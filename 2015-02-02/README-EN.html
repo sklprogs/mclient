@@ -1,0 +1,460 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="LibreOffice 3.5  (Linux)">
+	<META NAME="CREATED" CONTENT="20150202;1263700">
+	<META NAME="CHANGED" CONTENT="20150202;5264700">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { margin: 2cm }
+		P { margin-bottom: 0.21cm }
+		P.western { font-size: 14pt; so-language: en-US }
+		P.ctl { font-size: 14pt }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>Description and
+objectives</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Multitran Online
+Client is a program that connects to the web-site multitran.ru and
+returns translation of words entered by a user. The objective of this
+program is to ensure more comfortable work with keyboard and also to
+provide some additional functionality.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>System
+requirements</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>OS: Windows XP and
+later, Linux</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Mac OS X was not
+tested, however, it is possible to launch the program in this OS.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>An Internet
+connection is required.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Free space: 20 Mb
+(Windows build)</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Free RAM: 20 Mb
+(Windows build)</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Screen resolution:
+greater than 1024x758, at 1024x758 or less buttons may overlap.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>The program can work
+on slow computers, however, on fast computers its speed will be
+limited only by the Internet connection.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>Installation</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>You can start the
+build or the script (source code) itself. The build does not require
+installation, just copy it in some directory of your choice. To start
+the script itself, install Python 3 and all corresponding modules.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Additional software
+that may be required:</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Windows (the build):
+Microsoft Visual C++ 2010 Redistributable Package (x86)
+(vcredist_x86.exe) (otherwise, you can receive a warning about
+missing msvcr100.dll)</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Linux (the script):
+Python 3, an additional installation of html.parser and pyperclip, as
+well as other modules indicated in the import section, may be
+required.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>Usage and
+functionality</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>You need the
+Internet to work with this program. If the program is unable to get
+an article from the web-site, the corresponding warning will be
+shown. You will need to check the Internet connection and
+multitran.ru accessibility. If the Internet is up and stable - do not
+worry, the Multitran will be accessible soon. It is often enough to
+press &quot;OK&quot; button just after receiving this warning
+message.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Both one or several
+words may be requsted. If the requested phrase is not found with the
+current declension or grammatical number, the Multitran will
+automatically select the necessary declension and number. Thus, if
+you enter &quot;colorants&quot;, then the Multitran will show the
+article &quot;colorant&quot;.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>The program properly
+processes such symbols as á, ß, è, etc.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Titles of
+dictionaries from which terms are selected are highlighted in green.
+The current selected term is highlighted in blue. Comments, user
+names are highlighted in gray. The space between adjacents terms is
+highlighted in yellow. End dictionary links are processed as they
+were terms.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>After the article is
+downloaded, the program title changes to the text of your request. If
+the program has just started, the title shows the program title and
+build date.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>You can switch
+between adjacents terms using arrows. Press the left arrow to go to
+the nearest term from the left. Press the right arrow to go to the
+nearest term from the right. Press the up arrow to go to the first
+term of the preceding dictionary. Press the down arrow to go to the
+first term of the following dictionary.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>To return the
+translation of the current selected term, press Enter (on the basic
+or expanded keyboard). To copy the current term, press Ctrl-Enter.
+The program window will minimize and show a window of a program where
+the copied term can be inserted.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>In order to manually
+enter a term to translate, use the search field on the bottom of the
+window. After you have entered the necessary term, press Enter or the
+&quot;Search&quot; button.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>In order to switch
+between the search field and selected terms, press F6 or click the
+left mouse button in the required area.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>The language pair
+can be selected on the drop-down list. All language pairs currently
+present on the Multitran are supported. Please note that, if, for
+example, the English-Russian language pair is selected, you do not
+have to switch to the Russian-English pair (not counting the keyboard
+layout), because the Multitran can automatically determine the
+language of the term entered by you.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>In order to switch
+between buttons using keyboard, press Tab and Shift-Tab. A button can
+be activated by the left mouse button click, Enter (on the basic or
+expanded keyboard) or Space.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>You can
+enable/disable the history of requests by pressing the button
+&quot;History&quot;. Requests are sorted from the newest to the
+oldest. You can repeat a request by clicking the required term once
+in the history field. You can scroll the history field using the
+mouse wheel.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Use the function
+&quot;Clipboard&quot; to translate terms from the clipboard. The
+language pair, as always, is determined by the value provided by the
+drop-down list. After you have pressed the button &quot;Clipboard&quot;,
+the current window will be closed and a small window with the title
+'Change clipboard...' will show up. Since that the program with 1
+second delay will check whether the clipboard has changed. After the
+clipboard has changed, the program will load the new article
+correspondingly to the value stored in the clipboard. Please note: in
+a normal mode closing the article window will cause the program to
+exit. However, in the &quot;Clipboard&quot; mode after the article
+window has shown up, you will have to close it manually (pressing
+Alt-F4 or clicking &quot;X&quot;). The clipboard will be checked only
+when the current article window is closed. Please note that it is
+necessary to close the current article window in the &quot;Clipboard&quot;
+mode by pressing Alt-F4 or clicking &quot;X&quot;, and not the &quot;Exit&quot;
+button, because pressing this button will cause the program to exit
+even in the &quot;Clipboard&quot; mode.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>If the &quot;Clipboard&quot;
+mode is activated, then the text of the corresponding button becomes
+red. You can disable the clipboard scanning by pressing the
+corresponding button again. Please note that if the &quot;Clipboard&quot;
+mode is enabled, translating terms not by means of the clipboard but
+using the search, article or history fields will automatically
+disable this mode. This is the normal behavior and is reasoned by the
+logic of priotiries used in the program.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>In order to open the
+current article in a default browser, press the button &quot;In a
+browser&quot;.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>The program
+currently supports 2 interface languages - Russian and English. In
+order to switch between them, press buttons 'In English' and 'На
+русском' correspondingly.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>In order to look up
+the copyright information, press &quot;About&quot;.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>To exit the program,
+close the current window or press &quot;Exit&quot;. Please note that
+in the &quot;Clipboard&quot; mode closing the current window will not
+cause the program to close. To exit the program in this mode press
+&quot;Exit&quot;.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><FONT FACE="Times New Roman, serif"><B>Configuration
+file</B></FONT></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>You can adjust yourt
+settings in the configuration file <B>main.cfg</B>, which must be
+located either in the same directory with the program (in case of a
+build), or in the directory /usr/local/bin (a Linux script).</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>The configuration
+file must have the following sections (in square brackets):</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>[Linux settings],
+[Windows settings], [Mac settings], [Variables], [Integer Values],
+[Floating Values], [Boolean]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>and the following
+keys:</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>In the section
+[Variables]:</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>color_terms,
+color_terms_sel, color_dics, color_comments, color_borders,
+font_history, font_terms, font_terms_sel, font_dics, font_comments,
+window_size</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>In the section
+[Boolean]:</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>AlwaysMaximize</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Adjustable
+parameters are set after the equal sign. They should not be used
+inside quotation marks. Spaces inside parameters are allowed. </FONT></FONT>
+</P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>In order to ignore
+certain lines of the configuration file (comments, examples, etc.),
+put # at the beginning of a line. Such lines will not be loaded.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>The [Boolean]
+section allows only the following parameters: True or 1 (an option is
+enabled), False or 0 (an option is disabled).</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>Colors</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>You can select a
+desirable color by consulting an image “color chart.png” in the
+ZIP archive containing the program. Set the necessary color name
+after the equal sign. Spaces just before or after the equal sign are
+allowed.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>Fonts</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>In Windows: Open the
+directory C:\WINDOWS\Fonts and get the short name of a desirable
+font. For example, Times New Roman is designated as TIMES, Segoe UI –
+as SEGOEUI. Set this short title (case-insensitive) after the equal
+sign.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>In Linux: Open a
+directory with fonts, for example, /usr/share/fonts, then find the
+necessary font (for example, truetype/ttf-dejavu/DejaVuSansMono.ttf)
+and extract the title (for example, DejaVuSansMono). Set this title
+(also case-insensitive) after the equal sign.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>After you have
+indicated a font title, put the space and a point size (for example,
+14) and then put the space and a font attribute, for example,
+<U>underline</U>, <B>bold</B> or <I>italic</I>. You can combine
+underline, bold and italic. As a result, you must get, for example,
+the following: <B>font_dics=Arial 12 bold italic underline</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>Parameters</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>At the moment, you
+can adjust the following parameters:</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>color_terms</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Variables]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: A font
+color of terms</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example:
+color_terms=black </FONT></FONT>
+</P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>color_terms_sel</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Variables]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: A
+background color of the selected (current) term</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example:
+color_terms_sel=cyan </FONT></FONT>
+</P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>color_dics</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Variables]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: A font
+color of dictionary titles</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example:
+color_dics=light blue </FONT></FONT>
+</P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>color_comments</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Variables]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: A font
+color of commentaries and user names </FONT></FONT>
+</P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example:
+color_comments=gray </FONT></FONT>
+</P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>color_borders</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Variables]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: A terms
+delimiting color</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example:
+color_borders=khaki </FONT></FONT>
+</P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>font_history</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Variables]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: A font of a
+text in the History area</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example:
+font_history=ARIAL 12 </FONT></FONT>
+</P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>font_terms</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Variables]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: A font of
+terms</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example:
+font_terms=Times 14 </FONT></FONT>
+</P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>font_terms_sel</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Variables]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: A font of
+the selected (current) term</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example:
+font_terms_sel=Times 14 bold italic</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>font_dics</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Variables]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: A font of
+dictionary titles</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example: font_dics =
+Sans 14 bold underline </FONT></FONT>
+</P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>font_comments</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Variables]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: A font of
+commentaries</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example:
+font_comments = Sans 14 italic </FONT></FONT>
+</P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>AlwaysMaximize</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Boolean]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: Maximize a
+new window (True, 1) or not (False, 0)</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example:
+AlwaysMaximize=1</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>window_size</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Variables]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: Force a
+window size (works only when AlwaysMaximize=False)</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example:
+window_size=1024x768 </FONT></FONT>
+</P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>Known issues</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>In long articles the
+selection can get out of the screen view. Scroll the screen with the
+scrollbar or the mouse wheel.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Sometimes an HTML
+code fragment, particularly, a URL fragment, can be witnessed. If you
+notice that the program window lacks some text fragments or, vice
+versa, excessive fragments have been added, open the page in the
+browser and send me an address (URL) of this page. You can send me an
+e-mail in the window &quot;About&quot;.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>If you have
+discovered that the program has &quot;crashed&quot;, firstly check
+the list of running applications by pressing Alt-Tab. Sometimes the
+window shows behind windows of other applications and not above them.
+If you have discovered that the program permanently crashes when
+loading a certain page, please e-mail me the URL of this page.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>When switching to
+the English interface and enabling History, the program can firstly
+fail to get a correct list of requests. This bug is not obvious to
+the user, because the article is instantly reloaded.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>Potential
+enhancements</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Eliminate the
+revealed bugs.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Assign F1-F12 keys
+to the program buttons.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Save web-page on a
+hard drive.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Stop duplicating
+requests in the history field.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>To developers</B></FONT></FONT></P>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><SPAN LANG="en-GB">The
+program is distributed on the terms of GPL v.3. The program interface
+is translated into Russian (mes_ru.py) and English (mes_en.py), but
+you can add your own translations. Please note that these files store
+all messages used by me in various projects, not only in this one.
+Comments in the source code are mainly in Russian - sorry. If you
+decide to fork this program, you may want to contact me first in
+order not to duplicate efforts.</SPAN></FONT></FONT></P>
+</BODY>
+</HTML>
