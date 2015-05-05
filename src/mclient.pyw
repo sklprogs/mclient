@@ -19,7 +19,7 @@ from configparser import SafeConfigParser
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='2015-05-05 21:46'
+build_ver='3.0'
 config_file_root='main.cfg'
 root=tk.Tk()
 

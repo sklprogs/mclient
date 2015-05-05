@@ -1,0 +1,9 @@
+﻿- Use mouse for control: a term is selected according to the mouse pointer, use the left mouse button (LMB) to translate the selection, use the right mouse button (RMB) to copy the selection; wheel up - page up, wheel down - page down
+- Do not duplicate entries in the History
+- Use RMB to clear the History
+- Ignore URL links when translating in the Clipboard mode
+- Use RMB to clear the search field
+- Use the middle mouse button to clear the search field and paste clipboard contents
+- Fix the bug: the History is not added while in the Clipboard mode
+- Go to the previous article from the History (Ctrl-←), go to the next article from the History (Ctrl-→) (there are still some inaccuracies, for example, selecting '8 phrases' will go to 'phrase', not to a corresponding URL)
+- Use key bindings in the search field as well (except for Return)
