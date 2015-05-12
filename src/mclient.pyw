@@ -19,7 +19,7 @@ from configparser import SafeConfigParser
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='3.0'
+build_ver='3.1'
 config_file_root='main.cfg'
 root=tk.Tk()
 
@@ -286,9 +286,6 @@ mclientSaveTitle=load_option_bool(SectionBooleans,'mclientSaveTitle')
 # Всегда создавать новое окно на полный экран
 #AlwaysMaximize=True
 AlwaysMaximize=load_option_bool(SectionBooleans,'AlwaysMaximize')
-# mclient: Устанавливать фокус на строке поиска (True) или на окне статьи (False)
-#FocusSearch=True
-FocusSearch=load_option_bool(SectionBooleans,'FocusSearch')
 # mclient: Выделять ли промежуток между терминами цветом color_borders; если нет, то термины будут разделены точкой с запятой
 #TermsColoredSep=False
 TermsColoredSep=load_option_bool(SectionBooleans,'TermsColoredSep')
@@ -2187,8 +2184,8 @@ def article_field(db,Standalone=False):
 		# Поле ввода поисковой строки
 		search_field=tk.Entry(frame_panel)
 		search_field.pack(side='left')
-		search_field.bind('<Return>',go_search)
-		search_field.bind('<KP_Enter>',go_search)
+		top.bind('<Return>',go_search)
+		top.bind('<KP_Enter>',go_search)
 		search_field.bind('<Button 3>',clear_search_field)
 		search_field.bind('<Button 2>',paste_search_field)
 		# Кнопка для "чайников", заменяет Enter в search_field
@@ -2329,20 +2326,15 @@ def article_field(db,Standalone=False):
 	top.bind('<Prior>',move_page_up)
 	top.bind('<Next>',move_page_down)
 	if Standalone:
-		txt.bind('<Return>',go_url)
-		txt.bind('<KP_Enter>',go_url)
+		top.bind('<Shift-Return>',go_url)
+		top.bind('<Shift-KP_Enter>',go_url)
 		txt.bind('<Button-1>',go_url)
-		# Переключение между списком терминов и полем для ввода с помощью F6
-		search_field.bind('<F6>',lambda x:txt.focus())
-		txt.bind('<F6>',lambda x:search_field.focus())
-		# В режиме буфера фокус более естественно ставить на область терминов
-		if FocusSearch and db['mode']!='clipboard':
-			search_field.focus_force()
-		else:
-			txt.focus_force()
+		search_field.focus_force()
 	else:
 		txt.bind('<Return>',quit_now)
 		txt.bind('<KP_Enter>',quit_now)
+		txt.bind('<Shift-Return>',quit_now)
+		txt.bind('<Shift-KP_Enter>',quit_now)
 		top.bind('<Escape>',quit_now)
 		txt.focus_force()
 	top.bind('<Control-Return>',copy_sel)
