@@ -1,2 +1,0 @@
-- Archive program builds, so you do not need to re-download the whole ZIP when the program updates
-- Fix keyboard navigation
