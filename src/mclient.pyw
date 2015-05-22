@@ -19,7 +19,7 @@ from configparser import SafeConfigParser
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='2015-04-15 01:47'
+build_ver='3.0'
 config_file_root='main.cfg'
 root=tk.Tk()
 
@@ -475,7 +475,8 @@ def analyse_text(text,Truncate=True,Decline=False):
 			word=''
 			nls+=[len(words)]
 			k=-1
-		elif text[i]==' ':
+		# Необходимо разделять слова с неразрывным пробелом тоже, иначе фраза будет восприниматься как единое слово
+		elif text[i].isspace():
 			spaces+=[i]
 			spaces_sl+=[k]
 			if word!='':
@@ -1658,6 +1659,7 @@ def article_field(db,Standalone=False):
 		db['search']=db['terms']['phrases'][res[0]]
 		db['url']=db['terms']['url'][res[0]]
 		db['mode']='url'
+		db['history_index']=len(db['history'])
 		top.destroy()
 		root.deiconify()
 	# Search the selected term online using the entry widget
@@ -1667,6 +1669,8 @@ def article_field(db,Standalone=False):
 		db['search']=search_str.strip(dlb)
 		db['search']=search_str.strip(' ')
 		db['mode']='search'
+		# Обновляем индекс текущего запроса при добавлении элемента для поиска
+		db['history_index']=len(db['history'])
 		top.destroy()
 		root.deiconify()
 	# Copy to clipboard
@@ -1699,6 +1703,13 @@ def article_field(db,Standalone=False):
 				db['quit']=True
 		top.destroy()
 		root.deiconify()
+	# Определение текущего термина по координатам указателя
+	def mouse_sel(event):
+		cur_func=sys._getframe().f_code.co_name
+		tk_pos=pixels2tk(txt,event.x,event.y,Silent=False,Critical=False)
+		pos=tk2pos(db_page,tk_pos)
+		res[0]=get_adjacent_term(db,pos)
+		select_term(ForceScreenFit=True)
 	# Выделение терминов
 	def select_term(ForceScreenFit=True):
 		cur_func=sys._getframe().f_code.co_name
@@ -1714,6 +1725,11 @@ def article_field(db,Standalone=False):
 			pos2=db['terms']['pos'][res[0]][1]
 			pos1=pos2tk(db_page,pos1)
 			pos2=pos2tk(db_page,pos2,Even=True)
+			# Только 1 термин должен быть выделен, поэтому предварительно удаляем тэг выделения по всему тексту.
+			try:
+				txt.tag_remove('cur_term','1.0','end')
+			except:
+				log(cur_func,lev_err,'Не удалось удалить тэг "%s" в диапазоне %s-%s!' % ('cur_term','1.0','end'))
 			try:
 				txt.tag_add('cur_term',pos1,pos2)
 				log(cur_func,lev_debug,mes.tag_added % ('cur_term',pos1,pos2))
@@ -2049,6 +2065,24 @@ def article_field(db,Standalone=False):
 			log(cur_func,lev_warn,mes.history_failure)
 		top.destroy()
 		root.deiconify()
+	# Очистить строку поиска
+	def clear_search_field(event):
+		cur_func=sys._getframe().f_code.co_name
+		search_field.delete(0,'end')
+	# Очистить строку поиска и вставить в нее содержимое буфера обмена
+	def paste_search_field(event):
+		cur_func=sys._getframe().f_code.co_name
+		search_field.delete(0,'end')
+		search_field.insert(0,clipboard_paste())
+	# Очистить Историю
+	def clear_history(event):
+		cur_func=sys._getframe().f_code.co_name
+		db['mode']='search'
+		db['search']=mes.welcome
+		db['history']=[]
+		db['history_index']=0
+		top.destroy()
+		root.deiconify()
 	# Следить за буфером обмена
 	def watch_clipboard(event):
 		cur_func=sys._getframe().f_code.co_name
@@ -2071,6 +2105,7 @@ def article_field(db,Standalone=False):
 			Warning(cur_func,mes.browser_failure % db['url'])
 	# Переключить язык интерфейса с русского на английский и наоборот
 	def change_ui_lang(event):
+		cur_func=sys._getframe().f_code.co_name
 		global ui_lang
 		global mes
 		global gpl3_url
@@ -2084,6 +2119,30 @@ def article_field(db,Standalone=False):
 			gpl3_url=gpl3_url_en
 		top.destroy()
 		root.deiconify()
+	# Перейти на предыдущий запрос
+	def go_back(event):
+		cur_func=sys._getframe().f_code.co_name
+		if not 'history_index' in db:
+			db['history_index']=len(db['history'])
+		if db['history_index'] > 0:
+			db['history_index']-=1
+			if db['mode']!='search':
+				db['mode']='search'
+			db['search']=db['history'][db['history_index']]
+			top.destroy()
+			root.deiconify()
+	# Перейти на следующий запрос
+	def go_forward(event):
+		cur_func=sys._getframe().f_code.co_name
+		if not 'history_index' in db:
+			db['history_index']=len(db['history'])
+		if db['history_index'] < len(db['history'])-1:
+			db['history_index']+=1
+			if db['mode']!='search':
+				db['mode']='search'
+			db['search']=db['history'][db['history_index']]
+			top.destroy()
+			root.deiconify()
 	#--------------------------------------------------------------------------
 	if AlwaysMaximize:
 		if sys_type=='lin':
@@ -2130,6 +2189,8 @@ def article_field(db,Standalone=False):
 		search_field.pack(side='left')
 		search_field.bind('<Return>',go_search)
 		search_field.bind('<KP_Enter>',go_search)
+		search_field.bind('<Button 3>',clear_search_field)
+		search_field.bind('<Button 2>',paste_search_field)
 		# Кнопка для "чайников", заменяет Enter в search_field
 		button_search=tk.Button(frame_panel,text=mes.search)
 		button_search.bind('<Return>',go_search)
@@ -2148,6 +2209,7 @@ def article_field(db,Standalone=False):
 		button_history.bind('<KP_Enter>',toggle_history)
 		button_history.bind('<space>',toggle_history)
 		button_history.pack(side='left')
+		button_history.bind('<Button 3>',clear_history)
 		# Кнопка "Буфер обмена"
 		if db['mode']=='clipboard':
 			button_clipboard=tk.Button(frame_panel,text=mes.watch_clipboard,fg='red')
@@ -2186,6 +2248,9 @@ def article_field(db,Standalone=False):
 		button_quit.bind('<KP_Enter>',quit_now)
 		button_quit.bind('<space>',quit_now)
 		button_quit.pack(side='right')
+		# Перейти на предыдущую/следующую статью
+		top.bind('<Control-Left>',go_back)
+		top.bind('<Control-Right>',go_forward)
 	frame=tk.Frame(top)
 	frame.pack(expand=1,fill='both')
 	scrollbar=tk.Scrollbar(frame)
@@ -2251,21 +2316,22 @@ def article_field(db,Standalone=False):
 	coor_db=get_coor_pages(txt,db_page)
 	coor_db=aggregate_pages(db,coor_db)
 	#--------------------------------------------------------------------------
-	txt.bind('<Left>',move_left)
-	txt.bind('<Right>',move_right)
-	txt.bind('<Down>',move_down)
-	txt.bind('<Up>',move_up)
-	txt.bind('<Home>',move_line_start)
-	txt.bind('<End>',move_line_end)
-	txt.bind('<Control-Home>',move_text_start)
-	txt.bind('<Control-End>',move_text_end)
-	txt.bind('<Shift-Home>',move_page_start)
-	txt.bind('<Shift-End>',move_page_end)
-	txt.bind('<Prior>',move_page_up)
-	txt.bind('<Next>',move_page_down)
+	top.bind('<Left>',move_left)
+	top.bind('<Right>',move_right)
+	top.bind('<Down>',move_down)
+	top.bind('<Up>',move_up)
+	top.bind('<Home>',move_line_start)
+	top.bind('<End>',move_line_end)
+	top.bind('<Control-Home>',move_text_start)
+	top.bind('<Control-End>',move_text_end)
+	top.bind('<Shift-Home>',move_page_start)
+	top.bind('<Shift-End>',move_page_end)
+	top.bind('<Prior>',move_page_up)
+	top.bind('<Next>',move_page_down)
 	if Standalone:
 		txt.bind('<Return>',go_url)
 		txt.bind('<KP_Enter>',go_url)
+		txt.bind('<Button-1>',go_url)
 		# Переключение между списком терминов и полем для ввода с помощью F6
 		search_field.bind('<F6>',lambda x:txt.focus())
 		txt.bind('<F6>',lambda x:search_field.focus())
@@ -2277,10 +2343,15 @@ def article_field(db,Standalone=False):
 	else:
 		txt.bind('<Return>',quit_now)
 		txt.bind('<KP_Enter>',quit_now)
+		top.bind('<Escape>',quit_now)
 		txt.focus_force()
-	txt.bind('<Control-Return>',copy_sel)
-	txt.bind('<Control-KP_Enter>',copy_sel)
-	txt.bind('<Button 1>',lambda x:txt.focus())
+	top.bind('<Control-Return>',copy_sel)
+	# ПКМ используется еще для очистки Истории, поэтому нельзя использовать top
+	txt.bind('<Button 3>',copy_sel)
+	top.bind('<Control-KP_Enter>',copy_sel)
+	top.bind('<Button 4>',move_page_up)
+	top.bind('<Button 5>',move_page_down)
+	txt.bind('<Motion>',mouse_sel)
 	# Выделение первого признака
 	select_term()
 	top.wait_window()
@@ -2319,9 +2390,15 @@ def article_loop(Standalone=False):
 							log(cur_func,lev_info,mes.goodbye)
 							sys.exit()
 				new_buffer=clipboard_paste()
+				# Игнорировать URL, скопированные в буфер обмена
+				if 'http://' in new_buffer or 'www.' in new_buffer:
+					new_buffer=old_buffer
 				if new_buffer!=old_buffer:
 					break
 			db['search']=new_buffer
+			if not db['search'] in db['history']:
+				db['history'].append(db['search'])
+			db['history_index']=len(db['history'])
 		if db['mode']=='url':
 			db=get_online_article(db,IsURL=True,Standalone=Standalone)
 		else:
@@ -2343,7 +2420,8 @@ def article_loop(Standalone=False):
 			db=prepare_search(db)
 			db=article_field(db,Standalone=Standalone)
 			if Standalone:
-				db['history'].append(db['search'])
+				if not db['search'] in db['history']:
+					db['history'].append(db['search'])
 
 # I removed extra code, Standalone=False will not work
 article_loop(Standalone=True)

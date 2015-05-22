@@ -1,13 +1,9 @@
-- Enhance keyboard navigation:
-    ←: go to the nearest term to the left
-    →: the nearest term to the right
-    ↑: the first term of the preceding dictionary
-    ↓: the first term of the following dictionary
-    Home: the first term of the current dictionary
-    End: the last term of the current dictionary
-    Ctrl-Home: the first term of the article
-    Ctrl-End: the last term of the article
-    Shift-Home: the first term of the current page
-    Shift-End: the first term of the current page
-    PageUp: the first term of the preceding page
-    PageDown: the first term of the following page
+﻿- Use mouse for control: a term is selected according to the mouse pointer, use the left mouse button (LMB) to translate the selection, use the right mouse button (RMB) to copy the selection; wheel up - page up, wheel down - page down
+- Do not duplicate entries in the History
+- Use RMB to clear the History
+- Ignore URL links when translating in the Clipboard mode
+- Use RMB to clear the search field
+- Use the middle mouse button to clear the search field and paste clipboard contents
+- Fix the bug: the History is not added while in the Clipboard mode
+- Go to the previous article from the History (Ctrl-←), go to the next article from the History (Ctrl-→) (there are still some inaccuracies, for example, selecting '8 phrases' will go to 'phrase', not to a corresponding URL)
+- Use key bindings in the search field as well (except for Return)
