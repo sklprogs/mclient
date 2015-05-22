@@ -5,7 +5,7 @@
 	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="LibreOffice 3.5  (Linux)">
 	<META NAME="CREATED" CONTENT="20150202;224800">
-	<META NAME="CHANGED" CONTENT="20150315;12330000">
+	<META NAME="CHANGED" CONTENT="20150409;14581000">
 	<META NAME="Info 1" CONTENT="">
 	<META NAME="Info 2" CONTENT="">
 	<META NAME="Info 3" CONTENT="">
@@ -121,9 +121,11 @@ pyperclip, а также других модулей, указанных
 /usr/local/bin или /usr/bin символическую ссылку
 на такой скрипт:</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>#!/bin/sh</FONT></FONT></P>
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>#!/bin/sh </FONT></FONT>
+</P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>cd /opt/mclient/</FONT></FONT></P>
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>cd /opt/mclient/ </FONT></FONT>
+</P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>./mclient</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
@@ -353,6 +355,11 @@ font_history, font_terms, font_terms_sel, font_dics, font_comments,
 window_size, icon_mclient</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>В разделе
+[Integer Values]:</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>pixel_hack</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>В разделе
 [Boolean]:</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>ShowWallet,
@@ -537,13 +544,9 @@ font_dics = Sans 14 bold underline </FONT></FONT>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
 Шрифт комментариев</FONT></FONT></P>
-<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
-font_comments = Sans 14 italic </FONT></FONT>
-</P>
-<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
-<BR>
-</P>
+<P CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><SPAN LANG="en-GB">Пример:
+font_comments = Sans 14 italic</SPAN></FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>window_size</B></FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
@@ -574,6 +577,17 @@ window_size=1024x768 </FONT></FONT>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
 icon_64x64_mclient.gif</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>pixel_hack</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
+[Integer Values]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
+Указать число пикселей от границ окна,
+текст в области которых считается
+нечитаемым и должен быть перенесен.
+Чтобы отключить, выставьте 0.</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>AlwaysMaximize</B></FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
@@ -629,14 +643,6 @@ mclientSaveTitle=0</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>Известные
 ошибки </B></FONT></FONT>
-</P>
-<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>В длинных
-статьях окно не всегда поспевает за
-выделением. Предварительно прокручивайте
-экран с помощью ползунка или колесика
-мыши, затем щелкайте в область терминов.
-</FONT></FONT>
 </P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Иногда в
@@ -704,6 +710,10 @@ mclientSaveTitle=0</FONT></FONT></P>
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Не дублировать
 запросы в Истории. </FONT></FONT>
 </P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Улучшить
+навигацию с помощью клавиш PgUp, PgDn, Home,
+End, Ctrl-Home, Ctrl-End.</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>Разработчикам
 </B></FONT></FONT>

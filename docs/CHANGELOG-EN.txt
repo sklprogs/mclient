@@ -1,6 +1,2 @@
-- Add an icon
-- Focus on the search field by default (see FocusSearch in the config file; still focus on the terms field in the Clipboard mode)
-- Separate adjacent terms with semicolumn by default. Use TermsColoredSep=1 to separate terms with a coloured space
-- Change line breaks to Windows-style in the config file
-- Update manuals
-- Update README.md
+- Archive program builds, so you do not need to re-download the whole ZIP when the program updates
+- Fix keyboard navigation

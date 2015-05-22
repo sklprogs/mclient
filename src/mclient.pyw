@@ -19,7 +19,7 @@ from configparser import SafeConfigParser
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='2015-03-15 10:54'
+build_ver='2015-04-09 12:57'
 config_file_root='main.cfg'
 root=tk.Tk()
 
@@ -274,6 +274,11 @@ window_size=load_option(SectionVariables,'window_size')
 # icon_mclient='/usr/local/bin/icon_64x64_dic.xbm'
 icon_mclient=load_option(SectionVariables,'icon_mclient')
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Загрузка раздела [Integers] конфигурационного файла
+# Число пикселей с краев окна, текст в области которых считается нечитаемым и должен быть перенесен
+# Чтобы отключить, выставьте 0
+pixel_hack=load_option_int(SectionIntegers,'pixel_hack')
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Загрузка раздела [Booleans] конфигурационного файла
 # Следует ли всегда отображать в окне mclient только название и версию клиента (True), или же отображать текущий запрос (False); при 1-м запросе всегда указывается название и версия клиента
 #mclientSaveTitle=False
@@ -367,6 +372,313 @@ def mestype(func,cur_mes,Silent=False,Critical=False,Info=False):
 				log(func,lev_warn,cur_mes)
 			else:
 				Warning(func,cur_mes)
+				
+# Удалить знаки пунктуации
+# Это самый простой путь. Заменяет все совпадения (в отличие от использования переменных из punc_array) и не требует regexp (при котором потребуется экранирование)
+def delete_punctuation(fragm):
+	cur_func=sys._getframe().f_code.co_name
+	fragm=fragm.replace(',','')
+	fragm=fragm.replace('.','')
+	fragm=fragm.replace('!','')
+	fragm=fragm.replace('?','')
+	fragm=fragm.replace(':','')
+	fragm=fragm.replace(';','')
+	log(cur_func,lev_debug,str(fragm))
+	return fragm
+	
+# Удалить нумерацию в виде алфавита
+def delete_alphabetic_numeration(line):
+	cur_func=sys._getframe().f_code.co_name
+	my_expr=' [\(,\[]{0,1}[aA-zZ,аА-яЯ][\.,\),\]]( \D)'
+	match=re.search(my_expr,line)
+	while match:
+		replace_what=match.group(0)
+		replace_with=match.group(1)
+		line=line.replace(replace_what,replace_with)
+		match=re.search(my_expr,line)
+	log(cur_func,lev_debug,str(line))
+	return line
+
+# Преобразовать строку в нижний регистр, удалить пунктуацию и алфавитную нумерацию
+def prepare_str(line,Extended=False):
+	cur_func=sys._getframe().f_code.co_name
+	line=line.lower()
+	line=line.replace('ё','е')
+	line=line.replace('"','')
+	line=line.replace('“','')
+	line=line.replace('”','')
+	line=line.replace('«','')
+	line=line.replace('»','')
+	line=line.replace('(','')
+	line=line.replace(')','')
+	line=line.replace('[','')
+	line=line.replace(']','')
+	line=line.replace('{','')
+	line=line.replace('}','')
+	line=line.replace('*','')
+	line=delete_punctuation(line)
+	line=delete_alphabetic_numeration(line)
+	if Extended:
+		line=re.sub('\d+','',line)
+		#line=line.replace('-','')
+	#log(cur_func,lev_debug,str(line))
+	return line
+
+# Проанализировать текст и вернуть информацию о нем
+def analyse_text(text,Truncate=True,Decline=False):
+	cur_func=sys._getframe().f_code.co_name
+	start_time=time()
+	#check_args(cur_func,[[text,mes.type_str],[Truncate,mes.type_bool]])
+	# Нотация: lst = general list, clst = char list, wlst = word list, slst = sentence list
+	first_syms=[] # позиции первых букв слов
+	first_syms_sl=[] # позиции первых букв слов (отсчет от начала текущей строки)
+	first_syms_nf=[]
+	first_syms_nf_sl=[]
+	words=[] # список слов
+	# Для dlbs и nls делать _sl бессмысленно
+	dlbs=[] # позиции dlb
+	nls=[] # номера слов, с которых начинается новая строка
+	spaces=[] # позиции пробелов
+	spaces_sl=[] # позиции пробелов (отсчет от начала текущей строки)
+	last_syms=[] # позиции последних букв слов
+	last_syms_sl=[] # позиции последних букв слов (отсчет от начала текущей строки)
+	last_syms_nf=[] # позиции последних букв слов без пунктуации
+	last_syms_nf_sl=[] # позиции последних букв слов без пунктуации (отсчет от начала текущей строки)
+	sent_nos=[] # список номеров строк для каждого слова
+	words_nf=[] # список слов без пунктуации
+	sents_sym_len=[] # Длина предложений в символах
+	sents_word_len=[] # Список количеств слов в предложениях
+	sents_text=[] # Список предложений с сохранением лишних пробелов и пунктуации
+	sents_text_nf=[] # Список предложений с сохранением лишних пробелов без пунктуации
+	# Пример: [[[0, 2], [4, 8], [10, 17]], [[34, 34], [36, 38], [40, 43]]]
+	sents_pos=[] # Список позиций символов начала и конца слов, разбитый по предложениям
+	sents_pos_sl=[] # Тот же список, но номера идут от начала строки
+	sents_pos_nf=[] # Тот же список, но без учета пунктуации
+	sents_pos_nf_sl=[] # Тот же список, но номера идут от начала строки без учета пунктуации
+	#--------------------------------------------------------------------------
+	# Truncate - удалить лишние пробелы, переносы строк. Однако, strip по строкам не делается.
+	if Truncate:
+		text=tr_str(text)
+	else:
+		text=text.replace(wdlb,dlb)
+	#--------------------------------------------------------------------------
+	word=''
+	k=0
+	# В принципе, текст не должен быть пуст, но мы на всякий случай инициализируем i, чтобы не возникло ошибки при maxi=i
+	i=0
+	for i in range(len(text)):
+		if text[i]==dlb:
+			dlbs+=[i]
+			# Проверка защищает от двойных dlb и пробелов
+			if word!='':
+				words.append(word)
+			word=''
+			nls+=[len(words)]
+			k=-1
+		elif text[i]==' ':
+			spaces+=[i]
+			spaces_sl+=[k]
+			if word!='':
+				words.append(word)
+			word=''
+		else:
+			word+=text[i]
+			if len(word)==1:
+				first_syms+=[i]
+				first_syms_sl+=[k]
+				if word.isalpha():			
+					first_syms_nf+=[i]
+					first_syms_nf_sl+=[k]
+				elif i+1 < len(text):
+					delta=i+1
+					kdelta=k+1
+					while delta < len(text) and not text[delta].isalpha():
+						delta+=1
+						kdelta+=1
+					first_syms_nf+=[delta]
+					first_syms_nf_sl+=[kdelta]
+					log(cur_func,lev_info,mes.first_syms_cor % (i,delta))
+				else:
+					first_syms_nf+=[i]
+					first_syms_nf_sl+=[k]
+					log(cur_func,lev_warn,mes.first_syms_failure)
+		k+=1
+	# Добавление последнего слова
+	if word!='' and word!=dlb:
+		words.append(word)
+	maxi=i
+	words_num=len(words)
+	sent_no=0
+	for i in range(words_num):
+		words_nf.append(prepare_str(words[i],Extended=True))
+		last_syms+=[first_syms[i]+len(words[i])-1]
+		last_syms_nf+=[first_syms_nf[i]+len(words_nf[i])-1]
+		last_syms_sl+=[first_syms_sl[i]+len(words[i])-1]
+		last_syms_nf_sl+=[first_syms_nf_sl[i]+len(words_nf[i])-1]
+		if i in nls:
+			sent_no+=1
+		sent_nos+=[sent_no]
+	#--------------------------------------------------------------------------	
+	sent_no=0
+	j=0
+	pos_sl=[] # Список позиций всех символов в тексте в формате [[0,0],[0,1]...[n,n]]
+	for i in range(maxi+1):
+		pos_sl+=[[sent_no,j]]
+		if i in dlbs:
+			sent_no+=1
+			j=0
+		else:
+			j+=1
+	#--------------------------------------------------------------------------
+	sents=[]
+	sents_nf=[]
+	old_sent_no=-1
+	cur_sent=[]
+	cur_sent_nf=[]
+	cur_pos=[]
+	cur_pos_nf=[]
+	cur_pos_sl=[]
+	cur_pos_nf_sl=[]
+	for i in range(len(sent_nos)):
+		sent_no=sent_nos[i]
+		if sent_no!=old_sent_no:
+			if cur_sent!=[]:
+				sents+=[cur_sent]
+			if cur_sent_nf!=[]:
+				sents_nf+=[cur_sent_nf]
+			if cur_pos!=[]:
+				sents_pos+=[cur_pos]
+			if cur_pos_nf!=[]:
+				sents_pos_nf+=[cur_pos_nf]
+			if cur_pos_sl!=[]:
+				sents_pos_sl+=[cur_pos_sl]
+			if cur_pos_nf_sl!=[]:
+				sents_pos_nf_sl+=[cur_pos_nf_sl]
+			cur_sent=[]
+			cur_sent_nf=[]
+			cur_pos=[]
+			cur_pos_nf=[]
+			cur_pos_sl=[]
+			cur_pos_nf_sl=[]
+			old_sent_no=sent_no
+		cur_sent+=[words[i]]
+		cur_sent_nf+=[words_nf[i]]
+		cur_pos+=[[first_syms[i],last_syms[i]]]
+		cur_pos_sl+=[[first_syms_sl[i],last_syms_sl[i]]]
+		cur_pos_nf+=[[first_syms_nf[i],last_syms_nf[i]]]
+		cur_pos_nf_sl+=[[first_syms_nf_sl[i],last_syms_nf_sl[i]]]
+	#--------------------------------------------------------------------------
+	# Добавление последнего предложения
+	if cur_sent!=[]:
+		sents+=[cur_sent]
+	if cur_sent_nf!=[]:
+		sents_nf+=[cur_sent_nf]
+	if cur_pos!=[]:
+		sents_pos+=[cur_pos]
+	if cur_pos_nf!=[]:
+		sents_pos_nf+=[cur_pos_nf]
+	if cur_pos_sl!=[]:
+		sents_pos_sl+=[cur_pos_sl]
+	if cur_pos_nf_sl!=[]:
+		sents_pos_nf_sl+=[cur_pos_nf_sl]
+	#--------------------------------------------------------------------------
+	# +1 к номеру последнего предложения
+	sents_num=len(sents)
+	#--------------------------------------------------------------------------
+	for i in range(sents_num):
+		if len(sents_pos_sl[i]) > 0:
+			sents_sym_len+=[sents_pos_sl[i][-1][1]]
+		else:
+			sents_sym_len+=[0]
+			log(cur_func,lev_warn,mes.zero_len_sent % i)
+	#--------------------------------------------------------------------------
+	# +1 к номеру последнего слова в предложении
+	for i in range(sents_num):
+		sents_word_len+=[len(sents_pos[i])]
+	#--------------------------------------------------------------------------
+	for i in range(sents_num):
+		if sents_sym_len[i] > 0:
+			dummy=' '*(sents_sym_len[i]-1)
+		else:
+			dummy=''
+		dummy=list(dummy)
+		dummy_nf=list(dummy)
+		for j in range(sents_word_len[i]):
+			pos1=sents_pos_sl[i][j][0]
+			pos1_nf=sents_pos_nf_sl[i][j][0]
+			pos2=sents_pos_sl[i][j][1]
+			pos2_nf=sents_pos_nf_sl[i][j][1]
+			dummy[pos1:pos2+1]=sents[i][j]
+			dummy_nf[pos1_nf:pos2_nf+1]=sents_nf[i][j]
+		sents_text+=[''.join(dummy)]
+		sents_text_nf+=[''.join(dummy_nf)]
+	#--------------------------------------------------------------------------
+	#detailed_declined=decline_nom(words_nf,Decline=Decline)
+	detailed_declined=[]
+	#--------------------------------------------------------------------------
+	assert(words_num==len(words))
+	assert(words_num==len(words_nf))
+	assert(words_num==len(first_syms))
+	assert(words_num==len(first_syms_sl))
+	assert(words_num==len(first_syms_nf))
+	assert(words_num==len(first_syms_nf_sl))
+	assert(words_num==len(last_syms))
+	assert(words_num==len(last_syms_sl))
+	assert(words_num==len(last_syms_nf))
+	assert(words_num==len(last_syms_nf_sl))
+	assert(sents_num==len(sents))
+	assert(sents_num==len(sents_nf))
+	assert(sents_num==len(sents_pos))
+	assert(sents_num==len(sents_pos_nf))
+	assert(sents_num==len(sents_pos_sl))
+	assert(sents_num==len(sents_pos_nf_sl))
+	assert(sents_num==len(sents_text))
+	assert(sents_num==len(sents_text_nf))
+	#--------------------------------------------------------------------------
+	end_time=time()
+	log(cur_func,lev_info,mes.analysis_finished % str(end_time-start_time))
+	#--------------------------------------------------------------------------
+	log(cur_func,lev_debug,'len (=maxi+1): %d' % (maxi+1))
+	log(cur_func,lev_debug,'words: %s' % str(words))
+	log(cur_func,lev_debug,'words_nf: %s' % str(words_nf))
+	log(cur_func,lev_debug,'nls: %s' % str(nls))
+	log(cur_func,lev_debug,'dlbs: %s' % str(dlbs))
+	log(cur_func,lev_debug,'spaces: %s' % str(spaces))
+	log(cur_func,lev_debug,'spaces_sl: %s' % str(spaces_sl))
+	log(cur_func,lev_debug,'first_syms: %s' % str(first_syms))
+	log(cur_func,lev_debug,'first_syms_sl: %s' % str(first_syms_sl))
+	log(cur_func,lev_debug,'first_syms_nf: %s' % str(first_syms_nf))
+	log(cur_func,lev_debug,'first_syms_nf_sl: %s' % str(first_syms_nf_sl))
+	log(cur_func,lev_debug,'last_syms: %s' % str(last_syms))
+	log(cur_func,lev_debug,'last_syms_sl: %s' % str(last_syms_sl))
+	log(cur_func,lev_debug,'last_syms_nf: %s' % str(last_syms_nf))
+	log(cur_func,lev_debug,'last_syms_nf_sl: %s' % str(last_syms_nf_sl))
+	log(cur_func,lev_debug,'sent_nos: %s' % str(sent_nos))
+	log(cur_func,lev_debug,'words_num: %d' % words_num)
+	log(cur_func,lev_debug,'pos_sl: %s' % str(pos_sl))
+	log(cur_func,lev_debug,'sents_num: %d' % sents_num)
+	log(cur_func,lev_debug,'sents: %s' % str(sents))
+	log(cur_func,lev_debug,'sents_nf: %s' % str(sents_nf))
+	log(cur_func,lev_debug,'sents_pos: %s' % str(sents_pos))
+	log(cur_func,lev_debug,'sents_pos_nf: %s' % str(sents_pos_nf))
+	log(cur_func,lev_debug,'sents_pos_sl: %s' % str(sents_pos_sl))
+	log(cur_func,lev_debug,'sents_pos_nf_sl: %s' % str(sents_pos_nf_sl))
+	log(cur_func,lev_debug,'sents_sym_len: %s' % str(sents_sym_len))
+	log(cur_func,lev_debug,'sents_word_len: %s' % str(sents_word_len))
+	log(cur_func,lev_debug,'sents_text: %s' % str(sents_text))
+	log(cur_func,lev_debug,'sents_text_nf: %s' % str(sents_text_nf))
+	log(cur_func,lev_debug,'detailed_declined: %s' % str(detailed_declined))
+	#--------------------------------------------------------------------------
+	text_db={'len':maxi+1,'words_num':words_num,'words':words,'words_nf':words_nf,
+	        'first_syms':first_syms,'first_syms_nf':first_syms_nf,'first_syms_sl':first_syms_sl,
+	        'first_syms_nf_sl':first_syms_nf_sl,'last_syms':last_syms,'last_syms_sl':last_syms_sl,
+	        'last_syms_nf':last_syms_nf,'last_syms_nf_sl':last_syms_nf_sl,'nls':nls,'dlbs':dlbs,
+	        'spaces':spaces,'spaces_sl':spaces_sl,'sent_nos':sent_nos,'pos_sl':pos_sl,'text':text,
+	        'sents_num':sents_num,'sents_pos':sents_pos,'sents_pos_nf':sents_pos_nf,'sents':sents,
+	        'sents_nf':sents_nf,'sents_pos_sl':sents_pos_sl,'sents_pos_nf_sl':sents_pos_nf_sl,
+	        'sents_sym_len':sents_sym_len,'sents_word_len':sents_word_len,'sents_text':sents_text,
+	        'sents_text_nf':sents_text_nf,'declined':detailed_declined}
+	return text_db
 				
 # Привести список вида [[sent_no,pos1,sent_no,pos2]] к виду, понимаемому Tk
 def list2tk(lst):
@@ -1094,11 +1406,169 @@ def prepare_search(db):
 		res_mes+="db['move_right']:"+dlb+str(db['move_right'])+dlb+dlb
 		text_field_ro(mes.db_check6,res_mes)
 	return db
+	
+# Конвертировать строку в целое число
+def str2int(line):
+	cur_func=sys._getframe().f_code.co_name
+	par=None
+	try:
+		par=int(line)
+	except:
+		log(cur_func,lev_err,mes.convert_to_int_failure % line)
+	log(cur_func,lev_debug,str(par))
+	return par
+
+# Конвертировать строку с позицией Tkinter вида '1.20' в список вида [sent_no,pos_no]
+def convertFromTk(line,Even=False):
+	cur_func=sys._getframe().f_code.co_name
+	#check_args(cur_func,[[line,mes.type_str],[Even,mes.type_bool]])
+	num_lst=line.split('.')
+	assert(len(num_lst)==2)
+	sent=str2int(num_lst[0])
+	#check_type(cur_func,sent,mes.type_int)
+	pos=str2int(num_lst[1])
+	#check_type(cur_func,pos,mes.type_int)
+	if Even:
+		lst=[sent-1,pos-1]
+	else:
+		lst=[sent-1,pos]
+	# Tkinter позволяет выделять так, что конец придется на первый (=нулевой) символ в начале предложения, и из-за Even получится отрицательное число. Компенсируем это.
+	for i in range(len(lst)):
+		if lst[i] < 0:
+			log(cur_func,lev_warn,mes.negative % lst[i])
+			lst[i]=0
+	log(cur_func,lev_debug,str(lst))
+	return lst
+
+# Конвертировать числовую позицию формата int в позицию в формате Tkinter
+# Пример: 20 => '1.20'
+def pos2tk(text_db,pos,Even=False):
+	cur_func=sys._getframe().f_code.co_name
+	# < при len=maxi+1 и <= при len=maxi
+	assert(pos < text_db['len'])
+	#elem=text_db['pos_sl'][pos-1]
+	# 2014-11-15 11:52
+	elem=text_db['pos_sl'][pos]
+	tk_pos=convert2tk(elem[0],elem[1],Even=Even)
+	log(cur_func,lev_debug,str('%d => %s' % (pos,tk_pos)))
+	return tk_pos
+
+# Конвертировать позицию в формате Tkinter в числовую позицию формата int
+# Пример: '1.20' => 20
+def tk2pos(text_db,tk_pos,Even=False):
+	cur_func=sys._getframe().f_code.co_name
+	# Пример: [0,10]
+	pos_sl_no=convertFromTk(tk_pos,Even=Even)
+	# Выделение в Tkinter может выйти за пределы самого текста, поэтому заранее определяем правую границу.
+	found=len(text_db['pos_sl'])
+	for i in range(len(text_db['pos_sl'])):
+		if pos_sl_no==text_db['pos_sl'][i]:
+			found=i
+			break
+	log(cur_func,lev_debug,str('%s => %s' % (tk_pos,str(found))))
+	return found
+
+# Преобразовать координаты заданного виджета из пикселей в Tkinter
+def pixels2tk(widget,x,y,Silent=False,Critical=False):
+	cur_func=sys._getframe().f_code.co_name
+	try:
+		tk_pos=widget.index('@%d,%d' % (x,y))
+	except:
+		tk_pos='1.0'
+		mestype(cur_func,'Не удается преобразовать координаты виджета "%s" из пикселей в Tkinter для координат (%s,%s)' % (str(widget),str(x),str(y)),Silent=Silent,Critical=Critical)
+	log(cur_func,lev_debug,tk_pos)
+	return tk_pos
+	
+# Вычислить координаты текста для текущей видимой области
+def get_page_coor(text_db,coor_db,page_no):
+	cur_func=sys._getframe().f_code.co_name
+	coor_db['pages'][page_no]={}
+	coor_db['pages'][page_no]['up']={}
+	coor_db['pages'][page_no]['up']['pix']={}
+	coor_db['pages'][page_no]['down']={}
+	coor_db['pages'][page_no]['down']['pix']={}
+	coor_db['pages'][page_no]['up']['pix']['x']=coor_db['widget'].winfo_x()
+	coor_db['pages'][page_no]['up']['pix']['y']=coor_db['widget'].winfo_y()
+	coor_db['pages'][page_no]['down']['pix']['x']=coor_db['pages'][page_no]['up']['pix']['x']+coor_db['width']
+	coor_db['pages'][page_no]['down']['pix']['y']=coor_db['pages'][page_no]['up']['pix']['y']+coor_db['height']
+	coor_db['pages'][page_no]['up']['tk']=pixels2tk(coor_db['widget'],coor_db['pages'][page_no]['up']['pix']['x'],coor_db['pages'][page_no]['up']['pix']['y'])
+	coor_db['pages'][page_no]['down']['tk']=pixels2tk(coor_db['widget'],coor_db['pages'][page_no]['down']['pix']['x'],coor_db['pages'][page_no]['down']['pix']['y'])
+	coor_db['pages'][page_no]['up']['pos']=tk2pos(text_db,coor_db['pages'][page_no]['up']['tk'],Even=False)
+	coor_db['pages'][page_no]['down']['pos']=tk2pos(text_db,coor_db['pages'][page_no]['down']['tk'],Even=True)
+	log(cur_func,lev_debug,"coor_db['pages'][%d]['up']['pix']['x']: %d" % (page_no,coor_db['pages'][page_no]['up']['pix']['x']))
+	log(cur_func,lev_debug,"coor_db['pages'][%d]['up']['pix']['y']: %d" % (page_no,coor_db['pages'][page_no]['up']['pix']['y']))
+	log(cur_func,lev_debug,"coor_db['pages'][%d]['down']['pix']['x']: %d" % (page_no,coor_db['pages'][page_no]['down']['pix']['x']))
+	log(cur_func,lev_debug,"coor_db['pages'][%d]['down']['pix']['y']: %d" % (page_no,coor_db['pages'][page_no]['down']['pix']['y']))
+	log(cur_func,lev_debug,"coor_db['pages'][%d]['up']['tk']: %s" % (page_no,coor_db['pages'][page_no]['up']['tk']))
+	log(cur_func,lev_debug,"coor_db['pages'][%d]['down']['tk']: %s" % (page_no,coor_db['pages'][page_no]['down']['tk']))
+	log(cur_func,lev_debug,"coor_db['pages'][%d]['up']['pos']: %d" % (page_no,coor_db['pages'][page_no]['up']['pos']))
+	log(cur_func,lev_debug,"coor_db['pages'][%d]['down']['pos']: %d" % (page_no,coor_db['pages'][page_no]['down']['pos']))
+	return coor_db
+
+# В зависимости от размеров окна вычислить координаты текста для каждой видимой области
+def get_coor_pages(widget,text_db):
+	cur_func=sys._getframe().f_code.co_name
+	coor_db={}
+	coor_db['widget']=widget
+	coor_db['widget'].update_idletasks()
+	coor_db['width']=coor_db['widget'].winfo_width()
+	coor_db['height']=coor_db['widget'].winfo_height()
+	if coor_db['height'] > pixel_hack:
+		coor_db['height']-=pixel_hack
+	if coor_db['width'] > pixel_hack:
+		coor_db['width']-=pixel_hack
+	log(cur_func,lev_debug,"coor_db['width']: %d" % coor_db['width'])
+	log(cur_func,lev_debug,"coor_db['height']: %d" % coor_db['height'])
+	coor_db['pages']={}
+	page_no=0
+	next_page_pos=0
+	widget.yview('1.0')
+	while next_page_pos < text_db['len']:
+		coor_db=get_page_coor(text_db,coor_db,page_no)
+		next_page_pos=coor_db['pages'][page_no]['down']['pos']+1
+		if next_page_pos > text_db['len']-1:
+			break
+		else:
+			next_page_tk=pos2tk(text_db,next_page_pos,Even=True)
+			log(cur_func,lev_debug,'next_page_tk: %s' % next_page_tk)
+			widget.yview(next_page_tk)
+			page_no+=1
+	widget.yview('1.0')
+	coor_db['pages']['num']=page_no+1
+	coor_db['cur_page_no']=0
+	coor_db['direction']='right_down'
+	log(cur_func,lev_debug,"coor_db['pages']['num']: %d" % coor_db['pages']['num'])
+	return coor_db
+	
+# По позиции символа определить ближайший термин слева или справа
+def get_adjacent_term(db,det,direction='right_down'):
+	cur_func=sys._getframe().f_code.co_name
+	term=''
+	term_num=-1
+	if direction=='right_down':
+		for i in range(db['terms']['num']):
+			if det <= db['terms']['pos'][i][0] or det <= db['terms']['pos'][i][1]:
+				term_num=i
+				term=db['terms']['phrases'][term_num]
+				break
+		log(cur_func,lev_debug,mes.right_term % (term_num,term))
+	elif direction=='left_up':
+		i=db['terms']['num']-1
+		while i >= 0:
+			if det >= db['terms']['pos'][i][0] or det >= db['terms']['pos'][i][1]:
+				term_num=i
+				term=db['terms']['phrases'][term_num]
+				break
+			i-=1
+		log(cur_func,lev_debug,mes.left_term % (term_num,term))
+	return term_num
 
 # Отобразить окно со словарной статьей
 def article_field(db,Standalone=False):
 	cur_func=sys._getframe().f_code.co_name
-	top,res=tk.Toplevel(root),[0]
+	top=tk.Toplevel(root)
+	# Чтобы не создавать лишних глобальных переменных, пользуемся особенностью Питона - списки, измененные во вложенных функциях, сохраняют свои изменения в основных функциях
+	res, coor_up_tk, coor_up_pos, coor_down_tk, coor_down_pos, prev_coor_up_tk = [0],[0],[0],[0],[0],[0]
 	root.withdraw()
 	if not 'search' in db:
 		db['search']=mes.welcome
@@ -1167,67 +1637,117 @@ def article_field(db,Standalone=False):
 				db['quit']=True
 		top.destroy()
 		root.deiconify()
-	# orphant
-	# Сдвинуть экран до текущего термина
-	def shift_screen(tkpos):
-		cur_func=sys._getframe().f_code.co_name
-		# 1. Настройка метки
-		try:
-			txt.mark_set('insert',tkpos)
-			log(cur_func,lev_debug,mes.mark_added % ('insert',tkpos))
-		except:
-			log(cur_func,lev_err,mes.mark_addition_failure % ('insert',tkpos))
-		# 2. Прокрутка экрана
-		try:
-			txt.yview('insert')
-		except:
-			log(cur_func,lev_err,mes.shift_screen_failure % 'insert!')
 	# Выделение терминов
 	def select_term():
 		cur_func=sys._getframe().f_code.co_name
-		if db['terms']['num'] > 0:
-			# 1. Установка тэга
-			pos1=db['terms']['tk'][res[0]][0]
-			pos2=db['terms']['tk'][res[0]][-1]
+		if db['terms']['num'] > 0 and db['terms']['num'] > res[0]:
+			if not fits_screen():
+				log(cur_func,lev_warn,mes.visible_selection)
+				if coor_db['direction']=='right_down':
+					res[0]=get_adjacent_term(db,coor_db['pages'][coor_db['cur_page_no']]['up']['pos'],coor_db['direction'])
+				elif coor_db['direction']=='left_up':
+					res[0]=get_adjacent_term(db,coor_db['pages'][coor_db['cur_page_no']]['down']['pos'],coor_db['direction'])
+			pos1=db['terms']['pos'][res[0]][0]
+			pos2=db['terms']['pos'][res[0]][1]
+			pos1=pos2tk(db_page,pos1)
+			pos2=pos2tk(db_page,pos2,Even=True)
 			try:
 				txt.tag_add('cur_term',pos1,pos2)
 				log(cur_func,lev_debug,mes.tag_added % ('cur_term',pos1,pos2))
 			except:
 				mestype(cur_func,mes.tag_addition_failure % ('cur_term',pos1,pos2),Silent=False,Critical=False)
+		else:
+			log(cur_func,lev_warn,mes.not_enough_input_data)
 		# 2. Настройка тэга
 		try:
 			txt.tag_config('cur_term',background=color_terms_sel,font=font_terms_sel)
 			log(cur_func,lev_debug,mes.tag_config % ('cur_term',color_terms_sel,font_terms_sel))
 		except:
 			mestype(cur_func,mes.tag_config_failure % ('cur_term',color_terms_sel,font_terms_sel),Silent=False,Critical=False)
-		#shift_screen(pos1)
+	# Определить номера терминов, на которых экран должен сдвигаться
+	def aggregate_pages(): #db,coor_db
+		cur_func=sys._getframe().f_code.co_name
+		adj_terms=[]
+		term_num=0
+		for i in range(coor_db['pages']['num']):
+			term_num_up=get_adjacent_term(db,coor_db['pages'][i]['up']['pos'],direction='right_down')
+			term_up=db['terms']['phrases'][term_num_up]
+			term_num_down=get_adjacent_term(db,coor_db['pages'][i]['down']['pos'],direction='right_down')
+			term_down=db['terms']['phrases'][term_num_down]
+			log(cur_func,lev_debug,db_pages_stat % (i,term_num_up,term_up,term_num_down,term_down))
+	# Определить, входит ли текущий термин в видимую часть экрана
+	def fits_screen():
+		cur_func=sys._getframe().f_code.co_name
+		# Вернуть True, если смещение экрана не требуется (ввиду названия функции)
+		Success=True
+		# Если терминов нет, то смещать экран бесполезно
+		if db['terms']['num'] > 0 and db['terms']['num'] > res[0]:
+			if db['terms']['pos'][res[0]][0] >= coor_db['pages'][coor_db['cur_page_no']]['up']['pos'] and db['terms']['pos'][res[0]][-1] <= coor_db['pages'][coor_db['cur_page_no']]['down']['pos']:
+				pass
+			else:
+				Success=False
+		return Success
+	# Обеспечить удобное пролистывание экрана
+	def shift_screen():
+		cur_func=sys._getframe().f_code.co_name
+		# Вставляю проверку в самом начале, чтобы в случае ошибки не проводить дополнительные операции. Все равно если терминов нет, то смещать экран бесполезно
+		if db['terms']['num'] > 0 and db['terms']['num'] > res[0]:
+			if fits_screen():
+				log(cur_func,lev_info,mes.shift_screen_not_required)
+			else:
+				log(cur_func,lev_info,mes.shift_screen_required)
+				if coor_db['direction']=='right_down':
+					if coor_db['cur_page_no'] < coor_db['pages']['num']-1:
+						coor_db['cur_page_no']+=1
+				elif coor_db['direction']=='left_up':
+					if coor_db['cur_page_no'] > 0:
+						coor_db['cur_page_no']-=1
+				else:
+					ErrorMessage(cur_func,unknown_mode % (str(direction),'left_up, right_down'))
+			yview_tk=coor_db['pages'][coor_db['cur_page_no']]['up']['tk']
+			# Смещение экрана до заданного термина
+			# Алгоритм работает только, если метка называется 'insert'
+			try:
+				txt.mark_set('insert',yview_tk)
+				txt.yview('insert')
+				log(cur_func,lev_info,mes.shift_screen % ('insert',yview_tk))
+			except:
+				log(cur_func,lev_err,mes.shift_screen_failure % 'insert')
 	# Перейти на предыдущий термин
 	def move_left(event):
 		cur_func=sys._getframe().f_code.co_name
+		coor_db['direction']='left_up'
 		txt.tag_remove('cur_term','1.0','end')
 		log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
 		res[0]=db['move_left'][res[0]]
+		shift_screen()
 		select_term()
 	# Перейти на следующий термин
 	def move_right(event):
 		cur_func=sys._getframe().f_code.co_name
+		coor_db['direction']='right_down'
 		txt.tag_remove('cur_term','1.0','end')
 		log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
 		res[0]=db['move_right'][res[0]]
+		shift_screen()
 		select_term()
 	# Перейти на строку вниз
 	def move_down(event):
 		cur_func=sys._getframe().f_code.co_name
+		coor_db['direction']='right_down'
 		txt.tag_remove('cur_term','1.0','end')
 		log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
 		res[0]=db['move_down'][res[0]]
+		shift_screen()
 		select_term()
 	# Перейти на строку вверх
 	def move_up(event):
 		cur_func=sys._getframe().f_code.co_name
+		coor_db['direction']='left_up'
 		txt.tag_remove('cur_term','1.0','end')
 		log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
 		res[0]=db['move_up'][res[0]]
+		shift_screen()
 		select_term()
 	# Изменить направление (язык) перевода
 	def change_pair(event):
@@ -1564,14 +2084,16 @@ def article_field(db,Standalone=False):
 			log(cur_func,lev_debug,mes.tag_bg % ('borders',color_borders))
 		except:
 			mestype(cur_func,mes.tag_bg_failure % 'borders',Silent=False,Critical=False)
-	#--------------------------------------------------------------------------
-	# Выделение первого признака
-	select_term()
-	#--------------------------------------------------------------------------
 	scrollbar.config(command=txt.yview)
 	scrollbar.pack(side='right',fill='y')
 	txt.config(state='disabled')
 	txt.pack(expand=1,fill='both')
+	#--------------------------------------------------------------------------
+	# Возможно, здесь можно оптимизировать алгоритм
+	# db['all']['pos'] и db['all']['pos_sl'] включают позиции начала и конца вхождений в статью, в отличие от результата text_analyse(), где ['first_syms_nf'], ['last_syms_nf'] и ['pos_sl'] прописаны для каждого символа, поэтому tk2pos надо делать на основе новой БД, а не db['all']
+	db_page=analyse_text(db['page'],Truncate=False,Decline=False)
+	coor_db=get_coor_pages(txt,db_page)
+	#--------------------------------------------------------------------------
 	txt.bind('<Left>',move_left)
 	txt.bind('<Right>',move_right)
 	txt.bind('<Down>',move_down)
@@ -1594,6 +2116,8 @@ def article_field(db,Standalone=False):
 	txt.bind('<Control-Return>',copy_sel)
 	txt.bind('<Control-KP_Enter>',copy_sel)
 	txt.bind('<Button 1>',lambda x:txt.focus())
+	# Выделение первого признака
+	select_term()
 	top.wait_window()
 	return db
 
