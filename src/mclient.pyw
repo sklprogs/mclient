@@ -13,7 +13,7 @@ import html.parser
 # (C) Peter Sklyar, 2015. License: GPL v.3
 # All third-party modules are the intellectual work of their authors.
 
-build_ver='2015-01-26 04:57'
+build_ver='2015-01-30 03:56'
 root=tk.Tk()
 
 ui_lang='ru'
@@ -25,6 +25,7 @@ if ui_lang=='ru':
 else:
 	import mes_en as mes
 	gpl3_url=gpl3_url_en
+mclientSaveTitle=False
 	
 lev_crit='CRITICAL'
 lev_err='ERROR'
@@ -77,9 +78,9 @@ ENG => EST      Англ-эст:       'http://www.multitran.ru/c/m.exe?l1=1&l2=
 '''
 online_url_root='http://www.multitran.ru/c/m.exe?'
 online_url_safe='http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%ED%E5%E2%E5%F0%ED%E0%FF+%F1%F1%FB%EB%EA%E0'
-default_pair='ENG => RUS'
+default_pair='ENG <=> RUS'
 cur_pair=default_pair
-pairs=['ENG => RUS','DEU => RUS','SPA => RUS','FRA => RUS','NLD => RUS','ITA => RUS','LAV => RUS','EST => RUS','AFR => RUS','EPO => RUS','XAL => RUS','ENG => DEU','ENG => EST']
+pairs=['ENG <=> RUS','DEU <=> RUS','SPA <=> RUS','FRA <=> RUS','NLD <=> RUS','ITA <=> RUS','LAV <=> RUS','EST <=> RUS','AFR <=> RUS','EPO <=> RUS','XAL <=> RUS','ENG <=> DEU','ENG <=> EST']
 online_dic_urls=['http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=3&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=5&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=4&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=24&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=23&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=27&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=26&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=31&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=34&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=35&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=3&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=26&s=%s']
 online_dic_url=online_dic_urls[0]
 not_found_online='Вы знаете перевод этого слова? Добавьте его в словарь'
@@ -966,7 +967,10 @@ def article_field(db,Standalone=False):
 		cur_func=sys._getframe().f_code.co_name
 		clipboard_copy(db['terms']['phrases'][res[0]])
 		log(cur_func,lev_info,mes.copied_to_clipboard % str(db['terms']['phrases'][res[0]]))
-		if Standalone:
+		if db['mode']=='clipboard':
+			top.destroy()
+			root.deiconify()
+		elif Standalone:
 			top.iconify()
 		else:
 			db['quit']=True
@@ -1225,13 +1229,16 @@ def article_field(db,Standalone=False):
 	# Win, Mac
 	else:
 		top.wm_state(newstate='zoomed')
-	if db['first_launch']:
+	if mclientSaveTitle:
 		top.title(mes.mclient % build_ver)
-		db['first_launch']=False
 	else:
-		top.title(db['search'])
+		if db['first_launch']:
+			top.title(mes.mclient % build_ver)
+			db['first_launch']=False
+		else:
+			top.title(db['search'])
 	top.protocol("WM_DELETE_WINDOW",quit_top)
-	root.protocol("WM_DELETE_WINDOW",quit_now)
+	#root.protocol("WM_DELETE_WINDOW",quit_now)
 	if Standalone:
 		# Создание каркаса с предыдущими поисковыми запросами
 		frame_history=tk.Frame(top)
@@ -1384,6 +1391,7 @@ def article_field(db,Standalone=False):
 	txt.bind('<Control-Return>',copy_sel)
 	txt.bind('<Control-KP_Enter>',copy_sel)
 	txt.bind('<Button 1>',lambda x:txt.focus())
+	txt.focus_force()
 	top.wait_window()
 	return db
 
@@ -1411,8 +1419,7 @@ def article_loop(Standalone=False):
 		if db['mode']=='clipboard': # Переход на режимы 'search' и 'url' отключит режим 'clipboard'. Если создать дополнительную переменную для слежения за буфером, то не понятно, какому режиму отдавать предпочтение: если считать более приоритетным 'clipboard', то ручной переход на другие статьи не сработает
 			old_buffer=clipboard_paste()
 			while True:
-				root.title(mes.waiting_clipboard)
-				root.update()
+				root.withdraw()
 				sleep(1)
 				if 'quit' in db:
 					if db['quit']:
@@ -1422,8 +1429,6 @@ def article_loop(Standalone=False):
 				new_buffer=clipboard_paste()
 				if new_buffer!=old_buffer:
 					break
-			root.title(mes.welcome)
-			root.update()
 			db['search']=new_buffer
 		if db['mode']=='url':
 			db=get_online_article(db,IsURL=True)

@@ -1,0 +1,4 @@
+* Remove the root window while waiting for clipboard
+* Keep the default window title (optional)
+* Show the window above all
+* Close the window instead of minimizing in the clipboard mode
