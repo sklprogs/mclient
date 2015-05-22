@@ -1,0 +1,2 @@
+- Drop switching the search field and terms field (F6 is no longer supported)
+- Enter on a basic and expanded keyboard in the terms field has been re-assigned to Shift-Enter
