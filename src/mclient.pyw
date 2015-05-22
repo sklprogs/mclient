@@ -11,6 +11,7 @@ import tkinter.messagebox as tkmes
 # В Python 3 не работает просто import urllib, импорт должен быть именно такой, как здесь
 import urllib.request, urllib.parse
 import html.parser
+import posixpath
 from configparser import SafeConfigParser
 
 # (C) Peter Sklyar, 2015. License: GPL v.3
@@ -18,7 +19,7 @@ from configparser import SafeConfigParser
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='2015-02-01 21:50'
+build_ver='2015-03-15 10:54'
 config_file_root='main.cfg'
 root=tk.Tk()
 
@@ -65,7 +66,7 @@ err_mes_unsupported_lang='ERR_UNSUPPORTED_LANGUAGE'
 # cur_widget может меняться, поэтому не добавляю его в cmd_err_mess
 cmd_err_mess=[err_mes_unavail,err_mes_copy,err_mes_paste,err_wrong_enc,err_incor_log_mes,err_mes_no_feature_text,err_mes_no_full_inq_text,err_mes_no_inq_path,err_mes_empty_question,err_mes_empty_warning,err_mes_empty_info,err_mes_empty_error,err_mes_empty_input,err_mes_no_selection,err_mes_selected_not_matched,err_mes_empty_mes,err_mes_unsupported_lang]
 
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Multitran client-specific variables
 '''
 ENG => RUS      Англо-русский:  'http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s'
@@ -90,7 +91,7 @@ pairs=['ENG <=> RUS','DEU <=> RUS','SPA <=> RUS','FRA <=> RUS','NLD <=> RUS','IT
 online_dic_urls=['http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=3&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=5&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=4&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=24&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=23&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=27&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=26&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=31&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=34&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=35&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=3&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=26&s=%s']
 online_dic_url=online_dic_urls[0]
 not_found_online='Вы знаете перевод этого слова? Добавьте его в словарь'
-#-----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Tag patterns
 tag_pattern1='<a title="'
 tag_pattern2='<a href="m.exe?'
@@ -100,7 +101,7 @@ tag_pattern5='<span STYLE="color:gray">'
 tag_pattern6='<span STYLE="color:black">'
 tag_pattern7='</a>'
 tag_pattern8='">'
-#-----------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Bool
 HistoryEnabled=False
 # I removed extra code, InternalDebug=False will not work
@@ -151,16 +152,28 @@ def detect_os():
 sys_type=detect_os()
 if sys_type=='win':
 	import win32clipboard
+	sysdiv='\\'
 else:
 	import pyperclip # (C) Al Sweigart, al@inventwithpython.com, BSD License
+	sysdiv='/'
+	
+# Верно определить каталог по полному пути вне зависимости от ОС
+def true_dirname(path,UseLog=True):
+	cur_func=sys._getframe().f_code.co_name
+	path=path.replace('\\','//')
+	#curdir=ntpath.dirname(path)
+	curdir=posixpath.dirname(path)
+	if sys_type=='win':
+		curdir=curdir.replace('//','\\')
+	if UseLog:
+		log(cur_func,lev_debug,mes.full_path2 % (path,curdir))
+	return curdir
 
 parser=SafeConfigParser()
 # Должен лежать в одном каталоге с программой
 # Руководство питона предлагает использовать разные методы для разных платформ: http://docs.python.org/2/library/os.path.html
-config_file=os.path.realpath(config_file_root)
-if not os.path.exists(config_file):
-	if sys_type=='lin':
-		config_file='/usr/local/bin/'+config_file_root
+bin_dir=true_dirname(os.path.realpath(sys.argv[0]),UseLog=False)
+config_file=bin_dir+sysdiv+config_file_root
 exist(config_file)
 try:
 	parser.readfp(codecs.open(config_file,'r','utf-8'))
@@ -223,7 +236,7 @@ font_style='Sans 14'
 dlb='\n'
 wdlb='\r\n'
 
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Загрузка раздела [Variables] конфигурационного файла
 #color_terms='cyan'
 color_terms=load_option(SectionVariables,'color_terms')
@@ -257,7 +270,10 @@ font_comments=load_option(SectionVariables,'font_comments')
 # Принудительно задать размер окна (работает только при AlwaysMaximize==False)
 #window_size='1024x768'
 window_size=load_option(SectionVariables,'window_size')
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Путь к иконке mclient
+# icon_mclient='/usr/local/bin/icon_64x64_dic.xbm'
+icon_mclient=load_option(SectionVariables,'icon_mclient')
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Загрузка раздела [Booleans] конфигурационного файла
 # Следует ли всегда отображать в окне mclient только название и версию клиента (True), или же отображать текущий запрос (False); при 1-м запросе всегда указывается название и версия клиента
 #mclientSaveTitle=False
@@ -265,6 +281,14 @@ mclientSaveTitle=load_option_bool(SectionBooleans,'mclientSaveTitle')
 # Всегда создавать новое окно на полный экран
 #AlwaysMaximize=True
 AlwaysMaximize=load_option_bool(SectionBooleans,'AlwaysMaximize')
+# mclient: Устанавливать фокус на строке поиска (True) или на окне статьи (False)
+#FocusSearch=True
+FocusSearch=load_option_bool(SectionBooleans,'FocusSearch')
+# mclient: Выделять ли промежуток между терминами цветом color_borders; если нет, то термины будут разделены точкой с запятой
+#TermsColoredSep=False
+TermsColoredSep=load_option_bool(SectionBooleans,'TermsColoredSep')
+#ShowWallet=True
+ShowWallet=load_option_bool(SectionBooleans,'ShowWallet')
 
 # Вопрос
 def Question(cur_func='MAIN',cur_mes=err_mes_empty_question):
@@ -393,7 +417,7 @@ def clipboard_copy(line):
 		pyperclip.copy(line)
 		
 # Вернуть веб-страницу онлайн-словаря с термином
-def get_online_article(db,IsURL=False,Silent=False,Critical=False):
+def get_online_article(db,IsURL=False,Silent=False,Critical=False,Standalone=False):
 	cur_func=sys._getframe().f_code.co_name
 	# db['search'] требуется всегда, даже если на входе URL
 	# Если на входе URL, то читается db['url'], если же на входе строка, то читается db['search'] и создается db['url']
@@ -419,7 +443,10 @@ def get_online_article(db,IsURL=False,Silent=False,Critical=False):
 			log(cur_func,lev_warn,mes.failed % db['search'])
 			#mestype(cur_func,mes.webpage_unavailable,Silent=Silent,Critical=Critical)
 			if not Question(cur_func,mes.webpage_unavailable_ques):
-				sys.exit()
+				if Standalone:
+					sys.exit()
+				else:
+					break
 		if Success: # Если страница не загружена, то понятно, что ее кодировку изменить не удастся
 			try:
 				# Меняем кодировку win_encoding на нормальную
@@ -541,7 +568,7 @@ def extract_tags(db):
 # Create a list of on-screen text elements for each useful tag
 def extract_tag_contents(db):
 	cur_func=sys._getframe().f_code.co_name
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	# Assigning initial values
 	# It is much easier to debug results if we separate types just before showing them in tkinter
 	db['all']={}
@@ -549,7 +576,7 @@ def extract_tag_contents(db):
 	db['all']['types']=[]
 	db['all']['pos']=[]
 	db['all']['url']=[]
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	''' Tag patterns:
 	1) Abbreviations of dictionaries:
 	<a title="...">
@@ -562,7 +589,7 @@ def extract_tag_contents(db):
 	5) Comments:
 	<span STYLE="color:gray"...<
 	'''
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	for i in range(db['len_tags']):
 		EntryMatch=False
 		url=online_url_safe
@@ -645,7 +672,7 @@ def extract_tag_contents(db):
 			log(cur_func,lev_debug,mes.adding_url % url)
 			db['all']['url'].append(url)
 	db['all']['num']=len(db['all']['phrases'])
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	# Deleting some common entries
 	# We can also delete 'g-sort' here
 	# ATTENTION: All types must be removed: 'phrases', 'types', 'pos', 'url'!
@@ -692,14 +719,14 @@ def extract_tag_contents(db):
 				db['all']['num']-=1
 	else:
 		log(cur_func,lev_warn,mes.entries_terms_empty)
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	# Logging
 	log(cur_func,lev_debug,"db['all']['num']: %d" % db['all']['num'])
 	log(cur_func,lev_debug,"db['all']['phrases']: %s" % str(db['all']['phrases']))
 	log(cur_func,lev_debug,"db['all']['types']: %s" % str(db['all']['types']))
 	log(cur_func,lev_debug,"db['all']['pos']: %s" % str(db['all']['pos']))
 	log(cur_func,lev_debug,"db['all']['url']: %s" % str(db['all']['url']))
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	# Testing
 	assert(db['all']['num']==len(db['all']['phrases']))
 	assert(db['all']['num']==len(db['all']['types']))
@@ -761,7 +788,7 @@ def prepare_search(db):
 					db['all']['num']-=1
 					i-=1
 		i+=1
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	# Adjusting values
 	if db['all']['num'] > 0:
 		delta=db['all']['pos'][0][0]
@@ -771,7 +798,7 @@ def prepare_search(db):
 			delta_i=abs(delta_i)
 		db['all']['pos'][0]=[0,db['all']['pos'][0][1]-delta]
 	else:
-		log(cur_func,lev_warn,mes.final_lst_empty)
+		log(cur_func,lev_warn,mes.db_all_empty)
 	for i in range(db['all']['num']):
 		if i > 0:
 			delta=db['all']['pos'][i][0]-db['all']['pos'][i-1][1]
@@ -785,7 +812,7 @@ def prepare_search(db):
 			db['all']['pos'][i][1]=db['all']['pos'][i][0]+delta_i
 	log(cur_func,lev_debug,"db['all']['pos']: %s" % str(db['all']['pos']))
 	assert(db['all']['num']==len(db['all']['pos']))
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	# Creating the final text
 	# We update db['page'] there!
 	if db['len_page'] > 0 and db['all']['num'] > 0:
@@ -825,7 +852,30 @@ def prepare_search(db):
 		res_mes+=dlb+dlb+"db['all']['pos']:"+dlb+str(db['all']['pos'])
 		text_field_ro(mes.db_check1,res_mes)
 		text_field_ro(mes.db_check2,str(db['all']['dlbs']['pos']))
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
+	# Two adjacent terms are either separated with a coloured space, or with a semicolumn
+	if not TermsColoredSep:
+		# Separating terms with semicolumn instead of coloured background
+		db['page']=list(db['page'])
+		for i in range(db['all']['num']):
+			if i < db['all']['num']-1:
+				if db['all']['types'][i]=='terms' and db['all']['types'][i+1]=='terms':
+					cur_pos=db['all']['pos'][i][1]+1
+					db['page'].insert(cur_pos,';')
+					j=i+1
+					while j < db['all']['num']:
+						db['all']['pos'][j][0]+=1
+						db['all']['pos'][j][1]+=1
+						j+=1
+					for j in range(db['all']['dlbs']['num']):
+						if db['all']['dlbs']['pos'][j] >= cur_pos:
+							db['all']['dlbs']['pos'][j]+=1
+		db['page']=''.join(db['page'])
+		db['len_page']=len(db['page'])
+		log(cur_func,lev_debug,"db['page']: %s" % db['page'])
+		if InternalDebug:
+			text_field_ro("db['page']:",db['page'])
+	#--------------------------------------------------------------------------
 	# Creating tkinter-specific values
 	# list() is not enough!
 	db['all']['pos_sl']=[]
@@ -839,7 +889,7 @@ def prepare_search(db):
 	assert(db['all']['num']==len(db['all']['pos_sl']))
 	if db['all']['pos'] == db['all']['pos_sl']:
 		log(cur_func,lev_warn,mes.db_alg)
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	db['all']['tk']=[]
 	for i in range(db['all']['num']):
 		pos1=db['all']['pos_sl'][i][0]
@@ -848,14 +898,14 @@ def prepare_search(db):
 	db['all']['tk']=list2tk(db['all']['tk'])
 	log(cur_func,lev_debug,"db['all']['tk']: %s" % str(db['all']['tk']))
 	assert(db['all']['num']==len(db['all']['tk']))
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	# In comparison with the last InternalDebug: +str(db['all']['tk'][i])
 	if InternalDebug:
 		res_mes=''
 		for i in range(db['all']['num']):
 			res_mes+="i: %d" % i+tab+db['all']['types'][i]+tab+db['all']['phrases'][i]+tab+str(db['all']['pos'][i])+tab+str(db['all']['pos_sl'][i])+tab+str(db['all']['tk'][i])+tab+db['all']['url'][i]+dlb
 		text_field_ro(mes.db_check3,res_mes)
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	# Mark terms borders for easy reading
 	db['borders']=[]
 	for i in range(db['all']['num']):
@@ -869,7 +919,7 @@ def prepare_search(db):
 	if db['borders']!=[]:
 		db['borders']=list2tk(db['borders'])
 	log(cur_func,lev_debug,"db['borders']: %s" % str(db['borders']))
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	# Create separate keys for article entries. Please note that they are NOT interconnected with db['all'] anymore and should be created just before showing an article.
 	db['dics']={}
 	db['dics']['phrases']=[]
@@ -952,7 +1002,7 @@ def prepare_search(db):
 			debug_lst.append(db['page'][pos1:pos2+1])
 		res_mes+='comments:'+dlb+str(debug_lst)
 		text_field_ro(mes.db_check5,res_mes)
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	# The first element of the 'dic' list must precede the first element of the 'term' list. We create a new dic list in order not to change the existing one.
 	new_dic=[]
 	for i in range(db['dics']['num']):
@@ -965,7 +1015,7 @@ def prepare_search(db):
 		new_dic.insert(0,0)
 		log(cur_func,lev_warn,mes.no_line_breaks_in_article)
 	len_new_dic=len(new_dic)
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	# Collect the information for easy move-up/-down actions
 	# 'Move down' event
 	db['move_down']=[]
@@ -990,7 +1040,7 @@ def prepare_search(db):
 		db['move_down'].append(term_no)
 	assert(db['terms']['num']==len(db['move_down']))
 	log(cur_func,lev_debug,"db['move_down']: %s" % str(db['move_down']))
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	# 'Move up' event
 	db['move_up']=[]
 	dic_no=0
@@ -1015,7 +1065,7 @@ def prepare_search(db):
 		db['move_up'].append(term_no)
 	assert(db['terms']['num']==len(db['move_up']))
 	log(cur_func,lev_debug,"db['move_up']: %s" % str(db['move_up']))
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	# 'Move left' event
 	db['move_left']=[]
 	for i in range(db['terms']['num']):
@@ -1026,7 +1076,7 @@ def prepare_search(db):
 		db['move_left'].append(term_no)
 	assert(db['terms']['num']==len(db['move_left']))
 	log(cur_func,lev_debug,"db['move_left']: %s" % str(db['move_left']))
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	# 'Move right' event
 	db['move_right']=[]
 	for i in range(db['terms']['num']):
@@ -1098,6 +1148,8 @@ def article_field(db,Standalone=False):
 		elif Standalone:
 			top.iconify()
 		else:
+			top.destroy()
+			root.deiconify()
 			db['quit']=True
 	# Close the root window without errors
 	# Please note that quit_now() should have 1 argument, quit_top() - none of them
@@ -1267,6 +1319,7 @@ def article_field(db,Standalone=False):
 			except:
 				Warning(cur_func,browser_failure % gpl3_url)
 		top=tk.Toplevel(root)
+		top.tk.call('wm','iconphoto',top._w,tk.PhotoImage(file=icon_mclient))
 		top.title(mes.about)
 		frame1=tk.Frame(top)
 		frame1.pack(expand=1,fill='both',side='top')
@@ -1274,17 +1327,24 @@ def article_field(db,Standalone=False):
 		frame2.pack(expand=1,fill='both',side='left')
 		frame3=tk.Frame(top)
 		frame3.pack(expand=1,fill='both',side='right')
-		label=tk.Label(frame1,font=font_style,text=mes.about_text)
+		if ShowWallet:
+			label=tk.Label(frame1,font=font_style,text=mes.about_text)
+		else:
+			label=tk.Label(frame1,font=font_style,text=mes.about_text_no_wallet)
 		label.pack()
-		# Номер электронного кошелька
-		button_money=tk.Button(frame2,text=mes.wallet_no)
-		button_money.pack(side='left')
-		button_money.bind('<Return>',copy_wallet_no)
-		button_money.bind('<KP_Enter>',copy_wallet_no)
-		button_money.bind('<space>',copy_wallet_no)
-		button_money.bind('<Button-1>',copy_wallet_no)
+		if ShowWallet:
+			# Номер электронного кошелька
+			button_money=tk.Button(frame2,text=mes.wallet_no)
+			button_money.pack(side='left')
+			button_money.bind('<Return>',copy_wallet_no)
+			button_money.bind('<KP_Enter>',copy_wallet_no)
+			button_money.bind('<space>',copy_wallet_no)
+			button_money.bind('<Button-1>',copy_wallet_no)
 		# Лицензия
-		button_license=tk.Button(frame3,text=mes.view_license)
+		if ShowWallet:
+			button_license=tk.Button(frame3,text=mes.view_license)
+		else:
+			button_license=tk.Button(frame2,text=mes.view_license)
 		button_license.pack(side='left')
 		button_license.bind('<Return>',open_license_url)
 		button_license.bind('<KP_Enter>',open_license_url)
@@ -1348,7 +1408,7 @@ def article_field(db,Standalone=False):
 			gpl3_url=gpl3_url_en
 		top.destroy()
 		root.deiconify()
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	if AlwaysMaximize:
 		if sys_type=='lin':
 			top.wm_attributes('-zoomed',True)
@@ -1365,6 +1425,10 @@ def article_field(db,Standalone=False):
 			db['first_launch']=False
 		else:
 			top.title(db['search'])
+	# Only black-and-white icons of XBM format
+	#top.wm_iconbitmap(bitmap='@'+icon_mclient)
+	# Иконку надо определять здесь, поскольку запуск может быть не Standalone
+	top.tk.call('wm','iconphoto',top._w,tk.PhotoImage(file=icon_mclient))
 	top.protocol("WM_DELETE_WINDOW",quit_top)
 	#root.protocol("WM_DELETE_WINDOW",quit_now)
 	if Standalone:
@@ -1451,13 +1515,13 @@ def article_field(db,Standalone=False):
 	scrollbar=tk.Scrollbar(frame)
 	txt=tk.Text(frame,height=7,font=font_style,wrap='word',yscrollcommand=scrollbar.set)
 	txt.insert('1.0',db['page'])
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	# Установка курсора в начало
 	try:
 		txt.mark_set('insert','1.0')
 	except:
 		mestype(cur_func,mes.cursor_insert_failure,Silent=False,Critical=False)
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	# Выделение элементов
 	# 1. Установка тэгов
 	for i in range(db['all']['num']):
@@ -1469,14 +1533,15 @@ def article_field(db,Standalone=False):
 			log(cur_func,lev_debug,mes.tag_added % (db['all']['types'][i],pos1,pos2))
 		except:
 			mestype(cur_func,mes.tag_addition_failure % (db['all']['types'][i],pos1,pos2),Silent=False,Critical=False)
-	for i in range(len(db['borders'])):
-		pos1=db['borders'][i][0]
-		pos2=db['borders'][i][-1]
-		try:
-			txt.tag_add('borders',pos1,pos2)
-			log(cur_func,lev_debug,mes.tag_added % ('borders',pos1,pos2))
-		except:
-			mestype(cur_func,mes.tag_addition_failure % ('borders',pos1,pos2),Silent=False,Critical=False)
+	if TermsColoredSep:
+		for i in range(len(db['borders'])):
+			pos1=db['borders'][i][0]
+			pos2=db['borders'][i][-1]
+			try:
+				txt.tag_add('borders',pos1,pos2)
+				log(cur_func,lev_debug,mes.tag_added % ('borders',pos1,pos2))
+			except:
+				mestype(cur_func,mes.tag_addition_failure % ('borders',pos1,pos2),Silent=False,Critical=False)
 	# 2. Настройка тэгов
 	try:
 		txt.tag_config('terms',foreground=color_terms,font=font_terms)
@@ -1493,20 +1558,20 @@ def article_field(db,Standalone=False):
 		log(cur_func,lev_debug,mes.tag_config % ('comments',color_comments,font_comments))
 	except:
 		mestype(cur_func,mes.tag_config_failure % ('coments',color_comments,font_comments),Silent=False,Critical=False)
-	try:
-		txt.tag_config('borders',background=color_borders)
-		log(cur_func,lev_debug,mes.tag_bg % ('borders',color_borders))
-	except:
-		mestype(cur_func,mes.tag_bg_failure % 'borders',Silent=False,Critical=False)
-	#-------------------------------------------------------------------
+	if TermsColoredSep:
+		try:
+			txt.tag_config('borders',background=color_borders)
+			log(cur_func,lev_debug,mes.tag_bg % ('borders',color_borders))
+		except:
+			mestype(cur_func,mes.tag_bg_failure % 'borders',Silent=False,Critical=False)
+	#--------------------------------------------------------------------------
 	# Выделение первого признака
 	select_term()
-	#-------------------------------------------------------------------
+	#--------------------------------------------------------------------------
 	scrollbar.config(command=txt.yview)
 	scrollbar.pack(side='right',fill='y')
 	txt.config(state='disabled')
 	txt.pack(expand=1,fill='both')
-	txt.focus_force()
 	txt.bind('<Left>',move_left)
 	txt.bind('<Right>',move_right)
 	txt.bind('<Down>',move_down)
@@ -1517,19 +1582,25 @@ def article_field(db,Standalone=False):
 		# Переключение между списком терминов и полем для ввода с помощью F6
 		search_field.bind('<F6>',lambda x:txt.focus())
 		txt.bind('<F6>',lambda x:search_field.focus())
+		# В режиме буфера фокус более естественно ставить на область терминов
+		if FocusSearch and db['mode']!='clipboard':
+			search_field.focus_force()
+		else:
+			txt.focus_force()
 	else:
 		txt.bind('<Return>',quit_now)
 		txt.bind('<KP_Enter>',quit_now)
+		txt.focus_force()
 	txt.bind('<Control-Return>',copy_sel)
 	txt.bind('<Control-KP_Enter>',copy_sel)
 	txt.bind('<Button 1>',lambda x:txt.focus())
-	txt.focus_force()
 	top.wait_window()
 	return db
 
 # Запустить article_field в виде встроенной функции или в виде отдельного приложения
 def article_loop(Standalone=False):
 	cur_func=sys._getframe().f_code.co_name
+	root.tk.call('wm','iconphoto',root._w,tk.PhotoImage(file=icon_mclient))
 	db={}
 	if Standalone:
 		db['first_launch']=True
@@ -1563,9 +1634,9 @@ def article_loop(Standalone=False):
 					break
 			db['search']=new_buffer
 		if db['mode']=='url':
-			db=get_online_article(db,IsURL=True)
+			db=get_online_article(db,IsURL=True,Standalone=Standalone)
 		else:
-			db=get_online_article(db,IsURL=False)
+			db=get_online_article(db,IsURL=False,Standalone=Standalone)
 		db=prepare_page(db)
 		if not_found_online in db['page']:
 			Warning(cur_func,mes.term_not_found % db['search'])
@@ -1577,6 +1648,7 @@ def article_loop(Standalone=False):
 						log(cur_func,lev_info,mes.goodbye)
 						sys.exit()
 					else:
+						root.tk.call('wm','iconphoto',root._w,tk.PhotoImage(file=icon_main))
 						break
 			db=analyse_tags(db)
 			db=prepare_search(db)

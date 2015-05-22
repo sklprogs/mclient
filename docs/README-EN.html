@@ -5,7 +5,7 @@
 	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="LibreOffice 3.5  (Linux)">
 	<META NAME="CREATED" CONTENT="20150202;1263700">
-	<META NAME="CHANGED" CONTENT="20150203;14531500">
+	<META NAME="CHANGED" CONTENT="20150315;12352200">
 	<META NAME="Info 1" CONTENT="">
 	<META NAME="Info 2" CONTENT="">
 	<META NAME="Info 3" CONTENT="">
@@ -91,6 +91,22 @@ xclip</FONT></FONT></P>
 3, an additional installation of html.parser and pyperclip, as well
 as other modules indicated in the import section, may be required. </FONT></FONT>
 </P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>In case of starting
+the program in Linux terminal an error message can appear of that the
+config file was not found. In this situation, cd to a directory with
+the script (in case of running the script), or to a directory with
+the build (in case of running the build). You can also move the build
+to a separate directory, for example, /opt/mclient, and create a
+symbolic link in /usr/local/bin or /usr/bin to such script:</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>#!/bin/sh </FONT></FONT>
+</P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>cd /opt/mclient/ </FONT></FONT>
+</P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>./mclient</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>Usage and
 functionality </B></FONT></FONT>
@@ -257,12 +273,13 @@ keys:</FONT></FONT></P>
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>color_terms,
 color_terms_sel, color_dics, color_comments, color_borders,
 font_history, font_terms, font_terms_sel, font_dics, font_comments,
-window_size</FONT></FONT></P>
+window_size, icon_mclient</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>In the section
 [Boolean]:</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>AlwaysMaximize</FONT></FONT></P>
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>ShowWallet,
+TermsColoredSep, FocusSearch, AlwaysMaximize, mclientSaveTitle</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Adjustable
 parameters are set after the equal sign. They should not be used
@@ -421,16 +438,6 @@ commentaries</FONT></FONT></P>
 font_comments = Sans 14 italic </FONT></FONT>
 </P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>AlwaysMaximize</B></FONT></FONT></P>
-<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Boolean]</FONT></FONT></P>
-<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: Maximize a
-new window (True, 1) or not (False, 0)</FONT></FONT></P>
-<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example:
-AlwaysMaximize=1</FONT></FONT></P>
-<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>window_size</B></FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Variables]</FONT></FONT></P>
@@ -442,12 +449,67 @@ window size (works only when AlwaysMaximize=False)</FONT></FONT></P>
 window_size=1024x768 </FONT></FONT>
 </P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>icon_mclient</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Variables]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: Indicate a
+program icon. The icon file must be GIF and be located in the same
+directory as the program. An image used by default is a converted
+image /usr/share/icons/oxygen/64x64/apps/accessories-dictionary.png
+from Crunchbang.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example:
+icon_64x64_mclient.gif</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>AlwaysMaximize</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Boolean]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: Maximize a
+new window (True, 1) or not (False, 0)</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example:
+AlwaysMaximize=1</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>TermsColoredSep</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Boolean]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: Use color
+color_borders to separate terms; if False, then use a semicolumn</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example:
+TermsColoredSep=0</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>FocusSearch</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Boolean]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: Set focus
+on the search field (True, 1) or on the terms field (False, 0)</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example:
+FocusSearch=1</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>mclientSaveTitle</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Section: [Boolean]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Meaning: Always show
+only the client title and version in the window title (True, 1), or
+show a current request (False, 0); at the first request the client
+title and version is always shown</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Example:
+mclientSaveTitle=0</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>Known issues </B></FONT></FONT>
 </P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>In long articles the
 selection can get out of the screen view. Scroll the screen with the
-scrollbar or the mouse wheel. </FONT></FONT>
+scrollbar or the mouse wheel, then click in the terms field. </FONT></FONT>
 </P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Sometimes an HTML
@@ -471,6 +533,15 @@ the English interface and enabling History, the program can firstly
 fail to get a correct list of requests. This bug is not obvious to
 the user, because the article is instantly reloaded. </FONT></FONT>
 </P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>User comments are
+not shown inside other user comments.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>The program does not
+quit immediately, but only after the article is reloaded.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>History is not
+updated in the Clipboard mode.</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>Potential
 enhancements </B></FONT></FONT>

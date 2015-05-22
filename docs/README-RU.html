@@ -5,7 +5,7 @@
 	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="LibreOffice 3.5  (Linux)">
 	<META NAME="CREATED" CONTENT="20150202;224800">
-	<META NAME="CHANGED" CONTENT="20150203;14523200">
+	<META NAME="CHANGED" CONTENT="20150315;12330000">
 	<META NAME="Info 1" CONTENT="">
 	<META NAME="Info 2" CONTENT="">
 	<META NAME="Info 3" CONTENT="">
@@ -108,6 +108,24 @@ xclip</FONT></FONT></P>
 pyperclip, а также других модулей, указанных
 в секции import. </FONT></FONT>
 </P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>При запуске
+программы в Linux из терминала может
+появиться сообщение о том, что
+конфигурационный файл не найден. В этом
+случае перейдите в каталог со скриптом
+(при запуске скрипта), или в каталог со
+сборкой (при запуске сборки). Вы можете
+также поместить сборку в отдельный
+каталог, например, /opt/mclient, и создать в
+/usr/local/bin или /usr/bin символическую ссылку
+на такой скрипт:</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>#!/bin/sh</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>cd /opt/mclient/</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>./mclient</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>Использование
 и возможности </B></FONT></FONT>
@@ -332,12 +350,13 @@ Enter или кнопку &quot;Искать&quot;. </FONT></FONT>
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>color_terms,
 color_terms_sel, color_dics, color_comments, color_borders,
 font_history, font_terms, font_terms_sel, font_dics, font_comments,
-window_size</FONT></FONT></P>
+window_size, icon_mclient</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>В разделе
 [Boolean]:</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>AlwaysMaximize</FONT></FONT></P>
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>ShowWallet,
+TermsColoredSep, FocusSearch, AlwaysMaximize, mclientSaveTitle</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Настраиваемые
 параметры задаются после знака равенства.
@@ -408,7 +427,7 @@ DejaVuSansMono). Данное название (регистр также
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
 [Variables]</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Значение:
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
 Цвет шрифта терминов</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
@@ -420,7 +439,7 @@ color_terms=black </FONT></FONT>
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
 [Variables]</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Значение:
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
 Цвет фона выделенного (текущего) термина</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
@@ -432,7 +451,7 @@ color_terms_sel=cyan </FONT></FONT>
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
 [Variables]</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Значение:
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
 Цвет шрифта названий словарей</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
@@ -444,7 +463,7 @@ color_dics=light blue </FONT></FONT>
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
 [Variables]</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Значение:
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
 Цвет шрифта комментариев и имен
 пользователей</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
@@ -457,7 +476,7 @@ color_comments=gray </FONT></FONT>
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
 [Variables]</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Значение:
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
 Цвет, которым разграничиваются термины</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
@@ -469,7 +488,7 @@ color_borders=khaki </FONT></FONT>
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
 [Variables]</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Значение:
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
 Шрифт текста в области истории запросов</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
@@ -481,7 +500,7 @@ font_history=ARIAL 12 </FONT></FONT>
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
 [Variables]</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Значение:
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
 Шрифт терминов</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
@@ -493,7 +512,7 @@ font_terms=Times 14 </FONT></FONT>
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
 [Variables]</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Значение:
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
 Шрифт выделенного (текущего) термина</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
@@ -504,7 +523,7 @@ font_terms_sel=Times 14 bold italic</FONT></FONT></P>
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
 [Variables]</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Значение:
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
 Шрифт названий словарей</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
@@ -516,37 +535,97 @@ font_dics = Sans 14 bold underline </FONT></FONT>
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
 [Variables]</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Значение:
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
 Шрифт комментариев</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
 font_comments = Sans 14 italic </FONT></FONT>
 </P>
-<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>AlwaysMaximize</B></FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
-[Boolean]</FONT></FONT></P>
-<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Значение:
-Создавать ли новое окно на полный экран
-(True, 1) или нет (False, 0)</FONT></FONT></P>
-<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
-AlwaysMaximize=1</FONT></FONT></P>
+<BR>
+</P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>window_size</B></FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
 [Variables]</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Значение:
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
 Принудительно задать размер окна
 (работает только при AlwaysMaximize=False)</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
 window_size=1024x768 </FONT></FONT>
 </P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>icon_mclient</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
+[Variables]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
+Указать пиктограмму программы. Файл
+пиктограммы должен иметь формат GIF и
+находиться в одном каталоге с программой.
+Используемый по умолчанию рисунок -
+переконвертированный
+/usr/share/icons/oxygen/64x64/apps/accessories-dictionary.png из
+дистрибутива Crunchbang.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
+icon_64x64_mclient.gif</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>AlwaysMaximize</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
+[Boolean]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
+Создавать ли новое окно на полный экран
+(True, 1) или нет (False, 0)</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
+AlwaysMaximize=1</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>TermsColoredSep</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
+[Boolean]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
+Выделять ли промежуток между терминами
+цветом color_borders; если нет, то термины
+будут разделены точкой с запятой</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
+TermsColoredSep=0</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>FocusSearch</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
+[Boolean]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
+Устанавливать фокус на строке поиска
+(True, 1) или на окне статьи (False, 0)</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
+FocusSearch=1</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>mclientSaveTitle</B></FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Раздел:
+[Boolean]</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Предназначение:
+Всегда отображать в окне программы
+только название и версию клиента (True,
+1), или же отображать текущий запрос
+(False, 0); при 1-м запросе всегда указывается
+название и версия клиента</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; font-weight: normal; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Пример:
+mclientSaveTitle=0</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>Известные
 ошибки </B></FONT></FONT>
@@ -556,7 +635,8 @@ window_size=1024x768 </FONT></FONT>
 статьях окно не всегда поспевает за
 выделением. Предварительно прокручивайте
 экран с помощью ползунка или колесика
-мыши. </FONT></FONT>
+мыши, затем щелкайте в область терминов.
+</FONT></FONT>
 </P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4>Иногда в
@@ -591,6 +671,18 @@ window_size=1024x768 </FONT></FONT>
 пользователю, поскольку сразу происходит
 перезагрузка статьи. </FONT></FONT>
 </P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Не отображаются
+комментарии одних пользователей к
+комментариям других.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>Выход из
+программы осуществляется не мгновенно,
+а только после повторной загрузки
+статьи.</FONT></FONT></P>
+<P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4>История не
+пополняется в режиме Буфера.</FONT></FONT></P>
 <P LANG="en-GB" CLASS="western" ALIGN=JUSTIFY STYLE="text-indent: 1.27cm; margin-bottom: 0cm; line-height: 150%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=4><B>Что можно
 было бы улучшить </B></FONT></FONT>
