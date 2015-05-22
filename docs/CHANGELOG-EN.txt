@@ -1,2 +1,6 @@
-- Drop switching the search field and terms field (F6 is no longer supported)
-- Enter on a basic and expanded keyboard in the terms field has been re-assigned to Shift-Enter
+- Disallow empty search requests
+- Fix bugs: the article is reloaded before quitting the program and after showing/hiding the History
+- Remember current selection when showing/hiding the History (only if the selection is located on the first page)
+- Enable the mouse wheel on Windows
+- Enable the scrollbar (some corrections may be necessary, especially, on Windows)
+- Change hotkeys to go to the preceding/following page to Alt-Left and Alt-Right correspondingly in order not to conflict with the search field
