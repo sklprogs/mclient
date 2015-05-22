@@ -1,0 +1,4 @@
+* Configure the window size
+* Confirm the further operation if the server connection has been lost instead of entering an infinite loop
+* Add a config file
+* Change colors and fonts

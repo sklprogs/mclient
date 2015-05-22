@@ -1,19 +1,25 @@
 #!/usr/bin/python3
 #coding=UTF-8
 import sys
+import os
 from time import time, sleep
 import re
+import codecs
 import webbrowser
 import tkinter as tk
 import tkinter.messagebox as tkmes
 # В Python 3 не работает просто import urllib, импорт должен быть именно такой, как здесь
 import urllib.request, urllib.parse
 import html.parser
+from configparser import SafeConfigParser
 
 # (C) Peter Sklyar, 2015. License: GPL v.3
 # All third-party modules are the intellectual work of their authors.
 
-build_ver='2015-01-30 03:56'
+# Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
+cur_func='MAIN'
+build_ver='2015-02-01 21:50'
+config_file_root='main.cfg'
 root=tk.Tk()
 
 ui_lang='ru'
@@ -100,15 +106,33 @@ HistoryEnabled=False
 # I removed extra code, InternalDebug=False will not work
 InternalDebug=False
 
-# Custom
-win_encoding='windows-1251'
-default_encoding='utf-8'
-# Неразрывный пробел, non-breaking space
-nbspace=' '
-font_style='Sans 14'
-dlb='\n'
-wdlb='\r\n'
+# Placeholder
+def log(cur_func,level,log_mes,TransFunc=False):
+	#print(cur_func,':',level,':',log_mes)
+	pass
 
+# Placeholder
+def text_field_ro(title=mes.check,array='test',SelectAll=False,GoTo=''):
+	#print(title,':',array)
+	pass
+
+# Ошибка
+def ErrorMessage(cur_func='MAIN',cur_mes=err_mes_empty_error,Critical=True):
+	root.withdraw()
+	tkmes.showerror(mes.err_head,cur_mes)
+	if Critical:
+		log(cur_func,lev_crit,cur_mes)
+		sys.exit()
+	else:
+		log(cur_func,lev_err,cur_mes)
+	root.deiconify()
+
+# Проверить существование файла
+def exist(file):
+	cur_func=sys._getframe().f_code.co_name
+	if not os.path.exists(file):
+		ErrorMessage(cur_func,mes.file_not_found % file)
+		
 # Определить тип ОС
 def detect_os():
 	#cur_func=sys._getframe().f_code.co_name
@@ -129,16 +153,126 @@ if sys_type=='win':
 	import win32clipboard
 else:
 	import pyperclip # (C) Al Sweigart, al@inventwithpython.com, BSD License
-	
-# Placeholder
-def log(cur_func,level,log_mes,TransFunc=False):
-	#print(cur_func,':',level,':',log_mes)
-	pass
 
-# Placeholder
-def text_field_ro(title=mes.check,array='test',SelectAll=False,GoTo=''):
-	#print(title,':',array)
-	pass
+parser=SafeConfigParser()
+# Должен лежать в одном каталоге с программой
+# Руководство питона предлагает использовать разные методы для разных платформ: http://docs.python.org/2/library/os.path.html
+config_file=os.path.realpath(config_file_root)
+if not os.path.exists(config_file):
+	if sys_type=='lin':
+		config_file='/usr/local/bin/'+config_file_root
+exist(config_file)
+try:
+	parser.readfp(codecs.open(config_file,'r','utf-8'))
+except:
+	ErrorMessage(cur_func,mes.invalid_config % config_file)
+
+# Проверить наличие секции в конфигурационном файле
+def check_config_section(config_section):
+	cur_func=sys._getframe().f_code.co_name
+	if not parser.has_section(config_section):
+		ErrorMessage(cur_func,mes.wrong_config_structure+dlb+dlb+mes.no_config_section % config_section)
+
+# Проверить наличие параметра в конфигурационном файле
+def check_config_option(config_section,config_option):
+	cur_func=sys._getframe().f_code.co_name
+	if not parser.has_option(config_section,config_option):
+		ErrorMessage(cur_func,mes.wrong_config_structure+dlb+dlb+mes.no_config_option % (config_option,config_section))
+
+# Загрузить параметр типа str из конфигурационного файла
+def load_option(config_section,config_option):
+	check_config_option(config_section,config_option)
+	return parser.get(config_section,config_option)
+
+# Загрузить параметр типа float из конфигурационного файла
+def load_option_float(config_section,config_option):
+	check_config_option(config_section,config_option)
+	return parser.getfloat(config_section,config_option)
+
+# Загрузить параметр типа int из конфигурационного файла
+def load_option_int(config_section,config_option):
+	check_config_option(config_section,config_option)
+	return parser.getint(config_section,config_option)
+
+# Загрузить параметр типа bool из конфигурационного файла
+def load_option_bool(config_section,config_option):
+	check_config_option(config_section,config_option)
+	return parser.getboolean(config_section,config_option)
+
+# Разделы конфигурационного файла
+SectionLinuxSettings='Linux settings'
+SectionWindowsSettings='Windows settings'
+SectionMacSettings='Mac settings'
+SectionVariables='Variables'
+SectionIntegers='Integer Values'
+SectionFloatings='Floating Values'
+SectionBooleans='Boolean'
+Sections=[SectionLinuxSettings,SectionWindowsSettings,SectionMacSettings,SectionVariables,SectionIntegers,SectionFloatings,SectionBooleans]
+
+# Проверка наличия разделов
+i=0
+for i in range(len(Sections)):
+	check_config_section(Sections[i])
+
+# Custom
+win_encoding='windows-1251'
+default_encoding='utf-8'
+# Неразрывный пробел, non-breaking space
+nbspace=' '
+font_style='Sans 14'
+dlb='\n'
+wdlb='\r\n'
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Загрузка раздела [Variables] конфигурационного файла
+#color_terms='cyan'
+color_terms=load_option(SectionVariables,'color_terms')
+# Цвет, которым обозначается выделенный (текущий) термин в окне mclient
+#color_terms_sel='cyan'
+color_terms_sel=load_option(SectionVariables,'color_terms_sel')
+# Цвет, которым обозначаются названия словарей в окне mclient
+#color_dics='green'
+color_dics=load_option(SectionVariables,'color_dics')
+# Цвет, которым обозначаются комментарии и имена пользователей в окне mclient
+#color_comments='gray'
+color_comments=load_option(SectionVariables,'color_comments')
+# Цвет, которым разграничиваются термины в окне mclient
+#color_borders='lemon_chiffon'
+color_borders=load_option(SectionVariables,'color_borders')
+# Шрифт текста в области истории запросов (mclient)
+#font_history='Sans 12'
+font_history=load_option(SectionVariables,'font_history')
+# Шрифт терминов в окне mclient
+#font_terms='Sans 14'
+font_terms=load_option(SectionVariables,'font_terms')
+# Шрифт выделенного (текущего) термина в окне mclient
+#font_terms_sel='Sans 14 bold italic'
+font_terms_sel=load_option(SectionVariables,'font_terms_sel')
+# Шрифт названий словарей в окне mclient
+#font_dics='Sans 14'
+font_dics=load_option(SectionVariables,'font_dics')
+# Шрифт комментариев в окне mclient
+#font_comments='Sans 14'
+font_comments=load_option(SectionVariables,'font_comments')
+# Принудительно задать размер окна (работает только при AlwaysMaximize==False)
+#window_size='1024x768'
+window_size=load_option(SectionVariables,'window_size')
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Загрузка раздела [Booleans] конфигурационного файла
+# Следует ли всегда отображать в окне mclient только название и версию клиента (True), или же отображать текущий запрос (False); при 1-м запросе всегда указывается название и версия клиента
+#mclientSaveTitle=False
+mclientSaveTitle=load_option_bool(SectionBooleans,'mclientSaveTitle')
+# Всегда создавать новое окно на полный экран
+#AlwaysMaximize=True
+AlwaysMaximize=load_option_bool(SectionBooleans,'AlwaysMaximize')
+
+# Вопрос
+def Question(cur_func='MAIN',cur_mes=err_mes_empty_question):
+	root.withdraw()
+	par=tkmes.askokcancel(mes.ques_head,cur_mes)
+	root.deiconify()
+	log(cur_func,lev_info,cur_mes)
+	return par
 
 # Названия такие же, как у модуля PyZenity (кроме List)
 # Информация
@@ -155,17 +289,6 @@ def Warning(cur_func='MAIN',cur_mes=err_mes_empty_warning):
 	root.deiconify()
 	log(cur_func,lev_warn,cur_mes)
 	
-# Ошибка
-def ErrorMessage(cur_func='MAIN',cur_mes=err_mes_empty_error,Critical=True):
-	root.withdraw()
-	tkmes.showerror(mes_err_head,cur_mes)
-	if Critical:
-		log(cur_func,lev_crit,cur_mes)
-		sys.exit()
-	else:
-		log(cur_func,lev_err,cur_mes)
-	root.deiconify()
-
 # Вставить из буфера обмена
 def clipboard_paste():
 	cur_func=sys._getframe().f_code.co_name
@@ -294,7 +417,9 @@ def get_online_article(db,IsURL=False,Silent=False,Critical=False):
 		except:
 			db['page']=''
 			log(cur_func,lev_warn,mes.failed % db['search'])
-			mestype(cur_func,mes.webpage_unavailable,Silent=Silent,Critical=Critical)
+			#mestype(cur_func,mes.webpage_unavailable,Silent=Silent,Critical=Critical)
+			if not Question(cur_func,mes.webpage_unavailable_ques):
+				sys.exit()
 		if Success: # Если страница не загружена, то понятно, что ее кодировку изменить не удастся
 			try:
 				# Меняем кодировку win_encoding на нормальную
@@ -1013,43 +1138,43 @@ def article_field(db,Standalone=False):
 			pos1=db['terms']['tk'][res[0]][0]
 			pos2=db['terms']['tk'][res[0]][-1]
 			try:
-				txt.tag_add('terms',pos1,pos2)
-				log(cur_func,lev_debug,mes.tag_added % ('terms',pos1,pos2))
+				txt.tag_add('cur_term',pos1,pos2)
+				log(cur_func,lev_debug,mes.tag_added % ('cur_term',pos1,pos2))
 			except:
-				log(cur_func,lev_err,mes.tag_addition_failure % ('terms',pos1,pos2))
+				mestype(cur_func,mes.tag_addition_failure % ('cur_term',pos1,pos2),Silent=False,Critical=False)
 		# 2. Настройка тэга
 		try:
-			txt.tag_config('terms',background='cyan')
-			log(cur_func,lev_debug,mes.tag_configured % ('terms','cyan'))
+			txt.tag_config('cur_term',background=color_terms_sel,font=font_terms_sel)
+			log(cur_func,lev_debug,mes.tag_config % ('cur_term',color_terms_sel,font_terms_sel))
 		except:
-			log(cur_func,lev_err,mes.set_background_failure % 'terms')
+			mestype(cur_func,mes.tag_config_failure % ('cur_term',color_terms_sel,font_terms_sel),Silent=False,Critical=False)
 		#shift_screen(pos1)
 	# Перейти на предыдущий термин
 	def move_left(event):
 		cur_func=sys._getframe().f_code.co_name
-		txt.tag_remove('terms','1.0','end')
-		log(cur_func,lev_debug,mes.tag_removed % ('terms','1.0','end'))
+		txt.tag_remove('cur_term','1.0','end')
+		log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
 		res[0]=db['move_left'][res[0]]
 		select_term()
 	# Перейти на следующий термин
 	def move_right(event):
 		cur_func=sys._getframe().f_code.co_name
-		txt.tag_remove('terms','1.0','end')
-		log(cur_func,lev_debug,mes.tag_removed % ('terms','1.0','end'))
+		txt.tag_remove('cur_term','1.0','end')
+		log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
 		res[0]=db['move_right'][res[0]]
 		select_term()
 	# Перейти на строку вниз
 	def move_down(event):
 		cur_func=sys._getframe().f_code.co_name
-		txt.tag_remove('terms','1.0','end')
-		log(cur_func,lev_debug,mes.tag_removed % ('terms','1.0','end'))
+		txt.tag_remove('cur_term','1.0','end')
+		log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
 		res[0]=db['move_down'][res[0]]
 		select_term()
 	# Перейти на строку вверх
 	def move_up(event):
 		cur_func=sys._getframe().f_code.co_name
-		txt.tag_remove('terms','1.0','end')
-		log(cur_func,lev_debug,mes.tag_removed % ('terms','1.0','end'))
+		txt.tag_remove('cur_term','1.0','end')
+		log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
 		res[0]=db['move_up'][res[0]]
 		select_term()
 	# Изменить направление (язык) перевода
@@ -1224,11 +1349,14 @@ def article_field(db,Standalone=False):
 		top.destroy()
 		root.deiconify()
 	#-------------------------------------------------------------------
-	if sys_type=='lin':
-		top.wm_attributes('-zoomed',True)
-	# Win, Mac
+	if AlwaysMaximize:
+		if sys_type=='lin':
+			top.wm_attributes('-zoomed',True)
+		# Win, Mac
+		else:
+			top.wm_state(newstate='zoomed')
 	else:
-		top.wm_state(newstate='zoomed')
+		top.geometry(window_size)
 	if mclientSaveTitle:
 		top.title(mes.mclient % build_ver)
 	else:
@@ -1245,7 +1373,7 @@ def article_field(db,Standalone=False):
 		if HistoryEnabled:
 			frame_history.pack(expand=1,side='left',fill='both')
 		# Предыдущие поисковые запросы
-		listbox=tk.Listbox(frame_history,font='Sans 12')
+		listbox=tk.Listbox(frame_history,font=font_history)
 		if HistoryEnabled:
 			listbox.pack(expand=1,side='top',fill='both')
 		for i in range(len(db['history'])):
@@ -1328,7 +1456,7 @@ def article_field(db,Standalone=False):
 	try:
 		txt.mark_set('insert','1.0')
 	except:
-		log(cur_func,lev_err,mes.cursor_insert_failure)
+		mestype(cur_func,mes.cursor_insert_failure,Silent=False,Critical=False)
 	#-------------------------------------------------------------------
 	# Выделение элементов
 	# 1. Установка тэгов
@@ -1336,12 +1464,11 @@ def article_field(db,Standalone=False):
 		pos1=db['all']['tk'][i][0]
 		pos2=db['all']['tk'][i][-1]
 		tag_type=db['all']['types'][i]
-		if tag_type!='terms':
-			try:
-				txt.tag_add(tag_type,pos1,pos2)
-				log(cur_func,lev_debug,mes.tag_added % (db['all']['types'][i],pos1,pos2))
-			except:
-				log(cur_func,lev_err,mes.tag_addition_failure % (db['all']['types'][i],pos1,pos2))
+		try:
+			txt.tag_add(tag_type,pos1,pos2)
+			log(cur_func,lev_debug,mes.tag_added % (db['all']['types'][i],pos1,pos2))
+		except:
+			mestype(cur_func,mes.tag_addition_failure % (db['all']['types'][i],pos1,pos2),Silent=False,Critical=False)
 	for i in range(len(db['borders'])):
 		pos1=db['borders'][i][0]
 		pos2=db['borders'][i][-1]
@@ -1349,23 +1476,28 @@ def article_field(db,Standalone=False):
 			txt.tag_add('borders',pos1,pos2)
 			log(cur_func,lev_debug,mes.tag_added % ('borders',pos1,pos2))
 		except:
-			log(cur_func,lev_err,mes.tag_addition_failure % ('borders',pos1,pos2))
+			mestype(cur_func,mes.tag_addition_failure % ('borders',pos1,pos2),Silent=False,Critical=False)
 	# 2. Настройка тэгов
 	try:
-		txt.tag_config('dics',foreground='green')
-		log(cur_func,lev_debug,mes.tag_configured % ('dics','green'))
+		txt.tag_config('terms',foreground=color_terms,font=font_terms)
+		log(cur_func,lev_debug,mes.tag_config % ('terms',color_terms,font_terms))
 	except:
-		log(cur_func,lev_err,mes.tag_font_failure % 'dics')
+		mestype(cur_func,mes.tag_config_failure % ('terms',color_terms,font_terms),Silent=False,Critical=False)
 	try:
-		txt.tag_config('comments',foreground='gray')
-		log(cur_func,lev_debug,mes.tag_configured % ('comments','gray'))
+		txt.tag_config('dics',foreground=color_dics,font=font_dics)
+		log(cur_func,lev_debug,mes.tag_config % ('dics',color_dics,font_dics))
 	except:
-		log(cur_func,lev_err,mes.tag_font_failure % 'comments')
+		mestype(cur_func,mes.tag_config_failure % ('dics',color_dics,font_dics),Silent=False,Critical=False)
 	try:
-		txt.tag_config('borders',background='lemon chiffon')
-		log(cur_func,lev_debug,mes.tag_configured % ('borders','lemon_chiffon'))
+		txt.tag_config('comments',foreground=color_comments,font=font_comments)
+		log(cur_func,lev_debug,mes.tag_config % ('comments',color_comments,font_comments))
 	except:
-		log(cur_func,lev_err,mes.set_background_failure % 'borders')
+		mestype(cur_func,mes.tag_config_failure % ('coments',color_comments,font_comments),Silent=False,Critical=False)
+	try:
+		txt.tag_config('borders',background=color_borders)
+		log(cur_func,lev_debug,mes.tag_bg % ('borders',color_borders))
+	except:
+		mestype(cur_func,mes.tag_bg_failure % 'borders',Silent=False,Critical=False)
 	#-------------------------------------------------------------------
 	# Выделение первого признака
 	select_term()
