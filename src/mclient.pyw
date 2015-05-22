@@ -19,7 +19,7 @@ from configparser import SafeConfigParser
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='2015-04-09 12:57'
+build_ver='2015-04-15 01:47'
 config_file_root='main.cfg'
 root=tk.Tk()
 
@@ -1328,7 +1328,7 @@ def prepare_search(db):
 		log(cur_func,lev_warn,mes.no_line_breaks_in_article)
 	len_new_dic=len(new_dic)
 	#--------------------------------------------------------------------------
-	# Collect the information for easy move-up/-down actions
+	# Collect the information for easy move-up/-down/-left/-right, etc. actions
 	# 'Move down' event
 	db['move_down']=[]
 	dic_no=0
@@ -1352,6 +1352,36 @@ def prepare_search(db):
 		db['move_down'].append(term_no)
 	assert(db['terms']['num']==len(db['move_down']))
 	log(cur_func,lev_debug,"db['move_down']: %s" % str(db['move_down']))
+	#--------------------------------------------------------------------------
+	# 'End' event
+	# Весьма топорный алгоритм. Возможно, лучше создать db_page на раннем этапе и делать анализ 'end' на его основе
+	db['end']=list(db['move_down'])
+	# На предыдущем этапе мы делали проверку того, что длина списка терминов равна длине 'move_down'
+	for i in range(db['terms']['num']):
+		# Если элемент является 1-м элементом новой строки, то предыдущий элемент будет последним элементом предыдущей строки
+		db['end'][i]-=1
+	# Компенсируем различия с алгоритмом 'move_down'. Не очень красиво, но логично: в списке 'move_down' все элементы в последней строке будут ссылаться на одно и то же значение. В случае с 'end', все элементы последней строки должны ссылаться на номер последнего термина.
+	# Проверка нужна для last_elem
+	if db['terms']['num'] > 0:
+		max_terms=db['terms']['num']-1
+		max_all=db['all']['num']-1
+		last_elem=db['end'][-1]
+		while max_terms >= 0:
+			if db['end'][max_terms] == last_elem:
+				if max_all > 0:
+					if db['all']['types'][max_all-1]=='terms':
+						db['end'][max_terms]=db['terms']['num']-1
+					else:
+						# Вносим также 1-й элемент строки
+						db['end'][max_terms]=db['terms']['num']-1
+						break
+			else:
+				break
+			max_terms-=1
+			max_all-=1
+	# Мы изначально брали равный по длине список, но оставляем проверку на случай усложнения алгоритма.
+	assert(db['terms']['num']==len(db['end']))
+	log(cur_func,lev_debug,"db['end']: %s" % str(db['end']))
 	#--------------------------------------------------------------------------
 	# 'Move up' event
 	db['move_up']=[]
@@ -1378,6 +1408,28 @@ def prepare_search(db):
 	assert(db['terms']['num']==len(db['move_up']))
 	log(cur_func,lev_debug,"db['move_up']: %s" % str(db['move_up']))
 	#--------------------------------------------------------------------------
+	# 'Home' event
+	db['home']=[]
+	dic_no=0
+	dic_pos=0
+	for i in range(db['terms']['num']):
+		term_no=i
+		j=len_new_dic-1
+		while j >= 0:
+			if db['terms']['pos'][i][0] > new_dic[j]:
+				dic_pos=new_dic[j]
+				dic_no=j
+				break
+			j-=1
+		dic_pos=new_dic[dic_no]
+		for j in range(db['terms']['num']):
+			if db['terms']['pos'][j][0] >= dic_pos:
+				term_no=j
+				break
+		db['home'].append(term_no)
+	assert(db['terms']['num']==len(db['home']))
+	log(cur_func,lev_debug,"db['home']: %s" % str(db['home']))
+	#--------------------------------------------------------------------------
 	# 'Move left' event
 	db['move_left']=[]
 	for i in range(db['terms']['num']):
@@ -1397,6 +1449,7 @@ def prepare_search(db):
 			term_no+=1
 		#db['move_right']+=[[db['terms']['tk'][term_no]]]
 		db['move_right'].append(term_no)
+	#--------------------------------------------------------------------------
 	assert(db['terms']['num']==len(db['move_right']))
 	log(cur_func,lev_debug,"db['move_right']: %s" % str(db['move_right']))
 	if InternalDebug:
@@ -1562,13 +1615,22 @@ def get_adjacent_term(db,det,direction='right_down'):
 			i-=1
 		log(cur_func,lev_debug,mes.left_term % (term_num,term))
 	return term_num
+	
+# Определить номера терминов, которые являются пограничными для видимой области
+def aggregate_pages(db,coor_db):
+	cur_func=sys._getframe().f_code.co_name
+	for i in range(coor_db['pages']['num']):
+		coor_db['pages'][i]['up']['num']=get_adjacent_term(db,coor_db['pages'][i]['up']['pos'],direction='right_down')
+		coor_db['pages'][i]['down']['num']=get_adjacent_term(db,coor_db['pages'][i]['down']['pos'],direction='left_up')
+		if db['terms']['num'] > 0:
+			log(cur_func,lev_debug,mes.db_pages_stat % (i,coor_db['pages'][i]['up']['num'],db['terms']['phrases'][coor_db['pages'][i]['up']['num']],coor_db['pages'][i]['down']['num'],db['terms']['phrases'][coor_db['pages'][i]['down']['num']]))
+	return coor_db
 
 # Отобразить окно со словарной статьей
 def article_field(db,Standalone=False):
 	cur_func=sys._getframe().f_code.co_name
 	top=tk.Toplevel(root)
-	# Чтобы не создавать лишних глобальных переменных, пользуемся особенностью Питона - списки, измененные во вложенных функциях, сохраняют свои изменения в основных функциях
-	res, coor_up_tk, coor_up_pos, coor_down_tk, coor_down_pos, prev_coor_up_tk = [0],[0],[0],[0],[0],[0]
+	res=[0]
 	root.withdraw()
 	if not 'search' in db:
 		db['search']=mes.welcome
@@ -1638,15 +1700,16 @@ def article_field(db,Standalone=False):
 		top.destroy()
 		root.deiconify()
 	# Выделение терминов
-	def select_term():
+	def select_term(ForceScreenFit=True):
 		cur_func=sys._getframe().f_code.co_name
 		if db['terms']['num'] > 0 and db['terms']['num'] > res[0]:
-			if not fits_screen():
-				log(cur_func,lev_warn,mes.visible_selection)
-				if coor_db['direction']=='right_down':
-					res[0]=get_adjacent_term(db,coor_db['pages'][coor_db['cur_page_no']]['up']['pos'],coor_db['direction'])
-				elif coor_db['direction']=='left_up':
-					res[0]=get_adjacent_term(db,coor_db['pages'][coor_db['cur_page_no']]['down']['pos'],coor_db['direction'])
+			if ForceScreenFit:
+				if not fits_screen():
+					log(cur_func,lev_warn,mes.visible_selection)
+					if coor_db['direction']=='right_down':
+						res[0]=get_adjacent_term(db,coor_db['pages'][coor_db['cur_page_no']]['up']['pos'],coor_db['direction'])
+					elif coor_db['direction']=='left_up':
+						res[0]=get_adjacent_term(db,coor_db['pages'][coor_db['cur_page_no']]['down']['pos'],coor_db['direction'])
 			pos1=db['terms']['pos'][res[0]][0]
 			pos2=db['terms']['pos'][res[0]][1]
 			pos1=pos2tk(db_page,pos1)
@@ -1664,17 +1727,6 @@ def article_field(db,Standalone=False):
 			log(cur_func,lev_debug,mes.tag_config % ('cur_term',color_terms_sel,font_terms_sel))
 		except:
 			mestype(cur_func,mes.tag_config_failure % ('cur_term',color_terms_sel,font_terms_sel),Silent=False,Critical=False)
-	# Определить номера терминов, на которых экран должен сдвигаться
-	def aggregate_pages(): #db,coor_db
-		cur_func=sys._getframe().f_code.co_name
-		adj_terms=[]
-		term_num=0
-		for i in range(coor_db['pages']['num']):
-			term_num_up=get_adjacent_term(db,coor_db['pages'][i]['up']['pos'],direction='right_down')
-			term_up=db['terms']['phrases'][term_num_up]
-			term_num_down=get_adjacent_term(db,coor_db['pages'][i]['down']['pos'],direction='right_down')
-			term_down=db['terms']['phrases'][term_num_down]
-			log(cur_func,lev_debug,db_pages_stat % (i,term_num_up,term_up,term_num_down,term_down))
 	# Определить, входит ли текущий термин в видимую часть экрана
 	def fits_screen():
 		cur_func=sys._getframe().f_code.co_name
@@ -1688,13 +1740,26 @@ def article_field(db,Standalone=False):
 				Success=False
 		return Success
 	# Обеспечить удобное пролистывание экрана
-	def shift_screen():
+	# mode='normal': смещать экран согласно fits_screen()
+	# mode='change': изменить номер страницы даже в том случае, если текущий термин находится в видимой области (необходимо для move_page_up/_down)
+	# mode='still': не изменять номер страницы (необходимо для move_page_start/_end)
+	def shift_screen(mode='normal'):
 		cur_func=sys._getframe().f_code.co_name
+		DragScreen=False
 		# Вставляю проверку в самом начале, чтобы в случае ошибки не проводить дополнительные операции. Все равно если терминов нет, то смещать экран бесполезно
 		if db['terms']['num'] > 0 and db['terms']['num'] > res[0]:
-			if fits_screen():
-				log(cur_func,lev_info,mes.shift_screen_not_required)
+			if mode=='normal':
+				if fits_screen():
+					DragScreen=False
+				else:
+					DragScreen=True
+			elif mode=='change':
+				DragScreen=True
+			elif mode=='still':
+				DragScreen=False
 			else:
+				ErrorMessage(cur_func,mes.unknown_mode % (str(mode),'normal, change, still'))
+			if DragScreen:
 				log(cur_func,lev_info,mes.shift_screen_required)
 				if coor_db['direction']=='right_down':
 					if coor_db['cur_page_no'] < coor_db['pages']['num']-1:
@@ -1703,7 +1768,10 @@ def article_field(db,Standalone=False):
 					if coor_db['cur_page_no'] > 0:
 						coor_db['cur_page_no']-=1
 				else:
-					ErrorMessage(cur_func,unknown_mode % (str(direction),'left_up, right_down'))
+					ErrorMessage(cur_func,mes.unknown_mode % (str(coor_db['direction']),'left_up, right_down'))
+			else:
+				log(cur_func,lev_info,mes.shift_screen_not_required)
+			# Фактически, экран нужно смещать всегда
 			yview_tk=coor_db['pages'][coor_db['cur_page_no']]['up']['tk']
 			# Смещение экрана до заданного термина
 			# Алгоритм работает только, если метка называется 'insert'
@@ -1713,6 +1781,94 @@ def article_field(db,Standalone=False):
 				log(cur_func,lev_info,mes.shift_screen % ('insert',yview_tk))
 			except:
 				log(cur_func,lev_err,mes.shift_screen_failure % 'insert')
+	# Перейти на 1-й термин текущей строки	
+	def move_line_start(event):
+		cur_func=sys._getframe().f_code.co_name
+		coor_db['direction']='left_up'
+		txt.tag_remove('cur_term','1.0','end')
+		log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+		res[0]=db['home'][res[0]]
+		shift_screen()
+		select_term()
+	# Перейти на последний термин текущей строки
+	def move_line_end(event):
+		cur_func=sys._getframe().f_code.co_name
+		coor_db['direction']='right_down'
+		txt.tag_remove('cur_term','1.0','end')
+		log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+		res[0]=db['end'][res[0]]
+		shift_screen()
+		select_term()
+	# Перейти на 1-й термин статьи
+	def move_text_start(event):
+		cur_func=sys._getframe().f_code.co_name
+		coor_db['direction']='left_up'
+		txt.tag_remove('cur_term','1.0','end')
+		log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+		res[0]=0
+		coor_db['cur_page_no']=0
+		shift_screen()
+		select_term()
+	# Перейти на последний термин статьи
+	def move_text_end(event):
+		cur_func=sys._getframe().f_code.co_name
+		coor_db['direction']='right_down'
+		txt.tag_remove('cur_term','1.0','end')
+		log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+		res[0]=db['terms']['num']-1
+		coor_db['cur_page_no']=coor_db['pages']['num']-1
+		shift_screen()
+		select_term()
+	# Перейти на страницу вверх
+	def move_page_up(event):
+		cur_func=sys._getframe().f_code.co_name
+		txt.tag_remove('cur_term','1.0','end')
+		log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+		coor_db['direction']='left_up'
+		if coor_db['cur_page_no'] > 0:
+			res[0]=coor_db['pages'][coor_db['cur_page_no']-1]['up']['num']
+		else:
+			res[0]=coor_db['pages'][coor_db['cur_page_no']]['up']['num']
+		shift_screen(mode='change')
+		select_term(ForceScreenFit=False)
+		return "break"
+	# Перейти на страницу вверх
+	def move_page_down(event):
+		cur_func=sys._getframe().f_code.co_name
+		txt.tag_remove('cur_term','1.0','end')
+		log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+		coor_db['direction']='right_down'
+		if coor_db['cur_page_no'] < coor_db['pages']['num']-1:
+			res[0]=coor_db['pages'][coor_db['cur_page_no']+1]['up']['num']
+		else:
+			res[0]=coor_db['pages'][coor_db['cur_page_no']]['up']['num']
+		shift_screen(mode='change')
+		select_term(ForceScreenFit=False)
+		return "break"
+	# Перейти на 1-й термин текущей страницы
+	def move_page_start(event):
+		cur_func=sys._getframe().f_code.co_name
+		txt.tag_remove('cur_term','1.0','end')
+		log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+		# Направление указывается для того, чтобы в любом случае не менять текущую страницу
+		coor_db['direction']='left_up'
+		res[0]=coor_db['pages'][coor_db['cur_page_no']]['up']['num']
+		shift_screen(mode='still')
+		select_term(ForceScreenFit=False)
+		# Поскольку привязка идет по Shift, то tkinter может также осуществлять другие действия по Shift, например, выделение. "break" блокирует это поведение.
+		return "break"
+	# Перейти на последний термин текущей страницы
+	def move_page_end(event):
+		cur_func=sys._getframe().f_code.co_name
+		txt.tag_remove('cur_term','1.0','end')
+		log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+		# Направление указывается для того, чтобы в любом случае не менять текущую страницу
+		coor_db['direction']='left_up'
+		res[0]=coor_db['pages'][coor_db['cur_page_no']]['down']['num']
+		shift_screen(mode='still')
+		select_term(ForceScreenFit=False)
+		# Поскольку привязка идет по Shift, то tkinter может также осуществлять другие действия по Shift, например, выделение. "break" блокирует это поведение.
+		return "break"
 	# Перейти на предыдущий термин
 	def move_left(event):
 		cur_func=sys._getframe().f_code.co_name
@@ -2093,11 +2249,20 @@ def article_field(db,Standalone=False):
 	# db['all']['pos'] и db['all']['pos_sl'] включают позиции начала и конца вхождений в статью, в отличие от результата text_analyse(), где ['first_syms_nf'], ['last_syms_nf'] и ['pos_sl'] прописаны для каждого символа, поэтому tk2pos надо делать на основе новой БД, а не db['all']
 	db_page=analyse_text(db['page'],Truncate=False,Decline=False)
 	coor_db=get_coor_pages(txt,db_page)
+	coor_db=aggregate_pages(db,coor_db)
 	#--------------------------------------------------------------------------
 	txt.bind('<Left>',move_left)
 	txt.bind('<Right>',move_right)
 	txt.bind('<Down>',move_down)
 	txt.bind('<Up>',move_up)
+	txt.bind('<Home>',move_line_start)
+	txt.bind('<End>',move_line_end)
+	txt.bind('<Control-Home>',move_text_start)
+	txt.bind('<Control-End>',move_text_end)
+	txt.bind('<Shift-Home>',move_page_start)
+	txt.bind('<Shift-End>',move_page_end)
+	txt.bind('<Prior>',move_page_up)
+	txt.bind('<Next>',move_page_down)
 	if Standalone:
 		txt.bind('<Return>',go_url)
 		txt.bind('<KP_Enter>',go_url)

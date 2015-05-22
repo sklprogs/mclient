@@ -1,2 +1,13 @@
-- Archive program builds, so you do not need to re-download the whole ZIP when the program updates
-- Fix keyboard navigation
+- Enhance keyboard navigation:
+    ←: go to the nearest term to the left
+    →: the nearest term to the right
+    ↑: the first term of the preceding dictionary
+    ↓: the first term of the following dictionary
+    Home: the first term of the current dictionary
+    End: the last term of the current dictionary
+    Ctrl-Home: the first term of the article
+    Ctrl-End: the last term of the article
+    Shift-Home: the first term of the current page
+    Shift-End: the first term of the current page
+    PageUp: the first term of the preceding page
+    PageDown: the first term of the following page
