@@ -2303,7 +2303,7 @@ def article_field(db,Standalone=False):
 				frame_history.pack(expand=1,side='left',fill='both')
 			# Предыдущие поисковые запросы
 			listbox=tk.Listbox(frame_history,font=font_history)
-			if db['ShowHistory']:
+			if db['ShowHistory']==True:
 				listbox.pack(expand=1,side='top',fill='both')
 			for i in range(len(db['history'])):
 				listbox.insert(0,db['history'][i])
@@ -2544,6 +2544,7 @@ def article_loop(Standalone=False):
 						if new_buffer!=old_buffer:
 							break
 					db['search']=new_buffer
+					db=get_online_article(db,IsURL=False,Standalone=Standalone)
 					if not db['search'] in db['history']:
 						db['history'].append(db['search'])
 					db['history_index']=len(db['history'])
