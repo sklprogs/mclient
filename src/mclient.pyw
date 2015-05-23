@@ -19,7 +19,7 @@ from configparser import SafeConfigParser
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='3.2'
+build_ver='3.3'
 config_file_root='main.cfg'
 root=tk.Tk()
 
@@ -283,6 +283,61 @@ window_size=load_option(SectionVariables,'window_size')
 # Путь к иконке mclient
 # icon_mclient='/usr/local/bin/icon_64x64_dic.xbm'
 icon_mclient=load_option(SectionVariables,'icon_mclient')
+# Комбинации клавиш или кнопки мыши в mclient
+#bind_get_history='<Double-Button-1>' (ранее '<ButtonRelease-1>')
+bind_get_history=load_option(SectionVariables,'bind_get_history')
+#bind_copy_history='<ButtonRelease-3>'
+bind_copy_history=load_option(SectionVariables,'bind_copy_history')
+# bind_clear_search_field='<ButtonRelease-3>'
+bind_clear_search_field=load_option(SectionVariables,'bind_clear_search_field')
+#bind_paste_search_field='<ButtonRelease-2>'
+bind_paste_search_field=load_option(SectionVariables,'bind_paste_search_field')
+#bind_go_back='<Alt-Left>'
+bind_go_back=load_option(SectionVariables,'bind_go_back')
+#bind_go_forward='<Alt-Right>'
+bind_go_forward=load_option(SectionVariables,'bind_go_forward')
+#bind_move_left='<Left>'
+bind_move_left=load_option(SectionVariables,'bind_move_left')
+#bind_move_right='<Right>'
+bind_move_right=load_option(SectionVariables,'bind_move_right')
+#bind_move_down='<Down>'
+bind_move_down=load_option(SectionVariables,'bind_move_down')
+#bind_move_up='<Up>'
+bind_move_up=load_option(SectionVariables,'bind_move_up')
+#bind_move_line_start='<Home>'
+bind_move_line_start=load_option(SectionVariables,'bind_move_line_start')
+#bind_move_line_end='<End>'
+bind_move_line_end=load_option(SectionVariables,'bind_move_line_end')
+#bind_move_text_start='<Control-Home>'
+bind_move_text_start=load_option(SectionVariables,'bind_move_text_start')
+#bind_move_text_end='<Control-End>'
+bind_move_text_end=load_option(SectionVariables,'bind_move_text_end')
+#bind_move_page_start='<Shift-Home>'
+bind_move_page_start=load_option(SectionVariables,'bind_move_page_start')
+#bind_move_page_end='<Shift-End>'
+bind_move_page_end=load_option(SectionVariables,'bind_move_page_end')
+#bind_move_page_up='<Prior>'
+bind_move_page_up=load_option(SectionVariables,'bind_move_page_up')
+#bind_move_page_down='<Next>'
+bind_move_page_down=load_option(SectionVariables,'bind_move_page_down')
+#bind_go_url='<Shift-Return>'
+bind_go_url=load_option(SectionVariables,'bind_go_url')
+#bind_go_url_alt='<Shift-KP_Enter>'
+bind_go_url_alt=load_option(SectionVariables,'bind_go_url_alt')
+#bind_go_url_alt2='<Button-1>'
+bind_go_url_alt2=load_option(SectionVariables,'bind_go_url_alt2')
+#bind_copy_sel='<Control-Return>'
+bind_copy_sel=load_option(SectionVariables,'bind_copy_sel')
+#bind_copy_sel_alt='<Control-KP_Enter>'
+bind_copy_sel_alt=load_option(SectionVariables,'bind_copy_sel_alt')
+#bind_copy_sel_alt2='<ButtonRelease-3>'
+bind_copy_sel_alt2=load_option(SectionVariables,'bind_copy_sel_alt2')
+#bind_go_search='<Return>'
+bind_go_search=load_option(SectionVariables,'bind_go_search')
+#bind_go_search_alt='<KP_Enter>'
+bind_go_search_alt=load_option(SectionVariables,'bind_go_search_alt')
+#bind_clear_history='<ButtonRelease-3>'
+bind_clear_history=load_option(SectionVariables,'bind_clear_history')
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Загрузка раздела [Integers] конфигурационного файла
 # Число пикселей с краев окна, текст в области которых считается нечитаемым и должен быть перенесен
@@ -301,6 +356,9 @@ AlwaysMaximize=load_option_bool(SectionBooleans,'AlwaysMaximize')
 TermsColoredSep=load_option_bool(SectionBooleans,'TermsColoredSep')
 #ShowWallet=True
 ShowWallet=load_option_bool(SectionBooleans,'ShowWallet')
+# Работает ли вставка по СКМ в самой системе
+#MBSysEnabled=True
+MBSysEnabled=load_option_bool(SectionBooleans,'MBSysEnabled')
 
 # Вопрос
 def Question(cur_func='MAIN',cur_mes=err_mes_empty_question):
@@ -1846,6 +1904,8 @@ def article_field(db,Standalone=False):
 			detect_page()
 			log(cur_func,lev_info,mes.cur_page_no % db['coor_db']['cur_page_no'])
 			shift_screen(mode='still')
+			db['cur_scroll_pos']=db['scroll_poses'][db['coor_db']['cur_page_no']][0]
+			scrollbar.set(db['cur_scroll_pos'],db['scroll_poses'][db['coor_db']['cur_page_no']][1])
 			select_term()
 			db['prev_scroll_pos']=db['cur_scroll_pos']
 			log(cur_func,lev_info,"db['prev_scroll_pos']: %s" % str(db['prev_scroll_pos']))
@@ -2176,7 +2236,7 @@ def article_field(db,Standalone=False):
 		def get_history(event):
 			cur_func=sys._getframe().f_code.co_name
 			try:
-				# При выборе пункта, возвращается кортеж с номером пункта
+				# При выборе пункта возвращается кортеж с номером пункта
 				selection=listbox.curselection()
 				db['search']=listbox.get(selection[0])
 				db['mode']='search'
@@ -2187,6 +2247,19 @@ def article_field(db,Standalone=False):
 				log(cur_func,lev_warn,mes.history_failure)
 			top.destroy()
 			root.deiconify()
+		#----------------------------------------------------------------------
+		# Скопировать элемент истории
+		def copy_history(event):
+			cur_func=sys._getframe().f_code.co_name
+			selection=err_mes_copy
+			try:
+				selection=listbox.get(listbox.curselection()[0])
+				log(cur_func,lev_debug,mes.history_elem_selected % selection)
+			except:
+				# По непонятным пока причинам после переключения интерфейса на английский может возникнуть ошибка mes.history_failure.
+				#Warning(cur_func,mes.history_failure)
+				log(cur_func,lev_warn,mes.history_failure)
+			clipboard_copy(selection)
 		#----------------------------------------------------------------------
 		# Очистить строку поиска
 		def clear_search_field(event):
@@ -2307,20 +2380,41 @@ def article_field(db,Standalone=False):
 				listbox.pack(expand=1,side='top',fill='both')
 			for i in range(len(db['history'])):
 				listbox.insert(0,db['history'][i])
-			listbox.bind('<ButtonRelease-1>',get_history) # При просто <Button-1> выделение еще не будет выбрано
+			try:
+				listbox.bind(bind_get_history,get_history) # При просто <Button-1> выделение еще не будет выбрано
+			except tk.TclError:
+				Warning(cur_func,mes.wrong_keybinding % bind_get_history)
 			listbox.bind('<Return>',get_history)
 			listbox.bind('<KP_Enter>',get_history)
 			listbox.bind('<space>',get_history)
+			try:
+				listbox.bind(bind_copy_history,copy_history)
+			except tk.TclError:
+				Warning(cur_func,mes.wrong_keybinding % bind_copy_history)
 			# Создание каркаса с полем ввода, кнопкой выбора направления перевода и кнопкой выхода
 			frame_panel=tk.Frame(top)
 			frame_panel.pack(expand=0,fill='both',side='bottom')
 			# Поле ввода поисковой строки
 			search_field=tk.Entry(frame_panel)
 			search_field.pack(side='left')
-			top.bind('<Return>',go_search)
-			top.bind('<KP_Enter>',go_search)
-			search_field.bind('<ButtonRelease-3>',clear_search_field)
-			search_field.bind('<ButtonRelease-2>',paste_search_field)
+			try:
+				top.bind(bind_go_search,go_search)
+			except tk.TclError:
+				Warning(cur_func,mes.wrong_keybinding % bind_go_search)
+			try:
+				top.bind(bind_go_search_alt,go_search)
+			except tk.TclError:
+				Warning(cur_func,mes.wrong_keybinding % bind_go_search_alt)
+			try:
+				search_field.bind(bind_clear_search_field,clear_search_field)
+			except tk.TclError:
+				Warning(cur_func,mes.wrong_keybinding % bind_clear_search_field)
+			# Предполагается, что в Линуксе среда уже поддерживает вставку буфера обмена средней кнопкой. Если оставить, то вставляться будет дважды (либо работать через раз).
+			if not MBSysEnabled:
+				try:
+					search_field.bind(bind_paste_search_field,paste_search_field)
+				except tk.TclError:
+					Warning(cur_func,mes.wrong_keybinding % bind_paste_search_field)
 			# Кнопка для "чайников", заменяет Enter в search_field
 			button_search=tk.Button(frame_panel,text=mes.search)
 			button_search.bind('<Return>',go_search)
@@ -2338,7 +2432,10 @@ def article_field(db,Standalone=False):
 			button_history.bind('<Return>',toggle_history)
 			button_history.bind('<KP_Enter>',toggle_history)
 			button_history.bind('<space>',toggle_history)
-			button_history.bind('<ButtonRelease-3>',clear_history)
+			try:
+				button_history.bind(bind_clear_history,clear_history)
+			except tk.TclError:
+				Warning(cur_func,mes.wrong_keybinding % bind_clear_history)
 			button_history.pack(side='left')
 			# Кнопка "Буфер обмена"
 			if db['mode']=='clipboard':
@@ -2379,11 +2476,18 @@ def article_field(db,Standalone=False):
 			button_quit.bind('<space>',quit_now)
 			button_quit.pack(side='right')
 			# Перейти на предыдущую/следующую статью
-			top.bind('<Alt-Left>',go_back)
-			top.bind('<Alt-Right>',go_forward)
+			try:
+				top.bind(bind_go_back,go_back)
+			except tk.TclError:
+				Warning(cur_func,mes.wrong_keybinding % bind_go_back)
+			try:
+				top.bind(bind_go_forward,go_forward)
+			except tk.TclError:
+				Warning(cur_func,mes.wrong_keybinding % bind_go_forward)
 		frame=tk.Frame(top)
 		frame.pack(expand=1,fill='both')
-		scrollbar=tk.Scrollbar(frame,repeatinterval=1000,jump=1,repeatdelay=1000)
+		#scrollbar=tk.Scrollbar(frame,repeatinterval=1000,jump=1,repeatdelay=1000)
+		scrollbar=tk.Scrollbar(frame,jump=1)
 		txt=tk.Text(frame,height=7,font=font_style,wrap='word',yscrollcommand=scrollbar.set)
 		txt.insert('1.0',db['page'])
 		#--------------------------------------------------------------------------
@@ -2450,34 +2554,89 @@ def article_field(db,Standalone=False):
 		db=scrollbar_poses(db)
 		#--------------------------------------------------------------------------
 		scrollbar.config(command=custom_scroll)
-		top.bind('<Left>',move_left)
-		top.bind('<Right>',move_right)
-		top.bind('<Down>',move_down)
-		top.bind('<Up>',move_up)
-		top.bind('<Home>',move_line_start)
-		top.bind('<End>',move_line_end)
-		top.bind('<Control-Home>',move_text_start)
-		top.bind('<Control-End>',move_text_end)
-		top.bind('<Shift-Home>',move_page_start)
-		top.bind('<Shift-End>',move_page_end)
-		top.bind('<Prior>',move_page_up)
-		top.bind('<Next>',move_page_down)
+		try:
+			top.bind(bind_move_left,move_left)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_move_left)
+		try:
+			top.bind(bind_move_right,move_right)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_move_right)
+		try:
+			top.bind(bind_move_down,move_down)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_move_down)
+		try:
+			top.bind(bind_move_up,move_up)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_move_up)
+		try:
+			top.bind(bind_move_line_start,move_line_start)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_move_line_start)
+		try:
+			top.bind(bind_move_line_end,move_line_end)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_move_line_end)
+		try:
+			top.bind(bind_move_text_start,move_text_start)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_move_text_start)
+		try:
+			top.bind(bind_move_text_end,move_text_end)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_move_text_end)
+		try:
+			top.bind(bind_move_page_start,move_page_start)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_move_page_start)
+		try:
+			top.bind(bind_move_page_end,move_page_end)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_move_page_end)
+		try:
+			top.bind(bind_move_page_up,move_page_up)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_move_page_up)
+		try:
+			top.bind(bind_move_page_down,move_page_down)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_move_page_down)
 		if Standalone:
-			top.bind('<Shift-Return>',go_url)
-			top.bind('<Shift-KP_Enter>',go_url)
-			txt.bind('<Button-1>',go_url)
+			try:
+				top.bind(bind_go_url,go_url)
+			except tk.TclError:
+				Warning(cur_func,mes.wrong_keybinding % bind_go_url)
+			try:
+				top.bind(bind_go_url_alt,go_url)
+			except tk.TclError:
+				Warning(cur_func,mes.wrong_keybinding % bind_go_url_alt)
+			try:
+				txt.bind(bind_go_url_alt2,go_url)
+			except tk.TclError:
+				Warning(cur_func,mes.wrong_keybinding % bind_go_url_alt2)
 			search_field.focus_force()
 		else:
+			# Здесь пока не нужно выносить в конфиг
 			txt.bind('<Return>',quit_now)
 			txt.bind('<KP_Enter>',quit_now)
 			txt.bind('<Shift-Return>',quit_now)
 			txt.bind('<Shift-KP_Enter>',quit_now)
 			top.bind('<Escape>',quit_now)
 			txt.focus_force()
-		top.bind('<Control-Return>',copy_sel)
+		try:
+			top.bind(bind_copy_sel,copy_sel)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_copy_sel)
+		try:
+			top.bind(bind_copy_sel_alt,copy_sel)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_copy_sel_alt)
 		# ПКМ используется еще для очистки Истории, поэтому нельзя использовать top
-		txt.bind('<ButtonRelease-3>',copy_sel)
-		top.bind('<Control-KP_Enter>',copy_sel)
+		try:
+			txt.bind(bind_copy_sel_alt2,copy_sel)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_copy_sel_alt2)
 		if sys_type=='win' or sys_type=='mac':
 			top.bind('<MouseWheel>',mouse_wheel)
 		else:

@@ -1,6 +1,4 @@
-- Disallow empty search requests
-- Fix bugs: the article is reloaded before quitting the program and after showing/hiding the History
-- Remember current selection when showing/hiding the History (only if the selection is located on the first page)
-- Enable the mouse wheel on Windows
-- Enable the scrollbar (some corrections may be necessary, especially, on Windows)
-- Change hotkeys to go to the preceding/following page to Alt-Left and Alt-Right correspondingly in order not to conflict with the search field
+- Set hotkeys (keyboard + mouse) in the config file
+- Press RMB to copy a History entry
+- Change loading a History entry by LMB to double LMB, because copying a History entry requires selecting first this entry by LMB
+- Set the config key MBSysEnabled to indicate whether clipboard paste works on the system level (1, True) or this should be done on the program level (0, False)
