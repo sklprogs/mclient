@@ -1,4 +1,5 @@
-- Set hotkeys (keyboard + mouse) in the config file
-- Press RMB to copy a History entry
-- Change loading a History entry by LMB to double LMB, because copying a History entry requires selecting first this entry by LMB
-- Set the config key MBSysEnabled to indicate whether clipboard paste works on the system level (1, True) or this should be done on the program level (0, False)
+- Fix a bug: embedded user comments are now visible (but only inside the tag <span STYLE="color:rgb(60,179,113)">)
+- Fix a bug: a request "refer as" does not hang the app now
+- Fix a bug: updating the History field after changing the UI language caused an error
+- Close the current window in the Clipboard mode using MMB (bind_close_top)
+- Add a hotkey Control-q (bind_quit_now) to quit the app

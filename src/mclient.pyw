@@ -19,7 +19,7 @@ from configparser import SafeConfigParser
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='3.3'
+build_ver='3.4 (in progress)'
 config_file_root='main.cfg'
 root=tk.Tk()
 
@@ -101,6 +101,8 @@ tag_pattern5='<span STYLE="color:gray">'
 tag_pattern6='<span STYLE="color:black">'
 tag_pattern7='</a>'
 tag_pattern8='">'
+tag_pattern9='<span STYLE="color:rgb(60,179,113)">'
+tag_pattern10='</td>'
 #------------------------------------------------------------------------------
 # Bool
 # I removed extra code, InternalDebug=False will not work
@@ -338,6 +340,10 @@ bind_go_search=load_option(SectionVariables,'bind_go_search')
 bind_go_search_alt=load_option(SectionVariables,'bind_go_search_alt')
 #bind_clear_history='<ButtonRelease-3>'
 bind_clear_history=load_option(SectionVariables,'bind_clear_history')
+#bind_close_top='<ButtonRelease-2>'
+bind_close_top=load_option(SectionVariables,'bind_close_top')
+#bind_quit_now='<Control-q>'
+bind_quit_now=load_option(SectionVariables,'bind_quit_now')
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Загрузка раздела [Integers] конфигурационного файла
 # Число пикселей с краев окна, текст в области которых считается нечитаемым и должен быть перенесен
@@ -839,694 +845,715 @@ def get_online_article(db,IsURL=False,Silent=False,Critical=False,Standalone=Fal
 # Convert HTML entities to UTF-8 and perform other necessary operations
 def prepare_page(db):
 	cur_func=sys._getframe().f_code.co_name
-	try:
-		html_parser = html.parser.HTMLParser()
-		db['page']=html_parser.unescape(db['page'])
-	except:
-		log(cur_func,lev_err,mes.html_conversion_failure)
-	# It is not clear why .replace does not replace all suitable elements
-	db['page']=db['page'].replace('\r\n','')
-	db['page']=db['page'].replace('\n','')
-	db['page']=db['page'].replace('\xa0',' ')
-	while '  ' in db['page']:
-		db['page']=db['page'].replace('  ',' ')
-	db['page']=db['page'].replace(nbspace+'<','<')
-	db['page']=db['page'].replace(' <','<')
-	db['page']=db['page'].replace('>'+nbspace,'>')
-	db['page']=db['page'].replace('> ','>')
-	# Remove tags <p>, </p>, <b> and </b>, because they can be inside hyperlinks
-	db['page']=db['page'].replace('<p>','')
-	db['page']=db['page'].replace('</p>','')
-	db['page']=db['page'].replace('<b>','')
-	db['page']=db['page'].replace('</b>','')
-	# Remove symbols '<' and '>' that do not define tags
-	db['page']=list(db['page'])
-	i=0
-	TagOpen=False
-	while i < len(db['page']):
-		if db['page'][i]=='<':
-			if TagOpen:
-				log(cur_func,lev_debug,mes.deleting_useless_elem % (i,db['page'][i]))
-				if i >= 10 and i < len(db['page'])-10:
-					log(cur_func,lev_debug,mes.context % ''.join(db['page'][i-10:i+10]))
-				del db['page'][i]
-				i-=1
-			else:
-				TagOpen=True
-		if db['page'][i]=='>':
-			if not TagOpen:
-				log(cur_func,lev_info,mes.deleting_useless_elem % (i,db['page'][i]))
-				if i >= 10 and i < len(db['page'])-10:
-					log(cur_func,lev_info,mes.context % ''.join(db['page'][i-10:i+10]))
-				del db['page'][i]
-				i-=1
-			else:
-				TagOpen=False
-		i+=1
-	db['page']=''.join(db['page'])
-	db['len_page']=len(db['page'])
-	log(cur_func,lev_debug,"db['page']: '%s'" % db['page'])
-	log(cur_func,lev_debug,"db['len_page']: %d" % db['len_page'])
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+	else:
+		try:
+			html_parser = html.parser.HTMLParser()
+			db['page']=html_parser.unescape(db['page'])
+		except:
+			log(cur_func,lev_err,mes.html_conversion_failure)
+		# It is not clear why .replace does not replace all suitable elements
+		db['page']=db['page'].replace('\r\n','')
+		db['page']=db['page'].replace('\n','')
+		db['page']=db['page'].replace('\xa0',' ')
+		while '  ' in db['page']:
+			db['page']=db['page'].replace('  ',' ')
+		db['page']=db['page'].replace(nbspace+'<','<')
+		db['page']=db['page'].replace(' <','<')
+		db['page']=db['page'].replace('>'+nbspace,'>')
+		db['page']=db['page'].replace('> ','>')
+		# Remove tags <p>, </p>, <b> and </b>, because they can be inside hyperlinks
+		db['page']=db['page'].replace('<p>','')
+		db['page']=db['page'].replace('</p>','')
+		db['page']=db['page'].replace('<b>','')
+		db['page']=db['page'].replace('</b>','')
+		# Remove symbols '<' and '>' that do not define tags
+		db['page']=list(db['page'])
+		i=0
+		TagOpen=False
+		while i < len(db['page']):
+			if db['page'][i]=='<':
+				if TagOpen:
+					log(cur_func,lev_debug,mes.deleting_useless_elem % (i,db['page'][i]))
+					if i >= 10 and i < len(db['page'])-10:
+						log(cur_func,lev_debug,mes.context % ''.join(db['page'][i-10:i+10]))
+					del db['page'][i]
+					i-=1
+				else:
+					TagOpen=True
+			if db['page'][i]=='>':
+				if not TagOpen:
+					log(cur_func,lev_info,mes.deleting_useless_elem % (i,db['page'][i]))
+					if i >= 10 and i < len(db['page'])-10:
+						log(cur_func,lev_info,mes.context % ''.join(db['page'][i-10:i+10]))
+					del db['page'][i]
+					i-=1
+				else:
+					TagOpen=False
+			i+=1
+		db['page']=''.join(db['page'])
+		db['len_page']=len(db['page'])
+		log(cur_func,lev_debug,"db['page']: '%s'" % db['page'])
+		log(cur_func,lev_debug,"db['len_page']: %d" % db['len_page'])
 	return db
 
 # Analyse tags and collect the information on them
 def analyse_tags(db):
 	cur_func=sys._getframe().f_code.co_name
-	start_time=time()
-	db=tags_pos(db)
-	db=extract_tags(db)
-	db=remove_useless_tags(db)
-	db=extract_tag_contents(db)
-	end_time=time()
-	log(cur_func,lev_info,mes.tag_analysis_timer % str(end_time-start_time))
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+	else:
+		start_time=time()
+		db=tags_pos(db)
+		db=extract_tags(db)
+		db=remove_useless_tags(db)
+		db=extract_tag_contents(db)
+		end_time=time()
+		log(cur_func,lev_info,mes.tag_analysis_timer % str(end_time-start_time))
 	return db
 	
 # Create a list with positions of signs '<' and '>'
 def tags_pos(db):
 	cur_func=sys._getframe().f_code.co_name
-	tag_borders=[]
-	i=0
-	while i < db['len_page']:
-		# Signs '<' and '>' as such can cause serious problems since they can occur in invalid cases like "perform >>> conduct >> carry out (vbadalov)". The following algorithm is also not 100% precise but is better.
-		if db['page'][i]=='<' or db['page'][i]=='>':
-			tag_borders.append(i)
-		i+=1
-	if len(tag_borders) % 2 != 0:
-		log(cur_func,lev_warn,mes.wrong_tag_num % len(tag_borders))
-		if len(tag_borders) > 0:
-			del tag_borders[-1]
-		else:
-			log(cur_func,lev_warn,mes.tag_borders_empty)
-	tmp_borders=[]
-	i=0
-	while i < len(tag_borders):
-		uneven=tag_borders[i]
-		i+=1
-		even=tag_borders[i]
-		i+=1
-		tmp_borders+=[[uneven,even]]
-	db['tag_borders']=tmp_borders
-	db['len_tag_borders']=len(db['tag_borders'])
-	log(cur_func,lev_debug,"db['tag_borders']: %s" % str(db['tag_borders']))
-	log(cur_func,lev_debug,"db['len_tag_borders']: %d" % db['len_tag_borders'])
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+	else:
+		tag_borders=[]
+		i=0
+		while i < db['len_page']:
+			# Signs '<' and '>' as such can cause serious problems since they can occur in invalid cases like "perform >>> conduct >> carry out (vbadalov)". The following algorithm is also not 100% precise but is better.
+			if db['page'][i]=='<' or db['page'][i]=='>':
+				tag_borders.append(i)
+			i+=1
+		if len(tag_borders) % 2 != 0:
+			log(cur_func,lev_warn,mes.wrong_tag_num % len(tag_borders))
+			if len(tag_borders) > 0:
+				del tag_borders[-1]
+			else:
+				log(cur_func,lev_warn,mes.tag_borders_empty)
+		tmp_borders=[]
+		i=0
+		while i < len(tag_borders):
+			uneven=tag_borders[i]
+			i+=1
+			even=tag_borders[i]
+			i+=1
+			tmp_borders+=[[uneven,even]]
+		db['tag_borders']=tmp_borders
+		db['len_tag_borders']=len(db['tag_borders'])
+		log(cur_func,lev_debug,"db['tag_borders']: %s" % str(db['tag_borders']))
+		log(cur_func,lev_debug,"db['len_tag_borders']: %d" % db['len_tag_borders'])
 	return db
-
+	
 # Extract fragments inside signs '<' and '>'
 def extract_tags(db):
 	cur_func=sys._getframe().f_code.co_name
-	db['tags']=[]
-	for i in range(db['len_tag_borders']):
-		# +1 because of slice peculiarities
-		pos1=db['tag_borders'][i][0]
-		pos2=db['tag_borders'][i][1]+1
-		db['tags'].append(db['page'][pos1:pos2])
-		log(cur_func,lev_debug,mes.extracting_tag % db['tags'][-1])
-	db['len_tags']=len(db['tags'])
-	log(cur_func,lev_info,mes.tags_found % (db['len_tags']))
-	log(cur_func,lev_debug,str(db['tags']))
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+	else:
+		db['tags']=[]
+		for i in range(db['len_tag_borders']):
+			# +1 because of slice peculiarities
+			pos1=db['tag_borders'][i][0]
+			pos2=db['tag_borders'][i][1]+1
+			db['tags'].append(db['page'][pos1:pos2])
+			log(cur_func,lev_debug,mes.extracting_tag % db['tags'][-1])
+		db['len_tags']=len(db['tags'])
+		log(cur_func,lev_info,mes.tags_found % (db['len_tags']))
+		log(cur_func,lev_debug,str(db['tags']))
 	return db
 	
 # Create a list of on-screen text elements for each useful tag
 def extract_tag_contents(db):
 	cur_func=sys._getframe().f_code.co_name
-	#--------------------------------------------------------------------------
-	# Assigning initial values
-	# It is much easier to debug results if we separate types just before showing them in tkinter
-	db['all']={}
-	db['all']['phrases']=[]
-	db['all']['types']=[]
-	db['all']['pos']=[]
-	db['all']['url']=[]
-	#--------------------------------------------------------------------------
-	''' Tag patterns:
-	1) Abbreviations of dictionaries:
-	<a title="...">
-	2) Users
-	<a href="m.exe?..."><i>...</i></a> OR without 1st <
-	3) Terms:
-	<a href="m.exe?..."></a>
-	4) Genders:
-	<span STYLE="color:gray"<i>...</i>
-	5) Comments:
-	<span STYLE="color:gray"...<
-	'''
-	#--------------------------------------------------------------------------
-	for i in range(db['len_tags']):
-		EntryMatch=False
-		url=online_url_safe
-		# Extracting dictionary abbreviations
-		if db['tags'][i].startswith(tag_pattern1):
-			tmp_str=db['tags'][i]
-			tmp_str=tmp_str.replace(tag_pattern1,'',1)
-			tmp_str=re.sub('".*','',tmp_str)
-			if tmp_str=='' or tmp_str==' ':
-				log(cur_func,lev_warn,mes.wrong_tag % db['tags'][i])
-			else:
-				db['all']['phrases'].append(tmp_str)
-				db['all']['types'].append('dics')
-				pos1=db['tag_borders'][i][0]+len(tag_pattern1)-1
-				pos2=pos1+len(tmp_str)-1
-				db['all']['pos']+=[[pos1,pos2]]
-				EntryMatch=True
-		# Extracting terms
-		if db['tags'][i].startswith(tag_pattern2):
-			# It is reasonable to bind URLs to terms only, but we want the number of URLs to match db['all']['num'], moreover, extra URLs can appear useful.
-			if i+1 < db['len_tags']:
-				TermMatch=True
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+	else:
+		#--------------------------------------------------------------------------
+		# Assigning initial values
+		# It is much easier to debug results if we separate types just before showing them in tkinter
+		db['all']={}
+		db['all']['phrases']=[]
+		db['all']['types']=[]
+		db['all']['pos']=[]
+		db['all']['url']=[]
+		#--------------------------------------------------------------------------
+		''' Tag patterns:
+		1) Abbreviations of dictionaries:
+		<a title="...">
+		2) Users
+		<a href="m.exe?..."><i>...</i></a> OR without 1st <
+		3) Terms:
+		<a href="m.exe?..."></a>
+		4) Genders:
+		<span STYLE="color:gray"<i>...</i>
+		5) Comments:
+		<span STYLE="color:gray"...<
+		'''
+		#--------------------------------------------------------------------------
+		for i in range(db['len_tags']):
+			EntryMatch=False
+			url=online_url_safe
+			# Extracting dictionary abbreviations
+			if db['tags'][i].startswith(tag_pattern1):
+				tmp_str=db['tags'][i]
+				tmp_str=tmp_str.replace(tag_pattern1,'',1)
+				tmp_str=re.sub('".*','',tmp_str)
+				if tmp_str=='' or tmp_str==' ':
+					log(cur_func,lev_warn,mes.wrong_tag % db['tags'][i])
+				else:
+					db['all']['phrases'].append(tmp_str)
+					db['all']['types'].append('dics')
+					pos1=db['tag_borders'][i][0]+len(tag_pattern1)-1
+					pos2=pos1+len(tmp_str)-1
+					db['all']['pos']+=[[pos1,pos2]]
+					EntryMatch=True
+			# Extracting terms
+			if db['tags'][i].startswith(tag_pattern2):
+				# It is reasonable to bind URLs to terms only, but we want the number of URLs to match db['all']['num'], moreover, extra URLs can appear useful.
+				if i+1 < db['len_tags']:
+					TermMatch=True
+					pos1=db['tag_borders'][i][1]+1
+					pos2=db['tag_borders'][i+1][0]-1
+					if pos1 >= db['len_page']:
+						log(cur_func,lev_warn,mes.tag_near_text_end % db['tags'][i])
+					else:
+						if tag_pattern7 in db['tags'][i+1] or tag_pattern8 in db['tags'][i+1]:
+							tmp_str=db['page'][pos1:pos2+1]
+							# If we see symbols '<' or '>' there for some reason, then there is a problem in the tag extraction algorithm. We can make manual deletion of '<' and '>' there.
+							if tmp_str=='' or tmp_str==' ':
+								TermMatch=False
+								log(cur_func,lev_warn,mes.empty_tag_contents % db['tags'][i])
+							if TermMatch:
+								db['all']['phrases'].append(tmp_str)
+								db['all']['types'].append('terms')
+								db['all']['pos']+=[[pos1,pos2]]
+								EntryMatch=True
+						else:
+							TermMatch=False
+						# Extracting URL
+						url=db['tags'][i].replace(tag_pattern2,'',1)
+						# We need re because of such cases as "<a href="m.exe?t=74188_2_4&s1=faute">ошибка"
+						url=re.sub('\"\>.*','">',url)
+						if url.endswith(tag_pattern8):
+							url=url.replace(tag_pattern8,'')
+							url=online_url_root+url
+						else:
+							log(cur_func,lev_warn,mes.url_extraction_failure % url)
+						if not TermMatch:
+							log(cur_func,lev_warn,mes.useless_url % url)
+				else:
+					log(cur_func,lev_warn,mes.last_tag % db['tags'][i])
+					TermMatch=False
+			# Extracting comments
+			if db['tags'][i]==tag_pattern3 or db['tags'][i]==tag_pattern5 or db['tags'][i]==tag_pattern9:
 				pos1=db['tag_borders'][i][1]+1
-				pos2=db['tag_borders'][i+1][0]-1
 				if pos1 >= db['len_page']:
 					log(cur_func,lev_warn,mes.tag_near_text_end % db['tags'][i])
 				else:
-					if tag_pattern7 in db['tags'][i+1] or tag_pattern8 in db['tags'][i+1]:
-						tmp_str=db['page'][pos1:pos2+1]
-						# If we see symbols '<' or '>' there for some reason, then there is a problem in the tag extraction algorithm. We can make manual deletion of '<' and '>' there.
-						if tmp_str=='' or tmp_str==' ':
-							TermMatch=False
-							log(cur_func,lev_warn,mes.empty_tag_contents % db['tags'][i])
-						if TermMatch:
-							db['all']['phrases'].append(tmp_str)
-							db['all']['types'].append('terms')
-							db['all']['pos']+=[[pos1,pos2]]
-							EntryMatch=True
+					if i+1 < db['len_tags']:
+						pos2=db['tag_borders'][i+1][0]-1
 					else:
-						TermMatch=False
-					# Extracting URL
-					url=db['tags'][i].replace(tag_pattern2,'',1)
-					# We need re because of such cases as "<a href="m.exe?t=74188_2_4&s1=faute">ошибка"
-					url=re.sub('\"\>.*','">',url)
-					if url.endswith(tag_pattern8):
-						url=url.replace(tag_pattern8,'')
-						url=online_url_root+url
+						log(cur_func,lev_warn,mes.last_tag % db['tags'][i])
+						if db['len_tag_borders'] > 0:
+							pos2=db['tag_borders'][-1][1]
+						else:
+							pos2=pos1
+							log(cur_func,lev_warn,mes.tag_borders_empty)
+					tmp_str=db['page'][pos1:pos2+1]
+					# Sometimes, the tag contents is just '('. We remove it, so the final text does not look like '( user_name'
+					if tmp_str=='' or tmp_str==' ' or tmp_str=='|' or tmp_str=='(':
+						log(cur_func,lev_warn,mes.empty_tag_contents % db['tags'][i])
 					else:
-						log(cur_func,lev_warn,mes.url_extraction_failure % url)
-					if not TermMatch:
-						log(cur_func,lev_warn,mes.useless_url % url)
-			else:
-				log(cur_func,lev_warn,mes.last_tag % db['tags'][i])
-				TermMatch=False
-		# Extracting comments
-		if db['tags'][i]==tag_pattern3 or db['tags'][i]==tag_pattern5:
-			pos1=db['tag_borders'][i][1]+1
-			if pos1 >= db['len_page']:
-				log(cur_func,lev_warn,mes.tag_near_text_end % db['tags'][i])
-			else:
-				if i+1 < db['len_tags']:
-					pos2=db['tag_borders'][i+1][0]-1
-				else:
-					log(cur_func,lev_warn,mes.last_tag % db['tags'][i])
-					if db['len_tag_borders'] > 0:
-						pos2=db['tag_borders'][-1][1]
-					else:
-						pos2=pos1
-						log(cur_func,lev_warn,mes.tag_borders_empty)
-				tmp_str=db['page'][pos1:pos2+1]
-				# Sometimes, the tag contents is just '('. We remove it, so the final text does not look like '( user_name'
-				if tmp_str=='' or tmp_str==' ' or tmp_str=='|' or tmp_str=='(':
-					log(cur_func,lev_warn,mes.empty_tag_contents % db['tags'][i])
-				else:
-					db['all']['phrases'].append(tmp_str)
-					db['all']['types'].append('comments')
-					db['all']['pos']+=[[pos1,pos2]]
-					EntryMatch=True
-		if EntryMatch:
-			log(cur_func,lev_debug,mes.adding_url % url)
-			db['all']['url'].append(url)
-	db['all']['num']=len(db['all']['phrases'])
-	#--------------------------------------------------------------------------
-	# Deleting some common entries
-	# We can also delete 'g-sort' here
-	# ATTENTION: All types must be removed: 'phrases', 'types', 'pos', 'url'!
-	if db['all']['num'] > 0:
-		if db['all']['phrases'][0]=='Вход':
-			del db['all']['phrases'][0]
-			del db['all']['types'][0]
-			del db['all']['pos'][0]
-			del db['all']['url'][0]
-			db['all']['num']-=1
-		if db['all']['phrases'][0]=='Регистрация':
-			del db['all']['phrases'][0]
-			del db['all']['types'][0]
-			del db['all']['pos'][0]
-			del db['all']['url'][0]
-			db['all']['num']-=1
+						db['all']['phrases'].append(tmp_str)
+						db['all']['types'].append('comments')
+						db['all']['pos']+=[[pos1,pos2]]
+						EntryMatch=True
+			if EntryMatch:
+				log(cur_func,lev_debug,mes.adding_url % url)
+				db['all']['url'].append(url)
+		db['all']['num']=len(db['all']['phrases'])
+		#--------------------------------------------------------------------------
+		# Deleting some common entries
+		# We can also delete 'g-sort' here
+		# ATTENTION: All types must be removed: 'phrases', 'types', 'pos', 'url'!
 		if db['all']['num'] > 0:
-			if db['all']['phrases'][-1]=='Сообщить об ошибке':
-				del db['all']['phrases'][-1]
-				del db['all']['types'][-1]
-				del db['all']['pos'][-1]
-				del db['all']['url'][-1]
+			if db['all']['phrases'][0]=='Вход':
+				del db['all']['phrases'][0]
+				del db['all']['types'][0]
+				del db['all']['pos'][0]
+				del db['all']['url'][0]
 				db['all']['num']-=1
-		if db['all']['num'] > 0:
-			if db['all']['phrases'][-1]=='Изменить':
-				del db['all']['phrases'][-1]
-				del db['all']['types'][-1]
-				del db['all']['pos'][-1]
-				del db['all']['url'][-1]
+			if db['all']['phrases'][0]=='Регистрация':
+				del db['all']['phrases'][0]
+				del db['all']['types'][0]
+				del db['all']['pos'][0]
+				del db['all']['url'][0]
 				db['all']['num']-=1
-		if db['all']['num'] > 0:
-			if db['all']['phrases'][-1]=='Удалить':
-				del db['all']['phrases'][-1]
-				del db['all']['types'][-1]
-				del db['all']['pos'][-1]
-				del db['all']['url'][-1]
-				db['all']['num']-=1
-		if db['all']['num'] > 0:
-			if db['all']['phrases'][-1]=='Добавить':
-				del db['all']['phrases'][-1]
-				del db['all']['types'][-1]
-				del db['all']['pos'][-1]
-				del db['all']['url'][-1]
-				db['all']['num']-=1
-	else:
-		log(cur_func,lev_warn,mes.entries_terms_empty)
-	#--------------------------------------------------------------------------
-	# Logging
-	log(cur_func,lev_debug,"db['all']['num']: %d" % db['all']['num'])
-	log(cur_func,lev_debug,"db['all']['phrases']: %s" % str(db['all']['phrases']))
-	log(cur_func,lev_debug,"db['all']['types']: %s" % str(db['all']['types']))
-	log(cur_func,lev_debug,"db['all']['pos']: %s" % str(db['all']['pos']))
-	log(cur_func,lev_debug,"db['all']['url']: %s" % str(db['all']['url']))
-	#--------------------------------------------------------------------------
-	# Testing
-	assert(db['all']['num']==len(db['all']['phrases']))
-	assert(db['all']['num']==len(db['all']['types']))
-	assert(db['all']['num']==len(db['all']['pos']))
-	assert(db['all']['num']==len(db['all']['url']))
-	# Human-readable representation
-	if InternalDebug:
-		res_mes=''
-		for i in range(db['all']['num']):
-			res_mes+="i: %d" % i+tab+db['all']['types'][i]+tab+db['all']['phrases'][i]+tab+str(db['all']['pos'][i])+tab+db['all']['url'][i]+dlb
-		text_field_ro(mes.db_all_check,res_mes)	
+			if db['all']['num'] > 0:
+				if db['all']['phrases'][-1]=='Сообщить об ошибке':
+					del db['all']['phrases'][-1]
+					del db['all']['types'][-1]
+					del db['all']['pos'][-1]
+					del db['all']['url'][-1]
+					db['all']['num']-=1
+			if db['all']['num'] > 0:
+				if db['all']['phrases'][-1]=='Изменить':
+					del db['all']['phrases'][-1]
+					del db['all']['types'][-1]
+					del db['all']['pos'][-1]
+					del db['all']['url'][-1]
+					db['all']['num']-=1
+			if db['all']['num'] > 0:
+				if db['all']['phrases'][-1]=='Удалить':
+					del db['all']['phrases'][-1]
+					del db['all']['types'][-1]
+					del db['all']['pos'][-1]
+					del db['all']['url'][-1]
+					db['all']['num']-=1
+			if db['all']['num'] > 0:
+				if db['all']['phrases'][-1]=='Добавить':
+					del db['all']['phrases'][-1]
+					del db['all']['types'][-1]
+					del db['all']['pos'][-1]
+					del db['all']['url'][-1]
+					db['all']['num']-=1
+		else:
+			log(cur_func,lev_warn,mes.entries_terms_empty)
+		#--------------------------------------------------------------------------
+		# Logging
+		log(cur_func,lev_debug,"db['all']['num']: %d" % db['all']['num'])
+		log(cur_func,lev_debug,"db['all']['phrases']: %s" % str(db['all']['phrases']))
+		log(cur_func,lev_debug,"db['all']['types']: %s" % str(db['all']['types']))
+		log(cur_func,lev_debug,"db['all']['pos']: %s" % str(db['all']['pos']))
+		log(cur_func,lev_debug,"db['all']['url']: %s" % str(db['all']['url']))
+		#--------------------------------------------------------------------------
+		# Testing
+		assert(db['all']['num']==len(db['all']['phrases']))
+		assert(db['all']['num']==len(db['all']['types']))
+		assert(db['all']['num']==len(db['all']['pos']))
+		assert(db['all']['num']==len(db['all']['url']))
+		# Human-readable representation
+		if InternalDebug:
+			res_mes=''
+			for i in range(db['all']['num']):
+				res_mes+="i: %d" % i+tab+db['all']['types'][i]+tab+db['all']['phrases'][i]+tab+str(db['all']['pos'][i])+tab+db['all']['url'][i]+dlb
+			text_field_ro(mes.db_all_check,res_mes)	
 	return db
 	
 # Remove tags that are not relevant to the article structure
 def remove_useless_tags(db):
 	cur_func=sys._getframe().f_code.co_name
-	tags_total=db['len_tags']
-	i=0
-	while i < db['len_tags']:
-		#if tags[i].startswith(tag_pattern1) or tags[i].startswith(tag_pattern2) or tags[i].startswith(tag_pattern3) or tags[i].startswith(tag_pattern4) or tags[i]==tag_pattern5 or tags[i]==tag_pattern6 or tags[i]==tag_pattern7 or tags[i]==tag_pattern8:
-		if tag_pattern1 in db['tags'][i] or tag_pattern2 in db['tags'][i] or tag_pattern3 in db['tags'][i] or tag_pattern4 in db['tags'][i] or tag_pattern5 in db['tags'][i] or tag_pattern6 in db['tags'][i] or tag_pattern7 in db['tags'][i] or tag_pattern8 in db['tags'][i]:
-			log(cur_func,lev_debug,mes.tag_kept % db['tags'][i])
-			pass
-		else:
-			log(cur_func,lev_debug,mes.deleting_tag % (i,db['tags'][i]))
-			del db['tags'][i]
-			db['len_tags']-=1
-			del db['tag_borders'][i]
-			db['len_tag_borders']-=1
-			i-=1
-		i+=1
-	# Logging
-	log(cur_func,lev_debug,"db['len_tags']: %d" % db['len_tags'])
-	log(cur_func,lev_debug,"db['tags']: %s" % str(db['tags']))
-	log(cur_func,lev_debug,"db['len_tag_borders']: %d" % db['len_tag_borders'])
-	log(cur_func,lev_debug,"db['tag_borders']: %s" % str(db['tag_borders']))
-	log(cur_func,lev_info,mes.tags_stat % (tags_total,db['len_tags'],tags_total-db['len_tags']))
-	# Testing
-	assert(db['len_tags']==db['len_tag_borders'])
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+	else:
+		tags_total=db['len_tags']
+		i=0
+		while i < db['len_tags']:
+			#if tags[i].startswith(tag_pattern1) or tags[i].startswith(tag_pattern2) or tags[i].startswith(tag_pattern3) or tags[i].startswith(tag_pattern4) or tags[i]==tag_pattern5 or tags[i]==tag_pattern6 or tags[i]==tag_pattern7 or tags[i]==tag_pattern8:
+			if tag_pattern1 in db['tags'][i] or tag_pattern2 in db['tags'][i] or tag_pattern3 in db['tags'][i] or tag_pattern4 in db['tags'][i] or tag_pattern5 in db['tags'][i] or tag_pattern6 in db['tags'][i] or tag_pattern7 in db['tags'][i] or tag_pattern8 in db['tags'][i]:
+				log(cur_func,lev_debug,mes.tag_kept % db['tags'][i])
+				pass
+			else:
+				log(cur_func,lev_debug,mes.deleting_tag % (i,db['tags'][i]))
+				del db['tags'][i]
+				db['len_tags']-=1
+				del db['tag_borders'][i]
+				db['len_tag_borders']-=1
+				i-=1
+			i+=1
+		# Logging
+		log(cur_func,lev_debug,"db['len_tags']: %d" % db['len_tags'])
+		log(cur_func,lev_debug,"db['tags']: %s" % str(db['tags']))
+		log(cur_func,lev_debug,"db['len_tag_borders']: %d" % db['len_tag_borders'])
+		log(cur_func,lev_debug,"db['tag_borders']: %s" % str(db['tag_borders']))
+		log(cur_func,lev_info,mes.tags_stat % (tags_total,db['len_tags'],tags_total-db['len_tags']))
+		# Testing
+		assert(db['len_tags']==db['len_tag_borders'])
 	return db
 
 # Adjust positions of entries for pretty viewing
 def prepare_search(db):
 	cur_func=sys._getframe().f_code.co_name
-	# Removing unwanted values
-	# We assume that a 'dic'-type entry shall be succeeded by a 'term'-type entry, not a 'comment'-type entry. Therefore, we delete 'comment'-type entries after 'dic'-type entries in order to ensure that dictionary abbreviations do not succeed full dictionary titles. We also can delete full dictionary titles and leave abbreviations instead.
-	i=0
-	while i < db['all']['num']:
-		if i > 0:
-			if db['all']['types'][i-1]=='dics' and db['all']['types'][i]=='comments':
-				if '.' in db['all']['phrases'][i] or 'Макаров' in db['all']['phrases'][i] or 'Вебстер' in db['all']['phrases'][i] or 'Webster' in db['all']['phrases'][i] or 'Майкрософт' in db['all']['phrases'][i] or 'Microsoft' in db['all']['phrases'][i]:
-					pos1=db['all']['pos'][i][0]
-					pos2=db['all']['pos'][i][1]
-					log(cur_func,lev_info,mes.deleting_useless_entry % db['page'][pos1:pos2+1])
-					del db['all']['phrases'][i]
-					del db['all']['types'][i]
-					del db['all']['pos'][i]
-					del db['all']['url'][i]
-					db['all']['num']-=1
-					i-=1
-		i+=1
-	#--------------------------------------------------------------------------
-	# Adjusting values
-	if db['all']['num'] > 0:
-		delta=db['all']['pos'][0][0]
-		delta_i=db['all']['pos'][0][1]-delta
-		if delta_i < 0:
-			log(cur_func,lev_err,mes.wrong_delta % (db['all']['pos'][0][1],delta))
-			delta_i=abs(delta_i)
-		db['all']['pos'][0]=[0,db['all']['pos'][0][1]-delta]
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
 	else:
-		log(cur_func,lev_warn,mes.db_all_empty)
-	for i in range(db['all']['num']):
-		if i > 0:
-			delta=db['all']['pos'][i][0]-db['all']['pos'][i-1][1]
-			if delta < 2:
-				log(cur_func,lev_err,mes.intersection % (db['all']['pos'][i-1][0],db['all']['pos'][i-1][1],db['all']['pos'][i][0],db['all']['pos'][i][1]))
-			delta_i=db['all']['pos'][i][1]-db['all']['pos'][i][0]
+		# Removing unwanted values
+		# We assume that a 'dic'-type entry shall be succeeded by a 'term'-type entry, not a 'comment'-type entry. Therefore, we delete 'comment'-type entries after 'dic'-type entries in order to ensure that dictionary abbreviations do not succeed full dictionary titles. We also can delete full dictionary titles and leave abbreviations instead.
+		i=0
+		while i < db['all']['num']:
+			if i > 0:
+				if db['all']['types'][i-1]=='dics' and db['all']['types'][i]=='comments':
+					if '.' in db['all']['phrases'][i] or 'Макаров' in db['all']['phrases'][i] or 'Вебстер' in db['all']['phrases'][i] or 'Webster' in db['all']['phrases'][i] or 'Майкрософт' in db['all']['phrases'][i] or 'Microsoft' in db['all']['phrases'][i]:
+						pos1=db['all']['pos'][i][0]
+						pos2=db['all']['pos'][i][1]
+						log(cur_func,lev_info,mes.deleting_useless_entry % db['page'][pos1:pos2+1])
+						del db['all']['phrases'][i]
+						del db['all']['types'][i]
+						del db['all']['pos'][i]
+						del db['all']['url'][i]
+						db['all']['num']-=1
+						i-=1
+			i+=1
+		#--------------------------------------------------------------------------
+		# Adjusting values
+		if db['all']['num'] > 0:
+			delta=db['all']['pos'][0][0]
+			delta_i=db['all']['pos'][0][1]-delta
 			if delta_i < 0:
-				log(cur_func,lev_err,mes.wrong_delta % (db['all']['pos'][i][1],db['all']['pos'][i][0]))
+				log(cur_func,lev_err,mes.wrong_delta % (db['all']['pos'][0][1],delta))
 				delta_i=abs(delta_i)
-			db['all']['pos'][i][0]=db['all']['pos'][i-1][1]+2
-			db['all']['pos'][i][1]=db['all']['pos'][i][0]+delta_i
-	log(cur_func,lev_debug,"db['all']['pos']: %s" % str(db['all']['pos']))
-	assert(db['all']['num']==len(db['all']['pos']))
-	#--------------------------------------------------------------------------
-	# Creating the final text
-	# We update db['page'] there!
-	if db['len_page'] > 0 and db['all']['num'] > 0:
-		# Not "db['page']=' '*(db['len_page']-1)", because we have already shifted positions
-		db['len_page']=db['all']['pos'][-1][1]
-	else:
-		log(cur_func,lev_warn,mes.no_entries)
-	db['page']=' '*(db['len_page']-1)
-	db['page']=list(db['page'])
-	db['all']['sent_nos']=[]
-	# Длина не привязана к db['all']['num']!
-	db['all']['dlbs']={}
-	db['all']['dlbs']['pos']=[]
-	cur_sent=0
-	for i in range(db['all']['num']):
-		pos1=db['all']['pos'][i][0]
-		pos2=db['all']['pos'][i][1]
-		db['page'][pos1:pos2+1]=db['all']['phrases'][i]
-		if db['all']['types'][i]=='dics' and pos1 > 0:
-			db['page'][pos1-1]=dlb
-			db['all']['dlbs']['pos'].append(pos1-1)
-			cur_sent+=1
-		db['all']['sent_nos'].append(cur_sent)
-	db['page']=''.join(db['page'])
-	db['len_page']=len(db['page'])
-	assert(db['all']['num']==len(db['all']['sent_nos']))
-	db['all']['dlbs']['num']=len(db['all']['dlbs']['pos'])
-	log(cur_func,lev_debug,"db['all']['dlbs']['num']: %d" % db['all']['dlbs']['num'])
-	log(cur_func,lev_debug,"db['all']['dlbs']['pos']: %s" % str(db['all']['dlbs']['pos']))
-	if InternalDebug:
-		res_mes=[]
+			db['all']['pos'][0]=[0,db['all']['pos'][0][1]-delta]
+		else:
+			log(cur_func,lev_warn,mes.db_all_empty)
+		for i in range(db['all']['num']):
+			if i > 0:
+				delta=db['all']['pos'][i][0]-db['all']['pos'][i-1][1]
+				if delta < 2:
+					log(cur_func,lev_err,mes.intersection % (db['all']['pos'][i-1][0],db['all']['pos'][i-1][1],db['all']['pos'][i][0],db['all']['pos'][i][1]))
+				delta_i=db['all']['pos'][i][1]-db['all']['pos'][i][0]
+				if delta_i < 0:
+					log(cur_func,lev_err,mes.wrong_delta % (db['all']['pos'][i][1],db['all']['pos'][i][0]))
+					delta_i=abs(delta_i)
+				db['all']['pos'][i][0]=db['all']['pos'][i-1][1]+2
+				db['all']['pos'][i][1]=db['all']['pos'][i][0]+delta_i
+		log(cur_func,lev_debug,"db['all']['pos']: %s" % str(db['all']['pos']))
+		assert(db['all']['num']==len(db['all']['pos']))
+		#--------------------------------------------------------------------------
+		# Creating the final text
+		# We update db['page'] there!
+		if db['len_page'] > 0 and db['all']['num'] > 0:
+			# Not "db['page']=' '*(db['len_page']-1)", because we have already shifted positions
+			db['len_page']=db['all']['pos'][-1][1]
+		else:
+			log(cur_func,lev_warn,mes.no_entries)
+		db['page']=' '*(db['len_page']-1)
+		db['page']=list(db['page'])
+		db['all']['sent_nos']=[]
+		# Длина не привязана к db['all']['num']!
+		db['all']['dlbs']={}
+		db['all']['dlbs']['pos']=[]
+		cur_sent=0
 		for i in range(db['all']['num']):
 			pos1=db['all']['pos'][i][0]
 			pos2=db['all']['pos'][i][1]
-			res_mes.append(db['page'][pos1:pos2+1])
-		res_mes=str(res_mes)
-		res_mes+=dlb+dlb+"db['all']['pos']:"+dlb+str(db['all']['pos'])
-		text_field_ro(mes.db_check1,res_mes)
-		text_field_ro(mes.db_check2,str(db['all']['dlbs']['pos']))
-	#--------------------------------------------------------------------------
-	# Two adjacent terms are either separated with a coloured space, or with a semicolumn
-	if not TermsColoredSep:
-		# Separating terms with semicolumn instead of coloured background
-		db['page']=list(db['page'])
-		for i in range(db['all']['num']):
-			if i < db['all']['num']-1:
-				if db['all']['types'][i]=='terms' and db['all']['types'][i+1]=='terms':
-					cur_pos=db['all']['pos'][i][1]+1
-					db['page'].insert(cur_pos,';')
-					j=i+1
-					while j < db['all']['num']:
-						db['all']['pos'][j][0]+=1
-						db['all']['pos'][j][1]+=1
-						j+=1
-					for j in range(db['all']['dlbs']['num']):
-						if db['all']['dlbs']['pos'][j] >= cur_pos:
-							db['all']['dlbs']['pos'][j]+=1
+			db['page'][pos1:pos2+1]=db['all']['phrases'][i]
+			if db['all']['types'][i]=='dics' and pos1 > 0:
+				db['page'][pos1-1]=dlb
+				db['all']['dlbs']['pos'].append(pos1-1)
+				cur_sent+=1
+			db['all']['sent_nos'].append(cur_sent)
 		db['page']=''.join(db['page'])
 		db['len_page']=len(db['page'])
-		log(cur_func,lev_debug,"db['page']: %s" % db['page'])
+		assert(db['all']['num']==len(db['all']['sent_nos']))
+		db['all']['dlbs']['num']=len(db['all']['dlbs']['pos'])
+		log(cur_func,lev_debug,"db['all']['dlbs']['num']: %d" % db['all']['dlbs']['num'])
+		log(cur_func,lev_debug,"db['all']['dlbs']['pos']: %s" % str(db['all']['dlbs']['pos']))
 		if InternalDebug:
-			text_field_ro("db['page']:",db['page'])
-	#--------------------------------------------------------------------------
-	# Creating tkinter-specific values
-	# list() is not enough!
-	db['all']['pos_sl']=[]
-	delta=0
-	for i in range(db['all']['num']):
-		if db['all']['pos'][i][0]-1 in db['all']['dlbs']['pos']:
-			delta=db['all']['pos'][i][0]
-		db['all']['pos_sl']+=[[db['all']['pos'][i][0]-delta,db['all']['pos'][i][1]-delta]]
-		log(cur_func,lev_debug,mes.db_conv % (db['all']['pos'][i][0],db['all']['pos'][i][1],db['all']['pos_sl'][i][0],db['all']['pos_sl'][i][1]))
-	log(cur_func,lev_debug,"db['all']['pos_sl']: %s" % str(db['all']['pos_sl']))
-	assert(db['all']['num']==len(db['all']['pos_sl']))
-	if db['all']['pos'] == db['all']['pos_sl']:
-		log(cur_func,lev_warn,mes.db_alg)
-	#--------------------------------------------------------------------------
-	db['all']['tk']=[]
-	for i in range(db['all']['num']):
-		pos1=db['all']['pos_sl'][i][0]
-		pos2=db['all']['pos_sl'][i][1]
-		db['all']['tk']+=[[db['all']['sent_nos'][i],pos1,db['all']['sent_nos'][i],pos2]]
-	db['all']['tk']=list2tk(db['all']['tk'])
-	log(cur_func,lev_debug,"db['all']['tk']: %s" % str(db['all']['tk']))
-	assert(db['all']['num']==len(db['all']['tk']))
-	#--------------------------------------------------------------------------
-	# In comparison with the last InternalDebug: +str(db['all']['tk'][i])
-	if InternalDebug:
-		res_mes=''
+			res_mes=[]
+			for i in range(db['all']['num']):
+				pos1=db['all']['pos'][i][0]
+				pos2=db['all']['pos'][i][1]
+				res_mes.append(db['page'][pos1:pos2+1])
+			res_mes=str(res_mes)
+			res_mes+=dlb+dlb+"db['all']['pos']:"+dlb+str(db['all']['pos'])
+			text_field_ro(mes.db_check1,res_mes)
+			text_field_ro(mes.db_check2,str(db['all']['dlbs']['pos']))
+		#--------------------------------------------------------------------------
+		# Two adjacent terms are either separated with a coloured space, or with a semicolumn
+		if not TermsColoredSep:
+			# Separating terms with semicolumn instead of coloured background
+			db['page']=list(db['page'])
+			for i in range(db['all']['num']):
+				if i < db['all']['num']-1:
+					if db['all']['types'][i]=='terms' and db['all']['types'][i+1]=='terms':
+						cur_pos=db['all']['pos'][i][1]+1
+						db['page'].insert(cur_pos,';')
+						j=i+1
+						while j < db['all']['num']:
+							db['all']['pos'][j][0]+=1
+							db['all']['pos'][j][1]+=1
+							j+=1
+						for j in range(db['all']['dlbs']['num']):
+							if db['all']['dlbs']['pos'][j] >= cur_pos:
+								db['all']['dlbs']['pos'][j]+=1
+			db['page']=''.join(db['page'])
+			db['len_page']=len(db['page'])
+			log(cur_func,lev_debug,"db['page']: %s" % db['page'])
+			if InternalDebug:
+				text_field_ro("db['page']:",db['page'])
+		#--------------------------------------------------------------------------
+		# Creating tkinter-specific values
+		# list() is not enough!
+		db['all']['pos_sl']=[]
+		delta=0
 		for i in range(db['all']['num']):
-			res_mes+="i: %d" % i+tab+db['all']['types'][i]+tab+db['all']['phrases'][i]+tab+str(db['all']['pos'][i])+tab+str(db['all']['pos_sl'][i])+tab+str(db['all']['tk'][i])+tab+db['all']['url'][i]+dlb
-		text_field_ro(mes.db_check3,res_mes)
-	#--------------------------------------------------------------------------
-	# Mark terms borders for easy reading
-	db['borders']=[]
-	for i in range(db['all']['num']):
-		if i > 0:
-			if db['all']['types'][i-1]=='terms' and db['all']['types'][i]=='terms':
-				sent_no1=db['all']['sent_nos'][i-1]
-				sent_no2=db['all']['sent_nos'][i]
-				pos1=db['all']['pos_sl'][i-1][1]+1
-				pos2=db['all']['pos_sl'][i][0]-1
-				db['borders']+=[[sent_no1,pos1,sent_no2,pos2]]
-	if db['borders']!=[]:
-		db['borders']=list2tk(db['borders'])
-	log(cur_func,lev_debug,"db['borders']: %s" % str(db['borders']))
-	#--------------------------------------------------------------------------
-	# Create separate keys for article entries. Please note that they are NOT interconnected with db['all'] anymore and should be created just before showing an article.
-	db['dics']={}
-	db['dics']['phrases']=[]
-	db['dics']['pos']=[]
-	db['dics']['tk']=[]
-	db['terms']={}
-	db['terms']['phrases']=[]
-	db['terms']['pos']=[]
-	db['terms']['tk']=[]
-	db['terms']['url']=[]
-	db['comments']={}
-	db['comments']['phrases']=[]
-	db['comments']['pos']=[]
-	db['comments']['tk']=[]
-	for i in range(db['all']['num']):
-		if db['all']['types'][i]=='dics':
-			db['dics']['phrases'].append(db['all']['phrases'][i])
-			db['dics']['pos'].append(db['all']['pos'][i])
-			db['dics']['tk'].append(db['all']['tk'][i])
-		elif db['all']['types'][i]=='terms':
-			db['terms']['phrases'].append(db['all']['phrases'][i])
-			db['terms']['pos'].append(db['all']['pos'][i])
-			db['terms']['tk'].append(db['all']['tk'][i])
-			db['terms']['url'].append(db['all']['url'][i])
-		elif db['all']['types'][i]=='comments':
-			db['comments']['phrases'].append(db['all']['phrases'][i])
-			db['comments']['pos'].append(db['all']['pos'][i])
-			db['comments']['tk'].append(db['all']['tk'][i])
-		else:
-			log(cur_func,lev_err,mes.unknown_type % str(db['all']['types'][i]))
-	db['dics']['num']=len(db['dics']['phrases'])
-	db['terms']['num']=len(db['terms']['phrases'])
-	db['comments']['num']=len(db['comments']['phrases'])
-	# Logging
-	log(cur_func,lev_debug,"db['dics']['phrases']: %s" % str(db['dics']['phrases']))
-	log(cur_func,lev_debug,"db['dics']['pos']: %s" % str(db['dics']['pos']))
-	log(cur_func,lev_debug,"db['dics']['tk']: %s" % str(db['dics']['tk']))
-	log(cur_func,lev_debug,"db['dics']['num']: %s" % str(db['terms']['num']))
-	log(cur_func,lev_debug,"db['terms']['phrases']: %s" % str(db['terms']['phrases']))
-	log(cur_func,lev_debug,"db['terms']['pos']: %s" % str(db['terms']['pos']))
-	log(cur_func,lev_debug,"db['terms']['tk']: %s" % str(db['terms']['tk']))
-	log(cur_func,lev_debug,"db['terms']['url']: %s" % str(db['terms']['url']))
-	log(cur_func,lev_debug,"db['terms']['num']: %s" % str(db['terms']['num']))
-	log(cur_func,lev_debug,"db['comments']['phrases']: %s" % str(db['comments']['phrases']))
-	log(cur_func,lev_debug,"db['comments']['pos']: %s" % str(db['comments']['pos']))
-	log(cur_func,lev_debug,"db['comments']['tk']: %s" % str(db['comments']['tk']))
-	log(cur_func,lev_debug,"db['comments']['num']: %s" % str(db['comments']['num']))
-	if InternalDebug:
-		res_mes="db['dics']['num']:"+dlb+str(db['dics']['num'])+dlb+dlb
-		res_mes+="db['dics']['phrases']:"+dlb+str(db['dics']['phrases'])+dlb+dlb
-		res_mes+="db['dics']['pos']:"+dlb+str(db['dics']['pos'])+dlb+dlb
-		res_mes+="db['dics']['tk']:"+dlb+str(db['dics']['tk'])+dlb+dlb
-		res_mes+="db['terms']['num']:"+dlb+str(db['terms']['num'])+dlb+dlb
-		res_mes+="db['terms']['phrases']:"+dlb+str(db['terms']['phrases'])+dlb+dlb
-		res_mes+="db['terms']['pos']:"+dlb+str(db['terms']['pos'])+dlb+dlb
-		res_mes+="db['terms']['tk']:"+dlb+str(db['terms']['tk'])+dlb+dlb
-		res_mes+="db['terms']['url']:"+dlb+str(db['terms']['url'])+dlb+dlb
-		res_mes+="db['comments']['num']:"+dlb+str(db['comments']['num'])+dlb+dlb
-		res_mes+="db['comments']['phrases']:"+dlb+str(db['comments']['phrases'])+dlb+dlb
-		res_mes+="db['comments']['pos']:"+dlb+str(db['comments']['pos'])+dlb+dlb
-		res_mes+="db['comments']['tk']:"+dlb+str(db['comments']['tk'])
-		text_field_ro(mes.db_check4,res_mes)
-		res_mes=''
-		debug_lst=[]
+			if db['all']['pos'][i][0]-1 in db['all']['dlbs']['pos']:
+				delta=db['all']['pos'][i][0]
+			db['all']['pos_sl']+=[[db['all']['pos'][i][0]-delta,db['all']['pos'][i][1]-delta]]
+			log(cur_func,lev_debug,mes.db_conv % (db['all']['pos'][i][0],db['all']['pos'][i][1],db['all']['pos_sl'][i][0],db['all']['pos_sl'][i][1]))
+		log(cur_func,lev_debug,"db['all']['pos_sl']: %s" % str(db['all']['pos_sl']))
+		assert(db['all']['num']==len(db['all']['pos_sl']))
+		if db['all']['pos'] == db['all']['pos_sl']:
+			log(cur_func,lev_warn,mes.db_alg)
+		#--------------------------------------------------------------------------
+		db['all']['tk']=[]
+		for i in range(db['all']['num']):
+			pos1=db['all']['pos_sl'][i][0]
+			pos2=db['all']['pos_sl'][i][1]
+			db['all']['tk']+=[[db['all']['sent_nos'][i],pos1,db['all']['sent_nos'][i],pos2]]
+		db['all']['tk']=list2tk(db['all']['tk'])
+		log(cur_func,lev_debug,"db['all']['tk']: %s" % str(db['all']['tk']))
+		assert(db['all']['num']==len(db['all']['tk']))
+		#--------------------------------------------------------------------------
+		# In comparison with the last InternalDebug: +str(db['all']['tk'][i])
+		if InternalDebug:
+			res_mes=''
+			for i in range(db['all']['num']):
+				res_mes+="i: %d" % i+tab+db['all']['types'][i]+tab+db['all']['phrases'][i]+tab+str(db['all']['pos'][i])+tab+str(db['all']['pos_sl'][i])+tab+str(db['all']['tk'][i])+tab+db['all']['url'][i]+dlb
+			text_field_ro(mes.db_check3,res_mes)
+		#--------------------------------------------------------------------------
+		# Mark terms borders for easy reading
+		db['borders']=[]
+		for i in range(db['all']['num']):
+			if i > 0:
+				if db['all']['types'][i-1]=='terms' and db['all']['types'][i]=='terms':
+					sent_no1=db['all']['sent_nos'][i-1]
+					sent_no2=db['all']['sent_nos'][i]
+					pos1=db['all']['pos_sl'][i-1][1]+1
+					pos2=db['all']['pos_sl'][i][0]-1
+					db['borders']+=[[sent_no1,pos1,sent_no2,pos2]]
+		if db['borders']!=[]:
+			db['borders']=list2tk(db['borders'])
+		log(cur_func,lev_debug,"db['borders']: %s" % str(db['borders']))
+		#--------------------------------------------------------------------------
+		# Create separate keys for article entries. Please note that they are NOT interconnected with db['all'] anymore and should be created just before showing an article.
+		db['dics']={}
+		db['dics']['phrases']=[]
+		db['dics']['pos']=[]
+		db['dics']['tk']=[]
+		db['terms']={}
+		db['terms']['phrases']=[]
+		db['terms']['pos']=[]
+		db['terms']['tk']=[]
+		db['terms']['url']=[]
+		db['comments']={}
+		db['comments']['phrases']=[]
+		db['comments']['pos']=[]
+		db['comments']['tk']=[]
+		for i in range(db['all']['num']):
+			if db['all']['types'][i]=='dics':
+				db['dics']['phrases'].append(db['all']['phrases'][i])
+				db['dics']['pos'].append(db['all']['pos'][i])
+				db['dics']['tk'].append(db['all']['tk'][i])
+			elif db['all']['types'][i]=='terms':
+				db['terms']['phrases'].append(db['all']['phrases'][i])
+				db['terms']['pos'].append(db['all']['pos'][i])
+				db['terms']['tk'].append(db['all']['tk'][i])
+				db['terms']['url'].append(db['all']['url'][i])
+			elif db['all']['types'][i]=='comments':
+				db['comments']['phrases'].append(db['all']['phrases'][i])
+				db['comments']['pos'].append(db['all']['pos'][i])
+				db['comments']['tk'].append(db['all']['tk'][i])
+			else:
+				log(cur_func,lev_err,mes.unknown_type % str(db['all']['types'][i]))
+		db['dics']['num']=len(db['dics']['phrases'])
+		db['terms']['num']=len(db['terms']['phrases'])
+		db['comments']['num']=len(db['comments']['phrases'])
+		# Logging
+		log(cur_func,lev_debug,"db['dics']['phrases']: %s" % str(db['dics']['phrases']))
+		log(cur_func,lev_debug,"db['dics']['pos']: %s" % str(db['dics']['pos']))
+		log(cur_func,lev_debug,"db['dics']['tk']: %s" % str(db['dics']['tk']))
+		log(cur_func,lev_debug,"db['dics']['num']: %s" % str(db['terms']['num']))
+		log(cur_func,lev_debug,"db['terms']['phrases']: %s" % str(db['terms']['phrases']))
+		log(cur_func,lev_debug,"db['terms']['pos']: %s" % str(db['terms']['pos']))
+		log(cur_func,lev_debug,"db['terms']['tk']: %s" % str(db['terms']['tk']))
+		log(cur_func,lev_debug,"db['terms']['url']: %s" % str(db['terms']['url']))
+		log(cur_func,lev_debug,"db['terms']['num']: %s" % str(db['terms']['num']))
+		log(cur_func,lev_debug,"db['comments']['phrases']: %s" % str(db['comments']['phrases']))
+		log(cur_func,lev_debug,"db['comments']['pos']: %s" % str(db['comments']['pos']))
+		log(cur_func,lev_debug,"db['comments']['tk']: %s" % str(db['comments']['tk']))
+		log(cur_func,lev_debug,"db['comments']['num']: %s" % str(db['comments']['num']))
+		if InternalDebug:
+			res_mes="db['dics']['num']:"+dlb+str(db['dics']['num'])+dlb+dlb
+			res_mes+="db['dics']['phrases']:"+dlb+str(db['dics']['phrases'])+dlb+dlb
+			res_mes+="db['dics']['pos']:"+dlb+str(db['dics']['pos'])+dlb+dlb
+			res_mes+="db['dics']['tk']:"+dlb+str(db['dics']['tk'])+dlb+dlb
+			res_mes+="db['terms']['num']:"+dlb+str(db['terms']['num'])+dlb+dlb
+			res_mes+="db['terms']['phrases']:"+dlb+str(db['terms']['phrases'])+dlb+dlb
+			res_mes+="db['terms']['pos']:"+dlb+str(db['terms']['pos'])+dlb+dlb
+			res_mes+="db['terms']['tk']:"+dlb+str(db['terms']['tk'])+dlb+dlb
+			res_mes+="db['terms']['url']:"+dlb+str(db['terms']['url'])+dlb+dlb
+			res_mes+="db['comments']['num']:"+dlb+str(db['comments']['num'])+dlb+dlb
+			res_mes+="db['comments']['phrases']:"+dlb+str(db['comments']['phrases'])+dlb+dlb
+			res_mes+="db['comments']['pos']:"+dlb+str(db['comments']['pos'])+dlb+dlb
+			res_mes+="db['comments']['tk']:"+dlb+str(db['comments']['tk'])
+			text_field_ro(mes.db_check4,res_mes)
+			res_mes=''
+			debug_lst=[]
+			for i in range(db['dics']['num']):
+				pos1=db['dics']['pos'][i][0]
+				pos2=db['dics']['pos'][i][1]
+				debug_lst.append(db['page'][pos1:pos2+1])
+			res_mes+='dics:'+dlb+str(debug_lst)+dlb+dlb
+			debug_lst=[]
+			for i in range(db['terms']['num']):
+				pos1=db['terms']['pos'][i][0]
+				pos2=db['terms']['pos'][i][1]
+				debug_lst.append(db['page'][pos1:pos2+1])
+			res_mes+='terms:'+dlb+str(debug_lst)+dlb+dlb
+			debug_lst=[]
+			for i in range(db['comments']['num']):
+				pos1=db['comments']['pos'][i][0]
+				pos2=db['comments']['pos'][i][1]
+				debug_lst.append(db['page'][pos1:pos2+1])
+			res_mes+='comments:'+dlb+str(debug_lst)
+			text_field_ro(mes.db_check5,res_mes)
+		#--------------------------------------------------------------------------
+		# The first element of the 'dic' list must precede the first element of the 'term' list. We create a new dic list in order not to change the existing one.
+		new_dic=[]
 		for i in range(db['dics']['num']):
-			pos1=db['dics']['pos'][i][0]
-			pos2=db['dics']['pos'][i][1]
-			debug_lst.append(db['page'][pos1:pos2+1])
-		res_mes+='dics:'+dlb+str(debug_lst)+dlb+dlb
-		debug_lst=[]
-		for i in range(db['terms']['num']):
-			pos1=db['terms']['pos'][i][0]
-			pos2=db['terms']['pos'][i][1]
-			debug_lst.append(db['page'][pos1:pos2+1])
-		res_mes+='terms:'+dlb+str(debug_lst)+dlb+dlb
-		debug_lst=[]
-		for i in range(db['comments']['num']):
-			pos1=db['comments']['pos'][i][0]
-			pos2=db['comments']['pos'][i][1]
-			debug_lst.append(db['page'][pos1:pos2+1])
-		res_mes+='comments:'+dlb+str(debug_lst)
-		text_field_ro(mes.db_check5,res_mes)
-	#--------------------------------------------------------------------------
-	# The first element of the 'dic' list must precede the first element of the 'term' list. We create a new dic list in order not to change the existing one.
-	new_dic=[]
-	for i in range(db['dics']['num']):
-		new_dic.append(db['dics']['pos'][i][0])
-	if len(new_dic) > 0:
-		if new_dic[0]!='0':
+			new_dic.append(db['dics']['pos'][i][0])
+		if len(new_dic) > 0:
+			if new_dic[0]!='0':
+				new_dic.insert(0,0)
+		else:
+			# To prevent program crash
 			new_dic.insert(0,0)
-	else:
-		# To prevent program crash
-		new_dic.insert(0,0)
-		log(cur_func,lev_warn,mes.no_line_breaks_in_article)
-	len_new_dic=len(new_dic)
-	#--------------------------------------------------------------------------
-	# Collect the information for easy move-up/-down/-left/-right, etc. actions
-	# 'Move down' event
-	db['move_down']=[]
-	dic_no=0
-	dic_pos=0
-	for i in range(db['terms']['num']):
-		term_no=i
-		for j in range(len_new_dic):
-			if new_dic[j] > db['terms']['pos'][i][0]:
-				break
-			else:
-				dic_pos=new_dic[j]
-				dic_no=j
-		if len_new_dic-1 > dic_no:
-			dic_no+=1
-		dic_pos=new_dic[dic_no]
-		for j in range(db['terms']['num']):
-			if db['terms']['pos'][j][0] >= dic_pos:
-				term_no=j
-				break
-		#db['move_down']+=[[db['terms']['tk'][term_no]]]
-		db['move_down'].append(term_no)
-	assert(db['terms']['num']==len(db['move_down']))
-	log(cur_func,lev_debug,"db['move_down']: %s" % str(db['move_down']))
-	#--------------------------------------------------------------------------
-	# 'End' event
-	# Весьма топорный алгоритм. Возможно, лучше создать db_page на раннем этапе и делать анализ 'end' на его основе
-	db['end']=list(db['move_down'])
-	# На предыдущем этапе мы делали проверку того, что длина списка терминов равна длине 'move_down'
-	for i in range(db['terms']['num']):
-		# Если элемент является 1-м элементом новой строки, то предыдущий элемент будет последним элементом предыдущей строки
-		db['end'][i]-=1
-	# Компенсируем различия с алгоритмом 'move_down'. Не очень красиво, но логично: в списке 'move_down' все элементы в последней строке будут ссылаться на одно и то же значение. В случае с 'end', все элементы последней строки должны ссылаться на номер последнего термина.
-	# Проверка нужна для last_elem
-	if db['terms']['num'] > 0:
-		max_terms=db['terms']['num']-1
-		max_all=db['all']['num']-1
-		last_elem=db['end'][-1]
-		while max_terms >= 0:
-			if db['end'][max_terms] == last_elem:
-				if max_all > 0:
-					if db['all']['types'][max_all-1]=='terms':
-						db['end'][max_terms]=db['terms']['num']-1
-					else:
-						# Вносим также 1-й элемент строки
-						db['end'][max_terms]=db['terms']['num']-1
-						break
-			else:
-				break
-			max_terms-=1
-			max_all-=1
-	# Мы изначально брали равный по длине список, но оставляем проверку на случай усложнения алгоритма.
-	assert(db['terms']['num']==len(db['end']))
-	log(cur_func,lev_debug,"db['end']: %s" % str(db['end']))
-	#--------------------------------------------------------------------------
-	# 'Move up' event
-	db['move_up']=[]
-	dic_no=0
-	dic_pos=0
-	for i in range(db['terms']['num']):
-		term_no=i
-		j=len_new_dic-1
-		while j >= 0:
-			if db['terms']['pos'][i][0] > new_dic[j]:
-				dic_pos=new_dic[j]
-				dic_no=j
-				break
-			j-=1
-		if dic_no > 0:
-			dic_no-=1
-		dic_pos=new_dic[dic_no]
-		for j in range(db['terms']['num']):
-			if db['terms']['pos'][j][0] >= dic_pos:
-				term_no=j
-				break
-		#db['move_up']+=[[db['terms']['tk'][term_no]]]
-		db['move_up'].append(term_no)
-	assert(db['terms']['num']==len(db['move_up']))
-	log(cur_func,lev_debug,"db['move_up']: %s" % str(db['move_up']))
-	#--------------------------------------------------------------------------
-	# 'Home' event
-	db['home']=[]
-	dic_no=0
-	dic_pos=0
-	for i in range(db['terms']['num']):
-		term_no=i
-		j=len_new_dic-1
-		while j >= 0:
-			if db['terms']['pos'][i][0] > new_dic[j]:
-				dic_pos=new_dic[j]
-				dic_no=j
-				break
-			j-=1
-		dic_pos=new_dic[dic_no]
-		for j in range(db['terms']['num']):
-			if db['terms']['pos'][j][0] >= dic_pos:
-				term_no=j
-				break
-		db['home'].append(term_no)
-	assert(db['terms']['num']==len(db['home']))
-	log(cur_func,lev_debug,"db['home']: %s" % str(db['home']))
-	#--------------------------------------------------------------------------
-	# 'Move left' event
-	db['move_left']=[]
-	for i in range(db['terms']['num']):
-		term_no=i
-		if i > 0:
-			term_no-=1
-		#db['move_left']+=[[db['terms']['tk'][term_no]]]
-		db['move_left'].append(term_no)
-	assert(db['terms']['num']==len(db['move_left']))
-	log(cur_func,lev_debug,"db['move_left']: %s" % str(db['move_left']))
-	#--------------------------------------------------------------------------
-	# 'Move right' event
-	db['move_right']=[]
-	for i in range(db['terms']['num']):
-		term_no=i
-		if i < db['terms']['num']-1:
-			term_no+=1
-		#db['move_right']+=[[db['terms']['tk'][term_no]]]
-		db['move_right'].append(term_no)
-	#--------------------------------------------------------------------------
-	assert(db['terms']['num']==len(db['move_right']))
-	log(cur_func,lev_debug,"db['move_right']: %s" % str(db['move_right']))
-	if InternalDebug:
-		res_mes="db['move_up']:"+dlb+str(db['move_up'])+dlb+dlb
-		res_mes+="db['move_down']:"+dlb+str(db['move_down'])+dlb+dlb
-		res_mes+="db['move_left']:"+dlb+str(db['move_left'])+dlb+dlb
-		res_mes+="db['move_right']:"+dlb+str(db['move_right'])+dlb+dlb
-		text_field_ro(mes.db_check6,res_mes)
+			log(cur_func,lev_warn,mes.no_line_breaks_in_article)
+		len_new_dic=len(new_dic)
+		#--------------------------------------------------------------------------
+		# Collect the information for easy move-up/-down/-left/-right, etc. actions
+		# 'Move down' event
+		db['move_down']=[]
+		dic_no=0
+		dic_pos=0
+		for i in range(db['terms']['num']):
+			term_no=i
+			for j in range(len_new_dic):
+				if new_dic[j] > db['terms']['pos'][i][0]:
+					break
+				else:
+					dic_pos=new_dic[j]
+					dic_no=j
+			if len_new_dic-1 > dic_no:
+				dic_no+=1
+			dic_pos=new_dic[dic_no]
+			for j in range(db['terms']['num']):
+				if db['terms']['pos'][j][0] >= dic_pos:
+					term_no=j
+					break
+			#db['move_down']+=[[db['terms']['tk'][term_no]]]
+			db['move_down'].append(term_no)
+		assert(db['terms']['num']==len(db['move_down']))
+		log(cur_func,lev_debug,"db['move_down']: %s" % str(db['move_down']))
+		#--------------------------------------------------------------------------
+		# 'End' event
+		# Весьма топорный алгоритм. Возможно, лучше создать db_page на раннем этапе и делать анализ 'end' на его основе
+		db['end']=list(db['move_down'])
+		# На предыдущем этапе мы делали проверку того, что длина списка терминов равна длине 'move_down'
+		for i in range(db['terms']['num']):
+			# Если элемент является 1-м элементом новой строки, то предыдущий элемент будет последним элементом предыдущей строки
+			db['end'][i]-=1
+		# Компенсируем различия с алгоритмом 'move_down'. Не очень красиво, но логично: в списке 'move_down' все элементы в последней строке будут ссылаться на одно и то же значение. В случае с 'end', все элементы последней строки должны ссылаться на номер последнего термина.
+		# Проверка нужна для last_elem
+		if db['terms']['num'] > 0:
+			max_terms=db['terms']['num']-1
+			max_all=db['all']['num']-1
+			last_elem=db['end'][-1]
+			while max_terms >= 0:
+				if db['end'][max_terms] == last_elem:
+					if max_all > 0:
+						if db['all']['types'][max_all-1]=='terms':
+							db['end'][max_terms]=db['terms']['num']-1
+						else:
+							# Вносим также 1-й элемент строки
+							db['end'][max_terms]=db['terms']['num']-1
+							break
+				else:
+					break
+				max_terms-=1
+				max_all-=1
+		# Мы изначально брали равный по длине список, но оставляем проверку на случай усложнения алгоритма.
+		assert(db['terms']['num']==len(db['end']))
+		log(cur_func,lev_debug,"db['end']: %s" % str(db['end']))
+		#--------------------------------------------------------------------------
+		# 'Move up' event
+		db['move_up']=[]
+		dic_no=0
+		dic_pos=0
+		for i in range(db['terms']['num']):
+			term_no=i
+			j=len_new_dic-1
+			while j >= 0:
+				if db['terms']['pos'][i][0] > new_dic[j]:
+					dic_pos=new_dic[j]
+					dic_no=j
+					break
+				j-=1
+			if dic_no > 0:
+				dic_no-=1
+			dic_pos=new_dic[dic_no]
+			for j in range(db['terms']['num']):
+				if db['terms']['pos'][j][0] >= dic_pos:
+					term_no=j
+					break
+			#db['move_up']+=[[db['terms']['tk'][term_no]]]
+			db['move_up'].append(term_no)
+		assert(db['terms']['num']==len(db['move_up']))
+		log(cur_func,lev_debug,"db['move_up']: %s" % str(db['move_up']))
+		#--------------------------------------------------------------------------
+		# 'Home' event
+		db['home']=[]
+		dic_no=0
+		dic_pos=0
+		for i in range(db['terms']['num']):
+			term_no=i
+			j=len_new_dic-1
+			while j >= 0:
+				if db['terms']['pos'][i][0] > new_dic[j]:
+					dic_pos=new_dic[j]
+					dic_no=j
+					break
+				j-=1
+			dic_pos=new_dic[dic_no]
+			for j in range(db['terms']['num']):
+				if db['terms']['pos'][j][0] >= dic_pos:
+					term_no=j
+					break
+			db['home'].append(term_no)
+		assert(db['terms']['num']==len(db['home']))
+		log(cur_func,lev_debug,"db['home']: %s" % str(db['home']))
+		#--------------------------------------------------------------------------
+		# 'Move left' event
+		db['move_left']=[]
+		for i in range(db['terms']['num']):
+			term_no=i
+			if i > 0:
+				term_no-=1
+			#db['move_left']+=[[db['terms']['tk'][term_no]]]
+			db['move_left'].append(term_no)
+		assert(db['terms']['num']==len(db['move_left']))
+		log(cur_func,lev_debug,"db['move_left']: %s" % str(db['move_left']))
+		#--------------------------------------------------------------------------
+		# 'Move right' event
+		db['move_right']=[]
+		for i in range(db['terms']['num']):
+			term_no=i
+			if i < db['terms']['num']-1:
+				term_no+=1
+			#db['move_right']+=[[db['terms']['tk'][term_no]]]
+			db['move_right'].append(term_no)
+		#--------------------------------------------------------------------------
+		assert(db['terms']['num']==len(db['move_right']))
+		log(cur_func,lev_debug,"db['move_right']: %s" % str(db['move_right']))
+		if InternalDebug:
+			res_mes="db['move_up']:"+dlb+str(db['move_up'])+dlb+dlb
+			res_mes+="db['move_down']:"+dlb+str(db['move_down'])+dlb+dlb
+			res_mes+="db['move_left']:"+dlb+str(db['move_left'])+dlb+dlb
+			res_mes+="db['move_right']:"+dlb+str(db['move_right'])+dlb+dlb
+			text_field_ro(mes.db_check6,res_mes)
 	return db
 	
 # Конвертировать строку в целое число
@@ -1734,13 +1761,17 @@ def article_field(db,Standalone=False):
 			if not 'history' in db:
 				db['history']=[]
 		#----------------------------------------------------------------------
+		# Закрыть текущее окно mclient без выхода из самой программы
+		def close_top(event):
+			top.destroy()
+			root.deiconify()
+		#----------------------------------------------------------------------
 		# Search the selected term online
 		def go_sel(event):
 			cur_func=sys._getframe().f_code.co_name
 			db['search']=db['terms']['phrases'][res[0]]
 			db['mode']='search'
-			top.destroy()
-			root.deiconify()
+			close_top(event)
 		#----------------------------------------------------------------------
 		# Go to the URL of the current search
 		def go_url(event):
@@ -1749,8 +1780,7 @@ def article_field(db,Standalone=False):
 			db['url']=db['terms']['url'][res[0]]
 			db['mode']='url'
 			db['history_index']=len(db['history'])
-			top.destroy()
-			root.deiconify()
+			close_top(event)
 		#----------------------------------------------------------------------
 		# Search the selected term online using the entry widget
 		def go_search(event):
@@ -1762,8 +1792,7 @@ def article_field(db,Standalone=False):
 				db['mode']='search'
 				# Обновляем индекс текущего запроса при добавлении элемента для поиска
 				db['history_index']=len(db['history'])
-				top.destroy()
-				root.deiconify()
+				close_top(event)
 		#----------------------------------------------------------------------
 		# Copy to clipboard
 		def copy_sel(event):
@@ -1776,8 +1805,7 @@ def article_field(db,Standalone=False):
 			elif Standalone:
 				top.iconify()
 			else:
-				top.destroy()
-				root.deiconify()
+				close_top(event)
 				db['Quit']=True
 		#----------------------------------------------------------------------
 		# Close the root window without errors
@@ -1785,8 +1813,7 @@ def article_field(db,Standalone=False):
 		def quit_now(event):
 			cur_func=sys._getframe().f_code.co_name
 			db['Quit']=True
-			top.destroy()
-			root.deiconify()
+			close_top(event)
 		#----------------------------------------------------------------------
 		# Запрос на выход
 		def quit_top():
@@ -1795,8 +1822,7 @@ def article_field(db,Standalone=False):
 				#if Question(cur_func,mes.ques_exit):
 				#	log(cur_func,lev_info,mes.goodbye)
 					db['Quit']=True
-			top.destroy()
-			root.deiconify()
+			close_top(None)
 		#----------------------------------------------------------------------
 		# Определение текущего термина по координатам указателя
 		def mouse_sel(event):
@@ -1860,6 +1886,10 @@ def article_field(db,Standalone=False):
 			action=args[0]
 			log(cur_func,lev_info,mes.action % action)
 			offset=scrollbar.get()[0]
+			if offset < 0:
+				offset=0
+			elif offset > 1:
+				offset=1
 			log(cur_func,lev_info,mes.scrollbar_pos % str(offset))
 			if not 'prev_scroll_pos' in db:
 				db['prev_scroll_pos']=0
@@ -1905,7 +1935,17 @@ def article_field(db,Standalone=False):
 			log(cur_func,lev_info,mes.cur_page_no % db['coor_db']['cur_page_no'])
 			shift_screen(mode='still')
 			db['cur_scroll_pos']=db['scroll_poses'][db['coor_db']['cur_page_no']][0]
-			scrollbar.set(db['cur_scroll_pos'],db['scroll_poses'][db['coor_db']['cur_page_no']][1])
+			scroll_pos1=db['cur_scroll_pos']
+			scroll_pos2=db['scroll_poses'][db['coor_db']['cur_page_no']][1]
+			if scroll_pos1 < 0:
+				scroll_pos1=0
+			elif scroll_pos1 > 1:
+				scroll_pos1=1
+			if scroll_pos2 < 0:
+				scroll_pos2=0
+			elif scroll_pos2 > 1:
+				scroll_pos2=1
+			scrollbar.set(scroll_pos1,scroll_pos2)
 			select_term()
 			db['prev_scroll_pos']=db['cur_scroll_pos']
 			log(cur_func,lev_info,"db['prev_scroll_pos']: %s" % str(db['prev_scroll_pos']))
@@ -2171,8 +2211,7 @@ def article_field(db,Standalone=False):
 			db['mode']='skip'
 			# Запоминаем позицию выделения, чтобы она не сбрасывалась при переключении отображения Истории. Запомнить позицию выделения можно только на первой странице.
 			db['last']=res[0]
-			top.destroy()
-			root.deiconify()
+			close_top(event)
 		#----------------------------------------------------------------------
 		# Окно "О программе"
 		def show_about(event):
@@ -2245,8 +2284,7 @@ def article_field(db,Standalone=False):
 				# По непонятным пока причинам после переключения интерфейса на английский может возникнуть ошибка mes.history_failure.
 				#Warning(cur_func,mes.history_failure)
 				log(cur_func,lev_warn,mes.history_failure)
-			top.destroy()
-			root.deiconify()
+			close_top(event)
 		#----------------------------------------------------------------------
 		# Скопировать элемент истории
 		def copy_history(event):
@@ -2279,8 +2317,7 @@ def article_field(db,Standalone=False):
 			db['search']=mes.welcome
 			db['history']=[]
 			db['history_index']=0
-			top.destroy()
-			root.deiconify()
+			close_top(event)
 		#----------------------------------------------------------------------
 		# Следить за буфером обмена
 		def watch_clipboard(event):
@@ -2318,8 +2355,7 @@ def article_field(db,Standalone=False):
 				ui_lang='en'
 				import mes_en as mes
 				gpl3_url=gpl3_url_en
-			top.destroy()
-			root.deiconify()
+			close_top(event)
 		#----------------------------------------------------------------------
 		# Перейти на предыдущий запрос
 		def go_back(event):
@@ -2331,8 +2367,7 @@ def article_field(db,Standalone=False):
 				if db['mode']!='search':
 					db['mode']='search'
 				db['search']=db['history'][db['history_index']]
-				top.destroy()
-				root.deiconify()
+				close_top(event)
 		#----------------------------------------------------------------------
 		# Перейти на следующий запрос
 		def go_forward(event):
@@ -2344,8 +2379,7 @@ def article_field(db,Standalone=False):
 				if db['mode']!='search':
 					db['mode']='search'
 				db['search']=db['history'][db['history_index']]
-				top.destroy()
-				root.deiconify()
+				close_top(event)
 		#--------------------------------------------------------------------------
 		if AlwaysMaximize:
 			if sys_type=='lin':
@@ -2625,11 +2659,11 @@ def article_field(db,Standalone=False):
 			top.bind('<Escape>',quit_now)
 			txt.focus_force()
 		try:
-			top.bind(bind_copy_sel,copy_sel)
+			txt.bind(bind_copy_sel,copy_sel)
 		except tk.TclError:
 			Warning(cur_func,mes.wrong_keybinding % bind_copy_sel)
 		try:
-			top.bind(bind_copy_sel_alt,copy_sel)
+			txt.bind(bind_copy_sel_alt,copy_sel)
 		except tk.TclError:
 			Warning(cur_func,mes.wrong_keybinding % bind_copy_sel_alt)
 		# ПКМ используется еще для очистки Истории, поэтому нельзя использовать top
@@ -2643,6 +2677,17 @@ def article_field(db,Standalone=False):
 			top.bind('<Button 4>',mouse_wheel)
 			top.bind('<Button 5>',mouse_wheel)
 		txt.bind('<Motion>',mouse_sel)
+		# Закрывать текущее окно с последующей перезагрузкой статьи в обычном режиме бессмысленно, поэтому, прямо указываем режим Буфера
+		if db['mode']=='clipboard':
+			try:
+				# Привязка к top может конфликтовать со строкой поиска
+				txt.bind(bind_close_top,close_top)
+			except tk.TclError:
+				Warning(cur_func,mes.wrong_keybinding % bind_close_top)
+		try:
+			top.bind(bind_quit_now,quit_now)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_quit_now)
 		# Выделение первого признака
 		if db['mode']=='skip':
 			res[0]=db['last']
