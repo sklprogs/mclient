@@ -3,3 +3,5 @@
 - Fix a bug: updating the History field after changing the UI language caused an error
 - Close the current window in the Clipboard mode using MMB (bind_close_top)
 - Add a hotkey Control-q (bind_quit_now) to quit the app
+- Delete MBSysEnabled key because double-click paste should be controlled differently
+- Rewrite clipboard algorithms

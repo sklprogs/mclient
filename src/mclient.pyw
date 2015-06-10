@@ -163,10 +163,8 @@ def detect_os():
 
 sys_type=detect_os()
 if sys_type=='win':
-	import win32clipboard
 	sysdiv='\\'
 else:
-	import pyperclip # (C) Al Sweigart, al@inventwithpython.com, BSD License
 	sysdiv='/'
 	
 # Верно определить каталог по полному пути вне зависимости от ОС
@@ -362,9 +360,6 @@ AlwaysMaximize=load_option_bool(SectionBooleans,'AlwaysMaximize')
 TermsColoredSep=load_option_bool(SectionBooleans,'TermsColoredSep')
 #ShowWallet=True
 ShowWallet=load_option_bool(SectionBooleans,'ShowWallet')
-# Работает ли вставка по СКМ в самой системе
-#MBSysEnabled=True
-MBSysEnabled=load_option_bool(SectionBooleans,'MBSysEnabled')
 
 # Вопрос
 def Question(cur_func='MAIN',cur_mes=err_mes_empty_question):
@@ -389,36 +384,51 @@ def Warning(cur_func='MAIN',cur_mes=err_mes_empty_warning):
 	root.deiconify()
 	log(cur_func,lev_warn,cur_mes)
 	
-# Вставить из буфера обмена
-def clipboard_paste():
+# Заменить двойные разрывы строк на одиночные
+def delete_double_line_breaks(line,Strip=False):
 	cur_func=sys._getframe().f_code.co_name
-	if sys_type=='win':
-		#set_keyboard_layout('ru')
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+		return ''
+	else:
+		# Удаляем разрывы строк в случае копирования из табличного процессора
+		# Для LO/Gnumeric (даже Win-версий) достаточно \n, для MSO этого недостаточно (нужно \r\n)
+		# Без str может дать TypeError: Type str doesn't support the buffer API
+		line=str(line)
+		while '\r\n' in line:
+			line=line.replace('\r\n','\n')
+		line=line.replace('\r','\n')
+		while '\n\n' in line:
+			line=line.replace('\n\n','\n')
+		# Удалить пробелы и переносы строк с начала и конца
+		if Strip:
+			line=line.strip()
+		else:
+			# Удалять перенос строки с конца текста нужно всегда
+			line=line.strip(dlb)
+		log(cur_func,lev_debug,str(line))
+		return line
+
+# Вставить из буфера обмена
+def clipboard_paste(MakePretty=True):
+	cur_func=sys._getframe().f_code.co_name
+	line=''
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+	else:
 		try:
-			win32clipboard.OpenClipboard()
-			if win32clipboard.IsClipboardFormatAvailable(win32clipboard.CF_UNICODETEXT):
-				line=win32clipboard.GetClipboardData()
-			else:
-				line=err_mes_unavail
-				Warning(cur_func,mes.cf_text_failure)
-			win32clipboard.CloseClipboard()
-			line=str(line)
-			if line==None:
-				line=''
+			line=root.clipboard_get()
 		except:
 			line=err_mes_paste
 			log(cur_func,lev_debug,str(line))
 			Warning(cur_func,mes.clipboard_paste_failure)
-		#set_keyboard_layout('en')
-	else:
-		try:
-			line=pyperclip.paste()
-		except:
-			line=err_mes_paste
-	# Возможно, здесь ему не лучшее место
-	#if not line in cmd_err_mess:
-	#	line=delete_double_line_breaks(line)
-	log(cur_func,lev_debug,str(line))
+		if MakePretty:
+			if not line in cmd_err_mess:
+				line=delete_double_line_breaks(line)
+			if line.startswith(dlb):
+				line=line.replace(dlb,'',1)
+			line=line.rstrip(dlb)
+		log(cur_func,lev_debug,str(line))
 	return line
 	
 # Создание корректной ссылки в Интернете (URI => URL)
@@ -784,24 +794,19 @@ def convert2tk(sent,pos,Even=False):
 # Скопировать в буфер обмена
 def clipboard_copy(line):
 	cur_func=sys._getframe().f_code.co_name
-	line=str(line)
-	if sys_type=='win':
-		#set_keyboard_layout('ru')
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+	else:
+		line=str(line)
 		try:
-			win32clipboard.OpenClipboard()
-			win32clipboard.EmptyClipboard()
-			win32clipboard.SetClipboardData(win32clipboard.CF_UNICODETEXT,line)
-			win32clipboard.CloseClipboard()
+			root.clipboard_clear()
+			root.clipboard_append(line)
 		except:
 			# Иначе в окне не сработают горячие клавиши
-			#set_keyboard_layout('en')
+			set_keyboard_layout('en')
 			text_field_ro(mes.clipboard_copy_failure,line,SelectAll=True)
 			line=err_mes_copy
 			log(cur_func,lev_debug,str(line))
-		# Иначе скрипт останется на ru
-		#set_keyboard_layout('en')
-	else:
-		pyperclip.copy(line)
 		
 # Вернуть веб-страницу онлайн-словаря с термином
 def get_online_article(db,IsURL=False,Silent=False,Critical=False,Standalone=False):
@@ -842,6 +847,69 @@ def get_online_article(db,IsURL=False,Silent=False,Critical=False,Standalone=Fal
 				mestype(cur_func,mes.wrong_html_encoding,Silent=Silent,Critical=Critical)
 	return db
 	
+# Конвертировать строку в целое число
+def str2int(line):
+	cur_func=sys._getframe().f_code.co_name
+	par=None
+	try:
+		par=int(line)
+	except:
+		log(cur_func,lev_err,mes.convert_to_int_failure % line)
+	log(cur_func,lev_debug,str(par))
+	return par
+
+# Конвертировать строку с позицией Tkinter вида '1.20' в список вида [sent_no,pos_no]
+def convertFromTk(line,Even=False):
+	cur_func=sys._getframe().f_code.co_name
+	#check_args(cur_func,[[line,mes.type_str],[Even,mes.type_bool]])
+	num_lst=line.split('.')
+	assert(len(num_lst)==2)
+	sent=str2int(num_lst[0])
+	#check_type(cur_func,sent,mes.type_int)
+	pos=str2int(num_lst[1])
+	#check_type(cur_func,pos,mes.type_int)
+	if Even:
+		lst=[sent-1,pos-1]
+	else:
+		lst=[sent-1,pos]
+	# Tkinter позволяет выделять так, что конец придется на первый (=нулевой) символ в начале предложения, и из-за Even получится отрицательное число. Компенсируем это.
+	for i in range(len(lst)):
+		if lst[i] < 0:
+			log(cur_func,lev_warn,mes.negative % lst[i])
+			lst[i]=0
+	log(cur_func,lev_debug,str(lst))
+	return lst
+
+# Конвертировать числовую позицию формата int в позицию в формате Tkinter
+# Пример: 20 => '1.20'
+def pos2tk(text_db,pos,Even=False):
+	cur_func=sys._getframe().f_code.co_name
+	# < при len=maxi+1 и <= при len=maxi
+	assert(pos < text_db['len'])
+	#elem=text_db['pos_sl'][pos-1]
+	# 2014-11-15 11:52
+	elem=text_db['pos_sl'][pos]
+	tk_pos=convert2tk(elem[0],elem[1],Even=Even)
+	log(cur_func,lev_debug,str('%d => %s' % (pos,tk_pos)))
+	return tk_pos
+
+# Конвертировать позицию в формате Tkinter в числовую позицию формата int
+# Пример: '1.20' => 20
+def tk2pos(text_db,tk_pos,Even=False):
+	cur_func=sys._getframe().f_code.co_name
+	# Пример: [0,10]
+	pos_sl_no=convertFromTk(tk_pos,Even=Even)
+	# Выделение в Tkinter может выйти за пределы самого текста, поэтому заранее определяем правую границу.
+	found=len(text_db['pos_sl'])
+	for i in range(len(text_db['pos_sl'])):
+		if pos_sl_no==text_db['pos_sl'][i]:
+			found=i
+			break
+	log(cur_func,lev_debug,str('%s => %s' % (tk_pos,str(found))))
+	return found
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# mclient non-shared code
 # Convert HTML entities to UTF-8 and perform other necessary operations
 def prepare_page(db):
 	cur_func=sys._getframe().f_code.co_name
@@ -1142,37 +1210,6 @@ def extract_tag_contents(db):
 			text_field_ro(mes.db_all_check,res_mes)	
 	return db
 	
-# Remove tags that are not relevant to the article structure
-def remove_useless_tags(db):
-	cur_func=sys._getframe().f_code.co_name
-	if AbortAll==[True]:
-		log(cur_func,lev_warn,mes.abort_func % cur_func)
-	else:
-		tags_total=db['len_tags']
-		i=0
-		while i < db['len_tags']:
-			#if tags[i].startswith(tag_pattern1) or tags[i].startswith(tag_pattern2) or tags[i].startswith(tag_pattern3) or tags[i].startswith(tag_pattern4) or tags[i]==tag_pattern5 or tags[i]==tag_pattern6 or tags[i]==tag_pattern7 or tags[i]==tag_pattern8:
-			if tag_pattern1 in db['tags'][i] or tag_pattern2 in db['tags'][i] or tag_pattern3 in db['tags'][i] or tag_pattern4 in db['tags'][i] or tag_pattern5 in db['tags'][i] or tag_pattern6 in db['tags'][i] or tag_pattern7 in db['tags'][i] or tag_pattern8 in db['tags'][i]:
-				log(cur_func,lev_debug,mes.tag_kept % db['tags'][i])
-				pass
-			else:
-				log(cur_func,lev_debug,mes.deleting_tag % (i,db['tags'][i]))
-				del db['tags'][i]
-				db['len_tags']-=1
-				del db['tag_borders'][i]
-				db['len_tag_borders']-=1
-				i-=1
-			i+=1
-		# Logging
-		log(cur_func,lev_debug,"db['len_tags']: %d" % db['len_tags'])
-		log(cur_func,lev_debug,"db['tags']: %s" % str(db['tags']))
-		log(cur_func,lev_debug,"db['len_tag_borders']: %d" % db['len_tag_borders'])
-		log(cur_func,lev_debug,"db['tag_borders']: %s" % str(db['tag_borders']))
-		log(cur_func,lev_info,mes.tags_stat % (tags_total,db['len_tags'],tags_total-db['len_tags']))
-		# Testing
-		assert(db['len_tags']==db['len_tag_borders'])
-	return db
-
 # Adjust positions of entries for pretty viewing
 def prepare_search(db):
 	cur_func=sys._getframe().f_code.co_name
@@ -1555,79 +1592,53 @@ def prepare_search(db):
 			res_mes+="db['move_right']:"+dlb+str(db['move_right'])+dlb+dlb
 			text_field_ro(mes.db_check6,res_mes)
 	return db
-	
-# Конвертировать строку в целое число
-def str2int(line):
-	cur_func=sys._getframe().f_code.co_name
-	par=None
-	try:
-		par=int(line)
-	except:
-		log(cur_func,lev_err,mes.convert_to_int_failure % line)
-	log(cur_func,lev_debug,str(par))
-	return par
 
-# Конвертировать строку с позицией Tkinter вида '1.20' в список вида [sent_no,pos_no]
-def convertFromTk(line,Even=False):
+# Remove tags that are not relevant to the article structure
+def remove_useless_tags(db):
 	cur_func=sys._getframe().f_code.co_name
-	#check_args(cur_func,[[line,mes.type_str],[Even,mes.type_bool]])
-	num_lst=line.split('.')
-	assert(len(num_lst)==2)
-	sent=str2int(num_lst[0])
-	#check_type(cur_func,sent,mes.type_int)
-	pos=str2int(num_lst[1])
-	#check_type(cur_func,pos,mes.type_int)
-	if Even:
-		lst=[sent-1,pos-1]
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
 	else:
-		lst=[sent-1,pos]
-	# Tkinter позволяет выделять так, что конец придется на первый (=нулевой) символ в начале предложения, и из-за Even получится отрицательное число. Компенсируем это.
-	for i in range(len(lst)):
-		if lst[i] < 0:
-			log(cur_func,lev_warn,mes.negative % lst[i])
-			lst[i]=0
-	log(cur_func,lev_debug,str(lst))
-	return lst
-
-# Конвертировать числовую позицию формата int в позицию в формате Tkinter
-# Пример: 20 => '1.20'
-def pos2tk(text_db,pos,Even=False):
-	cur_func=sys._getframe().f_code.co_name
-	# < при len=maxi+1 и <= при len=maxi
-	assert(pos < text_db['len'])
-	#elem=text_db['pos_sl'][pos-1]
-	# 2014-11-15 11:52
-	elem=text_db['pos_sl'][pos]
-	tk_pos=convert2tk(elem[0],elem[1],Even=Even)
-	log(cur_func,lev_debug,str('%d => %s' % (pos,tk_pos)))
-	return tk_pos
-
-# Конвертировать позицию в формате Tkinter в числовую позицию формата int
-# Пример: '1.20' => 20
-def tk2pos(text_db,tk_pos,Even=False):
-	cur_func=sys._getframe().f_code.co_name
-	# Пример: [0,10]
-	pos_sl_no=convertFromTk(tk_pos,Even=Even)
-	# Выделение в Tkinter может выйти за пределы самого текста, поэтому заранее определяем правую границу.
-	found=len(text_db['pos_sl'])
-	for i in range(len(text_db['pos_sl'])):
-		if pos_sl_no==text_db['pos_sl'][i]:
-			found=i
-			break
-	log(cur_func,lev_debug,str('%s => %s' % (tk_pos,str(found))))
-	return found
-
+		tags_total=db['len_tags']
+		i=0
+		while i < db['len_tags']:
+			#if tags[i].startswith(tag_pattern1) or tags[i].startswith(tag_pattern2) or tags[i].startswith(tag_pattern3) or tags[i].startswith(tag_pattern4) or tags[i]==tag_pattern5 or tags[i]==tag_pattern6 or tags[i]==tag_pattern7 or tags[i]==tag_pattern8:
+			if tag_pattern1 in db['tags'][i] or tag_pattern2 in db['tags'][i] or tag_pattern3 in db['tags'][i] or tag_pattern4 in db['tags'][i] or tag_pattern5 in db['tags'][i] or tag_pattern6 in db['tags'][i] or tag_pattern7 in db['tags'][i] or tag_pattern8 in db['tags'][i]:
+				log(cur_func,lev_debug,mes.tag_kept % db['tags'][i])
+				pass
+			else:
+				log(cur_func,lev_debug,mes.deleting_tag % (i,db['tags'][i]))
+				del db['tags'][i]
+				db['len_tags']-=1
+				del db['tag_borders'][i]
+				db['len_tag_borders']-=1
+				i-=1
+			i+=1
+		# Logging
+		log(cur_func,lev_debug,"db['len_tags']: %d" % db['len_tags'])
+		log(cur_func,lev_debug,"db['tags']: %s" % str(db['tags']))
+		log(cur_func,lev_debug,"db['len_tag_borders']: %d" % db['len_tag_borders'])
+		log(cur_func,lev_debug,"db['tag_borders']: %s" % str(db['tag_borders']))
+		log(cur_func,lev_info,mes.tags_stat % (tags_total,db['len_tags'],tags_total-db['len_tags']))
+		# Testing
+		assert(db['len_tags']==db['len_tag_borders'])
+	return db
+	
 # Преобразовать координаты заданного виджета из пикселей в Tkinter
 def pixels2tk(widget,x,y,Silent=False,Critical=False):
 	cur_func=sys._getframe().f_code.co_name
-	try:
-		tk_pos=widget.index('@%d,%d' % (x,y))
-	except:
-		tk_pos='1.0'
-		mestype(cur_func,'Не удается преобразовать координаты виджета "%s" из пикселей в Tkinter для координат (%s,%s)' % (str(widget),str(x),str(y)),Silent=Silent,Critical=Critical)
-	log(cur_func,lev_debug,tk_pos)
-	return tk_pos
-	
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+		return '1.0'
+	else:
+		try:
+			tk_pos=widget.index('@%d,%d' % (x,y))
+		except:
+			tk_pos='1.0'
+			mestype(cur_func,'Не удается преобразовать координаты виджета "%s" из пикселей в Tkinter для координат (%s,%s)' % (str(widget),str(x),str(y)),Silent=Silent,Critical=Critical)
+		log(cur_func,lev_debug,tk_pos)
+		return tk_pos
+
 # Вычислить координаты текста для текущей видимой области
 def get_page_coor(db,page_no):
 	cur_func=sys._getframe().f_code.co_name
@@ -2308,6 +2319,7 @@ def article_field(db,Standalone=False):
 		def paste_search_field(event):
 			cur_func=sys._getframe().f_code.co_name
 			search_field.delete(0,'end')
+			search_field.selection_clear()
 			search_field.insert(0,clipboard_paste())
 		#----------------------------------------------------------------------
 		# Очистить Историю
@@ -2443,12 +2455,10 @@ def article_field(db,Standalone=False):
 				search_field.bind(bind_clear_search_field,clear_search_field)
 			except tk.TclError:
 				Warning(cur_func,mes.wrong_keybinding % bind_clear_search_field)
-			# Предполагается, что в Линуксе среда уже поддерживает вставку буфера обмена средней кнопкой. Если оставить, то вставляться будет дважды (либо работать через раз).
-			if not MBSysEnabled:
-				try:
-					search_field.bind(bind_paste_search_field,paste_search_field)
-				except tk.TclError:
-					Warning(cur_func,mes.wrong_keybinding % bind_paste_search_field)
+			try:
+				search_field.bind(bind_paste_search_field,paste_search_field)
+			except tk.TclError:
+				Warning(cur_func,mes.wrong_keybinding % bind_paste_search_field)
 			# Кнопка для "чайников", заменяет Enter в search_field
 			button_search=tk.Button(frame_panel,text=mes.search)
 			button_search.bind('<Return>',go_search)
@@ -2636,39 +2646,37 @@ def article_field(db,Standalone=False):
 			top.bind(bind_move_page_down,move_page_down)
 		except tk.TclError:
 			Warning(cur_func,mes.wrong_keybinding % bind_move_page_down)
+		try:
+			top.bind(bind_go_url,go_url)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_go_url)
+		try:
+			top.bind(bind_go_url_alt,go_url)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_go_url_alt)
+		try:
+			txt.bind(bind_go_url_alt2,go_url)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_go_url_alt2)
 		if Standalone:
-			try:
-				top.bind(bind_go_url,go_url)
-			except tk.TclError:
-				Warning(cur_func,mes.wrong_keybinding % bind_go_url)
-			try:
-				top.bind(bind_go_url_alt,go_url)
-			except tk.TclError:
-				Warning(cur_func,mes.wrong_keybinding % bind_go_url_alt)
-			try:
-				txt.bind(bind_go_url_alt2,go_url)
-			except tk.TclError:
-				Warning(cur_func,mes.wrong_keybinding % bind_go_url_alt2)
+			widget=top
 			search_field.focus_force()
 		else:
-			# Здесь пока не нужно выносить в конфиг
-			txt.bind('<Return>',quit_now)
-			txt.bind('<KP_Enter>',quit_now)
-			txt.bind('<Shift-Return>',quit_now)
-			txt.bind('<Shift-KP_Enter>',quit_now)
+			# Для выхода нельзя использовать Return, поскольку это конфликтует с Shift-Enter. Поэтому оставляем только Escape.
 			top.bind('<Escape>',quit_now)
+			widget=txt
 			txt.focus_force()
 		try:
-			txt.bind(bind_copy_sel,copy_sel)
+			widget.bind(bind_copy_sel,copy_sel)
 		except tk.TclError:
 			Warning(cur_func,mes.wrong_keybinding % bind_copy_sel)
 		try:
-			txt.bind(bind_copy_sel_alt,copy_sel)
+			widget.bind(bind_copy_sel_alt,copy_sel)
 		except tk.TclError:
 			Warning(cur_func,mes.wrong_keybinding % bind_copy_sel_alt)
-		# ПКМ используется еще для очистки Истории, поэтому нельзя использовать top
+		# ПКМ используется еще для очистки Истории, поэтому при Standalone нельзя использовать top
 		try:
-			txt.bind(bind_copy_sel_alt2,copy_sel)
+			widget.bind(bind_copy_sel_alt2,copy_sel)
 		except tk.TclError:
 			Warning(cur_func,mes.wrong_keybinding % bind_copy_sel_alt2)
 		if sys_type=='win' or sys_type=='mac':
@@ -2678,10 +2686,13 @@ def article_field(db,Standalone=False):
 			top.bind('<Button 5>',mouse_wheel)
 		txt.bind('<Motion>',mouse_sel)
 		# Закрывать текущее окно с последующей перезагрузкой статьи в обычном режиме бессмысленно, поэтому, прямо указываем режим Буфера
-		if db['mode']=='clipboard':
+		if db['mode']=='clipboard' or not Standalone:
 			try:
-				# Привязка к top может конфликтовать со строкой поиска
-				txt.bind(bind_close_top,close_top)
+				if Standalone:
+					# Привязка к top может конфликтовать со строкой поиска
+					txt.bind(bind_close_top,close_top)
+				else:
+					top.bind(bind_close_top,quit_now)
 			except tk.TclError:
 				Warning(cur_func,mes.wrong_keybinding % bind_close_top)
 		try:
@@ -2767,6 +2778,7 @@ def article_loop(Standalone=False):
 				db=article_field(db,Standalone=Standalone)
 				if Standalone and db['mode']!='skip' and not db['search'] in db['history']:
 					db['history'].append(db['search'])
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # I removed extra code, Standalone=False will not work
 article_loop(Standalone=True)
