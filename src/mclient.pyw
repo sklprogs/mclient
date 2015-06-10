@@ -19,7 +19,7 @@ from configparser import SafeConfigParser
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='3.4 (in progress)'
+build_ver='3.4'
 config_file_root='main.cfg'
 root=tk.Tk()
 
@@ -2321,6 +2321,7 @@ def article_field(db,Standalone=False):
 			search_field.delete(0,'end')
 			search_field.selection_clear()
 			search_field.insert(0,clipboard_paste())
+			return 'break'
 		#----------------------------------------------------------------------
 		# Очистить Историю
 		def clear_history(event):
@@ -2676,7 +2677,7 @@ def article_field(db,Standalone=False):
 			Warning(cur_func,mes.wrong_keybinding % bind_copy_sel_alt)
 		# ПКМ используется еще для очистки Истории, поэтому при Standalone нельзя использовать top
 		try:
-			widget.bind(bind_copy_sel_alt2,copy_sel)
+			txt.bind(bind_copy_sel_alt2,copy_sel)
 		except tk.TclError:
 			Warning(cur_func,mes.wrong_keybinding % bind_copy_sel_alt2)
 		if sys_type=='win' or sys_type=='mac':

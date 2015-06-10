@@ -5,3 +5,5 @@
 - Add a hotkey Control-q (bind_quit_now) to quit the app
 - Delete MBSysEnabled key because double-click paste should be controlled differently
 - Rewrite clipboard algorithms
+- Fix regression bugs that were revealed
+- Fix pasting with MMB
