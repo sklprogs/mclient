@@ -1,9 +1,6 @@
-- Fix a bug: embedded user comments are now visible (but only inside the tag <span STYLE="color:rgb(60,179,113)">)
-- Fix a bug: a request "refer as" does not hang the app now
-- Fix a bug: updating the History field after changing the UI language caused an error
-- Close the current window in the Clipboard mode using MMB (bind_close_top)
-- Add a hotkey Control-q (bind_quit_now) to quit the app
-- Delete MBSysEnabled key because double-click paste should be controlled differently
-- Rewrite clipboard algorithms
-- Fix regression bugs that were revealed
-- Fix pasting with MMB
+- Add a case-insensitive search in an article (Control-F3 - new search, F3 - new search/search down)
+- F5 to reload the article
+- F2 to save to disk or copy the article text or code to clipboard
+- Buttons 'Save' and 'Search in article'
+- Paste the previous request to the search field and copy it to clipboard (input '!' (repeat_sign) or '!!' (repeat_sign2) to the clipboard and press Enter)
+- Add new hotkeys (F1 - 'About', etc.)

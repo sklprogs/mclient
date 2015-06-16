@@ -8,18 +8,20 @@ import codecs
 import webbrowser
 import tkinter as tk
 import tkinter.messagebox as tkmes
+import tkinter.filedialog as dialog
 # В Python 3 не работает просто import urllib, импорт должен быть именно такой, как здесь
 import urllib.request, urllib.parse
 import html.parser
 import posixpath
 from configparser import SafeConfigParser
+import eg_mod as eg
 
 # (C) Peter Sklyar, 2015. License: GPL v.3
 # All third-party modules are the intellectual work of their authors.
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='3.4'
+build_ver='3.5 (in progress)'
 config_file_root='main.cfg'
 root=tk.Tk()
 
@@ -91,6 +93,7 @@ pairs=['ENG <=> RUS','DEU <=> RUS','SPA <=> RUS','FRA <=> RUS','NLD <=> RUS','IT
 online_dic_urls=['http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=3&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=5&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=4&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=24&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=23&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=27&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=26&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=31&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=34&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=35&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=3&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=26&s=%s']
 online_dic_url=online_dic_urls[0]
 not_found_online='Вы знаете перевод этого слова? Добавьте его в словарь'
+my_program_title=''
 #------------------------------------------------------------------------------
 # Tag patterns
 tag_pattern1='<a title="'
@@ -111,24 +114,28 @@ AbortAll=[False]
 # Список символов, которые можно считать за буквы.
 allowed_syms=['°']
 
-# Placeholder
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Placeholders
 def log(cur_func,level,log_mes,TransFunc=False):
 	#print(cur_func,':',level,':',log_mes)
 	pass
-
+#------------------------------------------------------------------------------
 # Placeholder
 def text_field_ro(title=mes.check,array='test',SelectAll=False,GoTo=''):
 	#print(title,':',array)
 	pass
-	
+#------------------------------------------------------------------------------	
 # Placeholder
 def decline_nom(words_nf,Decline=False):
 	pass
-	
+#------------------------------------------------------------------------------
 # Placeholder
 def check_args(func,arg_list):
 	pass
-
+#------------------------------------------------------------------------------
+def check_type(*args):
+	pass
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Ошибка
 def ErrorMessage(cur_func='MAIN',cur_mes=err_mes_empty_error,Critical=True):
 	root.withdraw()
@@ -141,10 +148,14 @@ def ErrorMessage(cur_func='MAIN',cur_mes=err_mes_empty_error,Critical=True):
 	root.deiconify()
 
 # Проверить существование файла
-def exist(file):
+def exist(file,Critical=True):
 	cur_func=sys._getframe().f_code.co_name
-	if not os.path.exists(file):
-		ErrorMessage(cur_func,mes.file_not_found % file)
+	if os.path.exists(file):
+		Success=True
+	else:
+		Success=False
+		if Critical:
+			ErrorMessage(cur_func,mes.file_not_found % file)
 		
 # Определить тип ОС
 def detect_os():
@@ -280,9 +291,19 @@ font_comments=load_option(SectionVariables,'font_comments')
 # Принудительно задать размер окна (работает только при AlwaysMaximize==False)
 #window_size='1024x768'
 window_size=load_option(SectionVariables,'window_size')
+# Путь к иконкам. top.wm_iconbitmap поддерживает только черно-белый XBM. Через PhotoImage удается загрузить только GIF.
+# icon_main='/usr/local/bin/icon_64x64_dic.gif'
+icon_main=bin_dir+sysdiv+load_option(SectionVariables,'icon_main')
 # Путь к иконке mclient
 # icon_mclient='/usr/local/bin/icon_64x64_dic.xbm'
 icon_mclient=load_option(SectionVariables,'icon_mclient')
+# Строка, обозначающая повтор действия
+#repeat_sign='!'
+repeat_sign=load_option(SectionVariables,'repeat_sign')
+# Строка (2), обозначающая повтор действия
+#repeat_sign2='!'
+repeat_sign2=load_option(SectionVariables,'repeat_sign2')
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Комбинации клавиш или кнопки мыши в mclient
 #bind_get_history='<Double-Button-1>' (ранее '<ButtonRelease-1>')
 bind_get_history=load_option(SectionVariables,'bind_get_history')
@@ -342,6 +363,18 @@ bind_clear_history=load_option(SectionVariables,'bind_clear_history')
 bind_close_top=load_option(SectionVariables,'bind_close_top')
 #bind_quit_now='<Control-q>'
 bind_quit_now=load_option(SectionVariables,'bind_quit_now')
+#bind_search_article='<F3>'
+bind_search_article=load_option(SectionVariables,'bind_search_article')
+#bind_re_search_article='<Control-F3>' #'<Control-f>'
+bind_re_search_article=load_option(SectionVariables,'bind_re_search_article')
+#bind_reload_article='<F5>' #'<Control-r>'
+bind_reload_article=load_option(SectionVariables,'bind_reload_article')
+#bind_save_article='<F2>' #'<Control-s>'
+bind_save_article=load_option(SectionVariables,'bind_save_article')
+#bind_search_field='<F6>'
+bind_search_field=load_option(SectionVariables,'bind_search_field')
+#bind_show_about='<F1>'
+bind_show_about=load_option(SectionVariables,'bind_show_about')
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Загрузка раздела [Integers] конфигурационного файла
 # Число пикселей с краев окна, текст в области которых считается нечитаемым и должен быть перенесен
@@ -811,40 +844,44 @@ def clipboard_copy(line):
 # Вернуть веб-страницу онлайн-словаря с термином
 def get_online_article(db,IsURL=False,Silent=False,Critical=False,Standalone=False):
 	cur_func=sys._getframe().f_code.co_name
-	# db['search'] требуется всегда, даже если на входе URL
-	# Если на входе URL, то читается db['url'], если же на входе строка, то читается db['search'] и создается db['url']
-	if not IsURL:
-		# Поскольку Multitran использует кодировку windows-1251, необходимо использовать ее. Поскольку некоторые символы не кодируются в win_encoding корректно, оставляем для них кодировку UTF-8.
-		try:
-			request_encoded=db['search'].encode(win_encoding)
-		except:
-			request_encoded=bytes(db['search'],encoding=default_encoding)
-		# Некоторые версии питона принимают 'encode('windows-1251')', но не 'encode(encoding='windows-1251')'
-		db['url']=online_request(online_dic_url,request_encoded)
-	db['page']=''
-	while db['page']=='':
-		Success=False
-		# Загружаем страницу
-		try:
-			# Если загружать страницу с помощью "page=urllib.request.urlopen(my_url)", то в итоге получится HTTPResponse, что полезно только для удаления тэгов JavaScript. Поскольку мы вручную удаляем все лишние тэги, то на выходе нам нужна строка.
-			db['page']=urllib.request.urlopen(db['url']).read()
-			log(cur_func,lev_info,mes.ok % db['search'])
-			Success=True
-		except:
-			db['page']=''
-			log(cur_func,lev_warn,mes.failed % db['search'])
-			#mestype(cur_func,mes.webpage_unavailable,Silent=Silent,Critical=Critical)
-			if not Question(cur_func,mes.webpage_unavailable_ques):
-				if Standalone:
-					sys.exit()
-				else:
-					break
-		if Success: # Если страница не загружена, то понятно, что ее кодировку изменить не удастся
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+	else:
+		# db['search'] требуется всегда, даже если на входе URL
+		# Если на входе URL, то читается db['url'], если же на входе строка, то читается db['search'] и создается db['url']
+		if not IsURL:
+			# Поскольку Multitran использует кодировку windows-1251, необходимо использовать ее. Поскольку некоторые символы не кодируются в win_encoding корректно, оставляем для них кодировку UTF-8.
 			try:
-				# Меняем кодировку win_encoding на нормальную
-				db['page']=db['page'].decode(win_encoding)
+				request_encoded=db['search'].encode(win_encoding)
 			except:
-				mestype(cur_func,mes.wrong_html_encoding,Silent=Silent,Critical=Critical)
+				request_encoded=bytes(db['search'],encoding=default_encoding)
+			# Некоторые версии питона принимают 'encode('windows-1251')', но не 'encode(encoding='windows-1251')'
+			db['url']=online_request(online_dic_url,request_encoded)
+		db['page']=''
+		db['html']=''
+		while db['page']=='':
+			Success=False
+			# Загружаем страницу
+			try:
+				# Если загружать страницу с помощью "page=urllib.request.urlopen(my_url)", то в итоге получится HTTPResponse, что полезно только для удаления тэгов JavaScript. Поскольку мы вручную удаляем все лишние тэги, то на выходе нам нужна строка.
+				db['page']=urllib.request.urlopen(db['url']).read()
+				log(cur_func,lev_info,mes.ok % db['search'])
+				Success=True
+			except:
+				log(cur_func,lev_warn,mes.failed % db['search'])
+				#mestype(cur_func,mes.webpage_unavailable,Silent=Silent,Critical=Critical)
+				if not Question(cur_func,mes.webpage_unavailable_ques):
+					if Standalone:
+						sys.exit()
+					else:
+						break
+			if Success: # Если страница не загружена, то понятно, что ее кодировку изменить не удастся
+				try:
+					# Меняем кодировку win_encoding на нормальную
+					db['page']=db['page'].decode(win_encoding)
+					db['html']=db['page']
+				except:
+					mestype(cur_func,mes.wrong_html_encoding,Silent=Silent,Critical=Critical)
 	return db
 	
 # Конвертировать строку в целое число
@@ -907,6 +944,207 @@ def tk2pos(text_db,tk_pos,Even=False):
 			break
 	log(cur_func,lev_debug,str('%s => %s' % (tk_pos,str(found))))
 	return found
+	
+# Выбор одного элемента из списка
+def SelectFromList(title,cur_mes,list_array,Insist=True,Silent=True,Critical=False,MakeLower=False):
+	cur_func=sys._getframe().f_code.co_name
+	log(cur_func,lev_debug,mes.title % str(title))
+	log(cur_func,lev_debug,mes.mes % str(cur_mes))
+	log(cur_func,lev_debug,mes.lst % str(list_array))
+	check_args(cur_func,[[title,mes.type_str],[cur_mes,mes.type_str],[list_array,mes.type_lst]])
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+		return ''
+	else:
+		choice=None
+		if list_array==[]:
+			mestype(cur_func,mes.empty_lists_not_allowed,Silent=Silent,Critical=Critical)
+		# Если список включает только 1 файл, вывести его сразу
+		elif len(list_array)==1:
+			choice=list_array[0]
+		elif Insist:
+			while choice==None:
+				root.withdraw()
+				# tmp
+				#choice=eg.choicebox(cur_mes,title,list_array,MakeLower=MakeLower)
+				try:
+					choice=eg.choicebox(cur_mes,title,list_array)
+				except:
+					log(cur_func,lev_err,mes.eg)
+					# Повторный вызов EasyGUI иногда проходит удачно
+					# tmp
+					try:
+						choice=eg.choicebox(cur_mes,title,list_array)
+					except:
+						ErrorMessage(cur_func,mes.eg)
+				root.deiconify()
+				if choice==None:
+					Warning(cur_func,mes.force_choice)
+		else:
+			root.withdraw()
+			# tmp
+			#choice=eg.choicebox(cur_mes,title,list_array,MakeLower=MakeLower)
+			choice=eg.choicebox(cur_mes,title,list_array)
+			root.deiconify()
+		log(cur_func,lev_debug,str(choice))
+		return choice
+
+# Удалить файл (но не каталог)
+def delete(file,Silent=False,Critical=False):
+	cur_func=sys._getframe().f_code.co_name
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+		return False
+	else:
+		Success=True
+		if os.path.exists(file):
+			try:
+				os.remove(file)
+				log(cur_func,lev_info,mes.deleting % file)
+			except:
+				Success=False
+				mestype(cur_func,mes.file_del_failure2 % file,Silent,Critical)
+		else:
+			Success=False
+			mestype(cur_func,mes.file_del_failure3 % file,Silent,Critical)
+		log(cur_func,lev_debug,str(Success))
+		return Success
+
+# Проверить существование файла и выйти в случае отказа от перезаписи
+def rewrite(file,Force=False,Critical=True):
+	cur_func=sys._getframe().f_code.co_name
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+	else:
+		if os.path.exists(file):
+			if Force:
+				Warning(cur_func,mes.rewrite_warning % file)
+				# Используется вторая проверка, поскольку пользователь может вручную удалить файл после предупреждения
+				if os.path.exists(file):
+					delete(file,Silent=False,Critical=Critical)
+			elif Question(cur_func,mes.rewrite_ques % file):
+				if os.path.exists(file):
+					delete(file,Silent=False,Critical=Critical)
+			elif Critical:
+				AbortAll[0]=True
+
+# Записать текст в файл в режиме 'write' или 'append'
+# Critical распространяется только на попытку записи файла. Проверка режима обязана быть Critical
+def write_file(file,text,mode='w',Silent=False,Critical=False,AskRewrite=True):
+	cur_func=sys._getframe().f_code.co_name
+	check_type(cur_func,file,mes.type_str)
+	check_type(cur_func,mode,mes.type_str)
+	Success=True
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+		Success=False
+	else:
+		Success=True
+		if mode!='w' and mode!='a':
+			Success=False
+			mestype(cur_func,mes.wrong_mode % mode,Silent=False,Critical=True)
+		# Может создаваться новый файл, поэтому проверку существования не делаем
+		if AskRewrite:
+			rewrite(file)
+		if AbortAll==[True]:
+			log(cur_func,lev_warn,mes.abort_func % cur_func)
+			Success=False
+		else:
+			try:
+				with open(file,mode,encoding=default_encoding) as f:
+					f.write(text)
+			except:
+				Success=False
+			if Success:
+				log(cur_func,lev_info,mes.file_written % file)
+			else:
+				mestype(cur_func,mes.file_write_failure % file,Silent=Silent,Critical=Critical)
+	log(cur_func,lev_debug,str(Success))
+	return Success
+
+# Удостовериться, что входная строка имеет какую-то ценность
+def empty(my_input):
+	cur_func=sys._getframe().f_code.co_name
+	par=False
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+	else:
+		if my_input=='' or my_input==None or my_input==[] or my_input==() or my_input=={} or my_input in cmd_err_mess:
+			par=True
+	log(cur_func,lev_debug,str(par))
+	return par
+
+# Диалог сохранения файла
+def dialog_save_file(text,filetypes=((mes.plain_text,'.txt'),(mes.webpage,'.htm'),(mes.webpage,'.html'),(mes.all_files,'*')),Critical=True):
+	cur_func=sys._getframe().f_code.co_name
+	file=''
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+	else:
+		options={}
+		options['initialfile']=''
+		options['filetypes']=filetypes
+		options['title']=mes.save_as
+		# Если реализовать выбор файла через EasyGui, получим ошибку при выборе каталога, защищенного от записи, не ловится даже в try-except, получаем "alloc: invalid block: 0xb33c040: c0 b Aborted"
+		#file=eg.filesavebox(msg=mes.select_file,filetypes=mask)
+		try:
+			file=dialog.asksaveasfilename(**options)
+		except:
+			mestype(cur_func,mes.file_sel_failed,Critical=Critical)
+		# dialog при пустом выборе возвращает (), который мы заменяем на '', потому что возвращаемое значение должно представлять собой строку, а не кортеж (иначе, например, такие процедуры как exist() будут вылетать)
+		if file==():
+			file=''
+		if empty(file):
+			if Critical:
+				AbortAll[0]=True
+		else:
+			# rewrite (AskRewrite) не задействуем, поскольку наличие файла уже проверяется на этапе asksaveasfilename()
+			write_file(file,text,mode='w',Silent=False,Critical=Critical,AskRewrite=False)
+	log(cur_func,lev_debug,mes.writing % str(file))
+	return file
+
+# Текстовое поле в одну строку
+def text_field_small(title,Insist=False):
+	cur_func=sys._getframe().f_code.co_name
+	def top_destroy(args):
+		top.destroy()
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+		return ''
+	else:
+		# UnixSelection не работает для Entry
+		top, res = tk.Toplevel(root), [None]
+		def callback():
+			res[0] = entry.get()
+			top.destroy()
+			root.deiconify()
+		root.withdraw()
+		title+=' '+my_program_title
+		top.title(title)
+		top.tk.call('wm','iconphoto',top._w,tk.PhotoImage(file=icon_main))
+		entry=tk.Entry(top,font=font_style)
+		entry.pack()
+		# Выход по нажатию Enter
+		entry.bind('<Return>', lambda e: callback())
+		entry.bind('<KP_Enter>', lambda e: callback())
+		# Выход по клику кнопки
+		ok=tk.Button(top, text=mes.enter_and_close, command=callback)
+		ok.pack()
+		# Выход по нажатию Enter и Пробел на кнопке
+		ok.bind('<Return>', lambda e:callback())
+		ok.bind('<KP_Enter>', lambda e:callback())
+		entry.focus_force()
+		top.bind('<Escape>',top_destroy)
+		top.wait_window(top)
+		func_res=res[0]
+		log(cur_func,lev_debug,str(func_res))
+		if Insist:
+			if empty(func_res):
+				ErrorMessage(cur_func,mes.empty_text)
+		# Предотвратить возможные ошибки при глобальной отмене
+		if func_res==None:
+			func_res=''
+		return func_res
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # mclient non-shared code
@@ -1764,25 +2002,14 @@ def article_field(db,Standalone=False):
 		if not 'ShowHistory' in db:
 			db['ShowHistory']=False
 		if not 'FirstLaunch' in db:
-			if Standalone:
-				db['FirstLaunch']=True
-			else:
-				db['FirstLaunch']=False
-		if Standalone:
-			if not 'history' in db:
-				db['history']=[]
+			db['FirstLaunch']=True
+		if not 'history' in db:
+			db['history']=[]
 		#----------------------------------------------------------------------
 		# Закрыть текущее окно mclient без выхода из самой программы
 		def close_top(event):
 			top.destroy()
 			root.deiconify()
-		#----------------------------------------------------------------------
-		# Search the selected term online
-		def go_sel(event):
-			cur_func=sys._getframe().f_code.co_name
-			db['search']=db['terms']['phrases'][res[0]]
-			db['mode']='search'
-			close_top(event)
 		#----------------------------------------------------------------------
 		# Go to the URL of the current search
 		def go_url(event):
@@ -1799,8 +2026,15 @@ def article_field(db,Standalone=False):
 			search_str=search_field.get()
 			db['search']=search_str.strip(dlb)
 			db['search']=search_str.strip(' ')
-			if db['search']!='':
-				db['mode']='search'
+			db['mode']='search'
+			if db['search']=='':
+				pass
+			# Скопировать предпоследний запрос в буфер и вставить его в строку поиска (например, для корректировки)
+			elif db['search']==repeat_sign or db['search']==repeat_sign2:
+				if len(db['history']) > 1:
+					clipboard_copy(db['history'][-2])
+					paste_search_field(None)
+			else:
 				# Обновляем индекс текущего запроса при добавлении элемента для поиска
 				db['history_index']=len(db['history'])
 				close_top(event)
@@ -1811,16 +2045,12 @@ def article_field(db,Standalone=False):
 			clipboard_copy(db['terms']['phrases'][res[0]])
 			log(cur_func,lev_info,mes.copied_to_clipboard % str(db['terms']['phrases'][res[0]]))
 			if db['mode']=='clipboard':
-				top.destroy()
-				root.deiconify()
-			elif Standalone:
-				top.iconify()
-			else:
 				close_top(event)
-				db['Quit']=True
+				db['mode']='search'
+			else:
+				top.iconify()
 		#----------------------------------------------------------------------
 		# Close the root window without errors
-		# Please note that quit_now() should have 1 argument, quit_top() - none of them
 		def quit_now(event):
 			cur_func=sys._getframe().f_code.co_name
 			db['Quit']=True
@@ -2221,7 +2451,7 @@ def article_field(db,Standalone=False):
 				db['ShowHistory']=True
 			db['mode']='skip'
 			# Запоминаем позицию выделения, чтобы она не сбрасывалась при переключении отображения Истории. Запомнить позицию выделения можно только на первой странице.
-			db['last']=res[0]
+			db['last_sel']=res[0]
 			close_top(event)
 		#----------------------------------------------------------------------
 		# Окно "О программе"
@@ -2320,7 +2550,10 @@ def article_field(db,Standalone=False):
 			cur_func=sys._getframe().f_code.co_name
 			search_field.delete(0,'end')
 			search_field.selection_clear()
-			search_field.insert(0,clipboard_paste())
+			if Standalone:
+				search_field.insert(0,clipboard_paste())
+			else:
+				search_field.insert(0,apply_autocor(clipboard_paste(),Auto=True))
 			return 'break'
 		#----------------------------------------------------------------------
 		# Очистить Историю
@@ -2393,6 +2626,59 @@ def article_field(db,Standalone=False):
 					db['mode']='search'
 				db['search']=db['history'][db['history_index']]
 				close_top(event)
+		#----------------------------------------------------------------------
+		# Найти слово/слова в статье
+		def search_article(event):
+			cur_func=sys._getframe().f_code.co_name
+			if not 'search_article_pos' in db:
+				db['search_article_pos']=0
+			if not 'search_article' in db:
+				db['search_article']=text_field_small(title=mes.search_str) #search_field.get()
+				db['search_article']=db['search_article'].strip(' ').strip(dlb)
+				root.withdraw()
+			if not empty(db['search_article']):
+				db['search_article']=db['search_article'].lower()
+				if db['search_article_pos'] < db['terms']['num']-1:
+					i=db['search_article_pos']+1
+				else:
+					i=0
+				while i < db['terms']['num']:
+					if db['search_article'] in db['terms']['phrases'][i].lower():
+						res[0]=i
+						db['search_article_pos']=i
+						break
+					i+=1
+					# Достигнут конец статьи, начинаем заново
+					if i==db['terms']['num']:
+						db['search_article_pos']=0
+				shift_screen()
+				select_term()
+		#----------------------------------------------------------------------
+		# Перезапустить поиск в статье по другому слову
+		def re_search_article(event):
+			cur_func=sys._getframe().f_code.co_name
+			db['search_article_pos']=0
+			if 'search_article' in db:
+				del db['search_article']
+			search_article(event)
+		#----------------------------------------------------------------------
+		# Сохранить статью на диск
+		def save_article(event):
+			cur_func=sys._getframe().f_code.co_name
+			opt=SelectFromList(mes.select_action,mes.actions,[mes.save_article_as_html,mes.save_article_as_txt,mes.copy_article_html,mes.copy_article_txt],Insist=False)
+			if not empty(opt):
+				if opt==mes.save_article_as_html:
+					# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
+					# Также меняем сокращенные гиперссылки на полные, чтобы они работали и в локальном файле.
+					dialog_save_file(db['html'].replace('charset=windows-1251"','charset=utf-8"').replace('<a href="m.exe?','<a href="'+online_url_root),filetypes=((mes.webpage,'.htm'),(mes.webpage,'.html'),(mes.all_files,'*')),Critical=False)
+				elif opt==mes.save_article_as_txt:
+					dialog_save_file(db['page'],filetypes=((mes.plain_text,'.txt'),(mes.all_files,'*')),Critical=False)
+				elif opt==mes.copy_article_html:
+					# Копирование веб-кода в буфер обмена полезно разве что в целях отладки, поэтому никак не меняем этот код.
+					clipboard_copy(db['html'])
+				elif opt==mes.copy_article_txt:
+					clipboard_copy(db['page'])
+			root.withdraw()
 		#--------------------------------------------------------------------------
 		if AlwaysMaximize:
 			if sys_type=='lin':
@@ -2405,9 +2691,8 @@ def article_field(db,Standalone=False):
 		if mclientSaveTitle:
 			top.title(mes.mclient % build_ver)
 		else:
-			if db['FirstLaunch']==True:
+			if db['FirstLaunch']:
 				top.title(mes.mclient % build_ver)
-				db['FirstLaunch']=False
 			else:
 				top.title(db['search'])
 		# Only black-and-white icons of XBM format
@@ -2416,119 +2701,135 @@ def article_field(db,Standalone=False):
 		top.tk.call('wm','iconphoto',top._w,tk.PhotoImage(file=icon_mclient))
 		top.protocol("WM_DELETE_WINDOW",quit_top)
 		#root.protocol("WM_DELETE_WINDOW",quit_now)
-		if Standalone:
-			# Создание каркаса с предыдущими поисковыми запросами
-			frame_history=tk.Frame(top)
-			if db['ShowHistory']==True:
-				frame_history.pack(expand=1,side='left',fill='both')
-			# Предыдущие поисковые запросы
-			listbox=tk.Listbox(frame_history,font=font_history)
-			if db['ShowHistory']==True:
-				listbox.pack(expand=1,side='top',fill='both')
-			for i in range(len(db['history'])):
-				listbox.insert(0,db['history'][i])
-			try:
-				listbox.bind(bind_get_history,get_history) # При просто <Button-1> выделение еще не будет выбрано
-			except tk.TclError:
-				Warning(cur_func,mes.wrong_keybinding % bind_get_history)
-			listbox.bind('<Return>',get_history)
-			listbox.bind('<KP_Enter>',get_history)
-			listbox.bind('<space>',get_history)
-			try:
-				listbox.bind(bind_copy_history,copy_history)
-			except tk.TclError:
-				Warning(cur_func,mes.wrong_keybinding % bind_copy_history)
-			# Создание каркаса с полем ввода, кнопкой выбора направления перевода и кнопкой выхода
-			frame_panel=tk.Frame(top)
-			frame_panel.pack(expand=0,fill='both',side='bottom')
-			# Поле ввода поисковой строки
-			search_field=tk.Entry(frame_panel)
-			search_field.pack(side='left')
-			try:
-				top.bind(bind_go_search,go_search)
-			except tk.TclError:
-				Warning(cur_func,mes.wrong_keybinding % bind_go_search)
-			try:
-				top.bind(bind_go_search_alt,go_search)
-			except tk.TclError:
-				Warning(cur_func,mes.wrong_keybinding % bind_go_search_alt)
-			try:
-				search_field.bind(bind_clear_search_field,clear_search_field)
-			except tk.TclError:
-				Warning(cur_func,mes.wrong_keybinding % bind_clear_search_field)
-			try:
-				search_field.bind(bind_paste_search_field,paste_search_field)
-			except tk.TclError:
-				Warning(cur_func,mes.wrong_keybinding % bind_paste_search_field)
-			# Кнопка для "чайников", заменяет Enter в search_field
-			button_search=tk.Button(frame_panel,text=mes.search)
-			button_search.bind('<Return>',go_search)
-			button_search.bind('<KP_Enter>',go_search)
-			button_search.bind('<space>',go_search)
-			button_search.bind('<ButtonRelease-1>',go_search)
-			button_search.pack(side='left')
-			# Выпадающий список с вариантами направлений перевода
-			var=tk.StringVar(top)
-			var.set(cur_pair)
-			option_menu=tk.OptionMenu(frame_panel,var,*pairs,command=change_pair).pack(side='left',anchor='center')
-			# Кнопка включения/отключения истории
-			button_history=tk.Button(frame_panel,text=mes.history)
-			button_history.bind('<ButtonRelease-1>',toggle_history)
-			button_history.bind('<Return>',toggle_history)
-			button_history.bind('<KP_Enter>',toggle_history)
-			button_history.bind('<space>',toggle_history)
-			try:
-				button_history.bind(bind_clear_history,clear_history)
-			except tk.TclError:
-				Warning(cur_func,mes.wrong_keybinding % bind_clear_history)
-			button_history.pack(side='left')
-			# Кнопка "Буфер обмена"
-			if db['mode']=='clipboard':
-				button_clipboard=tk.Button(frame_panel,text=mes.watch_clipboard,fg='red')
-			else:
-				button_clipboard=tk.Button(frame_panel,text=mes.watch_clipboard)
-			button_clipboard.bind('<ButtonRelease-1>',watch_clipboard)
-			button_clipboard.bind('<Return>',watch_clipboard)
-			button_clipboard.bind('<KP_Enter>',watch_clipboard)
-			button_clipboard.bind('<space>',watch_clipboard)
-			button_clipboard.pack(side='left')
-			# Кнопка "Открыть в браузере"
-			button_browser=tk.Button(frame_panel,text=mes.in_browser)
-			button_browser.bind('<ButtonRelease-1>',open_in_browser)
-			button_browser.bind('<Return>',open_in_browser)
-			button_browser.bind('<KP_Enter>',open_in_browser)
-			button_browser.bind('<space>',open_in_browser)
-			button_browser.pack(side='left')
-			# Кнопка переключения языка интерфейса
-			button_ui_lang=tk.Button(frame_panel,text=mes.ui_lang)
-			button_ui_lang.bind('<ButtonRelease-1>',change_ui_lang)
-			button_ui_lang.bind('<Return>',change_ui_lang)
-			button_ui_lang.bind('<KP_Enter>',change_ui_lang)
-			button_ui_lang.bind('<space>',change_ui_lang)
-			button_ui_lang.pack(side='left')
-			# Кнопка "О программе"
-			button_about=tk.Button(frame_panel,text=mes.about,command=show_about)
-			button_about.bind('<ButtonRelease-1>',show_about) 
-			button_about.bind('<Return>',show_about)
-			button_about.bind('<KP_Enter>',show_about)
-			button_about.bind('<space>',show_about)
-			button_about.pack(side='left')
-			# Кнопка выхода
-			button_quit=tk.Button(frame_panel,text=mes.x,command=quit_now)
-			button_quit.bind('<ButtonRelease-1>',quit_now) 
-			button_quit.bind('<Return>',quit_now)
-			button_quit.bind('<KP_Enter>',quit_now)
-			button_quit.bind('<space>',quit_now)
-			button_quit.pack(side='right')
-			# Перейти на предыдущую/следующую статью
-			try:
-				top.bind(bind_go_back,go_back)
-			except tk.TclError:
-				Warning(cur_func,mes.wrong_keybinding % bind_go_back)
-			try:
-				top.bind(bind_go_forward,go_forward)
-			except tk.TclError:
-				Warning(cur_func,mes.wrong_keybinding % bind_go_forward)
+		# Создание каркаса с предыдущими поисковыми запросами
+		frame_history=tk.Frame(top)
+		if db['ShowHistory']==True:
+			frame_history.pack(expand=1,side='left',fill='both')
+		# Предыдущие поисковые запросы
+		listbox=tk.Listbox(frame_history,font=font_history)
+		if db['ShowHistory']==True:
+			listbox.pack(expand=1,side='top',fill='both')
+		for i in range(len(db['history'])):
+			listbox.insert(0,db['history'][i])
+		try:
+			listbox.bind(bind_get_history,get_history) # При просто <Button-1> выделение еще не будет выбрано
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_get_history)
+		listbox.bind('<Return>',get_history)
+		listbox.bind('<KP_Enter>',get_history)
+		listbox.bind('<space>',get_history)
+		try:
+			listbox.bind(bind_copy_history,copy_history)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_copy_history)
+		# Создание каркаса с полем ввода, кнопкой выбора направления перевода и кнопкой выхода
+		frame_panel=tk.Frame(top)
+		frame_panel.pack(expand=0,fill='both',side='bottom')
+		# Поле ввода поисковой строки
+		search_field=tk.Entry(frame_panel)
+		search_field.pack(side='left')
+		if db['FirstLaunch'] and not Standalone:
+			paste_search_field(None)
+		try:
+			top.bind(bind_go_search,go_search)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_go_search)
+		try:
+			top.bind(bind_go_search_alt,go_search)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_go_search_alt)
+		try:
+			search_field.bind(bind_clear_search_field,clear_search_field)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_clear_search_field)
+		try:
+			search_field.bind(bind_paste_search_field,paste_search_field)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_paste_search_field)
+		# Кнопка для "чайников", заменяет Enter в search_field
+		button_search=tk.Button(frame_panel,text=mes.search)
+		button_search.bind('<Return>',go_search)
+		button_search.bind('<KP_Enter>',go_search)
+		button_search.bind('<space>',go_search)
+		button_search.bind('<ButtonRelease-1>',go_search)
+		button_search.pack(side='left')
+		# Выпадающий список с вариантами направлений перевода
+		var=tk.StringVar(top)
+		var.set(cur_pair)
+		option_menu=tk.OptionMenu(frame_panel,var,*pairs,command=change_pair).pack(side='left',anchor='center')
+		# Кнопка включения/отключения истории
+		button_history=tk.Button(frame_panel,text=mes.history)
+		button_history.bind('<ButtonRelease-1>',toggle_history)
+		button_history.bind('<Return>',toggle_history)
+		button_history.bind('<KP_Enter>',toggle_history)
+		button_history.bind('<space>',toggle_history)
+		try:
+			button_history.bind(bind_clear_history,clear_history)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_clear_history)
+		button_history.pack(side='left')
+		# Кнопка "Буфер обмена"
+		if db['mode']=='clipboard':
+			button_clipboard=tk.Button(frame_panel,text=mes.watch_clipboard,fg='red')
+		else:
+			button_clipboard=tk.Button(frame_panel,text=mes.watch_clipboard)
+		button_clipboard.bind('<ButtonRelease-1>',watch_clipboard)
+		button_clipboard.bind('<Return>',watch_clipboard)
+		button_clipboard.bind('<KP_Enter>',watch_clipboard)
+		button_clipboard.bind('<space>',watch_clipboard)
+		button_clipboard.pack(side='left')
+		# Кнопка "Открыть в браузере"
+		button_browser=tk.Button(frame_panel,text=mes.in_browser)
+		button_browser.bind('<ButtonRelease-1>',open_in_browser)
+		button_browser.bind('<Return>',open_in_browser)
+		button_browser.bind('<KP_Enter>',open_in_browser)
+		button_browser.bind('<space>',open_in_browser)
+		button_browser.pack(side='left')
+		# Кнопка переключения языка интерфейса
+		button_ui_lang=tk.Button(frame_panel,text=mes.ui_lang)
+		button_ui_lang.bind('<ButtonRelease-1>',change_ui_lang)
+		button_ui_lang.bind('<Return>',change_ui_lang)
+		button_ui_lang.bind('<KP_Enter>',change_ui_lang)
+		button_ui_lang.bind('<space>',change_ui_lang)
+		button_ui_lang.pack(side='left')
+		# Кнопка "О программе"
+		button_about=tk.Button(frame_panel,text=mes.about,command=show_about)
+		button_about.bind('<ButtonRelease-1>',show_about) 
+		button_about.bind('<Return>',show_about)
+		button_about.bind('<KP_Enter>',show_about)
+		button_about.bind('<space>',show_about)
+		button_about.pack(side='left')
+		# Кнопка "Сохранить"
+		button_save=tk.Button(frame_panel,text=mes.save,command=save_article)
+		button_save.bind('<ButtonRelease-1>',save_article)
+		button_save.bind('<Return>',save_article)
+		button_save.bind('<KP_Enter>',save_article)
+		button_save.bind('<space>',save_article)
+		button_save.pack(side='left')
+		# Кнопка "Поиск в статье"
+		button_search_art=tk.Button(frame_panel,text=mes.search_article,command=re_search_article)
+		# Здесь, в отличие от других bind, почему-то не передается event, поэтому работает только lambda
+		button_search_art.bind('<ButtonRelease-1>',lambda e:re_search_article(None))
+		button_search_art.bind('<Return>',lambda e:re_search_article(None))
+		button_search_art.bind('<KP_Enter>',lambda e:re_search_article(None))
+		button_search_art.bind('<space>',lambda e:re_search_article(None))
+		button_search_art.pack(side='left')
+		# Кнопка выхода
+		button_quit=tk.Button(frame_panel,text=mes.x,command=quit_now)
+		button_quit.bind('<ButtonRelease-1>',quit_now) 
+		button_quit.bind('<Return>',quit_now)
+		button_quit.bind('<KP_Enter>',quit_now)
+		button_quit.bind('<space>',quit_now)
+		button_quit.pack(side='right')
+		# Перейти на предыдущую/следующую статью
+		try:
+			top.bind(bind_go_back,go_back)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_go_back)
+		try:
+			top.bind(bind_go_forward,go_forward)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_go_forward)
 		frame=tk.Frame(top)
 		frame.pack(expand=1,fill='both')
 		#scrollbar=tk.Scrollbar(frame,repeatinterval=1000,jump=1,repeatdelay=1000)
@@ -2659,23 +2960,19 @@ def article_field(db,Standalone=False):
 			txt.bind(bind_go_url_alt2,go_url)
 		except tk.TclError:
 			Warning(cur_func,mes.wrong_keybinding % bind_go_url_alt2)
-		if Standalone:
-			widget=top
-			search_field.focus_force()
-		else:
+		search_field.focus_force()
+		if not Standalone:
 			# Для выхода нельзя использовать Return, поскольку это конфликтует с Shift-Enter. Поэтому оставляем только Escape.
 			top.bind('<Escape>',quit_now)
-			widget=txt
-			txt.focus_force()
 		try:
-			widget.bind(bind_copy_sel,copy_sel)
+			top.bind(bind_copy_sel,copy_sel)
 		except tk.TclError:
 			Warning(cur_func,mes.wrong_keybinding % bind_copy_sel)
 		try:
-			widget.bind(bind_copy_sel_alt,copy_sel)
+			top.bind(bind_copy_sel_alt,copy_sel)
 		except tk.TclError:
 			Warning(cur_func,mes.wrong_keybinding % bind_copy_sel_alt)
-		# ПКМ используется еще для очистки Истории, поэтому при Standalone нельзя использовать top
+		# ПКМ используется еще для очистки Истории, поэтому нельзя использовать top
 		try:
 			txt.bind(bind_copy_sel_alt2,copy_sel)
 		except tk.TclError:
@@ -2693,16 +2990,44 @@ def article_field(db,Standalone=False):
 					# Привязка к top может конфликтовать со строкой поиска
 					txt.bind(bind_close_top,close_top)
 				else:
-					top.bind(bind_close_top,quit_now)
+					txt.bind(bind_close_top,quit_top)
 			except tk.TclError:
 				Warning(cur_func,mes.wrong_keybinding % bind_close_top)
 		try:
 			top.bind(bind_quit_now,quit_now)
 		except tk.TclError:
 			Warning(cur_func,mes.wrong_keybinding % bind_quit_now)
+		try:
+			top.bind(bind_search_article,search_article)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_search_article)
+		try:
+			top.bind(bind_re_search_article,re_search_article)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_re_search_article)
+		try:
+			top.bind(bind_reload_article,close_top)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_reload_article)
+		try:
+			top.bind(bind_save_article,save_article)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_save_article)
+		try:
+			top.bind('Alt-F4',quit_top)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % 'Alt-F4')
+		try:
+			top.bind(bind_search_field,lambda e:search_field.focus_force())
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_search_field)
+		try:
+			top.bind(bind_show_about,show_about)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_show_about)
 		# Выделение первого признака
 		if db['mode']=='skip':
-			res[0]=db['last']
+			res[0]=db['last_sel']
 		select_term()
 		top.wait_window()
 	return db
@@ -2715,20 +3040,7 @@ def article_loop(Standalone=False):
 	else:
 		root.tk.call('wm','iconphoto',root._w,tk.PhotoImage(file=icon_mclient))
 		db={}
-		if Standalone:
-			db['FirstLaunch']=True
-			db['search']=mes.welcome
-		else:
-			db['FirstLaunch']=False
-			# Копирование из окна в Linux провоцирует зависание программы
-			if UsePaste:
-				db['search']=text_field_small_edit(mes.search_word,clipboard_paste(),Insist=True)
-			else:
-				db['search']=text_field_small(mes.search_word,Insist=True)
-			db['search']=apply_autocor(db['search'])
-			clipboard_copy(db['search'])
-			root.title(mes.searching)
-			root.update()
+		db['search']=mes.welcome
 		if AbortAll==[True]:
 			log(cur_func,lev_warn,mes.abort_func % cur_func)
 		else:
@@ -2737,6 +3049,9 @@ def article_loop(Standalone=False):
 			db['Quit']=False
 			db['ShowHistory']=False
 			while True:
+				if 'search_article' in db:
+					del db['search_article']
+				db['search_article_pos']=0
 				if db['Quit']:
 					if Standalone:
 						log(cur_func,lev_info,mes.goodbye)
@@ -2777,8 +3092,9 @@ def article_loop(Standalone=False):
 					db=analyse_tags(db)
 					db=prepare_search(db)
 				db=article_field(db,Standalone=Standalone)
-				if Standalone and db['mode']!='skip' and not db['search'] in db['history']:
+				if db['mode']!='skip' and not db['search'] in db['history']:
 					db['history'].append(db['search'])
+				db['FirstLaunch']=False
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # I removed extra code, Standalone=False will not work
