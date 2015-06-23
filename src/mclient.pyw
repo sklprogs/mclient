@@ -21,7 +21,7 @@ import eg_mod as eg
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='3.5 (in progress)'
+build_ver='3.5'
 config_file_root='main.cfg'
 root=tk.Tk()
 
@@ -189,6 +189,17 @@ def true_dirname(path,UseLog=True):
 	if UseLog:
 		log(cur_func,lev_debug,mes.full_path2 % (path,curdir))
 	return curdir
+	
+# Вернуть расширение файла с точкой
+def get_ext(file):
+	cur_func=sys._getframe().f_code.co_name
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+		return ''
+	else:
+		func_res=os.path.splitext(file)[1]
+		log(cur_func,lev_debug,str(func_res))
+		return func_res
 
 parser=SafeConfigParser()
 # Должен лежать в одном каталоге с программой
@@ -363,8 +374,10 @@ bind_clear_history=load_option(SectionVariables,'bind_clear_history')
 bind_close_top=load_option(SectionVariables,'bind_close_top')
 #bind_quit_now='<Control-q>'
 bind_quit_now=load_option(SectionVariables,'bind_quit_now')
-#bind_search_article='<F3>'
-bind_search_article=load_option(SectionVariables,'bind_search_article')
+#bind_search_article_forward='<F3>'
+bind_search_article_forward=load_option(SectionVariables,'bind_search_article_forward')
+#bind_search_article_backward='<Shift-F3>'
+bind_search_article_backward=load_option(SectionVariables,'bind_search_article_backward')
 #bind_re_search_article='<Control-F3>' #'<Control-f>'
 bind_re_search_article=load_option(SectionVariables,'bind_re_search_article')
 #bind_reload_article='<F5>' #'<Control-r>'
@@ -1098,6 +1111,10 @@ def dialog_save_file(text,filetypes=((mes.plain_text,'.txt'),(mes.webpage,'.htm'
 			if Critical:
 				AbortAll[0]=True
 		else:
+			# На Linux добавляется расширение после asksaveasfilename, на Windows - нет. Мы не можем понять, что выбрал пользователь, поскольку asksaveasfilename возвращает только имя файла. Поэтому, если никакого разрешения нет, добавляем '.htm' в надежде, что браузер нормально откроет текстовый файл.
+			# ВНИМАНИЕ: это сработает для обычного текста и для веб-страниц, с другими типами могут быть проблемы.
+			if empty(get_ext(file)):
+				file+='.htm'
 			# rewrite (AskRewrite) не задействуем, поскольку наличие файла уже проверяется на этапе asksaveasfilename()
 			write_file(file,text,mode='w',Silent=False,Critical=Critical,AskRewrite=False)
 	log(cur_func,lev_debug,mes.writing % str(file))
@@ -2029,10 +2046,15 @@ def article_field(db,Standalone=False):
 			db['mode']='search'
 			if db['search']=='':
 				pass
-			# Скопировать предпоследний запрос в буфер и вставить его в строку поиска (например, для корректировки)
-			elif db['search']==repeat_sign or db['search']==repeat_sign2:
+			# Скопировать предпоследний запрос в буфер и вставить его в строку поиска (например, для перехода на этот запрос еще раз)
+			elif db['search']==repeat_sign2:
 				if len(db['history']) > 1:
 					clipboard_copy(db['history'][-2])
+					paste_search_field(None)
+			# Скопировать последний запрос в буфер и вставить его в строку поиска (например, для корректировки)
+			elif db['search']==repeat_sign:
+				if len(db['history']) > 0:
+					clipboard_copy(db['history'][-1])
 					paste_search_field(None)
 			else:
 				# Обновляем индекс текущего запроса при добавлении элемента для поиска
@@ -2103,11 +2125,20 @@ def article_field(db,Standalone=False):
 			return db
 		#----------------------------------------------------------------------
 		# Вернуть номер страницы в зависимости от координат ползунка
-		def detect_page():
+		def detect_page(mode='coor'): # 'coor', 'term_no'
 			cur_func=sys._getframe().f_code.co_name
-			for i in range(db['coor_db']['pages']['num']):
-				if db['cur_scroll_pos'] >= db['scroll_poses'][i][0] and db['cur_scroll_pos'] <= db['scroll_poses'][i][1]:
-					break
+			# Инициализируем i, иначе при i=0 далее возникнет ошибка присваивания
+			i=0
+			if mode=='coor':
+				for i in range(db['coor_db']['pages']['num']):
+					if db['cur_scroll_pos'] >= db['scroll_poses'][i][0] and db['cur_scroll_pos'] <= db['scroll_poses'][i][1]:
+						break
+			elif mode=='term_no':
+				for i in range(db['coor_db']['pages']['num']):
+					if res[0] >= db['coor_db']['pages'][i]['up']['num'] and res[0] <= db['coor_db']['pages'][i]['down']['num']:
+						break
+			else:
+				ErrorMessage(cur_func,mes.unknown_mode % (str(mode),'coor, term_no'))
 			db['coor_db']['cur_page_no']=i
 			log(cur_func,lev_debug,str(db['coor_db']['cur_page_no']))
 		#----------------------------------------------------------------------
@@ -2628,39 +2659,54 @@ def article_field(db,Standalone=False):
 				close_top(event)
 		#----------------------------------------------------------------------
 		# Найти слово/слова в статье
-		def search_article(event):
+		def search_article(direction='forward'): # clear, forward, backward
 			cur_func=sys._getframe().f_code.co_name
-			if not 'search_article_pos' in db:
-				db['search_article_pos']=0
-			if not 'search_article' in db:
-				db['search_article']=text_field_small(title=mes.search_str) #search_field.get()
-				db['search_article']=db['search_article'].strip(' ').strip(dlb)
-				root.withdraw()
-			if not empty(db['search_article']):
-				db['search_article']=db['search_article'].lower()
-				if db['search_article_pos'] < db['terms']['num']-1:
-					i=db['search_article_pos']+1
-				else:
-					i=0
-				while i < db['terms']['num']:
-					if db['search_article'] in db['terms']['phrases'][i].lower():
-						res[0]=i
-						db['search_article_pos']=i
-						break
-					i+=1
-					# Достигнут конец статьи, начинаем заново
-					if i==db['terms']['num']:
-						db['search_article_pos']=0
-				shift_screen()
-				select_term()
-		#----------------------------------------------------------------------
-		# Перезапустить поиск в статье по другому слову
-		def re_search_article(event):
-			cur_func=sys._getframe().f_code.co_name
-			db['search_article_pos']=0
-			if 'search_article' in db:
-				del db['search_article']
-			search_article(event)
+			if direction=='clear': # Начать поиск заново
+				if 'search_list' in db:
+					del db['search_list']
+				direction='forward'
+			elif direction!='forward' and direction!='backward':
+				ErrorMessage(cur_func,mes.unknown_mode % (str(direction),'clear, forward, backward'))
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				# Создаем начальные значения
+				if not 'search_list' in db:
+					search_str=text_field_small(title=mes.search_str) #search_field.get()
+					search_str=search_str.strip(' ').strip(dlb)
+					root.withdraw()
+					if not empty(search_str):
+						# Создать список позиций всех совпадений по поиску в статье
+						db['search_list']=[]
+						i=0
+						while i < db['terms']['num']:
+							if search_str in db['terms']['phrases'][i].lower():
+								db['search_list'].append(i)
+							i+=1
+						if len(db['search_list']) > 0:
+							if direction=='forward':
+								# Номер текущего выделенного совпадения ('search_article_pos') в списке совпадений ('search_list')
+								db['search_article_pos']=-1
+							elif direction=='backward':
+								db['search_article_pos']=len(db['search_list'])
+				if 'search_list' in db:
+					# Продолжаем поиск с предыдущего места
+					if len(db['search_list']) > 0:
+						if direction=='forward':
+							if db['search_article_pos']+1 < len(db['search_list']):
+								db['search_article_pos']+=1
+							else:
+								db['search_article_pos']=0
+						elif direction=='backward':
+							if db['search_article_pos'] > 0:
+								db['search_article_pos']-=1
+							else:
+								db['search_article_pos']=len(db['search_list'])-1
+						res[0]=db['search_list'][db['search_article_pos']]
+						# Нужно дополнительно определять страницу, shift_screen + select_term работают неточно без указания доп. параметров, некоторые из которых, я, похоже, указать забыл
+						detect_page(mode='term_no')
+						shift_screen(mode='still')
+						select_term(ForceScreenFit=False)
 		#----------------------------------------------------------------------
 		# Сохранить статью на диск
 		def save_article(event):
@@ -2670,7 +2716,7 @@ def article_field(db,Standalone=False):
 				if opt==mes.save_article_as_html:
 					# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
 					# Также меняем сокращенные гиперссылки на полные, чтобы они работали и в локальном файле.
-					dialog_save_file(db['html'].replace('charset=windows-1251"','charset=utf-8"').replace('<a href="m.exe?','<a href="'+online_url_root),filetypes=((mes.webpage,'.htm'),(mes.webpage,'.html'),(mes.all_files,'*')),Critical=False)
+					dialog_save_file(db['html'].replace('charset=windows-1251"','charset=utf-8"').replace('<a href="m.exe?','<a href="'+online_url_root).replace('../c/m.exe?',online_url_root),filetypes=((mes.webpage,'.htm'),(mes.webpage,'.html'),(mes.all_files,'*')),Critical=False)
 				elif opt==mes.save_article_as_txt:
 					dialog_save_file(db['page'],filetypes=((mes.plain_text,'.txt'),(mes.all_files,'*')),Critical=False)
 				elif opt==mes.copy_article_html:
@@ -2807,12 +2853,11 @@ def article_field(db,Standalone=False):
 		button_save.bind('<space>',save_article)
 		button_save.pack(side='left')
 		# Кнопка "Поиск в статье"
-		button_search_art=tk.Button(frame_panel,text=mes.search_article,command=re_search_article)
-		# Здесь, в отличие от других bind, почему-то не передается event, поэтому работает только lambda
-		button_search_art.bind('<ButtonRelease-1>',lambda e:re_search_article(None))
-		button_search_art.bind('<Return>',lambda e:re_search_article(None))
-		button_search_art.bind('<KP_Enter>',lambda e:re_search_article(None))
-		button_search_art.bind('<space>',lambda e:re_search_article(None))
+		button_search_art=tk.Button(frame_panel,text=mes.search_article,command=search_article)
+		button_search_art.bind('<ButtonRelease-1>',lambda e:search_article(direction='clear'))
+		button_search_art.bind('<Return>',lambda e:search_article(direction='clear'))
+		button_search_art.bind('<KP_Enter>',lambda e:search_article(direction='clear'))
+		button_search_art.bind('<space>',lambda e:search_article(direction='clear'))
 		button_search_art.pack(side='left')
 		# Кнопка выхода
 		button_quit=tk.Button(frame_panel,text=mes.x,command=quit_now)
@@ -2998,11 +3043,15 @@ def article_field(db,Standalone=False):
 		except tk.TclError:
 			Warning(cur_func,mes.wrong_keybinding % bind_quit_now)
 		try:
-			top.bind(bind_search_article,search_article)
+			top.bind(bind_search_article_forward,lambda e:search_article(direction='forward'))
 		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_search_article)
+			Warning(cur_func,mes.wrong_keybinding % bind_search_article_forward)
 		try:
-			top.bind(bind_re_search_article,re_search_article)
+			top.bind(bind_search_article_backward,lambda e:search_article(direction='backward'))
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % bind_search_article_backward)
+		try:
+			top.bind(bind_re_search_article,lambda e:search_article(direction='clear'))
 		except tk.TclError:
 			Warning(cur_func,mes.wrong_keybinding % bind_re_search_article)
 		try:
@@ -3049,9 +3098,8 @@ def article_loop(Standalone=False):
 			db['Quit']=False
 			db['ShowHistory']=False
 			while True:
-				if 'search_article' in db:
-					del db['search_article']
-				db['search_article_pos']=0
+				if 'search_list' in db:
+					del db['search_list']
 				if db['Quit']:
 					if Standalone:
 						log(cur_func,lev_info,mes.goodbye)

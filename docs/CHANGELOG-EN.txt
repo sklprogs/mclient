@@ -1,4 +1,4 @@
-- Add a case-insensitive search in an article (Control-F3 - new search, F3 - new search/search down)
+- Add a case-insensitive search in an article (Control-F3 - new search, F3 - new search/search down, Shift-F3 - search up)
 - F5 to reload the article
 - F2 to save to disk or copy the article text or code to clipboard
 - Buttons 'Save' and 'Search in article'
