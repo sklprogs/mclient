@@ -1,6 +1,1 @@
-- Add a case-insensitive search in an article (Control-F3 - new search, F3 - new search/search down, Shift-F3 - search up)
-- F5 to reload the article
-- F2 to save to disk or copy the article text or code to clipboard
-- Buttons 'Save' and 'Search in article'
-- Paste the previous request to the search field and copy it to clipboard (input '!' (repeat_sign) or '!!' (repeat_sign2) to the clipboard and press Enter)
-- Add new hotkeys (F1 - 'About', etc.)
+- Add button images (to use text buttons, set TextButtons=1 in the config file)

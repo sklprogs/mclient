@@ -21,7 +21,7 @@ import eg_mod as eg
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='3.5'
+build_ver='3.6'
 config_file_root='main.cfg'
 root=tk.Tk()
 
@@ -113,6 +113,10 @@ InternalDebug=False
 AbortAll=[False]
 # Список символов, которые можно считать за буквы.
 allowed_syms=['°']
+sizes={}
+sizes['top']={}
+sizes['top']['width']=0
+sizes['top']['height']=0
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Placeholders
@@ -148,7 +152,7 @@ def ErrorMessage(cur_func='MAIN',cur_mes=err_mes_empty_error,Critical=True):
 	root.deiconify()
 
 # Проверить существование файла
-def exist(file,Critical=True):
+def exist(file,Silent=True,Critical=True):
 	cur_func=sys._getframe().f_code.co_name
 	if os.path.exists(file):
 		Success=True
@@ -302,18 +306,21 @@ font_comments=load_option(SectionVariables,'font_comments')
 # Принудительно задать размер окна (работает только при AlwaysMaximize==False)
 #window_size='1024x768'
 window_size=load_option(SectionVariables,'window_size')
-# Путь к иконкам. top.wm_iconbitmap поддерживает только черно-белый XBM. Через PhotoImage удается загрузить только GIF.
-# icon_main='/usr/local/bin/icon_64x64_dic.gif'
-icon_main=bin_dir+sysdiv+load_option(SectionVariables,'icon_main')
-# Путь к иконке mclient
-# icon_mclient='/usr/local/bin/icon_64x64_dic.xbm'
-icon_mclient=load_option(SectionVariables,'icon_mclient')
 # Строка, обозначающая повтор действия
 #repeat_sign='!'
 repeat_sign=load_option(SectionVariables,'repeat_sign')
 # Строка (2), обозначающая повтор действия
 #repeat_sign2='!'
 repeat_sign2=load_option(SectionVariables,'repeat_sign2')
+# Фон подсказки для кнопки. Поддерживаются также понятные для человека названия, например, 'yellow'
+#default_hint_background='#ffffe0'
+default_hint_background=load_option(SectionVariables,'default_hint_background')
+# Подсказка должна появиться выше ('top') кнопки или ниже ('bottom') ее
+#default_hint_direction='top'
+default_hint_direction=load_option(SectionVariables,'default_hint_direction')
+# Цвет рамки подсказки для кнопки
+#default_hint_frame_color='black'
+default_hint_frame_color=load_option(SectionVariables,'default_hint_frame_color')
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Комбинации клавиш или кнопки мыши в mclient
 #bind_get_history='<Double-Button-1>' (ранее '<ButtonRelease-1>')
@@ -389,10 +396,76 @@ bind_search_field=load_option(SectionVariables,'bind_search_field')
 #bind_show_about='<F1>'
 bind_show_about=load_option(SectionVariables,'bind_show_about')
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Значки
+# top.wm_iconbitmap поддерживает только черно-белый XBM. Через PhotoImage удается загрузить только GIF.
+# icon_main='/usr/local/bin/icon_36x36_dic.gif'
+icon_main=bin_dir+sysdiv+load_option(SectionVariables,'icon_main')
+# icon_mclient='/usr/local/bin/icon_36x36_dic.gif'
+icon_mclient=bin_dir+sysdiv+load_option(SectionVariables,'icon_mclient')
+#icon_go_search='icon_36x36_go_search.gif' #'/usr/local/bin/icon_36x36_go_search.gif'
+icon_go_search=bin_dir+sysdiv+load_option(SectionVariables,'icon_go_search')
+#icon_toggle_history='icon_36x36_toggle_history.gif'
+icon_toggle_history=bin_dir+sysdiv+load_option(SectionVariables,'icon_toggle_history')
+#icon_watch_clipboard_on='icon_36x36_watch_clipboard_on.gif'
+icon_watch_clipboard_on=bin_dir+sysdiv+load_option(SectionVariables,'icon_watch_clipboard_on')
+#icon_watch_clipboard_off='icon_36x36_watch_clipboard_off.gif'
+icon_watch_clipboard_off=bin_dir+sysdiv+load_option(SectionVariables,'icon_watch_clipboard_off')
+#icon_open_in_browser='icon_36x36_open_in_browser.gif'
+icon_open_in_browser=bin_dir+sysdiv+load_option(SectionVariables,'icon_open_in_browser')
+#icon_change_ui_lang='icon_36x36_change_ui_lang.gif'
+icon_change_ui_lang=bin_dir+sysdiv+load_option(SectionVariables,'icon_change_ui_lang')
+#icon_show_about='icon_36x36_show_about.gif'
+icon_show_about=bin_dir+sysdiv+load_option(SectionVariables,'icon_show_about')
+#icon_save_article='icon_36x36_save_article.gif'
+icon_save_article=bin_dir+sysdiv+load_option(SectionVariables,'icon_save_article')
+#icon_search_article='icon_36x36_search_article.gif'
+icon_search_article=bin_dir+sysdiv+load_option(SectionVariables,'icon_search_article')
+#icon_quit_now='icon_36x36_quit_now.gif'
+icon_quit_now=bin_dir+sysdiv+load_option(SectionVariables,'icon_quit_now')
+#icon_go_back='icon_36x36_go_back.gif'
+icon_go_back=bin_dir+sysdiv+load_option(SectionVariables,'icon_go_back')
+#icon_go_back_off='icon_36x36_go_back_off.gif'
+icon_go_back_off=bin_dir+sysdiv+load_option(SectionVariables,'icon_go_back_off')
+#icon_go_forward='icon_36x36_go_forward.gif'
+icon_go_forward=bin_dir+sysdiv+load_option(SectionVariables,'icon_go_forward')
+#icon_go_forward_off='icon_36x36_go_forward_off.gif'
+icon_go_forward_off=bin_dir+sysdiv+load_option(SectionVariables,'icon_go_forward_off')
+#icon_clear_search_field='icon_36x36_clear_search_field.gif'
+icon_clear_search_field=bin_dir+sysdiv+load_option(SectionVariables,'icon_clear_search_field')
+#icon_clear_history='icon_36x36_clear_history.gif'
+icon_clear_history=bin_dir+sysdiv+load_option(SectionVariables,'icon_clear_history')
+#icon_paste='icon_36x36_paste.gif'
+icon_paste=bin_dir+sysdiv+load_option(SectionVariables,'icon_paste')
+#icon_reload='icon_36x36_reload.gif'
+icon_reload=bin_dir+sysdiv+load_option(SectionVariables,'icon_reload')
+#icon_repeat_sign='icon_36x36_repeat_sign.gif'
+icon_repeat_sign=bin_dir+sysdiv+load_option(SectionVariables,'icon_repeat_sign')
+#icon_repeat_sign_off='icon_36x36_repeat_sign_off.gif'
+icon_repeat_sign_off=bin_dir+sysdiv+load_option(SectionVariables,'icon_repeat_sign_off')
+#icon_repeat_sign2='icon_36x36_repeat_sign2.gif'
+icon_repeat_sign2=bin_dir+sysdiv+load_option(SectionVariables,'icon_repeat_sign2')
+#icon_repeat_sign2_off='icon_36x36_repeat_sign2_off.gif'
+icon_repeat_sign2_off=bin_dir+sysdiv+load_option(SectionVariables,'icon_repeat_sign2_off')
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Загрузка раздела [Integers] конфигурационного файла
 # Число пикселей с краев окна, текст в области которых считается нечитаемым и должен быть перенесен
 # Чтобы отключить, выставьте 0
 pixel_hack=load_option_int(SectionIntegers,'pixel_hack')
+# Высота и ширина по умолчанию квадратной кнопки
+#default_button_size=36
+default_button_size=load_option_int(SectionIntegers,'default_button_size')
+# Задержка перед показом подсказки для кнопки, мс
+#default_hint_delay=800
+default_hint_delay=load_option_int(SectionIntegers,'default_hint_delay')
+# Ширина всплывающей подсказки; значение подобрано опытным путем
+#default_hint_width=280
+default_hint_width=load_option_int(SectionIntegers,'default_hint_width')
+# Высота всплывающей подсказки; значение подобрано опытным путем
+#default_hint_height=30
+default_hint_height=load_option_int(SectionIntegers,'default_hint_height')
+# Ширина рамки для границ всплывающей подсказки для кнопки
+#default_hint_border_width=2
+default_hint_border_width=load_option_int(SectionIntegers,'default_hint_border_width')
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Загрузка раздела [Booleans] конфигурационного файла
 # Следует ли всегда отображать в окне mclient только название и версию клиента (True), или же отображать текущий запрос (False); при 1-м запросе всегда указывается название и версия клиента
@@ -406,6 +479,12 @@ AlwaysMaximize=load_option_bool(SectionBooleans,'AlwaysMaximize')
 TermsColoredSep=load_option_bool(SectionBooleans,'TermsColoredSep')
 #ShowWallet=True
 ShowWallet=load_option_bool(SectionBooleans,'ShowWallet')
+# Всегда создавать кнопки без графики (True), либо создавать кнопки с графикой, если указан путь к значку (False)
+#TextButtons=False
+TextButtons=load_option_bool(SectionBooleans,'TextButtons')
+# Создавать кнопки для вспомогательных действий, для которых достаточно горячих клавиш
+#UseOptionalButtons=1
+UseOptionalButtons=load_option_bool(SectionBooleans,'UseOptionalButtons')
 
 # Вопрос
 def Question(cur_func='MAIN',cur_mes=err_mes_empty_question):
@@ -1989,7 +2068,170 @@ def get_adjacent_term(db,det,direction='right_down'):
 				i-=1
 			log(cur_func,lev_debug,mes.left_term % (term_num,term))
 		return term_num
+
+# Загрузить картинку кнопки
+def load_icon(icon_path,parent_widget,width=default_button_size,height=default_button_size,Silent=False,Critical=True):
+	cur_func=sys._getframe().f_code.co_name
+	button_img=None
+	check_type(cur_func,icon_path,mes.type_str)
+	exist(icon_path,Silent=Silent,Critical=Critical)
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+	else:
+		try:
+			# Нужно указывать виджет: http://stackoverflow.com/questions/23224574/tkinter-create-image-function-error-pyimage1-does-not-exist
+			button_img=tk.PhotoImage(file=icon_path,master=parent_widget,width=width,height=height) # Без 'file=' не сработает!
+		except tk.TclError:
+			mestype(cur_func,mes.button_load_failed % icon_path,Silent=Silent,Critical=Critical)
+	return button_img
 	
+# Привязать горячие клавиши или кнопки мыши к действию
+def create_binding(widget,binding,action):
+	cur_func=sys._getframe().f_code.co_name
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+	else:
+		try:
+			widget.bind(binding,action)
+		except tk.TclError:
+			Warning(cur_func,mes.wrong_keybinding % binding)
+		
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Всплывающие подсказки для кнопок
+# see also 'calltips'
+# based on idlelib.ToolTip
+class ToolTipBase:
+	def __init__(self,button):
+		self.button = button
+		self.tipwindow = None
+		self.id = None
+		self.x = self.y = 0
+		self._id1 = self.button.bind("<Enter>", self.enter)
+		self._id2 = self.button.bind("<Leave>", self.leave)
+		self._id3 = self.button.bind("<ButtonPress>", self.leave)
+	#--------------------------------------------------------------------------
+	def enter(self, event=None):
+		self.schedule()
+	#--------------------------------------------------------------------------
+	def leave(self, event=None):
+		self.unschedule()
+		self.hidetip()
+	#--------------------------------------------------------------------------
+	def schedule(self):
+		self.unschedule()
+		self.id = self.button.after(self.hint_delay, self.showtip)
+	#--------------------------------------------------------------------------
+	def unschedule(self):
+		id = self.id
+		self.id = None
+		if id:
+			self.button.after_cancel(id)
+	#--------------------------------------------------------------------------
+	def showtip(self):
+		cur_func=sys._getframe().f_code.co_name
+		if not 'top' in sizes or not 'width' in sizes['top'] or not 'height' in sizes['top']:
+			ErrorMessage(cur_func,mes.not_enough_input_data)
+		if AbortAll==[True]:
+			log(cur_func,lev_warn,mes.abort_func % cur_func)
+		else:
+			if self.tipwindow:
+				return
+			# The tip window must be completely outside the button; otherwise when the mouse enters the tip window we get a leave event and it disappears, and then we get an enter event and it reappears, and so on forever :-(
+			# Координаты подсказки рассчитываются так, чтобы по горизонтали подсказка и кнопка, несмотря на разные размеры, совпадали бы центрами.
+			x = self.button.winfo_rootx() + self.button.winfo_width()/2 - self.hint_width/2
+			if self.hint_direction=='bottom':
+				y = self.button.winfo_rooty() + self.button.winfo_height() + 1
+			elif self.hint_direction=='top':
+				y = self.button.winfo_rooty() - self.hint_height - 1
+			else:
+				ErrorMessage(cur_func,mes.unknown_mode % (str(self.hint_direction),'top, bottom'))
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				# Позиция подсказки корректируется так, чтобы не выходить за пределы экрана
+				if x + self.hint_width > sizes['top']['width']:
+					log(cur_func,lev_info,mes.wrong_coor % ('x',str(x),str(sizes['top']['width'] - self.hint_width)))
+					x = sizes['top']['width'] - self.hint_width
+				if y + self.hint_height > sizes['top']['height']:
+					log(cur_func,lev_info,mes.wrong_coor % ('y',str(y),str(sizes['top']['height'] - self.hint_height)))
+					y = sizes['top']['height'] - self.hint_height
+				if x < 0:
+					log(cur_func,lev_warn,mes.wrong_coor % ('x',str(x),'0'))
+					x=0
+				if y < 0:
+					log(cur_func,lev_warn,mes.wrong_coor % ('y',str(y),'0'))
+					y=0
+				self.tipwindow = tw = tk.Toplevel(self.button)
+				tw.wm_overrideredirect(1)
+				# "+%d+%d" недостаточно!
+				log(cur_func,lev_info,mes.new_geometry % ('tw',self.hint_width,self.hint_height,x,y))
+				tw.wm_geometry("%dx%d+%d+%d" % (self.hint_width,self.hint_height,x, y))
+				self.showcontents()
+	#--------------------------------------------------------------------------
+	def hidetip(self):
+		tw = self.tipwindow
+		self.tipwindow = None
+		if tw:
+			tw.destroy()
+
+class ToolTip(ToolTipBase):
+	def __init__(self,button,text='Sample text',hint_delay=default_hint_delay,hint_width=default_hint_width,hint_height=default_hint_height,hint_background=default_hint_background,hint_direction=default_hint_direction,hint_border_width=default_hint_border_width,hint_frame_color=default_hint_frame_color,button_side='left'):
+		self.text=text
+		self.hint_delay=hint_delay
+		self.hint_direction=hint_direction
+		self.hint_background=hint_background
+		self.hint_frame_color=hint_frame_color
+		self.hint_height=hint_height
+		self.hint_width=hint_width
+		self.hint_border_width=hint_border_width
+		self.button_side=button_side
+		ToolTipBase.__init__(self,button)
+	#--------------------------------------------------------------------------
+	def showcontents(self):
+		frame=tk.Frame(self.tipwindow,background=self.hint_frame_color,borderwidth=self.hint_border_width)
+		frame.pack()
+		label=tk.Label(frame,text=self.text,justify='center',background=self.hint_background,width=self.hint_width,height=self.hint_height)
+		label.pack() #expand=1,fill='x'
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+# Создать кнопку с различными параметрами
+# expand=1 - увеличить расстояние между кнопками
+def create_button(parent_widget,text,hint,action,expand=0,side='left',fg='black',Silent=False,Critical=True,width=default_button_size,height=default_button_size,bd=0,icon_path='',hint_delay=default_hint_delay,hint_width=default_hint_width,hint_height=default_hint_height,hint_background=default_hint_background,hint_direction=default_hint_direction,hint_border_width=default_hint_border_width,hint_frame_color=default_hint_frame_color):
+	cur_func=sys._getframe().f_code.co_name
+	button=None
+	Success=True # Кнопку удалось инициализировать и упаковать; неудачные привязки не учитываются
+	if AbortAll==[True]:
+		log(cur_func,lev_warn,mes.abort_func % cur_func)
+	else:
+		try:
+			if empty(icon_path) or TextButtons:
+				button=tk.Button(parent_widget,text=text,fg=fg)
+			else:
+				button_img=load_icon(icon_path=icon_path,parent_widget=parent_widget,width=width,height=height,Silent=Silent,Critical=Critical)
+				button=tk.Button(parent_widget,image=button_img,width=width,height=height,bd=bd)
+				button.flag_img=button_img
+		except tk.TclError:
+			Success=False
+			if Critical:
+				AbortAll[0]=True
+		create_binding(button,'<Return>',action)
+		create_binding(button,'<KP_Enter>',action)
+		create_binding(button,'<space>',action)
+		create_binding(button,'<ButtonRelease-1>',action)
+		try:
+			button.pack(expand=expand,side=side)
+		# tk.TclError, AttributeError
+		except:
+			Success=False
+			if Critical:
+				AbortAll[0]=True
+		if Success:
+			ToolTip(button,text=hint,hint_delay=hint_delay,hint_width=hint_width,hint_height=hint_height,hint_background=hint_background,hint_direction=hint_direction,button_side=side)
+		log(cur_func,lev_debug,str(Success))
+		if not Success:
+			mestype(cur_func,mes.button_create_failed % text,Silent=Silent,Critical=Critical)
+	return button
+
 # Определить номера терминов, которые являются пограничными для видимой области
 def aggregate_pages(db):
 	cur_func=sys._getframe().f_code.co_name
@@ -2031,245 +2273,302 @@ def article_field(db,Standalone=False):
 		# Go to the URL of the current search
 		def go_url(event):
 			cur_func=sys._getframe().f_code.co_name
-			db['search']=db['terms']['phrases'][res[0]]
-			db['url']=db['terms']['url'][res[0]]
-			db['mode']='url'
-			db['history_index']=len(db['history'])
-			close_top(event)
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				db['search']=db['terms']['phrases'][res[0]]
+				db['url']=db['terms']['url'][res[0]]
+				db['mode']='url'
+				db['history_index']=len(db['history'])
+				close_top(event)
+		#----------------------------------------------------------------------
+		def insert_repeat_sign(event):
+			cur_func=sys._getframe().f_code.co_name
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				if len(db['history']) > 0:
+					clipboard_copy(db['history'][-1])
+					paste_search_field(None)
+		#----------------------------------------------------------------------
+		def insert_repeat_sign2(event):
+			cur_func=sys._getframe().f_code.co_name
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				if len(db['history']) > 1:
+					clipboard_copy(db['history'][-2])
+					paste_search_field(None)
 		#----------------------------------------------------------------------
 		# Search the selected term online using the entry widget
 		def go_search(event):
 			cur_func=sys._getframe().f_code.co_name
-			search_str=search_field.get()
-			db['search']=search_str.strip(dlb)
-			db['search']=search_str.strip(' ')
-			db['mode']='search'
-			if db['search']=='':
-				pass
-			# Скопировать предпоследний запрос в буфер и вставить его в строку поиска (например, для перехода на этот запрос еще раз)
-			elif db['search']==repeat_sign2:
-				if len(db['history']) > 1:
-					clipboard_copy(db['history'][-2])
-					paste_search_field(None)
-			# Скопировать последний запрос в буфер и вставить его в строку поиска (например, для корректировки)
-			elif db['search']==repeat_sign:
-				if len(db['history']) > 0:
-					clipboard_copy(db['history'][-1])
-					paste_search_field(None)
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
 			else:
-				# Обновляем индекс текущего запроса при добавлении элемента для поиска
-				db['history_index']=len(db['history'])
-				close_top(event)
+				search_str=search_field.get()
+				db['search']=search_str.strip(dlb)
+				db['search']=search_str.strip(' ')
+				db['mode']='search'
+				if db['search']=='':
+					pass
+				# Скопировать предпоследний запрос в буфер и вставить его в строку поиска (например, для перехода на этот запрос еще раз)
+				elif db['search']==repeat_sign2:
+					insert_repeat_sign2(event)
+				# Скопировать последний запрос в буфер и вставить его в строку поиска (например, для корректировки)
+				elif db['search']==repeat_sign:
+					insert_repeat_sign(event)
+				else:
+					# Обновляем индекс текущего запроса при добавлении элемента для поиска
+					db['history_index']=len(db['history'])
+					close_top(event)
 		#----------------------------------------------------------------------
 		# Copy to clipboard
 		def copy_sel(event):
 			cur_func=sys._getframe().f_code.co_name
-			clipboard_copy(db['terms']['phrases'][res[0]])
-			log(cur_func,lev_info,mes.copied_to_clipboard % str(db['terms']['phrases'][res[0]]))
-			if db['mode']=='clipboard':
-				close_top(event)
-				db['mode']='search'
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
 			else:
-				top.iconify()
+				clipboard_copy(db['terms']['phrases'][res[0]])
+				log(cur_func,lev_info,mes.copied_to_clipboard % str(db['terms']['phrases'][res[0]]))
+				if db['mode']=='clipboard':
+					close_top(event)
+					db['mode']='search'
+				else:
+					top.iconify()
 		#----------------------------------------------------------------------
 		# Close the root window without errors
 		def quit_now(event):
 			cur_func=sys._getframe().f_code.co_name
-			db['Quit']=True
-			close_top(event)
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				db['Quit']=True
+				close_top(event)
 		#----------------------------------------------------------------------
 		# Запрос на выход
 		def quit_top():
 			cur_func=sys._getframe().f_code.co_name
-			if db['mode']!='clipboard':
-				#if Question(cur_func,mes.ques_exit):
-				#	log(cur_func,lev_info,mes.goodbye)
-					db['Quit']=True
-			close_top(None)
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				if db['mode']!='clipboard':
+					#if Question(cur_func,mes.ques_exit):
+					#	log(cur_func,lev_info,mes.goodbye)
+						db['Quit']=True
+				close_top(None)
 		#----------------------------------------------------------------------
 		# Определение текущего термина по координатам указателя
 		def mouse_sel(event):
 			cur_func=sys._getframe().f_code.co_name
-			tk_pos=pixels2tk(txt,event.x,event.y,Silent=False,Critical=False)
-			pos=tk2pos(db['db_page'],tk_pos)
-			res[0]=get_adjacent_term(db,pos)
-			select_term(ForceScreenFit=True)
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				tk_pos=pixels2tk(txt,event.x,event.y,Silent=False,Critical=False)
+				pos=tk2pos(db['db_page'],tk_pos)
+				res[0]=get_adjacent_term(db,pos)
+				select_term(ForceScreenFit=True)
 		#----------------------------------------------------------------------
 		# Задействование колеса мыши для пролистывания экрана
 		def mouse_wheel(event):
 			cur_func=sys._getframe().f_code.co_name
-			# В Windows XP delta==-120, однако, в других версиях оно другое
-			if event.num==5 or event.delta < 0:
-				move_page_down(event)
-			# В Windows XP delta==120, однако, в других версиях оно другое
-			if event.num==4 or event.delta > 0:
-				move_page_up(event)
-			return 'break'
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				# В Windows XP delta==-120, однако, в других версиях оно другое
+				if event.num==5 or event.delta < 0:
+					move_page_down(event)
+				# В Windows XP delta==120, однако, в других версиях оно другое
+				if event.num==4 or event.delta > 0:
+					move_page_up(event)
+				return 'break'
 		#----------------------------------------------------------------------
 		# Рассчитать координаты ползунка в зависимости от числа страниц
 		def scrollbar_poses(db):
 			cur_func=sys._getframe().f_code.co_name
-			delim=1/db['coor_db']['pages']['num']
-			# Минимальный шаг, который разграничивает координаты 2 соседних экранов
-			step=0.000000001
-			last_val=0
-			db['scroll_poses']=[]
-			for i in range(db['coor_db']['pages']['num']):
-				if i==0:
-					db['scroll_poses']+=[[last_val,last_val+delim]]
-				else:
-					db['scroll_poses']+=[[last_val+step,last_val+delim]]
-				last_val+=delim
-			log(cur_func,lev_debug,str(db['scroll_poses']))
-			assert(len(db['scroll_poses'])==db['coor_db']['pages']['num'])
-			return db
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				delim=1/db['coor_db']['pages']['num']
+				# Минимальный шаг, который разграничивает координаты 2 соседних экранов
+				step=0.000000001
+				last_val=0
+				db['scroll_poses']=[]
+				for i in range(db['coor_db']['pages']['num']):
+					if i==0:
+						db['scroll_poses']+=[[last_val,last_val+delim]]
+					else:
+						db['scroll_poses']+=[[last_val+step,last_val+delim]]
+					last_val+=delim
+				log(cur_func,lev_debug,str(db['scroll_poses']))
+				assert(len(db['scroll_poses'])==db['coor_db']['pages']['num'])
 		#----------------------------------------------------------------------
 		# Вернуть номер страницы в зависимости от координат ползунка
 		def detect_page(mode='coor'): # 'coor', 'term_no'
 			cur_func=sys._getframe().f_code.co_name
-			# Инициализируем i, иначе при i=0 далее возникнет ошибка присваивания
-			i=0
-			if mode=='coor':
-				for i in range(db['coor_db']['pages']['num']):
-					if db['cur_scroll_pos'] >= db['scroll_poses'][i][0] and db['cur_scroll_pos'] <= db['scroll_poses'][i][1]:
-						break
-			elif mode=='term_no':
-				for i in range(db['coor_db']['pages']['num']):
-					if res[0] >= db['coor_db']['pages'][i]['up']['num'] and res[0] <= db['coor_db']['pages'][i]['down']['num']:
-						break
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
 			else:
-				ErrorMessage(cur_func,mes.unknown_mode % (str(mode),'coor, term_no'))
-			db['coor_db']['cur_page_no']=i
-			log(cur_func,lev_debug,str(db['coor_db']['cur_page_no']))
+				# Инициализируем i, иначе при i=0 далее возникнет ошибка присваивания
+				i=0
+				if mode=='coor':
+					for i in range(db['coor_db']['pages']['num']):
+						if db['cur_scroll_pos'] >= db['scroll_poses'][i][0] and db['cur_scroll_pos'] <= db['scroll_poses'][i][1]:
+							break
+				elif mode=='term_no':
+					for i in range(db['coor_db']['pages']['num']):
+						if res[0] >= db['coor_db']['pages'][i]['up']['num'] and res[0] <= db['coor_db']['pages'][i]['down']['num']:
+							break
+				else:
+					ErrorMessage(cur_func,mes.unknown_mode % (str(mode),'coor, term_no'))
+				db['coor_db']['cur_page_no']=i
+				log(cur_func,lev_debug,str(db['coor_db']['cur_page_no']))
 		#----------------------------------------------------------------------
 		# Задействование ползунка
 		def custom_scroll(*args):
 			cur_func=sys._getframe().f_code.co_name
-			# Если сдвигается сам ползунок, то Tkinter передаст 2 параметра: 'moveto' и offset (оба имеющие тип 'строка', однако, второй параметр на самом деле float).
-			# Если же используются стрелки ползунка, то 1-м параметром будет 'scroll', а 2-м - '1' (направление вниз) или '-1' (направление вверх).
-			def add_page():
-				if db['coor_db']['cur_page_no'] < db['coor_db']['pages']['num']-1:
-					log(cur_func,lev_info,"db['coor_db']['cur_page_no']: %d -> %d" % (db['coor_db']['cur_page_no'],db['coor_db']['cur_page_no']+1))
-					db['coor_db']['cur_page_no']+=1
-			def subtract_page():
-				if db['coor_db']['cur_page_no'] > 0:
-					log(cur_func,lev_info,"db['coor_db']['cur_page_no']: %d -> %d" % (db['coor_db']['cur_page_no'],db['coor_db']['cur_page_no']-1))
-					db['coor_db']['cur_page_no']-=1
-			action=args[0]
-			log(cur_func,lev_info,mes.action % action)
-			offset=scrollbar.get()[0]
-			if offset < 0:
-				offset=0
-			elif offset > 1:
-				offset=1
-			log(cur_func,lev_info,mes.scrollbar_pos % str(offset))
-			if not 'prev_scroll_pos' in db:
-				db['prev_scroll_pos']=0
-				db['cur_scroll_pos']=0
-				db['coor_db']['cur_page_no']=0
-			db['prev_scroll_pos']=db['cur_scroll_pos']
-			db['cur_scroll_pos']=offset
-			log(cur_func,lev_info,"db['prev_scroll_pos']: %s" % str(db['prev_scroll_pos']))
-			log(cur_func,lev_info,"db['cur_scroll_pos']: %s" % str(db['cur_scroll_pos']))
-			# Определяем текущую страницу
-			detect_page()
-			log(cur_func,lev_info,mes.cur_page_no % db['coor_db']['cur_page_no'])
-			if action=='scroll':
-				offset=args[1]
-				if offset=='1':
-					add_page()
-				elif offset=='-1':
-					subtract_page()
-				else:
-					log(cur_func,lev_err,mes.unknown_args % (str(offset),'-1, 1'))
-			elif action=='moveto':
-				if db['cur_scroll_pos'] < 0:
-					log(cur_func,lev_info,mes.cor_scroll % (db['cur_scroll_pos'],0))
-					db['cur_scroll_pos']=0
-				elif db['cur_scroll_pos'] > 1:
-					log(cur_func,lev_info,mes.cor_scroll % (db['cur_scroll_pos'],1))
-					db['cur_scroll_pos']=1
-				if db['cur_scroll_pos'] > db['prev_scroll_pos']:
-					add_page()
-				#elif db['cur_scroll_pos'] < db['prev_scroll_pos']:
-				#	subtract_page()
-				else:
-					log(cur_func,lev_info,mes.scrollbar_still)
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
 			else:
-				Warning(cur_func,mes.unknown_args % (action,'scroll, move_to'))
-			db['prev_scroll_pos']=db['cur_scroll_pos']
-			db['cur_scroll_pos']=db['scroll_poses'][db['coor_db']['cur_page_no']][0]
-			log(cur_func,lev_info,mes.new_values)
-			log(cur_func,lev_info,"db['prev_scroll_pos']: %s" % str(db['prev_scroll_pos']))
-			log(cur_func,lev_info,"db['cur_scroll_pos']: %s" % str(db['cur_scroll_pos']))
-			# Изменяем текущую страницу в соответствии с предыдущими корректировками
-			detect_page()
-			log(cur_func,lev_info,mes.cur_page_no % db['coor_db']['cur_page_no'])
-			shift_screen(mode='still')
-			db['cur_scroll_pos']=db['scroll_poses'][db['coor_db']['cur_page_no']][0]
-			scroll_pos1=db['cur_scroll_pos']
-			scroll_pos2=db['scroll_poses'][db['coor_db']['cur_page_no']][1]
-			if scroll_pos1 < 0:
-				scroll_pos1=0
-			elif scroll_pos1 > 1:
-				scroll_pos1=1
-			if scroll_pos2 < 0:
-				scroll_pos2=0
-			elif scroll_pos2 > 1:
-				scroll_pos2=1
-			scrollbar.set(scroll_pos1,scroll_pos2)
-			select_term()
-			db['prev_scroll_pos']=db['cur_scroll_pos']
-			log(cur_func,lev_info,"db['prev_scroll_pos']: %s" % str(db['prev_scroll_pos']))
-			return 'break'
+				# Если сдвигается сам ползунок, то Tkinter передаст 2 параметра: 'moveto' и offset (оба имеющие тип 'строка', однако, второй параметр на самом деле float).
+				# Если же используются стрелки ползунка, то 1-м параметром будет 'scroll', а 2-м - '1' (направление вниз) или '-1' (направление вверх).
+				def add_page():
+					cur_func=sys._getframe().f_code.co_name
+					if AbortAll==[True]:
+						log(cur_func,lev_warn,mes.abort_func % cur_func)
+					else:
+						if db['coor_db']['cur_page_no'] < db['coor_db']['pages']['num']-1:
+							log(cur_func,lev_info,"db['coor_db']['cur_page_no']: %d -> %d" % (db['coor_db']['cur_page_no'],db['coor_db']['cur_page_no']+1))
+							db['coor_db']['cur_page_no']+=1
+				def subtract_page():
+					cur_func=sys._getframe().f_code.co_name
+					if AbortAll==[True]:
+						log(cur_func,lev_warn,mes.abort_func % cur_func)
+					else:
+						if db['coor_db']['cur_page_no'] > 0:
+							log(cur_func,lev_info,"db['coor_db']['cur_page_no']: %d -> %d" % (db['coor_db']['cur_page_no'],db['coor_db']['cur_page_no']-1))
+							db['coor_db']['cur_page_no']-=1
+				action=args[0]
+				log(cur_func,lev_info,mes.action % action)
+				offset=scrollbar.get()[0]
+				if offset < 0:
+					offset=0
+				elif offset > 1:
+					offset=1
+				log(cur_func,lev_info,mes.scrollbar_pos % str(offset))
+				if not 'prev_scroll_pos' in db:
+					db['prev_scroll_pos']=0
+					db['cur_scroll_pos']=0
+					db['coor_db']['cur_page_no']=0
+				db['prev_scroll_pos']=db['cur_scroll_pos']
+				db['cur_scroll_pos']=offset
+				log(cur_func,lev_info,"db['prev_scroll_pos']: %s" % str(db['prev_scroll_pos']))
+				log(cur_func,lev_info,"db['cur_scroll_pos']: %s" % str(db['cur_scroll_pos']))
+				# Определяем текущую страницу
+				detect_page()
+				log(cur_func,lev_info,mes.cur_page_no % db['coor_db']['cur_page_no'])
+				if action=='scroll':
+					offset=args[1]
+					if offset=='1':
+						add_page()
+					elif offset=='-1':
+						subtract_page()
+					else:
+						log(cur_func,lev_err,mes.unknown_args % (str(offset),'-1, 1'))
+				elif action=='moveto':
+					if db['cur_scroll_pos'] < 0:
+						log(cur_func,lev_info,mes.cor_scroll % (db['cur_scroll_pos'],0))
+						db['cur_scroll_pos']=0
+					elif db['cur_scroll_pos'] > 1:
+						log(cur_func,lev_info,mes.cor_scroll % (db['cur_scroll_pos'],1))
+						db['cur_scroll_pos']=1
+					if db['cur_scroll_pos'] > db['prev_scroll_pos']:
+						add_page()
+					#elif db['cur_scroll_pos'] < db['prev_scroll_pos']:
+					#	subtract_page()
+					else:
+						log(cur_func,lev_info,mes.scrollbar_still)
+				else:
+					Warning(cur_func,mes.unknown_args % (action,'scroll, move_to'))
+				db['prev_scroll_pos']=db['cur_scroll_pos']
+				db['cur_scroll_pos']=db['scroll_poses'][db['coor_db']['cur_page_no']][0]
+				log(cur_func,lev_info,mes.new_values)
+				log(cur_func,lev_info,"db['prev_scroll_pos']: %s" % str(db['prev_scroll_pos']))
+				log(cur_func,lev_info,"db['cur_scroll_pos']: %s" % str(db['cur_scroll_pos']))
+				# Изменяем текущую страницу в соответствии с предыдущими корректировками
+				detect_page()
+				log(cur_func,lev_info,mes.cur_page_no % db['coor_db']['cur_page_no'])
+				shift_screen(mode='still')
+				db['cur_scroll_pos']=db['scroll_poses'][db['coor_db']['cur_page_no']][0]
+				scroll_pos1=db['cur_scroll_pos']
+				scroll_pos2=db['scroll_poses'][db['coor_db']['cur_page_no']][1]
+				if scroll_pos1 < 0:
+					scroll_pos1=0
+				elif scroll_pos1 > 1:
+					scroll_pos1=1
+				if scroll_pos2 < 0:
+					scroll_pos2=0
+				elif scroll_pos2 > 1:
+					scroll_pos2=1
+				scrollbar.set(scroll_pos1,scroll_pos2)
+				select_term()
+				db['prev_scroll_pos']=db['cur_scroll_pos']
+				log(cur_func,lev_info,"db['prev_scroll_pos']: %s" % str(db['prev_scroll_pos']))
+				return 'break'
 		#----------------------------------------------------------------------
 		# Выделение терминов
 		def select_term(ForceScreenFit=True):
 			cur_func=sys._getframe().f_code.co_name
-			if db['terms']['num'] > 0 and db['terms']['num'] > res[0]:
-				if ForceScreenFit:
-					if not fits_screen():
-						log(cur_func,lev_warn,mes.visible_selection)
-						if db['coor_db']['direction']=='right_down':
-							res[0]=get_adjacent_term(db,db['coor_db']['pages'][db['coor_db']['cur_page_no']]['up']['pos'],db['coor_db']['direction'])
-						elif db['coor_db']['direction']=='left_up':
-							res[0]=get_adjacent_term(db,db['coor_db']['pages'][db['coor_db']['cur_page_no']]['down']['pos'],db['coor_db']['direction'])
-				pos1=db['terms']['pos'][res[0]][0]
-				pos2=db['terms']['pos'][res[0]][1]
-				pos1=pos2tk(db['db_page'],pos1)
-				pos2=pos2tk(db['db_page'],pos2,Even=True)
-				# Только 1 термин должен быть выделен, поэтому предварительно удаляем тэг выделения по всему тексту.
-				try:
-					txt.tag_remove('cur_term','1.0','end')
-				except:
-					log(cur_func,lev_err,'Не удалось удалить тэг "%s" в диапазоне %s-%s!' % ('cur_term','1.0','end'))
-				try:
-					txt.tag_add('cur_term',pos1,pos2)
-					log(cur_func,lev_debug,mes.tag_added % ('cur_term',pos1,pos2))
-				except:
-					mestype(cur_func,mes.tag_addition_failure % ('cur_term',pos1,pos2),Silent=False,Critical=False)
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
 			else:
-				log(cur_func,lev_warn,mes.not_enough_input_data)
-			# 2. Настройка тэга
-			try:
-				txt.tag_config('cur_term',background=color_terms_sel,font=font_terms_sel)
-				log(cur_func,lev_debug,mes.tag_config % ('cur_term',color_terms_sel,font_terms_sel))
-			except:
-				mestype(cur_func,mes.tag_config_failure % ('cur_term',color_terms_sel,font_terms_sel),Silent=False,Critical=False)
+				if db['terms']['num'] > 0 and db['terms']['num'] > res[0]:
+					if ForceScreenFit:
+						if not fits_screen():
+							log(cur_func,lev_warn,mes.visible_selection)
+							if db['coor_db']['direction']=='right_down':
+								res[0]=get_adjacent_term(db,db['coor_db']['pages'][db['coor_db']['cur_page_no']]['up']['pos'],db['coor_db']['direction'])
+							elif db['coor_db']['direction']=='left_up':
+								res[0]=get_adjacent_term(db,db['coor_db']['pages'][db['coor_db']['cur_page_no']]['down']['pos'],db['coor_db']['direction'])
+					pos1=db['terms']['pos'][res[0]][0]
+					pos2=db['terms']['pos'][res[0]][1]
+					pos1=pos2tk(db['db_page'],pos1)
+					pos2=pos2tk(db['db_page'],pos2,Even=True)
+					# Только 1 термин должен быть выделен, поэтому предварительно удаляем тэг выделения по всему тексту.
+					try:
+						txt.tag_remove('cur_term','1.0','end')
+					except:
+						log(cur_func,lev_err,'Не удалось удалить тэг "%s" в диапазоне %s-%s!' % ('cur_term','1.0','end'))
+					try:
+						txt.tag_add('cur_term',pos1,pos2)
+						log(cur_func,lev_debug,mes.tag_added % ('cur_term',pos1,pos2))
+					except:
+						mestype(cur_func,mes.tag_addition_failure % ('cur_term',pos1,pos2),Silent=False,Critical=False)
+				else:
+					log(cur_func,lev_warn,mes.not_enough_input_data)
+				# 2. Настройка тэга
+				try:
+					txt.tag_config('cur_term',background=color_terms_sel,font=font_terms_sel)
+					log(cur_func,lev_debug,mes.tag_config % ('cur_term',color_terms_sel,font_terms_sel))
+				except:
+					mestype(cur_func,mes.tag_config_failure % ('cur_term',color_terms_sel,font_terms_sel),Silent=False,Critical=False)
 		#----------------------------------------------------------------------
 		# Определить, входит ли текущий термин в видимую часть экрана
 		def fits_screen():
 			cur_func=sys._getframe().f_code.co_name
 			# Вернуть True, если смещение экрана не требуется (ввиду названия функции)
 			Success=True
-			# Если терминов нет, то смещать экран бесполезно
-			if db['terms']['num'] > 0 and db['terms']['num'] > res[0]:
-				if not 'cur_page_no' in db['coor_db']:
-					db['coor_db']['cur_page_no']=0
-				if db['terms']['pos'][res[0]][0] >= db['coor_db']['pages'][db['coor_db']['cur_page_no']]['up']['pos'] and db['terms']['pos'][res[0]][-1] <= db['coor_db']['pages'][db['coor_db']['cur_page_no']]['down']['pos']:
-					pass
-				else:
-					Success=False
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				# Если терминов нет, то смещать экран бесполезно
+				if db['terms']['num'] > 0 and db['terms']['num'] > res[0]:
+					if not 'cur_page_no' in db['coor_db']:
+						db['coor_db']['cur_page_no']=0
+					if db['terms']['pos'][res[0]][0] >= db['coor_db']['pages'][db['coor_db']['cur_page_no']]['up']['pos'] and db['terms']['pos'][res[0]][-1] <= db['coor_db']['pages'][db['coor_db']['cur_page_no']]['down']['pos']:
+						pass
+					else:
+						Success=False
 			return Success
 		#----------------------------------------------------------------------
 		# Обеспечить удобное пролистывание экрана
@@ -2278,349 +2577,423 @@ def article_field(db,Standalone=False):
 		# mode='still': не изменять номер страницы (необходимо для move_page_start/_end)
 		def shift_screen(mode='normal'):
 			cur_func=sys._getframe().f_code.co_name
-			DragScreen=False
-			# Вставляю проверку в самом начале, чтобы в случае ошибки не проводить дополнительные операции. Все равно если терминов нет, то смещать экран бесполезно
-			if db['terms']['num'] > 0 and db['terms']['num'] > res[0]:
-				if mode=='normal':
-					if fits_screen():
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				DragScreen=False
+				# Вставляю проверку в самом начале, чтобы в случае ошибки не проводить дополнительные операции. Все равно если терминов нет, то смещать экран бесполезно
+				if db['terms']['num'] > 0 and db['terms']['num'] > res[0]:
+					if mode=='normal':
+						if fits_screen():
+							DragScreen=False
+						else:
+							DragScreen=True
+					elif mode=='change':
+						DragScreen=True
+					elif mode=='still':
 						DragScreen=False
 					else:
-						DragScreen=True
-				elif mode=='change':
-					DragScreen=True
-				elif mode=='still':
-					DragScreen=False
-				else:
-					ErrorMessage(cur_func,mes.unknown_mode % (str(mode),'normal, change, still'))
-				if DragScreen:
-					log(cur_func,lev_info,mes.shift_screen_required)
-					if db['coor_db']['direction']=='right_down':
-						if db['coor_db']['cur_page_no'] < db['coor_db']['pages']['num']-1:
-							db['coor_db']['cur_page_no']+=1
-					elif db['coor_db']['direction']=='left_up':
-						if db['coor_db']['cur_page_no'] > 0:
-							db['coor_db']['cur_page_no']-=1
+						ErrorMessage(cur_func,mes.unknown_mode % (str(mode),'normal, change, still'))
+					if DragScreen:
+						log(cur_func,lev_info,mes.shift_screen_required)
+						if db['coor_db']['direction']=='right_down':
+							if db['coor_db']['cur_page_no'] < db['coor_db']['pages']['num']-1:
+								db['coor_db']['cur_page_no']+=1
+						elif db['coor_db']['direction']=='left_up':
+							if db['coor_db']['cur_page_no'] > 0:
+								db['coor_db']['cur_page_no']-=1
+						else:
+							ErrorMessage(cur_func,mes.unknown_mode % (str(db['coor_db']['direction']),'left_up, right_down'))
 					else:
-						ErrorMessage(cur_func,mes.unknown_mode % (str(db['coor_db']['direction']),'left_up, right_down'))
-				else:
-					log(cur_func,lev_info,mes.shift_screen_not_required)
-				# Фактически, экран нужно смещать всегда
-				yview_tk=db['coor_db']['pages'][db['coor_db']['cur_page_no']]['up']['tk']
-				# Смещение экрана до заданного термина
-				# Алгоритм работает только, если метка называется 'insert'
-				try:
-					txt.mark_set('insert',yview_tk)
-					txt.yview('insert')
-					log(cur_func,lev_info,mes.shift_screen % ('insert',yview_tk))
-				except:
-					log(cur_func,lev_err,mes.shift_screen_failure % 'insert')
+						log(cur_func,lev_info,mes.shift_screen_not_required)
+					# Фактически, экран нужно смещать всегда
+					yview_tk=db['coor_db']['pages'][db['coor_db']['cur_page_no']]['up']['tk']
+					# Смещение экрана до заданного термина
+					# Алгоритм работает только, если метка называется 'insert'
+					try:
+						txt.mark_set('insert',yview_tk)
+						txt.yview('insert')
+						log(cur_func,lev_info,mes.shift_screen % ('insert',yview_tk))
+					except:
+						log(cur_func,lev_err,mes.shift_screen_failure % 'insert')
 		#----------------------------------------------------------------------
 		# Перейти на 1-й термин текущей строки	
 		def move_line_start(event):
 			cur_func=sys._getframe().f_code.co_name
-			db['coor_db']['direction']='left_up'
-			txt.tag_remove('cur_term','1.0','end')
-			log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
-			res[0]=db['home'][res[0]]
-			shift_screen()
-			select_term()
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				db['coor_db']['direction']='left_up'
+				txt.tag_remove('cur_term','1.0','end')
+				log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+				res[0]=db['home'][res[0]]
+				shift_screen()
+				select_term()
 		#----------------------------------------------------------------------
 		# Перейти на последний термин текущей строки
 		def move_line_end(event):
 			cur_func=sys._getframe().f_code.co_name
-			db['coor_db']['direction']='right_down'
-			txt.tag_remove('cur_term','1.0','end')
-			log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
-			res[0]=db['end'][res[0]]
-			shift_screen()
-			select_term()
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				db['coor_db']['direction']='right_down'
+				txt.tag_remove('cur_term','1.0','end')
+				log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+				res[0]=db['end'][res[0]]
+				shift_screen()
+				select_term()
 		#----------------------------------------------------------------------
 		# Перейти на 1-й термин статьи
 		def move_text_start(event):
 			cur_func=sys._getframe().f_code.co_name
-			db['coor_db']['direction']='left_up'
-			txt.tag_remove('cur_term','1.0','end')
-			log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
-			res[0]=0
-			db['coor_db']['cur_page_no']=0
-			shift_screen()
-			select_term()
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				db['coor_db']['direction']='left_up'
+				txt.tag_remove('cur_term','1.0','end')
+				log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+				res[0]=0
+				db['coor_db']['cur_page_no']=0
+				shift_screen()
+				select_term()
 		#----------------------------------------------------------------------
 		# Перейти на последний термин статьи
 		def move_text_end(event):
 			cur_func=sys._getframe().f_code.co_name
-			db['coor_db']['direction']='right_down'
-			txt.tag_remove('cur_term','1.0','end')
-			log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
-			res[0]=db['terms']['num']-1
-			db['coor_db']['cur_page_no']=db['coor_db']['pages']['num']-1
-			shift_screen()
-			select_term()
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				db['coor_db']['direction']='right_down'
+				txt.tag_remove('cur_term','1.0','end')
+				log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+				res[0]=db['terms']['num']-1
+				db['coor_db']['cur_page_no']=db['coor_db']['pages']['num']-1
+				shift_screen()
+				select_term()
 		#----------------------------------------------------------------------
 		# Перейти на страницу вверх
 		def move_page_up(event):
 			cur_func=sys._getframe().f_code.co_name
-			txt.tag_remove('cur_term','1.0','end')
-			log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
-			db['coor_db']['direction']='left_up'
-			if db['coor_db']['cur_page_no'] > 0:
-				res[0]=db['coor_db']['pages'][db['coor_db']['cur_page_no']-1]['up']['num']
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
 			else:
-				res[0]=db['coor_db']['pages'][db['coor_db']['cur_page_no']]['up']['num']
-			shift_screen(mode='change')
-			select_term(ForceScreenFit=False)
-			return "break"
+				txt.tag_remove('cur_term','1.0','end')
+				log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+				db['coor_db']['direction']='left_up'
+				if db['coor_db']['cur_page_no'] > 0:
+					res[0]=db['coor_db']['pages'][db['coor_db']['cur_page_no']-1]['up']['num']
+				else:
+					res[0]=db['coor_db']['pages'][db['coor_db']['cur_page_no']]['up']['num']
+				shift_screen(mode='change')
+				select_term(ForceScreenFit=False)
+				return "break"
 		#----------------------------------------------------------------------
 		# Перейти на страницу вверх
 		def move_page_down(event):
 			cur_func=sys._getframe().f_code.co_name
-			txt.tag_remove('cur_term','1.0','end')
-			log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
-			db['coor_db']['direction']='right_down'
-			if db['coor_db']['cur_page_no'] < db['coor_db']['pages']['num']-1:
-				res[0]=db['coor_db']['pages'][db['coor_db']['cur_page_no']+1]['up']['num']
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
 			else:
-				res[0]=db['coor_db']['pages'][db['coor_db']['cur_page_no']]['up']['num']
-			shift_screen(mode='change')
-			select_term(ForceScreenFit=False)
-			return "break"
+				txt.tag_remove('cur_term','1.0','end')
+				log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+				db['coor_db']['direction']='right_down'
+				if db['coor_db']['cur_page_no'] < db['coor_db']['pages']['num']-1:
+					res[0]=db['coor_db']['pages'][db['coor_db']['cur_page_no']+1]['up']['num']
+				else:
+					res[0]=db['coor_db']['pages'][db['coor_db']['cur_page_no']]['up']['num']
+				shift_screen(mode='change')
+				select_term(ForceScreenFit=False)
+				return "break"
 		#----------------------------------------------------------------------
 		# Перейти на 1-й термин текущей страницы
 		def move_page_start(event):
 			cur_func=sys._getframe().f_code.co_name
-			txt.tag_remove('cur_term','1.0','end')
-			log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
-			# Направление указывается для того, чтобы в любом случае не менять текущую страницу
-			db['coor_db']['direction']='left_up'
-			res[0]=db['coor_db']['pages'][db['coor_db']['cur_page_no']]['up']['num']
-			shift_screen(mode='still')
-			select_term(ForceScreenFit=False)
-			# Поскольку привязка идет по Shift, то tkinter может также осуществлять другие действия по Shift, например, выделение. "break" блокирует это поведение.
-			return "break"
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				txt.tag_remove('cur_term','1.0','end')
+				log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+				# Направление указывается для того, чтобы в любом случае не менять текущую страницу
+				db['coor_db']['direction']='left_up'
+				res[0]=db['coor_db']['pages'][db['coor_db']['cur_page_no']]['up']['num']
+				shift_screen(mode='still')
+				select_term(ForceScreenFit=False)
+				# Поскольку привязка идет по Shift, то tkinter может также осуществлять другие действия по Shift, например, выделение. "break" блокирует это поведение.
+				return "break"
 		#----------------------------------------------------------------------
 		# Перейти на последний термин текущей страницы
 		def move_page_end(event):
 			cur_func=sys._getframe().f_code.co_name
-			txt.tag_remove('cur_term','1.0','end')
-			log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
-			# Направление указывается для того, чтобы в любом случае не менять текущую страницу
-			db['coor_db']['direction']='left_up'
-			res[0]=db['coor_db']['pages'][db['coor_db']['cur_page_no']]['down']['num']
-			shift_screen(mode='still')
-			select_term(ForceScreenFit=False)
-			# Поскольку привязка идет по Shift, то tkinter может также осуществлять другие действия по Shift, например, выделение. "break" блокирует это поведение.
-			return "break"
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				txt.tag_remove('cur_term','1.0','end')
+				log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+				# Направление указывается для того, чтобы в любом случае не менять текущую страницу
+				db['coor_db']['direction']='left_up'
+				res[0]=db['coor_db']['pages'][db['coor_db']['cur_page_no']]['down']['num']
+				shift_screen(mode='still')
+				select_term(ForceScreenFit=False)
+				# Поскольку привязка идет по Shift, то tkinter может также осуществлять другие действия по Shift, например, выделение. "break" блокирует это поведение.
+				return "break"
 		#----------------------------------------------------------------------
 		# Перейти на предыдущий термин
 		def move_left(event):
 			cur_func=sys._getframe().f_code.co_name
-			db['coor_db']['direction']='left_up'
-			txt.tag_remove('cur_term','1.0','end')
-			log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
-			res[0]=db['move_left'][res[0]]
-			shift_screen()
-			select_term()
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				db['coor_db']['direction']='left_up'
+				txt.tag_remove('cur_term','1.0','end')
+				log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+				res[0]=db['move_left'][res[0]]
+				shift_screen()
+				select_term()
 		#----------------------------------------------------------------------
 		# Перейти на следующий термин
 		def move_right(event):
 			cur_func=sys._getframe().f_code.co_name
-			db['coor_db']['direction']='right_down'
-			txt.tag_remove('cur_term','1.0','end')
-			log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
-			res[0]=db['move_right'][res[0]]
-			shift_screen()
-			select_term()
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				db['coor_db']['direction']='right_down'
+				txt.tag_remove('cur_term','1.0','end')
+				log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+				res[0]=db['move_right'][res[0]]
+				shift_screen()
+				select_term()
 		#----------------------------------------------------------------------
 		# Перейти на строку вниз
 		def move_down(event):
 			cur_func=sys._getframe().f_code.co_name
-			db['coor_db']['direction']='right_down'
-			txt.tag_remove('cur_term','1.0','end')
-			log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
-			res[0]=db['move_down'][res[0]]
-			shift_screen()
-			select_term()
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				db['coor_db']['direction']='right_down'
+				txt.tag_remove('cur_term','1.0','end')
+				log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+				res[0]=db['move_down'][res[0]]
+				shift_screen()
+				select_term()
 		#----------------------------------------------------------------------
 		# Перейти на строку вверх
 		def move_up(event):
 			cur_func=sys._getframe().f_code.co_name
-			db['coor_db']['direction']='left_up'
-			txt.tag_remove('cur_term','1.0','end')
-			log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
-			res[0]=db['move_up'][res[0]]
-			shift_screen()
-			select_term()
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				db['coor_db']['direction']='left_up'
+				txt.tag_remove('cur_term','1.0','end')
+				log(cur_func,lev_debug,mes.tag_removed % ('cur_term','1.0','end'))
+				res[0]=db['move_up'][res[0]]
+				shift_screen()
+				select_term()
 		#----------------------------------------------------------------------
 		# Изменить направление (язык) перевода
 		def change_pair(event):
 			cur_func=sys._getframe().f_code.co_name
-			global online_dic_url
-			global cur_pair
-			try:
-				selected_pair=var.get()
-			except:
-				log(cur_func,lev_err,mes.lang_pair_undefined)
-				selected_pair=cur_pair
-			log(cur_func,lev_debug,mes.got_value % str(selected_pair))
-			Found=False
-			for i in range(len(pairs)):
-				if selected_pair==pairs[i]:
-					Found=True
-					break
-			if Found:
-				online_dic_url=online_dic_urls[i]
-			log(cur_func,lev_info,mes.lang_pair % selected_pair)
-			log(cur_func,lev_debug,'URL: %s' % online_dic_url)
-			cur_pair=selected_pair
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				global online_dic_url
+				global cur_pair
+				try:
+					selected_pair=var.get()
+				except:
+					log(cur_func,lev_err,mes.lang_pair_undefined)
+					selected_pair=cur_pair
+				log(cur_func,lev_debug,mes.got_value % str(selected_pair))
+				Found=False
+				for i in range(len(pairs)):
+					if selected_pair==pairs[i]:
+						Found=True
+						break
+				if Found:
+					online_dic_url=online_dic_urls[i]
+				log(cur_func,lev_info,mes.lang_pair % selected_pair)
+				log(cur_func,lev_debug,'URL: %s' % online_dic_url)
+				cur_pair=selected_pair
 		#----------------------------------------------------------------------
 		# Отобразить/скрыть историю запросов онлайн
 		def toggle_history(event):
 			cur_func=sys._getframe().f_code.co_name
-			if db['ShowHistory']:
-				db['ShowHistory']=False
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
 			else:
-				db['ShowHistory']=True
-			db['mode']='skip'
-			# Запоминаем позицию выделения, чтобы она не сбрасывалась при переключении отображения Истории. Запомнить позицию выделения можно только на первой странице.
-			db['last_sel']=res[0]
-			close_top(event)
+				if db['ShowHistory']:
+					db['ShowHistory']=False
+				else:
+					db['ShowHistory']=True
+				db['mode']='skip'
+				# Запоминаем позицию выделения, чтобы она не сбрасывалась при переключении отображения Истории. Запомнить позицию выделения можно только на первой странице.
+				db['last_sel']=res[0]
+				close_top(event)
 		#----------------------------------------------------------------------
 		# Окно "О программе"
 		def show_about(event):
+			# Написать письмо автору
 			def response_back(event):
 				cur_func=sys._getframe().f_code.co_name
-				try:
-					webbrowser.open('mailto:%s' % my_email)
-				except:
-					Warning(cur_func,mes.email_agent_failure)
+				if AbortAll==[True]:
+					log(cur_func,lev_warn,mes.abort_func % cur_func)
+				else:
+					try:
+						webbrowser.open('mailto:%s' % my_email)
+					except:
+						Warning(cur_func,mes.email_agent_failure)
+			# Скопировать номер кошелька
 			def copy_wallet_no(event):
-				clipboard_copy(my_yandex_money)
-				InfoMessage(cur_func,mes.wallet_no_copied)
-				root.withdraw()
+				cur_func=sys._getframe().f_code.co_name
+				if AbortAll==[True]:
+					log(cur_func,lev_warn,mes.abort_func % cur_func)
+				else:
+					clipboard_copy(my_yandex_money)
+					InfoMessage(cur_func,mes.wallet_no_copied)
+					root.withdraw()
+			# Открыть веб-страницу с лицензией
 			def open_license_url(event):
-				try:
-					webbrowser.open(gpl3_url)
-				except:
-					Warning(cur_func,browser_failure % gpl3_url)
-			top=tk.Toplevel(root)
-			top.tk.call('wm','iconphoto',top._w,tk.PhotoImage(file=icon_mclient))
-			top.title(mes.about)
-			frame1=tk.Frame(top)
-			frame1.pack(expand=1,fill='both',side='top')
-			frame2=tk.Frame(top)
-			frame2.pack(expand=1,fill='both',side='left')
-			frame3=tk.Frame(top)
-			frame3.pack(expand=1,fill='both',side='right')
-			if ShowWallet:
-				label=tk.Label(frame1,font=font_style,text=mes.about_text)
+				cur_func=sys._getframe().f_code.co_name
+				if AbortAll==[True]:
+					log(cur_func,lev_warn,mes.abort_func % cur_func)
+				else:
+					try:
+						webbrowser.open(gpl3_url)
+					except:
+						Warning(cur_func,browser_failure % gpl3_url)
+			cur_func=sys._getframe().f_code.co_name
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
 			else:
-				label=tk.Label(frame1,font=font_style,text=mes.about_text_no_wallet)
-			label.pack()
-			if ShowWallet:
-				# Номер электронного кошелька
-				button_money=tk.Button(frame2,text=mes.wallet_no)
-				button_money.pack(side='left')
-				button_money.bind('<Return>',copy_wallet_no)
-				button_money.bind('<KP_Enter>',copy_wallet_no)
-				button_money.bind('<space>',copy_wallet_no)
-				button_money.bind('<Button-1>',copy_wallet_no)
-			# Лицензия
-			if ShowWallet:
-				button_license=tk.Button(frame3,text=mes.view_license)
-			else:
-				button_license=tk.Button(frame2,text=mes.view_license)
-			button_license.pack(side='left')
-			button_license.bind('<Return>',open_license_url)
-			button_license.bind('<KP_Enter>',open_license_url)
-			button_license.bind('<space>',open_license_url)
-			button_license.bind('<Button-1>',open_license_url)
-			# Отправить письмо автору
-			button_email=tk.Button(frame3,text=mes.email_author)
-			button_email.pack(side='right')
-			button_email.bind('<Return>',response_back)
-			button_email.bind('<KP_Enter>',response_back)
-			button_email.bind('<space>',response_back)
-			button_email.bind('<Button-1>',response_back)
-			top.wait_window()
+				top=tk.Toplevel(root)
+				top.tk.call('wm','iconphoto',top._w,tk.PhotoImage(file=icon_mclient))
+				top.title(mes.about)
+				frame1=tk.Frame(top)
+				frame1.pack(expand=1,fill='both',side='top')
+				frame2=tk.Frame(top)
+				frame2.pack(expand=1,fill='both',side='left')
+				frame3=tk.Frame(top)
+				frame3.pack(expand=1,fill='both',side='right')
+				if ShowWallet:
+					label=tk.Label(frame1,font=font_style,text=mes.about_text)
+				else:
+					label=tk.Label(frame1,font=font_style,text=mes.about_text_no_wallet)
+				label.pack()
+				if ShowWallet:
+					# Номер электронного кошелька
+					create_button(parent_widget=frame2,text=mes.btn_wallet_no,hint=mes.hint_wallet_no,action=copy_wallet_no,side='left')
+					# Лицензия
+					create_button(parent_widget=frame3,text=mes.btn_license,hint=mes.hint_license,action=open_license_url,side='left')
+				else:
+					# Лицензия
+					create_button(parent_widget=frame2,text=mes.btn_license,hint=mes.hint_license,action=open_license_url,side='left')
+				# Отправить письмо автору
+				create_button(parent_widget=frame3,text=mes.btn_email_author,hint=mes.hint_email_author,action=response_back,side='right')
+				top.wait_window()
 		#----------------------------------------------------------------------
 		# Перейти на элемент истории
 		def get_history(event):
 			cur_func=sys._getframe().f_code.co_name
-			try:
-				# При выборе пункта возвращается кортеж с номером пункта
-				selection=listbox.curselection()
-				db['search']=listbox.get(selection[0])
-				db['mode']='search'
-				log(cur_func,lev_debug,mes.history_elem_selected % db['search'])
-			except:
-				# По непонятным пока причинам после переключения интерфейса на английский может возникнуть ошибка mes.history_failure.
-				#Warning(cur_func,mes.history_failure)
-				log(cur_func,lev_warn,mes.history_failure)
-			close_top(event)
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				try:
+					# При выборе пункта возвращается кортеж с номером пункта
+					selection=listbox.curselection()
+					db['search']=listbox.get(selection[0])
+					db['mode']='search'
+					log(cur_func,lev_debug,mes.history_elem_selected % db['search'])
+				except:
+					# По непонятным пока причинам после переключения интерфейса на английский может возникнуть ошибка mes.history_failure.
+					#Warning(cur_func,mes.history_failure)
+					log(cur_func,lev_warn,mes.history_failure)
+				close_top(event)
 		#----------------------------------------------------------------------
 		# Скопировать элемент истории
 		def copy_history(event):
 			cur_func=sys._getframe().f_code.co_name
-			selection=err_mes_copy
-			try:
-				selection=listbox.get(listbox.curselection()[0])
-				log(cur_func,lev_debug,mes.history_elem_selected % selection)
-			except:
-				# По непонятным пока причинам после переключения интерфейса на английский может возникнуть ошибка mes.history_failure.
-				#Warning(cur_func,mes.history_failure)
-				log(cur_func,lev_warn,mes.history_failure)
-			clipboard_copy(selection)
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				selection=err_mes_copy
+				try:
+					selection=listbox.get(listbox.curselection()[0])
+					log(cur_func,lev_debug,mes.history_elem_selected % selection)
+				except:
+					# По непонятным пока причинам после переключения интерфейса на английский может возникнуть ошибка mes.history_failure.
+					#Warning(cur_func,mes.history_failure)
+					log(cur_func,lev_warn,mes.history_failure)
+				clipboard_copy(selection)
 		#----------------------------------------------------------------------
 		# Очистить строку поиска
 		def clear_search_field(event):
 			cur_func=sys._getframe().f_code.co_name
-			search_field.delete(0,'end')
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				search_field.delete(0,'end')
 		#----------------------------------------------------------------------
 		# Очистить строку поиска и вставить в нее содержимое буфера обмена
 		def paste_search_field(event):
 			cur_func=sys._getframe().f_code.co_name
-			search_field.delete(0,'end')
-			search_field.selection_clear()
-			if Standalone:
-				search_field.insert(0,clipboard_paste())
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
 			else:
-				search_field.insert(0,apply_autocor(clipboard_paste(),Auto=True))
-			return 'break'
+				search_field.delete(0,'end')
+				search_field.selection_clear()
+				if Standalone:
+					search_field.insert(0,clipboard_paste())
+				else:
+					search_field.insert(0,apply_autocor(clipboard_paste(),Auto=True))
+				return 'break'
 		#----------------------------------------------------------------------
 		# Очистить Историю
 		def clear_history(event):
 			cur_func=sys._getframe().f_code.co_name
-			db['mode']='search'
-			db['search']=mes.welcome
-			db['history']=[]
-			db['history_index']=0
-			close_top(event)
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				db['mode']='search'
+				db['search']=mes.welcome
+				db['history']=[]
+				db['history_index']=0
+				close_top(event)
 		#----------------------------------------------------------------------
 		# Следить за буфером обмена
 		def watch_clipboard(event):
 			cur_func=sys._getframe().f_code.co_name
-			if db['mode']=='clipboard':
-				db['mode']='search'
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
 			else:
-				db['mode']='clipboard'
-			top.destroy()
-			root.deiconify()
+				if db['mode']=='clipboard':
+					db['mode']='search'
+				else:
+					db['mode']='clipboard'
+				top.destroy()
+				root.deiconify()
 		#----------------------------------------------------------------------
 		# Открыть URL текущей статьи в браузере
 		def open_in_browser(event):
-			if not 'url' in db:
-				if db['terms']['num'] > 0:
-					db['url']=db['terms']['url'][0]
-				else:
-					db['url']=online_url_safe
-			try:
-				webbrowser.open(db['url'])
-			except:
-				Warning(cur_func,mes.browser_failure % db['url'])
+			cur_func=sys._getframe().f_code.co_name
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				if not 'url' in db:
+					if db['terms']['num'] > 0:
+						db['url']=db['terms']['url'][0]
+					else:
+						db['url']=online_url_safe
+				try:
+					webbrowser.open(db['url'])
+				except:
+					Warning(cur_func,mes.browser_failure % db['url'])
 		#----------------------------------------------------------------------
 		# Переключить язык интерфейса с русского на английский и наоборот
 		def change_ui_lang(event):
 			cur_func=sys._getframe().f_code.co_name
+			# Если включить проверку, будем все время получать SyntaxWarning
+			#if AbortAll==[True]:
+			#	log(cur_func,lev_warn,mes.abort_func % cur_func)
+			#else:
 			global ui_lang
 			global mes
 			global gpl3_url
@@ -2637,94 +3010,106 @@ def article_field(db,Standalone=False):
 		# Перейти на предыдущий запрос
 		def go_back(event):
 			cur_func=sys._getframe().f_code.co_name
-			if not 'history_index' in db:
-				db['history_index']=len(db['history'])
-			if db['history_index'] > 0:
-				db['history_index']-=1
-				if db['mode']!='search':
-					db['mode']='search'
-				db['search']=db['history'][db['history_index']]
-				close_top(event)
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				if not 'history_index' in db:
+					db['history_index']=len(db['history'])
+				if db['history_index'] > 0:
+					db['history_index']-=1
+					if db['mode']!='search':
+						db['mode']='search'
+					db['search']=db['history'][db['history_index']]
+					close_top(event)
 		#----------------------------------------------------------------------
 		# Перейти на следующий запрос
 		def go_forward(event):
 			cur_func=sys._getframe().f_code.co_name
-			if not 'history_index' in db:
-				db['history_index']=len(db['history'])
-			if db['history_index'] < len(db['history'])-1:
-				db['history_index']+=1
-				if db['mode']!='search':
-					db['mode']='search'
-				db['search']=db['history'][db['history_index']]
-				close_top(event)
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				if not 'history_index' in db:
+					db['history_index']=len(db['history'])
+				if db['history_index'] < len(db['history'])-1:
+					db['history_index']+=1
+					if db['mode']!='search':
+						db['mode']='search'
+					db['search']=db['history'][db['history_index']]
+					close_top(event)
 		#----------------------------------------------------------------------
 		# Найти слово/слова в статье
 		def search_article(direction='forward'): # clear, forward, backward
 			cur_func=sys._getframe().f_code.co_name
-			if direction=='clear': # Начать поиск заново
-				if 'search_list' in db:
-					del db['search_list']
-				direction='forward'
-			elif direction!='forward' and direction!='backward':
-				ErrorMessage(cur_func,mes.unknown_mode % (str(direction),'clear, forward, backward'))
 			if AbortAll==[True]:
 				log(cur_func,lev_warn,mes.abort_func % cur_func)
 			else:
-				# Создаем начальные значения
-				if not 'search_list' in db:
-					search_str=text_field_small(title=mes.search_str) #search_field.get()
-					search_str=search_str.strip(' ').strip(dlb)
-					root.withdraw()
-					if not empty(search_str):
-						# Создать список позиций всех совпадений по поиску в статье
-						db['search_list']=[]
-						i=0
-						while i < db['terms']['num']:
-							if search_str in db['terms']['phrases'][i].lower():
-								db['search_list'].append(i)
-							i+=1
+				if direction=='clear': # Начать поиск заново
+					if 'search_list' in db:
+						del db['search_list']
+					direction='forward'
+				elif direction!='forward' and direction!='backward':
+					ErrorMessage(cur_func,mes.unknown_mode % (str(direction),'clear, forward, backward'))
+				if AbortAll==[True]:
+					log(cur_func,lev_warn,mes.abort_func % cur_func)
+				else:
+					# Создаем начальные значения
+					if not 'search_list' in db:
+						search_str=text_field_small(title=mes.search_str) #search_field.get()
+						search_str=search_str.strip(' ').strip(dlb)
+						root.withdraw()
+						if not empty(search_str):
+							# Создать список позиций всех совпадений по поиску в статье
+							db['search_list']=[]
+							i=0
+							while i < db['terms']['num']:
+								if search_str in db['terms']['phrases'][i].lower():
+									db['search_list'].append(i)
+								i+=1
+							if len(db['search_list']) > 0:
+								if direction=='forward':
+									# Номер текущего выделенного совпадения ('search_article_pos') в списке совпадений ('search_list')
+									db['search_article_pos']=-1
+								elif direction=='backward':
+									db['search_article_pos']=len(db['search_list'])
+					if 'search_list' in db:
+						# Продолжаем поиск с предыдущего места
 						if len(db['search_list']) > 0:
 							if direction=='forward':
-								# Номер текущего выделенного совпадения ('search_article_pos') в списке совпадений ('search_list')
-								db['search_article_pos']=-1
+								if db['search_article_pos']+1 < len(db['search_list']):
+									db['search_article_pos']+=1
+								else:
+									db['search_article_pos']=0
 							elif direction=='backward':
-								db['search_article_pos']=len(db['search_list'])
-				if 'search_list' in db:
-					# Продолжаем поиск с предыдущего места
-					if len(db['search_list']) > 0:
-						if direction=='forward':
-							if db['search_article_pos']+1 < len(db['search_list']):
-								db['search_article_pos']+=1
-							else:
-								db['search_article_pos']=0
-						elif direction=='backward':
-							if db['search_article_pos'] > 0:
-								db['search_article_pos']-=1
-							else:
-								db['search_article_pos']=len(db['search_list'])-1
-						res[0]=db['search_list'][db['search_article_pos']]
-						# Нужно дополнительно определять страницу, shift_screen + select_term работают неточно без указания доп. параметров, некоторые из которых, я, похоже, указать забыл
-						detect_page(mode='term_no')
-						shift_screen(mode='still')
-						select_term(ForceScreenFit=False)
+								if db['search_article_pos'] > 0:
+									db['search_article_pos']-=1
+								else:
+									db['search_article_pos']=len(db['search_list'])-1
+							res[0]=db['search_list'][db['search_article_pos']]
+							# Нужно дополнительно определять страницу, shift_screen + select_term работают неточно без указания доп. параметров, некоторые из которых, я, похоже, указать забыл
+							detect_page(mode='term_no')
+							shift_screen(mode='still')
+							select_term(ForceScreenFit=False)
 		#----------------------------------------------------------------------
 		# Сохранить статью на диск
 		def save_article(event):
 			cur_func=sys._getframe().f_code.co_name
-			opt=SelectFromList(mes.select_action,mes.actions,[mes.save_article_as_html,mes.save_article_as_txt,mes.copy_article_html,mes.copy_article_txt],Insist=False)
-			if not empty(opt):
-				if opt==mes.save_article_as_html:
-					# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
-					# Также меняем сокращенные гиперссылки на полные, чтобы они работали и в локальном файле.
-					dialog_save_file(db['html'].replace('charset=windows-1251"','charset=utf-8"').replace('<a href="m.exe?','<a href="'+online_url_root).replace('../c/m.exe?',online_url_root),filetypes=((mes.webpage,'.htm'),(mes.webpage,'.html'),(mes.all_files,'*')),Critical=False)
-				elif opt==mes.save_article_as_txt:
-					dialog_save_file(db['page'],filetypes=((mes.plain_text,'.txt'),(mes.all_files,'*')),Critical=False)
-				elif opt==mes.copy_article_html:
-					# Копирование веб-кода в буфер обмена полезно разве что в целях отладки, поэтому никак не меняем этот код.
-					clipboard_copy(db['html'])
-				elif opt==mes.copy_article_txt:
-					clipboard_copy(db['page'])
-			root.withdraw()
+			if AbortAll==[True]:
+				log(cur_func,lev_warn,mes.abort_func % cur_func)
+			else:
+				opt=SelectFromList(mes.select_action,mes.actions,[mes.save_article_as_html,mes.save_article_as_txt,mes.copy_article_html,mes.copy_article_txt],Insist=False)
+				if not empty(opt):
+					if opt==mes.save_article_as_html:
+						# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
+						# Также меняем сокращенные гиперссылки на полные, чтобы они работали и в локальном файле.
+						dialog_save_file(db['html'].replace('charset=windows-1251"','charset=utf-8"').replace('<a href="m.exe?','<a href="'+online_url_root).replace('../c/m.exe?',online_url_root),filetypes=((mes.webpage,'.htm'),(mes.webpage,'.html'),(mes.all_files,'*')),Critical=False)
+					elif opt==mes.save_article_as_txt:
+						dialog_save_file(db['page'],filetypes=((mes.plain_text,'.txt'),(mes.all_files,'*')),Critical=False)
+					elif opt==mes.copy_article_html:
+						# Копирование веб-кода в буфер обмена полезно разве что в целях отладки, поэтому никак не меняем этот код.
+						clipboard_copy(db['html'])
+					elif opt==mes.copy_article_txt:
+						clipboard_copy(db['page'])
+				root.withdraw()
 		#--------------------------------------------------------------------------
 		if AlwaysMaximize:
 			if sys_type=='lin':
@@ -2746,6 +3131,11 @@ def article_field(db,Standalone=False):
 		# Иконку надо определять здесь, поскольку запуск может быть не Standalone
 		top.tk.call('wm','iconphoto',top._w,tk.PhotoImage(file=icon_mclient))
 		top.protocol("WM_DELETE_WINDOW",quit_top)
+		# tmp
+		top.update_idletasks()
+		sizes['top']['width']=top.winfo_width()
+		sizes['top']['height']=top.winfo_height()
+		log(cur_func,lev_info,mes.widget_sizes % ('top',sizes['top']['width'],sizes['top']['height']))
 		#root.protocol("WM_DELETE_WINDOW",quit_now)
 		# Создание каркаса с предыдущими поисковыми запросами
 		frame_history=tk.Frame(top)
@@ -2757,124 +3147,76 @@ def article_field(db,Standalone=False):
 			listbox.pack(expand=1,side='top',fill='both')
 		for i in range(len(db['history'])):
 			listbox.insert(0,db['history'][i])
-		try:
-			listbox.bind(bind_get_history,get_history) # При просто <Button-1> выделение еще не будет выбрано
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_get_history)
-		listbox.bind('<Return>',get_history)
-		listbox.bind('<KP_Enter>',get_history)
-		listbox.bind('<space>',get_history)
-		try:
-			listbox.bind(bind_copy_history,copy_history)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_copy_history)
 		# Создание каркаса с полем ввода, кнопкой выбора направления перевода и кнопкой выхода
 		frame_panel=tk.Frame(top)
 		frame_panel.pack(expand=0,fill='both',side='bottom')
 		# Поле ввода поисковой строки
 		search_field=tk.Entry(frame_panel)
-		search_field.pack(side='left')
+		if TextButtons:
+			search_field.pack(side='left')
+		else:
+			# Подгоняем высоту поисковой строки под высоту графических кнопок; значение 5 подобрано опытным путем
+			search_field.pack(side='left',ipady=5)
 		if db['FirstLaunch'] and not Standalone:
 			paste_search_field(None)
-		try:
-			top.bind(bind_go_search,go_search)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_go_search)
-		try:
-			top.bind(bind_go_search_alt,go_search)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_go_search_alt)
-		try:
-			search_field.bind(bind_clear_search_field,clear_search_field)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_clear_search_field)
-		try:
-			search_field.bind(bind_paste_search_field,paste_search_field)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_paste_search_field)
 		# Кнопка для "чайников", заменяет Enter в search_field
-		button_search=tk.Button(frame_panel,text=mes.search)
-		button_search.bind('<Return>',go_search)
-		button_search.bind('<KP_Enter>',go_search)
-		button_search.bind('<space>',go_search)
-		button_search.bind('<ButtonRelease-1>',go_search)
-		button_search.pack(side='left')
+		create_button(parent_widget=frame_panel,text=mes.btn_translate,hint=mes.btn_translate,action=go_search,icon_path=icon_go_search) # В данном случае btn = hint
+		# Если кнопки только текстовые, то все они не поместятся на экране, поэтому в текстовом режиме вспомогательные кнопки можно скрыть
+		if UseOptionalButtons:
+			# Вспомогательная кнопка очистки строки поиска
+			create_button(parent_widget=frame_panel,text=mes.btn_clear,hint=mes.hint_clear_search_field,action=clear_search_field,icon_path=icon_clear_search_field)
+			# Вспомогательная кнопка вставки
+			create_button(parent_widget=frame_panel,text=mes.btn_paste,hint=mes.hint_paste_clipboard,action=paste_search_field,icon_path=icon_paste)
+			# Вспомогательная кнопка вставки текущего запроса
+			if 'history' in db and len(db['history']) > 0:
+				create_button(parent_widget=frame_panel,text=mes.btn_repeat_sign,hint=mes.hint_paste_cur_request,action=insert_repeat_sign,icon_path=icon_repeat_sign)
+			else:
+				create_button(parent_widget=frame_panel,text=mes.btn_repeat_sign,hint=mes.hint_paste_cur_request,action=insert_repeat_sign,icon_path=icon_repeat_sign_off)
+			# Вспомогательная кнопка вставки предыдущего запроса
+			if 'history' in db and len(db['history']) > 1:
+				create_button(parent_widget=frame_panel,text=mes.btn_repeat_sign2,hint=mes.hint_paste_prev_request,action=insert_repeat_sign2,icon_path=icon_repeat_sign2)
+			else:
+				create_button(parent_widget=frame_panel,text=mes.btn_repeat_sign2,hint=mes.hint_paste_prev_request,action=insert_repeat_sign2,icon_path=icon_repeat_sign2_off)
 		# Выпадающий список с вариантами направлений перевода
 		var=tk.StringVar(top)
 		var.set(cur_pair)
 		option_menu=tk.OptionMenu(frame_panel,var,*pairs,command=change_pair).pack(side='left',anchor='center')
+		if UseOptionalButtons:
+			# Вспомогательная кнопка перехода на предыдущую статью
+			if 'history_index' in db and 'history' in db and db['history_index'] > 0:
+				create_button(parent_widget=frame_panel,text=mes.btn_prev,hint=mes.hint_preceding_article,action=go_back,icon_path=icon_go_back)
+			else:
+				create_button(parent_widget=frame_panel,text=mes.btn_prev,hint=mes.hint_preceding_article,action=go_back,icon_path=icon_go_back_off)
+			# Вспомогательная кнопка перехода на следующую статью
+			if 'history_index' in db and db['history_index'] < len(db['history'])-1:
+				create_button(parent_widget=frame_panel,text=mes.btn_next,hint=mes.hint_following_article,action=go_forward,icon_path=icon_go_forward)
+			else:
+				create_button(parent_widget=frame_panel,text=mes.btn_next,hint=mes.hint_following_article,action=go_forward,icon_path=icon_go_forward_off)
 		# Кнопка включения/отключения истории
-		button_history=tk.Button(frame_panel,text=mes.history)
-		button_history.bind('<ButtonRelease-1>',toggle_history)
-		button_history.bind('<Return>',toggle_history)
-		button_history.bind('<KP_Enter>',toggle_history)
-		button_history.bind('<space>',toggle_history)
-		try:
-			button_history.bind(bind_clear_history,clear_history)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_clear_history)
-		button_history.pack(side='left')
-		# Кнопка "Буфер обмена"
-		if db['mode']=='clipboard':
-			button_clipboard=tk.Button(frame_panel,text=mes.watch_clipboard,fg='red')
-		else:
-			button_clipboard=tk.Button(frame_panel,text=mes.watch_clipboard)
-		button_clipboard.bind('<ButtonRelease-1>',watch_clipboard)
-		button_clipboard.bind('<Return>',watch_clipboard)
-		button_clipboard.bind('<KP_Enter>',watch_clipboard)
-		button_clipboard.bind('<space>',watch_clipboard)
-		button_clipboard.pack(side='left')
-		# Кнопка "Открыть в браузере"
-		button_browser=tk.Button(frame_panel,text=mes.in_browser)
-		button_browser.bind('<ButtonRelease-1>',open_in_browser)
-		button_browser.bind('<Return>',open_in_browser)
-		button_browser.bind('<KP_Enter>',open_in_browser)
-		button_browser.bind('<space>',open_in_browser)
-		button_browser.pack(side='left')
-		# Кнопка переключения языка интерфейса
-		button_ui_lang=tk.Button(frame_panel,text=mes.ui_lang)
-		button_ui_lang.bind('<ButtonRelease-1>',change_ui_lang)
-		button_ui_lang.bind('<Return>',change_ui_lang)
-		button_ui_lang.bind('<KP_Enter>',change_ui_lang)
-		button_ui_lang.bind('<space>',change_ui_lang)
-		button_ui_lang.pack(side='left')
-		# Кнопка "О программе"
-		button_about=tk.Button(frame_panel,text=mes.about,command=show_about)
-		button_about.bind('<ButtonRelease-1>',show_about) 
-		button_about.bind('<Return>',show_about)
-		button_about.bind('<KP_Enter>',show_about)
-		button_about.bind('<space>',show_about)
-		button_about.pack(side='left')
-		# Кнопка "Сохранить"
-		button_save=tk.Button(frame_panel,text=mes.save,command=save_article)
-		button_save.bind('<ButtonRelease-1>',save_article)
-		button_save.bind('<Return>',save_article)
-		button_save.bind('<KP_Enter>',save_article)
-		button_save.bind('<space>',save_article)
-		button_save.pack(side='left')
+		button=create_button(parent_widget=frame_panel,text=mes.btn_history,hint=mes.hint_history,action=toggle_history,icon_path=icon_toggle_history)
+		create_binding(button,bind_clear_history,clear_history)
+		if UseOptionalButtons:
+			# Вспомогательная кнопка очистки истории
+			create_button(parent_widget=frame_panel,text=mes.btn_clear_history,hint=mes.hint_clear_history,action=clear_history,icon_path=icon_clear_history)
+			# Вспомогательная кнопка перезагрузки статьи
+			create_button(parent_widget=frame_panel,text=mes.btn_reload,hint=mes.hint_reload_article,action=close_top,icon_path=icon_reload)
 		# Кнопка "Поиск в статье"
-		button_search_art=tk.Button(frame_panel,text=mes.search_article,command=search_article)
-		button_search_art.bind('<ButtonRelease-1>',lambda e:search_article(direction='clear'))
-		button_search_art.bind('<Return>',lambda e:search_article(direction='clear'))
-		button_search_art.bind('<KP_Enter>',lambda e:search_article(direction='clear'))
-		button_search_art.bind('<space>',lambda e:search_article(direction='clear'))
-		button_search_art.pack(side='left')
+		create_button(parent_widget=frame_panel,text=mes.btn_search,hint=mes.hint_search_article,action=lambda e:search_article(direction='clear'),icon_path=icon_search_article)
+		# Кнопка "Сохранить"
+		create_button(parent_widget=frame_panel,text=mes.btn_save,hint=mes.hint_save_article,action=save_article,icon_path=icon_save_article)
+		# Кнопка "Открыть в браузере"
+		create_button(parent_widget=frame_panel,text=mes.btn_in_browser,hint=mes.hint_in_browser,action=open_in_browser,icon_path=icon_open_in_browser)
+		# Кнопка "Буфер обмена"
+		if 'mode' in db and db['mode']=='clipboard':
+			create_button(parent_widget=frame_panel,text=mes.btn_clipboard,hint=mes.hint_watch_clipboard,action=watch_clipboard,icon_path=icon_watch_clipboard_on,fg='red')
+		else:
+			create_button(parent_widget=frame_panel,text=mes.btn_clipboard,hint=mes.hint_watch_clipboard,action=watch_clipboard,icon_path=icon_watch_clipboard_off)
+		# Кнопка переключения языка интерфейса
+		create_button(parent_widget=frame_panel,text=mes.btn_ui_lang,hint=mes.hint_ui_lang,action=change_ui_lang,icon_path=icon_change_ui_lang)
+		# Кнопка "О программе"
+		create_button(parent_widget=frame_panel,text=mes.btn_about,hint=mes.hint_about,action=show_about,icon_path=icon_show_about)
 		# Кнопка выхода
-		button_quit=tk.Button(frame_panel,text=mes.x,command=quit_now)
-		button_quit.bind('<ButtonRelease-1>',quit_now) 
-		button_quit.bind('<Return>',quit_now)
-		button_quit.bind('<KP_Enter>',quit_now)
-		button_quit.bind('<space>',quit_now)
-		button_quit.pack(side='right')
-		# Перейти на предыдущую/следующую статью
-		try:
-			top.bind(bind_go_back,go_back)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_go_back)
-		try:
-			top.bind(bind_go_forward,go_forward)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_go_forward)
+		create_button(parent_widget=frame_panel,text=mes.btn_x,hint=mes.hint_x,action=quit_now,icon_path=icon_quit_now,side='right')
 		frame=tk.Frame(top)
 		frame.pack(expand=1,fill='both')
 		#scrollbar=tk.Scrollbar(frame,repeatinterval=1000,jump=1,repeatdelay=1000)
@@ -2942,140 +3284,71 @@ def article_field(db,Standalone=False):
 		# Поскольку область Истории изменяет размеры области терминов, то пересоздаем БД координат даже в режиме 'skip'
 		db=get_coor_pages(txt,db)
 		db=aggregate_pages(db)
-		db=scrollbar_poses(db)
+		scrollbar_poses(db)
 		#--------------------------------------------------------------------------
 		scrollbar.config(command=custom_scroll)
-		try:
-			top.bind(bind_move_left,move_left)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_move_left)
-		try:
-			top.bind(bind_move_right,move_right)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_move_right)
-		try:
-			top.bind(bind_move_down,move_down)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_move_down)
-		try:
-			top.bind(bind_move_up,move_up)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_move_up)
-		try:
-			top.bind(bind_move_line_start,move_line_start)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_move_line_start)
-		try:
-			top.bind(bind_move_line_end,move_line_end)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_move_line_end)
-		try:
-			top.bind(bind_move_text_start,move_text_start)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_move_text_start)
-		try:
-			top.bind(bind_move_text_end,move_text_end)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_move_text_end)
-		try:
-			top.bind(bind_move_page_start,move_page_start)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_move_page_start)
-		try:
-			top.bind(bind_move_page_end,move_page_end)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_move_page_end)
-		try:
-			top.bind(bind_move_page_up,move_page_up)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_move_page_up)
-		try:
-			top.bind(bind_move_page_down,move_page_down)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_move_page_down)
-		try:
-			top.bind(bind_go_url,go_url)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_go_url)
-		try:
-			top.bind(bind_go_url_alt,go_url)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_go_url_alt)
-		try:
-			txt.bind(bind_go_url_alt2,go_url)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_go_url_alt2)
+		#--------------------------------------------------------------------------
+		# Привязки: горячие клавиши и кнопки мыши
+		create_binding(widget=listbox,binding=bind_get_history,action=get_history) # При просто <Button-1> выделение еще не будет выбрано
+		create_binding(widget=listbox,binding='<Return>',action=get_history)
+		create_binding(widget=listbox,binding='<KP_Enter>',action=get_history)
+		create_binding(widget=listbox,binding='<space>',action=get_history)
+		create_binding(widget=listbox,binding=bind_copy_history,action=copy_history)
+		create_binding(widget=top,binding=bind_go_search,action=go_search)
+		create_binding(widget=top,binding=bind_go_search_alt,action=go_search)
+		create_binding(widget=search_field,binding=bind_clear_search_field,action=clear_search_field)
+		create_binding(widget=search_field,binding=bind_paste_search_field,action=paste_search_field)
+		# Перейти на предыдущую/следующую статью
+		create_binding(widget=top,binding=bind_go_back,action=go_back)
+		create_binding(widget=top,binding=bind_go_forward,action=go_forward)
+		create_binding(widget=top,binding=bind_move_left,action=move_left)
+		create_binding(widget=top,binding=bind_move_right,action=move_right)
+		create_binding(widget=top,binding=bind_move_down,action=move_down)
+		create_binding(widget=top,binding=bind_move_up,action=move_up)
+		create_binding(widget=top,binding=bind_move_line_start,action=move_line_start)
+		create_binding(widget=top,binding=bind_move_line_end,action=move_line_end)
+		create_binding(widget=top,binding=bind_move_text_start,action=move_text_start)
+		create_binding(widget=top,binding=bind_move_text_end,action=move_text_end)
+		create_binding(widget=top,binding=bind_move_page_start,action=move_page_start)
+		create_binding(widget=top,binding=bind_move_page_end,action=move_page_end)
+		create_binding(widget=top,binding=bind_move_page_up,action=move_page_up)
+		create_binding(widget=top,binding=bind_move_page_down,action=move_page_down)
+		create_binding(widget=top,binding=bind_go_url,action=go_url)
+		create_binding(widget=top,binding=bind_go_url_alt,action=go_url)
+		create_binding(widget=txt,binding=bind_go_url_alt2,action=go_url)
 		search_field.focus_force()
 		if not Standalone:
 			# Для выхода нельзя использовать Return, поскольку это конфликтует с Shift-Enter. Поэтому оставляем только Escape.
-			top.bind('<Escape>',quit_now)
-		try:
-			top.bind(bind_copy_sel,copy_sel)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_copy_sel)
-		try:
-			top.bind(bind_copy_sel_alt,copy_sel)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_copy_sel_alt)
-		# ПКМ используется еще для очистки Истории, поэтому нельзя использовать top
-		try:
-			txt.bind(bind_copy_sel_alt2,copy_sel)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_copy_sel_alt2)
+			create_binding(widget=top,binding='<Escape>',action=quit_now)
+		create_binding(widget=top,binding=bind_copy_sel,action=copy_sel)
+		create_binding(widget=top,binding=bind_copy_sel_alt,action=copy_sel)
+		create_binding(widget=txt,binding=bind_copy_sel_alt2,action=copy_sel)
 		if sys_type=='win' or sys_type=='mac':
-			top.bind('<MouseWheel>',mouse_wheel)
+			create_binding(widget=top,binding='<MouseWheel>',action=mouse_wheel)
 		else:
-			top.bind('<Button 4>',mouse_wheel)
-			top.bind('<Button 5>',mouse_wheel)
-		txt.bind('<Motion>',mouse_sel)
+			create_binding(widget=top,binding='<Button 4>',action=mouse_wheel)
+			create_binding(widget=top,binding='<Button 5>',action=mouse_wheel)
+		create_binding(widget=txt,binding='<Motion>',action=mouse_sel)
 		# Закрывать текущее окно с последующей перезагрузкой статьи в обычном режиме бессмысленно, поэтому, прямо указываем режим Буфера
-		if db['mode']=='clipboard' or not Standalone:
-			try:
+		if 'mode' in db:
+			if db['mode']=='clipboard' or not Standalone:
 				if Standalone:
 					# Привязка к top может конфликтовать со строкой поиска
-					txt.bind(bind_close_top,close_top)
+					create_binding(widget=txt,binding=bind_close_top,action=close_top)
 				else:
-					txt.bind(bind_close_top,quit_top)
-			except tk.TclError:
-				Warning(cur_func,mes.wrong_keybinding % bind_close_top)
-		try:
-			top.bind(bind_quit_now,quit_now)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_quit_now)
-		try:
-			top.bind(bind_search_article_forward,lambda e:search_article(direction='forward'))
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_search_article_forward)
-		try:
-			top.bind(bind_search_article_backward,lambda e:search_article(direction='backward'))
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_search_article_backward)
-		try:
-			top.bind(bind_re_search_article,lambda e:search_article(direction='clear'))
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_re_search_article)
-		try:
-			top.bind(bind_reload_article,close_top)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_reload_article)
-		try:
-			top.bind(bind_save_article,save_article)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_save_article)
-		try:
-			top.bind('Alt-F4',quit_top)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % 'Alt-F4')
-		try:
-			top.bind(bind_search_field,lambda e:search_field.focus_force())
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_search_field)
-		try:
-			top.bind(bind_show_about,show_about)
-		except tk.TclError:
-			Warning(cur_func,mes.wrong_keybinding % bind_show_about)
+					create_binding(widget=txt,binding=bind_close_top,action=quit_top)
+		create_binding(widget=top,binding=bind_quit_now,action=quit_now)
+		create_binding(widget=top,binding=bind_search_article_forward,action=lambda e:search_article(direction='forward'))
+		create_binding(widget=top,binding=bind_search_article_backward,action=lambda e:search_article(direction='backward'))
+		create_binding(widget=top,binding=bind_re_search_article,action=lambda e:search_article(direction='clear'))
+		create_binding(widget=top,binding=bind_reload_article,action=close_top)
+		create_binding(widget=top,binding=bind_save_article,action=save_article)
+		create_binding(widget=top,binding='Alt-F4',action=quit_top)
+		create_binding(widget=top,binding=bind_search_field,action=lambda e:search_field.focus_force())
+		create_binding(widget=top,binding=bind_show_about,action=show_about)
+		#--------------------------------------------------------------------------
 		# Выделение первого признака
-		if db['mode']=='skip':
+		if 'mode' in db and db['mode']=='skip':
 			res[0]=db['last_sel']
 		select_term()
 		top.wait_window()
