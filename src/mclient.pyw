@@ -319,8 +319,8 @@ default_hint_background=load_option(SectionVariables,'default_hint_background')
 #default_hint_direction='top'
 default_hint_direction=load_option(SectionVariables,'default_hint_direction')
 # Цвет рамки подсказки для кнопки
-#default_hint_frame_color='black'
-default_hint_frame_color=load_option(SectionVariables,'default_hint_frame_color')
+#default_hint_border_color='black'
+default_hint_border_color=load_option(SectionVariables,'default_hint_border_color')
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Комбинации клавиш или кнопки мыши в mclient
 #bind_get_history='<Double-Button-1>' (ранее '<ButtonRelease-1>')
@@ -2175,12 +2175,12 @@ class ToolTipBase:
 			tw.destroy()
 
 class ToolTip(ToolTipBase):
-	def __init__(self,button,text='Sample text',hint_delay=default_hint_delay,hint_width=default_hint_width,hint_height=default_hint_height,hint_background=default_hint_background,hint_direction=default_hint_direction,hint_border_width=default_hint_border_width,hint_frame_color=default_hint_frame_color,button_side='left'):
+	def __init__(self,button,text='Sample text',hint_delay=default_hint_delay,hint_width=default_hint_width,hint_height=default_hint_height,hint_background=default_hint_background,hint_direction=default_hint_direction,hint_border_width=default_hint_border_width,hint_border_color=default_hint_border_color,button_side='left'):
 		self.text=text
 		self.hint_delay=hint_delay
 		self.hint_direction=hint_direction
 		self.hint_background=hint_background
-		self.hint_frame_color=hint_frame_color
+		self.hint_border_color=hint_border_color
 		self.hint_height=hint_height
 		self.hint_width=hint_width
 		self.hint_border_width=hint_border_width
@@ -2188,7 +2188,7 @@ class ToolTip(ToolTipBase):
 		ToolTipBase.__init__(self,button)
 	#--------------------------------------------------------------------------
 	def showcontents(self):
-		frame=tk.Frame(self.tipwindow,background=self.hint_frame_color,borderwidth=self.hint_border_width)
+		frame=tk.Frame(self.tipwindow,background=self.hint_border_color,borderwidth=self.hint_border_width)
 		frame.pack()
 		label=tk.Label(frame,text=self.text,justify='center',background=self.hint_background,width=self.hint_width,height=self.hint_height)
 		label.pack() #expand=1,fill='x'
@@ -2196,7 +2196,7 @@ class ToolTip(ToolTipBase):
 
 # Создать кнопку с различными параметрами
 # expand=1 - увеличить расстояние между кнопками
-def create_button(parent_widget,text,hint,action,expand=0,side='left',fg='black',Silent=False,Critical=True,width=default_button_size,height=default_button_size,bd=0,icon_path='',hint_delay=default_hint_delay,hint_width=default_hint_width,hint_height=default_hint_height,hint_background=default_hint_background,hint_direction=default_hint_direction,hint_border_width=default_hint_border_width,hint_frame_color=default_hint_frame_color):
+def create_button(parent_widget,text,hint,action,expand=0,side='left',fg='black',Silent=False,Critical=True,width=default_button_size,height=default_button_size,bd=0,icon_path='',hint_delay=default_hint_delay,hint_width=default_hint_width,hint_height=default_hint_height,hint_background=default_hint_background,hint_direction=default_hint_direction,hint_border_width=default_hint_border_width,hint_border_color=default_hint_border_color):
 	cur_func=sys._getframe().f_code.co_name
 	button=None
 	Success=True # Кнопку удалось инициализировать и упаковать; неудачные привязки не учитываются
