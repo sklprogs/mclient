@@ -21,7 +21,7 @@ import eg_mod as eg
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='3.6'
+build_ver='3.7 (in progress)'
 config_file_root='main.cfg'
 root=tk.Tk()
 
@@ -110,6 +110,8 @@ tag_pattern10='</td>'
 # Bool
 # I removed extra code, InternalDebug=False will not work
 InternalDebug=False
+Spelling=False
+UnixSelection=False
 AbortAll=[False]
 # Список символов, которые можно считать за буквы.
 allowed_syms=['°']
@@ -124,11 +126,6 @@ def log(cur_func,level,log_mes,TransFunc=False):
 	#print(cur_func,':',level,':',log_mes)
 	pass
 #------------------------------------------------------------------------------
-# Placeholder
-def text_field_ro(title=mes.check,array='test',SelectAll=False,GoTo=''):
-	#print(title,':',array)
-	pass
-#------------------------------------------------------------------------------	
 # Placeholder
 def decline_nom(words_nf,Decline=False):
 	pass
@@ -361,10 +358,6 @@ bind_move_page_up=load_option(SectionVariables,'bind_move_page_up')
 bind_move_page_down=load_option(SectionVariables,'bind_move_page_down')
 #bind_go_url='<Shift-Return>'
 bind_go_url=load_option(SectionVariables,'bind_go_url')
-#bind_go_url_alt='<Shift-KP_Enter>'
-bind_go_url_alt=load_option(SectionVariables,'bind_go_url_alt')
-#bind_go_url_alt2='<Button-1>'
-bind_go_url_alt2=load_option(SectionVariables,'bind_go_url_alt2')
 #bind_copy_sel='<Control-Return>'
 bind_copy_sel=load_option(SectionVariables,'bind_copy_sel')
 #bind_copy_sel_alt='<Control-KP_Enter>'
@@ -1199,48 +1192,131 @@ def dialog_save_file(text,filetypes=((mes.plain_text,'.txt'),(mes.webpage,'.htm'
 	log(cur_func,lev_debug,mes.writing % str(file))
 	return file
 
-# Текстовое поле в одну строку
-def text_field_small(title,Insist=False):
+# Конструктор для создания окна для манипуляции текстом
+def text_field(title=mes.text,user_text=err_mes_empty_input,CheckSpelling=False,GoTo='',Insist=False,SelectAll=False,ReadOnly=False,ReadOnlyProtection=False,Small=False,TrimEnd=False): # Edit=True равноценно user_text!=err_mes_empty_input
 	cur_func=sys._getframe().f_code.co_name
-	def top_destroy(args):
-		top.destroy()
+	func_res=''
 	if AbortAll==[True]:
 		log(cur_func,lev_warn,mes.abort_func % cur_func)
-		return ''
 	else:
-		# UnixSelection не работает для Entry
+		global cur_widget
+		# Если правописание (Spelling) отключено в конфиге, то отключить и опциональный параметр CheckSpelling
+		if not Spelling:
+			CheckSpelling=False
 		top, res = tk.Toplevel(root), [None]
-		def callback():
-			res[0] = entry.get()
+		if AlwaysMaximize and not Small:
+			if sys_type=='lin':
+				top.wm_attributes('-zoomed',True)
+			# Win, Mac
+			else:
+				top.wm_state(newstate='zoomed')
+		def close_top(event):
 			top.destroy()
 			root.deiconify()
+		def callback(event):
+			if Small:
+				returned=widget.get()
+			elif ReadOnly:
+				returned=user_text
+			else:
+				returned=widget.get(1.0,'end')
+			returned=returned.strip(dlb)
+			res[0]=returned
+			close_top(None)
+		def select_all(event):
+			if Small:
+				widget.select_clear()
+				widget.select_range(0,'end')
+			else:
+				widget.tag_add('sel','1.0','end')
+				widget.mark_set('insert','1.0')
+			return 'break'
 		root.withdraw()
 		title+=' '+my_program_title
 		top.title(title)
 		top.tk.call('wm','iconphoto',top._w,tk.PhotoImage(file=icon_main))
-		entry=tk.Entry(top,font=font_style)
-		entry.pack()
-		# Выход по нажатию Enter
-		entry.bind('<Return>', lambda e: callback())
-		entry.bind('<KP_Enter>', lambda e: callback())
+		# Позволяет удалять пробел и пунктуацию с конца, что полезно при некорректной обработке Ctrl+Shift+->
+		if TrimEnd and not Small: # По текущим данным, UnixSelection не работает с Entry
+			user_text=delete_end_punc(user_text)
+		if Small:
+			widget=tk.Entry(top,font=font_style)
+		else:
+			scrollbar=tk.Scrollbar(top,jump=0)
+			widget=tk.Text(top,height=10,font=font_style,wrap='word',yscrollcommand=scrollbar.set)
+		if user_text!=err_mes_empty_input:
+			widget.insert('end',user_text)
+		if ReadOnlyProtection and not Small:
+			widget.config(state='disabled')
+		if not Small:
+			# Позволяет использовать мышь для управления скроллбаром
+			scrollbar.config(command=widget.yview)
+			scrollbar.pack(side='right',fill='y')
+		create_binding(widget=widget,binding='<Return>',action=callback)
+		create_binding(widget=widget,binding='<KP_Enter>',action=callback)
+		if CheckSpelling:
+			text_db=analyse_text(user_text,Truncate=False,Decline=False)
+			misspel_lst=check_spelling(text_db)
+			misspel_lst=list2tk(misspel_lst)
+			for i in range(len(misspel_lst)):
+				pos1=misspel_lst[i][0]
+				pos2=misspel_lst[i][1]
+				try:
+					widget.tag_add('missp',pos1,pos2)
+					log(cur_func,lev_debug,mes.tag_added % ('missp',pos1,pos2))
+				except:
+					log(cur_func,lev_err,mes.tag_addition_failure % ('missp',pos1,pos2))
+			try:
+				widget.tag_config('missp',background='red')
+				log(cur_func,lev_debug,mes.tag_bg % ('missp','red'))
+			except:
+				log(cur_func,lev_err,mes.tag_bg_failure % 'missp')
+		if Small:
+			widget.pack()
+		else:
+			widget.pack(expand=1,fill='both')
 		# Выход по клику кнопки
-		ok=tk.Button(top, text=mes.enter_and_close, command=callback)
-		ok.pack()
-		# Выход по нажатию Enter и Пробел на кнопке
-		ok.bind('<Return>', lambda e:callback())
-		ok.bind('<KP_Enter>', lambda e:callback())
-		entry.focus_force()
-		top.bind('<Escape>',top_destroy)
+		if ReadOnly:
+			create_button(parent_widget=top,text=mes.btn_x,hint=mes.btn_x,action=callback,expand=1)
+		else:
+			create_button(parent_widget=top,text=mes.save_and_close,hint=mes.save_and_close,action=callback,expand=1)
+		# Выход по нажатию Enter и Пробел на кнопке (навигация по Shift+Tab)
+		widget.focus_force()
+		if GoTo!='' and not Small:
+			try:
+				goto_pos=widget.search(GoTo,'1.0','end')
+				widget.mark_set('goto',goto_pos)
+				widget.mark_set('insert',goto_pos)
+				widget.yview('goto')
+			except:
+				log(cur_func,lev_err,mes.shift_screen_failure % 'goto')
+		else:
+			try:
+				widget.mark_set('insert','1.0')
+			except:
+				log(cur_func,lev_err,mes.cursor_insert_failure)
+		if SelectAll:
+			select_all(None)
+		# tmp
+		#elif Small and not ReadOnly:
+		#	select_all(None)
+		create_binding(widget=widget,binding='<Control-a>',action=select_all)
+		create_binding(widget=widget,binding='<Control-A>',action=select_all)
+		cur_widget=widget
+		if UnixSelection and not Small: # По текущим данным, UnixSelection не работает с Entry
+			cur_widget.bind('<Control-Shift-Left>', lambda x: top.after(20, left_sel_mod))
+			cur_widget.bind('<Control-Shift-Right>', lambda x: top.after(20, right_sel_mod))
+		if Small or ReadOnly:
+			create_binding(widget=widget,binding='<Escape>',action=close_top)
 		top.wait_window(top)
 		func_res=res[0]
 		log(cur_func,lev_debug,str(func_res))
 		if Insist:
 			if empty(func_res):
 				ErrorMessage(cur_func,mes.empty_text)
-		# Предотвратить возможные ошибки при глобальной отмене
+			# Предотвратить возможные ошибки при глобальной отмене
 		if func_res==None:
 			func_res=''
-		return func_res
+	return func_res
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # mclient non-shared code
@@ -1541,7 +1617,7 @@ def extract_tag_contents(db):
 			res_mes=''
 			for i in range(db['all']['num']):
 				res_mes+="i: %d" % i+tab+db['all']['types'][i]+tab+db['all']['phrases'][i]+tab+str(db['all']['pos'][i])+tab+db['all']['url'][i]+dlb
-			text_field_ro(mes.db_all_check,res_mes)	
+			text_field(title=mes.db_all_check,user_text=res_mes,ReadOnly=True)
 	return db
 	
 # Adjust positions of entries for pretty viewing
@@ -1629,8 +1705,8 @@ def prepare_search(db):
 				res_mes.append(db['page'][pos1:pos2+1])
 			res_mes=str(res_mes)
 			res_mes+=dlb+dlb+"db['all']['pos']:"+dlb+str(db['all']['pos'])
-			text_field_ro(mes.db_check1,res_mes)
-			text_field_ro(mes.db_check2,str(db['all']['dlbs']['pos']))
+			text_field(title=mes.db_check1,user_text=res_mes,ReadOnly=True)
+			text_field(title=mes.db_check2,user_text=str(db['all']['dlbs']['pos']),ReadOnly=True)
 		#--------------------------------------------------------------------------
 		# Two adjacent terms are either separated with a coloured space, or with a semicolumn
 		if not TermsColoredSep:
@@ -1653,7 +1729,7 @@ def prepare_search(db):
 			db['len_page']=len(db['page'])
 			log(cur_func,lev_debug,"db['page']: %s" % db['page'])
 			if InternalDebug:
-				text_field_ro("db['page']:",db['page'])
+				text_field(title="db['page']:",user_text=db['page'],ReadOnly=True)
 		#--------------------------------------------------------------------------
 		# Creating tkinter-specific values
 		# list() is not enough!
@@ -1683,7 +1759,7 @@ def prepare_search(db):
 			res_mes=''
 			for i in range(db['all']['num']):
 				res_mes+="i: %d" % i+tab+db['all']['types'][i]+tab+db['all']['phrases'][i]+tab+str(db['all']['pos'][i])+tab+str(db['all']['pos_sl'][i])+tab+str(db['all']['tk'][i])+tab+db['all']['url'][i]+dlb
-			text_field_ro(mes.db_check3,res_mes)
+			text_field(title=mes.db_check3,user_text=res_mes,ReadOnly=True)
 		#--------------------------------------------------------------------------
 		# Mark terms borders for easy reading
 		db['borders']=[]
@@ -1760,7 +1836,7 @@ def prepare_search(db):
 			res_mes+="db['comments']['phrases']:"+dlb+str(db['comments']['phrases'])+dlb+dlb
 			res_mes+="db['comments']['pos']:"+dlb+str(db['comments']['pos'])+dlb+dlb
 			res_mes+="db['comments']['tk']:"+dlb+str(db['comments']['tk'])
-			text_field_ro(mes.db_check4,res_mes)
+			text_field(title=mes.db_check4,user_text=res_mes,ReadOnly=True)
 			res_mes=''
 			debug_lst=[]
 			for i in range(db['dics']['num']):
@@ -1780,7 +1856,7 @@ def prepare_search(db):
 				pos2=db['comments']['pos'][i][1]
 				debug_lst.append(db['page'][pos1:pos2+1])
 			res_mes+='comments:'+dlb+str(debug_lst)
-			text_field_ro(mes.db_check5,res_mes)
+			text_field(title=mes.db_check5,user_text=res_mes,ReadOnly=True)
 		#--------------------------------------------------------------------------
 		# The first element of the 'dic' list must precede the first element of the 'term' list. We create a new dic list in order not to change the existing one.
 		new_dic=[]
@@ -1924,7 +2000,7 @@ def prepare_search(db):
 			res_mes+="db['move_down']:"+dlb+str(db['move_down'])+dlb+dlb
 			res_mes+="db['move_left']:"+dlb+str(db['move_left'])+dlb+dlb
 			res_mes+="db['move_right']:"+dlb+str(db['move_right'])+dlb+dlb
-			text_field_ro(mes.db_check6,res_mes)
+			text_field(title=mes.db_check6,user_text=res_mes,ReadOnly=True)
 	return db
 
 # Remove tags that are not relevant to the article structure
@@ -2002,7 +2078,7 @@ def get_page_coor(db,page_no):
 		log(cur_func,lev_debug,"db['coor_db']['pages'][%d]['down']['pos']: %d" % (page_no,db['coor_db']['pages'][page_no]['down']['pos']))
 	return db
 
-# В зависимости от размеров окна вычислить координаты текста для каждой видимой области
+# Вернуть число страниц (видимых областей) в статье
 def get_coor_pages(widget,db):
 	cur_func=sys._getframe().f_code.co_name
 	if AbortAll==[True]:
@@ -2023,6 +2099,8 @@ def get_coor_pages(widget,db):
 		db['coor_db']['pages']={}
 		page_no=0
 		next_page_pos=0
+		prev_tk='1.0'
+		next_page_tk='1.0'
 		widget.yview('1.0')
 		while next_page_pos < db['db_page']['len']:
 			db=get_page_coor(db,page_no)
@@ -2031,9 +2109,17 @@ def get_coor_pages(widget,db):
 				break
 			else:
 				next_page_tk=pos2tk(db['db_page'],next_page_pos,Even=True)
+				# В некоторых случаях, несмотря на +1 в номере символа, его позиция по Tk не меняется, и можно войти в бесконечный цикл.
+				while next_page_tk==prev_tk and next_page_pos < db['db_page']['len']-1:
+					next_page_pos+=1
+					next_page_tk=pos2tk(db['db_page'],next_page_pos,Even=True)
 				log(cur_func,lev_debug,'next_page_tk: %s' % next_page_tk)
-				widget.yview(next_page_tk)
-				page_no+=1
+				if next_page_tk==prev_tk or next_page_pos >= db['db_page']['len']-1:
+					break
+				else:
+					widget.yview(next_page_tk)
+					page_no+=1
+					prev_tk=next_page_tk
 		widget.yview('1.0')
 		db['coor_db']['pages']['num']=page_no+1
 		if db['mode']!='skip':
@@ -2197,6 +2283,7 @@ class ToolTip(ToolTipBase):
 # Создать кнопку с различными параметрами
 # expand=1 - увеличить расстояние между кнопками
 def create_button(parent_widget,text,hint,action,expand=0,side='left',fg='black',Silent=False,Critical=True,width=default_button_size,height=default_button_size,bd=0,icon_path='',hint_delay=default_hint_delay,hint_width=default_hint_width,hint_height=default_hint_height,hint_background=default_hint_background,hint_direction=default_hint_direction,hint_border_width=default_hint_border_width,hint_border_color=default_hint_border_color):
+	# side: must be 'top, 'bottom', 'left' or 'right'
 	cur_func=sys._getframe().f_code.co_name
 	button=None
 	Success=True # Кнопку удалось инициализировать и упаковать; неудачные привязки не учитываются
@@ -2270,7 +2357,7 @@ def article_field(db,Standalone=False):
 			top.destroy()
 			root.deiconify()
 		#----------------------------------------------------------------------
-		# Go to the URL of the current search
+		# Go to the URL of the current selection
 		def go_url(event):
 			cur_func=sys._getframe().f_code.co_name
 			if AbortAll==[True]:
@@ -2300,29 +2387,30 @@ def article_field(db,Standalone=False):
 					clipboard_copy(db['history'][-2])
 					paste_search_field(None)
 		#----------------------------------------------------------------------
-		# Search the selected term online using the entry widget
+		# Search the selected term online using the entry widget (search field)
 		def go_search(event):
 			cur_func=sys._getframe().f_code.co_name
 			if AbortAll==[True]:
 				log(cur_func,lev_warn,mes.abort_func % cur_func)
 			else:
-				search_str=search_field.get()
-				db['search']=search_str.strip(dlb)
-				db['search']=search_str.strip(' ')
-				db['mode']='search'
-				if db['search']=='':
-					pass
-				# Скопировать предпоследний запрос в буфер и вставить его в строку поиска (например, для перехода на этот запрос еще раз)
-				elif db['search']==repeat_sign2:
-					insert_repeat_sign2(event)
-				# Скопировать последний запрос в буфер и вставить его в строку поиска (например, для корректировки)
-				elif db['search']==repeat_sign:
-					insert_repeat_sign(event)
+				search_str=search_field.get().strip(dlb).strip(' ')
+				# Allows to use the same hotkeys for the search field and the article field
+				if search_str=='':
+					go_url(None)
 				else:
-					# Обновляем индекс текущего запроса при добавлении элемента для поиска
-					db['history_index']=len(db['history'])
-					close_top(event)
-		#----------------------------------------------------------------------
+					db['search']=search_str
+					db['mode']='search'
+					# Скопировать предпоследний запрос в буфер и вставить его в строку поиска (например, для перехода на этот запрос еще раз)
+					if db['search']==repeat_sign2:
+						insert_repeat_sign2(event)
+					# Скопировать последний запрос в буфер и вставить его в строку поиска (например, для корректировки)
+					elif db['search']==repeat_sign:
+						insert_repeat_sign(event)
+					else:
+						# Обновляем индекс текущего запроса при добавлении элемента для поиска
+						db['history_index']=len(db['history'])
+						close_top(event)
+		#----------------------------------------------------------------------		
 		# Copy to clipboard
 		def copy_sel(event):
 			cur_func=sys._getframe().f_code.co_name
@@ -3054,7 +3142,7 @@ def article_field(db,Standalone=False):
 				else:
 					# Создаем начальные значения
 					if not 'search_list' in db:
-						search_str=text_field_small(title=mes.search_str) #search_field.get()
+						search_str=text_field(title=mes.search_str,Small=True) #search_field.get()
 						search_str=search_str.strip(' ').strip(dlb)
 						root.withdraw()
 						if not empty(search_str):
@@ -3313,9 +3401,9 @@ def article_field(db,Standalone=False):
 		create_binding(widget=top,binding=bind_move_page_end,action=move_page_end)
 		create_binding(widget=top,binding=bind_move_page_up,action=move_page_up)
 		create_binding(widget=top,binding=bind_move_page_down,action=move_page_down)
-		create_binding(widget=top,binding=bind_go_url,action=go_url)
-		create_binding(widget=top,binding=bind_go_url_alt,action=go_url)
-		create_binding(widget=txt,binding=bind_go_url_alt2,action=go_url)
+		# Для перевода в области терминов используем кнопки мыши, но не альтернативные комбинации клавиш, поскольку предполагаются, что они для удобства совпадают с комбинациями клавиш для перевода в области поиска.
+		# ВНИМАНИЕ: widget - только txt. Если поставить top, то кнопки во frame_panel не будут нормально работать.
+		create_binding(widget=txt,binding=bind_go_url,action=go_url)
 		search_field.focus_force()
 		if not Standalone:
 			# Для выхода нельзя использовать Return, поскольку это конфликтует с Shift-Enter. Поэтому оставляем только Escape.

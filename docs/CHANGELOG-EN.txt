@@ -1,1 +1,3 @@
-- Add button images (to use text buttons, set TextButtons=1 in the config file)
+- Use the same key combination both for the terms field and the search field. If the search field is not empty, then its contents will be translated, otherwise the terms area will be translated.
+- Delete keys bind_go_url_alt, bind_go_url_alt2
+- Eliminate revealed hangups at certain requests

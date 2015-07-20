@@ -580,6 +580,7 @@ templ_diff='The difference for the template "%s":\n%d - %d = %d\n(approx. %d pag
 term_not_found='The term "%s" has not been found online!'
 test_sample2='Test sample in case of a successful replacement: "%s"'
 test_sample='Test sample: "%s"'
+text='Text:'
 title_diff='<title>Differences:</title>'
 title_template='Select a title template:'
 title='The title: "%s"'
