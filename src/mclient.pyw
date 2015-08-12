@@ -23,7 +23,7 @@ import mes_en
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='3.7'
+build_ver='3.8 (in progress)'
 gpl3_url_ru='http://rusgpl.ru/rusgpl.html'
 gpl3_url_en='http://www.gnu.org/licenses/gpl.html'
 # Данные глобальные переменные оформлены в виде словаря, что позволяет не использовать лишний раз global.
@@ -3214,7 +3214,7 @@ def article_field(db,Standalone=False):
 			if globs['AbortAll']:
 				log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 			else:
-				opt=SelectFromList(globs['mes'].select_action,globs['mes'].actions,[globs['mes'].save_article_as_html,globs['mes'].save_article_as_txt,globs['mes'].copy_article_html,globs['mes'].copy_article_txt],Insist=False)
+				opt=SelectFromList(globs['mes'].select_action,globs['mes'].actions,[globs['mes'].save_article_as_html,globs['mes'].save_article_as_txt,globs['mes'].copy_article_html,globs['mes'].copy_article_txt],Insist=False,Critical=False)
 				if not empty(opt):
 					if opt==globs['mes'].save_article_as_html:
 						# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.

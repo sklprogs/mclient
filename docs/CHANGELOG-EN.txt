@@ -1,7 +1,1 @@
-- Use the same key combination both for the terms field and the search field. If the search field is not empty, then its contents will be translated, otherwise the terms area will be translated.
-- Rename the config file to mclient.cfg
-- Delete keys bind_go_url_alt, bind_go_url_alt2. Add keys font_style, online_dic_url, ui_lang, win_encoding, InternalDebug, ReadOnlyProtection.
-- Eliminate revealed hangups at certain requests
-- Load default settings if the configuration file is missing or has errors
-- Select the default GUI language (ui_lang)
-- Fix a bug in the Clipboard Mode when copying by the program itself
+- Fix hang-up after canceling saving article.
