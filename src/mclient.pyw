@@ -243,7 +243,7 @@ def default_config(config='mclient',Init=True):
 		#globs['var'].update({'bind_re_search_article':'<Control-f>','bind_reload_article':'<Control-r>','bind_save_article':'<Control-s>'})
 		globs['var'].update({'online_dic_url':'http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','color_terms':'black','color_terms_sel':'cyan','color_dics':'cadet blue','color_comments':'gray','color_borders':'azure2','font_history':'Sans 12','font_terms':'Sans 14','font_terms_sel':'Sans 14 bold italic','font_dics':'Sans 14','font_comments':'Sans 14','window_size':'1024x768','repeat_sign':'!','repeat_sign2':'!!','default_hint_background':'#ffffe0','default_hint_direction':'top','default_hint_border_color':'navy','bind_get_history':'<Double-Button-1>','bind_copy_history':'<ButtonRelease-3>','bind_clear_search_field':'<ButtonRelease-3>','bind_paste_search_field':'<ButtonRelease-2>','bind_go_back':'<Alt-Left>','bind_go_forward':'<Alt-Right>','bind_move_left':'<Left>','bind_move_right':'<Right>','bind_move_down':'<Down>','bind_move_up':'<Up>','bind_move_line_start':'<Home>','bind_move_line_end':'<End>','bind_move_text_start':'<Control-Home>','bind_move_text_end':'<Control-End>','bind_move_page_start':'<Shift-Home>','bind_move_page_end':'<Shift-End>','bind_move_page_up':'<Prior>','bind_move_page_down':'<Next>','bind_go_url':'<Button-1>','bind_copy_sel':'<Control-Return>','bind_copy_sel_alt':'<Control-KP_Enter>','bind_copy_sel_alt2':'<ButtonRelease-3>','bind_go_search':'<Return>','bind_go_search_alt':'<KP_Enter>','bind_clear_history':'<ButtonRelease-3>','bind_close_top':'<ButtonRelease-2>','bind_quit_now':'<Control-q>','bind_search_article_forward':'<F3>','bind_search_article_backward':'<Shift-F3>','bind_re_search_article':'<Control-F3>','bind_reload_article':'<F5>','bind_save_article':'<F2>','bind_search_field':'<F6>','bind_show_about':'<F1>','icon_main':'icon_64x64_main.gif','icon_mclient':'icon_64x64_mclient.gif','icon_go_search':'icon_36x36_go_search.gif','icon_toggle_history':'icon_36x36_toggle_history.gif','icon_watch_clipboard_on':'icon_36x36_watch_clipboard_on.gif','icon_watch_clipboard_off':'icon_36x36_watch_clipboard_off.gif','icon_open_in_browser':'icon_36x36_open_in_browser.gif','icon_change_ui_lang':'icon_36x36_change_ui_lang.gif','icon_show_about':'icon_36x36_show_about.gif','icon_save_article':'icon_36x36_save_article.gif','icon_search_article':'icon_36x36_search_article.gif','icon_quit_now':'icon_36x36_quit_now.gif','icon_go_back':'icon_36x36_go_back.gif','icon_go_back_off':'icon_36x36_go_back_off.gif','icon_go_forward':'icon_36x36_go_forward.gif','icon_go_forward_off':'icon_36x36_go_forward_off.gif','icon_clear_search_field':'icon_36x36_clear_search_field.gif','icon_clear_history':'icon_36x36_clear_history.gif','icon_paste':'icon_36x36_paste.gif','icon_reload':'icon_36x36_reload.gif','icon_repeat_sign':'icon_36x36_repeat_sign.gif','icon_repeat_sign_off':'icon_36x36_repeat_sign_off.gif','icon_repeat_sign2':'icon_36x36_repeat_sign2.gif','icon_repeat_sign2_off':'icon_36x36_repeat_sign2_off.gif','font_style':'Sans 14','win_encoding':'windows-1251'})
 		globs['int'].update({'pixel_hack':18,'default_button_size':36,'default_hint_delay':800,'default_hint_width':280,'default_hint_height':30,'default_hint_border_width':2})
-		globs['bool'].update({'mclientSaveTitle':False,'AlwaysMaximize':True,'TermsColoredSep':False,'ShowWallet':True,'TextButtons':False,'UseOptionalButtons':True,'ReadOnlyProtection':False,'InternalDebug':False})
+		globs['bool'].update({'mclientSaveTitle':False,'AlwaysMaximize':True,'TermsColoredSep':False,'ShowWallet':True,'TextButtons':False,'UseOptionalButtons':True,'ReadOnlyProtection':False,'InternalDebug':False,'ShortHistory':True,'AutoHideHistory':True})
 	else:
 		ErrorMessage(cur_func,globs['mes'].unknown_mode % (str(config),'mclient'))
 		
@@ -2362,6 +2362,14 @@ def create_button(parent_widget,text,hint,action,expand=0,side='left',fg='black'
 			mestype(cur_func,globs['mes'].button_create_failed % text,Silent=Silent,Critical=Critical)
 	return button
 
+# Свернуть заданное окно
+def iconify(widget=root):
+	cur_func=sys._getframe().f_code.co_name
+	if globs['AbortAll']:
+		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+	else:
+		widget.iconify()
+
 # Определить номера терминов, которые являются пограничными для видимой области
 def aggregate_pages(db):
 	cur_func=sys._getframe().f_code.co_name
@@ -2374,7 +2382,7 @@ def aggregate_pages(db):
 			if db['terms']['num'] > 0:
 				log(cur_func,lev_debug,globs['mes'].db_pages_stat % (i,db['coor_db']['pages'][i]['up']['num'],db['terms']['phrases'][db['coor_db']['pages'][i]['up']['num']],db['coor_db']['pages'][i]['down']['num'],db['terms']['phrases'][db['coor_db']['pages'][i]['down']['num']]))
 	return db
-
+	
 # Отобразить окно со словарной статьей
 def article_field(db,Standalone=False):
 	cur_func=sys._getframe().f_code.co_name
@@ -2386,6 +2394,7 @@ def article_field(db,Standalone=False):
 		root.withdraw()
 		if not 'search' in db:
 			db['search']=globs['mes'].welcome
+			log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
 		if not 'mode' in db:
 			db['mode']='search'
 		if not 'ShowHistory' in db:
@@ -2394,6 +2403,7 @@ def article_field(db,Standalone=False):
 			db['FirstLaunch']=True
 		if not 'history' in db:
 			db['history']=[]
+			db['history_url']=[]
 		#----------------------------------------------------------------------
 		# Закрыть текущее окно mclient без выхода из самой программы
 		def close_top(event):
@@ -2407,7 +2417,9 @@ def article_field(db,Standalone=False):
 				log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 			else:
 				db['search']=db['terms']['phrases'][res[0]]
+				log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
 				db['url']=db['terms']['url'][res[0]]
+				log(cur_func,lev_debug,"db['url']: %s" % str(db['url']))
 				db['mode']='url'
 				db['history_index']=len(db['history'])
 				close_top(event)
@@ -2442,7 +2454,19 @@ def article_field(db,Standalone=False):
 					go_url(None)
 				else:
 					db['search']=search_str
+					log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
+					# Необходимо вовремя вернуть db['url'], чтобы он был занесен в историю
+					# Поскольку Multitran использует кодировку windows-1251, необходимо использовать ее. Поскольку некоторые символы не кодируются в globs['var']['win_encoding'] корректно, оставляем для них кодировку UTF-8.
+					# tmp, todo: Не получилось сделать этот блок в виде отдельной процедуры
+					try:
+						request_encoded=db['search'].encode(globs['var']['win_encoding'])
+					except:
+						request_encoded=bytes(db['search'],encoding=default_encoding)
+					# Некоторые версии питона принимают 'encode('windows-1251')', но не 'encode(encoding='windows-1251')'
+					db['url']=online_request(globs['var']['online_dic_url'],request_encoded)
+					log(cur_func,lev_debug,"db['url']: %s" % str(db['url']))
 					db['mode']='search'
+					#db['mode']='url'
 					# Скопировать предпоследний запрос в буфер и вставить его в строку поиска (например, для перехода на этот запрос еще раз)
 					if db['search']==globs['var']['repeat_sign2']:
 						insert_repeat_sign2(event)
@@ -3027,14 +3051,25 @@ def article_field(db,Standalone=False):
 				try:
 					# При выборе пункта возвращается кортеж с номером пункта
 					selection=listbox.curselection()
-					db['search']=listbox.get(selection[0])
-					db['mode']='search'
+					# ВНИМАНИЕ: В Python 3.4 selection[0] является числом, в более старших интерпретаторах, а также в сборках на их основе - строкой. Для совместимости преобразуем в число.
+					#db['search']=listbox.get(selection[0])
+					db['history_index']=len(db['history'])-int(selection[0])-1
+					db['search']=db['history'][db['history_index']]
+					# Список истории запросов идет в обратном порядке, поэтому необходимо синхронизировать
+					db['url']=db['history_url'][db['history_index']]
+					log(cur_func,lev_debug,"db['url']: %s" % str(db['url']))
 					log(cur_func,lev_debug,globs['mes'].history_elem_selected % db['search'])
 				except:
 					# По непонятным пока причинам после переключения интерфейса на английский может возникнуть ошибка globs['mes'].history_failure.
 					#Warning(cur_func,globs['mes'].history_failure)
 					log(cur_func,lev_warn,globs['mes'].history_failure)
-				close_top(event)
+				if globs['bool']['AutoHideHistory']:
+					# Уже содержит close_top()
+					toggle_history(None)
+				else:
+					close_top(event)
+				# Выносим в самый конец, чтобы нейтрализовать режим 'skip' в toggle_history()
+				db['mode']='url'
 		#----------------------------------------------------------------------
 		# Скопировать элемент истории
 		def copy_history(event):
@@ -3051,6 +3086,8 @@ def article_field(db,Standalone=False):
 					#Warning(cur_func,globs['mes'].history_failure)
 					log(cur_func,lev_warn,globs['mes'].history_failure)
 				clipboard_copy(selection)
+				if globs['bool']['AutoHideHistory']:
+					toggle_history(None)
 		#----------------------------------------------------------------------
 		# Очистить строку поиска
 		def clear_search_field(event):
@@ -3082,7 +3119,9 @@ def article_field(db,Standalone=False):
 			else:
 				db['mode']='search'
 				db['search']=globs['mes'].welcome
+				log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
 				db['history']=[]
+				db['history_url']=[]
 				db['history_index']=0
 				close_top(event)
 		#----------------------------------------------------------------------
@@ -3110,6 +3149,7 @@ def article_field(db,Standalone=False):
 						db['url']=db['terms']['url'][0]
 					else:
 						db['url']=online_url_safe
+					log(cur_func,lev_debug,"db['url']: %s" % str(db['url']))
 				try:
 					webbrowser.open(db['url'])
 				except:
@@ -3135,9 +3175,12 @@ def article_field(db,Standalone=False):
 					db['history_index']=len(db['history'])
 				if db['history_index'] > 0:
 					db['history_index']-=1
-					if db['mode']!='search':
-						db['mode']='search'
+					if db['mode']!='url':
+						db['mode']='url'
 					db['search']=db['history'][db['history_index']]
+					log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
+					db['url']=db['history_url'][db['history_index']]
+					log(cur_func,lev_debug,"db['url']: %s" % str(db['url']))
 					close_top(event)
 		#----------------------------------------------------------------------
 		# Перейти на следующий запрос
@@ -3150,9 +3193,12 @@ def article_field(db,Standalone=False):
 					db['history_index']=len(db['history'])
 				if db['history_index'] < len(db['history'])-1:
 					db['history_index']+=1
-					if db['mode']!='search':
-						db['mode']='search'
+					if db['mode']!='url':
+						db['mode']='url'
 					db['search']=db['history'][db['history_index']]
+					log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
+					db['url']=db['history_url'][db['history_index']]
+					log(cur_func,lev_debug,"db['url']: %s" % str(db['url']))
 					close_top(event)
 		#----------------------------------------------------------------------
 		# Найти слово/слова в статье
@@ -3451,12 +3497,13 @@ def article_field(db,Standalone=False):
 		create_binding(widget=txt,binding='<Motion>',action=mouse_sel)
 		# Закрывать текущее окно с последующей перезагрузкой статьи в обычном режиме бессмысленно, поэтому, прямо указываем режим Буфера
 		if 'mode' in db:
-			if db['mode']=='clipboard' or not Standalone:
-				if Standalone:
-					# Привязка к top может конфликтовать со строкой поиска
-					create_binding(widget=txt,binding=globs['var']['bind_close_top'],action=close_top)
-				else:
-					create_binding(widget=txt,binding=globs['var']['bind_close_top'],action=quit_top)
+			if db['mode']=='clipboard':
+				# Привязка к top может конфликтовать со строкой поиска
+				create_binding(widget=txt,binding=globs['var']['bind_close_top'],action=close_top)
+			elif Standalone:
+				create_binding(widget=txt,binding=globs['var']['bind_close_top'],action=lambda e: iconify(widget=top))
+			else:
+				create_binding(widget=txt,binding=globs['var']['bind_close_top'],action=quit_top)
 		create_binding(widget=top,binding=globs['var']['bind_quit_now'],action=quit_now)
 		create_binding(widget=top,binding=globs['var']['bind_search_article_forward'],action=lambda e:search_article(direction='forward'))
 		create_binding(widget=top,binding=globs['var']['bind_search_article_backward'],action=lambda e:search_article(direction='backward'))
@@ -3469,7 +3516,10 @@ def article_field(db,Standalone=False):
 		#--------------------------------------------------------------------------
 		# Выделение первого признака
 		if 'mode' in db and db['mode']=='skip':
-			res[0]=db['last_sel']
+			if 'last_sel' in db:
+				res[0]=db['last_sel']
+			else:
+				res[0]=0
 		select_term()
 		top.wait_window()
 	return db
@@ -3483,10 +3533,12 @@ def article_loop(Standalone=False):
 		root.tk.call('wm','iconphoto',root._w,tk.PhotoImage(file=globs['var']['icon_mclient']))
 		db={}
 		db['search']=globs['mes'].welcome
+		log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
 			db['history']=[]
+			db['history_url']=[]
 			db['mode']='search' # 'url', 'clipboard', 'skip'
 			db['Quit']=False
 			db['ShowHistory']=False
@@ -3516,9 +3568,19 @@ def article_loop(Standalone=False):
 							new_clipboard=old_clipboard
 						globs['IgnorePaste']=False
 					db['search']=new_clipboard
+					log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
 					db=get_online_article(db,IsURL=False,Standalone=Standalone)
-					if not db['search'] in db['history']:
+					if globs['bool']['ShortHistory']:
+						if not db['search'] in db['history']:
+							db['history'].append(db['search'])
+							log(cur_func,lev_info,globs['mes'].adding % str(db['search']))
+							db['history_url'].append(db['url'])
+							log(cur_func,lev_info,globs['mes'].adding % str(db['url']))
+					else:
 						db['history'].append(db['search'])
+						log(cur_func,lev_info,globs['mes'].adding % str(db['search']))
+						db['history_url'].append(db['url'])
+						log(cur_func,lev_info,globs['mes'].adding % str(db['url']))
 					db['history_index']=len(db['history'])
 				elif db['mode']=='url':
 					db=get_online_article(db,IsURL=True,Standalone=Standalone)
@@ -3530,13 +3592,20 @@ def article_loop(Standalone=False):
 					if not_found_online in db['page']:
 						Warning(cur_func,globs['mes'].term_not_found % db['search'])
 						db['search']='' # Do not put here anything besides '' because globs['mes'].welcome or any other is not translated for all languages, and we do not obligatory have 'en-ru' pair here, so this can enter an infinite loop
+						log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
 					db=analyse_tags(db)
 					db=prepare_search(db)
 				db=article_field(db,Standalone=Standalone)
-				if db['mode']!='skip' and not db['search'] in db['history']:
-					db['history'].append(db['search'])
+				if db['mode']!='skip' and not empty(db['search']):
+					if globs['bool']['ShortHistory']:
+						if not db['search'] in db['history']:
+							db['history'].append(db['search'])
+							db['history_url'].append(db['url'])
+					else:
+						db['history'].append(db['search'])
+						db['history_url'].append(db['url'])
 				db['FirstLaunch']=False
-#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<	
 
 default_config(config='mclient',Init=True)
 read_configs()
