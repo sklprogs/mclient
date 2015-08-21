@@ -3,3 +3,6 @@
 - (Optionally) Hide the History field after copying items in it or following them (AutoHideHistory)
 - Rely on URL instead of string requests in the History
 - Add a ShortHistory key: add requests that already have been added to the History (0, False) or not (1, True).  Set ShortHistory=0 to make navigation with buttons '→' and '←' more consistent.
+- Add new hotkeys (config keys bind_reload_article_alt, bind_save_article_alt, bind_toggle_history, bind_toggle_history_alt, bind_clear_history_alt, bind_open_in_browser, bind_open_in_browser_alt, bind_watch_clipboard), Esc and Ctrl-w to close the window (in the Clipboard Mode), Esc to minimize the window (in the regular mode)
+- Fix the button for switching a UI language
+- Change the clear history button image

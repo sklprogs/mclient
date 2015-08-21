@@ -23,7 +23,7 @@ import mes_en
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='3.8 (in progress)'
+build_ver='3.8'
 gpl3_url_ru='http://rusgpl.ru/rusgpl.html'
 gpl3_url_en='http://www.gnu.org/licenses/gpl.html'
 # Данные глобальные переменные оформлены в виде словаря, что позволяет не использовать лишний раз global.
@@ -197,14 +197,14 @@ def true_dirname(path,UseLog=True):
 	if sys_type=='win':
 		curdir=curdir.replace('//','\\')
 	if UseLog:
-		log(cur_func,lev_debug,mes.full_path2 % (path,curdir))
+		log(cur_func,lev_debug,globs['mes'].full_path2 % (path,curdir))
 	return curdir
 	
 # Вернуть расширение файла с точкой
 def get_ext(file):
 	cur_func=sys._getframe().f_code.co_name
 	if AbortAll==[True]:
-		log(cur_func,lev_warn,mes.abort_func % cur_func)
+		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		return ''
 	else:
 		func_res=os.path.splitext(file)[1]
@@ -216,12 +216,10 @@ def toggle_ui_lang():
 	if globs['ui_lang']=='en':
 		globs['ui_lang']='ru'
 		globs['mes']=mes_ru
-		globs['secret']=secret_ru
 		globs['license_url']=gpl3_url_ru
 	else:
 		globs['ui_lang']='en'
 		globs['mes']=mes_en
-		globs['secret']=secret_en
 		globs['license_url']=gpl3_url_en
 
 # Загрузить конфигурацию по умолчанию
@@ -241,8 +239,8 @@ def default_config(config='mclient',Init=True):
 	globs['mclient_config']=globs['bin_dir']+sysdiv+globs['mclient_config_root']
 	if config=='mclient':
 		#globs['var'].update({'bind_re_search_article':'<Control-f>','bind_reload_article':'<Control-r>','bind_save_article':'<Control-s>'})
-		globs['var'].update({'online_dic_url':'http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','color_terms':'black','color_terms_sel':'cyan','color_dics':'cadet blue','color_comments':'gray','color_borders':'azure2','font_history':'Sans 12','font_terms':'Sans 14','font_terms_sel':'Sans 14 bold italic','font_dics':'Sans 14','font_comments':'Sans 14','window_size':'1024x768','repeat_sign':'!','repeat_sign2':'!!','default_hint_background':'#ffffe0','default_hint_direction':'top','default_hint_border_color':'navy','bind_get_history':'<Double-Button-1>','bind_copy_history':'<ButtonRelease-3>','bind_clear_search_field':'<ButtonRelease-3>','bind_paste_search_field':'<ButtonRelease-2>','bind_go_back':'<Alt-Left>','bind_go_forward':'<Alt-Right>','bind_move_left':'<Left>','bind_move_right':'<Right>','bind_move_down':'<Down>','bind_move_up':'<Up>','bind_move_line_start':'<Home>','bind_move_line_end':'<End>','bind_move_text_start':'<Control-Home>','bind_move_text_end':'<Control-End>','bind_move_page_start':'<Shift-Home>','bind_move_page_end':'<Shift-End>','bind_move_page_up':'<Prior>','bind_move_page_down':'<Next>','bind_go_url':'<Button-1>','bind_copy_sel':'<Control-Return>','bind_copy_sel_alt':'<Control-KP_Enter>','bind_copy_sel_alt2':'<ButtonRelease-3>','bind_go_search':'<Return>','bind_go_search_alt':'<KP_Enter>','bind_clear_history':'<ButtonRelease-3>','bind_close_top':'<ButtonRelease-2>','bind_quit_now':'<Control-q>','bind_search_article_forward':'<F3>','bind_search_article_backward':'<Shift-F3>','bind_re_search_article':'<Control-F3>','bind_reload_article':'<F5>','bind_save_article':'<F2>','bind_search_field':'<F6>','bind_show_about':'<F1>','icon_main':'icon_64x64_main.gif','icon_mclient':'icon_64x64_mclient.gif','icon_go_search':'icon_36x36_go_search.gif','icon_toggle_history':'icon_36x36_toggle_history.gif','icon_watch_clipboard_on':'icon_36x36_watch_clipboard_on.gif','icon_watch_clipboard_off':'icon_36x36_watch_clipboard_off.gif','icon_open_in_browser':'icon_36x36_open_in_browser.gif','icon_change_ui_lang':'icon_36x36_change_ui_lang.gif','icon_show_about':'icon_36x36_show_about.gif','icon_save_article':'icon_36x36_save_article.gif','icon_search_article':'icon_36x36_search_article.gif','icon_quit_now':'icon_36x36_quit_now.gif','icon_go_back':'icon_36x36_go_back.gif','icon_go_back_off':'icon_36x36_go_back_off.gif','icon_go_forward':'icon_36x36_go_forward.gif','icon_go_forward_off':'icon_36x36_go_forward_off.gif','icon_clear_search_field':'icon_36x36_clear_search_field.gif','icon_clear_history':'icon_36x36_clear_history.gif','icon_paste':'icon_36x36_paste.gif','icon_reload':'icon_36x36_reload.gif','icon_repeat_sign':'icon_36x36_repeat_sign.gif','icon_repeat_sign_off':'icon_36x36_repeat_sign_off.gif','icon_repeat_sign2':'icon_36x36_repeat_sign2.gif','icon_repeat_sign2_off':'icon_36x36_repeat_sign2_off.gif','font_style':'Sans 14','win_encoding':'windows-1251'})
-		globs['int'].update({'pixel_hack':18,'default_button_size':36,'default_hint_delay':800,'default_hint_width':280,'default_hint_height':30,'default_hint_border_width':2})
+		globs['var'].update({'online_dic_url':'http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','color_terms':'black','color_terms_sel':'cyan','color_dics':'cadet blue','color_comments':'gray','color_borders':'azure2','font_history':'Sans 12','font_terms':'Sans 14','font_terms_sel':'Sans 14 bold italic','font_dics':'Sans 14','font_comments':'Sans 14','window_size':'1024x768','repeat_sign':'!','repeat_sign2':'!!','default_hint_background':'#ffffe0','default_hint_direction':'top','default_hint_border_color':'navy','bind_get_history':'<Double-Button-1>','bind_copy_history':'<ButtonRelease-3>','bind_clear_search_field':'<ButtonRelease-3>','bind_paste_search_field':'<ButtonRelease-2>','bind_go_back':'<Alt-Left>','bind_go_forward':'<Alt-Right>','bind_move_left':'<Left>','bind_move_right':'<Right>','bind_move_down':'<Down>','bind_move_up':'<Up>','bind_move_line_start':'<Home>','bind_move_line_end':'<End>','bind_move_text_start':'<Control-Home>','bind_move_text_end':'<Control-End>','bind_move_page_start':'<Shift-Home>','bind_move_page_end':'<Shift-End>','bind_move_page_up':'<Prior>','bind_move_page_down':'<Next>','bind_go_url':'<Button-1>','bind_copy_sel':'<Control-Return>','bind_copy_sel_alt':'<Control-KP_Enter>','bind_copy_sel_alt2':'<ButtonRelease-3>','bind_go_search':'<Return>','bind_go_search_alt':'<KP_Enter>','bind_clear_history':'<ButtonRelease-3>','bind_close_top':'<ButtonRelease-2>','bind_quit_now':'<Control-q>','bind_search_article_forward':'<F3>','bind_search_article_backward':'<Shift-F3>','bind_re_search_article':'<Control-F3>','bind_reload_article':'<F5>','bind_save_article':'<F2>','bind_search_field':'<F6>','bind_show_about':'<F1>','icon_main':'icon_64x64_main.gif','icon_mclient':'icon_64x64_mclient.gif','icon_go_search':'icon_36x36_go_search.gif','icon_toggle_history':'icon_36x36_toggle_history.gif','icon_watch_clipboard_on':'icon_36x36_watch_clipboard_on.gif','icon_watch_clipboard_off':'icon_36x36_watch_clipboard_off.gif','icon_open_in_browser':'icon_36x36_open_in_browser.gif','icon_change_ui_lang':'icon_36x36_change_ui_lang.gif','icon_show_about':'icon_36x36_show_about.gif','icon_save_article':'icon_36x36_save_article.gif','icon_search_article':'icon_36x36_search_article.gif','icon_quit_now':'icon_36x36_quit_now.gif','icon_go_back':'icon_36x36_go_back.gif','icon_go_back_off':'icon_36x36_go_back_off.gif','icon_go_forward':'icon_36x36_go_forward.gif','icon_go_forward_off':'icon_36x36_go_forward_off.gif','icon_clear_search_field':'icon_36x36_clear_search_field.gif','icon_clear_history':'icon_36x36_clear_history.gif','icon_paste':'icon_36x36_paste.gif','icon_reload':'icon_36x36_reload.gif','icon_repeat_sign':'icon_36x36_repeat_sign.gif','icon_repeat_sign_off':'icon_36x36_repeat_sign_off.gif','icon_repeat_sign2':'icon_36x36_repeat_sign2.gif','icon_repeat_sign2_off':'icon_36x36_repeat_sign2_off.gif','font_style':'Sans 14','win_encoding':'windows-1251','bind_reload_article_alt':'<Control-r>','bind_save_article_alt':'<Control-s>','bind_toggle_history':'<F4>','bind_toggle_history_alt':'<Control-h>','bind_clear_history_alt':'<Control-Shift-Delete>','bind_open_in_browser':'<F7>','bind_open_in_browser_alt':'<Control-b>','bind_watch_clipboard':'<F8>','bind_quit_now_alt':'<F10>'})
+		globs['int'].update({'pixel_hack':18,'default_button_size':36,'default_hint_delay':800,'default_hint_width':280,'default_hint_height':40,'default_hint_border_width':2})
 		globs['bool'].update({'mclientSaveTitle':False,'AlwaysMaximize':True,'TermsColoredSep':False,'ShowWallet':True,'TextButtons':False,'UseOptionalButtons':True,'ReadOnlyProtection':False,'InternalDebug':False,'ShortHistory':True,'AutoHideHistory':True})
 	else:
 		ErrorMessage(cur_func,globs['mes'].unknown_mode % (str(config),'mclient'))
@@ -259,7 +257,7 @@ def Question(cur_func='MAIN',cur_mes=err_mes_empty_question):
 # Информация
 def InfoMessage(cur_func='MAIN',cur_mes=err_mes_empty_info):
 	root.withdraw()
-	tkmes.showinfo(mes.inf_head,cur_mes)
+	tkmes.showinfo(globs['mes'].inf_head,cur_mes)
 	root.deiconify()
 	log(cur_func,lev_info,cur_mes)
 
@@ -2183,15 +2181,22 @@ def load_icon(icon_path,parent_widget,width=None,height=None,Silent=False,Critic
 	return button_img
 	
 # Привязать горячие клавиши или кнопки мыши к действию
-def create_binding(widget,binding,action):
+def create_binding(widget,bindings,action): # widget, list, function
 	cur_func=sys._getframe().f_code.co_name
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
-		try:
-			widget.bind(binding,action)
-		except tk.TclError:
-			Warning(cur_func,globs['mes'].wrong_keybinding % binding)
+		bindings_type=get_obj_type(bindings,Verbal=True,IgnoreErrors=True)
+		if bindings_type==globs['mes'].type_str or bindings_type==globs['mes'].type_lst:
+			if bindings_type==globs['mes'].type_str:
+				bindings=[bindings]
+			for i in range(len(bindings)):
+				try:
+					widget.bind(bindings[i],action)
+				except tk.TclError:
+					Warning(cur_func,globs['mes'].wrong_keybinding % bindings[i])
+		else:
+			ErrorMessage(cur_func,globs['mes'].unknown_mode % (str(bindings_type),'%s, %s' % (globs['mes'].type_str,globs['mes'].type_lst)))
 		
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Всплывающие подсказки для кнопок
@@ -2307,7 +2312,7 @@ class ToolTip(ToolTipBase):
 
 # Создать кнопку с различными параметрами
 # expand=1 - увеличить расстояние между кнопками
-def create_button(parent_widget,text,hint,action,expand=0,side='left',fg='black',Silent=False,Critical=True,width=None,height=None,bd=0,icon_path='',hint_delay=None,hint_width=None,hint_height=None,hint_background=None,hint_direction=None,hint_border_width=None,hint_border_color=None):
+def create_button(parent_widget,text,hint,action,expand=0,side='left',fg='black',Silent=False,Critical=True,width=None,height=None,bd=0,icon_path='',hint_delay=None,hint_width=None,hint_height=None,hint_background=None,hint_direction=None,hint_border_width=None,hint_border_color=None,bindings=[]):
 	# side: must be 'top, 'bottom', 'left' or 'right'
 	cur_func=sys._getframe().f_code.co_name
 	button=None
@@ -2315,51 +2320,62 @@ def create_button(parent_widget,text,hint,action,expand=0,side='left',fg='black'
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
-		if empty(width):
-			width=globs['int']['default_button_size']
-		if empty(height):
-			height=globs['int']['default_button_size']
-		if empty(hint_delay):
-			hint_delay=globs['int']['default_hint_delay']
-		if empty(hint_width):
-			hint_width=globs['int']['default_hint_width']
-		if empty(hint_height):
-			hint_height=globs['int']['default_hint_height']
-		if empty(hint_background):
-			hint_background=globs['var']['default_hint_background']
-		if empty(hint_direction):
-			hint_direction=globs['var']['default_hint_direction']
-		if empty(hint_border_width):
-			hint_border_width=globs['int']['default_hint_border_width']
-		if empty(hint_border_color):
-			hint_border_color=globs['var']['default_hint_border_color']
-		try:
-			if empty(icon_path) or globs['bool']['TextButtons']:
-				button=tk.Button(parent_widget,text=text,fg=fg)
-			else:
-				button_img=load_icon(icon_path=icon_path,parent_widget=parent_widget,width=width,height=height,Silent=Silent,Critical=Critical)
-				button=tk.Button(parent_widget,image=button_img,width=width,height=height,bd=bd)
-				button.flag_img=button_img
-		except tk.TclError:
-			Success=False
-			if Critical:
-				globs['AbortAll']=True
-		create_binding(button,'<Return>',action)
-		create_binding(button,'<KP_Enter>',action)
-		create_binding(button,'<space>',action)
-		create_binding(button,'<ButtonRelease-1>',action)
-		try:
-			button.pack(expand=expand,side=side)
-		# tk.TclError, AttributeError
-		except:
-			Success=False
-			if Critical:
-				globs['AbortAll']=True
-		if Success:
-			ToolTip(button,text=hint,hint_delay=hint_delay,hint_width=hint_width,hint_height=hint_height,hint_background=hint_background,hint_direction=hint_direction,button_side=side)
-		log(cur_func,lev_debug,str(Success))
-		if not Success:
-			mestype(cur_func,globs['mes'].button_create_failed % text,Silent=Silent,Critical=Critical)
+		bindings_type=get_obj_type(bindings,Verbal=True,IgnoreErrors=True)
+		if bindings_type==globs['mes'].type_str or bindings_type==globs['mes'].type_lst:
+			if bindings_type==globs['mes'].type_str:
+				bindings=[bindings]
+			if empty(width):
+				width=globs['int']['default_button_size']
+			if empty(height):
+				height=globs['int']['default_button_size']
+			if empty(hint_delay):
+				hint_delay=globs['int']['default_hint_delay']
+			if empty(hint_width):
+				hint_width=globs['int']['default_hint_width']
+			if empty(hint_height):
+				hint_height=globs['int']['default_hint_height']
+			if empty(hint_background):
+				hint_background=globs['var']['default_hint_background']
+			if empty(hint_direction):
+				hint_direction=globs['var']['default_hint_direction']
+			if empty(hint_border_width):
+				hint_border_width=globs['int']['default_hint_border_width']
+			if empty(hint_border_color):
+				hint_border_color=globs['var']['default_hint_border_color']
+			if not empty(bindings):
+				# Наличие элемента #0 должно гарантироваться в empty
+				hint_expand=dlb+bindings[0].replace('<','').replace('>','')
+				i=1
+				while i < len(bindings):
+					hint_expand+=', '+bindings[i].replace('<','').replace('>','')
+					i+=1
+				hint+=hint_expand
+			try:
+				if empty(icon_path) or globs['bool']['TextButtons']:
+					button=tk.Button(parent_widget,text=text,fg=fg)
+				else:
+					button_img=load_icon(icon_path=icon_path,parent_widget=parent_widget,width=width,height=height,Silent=Silent,Critical=Critical)
+					button=tk.Button(parent_widget,image=button_img,width=width,height=height,bd=bd)
+					button.flag_img=button_img
+			except tk.TclError:
+				Success=False
+				if Critical:
+					globs['AbortAll']=True
+			create_binding(widget=button,bindings=['<Return>','<KP_Enter>','<space>','<ButtonRelease-1>'],action=action)
+			try:
+				button.pack(expand=expand,side=side)
+			# tk.TclError, AttributeError
+			except:
+				Success=False
+				if Critical:
+					globs['AbortAll']=True
+			if Success:
+				ToolTip(button,text=hint,hint_delay=hint_delay,hint_width=hint_width,hint_height=hint_height,hint_background=hint_background,hint_direction=hint_direction,button_side=side)
+			log(cur_func,lev_debug,str(Success))
+			if not Success:
+				mestype(cur_func,globs['mes'].button_create_failed % text,Silent=Silent,Critical=Critical)
+		else:
+			ErrorMessage(cur_func,globs['mes'].unknown_mode % (str(bindings_type),'%s, %s' % (globs['mes'].type_str,globs['mes'].type_lst)))
 	return button
 
 # Свернуть заданное окно
@@ -3324,23 +3340,23 @@ def article_field(db,Standalone=False):
 		if db['FirstLaunch'] and not Standalone:
 			paste_search_field(None)
 		# Кнопка для "чайников", заменяет Enter в search_field
-		create_button(parent_widget=frame_panel,text=globs['mes'].btn_translate,hint=globs['mes'].btn_translate,action=go_search,icon_path=globs['var']['icon_go_search']) # В данном случае btn = hint
+		create_button(parent_widget=frame_panel,text=globs['mes'].btn_translate,hint=globs['mes'].btn_translate,action=go_search,icon_path=globs['var']['icon_go_search'],bindings=[globs['var']['bind_go_search'],globs['var']['bind_go_search_alt']]) # В данном случае btn = hint
 		# Если кнопки только текстовые, то все они не поместятся на экране, поэтому в текстовом режиме вспомогательные кнопки можно скрыть
 		if globs['bool']['UseOptionalButtons']:
 			# Вспомогательная кнопка очистки строки поиска
-			create_button(parent_widget=frame_panel,text=globs['mes'].btn_clear,hint=globs['mes'].hint_clear_search_field,action=clear_search_field,icon_path=globs['var']['icon_clear_search_field'])
+			create_button(parent_widget=frame_panel,text=globs['mes'].btn_clear,hint=globs['mes'].hint_clear_search_field,action=clear_search_field,icon_path=globs['var']['icon_clear_search_field'],bindings=[globs['var']['bind_clear_search_field']])
 			# Вспомогательная кнопка вставки
-			create_button(parent_widget=frame_panel,text=globs['mes'].btn_paste,hint=globs['mes'].hint_paste_clipboard,action=paste_search_field,icon_path=globs['var']['icon_paste'])
+			create_button(parent_widget=frame_panel,text=globs['mes'].btn_paste,hint=globs['mes'].hint_paste_clipboard,action=paste_search_field,icon_path=globs['var']['icon_paste'],bindings=['<Control-v>'])
 			# Вспомогательная кнопка вставки текущего запроса
 			if 'history' in db and len(db['history']) > 0:
-				create_button(parent_widget=frame_panel,text=globs['mes'].btn_repeat_sign,hint=globs['mes'].hint_paste_cur_request,action=insert_repeat_sign,icon_path=globs['var']['icon_repeat_sign'])
+				create_button(parent_widget=frame_panel,text=globs['mes'].btn_repeat_sign,hint=globs['mes'].hint_paste_cur_request,action=insert_repeat_sign,icon_path=globs['var']['icon_repeat_sign'],bindings=globs['var']['repeat_sign'])
 			else:
-				create_button(parent_widget=frame_panel,text=globs['mes'].btn_repeat_sign,hint=globs['mes'].hint_paste_cur_request,action=insert_repeat_sign,icon_path=globs['var']['icon_repeat_sign_off'])
+				create_button(parent_widget=frame_panel,text=globs['mes'].btn_repeat_sign,hint=globs['mes'].hint_paste_cur_request,action=insert_repeat_sign,icon_path=globs['var']['icon_repeat_sign_off'],bindings=globs['var']['repeat_sign'])
 			# Вспомогательная кнопка вставки предыдущего запроса
 			if 'history' in db and len(db['history']) > 1:
-				create_button(parent_widget=frame_panel,text=globs['mes'].btn_repeat_sign2,hint=globs['mes'].hint_paste_prev_request,action=insert_repeat_sign2,icon_path=globs['var']['icon_repeat_sign2'])
+				create_button(parent_widget=frame_panel,text=globs['mes'].btn_repeat_sign2,hint=globs['mes'].hint_paste_prev_request,action=insert_repeat_sign2,icon_path=globs['var']['icon_repeat_sign2'],bindings=globs['var']['repeat_sign2'])
 			else:
-				create_button(parent_widget=frame_panel,text=globs['mes'].btn_repeat_sign2,hint=globs['mes'].hint_paste_prev_request,action=insert_repeat_sign2,icon_path=globs['var']['icon_repeat_sign2_off'])
+				create_button(parent_widget=frame_panel,text=globs['mes'].btn_repeat_sign2,hint=globs['mes'].hint_paste_prev_request,action=insert_repeat_sign2,icon_path=globs['var']['icon_repeat_sign2_off'],bindings=globs['var']['repeat_sign2'])
 		# Выпадающий список с вариантами направлений перевода
 		var=tk.StringVar(top)
 		var.set(globs['cur_pair'])
@@ -3350,39 +3366,40 @@ def article_field(db,Standalone=False):
 		if globs['bool']['UseOptionalButtons']:
 			# Вспомогательная кнопка перехода на предыдущую статью
 			if 'history_index' in db and 'history' in db and db['history_index'] > 0:
-				create_button(parent_widget=frame_panel,text=globs['mes'].btn_prev,hint=globs['mes'].hint_preceding_article,action=go_back,icon_path=globs['var']['icon_go_back'])
+				create_button(parent_widget=frame_panel,text=globs['mes'].btn_prev,hint=globs['mes'].hint_preceding_article,action=go_back,icon_path=globs['var']['icon_go_back'],bindings=globs['var']['bind_go_back'])
 			else:
-				create_button(parent_widget=frame_panel,text=globs['mes'].btn_prev,hint=globs['mes'].hint_preceding_article,action=go_back,icon_path=globs['var']['icon_go_back_off'])
+				create_button(parent_widget=frame_panel,text=globs['mes'].btn_prev,hint=globs['mes'].hint_preceding_article,action=go_back,icon_path=globs['var']['icon_go_back_off'],bindings=globs['var']['bind_go_back'])
 			# Вспомогательная кнопка перехода на следующую статью
 			if 'history_index' in db and db['history_index'] < len(db['history'])-1:
-				create_button(parent_widget=frame_panel,text=globs['mes'].btn_next,hint=globs['mes'].hint_following_article,action=go_forward,icon_path=globs['var']['icon_go_forward'])
+				create_button(parent_widget=frame_panel,text=globs['mes'].btn_next,hint=globs['mes'].hint_following_article,action=go_forward,icon_path=globs['var']['icon_go_forward'],bindings=globs['var']['bind_go_forward'])
 			else:
-				create_button(parent_widget=frame_panel,text=globs['mes'].btn_next,hint=globs['mes'].hint_following_article,action=go_forward,icon_path=globs['var']['icon_go_forward_off'])
+				create_button(parent_widget=frame_panel,text=globs['mes'].btn_next,hint=globs['mes'].hint_following_article,action=go_forward,icon_path=globs['var']['icon_go_forward_off'],bindings=globs['var']['bind_go_forward'])
 		# Кнопка включения/отключения истории
-		button=create_button(parent_widget=frame_panel,text=globs['mes'].btn_history,hint=globs['mes'].hint_history,action=toggle_history,icon_path=globs['var']['icon_toggle_history'])
-		create_binding(button,globs['var']['bind_clear_history'],clear_history)
+		button=create_button(parent_widget=frame_panel,text=globs['mes'].btn_history,hint=globs['mes'].hint_history,action=toggle_history,icon_path=globs['var']['icon_toggle_history'],bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt']])
+		create_binding(widget=button,bindings=globs['var']['bind_clear_history'],action=clear_history)
+		create_binding(widget=top,bindings=globs['var']['bind_clear_history_alt'],action=clear_history)
 		if globs['bool']['UseOptionalButtons']:
 			# Вспомогательная кнопка очистки истории
-			create_button(parent_widget=frame_panel,text=globs['mes'].btn_clear_history,hint=globs['mes'].hint_clear_history,action=clear_history,icon_path=globs['var']['icon_clear_history'])
+			create_button(parent_widget=frame_panel,text=globs['mes'].btn_clear_history,hint=globs['mes'].hint_clear_history,action=clear_history,icon_path=globs['var']['icon_clear_history'],bindings=globs['var']['bind_clear_history_alt'])
 			# Вспомогательная кнопка перезагрузки статьи
-			create_button(parent_widget=frame_panel,text=globs['mes'].btn_reload,hint=globs['mes'].hint_reload_article,action=close_top,icon_path=globs['var']['icon_reload'])
+			create_button(parent_widget=frame_panel,text=globs['mes'].btn_reload,hint=globs['mes'].hint_reload_article,action=close_top,icon_path=globs['var']['icon_reload'],bindings=[globs['var']['bind_reload_article'],globs['var']['bind_reload_article_alt']])
 		# Кнопка "Поиск в статье"
-		create_button(parent_widget=frame_panel,text=globs['mes'].btn_search,hint=globs['mes'].hint_search_article,action=lambda e:search_article(direction='clear'),icon_path=globs['var']['icon_search_article'])
+		create_button(parent_widget=frame_panel,text=globs['mes'].btn_search,hint=globs['mes'].hint_search_article,action=lambda e:search_article(direction='clear'),icon_path=globs['var']['icon_search_article'],bindings=globs['var']['bind_re_search_article'])
 		# Кнопка "Сохранить"
-		create_button(parent_widget=frame_panel,text=globs['mes'].btn_save,hint=globs['mes'].hint_save_article,action=save_article,icon_path=globs['var']['icon_save_article'])
+		create_button(parent_widget=frame_panel,text=globs['mes'].btn_save,hint=globs['mes'].hint_save_article,action=save_article,icon_path=globs['var']['icon_save_article'],bindings=[globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']])
 		# Кнопка "Открыть в браузере"
-		create_button(parent_widget=frame_panel,text=globs['mes'].btn_in_browser,hint=globs['mes'].hint_in_browser,action=open_in_browser,icon_path=globs['var']['icon_open_in_browser'])
+		create_button(parent_widget=frame_panel,text=globs['mes'].btn_in_browser,hint=globs['mes'].hint_in_browser,action=open_in_browser,icon_path=globs['var']['icon_open_in_browser'],bindings=[globs['var']['bind_open_in_browser'],globs['var']['bind_open_in_browser_alt']])
 		# Кнопка "Буфер обмена"
 		if 'mode' in db and db['mode']=='clipboard':
-			create_button(parent_widget=frame_panel,text=globs['mes'].btn_clipboard,hint=globs['mes'].hint_watch_clipboard,action=watch_clipboard,icon_path=globs['var']['icon_watch_clipboard_on'],fg='red')
+			create_button(parent_widget=frame_panel,text=globs['mes'].btn_clipboard,hint=globs['mes'].hint_watch_clipboard,action=watch_clipboard,icon_path=globs['var']['icon_watch_clipboard_on'],fg='red',bindings=globs['var']['bind_watch_clipboard'])
 		else:
-			create_button(parent_widget=frame_panel,text=globs['mes'].btn_clipboard,hint=globs['mes'].hint_watch_clipboard,action=watch_clipboard,icon_path=globs['var']['icon_watch_clipboard_off'])
+			create_button(parent_widget=frame_panel,text=globs['mes'].btn_clipboard,hint=globs['mes'].hint_watch_clipboard,action=watch_clipboard,icon_path=globs['var']['icon_watch_clipboard_off'],bindings=globs['var']['bind_watch_clipboard'])
 		# Кнопка переключения языка интерфейса
 		create_button(parent_widget=frame_panel,text=globs['mes'].btn_ui_lang,hint=globs['mes'].hint_ui_lang,action=change_ui_lang,icon_path=globs['var']['icon_change_ui_lang'])
 		# Кнопка "О программе"
-		create_button(parent_widget=frame_panel,text=globs['mes'].btn_about,hint=globs['mes'].hint_about,action=show_about,icon_path=globs['var']['icon_show_about'])
+		create_button(parent_widget=frame_panel,text=globs['mes'].btn_about,hint=globs['mes'].hint_about,action=show_about,icon_path=globs['var']['icon_show_about'],bindings=globs['var']['bind_show_about'])
 		# Кнопка выхода
-		create_button(parent_widget=frame_panel,text=globs['mes'].btn_x,hint=globs['mes'].hint_x,action=quit_now,icon_path=globs['var']['icon_quit_now'],side='right')
+		create_button(parent_widget=frame_panel,text=globs['mes'].btn_x,hint=globs['mes'].hint_x,action=quit_now,icon_path=globs['var']['icon_quit_now'],side='right',bindings=[globs['var']['bind_quit_now'],globs['var']['bind_quit_now_alt']])
 		frame=tk.Frame(top)
 		frame.pack(expand=1,fill='both')
 		#scrollbar=tk.Scrollbar(frame,repeatinterval=1000,jump=1,repeatdelay=1000)
@@ -3455,64 +3472,68 @@ def article_field(db,Standalone=False):
 		scrollbar.config(command=custom_scroll)
 		#--------------------------------------------------------------------------
 		# Привязки: горячие клавиши и кнопки мыши
-		create_binding(widget=listbox,binding=globs['var']['bind_get_history'],action=get_history) # При просто <Button-1> выделение еще не будет выбрано
-		create_binding(widget=listbox,binding='<Return>',action=get_history)
-		create_binding(widget=listbox,binding='<KP_Enter>',action=get_history)
-		create_binding(widget=listbox,binding='<space>',action=get_history)
-		create_binding(widget=listbox,binding=globs['var']['bind_copy_history'],action=copy_history)
-		create_binding(widget=top,binding=globs['var']['bind_go_search'],action=go_search)
-		create_binding(widget=top,binding=globs['var']['bind_go_search_alt'],action=go_search)
-		create_binding(widget=search_field,binding=globs['var']['bind_clear_search_field'],action=clear_search_field)
-		create_binding(widget=search_field,binding=globs['var']['bind_paste_search_field'],action=paste_search_field)
+		create_binding(widget=listbox,bindings=[globs['var']['bind_get_history'],'<Return>','<KP_Enter>','<space>'],action=get_history) # При просто <Button-1> выделение еще не будет выбрано
+		create_binding(widget=listbox,bindings=globs['var']['bind_copy_history'],action=copy_history)
+		create_binding(widget=top,bindings=[globs['var']['bind_go_search'],globs['var']['bind_go_search_alt']],action=go_search)
+		create_binding(widget=search_field,bindings=globs['var']['bind_clear_search_field'],action=clear_search_field)
+		create_binding(widget=search_field,bindings=globs['var']['bind_paste_search_field'],action=paste_search_field)
 		# Перейти на предыдущую/следующую статью
-		create_binding(widget=top,binding=globs['var']['bind_go_back'],action=go_back)
-		create_binding(widget=top,binding=globs['var']['bind_go_forward'],action=go_forward)
-		create_binding(widget=top,binding=globs['var']['bind_move_left'],action=move_left)
-		create_binding(widget=top,binding=globs['var']['bind_move_right'],action=move_right)
-		create_binding(widget=top,binding=globs['var']['bind_move_down'],action=move_down)
-		create_binding(widget=top,binding=globs['var']['bind_move_up'],action=move_up)
-		create_binding(widget=top,binding=globs['var']['bind_move_line_start'],action=move_line_start)
-		create_binding(widget=top,binding=globs['var']['bind_move_line_end'],action=move_line_end)
-		create_binding(widget=top,binding=globs['var']['bind_move_text_start'],action=move_text_start)
-		create_binding(widget=top,binding=globs['var']['bind_move_text_end'],action=move_text_end)
-		create_binding(widget=top,binding=globs['var']['bind_move_page_start'],action=move_page_start)
-		create_binding(widget=top,binding=globs['var']['bind_move_page_end'],action=move_page_end)
-		create_binding(widget=top,binding=globs['var']['bind_move_page_up'],action=move_page_up)
-		create_binding(widget=top,binding=globs['var']['bind_move_page_down'],action=move_page_down)
+		create_binding(widget=top,bindings=globs['var']['bind_go_back'],action=go_back)
+		create_binding(widget=top,bindings=globs['var']['bind_go_forward'],action=go_forward)
+		create_binding(widget=top,bindings=globs['var']['bind_move_left'],action=move_left)
+		create_binding(widget=top,bindings=globs['var']['bind_move_right'],action=move_right)
+		create_binding(widget=top,bindings=globs['var']['bind_move_down'],action=move_down)
+		create_binding(widget=top,bindings=globs['var']['bind_move_up'],action=move_up)
+		create_binding(widget=top,bindings=globs['var']['bind_move_line_start'],action=move_line_start)
+		create_binding(widget=top,bindings=globs['var']['bind_move_line_end'],action=move_line_end)
+		create_binding(widget=top,bindings=globs['var']['bind_move_text_start'],action=move_text_start)
+		create_binding(widget=top,bindings=globs['var']['bind_move_text_end'],action=move_text_end)
+		create_binding(widget=top,bindings=globs['var']['bind_move_page_start'],action=move_page_start)
+		create_binding(widget=top,bindings=globs['var']['bind_move_page_end'],action=move_page_end)
+		create_binding(widget=top,bindings=globs['var']['bind_move_page_up'],action=move_page_up)
+		create_binding(widget=top,bindings=globs['var']['bind_move_page_down'],action=move_page_down)
 		# Для перевода в области терминов используем кнопки мыши, но не альтернативные комбинации клавиш, поскольку предполагаются, что они для удобства совпадают с комбинациями клавиш для перевода в области поиска.
 		# ВНИМАНИЕ: widget - только txt. Если поставить top, то кнопки во frame_panel не будут нормально работать.
-		create_binding(widget=txt,binding=globs['var']['bind_go_url'],action=go_url)
+		create_binding(widget=txt,bindings=globs['var']['bind_go_url'],action=go_url)
 		search_field.focus_force()
-		if not Standalone:
-			# Для выхода нельзя использовать Return, поскольку это конфликтует с Shift-Enter. Поэтому оставляем только Escape.
-			create_binding(widget=top,binding='<Escape>',action=quit_now)
-		create_binding(widget=top,binding=globs['var']['bind_copy_sel'],action=copy_sel)
-		create_binding(widget=top,binding=globs['var']['bind_copy_sel_alt'],action=copy_sel)
-		create_binding(widget=txt,binding=globs['var']['bind_copy_sel_alt2'],action=copy_sel)
+		# Для выхода нельзя использовать Return, поскольку это конфликтует с Shift-Enter. Поэтому оставляем только Escape.
+		if 'mode' in db:
+			if db['mode']=='clipboard':
+				create_binding(widget=top,bindings=['<Escape>','<Control-w>','<Alt-F4>'],action=close_top)
+			else:
+				if Standalone:
+					create_binding(widget=top,bindings='<Escape>',action=lambda e: iconify(widget=top))
+				else:
+					create_binding(widget=top,bindings='<Escape>',action=quit_now)
+		create_binding(widget=top,bindings=[globs['var']['bind_copy_sel'],globs['var']['bind_copy_sel_alt']],action=copy_sel)
+		create_binding(widget=txt,bindings=globs['var']['bind_copy_sel_alt2'],action=copy_sel)
 		if sys_type=='win' or sys_type=='mac':
-			create_binding(widget=top,binding='<MouseWheel>',action=mouse_wheel)
+			create_binding(widget=top,bindings='<MouseWheel>',action=mouse_wheel)
 		else:
-			create_binding(widget=top,binding='<Button 4>',action=mouse_wheel)
-			create_binding(widget=top,binding='<Button 5>',action=mouse_wheel)
-		create_binding(widget=txt,binding='<Motion>',action=mouse_sel)
+			create_binding(widget=top,bindings=['<Button 4>','<Button 5>'],action=mouse_wheel)
+		create_binding(widget=txt,bindings='<Motion>',action=mouse_sel)
 		# Закрывать текущее окно с последующей перезагрузкой статьи в обычном режиме бессмысленно, поэтому, прямо указываем режим Буфера
 		if 'mode' in db:
 			if db['mode']=='clipboard':
 				# Привязка к top может конфликтовать со строкой поиска
-				create_binding(widget=txt,binding=globs['var']['bind_close_top'],action=close_top)
+				create_binding(widget=txt,bindings=globs['var']['bind_close_top'],action=close_top)
 			elif Standalone:
-				create_binding(widget=txt,binding=globs['var']['bind_close_top'],action=lambda e: iconify(widget=top))
+				create_binding(widget=txt,bindings=globs['var']['bind_close_top'],action=lambda e: iconify(widget=top))
 			else:
-				create_binding(widget=txt,binding=globs['var']['bind_close_top'],action=quit_top)
-		create_binding(widget=top,binding=globs['var']['bind_quit_now'],action=quit_now)
-		create_binding(widget=top,binding=globs['var']['bind_search_article_forward'],action=lambda e:search_article(direction='forward'))
-		create_binding(widget=top,binding=globs['var']['bind_search_article_backward'],action=lambda e:search_article(direction='backward'))
-		create_binding(widget=top,binding=globs['var']['bind_re_search_article'],action=lambda e:search_article(direction='clear'))
-		create_binding(widget=top,binding=globs['var']['bind_reload_article'],action=close_top)
-		create_binding(widget=top,binding=globs['var']['bind_save_article'],action=save_article)
-		create_binding(widget=top,binding='Alt-F4',action=quit_top)
-		create_binding(widget=top,binding=globs['var']['bind_search_field'],action=lambda e:search_field.focus_force())
-		create_binding(widget=top,binding=globs['var']['bind_show_about'],action=show_about)
+				create_binding(widget=txt,bindings=globs['var']['bind_close_top'],action=quit_top)
+		# Дополнительные горячие клавиши
+		create_binding(widget=top,bindings=[globs['var']['bind_quit_now'],globs['var']['bind_quit_now_alt']],action=quit_now)
+		create_binding(widget=top,bindings=globs['var']['bind_search_article_forward'],action=lambda e:search_article(direction='forward'))
+		create_binding(widget=top,bindings=globs['var']['bind_search_article_backward'],action=lambda e:search_article(direction='backward'))
+		create_binding(widget=top,bindings=globs['var']['bind_re_search_article'],action=lambda e:search_article(direction='clear'))
+		create_binding(widget=top,bindings=[globs['var']['bind_reload_article'],globs['var']['bind_reload_article_alt']],action=close_top)
+		create_binding(widget=top,bindings=[globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']],action=save_article)
+		create_binding(widget=top,bindings='Alt-F4',action=quit_top)
+		create_binding(widget=top,bindings=globs['var']['bind_search_field'],action=lambda e:search_field.focus_force())
+		create_binding(widget=top,bindings=globs['var']['bind_show_about'],action=show_about)
+		create_binding(widget=top,bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt']],action=toggle_history)
+		create_binding(widget=top,bindings=[globs['var']['bind_open_in_browser'],globs['var']['bind_open_in_browser_alt']],action=open_in_browser)
+		create_binding(widget=top,bindings=globs['var']['bind_watch_clipboard'],action=watch_clipboard)
 		#--------------------------------------------------------------------------
 		# Выделение первого признака
 		if 'mode' in db and db['mode']=='skip':
