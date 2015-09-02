@@ -23,7 +23,7 @@ import mes_en
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='3.8.1'
+build_ver='3.9'
 gpl3_url_ru='http://rusgpl.ru/rusgpl.html'
 gpl3_url_en='http://www.gnu.org/licenses/gpl.html'
 # Данные глобальные переменные оформлены в виде словаря, что позволяет не использовать лишний раз global.
@@ -239,9 +239,9 @@ def default_config(config='mclient',Init=True):
 	globs['mclient_config']=globs['bin_dir']+sysdiv+globs['mclient_config_root']
 	if config=='mclient':
 		#globs['var'].update({'bind_re_search_article':'<Control-f>','bind_reload_article':'<Control-r>','bind_save_article':'<Control-s>'})
-		globs['var'].update({'online_dic_url':'http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','color_terms':'black','color_terms_sel':'cyan','color_dics':'cadet blue','color_comments':'gray','color_borders':'azure2','font_history':'Sans 12','font_terms':'Sans 14','font_terms_sel':'Sans 14 bold italic','font_dics':'Sans 14','font_comments':'Sans 14','window_size':'1024x768','repeat_sign':'!','repeat_sign2':'!!','default_hint_background':'#ffffe0','default_hint_direction':'top','default_hint_border_color':'navy','bind_get_history':'<Double-Button-1>','bind_copy_history':'<ButtonRelease-3>','bind_clear_search_field':'<ButtonRelease-3>','bind_paste_search_field':'<ButtonRelease-2>','bind_go_back':'<Alt-Left>','bind_go_forward':'<Alt-Right>','bind_move_left':'<Left>','bind_move_right':'<Right>','bind_move_down':'<Down>','bind_move_up':'<Up>','bind_move_line_start':'<Home>','bind_move_line_end':'<End>','bind_move_text_start':'<Control-Home>','bind_move_text_end':'<Control-End>','bind_move_page_start':'<Shift-Home>','bind_move_page_end':'<Shift-End>','bind_move_page_up':'<Prior>','bind_move_page_down':'<Next>','bind_go_url':'<Button-1>','bind_copy_sel':'<Control-Return>','bind_copy_sel_alt':'<Control-KP_Enter>','bind_copy_sel_alt2':'<ButtonRelease-3>','bind_go_search':'<Return>','bind_go_search_alt':'<KP_Enter>','bind_clear_history':'<ButtonRelease-3>','bind_close_top':'<ButtonRelease-2>','bind_quit_now':'<Control-q>','bind_search_article_forward':'<F3>','bind_search_article_backward':'<Shift-F3>','bind_re_search_article':'<Control-F3>','bind_reload_article':'<F5>','bind_save_article':'<F2>','bind_search_field':'<F6>','bind_show_about':'<F1>','icon_main':'icon_64x64_main.gif','icon_mclient':'icon_64x64_mclient.gif','icon_go_search':'icon_36x36_go_search.gif','icon_toggle_history':'icon_36x36_toggle_history.gif','icon_watch_clipboard_on':'icon_36x36_watch_clipboard_on.gif','icon_watch_clipboard_off':'icon_36x36_watch_clipboard_off.gif','icon_open_in_browser':'icon_36x36_open_in_browser.gif','icon_change_ui_lang':'icon_36x36_change_ui_lang.gif','icon_show_about':'icon_36x36_show_about.gif','icon_save_article':'icon_36x36_save_article.gif','icon_search_article':'icon_36x36_search_article.gif','icon_quit_now':'icon_36x36_quit_now.gif','icon_go_back':'icon_36x36_go_back.gif','icon_go_back_off':'icon_36x36_go_back_off.gif','icon_go_forward':'icon_36x36_go_forward.gif','icon_go_forward_off':'icon_36x36_go_forward_off.gif','icon_clear_search_field':'icon_36x36_clear_search_field.gif','icon_clear_history':'icon_36x36_clear_history.gif','icon_paste':'icon_36x36_paste.gif','icon_reload':'icon_36x36_reload.gif','icon_repeat_sign':'icon_36x36_repeat_sign.gif','icon_repeat_sign_off':'icon_36x36_repeat_sign_off.gif','icon_repeat_sign2':'icon_36x36_repeat_sign2.gif','icon_repeat_sign2_off':'icon_36x36_repeat_sign2_off.gif','font_style':'Sans 14','win_encoding':'windows-1251','bind_reload_article_alt':'<Control-r>','bind_save_article_alt':'<Control-s>','bind_toggle_history':'<F4>','bind_toggle_history_alt':'<Control-h>','bind_clear_history_alt':'<Control-Shift-Delete>','bind_open_in_browser':'<F7>','bind_open_in_browser_alt':'<Control-b>','bind_watch_clipboard':'<F8>','bind_quit_now_alt':'<F10>','bind_watch_clipboard_alt':'<Control-t>'})
+		globs['var'].update({'online_dic_url':'http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','color_terms':'black','color_terms_sel':'cyan','color_dics':'cadet blue','color_comments':'gray','color_borders':'azure2','font_history':'Sans 12','font_terms':'Sans 14','font_terms_sel':'Sans 14 bold italic','font_dics':'Sans 14','font_comments':'Sans 14','window_size':'1024x768','repeat_sign':'!','repeat_sign2':'!!','default_hint_background':'#ffffe0','default_hint_direction':'top','default_hint_border_color':'navy','bind_get_history':'<Double-Button-1>','bind_copy_history':'<ButtonRelease-3>','bind_clear_search_field':'<ButtonRelease-3>','bind_paste_search_field':'<ButtonRelease-2>','bind_go_back':'<Alt-Left>','bind_go_forward':'<Alt-Right>','bind_move_left':'<Left>','bind_move_right':'<Right>','bind_move_down':'<Down>','bind_move_up':'<Up>','bind_move_line_start':'<Home>','bind_move_line_end':'<End>','bind_move_text_start':'<Control-Home>','bind_move_text_end':'<Control-End>','bind_move_page_start':'<Shift-Home>','bind_move_page_end':'<Shift-End>','bind_move_page_up':'<Prior>','bind_move_page_down':'<Next>','bind_go_url':'<Button-1>','bind_copy_sel':'<Control-Return>','bind_copy_sel_alt':'<Control-KP_Enter>','bind_copy_sel_alt2':'<ButtonRelease-3>','bind_go_search':'<Return>','bind_go_search_alt':'<KP_Enter>','bind_clear_history':'<ButtonRelease-3>','bind_close_top':'<ButtonRelease-2>','bind_quit_now':'<Control-q>','bind_search_article_forward':'<F3>','bind_search_article_backward':'<Shift-F3>','bind_re_search_article':'<Control-F3>','bind_reload_article':'<F5>','bind_save_article':'<F2>','bind_search_field':'<F6>','bind_show_about':'<F1>','icon_main':'icon_64x64_main.gif','icon_mclient':'icon_64x64_mclient.gif','icon_go_search':'icon_36x36_go_search.gif','icon_toggle_history':'icon_36x36_toggle_history.gif','icon_watch_clipboard_on':'icon_36x36_watch_clipboard_on.gif','icon_watch_clipboard_off':'icon_36x36_watch_clipboard_off.gif','icon_open_in_browser':'icon_36x36_open_in_browser.gif','icon_change_ui_lang':'icon_36x36_change_ui_lang.gif','icon_show_about':'icon_36x36_show_about.gif','icon_save_article':'icon_36x36_save_article.gif','icon_search_article':'icon_36x36_search_article.gif','icon_quit_now':'icon_36x36_quit_now.gif','icon_go_back':'icon_36x36_go_back.gif','icon_go_back_off':'icon_36x36_go_back_off.gif','icon_go_forward':'icon_36x36_go_forward.gif','icon_go_forward_off':'icon_36x36_go_forward_off.gif','icon_clear_search_field':'icon_36x36_clear_search_field.gif','icon_clear_history':'icon_36x36_clear_history.gif','icon_paste':'icon_36x36_paste.gif','icon_reload':'icon_36x36_reload.gif','icon_repeat_sign':'icon_36x36_repeat_sign.gif','icon_repeat_sign_off':'icon_36x36_repeat_sign_off.gif','icon_repeat_sign2':'icon_36x36_repeat_sign2.gif','icon_repeat_sign2_off':'icon_36x36_repeat_sign2_off.gif','font_style':'Sans 14','win_encoding':'windows-1251','bind_reload_article_alt':'<Control-r>','bind_save_article_alt':'<Control-s>','bind_toggle_history':'<F4>','bind_toggle_history_alt':'<Control-h>','bind_clear_history_alt':'<Control-Shift-Delete>','bind_open_in_browser':'<F7>','bind_open_in_browser_alt':'<Control-b>','bind_watch_clipboard':'<F8>','bind_quit_now_alt':'<F10>','bind_watch_clipboard_alt':'<Control-t>','icon_spec_symbol':'icon_36x36_spec_symbol','bind_spec_symbol':'<Control-e>','spec_syms':'àáâäæßćĉçèéêēëəĝģĥìíîïīĵķļñņòóôõöōœšùúûūŭũüýÿžжҗқңөүұÀÁÂÄÆSSĆĈÇÈÉÊĒËƏĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ'})
 		globs['int'].update({'pixel_hack':18,'default_button_size':36,'default_hint_delay':800,'default_hint_width':280,'default_hint_height':40,'default_hint_border_width':2})
-		globs['bool'].update({'mclientSaveTitle':False,'AlwaysMaximize':True,'TermsColoredSep':False,'ShowWallet':True,'TextButtons':False,'UseOptionalButtons':True,'ReadOnlyProtection':False,'InternalDebug':False,'ShortHistory':True,'AutoHideHistory':True})
+		globs['bool'].update({'mclientSaveTitle':False,'AlwaysMaximize':True,'TermsColoredSep':False,'ShowWallet':True,'TextButtons':False,'UseOptionalButtons':True,'ReadOnlyProtection':False,'InternalDebug':False,'ShortHistory':True,'AutoHideHistory':True,'AutoCloseSpecSymbol':False})
 	else:
 		ErrorMessage(cur_func,globs['mes'].unknown_mode % (str(config),'mclient'))
 		
@@ -1101,6 +1101,7 @@ def additional_keys():
 	cur_func=sys._getframe().f_code.co_name
 	# Это второстепенный ключ, указывать его в конфиге не надо
 	globs['IgnorePaste']=False
+	globs['var']['spec_syms']=list(globs['var']['spec_syms'])
 
 # Загрузить все конфигурационные файлы
 def read_configs(Silent=False,Critical=False):
@@ -2312,6 +2313,7 @@ class ToolTip(ToolTipBase):
 
 # Создать кнопку с различными параметрами
 # expand=1 - увеличить расстояние между кнопками
+# Моментальная упаковка не поддерживается, потому что это действие возвращает вместо виджета None, а мы проводим далее над виджетом другие операции
 def create_button(parent_widget,text,hint,action,expand=0,side='left',fg='black',Silent=False,Critical=True,width=None,height=None,bd=0,icon_path='',hint_delay=None,hint_width=None,hint_height=None,hint_background=None,hint_direction=None,hint_border_width=None,hint_border_color=None,bindings=[]):
 	# side: must be 'top, 'bottom', 'left' or 'right'
 	cur_func=sys._getframe().f_code.co_name
@@ -2361,7 +2363,6 @@ def create_button(parent_widget,text,hint,action,expand=0,side='left',fg='black'
 				Success=False
 				if Critical:
 					globs['AbortAll']=True
-			create_binding(widget=button,bindings=['<Return>','<KP_Enter>','<space>','<ButtonRelease-1>'],action=action)
 			try:
 				button.pack(expand=expand,side=side)
 			# tk.TclError, AttributeError
@@ -2369,6 +2370,7 @@ def create_button(parent_widget,text,hint,action,expand=0,side='left',fg='black'
 				Success=False
 				if Critical:
 					globs['AbortAll']=True
+			create_binding(widget=button,bindings=['<Return>','<KP_Enter>','<space>','<ButtonRelease-1>'],action=action)
 			if Success:
 				ToolTip(button,text=hint,hint_delay=hint_delay,hint_width=hint_width,hint_height=hint_height,hint_background=hint_background,hint_direction=hint_direction,button_side=side)
 			log(cur_func,lev_debug,str(Success))
@@ -3291,6 +3293,28 @@ def article_field(db,Standalone=False):
 						clipboard_copy(db['page'])
 				root.withdraw()
 		#--------------------------------------------------------------------------
+		# Вставить спец. символ в строку поиска
+		def spec_symbol(event):
+			def insert_sym(sym):
+				search_field.insert('end',sym)
+				if globs['bool']['AutoCloseSpecSymbol']:
+					top.destroy()
+			cur_func=sys._getframe().f_code.co_name
+			if globs['AbortAll']:
+				log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+			else:
+				top=tk.Toplevel(root)
+				top.title(globs['mes'].paste_spec_symbol)
+				btn_frame=tk.Frame(top)
+				btn_frame.pack()
+				for i in range(len(globs['var']['spec_syms'])):
+					if i % 10 == 0:
+						btn_frame=tk.Frame(top)
+						btn_frame.pack()
+					# lambda сработает правильно только при моментальной упаковке, которая не поддерживается create_button (моментальная упаковка возвращает None вместо виджета), поэтому не используем эту функцию. По этой же причине нельзя привязать кнопкам '<Return>' и '<KP_Enter>', сработают только встроенные '<space>' и '<ButtonRelease-1>'.
+					btn=tk.Button(btn_frame,text=globs['var']['spec_syms'][i],command=lambda i=i:insert_sym(globs['var']['spec_syms'][i])).pack(side='left')
+				top.wait_window()
+		#--------------------------------------------------------------------------
 		if globs['bool']['AlwaysMaximize']:
 			if sys_type=='lin':
 				top.wm_attributes('-zoomed',True)
@@ -3357,6 +3381,8 @@ def article_field(db,Standalone=False):
 				create_button(parent_widget=frame_panel,text=globs['mes'].btn_repeat_sign2,hint=globs['mes'].hint_paste_prev_request,action=insert_repeat_sign2,icon_path=globs['var']['icon_repeat_sign2'],bindings=globs['var']['repeat_sign2'])
 			else:
 				create_button(parent_widget=frame_panel,text=globs['mes'].btn_repeat_sign2,hint=globs['mes'].hint_paste_prev_request,action=insert_repeat_sign2,icon_path=globs['var']['icon_repeat_sign2_off'],bindings=globs['var']['repeat_sign2'])
+		# Кнопка для вставки спец. символов
+		create_button(parent_widget=frame_panel,text=globs['mes'].btn_symbols,hint=globs['mes'].hint_symbols,action=spec_symbol,icon_path=globs['var']['icon_spec_symbol'],bindings=globs['var']['bind_spec_symbol'])
 		# Выпадающий список с вариантами направлений перевода
 		var=tk.StringVar(top)
 		var.set(globs['cur_pair'])
@@ -3499,7 +3525,8 @@ def article_field(db,Standalone=False):
 		# Для выхода нельзя использовать Return, поскольку это конфликтует с Shift-Enter. Поэтому оставляем только Escape.
 		if 'mode' in db:
 			if db['mode']=='clipboard':
-				create_binding(widget=top,bindings=['<Escape>','<Control-w>','<Alt-F4>'],action=close_top)
+				# Нельзя присваивать '<Alt-F4>', оно конфликтует с 'F4'; '<Alt-F4>' и так должно работать на системном уровне
+				create_binding(widget=top,bindings=['<Escape>','<Control-w>'],action=close_top)
 			else:
 				if Standalone:
 					create_binding(widget=top,bindings='<Escape>',action=lambda e: iconify(widget=top))
@@ -3528,12 +3555,12 @@ def article_field(db,Standalone=False):
 		create_binding(widget=top,bindings=globs['var']['bind_re_search_article'],action=lambda e:search_article(direction='clear'))
 		create_binding(widget=top,bindings=[globs['var']['bind_reload_article'],globs['var']['bind_reload_article_alt']],action=close_top)
 		create_binding(widget=top,bindings=[globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']],action=save_article)
-		create_binding(widget=top,bindings='Alt-F4',action=quit_top)
 		create_binding(widget=top,bindings=globs['var']['bind_search_field'],action=lambda e:search_field.focus_force())
 		create_binding(widget=top,bindings=globs['var']['bind_show_about'],action=show_about)
 		create_binding(widget=top,bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt']],action=toggle_history)
 		create_binding(widget=top,bindings=[globs['var']['bind_open_in_browser'],globs['var']['bind_open_in_browser_alt']],action=open_in_browser)
 		create_binding(widget=top,bindings=[globs['var']['bind_watch_clipboard'],globs['var']['bind_watch_clipboard_alt']],action=watch_clipboard)
+		create_binding(widget=top,bindings=[globs['var']['bind_spec_symbol']],action=spec_symbol)
 		#--------------------------------------------------------------------------
 		# Выделение первого признака
 		if 'mode' in db and db['mode']=='skip':
