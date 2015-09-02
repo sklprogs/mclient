@@ -23,7 +23,7 @@ import mes_en
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='3.9'
+build_ver='3.9.1'
 gpl3_url_ru='http://rusgpl.ru/rusgpl.html'
 gpl3_url_en='http://www.gnu.org/licenses/gpl.html'
 # Данные глобальные переменные оформлены в виде словаря, что позволяет не использовать лишний раз global.
@@ -3306,13 +3306,16 @@ def article_field(db,Standalone=False):
 				top=tk.Toplevel(root)
 				top.title(globs['mes'].paste_spec_symbol)
 				btn_frame=tk.Frame(top)
-				btn_frame.pack()
+				btn_frame.pack(expand=1)
 				for i in range(len(globs['var']['spec_syms'])):
 					if i % 10 == 0:
 						btn_frame=tk.Frame(top)
-						btn_frame.pack()
+						btn_frame.pack(expand=1)
 					# lambda сработает правильно только при моментальной упаковке, которая не поддерживается create_button (моментальная упаковка возвращает None вместо виджета), поэтому не используем эту функцию. По этой же причине нельзя привязать кнопкам '<Return>' и '<KP_Enter>', сработают только встроенные '<space>' и '<ButtonRelease-1>'.
-					btn=tk.Button(btn_frame,text=globs['var']['spec_syms'][i],command=lambda i=i:insert_sym(globs['var']['spec_syms'][i])).pack(side='left')
+					# width и height нужны для Windows
+					btn=tk.Button(btn_frame,text=globs['var']['spec_syms'][i],command=lambda i=i:insert_sym(globs['var']['spec_syms'][i]),width=2,height=2).pack(side='left',expand=1)
+				# В Windows окно может оказаться на заднем плане
+				top.focus_set()
 				top.wait_window()
 		#--------------------------------------------------------------------------
 		if globs['bool']['AlwaysMaximize']:
