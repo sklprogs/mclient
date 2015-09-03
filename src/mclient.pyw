@@ -23,7 +23,7 @@ import mes_en
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='3.9.1'
+build_ver='3.10'
 gpl3_url_ru='http://rusgpl.ru/rusgpl.html'
 gpl3_url_en='http://www.gnu.org/licenses/gpl.html'
 # Данные глобальные переменные оформлены в виде словаря, что позволяет не использовать лишний раз global.
@@ -76,6 +76,7 @@ LAV => RUS      Латыш-рус:      'http://www.multitran.ru/c/m.exe?l1=27&l
 EST => RUS      Эстон-рус:      'http://www.multitran.ru/c/m.exe?l1=26&l2=2&s=%s'
 AFR => RUS      Африкаанс-рус:  'http://www.multitran.ru/c/m.exe?l1=31&l2=2&s=%s'
 EPO => RUS      Эсперанто-рус:  'http://www.multitran.ru/c/m.exe?l1=34&l2=2&s=%s'
+RUS => XAL		Рус-калм:		'http://www.multitran.ru/c/m.exe?l1=2&l2=35&s=%s'
 XAL => RUS      Калм-рус:       'http://www.multitran.ru/c/m.exe?l1=35&l2=2&s=%s'
 ENG => DEU      Англ-нем:       'http://www.multitran.ru/c/m.exe?l1=1&l2=3&s=%s'
 ENG => EST      Англ-эст:       'http://www.multitran.ru/c/m.exe?l1=1&l2=26&s=%s'
@@ -84,8 +85,10 @@ online_url_root='http://www.multitran.ru/c/m.exe?'
 online_url_safe='http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%ED%E5%E2%E5%F0%ED%E0%FF+%F1%F1%FB%EB%EA%E0'
 default_pair='ENG <=> RUS'
 globs['cur_pair']=default_pair
-pairs=['ENG <=> RUS','DEU <=> RUS','SPA <=> RUS','FRA <=> RUS','NLD <=> RUS','ITA <=> RUS','LAV <=> RUS','EST <=> RUS','AFR <=> RUS','EPO <=> RUS','XAL <=> RUS','ENG <=> DEU','ENG <=> EST']
-online_dic_urls=['http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=3&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=5&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=4&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=24&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=23&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=27&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=26&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=31&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=34&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=35&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=3&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=26&s=%s']
+pairs=['ENG <=> RUS','DEU <=> RUS','SPA <=> RUS','FRA <=> RUS','NLD <=> RUS','ITA <=> RUS','LAV <=> RUS','EST <=> RUS','AFR <=> RUS','EPO <=> RUS','RUS <=> XAL','XAL <=> RUS','ENG <=> DEU','ENG <=> EST']
+online_dic_urls=['http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=3&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=5&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=4&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=24&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=23&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=27&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=26&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=31&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=34&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=2&l2=35&s=%s','http://www.multitran.ru/c/m.exe?l1=35&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=3&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=26&s=%s']
+assert(len(pairs)==len(online_dic_urls))
+#globs['var']['online_dic_url']=online_dic_urls[0]
 not_found_online='Вы знаете перевод этого слова? Добавьте его в словарь'
 my_program_title=''
 #------------------------------------------------------------------------------
@@ -116,7 +119,6 @@ SectionVariables='Variables'
 SectionIntegers='Integer Values'
 SectionFloatings='Floating Values'
 SectionBooleans='Boolean'
-Sections=[SectionLinuxSettings,SectionWindowsSettings,SectionMacSettings,SectionVariables,SectionIntegers,SectionFloatings,SectionBooleans]
 
 # Custom
 default_encoding='utf-8'
@@ -203,13 +205,13 @@ def true_dirname(path,UseLog=True):
 # Вернуть расширение файла с точкой
 def get_ext(file):
 	cur_func=sys._getframe().f_code.co_name
-	if AbortAll==[True]:
+	func_res=''
+	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-		return ''
 	else:
 		func_res=os.path.splitext(file)[1]
 		log(cur_func,lev_debug,str(func_res))
-		return func_res
+	return func_res
 
 # Изменить язык графического интерфейса и сообщений
 def toggle_ui_lang():
@@ -239,9 +241,11 @@ def default_config(config='mclient',Init=True):
 	globs['mclient_config']=globs['bin_dir']+sysdiv+globs['mclient_config_root']
 	if config=='mclient':
 		#globs['var'].update({'bind_re_search_article':'<Control-f>','bind_reload_article':'<Control-r>','bind_save_article':'<Control-s>'})
-		globs['var'].update({'online_dic_url':'http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','color_terms':'black','color_terms_sel':'cyan','color_dics':'cadet blue','color_comments':'gray','color_borders':'azure2','font_history':'Sans 12','font_terms':'Sans 14','font_terms_sel':'Sans 14 bold italic','font_dics':'Sans 14','font_comments':'Sans 14','window_size':'1024x768','repeat_sign':'!','repeat_sign2':'!!','default_hint_background':'#ffffe0','default_hint_direction':'top','default_hint_border_color':'navy','bind_get_history':'<Double-Button-1>','bind_copy_history':'<ButtonRelease-3>','bind_clear_search_field':'<ButtonRelease-3>','bind_paste_search_field':'<ButtonRelease-2>','bind_go_back':'<Alt-Left>','bind_go_forward':'<Alt-Right>','bind_move_left':'<Left>','bind_move_right':'<Right>','bind_move_down':'<Down>','bind_move_up':'<Up>','bind_move_line_start':'<Home>','bind_move_line_end':'<End>','bind_move_text_start':'<Control-Home>','bind_move_text_end':'<Control-End>','bind_move_page_start':'<Shift-Home>','bind_move_page_end':'<Shift-End>','bind_move_page_up':'<Prior>','bind_move_page_down':'<Next>','bind_go_url':'<Button-1>','bind_copy_sel':'<Control-Return>','bind_copy_sel_alt':'<Control-KP_Enter>','bind_copy_sel_alt2':'<ButtonRelease-3>','bind_go_search':'<Return>','bind_go_search_alt':'<KP_Enter>','bind_clear_history':'<ButtonRelease-3>','bind_close_top':'<ButtonRelease-2>','bind_quit_now':'<Control-q>','bind_search_article_forward':'<F3>','bind_search_article_backward':'<Shift-F3>','bind_re_search_article':'<Control-F3>','bind_reload_article':'<F5>','bind_save_article':'<F2>','bind_search_field':'<F6>','bind_show_about':'<F1>','icon_main':'icon_64x64_main.gif','icon_mclient':'icon_64x64_mclient.gif','icon_go_search':'icon_36x36_go_search.gif','icon_toggle_history':'icon_36x36_toggle_history.gif','icon_watch_clipboard_on':'icon_36x36_watch_clipboard_on.gif','icon_watch_clipboard_off':'icon_36x36_watch_clipboard_off.gif','icon_open_in_browser':'icon_36x36_open_in_browser.gif','icon_change_ui_lang':'icon_36x36_change_ui_lang.gif','icon_show_about':'icon_36x36_show_about.gif','icon_save_article':'icon_36x36_save_article.gif','icon_search_article':'icon_36x36_search_article.gif','icon_quit_now':'icon_36x36_quit_now.gif','icon_go_back':'icon_36x36_go_back.gif','icon_go_back_off':'icon_36x36_go_back_off.gif','icon_go_forward':'icon_36x36_go_forward.gif','icon_go_forward_off':'icon_36x36_go_forward_off.gif','icon_clear_search_field':'icon_36x36_clear_search_field.gif','icon_clear_history':'icon_36x36_clear_history.gif','icon_paste':'icon_36x36_paste.gif','icon_reload':'icon_36x36_reload.gif','icon_repeat_sign':'icon_36x36_repeat_sign.gif','icon_repeat_sign_off':'icon_36x36_repeat_sign_off.gif','icon_repeat_sign2':'icon_36x36_repeat_sign2.gif','icon_repeat_sign2_off':'icon_36x36_repeat_sign2_off.gif','font_style':'Sans 14','win_encoding':'windows-1251','bind_reload_article_alt':'<Control-r>','bind_save_article_alt':'<Control-s>','bind_toggle_history':'<F4>','bind_toggle_history_alt':'<Control-h>','bind_clear_history_alt':'<Control-Shift-Delete>','bind_open_in_browser':'<F7>','bind_open_in_browser_alt':'<Control-b>','bind_watch_clipboard':'<F8>','bind_quit_now_alt':'<F10>','bind_watch_clipboard_alt':'<Control-t>','icon_spec_symbol':'icon_36x36_spec_symbol','bind_spec_symbol':'<Control-e>','spec_syms':'àáâäæßćĉçèéêēëəĝģĥìíîïīĵķļñņòóôõöōœšùúûūŭũüýÿžжҗқңөүұÀÁÂÄÆSSĆĈÇÈÉÊĒËƏĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ'})
-		globs['int'].update({'pixel_hack':18,'default_button_size':36,'default_hint_delay':800,'default_hint_width':280,'default_hint_height':40,'default_hint_border_width':2})
-		globs['bool'].update({'mclientSaveTitle':False,'AlwaysMaximize':True,'TermsColoredSep':False,'ShowWallet':True,'TextButtons':False,'UseOptionalButtons':True,'ReadOnlyProtection':False,'InternalDebug':False,'ShortHistory':True,'AutoHideHistory':True,'AutoCloseSpecSymbol':False})
+		globs['var'].update({'online_dic_url':'http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','color_terms':'black','color_terms_sel':'cyan','color_dics':'cadet blue','color_comments':'gray','color_borders':'azure2','font_history':'Sans 12','font_terms':'Sans 14','font_terms_sel':'Sans 14 bold italic','font_dics':'Sans 14','font_comments':'Sans 14','window_size':'1024x768','repeat_sign':'!','repeat_sign2':'!!','default_hint_background':'#ffffe0','default_hint_direction':'top','default_hint_border_color':'navy','bind_get_history':'<Double-Button-1>','bind_copy_history':'<ButtonRelease-3>','bind_clear_search_field':'<ButtonRelease-3>','bind_paste_search_field':'<ButtonRelease-2>','bind_go_back':'<Alt-Left>','bind_go_forward':'<Alt-Right>','bind_move_left':'<Left>','bind_move_right':'<Right>','bind_move_down':'<Down>','bind_move_up':'<Up>','bind_move_line_start':'<Home>','bind_move_line_end':'<End>','bind_move_text_start':'<Control-Home>','bind_move_text_end':'<Control-End>','bind_move_page_start':'<Shift-Home>','bind_move_page_end':'<Shift-End>','bind_move_page_up':'<Prior>','bind_move_page_down':'<Next>','bind_go_url':'<Button-1>','bind_copy_sel':'<Control-Return>','bind_copy_sel_alt':'<Control-KP_Enter>','bind_copy_sel_alt2':'<ButtonRelease-3>','bind_go_search':'<Return>','bind_go_search_alt':'<KP_Enter>','bind_clear_history':'<ButtonRelease-3>','bind_close_top':'<ButtonRelease-2>','bind_quit_now':'<Control-q>','bind_search_article_forward':'<F3>','bind_search_article_backward':'<Shift-F3>','bind_re_search_article':'<Control-F3>','bind_reload_article':'<F5>','bind_save_article':'<F2>','bind_search_field':'<F6>','bind_show_about':'<F1>','icon_main':'icon_64x64_main.gif','icon_mclient':'icon_64x64_mclient.gif','icon_go_search':'icon_36x36_go_search.gif','icon_toggle_history':'icon_36x36_toggle_history.gif','icon_watch_clipboard_on':'icon_36x36_watch_clipboard_on.gif','icon_watch_clipboard_off':'icon_36x36_watch_clipboard_off.gif','icon_open_in_browser':'icon_36x36_open_in_browser.gif','icon_change_ui_lang':'icon_36x36_change_ui_lang.gif','icon_show_about':'icon_36x36_show_about.gif','icon_save_article':'icon_36x36_save_article.gif','icon_search_article':'icon_36x36_search_article.gif','icon_quit_now':'icon_36x36_quit_now.gif','icon_go_back':'icon_36x36_go_back.gif','icon_go_back_off':'icon_36x36_go_back_off.gif','icon_go_forward':'icon_36x36_go_forward.gif','icon_go_forward_off':'icon_36x36_go_forward_off.gif','icon_clear_search_field':'icon_36x36_clear_search_field.gif','icon_clear_history':'icon_36x36_clear_history.gif','icon_paste':'icon_36x36_paste.gif','icon_reload':'icon_36x36_reload.gif','icon_repeat_sign':'icon_36x36_repeat_sign.gif','icon_repeat_sign_off':'icon_36x36_repeat_sign_off.gif','icon_repeat_sign2':'icon_36x36_repeat_sign2.gif','icon_repeat_sign2_off':'icon_36x36_repeat_sign2_off.gif','bind_reload_article_alt':'<Control-r>','bind_save_article_alt':'<Control-s>','bind_toggle_history':'<F4>','bind_toggle_history_alt':'<Control-h>','bind_clear_history_alt':'<Control-Shift-Delete>','bind_open_in_browser':'<F7>','bind_open_in_browser_alt':'<Control-b>','bind_watch_clipboard':'<F8>','bind_quit_now_alt':'<F10>','bind_watch_clipboard_alt':'<Control-t>','icon_spec_symbol':'icon_36x36_spec_symbol','bind_spec_symbol':'<Control-e>','spec_syms':'àáâäāæßćĉçèéêēëəĝģĥìíîïīĵķļñņòóôõöōœšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒËƏĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ','web_search_url':'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s','bind_define':'<Control-d>','icon_define':'icon_36x36_define.gif','win_encoding':'windows-1251','font_style':'Sans 14'})
+		#----------------------------------------------------------------------
+		globs['int'].update({'pixel_hack':18,'default_button_size':36,'default_hint_delay':800,'default_hint_width':280,'default_hint_height':40,'default_hint_border_width':1})
+		#----------------------------------------------------------------------
+		globs['bool'].update({'mclientSaveTitle':False,'AlwaysMaximize':True,'TermsColoredSep':False,'ShowWallet':True,'TextButtons':False,'UseOptionalButtons':True,'ShortHistory':False,'AutoCloseSpecSymbol':False,'InternalDebug':False,'Spelling':True,'ReadOnlyProtection':False,'UnixSelection':False,'AutoHideHistory':False})
 	else:
 		ErrorMessage(cur_func,globs['mes'].unknown_mode % (str(config),'mclient'))
 		
@@ -326,6 +330,19 @@ def online_request(base_str,my_request_bytes): #str, bytes
 		my_url=base_str % urllib.parse.quote(my_request_bytes)
 		log(cur_func,lev_debug,str(my_url))
 	return my_url
+	
+# Открыть заданный адрес в веб-браузере по умолчанию
+def browse_url(base_str,search_str):
+	cur_func=sys._getframe().f_code.co_name
+	if globs['AbortAll']:
+		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+	else:
+		request_bytes=bytes(search_str,encoding=default_encoding)
+		search_str=online_request(base_str,request_bytes)
+		try:
+			webbrowser.open(search_str,new=2,autoraise=True)
+		except:
+			Warning(cur_func,globs['mes'].browser_failure % search_str)
 
 # Показать сообщение определенного типа в зависимости от параметров
 def mestype(func,cur_mes,Silent=False,Critical=False,Info=False):
@@ -731,6 +748,7 @@ def get_online_article(db,IsURL=False,Silent=False,Critical=False,Standalone=Fal
 				request_encoded=bytes(db['search'],encoding=default_encoding)
 			# Некоторые версии питона принимают 'encode('windows-1251')', но не 'encode(encoding='windows-1251')'
 			db['url']=online_request(globs['var']['online_dic_url'],request_encoded)
+			log(cur_func,lev_debug,"db['url']: %s" % str(db['url']))
 		db['page']=''
 		db['html']=''
 		while db['page']=='':
@@ -961,12 +979,14 @@ def empty(my_input):
 	return par
 
 # Диалог сохранения файла
-def dialog_save_file(text,filetypes=((globs['mes'].plain_text,'.txt'),(globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')),Critical=True):
+def dialog_save_file(text,filetypes=(),Critical=True):
 	cur_func=sys._getframe().f_code.co_name
 	file=''
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
+		if empty(filetypes):
+			filetypes=((globs['mes'].plain_text,'.txt'),(globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*'))
 		options={}
 		options['initialfile']=''
 		options['filetypes']=filetypes
@@ -993,13 +1013,26 @@ def dialog_save_file(text,filetypes=((globs['mes'].plain_text,'.txt'),(globs['me
 	log(cur_func,lev_debug,globs['mes'].writing % str(file))
 	return file
 
+# Выделить весь текст в виджете
+def select_all(widget,Small=True): # Entry: Small=True; Text: Small=False
+	if Small:
+		widget.select_clear()
+		widget.select_range(0,'end')
+	else:
+		widget.tag_add('sel','1.0','end')
+		widget.mark_set('insert','1.0')
+	return 'break'
+
 # Конструктор для создания окна для манипуляции текстом
-def text_field(title=globs['mes'].text,user_text=err_mes_empty_input,CheckSpelling=False,GoTo='',Insist=False,SelectAll=False,ReadOnly=False,Small=False,TrimEnd=False): # Edit=True равноценно user_text!=err_mes_empty_input
+def text_field(title=None,user_text=err_mes_empty_input,CheckSpelling=False,GoTo='',Insist=False,SelectAll=False,ReadOnly=False,Small=False,TrimEnd=False): # Edit=True равноценно user_text!=err_mes_empty_input
 	cur_func=sys._getframe().f_code.co_name
 	func_res=''
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
+		# Если правописание (globs['bool']['Spelling']) отключено в конфиге, то отключить и опциональный параметр CheckSpelling
+		if not globs['bool']['Spelling']:
+			CheckSpelling=False
 		top, res = tk.Toplevel(root), [None]
 		if globs['bool']['AlwaysMaximize'] and not Small:
 			if sys_type=='lin':
@@ -1022,20 +1055,14 @@ def text_field(title=globs['mes'].text,user_text=err_mes_empty_input,CheckSpelli
 				returned=returned.strip(dlb)
 			res[0]=returned
 			close_top(None)
-		def select_all(event):
-			if Small:
-				widget.select_clear()
-				widget.select_range(0,'end')
-			else:
-				widget.tag_add('sel','1.0','end')
-				widget.mark_set('insert','1.0')
-			return 'break'
 		root.withdraw()
+		if empty(title):
+			title=globs['mes'].text
 		title+=' '+my_program_title
 		top.title(title)
 		top.tk.call('wm','iconphoto',top._w,tk.PhotoImage(file=globs['var']['icon_main']))
 		# Позволяет удалять пробел и пунктуацию с конца, что полезно при некорректной обработке Ctrl+Shift+->
-		if TrimEnd and not Small:
+		if TrimEnd and not Small: # По текущим данным, globs['bool']['UnixSelection'] не работает с Entry
 			user_text=delete_end_punc(user_text)
 		if Small:
 			widget=tk.Entry(top,font=globs['var']['font_style'])
@@ -1050,8 +1077,24 @@ def text_field(title=globs['mes'].text,user_text=err_mes_empty_input,CheckSpelli
 			# Позволяет использовать мышь для управления скроллбаром
 			scrollbar.config(command=widget.yview)
 			scrollbar.pack(side='right',fill='y')
-		create_binding(widget=widget,bindings='<Return>',action=callback)
-		create_binding(widget=widget,bindings='<KP_Enter>',action=callback)
+		create_binding(widget=widget,bindings=['<Return>','<KP_Enter>'],action=callback)
+		if CheckSpelling:
+			text_db=analyse_text(user_text,Truncate=False,Decline=False)
+			misspel_lst=check_spelling(text_db)
+			misspel_lst=list2tk(misspel_lst)
+			for i in range(len(misspel_lst)):
+				pos1=misspel_lst[i][0]
+				pos2=misspel_lst[i][1]
+				try:
+					widget.tag_add('missp',pos1,pos2)
+					log(cur_func,lev_debug,globs['mes'].tag_added % ('missp',pos1,pos2))
+				except:
+					log(cur_func,lev_err,globs['mes'].tag_addition_failure % ('missp',pos1,pos2))
+			try:
+				widget.tag_config('missp',background='red')
+				log(cur_func,lev_debug,globs['mes'].tag_bg % ('missp','red'))
+			except:
+				log(cur_func,lev_err,globs['mes'].tag_bg_failure % 'missp')
 		if Small:
 			widget.pack()
 		else:
@@ -1077,12 +1120,14 @@ def text_field(title=globs['mes'].text,user_text=err_mes_empty_input,CheckSpelli
 			except:
 				log(cur_func,lev_err,globs['mes'].cursor_insert_failure)
 		if SelectAll:
-			select_all(None)
+			select_all(widget,Small=False)
 		elif Small and not ReadOnly:
-			select_all(None)
-		create_binding(widget=widget,bindings='<Control-a>',action=select_all)
-		create_binding(widget=widget,bindings='<Control-A>',action=select_all)
+			select_all(widget,Small=True)
+		create_binding(widget=widget,bindings='<Control-a>',action=lambda x:select_all(widget,Small=Small))
 		globs['cur_widget']=widget
+		if globs['bool']['UnixSelection'] and not Small: # По текущим данным, globs['bool']['UnixSelection'] не работает с Entry
+			create_binding(widget=globs['cur_widget'],bindings='<Control-Shift-Left>',action=lambda x: top.after(20, left_sel_mod))
+			create_binding(widget=globs['cur_widget'],bindings='<Control-Shift-Right>',action=lambda x: top.after(20, right_sel_mod))
 		if Small or ReadOnly:
 			create_binding(widget=widget,bindings='<Escape>',action=close_top)
 		top.wait_window(top)
@@ -1136,7 +1181,7 @@ def read_configs(Silent=False,Critical=False):
 				config_section_abbr=sys_type
 				#--------------------------------------------------------------
 				# Загрузка раздела SectionLinuxSettings/SectionWindowsSettings/SectionMacSettings
-				if globs['config_parser'].has_section(config_section):
+				'''if globs['config_parser'].has_section(config_section):
 					log(cur_func,lev_info,globs['mes'].section_keys % (config_section,len(globs[config_section_abbr])))
 					for config_option in globs[sys_type]:
 						total_keys+=1
@@ -1154,6 +1199,7 @@ def read_configs(Silent=False,Critical=False):
 				else:
 					Success=False
 					cur_mes+=globs['mes'].no_config_section % config_section+dlb
+				'''
 				#--------------------------------------------------------------
 				# Загрузка раздела SectionVariables
 				config_section=SectionVariables
@@ -1216,7 +1262,7 @@ def read_configs(Silent=False,Critical=False):
 					cur_mes+=globs['mes'].no_config_section % config_section+dlb
 				#--------------------------------------------------------------
 				# Загрузка раздела SectionFloatings
-				config_section=SectionFloatings
+				'''config_section=SectionFloatings
 				config_section_abbr='float'
 				if globs['config_parser'].has_section(config_section):
 					log(cur_func,lev_info,globs['mes'].section_keys % (config_section,len(globs[config_section_abbr])))
@@ -1236,6 +1282,7 @@ def read_configs(Silent=False,Critical=False):
 				else:
 					Success=False
 					cur_mes+=globs['mes'].no_config_section % config_section+dlb
+				'''
 				#--------------------------------------------------------------
 				# Загрузка раздела SectionBooleans
 				config_section=SectionBooleans
@@ -3029,7 +3076,7 @@ def article_field(db,Standalone=False):
 					try:
 						webbrowser.open(globs['license_url'])
 					except:
-						Warning(cur_func,browser_failure % globs['license_url'])
+						Warning(cur_func,globs['mes'].browser_failure % globs['license_url'])
 			cur_func=sys._getframe().f_code.co_name
 			if globs['AbortAll']:
 				log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
@@ -3058,6 +3105,7 @@ def article_field(db,Standalone=False):
 					create_button(parent_widget=frame2,text=globs['mes'].btn_license,hint=globs['mes'].hint_license,action=open_license_url,side='left')
 				# Отправить письмо автору
 				create_button(parent_widget=frame3,text=globs['mes'].btn_email_author,hint=globs['mes'].hint_email_author,action=response_back,side='right')
+				top.focus_set()
 				top.wait_window()
 		#----------------------------------------------------------------------
 		# Перейти на элемент истории
@@ -3172,6 +3220,17 @@ def article_field(db,Standalone=False):
 					webbrowser.open(db['url'])
 				except:
 					Warning(cur_func,globs['mes'].browser_failure % db['url'])
+		#----------------------------------------------------------------------
+		# Открыть веб-страницу с определением текущего термина
+		def define(Selected=True): # Selected: True: Выделенный термин; False: Название статьи
+			cur_func=sys._getframe().f_code.co_name
+			if globs['AbortAll']:
+				log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+			else:
+				if Selected:
+					browse_url(globs['var']['web_search_url'],'define:'+db['terms']['phrases'][res[0]])
+				else:
+					browse_url(globs['var']['web_search_url'],'define:'+db['search'])
 		#----------------------------------------------------------------------
 		# Переключить язык интерфейса с русского на английский и наоборот
 		def change_ui_lang(event):
@@ -3418,6 +3477,9 @@ def article_field(db,Standalone=False):
 		create_button(parent_widget=frame_panel,text=globs['mes'].btn_save,hint=globs['mes'].hint_save_article,action=save_article,icon_path=globs['var']['icon_save_article'],bindings=[globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']])
 		# Кнопка "Открыть в браузере"
 		create_button(parent_widget=frame_panel,text=globs['mes'].btn_in_browser,hint=globs['mes'].hint_in_browser,action=open_in_browser,icon_path=globs['var']['icon_open_in_browser'],bindings=[globs['var']['bind_open_in_browser'],globs['var']['bind_open_in_browser_alt']])
+		if globs['bool']['UseOptionalButtons']:
+			# Кнопка толкования термина. Сделана вспомогательной ввиду нехватки места
+			create_button(parent_widget=frame_panel,text=globs['mes'].btn_define,hint=globs['mes'].hint_define,action=lambda x:define(Selected=False),icon_path=globs['var']['icon_define'],bindings=globs['var']['bind_define'])
 		# Кнопка "Буфер обмена"
 		if 'mode' in db and db['mode']=='clipboard':
 			create_button(parent_widget=frame_panel,text=globs['mes'].btn_clipboard,hint=globs['mes'].hint_watch_clipboard,action=watch_clipboard,icon_path=globs['var']['icon_watch_clipboard_on'],fg='red',bindings=[globs['var']['bind_watch_clipboard'],globs['var']['bind_watch_clipboard_alt']])
@@ -3564,6 +3626,8 @@ def article_field(db,Standalone=False):
 		create_binding(widget=top,bindings=[globs['var']['bind_open_in_browser'],globs['var']['bind_open_in_browser_alt']],action=open_in_browser)
 		create_binding(widget=top,bindings=[globs['var']['bind_watch_clipboard'],globs['var']['bind_watch_clipboard_alt']],action=watch_clipboard)
 		create_binding(widget=top,bindings=[globs['var']['bind_spec_symbol']],action=spec_symbol)
+		create_binding(widget=search_field,bindings='<Control-a>',action=lambda x:select_all(search_field,Small=True))
+		create_binding(widget=top,bindings=globs['var']['bind_define'],action=lambda x:define(Selected=True))
 		#--------------------------------------------------------------------------
 		# Выделение первого признака
 		if 'mode' in db and db['mode']=='skip':

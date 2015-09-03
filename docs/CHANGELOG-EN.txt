@@ -1,3 +1,10 @@
+3.10
+* Add symbols ā, Ā
+* Add pair RUS <=> XAL, since otherwise a wrong URL is formed for words in Russian
+* Open a webpage with a definition of the current term (keys: web_search_url, bind_define, icon_define)
+* "About" window is now on foreground in Windows
+* Provide support for '<Control-a>' ("Select All") combination in the search field
+
 3.9.1
 * The special symbols window is now on foreground in Windows
 * Buttons for pasting special symbols are increased in size
