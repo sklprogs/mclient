@@ -23,7 +23,7 @@ import mes_en
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='3.10'
+build_ver='3.11'
 gpl3_url_ru='http://rusgpl.ru/rusgpl.html'
 gpl3_url_en='http://www.gnu.org/licenses/gpl.html'
 # Данные глобальные переменные оформлены в виде словаря, что позволяет не использовать лишний раз global.
@@ -1786,6 +1786,31 @@ def prepare_search(db):
 			if globs['bool']['InternalDebug']:
 				text_field(title="db['page']:",user_text=db['page'],ReadOnly=True)
 		#--------------------------------------------------------------------------
+		# cur Insert tabs between dictionary titles and terms
+		if not globs['bool']['TermsColoredSep']:
+			# Separating terms with semicolumn instead of coloured background
+			db['page']=list(db['page'])
+			for i in range(db['all']['num']):
+				if i < db['all']['num']-1:
+					#and db['all']['types'][i+1]=='terms'
+					# Иногда после названия словаря стоит комментарий, и только потом термин. Кроме того, нет смысла (?) ставить табуляцию между названиями словарей.
+					if db['all']['types'][i]=='dics' and db['all']['types'][i+1]!='dics':
+						cur_pos=db['all']['pos'][i][1]+1
+						db['page'].insert(cur_pos,'\t')
+						j=i+1
+						while j < db['all']['num']:
+							db['all']['pos'][j][0]+=1
+							db['all']['pos'][j][1]+=1
+							j+=1
+						for j in range(db['all']['dlbs']['num']):
+							if db['all']['dlbs']['pos'][j] >= cur_pos:
+								db['all']['dlbs']['pos'][j]+=1
+			db['page']=''.join(db['page'])
+			db['len_page']=len(db['page'])
+			log(cur_func,lev_debug,"db['page']: %s" % db['page'])
+			if globs['bool']['InternalDebug']:
+				text_field(title="db['page']:",user_text=db['page'],ReadOnly=True)
+		#--------------------------------------------------------------------------
 		# Creating tkinter-specific values
 		# list() is not enough!
 		db['all']['pos_sl']=[]
@@ -3497,6 +3522,8 @@ def article_field(db,Standalone=False):
 		scrollbar=tk.Scrollbar(frame,jump=1)
 		txt=tk.Text(frame,height=7,font=globs['var']['font_style'],wrap='word',yscrollcommand=scrollbar.set)
 		txt.insert('1.0',db['page'])
+		# cur
+		txt.config(tabs=("5c"))
 		#--------------------------------------------------------------------------
 		# Установка курсора в начало
 		try:

@@ -1,3 +1,6 @@
+3.11
+* Separate dictionary titles and terms with tabs
+
 3.10
 * Add symbols ā, Ā
 * Add pair RUS <=> XAL, since otherwise a wrong URL is formed for words in Russian
