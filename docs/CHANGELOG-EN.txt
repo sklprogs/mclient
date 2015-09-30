@@ -1,5 +1,10 @@
+
+
 3.11
 * Separate dictionary titles and terms with tabs
+* Add keys tab_length (Tabulation size in symbols), ExploreMismatch (Show a translation of the last word of a phrase that was not found)
+* Provide links for separate matches if the searched phrase was not found
+* Section "Phrases"
 
 3.10
 * Add symbols ā, Ā

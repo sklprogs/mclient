@@ -89,8 +89,14 @@ pairs=['ENG <=> RUS','DEU <=> RUS','SPA <=> RUS','FRA <=> RUS','NLD <=> RUS','IT
 online_dic_urls=['http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=3&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=5&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=4&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=24&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=23&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=27&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=26&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=31&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=34&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=2&l2=35&s=%s','http://www.multitran.ru/c/m.exe?l1=35&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=3&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=26&s=%s']
 assert(len(pairs)==len(online_dic_urls))
 #globs['var']['online_dic_url']=online_dic_urls[0]
-not_found_online='Вы знаете перевод этого слова? Добавьте его в словарь'
 my_program_title=''
+not_found_online='Вы знаете перевод этого слова? Добавьте его в словарь'
+sep_words_found='найдены отдельные слова'
+message_board='спросить в форуме'
+# 'спросить в форуме' не удается обработать в этом списке, поэтому обрабатываю его отдельно
+delete_entries=['Вход','Регистрация','Сообщить об ошибке','Изменить','Удалить','Добавить']
+delete_entries_pos=[0,0,-1,-1,-1,-1]
+assert len(delete_entries) == len(delete_entries_pos)
 #------------------------------------------------------------------------------
 # Tag patterns
 tag_pattern1='<a title="'
@@ -103,6 +109,10 @@ tag_pattern7='</a>'
 tag_pattern8='">'
 tag_pattern9='<span STYLE="color:rgb(60,179,113)">'
 tag_pattern10='</td>'
+# Возможно '... " href', или '" href', если перевод вмещается полностью
+tag_pattern11='" href'
+tag_pattern12='<trash>'
+tag_pattern13='"</trash><a href'
 #------------------------------------------------------------------------------
 # Список символов, которые можно считать за буквы.
 allowed_syms=['°']
@@ -243,9 +253,9 @@ def default_config(config='mclient',Init=True):
 		#globs['var'].update({'bind_re_search_article':'<Control-f>','bind_reload_article':'<Control-r>','bind_save_article':'<Control-s>'})
 		globs['var'].update({'online_dic_url':'http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','color_terms':'black','color_terms_sel':'cyan','color_dics':'cadet blue','color_comments':'gray','color_borders':'azure2','font_history':'Sans 12','font_terms':'Sans 14','font_terms_sel':'Sans 14 bold italic','font_dics':'Sans 14','font_comments':'Sans 14','window_size':'1024x768','repeat_sign':'!','repeat_sign2':'!!','default_hint_background':'#ffffe0','default_hint_direction':'top','default_hint_border_color':'navy','bind_get_history':'<Double-Button-1>','bind_copy_history':'<ButtonRelease-3>','bind_clear_search_field':'<ButtonRelease-3>','bind_paste_search_field':'<ButtonRelease-2>','bind_go_back':'<Alt-Left>','bind_go_forward':'<Alt-Right>','bind_move_left':'<Left>','bind_move_right':'<Right>','bind_move_down':'<Down>','bind_move_up':'<Up>','bind_move_line_start':'<Home>','bind_move_line_end':'<End>','bind_move_text_start':'<Control-Home>','bind_move_text_end':'<Control-End>','bind_move_page_start':'<Shift-Home>','bind_move_page_end':'<Shift-End>','bind_move_page_up':'<Prior>','bind_move_page_down':'<Next>','bind_go_url':'<Button-1>','bind_copy_sel':'<Control-Return>','bind_copy_sel_alt':'<Control-KP_Enter>','bind_copy_sel_alt2':'<ButtonRelease-3>','bind_go_search':'<Return>','bind_go_search_alt':'<KP_Enter>','bind_clear_history':'<ButtonRelease-3>','bind_close_top':'<ButtonRelease-2>','bind_quit_now':'<Control-q>','bind_search_article_forward':'<F3>','bind_search_article_backward':'<Shift-F3>','bind_re_search_article':'<Control-F3>','bind_reload_article':'<F5>','bind_save_article':'<F2>','bind_search_field':'<F6>','bind_show_about':'<F1>','icon_main':'icon_64x64_main.gif','icon_mclient':'icon_64x64_mclient.gif','icon_go_search':'icon_36x36_go_search.gif','icon_toggle_history':'icon_36x36_toggle_history.gif','icon_watch_clipboard_on':'icon_36x36_watch_clipboard_on.gif','icon_watch_clipboard_off':'icon_36x36_watch_clipboard_off.gif','icon_open_in_browser':'icon_36x36_open_in_browser.gif','icon_change_ui_lang':'icon_36x36_change_ui_lang.gif','icon_show_about':'icon_36x36_show_about.gif','icon_save_article':'icon_36x36_save_article.gif','icon_search_article':'icon_36x36_search_article.gif','icon_quit_now':'icon_36x36_quit_now.gif','icon_go_back':'icon_36x36_go_back.gif','icon_go_back_off':'icon_36x36_go_back_off.gif','icon_go_forward':'icon_36x36_go_forward.gif','icon_go_forward_off':'icon_36x36_go_forward_off.gif','icon_clear_search_field':'icon_36x36_clear_search_field.gif','icon_clear_history':'icon_36x36_clear_history.gif','icon_paste':'icon_36x36_paste.gif','icon_reload':'icon_36x36_reload.gif','icon_repeat_sign':'icon_36x36_repeat_sign.gif','icon_repeat_sign_off':'icon_36x36_repeat_sign_off.gif','icon_repeat_sign2':'icon_36x36_repeat_sign2.gif','icon_repeat_sign2_off':'icon_36x36_repeat_sign2_off.gif','bind_reload_article_alt':'<Control-r>','bind_save_article_alt':'<Control-s>','bind_toggle_history':'<F4>','bind_toggle_history_alt':'<Control-h>','bind_clear_history_alt':'<Control-Shift-Delete>','bind_open_in_browser':'<F7>','bind_open_in_browser_alt':'<Control-b>','bind_watch_clipboard':'<F8>','bind_quit_now_alt':'<F10>','bind_watch_clipboard_alt':'<Control-t>','icon_spec_symbol':'icon_36x36_spec_symbol','bind_spec_symbol':'<Control-e>','spec_syms':'àáâäāæßćĉçèéêēëəĝģĥìíîïīĵķļñņòóôõöōœšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒËƏĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ','web_search_url':'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s','bind_define':'<Control-d>','icon_define':'icon_36x36_define.gif','win_encoding':'windows-1251','font_style':'Sans 14'})
 		#----------------------------------------------------------------------
-		globs['int'].update({'pixel_hack':18,'default_button_size':36,'default_hint_delay':800,'default_hint_width':280,'default_hint_height':40,'default_hint_border_width':1})
+		globs['int'].update({'pixel_hack':18,'default_button_size':36,'default_hint_delay':800,'default_hint_width':280,'default_hint_height':40,'default_hint_border_width':1,'tab_length':5})
 		#----------------------------------------------------------------------
-		globs['bool'].update({'mclientSaveTitle':False,'AlwaysMaximize':True,'TermsColoredSep':False,'ShowWallet':True,'TextButtons':False,'UseOptionalButtons':True,'ShortHistory':False,'AutoCloseSpecSymbol':False,'InternalDebug':False,'Spelling':True,'ReadOnlyProtection':False,'UnixSelection':False,'AutoHideHistory':False})
+		globs['bool'].update({'mclientSaveTitle':False,'AlwaysMaximize':True,'TermsColoredSep':False,'ShowWallet':True,'TextButtons':False,'UseOptionalButtons':True,'ShortHistory':False,'AutoCloseSpecSymbol':False,'InternalDebug':False,'Spelling':True,'ReadOnlyProtection':False,'UnixSelection':False,'AutoHideHistory':False,'ExploreMismatch':True})
 	else:
 		ErrorMessage(cur_func,globs['mes'].unknown_mode % (str(config),'mclient'))
 		
@@ -1396,6 +1406,45 @@ def prepare_page(db):
 		db['page']=db['page'].replace(' <','<')
 		db['page']=db['page'].replace('>'+nbspace,'>')
 		db['page']=db['page'].replace('> ','>')
+		#----------------------------------------------------------------------
+		# If separate words are found instead of a phrase, prepare those words only
+		if sep_words_found in db['page']:
+			db['page']=db['page'].replace(sep_words_found,'')
+			if message_board in db['page']:
+				board_pos=db['page'].index(message_board)
+			else:
+				board_pos=-1
+			while tag_pattern11 in db['page']:
+				if db['page'].index(tag_pattern11) < board_pos:
+					db['page']=db['page'].replace(tag_pattern11,tag_pattern13)
+				else:
+					break
+			while tag_pattern1 in db['page']:
+				tag_pos=db['page'].index(tag_pattern1)
+				if tag_pos < board_pos:
+					db['page']=db['page'].replace(tag_pattern1,tag_pattern12,1)
+				else:
+					break
+			# Вставить sep_words_found перед названием 1-го словаря. Нельзя вставлять его в самое начало ввиду особенностей обработки delete_entries.
+			if globs['bool']['ExploreMismatch']:
+				db['page']=db['page'].replace(tag_pattern1,tag_pattern5+sep_words_found+tag_pattern6+tag_pattern1,1)
+			else:
+				db['page']=db['page'][:board_pos]+tag_pattern7+tag_pattern5+sep_words_found+tag_pattern6
+			# Поскольку message_board встречается между вхождениями, а не до них или после них, то обрабатываем его вне delete_entries.
+			db['page']=db['page'].replace(message_board,'')
+			if globs['bool']['InternalDebug']:
+				text_field(title="db['page']",user_text=db['page'],ReadOnly=True)
+		#----------------------------------------------------------------------
+		# Move the phrases section to the new line
+		regexp_obj=re.compile('\d+ фраз')
+		phrases_index=-1
+		for x in regexp_obj.finditer(db['page']):
+			phrases_index=x.start()
+		if phrases_index != -1:
+			if tag_pattern2 in db['page'][:phrases_index]:
+				phrases_index=db['page'][:phrases_index].rindex(tag_pattern2)
+				db['page']=db['page'][:phrases_index]+tag_pattern1+globs['mes'].phrases+tag_pattern8+db['page'][phrases_index:]
+		#----------------------------------------------------------------------
 		# Remove tags <p>, </p>, <b> and </b>, because they can be inside hyperlinks
 		db['page']=db['page'].replace('<p>','')
 		db['page']=db['page'].replace('</p>','')
@@ -1612,46 +1661,14 @@ def extract_tag_contents(db):
 		# We can also delete 'g-sort' here
 		# ATTENTION: All types must be removed: 'phrases', 'types', 'pos', 'url'!
 		if db['all']['num'] > 0:
-			if db['all']['phrases'][0]=='Вход':
-				del db['all']['phrases'][0]
-				del db['all']['types'][0]
-				del db['all']['pos'][0]
-				del db['all']['url'][0]
-				db['all']['num']-=1
-			if db['all']['phrases'][0]=='Регистрация':
-				del db['all']['phrases'][0]
-				del db['all']['types'][0]
-				del db['all']['pos'][0]
-				del db['all']['url'][0]
-				db['all']['num']-=1
-			if db['all']['num'] > 0:
-				if db['all']['phrases'][-1]=='Сообщить об ошибке':
-					del db['all']['phrases'][-1]
-					del db['all']['types'][-1]
-					del db['all']['pos'][-1]
-					del db['all']['url'][-1]
-					db['all']['num']-=1
-			if db['all']['num'] > 0:
-				if db['all']['phrases'][-1]=='Изменить':
-					del db['all']['phrases'][-1]
-					del db['all']['types'][-1]
-					del db['all']['pos'][-1]
-					del db['all']['url'][-1]
-					db['all']['num']-=1
-			if db['all']['num'] > 0:
-				if db['all']['phrases'][-1]=='Удалить':
-					del db['all']['phrases'][-1]
-					del db['all']['types'][-1]
-					del db['all']['pos'][-1]
-					del db['all']['url'][-1]
-					db['all']['num']-=1
-			if db['all']['num'] > 0:
-				if db['all']['phrases'][-1]=='Добавить':
-					del db['all']['phrases'][-1]
-					del db['all']['types'][-1]
-					del db['all']['pos'][-1]
-					del db['all']['url'][-1]
-					db['all']['num']-=1
+			for i in range(len(delete_entries)):
+				if db['all']['num'] > 0:
+					if db['all']['phrases'][delete_entries_pos[i]]==delete_entries[i]:
+						del db['all']['phrases'][delete_entries_pos[i]]
+						del db['all']['types'][delete_entries_pos[i]]
+						del db['all']['pos'][delete_entries_pos[i]]
+						del db['all']['url'][delete_entries_pos[i]]
+						db['all']['num']-=1
 		else:
 			log(cur_func,lev_warn,globs['mes'].entries_terms_empty)
 		#--------------------------------------------------------------------------
@@ -1786,7 +1803,7 @@ def prepare_search(db):
 			if globs['bool']['InternalDebug']:
 				text_field(title="db['page']:",user_text=db['page'],ReadOnly=True)
 		#--------------------------------------------------------------------------
-		# cur Insert tabs between dictionary titles and terms
+		# Insert tabs between dictionary titles and terms
 		if not globs['bool']['TermsColoredSep']:
 			# Separating terms with semicolumn instead of coloured background
 			db['page']=list(db['page'])
@@ -3522,8 +3539,8 @@ def article_field(db,Standalone=False):
 		scrollbar=tk.Scrollbar(frame,jump=1)
 		txt=tk.Text(frame,height=7,font=globs['var']['font_style'],wrap='word',yscrollcommand=scrollbar.set)
 		txt.insert('1.0',db['page'])
-		# cur
-		txt.config(tabs=("5c"))
+		# Сколько символов занимает табуляция
+		txt.config(tabs=(str(globs['int']['tab_length'])+"c"))
 		#--------------------------------------------------------------------------
 		# Установка курсора в начало
 		try:
