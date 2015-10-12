@@ -23,7 +23,7 @@ import mes_en
 
 # Нельзя закомментировать, поскольку cur_func нужен при ошибке чтения конфига (которое вне функций)
 cur_func='MAIN'
-build_ver='3.11'
+build_ver='3.12'
 gpl3_url_ru='http://rusgpl.ru/rusgpl.html'
 gpl3_url_en='http://www.gnu.org/licenses/gpl.html'
 # Данные глобальные переменные оформлены в виде словаря, что позволяет не использовать лишний раз global.
@@ -251,7 +251,7 @@ def default_config(config='mclient',Init=True):
 	globs['mclient_config']=globs['bin_dir']+sysdiv+globs['mclient_config_root']
 	if config=='mclient':
 		#globs['var'].update({'bind_re_search_article':'<Control-f>','bind_reload_article':'<Control-r>','bind_save_article':'<Control-s>'})
-		globs['var'].update({'online_dic_url':'http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','color_terms':'black','color_terms_sel':'cyan','color_dics':'cadet blue','color_comments':'gray','color_borders':'azure2','font_history':'Sans 12','font_terms':'Sans 14','font_terms_sel':'Sans 14 bold italic','font_dics':'Sans 14','font_comments':'Sans 14','window_size':'1024x768','repeat_sign':'!','repeat_sign2':'!!','default_hint_background':'#ffffe0','default_hint_direction':'top','default_hint_border_color':'navy','bind_get_history':'<Double-Button-1>','bind_copy_history':'<ButtonRelease-3>','bind_clear_search_field':'<ButtonRelease-3>','bind_paste_search_field':'<ButtonRelease-2>','bind_go_back':'<Alt-Left>','bind_go_forward':'<Alt-Right>','bind_move_left':'<Left>','bind_move_right':'<Right>','bind_move_down':'<Down>','bind_move_up':'<Up>','bind_move_line_start':'<Home>','bind_move_line_end':'<End>','bind_move_text_start':'<Control-Home>','bind_move_text_end':'<Control-End>','bind_move_page_start':'<Shift-Home>','bind_move_page_end':'<Shift-End>','bind_move_page_up':'<Prior>','bind_move_page_down':'<Next>','bind_go_url':'<Button-1>','bind_copy_sel':'<Control-Return>','bind_copy_sel_alt':'<Control-KP_Enter>','bind_copy_sel_alt2':'<ButtonRelease-3>','bind_go_search':'<Return>','bind_go_search_alt':'<KP_Enter>','bind_clear_history':'<ButtonRelease-3>','bind_close_top':'<ButtonRelease-2>','bind_quit_now':'<Control-q>','bind_search_article_forward':'<F3>','bind_search_article_backward':'<Shift-F3>','bind_re_search_article':'<Control-F3>','bind_reload_article':'<F5>','bind_save_article':'<F2>','bind_search_field':'<F6>','bind_show_about':'<F1>','icon_main':'icon_64x64_main.gif','icon_mclient':'icon_64x64_mclient.gif','icon_go_search':'icon_36x36_go_search.gif','icon_toggle_history':'icon_36x36_toggle_history.gif','icon_watch_clipboard_on':'icon_36x36_watch_clipboard_on.gif','icon_watch_clipboard_off':'icon_36x36_watch_clipboard_off.gif','icon_open_in_browser':'icon_36x36_open_in_browser.gif','icon_change_ui_lang':'icon_36x36_change_ui_lang.gif','icon_show_about':'icon_36x36_show_about.gif','icon_save_article':'icon_36x36_save_article.gif','icon_search_article':'icon_36x36_search_article.gif','icon_quit_now':'icon_36x36_quit_now.gif','icon_go_back':'icon_36x36_go_back.gif','icon_go_back_off':'icon_36x36_go_back_off.gif','icon_go_forward':'icon_36x36_go_forward.gif','icon_go_forward_off':'icon_36x36_go_forward_off.gif','icon_clear_search_field':'icon_36x36_clear_search_field.gif','icon_clear_history':'icon_36x36_clear_history.gif','icon_paste':'icon_36x36_paste.gif','icon_reload':'icon_36x36_reload.gif','icon_repeat_sign':'icon_36x36_repeat_sign.gif','icon_repeat_sign_off':'icon_36x36_repeat_sign_off.gif','icon_repeat_sign2':'icon_36x36_repeat_sign2.gif','icon_repeat_sign2_off':'icon_36x36_repeat_sign2_off.gif','bind_reload_article_alt':'<Control-r>','bind_save_article_alt':'<Control-s>','bind_toggle_history':'<F4>','bind_toggle_history_alt':'<Control-h>','bind_clear_history_alt':'<Control-Shift-Delete>','bind_open_in_browser':'<F7>','bind_open_in_browser_alt':'<Control-b>','bind_watch_clipboard':'<F8>','bind_quit_now_alt':'<F10>','bind_watch_clipboard_alt':'<Control-t>','icon_spec_symbol':'icon_36x36_spec_symbol','bind_spec_symbol':'<Control-e>','spec_syms':'àáâäāæßćĉçèéêēëəĝģĥìíîïīĵķļñņòóôõöōœšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒËƏĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ','web_search_url':'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s','bind_define':'<Control-d>','icon_define':'icon_36x36_define.gif','win_encoding':'windows-1251','font_style':'Sans 14'})
+		globs['var'].update({'online_dic_url':'http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','color_terms':'black','color_terms_sel':'cyan','color_dics':'cadet blue','color_comments':'gray','color_borders':'azure2','font_history':'Sans 12','font_terms':'Sans 14','font_terms_sel':'Sans 14 bold italic','font_dics':'Sans 14','font_comments':'Sans 14','window_size':'1024x768','repeat_sign':'!','repeat_sign2':'!!','default_hint_background':'#ffffe0','default_hint_direction':'top','default_hint_border_color':'navy','bind_get_history':'<Double-Button-1>','bind_copy_history':'<ButtonRelease-3>','bind_clear_search_field':'<ButtonRelease-3>','bind_paste_search_field':'<ButtonRelease-2>','bind_go_back':'<Alt-Left>','bind_go_forward':'<Alt-Right>','bind_move_left':'<Left>','bind_move_right':'<Right>','bind_move_down':'<Down>','bind_move_up':'<Up>','bind_move_line_start':'<Home>','bind_move_line_end':'<End>','bind_move_text_start':'<Control-Home>','bind_move_text_end':'<Control-End>','bind_move_page_start':'<Shift-Home>','bind_move_page_end':'<Shift-End>','bind_move_page_up':'<Prior>','bind_move_page_down':'<Next>','bind_go_url':'<Button-1>','bind_copy_sel':'<Control-Return>','bind_copy_sel_alt':'<Control-KP_Enter>','bind_copy_sel_alt2':'<ButtonRelease-3>','bind_go_search':'<Return>','bind_go_search_alt':'<KP_Enter>','bind_clear_history':'<ButtonRelease-3>','bind_close_top':'<ButtonRelease-2>','bind_quit_now':'<Control-q>','bind_search_article_forward':'<F3>','bind_search_article_backward':'<Shift-F3>','bind_re_search_article':'<Control-F3>','bind_reload_article':'<F5>','bind_save_article':'<F2>','bind_search_field':'<F6>','bind_show_about':'<F1>','icon_main':'icon_64x64_main.gif','icon_mclient':'icon_64x64_mclient.gif','icon_go_search':'icon_36x36_go_search.gif','icon_toggle_history':'icon_36x36_toggle_history.gif','icon_watch_clipboard_on':'icon_36x36_watch_clipboard_on.gif','icon_watch_clipboard_off':'icon_36x36_watch_clipboard_off.gif','icon_open_in_browser':'icon_36x36_open_in_browser.gif','icon_change_ui_lang':'icon_36x36_change_ui_lang.gif','icon_show_about':'icon_36x36_show_about.gif','icon_save_article':'icon_36x36_save_article.gif','icon_search_article':'icon_36x36_search_article.gif','icon_quit_now':'icon_36x36_quit_now.gif','icon_go_back':'icon_36x36_go_back.gif','icon_go_back_off':'icon_36x36_go_back_off.gif','icon_go_forward':'icon_36x36_go_forward.gif','icon_go_forward_off':'icon_36x36_go_forward_off.gif','icon_clear_search_field':'icon_36x36_clear_search_field.gif','icon_clear_history':'icon_36x36_clear_history.gif','icon_paste':'icon_36x36_paste.gif','icon_reload':'icon_36x36_reload.gif','icon_repeat_sign':'icon_36x36_repeat_sign.gif','icon_repeat_sign_off':'icon_36x36_repeat_sign_off.gif','icon_repeat_sign2':'icon_36x36_repeat_sign2.gif','icon_repeat_sign2_off':'icon_36x36_repeat_sign2_off.gif','bind_reload_article_alt':'<Control-r>','bind_save_article_alt':'<Control-s>','bind_toggle_history':'<F4>','bind_toggle_history_alt':'<Control-h>','bind_clear_history_alt':'<Control-Shift-Delete>','bind_open_in_browser':'<F7>','bind_open_in_browser_alt':'<Control-b>','bind_watch_clipboard':'<F8>','bind_quit_now_alt':'<F10>','bind_watch_clipboard_alt':'<Control-t>','icon_spec_symbol':'icon_36x36_spec_symbol','bind_spec_symbol':'<Control-e>','spec_syms':'àáâäāæßćĉçèéêēëəĝģĥìíîïīĵķļñņòóôõöōœšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒËƏĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ','web_search_url':'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s','bind_define':'<Control-d>','icon_define':'icon_36x36_define.gif','win_encoding':'windows-1251','font_style':'Sans 14','bind_copy_url':'<Control-F7>','bind_copy_article_url':'<Shift-F7>','bind_toggle_iconify':'<Control-i>'})
 		#----------------------------------------------------------------------
 		globs['int'].update({'pixel_hack':18,'default_button_size':36,'default_hint_delay':800,'default_hint_width':280,'default_hint_height':40,'default_hint_border_width':1,'tab_length':5})
 		#----------------------------------------------------------------------
@@ -2593,10 +2593,7 @@ def article_field(db,Standalone=False):
 			else:
 				clipboard_copy(db['terms']['phrases'][res[0]])
 				log(cur_func,lev_info,globs['mes'].copied_to_clipboard % str(db['terms']['phrases'][res[0]]))
-				if db['mode']=='clipboard':
-					close_top(event)
-				else:
-					top.iconify()
+				toggle_clipboard_mode(mode='copy')
 		#----------------------------------------------------------------------
 		# Close the root window without errors
 		def quit_now(event):
@@ -2613,7 +2610,7 @@ def article_field(db,Standalone=False):
 			if globs['AbortAll']:
 				log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 			else:
-				if db['mode']!='clipboard':
+				if not db['TrackClipboard']:
 					#if Question(cur_func,globs['mes'].ques_exit):
 					#	log(cur_func,lev_info,globs['mes'].goodbye)
 						db['Quit']=True
@@ -3239,9 +3236,11 @@ def article_field(db,Standalone=False):
 			if globs['AbortAll']:
 				log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 			else:
-				if db['mode']=='clipboard':
+				if db['TrackClipboard']:
+					db['TrackClipboard'] = False
 					db['mode']='search'
 				else:
+					db['TrackClipboard'] = True
 					db['mode']='clipboard'
 				top.destroy()
 				root.deiconify()
@@ -3262,6 +3261,29 @@ def article_field(db,Standalone=False):
 					webbrowser.open(db['url'])
 				except:
 					Warning(cur_func,globs['mes'].browser_failure % db['url'])
+		#----------------------------------------------------------------------
+		# Скопировать URL текущей статьи или выделения
+		def copy_url(widget,mode='article'):
+			cur_func=sys._getframe().f_code.co_name
+			if globs['AbortAll']:
+				log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+			else:
+				cur_url=online_url_safe
+				if 'url' in db and db['terms']['num'] > 0:
+					if mode == 'term':
+						# Скопировать URL текущего термина. URL 1-го термина не совпадает с URL статьи!
+						cur_url=db['terms']['url'][res[0]]
+						if db['Iconify']:
+							iconify(widget=widget)
+					elif mode == 'article':
+						# Скопировать URL статьи
+						cur_url=db['url']
+						if db['Iconify']:
+							iconify(widget=widget)
+					else:
+						ErrorMessage(cur_func,globs['mes'].unknown_mode % (str(mode),'article, term'))
+				log(cur_func,lev_debug,"cur_url: %s" % str(cur_url))
+			clipboard_copy(cur_url)
 		#----------------------------------------------------------------------
 		# Открыть веб-страницу с определением текущего термина
 		def define(Selected=True): # Selected: True: Выделенный термин; False: Название статьи
@@ -3419,6 +3441,33 @@ def article_field(db,Standalone=False):
 				top.focus_set()
 				top.wait_window()
 		#--------------------------------------------------------------------------
+		# Вернуть режим буфера обмена при закрытии окна спец. комбинацией или при копировании в буфер. В других случаях режим буфер не удастся отличить от других режимов даже при наличии спец. флага.
+		# Нельзя присваивать комбинации по типу (...,action=toggle_clipboard_mode), поскольку в этом случае эта процедура примет event за mode
+		def toggle_clipboard_mode(mode='close'): # close, copy
+			if globs['AbortAll']:
+				log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+			else:
+				if db['TrackClipboard']:
+					db['mode'] = 'clipboard'
+					close_top(None)
+				elif mode == 'close':
+					close_top(None)
+				elif mode == 'copy':
+					if db['Iconify']:
+						iconify(widget = top)
+				else:
+					ErrorMessage(cur_func,globs['mes'].unknown_mode % (str(mode),'close, copy'))
+		#--------------------------------------------------------------------------
+		# Временно включить или отключить сворачивание окна при операциях копирования
+		def toggle_iconify(event):
+			if globs['AbortAll']:
+				log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+			else:
+				if db['Iconify']:
+					db['Iconify'] = False
+				else:
+					db['Iconify'] = True
+		#--------------------------------------------------------------------------
 		if globs['bool']['AlwaysMaximize']:
 			if sys_type=='lin':
 				top.wm_attributes('-zoomed',True)
@@ -3523,7 +3572,7 @@ def article_field(db,Standalone=False):
 			# Кнопка толкования термина. Сделана вспомогательной ввиду нехватки места
 			create_button(parent_widget=frame_panel,text=globs['mes'].btn_define,hint=globs['mes'].hint_define,action=lambda x:define(Selected=False),icon_path=globs['var']['icon_define'],bindings=globs['var']['bind_define'])
 		# Кнопка "Буфер обмена"
-		if 'mode' in db and db['mode']=='clipboard':
+		if 'TrackClipboard' in db and db['TrackClipboard']:
 			create_button(parent_widget=frame_panel,text=globs['mes'].btn_clipboard,hint=globs['mes'].hint_watch_clipboard,action=watch_clipboard,icon_path=globs['var']['icon_watch_clipboard_on'],fg='red',bindings=[globs['var']['bind_watch_clipboard'],globs['var']['bind_watch_clipboard_alt']])
 		else:
 			create_button(parent_widget=frame_panel,text=globs['mes'].btn_clipboard,hint=globs['mes'].hint_watch_clipboard,action=watch_clipboard,icon_path=globs['var']['icon_watch_clipboard_off'],bindings=[globs['var']['bind_watch_clipboard'],globs['var']['bind_watch_clipboard_alt']])
@@ -3632,15 +3681,13 @@ def article_field(db,Standalone=False):
 		create_binding(widget=txt,bindings=globs['var']['bind_go_url'],action=go_url)
 		search_field.focus_force()
 		# Для выхода нельзя использовать Return, поскольку это конфликтует с Shift-Enter. Поэтому оставляем только Escape.
-		if 'mode' in db:
-			if db['mode']=='clipboard':
-				# Нельзя присваивать '<Alt-F4>', оно конфликтует с 'F4'; '<Alt-F4>' и так должно работать на системном уровне
-				create_binding(widget=top,bindings=['<Escape>','<Control-w>'],action=close_top)
+		if 'TrackClipboard' in db and db['TrackClipboard']:
+			create_binding(widget=top,bindings=['<Escape>','<Control-w>','<Alt-F4>'],action=lambda x:toggle_clipboard_mode(mode='close'))
+		else:
+			if Standalone:
+				create_binding(widget=top,bindings='<Escape>',action=lambda e: iconify(widget=top))
 			else:
-				if Standalone:
-					create_binding(widget=top,bindings='<Escape>',action=lambda e: iconify(widget=top))
-				else:
-					create_binding(widget=top,bindings='<Escape>',action=quit_now)
+				create_binding(widget=top,bindings='<Escape>',action=quit_now)
 		create_binding(widget=top,bindings=[globs['var']['bind_copy_sel'],globs['var']['bind_copy_sel_alt']],action=copy_sel)
 		create_binding(widget=txt,bindings=globs['var']['bind_copy_sel_alt2'],action=copy_sel)
 		if sys_type=='win' or sys_type=='mac':
@@ -3648,15 +3695,10 @@ def article_field(db,Standalone=False):
 		else:
 			create_binding(widget=top,bindings=['<Button 4>','<Button 5>'],action=mouse_wheel)
 		create_binding(widget=txt,bindings='<Motion>',action=mouse_sel)
-		# Закрывать текущее окно с последующей перезагрузкой статьи в обычном режиме бессмысленно, поэтому, прямо указываем режим Буфера
-		if 'mode' in db:
-			if db['mode']=='clipboard':
-				# Привязка к top может конфликтовать со строкой поиска
-				create_binding(widget=txt,bindings=globs['var']['bind_close_top'],action=close_top)
-			elif Standalone:
-				create_binding(widget=txt,bindings=globs['var']['bind_close_top'],action=lambda e: iconify(widget=top))
-			else:
-				create_binding(widget=txt,bindings=globs['var']['bind_close_top'],action=quit_top)
+		if 'TrackClipboard' in db and db['TrackClipboard']:
+			create_binding(widget=txt,bindings=globs['var']['bind_close_top'],action=lambda x:toggle_clipboard_mode(mode='close'))
+		else:
+			create_binding(widget=txt,bindings=globs['var']['bind_close_top'],action=lambda x:iconify(widget=top))
 		# Дополнительные горячие клавиши
 		create_binding(widget=top,bindings=[globs['var']['bind_quit_now'],globs['var']['bind_quit_now_alt']],action=quit_now)
 		create_binding(widget=top,bindings=globs['var']['bind_search_article_forward'],action=lambda e:search_article(direction='forward'))
@@ -3668,10 +3710,13 @@ def article_field(db,Standalone=False):
 		create_binding(widget=top,bindings=globs['var']['bind_show_about'],action=show_about)
 		create_binding(widget=top,bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt']],action=toggle_history)
 		create_binding(widget=top,bindings=[globs['var']['bind_open_in_browser'],globs['var']['bind_open_in_browser_alt']],action=open_in_browser)
+		create_binding(widget=top,bindings=globs['var']['bind_copy_url'],action=lambda x:copy_url(widget=top,mode='term'))
+		create_binding(widget=top,bindings=globs['var']['bind_copy_article_url'],action=lambda x:copy_url(widget=top,mode='article'))
 		create_binding(widget=top,bindings=[globs['var']['bind_watch_clipboard'],globs['var']['bind_watch_clipboard_alt']],action=watch_clipboard)
 		create_binding(widget=top,bindings=[globs['var']['bind_spec_symbol']],action=spec_symbol)
 		create_binding(widget=search_field,bindings='<Control-a>',action=lambda x:select_all(search_field,Small=True))
 		create_binding(widget=top,bindings=globs['var']['bind_define'],action=lambda x:define(Selected=True))
+		create_binding(widget=top,bindings=globs['var']['bind_toggle_iconify'],action=toggle_iconify)
 		#--------------------------------------------------------------------------
 		# Выделение первого признака
 		if 'mode' in db and db['mode']=='skip':
@@ -3696,11 +3741,13 @@ def article_loop(Standalone=False):
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
-			db['history']=[]
-			db['history_url']=[]
-			db['mode']='search' # 'url', 'clipboard', 'skip'
-			db['Quit']=False
-			db['ShowHistory']=False
+			db['history'] = []
+			db['history_url'] = []
+			db['mode'] = 'search' # 'url', 'clipboard', 'skip'
+			db['Quit'] = False
+			db['ShowHistory'] = False
+			db['TrackClipboard'] = False
+			db['Iconify'] = True
 			while True:
 				if 'search_list' in db:
 					del db['search_list']
@@ -3712,7 +3759,7 @@ def article_loop(Standalone=False):
 						# Возвращаемся в основную программу и меняем пиктограмму на основную
 						root.tk.call('wm','iconphoto',root._w,tk.PhotoImage(file=globs['var']['icon_main']))
 						break
-				elif db['mode']=='clipboard': # Переход на режимы 'search' и 'url' отключит режим 'clipboard'. Если создать дополнительную переменную для слежения за буфером, то не понятно, какому режиму отдавать предпочтение: если считать более приоритетным 'clipboard', то ручной переход на другие статьи не сработает
+				elif db['mode']=='clipboard':
 					old_clipboard=clipboard_paste()
 					new_clipboard=old_clipboard
 					root.withdraw()

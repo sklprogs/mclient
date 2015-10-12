@@ -1,4 +1,8 @@
-
+3.12
+* Temporarily enable/disable minimizing the window with copying actions (bind_toggle_iconify)
+* Copy the URL of the current term to clipboard (bind_copy_url)
+* Copy the URL of the article to clipboard (bind_copy_article_url)
+* Turn off the Clipboard Mode only when the user does so
 
 3.11
 * Separate dictionary titles and terms with tabs
