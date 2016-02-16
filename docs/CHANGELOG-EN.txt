@@ -1,5 +1,15 @@
 
 
+4.1
+* Fix a bug when moving to a previous article
+* Fix a bug when copying a cell with a hotkey
+* Delete a cell (the Delete key)
+
+4.0
+* Column view
+* Delete keys: TermsColoredSep, bind_hide_top, color_borders, font_comments, font_dics, font_terms
+* Add keys: CopyTermsOnly, SelectTermsOnly, font_comments_size, font_dics_size, font_terms_size, bind_hide_top, font_comments_family, font_dics_family, font_terms_family
+
 3.12.1
 * Fix a bug that prevents from restoring default settings in case the config file is missing or corrupted
 * Refactor the code

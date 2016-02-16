@@ -199,8 +199,9 @@ root = tk.Tk()
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Placeholders
 def log(cur_func,level,log_mes,TransFunc=False):
-	#print(cur_func,':',level,':',log_mes)
 	pass
+	#if level == lev_crit or level == lev_debug_err or level == lev_warn or level == lev_err:
+	#	print(cur_func,':',level,':',log_mes)
 #------------------------------------------------------------------------------
 # Placeholder
 def decline_nom(words_nf,Decline=False):
@@ -215,7 +216,7 @@ def check_type(*args):
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Ошибка
 def ErrorMessage(cur_func='MAIN',cur_mes=err_mes_empty_error,Critical=True):
-	root.withdraw()
+	#root.withdraw()
 	tkmes.showerror(globs['mes'].err_head,cur_mes)
 	if Critical:
 		log(cur_func,lev_crit,cur_mes)
@@ -459,7 +460,7 @@ def default_config(config='mclient',Init=True):
 		
 # Вопрос
 def Question(cur_func='MAIN',cur_mes=err_mes_empty_question):
-	root.withdraw()
+	#root.withdraw()
 	par = tkmes.askokcancel(globs['mes'].ques_head,cur_mes)
 	root.deiconify()
 	log(cur_func,lev_info,cur_mes)
@@ -468,14 +469,14 @@ def Question(cur_func='MAIN',cur_mes=err_mes_empty_question):
 # Названия такие же, как у модуля PyZenity (кроме List)
 # Информация
 def InfoMessage(cur_func='MAIN',cur_mes=err_mes_empty_info):
-	root.withdraw()
+	#root.withdraw()
 	tkmes.showinfo(globs['mes'].inf_head,cur_mes)
 	root.deiconify()
 	log(cur_func,lev_info,cur_mes)
 
 # Предупреждение
 def Warning(cur_func='MAIN',cur_mes=err_mes_empty_warning):
-	root.withdraw()
+	#root.withdraw()
 	tkmes.showwarning(globs['mes'].warn_head,cur_mes)
 	root.deiconify()
 	log(cur_func,lev_warn,cur_mes)
@@ -2120,14 +2121,7 @@ def add_history():
 				log(cur_func,lev_info,globs['mes'].adding % str(db['url']))
 				if 'listbox' in globs and len(db['history']) > 0:
 					globs['listbox'].insert(0,db['history'][-1])
-			db['history_index'] = len(db['history'])
-
-'''def assign_mode(mode='url'): # url, clipboard, skip
-	if 'mode' in db:
-		if 'mode' != 'clipboard'
-	else:
-		db['mode'] = 'url'
-'''
+			db['history_index'] = len(db['history']) - 1
 
 # Отобразить окно со словарной статьей
 class ShowArticle:
@@ -2498,9 +2492,7 @@ class ShowArticle:
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
-			parts = db['move_start']
-			db['cur_cell']['i'] = parts[0]
-			db['cur_cell']['j'] = parts[1]
+			assign_cur_cell(db['move_start'])
 			globs['web_widget'].set_cell()
 	#--------------------------------------------------------------------------
 	# Перейти на последний термин статьи
@@ -2510,9 +2502,7 @@ class ShowArticle:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
 			# Можно также брать db['move_down'][-1]
-			parts = db['move_end']
-			db['cur_cell']['i'] = parts[0]
-			db['cur_cell']['j'] = parts[1]
+			assign_cur_cell(db['move_end'])
 			globs['web_widget'].set_cell()
 	#--------------------------------------------------------------------------
 	# todo
@@ -2557,10 +2547,11 @@ class ShowArticle:
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
-			parts = db['move_left'][db['cur_cell']['i']][db['cur_cell']['j']]
-			db['cur_cell']['i'] = parts[0]
-			db['cur_cell']['j'] = parts[1]
-			globs['web_widget'].set_cell()
+			if len(db['move_left']) > db['cur_cell']['i'] and len(db['move_left'][db['cur_cell']['i']]) > db['cur_cell']['j']:
+				assign_cur_cell(db['move_left'][db['cur_cell']['i']][db['cur_cell']['j']])
+				globs['web_widget'].set_cell()
+			else:
+				log(cur_func,lev_err,globs['mes'].wrong_input2)
 	#--------------------------------------------------------------------------
 	# Перейти на следующий термин
 	def move_right(self,event):
@@ -2568,10 +2559,11 @@ class ShowArticle:
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
-			parts = db['move_right'][db['cur_cell']['i']][db['cur_cell']['j']]
-			db['cur_cell']['i'] = parts[0]
-			db['cur_cell']['j'] = parts[1]
-			globs['web_widget'].set_cell()
+			if len(db['move_right']) > db['cur_cell']['i'] and len(db['move_right'][db['cur_cell']['i']]) > db['cur_cell']['j']:
+				assign_cur_cell(db['move_right'][db['cur_cell']['i']][db['cur_cell']['j']])
+				globs['web_widget'].set_cell()
+			else:
+				log(cur_func,lev_err,globs['mes'].wrong_input2)
 	#--------------------------------------------------------------------------
 	# Перейти на строку вниз
 	def move_down(self,event):
@@ -2579,10 +2571,11 @@ class ShowArticle:
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
-			parts = db['move_down'][db['cur_cell']['i']][db['cur_cell']['j']]
-			db['cur_cell']['i'] = parts[0]
-			db['cur_cell']['j'] = parts[1]
-			globs['web_widget'].set_cell()
+			if len(db['move_down']) > db['cur_cell']['i'] and len(db['move_down'][db['cur_cell']['i']]) > db['cur_cell']['j']:
+				assign_cur_cell(db['move_down'][db['cur_cell']['i']][db['cur_cell']['j']])
+				globs['web_widget'].set_cell()
+			else:
+				log(cur_func,lev_err,globs['mes'].wrong_input2)
 	#--------------------------------------------------------------------------
 	# Перейти на строку вверх
 	def move_up(self,event):
@@ -2635,7 +2628,7 @@ class ShowArticle:
 			#db['mode'] = 'skip'
 			# Запоминаем позицию выделения, чтобы она не сбрасывалась при переключении отображения Истории. Запомнить позицию выделения можно только на первой странице.
 			# todo
-			db['last_cell'] = db['cur_cell']
+			#db['last_cell'] = db['cur_cell']
 			#loop_page()
 	#--------------------------------------------------------------------------
 	# Написать письмо автору
@@ -2938,9 +2931,7 @@ class ShowArticle:
 								db['search_article_pos'] -= 1
 							else:
 								db['search_article_pos'] = len(db['search_list']) - 1
-						parts = db['search_list'][db['search_article_pos']]
-						db['cur_cell']['i'] = parts[0]
-						db['cur_cell']['j'] = parts[1]
+						assign_cur_cell(db['search_list'][db['search_article_pos']])
 						globs['web_widget'].set_cell()
 	#--------------------------------------------------------------------------
 	# Сохранить статью на диск
@@ -3155,6 +3146,27 @@ def get_url():
 		db['url'] = online_request(globs['var']['online_dic_url'],request_encoded)
 		log(cur_func,lev_debug,"db['url']: %s" % str(db['url']))
 
+# Создать веб-страницу из ячеек и провести другие необходимые операции
+# Вынесено в отдельную процедуру для обеспечения быстрой перекомпоновки ячеек
+def process_cells():
+	cur_func = sys._getframe().f_code.co_name
+	if globs['AbortAll']:
+		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+	else:
+		db['cells'] = split_by_columms(db['elem'])
+		#db['cells'] = distribute_columns(db['cells'])
+		#span_cells = create_span(db['cells'])
+		generate_simple_page()
+		generate_tkhtml_text()
+		assign_cur_cell(get_selectable(0,0,GetNext=False))
+		if globs['bool']['SelectTermsOnly']:
+			db['move_start'] = get_selectable(0,0,GetNext=False)
+			db['move_end'] = get_selectable_backwards(len(db['cells'])-1,len(db['cells'][0])-1,GetPrevious=False)
+		else:
+			db['move_start'] = (0,0)
+			db['move_end'] = (-1,-1)
+		move_events()
+
 # Подготовить всю необходимую информацию для отображения GUI
 def get_article():
 	cur_func = sys._getframe().f_code.co_name
@@ -3218,22 +3230,7 @@ def get_article():
 			analyse_tags()
 			prepare_search()
 			db['elem'] = unite_comments(db['elem'])
-			db['cells'] = split_by_columms(db['elem'])
-			#db['cells'] = distribute_columns(db['cells'])
-			#span_cells = create_span(db['cells'])
-			generate_simple_page()
-			generate_tkhtml_text()
-			db['cur_cell'] = {}
-			parts = get_selectable(0,0,GetNext=False)
-			db['cur_cell']['i'] = parts[0]
-			db['cur_cell']['j'] = parts[1]
-			if globs['bool']['SelectTermsOnly']:
-				db['move_start'] = get_selectable(0,0,GetNext=False)
-				db['move_end'] = get_selectable_backwards(len(db['cells'])-1,len(db['cells'][0])-1,GetPrevious=False)
-			else:
-				db['move_start'] = (0,0)
-				db['move_end'] = (-1,-1)
-			move_events()
+			process_cells()
 		db['FirstLaunch'] = False
 
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<	
@@ -3570,13 +3567,30 @@ def set_page(Silent=False,Critical=False):
 		else:
 			mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
 		
+# Проверить входные данные и назначить текущую и прошлую ячейки
+def assign_cur_cell(parts,Silent=False,Critical=False):
+	cur_func = sys._getframe().f_code.co_name
+	if globs['AbortAll']:
+		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+	else:
+		if 'cur_cell' in db and 'i' in db['cur_cell'] and 'j' in db['cur_cell']:
+			db['last_cell'] = {'i':db['cur_cell']['i'],'j':db['cur_cell']['j']}
+		else:
+			# Для сохранения структуры при назначении parts
+			db['cur_cell'] = {'i':0,'j':0}
+		if len(parts) >= 2:
+			db['cur_cell']['i'] = parts[0]
+			db['cur_cell']['j'] = parts[1]
+		else:
+			mestype(cur_func,globs['mes'].wrong_input2,Silent=Silent,Critical=Critical)
+
 # Вернуть номер ячейки (номер строки и номер столбца), которой соответствует позиция, возвращаемая виджетом tkhtml в соответствии с простым текстом, возвращаемым этим виджетом.
 # Если ячейку выделить нельзя (согласно настройкам), то возвращается предыдущая ячейка
 def get_cell(index,Silent=False,Critical=False):
 	cur_func = sys._getframe().f_code.co_name
 	check_type(cur_func,index,globs['mes'].type_int)
 	if 'cur_cell' not in db:
-		get_first_selectable()
+		get_selectable(GetNext=False)
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
@@ -3584,11 +3598,9 @@ def get_cell(index,Silent=False,Critical=False):
 			parts = db['pos2cell'][index]
 			if globs['bool']['SelectTermsOnly']:
 				if db['cells'][parts[0]][parts[1]]['selectable']:
-					db['cur_cell']['i'] = parts[0]
-					db['cur_cell']['j'] = parts[1]
+					assign_cur_cell(parts)
 			else:
-				db['cur_cell']['i'] = parts[0]
-				db['cur_cell']['j'] = parts[1]
+				assign_cur_cell(parts)
 		else:
 			mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
 			
@@ -3814,7 +3826,11 @@ class TkinterHtmlMod(tk.Widget):
 		self.new_url = None
 		create_binding(widget=self,bindings=globs['var']['bind_go_url'],action=self.go_url)
 		self.bind("<Motion>",self.mouse_sel,True)
-		create_binding(widget=self,bindings=[globs['var']['bind_copy_sel'],globs['var']['bind_copy_sel_alt'],globs['var']['bind_copy_sel_alt2']],action=self.copy_cell)
+		# ВНИМАНИЕ: По непонятной причине, не работает привязка горячих клавиш (только мышь) для данного виджета, работает только для основного виджета!
+		if 'top' in globs:
+			create_binding(widget=globs['top'],bindings=[globs['var']['bind_copy_sel'],globs['var']['bind_copy_sel_alt'],globs['var']['bind_copy_sel_alt2']],action=self.copy_cell)
+			# По неясной причине в одной и той же Windows ИНОГДА не удается включить '<KP_Delete>'
+			create_binding(widget=globs['top'],bindings='<Delete>',action=self.del_cell)
 		# todo: Получаю здесь ошибку сегментирования
 		# Выделить первую выделяемую ячейку
 		#self.set_cell()
@@ -3883,8 +3899,9 @@ class TkinterHtmlMod(tk.Widget):
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
 			self.tag("delete", "selection")
-			if 'cur_cell' in db:
+			if 'cur_cell' in db and 'i' in db['cur_cell'] and 'j' in db['cur_cell']:
 				if globs['bool']['SelectTermsOnly']:
+					# todo: Проверка наличия 'first'
 					index = self.text('index',db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['first'],db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['last_term'])
 				else:
 					index = self.text('index',db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['first'],db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['last'])
@@ -3928,6 +3945,32 @@ class TkinterHtmlMod(tk.Widget):
 				clipboard_copy(selected_text)
 				if db['Iconify']:
 					iconify(widget=globs['top'])
+			else:
+				mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
+	#--------------------------------------------------------------------------
+	# Удалить ячейку и перекомпоновать статью
+	def del_cell(self,event,Silent=False,Critical=False):
+		cur_func = sys._getframe().f_code.co_name
+		if globs['AbortAll']:
+			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+		else:
+			if 'cur_cell' in db and 'i' in db['cur_cell'] and 'j' in db['cur_cell']:
+				Found = False
+				# Предполагаем, что db['elem'] уже прошло стадию объединения комментариев
+				for i in range(len(db['elem'])):
+					# todo: Уточнить и упростить алгоритм
+					if db['elem'][i] == db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]:
+						Found = True
+						break
+				if Found:
+					del db['elem'][i]
+					process_cells()
+					set_page()
+					if 'last_cell' in db and 'i' in db['last_cell'] and 'j' in db['last_cell'] and 'cells' in db and len(db['cells']) > 0 and db['last_cell']['i'] < len(db['cells']) and db['last_cell']['j'] < len(db['cells'][0]):
+						assign_cur_cell((db['last_cell']['i'],db['last_cell']['j']))
+					self.set_cell(event)
+				else:
+					mestype(cur_func,globs['mes'].wrong_input2,Silent=Silent,Critical=Critical)
 			else:
 				mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
 	#--------------------------------------------------------------------------

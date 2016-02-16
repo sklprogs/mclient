@@ -1,5 +1,15 @@
 
 
+4.1
+* Исправлен баг перехода на предыдущую статью
+* Исправлен баг, не позволяющий скопировать ячейку с клавиатуры
+* Возможность удаления ячейки (клавиша Delete)
+
+4.0
+* Колоночный вид
+* Удалены ключи: TermsColoredSep, bind_hide_top, color_borders, font_comments, font_dics, font_terms
+* Добавлены ключи: CopyTermsOnly, SelectTermsOnly, font_comments_size, font_dics_size, font_terms_size, bind_hide_top, font_comments_family, font_dics_family, font_terms_family
+
 3.12.1
 * Исправлен баг, не позволяющий восстанавливать настройки по умолчанию в случае неверного или отсутствующего конфигурационного файла
 * Код реорганизован
