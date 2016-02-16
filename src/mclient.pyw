@@ -23,7 +23,7 @@ import platform
 __author__ = 'Peter Sklyar'
 __copyright__ = 'Copyright 2015, 2016, Peter Sklyar'
 __license__ = 'GPL v.3'
-__version__ = '4.0'
+__version__ = '4.1'
 __email__ = 'skl.progs@gmail.com'
 
 # All third-party modules are the intellectual work of their authors.
