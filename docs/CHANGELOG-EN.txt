@@ -1,5 +1,9 @@
 
 
+4.2
+* Define cell borders more accurately
+* Select cells more accirately (still needs to be elaborated)
+
 4.1
 * Fix a bug when moving to a previous article
 * Fix a bug when copying a cell with a hotkey

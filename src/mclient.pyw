@@ -23,7 +23,7 @@ import platform
 __author__ = 'Peter Sklyar'
 __copyright__ = 'Copyright 2015, 2016, Peter Sklyar'
 __license__ = 'GPL v.3'
-__version__ = '4.1'
+__version__ = '4.2'
 __email__ = 'skl.progs@gmail.com'
 
 # All third-party modules are the intellectual work of their authors.
@@ -211,12 +211,13 @@ def decline_nom(words_nf,Decline=False):
 def check_args(func,arg_list):
 	pass
 #------------------------------------------------------------------------------
+# todo: Взять из main
 def check_type(*args):
 	pass
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 # Ошибка
 def ErrorMessage(cur_func='MAIN',cur_mes=err_mes_empty_error,Critical=True):
-	#root.withdraw()
+	root.withdraw()
 	tkmes.showerror(globs['mes'].err_head,cur_mes)
 	if Critical:
 		log(cur_func,lev_crit,cur_mes)
@@ -460,7 +461,7 @@ def default_config(config='mclient',Init=True):
 		
 # Вопрос
 def Question(cur_func='MAIN',cur_mes=err_mes_empty_question):
-	#root.withdraw()
+	root.withdraw()
 	par = tkmes.askokcancel(globs['mes'].ques_head,cur_mes)
 	root.deiconify()
 	log(cur_func,lev_info,cur_mes)
@@ -469,14 +470,14 @@ def Question(cur_func='MAIN',cur_mes=err_mes_empty_question):
 # Названия такие же, как у модуля PyZenity (кроме List)
 # Информация
 def InfoMessage(cur_func='MAIN',cur_mes=err_mes_empty_info):
-	#root.withdraw()
+	root.withdraw()
 	tkmes.showinfo(globs['mes'].inf_head,cur_mes)
 	root.deiconify()
 	log(cur_func,lev_info,cur_mes)
 
 # Предупреждение
 def Warning(cur_func='MAIN',cur_mes=err_mes_empty_warning):
-	#root.withdraw()
+	root.withdraw()
 	tkmes.showwarning(globs['mes'].warn_head,cur_mes)
 	root.deiconify()
 	log(cur_func,lev_warn,cur_mes)
@@ -3229,29 +3230,62 @@ def get_article():
 				log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
 			analyse_tags()
 			prepare_search()
-			db['elem'] = unite_comments(db['elem'])
+			unite_comments()
+			unite_by_url()
 			process_cells()
 		db['FirstLaunch'] = False
 
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<	
+# Объединить элементы списка, добавляя в нужном месте пробел
+def unite_items(lst):
+	cur_func = sys._getframe().f_code.co_name
+	func_res = ''
+	for i in range(len(lst)):
+		check_type(cur_func,lst[i],globs['mes'].type_str)
+	if globs['AbortAll']:
+		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+	else:
+		for i in range(len(lst)):
+			if not lst[i] == '':
+				if func_res == '':
+					func_res += lst[i]
+				else:
+					func_res += ' ' + lst[i]
+	return func_res
+
+# Объединить элементы, которые должны входить в одну ячейку (URL последующего элемента представляет собой URL предыдущего элемента плюс конструкция '&s1=*')
+def unite_by_url():
+	cur_func = sys._getframe().f_code.co_name
+	if globs['AbortAll']:
+		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+	else:
+		i = 0
+		while i < len(db['elem']):
+			if i > 0:
+				if db['elem'][i-1]['url'] == db['elem'][i]['url'] or db['elem'][i-1]['url'] + '&s1=' in db['elem'][i]['url']:
+					# В настоящее время в ячейке жестко заданы сначала название словаря, потом термин, потом комментарий, поэтому "хвост", который первоначально относился к последующей ячейке, лучше добавить к комментарию, иначе будет потерян смысл
+					db['elem'][i-1]['comment'] = unite_items([db['elem'][i-1]['comment'],db['elem'][i]['dic'],db['elem'][i]['term'],db['elem'][i]['comment']])
+					del db['elem'][i]
+					i -= 1
+			i += 1
+
 # Unite multiple comments using a separator ' | '. Delete comments-only entries.
-def unite_comments(db_elem):
+def unite_comments():
 	cur_func = sys._getframe().f_code.co_name
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
 		# Remove comments-only cells
-		i = len(db_elem) - 1
+		i = len(db['elem']) - 1
 		while i >= 0:
-			if db_elem[i]['dic'] == '' and db_elem[i]['term'] == '' and db_elem[i]['comment'] != '':
-				db_elem[i-1]['comment'] = db_elem[i-1]['comment']+' | '+db_elem[i]['comment']
-				del db_elem[i]
+			if db['elem'][i]['dic'] == '' and db['elem'][i]['term'] == '' and db['elem'][i]['comment'] != '':
+				db['elem'][i-1]['comment'] = db['elem'][i-1]['comment'] + ' | ' + db['elem'][i]['comment']
+				del db['elem'][i]
 			i -= 1
 		# Delete comments separators where they are not necessary
-		for i in range(len(db_elem)):
-			if db_elem[i]['comment'].startswith(' | '):
-				db_elem[i]['comment'] = db_elem[i]['comment'].replace(' | ',' ',1)
-	return db_elem
+		for i in range(len(db['elem'])):
+			if db['elem'][i]['comment'].startswith(' | '):
+				db['elem'][i]['comment'] = db['elem'][i]['comment'].replace(' | ',' ',1)
 	
 # Split selectables according to a predefined number of columns (col_limit)
 def split_selectables(selectables):
@@ -3900,12 +3934,14 @@ class TkinterHtmlMod(tk.Widget):
 		else:
 			self.tag("delete", "selection")
 			if 'cur_cell' in db and 'i' in db['cur_cell'] and 'j' in db['cur_cell']:
-				if globs['bool']['SelectTermsOnly']:
+				'''if globs['bool']['SelectTermsOnly']:
 					# todo: Проверка наличия 'first'
 					index = self.text('index',db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['first'],db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['last_term'])
 				else:
 					index = self.text('index',db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['first'],db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['last'])
-				self.tag("add", "selection",index[0],index[1],index[2],index[3])
+				'''
+				#self.tag("add", "selection",index[0],index[1],index[2],index[3])
+				self.tag("add", "selection",self._node,0,self._node,300)
 				self.tag('configure','selection','-background',globs['var']['color_terms_sel'])
 			else:
 				mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
