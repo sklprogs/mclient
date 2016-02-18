@@ -1,5 +1,12 @@
 
 
+4.3
+* Delete keys: ReadOnlyProtection, InternalDebug, Spelling, UnixSelection, icon_main, tab_length, bind_search_field
+* Delete symbols '<' and '>', if cyrillic symbols are nearby (define tags more accurately)
+* Recognize when an element marked as a term is actually a comment
+* Delete the tag <eq>
+* Detect parts of speech
+
 4.2
 * Define cell borders more accurately
 * Select cells more accirately (still needs to be elaborated)

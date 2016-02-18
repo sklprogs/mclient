@@ -23,7 +23,7 @@ import platform
 __author__ = 'Peter Sklyar'
 __copyright__ = 'Copyright 2015, 2016, Peter Sklyar'
 __license__ = 'GPL v.3'
-__version__ = '4.2'
+__version__ = '4.3'
 __email__ = 'skl.progs@gmail.com'
 
 # All third-party modules are the intellectual work of their authors.
@@ -81,8 +81,6 @@ globs['geom_top'] = {'width':0,'height':0}
 
 db = {}
 db['search'] = globs['mes'].welcome
-# todo: Избавиться
-globs['Quit'] = False
 db['ShowHistory'] = False
 
 lev_crit = 'CRITICAL'
@@ -92,9 +90,10 @@ lev_info = 'INFO'
 lev_debug_err = 'DEBUG-ERROR'
 lev_debug = 'DEBUG'
 
-# Сообщения
 my_email = 'skl.progs@gmail.com'
 my_yandex_money = '41001418272280'
+ru_alphabet = '№АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЪЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщыъьэюя'
+
 # Скрытые сообщения об ошибках
 err_mes_unavail = 'CF_UNICODETEXT_UNAVAILABLE'
 err_mes_copy = 'CLIPBOARD_COPY_ERROR'
@@ -167,6 +166,7 @@ tag_pattern10 = '</td>'
 tag_pattern11 = '" href'
 tag_pattern12 = '<trash>'
 tag_pattern13 = '"</trash><a href'
+tag_pattern14 = 'm.exe?a=118&t=' # Части речи # Полностью: '<a href="m.exe?a=118&t='
 #------------------------------------------------------------------------------
 # Список символов, которые можно считать за буквы.
 allowed_syms = ['°']
@@ -317,14 +317,14 @@ def default_config(config='mclient',Init=True):
 	'''
 	CONFIG CHANGES:
 	[bool]:
-	- TermsColoredSep
-	+ CopyTermsOnly
-	+ SelectTermsOnly
+	- 
+	+ 
 	[int]:
-	+ font_comments_size, font_dics_size, font_terms_size
+	- 
+	+ 
 	[var]:
-	- bind_hide_top, color_borders, font_comments, font_dics, font_terms
-	+ bind_hide_top, font_comments_family, font_dics_family, font_terms_family
+	- 
+	+ font_speech_family
 	'''
 	if config == 'mclient':
 		globs['bool'].update({
@@ -333,15 +333,11 @@ def default_config(config='mclient',Init=True):
 			'AutoHideHistory':False,
 			'CopyTermsOnly':True,
 			'ExploreMismatch':True,
-			'InternalDebug':False,
 			'mclientSaveTitle':False,
-			'ReadOnlyProtection':False,
 			'SelectTermsOnly':True,
 			'ShortHistory':False,
 			'ShowWallet':True,
-			'Spelling':True,
 			'TextButtons':False,
-			'UnixSelection':False,
 			'UseOptionalButtons':True,
 							})
 		#----------------------------------------------------------------------
@@ -353,9 +349,9 @@ def default_config(config='mclient',Init=True):
 			'default_hint_width':280,
 			'font_comments_size':3,
 			'font_dics_size':4,
+			'font_speech_size':4,
 			'font_terms_size':4,
-			'pixel_hack':18,
-			'tab_length':5
+			'pixel_hack':18
 							})
 		#----------------------------------------------------------------------
 		#globs['var'].update({'bind_re_search_article':'<Control-f>','bind_reload_article':'<Control-r>','bind_save_article':'<Control-s>'})
@@ -401,7 +397,6 @@ def default_config(config='mclient',Init=True):
 			'bind_save_article':'<F2>',
 			'bind_search_article_backward':'<Shift-F3>',
 			'bind_search_article_forward':'<F3>',
-			'bind_search_field':'<F6>',
 			'bind_show_about':'<F1>',
 			'bind_spec_symbol':'<Control-e>',
 			'bind_toggle_history_alt':'<Control-h>',
@@ -411,6 +406,7 @@ def default_config(config='mclient',Init=True):
 			'bind_watch_clipboard':'<F8>',
 			'color_comments':'gray',
 			'color_dics':'cadet blue',
+			'color_speech':'red',
 			'color_terms_sel':'cyan',
 			'color_terms':'black',
 			'default_hint_background':'#ffffe0',
@@ -419,6 +415,7 @@ def default_config(config='mclient',Init=True):
 			'font_comments_family':'Mono',
 			'font_dics_family':'Arial',
 			'font_history':'Sans 12',
+			'font_speech_family':'Arial',
 			'font_style':'Sans 14',
 			'font_terms_sel':'Sans 14 bold italic',
 			'font_terms_family':'Serif',
@@ -431,7 +428,6 @@ def default_config(config='mclient',Init=True):
 			'icon_go_forward_off':'icon_36x36_go_forward_off.gif',
 			'icon_go_forward':'icon_36x36_go_forward.gif',
 			'icon_go_search':'icon_36x36_go_search.gif',
-			'icon_main':'icon_64x64_main.gif',
 			'icon_mclient':'icon_64x64_mclient.gif',
 			'icon_open_in_browser':'icon_36x36_open_in_browser.gif',
 			'icon_paste':'icon_36x36_paste.gif',
@@ -461,25 +457,19 @@ def default_config(config='mclient',Init=True):
 		
 # Вопрос
 def Question(cur_func='MAIN',cur_mes=err_mes_empty_question):
-	root.withdraw()
 	par = tkmes.askokcancel(globs['mes'].ques_head,cur_mes)
-	root.deiconify()
 	log(cur_func,lev_info,cur_mes)
 	return par
 
 # Названия такие же, как у модуля PyZenity (кроме List)
 # Информация
 def InfoMessage(cur_func='MAIN',cur_mes=err_mes_empty_info):
-	root.withdraw()
 	tkmes.showinfo(globs['mes'].inf_head,cur_mes)
-	root.deiconify()
 	log(cur_func,lev_info,cur_mes)
 
 # Предупреждение
 def Warning(cur_func='MAIN',cur_mes=err_mes_empty_warning):
-	root.withdraw()
 	tkmes.showwarning(globs['mes'].warn_head,cur_mes)
-	root.deiconify()
 	log(cur_func,lev_warn,cur_mes)
 	
 # Заменить двойные разрывы строк на одиночные
@@ -984,7 +974,6 @@ def text_field(title=None,user_text=err_mes_empty_input,CheckSpelling=False,GoTo
 			title = globs['mes'].text
 		title += ' ' + my_program_title
 		top.title(title)
-		top.tk.call('wm','iconphoto',top._w,tk.PhotoImage(file=globs['var']['icon_main']))
 		# Позволяет удалять пробел и пунктуацию с конца, что полезно при некорректной обработке Ctrl + Shift + - >
 		if TrimEnd and not Small: # По текущим данным, globs['bool']['UnixSelection'] не работает с Entry
 			user_text = delete_end_punc(user_text)
@@ -1066,6 +1055,10 @@ def additional_keys():
 	# Это второстепенный ключ, указывать его в конфиге не надо
 	globs['IgnorePaste'] = False
 	globs['var']['spec_syms'] = list(globs['var']['spec_syms'])
+	globs['bool']['ReadOnlyProtection'] = False
+	globs['bool']['InternalDebug'] = False
+	globs['bool']['Spelling'] = False
+	globs['bool']['UnixSelection'] = False
 
 # Загрузить все конфигурационные файлы
 def read_configs(Silent=False,Critical=False):
@@ -1419,6 +1412,32 @@ def tag_add_config(widget,tag_name,pos1tk,pos2tk,mode='bg',color='cyan',DeletePr
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # mclient non-shared code
+
+# Удалить символы '<' и '>', не принадлежащие тэгам
+''' Такие символы встречаются в комментариях
+	Есть 3 варианта: 
+	1) Вручную указать тэги для удаления; 
+	2) Искать такие символы после тэга комментария и до начала нового известного тэга; 
+	3) Удалять такие символы, если рядом кириллица (не всеобъемлющий метод, но самый простой)
+'''
+def define_non_tags():
+	cur_func = sys._getframe().f_code.co_name
+	if globs['AbortAll']:
+		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+	else:
+		db['page'] = list(db['page'])
+		i = 0
+		while i < len(db['page']):
+			# Почему-то при 'not in lat_alphabet' удаляет почти всю статью
+			if i < len(db['page']) - 1 and db['page'][i] == '<' and db['page'][i+1] in ru_alphabet:
+				del db['page'][i]
+				i -= 1
+			if i > 0 and db['page'][i] == '>' and db['page'][i-1] in ru_alphabet:
+				del db['page'][i]
+				i -= 1
+			i += 1
+		db['page'] = ''.join(db['page'])
+	
 # Convert HTML entities to UTF-8 and perform other necessary operations
 def prepare_page():
 	cur_func = sys._getframe().f_code.co_name
@@ -1440,7 +1459,9 @@ def prepare_page():
 		db['page'] = db['page'].replace(' <','<')
 		db['page'] = db['page'].replace('>'+nbspace,'>')
 		db['page'] = db['page'].replace('> ','>')
-		#----------------------------------------------------------------------
+		# Не совсем понятно, для чего этот тэг используется в Мультитране, он мешает определить границы ячейки (по какой-то причине мой парсер его не удаляет). Тэг стоял между комментарием и сообщением пользователя об ошибке, однако, в той же статье ('get') такие случаи уже были, и этот тэг не использовался. Кроме того, тэг не был закрыт. Поскольку какой-то закономерности уловить не удается, я его просто удаляю.
+		db['page'] = db['page'].replace('<eq>','')
+		define_non_tags()
 		# If separate words are found instead of a phrase, prepare those words only
 		if sep_words_found in db['page']:
 			db['page'] = db['page'].replace(sep_words_found,'')
@@ -1593,12 +1614,14 @@ def extract_tag_contents():
 		<span STYLE="color:gray"<i>...</i>
 		5) Comments:
 		<span STYLE="color:gray"...<
+		6) Parts of speech (will be processed later):
+		'<a href="m.exe?a=118&t='
 		'''
 		db['elem'] = []
 		#----------------------------------------------------------------------
 		for i in range(db['len_tags']):
 			# Если используется шаблон вместо пустого словаря, то нужно обратить внимание на то, что при изменении присвоенных значений будет меняться и сам шаблон!
-			db['elem'].append({'url':online_url_safe,'selectable':False,'dic':'','term':'','comment':''})
+			db['elem'].append({'url':online_url_safe,'selectable':False,'speech':'','dic':'','term':'','comment':''})
 			EntryMatch = False
 			url = online_url_safe
 			# Extracting dictionary abbreviations
@@ -1673,7 +1696,7 @@ def extract_tag_contents():
 		# We do not need empty entries before creating cells, so we delete them (if any)
 		i = 0
 		while i < len(db['elem']):
-			if empty(db['elem'][i]['dic']) and empty(db['elem'][i]['term']) and empty(db['elem'][i]['comment']):
+			if empty(db['elem'][i]['speech']) and empty(db['elem'][i]['dic']) and empty(db['elem'][i]['term']) and empty(db['elem'][i]['comment']):
 				del db['elem'][i]
 				i -= 1
 			i += 1
@@ -1685,7 +1708,7 @@ def extract_tag_contents():
 		if globs['bool']['InternalDebug']:
 			res_mes = ''
 			for i in range(len(db['elem'])):
-				res_mes += "i: %d" % i + tab + db['elem'][i]['dic'] + tab + db['elem'][i]['term'] + tab + db['elem'][i]['comment'] + tab + db['elem'][i]['url'] + tab + str(db['elem'][i]['selectable']) + dlb
+				res_mes += "i: %d" % i + tab + db['elem'][i]['speech'] + tab + db['elem'][i]['dic'] + tab + db['elem'][i]['term'] + tab + db['elem'][i]['comment'] + tab + db['elem'][i]['url'] + tab + str(db['elem'][i]['selectable']) + dlb
 			text_field(title=globs['mes'].db_all_check,user_text=res_mes,ReadOnly=True)
 	
 # Adjust positions of entries for pretty viewing
@@ -1702,7 +1725,8 @@ def prepare_search():
 		i = 0
 		while i < len(db['elem']):
 			# todo: Удалять по URL
-			if db['elem'][i]['comment'].endswith('.') or 'Макаров' in db['elem'][i]['comment'] or 'Вебстер' in db['elem'][i]['comment'] or 'Webster' in db['elem'][i]['comment'] or 'Майкрософт' in db['elem'][i]['comment'] or 'Microsoft' in db['elem'][i]['comment']:
+			# Чтобы не удалить случайно длинный комментарий с точкой на конце, ограничиваю его длину 12 (выбрано условно)
+			if db['elem'][i]['comment'].endswith('.') and len(db['elem'][i]['comment']) < 12 or 'Макаров' in db['elem'][i]['comment'] or 'Вебстер' in db['elem'][i]['comment'] or 'Webster' in db['elem'][i]['comment'] or 'Майкрософт' in db['elem'][i]['comment'] or 'Microsoft' in db['elem'][i]['comment']:
 				log(cur_func,lev_info,globs['mes'].deleting_useless_entry % str(db['elem'][i]))
 				del db['elem'][i]
 				i -= 1
@@ -2174,8 +2198,6 @@ class ShowArticle:
 			self.listbox.pack(expand=1,side='top',fill='both')
 		for i in range(len(db['history'])):
 			self.listbox.insert(0,db['history'][i])
-		globs['listbox'] = self.listbox
-		globs['frame_history'] = self.frame_history
 	#--------------------------------------------------------------------------
 	# Создание каркаса с полем ввода, кнопкой выбора направления перевода и кнопкой выхода
 	def create_frame_panel(self):
@@ -2617,20 +2639,11 @@ class ShowArticle:
 		else:
 			if db['ShowHistory']:
 				db['ShowHistory'] = False
-				if 'frame_history' in globs and 'listbox' in globs:
-					globs['listbox'].pack_forget()
-					globs['frame_history'].pack_forget()
+				self.frame_history.pack_forget()
 			else:
 				db['ShowHistory'] = True
-				if 'frame_history' in globs and 'listbox' in globs:
-					globs['frame_history'].pack(expand=1,side='top',fill='both')
-					globs['listbox'].pack(expand=1,side='top',fill='both')
-					#globs['listbox'].pack(expand=1,side='top',fill='both')
-			#db['mode'] = 'skip'
-			# Запоминаем позицию выделения, чтобы она не сбрасывалась при переключении отображения Истории. Запомнить позицию выделения можно только на первой странице.
-			# todo
-			#db['last_cell'] = db['cur_cell']
-			#loop_page()
+				self.frame_history.pack(expand=1,side='top',fill='both')
+				self.listbox.pack(expand=1,side='top',fill='both')
 	#--------------------------------------------------------------------------
 	# Написать письмо автору
 	def response_back(self,event):
@@ -3119,7 +3132,6 @@ class ShowArticle:
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_re_search_article'],action=lambda e:self.search_article(direction='clear'))
 		create_binding(widget=globs['top'],bindings=[globs['var']['bind_reload_article'],globs['var']['bind_reload_article_alt']],action=loop_page)
 		create_binding(widget=globs['top'],bindings=[globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']],action=self.save_article)
-		create_binding(widget=globs['top'],bindings=globs['var']['bind_search_field'],action=lambda e:self.search_field.focus_force())
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_show_about'],action=self.show_about)
 		create_binding(widget=globs['top'],bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt']],action=self.toggle_history)
 		create_binding(widget=globs['top'],bindings=[globs['var']['bind_open_in_browser'],globs['var']['bind_open_in_browser_alt']],action=self.open_in_browser)
@@ -3154,9 +3166,9 @@ def process_cells():
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
-		db['cells'] = split_by_columms(db['elem'])
-		#db['cells'] = distribute_columns(db['cells'])
-		#span_cells = create_span(db['cells'])
+		split_by_columms()
+		#distribute_columns()
+		#span_cells = create_span()
 		generate_simple_page()
 		generate_tkhtml_text()
 		assign_cur_cell(get_selectable(0,0,GetNext=False))
@@ -3167,6 +3179,18 @@ def process_cells():
 			db['move_start'] = (0,0)
 			db['move_end'] = (-1,-1)
 		move_events()
+
+# Определить части речи и пометить их как названия словарей (чтобы выносились на новую строку)
+def define_parts_of_speech():
+	cur_func = sys._getframe().f_code.co_name
+	if globs['AbortAll']:
+		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+	else:
+		for i in range(len(db['elem'])):
+			if tag_pattern14 in db['elem'][i]['url']:
+				if empty(db['elem'][i]['speech']):
+					db['elem'][i]['speech'] = db['elem'][i]['term']
+					db['elem'][i]['term'] = ''
 
 # Подготовить всю необходимую информацию для отображения GUI
 def get_article():
@@ -3198,20 +3222,13 @@ def get_article():
 		if 'search_list' in db:
 			del db['search_list']
 		#----------------------------------------------------------------------
-		if globs['Quit']:
-			log(cur_func,lev_info,globs['mes'].goodbye)
-			root.destroy()
-			sys.exit()
-		#elif db['mode'] == 'clipboard':
-		elif db['TrackClipboard']:
+		#if db['mode'] == 'clipboard':
+		if db['TrackClipboard']:
 			old_clipboard = clipboard_paste()
 			new_clipboard = old_clipboard
 			#root.withdraw()
 			while old_clipboard == new_clipboard:
 				sleep(1)
-				if globs['Quit']:
-					log(cur_func,lev_info,globs['mes'].goodbye)
-					sys.exit()
 				new_clipboard = clipboard_paste()
 				# Игнорировать URL, скопированные в буфер обмена
 				if 'http://' in new_clipboard or 'www.' in new_clipboard or globs['IgnorePaste']:
@@ -3230,6 +3247,7 @@ def get_article():
 				log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
 			analyse_tags()
 			prepare_search()
+			define_parts_of_speech()
 			unite_comments()
 			unite_by_url()
 			process_cells()
@@ -3253,7 +3271,12 @@ def unite_items(lst):
 					func_res += ' ' + lst[i]
 	return func_res
 
-# Объединить элементы, которые должны входить в одну ячейку (URL последующего элемента представляет собой URL предыдущего элемента плюс конструкция '&s1=*')
+# Объединить элементы, которые должны входить в одну ячейку
+''' Правила такие:
+	1) URL последующего элемента совпадает с URL предыдущего элемента
+	2) URL последующего элемента представляет собой URL предыдущего элемента плюс конструкция '&s1=*')
+	3) В URL содержится 'UserName', т.е. элемент на самом деле относится к комментариям (хотя в Мультитране идет как самостоятельная ссылка)
+'''
 def unite_by_url():
 	cur_func = sys._getframe().f_code.co_name
 	if globs['AbortAll']:
@@ -3262,7 +3285,7 @@ def unite_by_url():
 		i = 0
 		while i < len(db['elem']):
 			if i > 0:
-				if db['elem'][i-1]['url'] == db['elem'][i]['url'] or db['elem'][i-1]['url'] + '&s1=' in db['elem'][i]['url']:
+				if db['elem'][i-1]['url'] == db['elem'][i]['url'] or db['elem'][i-1]['url'] + '&s1=' in db['elem'][i]['url'] or '&UserName=' in db['elem'][i]['url']:
 					# В настоящее время в ячейке жестко заданы сначала название словаря, потом термин, потом комментарий, поэтому "хвост", который первоначально относился к последующей ячейке, лучше добавить к комментарию, иначе будет потерян смысл
 					db['elem'][i-1]['comment'] = unite_items([db['elem'][i-1]['comment'],db['elem'][i]['dic'],db['elem'][i]['term'],db['elem'][i]['comment']])
 					del db['elem'][i]
@@ -3320,8 +3343,8 @@ def split_selectables(selectables):
 	return split_sel
 
 # Split the list of article elements according to a predefined number of columns (col_limit)
-# todo: Если вынести {'dic':'','term':'','comment':'','url':online_url_safe,'selectable':False} как empty_elem, то он будет меняться, поэтому указываю пока явно.
-def split_by_columms(db_elem):
+# todo: Если вынести {'search':'','dic':'','term':'','comment':'','url':online_url_safe,'selectable':False} как empty_elem, то он будет меняться, поэтому указываю пока явно.
+def split_by_columms():
 	cur_func = sys._getframe().f_code.co_name
 	'''Разбить список вхождений статьи по столбцам
 	Возможные виды:
@@ -3330,37 +3353,35 @@ def split_by_columms(db_elem):
 	3: источник (Мультитран, Лингво и пр.) занимает всю строчку, далее как в виде 1 или 2
 	4: всего столбцов: 2. 1-й столбец содержит название словаря или пуст, 2-й столбец содержит термины и комментарии в сплошном порядке.
 	'''
-	cells = []
+	db['cells'] = []
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
 		# Текущий вид: 1
 		# Текст ячеек. Термины и комментарии объединены.
 		row = []
-		for i in range(len(db_elem)):
-			if db_elem[i]['dic'] != '':
+		for i in range(len(db['elem'])):
+			if db['elem'][i]['speech'] != '' or db['elem'][i]['dic'] != '':
 				if len(row) > 0:
 					while len(row) < col_limit:
-						row.append({'dic':'','term':'','comment':'','url':online_url_safe,'selectable':False})
-					cells += [row]
-					row = [db_elem[i]]
+						row.append({'speech':'','dic':'','term':'','comment':'','url':online_url_safe,'selectable':False})
+					db['cells'] += [row]
+					row = [db['elem'][i]]
 				else:
-					row.append(db_elem[i])
+					row.append(db['elem'][i])
 			elif len(row) == col_limit:
-				cells += [row]
-				# A dic title is in the 1st column
-				row = [{'dic':'','term':'','comment':'','url':online_url_safe,'selectable':False}]
-				row.append(db_elem[i])
+				db['cells'] += [row]
+				row = [{'speech':'','dic':'','term':'','comment':'','url':online_url_safe,'selectable':False}]
+				row.append(db['elem'][i])
 			else:
-				row.append(db_elem[i])
+				row.append(db['elem'][i])
 			# Last element
-			if i == len(db_elem) - 1:
+			if i == len(db['elem']) - 1:
 				while len(row) < col_limit:
-					row.append({'dic':'','term':'','comment':'','url':online_url_safe,'selectable':False})
-				cells += [row]
+					row.append({'speech':'','dic':'','term':'','comment':'','url':online_url_safe,'selectable':False})
+				db['cells'] += [row]
 			log(cur_func,lev_debug,globs['mes'].line_no % (i,str(row)))
-		log(cur_func,lev_debug,str(cells))
-	return cells
+		log(cur_func,lev_debug,str(db['cells']))
 
 # Вернуть режим распределения свободного пространства для столбцов разной длины: без распределения (none), распределить на максимально длинный столбец (max), распределить равномерно и, при необходимости, добавить остаток к максимально длинному столбцу (all)
 def distribute_mode(len_empty,non_empty,max_pos=-1):
@@ -3413,24 +3434,24 @@ def distribute_mode(len_empty,non_empty,max_pos=-1):
 
 # Assign empty columns to table columns according to the text length
 # todo: Если вынести {'dic':'','term':'','comment':'','url':online_url_safe,'selectable':False} как empty_elem, то он будет меняться, поэтому указываю пока явно.
-def distribute_columns(cells,Silent=False,Critical=False):
+def distribute_columns(Silent=False,Critical=False):
 	cur_func = sys._getframe().f_code.co_name
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
-		if len(cells) > 0:
+		if 'cells' in db and len(db['cells']) > 0:
 			if col_limit >= min_col_limit:
-				for i in range(len(cells)):
+				for i in range(len(db['cells'])):
 					row = [] # Text-only list of article entries
 					row_elem = [] # List of dictionaries describing article entries
 					# The mode when the first column is assigned for dictionary titles
 					j = 1
 					len_empty = 0
 					# Collect some info on empty columns
-					while j < len(cells[i]):
-						if cells[i][j]['selectable']:
-							row.append(cells[i][j]['dic']+cells[i][j]['term']+cells[i][j]['comment'])
-							row_elem.append(cells[i][j])
+					while j < len(db['cells'][i]):
+						if db['cells'][i][j]['selectable']:
+							row.append(db['cells'][i][j]['speech']+db['cells'][i][j]['dic']+db['cells'][i][j]['term']+db['cells'][i][j]['comment'])
+							row_elem.append(db['cells'][i][j])
 						else:
 							len_empty += 1
 						#	row.append('')
@@ -3461,23 +3482,22 @@ def distribute_columns(cells,Silent=False,Critical=False):
 							# For some reason, at col_limit > 5 the number of elements in row_elem can exceed col_limit (adding columns on the basis of ratios without checking?)
 							# -1 since with will further need to add a dictionary title as the first column
 							if len(row_elem) < col_limit - 1:
-								row_elem.insert(indexes[j]+1,{'dic':'','term':'','comment':'','url':online_url_safe,'selectable':False})
+								row_elem.insert(indexes[j]+1,{'speech':'','dic':'','term':'','comment':'','url':online_url_safe,'selectable':False})
 					# Return the 1st column assigned for dictionary titles
-					if len(cells[i]) > 0:
-						row_elem.insert(0,cells[i][0])
+					if len(db['cells'][i]) > 0:
+						row_elem.insert(0,db['cells'][i][0])
 					# Ensure that the number of cells will be not less than col_limit (adding empty cells on the basis of the ratios is not enough).
 					delta = col_limit - len(row_elem)
 					for j in range(delta):
-						row_elem.insert(-1,{'dic':'','term':'','comment':'','url':online_url_safe,'selectable':False})
+						row_elem.insert(-1,{'speech':'','dic':'','term':'','comment':'','url':online_url_safe,'selectable':False})
 					log(cur_func,lev_debug,globs['mes'].line_no % (i,str(row_elem)))
 					if len(row_elem) != col_limit:
 						mestype(cur_func,globs['mes'].inconsistent_columns % (i,len(row_elem),col_limit),Silent=Silent,Critical=Critical)
-					cells[i] = row_elem
+					db['cells'][i] = row_elem
 			else:
 				mestype(cur_func,globs['mes'].min_col_limit % (min_col_limit,col_limit),Silent=Silent,Critical=Critical)
 		else:
 			mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
-	return cells
 	
 # Create a list indicating a number of empty elements in succession and a position preceding to them
 def prepare_span(lst): # A list of dictionaries characterizing article entries
@@ -3510,16 +3530,16 @@ def prepare_span(lst): # A list of dictionaries characterizing article entries
 	return col_info
 	
 # Create a list of cells to be merged compatible with QT setSpan
-def create_span(cells):
+def create_span():
 	cur_func = sys._getframe().f_code.co_name
 	# (row No, column No, number of rows, number of columns (to merge))
 	span_cells = []
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
-		for i in range(len(cells)):
+		for i in range(len(db['cells'])):
 			# Example: [[1,1],[3,1]] ([pos_of_elem,nos_of_cells_to_merge])
-			tmp_lst = prepare_span(cells[i])
+			tmp_lst = prepare_span(db['cells'][i])
 			for j in range(len(tmp_lst)):
 				# We need to add 1 (a column to be merged + empty columns)
 				span_cells += [[i,tmp_lst[j][0],1,tmp_lst[j][1]+1]]
@@ -3538,10 +3558,22 @@ def generate_simple_page(Silent=False,Critical=False):
 			# Форматирование текста ячеек тэгами
 			for i in range(len(db['cells'])):
 				db['simple_html'] += '<tr>'
-				# Число столбцов в таблице должно быть одинаковым!
-				for j in range(len(db['cells'][0])):
+				# Может, сделать алгоритм покрасивее?
+				if len(db['cells'][i]) > 0 and not empty(db['cells'][i][0]['speech']):
+					# Части речи
+					# todo: Указать здесь переменную величину для colspan (по центру при col_limit == 5: 9)
+					db['simple_html'] += '<td></td><td></td><td></td><td align="left"><font face="'
+					db['simple_html'] += globs['var']['font_speech_family']
+					db['simple_html'] += '" color="'
+					db['simple_html'] += globs['var']['color_speech']
+					db['simple_html'] += '" size="'
+					db['simple_html'] += str(globs['int']['font_speech_size'])
+					#db['simple_html'] += '"><b>' + db['cells'][i][j]['speech'] + '</b></font></td>'
+					db['simple_html'] += '"><b>' + db['cells'][i][0]['speech'] + '</b></font></td></tr>'
+				for j in range(len(db['cells'][i])):
 					# Названия словарей
 					db['simple_html'] += '<td align="center"><font face="'
+					#db['simple_html'] += '<font face="'
 					db['simple_html'] += globs['var']['font_dics_family']
 					db['simple_html'] += '" color="'
 					db['simple_html'] += globs['var']['color_dics']
@@ -3594,10 +3626,11 @@ def set_page(Silent=False,Critical=False):
 		if 'cells' in db:
 			globs['web_widget'].reset()
 			globs['web_widget'].parse(db['simple_html'])
-			# cur
 			#assert db['plain_text'] == globs['web_widget'].text('text')
 			if db['plain_text'] != globs['web_widget'].text('text'):
 				log(cur_func,lev_err,globs['mes'].different_texts)
+				#write_file('/tmp/assumed_text',db['plain_text'],AskRewrite=False)
+				#write_file('/tmp/real_text',globs['web_widget'].text('text'),AskRewrite=False)
 		else:
 			mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
 		
@@ -3658,6 +3691,14 @@ def generate_tkhtml_text(Silent=False,Critical=False):
 			for i in range(len(db['cells'])):
 				# Число столбцов в таблице должно быть одинаковым!
 				for j in range(len(db['cells'][0])):
+					if not empty(db['cells'][i][j]['speech']):
+						tmp_str = db['cells'][i][j]['speech'].strip() + '\n'
+						db['cells'][i][j]['first'] = len(db['plain_text'])
+						db['plain_text'] += tmp_str
+						db['cells'][i][j]['last_term'] = db['cells'][i][j]['first'] + len(db['cells'][i][j]['term'])
+						db['cells'][i][j]['last'] = len(db['plain_text'])
+						for k in range(len(tmp_str)):
+							db['pos2cell'].append([i,j])
 					if not empty(db['cells'][i][j]['dic']):
 						tmp_str = db['cells'][i][j]['dic'].strip() + '\n'
 						db['cells'][i][j]['first'] = len(db['plain_text'])
@@ -3668,6 +3709,7 @@ def generate_tkhtml_text(Silent=False,Critical=False):
 							db['pos2cell'].append([i,j])
 					if not empty(db['cells'][i][j]['term']+db['cells'][i][j]['comment']):
 						tmp_str = (db['cells'][i][j]['term'] + db['cells'][i][j]['comment']).strip() + '\n'
+						tmp_str = tmp_str.replace('  ',' ')
 						db['cells'][i][j]['first'] = len(db['plain_text'])
 						db['plain_text'] += tmp_str
 						db['cells'][i][j]['last_term'] = db['cells'][i][j]['first'] + len(db['cells'][i][j]['term'])
@@ -3933,16 +3975,19 @@ class TkinterHtmlMod(tk.Widget):
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
 			self.tag("delete", "selection")
+			index = None
 			if 'cur_cell' in db and 'i' in db['cur_cell'] and 'j' in db['cur_cell']:
-				'''if globs['bool']['SelectTermsOnly']:
-					# todo: Проверка наличия 'first'
-					index = self.text('index',db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['first'],db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['last_term'])
+				if globs['bool']['SelectTermsOnly']:
+					if 'first' in db['cells'][db['cur_cell']['i']][db['cur_cell']['j']] and 'last_term' in db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]:
+						index = self.text('index',db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['first'],db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['last_term'])
 				else:
-					index = self.text('index',db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['first'],db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['last'])
-				'''
-				#self.tag("add", "selection",index[0],index[1],index[2],index[3])
-				self.tag("add", "selection",self._node,0,self._node,300)
-				self.tag('configure','selection','-background',globs['var']['color_terms_sel'])
+					if 'first' in db['cells'][db['cur_cell']['i']][db['cur_cell']['j']] and 'last' in db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]:
+						index = self.text('index',db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['first'],db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['last'])
+				if not empty(index):
+					self.tag("add", "selection",index[0],index[1],index[2],index[3])
+					# В крайнем случае можно делать так:
+					#self.tag("add", "selection",self._node,0,self._node,300)
+					self.tag('configure','selection','-background',globs['var']['color_terms_sel'])
 			else:
 				mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
 	#--------------------------------------------------------------------------
