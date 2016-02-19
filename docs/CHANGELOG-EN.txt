@@ -1,5 +1,8 @@
 
 
+4.3.1.
+* Fix an empty history bug
+
 4.3
 * Delete keys: ReadOnlyProtection, InternalDebug, Spelling, UnixSelection, icon_main, tab_length, bind_search_field
 * Delete symbols '<' and '>', if cyrillic symbols are nearby (define tags more accurately)

@@ -23,7 +23,7 @@ import platform
 __author__ = 'Peter Sklyar'
 __copyright__ = 'Copyright 2015, 2016, Peter Sklyar'
 __license__ = 'GPL v.3'
-__version__ = '4.3'
+__version__ = '4.3.1'
 __email__ = 'skl.progs@gmail.com'
 
 # All third-party modules are the intellectual work of their authors.
@@ -2198,6 +2198,7 @@ class ShowArticle:
 			self.listbox.pack(expand=1,side='top',fill='both')
 		for i in range(len(db['history'])):
 			self.listbox.insert(0,db['history'][i])
+		globs['listbox'] = self.listbox
 	#--------------------------------------------------------------------------
 	# Создание каркаса с полем ввода, кнопкой выбора направления перевода и кнопкой выхода
 	def create_frame_panel(self):
@@ -3563,6 +3564,8 @@ def generate_simple_page(Silent=False,Critical=False):
 					# Части речи
 					# todo: Указать здесь переменную величину для colspan (по центру при col_limit == 5: 9)
 					db['simple_html'] += '<td></td><td></td><td></td><td align="left"><font face="'
+					# Разместить по центру
+					#db['simple_html'] += '<td colspan=9 align="center"><font face="'
 					db['simple_html'] += globs['var']['font_speech_family']
 					db['simple_html'] += '" color="'
 					db['simple_html'] += globs['var']['color_speech']
@@ -3571,9 +3574,29 @@ def generate_simple_page(Silent=False,Critical=False):
 					#db['simple_html'] += '"><b>' + db['cells'][i][j]['speech'] + '</b></font></td>'
 					db['simple_html'] += '"><b>' + db['cells'][i][0]['speech'] + '</b></font></td></tr>'
 				for j in range(len(db['cells'][i])):
+					'''
+					# 1) Разместить части речи раньше всех элементов
+					db['simple_html'] += '<td align="center"><font face="'
+					db['simple_html'] += globs['var']['font_speech_family']
+					db['simple_html'] += '" color="'
+					db['simple_html'] += globs['var']['color_speech']
+					db['simple_html'] += '" size="'
+					db['simple_html'] += str(globs['int']['font_speech_size'])
+					db['simple_html'] += '"><b>' + db['cells'][i][j]['speech'] + '</b></font></td>'
 					# Названия словарей
 					db['simple_html'] += '<td align="center"><font face="'
-					#db['simple_html'] += '<font face="'
+					# 2) Разместить части речи в одном столбце с названиями словарей
+					db['simple_html'] += '<td align="center"><font face="'
+					db['simple_html'] += globs['var']['font_speech_family']
+					db['simple_html'] += '" color="'
+					db['simple_html'] += globs['var']['color_speech']
+					db['simple_html'] += '" size="'
+					db['simple_html'] += str(globs['int']['font_speech_size'])
+					db['simple_html'] += '"><b>' + db['cells'][i][j]['speech'] + '</b></font>'
+					# Названия словарей
+					db['simple_html'] += '<font face="'
+					'''
+					db['simple_html'] += '<td align="center"><font face="'
 					db['simple_html'] += globs['var']['font_dics_family']
 					db['simple_html'] += '" color="'
 					db['simple_html'] += globs['var']['color_dics']

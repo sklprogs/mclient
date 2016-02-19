@@ -1,5 +1,8 @@
 
 
+4.3.1.
+* Исправлен баг, из-за которого история не отображалась
+
 4.3
 * Удалены ключи: ReadOnlyProtection, InternalDebug, Spelling, UnixSelection, icon_main, tab_length, bind_search_field
 * Удаление символов '<' и '>', если рядом есть кириллица (более точное определение тэгов)
