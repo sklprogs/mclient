@@ -1,10 +1,17 @@
 
 
+4.4
+* Удалены ключи: bind_toggle_iconify, bind_watch_clipboard, bind_watch_clipboard_alt, window_size, ShowWallet, TextButtons, UseOptionalButtons, AlwaysMaximize
+* Перевод буфера обмена по Control-c-c (вместо режима "Буфер обмена")
+* Навигация по стрелке вверх и стрелке вниз, Home, End, Contol-Home и Control-End
+* Теперь пиктограмма отображается корректно в версиях Windows старше XP
+
 4.3.1.
 * Исправлен баг, из-за которого история не отображалась
 
 4.3
 * Удалены ключи: ReadOnlyProtection, InternalDebug, Spelling, UnixSelection, icon_main, tab_length, bind_search_field
+* Добавлены ключи: color_speech, font_speech_family, font_speech_size
 * Удаление символов '<' и '>', если рядом есть кириллица (более точное определение тэгов)
 * Определение случаев, когда элемент, помеченный как термин, на самом деле оказывается комментарием
 * Удаление тэга <eq>

@@ -1,9 +1,16 @@
 
 
+4.4
+* Delete keys: bind_toggle_iconify, bind_watch_clipboard, bind_watch_clipboard_alt, window_size, ShowWallet, TextButtons, UseOptionalButtons, AlwaysMaximize
+* Translate clipboard by Control-c-c (instead of "the Clipboard Mode")
+* Navigate using up and down arrows, Home, End, Contol-Home and Control-End
+* Fix the icon in past Windows XP systems
+
 4.3.1.
 * Fix an empty history bug
 
 4.3
+* Add keys: color_speech, font_speech_family, font_speech_size
 * Delete keys: ReadOnlyProtection, InternalDebug, Spelling, UnixSelection, icon_main, tab_length, bind_search_field
 * Delete symbols '<' and '>', if cyrillic symbols are nearby (define tags more accurately)
 * Recognize when an element marked as a term is actually a comment

@@ -23,7 +23,7 @@ import platform
 __author__ = 'Peter Sklyar'
 __copyright__ = 'Copyright 2015, 2016, Peter Sklyar'
 __license__ = 'GPL v.3'
-__version__ = '4.3.1'
+__version__ = '4.4'
 __email__ = 'skl.progs@gmail.com'
 
 # All third-party modules are the intellectual work of their authors.
@@ -76,12 +76,9 @@ cur_func = 'MAIN'
 gpl3_url_ru = 'http://rusgpl.ru/rusgpl.html'
 gpl3_url_en = 'http://www.gnu.org/licenses/gpl.html'
 # Данные глобальные переменные оформлены в виде словаря, что позволяет не использовать лишний раз global.
-globs = {'AbortAll':False,'LogCount':0,'cur_widget':'ERR_NO_WIDGET_DEFINED','ui_lang':'ru','mes':mes_ru,'license_url':gpl3_url_ru,'mclient_config_root':'mclient.cfg','config_parser':SafeConfigParser(),'_tkhtml_loaded':False,'var':{},'int':{}}
-globs['geom_top'] = {'width':0,'height':0}
+globs = {'AbortAll':False,'cur_widget':'ERR_NO_WIDGET_DEFINED','ui_lang':'ru','mes':mes_ru,'license_url':gpl3_url_ru,'mclient_config_root':'mclient.cfg','config_parser':SafeConfigParser(),'_tkhtml_loaded':False,'var':{},'int':{},'mode':'url','ShowHistory':False,'FirstLaunch':True,'geom_top':{'width':0,'height':0},'CaptureHotkey':True}
 
-db = {}
-db['search'] = globs['mes'].welcome
-db['ShowHistory'] = False
+db = {'history':[],'history_url':[],'url':'http://www.multitran.ru/c/m.exe?CL=1&s=%C4%EE%E1%F0%EE+%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21&l1=1','search':globs['mes'].welcome}
 
 lev_crit = 'CRITICAL'
 lev_err = 'ERROR'
@@ -91,7 +88,6 @@ lev_debug_err = 'DEBUG-ERROR'
 lev_debug = 'DEBUG'
 
 my_email = 'skl.progs@gmail.com'
-my_yandex_money = '41001418272280'
 ru_alphabet = '№АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЪЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщыъьэюя'
 
 # Скрытые сообщения об ошибках
@@ -170,10 +166,6 @@ tag_pattern14 = 'm.exe?a=118&t=' # Части речи # Полностью: '<a
 #------------------------------------------------------------------------------
 # Список символов, которые можно считать за буквы.
 allowed_syms = ['°']
-sizes = {}
-sizes['top'] = {}
-sizes['top']['width'] = 0
-sizes['top']['height'] = 0
 
 # Разделы конфигурационного файла
 '''SectionLinuxSettings = 'Linux settings'
@@ -194,14 +186,16 @@ wdlb = '\r\n'
 tab = '        '
 col_limit = 5
 
-root = tk.Tk()
+if  __name__ == '__main__':
+	root = tk.Tk()
 
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Placeholders
 def log(cur_func,level,log_mes,TransFunc=False):
-	pass
-	#if level == lev_crit or level == lev_debug_err or level == lev_warn or level == lev_err:
-	#	print(cur_func,':',level,':',log_mes)
+	#pass
+	#print(cur_func,':',level,':',log_mes)
+	if level == lev_crit or level == lev_debug_err or level == lev_warn or level == lev_err:
+		print(cur_func,':',level,':',log_mes)
 #------------------------------------------------------------------------------
 # Placeholder
 def decline_nom(words_nf,Decline=False):
@@ -259,6 +253,13 @@ if sys_type == 'win':
 else:
 	sysdiv = '/'
 	
+if sys_type == 'win':
+	import kl_mod_win as kl_mod
+	import pythoncom
+else:
+	import kl_mod_lin as kl_mod
+	
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Верно определить каталог по полному пути вне зависимости от ОС
 def true_dirname(path,UseLog=True):
 	cur_func = sys._getframe().f_code.co_name
@@ -302,7 +303,6 @@ def toggle_ui_lang():
 # Загрузить конфигурацию по умолчанию
 def default_config(config='mclient',Init=True):
 	cur_func = sys._getframe().f_code.co_name
-	# Ключи, которые, возможно, стоит убрать: pixel_hack, use_format, use_output, mismatch_num, (некоторые в bool), CorrectHTML, UsePaste, DeclineFeatures, DicHints, AlwaysMaximize, TrimEnd, currar, Online
 	if Init:
 		globs['lin'] = {}
 		globs['win'] = {}
@@ -314,31 +314,16 @@ def default_config(config='mclient',Init=True):
 	# Эти ключи нужно создавать до чтения конфига
 	globs['bin_dir'] = true_dirname(os.path.realpath(sys.argv[0]),UseLog=False)
 	globs['mclient_config'] = globs['bin_dir'] + sysdiv + globs['mclient_config_root']
-	'''
-	CONFIG CHANGES:
-	[bool]:
-	- 
-	+ 
-	[int]:
-	- 
-	+ 
-	[var]:
-	- 
-	+ font_speech_family
-	'''
 	if config == 'mclient':
 		globs['bool'].update({
-			'AlwaysMaximize':True,
 			'AutoCloseSpecSymbol':False,
 			'AutoHideHistory':False,
 			'CopyTermsOnly':True,
 			'ExploreMismatch':True,
+			'Iconify':True,
 			'mclientSaveTitle':False,
 			'SelectTermsOnly':True,
-			'ShortHistory':False,
-			'ShowWallet':True,
-			'TextButtons':False,
-			'UseOptionalButtons':True,
+			'ShortHistory':False
 							})
 		#----------------------------------------------------------------------
 		globs['int'].update({
@@ -359,7 +344,6 @@ def default_config(config='mclient',Init=True):
 			'bind_clear_history_alt':'<Control-Shift-Delete>',
 			'bind_clear_history':'<ButtonRelease-3>',
 			'bind_clear_search_field':'<ButtonRelease-3>',
-			'bind_hide_top':'<ButtonRelease-2>',
 			'bind_copy_article_url':'<Shift-F7>',
 			'bind_copy_history':'<ButtonRelease-3>',
 			'bind_copy_sel_alt':'<Control-KP_Enter>',
@@ -373,6 +357,7 @@ def default_config(config='mclient',Init=True):
 			'bind_go_search_alt':'<KP_Enter>',
 			'bind_go_search':'<Return>',
 			'bind_go_url':'<Button-1>',
+			'bind_iconify':'<ButtonRelease-2>',
 			'bind_move_down':'<Down>',
 			'bind_move_left':'<Left>',
 			'bind_move_line_end':'<End>',
@@ -401,9 +386,6 @@ def default_config(config='mclient',Init=True):
 			'bind_spec_symbol':'<Control-e>',
 			'bind_toggle_history_alt':'<Control-h>',
 			'bind_toggle_history':'<F4>',
-			'bind_toggle_iconify':'<Control-i>',
-			'bind_watch_clipboard_alt':'<Control-t>',
-			'bind_watch_clipboard':'<F8>',
 			'color_comments':'gray',
 			'color_dics':'cadet blue',
 			'color_speech':'red',
@@ -449,8 +431,7 @@ def default_config(config='mclient',Init=True):
 			'repeat_sign2':'!!',
 			'spec_syms':'àáâäāæßćĉçèéêēëəĝģĥìíîïīĵķļñņòóôõöōœšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒËƏĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ',
 			'web_search_url':'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s',
-			'win_encoding':'windows-1251',
-			'window_size':'1024x768',
+			'win_encoding':'windows-1251'
 				})
 	else:
 		ErrorMessage(cur_func,globs['mes'].unknown_mode % (str(config),'mclient'))
@@ -504,7 +485,7 @@ def clipboard_paste(MakePretty=True):
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
 		# Иначе происходит зависание в цикле
-		root.update()
+		#root.update()
 		try:
 			line = root.clipboard_get()
 		except:
@@ -649,8 +630,6 @@ def clipboard_copy(line):
 		try:
 			root.clipboard_clear()
 			root.clipboard_append(line)
-			# Указать режиму буфера, что переводить измененный буфер не надо
-			globs['IgnorePaste'] = True
 		except:
 			pass
 			'''# Иначе в окне не сработают горячие клавиши
@@ -1052,13 +1031,12 @@ def text_field(title=None,user_text=err_mes_empty_input,CheckSpelling=False,GoTo
 # Создать переменные, которые основываются на ключах конфига, но не входят в него
 def additional_keys():
 	cur_func = sys._getframe().f_code.co_name
-	# Это второстепенный ключ, указывать его в конфиге не надо
-	globs['IgnorePaste'] = False
-	globs['var']['spec_syms'] = list(globs['var']['spec_syms'])
-	globs['bool']['ReadOnlyProtection'] = False
+	globs['bool']['AlwaysMaximize'] = True
 	globs['bool']['InternalDebug'] = False
+	globs['bool']['ReadOnlyProtection'] = False
 	globs['bool']['Spelling'] = False
 	globs['bool']['UnixSelection'] = False
+	globs['var']['spec_syms'] = list(globs['var']['spec_syms'])
 
 # Загрузить все конфигурационные файлы
 def read_configs(Silent=False,Critical=False):
@@ -1459,8 +1437,10 @@ def prepare_page():
 		db['page'] = db['page'].replace(' <','<')
 		db['page'] = db['page'].replace('>'+nbspace,'>')
 		db['page'] = db['page'].replace('> ','>')
-		# Не совсем понятно, для чего этот тэг используется в Мультитране, он мешает определить границы ячейки (по какой-то причине мой парсер его не удаляет). Тэг стоял между комментарием и сообщением пользователя об ошибке, однако, в той же статье ('get') такие случаи уже были, и этот тэг не использовался. Кроме того, тэг не был закрыт. Поскольку какой-то закономерности уловить не удается, я его просто удаляю.
+		# todo: проверить, учитывает ли парсер '>' в качестве закрывающего символа, или только '/>'
+		# Мой парсер по какой-то причине пропускает эти тэги, а tkhtml их удаляет, поэтому возникают проблемы с границами.
 		db['page'] = db['page'].replace('<eq>','')
+		db['page'] = db['page'].replace('<amp>','')
 		define_non_tags()
 		# If separate words are found instead of a phrase, prepare those words only
 		if sep_words_found in db['page']:
@@ -1849,7 +1829,7 @@ def get_coor_pages(widget):
 					prev_tk = next_page_tk
 		widget.yview('1.0')
 		db['coor_db']['pages']['num'] = page_no+1
-		if db['mode'] != 'skip':
+		if globs['mode'] != 'skip':
 			db['coor_db']['cur_page_no'] = 0
 		db['coor_db']['direction'] = 'right_down'
 		log(cur_func,lev_debug,"db['coor_db']['pages']['num']: %d" % db['coor_db']['pages']['num'])
@@ -2073,12 +2053,12 @@ def create_button(parent_widget,text,hint,action,expand=0,side='left',fg='black'
 					i += 1
 				hint += hint_expand
 			try:
-				if empty(icon_path) or globs['bool']['TextButtons']:
-					button = tk.Button(parent_widget,text=text,fg=fg)
-				else:
+				if os.path.exists(icon_path):
 					button_img = load_icon(icon_path=icon_path,parent_widget=parent_widget,width=width,height=height,Silent=Silent,Critical=Critical)
 					button = tk.Button(parent_widget,image=button_img,width=width,height=height,bd=bd)
-					button.flag_img = button_img
+					button.flag_img = button_img					
+				else:
+					button = tk.Button(parent_widget,text=text,fg=fg)
 			except tk.TclError:
 				Success = False
 				if Critical:
@@ -2101,12 +2081,21 @@ def create_button(parent_widget,text,hint,action,expand=0,side='left',fg='black'
 	return button
 
 # Свернуть заданное окно
-def iconify(widget=root):
+def iconify(widget):
 	cur_func = sys._getframe().f_code.co_name
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
 		widget.iconify()
+		
+# Развернуть заданное окно и установить на нем фокус
+def deiconify(widget):
+	cur_func = sys._getframe().f_code.co_name
+	if globs['AbortAll']:
+		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+	else:
+		widget.deiconify()
+		widget.focus_set()
 
 # Определить номера терминов, которые являются пограничными для видимой области
 def aggregate_pages():
@@ -2122,6 +2111,7 @@ def aggregate_pages():
 	
 def quit_now(*args):
 	root.destroy()
+	kl_mod.keylistener.cancel()
 	sys.exit()
 	
 # Пополнить историю и обновить виджет
@@ -2130,7 +2120,7 @@ def add_history():
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
-		if db['mode'] != 'skip' and not empty(db['search']):
+		if globs['mode'] != 'skip' and not empty(db['search']):
 			if globs['bool']['ShortHistory']:
 				if not db['search'] in db['history']:
 					db['history'].append(db['search'])
@@ -2156,16 +2146,14 @@ class ShowArticle:
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
+			root.tk.call('wm','iconphoto',root._w,tk.PhotoImage(file=globs['var']['icon_mclient']))
 			globs['top'] = tk.Toplevel(root)
 			root.withdraw()
-			if globs['bool']['AlwaysMaximize']:
-				if sys_type == 'lin':
-					globs['top'].wm_attributes('-zoomed',True)
-				# Win, Mac
-				else:
-					globs['top'].wm_state(newstate='zoomed')
+			if sys_type == 'lin':
+				globs['top'].wm_attributes('-zoomed',True)
+			# Win, Mac
 			else:
-				globs['top'].geometry(globs['var']['window_size'])
+				globs['top'].wm_state(newstate='zoomed')
 			# Назначение заголовка окна (первичное). В __init__ это происходит единожды, поэтому далее мы отдельно вызываем данную процедуру при каждой загрузке статьи.
 			self.update_title()
 			# Only black-and-white icons of XBM format
@@ -2183,18 +2171,18 @@ class ShowArticle:
 			self.web_frame = tk.Frame(globs['top'])
 			self.web_frame.pack(expand=1,fill='both')
 			globs['web_widget'] = create_web_widget(self.web_frame)
-			set_page()
+			set_article()
 			self.create_frame_panel()
 			globs['top'].wait_window()
 	#--------------------------------------------------------------------------
 	# Создание каркаса с предыдущими поисковыми запросами
 	def create_frame_history(self):
 		self.frame_history = tk.Frame(globs['top'])
-		if db['ShowHistory'] == True:
+		if globs['ShowHistory']:
 			self.frame_history.pack(expand=0,side='left',fill='both')
 		# Предыдущие поисковые запросы
 		self.listbox = tk.Listbox(self.frame_history,font=globs['var']['font_history'])
-		if db['ShowHistory'] == True:
+		if globs['ShowHistory']:
 			self.listbox.pack(expand=1,side='top',fill='both')
 		for i in range(len(db['history'])):
 			self.listbox.insert(0,db['history'][i])
@@ -2206,11 +2194,8 @@ class ShowArticle:
 		self.frame_panel.pack(expand=0,fill='x',side='bottom')
 		# Поле ввода поисковой строки
 		self.search_field = tk.Entry(self.frame_panel)
-		if globs['bool']['TextButtons']:
-			self.search_field.pack(side='left')
-		else:
-			# Подгоняем высоту поисковой строки под высоту графических кнопок; значение 5 подобрано опытным путем
-			self.search_field.pack(side='left',ipady=5)
+		# Подгоняем высоту поисковой строки под высоту графических кнопок; значение 5 подобрано опытным путем
+		self.search_field.pack(side='left',ipady=5)
 		# Для перевода в области терминов используем кнопки мыши, но не альтернативные комбинации клавиш, поскольку предполагаются, что они для удобства совпадают с комбинациями клавиш для перевода в области поиска.
 		self.search_field.focus_force()
 		self.draw_buttons()
@@ -2227,7 +2212,7 @@ class ShowArticle:
 				if globs['bool']['mclientSaveTitle']:
 					globs['top'].title(globs['mes'].mclient % __version__)
 				else:
-					if db['FirstLaunch']:
+					if globs['FirstLaunch']:
 						globs['top'].title(globs['mes'].mclient % __version__)
 					else:
 						globs['top'].title(db['search'])
@@ -2266,7 +2251,7 @@ class ShowArticle:
 				db['search'] = search_str
 				log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
 				get_url()
-				db['mode'] = 'url'
+				globs['mode'] = 'url'
 				# Скопировать предпоследний запрос в буфер и вставить его в строку поиска (например, для перехода на этот запрос еще раз)
 				if db['search'] == globs['var']['repeat_sign2']:
 					self.insert_repeat_sign2(event)
@@ -2275,7 +2260,7 @@ class ShowArticle:
 					self.insert_repeat_sign(event)
 				else:
 					self.clear_search_field(event)
-					loop_page()
+					load_article()
 					self.update_title()
 	#--------------------------------------------------------------------------
 	# Задействование колеса мыши для пролистывания экрана
@@ -2284,7 +2269,7 @@ class ShowArticle:
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
-			# В Windows XP delta == - 120, однако, в других версиях оно другое
+			# В Windows XP delta == -120, однако, в других версиях оно другое
 			if event.num == 5 or event.delta < 0:
 				self.move_page_down(event)
 			# В Windows XP delta == 120, однако, в других версиях оно другое
@@ -2494,13 +2479,17 @@ class ShowArticle:
 				except:
 					log(cur_func,lev_err,globs['mes'].shift_screen_failure % 'insert')
 	#--------------------------------------------------------------------------
-	# Перейти на 1 - й термин текущей строки	
+	# Перейти на 1-й термин текущей строки	
 	def move_line_start(self,event):
 		cur_func = sys._getframe().f_code.co_name
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
-			pass
+			if len(db['move_line_start']) > db['cur_cell']['i'] and len(db['move_line_start'][db['cur_cell']['i']]) > db['cur_cell']['j']:
+				assign_cur_cell(db['move_line_start'][db['cur_cell']['i']][db['cur_cell']['j']])
+				globs['web_widget'].set_cell()
+			else:
+				log(cur_func,lev_err,globs['mes'].wrong_input2)
 	#--------------------------------------------------------------------------
 	# Перейти на последний термин текущей строки
 	def move_line_end(self,event):
@@ -2508,7 +2497,11 @@ class ShowArticle:
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
-			pass
+			if len(db['move_line_end']) > db['cur_cell']['i'] and len(db['move_line_end'][db['cur_cell']['i']]) > db['cur_cell']['j']:
+				assign_cur_cell(db['move_line_end'][db['cur_cell']['i']][db['cur_cell']['j']])
+				globs['web_widget'].set_cell()
+			else:
+				log(cur_func,lev_err,globs['mes'].wrong_input2)
 	#--------------------------------------------------------------------------
 	# Перейти на 1 - й термин статьи
 	def move_text_start(self,event):
@@ -2516,7 +2509,7 @@ class ShowArticle:
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
-			assign_cur_cell(db['move_start'])
+			assign_cur_cell(db['move_text_start'])
 			globs['web_widget'].set_cell()
 	#--------------------------------------------------------------------------
 	# Перейти на последний термин статьи
@@ -2526,7 +2519,7 @@ class ShowArticle:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
 			# Можно также брать db['move_down'][-1]
-			assign_cur_cell(db['move_end'])
+			assign_cur_cell(db['move_text_end'])
 			globs['web_widget'].set_cell()
 	#--------------------------------------------------------------------------
 	# todo
@@ -2607,7 +2600,11 @@ class ShowArticle:
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
-			pass
+			if len(db['move_up']) > db['cur_cell']['i'] and len(db['move_up'][db['cur_cell']['i']]) > db['cur_cell']['j']:
+				assign_cur_cell(db['move_up'][db['cur_cell']['i']][db['cur_cell']['j']])
+				globs['web_widget'].set_cell()
+			else:
+				log(cur_func,lev_err,globs['mes'].wrong_input2)
 	#--------------------------------------------------------------------------
 	# Изменить направление (язык) перевода
 	def change_pair(self,event):
@@ -2638,11 +2635,11 @@ class ShowArticle:
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
-			if db['ShowHistory']:
-				db['ShowHistory'] = False
+			if globs['ShowHistory']:
+				globs['ShowHistory'] = False
 				self.frame_history.pack_forget()
 			else:
-				db['ShowHistory'] = True
+				globs['ShowHistory'] = True
 				self.frame_history.pack(expand=1,side='top',fill='both')
 				self.listbox.pack(expand=1,side='top',fill='both')
 	#--------------------------------------------------------------------------
@@ -2656,16 +2653,6 @@ class ShowArticle:
 				webbrowser.open('mailto:%s' % my_email)
 			except:
 				Warning(cur_func,globs['mes'].email_agent_failure)
-	#--------------------------------------------------------------------------
-	# Скопировать номер кошелька
-	def copy_wallet_no(self,event):
-		cur_func = sys._getframe().f_code.co_name
-		if globs['AbortAll']:
-			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-		else:
-			clipboard_copy(my_yandex_money)
-			InfoMessage(cur_func,globs['mes'].wallet_no_copied)
-			root.withdraw()
 	#--------------------------------------------------------------------------
 	# Открыть веб-страницу с лицензией
 	def open_license_url(self,event):
@@ -2693,19 +2680,10 @@ class ShowArticle:
 			frame2.pack(expand=1,fill='both',side='left')
 			frame3 = tk.Frame(about_top)
 			frame3.pack(expand=1,fill='both',side='right')
-			if globs['bool']['ShowWallet']:
-				label = tk.Label(frame1,font=globs['var']['font_style'],text=globs['mes'].about_text)
-			else:
-				label = tk.Label(frame1,font=globs['var']['font_style'],text=globs['mes'].about_text_no_wallet)
+			label = tk.Label(frame1,font=globs['var']['font_style'],text=globs['mes'].about_text)
 			label.pack()
-			if globs['bool']['ShowWallet']:
-				# Номер электронного кошелька
-				create_button(parent_widget=frame2,text=globs['mes'].btn_wallet_no,hint=globs['mes'].hint_wallet_no,action=self.copy_wallet_no,side='left')
-				# Лицензия
-				create_button(parent_widget=frame3,text=globs['mes'].btn_license,hint=globs['mes'].hint_license,action=self.open_license_url,side='left')
-			else:
-				# Лицензия
-				create_button(parent_widget=frame2,text=globs['mes'].btn_license,hint=globs['mes'].hint_license,action=self.open_license_url,side='left')
+			# Лицензия
+			create_button(parent_widget=frame2,text=globs['mes'].btn_license,hint=globs['mes'].hint_license,action=self.open_license_url,side='left')
 			# Отправить письмо автору
 			create_button(parent_widget=frame3,text=globs['mes'].btn_email_author,hint=globs['mes'].hint_email_author,action=self.response_back,side='right')
 			about_top.focus_set()
@@ -2728,13 +2706,13 @@ class ShowArticle:
 				db['url'] = db['history_url'][sel_no]
 				log(cur_func,lev_debug,"db['url']: %s" % str(db['url']))
 				log(cur_func,lev_debug,globs['mes'].history_elem_selected % db['search'])
-				db['mode'] = 'url'
-				loop_page()
+				globs['mode'] = 'url'
+				load_article()
 				if globs['bool']['AutoHideHistory']:
 					self.toggle_history(None)
 				# todo: Требуется ли это теперь?
 				# Выносим в самый конец, чтобы нейтрализовать режим 'skip' в toggle_history()
-				db['mode'] = 'url'
+				globs['mode'] = 'url'
 	#--------------------------------------------------------------------------
 	# Скопировать элемент истории
 	def copy_history(self,event):
@@ -2760,7 +2738,6 @@ class ShowArticle:
 				while i >= 0:
 					self.listbox.delete(i)
 					i -= 1
-			db['mode'] = 'skip'
 			db['search'] = globs['mes'].welcome
 			db['history'] = []
 			db['history_url'] = []
@@ -2793,16 +2770,12 @@ class ShowArticle:
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
-			if db['TrackClipboard']:
-				db['TrackClipboard'] = False
-				db['mode'] = 'url'
+			if globs['CaptureHotkey']:
+				globs['CaptureHotkey'] = False
 			else:
-				db['TrackClipboard'] = True
-				db['mode'] = 'clipboard'
-			globs['top'].iconify()
-			loop_page()
-			globs['top'].title(db['search'])
-			globs['top'].deiconify()
+				globs['CaptureHotkey'] = True
+			self.frame_panel.destroy()
+			self.create_frame_panel()
 	#--------------------------------------------------------------------------
 	# Открыть URL текущей статьи в браузере
 	def open_in_browser(self,event):
@@ -2831,12 +2804,12 @@ class ShowArticle:
 			if mode == 'term':
 				# Скопировать URL текущего термина. URL 1-го термина не совпадает с URL статьи!
 				cur_url = db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['url']
-				if db['Iconify']:
+				if globs['bool']['Iconify']:
 					iconify(widget=widget)
 			elif mode == 'article':
 				# Скопировать URL статьи
 				cur_url = db['url']
-				if db['Iconify']:
+				if globs['bool']['Iconify']:
 					iconify(widget=widget)
 			else:
 				ErrorMessage(cur_func,globs['mes'].unknown_mode % (str(mode),'article, term'))
@@ -2875,12 +2848,12 @@ class ShowArticle:
 				db['history_index'] = len(db['history'])
 			if db['history_index'] > 0:
 				db['history_index'] -= 1
-				db['mode'] = 'url'
+				globs['mode'] = 'url'
 				db['search'] = db['history'][db['history_index']]
 				log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
 				db['url'] = db['history_url'][db['history_index']]
 				log(cur_func,lev_debug,"db['url']: %s" % str(db['url']))
-				loop_page(AddHistory=False)
+				load_article(AddHistory=False)
 	#--------------------------------------------------------------------------
 	# Перейти на следующий запрос
 	def go_forward(self,event):
@@ -2892,12 +2865,12 @@ class ShowArticle:
 				db['history_index'] = len(db['history'])
 			if db['history_index'] < len(db['history']) - 1:
 				db['history_index'] += 1
-				db['mode'] = 'url'
+				globs['mode'] = 'url'
 				db['search'] = db['history'][db['history_index']]
 				log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
 				db['url'] = db['history_url'][db['history_index']]
 				log(cur_func,lev_debug,"db['url']: %s" % str(db['url']))
-				loop_page(AddHistory=False)
+				load_article(AddHistory=False)
 	#--------------------------------------------------------------------------
 	# Найти слово/слова в статье
 	def search_article(self,direction='forward'): # clear, forward, backward
@@ -2995,54 +2968,24 @@ class ShowArticle:
 			self.symbols_top.focus_set()
 			self.symbols_top.wait_window()
 	#--------------------------------------------------------------------------
-	# todo: Убрать режим 'close' (?)
-	# Вернуть режим буфера обмена при закрытии окна спец. комбинацией или при копировании в буфер. В других случаях режим буфер не удастся отличить от других режимов даже при наличии спец. флага.
-	# Нельзя присваивать комбинации по типу (...,action=toggle_clipboard_mode), поскольку в этом случае эта процедура примет event за mode
-	def toggle_clipboard_mode(self,mode='close'): # close, copy
-		if globs['AbortAll']:
-			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-		else:
-			if db['TrackClipboard']:
-				db['mode'] = 'clipboard'
-				loop_page()
-			elif mode == 'close':
-				loop_page()
-			elif mode == 'copy':
-				if db['Iconify']:
-					iconify(widget = top)
-			else:
-				ErrorMessage(cur_func,globs['mes'].unknown_mode % (str(mode),'close, copy'))
-	#--------------------------------------------------------------------------
-	# Временно включить или отключить сворачивание окна при операциях копирования
-	def toggle_iconify(self,event):
-		if globs['AbortAll']:
-			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-		else:
-			if db['Iconify']:
-				db['Iconify'] = False
-			else:
-				db['Iconify'] = True
-	#--------------------------------------------------------------------------
 	# Создать кнопки
 	def draw_buttons(self):
 		# Кнопка для "чайников", заменяет Enter в search_field
 		create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_translate,hint=globs['mes'].btn_translate,action=self.go_search,icon_path=globs['var']['icon_go_search'],bindings=[globs['var']['bind_go_search'],globs['var']['bind_go_search_alt']]) # В данном случае btn = hint
-		# Если кнопки только текстовые, то все они не поместятся на экране, поэтому в текстовом режиме вспомогательные кнопки можно скрыть
-		if globs['bool']['UseOptionalButtons']:
-			# Вспомогательная кнопка очистки строки поиска
-			create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_clear,hint=globs['mes'].hint_clear_search_field,action=self.clear_search_field,icon_path=globs['var']['icon_clear_search_field'],bindings=[globs['var']['bind_clear_search_field']])
-			# Вспомогательная кнопка вставки
-			create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_paste,hint=globs['mes'].hint_paste_clipboard,action=self.paste_search_field,icon_path=globs['var']['icon_paste'],bindings=['<Control-v>'])
-			# Вспомогательная кнопка вставки текущего запроса
-			if 'history' in db and len(db['history']) > 0:
-				create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_repeat_sign,hint=globs['mes'].hint_paste_cur_request,action=self.insert_repeat_sign,icon_path=globs['var']['icon_repeat_sign'],bindings=globs['var']['repeat_sign'])
-			else:
-				create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_repeat_sign,hint=globs['mes'].hint_paste_cur_request,action=self.insert_repeat_sign,icon_path=globs['var']['icon_repeat_sign_off'],bindings=globs['var']['repeat_sign'])
-			# Вспомогательная кнопка вставки предыдущего запроса
-			if 'history' in db and len(db['history']) > 1:
-				create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_repeat_sign2,hint=globs['mes'].hint_paste_prev_request,action=self.insert_repeat_sign2,icon_path=globs['var']['icon_repeat_sign2'],bindings=globs['var']['repeat_sign2'])
-			else:
-				create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_repeat_sign2,hint=globs['mes'].hint_paste_prev_request,action=self.insert_repeat_sign2,icon_path=globs['var']['icon_repeat_sign2_off'],bindings=globs['var']['repeat_sign2'])
+		# Кнопка очистки строки поиска
+		create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_clear,hint=globs['mes'].hint_clear_search_field,action=self.clear_search_field,icon_path=globs['var']['icon_clear_search_field'],bindings=[globs['var']['bind_clear_search_field']])
+		# Кнопка вставки
+		create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_paste,hint=globs['mes'].hint_paste_clipboard,action=self.paste_search_field,icon_path=globs['var']['icon_paste'],bindings=['<Control-v>'])
+		# Кнопка вставки текущего запроса
+		if 'history' in db and len(db['history']) > 0:
+			create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_repeat_sign,hint=globs['mes'].hint_paste_cur_request,action=self.insert_repeat_sign,icon_path=globs['var']['icon_repeat_sign'],bindings=globs['var']['repeat_sign'])
+		else:
+			create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_repeat_sign,hint=globs['mes'].hint_paste_cur_request,action=self.insert_repeat_sign,icon_path=globs['var']['icon_repeat_sign_off'],bindings=globs['var']['repeat_sign'])
+		# Кнопка вставки предыдущего запроса
+		if 'history' in db and len(db['history']) > 1:
+			create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_repeat_sign2,hint=globs['mes'].hint_paste_prev_request,action=self.insert_repeat_sign2,icon_path=globs['var']['icon_repeat_sign2'],bindings=globs['var']['repeat_sign2'])
+		else:
+			create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_repeat_sign2,hint=globs['mes'].hint_paste_prev_request,action=self.insert_repeat_sign2,icon_path=globs['var']['icon_repeat_sign2_off'],bindings=globs['var']['repeat_sign2'])
 		# Кнопка для вставки спец. символов
 		create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_symbols,hint=globs['mes'].hint_symbols,action=self.spec_symbol,icon_path=globs['var']['icon_spec_symbol'],bindings=globs['var']['bind_spec_symbol'])
 		# Выпадающий список с вариантами направлений перевода
@@ -3050,40 +2993,37 @@ class ShowArticle:
 		self.var.set(globs['cur_pair'])
 		self.option_menu = tk.OptionMenu(self.frame_panel,self.var,*pairs,command=self.change_pair).pack(side='left',anchor='center')
 		# Выпадающий список для вставки спец. символов
-		if globs['bool']['UseOptionalButtons']:
-			# Вспомогательная кнопка перехода на предыдущую статью
-			if 'history_index' in db and 'history' in db and db['history_index'] > 0:
-				create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_prev,hint=globs['mes'].hint_preceding_article,action=self.go_back,icon_path=globs['var']['icon_go_back'],bindings=globs['var']['bind_go_back'])
-			else:
-				create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_prev,hint=globs['mes'].hint_preceding_article,action=self.go_back,icon_path=globs['var']['icon_go_back_off'],bindings=globs['var']['bind_go_back'])
-			# Вспомогательная кнопка перехода на следующую статью
-			if 'history_index' in db and db['history_index'] < len(db['history']) - 1:
-				create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_next,hint=globs['mes'].hint_following_article,action=self.go_forward,icon_path=globs['var']['icon_go_forward'],bindings=globs['var']['bind_go_forward'])
-			else:
-				create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_next,hint=globs['mes'].hint_following_article,action=self.go_forward,icon_path=globs['var']['icon_go_forward_off'],bindings=globs['var']['bind_go_forward'])
+		# Кнопка перехода на предыдущую статью
+		if 'history_index' in db and 'history' in db and db['history_index'] > 0:
+			create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_prev,hint=globs['mes'].hint_preceding_article,action=self.go_back,icon_path=globs['var']['icon_go_back'],bindings=globs['var']['bind_go_back'])
+		else:
+			create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_prev,hint=globs['mes'].hint_preceding_article,action=self.go_back,icon_path=globs['var']['icon_go_back_off'],bindings=globs['var']['bind_go_back'])
+		# Кнопка перехода на следующую статью
+		if 'history_index' in db and db['history_index'] < len(db['history']) - 1:
+			create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_next,hint=globs['mes'].hint_following_article,action=self.go_forward,icon_path=globs['var']['icon_go_forward'],bindings=globs['var']['bind_go_forward'])
+		else:
+			create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_next,hint=globs['mes'].hint_following_article,action=self.go_forward,icon_path=globs['var']['icon_go_forward_off'],bindings=globs['var']['bind_go_forward'])
 		# Кнопка включения/отключения истории
 		self.button = create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_history,hint=globs['mes'].hint_history,action=self.toggle_history,icon_path=globs['var']['icon_toggle_history'],bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt']])
 		create_binding(widget=self.button,bindings=globs['var']['bind_clear_history'],action=self.clear_history)
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_clear_history_alt'],action=self.clear_history)
-		if globs['bool']['UseOptionalButtons']:
-			# Вспомогательная кнопка очистки истории
-			create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_clear_history,hint=globs['mes'].hint_clear_history,action=self.clear_history,icon_path=globs['var']['icon_clear_history'],bindings=globs['var']['bind_clear_history_alt'])
-			# Вспомогательная кнопка перезагрузки статьи
-			create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_reload,hint=globs['mes'].hint_reload_article,action=loop_page,icon_path=globs['var']['icon_reload'],bindings=[globs['var']['bind_reload_article'],globs['var']['bind_reload_article_alt']])
+		# Кнопка очистки истории
+		create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_clear_history,hint=globs['mes'].hint_clear_history,action=self.clear_history,icon_path=globs['var']['icon_clear_history'],bindings=globs['var']['bind_clear_history_alt'])
+		# Кнопка перезагрузки статьи
+		create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_reload,hint=globs['mes'].hint_reload_article,action=load_article,icon_path=globs['var']['icon_reload'],bindings=[globs['var']['bind_reload_article'],globs['var']['bind_reload_article_alt']])
 		# Кнопка "Поиск в статье"
 		create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_search,hint=globs['mes'].hint_search_article,action=lambda e:self.search_article(direction='clear'),icon_path=globs['var']['icon_search_article'],bindings=globs['var']['bind_re_search_article'])
 		# Кнопка "Сохранить"
 		create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_save,hint=globs['mes'].hint_save_article,action=self.save_article,icon_path=globs['var']['icon_save_article'],bindings=[globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']])
 		# Кнопка "Открыть в браузере"
 		create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_in_browser,hint=globs['mes'].hint_in_browser,action=self.open_in_browser,icon_path=globs['var']['icon_open_in_browser'],bindings=[globs['var']['bind_open_in_browser'],globs['var']['bind_open_in_browser_alt']])
-		if globs['bool']['UseOptionalButtons']:
-			# Кнопка толкования термина. Сделана вспомогательной ввиду нехватки места
-			create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_define,hint=globs['mes'].hint_define,action=lambda x:self.define(Selected=False),icon_path=globs['var']['icon_define'],bindings=globs['var']['bind_define'])
-		# Кнопка "Буфер обмена"
-		if 'TrackClipboard' in db and db['TrackClipboard']:
-			create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_clipboard,hint=globs['mes'].hint_watch_clipboard,action=self.watch_clipboard,icon_path=globs['var']['icon_watch_clipboard_on'],fg='red',bindings=[globs['var']['bind_watch_clipboard'],globs['var']['bind_watch_clipboard_alt']])
+		# Кнопка толкования термина. Сделана вспомогательной ввиду нехватки места
+		create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_define,hint=globs['mes'].hint_define,action=lambda x:self.define(Selected=False),icon_path=globs['var']['icon_define'],bindings=globs['var']['bind_define'])
+		# Кнопка "Перехват Ctrl-c-c"
+		if globs['CaptureHotkey']:
+			create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_clipboard,hint=globs['mes'].hint_watch_clipboard,action=self.watch_clipboard,icon_path=globs['var']['icon_watch_clipboard_on'],fg='red',bindings=[])
 		else:
-			create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_clipboard,hint=globs['mes'].hint_watch_clipboard,action=self.watch_clipboard,icon_path=globs['var']['icon_watch_clipboard_off'],bindings=[globs['var']['bind_watch_clipboard'],globs['var']['bind_watch_clipboard_alt']])
+			create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_clipboard,hint=globs['mes'].hint_watch_clipboard,action=self.watch_clipboard,icon_path=globs['var']['icon_watch_clipboard_off'],bindings=[])
 		# Кнопка переключения языка интерфейса
 		create_button(parent_widget=self.frame_panel,text=globs['mes'].btn_ui_lang,hint=globs['mes'].hint_ui_lang,action=self.change_ui_lang,icon_path=globs['var']['icon_change_ui_lang'])
 		# Кнопка "О программе"
@@ -3113,36 +3053,27 @@ class ShowArticle:
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_move_page_end'],action=self.move_page_end)
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_move_page_up'],action=self.move_page_up)
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_move_page_down'],action=self.move_page_down)
-		# Для выхода нельзя использовать Return, поскольку это конфликтует с Shift - Enter. Поэтому оставляем только Escape.
-		if 'TrackClipboard' in db and db['TrackClipboard']:
-			create_binding(widget=globs['top'],bindings=['<Escape>','<Control-w>','<Alt-F4>'],action=lambda x:self.toggle_clipboard_mode(mode='close'))
-		else:
-			create_binding(widget=globs['top'],bindings='<Escape>',action=lambda e: iconify(widget=globs['top']))
+		create_binding(widget=globs['top'],bindings='<Escape>',action=lambda e:iconify(widget=globs['top']))
 		if sys_type == 'win' or sys_type == 'mac':
 			create_binding(widget=globs['top'],bindings='<MouseWheel>',action=self.mouse_wheel)
 		else:
 			create_binding(widget=globs['top'],bindings=['<Button 4>','<Button 5>'],action=self.mouse_wheel)
-		if 'TrackClipboard' in db and db['TrackClipboard']:
-			create_binding(widget=globs['web_widget'],bindings=globs['var']['bind_hide_top'],action=lambda x:self.toggle_clipboard_mode(mode='close'))
-		else:
-			create_binding(widget=globs['web_widget'],bindings=globs['var']['bind_hide_top'],action=lambda x:iconify(widget=globs['top']))
+		create_binding(widget=globs['web_widget'],bindings=globs['var']['bind_iconify'],action=lambda e:iconify(widget=globs['top']))
 		# Дополнительные горячие клавиши
 		create_binding(widget=globs['top'],bindings=[globs['var']['bind_quit_now'],globs['var']['bind_quit_now_alt']],action=quit_now)
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_search_article_forward'],action=lambda e:self.search_article(direction='forward'))
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_search_article_backward'],action=lambda e:self.search_article(direction='backward'))
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_re_search_article'],action=lambda e:self.search_article(direction='clear'))
-		create_binding(widget=globs['top'],bindings=[globs['var']['bind_reload_article'],globs['var']['bind_reload_article_alt']],action=loop_page)
+		create_binding(widget=globs['top'],bindings=[globs['var']['bind_reload_article'],globs['var']['bind_reload_article_alt']],action=load_article)
 		create_binding(widget=globs['top'],bindings=[globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']],action=self.save_article)
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_show_about'],action=self.show_about)
 		create_binding(widget=globs['top'],bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt']],action=self.toggle_history)
 		create_binding(widget=globs['top'],bindings=[globs['var']['bind_open_in_browser'],globs['var']['bind_open_in_browser_alt']],action=self.open_in_browser)
-		create_binding(widget=globs['top'],bindings=globs['var']['bind_copy_url'],action=lambda x:self.copy_url(widget=globs['top'],mode='term'))
-		create_binding(widget=globs['top'],bindings=globs['var']['bind_copy_article_url'],action=lambda x:self.copy_url(widget=globs['top'],mode='article'))
-		create_binding(widget=globs['top'],bindings=[globs['var']['bind_watch_clipboard'],globs['var']['bind_watch_clipboard_alt']],action=self.watch_clipboard)
+		create_binding(widget=globs['top'],bindings=globs['var']['bind_copy_url'],action=lambda e:self.copy_url(widget=globs['top'],mode='term'))
+		create_binding(widget=globs['top'],bindings=globs['var']['bind_copy_article_url'],action=lambda e:self.copy_url(widget=globs['top'],mode='article'))
 		create_binding(widget=globs['top'],bindings=[globs['var']['bind_spec_symbol']],action=self.spec_symbol)
-		create_binding(widget=self.search_field,bindings='<Control-a>',action=lambda x:self.select_all(self.search_field,Small=True))
-		create_binding(widget=globs['top'],bindings=globs['var']['bind_define'],action=lambda x:self.define(Selected=True))
-		create_binding(widget=globs['top'],bindings=globs['var']['bind_toggle_iconify'],action=self.toggle_iconify)
+		create_binding(widget=self.search_field,bindings='<Control-a>',action=lambda e:self.select_all(self.search_field,Small=True))
+		create_binding(widget=globs['top'],bindings=globs['var']['bind_define'],action=lambda e:self.define(Selected=True))
 		#----------------------------------------------------------------------
 
 def get_url():
@@ -3199,48 +3130,11 @@ def get_article():
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
-		root.tk.call('wm','iconphoto',root._w,tk.PhotoImage(file=globs['var']['icon_mclient']))
-		#----------------------------------------------------------------------
-		# Воссоздаем значения, если они отсутствуют
-		if not 'history' in db:
-			db['history'] = []
-			db['history_url'] = []
-		if not 'mode' in db:
-			db['mode'] = 'url' # 'clipboard', 'skip'
-		if not 'url' in db:
-			db['url'] = 'http://www.multitran.ru/c/m.exe?CL=1&s=%C4%EE%E1%F0%EE+%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21&l1=1'
-		if not 'TrackClipboard' in db:
-			db['TrackClipboard'] = False
-		if not 'Iconify' in db:
-			db['Iconify'] = True
-		if not 'search' in db:
-			db['search'] = globs['mes'].welcome
-			log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
-		if not 'ShowHistory' in db:
-			db['ShowHistory'] = False
-		if not 'FirstLaunch' in db:
-			db['FirstLaunch'] = True
 		if 'search_list' in db:
 			del db['search_list']
-		#----------------------------------------------------------------------
-		#if db['mode'] == 'clipboard':
-		if db['TrackClipboard']:
-			old_clipboard = clipboard_paste()
-			new_clipboard = old_clipboard
-			#root.withdraw()
-			while old_clipboard == new_clipboard:
-				sleep(1)
-				new_clipboard = clipboard_paste()
-				# Игнорировать URL, скопированные в буфер обмена
-				if 'http://' in new_clipboard or 'www.' in new_clipboard or globs['IgnorePaste']:
-					new_clipboard = old_clipboard
-				globs['IgnorePaste'] = False
-			db['search'] = new_clipboard
-			get_url()
-			log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
 		get_online_article()
 		# Предполагаем, что режим может быть 'skip' только после создания БД хотя бы для 1 статьи
-		if db['mode'] != 'skip':
+		if globs['mode'] != 'skip':
 			prepare_page()
 			if not_found_online in db['page']:
 				Warning(cur_func,globs['mes'].term_not_found % db['search'])
@@ -3252,7 +3146,7 @@ def get_article():
 			unite_comments()
 			unite_by_url()
 			process_cells()
-		db['FirstLaunch'] = False
+		globs['FirstLaunch'] = False
 
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<	
 # Объединить элементы списка, добавляя в нужном месте пробел
@@ -3640,8 +3534,8 @@ def get_tkhtml_folder():
 						 platform.system().replace("Darwin", "MacOSX"),
 						 "64-bit" if sys.maxsize > 2**32 else "32-bit")
 	
-# Подготовить данные, необходимые для выделения в виджете tkhtml и отобразить статью в нем
-def set_page(Silent=False,Critical=False):
+# Отобразить данные в виджете tkhtml
+def set_article(Silent=False,Critical=False):
 	cur_func = sys._getframe().f_code.co_name
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
@@ -3685,7 +3579,10 @@ def get_cell(index,Silent=False,Critical=False):
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
 		if 'pos2cell' in db:
-			parts = db['pos2cell'][index]
+			if len(db['pos2cell']) > index:
+				parts = db['pos2cell'][index]
+			else:
+				parts = (0,0)
 			if globs['bool']['SelectTermsOnly']:
 				if db['cells'][parts[0]][parts[1]]['selectable']:
 					assign_cur_cell(parts)
@@ -3752,28 +3649,16 @@ def move_events():
 	db['move_left'] = []
 	db['move_down'] = []
 	db['move_up'] = []
+	db['move_line_start'] = []
+	db['move_line_end'] = []
+	db['move_text_start'] = (0,0)
+	db['move_text_end'] = (0,0)
 	if not 'cur_cell' in db:
 		db['cur_cell'] = {'i':0,'j':0}
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
 		if 'cells' in db and len(db['cells']) > 0 and len(db['cells'][0]) > 0:
-			# todo
-			
-			# 'Move down' event
-			
-			#------------------------------------------------------------------
-			# 'End' event
-			#db['end'] = db['move_down'][-1]
-			#------------------------------------------------------------------
-			# 'Move up' event
-			
-			#------------------------------------------------------------------
-			# 'Home' event
-			
-			#------------------------------------------------------------------
-			# 'Move left' event
-			
 			#------------------------------------------------------------------
 			# Список ячеек, выбираемых слева направо
 			db['move_right'] = []
@@ -3792,11 +3677,62 @@ def move_events():
 					tmp_lst += [get_selectable_backwards(i,j)]
 				db['move_left'] += [tmp_lst]
 			#------------------------------------------------------------------
-			# Список первых выбираемых ячеек сверху-вниз
-			# db['move_down'] = []
+			# Создаем список первых выделяемых ячеек
+			first_selectables = []
+			for i in range(len(db['cells'])):
+				first_selectables.append(get_selectable(i,0,False))
 			#------------------------------------------------------------------
-			# Список первых выбираемых ячеек снизу-вверх
-			# db['move_up'] = []
+			# Список для перехода на первые выделяемые ячейки
+			db['move_line_start'] = []
+			for i in range(len(db['cells'])):
+				tmp_lst = []
+				for j in range(len(db['cells'][i])):
+					tmp_lst += [first_selectables[i]]
+				db['move_line_start'] += [tmp_lst]
+			#------------------------------------------------------------------
+			# Временный список, необходимый для создания db['move_down']
+			tmp_sels = list(first_selectables)
+			if len(tmp_sels) > 1:
+				tmp_sels.insert(-1,tmp_sels[-1])
+				del tmp_sels[0]
+			# Список первых выделяемых ячеек сверху-вниз
+			db['move_down'] = []
+			for i in range(len(db['cells'])):
+				tmp_lst = []
+				for j in range(len(db['cells'][i])):
+					tmp_lst += [tmp_sels[i]]
+				db['move_down'] += [tmp_lst]
+			#------------------------------------------------------------------
+			# Временный список, необходимый для создания db['move_up']
+			tmp_sels = list(first_selectables)
+			if len(tmp_sels) > 1:
+				tmp_sels.insert(0,tmp_sels[0])
+				del tmp_sels[-1]
+			# Список первых выделяемых ячеек снизу-вверх
+			db['move_up'] = []
+			for i in range(len(db['cells'])):
+				tmp_lst = []
+				for j in range(len(db['cells'][i])):
+					tmp_lst += [tmp_sels[i]]
+				db['move_up'] += [tmp_lst]
+			#------------------------------------------------------------------
+			# Создаем список последних выделяемых ячеек
+			last_selectables = []
+			for i in range(len(db['cells'])):
+				# Алгоритм не принимает -1, необходимо точно указывать позицию
+				last_selectables.append(get_selectable_backwards(i,len(db['cells'][i])-1,False))
+			#------------------------------------------------------------------
+			# Список для перехода на последние выделяемые ячейки
+			for i in range(len(db['cells'])):
+				tmp_lst = []
+				for j in range(len(db['cells'][i])):
+					tmp_lst += [last_selectables[i]]
+				db['move_line_end'] += [tmp_lst]
+			#------------------------------------------------------------------
+			# Первая выделяемая ячейка
+			db['move_text_start'] = db['move_left'][0][0]
+			# Последняя выделяемая ячейка
+			db['move_text_end'] = db['move_right'][-1][-1]
 			#------------------------------------------------------------------
 			log(cur_func,lev_debug,"db['move_right']: %s" % str(db['move_right']))
 			log(cur_func,lev_debug,"db['move_left']: %s" % str(db['move_left']))
@@ -3805,6 +3741,10 @@ def move_events():
 				res_mes += "db['move_down']:" + dlb + str(db['move_down']) + dlb + dlb
 				res_mes += "db['move_left']:" + dlb + str(db['move_left']) + dlb + dlb
 				res_mes += "db['move_right']:" + dlb + str(db['move_right']) + dlb + dlb
+				res_mes += "db['move_line_start']:" + dlb + str(db['move_line_start']) + dlb + dlb
+				res_mes += "db['move_line_end']:" + dlb + str(db['move_line_end']) + dlb + dlb
+				res_mes += "db['move_text_start']:" + dlb + str(db['move_text_start']) + dlb + dlb
+				res_mes += "db['move_text_end']:" + dlb + str(db['move_text_end']) + dlb + dlb
 				text_field(title=globs['mes'].db_check6,user_text=res_mes,ReadOnly=True)
 		else:
 			mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
@@ -4011,6 +3951,7 @@ class TkinterHtmlMod(tk.Widget):
 					# В крайнем случае можно делать так:
 					#self.tag("add", "selection",self._node,0,self._node,300)
 					self.tag('configure','selection','-background',globs['var']['color_terms_sel'])
+					#self.yview_name('selection')
 			else:
 				mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
 	#--------------------------------------------------------------------------
@@ -4047,7 +3988,7 @@ class TkinterHtmlMod(tk.Widget):
 				else:
 					selected_text = db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['dic'] + ' ' + db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['term'] + db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['comment']
 				clipboard_copy(selected_text)
-				if db['Iconify']:
+				if globs['bool']['Iconify']:
 					iconify(widget=globs['top'])
 			else:
 				mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
@@ -4069,7 +4010,7 @@ class TkinterHtmlMod(tk.Widget):
 				if Found:
 					del db['elem'][i]
 					process_cells()
-					set_page()
+					set_article()
 					if 'last_cell' in db and 'i' in db['last_cell'] and 'j' in db['last_cell'] and 'cells' in db and len(db['cells']) > 0 and db['last_cell']['i'] < len(db['cells']) and db['last_cell']['j'] < len(db['cells'][0]):
 						assign_cur_cell((db['last_cell']['i'],db['last_cell']['j']))
 					self.set_cell(event)
@@ -4091,38 +4032,55 @@ class TkinterHtmlMod(tk.Widget):
 				db['url'] = db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['url']
 				log(cur_func,lev_info,globs['mes'].opening_link % db['url'])
 				db['search'] = db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['term']
-				db['mode'] = 'url'
-				loop_page()
+				globs['mode'] = 'url'
+				load_article()
 				globs['top'].title(db['search'])
 			else:
 				mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
 				
 # Отобразить новую статью
-def loop_page(AddHistory=True,*args):
+def load_article(AddHistory=True,Silent=False,Critical=False,*args):
 	cur_func = sys._getframe().f_code.co_name
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
-		while True:
-			if 'ShowArticle' in globs:
-				globs['ShowArticle'].change_pair(None)
+		if 'ShowArticle' in globs:
+			globs['ShowArticle'].change_pair(None)
 			get_article()
 			if AddHistory:
 				add_history()
-			set_page()
+			set_article()
 			if 'frame_panel' in globs and 'ShowArticle' in globs:
 				globs['frame_panel'].destroy()
 				globs['ShowArticle'].create_frame_panel()
 			if 'top' in globs:
-				globs['top'].deiconify()
-			if not 'TrackClipboard' in db or not db['TrackClipboard']:
-				break
-				
+				deiconify(widget=globs['top'])
+		else:
+			mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
+
+# Перехватить нажатие Control-c-c
+def timed_update():
+	if globs['CaptureHotkey'] and kl_mod.result():
+		new_clipboard = clipboard_paste()
+		# Использовать то же сочетание клавиш для вызова окна
+		if empty(new_clipboard):
+			if 'top' in globs:
+				deiconify(widget=globs['top'])
+		else:
+			db['search'] = new_clipboard
+			log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
+			get_url()
+			load_article()
+	root.after(300,timed_update)
+	
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-default_config(config='mclient',Init=True)
-read_configs()
-get_article()
-globs['ShowArticle'] = ShowArticle()
-globs['ShowArticle'].first_run()
-root.mainloop()
+if  __name__ == '__main__':
+	default_config(config='mclient',Init=True)
+	read_configs()
+	# Должно стоять до прорисовки виджетов
+	timed_update()
+	get_article()
+	globs['ShowArticle'] = ShowArticle()
+	globs['ShowArticle'].first_run()
+	root.mainloop()
