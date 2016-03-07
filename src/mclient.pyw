@@ -23,12 +23,12 @@ import platform
 __author__ = 'Peter Sklyar'
 __copyright__ = 'Copyright 2015, 2016, Peter Sklyar'
 __license__ = 'GPL v.3'
-__version__ = '4.4'
+__version__ = '4.4.1'
 __email__ = 'skl.progs@gmail.com'
 
 # All third-party modules are the intellectual work of their authors.
 
-license_easygui = '''
+third_parties = '''
 EasyGui version0.96
 EasyGui version0.95
 Copyright (c) 2010, Stephen Raymond Ferg
@@ -57,9 +57,8 @@ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING 
 IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
 OF SUCH DAMAGE.
-'''
 
-license_tkinterhtml = '''tkinterhtml
+tkinterhtml
 https://bitbucket.org/aivarannamaa/tkinterhtml
 License: MIT
 Copyright (c) <year> aivarannamaa
@@ -76,7 +75,7 @@ cur_func = 'MAIN'
 gpl3_url_ru = 'http://rusgpl.ru/rusgpl.html'
 gpl3_url_en = 'http://www.gnu.org/licenses/gpl.html'
 # Данные глобальные переменные оформлены в виде словаря, что позволяет не использовать лишний раз global.
-globs = {'AbortAll':False,'cur_widget':'ERR_NO_WIDGET_DEFINED','ui_lang':'ru','mes':mes_ru,'license_url':gpl3_url_ru,'mclient_config_root':'mclient.cfg','config_parser':SafeConfigParser(),'_tkhtml_loaded':False,'var':{},'int':{},'mode':'url','ShowHistory':False,'FirstLaunch':True,'geom_top':{'width':0,'height':0},'CaptureHotkey':True}
+globs = {'AbortAll':False,'cur_widget':'ERR_NO_WIDGET_DEFINED','ui_lang':'ru','mes':mes_ru,'license_url':gpl3_url_ru,'mclient_config_root':'mclient.cfg','config_parser':SafeConfigParser(),'_tkhtml_loaded':False,'var':{},'int':{},'mode':'url','ShowHistory':False,'geom_top':{'width':0,'height':0},'CaptureHotkey':True,'MouseClicked':False}
 
 db = {'history':[],'history_url':[],'url':'http://www.multitran.ru/c/m.exe?CL=1&s=%C4%EE%E1%F0%EE+%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21&l1=1','search':globs['mes'].welcome}
 
@@ -87,7 +86,6 @@ lev_info = 'INFO'
 lev_debug_err = 'DEBUG-ERROR'
 lev_debug = 'DEBUG'
 
-my_email = 'skl.progs@gmail.com'
 ru_alphabet = '№АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЪЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщыъьэюя'
 
 # Скрытые сообщения об ошибках
@@ -192,10 +190,10 @@ if  __name__ == '__main__':
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Placeholders
 def log(cur_func,level,log_mes,TransFunc=False):
-	#pass
+	pass
 	#print(cur_func,':',level,':',log_mes)
-	if level == lev_crit or level == lev_debug_err or level == lev_warn or level == lev_err:
-		print(cur_func,':',level,':',log_mes)
+	#if level == lev_crit or level == lev_debug_err or level == lev_warn or level == lev_err:
+	#	print(cur_func,':',level,':',log_mes)
 #------------------------------------------------------------------------------
 # Placeholder
 def decline_nom(words_nf,Decline=False):
@@ -321,7 +319,6 @@ def default_config(config='mclient',Init=True):
 			'CopyTermsOnly':True,
 			'ExploreMismatch':True,
 			'Iconify':True,
-			'mclientSaveTitle':False,
 			'SelectTermsOnly':True,
 			'ShortHistory':False
 							})
@@ -1795,8 +1792,8 @@ def get_coor_pages(widget):
 		db['coor_db'] = {}
 		db['coor_db']['widget'] = widget
 		db['coor_db']['widget'].update_idletasks()
-		db['coor_db']['width']=db['coor_db']['widget'].winfo_width()
-		db['coor_db']['height']=db['coor_db']['widget'].winfo_height()
+		db['coor_db']['width'] = db['coor_db']['widget'].winfo_width()
+		db['coor_db']['height'] = db['coor_db']['widget'].winfo_height()
 		if db['coor_db']['height'] > globs['int']['pixel_hack']:
 			db['coor_db']['height'] -= globs['int']['pixel_hack']
 		if db['coor_db']['width'] > globs['int']['pixel_hack']:
@@ -1816,8 +1813,8 @@ def get_coor_pages(widget):
 				break
 			else:
 				next_page_tk = pos2tk(db['db_page'],next_page_pos,Even=True)
-				# В некоторых случаях, несмотря на + 1 в номере символа, его позиция по Tk не меняется, и можно войти в бесконечный цикл.
-				while next_page_tk == prev_tk and next_page_pos < db['db_page']['len']-1:
+				# В некоторых случаях, несмотря на +1 в номере символа, его позиция по Tk не меняется, и можно войти в бесконечный цикл.
+				while next_page_tk == prev_tk and next_page_pos < db['db_page']['len'] - 1:
 					next_page_pos += 1
 					next_page_tk = pos2tk(db['db_page'],next_page_pos,Even=True)
 				log(cur_func,lev_debug,'next_page_tk: %s' % next_page_tk)
@@ -1828,37 +1825,44 @@ def get_coor_pages(widget):
 					page_no += 1
 					prev_tk = next_page_tk
 		widget.yview('1.0')
-		db['coor_db']['pages']['num'] = page_no+1
+		db['coor_db']['pages']['num'] = page_no + 1
 		if globs['mode'] != 'skip':
 			db['coor_db']['cur_page_no'] = 0
 		db['coor_db']['direction'] = 'right_down'
 		log(cur_func,lev_debug,"db['coor_db']['pages']['num']: %d" % db['coor_db']['pages']['num'])
 	
 # По позиции символа определить ближайший термин слева или справа
-def get_adjacent_term(det,direction='right_down'):
+def get_adjacent_cell(pos,direction='right_down'):
 	cur_func = sys._getframe().f_code.co_name
-	term_num = - 1
+	cell_no = (0,0)
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
-		term = ''
+		cell_text = ''
 		if direction == 'right_down':
-			for i in range(db['terms']['num']):
-				if det <= db['terms']['pos'][i][0] or det <= db['terms']['pos'][i][1]:
-					term_num = i
-					term = db['terms']['phrases'][term_num]
+			Found = False
+			for i in range(len(db['cells'])):
+				for j in range(len(db['cells'][i])):
+					if 'first' in db['cells'][i][j] and 'last' in db['cells'][i][j]:
+						if pos <= db['cells'][i][j]['first'] or pos <= db['cells'][i][j]['last']:
+							cell_no = (i,j)
+							cell_text = unite_items([db['cells'][i][j]['dic'],db['cells'][i][j]['term'],db['cells'][i][j]['comment']])
+							Found = True
+							break
+				if Found:
 					break
-			log(cur_func,lev_debug,globs['mes'].right_term % (term_num,term))
+			log(cur_func,lev_debug,globs['mes'].right_cell % (str(cell_no),cell_text))
 		elif direction == 'left_up':
-			i = db['terms']['num'] - 1
+			i = len(db['cells']) * len(db['cells'][0]) - 1
 			while i >= 0:
-				if det >= db['terms']['pos'][i][0] or det >= db['terms']['pos'][i][1]:
-					term_num = i
-					term = db['terms']['phrases'][term_num]
-					break
+				if 'first' in db['cells'][i][j] and 'last' in db['cells'][i][j]:
+					if pos >= db['cells'][i][j]['first'] or pos >= db['cells'][i][j]['last']:
+						cell_no = (i,j)
+						cell_text = unite_items([db['cells'][i][j]['dic'],db['cells'][i][j]['term'],db['cells'][i][j]['comment']])
+						break
 				i -= 1
-			log(cur_func,lev_debug,globs['mes'].left_term % (term_num,term))
-	return term_num
+			log(cur_func,lev_debug,globs['mes'].left_cell % (str(cell_no),cell_text))
+	return cell_no
 
 # Загрузить картинку кнопки
 # top.wm_iconbitmap поддерживает только черно - белый XBM. Через PhotoImage удается загрузить только GIF.
@@ -2095,7 +2099,17 @@ def deiconify(widget):
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
 		widget.deiconify()
-		widget.focus_set()
+		widget.focus_force()
+		if sys_type == 'win':
+			widget.wm_attributes('-topmost',1)
+			widget.wm_attributes('-topmost',0)
+			# Иначе нажатие кнопки будет вызывать переход по ссылке там, где это не надо
+			if globs['MouseClicked']:
+				import ctypes
+				# Уродливый хак, но иначе никак не поставить фокус на виджет (в Linux/Windows XP обходимся без этого, в Windows 8 - необходимо)
+				# Cимулируем нажатие кнопки мыши
+				ctypes.windll.user32.mouse_event(2, 0, 0, 0, 0)  # left mouse button down
+				ctypes.windll.user32.mouse_event(4, 0, 0, 0, 0)  # left mouse button up
 
 # Определить номера терминов, которые являются пограничными для видимой области
 def aggregate_pages():
@@ -2104,8 +2118,8 @@ def aggregate_pages():
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
 		for i in range(db['coor_db']['pages']['num']):
-			db['coor_db']['pages'][i]['up']['num'] = get_adjacent_term(db['coor_db']['pages'][i]['up']['pos'],direction='right_down')
-			db['coor_db']['pages'][i]['down']['num'] = get_adjacent_term(db['coor_db']['pages'][i]['down']['pos'],direction='left_up')
+			db['coor_db']['pages'][i]['up']['num'] = get_adjacent_cell(db['coor_db']['pages'][i]['up']['pos'],direction='right_down')
+			db['coor_db']['pages'][i]['down']['num'] = get_adjacent_cell(db['coor_db']['pages'][i]['down']['pos'],direction='left_up')
 			if db['terms']['num'] > 0:
 				log(cur_func,lev_debug,globs['mes'].db_pages_stat % (i,db['coor_db']['pages'][i]['up']['num'],db['terms']['phrases'][db['coor_db']['pages'][i]['up']['num']],db['coor_db']['pages'][i]['down']['num'],db['terms']['phrases'][db['coor_db']['pages'][i]['down']['num']]))
 	
@@ -2138,6 +2152,15 @@ def add_history():
 					globs['listbox'].insert(0,db['history'][-1])
 			db['history_index'] = len(db['history']) - 1
 
+# Обновить заголовок окна
+def update_title():
+	cur_func = sys._getframe().f_code.co_name
+	if globs['AbortAll']:
+		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+	else:
+		if 'top' in globs:
+			globs['top'].title(db['search'])
+
 # Отобразить окно со словарной статьей
 class ShowArticle:
 	cur_func = sys._getframe().f_code.co_name
@@ -2155,7 +2178,7 @@ class ShowArticle:
 			else:
 				globs['top'].wm_state(newstate='zoomed')
 			# Назначение заголовка окна (первичное). В __init__ это происходит единожды, поэтому далее мы отдельно вызываем данную процедуру при каждой загрузке статьи.
-			self.update_title()
+			update_title()
 			# Only black-and-white icons of XBM format
 			#globs['top'].wm_iconbitmap(bitmap='@'+globs['var']['icon_mclient'])
 			# Иконку надо определять здесь, поскольку запуск может быть не Standalone
@@ -2202,21 +2225,6 @@ class ShowArticle:
 		self.hotkeys()
 		globs['frame_panel'] = self.frame_panel
 	#--------------------------------------------------------------------------
-	# Обновить заголовок окна
-	def update_title(self):
-		cur_func = sys._getframe().f_code.co_name
-		if globs['AbortAll']:
-			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-		else:
-			if 'top' in globs:
-				if globs['bool']['mclientSaveTitle']:
-					globs['top'].title(globs['mes'].mclient % __version__)
-				else:
-					if globs['FirstLaunch']:
-						globs['top'].title(globs['mes'].mclient % __version__)
-					else:
-						globs['top'].title(db['search'])
-	#--------------------------------------------------------------------------
 	# Вставить предыдущий запрос
 	def insert_repeat_sign(self,event):
 		cur_func = sys._getframe().f_code.co_name
@@ -2261,7 +2269,6 @@ class ShowArticle:
 				else:
 					self.clear_search_field(event)
 					load_article()
-					self.update_title()
 	#--------------------------------------------------------------------------
 	# Задействование колеса мыши для пролистывания экрана
 	def mouse_wheel(self,event):
@@ -2334,7 +2341,7 @@ class ShowArticle:
 				if globs['AbortAll']:
 					log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 				else:
-					if db['coor_db']['cur_page_no'] < db['coor_db']['pages']['num']-1:
+					if db['coor_db']['cur_page_no'] < db['coor_db']['pages']['num'] - 1:
 						log(cur_func,lev_info,"db['coor_db']['cur_page_no']: %d -> %d" % (db['coor_db']['cur_page_no'],db['coor_db']['cur_page_no']+1))
 						db['coor_db']['cur_page_no'] += 1
 			def subtract_page(self):
@@ -2459,7 +2466,7 @@ class ShowArticle:
 				if DragScreen:
 					log(cur_func,lev_info,globs['mes'].shift_screen_required)
 					if db['coor_db']['direction'] == 'right_down':
-						if db['coor_db']['cur_page_no'] < db['coor_db']['pages']['num']-1:
+						if db['coor_db']['cur_page_no'] < db['coor_db']['pages']['num'] - 1:
 							db['coor_db']['cur_page_no'] += 1
 					elif db['coor_db']['direction'] == 'left_up':
 						if db['coor_db']['cur_page_no'] > 0:
@@ -2650,7 +2657,7 @@ class ShowArticle:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
 			try:
-				webbrowser.open('mailto:%s' % my_email)
+				webbrowser.open('mailto:%s' % __email__)
 			except:
 				Warning(cur_func,globs['mes'].email_agent_failure)
 	#--------------------------------------------------------------------------
@@ -2664,6 +2671,15 @@ class ShowArticle:
 				webbrowser.open(globs['license_url'])
 			except:
 				Warning(cur_func,globs['mes'].browser_failure % globs['license_url'])
+	#--------------------------------------------------------------------------
+	# Отобразить информацию о лицензии третьих сторон
+	def show_third_parties(self,event):
+		cur_func = sys._getframe().f_code.co_name
+		if globs['AbortAll']:
+			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+		else:
+			text_field(title=globs['mes'].btn_third_parties+':',user_text=third_parties,ReadOnly=True)
+			root.withdraw()
 	#--------------------------------------------------------------------------
 	# Окно "О программе"
 	def show_about(self,event):
@@ -2680,10 +2696,11 @@ class ShowArticle:
 			frame2.pack(expand=1,fill='both',side='left')
 			frame3 = tk.Frame(about_top)
 			frame3.pack(expand=1,fill='both',side='right')
-			label = tk.Label(frame1,font=globs['var']['font_style'],text=globs['mes'].about_text)
+			label = tk.Label(frame1,font=globs['var']['font_style'],text=globs['mes'].about_text % __version__)
 			label.pack()
 			# Лицензия
-			create_button(parent_widget=frame2,text=globs['mes'].btn_license,hint=globs['mes'].hint_license,action=self.open_license_url,side='left')
+			create_button(parent_widget=frame2,text=globs['mes'].btn_third_parties,hint=globs['mes'].hint_license,action=self.show_third_parties,side='left')
+			create_button(parent_widget=frame3,text=globs['mes'].btn_license,hint=globs['mes'].hint_license,action=self.open_license_url,side='left')
 			# Отправить письмо автору
 			create_button(parent_widget=frame3,text=globs['mes'].btn_email_author,hint=globs['mes'].hint_email_author,action=self.response_back,side='right')
 			about_top.focus_set()
@@ -3146,7 +3163,6 @@ def get_article():
 			unite_comments()
 			unite_by_url()
 			process_cells()
-		globs['FirstLaunch'] = False
 
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<	
 # Объединить элементы списка, добавляя в нужном месте пробел
@@ -3524,7 +3540,7 @@ def load_tkhtml(master, location=None):
 		if location:
 			master.tk.eval('global auto_path; lappend auto_path {%s}' % location)
 		master.tk.eval('package require Tkhtml')
-		globs['_tkhtml_loaded'] = True        
+		globs['_tkhtml_loaded'] = True
 
 # Вернуть местоположение библиотеки tkhtml
 def get_tkhtml_folder():
@@ -3951,7 +3967,11 @@ class TkinterHtmlMod(tk.Widget):
 					# В крайнем случае можно делать так:
 					#self.tag("add", "selection",self._node,0,self._node,300)
 					self.tag('configure','selection','-background',globs['var']['color_terms_sel'])
-					#self.yview_name('selection')
+					#self.yview('moveto',20.0)
+					# cur
+					#print(self.tk.call(self._w,'yview','selection'))
+					#self.tk.call(self._w,'yview','selection')
+					#self.yview_name('test_view')
 			else:
 				mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
 	#--------------------------------------------------------------------------
@@ -4026,7 +4046,9 @@ class TkinterHtmlMod(tk.Widget):
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
 			self.set_cell(event)
-			if 'cur_cell' in db:
+			if globs['MouseClicked']:
+				pass
+			elif 'cur_cell' in db:
 				log(cur_func,lev_debug,globs['mes'].cur_cell % (db['cur_cell']['i'],db['cur_cell']['j']))
 				# Используем более короткий ключ для простоты
 				db['url'] = db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['url']
@@ -4050,6 +4072,7 @@ def load_article(AddHistory=True,Silent=False,Critical=False,*args):
 			if AddHistory:
 				add_history()
 			set_article()
+			update_title()
 			if 'frame_panel' in globs and 'ShowArticle' in globs:
 				globs['frame_panel'].destroy()
 				globs['ShowArticle'].create_frame_panel()
@@ -4061,6 +4084,7 @@ def load_article(AddHistory=True,Silent=False,Critical=False,*args):
 # Перехватить нажатие Control-c-c
 def timed_update():
 	if globs['CaptureHotkey'] and kl_mod.result():
+		globs['MouseClicked'] = True
 		new_clipboard = clipboard_paste()
 		# Использовать то же сочетание клавиш для вызова окна
 		if empty(new_clipboard):
@@ -4071,6 +4095,8 @@ def timed_update():
 			log(cur_func,lev_debug,"db['search']: %s" % str(db['search']))
 			get_url()
 			load_article()
+	else:
+		globs['MouseClicked'] = False
 	root.after(300,timed_update)
 	
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

@@ -1,9 +1,14 @@
 
 
+4.4.1
+* Set focus on the window in case of Control-c-c in Windows versions newer than XP
+* Show the license information of the third-parties in GUI
+* Update a window title correctly
+
 4.4
 * Delete keys: bind_toggle_iconify, bind_watch_clipboard, bind_watch_clipboard_alt, window_size, ShowWallet, TextButtons, UseOptionalButtons, AlwaysMaximize
 * Translate clipboard by Control-c-c (instead of "the Clipboard Mode")
-* Navigate using up and down arrows, Home, End, Contol-Home and Control-End
+* Navigate using up and down arrows, Home, End, Control-Home and Control-End
 * Fix the icon in past Windows XP systems
 
 4.3.1.

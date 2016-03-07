@@ -1,9 +1,14 @@
 
 
+4.4.1
+* Установить фокус на окно при нажатии Control-c-c в версиях Windows старше XP
+* Отображать информацию о лицензиях третьих сторон в GUI
+* Исправлен механизм обновления заголовка окна
+
 4.4
 * Удалены ключи: bind_toggle_iconify, bind_watch_clipboard, bind_watch_clipboard_alt, window_size, ShowWallet, TextButtons, UseOptionalButtons, AlwaysMaximize
 * Перевод буфера обмена по Control-c-c (вместо режима "Буфер обмена")
-* Навигация по стрелке вверх и стрелке вниз, Home, End, Contol-Home и Control-End
+* Навигация по стрелке вверх и стрелке вниз, Home, End, Control-Home и Control-End
 * Теперь пиктограмма отображается корректно в версиях Windows старше XP
 
 4.3.1.
