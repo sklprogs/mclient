@@ -23,7 +23,7 @@ import platform
 __author__ = 'Peter Sklyar'
 __copyright__ = 'Copyright 2015, 2016, Peter Sklyar'
 __license__ = 'GPL v.3'
-__version__ = '4.4.1'
+__version__ = '4.5'
 __email__ = 'skl.progs@gmail.com'
 
 # All third-party modules are the intellectual work of their authors.
@@ -75,7 +75,7 @@ cur_func = 'MAIN'
 gpl3_url_ru = 'http://rusgpl.ru/rusgpl.html'
 gpl3_url_en = 'http://www.gnu.org/licenses/gpl.html'
 # Данные глобальные переменные оформлены в виде словаря, что позволяет не использовать лишний раз global.
-globs = {'AbortAll':False,'cur_widget':'ERR_NO_WIDGET_DEFINED','ui_lang':'ru','mes':mes_ru,'license_url':gpl3_url_ru,'mclient_config_root':'mclient.cfg','config_parser':SafeConfigParser(),'_tkhtml_loaded':False,'var':{},'int':{},'mode':'url','ShowHistory':False,'geom_top':{'width':0,'height':0},'CaptureHotkey':True,'MouseClicked':False}
+globs = {'AbortAll':False,'cur_widget':'ERR_NO_WIDGET_DEFINED','ui_lang':'ru','mes':mes_ru,'license_url':gpl3_url_ru,'mclient_config_root':'mclient.cfg','config_parser':SafeConfigParser(),'_tkhtml_loaded':False,'var':{},'int':{},'mode':'url','ShowHistory':False,'geom_top':{'width':0,'height':0},'CaptureHotkey':True,'MouseClicked':False,'cur_pair':'ENG <=> RUS'}
 
 db = {'history':[],'history_url':[],'url':'http://www.multitran.ru/c/m.exe?CL=1&s=%C4%EE%E1%F0%EE+%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21&l1=1','search':globs['mes'].welcome}
 
@@ -130,8 +130,6 @@ ENG => EST      Англ-эст:       'http://www.multitran.ru/c/m.exe?l1=1&l2=
 '''
 online_url_root = 'http://www.multitran.ru/c/m.exe?'
 online_url_safe = 'http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%ED%E5%E2%E5%F0%ED%E0%FF+%F1%F1%FB%EB%EA%E0'
-default_pair = 'ENG <=> RUS'
-globs['cur_pair'] = default_pair
 pairs = ['ENG <=> RUS','DEU <=> RUS','SPA <=> RUS','FRA <=> RUS','NLD <=> RUS','ITA <=> RUS','LAV <=> RUS','EST <=> RUS','AFR <=> RUS','EPO <=> RUS','RUS <=> XAL','XAL <=> RUS','ENG <=> DEU','ENG <=> EST']
 online_dic_urls = ['http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=3&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=5&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=4&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=24&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=23&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=27&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=26&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=31&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=34&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=2&l2=35&s=%s','http://www.multitran.ru/c/m.exe?l1=35&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=3&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=26&s=%s']
 assert len(pairs) == len(online_dic_urls)
@@ -360,8 +358,6 @@ def default_config(config='mclient',Init=True):
 			'bind_move_line_end':'<End>',
 			'bind_move_line_start':'<Home>',
 			'bind_move_page_down':'<Next>',
-			'bind_move_page_end':'<Shift-End>',
-			'bind_move_page_start':'<Shift-Home>',
 			'bind_move_page_up':'<Prior>',
 			'bind_move_right':'<Right>',
 			'bind_move_text_end':'<Control-End>',
@@ -538,85 +534,6 @@ def mestype(func,cur_mes,Silent=False,Critical=False,Info=False):
 			else:
 				Warning(func,cur_mes)
 				
-# Удалить знаки пунктуации
-# Это самый простой путь. Заменяет все совпадения (в отличие от использования переменных из punc_array) и не требует regexp (при котором потребуется экранирование)
-def delete_punctuation(fragm):
-	cur_func = sys._getframe().f_code.co_name
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		fragm = fragm.replace(',','')
-		fragm = fragm.replace('.','')
-		fragm = fragm.replace('!','')
-		fragm = fragm.replace('?','')
-		fragm = fragm.replace(':','')
-		fragm = fragm.replace(';','')
-		log(cur_func,lev_debug,str(fragm))
-	return fragm
-	
-# Удалить нумерацию в виде алфавита
-def delete_alphabetic_numeration(line):
-	cur_func = sys._getframe().f_code.co_name
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		my_expr = ' [\(,\[]{0,1}[aA-zZ,аА-яЯ][\.,\),\]]( \D)'
-		match = re.search(my_expr,line)
-		while match:
-			replace_what = match.group(0)
-			replace_with = match.group(1)
-			line = line.replace(replace_what,replace_with)
-			match = re.search(my_expr,line)
-		log(cur_func,lev_debug,str(line))
-	return line
-
-# Преобразовать строку в нижний регистр, удалить пунктуацию и алфавитную нумерацию
-def prepare_str(line,Extended=False,Lower=True,PuncOnly=False):
-	cur_func = sys._getframe().f_code.co_name
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		if Lower:
-			line = line.lower()
-		line = line.replace('ё','е')
-		if PuncOnly:
-			line = delete_punctuation(line)
-		else:
-			line = line.replace('"','')
-			line = line.replace('“','')
-			line = line.replace('”','')
-			line = line.replace('«','')
-			line = line.replace('»','')
-			line = line.replace('(','')
-			line = line.replace(')','')
-			line = line.replace('[','')
-			line = line.replace(']','')
-			line = line.replace('{','')
-			line = line.replace('}','')
-			line = line.replace('*','')
-			line = delete_punctuation(line)
-			line = delete_alphabetic_numeration(line)
-		if Extended:
-			line = re.sub('\d+','',line)
-			#line = line.replace('-','')
-		#log(cur_func,lev_debug,str(line))
-	return line
-
-# Привести в вид, понимаемый виджетом Tk, список вида [sent_no,pos1]
-def convert2tk(sent,pos,Even=False):
-	cur_func = sys._getframe().f_code.co_name
-	tk_str = '1.0'
-	check_args(cur_func,[[sent,globs['mes'].type_int],[pos,globs['mes'].type_int],[Even,globs['mes'].type_bool]])
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		if Even:
-			tk_str = str(sent+1) + '.' + str(pos+1)
-		else:
-			tk_str = str(sent+1) + '.' + str(pos)
-		log(cur_func,lev_debug,str(tk_str))
-	return tk_str
-	
 # Скопировать в буфер обмена
 def clipboard_copy(line):
 	cur_func = sys._getframe().f_code.co_name
@@ -636,7 +553,7 @@ def clipboard_copy(line):
 			log(cur_func,lev_debug,str(line))
 			'''
 		
-# Вернуть веб - страницу онлайн - словаря с термином
+# Вернуть веб-страницу онлайн-словаря с термином
 def get_online_article(Silent=False,Critical=False):
 	cur_func = sys._getframe().f_code.co_name
 	if globs['AbortAll']:
@@ -666,81 +583,6 @@ def get_online_article(Silent=False,Critical=False):
 					db['html'] = db['page']
 				except:
 					mestype(cur_func,globs['mes'].wrong_html_encoding,Silent=Silent,Critical=Critical)
-	
-# Конвертировать строку в целое число
-def str2int(line):
-	cur_func = sys._getframe().f_code.co_name
-	par = 0
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		try:
-			par = int(line)
-		except:
-			log(cur_func,lev_err,globs['mes'].convert_to_int_failure % line)
-		log(cur_func,lev_debug,str(par))
-	return par
-
-# Конвертировать строку с позицией Tkinter вида '1.20' в список вида [sent_no,pos_no]
-def convertFromTk(line,Even=False):
-	cur_func = sys._getframe().f_code.co_name
-	lst = [0,0]
-	check_args(cur_func,[[line,globs['mes'].type_str],[Even,globs['mes'].type_bool]])
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		num_lst = line.split('.')
-		assert len(num_lst) == 2
-		sent = str2int(num_lst[0])
-		check_type(cur_func,sent,globs['mes'].type_int)
-		pos = str2int(num_lst[1])
-		check_type(cur_func,pos,globs['mes'].type_int)
-		if Even:
-			lst = [sent-1,pos-1]
-		else:
-			lst = [sent-1,pos]
-		# Tkinter позволяет выделять так, что конец придется на первый (=нулевой) символ в начале предложения, и из-за Even получится отрицательное число. Компенсируем это.
-		for i in range(len(lst)):
-			if lst[i] < 0:
-				log(cur_func,lev_warn,globs['mes'].negative % lst[i])
-				lst[i] = 0
-		log(cur_func,lev_debug,str(lst))
-	return lst
-
-# Конвертировать числовую позицию формата int в позицию в формате Tkinter
-# Пример: 20 = > '1.20'
-def pos2tk(text_db,pos,Even=False):
-	cur_func = sys._getframe().f_code.co_name
-	tk_pos = '1.0'
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		# < при len = maxi + 1 и <= при len = maxi
-		assert pos < text_db['len']
-		#elem = text_db['pos_sl'][pos-1]
-		elem = text_db['pos_sl'][pos]
-		tk_pos = convert2tk(elem[0],elem[1],Even=Even)
-		log(cur_func,lev_debug,str('%d => %s' % (pos,tk_pos)))
-	return tk_pos
-
-# Конвертировать позицию в формате Tkinter в числовую позицию формата int
-# Пример: '1.20' = > 20
-def tk2pos(text_db,tk_pos,Even=False):
-	cur_func = sys._getframe().f_code.co_name
-	found = 0
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		# Пример: [0,10]
-		pos_sl_no = convertFromTk(tk_pos,Even=Even)
-		# Выделение в Tkinter может выйти за пределы самого текста, поэтому заранее определяем правую границу.
-		found = len(text_db['pos_sl'])
-		for i in range(len(text_db['pos_sl'])):
-			if pos_sl_no == text_db['pos_sl'][i]:
-				found = i
-				break
-		log(cur_func,lev_debug,str('%s => %s' % (tk_pos,str(found))))
-	return found
 	
 # Выбор одного элемента из списка
 def SelectFromList(title,cur_mes,list_array,Insist=False,Silent=False,Critical=True,MakeLower=False):
@@ -1261,18 +1103,6 @@ def get_obj_type(obj,Verbal=True,IgnoreErrors=False):
 		#log(cur_func,lev_debug,obj_type_str)
 	return obj_type_str
 	
-# Remove a tag within a range
-def tag_remove(widget,tag_name,pos1tk='1.0',pos2tk='end',Silent=False,Critical=False):
-	cur_func = sys._getframe().f_code.co_name
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		try:
-			widget.tag_remove(tag_name,pos1tk,pos2tk)
-			log(cur_func,lev_debug,globs['mes'].tag_removed % (tag_name,pos1tk,pos2tk))
-		except tk.TclError:
-			mestype(cur_func,globs['mes'].tag_remove_failed % (tag_name,str(widget),pos1tk,pos2tk),Silent=Silent,Critical=Critical)
-			
 # Add a mark
 def mark_add(widget,mark_name,postk,Silent=False,Critical=False):
 	cur_func = sys._getframe().f_code.co_name
@@ -1286,105 +1116,6 @@ def mark_add(widget,mark_name,postk,Silent=False,Critical=False):
 		except tk.TclError:
 			mestype(cur_func,globs['mes'].mark_addition_failure % (mark_name,postk),Silent=Silent,Critical=Critical)
 			
-# Remove a mark
-def mark_remove(widget,mark_name,Silent=False,Critical=False):
-	cur_func = sys._getframe().f_code.co_name
-	check_args(cur_func,[[mark_name,globs['mes'].type_str]])
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		try:
-			widget.mark_unset(mark_name)
-			log(cur_func,lev_debug,globs['mes'].mark_removed % (mark_name))
-		except tk.TclError:
-			mestype(cur_func,globs['mes'].mark_removal_failure % mark_name,Silent=Silent,Critical=Critical)
-
-# Remove a tag
-# Note: False will be returned if the tag has not been found
-def tag_remove(widget,tag_name='tag',pos1tk='1.0',pos2tk='end'):
-	cur_func = sys._getframe().f_code.co_name
-	Success = False
-	check_args(cur_func,[[tag_name,globs['mes'].type_str],[pos1tk,globs['mes'].type_str],[pos2tk,globs['mes'].type_str]])
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		Success = True
-		try:
-			widget.tag_remove(tag_name,pos1tk,pos2tk)
-		except:
-			Success = False
-			log(cur_func,lev_warn,globs['mes'].tag_remove_failed % (tag_name,str(widget),pos1tk,pos2tk))
-		log(cur_func,lev_debug,str(Success))
-	return Success
-
-# Add a tag
-def tag_add(widget,tag_name='tag',pos1tk='1.0',pos2tk='end',DeletePrevious=True):
-	cur_func = sys._getframe().f_code.co_name
-	Success = False
-	check_args(cur_func,[[tag_name,globs['mes'].type_str],[pos1tk,globs['mes'].type_str],[pos2tk,globs['mes'].type_str]])
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		Success = True
-		# Предварительно удалить все имеющиеся одноименные тэги из виджета. Полезно, если тэг может иметь только одно текущее выделение.
-		if DeletePrevious:
-			# Вероятно, неуспех данной операции не должен свидетельствовать об неуспехе всей операции, поскольку при отсутствии тэга выйдет ошибка, но тэг отсутствует в самом начале.
-			# Необходимо очистить весь виджет, поэтому диапазон не указываем
-			tag_remove(widget=widget,tag_name=tag_name)
-		# 1. Установка тэга
-		try:
-			widget.tag_add(tag_name,pos1tk,pos2tk)
-			log(cur_func,lev_debug,globs['mes'].tag_added % (tag_name,pos1tk,pos2tk))
-		except:
-			Success = False
-			log(cur_func,lev_err,globs['mes'].tag_addition_failure % (tag_name,pos1tk,pos2tk))
-		log(cur_func,lev_debug,str(Success))
-	return Success
-	
-# Configure an added tag (background, foreground)
-def tag_config(widget,tag_name='tag',mode='bg',color='cyan'):
-	cur_func = sys._getframe().f_code.co_name
-	Success = False
-	check_args(cur_func,[[tag_name,globs['mes'].type_str],[mode,globs['mes'].type_str],[color,globs['mes'].type_str]])
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		Success = True
-		# 2. Настройка тэга
-		try:
-			if mode == 'bg':
-				widget.tag_config(tag_name,background=color)
-				log(cur_func,lev_debug,globs['mes'].tag_bg % (tag_name,color))
-			elif mode == 'fg':
-				widget.tag_config(tag_name,foreground=color)
-				log(cur_func,lev_debug,globs['mes'].tag_fg % (tag_name,color))
-			else:
-				Success = False
-				ErrorMessage(cur_func,globs['mes'].unknown_mode % (str(mode),'bg, fg'))
-		except:
-			Success = False
-			if mode == 'fg':
-				log(cur_func,lev_err,globs['mes'].tag_fg_failure % tag_name)
-			else:
-				log(cur_func,lev_err,globs['mes'].tag_bg_failure % tag_name)
-		log(cur_func,lev_debug,str(Success))
-	return Success
-
-# Add and configure a tag
-def tag_add_config(widget,tag_name,pos1tk,pos2tk,mode='bg',color='cyan',DeletePrevious=True):
-	cur_func = sys._getframe().f_code.co_name
-	Success = False
-	check_args(cur_func,[[tag_name,globs['mes'].type_str],[pos1tk,globs['mes'].type_str],[pos2tk,globs['mes'].type_str]])
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		Success = True
-		Success = tag_add(widget=widget,tag_name=tag_name,pos1tk=pos1tk,pos2tk=pos2tk,DeletePrevious=DeletePrevious)
-		if Success:
-			Success = tag_config(widget=widget,tag_name=tag_name,mode=mode,color=color)
-		log(cur_func,lev_debug,str(Success))
-	return Success
-
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # mclient non-shared code
 
@@ -1657,8 +1388,6 @@ def extract_tag_contents():
 						db['elem'][-1]['comment'] = tmp_str
 			log(cur_func,lev_debug,globs['mes'].adding_url % url)
 			db['elem'][-1]['url'] = url
-			if not empty(db['elem'][-1]['term']):
-				db['elem'][-1]['selectable'] = True
 		#----------------------------------------------------------------------
 		# Deleting some common entries
 		# We can also delete 'g-sort' here
@@ -1696,9 +1425,6 @@ def prepare_search():
 	else:
 		# Removing unwanted values
 		# We assume that a 'dic'-type entry shall be succeeded by a 'term'-type entry, not a 'comment'-type entry. Therefore, we delete 'comment'-type entries after 'dic'-type entries in order to ensure that dictionary abbreviations do not succeed full dictionary titles. We also can delete full dictionary titles and leave abbreviations instead.
-		# todo (?)
-		#if i > 0:
-		#	if db['all']['types'][i-1] == 'dics' and db['all']['types'][i] == 'comments':
 		i = 0
 		while i < len(db['elem']):
 			# todo: Удалять по URL
@@ -1740,96 +1466,6 @@ def remove_useless_tags():
 		log(cur_func,lev_info,globs['mes'].tags_stat % (tags_total,db['len_tags'],tags_total-db['len_tags']))
 		# Testing
 		assert db['len_tags'] == db['len_tag_borders']
-	
-# Преобразовать координаты заданного виджета из пикселей в Tkinter
-def pixels2tk(widget,x,y,Silent=False,Critical=False):
-	cur_func = sys._getframe().f_code.co_name
-	tk_pos = '1.0'
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		try:
-			tk_pos = widget.index('@%d,%d' % (x,y))
-		except:
-			mestype(cur_func,globs['mes'].unknown_coor % (str(widget),str(x),str(y)),Silent=Silent,Critical=Critical)
-		log(cur_func,lev_debug,tk_pos)
-	return tk_pos
-
-# Вычислить координаты текста для текущей видимой области
-def get_page_coor(page_no):
-	cur_func = sys._getframe().f_code.co_name
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		db['coor_db']['pages'][page_no] = {}
-		db['coor_db']['pages'][page_no]['up'] = {}
-		db['coor_db']['pages'][page_no]['up']['pix'] = {}
-		db['coor_db']['pages'][page_no]['down'] = {}
-		db['coor_db']['pages'][page_no]['down']['pix'] = {}
-		db['coor_db']['pages'][page_no]['up']['pix']['x'] = db['coor_db']['widget'].winfo_x()
-		db['coor_db']['pages'][page_no]['up']['pix']['y'] = db['coor_db']['widget'].winfo_y()
-		db['coor_db']['pages'][page_no]['down']['pix']['x'] = db['coor_db']['pages'][page_no]['up']['pix']['x']+db['coor_db']['width']
-		db['coor_db']['pages'][page_no]['down']['pix']['y'] = db['coor_db']['pages'][page_no]['up']['pix']['y']+db['coor_db']['height']
-		db['coor_db']['pages'][page_no]['up']['tk'] = pixels2tk(db['coor_db']['widget'],db['coor_db']['pages'][page_no]['up']['pix']['x'],db['coor_db']['pages'][page_no]['up']['pix']['y'])
-		db['coor_db']['pages'][page_no]['down']['tk'] = pixels2tk(db['coor_db']['widget'],db['coor_db']['pages'][page_no]['down']['pix']['x'],db['coor_db']['pages'][page_no]['down']['pix']['y'])
-		db['coor_db']['pages'][page_no]['up']['pos'] = tk2pos(db['db_page'],db['coor_db']['pages'][page_no]['up']['tk'],Even=False)
-		db['coor_db']['pages'][page_no]['down']['pos'] = tk2pos(db['db_page'],db['coor_db']['pages'][page_no]['down']['tk'],Even=True)
-		log(cur_func,lev_debug,"db['coor_db']['pages'][%d]['up']['pix']['x']: %d" % (page_no,db['coor_db']['pages'][page_no]['up']['pix']['x']))
-		log(cur_func,lev_debug,"db['coor_db']['pages'][%d]['up']['pix']['y']: %d" % (page_no,db['coor_db']['pages'][page_no]['up']['pix']['y']))
-		log(cur_func,lev_debug,"db['coor_db']['pages'][%d]['down']['pix']['x']: %d" % (page_no,db['coor_db']['pages'][page_no]['down']['pix']['x']))
-		log(cur_func,lev_debug,"db['coor_db']['pages'][%d]['down']['pix']['y']: %d" % (page_no,db['coor_db']['pages'][page_no]['down']['pix']['y']))
-		log(cur_func,lev_debug,"db['coor_db']['pages'][%d]['up']['tk']: %s" % (page_no,db['coor_db']['pages'][page_no]['up']['tk']))
-		log(cur_func,lev_debug,"db['coor_db']['pages'][%d]['down']['tk']: %s" % (page_no,db['coor_db']['pages'][page_no]['down']['tk']))
-		log(cur_func,lev_debug,"db['coor_db']['pages'][%d]['up']['pos']: %d" % (page_no,db['coor_db']['pages'][page_no]['up']['pos']))
-		log(cur_func,lev_debug,"db['coor_db']['pages'][%d]['down']['pos']: %d" % (page_no,db['coor_db']['pages'][page_no]['down']['pos']))
-
-# Вернуть число страниц (видимых областей) в статье
-def get_coor_pages(widget):
-	cur_func = sys._getframe().f_code.co_name
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		db['coor_db'] = {}
-		db['coor_db']['widget'] = widget
-		db['coor_db']['widget'].update_idletasks()
-		db['coor_db']['width'] = db['coor_db']['widget'].winfo_width()
-		db['coor_db']['height'] = db['coor_db']['widget'].winfo_height()
-		if db['coor_db']['height'] > globs['int']['pixel_hack']:
-			db['coor_db']['height'] -= globs['int']['pixel_hack']
-		if db['coor_db']['width'] > globs['int']['pixel_hack']:
-			db['coor_db']['width'] -= globs['int']['pixel_hack']
-		log(cur_func,lev_debug,"db['coor_db']['width']: %d" % db['coor_db']['width'])
-		log(cur_func,lev_debug,"db['coor_db']['height']: %d" % db['coor_db']['height'])
-		db['coor_db']['pages'] = {}
-		page_no = 0
-		next_page_pos = 0
-		prev_tk = '1.0'
-		next_page_tk = '1.0'
-		widget.yview('1.0')
-		while next_page_pos < db['db_page']['len']:
-			get_page_coor(page_no)
-			next_page_pos = db['coor_db']['pages'][page_no]['down']['pos'] + 1
-			if next_page_pos > db['db_page']['len'] - 1:
-				break
-			else:
-				next_page_tk = pos2tk(db['db_page'],next_page_pos,Even=True)
-				# В некоторых случаях, несмотря на +1 в номере символа, его позиция по Tk не меняется, и можно войти в бесконечный цикл.
-				while next_page_tk == prev_tk and next_page_pos < db['db_page']['len'] - 1:
-					next_page_pos += 1
-					next_page_tk = pos2tk(db['db_page'],next_page_pos,Even=True)
-				log(cur_func,lev_debug,'next_page_tk: %s' % next_page_tk)
-				if next_page_tk == prev_tk or next_page_pos >= db['db_page']['len'] - 1:
-					break
-				else:
-					widget.yview(next_page_tk)
-					page_no += 1
-					prev_tk = next_page_tk
-		widget.yview('1.0')
-		db['coor_db']['pages']['num'] = page_no + 1
-		if globs['mode'] != 'skip':
-			db['coor_db']['cur_page_no'] = 0
-		db['coor_db']['direction'] = 'right_down'
-		log(cur_func,lev_debug,"db['coor_db']['pages']['num']: %d" % db['coor_db']['pages']['num'])
 	
 # По позиции символа определить ближайший термин слева или справа
 def get_adjacent_cell(pos,direction='right_down'):
@@ -2026,7 +1662,7 @@ def create_button(parent_widget,text,hint,action,expand=0,side='left',fg='black'
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
-		bindings_type=get_obj_type(bindings,Verbal=True,IgnoreErrors=True)
+		bindings_type = get_obj_type(bindings,Verbal=True,IgnoreErrors=True)
 		if bindings_type == globs['mes'].type_str or bindings_type == globs['mes'].type_lst:
 			if bindings_type == globs['mes'].type_str:
 				bindings = [bindings]
@@ -2111,18 +1747,6 @@ def deiconify(widget):
 				ctypes.windll.user32.mouse_event(2, 0, 0, 0, 0)  # left mouse button down
 				ctypes.windll.user32.mouse_event(4, 0, 0, 0, 0)  # left mouse button up
 
-# Определить номера терминов, которые являются пограничными для видимой области
-def aggregate_pages():
-	cur_func = sys._getframe().f_code.co_name
-	if globs['AbortAll']:
-		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-	else:
-		for i in range(db['coor_db']['pages']['num']):
-			db['coor_db']['pages'][i]['up']['num'] = get_adjacent_cell(db['coor_db']['pages'][i]['up']['pos'],direction='right_down')
-			db['coor_db']['pages'][i]['down']['num'] = get_adjacent_cell(db['coor_db']['pages'][i]['down']['pos'],direction='left_up')
-			if db['terms']['num'] > 0:
-				log(cur_func,lev_debug,globs['mes'].db_pages_stat % (i,db['coor_db']['pages'][i]['up']['num'],db['terms']['phrases'][db['coor_db']['pages'][i]['up']['num']],db['coor_db']['pages'][i]['down']['num'],db['terms']['phrases'][db['coor_db']['pages'][i]['down']['num']]))
-	
 def quit_now(*args):
 	root.destroy()
 	kl_mod.keylistener.cancel()
@@ -2283,208 +1907,6 @@ class ShowArticle:
 			if event.num == 4 or event.delta > 0:
 				self.move_page_up(event)
 			return 'break'
-	#----------------------------------------------------------------------
-	# todo
-	# Рассчитать координаты ползунка в зависимости от числа страниц
-	def scrollbar_poses(self):
-		cur_func = sys._getframe().f_code.co_name
-		if globs['AbortAll']:
-			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-		else:
-			delim = 1/db['coor_db']['pages']['num']
-			# Минимальный шаг, который разграничивает координаты 2 соседних экранов
-			step = 0.000000001
-			last_val = 0
-			db['scroll_poses'] = []
-			for i in range(db['coor_db']['pages']['num']):
-				if i == 0:
-					db['scroll_poses'] += [[last_val,last_val+delim]]
-				else:
-					db['scroll_poses'] += [[last_val+step,last_val+delim]]
-				last_val += delim
-			log(cur_func,lev_debug,str(db['scroll_poses']))
-			assert len(db['scroll_poses']) == db['coor_db']['pages']['num']
-	#----------------------------------------------------------------------
-	# todo
-	# Вернуть номер страницы в зависимости от координат ползунка
-	def detect_page(self,mode='coor'): # 'coor', 'term_no'
-		cur_func = sys._getframe().f_code.co_name
-		if globs['AbortAll']:
-			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-		else:
-			# Инициализируем i, иначе при i = 0 далее возникнет ошибка присваивания
-			i = 0
-			if mode == 'coor':
-				for i in range(db['coor_db']['pages']['num']):
-					if db['cur_scroll_pos'] >= db['scroll_poses'][i][0] and db['cur_scroll_pos'] <= db['scroll_poses'][i][1]:
-						break
-			elif mode == 'term_no':
-				for i in range(db['coor_db']['pages']['num']):
-					if res[0] >= db['coor_db']['pages'][i]['up']['num'] and res[0] <= db['coor_db']['pages'][i]['down']['num']:
-						break
-			else:
-				ErrorMessage(cur_func,globs['mes'].unknown_mode % (str(mode),'coor, term_no'))
-			db['coor_db']['cur_page_no'] = i
-			log(cur_func,lev_debug,str(db['coor_db']['cur_page_no']))
-	#----------------------------------------------------------------------
-	# todo
-	# Задействование ползунка
-	def custom_scroll(self,*args):
-		cur_func = sys._getframe().f_code.co_name
-		if globs['AbortAll']:
-			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-		else:
-			# Если сдвигается сам ползунок, то Tkinter передаст 2 параметра: 'moveto' и offset (оба имеющие тип 'строка', однако, второй параметр на самом деле float).
-			# Если же используются стрелки ползунка, то 1-м параметром будет 'scroll', а 2-м - '1' (направление вниз) или '-1' (направление вверх).
-			def add_page(self):
-				cur_func = sys._getframe().f_code.co_name
-				if globs['AbortAll']:
-					log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-				else:
-					if db['coor_db']['cur_page_no'] < db['coor_db']['pages']['num'] - 1:
-						log(cur_func,lev_info,"db['coor_db']['cur_page_no']: %d -> %d" % (db['coor_db']['cur_page_no'],db['coor_db']['cur_page_no']+1))
-						db['coor_db']['cur_page_no'] += 1
-			def subtract_page(self):
-				cur_func = sys._getframe().f_code.co_name
-				if globs['AbortAll']:
-					log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-				else:
-					if db['coor_db']['cur_page_no'] > 0:
-						log(cur_func,lev_info,"db['coor_db']['cur_page_no']: %d -> %d" % (db['coor_db']['cur_page_no'],db['coor_db']['cur_page_no']-1))
-						db['coor_db']['cur_page_no'] -= 1
-			action = args[0]
-			log(cur_func,lev_info,globs['mes'].action % action)
-			offset = self.scrollbar.get()[0]
-			if offset < 0:
-				offset = 0
-			elif offset > 1:
-				offset = 1
-			log(cur_func,lev_info,globs['mes'].scrollbar_pos % str(offset))
-			if not 'prev_scroll_pos' in db:
-				db['prev_scroll_pos'] = 0
-				db['cur_scroll_pos'] = 0
-				db['coor_db']['cur_page_no'] = 0
-			db['prev_scroll_pos'] = db['cur_scroll_pos']
-			db['cur_scroll_pos'] = offset
-			log(cur_func,lev_info,"db['prev_scroll_pos']: %s" % str(db['prev_scroll_pos']))
-			log(cur_func,lev_info,"db['cur_scroll_pos']: %s" % str(db['cur_scroll_pos']))
-			# Определяем текущую страницу
-			self.detect_page()
-			log(cur_func,lev_info,globs['mes'].cur_page_no % db['coor_db']['cur_page_no'])
-			if action == 'scroll':
-				offset = args[1]
-				if offset == '1':
-					self.add_page()
-				elif offset == ' - 1':
-					self.subtract_page()
-				else:
-					log(cur_func,lev_err,globs['mes'].unknown_args % (str(offset),'-1, 1'))
-			elif action == 'moveto':
-				if db['cur_scroll_pos'] < 0:
-					log(cur_func,lev_info,globs['mes'].cor_scroll % (db['cur_scroll_pos'],0))
-					db['cur_scroll_pos'] = 0
-				elif db['cur_scroll_pos'] > 1:
-					log(cur_func,lev_info,globs['mes'].cor_scroll % (db['cur_scroll_pos'],1))
-					db['cur_scroll_pos'] = 1
-				if db['cur_scroll_pos'] > db['prev_scroll_pos']:
-					self.add_page()
-				#elif db['cur_scroll_pos'] < db['prev_scroll_pos']:
-				#	self.subtract_page()
-				else:
-					log(cur_func,lev_info,globs['mes'].scrollbar_still)
-			else:
-				Warning(cur_func,globs['mes'].unknown_args % (action,'scroll, move_to'))
-			db['prev_scroll_pos'] = db['cur_scroll_pos']
-			db['cur_scroll_pos'] = db['scroll_poses'][db['coor_db']['cur_page_no']][0]
-			log(cur_func,lev_info,globs['mes'].new_values)
-			log(cur_func,lev_info,"db['prev_scroll_pos']: %s" % str(db['prev_scroll_pos']))
-			log(cur_func,lev_info,"db['cur_scroll_pos']: %s" % str(db['cur_scroll_pos']))
-			# Изменяем текущую страницу в соответствии с предыдущими корректировками
-			self.detect_page()
-			log(cur_func,lev_info,globs['mes'].cur_page_no % db['coor_db']['cur_page_no'])
-			self.shift_screen(mode='still')
-			db['cur_scroll_pos'] = db['scroll_poses'][db['coor_db']['cur_page_no']][0]
-			scroll_pos1 = db['cur_scroll_pos']
-			scroll_pos2 = db['scroll_poses'][db['coor_db']['cur_page_no']][1]
-			if scroll_pos1 < 0:
-				scroll_pos1 = 0
-			elif scroll_pos1 > 1:
-				scroll_pos1 = 1
-			if scroll_pos2 < 0:
-				scroll_pos2 = 0
-			elif scroll_pos2 > 1:
-				scroll_pos2 = 1
-			self.scrollbar.set(scroll_pos1,scroll_pos2)
-			self.select_term()
-			db['prev_scroll_pos'] = db['cur_scroll_pos']
-			log(cur_func,lev_info,"db['prev_scroll_pos']: %s" % str(db['prev_scroll_pos']))
-			return 'break'
-	#----------------------------------------------------------------------
-	# todo
-	# Определить, входит ли текущий термин в видимую часть экрана
-	def fits_screen(self):
-		cur_func = sys._getframe().f_code.co_name
-		# Вернуть True, если смещение экрана не требуется (ввиду названия функции)
-		Success = True
-		if globs['AbortAll']:
-			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-		else:
-			# Если терминов нет, то смещать экран бесполезно
-			if db['terms']['num'] > 0 and db['terms']['num'] > res[0]:
-				if not 'cur_page_no' in db['coor_db']:
-					db['coor_db']['cur_page_no'] = 0
-				if db['terms']['pos'][res[0]][0] >= db['coor_db']['pages'][db['coor_db']['cur_page_no']]['up']['pos'] and db['terms']['pos'][res[0]][-1] <= db['coor_db']['pages'][db['coor_db']['cur_page_no']]['down']['pos']:
-					pass
-				else:
-					Success = False
-		return Success
-	#----------------------------------------------------------------------
-	# todo
-	# Обеспечить удобное пролистывание экрана
-	# mode='normal': смещать экран согласно fits_screen()
-	# mode='change': изменить номер страницы даже в том случае, если текущий термин находится в видимой области (необходимо для move_page_up/_down)
-	# mode='still': не изменять номер страницы (необходимо для move_page_start/_end)
-	def shift_screen(self,mode='normal'):
-		cur_func = sys._getframe().f_code.co_name
-		if globs['AbortAll']:
-			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-		else:
-			DragScreen = False
-			# Вставляю проверку в самом начале, чтобы в случае ошибки не проводить дополнительные операции. Все равно если терминов нет, то смещать экран бесполезно
-			if db['terms']['num'] > 0 and db['terms']['num'] > res[0]:
-				if mode == 'normal':
-					if self.fits_screen():
-						DragScreen = False
-					else:
-						DragScreen = True
-				elif mode == 'change':
-					DragScreen = True
-				elif mode == 'still':
-					DragScreen = False
-				else:
-					ErrorMessage(cur_func,globs['mes'].unknown_mode % (str(mode),'normal, change, still'))
-				if DragScreen:
-					log(cur_func,lev_info,globs['mes'].shift_screen_required)
-					if db['coor_db']['direction'] == 'right_down':
-						if db['coor_db']['cur_page_no'] < db['coor_db']['pages']['num'] - 1:
-							db['coor_db']['cur_page_no'] += 1
-					elif db['coor_db']['direction'] == 'left_up':
-						if db['coor_db']['cur_page_no'] > 0:
-							db['coor_db']['cur_page_no'] -= 1
-					else:
-						ErrorMessage(cur_func,globs['mes'].unknown_mode % (str(db['coor_db']['direction']),'left_up, right_down'))
-				else:
-					log(cur_func,lev_info,globs['mes'].shift_screen_not_required)
-				# Фактически, экран нужно смещать всегда
-				yview_tk = db['coor_db']['pages'][db['coor_db']['cur_page_no']]['up']['tk']
-				# Смещение экрана до заданного термина
-				# Алгоритм работает только, если метка называется 'insert'
-				try:
-					txt.mark_set('insert',yview_tk)
-					txt.yview('insert')
-					log(cur_func,lev_info,globs['mes'].shift_screen % ('insert',yview_tk))
-				except:
-					log(cur_func,lev_err,globs['mes'].shift_screen_failure % 'insert')
 	#--------------------------------------------------------------------------
 	# Перейти на 1-й термин текущей строки	
 	def move_line_start(self,event):
@@ -2510,7 +1932,7 @@ class ShowArticle:
 			else:
 				log(cur_func,lev_err,globs['mes'].wrong_input2)
 	#--------------------------------------------------------------------------
-	# Перейти на 1 - й термин статьи
+	# Перейти на 1-й термин статьи
 	def move_text_start(self,event):
 		cur_func = sys._getframe().f_code.co_name
 		if globs['AbortAll']:
@@ -2518,6 +1940,8 @@ class ShowArticle:
 		else:
 			assign_cur_cell(db['move_text_start'])
 			globs['web_widget'].set_cell()
+			if globs['web_widget'].index and len(globs['web_widget'].index) > 0:
+				globs['web_widget'].yview_name(globs['web_widget'].index[0])
 	#--------------------------------------------------------------------------
 	# Перейти на последний термин статьи
 	def move_text_end(self,event):
@@ -2525,45 +1949,30 @@ class ShowArticle:
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
-			# Можно также брать db['move_down'][-1]
 			assign_cur_cell(db['move_text_end'])
 			globs['web_widget'].set_cell()
+			if globs['web_widget'].index and len(globs['web_widget'].index) > 0:
+				globs['web_widget'].yview_name(globs['web_widget'].index[0])
 	#--------------------------------------------------------------------------
-	# todo
 	# Перейти на страницу вверх
 	def move_page_up(self,event):
 		cur_func = sys._getframe().f_code.co_name
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
-			pass
+			globs['web_widget'].yview_scroll(-1,'pages')
+			# todo: Избавиться от этого
+			globs['web_widget'].mouse_sel(event)
 	#--------------------------------------------------------------------------
-	# todo
 	# Перейти на страницу вверх
 	def move_page_down(self,event):
 		cur_func = sys._getframe().f_code.co_name
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
-			pass
-	#--------------------------------------------------------------------------
-	# todo
-	# Перейти на 1 - й термин текущей страницы
-	def move_page_start(self,event):
-		cur_func = sys._getframe().f_code.co_name
-		if globs['AbortAll']:
-			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-		else:
-			pass
-	#--------------------------------------------------------------------------
-	# todo
-	# Перейти на последний термин текущей страницы
-	def move_page_end(self,event):
-		cur_func = sys._getframe().f_code.co_name
-		if globs['AbortAll']:
-			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
-		else:
-			pass
+			globs['web_widget'].yview_scroll(1,'pages')
+			# todo: Избавиться от этого
+			globs['web_widget'].mouse_sel(event)
 	#--------------------------------------------------------------------------
 	# Перейти на предыдущий термин
 	def move_left(self,event):
@@ -2930,14 +2339,18 @@ class ShowArticle:
 							if db['search_article_pos'] + 1 < len(db['search_list']):
 								db['search_article_pos'] += 1
 							else:
+								InfoMessage(cur_func,globs['mes'].search_from_start)
 								db['search_article_pos'] = 0
 						elif direction == 'backward':
 							if db['search_article_pos'] > 0:
 								db['search_article_pos'] -= 1
 							else:
+								InfoMessage(cur_func,globs['mes'].search_from_end)
 								db['search_article_pos'] = len(db['search_list']) - 1
 						assign_cur_cell(db['search_list'][db['search_article_pos']])
 						globs['web_widget'].set_cell()
+						if len(globs['web_widget'].index) > 0:
+							globs['web_widget'].yview_name(globs['web_widget'].index[0])
 	#--------------------------------------------------------------------------
 	# Сохранить статью на диск
 	def save_article(self,event):
@@ -2945,16 +2358,18 @@ class ShowArticle:
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
-			opt = SelectFromList(globs['mes'].select_action,globs['mes'].actions,[globs['mes'].save_article_as_html,globs['mes'].save_article_as_txt,globs['mes'].copy_article_html,globs['mes'].copy_article_txt],Insist=False,Critical=False)
+			opt = SelectFromList(globs['mes'].select_action,globs['mes'].actions,[globs['mes'].save_view_as_html,globs['mes'].save_article_as_html,globs['mes'].save_article_as_txt,globs['mes'].copy_article_html,globs['mes'].copy_article_txt],Insist=False,Critical=False)
 			if not empty(opt):
-				if opt == globs['mes'].save_article_as_html:
+				if opt == globs['mes'].save_view_as_html:
+					dialog_save_file(db['simple_html'],filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')),Critical=False)
+				elif opt == globs['mes'].save_article_as_html:
 					# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
 					# Также меняем сокращенные гиперссылки на полные, чтобы они работали и в локальном файле.
 					dialog_save_file(db['html'].replace('charset=windows-1251"','charset=utf-8"').replace('<a href="m.exe?','<a href="'+online_url_root).replace('../c/m.exe?',online_url_root),filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')),Critical=False)
 				elif opt == globs['mes'].save_article_as_txt:
 					dialog_save_file(db['plain_text'],filetypes=((globs['mes'].plain_text,'.txt'),(globs['mes'].all_files,'*')),Critical=False)
 				elif opt == globs['mes'].copy_article_html:
-					# Копирование веб - кода в буфер обмена полезно разве что в целях отладки, поэтому никак не меняем этот код.
+					# Копирование веб-кода в буфер обмена полезно разве что в целях отладки, поэтому никак не меняем этот код.
 					clipboard_copy(db['html'])
 				elif opt == globs['mes'].copy_article_txt:
 					clipboard_copy(db['plain_text'])
@@ -3055,6 +2470,10 @@ class ShowArticle:
 		create_binding(widget=globs['top'],bindings=[globs['var']['bind_go_search'],globs['var']['bind_go_search_alt']],action=self.go_search)
 		create_binding(widget=self.search_field,bindings=globs['var']['bind_clear_search_field'],action=self.clear_search_field)
 		create_binding(widget=self.search_field,bindings=globs['var']['bind_paste_search_field'],action=self.paste_search_field)
+		if sys_type == 'win' or sys_type == 'mac':
+			create_binding(widget=globs['top'],bindings='<MouseWheel>',action=self.mouse_wheel)
+		else:
+			create_binding(widget=globs['top'],bindings=['<Button 4>','<Button 5>'],action=self.mouse_wheel)
 		# Перейти на предыдущую/следующую статью
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_go_back'],action=self.go_back)
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_go_forward'],action=self.go_forward)
@@ -3066,15 +2485,9 @@ class ShowArticle:
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_move_line_end'],action=self.move_line_end)
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_move_text_start'],action=self.move_text_start)
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_move_text_end'],action=self.move_text_end)
-		create_binding(widget=globs['top'],bindings=globs['var']['bind_move_page_start'],action=self.move_page_start)
-		create_binding(widget=globs['top'],bindings=globs['var']['bind_move_page_end'],action=self.move_page_end)
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_move_page_up'],action=self.move_page_up)
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_move_page_down'],action=self.move_page_down)
 		create_binding(widget=globs['top'],bindings='<Escape>',action=lambda e:iconify(widget=globs['top']))
-		if sys_type == 'win' or sys_type == 'mac':
-			create_binding(widget=globs['top'],bindings='<MouseWheel>',action=self.mouse_wheel)
-		else:
-			create_binding(widget=globs['top'],bindings=['<Button 4>','<Button 5>'],action=self.mouse_wheel)
 		create_binding(widget=globs['web_widget'],bindings=globs['var']['bind_iconify'],action=lambda e:iconify(widget=globs['top']))
 		# Дополнительные горячие клавиши
 		create_binding(widget=globs['top'],bindings=[globs['var']['bind_quit_now'],globs['var']['bind_quit_now_alt']],action=quit_now)
@@ -3089,7 +2502,7 @@ class ShowArticle:
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_copy_url'],action=lambda e:self.copy_url(widget=globs['top'],mode='term'))
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_copy_article_url'],action=lambda e:self.copy_url(widget=globs['top'],mode='article'))
 		create_binding(widget=globs['top'],bindings=[globs['var']['bind_spec_symbol']],action=self.spec_symbol)
-		create_binding(widget=self.search_field,bindings='<Control-a>',action=lambda e:self.select_all(self.search_field,Small=True))
+		create_binding(widget=self.search_field,bindings='<Control-a>',action=lambda e:select_all(self.search_field,Small=True))
 		create_binding(widget=globs['top'],bindings=globs['var']['bind_define'],action=lambda e:self.define(Selected=True))
 		#----------------------------------------------------------------------
 
@@ -3108,6 +2521,17 @@ def get_url():
 		db['url'] = online_request(globs['var']['online_dic_url'],request_encoded)
 		log(cur_func,lev_debug,"db['url']: %s" % str(db['url']))
 
+# tmp
+def check_elems():
+	res_mes = ''
+	for i in range(len(db['elem'])):
+		if db['elem'][i]['selectable']:
+			if db['elem'][i]['speech'] or db['elem'][i]['dic']:
+				res_mes += str(i) + ':' + str(db['elem'][i]) + dlb
+	#if res_mes and globs['bool']['InternalDebug']:
+	if res_mes:
+		text_field(title="db['elem']:",user_text=res_mes,ReadOnly=True)
+
 # Создать веб-страницу из ячеек и провести другие необходимые операции
 # Вынесено в отдельную процедуру для обеспечения быстрой перекомпоновки ячеек
 def process_cells():
@@ -3115,6 +2539,7 @@ def process_cells():
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
+		check_elems()
 		split_by_columms()
 		#distribute_columns()
 		#span_cells = create_span()
@@ -3141,6 +2566,17 @@ def define_parts_of_speech():
 					db['elem'][i]['speech'] = db['elem'][i]['term']
 					db['elem'][i]['term'] = ''
 
+# Назначить выделяемые ячейки
+def define_selectables():
+	# Раньше выделяемые ячейки назначались в extract_tag_contents(), но это слишком рано, надо делать данную процедуру как минимум после define_parts_of_speech()
+	cur_func = sys._getframe().f_code.co_name
+	if globs['AbortAll']:
+		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+	else:
+		for i in range(len(db['elem'])):
+			if not empty(db['elem'][i]['term']):
+				db['elem'][i]['selectable'] = True
+
 # Подготовить всю необходимую информацию для отображения GUI
 def get_article():
 	cur_func = sys._getframe().f_code.co_name
@@ -3162,6 +2598,7 @@ def get_article():
 			define_parts_of_speech()
 			unite_comments()
 			unite_by_url()
+			define_selectables()
 			process_cells()
 
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<	
@@ -3372,7 +2809,7 @@ def distribute_columns(Silent=False,Critical=False):
 						lst_len_ne.append(len(row[j]))
 					# Cannot max on an empty list
 					if len(lst_len_ne) > 0:
-						max_pos=lst_len_ne.index(max(lst_len_ne))
+						max_pos = lst_len_ne.index(max(lst_len_ne))
 					else:
 						max_pos = -1
 					# (column_no,number of columns to add)
@@ -3423,7 +2860,7 @@ def prepare_span(lst): # A list of dictionaries characterizing article entries
 		owner = -1
 		while i >= 0:
 			if i != 0 and not lst[i]['selectable']:
-				if i < len(lst)-1:
+				if i < len(lst) - 1:
 					if lst[i+1]['selectable']:
 						last_empty_pos = i
 				else:
@@ -3562,8 +2999,12 @@ def set_article(Silent=False,Critical=False):
 			#assert db['plain_text'] == globs['web_widget'].text('text')
 			if db['plain_text'] != globs['web_widget'].text('text'):
 				log(cur_func,lev_err,globs['mes'].different_texts)
-				#write_file('/tmp/assumed_text',db['plain_text'],AskRewrite=False)
-				#write_file('/tmp/real_text',globs['web_widget'].text('text'),AskRewrite=False)
+				'''if sys_type == 'lin':
+					write_file('/tmp/assumed_text',db['plain_text'],AskRewrite=False)
+					write_file('/tmp/real_text',globs['web_widget'].text('text'),AskRewrite=False)
+				'''
+			# Установить выделение на первую выделяемую ячейку (которая каждый раз переопределяется при загрузке статьи в process_cells)
+			globs['web_widget'].set_cell()
 		else:
 			mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
 		
@@ -3600,6 +3041,7 @@ def get_cell(index,Silent=False,Critical=False):
 			else:
 				parts = (0,0)
 			if globs['bool']['SelectTermsOnly']:
+				# todo: Здесь иногда получаем ошибку с индексами
 				if db['cells'][parts[0]][parts[1]]['selectable']:
 					assign_cur_cell(parts)
 			else:
@@ -3658,6 +3100,50 @@ def generate_tkhtml_text(Silent=False,Critical=False):
 	log(cur_func,lev_debug,"len(db['pos2cell']): %d" % len(db['pos2cell']))
 	assert len(db['plain_text']) == len(db['pos2cell'])
 	
+# Вернуть первую выделяемую ячейку по вертикали в направлении сверху вниз
+def get_vert_selectable(cur_i=0,cur_j=0,GetNext=True,Silent=False,Critical=False):
+	cur_func = sys._getframe().f_code.co_name
+	func_res = (cur_i,cur_j)
+	if globs['AbortAll']:
+		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+	else:
+		i = cur_i
+		while i < len(db['cells']):
+			# todo: Алгоритм для globs['bool']['SelectTermsOnly']
+			if db['cells'][i][cur_j]['selectable']:
+				if GetNext:
+					if i != cur_i:
+						func_res = (i,cur_j)
+						break
+				else:
+					func_res = (i,cur_j)
+					break
+			i += 1
+		log(cur_func,lev_debug,str(func_res))
+	return func_res
+	
+# Вернуть первую выделяемую ячейку по вертикали в направлении снизу вверх
+def get_vert_selectable_backwards(cur_i=0,cur_j=0,GetPrevious=True,Silent=False,Critical=False):
+	cur_func = sys._getframe().f_code.co_name
+	func_res = (cur_i,cur_j)
+	if globs['AbortAll']:
+		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+	else:
+		i = cur_i
+		while i >= 0:
+			# todo: Алгоритм для globs['bool']['SelectTermsOnly']
+			if db['cells'][i][cur_j]['selectable']:
+				if GetPrevious:
+					if i != cur_i:
+						func_res = (i,cur_j)
+						break
+				else:
+					func_res = (i,cur_j)
+					break
+			i -= 1
+		log(cur_func,lev_debug,str(func_res))
+	return func_res
+
 # Prepare the information on move up, down, left, right, etc. events
 def move_events():
 	cur_func = sys._getframe().f_code.co_name
@@ -3693,65 +3179,81 @@ def move_events():
 					tmp_lst += [get_selectable_backwards(i,j)]
 				db['move_left'] += [tmp_lst]
 			#------------------------------------------------------------------
-			# Создаем список первых выделяемых ячеек
-			first_selectables = []
-			for i in range(len(db['cells'])):
-				first_selectables.append(get_selectable(i,0,False))
-			#------------------------------------------------------------------
 			# Список для перехода на первые выделяемые ячейки
-			db['move_line_start'] = []
 			for i in range(len(db['cells'])):
 				tmp_lst = []
 				for j in range(len(db['cells'][i])):
-					tmp_lst += [first_selectables[i]]
+					tmp_lst += [get_selectable(i,0,False)]
 				db['move_line_start'] += [tmp_lst]
-			#------------------------------------------------------------------
-			# Временный список, необходимый для создания db['move_down']
-			tmp_sels = list(first_selectables)
-			if len(tmp_sels) > 1:
-				tmp_sels.insert(-1,tmp_sels[-1])
-				del tmp_sels[0]
-			# Список первых выделяемых ячеек сверху-вниз
-			db['move_down'] = []
-			for i in range(len(db['cells'])):
-				tmp_lst = []
-				for j in range(len(db['cells'][i])):
-					tmp_lst += [tmp_sels[i]]
-				db['move_down'] += [tmp_lst]
-			#------------------------------------------------------------------
-			# Временный список, необходимый для создания db['move_up']
-			tmp_sels = list(first_selectables)
-			if len(tmp_sels) > 1:
-				tmp_sels.insert(0,tmp_sels[0])
-				del tmp_sels[-1]
-			# Список первых выделяемых ячеек снизу-вверх
-			db['move_up'] = []
-			for i in range(len(db['cells'])):
-				tmp_lst = []
-				for j in range(len(db['cells'][i])):
-					tmp_lst += [tmp_sels[i]]
-				db['move_up'] += [tmp_lst]
-			#------------------------------------------------------------------
-			# Создаем список последних выделяемых ячеек
-			last_selectables = []
-			for i in range(len(db['cells'])):
-				# Алгоритм не принимает -1, необходимо точно указывать позицию
-				last_selectables.append(get_selectable_backwards(i,len(db['cells'][i])-1,False))
 			#------------------------------------------------------------------
 			# Список для перехода на последние выделяемые ячейки
 			for i in range(len(db['cells'])):
 				tmp_lst = []
 				for j in range(len(db['cells'][i])):
-					tmp_lst += [last_selectables[i]]
+					# Алгоритм не принимает -1, необходимо точно указывать позицию
+					tmp_lst += [get_selectable_backwards(i,len(db['cells'][i])-1,False)]
 				db['move_line_end'] += [tmp_lst]
 			#------------------------------------------------------------------
 			# Первая выделяемая ячейка
-			db['move_text_start'] = db['move_left'][0][0]
+			# todo: Почему не удается использовать 'move_left', 'move_up'?
+			db['move_text_start'] = get_selectable(0,0,False)
 			# Последняя выделяемая ячейка
-			db['move_text_end'] = db['move_right'][-1][-1]
+			# todo: Почему не удается использовать 'move_right', 'move_down'?
+			db['move_text_end'] = get_selectable_backwards(len(db['cells'])-1,len(db['cells'][-1])-1,False)
 			#------------------------------------------------------------------
-			log(cur_func,lev_debug,"db['move_right']: %s" % str(db['move_right']))
+			# Логика 'move_up' и 'move_down': идем вверх/вниз по тому же столбцу. Если на текущей строке нет выделяемой ячейки в нужном столбце, тогда пропускаем ее. Если дошли до конца столбца, переходим на первую/последнюю строку последующего/предыдущего столбца.
+			#------------------------------------------------------------------
+			for i in range(len(db['cells'])):
+				tmp_lst = []
+				for j in range(len(db['cells'][i])):
+					# Номер строки, на которой находится конечная выделяемая ячейка при навигации сверху вниз. Обратить внимание, что это не обязательно последняя строка в статье!
+					# Возможно, имеет смысл вынести max_i в отдельный список, чтобы не вычислять его лишний раз. Но будет ли это быстрее?
+					max_i = get_vert_selectable_backwards(len(db['cells'])-1,j,GetPrevious=False)[0]
+					cell = get_vert_selectable(i,j)
+					# Просто == не работает
+					if i >= max_i:
+						# Если достигнут конец текущего столбца, перейти на первую выделяемую ячейку следующего столбца
+						if j < len(db['cells'][i]) - 1:
+							tmp_lst.append(get_vert_selectable(0,j+1,GetNext=False))
+						else:
+							tmp_lst.append((i,j))
+					elif cell == (i,j):
+						tmp_lst.append(get_selectable(i,0))
+					else:
+						tmp_lst.append(cell)
+				db['move_down'] += [tmp_lst]
+			#------------------------------------------------------------------
+			for i in range(len(db['cells'])):
+				tmp_lst = []
+				for j in range(len(db['cells'][i])):
+					# Номер строки, на которой находится первая выделяемая ячейка при навигации снизу вверх. Обратить внимание, что это не обязательно первая строка в статье!
+					# Возможно, имеет смысл вынести min_i в отдельный список, чтобы не вычислять его лишний раз. Но будет ли это быстрее?
+					min_i = get_vert_selectable(0,j,GetNext=False)[0]
+					cell = get_vert_selectable_backwards(i,j)
+					# Просто == не работает
+					if i <= min_i:
+						# Если достигнута самая первая выделяемая ячейка, не продолжать с последнего столбца статьи. Для 'move_down' такая проверка почему-то не обязательна.
+						if i == db['move_text_start'][0] and j == db['move_text_start'][1]:
+							tmp_lst.append((i,j))
+						# Если достигнут конец текущего столбца, перейти на последнюю выделяемую ячейку предыдущего столбца
+						elif j > 0:
+							tmp_lst.append(get_vert_selectable_backwards(len(db['cells'])-1,j-1,GetPrevious=False))
+						else:
+							tmp_lst.append((i,j))
+					elif cell == (i,j):
+						tmp_lst.append(get_selectable_backwards(i,0))
+					else:
+						tmp_lst.append(cell)
+				db['move_up'] += [tmp_lst]
+			#------------------------------------------------------------------
 			log(cur_func,lev_debug,"db['move_left']: %s" % str(db['move_left']))
+			log(cur_func,lev_debug,"db['move_right']: %s" % str(db['move_right']))
+			log(cur_func,lev_debug,"db['move_down']: %s" % str(db['move_down']))
+			log(cur_func,lev_debug,"db['move_up']: %s" % str(db['move_up']))
+			log(cur_func,lev_debug,"db['move_line_start']: %s" % str(db['move_line_start']))
+			log(cur_func,lev_debug,"db['move_line_end']: %s" % str(db['move_line_end']))
+			log(cur_func,lev_debug,"db['move_text_start']: %s" % str(db['move_text_start']))
+			log(cur_func,lev_debug,"db['move_text_end']: %s" % str(db['move_text_end']))
 			if globs['bool']['InternalDebug']:
 				res_mes = "db['move_up']:" + dlb + str(db['move_up']) + dlb + dlb
 				res_mes += "db['move_down']:" + dlb + str(db['move_down']) + dlb + dlb
@@ -3875,6 +3377,7 @@ class TkinterHtmlMod(tk.Widget):
 		tk.Widget.__init__(self, master, 'html', cfg, kw)
 		# make selection and copying possible
 		self._node = None
+		self.index = None
 		self._offset = None
 		self._selection_end_node = None
 		self._selection_end_offset = None
@@ -3886,9 +3389,6 @@ class TkinterHtmlMod(tk.Widget):
 			create_binding(widget=globs['top'],bindings=[globs['var']['bind_copy_sel'],globs['var']['bind_copy_sel_alt'],globs['var']['bind_copy_sel_alt2']],action=self.copy_cell)
 			# По неясной причине в одной и той же Windows ИНОГДА не удается включить '<KP_Delete>'
 			create_binding(widget=globs['top'],bindings='<Delete>',action=self.del_cell)
-		# todo: Получаю здесь ошибку сегментирования
-		# Выделить первую выделяемую ячейку
-		#self.set_cell()
 	#--------------------------------------------------------------------------
 	def node(self, *arguments):
 		return self.tk.call(self._w, "node", *arguments)
@@ -3926,18 +3426,23 @@ class TkinterHtmlMod(tk.Widget):
 	def yview(self, *args):
 		"Used to control the vertical position of the document."
 		if args: return self.tk.call(self._w, "yview", *args)
-		coords = map(float, self.tk.call(self._w, "yview").split())
+		#coords = map(float, self.tk.call(self._w, "yview").split())
+		coords = map(float, self.tk.call(self._w, "yview"))
 		return tuple(coords)
 	#--------------------------------------------------------------------------
+	# Сместить экран до заданного узла
 	def yview_name(self, name):
-		"""Adjust the vertical position of the document so that the tag
-		<a name=NAME...> is visible and preferably near the top of the window.
-		"""
+		''' Пример использования:
+			self.index = self.text('index',term_first_pos,term_last_pos)
+			self.yview_name(self.index[0])
+		'''
 		return self.yview(name)
 	#--------------------------------------------------------------------------
 	def yview_moveto(self, fraction):
 		"""Adjust the vertical position of the document so that fraction of
 		the document is off-screen above the visible region.
+		Example:
+		self.yview('moveto',20.0)
 		"""
 		return self.yview("moveto", fraction)
 	#--------------------------------------------------------------------------
@@ -3948,30 +3453,27 @@ class TkinterHtmlMod(tk.Widget):
 		return self.yview("scroll", number, what)
 	#--------------------------------------------------------------------------
 	# Выделить ячейку
-	def set_cell(self,Silent=False,Critical=False):
+	def set_cell(self,View=False,Silent=False,Critical=False): # View=True будет всегда сдвигать экран до текущей ячейки при навигации с клавиатуры
 		cur_func = sys._getframe().f_code.co_name
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
 			self.tag("delete", "selection")
-			index = None
 			if 'cur_cell' in db and 'i' in db['cur_cell'] and 'j' in db['cur_cell']:
 				if globs['bool']['SelectTermsOnly']:
 					if 'first' in db['cells'][db['cur_cell']['i']][db['cur_cell']['j']] and 'last_term' in db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]:
-						index = self.text('index',db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['first'],db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['last_term'])
+						self.index = self.text('index',db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['first'],db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['last_term'])
 				else:
 					if 'first' in db['cells'][db['cur_cell']['i']][db['cur_cell']['j']] and 'last' in db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]:
-						index = self.text('index',db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['first'],db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['last'])
-				if not empty(index):
-					self.tag("add", "selection",index[0],index[1],index[2],index[3])
+						self.index = self.text('index',db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['first'],db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]['last'])
+				if not empty(self.index):
+					log(cur_func,lev_debug,globs['mes'].cur_node % self.index[0])
 					# В крайнем случае можно делать так:
 					#self.tag("add", "selection",self._node,0,self._node,300)
+					self.tag('add','selection',self.index[0],self.index[1],self.index[2],self.index[3])
 					self.tag('configure','selection','-background',globs['var']['color_terms_sel'])
-					#self.yview('moveto',20.0)
-					# cur
-					#print(self.tk.call(self._w,'yview','selection'))
-					#self.tk.call(self._w,'yview','selection')
-					#self.yview_name('test_view')
+					if View:
+						self.yview_name(self.index[0])
 			else:
 				mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
 	#--------------------------------------------------------------------------
@@ -3981,18 +3483,19 @@ class TkinterHtmlMod(tk.Widget):
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 		else:
-			index = -1
 			# Если ячейку определить не удалось, либо ее выделять нельзя (согласно настройкам), то возвращается предыдущая ячейка. Это позволяет всегда иметь активное выделение.
+			# mouse_index (int) != self.index (tuple)
+			mouse_index = -1
 			try:
 				self._node, self._offset = self.node(True, event.x, event.y)
-				index = self.text("offset", self._node, self._offset)
+				mouse_index = self.text("offset", self._node, self._offset)
 			except ValueError:
 				# Это сообщение появляется так часто, что не ставлю тут ничего.
 				#log(cur_func,lev_warn,globs['mes'].unknown_cell)
 				pass
-			if index >= 0:
-				get_cell(index)
-				self.set_cell()
+			if mouse_index > 0:
+				get_cell(mouse_index)
+				self.set_cell(View=False)
 	#--------------------------------------------------------------------------
 	# Скопировать термин текущей ячейки (или полное ее содержимое)
 	def copy_cell(self,event=None,Silent=False,Critical=False):

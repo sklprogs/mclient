@@ -1,8 +1,20 @@
 
 
+4.5
+* Delete keys: bind_move_page_start, bind_move_page_end
+* Save an article in a current view
+* Scroll the screen while searching and when using PageUp/PageDn, Control-Home, Control-End
+* Enhance navigation using up and down arrows
+* Scroll the screen with MMB like in previous versions
+* Informing about start/end while searching
+* Fix a bug: Highlight a first selectable element when loading an article
+* Fix a bug: Do not select parts of speech
+* Remove useless code
+
 4.4.1
+* Delete the key: mclientSaveTitle
 * Set focus on the window in case of Control-c-c in Windows versions newer than XP
-* Show the license information of the third-parties in GUI
+* Show the license information on the third-parties in GUI
 * Update a window title correctly
 
 4.4

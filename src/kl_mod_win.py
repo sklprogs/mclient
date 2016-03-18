@@ -9,6 +9,7 @@ import pythoncom
 import threading
 
 globs = {'HotkeyCaught':False}
+lock = threading.Lock()
 
 def toggle_hotkey(SetBool=True):
 	globs['HotkeyCaught'] = SetBool
@@ -18,6 +19,7 @@ class KeyListener(threading.Thread):
 	def __init__(self):
 		threading.Thread.__init__(self)
 		self.finished = threading.Event()
+		lock.acquire()
 		# Переменные должны быть инициализированы до вызова HookManager
 		self.pressed = []
 		self.listeners = {}
@@ -28,6 +30,7 @@ class KeyListener(threading.Thread):
 		self.hm.KeyDown = self.press
 		self.hm.KeyUp = self.release
 		self.hm.HookKeyboard()
+		lock.release()
 	#--------------------------------------------------------------------------
 	def cancel(self):
 		self.hm.UnhookKeyboard()
