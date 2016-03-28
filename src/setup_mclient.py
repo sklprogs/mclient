@@ -9,7 +9,7 @@ executables = [
 ]
 
 setup(name='mclient.pyw',
-      version = '1.0',
-      description = '',
+      version = '4.5.1',
+      description = 'Multitran Online Client',
       options = dict(build_exe = buildOptions),
       executables = executables)

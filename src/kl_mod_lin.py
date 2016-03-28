@@ -8,12 +8,16 @@ from Xlib.ext import record
 from Xlib.protocol import rq
 import threading
 
-globs = {'HotkeyCaught':False}
+globs = {'HotkeyCaught':False,'Verbose':False}
 
 def catch_control_c(*args):
 	pass
 	
 signal.signal(signal.SIGINT,catch_control_c) # do not quit when Control-c is pressed
+
+def print_v(*args):
+	if globs['Verbose']:
+		print(*args)
 
 def toggle_hotkey(SetBool=True):
 	globs['HotkeyCaught'] = SetBool
@@ -51,7 +55,7 @@ class KeyListener(threading.Thread):
 		if reply.category != record.FromServer:
 			return
 		if reply.client_swapped:
-			print("* received swapped protocol data, cowardly ignored")
+			print_v("* received swapped protocol data, cowardly ignored")
 			return
 		# Добавил str, иначе получаем ошибку
 		if not len(str(reply.data)) or ord(str(reply.data[0])) < 2:
@@ -72,10 +76,10 @@ class KeyListener(threading.Thread):
 	def run(self):
 		# Check if the extension is present
 		if not self.record_dpy.has_extension("RECORD"):
-			print("RECORD extension not found")
+			print_v("RECORD extension not found")
 			sys.exit(1)
 		r = self.record_dpy.record_get_version(0, 0)
-		print("RECORD extension version %d.%d" % (r.major_version, r.minor_version))
+		print_v("RECORD extension version %d.%d" % (r.major_version, r.minor_version))
 		# Create a recording context; we only want key events
 		self.ctx = self.record_dpy.record_create_context(
 				0,
@@ -115,7 +119,7 @@ class KeyListener(threading.Thread):
 				if self.pressed[0] == 'Control_L' or self.pressed[0] == 'Control_R':
 					self.pressed.append(character)
 		action = self.listeners.get(tuple(self.pressed), False)
-		#print('Current action:', str(tuple(self.pressed)))
+		print_v('Current action:', str(tuple(self.pressed)))
 		if action:
 			action()
 	#--------------------------------------------------------------------------
@@ -128,12 +132,12 @@ class KeyListener(threading.Thread):
 	#--------------------------------------------------------------------------
 	def addKeyListener(self, hotkeys, callable):
 		keys = tuple(hotkeys.split("+"))
-		print("Added new keylistener for :",str(keys))
+		print_v("Added new keylistener for :",str(keys))
 		self.listeners[keys] = callable
 
 def result():
 	if globs['HotkeyCaught']:
-		print('Control-c-c detected!')
+		print_v('Control-c-c detected!')
 		globs['HotkeyCaught'] = False
 		return True
 	else:

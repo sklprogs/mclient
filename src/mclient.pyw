@@ -23,7 +23,7 @@ import platform
 __author__ = 'Peter Sklyar'
 __copyright__ = 'Copyright 2015, 2016, Peter Sklyar'
 __license__ = 'GPL v.3'
-__version__ = '4.5'
+__version__ = '4.5.1'
 __email__ = 'skl.progs@gmail.com'
 
 # All third-party modules are the intellectual work of their authors.
@@ -75,7 +75,7 @@ cur_func = 'MAIN'
 gpl3_url_ru = 'http://rusgpl.ru/rusgpl.html'
 gpl3_url_en = 'http://www.gnu.org/licenses/gpl.html'
 # Данные глобальные переменные оформлены в виде словаря, что позволяет не использовать лишний раз global.
-globs = {'AbortAll':False,'cur_widget':'ERR_NO_WIDGET_DEFINED','ui_lang':'ru','mes':mes_ru,'license_url':gpl3_url_ru,'mclient_config_root':'mclient.cfg','config_parser':SafeConfigParser(),'_tkhtml_loaded':False,'var':{},'int':{},'mode':'url','ShowHistory':False,'geom_top':{'width':0,'height':0},'CaptureHotkey':True,'MouseClicked':False,'cur_pair':'ENG <=> RUS'}
+globs = {'AbortAll':False,'cur_widget':'ERR_NO_WIDGET_DEFINED','ui_lang':'ru','mes':mes_ru,'license_url':gpl3_url_ru,'mclient_config_root':'mclient.cfg','config_parser':SafeConfigParser(),'_tkhtml_loaded':False,'var':{},'int':{},'mode':'url','ShowHistory':False,'geom_top':{'width':0,'height':0},'CaptureHotkey':True,'MouseClicked':False,'cur_pair':'ENG <=> RUS','cur_page':0}
 
 db = {'history':[],'history_url':[],'url':'http://www.multitran.ru/c/m.exe?CL=1&s=%C4%EE%E1%F0%EE+%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21&l1=1','search':globs['mes'].welcome}
 
@@ -190,6 +190,7 @@ if  __name__ == '__main__':
 def log(cur_func,level,log_mes,TransFunc=False):
 	pass
 	#print(cur_func,':',level,':',log_mes)
+	# or level == lev_info
 	#if level == lev_crit or level == lev_debug_err or level == lev_warn or level == lev_err:
 	#	print(cur_func,':',level,':',log_mes)
 #------------------------------------------------------------------------------
@@ -431,6 +432,7 @@ def default_config(config='mclient',Init=True):
 		
 # Вопрос
 def Question(cur_func='MAIN',cur_mes=err_mes_empty_question):
+	root.withdraw()
 	par = tkmes.askokcancel(globs['mes'].ques_head,cur_mes)
 	log(cur_func,lev_info,cur_mes)
 	return par
@@ -438,11 +440,13 @@ def Question(cur_func='MAIN',cur_mes=err_mes_empty_question):
 # Названия такие же, как у модуля PyZenity (кроме List)
 # Информация
 def InfoMessage(cur_func='MAIN',cur_mes=err_mes_empty_info):
+	root.withdraw()
 	tkmes.showinfo(globs['mes'].inf_head,cur_mes)
 	log(cur_func,lev_info,cur_mes)
 
 # Предупреждение
 def Warning(cur_func='MAIN',cur_mes=err_mes_empty_warning):
+	root.withdraw()
 	tkmes.showwarning(globs['mes'].warn_head,cur_mes)
 	log(cur_func,lev_warn,cur_mes)
 	
@@ -1735,6 +1739,8 @@ def deiconify(widget):
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
 		widget.deiconify()
+		# Активирует окно в Openbox
+		widget.lift()
 		widget.focus_force()
 		if sys_type == 'win':
 			widget.wm_attributes('-topmost',1)
@@ -2585,9 +2591,14 @@ def get_article():
 	else:
 		if 'search_list' in db:
 			del db['search_list']
+		# Больше всего времени уходит на загрузку с Интернета - ~4 с, обработка занимает только ~0,3 с.
+		start_time = time()
 		get_online_article()
+		end_time = time()
+		log(cur_func,lev_info,globs['mes'].operation_completed % str(end_time-start_time))
 		# Предполагаем, что режим может быть 'skip' только после создания БД хотя бы для 1 статьи
 		if globs['mode'] != 'skip':
+			start_time = time()
 			prepare_page()
 			if not_found_online in db['page']:
 				Warning(cur_func,globs['mes'].term_not_found % db['search'])
@@ -2600,6 +2611,9 @@ def get_article():
 			unite_by_url()
 			define_selectables()
 			process_cells()
+			globs['cur_page'] = 0
+			end_time = time()
+			log(cur_func,lev_info,globs['mes'].operation_completed % str(end_time-start_time))
 
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<	
 # Объединить элементы списка, добавляя в нужном месте пробел
@@ -3452,8 +3466,11 @@ class TkinterHtmlMod(tk.Widget):
 		"""
 		return self.yview("scroll", number, what)
 	#--------------------------------------------------------------------------
+	def bbox(self,*args): # nodeHandle
+		return self.tk.call(self._w, "bbox", *args)
+	#--------------------------------------------------------------------------
 	# Выделить ячейку
-	def set_cell(self,View=False,Silent=False,Critical=False): # View=True будет всегда сдвигать экран до текущей ячейки при навигации с клавиатуры
+	def set_cell(self,View=True,Silent=False,Critical=False): # View=True будет всегда сдвигать экран до текущей ячейки при навигации с клавиатуры
 		cur_func = sys._getframe().f_code.co_name
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
@@ -3473,7 +3490,24 @@ class TkinterHtmlMod(tk.Widget):
 					self.tag('add','selection',self.index[0],self.index[1],self.index[2],self.index[3])
 					self.tag('configure','selection','-background',globs['var']['color_terms_sel'])
 					if View:
-						self.yview_name(self.index[0])
+						# cur
+						#print('width:',self.winfo_width())
+						#print('height:',self.winfo_height())
+						root.update_idletasks()
+						y_range = self.winfo_height() + self.winfo_rooty()
+						coors = self.bbox(self.index[0])
+						print('Координаты:',coors,'сравниваем с',y_range)
+						#delta = coors[2] - globs['cur_page'] * y_range
+						#if delta >= y_range or delta < 0:
+						cur_page = round(coors[1] / y_range)
+						if cur_page != globs['cur_page']:
+							#globs['cur_page'] = round(coors[1] / y_range)
+							globs['cur_page'] = cur_page
+							print('Текущая страница:',globs['cur_page'])
+							print('Необходим сдвиг экрана!')
+							self.yview_name(self.index[0])
+						else:
+							print('Сдвигать экран не требуется')
 			else:
 				mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
 	#--------------------------------------------------------------------------
@@ -3587,6 +3621,10 @@ def load_article(AddHistory=True,Silent=False,Critical=False,*args):
 # Перехватить нажатие Control-c-c
 def timed_update():
 	if globs['CaptureHotkey'] and kl_mod.result():
+		# Позволяет предотвратить зависание потока в версиях Windows старше XP
+		if sys_type == 'win':
+			kl_mod.keylistener.cancel()
+			kl_mod.keylistener.restart()
 		globs['MouseClicked'] = True
 		new_clipboard = clipboard_paste()
 		# Использовать то же сочетание клавиш для вызова окна

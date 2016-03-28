@@ -1,5 +1,9 @@
 
 
+4.5.1
+* Lift the window in Openbox
+* Fix Control-c-c capture in Windows versions newer than XP
+
 4.5
 * Delete keys: bind_move_page_start, bind_move_page_end
 * Save an article in a current view

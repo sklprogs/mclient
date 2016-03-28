@@ -8,40 +8,48 @@ from pyHook import HookManager
 import pythoncom
 import threading
 
-globs = {'HotkeyCaught':False}
+globs = {'HotkeyCaught':False,'hits':0,'Verbose':False}
 lock = threading.Lock()
+
+def print_v(*args):
+	if globs['Verbose']:
+		print(*args)
 
 def toggle_hotkey(SetBool=True):
 	globs['HotkeyCaught'] = SetBool
-	print('Hotkey has been detected and flag has been changed to %s!' % str(globs['HotkeyCaught']))
+	globs['hits'] += 1
+	print_v('Hotkey has been detected and flag has been changed to %s (%d hits in total)!' % (str(globs['HotkeyCaught']),globs['hits']))
 
 class KeyListener(threading.Thread):
 	def __init__(self):
 		threading.Thread.__init__(self)
 		self.finished = threading.Event()
-		lock.acquire()
 		# Переменные должны быть инициализированы до вызова HookManager
 		self.pressed = []
 		self.listeners = {}
 		# Иногда по непонятной причине символы выходят в верхнем регистре, но мы их приводим в нижний регистр в классе, поэтому здесь достаточно указать 'c'
 		self.addKeyListener("Lcontrol+c+c",toggle_hotkey)
 		self.addKeyListener("Rcontrol+c+c",toggle_hotkey)
+		self.restart()
+	#--------------------------------------------------------------------------
+	def cancel(self):
+		self.hm.UnhookKeyboard()
+		self.finished.set()
+	#--------------------------------------------------------------------------
+	def restart(self):
+		lock.acquire()
 		self.hm = HookManager()
 		self.hm.KeyDown = self.press
 		self.hm.KeyUp = self.release
 		self.hm.HookKeyboard()
 		lock.release()
 	#--------------------------------------------------------------------------
-	def cancel(self):
-		self.hm.UnhookKeyboard()
-		self.finished.set()
-	#--------------------------------------------------------------------------
 	def press(self,event):
 		character = str(event.Key)
 		if character:
 			if len(character) == 1:
 				character = character.lower()
-			print('Key released: %s' % str(character))
+			print_v('Key released: %s' % str(character))
 			if len(self.pressed) == 3:
 				self.pressed = []
 			if character == 'Lcontrol' or character == 'Rcontrol':
@@ -53,7 +61,7 @@ class KeyListener(threading.Thread):
 					if self.pressed[0] == 'Lcontrol' or self.pressed[0] == 'Rcontrol':
 						self.pressed.append(character)
 			action = self.listeners.get(tuple(self.pressed), False)
-			print('Current action: ' + str(tuple(self.pressed)))
+			print_v('Current action: ' + str(tuple(self.pressed)))
 			if action:
 				action()
 		# Без этого получаем ошибку (an integer is required)
@@ -65,22 +73,22 @@ class KeyListener(threading.Thread):
 		if character:
 			if len(character) == 1:
 				character = character.lower()
-			print('Key released: %s' % str(character))
+			print_v('Key released: %s' % str(character))
 			# Не засчитывает отпущенный Control
 			# Кириллическую 'с' распознает как латинскую
 			if character != 'c' and character != 'C':
 				self.pressed = []
 		# Без этого получаем ошибку (an integer is required)
 		return True
-	#--------------------------------------------------------------------------
+	#-------------------------------------------------------------------
 	def addKeyListener(self, hotkeys, callable):
 		keys = tuple(hotkeys.split("+"))
-		print("Added new keylistener for :" + str(keys))
+		print_v("Added new keylistener for :" + str(keys))
 		self.listeners[keys] = callable
 
 def result():
 	if globs['HotkeyCaught']:
-		print('Control-c-c detected!')
+		print_v('Control-c-c detected!')
 		globs['HotkeyCaught'] = False
 		return True
 	else:
@@ -103,7 +111,7 @@ def wait_example():
 	
 def wait_cycle():
 	from time import sleep, time
-	print('You have 5 seconds only...')
+	print_v('You have 5 seconds only...')
 	timeout = time() + 5
 	while timeout > time():
 		pythoncom.PumpWaitingMessages()
