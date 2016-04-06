@@ -23,7 +23,7 @@ import platform
 __author__ = 'Peter Sklyar'
 __copyright__ = 'Copyright 2015, 2016, Peter Sklyar'
 __license__ = 'GPL v.3'
-__version__ = '4.5.1'
+__version__ = '4.5.2'
 __email__ = 'skl.progs@gmail.com'
 
 # All third-party modules are the intellectual work of their authors.
@@ -188,11 +188,12 @@ if  __name__ == '__main__':
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # Placeholders
 def log(cur_func,level,log_mes,TransFunc=False):
-	pass
+	# tmp
+	#pass
 	#print(cur_func,':',level,':',log_mes)
 	# or level == lev_info
-	#if level == lev_crit or level == lev_debug_err or level == lev_warn or level == lev_err:
-	#	print(cur_func,':',level,':',log_mes)
+	if level == lev_crit or level == lev_debug_err or level == lev_warn or level == lev_err:
+		print(cur_func,':',level,':',log_mes)
 #------------------------------------------------------------------------------
 # Placeholder
 def decline_nom(words_nf,Decline=False):
@@ -331,12 +332,12 @@ def default_config(config='mclient',Init=True):
 			'font_comments_size':3,
 			'font_dics_size':4,
 			'font_speech_size':4,
-			'font_terms_size':4,
-			'pixel_hack':18
+			'font_terms_size':4
 							})
 		#----------------------------------------------------------------------
 		#globs['var'].update({'bind_re_search_article':'<Control-f>','bind_reload_article':'<Control-r>','bind_save_article':'<Control-s>'})
 		globs['var'].update({
+			'bind_add_cell':'<Control-Insert>',
 			'bind_clear_history_alt':'<Control-Shift-Delete>',
 			'bind_clear_history':'<ButtonRelease-3>',
 			'bind_clear_search_field':'<ButtonRelease-3>',
@@ -346,6 +347,7 @@ def default_config(config='mclient',Init=True):
 			'bind_copy_sel_alt2':'<ButtonRelease-3>',
 			'bind_copy_sel':'<Control-Return>',
 			'bind_copy_url':'<Control-F7>',
+			'bind_delete_cell':'<Control-Delete>',
 			'bind_define':'<Control-d>',
 			'bind_get_history':'<Double-Button-1>',
 			'bind_go_back':'<Alt-Left>',
@@ -2527,17 +2529,6 @@ def get_url():
 		db['url'] = online_request(globs['var']['online_dic_url'],request_encoded)
 		log(cur_func,lev_debug,"db['url']: %s" % str(db['url']))
 
-# tmp
-def check_elems():
-	res_mes = ''
-	for i in range(len(db['elem'])):
-		if db['elem'][i]['selectable']:
-			if db['elem'][i]['speech'] or db['elem'][i]['dic']:
-				res_mes += str(i) + ':' + str(db['elem'][i]) + dlb
-	#if res_mes and globs['bool']['InternalDebug']:
-	if res_mes:
-		text_field(title="db['elem']:",user_text=res_mes,ReadOnly=True)
-
 # Создать веб-страницу из ячеек и провести другие необходимые операции
 # Вынесено в отдельную процедуру для обеспечения быстрой перекомпоновки ячеек
 def process_cells():
@@ -2545,7 +2536,6 @@ def process_cells():
 	if globs['AbortAll']:
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
-		check_elems()
 		split_by_columms()
 		#distribute_columns()
 		#span_cells = create_span()
@@ -3402,7 +3392,8 @@ class TkinterHtmlMod(tk.Widget):
 		if 'top' in globs:
 			create_binding(widget=globs['top'],bindings=[globs['var']['bind_copy_sel'],globs['var']['bind_copy_sel_alt'],globs['var']['bind_copy_sel_alt2']],action=self.copy_cell)
 			# По неясной причине в одной и той же Windows ИНОГДА не удается включить '<KP_Delete>'
-			create_binding(widget=globs['top'],bindings='<Delete>',action=self.del_cell)
+			create_binding(widget=globs['top'],bindings=globs['var']['bind_delete_cell'],action=self.delete_cell)
+			create_binding(widget=globs['top'],bindings=globs['var']['bind_add_cell'],action=self.add_cell)
 	#--------------------------------------------------------------------------
 	def node(self, *arguments):
 		return self.tk.call(self._w, "node", *arguments)
@@ -3487,27 +3478,34 @@ class TkinterHtmlMod(tk.Widget):
 					log(cur_func,lev_debug,globs['mes'].cur_node % self.index[0])
 					# В крайнем случае можно делать так:
 					#self.tag("add", "selection",self._node,0,self._node,300)
-					self.tag('add','selection',self.index[0],self.index[1],self.index[2],self.index[3])
+					try:
+						self.tag('add','selection',self.index[0],self.index[1],self.index[2],self.index[3])
+					# При удалении или вставке ячеек может возникнуть ошибка, поскольку текущий узел изменился
+					except TclError:
+						log(cur_func,lev_warn,tag_addition_failure % ('selection',self.index[0],self.index[3]))
 					self.tag('configure','selection','-background',globs['var']['color_terms_sel'])
 					if View:
 						# cur
-						#print('width:',self.winfo_width())
-						#print('height:',self.winfo_height())
+						widget_width = self.winfo_width()
+						widget_height = self.winfo_height()
+						widget_offset_x = self.winfo_rootx()
+						widget_offset_y = self.winfo_rooty()
+						log(cur_func,lev_debug,globs['mes'].geometry % (widget_width,widget_height,widget_offset_x,widget_offset_y))
 						root.update_idletasks()
-						y_range = self.winfo_height() + self.winfo_rooty()
+						y_range = widget_height + widget_offset_y
 						coors = self.bbox(self.index[0])
-						print('Координаты:',coors,'сравниваем с',y_range)
+						log(cur_func,lev_debug,globs['mes'].compare_coors % (coors,y_range))
 						#delta = coors[2] - globs['cur_page'] * y_range
 						#if delta >= y_range or delta < 0:
 						cur_page = round(coors[1] / y_range)
 						if cur_page != globs['cur_page']:
 							#globs['cur_page'] = round(coors[1] / y_range)
 							globs['cur_page'] = cur_page
-							print('Текущая страница:',globs['cur_page'])
-							print('Необходим сдвиг экрана!')
+							log(cur_func,lev_debug,globs['mes'].cur_page % globs['cur_page'])
+							log(cur_func,lev_debug,globs['mes'].shift2pos % self.index[0])
 							self.yview_name(self.index[0])
 						else:
-							print('Сдвигать экран не требуется')
+							log(cur_func,lev_info,globs['mes'].shift_screen_required)
 			else:
 				mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
 	#--------------------------------------------------------------------------
@@ -3551,7 +3549,7 @@ class TkinterHtmlMod(tk.Widget):
 				mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
 	#--------------------------------------------------------------------------
 	# Удалить ячейку и перекомпоновать статью
-	def del_cell(self,event,Silent=False,Critical=False):
+	def delete_cell(self,event,Silent=False,Critical=False):
 		cur_func = sys._getframe().f_code.co_name
 		if globs['AbortAll']:
 			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
@@ -3573,6 +3571,31 @@ class TkinterHtmlMod(tk.Widget):
 					self.set_cell(event)
 				else:
 					mestype(cur_func,globs['mes'].wrong_input2,Silent=Silent,Critical=Critical)
+			else:
+				mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
+		#--------------------------------------------------------------------------
+	# Добавить пустую ячейку и перекомпоновать статью
+	def add_cell(self,event,Silent=False,Critical=False):
+		cur_func = sys._getframe().f_code.co_name
+		if globs['AbortAll']:
+			log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
+		else:
+			if 'cur_cell' in db and 'i' in db['cur_cell'] and 'j' in db['cur_cell']:
+				Found = False
+				# Предполагаем, что db['elem'] уже прошло стадию объединения комментариев
+				for i in range(len(db['elem'])):
+					# todo: Уточнить и упростить алгоритм
+					if db['elem'][i] == db['cells'][db['cur_cell']['i']][db['cur_cell']['j']]:
+						Found = True
+						break
+				if Found:
+					#db['elem'].insert(i,{'url':online_url_safe,'selectable':True,'speech':'','dic':'','term':'Пустая ячейка','comment':''})
+					db['elem'].insert(i,{'url':online_url_safe,'selectable':False,'speech':'','dic':'','term':'','comment':''})
+					process_cells()
+					set_article()
+					if 'last_cell' in db and 'i' in db['last_cell'] and 'j' in db['last_cell'] and 'cells' in db and len(db['cells']) > 0 and db['last_cell']['i'] < len(db['cells']) and db['last_cell']['j'] + 1 < len(db['cells'][0]):
+						assign_cur_cell((db['last_cell']['i'],db['last_cell']['j']+1))
+					self.set_cell(event)
 			else:
 				mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
 	#--------------------------------------------------------------------------

@@ -1,5 +1,11 @@
 
 
+4.5.2
+* Add an empty cell
+* Add keys: bind_delete_cell, bind_add_cell
+* Change key combinations for adding and deleting a cell to Control-Insert and Control-Delete correspondingly in order to avoid conflict with Delete in the search field
+* Update documentation
+
 4.5.1
 * Lift the window in Openbox
 * Fix Control-c-c capture in Windows versions newer than XP
