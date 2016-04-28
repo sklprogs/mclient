@@ -1,5 +1,13 @@
 
 
+4.6
+* Make the foreground of the selected cell black by default
+* Add the key color_terms_sel_fg
+* Rename the key color_terms_sel to color_terms_sel_bg
+* Shift the screen so as to show the selected cell when using keyboard
+* Fix a bug: cannot quit when the Internet connection is missing
+* Set UTF-8 encoding when saving the current view
+
 4.5.2
 * Add an empty cell
 * Add keys: bind_delete_cell, bind_add_cell

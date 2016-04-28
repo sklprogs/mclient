@@ -23,7 +23,7 @@ import platform
 __author__ = 'Peter Sklyar'
 __copyright__ = 'Copyright 2015, 2016, Peter Sklyar'
 __license__ = 'GPL v.3'
-__version__ = '4.5.2'
+__version__ = '4.6'
 __email__ = 'skl.progs@gmail.com'
 
 # All third-party modules are the intellectual work of their authors.
@@ -75,7 +75,7 @@ cur_func = 'MAIN'
 gpl3_url_ru = 'http://rusgpl.ru/rusgpl.html'
 gpl3_url_en = 'http://www.gnu.org/licenses/gpl.html'
 # Данные глобальные переменные оформлены в виде словаря, что позволяет не использовать лишний раз global.
-globs = {'AbortAll':False,'cur_widget':'ERR_NO_WIDGET_DEFINED','ui_lang':'ru','mes':mes_ru,'license_url':gpl3_url_ru,'mclient_config_root':'mclient.cfg','config_parser':SafeConfigParser(),'_tkhtml_loaded':False,'var':{},'int':{},'mode':'url','ShowHistory':False,'geom_top':{'width':0,'height':0},'CaptureHotkey':True,'MouseClicked':False,'cur_pair':'ENG <=> RUS','cur_page':0}
+globs = {'AbortAll':False,'cur_widget':'ERR_NO_WIDGET_DEFINED','ui_lang':'ru','mes':mes_ru,'license_url':gpl3_url_ru,'mclient_config_root':'mclient.cfg','config_parser':SafeConfigParser(),'_tkhtml_loaded':False,'var':{},'int':{},'mode':'url','ShowHistory':False,'geom_top':{'width':0,'height':0},'CaptureHotkey':True,'MouseClicked':False,'cur_pair':'ENG <=> RUS','page_no':0}
 
 db = {'history':[],'history_url':[],'url':'http://www.multitran.ru/c/m.exe?CL=1&s=%C4%EE%E1%F0%EE+%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21&l1=1','search':globs['mes'].welcome}
 
@@ -385,7 +385,8 @@ def default_config(config='mclient',Init=True):
 			'color_comments':'gray',
 			'color_dics':'cadet blue',
 			'color_speech':'red',
-			'color_terms_sel':'cyan',
+			'color_terms_sel_bg':'cyan',
+			'color_terms_sel_fg':'black',
 			'color_terms':'black',
 			'default_hint_background':'#ffffe0',
 			'default_hint_border_color':'navy',
@@ -581,7 +582,7 @@ def get_online_article(Silent=False,Critical=False):
 				log(cur_func,lev_warn,globs['mes'].failed % db['search'])
 				#mestype(cur_func,globs['mes'].webpage_unavailable,Silent=Silent,Critical=Critical)
 				if not Question(cur_func,globs['mes'].webpage_unavailable_ques):
-					sys.exit()
+					quit_now()
 			if Success: # Если страница не загружена, то понятно, что ее кодировку изменить не удастся
 				try:
 					# Меняем кодировку globs['var']['win_encoding'] на нормальную
@@ -624,8 +625,6 @@ def SelectFromList(title,cur_mes,list_array,Insist=False,Silent=False,Critical=T
 			except:
 				mestype(cur_func,globs['mes'].eg,Silent=Silent,Critical=Critical)
 			root.deiconify()
-			if empty(choice) and Critical:
-				globs['AbortAll'] = True
 		log(cur_func,lev_debug,str(choice))
 	return choice
 
@@ -738,10 +737,7 @@ def dialog_save_file(text,filetypes=(),Critical=True):
 		# dialog при пустом выборе возвращает (), который мы заменяем на '', потому что возвращаемое значение должно представлять собой строку, а не кортеж (иначе, например, такие процедуры как exist() будут вылетать)
 		if file == ():
 			file = ''
-		if empty(file):
-			if Critical:
-				globs['AbortAll'] = True
-		else:
+		if not empty(file):
 			# На Linux добавляется расширение после asksaveasfilename, на Windows - нет. Мы не можем понять, что выбрал пользователь, поскольку asksaveasfilename возвращает только имя файла. Поэтому, если никакого разрешения нет, добавляем '.htm' в надежде, что браузер нормально откроет текстовый файл.
 			# ВНИМАНИЕ: это сработает для обычного текста и для веб-страниц, с другими типами могут быть проблемы.
 			if empty(get_ext(file)):
@@ -1521,7 +1517,7 @@ def load_icon(icon_path,parent_widget,width=None,height=None,Silent=False,Critic
 		if empty(height):
 			height = globs['int']['default_button_size']
 		try:
-			# Нужно указывать виджет: http://stackoverflow.com/questions/23224574/tkinter - create - image - function - error - pyimage1 - does - not - exist
+			# Нужно указывать виджет: http://stackoverflow.com/questions/23224574/tkinter-create-image-function-error-pyimage1-does-not-exist
 			button_img = tk.PhotoImage(file=icon_path,master=parent_widget,width=width,height=height) # Без 'file=' не сработает!
 		except tk.TclError:
 			mestype(cur_func,globs['mes'].button_load_failed % icon_path,Silent=Silent,Critical=Critical)
@@ -1657,6 +1653,7 @@ class ToolTip(ToolTipBase):
 		label.pack() #expand=1,fill='x'
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+# Упрощено
 # Создать кнопку с различными параметрами
 # expand = 1 - увеличить расстояние между кнопками
 # Моментальная упаковка не поддерживается, потому что это действие возвращает вместо виджета None, а мы проводим далее над виджетом другие операции
@@ -1695,7 +1692,7 @@ def create_button(parent_widget,text,hint,action,expand=0,side='left',fg='black'
 				hint_expand = dlb + bindings[0].replace('<','').replace('>','')
 				i = 1
 				while i < len(bindings):
-					hint_expand+=', '+bindings[i].replace('<','').replace('>','')
+					hint_expand += ', ' + bindings[i].replace('<','').replace('>','')
 					i += 1
 				hint += hint_expand
 			try:
@@ -1707,15 +1704,11 @@ def create_button(parent_widget,text,hint,action,expand=0,side='left',fg='black'
 					button = tk.Button(parent_widget,text=text,fg=fg)
 			except tk.TclError:
 				Success = False
-				if Critical:
-					globs['AbortAll'] = True
 			try:
 				button.pack(expand=expand,side=side)
 			# tk.TclError, AttributeError
 			except:
 				Success = False
-				if Critical:
-					globs['AbortAll'] = True
 			create_binding(widget=button,bindings=['<Return>','<KP_Enter>','<space>','<ButtonRelease-1>'],action=action)
 			if Success:
 				ToolTip(button,text=hint,hint_delay=hint_delay,hint_width=hint_width,hint_height=hint_height,hint_background=hint_background,hint_direction=hint_direction,button_side=side)
@@ -2601,7 +2594,8 @@ def get_article():
 			unite_by_url()
 			define_selectables()
 			process_cells()
-			globs['cur_page'] = 0
+			globs['page_no'] = 0
+			globs['top_indexes'] = {}
 			end_time = time()
 			log(cur_func,lev_info,globs['mes'].operation_completed % str(end_time-start_time))
 
@@ -2906,7 +2900,7 @@ def generate_simple_page(Silent=False,Critical=False):
 		log(cur_func,lev_warn,globs['mes'].abort_func % cur_func)
 	else:
 		if 'cells' in db and len(db['cells']) > 0:
-			db['simple_html'] = '<html><body><table>'
+			db['simple_html'] = '<html><body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"><table>'
 			# Форматирование текста ячеек тэгами
 			for i in range(len(db['cells'])):
 				db['simple_html'] += '<tr>'
@@ -3394,6 +3388,13 @@ class TkinterHtmlMod(tk.Widget):
 			# По неясной причине в одной и той же Windows ИНОГДА не удается включить '<KP_Delete>'
 			create_binding(widget=globs['top'],bindings=globs['var']['bind_delete_cell'],action=self.delete_cell)
 			create_binding(widget=globs['top'],bindings=globs['var']['bind_add_cell'],action=self.add_cell)
+		self.pages_coors = []
+		self.widget_width = 0
+		self.widget_height = 0
+		self.widget_offset_x = 0
+		self.widget_offset_y = 0
+		self.top_bbox = 0
+		self.bottom_bbox = 0
 	#--------------------------------------------------------------------------
 	def node(self, *arguments):
 		return self.tk.call(self._w, "node", *arguments)
@@ -3460,6 +3461,45 @@ class TkinterHtmlMod(tk.Widget):
 	def bbox(self,*args): # nodeHandle
 		return self.tk.call(self._w, "bbox", *args)
 	#--------------------------------------------------------------------------
+	# Сместить экран так, чтобы была видна текущая выделенная ячейка
+	def shift_screen(self):
+		root.update_idletasks()
+		cur_widget_width = self.winfo_width()
+		cur_widget_height = self.winfo_height()
+		cur_widget_offset_x = self.winfo_rootx()
+		cur_widget_offset_y = self.winfo_rooty()
+		if cur_widget_width != self.widget_width or cur_widget_height != self.widget_height or cur_widget_offset_x != self.widget_offset_x or cur_widget_offset_y != self.widget_offset_y:
+			self.widget_width = cur_widget_width
+			self.widget_height = cur_widget_height
+			self.widget_offset_x = cur_widget_offset_x
+			self.widget_offset_y = cur_widget_offset_y
+			log(cur_func,lev_debug,globs['mes'].geometry % (self.widget_width,self.widget_height,self.widget_offset_x,self.widget_offset_y))
+			globs['top_indexes'] = {}
+			globs['page_no'] = 0
+			assign_cur_cell(db['move_text_start'])
+		# Иначе экран будет смещаться до 1-й выделяемой ячейки, а не до верхнего края
+		if globs['page_no'] == 0 and not 0 in globs['top_indexes']:
+			globs['top_indexes'][0] = self.text('index',0)[0]
+		self.top_bbox = self.widget_height * globs['page_no']
+		self.bottom_bbox = self.top_bbox + self.widget_height
+		cur_top_bbox = self.bbox(self.index[0])[1]
+		cur_bottom_bbox = self.bbox(self.index[0])[3]
+		if cur_top_bbox < self.top_bbox:
+			if globs['page_no'] > 0:
+				globs['page_no'] -= 1
+			if globs['page_no'] in globs['top_indexes']:
+				self.yview_name(globs['top_indexes'][globs['page_no']])
+			#else:
+			#	self.yview_scroll(cur_top_bbox-self.top_bbox,'units')
+			log(cur_func,lev_info,globs['mes'].cur_page_no % globs['page_no'])
+		elif cur_bottom_bbox > self.bottom_bbox:
+			self.yview(self.index[0])
+			globs['page_no'] += 1
+			log(cur_func,lev_info,globs['mes'].cur_page_no % globs['page_no'])
+			globs['top_indexes'][globs['page_no']] = self.index[0]
+		else:
+			log(cur_func,lev_info,globs['mes'].shift_screen_not_required)
+	#--------------------------------------------------------------------------
 	# Выделить ячейку
 	def set_cell(self,View=True,Silent=False,Critical=False): # View=True будет всегда сдвигать экран до текущей ячейки при навигации с клавиатуры
 		cur_func = sys._getframe().f_code.co_name
@@ -3483,29 +3523,10 @@ class TkinterHtmlMod(tk.Widget):
 					# При удалении или вставке ячеек может возникнуть ошибка, поскольку текущий узел изменился
 					except TclError:
 						log(cur_func,lev_warn,tag_addition_failure % ('selection',self.index[0],self.index[3]))
-					self.tag('configure','selection','-background',globs['var']['color_terms_sel'])
+					self.tag('configure','selection','-background',globs['var']['color_terms_sel_bg'])
+					self.tag('configure','selection','-foreground',globs['var']['color_terms_sel_fg'])
 					if View:
-						# cur
-						widget_width = self.winfo_width()
-						widget_height = self.winfo_height()
-						widget_offset_x = self.winfo_rootx()
-						widget_offset_y = self.winfo_rooty()
-						log(cur_func,lev_debug,globs['mes'].geometry % (widget_width,widget_height,widget_offset_x,widget_offset_y))
-						root.update_idletasks()
-						y_range = widget_height + widget_offset_y
-						coors = self.bbox(self.index[0])
-						log(cur_func,lev_debug,globs['mes'].compare_coors % (coors,y_range))
-						#delta = coors[2] - globs['cur_page'] * y_range
-						#if delta >= y_range or delta < 0:
-						cur_page = round(coors[1] / y_range)
-						if cur_page != globs['cur_page']:
-							#globs['cur_page'] = round(coors[1] / y_range)
-							globs['cur_page'] = cur_page
-							log(cur_func,lev_debug,globs['mes'].cur_page % globs['cur_page'])
-							log(cur_func,lev_debug,globs['mes'].shift2pos % self.index[0])
-							self.yview_name(self.index[0])
-						else:
-							log(cur_func,lev_info,globs['mes'].shift_screen_required)
+						self.shift_screen()
 			else:
 				mestype(cur_func,globs['mes'].not_enough_input_data,Silent=Silent,Critical=Critical)
 	#--------------------------------------------------------------------------
