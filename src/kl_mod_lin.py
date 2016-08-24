@@ -8,7 +8,7 @@ from Xlib.ext import record
 from Xlib.protocol import rq
 import threading
 
-globs = {'HotkeyCaught':False,'Verbose':False}
+flags = {'HotkeyCaught':False,'Verbose':False}
 
 def catch_control_c(*args):
 	pass
@@ -16,11 +16,13 @@ def catch_control_c(*args):
 signal.signal(signal.SIGINT,catch_control_c) # do not quit when Control-c is pressed
 
 def print_v(*args):
-	if globs['Verbose']:
+	if flags['Verbose']:
 		print(*args)
 
 def toggle_hotkey(SetBool=True):
-	globs['HotkeyCaught'] = SetBool
+	flags['HotkeyCaught'] = SetBool
+
+
 
 # Определить нажатие горячих клавиш глобально в системе
 class KeyListener(threading.Thread):
@@ -42,7 +44,7 @@ class KeyListener(threading.Thread):
 		self.record_dpy = Display()
 		self.pressed = []
 		self.listeners = {}
-	#--------------------------------------------------------------------------
+
 	# need the following because XK.keysym_to_string() only does printable chars
 	# rather than being the correct inverse of XK.string_to_keysym()
 	def lookup_keysym(self, keysym):
@@ -50,7 +52,7 @@ class KeyListener(threading.Thread):
 			if name.startswith("XK_") and getattr(XK, name) == keysym:
 				return name.lstrip("XK_")
 		return "[%d]" % keysym
-	#--------------------------------------------------------------------------
+
 	def processevents(self, reply):
 		if reply.category != record.FromServer:
 			return
@@ -72,7 +74,7 @@ class KeyListener(threading.Thread):
 					self.press(character)
 				elif event.type == X.KeyRelease:
 					self.release(character)
-	#--------------------------------------------------------------------------
+
 	def run(self):
 		# Check if the extension is present
 		if not self.record_dpy.has_extension("RECORD"):
@@ -101,12 +103,12 @@ class KeyListener(threading.Thread):
 		self.record_dpy.record_enable_context(self.ctx, self.processevents)
 		# Finally free the context
 		self.record_dpy.record_free_context(self.ctx)
-	#--------------------------------------------------------------------------
+
 	def cancel(self):
 		self.finished.set()
 		self.local_dpy.record_disable_context(self.ctx)
 		self.local_dpy.flush()
-	#--------------------------------------------------------------------------
+
 	def press(self, character):
 		if len(self.pressed) == 3:
 			self.pressed = []
@@ -122,23 +124,25 @@ class KeyListener(threading.Thread):
 		print_v('Current action:', str(tuple(self.pressed)))
 		if action:
 			action()
-	#--------------------------------------------------------------------------
+
 	def release(self, character):
 		"""must be called whenever a key release event has occurred."""
 		# Не засчитывает отпущенный Control
 		# Кириллическую 'с' распознает как латинскую
 		if character != 'c':
 			self.pressed = []
-	#--------------------------------------------------------------------------
+
 	def addKeyListener(self, hotkeys, callable):
 		keys = tuple(hotkeys.split("+"))
 		print_v("Added new keylistener for :",str(keys))
 		self.listeners[keys] = callable
 
+
+
 def result():
-	if globs['HotkeyCaught']:
+	if flags['HotkeyCaught']:
 		print_v('Control-c-c detected!')
-		globs['HotkeyCaught'] = False
+		flags['HotkeyCaught'] = False
 		return True
 	else:
 		return False
