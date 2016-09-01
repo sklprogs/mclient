@@ -1881,6 +1881,9 @@ def timed_update():
 		h_table.search_field.widget.focus_force()
 	else:
 		h_table.MouseClicked = False
+	# We need to have .after in the same function for it to work
+	init_inst('root').widget.after(300,timed_update)
+	h_quit.now()
 	
 # Изменить язык графического интерфейса и сообщений
 def toggle_ui_lang():
@@ -1899,28 +1902,20 @@ class Quit:
 	
 	def __init__(self):
 		self.Quit = False
-		self.after_id = None
 	
 	def wait(self,*args):
 		self.Quit = True
 		init_inst('top').close()
 		
 	def now(self,*args):
-		log.append('Quit.now',lev_info,globs['mes'].goodbye)
-		kl_mod.keylistener.cancel()
-		if self.after_id:
-			init_inst('root').widget.after_cancel(self.after_id)
-		init_inst('root').destroy()
-		sys.exit()
-			
-	def loop(self):
 		if self.Quit:
-			self.now()
-		else:
-			self.after_id = init_inst('root').widget.after(300,timed_update)
-	
-	
-	
+			log.append('Quit.now',lev_info,globs['mes'].goodbye)
+			kl_mod.keylistener.cancel()
+			init_inst('root').destroy()
+			sys.exit()
+
+
+
 class About:
 	
 	def __init__(self):
@@ -3228,9 +3223,9 @@ if  __name__ == '__main__':
 	h_quit = Quit()
 	h_table = TkinterHtmlMod(init_inst('top').widget)
 	init_inst('top').widget.protocol("WM_DELETE_WINDOW",h_quit.wait)
+	timed_update() # Do not wrap this function. Change this carefully.
 	HTML() # Is needed after initializing requests
 	h_table.load_article()
 	h_table.show()
 	init_inst('top').show()
-	h_quit.loop()
 	init_inst('root').run()

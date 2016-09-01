@@ -116,7 +116,7 @@ class KeyListener(threading.Thread):
 			if len(self.pressed) > 0:
 				self.pressed = []
 			self.pressed.append(character)
-		elif character == 'c':
+		elif character == 'c' or character == 'Insert':
 			if len(self.pressed) > 0:
 				if self.pressed[0] == 'Control_L' or self.pressed[0] == 'Control_R':
 					self.pressed.append(character)
@@ -129,7 +129,7 @@ class KeyListener(threading.Thread):
 		"""must be called whenever a key release event has occurred."""
 		# Не засчитывает отпущенный Control
 		# Кириллическую 'с' распознает как латинскую
-		if character != 'c':
+		if character != 'c' and character != 'Insert':
 			self.pressed = []
 
 	def addKeyListener(self, hotkeys, callable):
@@ -141,7 +141,7 @@ class KeyListener(threading.Thread):
 
 def result():
 	if flags['HotkeyCaught']:
-		print_v('Control-c-c detected!')
+		print_v('Hotkey has been caught!')
 		flags['HotkeyCaught'] = False
 		return True
 	else:
@@ -156,6 +156,8 @@ def wait_example():
 keylistener = KeyListener()
 keylistener.addKeyListener("Control_L+c+c",toggle_hotkey)
 keylistener.addKeyListener("Control_R+c+c",toggle_hotkey)
+keylistener.addKeyListener("Control_L+Insert+Insert",toggle_hotkey)
+keylistener.addKeyListener("Control_R+Insert+Insert",toggle_hotkey)
 keylistener.start()
 
 if __name__ == '__main__':

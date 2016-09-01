@@ -30,6 +30,8 @@ class KeyListener(threading.Thread):
 		# Иногда по непонятной причине символы выходят в верхнем регистре, но мы их приводим в нижний регистр в классе, поэтому здесь достаточно указать 'c'
 		self.addKeyListener("Lcontrol+c+c",toggle_hotkey)
 		self.addKeyListener("Rcontrol+c+c",toggle_hotkey)
+		self.addKeyListener("Lcontrol+Insert+Insert",toggle_hotkey)
+		self.addKeyListener("Rcontrol+Insert+Insert",toggle_hotkey)
 		self.restart()
 	#--------------------------------------------------------------------------
 	def cancel(self):
@@ -56,7 +58,7 @@ class KeyListener(threading.Thread):
 				if len(self.pressed) > 0:
 					self.pressed = []
 				self.pressed.append(character)
-			elif character == 'c' or character == 'C':
+			elif character == 'c' or character == 'C' or character == 'Insert':
 				if len(self.pressed) > 0:
 					if self.pressed[0] == 'Lcontrol' or self.pressed[0] == 'Rcontrol':
 						self.pressed.append(character)
@@ -76,7 +78,7 @@ class KeyListener(threading.Thread):
 			print_v('Key released: %s' % str(character))
 			# Не засчитывает отпущенный Control
 			# Кириллическую 'с' распознает как латинскую
-			if character != 'c' and character != 'C':
+			if character != 'c' and character != 'C' and character != 'Insert':
 				self.pressed = []
 		# Без этого получаем ошибку (an integer is required)
 		return True
@@ -88,7 +90,7 @@ class KeyListener(threading.Thread):
 
 def result():
 	if globs['HotkeyCaught']:
-		print_v('Control-c-c detected!')
+		print_v('Hotkey has been caught!')
 		globs['HotkeyCaught'] = False
 		return True
 	else:
