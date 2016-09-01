@@ -3,7 +3,7 @@
 
 from constants import *
 from shared import Message, WriteTextFile, Launch, List, Config, Clipboard, Path, Online, ReadTextFile, timer, log, globs, h_os
-from sharedGUI import create_binding, Button, Root, Top, Entry, WidgetShared, Frame, TextBox, ListBox, dialog_save_file
+from sharedGUI import create_binding, Button, Root, Top, Entry, WidgetShared, Frame, TextBox, ListBox, dialog_save_file, OptionMenu
 import copy
 # В Python 3 не работает просто import urllib, импорт должен быть именно такой, как здесь
 import urllib.request, urllib.parse
@@ -102,6 +102,8 @@ class ConfigMclient(Config):
 			'bind_move_text_end':'<Control-End>',
 			'bind_move_text_start':'<Control-Home>',
 			'bind_move_up':'<Up>',
+			'bind_next_pair':'<F8>',
+			'bind_next_pair_alt':'<Control-l>',
 			'bind_open_in_browser_alt':'<Control-b>',
 			'bind_open_in_browser':'<F7>',
 			'bind_paste_search_field':'<ButtonRelease-2>',
@@ -118,8 +120,8 @@ class ConfigMclient(Config):
 			'bind_spec_symbol':'<Control-e>',
 			'bind_toggle_history_alt':'<Control-h>',
 			'bind_toggle_history':'<F4>',
-			'bind_toggle_view':'<F11>',
-			'bind_toggle_view_alt':'<Control-Shift-v>',
+			'bind_toggle_view':'<F6>',
+			'bind_toggle_view_alt':'<Alt-v>',
 			'color_comments':'gray',
 			'color_dics':'cadet blue',
 			'color_speech':'red',
@@ -162,7 +164,6 @@ class ConfigMclient(Config):
 			'icon_toggle_view':'icon_36x36_toggle_view.gif',
 			'icon_watch_clipboard_off':'icon_36x36_watch_clipboard_off.gif',
 			'icon_watch_clipboard_on':'icon_36x36_watch_clipboard_on.gif',
-			'online_dic_url':'http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s',
 			'repeat_sign':'!',
 			'repeat_sign2':'!!',
 			'spec_syms':'àáâäāæßćĉçèéêēëəĝģĥìíîïīĵķļñņòóôõöōœšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒËƏĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ',
@@ -201,8 +202,8 @@ sep_words_found = 'найдены отдельные слова'
 message_board = 'спросить в форуме'
 nbspace = ' '
 
-pairs = ['ENG <=> RUS','DEU <=> RUS','SPA <=> RUS','FRA <=> RUS','NLD <=> RUS','ITA <=> RUS','LAV <=> RUS','EST <=> RUS','AFR <=> RUS','EPO <=> RUS','RUS <=> XAL','XAL <=> RUS','ENG <=> DEU','ENG <=> EST']
-online_dic_urls = ['http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=3&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=5&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=4&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=24&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=23&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=27&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=26&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=31&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=34&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=2&l2=35&s=%s','http://www.multitran.ru/c/m.exe?l1=35&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=3&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=26&s=%s']
+pairs = ('ENG <=> RUS','DEU <=> RUS','SPA <=> RUS','FRA <=> RUS','NLD <=> RUS','ITA <=> RUS','LAV <=> RUS','EST <=> RUS','AFR <=> RUS','EPO <=> RUS','RUS <=> XAL','XAL <=> RUS','ENG <=> DEU','ENG <=> EST')
+online_dic_urls = ('http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=3&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=5&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=4&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=24&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=23&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=27&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=26&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=31&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=34&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=2&l2=35&s=%s','http://www.multitran.ru/c/m.exe?l1=35&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=3&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=26&s=%s')
 
 # Tag patterns
 tag_pattern1 = '<a title="'
@@ -1862,27 +1863,6 @@ def deiconify(obj,Silent=False,TakeFocus=True):
 	else:
 		Message(func='deiconify',type=lev_err,message=globs['mes'].not_enough_input_data,Silent=Silent)
 
-'''import traceback
-
-class Catcher:
-	def __init__(self, func, subst, widget):
-		self.func = func 
-		self.subst = subst
-		self.widget = widget
-    
-	def __call__(self, *args):
-		try:
-			if self.subst:
-				args = apply(self.subst, args)
-			return apply(self.func, args)
-		except(SystemExit,msg):
-			raise(SystemExit,msg)
-		except:
-			traceback.print_exc(file=open('test.log', 'a'))
-			
-tk.CallWrapper = Catcher
-'''
-
 # Перехватить нажатие Control-c-c
 def timed_update():
 	if h_table.CaptureHotkey and kl_mod.result():
@@ -2155,14 +2135,13 @@ class History:
 			self._index = len(self.urls) - 1
 		return self._index
 
-			
+
 
 """Wrapper for the Tkhtml widget from http://tkhtml.tcl.tk/tkhtml.html"""
 class TkinterHtmlMod(tk.Widget):
 
 	def __init__(self,master,cfg={},**kw):
 		self.Success = True
-		self.cur_pair = 'ENG <=> RUS'
 		self.i = 0
 		self.j = 0
 		self.pos2cell = []
@@ -2226,7 +2205,7 @@ class TkinterHtmlMod(tk.Widget):
 			init_inst('online').reset()
 			init_inst('online')._encoding = globs['var']['win_encoding']
 			init_inst('online')._search_str = self.search
-			init_inst('online')._base_str = globs['var']['online_dic_url']
+			init_inst('online')._base_str = self.get_pair()
 			self.url = init_inst('online').url()
 			log.append('TkinterHtmlMod.get_url',lev_debug,"self.url: %s" % str(self.url))
 	
@@ -2403,8 +2382,6 @@ class TkinterHtmlMod(tk.Widget):
 		else:
 			self.btn_clipboard.inactive()
 			
-		self.var.set(self.cur_pair)
-	
 	# Перейти на предыдущий запрос
 	def go_back(self,*args):
 		if self.Success:
@@ -2498,25 +2475,6 @@ class TkinterHtmlMod(tk.Widget):
 				elif opt == globs['mes'].copy_article_txt:
 					init_inst('clipboard').copy(requests.obj()._text)
 	
-	# Изменить направление (язык) перевода
-	def change_pair(self,*args):
-		try:
-			selected_pair = self.var.get()
-		except:
-			log.append('TkinterHtmlMod.change_pair',lev_err,globs['mes'].lang_pair_undefined)
-			selected_pair = self.cur_pair
-		log.append('TkinterHtmlMod.change_pair',lev_debug,globs['mes'].got_value % str(selected_pair))
-		Found = False
-		for i in range(len(pairs)):
-			if selected_pair == pairs[i]:
-				Found = True
-				break
-		if Found:
-			globs['var']['online_dic_url'] = online_dic_urls[i]
-		log.append('TkinterHtmlMod.change_pair',lev_info,globs['mes'].lang_pair % selected_pair)
-		log.append('TkinterHtmlMod.change_pair',lev_debug,'URL: %s' % globs['var']['online_dic_url'])
-		self.cur_pair = selected_pair
-	
 	def control_length(self): # Confirm too long requests
 		Confirmed = True
 		if len(self.search) >= 150:
@@ -2564,6 +2522,9 @@ class TkinterHtmlMod(tk.Widget):
 			self.btn_clipboard.inactive()
 		self.hotkeys()
 		
+	def get_pair(self):
+		return online_dic_urls[self.option_menu.index]
+	
 	# Создать кнопки
 	def draw_buttons(self):
 		# Кнопка для "чайников", заменяет Enter в search_field
@@ -2579,9 +2540,7 @@ class TkinterHtmlMod(tk.Widget):
 		# Кнопка для вставки спец. символов
 		Button(self.frame_panel,text=globs['mes'].btn_symbols,hint=globs['mes'].hint_symbols,action=self.spec_symbols.show,inactive_image_path=globs['var']['icon_spec_symbol'],active_image_path=globs['var']['icon_spec_symbol'],bindings=globs['var']['bind_spec_symbol'])
 		# Выпадающий список с вариантами направлений перевода
-		self.var = tk.StringVar(init_inst('top').widget)
-		self.var.set(self.cur_pair)
-		self.option_menu = tk.OptionMenu(self.frame_panel.widget,self.var,*pairs,command=self.change_pair).pack(side='left',anchor='center')
+		self.option_menu = OptionMenu(parent_obj=self.frame_panel,items=pairs)
 		# Кнопка изменения вида статьи
 		Button(self.frame_panel,text=globs['mes'].btn_toggle_view,hint=globs['mes'].hint_toggle_view,action=self.toggle_view,inactive_image_path=globs['var']['icon_toggle_view'],active_image_path=globs['var']['icon_toggle_view'],bindings=[globs['var']['bind_toggle_view'],globs['var']['bind_toggle_view_alt']])
 		# Кнопка перехода на предыдущую статью
@@ -2655,6 +2614,8 @@ class TkinterHtmlMod(tk.Widget):
 		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_spec_symbol']],action=self.spec_symbols.show)
 		create_binding(widget=self.search_field.widget,bindings='<Control-a>',action=lambda e:select_all(self.search_field.widget,Small=True))
 		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_define'],action=lambda e:self.define(Selected=True))
+		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_next_pair'],globs['var']['bind_next_pair_alt']],action=self.option_menu.set_next)
+		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_toggle_view'],globs['var']['bind_toggle_view_alt']],action=self.toggle_view)
 		
 	def show(self):
 		self.vsb.pack(side='right',fill='y')
@@ -3221,7 +3182,7 @@ class TkinterHtmlMod(tk.Widget):
 				self.url = self.history.urls[sel_no]
 				self.go_url()
 				
-	def toggle_view(self):
+	def toggle_view(self,*args):
 		if globs['view'] == 0:
 			globs['view'] = 1
 		elif globs['view'] == 1:

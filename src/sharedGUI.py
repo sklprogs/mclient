@@ -748,3 +748,44 @@ def dialog_save_file(filetypes=()):
 	except:
 		Message(func='dialog_save_file',type=lev_err,message=globs['mes'].file_sel_failed)
 	return file
+
+
+
+class OptionMenu:
+	
+	def __init__(self,parent_obj,items=(1,2,3,4,5),side='left',anchor='center'):
+		self.parent_obj = parent_obj
+		self.items = items
+		self.choice = None
+		self.index = 0
+		self.var = tk.StringVar(self.parent_obj.widget)
+		self.widget = tk.OptionMenu(self.parent_obj.widget,self.var,*self.items,command=self._get)
+		self.widget.pack(side=side,anchor=anchor)
+		self.default_set()
+		
+	def default_set(self):
+		if len(self.items) > 0:
+			self.var.set(self.items[0])
+	
+	def fill(self):
+		self.widget['menu'].delete(0,'end')
+		for item in self.items:
+			self.widget['menu'].add_command(label=item,command=lambda v=self.var,l=item:v.set(l))
+	
+	def reset(self,items=(1,2,3,4,5)):
+		self.items = items
+		self.fill()
+		self.default_set()
+		
+	def _get(self,*args): # Auto updated (after selecting an item)
+		self.choice = self.var.get()
+		self.index = self.items.index(self.choice)
+		
+	def set_next(self,*args):
+		if self.index == len(self.items) - 1:
+			self.index = 0
+		else:
+			self.index += 1
+		self.var.set(self.items[self.index])
+
+
