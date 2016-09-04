@@ -661,7 +661,7 @@ class ToolTip(ToolTipBase):
 class ListBox:
 	
 	# todo: configure a font
-	def __init__(self,parent_obj,Multiple=False,lst=[],title='Title:',icon=None):
+	def __init__(self,parent_obj,Multiple=False,lst=[],title='Title:',icon=None,SelectionCloses=True):
 		self.parent_obj = parent_obj
 		self.scrollbar = tk.Scrollbar(self.parent_obj.widget)
 		self.scrollbar.pack(side=tk.RIGHT,fill=tk.Y)
@@ -677,18 +677,13 @@ class ListBox:
 		self.widget.focus_set()
 		self.reset(lst=lst,title=title,icon=icon)
 		# todo: test <KP_Enter> in Windows
-		create_binding(self.widget,['<Return>','<KP_Enter>','<Double-Button-1>'],self.close)
+		if SelectionCloses:
+			create_binding(self.widget,['<Return>','<KP_Enter>','<Double-Button-1>'],self.close)
 		
 	def _resize(self):
 		# Autofit to contents
 		self.widget.config(width=0)
 		self.widget.config(height=0)
-	
-	# todo: elaborate
-	def resize(self):
-		#self.parent_obj.widget.update_idletasks()
-		#self._resize()
-		pass
 	
 	def activate(self,index=0):
 		self.widget.activate(index)
@@ -702,7 +697,7 @@ class ListBox:
 		self.icon(icon=icon)
 		self.title(title=title)
 		self.fill()
-		self.resize()
+		self._resize()
 		self.select()
 		self.IQuit = False
 	

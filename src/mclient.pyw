@@ -19,7 +19,7 @@ import webbrowser
 		pass
 '''
 
-version = '4.7 (alpha)'
+version = '4.7 (unstable)'
 
 
 
@@ -2074,13 +2074,14 @@ class History:
 		# todo: delete or keep
 		self._title = globs['mes'].btn_history
 		self._icon = globs['var']['icon_mclient']
-		self.obj = ListBox(parent_obj=self.parent_obj,title=self._title,icon=self._icon)
+		self.obj = ListBox(parent_obj=self.parent_obj,title=self._title,icon=self._icon,SelectionCloses=False)
 		self.widget = self.obj.widget
 		self.widget.pack(expand=1,side='top',fill='both')
 		self.Active = False
 		self._index = -1
 		self.close()
 		create_binding(widget=self.parent_obj.widget,bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt'],'<Escape>'],action=self.toggle)
+		create_binding(widget=self.parent_obj.widget,bindings=globs['var']['bind_clear_history_alt'],action=self.clear)
 		self.searches = []
 		self.urls = []
 	
@@ -2101,12 +2102,14 @@ class History:
 		if not h_table.url in self.urls:
 			self.urls.append(h_table.url)
 			self.searches.append(h_table.search)
-			self._index += 1
+			self.index_add()
 		self.fill()
 		
 	def clear(self,*args):
 		self.obj.clear()
 		self._index = -1
+		self.searches = []
+		self.urls = []
 		requests.requests = []
 		requests.search()
 		h_table.update_buttons()
@@ -2119,16 +2122,33 @@ class History:
 			
 	def get(self,*args):
 		# При выборе пункта возвращается кортеж с номером пункта
-		return self.widget.curselection()
+		selection = self.widget.curselection()
+		if selection and len(selection) > 0:
+			# ВНИМАНИЕ: В Python 3.4 selection[0] является числом, а в более старших интерпретаторах, а также в сборках на их основе - строкой. Для совместимости преобразуем в число.
+			self._index = int(selection[0])
+			selection = self.widget.get(selection[0])
+		return selection
+		
+	def index(self):
+		if self._index == -1:
+			self._index = len(self.urls) - 1
+		return self._index
+		
+	def index_add(self):
+		if self.index() < len(self.urls) - 1:
+			self._index += 1
+	
+	def index_subtract(self):
+		if self.index() > 0:
+			self._index -= 1
+	
+	def sel_index(self):
+		self.get()
+		return self._index
 
 	# Скопировать элемент истории
 	def copy(self,*args):
-		init_inst('clipboard').copy(self.obj.get())
-		
-	def index(self):
-		if self._index < 0:
-			self._index = len(self.urls) - 1
-		return self._index
+		init_inst('clipboard').copy(self.get())
 
 
 
@@ -2136,7 +2156,6 @@ class History:
 class TkinterHtmlMod(tk.Widget):
 
 	def __init__(self,master,cfg={},**kw):
-		self.Success = True
 		self.i = 0
 		self.j = 0
 		self.pos2cell = []
@@ -2151,7 +2170,6 @@ class TkinterHtmlMod(tk.Widget):
 		self.CaptureHotkey = True
 		self.MouseClicked = False
 		self.event = None
-		self.mode = 'url'
 		self.url = requests.obj().url
 		self.search = requests.obj().search
 		
@@ -2195,14 +2213,13 @@ class TkinterHtmlMod(tk.Widget):
 		self.bottom_bbox = 0
 		
 	def get_url(self):
-		if self.Success:
-			# Поскольку Multitran использует кодировку windows-1251, необходимо использовать ее. Поскольку некоторые символы не кодируются в globs['var']['win_encoding'] корректно, оставляем для них кодировку UTF-8.
-			init_inst('online').reset()
-			init_inst('online')._encoding = globs['var']['win_encoding']
-			init_inst('online')._search_str = self.search
-			init_inst('online')._base_str = self.get_pair()
-			self.url = init_inst('online').url()
-			log.append('TkinterHtmlMod.get_url',lev_debug,"self.url: %s" % str(self.url))
+		# Поскольку Multitran использует кодировку windows-1251, необходимо использовать ее. Поскольку некоторые символы не кодируются в globs['var']['win_encoding'] корректно, оставляем для них кодировку UTF-8.
+		init_inst('online').reset()
+		init_inst('online')._encoding = globs['var']['win_encoding']
+		init_inst('online')._search_str = self.search
+		init_inst('online')._base_str = self.get_pair()
+		self.url = init_inst('online').url()
+		log.append('TkinterHtmlMod.get_url',lev_debug,"self.url: %s" % str(self.url))
 	
 	# Перейти на 1-й термин текущей строки	
 	def move_line_start(self,*args):
@@ -2222,85 +2239,76 @@ class TkinterHtmlMod(tk.Widget):
 
 	# Перейти на 1-й термин статьи
 	def move_text_start(self,*args):
-		if self.Success:
-			self.text_start()
-			self.i, self.j = requests.obj()._move_text_start
-			self.set_cell()
+		self.text_start()
+		self.i, self.j = requests.obj()._move_text_start
+		self.set_cell()
 
 	# Перейти на последний термин статьи
 	def move_text_end(self,*args):
-		if self.Success:
-			self.text_end()
-			self.i, self.j = requests.obj()._move_text_end
-			self.set_cell()
+		self.text_end()
+		self.i, self.j = requests.obj()._move_text_end
+		self.set_cell()
 
 	# Перейти на страницу вверх
 	def move_page_up(self,event=None):
-		if self.Success:
-			if event:
-				self.event = event
-			self.yview_scroll(-1,'pages')
-			self.mouse_sel()
+		if event:
+			self.event = event
+		self.yview_scroll(-1,'pages')
+		self.mouse_sel()
 
 	# Перейти на страницу вверх
 	def move_page_down(self,event=None):
-		if self.Success:
-			if event:
-				self.event = event
-			self.yview_scroll(1,'pages')
-			self.mouse_sel()
+		if event:
+			self.event = event
+		self.yview_scroll(1,'pages')
+		self.mouse_sel()
 
 	# Перейти на предыдущий термин
 	def move_left(self,*args):
-		if self.Success:
-			self.left()
-			if len(requests.obj()._move_left) > self.i and len(requests.obj()._move_left[self.i]) > self.j:
-				self.i, self.j = requests.obj()._move_left[self.i][self.j]
-				self.set_cell()
-			else:
-				log.append('TkinterHtmlMod.move_left',lev_err,globs['mes'].wrong_input2)
+		self.left()
+		if len(requests.obj()._move_left) > self.i and len(requests.obj()._move_left[self.i]) > self.j:
+			self.i, self.j = requests.obj()._move_left[self.i][self.j]
+			self.set_cell()
+		else:
+			log.append('TkinterHtmlMod.move_left',lev_err,globs['mes'].wrong_input2)
 
 	# Перейти на следующий термин
 	def move_right(self,*args):
-		if self.Success:
-			self.right()
-			if len(requests.obj()._move_right) > self.i and len(requests.obj()._move_right[self.i]) > self.j:
-				self.i, self.j = requests.obj()._move_right[self.i][self.j]
-				self.set_cell()
-			else:
-				log.append('TkinterHtmlMod.move_right',lev_err,globs['mes'].wrong_input2)
+		self.right()
+		if len(requests.obj()._move_right) > self.i and len(requests.obj()._move_right[self.i]) > self.j:
+			self.i, self.j = requests.obj()._move_right[self.i][self.j]
+			self.set_cell()
+		else:
+			log.append('TkinterHtmlMod.move_right',lev_err,globs['mes'].wrong_input2)
 
 	# Перейти на строку вниз
 	def move_down(self,*args):
-		if self.Success:
-			self.down()
-			if len(requests.obj()._move_down) > self.i and len(requests.obj()._move_down[self.i]) > self.j:
-				self.i, self.j = requests.obj()._move_down[self.i][self.j]
-				self.set_cell()
-			else:
-				log.append('TkinterHtmlMod.move_down',lev_err,globs['mes'].wrong_input2)
+		self.down()
+		if len(requests.obj()._move_down) > self.i and len(requests.obj()._move_down[self.i]) > self.j:
+			self.i, self.j = requests.obj()._move_down[self.i][self.j]
+			self.set_cell()
+		else:
+			log.append('TkinterHtmlMod.move_down',lev_err,globs['mes'].wrong_input2)
 
 	# Перейти на строку вверх
 	def move_up(self,*args):
-		if self.Success:
-			self.up()
-			if len(requests.obj()._move_up) > self.i and len(requests.obj()._move_up[self.i]) > self.j:
-				self.i, self.j = requests.obj()._move_up[self.i][self.j]
-				self.set_cell()
-			else:
-				log.append('TkinterHtmlMod.move_up',lev_err,globs['mes'].wrong_input2)
+		self.up()
+		if len(requests.obj()._move_up) > self.i and len(requests.obj()._move_up[self.i]) > self.j:
+			self.i, self.j = requests.obj()._move_up[self.i][self.j]
+			self.set_cell()
+		else:
+			log.append('TkinterHtmlMod.move_up',lev_err,globs['mes'].wrong_input2)
 	
 	# Задействование колеса мыши для пролистывания экрана
 	def mouse_wheel(self,event):
-		if self.Success:
-			self.event = event
-			# В Windows XP delta == -120, однако, в других версиях оно другое
-			if self.event.num == 5 or self.event.delta < 0:
-				self.move_page_down()
-			# В Windows XP delta == 120, однако, в других версиях оно другое
-			if self.event.num == 4 or self.event.delta > 0:
-				self.move_page_up()
-			return 'break'
+		self.event = event
+		# В Windows XP delta == -120, однако, в других версиях оно другое
+		if self.event.num == 5 or self.event.delta < 0:
+			self.move_page_down()
+		# В Windows XP delta == 120, однако, в других версиях оно другое
+		if self.event.num == 4 or self.event.delta > 0:
+			self.move_page_up()
+		return 'break'
 	
 	# Переключить язык интерфейса с русского на английский и наоборот
 	def change_ui_lang(self,*args):
@@ -2309,12 +2317,11 @@ class TkinterHtmlMod(tk.Widget):
 	
 	# Следить за буфером обмена
 	def watch_clipboard(self,*args):
-		if self.Success:
-			if self.CaptureHotkey:
-				self.CaptureHotkey = False
-			else:
-				self.CaptureHotkey = True
-			self.update_buttons()
+		if self.CaptureHotkey:
+			self.CaptureHotkey = False
+		else:
+			self.CaptureHotkey = True
+		self.update_buttons()
 	
 	# Открыть URL текущей статьи в браузере
 	def open_in_browser(self,*args):
@@ -2323,21 +2330,20 @@ class TkinterHtmlMod(tk.Widget):
 	
 	# Скопировать URL текущей статьи или выделения
 	def copy_url(self,obj,mode='article'):
-		if self.Success:
-			cur_url = online_url_safe
-			if mode == 'term':
-				# Скопировать URL текущего термина. URL 1-го термина не совпадает с URL статьи!
-				cur_url = requests.obj()._cells[self.i][self.j].url
-				if globs['bool']['Iconify']:
-					iconify(obj)
-			elif mode == 'article':
-				# Скопировать URL статьи
-				cur_url = requests.obj().url
-				if globs['bool']['Iconify']:
-					iconify(obj)
-			else:
-				Message(func='TkinterHtmlMod.copy_url',type=lev_err,message=globs['mes'].unknown_mode % (str(mode),'article, term'))
-			init_inst('clipboard').copy(cur_url)
+		cur_url = online_url_safe
+		if mode == 'term':
+			# Скопировать URL текущего термина. URL 1-го термина не совпадает с URL статьи!
+			cur_url = requests.obj()._cells[self.i][self.j].url
+			if globs['bool']['Iconify']:
+				iconify(obj)
+		elif mode == 'article':
+			# Скопировать URL статьи
+			cur_url = requests.obj().url
+			if globs['bool']['Iconify']:
+				iconify(obj)
+		else:
+			Message(func='TkinterHtmlMod.copy_url',type=lev_err,message=globs['mes'].unknown_mode % (str(mode),'article, term'))
+		init_inst('clipboard').copy(cur_url)
 
 	# Открыть веб-страницу с определением текущего термина
 	def define(self,Selected=True): # Selected: True: Выделенный термин; False: Название статьи
@@ -2367,7 +2373,7 @@ class TkinterHtmlMod(tk.Widget):
 		else:
 			self.btn_prev.inactive()
 
-		if self.history._index >= 0 and self.history._index < len(self.history.urls) - 1:
+		if self.history._index < len(self.history.urls) - 1:
 			self.btn_next.active()
 		else:
 			self.btn_next.inactive()
@@ -2379,96 +2385,92 @@ class TkinterHtmlMod(tk.Widget):
 			
 	# Перейти на предыдущий запрос
 	def go_back(self,*args):
-		if self.Success:
-			if self.history._index > 0:
-				self.history._index -= 1
-				self.mode = 'url'
-				requests.search(url=self.history.urls[self.history._index])
-				self.load_article()
+		old_index = self.history.index()
+		self.history.index_subtract()
+		if old_index != self.history.index():
+			requests.search(url=self.history.urls[self.history._index])
+			self.load_article()
 
 	# Перейти на следующий запрос
 	def go_forward(self,*args):
-		if self.Success:
-			if self.history._index >= 0 and self.history._index < len(self.history.urls) - 1:
-				self.history._index += 1
-				self.mode = 'url'
-				requests.search(url=self.history.urls[self.history._index])
-				self.load_article()
+		old_index = self.history.index()
+		self.history.index_add()
+		if old_index != self.history.index():
+			requests.search(url=self.history.urls[self.history._index])
+			self.load_article()
 
 	# Найти слово/слова в статье
 	def search_article(self,direction='forward'): # clear, forward, backward
-		if self.Success:
-			if direction == 'clear': # Начать поиск заново
-				if self._search_list:
-					self._search_list = []
-				direction = 'forward'
-			elif direction != 'forward' and direction != 'backward':
-				Mestype('TkinterHtmlMod.search_article',globs['mes'].unknown_mode % (str(direction),'clear, forward, backward'))
-				direction = 'forward'
-			# Создаем начальные значения
-			if not self._search_list:
-				self.search_entry.show()
-				search_str = self.search_entry.widget.get().strip(' ').strip('\n').lower()
-				if search_str:
-					# Создать список позиций всех совпадений по поиску в статье
-					for i in range(len(requests.obj()._cells)):
-						for j in range(len(requests.obj()._cells[i])):
-							# todo: Для всех вхождений, а не только терминов
-							if requests.obj()._cells[i][j].Selectable and search_str in requests.obj()._cells[i][j].term.lower():
-								self._search_list.append((i,j))
-					if len(self._search_list) > 0:
-						if direction == 'forward':
-							# Номер текущего выделенного совпадения ('search_article_pos') в списке совпадений ('search_list')
-							self._search_article_pos = -1
-						elif direction == 'backward':
-							self._search_article_pos = len(self._search_list)
-			# Продолжаем поиск с предыдущего места
-			if len(self._search_list) > 0:
-				if direction == 'forward':
-					if self._search_article_pos + 1 < len(self._search_list):
-						self._search_article_pos += 1
-					else:
-						Message(func='TkinterHtmlMod.search_article',type=lev_info,message=globs['mes'].search_from_start)
-						self._search_article_pos = 0
-				elif direction == 'backward':
-					if self._search_article_pos > 0:
-						self._search_article_pos -= 1
-					else:
-						Message(func='TkinterHtmlMod.search_article',type=lev_info,message=globs['mes'].search_from_end)
-						self._search_article_pos = len(self._search_list) - 1
-				self.i, self.j = self._search_list[self._search_article_pos]
-				self.set_cell()
-				if len(self.index) > 0:
-					self.yview_name(self.index[0])
+		if direction == 'clear': # Начать поиск заново
+			if self._search_list:
+				self._search_list = []
+			direction = 'forward'
+		elif direction != 'forward' and direction != 'backward':
+			Mestype('TkinterHtmlMod.search_article',globs['mes'].unknown_mode % (str(direction),'clear, forward, backward'))
+			direction = 'forward'
+		# Создаем начальные значения
+		if not self._search_list:
+			self.search_entry.show()
+			search_str = self.search_entry.widget.get().strip(' ').strip('\n').lower()
+			if search_str:
+				# Создать список позиций всех совпадений по поиску в статье
+				for i in range(len(requests.obj()._cells)):
+					for j in range(len(requests.obj()._cells[i])):
+						# todo: Для всех вхождений, а не только терминов
+						if requests.obj()._cells[i][j].Selectable and search_str in requests.obj()._cells[i][j].term.lower():
+							self._search_list.append((i,j))
+				if len(self._search_list) > 0:
+					if direction == 'forward':
+						# Номер текущего выделенного совпадения ('search_article_pos') в списке совпадений ('search_list')
+						self._search_article_pos = -1
+					elif direction == 'backward':
+						self._search_article_pos = len(self._search_list)
+		# Продолжаем поиск с предыдущего места
+		if len(self._search_list) > 0:
+			if direction == 'forward':
+				if self._search_article_pos + 1 < len(self._search_list):
+					self._search_article_pos += 1
+				else:
+					Message(func='TkinterHtmlMod.search_article',type=lev_info,message=globs['mes'].search_from_start)
+					self._search_article_pos = 0
+			elif direction == 'backward':
+				if self._search_article_pos > 0:
+					self._search_article_pos -= 1
+				else:
+					Message(func='TkinterHtmlMod.search_article',type=lev_info,message=globs['mes'].search_from_end)
+					self._search_article_pos = len(self._search_list) - 1
+			self.i, self.j = self._search_list[self._search_article_pos]
+			self.set_cell()
+			if len(self.index) > 0:
+				self.yview_name(self.index[0])
 
 	# Сохранить статью на диск
 	def save_article(self,*args):
-		if self.Success:
-			init_inst('listbox').show()
-			init_inst('listbox').widget.focus_set()
-			opt = init_inst('listbox').get()
-			if opt:
-				opt = opt[0]
-				if opt == globs['mes'].save_view_as_html:
-					file = dialog_save_file(filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')))
-					if file:
-						# We disable AskRewrite because the confirmation is already built in the internal dialog
-						WriteTextFile(file,AskRewrite=False).write(requests.obj()._html)
-				elif opt == globs['mes'].save_article_as_html:
-					# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
-					# Также меняем сокращенные гиперссылки на полные, чтобы они работали и в локальном файле.
-					file = dialog_save_file(filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')))
-					if file:
-						# todo: fix remaining links to localhost
-						WriteTextFile(file,AskRewrite=False).write(requests.obj()._raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="m.exe?','<a href="'+online_url_root).replace('../c/m.exe?',online_url_root))
-				elif opt == globs['mes'].save_article_as_txt:
-					file = dialog_save_file(filetypes=((globs['mes'].plain_text,'.txt'),(globs['mes'].all_files,'*')))
-					if file:
-						WriteTextFile(file,AskRewrite=False).write(requests.obj()._text)
-				elif opt == globs['mes'].copy_article_html:
-					init_inst('clipboard').copy(requests.obj()._raw)
-				elif opt == globs['mes'].copy_article_txt:
-					init_inst('clipboard').copy(requests.obj()._text)
+		init_inst('listbox').show()
+		init_inst('listbox').widget.focus_set()
+		opt = init_inst('listbox').get()
+		if opt:
+			opt = opt[0]
+			if opt == globs['mes'].save_view_as_html:
+				file = dialog_save_file(filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')))
+				if file:
+					# We disable AskRewrite because the confirmation is already built in the internal dialog
+					WriteTextFile(file,AskRewrite=False).write(requests.obj()._html)
+			elif opt == globs['mes'].save_article_as_html:
+				# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
+				# Также меняем сокращенные гиперссылки на полные, чтобы они работали и в локальном файле.
+				file = dialog_save_file(filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')))
+				if file:
+					# todo: fix remaining links to localhost
+					WriteTextFile(file,AskRewrite=False).write(requests.obj()._raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="m.exe?','<a href="'+online_url_root).replace('../c/m.exe?',online_url_root))
+			elif opt == globs['mes'].save_article_as_txt:
+				file = dialog_save_file(filetypes=((globs['mes'].plain_text,'.txt'),(globs['mes'].all_files,'*')))
+				if file:
+					WriteTextFile(file,AskRewrite=False).write(requests.obj()._text)
+			elif opt == globs['mes'].copy_article_html:
+				init_inst('clipboard').copy(requests.obj()._raw)
+			elif opt == globs['mes'].copy_article_txt:
+				init_inst('clipboard').copy(requests.obj()._text)
 	
 	def control_length(self): # Confirm too long requests
 		Confirmed = True
@@ -2481,7 +2483,6 @@ class TkinterHtmlMod(tk.Widget):
 		if self.control_length():
 			self.get_url()
 			# todo: del everywhere
-			self.mode = 'url'
 			requests.search(url=self.url)
 			requests.obj().search = self.search
 			log.append('TkinterHtmlMod._go_search',lev_debug,requests.obj().search)
@@ -2490,20 +2491,19 @@ class TkinterHtmlMod(tk.Widget):
 	
 	# Search the selected term online using the entry widget (search field)
 	def go_search(self,*args):
-		if self.Success:
-			self.search = self.search_field.widget.get().strip('\n').strip(' ')
-			# Allows to use the same hotkeys for the search field and the article field
-			if self.search == '':
-				self.go_url()
+		self.search = self.search_field.widget.get().strip('\n').strip(' ')
+		# Allows to use the same hotkeys for the search field and the article field
+		if self.search == '':
+			self.go_url()
+		else:
+			# Скопировать предпоследний запрос в буфер и вставить его в строку поиска (например, для перехода на этот запрос еще раз)
+			if self.search == globs['var']['repeat_sign2']:
+				self.search_field.insert_repeat_sign2()
+			# Скопировать последний запрос в буфер и вставить его в строку поиска (например, для корректировки)
+			elif self.search == globs['var']['repeat_sign']:
+				self.search_field.insert_repeat_sign()
 			else:
-				# Скопировать предпоследний запрос в буфер и вставить его в строку поиска (например, для перехода на этот запрос еще раз)
-				if self.search == globs['var']['repeat_sign2']:
-					self.search_field.insert_repeat_sign2()
-				# Скопировать последний запрос в буфер и вставить его в строку поиска (например, для корректировки)
-				elif self.search == globs['var']['repeat_sign']:
-					self.search_field.insert_repeat_sign()
-				else:
-					self.search_online()
+				self.search_online()
 					
 	# Создание каркаса с полем ввода, кнопкой выбора направления перевода и кнопкой выхода
 	def create_frame_panel(self):
@@ -2602,6 +2602,7 @@ class TkinterHtmlMod(tk.Widget):
 		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_reload_article'],globs['var']['bind_reload_article_alt']],action=self.reload)
 		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']],action=self.save_article)
 		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_show_about'],action=init_inst('about').show)
+		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history']],action=self.history.toggle)
 		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt']],action=self.history.toggle)
 		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_open_in_browser'],globs['var']['bind_open_in_browser_alt']],action=self.open_in_browser)
 		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_copy_url'],action=lambda e:self.copy_url(init_inst('top'),mode='term'))
@@ -2712,39 +2713,37 @@ class TkinterHtmlMod(tk.Widget):
 	# Вернуть первую выделяемую ячейку по вертикали в направлении сверху вниз
 	def get_vert_selectable(self,cur_i=0,cur_j=0,GetNext=True):
 		func_res = (cur_i,cur_j)
-		if self.Success:
-			i = cur_i
-			while i < len(requests.obj()._cells):
-				# todo: Алгоритм для globs['bool']['SelectTermsOnly']
-				if requests.obj()._cells[i][cur_j].Selectable:
-					if GetNext:
-						if i != cur_i:
-							func_res = (i,cur_j)
-							break
-					else:
+		i = cur_i
+		while i < len(requests.obj()._cells):
+			# todo: Алгоритм для globs['bool']['SelectTermsOnly']
+			if requests.obj()._cells[i][cur_j].Selectable:
+				if GetNext:
+					if i != cur_i:
 						func_res = (i,cur_j)
 						break
-				i += 1
-			#log.append('TkinterHtmlMod.get_vert_selectable',lev_debug,str(func_res))
+				else:
+					func_res = (i,cur_j)
+					break
+			i += 1
+		#log.append('TkinterHtmlMod.get_vert_selectable',lev_debug,str(func_res))
 		return func_res
 		
 	# Вернуть первую выделяемую ячейку по вертикали в направлении снизу вверх
 	def get_vert_selectable_backwards(self,cur_i=0,cur_j=0,GetPrevious=True,Silent=False,Critical=False):
 		func_res = (cur_i,cur_j)
-		if self.Success:
-			i = cur_i
-			while i >= 0:
-				# todo: Алгоритм для globs['bool']['SelectTermsOnly']
-				if requests.obj()._cells[i][cur_j].Selectable:
-					if GetPrevious:
-						if i != cur_i:
-							func_res = (i,cur_j)
-							break
-					else:
+		i = cur_i
+		while i >= 0:
+			# todo: Алгоритм для globs['bool']['SelectTermsOnly']
+			if requests.obj()._cells[i][cur_j].Selectable:
+				if GetPrevious:
+					if i != cur_i:
 						func_res = (i,cur_j)
 						break
-				i -= 1
-			#log.append('TkinterHtmlMod.get_vert_selectable_backwards',lev_debug,str(func_res))
+				else:
+					func_res = (i,cur_j)
+					break
+			i -= 1
+		#log.append('TkinterHtmlMod.get_vert_selectable_backwards',lev_debug,str(func_res))
 		return func_res
 
 	# todo (?): create a MoveEvents class
@@ -2860,31 +2859,30 @@ class TkinterHtmlMod(tk.Widget):
 		Found = False
 		i = sel_i = cur_i
 		j = sel_j = cur_j
-		if self.Success:
-			while i < len(requests.obj()._cells):
-				while j < len(requests.obj()._cells[i]):
-					if globs['bool']['SelectTermsOnly']:
-						if requests.obj()._cells[i][j].Selectable:
-							# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
-							sel_i, sel_j = i, j
-							# Если указаная ячейка уже может быть выбрана, то игнорировать ее и искать следующую
-							if GetNext:
-								if cur_i != i or cur_j != j:
-									Found = True
-									break
-							else:
+		while i < len(requests.obj()._cells):
+			while j < len(requests.obj()._cells[i]):
+				if globs['bool']['SelectTermsOnly']:
+					if requests.obj()._cells[i][j].Selectable:
+						# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
+						sel_i, sel_j = i, j
+						# Если указаная ячейка уже может быть выбрана, то игнорировать ее и искать следующую
+						if GetNext:
+							if cur_i != i or cur_j != j:
 								Found = True
 								break
-					else:
-						sel_i, sel_j = i, j
-						if cur_i != i or cur_j != j:
+						else:
 							Found = True
 							break
-					j += 1
-				if Found:
-					break
-				j = 0
-				i += 1
+				else:
+					sel_i, sel_j = i, j
+					if cur_i != i or cur_j != j:
+						Found = True
+						break
+				j += 1
+			if Found:
+				break
+			j = 0
+			i += 1
 		#log.append('TkinterHtmlMod.get_selectable',lev_debug,str((sel_i,sel_j)))
 		return(sel_i,sel_j)
 		
@@ -2893,34 +2891,31 @@ class TkinterHtmlMod(tk.Widget):
 		Found = False
 		i = sel_i = cur_i
 		j = sel_j = cur_j
-		if self.Success:
-			while i >= 0:
-				while j >= 0:
-					if globs['bool']['SelectTermsOnly']:
-						if requests.obj()._cells[i][j].Selectable:
-							# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
-							sel_i = i
-							sel_j = j
-							# Если указаная ячейка уже может быть выбрана, то игнорировать ее и искать следующую
-							if GetPrevious:
-								if cur_i != i or cur_j != j:
-									Found = True
-									break
-							else:
+		while i >= 0:
+			while j >= 0:
+				if globs['bool']['SelectTermsOnly']:
+					if requests.obj()._cells[i][j].Selectable:
+						# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
+						sel_i = i
+						sel_j = j
+						# Если указаная ячейка уже может быть выбрана, то игнорировать ее и искать следующую
+						if GetPrevious:
+							if cur_i != i or cur_j != j:
 								Found = True
 								break
-					else:
-						sel_i, sel_j = i, j
-						if cur_i != i or cur_j != j:
+						else:
 							Found = True
 							break
-					j -= 1
-				if Found:
-					break
-				i -= 1
-				j = len(requests.obj()._cells[i]) - 1
-		else:
-			log.append('TkinterHtmlMod.get_selectable_backwards',lev_warn,globs['mes'].canceled)
+				else:
+					sel_i, sel_j = i, j
+					if cur_i != i or cur_j != j:
+						Found = True
+						break
+				j -= 1
+			if Found:
+				break
+			i -= 1
+			j = len(requests.obj()._cells[i]) - 1
 		#log.append('TkinterHtmlMod.get_selectable_backwards',lev_debug,str((sel_i,sel_j)))
 		return(sel_i,sel_j)
 	
@@ -3009,68 +3004,60 @@ class TkinterHtmlMod(tk.Widget):
 
 	# Изменить ячейку при движении мышью
 	def mouse_sel(self,event=None):
-		if self.Success:
-			if event:
-				self.event = event
-				# Если ячейку определить не удалось, либо ее выделять нельзя (согласно настройкам), то возвращается предыдущая ячейка. Это позволяет всегда иметь активное выделение.
-				try:
-					self._node, self._offset = self.node(True,self.event.x,self.event.y)
-					self.mouse_index = self.text("offset",self._node,self._offset)
-				except ValueError:
-					# Это сообщение появляется так часто, что не ставлю тут ничего.
-					#log.append('TkinterHtmlMod.mouse_sel',lev_warn,globs['mes'].unknown_cell)
-					pass
-				if self.mouse_index > 0:
-					self.get_cell(self.mouse_index)
-					self.set_cell(View=False)
-		else:
-			log.append('TkinterHtmlMod.mouse_sel',lev_warn,globs['mes'].canceled)
+		if event:
+			self.event = event
+			# Если ячейку определить не удалось, либо ее выделять нельзя (согласно настройкам), то возвращается предыдущая ячейка. Это позволяет всегда иметь активное выделение.
+			try:
+				self._node, self._offset = self.node(True,self.event.x,self.event.y)
+				self.mouse_index = self.text("offset",self._node,self._offset)
+			except ValueError:
+				# Это сообщение появляется так часто, что не ставлю тут ничего.
+				#log.append('TkinterHtmlMod.mouse_sel',lev_warn,globs['mes'].unknown_cell)
+				pass
+			if self.mouse_index > 0:
+				self.get_cell(self.mouse_index)
+				self.set_cell(View=False)
 
 	# Скопировать термин текущей ячейки (или полное ее содержимое)
 	def copy_cell(self,*args):
-		if self.Success:
-			#self.set_cell()
-			if globs['bool']['CopyTermsOnly']:
-				selected_text = requests.obj()._cells[self.i][self.j].term
-			else:
-				selected_text = List([requests.obj()._cells[self.i][self.j].dic,requests.obj()._cells[self.i][self.j].term,requests.obj()._cells[self.i][self.j].comment]).space_items()
-			init_inst('clipboard').copy(selected_text)
-			if globs['bool']['Iconify']:
-				iconify(init_inst('top'))
+		#self.set_cell()
+		if globs['bool']['CopyTermsOnly']:
+			selected_text = requests.obj()._cells[self.i][self.j].term
 		else:
-			log.append('TkinterHtmlMod.copy_cell',lev_warn,globs['mes'].canceled)
+			selected_text = List([requests.obj()._cells[self.i][self.j].dic,requests.obj()._cells[self.i][self.j].term,requests.obj()._cells[self.i][self.j].comment]).space_items()
+		init_inst('clipboard').copy(selected_text)
+		if globs['bool']['Iconify']:
+			iconify(init_inst('top'))
 
 	# Удалить ячейку и перекомпоновать статью
 	def delete_cell(self,*args):
-		if self.Success:
-			Found = False
-			# Предполагаем, что requests.obj()._elems уже прошло стадию объединения комментариев
-			for i in range(len(requests.obj()._elems)):
-				# todo: Уточнить и упростить алгоритм
-				if requests.obj()._elems[i] == requests.obj()._cells[self.i][self.j]:
-					Found = True
-					break
-			if Found:
-				del requests.obj()._elems[i]
-				requests.obj().cells = []
-				self.load_article()
-			else:
-				Message(func='TkinterHtmlMod.delete_cell',type=lev_warn,message=globs['mes'].wrong_input2,Silent=self.Silent)
+		Found = False
+		# Предполагаем, что requests.obj()._elems уже прошло стадию объединения комментариев
+		for i in range(len(requests.obj()._elems)):
+			# todo: Уточнить и упростить алгоритм
+			if requests.obj()._elems[i] == requests.obj()._cells[self.i][self.j]:
+				Found = True
+				break
+		if Found:
+			del requests.obj()._elems[i]
+			requests.obj().cells = []
+			self.load_article()
+		else:
+			Message(func='TkinterHtmlMod.delete_cell',type=lev_warn,message=globs['mes'].wrong_input2,Silent=self.Silent)
 
 	# Добавить пустую ячейку и перекомпоновать статью
 	def add_cell(self,*args):
-		if self.Success:
-			Found = False
-			# Предполагаем, что requests.obj()._elems уже прошло стадию объединения комментариев
-			for i in range(len(requests.obj()._elems)):
-				# todo: Уточнить и упростить алгоритм
-				if requests.obj()._elems[i] == requests.obj()._cells[self.i][self.j]:
-					Found = True
-					break
-			if Found:
-				requests.obj()._elems.insert(i,Cell())
-				requests.obj()._cells = []
-				self.load_article()
+		Found = False
+		# Предполагаем, что requests.obj()._elems уже прошло стадию объединения комментариев
+		for i in range(len(requests.obj()._elems)):
+			# todo: Уточнить и упростить алгоритм
+			if requests.obj()._elems[i] == requests.obj()._cells[self.i][self.j]:
+				Found = True
+				break
+		if Found:
+			requests.obj()._elems.insert(i,Cell())
+			requests.obj()._cells = []
+			self.load_article()
 
 	def load_article(self,*args):
 		self.reset()
@@ -3087,21 +3074,19 @@ class TkinterHtmlMod(tk.Widget):
 	
 	# Перейти по URL текущей ячейки
 	def go_url(self,*args):
-		if self.Success:
-			#self.set_cell()
-			if self.MouseClicked:
-				pass
-			else:
-				log.append('TkinterHtmlMod.go_url',lev_debug,globs['mes'].cur_cell % (self.i,self.j))
-				self.search = requests.obj()._cells[self.i][self.j].term
-				requests.search(url=requests.obj()._cells[self.i][self.j].url)
-				HTML()
-				log.append('TkinterHtmlMod.go_url',lev_info,globs['mes'].opening_link % requests.obj().url)
-				self.mode = 'url'
-				requests.obj().search = self.search
-				self.url = requests.obj().url
-				self.load_article()
-				#requests.attributes()
+		#self.set_cell()
+		if self.MouseClicked:
+			pass
+		else:
+			log.append('TkinterHtmlMod.go_url',lev_debug,globs['mes'].cur_cell % (self.i,self.j))
+			self.search = requests.obj()._cells[self.i][self.j].term
+			requests.search(url=requests.obj()._cells[self.i][self.j].url)
+			HTML()
+			log.append('TkinterHtmlMod.go_url',lev_info,globs['mes'].opening_link % requests.obj().url)
+			requests.obj().search = self.search
+			self.url = requests.obj().url
+			self.load_article()
+			#requests.attributes()
 				
 	def gen_pos2cell(self):
 		# 1-й символ всегда соответствует 1-й ячейке
@@ -3162,20 +3147,10 @@ class TkinterHtmlMod(tk.Widget):
 		if globs['bool']['AutoCloseSpecSymbol']:
 			self.spec_symbols.close()
 			
-	# todo: get url in self.history already
 	# Перейти на элемент истории
 	def get_history(self,*args):
-		if self.Success:
-			selection = self.history.get()
-			# ВНИМАНИЕ: В Python 3.4 selection[0] является числом, а в более старших интерпретаторах, а также в сборках на их основе - строкой. Для совместимости преобразуем в число.
-			#search_str = self.listbox.get(selection[0])
-			#sel_no = len(self.history.urls) - int(selection[0]) - 1
-			sel_no = int(selection[0])
-			if sel_no < len(self.history.urls):
-				# todo: fix: Список истории запросов идет в обратном порядке, поэтому необходимо синхронизировать
-				self.search = self.history.searches[sel_no]
-				self.url = self.history.urls[sel_no]
-				self.go_url()
+		requests.search(url=self.history.urls[self.history.sel_index()])
+		self.load_article()
 				
 	def toggle_view(self,*args):
 		if globs['view'] == 0:
