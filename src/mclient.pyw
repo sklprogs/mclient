@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from constants import *
-from shared import Message, WriteTextFile, Launch, List, Config, Clipboard, Path, Online, ReadTextFile, timer, log, globs, h_os
+from shared import Message, WriteTextFile, Launch, List, Config, Clipboard, Path, Online, ReadTextFile, Email, timer, log, globs, h_os, CreateInstance
 from sharedGUI import create_binding, Button, Root, Top, Entry, WidgetShared, Frame, TextBox, ListBox, dialog_save_file, OptionMenu
 import copy
 # В Python 3 не работает просто import urllib, импорт должен быть именно такой, как здесь
@@ -12,13 +12,15 @@ import os, sys, platform
 import tkinter as tk
 from tkinter import ttk
 from io import StringIO
-import webbrowser
+import sqlite3
+import pickle
 
 '''class log:
 	def append(self,*args):
 		pass
 '''
 
+product = 'MClient'
 version = '4.7 (unstable)'
 
 
@@ -49,6 +51,7 @@ class ConfigMclient(Config):
 			self.Success = False
 		self.check()
 		self.load()
+		self.additional_keys()
 			
 	def _default(self):
 		globs['bool'].update({
@@ -161,7 +164,8 @@ class ConfigMclient(Config):
 			'icon_show_about':'icon_36x36_show_about.gif',
 			'icon_spec_symbol':'icon_36x36_spec_symbol.gif',
 			'icon_toggle_history':'icon_36x36_toggle_history.gif',
-			'icon_toggle_view':'icon_36x36_toggle_view.gif',
+			'icon_toggle_view_hor':'icon_36x36_toggle_view_hor.gif',
+			'icon_toggle_view_ver':'icon_36x36_toggle_view_ver.gif',
 			'icon_watch_clipboard_off':'icon_36x36_watch_clipboard_off.gif',
 			'icon_watch_clipboard_on':'icon_36x36_watch_clipboard_on.gif',
 			'repeat_sign':'!',
@@ -177,6 +181,13 @@ class ConfigMclient(Config):
 		globs['int'] = {}
 		globs['var'] = {}
 		
+	def additional_keys(self):
+		for key in globs['var']:
+			if globs['var'][key].endswith('.gif'):
+				old_val = globs['var'][key]
+				globs['var'][key] = globs['bin_dir'] + os.path.sep + 'resources' + os.path.sep + globs['var'][key]
+				log.append('ConfigMclient.additional_keys',lev_debug,'%s -> %s' % (old_val,globs['var'][key]))
+
 
 
 ConfigMclient()
@@ -190,9 +201,12 @@ else:
 globs['_tkhtml_loaded'] = False
 # todo: del
 globs['bool']['DryRun'] = False #True
-globs['view'] = 0
-globs['col_limit'] = 5
 globs['dry_count'] = 0
+# todo: del
+#globs['source'] = 'multitran'
+#globs['collimit'] = 5
+#globs['view'] = 0
+#globs['priority'] = False
 
 online_url_root = 'http://www.multitran.ru/c/m.exe?'
 online_url_safe = 'http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%ED%E5%E2%E5%F0%ED%E0%FF+%F1%F1%FB%EB%EA%E0'
@@ -263,117 +277,277 @@ def init_inst(name):
 
 
 
-# Do not forget to import this class if it was used to pickle an object
-class CreateInstance:
-	pass
-
-
-
-class Requests:
+class Request:
 	
 	def __init__(self):
-		self.requests = []
-		self.search()
-		# Needs HTML() after this
+		self.reset()
 		
-	def _rebuild(self):
-		log.append('Requests._rebuild',lev_debug,globs['mes'].rebuild_object)
-		self._obj.view = globs['view']
-		self._obj.col_limit = globs['col_limit']
-		self._obj._cells = []
-		self._obj._html = ''
+	def reset(self):
+		self._online = self._source = self._dic = self._search = self._url = self._collimit = self._priority = self._view = self._cells = self._elems = self._html = self._html_raw = self._text = None
+		self._moves = {'_move_right':[],'_move_left':[],'_move_down':[],'_move_up':[],'_move_line_start':[],'_move_line_end':[],'_move_text_start':[],'_move_text_end':[]}
 	
-	# Search for a request object and create it if necessary
-	def search(self,url=welcome_url): # todo: search by `article id`
-		mode = 'Mismatch'
-		for i in range(len(self.requests)):
-			if self.requests[i].url == url:
-				if self.requests[i].view == globs['view'] and self.requests[i].col_limit == globs['col_limit']:
-					mode = 'Match'
-					self._obj = copy.deepcopy(self.requests[i])
-					break
-				else:
-					mode = 'Rebuild'
-					self._obj = copy.deepcopy(self.requests[i])
-		if mode == 'Rebuild':
-			self._rebuild()
-		elif mode == 'Mismatch':
-			self.create()
-			self._obj.url = url
-		elif mode == 'Match':
-			log.append('Requests.search',lev_debug,globs['mes'].match_found)
-		self.requests.append(self._obj)
-		'''
-		# Failsafe mode:
-		self.create()
-		self._obj.url = url
-		self.requests.append(self._obj)
-		'''
-		
-	def create(self,source='Multitran',customdic='main',url=welcome_url,search=welcome_str,cells=[],elems=[]):
-		log.append('Requests.create',lev_debug,globs['mes'].create_object)
-		self._obj = CreateInstance()
-		self._obj.source = source
-		self._obj.customdic = customdic
-		self._obj.url = url
-		self._obj.search = search
-		self._obj.view = globs['view']
-		self._obj.col_limit = globs['col_limit']
-		# Otherwise, these attributes will be duplicated (even when passing cells=[])
-		self._obj._cells = list(cells)
-		self._obj._elems = list(elems)
-		self._obj._raw = ''
-		self._obj._html = ''
-		self._obj._move_right = []
-		self._obj._move_left = []
-		self._obj._move_down = []
-		self._obj._move_up = []
-		self._obj._move_line_start = []
-		self._obj._move_line_end = []
-		self._obj._move_text_start = []
-		self._obj._move_text_end = []
-		
-	def obj(self):
-		if not self.requests:
-			self.create()
-		return self._obj
+	def update(self):
+		self._cells = self._html = self._text = None
 	
-	def attributes(self): # Testing
-		res_mes = 'Source:\n' + self._obj.source + '\n\n'
-		res_mes += 'Custom Dic:\n' + self._obj.customdic + '\n\n'
-		res_mes += 'Url:\n' + self._obj.url + '\n\n'
-		res_mes += 'Search:\n' + self._obj.search + '\n\n'
-		res_mes += 'View: ' + str(self._obj.view) + '\n\n'
-		res_mes += 'Column limit: ' + str(self._obj.col_limit) + '\n\n'
-		#res_mes += 'Cells:\n' + self._obj._cells + '\n\n'
-		#res_mes += 'Elems:\n' + self._obj._elems + '\n\n'
-		res_mes += 'HTML:\n' + self._obj._html + '\n\n'
-		init_inst('textbox').update(text=res_mes)
-		init_inst('top_textbox').show()
+	def new(self): # A completely new request
+		self._cells = self._elems = self._html_raw = self._html = self._text = None
+	
+	def online(self):
+		if self._online is None:
+			self._online = True
+		return self._online
 		
-	def contents(self): # Testing
-		res_mes = ''
-		for i in range(len(self.requests)):
-			res_mes += 'Source (%d): ' % i + self.requests[i].source + '\n'
-			res_mes += 'Custom Dic (%d): ' % i + self.requests[i].customdic + '\n'
-			res_mes += 'Url (%d): ' % i + self.requests[i].url + '\n'
-			res_mes += 'Search (%d): ' % i + self.requests[i].search + '\n'
-			res_mes += 'View (%d): ' % i + str(self.requests[i].view) + '\n'
-			res_mes += 'Column limit (%d): ' % i + str(self.requests[i].col_limit) + '\n'
-			#res_mes += 'HTML (%d): ' % i + TextBox(text=self.requests[i]._html,Auto=False).prepare_title(max_title_len=80,Enclose=False) + '\n\n'
-			res_mes += 'HTML (%d): ' % i + str(len(self.requests[i]._html)) + '\n\n'
-		init_inst('textbox').update(text=res_mes)
-		init_inst('top_textbox').show()
+	def source(self):
+		if self._source is None:
+			self._source = 'Multitran'
+		return self._source
+		
+	def dic(self):
+		if self._dic is None:
+			self._dic = 'Main'
+		return self._dic
+		
+	def search(self):
+		if self._search is None:
+			self._search = 'Добро пожаловать!'
+		return self._search
+		
+	def url(self):
+		if self._url is None:
+			self._url = 'http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
+		return self._url
+		
+	def collimit(self):
+		if self._collimit is None:
+			self._collimit = 5
+			# todo: del
+			#self._collimit = globs['collimit']
+		return self._collimit
+		
+	def view(self):
+		if self._view is None:
+			self._view = 0
+			# todo: del
+			#self._view = globs['view']
+		return self._view
+		
+	def priority(self):
+		if self._priority is None:
+			self._priority = False
+			# todo: del
+			#self._priority = globs['priority']
+		return self._priority
+		
+	def cells(self):
+		if self._cells is None:
+			Cells()
+		return self._cells
+		
+	def elems(self):
+		if self._elems is None:
+			Elems()
+		return self._elems
+		
+	def html(self):
+		if self._html is None:
+			HTML()
+		return self._html
+		
+	def html_raw(self):
+		if self._html_raw is None:
+			Page()
+		return self._html_raw
+		
+	def text(self):
+		if self._text is None:
+			Page()
+		return self._text
+		
+	# todo: fix: _moves is always not None
+	def moves(self):
+		if self._moves is None:
+			Cells()
+		return self._moves
 
 
 
-requests = Requests()
+class DB: # Requires h_request global
+	
+	def __init__(self):
+		self.db_con = sqlite3.connect(':memory:')
+		self.db = self.db_con.cursor()
+		self.reset()
+		
+	def reset(self):
+		self._count = 0
+		self._id_match = -1
+		self.db.execute('drop table if exists INFO')
+		self.db.execute('create table INFO (ONLINE bool,SOURCE text,DIC text,SEARCH text,URL text,ID integer,COLLIMIT integer,VIEW integer,PRIORITY integer,ELEMS pickle,CELLS pickle,HTML text,HTML_RAW text,TEXT text,MOVES pickle)')
+		self.db_con.commit()
+		
+	def copy(self):
+		h_request._html = self.html()
+		h_request._html_raw = self.html_raw()
+		h_request._text = self.text()
+		h_request._elems = self.elems()
+		h_request._cells = self.cells()
+		h_request._moves = self.moves()
+		
+	def copy_ahead(self):
+		h_request._search = self.search()
+		h_request._url = self.url()
+		h_request._html_raw = self.html_raw() # Do not re-download the page
+		h_request._elems = self.elems()
+	
+	def view(self):
+		self.db.execute('select VIEW from INFO where ID=?',(self._id_match,))
+		result = self.db.fetchone()
+		if result:
+			result = result[0]
+			return result
+	
+	def priority(self):
+		self.db.execute('select PRIORITY from INFO where ID=?',(self._id_match,))
+		result = self.db.fetchone()
+		if result:
+			result = result[0]
+			return result
+	
+	def online(self):
+		self.db.execute('select ONLINE from INFO where ID=?',(self._id_match,))
+		result = self.db.fetchone()
+		if result:
+			result = result[0]
+			return result
+	
+	def url(self):
+		self.db.execute('select URL from INFO where ID=?',(self._id_match,))
+		result = self.db.fetchone()
+		if result:
+			result = result[0]
+			return result
+	
+	def search(self):
+		self.db.execute('select SEARCH from INFO where ID=?',(self._id_match,))
+		result = self.db.fetchone()
+		if result:
+			result = result[0]
+			return result
+	
+	def dic(self):
+		self.db.execute('select DIC from INFO where ID=?',(self._id_match,))
+		result = self.db.fetchone()
+		if result:
+			result = result[0]
+			return result
+	
+	def source(self):
+		self.db.execute('select SOURCE from INFO where ID=?',(self._id_match,))
+		result = self.db.fetchone()
+		if result:
+			result = result[0]
+			return result
+	
+	def moves(self):
+		self.db.execute('select MOVES from INFO where ID=?',(self._id_match,))
+		result = self.db.fetchone()
+		if result:
+			result = result[0]
+			return pickle.loads(result)
+	
+	def cells(self):
+		self.db.execute('select CELLS from INFO where ID=?',(self._id_match,))
+		result = self.db.fetchone()
+		if result:
+			result = result[0]
+			return pickle.loads(result)
+	
+	def elems(self):
+		self.db.execute('select ELEMS from INFO where ID=?',(self._id_match,))
+		result = self.db.fetchone()
+		if result:
+			result = result[0]
+			return pickle.loads(result)
+	
+	def text(self):
+		self.db.execute('select TEXT from INFO where ID=?',(self._id_match,))
+		result = self.db.fetchone()
+		if result:
+			result = result[0]
+			return result
+	
+	def html_raw(self):
+		self.db.execute('select HTML_RAW from INFO where ID=?',(self._id_match,))
+		result = self.db.fetchone()
+		if result:
+			result = result[0]
+			return result
+	
+	def html(self):
+		self.db.execute('select HTML from INFO where ID=?',(self._id_match,))
+		result = self.db.fetchone()
+		if result:
+			result = result[0]
+			return result
+	
+	def add(self):
+		self.db.execute('insert into INFO values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[h_request.online(),h_request.source(),h_request.dic(),h_request.search(),h_request.url(),self._count,h_request.collimit(),h_request.view(),h_request.priority(),pickle.dumps(h_request.elems()),pickle.dumps(h_request.cells()),h_request.html(),h_request.html_raw(),h_request.text(),pickle.dumps(h_request.moves())])
+		self.db_con.commit()
+		self._count += 1
+	
+	def prev(self):
+		self.db.execute('select SEARCH from INFO where ID=?',(self._count - 1,))
+		result = self.db.fetchone()
+		if result:
+			result = result[0]
+			return result
+			
+	def preprev(self):
+		self.db.execute('select SEARCH from INFO where ID=?',(self._count - 2,))
+		result = self.db.fetchone()
+		if result:
+			result = result[0]
+			return result
+	
+	def search_full(self):
+		if h_request.online():
+			self.db.execute('select ID from INFO where ONLINE=? and SOURCE=? and DIC=? and URL=? and COLLIMIT=? and VIEW=? and PRIORITY=?',(h_request.online(),h_request.source(),h_request.dic(),h_request.url(),h_request.collimit(),h_request.view(),h_request.priority(),))
+		else:
+			self.db.execute('select ID from INFO where ONLINE=? and SOURCE=? and DIC=? and SEARCH=? and COLLIMIT=? and VIEW=? and PRIORITY=?',(h_request.online(),h_request.source(),h_request.dic(),h_request.search(),h_request.collimit(),h_request.view(),h_request.priority(),))
+		result = self.db.fetchone()
+		if result:
+			self._id_match = result[0]
+			log.append('DB.search_full',lev_info,globs['mes'].id_full_match % self._id_match)
+			self.copy()
+			return True
+	
+	def search_part(self):
+		if not self.search_full():
+			if h_request.online():
+				self.db.execute('select ID from INFO where ONLINE=? and SOURCE=? and DIC=? and URL=?',(h_request.online(),h_request.source(),h_request.dic(),h_request.url(),))
+			else:
+				self.db.execute('select ID from INFO where ONLINE=? and SOURCE=? and DIC=? and SEARCH=?',(h_request.online(),h_request.source(),h_request.dic(),h_request.search(),))
+			result = self.db.fetchone()
+			if result:
+				self._id_match = result[0]
+				log.append('DB.search_part',lev_info,globs['mes'].id_match % self._id_match)
+				self.copy_ahead()
+			else:
+				self.add()
+			
+	def print(self):
+		self.db.execute("select * from INFO")
+		print(self.db.fetchall())
+		
+	def close(self):
+		self.db_con.close()
+
+
 
 class HTML:
 	
 	def __init__(self):
-		# We want the object in Requests to be updated automatically. This is done if we call the object itself all the time, not its attribute. We can create self.obj and call it but calling it is almost as cumbersome as calling requests.obj().
-		if requests._obj._html and requests._obj.view == globs['view']:
+		if h_request._html:
 			log.append('HTML.__init__',lev_debug,globs['mes'].action_not_required)
 		else:
 			log.append('HTML.__init__',lev_info,globs['mes'].create_object)
@@ -381,7 +555,7 @@ class HTML:
 			self.html()
 	
 	def _comment(self):
-		if requests.obj()._cells[self.i][self.j].comment:
+		if h_request._cells[self.i][self.j].comment:
 			self.output.write('<i><font face="')
 			self.output.write(globs['var']['font_comments_family'])
 			self.output.write('" size="')
@@ -389,11 +563,11 @@ class HTML:
 			self.output.write('" color="')
 			self.output.write(globs['var']['color_comments'])
 			self.output.write('">')
-			self.output.write(requests.obj()._cells[self.i][self.j].comment)
+			self.output.write(h_request._cells[self.i][self.j].comment)
 			self.output.write('</i></font></td>')
 	
 	def _speech(self):
-		if requests.obj()._cells[self.i][self.j].speech:
+		if h_request._cells[self.i][self.j].speech:
 			self.output.write('<font face="')
 			self.output.write(globs['var']['font_speech_family'])
 			self.output.write('" color="')
@@ -401,11 +575,11 @@ class HTML:
 			self.output.write('" size="')
 			self.output.write(str(globs['int']['font_speech_size']))
 			self.output.write('"><b>')
-			self.output.write(requests.obj()._cells[self.i][self.j].speech)
+			self.output.write(h_request._cells[self.i][self.j].speech)
 			self.output.write('</b></font>')
 		
 	def _dic(self):
-		if requests.obj()._cells[self.i][self.j].dic:
+		if h_request._cells[self.i][self.j].dic:
 			self.output.write('<font face="')
 			self.output.write(globs['var']['font_dics_family'])
 			self.output.write('" color="')
@@ -413,11 +587,11 @@ class HTML:
 			self.output.write('" size="')
 			self.output.write(str(globs['int']['font_dics_size']))
 			self.output.write('"><b>')
-			self.output.write(requests.obj()._cells[self.i][self.j].dic)
+			self.output.write(h_request._cells[self.i][self.j].dic)
 			self.output.write('</b></font>')
 		
 	def _term(self):
-		if requests.obj()._cells[self.i][self.j].term:
+		if h_request._cells[self.i][self.j].term:
 			self.output.write('<font face="')
 			self.output.write(globs['var']['font_terms_family'])
 			self.output.write('" color="')
@@ -425,21 +599,21 @@ class HTML:
 			self.output.write('" size="')
 			self.output.write(str(globs['int']['font_terms_size']))
 			self.output.write('">')
-			self.output.write(requests.obj()._cells[self.i][self.j].term)
+			self.output.write(h_request._cells[self.i][self.j].term)
 			self.output.write('</font>')
 	
 	def html(self):
 		# Default Python string concatenation is too slow, so we use this module instead
 		self.output = StringIO()
 		self.output.write('<html><body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"><table>')
-		for i in range(len(requests.obj()._cells)):
+		for i in range(len(h_request._cells)):
 			self.i = i
 			# todo: this doesn't work, why?
 			self.output.write('<col width="130">')
 			self.output.write('<tr>')
-			for j in range(len(requests.obj()._cells[i])):
+			for j in range(len(h_request._cells[i])):
 				self.j = j
-				if requests.obj()._cells[i][j].dic:
+				if h_request._cells[i][j].dic:
 					self.output.write('<td align="center">')
 				else:
 					self.output.write('<td>')
@@ -449,7 +623,7 @@ class HTML:
 				self._comment()
 			self.output.write('</tr>')
 		self.output.write('</table></body></html>')
-		requests.obj()._html = self.output.getvalue()
+		h_request._html = self.output.getvalue()
 		self.output.close()
 		
 		
@@ -1388,11 +1562,11 @@ createAutoComplete();
 				# Загружаем страницу
 				try:
 					# Если загружать страницу с помощью "page=urllib.request.urlopen(my_url)", то в итоге получится HTTPResponse, что полезно только для удаления тэгов JavaScript. Поскольку мы вручную удаляем все лишние тэги, то на выходе нам нужна строка.
-					self._page = urllib.request.urlopen(requests.obj().url).read()
-					log.append('Page.get',lev_info,globs['mes'].ok % requests.obj().search)
+					self._page = urllib.request.urlopen(h_request.url()).read()
+					log.append('Page.get',lev_info,globs['mes'].ok % h_request.search())
 					Success = True
 				except:
-					log.append('Page.get',lev_warn,globs['mes'].failed % requests.obj().search)
+					log.append('Page.get',lev_warn,globs['mes'].failed % h_request.search())
 					if not Message(func='Page.get',type=lev_ques,message=globs['mes'].webpage_unavailable_ques).Yes:
 						break
 				if Success: # Если страница не загружена, то понятно, что ее кодировку изменить не удастся
@@ -1401,7 +1575,7 @@ createAutoComplete();
 						self._page = self._page.decode(globs['var']['win_encoding'])
 					except:
 						Message(func='Page.get',type=lev_err,message=globs['mes'].wrong_html_encoding)
-					requests.obj()._raw = self._page
+					h_request._html_raw = self._page
 		return self._page
 
 
@@ -1663,11 +1837,11 @@ class Tags:
 class Elems:
 	
 	def __init__(self):
-		if requests.obj()._elems:
+		if h_request._elems:
 			log.append('Elems.__init__',lev_debug,globs['mes'].action_not_required)
 		else:
 			log.append('Elems.__init__',lev_info,globs['mes'].create_object)
-			requests.obj()._elems = Tags().elems()
+			h_request._elems = Tags().elems()
 			self.useless()
 			self.speech()
 			self.unite_comments()
@@ -1678,12 +1852,12 @@ class Elems:
 	def useless(self):
 		# We assume that a 'dic'-type entry shall be succeeded by a 'term'-type entry, not a 'comment'-type entry. Therefore, we delete 'comment'-type entries after 'dic'-type entries in order to ensure that dictionary abbreviations do not succeed full dictionary titles. We also can delete full dictionary titles and leave abbreviations instead.
 		i = 0
-		while i < len(requests.obj()._elems):
+		while i < len(h_request._elems):
 			# todo: Удалять по URL
 			# Чтобы не удалить случайно длинный комментарий с точкой на конце, ограничиваю его длину 12 (выбрано условно)
-			if requests.obj()._elems[i].comment.endswith('.') and len(requests.obj()._elems[i].comment) < 12 or 'Макаров' in requests.obj()._elems[i].comment or 'Вебстер' in requests.obj()._elems[i].comment or 'Webster' in requests.obj()._elems[i].comment or 'Майкрософт' in requests.obj()._elems[i].comment or 'Microsoft' in requests.obj()._elems[i].comment:
-				log.append('Elems.useless',lev_info,globs['mes'].deleting_useless_entry % str(requests.obj()._elems[i].comment))
-				del requests.obj()._elems[i]
+			if h_request._elems[i].comment.endswith('.') and len(h_request._elems[i].comment) < 12 or 'Макаров' in h_request._elems[i].comment or 'Вебстер' in h_request._elems[i].comment or 'Webster' in h_request._elems[i].comment or 'Майкрософт' in h_request._elems[i].comment or 'Microsoft' in h_request._elems[i].comment:
+				log.append('Elems.useless',lev_info,globs['mes'].deleting_useless_entry % str(h_request._elems[i].comment))
+				del h_request._elems[i]
 				i -= 1
 			i += 1
 		# todo (?): обновить self._page
@@ -1691,25 +1865,25 @@ class Elems:
 		
 	# Определить части речи и пометить их как названия словарей (чтобы выносились на новую строку)
 	def speech(self):
-		for i in range(len(requests.obj()._elems)):
-			if tag_pattern14 in requests.obj()._elems[i].url:
-				if not requests.obj()._elems[i].speech:
-					requests.obj()._elems[i].speech = requests.obj()._elems[i].term
-					requests.obj()._elems[i].term = ''
+		for i in range(len(h_request._elems)):
+			if tag_pattern14 in h_request._elems[i].url:
+				if not h_request._elems[i].speech:
+					h_request._elems[i].speech = h_request._elems[i].term
+					h_request._elems[i].term = ''
 					
 	# Unite multiple comments using a separator ' | '. Delete comments-only entries.
 	def unite_comments(self):
 		# Remove comments-only cells
-		i = len(requests.obj()._elems) - 1
+		i = len(h_request._elems) - 1
 		while i >= 0:
-			if requests.obj()._elems[i].dic == '' and requests.obj()._elems[i].term == '' and requests.obj()._elems[i].comment != '':
-				requests.obj()._elems[i-1].comment = requests.obj()._elems[i-1].comment + ' | ' + requests.obj()._elems[i].comment
-				del requests.obj()._elems[i]
+			if h_request._elems[i].dic == '' and h_request._elems[i].term == '' and h_request._elems[i].comment != '':
+				h_request._elems[i-1].comment = h_request._elems[i-1].comment + ' | ' + h_request._elems[i].comment
+				del h_request._elems[i]
 			i -= 1
 		# Delete comments separators where they are not necessary
-		for i in range(len(requests.obj()._elems)):
-			if requests.obj()._elems[i].comment.startswith(' | '):
-				requests.obj()._elems[i].comment = requests.obj()._elems[i].comment.replace(' | ',' ',1)
+		for i in range(len(h_request._elems)):
+			if h_request._elems[i].comment.startswith(' | '):
+				h_request._elems[i].comment = h_request._elems[i].comment.replace(' | ',' ',1)
 				
 	# Объединить элементы, которые должны входить в одну ячейку
 	def unite_by_url(self):
@@ -1719,21 +1893,21 @@ class Elems:
 			3) В URL содержится 'UserName', т.е. элемент на самом деле относится к комментариям (хотя в Мультитране идет как самостоятельная ссылка)
 		'''
 		i = 0
-		while i < len(requests.obj()._elems):
+		while i < len(h_request._elems):
 			if i > 0:
-				if requests.obj()._elems[i].url and requests.obj()._elems[i-1].url == requests.obj()._elems[i].url or requests.obj()._elems[i-1].url + '&s1=' in requests.obj()._elems[i].url or '&UserName=' in requests.obj()._elems[i].url:
+				if h_request._elems[i].url and h_request._elems[i-1].url == h_request._elems[i].url or h_request._elems[i-1].url + '&s1=' in h_request._elems[i].url or '&UserName=' in h_request._elems[i].url:
 					# В настоящее время в ячейке жестко заданы сначала название словаря, потом термин, потом комментарий, поэтому "хвост", который первоначально относился к последующей ячейке, лучше добавить к комментарию, иначе будет потерян смысл
-					requests.obj()._elems[i-1].comment = List([requests.obj()._elems[i-1].comment,requests.obj()._elems[i].dic,requests.obj()._elems[i].term,requests.obj()._elems[i].comment]).space_items()
-					del requests.obj()._elems[i]
+					h_request._elems[i-1].comment = List([h_request._elems[i-1].comment,h_request._elems[i].dic,h_request._elems[i].term,h_request._elems[i].comment]).space_items()
+					del h_request._elems[i]
 					i -= 1
 			i += 1
 			
 	# Назначить выделяемые ячейки
 	def define_selectables(self):
 		# Выделяемые ячейки надо назначать как минимум после этой процедуры
-		for i in range(len(requests.obj()._elems)):
-			if requests.obj()._elems[i].term:
-				requests.obj()._elems[i].Selectable = True
+		for i in range(len(h_request._elems)):
+			if h_request._elems[i].term:
+				h_request._elems[i].Selectable = True
 
 
 
@@ -1752,67 +1926,66 @@ def Cell():
 class Cells:
 	
 	def __init__(self):
-		if requests.obj()._cells and requests.obj().view == globs['view']:
+		if h_request._cells:
 			log.append('Cells.__init__',lev_debug,globs['mes'].action_not_required)
 		else:
 			log.append('Cells.__init__',lev_info,globs['mes'].create_object)
+			h_request.collimit()
+			h_request.view()
+			h_request._cells = []
 			Elems()
-			if requests.obj().view == 1:
+			if h_request._view == 1:
 				self.view1()
-			elif requests.obj().view == 2:
+			elif h_request._view == 2:
 				self.view2()
 			else:
 				self.view0()
 
 	def view0(self):
-		# todo: do not recreate
-		requests.obj()._cells = []
 		row = []
-		for i in range(len(requests.obj()._elems)):
-			if requests.obj()._elems[i].dic != '':
+		for i in range(len(h_request._elems)):
+			if h_request._elems[i].dic != '':
 				if len(row) > 0:
-					while len(row) < requests.obj().col_limit:
+					while len(row) < h_request._collimit:
 						row.append(Cell())
-					requests.obj()._cells.append(row)
-					row = [requests.obj()._elems[i]]
+					h_request._cells.append(row)
+					row = [h_request._elems[i]]
 				else:
-					row.append(requests.obj()._elems[i])
-			elif requests.obj()._elems[i].speech != '':
+					row.append(h_request._elems[i])
+			elif h_request._elems[i].speech != '':
 				if len(row) > 0:
-					while len(row) < requests.obj().col_limit:
+					while len(row) < h_request._collimit:
 						row.append(Cell())
-					requests.obj()._cells.append(row)
+					h_request._cells.append(row)
 					# todo: Speech position is hardcoded. Should we enhance this?
-					if requests.obj().col_limit >= 2:
-						row = [Cell(),requests.obj()._elems[i]]
+					if h_request._collimit >= 2:
+						row = [Cell(),h_request._elems[i]]
 					else:
-						row = [requests.obj()._elems[i]]
+						row = [h_request._elems[i]]
 				else:
-					row.append(requests.obj()._elems[i])
-			elif len(row) == requests.obj().col_limit:
-				requests.obj()._cells.append(row)
+					row.append(h_request._elems[i])
+			elif len(row) == h_request._collimit:
+				h_request._cells.append(row)
 				row = [Cell()]
-				row.append(requests.obj()._elems[i])
+				row.append(h_request._elems[i])
 			else:
-				row.append(requests.obj()._elems[i])
-			if i == len(requests.obj()._elems) - 1: # Last element
-				while len(row) < requests.obj().col_limit:
+				row.append(h_request._elems[i])
+			if i == len(h_request._elems) - 1: # Last element
+				while len(row) < h_request._collimit:
 					row.append(Cell())
-				requests.obj()._cells.append(row)
+				h_request._cells.append(row)
 				
 	def view1(self):
-		# todo: do not recreate
-		requests.obj()._cells = []
 		columns = []
 		column = []
-		for i in range(len(requests.obj()._elems)):
-			if requests.obj()._elems[i].dic != '':
+		for i in range(len(h_request._elems)):
+			if h_request._elems[i].dic != '':
 				if column:
 					columns.append(column)
 				column = []
-				column.append(requests.obj()._elems[i])
+				column.append(h_request._elems[i])
 			else:
-				column.append(requests.obj()._elems[i])
+				column.append(h_request._elems[i])
 		if column: # Add the last column
 			columns.append(column)
 		max_cols = 0
@@ -1825,11 +1998,9 @@ class Cells:
 				if i >= len(columns[j]):
 					columns[j].append(Cell())
 				row.append(columns[j][i])
-			requests.obj()._cells.append(row)
+			h_request._cells.append(row)
 
 	def view2(self):
-		# todo: do not recreate
-		requests.obj()._cells = []
 		Message('Cells.view',lev_err,globs['mes'].not_implemented)
 
 
@@ -1956,10 +2127,7 @@ class About:
 	
 	# Написать письмо автору
 	def response_back(self,*args):
-		try:
-			webbrowser.open('mailto:%s' % email)
-		except:
-			Message(func='TkinterHtmlMod.response_back',type=lev_err,message=globs['mes'].email_agent_failure)
+		Email(email=email,subject=globs['mes'].program_subject % product).create()
 
 	# Открыть веб-страницу с лицензией
 	def open_license_url(self,*args):
@@ -2030,14 +2198,14 @@ class SearchField:
 		
 	# Вставить предыдущий запрос
 	def insert_repeat_sign(self,*args):
-		if len(requests.requests) > 0:
-			init_inst('clipboard').copy(requests.requests[-1].search)
+		if h_db._count > 0:
+			init_inst('clipboard').copy(str(h_db.prev()))
 			self.paste()
 
 	# Вставить запрос до предыдущего
 	def insert_repeat_sign2(self,*args):
-		if len(requests.requests) > 1:
-			init_inst('clipboard').copy(requests.requests[-2].search)
+		if h_db._count > 1:
+			init_inst('clipboard').copy(str(h_db.preprev()))
 			self.paste()
 			
 			
@@ -2078,6 +2246,7 @@ class History:
 		self.widget = self.obj.widget
 		self.widget.pack(expand=1,side='top',fill='both')
 		self.Active = False
+		# todo: abandon history index, use DB ID instead
 		self._index = -1
 		self.close()
 		create_binding(widget=self.parent_obj.widget,bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt'],'<Escape>'],action=self.toggle)
@@ -2110,8 +2279,12 @@ class History:
 		self._index = -1
 		self.searches = []
 		self.urls = []
-		requests.requests = []
-		requests.search()
+		h_db.reset()
+		h_request.reset()
+		# cur
+		h_db.search_part()
+		#HTML() # Is needed after initializing requests
+		h_table.load_article()
 		h_table.update_buttons()
 	
 	def toggle(self,*args):
@@ -2170,8 +2343,8 @@ class TkinterHtmlMod(tk.Widget):
 		self.CaptureHotkey = True
 		self.MouseClicked = False
 		self.event = None
-		self.url = requests.obj().url
-		self.search = requests.obj().search
+		self.url = h_request._url
+		self.search = h_request._search
 		
 		self.master = master
 		self.location = self.get_tkhtml_folder()
@@ -2224,8 +2397,8 @@ class TkinterHtmlMod(tk.Widget):
 	# Перейти на 1-й термин текущей строки	
 	def move_line_start(self,*args):
 		self.line_start()
-		if len(requests.obj()._move_line_start) > self.i and len(requests.obj()._move_line_start[self.i]) > self.j:
-			self.i, self.j = requests.obj()._move_line_start[self.i][self.j]
+		if len(h_request._moves['_move_line_start']) > self.i and len(h_request._moves['_move_line_start'][self.i]) > self.j:
+			self.i, self.j = h_request._moves['_move_line_start'][self.i][self.j]
 			self.set_cell()
 		else:
 			log.append('TkinterHtmlMod.move_line_start',lev_err,globs['mes'].wrong_input2)
@@ -2233,20 +2406,20 @@ class TkinterHtmlMod(tk.Widget):
 	# Перейти на последний термин текущей строки
 	def move_line_end(self,*args):
 		self.line_end()
-		if len(requests.obj()._move_line_end) > self.i and len(requests.obj()._move_line_end[self.i]) > self.j:
-			self.i, self.j = requests.obj()._move_line_end[self.i][self.j]
+		if len(h_request._moves['_move_line_end']) > self.i and len(h_request._moves['_move_line_end'][self.i]) > self.j:
+			self.i, self.j = h_request._moves['_move_line_end'][self.i][self.j]
 			self.set_cell()
 
 	# Перейти на 1-й термин статьи
 	def move_text_start(self,*args):
 		self.text_start()
-		self.i, self.j = requests.obj()._move_text_start
+		self.i, self.j = h_request._moves['_move_text_start']
 		self.set_cell()
 
 	# Перейти на последний термин статьи
 	def move_text_end(self,*args):
 		self.text_end()
-		self.i, self.j = requests.obj()._move_text_end
+		self.i, self.j = h_request._moves['_move_text_end']
 		self.set_cell()
 
 	# Перейти на страницу вверх
@@ -2266,8 +2439,8 @@ class TkinterHtmlMod(tk.Widget):
 	# Перейти на предыдущий термин
 	def move_left(self,*args):
 		self.left()
-		if len(requests.obj()._move_left) > self.i and len(requests.obj()._move_left[self.i]) > self.j:
-			self.i, self.j = requests.obj()._move_left[self.i][self.j]
+		if len(h_request._moves['_move_left']) > self.i and len(h_request._moves['_move_left'][self.i]) > self.j:
+			self.i, self.j = h_request._moves['_move_left'][self.i][self.j]
 			self.set_cell()
 		else:
 			log.append('TkinterHtmlMod.move_left',lev_err,globs['mes'].wrong_input2)
@@ -2275,8 +2448,8 @@ class TkinterHtmlMod(tk.Widget):
 	# Перейти на следующий термин
 	def move_right(self,*args):
 		self.right()
-		if len(requests.obj()._move_right) > self.i and len(requests.obj()._move_right[self.i]) > self.j:
-			self.i, self.j = requests.obj()._move_right[self.i][self.j]
+		if len(h_request._moves['_move_right']) > self.i and len(h_request._moves['_move_right'][self.i]) > self.j:
+			self.i, self.j = h_request._moves['_move_right'][self.i][self.j]
 			self.set_cell()
 		else:
 			log.append('TkinterHtmlMod.move_right',lev_err,globs['mes'].wrong_input2)
@@ -2284,8 +2457,8 @@ class TkinterHtmlMod(tk.Widget):
 	# Перейти на строку вниз
 	def move_down(self,*args):
 		self.down()
-		if len(requests.obj()._move_down) > self.i and len(requests.obj()._move_down[self.i]) > self.j:
-			self.i, self.j = requests.obj()._move_down[self.i][self.j]
+		if len(h_request._moves['_move_down']) > self.i and len(h_request._moves['_move_down'][self.i]) > self.j:
+			self.i, self.j = h_request._moves['_move_down'][self.i][self.j]
 			self.set_cell()
 		else:
 			log.append('TkinterHtmlMod.move_down',lev_err,globs['mes'].wrong_input2)
@@ -2293,8 +2466,8 @@ class TkinterHtmlMod(tk.Widget):
 	# Перейти на строку вверх
 	def move_up(self,*args):
 		self.up()
-		if len(requests.obj()._move_up) > self.i and len(requests.obj()._move_up[self.i]) > self.j:
-			self.i, self.j = requests.obj()._move_up[self.i][self.j]
+		if len(h_request._moves['_move_up']) > self.i and len(h_request._moves['_move_up'][self.i]) > self.j:
+			self.i, self.j = h_request._moves['_move_up'][self.i][self.j]
 			self.set_cell()
 		else:
 			log.append('TkinterHtmlMod.move_up',lev_err,globs['mes'].wrong_input2)
@@ -2325,7 +2498,7 @@ class TkinterHtmlMod(tk.Widget):
 	
 	# Открыть URL текущей статьи в браузере
 	def open_in_browser(self,*args):
-		init_inst('online')._url = requests.obj().url
+		init_inst('online')._url = h_request._url
 		init_inst('online').browse()
 	
 	# Скопировать URL текущей статьи или выделения
@@ -2333,12 +2506,12 @@ class TkinterHtmlMod(tk.Widget):
 		cur_url = online_url_safe
 		if mode == 'term':
 			# Скопировать URL текущего термина. URL 1-го термина не совпадает с URL статьи!
-			cur_url = requests.obj()._cells[self.i][self.j].url
+			cur_url = h_request._cells[self.i][self.j].url
 			if globs['bool']['Iconify']:
 				iconify(obj)
 		elif mode == 'article':
 			# Скопировать URL статьи
-			cur_url = requests.obj().url
+			cur_url = h_request._url
 			if globs['bool']['Iconify']:
 				iconify(obj)
 		else:
@@ -2350,9 +2523,9 @@ class TkinterHtmlMod(tk.Widget):
 		init_inst('online').reset()
 		init_inst('online')._base_str = globs['var']['web_search_url']
 		if Selected:
-			init_inst('online')._search_str = 'define:' + requests.obj()._cells[self.i][self.j].term
+			init_inst('online')._search_str = 'define:' + h_request._cells[self.i][self.j].term
 		else:
-			init_inst('online')._search_str = 'define:' + requests.obj().search
+			init_inst('online')._search_str = 'define:' + h_request._search
 		init_inst('online').browse()
 	
 	# Обновить рисунки на кнопках
@@ -2383,12 +2556,21 @@ class TkinterHtmlMod(tk.Widget):
 		else:
 			self.btn_clipboard.inactive()
 			
+		# todo: Change active/inactive button logic in case of creating three or more views
+		if h_request.view() == 0:
+			self.btn_toggle_view.active()
+		else:
+			self.btn_toggle_view.inactive()
+			
 	# Перейти на предыдущий запрос
 	def go_back(self,*args):
 		old_index = self.history.index()
 		self.history.index_subtract()
 		if old_index != self.history.index():
-			requests.search(url=self.history.urls[self.history._index])
+			# todo: elaborate
+			h_request.update()
+			h_request._url = self.history.urls[self.history._index]
+			h_db.search_part()
 			self.load_article()
 
 	# Перейти на следующий запрос
@@ -2396,7 +2578,10 @@ class TkinterHtmlMod(tk.Widget):
 		old_index = self.history.index()
 		self.history.index_add()
 		if old_index != self.history.index():
-			requests.search(url=self.history.urls[self.history._index])
+			# todo: elaborate
+			h_request.update()
+			h_request._url = self.history.urls[self.history._index]
+			h_db.search_part()
 			self.load_article()
 
 	# Найти слово/слова в статье
@@ -2414,10 +2599,10 @@ class TkinterHtmlMod(tk.Widget):
 			search_str = self.search_entry.widget.get().strip(' ').strip('\n').lower()
 			if search_str:
 				# Создать список позиций всех совпадений по поиску в статье
-				for i in range(len(requests.obj()._cells)):
-					for j in range(len(requests.obj()._cells[i])):
+				for i in range(len(h_request._cells)):
+					for j in range(len(h_request._cells[i])):
 						# todo: Для всех вхождений, а не только терминов
-						if requests.obj()._cells[i][j].Selectable and search_str in requests.obj()._cells[i][j].term.lower():
+						if h_request._cells[i][j].Selectable and search_str in h_request._cells[i][j].term.lower():
 							self._search_list.append((i,j))
 				if len(self._search_list) > 0:
 					if direction == 'forward':
@@ -2455,22 +2640,22 @@ class TkinterHtmlMod(tk.Widget):
 				file = dialog_save_file(filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')))
 				if file:
 					# We disable AskRewrite because the confirmation is already built in the internal dialog
-					WriteTextFile(file,AskRewrite=False).write(requests.obj()._html)
+					WriteTextFile(file,AskRewrite=False).write(h_request._html)
 			elif opt == globs['mes'].save_article_as_html:
 				# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
 				# Также меняем сокращенные гиперссылки на полные, чтобы они работали и в локальном файле.
 				file = dialog_save_file(filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')))
 				if file:
 					# todo: fix remaining links to localhost
-					WriteTextFile(file,AskRewrite=False).write(requests.obj()._raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="m.exe?','<a href="'+online_url_root).replace('../c/m.exe?',online_url_root))
+					WriteTextFile(file,AskRewrite=False).write(h_request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="m.exe?','<a href="'+online_url_root).replace('../c/m.exe?',online_url_root))
 			elif opt == globs['mes'].save_article_as_txt:
 				file = dialog_save_file(filetypes=((globs['mes'].plain_text,'.txt'),(globs['mes'].all_files,'*')))
 				if file:
-					WriteTextFile(file,AskRewrite=False).write(requests.obj()._text)
+					WriteTextFile(file,AskRewrite=False).write(h_request._text)
 			elif opt == globs['mes'].copy_article_html:
-				init_inst('clipboard').copy(requests.obj()._raw)
+				init_inst('clipboard').copy(h_request._html_raw)
 			elif opt == globs['mes'].copy_article_txt:
-				init_inst('clipboard').copy(requests.obj()._text)
+				init_inst('clipboard').copy(h_request._text)
 	
 	def control_length(self): # Confirm too long requests
 		Confirmed = True
@@ -2482,10 +2667,12 @@ class TkinterHtmlMod(tk.Widget):
 	def search_online(self):
 		if self.control_length():
 			self.get_url()
-			# todo: del everywhere
-			requests.search(url=self.url)
-			requests.obj().search = self.search
-			log.append('TkinterHtmlMod._go_search',lev_debug,requests.obj().search)
+			h_request._url = self.url
+			# todo: decide whether this should be located before or after 'search_part'
+			h_request._search = self.search
+			h_request.new()
+			h_db.search_part()
+			log.append('TkinterHtmlMod._go_search',lev_debug,h_request._search)
 			HTML()
 			self.load_article()
 	
@@ -2537,7 +2724,8 @@ class TkinterHtmlMod(tk.Widget):
 		# Выпадающий список с вариантами направлений перевода
 		self.option_menu = OptionMenu(parent_obj=self.frame_panel,items=pairs)
 		# Кнопка изменения вида статьи
-		Button(self.frame_panel,text=globs['mes'].btn_toggle_view,hint=globs['mes'].hint_toggle_view,action=self.toggle_view,inactive_image_path=globs['var']['icon_toggle_view'],active_image_path=globs['var']['icon_toggle_view'],bindings=[globs['var']['bind_toggle_view'],globs['var']['bind_toggle_view_alt']])
+		# todo: Change active/inactive button logic in case of creating three or more views
+		self.btn_toggle_view = Button(self.frame_panel,text=globs['mes'].btn_toggle_view,hint=globs['mes'].hint_toggle_view,action=self.toggle_view,inactive_image_path=globs['var']['icon_toggle_view_ver'],active_image_path=globs['var']['icon_toggle_view_hor'],bindings=[globs['var']['bind_toggle_view'],globs['var']['bind_toggle_view_alt']])
 		# Кнопка перехода на предыдущую статью
 		self.btn_prev = Button(self.frame_panel,text=globs['mes'].btn_prev,hint=globs['mes'].hint_preceding_article,action=self.go_back,inactive_image_path=globs['var']['icon_go_back_off'],active_image_path=globs['var']['icon_go_back'],bindings=globs['var']['bind_go_back'])
 		# Кнопка перехода на следующую статью
@@ -2639,8 +2827,8 @@ class TkinterHtmlMod(tk.Widget):
 			parts = (0,0)
 			log.append('TkinterHtmlMod.get_cell',lev_err,globs['mes'].wrong_input2)
 		if globs['bool']['SelectTermsOnly']:
-			if len(requests.obj()._cells) > parts[0] and len(requests.obj()._cells[self.i]) > parts[1]:
-				if requests.obj()._cells[parts[0]][parts[1]].Selectable:
+			if len(h_request._cells) > parts[0] and len(h_request._cells[self.i]) > parts[1]:
+				if h_request._cells[parts[0]][parts[1]].Selectable:
 					self.i, self.j = parts
 		else:
 			self.i, self.j = parts
@@ -2714,9 +2902,9 @@ class TkinterHtmlMod(tk.Widget):
 	def get_vert_selectable(self,cur_i=0,cur_j=0,GetNext=True):
 		func_res = (cur_i,cur_j)
 		i = cur_i
-		while i < len(requests.obj()._cells):
+		while i < len(h_request._cells):
 			# todo: Алгоритм для globs['bool']['SelectTermsOnly']
-			if requests.obj()._cells[i][cur_j].Selectable:
+			if h_request._cells[i][cur_j].Selectable:
 				if GetNext:
 					if i != cur_i:
 						func_res = (i,cur_j)
@@ -2734,7 +2922,7 @@ class TkinterHtmlMod(tk.Widget):
 		i = cur_i
 		while i >= 0:
 			# todo: Алгоритм для globs['bool']['SelectTermsOnly']
-			if requests.obj()._cells[i][cur_j].Selectable:
+			if h_request._cells[i][cur_j].Selectable:
 				if GetPrevious:
 					if i != cur_i:
 						func_res = (i,cur_j)
@@ -2749,73 +2937,73 @@ class TkinterHtmlMod(tk.Widget):
 	# todo (?): create a MoveEvents class
 	# Список ячеек, выбираемых слева направо
 	def right(self):
-		if not requests.obj()._move_right:
-			for i in range(len(requests.obj()._cells)):
+		if not h_request._moves['_move_right']:
+			for i in range(len(h_request._cells)):
 				tmp_lst = []
-				for j in range(len(requests.obj()._cells[i])):
+				for j in range(len(h_request._cells[i])):
 					tmp_lst += [self.get_selectable(i,j)]
-				requests.obj()._move_right += [tmp_lst]
-		return requests.obj()._move_right
+				h_request._moves['_move_right'] += [tmp_lst]
+		return h_request._moves['_move_right']
 	
 	# Список ячеек, выбираемых справа налево
 	def left(self): # Просто перевернуть self._move_right оказывается недостаточным
-		if not requests.obj()._move_left:
-			for i in range(len(requests.obj()._cells)):
+		if not h_request._moves['_move_left']:
+			for i in range(len(h_request._cells)):
 				tmp_lst = []
-				for j in range(len(requests.obj()._cells[i])):
+				for j in range(len(h_request._cells[i])):
 					tmp_lst += [self.get_selectable_backwards(i,j)]
-				requests.obj()._move_left += [tmp_lst]
-		return requests.obj()._move_left
+				h_request._moves['_move_left'] += [tmp_lst]
+		return h_request._moves['_move_left']
 
 	# Список для перехода на первые выделяемые ячейки
 	def line_start(self):
-		if not requests.obj()._move_line_start:
-			for i in range(len(requests.obj()._cells)):
+		if not h_request._moves['_move_line_start']:
+			for i in range(len(h_request._cells)):
 				tmp_lst = []
-				for j in range(len(requests.obj()._cells[i])):
+				for j in range(len(h_request._cells[i])):
 					tmp_lst += [self.get_selectable(i,0,False)]
-				requests.obj()._move_line_start += [tmp_lst]
-		return requests.obj()._move_line_start
+				h_request._moves['_move_line_start'] += [tmp_lst]
+		return h_request._moves['_move_line_start']
 
 	# Список для перехода на последние выделяемые ячейки
 	def line_end(self):
-		if not requests.obj()._move_line_end:
-			for i in range(len(requests.obj()._cells)):
+		if not h_request._moves['_move_line_end']:
+			for i in range(len(h_request._cells)):
 				tmp_lst = []
-				for j in range(len(requests.obj()._cells[i])):
+				for j in range(len(h_request._cells[i])):
 					# Алгоритм не принимает -1, необходимо точно указывать позицию
-					tmp_lst += [self.get_selectable_backwards(i,len(requests.obj()._cells[i])-1,False)]
-				requests.obj()._move_line_end += [tmp_lst]
-		return requests.obj()._move_line_end
+					tmp_lst += [self.get_selectable_backwards(i,len(h_request._cells[i])-1,False)]
+				h_request._moves['_move_line_end'] += [tmp_lst]
+		return h_request._moves['_move_line_end']
 
 	# Первая выделяемая ячейка
 	def text_start(self):
 		# todo: Почему не удается использовать 'move_left', 'move_up'?
-		if not requests.obj()._move_text_start:
-			requests.obj()._move_text_start = self.get_selectable(0,0,False)
-		return requests.obj()._move_text_start
+		if not h_request._moves['_move_text_start']:
+			h_request._moves['_move_text_start'] = self.get_selectable(0,0,False)
+		return h_request._moves['_move_text_start']
 		
 	# Последняя выделяемая ячейка
 	def text_end(self):
 		# todo: Почему не удается использовать 'move_right', 'move_down'?
-		if not requests.obj()._move_text_end:
-			requests.obj()._move_text_end = self.get_selectable_backwards(len(requests.obj()._cells)-1,len(requests.obj()._cells[-1])-1,False)
-		return requests.obj()._move_text_end
+		if not h_request._moves['_move_text_end']:
+			h_request._moves['_move_text_end'] = self.get_selectable_backwards(len(h_request._cells)-1,len(h_request._cells[-1])-1,False)
+		return h_request._moves['_move_text_end']
 		
 	# Логика 'move_up' и 'move_down': идем вверх/вниз по тому же столбцу. Если на текущей строке нет выделяемой ячейки в нужном столбце, тогда пропускаем ее. Если дошли до конца столбца, переходим на первую/последнюю строку последующего/предыдущего столбца.
 	def down(self):
-		if not requests.obj()._move_down:
-			for i in range(len(requests.obj()._cells)):
+		if not h_request._moves['_move_down']:
+			for i in range(len(h_request._cells)):
 				tmp_lst = []
-				for j in range(len(requests.obj()._cells[i])):
+				for j in range(len(h_request._cells[i])):
 					# Номер строки, на которой находится конечная выделяемая ячейка при навигации сверху вниз. Обратить внимание, что это не обязательно последняя строка в статье!
 					# Возможно, имеет смысл вынести max_i в отдельный список, чтобы не вычислять его лишний раз. Но будет ли это быстрее?
-					max_i = self.get_vert_selectable_backwards(len(requests.obj()._cells)-1,j,GetPrevious=False)[0]
+					max_i = self.get_vert_selectable_backwards(len(h_request._cells)-1,j,GetPrevious=False)[0]
 					cell = self.get_vert_selectable(i,j)
 					# Просто == не работает
 					if i >= max_i:
 						# Если достигнут конец текущего столбца, перейти на первую выделяемую ячейку следующего столбца
-						if j < len(requests.obj()._cells[i]) - 1:
+						if j < len(h_request._cells[i]) - 1:
 							tmp_lst.append(self.get_vert_selectable(0,j+1,GetNext=False))
 						else:
 							tmp_lst.append((i,j))
@@ -2823,14 +3011,14 @@ class TkinterHtmlMod(tk.Widget):
 						tmp_lst.append(self.get_selectable(i,0))
 					else:
 						tmp_lst.append(cell)
-				requests.obj()._move_down += [tmp_lst]
-		return requests.obj()._move_down
+				h_request._moves['_move_down'] += [tmp_lst]
+		return h_request._moves['_move_down']
 	
 	def up(self):
-		if not requests.obj()._move_up:
-			for i in range(len(requests.obj()._cells)):
+		if not h_request._moves['_move_up']:
+			for i in range(len(h_request._cells)):
 				tmp_lst = []
-				for j in range(len(requests.obj()._cells[i])):
+				for j in range(len(h_request._cells[i])):
 					# Номер строки, на которой находится первая выделяемая ячейка при навигации снизу вверх. Обратить внимание, что это не обязательно первая строка в статье!
 					# Возможно, имеет смысл вынести min_i в отдельный список, чтобы не вычислять его лишний раз. Но будет ли это быстрее?
 					min_i = self.get_vert_selectable(0,j,GetNext=False)[0]
@@ -2838,19 +3026,19 @@ class TkinterHtmlMod(tk.Widget):
 					# Просто == не работает
 					if i <= min_i:
 						# Если достигнута самая первая выделяемая ячейка, не продолжать с последнего столбца статьи. Для 'move_down' такая проверка почему-то не обязательна.
-						if i == requests.obj()._move_text_start[0] and j == requests.obj()._move_text_start[1]:
+						if i == h_request._moves['_move_text_start'][0] and j == h_request._moves['_move_text_start'][1]:
 							tmp_lst.append((i,j))
 						# Если достигнут конец текущего столбца, перейти на последнюю выделяемую ячейку предыдущего столбца
 						elif j > 0:
-							tmp_lst.append(self.get_vert_selectable_backwards(len(requests.obj()._cells)-1,j-1,GetPrevious=False))
+							tmp_lst.append(self.get_vert_selectable_backwards(len(h_request._cells)-1,j-1,GetPrevious=False))
 						else:
 							tmp_lst.append((i,j))
 					elif cell == (i,j):
 						tmp_lst.append(self.get_selectable_backwards(i,0))
 					else:
 						tmp_lst.append(cell)
-				requests.obj()._move_up += [tmp_lst]
-		return requests.obj()._move_up
+				h_request._moves['_move_up'] += [tmp_lst]
+		return h_request._moves['_move_up']
 
 	# Определить следующую (+1,+1) ячейку, которую можно выделить
 	''' Если выделить можно любую ячейку, то будет выбрана следующая по очереди. Обратить внимание: в конце таблицы, там, где выделяемых ячеек уже нет, будет возвращаться текущая ячейка. Это логично, если выбрать можно любую ячейку, но не совсем логично, если выбирать только помеченные ячейки. Впрочем, если указано использование помеченных ячеек, а ячейка не помечена, то переход на нее осуществлен не будет, поэтому и ссылка в ней использована не будет.
@@ -2859,10 +3047,10 @@ class TkinterHtmlMod(tk.Widget):
 		Found = False
 		i = sel_i = cur_i
 		j = sel_j = cur_j
-		while i < len(requests.obj()._cells):
-			while j < len(requests.obj()._cells[i]):
+		while i < len(h_request._cells):
+			while j < len(h_request._cells[i]):
 				if globs['bool']['SelectTermsOnly']:
-					if requests.obj()._cells[i][j].Selectable:
+					if h_request._cells[i][j].Selectable:
 						# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
 						sel_i, sel_j = i, j
 						# Если указаная ячейка уже может быть выбрана, то игнорировать ее и искать следующую
@@ -2894,7 +3082,7 @@ class TkinterHtmlMod(tk.Widget):
 		while i >= 0:
 			while j >= 0:
 				if globs['bool']['SelectTermsOnly']:
-					if requests.obj()._cells[i][j].Selectable:
+					if h_request._cells[i][j].Selectable:
 						# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
 						sel_i = i
 						sel_j = j
@@ -2915,7 +3103,7 @@ class TkinterHtmlMod(tk.Widget):
 			if Found:
 				break
 			i -= 1
-			j = len(requests.obj()._cells[i]) - 1
+			j = len(h_request._cells[i]) - 1
 		#log.append('TkinterHtmlMod.get_selectable_backwards',lev_debug,str((sel_i,sel_j)))
 		return(sel_i,sel_j)
 	
@@ -2942,7 +3130,7 @@ class TkinterHtmlMod(tk.Widget):
 			self.top_indexes = {}
 			self.page_no = 0
 			# todo: check this
-			self.i, self.j = requests.obj()._move_text_start
+			self.i, self.j = h_request._moves['_move_text_start']
 		# Иначе экран будет смещаться до 1-й выделяемой ячейки, а не до верхнего края
 		if self.page_no == 0 and not 0 in self.top_indexes:
 			self.top_indexes[0] = self.text('index',0)[0]
@@ -2981,11 +3169,11 @@ class TkinterHtmlMod(tk.Widget):
 		self.tag("delete", "selection")
 		self.index = None
 		# todo: Здесь иногда получаем ошибку с индексами
-		if len(requests.obj()._cells) > self.i and len(requests.obj()._cells[self.i]) > self.j:
+		if len(h_request._cells) > self.i and len(h_request._cells[self.i]) > self.j:
 			if globs['bool']['SelectTermsOnly']:
-				self.index = self.text('index',requests.obj()._cells[self.i][self.j].first,requests.obj()._cells[self.i][self.j].last_term)
+				self.index = self.text('index',h_request._cells[self.i][self.j].first,h_request._cells[self.i][self.j].last_term)
 			else:
-				self.index = self.text('index',requests.obj()._cells[self.i][self.j].first,requests.obj()._cells[self.i][self.j].last)
+				self.index = self.text('index',h_request._cells[self.i][self.j].first,h_request._cells[self.i][self.j].last)
 		else:
 			log.append('TkinterHtmlMod.set_cell',globs['mes'].wrong_input2)
 		if self.index:
@@ -3022,9 +3210,9 @@ class TkinterHtmlMod(tk.Widget):
 	def copy_cell(self,*args):
 		#self.set_cell()
 		if globs['bool']['CopyTermsOnly']:
-			selected_text = requests.obj()._cells[self.i][self.j].term
+			selected_text = h_request._cells[self.i][self.j].term
 		else:
-			selected_text = List([requests.obj()._cells[self.i][self.j].dic,requests.obj()._cells[self.i][self.j].term,requests.obj()._cells[self.i][self.j].comment]).space_items()
+			selected_text = List([h_request._cells[self.i][self.j].dic,h_request._cells[self.i][self.j].term,h_request._cells[self.i][self.j].comment]).space_items()
 		init_inst('clipboard').copy(selected_text)
 		if globs['bool']['Iconify']:
 			iconify(init_inst('top'))
@@ -3032,15 +3220,15 @@ class TkinterHtmlMod(tk.Widget):
 	# Удалить ячейку и перекомпоновать статью
 	def delete_cell(self,*args):
 		Found = False
-		# Предполагаем, что requests.obj()._elems уже прошло стадию объединения комментариев
-		for i in range(len(requests.obj()._elems)):
+		# Предполагаем, что h_request._elems уже прошло стадию объединения комментариев
+		for i in range(len(h_request._elems)):
 			# todo: Уточнить и упростить алгоритм
-			if requests.obj()._elems[i] == requests.obj()._cells[self.i][self.j]:
+			if h_request._elems[i] == h_request._cells[self.i][self.j]:
 				Found = True
 				break
 		if Found:
-			del requests.obj()._elems[i]
-			requests.obj().cells = []
+			del h_request._elems[i]
+			h_request.cells = []
 			self.load_article()
 		else:
 			Message(func='TkinterHtmlMod.delete_cell',type=lev_warn,message=globs['mes'].wrong_input2,Silent=self.Silent)
@@ -3048,26 +3236,26 @@ class TkinterHtmlMod(tk.Widget):
 	# Добавить пустую ячейку и перекомпоновать статью
 	def add_cell(self,*args):
 		Found = False
-		# Предполагаем, что requests.obj()._elems уже прошло стадию объединения комментариев
-		for i in range(len(requests.obj()._elems)):
+		# Предполагаем, что h_request._elems уже прошло стадию объединения комментариев
+		for i in range(len(h_request._elems)):
 			# todo: Уточнить и упростить алгоритм
-			if requests.obj()._elems[i] == requests.obj()._cells[self.i][self.j]:
+			if h_request._elems[i] == h_request._cells[self.i][self.j]:
 				Found = True
 				break
 		if Found:
-			requests.obj()._elems.insert(i,Cell())
-			requests.obj()._cells = []
+			h_request._elems.insert(i,Cell())
+			h_request._cells = []
 			self.load_article()
 
 	def load_article(self,*args):
 		self.reset()
-		self.parse(requests.obj()._html)
-		requests.obj()._text = self.text('text')
+		self.parse(h_request.html())
+		h_request._text = self.text('text')
 		self.top_indexes = {}
 		self.gen_poses()
 		self.gen_pos2cell()
 		self.move_text_start()
-		init_inst('top').widget.title(requests.obj().search)
+		init_inst('top').widget.title(h_request.search())
 		self.history.update()
 		self.update_buttons()
 		self.search_field.clear()
@@ -3079,65 +3267,64 @@ class TkinterHtmlMod(tk.Widget):
 			pass
 		else:
 			log.append('TkinterHtmlMod.go_url',lev_debug,globs['mes'].cur_cell % (self.i,self.j))
-			self.search = requests.obj()._cells[self.i][self.j].term
-			requests.search(url=requests.obj()._cells[self.i][self.j].url)
+			self.search = h_request._cells[self.i][self.j].term
+			h_request._url = h_request._cells[self.i][self.j].url
+			h_request.new()
+			h_db.search_part()
 			HTML()
-			log.append('TkinterHtmlMod.go_url',lev_info,globs['mes'].opening_link % requests.obj().url)
-			requests.obj().search = self.search
-			self.url = requests.obj().url
+			log.append('TkinterHtmlMod.go_url',lev_info,globs['mes'].opening_link % h_request._url)
+			# todo: decide whether this should be located before or after 'search_part'
+			h_request._search = self.search
+			self.url = h_request._url
 			self.load_article()
-			#requests.attributes()
 				
 	def gen_pos2cell(self):
 		# 1-й символ всегда соответствует 1-й ячейке
 		self.pos2cell = [[0,0]]
 		cur_index = 1 # Starts with '\n'
-		for i in range(len(requests.obj()._cells)):
+		for i in range(len(h_request._cells)):
 			# Число столбцов в таблице должно быть одинаковым!
-			for j in range(len(requests.obj()._cells[i])):
-				if requests.obj()._cells[i][j].speech:
-					tmp_str = requests.obj()._cells[i][j].speech.strip() + '\n'
-					requests.obj()._cells[i][j].first = cur_index
+			for j in range(len(h_request._cells[i])):
+				if h_request._cells[i][j].speech:
+					tmp_str = h_request._cells[i][j].speech.strip() + '\n'
+					h_request._cells[i][j].first = cur_index
 					cur_index += len(tmp_str)
-					requests.obj()._cells[i][j].last_term = requests.obj()._cells[i][j].first + len(requests.obj()._cells[i][j].term)
-					requests.obj()._cells[i][j].last = cur_index
+					h_request._cells[i][j].last_term = h_request._cells[i][j].first + len(h_request._cells[i][j].term)
+					h_request._cells[i][j].last = cur_index
 					for k in range(len(tmp_str)):
 						self.pos2cell.append([i,j])
-				if requests.obj()._cells[i][j].dic:
-					tmp_str = requests.obj()._cells[i][j].dic.strip() + '\n'
-					requests.obj()._cells[i][j].first = cur_index
+				if h_request._cells[i][j].dic:
+					tmp_str = h_request._cells[i][j].dic.strip() + '\n'
+					h_request._cells[i][j].first = cur_index
 					cur_index += len(tmp_str)
-					requests.obj()._cells[i][j].last_term = requests.obj()._cells[i][j].first + len(requests.obj()._cells[i][j].term)
-					requests.obj()._cells[i][j].last = cur_index
+					h_request._cells[i][j].last_term = h_request._cells[i][j].first + len(h_request._cells[i][j].term)
+					h_request._cells[i][j].last = cur_index
 					for k in range(len(tmp_str)):
 						self.pos2cell.append([i,j])
-				if requests.obj()._cells[i][j].term + requests.obj()._cells[i][j].comment:
-					tmp_str = (requests.obj()._cells[i][j].term + requests.obj()._cells[i][j].comment).strip() + '\n'
+				if h_request._cells[i][j].term + h_request._cells[i][j].comment:
+					tmp_str = (h_request._cells[i][j].term + h_request._cells[i][j].comment).strip() + '\n'
 					tmp_str = tmp_str.replace('  ',' ')
-					requests.obj()._cells[i][j].first = cur_index
+					h_request._cells[i][j].first = cur_index
 					cur_index += len(tmp_str)
-					requests.obj()._cells[i][j].last_term = requests.obj()._cells[i][j].first + len(requests.obj()._cells[i][j].term)
-					requests.obj()._cells[i][j].last = cur_index
+					h_request._cells[i][j].last_term = h_request._cells[i][j].first + len(h_request._cells[i][j].term)
+					h_request._cells[i][j].last = cur_index
 					for k in range(len(tmp_str)):
 						self.pos2cell.append([i,j])
-	#assert len(requests.obj()._text) == len(self.pos2cell)
+	#assert len(h_request._text) == len(self.pos2cell)
 				
 	def gen_poses(self):
 		cur_index = 1 # Starts with '\n'
-		for i in range(len(requests.obj()._cells)):
-			for j in range(len(requests.obj()._cells[i])):
-				tmp_str = List([requests.obj()._cells[i][j].speech,requests.obj()._cells[i][j].dic,requests.obj()._cells[i][j].term,requests.obj()._cells[i][j].comment]).space_items()
-				requests.obj()._cells[i][j].first = cur_index
-				requests.obj()._cells[i][j].last_term = cur_index + len(requests.obj()._cells[i][j].term)
-				requests.obj()._cells[i][j].last = cur_index + len(tmp_str)
+		for i in range(len(h_request._cells)):
+			for j in range(len(h_request._cells[i])):
+				tmp_str = List([h_request._cells[i][j].speech,h_request._cells[i][j].dic,h_request._cells[i][j].term,h_request._cells[i][j].comment]).space_items()
+				h_request._cells[i][j].first = cur_index
+				h_request._cells[i][j].last_term = cur_index + len(h_request._cells[i][j].term)
+				h_request._cells[i][j].last = cur_index + len(tmp_str)
 				cur_index += len(tmp_str)
 				cur_index += 1
 	
 	def reload(self,*args):
-		requests._obj._html = ''
-		requests._obj._text = ''
-		requests._obj._cells = []
-		requests._obj._elems = []
+		h_request._html = h_request._text = h_request._cells = h_request._elems = None
 		HTML()
 		self.load_article()
 		
@@ -3149,45 +3336,33 @@ class TkinterHtmlMod(tk.Widget):
 			
 	# Перейти на элемент истории
 	def get_history(self,*args):
-		requests.search(url=self.history.urls[self.history.sel_index()])
+		# todo: elaborate and everywhere where h_request._url is used in the same way
+		# cur
+		h_request.update()
+		h_request._url = self.history.urls[self.history.sel_index()]
+		# todo: check whether search_full is currently safe here
+		h_db.search_part()
 		self.load_article()
 				
 	def toggle_view(self,*args):
-		if globs['view'] == 0:
-			globs['view'] = 1
-		elif globs['view'] == 1:
-			#globs['view'] = 2
-			globs['view'] = 0
-		elif globs['view'] == 2:
-			globs['view'] = 0
-		log.append('TkinterHtmlMod.toggle_view',lev_info,globs['mes'].new_view_mode % globs['view'])
+		if h_request.view() == 0:
+			h_request._view = 1
+		elif h_request._view == 1:
+			#h_request._view = 2
+			h_request._view = 0
+		elif h_request._view == 2:
+			h_request._view = 0
+		log.append('TkinterHtmlMod.toggle_view',lev_info,globs['mes'].new_view_mode % h_request._view)
 		# todo: why move_right and move_left are so slow to be calculated?
-		# todo: remember, do not recreate
-		# cur
-		#self.reload()
-		# hint: toggle_view is activated after HTML()
-		requests._obj._html = ''
+		# todo: do not recreate 'cells' each time
+		h_request.update()
+		h_db.search_part()
 		HTML()
+		log.append('TkinterHtmlMod.go_url',lev_info,globs['mes'].opening_link % h_request._url)
+		# todo: decide whether this should be located before or after 'search_part'
+		h_request._search = self.search
+		self.url = h_request._url
 		self.load_article()
-		'''requests._obj._move_right = []
-		requests._obj._move_left = []
-		requests._obj._move_down = []
-		requests._obj._move_up = []
-		requests._obj._move_line_start = []
-		requests._obj._move_line_end = []
-		requests._obj._move_text_start = []
-		requests._obj._move_text_end = []
-		requests._obj._text = ''
-		requests._obj._html = ''
-		'''
-		#HTML()
-		#self.load_article()
-		'''# todo: do not reset
-		requests._obj._html = ''
-		requests._obj._cells = []
-		HTML()
-		self.load_article()
-		'''
 	
 	def zzz(self): # Only needed to move quickly to the end of the class
 		pass
@@ -3195,10 +3370,13 @@ class TkinterHtmlMod(tk.Widget):
 
 
 if  __name__ == '__main__':
+	h_request = Request()
+	h_db = DB()
 	h_quit = Quit()
 	h_table = TkinterHtmlMod(init_inst('top').widget)
 	init_inst('top').widget.protocol("WM_DELETE_WINDOW",h_quit.wait)
 	timed_update() # Do not wrap this function. Change this carefully.
+	h_db.search_part()
 	HTML() # Is needed after initializing requests
 	h_table.load_article()
 	h_table.show()

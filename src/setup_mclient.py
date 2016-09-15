@@ -5,7 +5,7 @@ from cx_Freeze import setup, Executable
 buildOptions = dict(packages = [], includes = ["re"], excludes = [])
 
 executables = [
-    Executable('mclient.pyw', base = 'Win32GUI', icon = 'icon_64x64_mclient.ico', targetName = 'mclient.exe')
+    Executable('mclient.pyw', base = 'Win32GUI', icon = 'resources\icon_64x64_mclient.ico', targetName = 'mclient.exe')
 ]
 
 setup(name='mclient.pyw',

@@ -403,10 +403,11 @@ class Entry:
 			self.widget.pack(ipady=ipady)
 		else:
 			self.widget.pack()
-		# Тип родительского виджета может быть любым
-		if not hasattr(self.parent_obj,'close_button'):
-			self.parent_obj.close_button = Button(self.parent_obj,text=globs['mes'].btn_x,hint=globs['mes'].btn_x,action=self.close,expand=0,side='bottom')
-		WidgetShared.custom_buttons(self)
+		if not self.Composite:
+			# Тип родительского виджета может быть любым
+			if not hasattr(self.parent_obj,'close_button'):
+				self.parent_obj.close_button = Button(self.parent_obj,text=globs['mes'].btn_x,hint=globs['mes'].btn_x,action=self.close,expand=0,side='bottom')
+			WidgetShared.custom_buttons(self)
 		self.custom_bindings()
 	
 	def custom_bindings(self):
@@ -414,6 +415,9 @@ class Entry:
 			create_binding(widget=self.widget,bindings=['<Return>','<KP_Enter>'],action=self.close)
 			create_binding(widget=self.widget,bindings='<Escape>',action=self.parent_obj.close)
 
+	def show(self,*args):
+		self.parent_obj.show()
+	
 	def close(self,*args):
 		self.Save = True
 		self.parent_obj.close()
@@ -436,7 +440,7 @@ class Entry:
 		self.widget.delete(0,'end')
 		
 	# GoTo работает только в tk.Text и оставлено для совместимости с ним (как и SpecialReturn)
-	def update(self,title='Title:',text='Text:',SelectAll=True,ReadOnly=False,CursorPos=0,icon='',GoTo='',SpecialReturn=False):
+	def update(self,title='Title:',text='',SelectAll=True,ReadOnly=False,CursorPos=0,icon='',GoTo='',SpecialReturn=False):
 		self.Save = False
 		# Операции над главным виджетом
 		self.icon(icon=icon)
@@ -661,11 +665,14 @@ class ToolTip(ToolTipBase):
 class ListBox:
 	
 	# todo: configure a font
-	def __init__(self,parent_obj,Multiple=False,lst=[],title='Title:',icon=None,SelectionCloses=True):
+	def __init__(self,parent_obj,Multiple=False,lst=[],title='Title:',icon=None,SelectionCloses=True,SelectFirst=True,Composite=False):
 		self.parent_obj = parent_obj
 		self.scrollbar = tk.Scrollbar(self.parent_obj.widget)
 		self.scrollbar.pack(side=tk.RIGHT,fill=tk.Y)
 		self.Multiple = Multiple
+		self.SelectFirst = SelectFirst
+		self.Composite = Composite
+		self.state = 'normal'
 		if self.Multiple:
 			self.widget = tk.Listbox(self.parent_obj.widget,exportselection=0,selectmode=tk.MULTIPLE)
 		else:
@@ -675,10 +682,15 @@ class ListBox:
 		self.scrollbar.config(command=self.widget.yview)
 		self.widget.config(yscrollcommand=self.scrollbar.set)
 		self.widget.focus_set()
-		self.reset(lst=lst,title=title,icon=icon)
+		self.reset(lst=lst,title=title,icon=icon,SelectFirst=self.SelectFirst)
 		# todo: test <KP_Enter> in Windows
 		if SelectionCloses:
 			create_binding(self.widget,['<Return>','<KP_Enter>','<Double-Button-1>'],self.close)
+		if not self.Composite:
+			# Тип родительского виджета может быть любым
+			if not hasattr(self.parent_obj,'close_button'):
+				self.parent_obj.close_button = Button(self.parent_obj,text=globs['mes'].btn_x,hint=globs['mes'].btn_x,action=self.close,expand=0,side='bottom')
+			WidgetShared.custom_buttons(self)
 		
 	def _resize(self):
 		# Autofit to contents
@@ -690,19 +702,26 @@ class ListBox:
 	
 	def clear(self):
 		self.widget.delete(0,tk.END)
+		
+	def clear_selection(self):
+		self.widget.selection_clear(0,tk.END)
 	
-	def reset(self,lst=[],title='Title:',icon=None):
+	def reset(self,lst=[],title='Title:',icon=None,SelectFirst=True):
+		self.SelectFirst = SelectFirst
 		self.clear()
 		self.lst = list(lst)
 		self.icon(icon=icon)
 		self.title(title=title)
 		self.fill()
 		self._resize()
-		self.select()
+		if self.SelectFirst:
+			self.select()
+		else:
+			self.clear_selection()
 		self.IQuit = False
 	
 	def select(self,index=0):
-		self.widget.selection_clear(0,tk.END)
+		self.clear_selection()
 		self.widget.selection_set(index)
 		self.widget.see(index)
 	

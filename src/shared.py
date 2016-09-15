@@ -854,7 +854,7 @@ class Time: # We constantly recalculate each value because they depend on each o
 		self.pattern = pattern
 		self.MondayWarning = MondayWarning
 		self._timestamp = _timestamp
-		self._date = self._instance = self._date = self._year = self._month_abbr = None
+		self._date = self._instance = self._date = self._year = self._month_abbr = self._month_name = ''
 		if self._timestamp or self._timestamp == 0: # Prevent recursion
 			self.instance()
 		else:
@@ -921,6 +921,15 @@ class Time: # We constantly recalculate each value because they depend on each o
 		else:
 			log.append('Time.monday_warning',lev_warn,globs['mes'].canceled)
 				
+	def month_name(self):
+		if self.Success:
+			if not self._instance:
+				self.instance()
+			self._month_name = calendar.month_name[Text(self._instance.strftime("%m"),Auto=False).str2int()]
+		else:
+			log.append('Time.month_local',lev_warn,globs['mes'].canceled)
+		return self._month_name
+	
 	def month_abbr(self):
 		if self.Success:
 			if not self._instance:
@@ -1621,3 +1630,19 @@ class Shortcut:
 				self.create_unix()
 		else:
 			log.append('Shortcut.create',lev_warn,globs['mes'].canceled)
+
+
+
+class Email:
+	
+	def __init__(self,email,subject='',message=''):
+		self._sep = ',' # Not all mail agents support ';'
+		self._email = email # A single address or multiple comma-separated addresses
+		self._subject = subject
+		self._message = message
+		
+	def create(self):
+		try:
+			webbrowser.open('mailto:%s?subject=%s&body=%s' % (self._email,self._subject,self._message))
+		except:
+			Message(func='TkinterHtmlMod.response_back',type=lev_err,message=globs['mes'].email_agent_failure)
