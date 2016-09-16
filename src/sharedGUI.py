@@ -665,7 +665,8 @@ class ToolTip(ToolTipBase):
 class ListBox:
 	
 	# todo: configure a font
-	def __init__(self,parent_obj,Multiple=False,lst=[],title='Title:',icon=None,SelectionCloses=True,SelectFirst=True,Composite=False,SingleClick=True):
+	def __init__(self,parent_obj,Multiple=False,lst=[],title='Title:',icon=None,SelectionCloses=True,SelectFirst=True,Composite=False,SingleClick=True,user_function=None):
+		# (1) Initializing variables
 		self.parent_obj = parent_obj
 		self.scrollbar = tk.Scrollbar(self.parent_obj.widget)
 		self.scrollbar.pack(side=tk.RIGHT,fill=tk.Y)
@@ -674,8 +675,11 @@ class ListBox:
 		self.Composite = Composite
 		self.SelectionCloses = SelectionCloses
 		self.SingleClick = SingleClick
+		# A user-defined function that is run when pressing Up/Down arrow keys and LMB. There is a problem binding it externally, so we bind it here.
+		self.user_function = user_function
 		self._index = 0
 		self.state = 'normal'
+		# (2) Creating the widget
 		if self.Multiple:
 			self.widget = tk.Listbox(self.parent_obj.widget,exportselection=0,selectmode=tk.MULTIPLE)
 		else:
@@ -686,8 +690,11 @@ class ListBox:
 		self.scrollbar.config(command=self.widget.yview)
 		self.widget.config(yscrollcommand=self.scrollbar.set)
 		self.widget.focus_set()
+		# (3) Setting bindings
 		# todo: test <KP_Enter> in Windows
-		if self.SelectionCloses:
+		if self.user_function:
+			create_binding(self.widget,'<<ListboxSelect>>',self.user_function) # Binding just to '<Button-1>' does not work. We do not need binding Return/space/etc. because the function will be called each time the selection is changed. However, we still need to bind Up/Down.
+		elif self.SelectionCloses:
 			create_binding(self.widget,['<Return>','<KP_Enter>','<Double-Button-1>'],self.close)
 			if self.SingleClick and not self.Multiple:
 				create_binding(self.widget,'<Button-1>',self.close)
@@ -705,8 +712,8 @@ class ListBox:
 		self.widget.config(width=0)
 		self.widget.config(height=0)
 	
-	def activate(self,index=0):
-		self.widget.activate(index)
+	def activate(self):
+		self.widget.activate(self._index)
 	
 	def clear(self):
 		self.widget.delete(0,tk.END)
@@ -790,10 +797,14 @@ class ListBox:
 	def move_down(self,*args):
 		self.index_add()
 		self.select()
+		if self.user_function:
+			self.user_function()
 		
 	def move_up(self,*args):
 		self.index_subtract()
 		self.select()
+		if self.user_function:
+			self.user_function()
 
 
 
