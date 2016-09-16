@@ -2399,11 +2399,8 @@ class TkinterHtmlMod(tk.Widget):
 		self.bottom_bbox = 0
 		
 	def get_url(self):
-		# Поскольку Multitran использует кодировку windows-1251, необходимо использовать ее. Поскольку некоторые символы не кодируются в globs['var']['win_encoding'] корректно, оставляем для них кодировку UTF-8.
-		init_inst('online').reset()
-		init_inst('online')._encoding = globs['var']['win_encoding']
-		init_inst('online')._search_str = self.search
-		init_inst('online')._base_str = self.get_pair()
+		# Note: encoding must be UTF-8 here
+		init_inst('online').reset(self.get_pair(),self.search)
 		self.url = init_inst('online').url()
 		log.append('TkinterHtmlMod.get_url',lev_debug,"self.url: %s" % str(self.url))
 	

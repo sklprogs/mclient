@@ -1456,13 +1456,12 @@ class Config:
 
 class Online:
 	
-	def __init__(self):
-		self.reset()
+	def __init__(self,base_str='',search_str='',encoding='UTF-8'):
+		self.reset(base_str=base_str,search_str=search_str,encoding=encoding)
 
 	def bytes(self):
 		if not self._bytes:
-			# todo: fix errors for mclient
-			self._bytes = bytes(self._search_str,encoding=self._encoding)
+			self._bytes = bytes(self.search_str,encoding=self.encoding)
 		return self._bytes 
 	
 	def browse(self): # Open a URL in a default browser
@@ -1474,18 +1473,16 @@ class Online:
 	# Create a correct online link (URI => URL)
 	def url(self):
 		if not self._url:
-			self._url = self._base_str % urllib.parse.quote(self.bytes())
+			self._url = self.base_str % urllib.parse.quote(self.bytes())
 			log.append('Online.url',lev_debug,str(self._url))
 		return self._url
 		
-	def reset(self):
-		# todo (?): Input this with Entry if not set
-		self._base_str = ''
-		self._search_str = ''
-		self._bytes = ''
-		self._encoding = 'UTF-8'
-		self._url = ''
-		
+	def reset(self,base_str='',search_str='',encoding='UTF-8'):
+		self.encoding = encoding
+		self.base_str = base_str
+		self.search_str = search_str
+		self._bytes = self._url = None
+
 
 
 class Diff:

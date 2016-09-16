@@ -10,6 +10,7 @@
 * Удалены ключи: AutoHideHistory, online_dic_url, bind_get_history
 * Добавлены ключи: bind_next_pair, bind_next_pair_alt (отвечают за выбор следующей языковой пары, по умолчанию - F8 и Control-l соответственно), bind_toggle_view, bind_toggle_view_alt (отвечают за выбор текущего вида, по умолчанию - F6 и Alt-v соответственно), icon_toggle_view_hor, icon_toggle_view_ver
 * Изображения для кнопок перемещены в каталог resources
+* Цикличная навигация по истории с помощью Alt-Влево и Alt-Вправо (комбинации по умолчанию)
 
 4.6
 * Теперь по умолчанию выделенная ячейка имеет черный цвет шрифта
