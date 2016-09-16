@@ -88,7 +88,6 @@ class ConfigMclient(Config):
 			'bind_copy_url':'<Control-F7>',
 			'bind_delete_cell':'<Control-Delete>',
 			'bind_define':'<Control-d>',
-			'bind_get_history':'<Double-Button-1>',
 			'bind_go_back':'<Alt-Left>',
 			'bind_go_forward':'<Alt-Right>',
 			'bind_go_search_alt':'<KP_Enter>',
@@ -380,18 +379,53 @@ class DB: # Requires h_request global
 		
 	def reset(self):
 		self._count = 0
-		self._id_match = -1
+		self._id = -1
 		self.db.execute('drop table if exists INFO')
 		self.db.execute('create table INFO (ONLINE bool,SOURCE text,DIC text,SEARCH text,URL text,ID integer,COLLIMIT integer,VIEW integer,PRIORITY integer,ELEMS pickle,CELLS pickle,HTML text,HTML_RAW text,TEXT text,MOVES pickle)')
 		self.db_con.commit()
 		
+	def index_add(self):
+		if self._id < self._count - 1:
+			self._id += 1
+		else:
+			self._id = 0
+	
+	def index_subtract(self):
+		if self._id > 0:
+			self._id -= 1
+		else:
+			self._id = self._count - 1
+		
+	# orphant, equivalent of '_count'
+	def len(self):
+		self.db.execute('select Count(*) from INFO')
+		result = self.db.fetchone()
+		if result:
+			result = result[0]
+			return result
+	
+	def searches(self):
+		self.db.execute('select SEARCH from INFO order by ID')
+		searches = self.db.fetchall()
+		for i in range(len(searches)):
+			searches[i] = searches[i][0]
+		return searches
+	
 	def copy(self):
-		h_request._html = self.html()
+		h_request._online = self.online()
+		h_request._source = self.source()
+		h_request._dic = self.dic()
+		h_request._search = self.search()
+		h_request._url = self.url()
+		h_request._collimit = self.collimit()
+		h_request._view = self.view()
+		h_request._priority = self.priority()
 		h_request._html_raw = self.html_raw()
-		h_request._text = self.text()
 		h_request._elems = self.elems()
 		h_request._cells = self.cells()
 		h_request._moves = self.moves()
+		h_request._html = self.html()
+		h_request._text = self.text()
 		
 	def copy_ahead(self):
 		h_request._search = self.search()
@@ -399,92 +433,99 @@ class DB: # Requires h_request global
 		h_request._html_raw = self.html_raw() # Do not re-download the page
 		h_request._elems = self.elems()
 	
+	def collimit(self):
+		self.db.execute('select COLLIMIT from INFO where ID=?',(self._id,))
+		result = self.db.fetchone()
+		if result:
+			result = result[0]
+			return result
+	
 	def view(self):
-		self.db.execute('select VIEW from INFO where ID=?',(self._id_match,))
+		self.db.execute('select VIEW from INFO where ID=?',(self._id,))
 		result = self.db.fetchone()
 		if result:
 			result = result[0]
 			return result
 	
 	def priority(self):
-		self.db.execute('select PRIORITY from INFO where ID=?',(self._id_match,))
+		self.db.execute('select PRIORITY from INFO where ID=?',(self._id,))
 		result = self.db.fetchone()
 		if result:
 			result = result[0]
 			return result
 	
 	def online(self):
-		self.db.execute('select ONLINE from INFO where ID=?',(self._id_match,))
+		self.db.execute('select ONLINE from INFO where ID=?',(self._id,))
 		result = self.db.fetchone()
 		if result:
 			result = result[0]
 			return result
 	
 	def url(self):
-		self.db.execute('select URL from INFO where ID=?',(self._id_match,))
+		self.db.execute('select URL from INFO where ID=?',(self._id,))
 		result = self.db.fetchone()
 		if result:
 			result = result[0]
 			return result
 	
 	def search(self):
-		self.db.execute('select SEARCH from INFO where ID=?',(self._id_match,))
+		self.db.execute('select SEARCH from INFO where ID=?',(self._id,))
 		result = self.db.fetchone()
 		if result:
 			result = result[0]
 			return result
 	
 	def dic(self):
-		self.db.execute('select DIC from INFO where ID=?',(self._id_match,))
+		self.db.execute('select DIC from INFO where ID=?',(self._id,))
 		result = self.db.fetchone()
 		if result:
 			result = result[0]
 			return result
 	
 	def source(self):
-		self.db.execute('select SOURCE from INFO where ID=?',(self._id_match,))
+		self.db.execute('select SOURCE from INFO where ID=?',(self._id,))
 		result = self.db.fetchone()
 		if result:
 			result = result[0]
 			return result
 	
 	def moves(self):
-		self.db.execute('select MOVES from INFO where ID=?',(self._id_match,))
+		self.db.execute('select MOVES from INFO where ID=?',(self._id,))
 		result = self.db.fetchone()
 		if result:
 			result = result[0]
 			return pickle.loads(result)
 	
 	def cells(self):
-		self.db.execute('select CELLS from INFO where ID=?',(self._id_match,))
+		self.db.execute('select CELLS from INFO where ID=?',(self._id,))
 		result = self.db.fetchone()
 		if result:
 			result = result[0]
 			return pickle.loads(result)
 	
 	def elems(self):
-		self.db.execute('select ELEMS from INFO where ID=?',(self._id_match,))
+		self.db.execute('select ELEMS from INFO where ID=?',(self._id,))
 		result = self.db.fetchone()
 		if result:
 			result = result[0]
 			return pickle.loads(result)
 	
 	def text(self):
-		self.db.execute('select TEXT from INFO where ID=?',(self._id_match,))
+		self.db.execute('select TEXT from INFO where ID=?',(self._id,))
 		result = self.db.fetchone()
 		if result:
 			result = result[0]
 			return result
 	
 	def html_raw(self):
-		self.db.execute('select HTML_RAW from INFO where ID=?',(self._id_match,))
+		self.db.execute('select HTML_RAW from INFO where ID=?',(self._id,))
 		result = self.db.fetchone()
 		if result:
 			result = result[0]
 			return result
 	
 	def html(self):
-		self.db.execute('select HTML from INFO where ID=?',(self._id_match,))
+		self.db.execute('select HTML from INFO where ID=?',(self._id,))
 		result = self.db.fetchone()
 		if result:
 			result = result[0]
@@ -493,6 +534,7 @@ class DB: # Requires h_request global
 	def add(self):
 		self.db.execute('insert into INFO values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[h_request.online(),h_request.source(),h_request.dic(),h_request.search(),h_request.url(),self._count,h_request.collimit(),h_request.view(),h_request.priority(),pickle.dumps(h_request.elems()),pickle.dumps(h_request.cells()),h_request.html(),h_request.html_raw(),h_request.text(),pickle.dumps(h_request.moves())])
 		self.db_con.commit()
+		self._id += 1
 		self._count += 1
 	
 	def prev(self):
@@ -516,8 +558,8 @@ class DB: # Requires h_request global
 			self.db.execute('select ID from INFO where ONLINE=? and SOURCE=? and DIC=? and SEARCH=? and COLLIMIT=? and VIEW=? and PRIORITY=?',(h_request.online(),h_request.source(),h_request.dic(),h_request.search(),h_request.collimit(),h_request.view(),h_request.priority(),))
 		result = self.db.fetchone()
 		if result:
-			self._id_match = result[0]
-			log.append('DB.search_full',lev_info,globs['mes'].id_full_match % self._id_match)
+			self._id = result[0]
+			log.append('DB.search_full',lev_info,globs['mes'].id_full_match % self._id)
 			self.copy()
 			return True
 	
@@ -529,8 +571,8 @@ class DB: # Requires h_request global
 				self.db.execute('select ID from INFO where ONLINE=? and SOURCE=? and DIC=? and SEARCH=?',(h_request.online(),h_request.source(),h_request.dic(),h_request.search(),))
 			result = self.db.fetchone()
 			if result:
-				self._id_match = result[0]
-				log.append('DB.search_part',lev_info,globs['mes'].id_match % self._id_match)
+				self._id = result[0]
+				log.append('DB.search_part',lev_info,globs['mes'].id_match % self._id)
 				self.copy_ahead()
 			else:
 				self.add()
@@ -2053,7 +2095,7 @@ def timed_update():
 	else:
 		h_table.MouseClicked = False
 	# We need to have .after in the same function for it to work
-	init_inst('root').widget.after(300,timed_update)
+	h_quit._id = init_inst('root').widget.after(300,timed_update)
 	h_quit.now()
 	
 # Изменить язык графического интерфейса и сообщений
@@ -2073,6 +2115,7 @@ class Quit:
 	
 	def __init__(self):
 		self.Quit = False
+		self._id = None # This must be changed externally
 	
 	def wait(self,*args):
 		self.Quit = True
@@ -2082,6 +2125,8 @@ class Quit:
 		if self.Quit:
 			log.append('Quit.now',lev_info,globs['mes'].goodbye)
 			kl_mod.keylistener.cancel()
+			init_inst('top').widget.destroy()
+			init_inst('root').widget.after_cancel(self._id)
 			init_inst('root').destroy()
 			sys.exit()
 
@@ -2239,20 +2284,19 @@ class History:
 	def __init__(self):
 		self.parent_obj = Top(init_inst('root'))
 		self.parent_obj.widget.geometry('250x350')
-		# todo: delete or keep
 		self._title = globs['mes'].btn_history
 		self._icon = globs['var']['icon_mclient']
-		self.obj = ListBox(parent_obj=self.parent_obj,title=self._title,icon=self._icon,SelectionCloses=False)
+		self.obj = ListBox(parent_obj=self.parent_obj,title=self._title,icon=self._icon,SelectFirst=False,SelectionCloses=False,SingleClick=False,Composite=True)
 		self.widget = self.obj.widget
-		self.widget.pack(expand=1,side='top',fill='both')
 		self.Active = False
-		# todo: abandon history index, use DB ID instead
-		self._index = -1
-		self.close()
 		create_binding(widget=self.parent_obj.widget,bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt'],'<Escape>'],action=self.toggle)
+		create_binding(widget=self.obj.widget,bindings=['<<ListboxSelect>>','<Return>','<KP_Enter>','<space>'],action=self.go)
 		create_binding(widget=self.parent_obj.widget,bindings=globs['var']['bind_clear_history_alt'],action=self.clear)
-		self.searches = []
-		self.urls = []
+		self.close()
+	
+	def autoselect(self):
+		self.obj._index = h_db._id
+		self.obj.select()
 	
 	def show(self,*args):
 		self.Active = True
@@ -2265,27 +2309,19 @@ class History:
 		self.parent_obj.close()
 		
 	def fill(self):
-		self.obj.reset(lst=self.searches,title=self._title,icon=self._icon)
+		self.obj.reset(lst=h_db.searches(),title=self._title,icon=self._icon)
 	
 	def update(self):
-		if not h_table.url in self.urls:
-			self.urls.append(h_table.url)
-			self.searches.append(h_table.search)
-			self.index_add()
 		self.fill()
+		self.autoselect()
 		
 	def clear(self,*args):
 		self.obj.clear()
-		self._index = -1
-		self.searches = []
-		self.urls = []
-		h_db.reset()
 		h_request.reset()
-		# cur
+		h_db.reset()
 		h_db.search_part()
-		#HTML() # Is needed after initializing requests
 		h_table.load_article()
-		h_table.update_buttons()
+		self.update()
 	
 	def toggle(self,*args):
 		if self.Active:
@@ -2293,35 +2329,14 @@ class History:
 		else:
 			self.show()
 			
-	def get(self,*args):
-		# При выборе пункта возвращается кортеж с номером пункта
-		selection = self.widget.curselection()
-		if selection and len(selection) > 0:
-			# ВНИМАНИЕ: В Python 3.4 selection[0] является числом, а в более старших интерпретаторах, а также в сборках на их основе - строкой. Для совместимости преобразуем в число.
-			self._index = int(selection[0])
-			selection = self.widget.get(selection[0])
-		return selection
+	def go(self,*args):
+		h_db._id = self.obj.index()
+		h_db.copy()
+		h_table.load_article()
 		
-	def index(self):
-		if self._index == -1:
-			self._index = len(self.urls) - 1
-		return self._index
-		
-	def index_add(self):
-		if self.index() < len(self.urls) - 1:
-			self._index += 1
-	
-	def index_subtract(self):
-		if self.index() > 0:
-			self._index -= 1
-	
-	def sel_index(self):
-		self.get()
-		return self._index
-
 	# Скопировать элемент истории
 	def copy(self,*args):
-		init_inst('clipboard').copy(self.get())
+		init_inst('clipboard').copy(h_request.search())
 
 
 
@@ -2370,7 +2385,6 @@ class TkinterHtmlMod(tk.Widget):
 		self.history = History()
 		self.create_frame_panel()
 		self.search_field.widget.focus_set()
-		
 		create_binding(widget=self,bindings=globs['var']['bind_go_url'],action=self.go_url)
 		self.bind("<Motion>",self.mouse_sel,True)
 		# ВНИМАНИЕ: По непонятной причине, не работает привязка горячих клавиш (только мышь) для данного виджета, работает только для основного виджета!
@@ -2530,23 +2544,22 @@ class TkinterHtmlMod(tk.Widget):
 	
 	# Обновить рисунки на кнопках
 	def update_buttons(self):
-		self.history.index()
-		if len(self.history.urls) > 0:
+		if h_db._count > 0:
 			self.btn_repeat_sign.active()
 		else:
 			self.btn_repeat_sign.inactive()
 
-		if len(self.history.urls) > 1:
+		if h_db._count > 1:
 			self.btn_repeat_sign2.active()
 		else:
 			self.btn_repeat_sign2.inactive()
 
-		if self.history._index > 0:
+		if h_db._id > 0:
 			self.btn_prev.active()
 		else:
 			self.btn_prev.inactive()
 
-		if self.history._index < len(self.history.urls) - 1:
+		if h_db._count > 1 and h_db._id < h_db._count - 1:
 			self.btn_next.active()
 		else:
 			self.btn_next.inactive()
@@ -2564,26 +2577,21 @@ class TkinterHtmlMod(tk.Widget):
 			
 	# Перейти на предыдущий запрос
 	def go_back(self,*args):
-		old_index = self.history.index()
-		self.history.index_subtract()
-		if old_index != self.history.index():
-			# todo: elaborate
-			h_request.update()
-			h_request._url = self.history.urls[self.history._index]
-			h_db.search_part()
+		old_index = h_db._id
+		h_db.index_subtract()
+		if old_index != h_db._id:
+			h_db.copy()
 			self.load_article()
 
 	# Перейти на следующий запрос
 	def go_forward(self,*args):
-		old_index = self.history.index()
-		self.history.index_add()
-		if old_index != self.history.index():
-			# todo: elaborate
-			h_request.update()
-			h_request._url = self.history.urls[self.history._index]
-			h_db.search_part()
+		old_index = h_db._id
+		h_db.index_add()
+		if old_index != h_db._id:
+			h_db.copy()
 			self.load_article()
 
+	# todo: elaborate
 	# Найти слово/слова в статье
 	def search_article(self,direction='forward'): # clear, forward, backward
 		if direction == 'clear': # Начать поиск заново
@@ -2668,12 +2676,10 @@ class TkinterHtmlMod(tk.Widget):
 		if self.control_length():
 			self.get_url()
 			h_request._url = self.url
-			# todo: decide whether this should be located before or after 'search_part'
 			h_request._search = self.search
 			h_request.new()
 			h_db.search_part()
 			log.append('TkinterHtmlMod._go_search',lev_debug,h_request._search)
-			HTML()
 			self.load_article()
 	
 	# Search the selected term online using the entry widget (search field)
@@ -2757,7 +2763,6 @@ class TkinterHtmlMod(tk.Widget):
 
 	def hotkeys(self):
 		# Привязки: горячие клавиши и кнопки мыши
-		create_binding(widget=self.history.widget,bindings=[globs['var']['bind_get_history'],'<Return>','<KP_Enter>','<space>'],action=self.get_history) # При просто <Button-1> выделение еще не будет выбрано
 		create_binding(widget=self.history.widget,bindings=globs['var']['bind_copy_history'],action=self.history.copy)
 		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_go_search'],globs['var']['bind_go_search_alt']],action=self.go_search)
 		# todo: do not iconify at <ButtonRelease-3>
@@ -3267,15 +3272,11 @@ class TkinterHtmlMod(tk.Widget):
 			pass
 		else:
 			log.append('TkinterHtmlMod.go_url',lev_debug,globs['mes'].cur_cell % (self.i,self.j))
-			self.search = h_request._cells[self.i][self.j].term
+			h_request._search = h_request._cells[self.i][self.j].term
 			h_request._url = h_request._cells[self.i][self.j].url
 			h_request.new()
 			h_db.search_part()
-			HTML()
 			log.append('TkinterHtmlMod.go_url',lev_info,globs['mes'].opening_link % h_request._url)
-			# todo: decide whether this should be located before or after 'search_part'
-			h_request._search = self.search
-			self.url = h_request._url
 			self.load_article()
 				
 	def gen_pos2cell(self):
@@ -3325,7 +3326,6 @@ class TkinterHtmlMod(tk.Widget):
 	
 	def reload(self,*args):
 		h_request._html = h_request._text = h_request._cells = h_request._elems = None
-		HTML()
 		self.load_article()
 		
 	# Вставить спец. символ в строку поиска
@@ -3334,16 +3334,6 @@ class TkinterHtmlMod(tk.Widget):
 		if globs['bool']['AutoCloseSpecSymbol']:
 			self.spec_symbols.close()
 			
-	# Перейти на элемент истории
-	def get_history(self,*args):
-		# todo: elaborate and everywhere where h_request._url is used in the same way
-		# cur
-		h_request.update()
-		h_request._url = self.history.urls[self.history.sel_index()]
-		# todo: check whether search_full is currently safe here
-		h_db.search_part()
-		self.load_article()
-				
 	def toggle_view(self,*args):
 		if h_request.view() == 0:
 			h_request._view = 1
@@ -3357,11 +3347,7 @@ class TkinterHtmlMod(tk.Widget):
 		# todo: do not recreate 'cells' each time
 		h_request.update()
 		h_db.search_part()
-		HTML()
 		log.append('TkinterHtmlMod.go_url',lev_info,globs['mes'].opening_link % h_request._url)
-		# todo: decide whether this should be located before or after 'search_part'
-		h_request._search = self.search
-		self.url = h_request._url
 		self.load_article()
 	
 	def zzz(self): # Only needed to move quickly to the end of the class
@@ -3377,7 +3363,6 @@ if  __name__ == '__main__':
 	init_inst('top').widget.protocol("WM_DELETE_WINDOW",h_quit.wait)
 	timed_update() # Do not wrap this function. Change this carefully.
 	h_db.search_part()
-	HTML() # Is needed after initializing requests
 	h_table.load_article()
 	h_table.show()
 	init_inst('top').show()

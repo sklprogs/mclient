@@ -665,32 +665,40 @@ class ToolTip(ToolTipBase):
 class ListBox:
 	
 	# todo: configure a font
-	def __init__(self,parent_obj,Multiple=False,lst=[],title='Title:',icon=None,SelectionCloses=True,SelectFirst=True,Composite=False):
+	def __init__(self,parent_obj,Multiple=False,lst=[],title='Title:',icon=None,SelectionCloses=True,SelectFirst=True,Composite=False,SingleClick=True):
 		self.parent_obj = parent_obj
 		self.scrollbar = tk.Scrollbar(self.parent_obj.widget)
 		self.scrollbar.pack(side=tk.RIGHT,fill=tk.Y)
 		self.Multiple = Multiple
 		self.SelectFirst = SelectFirst
 		self.Composite = Composite
+		self.SelectionCloses = SelectionCloses
+		self.SingleClick = SingleClick
+		self._index = 0
 		self.state = 'normal'
 		if self.Multiple:
 			self.widget = tk.Listbox(self.parent_obj.widget,exportselection=0,selectmode=tk.MULTIPLE)
 		else:
 			self.widget = tk.Listbox(self.parent_obj.widget,exportselection=0,selectmode=tk.SINGLE)
+		self.reset(lst=lst,title=title,icon=icon,SelectFirst=self.SelectFirst)
 		self.widget.pack(expand=1,fill='both')
 		self._resize()
 		self.scrollbar.config(command=self.widget.yview)
 		self.widget.config(yscrollcommand=self.scrollbar.set)
 		self.widget.focus_set()
-		self.reset(lst=lst,title=title,icon=icon,SelectFirst=self.SelectFirst)
 		# todo: test <KP_Enter> in Windows
-		if SelectionCloses:
+		if self.SelectionCloses:
 			create_binding(self.widget,['<Return>','<KP_Enter>','<Double-Button-1>'],self.close)
+			if self.SingleClick and not self.Multiple:
+				create_binding(self.widget,'<Button-1>',self.close)
 		if not self.Composite:
 			# Тип родительского виджета может быть любым
 			if not hasattr(self.parent_obj,'close_button'):
 				self.parent_obj.close_button = Button(self.parent_obj,text=globs['mes'].btn_x,hint=globs['mes'].btn_x,action=self.close,expand=0,side='bottom')
 			WidgetShared.custom_buttons(self)
+		if not self.Multiple:
+			create_binding(self.widget,'<Up>',self.move_up)
+			create_binding(self.widget,'<Down>',self.move_down)
 		
 	def _resize(self):
 		# Autofit to contents
@@ -714,16 +722,17 @@ class ListBox:
 		self.title(title=title)
 		self.fill()
 		self._resize()
+		self._index = 0
 		if self.SelectFirst:
 			self.select()
 		else:
 			self.clear_selection()
 		self.IQuit = False
 	
-	def select(self,index=0):
+	def select(self):
 		self.clear_selection()
-		self.widget.selection_set(index)
-		self.widget.see(index)
+		self.widget.selection_set(self._index)
+		self.widget.see(self._index)
 	
 	def show(self):
 		self.parent_obj.show()
@@ -742,11 +751,50 @@ class ListBox:
 	def icon(self,icon):
 		WidgetShared.icon(self.parent_obj,icon)
 		
-	def get(self):
-		# Return a result if the user has selected anything or None otherwise
-		if self.IQuit:
-			return [self.widget.get(idx) for idx in self.widget.curselection()]
+	def index(self):
+		selection = self.widget.curselection()
+		if selection and len(selection) > 0:
+			# ATTENTION: selection[0] is a number in Python 3.4, however, in older interpreters and builds based on them it is a string. In order to preserve compatibility, we convert it to a number.
+			self._index = int(selection[0])
+			return self._index
+		else:
+			return 0
 			
+	def index_add(self):
+		if self.index() < len(self.lst) - 1:
+			self._index += 1
+		else:
+			self._index = 0
+	
+	def index_subtract(self):
+		if self.index() > 0:
+			self._index -= 1
+		else:
+			self._index = len(self.lst) - 1
+	
+	def _get(self): # Call this externally to get results *before* closing the widget
+		result = [self.widget.get(idx) for idx in self.widget.curselection()]
+		if self.Multiple:
+			return result
+		else:
+			return result[0]
+	
+	def get(self):
+		if self.SelectionCloses:
+			# Return a result if the user has selected anything or None otherwise
+			if self.IQuit:
+				return self._get()
+		else:
+			return self._get()
+			
+	def move_down(self,*args):
+		self.index_add()
+		self.select()
+		
+	def move_up(self,*args):
+		self.index_subtract()
+		self.select()
+
 
 
 def dialog_save_file(filetypes=()):
