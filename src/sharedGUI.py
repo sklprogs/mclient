@@ -501,7 +501,11 @@ class Button:
 			# В большинстве случаев текстовая кнопка не требует задания высоты и ширины по умолчанию, они определяются автоматически. Также в большинстве случаев для текстовых кнопок следует использовать рамку.
 			self.widget = tk.Button(self.parent_obj.widget,bd=1,fg=fg)
 		self.title(button_text=text)
-		ToolTip(self.widget,text=hint,hint_delay=hint_delay,hint_width=hint_width,hint_height=hint_height,hint_background=hint_background,hint_direction=hint_direction,button_side=side)
+		if bindings:
+			hint_extended = hint + '\n' + str(bindings).replace('[','').replace(']','').replace('<','').replace('>','').replace("'",'')
+		else:
+			hint_extended = hint
+		ToolTip(self.widget,text=hint_extended,hint_delay=hint_delay,hint_width=hint_width,hint_height=hint_height,hint_background=hint_background,hint_direction=hint_direction,button_side=side)
 		self.show()
 		create_binding(widget=self.widget,bindings=['<ButtonRelease-1>','<space>','<Return>','<KP_Enter>'],action=self.click)
 		if TakeFocus:

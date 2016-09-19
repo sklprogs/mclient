@@ -20,7 +20,7 @@ class log:
 		pass
 
 product = 'MClient'
-version = '4.7 (unstable)'
+version = '4.7'
 
 
 
