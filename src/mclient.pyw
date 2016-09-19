@@ -15,10 +15,9 @@ from io import StringIO
 import sqlite3
 import pickle
 
-'''class log:
+class log:
 	def append(self,*args):
 		pass
-'''
 
 product = 'MClient'
 version = '4.7 (unstable)'
@@ -199,13 +198,10 @@ else:
 
 globs['_tkhtml_loaded'] = False
 # todo: del
-globs['bool']['DryRun'] = False #True
+globs['bool']['DryRun'] = True # False
 globs['dry_count'] = 0
-# todo: del
-#globs['source'] = 'multitran'
-#globs['collimit'] = 5
-#globs['view'] = 0
-#globs['priority'] = False
+globs['geom_top'] = {}
+globs['top'] = {}
 
 online_url_root = 'http://www.multitran.ru/c/m.exe?'
 online_url_safe = 'http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%ED%E5%E2%E5%F0%ED%E0%FF+%F1%F1%FB%EB%EA%E0'
@@ -282,14 +278,13 @@ class Request:
 		self.reset()
 		
 	def reset(self):
-		self._online = self._source = self._dic = self._search = self._url = self._collimit = self._priority = self._view = self._cells = self._elems = self._html = self._html_raw = self._text = None
-		self._moves = {'_move_right':[],'_move_left':[],'_move_down':[],'_move_up':[],'_move_line_start':[],'_move_line_end':[],'_move_text_start':[],'_move_text_end':[]}
+		self._online = self._source = self._dic = self._search = self._url = self._collimit = self._priority = self._view = self._cells = self._elems = self._html = self._html_raw = self._text = self._moves = None
 	
 	def update(self):
-		self._cells = self._html = self._text = None
+		self._cells = self._html = self._text = self._moves = None
 	
 	def new(self): # A completely new request
-		self._cells = self._elems = self._html_raw = self._html = self._text = None
+		self._cells = self._elems = self._html_raw = self._html = self._text = self._moves = None
 	
 	def online(self):
 		if self._online is None:
@@ -365,7 +360,7 @@ class Request:
 	# todo: fix: _moves is always not None
 	def moves(self):
 		if self._moves is None:
-			Cells()
+			Moves()
 		return self._moves
 
 
@@ -2339,6 +2334,234 @@ class History:
 
 
 
+class Moves:
+	
+	def __init__(self):
+		if h_request._moves:
+			log.append('Moves.__init__',lev_debug,globs['mes'].action_not_required)
+		else:
+			log.append('Moves.__init__',lev_info,globs['mes'].create_object)
+			Cells()
+			h_request._moves = {'_move_right':[],'_move_left':[],'_move_down':[],'_move_up':[],'_move_line_start':[],'_move_line_end':[],'_move_text_start':[],'_move_text_end':[]}
+			self.text_start()
+			self.text_end()
+			self.right()
+			self.left()
+			self.down()
+			self.up()
+			self.line_start()
+			self.line_end()
+		
+	# Вернуть первую выделяемую ячейку по вертикали в направлении сверху вниз
+	def get_vert_selectable(self,cur_i=0,cur_j=0,GetNext=True):
+		func_res = (cur_i,cur_j)
+		i = cur_i
+		while i < len(h_request._cells):
+			# todo: Алгоритм для globs['bool']['SelectTermsOnly']
+			if h_request._cells[i][cur_j].Selectable:
+				if GetNext:
+					if i != cur_i:
+						func_res = (i,cur_j)
+						break
+				else:
+					func_res = (i,cur_j)
+					break
+			i += 1
+		#log.append('TkinterHtmlMod.get_vert_selectable',lev_debug,str(func_res))
+		return func_res
+		
+	# Вернуть первую выделяемую ячейку по вертикали в направлении снизу вверх
+	def get_vert_selectable_backwards(self,cur_i=0,cur_j=0,GetPrevious=True,Silent=False,Critical=False):
+		func_res = (cur_i,cur_j)
+		i = cur_i
+		while i >= 0:
+			# todo: Алгоритм для globs['bool']['SelectTermsOnly']
+			if h_request._cells[i][cur_j].Selectable:
+				if GetPrevious:
+					if i != cur_i:
+						func_res = (i,cur_j)
+						break
+				else:
+					func_res = (i,cur_j)
+					break
+			i -= 1
+		#log.append('TkinterHtmlMod.get_vert_selectable_backwards',lev_debug,str(func_res))
+		return func_res
+
+	# Список ячеек, выбираемых слева направо
+	def right(self):
+		if not h_request._moves['_move_right']:
+			for i in range(len(h_request._cells)):
+				tmp_lst = []
+				for j in range(len(h_request._cells[i])):
+					tmp_lst += [self.get_selectable(i,j)]
+				h_request._moves['_move_right'] += [tmp_lst]
+		return h_request._moves['_move_right']
+	
+	# Список ячеек, выбираемых справа налево
+	def left(self): # Просто перевернуть self._move_right оказывается недостаточным
+		if not h_request._moves['_move_left']:
+			for i in range(len(h_request._cells)):
+				tmp_lst = []
+				for j in range(len(h_request._cells[i])):
+					tmp_lst += [self.get_selectable_backwards(i,j)]
+				h_request._moves['_move_left'] += [tmp_lst]
+		return h_request._moves['_move_left']
+
+	# Список для перехода на первые выделяемые ячейки
+	def line_start(self):
+		if not h_request._moves['_move_line_start']:
+			for i in range(len(h_request._cells)):
+				tmp_lst = []
+				for j in range(len(h_request._cells[i])):
+					tmp_lst += [self.get_selectable(i,0,False)]
+				h_request._moves['_move_line_start'] += [tmp_lst]
+		return h_request._moves['_move_line_start']
+
+	# Список для перехода на последние выделяемые ячейки
+	def line_end(self):
+		if not h_request._moves['_move_line_end']:
+			for i in range(len(h_request._cells)):
+				tmp_lst = []
+				for j in range(len(h_request._cells[i])):
+					# Алгоритм не принимает -1, необходимо точно указывать позицию
+					tmp_lst += [self.get_selectable_backwards(i,len(h_request._cells[i])-1,False)]
+				h_request._moves['_move_line_end'] += [tmp_lst]
+		return h_request._moves['_move_line_end']
+
+	# Первая выделяемая ячейка
+	def text_start(self):
+		# todo: Почему не удается использовать 'move_left', 'move_up'?
+		if not h_request._moves['_move_text_start']:
+			h_request._moves['_move_text_start'] = self.get_selectable(0,0,False)
+		return h_request._moves['_move_text_start']
+		
+	# Последняя выделяемая ячейка
+	def text_end(self):
+		# todo: Почему не удается использовать 'move_right', 'move_down'?
+		if not h_request._moves['_move_text_end']:
+			h_request._moves['_move_text_end'] = self.get_selectable_backwards(len(h_request._cells)-1,len(h_request._cells[-1])-1,False)
+		return h_request._moves['_move_text_end']
+		
+	# Логика 'move_up' и 'move_down': идем вверх/вниз по тому же столбцу. Если на текущей строке нет выделяемой ячейки в нужном столбце, тогда пропускаем ее. Если дошли до конца столбца, переходим на первую/последнюю строку последующего/предыдущего столбца.
+	def down(self):
+		if not h_request._moves['_move_down']:
+			for i in range(len(h_request._cells)):
+				tmp_lst = []
+				for j in range(len(h_request._cells[i])):
+					# Номер строки, на которой находится конечная выделяемая ячейка при навигации сверху вниз. Обратить внимание, что это не обязательно последняя строка в статье!
+					# Возможно, имеет смысл вынести max_i в отдельный список, чтобы не вычислять его лишний раз. Но будет ли это быстрее?
+					max_i = self.get_vert_selectable_backwards(len(h_request._cells)-1,j,GetPrevious=False)[0]
+					cell = self.get_vert_selectable(i,j)
+					# Просто == не работает
+					if i >= max_i:
+						# Если достигнут конец текущего столбца, перейти на первую выделяемую ячейку следующего столбца
+						if j < len(h_request._cells[i]) - 1:
+							tmp_lst.append(self.get_vert_selectable(0,j+1,GetNext=False))
+						else:
+							tmp_lst.append((i,j))
+					elif cell == (i,j):
+						tmp_lst.append(self.get_selectable(i,0))
+					else:
+						tmp_lst.append(cell)
+				h_request._moves['_move_down'] += [tmp_lst]
+		return h_request._moves['_move_down']
+	
+	def up(self):
+		if not h_request._moves['_move_up']:
+			for i in range(len(h_request._cells)):
+				tmp_lst = []
+				for j in range(len(h_request._cells[i])):
+					# Номер строки, на которой находится первая выделяемая ячейка при навигации снизу вверх. Обратить внимание, что это не обязательно первая строка в статье!
+					# Возможно, имеет смысл вынести min_i в отдельный список, чтобы не вычислять его лишний раз. Но будет ли это быстрее?
+					min_i = self.get_vert_selectable(0,j,GetNext=False)[0]
+					cell = self.get_vert_selectable_backwards(i,j)
+					# Просто == не работает
+					if i <= min_i:
+						# Если достигнута самая первая выделяемая ячейка, не продолжать с последнего столбца статьи. Для 'move_down' такая проверка почему-то не обязательна.
+						if i == h_request._moves['_move_text_start'][0] and j == h_request._moves['_move_text_start'][1]:
+							tmp_lst.append((i,j))
+						# Если достигнут конец текущего столбца, перейти на последнюю выделяемую ячейку предыдущего столбца
+						elif j > 0:
+							tmp_lst.append(self.get_vert_selectable_backwards(len(h_request._cells)-1,j-1,GetPrevious=False))
+						else:
+							tmp_lst.append((i,j))
+					elif cell == (i,j):
+						tmp_lst.append(self.get_selectable_backwards(i,0))
+					else:
+						tmp_lst.append(cell)
+				h_request._moves['_move_up'] += [tmp_lst]
+		return h_request._moves['_move_up']
+
+	# Определить следующую (+1,+1) ячейку, которую можно выделить
+	''' Если выделить можно любую ячейку, то будет выбрана следующая по очереди. Обратить внимание: в конце таблицы, там, где выделяемых ячеек уже нет, будет возвращаться текущая ячейка. Это логично, если выбрать можно любую ячейку, но не совсем логично, если выбирать только помеченные ячейки. Впрочем, если указано использование помеченных ячеек, а ячейка не помечена, то переход на нее осуществлен не будет, поэтому и ссылка в ней использована не будет.
+	'''
+	def get_selectable(self,cur_i=0,cur_j=0,GetNext=True):
+		Found = False
+		i = sel_i = cur_i
+		j = sel_j = cur_j
+		while i < len(h_request._cells):
+			while j < len(h_request._cells[i]):
+				if globs['bool']['SelectTermsOnly']:
+					if h_request._cells[i][j].Selectable:
+						# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
+						sel_i, sel_j = i, j
+						# Если указаная ячейка уже может быть выбрана, то игнорировать ее и искать следующую
+						if GetNext:
+							if cur_i != i or cur_j != j:
+								Found = True
+								break
+						else:
+							Found = True
+							break
+				else:
+					sel_i, sel_j = i, j
+					if cur_i != i or cur_j != j:
+						Found = True
+						break
+				j += 1
+			if Found:
+				break
+			j = 0
+			i += 1
+		#log.append('TkinterHtmlMod.get_selectable',lev_debug,str((sel_i,sel_j)))
+		return(sel_i,sel_j)
+		
+	# Определить предыдущую (-1,-1) ячейку, которую можно выделить
+	def get_selectable_backwards(self,cur_i,cur_j,GetPrevious=True):
+		Found = False
+		i = sel_i = cur_i
+		j = sel_j = cur_j
+		while i >= 0:
+			while j >= 0:
+				if globs['bool']['SelectTermsOnly']:
+					if h_request._cells[i][j].Selectable:
+						# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
+						sel_i = i
+						sel_j = j
+						# Если указаная ячейка уже может быть выбрана, то игнорировать ее и искать следующую
+						if GetPrevious:
+							if cur_i != i or cur_j != j:
+								Found = True
+								break
+						else:
+							Found = True
+							break
+				else:
+					sel_i, sel_j = i, j
+					if cur_i != i or cur_j != j:
+						Found = True
+						break
+				j -= 1
+			if Found:
+				break
+			i -= 1
+			j = len(h_request._cells[i]) - 1
+		#log.append('TkinterHtmlMod.get_selectable_backwards',lev_debug,str((sel_i,sel_j)))
+		return(sel_i,sel_j)
+
+
+
 """Wrapper for the Tkhtml widget from http://tkhtml.tcl.tk/tkhtml.html"""
 class TkinterHtmlMod(tk.Widget):
 
@@ -2404,9 +2627,9 @@ class TkinterHtmlMod(tk.Widget):
 		self.url = init_inst('online').url()
 		log.append('TkinterHtmlMod.get_url',lev_debug,"self.url: %s" % str(self.url))
 	
+	# todo: move 'move_*' procedures to Moves class
 	# Перейти на 1-й термин текущей строки	
 	def move_line_start(self,*args):
-		self.line_start()
 		if len(h_request._moves['_move_line_start']) > self.i and len(h_request._moves['_move_line_start'][self.i]) > self.j:
 			self.i, self.j = h_request._moves['_move_line_start'][self.i][self.j]
 			self.set_cell()
@@ -2415,20 +2638,17 @@ class TkinterHtmlMod(tk.Widget):
 
 	# Перейти на последний термин текущей строки
 	def move_line_end(self,*args):
-		self.line_end()
 		if len(h_request._moves['_move_line_end']) > self.i and len(h_request._moves['_move_line_end'][self.i]) > self.j:
 			self.i, self.j = h_request._moves['_move_line_end'][self.i][self.j]
 			self.set_cell()
 
 	# Перейти на 1-й термин статьи
 	def move_text_start(self,*args):
-		self.text_start()
 		self.i, self.j = h_request._moves['_move_text_start']
 		self.set_cell()
 
 	# Перейти на последний термин статьи
 	def move_text_end(self,*args):
-		self.text_end()
 		self.i, self.j = h_request._moves['_move_text_end']
 		self.set_cell()
 
@@ -2448,7 +2668,6 @@ class TkinterHtmlMod(tk.Widget):
 
 	# Перейти на предыдущий термин
 	def move_left(self,*args):
-		self.left()
 		if len(h_request._moves['_move_left']) > self.i and len(h_request._moves['_move_left'][self.i]) > self.j:
 			self.i, self.j = h_request._moves['_move_left'][self.i][self.j]
 			self.set_cell()
@@ -2457,7 +2676,6 @@ class TkinterHtmlMod(tk.Widget):
 
 	# Перейти на следующий термин
 	def move_right(self,*args):
-		self.right()
 		if len(h_request._moves['_move_right']) > self.i and len(h_request._moves['_move_right'][self.i]) > self.j:
 			self.i, self.j = h_request._moves['_move_right'][self.i][self.j]
 			self.set_cell()
@@ -2466,7 +2684,6 @@ class TkinterHtmlMod(tk.Widget):
 
 	# Перейти на строку вниз
 	def move_down(self,*args):
-		self.down()
 		if len(h_request._moves['_move_down']) > self.i and len(h_request._moves['_move_down'][self.i]) > self.j:
 			self.i, self.j = h_request._moves['_move_down'][self.i][self.j]
 			self.set_cell()
@@ -2475,7 +2692,6 @@ class TkinterHtmlMod(tk.Widget):
 
 	# Перейти на строку вверх
 	def move_up(self,*args):
-		self.up()
 		if len(h_request._moves['_move_up']) > self.i and len(h_request._moves['_move_up'][self.i]) > self.j:
 			self.i, self.j = h_request._moves['_move_up'][self.i][self.j]
 			self.set_cell()
@@ -2898,215 +3114,6 @@ class TkinterHtmlMod(tk.Widget):
 
 	def bbox(self,*args): # nodeHandle
 		return self.tk.call(self._w, "bbox", *args)
-
-	# Вернуть первую выделяемую ячейку по вертикали в направлении сверху вниз
-	def get_vert_selectable(self,cur_i=0,cur_j=0,GetNext=True):
-		func_res = (cur_i,cur_j)
-		i = cur_i
-		while i < len(h_request._cells):
-			# todo: Алгоритм для globs['bool']['SelectTermsOnly']
-			if h_request._cells[i][cur_j].Selectable:
-				if GetNext:
-					if i != cur_i:
-						func_res = (i,cur_j)
-						break
-				else:
-					func_res = (i,cur_j)
-					break
-			i += 1
-		#log.append('TkinterHtmlMod.get_vert_selectable',lev_debug,str(func_res))
-		return func_res
-		
-	# Вернуть первую выделяемую ячейку по вертикали в направлении снизу вверх
-	def get_vert_selectable_backwards(self,cur_i=0,cur_j=0,GetPrevious=True,Silent=False,Critical=False):
-		func_res = (cur_i,cur_j)
-		i = cur_i
-		while i >= 0:
-			# todo: Алгоритм для globs['bool']['SelectTermsOnly']
-			if h_request._cells[i][cur_j].Selectable:
-				if GetPrevious:
-					if i != cur_i:
-						func_res = (i,cur_j)
-						break
-				else:
-					func_res = (i,cur_j)
-					break
-			i -= 1
-		#log.append('TkinterHtmlMod.get_vert_selectable_backwards',lev_debug,str(func_res))
-		return func_res
-
-	# todo (?): create a MoveEvents class
-	# Список ячеек, выбираемых слева направо
-	def right(self):
-		if not h_request._moves['_move_right']:
-			for i in range(len(h_request._cells)):
-				tmp_lst = []
-				for j in range(len(h_request._cells[i])):
-					tmp_lst += [self.get_selectable(i,j)]
-				h_request._moves['_move_right'] += [tmp_lst]
-		return h_request._moves['_move_right']
-	
-	# Список ячеек, выбираемых справа налево
-	def left(self): # Просто перевернуть self._move_right оказывается недостаточным
-		if not h_request._moves['_move_left']:
-			for i in range(len(h_request._cells)):
-				tmp_lst = []
-				for j in range(len(h_request._cells[i])):
-					tmp_lst += [self.get_selectable_backwards(i,j)]
-				h_request._moves['_move_left'] += [tmp_lst]
-		return h_request._moves['_move_left']
-
-	# Список для перехода на первые выделяемые ячейки
-	def line_start(self):
-		if not h_request._moves['_move_line_start']:
-			for i in range(len(h_request._cells)):
-				tmp_lst = []
-				for j in range(len(h_request._cells[i])):
-					tmp_lst += [self.get_selectable(i,0,False)]
-				h_request._moves['_move_line_start'] += [tmp_lst]
-		return h_request._moves['_move_line_start']
-
-	# Список для перехода на последние выделяемые ячейки
-	def line_end(self):
-		if not h_request._moves['_move_line_end']:
-			for i in range(len(h_request._cells)):
-				tmp_lst = []
-				for j in range(len(h_request._cells[i])):
-					# Алгоритм не принимает -1, необходимо точно указывать позицию
-					tmp_lst += [self.get_selectable_backwards(i,len(h_request._cells[i])-1,False)]
-				h_request._moves['_move_line_end'] += [tmp_lst]
-		return h_request._moves['_move_line_end']
-
-	# Первая выделяемая ячейка
-	def text_start(self):
-		# todo: Почему не удается использовать 'move_left', 'move_up'?
-		if not h_request._moves['_move_text_start']:
-			h_request._moves['_move_text_start'] = self.get_selectable(0,0,False)
-		return h_request._moves['_move_text_start']
-		
-	# Последняя выделяемая ячейка
-	def text_end(self):
-		# todo: Почему не удается использовать 'move_right', 'move_down'?
-		if not h_request._moves['_move_text_end']:
-			h_request._moves['_move_text_end'] = self.get_selectable_backwards(len(h_request._cells)-1,len(h_request._cells[-1])-1,False)
-		return h_request._moves['_move_text_end']
-		
-	# Логика 'move_up' и 'move_down': идем вверх/вниз по тому же столбцу. Если на текущей строке нет выделяемой ячейки в нужном столбце, тогда пропускаем ее. Если дошли до конца столбца, переходим на первую/последнюю строку последующего/предыдущего столбца.
-	def down(self):
-		if not h_request._moves['_move_down']:
-			for i in range(len(h_request._cells)):
-				tmp_lst = []
-				for j in range(len(h_request._cells[i])):
-					# Номер строки, на которой находится конечная выделяемая ячейка при навигации сверху вниз. Обратить внимание, что это не обязательно последняя строка в статье!
-					# Возможно, имеет смысл вынести max_i в отдельный список, чтобы не вычислять его лишний раз. Но будет ли это быстрее?
-					max_i = self.get_vert_selectable_backwards(len(h_request._cells)-1,j,GetPrevious=False)[0]
-					cell = self.get_vert_selectable(i,j)
-					# Просто == не работает
-					if i >= max_i:
-						# Если достигнут конец текущего столбца, перейти на первую выделяемую ячейку следующего столбца
-						if j < len(h_request._cells[i]) - 1:
-							tmp_lst.append(self.get_vert_selectable(0,j+1,GetNext=False))
-						else:
-							tmp_lst.append((i,j))
-					elif cell == (i,j):
-						tmp_lst.append(self.get_selectable(i,0))
-					else:
-						tmp_lst.append(cell)
-				h_request._moves['_move_down'] += [tmp_lst]
-		return h_request._moves['_move_down']
-	
-	def up(self):
-		if not h_request._moves['_move_up']:
-			for i in range(len(h_request._cells)):
-				tmp_lst = []
-				for j in range(len(h_request._cells[i])):
-					# Номер строки, на которой находится первая выделяемая ячейка при навигации снизу вверх. Обратить внимание, что это не обязательно первая строка в статье!
-					# Возможно, имеет смысл вынести min_i в отдельный список, чтобы не вычислять его лишний раз. Но будет ли это быстрее?
-					min_i = self.get_vert_selectable(0,j,GetNext=False)[0]
-					cell = self.get_vert_selectable_backwards(i,j)
-					# Просто == не работает
-					if i <= min_i:
-						# Если достигнута самая первая выделяемая ячейка, не продолжать с последнего столбца статьи. Для 'move_down' такая проверка почему-то не обязательна.
-						if i == h_request._moves['_move_text_start'][0] and j == h_request._moves['_move_text_start'][1]:
-							tmp_lst.append((i,j))
-						# Если достигнут конец текущего столбца, перейти на последнюю выделяемую ячейку предыдущего столбца
-						elif j > 0:
-							tmp_lst.append(self.get_vert_selectable_backwards(len(h_request._cells)-1,j-1,GetPrevious=False))
-						else:
-							tmp_lst.append((i,j))
-					elif cell == (i,j):
-						tmp_lst.append(self.get_selectable_backwards(i,0))
-					else:
-						tmp_lst.append(cell)
-				h_request._moves['_move_up'] += [tmp_lst]
-		return h_request._moves['_move_up']
-
-	# Определить следующую (+1,+1) ячейку, которую можно выделить
-	''' Если выделить можно любую ячейку, то будет выбрана следующая по очереди. Обратить внимание: в конце таблицы, там, где выделяемых ячеек уже нет, будет возвращаться текущая ячейка. Это логично, если выбрать можно любую ячейку, но не совсем логично, если выбирать только помеченные ячейки. Впрочем, если указано использование помеченных ячеек, а ячейка не помечена, то переход на нее осуществлен не будет, поэтому и ссылка в ней использована не будет.
-	'''
-	def get_selectable(self,cur_i=0,cur_j=0,GetNext=True):
-		Found = False
-		i = sel_i = cur_i
-		j = sel_j = cur_j
-		while i < len(h_request._cells):
-			while j < len(h_request._cells[i]):
-				if globs['bool']['SelectTermsOnly']:
-					if h_request._cells[i][j].Selectable:
-						# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
-						sel_i, sel_j = i, j
-						# Если указаная ячейка уже может быть выбрана, то игнорировать ее и искать следующую
-						if GetNext:
-							if cur_i != i or cur_j != j:
-								Found = True
-								break
-						else:
-							Found = True
-							break
-				else:
-					sel_i, sel_j = i, j
-					if cur_i != i or cur_j != j:
-						Found = True
-						break
-				j += 1
-			if Found:
-				break
-			j = 0
-			i += 1
-		#log.append('TkinterHtmlMod.get_selectable',lev_debug,str((sel_i,sel_j)))
-		return(sel_i,sel_j)
-		
-	# Определить предыдущую (-1,-1) ячейку, которую можно выделить
-	def get_selectable_backwards(self,cur_i,cur_j,GetPrevious=True):
-		Found = False
-		i = sel_i = cur_i
-		j = sel_j = cur_j
-		while i >= 0:
-			while j >= 0:
-				if globs['bool']['SelectTermsOnly']:
-					if h_request._cells[i][j].Selectable:
-						# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
-						sel_i = i
-						sel_j = j
-						# Если указаная ячейка уже может быть выбрана, то игнорировать ее и искать следующую
-						if GetPrevious:
-							if cur_i != i or cur_j != j:
-								Found = True
-								break
-						else:
-							Found = True
-							break
-				else:
-					sel_i, sel_j = i, j
-					if cur_i != i or cur_j != j:
-						Found = True
-						break
-				j -= 1
-			if Found:
-				break
-			i -= 1
-			j = len(h_request._cells[i]) - 1
-		#log.append('TkinterHtmlMod.get_selectable_backwards',lev_debug,str((sel_i,sel_j)))
-		return(sel_i,sel_j)
 	
 	def get_nearest_page_up(self):
 		while self.page_no > 0:
@@ -3118,8 +3125,8 @@ class TkinterHtmlMod(tk.Widget):
 	# Сместить экран так, чтобы была видна текущая выделенная ячейка
 	def shift_screen(self):
 		init_inst('root').widget.update_idletasks()
-		cur_widget_width = self.winfo_width()
-		cur_widget_height = self.winfo_height()
+		cur_widget_width = globs['geom_top']['width'] = self.winfo_width()
+		cur_widget_height = globs['geom_top']['height'] = self.winfo_height()
 		cur_widget_offset_x = self.winfo_rootx()
 		cur_widget_offset_y = self.winfo_rooty()
 		if cur_widget_width != self.widget_width or cur_widget_height != self.widget_height or cur_widget_offset_x != self.widget_offset_x or cur_widget_offset_y != self.widget_offset_y:
@@ -3147,14 +3154,15 @@ class TkinterHtmlMod(tk.Widget):
 		if cur_top_bbox < self.top_bbox:
 			if self.page_no > 0:
 				self.page_no -= 1
-			# cur
 			if len(self.top_indexes) > 0:
 				self.get_nearest_page_up()
 				self.yview_name(self.top_indexes[self.page_no])
-			#if self.page_no in self.top_indexes:
-			#	self.yview_name(self.top_indexes[self.page_no])
-			#else:
-			#	self.yview_scroll(cur_top_bbox-self.top_bbox,'units')
+			# todo: check this
+			'''if self.page_no in self.top_indexes:
+				self.yview_name(self.top_indexes[self.page_no])
+			else:
+				self.yview_scroll(cur_top_bbox-self.top_bbox,'units')
+			'''
 			log.append('TkinterHtmlMod.shift_screen',lev_info,globs['mes'].cur_page_no % self.page_no)
 		elif cur_bottom_bbox > self.bottom_bbox:
 			self.yview(self.index[0])
@@ -3255,6 +3263,7 @@ class TkinterHtmlMod(tk.Widget):
 		self.top_indexes = {}
 		self.gen_poses()
 		self.gen_pos2cell()
+		Moves()
 		self.move_text_start()
 		init_inst('top').widget.title(h_request.search())
 		self.history.update()

@@ -598,19 +598,6 @@ class ToolTipBase:
 		else:
 			Message(func='ToolTipBase.showtip',type=lev_err,message=globs['mes'].unknown_mode % (str(self.hint_direction),'top, bottom'))
 		if 'geom_top' in globs and 'width' in globs['geom_top'] and 'height' in globs['geom_top']:
-			# Позиция подсказки корректируется так, чтобы не выходить за пределы экрана
-			if x + self.hint_width > globs['geom_top']['width']:
-				log.append('ToolTipBase.showtip',lev_info,globs['mes'].wrong_coor % ('x',str(x),str(globs['top']['width'] - self.hint_width)))
-				x = globs['geom_top']['width'] - self.hint_width
-			if y + self.hint_height > globs['top']['height']:
-				log.append('ToolTipBase.showtip',lev_info,globs['mes'].wrong_coor % ('y',str(y),str(globs['top']['height'] - self.hint_height)))
-				y = globs['geom_top']['height'] - self.hint_height
-			if x < 0:
-				log.append('ToolTipBase.showtip',lev_warn,globs['mes'].wrong_coor % ('x',str(x),'0'))
-				x = 0
-			if y < 0:
-				log.append('ToolTipBase.showtip',lev_warn,globs['mes'].wrong_coor % ('y',str(y),'0'))
-				y = 0
 			self.tipwindow = tw = tk.Toplevel(self.button)
 			tw.wm_overrideredirect(1)
 			# "+%d+%d" is not enough!
