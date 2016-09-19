@@ -198,7 +198,7 @@ else:
 
 globs['_tkhtml_loaded'] = False
 # todo: del
-globs['bool']['DryRun'] = True # False
+globs['bool']['DryRun'] = False # True
 globs['dry_count'] = 0
 globs['geom_top'] = {}
 globs['top'] = {}
