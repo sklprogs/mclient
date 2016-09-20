@@ -808,10 +808,10 @@ def dialog_save_file(filetypes=()):
 	options['initialfile'] = ''
 	options['filetypes'] = filetypes
 	options['title'] = globs['mes'].save_as
-	#try:
-	file = dialog.asksaveasfilename(**options)
-	#except:
-	#	Message(func='dialog_save_file',type=lev_err,message=globs['mes'].file_sel_failed)
+	try:
+		file = dialog.asksaveasfilename(**options)
+	except:
+		Message(func='dialog_save_file',type=lev_err,message=globs['mes'].file_sel_failed)
 	return file
 
 

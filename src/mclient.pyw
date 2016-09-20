@@ -2047,7 +2047,7 @@ def iconify(obj):
 		Message(func='iconify',type=lev_warn,message=globs['mes'].not_enough_input_data)
 
 # Развернуть заданное окно и установить на нем фокус
-def deiconify(obj,Silent=False,TakeFocus=True):
+def deiconify(obj,Silent=False,TakeFocus=True): # Requires h_table
 	if obj and hasattr(obj,'widget'):
 		obj.widget.deiconify()
 		# Activates the window in Openbox
@@ -2059,7 +2059,7 @@ def deiconify(obj,Silent=False,TakeFocus=True):
 			obj.widget.wm_attributes('-topmost',1)
 			obj.widget.wm_attributes('-topmost',0)
 			# Иначе нажатие кнопки будет вызывать переход по ссылке там, где это не надо
-			if self.MouseClicked:
+			if h_table.MouseClicked:
 				import ctypes
 				# Уродливый хак, но иначе никак не поставить фокус на виджет (в Linux/Windows XP обходимся без этого, в Windows 8 - необходимо)
 				# Cимулируем нажатие кнопки мыши
@@ -2177,6 +2177,7 @@ class SaveArticle:
 		self.widget = self.obj.widget
 		self.custom_bindings()
 		self.close()
+		self.file = ''
 		
 	def custom_bindings(self):
 		create_binding(widget=self.parent_obj.widget,bindings=['<Escape>',globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']],action=self.close)
@@ -2188,6 +2189,11 @@ class SaveArticle:
 	def show(self,*args):
 		self.obj.show()
 		
+	# Fix an extension for Windows
+	def fix_ext(self,ext='.htm'):
+		if not self.file.endswith(ext):
+			self.file += ext
+			
 	def select(self,*args):
 		self.show()
 		opt = self.obj.get()
@@ -2204,23 +2210,26 @@ class SaveArticle:
 				self.copy_view()
 	
 	def view_as_html(self):
-		file = dialog_save_file(filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')))
-		if file:
+		self.file = dialog_save_file(filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')))
+		if self.file:
+			self.fix_ext(ext='.htm')
 			# We disable AskRewrite because the confirmation is already built in the internal dialog
-			WriteTextFile(file,AskRewrite=False).write(h_request._html)
+			WriteTextFile(self.file,AskRewrite=False).write(h_request._html)
 			
 	def raw_as_html(self):
 		# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
 		# Также меняем сокращенные гиперссылки на полные, чтобы они работали и в локальном файле.
-		file = dialog_save_file(filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')))
-		if file:
+		self.file = dialog_save_file(filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')))
+		if self.file:
+			self.fix_ext(ext='.htm')
 			# todo: fix remaining links to localhost
-			WriteTextFile(file,AskRewrite=False).write(h_request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="m.exe?','<a href="'+online_url_root).replace('../c/m.exe?',online_url_root))
+			WriteTextFile(self.file,AskRewrite=False).write(h_request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="m.exe?','<a href="'+online_url_root).replace('../c/m.exe?',online_url_root))
 		
 	def view_as_txt(self):
-		file = dialog_save_file(filetypes=((globs['mes'].plain_text,'.txt'),(globs['mes'].all_files,'*')))
-		if file:
-			WriteTextFile(file,AskRewrite=False).write(h_request._text)
+		self.file = dialog_save_file(filetypes=((globs['mes'].plain_text,'.txt'),(globs['mes'].all_files,'*')))
+		if self.file:
+			self.fix_ext(ext='.txt')
+			WriteTextFile(self.file,AskRewrite=False).write(h_request._text)
 			
 	def copy_raw(self):
 		init_inst('clipboard').copy(h_request._html_raw)
@@ -2263,7 +2272,7 @@ class SearchArticle:
 	def show(self,*args):
 		self.parent_obj.show()
 		self.obj.select_all()
-			
+	
 	# Create a list of all matches in the article
 	def matches(self):
 		if self.search():
@@ -2272,7 +2281,7 @@ class SearchArticle:
 					# todo: Для всех вхождений, а не только терминов
 					if h_request._cells[i][j].Selectable and self._search in h_request._cells[i][j].term.lower():
 						self._list.append((i,j))
-	
+
 	def search(self):
 		if not self._search:
 			self.show()
@@ -3301,6 +3310,7 @@ class TkinterHtmlMod(tk.Widget):
 		self.history.update()
 		self.update_buttons()
 		self.search_article.reset()
+		self.search_field.clear()
 	
 	# Перейти по URL текущей ячейки
 	def go_url(self,*args):
