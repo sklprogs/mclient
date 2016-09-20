@@ -480,6 +480,7 @@ msword_extraction_failure='Failed to extract text from the file "%s" using Micro
 mult_items='The function "%s" inputs several elements, however, only 1 element has been provided.'
 negative='Only positive numbers are allowed. Replacing %d with 0.'
 new_geometry='Changing "%s" widget geometry to "%dx%d+%d+%d"'
+new_lang='New language: %s'
 new_line_break="[%s]: new line break: %s"
 new_values='NEW VALUES'
 new_view_mode='New article view mode: %d'

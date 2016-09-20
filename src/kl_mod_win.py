@@ -8,17 +8,17 @@ from pyHook import HookManager
 import pythoncom
 import threading
 
-globs = {'HotkeyCaught':False,'hits':0,'Verbose':False}
+flags = {'HotkeyCaught':False,'hits':0,'Verbose':False}
 lock = threading.Lock()
 
 def print_v(*args):
-	if globs['Verbose']:
+	if flags['Verbose']:
 		print(*args)
 
 def toggle_hotkey(SetBool=True):
-	globs['HotkeyCaught'] = SetBool
-	globs['hits'] += 1
-	print_v('Hotkey has been detected and flag has been changed to %s (%d hits in total)!' % (str(globs['HotkeyCaught']),globs['hits']))
+	flags['HotkeyCaught'] = SetBool
+	flags['hits'] += 1
+	print_v('Hotkey has been detected and flag has been changed to %s (%d hits in total)!' % (str(flags['HotkeyCaught']),flags['hits']))
 
 class KeyListener(threading.Thread):
 	def __init__(self):
@@ -89,9 +89,9 @@ class KeyListener(threading.Thread):
 		self.listeners[keys] = callable
 
 def result():
-	if globs['HotkeyCaught']:
+	if flags['HotkeyCaught']:
 		print_v('Hotkey has been caught!')
-		globs['HotkeyCaught'] = False
+		flags['HotkeyCaught'] = False
 		return True
 	else:
 		return False
@@ -105,7 +105,7 @@ def wait_example():
 	from time import sleep
 	while not result():
 		# Нельзя делать одновременно pythoncom.PumpMessages() и pythoncom.PumpWaitingMessages() - они оба создают циклы
-		# Без этого result вообще почему-то не работает (видимо, здесь есть какой-то цикл, который необходим). Если же создать поток, он не сможет обнаружить globs['HotkeyCaught'].
+		# Без этого result вообще почему-то не работает (видимо, здесь есть какой-то цикл, который необходим). Если же создать поток, он не сможет обнаружить flags['HotkeyCaught'].
 		pythoncom.PumpWaitingMessages()
 		# Если поставить слишком большой интервал, например, 1, то вообще ничего не получим!
 		sleep(0.1)

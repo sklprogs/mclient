@@ -1643,3 +1643,40 @@ class Email:
 			webbrowser.open('mailto:%s?subject=%s&body=%s' % (self._email,self._subject,self._message))
 		except:
 			Message(func='TkinterHtmlMod.response_back',type=lev_err,message=globs['mes'].email_agent_failure)
+
+
+
+class Lang:
+	
+	def __init__(self):
+		if not 'var' in globs:
+			globs['var'] = {}
+		if not 'ui_lang' in globs['var']:
+			globs['var']['ui_lang'] = 'ru'
+		self.set()
+	
+	def set_ru(self):
+		globs['var']['ui_lang'] = 'ru'
+		globs['mes'] = mes_ru
+		globs['license_url'] = gpl3_url_ru
+		log.append('Lang.set_ru',lev_info,globs['mes'].new_lang % globs['var']['ui_lang'])
+		
+	def set_en(self):
+		globs['var']['ui_lang'] = 'en'
+		globs['mes'] = mes_en
+		globs['license_url'] = gpl3_url_en
+		log.append('Lang.set_en',lev_info,globs['mes'].new_lang % globs['var']['ui_lang'])
+		
+	def set(self):
+		if globs['var']['ui_lang'] == 'ru':
+			self.set_ru()
+		else:
+			self.set_en()
+			
+	def toggle(self):
+		if globs['var']['ui_lang'] == 'en':
+			self.set_ru()
+		else:
+			self.set_en()
+			
+h_lang = Lang()

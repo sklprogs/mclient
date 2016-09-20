@@ -1,4 +1,18 @@
-
+4.7
+* Significantly refactor the code 
+* Drop EasyGUI
+* Elaborate widgets (center, show/close with a corresponding hotkey or with Esc)
+* Accelerate loading of previously loaded articles
+* Add a new experimental mode of view (arrange dictionaries vertically)
+* Check a request length (do not occasionally send a large fragment with Ctrl-c-c/Ctrl-Ins-Ins)
+* Use Control-Insert-Insert to capture the clipboard
+* Fit the search panel on screen at 1024x768
+* Delete keys: AutoHideHistory, online_dic_url, bind_get_history, icon_change_ui_lang
+* Add keys: bind_next_pair, bind_next_pair_alt (select the next language pair, F8 and Control-l correspondingly by default), bind_prev_pair, bind_prev_pair_alt (select the previous language pair, Shift-F8 and Control-L correspondingly by default), bind_toggle_view, bind_toggle_view_alt (select the current view, F6 and Control-V correspondingly by default), icon_toggle_view_hor, icon_toggle_view_ver
+* Move icons to the 'resources' directory
+* Cycle navigation through History using Alt-Left and Alt-Right (default hotkeys)
+* Add symbols Ғ, ғ, Ø, ø
+* Due to the new program architecture this is no longer possible to change the language in GUI (set the language in the configuration file)
 
 4.6
 * Make the foreground of the selected cell black by default

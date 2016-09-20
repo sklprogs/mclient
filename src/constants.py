@@ -8,7 +8,8 @@ version = '1.0'
 email = 'skl.progs@gmail.com'
 
 import re
-import mes_ru as mes
+import mes_ru
+import mes_en
 from configparser import SafeConfigParser
 
 config_parser = SafeConfigParser()
@@ -16,7 +17,7 @@ config_parser = SafeConfigParser()
 gpl3_url_en = 'http://www.gnu.org/licenses/gpl.html'
 gpl3_url_ru = 'http://rusgpl.ru/rusgpl.html'
 
-globs = {'mes':mes,'license_url':gpl3_url_ru,'ui_lang':'ru','int':{},'bool':{},'var':{}}
+globs = {'int':{},'bool':{},'var':{}}
 
 lev_crit = 'CRITICAL'
 lev_debug = 'DEBUG'

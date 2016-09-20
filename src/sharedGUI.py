@@ -775,7 +775,8 @@ class ListBox:
 		if self.Multiple:
 			return result
 		else:
-			return result[0]
+			if len(result) > 0:
+				return result[0]
 	
 	def get(self):
 		if self.SelectionCloses:
@@ -807,10 +808,10 @@ def dialog_save_file(filetypes=()):
 	options['initialfile'] = ''
 	options['filetypes'] = filetypes
 	options['title'] = globs['mes'].save_as
-	try:
-		file = dialog.asksaveasfilename(**options)
-	except:
-		Message(func='dialog_save_file',type=lev_err,message=globs['mes'].file_sel_failed)
+	#try:
+	file = dialog.asksaveasfilename(**options)
+	#except:
+	#	Message(func='dialog_save_file',type=lev_err,message=globs['mes'].file_sel_failed)
 	return file
 
 
@@ -844,6 +845,13 @@ class OptionMenu:
 	def _get(self,*args): # Auto updated (after selecting an item)
 		self.choice = self.var.get()
 		self.index = self.items.index(self.choice)
+		
+	def set_prev(self,*args):
+		if self.index == 0:
+			self.index = len(self.items) - 1
+		else:
+			self.index -= 1
+		self.var.set(self.items[self.index])
 		
 	def set_next(self,*args):
 		if self.index == len(self.items) - 1:

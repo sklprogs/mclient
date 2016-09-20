@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 from constants import *
-from shared import Message, WriteTextFile, Launch, List, Config, Clipboard, Path, Online, ReadTextFile, Email, timer, log, globs, h_os, CreateInstance
+from shared import Message, WriteTextFile, Launch, List, Config, Clipboard, Path, Online, ReadTextFile, Email, timer, log, globs, h_os, CreateInstance, h_lang
 from sharedGUI import create_binding, Button, Root, Top, Entry, WidgetShared, Frame, TextBox, ListBox, dialog_save_file, OptionMenu
 import copy
 # В Python 3 не работает просто import urllib, импорт должен быть именно такой, как здесь
@@ -18,7 +18,7 @@ import pickle
 class log:
 	def append(self,*args):
 		pass
-
+		
 product = 'MClient'
 version = '4.7'
 
@@ -105,6 +105,8 @@ class ConfigMclient(Config):
 			'bind_move_up':'<Up>',
 			'bind_next_pair':'<F8>',
 			'bind_next_pair_alt':'<Control-l>',
+			'bind_prev_pair':'<Shift-F8>',
+			'bind_prev_pair_alt':'<Control-L>',
 			'bind_open_in_browser_alt':'<Control-b>',
 			'bind_open_in_browser':'<F7>',
 			'bind_paste_search_field':'<ButtonRelease-2>',
@@ -122,7 +124,7 @@ class ConfigMclient(Config):
 			'bind_toggle_history_alt':'<Control-h>',
 			'bind_toggle_history':'<F4>',
 			'bind_toggle_view':'<F6>',
-			'bind_toggle_view_alt':'<Alt-v>',
+			'bind_toggle_view_alt':'<Control-V>',
 			'color_comments':'gray',
 			'color_dics':'cadet blue',
 			'color_speech':'red',
@@ -139,7 +141,6 @@ class ConfigMclient(Config):
 			'font_style':'Sans 14',
 			'font_terms_sel':'Sans 14 bold italic',
 			'font_terms_family':'Serif',
-			'icon_change_ui_lang':'icon_36x36_change_ui_lang.gif',
 			'icon_clear_history':'icon_36x36_clear_history.gif',
 			'icon_clear_search_field':'icon_36x36_clear_search_field.gif',
 			'icon_define':'icon_36x36_define.gif',
@@ -168,7 +169,8 @@ class ConfigMclient(Config):
 			'icon_watch_clipboard_on':'icon_36x36_watch_clipboard_on.gif',
 			'repeat_sign':'!',
 			'repeat_sign2':'!!',
-			'spec_syms':'àáâäāæßćĉçèéêēëəĝģĥìíîïīĵķļñņòóôõöōœšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒËƏĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ',
+			'spec_syms':'àáâäāæßćĉçèéêēёëəғĝģĥìíîïīĵķļñņòóôõöōœøšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒЁËƏҒĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒØŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ',
+			'ui_lang':'ru',
 			'web_search_url':'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s',
 			'win_encoding':'windows-1251'
 				           })
@@ -189,6 +191,7 @@ class ConfigMclient(Config):
 
 
 ConfigMclient()
+h_lang.set()
 
 if h_os.sys() == 'win':
 	import kl_mod_win as kl_mod
@@ -251,17 +254,12 @@ def init_inst(name):
 	elif name == 'top_textbox':
 		instances[name] = Top(init_inst('root'),Maximize=True)
 		instances[name].close()
-	elif name == 'top_listbox':
-		instances[name] = Top(init_inst('root'))
-		instances[name].close()
 	elif name == 'entry':
 		instances[name] = Entry(init_inst('top_entry'))
 		instances[name].icon(globs['var']['icon_mclient'])
 		instances[name].title(globs['mes'].search_str)
 	elif name == 'textbox':
 		instances[name] = TextBox(init_inst('top_textbox'))
-	elif name == 'listbox':
-		instances[name] = ListBox(parent_obj=init_inst('top_listbox'),Multiple=False,lst=[globs['mes'].save_view_as_html,globs['mes'].save_article_as_html,globs['mes'].save_article_as_txt,globs['mes'].copy_article_html,globs['mes'].copy_article_txt],title=globs['mes'].select_action,icon=globs['var']['icon_mclient'])
 	elif name == 'clipboard':
 		instances[name] = Clipboard(init_inst('root'))
 	elif name == 'online':
@@ -375,9 +373,8 @@ class DB: # Requires h_request global
 	def reset(self):
 		self._count = 0
 		self._id = -1
-		self.db.execute('drop table if exists INFO')
+		self.db.executescript('drop table if exists INFO;')
 		self.db.execute('create table INFO (ONLINE bool,SOURCE text,DIC text,SEARCH text,URL text,ID integer,COLLIMIT integer,VIEW integer,PRIORITY integer,ELEMS pickle,CELLS pickle,HTML text,HTML_RAW text,TEXT text,MOVES pickle)')
-		self.db_con.commit()
 		
 	def index_add(self):
 		if self._id < self._count - 1:
@@ -2092,19 +2089,8 @@ def timed_update():
 	# We need to have .after in the same function for it to work
 	h_quit._id = init_inst('root').widget.after(300,timed_update)
 	h_quit.now()
-	
-# Изменить язык графического интерфейса и сообщений
-def toggle_ui_lang():
-	if globs['ui_lang'] == 'en':
-		globs['ui_lang'] = 'ru'
-		globs['mes'] = mes_ru
-		globs['license_url'] = gpl3_url_ru
-	else:
-		globs['ui_lang'] = 'en'
-		globs['mes'] = mes_en
-		globs['license_url'] = gpl3_url_en
-		
-		
+
+
 
 class Quit:
 	
@@ -2179,40 +2165,142 @@ class About:
 		init_inst('textbox').update(title=globs['mes'].btn_third_parties+':',text=third_parties,ReadOnly=True,icon=globs['var']['icon_mclient'])
 		# todo: Maximize key does not work outside sharedGUI
 		init_inst('top_textbox').show()
+
+
 		
-		
-		
-class SearchEntry:
+class SaveArticle:
 	
 	def __init__(self):
-		self.Active = False
-		self.type = 'SearchEntry'
-		self.widget = init_inst('entry').widget
+		self.type = 'SaveArticle'
+		self.parent_obj = Top(init_inst('root'))
+		self.obj = ListBox(parent_obj=self.parent_obj,Multiple=False,lst=[globs['mes'].save_view_as_html,globs['mes'].save_article_as_html,globs['mes'].save_article_as_txt,globs['mes'].copy_article_html,globs['mes'].copy_article_txt],title=globs['mes'].select_action,icon=globs['var']['icon_mclient'])
+		self.widget = self.obj.widget
+		self.custom_bindings()
+		self.close()
+		
+	def custom_bindings(self):
+		create_binding(widget=self.parent_obj.widget,bindings=['<Escape>',globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']],action=self.close)
+		create_binding(widget=self.widget,bindings=['<Escape>',globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']],action=self.close)
+		
+	def close(self,*args):
+		self.obj.close()
+		
+	def show(self,*args):
+		self.obj.show()
+		
+	def select(self,*args):
+		self.show()
+		opt = self.obj.get()
+		if opt:
+			if opt == globs['mes'].save_view_as_html:
+				self.view_as_html()
+			elif opt == globs['mes'].save_article_as_html:
+				self.raw_as_html()
+			elif opt == globs['mes'].save_article_as_txt:
+				self.view_as_txt()
+			elif opt == globs['mes'].copy_article_html:
+				self.copy_raw()
+			elif opt == globs['mes'].copy_article_txt:
+				self.copy_view()
+	
+	def view_as_html(self):
+		file = dialog_save_file(filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')))
+		if file:
+			# We disable AskRewrite because the confirmation is already built in the internal dialog
+			WriteTextFile(file,AskRewrite=False).write(h_request._html)
+			
+	def raw_as_html(self):
+		# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
+		# Также меняем сокращенные гиперссылки на полные, чтобы они работали и в локальном файле.
+		file = dialog_save_file(filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')))
+		if file:
+			# todo: fix remaining links to localhost
+			WriteTextFile(file,AskRewrite=False).write(h_request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="m.exe?','<a href="'+online_url_root).replace('../c/m.exe?',online_url_root))
+		
+	def view_as_txt(self):
+		file = dialog_save_file(filetypes=((globs['mes'].plain_text,'.txt'),(globs['mes'].all_files,'*')))
+		if file:
+			WriteTextFile(file,AskRewrite=False).write(h_request._text)
+			
+	def copy_raw(self):
+		init_inst('clipboard').copy(h_request._html_raw)
+			
+	def copy_view(self):
+		init_inst('clipboard').copy(h_request._text)
+
+	
+
+# Search IN an article
+class SearchArticle:
+	
+	def __init__(self):
+		self.type = 'SearchArticle'
+		self.obj = init_inst('entry')
+		self.widget = self.obj.widget
 		self.parent_obj = init_inst('top_entry')
 		self.parent_obj.icon(globs['var']['icon_mclient'])
 		self.parent_obj.title(globs['mes'].search_word)
-		create_binding(widget=self.widget,bindings=globs['var']['bind_search_article_forward'],action=self.toggle)
+		create_binding(widget=self.widget,bindings=globs['var']['bind_search_article_forward'],action=self.close)
 		create_binding(widget=self.widget,bindings='<Escape>',action=self.close)
 		self.widget.focus_set()
 		self.close()
+		self.reset()
+	
+	def reset(self):
+		self._list = []
+		self._pos = -1
+		self._search = ''
+		# Plus: keeping old input
+		# Minus: searching old input after cancelling the search and searching again
+		#self.clear()
+	
+	def clear(self,*args):
+		self.obj.clear_text()
 	
 	def close(self,*args):
 		self.parent_obj.close()
-		self.Active = False
 		
 	def show(self,*args):
 		self.parent_obj.show()
-		init_inst('entry').select_all()
-		self.Active = True
+		self.obj.select_all()
+			
+	# Create a list of all matches in the article
+	def matches(self):
+		if self.search():
+			for i in range(len(h_request.cells())):
+				for j in range(len(h_request._cells[i])):
+					# todo: Для всех вхождений, а не только терминов
+					if h_request._cells[i][j].Selectable and self._search in h_request._cells[i][j].term.lower():
+						self._list.append((i,j))
 	
-	def toggle(self,*args):
-		if self.Active:
-			self.close()
-		else:
+	def search(self):
+		if not self._search:
 			self.show()
+			self._search = self.widget.get().strip(' ').strip('\n').lower()
+		return self._search
+	
+	def list(self):
+		if not self._list:
+			self.matches()
+		return self._list
+	
+	def forward(self):
+		if self._pos + 1 < len(self.list()):
+			self._pos += 1
+		else:
+			Message(func='SearchArticle.forward',type=lev_info,message=globs['mes'].search_from_start)
+			self._pos = 0
+	
+	def backward(self):
+		if self._pos > 0:
+			self._pos -= 1
+		else:
+			Message(func='SearchArticle.backward',type=lev_info,message=globs['mes'].search_from_end)
+			self._pos = len(self.list()) - 1
 
 	
 	
+# Search FOR an article
 class SearchField:
 	
 	def __init__(self,parent_obj,side='left',ipady=5):
@@ -2264,7 +2352,11 @@ class SpecSymbols:
 			# lambda сработает правильно только при моментальной упаковке, которая не поддерживается create_button (моментальная упаковка возвращает None вместо виджета), поэтому не используем эту функцию. По этой же причине нельзя привязать кнопкам '<Return>' и '<KP_Enter>', сработают только встроенные '<space>' и '<ButtonRelease-1>'.
 			# width и height нужны для Windows
 			self.button = tk.Button(self.frame.widget,text=globs['var']['spec_syms'][i],command=lambda i=i:h_table.insert_sym(globs['var']['spec_syms'][i]),width=2,height=2).pack(side='left',expand=1)
+		self.custom_bindings()
 		self.close()
+		
+	def custom_bindings(self):
+		create_binding(widget=self.widget,bindings=['<Escape>',globs['var']['bind_spec_symbol']],action=self.close)
 	
 	def show(self,*args):
 		self.obj.show()
@@ -2595,8 +2687,9 @@ class TkinterHtmlMod(tk.Widget):
 		self.vsb.config(command=self.yview)
 		self.hsb.config(command=self.xview)
 		
-		self.search_entry = SearchEntry()
+		self.search_article = SearchArticle()
 		self.spec_symbols = SpecSymbols()
+		self.save_article = SaveArticle()
 		
 		# todo: The same does not work when imported from sharedGUI for some reason
 		if h_os.sys() == 'lin':
@@ -2709,11 +2802,6 @@ class TkinterHtmlMod(tk.Widget):
 			self.move_page_up()
 		return 'break'
 	
-	# Переключить язык интерфейса с русского на английский и наоборот
-	def change_ui_lang(self,*args):
-		toggle_ui_lang()
-		self.update_buttons()
-	
 	# Следить за буфером обмена
 	def watch_clipboard(self,*args):
 		if self.CaptureHotkey:
@@ -2746,12 +2834,12 @@ class TkinterHtmlMod(tk.Widget):
 
 	# Открыть веб-страницу с определением текущего термина
 	def define(self,Selected=True): # Selected: True: Выделенный термин; False: Название статьи
-		init_inst('online').reset()
-		init_inst('online')._base_str = globs['var']['web_search_url']
+		# cur
 		if Selected:
-			init_inst('online')._search_str = 'define:' + h_request._cells[self.i][self.j].term
+			search_str = 'define:' + h_request._cells[self.i][self.j].term
 		else:
-			init_inst('online')._search_str = 'define:' + h_request._search
+			search_str = 'define:' + h_request._search
+		init_inst('online').reset(base_str=globs['var']['web_search_url'],search_str=search_str)
 		init_inst('online').browse()
 	
 	# Обновить рисунки на кнопках
@@ -2803,86 +2891,31 @@ class TkinterHtmlMod(tk.Widget):
 			h_db.copy()
 			self.load_article()
 
-	# todo: elaborate
-	# Найти слово/слова в статье
-	def search_article(self,direction='forward'): # clear, forward, backward
-		if direction == 'clear': # Начать поиск заново
-			if self._search_list:
-				self._search_list = []
-			direction = 'forward'
-		elif direction != 'forward' and direction != 'backward':
-			Mestype('TkinterHtmlMod.search_article',globs['mes'].unknown_mode % (str(direction),'clear, forward, backward'))
-			direction = 'forward'
-		# Создаем начальные значения
-		if not self._search_list:
-			self.search_entry.show()
-			search_str = self.search_entry.widget.get().strip(' ').strip('\n').lower()
-			if search_str:
-				# Создать список позиций всех совпадений по поиску в статье
-				for i in range(len(h_request._cells)):
-					for j in range(len(h_request._cells[i])):
-						# todo: Для всех вхождений, а не только терминов
-						if h_request._cells[i][j].Selectable and search_str in h_request._cells[i][j].term.lower():
-							self._search_list.append((i,j))
-				if len(self._search_list) > 0:
-					if direction == 'forward':
-						# Номер текущего выделенного совпадения ('search_article_pos') в списке совпадений ('search_list')
-						self._search_article_pos = -1
-					elif direction == 'backward':
-						self._search_article_pos = len(self._search_list)
-		# Продолжаем поиск с предыдущего места
-		if len(self._search_list) > 0:
-			if direction == 'forward':
-				if self._search_article_pos + 1 < len(self._search_list):
-					self._search_article_pos += 1
-				else:
-					Message(func='TkinterHtmlMod.search_article',type=lev_info,message=globs['mes'].search_from_start)
-					self._search_article_pos = 0
-			elif direction == 'backward':
-				if self._search_article_pos > 0:
-					self._search_article_pos -= 1
-				else:
-					Message(func='TkinterHtmlMod.search_article',type=lev_info,message=globs['mes'].search_from_end)
-					self._search_article_pos = len(self._search_list) - 1
-			self.i, self.j = self._search_list[self._search_article_pos]
-			self.set_cell()
-			if len(self.index) > 0:
-				self.yview_name(self.index[0])
-
-	# Сохранить статью на диск
-	def save_article(self,*args):
-		init_inst('listbox').show()
-		init_inst('listbox').widget.focus_set()
-		opt = init_inst('listbox').get()
-		if opt:
-			opt = opt[0]
-			if opt == globs['mes'].save_view_as_html:
-				file = dialog_save_file(filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')))
-				if file:
-					# We disable AskRewrite because the confirmation is already built in the internal dialog
-					WriteTextFile(file,AskRewrite=False).write(h_request._html)
-			elif opt == globs['mes'].save_article_as_html:
-				# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
-				# Также меняем сокращенные гиперссылки на полные, чтобы они работали и в локальном файле.
-				file = dialog_save_file(filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')))
-				if file:
-					# todo: fix remaining links to localhost
-					WriteTextFile(file,AskRewrite=False).write(h_request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="m.exe?','<a href="'+online_url_root).replace('../c/m.exe?',online_url_root))
-			elif opt == globs['mes'].save_article_as_txt:
-				file = dialog_save_file(filetypes=((globs['mes'].plain_text,'.txt'),(globs['mes'].all_files,'*')))
-				if file:
-					WriteTextFile(file,AskRewrite=False).write(h_request._text)
-			elif opt == globs['mes'].copy_article_html:
-				init_inst('clipboard').copy(h_request._html_raw)
-			elif opt == globs['mes'].copy_article_txt:
-				init_inst('clipboard').copy(h_request._text)
-	
 	def control_length(self): # Confirm too long requests
 		Confirmed = True
 		if len(self.search) >= 150:
 			if not Message(func='TkinterHtmlMod.control_length',type=lev_ques,message=globs['mes'].long_request % len(self.search)).Yes:
 				Confirmed = False
 		return Confirmed
+	
+	def drag_search(self):
+		if self.search_article.list():
+			self.i, self.j = self.search_article._list[self.search_article._pos]
+			self.set_cell()
+			if len(self.index) > 0:
+				self.yview_name(self.index[0])
+	
+	def search_reset(self,*args): # SearchArticle
+		self.search_article.reset()
+		self.search_forward()
+	
+	def search_backward(self,*args): # SearchArticle
+		self.search_article.backward()
+		self.drag_search()
+	
+	def search_forward(self,*args): # SearchArticle
+		self.search_article.forward()
+		self.drag_search()
 	
 	def search_online(self):
 		if self.control_length():
@@ -2957,17 +2990,15 @@ class TkinterHtmlMod(tk.Widget):
 		# Кнопка перезагрузки статьи
 		Button(self.frame_panel,text=globs['mes'].btn_reload,hint=globs['mes'].hint_reload_article,action=self.reload,inactive_image_path=globs['var']['icon_reload'],active_image_path=globs['var']['icon_reload'],bindings=[globs['var']['bind_reload_article'],globs['var']['bind_reload_article_alt']])
 		# Кнопка "Поиск в статье"
-		Button(self.frame_panel,text=globs['mes'].btn_search,hint=globs['mes'].hint_search_article,action=lambda:self.search_article(direction='clear'),inactive_image_path=globs['var']['icon_search_article'],active_image_path=globs['var']['icon_search_article'],bindings=globs['var']['bind_re_search_article'])
+		Button(self.frame_panel,text=globs['mes'].btn_search,hint=globs['mes'].hint_search_article,action=self.search_reset,inactive_image_path=globs['var']['icon_search_article'],active_image_path=globs['var']['icon_search_article'],bindings=globs['var']['bind_re_search_article'])
 		# Кнопка "Сохранить"
-		Button(self.frame_panel,text=globs['mes'].btn_save,hint=globs['mes'].hint_save_article,action=self.save_article,inactive_image_path=globs['var']['icon_save_article'],active_image_path=globs['var']['icon_save_article'],bindings=[globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']])
+		Button(self.frame_panel,text=globs['mes'].btn_save,hint=globs['mes'].hint_save_article,action=self.save_article.select,inactive_image_path=globs['var']['icon_save_article'],active_image_path=globs['var']['icon_save_article'],bindings=[globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']])
 		# Кнопка "Открыть в браузере"
 		Button(self.frame_panel,text=globs['mes'].btn_in_browser,hint=globs['mes'].hint_in_browser,action=self.open_in_browser,inactive_image_path=globs['var']['icon_open_in_browser'],active_image_path=globs['var']['icon_open_in_browser'],bindings=[globs['var']['bind_open_in_browser'],globs['var']['bind_open_in_browser_alt']])
 		# Кнопка толкования термина. Сделана вспомогательной ввиду нехватки места
 		Button(self.frame_panel,text=globs['mes'].btn_define,hint=globs['mes'].hint_define,action=lambda:self.define(Selected=False),inactive_image_path=globs['var']['icon_define'],active_image_path=globs['var']['icon_define'],bindings=globs['var']['bind_define'])
 		# Кнопка "Перехват Ctrl-c-c"
 		self.btn_clipboard = Button(self.frame_panel,text=globs['mes'].btn_clipboard,hint=globs['mes'].hint_watch_clipboard,action=self.watch_clipboard,inactive_image_path=globs['var']['icon_watch_clipboard_off'],active_image_path=globs['var']['icon_watch_clipboard_on'],fg='red',bindings=[])
-		# Кнопка переключения языка интерфейса
-		Button(self.frame_panel,text=globs['mes'].btn_ui_lang,hint=globs['mes'].hint_ui_lang,action=self.change_ui_lang,inactive_image_path=globs['var']['icon_change_ui_lang'],active_image_path=globs['var']['icon_change_ui_lang'])
 		# Кнопка "О программе"
 		Button(self.frame_panel,text=globs['mes'].btn_about,hint=globs['mes'].hint_about,action=init_inst('about').show,inactive_image_path=globs['var']['icon_show_about'],active_image_path=globs['var']['icon_show_about'],bindings=globs['var']['bind_show_about'])
 		# Кнопка выхода
@@ -3001,11 +3032,11 @@ class TkinterHtmlMod(tk.Widget):
 		create_binding(widget=self,bindings=globs['var']['bind_iconify'],action=lambda e:iconify(init_inst('top')))
 		# Дополнительные горячие клавиши
 		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_quit_now'],globs['var']['bind_quit_now_alt']],action=h_quit.wait)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_search_article_forward'],action=lambda e:self.search_article(direction='forward'))
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_search_article_backward'],action=lambda e:self.search_article(direction='backward'))
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_re_search_article'],action=lambda e:self.search_article(direction='clear'))
+		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_search_article_forward'],action=self.search_forward)
+		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_search_article_backward'],action=self.search_backward)
+		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_re_search_article'],action=self.search_reset)
 		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_reload_article'],globs['var']['bind_reload_article_alt']],action=self.reload)
-		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']],action=self.save_article)
+		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']],action=self.save_article.select)
 		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_show_about'],action=init_inst('about').show)
 		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history']],action=self.history.toggle)
 		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt']],action=self.history.toggle)
@@ -3015,6 +3046,7 @@ class TkinterHtmlMod(tk.Widget):
 		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_spec_symbol']],action=self.spec_symbols.show)
 		create_binding(widget=self.search_field.widget,bindings='<Control-a>',action=lambda e:select_all(self.search_field.widget,Small=True))
 		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_define'],action=lambda e:self.define(Selected=True))
+		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_prev_pair'],globs['var']['bind_prev_pair_alt']],action=self.option_menu.set_prev)
 		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_next_pair'],globs['var']['bind_next_pair_alt']],action=self.option_menu.set_next)
 		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_toggle_view'],globs['var']['bind_toggle_view_alt']],action=self.toggle_view)
 		
@@ -3237,7 +3269,7 @@ class TkinterHtmlMod(tk.Widget):
 				break
 		if Found:
 			del h_request._elems[i]
-			h_request.cells = []
+			h_request.update()
 			self.load_article()
 		else:
 			Message(func='TkinterHtmlMod.delete_cell',type=lev_warn,message=globs['mes'].wrong_input2,Silent=self.Silent)
@@ -3253,7 +3285,7 @@ class TkinterHtmlMod(tk.Widget):
 				break
 		if Found:
 			h_request._elems.insert(i,Cell())
-			h_request._cells = []
+			h_request.update()
 			self.load_article()
 
 	def load_article(self,*args):
@@ -3268,7 +3300,7 @@ class TkinterHtmlMod(tk.Widget):
 		init_inst('top').widget.title(h_request.search())
 		self.history.update()
 		self.update_buttons()
-		self.search_field.clear()
+		self.search_article.reset()
 	
 	# Перейти по URL текущей ячейки
 	def go_url(self,*args):
