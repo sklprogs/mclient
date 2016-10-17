@@ -20,7 +20,7 @@ class log:
 		pass
 		
 product = 'MClient'
-version = '4.7'
+version = '4.7.1'
 
 
 
@@ -239,37 +239,6 @@ delete_entries = ['Вход','Регистрация','Сообщить об о�
 
 instances = {}
 
-def init_inst(name):
-	if name in instances and instances[name]:
-		pass
-	elif name == 'root':
-		instances[name] = Root()
-		instances[name].close()
-	elif name == 'top':
-		instances[name] = Top(init_inst('root'),Maximize=True) #,DestroyRoot=True
-		instances[name].icon(globs['var']['icon_mclient'])
-	elif name == 'top_entry':
-		instances[name] = Top(init_inst('root'))
-		#instances[name].close()
-	elif name == 'top_textbox':
-		instances[name] = Top(init_inst('root'),Maximize=True)
-		instances[name].close()
-	elif name == 'entry':
-		instances[name] = Entry(init_inst('top_entry'))
-		instances[name].icon(globs['var']['icon_mclient'])
-		instances[name].title(globs['mes'].search_str)
-	elif name == 'textbox':
-		instances[name] = TextBox(init_inst('top_textbox'))
-	elif name == 'clipboard':
-		instances[name] = Clipboard(init_inst('root'))
-	elif name == 'online':
-		instances[name] = Online()
-	elif name == 'about':
-		instances[name] = About()
-	return instances[name]
-
-
-
 class Request:
 	
 	def __init__(self):
@@ -360,6 +329,40 @@ class Request:
 		if self._moves is None:
 			Moves()
 		return self._moves
+
+
+
+def init_inst(name):
+	if name in instances and instances[name]:
+		pass
+	elif name == 'root':
+		instances[name] = Root()
+		instances[name].close()
+	elif name == 'top':
+		instances[name] = Top(init_inst('root'),Maximize=True) #,DestroyRoot=True
+		instances[name].icon(globs['var']['icon_mclient'])
+	elif name == 'top_entry':
+		instances[name] = Top(init_inst('root'))
+		#instances[name].close()
+	elif name == 'top_textbox':
+		instances[name] = Top(init_inst('root'),Maximize=True)
+		instances[name].close()
+	elif name == 'entry':
+		instances[name] = Entry(init_inst('top_entry'))
+		instances[name].icon(globs['var']['icon_mclient'])
+		instances[name].title(globs['mes'].search_str)
+	elif name == 'textbox':
+		instances[name] = TextBox(init_inst('top_textbox'))
+	elif name == 'clipboard':
+		instances[name] = Clipboard(init_inst('root'))
+	elif name == 'online':
+		if h_request.source() == 'Multitran':
+			instances[name] = Online(MTSpecific=True)
+		else:
+			instances[name] = Online(MTSpecific=False)
+	elif name == 'about':
+		instances[name] = About()
+	return instances[name]
 
 
 
@@ -2725,7 +2728,10 @@ class TkinterHtmlMod(tk.Widget):
 		
 	def get_url(self):
 		# Note: encoding must be UTF-8 here
-		init_inst('online').reset(self.get_pair(),self.search)
+		if h_request.source() == 'Multitran':
+			init_inst('online').reset(self.get_pair(),self.search,MTSpecific=True)
+		else:
+			init_inst('online').reset(self.get_pair(),self.search,MTSpecific=False)
 		self.url = init_inst('online').url()
 		log.append('TkinterHtmlMod.get_url',lev_debug,"self.url: %s" % str(self.url))
 	
@@ -2843,7 +2849,6 @@ class TkinterHtmlMod(tk.Widget):
 
 	# Открыть веб-страницу с определением текущего термина
 	def define(self,Selected=True): # Selected: True: Выделенный термин; False: Название статьи
-		# cur
 		if Selected:
 			search_str = 'define:' + h_request._cells[self.i][self.j].term
 		else:
@@ -3372,7 +3377,7 @@ class TkinterHtmlMod(tk.Widget):
 				cur_index += 1
 	
 	def reload(self,*args):
-		h_request._html = h_request._text = h_request._cells = h_request._elems = None
+		h_request.new()
 		self.load_article()
 		
 	# Вставить спец. символ в строку поиска

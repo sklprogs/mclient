@@ -230,6 +230,9 @@ class TextBox:
 		WidgetShared.custom_buttons(self)
 		self.custom_bindings()
 		
+	def show(self):
+		self.parent_obj.show()
+	
 	def close(self,*args):
 		self.Save = True
 		self.parent_obj.close()
@@ -347,7 +350,7 @@ class TextBox:
 		WidgetShared.icon(self.parent_obj,icon)
 	
 	# Только для несоставных виджетов (ввиду custom_bindings)
-	def update(self,title='Title:',text='Text:',GoTo='',SelectAll=False,ReadOnly=False,CursorPos='1.0',icon='',SpecialReturn=True):
+	def update(self,title='Title:',text='',GoTo='',SelectAll=False,ReadOnly=False,CursorPos='1.0',icon='',SpecialReturn=True):
 		self.Save = False
 		self.SpecialReturn = SpecialReturn
 		# Операции над главным виджетом

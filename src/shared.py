@@ -535,69 +535,11 @@ class ReadTextFile:
 
 
 
-class AnalyseText:
-
-	def __init__(self,text):
-		self.dic = {}
-		self.dic['text'] = text
-		AnalyseText.words.num = AnalyseText.words_num
-		AnalyseText.words.nf = AnalyseText.words_nf
-		AnalyseText.words.low = AnalyseText.words_low
-		AnalyseText.words.nf.low = AnalyseText.words_nf_low
-
-	def words(self,word_no=-1):
-		if not 'words' in self.dic:
-			self.dic['words'] = self.dic['text'].split()
-		if word_no >= 0 and word_no < len(self.dic['words']):
-			return self.dic['words'][word_no]
-		else:
-			return self.dic['words']
-
-	def words_num(self):
-		# Is it worth it? Text length must be static
-		if not 'words_num' in self.dic:
-			self.dic['words_num'] = len(self.words())
-		return self.dic['words_num']
-
-	def words_low(self,word_no=-1):
-		if not 'words_low' in self.dic:
-			self.dic['words_low'] = []
-			for i in range(self.words_num()):
-				self.dic['words_low'].append('')
-		if word_no >= 0 and word_no < self.words_num():
-			self.dic['words_low'][word_no] = self.words(word_no).lower()
-			return self.dic['words_low'][word_no]
-		else:
-			return self.dic['words_low']
-
-	def words_nf(self,word_no=-1):
-		if not 'words_nf' in self.dic:
-			self.dic['words_nf'] = []
-			for i in range(self.words_num()):
-				self.dic['words_nf'].append('')
-		if word_no >= 0 and word_no < self.words_num():
-			self.dic['words_nf'][word_no] = self.words(word_no).replace(',','').replace('.','').replace('!','').replace('?','').replace(':','').replace(';','')
-			return self.dic['words_nf'][word_no]
-		else:
-			return self.dic['words_nf']
-
-	def words_nf_low(self,word_no=-1):
-		if not 'words_nf_low' in self.dic:
-			self.dic['words_nf_low'] = []
-			for i in range(self.words_num()):
-				self.dic['words_nf_low'].append('')
-		if word_no >= 0 and word_no < self.words_num():
-			self.dic['words_nf_low'][word_no] = self.words_nf(word_no).lower()
-			return self.dic['words_nf_low'][word_no]
-		else:
-			return self.dic['words_nf_low']
-			
-			
-			
 class Text:
 	
-	def __init__(self,text,Auto=True):
+	def __init__(self,text,Auto=False,Silent=False):
 		self.text = text
+		self.Silent = Silent
 		# This can be useful in many cases, e.g. after OCR
 		if Auto:
 			self.strip_lines()
@@ -704,6 +646,27 @@ class Text:
 		self.text = self.text.replace(' ]',']')
 		self.text = self.text.replace('{ ','{')
 		self.text = self.text.replace(' }','}')
+		
+	def extract_date(self): # Only for pattern '(YYYY-MM-DD)'
+		expr = '\((\d\d\d\d-\d\d-\d\d)\)'
+		if self.text:
+			match = re.search(expr,self.text)
+			if match:
+				return match.group(1)
+				
+	def extract_date_hash(self):
+		hash = -1
+		result = self.text.split('-') # Only strings at input
+		if len(result) == 3:
+			self.text = result[0]
+			hash = self.str2int() * 365
+			self.text = result[1]
+			hash += self.str2int() * 12
+			self.text = result[2]
+			hash += self.str2int()
+		#else:
+		#	Message(func='Text.extract_date_hash',type=lev_warn,message=globs['mes'].wrong_input2,Silent=self.Silent)
+		return hash
 	
 	# Fix possible misprints and OCR errors in the text where a degree sign can be witnessed
 	def fix_degree_sign(self):
@@ -728,7 +691,7 @@ class Text:
 	# Replace commas or semicolons with line breaks or line breaks with commas
 	def split_by_comma(self):
 		if (';' in self.text or ',' in self.text) and '\n' in self.text:
-			Message(func='Text.split_by_comma',type=lev_warn,message=globs['mes'].comma_ambiguous)
+			Message(func='Text.split_by_comma',type=lev_warn,message=globs['mes'].comma_ambiguous,Silent=self.Silent)
 		elif ';' in self.text or ',' in self.text:
 			self.text = self.text.replace(',','\n')
 			self.text = self.text.replace(';','\n')
@@ -1017,7 +980,7 @@ class File:
 		if self.Success:
 			if self.file.lower() == self.dest.lower():
 				Message(func='File.copy',type=lev_err,message=globs['mes'].file_copy_failure2 % self.file,Silent=self.Silent)
-			elif rewrite(selt.dest,AskRewrite=self.AskRewrite):
+			elif rewrite(self.dest,AskRewrite=self.AskRewrite):
 				Success = self._copy()
 			else:
 				log.append('File.copy',lev_info,globs['mes'].canceled_by_user)
@@ -1108,7 +1071,7 @@ class Path:
 			else:
 				log.append('Path.create',lev_info,globs['mes'].creating_dir % self.path)
 				try:
-					os.makedirs(self.path)
+					os.makedirs(self.path) # todo: consider os.mkdir
 				except:
 					Success = False
 					Message(func='Path.create',type=lev_err,message=globs['mes'].dir_creation_failure % self.path)
@@ -1134,14 +1097,6 @@ class Path:
 				self._extension = self._splitpath()[1]
 		return self._extension
 		
-	def extract_date(self): # Only for pattern '(YYYY-MM-DD)'
-		if not self._date:
-			expr = '\((\d\d\d\d-\d\d-\d\d)\)'
-			match = re.search(expr,self.filename())
-			if match:
-				self._date = match.group(1)
-		return self._date
-
 	def filename(self):
 		if not self._filename:
 			if len(self._splitpath()) >= 1:
@@ -1343,6 +1298,7 @@ class CreateInstance:
 
 
 
+# todo: fix: does not work with a root dir ('/')
 class Directory:
 	
 	def __init__(self,path,dest='',Silent=False):
@@ -1356,7 +1312,13 @@ class Directory:
 			self.dest = Path(dest).path
 		else:
 			self.dest = self.dir
+		# Assigning lists must be one per line
 		self._list = []
+		self._rel_list = []
+		self._files = []
+		self._rel_files = []
+		self._dirs = []
+		self._rel_dirs = []
 		if not os.path.isdir(self.dir):
 			self.Success = False
 			Message(func='Directory.__init__',type=lev_warn,message=globs['mes'].wrong_input2,Silent=self.Silent)
@@ -1371,13 +1333,58 @@ class Directory:
 		else:
 			log.append('Directory.delete',lev_warn,globs['mes'].canceled)
 			
+	# Create a list of objects with a relative path
+	def rel_list(self):
+		if self.Success:
+			if not self._rel_list:
+				self.list()
+		return self._rel_list
+	
+	# Create a list of objects with an absolute path
 	def list(self):
 		if self.Success:
 			if not self._list:
 				self._list = os.listdir(self.dir)
+				self._rel_list = list(self._list)
+				for i in range(len(self._list)):
+					self._list[i] = self.dir + h_os.sep() + self._list[i]
 		else:
 			log.append('Directory.list',lev_warn,globs['mes'].canceled)
 		return self._list
+
+	def rel_dirs(self):
+		if self.Success:
+			if not self._rel_dirs:
+				self.dirs()
+		return self._rel_dirs
+	
+	def rel_files(self):
+		if self.Success:
+			if not self._rel_files:
+				self.files()
+		return self._rel_files
+	
+	def dirs(self): # Needs absolute path
+		if self.Success:
+			if not self._dirs:
+				for i in range(len(self.list())):
+					if os.path.isdir(self._list[i]):
+						self._dirs.append(self._list[i])
+						self._rel_dirs.append(self._rel_list[i])
+		else:
+			log.append('Directory.dirs',lev_warn,globs['mes'].canceled)
+		return self._dirs
+
+	def files(self): # Needs absolute path
+		if self.Success:
+			if not self._files:
+				for i in range(len(self.list())):
+					if os.path.isfile(self._list[i]):
+						self._files.append(self._list[i])
+						self._rel_files.append(self._rel_list[i])
+		else:
+			log.append('Directory.files',lev_warn,globs['mes'].canceled)
+		return self._files
 		
 	def copy(self):
 		if self.Success:
@@ -1456,13 +1463,31 @@ class Config:
 
 class Online:
 	
-	def __init__(self,base_str='',search_str='',encoding='UTF-8'):
-		self.reset(base_str=base_str,search_str=search_str,encoding=encoding)
+	def __init__(self,base_str='',search_str='',encoding='UTF-8',MTSpecific=False):
+		self.reset(base_str=base_str,search_str=search_str,encoding=encoding,MTSpecific=MTSpecific)
 
-	def bytes(self):
+	def bytes_common(self):
 		if not self._bytes:
 			self._bytes = bytes(self.search_str,encoding=self.encoding)
-		return self._bytes 
+		
+	def bytes_multitran(self):
+		if not self._bytes:
+			# Otherwise, will not be able to encode 'Ъ'
+			try:
+				self._bytes = bytes(self.search_str,encoding=globs['var']['win_encoding'])
+			except:
+				# Otherwise, will not be able to encode specific characters
+				try:
+					self._bytes = bytes(self.search_str,encoding='UTF-8')
+				except:
+					self._bytes = ''
+	
+	def bytes(self):
+		if self.MTSpecific:
+			self.bytes_multitran()
+		else:
+			self.bytes_common()
+		return self._bytes
 	
 	def browse(self): # Open a URL in a default browser
 		try:
@@ -1477,8 +1502,9 @@ class Online:
 			log.append('Online.url',lev_debug,str(self._url))
 		return self._url
 		
-	def reset(self,base_str='',search_str='',encoding='UTF-8'):
+	def reset(self,base_str='',search_str='',encoding='UTF-8',MTSpecific=False):
 		self.encoding = encoding
+		self.MTSpecific = MTSpecific
 		self.base_str = base_str
 		self.search_str = search_str
 		self._bytes = self._url = None
@@ -1680,3 +1706,74 @@ class Lang:
 			self.set_en()
 			
 h_lang = Lang()
+
+
+
+class Grep:
+	
+	def __init__(self,lst,start=[],middle=[],end=[],Silent=False):
+		self.Silent = Silent
+		self._lst = lst
+		self._start = start
+		self._middle = middle
+		self._end = end
+		self.sanitize()
+		self._found = []
+		self.i = 0
+			
+	# Get rid of constructs like [None] instead of checking arguments when parameterizing
+	def sanitize(self):
+		if len(self._lst) == 1:
+			if not self._lst[0]:
+				self._lst = []
+		if len(self._start) == 1:
+			if not self._start[0]:
+				self._start = []
+		if len(self._middle) == 1:
+			if not self._middle[0]:
+				self._middle = []
+		if len(self._end) == 1:
+			if not self._end[0]:
+				self._end = []
+	
+	def start(self):
+		if not self._start:
+			return True
+		found = False
+		for i in range(len(self._start)):
+			if self._start[i] and self._lst[self.i].startswith(self._start[i]):
+				found = True
+		return found
+	
+	def middle(self):
+		if not self._middle:
+			return True
+		found = False
+		for i in range(len(self._middle)):
+			if self._middle[i] and self._middle[i] in self._lst[self.i]:
+				found = True
+		return found
+	
+	def end(self):
+		if not self._end:
+			return True
+		found = False
+		for i in range(len(self._end)):
+			if self._end[i] and self._lst[self.i].endswith(self._end[i]):
+				found = True
+		return found
+		
+	# Return all matches as a list
+	def get(self):
+		if not self._found:
+			for i in range(len(self._lst)):
+				self.i = i
+				if self.start() and self.middle() and self.end():
+					self._found.append(self._lst[i])
+		return self._found
+
+	# Return the 1st match as a string
+	def get_first(self):
+		self.get()
+		if self._found:
+			return self._found[0]
