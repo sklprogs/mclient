@@ -386,6 +386,15 @@ class TextBox:
 		self.clear_tags()
 		self.clear_marks()
 		
+	def cursor(self,*args):
+		try:
+			self._pos = self.widget.index('insert')
+			log.append('TextBox.cursor',lev_debug,'Got position: "%s"' % str(self._pos)) # todo: mes
+		except tk.TclError:
+			self._pos = '1.0'
+			log.append('TextBox.cursor',lev_warn,'Cannot return a cursor position!') # todo: mes
+		return self._pos
+		
 		
 		
 class Entry:
@@ -864,3 +873,66 @@ class OptionMenu:
 		self.var.set(self.items[self.index])
 
 
+
+'''	Usage:
+	create_binding(h_txt.widget,'<ButtonRelease-1>',action)
+
+def action(*args):
+	h_selection.get() # Refresh coordinates (or set h_selection._pos1_tk, h_selection._pos2_tk manually)
+	h_selection.set()
+'''
+class Selection:
+	
+	def __init__(self,h_widget,h_words):
+		self.h_widget = h_widget
+		self.h_words = h_words
+		self.reset()
+		
+	def reset(self,pos1_tk=None,pos2_tk=None,background='orange'):
+		self._pos1_tk = pos1_tk
+		self._pos2_tk = pos2_tk
+		self._text = ''
+		self._bg = background
+		
+	def pos1_tk(self):
+		if self._pos1_tk is None:
+			self.get()
+		return self._pos1_tk
+		
+	def pos2_tk(self):
+		if self._pos2_tk is None:
+			self.get()
+		return self._pos2_tk
+	
+	def get(self,*args):
+		try:
+			self._pos1_tk = self.h_widget.widget.index('sel.first')
+			self._pos2_tk = self.h_widget.widget.index('sel.last')
+		except tk.TclError:
+			self._pos1_tk, self._pos2_tk = None, None
+			log.append('Selection.tk_poses',lev_warn,globs['mes'].no_selection2 % 1) # todo: mes
+		log.append('Selection.tk_poses',lev_debug,str((self._pos1_tk,self._pos2_tk)))
+		return(self._pos1_tk,self._pos2_tk)
+		
+	def text(self):
+		try:
+			self._text = self.h_widget.widget.get('sel.first','sel.last').replace('\r','').replace('\n','')
+		except tk.TclError:
+			self._text = ''
+			log.append('Selection.text',lev_err,globs['mes'].tk_sel_failure2)
+		return self._text
+		
+	def cursor(self):
+		return self.h_widget.cursor()
+		
+	def set(self):
+		if self.pos1_tk() and self.pos2_tk():
+			self.h_widget.tag_add(pos1tk=self._pos1_tk,pos2tk=self._pos2_tk)
+		else:
+			# Just need to return something w/o warnings
+			_cursor = self.cursor()
+			self.h_widget.tag_add(pos1tk=_cursor,pos2tk=_cursor)
+
+
+
+# End

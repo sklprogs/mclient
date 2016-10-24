@@ -2,6 +2,7 @@
 
 4.7.1
 * Fix searching words with "ъ" character
+* Update documentation
 
 4.7
 * Significantly refactor the code 
