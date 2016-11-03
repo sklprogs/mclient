@@ -1,6 +1,3 @@
-
-
-4.7.2
 * Add Alt-` combination for calling the program window without translating the clipboard contents
 
 4.7.1
