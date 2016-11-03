@@ -1,5 +1,8 @@
 
 
+4.7.2
+* Add Alt-` combination for calling the program window without translating the clipboard contents
+
 4.7.1
 * Fix searching words with "ъ" character
 * Update documentation
