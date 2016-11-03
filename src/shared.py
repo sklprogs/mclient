@@ -18,7 +18,8 @@ import difflib
 import sqlite3
 
 from constants import *
-
+#from logic import Search
+#from logic import *
 
 
 # todo: Timing class functions sometimes shows inadequate results
@@ -543,6 +544,7 @@ class Text:
 		self.Silent = Silent
 		# This can be useful in many cases, e.g. after OCR
 		if Auto:
+			self.convert_line_breaks()
 			self.strip_lines()
 			self.delete_duplicate_line_breaks()
 			self.tabs2spaces()
@@ -552,6 +554,9 @@ class Text:
 			self.text = self.text.replace('· ','').replace('• ','') # Getting rid of some useless symbols
 			self.delete_space_with_punctuation()
 			self.text = self.text.strip() # This is necessary even if we do strip for each line (we need to strip '\n' at the beginning/end)
+			
+	def reset(self,text):
+		self.text = text
 		
 	# todo: check
 	def delete_alphabetic_numeration(self):
@@ -597,7 +602,11 @@ class Text:
 		# Further steps: self.delete_duplicate_spaces(), self.text.strip()
 		return self.text
 	
-	def delete_line_breaks(self): # Use splitlines() first to get rid of Windows- and MacOS-like line breaks
+	def convert_line_breaks(self):
+		self.text = self.text.replace('\r\n','\n').replace('\r','\n')
+		return self.text
+	
+	def delete_line_breaks(self): # Apply 'convert_line_breaks' first
 		self.text = self.text.replace('\n',' ')
 		return self.text
 	
@@ -627,6 +636,10 @@ class Text:
 	def delete_figures(self):
 		self.text = re.sub('\d+','',self.text)
 		return self.text
+		
+	def delete_cyrillic(self):
+		self.text = ''.join([sym for sym in self.text if sym not in ru_alphabet])
+		return self.text
 	
 	def delete_punctuation(self):
 		for i in range(len(punc_array)):
@@ -639,14 +652,7 @@ class Text:
 		# Delete duplicate spaces first
 		for i in range(len(punc_array)):
 			self.text = self.text.replace(' '+punc_array[i],punc_array[i])
-		self.text = self.text.replace('“ ','“')
-		self.text = self.text.replace(' ”','”')
-		self.text = self.text.replace('( ','(')
-		self.text = self.text.replace(' )',')')
-		self.text = self.text.replace('[ ','[')
-		self.text = self.text.replace(' ]',']')
-		self.text = self.text.replace('{ ','{')
-		self.text = self.text.replace(' }','}')
+		self.text = self.text.replace('“ ','“').replace(' ”','”').replace('( ','(').replace(' )',')').replace('[ ','[').replace(' ]',']').replace('{ ','{').replace(' }','}')
 		
 	def extract_date(self): # Only for pattern '(YYYY-MM-DD)'
 		expr = '\((\d\d\d\d-\d\d-\d\d)\)'
@@ -1781,99 +1787,50 @@ class Grep:
 
 
 
-class Search:
+class Words: # Requires h_decline, Search, Text
 	
-	def __init__(self,text,search):
-		self.Success = True
-		self.i = 0
-		self._next_loop = []
-		self._prev_loop = []
-		self._text = text
-		self._search = search
-		if not self._search or not self._text: # Prevent infinite loops
-			#self._search = 'ERR_MES_EMPTY_STRING'
-			Message(func='Search.__init__',type=lev_warn,message=globs['mes'].wrong_input2)
-			self.Success = False
-	
-	def add(self):
-		if self.Success:
-			if len(self._text) >= self.i + len(self._search):
-				self.i += len(self._search)
-		else:
-			log.append('Search.add',lev_warn,globs['mes'].canceled)
-		
-	def next(self):
-		if self.Success:
-			result = self._text.find(self._search,self.i)
-			if result != -1:
-				self.i = result
-				self.add()
-			return result
-		else:
-			log.append('Search.next',lev_warn,globs['mes'].canceled)
-		
-	def prev(self):
-		if self.Success:
-			# rfind, unlike find, does not include limits, so we can use it to search backwards
-			result = self._text.rfind(self._search,0,self.i)
-			if result != -1:
-				self.i = result
-			return result
-		else:
-			log.append('Search.prev',lev_warn,globs['mes'].canceled)
-		
-	def next_loop(self):
-		if self.Success:
-			if not self._next_loop:
-				self.i = 0
-				while True:
-					result = self.next()
-					if result == -1:
-						break
-					else:
-						self._next_loop.append(result)
-		else:
-			log.append('Search.next_loop',lev_warn,globs['mes'].canceled)
-		return self._next_loop
-		
-	def prev_loop(self):
-		if self.Success:
-			if not self._prev_loop:
-				self.i = len(self._text)
-				while True:
-					result = self.prev()
-					if result == -1:
-						break
-					else:
-						self._prev_loop.append(result)
-		else:
-			log.append('Search.prev_loop',lev_warn,globs['mes'].canceled)
-		return self._prev_loop
-
-
-
-
-class Words: # Requires h_decline as global
-	
-	def __init__(self,text):
-		self._text = text
+	def __init__(self,text,orig_cyr=False):
+		self.orig_cyr = orig_cyr
+		self._p = self._text_p = self._text_np = self._text_np_low = self._text_norm = self._len = None
+		# This is MUCH faster than using old symbol-per-symbol algorithm for finding words. We must, however, drop double space cases.
+		self._text = Text(text=text,Auto=True).text
 		self.create()
 		self.split()
-		self._p = self._text_np_low = self._text_norm = self._len = None
+		self._line_breaks = []
 		self.change_no()
 		
-	def split(self): # todo: elaborate
-		lst = self._text.split(' ')
+	def line_breaks(self):
+		if not self._line_breaks:
+			self._line_breaks = Search(self._text,'\n').next_loop()
+		return self._line_breaks
+		
+	def text_p(self):
+		if not self._text_p:
+			self._text_p = Text(text=self._text,Auto=False).delete_line_breaks()
+		return self._text_p
+	
+	def text_np(self):
+		if not self._text_np:
+			self._text_np = Text(text=self.text_p(),Auto=False).delete_punctuation()
+		return self._text_np
+		
+	def text_np_low(self):
+		if not self._text_np_low:
+			# This is MUCH faster than analysing each word and fetching results
+			self._text_np_low = self.text_np().lower()
+		return self._text_np_low
+	
+	def split(self):
+		lst = self.text_p().split(' ')
 		cur_len = 0
 		for i in range(len(lst)):
 			# Values to get first: NO, SENT_NO, P, F_SYM_P, L_SYM_P
 			# 27 columns for now
-			sent_no = 0 # todo: elaborate
 			if i > 0:
 				cur_len += 2
 			f_sym_p = cur_len
 			cur_len = l_sym_p = f_sym_p + len(lst[i]) - 1
-			self.db.execute('insert into WORDS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',(i,-1,sent_no,lst[i],-1,-1,-1,f_sym_p,l_sym_p,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,))
+			self.db.execute('insert into WORDS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',(i,-1,-1,lst[i],-1,-1,-1,f_sym_p,l_sym_p,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,))
 		self.db_con.commit()
 	
 	def create(self):
@@ -1940,8 +1897,8 @@ class Words: # Requires h_decline as global
 		result = self.fetchone()
 		if result == -1:
 			result = 0
-			for i in range(len(ru_alphabet)):
-				if ru_alphabet[i] in self._p:
+			for sym in ru_alphabet:
+				if sym in self._p:
 					result = 1
 					break
 			self.db.execute('update WORDS set CYR=? where NO=?',(result,self._no,))
@@ -1953,8 +1910,8 @@ class Words: # Requires h_decline as global
 		result = self.fetchone()
 		if result == -1:
 			result = 0
-			for i in range(len(lat_alphabet)):
-				if lat_alphabet[i] in self._p:
+			for sym in lat_alphabet:
+				if sym in self._p:
 					result = 1
 					break
 			self.db.execute('update WORDS set LAT=? where NO=?',(result,self._no,))
@@ -1966,8 +1923,8 @@ class Words: # Requires h_decline as global
 		result = self.fetchone()
 		if result == -1:
 			result = 0
-			for i in range(len(greek_alphabet)):
-				if greek_alphabet[i] in self._p:
+			for sym in greek_alphabet:
+				if sym in self._p:
 					result = 1
 					break
 			self.db.execute('update WORDS set GREEK=? where NO=?',(result,self._no,))
@@ -1979,8 +1936,8 @@ class Words: # Requires h_decline as global
 		result = self.fetchone()
 		if result == -1:
 			result = 0
-			for i in range(len(other_alphabet)):
-				if other_alphabet[i] in self._p:
+			for sym in other_alphabet:
+				if sym in self._p:
 					result = 1
 					break
 			self.db.execute('update WORDS set SPEC=? where NO=?',(result,self._no,))
@@ -2055,6 +2012,8 @@ class Words: # Requires h_decline as global
 				4) The word has digits
 			'''
 			if self.cyr() and self.lat() or self.greek() or self.digit():
+				result = 1
+			elif self.orig_cyr and self.lat():
 				result = 1
 			self.db.execute('update WORDS set STONE=? where NO=?',(result,self._no,))
 			self.db_con.commit()
@@ -2213,49 +2172,23 @@ class Words: # Requires h_decline as global
 	
 	def sent_no(self):
 		self.db.execute('select SENT_NO from WORDS where NO=?',(self._no,))
-		return self.fetchone()
+		result = self.fetchone()
+		if result == -1:
+			result = self.get_sent_no(self.f_sym_p())
+			self.db.execute('update WORDS set SENT_NO=? where NO=?',(result,self._no,))
+			self.db_con.commit()
+		return result
 	
 	def sents_p_len(self,sent_no=None):
-		if sent_no is None:
-			sent_no = self.sent_no()
-		if str(sent_no).isdigit():
-			if sent_no > 0:
-				self.l_sym_p()
-				self.db.execute('select L_SYM_P from WORDS where SENT_NO=? order by NO desc;',(sent_no-1,))
-				sent_no = self.fetchone()
-				if str(sent_no).isdigit():
-					sent_no += 1 # Sump up the line break
+		result = sent_no
+		if result is None:
+			result = self.sent_no()
+		if str(result).isdigit():
+			if result > 0:
+				result = self.line_breaks()[result-1]
 			else:
-				sent_no = 0
-			return sent_no
-			
-	def sents_np_len(self,sent_no=None):
-		if sent_no is None:
-			sent_no = self.sent_no()
-		if str(sent_no).isdigit():
-			if sent_no > 0:
-				self.l_sym_np()
-				self.db.execute('select L_SYM_NP from WORDS where SENT_NO=? order by NO desc;',(sent_no-1,))
-				sent_no = self.fetchone()
-				if str(sent_no).isdigit():
-					sent_no += 1 # Sump up the line break
-			else:
-				sent_no = 0
-			return sent_no
-			
-	def sents_norm_len(self,sent_no=None):
-		if sent_no is None:
-			sent_no = self.sent_no()
-		if str(sent_no).isdigit():
-			if sent_no > 0:
-				self.l_sym_norm()
-				self.db.execute('select L_SYM_NORM from WORDS where SENT_NO=? order by NO desc;',(sent_no-1,))
-				sent_no = self.fetchone()
-				if str(sent_no).isdigit():
-					sent_no += 1 # Sump up the line break
-			else:
-				sent_no = 0
-			return sent_no
+				result = self.line_breaks()[0]
+			return result
 			
 	def tk_p_f(self):
 		self.db.execute('select TK_P_F from WORDS where NO=?',(self._no,))
@@ -2264,7 +2197,7 @@ class Words: # Requires h_decline as global
 			sents_len = self.sents_p_len()
 			entire_len = self.f_sym_p()
 			if str(sents_len).isdigit() and str(entire_len).isdigit():
-				excess = entire_len - sents_len
+				excess = entire_len - sents_len - 1
 				result = str(self.sent_no()+1) + '.' + str(excess) # Uneven
 			else:
 				result = '0'
@@ -2280,7 +2213,7 @@ class Words: # Requires h_decline as global
 			sents_len = self.sents_p_len()
 			entire_len = self.l_sym_p()
 			if str(sents_len).isdigit() and str(entire_len).isdigit():
-				excess = entire_len - sents_len
+				excess = entire_len - sents_len - 1
 				result = str(self.sent_no()+1) + '.' + str(excess+1) # Even
 			else:
 				result = '0'
@@ -2358,12 +2291,16 @@ class Words: # Requires h_decline as global
 		self.db.execute('select NO from WORDS where F_SYM_P <= ? and L_SYM_P >= ? or L_SYM_P + 1 = ?',(pos,pos,pos))
 		return self.fetchone()
 		
-	def text_np_low(self):
-		if not self._text_np_low:
-			# This is MUCH faster than analysing each word and fetching results
-			self._text_np_low = Text(text=self._text).delete_line_breaks().lower()
-		return self._text_np_low
-					
+	def get_sent_no(self,pos=0):
+		res_i = 0
+		i = len(self.line_breaks()) - 1
+		while i >= 0:
+			if pos >= self._line_breaks[i]:
+				res_i = i + 1
+				break
+			i -= 1
+		return res_i
+		
 	def text_norm(self):
 		if not self._text_norm:
 			old = self._no
@@ -2430,74 +2367,74 @@ class Words: # Requires h_decline as global
 
 
 
-class TkPos:
+class Search:
 	
-	def __init__(self,h_widget,h_words):
-		self.h_widget = h_widget
-		self.h_words = h_words
-		self.reset()
+	def __init__(self,text,search):
+		self.Success = True
+		self.i = 0
+		self._next_loop = []
+		self._prev_loop = []
+		self._text = text
+		self._search = search
+		if not self._search or not self._text: # Prevent infinite loops
+			#self._search = 'ERR_MES_EMPTY_STRING'
+			Message(func='Search.__init__',type=lev_warn,message=globs['mes'].wrong_input2)
+			self.Success = False
 	
-	def reset(self,pos=None,pos_tk=None,sent_no=None,sents_len=None,p_no=None,First=True):
-		self._pos = pos
-		self._pos_tk = pos_tk
-		self._sent_no = sent_no
-		self._sents_len = sents_len
-		self._p_no = p_no
-		self.First = First
-		
-	def sent_no(self):
-		if self._sent_no is None:
-			self.split()
-		return self._sent_no
-		
-	def sents_len(self):
-		if self._sents_len is None:
-			self.split()
-		return self._sents_len
-		
-	def pos_tk(self):
-		if self._pos_tk is None:
-			self._pos_tk = self.h_widget.cursor()
-		return self._pos_tk
-		
-	def pos(self):
-		if self._pos is None:
-			self.tk2pos()
-		return self._pos
-	
-	def tk2pos(self):
-		self.split()
-		return self._pos
-		
-	def p_no(self):
-		if self._p_no is None:
-			self._p_no = self.h_words.get_p_no(pos=self.pos())
-		if self._p_no is None:
-			Message(func='TkPos.p_no',type=lev_err,message=globs['mes'].wrong_input2)
-			self._p_no = 0
-		return self._p_no
-		
-	def pos2tk(self):
-		self.h_words.change_no(no=self.p_no())
-		if self.First:
-			self._pos_tk = self.h_words.tk_p_f()
+	def add(self):
+		if self.Success:
+			if len(self._text) > self.i + len(self._search) - 1:
+				self.i += len(self._search)
 		else:
-			self._pos_tk = self.h_words.tk_p_l()
-			
-	def split(self):
-		_tuple = self.pos_tk().partition('.')
-		if _tuple[2]:
-			self._sent_no = Text(_tuple[0],Auto=False).str2int() - 1
-			if self._sent_no == 0:
-				self._sents_len = 0
-			else:
-				self._sents_len = self.h_words.sents_p_len(sent_no=self._sent_no)
-				if self._sents_len is None:
-					self._sents_len = 0
-			self._pos = self._sents_len + Text(_tuple[2],Auto=False).str2int()
+			log.append('Search.add',lev_warn,globs['mes'].canceled)
+		
+	def next(self):
+		if self.Success:
+			result = self._text.find(self._search,self.i)
+			if result != -1:
+				self.i = result
+				self.add()
+			return result
 		else:
-			Message(func='TkPos.split',type=lev_err,message=globs['mes'].wrong_input2)
-			self._sent_no = self._sents_len = self._pos = 0
+			log.append('Search.next',lev_warn,globs['mes'].canceled)
+		
+	def prev(self):
+		if self.Success:
+			# rfind, unlike find, does not include limits, so we can use it to search backwards
+			result = self._text.rfind(self._search,0,self.i)
+			if result != -1:
+				self.i = result
+			return result
+		else:
+			log.append('Search.prev',lev_warn,globs['mes'].canceled)
+		
+	def next_loop(self):
+		if self.Success:
+			if not self._next_loop:
+				self.i = 0
+				while True:
+					result = self.next()
+					if result == -1:
+						break
+					else:
+						self._next_loop.append(result)
+		else:
+			log.append('Search.next_loop',lev_warn,globs['mes'].canceled)
+		return self._next_loop
+		
+	def prev_loop(self):
+		if self.Success:
+			if not self._prev_loop:
+				self.i = len(self._text)
+				while True:
+					result = self.prev()
+					if result == -1:
+						break
+					else:
+						self._prev_loop.append(result)
+		else:
+			log.append('Search.prev_loop',lev_warn,globs['mes'].canceled)
+		return self._prev_loop
 
 
 

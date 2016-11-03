@@ -8,19 +8,18 @@ from Xlib.ext import record
 from Xlib.protocol import rq
 import threading
 
-flags = {'HotkeyCaught':False,'Verbose':False}
+def print_v(*args):
+	if Verbose:
+		print(*args)
+		
+def wait_example():
+	from time import sleep
+	while not keylistener.check():
+		sleep(.5)
+	keylistener.cancel()
 
 def catch_control_c(*args):
 	pass
-	
-signal.signal(signal.SIGINT,catch_control_c) # do not quit when Control-c is pressed
-
-def print_v(*args):
-	if flags['Verbose']:
-		print(*args)
-
-def toggle_hotkey(SetBool=True):
-	flags['HotkeyCaught'] = SetBool
 
 
 
@@ -44,7 +43,9 @@ class KeyListener(threading.Thread):
 		self.record_dpy = Display()
 		self.pressed = []
 		self.listeners = {}
-
+		self.character = None
+		self.status = 0 # 0: Nothing caught; 1: Read buffer and call main module; 2: Call main module
+		
 	# need the following because XK.keysym_to_string() only does printable chars
 	# rather than being the correct inverse of XK.string_to_keysym()
 	def lookup_keysym(self, keysym):
@@ -68,12 +69,12 @@ class KeyListener(threading.Thread):
 			event, data = rq.EventField(None).parse_binary_value(data, self.record_dpy.display, None, None)
 			keycode = event.detail
 			keysym = self.local_dpy.keycode_to_keysym(event.detail, 0)
-			character = self.lookup_keysym(keysym)
-			if character:
+			self.character = self.lookup_keysym(keysym)
+			if self.character:
 				if event.type == X.KeyPress:
-					self.press(character)
+					self.press()
 				elif event.type == X.KeyRelease:
-					self.release(character)
+					self.release()
 
 	def run(self):
 		# Check if the extension is present
@@ -109,55 +110,59 @@ class KeyListener(threading.Thread):
 		self.local_dpy.record_disable_context(self.ctx)
 		self.local_dpy.flush()
 
-	def press(self, character):
-		if len(self.pressed) == 3:
-			self.pressed = []
-		if character == 'Control_L' or character == 'Control_R':
-			if len(self.pressed) > 0:
+	def append(self):
+		if len(self.pressed) > 0:
+			if self.pressed[0] == 'Control_L' or self.pressed[0] == 'Control_R' or self.pressed[0] == 'Alt_L' or self.pressed[0] == 'Alt_R':
+				self.pressed.append(self.character)
+	
+	def press(self):
+		if len(self.pressed) == 2:
+			if self.pressed[1] == 'grave':
 				self.pressed = []
-			self.pressed.append(character)
-		elif character == 'c' or character == 'Insert':
-			if len(self.pressed) > 0:
-				if self.pressed[0] == 'Control_L' or self.pressed[0] == 'Control_R':
-					self.pressed.append(character)
+		elif len(self.pressed) == 3:
+			self.pressed = []
+		if self.character == 'Control_L' or self.character == 'Control_R' or self.character == 'Alt_L' or self.character == 'Alt_R':
+			self.pressed = [self.character]
+		elif self.character == 'c' or self.character == 'Insert' or self.character == 'grave':
+			self.append()
 		action = self.listeners.get(tuple(self.pressed), False)
 		print_v('Current action:', str(tuple(self.pressed)))
 		if action:
 			action()
 
-	def release(self, character):
+	def release(self):
 		"""must be called whenever a key release event has occurred."""
 		# Не засчитывает отпущенный Control
 		# Кириллическую 'с' распознает как латинскую
-		if character != 'c' and character != 'Insert':
+		if self.character != 'c' and self.character != 'Insert' and self.character != 'grave':
 			self.pressed = []
 
 	def addKeyListener(self, hotkeys, callable):
 		keys = tuple(hotkeys.split("+"))
 		print_v("Added new keylistener for :",str(keys))
 		self.listeners[keys] = callable
-
-
-
-def result():
-	if flags['HotkeyCaught']:
-		print_v('Hotkey has been caught!')
-		flags['HotkeyCaught'] = False
-		return True
-	else:
-		return False
+		
+	def check(self): # Returns 0..2
+		if self.status:
+			print_v('Hotkey has been caught!')
+			status = self.status
+			self.status = 0
+			return status
 			
-def wait_example():
-	from time import sleep
-	while not result():
-		sleep(.5)
-	keylistener.cancel()
-	
+	def set_status(self,status=0):
+		self.status = status
+		print_v('Setting status to %d!' % self.status)
+
+
+Verbose = False
+signal.signal(signal.SIGINT,catch_control_c) # do not quit when Control-c is pressed
 keylistener = KeyListener()
-keylistener.addKeyListener("Control_L+c+c",toggle_hotkey)
-keylistener.addKeyListener("Control_R+c+c",toggle_hotkey)
-keylistener.addKeyListener("Control_L+Insert+Insert",toggle_hotkey)
-keylistener.addKeyListener("Control_R+Insert+Insert",toggle_hotkey)
+keylistener.addKeyListener("Control_L+c+c",lambda: keylistener.set_status(status=1))
+keylistener.addKeyListener("Control_R+c+c",lambda: keylistener.set_status(status=1))
+keylistener.addKeyListener("Control_L+Insert+Insert",lambda: keylistener.set_status(status=1))
+keylistener.addKeyListener("Control_R+Insert+Insert",lambda: keylistener.set_status(status=1))
+keylistener.addKeyListener("Alt_L+grave",lambda: keylistener.set_status(status=2))
+keylistener.addKeyListener("Alt_R+grave",lambda: keylistener.set_status(status=2))
 keylistener.start()
 
 if __name__ == '__main__':

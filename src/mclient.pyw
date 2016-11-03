@@ -20,7 +20,7 @@ class log:
 		pass
 		
 product = 'MClient'
-version = '4.7.1'
+version = '4.7.2'
 
 
 
@@ -2071,24 +2071,29 @@ def deiconify(obj,Silent=False,TakeFocus=True): # Requires h_table
 	else:
 		Message(func='deiconify',type=lev_err,message=globs['mes'].not_enough_input_data,Silent=Silent)
 
+def call_app():
+	# Использовать то же сочетание клавиш для вызова окна
+	deiconify(init_inst('top'),TakeFocus=False)
+	# In case of .focus_set() *first* Control-c-c can call an inactive widget
+	h_table.search_field.widget.focus_force()
+
 # Перехватить нажатие Control-c-c
 def timed_update():
-	if h_table.CaptureHotkey and kl_mod.result():
-		# Позволяет предотвратить зависание потока в версиях Windows старше XP
-		if h_os.sys() == 'win':
-			kl_mod.keylistener.cancel()
-			kl_mod.keylistener.restart()
-		h_table.MouseClicked = True
-		new_clipboard = init_inst('clipboard').paste()
-		if new_clipboard:
-			h_table.search = new_clipboard
-			h_table.search_online()
-		# Использовать то же сочетание клавиш для вызова окна
-		deiconify(init_inst('top'),TakeFocus=False)
-		# In case of .focus_set() *first* Control-c-c can call an inactive widget
-		h_table.search_field.widget.focus_force()
-	else:
-		h_table.MouseClicked = False
+	h_table.MouseClicked = False
+	check = kl_mod.keylistener.check()
+	if check:
+		if check == 1 and h_table.CaptureHotkey:
+			# Позволяет предотвратить зависание потока в версиях Windows старше XP
+			if h_os.sys() == 'win':
+				kl_mod.keylistener.cancel()
+				kl_mod.keylistener.restart()
+			h_table.MouseClicked = True
+			new_clipboard = init_inst('clipboard').paste()
+			if new_clipboard:
+				h_table.search = new_clipboard
+				h_table.search_online()
+		if check == 2 or h_table.CaptureHotkey:
+			call_app()
 	# We need to have .after in the same function for it to work
 	h_quit._id = init_inst('root').widget.after(300,timed_update)
 	h_quit.now()

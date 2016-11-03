@@ -5,10 +5,12 @@ import tkinter as tk
 import tkinter.filedialog as dialog
 import mes_ru as mes
 import sys, os
+#from logic import Search, TkPos
+#from logic import *
 
 from constants import *
 globs['var'].update({'icon_main':'/usr/local/bin/icon_64x64_main.gif'})
-from shared import log, Message, WriteTextFile, Text, h_os
+from shared import log, Message, WriteTextFile, Text, h_os, Search
 #log = Log(Use=True,Write=True,Print=True,Short=False,file='/tmp/log')
 
 # Вернуть тип параметра
@@ -230,6 +232,10 @@ class TextBox:
 		WidgetShared.custom_buttons(self)
 		self.custom_bindings()
 		
+	# Setting ReadOnly state works only after filling text. Only widgets tk.Text, tk.Entry and not tk.Toplevel are supported.
+	def read_only(self,ReadOnly=True):
+		WidgetShared.set_state(self,ReadOnly=ReadOnly)
+		
 	def show(self):
 		self.parent_obj.show()
 	
@@ -357,15 +363,14 @@ class TextBox:
 		self.icon(icon=icon)
 		self.title(title=title)
 		# Иначе обновление текста не сработает. Необходимо делать до любых операций по обновлению текста.
-		WidgetShared.set_state(self,ReadOnly=False)
+		self.read_only(ReadOnly=False)
 		self.reset()
 		# Присвоение аргументов
 		self.insert(text=text)
 		# Перейти в указанное место
 		self.mark_add(mark_name='insert',postk=CursorPos)
 		self.widget.yview(CursorPos)
-		# Изменение статуса "Только чтение" поддерживается только виджетами tk.Text, tk.Entry и не поддерживается tk.Toplevel
-		WidgetShared.set_state(self,ReadOnly=ReadOnly)
+		self.read_only(ReadOnly=ReadOnly)
 		WidgetShared.custom_buttons(self)
 		if SelectAll:
 			self.select_all()
@@ -422,6 +427,10 @@ class Entry:
 			WidgetShared.custom_buttons(self)
 		self.custom_bindings()
 	
+	# Setting ReadOnly state works only after filling text. Only widgets tk.Text, tk.Entry and not tk.Toplevel are supported.
+	def read_only(self,ReadOnly=True):
+		WidgetShared.set_state(self,ReadOnly=ReadOnly)
+	
 	def custom_bindings(self):
 		if not self.Composite:
 			create_binding(widget=self.widget,bindings=['<Return>','<KP_Enter>'],action=self.close)
@@ -458,15 +467,14 @@ class Entry:
 		self.icon(icon=icon)
 		self.title(title=title)
 		# Иначе обновление текста не сработает. Необходимо делать до любых операций по обновлению текста.
-		WidgetShared.set_state(self,ReadOnly=False)
+		self.read_only(ReadOnly=False)
 		# Очистка текста
 		self.clear_text()
 		# Присвоение аргументов
 		self.insert(text=text)
 		# Перейти в указанное место
 		self.widget.icursor(CursorPos) # int, 'end'
-		# Изменение статуса "Только чтение" поддерживается только виджетами tk.Text, tk.Entry и не поддерживается tk.Toplevel
-		WidgetShared.set_state(self,ReadOnly=ReadOnly)
+		self.read_only(ReadOnly=ReadOnly)
 		WidgetShared.custom_buttons(self)
 		if SelectAll:
 			self.select_all()
@@ -935,4 +943,240 @@ class Selection:
 
 
 
-# End
+class ParallelTexts: # Requires Search
+	
+	def __init__(self,parent_obj,h_words1,h_words2,h_words3=None,h_words4=None):
+		self.h_words1 = h_words1
+		self.h_words2 = h_words2
+		self.h_words3 = h_words3
+		self.h_words4 = h_words4
+		if self.h_words3 and self.h_words4:
+			self.Extended = True
+		else:
+			self.Extended = False
+		self.parent_obj = parent_obj
+		self.obj = Top(self.parent_obj,Maximize=True)
+		self.widget = self.obj.widget
+		self.title()
+		self.frame1 = Frame(parent_obj=self.obj,side='top')
+		if self.Extended:
+			self.frame2 = Frame(parent_obj=self.obj,side='bottom')
+		self.txt1 = TextBox(self.frame1,Composite=True,side='left')
+		self.txt2 = TextBox(self.frame1,Composite=True,side='right')
+		if self.Extended:
+			self.txt3 = TextBox(self.frame2,Composite=True,side='left')
+			self.txt4 = TextBox(self.frame2,Composite=True,side='right')
+		self.h_tk_pos1 = TkPos(self.txt1,self.h_words1)
+		self.h_tk_pos2 = TkPos(self.txt2,self.h_words2)
+		if self.Extended:
+			self.h_tk_pos3 = TkPos(self.txt3,self.h_words3)
+			self.h_tk_pos4 = TkPos(self.txt4,self.h_words4)
+		self.fill()
+		# Setting ReadOnly state works only after filling text
+		self.txt1.read_only(ReadOnly=True)
+		self.txt2.read_only(ReadOnly=True)
+		self.txt3.read_only(ReadOnly=True)
+		self.txt4.read_only(ReadOnly=True)
+		self.txt1.widget.focus_set()
+		self.custom_bindings()
+		
+	def select1(self,*args):
+		self.duplicates(self.h_tk_pos1,self.h_tk_pos2)
+		self.select11()
+		
+	def select2(self,*args):
+		self.duplicates(self.h_tk_pos1,self.h_tk_pos2)
+		self.select22()
+		
+	def select3(self,*args):
+		self.duplicates(self.h_tk_pos3,self.h_tk_pos4)
+		self.select11()
+		
+	def select4(self,*args):
+		self.duplicates(self.h_tk_pos3,self.h_tk_pos4)
+		self.select22()
+	
+	def custom_bindings(self):
+		create_binding(self.txt1.widget,'<ButtonRelease-1>',self.select1)
+		create_binding(self.txt2.widget,'<ButtonRelease-1>',self.select2)
+		if self.Extended:
+			create_binding(self.txt3.widget,'<ButtonRelease-1>',self.select3)
+			create_binding(self.txt4.widget,'<ButtonRelease-1>',self.select4)
+		
+	def show(self):
+		self.obj.show()
+		
+	def close(self):
+		self.obj.close()
+		
+	def title(self,header='Compare texts:'):
+		self.obj.title(header)
+		
+	def fill(self):
+		self.txt1.insert(text=self.h_words1._text)
+		self.txt2.insert(text=self.h_words2._text)
+		if self.Extended:
+			self.txt3.insert(text=self.h_words3._text)
+			self.txt4.insert(text=self.h_words4._text)
+		
+	def update_txt(self,h_widget,h_words,background='orange'):
+		pos1 = h_words.tk_p_f()
+		pos2 = h_words.tk_p_l()
+		if pos1 and pos2:
+			h_widget.tag_add(tag_name='tag',pos1tk=pos1,pos2tk=pos2,DeletePrevious=True)
+			h_widget.widget.tag_config('tag',background=background)
+			# Set the cursor to the first symbol of the selection
+			h_widget.mark_add('insert',pos1)
+			h_widget.mark_add(mark_name='yview',postk=pos1)
+			# Shift screen
+			if not h_widget.visible(pos1):
+				h_widget.scroll('yview')
+		else:
+			Message(func='ParallelTexts.update_txt',type=lev_err,message=globs['mes'].wrong_input2)
+			
+	def synchronize11(self):
+		_search = self.h_words22.np(Substring=False)
+		_loop22 = Search(self.h_words22._text,_search).next_loop()
+		try:
+			index22 = _loop22.index(self.h_words22.f_sym_p())
+		except ValueError:
+			Message(func='ParallelTexts.synchronize11',type=lev_err,message=globs['mes'].wrong_input2)
+			index22 = 0
+		_loop11 = Search(self.h_words11._text,_search).next_loop()
+		if index22 >= len(_loop11):
+			''' # Go to the last stone
+			h_words11.change_no(h_words11.len()-1)
+			_no = h_words11.stone_no()
+			'''
+			_no = None # Keep old selection
+		else:
+			_no = self.h_words11.get_p_no(_loop11[index22])
+		if _no is not None:
+			self.h_words11.change_no(_no)
+			self.update_txt(self.txt11,self.h_words11,background='orange')
+			
+	def synchronize22(self):
+		_search = self.h_words11.np(Substring=False)
+		# This helps in case the word has both Cyrillic symbols and digits
+		_search = Text(text=_search,Auto=False).delete_cyrillic()
+		# cur
+		_search = _search.replace(' ','') # Removing the non-breaking space
+		_loop11 = Search(self.h_words11._text,_search).next_loop()
+		try:
+			index11 = _loop11.index(self.h_words11.f_sym_p())
+		except ValueError:
+			Message(func='ParallelTexts.synchronize22',type=lev_err,message=globs['mes'].wrong_input2)
+			index11 = 0
+		_loop22 = Search(self.h_words22._text,_search).next_loop()
+		if index11 >= len(_loop22):
+			''' # Go to the last stone
+			self.h_words22.change_no(self.h_words22.len()-1)
+			_no = self.h_words22.stone_no()
+			'''
+			_no = None # Keep old selection
+		else:
+			_no = self.h_words22.get_p_no(_loop22[index11])
+		if _no is not None:
+			self.h_words22.change_no(_no)
+			self.update_txt(self.txt22,self.h_words22,background='cyan')
+			
+	def select11(self,*args):
+		self.h_tk_pos11.reset()
+		self.h_words11.change_no(no=self.h_tk_pos11.p_no())
+		result = self.h_words11.stone_no()
+		if result == '-2':
+			Message(func='ParallelTexts.select11',type=lev_err,message=globs['mes'].wrong_input2)
+		else:
+			self.h_words11.change_no(no=result)
+			self.update_txt(self.txt11,self.h_words11)
+			self.synchronize22()
+
+	def select22(self,*args):
+		self.h_tk_pos22.reset()
+		self.h_words22.change_no(no=self.h_tk_pos22.p_no())
+		result = self.h_words22.stone_no()
+		if result == '-2':
+			Message(func='ParallelTexts.select22',type=lev_err,message=globs['mes'].wrong_input2)
+		else:
+			self.h_words22.change_no(no=result)
+			self.update_txt(self.txt22,self.h_words22,'cyan')
+			self.synchronize11()
+			
+	def duplicates(self,h_tk_pos11,h_tk_pos22):
+		self.h_tk_pos11 = h_tk_pos11
+		self.h_tk_pos22 = h_tk_pos22
+		self.h_words11 = self.h_tk_pos11.h_words
+		self.h_words22 = self.h_tk_pos22.h_words
+		self.txt11 = self.h_tk_pos11.h_widget
+		self.txt22 = self.h_tk_pos22.h_widget
+
+
+
+class TkPos:
+	
+	def __init__(self,h_widget,h_words):
+		self.h_widget = h_widget
+		self.h_words = h_words
+		self.reset()
+	
+	def reset(self,pos=None,pos_tk=None,sent_no=None,sents_len=None,p_no=None,First=True):
+		self._pos = pos
+		self._pos_tk = pos_tk
+		self._sent_no = sent_no
+		self._sents_len = sents_len
+		self._p_no = p_no
+		self.First = First
+		
+	def sent_no(self):
+		if self._sent_no is None:
+			self.split()
+		return self._sent_no
+		
+	def sents_len(self):
+		if self._sents_len is None:
+			self.split()
+		return self._sents_len
+		
+	def pos_tk(self):
+		if self._pos_tk is None:
+			self._pos_tk = self.h_widget.cursor()
+		return self._pos_tk
+		
+	def pos(self):
+		if self._pos is None:
+			self.tk2pos()
+		return self._pos
+	
+	def tk2pos(self):
+		self.split()
+		return self._pos
+		
+	def p_no(self):
+		if self._p_no is None:
+			self._p_no = self.h_words.get_p_no(pos=self.pos())
+		if self._p_no is None:
+			Message(func='TkPos.p_no',type=lev_err,message=globs['mes'].wrong_input2)
+			self._p_no = 0
+		return self._p_no
+		
+	def pos2tk(self):
+		self.h_words.change_no(no=self.p_no())
+		if self.First:
+			self._pos_tk = self.h_words.tk_p_f()
+		else:
+			self._pos_tk = self.h_words.tk_p_l()
+			
+	def split(self):
+		_tuple = self.pos_tk().partition('.')
+		if _tuple[2]:
+			self._sent_no = Text(_tuple[0],Auto=False).str2int() - 1
+			if self._sent_no == 0:
+				self._sents_len = 0
+			else:
+				self._sents_len = self.h_words.sents_p_len(sent_no=self._sent_no)
+				if self._sents_len is None:
+					self._sents_len = 0
+			self._pos = self._sents_len + Text(_tuple[2],Auto=False).str2int()
+		else:
+			Message(func='TkPos.split',type=lev_err,message=globs['mes'].wrong_input2)
+			self._sent_no = self._sents_len = self._pos = 0
