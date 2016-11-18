@@ -46,7 +46,8 @@ SectionVariables_abbr = 'var'
 SectionWindowsSettings = 'Windows settings'
 
 punc_array = ['.',',','!','?',':',';']
-punc_ext_array = ['"','”','»',']','}',')']
+#punc_ext_array = ['"','”','»',']','}',')'] # todo: why there were no opening brackets?
+punc_ext_array = ['"','“','”','','«','»','[',']','{','}','(',')']
 
 # All third-party modules are the intellectual work of their authors.
 

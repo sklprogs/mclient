@@ -122,7 +122,7 @@ def wait_cycle():
 	keylistener.cancel()
 	
 lock = threading.Lock()
-Verbose = True
+Verbose = False
 keylistener = KeyListener()
 # Лучше это делать в 2 строчки, иначе можем получать ошибки
 keylistener.start()

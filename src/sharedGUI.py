@@ -5,13 +5,14 @@ import tkinter as tk
 import tkinter.filedialog as dialog
 import mes_ru as mes
 import sys, os
-#from logic import Search, TkPos
-#from logic import *
 
 from constants import *
 globs['var'].update({'icon_main':'/usr/local/bin/icon_64x64_main.gif'})
-from shared import log, Message, WriteTextFile, Text, h_os, Search
+from shared import log, Message, WriteTextFile, Text, h_os, Search, Words, timer
 #log = Log(Use=True,Write=True,Print=True,Short=False,file='/tmp/log')
+
+if h_os.sys() == 'win':
+	import win32gui, win32con
 
 # Вернуть тип параметра
 def get_obj_type(obj,Verbal=True,IgnoreErrors=False):
@@ -74,6 +75,9 @@ class Root:
 		self.widget.withdraw()
 
 	def destroy(self):
+		self.kill()
+	
+	def kill(self):
 		self.widget.destroy()
 		
 	def update(self):
@@ -205,9 +209,244 @@ class Top:
 
 
 
+class SearchBox:
+
+	def __init__(self,obj):
+		self.type = 'SearchBox'
+		self.obj = obj
+		self.parent_obj = self.obj.parent_obj
+		h_top = Top(self.parent_obj)
+		self.h_entry = Entry(h_top)
+		self.h_entry.title(title='Find:') # todo: mes
+		self.h_entry.close()
+		self.h_sel = Selection(self.obj)
+
+	def reset_logic(self,h_words=None,Strict=False): # Strict: case-sensitive, with punctuation
+		self.Success = True
+		self._prev_loop = self._next_loop = self._search = self._pos1 = self._pos2 = self._text = None
+		self.i = 0
+		self.h_words = h_words
+		self.Strict = Strict
+		if self.h_words:
+			if self.Strict: # Do not get text from the widget - it's not packed yet
+				self._text = self.h_words._text
+			else:
+				self._text = self.h_words.text_np_low()
+			self.h_sel.reset_logic(h_words=self.h_words)
+			self.h_search = Search(text=self._text)
+		else:
+			self.Success = False
+			Message(func='SearchBox.reset_logic',type=lev_warn,message=globs['mes'].not_enough_input_data,Silent=True)
+	
+	def reset_data(self):
+		self.Success = True
+		self._prev_loop = self._next_loop = self._search = self._pos1 = self._pos2 = None
+		self.i = 0
+		self.search()
+		if self._text and self._search:
+			self.h_search.reset(text=self._text,search=self._search)
+			self.h_search.next_loop()
+			if not self.h_search._next_loop: # Prevents from calling self.search() once again
+				Message(func='SearchBox.reset_data',type=lev_info,message='No matches!') # todo: mes
+				self.Success = False
+		else:
+			self.Success = False
+			log.append('SearchBox.reset_data',lev_warn,globs['mes'].canceled)
+			
+	def reset(self,mode='data',h_words=None,Strict=False):
+		if mode == 'data':
+			self.reset_data()
+		else:
+			self.reset_logic(h_words=h_words,Strict=Strict)
+		
+	def loop(self):
+		if self.Success:
+			if not self.h_search._next_loop:
+				self.reset()
+		else:
+			log.append('SearchBox.loop',lev_warn,globs['mes'].canceled)
+		return self.h_search._next_loop
+		
+	def add(self):
+		if self.Success:
+			if self.i < len(self.loop()) - 1:
+				self.i += 1
+		else:
+			log.append('SearchBox.add',lev_warn,globs['mes'].canceled)
+			
+	def subtract(self):
+		if self.Success:
+			if self.i > 0:
+				self.i -= 1
+		else:
+			log.append('SearchBox.subtract',lev_warn,globs['mes'].canceled)
+
+	def new(self,*args):
+		self.reset_data()
+		self.next()
+
+	def select(self):
+		if self.Success:
+			if self.Strict:
+				result = self.h_words.get_p_no(self.pos1())
+			else:
+				result = self.h_words.get_np_no(self.pos1()) # todo: get_norm_no
+			if result is None:
+				_pos1tk = '1.0'
+				log.append('SearchBox.select',lev_err,globs['mes'].wrong_input2)
+			else:
+				self.h_words.change_no(no=result)
+				_pos1tk = self.h_words.tk_p_f()
+			if self.Strict:
+				result = self.h_words.get_p_no(self.pos2())
+			else:
+				result = self.h_words.get_np_no(self.pos2())
+			if result is None:
+				_pos2tk = '1.0'
+				log.append('SearchBox.select',lev_err,globs['mes'].wrong_input2)
+			else:
+				self.h_words.change_no(no=result)
+				_pos2tk = self.h_words.tk_p_l()
+			self.h_sel.reset(pos1_tk=_pos1tk,pos2_tk=_pos2tk,background='cyan')
+			self.h_sel.set()
+			self.obj.widget.see(_pos1tk) # todo: select either 'see' or 'autoscroll'
+			#self.obj.autoscroll(_pos1tk)
+		else:
+			log.append('SearchBox.select',lev_warn,globs['mes'].canceled)
+
+	def search(self):
+		if self.Success:
+			if self.h_words and not self._search:
+				self.h_entry.focus()
+				self.h_entry.select_all()
+				self.h_entry.show()
+				self._search = self.h_entry.get()
+				if self._search and not self.Strict:
+					self._search = Text(text=self._search,Auto=False).delete_punctuation()
+					self._search = Text(text=self._search,Auto=False).delete_duplicate_spaces()
+					self._search = self._search.lower()
+			return self._search
+		else:
+			log.append('SearchBox.search',lev_warn,globs['mes'].canceled)
+	
+	def next(self,*args):
+		if self.Success:
+			_loop = self.loop()
+			if _loop:
+				old_i = self.i
+				self.add()
+				if old_i == self.i:
+					if len(_loop) == 1:
+						Message(func='SearchBox.next',type=lev_info,message='Only one match found!') # todo: mes
+					else:
+						Message(func='SearchBox.next',type=lev_info,message='No more matches, continuing from the top!') # todo: mes
+						self.i = 0
+				self.select()
+			else:
+				Message(func='SearchBox.next',type=lev_info,message='No matches!') # todo: mes
+		else:
+			log.append('SearchBox.next',lev_warn,globs['mes'].canceled)
+
+	def prev(self,*args):
+		if self.Success:
+			_loop = self.loop()
+			if _loop:
+				old_i = self.i
+				self.subtract()
+				if old_i == self.i:
+					if len(_loop) == 1:
+						Message(func='SearchBox.prev',type=lev_info,message='Only one match found!') # todo: mes
+					else:
+						Message(func='SearchBox.prev',type=lev_info,message='No more matches, continuing from the bottom!') # todo: mes
+						self.i = len(_loop) - 1 # Not just -1
+				self.select()
+			else:
+				Message(func='SearchBox.prev',type=lev_info,message='No matches!') # todo: mes
+		else:
+			log.append('SearchBox.prev',lev_warn,globs['mes'].canceled)
+
+	def pos1(self):
+		if self.Success:
+			if self._pos1 is None:
+				self.loop()
+				self.i = 0
+			_loop = self.loop()
+			if _loop:
+				self._pos1 = _loop[self.i]
+			return self._pos1
+		else:
+			log.append('SearchBox.pos1',lev_warn,globs['mes'].canceled)
+		
+	def pos2(self):
+		if self.Success:
+			if self.pos1() is not None:
+				self._pos2 = self._pos1 + len(self.search())
+			return self._pos2
+		else:
+			log.append('SearchBox.pos2',lev_warn,globs['mes'].canceled)
+
+
+
+class Spelling:
+	
+	def __init__(self,obj,lang='ru',h_words=None):
+		self.supported_langs = ('ru')
+		self.obj = obj
+		self.reset(lang=lang,h_words=h_words)
+	
+	def reset(self,lang='ru',h_words=None):
+		self.Success = True
+		self.h_words = h_words
+		self.lang = lang
+		if not self.lang in self.supported_langs:
+			Message(func='Spelling.reset',type=lev_err,message=globs['mes'].unknown_lang_id % str(self.lang))
+			self.lang = 'ru'
+		if not self.h_words:
+			self.Success = False
+			log.append('Spelling.reset',lev_warn,globs['mes'].canceled)
+			
+	def check(self):
+		if self.Success:
+			for i in range(self.h_words.len()):
+				self.h_words.change_no(no=i)
+				self.h_words.spellcheck_ru()
+		else:
+			log.append('Spelling.check',lev_warn,globs['mes'].canceled)
+		
+	def select(self):
+		if self.Success:
+			if self.lang == 'ru':
+				self.h_words.db.execute('select NO from WORDS where SPELL_RU=?',(0,))
+			else:
+				pass # todo
+			result = self.h_words.fetchall()
+			if result:
+				for i in range(len(result)):
+					self.h_words.change_no(no=result[i])
+					pos1tk = self.h_words.tk_p_f()
+					pos2tk = self.h_words.tk_p_l()
+					if pos1tk and pos2tk:
+						self.obj.tag_add(tag_name='spell',pos1tk=pos1tk,pos2tk=pos2tk,DeletePrevious=False)
+					else:
+						log.append('Spelling.select',lev_err,globs['mes'].wrong_input2)
+				self.obj.tag_config(tag_name='spell',background='red')
+			else:
+				log.append('Spelling.select',lev_info,'Spelling seems to be correct for the language "%s".' % self.lang) # todo: mes
+		else:
+			log.append('Spelling.select',lev_warn,globs['mes'].canceled)
+			
+	def run(self):
+		if self.Success:
+			timer(func_title='Spelling.check',func=self.check)
+			self.select()
+		else:
+			log.append('Spelling.run',lev_warn,globs['mes'].canceled)
+
+
+
 class TextBox:
 	
-	def __init__(self,parent_obj,Composite=False,side='top'):
+	def __init__(self,parent_obj,Composite=False,side='top',h_words=None):
 		self.type = 'TextBox'
 		self.Composite = Composite
 		self.state = 'normal' # 'disabled' - отключить редактирование
@@ -229,9 +468,28 @@ class TextBox:
 		if not self.Composite and not hasattr(self.parent_obj,'close_button'):
 			if self.parent_obj.type == 'Toplevel' or self.parent_obj.type == 'Root':
 				self.parent_obj.close_button = Button(self.parent_obj,text=globs['mes'].btn_x,hint=globs['mes'].btn_x,action=self.close,expand=0,side='bottom')
+		self.search_box = SearchBox(self)
+		self.reset_logic(h_words=h_words)
 		WidgetShared.custom_buttons(self)
 		self.custom_bindings()
 		
+	def reset(self,mode='data',h_words=None):
+		if mode == 'data':
+			self.reset_data()
+		else:
+			self.reset_logic(h_words=h_words)
+	
+	def reset_logic(self,h_words=None):
+		self.h_words = h_words
+		self.search_box.reset_logic(h_words=self.h_words)
+	
+	# Delete text, tags, marks
+	def reset_data(self,*args):
+		print('Clearing text...') # todo: del # cur
+		self.clear_text()
+		self.clear_tags()
+		self.clear_marks()
+
 	# Setting ReadOnly state works only after filling text. Only widgets tk.Text, tk.Entry and not tk.Toplevel are supported.
 	def read_only(self,ReadOnly=True):
 		WidgetShared.set_state(self,ReadOnly=ReadOnly)
@@ -244,8 +502,11 @@ class TextBox:
 		self.parent_obj.close()
 		return 'break'
 	
-	# Только для несоставных виджетов
 	def custom_bindings(self):
+		create_binding(widget=self.widget,bindings=['<Control-f>','<Control-F3>'],action=self.search_box.new)
+		create_binding(widget=self.widget,bindings='<F3>',action=self.search_box.next)
+		create_binding(widget=self.widget,bindings='<Shift-F3>',action=self.search_box.prev)
+		# Только для несоставных виджетов
 		if not self.Composite:
 			self.widget.unbind('<Return>')
 			if self.state == 'disabled' or self.SpecialReturn:
@@ -289,6 +550,18 @@ class TextBox:
 		except tk.TclError:
 			log.append('TextBox.tag_add',lev_err,globs['mes'].tag_addition_failure % (tag_name,pos1tk,pos2tk))
 		self.tags.append(tag_name)
+		
+	def tag_config(self,tag_name='sel',background=None,foreground=None):
+		if background:
+			try:
+				self.widget.tag_config(tag_name,background=background)
+			except tk.TclError:
+				log.append('TextBox.tag_config',lev_err,globs['mes'].tag_bg_failure2 % (str(tag_name),str(background)))
+		if foreground:
+			try:
+				self.widget.tag_config(tag_name,foreground=foreground)
+			except tk.TclError:
+				log.append('TextBox.tag_config',lev_err,globs['mes'].tag_fg_failure2 % (str(tag_name),str(foreground)))
 	
 	# Tk.Entry не поддерживает тэги и метки
 	def mark_add(self,mark_name='insert',postk='1.0'):
@@ -382,15 +655,7 @@ class TextBox:
 	def visible(self,tk_pos):
 		if self.widget.bbox(tk_pos):
 			return True
-		else:
-			return False
 			
-	# Очистка текста, тэгов, меток
-	def reset(self):
-		self.clear_text()
-		self.clear_tags()
-		self.clear_marks()
-		
 	def cursor(self,*args):
 		try:
 			self._pos = self.widget.index('insert')
@@ -399,6 +664,15 @@ class TextBox:
 			self._pos = '1.0'
 			log.append('TextBox.cursor',lev_warn,'Cannot return a cursor position!') # todo: mes
 		return self._pos
+		
+	def focus_set(self):
+		self.focus()
+	
+	def focus(self):
+		self.widget.focus_set()
+		
+	def zzz(self):
+		pass
 		
 		
 		
@@ -486,6 +760,12 @@ class Entry:
 	def title(self,title='Title:'):
 		WidgetShared.title(self.parent_obj,title)
 		
+	def focus_set(self):
+		self.focus()
+	
+	def focus(self):
+		self.widget.focus_set()
+
 
 
 class Frame:
@@ -498,7 +778,7 @@ class Frame:
 			self.widget.pack(expand=expand,fill=fill,side=side)
 		else:
 			self.widget.pack(expand=expand,fill=fill)
-			
+
 
 
 # todo: Нужно ли на входе ,bindings=[]?
@@ -891,16 +1171,26 @@ def action(*args):
 '''
 class Selection:
 	
-	def __init__(self,h_widget,h_words):
+	def __init__(self,h_widget,h_words=None):
 		self.h_widget = h_widget
-		self.h_words = h_words
-		self.reset()
+		self.reset_logic(h_words=h_words)
+		self.reset_data()
 		
-	def reset(self,pos1_tk=None,pos2_tk=None,background='orange'):
+	def reset(self,mode='data',h_words=None,pos1_tk=None,pos2_tk=None,background='orange',tag='tag'):
+		if mode == 'data':
+			self.reset_data(pos1_tk=pos1_tk,pos2_tk=pos2_tk,background=background,tag=tag)
+		else:
+			self.reset_logic(h_words=h_words)
+	
+	def reset_logic(self,h_words):
+		self.h_words = h_words
+		
+	def reset_data(self,pos1_tk=None,pos2_tk=None,background='orange',tag='tag'):
 		self._pos1_tk = pos1_tk
 		self._pos2_tk = pos2_tk
 		self._text = ''
 		self._bg = background
+		self._tag = tag
 		
 	def pos1_tk(self):
 		if self._pos1_tk is None:
@@ -933,19 +1223,45 @@ class Selection:
 	def cursor(self):
 		return self.h_widget.cursor()
 		
+	def select_all(self):
+		self.h_widget.select_all()
+	
 	def set(self):
 		if self.pos1_tk() and self.pos2_tk():
-			self.h_widget.tag_add(pos1tk=self._pos1_tk,pos2tk=self._pos2_tk)
+			self.h_widget.tag_add(pos1tk=self._pos1_tk,pos2tk=self._pos2_tk,tag_name=self._tag)
 		else:
 			# Just need to return something w/o warnings
 			_cursor = self.cursor()
-			self.h_widget.tag_add(pos1tk=_cursor,pos2tk=_cursor)
+			self.h_widget.tag_add(tag_name=self._tag,pos1tk=_cursor,pos2tk=_cursor)
+		# This is not necessary for 'sel' tag which is hardcoded for selection and permanently colored with gray. A 'background' attribute cannot be changed for a 'sel' tag.
+		self.h_widget.widget.tag_config(tagName=self._tag,background=self._bg)
 
 
 
 class ParallelTexts: # Requires Search
 	
-	def __init__(self,parent_obj,h_words1,h_words2,h_words3=None,h_words4=None):
+	def __init__(self,parent_obj,Extended=True):
+		self.parent_obj = parent_obj
+		self.obj = Top(self.parent_obj,Maximize=True)
+		self.widget = self.obj.widget
+		self.title()
+		self.frame1 = Frame(parent_obj=self.obj,side='top')
+		self.Extended = Extended
+		if self.Extended:
+			self.frame2 = Frame(parent_obj=self.obj,side='bottom')
+		self.txt1 = TextBox(self.frame1,Composite=True,side='left')
+		self.txt2 = TextBox(self.frame1,Composite=True,side='right')
+		if self.Extended:
+			self.txt3 = TextBox(self.frame2,Composite=True,side='left')
+			self.txt4 = TextBox(self.frame2,Composite=True,side='right')
+		self.h_tk_pos1 = TkPos(h_widget=self.txt1)
+		self.h_tk_pos2 = TkPos(h_widget=self.txt2)
+		if self.Extended:
+			self.h_tk_pos3 = TkPos(h_widget=self.txt3)
+			self.h_tk_pos4 = TkPos(h_widget=self.txt4)
+		self.custom_bindings()
+		
+	def reset(self,h_words1,h_words2,h_words3=None,h_words4=None):
 		self.h_words1 = h_words1
 		self.h_words2 = h_words2
 		self.h_words3 = h_words3
@@ -954,59 +1270,94 @@ class ParallelTexts: # Requires Search
 			self.Extended = True
 		else:
 			self.Extended = False
-		self.parent_obj = parent_obj
-		self.obj = Top(self.parent_obj,Maximize=True)
-		self.widget = self.obj.widget
-		self.title()
-		self.frame1 = Frame(parent_obj=self.obj,side='top')
+		self.txt1.reset_logic(h_words=self.h_words1)
+		self.txt1.reset_data()
+		self.txt2.reset_logic(h_words=self.h_words2)
+		self.txt2.reset_data()
 		if self.Extended:
-			self.frame2 = Frame(parent_obj=self.obj,side='bottom')
-		self.txt1 = TextBox(self.frame1,Composite=True,side='left')
-		self.txt2 = TextBox(self.frame1,Composite=True,side='right')
+			self.txt3.reset_logic(h_words=self.h_words3)
+			self.txt3.reset_data()
+			self.txt4.reset_logic(h_words=self.h_words4)
+			self.txt4.reset_data()
+		self.h_tk_pos1.reset_logic(h_words=self.h_words1)
+		self.h_tk_pos1.reset_data()
+		self.h_tk_pos2.reset_logic(h_words=self.h_words2)
+		self.h_tk_pos2.reset_data()
 		if self.Extended:
-			self.txt3 = TextBox(self.frame2,Composite=True,side='left')
-			self.txt4 = TextBox(self.frame2,Composite=True,side='right')
-		self.h_tk_pos1 = TkPos(self.txt1,self.h_words1)
-		self.h_tk_pos2 = TkPos(self.txt2,self.h_words2)
-		if self.Extended:
-			self.h_tk_pos3 = TkPos(self.txt3,self.h_words3)
-			self.h_tk_pos4 = TkPos(self.txt4,self.h_words4)
+			self.h_tk_pos3.reset_logic(h_words=self.h_words3)
+			self.h_tk_pos3.reset_data()
+			self.h_tk_pos4.reset_logic(h_words=self.h_words4)
+			self.h_tk_pos4.reset_data()
 		self.fill()
 		# Setting ReadOnly state works only after filling text
 		self.txt1.read_only(ReadOnly=True)
 		self.txt2.read_only(ReadOnly=True)
-		self.txt3.read_only(ReadOnly=True)
-		self.txt4.read_only(ReadOnly=True)
-		self.txt1.widget.focus_set()
-		self.custom_bindings()
+		if self.Extended:
+			self.txt3.read_only(ReadOnly=True)
+			self.txt4.read_only(ReadOnly=True)
+		self.txt1.focus()
+		self.init_cursor_pos()
+		self.select1()
+		
+	# Set the cursor to the start of the text
+	def init_cursor_pos(self):
+		self.txt1.mark_add()
+		self.txt2.mark_add()
+		if self.Extended:
+			self.txt3.mark_add()
+			self.txt4.mark_add()
 		
 	def select1(self,*args):
+		self.decolorize()
+		self.txt1.widget.config(bg='old lace')
 		self.duplicates(self.h_tk_pos1,self.h_tk_pos2)
 		self.select11()
 		
 	def select2(self,*args):
+		self.decolorize()
+		self.txt2.widget.config(bg='old lace')
 		self.duplicates(self.h_tk_pos1,self.h_tk_pos2)
 		self.select22()
 		
 	def select3(self,*args):
+		self.decolorize()
+		self.txt3.widget.config(bg='old lace')
 		self.duplicates(self.h_tk_pos3,self.h_tk_pos4)
 		self.select11()
 		
 	def select4(self,*args):
+		self.decolorize()
+		self.txt4.widget.config(bg='old lace')
 		self.duplicates(self.h_tk_pos3,self.h_tk_pos4)
 		self.select22()
 	
 	def custom_bindings(self):
+		# cur
+		create_binding(widget=self.widget,bindings='<Control-u>',action=self.txt1.reset_data)
+		create_binding(widget=self.widget,bindings='<Control-q>',action=self.close)
+		create_binding(widget=self.widget,bindings='<Escape>',action=lambda x:iconify(self.obj))
+		create_binding(widget=self.widget,bindings=['<Alt-Key-1>','<Control-Key-1>'],action=self.select1)
+		create_binding(widget=self.widget,bindings=['<Alt-Key-2>','<Control-Key-2>'],action=self.select2)
+		if self.Extended:
+			create_binding(widget=self.widget,bindings=['<Alt-Key-3>','<Control-Key-3>'],action=self.select3)
+			create_binding(widget=self.widget,bindings=['<Alt-Key-4>','<Control-Key-4>'],action=self.select4)
 		create_binding(self.txt1.widget,'<ButtonRelease-1>',self.select1)
 		create_binding(self.txt2.widget,'<ButtonRelease-1>',self.select2)
 		if self.Extended:
 			create_binding(self.txt3.widget,'<ButtonRelease-1>',self.select3)
 			create_binding(self.txt4.widget,'<ButtonRelease-1>',self.select4)
+			
+	def decolorize(self):
+		self.txt1.widget.config(bg='white')
+		self.txt2.widget.config(bg='white')
+		if self.Extended:
+			self.txt3.widget.config(bg='white')
+			self.txt4.widget.config(bg='white')
 		
 	def show(self):
 		self.obj.show()
 		
-	def close(self):
+	def close(self,*args):
 		self.obj.close()
 		
 	def title(self,header='Compare texts:'):
@@ -1028,19 +1379,17 @@ class ParallelTexts: # Requires Search
 			# Set the cursor to the first symbol of the selection
 			h_widget.mark_add('insert',pos1)
 			h_widget.mark_add(mark_name='yview',postk=pos1)
-			# Shift screen
-			if not h_widget.visible(pos1):
-				h_widget.scroll('yview')
+			h_widget.widget.see('yview')
 		else:
 			Message(func='ParallelTexts.update_txt',type=lev_err,message=globs['mes'].wrong_input2)
 			
 	def synchronize11(self):
-		_search = self.h_words22.np(Substring=False)
+		_search = self.h_words22.np() # Substring=False
 		_loop22 = Search(self.h_words22._text,_search).next_loop()
 		try:
 			index22 = _loop22.index(self.h_words22.f_sym_p())
 		except ValueError:
-			Message(func='ParallelTexts.synchronize11',type=lev_err,message=globs['mes'].wrong_input2)
+			#Message(func='ParallelTexts.synchronize11',type=lev_err,message=globs['mes'].wrong_input2)
 			index22 = 0
 		_loop11 = Search(self.h_words11._text,_search).next_loop()
 		if index22 >= len(_loop11):
@@ -1056,7 +1405,7 @@ class ParallelTexts: # Requires Search
 			self.update_txt(self.txt11,self.h_words11,background='orange')
 			
 	def synchronize22(self):
-		_search = self.h_words11.np(Substring=False)
+		_search = self.h_words11.np() # Substring=False
 		# This helps in case the word has both Cyrillic symbols and digits
 		_search = Text(text=_search,Auto=False).delete_cyrillic()
 		# cur
@@ -1065,7 +1414,7 @@ class ParallelTexts: # Requires Search
 		try:
 			index11 = _loop11.index(self.h_words11.f_sym_p())
 		except ValueError:
-			Message(func='ParallelTexts.synchronize22',type=lev_err,message=globs['mes'].wrong_input2)
+			#Message(func='ParallelTexts.synchronize22',type=lev_err,message=globs['mes'].wrong_input2)
 			index11 = 0
 		_loop22 = Search(self.h_words22._text,_search).next_loop()
 		if index11 >= len(_loop22):
@@ -1114,12 +1463,20 @@ class ParallelTexts: # Requires Search
 
 class TkPos:
 	
-	def __init__(self,h_widget,h_words):
+	def __init__(self,h_widget,h_words=None):
 		self.h_widget = h_widget
-		self.h_words = h_words
-		self.reset()
+		self.reset_data()
 	
-	def reset(self,pos=None,pos_tk=None,sent_no=None,sents_len=None,p_no=None,First=True):
+	def reset(self,mode='data',h_words=None,pos=None,pos_tk=None,sent_no=None,sents_len=None,p_no=None,First=True):
+		if mode == 'data':
+			self.reset_data(pos=pos,pos_tk=pos_tk,sent_no=sent_no,sents_len=sents_len,p_no=p_no,First=First)
+		else:
+			self.reset_logic(h_words=h_words)
+	
+	def reset_logic(self,h_words):
+		self.h_words = h_words
+	
+	def reset_data(self,pos=None,pos_tk=None,sent_no=None,sents_len=None,p_no=None,First=True):
 		self._pos = pos
 		self._pos_tk = pos_tk
 		self._sent_no = sent_no
@@ -1165,6 +1522,7 @@ class TkPos:
 			self._pos_tk = self.h_words.tk_p_f()
 		else:
 			self._pos_tk = self.h_words.tk_p_l()
+		return self._pos_tk
 			
 	def split(self):
 		_tuple = self.pos_tk().partition('.')
@@ -1180,3 +1538,173 @@ class TkPos:
 		else:
 			Message(func='TkPos.split',type=lev_err,message=globs['mes'].wrong_input2)
 			self._sent_no = self._sents_len = self._pos = 0
+
+
+
+# A modified mclient class
+class SymbolMap:
+	
+	def __init__(self,parent_obj):
+		self.symbol = 'EMPTY'
+		self.parent_obj = parent_obj
+		self.obj = Top(parent_obj)
+		self.widget = self.obj.widget
+		self.obj.title(globs['mes'].paste_spec_symbol)
+		self.frame = Frame(self.obj,expand=1)
+		for i in range(len(globs['var']['spec_syms'])):
+			if i % 10 == 0:
+				self.frame = Frame(self.obj,expand=1)
+			# lambda сработает правильно только при моментальной упаковке, которая не поддерживается create_button (моментальная упаковка возвращает None вместо виджета), поэтому не используем эту функцию. По этой же причине нельзя привязать кнопкам '<Return>' и '<KP_Enter>', сработают только встроенные '<space>' и '<ButtonRelease-1>'.
+			# width и height нужны для Windows
+			self.button = tk.Button(self.frame.widget,text=globs['var']['spec_syms'][i],command=lambda i=i:self.set(globs['var']['spec_syms'][i]),width=2,height=2).pack(side='left',expand=1)
+		self.close()
+		
+	def set(self,sym,*args):
+		self.symbol = sym
+		self.close()
+
+	def get(self,*args):
+		self.show()
+		return self.symbol
+
+	def show(self,*args):
+		self.obj.show()
+		
+	def close(self,*args):
+		self.obj.close()
+
+
+
+# Window behavior is not uniform through different platforms or even through different Windows versions, so we bypass Tkinter's commands here
+class Geometry: # Requires h_os
+	
+	def __init__(self,h_root=None,parent_obj=None,title=None,hwnd=None):
+		self.h_root = h_root
+		self.parent_obj = parent_obj
+		self._title = title
+		self._hwnd = hwnd
+		self._geom = None
+
+	def update(self):
+		if self.h_root:
+			self.h_root.widget.update_idletasks()
+			return True
+		else:
+			Message(func='Geometry.update',type=lev_err,message=globs['mes'].wrong_input2)
+	
+	def save(self):
+		if self.parent_obj:
+			if self.update():
+				self._geom = self.parent_obj.widget.geometry()
+				log.append('Geometry.save',lev_info,'Saved geometry: %s' % self._geom) # todo: mes
+		else:
+			Message(func='Geometry.save',type=lev_err,message=globs['mes'].wrong_input2)
+		
+	def restore(self):
+		if self.parent_obj:
+			if self._geom:
+				log.append('Geometry.restore',lev_info,'Restoring geometry: %s' % self._geom) # todo: mes
+				self.parent_obj.widget.geometry(self._geom)
+			else:
+				Message(func='Geometry.update',type=lev_warn,message='Failed to restore geometry!') # todo: mes
+		else:
+			Message(func='Geometry.restore',type=lev_err,message=globs['mes'].wrong_input2)
+	
+	def foreground(self,*args):
+		if h_os.sys() == 'win':
+			if self.hwnd():
+				try:
+					win32gui.SetForegroundWindow(self._hwnd)
+				except: # 'pywintypes.error', but needs to import this for some reason
+					# In Windows 'Message' can be raised foreground, so we just log it
+					log.append('Geometry.foreground',lev_err,'Failed to change window properties!') # todo: mes
+			else:
+				Message(func='Geometry.foreground',type=lev_err,message=globs['mes'].wrong_input2)
+		elif self.parent_obj:
+			self.parent_obj.widget.lift()
+		else:
+			Message(func='Geometry.foreground',type=lev_err,message=globs['mes'].wrong_input2)
+
+	def minimize(self,*args):
+		if self.parent_obj:
+			''' # Does not always work
+			if h_os.sys() == 'win':
+				win32gui.ShowWindow(self.hwnd(),win32con.SW_MINIMIZE)
+			else:
+			'''
+			self.parent_obj.widget.iconify()
+		else:
+			Message(func='Geometry.minimize',type=lev_err,message=globs['mes'].wrong_input2)
+
+	def maximize(self,*args):
+		if h_os.sys() == 'win':
+			win32gui.ShowWindow(self.hwnd(),win32con.SW_MAXIMIZE)
+		elif self.parent_obj:
+			self.parent_obj.widget.wm_attributes('-zoomed',True)
+		else:
+			Message(func='Geometry.maximize',type=lev_err,message=globs['mes'].wrong_input2)
+
+	def focus(self,*args):
+		if h_os.sys() == 'win':
+			win32gui.SetActiveWindow(self.hwnd())
+		elif self.parent_obj:
+			self.parent_obj.widget.focus_set()
+		else:
+			Message(func='Geometry.focus',type=lev_err,message=globs['mes'].wrong_input2)
+
+	def lift(self,*args):
+		if self.parent_obj:
+			self.parent_obj.widget.lift()
+		else:
+			Message(func='Geometry.list',type=lev_err,message=globs['mes'].wrong_input2)
+
+	def _activate(self):
+		if self.parent_obj:
+			self.parent_obj.widget.deiconify()
+			self.parent_obj.widget.focus_set()
+		else:
+			Message(func='Geometry._activate',type=lev_err,message=globs['mes'].wrong_input2)
+	
+	def activate(self,*args):
+		if h_os.sys() == 'win':
+			if self.hwnd():
+				# There is a restriction in Windows that allows to change the foreground window only if you own the foreground window
+				# http://stackoverflow.com/questions/6312627/windows-7-how-to-bring-a-window-to-the-front-no-matter-what-other-window-has-fo
+				win32gui.ShowWindow(self._hwnd,win32con.SW_RESTORE)
+				win32gui.SetWindowPos(self._hwnd,win32con.HWND_NOTOPMOST, 0, 0, 0, 0, win32con.SWP_NOMOVE + win32con.SWP_NOSIZE)  
+				win32gui.SetWindowPos(self._hwnd,win32con.HWND_TOPMOST, 0, 0, 0, 0, win32con.SWP_NOMOVE + win32con.SWP_NOSIZE)  
+				win32gui.SetWindowPos(self._hwnd,win32con.HWND_NOTOPMOST, 0, 0, 0, 0, win32con.SWP_SHOWWINDOW + win32con.SWP_NOMOVE + win32con.SWP_NOSIZE)
+			else:
+				log.append('Geometry.activate',lev_warn,'Using an alternative!') # todo: mes
+				self._activate()
+		else:
+			self._activate()
+
+	def hwnd(self,*args):
+		if not self._hwnd:
+			if self._title:
+				try:
+					self._hwnd = win32gui.FindWindow(None,self._title)
+				except win32ui.error:
+					Message(func='Geometry.hwnd',type=lev_err,message='Failed to get the window handle!') # todo: mes
+			else:
+				Message(func='Geometry.hwnd',type=lev_err,message=globs['mes'].not_enough_input_data)
+		return self._hwnd
+
+
+
+if __name__ == '__main__':
+	h_root = Root()
+	h_root.close()
+	h_top = Top(h_root,Maximize=True)
+	text = '''Something funny with this guy
+	I am glad he is not my test
+	Glad is so angry'''
+	h_words = Words(text)
+	h_txt = TextBox(parent_obj=h_top,h_words=h_words)
+	h_txt.title(title='My text is:')
+	h_txt.insert(text)
+	h_txt.widget.focus_set()
+	h_txt.show()
+	h_root.destroy()
+	h_root.run()

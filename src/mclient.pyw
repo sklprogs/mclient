@@ -3,7 +3,7 @@
 
 from constants import *
 from shared import Message, WriteTextFile, Launch, List, Config, Clipboard, Path, Online, ReadTextFile, Email, timer, log, globs, h_os, CreateInstance, h_lang
-from sharedGUI import create_binding, Button, Root, Top, Entry, WidgetShared, Frame, TextBox, ListBox, dialog_save_file, OptionMenu
+from sharedGUI import create_binding, Button, Root, Top, Entry, WidgetShared, Frame, TextBox, ListBox, dialog_save_file, OptionMenu, Geometry
 import copy
 # В Python 3 не работает просто import urllib, импорт должен быть именно такой, как здесь
 import urllib.request, urllib.parse
@@ -20,7 +20,7 @@ class log:
 		pass
 		
 product = 'MClient'
-version = '4.7.2'
+version = '4.7.3'
 
 
 
@@ -339,13 +339,17 @@ def init_inst(name):
 		instances[name] = Root()
 		instances[name].close()
 	elif name == 'top':
-		instances[name] = Top(init_inst('root'),Maximize=True) #,DestroyRoot=True
+		#instances[name] = Top(init_inst('root'),Maximize=True) #,DestroyRoot=True # todo: del
+		instances[name] = Top(init_inst('root'))
 		instances[name].icon(globs['var']['icon_mclient'])
+		Geometry(h_root=init_inst('root'),parent_obj=instances[name],title=h_request.search()).maximize()
 	elif name == 'top_entry':
 		instances[name] = Top(init_inst('root'))
 		#instances[name].close()
 	elif name == 'top_textbox':
-		instances[name] = Top(init_inst('root'),Maximize=True)
+		#instances[name] = Top(init_inst('root'),Maximize=True) # todo: del
+		instances[name] = Top(init_inst('root'))
+		Geometry(h_root=init_inst('root'),parent_obj=instances[name],title=h_request.search()).maximize()
 		instances[name].close()
 	elif name == 'entry':
 		instances[name] = Entry(init_inst('top_entry'))
@@ -2042,44 +2046,14 @@ class Cells:
 
 
 
-# Свернуть заданное окно
-def iconify(obj):
-	if obj and hasattr(obj,'widget'):
-		obj.widget.iconify()
-	else:
-		Message(func='iconify',type=lev_warn,message=globs['mes'].not_enough_input_data)
-
-# Развернуть заданное окно и установить на нем фокус
-def deiconify(obj,Silent=False,TakeFocus=True): # Requires h_table
-	if obj and hasattr(obj,'widget'):
-		obj.widget.deiconify()
-		# Activates the window in Openbox
-		obj.widget.lift()
-		# Do not use .focus_set twice on different widgets
-		if TakeFocus:
-			obj.widget.focus_set()
-		if h_os.sys() == 'win':
-			obj.widget.wm_attributes('-topmost',1)
-			obj.widget.wm_attributes('-topmost',0)
-			# Иначе нажатие кнопки будет вызывать переход по ссылке там, где это не надо
-			if h_table.MouseClicked:
-				import ctypes
-				# Уродливый хак, но иначе никак не поставить фокус на виджет (в Linux/Windows XP обходимся без этого, в Windows 8 - необходимо)
-				# Cимулируем нажатие кнопки мыши
-				ctypes.windll.user32.mouse_event(2, 0, 0, 0, 0)  # left mouse button down
-				ctypes.windll.user32.mouse_event(4, 0, 0, 0, 0)  # left mouse button up
-	else:
-		Message(func='deiconify',type=lev_err,message=globs['mes'].not_enough_input_data,Silent=Silent)
-
 def call_app():
 	# Использовать то же сочетание клавиш для вызова окна
-	deiconify(init_inst('top'),TakeFocus=False)
+	Geometry(h_root=init_inst('root'),parent_obj=init_inst('top'),title=h_request.search()).activate()
 	# In case of .focus_set() *first* Control-c-c can call an inactive widget
 	h_table.search_field.widget.focus_force()
 
 # Перехватить нажатие Control-c-c
 def timed_update():
-	h_table.MouseClicked = False
 	check = kl_mod.keylistener.check()
 	if check:
 		if check == 1 and h_table.CaptureHotkey:
@@ -2087,7 +2061,6 @@ def timed_update():
 			if h_os.sys() == 'win':
 				kl_mod.keylistener.cancel()
 				kl_mod.keylistener.restart()
-			h_table.MouseClicked = True
 			new_clipboard = init_inst('clipboard').paste()
 			if new_clipboard:
 				h_table.search = new_clipboard
@@ -2259,6 +2232,7 @@ class SearchArticle:
 		self.parent_obj.title(globs['mes'].search_word)
 		create_binding(widget=self.widget,bindings=globs['var']['bind_search_article_forward'],action=self.close)
 		create_binding(widget=self.widget,bindings='<Escape>',action=self.close)
+		self.obj.select_all()
 		self.widget.focus_set()
 		self.close()
 		self.reset()
@@ -2352,9 +2326,9 @@ class SearchField:
 		if h_db._count > 1:
 			init_inst('clipboard').copy(str(h_db.preprev()))
 			self.paste()
-			
-			
-			
+
+
+
 class SpecSymbols:
 	
 	def __init__(self):
@@ -2420,6 +2394,7 @@ class History:
 		
 	def clear(self,*args):
 		self.obj.clear()
+		h_table.search_article.obj.clear_text()
 		h_request.reset()
 		h_db.reset()
 		h_db.search_part()
@@ -2687,7 +2662,6 @@ class TkinterHtmlMod(tk.Widget):
 		self._search_list = []
 		self._search_article_pos = 0
 		self.CaptureHotkey = True
-		self.MouseClicked = False
 		self.event = None
 		self.url = h_request._url
 		self.search = h_request._search
@@ -2842,12 +2816,12 @@ class TkinterHtmlMod(tk.Widget):
 			# Скопировать URL текущего термина. URL 1-го термина не совпадает с URL статьи!
 			cur_url = h_request._cells[self.i][self.j].url
 			if globs['bool']['Iconify']:
-				iconify(obj)
+				Geometry(h_root=init_inst('root'),parent_obj=init_inst('top'),title=h_request.search()).minimize()
 		elif mode == 'article':
 			# Скопировать URL статьи
 			cur_url = h_request._url
 			if globs['bool']['Iconify']:
-				iconify(obj)
+				Geometry(h_root=init_inst('root'),parent_obj=init_inst('top'),title=h_request.search()).minimize()
 		else:
 			Message(func='TkinterHtmlMod.copy_url',type=lev_err,message=globs['mes'].unknown_mode % (str(mode),'article, term'))
 		init_inst('clipboard').copy(cur_url)
@@ -3047,8 +3021,8 @@ class TkinterHtmlMod(tk.Widget):
 		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_move_text_end'],action=self.move_text_end)
 		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_move_page_up'],action=self.move_page_up)
 		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_move_page_down'],action=self.move_page_down)
-		create_binding(widget=init_inst('top').widget,bindings='<Escape>',action=lambda e:iconify(init_inst('top')))
-		create_binding(widget=self,bindings=globs['var']['bind_iconify'],action=lambda e:iconify(init_inst('top')))
+		create_binding(widget=init_inst('top').widget,bindings='<Escape>',action=Geometry(h_root=init_inst('root'),parent_obj=init_inst('top'),title=h_request.search()).minimize)
+		create_binding(widget=self,bindings=globs['var']['bind_iconify'],action=Geometry(h_root=init_inst('root'),parent_obj=init_inst('top'),title=h_request.search()).minimize)
 		# Дополнительные горячие клавиши
 		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_quit_now'],globs['var']['bind_quit_now_alt']],action=h_quit.wait)
 		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_search_article_forward'],action=self.search_forward)
@@ -3275,7 +3249,7 @@ class TkinterHtmlMod(tk.Widget):
 			selected_text = List([h_request._cells[self.i][self.j].dic,h_request._cells[self.i][self.j].term,h_request._cells[self.i][self.j].comment]).space_items()
 		init_inst('clipboard').copy(selected_text)
 		if globs['bool']['Iconify']:
-			iconify(init_inst('top'))
+			Geometry(h_root=init_inst('root'),parent_obj=init_inst('top'),title=h_request.search()).minimize()
 
 	# Удалить ячейку и перекомпоновать статью
 	def delete_cell(self,*args):
@@ -3324,17 +3298,13 @@ class TkinterHtmlMod(tk.Widget):
 	
 	# Перейти по URL текущей ячейки
 	def go_url(self,*args):
-		#self.set_cell()
-		if self.MouseClicked:
-			pass
-		else:
-			log.append('TkinterHtmlMod.go_url',lev_debug,globs['mes'].cur_cell % (self.i,self.j))
-			h_request._search = h_request._cells[self.i][self.j].term
-			h_request._url = h_request._cells[self.i][self.j].url
-			h_request.new()
-			h_db.search_part()
-			log.append('TkinterHtmlMod.go_url',lev_info,globs['mes'].opening_link % h_request._url)
-			self.load_article()
+		log.append('TkinterHtmlMod.go_url',lev_debug,globs['mes'].cur_cell % (self.i,self.j))
+		h_request._search = h_request._cells[self.i][self.j].term
+		h_request._url = h_request._cells[self.i][self.j].url
+		h_request.new()
+		h_db.search_part()
+		log.append('TkinterHtmlMod.go_url',lev_info,globs['mes'].opening_link % h_request._url)
+		self.load_article()
 				
 	def gen_pos2cell(self):
 		# 1-й символ всегда соответствует 1-й ячейке

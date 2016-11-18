@@ -1,3 +1,7 @@
+4.7.3
+* Some improvements in minimize/maximize/activate actions
+* Select the entire text when calling the search entry
+* Clear the search entry upon history deletion
 * Add Alt-` combination for calling the program window without translating the clipboard contents
 
 4.7.1
