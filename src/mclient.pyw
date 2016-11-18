@@ -20,7 +20,7 @@ class log:
 		pass
 		
 product = 'MClient'
-version = '4.7.3'
+version = '4.7.4'
 
 
 
@@ -2671,8 +2671,8 @@ class TkinterHtmlMod(tk.Widget):
 		self.load_tkhtml()
 		self.widget = tk.Widget
 		self.obj = self.widget.__init__(self,master,'html',cfg,kw)
-		self.vsb = ttk.Scrollbar(self.obj,orient=tk.VERTICAL)
-		self.hsb = ttk.Scrollbar(self.obj,orient=tk.HORIZONTAL)
+		self.vsb = ttk.Scrollbar(init_inst('top').widget,orient=tk.VERTICAL)
+		self.hsb = ttk.Scrollbar(self.master,orient=tk.HORIZONTAL)
 		self.widget.configure(self,yscrollcommand=self.vsb.set)
 		self.widget.configure(self,xscrollcommand=self.hsb.set)
 		self.vsb.config(command=self.yview)
@@ -2690,6 +2690,8 @@ class TkinterHtmlMod(tk.Widget):
 			init_inst('top').widget.wm_state(newstate='zoomed')
 		self.history = History()
 		self.create_frame_panel()
+		# The very place for packing the vertical scrollbar. If we pack it earlier, it will fill an extra space, if later - it will be too small.
+		self.vsb.pack(side='right',fill='y')
 		self.search_field.widget.focus_set()
 		create_binding(widget=self,bindings=globs['var']['bind_go_url'],action=self.go_url)
 		self.bind("<Motion>",self.mouse_sel,True)
@@ -3044,9 +3046,8 @@ class TkinterHtmlMod(tk.Widget):
 		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_toggle_view'],globs['var']['bind_toggle_view_alt']],action=self.toggle_view)
 		
 	def show(self):
-		self.vsb.pack(side='right',fill='y')
-		self.hsb.pack(side='bottom',fill='x')
 		self.pack(expand=1,fill='both')
+		self.hsb.pack(side='bottom',fill='x')
 		
 	# Загрузить библиотеку tkhtml
 	def load_tkhtml(self):
