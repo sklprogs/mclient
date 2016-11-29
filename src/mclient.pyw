@@ -20,7 +20,7 @@ class log:
 		pass
 		
 product = 'MClient'
-version = '4.7.4'
+version = '4.7.5'
 
 
 
@@ -540,15 +540,13 @@ class DB: # Requires h_request global
 		self.db.execute('select SEARCH from INFO where ID=?',(self._count - 1,))
 		result = self.db.fetchone()
 		if result:
-			result = result[0]
-			return result
+			return result[0]
 			
 	def preprev(self):
 		self.db.execute('select SEARCH from INFO where ID=?',(self._count - 2,))
 		result = self.db.fetchone()
 		if result:
-			result = result[0]
-			return result
+			return result[0]
 	
 	def search_full(self):
 		if h_request.online():
@@ -2048,12 +2046,13 @@ class Cells:
 
 def call_app():
 	# Использовать то же сочетание клавиш для вызова окна
-	Geometry(h_root=init_inst('root'),parent_obj=init_inst('top'),title=h_request.search()).activate()
+	Geometry(h_root=init_inst('root'),parent_obj=init_inst('top'),title=h_request.search()).activate(MouseClicked=h_table.MouseClicked)
 	# In case of .focus_set() *first* Control-c-c can call an inactive widget
 	h_table.search_field.widget.focus_force()
 
 # Перехватить нажатие Control-c-c
 def timed_update():
+	h_table.MouseClicked = False
 	check = kl_mod.keylistener.check()
 	if check:
 		if check == 1 and h_table.CaptureHotkey:
@@ -2061,6 +2060,7 @@ def timed_update():
 			if h_os.sys() == 'win':
 				kl_mod.keylistener.cancel()
 				kl_mod.keylistener.restart()
+			h_table.MouseClicked = True
 			new_clipboard = init_inst('clipboard').paste()
 			if new_clipboard:
 				h_table.search = new_clipboard
@@ -2661,6 +2661,7 @@ class TkinterHtmlMod(tk.Widget):
 		self.mouse_index = -1 # self.mouse_index (int) != self.index (tuple)
 		self._search_list = []
 		self._search_article_pos = 0
+		self.MouseClicked = False
 		self.CaptureHotkey = True
 		self.event = None
 		self.url = h_request._url
@@ -3299,13 +3300,14 @@ class TkinterHtmlMod(tk.Widget):
 	
 	# Перейти по URL текущей ячейки
 	def go_url(self,*args):
-		log.append('TkinterHtmlMod.go_url',lev_debug,globs['mes'].cur_cell % (self.i,self.j))
-		h_request._search = h_request._cells[self.i][self.j].term
-		h_request._url = h_request._cells[self.i][self.j].url
-		h_request.new()
-		h_db.search_part()
-		log.append('TkinterHtmlMod.go_url',lev_info,globs['mes'].opening_link % h_request._url)
-		self.load_article()
+		if not self.MouseClicked:
+			log.append('TkinterHtmlMod.go_url',lev_debug,globs['mes'].cur_cell % (self.i,self.j))
+			h_request._search = h_request._cells[self.i][self.j].term
+			h_request._url = h_request._cells[self.i][self.j].url
+			h_request.new()
+			h_db.search_part()
+			log.append('TkinterHtmlMod.go_url',lev_info,globs['mes'].opening_link % h_request._url)
+			self.load_article()
 				
 	def gen_pos2cell(self):
 		# 1-й символ всегда соответствует 1-й ячейке

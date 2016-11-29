@@ -12,7 +12,7 @@ from shared import log, Message, WriteTextFile, Text, h_os, Search, Words, timer
 #log = Log(Use=True,Write=True,Print=True,Short=False,file='/tmp/log')
 
 if h_os.sys() == 'win':
-	import win32gui, win32con
+	import win32gui, win32con, ctypes
 
 # Вернуть тип параметра
 def get_obj_type(obj,Verbal=True,IgnoreErrors=False):
@@ -169,11 +169,7 @@ class Top:
 		else:
 			self.widget.protocol("WM_DELETE_WINDOW",self.close)
 		if Maximize:
-			if h_os.sys() == 'lin':
-				self.widget.wm_attributes('-zoomed',True)
-			# Win, Mac
-			else:
-				self.widget.wm_state(newstate='zoomed')
+			Geometry(parent_obj=parent_obj).maximize()
 		self.tk_trigger = tk.BooleanVar()
 	
 	def close(self,*args):
@@ -183,9 +179,9 @@ class Top:
 	
 	def show(self,Lock=True):
 		self.count += 1
-		self.Lock = Lock
 		self.widget.deiconify()
 		self.center()
+		self.Lock = Lock
 		if self.Lock:
 			self.tk_trigger = tk.BooleanVar()
 			self.widget.wait_variable(self.tk_trigger)
@@ -196,9 +192,10 @@ class Top:
 	def icon(self,icon):
 		WidgetShared.icon(self,icon)
 		
-	def center(self):
+	# todo: not centers without Force=True when Lock=False
+	def center(self,Force=False):
 		# Make child widget always centered at the first time and up to a user's choice any other time (if the widget is reused).
-		if self.count == 1:
+		if self.count == 1 or Force:
 			self.widget.update_idletasks()
 			width = self.widget.winfo_screenwidth()
 			height = self.widget.winfo_screenheight()
@@ -621,6 +618,10 @@ class TextBox:
 	def autoscroll(self,mark):
 		if not self.visible(mark):
 			self.scroll(mark)
+			
+	# todo: select either 'see' or 'autoscroll'
+	def see(self,mark):
+		self.widget.see(mark)
 	
 	def title(self,title='Title:'):
 		WidgetShared.title(self.parent_obj,title)
@@ -1226,16 +1227,19 @@ class Selection:
 	def select_all(self):
 		self.h_widget.select_all()
 	
-	def set(self):
+	def set(self,DeletePrevious=True,AutoScroll=True):
 		if self.pos1_tk() and self.pos2_tk():
-			self.h_widget.tag_add(pos1tk=self._pos1_tk,pos2tk=self._pos2_tk,tag_name=self._tag)
+			mark = self._pos1_tk
+			self.h_widget.tag_add(pos1tk=self._pos1_tk,pos2tk=self._pos2_tk,tag_name=self._tag,DeletePrevious=DeletePrevious)
 		else:
 			# Just need to return something w/o warnings
-			_cursor = self.cursor()
-			self.h_widget.tag_add(tag_name=self._tag,pos1tk=_cursor,pos2tk=_cursor)
+			_cursor = mark = self.cursor()
+			self.h_widget.tag_add(tag_name=self._tag,pos1tk=_cursor,pos2tk=_cursor,DeletePrevious=DeletePrevious)
 		# This is not necessary for 'sel' tag which is hardcoded for selection and permanently colored with gray. A 'background' attribute cannot be changed for a 'sel' tag.
 		self.h_widget.widget.tag_config(tagName=self._tag,background=self._bg)
-
+		if AutoScroll: # todo: select either 'see' or 'autoscroll'
+			#self.h_widget.see(mark)
+			self.h_widget.autoscroll(mark) # cur
 
 
 class ParallelTexts: # Requires Search
@@ -1638,7 +1642,8 @@ class Geometry: # Requires h_os
 
 	def maximize(self,*args):
 		if h_os.sys() == 'win':
-			win32gui.ShowWindow(self.hwnd(),win32con.SW_MAXIMIZE)
+			#win32gui.ShowWindow(self.hwnd(),win32con.SW_MAXIMIZE)
+			self.parent_obj.widget.wm_state(newstate='zoomed')
 		elif self.parent_obj:
 			self.parent_obj.widget.wm_attributes('-zoomed',True)
 		else:
@@ -1661,24 +1666,22 @@ class Geometry: # Requires h_os
 	def _activate(self):
 		if self.parent_obj:
 			self.parent_obj.widget.deiconify()
-			self.parent_obj.widget.focus_set()
+			#self.parent_obj.widget.focus_set()
+			self.parent_obj.widget.lift()
 		else:
 			Message(func='Geometry._activate',type=lev_err,message=globs['mes'].wrong_input2)
 	
-	def activate(self,*args):
+	def activate(self,MouseClicked=False,*args):
+		self._activate()
 		if h_os.sys() == 'win':
-			if self.hwnd():
-				# There is a restriction in Windows that allows to change the foreground window only if you own the foreground window
-				# http://stackoverflow.com/questions/6312627/windows-7-how-to-bring-a-window-to-the-front-no-matter-what-other-window-has-fo
-				win32gui.ShowWindow(self._hwnd,win32con.SW_RESTORE)
-				win32gui.SetWindowPos(self._hwnd,win32con.HWND_NOTOPMOST, 0, 0, 0, 0, win32con.SWP_NOMOVE + win32con.SWP_NOSIZE)  
-				win32gui.SetWindowPos(self._hwnd,win32con.HWND_TOPMOST, 0, 0, 0, 0, win32con.SWP_NOMOVE + win32con.SWP_NOSIZE)  
-				win32gui.SetWindowPos(self._hwnd,win32con.HWND_NOTOPMOST, 0, 0, 0, 0, win32con.SWP_SHOWWINDOW + win32con.SWP_NOMOVE + win32con.SWP_NOSIZE)
-			else:
-				log.append('Geometry.activate',lev_warn,'Using an alternative!') # todo: mes
-				self._activate()
-		else:
-			self._activate()
+			self.parent_obj.widget.wm_attributes('-topmost',1)
+			self.parent_obj.widget.wm_attributes('-topmost',0)
+			# Иначе нажатие кнопки будет вызывать переход по ссылке там, где это не надо
+			if MouseClicked:
+				# Уродливый хак, но иначе никак не поставить фокус на виджет (в Linux/Windows XP обходимся без этого, в Windows 7/8 - необходимо)
+				# Cимулируем нажатие кнопки мыши
+				ctypes.windll.user32.mouse_event(2, 0, 0, 0, 0) # left mouse button down
+				ctypes.windll.user32.mouse_event(4, 0, 0, 0, 0) # left mouse button up
 
 	def hwnd(self,*args):
 		if not self._hwnd:
@@ -1690,6 +1693,63 @@ class Geometry: # Requires h_os
 			else:
 				Message(func='Geometry.hwnd',type=lev_err,message=globs['mes'].not_enough_input_data)
 		return self._hwnd
+
+
+
+class WaitBox:
+	
+	def __init__(self,parent_obj):
+		self.type = 'WaitBox'
+		self.parent_obj = parent_obj
+		self._func = self._title = self._args = self._message = None
+		self.obj = Top(parent_obj=self.parent_obj,Maximize=False)
+		self.widget = self.obj.widget
+		self.widget.geometry('300x150')
+		self.label = tk.Label(self.widget,text=globs['mes'].wait)
+		self.label.pack(expand=True)
+		self.close()
+		
+	def reset(self,func_title=None,func=None,args=None,message=None): # Use tuple for 'args' to pass multiple arguments
+		self._func = func
+		self._title = func_title
+		self._args = args
+		self._message = message
+		self.title()
+		self.message()
+	
+	def run(self):
+		self.show()
+		if self._func:
+			if self._args:
+				func_res = self._func(self._args)
+			else:
+				func_res = self._func()
+		else:
+			Message(func='WaitBox.run',type=lev_err,message=globs['mes'].wrong_input2)
+		self.close()
+		return func_res
+	
+	def show(self):
+		self.obj.show(Lock=False)
+		# todo: fix centering in Top.center() when Lock=False
+		self.obj.center(Force=True)
+	
+	def close(self):
+		self.obj.close()
+		
+	def title(self,title=None):
+		if title:
+			self._title = title
+		if self._title:
+			self.obj.title(self._title)
+			
+	def message(self,message=None):
+		if message:
+			self._message = message
+		if self._message:
+			self.label.config(text=self._message + '\n\n' + globs['mes'].wait)
+		else:
+			self.label.config(text=globs['mes'].wait)
 
 
 

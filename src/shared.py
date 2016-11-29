@@ -1799,10 +1799,11 @@ class Words: # Requires Search, Text
 		self.h_decline = h_decline
 		self._p = self._text_p = self._text_np = self._text_np_low = self._text_norm = self._len = None
 		# This is MUCH faster than using old symbol-per-symbol algorithm for finding words. We must, however, drop double space cases.
-		self._text = Text(text=text,Auto=True).text
+		self._text = self._text_orig = Text(text=text,Auto=True).text
 		self.create()
 		self.split()
 		self._line_breaks = []
+		self._list_norm = []
 		self.change_no()
 		
 	def line_breaks(self):
@@ -1846,7 +1847,6 @@ class Words: # Requires Search, Text
 		lst = self.text_p().split(' ')
 		cur_len = 0
 		for i in range(len(lst)):
-			# Values to get first: NO, SENT_NO, P, F_SYM_P, L_SYM_P
 			# 28 columns for now
 			if i > 0:
 				cur_len += 2
@@ -1861,7 +1861,6 @@ class Words: # Requires Search, Text
 		# This sometimes accelerates processing. May hinder DB recovery if it has been damaged (program termination, poweroff, etc.). Since we create DB in memory, this should not be a problem.
 		self.db.execute('PRAGMA synchronous=OFF')
 		#self.db_con.isolation_level = 'DEFERRED' # Disables autocommit
-		self.db.executescript('drop table if exists WORDS;')
 		# Other possible columns: P_LOW, P_UP, NP_UP
 		''' Use integers instead of booleans:
 			-2: Not applicable here # todo: test with preceding essential values
@@ -1893,12 +1892,15 @@ class Words: # Requires Search, Text
 			self.db.execute('select NORMAL from WORDS where NO=?',(self._no,))
 			result = self.fetchone()
 			if result == '-1':
-				self.h_decline.reset(word=self.np_low())
-				result = self.h_decline.normal()
-				if result:
-					result = result.replace('ё','е')
+				if self.empty() or self.stone(): # Probably dangerous. See 'matches()' before modifying.
+					result = ''
 				else:
-					result = self.np_low()
+					self.h_decline.reset(word=self.np_low())
+					result = self.h_decline.normal()
+					if result:
+						result = result.replace('ё','е')
+					else:
+						result = self.np_low()
 				self.db.execute('update WORDS set NORMAL=? where NO=?',(result,self._no,))
 				self.db_con.commit()
 			return result
@@ -1974,12 +1976,23 @@ class Words: # Requires Search, Text
 				result[i] = result[i][0]
 			return result
 	
-	def print(self):
+	def shorten_names(self,lst): # We shorten column names in order to fit the entire table on screen
+		for i in range(len(lst)):
+			lst[i] = lst[i].replace('NO_ESS','NOE').replace('SENT_NO','SE#').replace('NP_LOW','NPL').replace('NORMAL','NM').replace('F_SYM_P','FP').replace('L_SYM_P','LP').replace('F_SYM_NP','FNP').replace('L_SYM_NP','LNP').replace('F_SYM_NORM','FNM').replace('L_SYM_NORM','LNM').replace('GREEK','GRK').replace('SPEC','SPC').replace('DIGIT','DGT').replace('EMPTY','E').replace('STONE_NO','S#').replace('STONE','S').replace('TK_P_F','TPF').replace('TK_P_L','TPL').replace('TK_NP_F','TNF').replace('TK_NP_L','TNL').replace('TK_NORM_F','TNMF').replace('TK_NORM_L','TNML').replace('SPELL_RU','SRU').replace('MATCH_NO','M#')
+		return lst
+	
+	def print(self,arg_str=None,Short=True): # arg_str='NO,NORMAL,SENT_NO'
 		# self.db.execute('select * from WORDS')
 		# print(self.db.fetchall())
 		from prettytable import PrettyTable
-		self.db.execute('select * from WORDS')
-		col_names = [cn[0] for cn in self.db.description]
+		if arg_str:
+			self.db.execute('select %s from WORDS' % arg_str) # Dangerous
+			col_names = arg_str.split(',')
+		else:
+			self.db.execute('select * from WORDS')
+			col_names = [cn[0] for cn in self.db.description]
+		if Short:
+			col_names = self.shorten_names(col_names)
 		rows = self.db.fetchall()
 		x = PrettyTable(col_names)
 		for row in rows:
@@ -2069,6 +2082,12 @@ class Words: # Requires Search, Text
 		return self._len
 			
 	def f_sym_norm(self):
+		''' # Do the following first:
+			for i in range(h_words.len()):
+				h_words.change_no(no=i)
+				h_words.f_sym_norm()
+				h_words.l_sym_norm()
+		'''
 		self.db.execute('select F_SYM_NORM from WORDS where NO=?',(self._no,))
 		result = self.fetchone()
 		if result == -1:
@@ -2085,10 +2104,8 @@ class Words: # Requires Search, Text
 				old = self._no
 				self.change_no(no=self._no-1)
 				pos = self.l_sym_norm()
-				if pos >= 0:
-					result = pos + 2
-				else:
-					result = -2
+				# This is valid even if the previous pos is undefined (-2; this can happen if first words are empty or stones)
+				result = pos + 2
 				self.change_no(no=old)
 			else:
 				result = 0
@@ -2097,10 +2114,19 @@ class Words: # Requires Search, Text
 		return result
 		
 	def f_sym_np(self):
+		''' # Do the following first:
+			h_words.text_np()
+		'''
 		self.db.execute('select F_SYM_NP from WORDS where NO=?',(self._no,))
 		return self.fetchone()
 		
 	def l_sym_norm(self):
+		''' # Do the following first:
+			for i in range(h_words.len()):
+				h_words.change_no(no=i)
+				h_words.f_sym_norm()
+				h_words.l_sym_norm()
+		'''
 		self.db.execute('select L_SYM_NORM from WORDS where NO=?',(self._no,))
 		result = self.fetchone()
 		if result == -1:
@@ -2121,6 +2147,9 @@ class Words: # Requires Search, Text
 		return result
 		
 	def l_sym_np(self):
+		''' # Do the following first:
+			h_words.text_np()
+		'''
 		self.db.execute('select L_SYM_NP from WORDS where NO=?',(self._no,))
 		return self.fetchone()
 		
@@ -2183,6 +2212,9 @@ class Words: # Requires Search, Text
 		return result
 		
 	def tk_np_f(self):
+		''' # Do the following first:
+			h_words.text_np()
+		'''
 		self.db.execute('select TK_NP_F from WORDS where NO=?',(self._no,))
 		result = self.fetchone()
 		if result == '-1':
@@ -2202,6 +2234,12 @@ class Words: # Requires Search, Text
 		return result
 		
 	def tk_norm_f(self):
+		''' # Do the following first:
+			for i in range(h_words.len()):
+				h_words.change_no(no=i)
+				h_words.f_sym_norm()
+				h_words.l_sym_norm()
+		'''
 		self.db.execute('select TK_NORM_F from WORDS where NO=?',(self._no,))
 		result = self.fetchone()
 		if result == '-1':
@@ -2240,6 +2278,9 @@ class Words: # Requires Search, Text
 		return result
 		
 	def tk_np_l(self):
+		''' # Do the following first:
+			h_words.text_np()
+		'''
 		self.db.execute('select TK_NP_L from WORDS where NO=?',(self._no,))
 		result = self.fetchone()
 		if result == '-1':
@@ -2259,6 +2300,12 @@ class Words: # Requires Search, Text
 		return result
 		
 	def tk_norm_l(self):
+		''' # Do the following first:
+			for i in range(h_words.len()):
+				h_words.change_no(no=i)
+				h_words.f_sym_norm()
+				h_words.l_sym_norm()
+		'''
 		self.db.execute('select TK_NORM_L from WORDS where NO=?',(self._no,))
 		result = self.fetchone()
 		if result == '-1':
@@ -2283,15 +2330,34 @@ class Words: # Requires Search, Text
 		return self.fetchone()
 		
 	def get_np_no(self,pos=0):
+		''' # Do the following first:
+			h_words.text_np()
+		'''
 		# 'L_SYM_NP + 1 = ?' allows to select the word by the space following it
 		self.db.execute('select NO from WORDS where F_SYM_NP <= ? and L_SYM_NP >= ? or L_SYM_NP + 1 = ?',(pos,pos,pos))
 		return self.fetchone()
 		
 	def get_norm_no(self,pos=0):
+		''' # Do the following first:
+			for i in range(h_words.len()):
+				h_words.change_no(no=i)
+				h_words.f_sym_norm()
+				h_words.l_sym_norm()
+		'''
 		# 'L_SYM_NORM + 1 = ?' allows to select the word by the space following it
 		self.db.execute('select NO from WORDS where F_SYM_NORM <= ? and L_SYM_NORM >= ? or L_SYM_NORM + 1 = ?',(pos,pos,pos))
 		return self.fetchone()
 		
+	def get_norm_nos(self,pos1=0,pos2=0):
+		''' # Do the following first:
+			for i in range(h_words.len()):
+				h_words.change_no(no=i)
+				h_words.f_sym_norm()
+				h_words.l_sym_norm()
+		'''
+		self.db.execute('select NO from WORDS where F_SYM_NORM >= ? and L_SYM_NORM <= ?',(pos1,pos2))
+		return self.fetchall()
+	
 	def get_sent_no(self,pos=0):
 		res_i = 0
 		i = len(self.line_breaks()) - 1
@@ -2302,6 +2368,11 @@ class Words: # Requires Search, Text
 			i -= 1
 		return res_i
 		
+	def list_norm(self):
+		if not self._list_norm:
+			self.text_norm()
+		return self._list_norm
+	
 	def text_norm(self):
 		if not self._text_norm:
 			old = self._no
@@ -2312,9 +2383,9 @@ class Words: # Requires Search, Text
 				self.normal()
 			self.change_no(no=old)
 			self.db.execute('select NORMAL from WORDS where EMPTY=? and STONE=? order by NO',('0','0',))
-			self._text_norm = self.fetchall()
-			if self._text_norm:
-				self._text_norm = ' '.join(self._text_norm)
+			self._list_norm = self.fetchall()
+			if self._list_norm:
+				self._text_norm = ' '.join(self._list_norm)
 		return self._text_norm
 		
 	def next_stone(self):
@@ -2388,7 +2459,7 @@ class Words: # Requires Search, Text
 			self.db_con.commit()
 		else:
 			log.append('Words.spellcheck_ru',lev_warn,globs['mes'].canceled)
-		
+			
 	def zzz(self):
 		pass
 
