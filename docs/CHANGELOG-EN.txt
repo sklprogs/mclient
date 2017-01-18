@@ -1,4 +1,10 @@
 
+
+4.7.6
+* Fix links because of changes on multitran.ru
+* Create a separate repository for shared files ("shared")
+
+4.7.5
 * Fix scrollbars
 * Some improvements in minimize/maximize/activate actions
 * Select the entire text when calling the search entry (Linux)
