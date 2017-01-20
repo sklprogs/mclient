@@ -20,7 +20,7 @@ class log:
 		pass
 		
 product = 'MClient'
-version = '4.7.6'
+version = '4.7.7'
 
 
 
@@ -206,20 +206,20 @@ globs['dry_count'] = 0
 globs['geom_top'] = {}
 globs['top'] = {}
 
-online_url_root = 'http://www.multitran.ru/c/M.exe?'
-online_url_safe = 'http://www.multitran.ru/c/M.exe?l1=2&l2=1&s=%ED%E5%E2%E5%F0%ED%E0%FF+%F1%F1%FB%EB%EA%E0'
-welcome_url = 'http://www.multitran.ru/c/M.exe?CL=1&s=%C4%EE%E1%F0%EE+%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21&l1=1'
+online_url_root = 'http://www.multitran.ru/c/m.exe?'
+online_url_safe = 'http://www.multitran.ru/c/m.exe?l1=2&l2=1&s=%ED%E5%E2%E5%F0%ED%E0%FF+%F1%F1%FB%EB%EA%E0' # 'неверная ссылка'
+welcome_url = 'http://www.multitran.ru/c/m.exe?CL=1&s=%C4%EE%E1%F0%EE+%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21&l1=1'
 welcome_str = 'Добро пожаловать!'
 sep_words_found = 'найдены отдельные слова'
 message_board = 'спросить в форуме'
 nbspace = ' '
 
 pairs = ('ENG <=> RUS','DEU <=> RUS','SPA <=> RUS','FRA <=> RUS','NLD <=> RUS','ITA <=> RUS','LAV <=> RUS','EST <=> RUS','AFR <=> RUS','EPO <=> RUS','RUS <=> XAL','XAL <=> RUS','ENG <=> DEU','ENG <=> EST')
-online_dic_urls = ('http://www.multitran.ru/c/M.exe?CL=1&s=%s','http://www.multitran.ru/c/M.exe?l1=3&l2=2&s=%s','http://www.multitran.ru/c/M.exe?l1=5&l2=2&s=%s','http://www.multitran.ru/c/M.exe?l1=4&l2=2&s=%s','http://www.multitran.ru/c/M.exe?l1=24&l2=2&s=%s','http://www.multitran.ru/c/M.exe?l1=23&l2=2&s=%s','http://www.multitran.ru/c/M.exe?l1=27&l2=2&s=%s','http://www.multitran.ru/c/M.exe?l1=26&l2=2&s=%s','http://www.multitran.ru/c/M.exe?l1=31&l2=2&s=%s','http://www.multitran.ru/c/M.exe?l1=34&l2=2&s=%s','http://www.multitran.ru/c/M.exe?l1=2&l2=35&s=%s','http://www.multitran.ru/c/M.exe?l1=35&l2=2&s=%s','http://www.multitran.ru/c/M.exe?l1=1&l2=3&s=%s','http://www.multitran.ru/c/M.exe?l1=1&l2=26&s=%s')
+online_dic_urls = ('http://www.multitran.ru/c/m.exe?CL=1&s=%s','http://www.multitran.ru/c/m.exe?l1=3&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=5&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=4&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=24&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=23&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=27&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=26&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=31&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=34&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=2&l2=35&s=%s','http://www.multitran.ru/c/m.exe?l1=35&l2=2&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=3&s=%s','http://www.multitran.ru/c/m.exe?l1=1&l2=26&s=%s')
 
 # Tag patterns
 tag_pattern1 = '<a title="'
-tag_pattern2 = '<a href="M.exe?'
+tag_pattern2 = '<a href="m.exe?'
 tag_pattern3 = '<i>'
 tag_pattern4 = '</i>'
 tag_pattern5 = '<span STYLE="color:gray">'
@@ -232,7 +232,7 @@ tag_pattern10 = '</td>'
 tag_pattern11 = '" href'
 tag_pattern12 = '<trash>'
 tag_pattern13 = '"</trash><a href'
-tag_pattern14 = 'M.exe?a=118&t=' # Части речи # Полностью: '<a href="M.exe?a=118&t='
+tag_pattern14 = 'm.exe?a=118&t=' # Части речи # Полностью: '<a href="m.exe?a=118&t='
 
 # 'спросить в форуме' не удается обработать в этом списке, поэтому обрабатываю его отдельно
 delete_entries = ['Вход','Регистрация','Сообщить об ошибке','Изменить','Удалить','Добавить']
@@ -275,7 +275,7 @@ class Request:
 		
 	def url(self):
 		if self._url is None:
-			self._url = 'http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
+			self._url = 'http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
 		return self._url
 		
 	def collimit(self):
@@ -845,7 +845,7 @@ class Tags:
 	# Extract URL
 	def _url(self,i=0):
 		self.url = self._tags[i].replace(tag_pattern2,'',1)
-		# We need re because of such cases as "<a href = "M.exe?t = 74188_2_4&s1 = faute">ошибка"
+		# We need re because of such cases as "<a href = "m.exe?t = 74188_2_4&s1 = faute">ошибка"
 		self.url = re.sub('\"\>.*','">',self.url)
 		if self.url.endswith(tag_pattern8):
 			self.url = self.url.replace(tag_pattern8,'')
@@ -903,15 +903,15 @@ class Tags:
 			1) Abbreviations of dictionaries:
 			<a title="...">
 			2) Users
-			<a href="M.exe?..."><i>...</i></a> OR without 1st <
+			<a href="m.exe?..."><i>...</i></a> OR without 1st <
 			3) Terms:
-			<a href="M.exe?..."></a>
+			<a href="m.exe?..."></a>
 			4) Genders:
 			<span STYLE="color:gray"<i>...</i>
 			5) Comments:
 			<span STYLE="color:gray"...<
 			6) Parts of speech (will be processed later):
-			'<a href="M.exe?a=118&t='
+			'<a href="m.exe?a=118&t='
 			'''
 			self._tags = self.tags()
 			for i in range(len(self._tags)):
@@ -1356,7 +1356,7 @@ class SaveArticle:
 		if self.file:
 			self.fix_ext(ext='.htm')
 			# todo: fix remaining links to localhost
-			WriteTextFile(self.file,AskRewrite=False).write(h_request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+online_url_root).replace('../c/M.exe?',online_url_root))
+			WriteTextFile(self.file,AskRewrite=False).write(h_request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="m.exe?','<a href="'+online_url_root).replace('../c/m.exe?',online_url_root))
 		
 	def view_as_txt(self):
 		self.file = dialog_save_file(filetypes=((globs['mes'].plain_text,'.txt'),(globs['mes'].all_files,'*')))

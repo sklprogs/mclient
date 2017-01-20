@@ -1,5 +1,8 @@
 
 
+4.7.7
+* Fix links because of changes on multitran.ru
+
 4.7.6
 * Fix links because of changes on multitran.ru
 * Create a separate repository for shared files ("shared")
