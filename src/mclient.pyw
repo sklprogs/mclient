@@ -225,8 +225,6 @@ globs['geom_top'] = {}
 globs['top'] = {}
 
 online_url_safe = globs['var']['pair_root'] + 'l1=2&l2=1&s=%ED%E5%E2%E5%F0%ED%E0%FF+%F1%F1%FB%EB%EA%E0' # 'неверная ссылка'
-welcome_url = globs['var']['pair_root'] + 'CL=1&s=%C4%EE%E1%F0%EE+%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21&l1=1'
-welcome_str = 'Добро пожаловать!'
 sep_words_found = 'найдены отдельные слова'
 message_board = 'спросить в форуме'
 nbspace = ' '
@@ -264,15 +262,18 @@ tag_pattern10 = '</td>'
 tag_pattern11 = '" href'
 tag_pattern12 = '<trash>'
 tag_pattern13 = '"</trash><a href'
-tag_pattern14 = 'M.exe?a=118&t=' # Части речи # Полностью: '<a href="M.exe?a=118&t='
-tag_pattern14b = 'm.exe?a=118&t='
+tag_pattern14 = 'M.exe?a=118&t='  # Parts of speech
+tag_pattern14b = 'm.exe?a=118&t=' # Parts of speech
+tag_pattern14c = 'M.exe?t='       # Parts of speech
+tag_pattern14d = 'm.exe?t='       # Parts of speech
 tag_pattern15 = '<td bgcolor='
 tag_pattern16 = '#start'
 tag_pattern17 = '#phrases'
-tag_pattern18 = '<a href="'
-tag_pattern19 = tag_pattern18 + tag_pattern16
+tag_pattern18 = '<a href="#start'
+tag_pattern19 = '<a href="'
 # todo: implement
-tag_pattern20 = tag_pattern18 + '#phrases'
+tag_pattern20 = '<a href="#phrases'
+tag_pattern21 = '&ifp'            # Parts of speech
 
 # 'спросить в форуме' не удается обработать в этом списке, поэтому обрабатываю его отдельно
 delete_entries = ['Вход','Регистрация','Сообщить об ошибке','Изменить','Удалить','Добавить']
@@ -885,7 +886,17 @@ class Tags:
 	# Extract a speech form
 	# todo: Extract all speech forms right away, without converting from _term
 	def _speech(self,i=0):
-		if self._tags[i].startswith(tag_pattern15):
+		# todo: check & cleanup
+		par1 = tag_pattern7 in self._tags[i] and tag_pattern14b in self._tags[i]
+		par2 = tag_pattern21 in self._tags[i] and tag_pattern14c in self._tags[i]
+		par3 = tag_pattern21 in self._tags[i] and tag_pattern14d in self._tags[i]
+		par4 = tag_pattern7 in self._tags[i] and tag_pattern14 in self._tags[i]
+		par5 = self._tags[i].startswith(tag_pattern15)
+		par6 = tag_pattern7 in self._tags[i] and tag_pattern14c in self._tags[i]
+		par7 = tag_pattern7 in self._tags[i] and tag_pattern14d in self._tags[i]
+		par8 = tag_pattern21 in self._tags[i] and tag_pattern14 in self._tags[i]
+		par9 = tag_pattern21 in self._tags[i] and tag_pattern14b in self._tags[i]
+		if par1 or par2 or par3 or par4 or par5 or par6 or par7 or par8 or par9:
 			# It is reasonable to bind URLs to terms only, but we want the number of URLs to match the number of article elements, moreover, extra URLs can appear useful.
 			if i + 1 < len(self._tags):
 				pos1 = self._borders[i][1] + 1
@@ -893,11 +904,10 @@ class Tags:
 				if pos1 >= len(self._page):
 					log.append('Tags._speech',lev_warn,globs['mes'].tag_near_text_end % self._tags[i])
 				else:
-					if tag_pattern5 in self._tags[i+1] or tag_pattern7 in self._tags[i+1] or tag_pattern19 in self._tags[i+1]:
-						self._elems[-1].speech = self._page[pos1:pos2+1]
-						# todo: self.url = cur_pair + tag_pattern19
-						self.url = ''
-					#self._url(i)
+					self._elems[-1].speech = self._page[pos1:pos2+1]
+					# todo: self.url = cur_pair + tag_pattern19
+					self.url = ''
+					return True
 			else:
 				log.append('Tags._speech',lev_warn,globs['mes'].last_tag % self._tags[i])
 				
@@ -979,8 +989,10 @@ class Tags:
 				self._elems.append(Cell())
 				EntryMatch = False
 				self._dic(i)
-				self._term(i)
-				self._speech(i)
+				if self._speech(i):
+					self._elems[-1].term = ''
+				else:
+					self._term(i)
 				self._comment(i)
 				log.append('Tags.elems',lev_debug,globs['mes'].adding_url % self.url)
 				self._elems[i].url = self.url
@@ -1099,7 +1111,6 @@ class Elems:
 			log.append('Elems.__init__',lev_info,globs['mes'].create_object)
 			h_request._elems = Tags().elems()
 			self.useless()
-			self.speech()
 			self.unite_comments()
 			# todo: debug
 			#self.unite_by_url()
@@ -1119,14 +1130,6 @@ class Elems:
 		# todo (?): обновить self._page
 		# todo (?): Проверить, обязательно ли все еще следующее условие: The first element of the 'dic' list must precede the first element of the 'term' list
 		
-	# Определить части речи и пометить их как названия словарей (чтобы выносились на новую строку)
-	def speech(self):
-		for i in range(len(h_request._elems)):
-			if tag_pattern14 in h_request._elems[i].url or tag_pattern14b in h_request._elems[i].url:
-				if not h_request._elems[i].speech:
-					h_request._elems[i].speech = h_request._elems[i].term
-					h_request._elems[i].term = ''
-					
 	# Unite multiple comments using a separator ' | '. Delete comments-only entries.
 	def unite_comments(self):
 		# Remove comments-only cells
