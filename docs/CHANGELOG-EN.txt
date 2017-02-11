@@ -1,5 +1,8 @@
 
+
+4.8
 * Change the ENG-RUS pair link to the alternative one which does not require registration when open in a browser
+* Define parts of speech in the DEU-RUS pair
 
 4.7.8
 * Fix links because of changes on multitran.ru

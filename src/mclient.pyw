@@ -15,12 +15,15 @@ from io import StringIO
 import sqlite3
 import pickle
 
+product = 'MClient'
+version = '4.8'
+
+
+
+# Comment to enable logging
 class log:
 	def append(self,*args):
 		pass
-		
-product = 'MClient'
-version = '4.7.8'
 
 
 
@@ -263,6 +266,13 @@ tag_pattern12 = '<trash>'
 tag_pattern13 = '"</trash><a href'
 tag_pattern14 = 'M.exe?a=118&t=' # Части речи # Полностью: '<a href="M.exe?a=118&t='
 tag_pattern14b = 'm.exe?a=118&t='
+tag_pattern15 = '<td bgcolor='
+tag_pattern16 = '#start'
+tag_pattern17 = '#phrases'
+tag_pattern18 = '<a href="'
+tag_pattern19 = tag_pattern18 + tag_pattern16
+# todo: implement
+tag_pattern20 = tag_pattern18 + '#phrases'
 
 # 'спросить в форуме' не удается обработать в этом списке, поэтому обрабатываю его отдельно
 delete_entries = ['Вход','Регистрация','Сообщить об ошибке','Изменить','Удалить','Добавить']
@@ -872,6 +882,25 @@ class Tags:
 			else:
 				log.append('Tags._term',lev_warn,globs['mes'].last_tag % self._tags[i])
 				
+	# Extract a speech form
+	# todo: Extract all speech forms right away, without converting from _term
+	def _speech(self,i=0):
+		if self._tags[i].startswith(tag_pattern15):
+			# It is reasonable to bind URLs to terms only, but we want the number of URLs to match the number of article elements, moreover, extra URLs can appear useful.
+			if i + 1 < len(self._tags):
+				pos1 = self._borders[i][1] + 1
+				pos2 = self._borders[i+1][0] - 1
+				if pos1 >= len(self._page):
+					log.append('Tags._speech',lev_warn,globs['mes'].tag_near_text_end % self._tags[i])
+				else:
+					if tag_pattern5 in self._tags[i+1] or tag_pattern7 in self._tags[i+1] or tag_pattern19 in self._tags[i+1]:
+						self._elems[-1].speech = self._page[pos1:pos2+1]
+						# todo: self.url = cur_pair + tag_pattern19
+						self.url = ''
+					#self._url(i)
+			else:
+				log.append('Tags._speech',lev_warn,globs['mes'].last_tag % self._tags[i])
+				
 	# Extract URL
 	def _url(self,i=0):
 		self.url = self._tags[i].replace(tag_pattern2,'',1).replace(tag_pattern2b,'',1)
@@ -881,6 +910,7 @@ class Tags:
 			self.url = self.url.replace(tag_pattern8,'')
 			self.url = globs['var']['pair_root'] + self.url
 		else:
+			self.url = '' # todo: does this help?
 			log.append('Tags._url',lev_warn,globs['mes'].url_extraction_failure % self.url)
 		
 	# Extract a comment
@@ -950,6 +980,7 @@ class Tags:
 				EntryMatch = False
 				self._dic(i)
 				self._term(i)
+				self._speech(i)
 				self._comment(i)
 				log.append('Tags.elems',lev_debug,globs['mes'].adding_url % self.url)
 				self._elems[i].url = self.url
@@ -967,6 +998,9 @@ class Tags:
 		self._page = self._page.replace('</p>','')
 		self._page = self._page.replace('<b>','')
 		self._page = self._page.replace('</b>','')
+		# todo: do not replace, treat the contents as an indication of a part of speech (a verb, a noun, etc.)
+		self._page = self._page.replace('<em>',' ')
+		self._page = self._page.replace('</em>','')
 		
 	def open_close(self): # Remove symbols '<' and '>' that do not define tags
 		self._page = list(self._page)
@@ -1003,6 +1037,7 @@ class Tags:
 			self._non_tags()
 		return self._page
 	
+	# Delete '<' and '>' signs followed/preceeded by a Cyrillic character
 	def _non_tags(self):
 		self._page = list(self._page)
 		i = 0
@@ -1122,7 +1157,7 @@ class Elems:
 					del h_request._elems[i]
 					i -= 1
 			i += 1
-			
+
 	# Назначить выделяемые ячейки
 	def define_selectables(self):
 		# Выделяемые ячейки надо назначать как минимум после этой процедуры
