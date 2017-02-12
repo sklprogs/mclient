@@ -16,7 +16,7 @@ import sqlite3
 import pickle
 
 product = 'MClient'
-version = '4.8'
+version = '4.8.1'
 
 
 
@@ -59,7 +59,7 @@ class ConfigMclient(Config):
 		globs['bool'].update({
 			'AutoCloseSpecSymbol':False,
 			'CopyTermsOnly':True,
-			'ExploreMismatch':True,
+			'ExploreMismatch':False,
 			'Iconify':True,
 			'SelectTermsOnly':True,
 			'ShortHistory':False
@@ -247,6 +247,26 @@ online_dic_urls = ( globs['var']['pair_root'] + globs['var']['pair_eng_rus'],	# 
 				  )
 
 # Tag patterns
+tag_pattern_del = 	[
+						'.exe?a=5&s=AboutMultitran.htm',	# О словаре
+						'.exe?a=5&s=FAQ.htm',				# FAQ
+						'.exe?a=40',						# Вход
+						'.exe?a=113',						# Регистрация
+						'.exe?a=24&s=',						# Настройки
+						'.exe?a=5&s=searches',				# Словари
+						'.exe?a=2&l1=1&l2=2',				# Форум
+						'.exe?a=44&nadd=1',					# Купить
+						'.exe?a=5&s=DownloadFile',			# Скачать
+						'.exe?a=45',						# Отзывы
+						'.exe?a=5&s=s_contacts',			# Контакты
+						'.exe?a=104&&',						# Добавить
+						'.exe?a=134&s=',					# Удалить
+						'.exe?a=11&l1=',					# Изменить
+						'.exe?a=26&&s=',					# Сообщить об ошибке
+						'.exe?a=136',						# Оценить сайт
+						'&ex=1',							# только заданная форма слова
+						'&order=1',							# в заданном порядке
+					]
 tag_pattern1 = '<a title="'
 tag_pattern2 = '<a href="M.exe?'
 tag_pattern2b = '<a href="m.exe?'
@@ -262,23 +282,24 @@ tag_pattern10 = '</td>'
 tag_pattern11 = '" href'
 tag_pattern12 = '<trash>'
 tag_pattern13 = '"</trash><a href'
-tag_pattern14 = 'M.exe?a=118&t='  # Parts of speech
-tag_pattern14b = 'm.exe?a=118&t=' # Parts of speech
-tag_pattern14c = 'M.exe?t='       # Parts of speech
-tag_pattern14d = 'm.exe?t='       # Parts of speech
-tag_pattern15 = '<td bgcolor='
-tag_pattern16 = '#start'
-tag_pattern17 = '#phrases'
-tag_pattern18 = '<a href="#start'
-tag_pattern19 = '<a href="'
-# todo: implement
-tag_pattern20 = '<a href="#phrases'
-tag_pattern21 = '&ifp'            # Parts of speech
-
-# 'спросить в форуме' не удается обработать в этом списке, поэтому обрабатываю его отдельно
-delete_entries = ['Вход','Регистрация','Сообщить об ошибке','Изменить','Удалить','Добавить']
+tag_pattern_sp1 = '<td bgcolor='
+tag_pattern_sp2 = 'M.exe?a'
+tag_pattern_sp3 = 'm.exe?a'
+tag_pattern_sp4 = '<span STYLE=&#34;color:gray&#34;>'
+tag_pattern_sp5 = '&ifp='
+tag_pattern_t1 = 'M.exe?t'
+tag_pattern_t2 = 'm.exe?t'
+tag_pattern_t3 = '<a href="M.exe?&s='
+tag_pattern_t4 = '<a href="m.exe?&s='
+# May also need to look at: '<a href="#start', '<a href="#phrases', '<a href="', '<span STYLE="color:gray"> (ед.ч., мн.ч.)<span STYLE="color:black">'
+tag_pattern_ph1 = '<a href="M.exe?a=3&&s='
+tag_pattern_ph2 = '<a href="m.exe?a=3&&s='
+tag_pattern_ph3 = '<a href="M.exe?a=3&s='
+tag_pattern_ph4 = '<a href="m.exe?a=3&s='
 
 instances = {}
+
+
 
 class Request:
 	
@@ -752,6 +773,7 @@ class Page:
 				self._page = self._page[:board_pos] + tag_pattern7 + tag_pattern5 + sep_words_found + tag_pattern6
 			# Поскольку message_board встречается между вхождениями, а не до них или после них, то обрабатываем его вне delete_entries.
 			self._page = self._page.replace(message_board,'')
+
 	
 	def example_class(self):
 		self._page = ''''''
@@ -859,9 +881,31 @@ class Tags:
 			else:
 				self._elems[-1].dic = tmp_str
 				
+	def _phrases(self,i=0):
+		if self._tags[i].startswith(tag_pattern_ph1) or self._tags[i].startswith(tag_pattern_ph2) or self._tags[i].startswith(tag_pattern_ph3) or self._tags[i].startswith(tag_pattern_ph4):
+			if i + 1 < len(self._tags):
+				pos1 = self._borders[i][1] + 1
+				pos2 = self._borders[i+1][0] - 1
+				if pos1 >= len(self._page):
+					log.append('Tags._phrases',lev_warn,globs['mes'].tag_near_text_end % self._tags[i])
+				else:
+					tmp_str = self._page[pos1:pos2+1]
+					# If we see symbols '<' or '>' there for some reason, then there is a problem in the tag extraction algorithm. We can make manual deletion of '<' and '>' there.
+					# Draft such cases as '23 фраз' as dictionary titles, not terms
+					# todo: Make this selectable
+					match = re.search('\d+ фраз',tmp_str)
+					if match:
+						self._elems[-1].dic = tmp_str
+					else:
+						self._elems[-1].term = tmp_str
+				self._url(i)
+				return True
+			else:
+				log.append('Tags._term',lev_warn,globs['mes'].last_tag % self._tags[i])
+				
 	# Extract a term
 	def _term(self,i=0):
-		if self._tags[i].startswith(tag_pattern2) or self._tags[i].startswith(tag_pattern2b):
+		if tag_pattern_t1 in self._tags[i] or tag_pattern_t2 in self._tags[i] or tag_pattern_t3 in self._tags[i] or tag_pattern_t4 in self._tags[i]:
 			# It is reasonable to bind URLs to terms only, but we want the number of URLs to match the number of article elements, moreover, extra URLs can appear useful.
 			if i + 1 < len(self._tags):
 				pos1 = self._borders[i][1] + 1
@@ -869,34 +913,20 @@ class Tags:
 				if pos1 >= len(self._page):
 					log.append('Tags._term',lev_warn,globs['mes'].tag_near_text_end % self._tags[i])
 				else:
-					if tag_pattern7 in self._tags[i+1] or tag_pattern8 in self._tags[i+1]:
-						tmp_str = self._page[pos1:pos2+1]
-						# If we see symbols '<' or '>' there for some reason, then there is a problem in the tag extraction algorithm. We can make manual deletion of '<' and '>' there.
-						# Draft such cases as '23 фраз' as dictionary titles, not terms
-						# todo: Make this selectable
-						match = re.search('\d+ фраз',tmp_str)
-						if match:
-							self._elems[-1].dic = tmp_str
-						else:
-							self._elems[-1].term = tmp_str
-					self._url(i)
+					self._elems[-1].term = self._page[pos1:pos2+1]
+				self._url(i)
 			else:
 				log.append('Tags._term',lev_warn,globs['mes'].last_tag % self._tags[i])
 				
 	# Extract a speech form
-	# todo: Extract all speech forms right away, without converting from _term
 	def _speech(self,i=0):
-		# todo: check & cleanup
-		par1 = tag_pattern7 in self._tags[i] and tag_pattern14b in self._tags[i]
-		par2 = tag_pattern21 in self._tags[i] and tag_pattern14c in self._tags[i]
-		par3 = tag_pattern21 in self._tags[i] and tag_pattern14d in self._tags[i]
-		par4 = tag_pattern7 in self._tags[i] and tag_pattern14 in self._tags[i]
-		par5 = self._tags[i].startswith(tag_pattern15)
-		par6 = tag_pattern7 in self._tags[i] and tag_pattern14c in self._tags[i]
-		par7 = tag_pattern7 in self._tags[i] and tag_pattern14d in self._tags[i]
-		par8 = tag_pattern21 in self._tags[i] and tag_pattern14 in self._tags[i]
-		par9 = tag_pattern21 in self._tags[i] and tag_pattern14b in self._tags[i]
-		if par1 or par2 or par3 or par4 or par5 or par6 or par7 or par8 or par9:
+		par1 = tag_pattern_sp1 in self._tags[i]
+		par2 = tag_pattern_sp2 in self._tags[i]
+		par3 = tag_pattern_sp3 in self._tags[i]
+		par4 = tag_pattern_sp4 in self._tags[i]
+		par5 = tag_pattern_sp5 in self._tags[i] and tag_pattern_t1 in self._tags[i]
+		par6 = tag_pattern_sp5 in self._tags[i] and tag_pattern_t2 in self._tags[i]
+		if par1 or par2 or par3 or par4 or par5 or par6:
 			# It is reasonable to bind URLs to terms only, but we want the number of URLs to match the number of article elements, moreover, extra URLs can appear useful.
 			if i + 1 < len(self._tags):
 				pos1 = self._borders[i][1] + 1
@@ -905,6 +935,7 @@ class Tags:
 					log.append('Tags._speech',lev_warn,globs['mes'].tag_near_text_end % self._tags[i])
 				else:
 					self._elems[-1].speech = self._page[pos1:pos2+1]
+					# todo: fix: 1st 'speech' is not shown, probably because there is no 'dic'
 					# todo: self.url = cur_pair + tag_pattern19
 					self.url = ''
 					return True
@@ -946,17 +977,6 @@ class Tags:
 				else:
 					self._elems[-1].comment = tmp_str
 	
-	# Delete some common entries
-	def _common(self):
-		# We can also delete 'g-sort' here
-		# todo: remove useless entries by their URL, not by their names
-		i = 0
-		while i < len(self._elems):
-			if self._elems[i].term in delete_entries:
-				del self._elems[i]
-				i -= 1
-			i += 1
-	
 	# We do not need empty entries before creating cells, so we delete them (if any)
 	def _empty(self):
 		i = 0
@@ -989,14 +1009,16 @@ class Tags:
 				self._elems.append(Cell())
 				EntryMatch = False
 				self._dic(i)
-				if self._speech(i):
-					self._elems[-1].term = ''
+				if self._phrases(i):
+					self._elems[-1].speech = ''
 				else:
-					self._term(i)
+					if self._speech(i):
+						self._elems[-1].term = ''
+					else:
+						self._term(i)
 				self._comment(i)
 				log.append('Tags.elems',lev_debug,globs['mes'].adding_url % self.url)
 				self._elems[i].url = self.url
-			self._common()
 			self._empty()
 		return self._elems
 		
@@ -1081,7 +1103,18 @@ class Tags:
 		old_total = len(self._tags)
 		i = 0
 		while i < len(self._tags):
-			if tag_pattern1 in self._tags[i] or tag_pattern2 in self._tags[i] or tag_pattern2b in self._tags[i] or tag_pattern3 in self._tags[i] or tag_pattern4 in self._tags[i] or tag_pattern5 in self._tags[i] or tag_pattern6 in self._tags[i] or tag_pattern7 in self._tags[i] or tag_pattern8 in self._tags[i]:
+			Found = False
+			for j in range(len(tag_pattern_del)):
+				if tag_pattern_del[j] in self._tags[i]:
+					Found = True
+					break
+			if Found:
+				log.append('Tags._useless',lev_debug,globs['mes'].deleting_tag % (i,self._tags[i]))
+				del self._tags[i]
+				del self._borders[i]
+				i -= 1
+			# todo (?): elaborate
+			elif tag_pattern1 in self._tags[i] or tag_pattern2 in self._tags[i] or tag_pattern2b in self._tags[i] or tag_pattern3 in self._tags[i] or tag_pattern4 in self._tags[i] or tag_pattern5 in self._tags[i] or tag_pattern6 in self._tags[i] or tag_pattern7 in self._tags[i] or tag_pattern8 in self._tags[i]:
 				log.append('Tags._useless',lev_debug,globs['mes'].tag_kept % self._tags[i])
 			else:
 				log.append('Tags._useless',lev_debug,globs['mes'].deleting_tag % (i,self._tags[i]))
@@ -1217,7 +1250,14 @@ class Cells:
 						row.append(Cell())
 					h_request._cells.append(row)
 					# todo: Speech position is hardcoded. Should we enhance this?
-					if h_request._collimit >= 2:
+					if h_request._collimit > 2:
+						# Adding empty cells allows to format the view more correctly
+						row = [Cell(),h_request._elems[i]]
+						j = 2
+						while j < h_request._collimit:
+							row.append(Cell())
+							j += 1
+					elif h_request._collimit == 2:
 						row = [Cell(),h_request._elems[i]]
 					else:
 						row = [h_request._elems[i]]
@@ -1744,7 +1784,10 @@ class Moves:
 	def text_end(self):
 		# todo: Почему не удается использовать 'move_right', 'move_down'?
 		if not h_request._moves['_move_text_end']:
-			h_request._moves['_move_text_end'] = self.get_selectable_backwards(len(h_request._cells)-1,len(h_request._cells[-1])-1,False)
+			if len(h_request.cells()) > 0:
+				h_request._moves['_move_text_end'] = self.get_selectable_backwards(len(h_request._cells)-1,len(h_request._cells[-1])-1,False)
+			else:
+				h_request._moves['_move_text_end'] = (0,0)
 		return h_request._moves['_move_text_end']
 		
 	# Логика 'move_up' и 'move_down': идем вверх/вниз по тому же столбцу. Если на текущей строке нет выделяемой ячейки в нужном столбце, тогда пропускаем ее. Если дошли до конца столбца, переходим на первую/последнюю строку последующего/предыдущего столбца.
