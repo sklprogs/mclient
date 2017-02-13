@@ -249,25 +249,25 @@ online_dic_urls = ( globs['var']['pair_root'] + globs['var']['pair_eng_rus'],	# 
 # Tag patterns
 tag_pattern_del = 	[
 						'.exe?a=5&s=AboutMultitran.htm',	# О словаре
-						'.exe?a=5&s=FAQ.htm',				# FAQ
-						'.exe?a=40',						# Вход
-						'.exe?a=113',						# Регистрация
-						'.exe?a=24&s=',						# Настройки
-						'.exe?a=5&s=searches',				# Словари
-						'.exe?a=2&l1=1&l2=2',				# Форум
-						'.exe?a=44&nadd=1',					# Купить
-						'.exe?a=5&s=DownloadFile',			# Скачать
-						'.exe?a=45',						# Отзывы
-						'.exe?a=5&s=s_contacts',			# Контакты
-						'.exe?a=104&&',						# Добавить
-						'.exe?a=134&s=',					# Удалить
-						'.exe?a=11&l1=',					# Изменить
-						'.exe?a=26&&s=',					# Сообщить об ошибке
-						'.exe?a=136',						# Оценить сайт
-						'&ex=1',							# только заданная форма слова
-						'&order=1',							# в заданном порядке
-						'.exe?a=46&&short_value'			# спросить в форуме
-						'.exe?a=5&s=SendPassword'			# я забыл пароль
+						'.exe?a=5&s=FAQ.htm'           ,	# FAQ
+						'.exe?a=40'                    ,	# Вход
+						'.exe?a=113'                   ,	# Регистрация
+						'.exe?a=24&s='                 ,	# Настройки
+						'.exe?a=5&s=searches'          ,	# Словари
+						'.exe?a=2&l1=1&l2=2'           ,	# Форум
+						'.exe?a=44&nadd=1'             ,	# Купить
+						'.exe?a=5&s=DownloadFile'      ,	# Скачать
+						'.exe?a=45'                    ,	# Отзывы
+						'.exe?a=5&s=s_contacts'        ,	# Контакты
+						'.exe?a=104&&'                 ,	# Добавить
+						'.exe?a=134&s='                ,	# Удалить
+						'.exe?a=11&l1='                ,	# Изменить
+						'.exe?a=26&&s='                ,	# Сообщить об ошибке
+						'.exe?a=136'                   ,	# Оценить сайт
+						'&ex=1'                        ,	# только заданная форма слова
+						'&order=1'                     ,	# в заданном порядке
+						'.exe?a=46&&short_value'       ,	# спросить в форуме
+						'.exe?a=5&s=SendPassword'      ,	# я забыл пароль
 						'.exe?a=5&s=EnterProblems'			# проблемы со входом или использованием форума?
 					]
 tag_pattern1 = '<a title="'
@@ -748,6 +748,7 @@ class Page:
 			globs['dry_count'] += 1
 		else:
 			self.get()
+		self.mt_specific_replace()
 		self.decode_entities() # HTML specific
 		self.common_replace() # HTML specific
 		self.article_not_found() # HTML specific
@@ -778,7 +779,6 @@ class Page:
 				self._page = self._page[:board_pos] + tag_pattern7 + tag_pattern5 + sep_words_found + tag_pattern6
 			# Поскольку message_board встречается между вхождениями, а не до них или после них, то обрабатываем его вне delete_entries.
 			self._page = self._page.replace(message_board,'')
-
 	
 	def example_class(self):
 		self._page = ''''''
@@ -802,6 +802,9 @@ class Page:
 		self._page = self._page.replace(' <','<')
 		self._page = self._page.replace('>'+nbspace,'>')
 		self._page = self._page.replace('> ','>')
+		
+	def mt_specific_replace(self):
+		self._page = self._page.replace('&nbsp;Вы знаете перевод этого выражения? Добавьте его в словарь:','').replace('&nbsp;Вы знаете перевод этого слова? Добавьте его в словарь:','').replace('&nbsp;Требуется авторизация<br>&nbsp;Пожалуйста, войдите на сайт под Вашим именем','')
 	
 	# Convert HTML entities to a human readable format, e.g., '&copy;' -> '©'
 	def decode_entities(self): # HTML specific
@@ -1075,7 +1078,7 @@ class Tags:
 		
 	def page(self):
 		if not self._page:
-			self._page = Page().get()
+			self._page = Page()._page
 			# todo: Move this to __init__?
 			self.invalid()
 			self.open_close()
