@@ -266,6 +266,9 @@ tag_pattern_del = 	[
 						'.exe?a=136',						# Оценить сайт
 						'&ex=1',							# только заданная форма слова
 						'&order=1',							# в заданном порядке
+						'.exe?a=46&&short_value'			# спросить в форуме
+						'.exe?a=5&s=SendPassword'			# я забыл пароль
+						'.exe?a=5&s=EnterProblems'			# проблемы со входом или использованием форума?
 					]
 tag_pattern1 = '<a title="'
 tag_pattern2 = '<a href="M.exe?'
@@ -291,6 +294,8 @@ tag_pattern_t1 = 'M.exe?t'
 tag_pattern_t2 = 'm.exe?t'
 tag_pattern_t3 = '<a href="M.exe?&s='
 tag_pattern_t4 = '<a href="m.exe?&s='
+tag_pattern_t5 = '<a href="M.exe?s='
+tag_pattern_t6 = '<a href="m.exe?s='
 # May also need to look at: '<a href="#start', '<a href="#phrases', '<a href="', '<span STYLE="color:gray"> (ед.ч., мн.ч.)<span STYLE="color:black">'
 tag_pattern_ph1 = '<a href="M.exe?a=3&&s='
 tag_pattern_ph2 = '<a href="m.exe?a=3&&s='
@@ -905,7 +910,13 @@ class Tags:
 				
 	# Extract a term
 	def _term(self,i=0):
-		if tag_pattern_t1 in self._tags[i] or tag_pattern_t2 in self._tags[i] or tag_pattern_t3 in self._tags[i] or tag_pattern_t4 in self._tags[i]:
+		par1 = tag_pattern_t1 in self._tags[i]
+		par2 = tag_pattern_t2 in self._tags[i]
+		par3 = tag_pattern_t3 in self._tags[i]
+		par4 = tag_pattern_t4 in self._tags[i]
+		par5 = tag_pattern_t5 in self._tags[i]
+		par6 = tag_pattern_t6 in self._tags[i]
+		if par1 or par2 or par3 or par4 or par5 or par6:
 			# It is reasonable to bind URLs to terms only, but we want the number of URLs to match the number of article elements, moreover, extra URLs can appear useful.
 			if i + 1 < len(self._tags):
 				pos1 = self._borders[i][1] + 1
