@@ -16,7 +16,7 @@ import sqlite3
 import pickle
 
 product = 'MClient'
-version = '4.8.1'
+version = '4.8.2'
 
 
 

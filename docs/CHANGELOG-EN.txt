@@ -1,5 +1,8 @@
 
 
+4.8.2
+* Fix tags when only separate words are found
+
 4.8.1
 * Enhance tag extraction
 
