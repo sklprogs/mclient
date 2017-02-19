@@ -2,8 +2,8 @@
 # -*- coding: UTF-8 -*-
 
 from constants import *
-from shared import Message, WriteTextFile, Launch, List, Config, Clipboard, Path, Online, ReadTextFile, Email, timer, log, globs, h_os, CreateInstance, h_lang
-from sharedGUI import create_binding, Button, Root, Top, Entry, WidgetShared, Frame, TextBox, ListBox, dialog_save_file, OptionMenu, Geometry
+from shared import WriteTextFile, Launch, List, Config, Path, Online, ReadTextFile, Email, timer, log, globs, CreateInstance, h_lang
+from sharedGUI import Message, create_binding, Button, Root, Top, Entry, WidgetShared, Frame, TextBox, ListBox, dialog_save_file, OptionMenu, Geometry, Clipboard, h_widgets
 import copy
 # В Python 3 не работает просто import urllib, импорт должен быть именно такой, как здесь
 import urllib.request, urllib.parse
@@ -16,7 +16,7 @@ import sqlite3
 import pickle
 
 product = 'MClient'
-version = '4.8.2'
+version = '4.8.3'
 
 
 
@@ -302,8 +302,6 @@ tag_pattern_ph2 = '<a href="m.exe?a=3&&s='
 tag_pattern_ph3 = '<a href="M.exe?a=3&s='
 tag_pattern_ph4 = '<a href="m.exe?a=3&s='
 
-instances = {}
-
 
 
 class Request:
@@ -399,41 +397,63 @@ class Request:
 
 
 
-def init_inst(name):
-	if name in instances and instances[name]:
-		pass
-	elif name == 'root':
-		instances[name] = Root()
-		instances[name].close()
-	elif name == 'top':
-		#instances[name] = Top(init_inst('root'),Maximize=True) #,DestroyRoot=True # todo: del
-		instances[name] = Top(init_inst('root'))
-		instances[name].icon(globs['var']['icon_mclient'])
-		Geometry(h_root=init_inst('root'),parent_obj=instances[name],title=h_request.search()).maximize()
-	elif name == 'top_entry':
-		instances[name] = Top(init_inst('root'))
-		#instances[name].close()
-	elif name == 'top_textbox':
-		#instances[name] = Top(init_inst('root'),Maximize=True) # todo: del
-		instances[name] = Top(init_inst('root'))
-		Geometry(h_root=init_inst('root'),parent_obj=instances[name],title=h_request.search()).maximize()
-		instances[name].close()
-	elif name == 'entry':
-		instances[name] = Entry(init_inst('top_entry'))
-		instances[name].icon(globs['var']['icon_mclient'])
-		instances[name].title(globs['mes'].search_str)
-	elif name == 'textbox':
-		instances[name] = TextBox(init_inst('top_textbox'))
-	elif name == 'clipboard':
-		instances[name] = Clipboard(init_inst('root'))
-	elif name == 'online':
+class Objects: # Requires 'h_widgets', 'h_request'
+	
+	def __init__(self):
+		self._root = self._top = self._entry = self._textbox = self._clipboard = self._online_mt = self._online_other = self._about = None
+		
+	def root(self):
+		if not self._root:
+			self._root = h_widgets.root()
+		return self._root
+		
+	def top(self):
+		if not self._top:
+			self._top = Top(self.root())
+			self._top.icon(globs['var']['icon_mclient'])
+			Geometry(parent_obj=self._top,title=h_request.search()).maximize()
+		return self._top
+			
+	def entry(self):
+		if not self._entry:
+			self._entry = Entry(parent_obj=Top(self.root()))
+			self._entry.icon(globs['var']['icon_mclient'])
+			self._entry.title(globs['mes'].search_str)
+		return self._entry
+		
+	def textbox(self):
+		if not self._textbox:
+			h_top = Top(self.root())
+			self._textbox = TextBox(parent_obj=h_top)
+			Geometry(parent_obj=h_top).set('500x400')
+			self._textbox.icon(globs['var']['icon_mclient'])
+		return self._textbox
+		
+	def clipboard(self):
+		if not self._clipboard:
+			self._clipboard = Clipboard(self.root())
+		return self._clipboard
+		
+	def online_mt(self):
+		if not self._online_mt:
+			self._online_mt = Online(MTSpecific=True)
+		return self._online_mt
+		
+	def online_other(self):
+		if not self._online_other:
+			self._online_other = Online(MTSpecific=False)
+		return self._online_other
+		
+	def online(self):
 		if h_request.source() == 'Multitran':
-			instances[name] = Online(MTSpecific=True)
+			return self.online_mt()
 		else:
-			instances[name] = Online(MTSpecific=False)
-	elif name == 'about':
-		instances[name] = About()
-	return instances[name]
+			return self.online_other()
+			
+	def about(self):
+		if not self._about:
+			self._about = About()
+		return self._about
 
 
 
@@ -805,6 +825,9 @@ class Page:
 		
 	def mt_specific_replace(self):
 		self._page = self._page.replace('&nbsp;Вы знаете перевод этого выражения? Добавьте его в словарь:','').replace('&nbsp;Вы знаете перевод этого слова? Добавьте его в словарь:','').replace('&nbsp;Требуется авторизация<br>&nbsp;Пожалуйста, войдите на сайт под Вашим именем','')
+		match = re.search('все формы слов[а]{0,1} \(\d+\)',self._page)
+		if match:
+			self._page = self._page.replace(match.group(0),'')
 	
 	# Convert HTML entities to a human readable format, e.g., '&copy;' -> '©'
 	def decode_entities(self): # HTML specific
@@ -900,12 +923,11 @@ class Tags:
 					tmp_str = self._page[pos1:pos2+1]
 					# If we see symbols '<' or '>' there for some reason, then there is a problem in the tag extraction algorithm. We can make manual deletion of '<' and '>' there.
 					# Draft such cases as '23 фраз' as dictionary titles, not terms
-					# todo: Make this selectable
-					match = re.search('\d+ фраз',tmp_str)
-					if match:
-						self._elems[-1].dic = tmp_str
-					else:
-						self._elems[-1].term = tmp_str
+					if re.search('\d+ фраз',tmp_str):
+						# todo: Assigning both 'dic' and 'speech' will not show 'speech' # cur
+						self._elems[-1].dic = 'Phrases '
+						self._elems[-1].speech = 'Phrases '
+					self._elems[-1].term = tmp_str
 				self._url(i)
 				return True
 			else:
@@ -1208,9 +1230,9 @@ class Elems:
 					i -= 1
 			i += 1
 
+	# todo: assign Selectables at tagging and store them in DB
 	# Назначить выделяемые ячейки
 	def define_selectables(self):
-		# Выделяемые ячейки надо назначать как минимум после этой процедуры
 		for i in range(len(h_request._elems)):
 			if h_request._elems[i].term:
 				h_request._elems[i].Selectable = True
@@ -1320,7 +1342,7 @@ class Cells:
 
 def call_app():
 	# Использовать то же сочетание клавиш для вызова окна
-	Geometry(h_root=init_inst('root'),parent_obj=init_inst('top'),title=h_request.search()).activate(MouseClicked=h_table.MouseClicked)
+	Geometry(parent_obj=h_obj.top(),title=h_request.search()).activate(MouseClicked=h_table.MouseClicked)
 	# In case of .focus_set() *first* Control-c-c can call an inactive widget
 	h_table.search_field.widget.focus_force()
 
@@ -1335,14 +1357,14 @@ def timed_update():
 				kl_mod.keylistener.cancel()
 				kl_mod.keylistener.restart()
 			h_table.MouseClicked = True
-			new_clipboard = init_inst('clipboard').paste()
+			new_clipboard = h_obj.clipboard().paste()
 			if new_clipboard:
 				h_table.search = new_clipboard
 				h_table.search_online()
 		if check == 2 or h_table.CaptureHotkey:
 			call_app()
 	# We need to have .after in the same function for it to work
-	h_quit._id = init_inst('root').widget.after(300,timed_update)
+	h_quit._id = h_obj.root().widget.after(300,timed_update)
 	h_quit.now()
 
 
@@ -1355,15 +1377,15 @@ class Quit:
 	
 	def wait(self,*args):
 		self.Quit = True
-		init_inst('top').close()
+		h_obj.top().close()
 		
 	def now(self,*args):
 		if self.Quit:
 			log.append('Quit.now',lev_info,globs['mes'].goodbye)
 			kl_mod.keylistener.cancel()
-			init_inst('top').widget.destroy()
-			init_inst('root').widget.after_cancel(self._id)
-			init_inst('root').destroy()
+			h_obj.top().widget.destroy()
+			h_obj.root().widget.after_cancel(self._id)
+			h_obj.root().destroy()
 			sys.exit()
 
 
@@ -1373,7 +1395,7 @@ class About:
 	def __init__(self):
 		self.Active = False
 		self.type = 'About'
-		self.parent_obj = Top(init_inst('root'))
+		self.parent_obj = Top(h_obj.root())
 		self.widget = self.parent_obj.widget
 		self.parent_obj.icon(globs['var']['icon_mclient'])
 		self.parent_obj.title(globs['mes'].about)
@@ -1412,14 +1434,14 @@ class About:
 
 	# Открыть веб-страницу с лицензией
 	def open_license_url(self,*args):
-		init_inst('online')._url = globs['license_url']
-		init_inst('online').browse()
+		h_obj.online()._url = globs['license_url']
+		h_obj.online().browse()
 
 	# Отобразить информацию о лицензии третьих сторон
 	def show_third_parties(self,*args):
-		init_inst('textbox').update(title=globs['mes'].btn_third_parties+':',text=third_parties,ReadOnly=True,icon=globs['var']['icon_mclient'])
+		h_obj.textbox().update(title=globs['mes'].btn_third_parties+':',text=third_parties,ReadOnly=True,icon=globs['var']['icon_mclient'])
 		# todo: Maximize key does not work outside sharedGUI
-		init_inst('top_textbox').show()
+		h_obj._textbox.show()
 
 
 		
@@ -1427,7 +1449,7 @@ class SaveArticle:
 	
 	def __init__(self):
 		self.type = 'SaveArticle'
-		self.parent_obj = Top(init_inst('root'))
+		self.parent_obj = Top(h_obj.root())
 		self.obj = ListBox(parent_obj=self.parent_obj,Multiple=False,lst=[globs['mes'].save_view_as_html,globs['mes'].save_article_as_html,globs['mes'].save_article_as_txt,globs['mes'].copy_article_html,globs['mes'].copy_article_txt],title=globs['mes'].select_action,icon=globs['var']['icon_mclient'])
 		self.widget = self.obj.widget
 		self.custom_bindings()
@@ -1487,10 +1509,10 @@ class SaveArticle:
 			WriteTextFile(self.file,AskRewrite=False).write(h_request._text)
 			
 	def copy_raw(self):
-		init_inst('clipboard').copy(h_request._html_raw)
+		h_obj.clipboard().copy(h_request._html_raw)
 			
 	def copy_view(self):
-		init_inst('clipboard').copy(h_request._text)
+		h_obj.clipboard().copy(h_request._text)
 
 	
 
@@ -1499,11 +1521,9 @@ class SearchArticle:
 	
 	def __init__(self):
 		self.type = 'SearchArticle'
-		self.obj = init_inst('entry')
+		self.obj = h_obj.entry()
+		self.obj.title(globs['mes'].search_word)
 		self.widget = self.obj.widget
-		self.parent_obj = init_inst('top_entry')
-		self.parent_obj.icon(globs['var']['icon_mclient'])
-		self.parent_obj.title(globs['mes'].search_word)
 		create_binding(widget=self.widget,bindings=globs['var']['bind_search_article_forward'],action=self.close)
 		create_binding(widget=self.widget,bindings='<Escape>',action=self.close)
 		self.obj.select_all()
@@ -1523,10 +1543,10 @@ class SearchArticle:
 		self.obj.clear_text()
 	
 	def close(self,*args):
-		self.parent_obj.close()
+		self.obj.close()
 		
 	def show(self,*args):
-		self.parent_obj.show()
+		self.obj.show()
 		self.obj.select_all()
 	
 	# Create a list of all matches in the article
@@ -1586,19 +1606,19 @@ class SearchField:
 		if text:
 			self.widget.insert(0,text)
 		else:
-			self.widget.insert(0,init_inst('clipboard').paste())
+			self.widget.insert(0,h_obj.clipboard().paste())
 		return 'break'
 		
 	# Вставить предыдущий запрос
 	def insert_repeat_sign(self,*args):
 		if h_db._count > 0:
-			init_inst('clipboard').copy(str(h_db.prev()))
+			h_obj.clipboard().copy(str(h_db.prev()))
 			self.paste()
 
 	# Вставить запрос до предыдущего
 	def insert_repeat_sign2(self,*args):
 		if h_db._count > 1:
-			init_inst('clipboard').copy(str(h_db.preprev()))
+			h_obj.clipboard().copy(str(h_db.preprev()))
 			self.paste()
 
 
@@ -1606,7 +1626,7 @@ class SearchField:
 class SpecSymbols:
 	
 	def __init__(self):
-		self.obj = Top(init_inst('root'))
+		self.obj = Top(h_obj.root())
 		self.widget = self.obj.widget
 		self.obj.icon(globs['var']['icon_mclient'])
 		self.obj.title(globs['mes'].paste_spec_symbol)
@@ -1634,7 +1654,7 @@ class SpecSymbols:
 class History:
 	
 	def __init__(self):
-		self.parent_obj = Top(init_inst('root'))
+		self.parent_obj = Top(h_obj.root())
 		self.parent_obj.widget.geometry('250x350')
 		self._title = globs['mes'].btn_history
 		self._icon = globs['var']['icon_mclient']
@@ -1660,7 +1680,7 @@ class History:
 		self.parent_obj.close()
 		
 	def fill(self):
-		self.obj.reset(lst=h_db.searches(),title=self._title,icon=self._icon)
+		self.obj.reset(lst=h_db.searches(),title=self._title)
 	
 	def update(self):
 		self.fill()
@@ -1688,7 +1708,7 @@ class History:
 		
 	# Скопировать элемент истории
 	def copy(self,*args):
-		init_inst('clipboard').copy(h_request.search())
+		h_obj.clipboard().copy(h_request.search())
 
 
 
@@ -1949,7 +1969,7 @@ class TkinterHtmlMod(tk.Widget):
 		self.load_tkhtml()
 		self.widget = tk.Widget
 		self.obj = self.widget.__init__(self,master,'html',cfg,kw)
-		self.vsb = ttk.Scrollbar(init_inst('top').widget,orient=tk.VERTICAL)
+		self.vsb = ttk.Scrollbar(h_obj.top().widget,orient=tk.VERTICAL)
 		self.hsb = ttk.Scrollbar(self.master,orient=tk.HORIZONTAL)
 		self.widget.configure(self,yscrollcommand=self.vsb.set)
 		self.widget.configure(self,xscrollcommand=self.hsb.set)
@@ -1962,10 +1982,10 @@ class TkinterHtmlMod(tk.Widget):
 		
 		# todo: The same does not work when imported from sharedGUI for some reason
 		if h_os.sys() == 'lin':
-			init_inst('top').widget.wm_attributes('-zoomed',True)
+			h_obj.top().widget.wm_attributes('-zoomed',True)
 		# Win, Mac
 		else:
-			init_inst('top').widget.wm_state(newstate='zoomed')
+			h_obj.top().widget.wm_state(newstate='zoomed')
 		self.history = History()
 		self.create_frame_panel()
 		# The very place for packing the vertical scrollbar. If we pack it earlier, it will fill an extra space, if later - it will be too small.
@@ -1974,10 +1994,10 @@ class TkinterHtmlMod(tk.Widget):
 		create_binding(widget=self,bindings=globs['var']['bind_go_url'],action=self.go_url)
 		self.bind("<Motion>",self.mouse_sel,True)
 		# ВНИМАНИЕ: По непонятной причине, не работает привязка горячих клавиш (только мышь) для данного виджета, работает только для основного виджета!
-		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_copy_sel'],globs['var']['bind_copy_sel_alt'],globs['var']['bind_copy_sel_alt2']],action=self.copy_cell)
+		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_copy_sel'],globs['var']['bind_copy_sel_alt'],globs['var']['bind_copy_sel_alt2']],action=self.copy_cell)
 		# По неясной причине в одной и той же Windows ИНОГДА не удается включить '<KP_Delete>'
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_delete_cell'],action=self.delete_cell)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_add_cell'],action=self.add_cell)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_delete_cell'],action=self.delete_cell)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_add_cell'],action=self.add_cell)
 		self.widget_width = 0
 		self.widget_height = 0
 		self.widget_offset_x = 0
@@ -1988,10 +2008,10 @@ class TkinterHtmlMod(tk.Widget):
 	def get_url(self):
 		# Note: encoding must be UTF-8 here
 		if h_request.source() == 'Multitran':
-			init_inst('online').reset(self.get_pair(),self.search,MTSpecific=True)
+			h_obj.online().reset(self.get_pair(),self.search,MTSpecific=True)
 		else:
-			init_inst('online').reset(self.get_pair(),self.search,MTSpecific=False)
-		self.url = init_inst('online').url()
+			h_obj.online().reset(self.get_pair(),self.search,MTSpecific=False)
+		self.url = h_obj.online().url()
 		log.append('TkinterHtmlMod.get_url',lev_debug,"self.url: %s" % str(self.url))
 	
 	# todo: move 'move_*' procedures to Moves class
@@ -2086,8 +2106,8 @@ class TkinterHtmlMod(tk.Widget):
 	
 	# Открыть URL текущей статьи в браузере
 	def open_in_browser(self,*args):
-		init_inst('online')._url = h_request._url
-		init_inst('online').browse()
+		h_obj.online()._url = h_request._url
+		h_obj.online().browse()
 	
 	# Скопировать URL текущей статьи или выделения
 	def copy_url(self,obj,mode='article'):
@@ -2096,15 +2116,15 @@ class TkinterHtmlMod(tk.Widget):
 			# Скопировать URL текущего термина. URL 1-го термина не совпадает с URL статьи!
 			cur_url = h_request._cells[self.i][self.j].url
 			if globs['bool']['Iconify']:
-				Geometry(h_root=init_inst('root'),parent_obj=init_inst('top'),title=h_request.search()).minimize()
+				Geometry(parent_obj=h_obj.top(),title=h_request.search()).minimize()
 		elif mode == 'article':
 			# Скопировать URL статьи
 			cur_url = h_request._url
 			if globs['bool']['Iconify']:
-				Geometry(h_root=init_inst('root'),parent_obj=init_inst('top'),title=h_request.search()).minimize()
+				Geometry(parent_obj=h_obj.top(),title=h_request.search()).minimize()
 		else:
 			Message(func='TkinterHtmlMod.copy_url',type=lev_err,message=globs['mes'].unknown_mode % (str(mode),'article, term'))
-		init_inst('clipboard').copy(cur_url)
+		h_obj.clipboard().copy(cur_url)
 
 	# Открыть веб-страницу с определением текущего термина
 	def define(self,Selected=True): # Selected: True: Выделенный термин; False: Название статьи
@@ -2112,8 +2132,8 @@ class TkinterHtmlMod(tk.Widget):
 			search_str = 'define:' + h_request._cells[self.i][self.j].term
 		else:
 			search_str = 'define:' + h_request._search
-		init_inst('online').reset(base_str=globs['var']['web_search_url'],search_str=search_str)
-		init_inst('online').browse()
+		h_obj.online().reset(base_str=globs['var']['web_search_url'],search_str=search_str)
+		h_obj.online().browse()
 	
 	# Обновить рисунки на кнопках
 	def update_buttons(self):
@@ -2218,7 +2238,7 @@ class TkinterHtmlMod(tk.Widget):
 					
 	# Создание каркаса с полем ввода, кнопкой выбора направления перевода и кнопкой выхода
 	def create_frame_panel(self):
-		self.frame_panel = Frame(init_inst('top'),expand=0,fill='x',side='bottom')
+		self.frame_panel = Frame(h_obj.top(),expand=0,fill='x',side='bottom')
 		# Поле ввода поисковой строки
 		self.search_field = SearchField(parent_obj=self.frame_panel)
 		self.draw_buttons()
@@ -2257,7 +2277,7 @@ class TkinterHtmlMod(tk.Widget):
 		# Кнопка включения/отключения истории
 		self.button = Button(self.frame_panel,text=globs['mes'].btn_history,hint=globs['mes'].hint_history,action=self.history.toggle,inactive_image_path=globs['var']['icon_toggle_history'],active_image_path=globs['var']['icon_toggle_history'],bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt']])
 		create_binding(widget=self.button.widget,bindings=globs['var']['bind_clear_history'],action=self.history.clear)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_clear_history_alt'],action=self.history.clear)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_clear_history_alt'],action=self.history.clear)
 		# Кнопка очистки истории
 		Button(self.frame_panel,text=globs['mes'].btn_clear_history,hint=globs['mes'].hint_clear_history,action=self.history.clear,inactive_image_path=globs['var']['icon_clear_history'],active_image_path=globs['var']['icon_clear_history'],bindings=globs['var']['bind_clear_history_alt'])
 		# Кнопка перезагрузки статьи
@@ -2273,55 +2293,55 @@ class TkinterHtmlMod(tk.Widget):
 		# Кнопка "Перехват Ctrl-c-c"
 		self.btn_clipboard = Button(self.frame_panel,text=globs['mes'].btn_clipboard,hint=globs['mes'].hint_watch_clipboard,action=self.watch_clipboard,inactive_image_path=globs['var']['icon_watch_clipboard_off'],active_image_path=globs['var']['icon_watch_clipboard_on'],fg='red',bindings=[])
 		# Кнопка "О программе"
-		Button(self.frame_panel,text=globs['mes'].btn_about,hint=globs['mes'].hint_about,action=init_inst('about').show,inactive_image_path=globs['var']['icon_show_about'],active_image_path=globs['var']['icon_show_about'],bindings=globs['var']['bind_show_about'])
+		Button(self.frame_panel,text=globs['mes'].btn_about,hint=globs['mes'].hint_about,action=h_obj.about().show,inactive_image_path=globs['var']['icon_show_about'],active_image_path=globs['var']['icon_show_about'],bindings=globs['var']['bind_show_about'])
 		# Кнопка выхода
 		Button(self.frame_panel,text=globs['mes'].btn_x,hint=globs['mes'].hint_x,action=h_quit.wait,inactive_image_path=globs['var']['icon_quit_now'],active_image_path=globs['var']['icon_quit_now'],side='right',bindings=[globs['var']['bind_quit_now'],globs['var']['bind_quit_now_alt']])
 
 	def hotkeys(self):
 		# Привязки: горячие клавиши и кнопки мыши
 		create_binding(widget=self.history.widget,bindings=globs['var']['bind_copy_history'],action=self.history.copy)
-		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_go_search'],globs['var']['bind_go_search_alt']],action=self.go_search)
+		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_go_search'],globs['var']['bind_go_search_alt']],action=self.go_search)
 		# todo: do not iconify at <ButtonRelease-3>
 		create_binding(widget=self.search_field.widget,bindings=globs['var']['bind_clear_search_field'],action=self.search_field.clear)
 		create_binding(widget=self.search_field.widget,bindings=globs['var']['bind_paste_search_field'],action=lambda e:self.search_field.paste())
 		if h_os.sys() == 'win' or h_os.sys() == 'mac':
-			create_binding(widget=init_inst('top').widget,bindings='<MouseWheel>',action=self.mouse_wheel)
+			create_binding(widget=h_obj.top().widget,bindings='<MouseWheel>',action=self.mouse_wheel)
 		else:
-			create_binding(widget=init_inst('top').widget,bindings=['<Button 4>','<Button 5>'],action=self.mouse_wheel)
+			create_binding(widget=h_obj.top().widget,bindings=['<Button 4>','<Button 5>'],action=self.mouse_wheel)
 		# Перейти на предыдущую/следующую статью
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_go_back'],action=self.go_back)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_go_forward'],action=self.go_forward)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_move_left'],action=self.move_left)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_move_right'],action=self.move_right)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_move_down'],action=self.move_down)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_move_up'],action=self.move_up)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_move_line_start'],action=self.move_line_start)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_move_line_end'],action=self.move_line_end)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_move_text_start'],action=self.move_text_start)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_move_text_end'],action=self.move_text_end)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_move_page_up'],action=self.move_page_up)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_move_page_down'],action=self.move_page_down)
-		create_binding(widget=init_inst('top').widget,bindings='<Escape>',action=Geometry(h_root=init_inst('root'),parent_obj=init_inst('top'),title=h_request.search()).minimize)
-		create_binding(widget=self,bindings=globs['var']['bind_iconify'],action=Geometry(h_root=init_inst('root'),parent_obj=init_inst('top'),title=h_request.search()).minimize)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_go_back'],action=self.go_back)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_go_forward'],action=self.go_forward)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_left'],action=self.move_left)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_right'],action=self.move_right)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_down'],action=self.move_down)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_up'],action=self.move_up)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_line_start'],action=self.move_line_start)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_line_end'],action=self.move_line_end)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_text_start'],action=self.move_text_start)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_text_end'],action=self.move_text_end)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_page_up'],action=self.move_page_up)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_page_down'],action=self.move_page_down)
+		create_binding(widget=h_obj.top().widget,bindings='<Escape>',action=Geometry(parent_obj=h_obj.top(),title=h_request.search()).minimize)
+		create_binding(widget=self,bindings=globs['var']['bind_iconify'],action=Geometry(parent_obj=h_obj.top(),title=h_request.search()).minimize)
 		# Дополнительные горячие клавиши
-		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_quit_now'],globs['var']['bind_quit_now_alt']],action=h_quit.wait)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_search_article_forward'],action=self.search_forward)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_search_article_backward'],action=self.search_backward)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_re_search_article'],action=self.search_reset)
-		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_reload_article'],globs['var']['bind_reload_article_alt']],action=self.reload)
-		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']],action=self.save_article.select)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_show_about'],action=init_inst('about').show)
-		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history']],action=self.history.toggle)
-		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt']],action=self.history.toggle)
-		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_open_in_browser'],globs['var']['bind_open_in_browser_alt']],action=self.open_in_browser)
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_copy_url'],action=lambda e:self.copy_url(init_inst('top'),mode='term'))
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_copy_article_url'],action=lambda e:self.copy_url(init_inst('top'),mode='article'))
-		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_spec_symbol']],action=self.spec_symbols.show)
+		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_quit_now'],globs['var']['bind_quit_now_alt']],action=h_quit.wait)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_search_article_forward'],action=self.search_forward)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_search_article_backward'],action=self.search_backward)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_re_search_article'],action=self.search_reset)
+		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_reload_article'],globs['var']['bind_reload_article_alt']],action=self.reload)
+		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']],action=self.save_article.select)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_show_about'],action=h_obj.about().show)
+		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history']],action=self.history.toggle)
+		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt']],action=self.history.toggle)
+		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_open_in_browser'],globs['var']['bind_open_in_browser_alt']],action=self.open_in_browser)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_copy_url'],action=lambda e:self.copy_url(h_obj.top(),mode='term'))
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_copy_article_url'],action=lambda e:self.copy_url(h_obj.top(),mode='article'))
+		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_spec_symbol']],action=self.spec_symbols.show)
 		create_binding(widget=self.search_field.widget,bindings='<Control-a>',action=lambda e:select_all(self.search_field.widget,Small=True))
-		create_binding(widget=init_inst('top').widget,bindings=globs['var']['bind_define'],action=lambda e:self.define(Selected=True))
-		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_prev_pair'],globs['var']['bind_prev_pair_alt']],action=self.option_menu.set_prev)
-		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_next_pair'],globs['var']['bind_next_pair_alt']],action=self.option_menu.set_next)
-		create_binding(widget=init_inst('top').widget,bindings=[globs['var']['bind_toggle_view'],globs['var']['bind_toggle_view_alt']],action=self.toggle_view)
+		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_define'],action=lambda e:self.define(Selected=True))
+		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_prev_pair'],globs['var']['bind_prev_pair_alt']],action=self.option_menu.set_prev)
+		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_next_pair'],globs['var']['bind_next_pair_alt']],action=self.option_menu.set_next)
+		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_toggle_view'],globs['var']['bind_toggle_view_alt']],action=self.toggle_view)
 		
 	def show(self):
 		self.pack(expand=1,fill='both')
@@ -2428,7 +2448,7 @@ class TkinterHtmlMod(tk.Widget):
 	
 	# Сместить экран так, чтобы была видна текущая выделенная ячейка
 	def shift_screen(self):
-		init_inst('root').widget.update_idletasks()
+		h_obj.root().widget.update_idletasks()
 		cur_widget_width = globs['geom_top']['width'] = self.winfo_width()
 		cur_widget_height = globs['geom_top']['height'] = self.winfo_height()
 		cur_widget_offset_x = self.winfo_rootx()
@@ -2526,9 +2546,9 @@ class TkinterHtmlMod(tk.Widget):
 			selected_text = h_request._cells[self.i][self.j].term
 		else:
 			selected_text = List([h_request._cells[self.i][self.j].dic,h_request._cells[self.i][self.j].term,h_request._cells[self.i][self.j].comment]).space_items()
-		init_inst('clipboard').copy(selected_text)
+		h_obj.clipboard().copy(selected_text)
 		if globs['bool']['Iconify']:
-			Geometry(h_root=init_inst('root'),parent_obj=init_inst('top'),title=h_request.search()).minimize()
+			Geometry(parent_obj=h_obj.top(),title=h_request.search()).minimize()
 
 	# Удалить ячейку и перекомпоновать статью
 	def delete_cell(self,*args):
@@ -2569,7 +2589,7 @@ class TkinterHtmlMod(tk.Widget):
 		self.gen_pos2cell()
 		Moves()
 		self.move_text_start()
-		init_inst('top').widget.title(h_request.search())
+		h_obj.top().widget.title(h_request.search())
 		self.history.update()
 		self.update_buttons()
 		self.search_article.reset()
@@ -2664,13 +2684,14 @@ class TkinterHtmlMod(tk.Widget):
 
 if  __name__ == '__main__':
 	h_request = Request()
+	h_obj = Objects()
 	h_db = DB()
 	h_quit = Quit()
-	h_table = TkinterHtmlMod(init_inst('top').widget)
-	init_inst('top').widget.protocol("WM_DELETE_WINDOW",h_quit.wait)
+	h_table = TkinterHtmlMod(h_obj.top().widget)
+	h_obj.top().widget.protocol("WM_DELETE_WINDOW",h_quit.wait)
 	timed_update() # Do not wrap this function. Change this carefully.
 	h_db.search_part()
 	h_table.load_article()
 	h_table.show()
-	init_inst('top').show()
-	init_inst('root').run()
+	h_obj.top().show()
+	h_obj.root().run()
