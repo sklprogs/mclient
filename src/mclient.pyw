@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from constants import *
-from shared import WriteTextFile, Launch, List, Config, Path, Online, ReadTextFile, Email, timer, log, globs, CreateInstance, h_lang
-from sharedGUI import Message, create_binding, Button, Root, Top, Entry, WidgetShared, Frame, TextBox, ListBox, dialog_save_file, OptionMenu, Geometry, Clipboard, h_widgets
+import re
 import copy
 # В Python 3 не работает просто import urllib, импорт должен быть именно такой, как здесь
 import urllib.request, urllib.parse
@@ -14,36 +12,49 @@ from tkinter import ttk
 from io import StringIO
 import sqlite3
 import pickle
+import shared as sh
+import sharedGUI as sg
 
 product = 'MClient'
 version = '4.8.3'
 
+third_parties = '''
+tkinterhtml
+https://bitbucket.org/aivarannamaa/tkinterhtml
+License: MIT
+Copyright (c) <year> aivarannamaa
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ 
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+'''
 
 
-# Comment to enable logging
 class log:
+	
 	def append(self,*args):
 		pass
 
 
 
-class ConfigMclient(Config):
+class ConfigMclient(sh.Config):
 	
 	def __init__(self):
 		super().__init__()
-		self.sections = [SectionBooleans,SectionIntegers,SectionVariables]
-		self.sections_abbr = [SectionBooleans_abbr,SectionIntegers_abbr,SectionVariables_abbr]
-		self.sections_func = [config_parser.getboolean,config_parser.getint,config_parser.get]
-		self.message = globs['mes'].missing_config + '\n'
+		self.sections = [sh.SectionBooleans,sh.SectionIntegers,sh.SectionVariables]
+		self.sections_abbr = [sh.SectionBooleans_abbr,sh.SectionIntegers_abbr,sh.SectionVariables_abbr]
+		self.sections_func = [sh.config_parser.getboolean,sh.config_parser.getint,sh.config_parser.get]
+		self.message = sh.globs['mes'].missing_config + '\n'
 		self.total_keys = 0
 		self.changed_keys = 0
 		self.missing_keys = 0
 		self.missing_sections = 0
 		# Create these keys before reading the config
-		globs['bin_dir'] = Path(os.path.realpath(sys.argv[0])).dirname()
-		self.path = globs['bin_dir'] + os.path.sep + 'mclient.cfg'
+		self.path = '.' + os.path.sep + 'mclient.cfg'
 		self.reset()
-		h_read = ReadTextFile(self.path,Silent=self.Silent)
+		h_read = sh.ReadTextFile(self.path,Silent=self.Silent)
 		self.text = h_read.get()
 		self.Success = h_read.Success
 		self._default()
@@ -56,7 +67,7 @@ class ConfigMclient(Config):
 		self.additional_keys()
 			
 	def _default(self):
-		globs['bool'].update({
+		sh.globs['bool'].update({
 			'AutoCloseSpecSymbol':False,
 			'CopyTermsOnly':True,
 			'ExploreMismatch':False,
@@ -65,7 +76,7 @@ class ConfigMclient(Config):
 			'ShortHistory':False
 			             })
 		#---------------------------------------------------
-		globs['int'].update({
+		sh.globs['int'].update({
 			'default_button_size':36,
 			'default_hint_border_width':1,
 			'default_hint_delay':800,
@@ -77,7 +88,7 @@ class ConfigMclient(Config):
 			'font_terms_size':4
 			              })
 		#---------------------------------------------------
-		globs['var'].update({
+		sh.globs['var'].update({
 			'bind_add_cell':'<Control-Insert>',
 			'bind_clear_history_alt':'<Control-Shift-Delete>',
 			'bind_clear_history':'<ButtonRelease-3>',
@@ -194,56 +205,56 @@ class ConfigMclient(Config):
 				           })
 	
 	def reset(self):
-		globs['bool'] = {}
-		globs['float'] = {}
-		globs['int'] = {}
-		globs['var'] = {}
+		sh.globs['bool'] = {}
+		sh.globs['float'] = {}
+		sh.globs['int'] = {}
+		sh.globs['var'] = {}
 		
 	def additional_keys(self):
-		for key in globs['var']:
-			if globs['var'][key].endswith('.gif'):
-				old_val = globs['var'][key]
-				globs['var'][key] = globs['bin_dir'] + os.path.sep + 'resources' + os.path.sep + globs['var'][key]
-				log.append('ConfigMclient.additional_keys',lev_debug,'%s -> %s' % (old_val,globs['var'][key]))
+		for key in sh.globs['var']:
+			if sh.globs['var'][key].endswith('.gif'):
+				old_val = sh.globs['var'][key]
+				sh.globs['var'][key] = '.' + os.path.sep + 'resources' + os.path.sep + sh.globs['var'][key]
+				log.append('ConfigMclient.additional_keys',sh.lev_debug,'%s -> %s' % (old_val,sh.globs['var'][key]))
 
 
 
 ConfigMclient()
-h_lang.set()
+sh.h_lang.set()
 
-if h_os.sys() == 'win':
+if sh.h_os.sys() == 'win':
 	import kl_mod_win as kl_mod
 	import pythoncom
 else:
 	import kl_mod_lin as kl_mod
 
-globs['_tkhtml_loaded'] = False
+sh.globs['_tkhtml_loaded'] = False
 # todo: del
-globs['bool']['DryRun'] = False # True
-globs['dry_count'] = 0
-globs['geom_top'] = {}
-globs['top'] = {}
+sh.globs['bool']['DryRun'] = False # True
+sh.globs['dry_count'] = 0
+sh.globs['geom_top'] = {}
+sh.globs['top'] = {}
 
-online_url_safe = globs['var']['pair_root'] + 'l1=2&l2=1&s=%ED%E5%E2%E5%F0%ED%E0%FF+%F1%F1%FB%EB%EA%E0' # 'неверная ссылка'
+online_url_safe = sh.globs['var']['pair_root'] + 'l1=2&l2=1&s=%ED%E5%E2%E5%F0%ED%E0%FF+%F1%F1%FB%EB%EA%E0' # 'неверная ссылка'
 sep_words_found = 'найдены отдельные слова'
 message_board = 'спросить в форуме'
 nbspace = ' '
 
 pairs = ('ENG <=> RUS','DEU <=> RUS','SPA <=> RUS','FRA <=> RUS','NLD <=> RUS','ITA <=> RUS','LAV <=> RUS','EST <=> RUS','AFR <=> RUS','EPO <=> RUS','RUS <=> XAL','XAL <=> RUS','ENG <=> DEU','ENG <=> EST')
-online_dic_urls = ( globs['var']['pair_root'] + globs['var']['pair_eng_rus'],	# ENG <=> RUS, 'CL=1&s=%s'
-					globs['var']['pair_root'] + globs['var']['pair_deu_rus'],	# DEU <=> RUS, 'l1=3&l2=2&s=%s'
-					globs['var']['pair_root'] + globs['var']['pair_spa_rus'],	# SPA <=> RUS, 'l1=5&l2=2&s=%s'
-					globs['var']['pair_root'] + globs['var']['pair_fra_rus'],	# FRA <=> RUS, 'l1=4&l2=2&s=%s'
-					globs['var']['pair_root'] + globs['var']['pair_nld_rus'],	# NLD <=> RUS, 'l1=24&l2=2&s=%s',
-					globs['var']['pair_root'] + globs['var']['pair_ita_rus'],	# ITA <=> RUS, 'l1=23&l2=2&s=%s'
-					globs['var']['pair_root'] + globs['var']['pair_lav_rus'],	# LAV <=> RUS, 'l1=27&l2=2&s=%s'
-					globs['var']['pair_root'] + globs['var']['pair_est_rus'],	# EST <=> RUS, 'l1=26&l2=2&s=%s'
-					globs['var']['pair_root'] + globs['var']['pair_afr_rus'],	# AFR <=> RUS, 'l1=31&l2=2&s=%s'
-					globs['var']['pair_root'] + globs['var']['pair_epo_rus'],	# EPO <=> RUS, 'l1=34&l2=2&s=%s'
-					globs['var']['pair_root'] + globs['var']['pair_rus_xal'],	# RUS <=> XAL, 'l1=2&l2=35&s=%s'
-					globs['var']['pair_root'] + globs['var']['pair_xal_rus'],	# XAL <=> RUS, 'l1=35&l2=2&s=%s'
-					globs['var']['pair_root'] + globs['var']['pair_eng_deu'],	# ENG <=> DEU, 'l1=1&l2=3&s=%s'
-					globs['var']['pair_root'] + globs['var']['pair_eng_est']	# ENG <=> EST, 'l1=1&l2=26&s=%s'
+online_dic_urls = ( sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_rus'],	# ENG <=> RUS, 'CL=1&s=%s'
+					sh.globs['var']['pair_root'] + sh.globs['var']['pair_deu_rus'],	# DEU <=> RUS, 'l1=3&l2=2&s=%s'
+					sh.globs['var']['pair_root'] + sh.globs['var']['pair_spa_rus'],	# SPA <=> RUS, 'l1=5&l2=2&s=%s'
+					sh.globs['var']['pair_root'] + sh.globs['var']['pair_fra_rus'],	# FRA <=> RUS, 'l1=4&l2=2&s=%s'
+					sh.globs['var']['pair_root'] + sh.globs['var']['pair_nld_rus'],	# NLD <=> RUS, 'l1=24&l2=2&s=%s',
+					sh.globs['var']['pair_root'] + sh.globs['var']['pair_ita_rus'],	# ITA <=> RUS, 'l1=23&l2=2&s=%s'
+					sh.globs['var']['pair_root'] + sh.globs['var']['pair_lav_rus'],	# LAV <=> RUS, 'l1=27&l2=2&s=%s'
+					sh.globs['var']['pair_root'] + sh.globs['var']['pair_est_rus'],	# EST <=> RUS, 'l1=26&l2=2&s=%s'
+					sh.globs['var']['pair_root'] + sh.globs['var']['pair_afr_rus'],	# AFR <=> RUS, 'l1=31&l2=2&s=%s'
+					sh.globs['var']['pair_root'] + sh.globs['var']['pair_epo_rus'],	# EPO <=> RUS, 'l1=34&l2=2&s=%s'
+					sh.globs['var']['pair_root'] + sh.globs['var']['pair_rus_xal'],	# RUS <=> XAL, 'l1=2&l2=35&s=%s'
+					sh.globs['var']['pair_root'] + sh.globs['var']['pair_xal_rus'],	# XAL <=> RUS, 'l1=35&l2=2&s=%s'
+					sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_deu'],	# ENG <=> DEU, 'l1=1&l2=3&s=%s'
+					sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_est']	# ENG <=> EST, 'l1=1&l2=26&s=%s'
 				  )
 
 # Tag patterns
@@ -340,28 +351,28 @@ class Request:
 		
 	def url(self):
 		if self._url is None:
-			self._url = globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
+			self._url = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
 		return self._url
 		
 	def collimit(self):
 		if self._collimit is None:
 			self._collimit = 5
 			# todo: del
-			#self._collimit = globs['collimit']
+			#self._collimit = sh.globs['collimit']
 		return self._collimit
 		
 	def view(self):
 		if self._view is None:
 			self._view = 0
 			# todo: del
-			#self._view = globs['view']
+			#self._view = sh.globs['view']
 		return self._view
 		
 	def priority(self):
 		if self._priority is None:
 			self._priority = False
 			# todo: del
-			#self._priority = globs['priority']
+			#self._priority = sh.globs['priority']
 		return self._priority
 		
 	def cells(self):
@@ -397,51 +408,41 @@ class Request:
 
 
 
-class Objects: # Requires 'h_widgets', 'h_request'
+class Objects: # Requires 'h_request'
 	
 	def __init__(self):
-		self._root = self._top = self._entry = self._textbox = self._clipboard = self._online_mt = self._online_other = self._about = None
-		
-	def root(self):
-		if not self._root:
-			self._root = h_widgets.root()
-		return self._root
+		self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = None
 		
 	def top(self):
 		if not self._top:
-			self._top = Top(self.root())
-			self._top.icon(globs['var']['icon_mclient'])
-			Geometry(parent_obj=self._top,title=h_request.search()).maximize()
+			self._top = sg.Top(sg.widgets.root())
+			self._top.icon(sh.globs['var']['icon_mclient'])
+			sg.Geometry(parent_obj=self._top,title=h_request.search()).maximize()
 		return self._top
 			
 	def entry(self):
 		if not self._entry:
-			self._entry = Entry(parent_obj=Top(self.root()))
-			self._entry.icon(globs['var']['icon_mclient'])
-			self._entry.title(globs['mes'].search_str)
+			self._entry = sg.Entry(parent_obj=sg.Top(sg.widgets.root()))
+			self._entry.icon(sh.globs['var']['icon_mclient'])
+			self._entry.title(sh.globs['mes'].search_str)
 		return self._entry
 		
 	def textbox(self):
 		if not self._textbox:
-			h_top = Top(self.root())
-			self._textbox = TextBox(parent_obj=h_top)
-			Geometry(parent_obj=h_top).set('500x400')
-			self._textbox.icon(globs['var']['icon_mclient'])
+			h_top = sg.Top(sg.widgets.root())
+			self._textbox = sg.TextBox(parent_obj=h_top)
+			sg.Geometry(parent_obj=h_top).set('500x400')
+			self._textbox.icon(sh.globs['var']['icon_mclient'])
 		return self._textbox
-		
-	def clipboard(self):
-		if not self._clipboard:
-			self._clipboard = Clipboard(self.root())
-		return self._clipboard
 		
 	def online_mt(self):
 		if not self._online_mt:
-			self._online_mt = Online(MTSpecific=True)
+			self._online_mt = sh.Online(MTSpecific=True)
 		return self._online_mt
 		
 	def online_other(self):
 		if not self._online_other:
-			self._online_other = Online(MTSpecific=False)
+			self._online_other = sh.Online(MTSpecific=False)
 		return self._online_other
 		
 	def online(self):
@@ -643,7 +644,7 @@ class DB: # Requires h_request global
 		result = self.db.fetchone()
 		if result:
 			self._id = result[0]
-			log.append('DB.search_full',lev_info,globs['mes'].id_full_match % self._id)
+			log.append('DB.search_full',sh.lev_info,sh.globs['mes'].id_full_match % self._id)
 			self.copy()
 			return True
 	
@@ -656,7 +657,7 @@ class DB: # Requires h_request global
 			result = self.db.fetchone()
 			if result:
 				self._id = result[0]
-				log.append('DB.search_part',lev_info,globs['mes'].id_match % self._id)
+				log.append('DB.search_part',sh.lev_info,sh.globs['mes'].id_match % self._id)
 				self.copy_ahead()
 			else:
 				self.add()
@@ -674,20 +675,20 @@ class HTML:
 	
 	def __init__(self):
 		if h_request._html:
-			log.append('HTML.__init__',lev_debug,globs['mes'].action_not_required)
+			log.append('HTML.__init__',sh.lev_debug,sh.globs['mes'].action_not_required)
 		else:
-			log.append('HTML.__init__',lev_info,globs['mes'].create_object)
+			log.append('HTML.__init__',sh.lev_info,sh.globs['mes'].create_object)
 			Cells()
 			self.html()
 	
 	def _comment(self):
 		if h_request._cells[self.i][self.j].comment:
 			self.output.write('<i><font face="')
-			self.output.write(globs['var']['font_comments_family'])
+			self.output.write(sh.globs['var']['font_comments_family'])
 			self.output.write('" size="')
-			self.output.write(str(globs['int']['font_comments_size']))
+			self.output.write(str(sh.globs['int']['font_comments_size']))
 			self.output.write('" color="')
-			self.output.write(globs['var']['color_comments'])
+			self.output.write(sh.globs['var']['color_comments'])
 			self.output.write('">')
 			self.output.write(h_request._cells[self.i][self.j].comment)
 			self.output.write('</i></font></td>')
@@ -695,11 +696,11 @@ class HTML:
 	def _speech(self):
 		if h_request._cells[self.i][self.j].speech:
 			self.output.write('<font face="')
-			self.output.write(globs['var']['font_speech_family'])
+			self.output.write(sh.globs['var']['font_speech_family'])
 			self.output.write('" color="')
-			self.output.write(globs['var']['color_speech'])
+			self.output.write(sh.globs['var']['color_speech'])
 			self.output.write('" size="')
-			self.output.write(str(globs['int']['font_speech_size']))
+			self.output.write(str(sh.globs['int']['font_speech_size']))
 			self.output.write('"><b>')
 			self.output.write(h_request._cells[self.i][self.j].speech)
 			self.output.write('</b></font>')
@@ -707,11 +708,11 @@ class HTML:
 	def _dic(self):
 		if h_request._cells[self.i][self.j].dic:
 			self.output.write('<font face="')
-			self.output.write(globs['var']['font_dics_family'])
+			self.output.write(sh.globs['var']['font_dics_family'])
 			self.output.write('" color="')
-			self.output.write(globs['var']['color_dics'])
+			self.output.write(sh.globs['var']['color_dics'])
 			self.output.write('" size="')
-			self.output.write(str(globs['int']['font_dics_size']))
+			self.output.write(str(sh.globs['int']['font_dics_size']))
 			self.output.write('"><b>')
 			self.output.write(h_request._cells[self.i][self.j].dic)
 			self.output.write('</b></font>')
@@ -719,11 +720,11 @@ class HTML:
 	def _term(self):
 		if h_request._cells[self.i][self.j].term:
 			self.output.write('<font face="')
-			self.output.write(globs['var']['font_terms_family'])
+			self.output.write(sh.globs['var']['font_terms_family'])
 			self.output.write('" color="')
-			self.output.write(globs['var']['color_terms'])
+			self.output.write(sh.globs['var']['color_terms'])
 			self.output.write('" size="')
-			self.output.write(str(globs['int']['font_terms_size']))
+			self.output.write(str(sh.globs['int']['font_terms_size']))
 			self.output.write('">')
 			self.output.write(h_request._cells[self.i][self.j].term)
 			self.output.write('</font>')
@@ -758,14 +759,14 @@ class Page:
 	
 	def __init__(self):
 		self._page = ''
-		if globs['bool']['DryRun']:
-			if globs['dry_count'] == 0:
+		if sh.globs['bool']['DryRun']:
+			if sh.globs['dry_count'] == 0:
 				self.example()
-			elif globs['dry_count'] == 1:
+			elif sh.globs['dry_count'] == 1:
 				self.example2()
 			else:
 				self.example3()
-			globs['dry_count'] += 1
+			sh.globs['dry_count'] += 1
 		else:
 			self.get()
 		self.mt_specific_replace()
@@ -793,7 +794,7 @@ class Page:
 				else:
 					break
 			# Вставить sep_words_found перед названием 1-го словаря. Нельзя вставлять его в самое начало ввиду особенностей обработки delete_entries.
-			if globs['bool']['ExploreMismatch']:
+			if sh.globs['bool']['ExploreMismatch']:
 				self._page = self._page.replace(tag_pattern1,tag_pattern5 + sep_words_found + tag_pattern6 + tag_pattern1,1)
 			else:
 				self._page = self._page[:board_pos] + tag_pattern7 + tag_pattern5 + sep_words_found + tag_pattern6
@@ -834,12 +835,12 @@ class Page:
 		try:
 			self._page = html.unescape(self._page)
 		except:
-			log.append('Page.decode_entities',lev_err,globs['mes'].html_conversion_failure)
+			log.append('Page.decode_entities',sh.lev_err,sh.globs['mes'].html_conversion_failure)
 	
 	def get(self):
 		if not self._page:
-			''' # todo: Paste globs['mes'].wait into search_field before loading a page and clear search_field after the page has been processed. The problem: tkinter does not update when neccessary. Print supports this.
-			h_table.paste_search_field(text=globs['mes'].wait)
+			''' # todo: Paste sh.globs['mes'].wait into search_field before loading a page and clear search_field after the page has been processed. The problem: tkinter does not update when neccessary. Print supports this.
+			h_table.paste_search_field(text=sh.globs['mes'].wait)
 			h_table.clear_search_field()
 			'''
 			while self._page == '':
@@ -848,18 +849,18 @@ class Page:
 				try:
 					# Если загружать страницу с помощью "page=urllib.request.urlopen(my_url)", то в итоге получится HTTPResponse, что полезно только для удаления тэгов JavaScript. Поскольку мы вручную удаляем все лишние тэги, то на выходе нам нужна строка.
 					self._page = urllib.request.urlopen(h_request.url()).read()
-					log.append('Page.get',lev_info,globs['mes'].ok % h_request.search())
+					log.append('Page.get',sh.lev_info,sh.globs['mes'].ok % h_request.search())
 					Success = True
 				except:
-					log.append('Page.get',lev_warn,globs['mes'].failed % h_request.search())
-					if not Message(func='Page.get',type=lev_ques,message=globs['mes'].webpage_unavailable_ques).Yes:
+					log.append('Page.get',sh.lev_warn,sh.globs['mes'].failed % h_request.search())
+					if not sg.Message(func='Page.get',type=sh.lev_ques,message=sh.globs['mes'].webpage_unavailable_ques).Yes:
 						break
 				if Success: # Если страница не загружена, то понятно, что ее кодировку изменить не удастся
 					try:
-						# Меняем кодировку globs['var']['win_encoding'] на нормальную
-						self._page = self._page.decode(globs['var']['win_encoding'])
+						# Меняем кодировку sh.globs['var']['win_encoding'] на нормальную
+						self._page = self._page.decode(sh.globs['var']['win_encoding'])
 					except:
-						Message(func='Page.get',type=lev_err,message=globs['mes'].wrong_html_encoding)
+						sg.Message(func='Page.get',type=sh.lev_err,message=sh.globs['mes'].wrong_html_encoding)
 					h_request._html_raw = self._page
 		return self._page
 
@@ -887,11 +888,11 @@ class Tags:
 						tmp_borders.append(i)
 					i += 1
 				if len(tmp_borders) % 2 != 0:
-					log.append('Tags.pos',lev_warn,globs['mes'].wrong_tag_num % len(tmp_borders))
+					log.append('Tags.pos',sh.lev_warn,sh.globs['mes'].wrong_tag_num % len(tmp_borders))
 					if len(tmp_borders) > 0:
 						del tmp_borders[-1]
 					else:
-						log.append('Tags.pos',lev_warn,globs['mes'].tmp_borders_empty)
+						log.append('Tags.pos',sh.lev_warn,sh.globs['mes'].tmp_borders_empty)
 				i = 0
 				while i < len(tmp_borders):
 					uneven = tmp_borders[i]
@@ -908,7 +909,7 @@ class Tags:
 			tmp_str = tmp_str.replace(tag_pattern1,'',1)
 			tmp_str = re.sub('".*','',tmp_str)
 			if tmp_str == '' or tmp_str == ' ':
-				log.append('Tags._dic',lev_warn,globs['mes'].wrong_tag % self._tags[i])
+				log.append('Tags._dic',sh.lev_warn,sh.globs['mes'].wrong_tag % self._tags[i])
 			else:
 				self._elems[-1].dic = tmp_str
 				
@@ -918,7 +919,7 @@ class Tags:
 				pos1 = self._borders[i][1] + 1
 				pos2 = self._borders[i+1][0] - 1
 				if pos1 >= len(self._page):
-					log.append('Tags._phrases',lev_warn,globs['mes'].tag_near_text_end % self._tags[i])
+					log.append('Tags._phrases',sh.lev_warn,sh.globs['mes'].tag_near_text_end % self._tags[i])
 				else:
 					tmp_str = self._page[pos1:pos2+1]
 					# If we see symbols '<' or '>' there for some reason, then there is a problem in the tag extraction algorithm. We can make manual deletion of '<' and '>' there.
@@ -931,7 +932,7 @@ class Tags:
 				self._url(i)
 				return True
 			else:
-				log.append('Tags._term',lev_warn,globs['mes'].last_tag % self._tags[i])
+				log.append('Tags._term',sh.lev_warn,sh.globs['mes'].last_tag % self._tags[i])
 				
 	# Extract a term
 	def _term(self,i=0):
@@ -947,12 +948,12 @@ class Tags:
 				pos1 = self._borders[i][1] + 1
 				pos2 = self._borders[i+1][0] - 1
 				if pos1 >= len(self._page):
-					log.append('Tags._term',lev_warn,globs['mes'].tag_near_text_end % self._tags[i])
+					log.append('Tags._term',sh.lev_warn,sh.globs['mes'].tag_near_text_end % self._tags[i])
 				else:
 					self._elems[-1].term = self._page[pos1:pos2+1]
 				self._url(i)
 			else:
-				log.append('Tags._term',lev_warn,globs['mes'].last_tag % self._tags[i])
+				log.append('Tags._term',sh.lev_warn,sh.globs['mes'].last_tag % self._tags[i])
 				
 	# Extract a speech form
 	def _speech(self,i=0):
@@ -968,7 +969,7 @@ class Tags:
 				pos1 = self._borders[i][1] + 1
 				pos2 = self._borders[i+1][0] - 1
 				if pos1 >= len(self._page):
-					log.append('Tags._speech',lev_warn,globs['mes'].tag_near_text_end % self._tags[i])
+					log.append('Tags._speech',sh.lev_warn,sh.globs['mes'].tag_near_text_end % self._tags[i])
 				else:
 					self._elems[-1].speech = self._page[pos1:pos2+1]
 					# todo: fix: 1st 'speech' is not shown, probably because there is no 'dic'
@@ -976,7 +977,7 @@ class Tags:
 					self.url = ''
 					return True
 			else:
-				log.append('Tags._speech',lev_warn,globs['mes'].last_tag % self._tags[i])
+				log.append('Tags._speech',sh.lev_warn,sh.globs['mes'].last_tag % self._tags[i])
 				
 	# Extract URL
 	def _url(self,i=0):
@@ -985,31 +986,31 @@ class Tags:
 		self.url = re.sub('\"\>.*','">',self.url)
 		if self.url.endswith(tag_pattern8):
 			self.url = self.url.replace(tag_pattern8,'')
-			self.url = globs['var']['pair_root'] + self.url
+			self.url = sh.globs['var']['pair_root'] + self.url
 		else:
 			self.url = '' # todo: does this help?
-			log.append('Tags._url',lev_warn,globs['mes'].url_extraction_failure % self.url)
+			log.append('Tags._url',sh.lev_warn,sh.globs['mes'].url_extraction_failure % self.url)
 		
 	# Extract a comment
 	def _comment(self,i):
 		if self._tags[i] == tag_pattern3 or self._tags[i] == tag_pattern5 or self._tags[i] == tag_pattern9:
 			pos1 = self._borders[i][1] + 1
 			if pos1 >= len(self._page):
-				log.append('Tags._comment',lev_warn,globs['mes'].tag_near_text_end % self._tags[i])
+				log.append('Tags._comment',sh.lev_warn,sh.globs['mes'].tag_near_text_end % self._tags[i])
 			else:
 				if i + 1 < len(self._tags):
 					pos2 = self._borders[i+1][0] - 1
 				else:
-					log.append('Tags._comment',lev_warn,globs['mes'].last_tag % self._tags[i])
+					log.append('Tags._comment',sh.lev_warn,sh.globs['mes'].last_tag % self._tags[i])
 					if len(self._borders) > 0:
 						pos2 = self._borders[-1][1]
 					else:
 						pos2 = pos1
-						log.append('Tags._comment',lev_warn,globs['mes'].tag_borders_empty)
+						log.append('Tags._comment',sh.lev_warn,sh.globs['mes'].tag_borders_empty)
 				tmp_str = self._page[pos1:pos2+1]
 				# Sometimes, the tag contents is just '('. We remove it, so the final text does not look like '( user_name'
 				if tmp_str == '' or tmp_str == ' ' or tmp_str == '|' or tmp_str == '(':
-					log.append('Tags._comment',lev_warn,globs['mes'].empty_tag_contents % self._tags[i])
+					log.append('Tags._comment',sh.lev_warn,sh.globs['mes'].empty_tag_contents % self._tags[i])
 				else:
 					self._elems[-1].comment = tmp_str
 	
@@ -1053,7 +1054,7 @@ class Tags:
 					else:
 						self._term(i)
 				self._comment(i)
-				log.append('Tags.elems',lev_debug,globs['mes'].adding_url % self.url)
+				log.append('Tags.elems',sh.lev_debug,sh.globs['mes'].adding_url % self.url)
 				self._elems[i].url = self.url
 			self._empty()
 		return self._elems
@@ -1079,18 +1080,18 @@ class Tags:
 		while i < len(self._page):
 			if self._page[i] == '<':
 				if TagOpen:
-					log.append('Tags.open_close',lev_debug,globs['mes'].deleting_useless_elem % (i,self._page[i]))
+					log.append('Tags.open_close',sh.lev_debug,sh.globs['mes'].deleting_useless_elem % (i,self._page[i]))
 					if i >= 10 and i < len(self._page) - 10:
-						log.append('Tags.open_close',lev_debug,globs['mes'].context % ''.join(self._page[i-10:i+10]))
+						log.append('Tags.open_close',sh.lev_debug,sh.globs['mes'].context % ''.join(self._page[i-10:i+10]))
 					del self._page[i]
 					i -= 1
 				else:
 					TagOpen = True
 			if self._page[i] == '>':
 				if not TagOpen:
-					log.append('Tags.open_close',lev_info,globs['mes'].deleting_useless_elem % (i,self._page[i]))
+					log.append('Tags.open_close',sh.lev_info,sh.globs['mes'].deleting_useless_elem % (i,self._page[i]))
 					if i >= 10 and i < len(self._page) - 10:
-						log.append('Tags.open_close',lev_info,globs['mes'].context % ''.join(self._page[i-10:i+10]))
+						log.append('Tags.open_close',sh.lev_info,sh.globs['mes'].context % ''.join(self._page[i-10:i+10]))
 					del self._page[i]
 					i -= 1
 				else:
@@ -1112,11 +1113,11 @@ class Tags:
 		self._page = list(self._page)
 		i = 0
 		while i < len(self._page):
-			# todo: check: Почему-то при 'not in lat_alphabet' удаляет почти всю статью
-			if i < len(self._page) - 1 and self._page[i] == '<' and self._page[i+1] in ru_alphabet:
+			# todo: check: Почему-то при 'not in sh.lat_alphabet' удаляет почти всю статью
+			if i < len(self._page) - 1 and self._page[i] == '<' and self._page[i+1] in sh.ru_alphabet:
 				del self._page[i]
 				i -= 1
-			if i > 0 and self._page[i] == '>' and self._page[i-1] in ru_alphabet:
+			if i > 0 and self._page[i] == '>' and self._page[i-1] in sh.ru_alphabet:
 				del self._page[i]
 				i -= 1
 			i += 1
@@ -1130,9 +1131,9 @@ class Tags:
 			pos1 = self._borders[i][0]
 			pos2 = self._borders[i][1] + 1
 			self._tags.append(self._page[pos1:pos2])
-			log.append('Tags._extract',lev_debug,globs['mes'].extracting_tag % self._tags[-1])
-		log.append('Tags._extract',lev_info,globs['mes'].tags_found % (len(self._tags)))
-		log.append('Tags._extract',lev_debug,str(self._tags))
+			log.append('Tags._extract',sh.lev_debug,sh.globs['mes'].extracting_tag % self._tags[-1])
+		log.append('Tags._extract',sh.lev_info,sh.globs['mes'].tags_found % (len(self._tags)))
+		log.append('Tags._extract',sh.lev_debug,str(self._tags))
 		
 	# Remove tags that are not relevant to the article structure
 	def _useless(self):
@@ -1145,20 +1146,20 @@ class Tags:
 					Found = True
 					break
 			if Found:
-				log.append('Tags._useless',lev_debug,globs['mes'].deleting_tag % (i,self._tags[i]))
+				log.append('Tags._useless',sh.lev_debug,sh.globs['mes'].deleting_tag % (i,self._tags[i]))
 				del self._tags[i]
 				del self._borders[i]
 				i -= 1
 			# todo (?): elaborate
 			elif tag_pattern1 in self._tags[i] or tag_pattern2 in self._tags[i] or tag_pattern2b in self._tags[i] or tag_pattern3 in self._tags[i] or tag_pattern4 in self._tags[i] or tag_pattern5 in self._tags[i] or tag_pattern6 in self._tags[i] or tag_pattern7 in self._tags[i] or tag_pattern8 in self._tags[i]:
-				log.append('Tags._useless',lev_debug,globs['mes'].tag_kept % self._tags[i])
+				log.append('Tags._useless',sh.lev_debug,sh.globs['mes'].tag_kept % self._tags[i])
 			else:
-				log.append('Tags._useless',lev_debug,globs['mes'].deleting_tag % (i,self._tags[i]))
+				log.append('Tags._useless',sh.lev_debug,sh.globs['mes'].deleting_tag % (i,self._tags[i]))
 				del self._tags[i]
 				del self._borders[i]
 				i -= 1
 			i += 1
-		log.append('Tags._useless',lev_info,globs['mes'].tags_stat % (old_total,len(self._tags),old_total-len(self._tags)))
+		log.append('Tags._useless',sh.lev_info,sh.globs['mes'].tags_stat % (old_total,len(self._tags),old_total-len(self._tags)))
 		# Testing
 		assert len(self._tags) == len(self._borders)		
 		
@@ -1175,9 +1176,9 @@ class Elems:
 	
 	def __init__(self):
 		if h_request._elems:
-			log.append('Elems.__init__',lev_debug,globs['mes'].action_not_required)
+			log.append('Elems.__init__',sh.lev_debug,sh.globs['mes'].action_not_required)
 		else:
-			log.append('Elems.__init__',lev_info,globs['mes'].create_object)
+			log.append('Elems.__init__',sh.lev_info,sh.globs['mes'].create_object)
 			h_request._elems = Tags().elems()
 			self.useless()
 			self.unite_comments()
@@ -1192,7 +1193,7 @@ class Elems:
 			# todo: Удалять по URL
 			# Чтобы не удалить случайно длинный комментарий с точкой на конце, ограничиваю его длину 12 (выбрано условно)
 			if h_request._elems[i].comment.endswith('.') and len(h_request._elems[i].comment) < 12 or 'Макаров' in h_request._elems[i].comment or 'Вебстер' in h_request._elems[i].comment or 'Webster' in h_request._elems[i].comment or 'Майкрософт' in h_request._elems[i].comment or 'Microsoft' in h_request._elems[i].comment:
-				log.append('Elems.useless',lev_info,globs['mes'].deleting_useless_entry % str(h_request._elems[i].comment))
+				log.append('Elems.useless',sh.lev_info,sh.globs['mes'].deleting_useless_entry % str(h_request._elems[i].comment))
 				del h_request._elems[i]
 				i -= 1
 			i += 1
@@ -1225,7 +1226,7 @@ class Elems:
 			if i > 0:
 				if h_request._elems[i].url and h_request._elems[i-1].url == h_request._elems[i].url or h_request._elems[i-1].url + '&s1=' in h_request._elems[i].url or '&UserName=' in h_request._elems[i].url:
 					# В настоящее время в ячейке жестко заданы сначала название словаря, потом термин, потом комментарий, поэтому "хвост", который первоначально относился к последующей ячейке, лучше добавить к комментарию, иначе будет потерян смысл
-					h_request._elems[i-1].comment = List([h_request._elems[i-1].comment,h_request._elems[i].dic,h_request._elems[i].term,h_request._elems[i].comment]).space_items()
+					h_request._elems[i-1].comment = sh.List([h_request._elems[i-1].comment,h_request._elems[i].dic,h_request._elems[i].term,h_request._elems[i].comment]).space_items()
 					del h_request._elems[i]
 					i -= 1
 			i += 1
@@ -1240,7 +1241,7 @@ class Elems:
 
 
 def Cell():
-	obj = CreateInstance()
+	obj = sh.CreateInstance()
 	obj.Selectable = False
 	obj.speech = ''
 	obj.dic = ''
@@ -1255,9 +1256,9 @@ class Cells:
 	
 	def __init__(self):
 		if h_request._cells:
-			log.append('Cells.__init__',lev_debug,globs['mes'].action_not_required)
+			log.append('Cells.__init__',sh.lev_debug,sh.globs['mes'].action_not_required)
 		else:
-			log.append('Cells.__init__',lev_info,globs['mes'].create_object)
+			log.append('Cells.__init__',sh.lev_info,sh.globs['mes'].create_object)
 			h_request.collimit()
 			h_request.view()
 			h_request._cells = []
@@ -1336,13 +1337,13 @@ class Cells:
 			h_request._cells.append(row)
 
 	def view2(self):
-		Message('Cells.view',lev_err,globs['mes'].not_implemented)
+		sg.Message('Cells.view',sh.lev_err,sh.globs['mes'].not_implemented)
 
 
 
 def call_app():
 	# Использовать то же сочетание клавиш для вызова окна
-	Geometry(parent_obj=h_obj.top(),title=h_request.search()).activate(MouseClicked=h_table.MouseClicked)
+	sg.Geometry(parent_obj=objs.top(),title=h_request.search()).activate(MouseClicked=h_table.MouseClicked)
 	# In case of .focus_set() *first* Control-c-c can call an inactive widget
 	h_table.search_field.widget.focus_force()
 
@@ -1353,18 +1354,18 @@ def timed_update():
 	if check:
 		if check == 1 and h_table.CaptureHotkey:
 			# Позволяет предотвратить зависание потока в версиях Windows старше XP
-			if h_os.sys() == 'win':
+			if sh.h_os.sys() == 'win':
 				kl_mod.keylistener.cancel()
 				kl_mod.keylistener.restart()
 			h_table.MouseClicked = True
-			new_clipboard = h_obj.clipboard().paste()
+			new_clipboard = sg.widgets.clipboard().paste()
 			if new_clipboard:
 				h_table.search = new_clipboard
 				h_table.search_online()
 		if check == 2 or h_table.CaptureHotkey:
 			call_app()
 	# We need to have .after in the same function for it to work
-	h_quit._id = h_obj.root().widget.after(300,timed_update)
+	h_quit._id = sg.widgets.root().widget.after(300,timed_update)
 	h_quit.now()
 
 
@@ -1377,15 +1378,15 @@ class Quit:
 	
 	def wait(self,*args):
 		self.Quit = True
-		h_obj.top().close()
+		objs.top().close()
 		
 	def now(self,*args):
 		if self.Quit:
-			log.append('Quit.now',lev_info,globs['mes'].goodbye)
+			log.append('Quit.now',sh.lev_info,sh.globs['mes'].goodbye)
 			kl_mod.keylistener.cancel()
-			h_obj.top().widget.destroy()
-			h_obj.root().widget.after_cancel(self._id)
-			h_obj.root().destroy()
+			objs.top().widget.destroy()
+			sg.widgets.root().widget.after_cancel(self._id)
+			sg.widgets.root().destroy()
 			sys.exit()
 
 
@@ -1395,23 +1396,23 @@ class About:
 	def __init__(self):
 		self.Active = False
 		self.type = 'About'
-		self.parent_obj = Top(h_obj.root())
+		self.parent_obj = sg.Top(sg.widgets.root())
 		self.widget = self.parent_obj.widget
-		self.parent_obj.icon(globs['var']['icon_mclient'])
-		self.parent_obj.title(globs['mes'].about)
-		frame1 = Frame(self,expand=1,fill='both',side='top')
-		frame2 = Frame(self,expand=1,fill='both',side='left')
-		frame3 = Frame(self,expand=1,fill='both',side='right')
-		label = tk.Label(frame1.widget,font=globs['var']['font_style'],text=globs['mes'].about_text % version)
+		self.parent_obj.icon(sh.globs['var']['icon_mclient'])
+		self.parent_obj.title(sh.globs['mes'].about)
+		frame1 = sg.Frame(self,expand=1,fill='both',side='top')
+		frame2 = sg.Frame(self,expand=1,fill='both',side='left')
+		frame3 = sg.Frame(self,expand=1,fill='both',side='right')
+		label = tk.Label(frame1.widget,font=sh.globs['var']['font_style'],text=sh.globs['mes'].about_text % version)
 		label.pack()
 		# Лицензия
-		Button(frame2,text=globs['mes'].btn_third_parties,hint=globs['mes'].hint_license,action=self.show_third_parties,side='left')
-		Button(frame3,text=globs['mes'].btn_license,hint=globs['mes'].hint_license,action=self.open_license_url,side='left')
+		sg.Button(frame2,text=sh.globs['mes'].btn_third_parties,hint=sh.globs['mes'].hint_license,action=self.show_third_parties,side='left')
+		sg.Button(frame3,text=sh.globs['mes'].btn_license,hint=sh.globs['mes'].hint_license,action=self.open_license_url,side='left')
 		# Отправить письмо автору
-		Button(frame3,text=globs['mes'].btn_email_author,hint=globs['mes'].hint_email_author,action=self.response_back,side='right')
+		sg.Button(frame3,text=sh.globs['mes'].btn_email_author,hint=sh.globs['mes'].hint_email_author,action=self.response_back,side='right')
 		self.widget.focus_set()
-		create_binding(widget=self.widget,bindings=globs['var']['bind_show_about'],action=self.toggle)
-		create_binding(widget=self.widget,bindings='<Escape>',action=self.close)
+		sg.create_binding(widget=self.widget,bindings=sh.globs['var']['bind_show_about'],action=self.toggle)
+		sg.create_binding(widget=self.widget,bindings='<Escape>',action=self.close)
 		self.close()
 	
 	def close(self,*args):
@@ -1430,18 +1431,18 @@ class About:
 	
 	# Написать письмо автору
 	def response_back(self,*args):
-		Email(email=email,subject=globs['mes'].program_subject % product).create()
+		sh.Email(email=email,subject=sh.globs['mes'].program_subject % product).create()
 
 	# Открыть веб-страницу с лицензией
 	def open_license_url(self,*args):
-		h_obj.online()._url = globs['license_url']
-		h_obj.online().browse()
+		objs.online()._url = sh.globs['license_url']
+		objs.online().browse()
 
 	# Отобразить информацию о лицензии третьих сторон
 	def show_third_parties(self,*args):
-		h_obj.textbox().update(title=globs['mes'].btn_third_parties+':',text=third_parties,ReadOnly=True,icon=globs['var']['icon_mclient'])
+		objs.textbox().update(title=sh.globs['mes'].btn_third_parties+':',text=third_parties,ReadOnly=True,icon=sh.globs['var']['icon_mclient'])
 		# todo: Maximize key does not work outside sharedGUI
-		h_obj._textbox.show()
+		objs._textbox.show()
 
 
 		
@@ -1449,16 +1450,16 @@ class SaveArticle:
 	
 	def __init__(self):
 		self.type = 'SaveArticle'
-		self.parent_obj = Top(h_obj.root())
-		self.obj = ListBox(parent_obj=self.parent_obj,Multiple=False,lst=[globs['mes'].save_view_as_html,globs['mes'].save_article_as_html,globs['mes'].save_article_as_txt,globs['mes'].copy_article_html,globs['mes'].copy_article_txt],title=globs['mes'].select_action,icon=globs['var']['icon_mclient'])
+		self.parent_obj = sg.Top(sg.widgets.root())
+		self.obj = sg.ListBox(parent_obj=self.parent_obj,Multiple=False,lst=[sh.globs['mes'].save_view_as_html,sh.globs['mes'].save_article_as_html,sh.globs['mes'].save_article_as_txt,sh.globs['mes'].copy_article_html,sh.globs['mes'].copy_article_txt],title=sh.globs['mes'].select_action,icon=sh.globs['var']['icon_mclient'])
 		self.widget = self.obj.widget
 		self.custom_bindings()
 		self.close()
 		self.file = ''
 		
 	def custom_bindings(self):
-		create_binding(widget=self.parent_obj.widget,bindings=['<Escape>',globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']],action=self.close)
-		create_binding(widget=self.widget,bindings=['<Escape>',globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']],action=self.close)
+		sg.create_binding(widget=self.parent_obj.widget,bindings=['<Escape>',sh.globs['var']['bind_save_article'],sh.globs['var']['bind_save_article_alt']],action=self.close)
+		sg.create_binding(widget=self.widget,bindings=['<Escape>',sh.globs['var']['bind_save_article'],sh.globs['var']['bind_save_article_alt']],action=self.close)
 		
 	def close(self,*args):
 		self.obj.close()
@@ -1475,44 +1476,44 @@ class SaveArticle:
 		self.show()
 		opt = self.obj.get()
 		if opt:
-			if opt == globs['mes'].save_view_as_html:
+			if opt == sh.globs['mes'].save_view_as_html:
 				self.view_as_html()
-			elif opt == globs['mes'].save_article_as_html:
+			elif opt == sh.globs['mes'].save_article_as_html:
 				self.raw_as_html()
-			elif opt == globs['mes'].save_article_as_txt:
+			elif opt == sh.globs['mes'].save_article_as_txt:
 				self.view_as_txt()
-			elif opt == globs['mes'].copy_article_html:
+			elif opt == sh.globs['mes'].copy_article_html:
 				self.copy_raw()
-			elif opt == globs['mes'].copy_article_txt:
+			elif opt == sh.globs['mes'].copy_article_txt:
 				self.copy_view()
 	
 	def view_as_html(self):
-		self.file = dialog_save_file(filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')))
+		self.file = sg.dialog_save_file(filetypes=((sh.globs['mes'].webpage,'.htm'),(sh.globs['mes'].webpage,'.html'),(sh.globs['mes'].all_files,'*')))
 		if self.file:
 			self.fix_ext(ext='.htm')
 			# We disable AskRewrite because the confirmation is already built in the internal dialog
-			WriteTextFile(self.file,AskRewrite=False).write(h_request._html)
+			sh.WriteTextFile(self.file,AskRewrite=False).write(h_request._html)
 			
 	def raw_as_html(self):
 		# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
 		# Также меняем сокращенные гиперссылки на полные, чтобы они работали и в локальном файле.
-		self.file = dialog_save_file(filetypes=((globs['mes'].webpage,'.htm'),(globs['mes'].webpage,'.html'),(globs['mes'].all_files,'*')))
+		self.file = sg.dialog_save_file(filetypes=((sh.globs['mes'].webpage,'.htm'),(sh.globs['mes'].webpage,'.html'),(sh.globs['mes'].all_files,'*')))
 		if self.file:
 			self.fix_ext(ext='.htm')
 			# todo: fix remaining links to localhost
-			WriteTextFile(self.file,AskRewrite=False).write(h_request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+globs['var']['pair_root']).replace('../c/M.exe?',globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+globs['var']['pair_root']).replace('../c/m.exe?',globs['var']['pair_root']))
+			sh.WriteTextFile(self.file,AskRewrite=False).write(h_request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/M.exe?',sh.globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/m.exe?',sh.globs['var']['pair_root']))
 		
 	def view_as_txt(self):
-		self.file = dialog_save_file(filetypes=((globs['mes'].plain_text,'.txt'),(globs['mes'].all_files,'*')))
+		self.file = sg.dialog_save_file(filetypes=((sh.globs['mes'].plain_text,'.txt'),(sh.globs['mes'].all_files,'*')))
 		if self.file:
 			self.fix_ext(ext='.txt')
-			WriteTextFile(self.file,AskRewrite=False).write(h_request._text)
+			sh.WriteTextFile(self.file,AskRewrite=False).write(h_request._text)
 			
 	def copy_raw(self):
-		h_obj.clipboard().copy(h_request._html_raw)
+		sg.widgets.clipboard().copy(h_request._html_raw)
 			
 	def copy_view(self):
-		h_obj.clipboard().copy(h_request._text)
+		sg.widgets.clipboard().copy(h_request._text)
 
 	
 
@@ -1521,11 +1522,11 @@ class SearchArticle:
 	
 	def __init__(self):
 		self.type = 'SearchArticle'
-		self.obj = h_obj.entry()
-		self.obj.title(globs['mes'].search_word)
+		self.obj = objs.entry()
+		self.obj.title(sh.globs['mes'].search_word)
 		self.widget = self.obj.widget
-		create_binding(widget=self.widget,bindings=globs['var']['bind_search_article_forward'],action=self.close)
-		create_binding(widget=self.widget,bindings='<Escape>',action=self.close)
+		sg.create_binding(widget=self.widget,bindings=sh.globs['var']['bind_search_article_forward'],action=self.close)
+		sg.create_binding(widget=self.widget,bindings='<Escape>',action=self.close)
 		self.obj.select_all()
 		self.widget.focus_set()
 		self.close()
@@ -1573,14 +1574,14 @@ class SearchArticle:
 		if self._pos + 1 < len(self.list()):
 			self._pos += 1
 		else:
-			Message(func='SearchArticle.forward',type=lev_info,message=globs['mes'].search_from_start)
+			sg.Message(func='SearchArticle.forward',type=sh.lev_info,message=sh.globs['mes'].search_from_start)
 			self._pos = 0
 	
 	def backward(self):
 		if self._pos > 0:
 			self._pos -= 1
 		else:
-			Message(func='SearchArticle.backward',type=lev_info,message=globs['mes'].search_from_end)
+			sg.Message(func='SearchArticle.backward',type=sh.lev_info,message=sh.globs['mes'].search_from_end)
 			self._pos = len(self.list()) - 1
 
 	
@@ -1606,19 +1607,19 @@ class SearchField:
 		if text:
 			self.widget.insert(0,text)
 		else:
-			self.widget.insert(0,h_obj.clipboard().paste())
+			self.widget.insert(0,sg.widgets.clipboard().paste())
 		return 'break'
 		
 	# Вставить предыдущий запрос
 	def insert_repeat_sign(self,*args):
 		if h_db._count > 0:
-			h_obj.clipboard().copy(str(h_db.prev()))
+			sg.widgets.clipboard().copy(str(h_db.prev()))
 			self.paste()
 
 	# Вставить запрос до предыдущего
 	def insert_repeat_sign2(self,*args):
 		if h_db._count > 1:
-			h_obj.clipboard().copy(str(h_db.preprev()))
+			sg.widgets.clipboard().copy(str(h_db.preprev()))
 			self.paste()
 
 
@@ -1626,22 +1627,22 @@ class SearchField:
 class SpecSymbols:
 	
 	def __init__(self):
-		self.obj = Top(h_obj.root())
+		self.obj = sg.Top(sg.widgets.root())
 		self.widget = self.obj.widget
-		self.obj.icon(globs['var']['icon_mclient'])
-		self.obj.title(globs['mes'].paste_spec_symbol)
-		self.frame = Frame(self.obj,expand=1)
-		for i in range(len(globs['var']['spec_syms'])):
+		self.obj.icon(sh.globs['var']['icon_mclient'])
+		self.obj.title(sh.globs['mes'].paste_spec_symbol)
+		self.frame = sg.Frame(self.obj,expand=1)
+		for i in range(len(sh.globs['var']['spec_syms'])):
 			if i % 10 == 0:
-				self.frame = Frame(self.obj,expand=1)
+				self.frame = sg.Frame(self.obj,expand=1)
 			# lambda сработает правильно только при моментальной упаковке, которая не поддерживается create_button (моментальная упаковка возвращает None вместо виджета), поэтому не используем эту функцию. По этой же причине нельзя привязать кнопкам '<Return>' и '<KP_Enter>', сработают только встроенные '<space>' и '<ButtonRelease-1>'.
 			# width и height нужны для Windows
-			self.button = tk.Button(self.frame.widget,text=globs['var']['spec_syms'][i],command=lambda i=i:h_table.insert_sym(globs['var']['spec_syms'][i]),width=2,height=2).pack(side='left',expand=1)
+			self.button = tk.Button(self.frame.widget,text=sh.globs['var']['spec_syms'][i],command=lambda i=i:h_table.insert_sym(sh.globs['var']['spec_syms'][i]),width=2,height=2).pack(side='left',expand=1)
 		self.custom_bindings()
 		self.close()
 		
 	def custom_bindings(self):
-		create_binding(widget=self.widget,bindings=['<Escape>',globs['var']['bind_spec_symbol']],action=self.close)
+		sg.create_binding(widget=self.widget,bindings=['<Escape>',sh.globs['var']['bind_spec_symbol']],action=self.close)
 	
 	def show(self,*args):
 		self.obj.show()
@@ -1654,15 +1655,15 @@ class SpecSymbols:
 class History:
 	
 	def __init__(self):
-		self.parent_obj = Top(h_obj.root())
+		self.parent_obj = sg.Top(sg.widgets.root())
 		self.parent_obj.widget.geometry('250x350')
-		self._title = globs['mes'].btn_history
-		self._icon = globs['var']['icon_mclient']
-		self.obj = ListBox(parent_obj=self.parent_obj,title=self._title,icon=self._icon,SelectFirst=False,SelectionCloses=False,SingleClick=False,Composite=True,user_function=self.go)
+		self._title = sh.globs['mes'].btn_history
+		self._icon = sh.globs['var']['icon_mclient']
+		self.obj = sg.ListBox(parent_obj=self.parent_obj,title=self._title,icon=self._icon,SelectFirst=False,SelectionCloses=False,SingleClick=False,Composite=True,user_function=self.go)
 		self.widget = self.obj.widget
 		self.Active = False
-		create_binding(widget=self.parent_obj.widget,bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt'],'<Escape>'],action=self.toggle)
-		create_binding(widget=self.parent_obj.widget,bindings=globs['var']['bind_clear_history_alt'],action=self.clear)
+		sg.create_binding(widget=self.parent_obj.widget,bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt'],'<Escape>'],action=self.toggle)
+		sg.create_binding(widget=self.parent_obj.widget,bindings=sh.globs['var']['bind_clear_history_alt'],action=self.clear)
 		self.close()
 	
 	def autoselect(self):
@@ -1708,7 +1709,7 @@ class History:
 		
 	# Скопировать элемент истории
 	def copy(self,*args):
-		h_obj.clipboard().copy(h_request.search())
+		sg.widgets.clipboard().copy(h_request.search())
 
 
 
@@ -1716,9 +1717,9 @@ class Moves:
 	
 	def __init__(self):
 		if h_request._moves:
-			log.append('Moves.__init__',lev_debug,globs['mes'].action_not_required)
+			log.append('Moves.__init__',sh.lev_debug,sh.globs['mes'].action_not_required)
 		else:
-			log.append('Moves.__init__',lev_info,globs['mes'].create_object)
+			log.append('Moves.__init__',sh.lev_info,sh.globs['mes'].create_object)
 			Cells()
 			h_request._moves = {'_move_right':[],'_move_left':[],'_move_down':[],'_move_up':[],'_move_line_start':[],'_move_line_end':[],'_move_text_start':[],'_move_text_end':[]}
 			self.text_start()
@@ -1735,7 +1736,7 @@ class Moves:
 		func_res = (cur_i,cur_j)
 		i = cur_i
 		while i < len(h_request._cells):
-			# todo: Алгоритм для globs['bool']['SelectTermsOnly']
+			# todo: Алгоритм для sh.globs['bool']['SelectTermsOnly']
 			if h_request._cells[i][cur_j].Selectable:
 				if GetNext:
 					if i != cur_i:
@@ -1745,7 +1746,7 @@ class Moves:
 					func_res = (i,cur_j)
 					break
 			i += 1
-		#log.append('TkinterHtmlMod.get_vert_selectable',lev_debug,str(func_res))
+		#log.append('TkinterHtmlMod.get_vert_selectable',sh.lev_debug,str(func_res))
 		return func_res
 		
 	# Вернуть первую выделяемую ячейку по вертикали в направлении снизу вверх
@@ -1753,7 +1754,7 @@ class Moves:
 		func_res = (cur_i,cur_j)
 		i = cur_i
 		while i >= 0:
-			# todo: Алгоритм для globs['bool']['SelectTermsOnly']
+			# todo: Алгоритм для sh.globs['bool']['SelectTermsOnly']
 			if h_request._cells[i][cur_j].Selectable:
 				if GetPrevious:
 					if i != cur_i:
@@ -1763,7 +1764,7 @@ class Moves:
 					func_res = (i,cur_j)
 					break
 			i -= 1
-		#log.append('TkinterHtmlMod.get_vert_selectable_backwards',lev_debug,str(func_res))
+		#log.append('TkinterHtmlMod.get_vert_selectable_backwards',sh.lev_debug,str(func_res))
 		return func_res
 
 	# Список ячеек, выбираемых слева направо
@@ -1883,7 +1884,7 @@ class Moves:
 		j = sel_j = cur_j
 		while i < len(h_request._cells):
 			while j < len(h_request._cells[i]):
-				if globs['bool']['SelectTermsOnly']:
+				if sh.globs['bool']['SelectTermsOnly']:
 					if h_request._cells[i][j].Selectable:
 						# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
 						sel_i, sel_j = i, j
@@ -1905,7 +1906,7 @@ class Moves:
 				break
 			j = 0
 			i += 1
-		#log.append('TkinterHtmlMod.get_selectable',lev_debug,str((sel_i,sel_j)))
+		#log.append('TkinterHtmlMod.get_selectable',sh.lev_debug,str((sel_i,sel_j)))
 		return(sel_i,sel_j)
 		
 	# Определить предыдущую (-1,-1) ячейку, которую можно выделить
@@ -1915,7 +1916,7 @@ class Moves:
 		j = sel_j = cur_j
 		while i >= 0:
 			while j >= 0:
-				if globs['bool']['SelectTermsOnly']:
+				if sh.globs['bool']['SelectTermsOnly']:
 					if h_request._cells[i][j].Selectable:
 						# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
 						sel_i = i
@@ -1938,7 +1939,7 @@ class Moves:
 				break
 			i -= 1
 			j = len(h_request._cells[i]) - 1
-		#log.append('TkinterHtmlMod.get_selectable_backwards',lev_debug,str((sel_i,sel_j)))
+		#log.append('TkinterHtmlMod.get_selectable_backwards',sh.lev_debug,str((sel_i,sel_j)))
 		return(sel_i,sel_j)
 
 
@@ -1969,7 +1970,7 @@ class TkinterHtmlMod(tk.Widget):
 		self.load_tkhtml()
 		self.widget = tk.Widget
 		self.obj = self.widget.__init__(self,master,'html',cfg,kw)
-		self.vsb = ttk.Scrollbar(h_obj.top().widget,orient=tk.VERTICAL)
+		self.vsb = ttk.Scrollbar(objs.top().widget,orient=tk.VERTICAL)
 		self.hsb = ttk.Scrollbar(self.master,orient=tk.HORIZONTAL)
 		self.widget.configure(self,yscrollcommand=self.vsb.set)
 		self.widget.configure(self,xscrollcommand=self.hsb.set)
@@ -1981,23 +1982,23 @@ class TkinterHtmlMod(tk.Widget):
 		self.save_article = SaveArticle()
 		
 		# todo: The same does not work when imported from sharedGUI for some reason
-		if h_os.sys() == 'lin':
-			h_obj.top().widget.wm_attributes('-zoomed',True)
+		if sh.h_os.sys() == 'lin':
+			objs.top().widget.wm_attributes('-zoomed',True)
 		# Win, Mac
 		else:
-			h_obj.top().widget.wm_state(newstate='zoomed')
+			objs.top().widget.wm_state(newstate='zoomed')
 		self.history = History()
 		self.create_frame_panel()
 		# The very place for packing the vertical scrollbar. If we pack it earlier, it will fill an extra space, if later - it will be too small.
 		self.vsb.pack(side='right',fill='y')
 		self.search_field.widget.focus_set()
-		create_binding(widget=self,bindings=globs['var']['bind_go_url'],action=self.go_url)
+		sg.create_binding(widget=self,bindings=sh.globs['var']['bind_go_url'],action=self.go_url)
 		self.bind("<Motion>",self.mouse_sel,True)
 		# ВНИМАНИЕ: По непонятной причине, не работает привязка горячих клавиш (только мышь) для данного виджета, работает только для основного виджета!
-		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_copy_sel'],globs['var']['bind_copy_sel_alt'],globs['var']['bind_copy_sel_alt2']],action=self.copy_cell)
+		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_copy_sel'],sh.globs['var']['bind_copy_sel_alt'],sh.globs['var']['bind_copy_sel_alt2']],action=self.copy_cell)
 		# По неясной причине в одной и той же Windows ИНОГДА не удается включить '<KP_Delete>'
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_delete_cell'],action=self.delete_cell)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_add_cell'],action=self.add_cell)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_delete_cell'],action=self.delete_cell)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_add_cell'],action=self.add_cell)
 		self.widget_width = 0
 		self.widget_height = 0
 		self.widget_offset_x = 0
@@ -2008,11 +2009,11 @@ class TkinterHtmlMod(tk.Widget):
 	def get_url(self):
 		# Note: encoding must be UTF-8 here
 		if h_request.source() == 'Multitran':
-			h_obj.online().reset(self.get_pair(),self.search,MTSpecific=True)
+			objs.online().reset(self.get_pair(),self.search,MTSpecific=True)
 		else:
-			h_obj.online().reset(self.get_pair(),self.search,MTSpecific=False)
-		self.url = h_obj.online().url()
-		log.append('TkinterHtmlMod.get_url',lev_debug,"self.url: %s" % str(self.url))
+			objs.online().reset(self.get_pair(),self.search,MTSpecific=False)
+		self.url = objs.online().url()
+		log.append('TkinterHtmlMod.get_url',sh.lev_debug,"self.url: %s" % str(self.url))
 	
 	# todo: move 'move_*' procedures to Moves class
 	# Перейти на 1-й термин текущей строки	
@@ -2021,7 +2022,7 @@ class TkinterHtmlMod(tk.Widget):
 			self.i, self.j = h_request._moves['_move_line_start'][self.i][self.j]
 			self.set_cell()
 		else:
-			log.append('TkinterHtmlMod.move_line_start',lev_err,globs['mes'].wrong_input2)
+			log.append('TkinterHtmlMod.move_line_start',sh.lev_err,sh.globs['mes'].wrong_input2)
 
 	# Перейти на последний термин текущей строки
 	def move_line_end(self,*args):
@@ -2059,7 +2060,7 @@ class TkinterHtmlMod(tk.Widget):
 			self.i, self.j = h_request._moves['_move_left'][self.i][self.j]
 			self.set_cell()
 		else:
-			log.append('TkinterHtmlMod.move_left',lev_err,globs['mes'].wrong_input2)
+			log.append('TkinterHtmlMod.move_left',sh.lev_err,sh.globs['mes'].wrong_input2)
 
 	# Перейти на следующий термин
 	def move_right(self,*args):
@@ -2067,7 +2068,7 @@ class TkinterHtmlMod(tk.Widget):
 			self.i, self.j = h_request._moves['_move_right'][self.i][self.j]
 			self.set_cell()
 		else:
-			log.append('TkinterHtmlMod.move_right',lev_err,globs['mes'].wrong_input2)
+			log.append('TkinterHtmlMod.move_right',sh.lev_err,sh.globs['mes'].wrong_input2)
 
 	# Перейти на строку вниз
 	def move_down(self,*args):
@@ -2075,7 +2076,7 @@ class TkinterHtmlMod(tk.Widget):
 			self.i, self.j = h_request._moves['_move_down'][self.i][self.j]
 			self.set_cell()
 		else:
-			log.append('TkinterHtmlMod.move_down',lev_err,globs['mes'].wrong_input2)
+			log.append('TkinterHtmlMod.move_down',sh.lev_err,sh.globs['mes'].wrong_input2)
 
 	# Перейти на строку вверх
 	def move_up(self,*args):
@@ -2083,7 +2084,7 @@ class TkinterHtmlMod(tk.Widget):
 			self.i, self.j = h_request._moves['_move_up'][self.i][self.j]
 			self.set_cell()
 		else:
-			log.append('TkinterHtmlMod.move_up',lev_err,globs['mes'].wrong_input2)
+			log.append('TkinterHtmlMod.move_up',sh.lev_err,sh.globs['mes'].wrong_input2)
 	
 	# Задействование колеса мыши для пролистывания экрана
 	def mouse_wheel(self,event):
@@ -2106,8 +2107,8 @@ class TkinterHtmlMod(tk.Widget):
 	
 	# Открыть URL текущей статьи в браузере
 	def open_in_browser(self,*args):
-		h_obj.online()._url = h_request._url
-		h_obj.online().browse()
+		objs.online()._url = h_request._url
+		objs.online().browse()
 	
 	# Скопировать URL текущей статьи или выделения
 	def copy_url(self,obj,mode='article'):
@@ -2115,16 +2116,16 @@ class TkinterHtmlMod(tk.Widget):
 		if mode == 'term':
 			# Скопировать URL текущего термина. URL 1-го термина не совпадает с URL статьи!
 			cur_url = h_request._cells[self.i][self.j].url
-			if globs['bool']['Iconify']:
-				Geometry(parent_obj=h_obj.top(),title=h_request.search()).minimize()
+			if sh.globs['bool']['Iconify']:
+				sg.Geometry(parent_obj=objs.top(),title=h_request.search()).minimize()
 		elif mode == 'article':
 			# Скопировать URL статьи
 			cur_url = h_request._url
-			if globs['bool']['Iconify']:
-				Geometry(parent_obj=h_obj.top(),title=h_request.search()).minimize()
+			if sh.globs['bool']['Iconify']:
+				sg.Geometry(parent_obj=objs.top(),title=h_request.search()).minimize()
 		else:
-			Message(func='TkinterHtmlMod.copy_url',type=lev_err,message=globs['mes'].unknown_mode % (str(mode),'article, term'))
-		h_obj.clipboard().copy(cur_url)
+			sg.Message(func='TkinterHtmlMod.copy_url',type=sh.lev_err,message=sh.globs['mes'].unknown_mode % (str(mode),'article, term'))
+		sg.widgets.clipboard().copy(cur_url)
 
 	# Открыть веб-страницу с определением текущего термина
 	def define(self,Selected=True): # Selected: True: Выделенный термин; False: Название статьи
@@ -2132,8 +2133,8 @@ class TkinterHtmlMod(tk.Widget):
 			search_str = 'define:' + h_request._cells[self.i][self.j].term
 		else:
 			search_str = 'define:' + h_request._search
-		h_obj.online().reset(base_str=globs['var']['web_search_url'],search_str=search_str)
-		h_obj.online().browse()
+		objs.online().reset(base_str=sh.globs['var']['web_search_url'],search_str=search_str)
+		objs.online().browse()
 	
 	# Обновить рисунки на кнопках
 	def update_buttons(self):
@@ -2187,7 +2188,7 @@ class TkinterHtmlMod(tk.Widget):
 	def control_length(self): # Confirm too long requests
 		Confirmed = True
 		if len(self.search) >= 150:
-			if not Message(func='TkinterHtmlMod.control_length',type=lev_ques,message=globs['mes'].long_request % len(self.search)).Yes:
+			if not sg.Message(func='TkinterHtmlMod.control_length',type=sh.lev_ques,message=sh.globs['mes'].long_request % len(self.search)).Yes:
 				Confirmed = False
 		return Confirmed
 	
@@ -2217,7 +2218,7 @@ class TkinterHtmlMod(tk.Widget):
 			h_request._search = self.search
 			h_request.new()
 			h_db.search_part()
-			log.append('TkinterHtmlMod._go_search',lev_debug,h_request._search)
+			log.append('TkinterHtmlMod._go_search',sh.lev_debug,h_request._search)
 			self.load_article()
 	
 	# Search the selected term online using the entry widget (search field)
@@ -2228,17 +2229,17 @@ class TkinterHtmlMod(tk.Widget):
 			self.go_url()
 		else:
 			# Скопировать предпоследний запрос в буфер и вставить его в строку поиска (например, для перехода на этот запрос еще раз)
-			if self.search == globs['var']['repeat_sign2']:
+			if self.search == sh.globs['var']['repeat_sign2']:
 				self.search_field.insert_repeat_sign2()
 			# Скопировать последний запрос в буфер и вставить его в строку поиска (например, для корректировки)
-			elif self.search == globs['var']['repeat_sign']:
+			elif self.search == sh.globs['var']['repeat_sign']:
 				self.search_field.insert_repeat_sign()
 			else:
 				self.search_online()
 					
 	# Создание каркаса с полем ввода, кнопкой выбора направления перевода и кнопкой выхода
 	def create_frame_panel(self):
-		self.frame_panel = Frame(h_obj.top(),expand=0,fill='x',side='bottom')
+		self.frame_panel = sg.Frame(objs.top(),expand=0,fill='x',side='bottom')
 		# Поле ввода поисковой строки
 		self.search_field = SearchField(parent_obj=self.frame_panel)
 		self.draw_buttons()
@@ -2254,94 +2255,94 @@ class TkinterHtmlMod(tk.Widget):
 	# Создать кнопки
 	def draw_buttons(self):
 		# Кнопка для "чайников", заменяет Enter в search_field
-		Button(self.frame_panel,text=globs['mes'].btn_translate,hint=globs['mes'].btn_translate,action=self.go_search,inactive_image_path=globs['var']['icon_go_search'],active_image_path=globs['var']['icon_go_search'],bindings=[globs['var']['bind_go_search'],globs['var']['bind_go_search_alt']]) # В данном случае btn = hint
+		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_translate,hint=sh.globs['mes'].btn_translate,action=self.go_search,inactive_image_path=sh.globs['var']['icon_go_search'],active_image_path=sh.globs['var']['icon_go_search'],bindings=[sh.globs['var']['bind_go_search'],sh.globs['var']['bind_go_search_alt']]) # В данном случае btn = hint
 		# Кнопка очистки строки поиска
-		Button(self.frame_panel,text=globs['mes'].btn_clear,hint=globs['mes'].hint_clear_search_field,action=self.search_field.clear,inactive_image_path=globs['var']['icon_clear_search_field'],active_image_path=globs['var']['icon_clear_search_field'],bindings=[globs['var']['bind_clear_search_field']])
+		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_clear,hint=sh.globs['mes'].hint_clear_search_field,action=self.search_field.clear,inactive_image_path=sh.globs['var']['icon_clear_search_field'],active_image_path=sh.globs['var']['icon_clear_search_field'],bindings=[sh.globs['var']['bind_clear_search_field']])
 		# Кнопка вставки
-		Button(self.frame_panel,text=globs['mes'].btn_paste,hint=globs['mes'].hint_paste_clipboard,action=self.search_field.paste,inactive_image_path=globs['var']['icon_paste'],active_image_path=globs['var']['icon_paste'],bindings=['<Control-v>'])
+		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_paste,hint=sh.globs['mes'].hint_paste_clipboard,action=self.search_field.paste,inactive_image_path=sh.globs['var']['icon_paste'],active_image_path=sh.globs['var']['icon_paste'],bindings=['<Control-v>'])
 		# Кнопка вставки текущего запроса
-		self.btn_repeat_sign = Button(self.frame_panel,text=globs['mes'].btn_repeat_sign,hint=globs['mes'].hint_paste_cur_request,action=self.search_field.insert_repeat_sign,inactive_image_path=globs['var']['icon_repeat_sign_off'],active_image_path=globs['var']['icon_repeat_sign'],bindings=globs['var']['repeat_sign'])
+		self.btn_repeat_sign = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_repeat_sign,hint=sh.globs['mes'].hint_paste_cur_request,action=self.search_field.insert_repeat_sign,inactive_image_path=sh.globs['var']['icon_repeat_sign_off'],active_image_path=sh.globs['var']['icon_repeat_sign'],bindings=sh.globs['var']['repeat_sign'])
 		# Кнопка вставки предыдущего запроса
-		self.btn_repeat_sign2 = Button(self.frame_panel,text=globs['mes'].btn_repeat_sign2,hint=globs['mes'].hint_paste_prev_request,action=self.search_field.insert_repeat_sign2,inactive_image_path=globs['var']['icon_repeat_sign2_off'],active_image_path=globs['var']['icon_repeat_sign2'],bindings=globs['var']['repeat_sign2'])
+		self.btn_repeat_sign2 = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_repeat_sign2,hint=sh.globs['mes'].hint_paste_prev_request,action=self.search_field.insert_repeat_sign2,inactive_image_path=sh.globs['var']['icon_repeat_sign2_off'],active_image_path=sh.globs['var']['icon_repeat_sign2'],bindings=sh.globs['var']['repeat_sign2'])
 		# Кнопка для вставки спец. символов
-		Button(self.frame_panel,text=globs['mes'].btn_symbols,hint=globs['mes'].hint_symbols,action=self.spec_symbols.show,inactive_image_path=globs['var']['icon_spec_symbol'],active_image_path=globs['var']['icon_spec_symbol'],bindings=globs['var']['bind_spec_symbol'])
+		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_symbols,hint=sh.globs['mes'].hint_symbols,action=self.spec_symbols.show,inactive_image_path=sh.globs['var']['icon_spec_symbol'],active_image_path=sh.globs['var']['icon_spec_symbol'],bindings=sh.globs['var']['bind_spec_symbol'])
 		# Выпадающий список с вариантами направлений перевода
-		self.option_menu = OptionMenu(parent_obj=self.frame_panel,items=pairs)
+		self.option_menu = sg.OptionMenu(parent_obj=self.frame_panel,items=pairs)
 		# Кнопка изменения вида статьи
 		# todo: Change active/inactive button logic in case of creating three or more views
-		self.btn_toggle_view = Button(self.frame_panel,text=globs['mes'].btn_toggle_view,hint=globs['mes'].hint_toggle_view,action=self.toggle_view,inactive_image_path=globs['var']['icon_toggle_view_ver'],active_image_path=globs['var']['icon_toggle_view_hor'],bindings=[globs['var']['bind_toggle_view'],globs['var']['bind_toggle_view_alt']])
+		self.btn_toggle_view = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_view,hint=sh.globs['mes'].hint_toggle_view,action=self.toggle_view,inactive_image_path=sh.globs['var']['icon_toggle_view_ver'],active_image_path=sh.globs['var']['icon_toggle_view_hor'],bindings=[sh.globs['var']['bind_toggle_view'],sh.globs['var']['bind_toggle_view_alt']])
 		# Кнопка перехода на предыдущую статью
-		self.btn_prev = Button(self.frame_panel,text=globs['mes'].btn_prev,hint=globs['mes'].hint_preceding_article,action=self.go_back,inactive_image_path=globs['var']['icon_go_back_off'],active_image_path=globs['var']['icon_go_back'],bindings=globs['var']['bind_go_back'])
+		self.btn_prev = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_prev,hint=sh.globs['mes'].hint_preceding_article,action=self.go_back,inactive_image_path=sh.globs['var']['icon_go_back_off'],active_image_path=sh.globs['var']['icon_go_back'],bindings=sh.globs['var']['bind_go_back'])
 		# Кнопка перехода на следующую статью
-		self.btn_next = Button(self.frame_panel,text=globs['mes'].btn_next,hint=globs['mes'].hint_following_article,action=self.go_forward,inactive_image_path=globs['var']['icon_go_forward_off'],active_image_path=globs['var']['icon_go_forward'],bindings=globs['var']['bind_go_forward'])
+		self.btn_next = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_next,hint=sh.globs['mes'].hint_following_article,action=self.go_forward,inactive_image_path=sh.globs['var']['icon_go_forward_off'],active_image_path=sh.globs['var']['icon_go_forward'],bindings=sh.globs['var']['bind_go_forward'])
 		# Кнопка включения/отключения истории
-		self.button = Button(self.frame_panel,text=globs['mes'].btn_history,hint=globs['mes'].hint_history,action=self.history.toggle,inactive_image_path=globs['var']['icon_toggle_history'],active_image_path=globs['var']['icon_toggle_history'],bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt']])
-		create_binding(widget=self.button.widget,bindings=globs['var']['bind_clear_history'],action=self.history.clear)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_clear_history_alt'],action=self.history.clear)
+		self.button = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_history,hint=sh.globs['mes'].hint_history,action=self.history.toggle,inactive_image_path=sh.globs['var']['icon_toggle_history'],active_image_path=sh.globs['var']['icon_toggle_history'],bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt']])
+		sg.create_binding(widget=self.button.widget,bindings=sh.globs['var']['bind_clear_history'],action=self.history.clear)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_clear_history_alt'],action=self.history.clear)
 		# Кнопка очистки истории
-		Button(self.frame_panel,text=globs['mes'].btn_clear_history,hint=globs['mes'].hint_clear_history,action=self.history.clear,inactive_image_path=globs['var']['icon_clear_history'],active_image_path=globs['var']['icon_clear_history'],bindings=globs['var']['bind_clear_history_alt'])
+		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_clear_history,hint=sh.globs['mes'].hint_clear_history,action=self.history.clear,inactive_image_path=sh.globs['var']['icon_clear_history'],active_image_path=sh.globs['var']['icon_clear_history'],bindings=sh.globs['var']['bind_clear_history_alt'])
 		# Кнопка перезагрузки статьи
-		Button(self.frame_panel,text=globs['mes'].btn_reload,hint=globs['mes'].hint_reload_article,action=self.reload,inactive_image_path=globs['var']['icon_reload'],active_image_path=globs['var']['icon_reload'],bindings=[globs['var']['bind_reload_article'],globs['var']['bind_reload_article_alt']])
+		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_reload,hint=sh.globs['mes'].hint_reload_article,action=self.reload,inactive_image_path=sh.globs['var']['icon_reload'],active_image_path=sh.globs['var']['icon_reload'],bindings=[sh.globs['var']['bind_reload_article'],sh.globs['var']['bind_reload_article_alt']])
 		# Кнопка "Поиск в статье"
-		Button(self.frame_panel,text=globs['mes'].btn_search,hint=globs['mes'].hint_search_article,action=self.search_reset,inactive_image_path=globs['var']['icon_search_article'],active_image_path=globs['var']['icon_search_article'],bindings=globs['var']['bind_re_search_article'])
+		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_search,hint=sh.globs['mes'].hint_search_article,action=self.search_reset,inactive_image_path=sh.globs['var']['icon_search_article'],active_image_path=sh.globs['var']['icon_search_article'],bindings=sh.globs['var']['bind_re_search_article'])
 		# Кнопка "Сохранить"
-		Button(self.frame_panel,text=globs['mes'].btn_save,hint=globs['mes'].hint_save_article,action=self.save_article.select,inactive_image_path=globs['var']['icon_save_article'],active_image_path=globs['var']['icon_save_article'],bindings=[globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']])
+		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_save,hint=sh.globs['mes'].hint_save_article,action=self.save_article.select,inactive_image_path=sh.globs['var']['icon_save_article'],active_image_path=sh.globs['var']['icon_save_article'],bindings=[sh.globs['var']['bind_save_article'],sh.globs['var']['bind_save_article_alt']])
 		# Кнопка "Открыть в браузере"
-		Button(self.frame_panel,text=globs['mes'].btn_in_browser,hint=globs['mes'].hint_in_browser,action=self.open_in_browser,inactive_image_path=globs['var']['icon_open_in_browser'],active_image_path=globs['var']['icon_open_in_browser'],bindings=[globs['var']['bind_open_in_browser'],globs['var']['bind_open_in_browser_alt']])
+		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_in_browser,hint=sh.globs['mes'].hint_in_browser,action=self.open_in_browser,inactive_image_path=sh.globs['var']['icon_open_in_browser'],active_image_path=sh.globs['var']['icon_open_in_browser'],bindings=[sh.globs['var']['bind_open_in_browser'],sh.globs['var']['bind_open_in_browser_alt']])
 		# Кнопка толкования термина. Сделана вспомогательной ввиду нехватки места
-		Button(self.frame_panel,text=globs['mes'].btn_define,hint=globs['mes'].hint_define,action=lambda:self.define(Selected=False),inactive_image_path=globs['var']['icon_define'],active_image_path=globs['var']['icon_define'],bindings=globs['var']['bind_define'])
+		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_define,hint=sh.globs['mes'].hint_define,action=lambda:self.define(Selected=False),inactive_image_path=sh.globs['var']['icon_define'],active_image_path=sh.globs['var']['icon_define'],bindings=sh.globs['var']['bind_define'])
 		# Кнопка "Перехват Ctrl-c-c"
-		self.btn_clipboard = Button(self.frame_panel,text=globs['mes'].btn_clipboard,hint=globs['mes'].hint_watch_clipboard,action=self.watch_clipboard,inactive_image_path=globs['var']['icon_watch_clipboard_off'],active_image_path=globs['var']['icon_watch_clipboard_on'],fg='red',bindings=[])
+		self.btn_clipboard = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_clipboard,hint=sh.globs['mes'].hint_watch_clipboard,action=self.watch_clipboard,inactive_image_path=sh.globs['var']['icon_watch_clipboard_off'],active_image_path=sh.globs['var']['icon_watch_clipboard_on'],fg='red',bindings=[])
 		# Кнопка "О программе"
-		Button(self.frame_panel,text=globs['mes'].btn_about,hint=globs['mes'].hint_about,action=h_obj.about().show,inactive_image_path=globs['var']['icon_show_about'],active_image_path=globs['var']['icon_show_about'],bindings=globs['var']['bind_show_about'])
+		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_about,hint=sh.globs['mes'].hint_about,action=objs.about().show,inactive_image_path=sh.globs['var']['icon_show_about'],active_image_path=sh.globs['var']['icon_show_about'],bindings=sh.globs['var']['bind_show_about'])
 		# Кнопка выхода
-		Button(self.frame_panel,text=globs['mes'].btn_x,hint=globs['mes'].hint_x,action=h_quit.wait,inactive_image_path=globs['var']['icon_quit_now'],active_image_path=globs['var']['icon_quit_now'],side='right',bindings=[globs['var']['bind_quit_now'],globs['var']['bind_quit_now_alt']])
+		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_x,hint=sh.globs['mes'].hint_x,action=h_quit.wait,inactive_image_path=sh.globs['var']['icon_quit_now'],active_image_path=sh.globs['var']['icon_quit_now'],side='right',bindings=[sh.globs['var']['bind_quit_now'],sh.globs['var']['bind_quit_now_alt']])
 
 	def hotkeys(self):
 		# Привязки: горячие клавиши и кнопки мыши
-		create_binding(widget=self.history.widget,bindings=globs['var']['bind_copy_history'],action=self.history.copy)
-		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_go_search'],globs['var']['bind_go_search_alt']],action=self.go_search)
+		sg.create_binding(widget=self.history.widget,bindings=sh.globs['var']['bind_copy_history'],action=self.history.copy)
+		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_go_search'],sh.globs['var']['bind_go_search_alt']],action=self.go_search)
 		# todo: do not iconify at <ButtonRelease-3>
-		create_binding(widget=self.search_field.widget,bindings=globs['var']['bind_clear_search_field'],action=self.search_field.clear)
-		create_binding(widget=self.search_field.widget,bindings=globs['var']['bind_paste_search_field'],action=lambda e:self.search_field.paste())
-		if h_os.sys() == 'win' or h_os.sys() == 'mac':
-			create_binding(widget=h_obj.top().widget,bindings='<MouseWheel>',action=self.mouse_wheel)
+		sg.create_binding(widget=self.search_field.widget,bindings=sh.globs['var']['bind_clear_search_field'],action=self.search_field.clear)
+		sg.create_binding(widget=self.search_field.widget,bindings=sh.globs['var']['bind_paste_search_field'],action=lambda e:self.search_field.paste())
+		if sh.h_os.sys() == 'win' or sh.h_os.sys() == 'mac':
+			sg.create_binding(widget=objs.top().widget,bindings='<MouseWheel>',action=self.mouse_wheel)
 		else:
-			create_binding(widget=h_obj.top().widget,bindings=['<Button 4>','<Button 5>'],action=self.mouse_wheel)
+			sg.create_binding(widget=objs.top().widget,bindings=['<Button 4>','<Button 5>'],action=self.mouse_wheel)
 		# Перейти на предыдущую/следующую статью
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_go_back'],action=self.go_back)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_go_forward'],action=self.go_forward)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_left'],action=self.move_left)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_right'],action=self.move_right)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_down'],action=self.move_down)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_up'],action=self.move_up)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_line_start'],action=self.move_line_start)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_line_end'],action=self.move_line_end)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_text_start'],action=self.move_text_start)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_text_end'],action=self.move_text_end)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_page_up'],action=self.move_page_up)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_move_page_down'],action=self.move_page_down)
-		create_binding(widget=h_obj.top().widget,bindings='<Escape>',action=Geometry(parent_obj=h_obj.top(),title=h_request.search()).minimize)
-		create_binding(widget=self,bindings=globs['var']['bind_iconify'],action=Geometry(parent_obj=h_obj.top(),title=h_request.search()).minimize)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_go_back'],action=self.go_back)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_go_forward'],action=self.go_forward)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_left'],action=self.move_left)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_right'],action=self.move_right)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_down'],action=self.move_down)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_up'],action=self.move_up)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_line_start'],action=self.move_line_start)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_line_end'],action=self.move_line_end)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_text_start'],action=self.move_text_start)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_text_end'],action=self.move_text_end)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_page_up'],action=self.move_page_up)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_page_down'],action=self.move_page_down)
+		sg.create_binding(widget=objs.top().widget,bindings='<Escape>',action=sg.Geometry(parent_obj=objs.top(),title=h_request.search()).minimize)
+		sg.create_binding(widget=self,bindings=sh.globs['var']['bind_iconify'],action=sg.Geometry(parent_obj=objs.top(),title=h_request.search()).minimize)
 		# Дополнительные горячие клавиши
-		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_quit_now'],globs['var']['bind_quit_now_alt']],action=h_quit.wait)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_search_article_forward'],action=self.search_forward)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_search_article_backward'],action=self.search_backward)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_re_search_article'],action=self.search_reset)
-		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_reload_article'],globs['var']['bind_reload_article_alt']],action=self.reload)
-		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_save_article'],globs['var']['bind_save_article_alt']],action=self.save_article.select)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_show_about'],action=h_obj.about().show)
-		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history']],action=self.history.toggle)
-		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_toggle_history'],globs['var']['bind_toggle_history_alt']],action=self.history.toggle)
-		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_open_in_browser'],globs['var']['bind_open_in_browser_alt']],action=self.open_in_browser)
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_copy_url'],action=lambda e:self.copy_url(h_obj.top(),mode='term'))
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_copy_article_url'],action=lambda e:self.copy_url(h_obj.top(),mode='article'))
-		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_spec_symbol']],action=self.spec_symbols.show)
-		create_binding(widget=self.search_field.widget,bindings='<Control-a>',action=lambda e:select_all(self.search_field.widget,Small=True))
-		create_binding(widget=h_obj.top().widget,bindings=globs['var']['bind_define'],action=lambda e:self.define(Selected=True))
-		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_prev_pair'],globs['var']['bind_prev_pair_alt']],action=self.option_menu.set_prev)
-		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_next_pair'],globs['var']['bind_next_pair_alt']],action=self.option_menu.set_next)
-		create_binding(widget=h_obj.top().widget,bindings=[globs['var']['bind_toggle_view'],globs['var']['bind_toggle_view_alt']],action=self.toggle_view)
+		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_quit_now'],sh.globs['var']['bind_quit_now_alt']],action=h_quit.wait)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_search_article_forward'],action=self.search_forward)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_search_article_backward'],action=self.search_backward)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_re_search_article'],action=self.search_reset)
+		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_reload_article'],sh.globs['var']['bind_reload_article_alt']],action=self.reload)
+		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_save_article'],sh.globs['var']['bind_save_article_alt']],action=self.save_article.select)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_show_about'],action=objs.about().show)
+		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history']],action=self.history.toggle)
+		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt']],action=self.history.toggle)
+		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_open_in_browser'],sh.globs['var']['bind_open_in_browser_alt']],action=self.open_in_browser)
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_copy_url'],action=lambda e:self.copy_url(objs.top(),mode='term'))
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_copy_article_url'],action=lambda e:self.copy_url(objs.top(),mode='article'))
+		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_spec_symbol']],action=self.spec_symbols.show)
+		sg.create_binding(widget=self.search_field.widget,bindings='<Control-a>',action=lambda e:select_all(self.search_field.widget,Small=True))
+		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_define'],action=lambda e:self.define(Selected=True))
+		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_prev_pair'],sh.globs['var']['bind_prev_pair_alt']],action=self.option_menu.set_prev)
+		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_next_pair'],sh.globs['var']['bind_next_pair_alt']],action=self.option_menu.set_next)
+		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_toggle_view'],sh.globs['var']['bind_toggle_view_alt']],action=self.toggle_view)
 		
 	def show(self):
 		self.pack(expand=1,fill='both')
@@ -2355,8 +2356,7 @@ class TkinterHtmlMod(tk.Widget):
 
 	# Вернуть местоположение библиотеки tkhtml
 	def get_tkhtml_folder(self):
-		# globs['bin_dir']
-		return os.path.join (Path(os.path.abspath(sys.argv[0])).dirname(),
+		return os.path.join (sh.Path(os.path.abspath(sys.argv[0])).dirname(),
 							 "tkhtml",
 							 platform.system().replace("Darwin", "MacOSX"),
 							 "64-bit" if sys.maxsize > 2**32 else "32-bit")
@@ -2366,8 +2366,8 @@ class TkinterHtmlMod(tk.Widget):
 			parts = self.pos2cell[index]
 		else:
 			parts = (0,0)
-			log.append('TkinterHtmlMod.get_cell',lev_err,globs['mes'].wrong_input2)
-		if globs['bool']['SelectTermsOnly']:
+			log.append('TkinterHtmlMod.get_cell',sh.lev_err,sh.globs['mes'].wrong_input2)
+		if sh.globs['bool']['SelectTermsOnly']:
 			if len(h_request._cells) > parts[0] and len(h_request._cells[self.i]) > parts[1]:
 				if h_request._cells[parts[0]][parts[1]].Selectable:
 					self.i, self.j = parts
@@ -2448,9 +2448,9 @@ class TkinterHtmlMod(tk.Widget):
 	
 	# Сместить экран так, чтобы была видна текущая выделенная ячейка
 	def shift_screen(self):
-		h_obj.root().widget.update_idletasks()
-		cur_widget_width = globs['geom_top']['width'] = self.winfo_width()
-		cur_widget_height = globs['geom_top']['height'] = self.winfo_height()
+		sg.widgets.root().widget.update_idletasks()
+		cur_widget_width = sh.globs['geom_top']['width'] = self.winfo_width()
+		cur_widget_height = sh.globs['geom_top']['height'] = self.winfo_height()
 		cur_widget_offset_x = self.winfo_rootx()
 		cur_widget_offset_y = self.winfo_rooty()
 		if cur_widget_width != self.widget_width or cur_widget_height != self.widget_height or cur_widget_offset_x != self.widget_offset_x or cur_widget_offset_y != self.widget_offset_y:
@@ -2458,7 +2458,7 @@ class TkinterHtmlMod(tk.Widget):
 			self.widget_height = cur_widget_height
 			self.widget_offset_x = cur_widget_offset_x
 			self.widget_offset_y = cur_widget_offset_y
-			log.append('TkinterHtmlMod.shift_screen',lev_debug,globs['mes'].geometry % (self.widget_width,self.widget_height,self.widget_offset_x,self.widget_offset_y))
+			log.append('TkinterHtmlMod.shift_screen',sh.lev_debug,sh.globs['mes'].geometry % (self.widget_width,self.widget_height,self.widget_offset_x,self.widget_offset_y))
 			self.top_indexes = {}
 			self.page_no = 0
 			# todo: check this
@@ -2472,7 +2472,7 @@ class TkinterHtmlMod(tk.Widget):
 			cur_top_bbox = self.bbox(self.index[0])[1]
 			cur_bottom_bbox = self.bbox(self.index[0])[3]
 		except tk.TclError:
-			log.append('TkinterHtmlMod.shift_screen',lev_debug,globs['mes'].wrong_input2)
+			log.append('TkinterHtmlMod.shift_screen',sh.lev_debug,sh.globs['mes'].wrong_input2)
 			cur_top_bbox = 0
 			cur_bottom_bbox = 0
 		if cur_top_bbox < self.top_bbox:
@@ -2487,14 +2487,14 @@ class TkinterHtmlMod(tk.Widget):
 			else:
 				self.yview_scroll(cur_top_bbox-self.top_bbox,'units')
 			'''
-			log.append('TkinterHtmlMod.shift_screen',lev_info,globs['mes'].cur_page_no % self.page_no)
+			log.append('TkinterHtmlMod.shift_screen',sh.lev_info,sh.globs['mes'].cur_page_no % self.page_no)
 		elif cur_bottom_bbox > self.bottom_bbox:
 			self.yview(self.index[0])
 			self.page_no += 1
-			log.append('TkinterHtmlMod.shift_screen',lev_info,globs['mes'].cur_page_no % self.page_no)
+			log.append('TkinterHtmlMod.shift_screen',sh.lev_info,sh.globs['mes'].cur_page_no % self.page_no)
 			self.top_indexes[self.page_no] = self.index[0]
 		else:
-			#log.append('TkinterHtmlMod.shift_screen',lev_info,globs['mes'].shift_screen_not_required)
+			#log.append('TkinterHtmlMod.shift_screen',sh.lev_info,sh.globs['mes'].shift_screen_not_required)
 			pass
 
 	# Выделить ячейку
@@ -2503,23 +2503,23 @@ class TkinterHtmlMod(tk.Widget):
 		self.index = None
 		# todo: Здесь иногда получаем ошибку с индексами
 		if len(h_request._cells) > self.i and len(h_request._cells[self.i]) > self.j:
-			if globs['bool']['SelectTermsOnly']:
+			if sh.globs['bool']['SelectTermsOnly']:
 				self.index = self.text('index',h_request._cells[self.i][self.j].first,h_request._cells[self.i][self.j].last_term)
 			else:
 				self.index = self.text('index',h_request._cells[self.i][self.j].first,h_request._cells[self.i][self.j].last)
 		else:
-			log.append('TkinterHtmlMod.set_cell',globs['mes'].wrong_input2)
+			log.append('TkinterHtmlMod.set_cell',sh.globs['mes'].wrong_input2)
 		if self.index:
-			#log.append('TkinterHtmlMod.set_cell',lev_debug,globs['mes'].cur_node % self.index[0])
+			#log.append('TkinterHtmlMod.set_cell',sh.lev_debug,sh.globs['mes'].cur_node % self.index[0])
 			# В крайнем случае можно делать так:
 			#self.tag("add", "selection",self._node,0,self._node,300)
 			try:
 				self.tag('add','selection',self.index[0],self.index[1],self.index[2],self.index[3])
 			# При удалении или вставке ячеек может возникнуть ошибка, поскольку текущий узел изменился
 			except tk.TclError:
-				log.append('TkinterHtmlMod.set_cell',lev_warn,globs['mes'].tag_addition_failure % ('selection',self.index[0],self.index[3]))
-			self.tag('configure','selection','-background',globs['var']['color_terms_sel_bg'])
-			self.tag('configure','selection','-foreground',globs['var']['color_terms_sel_fg'])
+				log.append('TkinterHtmlMod.set_cell',sh.lev_warn,sh.globs['mes'].tag_addition_failure % ('selection',self.index[0],self.index[3]))
+			self.tag('configure','selection','-background',sh.globs['var']['color_terms_sel_bg'])
+			self.tag('configure','selection','-foreground',sh.globs['var']['color_terms_sel_fg'])
 			if View:
 				self.shift_screen()
 
@@ -2533,7 +2533,7 @@ class TkinterHtmlMod(tk.Widget):
 				self.mouse_index = self.text("offset",self._node,self._offset)
 			except ValueError:
 				# Это сообщение появляется так часто, что не ставлю тут ничего.
-				#log.append('TkinterHtmlMod.mouse_sel',lev_warn,globs['mes'].unknown_cell)
+				#log.append('TkinterHtmlMod.mouse_sel',sh.lev_warn,sh.globs['mes'].unknown_cell)
 				pass
 			if self.mouse_index > 0:
 				self.get_cell(self.mouse_index)
@@ -2542,13 +2542,13 @@ class TkinterHtmlMod(tk.Widget):
 	# Скопировать термин текущей ячейки (или полное ее содержимое)
 	def copy_cell(self,*args):
 		#self.set_cell()
-		if globs['bool']['CopyTermsOnly']:
+		if sh.globs['bool']['CopyTermsOnly']:
 			selected_text = h_request._cells[self.i][self.j].term
 		else:
-			selected_text = List([h_request._cells[self.i][self.j].dic,h_request._cells[self.i][self.j].term,h_request._cells[self.i][self.j].comment]).space_items()
-		h_obj.clipboard().copy(selected_text)
-		if globs['bool']['Iconify']:
-			Geometry(parent_obj=h_obj.top(),title=h_request.search()).minimize()
+			selected_text = sh.List([h_request._cells[self.i][self.j].dic,h_request._cells[self.i][self.j].term,h_request._cells[self.i][self.j].comment]).space_items()
+		sg.widgets.clipboard().copy(selected_text)
+		if sh.globs['bool']['Iconify']:
+			sg.Geometry(parent_obj=objs.top(),title=h_request.search()).minimize()
 
 	# Удалить ячейку и перекомпоновать статью
 	def delete_cell(self,*args):
@@ -2564,7 +2564,7 @@ class TkinterHtmlMod(tk.Widget):
 			h_request.update()
 			self.load_article()
 		else:
-			Message(func='TkinterHtmlMod.delete_cell',type=lev_warn,message=globs['mes'].wrong_input2,Silent=self.Silent)
+			sg.Message(func='TkinterHtmlMod.delete_cell',type=sh.lev_warn,message=sh.globs['mes'].wrong_input2,Silent=self.Silent)
 
 	# Добавить пустую ячейку и перекомпоновать статью
 	def add_cell(self,*args):
@@ -2589,7 +2589,7 @@ class TkinterHtmlMod(tk.Widget):
 		self.gen_pos2cell()
 		Moves()
 		self.move_text_start()
-		h_obj.top().widget.title(h_request.search())
+		objs.top().widget.title(h_request.search())
 		self.history.update()
 		self.update_buttons()
 		self.search_article.reset()
@@ -2598,12 +2598,12 @@ class TkinterHtmlMod(tk.Widget):
 	# Перейти по URL текущей ячейки
 	def go_url(self,*args):
 		if not self.MouseClicked:
-			log.append('TkinterHtmlMod.go_url',lev_debug,globs['mes'].cur_cell % (self.i,self.j))
+			log.append('TkinterHtmlMod.go_url',sh.lev_debug,sh.globs['mes'].cur_cell % (self.i,self.j))
 			h_request._search = h_request._cells[self.i][self.j].term
 			h_request._url = h_request._cells[self.i][self.j].url
 			h_request.new()
 			h_db.search_part()
-			log.append('TkinterHtmlMod.go_url',lev_info,globs['mes'].opening_link % h_request._url)
+			log.append('TkinterHtmlMod.go_url',sh.lev_info,sh.globs['mes'].opening_link % h_request._url)
 			self.load_article()
 				
 	def gen_pos2cell(self):
@@ -2644,7 +2644,7 @@ class TkinterHtmlMod(tk.Widget):
 		cur_index = 1 # Starts with '\n'
 		for i in range(len(h_request._cells)):
 			for j in range(len(h_request._cells[i])):
-				tmp_str = List([h_request._cells[i][j].speech,h_request._cells[i][j].dic,h_request._cells[i][j].term,h_request._cells[i][j].comment]).space_items()
+				tmp_str = sh.List([h_request._cells[i][j].speech,h_request._cells[i][j].dic,h_request._cells[i][j].term,h_request._cells[i][j].comment]).space_items()
 				h_request._cells[i][j].first = cur_index
 				h_request._cells[i][j].last_term = cur_index + len(h_request._cells[i][j].term)
 				h_request._cells[i][j].last = cur_index + len(tmp_str)
@@ -2658,7 +2658,7 @@ class TkinterHtmlMod(tk.Widget):
 	# Вставить спец. символ в строку поиска
 	def insert_sym(self,sym):
 		self.search_field.widget.insert('end',sym)
-		if globs['bool']['AutoCloseSpecSymbol']:
+		if sh.globs['bool']['AutoCloseSpecSymbol']:
 			self.spec_symbols.close()
 			
 	def toggle_view(self,*args):
@@ -2669,12 +2669,12 @@ class TkinterHtmlMod(tk.Widget):
 			h_request._view = 0
 		elif h_request._view == 2:
 			h_request._view = 0
-		log.append('TkinterHtmlMod.toggle_view',lev_info,globs['mes'].new_view_mode % h_request._view)
+		log.append('TkinterHtmlMod.toggle_view',sh.lev_info,sh.globs['mes'].new_view_mode % h_request._view)
 		# todo: why move_right and move_left are so slow to be calculated?
 		# todo: do not recreate 'cells' each time
 		h_request.update()
 		h_db.search_part()
-		log.append('TkinterHtmlMod.go_url',lev_info,globs['mes'].opening_link % h_request._url)
+		log.append('TkinterHtmlMod.go_url',sh.lev_info,sh.globs['mes'].opening_link % h_request._url)
 		self.load_article()
 	
 	def zzz(self): # Only needed to move quickly to the end of the class
@@ -2684,14 +2684,14 @@ class TkinterHtmlMod(tk.Widget):
 
 if  __name__ == '__main__':
 	h_request = Request()
-	h_obj = Objects()
+	objs = Objects()
 	h_db = DB()
 	h_quit = Quit()
-	h_table = TkinterHtmlMod(h_obj.top().widget)
-	h_obj.top().widget.protocol("WM_DELETE_WINDOW",h_quit.wait)
+	h_table = TkinterHtmlMod(objs.top().widget)
+	objs.top().widget.protocol("WM_DELETE_WINDOW",h_quit.wait)
 	timed_update() # Do not wrap this function. Change this carefully.
 	h_db.search_part()
 	h_table.load_article()
 	h_table.show()
-	h_obj.top().show()
-	h_obj.root().run()
+	objs.top().show()
+	sg.widgets.root().run()
