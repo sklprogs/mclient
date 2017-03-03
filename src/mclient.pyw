@@ -52,7 +52,7 @@ class ConfigMclient(sh.Config):
 		self.missing_keys = 0
 		self.missing_sections = 0
 		# Create these keys before reading the config
-		self.path = '.' + os.path.sep + 'mclient.cfg'
+		self.path = sys.path[0] + os.path.sep + 'mclient.cfg'
 		self.reset()
 		h_read = sh.ReadTextFile(self.path,Silent=self.Silent)
 		self.text = h_read.get()
@@ -214,7 +214,7 @@ class ConfigMclient(sh.Config):
 		for key in sh.globs['var']:
 			if sh.globs['var'][key].endswith('.gif'):
 				old_val = sh.globs['var'][key]
-				sh.globs['var'][key] = '.' + os.path.sep + 'resources' + os.path.sep + sh.globs['var'][key]
+				sh.globs['var'][key] = sys.path[0] + os.path.sep + 'resources' + os.path.sep + sh.globs['var'][key]
 				log.append('ConfigMclient.additional_keys',sh.lev_debug,'%s -> %s' % (old_val,sh.globs['var'][key]))
 
 
@@ -1358,7 +1358,7 @@ def timed_update():
 				kl_mod.keylistener.cancel()
 				kl_mod.keylistener.restart()
 			h_table.MouseClicked = True
-			new_clipboard = sg.widgets.clipboard().paste()
+			new_clipboard = sg.Clipboard().paste()
 			if new_clipboard:
 				h_table.search = new_clipboard
 				h_table.search_online()
@@ -1431,7 +1431,7 @@ class About:
 	
 	# Написать письмо автору
 	def response_back(self,*args):
-		sh.Email(email=email,subject=sh.globs['mes'].program_subject % product).create()
+		sh.Email(email=sh.email,subject=sh.globs['mes'].program_subject % product).create()
 
 	# Открыть веб-страницу с лицензией
 	def open_license_url(self,*args):
@@ -1453,11 +1453,11 @@ class SaveArticle:
 		self.parent_obj = sg.Top(sg.widgets.root())
 		self.obj = sg.ListBox(parent_obj=self.parent_obj,Multiple=False,lst=[sh.globs['mes'].save_view_as_html,sh.globs['mes'].save_article_as_html,sh.globs['mes'].save_article_as_txt,sh.globs['mes'].copy_article_html,sh.globs['mes'].copy_article_txt],title=sh.globs['mes'].select_action,icon=sh.globs['var']['icon_mclient'])
 		self.widget = self.obj.widget
-		self.custom_bindings()
+		self.bindings()
 		self.close()
 		self.file = ''
 		
-	def custom_bindings(self):
+	def bindings(self):
 		sg.create_binding(widget=self.parent_obj.widget,bindings=['<Escape>',sh.globs['var']['bind_save_article'],sh.globs['var']['bind_save_article_alt']],action=self.close)
 		sg.create_binding(widget=self.widget,bindings=['<Escape>',sh.globs['var']['bind_save_article'],sh.globs['var']['bind_save_article_alt']],action=self.close)
 		
@@ -1510,10 +1510,10 @@ class SaveArticle:
 			sh.WriteTextFile(self.file,AskRewrite=False).write(h_request._text)
 			
 	def copy_raw(self):
-		sg.widgets.clipboard().copy(h_request._html_raw)
+		sg.Clipboard().copy(h_request._html_raw)
 			
 	def copy_view(self):
-		sg.widgets.clipboard().copy(h_request._text)
+		sg.Clipboard().copy(h_request._text)
 
 	
 
@@ -1607,19 +1607,19 @@ class SearchField:
 		if text:
 			self.widget.insert(0,text)
 		else:
-			self.widget.insert(0,sg.widgets.clipboard().paste())
+			self.widget.insert(0,sg.Clipboard().paste())
 		return 'break'
 		
 	# Вставить предыдущий запрос
 	def insert_repeat_sign(self,*args):
 		if h_db._count > 0:
-			sg.widgets.clipboard().copy(str(h_db.prev()))
+			sg.Clipboard().copy(str(h_db.prev()))
 			self.paste()
 
 	# Вставить запрос до предыдущего
 	def insert_repeat_sign2(self,*args):
 		if h_db._count > 1:
-			sg.widgets.clipboard().copy(str(h_db.preprev()))
+			sg.Clipboard().copy(str(h_db.preprev()))
 			self.paste()
 
 
@@ -1638,10 +1638,10 @@ class SpecSymbols:
 			# lambda сработает правильно только при моментальной упаковке, которая не поддерживается create_button (моментальная упаковка возвращает None вместо виджета), поэтому не используем эту функцию. По этой же причине нельзя привязать кнопкам '<Return>' и '<KP_Enter>', сработают только встроенные '<space>' и '<ButtonRelease-1>'.
 			# width и height нужны для Windows
 			self.button = tk.Button(self.frame.widget,text=sh.globs['var']['spec_syms'][i],command=lambda i=i:h_table.insert_sym(sh.globs['var']['spec_syms'][i]),width=2,height=2).pack(side='left',expand=1)
-		self.custom_bindings()
+		self.bindings()
 		self.close()
 		
-	def custom_bindings(self):
+	def bindings(self):
 		sg.create_binding(widget=self.widget,bindings=['<Escape>',sh.globs['var']['bind_spec_symbol']],action=self.close)
 	
 	def show(self,*args):
@@ -1709,7 +1709,7 @@ class History:
 		
 	# Скопировать элемент истории
 	def copy(self,*args):
-		sg.widgets.clipboard().copy(h_request.search())
+		sg.Clipboard().copy(h_request.search())
 
 
 
@@ -2125,7 +2125,7 @@ class TkinterHtmlMod(tk.Widget):
 				sg.Geometry(parent_obj=objs.top(),title=h_request.search()).minimize()
 		else:
 			sg.Message(func='TkinterHtmlMod.copy_url',type=sh.lev_err,message=sh.globs['mes'].unknown_mode % (str(mode),'article, term'))
-		sg.widgets.clipboard().copy(cur_url)
+		sg.Clipboard().copy(cur_url)
 
 	# Открыть веб-страницу с определением текущего термина
 	def define(self,Selected=True): # Selected: True: Выделенный термин; False: Название статьи
@@ -2546,7 +2546,7 @@ class TkinterHtmlMod(tk.Widget):
 			selected_text = h_request._cells[self.i][self.j].term
 		else:
 			selected_text = sh.List([h_request._cells[self.i][self.j].dic,h_request._cells[self.i][self.j].term,h_request._cells[self.i][self.j].comment]).space_items()
-		sg.widgets.clipboard().copy(selected_text)
+		sg.Clipboard().copy(selected_text)
 		if sh.globs['bool']['Iconify']:
 			sg.Geometry(parent_obj=objs.top(),title=h_request.search()).minimize()
 
