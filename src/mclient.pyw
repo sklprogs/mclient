@@ -415,21 +415,21 @@ class Objects: # Requires 'h_request'
 		
 	def top(self):
 		if not self._top:
-			self._top = sg.Top(sg.widgets.root())
+			self._top = sg.Top(sg.objs.root())
 			self._top.icon(sh.globs['var']['icon_mclient'])
 			sg.Geometry(parent_obj=self._top,title=h_request.search()).maximize()
 		return self._top
 			
 	def entry(self):
 		if not self._entry:
-			self._entry = sg.Entry(parent_obj=sg.Top(sg.widgets.root()))
+			self._entry = sg.Entry(parent_obj=sg.Top(sg.objs.root()))
 			self._entry.icon(sh.globs['var']['icon_mclient'])
 			self._entry.title(sh.globs['mes'].search_str)
 		return self._entry
 		
 	def textbox(self):
 		if not self._textbox:
-			h_top = sg.Top(sg.widgets.root())
+			h_top = sg.Top(sg.objs.root())
 			self._textbox = sg.TextBox(parent_obj=h_top)
 			sg.Geometry(parent_obj=h_top).set('500x400')
 			self._textbox.icon(sh.globs['var']['icon_mclient'])
@@ -853,14 +853,14 @@ class Page:
 					Success = True
 				except:
 					log.append('Page.get',sh.lev_warn,sh.globs['mes'].failed % h_request.search())
-					if not sg.Message(func='Page.get',type=sh.lev_ques,message=sh.globs['mes'].webpage_unavailable_ques).Yes:
+					if not sg.Message(func='Page.get',level=sh.lev_ques,message=sh.globs['mes'].webpage_unavailable_ques).Yes:
 						break
 				if Success: # Если страница не загружена, то понятно, что ее кодировку изменить не удастся
 					try:
 						# Меняем кодировку sh.globs['var']['win_encoding'] на нормальную
 						self._page = self._page.decode(sh.globs['var']['win_encoding'])
 					except:
-						sg.Message(func='Page.get',type=sh.lev_err,message=sh.globs['mes'].wrong_html_encoding)
+						sg.Message(func='Page.get',level=sh.lev_err,message=sh.globs['mes'].wrong_html_encoding)
 					h_request._html_raw = self._page
 		return self._page
 
@@ -1365,7 +1365,7 @@ def timed_update():
 		if check == 2 or h_table.CaptureHotkey:
 			call_app()
 	# We need to have .after in the same function for it to work
-	h_quit._id = sg.widgets.root().widget.after(300,timed_update)
+	h_quit._id = sg.objs.root().widget.after(300,timed_update)
 	h_quit.now()
 
 
@@ -1385,8 +1385,8 @@ class Quit:
 			log.append('Quit.now',sh.lev_info,sh.globs['mes'].goodbye)
 			kl_mod.keylistener.cancel()
 			objs.top().widget.destroy()
-			sg.widgets.root().widget.after_cancel(self._id)
-			sg.widgets.root().destroy()
+			sg.objs.root().widget.after_cancel(self._id)
+			sg.objs.root().destroy()
 			sys.exit()
 
 
@@ -1396,7 +1396,7 @@ class About:
 	def __init__(self):
 		self.Active = False
 		self.type = 'About'
-		self.parent_obj = sg.Top(sg.widgets.root())
+		self.parent_obj = sg.Top(sg.objs.root())
 		self.widget = self.parent_obj.widget
 		self.parent_obj.icon(sh.globs['var']['icon_mclient'])
 		self.parent_obj.title(sh.globs['mes'].about)
@@ -1450,7 +1450,7 @@ class SaveArticle:
 	
 	def __init__(self):
 		self.type = 'SaveArticle'
-		self.parent_obj = sg.Top(sg.widgets.root())
+		self.parent_obj = sg.Top(sg.objs.root())
 		self.obj = sg.ListBox(parent_obj=self.parent_obj,Multiple=False,lst=[sh.globs['mes'].save_view_as_html,sh.globs['mes'].save_article_as_html,sh.globs['mes'].save_article_as_txt,sh.globs['mes'].copy_article_html,sh.globs['mes'].copy_article_txt],title=sh.globs['mes'].select_action,icon=sh.globs['var']['icon_mclient'])
 		self.widget = self.obj.widget
 		self.bindings()
@@ -1574,14 +1574,14 @@ class SearchArticle:
 		if self._pos + 1 < len(self.list()):
 			self._pos += 1
 		else:
-			sg.Message(func='SearchArticle.forward',type=sh.lev_info,message=sh.globs['mes'].search_from_start)
+			sg.Message(func='SearchArticle.forward',level=sh.lev_info,message=sh.globs['mes'].search_from_start)
 			self._pos = 0
 	
 	def backward(self):
 		if self._pos > 0:
 			self._pos -= 1
 		else:
-			sg.Message(func='SearchArticle.backward',type=sh.lev_info,message=sh.globs['mes'].search_from_end)
+			sg.Message(func='SearchArticle.backward',level=sh.lev_info,message=sh.globs['mes'].search_from_end)
 			self._pos = len(self.list()) - 1
 
 	
@@ -1627,7 +1627,7 @@ class SearchField:
 class SpecSymbols:
 	
 	def __init__(self):
-		self.obj = sg.Top(sg.widgets.root())
+		self.obj = sg.Top(sg.objs.root())
 		self.widget = self.obj.widget
 		self.obj.icon(sh.globs['var']['icon_mclient'])
 		self.obj.title(sh.globs['mes'].paste_spec_symbol)
@@ -1655,7 +1655,7 @@ class SpecSymbols:
 class History:
 	
 	def __init__(self):
-		self.parent_obj = sg.Top(sg.widgets.root())
+		self.parent_obj = sg.Top(sg.objs.root())
 		self.parent_obj.widget.geometry('250x350')
 		self._title = sh.globs['mes'].btn_history
 		self._icon = sh.globs['var']['icon_mclient']
@@ -2124,7 +2124,7 @@ class TkinterHtmlMod(tk.Widget):
 			if sh.globs['bool']['Iconify']:
 				sg.Geometry(parent_obj=objs.top(),title=h_request.search()).minimize()
 		else:
-			sg.Message(func='TkinterHtmlMod.copy_url',type=sh.lev_err,message=sh.globs['mes'].unknown_mode % (str(mode),'article, term'))
+			sg.Message(func='TkinterHtmlMod.copy_url',level=sh.lev_err,message=sh.globs['mes'].unknown_mode % (str(mode),'article, term'))
 		sg.Clipboard().copy(cur_url)
 
 	# Открыть веб-страницу с определением текущего термина
@@ -2188,7 +2188,7 @@ class TkinterHtmlMod(tk.Widget):
 	def control_length(self): # Confirm too long requests
 		Confirmed = True
 		if len(self.search) >= 150:
-			if not sg.Message(func='TkinterHtmlMod.control_length',type=sh.lev_ques,message=sh.globs['mes'].long_request % len(self.search)).Yes:
+			if not sg.Message(func='TkinterHtmlMod.control_length',level=sh.lev_ques,message=sh.globs['mes'].long_request % len(self.search)).Yes:
 				Confirmed = False
 		return Confirmed
 	
@@ -2448,7 +2448,7 @@ class TkinterHtmlMod(tk.Widget):
 	
 	# Сместить экран так, чтобы была видна текущая выделенная ячейка
 	def shift_screen(self):
-		sg.widgets.root().widget.update_idletasks()
+		sg.objs.root().widget.update_idletasks()
 		cur_widget_width = sh.globs['geom_top']['width'] = self.winfo_width()
 		cur_widget_height = sh.globs['geom_top']['height'] = self.winfo_height()
 		cur_widget_offset_x = self.winfo_rootx()
@@ -2564,7 +2564,7 @@ class TkinterHtmlMod(tk.Widget):
 			h_request.update()
 			self.load_article()
 		else:
-			sg.Message(func='TkinterHtmlMod.delete_cell',type=sh.lev_warn,message=sh.globs['mes'].wrong_input2,Silent=self.Silent)
+			sg.Message(func='TkinterHtmlMod.delete_cell',level=sh.lev_warn,message=sh.globs['mes'].wrong_input2,Silent=self.Silent)
 
 	# Добавить пустую ячейку и перекомпоновать статью
 	def add_cell(self,*args):
@@ -2694,4 +2694,4 @@ if  __name__ == '__main__':
 	h_table.load_article()
 	h_table.show()
 	objs.top().show()
-	sg.widgets.root().run()
+	sg.objs.root().run()
