@@ -222,7 +222,7 @@ class ConfigMclient(sh.Config):
 ConfigMclient()
 sh.h_lang.set()
 
-if sh.h_os.sys() == 'win':
+if sh.oss.win():
 	import kl_mod_win as kl_mod
 	import pythoncom
 else:
@@ -1354,7 +1354,7 @@ def timed_update():
 	if check:
 		if check == 1 and h_table.CaptureHotkey:
 			# Позволяет предотвратить зависание потока в версиях Windows старше XP
-			if sh.h_os.sys() == 'win':
+			if sh.oss.win():
 				kl_mod.keylistener.cancel()
 				kl_mod.keylistener.restart()
 			h_table.MouseClicked = True
@@ -1411,8 +1411,8 @@ class About:
 		# Отправить письмо автору
 		sg.Button(frame3,text=sh.globs['mes'].btn_email_author,hint=sh.globs['mes'].hint_email_author,action=self.response_back,side='right')
 		self.widget.focus_set()
-		sg.create_binding(widget=self.widget,bindings=sh.globs['var']['bind_show_about'],action=self.toggle)
-		sg.create_binding(widget=self.widget,bindings='<Escape>',action=self.close)
+		sg.bind(widget=self.widget,bindings=sh.globs['var']['bind_show_about'],action=self.toggle)
+		sg.bind(widget=self.widget,bindings='<Escape>',action=self.close)
 		self.close()
 	
 	def close(self,*args):
@@ -1458,8 +1458,8 @@ class SaveArticle:
 		self.file = ''
 		
 	def bindings(self):
-		sg.create_binding(widget=self.parent_obj.widget,bindings=['<Escape>',sh.globs['var']['bind_save_article'],sh.globs['var']['bind_save_article_alt']],action=self.close)
-		sg.create_binding(widget=self.widget,bindings=['<Escape>',sh.globs['var']['bind_save_article'],sh.globs['var']['bind_save_article_alt']],action=self.close)
+		sg.bind(widget=self.parent_obj.widget,bindings=['<Escape>',sh.globs['var']['bind_save_article'],sh.globs['var']['bind_save_article_alt']],action=self.close)
+		sg.bind(widget=self.widget,bindings=['<Escape>',sh.globs['var']['bind_save_article'],sh.globs['var']['bind_save_article_alt']],action=self.close)
 		
 	def close(self,*args):
 		self.obj.close()
@@ -1525,8 +1525,8 @@ class SearchArticle:
 		self.obj = objs.entry()
 		self.obj.title(sh.globs['mes'].search_word)
 		self.widget = self.obj.widget
-		sg.create_binding(widget=self.widget,bindings=sh.globs['var']['bind_search_article_forward'],action=self.close)
-		sg.create_binding(widget=self.widget,bindings='<Escape>',action=self.close)
+		sg.bind(widget=self.widget,bindings=sh.globs['var']['bind_search_article_forward'],action=self.close)
+		sg.bind(widget=self.widget,bindings='<Escape>',action=self.close)
 		self.obj.select_all()
 		self.widget.focus_set()
 		self.close()
@@ -1642,7 +1642,7 @@ class SpecSymbols:
 		self.close()
 		
 	def bindings(self):
-		sg.create_binding(widget=self.widget,bindings=['<Escape>',sh.globs['var']['bind_spec_symbol']],action=self.close)
+		sg.bind(widget=self.widget,bindings=['<Escape>',sh.globs['var']['bind_spec_symbol']],action=self.close)
 	
 	def show(self,*args):
 		self.obj.show()
@@ -1662,8 +1662,8 @@ class History:
 		self.obj = sg.ListBox(parent_obj=self.parent_obj,title=self._title,icon=self._icon,SelectFirst=False,SelectionCloses=False,SingleClick=False,Composite=True,user_function=self.go)
 		self.widget = self.obj.widget
 		self.Active = False
-		sg.create_binding(widget=self.parent_obj.widget,bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt'],'<Escape>'],action=self.toggle)
-		sg.create_binding(widget=self.parent_obj.widget,bindings=sh.globs['var']['bind_clear_history_alt'],action=self.clear)
+		sg.bind(widget=self.parent_obj.widget,bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt'],'<Escape>'],action=self.toggle)
+		sg.bind(widget=self.parent_obj.widget,bindings=sh.globs['var']['bind_clear_history_alt'],action=self.clear)
 		self.close()
 	
 	def autoselect(self):
@@ -1982,7 +1982,7 @@ class TkinterHtmlMod(tk.Widget):
 		self.save_article = SaveArticle()
 		
 		# todo: The same does not work when imported from sharedGUI for some reason
-		if sh.h_os.sys() == 'lin':
+		if sh.oss.lin():
 			objs.top().widget.wm_attributes('-zoomed',True)
 		# Win, Mac
 		else:
@@ -1992,13 +1992,13 @@ class TkinterHtmlMod(tk.Widget):
 		# The very place for packing the vertical scrollbar. If we pack it earlier, it will fill an extra space, if later - it will be too small.
 		self.vsb.pack(side='right',fill='y')
 		self.search_field.widget.focus_set()
-		sg.create_binding(widget=self,bindings=sh.globs['var']['bind_go_url'],action=self.go_url)
+		sg.bind(widget=self,bindings=sh.globs['var']['bind_go_url'],action=self.go_url)
 		self.bind("<Motion>",self.mouse_sel,True)
 		# ВНИМАНИЕ: По непонятной причине, не работает привязка горячих клавиш (только мышь) для данного виджета, работает только для основного виджета!
-		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_copy_sel'],sh.globs['var']['bind_copy_sel_alt'],sh.globs['var']['bind_copy_sel_alt2']],action=self.copy_cell)
+		sg.bind(widget=objs.top().widget,bindings=[sh.globs['var']['bind_copy_sel'],sh.globs['var']['bind_copy_sel_alt'],sh.globs['var']['bind_copy_sel_alt2']],action=self.copy_cell)
 		# По неясной причине в одной и той же Windows ИНОГДА не удается включить '<KP_Delete>'
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_delete_cell'],action=self.delete_cell)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_add_cell'],action=self.add_cell)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_delete_cell'],action=self.delete_cell)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_add_cell'],action=self.add_cell)
 		self.widget_width = 0
 		self.widget_height = 0
 		self.widget_offset_x = 0
@@ -2277,8 +2277,8 @@ class TkinterHtmlMod(tk.Widget):
 		self.btn_next = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_next,hint=sh.globs['mes'].hint_following_article,action=self.go_forward,inactive_image_path=sh.globs['var']['icon_go_forward_off'],active_image_path=sh.globs['var']['icon_go_forward'],bindings=sh.globs['var']['bind_go_forward'])
 		# Кнопка включения/отключения истории
 		self.button = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_history,hint=sh.globs['mes'].hint_history,action=self.history.toggle,inactive_image_path=sh.globs['var']['icon_toggle_history'],active_image_path=sh.globs['var']['icon_toggle_history'],bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt']])
-		sg.create_binding(widget=self.button.widget,bindings=sh.globs['var']['bind_clear_history'],action=self.history.clear)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_clear_history_alt'],action=self.history.clear)
+		sg.bind(widget=self.button.widget,bindings=sh.globs['var']['bind_clear_history'],action=self.history.clear)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_clear_history_alt'],action=self.history.clear)
 		# Кнопка очистки истории
 		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_clear_history,hint=sh.globs['mes'].hint_clear_history,action=self.history.clear,inactive_image_path=sh.globs['var']['icon_clear_history'],active_image_path=sh.globs['var']['icon_clear_history'],bindings=sh.globs['var']['bind_clear_history_alt'])
 		# Кнопка перезагрузки статьи
@@ -2300,49 +2300,49 @@ class TkinterHtmlMod(tk.Widget):
 
 	def hotkeys(self):
 		# Привязки: горячие клавиши и кнопки мыши
-		sg.create_binding(widget=self.history.widget,bindings=sh.globs['var']['bind_copy_history'],action=self.history.copy)
-		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_go_search'],sh.globs['var']['bind_go_search_alt']],action=self.go_search)
+		sg.bind(widget=self.history.widget,bindings=sh.globs['var']['bind_copy_history'],action=self.history.copy)
+		sg.bind(widget=objs.top().widget,bindings=[sh.globs['var']['bind_go_search'],sh.globs['var']['bind_go_search_alt']],action=self.go_search)
 		# todo: do not iconify at <ButtonRelease-3>
-		sg.create_binding(widget=self.search_field.widget,bindings=sh.globs['var']['bind_clear_search_field'],action=self.search_field.clear)
-		sg.create_binding(widget=self.search_field.widget,bindings=sh.globs['var']['bind_paste_search_field'],action=lambda e:self.search_field.paste())
-		if sh.h_os.sys() == 'win' or sh.h_os.sys() == 'mac':
-			sg.create_binding(widget=objs.top().widget,bindings='<MouseWheel>',action=self.mouse_wheel)
+		sg.bind(widget=self.search_field.widget,bindings=sh.globs['var']['bind_clear_search_field'],action=self.search_field.clear)
+		sg.bind(widget=self.search_field.widget,bindings=sh.globs['var']['bind_paste_search_field'],action=lambda e:self.search_field.paste())
+		if sh.oss.win() or sh.oss.mac():
+			sg.bind(widget=objs.top().widget,bindings='<MouseWheel>',action=self.mouse_wheel)
 		else:
-			sg.create_binding(widget=objs.top().widget,bindings=['<Button 4>','<Button 5>'],action=self.mouse_wheel)
+			sg.bind(widget=objs.top().widget,bindings=['<Button 4>','<Button 5>'],action=self.mouse_wheel)
 		# Перейти на предыдущую/следующую статью
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_go_back'],action=self.go_back)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_go_forward'],action=self.go_forward)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_left'],action=self.move_left)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_right'],action=self.move_right)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_down'],action=self.move_down)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_up'],action=self.move_up)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_line_start'],action=self.move_line_start)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_line_end'],action=self.move_line_end)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_text_start'],action=self.move_text_start)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_text_end'],action=self.move_text_end)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_page_up'],action=self.move_page_up)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_page_down'],action=self.move_page_down)
-		sg.create_binding(widget=objs.top().widget,bindings='<Escape>',action=sg.Geometry(parent_obj=objs.top(),title=h_request.search()).minimize)
-		sg.create_binding(widget=self,bindings=sh.globs['var']['bind_iconify'],action=sg.Geometry(parent_obj=objs.top(),title=h_request.search()).minimize)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_go_back'],action=self.go_back)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_go_forward'],action=self.go_forward)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_left'],action=self.move_left)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_right'],action=self.move_right)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_down'],action=self.move_down)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_up'],action=self.move_up)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_line_start'],action=self.move_line_start)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_line_end'],action=self.move_line_end)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_text_start'],action=self.move_text_start)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_text_end'],action=self.move_text_end)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_page_up'],action=self.move_page_up)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_move_page_down'],action=self.move_page_down)
+		sg.bind(widget=objs.top().widget,bindings='<Escape>',action=sg.Geometry(parent_obj=objs.top(),title=h_request.search()).minimize)
+		sg.bind(widget=self,bindings=sh.globs['var']['bind_iconify'],action=sg.Geometry(parent_obj=objs.top(),title=h_request.search()).minimize)
 		# Дополнительные горячие клавиши
-		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_quit_now'],sh.globs['var']['bind_quit_now_alt']],action=h_quit.wait)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_search_article_forward'],action=self.search_forward)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_search_article_backward'],action=self.search_backward)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_re_search_article'],action=self.search_reset)
-		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_reload_article'],sh.globs['var']['bind_reload_article_alt']],action=self.reload)
-		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_save_article'],sh.globs['var']['bind_save_article_alt']],action=self.save_article.select)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_show_about'],action=objs.about().show)
-		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history']],action=self.history.toggle)
-		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt']],action=self.history.toggle)
-		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_open_in_browser'],sh.globs['var']['bind_open_in_browser_alt']],action=self.open_in_browser)
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_copy_url'],action=lambda e:self.copy_url(objs.top(),mode='term'))
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_copy_article_url'],action=lambda e:self.copy_url(objs.top(),mode='article'))
-		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_spec_symbol']],action=self.spec_symbols.show)
-		sg.create_binding(widget=self.search_field.widget,bindings='<Control-a>',action=lambda e:select_all(self.search_field.widget,Small=True))
-		sg.create_binding(widget=objs.top().widget,bindings=sh.globs['var']['bind_define'],action=lambda e:self.define(Selected=True))
-		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_prev_pair'],sh.globs['var']['bind_prev_pair_alt']],action=self.option_menu.set_prev)
-		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_next_pair'],sh.globs['var']['bind_next_pair_alt']],action=self.option_menu.set_next)
-		sg.create_binding(widget=objs.top().widget,bindings=[sh.globs['var']['bind_toggle_view'],sh.globs['var']['bind_toggle_view_alt']],action=self.toggle_view)
+		sg.bind(widget=objs.top().widget,bindings=[sh.globs['var']['bind_quit_now'],sh.globs['var']['bind_quit_now_alt']],action=h_quit.wait)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_search_article_forward'],action=self.search_forward)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_search_article_backward'],action=self.search_backward)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_re_search_article'],action=self.search_reset)
+		sg.bind(widget=objs.top().widget,bindings=[sh.globs['var']['bind_reload_article'],sh.globs['var']['bind_reload_article_alt']],action=self.reload)
+		sg.bind(widget=objs.top().widget,bindings=[sh.globs['var']['bind_save_article'],sh.globs['var']['bind_save_article_alt']],action=self.save_article.select)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_show_about'],action=objs.about().show)
+		sg.bind(widget=objs.top().widget,bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history']],action=self.history.toggle)
+		sg.bind(widget=objs.top().widget,bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt']],action=self.history.toggle)
+		sg.bind(widget=objs.top().widget,bindings=[sh.globs['var']['bind_open_in_browser'],sh.globs['var']['bind_open_in_browser_alt']],action=self.open_in_browser)
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_copy_url'],action=lambda e:self.copy_url(objs.top(),mode='term'))
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_copy_article_url'],action=lambda e:self.copy_url(objs.top(),mode='article'))
+		sg.bind(widget=objs.top().widget,bindings=[sh.globs['var']['bind_spec_symbol']],action=self.spec_symbols.show)
+		sg.bind(widget=self.search_field.widget,bindings='<Control-a>',action=lambda e:select_all(self.search_field.widget,Small=True))
+		sg.bind(widget=objs.top().widget,bindings=sh.globs['var']['bind_define'],action=lambda e:self.define(Selected=True))
+		sg.bind(widget=objs.top().widget,bindings=[sh.globs['var']['bind_prev_pair'],sh.globs['var']['bind_prev_pair_alt']],action=self.option_menu.set_prev)
+		sg.bind(widget=objs.top().widget,bindings=[sh.globs['var']['bind_next_pair'],sh.globs['var']['bind_next_pair_alt']],action=self.option_menu.set_next)
+		sg.bind(widget=objs.top().widget,bindings=[sh.globs['var']['bind_toggle_view'],sh.globs['var']['bind_toggle_view_alt']],action=self.toggle_view)
 		
 	def show(self):
 		self.pack(expand=1,fill='both')
