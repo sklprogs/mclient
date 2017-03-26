@@ -1403,8 +1403,7 @@ class About:
 		frame1 = sg.Frame(self,expand=1,fill='both',side='top')
 		frame2 = sg.Frame(self,expand=1,fill='both',side='left')
 		frame3 = sg.Frame(self,expand=1,fill='both',side='right')
-		label = sg.Label(parent_obj=frame1,font=sh.globs['var']['font_style'])
-		label.text(arg=sh.globs['mes'].about_text % version)
+		label = sg.Label(parent_obj=frame1,text=sh.globs['mes'].about_text % version,font=sh.globs['var']['font_style'])
 		# Лицензия
 		sg.Button(frame2,text=sh.globs['mes'].btn_third_parties,hint=sh.globs['mes'].hint_license,action=self.show_third_parties,side='left')
 		sg.Button(frame3,text=sh.globs['mes'].btn_license,hint=sh.globs['mes'].hint_license,action=self.open_license_url,side='left')
