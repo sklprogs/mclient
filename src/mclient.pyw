@@ -1658,7 +1658,7 @@ class History:
 		self.parent_obj.widget.geometry('250x350')
 		self._title = sh.globs['mes'].btn_history
 		self._icon = sh.globs['var']['icon_mclient']
-		self.obj = sg.ListBox(parent_obj=self.parent_obj,title=self._title,icon=self._icon,SelectFirst=False,SelectionCloses=False,SingleClick=False,Composite=True,user_function=self.go)
+		self.obj = sg.ListBox(parent_obj=self.parent_obj,title=self._title,icon=self._icon,SelectionCloses=False,SingleClick=False,Composite=True,user_function=self.go)
 		self.widget = self.obj.widget
 		self.Active = False
 		sg.bind(obj=self.parent_obj,bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt'],'<Escape>'],action=self.toggle)
