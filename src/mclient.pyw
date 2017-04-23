@@ -1452,13 +1452,9 @@ class SaveArticle:
 		self.parent_obj = sg.Top(sg.objs.root())
 		self.obj = sg.ListBox(parent_obj=self.parent_obj,Multiple=False,lst=[sh.globs['mes'].save_view_as_html,sh.globs['mes'].save_article_as_html,sh.globs['mes'].save_article_as_txt,sh.globs['mes'].copy_article_html,sh.globs['mes'].copy_article_txt],title=sh.globs['mes'].select_action,icon=sh.globs['var']['icon_mclient'])
 		self.widget = self.obj.widget
-		self.bindings()
-		self.close()
+		# Use this instead of 'close' because there is no selection yet
+		self.obj.interrupt()
 		self.file = ''
-		
-	def bindings(self):
-		sg.bind(obj=self.parent_obj,bindings=['<Escape>',sh.globs['var']['bind_save_article'],sh.globs['var']['bind_save_article_alt']],action=self.close)
-		sg.bind(obj=self.obj,bindings=['<Escape>',sh.globs['var']['bind_save_article'],sh.globs['var']['bind_save_article_alt']],action=self.close)
 		
 	def close(self,*args):
 		self.obj.close()
@@ -1473,7 +1469,7 @@ class SaveArticle:
 			
 	def select(self,*args):
 		self.show()
-		opt = self.obj.get()
+		opt = self.obj._get
 		if opt:
 			if opt == sh.globs['mes'].save_view_as_html:
 				self.view_as_html()
