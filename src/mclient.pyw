@@ -310,12 +310,79 @@ tag_pattern_ph2 = '<a href="m.exe?a=3&&s='
 tag_pattern_ph3 = '<a href="M.exe?a=3&s='
 tag_pattern_ph4 = '<a href="m.exe?a=3&s='
 
-sh.globs['view']     = 0
-sh.globs['collimit'] = 5
+
+
+class Objects: # Requires 'article'
+	
+	def __init__(self):
+		self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = None
+		
+	def top(self):
+		if not self._top:
+			self._top = sg.Top(sg.objs.root())
+			self._top.icon(sh.globs['var']['icon_mclient'])
+			sg.Geometry(parent_obj=self._top,title=articles.current().search()).maximize()
+		return self._top
+			
+	def entry(self):
+		if not self._entry:
+			self._entry = sg.Entry(parent_obj=sg.Top(sg.objs.root()))
+			self._entry.icon(sh.globs['var']['icon_mclient'])
+			self._entry.title(sh.globs['mes'].search_str)
+		return self._entry
+		
+	def textbox(self):
+		if not self._textbox:
+			h_top = sg.Top(sg.objs.root())
+			self._textbox = sg.TextBox(parent_obj=h_top)
+			sg.Geometry(parent_obj=h_top).set('500x400')
+			self._textbox.icon(sh.globs['var']['icon_mclient'])
+		return self._textbox
+		
+	def online_mt(self):
+		if not self._online_mt:
+			self._online_mt = sh.Online(MTSpecific=True)
+		return self._online_mt
+		
+	def online_other(self):
+		if not self._online_other:
+			self._online_other = sh.Online(MTSpecific=False)
+		return self._online_other
+		
+	def online(self):
+		if articles.current().source() == 'Multitran':
+			return self.online_mt()
+		else:
+			return self.online_other()
+			
+	def about(self):
+		if not self._about:
+			self._about = About()
+		return self._about
 
 
 
-class Request:
+class CurRequest:
+	
+	def __init__(self):
+		self.reset()
+		
+	def reset(self):
+		self._view     = 0
+		self._collimit = 5
+		self._source   = 'Multitran'
+		self._search   = 'Добро пожаловать!'
+		self._url      = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
+		
+	def update(self):
+		# todo: read buttons
+		self._view     = 0
+		self._collimit = 5
+		self._source   = 'Multitran'
+
+
+
+class Article:
 	
 	def __init__(self):
 		self.reset()
@@ -324,7 +391,7 @@ class Request:
 		self._source = self._search = self._url = self._cells = self._elems = self._html = self._html_raw = self._text = self._moves = self._page = None
 	
 	def update(self):
-		self._cells = self._html = self._text = self._moves = None
+		self._cells = self._html = self._moves = None
 	
 	def new(self): # A completely new request
 		self._cells = self._elems = self._html_raw = self._html = self._text = self._moves = self._page = None
@@ -384,263 +451,75 @@ class Request:
 
 
 
-class Objects: # Requires 'h_request'
+class Articles: # Requires 'request'
 	
 	def __init__(self):
-		self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = None
-		
-	def top(self):
-		if not self._top:
-			self._top = sg.Top(sg.objs.root())
-			self._top.icon(sh.globs['var']['icon_mclient'])
-			sg.Geometry(parent_obj=self._top,title=h_request.search()).maximize()
-		return self._top
-			
-	def entry(self):
-		if not self._entry:
-			self._entry = sg.Entry(parent_obj=sg.Top(sg.objs.root()))
-			self._entry.icon(sh.globs['var']['icon_mclient'])
-			self._entry.title(sh.globs['mes'].search_str)
-		return self._entry
-		
-	def textbox(self):
-		if not self._textbox:
-			h_top = sg.Top(sg.objs.root())
-			self._textbox = sg.TextBox(parent_obj=h_top)
-			sg.Geometry(parent_obj=h_top).set('500x400')
-			self._textbox.icon(sh.globs['var']['icon_mclient'])
-		return self._textbox
-		
-	def online_mt(self):
-		if not self._online_mt:
-			self._online_mt = sh.Online(MTSpecific=True)
-		return self._online_mt
-		
-	def online_other(self):
-		if not self._online_other:
-			self._online_other = sh.Online(MTSpecific=False)
-		return self._online_other
-		
-	def online(self):
-		if h_request.source() == 'Multitran':
-			return self.online_mt()
-		else:
-			return self.online_other()
-			
-	def about(self):
-		if not self._about:
-			self._about = About()
-		return self._about
-
-
-
-class Article: # cur
-	
-	def __init__(self):
-		self._source = 'Multitran'
-		self._search = 'Добро пожаловать!'
-		self._url = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
-		self._cells = []
-		self._elems = []
-		self._moves = []
-		self._html = self._html_raw = self._text = self._page = ''
-
-
-
-class Articles: # cur
-	
-	def __init__(self):
-		self._articles = []
-		self._no = 0
-		
-	def add(self):
-		self._articles.append(Article())
-		self._no = len(self._articles) - 1
-		
-	def current(self):
-		if not self._articles:
-			self.add()
-		return self._articles[self._no]
-		
-	def search(self,source,url):
-		Found = False
-		for i in range(len(self._articles)):
-			if self._articles[i]._source == source and self._articles[i]._url == url:
-				self._no = i
-				break
-		if not Found:
-			self.add()
-			self.current()._source = source
-			self.current()._url    = url
-		
-	
-
-
-
-class DB: # Requires h_request global
-	
-	def __init__(self):
-		self.db_con = sqlite3.connect(':memory:')
-		self.db = self.db_con.cursor()
 		self.reset()
 		
 	def reset(self):
-		self._count = 0
-		self._id = -1
-		self.db.executescript('drop table if exists INFO;')
-		self.db.execute('create table INFO (SOURCE text,SEARCH text,URL text,ID integer,ELEMS pickle,CELLS pickle,HTML text,HTML_RAW text,TEXT text,MOVES pickle)')
-		
-	def index_add(self):
-		if self._id < self._count - 1:
-			self._id += 1
-		else:
-			self._id = 0
-	
-	def index_subtract(self):
-		if self._id > 0:
-			self._id -= 1
-		else:
-			self._id = self._count - 1
-		
-	# orphant, equivalent of '_count'
+		self._articles = []
+		self._no = 0
+		if not self._articles:
+			self.add()
+			
 	def len(self):
-		self.db.execute('select Count(*) from INFO')
-		result = self.db.fetchone()
-		if result:
-			result = result[0]
-			return result
-	
-	def searches(self):
-		self.db.execute('select SEARCH from INFO order by ID')
-		searches = self.db.fetchall()
-		for i in range(len(searches)):
-			searches[i] = searches[i][0]
-		return searches
-	
-	def copy(self):
-		h_request._source = self.source()
-		h_request._search = self.search()
-		h_request._url = self.url()
-		h_request._html_raw = self.html_raw()
-		h_request._elems = self.elems()
-		h_request._cells = self.cells()
-		h_request._moves = self.moves()
-		h_request._html = self.html()
-		h_request._text = self.text()
-		
-	def copy_ahead(self):
-		h_request._search = self.search()
-		h_request._url = self.url()
-		h_request._html_raw = self.html_raw() # Do not re-download the page
-		h_request._elems = self.elems()
-	
-	def url(self):
-		self.db.execute('select URL from INFO where ID=?',(self._id,))
-		result = self.db.fetchone()
-		if result:
-			result = result[0]
-			return result
-	
-	def search(self):
-		self.db.execute('select SEARCH from INFO where ID=?',(self._id,))
-		result = self.db.fetchone()
-		if result:
-			result = result[0]
-			return result
-	
-	def source(self):
-		self.db.execute('select SOURCE from INFO where ID=?',(self._id,))
-		result = self.db.fetchone()
-		if result:
-			result = result[0]
-			return result
-	
-	def moves(self):
-		self.db.execute('select MOVES from INFO where ID=?',(self._id,))
-		result = self.db.fetchone()
-		if result:
-			result = result[0]
-			return pickle.loads(result)
-	
-	def cells(self):
-		self.db.execute('select CELLS from INFO where ID=?',(self._id,))
-		result = self.db.fetchone()
-		if result:
-			result = result[0]
-			return pickle.loads(result)
-	
-	def elems(self):
-		self.db.execute('select ELEMS from INFO where ID=?',(self._id,))
-		result = self.db.fetchone()
-		if result:
-			result = result[0]
-			return pickle.loads(result)
-	
-	def text(self):
-		self.db.execute('select TEXT from INFO where ID=?',(self._id,))
-		result = self.db.fetchone()
-		if result:
-			result = result[0]
-			return result
-	
-	def html_raw(self):
-		self.db.execute('select HTML_RAW from INFO where ID=?',(self._id,))
-		result = self.db.fetchone()
-		if result:
-			result = result[0]
-			return result
-	
-	def html(self):
-		self.db.execute('select HTML from INFO where ID=?',(self._id,))
-		result = self.db.fetchone()
-		if result:
-			result = result[0]
-			return result
+		return len(self._articles)
 	
 	def add(self):
-		self.db.execute('insert into INFO values (?,?,?,?,?,?,?,?,?,?)',[h_request.source(),h_request.search(),h_request.url(),self._count,pickle.dumps(h_request.elems()),pickle.dumps(h_request.cells()),h_request.html(),h_request.html_raw(),h_request.text(),pickle.dumps(h_request.moves())])
-		self.db_con.commit()
-		self._id += 1
-		self._count += 1
-	
+		self._articles.append(Article())
+		self._no = self.len() - 1
+		
+	def current(self):
+		return self._articles[self._no]
+		
+	def search_article(self):
+		Found = False
+		for i in range(self.len()):
+			if self._articles[i]._source == request._source and self._articles[i]._url == request._url:
+				self._no = i
+				Found = True
+				break
+		if not Found:
+			self.add()
+			self.current()._source = request._source
+			self.current()._url    = request._url
+			self.current()._search = request._search
+			
+	def index_add(self):
+		if self._no < self.len() - 1:
+			self._no += 1
+		else:
+			self._no = 0
+			
+	def index_subtract(self):
+		if self._no > 0:
+			self._no -= 1
+		else:
+			self._no = self.len() - 1
+			
+	def searches(self):
+		return [str(x._search) for x in self._articles]
+		
 	def prev(self):
-		self.db.execute('select SEARCH from INFO where ID=?',(self._count - 1,))
-		result = self.db.fetchone()
-		if result:
-			return result[0]
+		if self._no > 0:
+			return self._articles[self._no-1].search()
 			
 	def preprev(self):
-		self.db.execute('select SEARCH from INFO where ID=?',(self._count - 2,))
-		result = self.db.fetchone()
-		if result:
-			return result[0]
-	
-	def search_full(self):
-		self.db.execute('select ID from INFO where SOURCE=? and URL=?',(h_request.source(),h_request.url(),))
-		result = self.db.fetchone()
-		if result:
-			self._id = result[0]
-			log.append('DB.search_full',sh.lev_info,sh.globs['mes'].id_full_match % self._id)
-			self.copy()
-			return True
-	
-	def search_part(self):
-		if not self.search_full():
-			self.db.execute('select ID from INFO where SOURCE=? and URL=?',(h_request.source(),h_request.url(),))
-			result = self.db.fetchone()
-			if result:
-				self._id = result[0]
-				log.append('DB.search_part',sh.lev_info,sh.globs['mes'].id_match % self._id)
-				self.copy_ahead()
-			else:
-				self.add()
+		if self._no > 1:
+			return self._articles[self._no-2].search()
 			
-	def print(self):
-		self.db.execute("select * from INFO")
-		print(self.db.fetchall())
-		
-	def close(self):
-		self.db_con.close()
+	def debug(self): # orphant
+		old = self._no
+		message = ''
+		for i in range(self.len()):
+			self._no = i
+			message += '#%d:\n'         % i
+			message += 'Source: "%s"\n' % str(self.current()._source)
+			message += 'Search: "%s"\n' % str(self.current()._search)
+			message += 'URL: "%s"\n'    % str(self.current()._url)
+			message += '\n\n'
+		self._no = old
+		sg.Message(func='Articles.debug',level=sh.lev_info,message=message)
 
 
 
@@ -794,7 +673,7 @@ class Page:
 		while not self._page:
 			try:
 				# Если загружать страницу с помощью "page=urllib.request.urlopen(my_url)", то в итоге получится HTTPResponse, что полезно только для удаления тэгов JavaScript. Поскольку мы вручную удаляем все лишние тэги, то на выходе нам нужна строка.
-				self._page = urllib.request.urlopen(h_request.url()).read()
+				self._page = urllib.request.urlopen(request._url).read() # cur
 				log.append('Page.get',sh.lev_info,sh.globs['mes'].ok % self._search_str)
 				Got = True
 			# Too many possible exceptions
@@ -1226,7 +1105,7 @@ class Cells:
 		self.view()
 		
 	def view(self):
-		if sh.globs['view'] == 1:
+		if request._view == 1:
 			self.view1()
 		else:
 			self.view0()
@@ -1237,7 +1116,7 @@ class Cells:
 			for i in range(len(self._elems)):
 				if self._elems[i].dic != '':
 					if len(row) > 0:
-						while len(row) < sh.globs['collimit']:
+						while len(row) < request._collimit:
 							row.append(Cell())
 						self._cells.append(row)
 						row = [self._elems[i]]
@@ -1245,31 +1124,31 @@ class Cells:
 						row.append(self._elems[i])
 				elif self._elems[i].speech != '':
 					if len(row) > 0:
-						while len(row) < sh.globs['collimit']:
+						while len(row) < request._collimit:
 							row.append(Cell())
 						self._cells.append(row)
 						# todo: Speech position is hardcoded. Should we enhance this?
-						if sh.globs['collimit'] > 2:
+						if request._collimit > 2:
 							# Adding empty cells allows to format the view more correctly
 							row = [Cell(),self._elems[i]]
 							j = 2
-							while j < sh.globs['collimit']:
+							while j < request._collimit:
 								row.append(Cell())
 								j += 1
-						elif sh.globs['collimit'] == 2:
+						elif request._collimit == 2:
 							row = [Cell(),self._elems[i]]
 						else:
 							row = [self._elems[i]]
 					else:
 						row.append(self._elems[i])
-				elif len(row) == sh.globs['collimit']:
+				elif len(row) == request._collimit:
 					self._cells.append(row)
 					row = [Cell()]
 					row.append(self._elems[i])
 				else:
 					row.append(self._elems[i])
 				if i == len(self._elems) - 1: # Last element
-					while len(row) < sh.globs['collimit']:
+					while len(row) < request._collimit:
 						row.append(Cell())
 					self._cells.append(row)
 		return self._cells
@@ -1305,7 +1184,7 @@ class Cells:
 
 def call_app():
 	# Использовать то же сочетание клавиш для вызова окна
-	sg.Geometry(parent_obj=objs.top(),title=h_request.search()).activate(MouseClicked=h_table.MouseClicked)
+	sg.Geometry(parent_obj=objs.top(),title=articles.current().search()).activate(MouseClicked=h_table.MouseClicked)
 	# In case of .focus_set() *first* Control-c-c can call an inactive widget
 	h_table.search_field.widget.focus_force()
 
@@ -1449,7 +1328,7 @@ class SaveArticle:
 		if self.file:
 			self.fix_ext(ext='.htm')
 			# We disable AskRewrite because the confirmation is already built in the internal dialog
-			sh.WriteTextFile(self.file,AskRewrite=False).write(h_request._html)
+			sh.WriteTextFile(self.file,AskRewrite=False).write(articles.current().html())
 			
 	def raw_as_html(self):
 		# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
@@ -1458,19 +1337,19 @@ class SaveArticle:
 		if self.file:
 			self.fix_ext(ext='.htm')
 			# todo: fix remaining links to localhost
-			sh.WriteTextFile(self.file,AskRewrite=False).write(h_request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/M.exe?',sh.globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/m.exe?',sh.globs['var']['pair_root']))
+			sh.WriteTextFile(self.file,AskRewrite=False).write(articles.current().html_raw().replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/M.exe?',sh.globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/m.exe?',sh.globs['var']['pair_root']))
 		
 	def view_as_txt(self):
 		self.file = sg.dialog_save_file(filetypes=((sh.globs['mes'].plain_text,'.txt'),(sh.globs['mes'].all_files,'*')))
 		if self.file:
 			self.fix_ext(ext='.txt')
-			sh.WriteTextFile(self.file,AskRewrite=False).write(h_request._text)
+			sh.WriteTextFile(self.file,AskRewrite=False).write(articles.current()._text)
 			
 	def copy_raw(self):
-		sg.Clipboard().copy(h_request._html_raw)
+		sg.Clipboard().copy(articles.current().html_raw())
 			
 	def copy_view(self):
-		sg.Clipboard().copy(h_request._text)
+		sg.Clipboard().copy(articles.current()._text)
 
 	
 
@@ -1510,10 +1389,10 @@ class SearchArticle:
 	# Create a list of all matches in the article
 	def matches(self):
 		if self.search():
-			for i in range(len(h_request.cells())):
-				for j in range(len(h_request._cells[i])):
+			for i in range(len(articles.current().cells())):
+				for j in range(len(articles.current()._cells[i])):
 					# todo: Для всех вхождений, а не только терминов
-					if h_request._cells[i][j].Selectable and self._search in h_request._cells[i][j].term.lower():
+					if articles.current()._cells[i][j].Selectable and self._search in articles.current()._cells[i][j].term.lower():
 						self._list.append((i,j))
 
 	def search(self):
@@ -1569,14 +1448,14 @@ class SearchField:
 		
 	# Вставить предыдущий запрос
 	def insert_repeat_sign(self,*args):
-		if h_db._count > 0:
-			sg.Clipboard().copy(str(h_db.prev()))
+		if articles.len() > 0:
+			sg.Clipboard().copy(str(articles.prev()))
 			self.paste()
 
 	# Вставить запрос до предыдущего
 	def insert_repeat_sign2(self,*args):
-		if h_db._count > 1:
-			sg.Clipboard().copy(str(h_db.preprev()))
+		if articles.len() > 1:
+			sg.Clipboard().copy(str(articles.preprev()))
 			self.paste()
 
 
@@ -1606,25 +1485,31 @@ class SpecSymbols:
 		
 	def close(self,*args):
 		self.obj.close()
-		
-		
-		
+
+
+
 class History:
 	
 	def __init__(self):
-		self.parent_obj = sg.Top(sg.objs.root())
-		self.parent_obj.widget.geometry('250x350')
 		self._title = sh.globs['mes'].btn_history
 		self._icon = sh.globs['var']['icon_mclient']
+		self.Active = False
+		self.gui()
+		
+	def gui(self):
+		self.parent_obj = sg.Top(sg.objs.root())
+		self.parent_obj.widget.geometry('250x350')
 		self.obj = sg.ListBox(parent_obj=self.parent_obj,title=self._title,icon=self._icon,SelectionCloses=False,SingleClick=False,Composite=True,user_function=self.go)
 		self.widget = self.obj.widget
-		self.Active = False
+		self.bindings()
+		self.close()
+		
+	def bindings(self):
 		sg.bind(obj=self.parent_obj,bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt'],'<Escape>'],action=self.toggle)
 		sg.bind(obj=self.parent_obj,bindings=sh.globs['var']['bind_clear_history_alt'],action=self.clear)
-		self.close()
 	
 	def autoselect(self):
-		self.obj._index = h_db._id
+		self.obj._index = articles._no
 		self.obj.select()
 	
 	def show(self,*args):
@@ -1638,7 +1523,7 @@ class History:
 		self.parent_obj.close()
 		
 	def fill(self):
-		self.obj.reset(lst=h_db.searches(),title=self._title)
+		self.obj.reset(lst=articles.searches(),title=self._title)
 	
 	def update(self):
 		self.fill()
@@ -1647,9 +1532,8 @@ class History:
 	def clear(self,*args):
 		self.obj.clear()
 		h_table.search_article.obj.clear_text()
-		h_request.reset()
-		h_db.reset()
-		h_db.search_part()
+		articles.reset()
+		articles.search_article()
 		h_table.load_article()
 		self.update()
 	
@@ -1660,13 +1544,13 @@ class History:
 			self.show()
 			
 	def go(self,*args):
-		h_db._id = self.obj.index()
-		h_db.copy()
+		articles._no = self.obj.index()
+		request.update()
 		h_table.load_article()
 		
 	# Скопировать элемент истории
 	def copy(self,*args):
-		sg.Clipboard().copy(h_request.search())
+		sg.Clipboard().copy(articles.current().search())
 
 
 
@@ -1758,7 +1642,7 @@ class Moves:
 				tmp_lst = []
 				for j in range(len(self._cells[i])):
 					# Алгоритм не принимает -1, необходимо точно указывать позицию
-					tmp_lst += [self.get_selectable_backwards(i,len(h_request._cells[i])-1,False)]
+					tmp_lst += [self.get_selectable_backwards(i,len(self._cells[i])-1,False)]
 				self._moves['_move_line_end'] += [tmp_lst]
 		return self._moves['_move_line_end']
 
@@ -1773,7 +1657,7 @@ class Moves:
 	def text_end(self):
 		# todo: Почему не удается использовать 'move_right', 'move_down'?
 		if not self._moves['_move_text_end']:
-			if len(h_request.cells()) > 0:
+			if len(self._cells) > 0:
 				self._moves['_move_text_end'] = self.get_selectable_backwards(len(self._cells)-1,len(self._cells[-1])-1,False)
 			else:
 				self._moves['_move_text_end'] = (0,0)
@@ -1892,7 +1776,7 @@ class Moves:
 			if Found:
 				break
 			i -= 1
-			j = len(h_request._cells[i]) - 1
+			j = len(self._cells[i]) - 1
 		#log.append('TkinterHtmlMod.get_selectable_backwards',sh.lev_debug,str((sel_i,sel_j)))
 		return(sel_i,sel_j)
 
@@ -1916,8 +1800,8 @@ class TkinterHtmlMod(tk.Widget):
 		self.MouseClicked = False
 		self.CaptureHotkey = True
 		self.event = None
-		self.url = h_request._url
-		self.search = h_request._search
+		self.url = request._url
+		self.search = request._search
 		
 		self.master = master
 		self.location = self.get_tkhtml_folder()
@@ -1962,7 +1846,7 @@ class TkinterHtmlMod(tk.Widget):
 		
 	def get_url(self):
 		# Note: encoding must be UTF-8 here
-		if h_request.source() == 'Multitran':
+		if request._source == 'Multitran': # cur
 			objs.online().reset(self.get_pair(),self.search,MTSpecific=True)
 		else:
 			objs.online().reset(self.get_pair(),self.search,MTSpecific=False)
@@ -1972,29 +1856,29 @@ class TkinterHtmlMod(tk.Widget):
 	# todo: move 'move_*' procedures to Moves class
 	# Перейти на 1-й термин текущей строки	
 	def move_line_start(self,*args):
-		if len(h_request._moves['_move_line_start']) > self.i and len(h_request._moves['_move_line_start'][self.i]) > self.j:
-			self.i, self.j = h_request._moves['_move_line_start'][self.i][self.j]
+		if len(articles.current()._moves['_move_line_start']) > self.i and len(articles.current()._moves['_move_line_start'][self.i]) > self.j:
+			self.i, self.j = articles.current()._moves['_move_line_start'][self.i][self.j]
 			self.set_cell()
 		else:
 			log.append('TkinterHtmlMod.move_line_start',sh.lev_err,sh.globs['mes'].wrong_input2)
 
 	# Перейти на последний термин текущей строки
 	def move_line_end(self,*args):
-		if len(h_request._moves['_move_line_end']) > self.i and len(h_request._moves['_move_line_end'][self.i]) > self.j:
-			self.i, self.j = h_request._moves['_move_line_end'][self.i][self.j]
+		if len(articles.current()._moves['_move_line_end']) > self.i and len(articles.current()._moves['_move_line_end'][self.i]) > self.j:
+			self.i, self.j = articles.current()._moves['_move_line_end'][self.i][self.j]
 			self.set_cell()
 
 	# Перейти на 1-й термин статьи
 	def move_text_start(self,*args):
-		if h_request._moves['_move_text_start']:
-			self.i, self.j = h_request._moves['_move_text_start']
+		if articles.current()._moves['_move_text_start']:
+			self.i, self.j = articles.current()._moves['_move_text_start']
 		else:
 			self.i, self.j = 0, 0
 		self.set_cell()
 
 	# Перейти на последний термин статьи
 	def move_text_end(self,*args):
-		self.i, self.j = h_request._moves['_move_text_end']
+		self.i, self.j = articles.current()._moves['_move_text_end']
 		self.set_cell()
 
 	# Перейти на страницу вверх
@@ -2013,32 +1897,32 @@ class TkinterHtmlMod(tk.Widget):
 
 	# Перейти на предыдущий термин
 	def move_left(self,*args):
-		if len(h_request._moves['_move_left']) > self.i and len(h_request._moves['_move_left'][self.i]) > self.j:
-			self.i, self.j = h_request._moves['_move_left'][self.i][self.j]
+		if len(articles.current()._moves['_move_left']) > self.i and len(articles.current()._moves['_move_left'][self.i]) > self.j:
+			self.i, self.j = articles.current()._moves['_move_left'][self.i][self.j]
 			self.set_cell()
 		else:
 			log.append('TkinterHtmlMod.move_left',sh.lev_err,sh.globs['mes'].wrong_input2)
 
 	# Перейти на следующий термин
 	def move_right(self,*args):
-		if len(h_request._moves['_move_right']) > self.i and len(h_request._moves['_move_right'][self.i]) > self.j:
-			self.i, self.j = h_request._moves['_move_right'][self.i][self.j]
+		if len(articles.current()._moves['_move_right']) > self.i and len(articles.current()._moves['_move_right'][self.i]) > self.j:
+			self.i, self.j = articles.current()._moves['_move_right'][self.i][self.j]
 			self.set_cell()
 		else:
 			log.append('TkinterHtmlMod.move_right',sh.lev_err,sh.globs['mes'].wrong_input2)
 
 	# Перейти на строку вниз
 	def move_down(self,*args):
-		if len(h_request._moves['_move_down']) > self.i and len(h_request._moves['_move_down'][self.i]) > self.j:
-			self.i, self.j = h_request._moves['_move_down'][self.i][self.j]
+		if len(articles.current()._moves['_move_down']) > self.i and len(articles.current()._moves['_move_down'][self.i]) > self.j:
+			self.i, self.j = articles.current()._moves['_move_down'][self.i][self.j]
 			self.set_cell()
 		else:
 			log.append('TkinterHtmlMod.move_down',sh.lev_err,sh.globs['mes'].wrong_input2)
 
 	# Перейти на строку вверх
 	def move_up(self,*args):
-		if len(h_request._moves['_move_up']) > self.i and len(h_request._moves['_move_up'][self.i]) > self.j:
-			self.i, self.j = h_request._moves['_move_up'][self.i][self.j]
+		if len(articles.current()._moves['_move_up']) > self.i and len(articles.current()._moves['_move_up'][self.i]) > self.j:
+			self.i, self.j = articles.current()._moves['_move_up'][self.i][self.j]
 			self.set_cell()
 		else:
 			log.append('TkinterHtmlMod.move_up',sh.lev_err,sh.globs['mes'].wrong_input2)
@@ -2064,7 +1948,7 @@ class TkinterHtmlMod(tk.Widget):
 	
 	# Открыть URL текущей статьи в браузере
 	def open_in_browser(self,*args):
-		objs.online()._url = h_request._url
+		objs.online()._url = articles.current()._url
 		objs.online().browse()
 	
 	# Скопировать URL текущей статьи или выделения
@@ -2072,14 +1956,14 @@ class TkinterHtmlMod(tk.Widget):
 		cur_url = online_url_safe
 		if mode == 'term':
 			# Скопировать URL текущего термина. URL 1-го термина не совпадает с URL статьи!
-			cur_url = h_request._cells[self.i][self.j].url
+			cur_url = articles.current()._cells[self.i][self.j].url
 			if sh.globs['bool']['Iconify']:
-				sg.Geometry(parent_obj=objs.top(),title=h_request.search()).minimize()
+				sg.Geometry(parent_obj=objs.top(),title=articles.current().search()).minimize()
 		elif mode == 'article':
 			# Скопировать URL статьи
-			cur_url = h_request._url
+			cur_url = articles.current()._url
 			if sh.globs['bool']['Iconify']:
-				sg.Geometry(parent_obj=objs.top(),title=h_request.search()).minimize()
+				sg.Geometry(parent_obj=objs.top(),title=articles.current().search()).minimize()
 		else:
 			sg.Message(func='TkinterHtmlMod.copy_url',level=sh.lev_err,message=sh.globs['mes'].unknown_mode % (str(mode),'article, term'))
 		sg.Clipboard().copy(cur_url)
@@ -2087,30 +1971,30 @@ class TkinterHtmlMod(tk.Widget):
 	# Открыть веб-страницу с определением текущего термина
 	def define(self,Selected=True): # Selected: True: Выделенный термин; False: Название статьи
 		if Selected:
-			search_str = 'define:' + h_request._cells[self.i][self.j].term
+			search_str = 'define:' + articles.current()._cells[self.i][self.j].term
 		else:
-			search_str = 'define:' + h_request._search
+			search_str = 'define:' + articles.current()._search
 		objs.online().reset(base_str=sh.globs['var']['web_search_url'],search_str=search_str)
 		objs.online().browse()
 	
 	# Обновить рисунки на кнопках
 	def update_buttons(self):
-		if h_db._count > 0:
+		if articles.len() > 0:
 			self.btn_repeat_sign.active()
 		else:
 			self.btn_repeat_sign.inactive()
 
-		if h_db._count > 1:
+		if articles.len() > 1:
 			self.btn_repeat_sign2.active()
 		else:
 			self.btn_repeat_sign2.inactive()
 
-		if h_db._id > 0:
+		if articles._no > 0:
 			self.btn_prev.active()
 		else:
 			self.btn_prev.inactive()
 
-		if h_db._count > 1 and h_db._id < h_db._count - 1:
+		if articles.len() > 1 and articles._no < articles.len() - 1:
 			self.btn_next.active()
 		else:
 			self.btn_next.inactive()
@@ -2121,25 +2005,25 @@ class TkinterHtmlMod(tk.Widget):
 			self.btn_clipboard.inactive()
 			
 		# todo: Change active/inactive button logic in case of creating three or more views
-		if sh.globs['view'] == 0:
+		if request._view == 0:
 			self.btn_toggle_view.active()
 		else:
 			self.btn_toggle_view.inactive()
 			
 	# Перейти на предыдущий запрос
 	def go_back(self,*args):
-		old_index = h_db._id
-		h_db.index_subtract()
-		if old_index != h_db._id:
-			h_db.copy()
+		old_index = articles._no
+		articles.index_subtract()
+		if old_index != articles._no:
+			request.update()
 			self.load_article()
 
 	# Перейти на следующий запрос
 	def go_forward(self,*args):
-		old_index = h_db._id
-		h_db.index_add()
-		if old_index != h_db._id:
-			h_db.copy()
+		old_index = articles._no
+		articles.index_add()
+		if old_index != articles._no:
+			request.update()
 			self.load_article()
 
 	def control_length(self): # Confirm too long requests
@@ -2171,11 +2055,11 @@ class TkinterHtmlMod(tk.Widget):
 	def search_online(self):
 		if self.control_length():
 			self.get_url()
-			h_request._url = self.url
-			h_request._search = self.search
-			h_request.new()
-			h_db.search_part()
-			log.append('TkinterHtmlMod._go_search',sh.lev_debug,h_request._search)
+			request._url    = self.url
+			request._search = self.search
+			articles.current().new()
+			articles.search_article()
+			log.append('TkinterHtmlMod._go_search',sh.lev_debug,articles.current()._search)
 			self.load_article()
 	
 	# Search the selected term online using the entry widget (search field)
@@ -2279,8 +2163,8 @@ class TkinterHtmlMod(tk.Widget):
 		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_move_text_end'],action=self.move_text_end)
 		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_move_page_up'],action=self.move_page_up)
 		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_move_page_down'],action=self.move_page_down)
-		sg.bind(obj=objs.top(),bindings='<Escape>',action=sg.Geometry(parent_obj=objs.top(),title=h_request.search()).minimize)
-		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_iconify'],action=sg.Geometry(parent_obj=objs.top(),title=h_request.search()).minimize)
+		sg.bind(obj=objs.top(),bindings='<Escape>',action=sg.Geometry(parent_obj=objs.top(),title=articles.current().search()).minimize)
+		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_iconify'],action=sg.Geometry(parent_obj=objs.top(),title=articles.current().search()).minimize)
 		# Дополнительные горячие клавиши
 		sg.bind(obj=objs.top(),bindings=[sh.globs['var']['bind_quit_now'],sh.globs['var']['bind_quit_now_alt']],action=h_quit.wait)
 		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_search_article_forward'],action=self.search_forward)
@@ -2325,8 +2209,8 @@ class TkinterHtmlMod(tk.Widget):
 			parts = (0,0)
 			log.append('TkinterHtmlMod.get_cell',sh.lev_err,sh.globs['mes'].wrong_input2)
 		if sh.globs['bool']['SelectTermsOnly']:
-			if h_request._cells and len(h_request._cells) > parts[0] and len(h_request._cells[self.i]) > parts[1]:
-				if h_request._cells[parts[0]][parts[1]].Selectable:
+			if articles.current()._cells and len(articles.current()._cells) > parts[0] and len(articles.current()._cells[self.i]) > parts[1]:
+				if articles.current()._cells[parts[0]][parts[1]].Selectable:
 					self.i, self.j = parts
 		else:
 			self.i, self.j = parts
@@ -2419,7 +2303,7 @@ class TkinterHtmlMod(tk.Widget):
 			self.top_indexes = {}
 			self.page_no = 0
 			# todo: check this
-			self.i, self.j = h_request._moves['_move_text_start']
+			self.i, self.j = articles.current()._moves['_move_text_start']
 		# Иначе экран будет смещаться до 1-й выделяемой ячейки, а не до верхнего края
 		if self.page_no == 0 and not 0 in self.top_indexes:
 			self.top_indexes[0] = self.text('index',0)[0]
@@ -2459,11 +2343,11 @@ class TkinterHtmlMod(tk.Widget):
 		self.tag("delete", "selection")
 		self.index = None
 		# todo: Здесь иногда получаем ошибку с индексами
-		if h_request._cells and len(h_request._cells) > self.i and len(h_request._cells[self.i]) > self.j:
+		if articles.current()._cells and len(articles.current()._cells) > self.i and len(articles.current()._cells[self.i]) > self.j:
 			if sh.globs['bool']['SelectTermsOnly']:
-				self.index = self.text('index',h_request._cells[self.i][self.j].first,h_request._cells[self.i][self.j].last_term)
+				self.index = self.text('index',articles.current()._cells[self.i][self.j].first,articles.current()._cells[self.i][self.j].last_term)
 			else:
-				self.index = self.text('index',h_request._cells[self.i][self.j].first,h_request._cells[self.i][self.j].last)
+				self.index = self.text('index',articles.current()._cells[self.i][self.j].first,articles.current()._cells[self.i][self.j].last)
 		else:
 			log.append('TkinterHtmlMod.set_cell',sh.globs['mes'].wrong_input2)
 		if self.index:
@@ -2500,25 +2384,25 @@ class TkinterHtmlMod(tk.Widget):
 	def copy_cell(self,*args):
 		#self.set_cell()
 		if sh.globs['bool']['CopyTermsOnly']:
-			selected_text = h_request._cells[self.i][self.j].term
+			selected_text = articles.current()._cells[self.i][self.j].term
 		else:
-			selected_text = sh.List([h_request._cells[self.i][self.j].dic,h_request._cells[self.i][self.j].term,h_request._cells[self.i][self.j].comment]).space_items()
+			selected_text = sh.List([articles.current()._cells[self.i][self.j].dic,articles.current()._cells[self.i][self.j].term,articles.current()._cells[self.i][self.j].comment]).space_items()
 		sg.Clipboard().copy(selected_text)
 		if sh.globs['bool']['Iconify']:
-			sg.Geometry(parent_obj=objs.top(),title=h_request.search()).minimize()
+			sg.Geometry(parent_obj=objs.top(),title=articles.current().search()).minimize()
 
 	# Удалить ячейку и перекомпоновать статью
 	def delete_cell(self,*args):
 		Found = False
-		# Предполагаем, что h_request._elems уже прошло стадию объединения комментариев
-		for i in range(len(h_request._elems)):
+		# Предполагаем, что articles.current()._elems уже прошло стадию объединения комментариев
+		for i in range(len(articles.current()._elems)):
 			# todo: Уточнить и упростить алгоритм
-			if h_request._elems[i] == h_request._cells[self.i][self.j]:
+			if articles.current()._elems[i] == articles.current()._cells[self.i][self.j]:
 				Found = True
 				break
 		if Found:
-			del h_request._elems[i]
-			h_request.update()
+			del articles.current()._elems[i]
+			articles.current().update()
 			self.load_article()
 		else:
 			sg.Message(func='TkinterHtmlMod.delete_cell',level=sh.lev_warn,message=sh.globs['mes'].wrong_input2,Silent=self.Silent)
@@ -2526,27 +2410,27 @@ class TkinterHtmlMod(tk.Widget):
 	# Добавить пустую ячейку и перекомпоновать статью
 	def add_cell(self,*args):
 		Found = False
-		# Предполагаем, что h_request._elems уже прошло стадию объединения комментариев
-		for i in range(len(h_request._elems)):
+		# Предполагаем, что articles.current()._elems уже прошло стадию объединения комментариев
+		for i in range(len(articles.current()._elems)):
 			# todo: Уточнить и упростить алгоритм
-			if h_request._elems[i] == h_request._cells[self.i][self.j]:
+			if articles.current()._elems[i] == articles.current()._cells[self.i][self.j]:
 				Found = True
 				break
 		if Found:
-			h_request._elems.insert(i,Cell())
-			h_request.update()
+			articles.current()._elems.insert(i,Cell())
+			articles.current().update()
 			self.load_article()
 
 	def load_article(self,*args):
 		self.reset()
-		self.parse(h_request.html())
-		h_request._text = self.text('text')
+		self.parse(articles.current().html())
+		articles.current()._text = self.text('text')
 		self.top_indexes = {}
 		self.gen_poses()
 		self.gen_pos2cell()
-		h_request.moves()
+		articles.current().moves()
 		self.move_text_start()
-		objs.top().widget.title(h_request.search())
+		objs.top().widget.title(articles.current().search())
 		self.history.update()
 		self.update_buttons()
 		self.search_article.reset()
@@ -2556,60 +2440,60 @@ class TkinterHtmlMod(tk.Widget):
 	def go_url(self,*args):
 		if not self.MouseClicked:
 			log.append('TkinterHtmlMod.go_url',sh.lev_debug,sh.globs['mes'].cur_cell % (self.i,self.j))
-			h_request._search = h_request._cells[self.i][self.j].term
-			h_request._url    = h_request._cells[self.i][self.j].url
-			h_request.new()
-			h_db.search_part()
-			log.append('TkinterHtmlMod.go_url',sh.lev_info,sh.globs['mes'].opening_link % h_request._url)
+			request._search = articles.current()._cells[self.i][self.j].term
+			request._url    = articles.current()._cells[self.i][self.j].url
+			articles.current().new()
+			articles.search_article()
+			log.append('TkinterHtmlMod.go_url',sh.lev_info,sh.globs['mes'].opening_link % articles.current()._url)
 			self.load_article()
 				
 	def gen_pos2cell(self):
 		# 1-й символ всегда соответствует 1-й ячейке
 		self.pos2cell = [[0,0]]
 		cur_index = 1 # Starts with '\n'
-		for i in range(len(h_request._cells)):
+		for i in range(len(articles.current().cells())):
 			# Число столбцов в таблице должно быть одинаковым!
-			for j in range(len(h_request._cells[i])):
-				if h_request._cells[i][j].speech:
-					tmp_str = h_request._cells[i][j].speech.strip() + '\n'
-					h_request._cells[i][j].first = cur_index
+			for j in range(len(articles.current()._cells[i])):
+				if articles.current()._cells[i][j].speech:
+					tmp_str = articles.current()._cells[i][j].speech.strip() + '\n'
+					articles.current()._cells[i][j].first = cur_index
 					cur_index += len(tmp_str)
-					h_request._cells[i][j].last_term = h_request._cells[i][j].first + len(h_request._cells[i][j].term)
-					h_request._cells[i][j].last = cur_index
+					articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].term)
+					articles.current()._cells[i][j].last = cur_index
 					for k in range(len(tmp_str)):
 						self.pos2cell.append([i,j])
-				if h_request._cells[i][j].dic:
-					tmp_str = h_request._cells[i][j].dic.strip() + '\n'
-					h_request._cells[i][j].first = cur_index
+				if articles.current()._cells[i][j].dic:
+					tmp_str = articles.current()._cells[i][j].dic.strip() + '\n'
+					articles.current()._cells[i][j].first = cur_index
 					cur_index += len(tmp_str)
-					h_request._cells[i][j].last_term = h_request._cells[i][j].first + len(h_request._cells[i][j].term)
-					h_request._cells[i][j].last = cur_index
+					articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].term)
+					articles.current()._cells[i][j].last = cur_index
 					for k in range(len(tmp_str)):
 						self.pos2cell.append([i,j])
-				if h_request._cells[i][j].term + h_request._cells[i][j].comment:
-					tmp_str = (h_request._cells[i][j].term + h_request._cells[i][j].comment).strip() + '\n'
+				if articles.current()._cells[i][j].term + articles.current()._cells[i][j].comment:
+					tmp_str = (articles.current()._cells[i][j].term + articles.current()._cells[i][j].comment).strip() + '\n'
 					tmp_str = tmp_str.replace('  ',' ')
-					h_request._cells[i][j].first = cur_index
+					articles.current()._cells[i][j].first = cur_index
 					cur_index += len(tmp_str)
-					h_request._cells[i][j].last_term = h_request._cells[i][j].first + len(h_request._cells[i][j].term)
-					h_request._cells[i][j].last = cur_index
+					articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].term)
+					articles.current()._cells[i][j].last = cur_index
 					for k in range(len(tmp_str)):
 						self.pos2cell.append([i,j])
-	#assert len(h_request._text) == len(self.pos2cell)
+	#assert len(articles.current()._text) == len(self.pos2cell)
 				
 	def gen_poses(self):
 		cur_index = 1 # Starts with '\n'
-		for i in range(len(h_request._cells)):
-			for j in range(len(h_request._cells[i])):
-				tmp_str = sh.List([h_request._cells[i][j].speech,h_request._cells[i][j].dic,h_request._cells[i][j].term,h_request._cells[i][j].comment]).space_items()
-				h_request._cells[i][j].first = cur_index
-				h_request._cells[i][j].last_term = cur_index + len(h_request._cells[i][j].term)
-				h_request._cells[i][j].last = cur_index + len(tmp_str)
+		for i in range(len(articles.current().cells())):
+			for j in range(len(articles.current()._cells[i])):
+				tmp_str = sh.List([articles.current()._cells[i][j].speech,articles.current()._cells[i][j].dic,articles.current()._cells[i][j].term,articles.current()._cells[i][j].comment]).space_items()
+				articles.current()._cells[i][j].first = cur_index
+				articles.current()._cells[i][j].last_term = cur_index + len(articles.current()._cells[i][j].term)
+				articles.current()._cells[i][j].last = cur_index + len(tmp_str)
 				cur_index += len(tmp_str)
 				cur_index += 1
 	
 	def reload(self,*args):
-		h_request.new()
+		articles.current().new()
 		self.load_article()
 		
 	# Вставить спец. символ в строку поиска
@@ -2619,22 +2503,22 @@ class TkinterHtmlMod(tk.Widget):
 			self.spec_symbols.close()
 			
 	def toggle_view(self,*args):
-		if sh.globs['view'] == 0:
-			sh.globs['view'] = 1
-		elif sh.globs['view'] == 1:
-			sh.globs['view'] = 0
+		if request._view == 0:
+			request._view = 1
+		elif request._view == 1:
+			request._view = 0
 		else:
-			sg.Message(func='TkinterHtmlMod.toggle_view',level=sh.lev_err,message=sh.globs['mes'].unknown_mode % (str(sh.globs['view']),'0, 1'))
-		log.append('TkinterHtmlMod.toggle_view',sh.lev_info,sh.globs['mes'].new_view_mode % sh.globs['view'])
+			sg.Message(func='TkinterHtmlMod.toggle_view',level=sh.lev_err,message=sh.globs['mes'].unknown_mode % (str(request._view),'0, 1'))
+		log.append('TkinterHtmlMod.toggle_view',sh.lev_info,sh.globs['mes'].new_view_mode % request._view)
 		# todo: why move_right and move_left are so slow to be calculated?
 		# todo: do not recreate 'cells' each time
-		'''h_request.update()
-		h_db.search_part()
-		log.append('TkinterHtmlMod.go_url',sh.lev_info,sh.globs['mes'].opening_link % h_request._url)
+		'''articles.current().update()
+		articles.search_article()
+		log.append('TkinterHtmlMod.go_url',sh.lev_info,sh.globs['mes'].opening_link % articles.current()._url)
 		self.load_article()
 		'''
 		# todo: store views to reload them without reloading everything
-		h_request.new()
+		articles.current().new()
 		self.load_article()
 	
 	def zzz(self): # Only needed to move quickly to the end of the class
@@ -2643,14 +2527,14 @@ class TkinterHtmlMod(tk.Widget):
 
 
 if  __name__ == '__main__':
-	h_request = Request()
+	request = CurRequest()
+	articles = Articles()
 	objs = Objects()
-	h_db = DB()
 	h_quit = Quit()
 	h_table = TkinterHtmlMod(objs.top().widget)
 	objs.top().widget.protocol("WM_DELETE_WINDOW",h_quit.wait)
 	timed_update() # Do not wrap this function. Change this carefully.
-	h_db.search_part()
+	articles.search_article()
 	h_table.load_article()
 	h_table.show()
 	objs.top().show()
