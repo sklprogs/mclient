@@ -488,7 +488,7 @@ class DB: # Requires h_request global
 		self._count = 0
 		self._id = -1
 		self.db.executescript('drop table if exists INFO;')
-		self.db.execute('create table INFO (SOURCE text,SEARCH text,URL text,ID integer,COLLIMIT integer,VIEW integer,PRIORITY integer,ELEMS pickle,CELLS pickle,HTML text,HTML_RAW text,TEXT text,MOVES pickle)')
+		self.db.execute('create table INFO (SOURCE text,SEARCH text,URL text,ID integer,ELEMS pickle,CELLS pickle,HTML text,HTML_RAW text,TEXT text,MOVES pickle)')
 		
 	def index_add(self):
 		if self._id < self._count - 1:
@@ -521,9 +521,6 @@ class DB: # Requires h_request global
 		h_request._source = self.source()
 		h_request._search = self.search()
 		h_request._url = self.url()
-		h_request._collimit = self.collimit()
-		h_request._view = self.view()
-		h_request._priority = self.priority()
 		h_request._html_raw = self.html_raw()
 		h_request._elems = self.elems()
 		h_request._cells = self.cells()
@@ -536,29 +533,6 @@ class DB: # Requires h_request global
 		h_request._url = self.url()
 		h_request._html_raw = self.html_raw() # Do not re-download the page
 		h_request._elems = self.elems()
-	
-	def collimit(self):
-		self.db.execute('select COLLIMIT from INFO where ID=?',(self._id,))
-		result = self.db.fetchone()
-		if result:
-			result = result[0]
-			return result
-	
-	def view(self):
-		self.db.execute('select VIEW from INFO where ID=?',(self._id,))
-		result = self.db.fetchone()
-		if result:
-			result = result[0]
-			return result
-	
-	def priority(self):
-		'''self.db.execute('select PRIORITY from INFO where ID=?',(self._id,))
-		result = self.db.fetchone()
-		if result:
-			result = result[0]
-			return result
-		'''
-		return 0
 	
 	def url(self):
 		self.db.execute('select URL from INFO where ID=?',(self._id,))
@@ -624,7 +598,7 @@ class DB: # Requires h_request global
 			return result
 	
 	def add(self):
-		self.db.execute('insert into INFO values (?,?,?,?,?,?,?,?,?,?,?,?,?)',[h_request.source(),h_request.search(),h_request.url(),self._count,sh.globs['collimit'],sh.globs['view'],0,pickle.dumps(h_request.elems()),pickle.dumps(h_request.cells()),h_request.html(),h_request.html_raw(),h_request.text(),pickle.dumps(h_request.moves())])
+		self.db.execute('insert into INFO values (?,?,?,?,?,?,?,?,?,?)',[h_request.source(),h_request.search(),h_request.url(),self._count,pickle.dumps(h_request.elems()),pickle.dumps(h_request.cells()),h_request.html(),h_request.html_raw(),h_request.text(),pickle.dumps(h_request.moves())])
 		self.db_con.commit()
 		self._id += 1
 		self._count += 1
@@ -642,7 +616,7 @@ class DB: # Requires h_request global
 			return result[0]
 	
 	def search_full(self):
-		self.db.execute('select ID from INFO where SOURCE=? and URL=? and COLLIMIT=? and VIEW=?',(h_request.source(),h_request.url(),sh.globs['collimit'],sh.globs['view'],))
+		self.db.execute('select ID from INFO where SOURCE=? and URL=?',(h_request.source(),h_request.url(),))
 		result = self.db.fetchone()
 		if result:
 			self._id = result[0]
@@ -2646,18 +2620,21 @@ class TkinterHtmlMod(tk.Widget):
 			
 	def toggle_view(self,*args):
 		if sh.globs['view'] == 0:
-			h_request._view = 1
-		elif h_request._view == 1:
-			#h_request._view = 2
-			h_request._view = 0
-		elif h_request._view == 2:
-			h_request._view = 0
-		log.append('TkinterHtmlMod.toggle_view',sh.lev_info,sh.globs['mes'].new_view_mode % h_request._view)
+			sh.globs['view'] = 1
+		elif sh.globs['view'] == 1:
+			sh.globs['view'] = 0
+		else:
+			sg.Message(func='TkinterHtmlMod.toggle_view',level=sh.lev_err,message=sh.globs['mes'].unknown_mode % (str(sh.globs['view']),'0, 1'))
+		log.append('TkinterHtmlMod.toggle_view',sh.lev_info,sh.globs['mes'].new_view_mode % sh.globs['view'])
 		# todo: why move_right and move_left are so slow to be calculated?
 		# todo: do not recreate 'cells' each time
-		h_request.update()
+		'''h_request.update()
 		h_db.search_part()
 		log.append('TkinterHtmlMod.go_url',sh.lev_info,sh.globs['mes'].opening_link % h_request._url)
+		self.load_article()
+		'''
+		# todo: store views to reload them without reloading everything
+		h_request.new()
 		self.load_article()
 	
 	def zzz(self): # Only needed to move quickly to the end of the class
