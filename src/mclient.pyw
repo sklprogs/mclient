@@ -388,13 +388,13 @@ class Article:
 		self.reset()
 		
 	def reset(self):
-		self._source = self._search = self._url = self._cells = self._elems = self._html = self._html_raw = self._text = self._moves = self._page = None
+		self._source = self._search = self._url = self._cells = self._elems = self._html = self._html_raw = self._text = self._moves = self._page = self._tags = None
 	
 	def update(self):
 		self._cells = self._html = self._moves = None
 	
 	def new(self): # A completely new request
-		self._cells = self._elems = self._html_raw = self._html = self._text = self._moves = self._page = None
+		self._cells = self._elems = self._html_raw = self._html = self._text = self._moves = None
 	
 	def source(self):
 		if self._source is None:
@@ -416,10 +416,15 @@ class Article:
 			self._cells = Cells(elems=self.elems())._cells
 		return self._cells
 		
+	def tags(self):
+		if self._tags is None:
+			self._tags = Tags(text=self.text())
+		return self._tags
+	
 	def elems(self):
 		if self._elems is None:
 			# todo: check when text=None
-			self._elems = Elems(lst=Tags(text=self.text())._elems)._elems
+			self._elems = Elems(lst=self.tags()._elems)._elems
 		return self._elems
 		
 	def html(self):
@@ -478,6 +483,7 @@ class Articles: # Requires 'request'
 			if self._articles[i]._source == request._source and self._articles[i]._url == request._url:
 				self._no = i
 				Found = True
+				articles.current().update()
 				break
 		if not Found:
 			self.add()
@@ -673,8 +679,9 @@ class Page:
 		while not self._page:
 			try:
 				# Если загружать страницу с помощью "page=urllib.request.urlopen(my_url)", то в итоге получится HTTPResponse, что полезно только для удаления тэгов JavaScript. Поскольку мы вручную удаляем все лишние тэги, то на выходе нам нужна строка.
-				self._page = urllib.request.urlopen(request._url).read() # cur
-				log.append('Page.get',sh.lev_info,sh.globs['mes'].ok % self._search_str)
+				self._page = urllib.request.urlopen(request._url).read()
+				# todo: 'sh.log' -> 'log' when all debugging is done
+				sh.log.append('Page.get',sh.lev_info,sh.globs['mes'].ok % self._search_str)
 				Got = True
 			# Too many possible exceptions
 			except:
@@ -707,7 +714,7 @@ class Page:
 			if self._source == 'Multitran':
 				self._get_online()
 			else:
-				self._get_offline(self)
+				self._get_offline()
 		return self._page
 
 
@@ -715,11 +722,11 @@ class Page:
 class Tags:
 	
 	def __init__(self,text=''):
-		self._page = text
+		self._page    = text
 		self._borders = []
-		self._elems = []
-		self._tags = []
-		self.url = '' # Only a current URL for a tag
+		self._elems   = []
+		self._tags    = []
+		self.url      = '' # Only a current URL for a tag
 		self.invalid()
 		self.open_close()
 		self._non_tags()
@@ -1012,15 +1019,10 @@ class Tags:
 
 
 
-class Elems:
+class CustomElems:
 	
 	def __init__(self,lst=[]): # List of class instances
 		self._elems = lst
-		self.useless()
-		self.unite_comments()
-		# todo: debug
-		#self.unite_by_url()
-		self.define_selectables()
 		self.blacklist()
 		self.prioritize()
 		
@@ -1030,7 +1032,20 @@ class Elems:
 		
 	def blacklist(self):
 		# todo: implement
-		log.append('Elems.blacklist',sh.lev_info,'Blacklist dictionaries here')
+		log.append('Elems.blacklist',sh.lev_info,'Blacklist dictionaries here')		
+
+
+
+# Actually, '_elems' is created with 'Tags'. Here we clean up and unite them.
+class Elems:
+	
+	def __init__(self,lst=[]): # List of class instances
+		self._elems = lst
+		self.useless()
+		self.unite_comments()
+		# todo: debug
+		#self.unite_by_url()
+		self.define_selectables()
 		
 	def useless(self):
 		# We assume that a 'dic'-type entry shall be succeeded by a 'term'-type entry, not a 'comment'-type entry. Therefore, we delete 'comment'-type entries after 'dic'-type entries in order to ensure that dictionary abbreviations do not succeed full dictionary titles. We also can delete full dictionary titles and leave abbreviations instead.
@@ -1846,7 +1861,7 @@ class TkinterHtmlMod(tk.Widget):
 		
 	def get_url(self):
 		# Note: encoding must be UTF-8 here
-		if request._source == 'Multitran': # cur
+		if request._source == 'Multitran':
 			objs.online().reset(self.get_pair(),self.search,MTSpecific=True)
 		else:
 			objs.online().reset(self.get_pair(),self.search,MTSpecific=False)
@@ -2057,7 +2072,6 @@ class TkinterHtmlMod(tk.Widget):
 			self.get_url()
 			request._url    = self.url
 			request._search = self.search
-			articles.current().new()
 			articles.search_article()
 			log.append('TkinterHtmlMod._go_search',sh.lev_debug,articles.current()._search)
 			self.load_article()
@@ -2422,19 +2436,64 @@ class TkinterHtmlMod(tk.Widget):
 			self.load_article()
 
 	def load_article(self,*args):
+		# cur
+		import time
+		start_time0 = time.time()
+		start_time = time.time()
+		
+		articles.current().html_raw()
+		
+		sh.log.append('TkinterHtmlMod.load_article (get raw html)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
+		
+		articles.current().text()
+		
+		start_time = time.time()
+		articles.current().tags()
+		sh.log.append('TkinterHtmlMod.load_article (tags)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
+		
+		start_time = time.time()
+		articles.current().elems()
+		
+		sh.log.append('TkinterHtmlMod.load_article (elems)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
+		
+		start_time = time.time()
+		articles.current().cells()
+		sh.log.append('TkinterHtmlMod.load_article (cells)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
+		
+		start_time = time.time()
+		result = articles.current().html()
+		
+		sh.log.append('TkinterHtmlMod.load_article (generate html)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
+		
+		start_time = time.time()
 		self.reset()
-		self.parse(articles.current().html())
+		self.parse(result)
+		
+		sh.log.append('TkinterHtmlMod.load_article (reset, draw)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
+		
+		start_time = time.time()
 		articles.current()._text = self.text('text')
 		self.top_indexes = {}
 		self.gen_poses()
 		self.gen_pos2cell()
+		
+		sh.log.append('TkinterHtmlMod.load_article (get text, generate positions)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
+		
+		start_time = time.time()
 		articles.current().moves()
 		self.move_text_start()
+		
+		sh.log.append('TkinterHtmlMod.load_article (moves)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
+		
+		start_time = time.time()
 		objs.top().widget.title(articles.current().search())
 		self.history.update()
 		self.update_buttons()
 		self.search_article.reset()
 		self.search_field.clear()
+		
+		sh.log.append('TkinterHtmlMod.load_article (update GUI)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
+		sh.log.append('TkinterHtmlMod.load_article (everything)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time0))
 	
 	# Перейти по URL текущей ячейки
 	def go_url(self,*args):
@@ -2442,7 +2501,6 @@ class TkinterHtmlMod(tk.Widget):
 			log.append('TkinterHtmlMod.go_url',sh.lev_debug,sh.globs['mes'].cur_cell % (self.i,self.j))
 			request._search = articles.current()._cells[self.i][self.j].term
 			request._url    = articles.current()._cells[self.i][self.j].url
-			articles.current().new()
 			articles.search_article()
 			log.append('TkinterHtmlMod.go_url',sh.lev_info,sh.globs['mes'].opening_link % articles.current()._url)
 			self.load_article()
@@ -2511,14 +2569,8 @@ class TkinterHtmlMod(tk.Widget):
 			sg.Message(func='TkinterHtmlMod.toggle_view',level=sh.lev_err,message=sh.globs['mes'].unknown_mode % (str(request._view),'0, 1'))
 		log.append('TkinterHtmlMod.toggle_view',sh.lev_info,sh.globs['mes'].new_view_mode % request._view)
 		# todo: why move_right and move_left are so slow to be calculated?
-		# todo: do not recreate 'cells' each time
-		'''articles.current().update()
-		articles.search_article()
-		log.append('TkinterHtmlMod.go_url',sh.lev_info,sh.globs['mes'].opening_link % articles.current()._url)
-		self.load_article()
-		'''
 		# todo: store views to reload them without reloading everything
-		articles.current().new()
+		articles.current().update()
 		self.load_article()
 	
 	def zzz(self): # Only needed to move quickly to the end of the class
