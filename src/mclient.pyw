@@ -678,10 +678,10 @@ class Page:
 		Got = False
 		while not self._page:
 			try:
+				log.append('Page.get',sh.lev_info,'Get online: "%s"' % self._search_str) # todo: mes
 				# Если загружать страницу с помощью "page=urllib.request.urlopen(my_url)", то в итоге получится HTTPResponse, что полезно только для удаления тэгов JavaScript. Поскольку мы вручную удаляем все лишние тэги, то на выходе нам нужна строка.
 				self._page = urllib.request.urlopen(request._url).read()
-				# todo: 'sh.log' -> 'log' when all debugging is done
-				sh.log.append('Page.get',sh.lev_info,sh.globs['mes'].ok % self._search_str)
+				log.append('Page.get',sh.lev_info,sh.globs['mes'].ok % self._search_str)
 				Got = True
 			# Too many possible exceptions
 			except:
@@ -781,7 +781,7 @@ class Tags:
 					# If we see symbols '<' or '>' there for some reason, then there is a problem in the tag extraction algorithm. We can make manual deletion of '<' and '>' there.
 					# Draft such cases as '23 фраз' as dictionary titles, not terms
 					if re.search('\d+ фраз',tmp_str):
-						# todo: Assigning both 'dic' and 'speech' will not show 'speech' # cur
+						# todo: fix: Assigning both 'dic' and 'speech' will not show 'speech'
 						self._elems[-1].dic = 'Phrases '
 						self._elems[-1].speech = 'Phrases '
 					self._elems[-1].term = tmp_str
@@ -2436,64 +2436,19 @@ class TkinterHtmlMod(tk.Widget):
 			self.load_article()
 
 	def load_article(self,*args):
-		# cur
-		import time
-		start_time0 = time.time()
-		start_time = time.time()
-		
-		articles.current().html_raw()
-		
-		sh.log.append('TkinterHtmlMod.load_article (get raw html)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
-		
-		articles.current().text()
-		
-		start_time = time.time()
-		articles.current().tags()
-		sh.log.append('TkinterHtmlMod.load_article (tags)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
-		
-		start_time = time.time()
-		articles.current().elems()
-		
-		sh.log.append('TkinterHtmlMod.load_article (elems)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
-		
-		start_time = time.time()
-		articles.current().cells()
-		sh.log.append('TkinterHtmlMod.load_article (cells)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
-		
-		start_time = time.time()
-		result = articles.current().html()
-		
-		sh.log.append('TkinterHtmlMod.load_article (generate html)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
-		
-		start_time = time.time()
 		self.reset()
-		self.parse(result)
-		
-		sh.log.append('TkinterHtmlMod.load_article (reset, draw)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
-		
-		start_time = time.time()
+		self.parse(articles.current().html())
 		articles.current()._text = self.text('text')
 		self.top_indexes = {}
 		self.gen_poses()
 		self.gen_pos2cell()
-		
-		sh.log.append('TkinterHtmlMod.load_article (get text, generate positions)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
-		
-		start_time = time.time()
 		articles.current().moves()
 		self.move_text_start()
-		
-		sh.log.append('TkinterHtmlMod.load_article (moves)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
-		
-		start_time = time.time()
 		objs.top().widget.title(articles.current().search())
 		self.history.update()
 		self.update_buttons()
 		self.search_article.reset()
 		self.search_field.clear()
-		
-		sh.log.append('TkinterHtmlMod.load_article (update GUI)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
-		sh.log.append('TkinterHtmlMod.load_article (everything)',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time0))
 	
 	# Перейти по URL текущей ячейки
 	def go_url(self,*args):
