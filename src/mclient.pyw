@@ -315,7 +315,7 @@ tag_pattern_ph4 = '<a href="m.exe?a=3&s='
 class Objects: # Requires 'article'
 	
 	def __init__(self):
-		self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = None
+		self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = self._blacklist = self._prioritize = None
 		
 	def top(self):
 		if not self._top:
@@ -359,6 +359,16 @@ class Objects: # Requires 'article'
 		if not self._about:
 			self._about = About()
 		return self._about
+		
+	def blacklist(self):
+		if not self._blacklist:
+			self._blacklist = Lists().blacklist()
+		return self._blacklist
+		
+	def prioritize(self):
+		if not self._prioritize:
+			self._prioritize = Lists().prioritize()
+		return self._prioritize
 
 
 
@@ -425,6 +435,7 @@ class Article:
 		if self._elems is None:
 			# todo: check when text=None
 			self._elems = Elems(lst=self.tags()._elems)._elems
+			self._elems = CustomElems(lst=self._elems)._elems
 		return self._elems
 		
 	def html(self):
@@ -1028,11 +1039,27 @@ class CustomElems:
 		
 	def prioritize(self):
 		# todo: implement
-		log.append('Elems.prioritize',sh.lev_info,'Prioritize dictionaries here')
+		log.append('CustomElems.prioritize',sh.lev_info,'Prioritize dictionaries here')
 		
 	def blacklist(self):
-		# todo: implement
-		log.append('Elems.blacklist',sh.lev_info,'Blacklist dictionaries here')		
+		mes_lst = []
+		lst = objs.blacklist()
+		if lst:
+			i = 0
+			while i < len(self._elems):
+				if self._elems[i].dic in lst:
+					mes_lst.append(self._elems[i].dic)
+					del self._elems[i]
+					i -= 1
+				i += 1
+			if mes_lst:
+				mes_lst.sort()
+				sh.log.append('CustomElems.blacklist',sh.lev_info,'Ignore dictionaries: %s' % ';'.join(set(mes_lst)))
+			else:
+				sh.log.append('CustomElems.blacklist',sh.lev_debug,'Nothing to ignore')
+		else:
+			log.append('CustomElems.blacklist',sh.lev_warn,sh.globs['mes'].empty_input)
+		return self._elems
 
 
 
@@ -2533,12 +2560,71 @@ class TkinterHtmlMod(tk.Widget):
 
 
 
+class Paths:
+	
+	def __init__(self):
+		self.dir = sh.Directory(path=os.path.join(sys.path[0],'dics'))
+		self.Success = self.dir.Success
+		
+	def blacklist(self):
+		if self.Success:
+			instance = sh.File(file=os.path.join(self.dir.dir,'block.txt'))
+			self.Success = instance.Success
+			if self.Success:
+				return instance.file
+			else:
+				sh.log.append('Paths.blacklist',lev_warn,globs['mes'].canceled)
+		else:
+			sh.log.append('Paths.blacklist',lev_warn,globs['mes'].canceled)
+			
+	def prioritize(self):
+		if self.Success:
+			instance = sh.File(file=os.path.join(self.dir.dir,'prioritize.txt'))
+			self.Success = instance.Success
+			if self.Success:
+				return instance.file
+			else:
+				sh.log.append('Paths.prioritize',lev_warn,globs['mes'].canceled)
+		else:
+			sh.log.append('Paths.prioritize',lev_warn,globs['mes'].canceled)
+
+
+
+# Read the blocklist and the prioritize list
+class Lists:
+	
+	def __init__(self):
+		paths            = Paths()
+		self._blacklist  = paths.blacklist()
+		self._prioritize = paths.prioritize()
+		self.Success = paths.Success
+		
+	def blacklist(self):
+		if self.Success:
+			text = sh.ReadTextFile(file=self._blacklist,Silent=1).get()
+			text = sh.Text(text=text,Auto=1).text
+			return text.splitlines()
+		else:
+			log.append('Lists.blacklist',lev_warn,globs['mes'].canceled)
+			
+	def prioritize(self):
+		if self.Success:
+			text = sh.ReadTextFile(file=self._prioritize,Silent=1).get()
+			text = sh.Text(text=text,Auto=1).text
+			return text.splitlines()
+		else:
+			log.append('Lists.prioritize',lev_warn,globs['mes'].canceled)
+
+
+
+objs = Objects()
+
+
 if  __name__ == '__main__':
-	request = CurRequest()
+	request  = CurRequest()
 	articles = Articles()
-	objs = Objects()
-	h_quit = Quit()
-	h_table = TkinterHtmlMod(objs.top().widget)
+	h_quit   = Quit()
+	h_table  = TkinterHtmlMod(objs.top().widget)
 	objs.top().widget.protocol("WM_DELETE_WINDOW",h_quit.wait)
 	timed_update() # Do not wrap this function. Change this carefully.
 	articles.search_article()
