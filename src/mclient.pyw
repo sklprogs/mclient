@@ -135,6 +135,7 @@ class ConfigMclient(sh.Config):
 			'bind_search_article_forward':'<F3>',
 			'bind_show_about':'<F1>',
 			'bind_spec_symbol':'<Control-e>',
+			'bind_toggle_block':'<Alt-b>',
 			'bind_toggle_history_alt':'<Control-h>',
 			'bind_toggle_history':'<F4>',
 			'bind_toggle_view':'<F6>',
@@ -155,6 +156,8 @@ class ConfigMclient(sh.Config):
 			'font_style':'Sans 14',
 			'font_terms_sel':'Sans 14 bold italic',
 			'font_terms_family':'Serif',
+			'icon_block_off':'icon_36x36_block_off.gif',
+			'icon_block_on':'icon_36x36_block_on.gif',
 			'icon_clear_history':'icon_36x36_clear_history.gif',
 			'icon_clear_search_field':'icon_36x36_clear_search_field.gif',
 			'icon_define':'icon_36x36_define.gif',
@@ -383,6 +386,7 @@ class CurRequest:
 		self._source   = 'Multitran'
 		self._search   = 'Добро пожаловать!'
 		self._url      = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
+		self._blocked  = 0
 		
 	def update(self):
 		# todo: read buttons
@@ -1053,10 +1057,12 @@ class CustomElems:
 					i -= 1
 				i += 1
 			if mes_lst:
-				mes_lst.sort()
-				sh.log.append('CustomElems.blacklist',sh.lev_info,'Ignore dictionaries: %s' % ';'.join(set(mes_lst)))
+				mes_lst = set(sorted(mes_lst))
+				request._blocked = len(mes_lst)
+				log.append('CustomElems.blacklist',sh.lev_info,'Ignore dictionaries: %s' % ';'.join(mes_lst))
 			else:
-				sh.log.append('CustomElems.blacklist',sh.lev_debug,'Nothing to ignore')
+				request._blocked = 0
+				log.append('CustomElems.blacklist',sh.lev_debug,'Nothing to ignore')
 		else:
 			log.append('CustomElems.blacklist',sh.lev_warn,sh.globs['mes'].empty_input)
 		return self._elems
@@ -2052,6 +2058,11 @@ class TkinterHtmlMod(tk.Widget):
 		else:
 			self.btn_toggle_view.inactive()
 			
+		if request._blocked:
+			self.btn_toggle_block.active()
+		else:
+			self.btn_toggle_block.inactive()
+			
 	# Перейти на предыдущий запрос
 	def go_back(self,*args):
 		old_index = articles._no
@@ -2153,6 +2164,8 @@ class TkinterHtmlMod(tk.Widget):
 		# Кнопка изменения вида статьи
 		# todo: Change active/inactive button logic in case of creating three or more views
 		self.btn_toggle_view = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_view,hint=sh.globs['mes'].hint_toggle_view,action=self.toggle_view,inactive_image_path=sh.globs['var']['icon_toggle_view_ver'],active_image_path=sh.globs['var']['icon_toggle_view_hor'],bindings=[sh.globs['var']['bind_toggle_view'],sh.globs['var']['bind_toggle_view_alt']])
+		# Кнопка включения/отключения режима блокировки словарей
+		self.btn_toggle_block = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_block,hint=sh.globs['mes'].hint_toggle_block,action=self.toggle_block,inactive_image_path=sh.globs['var']['icon_block_off'],active_image_path=sh.globs['var']['icon_block_on'],bindings=sh.globs['var']['bind_toggle_block'])
 		# Кнопка перехода на предыдущую статью
 		self.btn_prev = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_prev,hint=sh.globs['mes'].hint_preceding_article,action=self.go_back,inactive_image_path=sh.globs['var']['icon_go_back_off'],active_image_path=sh.globs['var']['icon_go_back'],bindings=sh.globs['var']['bind_go_back'])
 		# Кнопка перехода на следующую статью
@@ -2554,6 +2567,10 @@ class TkinterHtmlMod(tk.Widget):
 		# todo: store views to reload them without reloading everything
 		articles.current().update()
 		self.load_article()
+		
+	def toggle_block(self,*args):
+		# todo: elaborate
+		sg.Message(func='TkinterHtmlMod.toggle_block',level=sh.lev_info,message='Edit configuration to toggle blocking.') # todo: mes
 	
 	def zzz(self): # Only needed to move quickly to the end of the class
 		pass
@@ -2573,9 +2590,9 @@ class Paths:
 			if self.Success:
 				return instance.file
 			else:
-				sh.log.append('Paths.blacklist',lev_warn,globs['mes'].canceled)
+				log.append('Paths.blacklist',lev_warn,globs['mes'].canceled)
 		else:
-			sh.log.append('Paths.blacklist',lev_warn,globs['mes'].canceled)
+			log.append('Paths.blacklist',lev_warn,globs['mes'].canceled)
 			
 	def prioritize(self):
 		if self.Success:
@@ -2584,9 +2601,9 @@ class Paths:
 			if self.Success:
 				return instance.file
 			else:
-				sh.log.append('Paths.prioritize',lev_warn,globs['mes'].canceled)
+				log.append('Paths.prioritize',lev_warn,globs['mes'].canceled)
 		else:
-			sh.log.append('Paths.prioritize',lev_warn,globs['mes'].canceled)
+			log.append('Paths.prioritize',lev_warn,globs['mes'].canceled)
 
 
 
