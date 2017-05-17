@@ -16,7 +16,7 @@ import shared as sh
 import sharedGUI as sg
 
 product = 'MClient'
-version = '4.8.3'
+version = '4.9'
 
 third_parties = '''
 tkinterhtml
@@ -318,7 +318,7 @@ tag_pattern_ph4 = '<a href="m.exe?a=3&s='
 class Objects: # Requires 'article'
 	
 	def __init__(self):
-		self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = self._blacklist = self._prioritize = None
+		self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = self._blacklist = self._black_old = self._prioritize = None
 		
 	def top(self):
 		if not self._top:
@@ -364,12 +364,13 @@ class Objects: # Requires 'article'
 		return self._about
 		
 	def blacklist(self):
-		if not self._blacklist:
+		if self._blacklist is None: # Allow empty lists
 			self._blacklist = Lists().blacklist()
+			self._black_old = list(self._blacklist) # Do not copy directly!
 		return self._blacklist
 		
 	def prioritize(self):
-		if not self._prioritize:
+		if self._prioritize is None: # Allow empty lists
 			self._prioritize = Lists().prioritize()
 		return self._prioritize
 
@@ -386,7 +387,8 @@ class CurRequest:
 		self._source   = 'Multitran'
 		self._search   = 'Добро пожаловать!'
 		self._url      = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
-		self._blocked  = 0
+		# Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
+		self.Block     = True
 		
 	def update(self):
 		# todo: read buttons
@@ -402,13 +404,14 @@ class Article:
 		self.reset()
 		
 	def reset(self):
-		self._source = self._search = self._url = self._cells = self._elems = self._html = self._html_raw = self._text = self._moves = self._page = self._tags = None
+		self._source = self._search = self._url = self._cells = self._elems = self._html = self._html_raw = self._text = self._moves = self._page = self._tags = self._blocked = None
 	
 	def update(self):
-		self._cells = self._html = self._moves = None
+		self._cells = self._html = self._text = self._moves = None
 	
+	# todo: drop in favor of 'reset'
 	def new(self): # A completely new request
-		self._cells = self._elems = self._html_raw = self._html = self._text = self._moves = None
+		self._cells = self._elems = self._html_raw = self._html = self._text = self._moves = self._blocked = None
 	
 	def source(self):
 		if self._source is None:
@@ -439,7 +442,6 @@ class Article:
 		if self._elems is None:
 			# todo: check when text=None
 			self._elems = Elems(lst=self.tags()._elems)._elems
-			self._elems = CustomElems(lst=self._elems)._elems
 		return self._elems
 		
 	def html(self):
@@ -468,6 +470,11 @@ class Article:
 		if self._moves is None:
 			self._moves = Moves(cells=self.cells())._moves
 		return self._moves
+		
+	def blocked(self):
+		if self._blocked is None: # Allow an empty list
+			self.elems()
+		return self._blocked
 
 
 
@@ -580,7 +587,10 @@ class HTML:
 			self.output.write('<font face="')
 			self.output.write(sh.globs['var']['font_dics_family'])
 			self.output.write('" color="')
-			self.output.write(sh.globs['var']['color_dics'])
+			if self._cells[self.i][self.j].Block:
+				self.output.write('gray')
+			else:
+				self.output.write(sh.globs['var']['color_dics'])
 			self.output.write('" size="')
 			self.output.write(str(sh.globs['int']['font_dics_size']))
 			self.output.write('"><b>')
@@ -1034,41 +1044,6 @@ class Tags:
 
 
 
-class CustomElems:
-	
-	def __init__(self,lst=[]): # List of class instances
-		self._elems = lst
-		self.blacklist()
-		self.prioritize()
-		
-	def prioritize(self):
-		# todo: implement
-		log.append('CustomElems.prioritize',sh.lev_info,'Prioritize dictionaries here')
-		
-	def blacklist(self):
-		mes_lst = []
-		lst = objs.blacklist()
-		if lst:
-			i = 0
-			while i < len(self._elems):
-				if self._elems[i].dic in lst:
-					mes_lst.append(self._elems[i].dic)
-					del self._elems[i]
-					i -= 1
-				i += 1
-			if mes_lst:
-				mes_lst = set(sorted(mes_lst))
-				request._blocked = len(mes_lst)
-				log.append('CustomElems.blacklist',sh.lev_info,'Ignore dictionaries: %s' % ';'.join(mes_lst))
-			else:
-				request._blocked = 0
-				log.append('CustomElems.blacklist',sh.lev_debug,'Nothing to ignore')
-		else:
-			log.append('CustomElems.blacklist',sh.lev_warn,sh.globs['mes'].empty_input)
-		return self._elems
-
-
-
 # Actually, '_elems' is created with 'Tags'. Here we clean up and unite them.
 class Elems:
 	
@@ -1079,6 +1054,8 @@ class Elems:
 		# todo: debug
 		#self.unite_by_url()
 		self.define_selectables()
+		self.blacklist()
+		self.prioritize()
 		
 	def useless(self):
 		# We assume that a 'dic'-type entry shall be succeeded by a 'term'-type entry, not a 'comment'-type entry. Therefore, we delete 'comment'-type entries after 'dic'-type entries in order to ensure that dictionary abbreviations do not succeed full dictionary titles. We also can delete full dictionary titles and leave abbreviations instead.
@@ -1131,13 +1108,42 @@ class Elems:
 		for i in range(len(self._elems)):
 			if self._elems[i].term:
 				self._elems[i].Selectable = True
+	
+	def blacklist(self):
+		articles.current()._blocked = []
+		if objs.blacklist():
+			Block = False
+			for i in range(len(self._elems)):
+				if self._elems[i].dic in objs._blacklist:
+					articles.current()._blocked.append(self._elems[i].dic)
+					self._elems[i].Block = True
+					Block = True
+				# If a dictionary is blacklisted, block each cell related to it, stop when the following dictionary is not blacklisted
+				elif Block:
+					if self._elems[i].dic:
+						Block = False
+					else:
+						self._elems[i].Block = True
+			if articles.current()._blocked:
+				articles.current()._blocked = set(sorted(articles.current()._blocked))
+				log.append('Elems.blacklist',sh.lev_info,'Ignore dictionaries: %s' % ';'.join(articles.current()._blocked))
+			else:
+				log.append('Elems.blacklist',sh.lev_debug,'Nothing to ignore')
+		else:
+			log.append('Elems.blacklist',sh.lev_warn,sh.globs['mes'].empty_input)
+		return self._elems
+		
+	def prioritize(self):
+		# todo: implement
+		log.append('Elems.prioritize',sh.lev_info,'Prioritize dictionaries here')
+		return self._elems
 
 
 
 class Cell:
 	
 	def __init__(self):
-		self.Selectable = False
+		self.Selectable = self.Block = False
 		self.speech = self.dic = self.term = self.comment = self.url = ''
 
 
@@ -1162,7 +1168,9 @@ class Cells:
 		if not self._cells:
 			row = []
 			for i in range(len(self._elems)):
-				if self._elems[i].dic != '':
+				if request.Block and self._elems[i].Block:
+					pass
+				elif self._elems[i].dic != '':
 					if len(row) > 0:
 						while len(row) < request._collimit:
 							row.append(Cell())
@@ -1206,7 +1214,9 @@ class Cells:
 			columns = []
 			column = []
 			for i in range(len(self._elems)):
-				if self._elems[i].dic != '':
+				if request.Block and self._elems[i].Block:
+					pass
+				elif self._elems[i].dic != '':
 					if column:
 						columns.append(column)
 					column = []
@@ -2058,7 +2068,7 @@ class TkinterHtmlMod(tk.Widget):
 		else:
 			self.btn_toggle_view.inactive()
 			
-		if request._blocked:
+		if request.Block and articles.current().blocked():
 			self.btn_toggle_block.active()
 		else:
 			self.btn_toggle_block.inactive()
@@ -2569,8 +2579,17 @@ class TkinterHtmlMod(tk.Widget):
 		self.load_article()
 		
 	def toggle_block(self,*args):
-		# todo: elaborate
-		sg.Message(func='TkinterHtmlMod.toggle_block',level=sh.lev_info,message='Edit configuration to toggle blocking.') # todo: mes
+		if request.Block:
+			request.Block = False
+			sg.Message(func='TkinterHtmlMod.toggle_block',level=sh.lev_info,message='Blacklisting is now OFF.') # todo: mes
+		else:
+			request.Block = True
+			if objs._blacklist:
+				sg.Message(func='TkinterHtmlMod.toggle_block',level=sh.lev_info,message='Blacklisting is now ON.')  # todo: mes
+			else:
+				sg.Message(func='TkinterHtmlMod.toggle_block',level=sh.lev_warn,message='No dictionaries have been provided for blacklisting!') # todo: mes
+		articles.current().update()
+		self.load_article()
 	
 	def zzz(self): # Only needed to move quickly to the end of the class
 		pass
