@@ -138,6 +138,7 @@ class ConfigMclient(sh.Config):
 			'bind_toggle_block':'<Alt-b>',
 			'bind_toggle_history_alt':'<Control-h>',
 			'bind_toggle_history':'<F4>',
+			'bind_toggle_priority':'<Alt-p>',
 			'bind_toggle_view':'<F6>',
 			'bind_toggle_view_alt':'<Control-V>',
 			'color_comments':'gray',
@@ -169,6 +170,8 @@ class ConfigMclient(sh.Config):
 			'icon_mclient':'icon_64x64_mclient.gif',
 			'icon_open_in_browser':'icon_36x36_open_in_browser.gif',
 			'icon_paste':'icon_36x36_paste.gif',
+			'icon_priority_off':'icon_36x36_priority_off.gif',
+			'icon_priority_on':'icon_36x36_priority_on.gif',
 			'icon_quit_now':'icon_36x36_quit_now.gif',
 			'icon_reload':'icon_36x36_reload.gif',
 			'icon_repeat_sign_off':'icon_36x36_repeat_sign_off.gif',
@@ -318,7 +321,7 @@ tag_pattern_ph4 = '<a href="m.exe?a=3&s='
 class Objects: # Requires 'article'
 	
 	def __init__(self):
-		self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = self._blacklist = self._black_old = self._prioritize = None
+		self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = self._blacklist = self._prioritize = None
 		
 	def top(self):
 		if not self._top:
@@ -366,7 +369,6 @@ class Objects: # Requires 'article'
 	def blacklist(self):
 		if self._blacklist is None: # Allow empty lists
 			self._blacklist = Lists().blacklist()
-			self._black_old = list(self._blacklist) # Do not copy directly!
 		return self._blacklist
 		
 	def prioritize(self):
@@ -382,13 +384,14 @@ class CurRequest:
 		self.reset()
 		
 	def reset(self):
-		self._view     = 0
-		self._collimit = 5
-		self._source   = 'Multitran'
-		self._search   = 'Добро пожаловать!'
-		self._url      = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
+		self._view      = 0
+		self._collimit  = 5
+		self._source    = 'Multitran'
+		self._search    = 'Добро пожаловать!'
+		self._url       = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
 		# Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
-		self.Block     = True
+		self.Block      = True
+		self.Prioritize = True
 		
 	def update(self):
 		# todo: read buttons
@@ -404,14 +407,14 @@ class Article:
 		self.reset()
 		
 	def reset(self):
-		self._source = self._search = self._url = self._cells = self._elems = self._html = self._html_raw = self._text = self._moves = self._page = self._tags = self._blocked = None
+		self._source = self._search = self._url = self._cells = self._elems = self._html = self._html_raw = self._text = self._moves = self._page = self._tags = self._block = self._prioritize = None
 	
 	def update(self):
 		self._cells = self._html = self._text = self._moves = None
 	
 	# todo: drop in favor of 'reset'
 	def new(self): # A completely new request
-		self._cells = self._elems = self._html_raw = self._html = self._text = self._moves = self._blocked = None
+		self._cells = self._elems = self._html_raw = self._html = self._text = self._moves = self._block = self._prioritize = None
 	
 	def source(self):
 		if self._source is None:
@@ -471,10 +474,15 @@ class Article:
 			self._moves = Moves(cells=self.cells())._moves
 		return self._moves
 		
-	def blocked(self):
-		if self._blocked is None: # Allow an empty list
+	def block(self):
+		if self._block is None: # Allow an empty list
 			self.elems()
-		return self._blocked
+		return self._block
+		
+	def prioritize(self):
+		if self._prioritize is None: # Allow an empty list
+			self.elems()
+		return self._prioritize
 
 
 
@@ -587,8 +595,11 @@ class HTML:
 			self.output.write('<font face="')
 			self.output.write(sh.globs['var']['font_dics_family'])
 			self.output.write('" color="')
+			# todo: should we put these values into the config?
 			if self._cells[self.i][self.j].Block:
 				self.output.write('gray')
+			elif self._cells[self.i][self.j].priority >= 0:
+				self.output.write('steel blue') # tomato2
 			else:
 				self.output.write(sh.globs['var']['color_dics'])
 			self.output.write('" size="')
@@ -1110,12 +1121,13 @@ class Elems:
 				self._elems[i].Selectable = True
 	
 	def blacklist(self):
-		articles.current()._blocked = []
+		articles.current()._block = []
 		if objs.blacklist():
 			Block = False
 			for i in range(len(self._elems)):
-				if self._elems[i].dic in objs._blacklist:
-					articles.current()._blocked.append(self._elems[i].dic)
+				# todo: partial match (probably, a dictionary section should be divided into several cells before this)
+				if self._elems[i].dic and self._elems[i].dic in objs._blacklist:
+					articles.current()._block.append(self._elems[i].dic)
 					self._elems[i].Block = True
 					Block = True
 				# If a dictionary is blacklisted, block each cell related to it, stop when the following dictionary is not blacklisted
@@ -1124,9 +1136,9 @@ class Elems:
 						Block = False
 					else:
 						self._elems[i].Block = True
-			if articles.current()._blocked:
-				articles.current()._blocked = set(sorted(articles.current()._blocked))
-				log.append('Elems.blacklist',sh.lev_info,'Ignore dictionaries: %s' % ';'.join(articles.current()._blocked))
+			if articles.current()._block:
+				articles.current()._block = set(sorted(articles.current()._block))
+				log.append('Elems.blacklist',sh.lev_info,'Ignore dictionaries: %s' % ';'.join(articles.current()._block))
 			else:
 				log.append('Elems.blacklist',sh.lev_debug,'Nothing to ignore')
 		else:
@@ -1134,8 +1146,38 @@ class Elems:
 		return self._elems
 		
 	def prioritize(self):
-		# todo: implement
-		log.append('Elems.prioritize',sh.lev_info,'Prioritize dictionaries here')
+		articles.current()._prioritize = []
+		if objs.prioritize():
+			# Separate different sections having same dictionary titles
+			ind = max_ind = -1
+			# This extra loop allows to group priorities by dictionaries
+			for j in range(len(objs._prioritize)):
+				for i in range(len(self._elems)):
+					if self._elems[i].dic and self._elems[i].dic in objs._prioritize[j]:
+						try:
+							ind = objs._prioritize.index(self._elems[i].dic)
+						except ValueError:
+							pass
+						if ind >= 0:
+							if ind > max_ind:
+								max_ind = ind
+							else:
+								ind = max_ind = max_ind + 1
+							self._elems[i].priority = ind
+							articles.current()._prioritize.append(self._elems[i].dic)
+					# If a dictionary is prioritized, prioritize each cell related to it, stop when the following dictionary is not prioritized
+					elif ind >= 0:
+						if self._elems[i].dic:
+							ind = -1
+						else:
+							self._elems[i].priority = ind
+			if articles.current()._prioritize:
+				articles.current()._prioritize = set(sorted(articles.current()._prioritize))
+				log.append('Elems.prioritize',sh.lev_info,'Prioritize dictionaries: %s' % ';'.join(articles.current()._prioritize))
+			else:
+				log.append('Elems.prioritize',sh.lev_debug,'Nothing to prioritize')
+		else:
+			log.append('Elems.prioritize',sh.lev_warn,sh.globs['mes'].empty_input)
 		return self._elems
 
 
@@ -1145,6 +1187,7 @@ class Cell:
 	def __init__(self):
 		self.Selectable = self.Block = False
 		self.speech = self.dic = self.term = self.comment = self.url = ''
+		self.priority = -1
 
 
 
@@ -1153,11 +1196,35 @@ class Cells:
 	def __init__(self,elems=[]):
 		self._cells = []
 		self._elems = elems
-		# todo: store collimit or reset upon changing it (externally)
-		self._view0 = []
-		self._view1 = []
+		self.prioritize()
 		self.view()
 		
+	def debug(self): # orphant
+		message = ''
+		for i in range(len(self._elems)):
+			message += '#%d:\nspeech:\t\t"%s"\ndic:\t\t"%s"\nterm:\t\t"%s"\ncomment:\t\t"%s"\nBlock:\t\t%s\npriority:\t\t%d\n\n' % (i,self._elems[i].speech,self._elems[i].dic,self._elems[i].term,self._elems[i].comment,str(self._elems[i].Block),self._elems[i].priority)
+		sg.Message(func='Cells.debug',level=sh.lev_info,message=message)
+	
+	def delete_speech(self):
+		self._elems = [x for x in self._elems if not x.speech]
+		return self._elems
+	
+	def prioritize(self):
+		if request.Prioritize and articles.current()._prioritize:
+			# 'Tags._elems' are used universally, and this '_elems' value is class-specific and can be changed as we like
+			# The reverse order will result in priority dictionaries having the same title going bottom to top
+			self._elems = sorted(self._elems,key=lambda x:x.priority,reverse=0)
+			# Rebuild the list such that the priority dictionaries are on top. We can do the same by assigning some large integer to 'priority' by default, but this looks ugly.
+			start = -1
+			for i in range(len(self._elems)):
+				if self._elems[i].priority >= 0:
+					start = i
+					break
+			if start >= 0:
+				# Looks like -1 is not suitable for slicing
+				self._elems = self._elems[start:len(self._elems)] + self._elems[0:start]
+		return self._elems
+	
 	def view(self):
 		if request._view == 1:
 			self.view1()
@@ -2068,10 +2135,15 @@ class TkinterHtmlMod(tk.Widget):
 		else:
 			self.btn_toggle_view.inactive()
 			
-		if request.Block and articles.current().blocked():
+		if request.Block and articles.current().block():
 			self.btn_toggle_block.active()
 		else:
 			self.btn_toggle_block.inactive()
+			
+		if request.Prioritize and articles.current().prioritize():
+			self.btn_toggle_priority.active()
+		else:
+			self.btn_toggle_priority.inactive()
 			
 	# Перейти на предыдущий запрос
 	def go_back(self,*args):
@@ -2176,6 +2248,8 @@ class TkinterHtmlMod(tk.Widget):
 		self.btn_toggle_view = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_view,hint=sh.globs['mes'].hint_toggle_view,action=self.toggle_view,inactive_image_path=sh.globs['var']['icon_toggle_view_ver'],active_image_path=sh.globs['var']['icon_toggle_view_hor'],bindings=[sh.globs['var']['bind_toggle_view'],sh.globs['var']['bind_toggle_view_alt']])
 		# Кнопка включения/отключения режима блокировки словарей
 		self.btn_toggle_block = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_block,hint=sh.globs['mes'].hint_toggle_block,action=self.toggle_block,inactive_image_path=sh.globs['var']['icon_block_off'],active_image_path=sh.globs['var']['icon_block_on'],bindings=sh.globs['var']['bind_toggle_block'])
+		# Кнопка включения/отключения режима приоритезации словарей
+		self.btn_toggle_priority = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_priority,hint=sh.globs['mes'].hint_toggle_priority,action=self.toggle_priority,inactive_image_path=sh.globs['var']['icon_priority_off'],active_image_path=sh.globs['var']['icon_priority_on'],bindings=sh.globs['var']['bind_toggle_priority'])
 		# Кнопка перехода на предыдущую статью
 		self.btn_prev = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_prev,hint=sh.globs['mes'].hint_preceding_article,action=self.go_back,inactive_image_path=sh.globs['var']['icon_go_back_off'],active_image_path=sh.globs['var']['icon_go_back'],bindings=sh.globs['var']['bind_go_back'])
 		# Кнопка перехода на следующую статью
@@ -2581,13 +2655,28 @@ class TkinterHtmlMod(tk.Widget):
 	def toggle_block(self,*args):
 		if request.Block:
 			request.Block = False
-			sg.Message(func='TkinterHtmlMod.toggle_block',level=sh.lev_info,message='Blacklisting is now OFF.') # todo: mes
+			#sg.Message(func='TkinterHtmlMod.toggle_block',level=sh.lev_info,message='Blacklisting is now OFF.') # todo: mes
 		else:
 			request.Block = True
 			if objs._blacklist:
-				sg.Message(func='TkinterHtmlMod.toggle_block',level=sh.lev_info,message='Blacklisting is now ON.')  # todo: mes
+				#sg.Message(func='TkinterHtmlMod.toggle_block',level=sh.lev_info,message='Blacklisting is now ON.')  # todo: mes
+				pass
 			else:
 				sg.Message(func='TkinterHtmlMod.toggle_block',level=sh.lev_warn,message='No dictionaries have been provided for blacklisting!') # todo: mes
+		articles.current().update()
+		self.load_article()
+		
+	def toggle_priority(self,*args):
+		if request.Prioritize:
+			request.Prioritize = False
+			#sg.Message(func='TkinterHtmlMod.toggle_priority',level=sh.lev_info,message='Prioritizing is now OFF.') # todo: mes
+		else:
+			request.Prioritize = True
+			if objs._prioritize:
+				#sg.Message(func='TkinterHtmlMod.toggle_priority',level=sh.lev_info,message='Prioritizing is now ON.')  # todo: mes
+				pass
+			else:
+				sg.Message(func='TkinterHtmlMod.toggle_priority',level=sh.lev_warn,message='No dictionaries have been provided for prioritizing!') # todo: mes
 		articles.current().update()
 		self.load_article()
 	
