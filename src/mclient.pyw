@@ -135,6 +135,7 @@ class ConfigMclient(sh.Config):
 			'bind_search_article_forward':'<F3>',
 			'bind_show_about':'<F1>',
 			'bind_spec_symbol':'<Control-e>',
+			'bind_toggle_alphabet':'<Alt-a>',
 			'bind_toggle_block':'<Alt-b>',
 			'bind_toggle_history_alt':'<Control-h>',
 			'bind_toggle_history':'<F4>',
@@ -157,6 +158,8 @@ class ConfigMclient(sh.Config):
 			'font_style':'Sans 14',
 			'font_terms_sel':'Sans 14 bold italic',
 			'font_terms_family':'Serif',
+			'icon_alphabet_off':'icon_36x36_alphabet_off.gif',
+			'icon_alphabet_on':'icon_36x36_alphabet_on.gif',
 			'icon_block_off':'icon_36x36_block_off.gif',
 			'icon_block_on':'icon_36x36_block_on.gif',
 			'icon_clear_history':'icon_36x36_clear_history.gif',
@@ -384,14 +387,15 @@ class CurRequest:
 		self.reset()
 		
 	def reset(self):
-		self._view      = 0
-		self._collimit  = 5
-		self._source    = 'Multitran'
-		self._search    = 'Добро пожаловать!'
-		self._url       = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
+		self._view       = 0
+		self._collimit   = 5
+		self._source     = 'Multitran'
+		self._search     = 'Добро пожаловать!'
+		self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
 		# Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
-		self.Block      = True
-		self.Prioritize = True
+		self.Block       = True
+		self.Prioritize  = True
+		self.Alphabetize = True
 		
 	def update(self):
 		# todo: read buttons
@@ -818,8 +822,8 @@ class Tags:
 					# Draft such cases as '23 фраз' as dictionary titles, not terms
 					if re.search('\d+ фраз',tmp_str):
 						# todo: fix: Assigning both 'dic' and 'speech' will not show 'speech'
-						self._elems[-1].dic = 'Phrases '
-						self._elems[-1].speech = 'Phrases '
+						self._elems[-1].dic    = 'Фразы ' # 'Phrases '
+						self._elems[-1].speech = 'Фразы ' # 'Phrases '
 					self._elems[-1].term = tmp_str
 				self._url(i)
 				return True
@@ -1065,8 +1069,28 @@ class Elems:
 		# todo: debug
 		#self.unite_by_url()
 		self.define_selectables()
+		self.speech_related()
+		self.dic_related()
 		self.blacklist()
 		self.prioritize()
+		
+	def speech_related(self):
+		if self._elems:
+			speech_rel = self._elems[0].speech
+		for elem in self._elems:
+			if elem.speech:
+				speech_rel = elem.speech_rel = elem.speech
+			else:
+				elem.speech_rel = speech_rel
+				
+	def dic_related(self):
+		if self._elems:
+			dic_rel = self._elems[0].dic
+		for elem in self._elems:
+			if elem.dic:
+				dic_rel = elem.dic_rel = elem.dic
+			else:
+				elem.dic_rel = dic_rel
 		
 	def useless(self):
 		# We assume that a 'dic'-type entry shall be succeeded by a 'term'-type entry, not a 'comment'-type entry. Therefore, we delete 'comment'-type entries after 'dic'-type entries in order to ensure that dictionary abbreviations do not succeed full dictionary titles. We also can delete full dictionary titles and leave abbreviations instead.
@@ -1186,7 +1210,7 @@ class Cell:
 	
 	def __init__(self):
 		self.Selectable = self.Block = False
-		self.speech = self.dic = self.term = self.comment = self.url = ''
+		self.speech = self.dic = self.term = self.comment = self.url = self.speech_rel = self.dic_rel = ''
 		self.priority = -1
 
 
@@ -1196,6 +1220,7 @@ class Cells:
 	def __init__(self,elems=[]):
 		self._cells = []
 		self._elems = elems
+		self.alphabetize()
 		self.prioritize()
 		self.view()
 		
@@ -1208,6 +1233,10 @@ class Cells:
 	def delete_speech(self):
 		self._elems = [x for x in self._elems if not x.speech]
 		return self._elems
+	
+	def alphabetize(self):
+		if request.Alphabetize:
+			self._elems = sorted(self._elems,key=lambda x:x.dic_rel)
 	
 	def prioritize(self):
 		if request.Prioritize and articles.current()._prioritize:
@@ -2135,6 +2164,11 @@ class TkinterHtmlMod(tk.Widget):
 		else:
 			self.btn_toggle_view.inactive()
 			
+		if request.Alphabetize:
+			self.btn_toggle_alphabet.active()
+		else:
+			self.btn_toggle_alphabet.inactive()
+		
 		if request.Block and articles.current().block():
 			self.btn_toggle_block.active()
 		else:
@@ -2250,6 +2284,8 @@ class TkinterHtmlMod(tk.Widget):
 		self.btn_toggle_block = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_block,hint=sh.globs['mes'].hint_toggle_block,action=self.toggle_block,inactive_image_path=sh.globs['var']['icon_block_off'],active_image_path=sh.globs['var']['icon_block_on'],bindings=sh.globs['var']['bind_toggle_block'])
 		# Кнопка включения/отключения режима приоритезации словарей
 		self.btn_toggle_priority = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_priority,hint=sh.globs['mes'].hint_toggle_priority,action=self.toggle_priority,inactive_image_path=sh.globs['var']['icon_priority_off'],active_image_path=sh.globs['var']['icon_priority_on'],bindings=sh.globs['var']['bind_toggle_priority'])
+		# Кнопка включения/отключения сортировки словарей по алфавиту
+		self.btn_toggle_alphabet = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_alphabet,hint=sh.globs['mes'].hint_toggle_alphabet,action=self.toggle_alphabet,inactive_image_path=sh.globs['var']['icon_alphabet_off'],active_image_path=sh.globs['var']['icon_alphabet_on'],bindings=sh.globs['var']['bind_toggle_alphabet'])
 		# Кнопка перехода на предыдущую статью
 		self.btn_prev = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_prev,hint=sh.globs['mes'].hint_preceding_article,action=self.go_back,inactive_image_path=sh.globs['var']['icon_go_back_off'],active_image_path=sh.globs['var']['icon_go_back'],bindings=sh.globs['var']['bind_go_back'])
 		# Кнопка перехода на следующую статью
@@ -2652,6 +2688,14 @@ class TkinterHtmlMod(tk.Widget):
 		articles.current().update()
 		self.load_article()
 		
+	def toggle_alphabet(self,*args):
+		if request.Alphabetize:
+			request.Alphabetize = False
+		else:
+			request.Alphabetize = True
+		articles.current().update()
+		self.load_article()
+	
 	def toggle_block(self,*args):
 		if request.Block:
 			request.Block = False
