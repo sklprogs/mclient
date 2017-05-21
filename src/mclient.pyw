@@ -90,8 +90,7 @@ class ConfigMclient(sh.Config):
 		#---------------------------------------------------
 		sh.globs['var'].update({
 			'bind_add_cell':'<Control-Insert>',
-			'bind_clear_history_alt':'<Control-Shift-Delete>',
-			'bind_clear_history':'<ButtonRelease-3>',
+			'bind_clear_history':'<Control-Shift-Delete>',
 			'bind_clear_search_field':'<ButtonRelease-3>',
 			'bind_copy_article_url':'<Shift-F7>',
 			'bind_copy_history':'<ButtonRelease-3>',
@@ -1694,7 +1693,7 @@ class History:
 		
 	def bindings(self):
 		sg.bind(obj=self.parent_obj,bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt'],'<Escape>'],action=self.toggle)
-		sg.bind(obj=self.parent_obj,bindings=sh.globs['var']['bind_clear_history_alt'],action=self.clear)
+		sg.bind(obj=self.parent_obj,bindings='<ButtonRelease-3>',action=self.clear)
 	
 	def autoselect(self):
 		self.obj._index = articles._no
@@ -2316,21 +2315,26 @@ class TkinterHtmlMod(tk.Widget):
 		self.btn_toggle_view = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_view,hint=sh.globs['mes'].hint_toggle_view,action=self.toggle_view,inactive_image_path=sh.globs['var']['icon_toggle_view_ver'],active_image_path=sh.globs['var']['icon_toggle_view_hor'],bindings=[sh.globs['var']['bind_toggle_view'],sh.globs['var']['bind_toggle_view_alt']])
 		# Кнопка включения/отключения режима блокировки словарей
 		self.btn_toggle_block = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_block,hint=sh.globs['mes'].hint_toggle_block,action=self.toggle_block,inactive_image_path=sh.globs['var']['icon_block_off'],active_image_path=sh.globs['var']['icon_block_on'],bindings=sh.globs['var']['bind_toggle_block'])
+		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_toggle_block'],action=self.toggle_block)
 		# Кнопка включения/отключения режима приоритезации словарей
 		self.btn_toggle_priority = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_priority,hint=sh.globs['mes'].hint_toggle_priority,action=self.toggle_priority,inactive_image_path=sh.globs['var']['icon_priority_off'],active_image_path=sh.globs['var']['icon_priority_on'],bindings=sh.globs['var']['bind_toggle_priority'])
+		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_toggle_priority'],action=self.toggle_priority)
 		# Кнопка включения/отключения сортировки словарей по алфавиту
 		self.btn_toggle_alphabet = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_alphabet,hint=sh.globs['mes'].hint_toggle_alphabet,action=self.toggle_alphabet,inactive_image_path=sh.globs['var']['icon_alphabet_off'],active_image_path=sh.globs['var']['icon_alphabet_on'],bindings=sh.globs['var']['bind_toggle_alphabet'])
+		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_toggle_alphabet'],action=self.toggle_alphabet)
 		# Кнопка перехода на предыдущую статью
 		self.btn_prev = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_prev,hint=sh.globs['mes'].hint_preceding_article,action=self.go_back,inactive_image_path=sh.globs['var']['icon_go_back_off'],active_image_path=sh.globs['var']['icon_go_back'],bindings=sh.globs['var']['bind_go_back'])
 		# Кнопка перехода на следующую статью
 		self.btn_next = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_next,hint=sh.globs['mes'].hint_following_article,action=self.go_forward,inactive_image_path=sh.globs['var']['icon_go_forward_off'],active_image_path=sh.globs['var']['icon_go_forward'],bindings=sh.globs['var']['bind_go_forward'])
 		# Кнопка включения/отключения и очистки истории
 		# todo: fix: do not iconify on RMB (separate button frame from main frame)
-		hint_history = sh.globs['mes'].hint_history + '\n' + sh.globs['var']['bind_toggle_history'] + ', ' + sh.globs['var']['bind_toggle_history_alt'] + '\n\n' + sh.globs['mes'].hint_clear_history + '\n' + sh.globs['var']['bind_clear_history'] + ', ' + sh.globs['var']['bind_clear_history_alt']
+		# We may hardcore 'bind_clear_history_alt' because this is bound to the button
+		bind_clear_history_alt = '<ButtonRelease-3>'
+		hint_history = sh.globs['mes'].hint_history + '\n' + sh.globs['var']['bind_toggle_history'] + ', ' + sh.globs['var']['bind_toggle_history_alt'] + '\n\n' + sh.globs['mes'].hint_clear_history + '\n' + sh.globs['var']['bind_clear_history'] + ', ' + bind_clear_history_alt
 		self.button = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_history,hint=hint_history,action=self.history.toggle,inactive_image_path=sh.globs['var']['icon_toggle_history'],active_image_path=sh.globs['var']['icon_toggle_history'],hint_height=80)
 		sg.bind(obj=objs.top(),bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt']],action=self.history.toggle)
-		sg.bind(obj=self.button,bindings=sh.globs['var']['bind_clear_history'],action=self.history.clear)
-		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_clear_history_alt'],action=self.history.clear)
+		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_clear_history'],action=self.history.clear)
+		sg.bind(obj=self.button,bindings=bind_clear_history_alt,action=self.history.clear)
 		# Кнопка перезагрузки статьи
 		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_reload,hint=sh.globs['mes'].hint_reload_article,action=self.reload,inactive_image_path=sh.globs['var']['icon_reload'],active_image_path=sh.globs['var']['icon_reload'],bindings=[sh.globs['var']['bind_reload_article'],sh.globs['var']['bind_reload_article_alt']])
 		# Кнопка "Поиск в статье"
