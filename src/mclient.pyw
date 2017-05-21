@@ -396,6 +396,7 @@ class CurRequest:
 		self.Block       = True
 		self.Prioritize  = True
 		self.Alphabetize = True
+		self.Group       = False
 		
 	def update(self):
 		# todo: read buttons
@@ -582,18 +583,48 @@ class HTML:
 			self.output.write(self._cells[self.i][self.j].comment)
 			self.output.write('</i></font></td>')
 	
-	def _speech(self):
-		if self._cells[self.i][self.j].speech:
-			self.output.write('<font face="')
-			self.output.write(sh.globs['var']['font_speech_family'])
-			self.output.write('" color="')
-			self.output.write(sh.globs['var']['color_speech'])
-			self.output.write('" size="')
-			self.output.write(str(sh.globs['int']['font_speech_size']))
-			self.output.write('"><b>')
-			self.output.write(self._cells[self.i][self.j].speech)
-			self.output.write('</b></font>')
+	def _speech1(self):
+		self.output.write('<font face="')
+		self.output.write(sh.globs['var']['font_speech_family'])
+		self.output.write('" color="')
+		self.output.write(sh.globs['var']['color_speech'])
+		self.output.write('" size="')
+		self.output.write(str(sh.globs['int']['font_speech_size']))
+		self.output.write('"><b>')
 		
+	def _speech2(self):
+		self.output.write(self._cells[self.i][self.j].speech)
+		
+	def _speech3(self):
+		self.output.write(self._cells[self.i][self.j].speech_rel)
+		
+	def _speech4(self):
+		self.output.write('</b></font>')
+	
+	def _speech(self):
+		''' Cases:
+			- No mixing + non-empty 'speech': output
+			- No mixing + empty 'speech': pass
+			- Mixing + non-empty 'speech': output
+			- Mixing + empty 'speech' + empty 'dic': pass
+			- Mixing + empty 'speech' + non-empty 'dic': output 'speech_rel'
+		'''
+		if request.Alphabetize or request.Group or request.Prioritize:
+			if self._cells[self.i][self.j].speech:
+				self._speech1()
+				self._speech2()
+				self._speech4()
+			elif self._cells[self.i][self.j].dic:
+				self._speech1()
+				# todo: fix this: cannot add/modify contents in this class - we'll have 'text' mismatch
+				self._speech2()
+				#self._speech3()
+				self._speech4()
+		elif self._cells[self.i][self.j].speech:
+			self._speech1()
+			self._speech2()
+			self._speech4()
+
 	def _dic(self):
 		if self._cells[self.i][self.j].dic:
 			self.output.write('<font face="')
@@ -1222,6 +1253,9 @@ class Cells:
 		self._elems = elems
 		self.alphabetize()
 		self.prioritize()
+		# todo: rework this
+		#if request.Alphabetize or request.Prioritize or request.Group:
+		#	self.delete_speech()
 		self.view()
 		
 	def debug(self): # orphant
