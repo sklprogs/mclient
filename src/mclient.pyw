@@ -2324,12 +2324,13 @@ class TkinterHtmlMod(tk.Widget):
 		self.btn_prev = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_prev,hint=sh.globs['mes'].hint_preceding_article,action=self.go_back,inactive_image_path=sh.globs['var']['icon_go_back_off'],active_image_path=sh.globs['var']['icon_go_back'],bindings=sh.globs['var']['bind_go_back'])
 		# Кнопка перехода на следующую статью
 		self.btn_next = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_next,hint=sh.globs['mes'].hint_following_article,action=self.go_forward,inactive_image_path=sh.globs['var']['icon_go_forward_off'],active_image_path=sh.globs['var']['icon_go_forward'],bindings=sh.globs['var']['bind_go_forward'])
-		# Кнопка включения/отключения истории
-		self.button = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_history,hint=sh.globs['mes'].hint_history,action=self.history.toggle,inactive_image_path=sh.globs['var']['icon_toggle_history'],active_image_path=sh.globs['var']['icon_toggle_history'],bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt']])
+		# Кнопка включения/отключения и очистки истории
+		# todo: fix: do not iconify on RMB (separate button frame from main frame)
+		hint_history = sh.globs['mes'].hint_history + '\n' + sh.globs['var']['bind_toggle_history'] + ', ' + sh.globs['var']['bind_toggle_history_alt'] + '\n\n' + sh.globs['mes'].hint_clear_history + '\n' + sh.globs['var']['bind_clear_history'] + ', ' + sh.globs['var']['bind_clear_history_alt']
+		self.button = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_history,hint=hint_history,action=self.history.toggle,inactive_image_path=sh.globs['var']['icon_toggle_history'],active_image_path=sh.globs['var']['icon_toggle_history'],hint_height=80)
+		sg.bind(obj=objs.top(),bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt']],action=self.history.toggle)
 		sg.bind(obj=self.button,bindings=sh.globs['var']['bind_clear_history'],action=self.history.clear)
 		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_clear_history_alt'],action=self.history.clear)
-		# Кнопка очистки истории
-		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_clear_history,hint=sh.globs['mes'].hint_clear_history,action=self.history.clear,inactive_image_path=sh.globs['var']['icon_clear_history'],active_image_path=sh.globs['var']['icon_clear_history'],bindings=sh.globs['var']['bind_clear_history_alt'])
 		# Кнопка перезагрузки статьи
 		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_reload,hint=sh.globs['mes'].hint_reload_article,action=self.reload,inactive_image_path=sh.globs['var']['icon_reload'],active_image_path=sh.globs['var']['icon_reload'],bindings=[sh.globs['var']['bind_reload_article'],sh.globs['var']['bind_reload_article_alt']])
 		# Кнопка "Поиск в статье"
