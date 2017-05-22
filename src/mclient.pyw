@@ -384,12 +384,6 @@ class CurRequest:
 		self.Prioritize  = True
 		self.Alphabetize = True
 		self.Group       = False
-		
-	def update(self):
-		# todo: read buttons
-		self._view     = 0
-		self._collimit = 5
-		self._source   = 'Multitran'
 
 
 
@@ -1717,7 +1711,6 @@ class History:
 			
 	def go(self,*args):
 		articles._no = self.obj.index()
-		request.update()
 		h_table.load_article()
 		
 	# Скопировать элемент истории
@@ -1990,7 +1983,7 @@ class TkinterHtmlMod(tk.Widget):
 		self.search_field.widget.focus_set()
 		self.bind(sh.globs['var']['bind_go_url'],self.go_url)
 		self.bind("<Motion>",self.mouse_sel,True)
-		# ВНИМАНИЕ: По непонятной причине, не работает привязка горячих клавиш (только мышь) для данного виджета, работает только для основного виджета!
+		# todo: fix: ВНИМАНИЕ: По непонятной причине, не работает привязка горячих клавиш (только мышь) для данного виджета, работает только для основного виджета!
 		sg.bind(obj=objs.top(),bindings=[sh.globs['var']['bind_copy_sel'],sh.globs['var']['bind_copy_sel_alt'],sh.globs['var']['bind_copy_sel_alt2']],action=self.copy_cell)
 		# По неясной причине в одной и той же Windows ИНОГДА не удается включить '<KP_Delete>'
 		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_delete_cell'],action=self.delete_cell)
@@ -2188,7 +2181,6 @@ class TkinterHtmlMod(tk.Widget):
 		old_index = articles._no
 		articles.index_subtract()
 		if old_index != articles._no:
-			request.update()
 			self.load_article()
 
 	# Перейти на следующий запрос
@@ -2196,7 +2188,6 @@ class TkinterHtmlMod(tk.Widget):
 		old_index = articles._no
 		articles.index_add()
 		if old_index != articles._no:
-			request.update()
 			self.load_article()
 
 	def control_length(self): # Confirm too long requests
@@ -2231,7 +2222,7 @@ class TkinterHtmlMod(tk.Widget):
 			request._url    = self.url
 			request._search = self.search
 			articles.search_article()
-			log.append('TkinterHtmlMod._go_search',sh.lev_debug,articles.current()._search)
+			log.append('TkinterHtmlMod.search_online',sh.lev_debug,articles.current()._search)
 			self.load_article()
 	
 	# Search the selected term online using the entry widget (search field)
@@ -2265,7 +2256,14 @@ class TkinterHtmlMod(tk.Widget):
 	def get_pair(self):
 		return online_dic_urls[self.option_menu.index]
 	
+	def set_columns(self,*args):
+		log.append('TkinterHtmlMod.set_columns',sh.lev_info,str(self.menu_columns.choice))
+		request._collimit = self.menu_columns.choice
+		articles.current().update()
+		self.load_article()
+	
 	# Создать кнопки
+	# Bindings are indicated here only to set hints. In order to set bindings, use 'self.hotkeys'.
 	def draw_buttons(self):
 		# Кнопка для "чайников", заменяет Enter в search_field
 		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_translate,hint=sh.globs['mes'].btn_translate,action=self.go_search,inactive_image_path=sh.globs['var']['icon_go_search'],active_image_path=sh.globs['var']['icon_go_search'],bindings=[sh.globs['var']['bind_go_search'],sh.globs['var']['bind_go_search_alt']]) # В данном случае btn = hint
@@ -2280,19 +2278,18 @@ class TkinterHtmlMod(tk.Widget):
 		# Кнопка для вставки спец. символов
 		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_symbols,hint=sh.globs['mes'].hint_symbols,action=self.spec_symbols.show,inactive_image_path=sh.globs['var']['icon_spec_symbol'],active_image_path=sh.globs['var']['icon_spec_symbol'],bindings=sh.globs['var']['bind_spec_symbol'])
 		# Выпадающий список с вариантами направлений перевода
-		self.option_menu = sg.OptionMenu(parent_obj=self.frame_panel,items=pairs)
+		self.option_menu  = sg.OptionMenu(parent_obj=self.frame_panel,items=pairs)
+		self.menu_columns = sg.OptionMenu(parent_obj=self.frame_panel,items=(2,3,4,5,6,7,8,9),command=self.set_columns)
+		self.menu_columns.set(request._collimit)
 		# Кнопка изменения вида статьи
 		# todo: Change active/inactive button logic in case of creating three or more views
 		self.btn_toggle_view = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_view,hint=sh.globs['mes'].hint_toggle_view,action=self.toggle_view,inactive_image_path=sh.globs['var']['icon_toggle_view_ver'],active_image_path=sh.globs['var']['icon_toggle_view_hor'],bindings=[sh.globs['var']['bind_toggle_view'],sh.globs['var']['bind_toggle_view_alt']])
 		# Кнопка включения/отключения режима блокировки словарей
 		self.btn_toggle_block = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_block,hint=sh.globs['mes'].hint_toggle_block,action=self.toggle_block,inactive_image_path=sh.globs['var']['icon_block_off'],active_image_path=sh.globs['var']['icon_block_on'],bindings=sh.globs['var']['bind_toggle_block'])
-		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_toggle_block'],action=self.toggle_block)
 		# Кнопка включения/отключения режима приоритезации словарей
 		self.btn_toggle_priority = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_priority,hint=sh.globs['mes'].hint_toggle_priority,action=self.toggle_priority,inactive_image_path=sh.globs['var']['icon_priority_off'],active_image_path=sh.globs['var']['icon_priority_on'],bindings=sh.globs['var']['bind_toggle_priority'])
-		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_toggle_priority'],action=self.toggle_priority)
 		# Кнопка включения/отключения сортировки словарей по алфавиту
 		self.btn_toggle_alphabet = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_alphabet,hint=sh.globs['mes'].hint_toggle_alphabet,action=self.toggle_alphabet,inactive_image_path=sh.globs['var']['icon_alphabet_off'],active_image_path=sh.globs['var']['icon_alphabet_on'],bindings=sh.globs['var']['bind_toggle_alphabet'])
-		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_toggle_alphabet'],action=self.toggle_alphabet)
 		# Кнопка перехода на предыдущую статью
 		self.btn_prev = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_prev,hint=sh.globs['mes'].hint_preceding_article,action=self.go_back,inactive_image_path=sh.globs['var']['icon_go_back_off'],active_image_path=sh.globs['var']['icon_go_back'],bindings=sh.globs['var']['bind_go_back'])
 		# Кнопка перехода на следующую статью
@@ -2303,8 +2300,6 @@ class TkinterHtmlMod(tk.Widget):
 		bind_clear_history_alt = '<ButtonRelease-3>'
 		hint_history = sh.globs['mes'].hint_history + '\n' + sh.globs['var']['bind_toggle_history'] + ', ' + sh.globs['var']['bind_toggle_history_alt'] + '\n\n' + sh.globs['mes'].hint_clear_history + '\n' + sh.globs['var']['bind_clear_history'] + ', ' + bind_clear_history_alt
 		self.button = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_history,hint=hint_history,action=self.history.toggle,inactive_image_path=sh.globs['var']['icon_toggle_history'],active_image_path=sh.globs['var']['icon_toggle_history'],hint_height=80)
-		sg.bind(obj=objs.top(),bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt']],action=self.history.toggle)
-		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_clear_history'],action=self.history.clear)
 		sg.bind(obj=self.button,bindings=bind_clear_history_alt,action=self.history.clear)
 		# Кнопка перезагрузки статьи
 		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_reload,hint=sh.globs['mes'].hint_reload_article,action=self.reload,inactive_image_path=sh.globs['var']['icon_reload'],active_image_path=sh.globs['var']['icon_reload'],bindings=[sh.globs['var']['bind_reload_article'],sh.globs['var']['bind_reload_article_alt']])
@@ -2368,6 +2363,11 @@ class TkinterHtmlMod(tk.Widget):
 		sg.bind(obj=objs.top(),bindings=[sh.globs['var']['bind_prev_pair'],sh.globs['var']['bind_prev_pair_alt']],action=self.option_menu.set_prev)
 		sg.bind(obj=objs.top(),bindings=[sh.globs['var']['bind_next_pair'],sh.globs['var']['bind_next_pair_alt']],action=self.option_menu.set_next)
 		sg.bind(obj=objs.top(),bindings=[sh.globs['var']['bind_toggle_view'],sh.globs['var']['bind_toggle_view_alt']],action=self.toggle_view)
+		sg.bind(obj=objs.top(),bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt']],action=self.history.toggle)
+		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_clear_history'],action=self.history.clear)
+		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_toggle_alphabet'],action=self.toggle_alphabet)
+		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_toggle_block'],action=self.toggle_block)
+		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_toggle_priority'],action=self.toggle_priority)
 		
 	def show(self):
 		self.pack(expand=1,fill='both')
