@@ -3,7 +3,7 @@
 4.9
 * Новые режимы: черный список, сортировка по приоритету, сортировка по алфавиту
 * Рефакторинг кода
-* Удален ключ: bind_clear_history_alt
+* Удалены ключи: bind_clear_history_alt, ExploreMismatch, SelectTermsOnly, ShortHistory, default_*, icon_*
 
 4.8.2
 * Исправлены тэги при нахождении только отдельных слов

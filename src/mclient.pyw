@@ -2,16 +2,13 @@
 # -*- coding: UTF-8 -*-
 
 import re
-import copy
+import os, sys, platform
+import io
 # В Python 3 не работает просто import urllib, импорт должен быть именно такой, как здесь
 import urllib.request, urllib.parse
 import html
-import os, sys, platform
 import tkinter as tk
 from tkinter import ttk
-import io
-import sqlite3
-import pickle
 import shared as sh
 import sharedGUI as sg
 
@@ -52,7 +49,7 @@ class ConfigMclient(sh.Config):
 		self.missing_keys = 0
 		self.missing_sections = 0
 		# Create these keys before reading the config
-		self.path = sys.path[0] + os.path.sep + 'mclient.cfg'
+		self.path = os.path.join(sys.path[0],'mclient.cfg')
 		self.reset()
 		h_read = sh.ReadTextFile(self.path,Silent=self.Silent)
 		self.text = h_read.get()
@@ -70,18 +67,10 @@ class ConfigMclient(sh.Config):
 		sh.globs['bool'].update({
 			'AutoCloseSpecSymbol':False,
 			'CopyTermsOnly':True,
-			'ExploreMismatch':False,
-			'Iconify':True,
-			'SelectTermsOnly':True,
-			'ShortHistory':False
+			'Iconify':True
 			             })
 		#---------------------------------------------------
 		sh.globs['int'].update({
-			'default_button_size':36,
-			'default_hint_border_width':1,
-			'default_hint_delay':800,
-			'default_hint_height':40,
-			'default_hint_width':280,
 			'font_comments_size':3,
 			'font_dics_size':4,
 			'font_speech_size':4,
@@ -147,9 +136,6 @@ class ConfigMclient(sh.Config):
 			'color_terms_sel_bg':'cyan',
 			'color_terms_sel_fg':'black',
 			'color_terms':'black',
-			'default_hint_background':'#ffffe0',
-			'default_hint_border_color':'navy',
-			'default_hint_direction':'top',
 			'font_comments_family':'Mono',
 			'font_dics_family':'Arial',
 			'font_history':'Sans 12',
@@ -157,6 +143,37 @@ class ConfigMclient(sh.Config):
 			'font_style':'Sans 14',
 			'font_terms_sel':'Sans 14 bold italic',
 			'font_terms_family':'Serif',
+			'pair_afr_rus':'l1=31&l2=2&s=%s',
+			'pair_deu_rus':'l1=3&l2=2&s=%s',
+			'pair_eng_deu':'l1=1&l2=3&s=%s',
+			'pair_eng_est':'l1=1&l2=26&s=%s',
+			'pair_eng_rus':'CL=1&s=%s',
+			'pair_epo_rus':'l1=34&l2=2&s=%s',
+			'pair_est_rus':'l1=26&l2=2&s=%s',
+			'pair_fra_rus':'l1=4&l2=2&s=%s',
+			'pair_ita_rus':'l1=23&l2=2&s=%s',
+			'pair_lav_rus':'l1=27&l2=2&s=%s',
+			'pair_nld_rus':'l1=24&l2=2&s=%s',
+			'pair_root':'http://www.multitran.ru/c/M.exe?',
+			'pair_rus_xal':'l1=2&l2=35&s=%s',
+			'pair_spa_rus':'l1=5&l2=2&s=%s',
+			'pair_xal_rus':'l1=35&l2=2&s=%s',
+			'repeat_sign':'!',
+			'repeat_sign2':'!!',
+			'spec_syms':'àáâäāæßćĉçèéêēёëəғĝģĥìíîïīĵķļñņòóôõöōœøšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒЁËƏҒĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒØŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ',
+			'ui_lang':'ru',
+			'web_search_url':'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s',
+			'win_encoding':'windows-1251'
+				           })
+	
+	def reset(self):
+		sh.globs['bool'] = {}
+		sh.globs['float'] = {}
+		sh.globs['int'] = {}
+		sh.globs['var'] = {}
+		
+	def additional_keys(self):
+		sh.globs['var'].update({
 			'icon_alphabet_off':'icon_36x36_alphabet_off.gif',
 			'icon_alphabet_on':'icon_36x36_alphabet_on.gif',
 			'icon_block_off':'icon_36x36_block_off.gif',
@@ -188,41 +205,12 @@ class ConfigMclient(sh.Config):
 			'icon_toggle_view_hor':'icon_36x36_toggle_view_hor.gif',
 			'icon_toggle_view_ver':'icon_36x36_toggle_view_ver.gif',
 			'icon_watch_clipboard_off':'icon_36x36_watch_clipboard_off.gif',
-			'icon_watch_clipboard_on':'icon_36x36_watch_clipboard_on.gif',
-			'pair_afr_rus':'l1=31&l2=2&s=%s',
-			'pair_deu_rus':'l1=3&l2=2&s=%s',
-			'pair_eng_deu':'l1=1&l2=3&s=%s',
-			'pair_eng_est':'l1=1&l2=26&s=%s',
-			'pair_eng_rus':'CL=1&s=%s',
-			'pair_epo_rus':'l1=34&l2=2&s=%s',
-			'pair_est_rus':'l1=26&l2=2&s=%s',
-			'pair_fra_rus':'l1=4&l2=2&s=%s',
-			'pair_ita_rus':'l1=23&l2=2&s=%s',
-			'pair_lav_rus':'l1=27&l2=2&s=%s',
-			'pair_nld_rus':'l1=24&l2=2&s=%s',
-			'pair_root':'http://www.multitran.ru/c/M.exe?',
-			'pair_rus_xal':'l1=2&l2=35&s=%s',
-			'pair_spa_rus':'l1=5&l2=2&s=%s',
-			'pair_xal_rus':'l1=35&l2=2&s=%s',
-			'repeat_sign':'!',
-			'repeat_sign2':'!!',
-			'spec_syms':'àáâäāæßćĉçèéêēёëəғĝģĥìíîïīĵķļñņòóôõöōœøšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒЁËƏҒĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒØŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ',
-			'ui_lang':'ru',
-			'web_search_url':'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s',
-			'win_encoding':'windows-1251'
-				           })
-	
-	def reset(self):
-		sh.globs['bool'] = {}
-		sh.globs['float'] = {}
-		sh.globs['int'] = {}
-		sh.globs['var'] = {}
-		
-	def additional_keys(self):
+			'icon_watch_clipboard_on':'icon_36x36_watch_clipboard_on.gif'
+			})
 		for key in sh.globs['var']:
 			if sh.globs['var'][key].endswith('.gif'):
 				old_val = sh.globs['var'][key]
-				sh.globs['var'][key] = sys.path[0] + os.path.sep + 'resources' + os.path.sep + sh.globs['var'][key]
+				sh.globs['var'][key] = os.path.join(sys.path[0],'resources',sh.globs['var'][key])
 				log.append('ConfigMclient.additional_keys',sh.lev_debug,'%s -> %s' % (old_val,sh.globs['var'][key]))
 
 
@@ -715,10 +703,7 @@ class Page:
 				else:
 					break
 			# Вставить sep_words_found перед названием 1-го словаря. Нельзя вставлять его в самое начало ввиду особенностей обработки delete_entries.
-			if sh.globs['bool']['ExploreMismatch']:
-				self._page = self._page.replace(tag_pattern1,tag_pattern5 + sep_words_found + tag_pattern6 + tag_pattern1,1)
-			else:
-				self._page = self._page[:board_pos] + tag_pattern7 + tag_pattern5 + sep_words_found + tag_pattern6
+			self._page = self._page[:board_pos] + tag_pattern7 + tag_pattern5 + sep_words_found + tag_pattern6
 			# Поскольку message_board встречается между вхождениями, а не до них или после них, то обрабатываем его вне delete_entries.
 			self._page = self._page.replace(message_board,'')
 	
@@ -1761,7 +1746,6 @@ class Moves:
 		func_res = (cur_i,cur_j)
 		i = cur_i
 		while i < len(self._cells):
-			# todo: Алгоритм для sh.globs['bool']['SelectTermsOnly']
 			if self._cells[i][cur_j].Selectable:
 				if GetNext:
 					if i != cur_i:
@@ -1779,7 +1763,6 @@ class Moves:
 		func_res = (cur_i,cur_j)
 		i = cur_i
 		while i >= 0:
-			# todo: Алгоритм для sh.globs['bool']['SelectTermsOnly']
 			if self._cells[i][cur_j].Selectable:
 				if GetPrevious:
 					if i != cur_i:
@@ -1909,21 +1892,15 @@ class Moves:
 		j = sel_j = cur_j
 		while i < len(self._cells):
 			while j < len(self._cells[i]):
-				if sh.globs['bool']['SelectTermsOnly']:
-					if self._cells[i][j].Selectable:
-						# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
-						sel_i, sel_j = i, j
-						# Если указаная ячейка уже может быть выбрана, то игнорировать ее и искать следующую
-						if GetNext:
-							if cur_i != i or cur_j != j:
-								Found = True
-								break
-						else:
+				if self._cells[i][j].Selectable:
+					# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
+					sel_i, sel_j = i, j
+					# Если указаная ячейка уже может быть выбрана, то игнорировать ее и искать следующую
+					if GetNext:
+						if cur_i != i or cur_j != j:
 							Found = True
 							break
-				else:
-					sel_i, sel_j = i, j
-					if cur_i != i or cur_j != j:
+					else:
 						Found = True
 						break
 				j += 1
@@ -1941,22 +1918,16 @@ class Moves:
 		j = sel_j = cur_j
 		while i >= 0:
 			while j >= 0:
-				if sh.globs['bool']['SelectTermsOnly']:
-					if self._cells[i][j].Selectable:
-						# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
-						sel_i = i
-						sel_j = j
-						# Если указаная ячейка уже может быть выбрана, то игнорировать ее и искать следующую
-						if GetPrevious:
-							if cur_i != i or cur_j != j:
-								Found = True
-								break
-						else:
+				if self._cells[i][j].Selectable:
+					# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
+					sel_i = i
+					sel_j = j
+					# Если указаная ячейка уже может быть выбрана, то игнорировать ее и искать следующую
+					if GetPrevious:
+						if cur_i != i or cur_j != j:
 							Found = True
 							break
-				else:
-					sel_i, sel_j = i, j
-					if cur_i != i or cur_j != j:
+					else:
 						Found = True
 						break
 				j -= 1
@@ -2421,12 +2392,9 @@ class TkinterHtmlMod(tk.Widget):
 		else:
 			parts = (0,0)
 			log.append('TkinterHtmlMod.get_cell',sh.lev_err,sh.globs['mes'].wrong_input2)
-		if sh.globs['bool']['SelectTermsOnly']:
-			if articles.current()._cells and len(articles.current()._cells) > parts[0] and len(articles.current()._cells[self.i]) > parts[1]:
-				if articles.current()._cells[parts[0]][parts[1]].Selectable:
-					self.i, self.j = parts
-		else:
-			self.i, self.j = parts
+		if articles.current()._cells and len(articles.current()._cells) > parts[0] and len(articles.current()._cells[self.i]) > parts[1]:
+			if articles.current()._cells[parts[0]][parts[1]].Selectable:
+				self.i, self.j = parts
 	
 	def node(self, *arguments):
 		return self.tk.call(self._w, "node", *arguments)
@@ -2557,10 +2525,7 @@ class TkinterHtmlMod(tk.Widget):
 		self.index = None
 		# todo: Здесь иногда получаем ошибку с индексами
 		if articles.current()._cells and len(articles.current()._cells) > self.i and len(articles.current()._cells[self.i]) > self.j:
-			if sh.globs['bool']['SelectTermsOnly']:
-				self.index = self.text('index',articles.current()._cells[self.i][self.j].first,articles.current()._cells[self.i][self.j].last_term)
-			else:
-				self.index = self.text('index',articles.current()._cells[self.i][self.j].first,articles.current()._cells[self.i][self.j].last)
+			self.index = self.text('index',articles.current()._cells[self.i][self.j].first,articles.current()._cells[self.i][self.j].last_term)
 		else:
 			log.append('TkinterHtmlMod.set_cell',sh.globs['mes'].wrong_input2)
 		if self.index:
