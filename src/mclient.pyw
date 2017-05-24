@@ -380,8 +380,14 @@ class CurRequest:
 		self._search     = 'Добро пожаловать!'
 		self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
 		# Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
+		# cur
+		'''
 		self.Block       = True
 		self.Prioritize  = True
+		self.Alphabetize = True
+		'''
+		self.Block       = False
+		self.Prioritize  = False
 		self.Alphabetize = True
 		self.Group       = False
 
@@ -564,50 +570,27 @@ class HTML:
 			self.output.write(self._cells[self.i][self.j].comment)
 			self.output.write('</i></font></td>')
 	
-	def _speech1(self):
-		self.output.write('<font face="')
-		self.output.write(sh.globs['var']['font_speech_family'])
-		self.output.write('" color="')
-		self.output.write(sh.globs['var']['color_speech'])
-		self.output.write('" size="')
-		self.output.write(str(sh.globs['int']['font_speech_size']))
-		self.output.write('"><b>')
-		
-	def _speech2(self):
-		self.output.write(self._cells[self.i][self.j].speech)
-		
-	def _speech3(self):
-		self.output.write(self._cells[self.i][self.j].speech_rel)
-		
-	def _speech4(self):
-		self.output.write('</b></font>')
-	
 	def _speech(self):
-		''' Cases:
-			- No mixing + non-empty 'speech': output
-			- No mixing + empty 'speech': pass
-			- Mixing + non-empty 'speech': output
-			- Mixing + empty 'speech' + empty 'dic': pass
-			- Mixing + empty 'speech' + non-empty 'dic': output 'speech_rel'
-		'''
-		if request.Alphabetize or request.Group or request.Prioritize:
-			if self._cells[self.i][self.j].speech:
-				self._speech1()
-				self._speech2()
-				self._speech4()
-			elif self._cells[self.i][self.j].dic:
-				self._speech1()
-				# todo: fix this: cannot add/modify contents in this class - we'll have 'text' mismatch
-				self._speech2()
-				#self._speech3()
-				self._speech4()
-		elif self._cells[self.i][self.j].speech:
-			self._speech1()
-			self._speech2()
-			self._speech4()
+		if self._cells[self.i][self.j].speech_print == ' ':
+			self.output.write('<td>')
+		else:
+			self.output.write('<td align="center">')
+			self.output.write('<font face="')
+			self.output.write(sh.globs['var']['font_speech_family'])
+			self.output.write('" color="')
+			self.output.write(sh.globs['var']['color_speech'])
+			self.output.write('" size="')
+			self.output.write(str(sh.globs['int']['font_speech_size']))
+			self.output.write('"><b>')
+			self.output.write(self._cells[self.i][self.j].speech_print)
+			self.output.write('</b></font>')
+			#self.output.write('<td>')
 
 	def _dic(self):
-		if self._cells[self.i][self.j].dic:
+		if self._cells[self.i][self.j].dic_print == ' ':
+			self.output.write('<td>')
+		else:
+			self.output.write('<td align="center">')
 			self.output.write('<font face="')
 			self.output.write(sh.globs['var']['font_dics_family'])
 			self.output.write('" color="')
@@ -621,11 +604,12 @@ class HTML:
 			self.output.write('" size="')
 			self.output.write(str(sh.globs['int']['font_dics_size']))
 			self.output.write('"><b>')
-			self.output.write(self._cells[self.i][self.j].dic)
+			self.output.write(self._cells[self.i][self.j].dic_print)
 			self.output.write('</b></font>')
 		
 	def _term(self):
 		if self._cells[self.i][self.j].term:
+			self.output.write('<td>') # cur
 			self.output.write('<font face="')
 			self.output.write(sh.globs['var']['font_terms_family'])
 			self.output.write('" color="')
@@ -647,12 +631,8 @@ class HTML:
 			self.output.write('<tr>')
 			for j in range(len(self._cells[i])):
 				self.j = j
-				if self._cells[i][j].dic:
-					self.output.write('<td align="center">')
-				else:
-					self.output.write('<td>')
-				self._speech()
 				self._dic()
+				self._speech()
 				self._term()
 				self._comment()
 			self.output.write('</tr>')
@@ -1078,28 +1058,34 @@ class Elems:
 		# todo: debug
 		#self.unite_by_url()
 		self.define_selectables()
-		self.speech_related()
-		self.dic_related()
-		self.blacklist()
-		self.prioritize()
+		self.fill_speech()
+		self.fill_dic()
+		# todo: do we really need this?
+		self.delete_empty_terms()
+		# cur
+		#self.blacklist()
+		#self.prioritize()
 		
-	def speech_related(self):
+	def delete_empty_terms(self):
+		self._elems = [elem for elem in self._elems if elem.term]
+	
+	def fill_speech(self):
 		if self._elems:
-			speech_rel = self._elems[0].speech
+			speech = self._elems[0].speech
 		for elem in self._elems:
 			if elem.speech:
-				speech_rel = elem.speech_rel = elem.speech
+				speech = elem.speech
 			else:
-				elem.speech_rel = speech_rel
+				elem.speech = speech
 				
-	def dic_related(self):
+	def fill_dic(self):
 		if self._elems:
-			dic_rel = self._elems[0].dic
+			dic = self._elems[0].dic
 		for elem in self._elems:
 			if elem.dic:
-				dic_rel = elem.dic_rel = elem.dic
+				dic = elem.dic
 			else:
-				elem.dic_rel = dic_rel
+				elem.dic = dic
 		
 	def useless(self):
 		# We assume that a 'dic'-type entry shall be succeeded by a 'term'-type entry, not a 'comment'-type entry. Therefore, we delete 'comment'-type entries after 'dic'-type entries in order to ensure that dictionary abbreviations do not succeed full dictionary titles. We also can delete full dictionary titles and leave abbreviations instead.
@@ -1219,7 +1205,9 @@ class Cell:
 	
 	def __init__(self):
 		self.Selectable = self.Block = False
-		self.speech = self.dic = self.term = self.comment = self.url = self.speech_rel = self.dic_rel = ''
+		self.speech = self.dic = self.term = self.comment = self.url = ''
+		# Must not be '', otherwise, '<td>' will not work
+		self.speech_print = self.dic_print = ' '
 		self.priority = -1
 
 
@@ -1229,26 +1217,55 @@ class Cells:
 	def __init__(self,elems=[]):
 		self._cells = []
 		self._elems = elems
+		# cur
+		#self.debug_elems()
 		self.alphabetize()
-		self.prioritize()
-		# todo: rework this
-		#if request.Alphabetize or request.Prioritize or request.Group:
-		#	self.delete_speech()
+		#self.prioritize()
+		#self.debug_elems()
 		self.view()
+		#self.debug_cells()
+		self.group()
 		
-	def debug(self): # orphant
+	def group(self):
+		old_dic = old_speech = None
+		for row in self._cells:
+			elem = row[0]
+			if elem.dic != old_dic:
+				old_dic = elem.dic_print = elem.dic
+			if elem.speech != old_speech:
+				old_speech = elem.speech_print = elem.speech
+			if not elem.term: # cur
+				elem.term = ' '
+	
+	def debug_elems(self): # orphant
 		message = ''
 		for i in range(len(self._elems)):
 			message += '#%d:\nspeech:\t\t"%s"\ndic:\t\t"%s"\nterm:\t\t"%s"\ncomment:\t\t"%s"\nBlock:\t\t%s\npriority:\t\t%d\n\n' % (i,self._elems[i].speech,self._elems[i].dic,self._elems[i].term,self._elems[i].comment,str(self._elems[i].Block),self._elems[i].priority)
-		sg.Message(func='Cells.debug',level=sh.lev_info,message=message)
-	
-	def delete_speech(self):
-		self._elems = [x for x in self._elems if not x.speech]
-		return self._elems
+		sg.Message(func='Cells.debug_elems',level=sh.lev_info,message=message)
+		
+	def debug_cells(self): # orphant
+		message = ''
+		for i in range(len(self._cells)):
+			message += 'Row %d:\n' % i
+			row     = self._cells[i]
+			speech  = []
+			dic     = []
+			term    = []
+			comment = []
+			for cell in row:
+				speech.append(cell.speech)
+				dic.append(cell.dic)
+				term.append(cell.term)
+				comment.append(cell.comment)
+			message += 'Speech:\t\t"%s"\n' % ''.join(speech)
+			message += 'Dic:\t\t"%s"\n' % ''.join(dic)
+			message += 'Term:\t\t"%s"\n' % ''.join(term)
+			message += 'Comment:\t\t"%s"\n' % ''.join(comment)
+		sg.Message(func='Cells.debug_cells',level=sh.lev_info,message=message)
 	
 	def alphabetize(self):
 		if request.Alphabetize:
-			self._elems = sorted(self._elems,key=lambda x:x.dic_rel)
+			self._elems = sorted(self._elems,key=lambda elem:(elem.dic,elem.speech))
 	
 	def prioritize(self):
 		if request.Prioritize and articles.current()._prioritize:
@@ -1267,11 +1284,42 @@ class Cells:
 		return self._elems
 	
 	def view(self):
-		if request._view == 1:
+		'''if request._view == 1:
 			self.view1()
 		else:
 			self.view0()
+		'''
+		# cur
+		self.view2()
 
+	def view2(self): # cur
+		if not self._cells:
+			row = []
+			old_dic = old_speech = None
+			for i in range(len(self._elems)):
+				if request.Block and self._elems[i].Block:
+					pass
+				elif len(row) == request._collimit:
+					self._cells.append(row)
+					row = []
+				elif self._elems[i].dic != old_dic or self._elems[i].speech != old_speech:
+					if len(row) > 0:
+						while len(row) < request._collimit:
+							row.append(Cell())
+						self._cells.append(row)
+					row        = [self._elems[i]]
+					old_dic    = self._elems[i].dic
+					old_speech = self._elems[i].speech
+				else:
+					if row == []:
+						row.append(Cell())
+					row.append(self._elems[i])
+			if len(row) > 0:
+				while len(row) < request._collimit:
+					row.append(Cell())
+				self._cells.append(row)
+		return self._cells
+	
 	def view0(self):
 		if not self._cells:
 			row = []
@@ -2279,7 +2327,7 @@ class TkinterHtmlMod(tk.Widget):
 		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_symbols,hint=sh.globs['mes'].hint_symbols,action=self.spec_symbols.show,inactive_image_path=sh.globs['var']['icon_spec_symbol'],active_image_path=sh.globs['var']['icon_spec_symbol'],bindings=sh.globs['var']['bind_spec_symbol'])
 		# Выпадающий список с вариантами направлений перевода
 		self.option_menu  = sg.OptionMenu(parent_obj=self.frame_panel,items=pairs)
-		self.menu_columns = sg.OptionMenu(parent_obj=self.frame_panel,items=(2,3,4,5,6,7,8,9),command=self.set_columns)
+		self.menu_columns = sg.OptionMenu(parent_obj=self.frame_panel,items=(3,4,5,6,7,8,9,10),command=self.set_columns)
 		self.menu_columns.set(request._collimit)
 		# Кнопка изменения вида статьи
 		# todo: Change active/inactive button logic in case of creating three or more views
