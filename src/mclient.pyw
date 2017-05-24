@@ -380,16 +380,10 @@ class CurRequest:
 		self._search     = 'Добро пожаловать!'
 		self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
 		# Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
-		# cur
-		'''
 		self.Block       = True
 		self.Prioritize  = True
 		self.Alphabetize = True
-		'''
-		self.Block       = False
-		self.Prioritize  = False
-		self.Alphabetize = True
-		self.Group       = False
+		self.SortTerms   = True
 
 
 
@@ -594,11 +588,11 @@ class HTML:
 			self.output.write('<font face="')
 			self.output.write(sh.globs['var']['font_dics_family'])
 			self.output.write('" color="')
-			# todo: should we put these values into the config?
+			# cur # todo: put these values into the config?
 			if self._cells[self.i][self.j].Block:
 				self.output.write('gray')
-			elif self._cells[self.i][self.j].priority >= 0:
-				self.output.write('steel blue') # tomato2
+			elif self._cells[self.i][self.j].dic in articles.current().prioritize():
+				self.output.write('red')
 			else:
 				self.output.write(sh.globs['var']['color_dics'])
 			self.output.write('" size="')
@@ -1060,11 +1054,15 @@ class Elems:
 		self.define_selectables()
 		self.fill_speech()
 		self.fill_dic()
-		# todo: do we really need this?
 		self.delete_empty_terms()
-		# cur
-		#self.blacklist()
-		#self.prioritize()
+		self.blacklist()
+		self.prioritize()
+		
+	def blacklist(self):
+		articles.current()._block = [elem.dic for elem in self._elems if elem.dic in objs.blacklist()]
+		
+	def prioritize(self):
+		articles.current()._prioritize = [elem.dic for elem in self._elems if elem.dic in objs.prioritize()]
 		
 	def delete_empty_terms(self):
 		self._elems = [elem for elem in self._elems if elem.term]
@@ -1138,66 +1136,6 @@ class Elems:
 		for i in range(len(self._elems)):
 			if self._elems[i].term:
 				self._elems[i].Selectable = True
-	
-	def blacklist(self):
-		articles.current()._block = []
-		if objs.blacklist():
-			Block = False
-			for i in range(len(self._elems)):
-				# todo: partial match (probably, a dictionary section should be divided into several cells before this)
-				if self._elems[i].dic and self._elems[i].dic in objs._blacklist:
-					articles.current()._block.append(self._elems[i].dic)
-					self._elems[i].Block = True
-					Block = True
-				# If a dictionary is blacklisted, block each cell related to it, stop when the following dictionary is not blacklisted
-				elif Block:
-					if self._elems[i].dic:
-						Block = False
-					else:
-						self._elems[i].Block = True
-			if articles.current()._block:
-				articles.current()._block = set(sorted(articles.current()._block))
-				log.append('Elems.blacklist',sh.lev_info,'Ignore dictionaries: %s' % ';'.join(articles.current()._block))
-			else:
-				log.append('Elems.blacklist',sh.lev_debug,'Nothing to ignore')
-		else:
-			log.append('Elems.blacklist',sh.lev_warn,sh.globs['mes'].empty_input)
-		return self._elems
-		
-	def prioritize(self):
-		articles.current()._prioritize = []
-		if objs.prioritize():
-			# Separate different sections having same dictionary titles
-			ind = max_ind = -1
-			# This extra loop allows to group priorities by dictionaries
-			for j in range(len(objs._prioritize)):
-				for i in range(len(self._elems)):
-					if self._elems[i].dic and self._elems[i].dic in objs._prioritize[j]:
-						try:
-							ind = objs._prioritize.index(self._elems[i].dic)
-						except ValueError:
-							pass
-						if ind >= 0:
-							if ind > max_ind:
-								max_ind = ind
-							else:
-								ind = max_ind = max_ind + 1
-							self._elems[i].priority = ind
-							articles.current()._prioritize.append(self._elems[i].dic)
-					# If a dictionary is prioritized, prioritize each cell related to it, stop when the following dictionary is not prioritized
-					elif ind >= 0:
-						if self._elems[i].dic:
-							ind = -1
-						else:
-							self._elems[i].priority = ind
-			if articles.current()._prioritize:
-				articles.current()._prioritize = set(sorted(articles.current()._prioritize))
-				log.append('Elems.prioritize',sh.lev_info,'Prioritize dictionaries: %s' % ';'.join(articles.current()._prioritize))
-			else:
-				log.append('Elems.prioritize',sh.lev_debug,'Nothing to prioritize')
-		else:
-			log.append('Elems.prioritize',sh.lev_warn,sh.globs['mes'].empty_input)
-		return self._elems
 
 
 
@@ -1208,7 +1146,6 @@ class Cell:
 		self.speech = self.dic = self.term = self.comment = self.url = ''
 		# Must not be '', otherwise, '<td>' will not work
 		self.speech_print = self.dic_print = ' '
-		self.priority = -1
 
 
 
@@ -1219,8 +1156,9 @@ class Cells:
 		self._elems = elems
 		# cur
 		#self.debug_elems()
+		self.blacklist()
 		self.alphabetize()
-		#self.prioritize()
+		self.prioritize()
 		#self.debug_elems()
 		self.view()
 		#self.debug_cells()
@@ -1240,7 +1178,7 @@ class Cells:
 	def debug_elems(self): # orphant
 		message = ''
 		for i in range(len(self._elems)):
-			message += '#%d:\nspeech:\t\t"%s"\ndic:\t\t"%s"\nterm:\t\t"%s"\ncomment:\t\t"%s"\nBlock:\t\t%s\npriority:\t\t%d\n\n' % (i,self._elems[i].speech,self._elems[i].dic,self._elems[i].term,self._elems[i].comment,str(self._elems[i].Block),self._elems[i].priority)
+			message += '#%d:\nspeech:\t\t"%s"\ndic:\t\t"%s"\nterm:\t\t"%s"\ncomment:\t\t"%s"\nBlock:\t\t%s' % (i,self._elems[i].speech,self._elems[i].dic,self._elems[i].term,self._elems[i].comment,str(self._elems[i].Block))
 		sg.Message(func='Cells.debug_elems',level=sh.lev_info,message=message)
 		
 	def debug_cells(self): # orphant
@@ -1263,24 +1201,22 @@ class Cells:
 			message += 'Comment:\t\t"%s"\n' % ''.join(comment)
 		sg.Message(func='Cells.debug_cells',level=sh.lev_info,message=message)
 	
+	def blacklist(self):
+		if request.Block:
+			self._elems = [elem for elem in self._elems if elem.dic not in objs.blacklist()]
+	
 	def alphabetize(self):
 		if request.Alphabetize:
-			self._elems = sorted(self._elems,key=lambda elem:(elem.dic,elem.speech))
+			if request.SortTerms:
+				self._elems = sorted(self._elems,key=lambda elem:(elem.dic,elem.speech,elem.term))
+			else:
+				self._elems = sorted(self._elems,key=lambda elem:(elem.dic,elem.speech))
 	
 	def prioritize(self):
-		if request.Prioritize and articles.current()._prioritize:
-			# 'Tags._elems' are used universally, and this '_elems' value is class-specific and can be changed as we like
-			# The reverse order will result in priority dictionaries having the same title going bottom to top
-			self._elems = sorted(self._elems,key=lambda x:x.priority,reverse=0)
-			# Rebuild the list such that the priority dictionaries are on top. We can do the same by assigning some large integer to 'priority' by default, but this looks ugly.
-			start = -1
-			for i in range(len(self._elems)):
-				if self._elems[i].priority >= 0:
-					start = i
-					break
-			if start >= 0:
-				# Looks like -1 is not suitable for slicing
-				self._elems = self._elems[start:len(self._elems)] + self._elems[0:start]
+		if request.Prioritize:
+			prioritized = [elem for elem in self._elems if elem.dic in objs.prioritize()]
+			common      = [elem for elem in self._elems if not elem.dic in articles.current()._prioritize]
+			self._elems = prioritized + common
 		return self._elems
 	
 	def view(self):
