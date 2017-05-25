@@ -1,5 +1,13 @@
 
 
+4.9
+* Add a drop-down list to select the number of columns
+* Automatically alphabetize dictionaries and then group them by word forms
+* Add new modes: blacklisting, prioritizing, terms alphabetizing
+* Refactor the code
+* Delete keys: bind_clear_history_alt, ExploreMismatch, SelectTermsOnly, ShortHistory, default_*, icon_*
+* Change bind_toggle_view_alt to '<Alt-v>' by default
+
 4.8.2
 * Fix tags when only separate words are found
 

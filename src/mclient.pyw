@@ -1,6 +1,11 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+''' # fix:
+	- Sometimes terms disappear ('добро пожаловать в Эдинбург!' == 'welcome to Edinburgh!')
+	- Terms alphabetizing is not needed in phrases
+'''
+
 import re
 import os, sys, platform
 import io
@@ -129,7 +134,7 @@ class ConfigMclient(sh.Config):
 			'bind_toggle_history':'<F4>',
 			'bind_toggle_priority':'<Alt-p>',
 			'bind_toggle_view':'<F6>',
-			'bind_toggle_view_alt':'<Control-V>',
+			'bind_toggle_view_alt':'<Alt-v>',
 			'color_comments':'gray',
 			'color_dics':'cadet blue',
 			'color_speech':'red',
@@ -375,15 +380,16 @@ class CurRequest:
 		
 	def reset(self):
 		self._view       = 0
-		self._collimit   = 5
+		self._collimit   = 4
 		self._source     = 'Multitran'
 		self._search     = 'Добро пожаловать!'
 		self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
 		# Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
 		self.Block       = True
 		self.Prioritize  = True
-		self.Alphabetize = True
 		self.SortTerms   = True
+		# *Temporary* turn off prioritizing and terms sorting for articles with 'sep_words_found' and in phrases; use previous settings for new articles
+		self.SpecialPage = False
 
 
 
@@ -1195,14 +1201,14 @@ class Cells:
 			self._elems = [elem for elem in self._elems if elem.dic not in objs.blacklist()]
 	
 	def alphabetize(self):
-		if request.Alphabetize:
+		if not request.SpecialPage:
 			if request.SortTerms:
 				self._elems = sorted(self._elems,key=lambda elem:(elem.dic,elem.speech,elem.term))
 			else:
 				self._elems = sorted(self._elems,key=lambda elem:(elem.dic,elem.speech))
 	
 	def prioritize(self):
-		if request.Prioritize:
+		if request.Prioritize and not request.SpecialPage:
 			prioritized = [elem for elem in self._elems if elem.dic in objs.prioritize()]
 			common      = [elem for elem in self._elems if not elem.dic in articles.current()._prioritize]
 			self._elems = prioritized + common
@@ -1240,18 +1246,21 @@ class Cells:
 				self._cells.append(row)
 		return self._cells
 	
-	def view1(self): # cur
+	def view1(self):
 		if not self._cells:
 			columns = []
 			column = []
+			old_dic = old_speech = None
 			for i in range(len(self._elems)):
 				if request.Block and self._elems[i].Block:
 					pass
-				elif self._elems[i].dic != '':
+				elif self._elems[i].dic != old_dic or self._elems[i].speech != old_speech:
 					if column:
 						columns.append(column)
 					column = []
 					column.append(self._elems[i])
+					old_dic    = self._elems[i].dic
+					old_speech = self._elems[i].speech
 				else:
 					column.append(self._elems[i])
 			if column: # Add the last column
@@ -2084,7 +2093,7 @@ class TkinterHtmlMod(tk.Widget):
 		else:
 			self.btn_toggle_view.inactive()
 			
-		if request.Alphabetize:
+		if not request.SpecialPage and request.SortTerms:
 			self.btn_toggle_alphabet.active()
 		else:
 			self.btn_toggle_alphabet.inactive()
@@ -2094,7 +2103,7 @@ class TkinterHtmlMod(tk.Widget):
 		else:
 			self.btn_toggle_block.inactive()
 			
-		if request.Prioritize and articles.current().prioritize():
+		if not request.SpecialPage and request.Prioritize and articles.current().prioritize():
 			self.btn_toggle_priority.active()
 		else:
 			self.btn_toggle_priority.inactive()
@@ -2202,7 +2211,7 @@ class TkinterHtmlMod(tk.Widget):
 		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_symbols,hint=sh.globs['mes'].hint_symbols,action=self.spec_symbols.show,inactive_image_path=sh.globs['var']['icon_spec_symbol'],active_image_path=sh.globs['var']['icon_spec_symbol'],bindings=sh.globs['var']['bind_spec_symbol'])
 		# Выпадающий список с вариантами направлений перевода
 		self.option_menu  = sg.OptionMenu(parent_obj=self.frame_panel,items=pairs)
-		self.menu_columns = sg.OptionMenu(parent_obj=self.frame_panel,items=(3,4,5,6,7,8,9,10),command=self.set_columns)
+		self.menu_columns = sg.OptionMenu(parent_obj=self.frame_panel,items=(1,2,3,4,5,6,7,8,9,10),command=self.set_columns)
 		self.menu_columns.set(request._collimit)
 		# Кнопка изменения вида статьи
 		# todo: Change active/inactive button logic in case of creating three or more views
@@ -2524,6 +2533,11 @@ class TkinterHtmlMod(tk.Widget):
 
 	def load_article(self,*args):
 		self.reset()
+		# Do this before calling 'html()'
+		if sep_words_found in articles.current().text() or re.search('\d+\sфраз',articles.current().search()):
+			request.SpecialPage = True
+		else:
+			request.SpecialPage = False
 		self.parse(articles.current().html())
 		articles.current()._text = self.text('text')
 		self.top_indexes = {}
@@ -2616,10 +2630,10 @@ class TkinterHtmlMod(tk.Widget):
 		self.load_article()
 		
 	def toggle_alphabet(self,*args):
-		if request.Alphabetize:
-			request.Alphabetize = False
+		if request.SortTerms:
+			request.SortTerms = False
 		else:
-			request.Alphabetize = True
+			request.SortTerms = True
 		articles.current().update()
 		self.load_article()
 	
