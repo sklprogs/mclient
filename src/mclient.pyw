@@ -684,7 +684,7 @@ class Page:
 		self._page = self._page.replace('> ','>')
 		
 	def mt_specific_replace(self):
-		self._page = self._page.replace('&nbsp;Вы знаете перевод этого выражения? Добавьте его в словарь:','').replace('&nbsp;Вы знаете перевод этого слова? Добавьте его в словарь:','').replace('&nbsp;Требуется авторизация<br>&nbsp;Пожалуйста, войдите на сайт под Вашим именем','')
+		self._page = self._page.replace('&nbsp;Вы знаете перевод этого выражения? Добавьте его в словарь:','').replace('&nbsp;Вы знаете перевод этого слова? Добавьте его в словарь:','').replace('&nbsp;Требуется авторизация<br>&nbsp;Пожалуйста, войдите на сайт под Вашим именем','').replace('Термины, содержащие ','')
 		self._page = re.sub('все формы слов[а]{0,1} \(\d+\)','',self._page)
 	
 	# Convert HTML entities to a human readable format, e.g., '&copy;' -> '©'
@@ -802,8 +802,8 @@ class Tags:
 					# Draft such cases as '23 фраз' as dictionary titles, not terms
 					if re.search('\d+ фраз',tmp_str):
 						# todo: fix: Assigning both 'dic' and 'speech' will not show 'speech'
-						self._elems[-1].dic    = 'Фразы ' # 'Phrases '
-						self._elems[-1].speech = 'Фразы ' # 'Phrases '
+						self._elems[-1].dic = 'Фразы ' # 'Phrases '
+						self._elems[-1].speech = 'Фразы '
 					self._elems[-1].term = tmp_str
 				self._url(i)
 				return True
@@ -941,13 +941,12 @@ class Tags:
 		self._page = self._page.replace('<eq>','')
 		self._page = self._page.replace('<amp>','')
 		# Remove tags <p>, </p>, <b> and </b>, because they can be inside hyperlinks
-		self._page = self._page.replace('<p>','')
-		self._page = self._page.replace('</p>','')
-		self._page = self._page.replace('<b>','')
-		self._page = self._page.replace('</b>','')
+		self._page = self._page.replace('<p>','').replace('</p>','')
+		self._page = self._page.replace('<b>','').replace('</b>','')
 		# todo: do not replace, treat the contents as an indication of a part of speech (a verb, a noun, etc.)
-		self._page = self._page.replace('<em>',' ')
-		self._page = self._page.replace('</em>','')
+		self._page = self._page.replace('<em>',' ').replace('</em>','')
+		# Causes problems when generating positions
+		self._page = self._page.replace('<strong>','').replace('</strong>','')
 		
 	def open_close(self): # Remove symbols '<' and '>' that do not define tags
 		self._page = list(self._page)
