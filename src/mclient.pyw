@@ -3,7 +3,6 @@
 
 ''' # fix:
 	- Sometimes terms disappear ('добро пожаловать в Эдинбург!' == 'welcome to Edinburgh!')
-	- Terms alphabetizing is not needed in phrases
 '''
 
 import re
@@ -531,10 +530,6 @@ class Articles: # Requires 'request'
 	def prev(self):
 		if self._no > 0:
 			return self._articles[self._no-1].search()
-			
-	def preprev(self):
-		if self._no > 1:
-			return self._articles[self._no-2].search()
 			
 	def debug(self): # orphant
 		old = self._no
@@ -1544,16 +1539,16 @@ class SearchField:
 			self.widget.insert(0,sg.Clipboard().paste())
 		return 'break'
 		
-	# Вставить предыдущий запрос
+	# Вставить текущий запрос	
 	def insert_repeat_sign(self,*args):
 		if articles.len() > 0:
-			sg.Clipboard().copy(str(articles.prev()))
+			sg.Clipboard().copy(str(articles.current().search()))
 			self.paste()
 
-	# Вставить запрос до предыдущего
+	# Вставить предыдущий запрос
 	def insert_repeat_sign2(self,*args):
 		if articles.len() > 1:
-			sg.Clipboard().copy(str(articles.preprev()))
+			sg.Clipboard().copy(str(articles.prev()))
 			self.paste()
 
 
