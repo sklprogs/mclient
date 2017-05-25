@@ -1531,7 +1531,7 @@ class SearchField:
 		self.widget.selection_clear()
 		
 	# Очистить строку поиска и вставить в нее заданный текст или содержимое буфера обмена
-	def paste(self,text=None):
+	def paste(self,event=None,text=None):
 		self.clear()
 		if text:
 			self.widget.insert(0,text)
