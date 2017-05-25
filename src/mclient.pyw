@@ -565,10 +565,8 @@ class HTML:
 			self.output.write('</i></font></td>')
 	
 	def _speech(self):
-		if self._cells[self.i][self.j].speech_print == ' ':
-			self.output.write('<td>')
-		else:
-			self.output.write('<td align="center">')
+		self.output.write('<td align="center">')
+		if self._cells[self.i][self.j].speech_print:
 			self.output.write('<font face="')
 			self.output.write(sh.globs['var']['font_speech_family'])
 			self.output.write('" color="')
@@ -578,17 +576,15 @@ class HTML:
 			self.output.write('"><b>')
 			self.output.write(self._cells[self.i][self.j].speech_print)
 			self.output.write('</b></font>')
-			#self.output.write('<td>')
+		self.output.write('<td>')
 
 	def _dic(self):
-		if self._cells[self.i][self.j].dic_print == ' ':
-			self.output.write('<td>')
-		else:
+		if self._cells[self.i][self.j].dic_print:
 			self.output.write('<td align="center">')
 			self.output.write('<font face="')
 			self.output.write(sh.globs['var']['font_dics_family'])
 			self.output.write('" color="')
-			# cur # todo: put these values into the config?
+			# todo (?): add to the config
 			if self._cells[self.i][self.j].Block:
 				self.output.write('gray')
 			elif self._cells[self.i][self.j].dic in articles.current().prioritize():
@@ -600,10 +596,11 @@ class HTML:
 			self.output.write('"><b>')
 			self.output.write(self._cells[self.i][self.j].dic_print)
 			self.output.write('</b></font>')
+		else:
+			self.output.write('<td>')
 		
 	def _term(self):
 		if self._cells[self.i][self.j].term:
-			self.output.write('<td>') # cur
 			self.output.write('<font face="')
 			self.output.write(sh.globs['var']['font_terms_family'])
 			self.output.write('" color="')
@@ -1143,9 +1140,7 @@ class Cell:
 	
 	def __init__(self):
 		self.Selectable = self.Block = False
-		self.speech = self.dic = self.term = self.comment = self.url = ''
-		# Must not be '', otherwise, '<td>' will not work
-		self.speech_print = self.dic_print = ' '
+		self.speech = self.dic = self.term = self.comment = self.url = self.speech_print = self.dic_print = ''
 
 
 
@@ -1154,14 +1149,10 @@ class Cells:
 	def __init__(self,elems=[]):
 		self._cells = []
 		self._elems = elems
-		# cur
-		#self.debug_elems()
 		self.blacklist()
 		self.alphabetize()
 		self.prioritize()
-		#self.debug_elems()
 		self.view()
-		#self.debug_cells()
 		self.group()
 		
 	def group(self):
@@ -1172,13 +1163,11 @@ class Cells:
 				old_dic = elem.dic_print = elem.dic
 			if elem.speech != old_speech:
 				old_speech = elem.speech_print = elem.speech
-			if not elem.term: # cur
-				elem.term = ' '
-	
+
 	def debug_elems(self): # orphant
 		message = ''
 		for i in range(len(self._elems)):
-			message += '#%d:\nspeech:\t\t"%s"\ndic:\t\t"%s"\nterm:\t\t"%s"\ncomment:\t\t"%s"\nBlock:\t\t%s' % (i,self._elems[i].speech,self._elems[i].dic,self._elems[i].term,self._elems[i].comment,str(self._elems[i].Block))
+			message += '#%d:\nspeech:\t\t"%s"\ndic:\t\t"%s"\nterm:\t\t"%s"\ncomment:\t\t"%s"\nBlock:\t\t%s\n\n' % (i,self._elems[i].speech,self._elems[i].dic,self._elems[i].term,self._elems[i].comment,str(self._elems[i].Block))
 		sg.Message(func='Cells.debug_elems',level=sh.lev_info,message=message)
 		
 	def debug_cells(self): # orphant
@@ -1195,10 +1184,10 @@ class Cells:
 				dic.append(cell.dic)
 				term.append(cell.term)
 				comment.append(cell.comment)
-			message += 'Speech:\t\t"%s"\n' % ''.join(speech)
-			message += 'Dic:\t\t"%s"\n' % ''.join(dic)
-			message += 'Term:\t\t"%s"\n' % ''.join(term)
-			message += 'Comment:\t\t"%s"\n' % ''.join(comment)
+			message += 'Speech:\t\t"%s"\n' % '; '.join(speech)
+			message += 'Dic:\t\t"%s"\n' % '; '.join(dic)
+			message += 'Term:\t\t"%s"\n' % '; '.join(term)
+			message += 'Comment:\t\t"%s"\n\n' % '; '.join(comment)
 		sg.Message(func='Cells.debug_cells',level=sh.lev_info,message=message)
 	
 	def blacklist(self):
@@ -1220,15 +1209,12 @@ class Cells:
 		return self._elems
 	
 	def view(self):
-		'''if request._view == 1:
+		if request._view == 1:
 			self.view1()
 		else:
 			self.view0()
-		'''
-		# cur
-		self.view2()
 
-	def view2(self): # cur
+	def view0(self):
 		if not self._cells:
 			row = []
 			old_dic = old_speech = None
@@ -1247,8 +1233,6 @@ class Cells:
 					old_dic    = self._elems[i].dic
 					old_speech = self._elems[i].speech
 				else:
-					if row == []:
-						row.append(Cell())
 					row.append(self._elems[i])
 			if len(row) > 0:
 				while len(row) < request._collimit:
@@ -1256,52 +1240,7 @@ class Cells:
 				self._cells.append(row)
 		return self._cells
 	
-	def view0(self):
-		if not self._cells:
-			row = []
-			for i in range(len(self._elems)):
-				if request.Block and self._elems[i].Block:
-					pass
-				elif self._elems[i].dic != '':
-					if len(row) > 0:
-						while len(row) < request._collimit:
-							row.append(Cell())
-						self._cells.append(row)
-						row = [self._elems[i]]
-					else:
-						row.append(self._elems[i])
-				elif self._elems[i].speech != '':
-					if len(row) > 0:
-						while len(row) < request._collimit:
-							row.append(Cell())
-						self._cells.append(row)
-						# todo: Speech position is hardcoded. Should we enhance this?
-						if request._collimit > 2:
-							# Adding empty cells allows to format the view more correctly
-							row = [Cell(),self._elems[i]]
-							j = 2
-							while j < request._collimit:
-								row.append(Cell())
-								j += 1
-						elif request._collimit == 2:
-							row = [Cell(),self._elems[i]]
-						else:
-							row = [self._elems[i]]
-					else:
-						row.append(self._elems[i])
-				elif len(row) == request._collimit:
-					self._cells.append(row)
-					row = [Cell()]
-					row.append(self._elems[i])
-				else:
-					row.append(self._elems[i])
-				if i == len(self._elems) - 1: # Last element
-					while len(row) < request._collimit:
-						row.append(Cell())
-					self._cells.append(row)
-		return self._cells
-				
-	def view1(self):
+	def view1(self): # cur
 		if not self._cells:
 			columns = []
 			column = []
