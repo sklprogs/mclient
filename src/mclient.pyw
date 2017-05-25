@@ -585,9 +585,9 @@ class HTML:
 			self.output.write(sh.globs['var']['font_dics_family'])
 			self.output.write('" color="')
 			# todo (?): add to the config
-			if self._cells[self.i][self.j].Block:
+			if self._cells[self.i][self.j].dic_print in articles.current().block():
 				self.output.write('gray')
-			elif self._cells[self.i][self.j].dic in articles.current().prioritize():
+			elif self._cells[self.i][self.j].dic_print in articles.current().prioritize():
 				self.output.write('red')
 			else:
 				self.output.write(sh.globs['var']['color_dics'])
@@ -1140,6 +1140,7 @@ class Cell:
 	
 	def __init__(self):
 		self.Selectable = self.Block = False
+		# todo: do we really need *_print? (If we are going to recreate cells each time, we don't need it. If we try to remember staff, we'll need it).
 		self.speech = self.dic = self.term = self.comment = self.url = self.speech_print = self.dic_print = ''
 
 
@@ -2554,16 +2555,16 @@ class TkinterHtmlMod(tk.Widget):
 		for i in range(len(articles.current().cells())):
 			# Число столбцов в таблице должно быть одинаковым!
 			for j in range(len(articles.current()._cells[i])):
-				if articles.current()._cells[i][j].speech:
-					tmp_str = articles.current()._cells[i][j].speech.strip() + '\n'
+				if articles.current()._cells[i][j].speech_print:
+					tmp_str = articles.current()._cells[i][j].speech_print.strip() + '\n'
 					articles.current()._cells[i][j].first = cur_index
 					cur_index += len(tmp_str)
 					articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].term)
 					articles.current()._cells[i][j].last = cur_index
 					for k in range(len(tmp_str)):
 						self.pos2cell.append([i,j])
-				if articles.current()._cells[i][j].dic:
-					tmp_str = articles.current()._cells[i][j].dic.strip() + '\n'
+				if articles.current()._cells[i][j].dic_print:
+					tmp_str = articles.current()._cells[i][j].dic_print.strip() + '\n'
 					articles.current()._cells[i][j].first = cur_index
 					cur_index += len(tmp_str)
 					articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].term)
@@ -2585,7 +2586,7 @@ class TkinterHtmlMod(tk.Widget):
 		cur_index = 1 # Starts with '\n'
 		for i in range(len(articles.current().cells())):
 			for j in range(len(articles.current()._cells[i])):
-				tmp_str = sh.List([articles.current()._cells[i][j].speech,articles.current()._cells[i][j].dic,articles.current()._cells[i][j].term,articles.current()._cells[i][j].comment]).space_items()
+				tmp_str = sh.List([articles.current()._cells[i][j].speech_print,articles.current()._cells[i][j].dic_print,articles.current()._cells[i][j].term,articles.current()._cells[i][j].comment]).space_items()
 				articles.current()._cells[i][j].first = cur_index
 				articles.current()._cells[i][j].last_term = cur_index + len(articles.current()._cells[i][j].term)
 				articles.current()._cells[i][j].last = cur_index + len(tmp_str)
