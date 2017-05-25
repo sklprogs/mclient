@@ -2678,9 +2678,9 @@ class Paths:
 			if self.Success:
 				return instance.file
 			else:
-				log.append('Paths.blacklist',lev_warn,globs['mes'].canceled)
+				log.append('Paths.blacklist',sh.lev_warn,sh.globs['mes'].canceled)
 		else:
-			log.append('Paths.blacklist',lev_warn,globs['mes'].canceled)
+			log.append('Paths.blacklist',sh.lev_warn,sh.globs['mes'].canceled)
 			
 	def prioritize(self):
 		if self.Success:
@@ -2689,9 +2689,9 @@ class Paths:
 			if self.Success:
 				return instance.file
 			else:
-				log.append('Paths.prioritize',lev_warn,globs['mes'].canceled)
+				log.append('Paths.prioritize',sh.lev_warn,sh.globs['mes'].canceled)
 		else:
-			log.append('Paths.prioritize',lev_warn,globs['mes'].canceled)
+			log.append('Paths.prioritize',sh.lev_warn,sh.globs['mes'].canceled)
 
 
 
@@ -2710,7 +2710,7 @@ class Lists:
 			text = sh.Text(text=text,Auto=1).text
 			return text.splitlines()
 		else:
-			log.append('Lists.blacklist',lev_warn,globs['mes'].canceled)
+			log.append('Lists.blacklist',sh.lev_warn,sh.globs['mes'].canceled)
 			
 	def prioritize(self):
 		if self.Success:
@@ -2718,7 +2718,7 @@ class Lists:
 			text = sh.Text(text=text,Auto=1).text
 			return text.splitlines()
 		else:
-			log.append('Lists.prioritize',lev_warn,globs['mes'].canceled)
+			log.append('Lists.prioritize',sh.lev_warn,sh.globs['mes'].canceled)
 
 
 
