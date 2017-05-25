@@ -53,7 +53,7 @@ class ConfigMclient(sh.Config):
 		self.missing_keys = 0
 		self.missing_sections = 0
 		# Create these keys before reading the config
-		self.path = os.path.join(sys.path[0],'mclient.cfg')
+		self.path = sh.objs.pdir().add('mclient.cfg')
 		self.reset()
 		h_read = sh.ReadTextFile(self.path,Silent=self.Silent)
 		self.text = h_read.get()
@@ -214,7 +214,7 @@ class ConfigMclient(sh.Config):
 		for key in sh.globs['var']:
 			if sh.globs['var'][key].endswith('.gif'):
 				old_val = sh.globs['var'][key]
-				sh.globs['var'][key] = os.path.join(sys.path[0],'resources',sh.globs['var'][key])
+				sh.globs['var'][key] = sh.objs.pdir().add('resources',sh.globs['var'][key])
 				log.append('ConfigMclient.additional_keys',sh.lev_debug,'%s -> %s' % (old_val,sh.globs['var'][key]))
 
 
@@ -2668,7 +2668,7 @@ class TkinterHtmlMod(tk.Widget):
 class Paths:
 	
 	def __init__(self):
-		self.dir = sh.Directory(path=os.path.join(sys.path[0],'dics'))
+		self.dir = sh.Directory(path=sh.objs.pdir().add('dics'))
 		self.Success = self.dir.Success
 		
 	def blacklist(self):
