@@ -3,6 +3,7 @@
 
 ''' # fix:
 	- Sometimes terms disappear ('добро пожаловать в Эдинбург!' == 'welcome to Edinburgh!')
+	- Make transcriptions Selectable
 '''
 
 import re
@@ -17,7 +18,7 @@ import shared as sh
 import sharedGUI as sg
 
 product = 'MClient'
-version = '4.9'
+version = '4.10'
 
 third_parties = '''
 tkinterhtml
@@ -182,7 +183,6 @@ class ConfigMclient(sh.Config):
 			'icon_alphabet_on':'icon_36x36_alphabet_on.gif',
 			'icon_block_off':'icon_36x36_block_off.gif',
 			'icon_block_on':'icon_36x36_block_on.gif',
-			'icon_clear_history':'icon_36x36_clear_history.gif',
 			'icon_clear_search_field':'icon_36x36_clear_search_field.gif',
 			'icon_define':'icon_36x36_define.gif',
 			'icon_go_back_off':'icon_36x36_go_back_off.gif',
@@ -309,6 +309,12 @@ tag_pattern_ph1 = '<a href="M.exe?a=3&&s='
 tag_pattern_ph2 = '<a href="m.exe?a=3&&s='
 tag_pattern_ph3 = '<a href="M.exe?a=3&s='
 tag_pattern_ph4 = '<a href="m.exe?a=3&s='
+tag_pattern_tr1 = '<img SRC="/gif/'
+
+transc_orig  = ('[',']','2','3','34','39','40','41','58','65','68','69','73','78','79','80','81','83','84','86','90','97','98','100','101','102','103','104','105','106','107','108','109','110','112','113','114','115','116','117','118','119','120','122')
+transc_final = ('[',']','','','ˌ','′','(',')',':','ʌ','ð','ɜ','ı','ŋ','ɔ','ɒ','ɑ','ʃ','θ','ʋ','ʒ','a','b','d','e','f','g','h','i','j','k','l','m','n','p','ə','r','s','t','u','v','w','æ','z')
+
+assert(len(transc_orig) == len(transc_final))
 
 
 
@@ -578,7 +584,21 @@ class HTML:
 			self.output.write(self._cells[self.i][self.j].speech_print)
 			self.output.write('</b></font>')
 		self.output.write('<td>')
-
+		
+	def _transcription(self):
+		self.output.write('<td align="center">')
+		if self._cells[self.i][self.j].transc_print:
+			self.output.write('<font face="')
+			self.output.write(sh.globs['var']['font_speech_family'])
+			self.output.write('" color="')
+			self.output.write(sh.globs['var']['color_comments'])
+			self.output.write('" size="')
+			self.output.write(str(sh.globs['int']['font_speech_size']))
+			self.output.write('">')
+			self.output.write(self._cells[self.i][self.j].transc_print)
+			self.output.write('</font>')
+		self.output.write('<td>')
+	
 	def _dic(self):
 		if self._cells[self.i][self.j].dic_print:
 			self.output.write('<td align="center">')
@@ -625,6 +645,7 @@ class HTML:
 				self.j = j
 				self._dic()
 				self._speech()
+				self._transcription()
 				self._term()
 				self._comment()
 			self.output.write('</tr>')
@@ -753,6 +774,15 @@ class Tags:
 		self._non_tags()
 		self.elems()
 	
+	def debug(self,Sort=True): # orphant
+		message = ''
+		lst = list(self._tags)
+		if Sort:
+			lst = sorted(set(lst))
+		for i in range(len(lst)):
+			message += '%d: %s\n' % (i,lst[i])
+		sg.Message(func='Tags.debug',level=sh.lev_info,message=message)
+
 	# Create a list with positions of signs '<' and '>'
 	def borders(self):
 		if not self._borders:
@@ -856,6 +886,20 @@ class Tags:
 			else:
 				log.append('Tags._speech',sh.lev_warn,sh.globs['mes'].last_tag % self._tags[i])
 				
+	# Extract a phonetic sign (Multitran-only)
+	def _transcription(self,i=0):
+		if tag_pattern_tr1 in self._tags[i]:
+			tmp = re.sub(r'\.gif.*','',self._tags[i])
+			tmp = tmp.replace(tag_pattern_tr1,'')
+			if tmp:
+				try:
+					ind = transc_orig.index(tmp)
+					self._elems[-1].transc = transc_final[ind]
+				except ValueError:
+					sh.log.append('Tags._transcription',sh.lev_warn,sh.globs['mes'].wrong_input3 % tmp)
+			else:
+				log.append('Tags._transcription',sh.lev_warn,sh.globs['mes'].empty_input)
+				
 	# Extract URL
 	def _url(self,i=0):
 		self.url = self._tags[i].replace(tag_pattern2,'',1).replace(tag_pattern2b,'',1)
@@ -869,7 +913,7 @@ class Tags:
 			log.append('Tags._url',sh.lev_warn,sh.globs['mes'].url_extraction_failure % self.url)
 		
 	# Extract a comment
-	def _comment(self,i):
+	def _comment(self,i=0):
 		if self._tags[i] == tag_pattern3 or self._tags[i] == tag_pattern5 or self._tags[i] == tag_pattern9:
 			pos1 = self._borders[i][1] + 1
 			if pos1 >= len(self._page):
@@ -891,15 +935,6 @@ class Tags:
 				else:
 					self._elems[-1].comment = tmp_str
 	
-	# We do not need empty entries before creating cells, so we delete them (if any)
-	def _empty(self):
-		i = 0
-		while i < len(self._elems):
-			if not self._elems[i].speech and not self._elems[i].dic and not self._elems[i].term and not self._elems[i].comment:
-				del self._elems[i]
-				i -= 1
-			i += 1
-	
 	# Create a list of on-screen text elements for each useful tag
 	def elems(self):
 		if not self._elems:
@@ -916,6 +951,8 @@ class Tags:
 			<span STYLE="color:gray"...<
 			6) Parts of speech (will be processed later):
 			'<a href="M.exe?a=118&t='
+			7) Transcription: (a digit in 'width="9"' may vary)
+			'<img SRC="/gif/..." width="9" height="16" align="absbottom">'
 			'''
 			self._tags = self.tags()
 			for i in range(len(self._tags)):
@@ -930,10 +967,10 @@ class Tags:
 						self._elems[-1].term = ''
 					else:
 						self._term(i)
+				self._transcription(i)
 				self._comment(i)
 				log.append('Tags.elems',sh.lev_debug,sh.globs['mes'].adding_url % self.url)
 				self._elems[i].url = self.url
-			self._empty()
 		return self._elems
 		
 	def invalid(self): # Delete tags that impede the tag analysis
@@ -1018,7 +1055,7 @@ class Tags:
 				del self._borders[i]
 				i -= 1
 			# todo (?): elaborate
-			elif tag_pattern1 in self._tags[i] or tag_pattern2 in self._tags[i] or tag_pattern2b in self._tags[i] or tag_pattern3 in self._tags[i] or tag_pattern4 in self._tags[i] or tag_pattern5 in self._tags[i] or tag_pattern6 in self._tags[i] or tag_pattern7 in self._tags[i] or tag_pattern8 in self._tags[i]:
+			elif tag_pattern1 in self._tags[i] or tag_pattern2 in self._tags[i] or tag_pattern2b in self._tags[i] or tag_pattern3 in self._tags[i] or tag_pattern4 in self._tags[i] or tag_pattern5 in self._tags[i] or tag_pattern6 in self._tags[i] or tag_pattern7 in self._tags[i] or tag_pattern8 in self._tags[i] or tag_pattern_tr1 in self._tags[i]:
 				log.append('Tags._useless',sh.lev_debug,sh.globs['mes'].tag_kept % self._tags[i])
 			else:
 				log.append('Tags._useless',sh.lev_debug,sh.globs['mes'].deleting_tag % (i,self._tags[i]))
@@ -1046,11 +1083,13 @@ class Elems:
 		self._elems = lst
 		self.useless()
 		self.unite_comments()
+		self.unite_transc()
+		self.empty()
 		# todo: debug
 		#self.unite_by_url()
 		self.define_selectables()
-		self.fill_speech()
 		self.fill_dic()
+		self.fill_speech()
 		self.delete_empty_terms()
 		self.blacklist()
 		self.prioritize()
@@ -1062,17 +1101,8 @@ class Elems:
 		articles.current()._prioritize = [elem.dic for elem in self._elems if elem.dic in objs.prioritize()]
 		
 	def delete_empty_terms(self):
-		self._elems = [elem for elem in self._elems if elem.term]
+		self._elems = [elem for elem in self._elems if elem.term or elem.transc_print]
 	
-	def fill_speech(self):
-		if self._elems:
-			speech = self._elems[0].speech
-		for elem in self._elems:
-			if elem.speech:
-				speech = elem.speech
-			else:
-				elem.speech = speech
-				
 	def fill_dic(self):
 		if self._elems:
 			dic = self._elems[0].dic
@@ -1081,7 +1111,19 @@ class Elems:
 				dic = elem.dic
 			else:
 				elem.dic = dic
-		
+	
+	def fill_speech(self):
+		if self._elems:
+			speech = self._elems[0].speech
+			transc = self._elems[0].transc
+		for elem in self._elems:
+			if elem.speech:
+				speech = elem.speech
+				transc = elem.transc
+			else:
+				elem.speech = speech
+				elem.transc = transc
+				
 	def useless(self):
 		# We assume that a 'dic'-type entry shall be succeeded by a 'term'-type entry, not a 'comment'-type entry. Therefore, we delete 'comment'-type entries after 'dic'-type entries in order to ensure that dictionary abbreviations do not succeed full dictionary titles. We also can delete full dictionary titles and leave abbreviations instead.
 		i = 0
@@ -1101,7 +1143,7 @@ class Elems:
 		# Remove comments-only cells
 		i = len(self._elems) - 1
 		while i >= 0:
-			if self._elems[i].dic == '' and self._elems[i].term == '' and self._elems[i].comment != '':
+			if self._elems[i].speech == '' and self._elems[i].dic == '' and self._elems[i].term == '' and self._elems[i].transc == '' and self._elems[i].comment != '':
 				self._elems[i-1].comment = self._elems[i-1].comment + ' | ' + self._elems[i].comment
 				del self._elems[i]
 			i -= 1
@@ -1109,6 +1151,18 @@ class Elems:
 		for i in range(len(self._elems)):
 			if self._elems[i].comment.startswith(' | '):
 				self._elems[i].comment = self._elems[i].comment.replace(' | ',' ',1)
+				
+	def unite_transc(self):
+		# Remove transcription-only cells
+		i = len(self._elems) - 1
+		while i >= 0:
+			if self._elems[i].speech == '' and self._elems[i].dic == '' and self._elems[i].term == '' and self._elems[i].comment == '' and self._elems[i].transc != '':
+				self._elems[i-1].transc = self._elems[i-1].transc + self._elems[i].transc
+				del self._elems[i]
+			i -= 1
+			
+	def empty(self):
+		self._elems = [elem for elem in self._elems if elem.dic or elem.speech or elem.transc or elem.term or elem.comment]
 				
 	# Объединить элементы, которые должны входить в одну ячейку
 	def unite_by_url(self):
@@ -1141,7 +1195,7 @@ class Cell:
 	def __init__(self):
 		self.Selectable = self.Block = False
 		# todo: do we really need *_print? (If we are going to recreate cells each time, we don't need it. If we try to remember staff, we'll need it).
-		self.speech = self.dic = self.term = self.comment = self.url = self.speech_print = self.dic_print = ''
+		self.speech = self.dic = self.term = self.comment = self.url = self.speech_print = self.dic_print = self.transc = self.transc_print = ''
 
 
 
@@ -1164,11 +1218,13 @@ class Cells:
 				old_dic = elem.dic_print = elem.dic
 			if elem.speech != old_speech:
 				old_speech = elem.speech_print = elem.speech
+				elem.transc_print = elem.transc
+				elem.Selectable = True
 
 	def debug_elems(self): # orphant
 		message = ''
 		for i in range(len(self._elems)):
-			message += '#%d:\nspeech:\t\t"%s"\ndic:\t\t"%s"\nterm:\t\t"%s"\ncomment:\t\t"%s"\nBlock:\t\t%s\n\n' % (i,self._elems[i].speech,self._elems[i].dic,self._elems[i].term,self._elems[i].comment,str(self._elems[i].Block))
+			message += '#%d:\ndic:\t\t"%s"\nspeech:\t\t"%s"\ntransc:\t\t"%s"\nterm:\t\t"%s"\ncomment:\t\t"%s"\nBlock:\t\t%s\n\n' % (i,self._elems[i].dic,self._elems[i].speech,self._elems[i].transc,self._elems[i].term,self._elems[i].comment,str(self._elems[i].Block))
 		sg.Message(func='Cells.debug_elems',level=sh.lev_info,message=message)
 		
 	def debug_cells(self): # orphant
@@ -1177,15 +1233,18 @@ class Cells:
 			message += 'Row %d:\n' % i
 			row     = self._cells[i]
 			speech  = []
+			transc  = []
 			dic     = []
 			term    = []
 			comment = []
 			for cell in row:
 				speech.append(cell.speech)
+				transc.append(cell.transc)
 				dic.append(cell.dic)
 				term.append(cell.term)
 				comment.append(cell.comment)
 			message += 'Speech:\t\t"%s"\n' % '; '.join(speech)
+			message += 'Transc:\t\t"%s"\n' % '; '.join(transc)
 			message += 'Dic:\t\t"%s"\n' % '; '.join(dic)
 			message += 'Term:\t\t"%s"\n' % '; '.join(term)
 			message += 'Comment:\t\t"%s"\n\n' % '; '.join(comment)
@@ -2563,6 +2622,14 @@ class TkinterHtmlMod(tk.Widget):
 		for i in range(len(articles.current().cells())):
 			# Число столбцов в таблице должно быть одинаковым!
 			for j in range(len(articles.current()._cells[i])):
+				if articles.current()._cells[i][j].dic_print:
+					tmp_str = articles.current()._cells[i][j].dic_print.strip() + '\n'
+					articles.current()._cells[i][j].first = cur_index
+					cur_index += len(tmp_str)
+					articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].term)
+					articles.current()._cells[i][j].last = cur_index
+					for k in range(len(tmp_str)):
+						self.pos2cell.append([i,j])
 				if articles.current()._cells[i][j].speech_print:
 					tmp_str = articles.current()._cells[i][j].speech_print.strip() + '\n'
 					articles.current()._cells[i][j].first = cur_index
@@ -2571,8 +2638,8 @@ class TkinterHtmlMod(tk.Widget):
 					articles.current()._cells[i][j].last = cur_index
 					for k in range(len(tmp_str)):
 						self.pos2cell.append([i,j])
-				if articles.current()._cells[i][j].dic_print:
-					tmp_str = articles.current()._cells[i][j].dic_print.strip() + '\n'
+				if articles.current()._cells[i][j].transc_print:
+					tmp_str = articles.current()._cells[i][j].transc_print.strip() + '\n'
 					articles.current()._cells[i][j].first = cur_index
 					cur_index += len(tmp_str)
 					articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].term)

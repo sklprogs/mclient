@@ -1,5 +1,8 @@
 
 
+4.10
+* Add phonetic signs
+
 4.9
 * Add a drop-down list to select the number of columns
 * Automatically alphabetize dictionaries and then group them by word forms
