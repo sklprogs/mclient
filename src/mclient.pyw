@@ -413,12 +413,13 @@ class CurRequest:
 		
 	def reset(self):
 		self._view       = 0
-		self._collimit   = 4
+		#self._collimit   = 4
+		self._collimit   = 5
 		# cur
-		#self._source     = 'All'
-		self._source     = 'Offline'
-		#self._search     = 'Добро пожаловать!'
-		self._search     = 'связь'
+		self._source     = 'All'
+		#self._source     = 'Offline'
+		self._search     = 'Добро пожаловать!'
+		#self._search     = 'связь'
 		self._lang       = 'English'
 		self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
 		# Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
@@ -795,6 +796,8 @@ class Page:
 				self._get_offline()
 			else:
 				sg.Message('Page.get',sh.lev_err,sh.globs['mes'].unknown_mode % (str(request._source),';'.join(sources)))
+			if self._page is None:
+				self._page = ''
 			if page and self._page:
 				self._page += page
 			elif page:
@@ -1051,6 +1054,8 @@ class Tags:
 		self._page = self._page.replace('<em>',' ').replace('</em>','')
 		# Causes problems when generating positions
 		self._page = self._page.replace('<strong>','').replace('</strong>','')
+		# todo: should we process this tag?
+		self._page = self._page.replace('<abr>','')
 		
 	def open_close(self): # Remove symbols '<' and '>' that do not define tags
 		self._page = list(self._page)
@@ -1271,7 +1276,7 @@ class Cells:
 		self._cells = []
 		self._elems = elems
 		# cur
-		self.debug_elems()
+		#self.debug_elems()
 		self.blacklist()
 		self.alphabetize()
 		self.prioritize()
@@ -1422,7 +1427,7 @@ def timed_update():
 			new_clipboard = sg.Clipboard().paste()
 			if new_clipboard:
 				h_table.search = new_clipboard
-				h_table.search_online()
+				h_table.search_sources()
 		if check == 2 or h_table.CaptureHotkey:
 			call_app()
 	# We need to have .after in the same function for it to work
@@ -2051,11 +2056,13 @@ class TkinterHtmlMod(tk.Widget):
 		
 	def get_url(self):
 		# Note: encoding must be UTF-8 here
-		if request._source == 'Multitran':
-			objs.online().reset(self.get_pair(),self.search,MTSpecific=True)
-		else:
+		if request._source == 'Offline':
 			objs.online().reset(self.get_pair(),self.search,MTSpecific=False)
-		self.url = objs.online().url()
+			# cur # todo: elaborate
+			self.url = self.search
+		else:
+			objs.online().reset(self.get_pair(),self.search,MTSpecific=True)
+			self.url = objs.online().url()
 		log.append('TkinterHtmlMod.get_url',sh.lev_debug,"self.url: %s" % str(self.url))
 	
 	# todo: move 'move_*' procedures to Moves class
@@ -2270,13 +2277,13 @@ class TkinterHtmlMod(tk.Widget):
 		self.search_article.forward()
 		self.drag_search()
 	
-	def search_online(self):
+	def search_sources(self):
 		if self.control_length():
 			self.get_url()
 			request._url    = self.url
 			request._search = self.search
 			articles.search_article()
-			log.append('TkinterHtmlMod.search_online',sh.lev_debug,articles.current()._search)
+			log.append('TkinterHtmlMod.search_sources',sh.lev_debug,articles.current()._search)
 			self.load_article()
 	
 	# Search the selected term online using the entry widget (search field)
@@ -2293,7 +2300,8 @@ class TkinterHtmlMod(tk.Widget):
 			elif self.search == sh.globs['var']['repeat_sign']:
 				self.search_field.insert_repeat_sign()
 			else:
-				self.search_online()
+				# cur
+				self.search_sources()
 					
 	# Создание каркаса с полем ввода, кнопкой выбора направления перевода и кнопкой выхода
 	def create_frame_panel(self):
@@ -2308,15 +2316,16 @@ class TkinterHtmlMod(tk.Widget):
 		self.hotkeys()
 		
 	def set_lang(self,*args):
-		request._lang = langs[self.option_menu.index]
+		request._lang = langs[self.menu_pairs.index]
 		log.append('TkinterHtmlMod.set_lang',sh.lev_info,'Set language to "%s"' % request._lang)
 		
 	def set_source(self,*args):
-		request._source = sources[self.source_menu.index]
+		request._source = sources[self.menu_sources.index]
 		log.append('TkinterHtmlMod.set_source',sh.lev_info,'Set source to "%s"' % request._source)
+		self.load_article()
 	
 	def get_pair(self):
-		return online_dic_urls[self.option_menu.index]
+		return online_dic_urls[self.menu_pairs.index]
 	
 	def set_columns(self,*args):
 		log.append('TkinterHtmlMod.set_columns',sh.lev_info,str(self.menu_columns.choice))
@@ -2339,11 +2348,10 @@ class TkinterHtmlMod(tk.Widget):
 		self.btn_repeat_sign2 = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_repeat_sign2,hint=sh.globs['mes'].hint_paste_prev_request,action=self.search_field.insert_repeat_sign2,inactive_image_path=sh.globs['var']['icon_repeat_sign2_off'],active_image_path=sh.globs['var']['icon_repeat_sign2'],bindings=sh.globs['var']['repeat_sign2'])
 		# Кнопка для вставки спец. символов
 		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_symbols,hint=sh.globs['mes'].hint_symbols,action=self.spec_symbols.show,inactive_image_path=sh.globs['var']['icon_spec_symbol'],active_image_path=sh.globs['var']['icon_spec_symbol'],bindings=sh.globs['var']['bind_spec_symbol'])
-		self.source_menu  = sg.OptionMenu(parent_obj=self.frame_panel,items=sources,command=self.set_source) # todo: mes
+		self.menu_sources  = sg.OptionMenu(parent_obj=self.frame_panel,items=sources,command=self.set_source) # todo: mes
 		# Выпадающий список с вариантами направлений перевода
-		self.option_menu  = sg.OptionMenu(parent_obj=self.frame_panel,items=pairs,command=self.set_lang)
-		self.menu_columns = sg.OptionMenu(parent_obj=self.frame_panel,items=(1,2,3,4,5,6,7,8,9,10),command=self.set_columns)
-		self.menu_columns.set(request._collimit)
+		self.menu_pairs  = sg.OptionMenu(parent_obj=self.frame_panel,items=pairs,command=self.set_lang)
+		self.menu_columns = sg.OptionMenu(parent_obj=self.frame_panel,items=(1,2,3,4,5,6,7,8,9,10),command=self.set_columns,default=4)
 		# Кнопка изменения вида статьи
 		# todo: Change active/inactive button logic in case of creating three or more views
 		self.btn_toggle_view = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_toggle_view,hint=sh.globs['mes'].hint_toggle_view,action=self.toggle_view,inactive_image_path=sh.globs['var']['icon_toggle_view_ver'],active_image_path=sh.globs['var']['icon_toggle_view_hor'],bindings=[sh.globs['var']['bind_toggle_view'],sh.globs['var']['bind_toggle_view_alt']])
@@ -2423,8 +2431,8 @@ class TkinterHtmlMod(tk.Widget):
 		sg.bind(obj=objs.top(),bindings=[sh.globs['var']['bind_spec_symbol']],action=self.spec_symbols.show)
 		sg.bind(obj=self.search_field,bindings='<Control-a>',action=lambda e:select_all(self.search_field.widget,Small=True))
 		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_define'],action=lambda e:self.define(Selected=True))
-		sg.bind(obj=objs.top(),bindings=[sh.globs['var']['bind_prev_pair'],sh.globs['var']['bind_prev_pair_alt']],action=self.option_menu.set_prev)
-		sg.bind(obj=objs.top(),bindings=[sh.globs['var']['bind_next_pair'],sh.globs['var']['bind_next_pair_alt']],action=self.option_menu.set_next)
+		sg.bind(obj=objs.top(),bindings=[sh.globs['var']['bind_prev_pair'],sh.globs['var']['bind_prev_pair_alt']],action=self.menu_pairs.set_prev)
+		sg.bind(obj=objs.top(),bindings=[sh.globs['var']['bind_next_pair'],sh.globs['var']['bind_next_pair_alt']],action=self.menu_pairs.set_next)
 		sg.bind(obj=objs.top(),bindings=[sh.globs['var']['bind_toggle_view'],sh.globs['var']['bind_toggle_view_alt']],action=self.toggle_view)
 		sg.bind(obj=objs.top(),bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt']],action=self.history.toggle)
 		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_clear_history'],action=self.history.clear)
@@ -2921,18 +2929,16 @@ class ExtDics:
 			for dic in dics:
 				tmp = dic.get(search=search)
 				if tmp:
-					tmp = re.sub(r'<blockquote>\d+\) <',r'<',tmp)
+					tmp = re.sub(r'<blockquote>\d+\)[\s]{0,1}<',r'<',tmp)
 					# Set offline dictionary title
 					# cur
 					lst.append(tag_pattern1 + dic._name + tag_pattern8 + tmp)
 			tmp = '\n'.join(lst)
 			# cur
-			# fix: the last term is removed
+			# fix: the last term is removed (col_limit == 4), the last speech is removed
 			# Remove XML ending tags
-			tmp = re.sub(r'\<\/[a-zA-Z]*\>','',tmp)
-			if tmp:
-				# Insert some ending tag, otherwise, the last term is deleted
-				return tmp + '</body>'
+			# todo: make all fixes and del '<dtrn></dtrn></body>'
+			return re.sub(r'\<\/[a-zA-Z]*\>','',tmp)# + '<dtrn>...</dtrn></body>'
 		else:
 			log.append('ExtDics.get',sh.lev_warn,sh.globs['mes'].canceled)
 	
@@ -3005,6 +3011,9 @@ if  __name__ == '__main__':
 	h_quit   = Quit()
 	h_table  = TkinterHtmlMod(objs.top().widget)
 	objs.top().widget.protocol("WM_DELETE_WINDOW",h_quit.wait)
+	# 'OptionMenu' is updated when the user selects an item. There is a need to update it manually only in case of different default 'request' values.
+	h_table.menu_columns.set(request._collimit)
+	h_table.menu_sources.set(request._source)
 	timed_update() # Do not wrap this function. Change this carefully.
 	articles.search_article()
 	h_table.load_article()
