@@ -16,9 +16,10 @@ import tkinter as tk
 from tkinter import ttk
 import shared as sh
 import sharedGUI as sg
+import pystardict as pd
 
 product = 'MClient'
-version = '4.10'
+version = '5.0'
 
 third_parties = '''
 tkinterhtml
@@ -34,10 +35,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 '''
 
 
-class log:
+'''class log:
 	
 	def append(self,*args):
 		pass
+'''
+log = sh.log
 
 
 
@@ -253,6 +256,24 @@ online_dic_urls = ( sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_rus
 					sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_deu'],	# ENG <=> DEU, 'l1=1&l2=3&s=%s'
 					sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_est']	# ENG <=> EST, 'l1=1&l2=26&s=%s'
 				  )
+				  
+langs           = ( 'English'                                                     , # ENG <=> RUS
+					'German'                                                      , # DEU <=> RUS
+					'Spanish'                                                     , # SPA <=> RUS
+					'French'                                                      , # FRA <=> RUS
+					'Dutch'                                                       , # NLD <=> RUS
+					'Italian'                                                     ,	# ITA <=> RUS
+					'Latvian'                                                     , # LAV <=> RUS
+					'Estonian'                                                    ,	# EST <=> RUS
+					'Afrikaans'                                                   ,	# AFR <=> RUS
+					'Esperanto'                                                   ,	# EPO <=> RUS
+					'Kazakh'                                                      ,	# RUS <=> XAL
+					'Kazakh'                                                      ,	# XAL <=> RUS
+					'German'                                                      ,	# ENG <=> DEU
+					'Estonian'                                                  	# ENG <=> EST
+				  )
+
+sources = ('All','Online','Offline')
 
 # Tag patterns
 tag_pattern_del = 	[
@@ -309,7 +330,14 @@ tag_pattern_ph1 = '<a href="M.exe?a=3&&s='
 tag_pattern_ph2 = '<a href="m.exe?a=3&&s='
 tag_pattern_ph3 = '<a href="M.exe?a=3&s='
 tag_pattern_ph4 = '<a href="m.exe?a=3&s='
+# Transcription
 tag_pattern_tr1 = '<img SRC="/gif/'
+# Stardict-specific
+tag_pattern_st1 = '<k>'    # '</k>'
+tag_pattern_st2 = '<dtrn>' # '</dtrn>'
+tag_pattern_st3 = '<kref>' # '</kref>'
+tag_pattern_st4 = '<tr>'
+tag_pattern_st8 = '</tr>'
 
 transc_orig  = ('[',']','2','3','34','39','40','41','58','65','68','69','73','78','79','80','81','83','84','86','90','97','98','100','101','102','103','104','105','106','107','108','109','110','112','113','114','115','116','117','118','119','120','122')
 transc_final = ('[',']','','','ˌ','′','(',')',':','ʌ','ð','ɜ','ı','ŋ','ɔ','ɒ','ɑ','ʃ','θ','ʋ','ʒ','a','b','d','e','f','g','h','i','j','k','l','m','n','p','ə','r','s','t','u','v','w','æ','z')
@@ -386,8 +414,12 @@ class CurRequest:
 	def reset(self):
 		self._view       = 0
 		self._collimit   = 4
-		self._source     = 'Multitran'
-		self._search     = 'Добро пожаловать!'
+		# cur
+		#self._source     = 'All'
+		self._source     = 'Offline'
+		#self._search     = 'Добро пожаловать!'
+		self._search     = 'связь'
+		self._lang       = 'English'
 		self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
 		# Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
 		self.Block       = True
@@ -720,16 +752,16 @@ class Page:
 		Got = False
 		while not self._page:
 			try:
-				log.append('Page.get',sh.lev_info,'Get online: "%s"' % self._search_str) # todo: mes
+				log.append('Page._get_online',sh.lev_info,'Get online: "%s"' % self._search_str) # todo: mes
 				# Если загружать страницу с помощью "page=urllib.request.urlopen(my_url)", то в итоге получится HTTPResponse, что полезно только для удаления тэгов JavaScript. Поскольку мы вручную удаляем все лишние тэги, то на выходе нам нужна строка.
 				self._page = urllib.request.urlopen(request._url).read()
-				log.append('Page.get',sh.lev_info,sh.globs['mes'].ok % self._search_str)
+				log.append('Page._get_online',sh.lev_info,sh.globs['mes'].ok % self._search_str)
 				Got = True
 			# Too many possible exceptions
 			except:
-				log.append('Page.get',sh.lev_warn,sh.globs['mes'].failed % self._search_str)
+				log.append('Page._get_online',sh.lev_warn,sh.globs['mes'].failed % self._search_str)
 				# For some reason, 'break' does not work here
-				if not sg.Message(func='Page.get',level=sh.lev_ques,message=sh.globs['mes'].webpage_unavailable_ques).Yes:
+				if not sg.Message(func='Page._get_online',level=sh.lev_ques,message=sh.globs['mes'].webpage_unavailable_ques).Yes:
 					self._page = 'CANCELED'
 		if self._page == 'CANCELED':
 			self._page = ''
@@ -738,14 +770,13 @@ class Page:
 				# Меняем кодировку sh.globs['var']['win_encoding'] на нормальную
 				self._page = self._page.decode(sh.globs['var']['win_encoding'])
 			except:
-				sg.Message(func='Page.get',level=sh.lev_err,message=sh.globs['mes'].wrong_html_encoding)
+				sg.Message(func='Page._get_online',level=sh.lev_err,message=sh.globs['mes'].wrong_html_encoding)
 			self._html_raw = self._page
 	
 	def _get_offline(self):
-		# todo: implement
-		# Set testing values here
-		self._page = ''
-		self._html_raw = ''
+		self._page = self._html_raw = ext_dics.get(lang=request._lang,search=self._search_str)
+		# cur
+		#sg.Message(func='Page._get_offline',level=sh.lev_info,message=str(self._page)) # todo: del
 	
 	def get(self):
 		if not self._page:
@@ -753,10 +784,21 @@ class Page:
 			h_table.paste_search_field(text=sh.globs['mes'].wait)
 			h_table.clear_search_field()
 			'''
-			if self._source == 'Multitran':
+			page = ''
+			if request._source == 'All': # todo: mes
 				self._get_online()
-			else:
+				page = self._page
 				self._get_offline()
+			elif request._source == 'Online':
+				self._get_online()
+			elif request._source == 'Offline':
+				self._get_offline()
+			else:
+				sg.Message('Page.get',sh.lev_err,sh.globs['mes'].unknown_mode % (str(request._source),';'.join(sources)))
+			if page and self._page:
+				self._page += page
+			elif page:
+				self._page = page
 		return self._page
 
 
@@ -849,7 +891,8 @@ class Tags:
 		par4 = tag_pattern_t4 in self._tags[i]
 		par5 = tag_pattern_t5 in self._tags[i]
 		par6 = tag_pattern_t6 in self._tags[i]
-		if par1 or par2 or par3 or par4 or par5 or par6:
+		par7 = tag_pattern_st2 in self._tags[i]
+		if par1 or par2 or par3 or par4 or par5 or par6 or par7:
 			# It is reasonable to bind URLs to terms only, but we want the number of URLs to match the number of article elements, moreover, extra URLs can appear useful.
 			if i + 1 < len(self._tags):
 				pos1 = self._borders[i][1] + 1
@@ -870,7 +913,8 @@ class Tags:
 		par4 = tag_pattern_sp4 in self._tags[i]
 		par5 = tag_pattern_sp5 in self._tags[i] and tag_pattern_t1 in self._tags[i]
 		par6 = tag_pattern_sp5 in self._tags[i] and tag_pattern_t2 in self._tags[i]
-		if par1 or par2 or par3 or par4 or par5 or par6:
+		par7 = tag_pattern_st1 in self._tags[i]
+		if par1 or par2 or par3 or par4 or par5 or par6 or par7:
 			# It is reasonable to bind URLs to terms only, but we want the number of URLs to match the number of article elements, moreover, extra URLs can appear useful.
 			if i + 1 < len(self._tags):
 				pos1 = self._borders[i][1] + 1
@@ -886,8 +930,8 @@ class Tags:
 			else:
 				log.append('Tags._speech',sh.lev_warn,sh.globs['mes'].last_tag % self._tags[i])
 				
-	# Extract a phonetic sign (Multitran-only)
 	def _transcription(self,i=0):
+		# Extract a phonetic sign (Multitran-only)
 		if tag_pattern_tr1 in self._tags[i]:
 			tmp = re.sub(r'\.gif.*','',self._tags[i])
 			tmp = tmp.replace(tag_pattern_tr1,'')
@@ -899,6 +943,8 @@ class Tags:
 					sh.log.append('Tags._transcription',sh.lev_warn,sh.globs['mes'].wrong_input3 % tmp)
 			else:
 				log.append('Tags._transcription',sh.lev_warn,sh.globs['mes'].empty_input)
+		elif tag_pattern_st4 in self._tags[i]: # Stardict
+			self._elems[-1].transc = self._tags[i].replace(tag_pattern_st4,'',1).replace(tag_pattern_st8,'',1)
 				
 	# Extract URL
 	def _url(self,i=0):
@@ -940,19 +986,39 @@ class Tags:
 		if not self._elems:
 			''' Tag patterns:
 			1) Abbreviations of dictionaries:
-			<a title="...">
-			2) Users
-			<a href="M.exe?..."><i>...</i></a> OR without 1st <
+			     - Multitran:
+			         <a title="...">
+			     - Stardict:
+			         define them manually by the file name
+			2) Users:
+			     - Multitran:
+			         <a href="M.exe?..."><i>...</i></a>
+			           OR without 1st <
 			3) Terms:
-			<a href="M.exe?..."></a>
+			     - Multitran:
+			         <a href="M.exe?..."></a>
+			     - Stardict:
+			         <dtrn></dtrn>
+			         <kref></kref> (in phrases)
 			4) Genders:
-			<span STYLE="color:gray"<i>...</i>
+			     - Multitran:
+			         <span STYLE="color:gray"<i>...</i>
 			5) Comments:
-			<span STYLE="color:gray"...<
+			     - Multitran:
+			         <span STYLE="color:gray"...<
+			     - Stardict:
+			         <i></i>
 			6) Parts of speech (will be processed later):
-			'<a href="M.exe?a=118&t='
+			     - Multitran:
+			         '<a href="M.exe?a=118&t='
+			     - Stardict:
+			         <k></k>
+			
 			7) Transcription: (a digit in 'width="9"' may vary)
-			'<img SRC="/gif/..." width="9" height="16" align="absbottom">'
+			     - Multitran:
+			         '<img SRC="/gif/..." width="9" height="16" align="absbottom">'
+			     - Stardict:
+			         <tr></tr>
 			'''
 			self._tags = self.tags()
 			for i in range(len(self._tags)):
@@ -1055,7 +1121,7 @@ class Tags:
 				del self._borders[i]
 				i -= 1
 			# todo (?): elaborate
-			elif tag_pattern1 in self._tags[i] or tag_pattern2 in self._tags[i] or tag_pattern2b in self._tags[i] or tag_pattern3 in self._tags[i] or tag_pattern4 in self._tags[i] or tag_pattern5 in self._tags[i] or tag_pattern6 in self._tags[i] or tag_pattern7 in self._tags[i] or tag_pattern8 in self._tags[i] or tag_pattern_tr1 in self._tags[i]:
+			elif tag_pattern1 in self._tags[i] or tag_pattern2 in self._tags[i] or tag_pattern2b in self._tags[i] or tag_pattern3 in self._tags[i] or tag_pattern4 in self._tags[i] or tag_pattern5 in self._tags[i] or tag_pattern6 in self._tags[i] or tag_pattern7 in self._tags[i] or tag_pattern8 in self._tags[i] or tag_pattern_tr1 in self._tags[i] or tag_pattern_st1 in self._tags[i] or tag_pattern_st2 in self._tags[i] or tag_pattern_st3 in self._tags[i] or tag_pattern_st4 in self._tags[i]:
 				log.append('Tags._useless',sh.lev_debug,sh.globs['mes'].tag_kept % self._tags[i])
 			else:
 				log.append('Tags._useless',sh.lev_debug,sh.globs['mes'].deleting_tag % (i,self._tags[i]))
@@ -1204,6 +1270,8 @@ class Cells:
 	def __init__(self,elems=[]):
 		self._cells = []
 		self._elems = elems
+		# cur
+		self.debug_elems()
 		self.blacklist()
 		self.alphabetize()
 		self.prioritize()
@@ -2239,6 +2307,14 @@ class TkinterHtmlMod(tk.Widget):
 			self.btn_clipboard.inactive()
 		self.hotkeys()
 		
+	def set_lang(self,*args):
+		request._lang = langs[self.option_menu.index]
+		log.append('TkinterHtmlMod.set_lang',sh.lev_info,'Set language to "%s"' % request._lang)
+		
+	def set_source(self,*args):
+		request._source = sources[self.source_menu.index]
+		log.append('TkinterHtmlMod.set_source',sh.lev_info,'Set source to "%s"' % request._source)
+	
 	def get_pair(self):
 		return online_dic_urls[self.option_menu.index]
 	
@@ -2263,8 +2339,9 @@ class TkinterHtmlMod(tk.Widget):
 		self.btn_repeat_sign2 = sg.Button(self.frame_panel,text=sh.globs['mes'].btn_repeat_sign2,hint=sh.globs['mes'].hint_paste_prev_request,action=self.search_field.insert_repeat_sign2,inactive_image_path=sh.globs['var']['icon_repeat_sign2_off'],active_image_path=sh.globs['var']['icon_repeat_sign2'],bindings=sh.globs['var']['repeat_sign2'])
 		# Кнопка для вставки спец. символов
 		sg.Button(self.frame_panel,text=sh.globs['mes'].btn_symbols,hint=sh.globs['mes'].hint_symbols,action=self.spec_symbols.show,inactive_image_path=sh.globs['var']['icon_spec_symbol'],active_image_path=sh.globs['var']['icon_spec_symbol'],bindings=sh.globs['var']['bind_spec_symbol'])
+		self.source_menu  = sg.OptionMenu(parent_obj=self.frame_panel,items=sources,command=self.set_source) # todo: mes
 		# Выпадающий список с вариантами направлений перевода
-		self.option_menu  = sg.OptionMenu(parent_obj=self.frame_panel,items=pairs)
+		self.option_menu  = sg.OptionMenu(parent_obj=self.frame_panel,items=pairs,command=self.set_lang)
 		self.menu_columns = sg.OptionMenu(parent_obj=self.frame_panel,items=(1,2,3,4,5,6,7,8,9,10),command=self.set_columns)
 		self.menu_columns.set(request._collimit)
 		# Кнопка изменения вида статьи
@@ -2789,11 +2866,141 @@ class Lists:
 
 
 
+class ExtDic:
+	
+	def __init__(self,path,lang='English',name='External',Block=False,Silent=False):
+		self.Silent = Silent
+		# Full path without extension (as managed by pystardict)
+		self._path  = path
+		self._lang  = lang
+		self._name  = name
+		self.Block  = Block
+		self._dic   = None
+		self.load()
+	
+	def load(self):
+		log.append('ExtDic.load',sh.lev_info,'Load "%s"' % self._path) # todo: mes
+		try:
+			self._dic = pd.Dictionary(self._path)
+		except:
+			sg.Message('ExtDic.load',sh.lev_warn,'Failed to load "%s"!' % self._path,self.Silent) # todo: mes
+			
+	def get(self,search):
+		result = ''
+		if self._dic:
+			try:
+				result = self._dic.get(k=search)
+			except:
+				sg.Message('ExtDic.get',sh.lev_warn,'Failed to parse "%s"!' % self._path,self.Silent) # todo: mes
+		else:
+			log.append('ExtDic.get',sh.lev_warn,sh.globs['mes'].empty_input)
+		return result
+
+
+
+class ExtDics:
+	
+	def __init__(self,path):
+		self._dics    = []
+		self._dics_en = []
+		self._dics_de = []
+		self._dics_es = []
+		self._dics_it = []
+		self._dics_fr = []
+		self._path    = path
+		self.dir      = sh.Directory(path=self._path)
+		self._files   = self.dir.files()
+		self.Success  = self.dir.Success
+		self._list()
+		self.load()
+		
+	def get(self,lang='English',search=''):
+		if self.Success:
+			dics = [dic for dic in self._dics if dic._lang == lang and not dic.Block]
+			lst  = []
+			for dic in dics:
+				tmp = dic.get(search=search)
+				if tmp:
+					tmp = re.sub(r'<blockquote>\d+\) <',r'<',tmp)
+					# Set offline dictionary title
+					# cur
+					lst.append(tag_pattern1 + dic._name + tag_pattern8 + tmp)
+			tmp = '\n'.join(lst)
+			# cur
+			# fix: the last term is removed
+			# Remove XML ending tags
+			tmp = re.sub(r'\<\/[a-zA-Z]*\>','',tmp)
+			if tmp:
+				# Insert some ending tag, otherwise, the last term is deleted
+				return tmp + '</body>'
+		else:
+			log.append('ExtDics.get',sh.lev_warn,sh.globs['mes'].canceled)
+	
+	def load(self):
+		if self.Success:
+			sg.objs.waitbox().reset(func_title='ExtDic.load',message='Load offline dictionaries') # todo: mes
+			sg.objs._waitbox.show()
+			for elem in self._en:
+				path = os.path.join(self._path,elem)
+				self._dics.append(ExtDic(path=path,lang='English',name=elem))
+			for elem in self._de:
+				path = os.path.join(self._path,elem)
+				self._dics.append(ExtDic(path=path,lang='German',name=elem))
+			for elem in self._es:
+				path = os.path.join(self._path,elem)
+				self._dics.append(ExtDic(path=path,lang='Spanish',name=elem))
+			for elem in self._it:
+				path = os.path.join(self._path,elem)
+				self._dics.append(ExtDic(path=path,lang='Italian',name=elem))
+			for elem in self._fr:
+				path = os.path.join(self._path,elem)
+				self._dics.append(ExtDic(path=path,lang='French',name=elem))
+			sg.objs._waitbox.close()
+			# Leave only those dictionaries that were successfully loaded
+			self._dics = [x for x in self._dics if x._dic]
+			log.append('ExtDics.load',sh.lev_info,'%d offline dictionaries have been loaded' % len(self._dics)) # todo: mes
+		else:
+			log.append('ExtDics.load',sh.lev_warn,sh.globs['mes'].canceled)
+	
+	def _list(self):
+		if self._files:
+			self._filenames = set([sh.Path(file).filename().replace('.dict','') for file in self._files])
+			# todo: elaborate (make automatical, use language codes)
+			# todo: forget 'Ru', check for 1st upper and 2nd lower letters
+			self._en        = [elem for elem in self._filenames if 'RuEn' in elem or 'EnRu' in elem]
+			self._de        = [elem for elem in self._filenames if 'RuDe' in elem or 'DeRu' in elem]
+			self._es        = [elem for elem in self._filenames if 'RuEs' in elem or 'EsRu' in elem]
+			self._it        = [elem for elem in self._filenames if 'RuIt' in elem or 'ItRu' in elem]
+			self._fr        = [elem for elem in self._filenames if 'RuFr' in elem or 'FrRu' in elem]
+		else:
+			self._filenames = []
+			self._en        = []
+			self._de        = []
+			self._es        = []
+			self._it        = []
+			self._fr        = []
+	
+	def debug(self):
+		message = 'English:\n'
+		message += '\n'.join(self._en) + '\n\n'
+		message += 'German:\n'
+		message += '\n'.join(self._de) + '\n\n'
+		message += 'French:\n'
+		message += '\n'.join(self._fr) + '\n\n'
+		message += 'Spanish:\n'
+		message += '\n'.join(self._es) + '\n\n'
+		message += 'Italian:\n'
+		message += '\n'.join(self._it) + '\n\n'
+		sg.Message(func='ExtDics.debug',level=sh.lev_info,message=message)
+
+
+
 objs = Objects()
 
 
 if  __name__ == '__main__':
 	request  = CurRequest()
+	ext_dics = ExtDics(path=sh.objs.pdir().add('dics'))
 	articles = Articles()
 	h_quit   = Quit()
 	h_table  = TkinterHtmlMod(objs.top().widget)
