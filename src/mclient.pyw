@@ -413,13 +413,9 @@ class CurRequest:
 		
 	def reset(self):
 		self._view       = 0
-		#self._collimit   = 4
-		self._collimit   = 5
-		# cur
+		self._collimit   = 4
 		self._source     = 'All'
-		#self._source     = 'Offline'
 		self._search     = 'Добро пожаловать!'
-		#self._search     = 'связь'
 		self._lang       = 'English'
 		self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
 		# Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
@@ -776,8 +772,6 @@ class Page:
 	
 	def _get_offline(self):
 		self._page = self._html_raw = ext_dics.get(lang=request._lang,search=self._search_str)
-		# cur
-		#sg.Message(func='Page._get_offline',level=sh.lev_info,message=str(self._page)) # todo: del
 	
 	def get(self):
 		if not self._page:
@@ -818,6 +812,12 @@ class Tags:
 		self.open_close()
 		self._non_tags()
 		self.elems()
+	
+	def debug_elems(self): # orphant
+		message = ''
+		for i in range(len(self._elems)):
+			message += '#%d:\ndic:\t\t"%s"\nspeech:\t\t"%s"\ntransc:\t\t"%s"\nterm:\t\t"%s"\ncomment:\t\t"%s"\nBlock:\t\t%s\n\n' % (i,self._elems[i].dic,self._elems[i].speech,self._elems[i].transc,self._elems[i].term,self._elems[i].comment,str(self._elems[i].Block))
+		sg.Message(func='Tags.debug_elems',level=sh.lev_info,message=message)
 	
 	def debug(self,Sort=True): # orphant
 		message = ''
@@ -897,8 +897,8 @@ class Tags:
 		par7 = tag_pattern_st2 in self._tags[i]
 		if par1 or par2 or par3 or par4 or par5 or par6 or par7:
 			# It is reasonable to bind URLs to terms only, but we want the number of URLs to match the number of article elements, moreover, extra URLs can appear useful.
+			pos1 = self._borders[i][1] + 1
 			if i + 1 < len(self._tags):
-				pos1 = self._borders[i][1] + 1
 				pos2 = self._borders[i+1][0] - 1
 				if pos1 >= len(self._page):
 					log.append('Tags._term',sh.lev_warn,sh.globs['mes'].tag_near_text_end % self._tags[i])
@@ -907,6 +907,8 @@ class Tags:
 				self._url(i)
 			else:
 				log.append('Tags._term',sh.lev_warn,sh.globs['mes'].last_tag % self._tags[i])
+				# To compensate a missing tag, we also can add '</dtrn><dtrn></dtrn>' to the output of 'ExtDics.get'
+				self._elems[-1].term = self._page[pos1::]
 				
 	# Extract a speech form
 	def _speech(self,i=0):
@@ -958,8 +960,7 @@ class Tags:
 			self.url = self.url.replace(tag_pattern8,'')
 			self.url = sh.globs['var']['pair_root'] + self.url
 		else:
-			self.url = '' # todo: does this help?
-			log.append('Tags._url',sh.lev_warn,sh.globs['mes'].url_extraction_failure % self.url)
+			self.url = ''
 		
 	# Extract a comment
 	def _comment(self,i=0):
@@ -1027,15 +1028,13 @@ class Tags:
 			for i in range(len(self._tags)):
 				# Если используется шаблон вместо пустого словаря, то нужно обратить внимание на то, что при изменении присвоенных значений будет меняться и сам шаблон!
 				self._elems.append(Cell())
-				EntryMatch = False
 				self._dic(i)
 				if self._phrases(i):
 					self._elems[-1].speech = ''
+				elif self._speech(i):
+					self._elems[-1].term = ''
 				else:
-					if self._speech(i):
-						self._elems[-1].term = ''
-					else:
-						self._term(i)
+					self._term(i)
 				self._transcription(i)
 				self._comment(i)
 				log.append('Tags.elems',sh.lev_debug,sh.globs['mes'].adding_url % self.url)
@@ -1165,6 +1164,12 @@ class Elems:
 		self.blacklist()
 		self.prioritize()
 		
+	def debug_elems(self): # orphant
+		message = ''
+		for i in range(len(self._elems)):
+			message += '#%d:\ndic:\t\t"%s"\nspeech:\t\t"%s"\ntransc:\t\t"%s"\nterm:\t\t"%s"\ncomment:\t\t"%s"\nBlock:\t\t%s\n\n' % (i,self._elems[i].dic,self._elems[i].speech,self._elems[i].transc,self._elems[i].term,self._elems[i].comment,str(self._elems[i].Block))
+		sg.Message(func='Elems.debug_elems',level=sh.lev_info,message=message)
+		
 	def blacklist(self):
 		articles.current()._block = [elem.dic for elem in self._elems if elem.dic in objs.blacklist()]
 		
@@ -1275,8 +1280,6 @@ class Cells:
 	def __init__(self,elems=[]):
 		self._cells = []
 		self._elems = elems
-		# cur
-		#self.debug_elems()
 		self.blacklist()
 		self.alphabetize()
 		self.prioritize()
@@ -1356,7 +1359,7 @@ class Cells:
 					pass
 				elif len(row) == request._collimit:
 					self._cells.append(row)
-					row = []
+					row = [self._elems[i]]
 				elif self._elems[i].dic != old_dic or self._elems[i].speech != old_speech:
 					if len(row) > 0:
 						while len(row) < request._collimit:
@@ -2058,7 +2061,7 @@ class TkinterHtmlMod(tk.Widget):
 		# Note: encoding must be UTF-8 here
 		if request._source == 'Offline':
 			objs.online().reset(self.get_pair(),self.search,MTSpecific=False)
-			# cur # todo: elaborate
+			# note # todo: elaborate
 			self.url = self.search
 		else:
 			objs.online().reset(self.get_pair(),self.search,MTSpecific=True)
@@ -2300,7 +2303,6 @@ class TkinterHtmlMod(tk.Widget):
 			elif self.search == sh.globs['var']['repeat_sign']:
 				self.search_field.insert_repeat_sign()
 			else:
-				# cur
 				self.search_sources()
 					
 	# Создание каркаса с полем ввода, кнопкой выбора направления перевода и кнопкой выхода
@@ -2931,14 +2933,9 @@ class ExtDics:
 				if tmp:
 					tmp = re.sub(r'<blockquote>\d+\)[\s]{0,1}<',r'<',tmp)
 					# Set offline dictionary title
-					# cur
 					lst.append(tag_pattern1 + dic._name + tag_pattern8 + tmp)
 			tmp = '\n'.join(lst)
-			# cur
-			# fix: the last term is removed (col_limit == 4), the last speech is removed
-			# Remove XML ending tags
-			# todo: make all fixes and del '<dtrn></dtrn></body>'
-			return re.sub(r'\<\/[a-zA-Z]*\>','',tmp)# + '<dtrn>...</dtrn></body>'
+			return re.sub(r'\<\/[a-zA-Z]*\>','',tmp) # Remove XML ending tags
 		else:
 			log.append('ExtDics.get',sh.lev_warn,sh.globs['mes'].canceled)
 	
