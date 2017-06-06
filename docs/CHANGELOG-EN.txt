@@ -1,5 +1,9 @@
 
 
+5.0
+* Add a basic Stardict support
+* Fix the bug causing skipping cells
+
 4.10
 * Add phonetic signs
 

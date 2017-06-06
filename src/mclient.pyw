@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-''' # fix:
-	- Sometimes terms disappear ('добро пожаловать в Эдинбург!' == 'welcome to Edinburgh!')
+''' # todo
 	- Make transcriptions Selectable
 '''
 
@@ -35,12 +34,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 '''
 
 
-'''class log:
+class log:
 	
 	def append(self,*args):
 		pass
-'''
-log = sh.log
+
+#log = sh.log
 
 
 
