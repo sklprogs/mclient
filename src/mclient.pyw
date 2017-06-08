@@ -348,8 +348,19 @@ assert(len(transc_orig) == len(transc_final))
 class Objects: # Requires 'article'
 	
 	def __init__(self):
-		self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = self._blacklist = self._prioritize = None
+		self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = self._blacklist = self._prioritize = self._parties = None
 		
+	def parties(self):
+		if not self._parties:
+			top = sg.objs.new_top(Maximize=0)
+			sg.Geometry(parent_obj=top).set('800x600')
+			self._parties = sg.TextBox(parent_obj=top)
+			self._parties.icon(sh.globs['var']['icon_mclient'])
+			self._parties.title(text=sh.globs['mes'].btn_third_parties+':')
+			self._parties.insert(text=third_parties,MoveTop=1)
+			self._parties.read_only()
+		return self._parties
+	
 	def top(self):
 		if not self._top:
 			self._top = sg.Top(sg.objs.root())
@@ -1507,9 +1518,7 @@ class About:
 
 	# Отобразить информацию о лицензии третьих сторон
 	def show_third_parties(self,*args):
-		objs.textbox().update(title=sh.globs['mes'].btn_third_parties+':',text=third_parties,ReadOnly=True,icon=sh.globs['var']['icon_mclient'])
-		# todo: Maximize key does not work outside sharedGUI
-		objs._textbox.show()
+		objs.parties().show()
 
 
 		
