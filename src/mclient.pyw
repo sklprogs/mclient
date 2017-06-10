@@ -1474,23 +1474,68 @@ class About:
 	
 	def __init__(self):
 		self.Active = False
-		self.type = 'About'
-		self.obj = sg.Top(sg.objs.root())
+		self.type   = 'About'
+		self.obj    = sg.Top(sg.objs.root())
 		self.widget = self.obj.widget
-		self.obj.icon(sh.globs['var']['icon_mclient'])
+		self.obj.icon (sh.globs['var']['icon_mclient'])
 		self.obj.title(sh.globs['mes'].about)
-		frame1 = sg.Frame(self,expand=1,fill='both',side='top')
-		frame2 = sg.Frame(self,expand=1,fill='both',side='left')
-		frame3 = sg.Frame(self,expand=1,fill='both',side='right')
-		label = sg.Label(parent_obj=frame1,text=sh.globs['mes'].about_text % version,font=sh.globs['var']['font_style'])
+		frame1 = sg.Frame (
+		            parent_obj          = self                                ,
+		            expand              = 1                                   ,
+		            fill                = 'both'                              ,
+		            side                = 'top'
+		                  )
+		frame2 = sg.Frame (
+		            parent_obj          = self                                ,
+		            expand              = 1                                   ,
+		            fill                = 'both'                              ,
+		            side                = 'left'
+		                  )
+		frame3 = sg.Frame (
+		            parent_obj          = self                                ,
+		            expand              = 1                                   ,
+		            fill                = 'both'                              ,
+		            side                = 'right'
+		                  )
+		label  = sg.Label (
+		            parent_obj          = frame1                              ,
+		            text                = sh.globs['mes'].about_text % version,
+		            font                = sh.globs['var']['font_style']
+		                  )
 		# Лицензия
-		sg.Button(frame2,text=sh.globs['mes'].btn_third_parties,hint=sh.globs['mes'].hint_license,action=self.show_third_parties,side='left')
-		sg.Button(frame3,text=sh.globs['mes'].btn_license,hint=sh.globs['mes'].hint_license,action=self.open_license_url,side='left')
+		sg.Button (
+		            parent_obj          = frame2                              ,
+		            text                = sh.globs['mes'].btn_third_parties   ,
+		            hint                = sh.globs['mes'].hint_license        ,
+		            action              = self.show_third_parties             ,
+		            side                = 'left'
+		          )
+		sg.Button (
+		            parent_obj          = frame3                              ,
+		            text                = sh.globs['mes'].btn_license         ,
+		            hint                = sh.globs['mes'].hint_license        ,
+		            action              = self.open_license_url               ,
+		            side                = 'left'
+		          )
 		# Отправить письмо автору
-		sg.Button(frame3,text=sh.globs['mes'].btn_email_author,hint=sh.globs['mes'].hint_email_author,action=self.response_back,side='right')
+		sg.Button (
+		            parent_obj          = frame3                              ,
+		            text                = sh.globs['mes'].btn_email_author    ,
+		            hint                = sh.globs['mes'].hint_email_author   ,
+		            action              = self.response_back                  ,
+		            side                = 'right'
+		          )
 		self.widget.focus_set()
-		sg.bind(obj=self.obj,bindings=sh.globs['var']['bind_show_about'],action=self.toggle)
-		sg.bind(obj=self.obj,bindings='<Escape>',action=self.close)
+		sg.bind (
+		            obj                 = self.obj                            ,
+		            bindings            = sh.globs['var']['bind_show_about']  ,
+		            action              = self.toggle
+		        )
+		sg.bind (
+		            obj                 = self.obj                            ,
+		            bindings            = '<Escape>'                          ,
+		            action              = self.close
+		        )
 		self.close()
 	
 	def close(self,*args):
@@ -1509,7 +1554,10 @@ class About:
 	
 	# Написать письмо автору
 	def response_back(self,*args):
-		sh.Email(email=sh.email,subject=sh.globs['mes'].program_subject % product).create()
+		sh.Email (
+		            email               = sh.email                            ,
+		            subject             = sh.globs['mes'].program_subject % product
+		         ).create()
 
 	# Открыть веб-страницу с лицензией
 	def open_license_url(self,*args):
@@ -1525,9 +1573,19 @@ class About:
 class SaveArticle:
 	
 	def __init__(self):
-		self.type = 'SaveArticle'
+		self.type       = 'SaveArticle'
 		self.parent_obj = sg.Top(sg.objs.root())
-		self.obj = sg.ListBox(parent_obj=self.parent_obj,Multiple=False,lst=[sh.globs['mes'].save_view_as_html,sh.globs['mes'].save_article_as_html,sh.globs['mes'].save_article_as_txt,sh.globs['mes'].copy_article_html,sh.globs['mes'].copy_article_txt],title=sh.globs['mes'].select_action,icon=sh.globs['var']['icon_mclient'])
+		self.obj        = sg.ListBox (
+		            parent_obj          = self.parent_obj                     ,
+		            Multiple            = False                               ,
+		            lst                 = [sh.globs['mes'].save_view_as_html  ,
+		                                  sh.globs['mes'].save_article_as_html,
+		                                  sh.globs['mes'].save_article_as_txt ,
+		                                  sh.globs['mes'].copy_article_html   ,
+		                                  sh.globs['mes'].copy_article_txt]   ,
+		            title               = sh.globs['mes'].select_action       ,
+		            icon                = sh.globs['var']['icon_mclient']
+		                             )
 		self.widget = self.obj.widget
 		# Use this instead of 'close' because there is no selection yet
 		self.obj.interrupt()
@@ -1560,7 +1618,12 @@ class SaveArticle:
 				self.copy_view()
 	
 	def view_as_html(self):
-		self.file = sg.dialog_save_file(filetypes=((sh.globs['mes'].webpage,'.htm'),(sh.globs['mes'].webpage,'.html'),(sh.globs['mes'].all_files,'*')))
+		self.file = sg.dialog_save_file (
+		            filetypes           = ((sh.globs['mes'].webpage,'.htm')   ,
+		                                   (sh.globs['mes'].webpage,'.html')  ,
+		                                   (sh.globs['mes'].all_files,'*')
+		                                  )
+		                                )
 		if self.file:
 			self.fix_ext(ext='.htm')
 			# We disable AskRewrite because the confirmation is already built in the internal dialog
@@ -1569,14 +1632,23 @@ class SaveArticle:
 	def raw_as_html(self):
 		# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
 		# Также меняем сокращенные гиперссылки на полные, чтобы они работали и в локальном файле.
-		self.file = sg.dialog_save_file(filetypes=((sh.globs['mes'].webpage,'.htm'),(sh.globs['mes'].webpage,'.html'),(sh.globs['mes'].all_files,'*')))
+		self.file = sg.dialog_save_file (
+		            filetypes           = ((sh.globs['mes'].webpage,'.htm')   ,
+		                                   (sh.globs['mes'].webpage,'.html')  ,
+		                                   (sh.globs['mes'].all_files,'*')
+		                                  )
+		                                )
 		if self.file:
 			self.fix_ext(ext='.htm')
 			# todo: fix remaining links to localhost
 			sh.WriteTextFile(self.file,AskRewrite=False).write(articles.current().html_raw().replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/M.exe?',sh.globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/m.exe?',sh.globs['var']['pair_root']))
 		
 	def view_as_txt(self):
-		self.file = sg.dialog_save_file(filetypes=((sh.globs['mes'].plain_text,'.txt'),(sh.globs['mes'].all_files,'*')))
+		self.file = sg.dialog_save_file (
+		            filetypes           = ((sh.globs['mes'].plain_text,'.txt'),
+		                                   (sh.globs['mes'].all_files,'*')
+		                                  )
+		                                )
 		if self.file:
 			self.fix_ext(ext='.txt')
 			sh.WriteTextFile(self.file,AskRewrite=False).write(articles.current()._text)
@@ -1593,20 +1665,28 @@ class SaveArticle:
 class SearchArticle:
 	
 	def __init__(self):
-		self.type = 'SearchArticle'
-		self.obj = objs.entry()
+		self.type   = 'SearchArticle'
+		self.obj    = objs.entry()
 		self.obj.title(sh.globs['mes'].search_word)
 		self.widget = self.obj.widget
-		sg.bind(obj=self.obj,bindings=sh.globs['var']['bind_search_article_forward'],action=self.close)
-		sg.bind(obj=self.obj,bindings='<Escape>',action=self.close)
+		sg.bind (
+		            obj                 = self.obj                            ,
+		            bindings            = sh.globs['var']['bind_search_article_forward'],
+		            action              = self.close
+		        )
+		sg.bind (
+		            obj                 = self.obj                            ,
+		            bindings            = '<Escape>'                          ,
+		            action              = self.close
+		        )
 		self.obj.select_all()
 		self.obj.focus()
 		self.close()
 		self.reset()
 	
 	def reset(self):
-		self._list = []
-		self._pos = -1
+		self._list   = []
+		self._pos    = -1
 		self._search = ''
 		# Plus: keeping old input
 		# Minus: searching old input after cancelling the search and searching again
@@ -1646,14 +1726,22 @@ class SearchArticle:
 		if self._pos + 1 < len(self.list()):
 			self._pos += 1
 		else:
-			sg.Message(func='SearchArticle.forward',level=sh.lev_info,message=sh.globs['mes'].search_from_start)
+			sg.Message (
+			        func                = 'SearchArticle.forward'             ,
+			        level               = sh.lev_info                         ,
+			        message             = sh.globs['mes'].search_from_start
+			           )
 			self._pos = 0
 	
 	def backward(self):
 		if self._pos > 0:
 			self._pos -= 1
 		else:
-			sg.Message(func='SearchArticle.backward',level=sh.lev_info,message=sh.globs['mes'].search_from_end)
+			sg.Message (
+			        func                = 'SearchArticle.backward'            ,
+			        level               = sh.lev_info                         ,
+			        message             = sh.globs['mes'].search_from_end
+			           )
 			self._pos = len(self.list()) - 1
 
 	
@@ -1662,10 +1750,10 @@ class SearchArticle:
 class SearchField:
 	
 	def __init__(self,parent_obj,side='left',ipady=5):
-		self.type = 'SearchField'
+		self.type       = 'SearchField'
 		self.parent_obj = parent_obj
 		# Поле ввода поисковой строки
-		self.widget = tk.Entry(self.parent_obj.widget)
+		self.widget     = tk.Entry(self.parent_obj.widget)
 		# Подгоняем высоту поисковой строки под высоту графических кнопок; значение 5 подобрано опытным путем
 		self.widget.pack(side=side,ipady=ipady)
 		
@@ -1699,11 +1787,11 @@ class SearchField:
 class SpecSymbols:
 	
 	def __init__(self):
-		self.obj = sg.Top(sg.objs.root())
+		self.obj    = sg.Top(sg.objs.root())
 		self.widget = self.obj.widget
-		self.obj.icon(sh.globs['var']['icon_mclient'])
+		self.obj.icon (sh.globs['var']['icon_mclient'])
 		self.obj.title(sh.globs['mes'].paste_spec_symbol)
-		self.frame = sg.Frame(self.obj,expand=1)
+		self.frame  = sg.Frame(self.obj,expand=1)
 		for i in range(len(sh.globs['var']['spec_syms'])):
 			if i % 10 == 0:
 				self.frame = sg.Frame(self.obj,expand=1)
@@ -1714,7 +1802,11 @@ class SpecSymbols:
 		self.close()
 		
 	def bindings(self):
-		sg.bind(obj=self.obj,bindings=['<Escape>',sh.globs['var']['bind_spec_symbol']],action=self.close)
+		sg.bind (
+		            obj                 = self.obj                            ,
+		            bindings            = ['<Escape>',sh.globs['var']['bind_spec_symbol']],
+		            action              = self.close
+		        )
 	
 	def show(self,*args):
 		self.obj.show()
@@ -1735,13 +1827,28 @@ class History:
 	def gui(self):
 		self.parent_obj = sg.Top(sg.objs.root())
 		self.parent_obj.widget.geometry('250x350')
-		self.obj = sg.ListBox(parent_obj=self.parent_obj,title=self._title,icon=self._icon,SelectionCloses=False,SingleClick=False,Composite=True,user_function=self.go)
+		self.obj = sg.ListBox (
+		            parent_obj          = self.parent_obj                     ,
+		            title               = self._title                         ,
+		            icon                = self._icon                          ,
+		            SelectionCloses     = False                               ,
+		            SingleClick         = False                               ,
+		            Composite           = True                                ,
+		            user_function       = self.go
+		                      )
 		self.widget = self.obj.widget
 		self.bindings()
 		self.close()
 		
 	def bindings(self):
-		sg.bind(obj=self.parent_obj,bindings=[sh.globs['var']['bind_toggle_history'],sh.globs['var']['bind_toggle_history_alt'],'<Escape>'],action=self.toggle)
+		sg.bind (
+		            obj                 = self.parent_obj                     ,
+		            bindings            = [sh.globs['var']['bind_toggle_history'],
+		                                   sh.globs['var']['bind_toggle_history_alt'],
+		                                   '<Escape>'
+		                                  ]                                   ,
+		            action              = self.toggle
+		        )
 		sg.bind(obj=self.parent_obj,bindings='<ButtonRelease-3>',action=self.clear)
 	
 	def autoselect(self):
@@ -1792,17 +1899,26 @@ class History:
 class Moves:
 	
 	def __init__(self,cells=[]):
-		self._moves = {'_move_right':[],'_move_left':[],'_move_down':[],'_move_up':[],'_move_line_start':[],'_move_line_end':[],'_move_text_start':[],'_move_text_end':[]}
+		self._moves = {
+		            '_move_right'       : [] ,
+		            '_move_left'        : [] ,
+		            '_move_down'        : [] ,
+		            '_move_up'          : [] ,
+		            '_move_line_start'  : [] ,
+		            '_move_line_end'    : [] ,
+		            '_move_text_start'  : [] ,
+		            '_move_text_end'    : []
+		              }
 		self._cells = cells
 		if self._cells:
-			self.text_start()
-			self.text_end()
-			self.right()
-			self.left()
-			self.down()
-			self.up()
-			self.line_start()
-			self.line_end()
+			self.text_start ()
+			self.text_end   ()
+			self.right      ()
+			self.left       ()
+			self.down       ()
+			self.up         ()
+			self.line_start ()
+			self.line_end   ()
 		
 	# Вернуть первую выделяемую ячейку по вертикали в направлении сверху вниз
 	def get_vert_selectable(self,cur_i=0,cur_j=0,GetNext=True):
@@ -2864,7 +2980,7 @@ class Lists:
 		paths            = Paths()
 		self._blacklist  = paths.blacklist()
 		self._prioritize = paths.prioritize()
-		self.Success = paths.Success
+		self.Success     = paths.Success
 		
 	def blacklist(self):
 		if self.Success:
