@@ -18,7 +18,7 @@ import sharedGUI as sg
 import pystardict as pd
 
 product = 'MClient'
-version = '5.0'
+version = '5.0.1'
 
 third_parties = '''
 tkinterhtml
@@ -47,19 +47,19 @@ class ConfigMclient(sh.Config):
 	
 	def __init__(self):
 		super().__init__()
-		self.sections = [sh.SectionBooleans,sh.SectionIntegers,sh.SectionVariables]
-		self.sections_abbr = [sh.SectionBooleans_abbr,sh.SectionIntegers_abbr,sh.SectionVariables_abbr]
-		self.sections_func = [sh.config_parser.getboolean,sh.config_parser.getint,sh.config_parser.get]
-		self.message = sh.globs['mes'].missing_config + '\n'
-		self.total_keys = 0
-		self.changed_keys = 0
-		self.missing_keys = 0
+		self.sections         = [sh.SectionBooleans,sh.SectionIntegers,sh.SectionVariables]
+		self.sections_abbr    = [sh.SectionBooleans_abbr,sh.SectionIntegers_abbr,sh.SectionVariables_abbr]
+		self.sections_func    = [sh.config_parser.getboolean,sh.config_parser.getint,sh.config_parser.get]
+		self.message          = sh.globs['mes'].missing_config + '\n'
+		self.total_keys       = 0
+		self.changed_keys     = 0
+		self.missing_keys     = 0
 		self.missing_sections = 0
 		# Create these keys before reading the config
-		self.path = sh.objs.pdir().add('mclient.cfg')
+		self.path    = sh.objs.pdir().add('mclient.cfg')
 		self.reset()
-		h_read = sh.ReadTextFile(self.path,Silent=self.Silent)
-		self.text = h_read.get()
+		h_read       = sh.ReadTextFile(self.path,Silent=self.Silent)
+		self.text    = h_read.get()
 		self.Success = h_read.Success
 		self._default()
 		if os.path.exists(self.path):
@@ -174,10 +174,10 @@ class ConfigMclient(sh.Config):
 				           })
 	
 	def reset(self):
-		sh.globs['bool'] = {}
+		sh.globs['bool']  = {}
 		sh.globs['float'] = {}
-		sh.globs['int'] = {}
-		sh.globs['var'] = {}
+		sh.globs['int']   = {}
+		sh.globs['var']   = {}
 		
 	def additional_keys(self):
 		sh.globs['var'].update({
@@ -224,11 +224,12 @@ class ConfigMclient(sh.Config):
 ConfigMclient()
 sh.h_lang.set()
 
-if sh.oss.win():
-	import kl_mod_win as kl_mod
-	import pythoncom
-else:
-	import kl_mod_lin as kl_mod
+if __name__ == '__main__':
+	if sh.oss.win():
+		import kl_mod_win as kl_mod
+		import pythoncom
+	else:
+		import kl_mod_lin as kl_mod
 
 sh.globs['_tkhtml_loaded'] = False
 sh.globs['geom_top'] = {}
@@ -236,8 +237,8 @@ sh.globs['top'] = {}
 
 online_url_safe = sh.globs['var']['pair_root'] + 'l1=2&l2=1&s=%ED%E5%E2%E5%F0%ED%E0%FF+%F1%F1%FB%EB%EA%E0' # 'неверная ссылка'
 sep_words_found = 'найдены отдельные слова'
-message_board = 'спросить в форуме'
-nbspace = ' '
+message_board   = 'спросить в форуме'
+nbspace         = ' '
 
 pairs = ('ENG <=> RUS','DEU <=> RUS','SPA <=> RUS','FRA <=> RUS','NLD <=> RUS','ITA <=> RUS','LAV <=> RUS','EST <=> RUS','AFR <=> RUS','EPO <=> RUS','RUS <=> XAL','XAL <=> RUS','ENG <=> DEU','ENG <=> EST')
 online_dic_urls = ( sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_rus'],	# ENG <=> RUS, 'CL=1&s=%s'
@@ -454,7 +455,7 @@ class Article:
 	
 	def source(self):
 		if self._source is None:
-			self._source = 'Multitran'
+			self._source = request._source
 		return self._source
 		
 	def search(self):
@@ -576,7 +577,7 @@ class Articles: # Requires 'request'
 		if self._no > 0:
 			return self._articles[self._no-1].search()
 			
-	def debug(self): # orphant
+	def debug(self): # orphan
 		old = self._no
 		message = ''
 		for i in range(self.len()):
@@ -696,42 +697,43 @@ class HTML:
 
 class Page:
 	
-	def __init__(self,source='Multitran',search_str='SEARCH'):
-		self._html_raw = self._page = ''
-		self._source = source
+	def __init__(self,source='All',search_str='SEARCH'):
+		self._html_raw   = self._page = ''
+		self._source     = source
 		self._search_str = search_str
 		
 	def run(self):
-		self.get()
+		self.get                ()
 		self.mt_specific_replace()
-		self.decode_entities()   # HTML specific
-		self.common_replace()    # HTML specific
-		self.article_not_found() # HTML specific
+		self.decode_entities    () # HTML specific
+		self.common_replace     () # HTML specific
+		self.article_not_found  () # HTML specific
 		return self._page
 		
 	def article_not_found(self): # HTML specific
-		# If separate words are found instead of a phrase, prepare those words only
-		if sep_words_found in self._page:
-			self._page = self._page.replace(sep_words_found,'')
-			if message_board in self._page:
-				board_pos = self._page.index(message_board)
-			else:
-				board_pos = -1
-			while tag_pattern11 in self._page:
-				if self._page.index(tag_pattern11) < board_pos:
-					self._page = self._page.replace(tag_pattern11,tag_pattern13)
+		if self._source == 'All' or self._source == 'Online':
+			# If separate words are found instead of a phrase, prepare those words only
+			if sep_words_found in self._page:
+				self._page = self._page.replace(sep_words_found,'')
+				if message_board in self._page:
+					board_pos = self._page.index(message_board)
 				else:
-					break
-			while tag_pattern1 in self._page:
-				tag_pos = self._page.index(tag_pattern1)
-				if tag_pos < board_pos:
-					self._page = self._page.replace(tag_pattern1,tag_pattern12,1)
-				else:
-					break
-			# Вставить sep_words_found перед названием 1-го словаря. Нельзя вставлять его в самое начало ввиду особенностей обработки delete_entries.
-			self._page = self._page[:board_pos] + tag_pattern7 + tag_pattern5 + sep_words_found + tag_pattern6
-			# Поскольку message_board встречается между вхождениями, а не до них или после них, то обрабатываем его вне delete_entries.
-			self._page = self._page.replace(message_board,'')
+					board_pos = -1
+				while tag_pattern11 in self._page:
+					if self._page.index(tag_pattern11) < board_pos:
+						self._page = self._page.replace(tag_pattern11,tag_pattern13)
+					else:
+						break
+				while tag_pattern1 in self._page:
+					tag_pos = self._page.index(tag_pattern1)
+					if tag_pos < board_pos:
+						self._page = self._page.replace(tag_pattern1,tag_pattern12,1)
+					else:
+						break
+				# Вставить sep_words_found перед названием 1-го словаря. Нельзя вставлять его в самое начало ввиду особенностей обработки delete_entries.
+				self._page = self._page[:board_pos] + tag_pattern7 + tag_pattern5 + sep_words_found + tag_pattern6
+				# Поскольку message_board встречается между вхождениями, а не до них или после них, то обрабатываем его вне delete_entries.
+				self._page = self._page.replace(message_board,'')
 	
 	def common_replace(self): # HTML specific
 		self._page = self._page.replace('\r\n','')
@@ -745,15 +747,18 @@ class Page:
 		self._page = self._page.replace('> ','>')
 		
 	def mt_specific_replace(self):
-		self._page = self._page.replace('&nbsp;Вы знаете перевод этого выражения? Добавьте его в словарь:','').replace('&nbsp;Вы знаете перевод этого слова? Добавьте его в словарь:','').replace('&nbsp;Требуется авторизация<br>&nbsp;Пожалуйста, войдите на сайт под Вашим именем','').replace('Термины, содержащие ','')
-		self._page = re.sub('все формы слов[а]{0,1} \(\d+\)','',self._page)
+		if self._source == 'All' or self._source == 'Online':
+			self._page = self._page.replace('&nbsp;Вы знаете перевод этого выражения? Добавьте его в словарь:','').replace('&nbsp;Вы знаете перевод этого слова? Добавьте его в словарь:','').replace('&nbsp;Требуется авторизация<br>&nbsp;Пожалуйста, войдите на сайт под Вашим именем','').replace('Термины, содержащие ','')
+			self._page = re.sub('все формы слов[а]{0,1} \(\d+\)','',self._page)
 	
 	# Convert HTML entities to a human readable format, e.g., '&copy;' -> '©'
 	def decode_entities(self): # HTML specific
-		try:
-			self._page = html.unescape(self._page)
-		except:
-			log.append('Page.decode_entities',sh.lev_err,sh.globs['mes'].html_conversion_failure)
+		# todo: do we need to check this?
+		if self._source == 'All' or self._source == 'Online':
+			try:
+				self._page = html.unescape(self._page)
+			except:
+				log.append('Page.decode_entities',sh.lev_err,sh.globs['mes'].html_conversion_failure)
 	
 	def _get_online(self):
 		Got = False
@@ -778,10 +783,9 @@ class Page:
 				self._page = self._page.decode(sh.globs['var']['win_encoding'])
 			except:
 				sg.Message(func='Page._get_online',level=sh.lev_err,message=sh.globs['mes'].wrong_html_encoding)
-			self._html_raw = self._page
 	
 	def _get_offline(self):
-		self._page = self._html_raw = ext_dics.get(lang=request._lang,search=self._search_str)
+		self._page = ext_dics.get(lang=request._lang,search=self._search_str)
 	
 	def get(self):
 		if not self._page:
@@ -790,13 +794,13 @@ class Page:
 			h_table.clear_search_field()
 			'''
 			page = ''
-			if request._source == 'All': # todo: mes
+			if self._source == 'All': # todo: mes
 				self._get_online()
 				page = self._page
 				self._get_offline()
-			elif request._source == 'Online':
+			elif self._source == 'Online':
 				self._get_online()
-			elif request._source == 'Offline':
+			elif self._source == 'Offline':
 				self._get_offline()
 			else:
 				sg.Message('Page.get',sh.lev_err,sh.globs['mes'].unknown_mode % (str(request._source),';'.join(sources)))
@@ -806,6 +810,7 @@ class Page:
 				self._page += page
 			elif page:
 				self._page = page
+			self._html_raw = self._page
 		return self._page
 
 
@@ -818,18 +823,18 @@ class Tags:
 		self._elems   = []
 		self._tags    = []
 		self.url      = '' # Only a current URL for a tag
-		self.invalid()
+		self.invalid   ()
 		self.open_close()
-		self._non_tags()
-		self.elems()
+		self._non_tags ()
+		self.elems     ()
 	
-	def debug_elems(self): # orphant
+	def debug_elems(self): # orphan
 		message = ''
 		for i in range(len(self._elems)):
 			message += '#%d:\ndic:\t\t"%s"\nspeech:\t\t"%s"\ntransc:\t\t"%s"\nterm:\t\t"%s"\ncomment:\t\t"%s"\nBlock:\t\t%s\n\n' % (i,self._elems[i].dic,self._elems[i].speech,self._elems[i].transc,self._elems[i].term,self._elems[i].comment,str(self._elems[i].Block))
 		sg.Message(func='Tags.debug_elems',level=sh.lev_info,message=message)
 	
-	def debug(self,Sort=True): # orphant
+	def debug(self,Sort=True): # orphan
 		message = ''
 		lst = list(self._tags)
 		if Sort:
@@ -845,7 +850,7 @@ class Tags:
 				tmp_borders = []
 				i = 0
 				while i < len(self._page):
-					# Signs '<' and '>' as such can cause serious problems since they can occur in invalid cases like "perform >>> conduct >> carry out (vbadalov)". The following algorithm is also not 100% precise but is better.
+					# Signs '<' and '>' as such can cause serious problems since they can occur in invalid cases like "perform >>> conduct >> carry out (vbadalov)" (sampling, test). The following algorithm is also not 100% precise but is better.
 					if self._page[i] == '<' or self._page[i] == '>':
 						tmp_borders.append(i)
 					i += 1
@@ -859,7 +864,7 @@ class Tags:
 				while i < len(tmp_borders):
 					uneven = tmp_borders[i]
 					i += 1
-					even = tmp_borders[i]
+					even   = tmp_borders[i]
 					i += 1
 					self._borders += [[uneven,even]]
 		return self._borders
@@ -964,7 +969,7 @@ class Tags:
 	# Extract URL
 	def _url(self,i=0):
 		self.url = self._tags[i].replace(tag_pattern2,'',1).replace(tag_pattern2b,'',1)
-		# We need re because of such cases as "<a href = "M.exe?t = 74188_2_4&s1 = faute">ошибка"
+		# We need re because of such cases as "<a href="M.exe?t=74188_2_4&s1=faute">ошибка"
 		self.url = re.sub('\"\>.*','">',self.url)
 		if self.url.endswith(tag_pattern8):
 			self.url = self.url.replace(tag_pattern8,'')
@@ -1065,6 +1070,7 @@ class Tags:
 		self._page = self._page.replace('<strong>','').replace('</strong>','')
 		# todo: should we process this tag?
 		self._page = self._page.replace('<abr>','')
+		self._page = self._page.replace('<span STYLE="color:gray">|</span>','<span STYLE="color:gray">|<span STYLE="color:black">')
 		
 	def open_close(self): # Remove symbols '<' and '>' that do not define tags
 		self._page = list(self._page)
@@ -1167,6 +1173,7 @@ class Elems:
 		self.empty()
 		# todo: debug
 		#self.unite_by_url()
+		#self.debug_elems()
 		self.define_selectables()
 		self.fill_dic()
 		self.fill_speech()
@@ -1174,7 +1181,7 @@ class Elems:
 		self.blacklist()
 		self.prioritize()
 		
-	def debug_elems(self): # orphant
+	def debug_elems(self): # orphan
 		message = ''
 		for i in range(len(self._elems)):
 			message += '#%d:\ndic:\t\t"%s"\nspeech:\t\t"%s"\ntransc:\t\t"%s"\nterm:\t\t"%s"\ncomment:\t\t"%s"\nBlock:\t\t%s\n\n' % (i,self._elems[i].dic,self._elems[i].speech,self._elems[i].transc,self._elems[i].term,self._elems[i].comment,str(self._elems[i].Block))
@@ -1307,13 +1314,13 @@ class Cells:
 				elem.transc_print = elem.transc
 				elem.Selectable = True
 
-	def debug_elems(self): # orphant
+	def debug_elems(self): # orphan
 		message = ''
 		for i in range(len(self._elems)):
 			message += '#%d:\ndic:\t\t"%s"\nspeech:\t\t"%s"\ntransc:\t\t"%s"\nterm:\t\t"%s"\ncomment:\t\t"%s"\nBlock:\t\t%s\n\n' % (i,self._elems[i].dic,self._elems[i].speech,self._elems[i].transc,self._elems[i].term,self._elems[i].comment,str(self._elems[i].Block))
 		sg.Message(func='Cells.debug_elems',level=sh.lev_info,message=message)
 		
-	def debug_cells(self): # orphant
+	def debug_cells(self): # orphan
 		message = ''
 		for i in range(len(self._cells)):
 			message += 'Row %d:\n' % i
@@ -2873,9 +2880,9 @@ class TkinterHtmlMod(tk.Widget):
 		for i in range(len(articles.current().cells())):
 			for j in range(len(articles.current()._cells[i])):
 				tmp_str = sh.List([articles.current()._cells[i][j].speech_print,articles.current()._cells[i][j].dic_print,articles.current()._cells[i][j].term,articles.current()._cells[i][j].comment]).space_items()
-				articles.current()._cells[i][j].first = cur_index
+				articles.current()._cells[i][j].first     = cur_index
 				articles.current()._cells[i][j].last_term = cur_index + len(articles.current()._cells[i][j].term)
-				articles.current()._cells[i][j].last = cur_index + len(tmp_str)
+				articles.current()._cells[i][j].last      = cur_index + len(tmp_str)
 				cur_index += len(tmp_str)
 				cur_index += 1
 	
@@ -3055,11 +3062,10 @@ class ExtDics:
 			for dic in dics:
 				tmp = dic.get(search=search)
 				if tmp:
-					tmp = re.sub(r'<blockquote>\d+\)[\s]{0,1}<',r'<',tmp)
 					# Set offline dictionary title
 					lst.append(tag_pattern1 + dic._name + tag_pattern8 + tmp)
 			tmp = '\n'.join(lst)
-			return re.sub(r'\<\/[a-zA-Z]*\>','',tmp) # Remove XML ending tags
+			return tmp
 		else:
 			log.append('ExtDics.get',sh.lev_warn,sh.globs['mes'].canceled)
 	
