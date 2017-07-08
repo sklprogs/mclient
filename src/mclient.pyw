@@ -5,20 +5,23 @@
 	- Make transcriptions Selectable
 '''
 
-import re
-import os, sys, platform
-import io
-# В Python 3 не работает просто import urllib, импорт должен быть именно такой, как здесь
-import urllib.request, urllib.parse
-import html
+import tkinterhtml
+import os
+import sys
 import tkinter as tk
-from tkinter import ttk
+#from tkinter import ttk # todo (?): del
 import shared as sh
 import sharedGUI as sg
-import pystardict as pd
+import page   as pg
+import tags   as tg
+import elems  as el
+import cells  as cl
+import db
+import mkhtml as mh
+
 
 product = 'MClient'
-version = '5.0.1'
+version = '5.1'
 
 third_parties = '''
 tkinterhtml
@@ -32,14 +35,6 @@ The above copyright notice and this permission notice shall be included in all c
  
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 '''
-
-
-class log:
-	
-	def append(self,*args):
-		pass
-
-#log = sh.log
 
 
 
@@ -217,7 +212,7 @@ class ConfigMclient(sh.Config):
 			if sh.globs['var'][key].endswith('.gif'):
 				old_val = sh.globs['var'][key]
 				sh.globs['var'][key] = sh.objs.pdir().add('resources',sh.globs['var'][key])
-				log.append('ConfigMclient.additional_keys',sh.lev_debug,'%s -> %s' % (old_val,sh.globs['var'][key]))
+				sh.log.append('ConfigMclient.additional_keys',sh.lev_debug,'%s -> %s' % (old_val,sh.globs['var'][key]))
 
 
 
@@ -237,8 +232,6 @@ sh.globs['top'] = {}
 
 online_url_safe = sh.globs['var']['pair_root'] + 'l1=2&l2=1&s=%ED%E5%E2%E5%F0%ED%E0%FF+%F1%F1%FB%EB%EA%E0' # 'неверная ссылка'
 sep_words_found = 'найдены отдельные слова'
-message_board   = 'спросить в форуме'
-nbspace         = ' '
 
 pairs = ('ENG <=> RUS','DEU <=> RUS','SPA <=> RUS','FRA <=> RUS','NLD <=> RUS','ITA <=> RUS','LAV <=> RUS','EST <=> RUS','AFR <=> RUS','EPO <=> RUS','RUS <=> XAL','XAL <=> RUS','ENG <=> DEU','ENG <=> EST')
 online_dic_urls = ( sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_rus'],	# ENG <=> RUS, 'CL=1&s=%s'
@@ -275,82 +268,33 @@ langs           = ( 'English'                                                   
 
 sources = ('All','Online','Offline')
 
-# Tag patterns
-tag_pattern_del = 	[
-						'.exe?a=5&s=AboutMultitran.htm',	# О словаре
-						'.exe?a=5&s=FAQ.htm'           ,	# FAQ
-						'.exe?a=40'                    ,	# Вход
-						'.exe?a=113'                   ,	# Регистрация
-						'.exe?a=24&s='                 ,	# Настройки
-						'.exe?a=5&s=searches'          ,	# Словари
-						'.exe?a=2&l1=1&l2=2'           ,	# Форум
-						'.exe?a=44&nadd=1'             ,	# Купить
-						'.exe?a=5&s=DownloadFile'      ,	# Скачать
-						'.exe?a=45'                    ,	# Отзывы
-						'.exe?a=5&s=s_contacts'        ,	# Контакты
-						'.exe?a=104&&'                 ,	# Добавить
-						'.exe?a=134&s='                ,	# Удалить
-						'.exe?a=11&l1='                ,	# Изменить
-						'.exe?a=26&&s='                ,	# Сообщить об ошибке
-						'.exe?a=136'                   ,	# Оценить сайт
-						'&ex=1'                        ,	# только заданная форма слова
-						'&order=1'                     ,	# в заданном порядке
-						'.exe?a=46&&short_value'       ,	# спросить в форуме
-						'.exe?a=5&s=SendPassword'      ,	# я забыл пароль
-						'.exe?a=5&s=EnterProblems'			# проблемы со входом или использованием форума?
-					]
-tag_pattern1    = '<a title="'
-tag_pattern2    = '<a href="M.exe?'
-tag_pattern2b   = '<a href="m.exe?'
-tag_pattern3    = '<i>'
-tag_pattern4    = '</i>'
-tag_pattern5    = '<span STYLE="color:gray">'
-tag_pattern6    = '<span STYLE="color:black">'
-tag_pattern7    = '</a>'
-tag_pattern8    = '">'
-tag_pattern9    = '<span STYLE="color:rgb(60,179,113)">'
-tag_pattern10   = '</td>'
-# Возможно '... " href', или '" href', если перевод вмещается полностью
-tag_pattern11   = '" href'
-tag_pattern12   = '<trash>'
-tag_pattern13   = '"</trash><a href'
-tag_pattern_sp1 = '<td bgcolor='
-tag_pattern_sp2 = 'M.exe?a'
-tag_pattern_sp3 = 'm.exe?a'
-tag_pattern_sp4 = '<span STYLE=&#34;color:gray&#34;>'
-tag_pattern_sp5 = '&ifp='
-tag_pattern_t1  = 'M.exe?t'
-tag_pattern_t2  = 'm.exe?t'
-tag_pattern_t3  = '<a href="M.exe?&s='
-tag_pattern_t4  = '<a href="m.exe?&s='
-tag_pattern_t5  = '<a href="M.exe?s='
-tag_pattern_t6  = '<a href="m.exe?s='
-# May also need to look at: '<a href="#start', '<a href="#phrases', '<a href="', '<span STYLE="color:gray"> (ед.ч., мн.ч.)<span STYLE="color:black">'
-tag_pattern_ph1 = '<a href="M.exe?a=3&&s='
-tag_pattern_ph2 = '<a href="m.exe?a=3&&s='
-tag_pattern_ph3 = '<a href="M.exe?a=3&s='
-tag_pattern_ph4 = '<a href="m.exe?a=3&s='
-# Transcription
-tag_pattern_tr1 = '<img SRC="/gif/'
-# Stardict-specific
-tag_pattern_st1 = '<k>'    # '</k>'
-tag_pattern_st2 = '<dtrn>' # '</dtrn>'
-tag_pattern_st3 = '<kref>' # '</kref>'
-tag_pattern_st4 = '<tr>'
-tag_pattern_st8 = '</tr>'
-
-transc_orig  = ('[',']','2','3','34','39','40','41','58','65','68','69','73','78','79','80','81','83','84','86','90','97','98','100','101','102','103','104','105','106','107','108','109','110','112','113','114','115','116','117','118','119','120','122')
-transc_final = ('[',']','','','ˌ','′','(',')',':','ʌ','ð','ɜ','ı','ŋ','ɔ','ɒ','ɑ','ʃ','θ','ʋ','ʒ','a','b','d','e','f','g','h','i','j','k','l','m','n','p','ə','r','s','t','u','v','w','æ','z')
-
-assert(len(transc_orig) == len(transc_final))
-
 
 
 class Objects: # Requires 'article'
 	
 	def __init__(self):
-		self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = self._blacklist = self._prioritize = self._parties = None
+		self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = self._blacklist = self._prioritize = self._parties = self._request = self._ext_dics = self._webframe = self._blocks_db = None
 		
+	def blocks_db(self):
+		if not self._blocks_db:
+			self._blocks_db = db.DB()
+		return self._blocks_db
+	
+	def webframe(self):
+		if not self._webframe:
+			self._webframe = WebFrame()
+		return self._webframe
+	
+	def ext_dics(self):
+		if not self._ext_dics:
+			self._ext_dics = pg.ExtDics(path=sh.objs.pdir().add('dics'))
+		return self._ext_dics
+	
+	def request(self):
+		if not self._request:
+			self._request = CurRequest()
+		return self._request
+	
 	def parties(self):
 		if not self._parties:
 			top = sg.objs.new_top(Maximize=0)
@@ -424,9 +368,12 @@ class CurRequest:
 		
 	def reset(self):
 		self._view       = 0
-		self._collimit   = 4
-		self._source     = 'All'
-		self._search     = 'Добро пожаловать!'
+		self._collimit   = 10
+		self._source    = 'All'
+		#self._source     = 'Offline'
+		self._search    = 'Добро пожаловать!'
+		#self._search    = 'filter'
+		#self._search     = 'computer'
 		self._lang       = 'English'
 		self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
 		# Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
@@ -435,6 +382,9 @@ class CurRequest:
 		self.SortTerms   = True
 		# *Temporary* turn off prioritizing and terms sorting for articles with 'sep_words_found' and in phrases; use previous settings for new articles
 		self.SpecialPage = False
+		self._page       = ''
+		self._html       = ''
+		self._html_raw   = ''
 
 
 
@@ -455,7 +405,7 @@ class Article:
 	
 	def source(self):
 		if self._source is None:
-			self._source = request._source
+			self._source = objs.request()._source
 		return self._source
 		
 	def search(self):
@@ -475,13 +425,15 @@ class Article:
 		
 	def tags(self):
 		if self._tags is None:
-			self._tags = Tags(text=self.text())
+			_tags = tg.Tags(text=self.text())
+			_tags.tags()
+			self._tags = _tags.blocks()
 		return self._tags
 	
 	def elems(self):
 		if self._elems is None:
 			# todo: check when text=None
-			self._elems = Elems(lst=self.tags()._elems)._elems
+			self._elems = Elems(lst=self.tags()).elems()
 		return self._elems
 		
 	def html(self):
@@ -491,7 +443,7 @@ class Article:
 		
 	def page(self):
 		if self._page is None:
-			self._page = Page(source=self.source(),search_str=self.search())
+			self._page = pg.Page(source=self.source(),lang=objs.request()._lang,search=self.search(),url=self.url(),win_encoding=sh.globs['var']['win_encoding'],ext_dics=objs.ext_dics())
 			self._page.run()
 		return self._page
 	
@@ -518,7 +470,7 @@ class Article:
 		
 	def prioritize(self):
 		if self._prioritize is None: # Allow an empty list
-			self.elems()
+			self.elems() # fix: rework output
 		return self._prioritize
 
 
@@ -547,16 +499,16 @@ class Articles: # Requires 'request'
 	def search_article(self):
 		Found = False
 		for i in range(self.len()):
-			if self._articles[i]._source == request._source and self._articles[i]._url == request._url:
+			if self._articles[i]._source == objs.request()._source and self._articles[i]._url == objs._request._url:
 				self._no = i
 				Found = True
 				articles.current().update()
 				break
 		if not Found:
 			self.add()
-			self.current()._source = request._source
-			self.current()._url    = request._url
-			self.current()._search = request._search
+			self.current()._source = objs.request()._source
+			self.current()._url    = objs._request._url
+			self.current()._search = objs._request._search
 			
 	def index_add(self):
 		if self._no < self.len() - 1:
@@ -589,841 +541,6 @@ class Articles: # Requires 'request'
 			message += '\n\n'
 		self._no = old
 		sg.Message(func='Articles.debug',level=sh.lev_info,message=message)
-
-
-
-class HTML:
-	
-	def __init__(self,cells=[]):
-		self._html = ''
-		self._cells = cells
-		self.html()
-	
-	def _comment(self):
-		if self._cells[self.i][self.j].comment:
-			self.output.write('<i><font face="')
-			self.output.write(sh.globs['var']['font_comments_family'])
-			self.output.write('" size="')
-			self.output.write(str(sh.globs['int']['font_comments_size']))
-			self.output.write('" color="')
-			self.output.write(sh.globs['var']['color_comments'])
-			self.output.write('">')
-			self.output.write(self._cells[self.i][self.j].comment)
-			self.output.write('</i></font></td>')
-	
-	def _speech(self):
-		self.output.write('<td align="center">')
-		if self._cells[self.i][self.j].speech_print:
-			self.output.write('<font face="')
-			self.output.write(sh.globs['var']['font_speech_family'])
-			self.output.write('" color="')
-			self.output.write(sh.globs['var']['color_speech'])
-			self.output.write('" size="')
-			self.output.write(str(sh.globs['int']['font_speech_size']))
-			self.output.write('"><b>')
-			self.output.write(self._cells[self.i][self.j].speech_print)
-			self.output.write('</b></font>')
-		self.output.write('<td>')
-		
-	def _transcription(self):
-		self.output.write('<td align="center">')
-		if self._cells[self.i][self.j].transc_print:
-			self.output.write('<font face="')
-			self.output.write(sh.globs['var']['font_speech_family'])
-			self.output.write('" color="')
-			self.output.write(sh.globs['var']['color_comments'])
-			self.output.write('" size="')
-			self.output.write(str(sh.globs['int']['font_speech_size']))
-			self.output.write('">')
-			self.output.write(self._cells[self.i][self.j].transc_print)
-			self.output.write('</font>')
-		self.output.write('<td>')
-	
-	def _dic(self):
-		if self._cells[self.i][self.j].dic_print:
-			self.output.write('<td align="center">')
-			self.output.write('<font face="')
-			self.output.write(sh.globs['var']['font_dics_family'])
-			self.output.write('" color="')
-			# todo (?): add to the config
-			if self._cells[self.i][self.j].dic_print in articles.current().block():
-				self.output.write('gray')
-			elif self._cells[self.i][self.j].dic_print in articles.current().prioritize():
-				self.output.write('red')
-			else:
-				self.output.write(sh.globs['var']['color_dics'])
-			self.output.write('" size="')
-			self.output.write(str(sh.globs['int']['font_dics_size']))
-			self.output.write('"><b>')
-			self.output.write(self._cells[self.i][self.j].dic_print)
-			self.output.write('</b></font>')
-		else:
-			self.output.write('<td>')
-		
-	def _term(self):
-		if self._cells[self.i][self.j].term:
-			self.output.write('<font face="')
-			self.output.write(sh.globs['var']['font_terms_family'])
-			self.output.write('" color="')
-			self.output.write(sh.globs['var']['color_terms'])
-			self.output.write('" size="')
-			self.output.write(str(sh.globs['int']['font_terms_size']))
-			self.output.write('">')
-			self.output.write(self._cells[self.i][self.j].term)
-			self.output.write('</font>')
-	
-	def html(self):
-		# Default Python string concatenation is too slow, so we use this module instead
-		self.output = io.StringIO()
-		self.output.write('<html><body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"><table>')
-		for i in range(len(self._cells)):
-			self.i = i
-			# todo: this doesn't work, why?
-			self.output.write('<col width="130">')
-			self.output.write('<tr>')
-			for j in range(len(self._cells[i])):
-				self.j = j
-				self._dic()
-				self._speech()
-				self._transcription()
-				self._term()
-				self._comment()
-			self.output.write('</tr>')
-		self.output.write('</table></body></html>')
-		self._html = self.output.getvalue()
-		self.output.close()
-		
-		
-
-class Page:
-	
-	def __init__(self,source='All',search_str='SEARCH'):
-		self._html_raw   = self._page = ''
-		self._source     = source
-		self._search_str = search_str
-		
-	def run(self):
-		self.get                ()
-		self.mt_specific_replace()
-		self.decode_entities    () # HTML specific
-		self.common_replace     () # HTML specific
-		self.article_not_found  () # HTML specific
-		return self._page
-		
-	def article_not_found(self): # HTML specific
-		if self._source == 'All' or self._source == 'Online':
-			# If separate words are found instead of a phrase, prepare those words only
-			if sep_words_found in self._page:
-				self._page = self._page.replace(sep_words_found,'')
-				if message_board in self._page:
-					board_pos = self._page.index(message_board)
-				else:
-					board_pos = -1
-				while tag_pattern11 in self._page:
-					if self._page.index(tag_pattern11) < board_pos:
-						self._page = self._page.replace(tag_pattern11,tag_pattern13)
-					else:
-						break
-				while tag_pattern1 in self._page:
-					tag_pos = self._page.index(tag_pattern1)
-					if tag_pos < board_pos:
-						self._page = self._page.replace(tag_pattern1,tag_pattern12,1)
-					else:
-						break
-				# Вставить sep_words_found перед названием 1-го словаря. Нельзя вставлять его в самое начало ввиду особенностей обработки delete_entries.
-				self._page = self._page[:board_pos] + tag_pattern7 + tag_pattern5 + sep_words_found + tag_pattern6
-				# Поскольку message_board встречается между вхождениями, а не до них или после них, то обрабатываем его вне delete_entries.
-				self._page = self._page.replace(message_board,'')
-	
-	def common_replace(self): # HTML specific
-		self._page = self._page.replace('\r\n','')
-		self._page = self._page.replace('\n','')
-		self._page = self._page.replace('\xa0',' ')
-		while '  ' in self._page:
-			self._page = self._page.replace('  ',' ')
-		self._page = self._page.replace(nbspace+'<','<')
-		self._page = self._page.replace(' <','<')
-		self._page = self._page.replace('>'+nbspace,'>')
-		self._page = self._page.replace('> ','>')
-		
-	def mt_specific_replace(self):
-		if self._source == 'All' or self._source == 'Online':
-			self._page = self._page.replace('&nbsp;Вы знаете перевод этого выражения? Добавьте его в словарь:','').replace('&nbsp;Вы знаете перевод этого слова? Добавьте его в словарь:','').replace('&nbsp;Требуется авторизация<br>&nbsp;Пожалуйста, войдите на сайт под Вашим именем','').replace('Термины, содержащие ','')
-			self._page = re.sub('все формы слов[а]{0,1} \(\d+\)','',self._page)
-	
-	# Convert HTML entities to a human readable format, e.g., '&copy;' -> '©'
-	def decode_entities(self): # HTML specific
-		# todo: do we need to check this?
-		if self._source == 'All' or self._source == 'Online':
-			try:
-				self._page = html.unescape(self._page)
-			except:
-				log.append('Page.decode_entities',sh.lev_err,sh.globs['mes'].html_conversion_failure)
-	
-	def _get_online(self):
-		Got = False
-		while not self._page:
-			try:
-				log.append('Page._get_online',sh.lev_info,'Get online: "%s"' % self._search_str) # todo: mes
-				# Если загружать страницу с помощью "page=urllib.request.urlopen(my_url)", то в итоге получится HTTPResponse, что полезно только для удаления тэгов JavaScript. Поскольку мы вручную удаляем все лишние тэги, то на выходе нам нужна строка.
-				self._page = urllib.request.urlopen(request._url).read()
-				log.append('Page._get_online',sh.lev_info,sh.globs['mes'].ok % self._search_str)
-				Got = True
-			# Too many possible exceptions
-			except:
-				log.append('Page._get_online',sh.lev_warn,sh.globs['mes'].failed % self._search_str)
-				# For some reason, 'break' does not work here
-				if not sg.Message(func='Page._get_online',level=sh.lev_ques,message=sh.globs['mes'].webpage_unavailable_ques).Yes:
-					self._page = 'CANCELED'
-		if self._page == 'CANCELED':
-			self._page = ''
-		if Got: # Если страница не загружена, то понятно, что ее кодировку изменить не удастся
-			try:
-				# Меняем кодировку sh.globs['var']['win_encoding'] на нормальную
-				self._page = self._page.decode(sh.globs['var']['win_encoding'])
-			except:
-				sg.Message(func='Page._get_online',level=sh.lev_err,message=sh.globs['mes'].wrong_html_encoding)
-	
-	def _get_offline(self):
-		self._page = ext_dics.get(lang=request._lang,search=self._search_str)
-	
-	def get(self):
-		if not self._page:
-			''' # todo: Paste sh.globs['mes'].wait into search_field before loading a page and clear search_field after the page has been processed. The problem: tkinter does not update when neccessary. Print supports this.
-			h_table.paste_search_field(text=sh.globs['mes'].wait)
-			h_table.clear_search_field()
-			'''
-			page = ''
-			if self._source == 'All': # todo: mes
-				self._get_online()
-				page = self._page
-				self._get_offline()
-			elif self._source == 'Online':
-				self._get_online()
-			elif self._source == 'Offline':
-				self._get_offline()
-			else:
-				sg.Message('Page.get',sh.lev_err,sh.globs['mes'].unknown_mode % (str(request._source),';'.join(sources)))
-			if self._page is None:
-				self._page = ''
-			if page and self._page:
-				self._page += page
-			elif page:
-				self._page = page
-			self._html_raw = self._page
-		return self._page
-
-
-
-class Tags:
-	
-	def __init__(self,text=''):
-		self._page    = text
-		self._borders = []
-		self._elems   = []
-		self._tags    = []
-		self.url      = '' # Only a current URL for a tag
-		self.invalid   ()
-		self.open_close()
-		self._non_tags ()
-		self.elems     ()
-	
-	def debug_elems(self): # orphan
-		message = ''
-		for i in range(len(self._elems)):
-			message += '#%d:\ndic:\t\t"%s"\nspeech:\t\t"%s"\ntransc:\t\t"%s"\nterm:\t\t"%s"\ncomment:\t\t"%s"\nBlock:\t\t%s\n\n' % (i,self._elems[i].dic,self._elems[i].speech,self._elems[i].transc,self._elems[i].term,self._elems[i].comment,str(self._elems[i].Block))
-		sg.Message(func='Tags.debug_elems',level=sh.lev_info,message=message)
-	
-	def debug(self,Sort=True): # orphan
-		message = ''
-		lst = list(self._tags)
-		if Sort:
-			lst = sorted(set(lst))
-		for i in range(len(lst)):
-			message += '%d: %s\n' % (i,lst[i])
-		sg.Message(func='Tags.debug',level=sh.lev_info,message=message)
-
-	# Create a list with positions of signs '<' and '>'
-	def borders(self):
-		if not self._borders:
-			if self._page:
-				tmp_borders = []
-				i = 0
-				while i < len(self._page):
-					# Signs '<' and '>' as such can cause serious problems since they can occur in invalid cases like "perform >>> conduct >> carry out (vbadalov)" (sampling, test). The following algorithm is also not 100% precise but is better.
-					if self._page[i] == '<' or self._page[i] == '>':
-						tmp_borders.append(i)
-					i += 1
-				if len(tmp_borders) % 2 != 0:
-					log.append('Tags.pos',sh.lev_warn,sh.globs['mes'].wrong_tag_num % len(tmp_borders))
-					if len(tmp_borders) > 0:
-						del tmp_borders[-1]
-					else:
-						log.append('Tags.pos',sh.lev_warn,sh.globs['mes'].tmp_borders_empty)
-				i = 0
-				while i < len(tmp_borders):
-					uneven = tmp_borders[i]
-					i += 1
-					even   = tmp_borders[i]
-					i += 1
-					self._borders += [[uneven,even]]
-		return self._borders
-		
-	# Extract a dictionary abbreviation
-	def _dic(self,i=0):
-		if self._tags[i].startswith(tag_pattern1):
-			tmp_str = self._tags[i]
-			tmp_str = tmp_str.replace(tag_pattern1,'',1)
-			tmp_str = re.sub('".*','',tmp_str)
-			if tmp_str == '' or tmp_str == ' ':
-				log.append('Tags._dic',sh.lev_warn,sh.globs['mes'].wrong_tag % self._tags[i])
-			else:
-				self._elems[-1].dic = tmp_str
-				
-	def _phrases(self,i=0):
-		if self._tags[i].startswith(tag_pattern_ph1) or self._tags[i].startswith(tag_pattern_ph2) or self._tags[i].startswith(tag_pattern_ph3) or self._tags[i].startswith(tag_pattern_ph4):
-			if i + 1 < len(self._tags):
-				pos1 = self._borders[i][1] + 1
-				pos2 = self._borders[i+1][0] - 1
-				if pos1 >= len(self._page):
-					log.append('Tags._phrases',sh.lev_warn,sh.globs['mes'].tag_near_text_end % self._tags[i])
-				else:
-					tmp_str = self._page[pos1:pos2+1]
-					# If we see symbols '<' or '>' there for some reason, then there is a problem in the tag extraction algorithm. We can make manual deletion of '<' and '>' there.
-					# Draft such cases as '23 фраз' as dictionary titles, not terms
-					if re.search('\d+ фраз',tmp_str):
-						# todo: fix: Assigning both 'dic' and 'speech' will not show 'speech'
-						self._elems[-1].dic = 'Фразы ' # 'Phrases '
-						self._elems[-1].speech = 'Фразы '
-					self._elems[-1].term = tmp_str
-				self._url(i)
-				return True
-			else:
-				log.append('Tags._term',sh.lev_warn,sh.globs['mes'].last_tag % self._tags[i])
-				
-	# Extract a term
-	def _term(self,i=0):
-		par1 = tag_pattern_t1 in self._tags[i]
-		par2 = tag_pattern_t2 in self._tags[i]
-		par3 = tag_pattern_t3 in self._tags[i]
-		par4 = tag_pattern_t4 in self._tags[i]
-		par5 = tag_pattern_t5 in self._tags[i]
-		par6 = tag_pattern_t6 in self._tags[i]
-		par7 = tag_pattern_st2 in self._tags[i]
-		if par1 or par2 or par3 or par4 or par5 or par6 or par7:
-			# It is reasonable to bind URLs to terms only, but we want the number of URLs to match the number of article elements, moreover, extra URLs can appear useful.
-			pos1 = self._borders[i][1] + 1
-			if i + 1 < len(self._tags):
-				pos2 = self._borders[i+1][0] - 1
-				if pos1 >= len(self._page):
-					log.append('Tags._term',sh.lev_warn,sh.globs['mes'].tag_near_text_end % self._tags[i])
-				else:
-					self._elems[-1].term = self._page[pos1:pos2+1]
-				self._url(i)
-			else:
-				log.append('Tags._term',sh.lev_warn,sh.globs['mes'].last_tag % self._tags[i])
-				# To compensate a missing tag, we also can add '</dtrn><dtrn></dtrn>' to the output of 'ExtDics.get'
-				self._elems[-1].term = self._page[pos1::]
-				
-	# Extract a speech form
-	def _speech(self,i=0):
-		par1 = tag_pattern_sp1 in self._tags[i]
-		par2 = tag_pattern_sp2 in self._tags[i]
-		par3 = tag_pattern_sp3 in self._tags[i]
-		par4 = tag_pattern_sp4 in self._tags[i]
-		par5 = tag_pattern_sp5 in self._tags[i] and tag_pattern_t1 in self._tags[i]
-		par6 = tag_pattern_sp5 in self._tags[i] and tag_pattern_t2 in self._tags[i]
-		par7 = tag_pattern_st1 in self._tags[i]
-		if par1 or par2 or par3 or par4 or par5 or par6 or par7:
-			# It is reasonable to bind URLs to terms only, but we want the number of URLs to match the number of article elements, moreover, extra URLs can appear useful.
-			if i + 1 < len(self._tags):
-				pos1 = self._borders[i][1] + 1
-				pos2 = self._borders[i+1][0] - 1
-				if pos1 >= len(self._page):
-					log.append('Tags._speech',sh.lev_warn,sh.globs['mes'].tag_near_text_end % self._tags[i])
-				else:
-					self._elems[-1].speech = self._page[pos1:pos2+1]
-					# todo: fix: 1st 'speech' is not shown, probably because there is no 'dic'
-					# todo: self.url = cur_pair + tag_pattern19
-					self.url = ''
-					return True
-			else:
-				log.append('Tags._speech',sh.lev_warn,sh.globs['mes'].last_tag % self._tags[i])
-				
-	def _transcription(self,i=0):
-		# Extract a phonetic sign (Multitran-only)
-		if tag_pattern_tr1 in self._tags[i]:
-			tmp = re.sub(r'\.gif.*','',self._tags[i])
-			tmp = tmp.replace(tag_pattern_tr1,'')
-			if tmp:
-				try:
-					ind = transc_orig.index(tmp)
-					self._elems[-1].transc = transc_final[ind]
-				except ValueError:
-					sh.log.append('Tags._transcription',sh.lev_warn,sh.globs['mes'].wrong_input3 % tmp)
-			else:
-				log.append('Tags._transcription',sh.lev_warn,sh.globs['mes'].empty_input)
-		elif tag_pattern_st4 in self._tags[i]: # Stardict
-			self._elems[-1].transc = self._tags[i].replace(tag_pattern_st4,'',1).replace(tag_pattern_st8,'',1)
-				
-	# Extract URL
-	def _url(self,i=0):
-		self.url = self._tags[i].replace(tag_pattern2,'',1).replace(tag_pattern2b,'',1)
-		# We need re because of such cases as "<a href="M.exe?t=74188_2_4&s1=faute">ошибка"
-		self.url = re.sub('\"\>.*','">',self.url)
-		if self.url.endswith(tag_pattern8):
-			self.url = self.url.replace(tag_pattern8,'')
-			self.url = sh.globs['var']['pair_root'] + self.url
-		else:
-			self.url = ''
-		
-	# Extract a comment
-	def _comment(self,i=0):
-		if self._tags[i] == tag_pattern3 or self._tags[i] == tag_pattern5 or self._tags[i] == tag_pattern9:
-			pos1 = self._borders[i][1] + 1
-			if pos1 >= len(self._page):
-				log.append('Tags._comment',sh.lev_warn,sh.globs['mes'].tag_near_text_end % self._tags[i])
-			else:
-				if i + 1 < len(self._tags):
-					pos2 = self._borders[i+1][0] - 1
-				else:
-					log.append('Tags._comment',sh.lev_warn,sh.globs['mes'].last_tag % self._tags[i])
-					if len(self._borders) > 0:
-						pos2 = self._borders[-1][1]
-					else:
-						pos2 = pos1
-						log.append('Tags._comment',sh.lev_warn,sh.globs['mes'].tag_borders_empty)
-				tmp_str = self._page[pos1:pos2+1]
-				# Sometimes, the tag contents is just '('. We remove it, so the final text does not look like '( user_name'
-				if tmp_str == '' or tmp_str == ' ' or tmp_str == '|' or tmp_str == '(':
-					log.append('Tags._comment',sh.lev_warn,sh.globs['mes'].empty_tag_contents % self._tags[i])
-				else:
-					self._elems[-1].comment = tmp_str
-	
-	# Create a list of on-screen text elements for each useful tag
-	def elems(self):
-		if not self._elems:
-			''' Tag patterns:
-			1) Abbreviations of dictionaries:
-			     - Multitran:
-			         <a title="...">
-			     - Stardict:
-			         define them manually by the file name
-			2) Users:
-			     - Multitran:
-			         <a href="M.exe?..."><i>...</i></a>
-			           OR without 1st <
-			3) Terms:
-			     - Multitran:
-			         <a href="M.exe?..."></a>
-			     - Stardict:
-			         <dtrn></dtrn>
-			         <kref></kref> (in phrases)
-			4) Genders:
-			     - Multitran:
-			         <span STYLE="color:gray"<i>...</i>
-			5) Comments:
-			     - Multitran:
-			         <span STYLE="color:gray"...<
-			     - Stardict:
-			         <i></i>
-			6) Parts of speech (will be processed later):
-			     - Multitran:
-			         '<a href="M.exe?a=118&t='
-			     - Stardict:
-			         <k></k>
-			
-			7) Transcription: (a digit in 'width="9"' may vary)
-			     - Multitran:
-			         '<img SRC="/gif/..." width="9" height="16" align="absbottom">'
-			     - Stardict:
-			         <tr></tr>
-			'''
-			self._tags = self.tags()
-			for i in range(len(self._tags)):
-				# Если используется шаблон вместо пустого словаря, то нужно обратить внимание на то, что при изменении присвоенных значений будет меняться и сам шаблон!
-				self._elems.append(Cell())
-				self._dic(i)
-				if self._phrases(i):
-					self._elems[-1].speech = ''
-				elif self._speech(i):
-					self._elems[-1].term = ''
-				else:
-					self._term(i)
-				self._transcription(i)
-				self._comment(i)
-				log.append('Tags.elems',sh.lev_debug,sh.globs['mes'].adding_url % self.url)
-				self._elems[i].url = self.url
-		return self._elems
-		
-	def invalid(self): # Delete tags that impede the tag analysis
-		# todo: проверить, учитывает ли парсер '>' в качестве закрывающего символа, или только '/>'
-		# Мой парсер по какой-то причине пропускает эти тэги, а tkhtml их удаляет, поэтому возникают проблемы с границами.
-		self._page = self._page.replace('<eq>','')
-		self._page = self._page.replace('<amp>','')
-		# Remove tags <p>, </p>, <b> and </b>, because they can be inside hyperlinks
-		self._page = self._page.replace('<p>','').replace('</p>','')
-		self._page = self._page.replace('<b>','').replace('</b>','')
-		# todo: do not replace, treat the contents as an indication of a part of speech (a verb, a noun, etc.)
-		self._page = self._page.replace('<em>',' ').replace('</em>','')
-		# Causes problems when generating positions
-		self._page = self._page.replace('<strong>','').replace('</strong>','')
-		# todo: should we process this tag?
-		self._page = self._page.replace('<abr>','')
-		self._page = self._page.replace('<span STYLE="color:gray">|</span>','<span STYLE="color:gray">|<span STYLE="color:black">')
-		
-	def open_close(self): # Remove symbols '<' and '>' that do not define tags
-		self._page = list(self._page)
-		i = 0
-		TagOpen = False
-		while i < len(self._page):
-			if self._page[i] == '<':
-				if TagOpen:
-					log.append('Tags.open_close',sh.lev_debug,sh.globs['mes'].deleting_useless_elem % (i,self._page[i]))
-					if i >= 10 and i < len(self._page) - 10:
-						log.append('Tags.open_close',sh.lev_debug,sh.globs['mes'].context % ''.join(self._page[i-10:i+10]))
-					del self._page[i]
-					i -= 1
-				else:
-					TagOpen = True
-			if self._page[i] == '>':
-				if not TagOpen:
-					log.append('Tags.open_close',sh.lev_info,sh.globs['mes'].deleting_useless_elem % (i,self._page[i]))
-					if i >= 10 and i < len(self._page) - 10:
-						log.append('Tags.open_close',sh.lev_info,sh.globs['mes'].context % ''.join(self._page[i-10:i+10]))
-					del self._page[i]
-					i -= 1
-				else:
-					TagOpen = False
-			i += 1
-		self._page = ''.join(self._page)
-		
-	# Delete '<' and '>' signs followed/preceeded by a Cyrillic character
-	def _non_tags(self):
-		self._page = list(self._page)
-		i = 0
-		while i < len(self._page):
-			# todo: check: Почему-то при 'not in sh.lat_alphabet' удаляет почти всю статью
-			if i < len(self._page) - 1 and self._page[i] == '<' and self._page[i+1] in sh.ru_alphabet:
-				del self._page[i]
-				i -= 1
-			if i > 0 and self._page[i] == '>' and self._page[i-1] in sh.ru_alphabet:
-				del self._page[i]
-				i -= 1
-			i += 1
-		# todo: "Expected str instance, int found" error if failed to convert encoding
-		self._page = ''.join(self._page)
-		
-	def _extract(self):
-		self._borders = self.borders()
-		for i in range(len(self._borders)):
-			# + 1 because of slice peculiarities
-			pos1 = self._borders[i][0]
-			pos2 = self._borders[i][1] + 1
-			self._tags.append(self._page[pos1:pos2])
-			log.append('Tags._extract',sh.lev_debug,sh.globs['mes'].extracting_tag % self._tags[-1])
-		log.append('Tags._extract',sh.lev_info,sh.globs['mes'].tags_found % (len(self._tags)))
-		log.append('Tags._extract',sh.lev_debug,str(self._tags))
-		
-	# Remove tags that are not relevant to the article structure
-	def _useless(self):
-		old_total = len(self._tags)
-		i = 0
-		while i < len(self._tags):
-			Found = False
-			for j in range(len(tag_pattern_del)):
-				if tag_pattern_del[j] in self._tags[i]:
-					Found = True
-					break
-			if Found:
-				log.append('Tags._useless',sh.lev_debug,sh.globs['mes'].deleting_tag % (i,self._tags[i]))
-				del self._tags[i]
-				del self._borders[i]
-				i -= 1
-			# todo (?): elaborate
-			elif tag_pattern1 in self._tags[i] or tag_pattern2 in self._tags[i] or tag_pattern2b in self._tags[i] or tag_pattern3 in self._tags[i] or tag_pattern4 in self._tags[i] or tag_pattern5 in self._tags[i] or tag_pattern6 in self._tags[i] or tag_pattern7 in self._tags[i] or tag_pattern8 in self._tags[i] or tag_pattern_tr1 in self._tags[i] or tag_pattern_st1 in self._tags[i] or tag_pattern_st2 in self._tags[i] or tag_pattern_st3 in self._tags[i] or tag_pattern_st4 in self._tags[i]:
-				log.append('Tags._useless',sh.lev_debug,sh.globs['mes'].tag_kept % self._tags[i])
-			else:
-				log.append('Tags._useless',sh.lev_debug,sh.globs['mes'].deleting_tag % (i,self._tags[i]))
-				del self._tags[i]
-				del self._borders[i]
-				i -= 1
-			i += 1
-		log.append('Tags._useless',sh.lev_info,sh.globs['mes'].tags_stat % (old_total,len(self._tags),old_total-len(self._tags)))
-		# Testing
-		assert len(self._tags) == len(self._borders)		
-		
-	# Extract fragments inside signs '<' and '>'
-	def tags(self):
-		if not self._tags:
-			self._extract()
-			self._useless()
-		return self._tags
-
-
-
-# Actually, '_elems' is created with 'Tags'. Here we clean up and unite them.
-class Elems:
-	
-	def __init__(self,lst=[]): # List of class instances
-		self._elems = lst
-		self.useless()
-		self.unite_comments()
-		self.unite_transc()
-		self.empty()
-		# todo: debug
-		#self.unite_by_url()
-		#self.debug_elems()
-		self.define_selectables()
-		self.fill_dic()
-		self.fill_speech()
-		self.delete_empty_terms()
-		self.blacklist()
-		self.prioritize()
-		
-	def debug_elems(self): # orphan
-		message = ''
-		for i in range(len(self._elems)):
-			message += '#%d:\ndic:\t\t"%s"\nspeech:\t\t"%s"\ntransc:\t\t"%s"\nterm:\t\t"%s"\ncomment:\t\t"%s"\nBlock:\t\t%s\n\n' % (i,self._elems[i].dic,self._elems[i].speech,self._elems[i].transc,self._elems[i].term,self._elems[i].comment,str(self._elems[i].Block))
-		sg.Message(func='Elems.debug_elems',level=sh.lev_info,message=message)
-		
-	def blacklist(self):
-		articles.current()._block = [elem.dic for elem in self._elems if elem.dic in objs.blacklist()]
-		
-	def prioritize(self):
-		articles.current()._prioritize = [elem.dic for elem in self._elems if elem.dic in objs.prioritize()]
-		
-	def delete_empty_terms(self):
-		self._elems = [elem for elem in self._elems if elem.term or elem.transc_print]
-	
-	def fill_dic(self):
-		if self._elems:
-			dic = self._elems[0].dic
-		for elem in self._elems:
-			if elem.dic:
-				dic = elem.dic
-			else:
-				elem.dic = dic
-	
-	def fill_speech(self):
-		if self._elems:
-			speech = self._elems[0].speech
-			transc = self._elems[0].transc
-		for elem in self._elems:
-			if elem.speech:
-				speech = elem.speech
-				transc = elem.transc
-			else:
-				elem.speech = speech
-				elem.transc = transc
-				
-	def useless(self):
-		# We assume that a 'dic'-type entry shall be succeeded by a 'term'-type entry, not a 'comment'-type entry. Therefore, we delete 'comment'-type entries after 'dic'-type entries in order to ensure that dictionary abbreviations do not succeed full dictionary titles. We also can delete full dictionary titles and leave abbreviations instead.
-		i = 0
-		while i < len(self._elems):
-			# todo: Удалять по URL
-			# Чтобы не удалить случайно длинный комментарий с точкой на конце, ограничиваю его длину 12 (выбрано условно)
-			if self._elems[i].comment.endswith('.') and len(self._elems[i].comment) < 12 or 'Макаров' in self._elems[i].comment or 'Вебстер' in self._elems[i].comment or 'Webster' in self._elems[i].comment or 'Майкрософт' in self._elems[i].comment or 'Microsoft' in self._elems[i].comment:
-				log.append('Elems.useless',sh.lev_info,sh.globs['mes'].deleting_useless_entry % str(self._elems[i].comment))
-				del self._elems[i]
-				i -= 1
-			i += 1
-		# todo (?): обновить self._page
-		# todo (?): Проверить, обязательно ли все еще следующее условие: The first element of the 'dic' list must precede the first element of the 'term' list
-		
-	# Unite multiple comments using a separator ' | '. Delete comments-only entries.
-	def unite_comments(self):
-		# Remove comments-only cells
-		i = len(self._elems) - 1
-		while i >= 0:
-			if self._elems[i].speech == '' and self._elems[i].dic == '' and self._elems[i].term == '' and self._elems[i].transc == '' and self._elems[i].comment != '':
-				self._elems[i-1].comment = self._elems[i-1].comment + ' | ' + self._elems[i].comment
-				del self._elems[i]
-			i -= 1
-		# Delete comments separators where they are not necessary
-		for i in range(len(self._elems)):
-			if self._elems[i].comment.startswith(' | '):
-				self._elems[i].comment = self._elems[i].comment.replace(' | ',' ',1)
-				
-	def unite_transc(self):
-		# Remove transcription-only cells
-		i = len(self._elems) - 1
-		while i >= 0:
-			if self._elems[i].speech == '' and self._elems[i].dic == '' and self._elems[i].term == '' and self._elems[i].comment == '' and self._elems[i].transc != '':
-				self._elems[i-1].transc = self._elems[i-1].transc + self._elems[i].transc
-				del self._elems[i]
-			i -= 1
-			
-	def empty(self):
-		self._elems = [elem for elem in self._elems if elem.dic or elem.speech or elem.transc or elem.term or elem.comment]
-				
-	# Объединить элементы, которые должны входить в одну ячейку
-	def unite_by_url(self):
-		''' Правила такие:
-			1) URL последующего элемента совпадает с URL предыдущего элемента
-			2) URL последующего элемента представляет собой URL предыдущего элемента плюс конструкция '&s1=*')
-			3) В URL содержится 'UserName', т.е. элемент на самом деле относится к комментариям (хотя в Мультитране идет как самостоятельная ссылка)
-		'''
-		i = 0
-		while i < len(self._elems):
-			if i > 0:
-				if self._elems[i].url and self._elems[i-1].url == self._elems[i].url or self._elems[i-1].url + '&s1=' in self._elems[i].url or '&UserName=' in self._elems[i].url:
-					# В настоящее время в ячейке жестко заданы сначала название словаря, потом термин, потом комментарий, поэтому "хвост", который первоначально относился к последующей ячейке, лучше добавить к комментарию, иначе будет потерян смысл
-					self._elems[i-1].comment = sh.List([self._elems[i-1].comment,self._elems[i].dic,self._elems[i].term,self._elems[i].comment]).space_items()
-					del self._elems[i]
-					i -= 1
-			i += 1
-
-	# todo: assign Selectables at tagging and store them in DB
-	# Назначить выделяемые ячейки
-	def define_selectables(self):
-		for i in range(len(self._elems)):
-			if self._elems[i].term:
-				self._elems[i].Selectable = True
-
-
-
-class Cell:
-	
-	def __init__(self):
-		self.Selectable = self.Block = False
-		# todo: do we really need *_print? (If we are going to recreate cells each time, we don't need it. If we try to remember staff, we'll need it).
-		self.speech = self.dic = self.term = self.comment = self.url = self.speech_print = self.dic_print = self.transc = self.transc_print = ''
-
-
-
-class Cells:
-	
-	def __init__(self,elems=[]):
-		self._cells = []
-		self._elems = elems
-		self.blacklist()
-		self.alphabetize()
-		self.prioritize()
-		self.view()
-		self.group()
-		
-	def group(self):
-		old_dic = old_speech = None
-		for row in self._cells:
-			elem = row[0]
-			if elem.dic != old_dic:
-				old_dic = elem.dic_print = elem.dic
-			if elem.speech != old_speech:
-				old_speech = elem.speech_print = elem.speech
-				elem.transc_print = elem.transc
-				elem.Selectable = True
-
-	def debug_elems(self): # orphan
-		message = ''
-		for i in range(len(self._elems)):
-			message += '#%d:\ndic:\t\t"%s"\nspeech:\t\t"%s"\ntransc:\t\t"%s"\nterm:\t\t"%s"\ncomment:\t\t"%s"\nBlock:\t\t%s\n\n' % (i,self._elems[i].dic,self._elems[i].speech,self._elems[i].transc,self._elems[i].term,self._elems[i].comment,str(self._elems[i].Block))
-		sg.Message(func='Cells.debug_elems',level=sh.lev_info,message=message)
-		
-	def debug_cells(self): # orphan
-		message = ''
-		for i in range(len(self._cells)):
-			message += 'Row %d:\n' % i
-			row     = self._cells[i]
-			speech  = []
-			transc  = []
-			dic     = []
-			term    = []
-			comment = []
-			for cell in row:
-				speech.append(cell.speech)
-				transc.append(cell.transc)
-				dic.append(cell.dic)
-				term.append(cell.term)
-				comment.append(cell.comment)
-			message += 'Speech:\t\t"%s"\n' % '; '.join(speech)
-			message += 'Transc:\t\t"%s"\n' % '; '.join(transc)
-			message += 'Dic:\t\t"%s"\n' % '; '.join(dic)
-			message += 'Term:\t\t"%s"\n' % '; '.join(term)
-			message += 'Comment:\t\t"%s"\n\n' % '; '.join(comment)
-		sg.Message(func='Cells.debug_cells',level=sh.lev_info,message=message)
-	
-	def blacklist(self):
-		if request.Block:
-			self._elems = [elem for elem in self._elems if elem.dic not in objs.blacklist()]
-	
-	def alphabetize(self):
-		if not request.SpecialPage:
-			if request.SortTerms:
-				self._elems = sorted(self._elems,key=lambda elem:(elem.dic,elem.speech,elem.term))
-			else:
-				self._elems = sorted(self._elems,key=lambda elem:(elem.dic,elem.speech))
-	
-	def prioritize(self):
-		if request.Prioritize and not request.SpecialPage:
-			prioritized = [elem for elem in self._elems if elem.dic in objs.prioritize()]
-			common      = [elem for elem in self._elems if not elem.dic in articles.current()._prioritize]
-			self._elems = prioritized + common
-		return self._elems
-	
-	def view(self):
-		if request._view == 1:
-			self.view1()
-		else:
-			self.view0()
-
-	def view0(self):
-		if not self._cells:
-			row = []
-			old_dic = old_speech = None
-			for i in range(len(self._elems)):
-				if request.Block and self._elems[i].Block:
-					pass
-				elif len(row) == request._collimit:
-					self._cells.append(row)
-					row = [self._elems[i]]
-				elif self._elems[i].dic != old_dic or self._elems[i].speech != old_speech:
-					if len(row) > 0:
-						while len(row) < request._collimit:
-							row.append(Cell())
-						self._cells.append(row)
-					row        = [self._elems[i]]
-					old_dic    = self._elems[i].dic
-					old_speech = self._elems[i].speech
-				else:
-					row.append(self._elems[i])
-			if len(row) > 0:
-				while len(row) < request._collimit:
-					row.append(Cell())
-				self._cells.append(row)
-		return self._cells
-	
-	def view1(self):
-		if not self._cells:
-			columns = []
-			column = []
-			old_dic = old_speech = None
-			for i in range(len(self._elems)):
-				if request.Block and self._elems[i].Block:
-					pass
-				elif self._elems[i].dic != old_dic or self._elems[i].speech != old_speech:
-					if column:
-						columns.append(column)
-					column = []
-					column.append(self._elems[i])
-					old_dic    = self._elems[i].dic
-					old_speech = self._elems[i].speech
-				else:
-					column.append(self._elems[i])
-			if column: # Add the last column
-				columns.append(column)
-			max_cols = 0
-			for i in range(len(columns)):
-				if len(columns[i]) > max_cols:
-					max_cols = len(columns[i])
-			for i in range(max_cols):
-				row = []
-				for j in range(len(columns)):
-					if i >= len(columns[j]):
-						columns[j].append(Cell())
-					row.append(columns[j][i])
-				self._cells.append(row)
-		return self._cells
 
 
 
@@ -1460,7 +577,7 @@ class Quit:
 	
 	def __init__(self):
 		self.Quit = False
-		self._id = None # This must be changed externally
+		self._id  = None # This must be changed externally
 	
 	def wait(self,*args):
 		self.Quit = True
@@ -1468,7 +585,7 @@ class Quit:
 		
 	def now(self,*args):
 		if self.Quit:
-			log.append('Quit.now',sh.lev_info,sh.globs['mes'].goodbye)
+			sh.log.append('Quit.now',sh.lev_info,sh.globs['mes'].goodbye)
 			kl_mod.keylistener.cancel()
 			objs.top().widget.destroy()
 			sg.objs.root().widget.after_cancel(self._id)
@@ -1827,7 +944,7 @@ class History:
 	
 	def __init__(self):
 		self._title = sh.globs['mes'].btn_history
-		self._icon = sh.globs['var']['icon_mclient']
+		self._icon  = sh.globs['var']['icon_mclient']
 		self.Active = False
 		self.gui()
 		
@@ -1903,226 +1020,85 @@ class History:
 
 
 
+class WebFrame:
+	
+	def __init__(self):
+		self.values()
+		self.gui()
+	
+	def values(self):
+		self.event       = None
+		self._node       = None
+		self.index       = None
+		self._offset     = None
+		self.mouse_index = -1 # self.mouse_index (int) != self.index (tuple)
+	
+	def gui(self):
+		self.obj = sg.objs.new_top(Maximize=1)
+		#self.frame = tkinterhtml.HtmlFrame(self.obj.widget,horizontal_scrollbar="auto")
+		self.frame = tkinterhtml.HtmlFrame(self.obj.widget,horizontal_scrollbar="on")
+		self.frame.pack(expand=1,fill='both')
+		self.obj.widget.columnconfigure(0,weight=1)
+		self.obj.widget.rowconfigure(0,weight=1)
+		self.bindings()
+		
+	def bindings(self):
+		self.frame.html.bind("<Motion>",self.mouse_sel,True)
+		
+	# Изменить ячейку при движении мышью
+	def mouse_sel(self,event=None):
+		if event:
+			self.event = event
+			# Если ячейку определить не удалось, либо ее выделять нельзя (согласно настройкам), то возвращается предыдущая ячейка. Это позволяет всегда иметь активное выделение.
+			try:
+				self._node, self._offset = self.frame.html.node(True,self.event.x,self.event.y)
+				self.mouse_index         = self.frame.html.text("offset",self._node,self._offset)
+			except ValueError:
+				# Это сообщение появляется так часто, что не ставлю тут ничего.
+				#sh.log.append('WebFrame.mouse_sel',sh.lev_warn,sh.globs['mes'].unknown_cell)
+				pass
+			if self.mouse_index > 0:
+				#self.get_cell(self.mouse_index)
+				#self.set_cell(View=False)
+				#print(self.mouse_index)
+				self.set_cell(pos=self.mouse_index)
+				# cur
+	
+	# Выделить ячейку
+	def set_cell(self,pos,View=True): # View=True будет всегда сдвигать экран до текущей ячейки при навигации с клавиатуры
+		self.frame.html.tag("delete", "selection")
+		pos1, pos2 = objs.blocks_db().get_cell(pos=pos)
+		self.index = self.frame.html.text('index',pos1,pos2)
+		if self.index:
+			try:
+				self.frame.html.tag('add','selection',self.index[0],self.index[1],self.index[2],self.index[3])
+			# При удалении или вставке ячеек может возникнуть ошибка, поскольку текущий узел изменился
+			except tk.TclError:
+				sh.log.append('WebFrame.set_cell',sh.lev_warn,sh.globs['mes'].tag_addition_failure % ('selection',self.index[0],self.index[3]))
+			self.frame.html.tag('configure','selection','-background',sh.globs['var']['color_terms_sel_bg'])
+			self.frame.html.tag('configure','selection','-foreground',sh.globs['var']['color_terms_sel_fg'])
+			#if View:
+			#	self.shift_screen()
+	
+	def fill(self,code='<html><body><h1>Nothing has been loaded yet.</h1></body></html>'):
+		self.frame.set_content(code)
+		
+	def show(self,*args):
+		self.obj.show()
+		
+	def close(self,*args):
+		self.obj.close()
+
+
+
 class Moves:
 	
-	def __init__(self,cells=[]):
-		self._moves = {
-		            '_move_right'       : [] ,
-		            '_move_left'        : [] ,
-		            '_move_down'        : [] ,
-		            '_move_up'          : [] ,
-		            '_move_line_start'  : [] ,
-		            '_move_line_end'    : [] ,
-		            '_move_text_start'  : [] ,
-		            '_move_text_end'    : []
-		              }
-		self._cells = cells
-		if self._cells:
-			self.text_start ()
-			self.text_end   ()
-			self.right      ()
-			self.left       ()
-			self.down       ()
-			self.up         ()
-			self.line_start ()
-			self.line_end   ()
-		
-	# Вернуть первую выделяемую ячейку по вертикали в направлении сверху вниз
-	def get_vert_selectable(self,cur_i=0,cur_j=0,GetNext=True):
-		func_res = (cur_i,cur_j)
-		i = cur_i
-		while i < len(self._cells):
-			if self._cells[i][cur_j].Selectable:
-				if GetNext:
-					if i != cur_i:
-						func_res = (i,cur_j)
-						break
-				else:
-					func_res = (i,cur_j)
-					break
-			i += 1
-		#log.append('TkinterHtmlMod.get_vert_selectable',sh.lev_debug,str(func_res))
-		return func_res
-		
-	# Вернуть первую выделяемую ячейку по вертикали в направлении снизу вверх
-	def get_vert_selectable_backwards(self,cur_i=0,cur_j=0,GetPrevious=True,Silent=False,Critical=False):
-		func_res = (cur_i,cur_j)
-		i = cur_i
-		while i >= 0:
-			if self._cells[i][cur_j].Selectable:
-				if GetPrevious:
-					if i != cur_i:
-						func_res = (i,cur_j)
-						break
-				else:
-					func_res = (i,cur_j)
-					break
-			i -= 1
-		#log.append('TkinterHtmlMod.get_vert_selectable_backwards',sh.lev_debug,str(func_res))
-		return func_res
-
-	# Список ячеек, выбираемых слева направо
-	def right(self):
-		if not self._moves['_move_right']:
-			for i in range(len(self._cells)):
-				tmp_lst = []
-				for j in range(len(self._cells[i])):
-					tmp_lst += [self.get_selectable(i,j)]
-				self._moves['_move_right'] += [tmp_lst]
-		return self._moves['_move_right']
+	def __init__(self,pos):
+		self._pos = sh.Input(func_title='Moves.__init__',val=pos).integer()
 	
-	# Список ячеек, выбираемых справа налево
-	def left(self): # Просто перевернуть self._move_right оказывается недостаточным
-		if not self._moves['_move_left']:
-			for i in range(len(self._cells)):
-				tmp_lst = []
-				for j in range(len(self._cells[i])):
-					tmp_lst += [self.get_selectable_backwards(i,j)]
-				self._moves['_move_left'] += [tmp_lst]
-		return self._moves['_move_left']
-
-	# Список для перехода на первые выделяемые ячейки
-	def line_start(self):
-		if not self._moves['_move_line_start']:
-			for i in range(len(self._cells)):
-				tmp_lst = []
-				for j in range(len(self._cells[i])):
-					tmp_lst += [self.get_selectable(i,0,False)]
-				self._moves['_move_line_start'] += [tmp_lst]
-		return self._moves['_move_line_start']
-
-	# Список для перехода на последние выделяемые ячейки
-	def line_end(self):
-		if not self._moves['_move_line_end']:
-			for i in range(len(self._cells)):
-				tmp_lst = []
-				for j in range(len(self._cells[i])):
-					# Алгоритм не принимает -1, необходимо точно указывать позицию
-					tmp_lst += [self.get_selectable_backwards(i,len(self._cells[i])-1,False)]
-				self._moves['_move_line_end'] += [tmp_lst]
-		return self._moves['_move_line_end']
-
-	# Первая выделяемая ячейка
-	def text_start(self):
-		# todo: Почему не удается использовать 'move_left', 'move_up'?
-		if not self._moves['_move_text_start']:
-			self._moves['_move_text_start'] = self.get_selectable(0,0,False)
-		return self._moves['_move_text_start']
-		
-	# Последняя выделяемая ячейка
-	def text_end(self):
-		# todo: Почему не удается использовать 'move_right', 'move_down'?
-		if not self._moves['_move_text_end']:
-			if len(self._cells) > 0:
-				self._moves['_move_text_end'] = self.get_selectable_backwards(len(self._cells)-1,len(self._cells[-1])-1,False)
-			else:
-				self._moves['_move_text_end'] = (0,0)
-		return self._moves['_move_text_end']
-		
-	# Логика 'move_up' и 'move_down': идем вверх/вниз по тому же столбцу. Если на текущей строке нет выделяемой ячейки в нужном столбце, тогда пропускаем ее. Если дошли до конца столбца, переходим на первую/последнюю строку последующего/предыдущего столбца.
-	def down(self):
-		if not self._moves['_move_down']:
-			for i in range(len(self._cells)):
-				tmp_lst = []
-				for j in range(len(self._cells[i])):
-					# Номер строки, на которой находится конечная выделяемая ячейка при навигации сверху вниз. Обратить внимание, что это не обязательно последняя строка в статье!
-					# Возможно, имеет смысл вынести max_i в отдельный список, чтобы не вычислять его лишний раз. Но будет ли это быстрее?
-					max_i = self.get_vert_selectable_backwards(len(self._cells)-1,j,GetPrevious=False)[0]
-					cell = self.get_vert_selectable(i,j)
-					# Просто == не работает
-					if i >= max_i:
-						# Если достигнут конец текущего столбца, перейти на первую выделяемую ячейку следующего столбца
-						if j < len(self._cells[i]) - 1:
-							tmp_lst.append(self.get_vert_selectable(0,j+1,GetNext=False))
-						else:
-							tmp_lst.append((i,j))
-					elif cell == (i,j):
-						tmp_lst.append(self.get_selectable(i,0))
-					else:
-						tmp_lst.append(cell)
-				self._moves['_move_down'] += [tmp_lst]
-		return self._moves['_move_down']
-	
-	def up(self):
-		if not self._moves['_move_up']:
-			for i in range(len(self._cells)):
-				tmp_lst = []
-				for j in range(len(self._cells[i])):
-					# Номер строки, на которой находится первая выделяемая ячейка при навигации снизу вверх. Обратить внимание, что это не обязательно первая строка в статье!
-					# Возможно, имеет смысл вынести min_i в отдельный список, чтобы не вычислять его лишний раз. Но будет ли это быстрее?
-					min_i = self.get_vert_selectable(0,j,GetNext=False)[0]
-					cell = self.get_vert_selectable_backwards(i,j)
-					# Просто == не работает
-					if i <= min_i:
-						# Если достигнута самая первая выделяемая ячейка, не продолжать с последнего столбца статьи. Для 'move_down' такая проверка почему-то не обязательна.
-						if i == self._moves['_move_text_start'][0] and j == self._moves['_move_text_start'][1]:
-							tmp_lst.append((i,j))
-						# Если достигнут конец текущего столбца, перейти на последнюю выделяемую ячейку предыдущего столбца
-						elif j > 0:
-							tmp_lst.append(self.get_vert_selectable_backwards(len(self._cells)-1,j-1,GetPrevious=False))
-						else:
-							tmp_lst.append((i,j))
-					elif cell == (i,j):
-						tmp_lst.append(self.get_selectable_backwards(i,0))
-					else:
-						tmp_lst.append(cell)
-				self._moves['_move_up'] += [tmp_lst]
-		return self._moves['_move_up']
-
-	# Определить следующую (+1,+1) ячейку, которую можно выделить
-	''' Если выделить можно любую ячейку, то будет выбрана следующая по очереди. Обратить внимание: в конце таблицы, там, где выделяемых ячеек уже нет, будет возвращаться текущая ячейка. Это логично, если выбрать можно любую ячейку, но не совсем логично, если выбирать только помеченные ячейки. Впрочем, если указано использование помеченных ячеек, а ячейка не помечена, то переход на нее осуществлен не будет, поэтому и ссылка в ней использована не будет.
-	'''
-	def get_selectable(self,cur_i=0,cur_j=0,GetNext=True):
-		Found = False
-		i = sel_i = cur_i
-		j = sel_j = cur_j
-		while i < len(self._cells):
-			while j < len(self._cells[i]):
-				if self._cells[i][j].Selectable:
-					# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
-					sel_i, sel_j = i, j
-					# Если указаная ячейка уже может быть выбрана, то игнорировать ее и искать следующую
-					if GetNext:
-						if cur_i != i or cur_j != j:
-							Found = True
-							break
-					else:
-						Found = True
-						break
-				j += 1
-			if Found:
-				break
-			j = 0
-			i += 1
-		#log.append('TkinterHtmlMod.get_selectable',sh.lev_debug,str((sel_i,sel_j)))
-		return(sel_i,sel_j)
-		
-	# Определить предыдущую (-1,-1) ячейку, которую можно выделить
-	def get_selectable_backwards(self,cur_i,cur_j,GetPrevious=True):
-		Found = False
-		i = sel_i = cur_i
-		j = sel_j = cur_j
-		while i >= 0:
-			while j >= 0:
-				if self._cells[i][j].Selectable:
-					# Позволяет вернуть последнюю ячейку, которую можно выделить, если достигнут конец таблицы
-					sel_i = i
-					sel_j = j
-					# Если указаная ячейка уже может быть выбрана, то игнорировать ее и искать следующую
-					if GetPrevious:
-						if cur_i != i or cur_j != j:
-							Found = True
-							break
-					else:
-						Found = True
-						break
-				j -= 1
-			if Found:
-				break
-			i -= 1
-			j = len(self._cells[i]) - 1
-		#log.append('TkinterHtmlMod.get_selectable_backwards',sh.lev_debug,str((sel_i,sel_j)))
-		return(sel_i,sel_j)
+	def get_cell(self):
+		# cur
+		pass
 
 
 
@@ -2144,8 +1120,8 @@ class TkinterHtmlMod(tk.Widget):
 		self.MouseClicked = False
 		self.CaptureHotkey = True
 		self.event = None
-		self.url = request._url
-		self.search = request._search
+		self.url = objs.request()._url
+		self.search = objs._request._search
 		
 		self.master = master
 		self.location = self.get_tkhtml_folder()
@@ -2190,14 +1166,14 @@ class TkinterHtmlMod(tk.Widget):
 		
 	def get_url(self):
 		# Note: encoding must be UTF-8 here
-		if request._source == 'Offline':
+		if objs.request()._source == 'Offline':
 			objs.online().reset(self.get_pair(),self.search,MTSpecific=False)
 			# note # todo: elaborate
 			self.url = self.search
 		else:
 			objs.online().reset(self.get_pair(),self.search,MTSpecific=True)
 			self.url = objs.online().url()
-		log.append('TkinterHtmlMod.get_url',sh.lev_debug,"self.url: %s" % str(self.url))
+		sh.log.append('TkinterHtmlMod.get_url',sh.lev_debug,"self.url: %s" % str(self.url))
 	
 	# todo: move 'move_*' procedures to Moves class
 	# Перейти на 1-й термин текущей строки	
@@ -2206,7 +1182,7 @@ class TkinterHtmlMod(tk.Widget):
 			self.i, self.j = articles.current()._moves['_move_line_start'][self.i][self.j]
 			self.set_cell()
 		else:
-			log.append('TkinterHtmlMod.move_line_start',sh.lev_err,sh.globs['mes'].wrong_input2)
+			sh.log.append('TkinterHtmlMod.move_line_start',sh.lev_err,sh.globs['mes'].wrong_input2)
 
 	# Перейти на последний термин текущей строки
 	def move_line_end(self,*args):
@@ -2247,7 +1223,7 @@ class TkinterHtmlMod(tk.Widget):
 			self.i, self.j = articles.current()._moves['_move_left'][self.i][self.j]
 			self.set_cell()
 		else:
-			log.append('TkinterHtmlMod.move_left',sh.lev_err,sh.globs['mes'].wrong_input2)
+			sh.log.append('TkinterHtmlMod.move_left',sh.lev_err,sh.globs['mes'].wrong_input2)
 
 	# Перейти на следующий термин
 	def move_right(self,*args):
@@ -2255,7 +1231,7 @@ class TkinterHtmlMod(tk.Widget):
 			self.i, self.j = articles.current()._moves['_move_right'][self.i][self.j]
 			self.set_cell()
 		else:
-			log.append('TkinterHtmlMod.move_right',sh.lev_err,sh.globs['mes'].wrong_input2)
+			sh.log.append('TkinterHtmlMod.move_right',sh.lev_err,sh.globs['mes'].wrong_input2)
 
 	# Перейти на строку вниз
 	def move_down(self,*args):
@@ -2263,7 +1239,7 @@ class TkinterHtmlMod(tk.Widget):
 			self.i, self.j = articles.current()._moves['_move_down'][self.i][self.j]
 			self.set_cell()
 		else:
-			log.append('TkinterHtmlMod.move_down',sh.lev_err,sh.globs['mes'].wrong_input2)
+			sh.log.append('TkinterHtmlMod.move_down',sh.lev_err,sh.globs['mes'].wrong_input2)
 
 	# Перейти на строку вверх
 	def move_up(self,*args):
@@ -2271,7 +1247,7 @@ class TkinterHtmlMod(tk.Widget):
 			self.i, self.j = articles.current()._moves['_move_up'][self.i][self.j]
 			self.set_cell()
 		else:
-			log.append('TkinterHtmlMod.move_up',sh.lev_err,sh.globs['mes'].wrong_input2)
+			sh.log.append('TkinterHtmlMod.move_up',sh.lev_err,sh.globs['mes'].wrong_input2)
 	
 	# Задействование колеса мыши для пролистывания экрана
 	def mouse_wheel(self,event):
@@ -2351,22 +1327,22 @@ class TkinterHtmlMod(tk.Widget):
 			self.btn_clipboard.inactive()
 			
 		# todo: Change active/inactive button logic in case of creating three or more views
-		if request._view == 0:
+		if objs.request()._view == 0:
 			self.btn_toggle_view.active()
 		else:
 			self.btn_toggle_view.inactive()
 			
-		if not request.SpecialPage and request.SortTerms:
+		if not objs.request().SpecialPage and objs._request.SortTerms:
 			self.btn_toggle_alphabet.active()
 		else:
 			self.btn_toggle_alphabet.inactive()
 		
-		if request.Block and articles.current().block():
+		if objs._request.Block and articles.current().block():
 			self.btn_toggle_block.active()
 		else:
 			self.btn_toggle_block.inactive()
 			
-		if not request.SpecialPage and request.Prioritize and articles.current().prioritize():
+		if not objs._request.SpecialPage and objs._request.Prioritize and articles.current().prioritize():
 			self.btn_toggle_priority.active()
 		else:
 			self.btn_toggle_priority.inactive()
@@ -2414,10 +1390,10 @@ class TkinterHtmlMod(tk.Widget):
 	def search_sources(self):
 		if self.control_length():
 			self.get_url()
-			request._url    = self.url
-			request._search = self.search
+			objs.request()._url    = self.url
+			objs._request._search  = self.search
 			articles.search_article()
-			log.append('TkinterHtmlMod.search_sources',sh.lev_debug,articles.current()._search)
+			sh.log.append('TkinterHtmlMod.search_sources',sh.lev_debug,articles.current()._search)
 			self.load_article()
 	
 	# Search the selected term online using the entry widget (search field)
@@ -2449,20 +1425,20 @@ class TkinterHtmlMod(tk.Widget):
 		self.hotkeys()
 		
 	def set_lang(self,*args):
-		request._lang = langs[self.menu_pairs.index]
-		log.append('TkinterHtmlMod.set_lang',sh.lev_info,'Set language to "%s"' % request._lang)
+		objs.request()._lang = langs[self.menu_pairs.index]
+		sh.log.append('TkinterHtmlMod.set_lang',sh.lev_info,'Set language to "%s"' % objs._request._lang)
 		
 	def set_source(self,*args):
-		request._source = sources[self.menu_sources.index]
-		log.append('TkinterHtmlMod.set_source',sh.lev_info,'Set source to "%s"' % request._source)
+		objs.request()._source = sources[self.menu_sources.index]
+		sh.log.append('TkinterHtmlMod.set_source',sh.lev_info,'Set source to "%s"' % objs._request._source)
 		self.load_article()
 	
 	def get_pair(self):
 		return online_dic_urls[self.menu_pairs.index]
 	
 	def set_columns(self,*args):
-		log.append('TkinterHtmlMod.set_columns',sh.lev_info,str(self.menu_columns.choice))
-		request._collimit = self.menu_columns.choice
+		sh.log.append('TkinterHtmlMod.set_columns',sh.lev_info,str(self.menu_columns.choice))
+		objs.request()._collimit = self.menu_columns.choice
 		articles.current().update()
 		self.load_article()
 	
@@ -2595,7 +1571,7 @@ class TkinterHtmlMod(tk.Widget):
 			parts = self.pos2cell[index]
 		else:
 			parts = (0,0)
-			log.append('TkinterHtmlMod.get_cell',sh.lev_err,sh.globs['mes'].wrong_input2)
+			sh.log.append('TkinterHtmlMod.get_cell',sh.lev_err,sh.globs['mes'].wrong_input2)
 		if articles.current()._cells and len(articles.current()._cells) > parts[0] and len(articles.current()._cells[self.i]) > parts[1]:
 			if articles.current()._cells[parts[0]][parts[1]].Selectable:
 				self.i, self.j = parts
@@ -2684,7 +1660,7 @@ class TkinterHtmlMod(tk.Widget):
 			self.widget_height = cur_widget_height
 			self.widget_offset_x = cur_widget_offset_x
 			self.widget_offset_y = cur_widget_offset_y
-			log.append('TkinterHtmlMod.shift_screen',sh.lev_debug,sh.globs['mes'].geometry % (self.widget_width,self.widget_height,self.widget_offset_x,self.widget_offset_y))
+			sh.log.append('TkinterHtmlMod.shift_screen',sh.lev_debug,sh.globs['mes'].geometry % (self.widget_width,self.widget_height,self.widget_offset_x,self.widget_offset_y))
 			self.top_indexes = {}
 			self.page_no = 0
 			# todo: check this
@@ -2698,7 +1674,7 @@ class TkinterHtmlMod(tk.Widget):
 			cur_top_bbox = self.bbox(self.index[0])[1]
 			cur_bottom_bbox = self.bbox(self.index[0])[3]
 		except tk.TclError:
-			log.append('TkinterHtmlMod.shift_screen',sh.lev_debug,sh.globs['mes'].wrong_input2)
+			sh.log.append('TkinterHtmlMod.shift_screen',sh.lev_debug,sh.globs['mes'].wrong_input2)
 			cur_top_bbox = 0
 			cur_bottom_bbox = 0
 		if cur_top_bbox < self.top_bbox:
@@ -2713,14 +1689,14 @@ class TkinterHtmlMod(tk.Widget):
 			else:
 				self.yview_scroll(cur_top_bbox-self.top_bbox,'units')
 			'''
-			log.append('TkinterHtmlMod.shift_screen',sh.lev_info,sh.globs['mes'].cur_page_no % self.page_no)
+			sh.log.append('TkinterHtmlMod.shift_screen',sh.lev_info,sh.globs['mes'].cur_page_no % self.page_no)
 		elif cur_bottom_bbox > self.bottom_bbox:
 			self.yview(self.index[0])
 			self.page_no += 1
-			log.append('TkinterHtmlMod.shift_screen',sh.lev_info,sh.globs['mes'].cur_page_no % self.page_no)
+			sh.log.append('TkinterHtmlMod.shift_screen',sh.lev_info,sh.globs['mes'].cur_page_no % self.page_no)
 			self.top_indexes[self.page_no] = self.index[0]
 		else:
-			#log.append('TkinterHtmlMod.shift_screen',sh.lev_info,sh.globs['mes'].shift_screen_not_required)
+			#sh.log.append('TkinterHtmlMod.shift_screen',sh.lev_info,sh.globs['mes'].shift_screen_not_required)
 			pass
 
 	# Выделить ячейку
@@ -2731,16 +1707,16 @@ class TkinterHtmlMod(tk.Widget):
 		if articles.current()._cells and len(articles.current()._cells) > self.i and len(articles.current()._cells[self.i]) > self.j:
 			self.index = self.text('index',articles.current()._cells[self.i][self.j].first,articles.current()._cells[self.i][self.j].last_term)
 		else:
-			log.append('TkinterHtmlMod.set_cell',sh.globs['mes'].wrong_input2)
+			sh.log.append('TkinterHtmlMod.set_cell',sh.globs['mes'].wrong_input2)
 		if self.index:
-			#log.append('TkinterHtmlMod.set_cell',sh.lev_debug,sh.globs['mes'].cur_node % self.index[0])
+			#sh.log.append('TkinterHtmlMod.set_cell',sh.lev_debug,sh.globs['mes'].cur_node % self.index[0])
 			# В крайнем случае можно делать так:
 			#self.tag("add", "selection",self._node,0,self._node,300)
 			try:
 				self.tag('add','selection',self.index[0],self.index[1],self.index[2],self.index[3])
 			# При удалении или вставке ячеек может возникнуть ошибка, поскольку текущий узел изменился
 			except tk.TclError:
-				log.append('TkinterHtmlMod.set_cell',sh.lev_warn,sh.globs['mes'].tag_addition_failure % ('selection',self.index[0],self.index[3]))
+				sh.log.append('TkinterHtmlMod.set_cell',sh.lev_warn,sh.globs['mes'].tag_addition_failure % ('selection',self.index[0],self.index[3]))
 			self.tag('configure','selection','-background',sh.globs['var']['color_terms_sel_bg'])
 			self.tag('configure','selection','-foreground',sh.globs['var']['color_terms_sel_fg'])
 			if View:
@@ -2756,7 +1732,7 @@ class TkinterHtmlMod(tk.Widget):
 				self.mouse_index = self.text("offset",self._node,self._offset)
 			except ValueError:
 				# Это сообщение появляется так часто, что не ставлю тут ничего.
-				#log.append('TkinterHtmlMod.mouse_sel',sh.lev_warn,sh.globs['mes'].unknown_cell)
+				#sh.log.append('TkinterHtmlMod.mouse_sel',sh.lev_warn,sh.globs['mes'].unknown_cell)
 				pass
 			if self.mouse_index > 0:
 				self.get_cell(self.mouse_index)
@@ -2799,7 +1775,7 @@ class TkinterHtmlMod(tk.Widget):
 				Found = True
 				break
 		if Found:
-			articles.current()._elems.insert(i,Cell())
+			articles.current()._elems.insert(i,Elem())
 			articles.current().update()
 			self.load_article()
 
@@ -2807,9 +1783,9 @@ class TkinterHtmlMod(tk.Widget):
 		self.reset()
 		# Do this before calling 'html()'
 		if sep_words_found in articles.current().text() or re.search('\d+\sфраз',articles.current().search()):
-			request.SpecialPage = True
+			objs.request().SpecialPage = True
 		else:
-			request.SpecialPage = False
+			objs.request().SpecialPage = False
 		self.parse(articles.current().html())
 		articles.current()._text = self.text('text')
 		self.top_indexes = {}
@@ -2826,11 +1802,11 @@ class TkinterHtmlMod(tk.Widget):
 	# Перейти по URL текущей ячейки
 	def go_url(self,*args):
 		if not self.MouseClicked:
-			log.append('TkinterHtmlMod.go_url',sh.lev_debug,sh.globs['mes'].cur_cell % (self.i,self.j))
-			request._search = articles.current()._cells[self.i][self.j].term
-			request._url    = articles.current()._cells[self.i][self.j].url
+			sh.log.append('TkinterHtmlMod.go_url',sh.lev_debug,sh.globs['mes'].cur_cell % (self.i,self.j))
+			objs.request()._search = articles.current()._cells[self.i][self.j].terms() # fix
+			objs._request._url     = articles.current()._cells[self.i][self.j].url()
 			articles.search_article()
-			log.append('TkinterHtmlMod.go_url',sh.lev_info,sh.globs['mes'].opening_link % articles.current()._url)
+			sh.log.append('TkinterHtmlMod.go_url',sh.lev_info,sh.globs['mes'].opening_link % articles.current()._url)
 			self.load_article()
 				
 	def gen_pos2cell(self):
@@ -2840,36 +1816,48 @@ class TkinterHtmlMod(tk.Widget):
 		for i in range(len(articles.current().cells())):
 			# Число столбцов в таблице должно быть одинаковым!
 			for j in range(len(articles.current()._cells[i])):
-				if articles.current()._cells[i][j].dic_print:
-					tmp_str = articles.current()._cells[i][j].dic_print.strip() + '\n'
+				#if articles.current()._cells[i][j].dic_print: # fix
+				if articles.current()._cells[i][j].dic():
+					#tmp_str = articles.current()._cells[i][j].dic_print.strip() + '\n'
+					tmp_str = articles.current()._cells[i][j].dic().strip() + '\n'
 					articles.current()._cells[i][j].first = cur_index
 					cur_index += len(tmp_str)
-					articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].term)
+					#articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].term)
+					articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].terms()) # fix
 					articles.current()._cells[i][j].last = cur_index
 					for k in range(len(tmp_str)):
 						self.pos2cell.append([i,j])
-				if articles.current()._cells[i][j].speech_print:
-					tmp_str = articles.current()._cells[i][j].speech_print.strip() + '\n'
+				#if articles.current()._cells[i][j].speech_print:
+				if articles.current()._cells[i][j].wforms():
+					#tmp_str = articles.current()._cells[i][j].speech_print.strip() + '\n'
+					tmp_str = articles.current()._cells[i][j].wforms().strip() + '\n'
 					articles.current()._cells[i][j].first = cur_index
 					cur_index += len(tmp_str)
-					articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].term)
+					#articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].term)
+					articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].terms())
 					articles.current()._cells[i][j].last = cur_index
 					for k in range(len(tmp_str)):
 						self.pos2cell.append([i,j])
-				if articles.current()._cells[i][j].transc_print:
-					tmp_str = articles.current()._cells[i][j].transc_print.strip() + '\n'
+				#if articles.current()._cells[i][j].transc_print:
+				if articles.current()._cells[i][j].transc():
+					#tmp_str = articles.current()._cells[i][j].transc_print.strip() + '\n'
+					tmp_str = articles.current()._cells[i][j].transc().strip() + '\n'
 					articles.current()._cells[i][j].first = cur_index
 					cur_index += len(tmp_str)
-					articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].term)
+					#articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].term)
+					articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].terms()) # fix
 					articles.current()._cells[i][j].last = cur_index
 					for k in range(len(tmp_str)):
 						self.pos2cell.append([i,j])
-				if articles.current()._cells[i][j].term + articles.current()._cells[i][j].comment:
-					tmp_str = (articles.current()._cells[i][j].term + articles.current()._cells[i][j].comment).strip() + '\n'
+				#if articles.current()._cells[i][j].term + articles.current()._cells[i][j].comment:
+				if articles.current()._cells[i][j].terms() + articles.current()._cells[i][j].comments():
+					#tmp_str = (articles.current()._cells[i][j].term + articles.current()._cells[i][j].comment).strip() + '\n'
+					tmp_str = (articles.current()._cells[i][j].terms() + articles.current()._cells[i][j].comments()).strip() + '\n'
 					tmp_str = tmp_str.replace('  ',' ')
 					articles.current()._cells[i][j].first = cur_index
 					cur_index += len(tmp_str)
-					articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].term)
+					#articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].term)
+					articles.current()._cells[i][j].last_term = articles.current()._cells[i][j].first + len(articles.current()._cells[i][j].terms())
 					articles.current()._cells[i][j].last = cur_index
 					for k in range(len(tmp_str)):
 						self.pos2cell.append([i,j])
@@ -2879,9 +1867,11 @@ class TkinterHtmlMod(tk.Widget):
 		cur_index = 1 # Starts with '\n'
 		for i in range(len(articles.current().cells())):
 			for j in range(len(articles.current()._cells[i])):
-				tmp_str = sh.List([articles.current()._cells[i][j].speech_print,articles.current()._cells[i][j].dic_print,articles.current()._cells[i][j].term,articles.current()._cells[i][j].comment]).space_items()
+				# fix
+				#tmp_str = sh.List([articles.current()._cells[i][j].speech_print,articles.current()._cells[i][j].dic_print,articles.current()._cells[i][j].term,articles.current()._cells[i][j].comment]).space_items()
+				tmp_str = articles.current()._cells[i][j].wforms() + articles.current()._cells[i][j].dic() + articles.current()._cells[i][j].terms() + articles.current()._cells[i][j].comments()
 				articles.current()._cells[i][j].first     = cur_index
-				articles.current()._cells[i][j].last_term = cur_index + len(articles.current()._cells[i][j].term)
+				articles.current()._cells[i][j].last_term = cur_index + len(articles.current()._cells[i][j].terms()) # fix
 				articles.current()._cells[i][j].last      = cur_index + len(tmp_str)
 				cur_index += len(tmp_str)
 				cur_index += 1
@@ -2897,32 +1887,32 @@ class TkinterHtmlMod(tk.Widget):
 			self.spec_symbols.close()
 			
 	def toggle_view(self,*args):
-		if request._view == 0:
-			request._view = 1
-		elif request._view == 1:
-			request._view = 0
+		if objs.request()._view == 0:
+			objs._request._view = 1
+		elif objs._request._view == 1:
+			objs._request._view = 0
 		else:
-			sg.Message(func='TkinterHtmlMod.toggle_view',level=sh.lev_err,message=sh.globs['mes'].unknown_mode % (str(request._view),'0, 1'))
-		log.append('TkinterHtmlMod.toggle_view',sh.lev_info,sh.globs['mes'].new_view_mode % request._view)
+			sg.Message(func='TkinterHtmlMod.toggle_view',level=sh.lev_err,message=sh.globs['mes'].unknown_mode % (str(objs._request._view),'0, 1'))
+		sh.log.append('TkinterHtmlMod.toggle_view',sh.lev_info,sh.globs['mes'].new_view_mode % objs._request._view)
 		# todo: why move_right and move_left are so slow to be calculated?
 		# todo: store views to reload them without reloading everything
 		articles.current().update()
 		self.load_article()
 		
 	def toggle_alphabet(self,*args):
-		if request.SortTerms:
-			request.SortTerms = False
+		if objs.request().SortTerms:
+			objs._request.SortTerms = False
 		else:
-			request.SortTerms = True
+			objs._request.SortTerms = True
 		articles.current().update()
 		self.load_article()
 	
 	def toggle_block(self,*args):
-		if request.Block:
-			request.Block = False
+		if objs.request().Block:
+			objs._request.Block = False
 			#sg.Message(func='TkinterHtmlMod.toggle_block',level=sh.lev_info,message='Blacklisting is now OFF.') # todo: mes
 		else:
-			request.Block = True
+			objs._request.Block = True
 			if objs._blacklist:
 				#sg.Message(func='TkinterHtmlMod.toggle_block',level=sh.lev_info,message='Blacklisting is now ON.')  # todo: mes
 				pass
@@ -2932,11 +1922,11 @@ class TkinterHtmlMod(tk.Widget):
 		self.load_article()
 		
 	def toggle_priority(self,*args):
-		if request.Prioritize:
-			request.Prioritize = False
+		if objs.request().Prioritize:
+			objs._request.Prioritize = False
 			#sg.Message(func='TkinterHtmlMod.toggle_priority',level=sh.lev_info,message='Prioritizing is now OFF.') # todo: mes
 		else:
-			request.Prioritize = True
+			objs._request.Prioritize = True
 			if objs._prioritize:
 				#sg.Message(func='TkinterHtmlMod.toggle_priority',level=sh.lev_info,message='Prioritizing is now ON.')  # todo: mes
 				pass
@@ -2963,9 +1953,9 @@ class Paths:
 			if self.Success:
 				return instance.file
 			else:
-				log.append('Paths.blacklist',sh.lev_warn,sh.globs['mes'].canceled)
+				sh.log.append('Paths.blacklist',sh.lev_warn,sh.globs['mes'].canceled)
 		else:
-			log.append('Paths.blacklist',sh.lev_warn,sh.globs['mes'].canceled)
+			sh.log.append('Paths.blacklist',sh.lev_warn,sh.globs['mes'].canceled)
 			
 	def prioritize(self):
 		if self.Success:
@@ -2974,9 +1964,9 @@ class Paths:
 			if self.Success:
 				return instance.file
 			else:
-				log.append('Paths.prioritize',sh.lev_warn,sh.globs['mes'].canceled)
+				sh.log.append('Paths.prioritize',sh.lev_warn,sh.globs['mes'].canceled)
 		else:
-			log.append('Paths.prioritize',sh.lev_warn,sh.globs['mes'].canceled)
+			sh.log.append('Paths.prioritize',sh.lev_warn,sh.globs['mes'].canceled)
 
 
 
@@ -2995,7 +1985,7 @@ class Lists:
 			text = sh.Text(text=text,Auto=1).text
 			return text.splitlines()
 		else:
-			log.append('Lists.blacklist',sh.lev_warn,sh.globs['mes'].canceled)
+			sh.log.append('Lists.blacklist',sh.lev_warn,sh.globs['mes'].canceled)
 			
 	def prioritize(self):
 		if self.Success:
@@ -3003,128 +1993,101 @@ class Lists:
 			text = sh.Text(text=text,Auto=1).text
 			return text.splitlines()
 		else:
-			log.append('Lists.prioritize',sh.lev_warn,sh.globs['mes'].canceled)
+			sh.log.append('Lists.prioritize',sh.lev_warn,sh.globs['mes'].canceled)
 
 
+def load_article():
+	'''
+	objs.request()._source = 'Online'                                          # todo: test & del
+	objs.request()._search = 'do'                                              # todo: test & del
+	objs.request()._url    = 'https://www.multitran.ru/c/m.exe?CL=1&s=do&l1=1' # todo: test & del
+	objs.ext_dics()                                                            # todo: test & del
+	'''
+	
+	'''
+	objs.request()._source = 'Offline'                                         # todo: test & del
+	objs.request()._search = 'ordered list'                                    # todo: test & del
+	objs.request()._url    = ''                                                # todo: test & del
+	objs.ext_dics()                                                            # todo: test & del
+	'''
+	
+	'''
+	# fix: uniting terms & comments, delete '|'
+	objs.request()._source = 'Online'                                          # todo: test & del
+	objs.request()._search = 'teaser rate'                                     # todo: test & del
+	objs.request()._url    = 'https://www.multitran.ru/c/M.exe?l1=1&l2=2&s=teaser%20rate&l1=1&l2=2&s=teaser%20rate'   # todo: test & del
+	objs.ext_dics()                                                            # todo: test & de
+	'''
+	
+	objs.request()._source = 'Online'                                          # todo: test & del
+	objs.request()._search = 'martyr'                                          # todo: test & del
+	objs.request()._url    = 'https://www.multitran.ru/c/m.exe?CL=1&s=martyr&l1=1' # todo: test & del
+	objs.ext_dics()                                                            # todo: test & de
+	
+	'''
+	objs.request()._source = 'Online'                                          # todo: test & del
+	objs.request()._search = 'широта'                                          # todo: test & del
+	objs.request()._url    = 'https://www.multitran.ru/c/m.exe?t=1554559_2_3&s1=H&%23246;he' # todo: test & del
+	objs.ext_dics()                                                            # todo: test & de
+	'''
+	
+	'''
+	objs.request()._source = 'Online'                                          # todo: test & del
+	objs.request()._search = 'alongside'                                       # todo: test & del
+	objs.request()._url    = 'https://www.multitran.ru/c/m.exe?l1=1&l2=2&s=alongside' # todo: test & del
+	objs.ext_dics()                                                            # todo: test & del
+	'''
+	
+	'''
+	objs.request()._source = 'Online'                                          # todo: test & del
+	objs.request()._search = 'counterpart'                                       # todo: test & del
+	objs.request()._url    = 'https://www.multitran.ru/c/M.exe?l1=1&l2=2&s=counterpart&l1=1&l2=2&s=counterpart' # todo: test & del
+	objs.ext_dics()                                                            # todo: test & del
+	'''
 
-class ExtDic:
+	timer = sh.Timer(func_title='load_article (page)')
+	timer.start()
+	page = pg.Page (
+	                source              = objs.request()._source              ,
+	                lang                = objs._request._lang                 ,
+	                search              = objs._request._search               ,
+	                url                 = objs._request._url                  ,
+	                win_encoding        = sh.globs['var']['win_encoding']     ,
+	                ext_dics            = objs.ext_dics()
+	               )
+	page.run()
+	objs._request._page     = page._page
+	objs._request._html_raw = page._html_raw
+	timer.end()
 	
-	def __init__(self,path,lang='English',name='External',Block=False,Silent=False):
-		self.Silent = Silent
-		# Full path without extension (as managed by pystardict)
-		self._path  = path
-		self._lang  = lang
-		self._name  = name
-		self.Block  = Block
-		self._dic   = None
-		self.load()
+	timer = sh.Timer(func_title='load_article (tags, elems, blocks_db, cells, mkhtml)')
+	timer.start()
+	tags = tg.Tags (
+	                text                = objs._request._page                 ,
+	                source              = objs._request._source               ,
+	                pair_root           = sh.globs['var']['pair_root']
+	               )
+	tags.run()
 	
-	def load(self):
-		log.append('ExtDic.load',sh.lev_info,'Load "%s"' % self._path) # todo: mes
-		try:
-			self._dic = pd.Dictionary(self._path)
-		except:
-			sg.Message('ExtDic.load',sh.lev_warn,'Failed to load "%s"!' % self._path,self.Silent) # todo: mes
-			
-	def get(self,search):
-		result = ''
-		if self._dic:
-			try:
-				result = self._dic.get(k=search)
-			except:
-				sg.Message('ExtDic.get',sh.lev_warn,'Failed to parse "%s"!' % self._path,self.Silent) # todo: mes
-		else:
-			log.append('ExtDic.get',sh.lev_warn,sh.globs['mes'].empty_input)
-		return result
-
-
-
-class ExtDics:
+	elems = el.Elems(blocks=tags._blocks)
+	elems.run()
 	
-	def __init__(self,path):
-		self._dics    = []
-		self._dics_en = []
-		self._dics_de = []
-		self._dics_es = []
-		self._dics_it = []
-		self._dics_fr = []
-		self._path    = path
-		self.dir      = sh.Directory(path=self._path)
-		self._files   = self.dir.files()
-		self.Success  = self.dir.Success
-		self._list()
-		self.load()
-		
-	def get(self,lang='English',search=''):
-		if self.Success:
-			dics = [dic for dic in self._dics if dic._lang == lang and not dic.Block]
-			lst  = []
-			for dic in dics:
-				tmp = dic.get(search=search)
-				if tmp:
-					# Set offline dictionary title
-					lst.append(tag_pattern1 + dic._name + tag_pattern8 + tmp)
-			tmp = '\n'.join(lst)
-			return tmp
-		else:
-			log.append('ExtDics.get',sh.lev_warn,sh.globs['mes'].canceled)
+	objs.blocks_db().fill(elems.dump())
+	objs._blocks_db.sort()
 	
-	def load(self):
-		if self.Success:
-			sg.objs.waitbox().reset(func_title='ExtDic.load',message='Load offline dictionaries') # todo: mes
-			sg.objs._waitbox.show()
-			for elem in self._en:
-				path = os.path.join(self._path,elem)
-				self._dics.append(ExtDic(path=path,lang='English',name=elem))
-			for elem in self._de:
-				path = os.path.join(self._path,elem)
-				self._dics.append(ExtDic(path=path,lang='German',name=elem))
-			for elem in self._es:
-				path = os.path.join(self._path,elem)
-				self._dics.append(ExtDic(path=path,lang='Spanish',name=elem))
-			for elem in self._it:
-				path = os.path.join(self._path,elem)
-				self._dics.append(ExtDic(path=path,lang='Italian',name=elem))
-			for elem in self._fr:
-				path = os.path.join(self._path,elem)
-				self._dics.append(ExtDic(path=path,lang='French',name=elem))
-			sg.objs._waitbox.close()
-			# Leave only those dictionaries that were successfully loaded
-			self._dics = [x for x in self._dics if x._dic]
-			log.append('ExtDics.load',sh.lev_info,'%d offline dictionaries have been loaded' % len(self._dics)) # todo: mes
-		else:
-			log.append('ExtDics.load',sh.lev_warn,sh.globs['mes'].canceled)
+	data = objs._blocks_db.dbc.fetchall()
 	
-	def _list(self):
-		if self._files:
-			self._filenames = set([sh.Path(file).filename().replace('.dict','') for file in self._files])
-			# todo: elaborate (make automatical, use language codes)
-			# todo: forget 'Ru', check for 1st upper and 2nd lower letters
-			self._en        = [elem for elem in self._filenames if 'RuEn' in elem or 'EnRu' in elem]
-			self._de        = [elem for elem in self._filenames if 'RuDe' in elem or 'DeRu' in elem]
-			self._es        = [elem for elem in self._filenames if 'RuEs' in elem or 'EsRu' in elem]
-			self._it        = [elem for elem in self._filenames if 'RuIt' in elem or 'ItRu' in elem]
-			self._fr        = [elem for elem in self._filenames if 'RuFr' in elem or 'FrRu' in elem]
-		else:
-			self._filenames = []
-			self._en        = []
-			self._de        = []
-			self._es        = []
-			self._it        = []
-			self._fr        = []
+	cells = cl.Cells(data=data,collimit=objs._request._collimit)
+	cells.run()
 	
-	def debug(self):
-		message = 'English:\n'
-		message += '\n'.join(self._en) + '\n\n'
-		message += 'German:\n'
-		message += '\n'.join(self._de) + '\n\n'
-		message += 'French:\n'
-		message += '\n'.join(self._fr) + '\n\n'
-		message += 'Spanish:\n'
-		message += '\n'.join(self._es) + '\n\n'
-		message += 'Italian:\n'
-		message += '\n'.join(self._it) + '\n\n'
-		sg.Message(func='ExtDics.debug',level=sh.lev_info,message=message)
+	objs._blocks_db.update(query=cells.dump())
+	
+	get_html = mh.HTML(blocks=cells._blocks,collimit=objs._request._collimit)
+	objs._request._html = get_html._html
+	
+	timer.end()
+	
+	objs.webframe().fill(code=objs._request._html)
 
 
 
@@ -3132,8 +2095,18 @@ objs = Objects()
 
 
 if  __name__ == '__main__':
-	request  = CurRequest()
-	ext_dics = ExtDics(path=sh.objs.pdir().add('dics'))
+	sg.objs.start()
+	
+	ConfigMclient()
+
+	load_article()
+	objs.webframe().show()
+	
+	kl_mod.keylistener.cancel() # todo (?): del
+	
+	sg.objs.end()
+	
+	'''
 	articles = Articles()
 	h_quit   = Quit()
 	h_table  = TkinterHtmlMod(objs.top().widget)
@@ -3147,3 +2120,4 @@ if  __name__ == '__main__':
 	h_table.show()
 	objs.top().show()
 	sg.objs.root().run()
+	'''
