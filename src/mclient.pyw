@@ -369,13 +369,16 @@ class CurRequest:
 	def reset(self):
 		self._view       = 0
 		self._collimit   = 10
-		self._source    = 'All'
-		#self._source     = 'Offline'
-		self._search    = 'Добро пожаловать!'
+		#self._source    = 'All'
+		#self._source    = 'Offline'
+		self._source     = 'Online'
+		#self._search    = 'Добро пожаловать!'
 		#self._search    = 'filter'
-		#self._search     = 'computer'
+		#self._search    = 'computer'
+		self._search     = 'martyr'
 		self._lang       = 'English'
 		self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
+		self._article_id = self._search + ' (' + self._url + ')'
 		# Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
 		self.Block       = True
 		self.Prioritize  = True
@@ -1067,7 +1070,11 @@ class WebFrame:
 	# Выделить ячейку
 	def set_cell(self,pos,View=True): # View=True будет всегда сдвигать экран до текущей ячейки при навигации с клавиатуры
 		self.frame.html.tag("delete", "selection")
-		pos1, pos2 = objs.blocks_db().get_cell(pos=pos)
+		result = objs.blocks_db().get_cell(pos=pos)
+		if result:
+			pos1, pos2 = result
+		else:
+			pos1, pos2 = 0, 0
 		self.index = self.frame.html.text('index',pos1,pos2)
 		if self.index:
 			try:
@@ -2019,10 +2026,12 @@ def load_article():
 	objs.ext_dics()                                                            # todo: test & de
 	'''
 	
+	'''
 	objs.request()._source = 'Online'                                          # todo: test & del
 	objs.request()._search = 'martyr'                                          # todo: test & del
 	objs.request()._url    = 'https://www.multitran.ru/c/m.exe?CL=1&s=martyr&l1=1' # todo: test & del
 	objs.ext_dics()                                                            # todo: test & de
+	'''
 	
 	'''
 	objs.request()._source = 'Online'                                          # todo: test & del
@@ -2044,9 +2053,16 @@ def load_article():
 	objs.request()._url    = 'https://www.multitran.ru/c/M.exe?l1=1&l2=2&s=counterpart&l1=1&l2=2&s=counterpart' # todo: test & del
 	objs.ext_dics()                                                            # todo: test & del
 	'''
-
-	timer = sh.Timer(func_title='load_article (page)')
+	
+	#blacklist  = ['Христианство']
+	blacklist  = []
+	prioritize = ['Религия']
+	
+	objs.request()._url = 'https://www.multitran.ru/c/m.exe?CL=1&s=martyr&l1=1' # todo: test & del
+	
+	timer = sh.Timer(func_title='Page')
 	timer.start()
+	
 	page = pg.Page (
 	                source              = objs.request()._source              ,
 	                lang                = objs._request._lang                 ,
@@ -2055,32 +2071,49 @@ def load_article():
 	                win_encoding        = sh.globs['var']['win_encoding']     ,
 	                ext_dics            = objs.ext_dics()
 	               )
+	               
 	page.run()
 	objs._request._page     = page._page
 	objs._request._html_raw = page._html_raw
+	
 	timer.end()
-	
-	timer = sh.Timer(func_title='load_article (tags, elems, blocks_db, cells, mkhtml)')
+
+	timer = sh.Timer(func_title='tags + elems + cells')
 	timer.start()
-	tags = tg.Tags (
-	                text                = objs._request._page                 ,
-	                source              = objs._request._source               ,
-	                pair_root           = sh.globs['var']['pair_root']
-	               )
+	
+	tags = tg.Tags(text=page._page,source=objs._request._source,pair_root=sh.globs['var']['pair_root'])
 	tags.run()
+	#tags.debug(MaxRows=40)
+	#input('Tags step completed. Press Enter')
 	
-	elems = el.Elems(blocks=tags._blocks)
+	elems = el.Elems(blocks=tags._blocks,source=objs._request._source,article_id=objs._request._article_id)
 	elems.run()
+	#elems.debug(MaxRows=40)
+	#input('Elems step completed. Press Enter')
 	
-	objs.blocks_db().fill(elems.dump())
-	objs._blocks_db.sort()
+	objs.blocks_db().fill(elems._data)
 	
-	data = objs._blocks_db.dbc.fetchall()
+	objs._blocks_db.request(source=objs._request._source,article_id=objs._request._article_id)
+	data = objs._blocks_db.assign_bp()
 	
-	cells = cl.Cells(data=data,collimit=objs._request._collimit)
+	bp = cl.BlockPrioritize(data=data,source=objs._request._source,article_id=objs._request._article_id,blacklist=blacklist,prioritize=prioritize)
+	bp.run()
+	#bp.debug(MaxRows=40)
+	#input('BlockPrioritize step completed. Press Enter')
+	#sg.Message('BlockPrioritize',sh.lev_info,bp._query.replace(';',';\n'))
+	objs._blocks_db.update(query=bp._query)
+	
+	data = objs._blocks_db.assign_cells()
+	cells = cl.Cells(data=data,nos=objs._blocks_db.nos_nb(),collimit=objs._request._collimit)
 	cells.run()
-	
-	objs._blocks_db.update(query=cells.dump())
+	#cells.debug(MaxRows=40)
+	#input('Cells step completed. Press Enter')
+	#sg.Message('Cells',sh.lev_info,cells._query.replace(';',';\n'))
+	objs._blocks_db.update(query=cells._query)
+
+	#objs._blocks_db.print(Shorten=1,MaxRow=18,MaxRows=100)
+	#objs._blocks_db.dbc.execute('select * from BLOCKS where BLOCK=0 order by CELLNO,NO')
+	#objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=100)
 	
 	get_html = mh.HTML(blocks=cells._blocks,collimit=objs._request._collimit)
 	objs._request._html = get_html._html

@@ -14,7 +14,7 @@ import sharedGUI as sg
 
 class HTML:
 	
-	def __init__(self,blocks=[],collimit=9): # 'collimit' includes non-selectable blocks
+	def __init__(self,blocks=[],collimit=9): # 'collimit' includes fixed blocks
 		self._blocks   = blocks
 		self._collimit = collimit
 		self._html     = ''
@@ -156,15 +156,12 @@ class HTML:
 if __name__ == '__main__':
 	import re
 	import html
-	import time
-	import tags as tg
-	import elems as el
-	import cells as cl
+	import tags    as tg
 	import db
+	import elems   as el
+	import cells   as cl
 	import mclient as mc
 	
-	collimit = 10
-	#collimit = 6
 	
 	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/star_test').get()
 	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/sampling.txt').get()
@@ -195,55 +192,57 @@ if __name__ == '__main__':
 	text = re.sub(r'\>[\s]{0,1}\<','><',text)
 
 	mc.ConfigMclient ()
+	
+	collimit   = 10
+	source     = 'All'
+	article_id = 'martyr.txt'
+	#blacklist  = ['Христианство']
+	blacklist  = []
+	prioritize = ['Религия']
 
-	timer = sh.Timer(func_title='mkhtml')
+	timer = sh.Timer(func_title='tags + elems + cells')
 	timer.start()
 	
 	tags = tg.Tags(text)
 	tags.run()
-	#tags.debug()
+	#tags.debug(MaxRows=40)
 	#input('Tags step completed. Press Enter')
-	
-	source     = 'All'
-	article_id = 'martyr.txt'
 	
 	elems = el.Elems(blocks=tags._blocks,source=source,article_id=article_id)
 	elems.run()
-	#elems.debug()
+	#elems.debug(MaxRows=40)
 	#input('Elems step completed. Press Enter')
 	
 	blocks_db = db.DB()
-	blocks_db.fill(elems.dump())
-	blocks_db.print(Shorten=1)
+	blocks_db.fill(elems._data)
 	
-	#print(blocks_db.first_no(source=source,article_id=article_id))
+	blocks_db.request(source=source,article_id=article_id)
+	data = blocks_db.assign_bp()
 	
-	print(blocks_db.nos(source=source,article_id=article_id))
+	bp = cl.BlockPrioritize(data=data,source=source,article_id=article_id,blacklist=blacklist,prioritize=prioritize)
+	bp.run()
+	#bp.debug(MaxRows=40)
+	#input('BlockPrioritize step completed. Press Enter')
+	#sg.Message('BlockPrioritize',sh.lev_info,bp._query.replace(';',';\n'))
+	blocks_db.update(query=bp._query)
 	
-	print('Finished.')
-	
-	sg.objs.end()
-	import sys
-	sys.exit()
-	
-	data = blocks_db.sort(Fetch=1)
-	#blocks_db.print()
-	
-	data = blocks_db.dbc.fetchall()
-	
-	cells = cl.Cells(data=data,collimit=collimit)
+	data = blocks_db.assign_cells()
+	cells = cl.Cells(data=data,nos=blocks_db.nos_nb(),collimit=collimit)
 	cells.run()
-	#cells.debug()
+	#cells.debug(MaxRows=40)
 	#input('Cells step completed. Press Enter')
-	
-	blocks_db.update(query=cells.dump())
+	#sg.Message('Cells',sh.lev_info,cells._query.replace(';',';\n'))
+	blocks_db.update(query=cells._query)
+
+	#blocks_db.print(Shorten=1,MaxRow=18,MaxRows=100)
+	#blocks_db.dbc.execute('select * from BLOCKS where BLOCK=0 order by CELLNO,NO')
+	#blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=100)
 	
 	mkhtml = HTML(blocks=cells._blocks,collimit=collimit)
 	
-	
 	timer.end()
-	'''
+	
 	file_w = '/tmp/test.html'
 	sh.WriteTextFile(file=file_w,AskRewrite=0).write(text=mkhtml._html)
 	sh.Launch(target=file_w).default()
-	'''
+	

@@ -76,17 +76,13 @@ class DB:
 		         ).print()
 
 	def get_cell(self,pos): # Selectable
-		# todo: limit by SOURCE, ARTICLEID
-		#TEXT,CELLNO
-		self.dbc.execute('select CELLNO from BLOCKS where POS1 <= ? and POS2 >= ?',(pos,pos))
-		result = self.dbc.fetchall()
-		if result and result[0]:
-			result = result[0][0]
-			sh.log.append('DB.get_cell',sh.lev_debug,'Cell #:%d' % result) # todo: mes
-			self.dbc.execute('select POS1,POS2 from BLOCKS where CELLNO=?',(result,))
-			return self.dbc.fetchone()
+		if self._source and self._article_id:
+			self.dbc.execute('select POS1,POS2 from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ?',(self._source,self._article_id,pos,pos,))
+			result = self.dbc.fetchone()
+			if result:
+				return(result[0],result[1])
 		else:
-			return(0,0)
+			sg.Message('DB.get_cell',sh.lev_warn,sh.globs['mes'].empty_input)
 
 	def update(self,query):
 		try:
