@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+''' # todo:
+    - DB.reset: reset TEXT for DIC, WFORM, SPEECH, TRANSC; reset BLOCK, PRIORITY, CELLNO, SELECTABLE, ROWNO, COLNO, POS1, POS2
+'''
+
 import sqlite3
 import prettytable
 import shared as sh
@@ -10,43 +14,67 @@ import sharedGUI as sg
 class DB:
 	
 	def __init__(self):
-		self.db  = sqlite3.connect(':memory:')
-		self.dbc = self.db.cursor()
-		# Must use 'integer' fully before 'primary key autoincrement'
-		self.dbc.execute('create table if not exists BLOCKS (NO integer primary key autoincrement,ARTICLEID text,SOURCE text,DICA text,WFORMA text,SPEECHA text,TRANSCA text,TERMA text,TYPE text,TEXT text,SELECTABLE bool,SAMECELL bool,CELLNO integer,ROWNO integer,COLNO integer,POS1 integer,POS2 integer,BLOCK boolean)')
-		
+		self._source     = ''
+		self._article_id = ''
+		self.db          = sqlite3.connect(':memory:')
+		self.dbc         = self.db.cursor()
+		# We use integers instead of booleans; -1 means not set
+		# Must indicate 'integer' fully before 'primary key autoincrement'
+		self.dbc.execute (
+		            'create table if not exists BLOCKS (\
+		            NO                  integer primary key autoincrement    ,\
+		            SOURCE              text                                 ,\
+		            ARTICLEID           text                                 ,\
+		            DICA                text                                 ,\
+		            WFORMA              text                                 ,\
+		            SPEECHA             text                                 ,\
+		            TRANSCA             text                                 ,\
+		            TERMA               text                                 ,\
+		            TYPE                text                                 ,\
+		            TEXT                text                                 ,\
+		            URL                 text                                 ,\
+		            BLOCK               integer                              ,\
+		            PRIORITY            integer                              ,\
+		            SELECTABLE          integer                              ,\
+		            SAMECELL            integer                              ,\
+		            CELLNO              integer                              ,\
+		            ROWNO               integer                              ,\
+		            COLNO               integer                              ,\
+		            POS1                integer                              ,\
+		            POS2                integer\
+		                                               )'
+		                 )
+
 	def fill(self,data):
-		self.dbc.executemany('insert into BLOCKS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',data)
+		self.dbc.executemany('insert into BLOCKS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',data)
+
+	def sort(self,Fetch=True):
+		self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where BLOCK is NOT ? order by DICA,WFORMA,SPEECHA,TERMA,CELLNO,NO',(1,))
+		if Fetch:
+			return self.dbc.fetchall()
+			
+	def request(self,source,article_id):
+		if source and article_id:
+			self._source     = source
+			self._article_id = article_id
+		else:
+			sg.Message('DB.request',sh.lev_warn,sh.globs['mes'].empty_input)
 	
-	def sort(self):
-		#self.dbc.execute('select * from BLOCKS order by DICA,WFORMA,NO,TERMA')
-		#self.dbc.execute('select TYPE,TEXT,SELECTABLE,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where TYPE in ("term","comment","correction","phrase") order by DICA,WFORMA,CELLNO,TERMA,NO')
-		self.dbc.execute('select TYPE,TEXT,SELECTABLE,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where TYPE in ("term","comment","correction","phrase") order by DICA,WFORMA,TERMA,CELLNO,NO')
-		#self.dbc.execute('select TYPE,TEXT,SELECTABLE,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where TYPE in ("term","comment","correction","phrase") order by NO') # cur
-		#return self.dbc.fetchall()
-	
-	def shorten(self,rows):
-		for i in range(len(rows)):
-			if isinstance(rows[i],tuple):
-				rows[i] = list(rows[i])
-			for j in range(len(rows[i])):
-				if isinstance(rows[i][j],str):
-					if len(rows[i][j]) > 20:
-						rows[i][j] = rows[i][j][0:20]
-		return rows
-	
-	def print(self,Selected=False):
+	def print(self,Selected=False,Shorten=False,MaxHeader=10,MaxRow=20,MaxRows=20):
 		# 'self.dbc.description' is 'None' without performing 'select' first
 		if not Selected:
-			self.dbc.execute('select * from BLOCKS')
-		col_names = [cn[0] for cn in self.dbc.description]
-		rows = self.dbc.fetchall()
-		rows = self.shorten(rows)
-		x = prettytable.PrettyTable(col_names)
-		for row in rows:
-			x.add_row(row)
-		print(x)
-		
+			self.dbc.execute('select * from BLOCKS order by NO')
+		headers = [cn[0] for cn in self.dbc.description]
+		rows    = self.dbc.fetchall()
+		sh.Table (
+		            headers             = headers                             ,
+		            rows                = rows                                ,
+		            Shorten             = Shorten                             ,
+		            MaxHeader           = MaxHeader                           ,
+		            MaxRow              = MaxRow                              ,
+		            MaxRows             = MaxRows
+		         ).print()
+
 	def get_cell(self,pos): # Selectable
 		# todo: limit by SOURCE, ARTICLEID
 		#TEXT,CELLNO
@@ -59,14 +87,46 @@ class DB:
 			return self.dbc.fetchone()
 		else:
 			return(0,0)
-		
-		
-		
+
 	def update(self,query):
 		try:
 			self.dbc.executescript(query)
 		except sqlite3.OperationalError:
 			sg.Message('DB.update',sh.lev_err,'Unable to execute:\n"%s"' % str(query))
+			
+	def nos(self,source,article_id):
+		if self._source and self._article_id:
+			self.dbc.execute('select NO from BLOCKS where SOURCE = ? and ARTICLEID = ? order by NO',(self._source,self._article_id))
+			result = self.dbc.fetchall()
+			if result:
+				return [x[0] for x in result]
+		else:
+			sg.Message('DB.nos',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def nos_nb(self):
+		if self._source and self._article_id:
+			self.dbc.execute('select NO from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK IS NOT ? order by NO',(self._source,self._article_id,1,))
+			result = self.dbc.fetchall()
+			if result:
+				return [x[0] for x in result]
+		else:
+			sg.Message('DB.nos_nb',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	# Assign input data for BlockPrioritize
+	def assign_bp(self):
+		if self._source and self._article_id:
+			self.dbc.execute('select NO,TYPE,DICA from BLOCKS where SOURCE = ? and ARTICLEID = ? order by NO',(self._source,self._article_id))
+			return self.dbc.fetchall()
+		else:
+			sg.Message('DB.assign_bp',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	# Assign input data for Cells
+	def assign_cells(self):
+		if self._source and self._article_id:
+			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK is not ? order by NO',(self._source,self._article_id,1,))
+			return self.dbc.fetchall()
+		else:
+			sg.Message('DB.assign_cells',sh.lev_warn,sh.globs['mes'].empty_input)
 
 
 

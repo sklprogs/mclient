@@ -143,12 +143,25 @@ useful_tags = [pdic,purl1,purl2,pcom1,pcom2,pcom3,pcor1,ptr1,ptr2,pwf6,ptm7,pph5
 class Block:
 	
 	def __init__(self):
-		self._type      = 'comment' # 'wform', 'speech', 'dic', 'phrase', 'term', 'comment', 'correction', 'transc', 'invalid'
-		self._text      = self._url = ''
-		self._cell_no   = 0 # Applies to non-blocked cells only
-		self.Block      = self.SameCell = False
-		# 'Selectable' is an attribute of a *cell* which is valid if the cell has a non-blocked block of types 'term', 'phrase' or 'transc'
-		self.Selectable = False
+		self._block    = -1
+		self.i         = -1
+		self.j         = -1
+		self._first    = -1
+		self._last     = -1
+		self._no       = -1
+		self._cell_no  = -1 # Applies to non-blocked cells only
+		self._same     = -1
+		# '_select' is an attribute of a *cell* which is valid if the cell has a non-blocked block of types 'term', 'phrase' or 'transc'
+		self._select   = -1
+		self._type     = 'comment' # 'wform', 'speech', 'dic', 'phrase', 'term', 'comment', 'correction', 'transc', 'invalid'
+		self._text     = ''
+		self._url      = ''
+		self._dica     = ''
+		self._wforma   = ''
+		self._speecha  = ''
+		self._transca  = ''
+		self._terma    = ''
+		self._priority = -1
 
 
 
@@ -397,25 +410,36 @@ class Tags:
 		sg.objs._txt.insert(text=message)
 		sg.objs._txt.show()
 		
-	def debug_blocks(self):
-		message = ''
-		count = 0
+	def debug_blocks(self,Shorten=1,MaxHeader=10,MaxRow=20,MaxRows=20):
+		print('\nTags.debug_blocks (Non-DB blocks):')
+		headers = [
+		            'TYPE'              ,
+		            'TEXT'              ,
+		            'URL'               ,
+		            'SAMECELL'          
+		          ]
+		rows = []
 		for block in self._blocks:
-			# fix: search does not work
-			message += '%d: Type\t\t: "%s"\n'       % ( count,block._type    )
-			message += '%d: Text\t\t: "%s"\n'       % ( count,block._text    )
-			message += '%d: URL\t\t: "%s"\n'        % ( count,block._url     )
-			message += '%d: Block\t\t: "%s"\n'      % ( count,block.Block    )
-			message += '%d: SameCell\t\t: "%s"\n'   % ( count,block.SameCell )
-			message += '%d: Cell #\t\t: %d\n\n'     % ( count,block._cell_no )
-			count += 1
-		#sg.Message('Tags.debug_blocks',sh.lev_info,message)
-		words = sh.Words(text=message,OrigCyr=1,Auto=0)
-		words.sent_nos()
-		sg.objs.txt(words=words).reset_data()
-		sg.objs._txt.title('Tags.debug_blocks:')
-		sg.objs._txt.insert(text=message)
-		sg.objs._txt.show()
+			rows.append (
+			              [
+			        block._type         ,
+			        block._text         ,
+			        block._url          ,
+			        block._same         
+			              ]
+			            )
+		sh.Table (
+		            headers             = headers                             ,
+		            rows                = rows                                ,
+		            Shorten             = Shorten                             ,
+		            MaxHeader           = MaxHeader                           ,
+		            MaxRow              = MaxRow                              ,
+		            MaxRows             = MaxRows
+		         ).print()
+		
+	def debug(self,Shorten=1,MaxHeader=10,MaxRow=20,MaxRows=20):
+		self.debug_tags   ()
+		self.debug_blocks (Shorten=Shorten,MaxHeader=MaxHeader,MaxRow=MaxRow,MaxRows=MaxRows)
 		
 	def blocks(self):
 		if not self._blocks:
@@ -425,7 +449,9 @@ class Tags:
 				lst = analyze._elems
 				for i in range(len(lst)):
 					if i > 0:
-						lst[i].SameCell = True
+						lst[i]._same = 1
+					else:
+						lst[i]._same = 0
 				self._blocks += lst
 		return self._blocks
 		

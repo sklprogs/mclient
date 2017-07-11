@@ -196,21 +196,37 @@ if __name__ == '__main__':
 
 	mc.ConfigMclient ()
 
-	start_time = time.time()
-	cur_start  = time.time()
+	timer = sh.Timer(func_title='mkhtml')
+	timer.start()
 	
 	tags = tg.Tags(text)
 	tags.run()
+	#tags.debug()
+	#input('Tags step completed. Press Enter')
 	
-	sh.log.append('tags',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-cur_start))
-	cur_start  = time.time()
+	source     = 'All'
+	article_id = 'martyr.txt'
 	
-	elems = el.Elems(blocks=tags._blocks)
+	elems = el.Elems(blocks=tags._blocks,source=source,article_id=article_id)
 	elems.run()
+	#elems.debug()
+	#input('Elems step completed. Press Enter')
 	
 	blocks_db = db.DB()
 	blocks_db.fill(elems.dump())
-	blocks_db.sort()
+	blocks_db.print(Shorten=1)
+	
+	#print(blocks_db.first_no(source=source,article_id=article_id))
+	
+	print(blocks_db.nos(source=source,article_id=article_id))
+	
+	print('Finished.')
+	
+	sg.objs.end()
+	import sys
+	sys.exit()
+	
+	data = blocks_db.sort(Fetch=1)
 	#blocks_db.print()
 	
 	data = blocks_db.dbc.fetchall()
@@ -218,15 +234,16 @@ if __name__ == '__main__':
 	cells = cl.Cells(data=data,collimit=collimit)
 	cells.run()
 	#cells.debug()
+	#input('Cells step completed. Press Enter')
 	
-	sh.log.append('elems, db, cells',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-cur_start))
+	blocks_db.update(query=cells.dump())
 	
-	cur_start  = time.time()
 	mkhtml = HTML(blocks=cells._blocks,collimit=collimit)
-	sh.log.append('mkhtml',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-cur_start))
 	
-	sh.log.append('tags, elems, mkhtml',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-start_time))
 	
+	timer.end()
+	'''
 	file_w = '/tmp/test.html'
 	sh.WriteTextFile(file=file_w,AskRewrite=0).write(text=mkhtml._html)
 	sh.Launch(target=file_w).default()
+	'''
