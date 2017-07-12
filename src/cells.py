@@ -123,21 +123,19 @@ class BlockPrioritize:
 
 
 
-# This is view-specific and should be recreated each time
-''' This re-assigns DIC, WFORM, SPEECH, TRANSC types and calculates view-specific fields
+''' This re-assigns DIC, WFORM, SPEECH, TRANSC types
     We assume that sqlite has already sorted DB with 'BLOCK IS NOT 1'
     Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL, DICA, WFORMA, SPEECHA, TRANSCA
-    Modifies attributes:        SELECTABLE, CELLNO, ROWNO, COLNO, POS1, POS2
+    Modifies attributes:        TEXT, ROWNO, COLNO
 '''
 class Cells:
 	
-	def __init__(self,data,nos,collimit=10): # Including fixed columns
+	def __init__(self,data,collimit=10): # Including fixed columns
 		self._data       = data # Sqlite fetch
-		self._nos        = nos  # Autoincrement numbers for the current request
 		self._collimit   = collimit
 		self._blocks     = []
 		self._query      = ''
-		if self._data and self._nos:
+		if self._data:
 			self.Success = True
 		else:
 			self.Success = False
@@ -172,9 +170,6 @@ class Cells:
 			self.assign      ()
 			self.clear_fixed ()
 			self.wrap        ()
-			self.gen_poses   ()
-			self.cell_no     ()
-			self.selectables ()
 			self.dump        ()
 		else:
 			sh.log.append('Cells.run',sh.lev_warn,sh.globs['mes'].canceled)
@@ -198,10 +193,125 @@ class Cells:
 		            'NO'                ,
 		            'TYPE'              ,
 		            'TEXT'              ,
+		            'ROWNO'             ,
+		            'COLNO'             
+		          ]
+		rows = []
+		for block in self._blocks:
+			rows.append (
+			              [
+			        block._no           ,
+			        block._type         ,
+			        block._text         ,
+			        block.i             ,
+			        block.j             
+			              ]
+			            )
+		sh.Table (
+		            headers             = headers                             ,
+		            rows                = rows                                ,
+		            Shorten             = Shorten                             ,
+		            MaxHeader           = MaxHeader                           ,
+		            MaxRow              = MaxRow                              ,
+		            MaxRows             = MaxRows
+		         ).print()
+	
+	# cur
+	def wrap(self): # Dic-Wform-Transc-Speech
+		i = j = -1
+		for block in self._blocks:
+			if block._type == 'dic':
+				i += 1
+				block.i = i
+				block.j = 0
+				j = 3
+			elif block._type == 'wform':
+				if i < 0:
+					i = 0
+				block.i = i
+				block.j = j = 1
+			elif block._type == 'transc':
+				if i < 0:
+					i = 0
+				block.i = i
+				block.j = j = 2
+			elif block._type == 'speech':
+				if i < 0:
+					i = 0
+				block.i = i
+				block.j = j = 3
+			elif block._same > 0: # Must be before checking '_collimit'
+				if i < 0:
+					i = 0
+				block.i = i
+				block.j = j
+			elif j + 1 == self._collimit:
+				i += 1
+				block.i = i
+				block.j = j = 4 # Instead of creating empty non-selectable cells
+			else:
+				if i < 0:
+					i = 0
+				block.i = i
+				j += 1
+				block.j = j
+		
+	def dump(self):
+		tmp = io.StringIO()
+		tmp.write('begin;')
+		for block in self._blocks:
+			tmp.write('update BLOCKS set TEXT="%s",ROWNO=%d,COLNO=%d where NO=%d;' % (block._text,block.i,block.j,block._no))
+		tmp.write('commit;')
+		self._query = tmp.getvalue()
+		tmp.close()
+		return self._query
+
+
+
+# This is view-specific and should be recreated each time
+''' We assume that sqlite has already sorted DB with 'BLOCK IS NOT 1'
+    Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL
+    Modifies attributes:        SELECTABLE, CELLNO, POS1, POS2
+'''
+class Pos:
+	
+	def __init__(self,data):
+		self._data       = data # Sqlite fetch
+		self._blocks     = []
+		self._query      = ''
+		if self._data:
+			self.Success = True
+		else:
+			self.Success = False
+			sh.log.append('Pos.__init__',sh.lev_warn,sh.globs['mes'].empty_input)
+		
+	def run(self):
+		if self.Success:
+			self.assign      ()
+			self.gen_poses   ()
+			self.cell_no     ()
+			self.selectables ()
+			self.dump        ()
+		else:
+			sh.log.append('Pos.run',sh.lev_warn,sh.globs['mes'].canceled)
+		
+	def assign(self):
+		for item in self._data:
+			block          = Block()
+			block._no      = item[0]
+			block._type    = item[1]
+			block._text    = item[2]
+			block._same    = item[3]
+			self._blocks.append(block)
+		
+	def debug(self,Shorten=1,MaxHeader=10,MaxRow=20,MaxRows=20):
+		print('\nPos.debug (Non-DB blocks):')
+		headers = [
+		            'NO'                ,
+		            'TYPE'              ,
+		            'TEXT'              ,
 		            'SELECTABLE'        ,
 		            'CELLNO'            ,
-		            'ROWNO'             ,
-		            'COLNO'             ,
 		            'POS1'              ,
 		            'POS2'
 		          ]
@@ -214,8 +324,6 @@ class Cells:
 			        block._text         ,
 			        block._select       ,
 			        block._cell_no      ,
-			        block.i             ,
-			        block.j             ,
 			        block._first        ,
 			        block._last
 			              ]
@@ -229,35 +337,6 @@ class Cells:
 		            MaxRows             = MaxRows
 		         ).print()
 	
-	def wrap(self): # Dic-Wform-Transc-Speech
-		i = j = -1
-		for block in self._blocks:
-			if block._type == 'dic':
-				i += 1
-				block.i = i
-				block.j = 0
-				j = 3
-			elif block._type == 'wform':
-				block.i = i
-				block.j = j = 1
-			elif block._type == 'transc':
-				block.i = i
-				block.j = j = 2
-			elif block._type == 'speech':
-				block.i = i
-				block.j = j = 3
-			elif block._same > 0: # Must be before checking '_collimit'
-				block.i = i
-				block.j = j
-			elif j + 1 == self._collimit:
-				i += 1
-				block.i = i
-				block.j = j = 4 # Instead of creating empty non-selectable cells
-			else:
-				block.i = i
-				j += 1
-				block.j = j
-				
 	def gen_poses(self):
 		last = -1
 		for block in self._blocks:
@@ -295,7 +374,7 @@ class Cells:
 		tmp = io.StringIO()
 		tmp.write('begin;')
 		for block in self._blocks:
-			tmp.write('update BLOCKS set SELECTABLE=%d,CELLNO=%d,ROWNO=%d,COLNO=%d,POS1=%d,POS2=%d where NO=%d;' % (block._select,block._cell_no,block.i,block.j,block._first,block._last,block._no))
+			tmp.write('update BLOCKS set SELECTABLE=%d,CELLNO=%d,POS1=%d,POS2=%d where NO=%d;' % (block._select,block._cell_no,block._first,block._last,block._no))
 		tmp.write('commit;')
 		self._query = tmp.getvalue()
 		tmp.close()
@@ -370,14 +449,22 @@ if __name__ == '__main__':
 	blocks_db.update(query=bp._query)
 	
 	data = blocks_db.assign_cells()
-	cells = Cells(data=data,nos=blocks_db.nos_nb(),collimit=10)
+	cells = Cells(data=data,collimit=10)
 	cells.run()
 	cells.debug(MaxRows=40)
 	input('Cells step completed. Press Enter')
 	sg.Message('Cells',sh.lev_info,cells._query.replace(';',';\n'))
 	blocks_db.update(query=cells._query)
+	
+	data = blocks_db.assign_pos()
+	pos = Pos(data=data)
+	pos.run()
+	pos.debug(MaxRows=40)
+	input('Pos step completed. Press Enter')
+	sg.Message('Pos',sh.lev_info,pos._query.replace(';',';\n'))
+	blocks_db.update(query=pos._query)
 
-	#blocks_db.print(Shorten=1,MaxRow=18,MaxRows=100)
-	blocks_db.dbc.execute('select * from BLOCKS where BLOCK=0 order by CELLNO,NO')
-	blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=100)
+	blocks_db.print(Shorten=1,MaxRow=18,MaxRows=100)
+	#blocks_db.dbc.execute('select * from BLOCKS where BLOCK=0 order by CELLNO,NO')
+	#blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=100)
 	

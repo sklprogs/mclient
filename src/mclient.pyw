@@ -386,6 +386,7 @@ class CurRequest:
 		# *Temporary* turn off prioritizing and terms sorting for articles with 'sep_words_found' and in phrases; use previous settings for new articles
 		self.SpecialPage = False
 		self._page       = ''
+		self._tkpage     = '' # cur
 		self._html       = ''
 		self._html_raw   = ''
 

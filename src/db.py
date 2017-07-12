@@ -90,24 +90,6 @@ class DB:
 		except sqlite3.OperationalError:
 			sg.Message('DB.update',sh.lev_err,'Unable to execute:\n"%s"' % str(query))
 			
-	def nos(self,source,article_id):
-		if self._source and self._article_id:
-			self.dbc.execute('select NO from BLOCKS where SOURCE = ? and ARTICLEID = ? order by NO',(self._source,self._article_id))
-			result = self.dbc.fetchall()
-			if result:
-				return [x[0] for x in result]
-		else:
-			sg.Message('DB.nos',sh.lev_warn,sh.globs['mes'].empty_input)
-			
-	def nos_nb(self):
-		if self._source and self._article_id:
-			self.dbc.execute('select NO from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK IS NOT ? order by NO',(self._source,self._article_id,1,))
-			result = self.dbc.fetchall()
-			if result:
-				return [x[0] for x in result]
-		else:
-			sg.Message('DB.nos_nb',sh.lev_warn,sh.globs['mes'].empty_input)
-			
 	# Assign input data for BlockPrioritize
 	def assign_bp(self):
 		if self._source and self._article_id:
@@ -119,10 +101,18 @@ class DB:
 	# Assign input data for Cells
 	def assign_cells(self):
 		if self._source and self._article_id:
-			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK is not ? order by NO',(self._source,self._article_id,1,))
+			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK is not ? order by PRIORITY,NO',(self._source,self._article_id,1,))
 			return self.dbc.fetchall()
 		else:
 			sg.Message('DB.assign_cells',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	# Assign input data for Pos
+	def assign_pos(self):
+		if self._source and self._article_id:
+			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK is not ? order by ROWNO,COLNO,NO',(self._source,self._article_id,1,))
+			return self.dbc.fetchall()
+		else:
+			sg.Message('DB.assign_pos',sh.lev_warn,sh.globs['mes'].empty_input)
 
 
 
