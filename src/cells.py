@@ -146,7 +146,7 @@ class Cells:
 		for block in self._blocks:
 			if block._type == 'dic':
 				if dica == block._dica:
-					block._text = ''
+					block._text = '' # cur
 				else:
 					dica = block._dica
 			if block._type == 'wform':
@@ -216,45 +216,42 @@ class Cells:
 		            MaxRows             = MaxRows
 		         ).print()
 	
-	# cur
 	def wrap(self): # Dic-Wform-Transc-Speech
-		i = j = -1
-		for block in self._blocks:
-			if block._type == 'dic':
-				i += 1
-				block.i = i
-				block.j = 0
+		i = j = 0
+		for x in range(len(self._blocks)):
+			if self._blocks[x]._type == 'dic':
+				if x > 0:
+					i += 1
+					self._blocks[x].i = i
+				else:
+					self._blocks[x].i = i
+					i += 1
+				self._blocks[x].j = 0
 				j = 3
-			elif block._type == 'wform':
-				if i < 0:
-					i = 0
-				block.i = i
-				block.j = j = 1
-			elif block._type == 'transc':
-				if i < 0:
-					i = 0
-				block.i = i
-				block.j = j = 2
-			elif block._type == 'speech':
-				if i < 0:
-					i = 0
-				block.i = i
-				block.j = j = 3
-			elif block._same > 0: # Must be before checking '_collimit'
-				if i < 0:
-					i = 0
-				block.i = i
-				block.j = j
+			elif self._blocks[x]._type == 'wform':
+				self._blocks[x].i = i
+				self._blocks[x].j = j = 1
+			elif self._blocks[x]._type == 'transc':
+				self._blocks[x].i = i
+				self._blocks[x].j = j = 2
+			elif self._blocks[x]._type == 'speech':
+				self._blocks[x].i = i
+				self._blocks[x].j = j = 3
+			elif self._blocks[x]._same > 0: # Must be before checking '_collimit'
+				self._blocks[x].i = i
+				self._blocks[x].j = j
 			elif j + 1 == self._collimit:
 				i += 1
-				block.i = i
-				block.j = j = 4 # Instead of creating empty non-selectable cells
+				self._blocks[x].i = i
+				self._blocks[x].j = j = 4 # Instead of creating empty non-selectable cells
 			else:
-				if i < 0:
-					i = 0
-				block.i = i
-				j += 1
-				block.j = j
+				self._blocks[x].i = i
+				if x > 0:
+					j += 1
+					self._blocks[x].j = j
+				else:
+					self._blocks[x].j = 4
+					j += 1
 		
 	def dump(self):
 		tmp = io.StringIO()
@@ -302,6 +299,7 @@ class Pos:
 			block._type    = item[1]
 			block._text    = item[2]
 			block._same    = item[3]
+			block.i        = item[4]
 			self._blocks.append(block)
 		
 	def debug(self,Shorten=1,MaxHeader=10,MaxRow=20,MaxRows=20):
@@ -337,14 +335,12 @@ class Pos:
 		            MaxRows             = MaxRows
 		         ).print()
 	
-	def gen_poses(self):
-		last = -1
+	def gen_poses(self): # todo: elaborate
+		last = 0
 		for block in self._blocks:
 			block._first = last + 1
 			block._last  = block._first + len(block._text)
 			last         = block._last
-			# 'block._last+1' if there are spaces between words
-			# tmp.write(' ') if there are spaces between words
 		
 	def selectables(self):
 		cell_nos = []

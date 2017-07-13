@@ -5,19 +5,19 @@
 	- Make transcriptions Selectable
 '''
 
-import tkinterhtml
+import tkinterhtml as th
 import os
 import sys
-import tkinter as tk
+import tkinter     as tk
 #from tkinter import ttk # todo (?): del
-import shared as sh
-import sharedGUI as sg
-import page   as pg
-import tags   as tg
-import elems  as el
-import cells  as cl
+import shared      as sh
+import sharedGUI   as sg
+import page        as pg
+import tags        as tg
+import elems       as el
+import cells       as cl
 import db
-import mkhtml as mh
+import mkhtml      as mh
 
 
 product = 'MClient'
@@ -386,7 +386,6 @@ class CurRequest:
 		# *Temporary* turn off prioritizing and terms sorting for articles with 'sep_words_found' and in phrases; use previous settings for new articles
 		self.SpecialPage = False
 		self._page       = ''
-		self._tkpage     = '' # cur
 		self._html       = ''
 		self._html_raw   = ''
 
@@ -1039,15 +1038,21 @@ class WebFrame:
 	
 	def gui(self):
 		self.obj = sg.objs.new_top(Maximize=1)
-		#self.frame = tkinterhtml.HtmlFrame(self.obj.widget,horizontal_scrollbar="auto")
-		self.frame = tkinterhtml.HtmlFrame(self.obj.widget,horizontal_scrollbar="on")
-		self.frame.pack(expand=1,fill='both')
-		self.obj.widget.columnconfigure(0,weight=1)
-		self.obj.widget.rowconfigure(0,weight=1)
+		self.widget = th.TkinterHtml(self.obj.widget)
+		self.widget.pack(expand='1',fill='both')
 		self.bindings()
+		self.title()
+		
+	def title(self,arg=None):
+		if not arg:
+			arg = sh.List(lst1=[product,version]).space_items()
+		self.obj.title(arg)
+		
+	def text(self,event=None):
+		return self.widget.text('text')
 		
 	def bindings(self):
-		self.frame.html.bind("<Motion>",self.mouse_sel,True)
+		self.widget.bind("<Motion>",self.mouse_sel,True)
 		
 	# Изменить ячейку при движении мышью
 	def mouse_sel(self,event=None):
@@ -1055,8 +1060,8 @@ class WebFrame:
 			self.event = event
 			# Если ячейку определить не удалось, либо ее выделять нельзя (согласно настройкам), то возвращается предыдущая ячейка. Это позволяет всегда иметь активное выделение.
 			try:
-				self._node, self._offset = self.frame.html.node(True,self.event.x,self.event.y)
-				self.mouse_index         = self.frame.html.text("offset",self._node,self._offset)
+				self._node, self._offset = self.widget.node(True,self.event.x,self.event.y)
+				self.mouse_index         = self.widget.text("offset",self._node,self._offset)
 			except ValueError:
 				# Это сообщение появляется так часто, что не ставлю тут ничего.
 				#sh.log.append('WebFrame.mouse_sel',sh.lev_warn,sh.globs['mes'].unknown_cell)
@@ -1070,26 +1075,36 @@ class WebFrame:
 	
 	# Выделить ячейку
 	def set_cell(self,pos,View=True): # View=True будет всегда сдвигать экран до текущей ячейки при навигации с клавиатуры
-		self.frame.html.tag("delete", "selection")
+		print() # todo: del
+		print('mouse_index:',self.mouse_index) # todo: del
+		self.widget.tag("delete", "selection")
 		result = objs.blocks_db().get_cell(pos=pos)
 		if result:
 			pos1, pos2 = result
 		else:
 			pos1, pos2 = 0, 0
-		self.index = self.frame.html.text('index',pos1,pos2)
+		#print('pos1:',pos1) # todo: del # cur
+		#print('pos2:',pos2) # todo: del
+		self.index = self.widget.text('index',pos1,pos2)
+		print('index:',self.index) # todo: del
+		print('index[0]:',self.index[0]) # todo: del
+		print('index[1]:',self.index[1]) # todo: del
+		print('index[2]:',self.index[2]) # todo: del
+		print('index[3]:',self.index[3]) # todo: del
 		if self.index:
 			try:
-				self.frame.html.tag('add','selection',self.index[0],self.index[1],self.index[2],self.index[3])
+				self.widget.tag('add','selection',self.index[0],self.index[1],self.index[2],self.index[3])
 			# При удалении или вставке ячеек может возникнуть ошибка, поскольку текущий узел изменился
 			except tk.TclError:
 				sh.log.append('WebFrame.set_cell',sh.lev_warn,sh.globs['mes'].tag_addition_failure % ('selection',self.index[0],self.index[3]))
-			self.frame.html.tag('configure','selection','-background',sh.globs['var']['color_terms_sel_bg'])
-			self.frame.html.tag('configure','selection','-foreground',sh.globs['var']['color_terms_sel_fg'])
+			self.widget.tag('configure','selection','-background',sh.globs['var']['color_terms_sel_bg'])
+			self.widget.tag('configure','selection','-foreground',sh.globs['var']['color_terms_sel_fg'])
 			#if View:
 			#	self.shift_screen()
 	
 	def fill(self,code='<html><body><h1>Nothing has been loaded yet.</h1></body></html>'):
-		self.frame.set_content(code)
+		self.widget.reset()
+		self.widget.parse(code)
 		
 	def show(self,*args):
 		self.obj.show()
@@ -2105,7 +2120,7 @@ def load_article():
 	objs._blocks_db.update(query=bp._query)
 	
 	data = objs._blocks_db.assign_cells()
-	cells = cl.Cells(data=data,nos=objs._blocks_db.nos_nb(),collimit=objs._request._collimit)
+	cells = cl.Cells(data=data,collimit=objs._request._collimit)
 	cells.run()
 	#cells.debug(MaxRows=40)
 	#input('Cells step completed. Press Enter')
@@ -2116,7 +2131,15 @@ def load_article():
 	#objs._blocks_db.dbc.execute('select * from BLOCKS where BLOCK=0 order by CELLNO,NO')
 	#objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=100)
 	
-	get_html = mh.HTML(blocks=cells._blocks,collimit=objs._request._collimit)
+	data = objs._blocks_db.assign_pos()
+	pos = cl.Pos(data=data)
+	pos.run()
+	#pos.debug(MaxRows=40)
+	#input('Pos step completed. Press Enter')
+	#sg.Message('Pos',sh.lev_info,pos._query.replace(';',';\n'))
+	objs._blocks_db.update(query=pos._query)
+	
+	get_html = mh.HTML(data=objs._blocks_db.fetch(),collimit=objs._request._collimit)
 	objs._request._html = get_html._html
 	
 	timer.end()

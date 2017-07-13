@@ -12,14 +12,38 @@ import shared as sh
 import sharedGUI as sg
 
 
+# Shortened
+class Block:
+	
+	def __init__(self):
+		self._type = ''
+		self._text = ''
+		self.i     = 0
+		self.j     = 0
+
+
 class HTML:
 	
-	def __init__(self,blocks=[],collimit=9): # 'collimit' includes fixed blocks
-		self._blocks   = blocks
+	def __init__(self,data,collimit=9): # 'collimit' includes fixed blocks
+		self._data     = data
 		self._collimit = collimit
-		self._html     = ''
+		self._blocks   = []
 		self._block    = None
-		self.html()
+		self._html     = ''
+		if self._data:
+			self.assign ()
+			self.html   ()
+		else:
+			sh.log.append('HTML.__init__',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def assign(self):
+		for item in self._data:
+			block       = Block()
+			block._type = item[0]
+			block._text = item[1]
+			block.i     = item[2]
+			block.j     = item[3]
+			self._blocks.append(block)
 		
 	def _dic(self):
 		if self._block._type == 'dic':
@@ -74,13 +98,6 @@ class HTML:
 	
 	def _comment(self):
 		if self._block._type == 'comment' or self._block._type == 'speech' or self._block._type == 'transc':
-			'''
-			if self._block._type == 'speech' or self._block._type == 'transc':
-				#self.output.write('<td align="center">')
-				self.output.write('<td align="left">')
-			#else:
-			#	self.output.write('<td align="left">')
-			'''
 			#self.output.write('<td align="left">')
 			self.output.write('<i><font face="')
 			self.output.write(sh.globs['var']['font_comments_family'])
@@ -113,40 +130,21 @@ class HTML:
 		self.output = io.StringIO()
 		self.output.write('<html><body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"><table>')
 		i = j = 0
-		self.output.write('<tr>')
+		self.output.write('<tr><td>')
 		for self._block in self._blocks:
-			''' Just draw a table on a sheet of paper and count a number of empty cells. From this, we come to
-			    self._collimit - j + 1 + (self._block.i - i - 1) * self._collimit + self._block.j,
-			    which results in:
-			    delta = self._collimit * (self._block.i - i) + self._block.j - j - 1.
-			    The number of tabs to be inserted is the number of empty cells + 1. So:
-			'''
-			delta = self._collimit * (self._block.i - i) + self._block.j - j
-			for x in range(delta):
-				if j == self._collimit - 1:
-					j = 0
-					#self.output.write('</td>')
-					self.output.write('</tr><tr>')
-					#self.output.write('</td></tr><tr><td>')
-					i += 1
-				else:
-					j += 1
-				self.output.write('<td>')
-				#self.output.write('<td>')
-				#self.output.write('<td align="left">')
-				#self.output.write('</td>')
-			#if not self._block.SameCell:
-			#self.output.write('<td>')
+			while self._block.i > i:
+				self.output.write('</td></tr>\n<tr><td align="center">')
+				i = self._block.i
+				j = 0
+			while self._block.j > j:
+				self.output.write('</td><td>')
+				j += 1
 			self._dic        ()
 			self._wform      ()
 			self._term       ()
 			self._comment    ()
 			self._correction ()
-			#if not self._block.SameCell:
-			#self.output.write('</td>')
-			#for x in range(delta):
-			#	self.output.write('</td>')
-		self.output.write('</tr>')
+		self.output.write('</td></tr>')
 		self.output.write('</table></body></html>')
 		self._html = self.output.getvalue()
 		self.output.close()
@@ -200,7 +198,7 @@ if __name__ == '__main__':
 	blacklist  = []
 	prioritize = ['Религия']
 
-	timer = sh.Timer(func_title='tags + elems + cells')
+	timer = sh.Timer(func_title='tags + elems + cells + pos + mkhtml')
 	timer.start()
 	
 	tags = tg.Tags(text)
@@ -227,18 +225,24 @@ if __name__ == '__main__':
 	blocks_db.update(query=bp._query)
 	
 	data = blocks_db.assign_cells()
-	cells = cl.Cells(data=data,nos=blocks_db.nos_nb(),collimit=collimit)
+	cells = cl.Cells(data=data,collimit=collimit)
 	cells.run()
 	#cells.debug(MaxRows=40)
 	#input('Cells step completed. Press Enter')
 	#sg.Message('Cells',sh.lev_info,cells._query.replace(';',';\n'))
 	blocks_db.update(query=cells._query)
 
-	#blocks_db.print(Shorten=1,MaxRow=18,MaxRows=100)
-	#blocks_db.dbc.execute('select * from BLOCKS where BLOCK=0 order by CELLNO,NO')
-	#blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=100)
+	data = blocks_db.assign_pos()
+	pos = cl.Pos(data=data)
+	pos.run()
+	#pos.debug(MaxRows=40)
+	#input('Pos step completed. Press Enter')
+	#sg.Message('Pos',sh.lev_info,pos._query.replace(';',';\n'))
+	blocks_db.update(query=pos._query)
 	
-	mkhtml = HTML(blocks=cells._blocks,collimit=collimit)
+	blocks_db.print(Shorten=1,MaxRows=100,MaxRow=18)
+	
+	mkhtml = HTML(data=blocks_db.fetch(),collimit=collimit)
 	
 	timer.end()
 	

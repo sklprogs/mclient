@@ -53,6 +53,10 @@ class DB:
 		if Fetch:
 			return self.dbc.fetchall()
 			
+	def fetch(self):
+		self.dbc.execute('select TYPE,TEXT,ROWNO,COLNO from BLOCKS where BLOCK is NOT ? order by CELLNO,NO',(1,))
+		return self.dbc.fetchall()
+			
 	def request(self,source,article_id):
 		if source and article_id:
 			self._source     = source
@@ -63,7 +67,7 @@ class DB:
 	def print(self,Selected=False,Shorten=False,MaxHeader=10,MaxRow=20,MaxRows=20):
 		# 'self.dbc.description' is 'None' without performing 'select' first
 		if not Selected:
-			self.dbc.execute('select * from BLOCKS order by NO')
+			self.dbc.execute('select * from BLOCKS order by CELLNO,NO')
 		headers = [cn[0] for cn in self.dbc.description]
 		rows    = self.dbc.fetchall()
 		sh.Table (
@@ -77,10 +81,16 @@ class DB:
 
 	def get_cell(self,pos): # Selectable
 		if self._source and self._article_id:
-			self.dbc.execute('select POS1,POS2 from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ?',(self._source,self._article_id,pos,pos,))
+			self.dbc.execute('select NO,CELLNO,TYPE,TEXT,POS1,POS2 from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ?',(self._source,self._article_id,pos,pos,))
 			result = self.dbc.fetchone()
 			if result:
-				return(result[0],result[1])
+				#return(result[0],result[1])
+				print('NO:\t\t',result[0])
+				print('CELLNO:\t\t',result[1])
+				print('TYPE:\t\t',result[2])
+				print('TEXT:\t\t',result[3])
+				print('Range:\t\t%d-%d' % (result[4],result[5]))
+				return(result[4],result[5])
 		else:
 			sg.Message('DB.get_cell',sh.lev_warn,sh.globs['mes'].empty_input)
 
@@ -101,7 +111,7 @@ class DB:
 	# Assign input data for Cells
 	def assign_cells(self):
 		if self._source and self._article_id:
-			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK is not ? order by PRIORITY,NO',(self._source,self._article_id,1,))
+			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK is not ? order by PRIORITY,DICA,WFORMA,SPEECHA,TERMA,NO',(self._source,self._article_id,1,))
 			return self.dbc.fetchall()
 		else:
 			sg.Message('DB.assign_cells',sh.lev_warn,sh.globs['mes'].empty_input)
@@ -109,7 +119,7 @@ class DB:
 	# Assign input data for Pos
 	def assign_pos(self):
 		if self._source and self._article_id:
-			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK is not ? order by ROWNO,COLNO,NO',(self._source,self._article_id,1,))
+			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,ROWNO from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK is not ? order by ROWNO,COLNO,NO',(self._source,self._article_id,1,))
 			return self.dbc.fetchall()
 		else:
 			sg.Message('DB.assign_pos',sh.lev_warn,sh.globs['mes'].empty_input)
@@ -119,9 +129,9 @@ class DB:
 if __name__ == '__main__':
 	import re
 	import html
-	import time
-	import tags as tg
-	import elems as el
+	import tags    as tg
+	import elems   as el
+	import cells   as cl
 	import mclient as mc
 	
 	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/star_test').get()
@@ -153,29 +163,51 @@ if __name__ == '__main__':
 	text = re.sub(r'\>[\s]{0,1}\<','><',text)
 
 	mc.ConfigMclient ()
-
-	start_time = time.time()
-	cur_start  = time.time()
 	
+	collimit   = 10
+	source     = 'All'
+	article_id = 'martyr.txt'
+	#blacklist  = ['Христианство']
+	blacklist  = []
+	prioritize = ['Религия']
+
 	tags = tg.Tags(text)
 	tags.run()
+	#tags.debug(MaxRows=40)
+	#input('Tags step completed. Press Enter')
 	
-	sh.log.append('tags',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-cur_start))
-	cur_start  = time.time()
-	
-	elems = el.Elems(blocks=tags._blocks)
+	elems = el.Elems(blocks=tags._blocks,source=source,article_id=article_id)
 	elems.run()
+	#elems.debug(MaxRows=40)
+	#input('Elems step completed. Press Enter')
 	
-	sh.log.append('elems',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-cur_start))
+	blocks_db = DB()
+	blocks_db.fill(elems._data)
 	
-	cur_start  = time.time()
-	data = elems.dump()
-	sh.log.append('elems: fill + dump',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-cur_start))
+	blocks_db.request(source=source,article_id=article_id)
+	data = blocks_db.assign_bp()
 	
-	db = DB()
-	cur_start  = time.time()
-	db.fill(data)
-	db.sort()
-	sh.log.append('db.fill, db.sort',sh.lev_info,sh.globs['mes'].operation_completed % float(time.time()-cur_start))
-	db.dbc.execute('select TERMA,TYPE,TEXT,SELECTABLE,SAMECELL,CELLNO from BLOCKS')
-	db.print(Selected=1)
+	bp = cl.BlockPrioritize(data=data,source=source,article_id=article_id,blacklist=blacklist,prioritize=prioritize)
+	bp.run()
+	#bp.debug(MaxRows=40)
+	#input('BlockPrioritize step completed. Press Enter')
+	#sg.Message('BlockPrioritize',sh.lev_info,bp._query.replace(';',';\n'))
+	blocks_db.update(query=bp._query)
+	
+	data = blocks_db.assign_cells()
+	cells = cl.Cells(data=data,collimit=collimit)
+	cells.run()
+	#cells.debug(MaxRows=40)
+	#input('Cells step completed. Press Enter')
+	#sg.Message('Cells',sh.lev_info,cells._query.replace(';',';\n'))
+	blocks_db.update(query=cells._query)
+
+	data = blocks_db.assign_pos()
+	pos = cl.Pos(data=data)
+	pos.run()
+	#pos.debug(MaxRows=40)
+	#input('Pos step completed. Press Enter')
+	#sg.Message('Pos',sh.lev_info,pos._query.replace(';',';\n'))
+	blocks_db.update(query=pos._query)
+	
+	blocks_db.print(Shorten=1,MaxRow=18,MaxRows=150)
