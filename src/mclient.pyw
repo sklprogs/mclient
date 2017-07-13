@@ -2139,6 +2139,9 @@ def load_article():
 	#sg.Message('Pos',sh.lev_info,pos._query.replace(';',';\n'))
 	objs._blocks_db.update(query=pos._query)
 	
+	objs._blocks_db.print(Shorten=1,MaxRows=100,MaxRow=15)
+	input('Return.')
+	
 	get_html = mh.HTML(data=objs._blocks_db.fetch(),collimit=objs._request._collimit)
 	objs._request._html = get_html._html
 	

@@ -128,24 +128,23 @@ class HTML:
 	def html(self):
 		# Default Python string concatenation is too slow, so we use this module instead
 		self.output = io.StringIO()
-		self.output.write('<html><body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"><table>')
+		self.output.write('<html>\n  <body>\n    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">\n      <table>')
 		i = j = 0
-		self.output.write('<tr><td>')
+		self.output.write('\n        <tr><td>')
 		for self._block in self._blocks:
 			while self._block.i > i:
-				self.output.write('</td></tr>\n<tr><td align="center">')
+				self.output.write('</td></tr>\n        <tr><td align="center">')
 				i = self._block.i
 				j = 0
 			while self._block.j > j:
-				self.output.write('</td><td>')
+				self.output.write('</td>\n          <td>')
 				j += 1
 			self._dic        ()
 			self._wform      ()
 			self._term       ()
 			self._comment    ()
 			self._correction ()
-		self.output.write('</td></tr>')
-		self.output.write('</table></body></html>')
+		self.output.write('</td></tr>\n      </table>  \n</body>\n</html>')
 		self._html = self.output.getvalue()
 		self.output.close()
 
