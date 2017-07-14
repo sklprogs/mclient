@@ -205,6 +205,10 @@ if __name__ == '__main__':
 	#tags.debug(MaxRows=40)
 	#input('Tags step completed. Press Enter')
 	
+	sg.Clipboard().copy(text=text)
+	sg.objs.txt().reset_data()
+	sg.objs._txt.insert(text)
+	
 	elems = el.Elems(blocks=tags._blocks,source=source,article_id=article_id)
 	elems.run()
 	#elems.debug(MaxRows=40)
@@ -240,6 +244,7 @@ if __name__ == '__main__':
 	blocks_db.update(query=pos._query)
 	
 	blocks_db.print(Shorten=1,MaxRows=100,MaxRow=18)
+	input('Return.')
 	
 	mkhtml = HTML(data=blocks_db.fetch(),collimit=collimit)
 	

@@ -257,7 +257,11 @@ class Cells:
 		tmp = io.StringIO()
 		tmp.write('begin;')
 		for block in self._blocks:
-			tmp.write('update BLOCKS set TEXT="%s",ROWNO=%d,COLNO=%d where NO=%d;' % (block._text,block.i,block.j,block._no))
+			# We do not want to mess around with screening quotes that can fail the query
+			if block._text:
+				tmp.write('update BLOCKS set ROWNO=%d,COLNO=%d where NO=%d;' % (block.i,block.j,block._no))
+			else:
+				tmp.write('update BLOCKS set TEXT="%s",ROWNO=%d,COLNO=%d where NO=%d;' % (block._text,block.i,block.j,block._no))
 		tmp.write('commit;')
 		self._query = tmp.getvalue()
 		tmp.close()

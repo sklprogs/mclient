@@ -1037,7 +1037,7 @@ class WebFrame:
 		self.mouse_index = -1 # self.mouse_index (int) != self.index (tuple)
 	
 	def gui(self):
-		self.obj = sg.objs.new_top(Maximize=1)
+		self.obj    = sg.objs.new_top(Maximize=1)
 		self.widget = th.TkinterHtml(self.obj.widget)
 		self.widget.pack(expand='1',fill='both')
 		self.bindings()
@@ -2063,18 +2063,19 @@ def load_article():
 	objs.ext_dics()                                                            # todo: test & del
 	'''
 	
-	'''
+
 	objs.request()._source = 'Online'                                          # todo: test & del
 	objs.request()._search = 'counterpart'                                       # todo: test & del
 	objs.request()._url    = 'https://www.multitran.ru/c/M.exe?l1=1&l2=2&s=counterpart&l1=1&l2=2&s=counterpart' # todo: test & del
 	objs.ext_dics()                                                            # todo: test & del
-	'''
+
 	
 	#blacklist  = ['Христианство']
 	blacklist  = []
 	prioritize = ['Религия']
 	
-	objs.request()._url = 'https://www.multitran.ru/c/m.exe?CL=1&s=martyr&l1=1' # todo: test & del
+	#'https://www.multitran.ru/c/m.exe?CL=1&s=martyr&l1=1'
+	#objs.request()._url = 'https://www.multitran.ru/c/m.exe?l1=1&l2=2&s=martyr' # todo: test & del
 	
 	timer = sh.Timer(func_title='Page')
 	timer.start()
@@ -2091,13 +2092,25 @@ def load_article():
 	page.run()
 	objs._request._page     = page._page
 	objs._request._html_raw = page._html_raw
-	
-	timer.end()
 
-	timer = sh.Timer(func_title='tags + elems + cells')
+	
+	#sg.Clipboard().copy(text=page._page)
+	#sg.objs.txt().insert(page._page)
+	#sg.objs.txt().show()
+
+	collimit   = 10
+	source     = 'All'
+	#article_id = 'martyr.txt'
+	article_id = 'counterpart'
+	#blacklist  = ['Христианство']
+	blacklist  = []
+	prioritize = ['Религия']
+
+	timer = sh.Timer(func_title='tags + elems + cells + pos + mkhtml')
 	timer.start()
 	
-	tags = tg.Tags(text=page._page,source=objs._request._source,pair_root=sh.globs['var']['pair_root'])
+	tags = tg.Tags(text=objs._request._page,source=objs._request._source,pair_root=sh.globs['var']['pair_root'])
+	#tags = tg.Tags(text=page._page,source=objs._request._source,pair_root=sh.globs['var']['pair_root'])
 	tags.run()
 	#tags.debug(MaxRows=40)
 	#input('Tags step completed. Press Enter')
@@ -2140,7 +2153,7 @@ def load_article():
 	objs._blocks_db.update(query=pos._query)
 	
 	objs._blocks_db.print(Shorten=1,MaxRows=100,MaxRow=15)
-	input('Return.')
+	#input('Return.')
 	
 	get_html = mh.HTML(data=objs._blocks_db.fetch(),collimit=objs._request._collimit)
 	objs._request._html = get_html._html
@@ -2148,6 +2161,11 @@ def load_article():
 	timer.end()
 	
 	objs.webframe().fill(code=objs._request._html)
+	text = objs.webframe().text()
+	sg.Clipboard().copy(text)
+	sg.objs.txt().reset_data()
+	sg.objs.txt().insert(text)
+	sg.objs.txt().show()
 
 
 

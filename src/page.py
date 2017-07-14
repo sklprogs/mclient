@@ -157,12 +157,18 @@ class Page:
 	def run(self):
 		self.get                ()
 		self.decode_entities    () # HTML specific
+		self.invalid            ()
 		# An excessive space must be removed after unescaping the page
 		self.mt_specific_replace()
 		self.common_replace     () # HTML specific
 		self.article_not_found  () # HTML specific
 		return self._page
 		
+	# This is due to technical limitations and should be corrected
+	def invalid(self):
+		# Do this before 'common_replace'. Splitting terms is hindered without this.
+		self._page = self._page.replace('</a>;  <a','</a><a')
+	
 	def article_not_found(self): # HTML specific
 		if self._source == 'All' or self._source == 'Online':
 			# If separate words are found instead of a phrase, prepare those words only

@@ -98,7 +98,7 @@ class DB:
 		try:
 			self.dbc.executescript(query)
 		except sqlite3.OperationalError:
-			sg.Message('DB.update',sh.lev_err,'Unable to execute:\n"%s"' % str(query))
+			sg.Message('DB.update',sh.lev_err,'Unable to execute:\n"%s"' % str(query).replace(';',';\n'))
 			
 	# Assign input data for BlockPrioritize
 	def assign_bp(self):

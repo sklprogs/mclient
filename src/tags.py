@@ -262,7 +262,7 @@ class AnalyzeTag:
 			tmp = self._block.replace(pdic,'',1)
 			tmp = re.sub('".*','',tmp)
 			if tmp == '' or tmp == ' ':
-				sh.log.append('AnalyzeTag.dic',sh.lev_warn,sh.globs['mes'].wrong_tag % block)
+				sh.log.append('AnalyzeTag.dic',sh.lev_warn,sh.globs['mes'].wrong_tag % tmp)
 			else:
 				self._cur._type = 'dic'
 				self._cur._text = tmp
