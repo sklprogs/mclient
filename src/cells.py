@@ -42,12 +42,13 @@ class Block:
 '''
 class BlockPrioritize:
 	
-	def __init__(self,data,source,article_id,blacklist=[],prioritize=[]):
+	def __init__(self,data,source,article_id,blacklist=[],prioritize=[],phrase_dic=None):
 		self._data       = data
 		self._source     = source
 		self._article_id = article_id
 		self._blacklist  = blacklist
 		self._prioritize = prioritize
+		self._phrase_dic = phrase_dic
 		self._blocks     = []
 		self._query      = ''
 		if self._data and self._source and self._article_id:
@@ -81,7 +82,16 @@ class BlockPrioritize:
 				block._block = 0
 			
 	def prioritize(self):
-		pass
+		if self._phrase_dic:
+			for block in self._blocks:
+				if self._phrase_dic == block._dica:
+					# Set the (presumably) lowest priority for a 'Phrases' dictionary
+					block._priority = -10
+		for i in range(len(self._prioritize)):
+			priority = len(self._prioritize) - i
+			for block in self._blocks:
+				if self._prioritize[i].lower() == block._dica.lower():
+					block._priority = priority
 	
 	def dump(self):
 		tmp = io.StringIO()
@@ -396,9 +406,9 @@ if __name__ == '__main__':
 	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/do.txt').get()
 	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/filter_get').get()
 	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро пожаловать.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро.txt').get()
+	text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро.txt').get()
 	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/рабочая документация.txt').get()
-	text = sh.ReadTextFile(file='/home/pete/tmp/ars/martyr.txt').get()
+	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/martyr.txt').get()
 
 	text = text.replace('\r','')
 	text = text.replace('\n','')
@@ -422,49 +432,59 @@ if __name__ == '__main__':
 	
 	source     = 'All'
 	article_id = 'martyr.txt'
-	blacklist  = ['Христианство']
-	prioritize = ['Религия']
+	blacklist  = ['Австралийский сленг','Архаизм','Бранное выражение','Грубое выражение','Диалект','Жаргон','Презрительное выражение','Просторечие','Разговорное выражение','Расширение файла','Редкое выражение','Ругательство','Сленг','Табу','Табуированная лексика','Тюремный жаргон','Устаревшее слово','Фамильярное выражение','Шутливое выражение','Эвфемизм']
+	
+	prioritize = ['Общая лексика','Техника']
+	
+	Debug = 0
 
 	tags = tg.Tags(text)
 	tags.run()
-	tags.debug(MaxRows=40)
-	input('Tags step completed. Press Enter')
+	if Debug:
+		tags.debug(MaxRows=40)
+		input('Tags step completed. Press Enter')
 	
 	elems = el.Elems(blocks=tags._blocks,source=source,article_id=article_id)
 	elems.run()
-	elems.debug(MaxRows=40)
-	input('Elems step completed. Press Enter')
+	if Debug:
+		elems.debug(MaxRows=40)
+		input('Elems step completed. Press Enter')
 	
 	blocks_db = db.DB()
 	blocks_db.fill(elems._data)
 	
 	blocks_db.request(source=source,article_id=article_id)
+	phrase_dic = blocks_db.phrase_dic()
 	data = blocks_db.assign_bp()
 	
-	bp = BlockPrioritize(data=data,source=source,article_id=article_id,blacklist=blacklist,prioritize=prioritize)
+	bp = BlockPrioritize(data=data,source=source,article_id=article_id,blacklist=blacklist,prioritize=prioritize,phrase_dic=phrase_dic)
 	bp.run()
-	bp.debug(MaxRows=40)
-	input('BlockPrioritize step completed. Press Enter')
-	sg.Message('BlockPrioritize',sh.lev_info,bp._query.replace(';',';\n'))
+	if Debug:
+		bp.debug(MaxRows=40)
+		input('BlockPrioritize step completed. Press Enter')
+		sg.Message('BlockPrioritize',sh.lev_info,bp._query.replace(';',';\n'))
 	blocks_db.update(query=bp._query)
 	
 	data = blocks_db.assign_cells()
 	cells = Cells(data=data,collimit=10)
 	cells.run()
-	cells.debug(MaxRows=40)
-	input('Cells step completed. Press Enter')
-	sg.Message('Cells',sh.lev_info,cells._query.replace(';',';\n'))
+	if Debug:
+		cells.debug(MaxRows=40)
+		input('Cells step completed. Press Enter')
+		sg.Message('Cells',sh.lev_info,cells._query.replace(';',';\n'))
 	blocks_db.update(query=cells._query)
 	
 	data = blocks_db.assign_pos()
 	pos = Pos(data=data)
 	pos.run()
-	pos.debug(MaxRows=40)
-	input('Pos step completed. Press Enter')
-	sg.Message('Pos',sh.lev_info,pos._query.replace(';',';\n'))
+	if Debug:
+		pos.debug(MaxRows=40)
+		input('Pos step completed. Press Enter')
+		sg.Message('Pos',sh.lev_info,pos._query.replace(';',';\n'))
 	blocks_db.update(query=pos._query)
 
-	blocks_db.print(Shorten=1,MaxRow=18,MaxRows=100)
-	#blocks_db.dbc.execute('select * from BLOCKS where BLOCK=0 order by CELLNO,NO')
-	#blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=100)
+	if Debug:
+		blocks_db.print(Shorten=1,MaxRow=18,MaxRows=100)
+		#blocks_db.dbc.execute('select * from BLOCKS where BLOCK=0 order by CELLNO,NO')
+		#blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=100)
 	

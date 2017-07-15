@@ -111,7 +111,7 @@ class DB:
 	# Assign input data for Cells
 	def assign_cells(self):
 		if self._source and self._article_id:
-			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK is not ? order by PRIORITY,DICA,WFORMA,SPEECHA,TERMA,NO',(self._source,self._article_id,1,))
+			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK is not ? order by PRIORITY desc,DICA,WFORMA,SPEECHA,TERMA,NO',(self._source,self._article_id,1,))
 			return self.dbc.fetchall()
 		else:
 			sg.Message('DB.assign_cells',sh.lev_warn,sh.globs['mes'].empty_input)
@@ -123,6 +123,15 @@ class DB:
 			return self.dbc.fetchall()
 		else:
 			sg.Message('DB.assign_pos',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def phrase_dic(self):
+		if self._source and self._article_id:
+			self.dbc.execute('select DICA from BLOCKS where SOURCE = ? and ARTICLEID = ? and TYPE = ? order by NO',(self._source,self._article_id,'phrase',))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sg.Message('DB.phrase_dic',sh.lev_warn,sh.globs['mes'].empty_input)
 
 
 

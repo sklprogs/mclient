@@ -369,7 +369,7 @@ class CurRequest:
 	def reset(self):
 		self._view       = 0
 		#self._collimit   = 8
-		self._collimit   = 9
+		self._collimit   = 8
 		self._source     = 'All'
 		#self._source    = 'Offline'
 		#self._source    = 'Online'
@@ -381,7 +381,8 @@ class CurRequest:
 		#self._search     = 'martyr'
 		#self._search      = 'balance'
 		#self._search      = 'do'
-		self._search     = 'слово'
+		#self._search     = 'слово'
+		self._search      = 'башмак'
 		self._lang       = 'English'
 		#self._url       = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
 		#self._url       = sh.globs['var']['pair_root'] + 'CL=1&s=filter&l1=1'
@@ -391,7 +392,8 @@ class CurRequest:
 		#self._url         = sh.globs['var']['pair_root'] + 't=3502039_1_2&s1=%F3%F0%E0%E2%ED%EE%E2%E5%F1%E8%F2%FC'
 		#self._url          = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=do'
 		#self._url          = sh.globs['var']['pair_root'] + 'l1=4&l2=2&s=%F1%EB%EE%E2%EE'
-		self._url         = sh.globs['var']['pair_root'] + 'l1=3&l2=2&s=%F1%EB%EE%E2%EE'
+		#self._url         = sh.globs['var']['pair_root'] + 'l1=3&l2=2&s=%F1%EB%EE%E2%EE'
+		self._url          = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%E1%E0%F8%EC%E0%EA'
 		self._article_id = self._search + ' (' + self._url + ')'
 		# Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
 		self.Block       = True
@@ -2059,9 +2061,9 @@ def load_article():
 	
 	Debug = 0
 	
-	#blacklist  = ['Христианство']
-	blacklist  = []
-	prioritize = ['Религия']
+	blacklist  = ['Австралийский сленг','Архаизм','Бранное выражение','Грубое выражение','Диалект','Жаргон','Презрительное выражение','Просторечие','Разговорное выражение','Расширение файла','Редкое выражение','Ругательство','Сленг','Табу','Табуированная лексика','Тюремный жаргон','Устаревшее слово','Фамильярное выражение','Шутливое выражение','Эвфемизм']
+	
+	prioritize = ['Общая лексика','Техника']
 
 	timer = sh.Timer(func_title='tags + elems + cells + pos + mkhtml')
 	timer.start()
@@ -2080,9 +2082,10 @@ def load_article():
 	objs.blocks_db().fill(elems._data)
 	
 	objs._blocks_db.request(source=objs._request._source,article_id=objs._request._article_id)
+	phrase_dic = objs._blocks_db.phrase_dic()
 	data = objs._blocks_db.assign_bp()
 	
-	bp = cl.BlockPrioritize(data=data,source=objs._request._source,article_id=objs._request._article_id,blacklist=blacklist,prioritize=prioritize)
+	bp = cl.BlockPrioritize(data=data,source=objs._request._source,article_id=objs._request._article_id,blacklist=blacklist,prioritize=prioritize,phrase_dic=phrase_dic)
 	bp.run()
 	if Debug:
 		bp.debug(MaxRows=40)
