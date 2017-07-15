@@ -140,9 +140,10 @@ class BlockPrioritize:
 '''
 class Cells:
 	
-	def __init__(self,data,collimit=10): # Including fixed columns
+	def __init__(self,data,collimit=10,phrase_dic=None): # Including fixed columns
 		self._data       = data # Sqlite fetch
 		self._collimit   = collimit
+		self._phrase_dic = phrase_dic
 		self._blocks     = []
 		self._query      = ''
 		if self._data:
@@ -151,6 +152,14 @@ class Cells:
 			self.Success = False
 			sh.log.append('Cells.__init__',sh.lev_warn,sh.globs['mes'].empty_input)
 		
+	# The 'Phrases' section comes the latest in MT, therefore, it inherits fixed columns of the preceding dictionary which are irrelevant. Here we clear them.
+	def clear_phrases(self):
+		if self._phrase_dic:
+			for block in self._blocks:
+				if block._dica == self._phrase_dic:
+					if block._type == 'wform' or block._type == 'speech' or block._type == 'transc':
+						block._text  = ''
+	
 	def clear_fixed(self):
 		dica = wforma = speecha = transca = ''
 		for block in self._blocks:
@@ -177,10 +186,11 @@ class Cells:
 	
 	def run(self):
 		if self.Success:
-			self.assign      ()
-			self.clear_fixed ()
-			self.wrap        ()
-			self.dump        ()
+			self.assign        ()
+			self.clear_fixed   ()
+			self.clear_phrases ()
+			self.wrap          ()
+			self.dump          ()
 		else:
 			sh.log.append('Cells.run',sh.lev_warn,sh.globs['mes'].canceled)
 		
@@ -466,7 +476,7 @@ if __name__ == '__main__':
 	blocks_db.update(query=bp._query)
 	
 	data = blocks_db.assign_cells()
-	cells = Cells(data=data,collimit=10)
+	cells = Cells(data=data,collimit=10,phrase_dic=phrase_dic)
 	cells.run()
 	if Debug:
 		cells.debug(MaxRows=40)

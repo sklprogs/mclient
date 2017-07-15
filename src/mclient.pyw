@@ -2098,7 +2098,7 @@ def load_article():
 		input('After-BP DB created. Press Enter')
 	
 	data = objs._blocks_db.assign_cells()
-	cells = cl.Cells(data=data,collimit=objs._request._collimit)
+	cells = cl.Cells(data=data,collimit=objs._request._collimit,phrase_dic=phrase_dic)
 	cells.run()
 	if Debug:
 		cells.debug(MaxRows=40)
