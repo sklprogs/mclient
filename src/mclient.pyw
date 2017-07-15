@@ -368,16 +368,30 @@ class CurRequest:
 		
 	def reset(self):
 		self._view       = 0
-		self._collimit   = 10
-		#self._source    = 'All'
+		#self._collimit   = 8
+		self._collimit   = 9
+		self._source     = 'All'
 		#self._source    = 'Offline'
-		self._source     = 'Online'
+		#self._source    = 'Online'
 		#self._search    = 'Добро пожаловать!'
 		#self._search    = 'filter'
+		#self._search    = 'counterpart'
+		#self._search     = 'compensate'
 		#self._search    = 'computer'
-		self._search     = 'martyr'
+		#self._search     = 'martyr'
+		#self._search      = 'balance'
+		#self._search      = 'do'
+		self._search     = 'слово'
 		self._lang       = 'English'
-		self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
+		#self._url       = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
+		#self._url       = sh.globs['var']['pair_root'] + 'CL=1&s=filter&l1=1'
+		#self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=martyr'
+		#self._url        = sh.globs['var']['pair_root'] + 'CL=1&s=counterpart&l1=1'
+		#self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=compensate'
+		#self._url         = sh.globs['var']['pair_root'] + 't=3502039_1_2&s1=%F3%F0%E0%E2%ED%EE%E2%E5%F1%E8%F2%FC'
+		#self._url          = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=do'
+		#self._url          = sh.globs['var']['pair_root'] + 'l1=4&l2=2&s=%F1%EB%EE%E2%EE'
+		self._url         = sh.globs['var']['pair_root'] + 'l1=3&l2=2&s=%F1%EB%EE%E2%EE'
 		self._article_id = self._search + ' (' + self._url + ')'
 		# Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
 		self.Block       = True
@@ -2020,62 +2034,9 @@ class Lists:
 
 
 def load_article():
-	'''
-	objs.request()._source = 'Online'                                          # todo: test & del
-	objs.request()._search = 'do'                                              # todo: test & del
-	objs.request()._url    = 'https://www.multitran.ru/c/m.exe?CL=1&s=do&l1=1' # todo: test & del
-	objs.ext_dics()                                                            # todo: test & del
-	'''
-	
-	'''
-	objs.request()._source = 'Offline'                                         # todo: test & del
-	objs.request()._search = 'ordered list'                                    # todo: test & del
-	objs.request()._url    = ''                                                # todo: test & del
-	objs.ext_dics()                                                            # todo: test & del
-	'''
-	
-	'''
-	# fix: uniting terms & comments, delete '|'
-	objs.request()._source = 'Online'                                          # todo: test & del
-	objs.request()._search = 'teaser rate'                                     # todo: test & del
-	objs.request()._url    = 'https://www.multitran.ru/c/M.exe?l1=1&l2=2&s=teaser%20rate&l1=1&l2=2&s=teaser%20rate'   # todo: test & del
-	objs.ext_dics()                                                            # todo: test & de
-	'''
-	
-	'''
-	objs.request()._source = 'Online'                                          # todo: test & del
-	objs.request()._search = 'martyr'                                          # todo: test & del
-	objs.request()._url    = 'https://www.multitran.ru/c/m.exe?CL=1&s=martyr&l1=1' # todo: test & del
-	objs.ext_dics()                                                            # todo: test & de
-	'''
-	
-	'''
-	objs.request()._source = 'Online'                                          # todo: test & del
-	objs.request()._search = 'широта'                                          # todo: test & del
-	objs.request()._url    = 'https://www.multitran.ru/c/m.exe?t=1554559_2_3&s1=H&%23246;he' # todo: test & del
-	objs.ext_dics()                                                            # todo: test & de
-	'''
-	
-	'''
-	objs.request()._source = 'Online'                                          # todo: test & del
-	objs.request()._search = 'alongside'                                       # todo: test & del
-	objs.request()._url    = 'https://www.multitran.ru/c/m.exe?l1=1&l2=2&s=alongside' # todo: test & del
-	objs.ext_dics()                                                            # todo: test & del
-	'''
-	
-
-	objs.request()._source = 'Online'                                          # todo: test & del
-	objs.request()._search = 'counterpart'                                       # todo: test & del
-	objs.request()._url    = 'https://www.multitran.ru/c/M.exe?l1=1&l2=2&s=counterpart&l1=1&l2=2&s=counterpart' # todo: test & del
-	objs.ext_dics()                                                            # todo: test & del
-
-	
 	#blacklist  = ['Христианство']
 	blacklist  = []
 	prioritize = ['Религия']
-	
-	#'https://www.multitran.ru/c/m.exe?CL=1&s=martyr&l1=1'
-	#objs.request()._url = 'https://www.multitran.ru/c/m.exe?l1=1&l2=2&s=martyr' # todo: test & del
 	
 	timer = sh.Timer(func_title='Page')
 	timer.start()
@@ -2092,16 +2053,12 @@ def load_article():
 	page.run()
 	objs._request._page     = page._page
 	objs._request._html_raw = page._html_raw
+	
+	timer.end()
 
 	
-	#sg.Clipboard().copy(text=page._page)
-	#sg.objs.txt().insert(page._page)
-	#sg.objs.txt().show()
-
-	collimit   = 10
-	source     = 'All'
-	#article_id = 'martyr.txt'
-	article_id = 'counterpart'
+	Debug = 0
+	
 	#blacklist  = ['Христианство']
 	blacklist  = []
 	prioritize = ['Религия']
@@ -2110,15 +2067,15 @@ def load_article():
 	timer.start()
 	
 	tags = tg.Tags(text=objs._request._page,source=objs._request._source,pair_root=sh.globs['var']['pair_root'])
-	#tags = tg.Tags(text=page._page,source=objs._request._source,pair_root=sh.globs['var']['pair_root'])
 	tags.run()
 	#tags.debug(MaxRows=40)
 	#input('Tags step completed. Press Enter')
 	
 	elems = el.Elems(blocks=tags._blocks,source=objs._request._source,article_id=objs._request._article_id)
 	elems.run()
-	#elems.debug(MaxRows=40)
-	#input('Elems step completed. Press Enter')
+	if Debug:
+		elems.debug(MaxRows=40)
+		input('Elems step completed. Press Enter')
 	
 	objs.blocks_db().fill(elems._data)
 	
@@ -2127,18 +2084,28 @@ def load_article():
 	
 	bp = cl.BlockPrioritize(data=data,source=objs._request._source,article_id=objs._request._article_id,blacklist=blacklist,prioritize=prioritize)
 	bp.run()
-	#bp.debug(MaxRows=40)
-	#input('BlockPrioritize step completed. Press Enter')
-	#sg.Message('BlockPrioritize',sh.lev_info,bp._query.replace(';',';\n'))
+	if Debug:
+		bp.debug(MaxRows=40)
+		input('BlockPrioritize step completed. Press Enter')
+		sg.Message('BlockPrioritize',sh.lev_info,bp._query.replace(';',';\n'))
 	objs._blocks_db.update(query=bp._query)
+	
+	if Debug:
+		objs._blocks_db.print(Shorten=1,MaxRows=1,MaxRow=15)
+		input('After-BP DB created. Press Enter')
 	
 	data = objs._blocks_db.assign_cells()
 	cells = cl.Cells(data=data,collimit=objs._request._collimit)
 	cells.run()
-	#cells.debug(MaxRows=40)
-	#input('Cells step completed. Press Enter')
-	#sg.Message('Cells',sh.lev_info,cells._query.replace(';',';\n'))
+	if Debug:
+		cells.debug(MaxRows=40)
+		input('Cells step completed. Press Enter')
+		sg.Message('Cells',sh.lev_info,cells._query.replace(';',';\n'))
 	objs._blocks_db.update(query=cells._query)
+	
+	if Debug:
+		objs._blocks_db.print(Shorten=1,MaxRows=1,MaxRow=15)
+		input('After-Cells DB created. Press Enter')
 
 	#objs._blocks_db.print(Shorten=1,MaxRow=18,MaxRows=100)
 	#objs._blocks_db.dbc.execute('select * from BLOCKS where BLOCK=0 order by CELLNO,NO')
@@ -2147,25 +2114,24 @@ def load_article():
 	data = objs._blocks_db.assign_pos()
 	pos = cl.Pos(data=data)
 	pos.run()
-	#pos.debug(MaxRows=40)
-	#input('Pos step completed. Press Enter')
-	#sg.Message('Pos',sh.lev_info,pos._query.replace(';',';\n'))
+	if Debug:
+		pos.debug(MaxRows=40)
+		input('Pos step completed. Press Enter')
+		sg.Message('Pos',sh.lev_info,pos._query.replace(';',';\n'))
 	objs._blocks_db.update(query=pos._query)
 	
-	objs._blocks_db.print(Shorten=1,MaxRows=100,MaxRow=15)
-	#input('Return.')
+	if Debug:
+		objs._blocks_db.print(Shorten=1,MaxRows=100,MaxRow=15)
 	
 	get_html = mh.HTML(data=objs._blocks_db.fetch(),collimit=objs._request._collimit)
 	objs._request._html = get_html._html
 	
 	timer.end()
 	
+	if Debug:
+		input('Return.')
+	
 	objs.webframe().fill(code=objs._request._html)
-	text = objs.webframe().text()
-	sg.Clipboard().copy(text)
-	sg.objs.txt().reset_data()
-	sg.objs.txt().insert(text)
-	sg.objs.txt().show()
 
 
 

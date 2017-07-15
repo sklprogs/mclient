@@ -10,7 +10,6 @@
 
 ''' # todo:
     - Check that _same of the 1st cell is always True (or fix such behavior)
-	- clean up
 	- unite cells if (?) the url is the same or similar. Example: 'sampling' -> Робототехника -> проведение выборочных замеров
 '''
 
@@ -205,8 +204,9 @@ class Elems:
 	def phrases(self):
 		for block in self._blocks:
 			if block._type == 'phrase':
-				block._type = 'dic'
-				block._select = True
+				block._type   = 'dic'
+				block._select = 1
+				block._dica   = block._text
 				break
 				
 	def fill(self):
@@ -273,36 +273,7 @@ class Elems:
 		i = 0
 		while i < len(self._blocks):
 			if dica != self._blocks[i]._dica or wforma != self._blocks[i]._wforma or speecha != self._blocks[i]._speecha:
-				block          = Block()
-				block._type    = 'dic'
-				block._text    = self._blocks[i]._dica
-				block._dica    = self._blocks[i]._dica
-				block._wforma  = self._blocks[i]._wforma
-				block._speecha = self._blocks[i]._speecha
-				block._transca = self._blocks[i]._transca
-				block._terma   = self._blocks[i]._terma
-				block._same    = 0
-				self._blocks.insert(i,block)
-				block          = Block()
-				block._type    = 'wform'
-				block._text    = self._blocks[i]._wforma
-				block._dica    = self._blocks[i]._dica
-				block._wforma  = self._blocks[i]._wforma
-				block._speecha = self._blocks[i]._speecha
-				block._transca = self._blocks[i]._transca
-				block._terma   = self._blocks[i]._terma
-				block._same    = 0
-				self._blocks.insert(i,block)
-				block          = Block()
-				block._type    = 'transc'
-				block._text    = self._blocks[i]._transca
-				block._dica    = self._blocks[i]._dica
-				block._wforma  = self._blocks[i]._wforma
-				block._speecha = self._blocks[i]._speecha
-				block._transca = self._blocks[i]._transca
-				block._terma   = self._blocks[i]._terma
-				block._same    = 0
-				self._blocks.insert(i,block)
+				
 				block          = Block()
 				block._type    = 'speech'
 				block._text    = self._blocks[i]._speecha
@@ -313,6 +284,40 @@ class Elems:
 				block._terma   = self._blocks[i]._terma
 				block._same    = 0
 				self._blocks.insert(i,block)
+				
+				block          = Block()
+				block._type    = 'transc'
+				block._text    = self._blocks[i]._transca
+				block._dica    = self._blocks[i]._dica
+				block._wforma  = self._blocks[i]._wforma
+				block._speecha = self._blocks[i]._speecha
+				block._transca = self._blocks[i]._transca
+				block._terma   = self._blocks[i]._terma
+				block._same    = 0
+				self._blocks.insert(i,block)
+				
+				block          = Block()
+				block._type    = 'wform'
+				block._text    = self._blocks[i]._wforma
+				block._dica    = self._blocks[i]._dica
+				block._wforma  = self._blocks[i]._wforma
+				block._speecha = self._blocks[i]._speecha
+				block._transca = self._blocks[i]._transca
+				block._terma   = self._blocks[i]._terma
+				block._same    = 0
+				self._blocks.insert(i,block)
+				
+				block          = Block()
+				block._type    = 'dic'
+				block._text    = self._blocks[i]._dica
+				block._dica    = self._blocks[i]._dica
+				block._wforma  = self._blocks[i]._wforma
+				block._speecha = self._blocks[i]._speecha
+				block._transca = self._blocks[i]._transca
+				block._terma   = self._blocks[i]._terma
+				block._same    = 0
+				self._blocks.insert(i,block)
+				
 				dica    = self._blocks[i]._dica
 				wforma  = self._blocks[i]._wforma
 				speecha = self._blocks[i]._speecha
@@ -393,4 +398,9 @@ if __name__ == '__main__':
 	
 	elems = Elems(blocks=tags._blocks,source=source,article_id=article_id)
 	elems.run   ()
-	elems.debug ()
+	elems.debug (MaxRows=100)
+	
+	import db
+	blocks_db = db.DB()
+	blocks_db.fill(elems._data)
+	blocks_db.print(MaxRows=100,Shorten=1,MaxRow=15)

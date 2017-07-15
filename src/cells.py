@@ -146,7 +146,7 @@ class Cells:
 		for block in self._blocks:
 			if block._type == 'dic':
 				if dica == block._dica:
-					block._text = '' # cur
+					block._text = ''
 				else:
 					dica = block._dica
 			if block._type == 'wform':
