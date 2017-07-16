@@ -369,7 +369,7 @@ class CurRequest:
 	def reset(self):
 		self._view       = 0
 		#self._collimit   = 8
-		self._collimit   = 8
+		self._collimit   = 7
 		self._source     = 'All'
 		#self._source    = 'Offline'
 		#self._source    = 'Online'
@@ -382,7 +382,9 @@ class CurRequest:
 		#self._search      = 'balance'
 		#self._search      = 'do'
 		#self._search     = 'слово'
-		self._search      = 'башмак'
+		#self._search      = 'башмак'
+		self._search     = 'preceding'
+		#self._search      = 'дерево' # DE
 		self._lang       = 'English'
 		#self._url       = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
 		#self._url       = sh.globs['var']['pair_root'] + 'CL=1&s=filter&l1=1'
@@ -393,7 +395,10 @@ class CurRequest:
 		#self._url          = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=do'
 		#self._url          = sh.globs['var']['pair_root'] + 'l1=4&l2=2&s=%F1%EB%EE%E2%EE'
 		#self._url         = sh.globs['var']['pair_root'] + 'l1=3&l2=2&s=%F1%EB%EE%E2%EE'
-		self._url          = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%E1%E0%F8%EC%E0%EA'
+		#self._url          = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%E1%E0%F8%EC%E0%EA'
+		self._url           = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
+		# 'дерево', DE
+		#self._url           = sh.globs['var']['pair_root'] + 'l1=3&l2=2&s=%E4%E5%F0%E5%E2%EE'
 		self._article_id = self._search + ' (' + self._url + ')'
 		# Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
 		self.Block       = True
@@ -2036,10 +2041,6 @@ class Lists:
 
 
 def load_article():
-	#blacklist  = ['Христианство']
-	blacklist  = []
-	prioritize = ['Религия']
-	
 	timer = sh.Timer(func_title='Page')
 	timer.start()
 	
@@ -2059,24 +2060,34 @@ def load_article():
 	timer.end()
 
 	
-	Debug = 0
+	Debug = 1
 	
-	blacklist  = ['Австралийский сленг','Архаизм','Бранное выражение','Грубое выражение','Диалект','Жаргон','Презрительное выражение','Просторечие','Разговорное выражение','Расширение файла','Редкое выражение','Ругательство','Сленг','Табу','Табуированная лексика','Тюремный жаргон','Устаревшее слово','Фамильярное выражение','Шутливое выражение','Эвфемизм']
+	#blacklist  = ['Австралийский сленг','Архаизм','Бранное выражение','Грубое выражение','Диалект','Жаргон','Презрительное выражение','Просторечие','Разговорное выражение','Расширение файла','Редкое выражение','Ругательство','Сленг','Табу','Табуированная лексика','Тюремный жаргон','Устаревшее слово','Фамильярное выражение','Шутливое выражение','Эвфемизм']
+	
+	blacklist = []
 	
 	prioritize = ['Общая лексика','Техника']
+	#prioritize = [] # cur
 
 	timer = sh.Timer(func_title='tags + elems + cells + pos + mkhtml')
 	timer.start()
 	
 	tags = tg.Tags(text=objs._request._page,source=objs._request._source,pair_root=sh.globs['var']['pair_root'])
 	tags.run()
-	#tags.debug(MaxRows=40)
-	#input('Tags step completed. Press Enter')
+	if Debug:
+		tags.debug(MaxRows=100)
+		input('Tags step completed. Press Enter')
+	
+	# Костыль # cur
+	for i in range(len(tags._blocks)):
+		if tags._blocks[i]._type == 'term' and tags._blocks[i]._text == 'впереди' and tags._blocks[i]._same == 1:
+			sg.Message('__main__',sh.lev_info,'Term found!')
+			tags._blocks[i]._same = 0
 	
 	elems = el.Elems(blocks=tags._blocks,source=objs._request._source,article_id=objs._request._article_id)
 	elems.run()
 	if Debug:
-		elems.debug(MaxRows=40)
+		elems.debug(Shorten=1,MaxRows=100)
 		input('Elems step completed. Press Enter')
 	
 	objs.blocks_db().fill(elems._data)
@@ -2088,13 +2099,13 @@ def load_article():
 	bp = cl.BlockPrioritize(data=data,source=objs._request._source,article_id=objs._request._article_id,blacklist=blacklist,prioritize=prioritize,phrase_dic=phrase_dic)
 	bp.run()
 	if Debug:
-		bp.debug(MaxRows=40)
+		bp.debug(Shorten=1,MaxRows=100)
 		input('BlockPrioritize step completed. Press Enter')
 		sg.Message('BlockPrioritize',sh.lev_info,bp._query.replace(';',';\n'))
 	objs._blocks_db.update(query=bp._query)
 	
 	if Debug:
-		objs._blocks_db.print(Shorten=1,MaxRows=1,MaxRow=15)
+		objs._blocks_db.print(Shorten=1,MaxRows=100,MaxRow=15)
 		input('After-BP DB created. Press Enter')
 	
 	data = objs._blocks_db.assign_cells()
@@ -2107,7 +2118,7 @@ def load_article():
 	objs._blocks_db.update(query=cells._query)
 	
 	if Debug:
-		objs._blocks_db.print(Shorten=1,MaxRows=1,MaxRow=15)
+		objs._blocks_db.print(Shorten=1,MaxRows=100,MaxRow=15)
 		input('After-Cells DB created. Press Enter')
 
 	#objs._blocks_db.print(Shorten=1,MaxRow=18,MaxRows=100)
@@ -2124,7 +2135,7 @@ def load_article():
 	objs._blocks_db.update(query=pos._query)
 	
 	if Debug:
-		objs._blocks_db.print(Shorten=1,MaxRows=100,MaxRow=15)
+		objs._blocks_db.print(Shorten=1,MaxRows=1000,MaxRow=15)
 	
 	get_html = mh.HTML(data=objs._blocks_db.fetch(),collimit=objs._request._collimit)
 	objs._request._html = get_html._html

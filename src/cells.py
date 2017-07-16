@@ -37,7 +37,7 @@ class Block:
 
 # Update Block and Priority in DB before sorting cells
 ''' This complements DB with values that must be dumped into DB before sorting it
-    Needs attributes in blocks: NO, TYPE, DICA
+    Needs attributes in blocks: NO, TYPE, TEXT (test purposes only), DICA
     Modifies attributes:        BLOCK, PRIORITY
 '''
 class BlockPrioritize:
@@ -71,7 +71,8 @@ class BlockPrioritize:
 			block       = Block()
 			block._no   = item[0]
 			block._type = item[1]
-			block._dica = item[2]
+			block._text = item[2]
+			block._dica = item[3]
 			self._blocks.append(block)
 			
 	def block(self):
@@ -108,6 +109,7 @@ class BlockPrioritize:
 		            'NO'                ,
 		            'DICA'              ,
 		            'TYPE'              ,
+		            'TEXT'              ,
 		            'BLOCK'             ,
 		            'PRIORITY'          
 		          ]
@@ -118,6 +120,7 @@ class BlockPrioritize:
 			        block._no           ,
 			        block._dica         ,
 			        block._type         ,
+			        block._text         ,
 			        block._block        ,
 			        block._priority        
 			              ]
@@ -416,9 +419,10 @@ if __name__ == '__main__':
 	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/do.txt').get()
 	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/filter_get').get()
 	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро пожаловать.txt').get()
-	text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро.txt').get()
+	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро.txt').get()
 	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/рабочая документация.txt').get()
 	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/martyr.txt').get()
+	text = sh.ReadTextFile(file='/home/pete/tmp/ars/preceding.txt').get()
 
 	text = text.replace('\r','')
 	text = text.replace('\n','')
@@ -441,7 +445,8 @@ if __name__ == '__main__':
 	mc.ConfigMclient ()
 	
 	source     = 'All'
-	article_id = 'martyr.txt'
+	#article_id = 'martyr.txt'
+	article_id = 'preceding.txt'
 	blacklist  = ['Австралийский сленг','Архаизм','Бранное выражение','Грубое выражение','Диалект','Жаргон','Презрительное выражение','Просторечие','Разговорное выражение','Расширение файла','Редкое выражение','Ругательство','Сленг','Табу','Табуированная лексика','Тюремный жаргон','Устаревшее слово','Фамильярное выражение','Шутливое выражение','Эвфемизм']
 	
 	prioritize = ['Общая лексика','Техника']
@@ -494,7 +499,11 @@ if __name__ == '__main__':
 	blocks_db.update(query=pos._query)
 
 	if Debug:
-		blocks_db.print(Shorten=1,MaxRow=18,MaxRows=100)
+		blocks_db.print(Shorten=1,MaxRow=15,MaxRows=100)
 		#blocks_db.dbc.execute('select * from BLOCKS where BLOCK=0 order by CELLNO,NO')
 		#blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=100)
+		
+	#blocks_db.dbc.execute('select * from BLOCKS where BLOCK=0 order by NO')
+	#blocks_db.print(Selected=1,Shorten=1,MaxRow=15,MaxRows=100)
+	blocks_db.print(Shorten=1,MaxRow=15,MaxRows=100)
 	

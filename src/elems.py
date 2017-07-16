@@ -9,7 +9,7 @@
 '''
 
 ''' # todo:
-    - Check that _same of the 1st cell is always True (or fix such behavior)
+    - Check that _same of the 1st cell is always 1 (or fix such behavior)
 	- unite cells if (?) the url is the same or similar. Example: 'sampling' -> Робототехника -> проведение выборочных замеров
 '''
 
@@ -74,6 +74,8 @@ class Elems:
 			self.unite_comments    ()
 			self.unite_corrections ()
 			self.speech            ()
+			self.comment_same      ()
+			self.add_space         ()
 			self.fill              ()
 			self.fill_terma        ()
 			self.remove_fixed      ()
@@ -115,7 +117,7 @@ class Elems:
 		            MaxRows             = MaxRows
 		         ).print()
 		
-	# 'speech' blocks have '_same = True' when analyzing MT because they are within a single tag. We fix it here, not in Tags, because Tags are assumed to output the result 'as is'.
+	# 'speech' blocks have '_same = 1' when analyzing MT because they are within a single tag. We fix it here, not in Tags, because Tags are assumed to output the result 'as is'.
 	def speech(self):
 		for i in range(len(self._blocks)):
 			if self._blocks[i]._type == 'speech':
@@ -190,6 +192,71 @@ class Elems:
 						if i < len(self._blocks) - 1 and self._blocks[i+1]._type != 'comment' and self._blocks[i+1]._type != 'correction':
 							self._blocks[i+1]._same = 0
 			i += 1
+			
+	''' Sometimes sources do not provide sufficient information on SAMECELL blocks, 
+	    and the tag parser cannot handle sequences such as 'any type (not _same) -> comment (not _same) -> any type (not _same)'.
+	    Rules:
+	    1) (Should be always correct)
+	        'i >= 0 -> correction (not _same)
+				=>
+			'i >= 0 -> correction (_same)
+	    2) (Preferable)
+			'term (not _same) -> comment (not _same) -> any type (not _same)'
+				=>
+			'term (not _same) -> comment (_same) -> any type (not _same)'
+	    3) (Generally correct before removing fixed columns)
+			'dic/wform/speech/transc -> comment (not _same) -> term (not _same)'
+				=>
+			'dic/wform/speech/transc -> comment (not _same) -> term (_same)'
+		4) (By guess, check only after ##2&3)
+	        'any type (_same) -> comment (not _same) -> any type (not _same)'
+				=>
+			'any type (_same) -> comment (_same) -> any type (not _same)'
+	    5) (Always correct)
+			'any type -> comment/correction (not _same) -> END'
+				=>
+			'any type -> comment/correction (_same) -> END'
+		6) (Do this in the end of the loop; + Readability improvement ("в 42 тематиках"))
+		    'any type (not same) -> comment (not same) -> any type (not _same)'
+				=>
+			'any type (not same) -> comment (_same) -> any type (not _same)'
+	'''
+	def comment_same(self):
+		for i in range(len(self._blocks)):
+			cond1  = i > 0 and self._blocks[i]._type == 'correction'
+			cond2  = self._blocks[i]._same <= 0
+			cond3  = i > 0 and self._blocks[i-1]._type == 'comment' and self._blocks[i-1]._same <= 0
+			cond4  = i > 1 and self._blocks[i-2]._type == 'term' and self._blocks[i-2]._same <= 0
+			cond5  = i > 1 and self._blocks[i-2]._same <= 0
+			cond6  = self._blocks[i]._type == 'term'
+			cond7a = i > 1 and self._blocks[i-2]._type == 'dic'
+			cond7b = i > 1 and self._blocks[i-2]._type == 'wform'
+			cond7c = i > 1 and self._blocks[i-2]._type == 'speech'
+			cond7d = i > 1 and self._blocks[i-2]._type == 'transc'
+			cond7  = cond7a or cond7b or cond7c or cond7d
+			# not equivalent to 'not cond5' because of 'i'
+			cond8  = i > 1 and self._blocks[i-2]._same == 1
+			# Rule 1
+			if cond1 and cond2:
+				self._blocks[i]._same = 1
+			# Rule 2
+			elif cond4 and cond3 and cond2:
+				self._blocks[i-1]._same = 1
+			# Rule 3
+			elif cond7 and cond3 and cond6 and cond2:
+				self._blocks[i]._same = 1
+			# Rule 4:
+			elif cond8 and cond3 and cond2:
+				self._blocks[i-1]._same = 1
+			# Rule 6:
+			elif cond5 and cond3 and cond2:
+				self._blocks[i-1]._same = 1
+		# Rule 5
+		# After exiting the loop, the last block
+		cond1 = self._blocks[i]._type == 'comment' or self._blocks[i]._type == 'correction'
+		cond2 = self._blocks[i]._same <= 0
+		if cond1 and cond2:
+			self._blocks[i]._same = 1
 	
 	def add_space(self):
 		for i in range(len(self._blocks)):

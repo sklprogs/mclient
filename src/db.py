@@ -103,7 +103,7 @@ class DB:
 	# Assign input data for BlockPrioritize
 	def assign_bp(self):
 		if self._source and self._article_id:
-			self.dbc.execute('select NO,TYPE,DICA from BLOCKS where SOURCE = ? and ARTICLEID = ? order by NO',(self._source,self._article_id))
+			self.dbc.execute('select NO,TYPE,TEXT,DICA from BLOCKS where SOURCE = ? and ARTICLEID = ? order by NO',(self._source,self._article_id))
 			return self.dbc.fetchall()
 		else:
 			sg.Message('DB.assign_bp',sh.lev_warn,sh.globs['mes'].empty_input)
