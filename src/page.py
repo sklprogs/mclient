@@ -145,7 +145,7 @@ class ExtDics:
 
 class Page:
 	
-	def __init__(self,source='All',lang='English',search='SEARCH',url='',win_encoding='windows-1251',ext_dics=[]):
+	def __init__(self,source='All',lang='English',search='SEARCH',url='',win_encoding='windows-1251',ext_dics=[],file=None):
 		self._html_raw     = self._page = ''
 		self._source       = source
 		self._lang         = lang
@@ -153,6 +153,11 @@ class Page:
 		self._url          = url
 		self._win_encoding = win_encoding
 		self.ext_dics      = ext_dics
+		self._file         = file
+		self.Success       = True
+		if not self._source or not self._lang or not self._search or not self._win_encoding:
+			self.Success   = False
+			sh.log.append('Page.__init__',sh.lev_warn,sh.globs['mes'].empty_input)
 		
 	def run(self):
 		self.get                ()
@@ -260,27 +265,33 @@ class Page:
 	
 	def get(self):
 		if not self._page:
-			page = ''
-			if self._source == 'All': # todo: mes
-				self._get_online()
-				self.disamb_mt()
-				page = self._page
-				self._get_offline()
-				self.disamb_sd()
-			elif self._source == 'Online':
-				self._get_online()
-				self.disamb_mt()
-			elif self._source == 'Offline':
-				self._get_offline()
+			if self._file:
+				read = sh.ReadTextFile(file=self._file)
+				self._page   = read.get()
+				self.Success = read.Success
 				self.disamb_sd()
 			else:
-				sg.Message('Page.get',sh.lev_err,sh.globs['mes'].unknown_mode % (str(self._source),';'.join(sources)))
-			if self._page is None:
-				self._page = ''
-			if page and self._page:
-				self._page += page
-			elif page:
-				self._page = page
+				page = ''
+				if self._source == 'All': # todo: mes
+					self._get_online()
+					self.disamb_mt()
+					page = self._page
+					self._get_offline()
+					self.disamb_sd()
+				elif self._source == 'Online':
+					self._get_online()
+					self.disamb_mt()
+				elif self._source == 'Offline':
+					self._get_offline()
+					self.disamb_sd()
+				else:
+					sg.Message('Page.get',sh.lev_err,sh.globs['mes'].unknown_mode % (str(self._source),';'.join(sources)))
+				if self._page is None:
+					self._page = ''
+				if page and self._page:
+					self._page += page
+				elif page:
+					self._page = page
 			self._html_raw = self._page
 		return self._page
 

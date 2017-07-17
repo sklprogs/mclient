@@ -368,16 +368,19 @@ class CurRequest:
 		
 	def reset(self):
 		self._view       = 0
-		self._collimit   = 8
-		#self._collimit   = 7
+		#self._collimit   = 8
+		self._collimit   = 7
 		self._source     = 'All'
 		#self._source    = 'Offline'
 		#self._source    = 'Online'
 		#self._search    = 'Добро пожаловать!'
 		#self._search    = 'filter'
-		self._search    = 'counterpart'
+		#self._search    = 'counterpart'
+		self._search    = 'жесткая посадка'
 		#self._search     = 'compensate'
 		#self._search    = 'computer'
+		#self._search    = 'tablet' # todo: extract text for offline article
+		#self._search    = 'Linux'
 		#self._search     = 'martyr'
 		#self._search      = 'balance'
 		#self._search      = 'do'
@@ -390,6 +393,7 @@ class CurRequest:
 		#self._url       = sh.globs['var']['pair_root'] + 'CL=1&s=filter&l1=1'
 		#self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=martyr'
 		self._url        = sh.globs['var']['pair_root'] + 'CL=1&s=counterpart&l1=1'
+		self._url        = sh.globs['var']['pair_root'] +  'l1=1&l2=2&s=%E6%E5%F1%F2%EA%E0%FF%20%EF%EE%F1%E0%E4%EA%E0&l1=1&l2=2&s=%E6%E5%F1%F2%EA%E0%FF%20%EF%EE%F1%E0%E4%EA%E0'
 		#self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=compensate'
 		#self._url         = sh.globs['var']['pair_root'] + 't=3502039_1_2&s1=%F3%F0%E0%E2%ED%EE%E2%E5%F1%E8%F2%FC'
 		#self._url          = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=do'
@@ -2073,7 +2077,11 @@ def load_article():
 	timer = sh.Timer(func_title='tags + elems + cells + pos + mkhtml')
 	timer.start()
 	
-	tags = tg.Tags(text=objs._request._page,source=objs._request._source,pair_root=sh.globs['var']['pair_root'])
+	tags = tg.Tags (
+	                text                = objs._request._page                 ,
+	                source              = objs._request._source               ,
+	                pair_root           = sh.globs['var']['pair_root']
+	               )
 	tags.run()
 	if Debug:
 		tags.debug(MaxRows=100)
@@ -2082,7 +2090,7 @@ def load_article():
 	# Костыль # cur
 	for i in range(len(tags._blocks)):
 		if tags._blocks[i]._type == 'term' and tags._blocks[i]._text == 'впереди' and tags._blocks[i]._same == 1:
-			#sg.Message('__main__',sh.lev_info,'Term found!')
+			sg.Message('__main__',sh.lev_info,'Term found!')
 			tags._blocks[i]._same = 0
 	
 	elems = el.Elems(blocks=tags._blocks,source=objs._request._source,article_id=objs._request._article_id)

@@ -85,7 +85,7 @@ class Elems:
 		else:
 			sh.log.append('Elems.run',sh.lev_warn,sh.globs['mes'].canceled)
 	
-	def debug(self,Shorten=1,MaxHeader=10,MaxRow=20,MaxRows=20):
+	def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
 		print('\nElems.debug (Non-DB blocks):')
 		headers = [
 		            'DICA'              ,
@@ -113,7 +113,6 @@ class Elems:
 		            headers             = headers                             ,
 		            rows                = rows                                ,
 		            Shorten             = Shorten                             ,
-		            MaxHeader           = MaxHeader                           ,
 		            MaxRow              = MaxRow                              ,
 		            MaxRows             = MaxRows
 		         ).print()
@@ -478,46 +477,42 @@ class PhraseTerma:
 
 
 if __name__ == '__main__':
-	import re
-	import html
-	import tags as tg
+	import tags    as tg
+	import page    as pg
 	import mclient as mc
 	
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/star_test').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/sampling.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/filter_get').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро пожаловать.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/рабочая документация.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/martyr.txt').get()
-	text = sh.ReadTextFile(file='/home/pete/tmp/ars/preceding.txt').get()
+	#'/home/pete/tmp/ars/star_test'
+	#'/home/pete/tmp/ars/sampling.txt'
+	#'/home/pete/tmp/ars/filter_get'
+	#'/home/pete/tmp/ars/добро пожаловать.txt'
+	#'/home/pete/tmp/ars/добро.txt'
+	#'/home/pete/tmp/ars/рабочая документация.txt'
+	#'/home/pete/tmp/ars/martyr.txt'
+	#'/home/pete/tmp/ars/preceding.txt'
 
-	text = text.replace('\r','')
-	text = text.replace('\n','')
-	text = text.replace(' <','<')
-	text = text.replace('> ','>')
-	text = text.replace(sh.nbspace+'<','<')
-	text = text.replace('>'+sh.nbspace,'>')
-
-	text = text.replace('>; <','><')
-	text = text.replace('> <','><')
-	
-	#source     = 'All'
-	#article_id = 'martyr.txt'
+	# Modifiable
 	source     = 'Offline'
-	article_id = 'preceding.txt'
-
-	try:
-		text = html.unescape(text)
-	except:
-		sh.log.append('Page.decode_entities',sh.lev_err,sh.globs['mes'].html_conversion_failure)
-		
-	# An excessive space must be removed after unescaping the page
-	text = re.sub(r'\>[\s]{0,1}\<','><',text)
-
+	search     = 'preceding'
+	article_id = search + '.txt'
+	file       = '/home/pete/tmp/ars/preceding.txt'
+	
+	timer = sh.Timer(func_title='page, elems')
+	timer.start()
+	
+	page = pg.Page (
+	                source              = source                              ,
+	                lang                = 'English'                           ,
+	                search              = search                              ,
+	                url                 = ''                                  ,
+	                win_encoding        = 'windows-1251'                      ,
+	                ext_dics            = []                                  ,
+	                file                = file
+	               )
+	page.run()
+	
 	mc.ConfigMclient ()
 
-	tags = tg.Tags(text)
+	tags = tg.Tags(page._page)
 	tags.run()
 	
 	elems = Elems(blocks=tags._blocks,source=source,article_id=article_id)
@@ -530,5 +525,10 @@ if __name__ == '__main__':
 	
 	ph_terma = PhraseTerma(dbc=blocks_db.dbc,source=source,article_id=article_id)
 	ph_terma.run()
+	
+	timer.end()
+	
+	elems.debug()
 
-	blocks_db.print(Shorten=1,MaxRows=200,MaxRow=15)
+	#'DICA,WFORMA,SPEECHA,TRANSCA,TERMA,TYPE,TEXT,URL,SAMECELL'
+	#blocks_db.print(Selected=1,Shorten=1,MaxRows=50,MaxRow=7)

@@ -64,7 +64,7 @@ class DB:
 		else:
 			sg.Message('DB.request',sh.lev_warn,sh.globs['mes'].empty_input)
 	
-	def print(self,Selected=False,Shorten=False,MaxHeader=10,MaxRow=20,MaxRows=20):
+	def print(self,Selected=False,Shorten=False,MaxRow=20,MaxRows=20):
 		# 'self.dbc.description' is 'None' without performing 'select' first
 		if not Selected:
 			self.dbc.execute('select * from BLOCKS order by CELLNO,NO')
@@ -74,7 +74,6 @@ class DB:
 		            headers             = headers                             ,
 		            rows                = rows                                ,
 		            Shorten             = Shorten                             ,
-		            MaxHeader           = MaxHeader                           ,
 		            MaxRow              = MaxRow                              ,
 		            MaxRows             = MaxRows
 		         ).print()

@@ -103,7 +103,7 @@ class BlockPrioritize:
 		self._query = tmp.getvalue()
 		tmp.close()
 
-	def debug(self,Shorten=1,MaxHeader=10,MaxRow=20,MaxRows=20):
+	def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
 		print('\nBlockPrioritize.debug (Non-DB blocks):')
 		headers = [
 		            'NO'                ,
@@ -129,7 +129,6 @@ class BlockPrioritize:
 		            headers             = headers                             ,
 		            rows                = rows                                ,
 		            Shorten             = Shorten                             ,
-		            MaxHeader           = MaxHeader                           ,
 		            MaxRow              = MaxRow                              ,
 		            MaxRows             = MaxRows
 		         ).print()
@@ -210,7 +209,7 @@ class Cells:
 			block._transca = item[7]
 			self._blocks.append(block)
 		
-	def debug(self,Shorten=1,MaxHeader=10,MaxRow=20,MaxRows=20):
+	def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
 		print('\nCells.debug (Non-DB blocks):')
 		headers = [
 		            'NO'                ,
@@ -234,7 +233,6 @@ class Cells:
 		            headers             = headers                             ,
 		            rows                = rows                                ,
 		            Shorten             = Shorten                             ,
-		            MaxHeader           = MaxHeader                           ,
 		            MaxRow              = MaxRow                              ,
 		            MaxRows             = MaxRows
 		         ).print()
@@ -329,7 +327,7 @@ class Pos:
 			block.i        = item[4]
 			self._blocks.append(block)
 		
-	def debug(self,Shorten=1,MaxHeader=10,MaxRow=20,MaxRows=20):
+	def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
 		print('\nPos.debug (Non-DB blocks):')
 		headers = [
 		            'NO'                ,
@@ -357,7 +355,6 @@ class Pos:
 		            headers             = headers                             ,
 		            rows                = rows                                ,
 		            Shorten             = Shorten                             ,
-		            MaxHeader           = MaxHeader                           ,
 		            MaxRow              = MaxRow                              ,
 		            MaxRows             = MaxRows
 		         ).print()
