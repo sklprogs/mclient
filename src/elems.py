@@ -75,6 +75,7 @@ class Elems:
 			self.unite_corrections ()
 			self.speech            ()
 			self.comment_same      ()
+			# todo: fix 'List().space_items', use it in 'unite_*' and delete this
 			self.add_space         ()
 			self.fill              ()
 			self.fill_terma        ()
@@ -321,6 +322,7 @@ class Elems:
 	
 	def fill_terma(self):
 		terma = ''
+		# This is just to get a non-empty value of 'terma' if some other types besides 'phrase' and 'term' follow them in the end.
 		i = len(self._blocks) - 1
 		while i >= 0:
 			if self._blocks[i]._type == 'term' or self._blocks[i]._type == 'phrase':
@@ -423,6 +425,58 @@ class Elems:
 
 
 
+class PhraseTerma:
+	
+	def __init__(self,dbc,source,article_id):
+		self.dbc         = dbc
+		self._source     = source
+		self._article_id = article_id
+		self._no1        = -1
+		self._no2        = -1
+		if self.dbc and self._source and self._article_id:
+			self.Success = True
+		else:
+			self.Success = False
+			sh.log.append('PhraseTerma.__init__',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def second_phrase(self):
+		if self._no2 < 0:
+			self.dbc.execute('select NO from BLOCKS where SOURCE = ? and ARTICLEID = ? and TYPE = ? order by NO',(self._source,self._article_id,'phrase',))
+			result = self.dbc.fetchone()
+			if result:
+				self._no2 = result[0]
+			sh.log.append('PhraseTerma.second_phrase',sh.lev_debug,str(self._no2))
+		return self._no2
+		
+	def phrase_dic(self):
+		if self._no1 < 0:
+			if self._no2 >= 0:
+				self.dbc.execute('select NO from BLOCKS where SOURCE = ? and ARTICLEID = ? and TYPE = ? and NO < ? order by NO desc',(self._source,self._article_id,'dic',self._no2,))
+				result = self.dbc.fetchone()
+				if result:
+					self._no1 = result[0]
+			else:
+				sh.log.append('PhraseTerma.phrase_dic',sh.lev_warn,sh.globs['mes'].wrong_input2)
+			sh.log.append('PhraseTerma.phrase_dic',sh.lev_debug,str(self._no1))
+		return self._no1
+		
+	def dump(self):
+		if self._no1 and self._no2:
+			sh.log.append('PhraseTerma.dump',sh.lev_info,'Update DB in range %d-%d' % (self._no1,self._no2)) # todo: mes
+			self.dbc.execute('update BLOCKS set TERMA=? where NO >= ? and NO < ?',('',self._no1,self._no2,))
+		else:
+			sh.log.append('PhraseTerma.dump',sh.lev_warn,sh.globs['mes'].wrong_input2)
+		
+	def run(self):
+		if self.Success:
+			self.second_phrase ()
+			self.phrase_dic   ()
+			self.dump         ()
+		else:
+			sh.log.append('PhraseTerma.run',sh.lev_warn,sh.globs['mes'].canceled)
+
+
+
 if __name__ == '__main__':
 	import re
 	import html
@@ -435,7 +489,8 @@ if __name__ == '__main__':
 	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро пожаловать.txt').get()
 	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро.txt').get()
 	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/рабочая документация.txt').get()
-	text = sh.ReadTextFile(file='/home/pete/tmp/ars/martyr.txt').get()
+	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/martyr.txt').get()
+	text = sh.ReadTextFile(file='/home/pete/tmp/ars/preceding.txt').get()
 
 	text = text.replace('\r','')
 	text = text.replace('\n','')
@@ -447,8 +502,10 @@ if __name__ == '__main__':
 	text = text.replace('>; <','><')
 	text = text.replace('> <','><')
 	
-	source     = 'All'
-	article_id = 'martyr.txt'
+	#source     = 'All'
+	#article_id = 'martyr.txt'
+	source     = 'Offline'
+	article_id = 'preceding.txt'
 
 	try:
 		text = html.unescape(text)
@@ -465,9 +522,13 @@ if __name__ == '__main__':
 	
 	elems = Elems(blocks=tags._blocks,source=source,article_id=article_id)
 	elems.run   ()
-	elems.debug (MaxRows=100)
+	#elems.debug (MaxRows=100)
 	
 	import db
 	blocks_db = db.DB()
 	blocks_db.fill(elems._data)
-	blocks_db.print(MaxRows=100,Shorten=1,MaxRow=15)
+	
+	ph_terma = PhraseTerma(dbc=blocks_db.dbc,source=source,article_id=article_id)
+	ph_terma.run()
+
+	blocks_db.print(Shorten=1,MaxRows=200,MaxRow=15)

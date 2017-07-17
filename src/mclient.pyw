@@ -368,14 +368,14 @@ class CurRequest:
 		
 	def reset(self):
 		self._view       = 0
-		#self._collimit   = 8
-		self._collimit   = 7
+		self._collimit   = 8
+		#self._collimit   = 7
 		self._source     = 'All'
 		#self._source    = 'Offline'
 		#self._source    = 'Online'
 		#self._search    = 'Добро пожаловать!'
 		#self._search    = 'filter'
-		#self._search    = 'counterpart'
+		self._search    = 'counterpart'
 		#self._search     = 'compensate'
 		#self._search    = 'computer'
 		#self._search     = 'martyr'
@@ -383,20 +383,21 @@ class CurRequest:
 		#self._search      = 'do'
 		#self._search     = 'слово'
 		#self._search      = 'башмак'
-		self._search     = 'preceding'
+		#self._search     = 'preceding'
 		#self._search      = 'дерево' # DE
 		self._lang       = 'English'
 		#self._url       = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
 		#self._url       = sh.globs['var']['pair_root'] + 'CL=1&s=filter&l1=1'
 		#self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=martyr'
-		#self._url        = sh.globs['var']['pair_root'] + 'CL=1&s=counterpart&l1=1'
+		self._url        = sh.globs['var']['pair_root'] + 'CL=1&s=counterpart&l1=1'
 		#self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=compensate'
 		#self._url         = sh.globs['var']['pair_root'] + 't=3502039_1_2&s1=%F3%F0%E0%E2%ED%EE%E2%E5%F1%E8%F2%FC'
 		#self._url          = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=do'
 		#self._url          = sh.globs['var']['pair_root'] + 'l1=4&l2=2&s=%F1%EB%EE%E2%EE'
 		#self._url         = sh.globs['var']['pair_root'] + 'l1=3&l2=2&s=%F1%EB%EE%E2%EE'
+		# 'башмак', EN
 		#self._url          = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%E1%E0%F8%EC%E0%EA'
-		self._url           = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
+		#self._url           = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
 		# 'дерево', DE
 		#self._url           = sh.globs['var']['pair_root'] + 'l1=3&l2=2&s=%E4%E5%F0%E5%E2%EE'
 		self._article_id = self._search + ' (' + self._url + ')'
@@ -2060,7 +2061,7 @@ def load_article():
 	timer.end()
 
 	
-	Debug = 1
+	Debug = 0
 	
 	#blacklist  = ['Австралийский сленг','Архаизм','Бранное выражение','Грубое выражение','Диалект','Жаргон','Презрительное выражение','Просторечие','Разговорное выражение','Расширение файла','Редкое выражение','Ругательство','Сленг','Табу','Табуированная лексика','Тюремный жаргон','Устаревшее слово','Фамильярное выражение','Шутливое выражение','Эвфемизм']
 	
@@ -2081,7 +2082,7 @@ def load_article():
 	# Костыль # cur
 	for i in range(len(tags._blocks)):
 		if tags._blocks[i]._type == 'term' and tags._blocks[i]._text == 'впереди' and tags._blocks[i]._same == 1:
-			sg.Message('__main__',sh.lev_info,'Term found!')
+			#sg.Message('__main__',sh.lev_info,'Term found!')
 			tags._blocks[i]._same = 0
 	
 	elems = el.Elems(blocks=tags._blocks,source=objs._request._source,article_id=objs._request._article_id)
@@ -2092,7 +2093,15 @@ def load_article():
 	
 	objs.blocks_db().fill(elems._data)
 	
+	#objs._blocks_db.dbc.execute('select * from BLOCKS order by NO')    # todo: del
+	#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=1000,MaxRow=13) # todo: del
+	#input('Elems step completed. Press Enter')                         # todo: del
+	
 	objs._blocks_db.request(source=objs._request._source,article_id=objs._request._article_id)
+	
+	ph_terma = el.PhraseTerma(dbc=objs._blocks_db.dbc,source=objs._request._source,article_id=objs._request._article_id)
+	ph_terma.run()
+	
 	phrase_dic = objs._blocks_db.phrase_dic()
 	data = objs._blocks_db.assign_bp()
 	
@@ -2103,6 +2112,10 @@ def load_article():
 		input('BlockPrioritize step completed. Press Enter')
 		sg.Message('BlockPrioritize',sh.lev_info,bp._query.replace(';',';\n'))
 	objs._blocks_db.update(query=bp._query)
+	
+	#objs._blocks_db.dbc.execute('select * from BLOCKS order by NO')    # todo: del
+	#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=1000,MaxRow=13) # todo: del
+	#input('BlockPrioritize step completed. Press Enter')               # todo: del
 	
 	if Debug:
 		objs._blocks_db.print(Shorten=1,MaxRows=100,MaxRow=15)
@@ -2140,12 +2153,18 @@ def load_article():
 	get_html = mh.HTML(data=objs._blocks_db.fetch(),collimit=objs._request._collimit)
 	objs._request._html = get_html._html
 	
+	#objs._blocks_db.dbc.execute('select * from BLOCKS order by NO')    # todo: del
+	#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=1000,MaxRow=13) # todo: del
+	#input('Final step completed. Press Enter')                         # todo: del
+	
 	timer.end()
 	
 	if Debug:
 		input('Return.')
 	
 	objs.webframe().fill(code=objs._request._html)
+	#objs._blocks_db.dbc.execute('select * from BLOCKS order by NO')
+	#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=1000,MaxRow=13)
 
 
 
