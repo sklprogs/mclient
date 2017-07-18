@@ -5,6 +5,7 @@
 	- Make transcriptions Selectable
 '''
 
+from tkinter import ttk
 import tkinterhtml as th
 import os
 import sys
@@ -376,7 +377,7 @@ class CurRequest:
 		#self._search    = 'Добро пожаловать!'
 		#self._search    = 'filter'
 		#self._search    = 'counterpart'
-		self._search    = 'жесткая посадка'
+		#self._search    = 'жесткая посадка'
 		#self._search     = 'compensate'
 		#self._search    = 'computer'
 		#self._search    = 'tablet' # todo: extract text for offline article
@@ -386,14 +387,15 @@ class CurRequest:
 		#self._search      = 'do'
 		#self._search     = 'слово'
 		#self._search      = 'башмак'
-		#self._search     = 'preceding'
+		self._search     = 'preceding'
 		#self._search      = 'дерево' # DE
 		self._lang       = 'English'
 		#self._url       = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
 		#self._url       = sh.globs['var']['pair_root'] + 'CL=1&s=filter&l1=1'
 		#self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=martyr'
-		self._url        = sh.globs['var']['pair_root'] + 'CL=1&s=counterpart&l1=1'
-		self._url        = sh.globs['var']['pair_root'] +  'l1=1&l2=2&s=%E6%E5%F1%F2%EA%E0%FF%20%EF%EE%F1%E0%E4%EA%E0&l1=1&l2=2&s=%E6%E5%F1%F2%EA%E0%FF%20%EF%EE%F1%E0%E4%EA%E0'
+		#self._url        = sh.globs['var']['pair_root'] + 'CL=1&s=counterpart&l1=1'
+		# 'жесткая посадка', EN
+		#self._url        = sh.globs['var']['pair_root'] +  'l1=1&l2=2&s=%E6%E5%F1%F2%EA%E0%FF%20%EF%EE%F1%E0%E4%EA%E0&l1=1&l2=2&s=%E6%E5%F1%F2%EA%E0%FF%20%EF%EE%F1%E0%E4%EA%E0'
 		#self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=compensate'
 		#self._url         = sh.globs['var']['pair_root'] + 't=3502039_1_2&s1=%F3%F0%E0%E2%ED%EE%E2%E5%F1%E8%F2%FC'
 		#self._url          = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=do'
@@ -401,7 +403,7 @@ class CurRequest:
 		#self._url         = sh.globs['var']['pair_root'] + 'l1=3&l2=2&s=%F1%EB%EE%E2%EE'
 		# 'башмак', EN
 		#self._url          = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%E1%E0%F8%EC%E0%EA'
-		#self._url           = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
+		self._url           = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
 		# 'дерево', DE
 		#self._url           = sh.globs['var']['pair_root'] + 'l1=3&l2=2&s=%E4%E5%F0%E5%E2%EE'
 		self._article_id = self._search + ' (' + self._url + ')'
@@ -1052,8 +1054,8 @@ class History:
 class WebFrame:
 	
 	def __init__(self):
-		self.values()
-		self.gui()
+		self.values ()
+		self.gui    ()
 	
 	def values(self):
 		self.event       = None
@@ -1064,10 +1066,22 @@ class WebFrame:
 	
 	def gui(self):
 		self.obj    = sg.objs.new_top(Maximize=1)
-		self.widget = th.TkinterHtml(self.obj.widget)
+		self.frame  = sg.Frame(parent_obj=self.obj)
+		self.frame_x = sg.Frame(parent_obj=self.frame,expand=0,fill='x',side='bottom')
+		self.frame_y = sg.Frame(parent_obj=self.frame,expand=0,fill='y',side='right')
+		self.widget = th.TkinterHtml(self.frame.widget)
 		self.widget.pack(expand='1',fill='both')
-		self.bindings()
-		self.title()
+		self.scrollbars ()
+		self.bindings   ()
+		self.title      ()
+		
+	def scrollbars(self):
+		vsb = ttk.Scrollbar(self.frame_y.widget,orient='vertical',command=self.widget.yview)
+		vsb.pack(expand=1,fill='y')
+		hsb = ttk.Scrollbar(self.frame_x.widget,orient='horizontal',command=self.widget.xview)
+		hsb.pack(expand=1,fill='x')
+		self.widget.configure(xscrollcommand=hsb.set)
+		self.widget.configure(yscrollcommand=vsb.set)
 		
 	def title(self,arg=None):
 		if not arg:
@@ -1101,6 +1115,7 @@ class WebFrame:
 	
 	# Выделить ячейку
 	def set_cell(self,pos,View=True): # View=True будет всегда сдвигать экран до текущей ячейки при навигации с клавиатуры
+		'''
 		print() # todo: del
 		print('mouse_index:',self.mouse_index) # todo: del
 		self.widget.tag("delete", "selection")
@@ -1117,6 +1132,7 @@ class WebFrame:
 		print('index[1]:',self.index[1]) # todo: del
 		print('index[2]:',self.index[2]) # todo: del
 		print('index[3]:',self.index[3]) # todo: del
+		'''
 		if self.index:
 			try:
 				self.widget.tag('add','selection',self.index[0],self.index[1],self.index[2],self.index[3])
@@ -2055,7 +2071,8 @@ def load_article():
 	                search              = objs._request._search               ,
 	                url                 = objs._request._url                  ,
 	                win_encoding        = sh.globs['var']['win_encoding']     ,
-	                ext_dics            = objs.ext_dics()
+	                ext_dics            = objs.ext_dics()                     ,
+	                file                = '/home/pete/tmp/ars/preceding.txt'
 	               )
 	               
 	page.run()
@@ -2087,11 +2104,13 @@ def load_article():
 		tags.debug(MaxRows=100)
 		input('Tags step completed. Press Enter')
 	
+	'''
 	# Костыль # cur
 	for i in range(len(tags._blocks)):
 		if tags._blocks[i]._type == 'term' and tags._blocks[i]._text == 'впереди' and tags._blocks[i]._same == 1:
 			sg.Message('__main__',sh.lev_info,'Term found!')
 			tags._blocks[i]._same = 0
+	'''
 	
 	elems = el.Elems(blocks=tags._blocks,source=objs._request._source,article_id=objs._request._article_id)
 	elems.run()
@@ -2183,6 +2202,8 @@ if  __name__ == '__main__':
 	sg.objs.start()
 	
 	ConfigMclient()
+	
+	articles = Articles()
 
 	load_article()
 	objs.webframe().show()
@@ -2192,7 +2213,6 @@ if  __name__ == '__main__':
 	sg.objs.end()
 	
 	'''
-	articles = Articles()
 	h_quit   = Quit()
 	h_table  = TkinterHtmlMod(objs.top().widget)
 	objs.top().widget.protocol("WM_DELETE_WINDOW",h_quit.wait)
