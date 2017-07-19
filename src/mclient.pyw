@@ -2522,7 +2522,7 @@ def load_article():
 	timer.end()
 
 	
-	Debug = 1
+	Debug = 0
 	
 	#blacklist  = ['Австралийский сленг','Архаизм','Бранное выражение','Грубое выражение','Диалект','Жаргон','Презрительное выражение','Просторечие','Разговорное выражение','Расширение файла','Редкое выражение','Ругательство','Сленг','Табу','Табуированная лексика','Тюремный жаргон','Устаревшее слово','Фамильярное выражение','Шутливое выражение','Эвфемизм']
 	
@@ -2544,13 +2544,6 @@ def load_article():
 		tags.debug(MaxRows=100)
 		input('Tags step completed. Press Enter')
 	
-	'''
-	# Костыль # cur
-	for i in range(len(tags._blocks)):
-		if tags._blocks[i]._type == 'term' and tags._blocks[i]._text == 'впереди' and tags._blocks[i]._same == 1:
-			sg.Message('__main__',sh.lev_info,'Term found!')
-			tags._blocks[i]._same = 0
-	'''
 	
 	elems = el.Elems (blocks     = tags._blocks
 	                 ,source     = objs._request._source

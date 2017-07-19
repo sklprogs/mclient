@@ -68,7 +68,9 @@ class Elems:
 		if self.Success:
 			self.transc            ()
 			self.phrases           ()
+			self.straight_line     ()
 			self.comments          ()
+			self.dic_abbr          ()
 			self.add_space         ()
 			# These 2 procedures should not be combined (otherwise, corrections will have the same color as comments)
 			self.unite_comments    ()
@@ -155,6 +157,18 @@ class Elems:
 					i -= 1
 			i += 1
 			
+	def dic_abbr(self):
+		i = 0
+		while i < len(self._blocks):
+			# We suppose that these are abbreviations of dictionary titles. If the full dictionary title is not preceding (this can happen if the whole article is occupied by the 'Phrases' section), we keep these abbreviations as comments.
+			if i > 0 and self._blocks[i-1]._type == 'dic' and self._blocks[i]._same > 0:
+				del self._blocks[i]
+				i -= 1
+			i += 1
+			
+	def straight_line(self):
+		self._blocks = [block for block in self._blocks if block._text.strip() != '|']
+	
 	def comments(self):
 		i = 0
 		while i < len(self._blocks):
@@ -163,22 +177,6 @@ class Elems:
 				# Delete comments that are just ';' or ',' (we don't need them, we have a table view)
 				# We delete instead of assigning Block attribute because we may need to unblock blocked dictionaries later
 				if text_str == ';' or text_str == ',':
-					del self._blocks[i]
-					i -= 1
-				# We suppose that these are abbreviations of dictionary titles. If the full dictionary title is not preceding (this can happen if the whole article is occupied by the 'Phrases' section), we keep these abbreviations as comments.
-				elif i > 0 and self._blocks[i-1]._type == 'dic' and self._blocks[i]._same > 0:
-					del self._blocks[i]
-					i -= 1
-				elif i == 0 and text_str == '|':
-					del self._blocks[i]
-					i -= 1
-				elif i > 0 and text_str == '|' and self._blocks[i-1]._type != 'comment' and self._blocks[i-1]._type != 'correction':
-					del self._blocks[i]
-					i -= 1
-				elif i > 0 and self._blocks[i]._text == self._blocks[i-1]._text == '|':
-					del self._blocks[i]
-					i -= 1
-				elif i == len(self._blocks) and text_str == '|':
 					del self._blocks[i]
 					i -= 1
 				elif not self._blocks[i]._same > 0:
@@ -491,44 +489,56 @@ if __name__ == '__main__':
 	#'/home/pete/tmp/ars/preceding.txt'
 
 	# Modifiable
-	source     = 'Offline'
+	#source     = 'Offline'
+	source     = 'Online'
 	search     = 'preceding'
+	url        = 'http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
 	article_id = search + '.txt'
 	file       = '/home/pete/tmp/ars/preceding.txt'
+	#file       = None
+	Debug      = 0
+	
 	
 	timer = sh.Timer(func_title='page, elems')
 	timer.start()
 	
-	page = pg.Page (
-	                source              = source                              ,
-	                lang                = 'English'                           ,
-	                search              = search                              ,
-	                url                 = ''                                  ,
-	                win_encoding        = 'windows-1251'                      ,
-	                ext_dics            = []                                  ,
-	                file                = file
-	               )
+	page = pg.Page (source       = source
+	               ,lang         = 'English'
+	               ,search       = search
+	               ,url          = url
+	               ,win_encoding = 'windows-1251'
+	               ,ext_dics     = []
+	               ,file         = file)
 	page.run()
 	
 	mc.ConfigMclient ()
 
-	tags = tg.Tags(page._page)
+	tags = tg.Tags(source=source,text=page._page)
 	tags.run()
 	
-	elems = Elems(blocks=tags._blocks,source=source,article_id=article_id)
+	if Debug:
+		tags.debug()
+	
+	elems = Elems (blocks     = tags._blocks
+	              ,source     = source
+	              ,article_id = article_id)
 	elems.run   ()
-	#elems.debug (MaxRows=100)
+	
+	if Debug:
+		elems.debug (MaxRows=200)
 	
 	import db
 	blocks_db = db.DB()
 	blocks_db.fill(elems._data)
 	
-	ph_terma = PhraseTerma(dbc=blocks_db.dbc,source=source,article_id=article_id)
+	ph_terma = PhraseTerma (dbc        = blocks_db.dbc
+	                       ,source     = source
+	                       ,article_id = article_id)
 	ph_terma.run()
 	
 	timer.end()
 	
-	elems.debug()
+	elems.debug(MaxRows=200)
 
 	#'DICA,WFORMA,SPEECHA,TRANSCA,TERMA,TYPE,TEXT,URL,SAMECELL'
 	#blocks_db.print(Selected=1,Shorten=1,MaxRows=50,MaxRow=7)

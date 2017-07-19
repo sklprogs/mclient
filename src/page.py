@@ -172,6 +172,8 @@ class Page:
 	# This is due to technical limitations and should be corrected
 	def invalid(self):
 		# We need to close the tag since all following blocks with be 'SAMECELL == 1' otherwise
+		# cur
+		#self._page = self._page.replace('<span STYLE="color:black">','<span STYLE="color:black"></span>')
 		self._page = self._page.replace('<span STYLE="color:black">','</span>')
 		# Do this before 'common_replace'. Splitting terms is hindered without this.
 		self._page = self._page.replace('>;  <','><')
@@ -221,7 +223,7 @@ class Page:
 			try:
 				self._page = html.unescape(self._page)
 			except:
-				sh.log.append('Page.decode_entities',sh.lev_err,sh.globs['mes'].html_conversion_failure)
+				sg.Message('Page.decode_entities',sh.lev_err,sh.globs['mes'].html_conversion_failure)
 	
 	def _get_online(self):
 		Got = False
@@ -271,6 +273,7 @@ class Page:
 				read = sh.ReadTextFile(file=self._file)
 				self._page   = read.get()
 				self.Success = read.Success
+				self.disamb_mt()
 				self.disamb_sd()
 			else:
 				page = ''
@@ -299,12 +302,16 @@ class Page:
 
 
 if __name__ == '__main__':
-	from time import time
-	start_time = time()
-	#page = Page(search='filter',url='https://www.multitran.ru/c/M.exe?CL=1&s=filter&l1=1')
-	page = Page(search='do',url='https://www.multitran.ru/c/M.exe?CL=1&s=filter&l1=1')
+	timer = sh.Timer(func_title='Page')
+	timer.start()
+	sg.objs.start()
+	page = Page (source = 'Online'
+	            ,search = 'preceding'
+	            ,file   = '/home/pete/tmp/ars/preceding.txt'
+	            )
 	page.run()
-	text = page._page
-	sh.log.append('__main__',sh.lev_info,sh.globs['mes'].operation_completed % float(time()-start_time))
-	text = text.replace('windows-1251','UTF-8')
-	sh.WriteTextFile(file='/home/pete/tmp/ars/do.txt',AskRewrite=0).write(text=text)
+	timer.end()
+	#sh.WriteTextFile(file='/home/pete/tmp/ars/do.txt',AskRewrite=0).write(text=text)
+	sg.objs.txt().insert(text=page._page)
+	sg.objs._txt.show()
+	sg.objs.end()

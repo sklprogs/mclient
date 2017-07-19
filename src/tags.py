@@ -466,33 +466,23 @@ class Tags:
 
 
 if __name__ == '__main__':
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/star_test').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/sampling.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/filter_get').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро пожаловать.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро.txt').get()
-	text = sh.ReadTextFile(file='/home/pete/tmp/ars/рабочая документация.txt').get()
-
-	text = text.replace('\r','')
-	text = text.replace('\n','')
-	text = text.replace(' <','<')
-	text = text.replace('> ','>')
-	text = text.replace(sh.nbspace+'<','<')
-	text = text.replace('>'+sh.nbspace,'>')
-
-	text = text.replace('>; <','><')
-	text = text.replace('> <','><')
-
-	import html
-	try:
-		text = html.unescape(text)
-	except:
-		sh.log.append('Page.decode_entities',sh.lev_err,sh.globs['mes'].html_conversion_failure)
-		
-	# An excessive space must be removed after unescaping the page
-	text = re.sub(r'\>[\s]{0,1}\<','><',text)
-
-	tags = Tags(text)
+	import page as pg
+	
+	# Modifiable
+	source = 'Online'
+	search = 'preceding'
+	file   = '/home/pete/tmp/ars/preceding.txt'
+	
+	page = pg.Page (source = source
+	               ,search = search
+	               ,file   = file
+	               )
+	page.run()
+	
+	timer = sh.Timer(func_title='Page')
+	timer.start()
+	tags = Tags(source=source,text=page._page)
 	tags.run()
-	tags.debug_tags   ()
-	tags.debug_blocks ()
+	timer.end()
+	#tags.debug_tags   ()
+	tags.debug_blocks (MaxRow=30,MaxRows=100)
