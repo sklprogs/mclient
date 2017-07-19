@@ -171,8 +171,10 @@ class Page:
 		
 	# This is due to technical limitations and should be corrected
 	def invalid(self):
+		# We need to close the tag since all following blocks with be 'SAMECELL == 1' otherwise
+		self._page = self._page.replace('<span STYLE="color:black">','</span>')
 		# Do this before 'common_replace'. Splitting terms is hindered without this.
-		self._page = self._page.replace('</a>;  <a','</a><a')
+		self._page = self._page.replace('>;  <','><')
 	
 	def article_not_found(self): # HTML specific
 		if self._source == 'All' or self._source == 'Online':

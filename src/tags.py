@@ -410,7 +410,7 @@ class Tags:
 		sg.objs._txt.insert(text=message)
 		sg.objs._txt.show()
 		
-	def debug_blocks(self,Shorten=1,MaxHeader=10,MaxRow=20,MaxRows=20):
+	def debug_blocks(self,Shorten=1,MaxRow=20,MaxRows=20):
 		print('\nTags.debug_blocks (Non-DB blocks):')
 		headers = [
 		            'TYPE'              ,
@@ -432,19 +432,21 @@ class Tags:
 		            headers             = headers                             ,
 		            rows                = rows                                ,
 		            Shorten             = Shorten                             ,
-		            MaxHeader           = MaxHeader                           ,
 		            MaxRow              = MaxRow                              ,
 		            MaxRows             = MaxRows
 		         ).print()
 		
-	def debug(self,Shorten=1,MaxHeader=10,MaxRow=20,MaxRows=20):
+	def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
 		self.debug_tags   ()
-		self.debug_blocks (Shorten=Shorten,MaxHeader=MaxHeader,MaxRow=MaxRow,MaxRows=MaxRows)
+		self.debug_blocks (Shorten=Shorten,MaxRow=MaxRow,MaxRows=MaxRows)
 		
 	def blocks(self):
 		if not self._blocks:
 			for tag in self._tags:
-				analyze = AnalyzeTag(tag=tag,source=self._source,pair_root=self._pair_root)
+				analyze = AnalyzeTag (tag       = tag
+				                     ,source    = self._source
+				                     ,pair_root = self._pair_root
+				                     )
 				analyze.analyze()
 				lst = analyze._elems
 				for i in range(len(lst)):

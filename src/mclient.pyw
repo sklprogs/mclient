@@ -605,13 +605,15 @@ class Quit:
 	
 	def wait(self,*args):
 		self.Quit = True
-		objs.top().close()
+		# todo: rework
+		#objs.top().close()
 		
 	def now(self,*args):
 		if self.Quit:
 			sh.log.append('Quit.now',sh.lev_info,sh.globs['mes'].goodbye)
 			kl_mod.keylistener.cancel()
-			objs.top().widget.destroy()
+			# todo: rework
+			#objs.top().widget.destroy()
 			sg.objs.root().widget.after_cancel(self._id)
 			sg.objs.root().destroy()
 			sys.exit()
@@ -2520,7 +2522,7 @@ def load_article():
 	timer.end()
 
 	
-	Debug = 0
+	Debug = 1
 	
 	#blacklist  = ['Австралийский сленг','Архаизм','Бранное выражение','Грубое выражение','Диалект','Жаргон','Презрительное выражение','Просторечие','Разговорное выражение','Расширение файла','Редкое выражение','Ругательство','Сленг','Табу','Табуированная лексика','Тюремный жаргон','Устаревшее слово','Фамильярное выражение','Шутливое выражение','Эвфемизм']
 	
@@ -2561,9 +2563,10 @@ def load_article():
 	
 	objs.blocks_db().fill(elems._data)
 	
-	#objs._blocks_db.dbc.execute('select * from BLOCKS order by NO')    # todo: del
-	#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=1000,MaxRow=13) # todo: del
-	#input('Elems step completed. Press Enter')                         # todo: del
+	if Debug:
+		objs._blocks_db.dbc.execute('select NO,TYPE,TEXT,SAMECELL from BLOCKS order by NO')    # todo: del
+		objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=1000,MaxRow=100) # todo: del
+		input('Elems step completed. Press Enter')                         # todo: del
 	
 	objs._blocks_db.request (source     = objs._request._source
 	                        ,article_id = objs._request._article_id

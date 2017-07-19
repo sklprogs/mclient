@@ -216,9 +216,9 @@ if __name__ == '__main__':
 
 	# Modifiable
 	source     = 'Offline'
-	search     = 'do'
+	search     = 'preceding'
 	article_id = search + '.txt'
-	file       = '/home/pete/tmp/ars/do.txt'
+	file       = '/home/pete/tmp/ars/preceding.txt'
 	collimit   = 7
 	#blacklist  = ['Христианство']
 	blacklist  = []
