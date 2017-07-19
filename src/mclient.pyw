@@ -2550,7 +2550,10 @@ def load_article():
 			tags._blocks[i]._same = 0
 	'''
 	
-	elems = el.Elems(blocks=tags._blocks,source=objs._request._source,article_id=objs._request._article_id)
+	elems = el.Elems (blocks     = tags._blocks
+	                 ,source     = objs._request._source
+	                 ,article_id = objs._request._article_id
+	                 )
 	elems.run()
 	if Debug:
 		elems.debug(Shorten=1,MaxRows=100)
@@ -2562,15 +2565,26 @@ def load_article():
 	#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=1000,MaxRow=13) # todo: del
 	#input('Elems step completed. Press Enter')                         # todo: del
 	
-	objs._blocks_db.request(source=objs._request._source,article_id=objs._request._article_id)
+	objs._blocks_db.request (source     = objs._request._source
+	                        ,article_id = objs._request._article_id
+	                        )
 	
-	ph_terma = el.PhraseTerma(dbc=objs._blocks_db.dbc,source=objs._request._source,article_id=objs._request._article_id)
+	ph_terma = el.PhraseTerma (dbc        = objs._blocks_db.dbc
+	                          ,source     = objs._request._source
+	                          ,article_id = objs._request._article_id
+	                          )
 	ph_terma.run()
 	
-	phrase_dic = objs._blocks_db.phrase_dic()
-	data = objs._blocks_db.assign_bp()
+	phrase_dic = objs._blocks_db.phrase_dic ()
+	data       = objs._blocks_db.assign_bp  ()
 	
-	bp = cl.BlockPrioritize(data=data,source=objs._request._source,article_id=objs._request._article_id,blacklist=blacklist,prioritize=prioritize,phrase_dic=phrase_dic)
+	bp = cl.BlockPrioritize (data=data
+	                        ,source     = objs._request._source
+	                        ,article_id = objs._request._article_id
+	                        ,blacklist  = blacklist
+	                        ,prioritize = prioritize
+	                        ,phrase_dic = phrase_dic
+	                        )
 	bp.run()
 	if Debug:
 		bp.debug(Shorten=1,MaxRows=100)
@@ -2587,7 +2601,10 @@ def load_article():
 		input('After-BP DB created. Press Enter')
 	
 	data = objs._blocks_db.assign_cells()
-	cells = cl.Cells(data=data,collimit=objs._request._collimit,phrase_dic=phrase_dic)
+	cells = cl.Cells (data       = data
+	                 ,collimit   = objs._request._collimit
+	                 ,phrase_dic = phrase_dic
+	                 )
 	cells.run()
 	if Debug:
 		cells.debug(MaxRows=40)
@@ -2615,7 +2632,9 @@ def load_article():
 	if Debug:
 		objs._blocks_db.print(Shorten=1,MaxRows=1000,MaxRow=15)
 	
-	get_html = mh.HTML(data=objs._blocks_db.fetch(),collimit=objs._request._collimit)
+	get_html = mh.HTML (data     = objs._blocks_db.fetch()
+	                   ,collimit = objs._request._collimit
+	                   )
 	objs._request._html = get_html._html
 	
 	#objs._blocks_db.dbc.execute('select * from BLOCKS order by NO')    # todo: del

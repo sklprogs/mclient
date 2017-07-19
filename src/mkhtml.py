@@ -24,12 +24,50 @@ class Block:
 
 class HTML:
 	
-	def __init__(self,data,collimit=9): # 'collimit' includes fixed blocks
+	def __init__(self,data,collimit=9,Printer=False): # 'collimit' includes fixed blocks
 		self._data     = data
 		self._collimit = collimit
+		self.Printer   = Printer
 		self._blocks   = []
 		self._block    = None
 		self._html     = ''
+		self._script   = '''
+		<head>
+		  
+		  <div align="center">
+		    <!-- A button to print the printable area -->
+		    <input type="button" onclick="printDiv('printableArea')" value="Print" />
+		  </div>
+		  
+		  <script type="text/javascript">
+		    function printDiv(divName) {
+		      var printContents = document.getElementById(divName).innerHTML;
+		      var originalContents = document.body.innerHTML;
+		      document.body.innerHTML = printContents;
+		      window.print();
+		      document.body.innerHTML = originalContents;
+		    }
+		  </script>
+		  
+		  <!-- Print in a landscape mode -->
+		  <style type="text/css">
+		    @page
+		    {
+		      size: landscape;
+		      margin: 1.5cm;
+		    }
+		  </style>
+		  
+		  <style type="text/css" media="print">
+		    @page
+		    {
+		      size: landscape;
+		      margin: 1.5cm;
+		    }
+		  </style>
+		
+		</head>
+		'''
 		if self._data:
 			self.assign ()
 			self.html   ()
@@ -128,9 +166,14 @@ class HTML:
 	def html(self):
 		# Default Python string concatenation is too slow, so we use this module instead
 		self.output = io.StringIO()
-		self.output.write('<html>\n  <body>\n    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">\n      <table>')
+		self.output.write('<html>\n')
+		if self.Printer:
+			self.output.write(self._script)
+		self.output.write('  <body>\n    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">')
+		if self.Printer:
+			self.output.write('\n    <div id="printableArea">')
+		self.output.write('\n      <table>\n        <tr><td>')
 		i = j = 0
-		self.output.write('\n        <tr><td>')
 		for self._block in self._blocks:
 			while self._block.i > i:
 				self.output.write('</td></tr>\n        <tr><td align="center">')
@@ -144,15 +187,17 @@ class HTML:
 			self._term       ()
 			self._comment    ()
 			self._correction ()
-		self.output.write('</td></tr>\n      </table>  \n</body>\n</html>')
+		self.output.write('</td></tr>\n      </table>  ')
+		if self.Printer:
+			self.output.write('\n  </div>')
+		self.output.write('\n</body>\n</html>')
 		self._html = self.output.getvalue()
 		self.output.close()
 
 
 
 if __name__ == '__main__':
-	import re
-	import html
+	import page    as pg
 	import tags    as tg
 	import db
 	import elems   as el
@@ -160,93 +205,124 @@ if __name__ == '__main__':
 	import mclient as mc
 	
 	
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/star_test').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/sampling.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/test.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/do.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/filter_get').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро пожаловать.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/рабочая документация.txt').get()
-	text = sh.ReadTextFile(file='/home/pete/tmp/ars/martyr.txt').get()
+	#'/home/pete/tmp/ars/star_test'
+	#'/home/pete/tmp/ars/sampling.txt'
+	#'/home/pete/tmp/ars/filter_get'
+	#'/home/pete/tmp/ars/добро пожаловать.txt'
+	#'/home/pete/tmp/ars/добро.txt'
+	#'/home/pete/tmp/ars/рабочая документация.txt'
+	#'/home/pete/tmp/ars/martyr.txt'
+	#'/home/pete/tmp/ars/preceding.txt'
 
-	text = text.replace('\r','')
-	text = text.replace('\n','')
-	text = text.replace(' <','<')
-	text = text.replace('> ','>')
-	text = text.replace(sh.nbspace+'<','<')
-	text = text.replace('>'+sh.nbspace,'>')
-
-	text = text.replace('>; <','><')
-	text = text.replace('> <','><')
-
-	try:
-		text = html.unescape(text)
-	except:
-		sh.log.append('Page.decode_entities',sh.lev_err,sh.globs['mes'].html_conversion_failure)
-		
-	# An excessive space must be removed after unescaping the page
-	text = re.sub(r'\>[\s]{0,1}\<','><',text)
+	# Modifiable
+	source     = 'Offline'
+	search     = 'do'
+	article_id = search + '.txt'
+	file       = '/home/pete/tmp/ars/do.txt'
+	collimit   = 7
+	#blacklist  = ['Христианство']
+	blacklist  = []
+	prioritize = ['Общая лексика']
+	Debug      = 0
+	
+	timer = sh.Timer(func_title='page, elems')
+	timer.start()
+	
+	page = pg.Page (source       = source
+	               ,lang         = 'English'
+	               ,search       = search
+	               ,url          = ''
+	               ,win_encoding = 'windows-1251'
+	               ,ext_dics     = []
+	               ,file         = file
+	               )
+	page.run()
 
 	mc.ConfigMclient ()
 	
-	collimit   = 10
-	source     = 'All'
-	article_id = 'martyr.txt'
-	#blacklist  = ['Христианство']
-	blacklist  = []
-	prioritize = ['Религия']
-
 	timer = sh.Timer(func_title='tags + elems + cells + pos + mkhtml')
 	timer.start()
 	
-	tags = tg.Tags(text)
+	tags = tg.Tags(page._page)
 	tags.run()
-	#tags.debug(MaxRows=40)
-	#input('Tags step completed. Press Enter')
+
+	if Debug:
+		tags.debug(MaxRows=40)
+		input('Tags step completed. Press Enter')
 	
-	sg.Clipboard().copy(text=text)
-	sg.objs.txt().reset_data()
-	sg.objs._txt.insert(text)
-	
-	elems = el.Elems(blocks=tags._blocks,source=source,article_id=article_id)
+	elems = el.Elems (blocks     = tags._blocks
+	                 ,source     = source
+	                 ,article_id = article_id
+	                 )
 	elems.run()
-	#elems.debug(MaxRows=40)
-	#input('Elems step completed. Press Enter')
+
+	if Debug:
+		elems.debug(MaxRows=40)
+		input('Elems step completed. Press Enter')
 	
 	blocks_db = db.DB()
 	blocks_db.fill(elems._data)
 	
-	blocks_db.request(source=source,article_id=article_id)
-	data = blocks_db.assign_bp()
+	blocks_db.request (source     = source
+	                  ,article_id = article_id
+	                  )
+	ph_terma = el.PhraseTerma (dbc        = blocks_db.dbc
+	                          ,source     = source
+	                          ,article_id = article_id
+	                          )
+	ph_terma.run()
 	
-	bp = cl.BlockPrioritize(data=data,source=source,article_id=article_id,blacklist=blacklist,prioritize=prioritize)
+	phrase_dic = blocks_db.phrase_dic ()
+	data       = blocks_db.assign_bp  ()
+	
+	bp = cl.BlockPrioritize (data=data
+	                        ,source     = source
+	                        ,article_id = article_id
+	                        ,blacklist  = blacklist
+	                        ,prioritize = prioritize
+	                        ,phrase_dic = phrase_dic
+	                        )
 	bp.run()
-	#bp.debug(MaxRows=40)
-	#input('BlockPrioritize step completed. Press Enter')
-	#sg.Message('BlockPrioritize',sh.lev_info,bp._query.replace(';',';\n'))
+	
+	if Debug:
+		bp.debug(MaxRows=40)
+		input('BlockPrioritize step completed. Press Enter')
+		sg.Message('BlockPrioritize',sh.lev_info,bp._query.replace(';',';\n'))
+
 	blocks_db.update(query=bp._query)
 	
 	data = blocks_db.assign_cells()
-	cells = cl.Cells(data=data,collimit=collimit)
+	cells = cl.Cells (data       = data
+	                 ,collimit   = collimit
+	                 ,phrase_dic = phrase_dic
+	                 )
 	cells.run()
-	#cells.debug(MaxRows=40)
-	#input('Cells step completed. Press Enter')
-	#sg.Message('Cells',sh.lev_info,cells._query.replace(';',';\n'))
+	
+	if Debug:
+		cells.debug(MaxRows=40)
+		input('Cells step completed. Press Enter')
+		sg.Message('Cells',sh.lev_info,cells._query.replace(';',';\n'))
+
 	blocks_db.update(query=cells._query)
 
 	data = blocks_db.assign_pos()
 	pos = cl.Pos(data=data)
 	pos.run()
-	#pos.debug(MaxRows=40)
-	#input('Pos step completed. Press Enter')
-	#sg.Message('Pos',sh.lev_info,pos._query.replace(';',';\n'))
+	if Debug:
+		pos.debug(MaxRows=40)
+		input('Pos step completed. Press Enter')
+		sg.Message ('Pos',sh.lev_info,pos._query.replace(';',';\n'))
+	
 	blocks_db.update(query=pos._query)
 	
-	blocks_db.print(Shorten=1,MaxRows=100,MaxRow=18)
-	input('Return.')
+	if Debug:
+		blocks_db.print(Shorten=1,MaxRows=100,MaxRow=18)
+		input('Return.')
 	
-	mkhtml = HTML(data=blocks_db.fetch(),collimit=collimit)
+	mkhtml = HTML (data     = blocks_db.fetch()
+	              ,collimit = collimit
+	              ,Printer  = 1
+	              )
 	
 	timer.end()
 	
