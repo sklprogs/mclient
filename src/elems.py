@@ -50,6 +50,7 @@ class Block:
 	- We fill 'terma' from the end in order to ensure that 'terma' of blocks of non-selectable types will have the value of the 'term' AFTER those blocks
 	- We fill 'terma' from the end in order to ensure that 'terma' is also filled for blocks having '_same == 0'
 	- When filling 'terma' from the start to the end, in order to set a default 'terma' value, we also search for blocks of the 'phrase' type (just to be safe in such cases when 'phrase' blocks anticipate 'term' blocks). However, we fill 'terma' for 'phrase' blocks from the end to the start because we want the 'phrase' dictionary to have the 'terma' value of the first 'phrase' block AFTER it
+	- Finally, we clear TERMA values for fixed columns. Sqlite sorts '' before a non-empty string, so we ensure thereby that sorting by TERMA will be correct. Otherwise, we would have to correctly calculate TERMA values for fixed columns that will vary depending on the view. Incorrect sorting by TERMA may result in putting a TERM item before fixed columns.
 '''
 class Elems:
 	
@@ -83,6 +84,7 @@ class Elems:
 			self.fill_terma        ()
 			self.remove_fixed      ()
 			self.insert_fixed      ()
+			self.fixed_terma       ()
 			self.dump              ()
 		else:
 			sh.log.append('Elems.run',sh.lev_warn,sh.globs['mes'].canceled)
@@ -161,6 +163,7 @@ class Elems:
 		i = 0
 		while i < len(self._blocks):
 			# We suppose that these are abbreviations of dictionary titles. If the full dictionary title is not preceding (this can happen if the whole article is occupied by the 'Phrases' section), we keep these abbreviations as comments.
+			# note: checking 'self._blocks[i]._type == 'dic' and self._blocks[i]._same > 0' is not enough.
 			if i > 0 and self._blocks[i-1]._type == 'dic' and self._blocks[i]._same > 0:
 				del self._blocks[i]
 				i -= 1
@@ -308,14 +311,15 @@ class Elems:
 				speecha = block._text
 			elif block._type == 'transc':
 				transca = block._text
-			elif block._type == 'term':
+			# todo: Is there a difference if we use both term/phrase here or the term only?
+			elif block._type == 'term' or block._type == 'phrase':
 				terma = block._text
 			block._dica    = dica
 			block._wforma  = wforma
 			block._speecha = speecha
 			block._transca = transca
 			if block._same > 0:
-				block._terma = terma
+				block._terma   = terma
 	
 	def fill_terma(self):
 		terma = ''
@@ -333,6 +337,11 @@ class Elems:
 			if not self._blocks[i]._same > 0:
 				self._blocks[i]._terma = terma
 			i -= 1
+			
+	def fixed_terma(self):
+		for block in self._blocks:
+			if block._type in ('dic','wform','speech','transc'):
+				block._terma = ''
 			
 	def insert_fixed(self):
 		dica = wforma = speecha = ''
@@ -538,7 +547,8 @@ if __name__ == '__main__':
 	
 	timer.end()
 	
-	elems.debug(MaxRows=200)
+	#elems.debug(MaxRows=200)
 
 	#'DICA,WFORMA,SPEECHA,TRANSCA,TERMA,TYPE,TEXT,URL,SAMECELL'
-	#blocks_db.print(Selected=1,Shorten=1,MaxRows=50,MaxRow=7)
+	blocks_db.dbc.execute('select NO,DICA,TERMA,TYPE,TEXT,SAMECELL from BLOCKS order by NO')
+	blocks_db.print(Selected=1,Shorten=1,MaxRows=200,MaxRow=20)

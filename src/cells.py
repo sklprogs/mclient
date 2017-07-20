@@ -37,7 +37,7 @@ class Block:
 
 # Update Block and Priority in DB before sorting cells
 ''' This complements DB with values that must be dumped into DB before sorting it
-    Needs attributes in blocks: NO, TYPE, TEXT (test purposes only), DICA
+    Needs attributes in blocks: NO, DICA, TYPE, TEXT (test purposes only)
     Modifies attributes:        BLOCK, PRIORITY
 '''
 class BlockPrioritize:
@@ -59,20 +59,20 @@ class BlockPrioritize:
 	
 	def run(self):
 		if self.Success:
-			self.assign     ()
-			self.block      ()
-			self.prioritize ()
-			self.dump       ()
+			self.assign       ()
+			self.block        ()
+			self.prioritize   ()
+			self.dump         ()
 		else:
 			sh.log.append('BlockPrioritize.run',sh.lev_warn,sh.globs['mes'].canceled)
 	
 	def assign(self):
 		for item in self._data:
-			block       = Block()
-			block._no   = item[0]
-			block._type = item[1]
-			block._text = item[2]
-			block._dica = item[3]
+			block        = Block()
+			block._no    = item[0]
+			block._type  = item[1]
+			block._text  = item[2]
+			block._dica  = item[3]
 			self._blocks.append(block)
 			
 	def block(self):
@@ -93,7 +93,7 @@ class BlockPrioritize:
 			for block in self._blocks:
 				if self._prioritize[i].lower() == block._dica.lower():
 					block._priority = priority
-	
+					
 	def dump(self):
 		tmp = io.StringIO()
 		tmp.write('begin;')
@@ -185,7 +185,7 @@ class Cells:
 					block._text = ''
 				else:
 					transca = block._transca
-	
+					
 	def run(self):
 		if self.Success:
 			self.assign        ()

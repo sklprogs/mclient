@@ -5,6 +5,11 @@
 	- Make transcriptions Selectable
 '''
 
+''' # fix
+    - 'жесткая посадка': 'жесткая посадка' is recognized as a term instead of a wform
+    - odd fixed columns are inserted
+'''
+
 from tkinter import ttk
 import tkinterhtml as th
 import os
@@ -362,8 +367,8 @@ class CurRequest:
 		
 	def reset(self):
 		self._view       = 0
-		#self._collimit   = 8
-		self._collimit   = 7
+		self._collimit   = 9
+		#self._collimit   = 7
 		self._source     = 'All'
 		#self._source    = 'Offline'
 		#self._source    = 'Online'
@@ -380,12 +385,13 @@ class CurRequest:
 		#self._search      = 'do'
 		#self._search     = 'слово'
 		#self._search      = 'башмак'
-		self._search     = 'preceding'
+		#self._search     = 'preceding'
 		#self._search      = 'дерево' # DE
+		self._search     = 'odd' # EN
 		self._lang       = 'English'
 		#self._url       = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
 		#self._url       = sh.globs['var']['pair_root'] + 'CL=1&s=filter&l1=1'
-		#self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=martyr'
+		self._url        = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=martyr'
 		#self._url        = sh.globs['var']['pair_root'] + 'CL=1&s=counterpart&l1=1'
 		# 'жесткая посадка', EN
 		#self._url        = sh.globs['var']['pair_root'] +  'l1=1&l2=2&s=%E6%E5%F1%F2%EA%E0%FF%20%EF%EE%F1%E0%E4%EA%E0&l1=1&l2=2&s=%E6%E5%F1%F2%EA%E0%FF%20%EF%EE%F1%E0%E4%EA%E0'
@@ -396,7 +402,7 @@ class CurRequest:
 		#self._url         = sh.globs['var']['pair_root'] + 'l1=3&l2=2&s=%F1%EB%EE%E2%EE'
 		# 'башмак', EN
 		#self._url          = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%E1%E0%F8%EC%E0%EA'
-		self._url           = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
+		#self._url           = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
 		# 'дерево', DE
 		#self._url           = sh.globs['var']['pair_root'] + 'l1=3&l2=2&s=%E4%E5%F0%E5%E2%EE'
 		self._article_id = self._search + ' (' + self._url + ')'
@@ -1817,14 +1823,14 @@ class WebFrame:
 	def move_page_up(self,event=None):
 		if event:
 			self.event = event
-		self.yview_scroll(-1,'pages')
+		self.widget.yview_scroll(-1,'pages')
 		self.mouse_sel()
 
 	# Перейти на страницу вверх
 	def move_page_down(self,event=None):
 		if event:
 			self.event = event
-		self.yview_scroll(1,'pages')
+		self.widget.yview_scroll(1,'pages')
 		self.mouse_sel()
 
 	# Перейти на предыдущий термин
@@ -1983,7 +1989,7 @@ class WebFrame:
 			self.i, self.j = self.search_article._list[self.search_article._pos]
 			self.set_cell()
 			if len(self.index) > 0:
-				self.yview_name(self.index[0])
+				self.widget.yview_name(self.index[0])
 	
 	def search_reset(self,*args): # SearchArticle
 		self.search_article.reset()
@@ -2123,16 +2129,6 @@ class TkinterHtmlMod(tk.Widget):
 		self.top_bbox = 0
 		self.bottom_bbox = 0
 		
-	def show(self):
-		self.pack(expand=1,fill='both')
-		self.hsb.pack(side='bottom',fill='x')
-		
-	# Загрузить библиотеку tkhtml
-	def load_tkhtml(self):
-		if self.location:
-			self.master.tk.eval('global auto_path; lappend auto_path {%s}' % self.location)
-		self.master.tk.eval('package require Tkhtml')
-
 	# Вернуть местоположение библиотеки tkhtml
 	def get_tkhtml_folder(self):
 		return os.path.join (sh.Path(os.path.abspath(sys.argv[0])).dirname(),
@@ -2149,71 +2145,6 @@ class TkinterHtmlMod(tk.Widget):
 		if articles.current()._cells and len(articles.current()._cells) > parts[0] and len(articles.current()._cells[self.i]) > parts[1]:
 			if articles.current()._cells[parts[0]][parts[1]].Selectable:
 				self.i, self.j = parts
-	
-	def node(self, *arguments):
-		return self.tk.call(self._w, "node", *arguments)
-
-	def parse(self, *args):
-		self.tk.call(self._w, "parse", *args)
-
-	def reset(self):
-		return self.tk.call(self._w, "reset")
-
-	def tag(self, subcommand, tag_name, *arguments):
-		return self.tk.call(self._w, "tag", subcommand, tag_name, *arguments)
-
-	def text(self, *args):
-		return self.tk.call(self._w, "text", *args)
-
-	def xview(self, *args):
-		"Used to control horizontal scrolling."
-		if args: return self.tk.call(self._w, "xview", *args)
-		coords = map(float, self.tk.call(self._w, "xview").split())
-		return tuple(coords)
-
-	def xview_moveto(self, fraction):
-		"""Adjusts horizontal position of the widget so that fraction
-		of the horizontal span of the document is off-screen to the left.
-		"""
-		return self.xview("moveto", fraction)
-
-	def xview_scroll(self, number, what):
-		"""Shifts the view in the window according to number and what;
-		number is an integer, and what is either 'units' or 'pages'.
-		"""
-		return self.xview("scroll", number, what)
-
-	def yview(self, *args):
-		"Used to control the vertical position of the document."
-		if args: return self.tk.call(self._w, "yview", *args)
-		#coords = map(float, self.tk.call(self._w, "yview").split())
-		coords = map(float, self.tk.call(self._w, "yview"))
-		return tuple(coords)
-
-	# Сместить экран до заданного узла
-	def yview_name(self, name):
-		''' Пример использования:
-			self.index = self.text('index',term_first_pos,term_last_pos)
-			self.yview_name(self.index[0])
-		'''
-		return self.yview(name)
-
-	def yview_moveto(self, fraction):
-		"""Adjust the vertical position of the document so that fraction of
-		the document is off-screen above the visible region.
-		Example:
-		self.yview('moveto',20.0)
-		"""
-		return self.yview("moveto", fraction)
-
-	def yview_scroll(self, number, what):
-		"""Shifts the view in the window up or down, according to number and
-		what. 'number' is an integer, and 'what' is either 'units' or 'pages'.
-		"""
-		return self.yview("scroll", number, what)
-
-	def bbox(self,*args): # nodeHandle
-		return self.tk.call(self._w, "bbox", *args)
 	
 	def get_nearest_page_up(self):
 		while self.page_no > 0:
@@ -2256,16 +2187,16 @@ class TkinterHtmlMod(tk.Widget):
 				self.page_no -= 1
 			if len(self.top_indexes) > 0:
 				self.get_nearest_page_up()
-				self.yview_name(self.top_indexes[self.page_no])
+				self.widget.yview_name(self.top_indexes[self.page_no])
 			# todo: check this
 			'''if self.page_no in self.top_indexes:
-				self.yview_name(self.top_indexes[self.page_no])
+				self.widget.yview_name(self.top_indexes[self.page_no])
 			else:
-				self.yview_scroll(cur_top_bbox-self.top_bbox,'units')
+				self.widget.yview_scroll(cur_top_bbox-self.top_bbox,'units')
 			'''
 			sh.log.append('WebFrame.shift_screen',sh.lev_info,sh.globs['mes'].cur_page_no % self.page_no)
 		elif cur_bottom_bbox > self.bottom_bbox:
-			self.yview(self.index[0])
+			self.widget.yview(self.index[0])
 			self.page_no += 1
 			sh.log.append('WebFrame.shift_screen',sh.lev_info,sh.globs['mes'].cur_page_no % self.page_no)
 			self.top_indexes[self.page_no] = self.index[0]
@@ -2512,7 +2443,7 @@ def load_article():
 	                url                 = objs._request._url                  ,
 	                win_encoding        = sh.globs['var']['win_encoding']     ,
 	                ext_dics            = objs.ext_dics()                     ,
-	                file                = '/home/pete/tmp/ars/preceding.txt'
+	                file                = '/home/pete/tmp/ars/решение.txt'
 	               )
 	               
 	page.run()
@@ -2633,8 +2564,10 @@ def load_article():
 	                   )
 	objs._request._html = get_html._html
 	
-	#objs._blocks_db.dbc.execute('select * from BLOCKS order by NO')    # todo: del
-	#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=1000,MaxRow=13) # todo: del
+	#objs._blocks_db.dbc.execute('select NO,DICA,TYPE,TEXT,SAMECELL,CELLNO from BLOCKS order by NO')    # todo: del
+	#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=1000,MaxRow=20) # todo: del
+	#objs._blocks_db.sort(Fetch=0)
+	#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=1000,MaxRow=20)
 	#input('Final step completed. Press Enter')                         # todo: del
 	
 	timer.end()
@@ -2644,7 +2577,8 @@ def load_article():
 	
 	objs.webframe().fill(code=objs._request._html)
 	#objs._blocks_db.dbc.execute('select * from BLOCKS order by NO')
-	#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=1000,MaxRow=13)
+	objs._blocks_db.sort(Fetch=0)
+	objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=10000,MaxRow=15)
 
 
 

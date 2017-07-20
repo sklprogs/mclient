@@ -49,7 +49,7 @@ class DB:
 		self.dbc.executemany('insert into BLOCKS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',data)
 
 	def sort(self,Fetch=True):
-		self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where BLOCK is NOT ? order by DICA,WFORMA,SPEECHA,TERMA,CELLNO,NO',(1,))
+		self.dbc.execute('select NO,DICA,WFORMA,SPEECHA,TERMA,TYPE,TEXT,SAMECELL,CELLNO,ROWNO,COLNO from BLOCKS where BLOCK is NOT ? order by CELLNO,NO',(1,)) # order by DICA,WFORMA,SPEECHA,TERMA,
 		if Fetch:
 			return self.dbc.fetchall()
 			
