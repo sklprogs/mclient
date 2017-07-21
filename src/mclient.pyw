@@ -86,7 +86,6 @@ class ConfigMclient(sh.Config):
 			              })
 		#---------------------------------------------------
 		sh.globs['var'].update({
-			'bind_add_cell':'<Control-Insert>',
 			'bind_clear_history':'<Control-Shift-Delete>',
 			'bind_clear_search_field':'<ButtonRelease-3>',
 			'bind_copy_article_url':'<Shift-F7>',
@@ -95,7 +94,6 @@ class ConfigMclient(sh.Config):
 			'bind_copy_sel_alt2':'<ButtonRelease-3>',
 			'bind_copy_sel':'<Control-Return>',
 			'bind_copy_url':'<Control-F7>',
-			'bind_delete_cell':'<Control-Delete>',
 			'bind_define':'<Control-d>',
 			'bind_go_back':'<Alt-Left>',
 			'bind_go_forward':'<Alt-Right>',
@@ -338,7 +336,8 @@ class Objects: # Requires 'article'
 		return self._online_other
 		
 	def online(self):
-		if articles.current().source() == 'Multitran':
+		# todo: create a sub-source
+		if objs.request()._source == 'All' or objs.request()._source == 'Online':
 			return self.online_mt()
 		else:
 			return self.online_other()
@@ -405,7 +404,6 @@ class CurRequest:
 		#self._url           = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
 		# 'дерево', DE
 		#self._url           = sh.globs['var']['pair_root'] + 'l1=3&l2=2&s=%E4%E5%F0%E5%E2%EE'
-		self._article_id = self._search + ' (' + self._url + ')'
 		# Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
 		self.Block       = True
 		self.Prioritize  = True
@@ -418,184 +416,28 @@ class CurRequest:
 
 
 
-class Article:
-	
-	def __init__(self):
-		self.reset()
-		
-	def reset(self):
-		self._source = self._search = self._url = self._cells = self._elems = self._html = self._html_raw = self._text = self._moves = self._page = self._tags = self._block = self._prioritize = None
-	
-	def update(self):
-		self._cells = self._html = self._text = self._moves = None
-	
-	# todo: drop in favor of 'reset'
-	def new(self): # A completely new request
-		self._cells = self._elems = self._html_raw = self._html = self._text = self._moves = self._block = self._prioritize = None
-	
-	def source(self):
-		if self._source is None:
-			self._source = objs.request()._source
-		return self._source
-		
-	def search(self):
-		if self._search is None:
-			self._search = 'Добро пожаловать!'
-		return self._search
-		
-	def url(self):
-		if self._url is None:
-			self._url = sh.globs['var']['pair_root'] + 'l1=1&l2=2&s=%C4%EE%E1%F0%EE%20%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21'
-		return self._url
-		
-	def cells(self):
-		if self._cells is None:
-			self._cells = Cells(elems=self.elems())._cells
-		return self._cells
-		
-	def tags(self):
-		if self._tags is None:
-			_tags = tg.Tags(text=self.text())
-			_tags.tags()
-			self._tags = _tags.blocks()
-		return self._tags
-	
-	def elems(self):
-		if self._elems is None:
-			# todo: check when text=None
-			self._elems = Elems(lst=self.tags()).elems()
-		return self._elems
-		
-	def html(self):
-		if self._html is None:
-			self._html = HTML(cells=self.cells())._html
-		return self._html
-		
-	def page(self):
-		if self._page is None:
-			self._page = pg.Page(source=self.source(),lang=objs.request()._lang,search=self.search(),url=self.url(),win_encoding=sh.globs['var']['win_encoding'],ext_dics=objs.ext_dics())
-			self._page.run()
-		return self._page
-	
-	def html_raw(self):
-		if self._html_raw is None:
-			self._html_raw = self.page()._html_raw
-		return self._html_raw
-		
-	def text(self):
-		if self._text is None:
-			self._text = self.page()._page
-		return self._text
-		
-	# todo: fix: _moves is always not None
-	def moves(self):
-		if self._moves is None:
-			self._moves = Moves(cells=self.cells())._moves
-		return self._moves
-		
-	def block(self):
-		if self._block is None: # Allow an empty list
-			self.elems()
-		return self._block
-		
-	def prioritize(self):
-		if self._prioritize is None: # Allow an empty list
-			self.elems() # fix: rework output
-		return self._prioritize
-
-
-
-class Articles: # Requires 'request'
-	
-	def __init__(self):
-		self.reset()
-		
-	def reset(self):
-		self._articles = []
-		self._no = 0
-		if not self._articles:
-			self.add()
-			
-	def len(self):
-		return len(self._articles)
-	
-	def add(self):
-		self._articles.append(Article())
-		self._no = self.len() - 1
-		
-	def current(self):
-		return self._articles[self._no]
-		
-	def search_article(self):
-		Found = False
-		for i in range(self.len()):
-			if self._articles[i]._source == objs.request()._source and self._articles[i]._url == objs._request._url:
-				self._no = i
-				Found = True
-				articles.current().update()
-				break
-		if not Found:
-			self.add()
-			self.current()._source = objs.request()._source
-			self.current()._url    = objs._request._url
-			self.current()._search = objs._request._search
-			
-	def index_add(self):
-		if self._no < self.len() - 1:
-			self._no += 1
-		else:
-			self._no = 0
-			
-	def index_subtract(self):
-		if self._no > 0:
-			self._no -= 1
-		else:
-			self._no = self.len() - 1
-			
-	def searches(self):
-		return [str(x._search) for x in self._articles]
-		
-	def prev(self):
-		if self._no > 0:
-			return self._articles[self._no-1].search()
-			
-	def debug(self): # orphan
-		old = self._no
-		message = ''
-		for i in range(self.len()):
-			self._no = i
-			message += '#%d:\n'         % i
-			message += 'Source: "%s"\n' % str(self.current()._source)
-			message += 'Search: "%s"\n' % str(self.current()._search)
-			message += 'URL: "%s"\n'    % str(self.current()._url)
-			message += '\n\n'
-		self._no = old
-		sg.Message(func='Articles.debug',level=sh.lev_info,message=message)
-
-
-
 def call_app():
 	# Использовать то же сочетание клавиш для вызова окна
-	sg.Geometry(parent_obj=objs.top(),title=articles.current().search()).activate(MouseClicked=h_table.MouseClicked)
+	sg.Geometry(parent_obj=objs.top(),title=objs.request()._search).activate(MouseClicked=objs.webframe().MouseClicked)
 	# In case of .focus_set() *first* Control-c-c can call an inactive widget
-	h_table.search_field.widget.focus_force()
+	objs.webframe().search_field.widget.focus_force()
 
 # Перехватить нажатие Control-c-c
 def timed_update():
-	h_table.MouseClicked = False
+	objs.webframe().MouseClicked = False
 	check = kl_mod.keylistener.check()
 	if check:
-		if check == 1 and h_table.CaptureHotkey:
+		if check == 1 and objs.webframe().CaptureHotkey:
 			# Позволяет предотвратить зависание потока в версиях Windows старше XP
 			if sh.oss.win():
 				kl_mod.keylistener.cancel()
 				kl_mod.keylistener.restart()
-			h_table.MouseClicked = True
+			objs.webframe().MouseClicked = True
 			new_clipboard = sg.Clipboard().paste()
 			if new_clipboard:
-				h_table.search = new_clipboard
-				h_table.search_sources()
-		if check == 2 or h_table.CaptureHotkey:
+				objs.webframe().search = new_clipboard
+				objs.webframe().search_sources()
+		if check == 2 or objs.webframe().CaptureHotkey:
 			call_app()
 	# We need to have .after in the same function for it to work
 	h_quit._id = sg.objs.root().widget.after(300,timed_update)
@@ -783,7 +625,7 @@ class SaveArticle:
 		if self.file:
 			self.fix_ext(ext='.htm')
 			# We disable AskRewrite because the confirmation is already built in the internal dialog
-			sh.WriteTextFile(self.file,AskRewrite=False).write(articles.current().html())
+			sh.WriteTextFile(self.file,AskRewrite=False).write(objs.request()._html)
 			
 	def raw_as_html(self):
 		# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
@@ -797,7 +639,7 @@ class SaveArticle:
 		if self.file:
 			self.fix_ext(ext='.htm')
 			# todo: fix remaining links to localhost
-			sh.WriteTextFile(self.file,AskRewrite=False).write(articles.current().html_raw().replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/M.exe?',sh.globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/m.exe?',sh.globs['var']['pair_root']))
+			sh.WriteTextFile(self.file,AskRewrite=False).write(objs.request()._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/M.exe?',sh.globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/m.exe?',sh.globs['var']['pair_root']))
 		
 	def view_as_txt(self):
 		self.file = sg.dialog_save_file (
@@ -807,13 +649,13 @@ class SaveArticle:
 		                                )
 		if self.file:
 			self.fix_ext(ext='.txt')
-			sh.WriteTextFile(self.file,AskRewrite=False).write(articles.current()._text)
+			sh.WriteTextFile(self.file,AskRewrite=False).write(objs.request()._page)
 			
 	def copy_raw(self):
-		sg.Clipboard().copy(articles.current().html_raw())
+		sg.Clipboard().copy(objs.request()._html_raw)
 			
 	def copy_view(self):
-		sg.Clipboard().copy(articles.current()._text)
+		sg.Clipboard().copy(objs.request()._page)
 
 	
 
@@ -932,7 +774,7 @@ class SearchField:
 	# Вставить текущий запрос	
 	def insert_repeat_sign(self,*args):
 		if articles.len() > 0:
-			sg.Clipboard().copy(str(articles.current().search()))
+			sg.Clipboard().copy(str(objs.request()._search))
 			self.paste()
 
 	# Вставить предыдущий запрос
@@ -959,7 +801,7 @@ class SpecSymbols:
 			self.button = tk.Button (
 			        self.frame.widget                                         ,
 			        text                = sh.globs['var']['spec_syms'][i]     ,
-			        command             = lambda i=i:h_table.insert_sym(sh.globs['var']['spec_syms'][i]),
+			        command             = lambda i=i:objs.webframe().insert_sym(sh.globs['var']['spec_syms'][i]),
 			        width               = 2                                   ,
 			        height              = 2).pack(side='left',expand=1
 			                        )
@@ -992,29 +834,30 @@ class History:
 	def gui(self):
 		self.parent_obj = sg.Top(sg.objs.root())
 		self.parent_obj.widget.geometry('250x350')
-		self.obj = sg.ListBox (
-		            parent_obj          = self.parent_obj                     ,
-		            title               = self._title                         ,
-		            icon                = self._icon                          ,
-		            SelectionCloses     = False                               ,
-		            SingleClick         = False                               ,
-		            Composite           = True                                ,
-		            user_function       = self.go
+		self.obj = sg.ListBox (parent_obj       = self.parent_obj
+		                       ,title           = self._title
+		                       ,icon            = self._icon
+		                       ,SelectionCloses = False
+		                       ,SingleClick     = False
+		                       ,Composite       = True
+		                       ,user_function   = self.go
 		                      )
 		self.widget = self.obj.widget
 		self.bindings()
 		self.close()
 		
 	def bindings(self):
-		sg.bind (
-		            obj                 = self.parent_obj                     ,
-		            bindings            = [sh.globs['var']['bind_toggle_history'],
-		                                   sh.globs['var']['bind_toggle_history_alt'],
-		                                   '<Escape>'
-		                                  ]                                   ,
-		            action              = self.toggle
+		sg.bind (obj       = self.parent_obj
+		         ,bindings = [sh.globs['var']['bind_toggle_history']
+		                      ,sh.globs['var']['bind_toggle_history_alt']
+		                      ,'<Escape>'
+		                     ]
+		         ,action = self.toggle
 		        )
-		sg.bind(obj=self.parent_obj,bindings='<ButtonRelease-3>',action=self.clear)
+		sg.bind (obj       = self.parent_obj
+		         ,bindings = '<ButtonRelease-3>'
+		         ,action   = self.clear
+		        )
 	
 	def autoselect(self):
 		self.obj._index = articles._no
@@ -1031,7 +874,7 @@ class History:
 		self.parent_obj.close()
 		
 	def fill(self):
-		self.obj.reset(lst=articles.searches(),title=self._title)
+		self.obj.reset(lst=objs.blocks_db().searches(),title=self._title)
 	
 	def update(self):
 		self.fill()
@@ -1039,10 +882,10 @@ class History:
 		
 	def clear(self,*args):
 		self.obj.clear()
-		h_table.search_article.obj.clear_text()
-		articles.reset()
-		articles.search_article()
-		h_table.load_article()
+		objs.blocks_db().clear()
+		objs.webframe().search_article.obj.clear_text()
+		objs.request().reset()
+		objs.webframe().load_article()
 		self.update()
 	
 	def toggle(self,*args):
@@ -1053,11 +896,11 @@ class History:
 			
 	def go(self,*args):
 		articles._no = self.obj.index()
-		h_table.load_article()
+		objs.webframe().load_article()
 		
 	# Скопировать элемент истории
 	def copy(self,*args):
-		sg.Clipboard().copy(articles.current().search())
+		sg.Clipboard().copy(objs.request()._search)
 
 
 
@@ -1490,13 +1333,13 @@ class WebFrame:
 		            obj                 = self.obj                            ,
 		            bindings            = '<Escape>'                          ,
 		            action              = sg.Geometry(parent_obj=self.obj     ,
-		            title               = articles.current().search()).minimize
+		            title               = objs.request()._search).minimize
 		        )
 		sg.bind (
 		            obj                 = self.obj                            ,
 		            bindings            = sh.globs['var']['bind_iconify']     ,
 		            action              = sg.Geometry(parent_obj=self.obj     ,
-		            title               = articles.current().search()).minimize
+		            title               = objs.request()._search).minimize
 		        )
 		# Дополнительные горячие клавиши
 		sg.bind (
@@ -1762,8 +1605,7 @@ class WebFrame:
 			sh.log.append('WebFrame.go_url',sh.lev_debug,sh.globs['mes'].cur_cell % (self.i,self.j))
 			objs.request()._search = articles.current()._cells[self.i][self.j].terms() # fix
 			objs._request._url     = articles.current()._cells[self.i][self.j].url()
-			articles.search_article()
-			sh.log.append('WebFrame.go_url',sh.lev_info,sh.globs['mes'].opening_link % articles.current()._url)
+			sh.log.append('WebFrame.go_url',sh.lev_info,sh.globs['mes'].opening_link % objs.request()._url)
 			self.load_article()
 			
 	def search_sources(self):
@@ -1771,8 +1613,7 @@ class WebFrame:
 			self.get_url()
 			objs.request()._url    = self.url
 			objs._request._search  = self.search
-			articles.search_article()
-			sh.log.append('WebFrame.search_sources',sh.lev_debug,articles.current()._search)
+			sh.log.append('WebFrame.search_sources',sh.lev_debug,objs.request()._search)
 			self.load_article()
 			
 	def set_source(self,*args):
@@ -1886,7 +1727,7 @@ class WebFrame:
 	
 	# Открыть URL текущей статьи в браузере
 	def open_in_browser(self,*args):
-		objs.online()._url = articles.current()._url
+		objs.online()._url = objs.request()._url
 		objs.online().browse()
 	
 	# Скопировать URL текущей статьи или выделения
@@ -1896,12 +1737,12 @@ class WebFrame:
 			# Скопировать URL текущего термина. URL 1-го термина не совпадает с URL статьи!
 			cur_url = articles.current()._cells[self.i][self.j].url
 			if sh.globs['bool']['Iconify']:
-				sg.Geometry(parent_obj=objs.top(),title=articles.current().search()).minimize()
+				sg.Geometry(parent_obj=objs.top(),title=objs.request()._search).minimize()
 		elif mode == 'article':
 			# Скопировать URL статьи
-			cur_url = articles.current()._url
+			cur_url = objs.request()._url
 			if sh.globs['bool']['Iconify']:
-				sg.Geometry(parent_obj=objs.top(),title=articles.current().search()).minimize()
+				sg.Geometry(parent_obj=objs.top(),title=objs.request()._search).minimize()
 		else:
 			sg.Message(func='WebFrame.copy_url',level=sh.lev_err,message=sh.globs['mes'].unknown_mode % (str(mode),'article, term'))
 		sg.Clipboard().copy(cur_url)
@@ -1911,7 +1752,7 @@ class WebFrame:
 		if Selected:
 			search_str = 'define:' + articles.current()._cells[self.i][self.j].term
 		else:
-			search_str = 'define:' + articles.current()._search
+			search_str = 'define:' + objs.request()._search
 		objs.online().reset(base_str=sh.globs['var']['web_search_url'],search_str=search_str)
 		objs.online().browse()
 	
@@ -1958,7 +1799,8 @@ class WebFrame:
 		else:
 			self.btn_toggle_block.inactive()
 			
-		if not objs._request.SpecialPage and objs._request.Prioritize and articles.current().prioritize():
+		# todo: assign 'objs._request._prioritize'
+		if not objs._request.SpecialPage and objs._request.Prioritize and objs._request._prioritize:
 			self.btn_toggle_priority.active()
 		else:
 			self.btn_toggle_priority.inactive()
@@ -2013,7 +1855,6 @@ class WebFrame:
 	def set_columns(self,*args):
 		sh.log.append('WebFrame.set_columns',sh.lev_info,str(self.menu_columns.choice))
 		objs.request()._collimit = self.menu_columns.choice
-		articles.current().update()
 		self.load_article()
 		
 	def reload(self,*args):
@@ -2036,7 +1877,6 @@ class WebFrame:
 		sh.log.append('WebFrame.toggle_view',sh.lev_info,sh.globs['mes'].new_view_mode % objs._request._view)
 		# todo: why move_right and move_left are so slow to be calculated?
 		# todo: store views to reload them without reloading everything
-		articles.current().update()
 		self.load_article()
 		
 	def toggle_alphabet(self,*args):
@@ -2044,7 +1884,6 @@ class WebFrame:
 			objs._request.SortTerms = False
 		else:
 			objs._request.SortTerms = True
-		articles.current().update()
 		self.load_article()
 	
 	def toggle_block(self,*args):
@@ -2058,7 +1897,6 @@ class WebFrame:
 				pass
 			else:
 				sg.Message(func='WebFrame.toggle_block',level=sh.lev_warn,message='No dictionaries have been provided for blacklisting!') # todo: mes
-		articles.current().update()
 		self.load_article()
 		
 	def toggle_priority(self,*args):
@@ -2072,7 +1910,6 @@ class WebFrame:
 				pass
 			else:
 				sg.Message(func='WebFrame.toggle_priority',level=sh.lev_warn,message='No dictionaries have been provided for prioritizing!') # todo: mes
-		articles.current().update()
 		self.load_article()
 		
 	def zzz(self): # Only needed to move quickly to the end of the class
@@ -2119,9 +1956,6 @@ class TkinterHtmlMod(tk.Widget):
 		self.bind("<Motion>",self.mouse_sel,True)
 		# todo: fix: ВНИМАНИЕ: По непонятной причине, не работает привязка горячих клавиш (только мышь) для данного виджета, работает только для основного виджета!
 		sg.bind(obj=objs.top(),bindings=[sh.globs['var']['bind_copy_sel'],sh.globs['var']['bind_copy_sel_alt'],sh.globs['var']['bind_copy_sel_alt2']],action=self.copy_cell)
-		# По неясной причине в одной и той же Windows ИНОГДА не удается включить '<KP_Delete>'
-		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_delete_cell'],action=self.delete_cell)
-		sg.bind(obj=objs.top(),bindings=sh.globs['var']['bind_add_cell'],action=self.add_cell)
 		self.widget_width = 0
 		self.widget_height = 0
 		self.widget_offset_x = 0
@@ -2252,53 +2086,22 @@ class TkinterHtmlMod(tk.Widget):
 			selected_text = sh.List([articles.current()._cells[self.i][self.j].dic,articles.current()._cells[self.i][self.j].term,articles.current()._cells[self.i][self.j].comment]).space_items()
 		sg.Clipboard().copy(selected_text)
 		if sh.globs['bool']['Iconify']:
-			sg.Geometry(parent_obj=objs.top(),title=articles.current().search()).minimize()
-
-	# Удалить ячейку и перекомпоновать статью
-	def delete_cell(self,*args):
-		Found = False
-		# Предполагаем, что articles.current()._elems уже прошло стадию объединения комментариев
-		for i in range(len(articles.current()._elems)):
-			# todo: Уточнить и упростить алгоритм
-			if articles.current()._elems[i] == articles.current()._cells[self.i][self.j]:
-				Found = True
-				break
-		if Found:
-			del articles.current()._elems[i]
-			articles.current().update()
-			self.load_article()
-		else:
-			sg.Message(func='WebFrame.delete_cell',level=sh.lev_warn,message=sh.globs['mes'].wrong_input2,Silent=self.Silent)
-
-	# Добавить пустую ячейку и перекомпоновать статью
-	def add_cell(self,*args):
-		Found = False
-		# Предполагаем, что articles.current()._elems уже прошло стадию объединения комментариев
-		for i in range(len(articles.current()._elems)):
-			# todo: Уточнить и упростить алгоритм
-			if articles.current()._elems[i] == articles.current()._cells[self.i][self.j]:
-				Found = True
-				break
-		if Found:
-			articles.current()._elems.insert(i,Elem())
-			articles.current().update()
-			self.load_article()
+			sg.Geometry(parent_obj=objs.top(),title=objs.request()._search).minimize()
 
 	def load_article(self,*args):
 		self.reset()
+		objs.request()._text = self.text()
 		# Do this before calling 'html()'
-		if sep_words_found in articles.current().text() or re.search('\d+\sфраз',articles.current().search()):
+		if sep_words_found in objs.request()._page or re.search('\d+\sфраз',objs.request()._search):
 			objs.request().SpecialPage = True
 		else:
 			objs.request().SpecialPage = False
-		self.parse(articles.current().html())
-		articles.current()._text = self.text('text')
+		self.parse(objs.request()._html)
 		self.top_indexes = {}
 		self.gen_poses()
 		self.gen_pos2cell()
-		articles.current().moves()
 		self.move_text_start()
-		objs.top().widget.title(articles.current().search())
+		objs.top().widget.title(objs.request()._search)
 		self.history.update()
 		self.update_buttons()
 		self.search_article.reset()
@@ -2356,7 +2159,7 @@ class TkinterHtmlMod(tk.Widget):
 					articles.current()._cells[i][j].last = cur_index
 					for k in range(len(tmp_str)):
 						self.pos2cell.append([i,j])
-	#assert len(articles.current()._text) == len(self.pos2cell)
+	#assert len(objs.request()._page) == len(self.pos2cell)
 				
 	def gen_poses(self):
 		cur_index = 1 # Starts with '\n'
@@ -2443,7 +2246,7 @@ def load_article():
 	                url                 = objs._request._url                  ,
 	                win_encoding        = sh.globs['var']['win_encoding']     ,
 	                ext_dics            = objs.ext_dics()                     ,
-	                file                = '/home/pete/tmp/ars/решение.txt'
+	                file                = '/home/pete/tmp/ars/do.txt'
 	               )
 	               
 	page.run()
@@ -2476,9 +2279,9 @@ def load_article():
 		input('Tags step completed. Press Enter')
 	
 	
-	elems = el.Elems (blocks     = tags._blocks
-	                 ,source     = objs._request._source
-	                 ,article_id = objs._request._article_id
+	elems = el.Elems (blocks = tags._blocks
+	                 ,source = objs._request._source
+	                 ,search = objs._request._search
 	                 )
 	elems.run()
 	if Debug:
@@ -2492,13 +2295,13 @@ def load_article():
 		objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=1000,MaxRow=100) # todo: del
 		input('Elems step completed. Press Enter')                         # todo: del
 	
-	objs._blocks_db.request (source     = objs._request._source
-	                        ,article_id = objs._request._article_id
+	objs._blocks_db.request (source = objs._request._source
+	                        ,search = objs._request._search
 	                        )
 	
-	ph_terma = el.PhraseTerma (dbc        = objs._blocks_db.dbc
-	                          ,source     = objs._request._source
-	                          ,article_id = objs._request._article_id
+	ph_terma = el.PhraseTerma (dbc    = objs._blocks_db.dbc
+	                          ,source = objs._request._source
+	                          ,search = objs._request._search
 	                          )
 	ph_terma.run()
 	
@@ -2507,7 +2310,7 @@ def load_article():
 	
 	bp = cl.BlockPrioritize (data=data
 	                        ,source     = objs._request._source
-	                        ,article_id = objs._request._article_id
+	                        ,search     = objs._request._search
 	                        ,blacklist  = blacklist
 	                        ,prioritize = prioritize
 	                        ,phrase_dic = phrase_dic
@@ -2590,8 +2393,7 @@ if  __name__ == '__main__':
 	
 	ConfigMclient()
 	
-	h_quit   = Quit()
-	articles = Articles()
+	h_quit = Quit()
 
 	load_article()
 	objs.webframe().show()
@@ -2604,12 +2406,11 @@ if  __name__ == '__main__':
 	h_table  = TkinterHtmlMod(objs.top().widget)
 	objs.top().widget.protocol("WM_DELETE_WINDOW",h_quit.wait)
 	# 'OptionMenu' is updated when the user selects an item. There is a need to update it manually only in case of different default 'request' values.
-	h_table.menu_columns.set(request._collimit)
-	h_table.menu_sources.set(request._source)
+	objs.webframe().menu_columns.set(request._collimit)
+	objs.webframe().menu_sources.set(request._source)
 	timed_update() # Do not wrap this function. Change this carefully.
-	articles.search_article()
-	h_table.load_article()
-	h_table.show()
+	objs.webframe().load_article()
+	objs.webframe().show()
 	objs.top().show()
 	sg.objs.root().run()
 	'''

@@ -54,12 +54,12 @@ class Block:
 '''
 class Elems:
 	
-	def __init__(self,blocks,source,article_id):
-		self._blocks     = blocks
-		self._source     = source
-		self._article_id = article_id
-		self._data       = []
-		if self._blocks and self._source and self._article_id:
+	def __init__(self,blocks,source,search):
+		self._blocks = blocks
+		self._source = source
+		self._search = search
+		self._data   = []
+		if self._blocks and self._source and self._search:
 			self.Success = True
 		else:
 			self.Success = False
@@ -408,7 +408,7 @@ class Elems:
 			              (
 			        None                , # (00) Skips the autoincrement
 			        self._source        , # (01) SOURCE
-			        self._article_id    , # (02) ARTICLEID
+			        self._search        , # (02) SEARCH
 			        block._dica         , # (03) DICA
 			        block._wforma       , # (04) WFORMA
 			        block._speecha      , # (05) SPEECHA
@@ -433,13 +433,13 @@ class Elems:
 
 class PhraseTerma:
 	
-	def __init__(self,dbc,source,article_id):
-		self.dbc         = dbc
-		self._source     = source
-		self._article_id = article_id
-		self._no1        = -1
-		self._no2        = -1
-		if self.dbc and self._source and self._article_id:
+	def __init__(self,dbc,source,search):
+		self.dbc     = dbc
+		self._source = source
+		self._search = search
+		self._no1    = -1
+		self._no2    = -1
+		if self.dbc and self._source and self._search:
 			self.Success = True
 		else:
 			self.Success = False
@@ -447,7 +447,7 @@ class PhraseTerma:
 			
 	def second_phrase(self):
 		if self._no2 < 0:
-			self.dbc.execute('select NO from BLOCKS where SOURCE = ? and ARTICLEID = ? and TYPE = ? order by NO',(self._source,self._article_id,'phrase',))
+			self.dbc.execute('select NO from BLOCKS where SOURCE = ? and SEARCH = ? and TYPE = ? order by NO',(self._source,self._search,'phrase',))
 			result = self.dbc.fetchone()
 			if result:
 				self._no2 = result[0]
@@ -457,7 +457,7 @@ class PhraseTerma:
 	def phrase_dic(self):
 		if self._no1 < 0:
 			if self._no2 >= 0:
-				self.dbc.execute('select NO from BLOCKS where SOURCE = ? and ARTICLEID = ? and TYPE = ? and NO < ? order by NO desc',(self._source,self._article_id,'dic',self._no2,))
+				self.dbc.execute('select NO from BLOCKS where SOURCE = ? and SEARCH = ? and TYPE = ? and NO < ? order by NO desc',(self._source,self._search,'dic',self._no2,))
 				result = self.dbc.fetchone()
 				if result:
 					self._no1 = result[0]
@@ -502,7 +502,6 @@ if __name__ == '__main__':
 	source     = 'Online'
 	search     = 'preceding'
 	url        = 'http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
-	article_id = search + '.txt'
 	file       = '/home/pete/tmp/ars/preceding.txt'
 	#file       = None
 	Debug      = 0
@@ -528,9 +527,9 @@ if __name__ == '__main__':
 	if Debug:
 		tags.debug()
 	
-	elems = Elems (blocks     = tags._blocks
-	              ,source     = source
-	              ,article_id = article_id)
+	elems = Elems (blocks = tags._blocks
+	              ,source = source
+	              ,search = search)
 	elems.run   ()
 	
 	if Debug:
@@ -540,9 +539,9 @@ if __name__ == '__main__':
 	blocks_db = db.DB()
 	blocks_db.fill(elems._data)
 	
-	ph_terma = PhraseTerma (dbc        = blocks_db.dbc
-	                       ,source     = source
-	                       ,article_id = article_id)
+	ph_terma = PhraseTerma (dbc    = blocks_db.dbc
+	                       ,source = source
+	                       ,search = search)
 	ph_terma.run()
 	
 	timer.end()

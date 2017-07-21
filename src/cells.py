@@ -42,16 +42,16 @@ class Block:
 '''
 class BlockPrioritize:
 	
-	def __init__(self,data,source,article_id,blacklist=[],prioritize=[],phrase_dic=None):
+	def __init__(self,data,source,search,blacklist=[],prioritize=[],phrase_dic=None):
 		self._data       = data
 		self._source     = source
-		self._article_id = article_id
+		self._search     = search
 		self._blacklist  = blacklist
 		self._prioritize = prioritize
 		self._phrase_dic = phrase_dic
 		self._blocks     = []
 		self._query      = ''
-		if self._data and self._source and self._article_id:
+		if self._data and self._source and self._search:
 			self.Success = True
 		else:
 			self.Success = False
@@ -442,10 +442,8 @@ if __name__ == '__main__':
 	mc.ConfigMclient ()
 	
 	source     = 'All'
-	#article_id = 'martyr.txt'
-	article_id = 'preceding.txt'
+	search     = 'martyr.txt'
 	blacklist  = ['Австралийский сленг','Архаизм','Бранное выражение','Грубое выражение','Диалект','Жаргон','Презрительное выражение','Просторечие','Разговорное выражение','Расширение файла','Редкое выражение','Ругательство','Сленг','Табу','Табуированная лексика','Тюремный жаргон','Устаревшее слово','Фамильярное выражение','Шутливое выражение','Эвфемизм']
-	
 	prioritize = ['Общая лексика','Техника']
 	
 	Debug = 0
@@ -456,7 +454,7 @@ if __name__ == '__main__':
 		tags.debug(MaxRows=40)
 		input('Tags step completed. Press Enter')
 	
-	elems = el.Elems(blocks=tags._blocks,source=source,article_id=article_id)
+	elems = el.Elems(blocks=tags._blocks,source=source,search=search)
 	elems.run()
 	if Debug:
 		elems.debug(MaxRows=40)
@@ -465,11 +463,11 @@ if __name__ == '__main__':
 	blocks_db = db.DB()
 	blocks_db.fill(elems._data)
 	
-	blocks_db.request(source=source,article_id=article_id)
+	blocks_db.request(source=source,search=search)
 	phrase_dic = blocks_db.phrase_dic()
 	data = blocks_db.assign_bp()
 	
-	bp = BlockPrioritize(data=data,source=source,article_id=article_id,blacklist=blacklist,prioritize=prioritize,phrase_dic=phrase_dic)
+	bp = BlockPrioritize(data=data,source=source,search=search,blacklist=blacklist,prioritize=prioritize,phrase_dic=phrase_dic)
 	bp.run()
 	if Debug:
 		bp.debug(MaxRows=40)

@@ -14,17 +14,17 @@ import sharedGUI as sg
 class DB:
 	
 	def __init__(self):
-		self._source     = ''
-		self._article_id = ''
-		self.db          = sqlite3.connect(':memory:')
-		self.dbc         = self.db.cursor()
+		self._source = ''
+		self._search = ''
+		self.db      = sqlite3.connect(':memory:')
+		self.dbc     = self.db.cursor()
 		# We use integers instead of booleans; -1 means not set
 		# Must indicate 'integer' fully before 'primary key autoincrement'
 		self.dbc.execute (
 		            'create table if not exists BLOCKS (\
 		            NO                  integer primary key autoincrement    ,\
 		            SOURCE              text                                 ,\
-		            ARTICLEID           text                                 ,\
+		            SEARCH              text                                 ,\
 		            DICA                text                                 ,\
 		            WFORMA              text                                 ,\
 		            SPEECHA             text                                 ,\
@@ -56,11 +56,17 @@ class DB:
 	def fetch(self):
 		self.dbc.execute('select TYPE,TEXT,ROWNO,COLNO from BLOCKS where BLOCK is NOT ? order by CELLNO,NO',(1,))
 		return self.dbc.fetchall()
-			
-	def request(self,source,article_id):
-		if source and article_id:
-			self._source     = source
-			self._article_id = article_id
+		
+	def searches(self):
+		self.dbc.execute('select SEARCH from BLOCKS order by NO desc')
+		result = self.dbc.fetchall()
+		if result:
+			return [item[0] for item in result]
+
+	def request(self,source,search):
+		if source and search:
+			self._source = source
+			self._search = search
 		else:
 			sg.Message('DB.request',sh.lev_warn,sh.globs['mes'].empty_input)
 	
@@ -79,8 +85,8 @@ class DB:
 		         ).print()
 
 	def get_cell(self,pos): # Selectable
-		if self._source and self._article_id:
-			self.dbc.execute('select NO,CELLNO,TYPE,TEXT,POS1,POS2 from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ?',(self._source,self._article_id,pos,pos,))
+		if self._source and self._search:
+			self.dbc.execute('select NO,CELLNO,TYPE,TEXT,POS1,POS2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ?',(self._source,self._search,pos,pos,))
 			result = self.dbc.fetchone()
 			if result:
 				#return(result[0],result[1])
@@ -101,36 +107,41 @@ class DB:
 			
 	# Assign input data for BlockPrioritize
 	def assign_bp(self):
-		if self._source and self._article_id:
-			self.dbc.execute('select NO,TYPE,TEXT,DICA from BLOCKS where SOURCE = ? and ARTICLEID = ? order by NO',(self._source,self._article_id))
+		if self._source and self._search:
+			self.dbc.execute('select NO,TYPE,TEXT,DICA from BLOCKS where SOURCE = ? and SEARCH = ? order by NO',(self._source,self._search))
 			return self.dbc.fetchall()
 		else:
 			sg.Message('DB.assign_bp',sh.lev_warn,sh.globs['mes'].empty_input)
 			
 	# Assign input data for Cells
 	def assign_cells(self):
-		if self._source and self._article_id:
-			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK is not ? order by PRIORITY desc,DICA,WFORMA,SPEECHA,TERMA,NO',(self._source,self._article_id,1,))
+		if self._source and self._search:
+			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK is not ? order by PRIORITY desc,DICA,WFORMA,SPEECHA,TERMA,NO',(self._source,self._search,1,))
 			return self.dbc.fetchall()
 		else:
 			sg.Message('DB.assign_cells',sh.lev_warn,sh.globs['mes'].empty_input)
 			
 	# Assign input data for Pos
 	def assign_pos(self):
-		if self._source and self._article_id:
-			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,ROWNO from BLOCKS where SOURCE = ? and ARTICLEID = ? and BLOCK is not ? order by ROWNO,COLNO,NO',(self._source,self._article_id,1,))
+		if self._source and self._search:
+			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,ROWNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK is not ? order by ROWNO,COLNO,NO',(self._source,self._search,1,))
 			return self.dbc.fetchall()
 		else:
 			sg.Message('DB.assign_pos',sh.lev_warn,sh.globs['mes'].empty_input)
 			
 	def phrase_dic(self):
-		if self._source and self._article_id:
-			self.dbc.execute('select DICA from BLOCKS where SOURCE = ? and ARTICLEID = ? and TYPE = ? order by NO',(self._source,self._article_id,'phrase',))
+		if self._source and self._search:
+			self.dbc.execute('select DICA from BLOCKS where SOURCE = ? and SEARCH = ? and TYPE = ? order by NO',(self._source,self._search,'phrase',))
 			result = self.dbc.fetchone()
 			if result:
 				return result[0]
 		else:
 			sg.Message('DB.phrase_dic',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def clear(self,*args):
+		sh.log.append('DB.clear',sh.lev_warn,'Delete all records from BLOCKS') # todo: mes
+		# VACUUM command is a no-op for in-memory databases
+		self.dbc.execute('delete from BLOCKS')
 
 
 
@@ -174,8 +185,8 @@ if __name__ == '__main__':
 	
 	collimit   = 10
 	source     = 'All'
-	article_id = 'martyr.txt'
-	#blacklist  = ['Христианство']
+	search     = 'martyr'
+	#blacklist = ['Христианство']
 	blacklist  = []
 	prioritize = ['Религия']
 
@@ -184,7 +195,7 @@ if __name__ == '__main__':
 	#tags.debug(MaxRows=40)
 	#input('Tags step completed. Press Enter')
 	
-	elems = el.Elems(blocks=tags._blocks,source=source,article_id=article_id)
+	elems = el.Elems(blocks=tags._blocks,source=source,search=search)
 	elems.run()
 	#elems.debug(MaxRows=40)
 	#input('Elems step completed. Press Enter')
@@ -192,10 +203,10 @@ if __name__ == '__main__':
 	blocks_db = DB()
 	blocks_db.fill(elems._data)
 	
-	blocks_db.request(source=source,article_id=article_id)
+	blocks_db.request(source=source,search=search)
 	data = blocks_db.assign_bp()
 	
-	bp = cl.BlockPrioritize(data=data,source=source,article_id=article_id,blacklist=blacklist,prioritize=prioritize)
+	bp = cl.BlockPrioritize(data=data,source=source,search=search,blacklist=blacklist,prioritize=prioritize)
 	bp.run()
 	#bp.debug(MaxRows=40)
 	#input('BlockPrioritize step completed. Press Enter')

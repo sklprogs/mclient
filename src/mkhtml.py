@@ -217,10 +217,9 @@ if __name__ == '__main__':
 	# Modifiable
 	source     = 'Offline'
 	search     = 'preceding'
-	article_id = search + '.txt'
 	file       = '/home/pete/tmp/ars/preceding.txt'
 	collimit   = 7
-	#blacklist  = ['Христианство']
+	#blacklist = ['Христианство']
 	blacklist  = []
 	prioritize = ['Общая лексика']
 	Debug      = 0
@@ -250,9 +249,9 @@ if __name__ == '__main__':
 		tags.debug(MaxRows=40)
 		input('Tags step completed. Press Enter')
 	
-	elems = el.Elems (blocks     = tags._blocks
-	                 ,source     = source
-	                 ,article_id = article_id
+	elems = el.Elems (blocks = tags._blocks
+	                 ,source = source
+	                 ,search = search
 	                 )
 	elems.run()
 
@@ -263,12 +262,12 @@ if __name__ == '__main__':
 	blocks_db = db.DB()
 	blocks_db.fill(elems._data)
 	
-	blocks_db.request (source     = source
-	                  ,article_id = article_id
+	blocks_db.request (source = source
+	                  ,search = search
 	                  )
-	ph_terma = el.PhraseTerma (dbc        = blocks_db.dbc
-	                          ,source     = source
-	                          ,article_id = article_id
+	ph_terma = el.PhraseTerma (dbc    = blocks_db.dbc
+	                          ,source = source
+	                          ,search = search
 	                          )
 	ph_terma.run()
 	
@@ -277,7 +276,7 @@ if __name__ == '__main__':
 	
 	bp = cl.BlockPrioritize (data=data
 	                        ,source     = source
-	                        ,article_id = article_id
+	                        ,search     = search
 	                        ,blacklist  = blacklist
 	                        ,prioritize = prioritize
 	                        ,phrase_dic = phrase_dic
