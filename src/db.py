@@ -57,6 +57,10 @@ class DB:
 		self.dbc.execute('select TYPE,TEXT,ROWNO,COLNO from BLOCKS where BLOCK is NOT ? order by CELLNO,NO',(1,))
 		return self.dbc.fetchall()
 		
+	def present(self):
+		self.dbc.execute('select NO from BLOCKS where SOURCE = ? and SEARCH = ?',(self._source,self._search,))
+		return self.dbc.fetchall()
+		
 	def searches(self):
 		self.dbc.execute('select SEARCH from BLOCKS order by NO desc')
 		result = self.dbc.fetchall()
