@@ -54,7 +54,7 @@ class DB:
 			return self.dbc.fetchall()
 			
 	def fetch(self):
-		self.dbc.execute('select TYPE,TEXT,ROWNO,COLNO from BLOCKS where BLOCK is NOT ? order by CELLNO,NO',(1,))
+		self.dbc.execute('select TYPE,TEXT,ROWNO,COLNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK is NOT ? order by CELLNO,NO',(self._source,self._search,1,))
 		return self.dbc.fetchall()
 		
 	def present(self):
@@ -80,12 +80,11 @@ class DB:
 			self.dbc.execute('select * from BLOCKS order by CELLNO,NO')
 		headers = [cn[0] for cn in self.dbc.description]
 		rows    = self.dbc.fetchall()
-		sh.Table (
-		            headers             = headers                             ,
-		            rows                = rows                                ,
-		            Shorten             = Shorten                             ,
-		            MaxRow              = MaxRow                              ,
-		            MaxRows             = MaxRows
+		sh.Table (headers = headers
+		         ,rows    = rows
+		         ,Shorten = Shorten
+		         ,MaxRow  = MaxRow
+		         ,MaxRows = MaxRows
 		         ).print()
 
 	def get_cell(self,pos): # Selectable

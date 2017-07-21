@@ -404,10 +404,12 @@ def timed_update():
 			objs.request().MouseClicked = True
 			new_clipboard = sg.Clipboard().paste()
 			if new_clipboard:
-				objs.webframe().search = new_clipboard
+				objs.request()._search = new_clipboard
 				objs.webframe().search_sources()
+				objs._webframe.load_article()
 		if check == 2 or objs.request().CaptureHotkey:
 			call_app()
+	sg.objs.root().widget.after(300,timed_update)
 
 
 
@@ -420,62 +422,53 @@ class About:
 		self.widget = self.obj.widget
 		self.obj.icon (sh.globs['var']['icon_mclient'])
 		self.obj.title(sh.globs['mes'].about)
-		frame1 = sg.Frame (
-		            parent_obj          = self                                ,
-		            expand              = 1                                   ,
-		            fill                = 'both'                              ,
-		            side                = 'top'
+		frame1 = sg.Frame (parent_obj = self
+		                  ,expand     = 1
+		                  ,fill       = 'both'
+		                  ,side       = 'top'
 		                  )
-		frame2 = sg.Frame (
-		            parent_obj          = self                                ,
-		            expand              = 1                                   ,
-		            fill                = 'both'                              ,
-		            side                = 'left'
+		frame2 = sg.Frame (parent_obj = self
+		                  ,expand     = 1
+		                  ,fill       = 'both'
+		                  ,side       = 'left'
 		                  )
-		frame3 = sg.Frame (
-		            parent_obj          = self                                ,
-		            expand              = 1                                   ,
-		            fill                = 'both'                              ,
-		            side                = 'right'
+		frame3 = sg.Frame (parent_obj = self
+		                  ,expand     = 1
+		                  ,fill       = 'both'
+		                  ,side       = 'right'
 		                  )
-		label  = sg.Label (
-		            parent_obj          = frame1                              ,
-		            text                = sh.globs['mes'].about_text % version,
-		            font                = sh.globs['var']['font_style']
+		label  = sg.Label (parent_obj = frame1
+		                  ,text       = sh.globs['mes'].about_text % version
+		                  ,font       = sh.globs['var']['font_style']
 		                  )
 		# Лицензия
-		sg.Button (
-		            parent_obj          = frame2                              ,
-		            text                = sh.globs['mes'].btn_third_parties   ,
-		            hint                = sh.globs['mes'].hint_license        ,
-		            action              = self.show_third_parties             ,
-		            side                = 'left'
+		sg.Button (parent_obj = frame2
+		          ,text       = sh.globs['mes'].btn_third_parties
+		          ,hint       = sh.globs['mes'].hint_license
+		          ,action     = self.show_third_parties
+		          ,side       = 'left'
 		          )
-		sg.Button (
-		            parent_obj          = frame3                              ,
-		            text                = sh.globs['mes'].btn_license         ,
-		            hint                = sh.globs['mes'].hint_license        ,
-		            action              = self.open_license_url               ,
-		            side                = 'left'
+		sg.Button (parent_obj = frame3
+		          ,text       = sh.globs['mes'].btn_license
+		          ,hint       = sh.globs['mes'].hint_license
+		          ,action     = self.open_license_url
+		          ,side       = 'left'
 		          )
 		# Отправить письмо автору
-		sg.Button (
-		            parent_obj          = frame3                              ,
-		            text                = sh.globs['mes'].btn_email_author    ,
-		            hint                = sh.globs['mes'].hint_email_author   ,
-		            action              = self.response_back                  ,
-		            side                = 'right'
+		sg.Button (parent_obj = frame3
+		          ,text       = sh.globs['mes'].btn_email_author
+		          ,hint       = sh.globs['mes'].hint_email_author
+		          ,action     = self.response_back
+		          ,side       = 'right'
 		          )
 		self.widget.focus_set()
-		sg.bind (
-		            obj                 = self.obj                            ,
-		            bindings            = sh.globs['var']['bind_show_about']  ,
-		            action              = self.toggle
+		sg.bind (obj      = self.obj
+		        ,bindings = sh.globs['var']['bind_show_about']
+		        ,action   = self.toggle
 		        )
-		sg.bind (
-		            obj                 = self.obj                            ,
-		            bindings            = '<Escape>'                          ,
-		            action              = self.close
+		sg.bind (obj      = self.obj
+		        ,bindings = '<Escape>'
+		        ,action   = self.close
 		        )
 		self.close()
 	
@@ -495,9 +488,8 @@ class About:
 	
 	# Написать письмо автору
 	def response_back(self,*args):
-		sh.Email (
-		            email               = sh.email                            ,
-		            subject             = sh.globs['mes'].program_subject % product
+		sh.Email (email   = sh.email
+		         ,subject = sh.globs['mes'].program_subject % product
 		         ).create()
 
 	# Открыть веб-страницу с лицензией
@@ -517,15 +509,16 @@ class SaveArticle:
 		self.type       = 'SaveArticle'
 		self.parent_obj = sg.Top(sg.objs.root())
 		self.obj        = sg.ListBox (
-		            parent_obj          = self.parent_obj                     ,
-		            Multiple            = False                               ,
-		            lst                 = [sh.globs['mes'].save_view_as_html  ,
-		                                  sh.globs['mes'].save_article_as_html,
-		                                  sh.globs['mes'].save_article_as_txt ,
-		                                  sh.globs['mes'].copy_article_html   ,
-		                                  sh.globs['mes'].copy_article_txt]   ,
-		            title               = sh.globs['mes'].select_action       ,
-		            icon                = sh.globs['var']['icon_mclient']
+		            parent_obj = self.parent_obj
+		           ,Multiple   = False
+		           ,lst        = [sh.globs['mes'].save_view_as_html
+		                         ,sh.globs['mes'].save_article_as_html
+		                         ,sh.globs['mes'].save_article_as_txt
+		                         ,sh.globs['mes'].copy_article_html
+		                         ,sh.globs['mes'].copy_article_txt
+		                         ]
+		           ,title      = sh.globs['mes'].select_action
+		           ,icon       = sh.globs['var']['icon_mclient']
 		                             )
 		self.widget = self.obj.widget
 		# Use this instead of 'close' because there is no selection yet
@@ -560,10 +553,10 @@ class SaveArticle:
 	
 	def view_as_html(self):
 		self.file = sg.dialog_save_file (
-		            filetypes           = ((sh.globs['mes'].webpage,'.htm')   ,
-		                                   (sh.globs['mes'].webpage,'.html')  ,
-		                                   (sh.globs['mes'].all_files,'*')
-		                                  )
+		            filetypes = ((sh.globs['mes'].webpage,'.htm')
+		                        ,(sh.globs['mes'].webpage,'.html')
+		                        ,(sh.globs['mes'].all_files,'*')
+		                        )
 		                                )
 		if self.file:
 			self.fix_ext(ext='.htm')
@@ -574,10 +567,10 @@ class SaveArticle:
 		# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
 		# Также меняем сокращенные гиперссылки на полные, чтобы они работали и в локальном файле.
 		self.file = sg.dialog_save_file (
-		            filetypes           = ((sh.globs['mes'].webpage,'.htm')   ,
-		                                   (sh.globs['mes'].webpage,'.html')  ,
-		                                   (sh.globs['mes'].all_files,'*')
-		                                  )
+		            filetypes = ((sh.globs['mes'].webpage,'.htm')
+		                        ,(sh.globs['mes'].webpage,'.html')
+		                        ,(sh.globs['mes'].all_files,'*')
+		                        )
 		                                )
 		if self.file:
 			self.fix_ext(ext='.htm')
@@ -586,9 +579,9 @@ class SaveArticle:
 		
 	def view_as_txt(self):
 		self.file = sg.dialog_save_file (
-		            filetypes           = ((sh.globs['mes'].plain_text,'.txt'),
-		                                   (sh.globs['mes'].all_files,'*')
-		                                  )
+		            filetypes = ((sh.globs['mes'].plain_text,'.txt')
+		                        ,(sh.globs['mes'].all_files,'*')
+		                        )
 		                                )
 		if self.file:
 			self.fix_ext(ext='.txt')
@@ -610,15 +603,13 @@ class SearchArticle:
 		self.obj    = objs.entry()
 		self.obj.title(sh.globs['mes'].search_word)
 		self.widget = self.obj.widget
-		sg.bind (
-		            obj                 = self.obj                            ,
-		            bindings            = sh.globs['var']['bind_search_article_forward'],
-		            action              = self.close
+		sg.bind (obj      = self.obj
+		        ,bindings = sh.globs['var']['bind_search_article_forward']
+		        ,action   = self.close
 		        )
-		sg.bind (
-		            obj                 = self.obj                            ,
-		            bindings            = '<Escape>'                          ,
-		            action              = self.close
+		sg.bind (obj      = self.obj
+		        ,bindings = '<Escape>'
+		        ,action   = self.close
 		        )
 		self.obj.select_all()
 		self.obj.focus()
@@ -667,10 +658,9 @@ class SearchArticle:
 		if self._pos + 1 < len(self.list()):
 			self._pos += 1
 		else:
-			sg.Message (
-			        func                = 'SearchArticle.forward'             ,
-			        level               = sh.lev_info                         ,
-			        message             = sh.globs['mes'].search_from_start
+			sg.Message (func    = 'SearchArticle.forward'
+			           ,level   = sh.lev_info
+			           ,message = sh.globs['mes'].search_from_start
 			           )
 			self._pos = 0
 	
@@ -678,10 +668,9 @@ class SearchArticle:
 		if self._pos > 0:
 			self._pos -= 1
 		else:
-			sg.Message (
-			        func                = 'SearchArticle.backward'            ,
-			        level               = sh.lev_info                         ,
-			        message             = sh.globs['mes'].search_from_end
+			sg.Message (func    = 'SearchArticle.backward'
+			           ,level   = sh.lev_info
+			           ,message = sh.globs['mes'].search_from_end
 			           )
 			self._pos = len(self.list()) - 1
 
@@ -694,11 +683,10 @@ class SearchField:
 		self.type       = 'SearchField'
 		self.parent_obj = parent_obj
 		# Поле ввода поисковой строки
-		self.obj        = sg.Entry (
-		            parent_obj          = self.parent_obj                     ,
-		            Composite           = True                                ,
-		            side                = side                                ,
-		            ipady               = ipady
+		self.obj        = sg.Entry (parent_obj = self.parent_obj
+		                           ,Composite  = True
+		                           ,side       = side
+		                           ,ipady      = ipady
 		                           )
 		self.widget = self.obj.widget
 		
@@ -742,20 +730,19 @@ class SpecSymbols:
 			# lambda сработает правильно только при моментальной упаковке, которая не поддерживается create_button (моментальная упаковка возвращает None вместо виджета), поэтому не используем эту функцию. По этой же причине нельзя привязать кнопкам '<Return>' и '<KP_Enter>', сработают только встроенные '<space>' и '<ButtonRelease-1>'.
 			# width и height нужны для Windows
 			self.button = tk.Button (
-			        self.frame.widget                                         ,
-			        text                = sh.globs['var']['spec_syms'][i]     ,
-			        command             = lambda i=i:objs.webframe().insert_sym(sh.globs['var']['spec_syms'][i]),
-			        width               = 2                                   ,
-			        height              = 2).pack(side='left',expand=1
+			        self.frame.widget
+			       ,text    = sh.globs['var']['spec_syms'][i]
+			       ,command = lambda i=i:objs.webframe().insert_sym(sh.globs['var']['spec_syms'][i])
+			       ,width   = 2
+			       ,height  = 2).pack(side='left',expand=1
 			                        )
 		self.bindings()
 		self.close()
 		
 	def bindings(self):
-		sg.bind (
-		            obj                 = self.obj                            ,
-		            bindings            = ['<Escape>',sh.globs['var']['bind_spec_symbol']],
-		            action              = self.close
+		sg.bind (obj      = self.obj
+		        ,bindings = ['<Escape>',sh.globs['var']['bind_spec_symbol']]
+		        ,action   = self.close
 		        )
 	
 	def show(self,*args):
@@ -777,29 +764,29 @@ class History:
 	def gui(self):
 		self.parent_obj = sg.Top(sg.objs.root())
 		self.parent_obj.widget.geometry('250x350')
-		self.obj = sg.ListBox (parent_obj       = self.parent_obj
-		                       ,title           = self._title
-		                       ,icon            = self._icon
-		                       ,SelectionCloses = False
-		                       ,SingleClick     = False
-		                       ,Composite       = True
-		                       ,user_function   = self.go
+		self.obj = sg.ListBox (parent_obj      = self.parent_obj
+		                      ,title           = self._title
+		                      ,icon            = self._icon
+		                      ,SelectionCloses = False
+		                      ,SingleClick     = False
+		                      ,Composite       = True
+		                      ,user_function   = self.go
 		                      )
 		self.widget = self.obj.widget
 		self.bindings()
 		self.close()
 		
 	def bindings(self):
-		sg.bind (obj       = self.parent_obj
-		         ,bindings = [sh.globs['var']['bind_toggle_history']
-		                      ,sh.globs['var']['bind_toggle_history_alt']
-		                      ,'<Escape>'
-		                     ]
-		         ,action = self.toggle
+		sg.bind (obj      = self.parent_obj
+		        ,bindings = [sh.globs['var']['bind_toggle_history']
+		                    ,sh.globs['var']['bind_toggle_history_alt']
+		                    ,'<Escape>'
+		                    ]
+		        ,action = self.toggle
 		        )
-		sg.bind (obj       = self.parent_obj
-		         ,bindings = '<ButtonRelease-3>'
-		         ,action   = self.clear
+		sg.bind (obj      = self.parent_obj
+		        ,bindings = '<ButtonRelease-3>'
+		        ,action   = self.clear
 		        )
 	
 	def autoselect(self):
@@ -1569,6 +1556,7 @@ class WebFrame:
 		self.fill(code=objs._request._html)
 		#objs._blocks_db.sort(Fetch=0)
 		#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=10000,MaxRow=15)
+		self.title(arg=objs._request._search)
 		
 	# note: the code after this comment must be reworked
 	# Search the selected term online using the entry widget (search field)
