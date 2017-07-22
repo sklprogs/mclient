@@ -66,6 +66,31 @@ class DB:
 		result = self.dbc.fetchall()
 		if result:
 			return [item[0] for item in result]
+			
+	def cur_nos(self):
+		if self._search:
+			self.dbc.execute('select NO from BLOCKS where SEARCH = ? and BLOCK < 1 order by NO',(self._search,))
+			result = self.dbc.fetchall()
+			if result:
+				return(result[0][0],result[-1][0])
+		else:
+			sh.log.append('DB.prev_search',sh.lev_warn,sh.globs['mes'].empty_input)
+	
+	def prev_search(self):
+		nos = self.cur_nos()
+		if nos:
+			self.dbc.execute('select SEARCH from BLOCKS where NO < ? and BLOCK < 1 order by NO desc',(nos[0],))
+			return self.dbc.fetchone()
+		else:
+			sh.log.append('DB.prev_search',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def next_search(self):
+		nos = self.cur_nos()
+		if nos:
+			self.dbc.execute('select SEARCH from BLOCKS where NO > ? and BLOCK < 1 order by NO',(nos[-1],))
+			return self.dbc.fetchone()
+		else:
+			sh.log.append('DB.prev_search',sh.lev_warn,sh.globs['mes'].empty_input)
 
 	def request(self,source,search):
 		if source and search:

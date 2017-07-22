@@ -5,7 +5,7 @@
 * Определение типов речи
 * Выделение исправлений зеленым цветом (1 уровень)
 * Рефакторинг кода, переход на базу данных
-* Удалены ключи: bind_add_cell, bind_delete_cell, bind_go_url
+* Удалены ключи: bind_add_cell, bind_delete_cell, bind_go, bind_go_alt, bind_go_search, bind_go_search_alt, bind_go_url, bind_iconify, bind_move_*
 
 5.0.1
 * Корректирующий релиз (согласно изменениям в коде МТ)

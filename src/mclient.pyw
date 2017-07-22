@@ -97,19 +97,6 @@ class ConfigMclient(sh.Config):
 			'bind_define':'<Control-d>',
 			'bind_go_back':'<Alt-Left>',
 			'bind_go_forward':'<Alt-Right>',
-			'bind_go_search_alt':'<KP_Enter>',
-			'bind_go_search':'<Return>',
-			'bind_iconify':'<ButtonRelease-2>',
-			'bind_move_down':'<Down>',
-			'bind_move_left':'<Left>',
-			'bind_move_line_end':'<End>',
-			'bind_move_line_start':'<Home>',
-			'bind_move_page_down':'<Next>',
-			'bind_move_page_up':'<Prior>',
-			'bind_move_right':'<Right>',
-			'bind_move_text_end':'<Control-End>',
-			'bind_move_text_start':'<Control-Home>',
-			'bind_move_up':'<Up>',
 			'bind_next_pair':'<F8>',
 			'bind_next_pair_alt':'<Control-l>',
 			'bind_prev_pair':'<Shift-F8>',
@@ -405,8 +392,7 @@ def timed_update():
 			new_clipboard = sg.Clipboard().paste()
 			if new_clipboard:
 				objs.request()._search = new_clipboard
-				objs.webframe().search_sources()
-				objs._webframe.load_article()
+				objs.webframe().go_search()
 		if check == 2 or objs.request().CaptureHotkey:
 			call_app()
 	sg.objs.root().widget.after(300,timed_update)
@@ -704,15 +690,13 @@ class SearchField:
 		
 	# Вставить текущий запрос	
 	def insert_repeat_sign(self,*args):
-		if articles.len() > 0:
-			sg.Clipboard().copy(str(objs.request()._search))
-			self.paste()
+		sg.Clipboard().copy(str(objs.request()._search))
+		self.paste()
 
 	# Вставить предыдущий запрос
 	def insert_repeat_sign2(self,*args):
-		if articles.len() > 1:
-			sg.Clipboard().copy(str(articles.prev()))
-			self.paste()
+		sg.Clipboard().copy(objs.blocks_db().prev_search())
+		self.paste()
 
 
 
@@ -895,11 +879,11 @@ class WebFrame:
 		sg.Button (parent_obj          = self._panel
 		          ,text                = sh.globs['mes'].btn_translate
 		          ,hint                = sh.globs['mes'].btn_translate
-		          ,action              = self.go_search
+		          ,action              = self.go
 		          ,inactive_image_path = sh.globs['var']['icon_go_search']
 		          ,active_image_path   = sh.globs['var']['icon_go_search']
-		          ,bindings            = [sh.globs['var']['bind_go_search']
-		                                 ,sh.globs['var']['bind_go_search_alt']
+		          ,bindings            = ['<Return>'
+		                                 ,'<KP_Enter>'
 		                                 ]
 		          ) # В данном случае btn = hint
 
@@ -1157,10 +1141,10 @@ class WebFrame:
 		        ,action   = self.history.copy
 		        )
 		sg.bind (obj      = self.obj
-		        ,bindings = [sh.globs['var']['bind_go_search']
-		                    ,sh.globs['var']['bind_go_search_alt']
+		        ,bindings = ['<Return>'
+		                    ,'<KP_Enter>'
 		                    ]
-		        ,action   = self.go_search
+		        ,action   = self.go
 		        )
 		# todo: do not iconify at <ButtonRelease-3>
 		sg.bind (obj      = self.search_field
@@ -1193,49 +1177,47 @@ class WebFrame:
 		        ,action   = self.go_forward
 		        )
 		sg.bind (obj      = self.obj
-		        ,bindings = sh.globs['var']['bind_move_left']
+		        ,bindings = '<Left>'
 		        ,action   = self.move_left
 		        )
 		sg.bind (obj      = self.obj
-		        ,bindings = sh.globs['var']['bind_move_right']
+		        ,bindings = '<Right>'
 		        ,action   = self.move_right
 		        )
 		sg.bind (obj      = self.obj
-		        ,bindings = sh.globs['var']['bind_move_down']
+		        ,bindings = '<Down>'
 		        ,action   = self.move_down
 		    )
 		sg.bind (obj      = self.obj
-		        ,bindings = sh.globs['var']['bind_move_up']
+		        ,bindings = '<Up>'
 		        ,action   = self.move_up
 		        )
 		sg.bind (obj      = self.obj
-		        ,bindings = sh.globs['var']['bind_move_line_start']
+		        ,bindings = '<Home>'
 		        ,action   = self.move_line_start
 		        )
 		sg.bind (obj      = self.obj
-		        ,bindings = sh.globs['var']['bind_move_line_end']
+		        ,bindings = '<End>'
 		        ,action   = self.move_line_end
 		        )
 		sg.bind (obj      = self.obj
-		        ,bindings = sh.globs['var']['bind_move_text_start']
+		        ,bindings = '<Control-Home>'
 		        ,action   = self.move_text_start
 		        )
 		sg.bind (obj      = self.obj
-		        ,bindings = sh.globs['var']['bind_move_text_end']
+		        ,bindings = '<Control-End>'
 		        ,action   = self.move_text_end
 		        )
 		sg.bind (obj      = self.obj
-		        ,bindings = sh.globs['var']['bind_move_page_up']
+		        ,bindings = '<Prior>'
 		        ,action   = self.move_page_up
 		        )
 		sg.bind (obj      = self.obj
-		        ,bindings = sh.globs['var']['bind_move_page_down']
+		        ,bindings = '<Next>'
 		        ,action   = self.move_page_down
 		        )
 		sg.bind (obj      = self.obj
-		        ,bindings = ['<Escape>'
-		                    ,sh.globs['var']['bind_iconify']
-		                    ]
+		        ,bindings = '<Escape>'
 		        ,action   = sg.Geometry(parent_obj=self.obj).minimize
 		        )
 		# Дополнительные горячие клавиши
@@ -1558,24 +1540,21 @@ class WebFrame:
 		#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=10000,MaxRow=15)
 		self.title(arg=objs._request._search)
 		
-	# note: the code after this comment must be reworked
-	# Search the selected term online using the entry widget (search field)
-	def go_search(self,*args):
+	# Select either the search string or the URL
+	def go(self,*args):
 		objs.request().reset()
-		objs._request._search = self.search_field.widget.get().strip('\n').strip(' ')
-		# Allows to use the same hotkeys for the search field and the article field
-		if objs.request()._search == '':
+		search = self.search_field.widget.get().strip('\n').strip(' ')
+		if search == '':
 			self.go_url()
+		elif search == sh.globs['var']['repeat_sign']:
+			self.search_field.insert_repeat_sign()
+		elif search == sh.globs['var']['repeat_sign2']:
+			self.search_field.insert_repeat_sign2()
 		else:
-			# Скопировать предпоследний запрос в буфер и вставить его в строку поиска (например, для перехода на этот запрос еще раз)
-			if objs.request()._search == sh.globs['var']['repeat_sign2']:
-				self.search_field.insert_repeat_sign2()
-			# Скопировать последний запрос в буфер и вставить его в строку поиска (например, для корректировки)
-			elif objs.request()._search == sh.globs['var']['repeat_sign']:
-				self.search_field.insert_repeat_sign()
-			else:
-				self.search_sources()
+			objs._request._search = search
+			self.go_search()
 				
+	# note: the code after this comment must be reworked
 	# Перейти по URL текущей ячейки
 	def go_url(self,*args):
 		if not self.MouseClicked:
@@ -1585,10 +1564,10 @@ class WebFrame:
 			sh.log.append('WebFrame.go_url',sh.lev_info,sh.globs['mes'].opening_link % objs.request()._url)
 			self.load_article()
 			
-	def search_sources(self):
+	def go_search(self):
 		if self.control_length():
 			self.get_url()
-			sh.log.append('WebFrame.search_sources',sh.lev_debug,objs.request()._search)
+			sh.log.append('WebFrame.go_search',sh.lev_debug,objs.request()._search)
 			self.load_article()
 			
 	def set_source(self,*args):
