@@ -65,7 +65,7 @@ class DB:
 		self.dbc.execute('select SEARCH from BLOCKS order by NO desc')
 		result = self.dbc.fetchall()
 		if result:
-			return [item[0] for item in result]
+			return set([item[0] for item in result])
 			
 	def cur_nos(self):
 		if self._search:

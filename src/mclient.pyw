@@ -770,18 +770,21 @@ class History:
 		        )
 		sg.bind (obj      = self.parent_obj
 		        ,bindings = '<ButtonRelease-3>'
+		        ,action   = self.copy
+		        )
+		sg.bind (obj      = self.parent_obj
+		        ,bindings = sh.globs['var']['bind_clear_history']
 		        ,action   = self.clear
 		        )
 	
 	def autoselect(self):
-		self.obj._index = articles._no
-		self.obj.select()
+		self.obj.set(item=objs.request()._search)
 	
 	def show(self,*args):
 		self.Active = True
 		self.fill()
 		self.parent_obj.show()
-		self.widget.focus_set()
+		#self.obj.focus() # todo: test & del
 		
 	def close(self,*args):
 		self.Active = False
@@ -795,11 +798,11 @@ class History:
 		self.autoselect()
 		
 	def clear(self,*args):
-		self.obj.clear()
 		objs.blocks_db().clear()
-		objs.webframe().search_article.obj.clear_text()
+		self.obj.clear()
+		objs.webframe().reset()
+		objs._webframe.search_article.obj.clear_text()
 		objs.request().reset()
-		objs.webframe().load_article()
 		self.update()
 	
 	def toggle(self,*args):
@@ -809,12 +812,14 @@ class History:
 			self.show()
 			
 	def go(self,*args):
-		articles._no = self.obj.index()
-		objs.webframe().load_article()
+		objs.request()._search = self.obj.get()
+		# Do not warn after clearing the widget
+		if objs.request()._search:
+			objs.webframe().load_article()
 		
 	# Скопировать элемент истории
 	def copy(self,*args):
-		sg.Clipboard().copy(objs.request()._search)
+		sg.Clipboard().copy(self.obj.get())
 
 
 
@@ -824,6 +829,9 @@ class WebFrame:
 		self.values  ()
 		self.widgets ()
 		self.gui     ()
+	
+	def reset(self):
+		self.widget.reset()
 	
 	def values(self):
 		self.event         = None
