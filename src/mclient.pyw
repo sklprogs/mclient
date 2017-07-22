@@ -48,9 +48,18 @@ class ConfigMclient(sh.Config):
 	
 	def __init__(self):
 		super().__init__()
-		self.sections         = [sh.SectionBooleans,sh.SectionIntegers,sh.SectionVariables]
-		self.sections_abbr    = [sh.SectionBooleans_abbr,sh.SectionIntegers_abbr,sh.SectionVariables_abbr]
-		self.sections_func    = [sh.config_parser.getboolean,sh.config_parser.getint,sh.config_parser.get]
+		self.sections         = [sh.SectionBooleans
+		                        ,sh.SectionIntegers
+		                        ,sh.SectionVariables
+		                        ]
+		self.sections_abbr    = [sh.SectionBooleans_abbr
+		                        ,sh.SectionIntegers_abbr
+		                        ,sh.SectionVariables_abbr
+		                        ]
+		self.sections_func    = [sh.config_parser.getboolean
+		                        ,sh.config_parser.getint
+		                        ,sh.config_parser.get
+		                        ]
 		self.message          = sh.globs['mes'].missing_config + '\n'
 		self.total_keys       = 0
 		self.changed_keys     = 0
@@ -72,91 +81,92 @@ class ConfigMclient(sh.Config):
 		self.additional_keys()
 			
 	def _default(self):
-		sh.globs['bool'].update({
-			'AutoCloseSpecSymbol':False,
-			'CopyTermsOnly':True,
-			'Iconify':True
-			             })
+		sh.globs['bool'].update ({
+			'AutoCloseSpecSymbol':False
+		   ,'CopyTermsOnly'      :True
+		   ,'Iconify'            :True
+			                    })
 		#---------------------------------------------------
-		sh.globs['int'].update({
-			'font_comments_size':3,
-			'font_dics_size':4,
-			'font_speech_size':4,
-			'font_terms_size':4
-			              })
+		sh.globs['int'].update ({
+			'font_comments_size':3
+		   ,'font_dics_size'    :4
+		   ,'font_speech_size'  :4
+		   ,'font_terms_size'   :4
+			                   })
 		#---------------------------------------------------
-		sh.globs['var'].update({
-			'bind_clear_history':'<Control-Shift-Delete>',
-			'bind_clear_search_field':'<ButtonRelease-3>',
-			'bind_copy_article_url':'<Shift-F7>',
-			'bind_copy_history':'<ButtonRelease-3>',
-			'bind_copy_sel_alt':'<Control-KP_Enter>',
-			'bind_copy_sel_alt2':'<ButtonRelease-3>',
-			'bind_copy_sel':'<Control-Return>',
-			'bind_copy_url':'<Control-F7>',
-			'bind_define':'<Control-d>',
-			'bind_go_back':'<Alt-Left>',
-			'bind_go_forward':'<Alt-Right>',
-			'bind_next_pair':'<F8>',
-			'bind_next_pair_alt':'<Control-l>',
-			'bind_prev_pair':'<Shift-F8>',
-			'bind_prev_pair_alt':'<Control-L>',
-			'bind_open_in_browser_alt':'<Control-b>',
-			'bind_open_in_browser':'<F7>',
-			'bind_paste_search_field':'<ButtonRelease-2>',
-			'bind_quit_now_alt':'<F10>',
-			'bind_quit_now':'<Control-q>',
-			'bind_re_search_article':'<Control-F3>',
-			'bind_reload_article_alt':'<Control-r>',
-			'bind_reload_article':'<F5>',
-			'bind_save_article_alt':'<Control-s>',
-			'bind_save_article':'<F2>',
-			'bind_search_article_backward':'<Shift-F3>',
-			'bind_search_article_forward':'<F3>',
-			'bind_show_about':'<F1>',
-			'bind_spec_symbol':'<Control-e>',
-			'bind_toggle_alphabet':'<Alt-a>',
-			'bind_toggle_block':'<Alt-b>',
-			'bind_toggle_history_alt':'<Control-h>',
-			'bind_toggle_history':'<F4>',
-			'bind_toggle_priority':'<Alt-p>',
-			'bind_toggle_view':'<F6>',
-			'bind_toggle_view_alt':'<Alt-v>',
-			'color_comments':'gray',
-			'color_dics':'cadet blue',
-			'color_speech':'red',
-			'color_terms_sel_bg':'cyan',
-			'color_terms_sel_fg':'black',
-			'color_terms':'black',
-			'font_comments_family':'Mono',
-			'font_dics_family':'Arial',
-			'font_history':'Sans 12',
-			'font_speech_family':'Arial',
-			'font_style':'Sans 14',
-			'font_terms_sel':'Sans 14 bold italic',
-			'font_terms_family':'Serif',
-			'pair_afr_rus':'l1=31&l2=2&s=%s',
-			'pair_deu_rus':'l1=3&l2=2&s=%s',
-			'pair_eng_deu':'l1=1&l2=3&s=%s',
-			'pair_eng_est':'l1=1&l2=26&s=%s',
-			'pair_eng_rus':'CL=1&s=%s',
-			'pair_epo_rus':'l1=34&l2=2&s=%s',
-			'pair_est_rus':'l1=26&l2=2&s=%s',
-			'pair_fra_rus':'l1=4&l2=2&s=%s',
-			'pair_ita_rus':'l1=23&l2=2&s=%s',
-			'pair_lav_rus':'l1=27&l2=2&s=%s',
-			'pair_nld_rus':'l1=24&l2=2&s=%s',
-			'pair_root':'http://www.multitran.ru/c/M.exe?',
-			'pair_rus_xal':'l1=2&l2=35&s=%s',
-			'pair_spa_rus':'l1=5&l2=2&s=%s',
-			'pair_xal_rus':'l1=35&l2=2&s=%s',
-			'repeat_sign':'!',
-			'repeat_sign2':'!!',
-			'spec_syms':'àáâäāæßćĉçèéêēёëəғĝģĥìíîïīĵķļñņòóôõöōœøšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒЁËƏҒĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒØŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ',
-			'ui_lang':'ru',
-			'web_search_url':'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s',
-			'win_encoding':'windows-1251'
-				           })
+		sh.globs['var'].update ({
+			'bind_clear_history'          :'<Control-Shift-Delete>'
+		   ,'bind_clear_search_field'     :'<ButtonRelease-3>'
+		   ,'bind_copy_article_url'       :'<Shift-F7>'
+		   ,'bind_copy_history'           :'<ButtonRelease-3>'
+		   ,'bind_copy_sel_alt'           :'<Control-KP_Enter>'
+		   ,'bind_copy_sel_alt2'          :'<ButtonRelease-3>'
+		   ,'bind_copy_sel'               :'<Control-Return>'
+		   ,'bind_copy_url'               :'<Control-F7>'
+		   ,'bind_define'                 :'<Control-d>'
+		   ,'bind_go_back'                :'<Alt-Left>'
+		   ,'bind_go_forward'             :'<Alt-Right>'
+		   ,'bind_next_pair'              :'<F8>'
+		   ,'bind_next_pair_alt'          :'<Control-l>'
+		   ,'bind_prev_pair'              :'<Shift-F8>'
+		   ,'bind_prev_pair_alt'          :'<Control-L>'
+		   ,'bind_open_in_browser_alt'    :'<Control-b>'
+		   ,'bind_open_in_browser'        :'<F7>'
+		   ,'bind_paste_search_field'     :'<ButtonRelease-2>'
+		   ,'bind_print'                  :'<Control-p>'
+		   ,'bind_quit_now_alt'           :'<F10>'
+		   ,'bind_quit_now'               :'<Control-q>'
+		   ,'bind_re_search_article'      :'<Control-F3>'
+		   ,'bind_reload_article_alt'     :'<Control-r>'
+		   ,'bind_reload_article'         :'<F5>'
+		   ,'bind_save_article_alt'       :'<Control-s>'
+		   ,'bind_save_article'           :'<F2>'
+		   ,'bind_search_article_backward':'<Shift-F3>'
+		   ,'bind_search_article_forward' :'<F3>'
+		   ,'bind_show_about'             :'<F1>'
+		   ,'bind_spec_symbol'            :'<Control-e>'
+		   ,'bind_toggle_alphabet'        :'<Alt-a>'
+		   ,'bind_toggle_block'           :'<Alt-b>'
+		   ,'bind_toggle_history_alt'     :'<Control-h>'
+		   ,'bind_toggle_history'         :'<F4>'
+		   ,'bind_toggle_priority'        :'<Alt-p>'
+		   ,'bind_toggle_view'            :'<F6>'
+		   ,'bind_toggle_view_alt'        :'<Alt-v>'
+		   ,'color_comments'              :'gray'
+		   ,'color_dics'                  :'cadet blue'
+		   ,'color_speech'                :'red'
+		   ,'color_terms_sel_bg'          :'cyan'
+		   ,'color_terms_sel_fg'          :'black'
+		   ,'color_terms'                 :'black'
+		   ,'font_comments_family'        :'Mono'
+		   ,'font_dics_family'            :'Arial'
+		   ,'font_history'                :'Sans 12'
+		   ,'font_speech_family'          :'Arial'
+		   ,'font_style'                  :'Sans 14'
+		   ,'font_terms_sel'              :'Sans 14 bold italic'
+		   ,'font_terms_family'           :'Serif'
+		   ,'pair_afr_rus'                :'l1=31&l2=2&s=%s'
+		   ,'pair_deu_rus'                :'l1=3&l2=2&s=%s'
+		   ,'pair_eng_deu'                :'l1=1&l2=3&s=%s'
+		   ,'pair_eng_est'                :'l1=1&l2=26&s=%s'
+		   ,'pair_eng_rus'                :'CL=1&s=%s'
+		   ,'pair_epo_rus'                :'l1=34&l2=2&s=%s'
+		   ,'pair_est_rus'                :'l1=26&l2=2&s=%s'
+		   ,'pair_fra_rus'                :'l1=4&l2=2&s=%s'
+		   ,'pair_ita_rus'                :'l1=23&l2=2&s=%s'
+		   ,'pair_lav_rus'                :'l1=27&l2=2&s=%s'
+		   ,'pair_nld_rus'                :'l1=24&l2=2&s=%s'
+		   ,'pair_root'                   :'http://www.multitran.ru/c/M.exe?'
+		   ,'pair_rus_xal'                :'l1=2&l2=35&s=%s'
+		   ,'pair_spa_rus'                :'l1=5&l2=2&s=%s'
+		   ,'pair_xal_rus'                :'l1=35&l2=2&s=%s'
+		   ,'repeat_sign'                 :'!'
+		   ,'repeat_sign2'                :'!!'
+		   ,'spec_syms'                   :'àáâäāæßćĉçèéêēёëəғĝģĥìíîïīĵķļñņòóôõöōœøšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒЁËƏҒĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒØŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ'
+		   ,'ui_lang'                     :'ru'
+		   ,'web_search_url'              :'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s'
+		   ,'win_encoding'                :'windows-1251'
+				               })
 	
 	def reset(self):
 		sh.globs['bool']  = {}
@@ -165,39 +175,40 @@ class ConfigMclient(sh.Config):
 		sh.globs['var']   = {}
 		
 	def additional_keys(self):
-		sh.globs['var'].update({
-			'icon_alphabet_off':'icon_36x36_alphabet_off.gif',
-			'icon_alphabet_on':'icon_36x36_alphabet_on.gif',
-			'icon_block_off':'icon_36x36_block_off.gif',
-			'icon_block_on':'icon_36x36_block_on.gif',
-			'icon_clear_search_field':'icon_36x36_clear_search_field.gif',
-			'icon_define':'icon_36x36_define.gif',
-			'icon_go_back_off':'icon_36x36_go_back_off.gif',
-			'icon_go_back':'icon_36x36_go_back.gif',
-			'icon_go_forward_off':'icon_36x36_go_forward_off.gif',
-			'icon_go_forward':'icon_36x36_go_forward.gif',
-			'icon_go_search':'icon_36x36_go_search.gif',
-			'icon_mclient':'icon_64x64_mclient.gif',
-			'icon_open_in_browser':'icon_36x36_open_in_browser.gif',
-			'icon_paste':'icon_36x36_paste.gif',
-			'icon_priority_off':'icon_36x36_priority_off.gif',
-			'icon_priority_on':'icon_36x36_priority_on.gif',
-			'icon_quit_now':'icon_36x36_quit_now.gif',
-			'icon_reload':'icon_36x36_reload.gif',
-			'icon_repeat_sign_off':'icon_36x36_repeat_sign_off.gif',
-			'icon_repeat_sign':'icon_36x36_repeat_sign.gif',
-			'icon_repeat_sign2_off':'icon_36x36_repeat_sign2_off.gif',
-			'icon_repeat_sign2':'icon_36x36_repeat_sign2.gif',
-			'icon_save_article':'icon_36x36_save_article.gif',
-			'icon_search_article':'icon_36x36_search_article.gif',
-			'icon_show_about':'icon_36x36_show_about.gif',
-			'icon_spec_symbol':'icon_36x36_spec_symbol.gif',
-			'icon_toggle_history':'icon_36x36_toggle_history.gif',
-			'icon_toggle_view_hor':'icon_36x36_toggle_view_hor.gif',
-			'icon_toggle_view_ver':'icon_36x36_toggle_view_ver.gif',
-			'icon_watch_clipboard_off':'icon_36x36_watch_clipboard_off.gif',
-			'icon_watch_clipboard_on':'icon_36x36_watch_clipboard_on.gif'
-			})
+		sh.globs['var'].update ({
+			'icon_alphabet_off'       :'icon_36x36_alphabet_off.gif'
+		   ,'icon_alphabet_on'        :'icon_36x36_alphabet_on.gif'
+		   ,'icon_block_off'          :'icon_36x36_block_off.gif'
+		   ,'icon_block_on'           :'icon_36x36_block_on.gif'
+		   ,'icon_clear_search_field' :'icon_36x36_clear_search_field.gif'
+		   ,'icon_define'             :'icon_36x36_define.gif'
+		   ,'icon_go_back_off'        :'icon_36x36_go_back_off.gif'
+		   ,'icon_go_back'            :'icon_36x36_go_back.gif'
+		   ,'icon_go_forward_off'     :'icon_36x36_go_forward_off.gif'
+		   ,'icon_go_forward'         :'icon_36x36_go_forward.gif'
+		   ,'icon_go_search'          :'icon_36x36_go_search.gif'
+		   ,'icon_mclient'            :'icon_64x64_mclient.gif'
+		   ,'icon_open_in_browser'    :'icon_36x36_open_in_browser.gif'
+		   ,'icon_paste'              :'icon_36x36_paste.gif'
+		   ,'icon_print'              :'icon_36x36_print.gif'
+		   ,'icon_priority_off'       :'icon_36x36_priority_off.gif'
+		   ,'icon_priority_on'        :'icon_36x36_priority_on.gif'
+		   ,'icon_quit_now'           :'icon_36x36_quit_now.gif'
+		   ,'icon_reload'             :'icon_36x36_reload.gif'
+		   ,'icon_repeat_sign_off'    :'icon_36x36_repeat_sign_off.gif'
+		   ,'icon_repeat_sign'        :'icon_36x36_repeat_sign.gif'
+		   ,'icon_repeat_sign2_off'   :'icon_36x36_repeat_sign2_off.gif'
+		   ,'icon_repeat_sign2'       :'icon_36x36_repeat_sign2.gif'
+		   ,'icon_save_article'       :'icon_36x36_save_article.gif'
+		   ,'icon_search_article'     :'icon_36x36_search_article.gif'
+		   ,'icon_show_about'         :'icon_36x36_show_about.gif'
+		   ,'icon_spec_symbol'        :'icon_36x36_spec_symbol.gif'
+		   ,'icon_toggle_history'     :'icon_36x36_toggle_history.gif'
+		   ,'icon_toggle_view_hor'    :'icon_36x36_toggle_view_hor.gif'
+		   ,'icon_toggle_view_ver'    :'icon_36x36_toggle_view_ver.gif'
+		   ,'icon_watch_clipboard_off':'icon_36x36_watch_clipboard_off.gif'
+		   ,'icon_watch_clipboard_on' :'icon_36x36_watch_clipboard_on.gif'
+			                   })
 		for key in sh.globs['var']:
 			if sh.globs['var'][key].endswith('.gif'):
 				old_val = sh.globs['var'][key]
@@ -223,38 +234,53 @@ sh.globs['top'] = {}
 online_url_safe = sh.globs['var']['pair_root'] + 'l1=2&l2=1&s=%ED%E5%E2%E5%F0%ED%E0%FF+%F1%F1%FB%EB%EA%E0' # 'неверная ссылка'
 sep_words_found = 'найдены отдельные слова'
 
-pairs = ('ENG <=> RUS','DEU <=> RUS','SPA <=> RUS','FRA <=> RUS','NLD <=> RUS','ITA <=> RUS','LAV <=> RUS','EST <=> RUS','AFR <=> RUS','EPO <=> RUS','RUS <=> XAL','XAL <=> RUS','ENG <=> DEU','ENG <=> EST')
-online_dic_urls = ( sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_rus'],	# ENG <=> RUS, 'CL=1&s=%s'
-					sh.globs['var']['pair_root'] + sh.globs['var']['pair_deu_rus'],	# DEU <=> RUS, 'l1=3&l2=2&s=%s'
-					sh.globs['var']['pair_root'] + sh.globs['var']['pair_spa_rus'],	# SPA <=> RUS, 'l1=5&l2=2&s=%s'
-					sh.globs['var']['pair_root'] + sh.globs['var']['pair_fra_rus'],	# FRA <=> RUS, 'l1=4&l2=2&s=%s'
-					sh.globs['var']['pair_root'] + sh.globs['var']['pair_nld_rus'],	# NLD <=> RUS, 'l1=24&l2=2&s=%s',
-					sh.globs['var']['pair_root'] + sh.globs['var']['pair_ita_rus'],	# ITA <=> RUS, 'l1=23&l2=2&s=%s'
-					sh.globs['var']['pair_root'] + sh.globs['var']['pair_lav_rus'],	# LAV <=> RUS, 'l1=27&l2=2&s=%s'
-					sh.globs['var']['pair_root'] + sh.globs['var']['pair_est_rus'],	# EST <=> RUS, 'l1=26&l2=2&s=%s'
-					sh.globs['var']['pair_root'] + sh.globs['var']['pair_afr_rus'],	# AFR <=> RUS, 'l1=31&l2=2&s=%s'
-					sh.globs['var']['pair_root'] + sh.globs['var']['pair_epo_rus'],	# EPO <=> RUS, 'l1=34&l2=2&s=%s'
-					sh.globs['var']['pair_root'] + sh.globs['var']['pair_rus_xal'],	# RUS <=> XAL, 'l1=2&l2=35&s=%s'
-					sh.globs['var']['pair_root'] + sh.globs['var']['pair_xal_rus'],	# XAL <=> RUS, 'l1=35&l2=2&s=%s'
-					sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_deu'],	# ENG <=> DEU, 'l1=1&l2=3&s=%s'
-					sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_est']	# ENG <=> EST, 'l1=1&l2=26&s=%s'
+pairs = ('ENG <=> RUS'
+        ,'DEU <=> RUS'
+        ,'SPA <=> RUS'
+        ,'FRA <=> RUS'
+        ,'NLD <=> RUS'
+        ,'ITA <=> RUS'
+        ,'LAV <=> RUS'
+        ,'EST <=> RUS'
+        ,'AFR <=> RUS'
+        ,'EPO <=> RUS'
+        ,'RUS <=> XAL'
+        ,'XAL <=> RUS'
+        ,'ENG <=> DEU'
+        ,'ENG <=> EST'
+        )
+        
+online_dic_urls = (sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_rus']	# ENG <=> RUS, 'CL=1&s=%s'
+				  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_deu_rus']	# DEU <=> RUS, 'l1=3&l2=2&s=%s'
+				  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_spa_rus']	# SPA <=> RUS, 'l1=5&l2=2&s=%s'
+				  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_fra_rus']	# FRA <=> RUS, 'l1=4&l2=2&s=%s'
+				  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_nld_rus']	# NLD <=> RUS, 'l1=24&l2=2&s=%s',
+				  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_ita_rus']	# ITA <=> RUS, 'l1=23&l2=2&s=%s'
+				  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_lav_rus']	# LAV <=> RUS, 'l1=27&l2=2&s=%s'
+				  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_est_rus']	# EST <=> RUS, 'l1=26&l2=2&s=%s'
+				  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_afr_rus']	# AFR <=> RUS, 'l1=31&l2=2&s=%s'
+				  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_epo_rus']	# EPO <=> RUS, 'l1=34&l2=2&s=%s'
+				  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_rus_xal']	# RUS <=> XAL, 'l1=2&l2=35&s=%s'
+				  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_xal_rus']	# XAL <=> RUS, 'l1=35&l2=2&s=%s'
+				  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_deu']	# ENG <=> DEU, 'l1=1&l2=3&s=%s'
+				  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_est']	# ENG <=> EST, 'l1=1&l2=26&s=%s'
 				  )
 				  
-langs           = ( 'English'                                                     , # ENG <=> RUS
-					'German'                                                      , # DEU <=> RUS
-					'Spanish'                                                     , # SPA <=> RUS
-					'French'                                                      , # FRA <=> RUS
-					'Dutch'                                                       , # NLD <=> RUS
-					'Italian'                                                     ,	# ITA <=> RUS
-					'Latvian'                                                     , # LAV <=> RUS
-					'Estonian'                                                    ,	# EST <=> RUS
-					'Afrikaans'                                                   ,	# AFR <=> RUS
-					'Esperanto'                                                   ,	# EPO <=> RUS
-					'Kazakh'                                                      ,	# RUS <=> XAL
-					'Kazakh'                                                      ,	# XAL <=> RUS
-					'German'                                                      ,	# ENG <=> DEU
-					'Estonian'                                                  	# ENG <=> EST
-				  )
+langs = ('English'   # ENG <=> RUS
+        ,'German'    # DEU <=> RUS
+        ,'Spanish'   # SPA <=> RUS
+        ,'French'    # FRA <=> RUS
+        ,'Dutch'     # NLD <=> RUS
+        ,'Italian'   # ITA <=> RUS
+        ,'Latvian'   # LAV <=> RUS
+        ,'Estonian'  # EST <=> RUS
+        ,'Afrikaans' # AFR <=> RUS
+        ,'Esperanto' # EPO <=> RUS
+        ,'Kazakh'    # RUS <=> XAL
+        ,'Kazakh'    # XAL <=> RUS
+        ,'German'    # ENG <=> DEU
+        ,'Estonian'  # ENG <=> EST
+		)
 
 sources = ('All','Online','Offline')
 
@@ -1088,6 +1114,15 @@ class WebFrame:
 		                                 ,sh.globs['var']['bind_open_in_browser_alt']
 		                                 ]
 		          )
+		# Кнопка "Печать"
+		sg.Button (parent_obj          = self._panel
+		          ,text                = 'Print' # todo: mes
+		          ,hint                = 'Create a print-ready preview' # todo: mes
+		          ,action              = self.print
+		          ,inactive_image_path = sh.globs['var']['icon_print']
+		          ,active_image_path   = sh.globs['var']['icon_print']
+		          ,bindings            = sh.globs['var']['bind_print']
+		          )
 		# Кнопка толкования термина. Сделана вспомогательной ввиду нехватки места
 		sg.Button (parent_obj          = self._panel
 		          ,text                = sh.globs['mes'].btn_define
@@ -1856,6 +1891,16 @@ class WebFrame:
 			else:
 				sg.Message(func='WebFrame.toggle_priority',level=sh.lev_warn,message='No dictionaries have been provided for prioritizing!') # todo: mes
 		self.load_article()
+		
+	def print(self,*args):
+		# todo: generate os-specific tmp path # cur
+		file = '/tmp/test.html'
+		code = mh.HTML (data     = objs._blocks_db.fetch()
+					   ,collimit = objs._request._collimit
+					   ,Printer  = True
+					   )._html
+		sh.WriteTextFile(file,AskRewrite=1).write(code)
+		sh.Launch(target=file).auto()
 		
 	def zzz(self): # Only needed to move quickly to the end of the class
 		pass
