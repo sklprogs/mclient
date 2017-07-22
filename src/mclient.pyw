@@ -1220,6 +1220,10 @@ class WebFrame:
 		        ,bindings = '<Escape>'
 		        ,action   = sg.Geometry(parent_obj=self.obj).minimize
 		        )
+		sg.bind (obj      = self
+		        ,bindings = '<ButtonRelease-2>'
+		        ,action   = sg.Geometry(parent_obj=self.obj).minimize
+		        )
 		# Дополнительные горячие клавиши
 		sg.bind (obj      = self.obj
 		        ,bindings = sh.globs['var']['bind_search_article_forward']
@@ -1539,18 +1543,20 @@ class WebFrame:
 		#objs._blocks_db.sort(Fetch=0)
 		#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=10000,MaxRow=15)
 		self.title(arg=objs._request._search)
+		self.search_field.clear()
 		
 	# Select either the search string or the URL
 	def go(self,*args):
-		objs.request().reset()
 		search = self.search_field.widget.get().strip('\n').strip(' ')
 		if search == '':
+			objs.request().reset()
 			self.go_url()
 		elif search == sh.globs['var']['repeat_sign']:
 			self.search_field.insert_repeat_sign()
 		elif search == sh.globs['var']['repeat_sign2']:
 			self.search_field.insert_repeat_sign2()
 		else:
+			objs.request().reset()
 			objs._request._search = search
 			self.go_search()
 				
@@ -1587,30 +1593,19 @@ class WebFrame:
 	# todo: move 'move_*' procedures to Moves class
 	# Перейти на 1-й термин текущей строки	
 	def move_line_start(self,*args):
-		if len(articles.current()._moves['_move_line_start']) > self.i and len(articles.current()._moves['_move_line_start'][self.i]) > self.j:
-			self.i, self.j = articles.current()._moves['_move_line_start'][self.i][self.j]
-			self.set_cell()
-		else:
-			sh.log.append('WebFrame.move_line_start',sh.lev_err,sh.globs['mes'].wrong_input2)
+		pass
 
 	# Перейти на последний термин текущей строки
 	def move_line_end(self,*args):
-		if len(articles.current()._moves['_move_line_end']) > self.i and len(articles.current()._moves['_move_line_end'][self.i]) > self.j:
-			self.i, self.j = articles.current()._moves['_move_line_end'][self.i][self.j]
-			self.set_cell()
+		pass
 
 	# Перейти на 1-й термин статьи
 	def move_text_start(self,*args):
-		if articles.current()._moves['_move_text_start']:
-			self.i, self.j = articles.current()._moves['_move_text_start']
-		else:
-			self.i, self.j = 0, 0
-		self.set_cell()
+		pass
 
 	# Перейти на последний термин статьи
 	def move_text_end(self,*args):
-		self.i, self.j = articles.current()._moves['_move_text_end']
-		self.set_cell()
+		pass
 
 	# Перейти на страницу вверх
 	def move_page_up(self,event=None):
@@ -1628,35 +1623,19 @@ class WebFrame:
 
 	# Перейти на предыдущий термин
 	def move_left(self,*args):
-		if len(articles.current()._moves['_move_left']) > self.i and len(articles.current()._moves['_move_left'][self.i]) > self.j:
-			self.i, self.j = articles.current()._moves['_move_left'][self.i][self.j]
-			self.set_cell()
-		else:
-			sh.log.append('WebFrame.move_left',sh.lev_err,sh.globs['mes'].wrong_input2)
+		pass
 
 	# Перейти на следующий термин
 	def move_right(self,*args):
-		if len(articles.current()._moves['_move_right']) > self.i and len(articles.current()._moves['_move_right'][self.i]) > self.j:
-			self.i, self.j = articles.current()._moves['_move_right'][self.i][self.j]
-			self.set_cell()
-		else:
-			sh.log.append('WebFrame.move_right',sh.lev_err,sh.globs['mes'].wrong_input2)
+		pass
 
 	# Перейти на строку вниз
 	def move_down(self,*args):
-		if len(articles.current()._moves['_move_down']) > self.i and len(articles.current()._moves['_move_down'][self.i]) > self.j:
-			self.i, self.j = articles.current()._moves['_move_down'][self.i][self.j]
-			self.set_cell()
-		else:
-			sh.log.append('WebFrame.move_down',sh.lev_err,sh.globs['mes'].wrong_input2)
+		pass
 
 	# Перейти на строку вверх
 	def move_up(self,*args):
-		if len(articles.current()._moves['_move_up']) > self.i and len(articles.current()._moves['_move_up'][self.i]) > self.j:
-			self.i, self.j = articles.current()._moves['_move_up'][self.i][self.j]
-			self.set_cell()
-		else:
-			sh.log.append('WebFrame.move_up',sh.lev_err,sh.globs['mes'].wrong_input2)
+		pass
 	
 	# Задействование колеса мыши для пролистывания экрана
 	def mouse_wheel(self,event):
@@ -1759,16 +1738,16 @@ class WebFrame:
 			
 	# Перейти на предыдущий запрос
 	def go_back(self,*args):
-		old_index = articles._no
-		articles.index_subtract()
-		if old_index != articles._no:
+		result = objs.blocks_db().prev_search()
+		if result:
+			objs.request()._search = result
 			self.load_article()
 
 	# Перейти на следующий запрос
 	def go_forward(self,*args):
-		old_index = articles._no
-		articles.index_add()
-		if old_index != articles._no:
+		result = objs.blocks_db().next_search()
+		if result:
+			objs.request()._search = result
 			self.load_article()
 
 	def control_length(self): # Confirm too long requests

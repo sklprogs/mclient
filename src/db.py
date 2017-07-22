@@ -80,7 +80,9 @@ class DB:
 		nos = self.cur_nos()
 		if nos:
 			self.dbc.execute('select SEARCH from BLOCKS where NO < ? and BLOCK < 1 order by NO desc',(nos[0],))
-			return self.dbc.fetchone()
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
 		else:
 			sh.log.append('DB.prev_search',sh.lev_warn,sh.globs['mes'].empty_input)
 			
@@ -88,7 +90,9 @@ class DB:
 		nos = self.cur_nos()
 		if nos:
 			self.dbc.execute('select SEARCH from BLOCKS where NO > ? and BLOCK < 1 order by NO',(nos[-1],))
-			return self.dbc.fetchone()
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
 		else:
 			sh.log.append('DB.prev_search',sh.lev_warn,sh.globs['mes'].empty_input)
 
