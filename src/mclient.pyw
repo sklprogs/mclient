@@ -826,12 +826,14 @@ class History:
 class WebFrame:
 	
 	def __init__(self):
-		self.values  ()
-		self.widgets ()
-		self.gui     ()
+		self.values()
+		self.widgets()
+		self.gui()
 	
 	def reset(self):
 		self.widget.reset()
+		self.update_buttons()
+		self.title()
 	
 	def values(self):
 		self.event         = None
@@ -1542,8 +1544,6 @@ class WebFrame:
 		#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=1000,MaxRow=20)
 		#input('Final step completed. Press Enter')                         # todo: del
 		
-		timer.end()
-		
 		if Debug:
 			input('Return.')
 		
@@ -1552,6 +1552,8 @@ class WebFrame:
 		#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=10000,MaxRow=15)
 		self.title(arg=objs._request._search)
 		self.search_field.clear()
+		self.update_buttons()
+		timer.end()
 		
 	# Select either the search string or the URL
 	def go(self,*args):
@@ -1658,10 +1660,10 @@ class WebFrame:
 	
 	# Следить за буфером обмена
 	def watch_clipboard(self,*args):
-		if self.CaptureHotkey:
-			self.CaptureHotkey = False
+		if objs.request().CaptureHotkey:
+			objs._request.CaptureHotkey = False
 		else:
-			self.CaptureHotkey = True
+			objs._request.CaptureHotkey = True
 		self.update_buttons()
 	
 	# Открыть URL текущей статьи в браузере
@@ -1697,49 +1699,50 @@ class WebFrame:
 	
 	# Обновить рисунки на кнопках
 	def update_buttons(self):
-		if articles.len() > 0:
+		searches = objs.blocks_db().searches()
+		if searches:
 			self.btn_repeat_sign.active()
 		else:
 			self.btn_repeat_sign.inactive()
 
-		if articles.len() > 1:
+		if searches and len(searches) > 1:
 			self.btn_repeat_sign2.active()
 		else:
 			self.btn_repeat_sign2.inactive()
 
-		if articles._no > 0:
+		if objs.blocks_db().prev_search():
 			self.btn_prev.active()
 		else:
 			self.btn_prev.inactive()
 
-		if articles.len() > 1 and articles._no < articles.len() - 1:
+		if objs.blocks_db().next_search():
 			self.btn_next.active()
 		else:
 			self.btn_next.inactive()
 
-		if self.CaptureHotkey:
+		if objs.request().CaptureHotkey:
 			self.btn_clipboard.active()
 		else:
 			self.btn_clipboard.inactive()
 			
 		# todo: Change active/inactive button logic in case of creating three or more views
-		if objs.request()._view == 0:
+		if objs._request._view == 0:
 			self.btn_toggle_view.active()
 		else:
 			self.btn_toggle_view.inactive()
 			
-		if not objs.request().SpecialPage and objs._request.SortTerms:
+		if not objs._request.SpecialPage and objs._request.SortTerms:
 			self.btn_toggle_alphabet.active()
 		else:
 			self.btn_toggle_alphabet.inactive()
 		
-		if objs._request.Block and articles.current().block():
+		if objs._request.Block and objs.blacklist():
 			self.btn_toggle_block.active()
 		else:
 			self.btn_toggle_block.inactive()
 			
 		# todo: assign 'objs._request._prioritize'
-		if not objs._request.SpecialPage and objs._request.Prioritize and objs._request._prioritize:
+		if not objs._request.SpecialPage and objs._request.Prioritize and objs.prioritize():
 			self.btn_toggle_priority.active()
 		else:
 			self.btn_toggle_priority.inactive()
@@ -1800,7 +1803,7 @@ class WebFrame:
 		self.load_article()
 		
 	def reload(self,*args):
-		articles.current().new()
+		objs.blocks_db().clear_cur()
 		self.load_article()
 		
 	# Вставить спец. символ в строку поиска

@@ -67,9 +67,12 @@ class DB:
 		if result:
 			return set([item[0] for item in result])
 			
-	def cur_nos(self):
+	def cur_nos(self,Block=True):
 		if self._search:
-			self.dbc.execute('select NO from BLOCKS where SEARCH = ? and BLOCK < 1 order by NO',(self._search,))
+			if Block:
+				self.dbc.execute('select NO from BLOCKS where SEARCH = ? and BLOCK < 1 order by NO',(self._search,))
+			else:
+				self.dbc.execute('select NO from BLOCKS where SEARCH = ? order by NO',(self._search,))
 			result = self.dbc.fetchall()
 			if result:
 				return(result[0][0],result[-1][0])
@@ -170,10 +173,19 @@ class DB:
 		else:
 			sg.Message('DB.phrase_dic',sh.lev_warn,sh.globs['mes'].empty_input)
 			
-	def clear(self,*args):
+	def clear(self):
 		sh.log.append('DB.clear',sh.lev_warn,'Delete all records from BLOCKS') # todo: mes
 		# VACUUM command is a no-op for in-memory databases
 		self.dbc.execute('delete from BLOCKS')
+		
+	def clear_cur(self):
+		nos = self.cur_nos(Block=0)
+		if nos:
+			sh.log.append('DB.clear_cur',sh.lev_warn,'Delete records %d-%d from BLOCKS' % (nos[0],nos[1])) # todo: mes
+			# Sqlite does not warn about '? <= NO >= ?', but this does nothing
+			self.dbc.execute('delete from BLOCKS where NO >= ? and NO <= ?',(nos[0],nos[1],))
+		else:
+			sh.log.append('DB.clear_cur',sh.lev_warn,sh.globs['mes'].empty_input)
 
 
 
