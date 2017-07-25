@@ -301,6 +301,98 @@ class Page:
 		return self._page
 
 
+
+class Welcome:
+	
+	def __init__(self,url=None,st_status=0,product='MClient',version='current',ui_lang='en'):
+		if not url:
+			# 'https://www.multitran.ru' is got faster than 'http://www.multitran.ru' (~0.2s)
+			url = 'https://www.multitran.ru'
+		self._url       = url
+		self._product   = product
+		self._version   = version
+		self._ui_lang   = ui_lang
+		self._st_status = st_status #len(ext_dics._dics)
+		self._mt_status = 'not running'
+		self._mt_color  = 'red'
+		self._st_color  = 'red'
+		self._desc      = sh.List(lst1=[self._product
+		                               ,self._version
+		                               ]
+		                         ).space_items()
+		self.lang()
+
+	# todo: use modern localization
+	def lang(self):
+		if self._ui_lang == 'ru':
+			self._fragm1 = '%s приветствует Вас!' % self._desc 
+			self._fragm2 = 'Эта программа – оболочка для онлайн и локальных словарей.'
+			self._fragm3 = 'Введите слово или фразу для перевода в область ввода ниже.'
+			self._fragm4 = 'Щелкните левой кнопкой мыши на выделении для получения перевода. Щелкните правой кнопкой мыши для копирования выделения в буфер обмена.'
+			self._fragm5 = 'Мультитран '
+			self._fragm6 = 'Загружено локальных словарей:'
+		else:
+			self._fragm1 = 'Welcome to %s!' % self._desc
+			self._fragm2 = 'This program retrieves translation from online/offline sources.'
+			self._fragm3 = 'Use an entry area below to enter a word/phrase to be translated.'
+			self._fragm4 = 'Click the left mouse button on the selection to return its translation. Click the right mouse button on the selection to copy it to clipboard.'
+			self._fragm5 = 'Multitran is '
+			self._fragm6 = 'Offline dictionaries loaded:'
+	
+	def online(self):
+		try:
+			code = urllib.request.urlopen(self._url).code
+			if (code / 100 < 4):
+				return True
+		except urllib.error.URLError:
+			return False
+			
+	def generate(self):
+		return '''<html>
+                <body>
+                      <h1>
+                          %s
+                      </h1>
+                      <font face='Serif' size='6'>
+						<br>
+							%s
+						<br>
+						    %s
+						<br>
+						    %s
+						<br><br>
+                            %s
+                      <font face='Serif' color='%s' size='6'>%s</font>.
+                      <br>
+                           %s <font color='%s'>%d</font>.
+                      </font>
+                </body>
+          </html>
+		''' % (self._fragm1,self._fragm2,self._fragm3,self._fragm4
+		      ,self._fragm5,self._mt_color,self._mt_status,self._fragm6
+		      ,self._st_color,self._st_status)
+		
+	def run(self):
+		if self.online():
+			if self._ui_lang == 'ru':
+				self._mt_status = 'работает'
+			else:
+				self._mt_status = 'running'
+			self._mt_color  = 'green'
+		else:
+			if self._ui_lang == 'ru':
+				self._mt_status = 'не работает'
+			else:
+				self._mt_status = 'not running'
+			self._mt_color  = 'red'
+		if self._st_status == 0:
+			self._st_color = 'red'
+		else:
+			self._st_color = 'green'
+		return self.generate()
+
+
+
 if __name__ == '__main__':
 	timer = sh.Timer(func_title='Page')
 	timer.start()

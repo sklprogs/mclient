@@ -10,12 +10,11 @@
     - odd fixed columns are inserted
 '''
 
-from tkinter import ttk
-import tkinterhtml as th
 import os
 import sys
 import tkinter     as tk
-#from tkinter import ttk # todo (?): del
+from tkinter import ttk
+import tkinterhtml as th
 import shared      as sh
 import sharedGUI   as sg
 import page        as pg
@@ -156,7 +155,7 @@ class ConfigMclient(sh.Config):
 		   ,'pair_ita_rus'                :'l1=23&l2=2&s=%s'
 		   ,'pair_lav_rus'                :'l1=27&l2=2&s=%s'
 		   ,'pair_nld_rus'                :'l1=24&l2=2&s=%s'
-		   ,'pair_root'                   :'http://www.multitran.ru/c/M.exe?'
+		   ,'pair_root'                   :'https://www.multitran.ru/c/M.exe?'
 		   ,'pair_rus_xal'                :'l1=2&l2=35&s=%s'
 		   ,'pair_spa_rus'                :'l1=5&l2=2&s=%s'
 		   ,'pair_xal_rus'                :'l1=35&l2=2&s=%s'
@@ -857,7 +856,14 @@ class WebFrame:
 		self.gui()
 	
 	def reset(self):
-		self.widget.reset()
+		#'widget.reset' is already done in 'self.fill'
+		welcome = pg.Welcome(url       = sh.globs['var']['pair_root']
+		                    ,st_status = len(objs.ext_dics()._dics)
+		                    ,product   = product
+		                    ,version   = version
+		                    ,ui_lang   = sh.globs['var']['ui_lang']
+		                    )
+		self.fill(welcome.run())
 		self.update_buttons()
 		self.title()
 	
@@ -1972,9 +1978,8 @@ if  __name__ == '__main__':
 	ConfigMclient()
 	
 	timed_update()
-	objs.request()._search = 'Добро пожаловать!'
-	objs._request._url     = sh.globs['var']['pair_root'] + 'CL=1&s=%C4%EE%E1%F0%EE+%EF%EE%E6%E0%EB%EE%E2%E0%F2%FC%21&l1=1'
-	objs.webframe().load_article()
+
+	objs.webframe().reset()
 	objs._webframe.show()
 	
 	kl_mod.keylistener.cancel()
