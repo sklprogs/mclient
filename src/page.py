@@ -350,24 +350,24 @@ class Welcome:
 	def generate(self):
 		return '''<html>
                 <body>
-                      <h1>
-                          %s
-                      </h1>
-                      <font face='Serif' size='6'>
-						<br>
-							%s
-						<br>
-						    %s
-						<br>
-						    %s
-						<br><br>
-                            %s
-                      <font face='Serif' color='%s' size='6'>%s</font>.
-                      <br>
-                           %s <font color='%s'>%d</font>.
-                      </font>
+                  <h1>
+                    %s
+                  </h1>
+                  <font face='Serif' size='6'>
+				  <br>
+				    %s
+				  <br>
+					%s
+				  <br>
+				    %s
+				  <br><br>
+                    %s
+                  <font face='Serif' color='%s' size='6'>%s</font>.
+                  <br>
+                    %s <font color='%s'>%d</font>.
+                  </font>
                 </body>
-          </html>
+              </html>
 		''' % (self._fragm1,self._fragm2,self._fragm3,self._fragm4
 		      ,self._fragm5,self._mt_color,self._mt_status,self._fragm6
 		      ,self._st_color,self._st_status)

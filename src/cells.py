@@ -2,7 +2,6 @@
 # -*- coding: UTF-8 -*-
 
 ''' # todo:
-    - make 'Phrases' section having the lowest priority
     - selectables: make 'Phrases' DIC cell SELECTABLE
 '''
 
@@ -59,20 +58,20 @@ class BlockPrioritize:
 	
 	def run(self):
 		if self.Success:
-			self.assign       ()
-			self.block        ()
-			self.prioritize   ()
-			self.dump         ()
+			self.assign     ()
+			self.block      ()
+			self.prioritize ()
+			self.dump       ()
 		else:
 			sh.log.append('BlockPrioritize.run',sh.lev_warn,sh.globs['mes'].canceled)
 	
 	def assign(self):
 		for item in self._data:
-			block        = Block()
-			block._no    = item[0]
-			block._type  = item[1]
-			block._text  = item[2]
-			block._dica  = item[3]
+			block       = Block()
+			block._no   = item[0]
+			block._type = item[1]
+			block._text = item[2]
+			block._dica = item[3]
 			self._blocks.append(block)
 			
 	def block(self):
@@ -105,32 +104,28 @@ class BlockPrioritize:
 
 	def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
 		print('\nBlockPrioritize.debug (Non-DB blocks):')
-		headers = [
-		            'NO'                ,
-		            'DICA'              ,
-		            'TYPE'              ,
-		            'TEXT'              ,
-		            'BLOCK'             ,
-		            'PRIORITY'          
+		headers = ['NO'
+		          ,'DICA'
+		          ,'TYPE'
+		          ,'TEXT'
+		          ,'BLOCK'
+		          ,'PRIORITY'          
 		          ]
 		rows = []
 		for block in self._blocks:
-			rows.append (
-			              [
-			        block._no           ,
-			        block._dica         ,
-			        block._type         ,
-			        block._text         ,
-			        block._block        ,
-			        block._priority        
-			              ]
+			rows.append ([block._no
+			             ,block._dica
+			             ,block._type
+			             ,block._text
+			             ,block._block
+			             ,block._priority        
+			             ]
 			            )
-		sh.Table (
-		            headers             = headers                             ,
-		            rows                = rows                                ,
-		            Shorten             = Shorten                             ,
-		            MaxRow              = MaxRow                              ,
-		            MaxRows             = MaxRows
+		sh.Table (headers = headers
+		         ,rows    = rows
+		         ,Shorten = Shorten
+		         ,MaxRow  = MaxRow
+		         ,MaxRows = MaxRows
 		         ).print()
 
 
@@ -211,30 +206,26 @@ class Cells:
 		
 	def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
 		print('\nCells.debug (Non-DB blocks):')
-		headers = [
-		            'NO'                ,
-		            'TYPE'              ,
-		            'TEXT'              ,
-		            'ROWNO'             ,
-		            'COLNO'             
+		headers = ['NO'
+		          ,'TYPE'
+		          ,'TEXT'
+		          ,'ROWNO'
+		          ,'COLNO'             
 		          ]
 		rows = []
 		for block in self._blocks:
-			rows.append (
-			              [
-			        block._no           ,
-			        block._type         ,
-			        block._text         ,
-			        block.i             ,
-			        block.j             
-			              ]
+			rows.append ([block._no
+			             ,block._type
+			             ,block._text
+			             ,block.i
+			             ,block.j             
+			             ]
 			            )
-		sh.Table (
-		            headers             = headers                             ,
-		            rows                = rows                                ,
-		            Shorten             = Shorten                             ,
-		            MaxRow              = MaxRow                              ,
-		            MaxRows             = MaxRows
+		sh.Table (headers = headers
+		         ,rows    = rows
+		         ,Shorten = Shorten
+		         ,MaxRow  = MaxRow
+		         ,MaxRows = MaxRows
 		         ).print()
 	
 	def wrap(self): # Dic-Wform-Transc-Speech
@@ -319,44 +310,40 @@ class Pos:
 		
 	def assign(self):
 		for item in self._data:
-			block          = Block()
-			block._no      = item[0]
-			block._type    = item[1]
-			block._text    = item[2]
-			block._same    = item[3]
-			block.i        = item[4]
+			block       = Block()
+			block._no   = item[0]
+			block._type = item[1]
+			block._text = item[2]
+			block._same = item[3]
+			block.i     = item[4]
 			self._blocks.append(block)
 		
 	def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
 		print('\nPos.debug (Non-DB blocks):')
-		headers = [
-		            'NO'                ,
-		            'TYPE'              ,
-		            'TEXT'              ,
-		            'SELECTABLE'        ,
-		            'CELLNO'            ,
-		            'POS1'              ,
-		            'POS2'
+		headers = ['NO'
+		          ,'TYPE'
+		          ,'TEXT'
+		          ,'SELECTABLE'
+		          ,'CELLNO'
+		          ,'POS1'
+		          ,'POS2'
 		          ]
 		rows = []
 		for block in self._blocks:
-			rows.append (
-			              [
-			        block._no           ,
-			        block._type         ,
-			        block._text         ,
-			        block._select       ,
-			        block._cell_no      ,
-			        block._first        ,
-			        block._last
-			              ]
+			rows.append ([block._no
+			             ,block._type
+			             ,block._text
+			             ,block._select
+			             ,block._cell_no
+			             ,block._first
+			             ,block._last
+			             ]
 			            )
-		sh.Table (
-		            headers             = headers                             ,
-		            rows                = rows                                ,
-		            Shorten             = Shorten                             ,
-		            MaxRow              = MaxRow                              ,
-		            MaxRows             = MaxRows
+		sh.Table (headers = headers
+		         ,rows    = rows
+		         ,Shorten = Shorten
+		         ,MaxRow  = MaxRow
+		         ,MaxRows = MaxRows
 		         ).print()
 	
 	def gen_poses(self): # todo: elaborate

@@ -91,34 +91,30 @@ class Elems:
 	
 	def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
 		print('\nElems.debug (Non-DB blocks):')
-		headers = [
-		            'DICA'              ,
-		            'WFORMA'            ,
-		            'SPEECHA'           ,
-		            'TRANSCA'           ,
-		            'TYPE'              ,
-		            'TEXT'              ,
-		            'SAMECELL'          
+		headers = ['DICA'
+		          ,'WFORMA'
+		          ,'SPEECHA'
+		          ,'TRANSCA'
+		          ,'TYPE'
+		          ,'TEXT'
+		          ,'SAMECELL'          
 		          ]
 		rows = []
 		for block in self._blocks:
-			rows.append (
-			              [
-			        block._dica         ,
-			        block._wforma       ,
-			        block._speecha      ,
-			        block._transca      ,
-			        block._type         ,
-			        block._text         ,
-			        block._same         
-			              ]
+			rows.append ([block._dica
+			             ,block._wforma
+			             ,block._speecha
+			             ,block._transca
+			             ,block._type
+			             ,block._text
+			             ,block._same         
+			             ]
 			            )
-		sh.Table (
-		            headers             = headers                             ,
-		            rows                = rows                                ,
-		            Shorten             = Shorten                             ,
-		            MaxRow              = MaxRow                              ,
-		            MaxRows             = MaxRows
+		sh.Table (headers = headers
+		         ,rows    = rows
+		         ,Shorten = Shorten
+		         ,MaxRow  = MaxRow
+		         ,MaxRows = MaxRows
 		         ).print()
 		
 	# 'speech' blocks have '_same = 1' when analyzing MT because they are within a single tag. We fix it here, not in Tags, because Tags are assumed to output the result 'as is'.
@@ -405,29 +401,28 @@ class Elems:
 	def dump(self):
 		for block in self._blocks:
 			self._data.append (
-			              (
-			        None                , # (00) Skips the autoincrement
-			        self._source        , # (01) SOURCE
-			        self._search        , # (02) SEARCH
-			        block._dica         , # (03) DICA
-			        block._wforma       , # (04) WFORMA
-			        block._speecha      , # (05) SPEECHA
-			        block._transca      , # (06) TRANSCA
-			        block._terma        , # (07) TERMA
-			        block._type         , # (08) TYPE
-			        block._text         , # (09) TEXT
-			        block._url          , # (10) URL
-			        block._block        , # (11) BLOCK
-			        block._priority     , # (12) PRIORITY
-			        block._select       , # (13) SELECTABLE
-			        block._same         , # (14) SAMECELL
-			        block._cell_no      , # (15) CELLNO
-			        -1                  , # (16) ROWNO
-			        -1                  , # (17) COLNO
-			        -1                  , # (18) POS1
-			        -1                    # (19) POS2
-			            )
-			              )
+			  (None            # (00) Skips the autoincrement
+			  ,self._source    # (01) SOURCE
+			  ,self._search    # (02) SEARCH
+			  ,block._dica     # (03) DICA
+			  ,block._wforma   # (04) WFORMA
+			  ,block._speecha  # (05) SPEECHA
+			  ,block._transca  # (06) TRANSCA
+			  ,block._terma    # (07) TERMA
+			  ,block._type     # (08) TYPE
+			  ,block._text     # (09) TEXT
+			  ,block._url      # (10) URL
+			  ,block._block    # (11) BLOCK
+			  ,block._priority # (12) PRIORITY
+			  ,block._select   # (13) SELECTABLE
+			  ,block._same     # (14) SAMECELL
+			  ,block._cell_no  # (15) CELLNO
+			  ,-1              # (16) ROWNO
+			  ,-1              # (17) COLNO
+			  ,-1              # (18) POS1
+			  ,-1              # (19) POS2
+			  )
+			                  )
 
 
 
@@ -475,7 +470,7 @@ class PhraseTerma:
 		
 	def run(self):
 		if self.Success:
-			self.second_phrase ()
+			self.second_phrase()
 			self.phrase_dic   ()
 			self.dump         ()
 		else:
@@ -498,13 +493,13 @@ if __name__ == '__main__':
 	#'/home/pete/tmp/ars/preceding.txt'
 
 	# Modifiable
-	#source     = 'Offline'
-	source     = 'Online'
-	search     = 'preceding'
-	url        = 'http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
-	file       = '/home/pete/tmp/ars/preceding.txt'
-	#file       = None
-	Debug      = 0
+	#source = 'Offline'
+	source  = 'Online'
+	search  = 'preceding'
+	url     = 'http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
+	file    = '/home/pete/tmp/ars/preceding.txt'
+	#file   = None
+	Debug   = 0
 	
 	
 	timer = sh.Timer(func_title='page, elems')
