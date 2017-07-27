@@ -197,91 +197,86 @@ class DB:
 			return self.dbc.fetchone()
 		else:
 			sh.log.append('DB.block_pos',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def max_cell_no(self):
+		if self._source and self._search:
+			self.dbc.execute('select CELLNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 order by CELLNO desc',(self._source,self._search,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('DB.block_pos',sh.lev_warn,sh.globs['mes'].empty_input)
 
 
 
 if __name__ == '__main__':
-	import re
-	import html
+	import page    as pg
 	import tags    as tg
 	import elems   as el
 	import cells   as cl
 	import mclient as mc
 	
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/star_test').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/sampling.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/test.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/do.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/filter_get').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро пожаловать.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/рабочая документация.txt').get()
-	text = sh.ReadTextFile(file='/home/pete/tmp/ars/martyr.txt').get()
-
-	text = text.replace('\r','')
-	text = text.replace('\n','')
-	text = text.replace(' <','<')
-	text = text.replace('> ','>')
-	text = text.replace(sh.nbspace+'<','<')
-	text = text.replace('>'+sh.nbspace,'>')
-
-	text = text.replace('>; <','><')
-	text = text.replace('> <','><')
-
-	try:
-		text = html.unescape(text)
-	except:
-		sh.log.append('Page.decode_entities',sh.lev_err,sh.globs['mes'].html_conversion_failure)
-		
-	# An excessive space must be removed after unescaping the page
-	text = re.sub(r'\>[\s]{0,1}\<','><',text)
+	# Modifiable
+	source     = 'Online'
+	search     = 'рабочая документация'
+	file       = '/home/pete/tmp/ars/рабочая документация.txt'
+	collimit   = 10
+	blacklist  = []
+	prioritize = ['Общая лексика']
+	
+	page = pg.Page (source       = source
+	               ,lang         = 'English'
+	               ,search       = search
+	               ,url          = ''
+	               ,win_encoding = 'windows-1251'
+	               ,ext_dics     = []
+	               ,file         = file
+	               )
+	page.run()
 
 	mc.ConfigMclient ()
 	
-	collimit   = 10
-	source     = 'All'
-	search     = 'martyr'
-	#blacklist = ['Христианство']
-	blacklist  = []
-	prioritize = ['Религия']
-
-	tags = tg.Tags(text)
+	tags = tg.Tags(page._page)
 	tags.run()
-	#tags.debug(MaxRows=40)
-	#input('Tags step completed. Press Enter')
 	
 	elems = el.Elems(blocks=tags._blocks,source=source,search=search)
 	elems.run()
-	#elems.debug(MaxRows=40)
-	#input('Elems step completed. Press Enter')
 	
 	blocks_db = DB()
 	blocks_db.fill(elems._data)
-	
 	blocks_db.request(source=source,search=search)
-	data = blocks_db.assign_bp()
 	
-	bp = cl.BlockPrioritize(data=data,source=source,search=search,blacklist=blacklist,prioritize=prioritize)
+	ph_terma = el.PhraseTerma (dbc    = blocks_db.dbc
+	                          ,source = source
+	                          ,search = search
+	                          )
+	ph_terma.run()
+	
+	data       = blocks_db.assign_bp()
+	phrase_dic = blocks_db.phrase_dic ()
+	
+	bp = cl.BlockPrioritize (data       = data
+	                        ,source     = source
+	                        ,search     = search
+	                        ,blacklist  = blacklist
+	                        ,prioritize = prioritize
+	                        ,phrase_dic = phrase_dic
+	                        )
 	bp.run()
-	#bp.debug(MaxRows=40)
-	#input('BlockPrioritize step completed. Press Enter')
-	#sg.Message('BlockPrioritize',sh.lev_info,bp._query.replace(';',';\n'))
 	blocks_db.update(query=bp._query)
 	
 	data = blocks_db.assign_cells()
 	cells = cl.Cells(data=data,collimit=collimit)
 	cells.run()
-	#cells.debug(MaxRows=40)
-	#input('Cells step completed. Press Enter')
-	#sg.Message('Cells',sh.lev_info,cells._query.replace(';',';\n'))
 	blocks_db.update(query=cells._query)
 
+	'''
 	data = blocks_db.assign_pos()
-	pos = cl.Pos(data=data)
+	pos = cl.Pos(data=data,raw_text='RAW_TEXT')
 	pos.run()
-	#pos.debug(MaxRows=40)
-	#input('Pos step completed. Press Enter')
-	#sg.Message('Pos',sh.lev_info,pos._query.replace(';',';\n'))
 	blocks_db.update(query=pos._query)
+	'''
 	
 	blocks_db.print(Shorten=1,MaxRow=18,MaxRows=150)
+	
+	print(blocks_db.max_cell_no())

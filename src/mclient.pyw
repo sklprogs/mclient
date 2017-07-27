@@ -1465,7 +1465,7 @@ class WebFrame:
 						   ,url          = objs._request._url
 						   ,win_encoding = sh.globs['var']['win_encoding']
 						   ,ext_dics     = objs.ext_dics()
-						   #,file         = '/home/pete/tmp/ars/preceding.txt' # cur
+						   ,file         = '/home/pete/tmp/ars/preceding.txt' # cur
 						   )
 			page.run()
 			objs._request._page     = page._page
@@ -1512,8 +1512,8 @@ class WebFrame:
 		cells.run()
 		objs._blocks_db.update(query=cells._query)
 		
-		#raw_text = sh.ReadTextFile(file='/home/pete/tmp/ars/preceding - extracted text').get() # cur
-		raw_text = 'text'
+		raw_text = sh.ReadTextFile(file='/home/pete/tmp/ars/preceding - extracted text').get() # cur
+		#raw_text = 'text'
 		
 		data = objs._blocks_db.assign_pos()
 		pos  = cl.Pos(data=data,raw_text=raw_text) # cur

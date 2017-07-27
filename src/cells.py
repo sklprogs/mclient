@@ -22,7 +22,7 @@ class Block:
 		self._no       = -1
 		self._cell_no  = -1 # Applies to non-blocked cells only
 		self._same     = -1
-		self._priority = -1
+		self._priority = 0
 		# '_select' is an attribute of a *cell* which is valid if the cell has a non-blocked block of types 'term', 'phrase' or 'transc'
 		self._select   = -1
 		self._type     = 'comment' # 'wform', 'speech', 'dic', 'phrase', 'term', 'comment', 'correction', 'transc', 'invalid'
@@ -133,7 +133,7 @@ class BlockPrioritize:
 ''' This re-assigns DIC, WFORM, SPEECH, TRANSC types
     We assume that sqlite has already sorted DB with 'BLOCK IS NOT 1'
     Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL, DICA, WFORMA, SPEECHA, TRANSCA
-    Modifies attributes:        TEXT, ROWNO, COLNO
+    Modifies attributes:        TEXT, ROWNO, COLNO, CELLNO, SELECTABLE
 '''
 class Cells:
 	
@@ -155,7 +155,7 @@ class Cells:
 			for block in self._blocks:
 				if block._dica == self._phrase_dic:
 					if block._type == 'wform' or block._type == 'speech' or block._type == 'transc':
-						block._text  = ''
+						block._text = ''
 	
 	def clear_fixed(self):
 		dica = wforma = speecha = transca = ''
@@ -187,6 +187,8 @@ class Cells:
 			self.clear_fixed   ()
 			self.clear_phrases ()
 			self.wrap          ()
+			self.cell_no       ()
+			self.selectables   ()
 			self.dump          ()
 		else:
 			sh.log.append('Cells.run',sh.lev_warn,sh.globs['mes'].canceled)
@@ -210,7 +212,9 @@ class Cells:
 		          ,'TYPE'
 		          ,'TEXT'
 		          ,'ROWNO'
-		          ,'COLNO'             
+		          ,'COLNO'
+		          ,'CELLNO'
+		          ,'SELECTABLE'
 		          ]
 		rows = []
 		for block in self._blocks:
@@ -218,7 +222,9 @@ class Cells:
 			             ,block._type
 			             ,block._text
 			             ,block.i
-			             ,block.j             
+			             ,block.j
+			             ,block._cell_no
+			             ,block._select
 			             ]
 			            )
 		sh.Table (headers = headers
@@ -264,6 +270,25 @@ class Cells:
 				else:
 					self._blocks[x].j = 4
 					j += 1
+					
+	def selectables(self):
+		cell_nos = [block._cell_no for block in self._blocks if block._type in ('phrase','term','transc') and block._text]
+		for block in self._blocks:
+			if block._cell_no in cell_nos:
+				block._select = 1
+			else:
+				block._select = 0
+
+	def cell_no(self):
+		no = 0
+		for i in range(len(self._blocks)):
+			if self._blocks[i]._same > 0:
+				self._blocks[i]._cell_no = no
+			elif i > 0: # i != no
+				no += 1
+				self._blocks[i]._cell_no = no
+			else:
+				self._blocks[i]._cell_no = no
 		
 	def dump(self):
 		tmp = io.StringIO()
@@ -271,9 +296,9 @@ class Cells:
 		for block in self._blocks:
 			# We do not want to mess around with screening quotes that can fail the query
 			if block._text:
-				tmp.write('update BLOCKS set ROWNO=%d,COLNO=%d where NO=%d;' % (block.i,block.j,block._no))
+				tmp.write('update BLOCKS set ROWNO=%d,COLNO=%d,CELLNO=%d,SELECTABLE=%s where NO=%d;' % (block.i,block.j,block._cell_no,block._select,block._no))
 			else:
-				tmp.write('update BLOCKS set TEXT="%s",ROWNO=%d,COLNO=%d where NO=%d;' % (block._text,block.i,block.j,block._no))
+				tmp.write('update BLOCKS set TEXT="%s",ROWNO=%d,COLNO=%d,CELLNO=%d,SELECTABLE=%s where NO=%d;' % (block._text,block.i,block.j,block._cell_no,block._select,block._no))
 		tmp.write('commit;')
 		self._query = tmp.getvalue()
 		tmp.close()
@@ -284,7 +309,7 @@ class Cells:
 # This is view-specific and should be recreated each time
 ''' We assume that sqlite has already sorted DB with 'BLOCK IS NOT 1'
     Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL
-    Modifies attributes:        SELECTABLE, CELLNO, POS1, POS2
+    Modifies attributes:        POS1, POS2
 '''
 class Pos:
 	
@@ -303,8 +328,6 @@ class Pos:
 		if self.Success:
 			self.assign      ()
 			self.gen_poses   ()
-			self.cell_no     ()
-			self.selectables ()
 			self.dump        ()
 		else:
 			sh.log.append('Pos.run',sh.lev_warn,sh.globs['mes'].canceled)
@@ -324,8 +347,6 @@ class Pos:
 		headers = ['NO'
 		          ,'TYPE'
 		          ,'TEXT'
-		          ,'SELECTABLE'
-		          ,'CELLNO'
 		          ,'POS1'
 		          ,'POS2'
 		          ]
@@ -334,8 +355,6 @@ class Pos:
 			rows.append ([block._no
 			             ,block._type
 			             ,block._text
-			             ,block._select
-			             ,block._cell_no
 			             ,block._first
 			             ,block._last
 			             ]
@@ -361,35 +380,11 @@ class Pos:
 			block._last  = block._first + len(block._text)
 			last         = block._last
 		
-	def selectables(self):
-		cell_nos = []
-		for block in self._blocks:
-			if block._type == 'phrase' or block._type == 'term' or block._type == 'transc':
-				# There is no need to select empty cells
-				if block._text:
-					cell_nos.append(block._cell_no)
-		for block in self._blocks:
-			if block._cell_no in cell_nos:
-				block._select = 1
-			else:
-				block._select = 0
-
-	def cell_no(self):
-		no = 0
-		for i in range(len(self._blocks)):
-			if self._blocks[i]._same > 0:
-				self._blocks[i]._cell_no = no
-			elif i > 0: # i != no
-				no += 1
-				self._blocks[i]._cell_no = no
-			else:
-				self._blocks[i]._cell_no = no
-		
 	def dump(self):
 		tmp = io.StringIO()
 		tmp.write('begin;')
 		for block in self._blocks:
-			tmp.write('update BLOCKS set SELECTABLE=%d,CELLNO=%d,POS1=%d,POS2=%d where NO=%d;' % (block._select,block._cell_no,block._first,block._last,block._no))
+			tmp.write('update BLOCKS set POS1=%d,POS2=%d where NO=%d;' % (block._first,block._last,block._no))
 		tmp.write('commit;')
 		self._query = tmp.getvalue()
 		tmp.close()
