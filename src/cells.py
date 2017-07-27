@@ -307,7 +307,7 @@ class Cells:
 
 
 # This is view-specific and should be recreated each time
-''' We assume that sqlite has already sorted DB with 'BLOCK IS NOT 1'
+''' We assume that sqlite has already sorted DB with 'BLOCK IS NOT 1' and all cell manipulations are completed
     Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL
     Modifies attributes:        POS1, POS2
 '''
@@ -366,15 +366,17 @@ class Pos:
 		         ,MaxRows = MaxRows
 		         ).print()
 	
-	def gen_poses(self): # todo: elaborate
-		last = len(self._raw_text) - len(self._raw_text.lstrip('\n'))
-		sh.log.append('Pos.gen_poses',sh.lev_debug,'Overhead is %d symbols' % last) # todo: mes
+	def gen_poses(self):
+		last = 0
 		for block in self._blocks:
 			if block._text:
-				if block._same > 0:
-					block._first = last + 2
+				search   = sh.Search(text=self._raw_text,search=block._text)
+				search.i = last
+				result   = sh.Input(val=search.next(),func_title='Pos.gen_poses').integer()
+				if result > last:
+					block._first = result
 				else:
-					block._first = last + 1
+					block._first = last
 			else:
 				block._first = last
 			block._last = block._first + len(block._text)
@@ -393,102 +395,80 @@ class Pos:
 
 
 if __name__ == '__main__':
-	import re
-	import html
-	import tags as tg
-	import elems as el
-	import mclient as mc
 	import db
+	import page    as pg
+	import tags    as tg
+	import elems   as el
+	import mclient as mc
 	
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/star_test').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/sampling.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/test.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/do.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/filter_get').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро пожаловать.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/добро.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/рабочая документация.txt').get()
-	#text = sh.ReadTextFile(file='/home/pete/tmp/ars/martyr.txt').get()
-	text = sh.ReadTextFile(file='/home/pete/tmp/ars/preceding.txt').get()
-
-	text = text.replace('\r','')
-	text = text.replace('\n','')
-	text = text.replace(' <','<')
-	text = text.replace('> ','>')
-	text = text.replace(sh.nbspace+'<','<')
-	text = text.replace('>'+sh.nbspace,'>')
-
-	text = text.replace('>; <','><')
-	text = text.replace('> <','><')
-
-	try:
-		text = html.unescape(text)
-	except:
-		sh.log.append('Page.decode_entities',sh.lev_err,sh.globs['mes'].html_conversion_failure)
-		
-	# An excessive space must be removed after unescaping the page
-	text = re.sub(r'\>[\s]{0,1}\<','><',text)
-
+	# Modifiable
+	source     = 'Online'
+	search     = 'working documentation'
+	url        = ''
+	file       = '/home/pete/tmp/ars/working documentation.txt'
+	blacklist  = []
+	prioritize = ['Общая лексика']
+	collimit   = 10
+	file_raw   = '/home/pete/tmp/ars/working documentation - extracted text'
+	
+	raw_text = sh.ReadTextFile(file=file_raw).get()
+	
+	timer = sh.Timer(func_title='page, tags, elems, ph_terma, cells')
+	timer.start()
+	
 	mc.ConfigMclient ()
 	
-	source     = 'All'
-	search     = 'martyr.txt'
-	blacklist  = ['Австралийский сленг','Архаизм','Бранное выражение','Грубое выражение','Диалект','Жаргон','Презрительное выражение','Просторечие','Разговорное выражение','Расширение файла','Редкое выражение','Ругательство','Сленг','Табу','Табуированная лексика','Тюремный жаргон','Устаревшее слово','Фамильярное выражение','Шутливое выражение','Эвфемизм']
-	prioritize = ['Общая лексика','Техника']
+	page = pg.Page (source       = source
+	               ,lang         = 'English'
+	               ,search       = search
+	               ,url          = url
+	               ,win_encoding = 'windows-1251'
+	               ,ext_dics     = []
+	               ,file         = file)
+	page.run()
 	
-	Debug = 0
-
-	tags = tg.Tags(text)
+	tags = tg.Tags(source=source,text=page._page)
 	tags.run()
-	if Debug:
-		tags.debug(MaxRows=40)
-		input('Tags step completed. Press Enter')
 	
-	elems = el.Elems(blocks=tags._blocks,source=source,search=search)
+	elems = el.Elems (blocks = tags._blocks
+	                 ,source = source
+	                 ,search = search)
 	elems.run()
-	if Debug:
-		elems.debug(MaxRows=40)
-		input('Elems step completed. Press Enter')
 	
 	blocks_db = db.DB()
 	blocks_db.fill(elems._data)
 	
 	blocks_db.request(source=source,search=search)
-	phrase_dic = blocks_db.phrase_dic()
-	data = blocks_db.assign_bp()
 	
-	bp = BlockPrioritize(data=data,source=source,search=search,blacklist=blacklist,prioritize=prioritize,phrase_dic=phrase_dic)
+	ph_terma = el.PhraseTerma (dbc    = blocks_db.dbc
+	                          ,source = source
+	                          ,search = search)
+	ph_terma.run()
+	
+	data       = blocks_db.assign_bp()
+	phrase_dic = blocks_db.phrase_dic ()
+	
+	bp = BlockPrioritize (data       = data
+	                     ,source     = source
+	                     ,search     = search
+	                     ,blacklist  = blacklist
+	                     ,prioritize = prioritize
+	                     ,phrase_dic = phrase_dic
+	                     )
 	bp.run()
-	if Debug:
-		bp.debug(MaxRows=40)
-		input('BlockPrioritize step completed. Press Enter')
-		sg.Message('BlockPrioritize',sh.lev_info,bp._query.replace(';',';\n'))
 	blocks_db.update(query=bp._query)
 	
 	data = blocks_db.assign_cells()
-	cells = Cells(data=data,collimit=10,phrase_dic=phrase_dic)
+	cells = Cells(data=data,collimit=collimit)
 	cells.run()
-	if Debug:
-		cells.debug(MaxRows=40)
-		input('Cells step completed. Press Enter')
-		sg.Message('Cells',sh.lev_info,cells._query.replace(';',';\n'))
 	blocks_db.update(query=cells._query)
 	
 	data = blocks_db.assign_pos()
-	pos = Pos(data=data)
+	pos  = Pos(data=data,raw_text=raw_text)
 	pos.run()
-	if Debug:
-		pos.debug(MaxRows=40)
-		input('Pos step completed. Press Enter')
-		sg.Message('Pos',sh.lev_info,pos._query.replace(';',';\n'))
 	blocks_db.update(query=pos._query)
-
-	if Debug:
-		blocks_db.print(Shorten=1,MaxRow=15,MaxRows=100)
-		#blocks_db.dbc.execute('select * from BLOCKS where BLOCK=0 order by CELLNO,NO')
-		#blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=100)
-		
-	#blocks_db.dbc.execute('select * from BLOCKS where BLOCK=0 order by NO')
-	#blocks_db.print(Selected=1,Shorten=1,MaxRow=15,MaxRows=100)
-	blocks_db.print(Shorten=1,MaxRow=15,MaxRows=100)
 	
+	timer.end()
+	
+	blocks_db.dbc.execute('select NO,DICA,TYPE,TEXT,SAMECELL,PRIORITY,CELLNO,POS1,POS2,SELECTABLE from BLOCKS order by CELLNO,NO')
+	blocks_db.print(Selected=1,Shorten=1,MaxRows=200,MaxRow=18)

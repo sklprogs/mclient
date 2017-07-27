@@ -477,32 +477,24 @@ class PhraseTerma:
 
 
 if __name__ == '__main__':
-	import tags    as tg
+	import db
 	import page    as pg
+	import tags    as tg
 	import mclient as mc
 	
-	#'/home/pete/tmp/ars/star_test'
-	#'/home/pete/tmp/ars/sampling.txt'
-	#'/home/pete/tmp/ars/filter_get'
-	#'/home/pete/tmp/ars/добро пожаловать.txt'
-	#'/home/pete/tmp/ars/добро.txt'
-	#'/home/pete/tmp/ars/рабочая документация.txt'
-	#'/home/pete/tmp/ars/martyr.txt'
-	#'/home/pete/tmp/ars/preceding.txt'
-
 	# Modifiable
-	#source = 'Offline'
 	source  = 'Online'
 	search  = 'preceding'
 	url     = 'http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
 	file    = '/home/pete/tmp/ars/preceding.txt'
-	#file   = None
 	Debug   = 0
 	
 	
 	timer = sh.Timer(func_title='page, elems')
 	timer.start()
 	
+	mc.ConfigMclient()
+
 	page = pg.Page (source       = source
 	               ,lang         = 'English'
 	               ,search       = search
@@ -512,8 +504,6 @@ if __name__ == '__main__':
 	               ,file         = file)
 	page.run()
 	
-	mc.ConfigMclient ()
-
 	tags = tg.Tags(source=source,text=page._page)
 	tags.run()
 	
@@ -523,14 +513,15 @@ if __name__ == '__main__':
 	elems = Elems (blocks = tags._blocks
 	              ,source = source
 	              ,search = search)
-	elems.run   ()
+	elems.run()
 	
 	if Debug:
 		elems.debug (MaxRows=200)
 	
-	import db
 	blocks_db = db.DB()
 	blocks_db.fill(elems._data)
+	
+	blocks_db.request(source=source,search=search)
 	
 	ph_terma = PhraseTerma (dbc    = blocks_db.dbc
 	                       ,source = source
@@ -539,8 +530,5 @@ if __name__ == '__main__':
 	
 	timer.end()
 	
-	#elems.debug(MaxRows=200)
-
-	#'DICA,WFORMA,SPEECHA,TRANSCA,TERMA,TYPE,TEXT,URL,SAMECELL'
 	blocks_db.dbc.execute('select NO,DICA,TERMA,TYPE,TEXT,SAMECELL from BLOCKS order by NO')
 	blocks_db.print(Selected=1,Shorten=1,MaxRows=200,MaxRow=20)
