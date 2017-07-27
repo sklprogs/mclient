@@ -1465,7 +1465,7 @@ class WebFrame:
 						   ,url          = objs._request._url
 						   ,win_encoding = sh.globs['var']['win_encoding']
 						   ,ext_dics     = objs.ext_dics()
-						   ,file         = '/home/pete/tmp/ars/preceding.txt' # cur
+						   #,file         = '/home/pete/tmp/ars/preceding.txt' # cur
 						   )
 			page.run()
 			objs._request._page     = page._page
@@ -1512,27 +1512,27 @@ class WebFrame:
 		cells.run()
 		objs._blocks_db.update(query=cells._query)
 		
-		raw_text = sh.ReadTextFile(file='/home/pete/tmp/ars/preceding - extracted text').get() # cur
-		#raw_text = 'text'
-		
-		data = objs._blocks_db.assign_pos()
-		pos  = cl.Pos(data=data,raw_text=raw_text) # cur
-		pos.run()
-		objs._blocks_db.update(query=pos._query)
-		
 		get_html = mh.HTML (data     = objs._blocks_db.fetch()
 						   ,collimit = objs._request._collimit
 						   )
 		objs._request._html = get_html._html
 		self.fill(code=objs._request._html)
 		
+		data = objs._blocks_db.assign_pos()
+		pos  = cl.Pos(data=data,raw_text=self.text())
+		pos.run()
+		objs._blocks_db.update(query=pos._query)
+		
 		self.title(arg=objs._request._search)
 		self.search_field.clear()
 		self.update_buttons()
 		timer.end()
 		
-		#sg.objs.txt().reset_data()
-		#sg.objs.txt().insert(self.text())
+		'''
+		sg.objs.txt().reset_data()
+		sg.objs.txt().insert(self.text())
+		sg.objs.txt().show()
+		'''
 		
 		objs.blocks_db().dbc.execute('select NO,CELLNO,TYPE,TEXT,POS1,POS2 from BLOCKS order by CELLNO,NO')
 		objs.blocks_db().print(Selected=1,Shorten=1,MaxRow=20,MaxRows=300)

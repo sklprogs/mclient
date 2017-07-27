@@ -314,10 +314,10 @@ class Cells:
 class Pos:
 	
 	def __init__(self,data,raw_text):
-		self._data       = data # Sqlite fetch
-		self._raw_text   = raw_text
-		self._blocks     = []
-		self._query      = ''
+		self._data     = data     # Sqlite fetch
+		self._raw_text = raw_text # Retrieved from the TkinterHTML widget
+		self._blocks   = []
+		self._query    = ''
 		if self._data and self._raw_text:
 			self.Success = True
 		else:
@@ -326,9 +326,9 @@ class Pos:
 		
 	def run(self):
 		if self.Success:
-			self.assign      ()
-			self.gen_poses   ()
-			self.dump        ()
+			self.assign   ()
+			self.gen_poses()
+			self.dump     ()
 		else:
 			sh.log.append('Pos.run',sh.lev_warn,sh.globs['mes'].canceled)
 		
@@ -377,8 +377,8 @@ class Pos:
 					block._first = last + 1
 			else:
 				block._first = last
-			block._last  = block._first + len(block._text)
-			last         = block._last
+			block._last = block._first + len(block._text)
+			last        = block._last
 		
 	def dump(self):
 		tmp = io.StringIO()
