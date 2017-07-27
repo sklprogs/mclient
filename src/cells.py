@@ -288,11 +288,12 @@ class Cells:
 '''
 class Pos:
 	
-	def __init__(self,data):
+	def __init__(self,data,raw_text):
 		self._data       = data # Sqlite fetch
+		self._raw_text   = raw_text
 		self._blocks     = []
 		self._query      = ''
-		if self._data:
+		if self._data and self._raw_text:
 			self.Success = True
 		else:
 			self.Success = False
@@ -347,9 +348,16 @@ class Pos:
 		         ).print()
 	
 	def gen_poses(self): # todo: elaborate
-		last = 0
+		last = len(self._raw_text) - len(self._raw_text.lstrip('\n'))
+		sh.log.append('Pos.gen_poses',sh.lev_debug,'Overhead is %d symbols' % last) # todo: mes
 		for block in self._blocks:
-			block._first = last + 1
+			if block._text:
+				if block._same > 0:
+					block._first = last + 2
+				else:
+					block._first = last + 1
+			else:
+				block._first = last
 			block._last  = block._first + len(block._text)
 			last         = block._last
 		

@@ -119,21 +119,6 @@ class DB:
 		         ,MaxRows = MaxRows
 		         ).print()
 
-	def get_cell(self,pos): # Selectable
-		if self._source and self._search:
-			self.dbc.execute('select NO,CELLNO,TYPE,TEXT,POS1,POS2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ?',(self._source,self._search,pos,pos,))
-			result = self.dbc.fetchone()
-			if result:
-				#return(result[0],result[1])
-				print('NO:\t\t',result[0])
-				print('CELLNO:\t\t',result[1])
-				print('TYPE:\t\t',result[2])
-				print('TEXT:\t\t',result[3])
-				print('Range:\t\t%d-%d' % (result[4],result[5]))
-				return(result[4],result[5])
-		else:
-			sg.Message('DB.get_cell',sh.lev_warn,sh.globs['mes'].empty_input)
-
 	def update(self,query):
 		try:
 			self.dbc.executescript(query)
@@ -186,6 +171,32 @@ class DB:
 			self.dbc.execute('delete from BLOCKS where NO >= ? and NO <= ?',(nos[0],nos[1],))
 		else:
 			sh.log.append('DB.clear_cur',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def get_cell(self,pos,Selectable=True):
+		if self._source and self._search:
+			if Selectable:
+				self.dbc.execute('select CELLNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and SELECTABLE = 1 and POS1 <= ? and POS2 >= ?',(self._source,self._search,pos,pos,))
+			else:
+				self.dbc.execute('select CELLNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 >= ?',(self._source,self._search,pos,pos,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('DB.get_cell',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def cell_pos(self,cell_no):
+		if self._source and self._search:
+			self.dbc.execute('select POS1,POS2,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and CELLNO = ? order by NO',(self._source,self._search,cell_no,))
+			return self.dbc.fetchall()
+		else:
+			sh.log.append('DB.cell_pos',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def block_pos(self,pos):
+		if self._source and self._search:
+			self.dbc.execute('select POS1,POS2,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 >= ? order by NO',(self._source,self._search,pos,pos,))
+			return self.dbc.fetchone()
+		else:
+			sh.log.append('DB.block_pos',sh.lev_warn,sh.globs['mes'].empty_input)
 
 
 

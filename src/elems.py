@@ -72,13 +72,11 @@ class Elems:
 			self.straight_line     ()
 			self.comments          ()
 			self.dic_abbr          ()
-			self.add_space         ()
 			# These 2 procedures should not be combined (otherwise, corrections will have the same color as comments)
 			self.unite_comments    ()
 			self.unite_corrections ()
 			self.speech            ()
 			self.comment_same      ()
-			# todo: fix 'List().space_items', use it in 'unite_*' and delete this
 			self.add_space         ()
 			self.fill              ()
 			self.fill_terma        ()
@@ -140,7 +138,7 @@ class Elems:
 		while i < len(self._blocks):
 			if self._blocks[i]._type == 'comment' and self._blocks[i]._same > 0:
 				if i > 0 and self._blocks[i-1]._type == 'comment':
-					self._blocks[i-1]._text += self._blocks[i]._text
+					self._blocks[i-1]._text = sh.List(lst1=[self._blocks[i-1]._text,self._blocks[i]._text]).space_items()
 					del self._blocks[i]
 					i -= 1
 			i += 1
@@ -150,7 +148,7 @@ class Elems:
 		while i < len(self._blocks):
 			if self._blocks[i]._type == 'correction' and self._blocks[i]._same > 0:
 				if i > 0 and self._blocks[i-1]._type == 'correction':
-					self._blocks[i-1]._text += self._blocks[i]._text
+					self._blocks[i-1]._text = sh.List(lst1=[self._blocks[i-1]._text,self._blocks[i]._text]).space_items()
 					del self._blocks[i]
 					i -= 1
 			i += 1

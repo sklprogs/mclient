@@ -390,7 +390,7 @@ class CurRequest:
 		self.SpecialPage   = False
 		self.MouseClicked  = False
 		self.CaptureHotkey = True
-		self._page         = ''
+		self._page         = '' # cur
 		self._html         = ''
 		self._html_raw     = ''
 		
@@ -870,11 +870,9 @@ class WebFrame:
 	def values(self):
 		self.event         = None
 		self._node         = None
-		self.index         = None
-		self._offset       = None
 		self.MouseClicked  = False
 		self.CaptureHotkey = True
-		self.mouse_index   = -1 # self.mouse_index (int) != self.index (tuple)
+		self._pos          = -1
 	
 	def gui(self):
 		self.obj     = sg.objs.new_top(Maximize=1)
@@ -1410,54 +1408,41 @@ class WebFrame:
 	def text(self,event=None):
 		return self.widget.text('text')
 		
-	# Изменить ячейку при движении мышью
 	def mouse_sel(self,event=None):
+		self.get_cell(event=event)
+		self.set_cell()
+	
+	def get_cell(self,event=None):
 		if event:
-			self.event = event
-			# Если ячейку определить не удалось, либо ее выделять нельзя (согласно настройкам), то возвращается предыдущая ячейка. Это позволяет всегда иметь активное выделение.
 			try:
-				self._node, self._offset = self.widget.node(True,self.event.x,self.event.y)
-				self.mouse_index         = self.widget.text("offset",self._node,self._offset)
-			except ValueError:
-				# Это сообщение появляется так часто, что не ставлю тут ничего.
-				#sh.log.append('WebFrame.mouse_sel',sh.lev_warn,sh.globs['mes'].unknown_cell)
-				pass
-			if self.mouse_index > 0:
-				#self.get_cell(self.mouse_index)
-				#self.set_cell(View=False)
-				#print(self.mouse_index)
-				self.set_cell(pos=self.mouse_index)
-				
-	# Выделить ячейку
-	def set_cell(self,pos,View=True): # View=True будет всегда сдвигать экран до текущей ячейки при навигации с клавиатуры
-		'''
-		print() # todo: del
-		print('mouse_index:',self.mouse_index) # todo: del
-		self.widget.tag("delete", "selection")
-		result = objs.blocks_db().get_cell(pos=pos)
-		if result:
-			pos1, pos2 = result
-		else:
-			pos1, pos2 = 0, 0
-		#print('pos1:',pos1) # todo: del # cur
-		#print('pos2:',pos2) # todo: del
-		self.index = self.widget.text('index',pos1,pos2)
-		print('index:',self.index) # todo: del
-		print('index[0]:',self.index[0]) # todo: del
-		print('index[1]:',self.index[1]) # todo: del
-		print('index[2]:',self.index[2]) # todo: del
-		print('index[3]:',self.index[3]) # todo: del
-		'''
-		if self.index:
-			try:
-				self.widget.tag('add','selection',self.index[0],self.index[1],self.index[2],self.index[3])
-			# При удалении или вставке ячеек может возникнуть ошибка, поскольку текущий узел изменился
-			except tk.TclError:
-				sh.log.append('WebFrame.set_cell',sh.lev_warn,sh.globs['mes'].tag_addition_failure % ('selection',self.index[0],self.index[3]))
+				self._node, self._node2 = self.widget.node(True,event.x,event.y)
+				self._pos = self.widget.text('offset',self._node,self._node2)
+			except ValueError: # Need more than 0 values to unpack
+				self._node = None
+			
+	def set_cell(self):
+		if self._node and self._pos >= 0:
+			'''
+			pos1, pos2 = 0, 300
+			self.widget.tag('delete','selection')
+			self.widget.tag('add','selection',self._node,pos1,self._node,pos2)
 			self.widget.tag('configure','selection','-background',sh.globs['var']['color_terms_sel_bg'])
 			self.widget.tag('configure','selection','-foreground',sh.globs['var']['color_terms_sel_fg'])
-			#if View:
-			#	self.shift_screen()
+			'''
+			
+			poses = objs.blocks_db().block_pos(self._pos)
+			if poses:
+				pos1, pos2 = poses[0], poses[1]
+				pos2 = pos2 - pos1 - 1
+				pos1 = 0
+				print('Pos: %d, range: %d-%d (%d-%d), text: "%s"' % (self._pos,poses[0],poses[1],pos1,pos2,poses[2]))
+				try:
+					self.widget.tag('delete','selection')
+					self.widget.tag('add','selection',self._node,pos1,self._node,pos2)
+					self.widget.tag('configure','selection','-background',sh.globs['var']['color_terms_sel_bg'])
+					self.widget.tag('configure','selection','-foreground',sh.globs['var']['color_terms_sel_fg'])
+				except tk.TclError:
+					sh.log.append('WebFrame.set_cell',sh.lev_warn,'Unable to set selection for poses %s-%s!' % (str(items[0]),str(items[1])))
 	
 	def fill(self,code='<html><body><h1>Nothing has been loaded yet.</h1></body></html>'):
 		self.widget.reset()
@@ -1469,7 +1454,7 @@ class WebFrame:
 	def close(self,*args):
 		self.obj.close()
 		
-	def load_article(self,Debug=0):
+	def load_article(self):
 		timer = sh.Timer(func_title='WebFrame.load_article')
 		timer.start()
 		objs.blocks_db().request(source=objs.request()._source,search=objs._request._search)
@@ -1480,7 +1465,7 @@ class WebFrame:
 						   ,url          = objs._request._url
 						   ,win_encoding = sh.globs['var']['win_encoding']
 						   ,ext_dics     = objs.ext_dics()
-						  #,file         = '/home/pete/tmp/ars/do.txt'
+						   #,file         = '/home/pete/tmp/ars/preceding.txt' # cur
 						   )
 			page.run()
 			objs._request._page     = page._page
@@ -1491,26 +1476,15 @@ class WebFrame:
 						   ,pair_root = sh.globs['var']['pair_root']
 						   )
 			tags.run()
-			if Debug:
-				tags.debug(MaxRows=100)
-				input('Tags step completed. Press Enter')
 			
 			elems = el.Elems (blocks = tags._blocks
 							 ,source = objs._request._source
 							 ,search = objs._request._search
 							 )
 			elems.run()
-			if Debug:
-				elems.debug(Shorten=1,MaxRows=100)
-				input('Elems step completed. Press Enter')
-			
+
 			objs._blocks_db.fill(elems._data)
 			
-			if Debug:
-				objs._blocks_db.dbc.execute('select NO,TYPE,TEXT,SAMECELL from BLOCKS order by NO')    # todo: del
-				objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=1000,MaxRow=100) # todo: del
-				input('Elems step completed. Press Enter')                         # todo: del
-		
 			ph_terma = el.PhraseTerma (dbc    = objs._blocks_db.dbc
 									  ,source = objs._request._source
 									  ,search = objs._request._search
@@ -1528,19 +1502,7 @@ class WebFrame:
 								,phrase_dic = phrase_dic
 								)
 		bp.run()
-		if Debug:
-			bp.debug(Shorten=1,MaxRows=100)
-			input('BlockPrioritize step completed. Press Enter')
-			sg.Message('BlockPrioritize',sh.lev_info,bp._query.replace(';',';\n'))
 		objs._blocks_db.update(query=bp._query)
-		
-		#objs._blocks_db.dbc.execute('select * from BLOCKS order by NO')    # todo: del
-		#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=1000,MaxRow=13) # todo: del
-		#input('BlockPrioritize step completed. Press Enter')               # todo: del
-		
-		if Debug:
-			objs._blocks_db.print(Shorten=1,MaxRows=100,MaxRow=15)
-			input('After-BP DB created. Press Enter')
 		
 		data = objs._blocks_db.assign_cells()
 		cells = cl.Cells (data       = data
@@ -1548,53 +1510,34 @@ class WebFrame:
 						 ,phrase_dic = phrase_dic
 						 )
 		cells.run()
-		if Debug:
-			cells.debug(MaxRows=40)
-			input('Cells step completed. Press Enter')
-			sg.Message('Cells',sh.lev_info,cells._query.replace(';',';\n'))
 		objs._blocks_db.update(query=cells._query)
 		
-		if Debug:
-			objs._blocks_db.print(Shorten=1,MaxRows=100,MaxRow=15)
-			input('After-Cells DB created. Press Enter')
-
-		#objs._blocks_db.print(Shorten=1,MaxRow=18,MaxRows=100)
-		#objs._blocks_db.dbc.execute('select * from BLOCKS where BLOCK=0 order by CELLNO,NO')
-		#objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=100)
+		#raw_text = sh.ReadTextFile(file='/home/pete/tmp/ars/preceding - extracted text').get() # cur
+		raw_text = 'text'
 		
 		data = objs._blocks_db.assign_pos()
-		pos = cl.Pos(data=data)
+		pos  = cl.Pos(data=data,raw_text=raw_text) # cur
 		pos.run()
-		if Debug:
-			pos.debug(MaxRows=40)
-			input('Pos step completed. Press Enter')
-			sg.Message('Pos',sh.lev_info,pos._query.replace(';',';\n'))
 		objs._blocks_db.update(query=pos._query)
 		
-		if Debug:
-			objs._blocks_db.print(Shorten=1,MaxRows=1000,MaxRow=15)
-		
-		get_html = mh.HTML (data      = objs._blocks_db.fetch()
-							,collimit = objs._request._collimit
+		get_html = mh.HTML (data     = objs._blocks_db.fetch()
+						   ,collimit = objs._request._collimit
 						   )
 		objs._request._html = get_html._html
-		
-		#objs._blocks_db.dbc.execute('select NO,DICA,TYPE,TEXT,SAMECELL,CELLNO from BLOCKS order by NO')    # todo: del
-		#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=1000,MaxRow=20) # todo: del
-		#objs._blocks_db.sort(Fetch=0)
-		#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=1000,MaxRow=20)
-		#input('Final step completed. Press Enter')                         # todo: del
-		
-		if Debug:
-			input('Return.')
-		
 		self.fill(code=objs._request._html)
-		#objs._blocks_db.sort(Fetch=0)
-		#objs._blocks_db.print(Selected=1,Shorten=1,MaxRows=10000,MaxRow=15)
+		
 		self.title(arg=objs._request._search)
 		self.search_field.clear()
 		self.update_buttons()
 		timer.end()
+		
+		#sg.objs.txt().reset_data()
+		#sg.objs.txt().insert(self.text())
+		
+		objs.blocks_db().dbc.execute('select NO,CELLNO,TYPE,TEXT,POS1,POS2 from BLOCKS order by CELLNO,NO')
+		objs.blocks_db().print(Selected=1,Shorten=1,MaxRow=20,MaxRows=300)
+		#input('Check.')
+		
 		
 	# Select either the search string or the URL
 	def go(self,*args):
