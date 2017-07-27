@@ -366,22 +366,39 @@ class Pos:
 		         ,MaxRows = MaxRows
 		         ).print()
 	
+	''' We generate positions here according to the text produced by 
+	    TkinterHtml's 'widget.text()' command.
+	    Peculiarities of the retrieved text:
+	    - TkinterHtml adds some empty lines from the top and the bottom;
+	      the number of these lines varies each time (and we don't know
+	      the rule according to which they are generated)
+	    - Each cell occupies a single line
+	    - Blocks within a cell are spaced with a single space (except
+	      for the blocks having such text as '(')
+	    - Each line is stripped
+	    - Pos2 of the previous cell and pos1 of the next cell are
+	      sometimes equal; this corresponds to the position system
+	      used by Tkinter
+	    - Duplicate spaces are removed
+	'''
 	def gen_poses(self):
 		last = 0
 		for block in self._blocks:
-			if block._text:
-				search   = sh.Search(text=self._raw_text,search=block._text)
+			text = sh.Text(text=block._text.strip()).delete_duplicate_spaces()
+			if text:
+				search   = sh.Search(text=self._raw_text,search=text)
 				search.i = last
 				result   = sh.Input(val=search.next(),func_title='Pos.gen_poses').integer()
-				if result > last:
+				if result >= last:
 					block._first = result
 				else:
+					sg.Message('WebFrame.gen_poses',sh.lev_err,'Unable to find "%s"!' % str(text)) # todo: mes
 					block._first = last
 			else:
 				block._first = last
-			block._last = block._first + len(block._text)
+			block._last = block._first + len(text)
 			last        = block._last
-		
+	
 	def dump(self):
 		tmp = io.StringIO()
 		tmp.write('begin;')

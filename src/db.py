@@ -172,38 +172,11 @@ class DB:
 		else:
 			sh.log.append('DB.clear_cur',sh.lev_warn,sh.globs['mes'].empty_input)
 			
-	def get_cell(self,pos,Selectable=True):
-		if self._source and self._search:
-			if Selectable:
-				self.dbc.execute('select CELLNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and SELECTABLE = 1 and POS1 <= ? and POS2 >= ?',(self._source,self._search,pos,pos,))
-			else:
-				self.dbc.execute('select CELLNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 >= ?',(self._source,self._search,pos,pos,))
-			result = self.dbc.fetchone()
-			if result:
-				return result[0]
-		else:
-			sh.log.append('DB.get_cell',sh.lev_warn,sh.globs['mes'].empty_input)
-			
-	def cell_pos(self,cell_no):
-		if self._source and self._search:
-			self.dbc.execute('select POS1,POS2,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and CELLNO = ? order by NO',(self._source,self._search,cell_no,))
-			return self.dbc.fetchall()
-		else:
-			sh.log.append('DB.cell_pos',sh.lev_warn,sh.globs['mes'].empty_input)
-			
 	def block_pos(self,pos):
 		if self._source and self._search:
-			self.dbc.execute('select POS1,POS2,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 >= ? order by NO',(self._source,self._search,pos,pos,))
+			# We use strict 'POS2 > pos' because the range provided by 'Pos.gen_poses' is non-inclusive (just like in Tkinter)
+			self.dbc.execute('select POS1,POS2,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 > ? order by NO',(self._source,self._search,pos,pos,))
 			return self.dbc.fetchone()
-		else:
-			sh.log.append('DB.block_pos',sh.lev_warn,sh.globs['mes'].empty_input)
-			
-	def max_cell_no(self):
-		if self._source and self._search:
-			self.dbc.execute('select CELLNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 order by CELLNO desc',(self._source,self._search,))
-			result = self.dbc.fetchone()
-			if result:
-				return result[0]
 		else:
 			sh.log.append('DB.block_pos',sh.lev_warn,sh.globs['mes'].empty_input)
 
@@ -278,5 +251,3 @@ if __name__ == '__main__':
 	'''
 	
 	blocks_db.print(Shorten=1,MaxRow=18,MaxRows=150)
-	
-	print(blocks_db.max_cell_no())
