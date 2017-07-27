@@ -172,10 +172,13 @@ class DB:
 		else:
 			sh.log.append('DB.clear_cur',sh.lev_warn,sh.globs['mes'].empty_input)
 			
-	def block_pos(self,pos):
+	def block_pos(self,pos,Selectable=False):
 		if self._source and self._search:
 			# We use strict 'POS2 > pos' because the range provided by 'Pos.gen_poses' is non-inclusive (just like in Tkinter)
-			self.dbc.execute('select POS1,POS2,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 > ? order by NO',(self._source,self._search,pos,pos,))
+			if Selectable:
+				self.dbc.execute('select POS1,POS2,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 > ? and SELECTABLE = 1 order by NO',(self._source,self._search,pos,pos,))
+			else:
+				self.dbc.execute('select POS1,POS2,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 > ? order by NO',(self._source,self._search,pos,pos,))
 			return self.dbc.fetchone()
 		else:
 			sh.log.append('DB.block_pos',sh.lev_warn,sh.globs['mes'].empty_input)

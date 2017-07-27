@@ -272,9 +272,9 @@ class Cells:
 					j += 1
 					
 	def selectables(self):
-		cell_nos = [block._cell_no for block in self._blocks if block._type in ('phrase','term','transc') and block._text]
+		nos = [block._no for block in self._blocks if block._type in ('phrase','term','transc') and block._text]
 		for block in self._blocks:
-			if block._cell_no in cell_nos:
+			if block._no in nos:
 				block._select = 1
 			else:
 				block._select = 0

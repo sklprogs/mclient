@@ -3,6 +3,8 @@
 
 ''' # todo
 	- Make transcriptions Selectable
+	- Create an option to toggle SELECTABLE (no need to update DB) (see WebFrame.select)
+	- Since selectables are block-based now, move them to Elems
 '''
 
 ''' # fix
@@ -1422,7 +1424,8 @@ class WebFrame:
 			
 	def select(self):
 		if self._pos >= 0:
-			poses = objs.blocks_db().block_pos(self._pos)
+			# todo: create an option to toggle SELECTABLE (no need to update DB)
+			poses = objs.blocks_db().block_pos(self._pos,Selectable=1)
 			if poses:
 				''' Creating a selection requires 4 parameters to be 
 				calculated:
