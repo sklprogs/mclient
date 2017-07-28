@@ -1180,7 +1180,15 @@ class WebFrame:
 		        )
 		sg.bind (obj      = self
 		        ,bindings = '<Button-1>'
-		        ,action   = self.go_url
+		        # todo: This currently means 'self.go_url'. Prioritize/unblock dictionaries in 'self.go'.
+		        ,action   = self.go
+		        )
+		sg.bind (obj      = self
+		        ,bindings = [sh.globs['var']['bind_copy_sel']
+		                    ,sh.globs['var']['bind_copy_sel_alt']
+		                    ,sh.globs['var']['bind_copy_sel_alt2']
+		                    ]
+		        ,action   = self.copy_text
 		        )
 		sg.bind (obj = self.obj
 		        ,bindings = [sh.globs['var']['bind_quit_now']
@@ -1580,7 +1588,7 @@ class WebFrame:
 				sh.log.append('WebFrame.go_url',sh.lev_info,sh.globs['mes'].opening_link % objs._request._url)
 				self.load_article()
 			else:
-				sg.Message('WebFrame.go_url',sh.lev_info,'This block does not contain a URL!') # todo: mes
+				sg.Message('WebFrame.go_url',sh.lev_warn,'This block does not contain a URL!') # todo: mes
 			
 	def go_search(self):
 		if self.control_length():
@@ -1667,6 +1675,16 @@ class WebFrame:
 	def open_in_browser(self,*args):
 		objs.online()._url = objs.request()._url
 		objs.online().browse()
+	
+	# Скопировать текст текущего блока
+	def copy_text(self,*args):
+		text = objs.blocks_db().text(pos=self._pos)
+		if text:
+			sg.Clipboard().copy(text)
+			if sh.globs['bool']['Iconify']:
+				sg.Geometry(parent_obj=self.obj).minimize()
+		else:
+			sg.Message('WebFrame.copy_text',sh.lev_warn,'This block does not contain any text!') # todo: mes
 	
 	# Скопировать URL текущей статьи или выделения
 	def copy_url(self,obj,mode='article'):
