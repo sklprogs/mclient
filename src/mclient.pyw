@@ -1334,11 +1334,11 @@ class WebFrame:
 		        )
 		sg.bind (obj      = self.obj
 		        ,bindings = sh.globs['var']['bind_copy_url']
-		        ,action   = lambda e:self.copy_url(self.obj,mode='term')
+		        ,action   = self.copy_block_url
 		        )
 		sg.bind (obj      = self.obj
 		        ,bindings = sh.globs['var']['bind_copy_article_url']
-		        ,action   = lambda e:self.copy_url(self.obj,mode='article')
+		        ,action   = self.copy_url
 		        )
 		sg.bind (obj      = self.obj
 		        ,bindings = sh.globs['var']['bind_spec_symbol']
@@ -1686,23 +1686,22 @@ class WebFrame:
 		else:
 			sg.Message('WebFrame.copy_text',sh.lev_warn,'This block does not contain any text!') # todo: mes
 	
-	# Скопировать URL текущей статьи или выделения
-	def copy_url(self,obj,mode='article'):
-		cur_url = online_url_safe
-		if mode == 'term':
-			# Скопировать URL текущего термина. URL 1-го термина не совпадает с URL статьи!
-			cur_url = articles.current()._cells[self.i][self.j].url
+	# Скопировать URL текущей статьи
+	def copy_url(self,*args):
+		sg.Clipboard().copy(objs.request()._url)
+		if sh.globs['bool']['Iconify']:
+			sg.Geometry(parent_obj=self.obj).minimize()
+		
+	# Скопировать URL выделенного блока
+	def copy_block_url(self,*args):
+		url = objs.blocks_db().url(pos=self._pos)
+		if url:
+			sg.Clipboard().copy(url)
 			if sh.globs['bool']['Iconify']:
-				sg.Geometry(parent_obj=objs.top(),title=objs.request()._search).minimize()
-		elif mode == 'article':
-			# Скопировать URL статьи
-			cur_url = objs.request()._url
-			if sh.globs['bool']['Iconify']:
-				sg.Geometry(parent_obj=objs.top(),title=objs.request()._search).minimize()
+				sg.Geometry(parent_obj=self.obj).minimize()
 		else:
-			sg.Message(func='WebFrame.copy_url',level=sh.lev_err,message=sh.globs['mes'].unknown_mode % (str(mode),'article, term'))
-		sg.Clipboard().copy(cur_url)
-
+			sg.Message('WebFrame.copy_block_url',sh.lev_warn,'This block does not contain a URL!') # todo: mes
+	
 	# Открыть веб-страницу с определением текущего термина
 	def define(self,Selected=True): # Selected: True: Выделенный термин; False: Название статьи
 		if Selected:
