@@ -156,12 +156,13 @@ class Block:
 		self._type     = 'comment' # 'wform', 'speech', 'dic', 'phrase', 'term', 'comment', 'correction', 'transc', 'invalid'
 		self._text     = ''
 		self._url      = ''
+		self._urla     = ''
 		self._dica     = ''
 		self._wforma   = ''
 		self._speecha  = ''
 		self._transca  = ''
 		self._terma    = ''
-		self._priority = -1
+		self._priority = 0
 
 
 

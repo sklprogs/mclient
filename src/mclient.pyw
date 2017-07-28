@@ -392,7 +392,7 @@ class CurRequest:
 		self.SpecialPage   = False
 		self.MouseClicked  = False
 		self.CaptureHotkey = True
-		self._page         = '' # cur
+		self._page         = ''
 		self._html         = ''
 		self._html_raw     = ''
 		
@@ -841,7 +841,11 @@ class History:
 	def go(self,*args):
 		objs.request()._search = self.obj.get()
 		# Do not warn after clearing the widget
-		if objs.request()._search:
+		if objs._request._search:
+			objs.blocks_db().request (source = objs._request._source
+		                             ,search = objs._request._search
+		                             )
+			objs._request._url = objs._blocks_db.urla()
 			objs.webframe().load_article()
 		
 	# Скопировать элемент истории
@@ -1490,6 +1494,7 @@ class WebFrame:
 			elems = el.Elems (blocks = tags._blocks
 							 ,source = objs._request._source
 							 ,search = objs._request._search
+							 ,urla   = objs._request._url
 							 )
 			elems.run()
 
@@ -1544,25 +1549,23 @@ class WebFrame:
 		sg.objs.txt().show()
 		'''
 		
+		
 		'''
 		objs.blocks_db().dbc.execute('select NO,CELLNO,TYPE,TEXT,POS1,POS2 from BLOCKS order by CELLNO,NO')
 		objs.blocks_db().print(Selected=1,Shorten=1,MaxRow=20,MaxRows=300)
-		#input('Check.')
+		input('Check.')
 		'''
-		
 		
 	# Select either the search string or the URL
 	def go(self,*args):
 		search = self.search_field.widget.get().strip('\n').strip(' ')
 		if search == '':
-			objs.request().reset()
 			self.go_url()
 		elif search == sh.globs['var']['repeat_sign']:
 			self.search_field.insert_repeat_sign()
 		elif search == sh.globs['var']['repeat_sign2']:
 			self.search_field.insert_repeat_sign2()
 		else:
-			objs.request().reset()
 			objs._request._search = search
 			self.go_search()
 				
@@ -1570,11 +1573,14 @@ class WebFrame:
 	# Перейти по URL текущей ячейки
 	def go_url(self,*args):
 		if not self.MouseClicked:
-			sh.log.append('WebFrame.go_url',sh.lev_debug,sh.globs['mes'].cur_cell % (self.i,self.j))
-			objs.request()._search = articles.current()._cells[self.i][self.j].terms() # fix
-			objs._request._url     = articles.current()._cells[self.i][self.j].url()
-			sh.log.append('WebFrame.go_url',sh.lev_info,sh.globs['mes'].opening_link % objs.request()._url)
-			self.load_article()
+			url = objs.blocks_db().url(pos=self._pos)
+			if url:
+				objs.request()._search = objs._blocks_db.text(pos=self._pos)
+				objs._request._url     = url
+				sh.log.append('WebFrame.go_url',sh.lev_info,sh.globs['mes'].opening_link % objs._request._url)
+				self.load_article()
+			else:
+				sg.Message('WebFrame.go_url',sh.lev_info,'This block does not contain a URL!') # todo: mes
 			
 	def go_search(self):
 		if self.control_length():

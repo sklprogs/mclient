@@ -22,31 +22,33 @@ class DB:
 		# Must indicate 'integer' fully before 'primary key autoincrement'
 		self.dbc.execute (
 		            'create table if not exists BLOCKS (\
-		            NO                  integer primary key autoincrement    ,\
-		            SOURCE              text                                 ,\
-		            SEARCH              text                                 ,\
-		            DICA                text                                 ,\
-		            WFORMA              text                                 ,\
-		            SPEECHA             text                                 ,\
-		            TRANSCA             text                                 ,\
-		            TERMA               text                                 ,\
-		            TYPE                text                                 ,\
-		            TEXT                text                                 ,\
-		            URL                 text                                 ,\
-		            BLOCK               integer                              ,\
-		            PRIORITY            integer                              ,\
-		            SELECTABLE          integer                              ,\
-		            SAMECELL            integer                              ,\
-		            CELLNO              integer                              ,\
-		            ROWNO               integer                              ,\
-		            COLNO               integer                              ,\
-		            POS1                integer                              ,\
-		            POS2                integer\
+		            NO          integer primary   \
+		                        key autoincrement \
+		            ,SOURCE     text              \
+		            ,SEARCH     text              \
+		            ,URLA       text              \
+		            ,DICA       text              \
+		            ,WFORMA     text              \
+		            ,SPEECHA    text              \
+		            ,TRANSCA    text              \
+		            ,TERMA      text              \
+		            ,TYPE       text              \
+		            ,TEXT       text              \
+		            ,URL        text              \
+		            ,BLOCK      integer           \
+		            ,PRIORITY   integer           \
+		            ,SELECTABLE integer           \
+		            ,SAMECELL   integer           \
+		            ,CELLNO     integer           \
+		            ,ROWNO      integer           \
+		            ,COLNO      integer           \
+		            ,POS1       integer           \
+		            ,POS2       integer           \
 		                                               )'
 		                 )
 
 	def fill(self,data):
-		self.dbc.executemany('insert into BLOCKS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',data)
+		self.dbc.executemany('insert into BLOCKS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',data)
 
 	def sort(self,Fetch=True):
 		self.dbc.execute('select NO,DICA,WFORMA,SPEECHA,TERMA,TYPE,TEXT,SAMECELL,CELLNO,ROWNO,COLNO from BLOCKS where BLOCK is NOT ? order by CELLNO,NO',(1,)) # order by DICA,WFORMA,SPEECHA,TERMA,
@@ -54,7 +56,7 @@ class DB:
 			return self.dbc.fetchall()
 			
 	def fetch(self):
-		self.dbc.execute('select TYPE,TEXT,ROWNO,COLNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK is NOT ? order by CELLNO,NO',(self._source,self._search,1,))
+		self.dbc.execute('select TYPE,TEXT,ROWNO,COLNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 order by CELLNO,NO',(self._source,self._search,))
 		return self.dbc.fetchall()
 		
 	def present(self):
@@ -136,7 +138,7 @@ class DB:
 	# Assign input data for Cells
 	def assign_cells(self):
 		if self._source and self._search:
-			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK is not ? order by PRIORITY desc,DICA,WFORMA,SPEECHA,TERMA,NO',(self._source,self._search,1,))
+			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 order by PRIORITY desc,DICA,WFORMA,SPEECHA,TERMA,NO',(self._source,self._search,))
 			return self.dbc.fetchall()
 		else:
 			sg.Message('DB.assign_cells',sh.lev_warn,sh.globs['mes'].empty_input)
@@ -144,7 +146,7 @@ class DB:
 	# Assign input data for Pos
 	def assign_pos(self):
 		if self._source and self._search:
-			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,ROWNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK is not ? order by ROWNO,COLNO,NO',(self._source,self._search,1,))
+			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,ROWNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 order by ROWNO,COLNO,NO',(self._source,self._search,))
 			return self.dbc.fetchall()
 		else:
 			sg.Message('DB.assign_pos',sh.lev_warn,sh.globs['mes'].empty_input)
@@ -176,12 +178,39 @@ class DB:
 		if self._source and self._search:
 			# We use strict 'POS2 > pos' because the range provided by 'Pos.gen_poses' is non-inclusive (just like in Tkinter)
 			if Selectable:
-				self.dbc.execute('select POS1,POS2,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 > ? and SELECTABLE = 1 order by NO',(self._source,self._search,pos,pos,))
+				self.dbc.execute('select POS1,POS2,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 > ? and SELECTABLE = 1',(self._source,self._search,pos,pos,))
 			else:
-				self.dbc.execute('select POS1,POS2,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 > ? order by NO',(self._source,self._search,pos,pos,))
+				self.dbc.execute('select POS1,POS2,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 > ?',(self._source,self._search,pos,pos,))
 			return self.dbc.fetchone()
 		else:
 			sh.log.append('DB.block_pos',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def urla(self):
+		if self._source and self._search:
+			self.dbc.execute('select URLA from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1',(self._source,self._search,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('DB.urla',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def url(self,pos):
+		if self._source and self._search:
+			self.dbc.execute('select URL from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 > ?',(self._source,self._search,pos,pos,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('DB.url',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def text(self,pos):
+		if self._source and self._search:
+			self.dbc.execute('select TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 > ?',(self._source,self._search,pos,pos,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('DB.text',sh.lev_warn,sh.globs['mes'].empty_input)
 
 
 

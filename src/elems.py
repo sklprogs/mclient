@@ -35,6 +35,7 @@ class Block:
 		self._type     = 'comment' # 'wform', 'speech', 'dic', 'phrase', 'term', 'comment', 'correction', 'transc', 'invalid'
 		self._text     = ''
 		self._url      = ''
+		self._urla     = ''
 		self._dica     = ''
 		self._wforma   = ''
 		self._speecha  = ''
@@ -54,10 +55,11 @@ class Block:
 '''
 class Elems:
 	
-	def __init__(self,blocks,source,search):
+	def __init__(self,blocks,source,search,urla=''):
 		self._blocks = blocks
 		self._source = source
 		self._search = search
+		self._urla   = urla
 		self._data   = []
 		if self._blocks and self._source and self._search:
 			self.Success = True
@@ -313,7 +315,8 @@ class Elems:
 			block._speecha = speecha
 			block._transca = transca
 			if block._same > 0:
-				block._terma   = terma
+				block._terma = terma
+			block._urla    = self._urla
 	
 	def fill_terma(self):
 		terma = ''
@@ -402,23 +405,24 @@ class Elems:
 			  (None            # (00) Skips the autoincrement
 			  ,self._source    # (01) SOURCE
 			  ,self._search    # (02) SEARCH
-			  ,block._dica     # (03) DICA
-			  ,block._wforma   # (04) WFORMA
-			  ,block._speecha  # (05) SPEECHA
-			  ,block._transca  # (06) TRANSCA
-			  ,block._terma    # (07) TERMA
-			  ,block._type     # (08) TYPE
-			  ,block._text     # (09) TEXT
-			  ,block._url      # (10) URL
-			  ,block._block    # (11) BLOCK
-			  ,block._priority # (12) PRIORITY
-			  ,block._select   # (13) SELECTABLE
-			  ,block._same     # (14) SAMECELL
-			  ,block._cell_no  # (15) CELLNO
-			  ,-1              # (16) ROWNO
-			  ,-1              # (17) COLNO
-			  ,-1              # (18) POS1
-			  ,-1              # (19) POS2
+			  ,self._urla      # (03) URLA
+			  ,block._dica     # (04) DICA
+			  ,block._wforma   # (05) WFORMA
+			  ,block._speecha  # (06) SPEECHA
+			  ,block._transca  # (07) TRANSCA
+			  ,block._terma    # (08) TERMA
+			  ,block._type     # (09) TYPE
+			  ,block._text     # (10) TEXT
+			  ,block._url      # (11) URL
+			  ,block._block    # (12) BLOCK
+			  ,block._priority # (13) PRIORITY
+			  ,block._select   # (14) SELECTABLE
+			  ,block._same     # (15) SAMECELL
+			  ,block._cell_no  # (16) CELLNO
+			  ,-1              # (17) ROWNO
+			  ,-1              # (18) COLNO
+			  ,-1              # (19) POS1
+			  ,-1              # (20) POS2
 			  )
 			                  )
 
