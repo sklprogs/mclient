@@ -211,6 +211,16 @@ class DB:
 				return result[0]
 		else:
 			sh.log.append('DB.text',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	# Get the first term to put a selection on
+	def first_term(self):
+		if self._source and self._search:
+			self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 order by CELLNO,NO',(self._source,self._search,'term','phrase',))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('DB.first_term',sh.lev_warn,sh.globs['mes'].empty_input)
 
 
 

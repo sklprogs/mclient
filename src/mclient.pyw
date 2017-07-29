@@ -1465,7 +1465,11 @@ class WebFrame:
 				else:
 					# todo: check frequency
 					sh.log.append('WebFrame.select',sh.lev_warn,'Unable to get the index!') # todo: mes
-				
+					
+	def first_selection(self,*args):
+		self._pos = objs.blocks_db().first_term()
+		self.select()
+	
 	def fill(self,code='<html><body><h1>Nothing has been loaded yet.</h1></body></html>'):
 		self.widget.reset()
 		self.widget.parse(code)
@@ -1547,6 +1551,7 @@ class WebFrame:
 		objs._blocks_db.update(query=pos._query)
 		
 		self.title(arg=objs._request._search)
+		self.first_selection()
 		self.search_field.clear()
 		self.update_buttons()
 		timer.end()
