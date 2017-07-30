@@ -1491,7 +1491,9 @@ class WebFrame:
 						   ,url          = objs._request._url
 						   ,win_encoding = sh.globs['var']['win_encoding']
 						   ,ext_dics     = objs.ext_dics()
-						   #,file         = '/home/pete/tmp/ars/preceding.txt'
+						   ,file         = '/home/pete/tmp/ars/lottery.txt' # cur
+						   #,file         = '/home/pete/tmp/ars/таратайка.txt'
+						   #,file         = '/home/pete/tmp/ars/painting.txt'
 						   )
 			page.run()
 			ptimer.end()
@@ -1558,9 +1560,8 @@ class WebFrame:
 		timer.end()
 		
 		'''
-		objs.blocks_db().dbc.execute('select NO,CELLNO,TYPE,TEXT,POS1,POS2 from BLOCKS order by CELLNO,NO')
+		objs.blocks_db().dbc.execute('select CELLNO,NO,TYPE,TEXT,POS1,POS2,SELECTABLE from BLOCKS order by CELLNO,NO')
 		objs.blocks_db().print(Selected=1,Shorten=1,MaxRow=20,MaxRows=300)
-		input('Check.')
 		'''
 		
 	# Select either the search string or the URL
