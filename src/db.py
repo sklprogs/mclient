@@ -11,13 +11,15 @@ import shared as sh
 import sharedGUI as sg
 
 
+# note: don't forget to change 'self.Selectable' externally
 class DB:
 	
 	def __init__(self):
-		self._source = ''
-		self._search = ''
-		self.db      = sqlite3.connect(':memory:')
-		self.dbc     = self.db.cursor()
+		self._source    = ''
+		self._search    = ''
+		self.Selectable = True
+		self.db         = sqlite3.connect(':memory:')
+		self.dbc        = self.db.cursor()
 		# We use integers instead of booleans; -1 means not set
 		# Must indicate 'integer' fully before 'primary key autoincrement'
 		self.dbc.execute (
@@ -174,13 +176,13 @@ class DB:
 		else:
 			sh.log.append('DB.clear_cur',sh.lev_warn,sh.globs['mes'].empty_input)
 			
-	def block_pos(self,pos,Selectable=False):
+	def block_pos(self,pos):
 		if self._source and self._search:
 			# We use strict 'POS2 > pos' because the range provided by 'Pos.gen_poses' is non-inclusive (just like in Tkinter)
-			if Selectable:
-				self.dbc.execute('select POS1,POS2,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 > ? and SELECTABLE = 1',(self._source,self._search,pos,pos,))
+			if self.Selectable:
+				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 > ? and SELECTABLE = 1',(self._source,self._search,pos,pos,))
 			else:
-				self.dbc.execute('select POS1,POS2,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 > ?',(self._source,self._search,pos,pos,))
+				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and POS1 <= ? and POS2 > ?',(self._source,self._search,pos,pos,))
 			return self.dbc.fetchone()
 		else:
 			sh.log.append('DB.block_pos',sh.lev_warn,sh.globs['mes'].empty_input)
@@ -212,15 +214,329 @@ class DB:
 		else:
 			sh.log.append('DB.text',sh.lev_warn,sh.globs['mes'].empty_input)
 			
-	# Get the first term to put a selection on
-	def first_term(self):
+	def min_cell(self):
 		if self._source and self._search:
-			self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 order by CELLNO,NO',(self._source,self._search,'term','phrase',))
+			if self.Selectable:
+				# This function is made for calculating moves; if we don't take into account types, the first selectable cell may not be reached (e.g., it has 'transc' type)
+				self.dbc.execute('select CELLNO,POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 order by CELLNO',(self._source,self._search,'term','phrase',))
+			else:
+				self.dbc.execute('select CELLNO,POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 order by CELLNO',(self._source,self._search,))
+			return self.dbc.fetchone()
+		else:
+			sh.log.append('DB.min_cell',sh.lev_warn,sh.globs['mes'].empty_input)
+	
+	def max_cell(self):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select CELLNO,POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 order by CELLNO desc',(self._source,self._search,'term','phrase',))
+			else:
+				self.dbc.execute('select CELLNO,POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 order by CELLNO desc',(self._source,self._search,))
+			return self.dbc.fetchone()
+		else:
+			sh.log.append('DB.max_cell',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	# Find the maximum available row number for the whole table; this might not be the same as ROWNO of 'self.max_cell'
+	def max_row(self):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select ROWNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 order by ROWNO desc',(self._source,self._search,'term','phrase',))
+			else:
+				self.dbc.execute('select ROWNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 order by ROWNO desc',(self._source,self._search,))
 			result = self.dbc.fetchone()
 			if result:
 				return result[0]
 		else:
-			sh.log.append('DB.first_term',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append('DB.max_row',sh.lev_warn,sh.globs['mes'].empty_input)
+	
+	# Find the maximum available column number for the whole table; this might not be the same as COLNO of 'self.max_cell'
+	def max_col(self):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select COLNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 order by COLNO desc',(self._source,self._search,'term','phrase',))
+			else:
+				self.dbc.execute('select COLNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 order by COLNO desc',(self._source,self._search,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('DB.max_col',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	# Find the maximum available row number for the set column
+	def max_row_sp(self,col_no):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select ROWNO from BLOCKS where COLNO = ? and SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 order by ROWNO desc',(col_no,self._source,self._search,'term','phrase',))
+			else:
+				self.dbc.execute('select ROWNO from BLOCKS where COLNO = ? and SOURCE = ? and SEARCH = ? and BLOCK < 1 order by ROWNO desc',(col_no,self._source,self._search,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('DB.max_row_sp',sh.lev_warn,sh.globs['mes'].empty_input)
+	
+	# Find the maximum available column number for the set row
+	def max_col_sp(self,row_no):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select COLNO from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 order by COLNO desc',(row_no,self._source,self._search,'term','phrase',))
+			else:
+				self.dbc.execute('select COLNO from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK < 1 order by COLNO desc',(row_no,self._source,self._search,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('DB.max_col_sp',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	# Find the minimum available column number for the whole table; this should be the same as COLNO of 'self.min_cell' but we leave it for non-standard tables
+	def min_col(self):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select COLNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 order by COLNO',(self._source,self._search,'term','phrase',))
+			else:
+				self.dbc.execute('select COLNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 order by COLNO',(self._source,self._search,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('DB.min_col',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	# Find the minimum available row number for the whole table; this should be the same as ROWNO of 'self.min_cell' but we leave it for non-standard tables
+	def min_row(self):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select ROWNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 order by ROWNO',(self._source,self._search,'term','phrase',))
+			else:
+				self.dbc.execute('select ROWNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 order by ROWNO',(self._source,self._search,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('DB.min_row',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	# Find the minimum available row number for the set column; this might not be the same as ROWNO of 'self.min_cell'
+	def min_row_sp(self,col_no):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select ROWNO from BLOCKS where COLNO = ? and SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 order by ROWNO',(col_no,self._source,self._search,'term','phrase',))
+			else:
+				self.dbc.execute('select ROWNO from BLOCKS where COLNO = ? and SOURCE = ? and SEARCH = ? and BLOCK < 1 order by ROWNO',(col_no,self._source,self._search,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('DB.min_row_sp',sh.lev_warn,sh.globs['mes'].empty_input)
+	
+	# Find the minimum available column number for the set row
+	def min_col_sp(self,row_no):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select COLNO from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 order by COLNO',(row_no,self._source,self._search,'term','phrase',))
+			else:
+				self.dbc.execute('select COLNO from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK < 1 order by COLNO',(row_no,self._source,self._search,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('DB.min_col_sp',sh.lev_warn,sh.globs['mes'].empty_input)
+
+
+
+# Separating this class will slow down the program at ~0,027s.
+class Moves(DB):
+	
+	def __init__(self):
+		super().__init__()
+		
+	def start(self):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 order by CELLNO,NO',(self._source,self._search,'term','phrase',))
+			else:
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 order by CELLNO,NO',(self._source,self._search,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('Moves.start',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def end(self):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 order by CELLNO desc,NO desc',(self._source,self._search,'term','phrase',))
+			else:
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 order by CELLNO desc,NO desc',(self._source,self._search,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('Moves.end',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def line_start(self,pos):
+		if self._source and self._search:
+			poses = self.block_pos(pos=pos)
+			if poses:
+				row_no, col_no = poses[3], poses[4]
+				if self.Selectable:
+					self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and ROWNO = ? and COLNO <= ? order by COLNO,NO',(self._source,self._search,'term','phrase',row_no,col_no,))
+				else:
+					self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and ROWNO = ? and COLNO <= ? order by COLNO,NO',(self._source,self._search,row_no,col_no,))
+				result = self.dbc.fetchone()
+				if result:
+					return result[0]
+			else:
+				sh.log.append('Moves.line_start',sh.lev_warn,sh.globs['mes'].empty_input)
+		else:
+			sh.log.append('Moves.line_start',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def line_end(self,pos):
+		if self._source and self._search:
+			poses = self.block_pos(pos=pos)
+			if poses:
+				row_no, col_no = poses[3], poses[4]
+				if self.Selectable:
+					self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and ROWNO = ? and COLNO >= ? order by COLNO desc,NO',(self._source,self._search,'term','phrase',row_no,col_no,))
+				else:
+					self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and ROWNO = ? and COLNO >= ? order by COLNO desc,NO',(self._source,self._search,row_no,col_no,))
+				result = self.dbc.fetchone()
+				if result:
+					return result[0]
+			else:
+				sh.log.append('Moves.line_end',sh.lev_warn,sh.globs['mes'].empty_input)
+		else:
+			sh.log.append('Moves.line_end',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def left(self,pos):
+		if self._source and self._search:
+			poses = self.block_pos(pos=pos)
+			if poses:
+				cell_no = poses[2]
+				min_cell = self.min_cell()
+				max_cell = self.max_cell()
+				if min_cell and max_cell:
+					# todo: should we take into account types in 'self.min_cell_no' and 'self.max_cell_no'?
+					if cell_no == min_cell[0]:
+						cell_no = max_cell[0] + 1 # Loop moves
+					if self.Selectable:
+						self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and CELLNO < ? order by CELLNO desc,NO',(self._source,self._search,'term','phrase',cell_no,))
+					else:
+						self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and CELLNO < ? order by CELLNO desc,NO',(self._source,self._search,cell_no,))
+					result = self.dbc.fetchone()
+					if result:
+						return result[0]
+				else:
+					sh.log.append('Moves.left',sh.lev_warn,sh.globs['mes'].empty_input)
+			else:
+				sh.log.append('Moves.left',sh.lev_warn,sh.globs['mes'].empty_input)
+		else:
+			sh.log.append('Moves.left',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def right(self,pos):
+		if self._source and self._search:
+			poses = self.block_pos(pos=pos)
+			if poses:
+				cell_no = poses[2]
+				max_cell = self.max_cell()
+				if max_cell:
+					if cell_no == max_cell[0]:
+						cell_no = -1 # Loop moves
+					if self.Selectable:
+						self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and CELLNO > ? order by CELLNO,NO',(self._source,self._search,'term','phrase',cell_no,))
+					else:
+						self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and CELLNO > ? order by CELLNO,NO',(self._source,self._search,cell_no,))
+					result = self.dbc.fetchone()
+					if result:
+						return result[0]
+				else:
+					sh.log.append('Moves.right',sh.lev_warn,sh.globs['mes'].empty_input)
+			else:
+				sh.log.append('Moves.right',sh.lev_warn,sh.globs['mes'].empty_input)
+		else:
+			sh.log.append('Moves.right',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def up(self,pos):
+		if self._source and self._search:
+			poses = self.block_pos(pos=pos)
+			if poses:
+				cell_no, row_no, col_no = poses[2], poses[3], poses[4]
+				min_cell   = self.min_cell()
+				min_row_sp = self.min_row_sp(col_no=col_no)
+				max_col    = self.max_col()
+				cond1      = max_col or max_col == 0
+				cond2      = min_row_sp or min_row_sp == 0
+				if min_cell and cond1 and cond2:
+					if cell_no == min_cell[0]:
+						if self.Selectable:
+							self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and COLNO = ? order by ROWNO desc,NO',(self._source,self._search,'term','phrase',max_col,))
+						else:
+							self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and COLNO = ? order by ROWNO desc,NO',(self._source,self._search,max_col,))
+						result = self.dbc.fetchone()
+						if result:
+							return result[0]
+					elif row_no == min_row_sp:
+						if self.Selectable:
+							self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and COLNO < ? order by COLNO desc,ROWNO desc,NO',(self._source,self._search,'term','phrase',col_no,))
+						else:
+							self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and COLNO < ? order by COLNO desc,ROWNO desc,NO',(self._source,self._search,col_no,))
+						result = self.dbc.fetchone()
+						if result:
+							return result[0]
+					else:
+						if self.Selectable:
+							self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and COLNO = ? and ROWNO < ? order by ROWNO desc,NO',(self._source,self._search,'term','phrase',col_no,row_no,))
+						else:
+							self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and COLNO = ? and ROWNO < ? order by ROWNO desc,NO',(self._source,self._search,col_no,row_no,))
+						result = self.dbc.fetchone()
+						if result:
+							return result[0]
+				else:
+					sh.log.append('Moves.up',sh.lev_warn,sh.globs['mes'].empty_input)
+			else:
+				sh.log.append('Moves.up',sh.lev_warn,sh.globs['mes'].empty_input)
+		else:
+			sh.log.append('Moves.up',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def down(self,pos):
+		if self._source and self._search:
+			poses = self.block_pos(pos=pos)
+			if poses:
+				cell_no, row_no, col_no = poses[2], poses[3], poses[4]
+				min_col    = self.min_col()
+				max_row_sp = self.max_row_sp(col_no=col_no)
+				max_col    = self.max_col()
+				cond1      = min_col or min_col == 0
+				cond2      = max_row_sp or max_row_sp == 0
+				cond3      = max_col or max_col == 0
+				if cond1 and cond2 and cond3:
+					if row_no == max_row_sp and col_no == max_col:
+						if self.Selectable:
+							self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and COLNO = ? order by ROWNO,NO',(self._source,self._search,'term','phrase',min_col,))
+						else:
+							self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and COLNO = ? order by ROWNO,NO',(self._source,self._search,min_col,))
+						result = self.dbc.fetchone()
+						if result:
+							return result[0]
+					elif row_no == max_row_sp:
+						if self.Selectable:
+							self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and COLNO > ? order by COLNO,ROWNO,NO',(self._source,self._search,'term','phrase',col_no,))
+						else:
+							self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and COLNO > ? order by COLNO,ROWNO,NO',(self._source,self._search,col_no,))
+						result = self.dbc.fetchone()
+						if result:
+							return result[0]
+					else:
+						if self.Selectable:
+							self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and COLNO = ? and ROWNO > ? order by ROWNO,NO',(self._source,self._search,'term','phrase',col_no,row_no,))
+						else:
+							self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK < 1 and COLNO = ? and ROWNO > ? order by ROWNO,NO',(self._source,self._search,col_no,row_no,))
+						result = self.dbc.fetchone()
+						if result:
+							return result[0]
+				else:
+					sh.log.append('Moves.down',sh.lev_warn,sh.globs['mes'].empty_input)
+			else:
+				sh.log.append('Moves.down',sh.lev_warn,sh.globs['mes'].empty_input)
+		else:
+			sh.log.append('Moves.down',sh.lev_warn,sh.globs['mes'].empty_input)
 
 
 

@@ -84,7 +84,7 @@ class ConfigMclient(sh.Config):
 	def _default(self):
 		sh.globs['bool'].update ({
 			'AutoCloseSpecSymbol':False
-		   ,'CopyTermsOnly'      :True
+		   ,'SelectTermsOnly'    :True
 		   ,'Iconify'            :True
 			                    })
 		#---------------------------------------------------
@@ -287,16 +287,17 @@ sources = ('All','Online','Offline')
 
 
 
-class Objects: # Requires 'article'
+class Objects:
 	
 	def __init__(self):
-		self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = self._blacklist = self._prioritize = self._parties = self._request = self._ext_dics = self._webframe = self._blocks_db = None
+		self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = self._blacklist = self._prioritize = self._parties = self._request = self._ext_dics = self._webframe = self._blocks_db = self._moves = None
 		
 	def blocks_db(self):
 		if not self._blocks_db:
-			self._blocks_db = db.DB()
+			self._blocks_db = db.Moves()
+			self._blocks_db.Selectable = sh.globs['bool']['SelectTermsOnly']
 		return self._blocks_db
-	
+		
 	def webframe(self):
 		if not self._webframe:
 			self._webframe = WebFrame()
@@ -1435,9 +1436,9 @@ class WebFrame:
 				#sh.log.append('WebFrame.get_pos',sh.lev_warn,'Unable to get the position!') # todo: mes
 			
 	def select(self):
-		if self._pos >= 0:
+		if self._pos is not None and self._pos >= 0:
 			# todo: create an option to toggle SELECTABLE (no need to update DB)
-			poses = objs.blocks_db().block_pos(self._pos,Selectable=1)
+			poses = objs.blocks_db().block_pos(self._pos)
 			if poses:
 				''' Creating a selection requires 4 parameters to be 
 				calculated:
@@ -1463,13 +1464,10 @@ class WebFrame:
 					except tk.TclError:
 						sh.log.append('WebFrame.select',sh.lev_warn,'Unable to set selection for poses %s-%s!' % (str(_index[1]),str(_index[3])))
 				else:
-					# todo: check frequency
 					sh.log.append('WebFrame.select',sh.lev_warn,'Unable to get the index!') # todo: mes
+		#else: # Too frequent
+		#	sh.log.append('WebFrame.select',sh.lev_warn,sh.globs['mes'].wrong_input2)
 					
-	def first_selection(self,*args):
-		self._pos = objs.blocks_db().first_term()
-		self.select()
-	
 	def fill(self,code='<html><body><h1>Nothing has been loaded yet.</h1></body></html>'):
 		self.widget.reset()
 		self.widget.parse(code)
@@ -1485,6 +1483,8 @@ class WebFrame:
 		timer.start()
 		objs.blocks_db().request(source=objs.request()._source,search=objs._request._search)
 		if not objs._blocks_db.present():
+			ptimer = sh.Timer(func_title='WebFrame.load_article (Page)')
+			ptimer.start()
 			page = pg.Page (source       = objs._request._source
 						   ,lang         = objs._request._lang
 						   ,search       = objs._request._search
@@ -1494,6 +1494,7 @@ class WebFrame:
 						   #,file         = '/home/pete/tmp/ars/preceding.txt'
 						   )
 			page.run()
+			ptimer.end()
 			objs._request._page     = page._page
 			objs._request._html_raw = page._html_raw
 			
@@ -1551,17 +1552,10 @@ class WebFrame:
 		objs._blocks_db.update(query=pos._query)
 		
 		self.title(arg=objs._request._search)
-		self.first_selection()
+		self.move_text_start()
 		self.search_field.clear()
 		self.update_buttons()
 		timer.end()
-		
-		'''
-		sg.objs.txt().reset_data()
-		sg.objs.txt().insert(self.text())
-		sg.objs.txt().show()
-		'''
-		
 		
 		'''
 		objs.blocks_db().dbc.execute('select NO,CELLNO,TYPE,TEXT,POS1,POS2 from BLOCKS order by CELLNO,NO')
@@ -1618,19 +1612,23 @@ class WebFrame:
 	# todo: move 'move_*' procedures to Moves class
 	# Перейти на 1-й термин текущей строки	
 	def move_line_start(self,*args):
-		pass
+		self._pos = objs.blocks_db().line_start(pos=self._pos)
+		self.select()
 
 	# Перейти на последний термин текущей строки
 	def move_line_end(self,*args):
-		pass
+		self._pos = objs.blocks_db().line_end(pos=self._pos)
+		self.select()
 
-	# Перейти на 1-й термин статьи
+	# Go to the 1st (non-)selectable block
 	def move_text_start(self,*args):
-		pass
+		self._pos = objs.blocks_db().start()
+		self.select()
 
 	# Перейти на последний термин статьи
 	def move_text_end(self,*args):
-		pass
+		self._pos = objs.blocks_db().end()
+		self.select()
 
 	# Перейти на страницу вверх
 	def move_page_up(self,event=None): # todo: do we need 'event' here?
@@ -1644,19 +1642,23 @@ class WebFrame:
 
 	# Перейти на предыдущий термин
 	def move_left(self,*args):
-		pass
+		self._pos = objs.blocks_db().left(pos=self._pos)
+		self.select()
 
 	# Перейти на следующий термин
 	def move_right(self,*args):
-		pass
+		self._pos = objs.blocks_db().right(pos=self._pos)
+		self.select()
 
 	# Перейти на строку вниз
 	def move_down(self,*args):
-		pass
+		self._pos = objs.blocks_db().down(pos=self._pos)
+		self.select()
 
 	# Перейти на строку вверх
 	def move_up(self,*args):
-		pass
+		self._pos = objs.blocks_db().up(pos=self._pos)
+		self.select()
 	
 	# Задействование колеса мыши для пролистывания экрана
 	def mouse_wheel(self,event):
