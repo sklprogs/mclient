@@ -1184,7 +1184,7 @@ class WebFrame:
 		        # todo: This currently means 'self.go_url'. Prioritize/unblock dictionaries in 'self.go'.
 		        ,action   = self.go
 		        )
-		sg.bind (obj      = self
+		sg.bind (obj      = self.obj
 		        ,bindings = [sh.globs['var']['bind_copy_sel']
 		                    ,sh.globs['var']['bind_copy_sel_alt']
 		                    ,sh.globs['var']['bind_copy_sel_alt2']
@@ -1491,8 +1491,8 @@ class WebFrame:
 						   ,url          = objs._request._url
 						   ,win_encoding = sh.globs['var']['win_encoding']
 						   ,ext_dics     = objs.ext_dics()
-						   ,file         = '/home/pete/tmp/ars/lottery.txt' # cur
-						   #,file         = '/home/pete/tmp/ars/таратайка.txt'
+						   #,file         = '/home/pete/tmp/ars/lottery.txt' # cur
+						   ,file         = '/home/pete/tmp/ars/таратайка.txt'
 						   #,file         = '/home/pete/tmp/ars/painting.txt'
 						   )
 			page.run()
