@@ -1492,8 +1492,9 @@ class WebFrame:
 						   ,win_encoding = sh.globs['var']['win_encoding']
 						   ,ext_dics     = objs.ext_dics()
 						   #,file         = '/home/pete/tmp/ars/lottery.txt' # cur
-						   ,file         = '/home/pete/tmp/ars/таратайка.txt'
+						   #,file         = '/home/pete/tmp/ars/таратайка.txt'
 						   #,file         = '/home/pete/tmp/ars/painting.txt'
+						   #,file          = '/home/pete/tmp/ars/рабочая документация.txt'
 						   )
 			page.run()
 			ptimer.end()
