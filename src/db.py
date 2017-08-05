@@ -30,7 +30,7 @@ class DB:
 		# Must indicate 'integer' fully before 'primary key autoincrement'
 		self.dbc.execute (
 		            'create table if not exists BLOCKS (\
-		            NO          integer primary   \
+		             NO         integer primary   \
 		                        key autoincrement \
 		            ,SOURCE     text              \
 		            ,SEARCH     text              \
@@ -52,11 +52,19 @@ class DB:
 		            ,COLNO      integer           \
 		            ,POS1       integer           \
 		            ,POS2       integer           \
+		            ,NODE1      text              \
+					,NODE2      text              \
+					,OFFPOS1    integer           \
+					,OFFPOS2    integer           \
+					,BBOX1      integer           \
+					,BBOX2      integer           \
+					,BBOX3      integer           \
+					,BBOX4      integer           \
 		                                               )'
 		                 )
 
 	def fill(self,data):
-		self.dbc.executemany('insert into BLOCKS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',data)
+		self.dbc.executemany('insert into BLOCKS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',data)
 
 	def sort(self,Fetch=True):
 		self.dbc.execute('select NO,DICA,WFORMA,SPEECHA,TERMA,TYPE,TEXT,SAMECELL,CELLNO,ROWNO,COLNO from BLOCKS where BLOCK is NOT ? order by CELLNO,NO',(1,)) # order by DICA,WFORMA,SPEECHA,TERMA,
@@ -328,6 +336,16 @@ class DB:
 			return self.dbc.fetchone()
 		else:
 			sh.log.append('DB.min_col_sp',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def selection(self,pos):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOX2,BBOX3,BBOX4 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and POS1 <= ? and POS2 >= ? order by COLNO,NO',(self._source,self._search,'term','phrase',pos,pos,))
+			else:
+				self.dbc.execute('select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOX2,BBOX3,BBOX4 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and POS1 <= ? and POS2 >= ? order by COLNO,NO',(self._source,self._search,pos,pos,))
+		else:
+			sh.log.append('DB.selection',sh.lev_warn,sh.globs['mes'].empty_input)
+		return self.dbc.fetchone()
 
 
 

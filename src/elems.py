@@ -45,6 +45,7 @@ class Block:
 
 
 
+
 # Process blocks before dumping to DB
 ''' About filling 'terma':
     - We fill 'terma' from the start in order to ensure the correct 'terma' value for blocks having '_same == 1'
@@ -423,6 +424,14 @@ class Elems:
 			  ,-1              # (18) COLNO
 			  ,-1              # (19) POS1
 			  ,-1              # (20) POS2
+			  ,''              # (21) NODE1
+			  ,''              # (22) NODE2
+			  ,-1              # (23) OFFPOS1
+			  ,-1              # (24) OFFPOS2
+			  ,-1              # (25) BBOX1
+			  ,-1              # (26) BBOX2
+			  ,-1              # (27) BBOX3
+			  ,-1              # (28) BBOX4
 			  )
 			                  )
 
