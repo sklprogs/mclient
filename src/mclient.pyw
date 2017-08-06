@@ -1463,7 +1463,12 @@ class WebFrame:
 	def shift_screen(self):
 		result = objs.blocks_db().selection(pos=self._pos)
 		if result:
+			# Tkinter keywords (e.g., 'start', '1.0') do not work here for some reason, setting 'yview' manually
+			if not result[8]:
+				objs._blocks_db.Selectable = False
 			node = objs._blocks_db.node(page_no=result[8])
+			if not result[8]:
+				objs._blocks_db.Selectable = sh.globs['bool']['SelectTermsOnly']
 			if node:
 				self.widget.yview_name(node)
 			else:
@@ -1496,9 +1501,9 @@ class WebFrame:
 						   ,ext_dics     = objs.ext_dics()
 						   #,file         = '/home/pete/tmp/ars/lottery.txt' # cur
 						   #,file         = '/home/pete/tmp/ars/таратайка.txt'
-						   ,file         = '/home/pete/tmp/ars/painting.txt'
+						   #,file         = '/home/pete/tmp/ars/painting.txt'
 						   #,file          = '/home/pete/tmp/ars/рабочая документация.txt'
-						   #,file           = '/home/pete/tmp/ars/do.txt'
+						   ,file           = '/home/pete/tmp/ars/do.txt'
 						   )
 			page.run()
 			ptimer.end()
