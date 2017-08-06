@@ -1459,29 +1459,14 @@ class WebFrame:
 		sh.log.append('WebFrame.size',sh.lev_debug,'Widget height: %s' % str(height)) # todo: mes
 		return height
 	
-	def page_no(self):
-		# BBOX: man says: The first two integers are the x and y coordinates of the top-left corner of the bounding-box, the later two are the x and y coordinates of the bottom-right corner of the same box. If the node does not generate content, then an empty string is returned.
-		result = objs.blocks_db().selection(pos=self._pos)
-		if result:
-			_size = self.size()
-			if _size:
-				# cur
-				bottom = int(result[5] / _size)
-				top    = int(result[7] / _size)
-				if top != self._page_no:
-					self._page_no = top
-				elif bottom != self._page_no:
-					self._page_no = bottom
-				sh.log.append('WebFrame.page_no',sh.lev_debug,'Page #: %d' % self._page_no) # todo: mes
-			else:
-				sh.log.append('WebFrame.page_no',sh.lev_warn,sh.globs['mes'].empty_input)
-		else:
-			sh.log.append('WebFrame.page_no',sh.lev_warn,sh.globs['mes'].empty_input)
-			
 	def shift_screen(self):
 		result = objs.blocks_db().selection(pos=self._pos)
 		if result:
-			self.widget.yview_name(result[0])
+			node = objs._blocks_db.node(page_no=result[8])
+			if node:
+				self.widget.yview_name(node)
+			else:
+				sh.log.append('WebFrame.shift_screen',sh.lev_warn,sh.globs['mes'].empty_input)
 		else:
 			sh.log.append('WebFrame.shift_screen',sh.lev_warn,sh.globs['mes'].empty_input)
 	
@@ -1635,7 +1620,6 @@ class WebFrame:
 	
 	def key_move(self):
 		self.select()
-		self.page_no()
 		self.shift_screen()
 	
 	# todo: move 'move_*' procedures to Moves class
@@ -1663,15 +1647,13 @@ class WebFrame:
 	def move_page_up(self,event=None): # todo: do we need 'event' here?
 		self.widget.yview_scroll(-1,'pages')
 		self.mouse_sel(event=event) # todo: do we need this?
-		self.page_no()
-		self.shift_screen()
+		#self.key_move()
 
 	# Перейти на страницу вверх
 	def move_page_down(self,event=None): # todo: do we need 'event' here?
 		self.widget.yview_scroll(1,'pages')
 		self.mouse_sel(event=event) # todo: do we need this?
-		self.page_no()
-		self.shift_screen()
+		#self.key_move()
 
 	# Перейти на предыдущий термин
 	def move_left(self,*args):

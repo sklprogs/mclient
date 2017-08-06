@@ -29,9 +29,11 @@ class Block:
 		self._last     = -1
 		self._no       = -1
 		self._cell_no  = -1 # Applies to non-blocked cells only
+		self._page_no  = -1
 		self._same     = -1
 		# '_select' is an attribute of a *cell* which is valid if the cell has a non-blocked block of types 'term', 'phrase' or 'transc'
 		self._select   = -1
+		self._priority = 0
 		self._type     = 'comment' # 'wform', 'speech', 'dic', 'phrase', 'term', 'comment', 'correction', 'transc', 'invalid'
 		self._text     = ''
 		self._url      = ''
@@ -41,8 +43,6 @@ class Block:
 		self._speecha  = ''
 		self._transca  = ''
 		self._terma    = ''
-		self._priority = -1
-
 
 
 
@@ -432,6 +432,7 @@ class Elems:
 			  ,-1              # (26) BBOX2
 			  ,-1              # (27) BBOX3
 			  ,-1              # (28) BBOX4
+			  ,-1              # (29) PAGENO
 			  )
 			                  )
 

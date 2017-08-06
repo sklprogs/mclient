@@ -60,11 +60,12 @@ class DB:
 					,BBOX2      integer           \
 					,BBOX3      integer           \
 					,BBOX4      integer           \
+					,PAGENO     integer           \
 		                                               )'
 		                 )
 
 	def fill(self,data):
-		self.dbc.executemany('insert into BLOCKS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',data)
+		self.dbc.executemany('insert into BLOCKS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',data)
 
 	def sort(self,Fetch=True):
 		self.dbc.execute('select NO,DICA,WFORMA,SPEECHA,TERMA,TYPE,TEXT,SAMECELL,CELLNO,ROWNO,COLNO from BLOCKS where BLOCK is NOT ? order by CELLNO,NO',(1,)) # order by DICA,WFORMA,SPEECHA,TERMA,
@@ -340,11 +341,21 @@ class DB:
 	def selection(self,pos):
 		if self._source and self._search:
 			if self.Selectable:
-				self.dbc.execute('select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOX2,BBOX3,BBOX4 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and POS1 <= ? and POS2 >= ? order by COLNO,NO',(self._source,self._search,'term','phrase',pos,pos,))
+				self.dbc.execute('select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOX2,BBOX3,BBOX4,PAGENO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and POS1 <= ? and POS2 >= ? order by COLNO,NO',(self._source,self._search,'term','phrase',pos,pos,))
 			else:
-				self.dbc.execute('select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOX2,BBOX3,BBOX4 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and POS1 <= ? and POS2 >= ? order by COLNO,NO',(self._source,self._search,pos,pos,))
+				self.dbc.execute('select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOX2,BBOX3,BBOX4,PAGENO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and POS1 <= ? and POS2 >= ? order by COLNO,NO',(self._source,self._search,pos,pos,))
 		else:
 			sh.log.append('DB.selection',sh.lev_warn,sh.globs['mes'].empty_input)
+		return self.dbc.fetchone()
+		
+	def node(self,page_no):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select NODE1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and PAGENO = ? order by CELLNO,NO',(self._source,self._search,'term','phrase',page_no,))
+			else:
+				self.dbc.execute('select NODE1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and PAGENO = ? order by CELLNO,NO',(self._source,self._search,page_no,))
+		else:
+			sh.log.append('DB.node',sh.lev_warn,sh.globs['mes'].empty_input)
 		return self.dbc.fetchone()
 
 
