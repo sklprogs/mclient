@@ -6,6 +6,8 @@
 	- Create an option to toggle SELECTABLE (no need to update DB) (see WebFrame.select)
 	- Since selectables are block-based now, move them to Elems
 	- Use NO (or NODE1,NODE2) instead of POS *where appropriate*
+	- Loop WebFrame.move_page_up & WebFrame.move_page_down
+	- Use the most appropriate BBOX
 '''
 
 ''' # fix
@@ -880,7 +882,6 @@ class WebFrame:
 		self.CaptureHotkey = True
 		# todo: decide which values should be deleted
 		self._no           = -1
-		self._page_no      = 0
 		self._pos          = -1
 	
 	def gui(self):
@@ -1495,9 +1496,9 @@ class WebFrame:
 						   ,ext_dics     = objs.ext_dics()
 						   #,file         = '/home/pete/tmp/ars/lottery.txt' # cur
 						   #,file         = '/home/pete/tmp/ars/таратайка.txt'
-						   #,file         = '/home/pete/tmp/ars/painting.txt'
+						   ,file         = '/home/pete/tmp/ars/painting.txt'
 						   #,file          = '/home/pete/tmp/ars/рабочая документация.txt'
-						   ,file           = '/home/pete/tmp/ars/do.txt'
+						   #,file           = '/home/pete/tmp/ars/do.txt'
 						   )
 			page.run()
 			ptimer.end()
@@ -1644,16 +1645,14 @@ class WebFrame:
 		self.key_move()
 
 	# Перейти на страницу вверх
-	def move_page_up(self,event=None): # todo: do we need 'event' here?
-		self.widget.yview_scroll(-1,'pages')
-		self.mouse_sel(event=event) # todo: do we need this?
-		#self.key_move()
+	def move_page_up(self,*args):
+		self._pos = objs.blocks_db().page_up(pos=self._pos)
+		self.key_move()
 
-	# Перейти на страницу вверх
-	def move_page_down(self,event=None): # todo: do we need 'event' here?
-		self.widget.yview_scroll(1,'pages')
-		self.mouse_sel(event=event) # todo: do we need this?
-		#self.key_move()
+	# Перейти на страницу вниз
+	def move_page_down(self,*args):
+		self._pos = objs.blocks_db().page_down(pos=self._pos)
+		self.key_move()
 
 	# Перейти на предыдущий термин
 	def move_left(self,*args):

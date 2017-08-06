@@ -195,9 +195,9 @@ class DB:
 		if self._source and self._search:
 			# todo: is there any difference between POS2 > pos and POS2 >= pos?
 			if self.Selectable:
-				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ? and POS1 < POS2 and SELECTABLE = 1',(self._source,self._search,pos,pos,))
+				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,PAGENO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ? and POS1 < POS2 and SELECTABLE = 1',(self._source,self._search,pos,pos,))
 			else:
-				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ? and POS1 < POS2',(self._source,self._search,pos,pos,))
+				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,PAGENO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ? and POS1 < POS2',(self._source,self._search,pos,pos,))
 			return self.dbc.fetchone()
 		else:
 			sh.log.append('DB.block_pos',sh.lev_warn,sh.globs['mes'].empty_input)
@@ -315,7 +315,7 @@ class DB:
 			return self.dbc.fetchone()
 		else:
 			sh.log.append('DB.min_row',sh.lev_warn,sh.globs['mes'].empty_input)
-			
+	
 	# Find the minimum available row number for the set column; this might not be the same as ROWNO of 'self.min_cell'
 	def min_row_sp(self,col_no):
 		if self._source and self._search:
@@ -551,6 +551,38 @@ class Moves(DB):
 				sh.log.append('Moves.down',sh.lev_warn,sh.globs['mes'].empty_input)
 		else:
 			sh.log.append('Moves.down',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def page_down(self,pos):
+		if self._source and self._search:
+			poses = self.block_pos(pos=pos)
+			if poses:
+				if self.Selectable:
+					self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and PAGENO > ? order by CELLNO,NO',(self._source,self._search,'term','phrase',poses[6],))
+				else:
+					self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and PAGENO > ? order by CELLNO,NO',(self._source,self._search,poses[6],))
+				result = self.dbc.fetchone()
+				if result:
+					return result[0]
+			else:
+				sh.log.append('Moves.page_down',sh.lev_warn,sh.globs['mes'].empty_input)
+		else:
+			sh.log.append('Moves.page_down',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def page_up(self,pos):
+		if self._source and self._search:
+			poses = self.block_pos(pos=pos)
+			if poses:
+				if self.Selectable:
+					self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and PAGENO < ? order by PAGENO desc,CELLNO,NO',(self._source,self._search,'term','phrase',poses[6],))
+				else:
+					self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and PAGENO < ? order by PAGENO desc,CELLNO,NO',(self._source,self._search,poses[6],))
+				result = self.dbc.fetchone()
+				if result:
+					return result[0]
+			else:
+				sh.log.append('Moves.page_up',sh.lev_warn,sh.globs['mes'].empty_input)
+		else:
+			sh.log.append('Moves.page_up',sh.lev_warn,sh.globs['mes'].empty_input)
 
 
 
