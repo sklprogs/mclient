@@ -21,7 +21,6 @@ class Block:
 		self._last     = -1
 		self._no       = -1
 		self._cell_no  = -1 # Applies to non-blocked cells only
-		self._page_no  = -1
 		self._same     = -1
 		# '_select' is an attribute of a *cell* which is valid if the cell has a non-blocked block of types 'term', 'phrase' or 'transc'
 		self._select   = -1
@@ -431,12 +430,9 @@ class Pages:
 		self.obj     = obj
 		self._blocks = blocks
 		self._query  = ''
-		if self._blocks and self.obj and hasattr(self.obj,'widget') and hasattr(self.obj,'size'):
+		if self._blocks and self.obj and hasattr(self.obj,'widget') and hasattr(self.obj,'bbox'):
 			self.Success = True
 			self.widget = self.obj.widget
-			self._size = self.obj.size()
-			if not self._size:
-				sg.Message('Pages.__init__',sh.lev_err,'Unable to get widget sizes!') # todo: mes
 		else:
 			self.Success = False
 			sh.log.append('Pages.__init__',sh.lev_warn,sh.globs['mes'].empty_input)
@@ -447,14 +443,14 @@ class Pages:
 		for block in self._blocks:
 			_index = self.widget.text('index',block._first,block._last)
 			if _index:
-				tmp.write('update BLOCKS set NODE1="%s",NODE2="%s",OFFPOS1=%d,OFFPOS2=%d,' % (_index[0],_index[2],_index[1],_index[3]))
-				_bbox = self.obj.bbox(_index[0])
+				_bbox  = self.obj.bbox(_index[0])
 				if _bbox:
-					if self._size:
-						# BBOX: man says: The first two integers are the x and y coordinates of the top-left corner of the bounding-box, the later two are the x and y coordinates of the bottom-right corner of the same box. If the node does not generate content, then an empty string is returned.
-						tmp.write('BBOX1=%d,BBOX2=%d,BBOX3=%d,BBOX4=%d,PAGENO=%d where NO=%d;' % (_bbox[0],_bbox[1],_bbox[2],_bbox[3],int(_bbox[1]/self._size),block._no))
-					else:
-						tmp.write('BBOX1=%d,BBOX2=%d,BBOX3=%d,BBOX4=%d where NO=%d;' % (_bbox[0],_bbox[1],_bbox[2],_bbox[3],block._no))
+					# BBOX: man says: The first two integers are the x and y coordinates of the top-left corner of the bounding-box, the later two are the x and y coordinates of the bottom-right corner of the same box. If the node does not generate content, then an empty string is returned.
+					tmp.write('update BLOCKS set NODE1="%s",NODE2="%s",OFFPOS1=%d,OFFPOS2=%d,BBOX1=%d,BBOX2=%d,BBOY1=%d,BBOY2=%d where NO=%d;' % (_index[0],_index[2],_index[1],_index[3],_bbox[0],_bbox[2],_bbox[1],_bbox[3],block._no))
+				else:
+					sh.log.append('Pages.create_index',sh.lev_warn,sh.globs['mes'].empty_input)
+			else:
+				sh.log.append('Pages.create_index',sh.lev_warn,sh.globs['mes'].empty_input)
 		tmp.write('commit;')
 		self._query = tmp.getvalue()
 		tmp.close()

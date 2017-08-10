@@ -53,19 +53,18 @@ class DB:
 		            ,POS1       integer           \
 		            ,POS2       integer           \
 		            ,NODE1      text              \
-					,NODE2      text              \
+		            ,NODE2      text              \
 					,OFFPOS1    integer           \
 					,OFFPOS2    integer           \
 					,BBOX1      integer           \
 					,BBOX2      integer           \
-					,BBOX3      integer           \
-					,BBOX4      integer           \
-					,PAGENO     integer           \
+					,BBOY1      integer           \
+					,BBOY2      integer           \
 		                                               )'
 		                 )
 
 	def fill(self,data):
-		self.dbc.executemany('insert into BLOCKS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',data)
+		self.dbc.executemany('insert into BLOCKS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',data)
 
 	def sort(self,Fetch=True):
 		self.dbc.execute('select NO,DICA,WFORMA,SPEECHA,TERMA,TYPE,TEXT,SAMECELL,CELLNO,ROWNO,COLNO from BLOCKS where BLOCK is NOT ? order by CELLNO,NO',(1,)) # order by DICA,WFORMA,SPEECHA,TERMA,
@@ -195,9 +194,9 @@ class DB:
 		if self._source and self._search:
 			# todo: is there any difference between POS2 > pos and POS2 >= pos?
 			if self.Selectable:
-				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,PAGENO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ? and POS1 < POS2 and SELECTABLE = 1',(self._source,self._search,pos,pos,))
+				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ? and POS1 < POS2 and SELECTABLE = 1',(self._source,self._search,pos,pos,))
 			else:
-				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,PAGENO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ? and POS1 < POS2',(self._source,self._search,pos,pos,))
+				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ? and POS1 < POS2',(self._source,self._search,pos,pos,))
 			return self.dbc.fetchone()
 		else:
 			sh.log.append('DB.block_pos',sh.lev_warn,sh.globs['mes'].empty_input)
@@ -341,21 +340,33 @@ class DB:
 	def selection(self,pos):
 		if self._source and self._search:
 			if self.Selectable:
-				self.dbc.execute('select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOX2,BBOX3,BBOX4,PAGENO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and POS1 <= ? and POS2 >= ? order by COLNO,NO',(self._source,self._search,'term','phrase',pos,pos,))
+				self.dbc.execute('select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOX2,BBOY1,BBOY2,ROWNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and POS1 <= ? and POS2 >= ? order by COLNO,NO',(self._source,self._search,'term','phrase',pos,pos,))
 			else:
-				self.dbc.execute('select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOX2,BBOX3,BBOX4,PAGENO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and POS1 <= ? and POS2 >= ? order by COLNO,NO',(self._source,self._search,pos,pos,))
+				self.dbc.execute('select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOY1,BBOX2,BBOY2,ROWNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and POS1 <= ? and POS2 >= ? order by COLNO,NO',(self._source,self._search,pos,pos,))
 		else:
 			sh.log.append('DB.selection',sh.lev_warn,sh.globs['mes'].empty_input)
 		return self.dbc.fetchone()
 		
-	def node(self,page_no):
+	def node(self,bboy):
 		if self._source and self._search:
 			if self.Selectable:
-				self.dbc.execute('select NODE1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and PAGENO = ? order by CELLNO,NO',(self._source,self._search,'term','phrase',page_no,))
+				self.dbc.execute('select NODE1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and BBOY1 >= ? order by BBOY1',(self._source,self._search,'term','phrase',bboy,))
 			else:
-				self.dbc.execute('select NODE1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and PAGENO = ? order by CELLNO,NO',(self._source,self._search,page_no,))
+				self.dbc.execute('select NODE1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and BBOY1 >= ? order by BBOY1',(self._source,self._search,bboy,))
+			return self.dbc.fetchone()
 		else:
 			sh.log.append('DB.node',sh.lev_warn,sh.globs['mes'].empty_input)
+		
+	# orphan
+	# todo: elaborate
+	def search_forward(self,pos,search):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and TEXT = ? order by CELLNO,NO',(self._source,self._search,'term','phrase',search,))
+			else:
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and TEXT = ? order by CELLNO,NO',(self._source,self._search,'term','phrase',search,))
+		else:
+			sh.log.append('DB.search_forward',sh.lev_warn,sh.globs['mes'].empty_input)
 		return self.dbc.fetchone()
 
 
@@ -552,35 +563,27 @@ class Moves(DB):
 		else:
 			sh.log.append('Moves.down',sh.lev_warn,sh.globs['mes'].empty_input)
 			
-	def page_down(self,pos):
+	def page_down(self,bboy,height):
 		if self._source and self._search:
-			poses = self.block_pos(pos=pos)
-			if poses:
-				if self.Selectable:
-					self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and PAGENO > ? order by CELLNO,NO',(self._source,self._search,'term','phrase',poses[6],))
-				else:
-					self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and PAGENO > ? order by CELLNO,NO',(self._source,self._search,poses[6],))
-				result = self.dbc.fetchone()
-				if result:
-					return result[0]
+			if self.Selectable:
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and BBOY1 >= ? order by CELLNO,NO',(self._source,self._search,'term','phrase',int(bboy / height) * height + height,))
 			else:
-				sh.log.append('Moves.page_down',sh.lev_warn,sh.globs['mes'].empty_input)
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and BBOY1 >= ? order by CELLNO,NO',(self._source,self._search,int(bboy / height) * height + height,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
 		else:
 			sh.log.append('Moves.page_down',sh.lev_warn,sh.globs['mes'].empty_input)
 			
-	def page_up(self,pos):
+	def page_up(self,bboy,height):
 		if self._source and self._search:
-			poses = self.block_pos(pos=pos)
-			if poses:
-				if self.Selectable:
-					self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and PAGENO < ? order by PAGENO desc,CELLNO,NO',(self._source,self._search,'term','phrase',poses[6],))
-				else:
-					self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and PAGENO < ? order by PAGENO desc,CELLNO,NO',(self._source,self._search,poses[6],))
-				result = self.dbc.fetchone()
-				if result:
-					return result[0]
+			if self.Selectable:
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and BBOY1 >= ? order by CELLNO,NO',(self._source,self._search,'term','phrase',int(bboy / height) * height - height,))
 			else:
-				sh.log.append('Moves.page_up',sh.lev_warn,sh.globs['mes'].empty_input)
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and BBOY1 >= ? order by CELLNO,NO',(self._source,self._search,int(bboy / height) * height - height,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
 		else:
 			sh.log.append('Moves.page_up',sh.lev_warn,sh.globs['mes'].empty_input)
 
@@ -650,11 +653,4 @@ if __name__ == '__main__':
 	cells.run()
 	blocks_db.update(query=cells._query)
 
-	'''
-	data = blocks_db.assign_pos()
-	pos = cl.Pos(data=data,raw_text='RAW_TEXT')
-	pos.run()
-	blocks_db.update(query=pos._query)
-	'''
-	
 	blocks_db.print(Shorten=1,MaxRow=15,MaxRows=150)

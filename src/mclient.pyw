@@ -5,14 +5,16 @@
 	- Make transcriptions Selectable
 	- Create an option to toggle SELECTABLE (no need to update DB) (see WebFrame.select)
 	- Since selectables are block-based now, move them to Elems
-	- Use NO (or NODE1,NODE2) instead of POS *where appropriate*
+	- Use NO/NODE instead of POS *where appropriate*
 	- Loop WebFrame.move_page_up & WebFrame.move_page_down
-	- Use the most appropriate BBOX
 '''
 
 ''' # fix
     - 'жесткая посадка': 'жесткая посадка' is recognized as a term instead of a wform
     - odd fixed columns are inserted
+    - NODE1 < NODE2 in some rare cases
+    - ShiftScreen with SelectTermsOnly=0 on 'painting'
+    - ShiftScreen on 'делать' -> 'Вычислительная техника'
 '''
 
 import os
@@ -878,11 +880,12 @@ class WebFrame:
 		self.title()
 	
 	def values(self):
-		self.MouseClicked  = False
-		self.CaptureHotkey = True
+		self.MouseClicked    = False
+		self.CaptureHotkey   = True
 		# todo: decide which values should be deleted
-		self._no           = -1
-		self._pos          = -1
+		self._pos            = -1
+		self.direction       = 'right'
+		self._row_no         = 0
 	
 	def gui(self):
 		self.obj     = sg.objs.new_top(Maximize=1)
@@ -1437,7 +1440,7 @@ class WebFrame:
 				node1,node2 = self.widget.node(True,event.x,event.y)
 				self._pos   = self.widget.text('offset',node1,node2)
 			except ValueError: # Need more than 0 values to unpack
-				self._pos   = -1
+				pass
 				# The error message is too frequent
 				#sh.log.append('WebFrame.get_pos',sh.lev_warn,'Unable to get the position!') # todo: mes
 			
@@ -1456,23 +1459,40 @@ class WebFrame:
 		
 	def size(self):
 		sg.objs.root().widget.update_idletasks()
-		height = self.widget.winfo_height()
-		sh.log.append('WebFrame.size',sh.lev_debug,'Widget height: %s' % str(height)) # todo: mes
-		return height
+		#sh.log.append('WebFrame.size',sh.lev_debug,'Widget height: %s' % str(height)) # todo: mes
+		return self.widget.winfo_height()
 	
 	def shift_screen(self):
 		result = objs.blocks_db().selection(pos=self._pos)
 		if result:
-			# Tkinter keywords (e.g., 'start', '1.0') do not work here for some reason, setting 'yview' manually
-			if not result[8]:
+			bboy1    = result[6]
+			bboy2    = result[7]
+			row_no   = result[8]
+			_height  = self.size()
+			page_no1 = int(bboy1 / _height)
+			page_no2 = int(bboy2 / _height)
+			if page_no1 == page_no2:
+				# This prevents from extra scrolling the same row
+				if self._row_no != row_no:
+					self._row_no = row_no
+				page_bboy = page_no1 * _height
 				objs._blocks_db.Selectable = False
-			node = objs._blocks_db.node(page_no=result[8])
-			if not result[8]:
+				node = objs._blocks_db.node(bboy=page_bboy)
 				objs._blocks_db.Selectable = sh.globs['bool']['SelectTermsOnly']
-			if node:
-				self.widget.yview_name(node)
+				if node:
+					self.widget.yview_name(node)
+				else:
+					sh.log.append('WebFrame.shift_screen',sh.lev_warn,sh.globs['mes'].empty_input)
 			else:
-				sh.log.append('WebFrame.shift_screen',sh.lev_warn,sh.globs['mes'].empty_input)
+				node = result[0]
+				# If a part of the selection is readable, then Tkinter thinks that the entire selection is readable. Moreover, in the majority of cases, NODE1 = NODE2 and BBOY1 and BBOY2 refer to the same node. Calculating 'moveto' proportion (max possible BBOY2/BBOY1) does not help, 'scan_dragto' is not implemented, so we use a little trick here. 
+				# 'Units' means 'lines'
+				if self._row_no != row_no:
+					if self.direction in ('down','right'):
+						self.widget.yview_scroll(number=5,what='units') 
+					elif self.direction in ('up','left'):
+						self.widget.yview_scroll(number=-5,what='units')
+					self._row_no = row_no
 		else:
 			sh.log.append('WebFrame.shift_screen',sh.lev_warn,sh.globs['mes'].empty_input)
 	
@@ -1503,7 +1523,13 @@ class WebFrame:
 						   #,file         = '/home/pete/tmp/ars/таратайка.txt'
 						   #,file         = '/home/pete/tmp/ars/painting.txt'
 						   #,file          = '/home/pete/tmp/ars/рабочая документация.txt'
-						   ,file           = '/home/pete/tmp/ars/do.txt'
+						   #,file           = '/home/pete/tmp/ars/do.txt'
+						   ,file           = '/home/pete/tmp/ars/set.txt'
+						   #,file           = '/home/pete/tmp/ars/get.txt'
+						   #,file           = '/home/pete/tmp/ars/pack.txt'
+						   #,file           = '/home/pete/tmp/ars/counterpart.txt'
+						   #,file           = '/home/pete/tmp/ars/test.txt'
+						   #,file           = '/home/pete/tmp/ars/cut.txt'
 						   )
 			page.run()
 			ptimer.end()
@@ -1631,51 +1657,71 @@ class WebFrame:
 	# todo: move 'move_*' procedures to Moves class
 	# Перейти на 1-й термин текущей строки	
 	def move_line_start(self,*args):
+		self.direction = 'left'
 		self._pos = objs.blocks_db().line_start(pos=self._pos)
 		self.key_move()
 
 	# Перейти на последний термин текущей строки
 	def move_line_end(self,*args):
+		self.direction = 'right'
 		self._pos = objs.blocks_db().line_end(pos=self._pos)
 		self.key_move()
 
 	# Go to the 1st (non-)selectable block
 	def move_text_start(self,*args):
+		self.direction = 'up'
 		self._pos = objs.blocks_db().start()
 		self.key_move()
 
 	# Перейти на последний термин статьи
 	def move_text_end(self,*args):
+		self.direction = 'down'
 		self._pos = objs.blocks_db().end()
 		self.key_move()
 
 	# Перейти на страницу вверх
 	def move_page_up(self,*args):
-		self._pos = objs.blocks_db().page_up(pos=self._pos)
-		self.key_move()
+		self.direction = 'up'
+		result = objs.blocks_db().selection(pos=self._pos)
+		height = self.size()
+		if result and height:
+			result = objs.blocks_db().page_up(bboy=result[6],height=height)
+			if result:
+				self._pos = result
+				self.key_move()
 
 	# Перейти на страницу вниз
 	def move_page_down(self,*args):
-		self._pos = objs.blocks_db().page_down(pos=self._pos)
-		self.key_move()
+		self.direction = 'down'
+		result = objs.blocks_db().selection(pos=self._pos)
+		height = self.size()
+		if result and height:
+			result = objs.blocks_db().page_down(bboy=result[6],height=height)
+			if result:
+				self._pos = result
+				self.key_move()
 
 	# Перейти на предыдущий термин
 	def move_left(self,*args):
+		self.direction = 'left'
 		self._pos = objs.blocks_db().left(pos=self._pos)
 		self.key_move()
 
 	# Перейти на следующий термин
 	def move_right(self,*args):
+		self.direction = 'right'
 		self._pos = objs.blocks_db().right(pos=self._pos)
 		self.key_move()
 
 	# Перейти на строку вниз
 	def move_down(self,*args):
+		self.direction = 'down'
 		self._pos = objs.blocks_db().down(pos=self._pos)
 		self.key_move()
 
 	# Перейти на строку вверх
 	def move_up(self,*args):
+		self.direction = 'up'
 		self._pos = objs.blocks_db().up(pos=self._pos)
 		self.key_move()
 	
@@ -1683,10 +1729,10 @@ class WebFrame:
 	def mouse_wheel(self,event):
 		# В Windows XP delta == -120, однако, в других версиях оно другое
 		if event.num == 5 or event.delta < 0:
-			self.move_page_down(event=event)
+			self.move_page_down()
 		# В Windows XP delta == 120, однако, в других версиях оно другое
 		if event.num == 4 or event.delta > 0:
-			self.move_page_up(event=event)
+			self.move_page_up()
 		return 'break'
 	
 	# Следить за буфером обмена

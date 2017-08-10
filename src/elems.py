@@ -29,7 +29,6 @@ class Block:
 		self._last     = -1
 		self._no       = -1
 		self._cell_no  = -1 # Applies to non-blocked cells only
-		self._page_no  = -1
 		self._same     = -1
 		# '_select' is an attribute of a *cell* which is valid if the cell has a non-blocked block of types 'term', 'phrase' or 'transc'
 		self._select   = -1
@@ -430,9 +429,8 @@ class Elems:
 			  ,-1              # (24) OFFPOS2
 			  ,-1              # (25) BBOX1
 			  ,-1              # (26) BBOX2
-			  ,-1              # (27) BBOX3
-			  ,-1              # (28) BBOX4
-			  ,-1              # (29) PAGENO
+			  ,-1              # (27) BBOY1
+			  ,-1              # (28) BBOY2
 			  )
 			                  )
 
