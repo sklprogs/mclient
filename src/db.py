@@ -152,9 +152,12 @@ class DB:
 			sg.Message('DB.assign_bp',sh.lev_warn,sh.globs['mes'].empty_input)
 			
 	# Assign input data for Cells
-	def assign_cells(self):
+	def assign_cells(self,SortTerms=False):
 		if self._source and self._search:
-			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 order by PRIORITY desc,DICA,WFORMA,SPEECHA,TERMA,NO',(self._source,self._search,))
+			if SortTerms:
+				self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 order by PRIORITY desc,DICA,WFORMA,SPEECHA,TERMA,NO',(self._source,self._search,))
+			else:
+				self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 order by PRIORITY desc,DICA,WFORMA,SPEECHA,NO',(self._source,self._search,))
 			return self.dbc.fetchall()
 		else:
 			sg.Message('DB.assign_cells',sh.lev_warn,sh.globs['mes'].empty_input)
@@ -242,9 +245,9 @@ class DB:
 	def max_cell(self):
 		if self._source and self._search:
 			if self.Selectable:
-				self.dbc.execute('select CELLNO,NO,POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 order by CELLNO desc,NO desc',(self._source,self._search,'term','phrase',))
+				self.dbc.execute('select CELLNO,NO,POS1,BBOX1,BBOX2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 order by CELLNO desc,NO desc',(self._source,self._search,'term','phrase',))
 			else:
-				self.dbc.execute('select CELLNO,NO,POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by CELLNO desc,NO desc',(self._source,self._search,))
+				self.dbc.execute('select CELLNO,NO,POS1,BBOX1,BBOX2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by CELLNO desc,NO desc',(self._source,self._search,))
 			return self.dbc.fetchone()
 		else:
 			sh.log.append('DB.max_cell',sh.lev_warn,sh.globs['mes'].empty_input)
@@ -382,20 +385,55 @@ class DB:
 		else:
 			sh.log.append('DB.prioritized',sh.lev_warn,sh.globs['mes'].empty_input)
 			
-	def zzz(self):
-		pass
-			
-	# orphan
 	# todo: elaborate
 	def search_forward(self,pos,search):
 		if self._source and self._search:
 			if self.Selectable:
-				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and TEXT = ? order by CELLNO,NO',(self._source,self._search,'term','phrase',search,))
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and TEXT = ? and POS1 > ? order by CELLNO,NO',(self._source,self._search,'term','phrase',search,pos,))
 			else:
-				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and TEXT = ? order by CELLNO,NO',(self._source,self._search,'term','phrase',search,))
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and TEXT = ? and POS1 > ? order by CELLNO,NO',(self._source,self._search,'term','phrase',search,pos,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
 		else:
 			sh.log.append('DB.search_forward',sh.lev_warn,sh.globs['mes'].empty_input)
-		return self.dbc.fetchone()
+		
+	def search_backward(self,pos,search):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and TEXT = ? and POS2 < ? order by CELLNO,NO',(self._source,self._search,'term','phrase',search,pos,))
+			else:
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and TEXT = ? and POS2 < ? order by CELLNO,NO',(self._source,self._search,'term','phrase',search,pos,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('DB.search_backward',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def wforms(self,Block=False):
+		if self._source and self._search:
+			# Do not use 'POS1 < POS2', it might be not set yet
+			if Block:
+				self.dbc.execute('select TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and TYPE = ? and TEXT != ?',(self._source,self._search,'wform','',))
+			else:
+				self.dbc.execute('select TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and TYPE = ? and TEXT != ?',(self._source,self._search,'wform','',))
+			return self.dbc.fetchall()
+		else:
+			sh.log.append('DB.wforms',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def dics(self,Block=False):
+		if self._source and self._search:
+			# Do not use 'POS1 < POS2', it might be not set yet
+			if Block:
+				self.dbc.execute('select TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and TYPE = ? and TEXT != ?',(self._source,self._search,'dic','',))
+			else:
+				self.dbc.execute('select TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and TYPE = ? and TEXT != ?',(self._source,self._search,'dic','',))
+			return self.dbc.fetchall()
+		else:
+			sh.log.append('DB.dics',sh.lev_warn,sh.globs['mes'].empty_input)
+
+	def zzz(self):
+		pass
 
 
 

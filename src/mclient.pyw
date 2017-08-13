@@ -8,6 +8,7 @@
 	- Use NO/NODE instead of POS *where appropriate*
 	- Loop WebFrame.move_page_up & WebFrame.move_page_down
 	(?) Update SELECTABLE and shorten queries
+	- Restore selection upon changing a setting and loading the article again
 '''
 
 ''' # fix
@@ -16,11 +17,12 @@
     - NODE1 < NODE2 in some rare cases
     - ShiftScreen with SelectTermsOnly=0 on 'painting'
     - ShiftScreen on 'делать' -> 'Вычислительная техника'
-    - PageDown fails on the last block of MAXCOL (do, set)
+    - PageDown fails on the last block of MAXCOL (do, set) (we need to loop PgUp/PgDn)
     - shift_y does not work properly when changing sizes on-the-fly
     - Changing node still sometimes fails
     - Some blocks on the borders of pages are still not fully readable
-    - Ошибка сегментирования при загрузке статьи, где все словари блокируются
+    - A segmentation error when loading an article where all dictionaries are blocked
+    - A Warning appears when only separate words are found
 '''
 
 import os
@@ -642,8 +644,7 @@ class SearchArticle:
 		self.close()
 		self.reset()
 	
-	def reset(self):
-		self._list   = []
+	def reset(self,*args):
 		self._pos    = -1
 		self._search = ''
 		# Plus: keeping old input
@@ -660,48 +661,55 @@ class SearchArticle:
 		self.obj.show()
 		self.obj.select_all()
 	
-	# Create a list of all matches in the article
-	def matches(self):
-		if self.search():
-			for i in range(len(articles.current().cells())):
-				for j in range(len(articles.current()._cells[i])):
-					# todo: Для всех вхождений, а не только терминов
-					if articles.current()._cells[i][j].Selectable and self._search in articles.current()._cells[i][j].term.lower():
-						self._list.append((i,j))
-
 	def search(self):
 		if not self._search:
 			self.show()
 			self._search = self.widget.get().strip(' ').strip('\n').lower()
 		return self._search
 	
-	def list(self):
-		if not self._list:
-			self.matches()
-		return self._list
-	
-	def forward(self):
-		if self._pos + 1 < len(self.list()):
-			self._pos += 1
+	def forward(self,*args):
+		pos = objs.blocks_db().search_forward(pos=self._pos,search=self.search())
+		if pos or pos == 0:
+			objs.webframe()._pos = pos
+			objs._webframe.key_move()
+			self._pos = pos + 1
+		elif self._pos < 0:
+			sg.Message (func    = 'SearchArticle.forward'
+			           ,level   = sh.lev_info
+			           ,message = sh.globs['mes'].not_found2
+			           )
 		else:
 			sg.Message (func    = 'SearchArticle.forward'
 			           ,level   = sh.lev_info
 			           ,message = sh.globs['mes'].search_from_start
 			           )
 			self._pos = 0
-	
-	def backward(self):
-		if self._pos > 0:
-			self._pos -= 1
+			self.forward()
+			
+	def backward(self,*args):
+		max_cell = objs._blocks_db.max_cell()
+		if max_cell:
+			pos = objs.blocks_db().search_backward(pos=self._pos,search=self.search())
+			if pos or pos == 0:
+				objs.webframe()._pos = pos
+				objs._webframe.key_move()
+			elif self._pos == max_cell[4] + 1:
+				sg.Message (func    = 'SearchArticle.backward'
+						   ,level   = sh.lev_info
+						   ,message = sh.globs['mes'].not_found2
+						   )
+			else:
+				sg.Message (func    = 'SearchArticle.backward'
+						   ,level   = sh.lev_info
+						   ,message = sh.globs['mes'].search_from_end
+						   )
+				self._pos = max_cell[4] + 1
+				self.backward()
 		else:
-			sg.Message (func    = 'SearchArticle.backward'
-			           ,level   = sh.lev_info
-			           ,message = sh.globs['mes'].search_from_end
-			           )
-			self._pos = len(self.list()) - 1
+			sh.log.append('SearchArticle.backward',sh.lev_warn,sh.globs['mes'].empty_input)
 
-	
-	
+
+
 # Search FOR an article
 class SearchField:
 	
@@ -1303,11 +1311,11 @@ class WebFrame:
 		# Дополнительные горячие клавиши
 		sg.bind (obj      = self.obj
 		        ,bindings = sh.globs['var']['bind_search_article_forward']
-		        ,action   = self.search_forward
+		        ,action   = self.search_article.forward
 		        )
 		sg.bind (obj      = self.obj
 		        ,bindings = sh.globs['var']['bind_search_article_backward']
-		        ,action   = self.search_backward
+		        ,action   = self.search_article.backward
 		        )
 		sg.bind (obj      = self.obj
 		        ,bindings = sh.globs['var']['bind_re_search_article']
@@ -1461,7 +1469,9 @@ class WebFrame:
 			except tk.TclError:
 				sh.log.append('WebFrame.select',sh.lev_warn,'Unable to set selection!') # todo: mes
 		else:
-			sh.log.append('WebFrame.select',sh.lev_warn,sh.globs['mes'].empty_input)
+			# Too frequent
+			#sh.log.append('WebFrame.select',sh.lev_warn,sh.globs['mes'].empty_input)
+			pass
 		
 	def height(self):
 		sg.objs.root().widget.update_idletasks()
@@ -1620,7 +1630,24 @@ class WebFrame:
 		bp.run()
 		objs._blocks_db.update(query=bp._query)
 		
-		data = objs._blocks_db.assign_cells()
+		dics   = objs._blocks_db.dics(Block=0)
+		wforms = objs._blocks_db.wforms(Block=0)
+		# todo: make this Multitran-only
+		# note: if an article comprises only 1 dic/wform, this is usually a dictionary + terms from the 'Phrases' section
+		if dics and len(dics) == 1 or wforms and len(wforms) == 1:
+			objs._request.SpecialPage = True
+			# A dictionary from the 'Phrases' section usually has an 'original + translation' structure, so we need to switch off sorting terms and ensure that the number of columns is divisible by 2
+			if objs._request._collimit % 2 != 0:
+				if objs._request._collimit == 5:
+					objs._request._collimit += 1
+				else:
+					objs._request._collimit -= 1
+				sh.log.append('WebFrame.load_article',sh.lev_info,'Set the column limit to %d' % objs._request._collimit)
+		else:
+			objs._request.SpecialPage = False # Otherwise, 'SpecialPage' will be inherited
+		
+		SortTerms = objs._request.SortTerms and not objs._request.SpecialPage
+		data = objs._blocks_db.assign_cells(SortTerms=SortTerms)
 		cells = cl.Cells (data       = data
 						 ,collimit   = objs._request._collimit
 						 ,phrase_dic = phrase_dic
@@ -1879,7 +1906,6 @@ class WebFrame:
 		else:
 			self.btn_toggle_block.inactive()
 			
-		# todo: assign 'objs._request._prioritize'
 		if not objs._request.SpecialPage and objs._request.Prioritize and objs._blocks_db.prioritized():
 			self.btn_toggle_priority.active()
 		else:
@@ -1909,24 +1935,9 @@ class WebFrame:
 				Confirmed = False
 		return Confirmed
 	
-	def drag_search(self):
-		if self.search_article.list():
-			self.i, self.j = self.search_article._list[self.search_article._pos]
-			self.set_cell()
-			if len(self.index) > 0:
-				self.widget.yview_name(self.index[0])
-	
 	def search_reset(self,*args): # SearchArticle
 		self.search_article.reset()
-		self.search_forward()
-	
-	def search_backward(self,*args): # SearchArticle
-		self.search_article.backward()
-		self.drag_search()
-	
-	def search_forward(self,*args): # SearchArticle
 		self.search_article.forward()
-		self.drag_search()
 	
 	def set_lang(self,*args):
 		objs.request()._lang = langs[self.menu_pairs.index]
