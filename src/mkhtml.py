@@ -24,14 +24,18 @@ class Block:
 
 class HTML:
 	
-	def __init__(self,data,collimit=9,Printer=False): # 'collimit' includes fixed blocks
-		self._data     = data
-		self._collimit = collimit
-		self.Printer   = Printer
-		self._blocks   = []
-		self._block    = None
-		self._html     = ''
-		self._script   = '''
+	def __init__(self,data,collimit=9,Printer=False,blacklist=[],prioritize=[],blocked_color='gray',priority_color='red'): # 'collimit' includes fixed blocks
+		self._data           = data
+		self._collimit       = collimit
+		self.Printer         = Printer
+		self._blacklist      = blacklist
+		self._prioritize     = prioritize
+		self._blocked_color  = blocked_color
+		self._priority_color = priority_color
+		self._blocks         = []
+		self._block          = None
+		self._html           = ''
+		self._script         = '''
 		<head>
 		  
 		  <div align="center">
@@ -69,8 +73,8 @@ class HTML:
 		</head>
 		'''
 		if self._data:
-			self.assign ()
-			self.html   ()
+			self.assign()
+			self.html  ()
 		else:
 			sh.log.append('HTML.__init__',sh.lev_warn,sh.globs['mes'].empty_input)
 			
@@ -89,16 +93,12 @@ class HTML:
 			self.output.write('<font face="')
 			self.output.write(sh.globs['var']['font_dics_family'])
 			self.output.write('" color="')
-			'''
-			# todo (?): add to the config
-			if self._block._text in articles.current().block():
-				self.output.write('gray')
-			elif self._block._text in articles.current().prioritize():
-				self.output.write('red')
+			if self._block._text in self._blacklist:
+				self.output.write(self._blocked_color)
+			elif self._block._text in self._prioritize:
+				self.output.write(self._priority_color)
 			else:
 				self.output.write(sh.globs['var']['color_dics'])
-			'''
-			self.output.write(sh.globs['var']['color_dics'])
 			self.output.write('" size="')
 			self.output.write(str(sh.globs['int']['font_dics_size']))
 			self.output.write('"><b>')

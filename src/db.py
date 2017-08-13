@@ -367,6 +367,24 @@ class DB:
 		else:
 			sh.log.append('DB.row',sh.lev_warn,sh.globs['mes'].empty_input)
 			
+	def blocked(self):
+		if self._source and self._search:
+			self.dbc.execute('select NO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 1',(self._source,self._search,))
+			return self.dbc.fetchall()
+		else:
+			sh.log.append('DB.blocked',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def prioritized(self):
+		if self._source and self._search:
+			# note: We assume that 'Phrases' section has -1000 priority and this is always used despite user settings
+			self.dbc.execute('select NO from BLOCKS where SOURCE = ? and SEARCH = ? and PRIORITY != 0 and PRIORITY != -1000',(self._source,self._search,))
+			return self.dbc.fetchall()
+		else:
+			sh.log.append('DB.prioritized',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def zzz(self):
+		pass
+			
 	# orphan
 	# todo: elaborate
 	def search_forward(self,pos,search):

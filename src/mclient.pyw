@@ -7,6 +7,7 @@
 	- Since selectables are block-based now, move them to Elems
 	- Use NO/NODE instead of POS *where appropriate*
 	- Loop WebFrame.move_page_up & WebFrame.move_page_down
+	(?) Update SELECTABLE and shorten queries
 '''
 
 ''' # fix
@@ -19,10 +20,12 @@
     - shift_y does not work properly when changing sizes on-the-fly
     - Changing node still sometimes fails
     - Some blocks on the borders of pages are still not fully readable
+    - Ошибка сегментирования при загрузке статьи, где все словари блокируются
 '''
 
 import os
 import sys
+import io
 import tkinter     as tk
 from tkinter import ttk
 import tkinterhtml as th
@@ -89,7 +92,7 @@ class ConfigMclient(sh.Config):
 		self.check()
 		self.load()
 		self.additional_keys()
-			
+
 	def _default(self):
 		sh.globs['bool'].update ({
 			'AutoCloseSpecSymbol':False
@@ -1570,7 +1573,7 @@ class WebFrame:
 						   #,file          = '/home/pete/tmp/ars/рабочая документация.txt'
 						   #,file           = '/home/pete/tmp/ars/do.txt'
 						   #,file           = '/home/pete/tmp/ars/set.txt'
-						   ,file           = '/home/pete/tmp/ars/get.txt'
+						   #,file           = '/home/pete/tmp/ars/get.txt'
 						   #,file           = '/home/pete/tmp/ars/pack.txt'
 						   #,file           = '/home/pete/tmp/ars/counterpart.txt'
 						   #,file           = '/home/pete/tmp/ars/test.txt'
@@ -1610,6 +1613,8 @@ class WebFrame:
 								,search     = objs._request._search
 								,blacklist  = objs.blacklist()
 								,prioritize = objs.prioritize()
+								,Block      = objs._request.Block
+								,Prioritize = objs._request.Prioritize
 								,phrase_dic = phrase_dic
 								)
 		bp.run()
@@ -1623,8 +1628,10 @@ class WebFrame:
 		cells.run()
 		objs._blocks_db.update(query=cells._query)
 		
-		get_html = mh.HTML (data     = objs._blocks_db.fetch()
-						   ,collimit = objs._request._collimit
+		get_html = mh.HTML (data       = objs._blocks_db.fetch()
+						   ,collimit   = objs._request._collimit
+						   ,blacklist  = objs.blacklist()
+						   ,prioritize = objs.prioritize()
 						   )
 		objs._request._html = get_html._html
 		self.fill(code=objs._request._html)
@@ -1646,12 +1653,6 @@ class WebFrame:
 		
 		'''
 		objs.blocks_db().dbc.execute('select CELLNO,NO,TYPE,TEXT,POS1,POS2,SELECTABLE from BLOCKS order by CELLNO,NO')
-		objs.blocks_db().print(Selected=1,Shorten=1,MaxRow=20,MaxRows=300)
-		'''
-		
-		# cur
-		'''
-		objs.blocks_db().dbc.execute('select CELLNO,ROWNO,COLNO,NO,TYPE,TEXT,BBOX1,BBOX2,BBOY1,BBOY2 from BLOCKS order by CELLNO,NO')
 		objs.blocks_db().print(Selected=1,Shorten=1,MaxRow=20,MaxRows=300)
 		'''
 		
@@ -1873,13 +1874,13 @@ class WebFrame:
 		else:
 			self.btn_toggle_alphabet.inactive()
 		
-		if objs._request.Block and objs.blacklist():
+		if objs._request.Block and objs._blocks_db.blocked():
 			self.btn_toggle_block.active()
 		else:
 			self.btn_toggle_block.inactive()
 			
 		# todo: assign 'objs._request._prioritize'
-		if not objs._request.SpecialPage and objs._request.Prioritize and objs.prioritize():
+		if not objs._request.SpecialPage and objs._request.Prioritize and objs._blocks_db.prioritized():
 			self.btn_toggle_priority.active()
 		else:
 			self.btn_toggle_priority.inactive()
@@ -1972,6 +1973,7 @@ class WebFrame:
 		if objs.request().Block:
 			objs._request.Block = False
 			#sg.Message(func='WebFrame.toggle_block',level=sh.lev_info,message='Blacklisting is now OFF.') # todo: mes
+			self.unblock()
 		else:
 			objs._request.Block = True
 			if objs._blacklist:
@@ -1981,10 +1983,37 @@ class WebFrame:
 				sg.Message(func='WebFrame.toggle_block',level=sh.lev_warn,message='No dictionaries have been provided for blacklisting!') # todo: mes
 		self.load_article()
 		
+	def unblock(self):
+		result = objs.blocks_db().blocked()
+		if result:
+			tmp = io.StringIO()
+			query = ''
+			tmp.write('begin;')
+			for no in result:
+				tmp.write('update BLOCKS set BLOCK=0 where NO=%d;' % no)
+			tmp.write('commit;')
+			query = tmp.getvalue()
+			tmp.close()
+			objs._blocks_db.update(query=query)
+			
+	def unprioritize(self):
+		result = objs.blocks_db().prioritized()
+		if result:
+			tmp = io.StringIO()
+			query = ''
+			tmp.write('begin;')
+			for no in result:
+				tmp.write('update BLOCKS set PRIORITY=0 where NO=%d;' % no)
+			tmp.write('commit;')
+			query = tmp.getvalue()
+			tmp.close()
+			objs._blocks_db.update(query=query)
+		
 	def toggle_priority(self,*args):
 		if objs.request().Prioritize:
 			objs._request.Prioritize = False
 			#sg.Message(func='WebFrame.toggle_priority',level=sh.lev_info,message='Prioritizing is now OFF.') # todo: mes
+			self.unprioritize()
 		else:
 			objs._request.Prioritize = True
 			if objs._prioritize:

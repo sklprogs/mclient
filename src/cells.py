@@ -41,12 +41,14 @@ class Block:
 '''
 class BlockPrioritize:
 	
-	def __init__(self,data,source,search,blacklist=[],prioritize=[],phrase_dic=None):
+	def __init__(self,data,source,search,blacklist=[],prioritize=[],Block=False,Prioritize=False,phrase_dic=None):
 		self._data       = data
 		self._source     = source
 		self._search     = search
 		self._blacklist  = blacklist
 		self._prioritize = prioritize
+		self.Block       = Block
+		self.Prioritize  = Prioritize
 		self._phrase_dic = phrase_dic
 		self._blocks     = []
 		self._query      = ''
@@ -76,7 +78,7 @@ class BlockPrioritize:
 			
 	def block(self):
 		for block in self._blocks:
-			if block._dica in self._blacklist:
+			if self.Block and block._dica in self._blacklist:
 				block._block = 1
 			else:
 				block._block = 0
@@ -85,13 +87,14 @@ class BlockPrioritize:
 		if self._phrase_dic:
 			for block in self._blocks:
 				if self._phrase_dic == block._dica:
-					# Set the (presumably) lowest priority for a 'Phrases' dictionary
-					block._priority = -10
-		for i in range(len(self._prioritize)):
-			priority = len(self._prioritize) - i
-			for block in self._blocks:
-				if self._prioritize[i].lower() == block._dica.lower():
-					block._priority = priority
+					# Set the (presumably) lowest priority for a 'Phrases' dictionary. This must be a quite small value as not to conflict with other dictionaries.
+					block._priority = -1000
+		if self.Prioritize:
+			for i in range(len(self._prioritize)):
+				priority = len(self._prioritize) - i
+				for block in self._blocks:
+					if self._prioritize[i].lower() == block._dica.lower():
+						block._priority = priority
 					
 	def dump(self):
 		tmp = io.StringIO()
