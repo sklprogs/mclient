@@ -264,9 +264,9 @@ class DB:
 	def max_col(self):
 		if self._source and self._search:
 			if self.Selectable:
-				self.dbc.execute('select COLNO,NO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 order by COLNO desc,NO desc',(self._source,self._search,'term','phrase',))
+				self.dbc.execute('select COLNO,NO,BBOX2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 order by COLNO desc,NO desc',(self._source,self._search,'term','phrase',))
 			else:
-				self.dbc.execute('select COLNO,NO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by COLNO desc,NO desc',(self._source,self._search,))
+				self.dbc.execute('select COLNO,NO,BBOX2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by COLNO desc,NO desc',(self._source,self._search,))
 			return self.dbc.fetchone()
 		else:
 			sh.log.append('DB.max_col',sh.lev_warn,sh.globs['mes'].empty_input)
@@ -286,9 +286,9 @@ class DB:
 	def max_col_sp(self,row_no):
 		if self._source and self._search:
 			if self.Selectable:
-				self.dbc.execute('select COLNO,NO from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 order by COLNO desc,NO desc',(row_no,self._source,self._search,'term','phrase',))
+				self.dbc.execute('select COLNO,NO,BBOX2 from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 order by COLNO desc,NO desc',(row_no,self._source,self._search,'term','phrase',))
 			else:
-				self.dbc.execute('select COLNO,NO from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by COLNO desc,NO desc',(row_no,self._source,self._search,))
+				self.dbc.execute('select COLNO,NO,BBOX2 from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by COLNO desc,NO desc',(row_no,self._source,self._search,))
 			return self.dbc.fetchone()
 		else:
 			sh.log.append('DB.max_col_sp',sh.lev_warn,sh.globs['mes'].empty_input)
@@ -297,9 +297,9 @@ class DB:
 	def min_col(self):
 		if self._source and self._search:
 			if self.Selectable:
-				self.dbc.execute('select COLNO,NO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 order by COLNO,NO',(self._source,self._search,'term','phrase',))
+				self.dbc.execute('select COLNO,NO,BBOX1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 order by COLNO,NO',(self._source,self._search,'term','phrase',))
 			else:
-				self.dbc.execute('select COLNO,NO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by COLNO,NO',(self._source,self._search,))
+				self.dbc.execute('select COLNO,NO,BBOX1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by COLNO,NO',(self._source,self._search,))
 			return self.dbc.fetchone()
 		else:
 			sh.log.append('DB.min_col',sh.lev_warn,sh.globs['mes'].empty_input)
@@ -330,9 +330,9 @@ class DB:
 	def min_col_sp(self,row_no):
 		if self._source and self._search:
 			if self.Selectable:
-				self.dbc.execute('select COLNO,NO from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 order by COLNO,NO',(row_no,self._source,self._search,'term','phrase',))
+				self.dbc.execute('select COLNO,NO,BBOX1 from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 order by COLNO,NO',(row_no,self._source,self._search,'term','phrase',))
 			else:
-				self.dbc.execute('select COLNO,NO from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by COLNO,NO',(row_no,self._source,self._search,))
+				self.dbc.execute('select COLNO,NO,BBOX1 from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by COLNO,NO',(row_no,self._source,self._search,))
 			return self.dbc.fetchone()
 		else:
 			sh.log.append('DB.min_col_sp',sh.lev_warn,sh.globs['mes'].empty_input)
@@ -347,16 +347,26 @@ class DB:
 			sh.log.append('DB.selection',sh.lev_warn,sh.globs['mes'].empty_input)
 		return self.dbc.fetchone()
 		
-	def node(self,bboy):
+	def node_y1(self,bboy):
 		if self._source and self._search:
 			if self.Selectable:
-				self.dbc.execute('select NODE1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and BBOY1 >= ? order by BBOY1',(self._source,self._search,'term','phrase',bboy,))
+				self.dbc.execute('select NODE1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and BBOY1 >= ? order by CELLNO,NO',(self._source,self._search,'term','phrase',bboy,))
 			else:
-				self.dbc.execute('select NODE1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and BBOY1 >= ? order by BBOY1',(self._source,self._search,bboy,))
+				self.dbc.execute('select NODE1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and BBOY1 >= ? order by CELLNO,NO',(self._source,self._search,bboy,))
 			return self.dbc.fetchone()
 		else:
-			sh.log.append('DB.node',sh.lev_warn,sh.globs['mes'].empty_input)
-		
+			sh.log.append('DB.node_y1',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def row(self,row_no):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select BBOX1,BBOX2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and ROWNO = ? order by CELLNO,NO',(self._source,self._search,'term','phrase',row_no,))
+			else:
+				self.dbc.execute('select BBOX1,BBOX2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and ROWNO = ? order by CELLNO,NO',(self._source,self._search,row_no,))
+			return self.dbc.fetchall()
+		else:
+			sh.log.append('DB.row',sh.lev_warn,sh.globs['mes'].empty_input)
+			
 	# orphan
 	# todo: elaborate
 	def search_forward(self,pos,search):

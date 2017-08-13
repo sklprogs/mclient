@@ -15,6 +15,10 @@
     - NODE1 < NODE2 in some rare cases
     - ShiftScreen with SelectTermsOnly=0 on 'painting'
     - ShiftScreen on 'делать' -> 'Вычислительная техника'
+    - PageDown fails on the last block of MAXCOL (do, set)
+    - shift_y does not work properly when changing sizes on-the-fly
+    - Changing node still sometimes fails
+    - Some blocks on the borders of pages are still not fully readable
 '''
 
 import os
@@ -882,7 +886,6 @@ class WebFrame:
 	def values(self):
 		self.MouseClicked    = False
 		self.CaptureHotkey   = True
-		# todo: decide which values should be deleted
 		self._pos            = -1
 		self.direction       = 'right'
 		self._row_no         = 0
@@ -1457,34 +1460,68 @@ class WebFrame:
 		else:
 			sh.log.append('WebFrame.select',sh.lev_warn,sh.globs['mes'].empty_input)
 		
-	def size(self):
+	def height(self):
 		sg.objs.root().widget.update_idletasks()
-		#sh.log.append('WebFrame.size',sh.lev_debug,'Widget height: %s' % str(height)) # todo: mes
+		#sh.log.append('WebFrame.height',sh.lev_debug,'Widget height: %s' % str(_height)) # todo: mes
 		return self.widget.winfo_height()
+		
+	def width(self):
+		sg.objs.root().widget.update_idletasks()
+		#sh.log.append('WebFrame.width',sh.lev_debug,'Widget width: %s' % str(_width)) # todo: mes
+		return self.widget.winfo_width()
 	
-	def shift_screen(self):
-		result = objs.blocks_db().selection(pos=self._pos)
-		if result:
-			bboy1    = result[6]
-			bboy2    = result[7]
-			row_no   = result[8]
-			_height  = self.size()
+	def shift_x(self,bbox1,bbox2,row_no):
+		_width  = self.width()
+		if _width:
+			page_no1 = int(bbox1 / _width)
+			page_no2 = int(bbox2 / _width)
+			min_col  = objs._blocks_db.min_col()
+			max_col  = objs._blocks_db.max_col()
+			if min_col and max_col:
+				min_bbox = min_col[2]
+				max_bbox = max_col[2]
+				page_no  = 0
+				bboxes   = objs._blocks_db.row(row_no=row_no)
+				if bboxes:
+					for i in range(len(bboxes)):
+						if page_no != int(bboxes[i][0] / _width) or page_no != int(bboxes[i][1] / _width):
+							page_no += 1
+						if bbox1 == bboxes[i][0]:
+							bbox1 = page_no * _width
+							break
+					fraction = None
+					if bbox1 == min_bbox:
+						fraction = '0.0'
+					elif self.direction == 'left':
+						fraction = (bbox1-5)/max_bbox
+					elif self.direction == 'right':
+						fraction = (bbox1+5)/max_bbox
+					if fraction:
+						self.widget.xview_moveto(fraction=fraction)
+				else:
+					sh.log.append('WebFrame.shift_x',sh.lev_warn,sh.globs['mes'].empty_input)
+			else:
+				sh.log.append('WebFrame.shift_x',sh.lev_warn,sh.globs['mes'].empty_input)
+		else:
+			sh.log.append('WebFrame.shift_x',sh.lev_warn,sh.globs['mes'].empty_input)
+		
+	def shift_y(self,bboy1,bboy2,row_no,node):
+		_height  = self.height()
+		if _height:
 			page_no1 = int(bboy1 / _height)
 			page_no2 = int(bboy2 / _height)
 			if page_no1 == page_no2:
 				# This prevents from extra scrolling the same row
-				if self._row_no != row_no:
-					self._row_no = row_no
+				self._row_no = row_no
 				page_bboy = page_no1 * _height
 				objs._blocks_db.Selectable = False
-				node = objs._blocks_db.node(bboy=page_bboy)
+				node = objs._blocks_db.node_y1(bboy=page_bboy)
 				objs._blocks_db.Selectable = sh.globs['bool']['SelectTermsOnly']
 				if node:
 					self.widget.yview_name(node)
 				else:
 					sh.log.append('WebFrame.shift_screen',sh.lev_warn,sh.globs['mes'].empty_input)
 			else:
-				node = result[0]
 				# If a part of the selection is readable, then Tkinter thinks that the entire selection is readable. Moreover, in the majority of cases, NODE1 = NODE2 and BBOY1 and BBOY2 refer to the same node. Calculating 'moveto' proportion (max possible BBOY2/BBOY1) does not help, 'scan_dragto' is not implemented, so we use a little trick here. 
 				# 'Units' means 'lines'
 				if self._row_no != row_no:
@@ -1493,6 +1530,14 @@ class WebFrame:
 					elif self.direction in ('up','left'):
 						self.widget.yview_scroll(number=-5,what='units')
 					self._row_no = row_no
+		else:
+			sh.log.append('WebFrame.shift_y',sh.lev_warn,sh.globs['mes'].empty_input)
+	
+	def shift_screen(self):
+		result = objs.blocks_db().selection(pos=self._pos)
+		if result:
+			self.shift_x(bbox1=result[4],bbox2=result[5],row_no=result[8])
+			self.shift_y(bboy1=result[6],bboy2=result[7],row_no=result[8],node=result[0])
 		else:
 			sh.log.append('WebFrame.shift_screen',sh.lev_warn,sh.globs['mes'].empty_input)
 	
@@ -1524,8 +1569,8 @@ class WebFrame:
 						   #,file         = '/home/pete/tmp/ars/painting.txt'
 						   #,file          = '/home/pete/tmp/ars/рабочая документация.txt'
 						   #,file           = '/home/pete/tmp/ars/do.txt'
-						   ,file           = '/home/pete/tmp/ars/set.txt'
-						   #,file           = '/home/pete/tmp/ars/get.txt'
+						   #,file           = '/home/pete/tmp/ars/set.txt'
+						   ,file           = '/home/pete/tmp/ars/get.txt'
 						   #,file           = '/home/pete/tmp/ars/pack.txt'
 						   #,file           = '/home/pete/tmp/ars/counterpart.txt'
 						   #,file           = '/home/pete/tmp/ars/test.txt'
@@ -1601,6 +1646,12 @@ class WebFrame:
 		
 		'''
 		objs.blocks_db().dbc.execute('select CELLNO,NO,TYPE,TEXT,POS1,POS2,SELECTABLE from BLOCKS order by CELLNO,NO')
+		objs.blocks_db().print(Selected=1,Shorten=1,MaxRow=20,MaxRows=300)
+		'''
+		
+		# cur
+		'''
+		objs.blocks_db().dbc.execute('select CELLNO,ROWNO,COLNO,NO,TYPE,TEXT,BBOX1,BBOX2,BBOY1,BBOY2 from BLOCKS order by CELLNO,NO')
 		objs.blocks_db().print(Selected=1,Shorten=1,MaxRow=20,MaxRows=300)
 		'''
 		
@@ -1683,7 +1734,7 @@ class WebFrame:
 	def move_page_up(self,*args):
 		self.direction = 'up'
 		result = objs.blocks_db().selection(pos=self._pos)
-		height = self.size()
+		height = self.height()
 		if result and height:
 			result = objs.blocks_db().page_up(bboy=result[6],height=height)
 			if result:
@@ -1694,7 +1745,7 @@ class WebFrame:
 	def move_page_down(self,*args):
 		self.direction = 'down'
 		result = objs.blocks_db().selection(pos=self._pos)
-		height = self.size()
+		height = self.height()
 		if result and height:
 			result = objs.blocks_db().page_down(bboy=result[6],height=height)
 			if result:
