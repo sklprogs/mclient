@@ -27,6 +27,7 @@
     - Clicking the selected block outside the selection causes the 'URL is empty' message
     - EN-RU -> collimit: 4 (w/o fixed) -> 'bow' -> 'арчак' -> Up => No selection
     - EN-RU -> collimit: 4 (w/o fixed) -> 'bow' -> 'Ятенный спорт' -> Up => No selection
+    - centre: not a SpecialPage
 '''
 
 import os
@@ -831,13 +832,12 @@ class History:
 		        )
 	
 	def autoselect(self):
+		self.obj.clear_selection()
 		self.obj.set(item=objs.request()._search)
 	
 	def show(self,*args):
 		self.Active = True
-		self.fill()
 		self.parent_obj.show()
-		#self.obj.focus() # todo: test & del
 		
 	def close(self,*args):
 		self.Active = False
@@ -856,7 +856,6 @@ class History:
 		objs.webframe().reset()
 		objs._webframe.search_article.obj.clear_text()
 		objs.request().reset()
-		self.update()
 	
 	def toggle(self,*args):
 		if self.Active:
@@ -1680,17 +1679,12 @@ class WebFrame:
 		self.title(arg=objs._request._search)
 		self.move_text_start()
 		self.search_field.clear()
+		self.history.update()
 		self.update_buttons()
 		timer.end()
 		
 		'''
 		objs.blocks_db().dbc.execute('select CELLNO,NO,TYPE,TEXT,POS1,POS2,SELECTABLE from BLOCKS order by CELLNO,NO')
-		objs.blocks_db().print(Selected=1,Shorten=1,MaxRow=20,MaxRows=300)
-		'''
-		
-		# cur
-		'''
-		objs.blocks_db().dbc.execute('select CELLNO,NO,TYPE,TEXT,URL,SELECTABLE from BLOCKS order by CELLNO,NO')
 		objs.blocks_db().print(Selected=1,Shorten=1,MaxRow=20,MaxRows=300)
 		'''
 		
@@ -1931,17 +1925,35 @@ class WebFrame:
 			
 	# Перейти на предыдущий запрос
 	def go_back(self,*args):
-		result = objs.blocks_db().prev_search()
-		if result:
-			objs.request()._search = result
-			self.load_article()
+		searches = objs.blocks_db().searches()
+		if searches:
+			result = objs._blocks_db.prev_search()
+			if result:
+				objs.request()._search = result
+				self.load_article()
+			# No need to load the same article once again
+			elif len(searches) > 1:
+				# The list is sorted in the descending order
+				objs.request()._search = list(searches)[0]
+				self.load_article()
+		else:
+			sh.log.append('WebFrame.go_back',sh.lev_warn,sh.globs['mes'].canceled)
 
 	# Перейти на следующий запрос
 	def go_forward(self,*args):
-		result = objs.blocks_db().next_search()
-		if result:
-			objs.request()._search = result
-			self.load_article()
+		searches = objs.blocks_db().searches()
+		if searches:
+			result = objs.blocks_db().next_search()
+			if result:
+				objs.request()._search = result
+				self.load_article()
+			# No need to load the same article once again
+			elif len(searches) > 1:
+				# The list is sorted in the descending order
+				objs.request()._search = list(searches)[-1]
+				self.load_article()
+		else:
+			sh.log.append('WebFrame.go_forward',sh.lev_warn,sh.globs['mes'].canceled)
 
 	def control_length(self): # Confirm too long requests
 		Confirmed = True

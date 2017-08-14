@@ -80,10 +80,10 @@ class DB:
 		return self.dbc.fetchall()
 		
 	def searches(self):
-		self.dbc.execute('select SEARCH from BLOCKS order by NO desc')
+		self.dbc.execute('select distinct SEARCH from BLOCKS order by NO desc')
 		result = self.dbc.fetchall()
 		if result:
-			return set([item[0] for item in result])
+			return [item[0] for item in result]
 			
 	def cur_nos(self,Block=True):
 		if self._search:
