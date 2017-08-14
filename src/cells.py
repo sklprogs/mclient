@@ -22,8 +22,6 @@ class Block:
 		self._no       = -1
 		self._cell_no  = -1 # Applies to non-blocked cells only
 		self._same     = -1
-		# '_select' is an attribute of a *cell* which is valid if the cell has a non-blocked block of types 'term', 'phrase' or 'transc'
-		self._select   = -1
 		self._priority = 0
 		self._type     = 'comment' # 'wform', 'speech', 'dic', 'phrase', 'term', 'comment', 'correction', 'transc', 'invalid'
 		self._text     = ''
@@ -136,7 +134,7 @@ class BlockPrioritize:
 ''' This re-assigns DIC, WFORM, SPEECH, TRANSC types
     We assume that sqlite has already sorted DB with 'BLOCK IS NOT 1'
     Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL, DICA, WFORMA, SPEECHA, TRANSCA
-    Modifies attributes:        TEXT, ROWNO, COLNO, CELLNO, SELECTABLE
+    Modifies attributes:        TEXT, ROWNO, COLNO, CELLNO
 '''
 class Cells:
 	
@@ -191,7 +189,6 @@ class Cells:
 			self.clear_phrases ()
 			self.wrap          ()
 			self.cell_no       ()
-			self.selectables   ()
 			self.dump          ()
 		else:
 			sh.log.append('Cells.run',sh.lev_warn,sh.globs['mes'].canceled)
@@ -217,7 +214,6 @@ class Cells:
 		          ,'ROWNO'
 		          ,'COLNO'
 		          ,'CELLNO'
-		          ,'SELECTABLE'
 		          ]
 		rows = []
 		for block in self._blocks:
@@ -227,7 +223,6 @@ class Cells:
 			             ,block.i
 			             ,block.j
 			             ,block._cell_no
-			             ,block._select
 			             ]
 			            )
 		sh.Table (headers = headers
@@ -274,14 +269,6 @@ class Cells:
 					self._blocks[x].j = 4
 					j += 1
 					
-	def selectables(self):
-		nos = [block._no for block in self._blocks if block._type in ('phrase','term','transc') and block._text]
-		for block in self._blocks:
-			if block._no in nos:
-				block._select = 1
-			else:
-				block._select = 0
-
 	def cell_no(self):
 		no = 0
 		for i in range(len(self._blocks)):
@@ -299,9 +286,9 @@ class Cells:
 		for block in self._blocks:
 			# We do not want to mess around with screening quotes that can fail the query
 			if block._text:
-				tmp.write('update BLOCKS set ROWNO=%d,COLNO=%d,CELLNO=%d,SELECTABLE=%s where NO=%d;' % (block.i,block.j,block._cell_no,block._select,block._no))
+				tmp.write('update BLOCKS set ROWNO=%d,COLNO=%d,CELLNO=%d where NO=%d;' % (block.i,block.j,block._cell_no,block._no))
 			else:
-				tmp.write('update BLOCKS set TEXT="%s",ROWNO=%d,COLNO=%d,CELLNO=%d,SELECTABLE=%s where NO=%d;' % (block._text,block.i,block.j,block._cell_no,block._select,block._no))
+				tmp.write('update BLOCKS set TEXT="%s",ROWNO=%d,COLNO=%d,CELLNO=%d where NO=%d;' % (block._text,block.i,block.j,block._cell_no,block._no))
 		tmp.write('commit;')
 		self._query = tmp.getvalue()
 		tmp.close()

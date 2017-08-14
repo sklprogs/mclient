@@ -4,7 +4,6 @@
 ''' # todo
 	- Make transcriptions Selectable
 	- Create an option to toggle SELECTABLE (no need to update DB) (see WebFrame.select)
-	- Since selectables are block-based now, move them to Elems
 	- Use NO/NODE instead of POS *where appropriate*
 	- Loop WebFrame.move_page_up & WebFrame.move_page_down
 	(?) Update SELECTABLE and shorten queries
@@ -23,6 +22,7 @@
     - Some blocks on the borders of pages are still not fully readable
     - A segmentation error when loading an article where all dictionaries are blocked
     - A Warning appears when only separate words are found
+    - When adding a space between blocks, add it to the end of the preceding block; otherwise, sorting terms may not work correctly (башмак -> sabaton)
 '''
 
 import os

@@ -85,6 +85,7 @@ class Elems:
 			self.remove_fixed      ()
 			self.insert_fixed      ()
 			self.fixed_terma       ()
+			self.selectables       ()
 			self.dump              ()
 		else:
 			sh.log.append('Elems.run',sh.lev_warn,sh.globs['mes'].canceled)
@@ -97,7 +98,8 @@ class Elems:
 		          ,'TRANSCA'
 		          ,'TYPE'
 		          ,'TEXT'
-		          ,'SAMECELL'          
+		          ,'SAMECELL'
+		          ,'SELECTABLE'
 		          ]
 		rows = []
 		for block in self._blocks:
@@ -107,7 +109,8 @@ class Elems:
 			             ,block._transca
 			             ,block._type
 			             ,block._text
-			             ,block._same         
+			             ,block._same
+			             ,block._select
 			             ]
 			            )
 		sh.Table (headers = headers
@@ -434,6 +437,14 @@ class Elems:
 			  )
 			                  )
 
+	def selectables(self):
+		# block._no is set only after creating DB
+		for block in self._blocks:
+			if block._type in ('phrase','term','transc') and block._text:
+				block._select = 1
+			else:
+				block._select = 0
+
 
 
 class PhraseTerma:
@@ -466,6 +477,7 @@ class PhraseTerma:
 				result = self.dbc.fetchone()
 				if result:
 					self._no1 = result[0]
+					self.dbc.execute('update BLOCKS set SELECTABLE=1 where NO = ?',(self._no1,))
 			else:
 				sh.log.append('PhraseTerma.phrase_dic',sh.lev_warn,sh.globs['mes'].wrong_input2)
 			sh.log.append('PhraseTerma.phrase_dic',sh.lev_debug,str(self._no1))
