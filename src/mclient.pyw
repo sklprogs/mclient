@@ -1373,8 +1373,7 @@ class WebFrame:
 		        )
 		sg.bind (obj      = self.search_field
 		        ,bindings = '<Control-a>'
-		        # fix
-		        ,action   = lambda e:select_all(self.search_field.widget,Small=True)
+		        ,action   = self.search_field.obj.select_all
 		        )
 		sg.bind (obj      = self.obj
 		        ,bindings = sh.globs['var']['bind_define']
