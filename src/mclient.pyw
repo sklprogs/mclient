@@ -6,8 +6,8 @@
 	- Create an option to toggle SELECTABLE (no need to update DB) (see WebFrame.select)
 	- Use NO/NODE instead of POS *where appropriate*
 	- Loop WebFrame.move_page_up & WebFrame.move_page_down
-	(?) Update SELECTABLE and shorten queries
 	- Restore selection upon changing a setting and loading the article again
+	- Use the language pair as a part of an article ID. Otherwise, we cannot view same SEARCH in different languages ('RUS-XAL' -> 'липа' -> 'EN-RU')
 '''
 
 ''' # fix
@@ -23,6 +23,10 @@
     - A segmentation error when loading an article where all dictionaries are blocked
     - A Warning appears when only separate words are found
     - When adding a space between blocks, add it to the end of the preceding block; otherwise, sorting terms may not work correctly (башмак -> sabaton)
+    - When deleting/inserting fixed columns, preserve URL
+    - Clicking the selected block outside the selection causes the 'URL is empty' message
+    - EN-RU -> collimit: 4 (w/o fixed) -> 'bow' -> 'арчак' -> Up => No selection
+    - EN-RU -> collimit: 4 (w/o fixed) -> 'bow' -> 'Ятенный спорт' -> Up => No selection
 '''
 
 import os
@@ -395,7 +399,8 @@ class CurRequest:
 	def reset(self):
 		self._lang         = 'English'
 		self._view         = 0
-		self._collimit     = 9
+		# note: this should be synchronized with the 'default' value of objs.webframe().menu_columns
+		self._collimit     = 8
 		self._source       = 'All'
 		self._search       = ''
 		self._url          = ''
@@ -1683,6 +1688,12 @@ class WebFrame:
 		objs.blocks_db().print(Selected=1,Shorten=1,MaxRow=20,MaxRows=300)
 		'''
 		
+		# cur
+		'''
+		objs.blocks_db().dbc.execute('select CELLNO,NO,TYPE,TEXT,URL,SELECTABLE from BLOCKS order by CELLNO,NO')
+		objs.blocks_db().print(Selected=1,Shorten=1,MaxRow=20,MaxRows=300)
+		'''
+		
 	# Select either the search string or the URL
 	def go(self,*args):
 		search = self.search_field.widget.get().strip('\n').strip(' ')
@@ -1955,7 +1966,7 @@ class WebFrame:
 	
 	def set_columns(self,*args):
 		sh.log.append('WebFrame.set_columns',sh.lev_info,str(self.menu_columns.choice))
-		objs.request()._collimit = self.menu_columns.choice
+		objs.request()._collimit = self.menu_columns.choice + 4
 		self.load_article()
 		
 	def reload(self,*args):

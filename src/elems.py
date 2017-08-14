@@ -440,7 +440,7 @@ class Elems:
 	def selectables(self):
 		# block._no is set only after creating DB
 		for block in self._blocks:
-			if block._type in ('phrase','term','transc') and block._text:
+			if block._type in ('phrase','term','transc') and block._text and block._select < 1:
 				block._select = 1
 			else:
 				block._select = 0

@@ -301,20 +301,13 @@ class AnalyzeTag:
             self._cur._type = 'term'
             
     def url(self):
-        cond1 = self._source == 'All'    and self._cur._type == 'term'
-        cond2 = self._source == 'All'    and self._cur._type == 'phrase'
-        cond3 = self._source == 'Online' and self._cur._type == 'term'
-        cond4 = self._source == 'Online' and self._cur._type == 'phrase'
-        #note: these additional checks can be shortened if we create a sub-source (e.g., 'Multitran') and check for it
-        cond5 = purl1 in self._block
-        cond6 = purl2 in self._block
-        
-        if cond1 or cond2 or cond3 or cond4:
-            if cond5 or cond6: # Otherwise, 'self._block' will be returned when there is no match
+        # note: these additional checks can be shortened if we create a sub-source (e.g., 'Multitran') and check for it
+        if self._source == 'All' or self._source == 'Online':
+            if purl1 in self._block or purl2 in self._block: # Otherwise, 'self._block' will be returned when there is no match
                 self._cur._url = self._block.replace(purl1,'',1).replace(purl2,'',1)
                 if self._cur._url.endswith(purl3):
                     self._cur._url = self._cur._url.replace(purl3,'')
-                    #note: adding a non-Multitran online source will require code modification
+                    # note: adding a non-Multitran online source will require code modification
                     self._cur._url = self._pair_root + self._cur._url
                 else:
                     self._cur._url = ''
