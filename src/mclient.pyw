@@ -1154,11 +1154,11 @@ class WebFrame:
 		          ,active_image_path   = sh.globs['var']['icon_print']
 		          ,bindings            = sh.globs['var']['bind_print']
 		          )
-		# Кнопка толкования термина. Сделана вспомогательной ввиду нехватки места
+		# Кнопка толкования термина
 		sg.Button (parent_obj          = self._panel
 		          ,text                = sh.globs['mes'].btn_define
 		          ,hint                = sh.globs['mes'].hint_define
-		          ,action              = lambda:self.define(Selected=False)
+		          ,action              = lambda x:self.define(Selected=False)
 		          ,inactive_image_path = sh.globs['var']['icon_define']
 		          ,active_image_path   = sh.globs['var']['icon_define']
 		          ,bindings            = sh.globs['var']['bind_define']
@@ -1856,11 +1856,18 @@ class WebFrame:
 	# Открыть веб-страницу с определением текущего термина
 	def define(self,Selected=True): # Selected: True: Выделенный термин; False: Название статьи
 		if Selected:
-			search_str = 'define:' + articles.current()._cells[self.i][self.j].term
+			result = objs.blocks_db().block_pos(pos=self._pos)
+			if result and result[6]:
+				search_str = 'define:' + result[6]
+			else:
+				search_str = None
 		else:
 			search_str = 'define:' + objs.request()._search
-		objs.online().reset(base_str=sh.globs['var']['web_search_url'],search_str=search_str)
-		objs.online().browse()
+		if search_str:
+			objs.online().reset(base_str=sh.globs['var']['web_search_url'],search_str=search_str)
+			objs.online().browse()
+		else:
+			sh.log.append('WebFrame.define',sh.lev_warn,sh.globs['mes'].empty_input)
 	
 	# Обновить рисунки на кнопках
 	def update_buttons(self):

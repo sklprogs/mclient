@@ -197,9 +197,9 @@ class DB:
 		if self._source and self._search:
 			# todo: is there any difference between POS2 > pos and POS2 >= pos?
 			if self.Selectable:
-				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ? and POS1 < POS2 and SELECTABLE = 1',(self._source,self._search,pos,pos,))
+				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ? and POS1 < POS2 and SELECTABLE = 1',(self._source,self._search,pos,pos,))
 			else:
-				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ? and POS1 < POS2',(self._source,self._search,pos,pos,))
+				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ? and POS1 < POS2',(self._source,self._search,pos,pos,))
 			return self.dbc.fetchone()
 		else:
 			sh.log.append('DB.block_pos',sh.lev_warn,sh.globs['mes'].empty_input)
