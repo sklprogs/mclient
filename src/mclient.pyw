@@ -27,7 +27,7 @@
     - Clicking the selected block outside the selection causes the 'URL is empty' message
     - EN-RU -> collimit: 4 (w/o fixed) -> 'bow' -> 'арчак' -> Up => No selection
     - EN-RU -> collimit: 4 (w/o fixed) -> 'bow' -> 'Ятенный спорт' -> Up => No selection
-    - centre: not a SpecialPage
+    - bind RMB to tkinterhtml widget only, not top; check this on clear_history button
 '''
 
 import os
@@ -1373,6 +1373,7 @@ class WebFrame:
 		        )
 		sg.bind (obj      = self.search_field
 		        ,bindings = '<Control-a>'
+		        # fix
 		        ,action   = lambda e:select_all(self.search_field.widget,Small=True)
 		        )
 		sg.bind (obj      = self.obj
@@ -1634,11 +1635,11 @@ class WebFrame:
 		bp.run()
 		objs._blocks_db.update(query=bp._query)
 		
-		dics   = objs._blocks_db.dics(Block=0)
-		wforms = objs._blocks_db.wforms(Block=0)
+		dics = objs._blocks_db.dics(Block=0)
 		# todo: make this Multitran-only
 		# note: if an article comprises only 1 dic/wform, this is usually a dictionary + terms from the 'Phrases' section
-		if dics and len(dics) == 1 or wforms and len(wforms) == 1:
+		# Do not rely on the number of wforms; large articles like 'centre' may have only 1 wform (an a plurality of dics)
+		if not dics or dics and len(dics) == 1:
 			objs._request.SpecialPage = True
 			# A dictionary from the 'Phrases' section usually has an 'original + translation' structure, so we need to switch off sorting terms and ensure that the number of columns is divisible by 2
 			if objs._request._collimit % 2 != 0:

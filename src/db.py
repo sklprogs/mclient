@@ -410,17 +410,6 @@ class DB:
 		else:
 			sh.log.append('DB.search_backward',sh.lev_warn,sh.globs['mes'].empty_input)
 			
-	def wforms(self,Block=False):
-		if self._source and self._search:
-			# Do not use 'POS1 < POS2', it might be not set yet
-			if Block:
-				self.dbc.execute('select TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and TYPE = ? and TEXT != ?',(self._source,self._search,'wform','',))
-			else:
-				self.dbc.execute('select TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and TYPE = ? and TEXT != ?',(self._source,self._search,'wform','',))
-			return self.dbc.fetchall()
-		else:
-			sh.log.append('DB.wforms',sh.lev_warn,sh.globs['mes'].empty_input)
-			
 	def dics(self,Block=False):
 		if self._source and self._search:
 			# Do not use 'POS1 < POS2', it might be not set yet
