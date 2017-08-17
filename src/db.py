@@ -122,7 +122,7 @@ class DB:
 			self._source = source
 			self._search = search
 		else:
-			sg.Message('DB.request',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append('DB.request',sh.lev_warn,sh.globs['mes'].empty_input)
 	
 	def print(self,Selected=False,Shorten=False,MaxRow=20,MaxRows=20):
 		# 'self.dbc.description' is 'None' without performing 'select' first
@@ -149,7 +149,7 @@ class DB:
 			self.dbc.execute('select NO,TYPE,TEXT,DICA from BLOCKS where SOURCE = ? and SEARCH = ? order by NO',(self._source,self._search))
 			return self.dbc.fetchall()
 		else:
-			sg.Message('DB.assign_bp',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append('DB.assign_bp',sh.lev_warn,sh.globs['mes'].empty_input)
 			
 	# Assign input data for Cells
 	def assign_cells(self,SortTerms=False):
@@ -160,7 +160,7 @@ class DB:
 				self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 order by PRIORITY desc,DICA,WFORMA,SPEECHA,NO',(self._source,self._search,))
 			return self.dbc.fetchall()
 		else:
-			sg.Message('DB.assign_cells',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append('DB.assign_cells',sh.lev_warn,sh.globs['mes'].empty_input)
 			
 	# Assign input data for Pos
 	def assign_pos(self):
@@ -168,7 +168,7 @@ class DB:
 			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,ROWNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 order by ROWNO,COLNO,NO',(self._source,self._search,))
 			return self.dbc.fetchall()
 		else:
-			sg.Message('DB.assign_pos',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append('DB.assign_pos',sh.lev_warn,sh.globs['mes'].empty_input)
 			
 	def phrase_dic(self):
 		if self._source and self._search:
@@ -177,7 +177,7 @@ class DB:
 			if result:
 				return result[0]
 		else:
-			sg.Message('DB.phrase_dic',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append('DB.phrase_dic',sh.lev_warn,sh.globs['mes'].empty_input)
 			
 	def clear(self):
 		sh.log.append('DB.clear',sh.lev_warn,'Delete all records from BLOCKS') # todo: mes
@@ -347,7 +347,9 @@ class DB:
 			else:
 				self.dbc.execute('select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOY1,BBOX2,BBOY2,ROWNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and POS1 <= ? and POS2 >= ? order by COLNO,NO',(self._source,self._search,pos,pos,))
 		else:
-			sh.log.append('DB.selection',sh.lev_warn,sh.globs['mes'].empty_input)
+			# Too frequent
+			#sh.log.append('DB.selection',sh.lev_warn,sh.globs['mes'].empty_input)
+			pass
 		return self.dbc.fetchone()
 		
 	def node_y1(self,bboy):

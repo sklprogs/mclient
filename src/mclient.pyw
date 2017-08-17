@@ -822,7 +822,7 @@ class History:
 		                    ]
 		        ,action = self.toggle
 		        )
-		sg.bind (obj      = self.parent_obj
+		sg.bind (obj      = self
 		        ,bindings = '<ButtonRelease-3>'
 		        ,action   = self.copy
 		        )
@@ -1086,15 +1086,14 @@ class WebFrame:
 		                          )
 		# Кнопка включения/отключения и очистки истории
 		# todo: fix: do not iconify on RMB (separate button frame from main frame)
-		# We may hardcore 'bind_clear_history_alt' because this is bound to the button
-		bind_clear_history_alt = '<ButtonRelease-3>'
+		# We may hardcore the hotkey to clear the history because this hotkey is bound to the button
 		hint_history = sh.globs['mes'].hint_history                           \
 		            + '\n'   + sh.globs['var']['bind_toggle_history']         \
 		            + ', '   + sh.globs['var']['bind_toggle_history_alt']     \
 		            + '\n\n' + sh.globs['mes'].hint_clear_history             \
 		            + '\n'   + sh.globs['var']['bind_clear_history']          \
-		            + ', '   + bind_clear_history_alt
-		self.button = sg.Button (
+		            + ', <ButtonRelease-3>'
+		self.btn_history = sg.Button (
 		           parent_obj          = self._panel
 		          ,text                = sh.globs['mes'].btn_history
 		          ,hint                = hint_history
@@ -1102,11 +1101,7 @@ class WebFrame:
 		          ,inactive_image_path = sh.globs['var']['icon_toggle_history']
 		          ,active_image_path   = sh.globs['var']['icon_toggle_history']
 		          ,hint_height         = 80
-		                        )
-		sg.bind (obj      = self.button
-		        ,bindings = bind_clear_history_alt
-		        ,action   = self.history.clear
-		        )
+		                             )
 		# Кнопка перезагрузки статьи
 		sg.Button (parent_obj          = self._panel
 		          ,text                = sh.globs['mes'].btn_reload
@@ -1419,6 +1414,10 @@ class WebFrame:
 		        ,bindings = sh.globs['var']['bind_toggle_priority']
 		        ,action   = self.toggle_priority
 		        )
+		sg.bind (obj      = self.btn_history
+		        ,bindings = '<ButtonRelease-3>'
+		        ,action   = self.history.clear
+		        )
 		
 	def scrollbars(self):
 		vsb = ttk.Scrollbar (self.frame_y.widget
@@ -1445,7 +1444,9 @@ class WebFrame:
 		self.obj.title(arg)
 		
 	def text(self,event=None):
-		return self.widget.text('text')
+		# We will have a Segmentation Fault on empty input
+		if objs.request()._html:
+			return self.widget.text('text')
 		
 	def mouse_sel(self,event=None):
 		self.get_pos(event=event)
