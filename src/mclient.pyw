@@ -28,6 +28,8 @@
     - EN-RU -> collimit: 4 (w/o fixed) -> 'bow' -> 'арчак' -> Up => No selection
     - EN-RU -> collimit: 4 (w/o fixed) -> 'bow' -> 'Ятенный спорт' -> Up => No selection
     - bind RMB to tkinterhtml widget only, not top; check this on clear_history button
+    - Do not warn about an empty URL after clearing history
+    - Clear CurRequest data after clearing history
 '''
 
 import os
@@ -592,10 +594,12 @@ class SaveArticle:
 		                        ,(sh.globs['mes'].all_files,'*')
 		                        )
 		                                )
-		if self.file:
+		if self.file and objs.request()._html:
 			self.fix_ext(ext='.htm')
 			# We disable AskRewrite because the confirmation is already built in the internal dialog
-			sh.WriteTextFile(self.file,AskRewrite=False).write(objs.request()._html)
+			sh.WriteTextFile(self.file,AskRewrite=False).write(objs._request._html)
+		else:
+			sh.log.append('SaveArticle.view_as_html',sh.lev_warn,sh.globs['mes'].empty_input)
 			
 	def raw_as_html(self):
 		# Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
@@ -606,10 +610,12 @@ class SaveArticle:
 		                        ,(sh.globs['mes'].all_files,'*')
 		                        )
 		                                )
-		if self.file:
+		if self.file and objs.request()._html_raw:
 			self.fix_ext(ext='.htm')
 			# todo: fix remaining links to localhost
-			sh.WriteTextFile(self.file,AskRewrite=False).write(objs.request()._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/M.exe?',sh.globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/m.exe?',sh.globs['var']['pair_root']))
+			sh.WriteTextFile(self.file,AskRewrite=False).write(objs._request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/M.exe?',sh.globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/m.exe?',sh.globs['var']['pair_root']))
+		else:
+			sh.log.append('SaveArticle.raw_as_html',sh.lev_warn,sh.globs['mes'].empty_input)
 		
 	def view_as_txt(self):
 		self.file = sg.dialog_save_file (
@@ -617,9 +623,11 @@ class SaveArticle:
 		                        ,(sh.globs['mes'].all_files,'*')
 		                        )
 		                                )
-		if self.file:
+		if self.file and objs.request()._page:
 			self.fix_ext(ext='.txt')
-			sh.WriteTextFile(self.file,AskRewrite=False).write(objs.request()._page)
+			sh.WriteTextFile(self.file,AskRewrite=False).write(objs._request._page)
+		else:
+			sh.log.append('SaveArticle.view_as_txt',sh.lev_warn,sh.globs['mes'].empty_input)
 			
 	def copy_raw(self):
 		sg.Clipboard().copy(objs.request()._html_raw)
@@ -1863,13 +1871,10 @@ class WebFrame:
 	def define(self,Selected=True): # Selected: True: Выделенный термин; False: Название статьи
 		if Selected:
 			result = objs.blocks_db().block_pos(pos=self._pos)
-			if result and result[6]:
-				search_str = 'define:' + result[6]
-			else:
-				search_str = None
+			search_str = 'define:' + result[6]
 		else:
 			search_str = 'define:' + objs.request()._search
-		if search_str:
+		if search_str != 'define:':
 			objs.online().reset(base_str=sh.globs['var']['web_search_url'],search_str=search_str)
 			objs.online().browse()
 		else:
@@ -2072,8 +2077,11 @@ class WebFrame:
 					   ,collimit = objs._request._collimit
 					   ,Printer  = True
 					   )._html
-		sh.WriteTextFile(file,AskRewrite=1).write(code)
-		sh.Launch(target=file).auto()
+		if code:
+			sh.WriteTextFile(file,AskRewrite=1).write(code)
+			sh.Launch(target=file).auto()
+		else:
+			sh.log.append('WebFrame.print',sh.lev_warn,sh.globs['mes'].empty_input)
 		
 	def bbox(self,*args):
 		return self.widget.tk.call(self.widget,"bbox",*args)
