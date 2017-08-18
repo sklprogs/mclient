@@ -406,35 +406,36 @@ class Elems:
 	def dump(self):
 		for block in self._blocks:
 			self._data.append (
-			  (None            # (00) Skips the autoincrement
-			  ,self._source    # (01) SOURCE
-			  ,self._search    # (02) SEARCH
-			  ,self._urla      # (03) URLA
-			  ,block._dica     # (04) DICA
-			  ,block._wforma   # (05) WFORMA
-			  ,block._speecha  # (06) SPEECHA
-			  ,block._transca  # (07) TRANSCA
-			  ,block._terma    # (08) TERMA
-			  ,block._type     # (09) TYPE
-			  ,block._text     # (10) TEXT
-			  ,block._url      # (11) URL
-			  ,block._block    # (12) BLOCK
-			  ,block._priority # (13) PRIORITY
-			  ,block._select   # (14) SELECTABLE
-			  ,block._same     # (15) SAMECELL
-			  ,block._cell_no  # (16) CELLNO
-			  ,-1              # (17) ROWNO
-			  ,-1              # (18) COLNO
-			  ,-1              # (19) POS1
-			  ,-1              # (20) POS2
-			  ,''              # (21) NODE1
-			  ,''              # (22) NODE2
-			  ,-1              # (23) OFFPOS1
-			  ,-1              # (24) OFFPOS2
-			  ,-1              # (25) BBOX1
-			  ,-1              # (26) BBOX2
-			  ,-1              # (27) BBOY1
-			  ,-1              # (28) BBOY2
+			  (None                # (00) Skips the autoincrement
+			  ,self._source        # (01) SOURCE
+			  ,self._search        # (02) SEARCH
+			  ,self._urla          # (03) URLA
+			  ,block._dica         # (04) DICA
+			  ,block._wforma       # (05) WFORMA
+			  ,block._speecha      # (06) SPEECHA
+			  ,block._transca      # (07) TRANSCA
+			  ,block._terma        # (08) TERMA
+			  ,block._type         # (09) TYPE
+			  ,block._text         # (10) TEXT
+			  ,block._url          # (11) URL
+			  ,block._block        # (12) BLOCK
+			  ,block._priority     # (13) PRIORITY
+			  ,block._select       # (14) SELECTABLE
+			  ,block._same         # (15) SAMECELL
+			  ,block._cell_no      # (16) CELLNO
+			  ,-1                  # (17) ROWNO
+			  ,-1                  # (18) COLNO
+			  ,-1                  # (19) POS1
+			  ,-1                  # (20) POS2
+			  ,''                  # (21) NODE1
+			  ,''                  # (22) NODE2
+			  ,-1                  # (23) OFFPOS1
+			  ,-1                  # (24) OFFPOS2
+			  ,-1                  # (25) BBOX1
+			  ,-1                  # (26) BBOX2
+			  ,-1                  # (27) BBOY1
+			  ,-1                  # (28) BBOY2
+			  ,block._text.lower() # (29) TEXTLOW
 			  )
 			                  )
 
@@ -446,8 +447,8 @@ class Elems:
 			else:
 				block._select = 0
 	
+	# todo: Make this Multitran-only
 	def term2wform(self):
-		# todo: Make this Multitran-only
 		if len(self._blocks) > 1:
 			# Articles with 'sep_words_found' also have the 1st block of the 'term' type
 			if self._blocks[0]._type == 'term' and self._blocks[1]._type != 'term':

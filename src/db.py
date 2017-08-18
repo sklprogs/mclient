@@ -12,7 +12,6 @@
 '''
 
 import sqlite3
-import prettytable
 import shared as sh
 import sharedGUI as sg
 
@@ -60,11 +59,12 @@ class DB:
 					,BBOX2      integer           \
 					,BBOY1      integer           \
 					,BBOY2      integer           \
+					,TEXTLOW    text              \
 		                                               )'
 		                 )
 
 	def fill(self,data):
-		self.dbc.executemany('insert into BLOCKS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',data)
+		self.dbc.executemany('insert into BLOCKS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',data)
 
 	def sort(self,Fetch=True):
 		self.dbc.execute('select NO,DICA,WFORMA,SPEECHA,TERMA,TYPE,TEXT,SAMECELL,CELLNO,ROWNO,COLNO from BLOCKS where BLOCK is NOT ? order by CELLNO,NO',(1,)) # order by DICA,WFORMA,SPEECHA,TERMA,
@@ -387,31 +387,6 @@ class DB:
 		else:
 			sh.log.append('DB.prioritized',sh.lev_warn,sh.globs['mes'].empty_input)
 			
-	# todo: elaborate
-	def search_forward(self,pos,search):
-		if self._source and self._search:
-			if self.Selectable:
-				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and TEXT = ? and POS1 > ? order by CELLNO,NO',(self._source,self._search,'term','phrase',search,pos,))
-			else:
-				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and TEXT = ? and POS1 > ? order by CELLNO,NO',(self._source,self._search,'term','phrase',search,pos,))
-			result = self.dbc.fetchone()
-			if result:
-				return result[0]
-		else:
-			sh.log.append('DB.search_forward',sh.lev_warn,sh.globs['mes'].empty_input)
-		
-	def search_backward(self,pos,search):
-		if self._source and self._search:
-			if self.Selectable:
-				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and TEXT = ? and POS2 < ? order by CELLNO,NO',(self._source,self._search,'term','phrase',search,pos,))
-			else:
-				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and TEXT = ? and POS2 < ? order by CELLNO,NO',(self._source,self._search,'term','phrase',search,pos,))
-			result = self.dbc.fetchone()
-			if result:
-				return result[0]
-		else:
-			sh.log.append('DB.search_backward',sh.lev_warn,sh.globs['mes'].empty_input)
-			
 	def dics(self,Block=False):
 		if self._source and self._search:
 			# Do not use 'POS1 < POS2', it might be not set yet
@@ -422,6 +397,30 @@ class DB:
 			return self.dbc.fetchall()
 		else:
 			sh.log.append('DB.dics',sh.lev_warn,sh.globs['mes'].empty_input)
+			
+	def search_forward(self,pos,search):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and TEXTLOW like ? and POS1 > ? order by CELLNO,NO',(self._source,self._search,'term','phrase','%' + search + '%',pos,))
+			else:
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and TEXTLOW like ? and POS1 > ? order by CELLNO,NO',(self._source,self._search,'%' + search + '%',pos,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('DB.search_forward',sh.lev_warn,sh.globs['mes'].empty_input)
+		
+	def search_backward(self,pos,search):
+		if self._source and self._search:
+			if self.Selectable:
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and TEXTLOW like ? and POS2 < ? order by CELLNO,NO',(self._source,self._search,'term','phrase','%' + search + '%',pos,))
+			else:
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and TEXTLOW like ? and POS2 < ? order by CELLNO,NO',(self._source,self._search,'%' + search + '%',pos,))
+			result = self.dbc.fetchone()
+			if result:
+				return result[0]
+		else:
+			sh.log.append('DB.search_backward',sh.lev_warn,sh.globs['mes'].empty_input)
 
 	def zzz(self):
 		pass

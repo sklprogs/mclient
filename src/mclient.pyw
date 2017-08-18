@@ -32,6 +32,8 @@
     - Unable to load same phrase sections (e.g., 'Медицина' in different articles)
     - ShiftScreen: A -> Сельское хозяйство -> <Start>
     - Fix Moves (line_start, line_end, PgDown/PgUp) on 'random fury'
+    - Reset SearchArticle after loading a new article; otherwise, there is an indefinite loop
+    - Fix Search.backwards
 '''
 
 import os

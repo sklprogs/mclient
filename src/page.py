@@ -169,14 +169,13 @@ class Page:
 		self.article_not_found  () # HTML specific
 		return self._page
 		
-	# This is due to technical limitations and should be corrected
+	# todo: Make this MT-only
 	def invalid(self):
 		# We need to close the tag since all following blocks with be 'SAMECELL == 1' otherwise
-		# cur
-		#self._page = self._page.replace('<span STYLE="color:black">','<span STYLE="color:black"></span>')
 		self._page = self._page.replace('<span STYLE="color:black">','</span>')
 		# Do this before 'common_replace'. Splitting terms is hindered without this.
 		self._page = self._page.replace('>;  <','><')
+		self._page = self._page.replace('Требуется авторизация','')
 	
 	def article_not_found(self): # HTML specific
 		if self._source == 'All' or self._source == 'Online':
