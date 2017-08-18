@@ -11,7 +11,6 @@
 '''
 
 ''' # fix
-    - 'жесткая посадка': 'жесткая посадка' is recognized as a term instead of a wform
     - odd fixed columns are inserted
     - NODE1 < NODE2 in some rare cases
     - ShiftScreen with SelectTermsOnly=0 on 'painting'
@@ -20,7 +19,6 @@
     - shift_y does not work properly when changing sizes on-the-fly
     - Changing node still sometimes fails
     - Some blocks on the borders of pages are still not fully readable
-    - A segmentation error when loading an article where all dictionaries are blocked
     - A Warning appears when only separate words are found
     - When adding a space between blocks, add it to the end of the preceding block; otherwise, sorting terms may not work correctly (башмак -> sabaton)
     - When deleting/inserting fixed columns, preserve URL
@@ -30,6 +28,7 @@
     - bind RMB to tkinterhtml widget only, not top; check this on clear_history button
     - Do not warn about an empty URL after clearing history
     - Clear CurRequest data after clearing history
+    - Unable to load same phrase sections (e.g., 'Медицина' in different articles)
 '''
 
 import os

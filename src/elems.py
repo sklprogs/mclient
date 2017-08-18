@@ -79,6 +79,7 @@ class Elems:
 			self.unite_corrections ()
 			self.speech            ()
 			self.comment_same      ()
+			self.term2wform        ()
 			self.add_space         ()
 			self.fill              ()
 			self.fill_terma        ()
@@ -444,6 +445,12 @@ class Elems:
 				block._select = 1
 			else:
 				block._select = 0
+	
+	def term2wform(self):
+		# todo: Make this Multitran-only
+		if len(self._blocks) > 0:
+			if self._blocks[0]._type == 'term':
+				self._blocks[0]._type = 'wform'
 
 
 
