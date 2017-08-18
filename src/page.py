@@ -176,6 +176,7 @@ class Page:
 		# Do this before 'common_replace'. Splitting terms is hindered without this.
 		self._page = self._page.replace('>;  <','><')
 		self._page = self._page.replace('Требуется авторизация','')
+		self._page = self._page.replace('</a>, содержащие <strong>','</a><strong>')
 	
 	def article_not_found(self): # HTML specific
 		if self._source == 'All' or self._source == 'Online':
@@ -213,7 +214,7 @@ class Page:
 	def mt_specific_replace(self):
 		if self._source == 'All' or self._source == 'Online':
 			self._page = self._page.replace('&nbsp;Вы знаете перевод этого выражения? Добавьте его в словарь:','').replace('&nbsp;Вы знаете перевод этого слова? Добавьте его в словарь:','').replace('&nbsp;Требуется авторизация<br>&nbsp;Пожалуйста, войдите на сайт под Вашим именем','').replace('Термины, содержащие ','')
-			self._page = re.sub('все формы слов[а]{0,1} \(\d+\)','',self._page)
+			self._page = re.sub('[:]{0,1}[\s]{0,1}все формы слов[а]{0,1} \(\d+\)','',self._page)
 	
 	# Convert HTML entities to a human readable format, e.g., '&copy;' -> '©'
 	def decode_entities(self): # HTML specific

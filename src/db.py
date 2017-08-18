@@ -413,15 +413,15 @@ class DB:
 	def search_backward(self,pos,search):
 		if self._source and self._search:
 			if self.Selectable:
-				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and TEXTLOW like ? and POS2 < ? order by CELLNO,NO',(self._source,self._search,'term','phrase','%' + search + '%',pos,))
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and TEXTLOW like ? and POS2 < ? order by CELLNO desc,NO desc',(self._source,self._search,'term','phrase','%' + search + '%',pos,))
 			else:
-				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and TEXTLOW like ? and POS2 < ? order by CELLNO,NO',(self._source,self._search,'%' + search + '%',pos,))
+				self.dbc.execute('select POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and TEXTLOW like ? and POS2 < ? order by CELLNO desc,NO desc',(self._source,self._search,'%' + search + '%',pos,))
 			result = self.dbc.fetchone()
 			if result:
 				return result[0]
 		else:
 			sh.log.append('DB.search_backward',sh.lev_warn,sh.globs['mes'].empty_input)
-
+			
 	def zzz(self):
 		pass
 
