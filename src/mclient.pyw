@@ -8,6 +8,7 @@
 	- Loop WebFrame.move_page_up & WebFrame.move_page_down
 	- Restore selection upon changing a setting and loading the article again
 	- Use the language pair as a part of an article ID. Otherwise, we cannot view same SEARCH in different languages ('RUS-XAL' -> 'липа' -> 'EN-RU')
+	- Use borders of the cell, not borders of the block when calculating ShiftScreen
 '''
 
 ''' # fix
@@ -29,6 +30,8 @@
     - Do not warn about an empty URL after clearing history
     - Clear CurRequest data after clearing history
     - Unable to load same phrase sections (e.g., 'Медицина' in different articles)
+    - ShiftScreen: A -> Сельское хозяйство -> <Start>
+    - Fix Moves (line_start, line_end, PgDown/PgUp) on 'random fury'
 '''
 
 import os
@@ -1589,6 +1592,7 @@ class WebFrame:
 						   ,url          = objs._request._url
 						   ,win_encoding = sh.globs['var']['win_encoding']
 						   ,ext_dics     = objs.ext_dics()
+						   #,file           = '/home/pete/tmp/ars/random fury.txt'
 						   #,file         = '/home/pete/tmp/ars/lottery.txt' # cur
 						   #,file         = '/home/pete/tmp/ars/таратайка.txt'
 						   #,file         = '/home/pete/tmp/ars/painting.txt'

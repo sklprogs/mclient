@@ -382,7 +382,7 @@ class Pos:
 				if result >= last:
 					block._first = result
 				else:
-					sg.Message('WebFrame.gen_poses',sh.lev_err,'Unable to find "%s"!' % str(text)) # todo: mes
+					sg.Message('Pos.gen_poses',sh.lev_err,'Unable to find "%s"!' % str(text)) # todo: mes
 					block._first = last
 			else:
 				block._first = last

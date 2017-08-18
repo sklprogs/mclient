@@ -448,8 +448,9 @@ class Elems:
 	
 	def term2wform(self):
 		# todo: Make this Multitran-only
-		if len(self._blocks) > 0:
-			if self._blocks[0]._type == 'term':
+		if len(self._blocks) > 1:
+			# Articles with 'sep_words_found' also have the 1st block of the 'term' type
+			if self._blocks[0]._type == 'term' and self._blocks[1]._type != 'term':
 				self._blocks[0]._type = 'wform'
 
 

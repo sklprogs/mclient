@@ -165,7 +165,7 @@ class DB:
 	# Assign input data for Pos
 	def assign_pos(self):
 		if self._source and self._search:
-			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,ROWNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 order by ROWNO,COLNO,NO',(self._source,self._search,))
+			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,ROWNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 order by CELLNO,NO',(self._source,self._search,))
 			return self.dbc.fetchall()
 		else:
 			sh.log.append('DB.assign_pos',sh.lev_warn,sh.globs['mes'].empty_input)
@@ -195,11 +195,11 @@ class DB:
 			
 	def block_pos(self,pos):
 		if self._source and self._search:
-			# todo: is there any difference between POS2 > pos and POS2 >= pos?
 			if self.Selectable:
-				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ? and POS1 < POS2 and SELECTABLE = 1',(self._source,self._search,pos,pos,))
+				# 'POS2 > pos' instead of 'POS2 >= pos' allows to correctly navigate through blocks where separate words have been found
+				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 > ? and POS1 < POS2 and SELECTABLE = 1',(self._source,self._search,pos,pos,))
 			else:
-				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 >= ? and POS1 < POS2',(self._source,self._search,pos,pos,))
+				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 > ? and POS1 < POS2',(self._source,self._search,pos,pos,))
 			return self.dbc.fetchone()
 		else:
 			sh.log.append('DB.block_pos',sh.lev_warn,sh.globs['mes'].empty_input)
