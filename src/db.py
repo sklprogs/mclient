@@ -197,9 +197,9 @@ class DB:
 		if self._source and self._search:
 			if self.Selectable:
 				# 'POS2 > pos' instead of 'POS2 >= pos' allows to correctly navigate through blocks where separate words have been found
-				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 > ? and POS1 < POS2 and SELECTABLE = 1',(self._source,self._search,pos,pos,))
+				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT,SELECTABLE from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 > ? and POS1 < POS2 and SELECTABLE = 1',(self._source,self._search,pos,pos,))
 			else:
-				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 > ? and POS1 < POS2',(self._source,self._search,pos,pos,))
+				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT,SELECTABLE from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 > ? and POS1 < POS2',(self._source,self._search,pos,pos,))
 			return self.dbc.fetchone()
 		else:
 			sh.log.append('DB.block_pos',sh.lev_warn,sh.globs['mes'].empty_input)
@@ -346,11 +346,11 @@ class DB:
 				self.dbc.execute('select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOX2,BBOY1,BBOY2,ROWNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and POS1 <= ? and POS2 >= ? order by COLNO,NO',(self._source,self._search,'term','phrase',pos,pos,))
 			else:
 				self.dbc.execute('select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOY1,BBOX2,BBOY2,ROWNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and POS1 <= ? and POS2 >= ? order by COLNO,NO',(self._source,self._search,pos,pos,))
+			return self.dbc.fetchone()
 		else:
 			# Too frequent
 			#sh.log.append('DB.selection',sh.lev_warn,sh.globs['mes'].empty_input)
 			pass
-		return self.dbc.fetchone()
 		
 	def node_y1(self,bboy):
 		if self._source and self._search:

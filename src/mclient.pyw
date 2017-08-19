@@ -1484,13 +1484,25 @@ class WebFrame:
     # todo: rework?
     def get_pos(self,event=None):
         if event:
+            pos = None
             try:
                 node1,node2 = self.widget.node(True,event.x,event.y)
-                self._pos   = self.widget.text('offset',node1,node2)
+                pos         = self.widget.text('offset',node1,node2)
             except ValueError: # Need more than 0 values to unpack
                 pass
                 # The error message is too frequent
                 #sh.log.append('WebFrame.get_pos',sh.lev_warn,'Unable to get the position!') # todo: mes
+            if pos is not None:
+                objs.blocks_db().Selectable = False
+                result = objs._blocks_db.block_pos(pos=pos)
+                objs._blocks_db.Selectable = True
+                if result:
+                    if result[7] == 1: # Selectable
+                        self._pos = pos
+                else:
+                    # Too frequent
+                    #sh.log.append('WebFrame.get_pos',sh.lev_warn,sh.globs['mes'].empty_input) # todo: mes
+                    pass
             
     def select(self):
         result = objs.blocks_db().selection(pos=self._pos)
@@ -1733,7 +1745,6 @@ class WebFrame:
             objs._request._search = search
             self.go_search()
                 
-    # note: the code after this comment must be reworked
     # Перейти по URL текущей ячейки
     def go_url(self,*args):
         if not self.MouseClicked:
