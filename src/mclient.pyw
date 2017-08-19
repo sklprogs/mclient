@@ -39,6 +39,7 @@
 import os
 import sys
 import io
+import tempfile
 import tkinter     as tk
 from tkinter import ttk
 import tkinterhtml as th
@@ -315,8 +316,13 @@ sources = ('All','Online','Offline')
 class Objects:
     
     def __init__(self):
-        self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = self._blacklist = self._prioritize = self._parties = self._request = self._ext_dics = self._webframe = self._blocks_db = self._moves = None
+        self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = self._blacklist = self._prioritize = self._parties = self._request = self._ext_dics = self._webframe = self._blocks_db = self._moves = self._tmpfile = None
         
+    def tmpfile(self):
+        if not self._tmpfile:
+            self._tmpfile = tempfile.NamedTemporaryFile(mode='w',encoding='UTF-8',suffix='.htm',delete=0).name
+        return self._tmpfile
+    
     def blocks_db(self):
         if not self._blocks_db:
             self._blocks_db = db.Moves()
@@ -1447,6 +1453,10 @@ class WebFrame:
                 ,bindings = '<ButtonRelease-3>'
                 ,action   = self.history.clear
                 )
+        sg.bind (obj      = self.obj
+                ,bindings = sh.globs['var']['bind_print']
+                ,action   = self.print
+                )
         
     def scrollbars(self):
         vsb = ttk.Scrollbar (self.frame_y.widget
@@ -2100,15 +2110,13 @@ class WebFrame:
         self.load_article()
         
     def print(self,*args):
-        # todo: generate os-specific tmp path # cur
-        file = '/tmp/test.html'
         code = mh.HTML (data     = objs._blocks_db.fetch()
                        ,collimit = objs._request._collimit
                        ,Printer  = True
                        )._html
         if code:
-            sh.WriteTextFile(file,AskRewrite=1).write(code)
-            sh.Launch(target=file).auto()
+            sh.WriteTextFile(objs.tmpfile(),AskRewrite=0).write(code)
+            sh.Launch(target=objs._tmpfile).auto()
         else:
             sh.log.append('WebFrame.print',sh.lev_warn,sh.globs['mes'].empty_input)
         
