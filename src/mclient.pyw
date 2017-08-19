@@ -9,6 +9,7 @@
     - Restore selection upon changing a setting and loading the article again
     - Use the language pair as a part of an article ID. Otherwise, we cannot view same SEARCH in different languages ('RUS-XAL' -> 'липа' -> 'EN-RU')
     - Use borders of the cell, not borders of the block when calculating ShiftScreen
+    - Store '_html_raw' value for all articles, not just for the latest new loaded one
 '''
 
 ''' # fix
@@ -32,8 +33,8 @@
     - Unable to load same phrase sections (e.g., 'Медицина' in different articles)
     - ShiftScreen: A -> Сельское хозяйство -> <Start>
     - Fix Moves (line_start, line_end, PgDown/PgUp) on 'random fury'
-    - Reset SearchArticle after loading a new article; otherwise, there is an indefinite loop
     - When there is an article where all dictionaries are blocked, Previous-Next arrows are blank even if the history is not empty
+    - Fix links in a saved raw html
 '''
 
 import os
@@ -595,7 +596,7 @@ class SaveArticle:
             elif opt == sh.globs['mes'].copy_article_html:
                 self.copy_raw()
             elif opt == sh.globs['mes'].copy_article_txt:
-                self.copy_view()
+                self.copy_txt()
     
     def view_as_html(self):
         self.file = sg.dialog_save_file (
@@ -633,17 +634,22 @@ class SaveArticle:
                                 ,(sh.globs['mes'].all_files,'*')
                                 )
                                         )
-        if self.file and objs.request()._page:
+        text = objs.webframe().text()
+        if self.file and text:
             self.fix_ext(ext='.txt')
-            sh.WriteTextFile(self.file,AskRewrite=False).write(objs._request._page)
+            sh.WriteTextFile(self.file,AskRewrite=False).write(text.strip())
         else:
             sh.log.append('SaveArticle.view_as_txt',sh.lev_warn,sh.globs['mes'].empty_input)
             
     def copy_raw(self):
         sg.Clipboard().copy(objs.request()._html_raw)
             
-    def copy_view(self):
-        sg.Clipboard().copy(objs.request()._page)
+    def copy_txt(self):
+        text = objs.webframe().text()
+        if text:
+            sg.Clipboard().copy(text.strip())
+        else:
+            sh.log.append('SaveArticle.copy_txt',sh.lev_warn,sh.globs['mes'].empty_input)
 
     
 
@@ -1648,7 +1654,9 @@ class WebFrame:
                            )
             page.run()
             ptimer.end()
+            # todo: # fix: assign this for already loaded articles too
             objs._request._page     = page._page
+            # note: # todo: 'Page' returns '_html_raw' for online pages only; this value can be separated for online & offline sources after introducing sub-sources instead of relying on 'All'
             objs._request._html_raw = page._html_raw
             
             tags = tg.Tags (text      = objs._request._page
