@@ -1633,18 +1633,18 @@ class WebFrame:
                            ,url          = objs._request._url
                            ,win_encoding = sh.globs['var']['win_encoding']
                            ,ext_dics     = objs.ext_dics()
-                           #,file           = '/home/pete/tmp/ars/random fury.txt'
-                           #,file         = '/home/pete/tmp/ars/lottery.txt' # cur
-                           #,file         = '/home/pete/tmp/ars/таратайка.txt'
-                           #,file         = '/home/pete/tmp/ars/painting.txt'
-                           #,file          = '/home/pete/tmp/ars/рабочая документация.txt'
-                           #,file           = '/home/pete/tmp/ars/do.txt'
-                           #,file           = '/home/pete/tmp/ars/set.txt'
-                           #,file           = '/home/pete/tmp/ars/get.txt'
-                           #,file           = '/home/pete/tmp/ars/pack.txt'
-                           #,file           = '/home/pete/tmp/ars/counterpart.txt'
-                           #,file           = '/home/pete/tmp/ars/test.txt'
-                           #,file           = '/home/pete/tmp/ars/cut.txt'
+                           #,file        = '/home/pete/tmp/ars/random fury.txt'
+                           #,file        = '/home/pete/tmp/ars/lottery.txt'
+                           #,file        = '/home/pete/tmp/ars/таратайка.txt'
+                           #,file        = '/home/pete/tmp/ars/painting.txt'
+                           #,file        = '/home/pete/tmp/ars/рабочая документация.txt'
+                           #,file        = '/home/pete/tmp/ars/do.txt'
+                           #,file        = '/home/pete/tmp/ars/set.txt'
+                           #,file        = '/home/pete/tmp/ars/get.txt'
+                           #,file        = '/home/pete/tmp/ars/pack.txt'
+                           #,file        = '/home/pete/tmp/ars/counterpart.txt'
+                           #,file        = '/home/pete/tmp/ars/test.txt'
+                           #,file        = '/home/pete/tmp/ars/cut.txt'
                            )
             page.run()
             ptimer.end()

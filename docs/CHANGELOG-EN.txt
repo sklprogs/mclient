@@ -1,5 +1,18 @@
 
 
+5.1
+* New tag parser: parse tags, including nested ones, more accurately
+* Determine word forms
+* Color corrections with green (the 1st level)
+* Refactor the code, use a database
+* Print an article (using a browser in a landscape orientation)
+* Enhance visibility of blocks for horizontal/vertical scrolling
+* Add a welcome screen
+* Loop moves using arrows (go to the start from the end and vice versa) (to be elaborated)
+* Rename CopyTermsOnly to SelectTermsOnly
+* Add keys: bind_print
+* Delete keys: bind_add_cell, bind_delete_cell, bind_go, bind_go_alt, bind_go_search, bind_go_search_alt, bind_go_url, bind_iconify, bind_move_*
+
 5.0
 * Add a basic Stardict support
 * Fix the bug causing skipping cells
