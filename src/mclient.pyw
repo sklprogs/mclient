@@ -1872,13 +1872,15 @@ class WebFrame:
     
     # Задействование колеса мыши для пролистывания экрана
     def mouse_wheel(self,event):
-        # В Windows XP delta == -120, однако, в других версиях оно другое
-        if event.num == 5 or event.delta < 0:
-            self.move_page_down()
-        # В Windows XP delta == 120, однако, в других версиях оно другое
-        if event.num == 4 or event.delta > 0:
-            self.move_page_up()
-        return 'break'
+        # todo: fix: too small delta in Windows
+        if sh.oss.lin():
+            # В Windows XP delta == -120, однако, в других версиях оно другое
+            if event.num == 5 or event.delta < 0:
+                self.move_page_down()
+            # В Windows XP delta == 120, однако, в других версиях оно другое
+            if event.num == 4 or event.delta > 0:
+                self.move_page_up()
+            return 'break'
     
     # Следить за буфером обмена
     def watch_clipboard(self,*args):
