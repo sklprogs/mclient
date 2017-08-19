@@ -55,7 +55,7 @@ import mkhtml      as mh
 
 
 product = 'MClient'
-version = '5.1'
+version = '5.1.1'
 
 third_parties = '''
 tkinterhtml
@@ -442,19 +442,20 @@ def call_app():
 
 # Перехватить нажатие Control-c-c
 def timed_update():
+    objs.request().MouseClicked = False
     check = kl_mod.keylistener.check()
     if check:
-        if check == 1 and objs.request().CaptureHotkey:
+        if check == 1 and objs._request.CaptureHotkey:
             # Позволяет предотвратить зависание потока в версиях Windows старше XP
             if sh.oss.win():
                 kl_mod.keylistener.cancel()
                 kl_mod.keylistener.restart()
-            objs.request().MouseClicked = True
+            objs._request.MouseClicked = True
             new_clipboard = sg.Clipboard().paste()
             if new_clipboard:
-                objs.request()._search = new_clipboard
+                objs._request._search = new_clipboard
                 objs.webframe().go_search()
-        if check == 2 or objs.request().CaptureHotkey:
+        if check == 2 or objs._request.CaptureHotkey:
             call_app()
     sg.objs.root().widget.after(300,timed_update)
 
@@ -940,8 +941,6 @@ class WebFrame:
         self.title()
     
     def values(self):
-        self.MouseClicked    = False
-        self.CaptureHotkey   = True
         self._pos            = -1
         self.direction       = 'right'
         self._row_no         = 0
@@ -1766,7 +1765,7 @@ class WebFrame:
                 
     # Перейти по URL текущей ячейки
     def go_url(self,*args):
-        if not self.MouseClicked:
+        if not objs.request().MouseClicked:
             url = objs.blocks_db().url(pos=self._pos)
             if url:
                 objs.request()._search = objs._blocks_db.text(pos=self._pos)
