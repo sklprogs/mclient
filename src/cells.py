@@ -138,10 +138,11 @@ class BlockPrioritize:
 '''
 class Cells:
 	
-	def __init__(self,data,collimit=10,phrase_dic=None): # Including fixed columns
+	def __init__(self,data,collimit=10,phrase_dic=None,Reverse=False): # Including fixed columns
 		self._data       = data # Sqlite fetch
 		self._collimit   = collimit
 		self._phrase_dic = phrase_dic
+		self.Reverse     = Reverse
 		self._blocks     = []
 		self._query      = ''
 		if self._data:
@@ -232,7 +233,13 @@ class Cells:
 		         ,MaxRows = MaxRows
 		         ).print()
 	
-	def wrap(self): # Dic-Wform-Transc-Speech
+	def wrap(self):
+		if self.Reverse:
+			self.wrap_y()
+		else:
+			self.wrap_x()
+	
+	def wrap_x(self): # Dic-Wform-Transc-Speech
 		i = j = 0
 		for x in range(len(self._blocks)):
 			if self._blocks[x]._type == 'dic':
@@ -269,6 +276,25 @@ class Cells:
 					self._blocks[x].j = 4
 					j += 1
 					
+	# Create a vertically reversed view. This generally differs from 'wrap' in that we do not use 'collimit'.
+	def wrap_y(self): # Dic-Wform-Transc-Speech
+		i = j = 0
+		for x in range(len(self._blocks)):
+			if self._blocks[x]._type == 'dic' and self._blocks[x]._text:
+				if x > 0:
+					j += 1
+				self._blocks[x].j = j
+				self._blocks[x].i = 0
+				i = 1
+			elif self._blocks[x]._same > 0:
+				self._blocks[x].i = i
+				self._blocks[x].j = j
+			elif self._blocks[x]._text:
+				self._blocks[x].j = j
+				i += 1
+				self._blocks[x].i = i
+		self._blocks = sorted(self._blocks,key=lambda block:(block.i,block.j))
+	
 	def cell_no(self):
 		no = 0
 		for i in range(len(self._blocks)):

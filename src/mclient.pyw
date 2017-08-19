@@ -404,13 +404,10 @@ class CurRequest:
         self.reset()
         
     def reset(self):
-        self._lang         = 'English'
-        self._view         = 0
         # note: this should be synchronized with the 'default' value of objs.webframe().menu_columns
         self._collimit     = 8
         self._source       = 'All'
-        self._search       = ''
-        self._url          = ''
+        self._lang         = 'English'
         # Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
         self.Block         = True
         self.Prioritize    = True
@@ -419,9 +416,12 @@ class CurRequest:
         self.SpecialPage   = False
         self.MouseClicked  = False
         self.CaptureHotkey = True
+        self.Reverse       = False
         self._page         = ''
         self._html         = ''
         self._html_raw     = ''
+        self._search       = ''
+        self._url          = ''
         
 
 
@@ -1698,6 +1698,7 @@ class WebFrame:
         cells = cl.Cells (data       = data
                          ,collimit   = objs._request._collimit
                          ,phrase_dic = phrase_dic
+                         ,Reverse    = objs._request.Reverse
                          )
         cells.run()
         objs._blocks_db.update(query=cells._query)
@@ -1942,11 +1943,10 @@ class WebFrame:
         else:
             self.btn_clipboard.inactive()
             
-        # todo: Change active/inactive button logic in case of creating three or more views
-        if objs._request._view == 0:
-            self.btn_toggle_view.active()
-        else:
+        if objs._request.Reverse:
             self.btn_toggle_view.inactive()
+        else:
+            self.btn_toggle_view.active()
             
         if not objs._request.SpecialPage and objs._request.SortTerms:
             self.btn_toggle_alphabet.active()
@@ -2032,15 +2032,10 @@ class WebFrame:
             self.spec_symbols.close()
             
     def toggle_view(self,*args):
-        if objs.request()._view == 0:
-            objs._request._view = 1
-        elif objs._request._view == 1:
-            objs._request._view = 0
+        if objs.request().Reverse:
+            objs._request.Reverse = False
         else:
-            sg.Message(func='WebFrame.toggle_view',level=sh.lev_err,message=sh.globs['mes'].unknown_mode % (str(objs._request._view),'0, 1'))
-        sh.log.append('WebFrame.toggle_view',sh.lev_info,sh.globs['mes'].new_view_mode % objs._request._view)
-        # todo: why move_right and move_left are so slow to be calculated?
-        # todo: store views to reload them without reloading everything
+            objs._request.Reverse = True
         self.load_article()
         
     def toggle_alphabet(self,*args):
