@@ -202,7 +202,9 @@ class DB:
 				self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT,SELECTABLE from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 <= ? and POS2 > ? and POS1 < POS2',(self._source,self._search,pos,pos,))
 			return self.dbc.fetchone()
 		else:
-			sh.log.append('DB.block_pos',sh.lev_warn,sh.globs['mes'].empty_input)
+			# Too frequent
+			#sh.log.append('DB.block_pos',sh.lev_warn,sh.globs['mes'].empty_input)
+			pass
 			
 	def urla(self):
 		if self._source and self._search:

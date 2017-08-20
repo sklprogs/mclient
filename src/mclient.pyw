@@ -55,7 +55,7 @@ import mkhtml      as mh
 
 
 product = 'MClient'
-version = '5.1.1'
+version = '5.1.2'
 
 third_parties = '''
 tkinterhtml
