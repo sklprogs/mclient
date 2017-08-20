@@ -55,7 +55,7 @@ import mkhtml      as mh
 
 
 product = 'MClient'
-version = '5.1.2'
+version = '5.1.3'
 
 third_parties = '''
 tkinterhtml
@@ -1873,14 +1873,19 @@ class WebFrame:
     # Задействование колеса мыши для пролистывания экрана
     def mouse_wheel(self,event):
         # todo: fix: too small delta in Windows
-        if sh.oss.lin():
-            # В Windows XP delta == -120, однако, в других версиях оно другое
-            if event.num == 5 or event.delta < 0:
+        # В Windows XP delta == -120, однако, в других версиях оно другое
+        if event.num == 5 or event.delta < 0:
+            if sh.oss.lin():
                 self.move_page_down()
-            # В Windows XP delta == 120, однако, в других версиях оно другое
-            if event.num == 4 or event.delta > 0:
+            else:
+                self.move_down()
+        # В Windows XP delta == 120, однако, в других версиях оно другое
+        if event.num == 4 or event.delta > 0:
+            if sh.oss.lin():
                 self.move_page_up()
-            return 'break'
+            else:
+                self.move_up()
+        return 'break'
     
     # Следить за буфером обмена
     def watch_clipboard(self,*args):
