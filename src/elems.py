@@ -253,11 +253,12 @@ class Elems:
 			elif cond5 and cond3 and cond2:
 				self._blocks[i-1]._same = 1
 		# Rule 5
-		# After exiting the loop, the last block
-		cond1 = self._blocks[i]._type == 'comment' or self._blocks[i]._type == 'correction'
-		cond2 = self._blocks[i]._same <= 0
-		if cond1 and cond2:
-			self._blocks[i]._same = 1
+		if self._blocks:
+			# After exiting the loop, the last block
+			cond1 = self._blocks[i]._type == 'comment' or self._blocks[i]._type == 'correction'
+			cond2 = self._blocks[i]._same <= 0
+			if cond1 and cond2:
+				self._blocks[i]._same = 1
 	
 	def add_space(self):
 		for i in range(len(self._blocks)):

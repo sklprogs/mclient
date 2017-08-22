@@ -55,7 +55,7 @@ import mkhtml      as mh
 
 
 product = 'MClient'
-version = '5.1.3'
+version = '5.1.4'
 
 third_parties = '''
 tkinterhtml
@@ -875,7 +875,8 @@ class History:
     
     def autoselect(self):
         self.obj.clear_selection()
-        self.obj.set(item=objs.request()._search)
+        if objs.request()._search in self.obj.lst:
+            self.obj.set(item=objs._request._search)
     
     def show(self,*args):
         self.Active = True
@@ -941,9 +942,9 @@ class WebFrame:
         self.title()
     
     def values(self):
-        self._pos            = -1
-        self.direction       = 'right'
-        self._row_no         = 0
+        self._pos      = -1
+        self.direction = 'right'
+        self._row_no   = 0
     
     def gui(self):
         self.obj     = sg.objs.new_top(Maximize=1)
@@ -959,11 +960,11 @@ class WebFrame:
                                 )
         self.widget  = th.TkinterHtml(self.frame.widget)
         self.widget.pack(expand='1',fill='both')
-        self.scrollbars  ()
-        self.frame_panel ()
-        self.icon        ()
-        self.title       ()
-        self.bindings    ()
+        self.scrollbars ()
+        self.frame_panel()
+        self.icon       ()
+        self.title      ()
+        self.bindings   ()
         self.search_field.widget.focus_set()
         self.obj.widget.protocol("WM_DELETE_WINDOW",self.close)
         
@@ -1739,7 +1740,9 @@ class WebFrame:
         
         self.title(arg=objs._request._search)
         self.move_text_start()
-        self.search_field.clear()
+        # Empty article is not added either to DB or history, so we just do not clear the search field to be able to correct the typo.
+        if pages._blocks:
+            self.search_field.clear()
         self.history.update()
         self.search_article.reset()
         self.update_buttons()
