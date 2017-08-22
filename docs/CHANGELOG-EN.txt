@@ -1,5 +1,17 @@
 
 
+5.1.4
+* Inform about missing articles
+
+5.1.3
+* Set a special behavior for a mouse wheel (Windows)
+
+5.1.2
+* Fix button hints
+
+5.1.1
+* Fix Ctrl-c-c (Ctrl-Ins-Ins)
+
 5.1
 * New tag parser: parse tags, including nested ones, more accurately
 * Determine word forms
