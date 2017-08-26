@@ -35,12 +35,12 @@
     - Fix Moves (line_start, line_end, PgDown/PgUp) on 'random fury'
     - When there is an article where all dictionaries are blocked, Previous-Next arrows are blank even if the history is not empty
     - Fix links in a saved raw html
+    - 'gen_poses' cannot find Search items when Page is forced to use 'file=' (RU-DE, 'tun')
 '''
 
 import os
 import sys
 import io
-import tempfile
 import tkinter     as tk
 from tkinter import ttk
 import tkinterhtml as th
@@ -55,7 +55,7 @@ import mkhtml      as mh
 
 
 product = 'MClient'
-version = '5.1.4'
+version = '5.1.5'
 
 third_parties = '''
 tkinterhtml
@@ -317,13 +317,8 @@ sources = ('All','Online','Offline')
 class Objects:
     
     def __init__(self):
-        self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = self._blacklist = self._prioritize = self._parties = self._request = self._ext_dics = self._webframe = self._blocks_db = self._moves = self._tmpfile = None
+        self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = self._blacklist = self._prioritize = self._parties = self._request = self._ext_dics = self._webframe = self._blocks_db = self._moves = None
         
-    def tmpfile(self):
-        if not self._tmpfile:
-            self._tmpfile = tempfile.NamedTemporaryFile(mode='w',encoding='UTF-8',suffix='.htm',delete=0).name
-        return self._tmpfile
-    
     def blocks_db(self):
         if not self._blocks_db:
             self._blocks_db = db.Moves()
@@ -1651,6 +1646,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/counterpart.txt'
                            #,file        = '/home/pete/tmp/ars/test.txt'
                            #,file        = '/home/pete/tmp/ars/cut.txt'
+                           #,file        = '/home/pete/tmp/ars/tun.txt'
                            )
             page.run()
             ptimer.end()
@@ -2132,8 +2128,8 @@ class WebFrame:
                        ,Printer  = True
                        )._html
         if code:
-            sh.WriteTextFile(objs.tmpfile(),AskRewrite=0).write(code)
-            sh.Launch(target=objs._tmpfile).auto()
+            sh.WriteTextFile(sh.objs.tmpfile(suffix='.htm',Delete=0),AskRewrite=0).write(code)
+            sh.Launch(target=sh.objs._tmpfile).auto()
         else:
             sh.log.append('WebFrame.print',sh.lev_warn,sh.globs['mes'].empty_input)
         

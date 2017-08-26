@@ -87,55 +87,55 @@ tag_pattern_del = ['.exe?a=5&s=AboutMultitran.htm' # О словаре
 
 # Stardict: ST, Multitran: MT
 # Full dictionary titles
-pdic  = '<a title="'                              # MT
+pdic  = '<a title="'                           # MT
 
 # URLs
-purl1 = '<a href="M.exe?'                         # MT
-purl2 = '<a href="m.exe?'                         # MT
-purl3 = '">'                                      # MT
+purl1 = '<a href="M.exe?'                      # MT
+purl2 = '<a href="m.exe?'                      # MT
+purl3 = '">'                                   # MT
 
 # Comments
 # May also need to look at: '<a href="#start', '<a href="#phrases', '<a href="', '<span STYLE="color:gray"> (ед.ч., мн.ч.)<span STYLE="color:black">'
-pcom1 = '<i>'                                     # MT
-pcom2 = '<span STYLE="color:gray">'               # MT
-pcom3 = '<co>'                                    # ST
+pcom1 = '<i>'                                  # MT
+pcom2 = '<span STYLE="color:gray">'            # MT
+pcom3 = '<co>'                                 # ST
 
 # Corrective comments
-pcor1 = '<span STYLE="color:rgb(60,179,113)">'    # MT
+pcor1 = '<span STYLE="color:rgb(60,179,113)">' # MT
 
 # Word Forms
-pwf1  = '<td bgcolor='                            # MT
-pwf2  = '<a href="M.exe?a='                       # MT # Do not shorten
-pwf3  = '<a href="m.exe?a='                       # MT # Do not shorten
-pwf4  = '<span STYLE=&#34;color:gray&#34;>'       # MT
-pwf5  = '&ifp='                                   # MT
-pwf6  = '<k>'                                     # ST
+pwf1  = '<td bgcolor='                         # MT
+pwf2  = '<a href="M.exe?a='                    # MT # Do not shorten
+pwf3  = '<a href="m.exe?a='                    # MT # Do not shorten
+pwf4  = '<td bgcolor="#DBDBDB"'                # MT
+pwf5  = '&ifp='                                # MT
+pwf6  = '<k>'                                  # ST
 
 # Parts of speech
-psp1  = '<em>'                                    # MT
+psp1  = '<em>'                                 # MT
 
 # Terms
-ptm1  = 'M.exe?t'                                 # MT # Both terms and word forms
-ptm2  = 'm.exe?t'                                 # MT # Both terms and word forms
-ptm3  = '<a href="M.exe?&s='                      # MT
-ptm4  = '<a href="m.exe?&s='                      # MT
-ptm5  = '<a href="M.exe?s='                       # MT
-ptm6  = '<a href="m.exe?s='                       # MT
-ptm7  = '<dtrn>'                                  # ST
+ptm1  = 'M.exe?t'                              # MT # Both terms and word forms
+ptm2  = 'm.exe?t'                              # MT # Both terms and word forms
+ptm3  = '<a href="M.exe?&s='                   # MT
+ptm4  = '<a href="m.exe?&s='                   # MT
+ptm5  = '<a href="M.exe?s='                    # MT
+ptm6  = '<a href="m.exe?s='                    # MT
+ptm7  = '<dtrn>'                               # ST
 
 # Terms in the 'Phrases' section
-pph1  = '<a href="M.exe?a=3&&s='                  # MT
-pph2  = '<a href="m.exe?a=3&&s='                  # MT
-pph3  = '<a href="M.exe?a=3&s='                   # MT
-pph4  = '<a href="m.exe?a=3&s='                   # MT
-pph5  = '<kref>'                                  # ST
+pph1  = '<a href="M.exe?a=3&&s='               # MT
+pph2  = '<a href="m.exe?a=3&&s='               # MT
+pph3  = '<a href="M.exe?a=3&s='                # MT
+pph4  = '<a href="m.exe?a=3&s='                # MT
+pph5  = '<kref>'                               # ST
 
 # Transcription
-ptr1  = '<img SRC="/gif/'                         # MT
-ptr2  = '<tr>'                                    # ST
-ptr3  = '</tr>'                                   # ST
+ptr1  = '<img SRC="/gif/'                      # MT
+ptr2  = '<tr>'                                 # ST
+ptr3  = '</tr>'                                # ST
 
-useful_tags = [pdic,purl1,purl2,pcom1,pcom2,pcom3,pcor1,ptr1,ptr2,pwf6,ptm7,pph5,psp1]
+useful_tags = [pdic,purl1,purl2,pcom1,pcom2,pcom3,pcor1,ptr1,ptr2,pwf4,pwf6,ptm7,pph5,psp1]
 
 
 
@@ -176,22 +176,29 @@ class AnalyzeTag:
         self._elems     = []
         self._block     = ''
         
-    def analyze(self):
+    def run(self):
         self.split()
         self._blocks = [block for block in self._blocks if block.strip()]
         for self._block in self._blocks:
             if self._block.startswith('<'):
                 if self.useful() and not self.useless():
-                    self.phrases ()
+                    self._cur._type = ''
+                    self.phrases()
                     # Phrases and word forms have conflicting tags
-                    if self._cur._type != 'phrase':
+                    # We check '_type' to speed up
+                    if not self._cur._type:
                         self.wform()
-                    self.dic    ()
-                    self.term   ()
-                    self.speech ()
-                    self.comment()
-                    self.url    ()
-                    self.transc ()
+                    if not self._cur._type:
+                        self.dic()
+                    if not self._cur._type:
+                        self.term()
+                    if not self._cur._type:
+                        self.speech()
+                    if not self._cur._type:
+                        self.comment()
+                    if not self._cur._type:
+                        self.transc()
+                    self.url()
                 else:
                     self._cur._type = 'invalid'
             else:
@@ -358,7 +365,7 @@ class AnalyzeTag:
 class Tags:
     
     def __init__(self,text,source='All',pair_root='http://www.multitran.ru/c/M.exe?'):
-        self._text      = text
+        self._text     = text
         self._source    = source
         self._pair_root = pair_root
         self._tags      = []
@@ -412,8 +419,7 @@ class Tags:
                   ]
         rows = []
         for block in self._blocks:
-            rows.append (
-                         [block._type
+            rows.append ([block._type
                          ,block._text
                          ,block._url
                          ,block._same         
@@ -427,8 +433,8 @@ class Tags:
                  ).print()
         
     def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
-        self.debug_tags   ()
-        self.debug_blocks (Shorten=Shorten,MaxRow=MaxRow,MaxRows=MaxRows)
+        self.debug_tags  ()
+        self.debug_blocks(Shorten=Shorten,MaxRow=MaxRow,MaxRows=MaxRows)
         
     def blocks(self):
         if not self._blocks:
@@ -437,7 +443,7 @@ class Tags:
                                      ,source    = self._source
                                      ,pair_root = self._pair_root
                                      )
-                analyze.analyze()
+                analyze.run()
                 lst = analyze._elems
                 for i in range(len(lst)):
                     if i > 0:
@@ -460,8 +466,10 @@ if __name__ == '__main__':
     
     # Modifiable
     source = 'Online'
-    search = 'preceding'
-    file   = '/home/pete/tmp/ars/preceding.txt'
+    #search = 'preceding'
+    search = 'tun'
+    #file   = '/home/pete/tmp/ars/welcome back.txt'
+    file   = '/home/pete/tmp/ars/tun.txt'
     
     page = pg.Page (source = source
                    ,search = search
@@ -474,5 +482,5 @@ if __name__ == '__main__':
     tags = Tags(source=source,text=page._page)
     tags.run()
     timer.end()
-    #tags.debug_tags   ()
-    tags.debug_blocks (MaxRow=30,MaxRows=100)
+    tags.debug_tags()
+    tags.debug_blocks(Shorten=1,MaxRow=30,MaxRows=300)

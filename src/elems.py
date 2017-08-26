@@ -79,7 +79,6 @@ class Elems:
 			self.unite_corrections ()
 			self.speech            ()
 			self.comment_same      ()
-			self.term2wform        ()
 			self.add_space         ()
 			self.fill              ()
 			self.fill_terma        ()
@@ -447,13 +446,6 @@ class Elems:
 				block._select = 1
 			else:
 				block._select = 0
-	
-	# todo: Make this Multitran-only
-	def term2wform(self):
-		if len(self._blocks) > 1:
-			# Articles with 'sep_words_found' also have the 1st block of the 'term' type
-			if self._blocks[0]._type == 'term' and self._blocks[1]._type != 'term':
-				self._blocks[0]._type = 'wform'
 
 
 

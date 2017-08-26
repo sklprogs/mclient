@@ -161,8 +161,9 @@ class Page:
         
     def run(self):
         self.get                ()
-        self.decode_entities    () # HTML specific
         self.invalid            ()
+        self.decode_entities    () # HTML specific
+        self.invalid2           ()
         # An excessive space must be removed after unescaping the page
         self.mt_specific_replace()
         self.common_replace     () # HTML specific
@@ -171,6 +172,11 @@ class Page:
         
     # todo: Make this MT-only
     def invalid(self):
+        # Do this before unescaping, otherwise, some tags describing wforms will become exactly comments. It seems that 'wform' tags are already present. Replacing these tags with altertnative 'wform' tags does not work.
+        self._page = self._page.replace('<span STYLE=&#34;color:gray&#34;>','').replace('<span STYLE=&#34;color:black&#34;>','')
+    
+    # todo: Make this MT-only
+    def invalid2(self):
         # We need to close the tag since all following blocks with be 'SAMECELL == 1' otherwise
         self._page = self._page.replace('<span STYLE="color:black">','</span>')
         # Do this before 'common_replace'. Splitting terms is hindered without this.
