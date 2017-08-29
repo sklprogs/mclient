@@ -1,10 +1,6 @@
 #!/usr/bin/python3
 
 ''' # todo:
-    - this doesn't work, why?
-      self.output.write('<col width="130">')
-    - fix </td>, <td align=>
-    - clean up
 '''
 
 import io
@@ -26,6 +22,7 @@ class HTML:
     
     def __init__(self,data,collimit=9,Printer=False,blacklist=[]
                 ,prioritize=[],blocked_color='gray',priority_color='red'
+                ,width=0,Reverse=False
                 ): # 'collimit' includes fixed blocks
         self._data           = data
         self._collimit       = collimit
@@ -34,6 +31,8 @@ class HTML:
         self._prioritize     = prioritize
         self._blocked_color  = blocked_color
         self._priority_color = priority_color
+        self._width          = width
+        self.Reverse         = Reverse
         self._blocks         = []
         self._block          = None
         self._html           = ''
@@ -88,7 +87,6 @@ class HTML:
         
     def _dic(self):
         if self._block._type == 'dic':
-            #self.output.write('<td align="left">') # cur
             self.output.write('<font face="')
             self.output.write(sh.globs['var']['font_dics_family'])
             self.output.write('" color="')
@@ -103,12 +101,9 @@ class HTML:
             self.output.write('"><b>')
             self.output.write(self._block._text)
             self.output.write('</b></font>')
-            #self.output.write('<td align="left">')
     
     def _wform(self):
         if self._block._type == 'wform':
-            #self.output.write('<td align="center">')
-            #self.output.write('<td align="left">')
             self.output.write('<font face="')
             self.output.write(sh.globs['var']['font_speech_family'])
             self.output.write('" color="')
@@ -118,11 +113,9 @@ class HTML:
             self.output.write('"><b>')
             self.output.write(self._block._text)
             self.output.write('</b></font>')
-            #self.output.write('</td>')
         
     def _term(self):
         if self._block._type == 'term' or self._block._type == 'phrase':
-            #self.output.write('<td align="left">')
             self.output.write('<font face="')
             self.output.write(sh.globs['var']['font_terms_family'])
             self.output.write('" color="')
@@ -135,7 +128,6 @@ class HTML:
     
     def _comment(self):
         if self._block._type == 'comment' or self._block._type == 'speech' or self._block._type == 'transc':
-            #self.output.write('<td align="left">')
             self.output.write('<i><font face="')
             self.output.write(sh.globs['var']['font_comments_family'])
             self.output.write('" size="')
@@ -145,8 +137,6 @@ class HTML:
             self.output.write('">')
             self.output.write(self._block._text)
             self.output.write('</i></font>')
-            #if self._block._type == 'speech' or self._block._type == 'transc':
-            #       self.output.write('</td align="left">')
             
     def _correction(self):
         if self._block._type == 'correction':
@@ -172,21 +162,40 @@ class HTML:
         if self.Printer:
             self.output.write('\n    <div id="printableArea">')
         if self._blocks:
-            self.output.write('\n      <table>\n    <tr><td>')
+            self.output.write('\n      <table>\n    <tr>')
+            if self._width and self.Reverse:
+                self.output.write('<td col width="')
+                self.output.write(str(self._width))
+                self.output.write('">')
+            else:
+                self.output.write('<td>')
             i = j = 0
             for self._block in self._blocks:
                 while self._block.i > i:
-                    self.output.write('</td></tr>\n    <tr><td align="center">')
+                    self.output.write('</td></tr>\n    <tr>')
+                    if self._width and self.Reverse:
+                        self.output.write('<td align="center" col width="')
+                        self.output.write(str(self._width))
+                        self.output.write('">')
+                    else:
+                        self.output.write('<td align="center">')
                     i = self._block.i
                     j = 0
                 while self._block.j > j:
-                    self.output.write('</td>\n      <td>')
+                    self.output.write('</td>\n      ')
+                    # note: hardcoded number of fixed columns (-1 because we define 'td' for the next column here)
+                    if self._width and self._block._text and (self._block.j > 3 or self.Reverse):
+                        self.output.write('<td col width="')
+                        self.output.write(str(self._width))
+                        self.output.write('">')
+                    else:
+                        self.output.write('<td>')
                     j += 1
-                self._dic    ()
-                self._wform      ()
-                self._term       ()
-                self._comment    ()
-                self._correction ()
+                self._dic       ()
+                self._wform     ()
+                self._term      ()
+                self._comment   ()
+                self._correction()
             self.output.write('</td></tr>\n      </table>  ')
         else:
             self.output.write('<h1>Ничего не найдено.</h1>') # todo: mes
@@ -194,6 +203,8 @@ class HTML:
             self.output.write('\n  </div>')
         self.output.write('\n</body>\n</html>')
         self._html = self.output.getvalue()
+        # todo: enhance algorithm, drop this; I tried to monitor j, block._text, block.j, but they are all changing
+        self._html = self._html.replace('<td col width="%d"></td>' % self._width,'<td></td>')
         self.output.close()
 
 

@@ -116,7 +116,8 @@ class ConfigMclient(sh.Config):
                                 })
         #---------------------------------------------------
         sh.globs['int'].update ({
-            'font_comments_size':3
+            'col_width'         :250
+           ,'font_comments_size':3
            ,'font_dics_size'    :4
            ,'font_speech_size'  :4
            ,'font_terms_size'   :4
@@ -1721,6 +1722,8 @@ class WebFrame:
                            ,collimit   = objs._request._collimit
                            ,blacklist  = objs.blacklist()
                            ,prioritize = objs.prioritize()
+                           ,width      = sh.globs['int']['col_width']
+                           ,Reverse    = objs._request.Reverse
                            )
         objs._request._html = get_html._html
         self.fill(code=objs._request._html)
