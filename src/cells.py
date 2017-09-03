@@ -5,6 +5,10 @@
     - selectables: make 'Phrases' DIC cell SELECTABLE
 '''
 
+import gettext
+
+gettext.install('mclient','./locale')
+
 import io
 import shared as sh
 import sharedGUI as sg

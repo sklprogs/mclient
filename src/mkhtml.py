@@ -3,6 +3,10 @@
 ''' # todo:
 '''
 
+import gettext
+
+gettext.install('mclient','./locale')
+
 import io
 import shared as sh
 import sharedGUI as sg

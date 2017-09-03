@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import gettext
+
+gettext.install('mclient','./locale')
+
 import re
 import copy
 import shared as sh

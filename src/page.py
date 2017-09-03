@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import gettext
+
+gettext.install('mclient','./locale')
+
 import os
 import re
 # В Python 3 не работает просто import urllib, импорт должен быть именно такой, как здесь

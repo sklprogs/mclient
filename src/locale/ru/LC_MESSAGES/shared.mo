@@ -1,0 +1,1 @@
+/usr/local/bin/shared/locale/ru/LC_MESSAGES/shared.mo

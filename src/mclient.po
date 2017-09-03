@@ -1,0 +1,735 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: mclient\n"
+"POT-Creation-Date: 2017-08-30 05:45+MSK\n"
+"PO-Revision-Date: 2017-09-03 08:51+0300\n"
+"Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
+"Language-Team: ru <skl.progs@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: ru_RU\n"
+"X-Generator: Poedit 1.6.10\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: cells.py:61
+#: cells.py:73
+#: cells.py:162
+#: cells.py:208
+#: cells.py:357
+#: cells.py:368
+#: cells.py:481
+#: cells.py:497
+#: cells.py:502
+#: cells.py:521
+#: db.py:99
+#: db.py:112
+#: db.py:125
+#: db.py:135
+#: db.py:168
+#: db.py:181
+#: db.py:190
+#: db.py:202
+#: db.py:208
+#: db.py:218
+#: db.py:225
+#: db.py:250
+#: db.py:262
+#: db.py:274
+#: db.py:288
+#: db.py:301
+#: db.py:315
+#: db.py:329
+#: db.py:343
+#: db.py:357
+#: db.py:371
+#: db.py:385
+#: db.py:399
+#: db.py:413
+#: db.py:443
+#: db.py:456
+#: db.py:466
+#: db.py:477
+#: db.py:491
+#: db.py:506
+#: db.py:521
+#: db.py:547
+#: db.py:562
+#: db.py:580
+#: db.py:585
+#: db.py:603
+#: db.py:608
+#: db.py:631
+#: db.py:636
+#: db.py:641
+#: db.py:664
+#: db.py:669
+#: db.py:674
+#: db.py:713
+#: db.py:718
+#: db.py:723
+#: db.py:762
+#: db.py:767
+#: db.py:772
+#: db.py:787
+#: db.py:802
+#: elems.py:69
+#: elems.py:95
+#: elems.py:471
+#: elems.py:497
+#: elems.py:513
+#: elems.py:524
+#: mclient.pyw:613
+#: mclient.pyw:632
+#: mclient.pyw:648
+#: mclient.pyw:661
+#: mclient.pyw:743
+#: mclient.pyw:1561
+#: mclient.pyw:1624
+#: mclient.pyw:1629
+#: mclient.pyw:1634
+#: mclient.pyw:1654
+#: mclient.pyw:1668
+#: mclient.pyw:1679
+#: mclient.pyw:1855
+#: mclient.pyw:2008
+#: mclient.pyw:2027
+#: mclient.pyw:2043
+#: mclient.pyw:2110
+#: mclient.pyw:2129
+#: mclient.pyw:2211
+#: mclient.pyw:2264
+#: mclient.pyw:2279
+#: mclient.pyw:2305
+#: mclient.pyw:2310
+#: mclient.pyw:2322
+#: mclient.pyw:2327
+#: mclient.pyw:2349
+#: mclient.pyw:2360
+#: page.py:47
+#: page.py:58
+#: page.py:63
+#: page.py:98
+#: page.py:132
+#: page.py:190
+#: page.py:287
+#: tags.py:279
+#: tags.py:368
+#: tags.py:373
+msgid "WARNING"
+msgstr "ПРЕДУПРЕЖДЕНИЕ"
+
+#: cells.py:62
+#: cells.py:163
+#: cells.py:358
+#: cells.py:482
+#: cells.py:498
+#: cells.py:503
+#: db.py:100
+#: db.py:113
+#: db.py:126
+#: db.py:136
+#: db.py:169
+#: db.py:181
+#: db.py:191
+#: db.py:203
+#: db.py:226
+#: db.py:251
+#: db.py:263
+#: db.py:275
+#: db.py:289
+#: db.py:302
+#: db.py:316
+#: db.py:330
+#: db.py:344
+#: db.py:358
+#: db.py:372
+#: db.py:386
+#: db.py:400
+#: db.py:414
+#: db.py:444
+#: db.py:457
+#: db.py:467
+#: db.py:478
+#: db.py:492
+#: db.py:507
+#: db.py:522
+#: db.py:548
+#: db.py:563
+#: db.py:581
+#: db.py:586
+#: db.py:604
+#: db.py:609
+#: db.py:632
+#: db.py:637
+#: db.py:642
+#: db.py:665
+#: db.py:670
+#: db.py:675
+#: db.py:714
+#: db.py:719
+#: db.py:724
+#: db.py:763
+#: db.py:768
+#: db.py:773
+#: db.py:788
+#: db.py:803
+#: elems.py:70
+#: elems.py:472
+#: mclient.pyw:614
+#: mclient.pyw:633
+#: mclient.pyw:649
+#: mclient.pyw:662
+#: mclient.pyw:744
+#: mclient.pyw:1625
+#: mclient.pyw:1630
+#: mclient.pyw:1635
+#: mclient.pyw:1655
+#: mclient.pyw:1669
+#: mclient.pyw:1680
+#: mclient.pyw:2044
+#: mclient.pyw:2280
+#: page.py:64
+#: page.py:191
+#: tags.py:374
+msgid "Empty input is not allowed!"
+msgstr "Пустые входные данные не допускаются!"
+
+#: cells.py:74
+#: cells.py:209
+#: cells.py:369
+#: cells.py:522
+#: elems.py:96
+#: elems.py:525
+#: mclient.pyw:2111
+#: mclient.pyw:2130
+#: mclient.pyw:2306
+#: mclient.pyw:2311
+#: mclient.pyw:2323
+#: mclient.pyw:2328
+#: mclient.pyw:2350
+#: mclient.pyw:2361
+#: page.py:99
+#: page.py:133
+msgid "Operation has been canceled."
+msgstr "Операция отменена."
+
+#: cells.py:435
+#: db.py:157
+#: page.py:265
+#: page.py:304
+#: page.py:351
+#: tags.py:269
+#: tags.py:342
+msgid "ERROR"
+msgstr "ОШИБКА"
+
+#: cells.py:436
+#, python-format
+msgid "Unable to find \"%s\"!"
+msgstr "Не удалось найти %s!"
+
+#: cells.py:512
+#: elems.py:509
+#: mclient.pyw:720
+#: mclient.pyw:725
+#: mclient.pyw:755
+#: mclient.pyw:768
+#: mclient.pyw:1778
+#: mclient.pyw:1849
+#: mclient.pyw:1871
+#: mclient.pyw:2150
+#: mclient.pyw:2159
+#: mkhtml.py:305
+#: mkhtml.py:322
+#: mkhtml.py:335
+#: page.py:40
+#: page.py:127
+#: page.py:166
+#: page.py:274
+#: page.py:280
+msgid "INFO"
+msgstr "ИНФОРМАЦИЯ"
+
+#: db.py:158
+#, python-format
+msgid ""
+"Unable to execute:\n"
+"\"%s\""
+msgstr ""
+"Не удалось выполнить:\n"
+"\"%s\""
+
+#: db.py:209
+#, python-format
+msgid "Delete all records from %s"
+msgstr "Удалить все записи из %s"
+
+#: db.py:219
+#, python-format
+msgid "Delete records %d-%d from %s"
+msgstr "Удаление записей %d-%d из %s"
+
+#: elems.py:482
+#: elems.py:501
+#: mclient.pyw:245
+#: mclient.pyw:1863
+#: mclient.pyw:1890
+msgid "DEBUG"
+msgstr "ОТЛАДКА"
+
+#: elems.py:498
+#: elems.py:514
+msgid "Wrong input data!"
+msgstr "Недопустимые входные данные!"
+
+#: elems.py:509
+#, python-format
+msgid "Update DB, range %d-%d"
+msgstr "Обновление БД, диапазон %d-%d"
+
+#: mclient.pyw:91
+msgid "The following sections and/or keys are missing:"
+msgstr "Отсутствуют следующие разделы и/или ключи:"
+
+#: mclient.pyw:352
+#: mclient.pyw:492
+msgid "Third parties"
+msgstr "Третьи стороны"
+
+#: mclient.pyw:361
+#: mclient.pyw:673
+msgid "Enter a string to search:"
+msgstr "Строка для поиска:"
+
+#: mclient.pyw:470
+#: mclient.pyw:1231
+msgid "About"
+msgstr "О программе"
+
+#: mclient.pyw:487
+#, python-format
+msgid ""
+"Programming: Peter Sklyar, 2015, 2016.\n"
+"Version: %s\n"
+"\n"
+"This program is free and opensource. You can use and modify it freely\n"
+"within the scope of the provisions set forth in GPL v.3 and the active legislation.\n"
+"\n"
+"If you have any questions, requests, etc., please do not hesitate to contact me.\n"
+msgstr ""
+"Программирование: Петр Скляр, 2015-2017.\n"
+"Версия: %s\n"
+"\n"
+"Эта программа является открытой и бесплатной. Вы можете свободно использовать\n"
+"и видоизменять ее в рамках лицензии GPL v.3 и текущего законодательства.\n"
+"\n"
+"Любые вопросы, пожелания и пр. излагайте по электронной почте.\n"
+
+#: mclient.pyw:493
+#: mclient.pyw:499
+msgid "View the license"
+msgstr "Информация о лицензии"
+
+#: mclient.pyw:498
+msgid "License"
+msgstr "Лицензия"
+
+#: mclient.pyw:505
+#: mclient.pyw:506
+msgid "Send email to the author"
+msgstr "Написать письмо автору"
+
+#: mclient.pyw:538
+#, python-format
+msgid "Concerning %s"
+msgstr "По поводу %s"
+
+#: mclient.pyw:560
+#: mclient.pyw:589
+msgid "Save the current view as a web-page (*.htm)"
+msgstr "Сохранить текущее представление как веб-страницу (*.htm)"
+
+#: mclient.pyw:561
+#: mclient.pyw:591
+msgid "Save the original article as a web-page (*.htm)"
+msgstr "Сохранить оригинальную статью как веб-страницу (*.htm)"
+
+#: mclient.pyw:562
+#: mclient.pyw:593
+msgid "Save the article as plain text in UTF-8 (*.txt)"
+msgstr "Сохранить статью как обычный текст в кодировке UTF-8 (*.txt)"
+
+#: mclient.pyw:563
+#: mclient.pyw:595
+msgid "Copy HTML code of the article to clipboard"
+msgstr "Скопировать HTML-код статьи в буфер обмена"
+
+#: mclient.pyw:564
+#: mclient.pyw:597
+msgid "Copy the text of the article to clipboard"
+msgstr "Скопировать текст статьи в буфер обмена"
+
+#: mclient.pyw:566
+msgid "Select an action:"
+msgstr "Выберите действие:"
+
+#: mclient.pyw:602
+#: mclient.pyw:603
+#: mclient.pyw:621
+#: mclient.pyw:622
+msgid "Web-page"
+msgstr "Веб-страница"
+
+#: mclient.pyw:604
+#: mclient.pyw:623
+#: mclient.pyw:639
+msgid "All files"
+msgstr "Все файлы"
+
+#: mclient.pyw:638
+msgid "Plain text (UTF-8)"
+msgstr "Обычный текст (UTF-8)"
+
+#: mclient.pyw:721
+#: mclient.pyw:769
+msgid "Nothing has been found!"
+msgstr "Ничего не найдено."
+
+#: mclient.pyw:726
+msgid "The start has been reached. Searching from the end."
+msgstr "Достигнуто начало. Поиск производится с конца."
+
+#: mclient.pyw:756
+msgid "The end has been reached. Searching from the start."
+msgstr "Достигнут конец. Поиск производится с начала."
+
+#: mclient.pyw:818
+#: mclient.pyw:1057
+msgid "Paste a special symbol"
+msgstr "Вставить специальный символ"
+
+#: mclient.pyw:852
+#: mclient.pyw:1151
+msgid "History"
+msgstr "История"
+
+#: mclient.pyw:1004
+#: mclient.pyw:1005
+msgid "Translate"
+msgstr "Перевести"
+
+#: mclient.pyw:1017
+msgid "Clear"
+msgstr "Очистить"
+
+#: mclient.pyw:1018
+msgid "Clear search field"
+msgstr "Очистить строку поиска"
+
+#: mclient.pyw:1027
+msgid "Paste"
+msgstr "Вставить"
+
+#: mclient.pyw:1028
+msgid "Paste text from clipboard"
+msgstr "Вставить текст из буфера обмена"
+
+#: mclient.pyw:1038
+msgid "Paste current request"
+msgstr "Вставить текущий запрос"
+
+#: mclient.pyw:1048
+msgid "Paste previous request"
+msgstr "Вставить предыдущий запрос"
+
+#: mclient.pyw:1056
+msgid "Symbols"
+msgstr "Символы"
+
+#: mclient.pyw:1081
+msgid "Toggle view"
+msgstr "Смена вида"
+
+#: mclient.pyw:1082
+msgid "Toggle the article view mode"
+msgstr "Переключить вид отображения статьи"
+
+#: mclient.pyw:1093
+msgid "Blacklist"
+msgstr "Черный список"
+
+#: mclient.pyw:1094
+msgid "Toggle the blacklist"
+msgstr "Включить/отключить черный список"
+
+#: mclient.pyw:1103
+msgid "Prioritize"
+msgstr "Приоритеты"
+
+#: mclient.pyw:1104
+msgid "Toggle prioritizing"
+msgstr "Включить/отключить список приоритетов"
+
+#: mclient.pyw:1113
+msgid "Alphabetize"
+msgstr "По алфавиту"
+
+#: mclient.pyw:1114
+msgid "Toggle alphabetizing"
+msgstr "Вкл./откл. сортировку по алфавиту"
+
+#: mclient.pyw:1124
+msgid "Go to the preceding article"
+msgstr "Предыдущая статья"
+
+#: mclient.pyw:1134
+msgid "Go to the following article"
+msgstr "Последующая статья"
+
+#: mclient.pyw:1143
+msgid "Show history"
+msgstr "Показать историю"
+
+#: mclient.pyw:1146
+msgid "Clear history"
+msgstr "Очистить историю"
+
+#: mclient.pyw:1160
+msgid "Reload"
+msgstr "Обновить"
+
+#: mclient.pyw:1161
+msgid "Reload the article"
+msgstr "Перезагрузить статью"
+
+#: mclient.pyw:1171
+msgid "Search"
+msgstr "Искать"
+
+#: mclient.pyw:1172
+msgid "Find in the current article"
+msgstr "Найти в текущей статье"
+
+#: mclient.pyw:1180
+msgid "Save"
+msgstr "Сохранить"
+
+#: mclient.pyw:1181
+msgid "Save the current article"
+msgstr "Сохранить текущую статью"
+
+#: mclient.pyw:1191
+msgid "Browse"
+msgstr "В браузере"
+
+#: mclient.pyw:1192
+msgid "Open the current article in a browser"
+msgstr "Открыть текущую статью в браузере"
+
+#: mclient.pyw:1202
+msgid "Print"
+msgstr "Печать"
+
+#: mclient.pyw:1203
+msgid "Create a print-ready preview"
+msgstr "Печать (предв. просмотр)"
+
+#: mclient.pyw:1211
+msgid "Define"
+msgstr "Что это?"
+
+#: mclient.pyw:1212
+msgid "Define the current term"
+msgstr "Дать определение термину"
+
+#: mclient.pyw:1221
+msgid "Clipboard"
+msgstr "Буфер обмена"
+
+#: mclient.pyw:1222
+msgid "Capture Ctrl-c-c and Ctrl-Ins-Ins"
+msgstr "Перехватывать Ctrl-c-c и Ctrl-Ins-Ins"
+
+#: mclient.pyw:1232
+msgid "View About"
+msgstr "Информация о программе"
+
+#: mclient.pyw:1240
+msgid "Quit"
+msgstr "Выйти"
+
+#: mclient.pyw:1241
+msgid "Quit the program"
+msgstr "Выйти из программы"
+
+#: mclient.pyw:1562
+msgid "Unable to set selection!"
+msgstr "Не удалось задать выделение!"
+
+#: mclient.pyw:1779
+#, python-format
+msgid "Set the column limit to %d"
+msgstr "Задать максимальное число столбцов: %d"
+
+#: mclient.pyw:1850
+#, python-format
+msgid "Open link: %s"
+msgstr "Открывается ссылка: %s"
+
+#: mclient.pyw:1856
+#: mclient.pyw:2028
+msgid "This block does not contain a URL!"
+msgstr "Этот блок не содержит URL!"
+
+#: mclient.pyw:1872
+#, python-format
+msgid "Set source to \"%s\""
+msgstr "Выбран источник \"%s\""
+
+#: mclient.pyw:2009
+msgid "This block does not contain any text!"
+msgstr "Этот блок не содержит текста!"
+
+#: mclient.pyw:2137
+#: page.py:292
+msgid "QUESTION"
+msgstr "ВОПРОС"
+
+#: mclient.pyw:2138
+#, python-format
+msgid "The request is long (%d symbols). Do you really want to send it?"
+msgstr "Запрос длинный (%d символов). Отправить?"
+
+#: mclient.pyw:2151
+#, python-format
+msgid "Set language to \"%s\""
+msgstr "Выбран язык \"%s\""
+
+#: mclient.pyw:2212
+msgid "No dictionaries have been provided for blacklisting!"
+msgstr "Список блокируемых словарей пуст!"
+
+#: mclient.pyw:2265
+msgid "No dictionaries have been provided for prioritizing!"
+msgstr "Список приоритетных словарей пуст!"
+
+#: mkhtml.py:202
+msgid "Nothing has been found."
+msgstr "Ничего не найдено."
+
+#: page.py:41
+#, python-format
+msgid "Load \"%s\""
+msgstr "Загрузка \"%s\""
+
+#: page.py:48
+#, python-format
+msgid "Failed to load \"%s\"!"
+msgstr "Не удалось загрузить \"%s\"!"
+
+#: page.py:59
+#, python-format
+msgid "Failed to parse \"%s\"!"
+msgstr "Не удалось проанализировать \"%s\"!"
+
+#: page.py:105
+msgid "Load offline dictionaries"
+msgstr "Загрузка локальных словарей"
+
+#: page.py:128
+#, python-format
+msgid "%d offline dictionaries have been loaded"
+msgstr "Загружено локальных словарей: %d"
+
+#: page.py:266
+msgid "Unable to convert HTML entities to UTF-8!"
+msgstr "Не удалось конвертировать код HTML в UTF-8!"
+
+#: page.py:275
+#, python-format
+msgid "Get online: \"%s\""
+msgstr "Поиск онлайн: \"%s\""
+
+#: page.py:281
+#, python-format
+msgid "[OK]: \"%s\""
+msgstr "[Успешно]: \"%s\""
+
+#: page.py:288
+#, python-format
+msgid "[FAILED]: \"%s\""
+msgstr "[ОШИБКА]: \"%s\""
+
+#: page.py:293
+msgid ""
+"Unable to get the webpage. Check website accessibility.\n"
+"\n"
+"Press OK to try again."
+msgstr ""
+"Не удается загрузить страницу. Проверьте доступность веб-сайта.\n"
+"\n"
+"Нажмите OK, чтобы попытаться снова."
+
+#: page.py:305
+msgid "Unable to change the web-page encoding!"
+msgstr "Не удается изменить кодировку веб-страницы!"
+
+#: page.py:352
+#: tags.py:270
+#: tags.py:343
+#, python-format
+msgid ""
+"An unknown mode \"%s\"!\n"
+"\n"
+"The following modes are supported: \"%s\"."
+msgstr ""
+"Неизвестный режим \"%s\"!\n"
+"\n"
+"Поддерживаются следующие режимы: \"%s\"."
+
+#: page.py:411
+#, python-format
+msgid "Welcome to %s!"
+msgstr "%s приветствует Вас!"
+
+#: page.py:412
+msgid "This program retrieves translation from online/offline sources."
+msgstr "Эта программа – оболочка для онлайн и локальных словарей."
+
+#: page.py:413
+msgid "Use an entry area below to enter a word/phrase to be translated."
+msgstr "Введите слово или фразу для перевода в область ввода ниже."
+
+#: page.py:414
+msgid "Click the left mouse button on the selection to return its translation. Click the right mouse button on the selection to copy it to clipboard."
+msgstr "Щелкните левой кнопкой мыши на выделении для получения перевода. Щелкните правой кнопкой мыши для копирования выделения в буфер обмена."
+
+#: page.py:415
+msgid "Multitran is "
+msgstr "Мультитран "
+
+#: page.py:418
+msgid "Offline dictionaries loaded:"
+msgstr "Загружено локальных словарей:"
+
+#: page.py:425
+msgid "running"
+msgstr "работает"
+
+#: page.py:428
+msgid "not running"
+msgstr "не работает"
+
+#: tags.py:280
+#, python-format
+msgid "Wrong tag \"%s\"!"
+msgstr "Неправильный тэг \"%s\"!"
+
+#: tags.py:369
+#, python-format
+msgid "Wrong input data: \"%s\""
+msgstr "Недопустимые входные данные: \"%s\""
+

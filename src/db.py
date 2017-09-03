@@ -11,6 +11,10 @@
     We need 'POS1 < POS2' to skip empty blocks; POS1 = POS2 causes Moves to work incorrectly
 '''
 
+import gettext
+
+gettext.install('mclient','./locale')
+
 import sqlite3
 import shared as sh
 import sharedGUI as sg

@@ -38,6 +38,10 @@
     - 'gen_poses' cannot find Search items when Page is forced to use 'file=' (RU-DE, 'tun')
 '''
 
+import gettext
+
+gettext.install('mclient','./locale')
+
 import os
 import sys
 import io
