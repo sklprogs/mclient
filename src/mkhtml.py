@@ -198,7 +198,9 @@ class HTML:
                 self._correction()
             self.output.write('</td></tr>\n      </table>  ')
         else:
-            self.output.write('<h1>Ничего не найдено.</h1>') # todo: mes
+            self.output.write('<h1>')
+            self.output.write(_('Nothing has been found.'))
+            self.output.write('</h1>')
         if self.Printer:
             self.output.write('\n  </div>')
         self.output.write('\n</body>\n</html>')
@@ -241,13 +243,13 @@ if __name__ == '__main__':
     timer.start()
     
     page = pg.Page (source       = source
-               ,lang     = 'English'
-               ,search       = search
-               ,url      = ''
-               ,win_encoding = 'windows-1251'
-               ,ext_dics     = []
-               ,file     = file
-               )
+                   ,lang         = 'English'
+                   ,search       = search
+                   ,url          = ''
+                   ,win_encoding = 'windows-1251'
+                   ,ext_dics     = []
+                   ,file         = file
+                   )
     page.run()
 
     mc.ConfigMclient ()
@@ -263,9 +265,9 @@ if __name__ == '__main__':
         input('Tags step completed. Press Enter')
     
     elems = el.Elems (blocks = tags._blocks
-             ,source = source
-             ,search = search
-             )
+                     ,source = source
+                     ,search = search
+                     )
     elems.run()
 
     if Debug:
@@ -276,44 +278,50 @@ if __name__ == '__main__':
     blocks_db.fill(elems._data)
     
     blocks_db.request (source = source
-              ,search = search
-              )
-    ph_terma = el.PhraseTerma (dbc    = blocks_db.dbc
-                  ,source = source
-                  ,search = search
-                  )
+                      ,search = search
+                      )
+    ph_terma = el.PhraseTerma (dbc = blocks_db.dbc
+                              ,source = source
+                              ,search = search
+                              )
     ph_terma.run()
     
     phrase_dic = blocks_db.phrase_dic ()
     data       = blocks_db.assign_bp  ()
     
-    bp = cl.BlockPrioritize (data=data
-                ,source     = source
-                ,search     = search
-                ,blacklist  = blacklist
-                ,prioritize = prioritize
-                ,phrase_dic = phrase_dic
-                )
+    bp = cl.BlockPrioritize (data       = data
+                            ,source     = source
+                            ,search     = search
+                            ,blacklist  = blacklist
+                            ,prioritize = prioritize
+                            ,phrase_dic = phrase_dic
+                            )
     bp.run()
     
     if Debug:
         bp.debug(MaxRows=40)
         input('BlockPrioritize step completed. Press Enter')
-        sg.Message('BlockPrioritize',sh.lev_info,bp._query.replace(';',';\n'))
+        sg.Message ('BlockPrioritize'
+                   ,_('INFO')
+                   ,bp._query.replace(';',';\n')
+                   )
 
     blocks_db.update(query=bp._query)
     
-    data = blocks_db.assign_cells()
+    data  = blocks_db.assign_cells()
     cells = cl.Cells (data       = data
-             ,collimit   = collimit
-             ,phrase_dic = phrase_dic
-             )
+                     ,collimit   = collimit
+                     ,phrase_dic = phrase_dic
+                     )
     cells.run()
     
     if Debug:
         cells.debug(MaxRows=40)
         input('Cells step completed. Press Enter')
-        sg.Message('Cells',sh.lev_info,cells._query.replace(';',';\n'))
+        sg.Message ('Cells'
+                   ,_('INFO')
+                   ,cells._query.replace(';',';\n')
+                   )
 
     blocks_db.update(query=cells._query)
 
@@ -323,7 +331,10 @@ if __name__ == '__main__':
     if Debug:
         pos.debug(MaxRows=40)
         input('Pos step completed. Press Enter')
-        sg.Message ('Pos',sh.lev_info,pos._query.replace(';',';\n'))
+        sg.Message ('Pos'
+                   ,_('INFO')
+                   ,pos._query.replace(';',';\n')
+                   )
     
     blocks_db.update(query=pos._query)
     
@@ -332,9 +343,9 @@ if __name__ == '__main__':
         input('Return.')
     
     mkhtml = HTML (data     = blocks_db.fetch()
-              ,collimit = collimit
-              ,Printer  = 1
-              )
+                  ,collimit = collimit
+                  ,Printer  = 1
+                  )
     
     timer.end()
     

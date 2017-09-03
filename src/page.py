@@ -24,7 +24,7 @@ p8 = '">'
 
 
 class ExtDic:
-    
+
     def __init__(self,path,lang='English',name='External',Block=False,Silent=False):
         self.Silent = Silent
         # Full path without extension (as managed by pystardict)
@@ -34,29 +34,41 @@ class ExtDic:
         self.Block  = Block
         self._dic   = None
         self.load()
-    
+
     def load(self):
-        sh.log.append('ExtDic.load',sh.lev_info,'Load "%s"' % self._path) # todo: mes
+        sh.log.append ('ExtDic.load'
+                      ,_('INFO')
+                      ,_('Load "%s"') % self._path
+                      )
         try:
             self._dic = pd.Dictionary(self._path)
         except:
-            sg.Message('ExtDic.load',sh.lev_warn,'Failed to load "%s"!' % self._path,self.Silent) # todo: mes
-            
+            sg.Message ('ExtDic.load'
+                       ,_('WARNING')
+                       ,_('Failed to load "%s"!') % self._path,self.Silent
+                       )
+
     def get(self,search):
         result = ''
         if self._dic:
             try:
                 result = self._dic.get(k=search)
             except:
-                sg.Message('ExtDic.get',sh.lev_warn,'Failed to parse "%s"!' % self._path,self.Silent) # todo: mes
+                sg.Message ('ExtDic.get'
+                           ,_('WARNING')
+                           ,_('Failed to parse "%s"!') % self._path,self.Silent
+                           )
         else:
-            sh.log.append('ExtDic.get',sh.lev_warn,sh.globs['mes'].empty_input)
+            sh.log.append ('ExtDic.get'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
         return result
 
 
 
 class ExtDics:
-    
+
     def __init__(self,path):
         self._dics    = []
         self._dics_en = []
@@ -70,7 +82,7 @@ class ExtDics:
         self.Success  = self.dir.Success
         self._list()
         self.load()
-        
+
     def get(self,lang='English',search=''):
         if self.Success:
             dics = [dic for dic in self._dics if dic._lang == lang and not dic.Block]
@@ -82,11 +94,16 @@ class ExtDics:
                     lst.append(p4 + dic._name + p8 + tmp)
             return '\n'.join(lst)
         else:
-            sh.log.append('ExtDics.get',sh.lev_warn,sh.globs['mes'].canceled)
-    
+            sh.log.append ('ExtDics.get'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+
     def load(self):
         if self.Success:
-            sg.objs.waitbox().reset(func_title='ExtDic.load',message='Load offline dictionaries') # todo: mes
+            sg.objs.waitbox().reset (func_title = 'ExtDic.load'
+                                    ,message    = _('Load offline dictionaries')
+                                    )
             sg.objs._waitbox.show()
             for elem in self._en:
                 path = os.path.join(self._path,elem)
@@ -106,10 +123,16 @@ class ExtDics:
             sg.objs._waitbox.close()
             # Leave only those dictionaries that were successfully loaded
             self._dics = [x for x in self._dics if x._dic]
-            sh.log.append('ExtDics.load',sh.lev_info,'%d offline dictionaries have been loaded' % len(self._dics)) # todo: mes
+            sh.log.append ('ExtDics.load'
+                          ,_('INFO')
+                          ,_('%d offline dictionaries have been loaded') % len(self._dics)
+                          )
         else:
-            sh.log.append('ExtDics.load',sh.lev_warn,sh.globs['mes'].canceled)
-    
+            sh.log.append ('ExtDics.load'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+
     def _list(self):
         if self._files:
             self._filenames = set([sh.Path(file).filename().replace('.dict','') for file in self._files])
@@ -127,7 +150,7 @@ class ExtDics:
             self._es        = []
             self._it        = []
             self._fr        = []
-    
+
     def debug(self):
         message = 'English:\n'
         message += '\n'.join(self._en) + '\n\n'
@@ -139,13 +162,19 @@ class ExtDics:
         message += '\n'.join(self._es) + '\n\n'
         message += 'Italian:\n'
         message += '\n'.join(self._it) + '\n\n'
-        sg.Message(func='ExtDics.debug',level=sh.lev_info,message=message)
+        sg.Message (func    = 'ExtDics.debug'
+                   ,level   = _('INFO')
+                   ,message = message
+                   )
 
 
 
 class Page:
-    
-    def __init__(self,source='All',lang='English',search='SEARCH',url='',win_encoding='windows-1251',ext_dics=[],file=None):
+
+    def __init__(self,source='All',lang='English'
+                ,search='SEARCH',url='',win_encoding='windows-1251'
+                ,ext_dics=[],file=None
+                ):
         self._html_raw     = self._page = ''
         self._source       = source
         self._lang         = lang
@@ -157,8 +186,11 @@ class Page:
         self.Success       = True
         if not self._source or not self._lang or not self._search or not self._win_encoding:
             self.Success   = False
-            sh.log.append('Page.__init__',sh.lev_warn,sh.globs['mes'].empty_input)
-        
+            sh.log.append ('Page.__init__'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+
     def run(self):
         self.get                ()
         self.invalid            ()
@@ -169,12 +201,12 @@ class Page:
         self.common_replace     () # HTML specific
         self.article_not_found  () # HTML specific
         return self._page
-        
+
     # todo: Make this MT-only
     def invalid(self):
         # Do this before unescaping, otherwise, some tags describing wforms will become exactly comments. It seems that 'wform' tags are already present. Replacing these tags with altertnative 'wform' tags does not work.
         self._page = self._page.replace('<span STYLE=&#34;color:gray&#34;>','').replace('<span STYLE=&#34;color:black&#34;>','')
-    
+
     # todo: Make this MT-only
     def invalid2(self):
         # We need to close the tag since all following blocks with be 'SAMECELL == 1' otherwise
@@ -183,7 +215,7 @@ class Page:
         self._page = self._page.replace('>;  <','><')
         self._page = self._page.replace('Требуется авторизация','')
         self._page = self._page.replace('</a>, содержащие <strong>','</a><strong>')
-    
+
     def article_not_found(self): # HTML specific
         if self._source == 'All' or self._source == 'Online':
             # If separate words are found instead of a phrase, prepare those words only
@@ -208,7 +240,7 @@ class Page:
                 self._page = self._page[:board_pos] + p5 + p6 + sep_words_found + p7
                 # Поскольку message_board встречается между вхождениями, а не до них или после них, то обрабатываем его вне delete_entries.
                 self._page = self._page.replace(message_board,'')
-    
+
     def common_replace(self): # HTML specific
         self._page = self._page.replace('\r\n','')
         self._page = self._page.replace('\n','')
@@ -216,12 +248,12 @@ class Page:
         while '  ' in self._page:
             self._page = self._page.replace('  ',' ')
         self._page = re.sub(r'\>[\s]{0,1}\<','><',self._page)
-        
+
     def mt_specific_replace(self):
         if self._source == 'All' or self._source == 'Online':
             self._page = self._page.replace('&nbsp;Вы знаете перевод этого выражения? Добавьте его в словарь:','').replace('&nbsp;Вы знаете перевод этого слова? Добавьте его в словарь:','').replace('&nbsp;Требуется авторизация<br>&nbsp;Пожалуйста, войдите на сайт под Вашим именем','').replace('Термины, содержащие ','')
             self._page = re.sub('[:]{0,1}[\s]{0,1}все формы слов[а]{0,1} \(\d+\)','',self._page)
-    
+
     # Convert HTML entities to a human readable format, e.g., '&copy;' -> '©'
     def decode_entities(self): # HTML specific
         # todo: do we need to check this?
@@ -229,22 +261,37 @@ class Page:
             try:
                 self._page = html.unescape(self._page)
             except:
-                sg.Message('Page.decode_entities',sh.lev_err,sh.globs['mes'].html_conversion_failure)
-    
+                sg.Message ('Page.decode_entities'
+                           ,_('ERROR')
+                           ,_('Unable to convert HTML entities to UTF-8!')
+                           )
+
     def _get_online(self):
         Got = False
         while not self._page:
             try:
-                sh.log.append('Page._get_online',sh.lev_info,'Get online: "%s"' % self._search) # todo: mes
+                sh.log.append ('Page._get_online'
+                              ,_('INFO')
+                              ,_('Get online: "%s"') % self._search
+                              )
                 # Если загружать страницу с помощью "page=urllib.request.urlopen(my_url)", то в итоге получится HTTPResponse, что полезно только для удаления тэгов JavaScript. Поскольку мы вручную удаляем все лишние тэги, то на выходе нам нужна строка.
                 self._page = urllib.request.urlopen(self._url).read()
-                sh.log.append('Page._get_online',sh.lev_info,sh.globs['mes'].ok % self._search)
+                sh.log.append ('Page._get_online'
+                              ,_('INFO')
+                              ,_('[OK]: "%s"') % self._search
+                              )
                 Got = True
             # Too many possible exceptions
             except:
-                sh.log.append('Page._get_online',sh.lev_warn,sh.globs['mes'].failed % self._search)
+                sh.log.append ('Page._get_online'
+                              ,_('WARNING')
+                              ,_('[FAILED]: "%s"') % self._search
+                              )
                 # For some reason, 'break' does not work here
-                if not sg.Message(func='Page._get_online',level=sh.lev_ques,message=sh.globs['mes'].webpage_unavailable_ques).Yes:
+                if not sg.Message (func    = 'Page._get_online'
+                                  ,level   = _('QUESTION')
+                                  ,message = _('Unable to get the webpage. Check website accessibility.\n\nPress OK to try again.')
+                                  ).Yes:
                     self._page = 'CANCELED'
         if self._page == 'CANCELED':
             self._page = ''
@@ -253,26 +300,29 @@ class Page:
                 # Меняем кодировку sh.globs['var']['win_encoding'] на нормальную
                 self._html_raw = self._page = self._page.decode(self._win_encoding)
             except:
-                sg.Message(func='Page._get_online',level=sh.lev_err,message=sh.globs['mes'].wrong_html_encoding)
-    
+                sg.Message (func    = 'Page._get_online'
+                           ,level   = _('ERROR')
+                           ,message = _('Unable to change the web-page encoding!')
+                           )
+
     def _get_offline(self):
         if self.ext_dics:
             self._page = self.ext_dics.get(lang=self._lang,search=self._search)
-    
+
     def disamb_mt(self):
         # This is done to speed up and eliminate tag disambiguation
         try:
             self._page = self._page.replace('<tr>','').replace('</tr>','')
         except TypeError: # Encoding has failed
             self._page = ''
-        
+
     def disamb_sd(self):
         # This is done to speed up and eliminate tag disambiguation
         try:
             self._page = self._page.replace('<i>','').replace('</i>','')
         except TypeError: # Encoding has failed
             self._page = ''
-    
+
     def get(self):
         if not self._page:
             if self._file:
@@ -284,7 +334,7 @@ class Page:
             else:
                 page = ''
                 # todo: introduce sub-sources, make this code clear; assign '_html_raw' for each sub-source
-                if self._source == 'All': # todo: mes
+                if self._source == 'All':
                     self._get_online()
                     self.disamb_mt()
                     page = self._page
@@ -297,7 +347,10 @@ class Page:
                     self._get_offline()
                     self.disamb_sd()
                 else:
-                    sg.Message('Page.get',sh.lev_err,sh.globs['mes'].unknown_mode % (str(self._source),';'.join(sources)))
+                    sg.Message ('Page.get'
+                               ,_('ERROR')
+                               ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._source),';'.join(sources))
+                               )
                 if self._page is None:
                     self._page = ''
                 if page and self._page:
@@ -309,15 +362,14 @@ class Page:
 
 
 class Welcome:
-    
-    def __init__(self,url=None,st_status=0,product='MClient',version='current',ui_lang='en'):
+
+    def __init__(self,url=None,st_status=0,product='MClient',version='current'):
         if not url:
             # 'https://www.multitran.ru' is got faster than 'http://www.multitran.ru' (~0.2s)
             url = 'https://www.multitran.ru'
         self._url       = url
         self._product   = product
         self._version   = version
-        self._ui_lang   = ui_lang
         self._st_status = st_status #len(ext_dics._dics)
         self._mt_status = 'not running'
         self._mt_color  = 'red'
@@ -326,25 +378,7 @@ class Welcome:
                                        ,self._version
                                        ]
                                  ).space_items()
-        self.lang()
 
-    # todo: use modern localization
-    def lang(self):
-        if self._ui_lang == 'ru':
-            self._fragm1 = '%s приветствует Вас!' % self._desc 
-            self._fragm2 = 'Эта программа – оболочка для онлайн и локальных словарей.'
-            self._fragm3 = 'Введите слово или фразу для перевода в область ввода ниже.'
-            self._fragm4 = 'Щелкните левой кнопкой мыши на выделении для получения перевода. Щелкните правой кнопкой мыши для копирования выделения в буфер обмена.'
-            self._fragm5 = 'Мультитран '
-            self._fragm6 = 'Загружено локальных словарей:'
-        else:
-            self._fragm1 = 'Welcome to %s!' % self._desc
-            self._fragm2 = 'This program retrieves translation from online/offline sources.'
-            self._fragm3 = 'Use an entry area below to enter a word/phrase to be translated.'
-            self._fragm4 = 'Click the left mouse button on the selection to return its translation. Click the right mouse button on the selection to copy it to clipboard.'
-            self._fragm5 = 'Multitran is '
-            self._fragm6 = 'Offline dictionaries loaded:'
-    
     def online(self):
         try:
             code = urllib.request.urlopen(self._url).code
@@ -352,7 +386,7 @@ class Welcome:
                 return True
         except urllib.error.URLError:
             return False
-            
+
     def generate(self):
         return '''<html>
                 <body>
@@ -374,22 +408,24 @@ class Welcome:
                   </font>
                 </body>
               </html>
-        ''' % (self._fragm1,self._fragm2,self._fragm3,self._fragm4
-              ,self._fragm5,self._mt_color,self._mt_status,self._fragm6
-              ,self._st_color,self._st_status)
-        
+        ''' % (_('Welcome to %s!') % self._desc
+              ,_('This program retrieves translation from online/offline sources.')
+              ,_('Use an entry area below to enter a word/phrase to be translated.')
+              ,_('Click the left mouse button on the selection to return its translation. Click the right mouse button on the selection to copy it to clipboard.')
+              ,_('Multitran is ')
+              ,self._mt_color
+              ,self._mt_status
+              ,_('Offline dictionaries loaded:')
+              ,self._st_color
+              ,self._st_status
+              )
+
     def run(self):
         if self.online():
-            if self._ui_lang == 'ru':
-                self._mt_status = 'работает'
-            else:
-                self._mt_status = 'running'
+            self._mt_status = _('running')
             self._mt_color  = 'green'
         else:
-            if self._ui_lang == 'ru':
-                self._mt_status = 'не работает'
-            else:
-                self._mt_status = 'not running'
+            self._mt_status = _('not running')
             self._mt_color  = 'red'
         if self._st_status == 0:
             self._st_color = 'red'

@@ -1,1 +1,0 @@
-/usr/local/bin/mes_ru.py

@@ -95,7 +95,10 @@ class DB:
 			if result:
 				return(result[0][0],result[-1][0])
 		else:
-			sh.log.append('DB.prev_search',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.prev_search'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 	
 	def prev_search(self):
 		nos = self.cur_nos()
@@ -105,7 +108,10 @@ class DB:
 			if result:
 				return result[0]
 		else:
-			sh.log.append('DB.prev_search',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.prev_search'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def next_search(self):
 		nos = self.cur_nos()
@@ -115,14 +121,20 @@ class DB:
 			if result:
 				return result[0]
 		else:
-			sh.log.append('DB.prev_search',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.prev_search'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 
 	def request(self,source,search):
 		if source and search:
 			self._source = source
 			self._search = search
 		else:
-			sh.log.append('DB.request',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.request'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 	
 	def print(self,Selected=False,Shorten=False,MaxRow=20,MaxRows=20):
 		# 'self.dbc.description' is 'None' without performing 'select' first
@@ -141,7 +153,10 @@ class DB:
 		try:
 			self.dbc.executescript(query)
 		except sqlite3.OperationalError:
-			sg.Message('DB.update',sh.lev_err,'Unable to execute:\n"%s"' % str(query).replace(';',';\n'))
+			sg.Message ('DB.update'
+			           ,_('ERROR')
+			           ,_('Unable to execute:\n"%s"') % str(query).replace(';',';\n')
+			           )
 			
 	# Assign input data for BlockPrioritize
 	def assign_bp(self):
@@ -149,7 +164,10 @@ class DB:
 			self.dbc.execute('select NO,TYPE,TEXT,DICA from BLOCKS where SOURCE = ? and SEARCH = ? order by NO',(self._source,self._search))
 			return self.dbc.fetchall()
 		else:
-			sh.log.append('DB.assign_bp',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.assign_bp'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	# Assign input data for Cells
 	def assign_cells(self,SortTerms=False):
@@ -160,7 +178,7 @@ class DB:
 				self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 order by PRIORITY desc,DICA,WFORMA,SPEECHA,NO',(self._source,self._search,))
 			return self.dbc.fetchall()
 		else:
-			sh.log.append('DB.assign_cells',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append('DB.assign_cells',_('WARNING'),_('Empty input is not allowed!'))
 			
 	# Assign input data for Pos
 	def assign_pos(self):
@@ -168,7 +186,10 @@ class DB:
 			self.dbc.execute('select NO,TYPE,TEXT,SAMECELL,ROWNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 order by CELLNO,NO',(self._source,self._search,))
 			return self.dbc.fetchall()
 		else:
-			sh.log.append('DB.assign_pos',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.assign_pos'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def phrase_dic(self):
 		if self._source and self._search:
@@ -177,21 +198,33 @@ class DB:
 			if result:
 				return result[0]
 		else:
-			sh.log.append('DB.phrase_dic',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.phrase_dic'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def clear(self):
-		sh.log.append('DB.clear',sh.lev_warn,'Delete all records from BLOCKS') # todo: mes
+		sh.log.append ('DB.clear'
+		              ,_('WARNING')
+		              ,_('Delete all records from %s') % 'BLOCKS'
+		              )
 		# VACUUM command is a no-op for in-memory databases
 		self.dbc.execute('delete from BLOCKS')
 		
 	def clear_cur(self):
 		nos = self.cur_nos(Block=0)
 		if nos:
-			sh.log.append('DB.clear_cur',sh.lev_warn,'Delete records %d-%d from BLOCKS' % (nos[0],nos[1])) # todo: mes
+			sh.log.append ('DB.clear_cur'
+			              ,_('WARNING')
+			              ,_('Delete records %d-%d from %s') % (nos[0],nos[1],'BLOCKS')
+			              )
 			# Sqlite does not warn about '? <= NO >= ?', but this does nothing
 			self.dbc.execute('delete from BLOCKS where NO >= ? and NO <= ?',(nos[0],nos[1],))
 		else:
-			sh.log.append('DB.clear_cur',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.clear_cur'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def block_pos(self,pos):
 		if self._source and self._search:
@@ -203,7 +236,7 @@ class DB:
 			return self.dbc.fetchone()
 		else:
 			# Too frequent
-			#sh.log.append('DB.block_pos',sh.lev_warn,sh.globs['mes'].empty_input)
+			#sh.log.append('DB.block_pos',_('WARNING'),_('Empty input is not allowed!'))
 			pass
 			
 	def urla(self):
@@ -213,7 +246,10 @@ class DB:
 			if result:
 				return result[0]
 		else:
-			sh.log.append('DB.urla',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.urla'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def url(self,pos):
 		if self._source and self._search:
@@ -222,7 +258,10 @@ class DB:
 			if result:
 				return result[0]
 		else:
-			sh.log.append('DB.url',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.url'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def text(self,pos):
 		if self._source and self._search:
@@ -231,7 +270,10 @@ class DB:
 			if result:
 				return result[0]
 		else:
-			sh.log.append('DB.text',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.text'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def min_cell(self):
 		if self._source and self._search:
@@ -242,7 +284,10 @@ class DB:
 				self.dbc.execute('select CELLNO,NO,POS1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by CELLNO,NO',(self._source,self._search,))
 			return self.dbc.fetchone()
 		else:
-			sh.log.append('DB.min_cell',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.min_cell'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 	
 	def max_cell(self):
 		if self._source and self._search:
@@ -252,7 +297,10 @@ class DB:
 				self.dbc.execute('select CELLNO,NO,POS1,BBOX1,BBOX2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by CELLNO desc,NO desc',(self._source,self._search,))
 			return self.dbc.fetchone()
 		else:
-			sh.log.append('DB.max_cell',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.max_cell'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	# Find the maximum available row number for the whole table; this might not be the same as ROWNO of 'self.max_cell'
 	def max_row(self):
@@ -263,7 +311,10 @@ class DB:
 				self.dbc.execute('select ROWNO,NO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by ROWNO desc',(self._source,self._search,))
 			return self.dbc.fetchone()
 		else:
-			sh.log.append('DB.max_row',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.max_row'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 	
 	# Find the maximum available column number for the whole table; this might not be the same as COLNO of 'self.max_cell'
 	def max_col(self):
@@ -274,7 +325,10 @@ class DB:
 				self.dbc.execute('select COLNO,NO,BBOX2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by COLNO desc,NO desc',(self._source,self._search,))
 			return self.dbc.fetchone()
 		else:
-			sh.log.append('DB.max_col',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.max_col'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	# Find the maximum available row number for the set column
 	def max_row_sp(self,col_no):
@@ -285,7 +339,10 @@ class DB:
 				self.dbc.execute('select ROWNO,NO from BLOCKS where COLNO = ? and SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by ROWNO desc,NO desc',(col_no,self._source,self._search,))
 			return self.dbc.fetchone()
 		else:
-			sh.log.append('DB.max_row_sp',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.max_row_sp'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 	
 	# Find the maximum available column number for the set row
 	def max_col_sp(self,row_no):
@@ -296,7 +353,10 @@ class DB:
 				self.dbc.execute('select COLNO,NO,BBOX2 from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by COLNO desc,NO desc',(row_no,self._source,self._search,))
 			return self.dbc.fetchone()
 		else:
-			sh.log.append('DB.max_col_sp',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.max_col_sp'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	# Find the minimum available column number for the whole table; this should be the same as COLNO of 'self.min_cell' but we leave it for non-standard tables
 	def min_col(self):
@@ -307,7 +367,10 @@ class DB:
 				self.dbc.execute('select COLNO,NO,BBOX1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by COLNO,NO',(self._source,self._search,))
 			return self.dbc.fetchone()
 		else:
-			sh.log.append('DB.min_col',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.min_col'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	# Find the minimum available row number for the whole table; this should be the same as ROWNO of 'self.min_cell' but we leave it for non-standard tables
 	def min_row(self):
@@ -318,7 +381,10 @@ class DB:
 				self.dbc.execute('select ROWNO,NO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by ROWNO,NO',(self._source,self._search,))
 			return self.dbc.fetchone()
 		else:
-			sh.log.append('DB.min_row',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.min_row'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 	
 	# Find the minimum available row number for the set column; this might not be the same as ROWNO of 'self.min_cell'
 	def min_row_sp(self,col_no):
@@ -329,7 +395,10 @@ class DB:
 				self.dbc.execute('select ROWNO,NO from BLOCKS where COLNO = ? and SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by ROWNO,NO',(col_no,self._source,self._search,))
 			return self.dbc.fetchone()
 		else:
-			sh.log.append('DB.min_row_sp',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.min_row_sp'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 	
 	# Find the minimum available column number for the set row
 	def min_col_sp(self,row_no):
@@ -340,7 +409,10 @@ class DB:
 				self.dbc.execute('select COLNO,NO,BBOX1 from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 order by COLNO,NO',(row_no,self._source,self._search,))
 			return self.dbc.fetchone()
 		else:
-			sh.log.append('DB.min_col_sp',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.min_col_sp'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def selection(self,pos):
 		if self._source and self._search:
@@ -350,9 +422,14 @@ class DB:
 				self.dbc.execute('select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOY1,BBOX2,BBOY2,ROWNO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and POS1 <= ? and POS2 >= ? order by COLNO,NO',(self._source,self._search,pos,pos,))
 			return self.dbc.fetchone()
 		else:
-			# Too frequent
-			#sh.log.append('DB.selection',sh.lev_warn,sh.globs['mes'].empty_input)
 			pass
+			'''
+			# Too frequent
+			sh.log.append ('DB.selection'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
+			'''
 		
 	def node_y1(self,bboy):
 		if self._source and self._search:
@@ -362,7 +439,10 @@ class DB:
 				self.dbc.execute('select NODE1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and BBOY1 >= ? order by CELLNO,NO',(self._source,self._search,bboy,))
 			return self.dbc.fetchone()
 		else:
-			sh.log.append('DB.node_y1',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.node_y1'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def row(self,row_no):
 		if self._source and self._search:
@@ -372,14 +452,20 @@ class DB:
 				self.dbc.execute('select BBOX1,BBOX2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and POS1 < POS2 and ROWNO = ? order by CELLNO,NO',(self._source,self._search,row_no,))
 			return self.dbc.fetchall()
 		else:
-			sh.log.append('DB.row',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.row'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def blocked(self):
 		if self._source and self._search:
 			self.dbc.execute('select NO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 1',(self._source,self._search,))
 			return self.dbc.fetchall()
 		else:
-			sh.log.append('DB.blocked',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.blocked'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def prioritized(self):
 		if self._source and self._search:
@@ -387,7 +473,10 @@ class DB:
 			self.dbc.execute('select NO from BLOCKS where SOURCE = ? and SEARCH = ? and PRIORITY != 0 and PRIORITY != -1000',(self._source,self._search,))
 			return self.dbc.fetchall()
 		else:
-			sh.log.append('DB.prioritized',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.prioritized'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def dics(self,Block=False):
 		if self._source and self._search:
@@ -398,7 +487,10 @@ class DB:
 				self.dbc.execute('select TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and TYPE = ? and TEXT != ?',(self._source,self._search,'dic','',))
 			return self.dbc.fetchall()
 		else:
-			sh.log.append('DB.dics',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.dics'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def search_forward(self,pos,search):
 		if self._source and self._search:
@@ -410,7 +502,10 @@ class DB:
 			if result:
 				return result[0]
 		else:
-			sh.log.append('DB.search_forward',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.search_forward'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 		
 	def search_backward(self,pos,search):
 		if self._source and self._search:
@@ -422,7 +517,10 @@ class DB:
 			if result:
 				return result[0]
 		else:
-			sh.log.append('DB.search_backward',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('DB.search_backward'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def zzz(self):
 		pass
@@ -445,7 +543,10 @@ class Moves(DB):
 			if result:
 				return result[0]
 		else:
-			sh.log.append('Moves.start',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('Moves.start'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def end(self):
 		if self._source and self._search:
@@ -457,7 +558,10 @@ class Moves(DB):
 			if result:
 				return result[0]
 		else:
-			sh.log.append('Moves.end',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('Moves.end'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def line_start(self,pos):
 		if self._source and self._search:
@@ -472,9 +576,15 @@ class Moves(DB):
 				if result:
 					return result[0]
 			else:
-				sh.log.append('Moves.line_start',sh.lev_warn,sh.globs['mes'].empty_input)
+				sh.log.append ('Moves.line_start'
+				              ,_('WARNING')
+				              ,_('Empty input is not allowed!')
+				              )
 		else:
-			sh.log.append('Moves.line_start',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('Moves.line_start'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def line_end(self,pos):
 		if self._source and self._search:
@@ -489,9 +599,15 @@ class Moves(DB):
 				if result:
 					return result[0]
 			else:
-				sh.log.append('Moves.line_end',sh.lev_warn,sh.globs['mes'].empty_input)
+				sh.log.append ('Moves.line_end'
+				              ,_('WARNING')
+				              ,_('Empty input is not allowed!')
+				              )
 		else:
-			sh.log.append('Moves.line_end',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('Moves.line_end'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def left(self,pos):
 		if self._source and self._search:
@@ -511,11 +627,20 @@ class Moves(DB):
 					if result:
 						return result[0]
 				else:
-					sh.log.append('Moves.left',sh.lev_warn,sh.globs['mes'].empty_input)
+					sh.log.append ('Moves.left'
+					              ,_('WARNING')
+					              ,_('Empty input is not allowed!')
+					              )
 			else:
-				sh.log.append('Moves.left',sh.lev_warn,sh.globs['mes'].empty_input)
+				sh.log.append ('Moves.left'
+				              ,_('WARNING')
+				              ,_('Empty input is not allowed!')
+				              )
 		else:
-			sh.log.append('Moves.left',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('Moves.left'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def right(self,pos):
 		if self._source and self._search:
@@ -535,11 +660,20 @@ class Moves(DB):
 					if result:
 						return result[0]
 				else:
-					sh.log.append('Moves.right',sh.lev_warn,sh.globs['mes'].empty_input)
+					sh.log.append ('Moves.right'
+					              ,_('WARNING')
+					              ,_('Empty input is not allowed!')
+					              )
 			else:
-				sh.log.append('Moves.right',sh.lev_warn,sh.globs['mes'].empty_input)
+				sh.log.append ('Moves.right'
+				              ,_('WARNING')
+				              ,_('Empty input is not allowed!')
+				              )
 		else:
-			sh.log.append('Moves.right',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('Moves.right'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def up(self,pos):
 		if self._source and self._search:
@@ -575,11 +709,20 @@ class Moves(DB):
 						if result:
 							return result[0]
 				else:
-					sh.log.append('Moves.up',sh.lev_warn,sh.globs['mes'].empty_input)
+					sh.log.append ('Moves.up'
+					              ,_('WARNING')
+					              ,_('Empty input is not allowed!')
+					              )
 			else:
-				sh.log.append('Moves.up',sh.lev_warn,sh.globs['mes'].empty_input)
+				sh.log.append ('Moves.up'
+				              ,_('WARNING')
+				              ,_('Empty input is not allowed!')
+				              )
 		else:
-			sh.log.append('Moves.up',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('Moves.up'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def down(self,pos):
 		if self._source and self._search:
@@ -615,11 +758,20 @@ class Moves(DB):
 						if result:
 							return result[0]
 				else:
-					sh.log.append('Moves.down',sh.lev_warn,sh.globs['mes'].empty_input)
+					sh.log.append ('Moves.down'
+					              ,_('WARNING')
+					              ,_('Empty input is not allowed!')
+					              )
 			else:
-				sh.log.append('Moves.down',sh.lev_warn,sh.globs['mes'].empty_input)
+				sh.log.append ('Moves.down'
+				              ,_('WARNING')
+				              ,_('Empty input is not allowed!')
+				              )
 		else:
-			sh.log.append('Moves.down',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('Moves.down'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def page_down(self,bboy,height):
 		if self._source and self._search:
@@ -631,7 +783,10 @@ class Moves(DB):
 			if result:
 				return result[0]
 		else:
-			sh.log.append('Moves.page_down',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('Moves.page_down'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def page_up(self,bboy,height):
 		if self._source and self._search:
@@ -643,7 +798,10 @@ class Moves(DB):
 			if result:
 				return result[0]
 		else:
-			sh.log.append('Moves.page_up',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('Moves.page_up'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 
 
 

@@ -65,7 +65,10 @@ class Elems:
 			self.Success = True
 		else:
 			self.Success = False
-			sh.log.append('Elems.__init__',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('Elems.__init__'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 		
 	def run(self):
 		if self.Success:
@@ -88,7 +91,10 @@ class Elems:
 			self.selectables       ()
 			self.dump              ()
 		else:
-			sh.log.append('Elems.run',sh.lev_warn,sh.globs['mes'].canceled)
+			sh.log.append ('Elems.run'
+			              ,_('WARNING')
+			              ,_('Operation has been canceled.')
+			              )
 	
 	def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
 		print('\nElems.debug (Non-DB blocks):')
@@ -461,7 +467,10 @@ class PhraseTerma:
 			self.Success = True
 		else:
 			self.Success = False
-			sh.log.append('PhraseTerma.__init__',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('PhraseTerma.__init__'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 			
 	def second_phrase(self):
 		if self._no2 < 0:
@@ -469,7 +478,10 @@ class PhraseTerma:
 			result = self.dbc.fetchone()
 			if result:
 				self._no2 = result[0]
-			sh.log.append('PhraseTerma.second_phrase',sh.lev_debug,str(self._no2))
+			sh.log.append ('PhraseTerma.second_phrase'
+			              ,_('DEBUG')
+			              ,str(self._no2)
+			              )
 		return self._no2
 		
 	def phrase_dic(self):
@@ -481,17 +493,26 @@ class PhraseTerma:
 					self._no1 = result[0]
 					self.dbc.execute('update BLOCKS set SELECTABLE=1 where NO = ?',(self._no1,))
 			else:
-				sh.log.append('PhraseTerma.phrase_dic',sh.lev_warn,sh.globs['mes'].wrong_input2)
-			sh.log.append('PhraseTerma.phrase_dic',sh.lev_debug,str(self._no1))
+				sh.log.append ('PhraseTerma.phrase_dic'
+				              ,_('WARNING')
+				              ,_('Wrong input data!')
+				              )
+			sh.log.append ('PhraseTerma.phrase_dic'
+			              ,_('DEBUG')
+			              ,str(self._no1)
+			              )
 		return self._no1
 		
 	def dump(self):
 		# Autoincrement starts with 1 in sqlite
 		if self._no1 > 0 and self._no2 > 0:
-			sh.log.append('PhraseTerma.dump',sh.lev_info,'Update DB in range %d-%d' % (self._no1,self._no2)) # todo: mes
+			sh.log.append('PhraseTerma.dump',_('INFO'),_('Update DB, range %d-%d') % (self._no1,self._no2))
 			self.dbc.execute('update BLOCKS set TERMA=? where NO >= ? and NO < ?',('',self._no1,self._no2,))
 		else:
-			sh.log.append('PhraseTerma.dump',sh.lev_warn,sh.globs['mes'].wrong_input2)
+			sh.log.append ('PhraseTerma.dump'
+			              ,_('WARNING')
+			              ,_('Wrong input data!')
+			              )
 		
 	def run(self):
 		if self.Success:
@@ -499,7 +520,10 @@ class PhraseTerma:
 			self.phrase_dic   ()
 			self.dump         ()
 		else:
-			sh.log.append('PhraseTerma.run',sh.lev_warn,sh.globs['mes'].canceled)
+			sh.log.append ('PhraseTerma.run'
+			              ,_('WARNING')
+			              ,_('Operation has been canceled.')
+			              )
 
 
 

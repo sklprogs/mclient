@@ -55,7 +55,7 @@ import mkhtml      as mh
 
 
 product = 'MClient'
-version = '5.1.5'
+version = '5.2'
 
 third_parties = '''
 tkinterhtml
@@ -88,7 +88,7 @@ class ConfigMclient(sh.Config):
                                 ,sh.config_parser.getint
                                 ,sh.config_parser.get
                                 ]
-        self.message          = sh.globs['mes'].missing_config + '\n'
+        self.message          = _('The following sections and/or keys are missing:') + '\n'
         self.total_keys       = 0
         self.changed_keys     = 0
         self.missing_keys     = 0
@@ -192,7 +192,6 @@ class ConfigMclient(sh.Config):
            ,'repeat_sign'                 :'!'
            ,'repeat_sign2'                :'!!'
            ,'spec_syms'                   :'àáâäāæßćĉçèéêēёëəғĝģĥìíîïīĵķļñņòóôõöōœøšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒЁËƏҒĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒØŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ'
-           ,'ui_lang'                     :'ru'
            ,'web_search_url'              :'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s'
            ,'win_encoding'                :'windows-1251'
                                })
@@ -242,12 +241,15 @@ class ConfigMclient(sh.Config):
             if sh.globs['var'][key].endswith('.gif'):
                 old_val = sh.globs['var'][key]
                 sh.globs['var'][key] = sh.objs.pdir().add('resources',sh.globs['var'][key])
-                sh.log.append('ConfigMclient.additional_keys',sh.lev_debug,'%s -> %s' % (old_val,sh.globs['var'][key]))
+                sh.log.append ('ConfigMclient.additional_keys'
+                              ,_('DEBUG')
+                              ,'%s -> %s' % (old_val,sh.globs['var'][key])
+                              )
 
 
 
 ConfigMclient()
-sh.h_lang.set()
+
 
 if __name__ == '__main__':
     if sh.oss.win():
@@ -347,7 +349,7 @@ class Objects:
             sg.Geometry(parent_obj=top).set('800x600')
             self._parties = sg.TextBox(parent_obj=top)
             self._parties.icon(sh.globs['var']['icon_mclient'])
-            self._parties.title(text=sh.globs['mes'].btn_third_parties+':')
+            self._parties.title(text=_('Third parties')+':')
             self._parties.insert(text=third_parties,MoveTop=1)
             self._parties.read_only()
         return self._parties
@@ -356,7 +358,7 @@ class Objects:
         if not self._entry:
             self._entry = sg.Entry(parent_obj=sg.Top(sg.objs.root()))
             self._entry.icon(sh.globs['var']['icon_mclient'])
-            self._entry.title(sh.globs['mes'].search_str)
+            self._entry.title(_('Enter a string to search:'))
         return self._entry
         
     def textbox(self):
@@ -465,7 +467,7 @@ class About:
         self.obj    = sg.Top(sg.objs.root())
         self.widget = self.obj.widget
         self.obj.icon (sh.globs['var']['icon_mclient'])
-        self.obj.title(sh.globs['mes'].about)
+        self.obj.title(_('About'))
         frame1 = sg.Frame (parent_obj = self
                           ,expand     = 1
                           ,fill       = 'both'
@@ -482,26 +484,26 @@ class About:
                           ,side       = 'right'
                           )
         label  = sg.Label (parent_obj = frame1
-                          ,text       = sh.globs['mes'].about_text % version
+                          ,text       = _('Programming: Peter Sklyar, 2015, 2016.\nVersion: %s\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n') % version
                           ,font       = sh.globs['var']['font_style']
                           )
         # Лицензия
         sg.Button (parent_obj = frame2
-                  ,text       = sh.globs['mes'].btn_third_parties
-                  ,hint       = sh.globs['mes'].hint_license
+                  ,text       = _('Third parties')
+                  ,hint       = _('View the license')
                   ,action     = self.show_third_parties
                   ,side       = 'left'
                   )
         sg.Button (parent_obj = frame3
-                  ,text       = sh.globs['mes'].btn_license
-                  ,hint       = sh.globs['mes'].hint_license
+                  ,text       = _('License')
+                  ,hint       = _('View the license')
                   ,action     = self.open_license_url
                   ,side       = 'left'
                   )
         # Отправить письмо автору
         sg.Button (parent_obj = frame3
-                  ,text       = sh.globs['mes'].btn_email_author
-                  ,hint       = sh.globs['mes'].hint_email_author
+                  ,text       = _('Send email to the author')
+                  ,hint       = _('Send email to the author')
                   ,action     = self.response_back
                   ,side       = 'right'
                   )
@@ -533,7 +535,7 @@ class About:
     # Написать письмо автору
     def response_back(self,*args):
         sh.Email (email   = sh.email
-                 ,subject = sh.globs['mes'].program_subject % product
+                 ,subject = _('Concerning %s') % product
                  ).create()
 
     # Открыть веб-страницу с лицензией
@@ -555,13 +557,13 @@ class SaveArticle:
         self.obj        = sg.ListBox (
                     parent_obj = self.parent_obj
                    ,Multiple   = False
-                   ,lst        = [sh.globs['mes'].save_view_as_html
-                                 ,sh.globs['mes'].save_article_as_html
-                                 ,sh.globs['mes'].save_article_as_txt
-                                 ,sh.globs['mes'].copy_article_html
-                                 ,sh.globs['mes'].copy_article_txt
+                   ,lst        = [_('Save the current view as a web-page (*.htm)')
+                                 ,_('Save the original article as a web-page (*.htm)')
+                                 ,_('Save the article as plain text in UTF-8 (*.txt)')
+                                 ,_('Copy HTML code of the article to clipboard')
+                                 ,_('Copy the text of the article to clipboard')
                                  ]
-                   ,title      = sh.globs['mes'].select_action
+                   ,title      = _('Select an action:')
                    ,icon       = sh.globs['var']['icon_mclient']
                                      )
         self.widget = self.obj.widget
@@ -584,22 +586,22 @@ class SaveArticle:
         self.show()
         opt = self.obj._get
         if opt:
-            if opt == sh.globs['mes'].save_view_as_html:
+            if opt == _('Save the current view as a web-page (*.htm)'):
                 self.view_as_html()
-            elif opt == sh.globs['mes'].save_article_as_html:
+            elif opt == _('Save the original article as a web-page (*.htm)'):
                 self.raw_as_html()
-            elif opt == sh.globs['mes'].save_article_as_txt:
+            elif opt == _('Save the article as plain text in UTF-8 (*.txt)'):
                 self.view_as_txt()
-            elif opt == sh.globs['mes'].copy_article_html:
+            elif opt == _('Copy HTML code of the article to clipboard'):
                 self.copy_raw()
-            elif opt == sh.globs['mes'].copy_article_txt:
+            elif opt == _('Copy the text of the article to clipboard'):
                 self.copy_txt()
     
     def view_as_html(self):
         self.file = sg.dialog_save_file (
-                    filetypes = ((sh.globs['mes'].webpage,'.htm')
-                                ,(sh.globs['mes'].webpage,'.html')
-                                ,(sh.globs['mes'].all_files,'*')
+                    filetypes = ((_('Web-page'),'.htm')
+                                ,(_('Web-page'),'.html')
+                                ,(_('All files'),'*')
                                 )
                                         )
         if self.file and objs.request()._html:
@@ -607,15 +609,18 @@ class SaveArticle:
             # We disable AskRewrite because the confirmation is already built in the internal dialog
             sh.WriteTextFile(self.file,AskRewrite=False).write(objs._request._html)
         else:
-            sh.log.append('SaveArticle.view_as_html',sh.lev_warn,sh.globs['mes'].empty_input)
+            sh.log.append ('SaveArticle.view_as_html'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
             
     def raw_as_html(self):
         # Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
         # Также меняем сокращенные гиперссылки на полные, чтобы они работали и в локальном файле.
         self.file = sg.dialog_save_file (
-                    filetypes = ((sh.globs['mes'].webpage,'.htm')
-                                ,(sh.globs['mes'].webpage,'.html')
-                                ,(sh.globs['mes'].all_files,'*')
+                    filetypes = ((_('Web-page'),'.htm')
+                                ,(_('Web-page'),'.html')
+                                ,(_('All files'),'*')
                                 )
                                         )
         if self.file and objs.request()._html_raw:
@@ -623,12 +628,15 @@ class SaveArticle:
             # todo: fix remaining links to localhost
             sh.WriteTextFile(self.file,AskRewrite=False).write(objs._request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/M.exe?',sh.globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/m.exe?',sh.globs['var']['pair_root']))
         else:
-            sh.log.append('SaveArticle.raw_as_html',sh.lev_warn,sh.globs['mes'].empty_input)
+            sh.log.append ('SaveArticle.raw_as_html'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
         
     def view_as_txt(self):
         self.file = sg.dialog_save_file (
-                    filetypes = ((sh.globs['mes'].plain_text,'.txt')
-                                ,(sh.globs['mes'].all_files,'*')
+                    filetypes = ((_('Plain text (UTF-8)'),'.txt')
+                                ,(_('All files'),'*')
                                 )
                                         )
         text = objs.webframe().text()
@@ -636,7 +644,10 @@ class SaveArticle:
             self.fix_ext(ext='.txt')
             sh.WriteTextFile(self.file,AskRewrite=False).write(text.strip())
         else:
-            sh.log.append('SaveArticle.view_as_txt',sh.lev_warn,sh.globs['mes'].empty_input)
+            sh.log.append ('SaveArticle.view_as_txt'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
             
     def copy_raw(self):
         sg.Clipboard().copy(objs.request()._html_raw)
@@ -646,7 +657,10 @@ class SaveArticle:
         if text:
             sg.Clipboard().copy(text.strip())
         else:
-            sh.log.append('SaveArticle.copy_txt',sh.lev_warn,sh.globs['mes'].empty_input)
+            sh.log.append ('SaveArticle.copy_txt'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
 
     
 
@@ -656,7 +670,7 @@ class SearchArticle:
     def __init__(self):
         self.type   = 'SearchArticle'
         self.obj    = objs.entry()
-        self.obj.title(sh.globs['mes'].search_word)
+        self.obj.title(_('Enter a string to search:'))
         self.widget = self.obj.widget
         sg.bind (obj      = self.obj
                 ,bindings = sh.globs['var']['bind_search_article_forward']
@@ -703,13 +717,13 @@ class SearchArticle:
             objs._webframe.key_move()
         elif self._pos < 0:
             sg.Message (func    = 'SearchArticle.forward'
-                       ,level   = sh.lev_info
-                       ,message = sh.globs['mes'].not_found2
+                       ,level   = _('INFO')
+                       ,message = _('Nothing has been found!')
                        )
         else:
             sg.Message (func    = 'SearchArticle.forward'
-                       ,level   = sh.lev_info
-                       ,message = sh.globs['mes'].search_from_start
+                       ,level   = _('INFO')
+                       ,message = _('The start has been reached. Searching from the end.')
                        )
             self._pos = 0
             self.forward()
@@ -725,7 +739,10 @@ class SearchArticle:
             if max_cell:
                 self._last = objs.blocks_db().search_backward(pos=max_cell[2]+1,search=self.search())
             else:
-                sh.log.append('SearchArticle.last',sh.lev_warn,sh.globs['mes'].empty_input)
+                sh.log.append ('SearchArticle.last'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
         return self._last
     
     def backward(self,*args):
@@ -735,8 +752,8 @@ class SearchArticle:
             print('_pos:',self._pos) # todo: del
             if self._pos == self._first:
                 sg.Message (func    = 'SearchArticle.backward'
-                           ,level   = sh.lev_info
-                           ,message = sh.globs['mes'].search_from_end
+                           ,level   = _('INFO')
+                           ,message = _('The end has been reached. Searching from the start.')
                            )
                 objs.webframe()._pos = self._pos = self.last()
                 objs._webframe.key_move()
@@ -748,8 +765,8 @@ class SearchArticle:
                     objs._webframe.key_move()
         else:
             sg.Message (func    = 'SearchArticle.backward'
-                       ,level   = sh.lev_info
-                       ,message = sh.globs['mes'].not_found2
+                       ,level   = _('INFO')
+                       ,message = _('Nothing has been found!')
                        )
 
 
@@ -798,7 +815,7 @@ class SpecSymbols:
         self.obj    = sg.Top(sg.objs.root())
         self.widget = self.obj.widget
         self.obj.icon (sh.globs['var']['icon_mclient'])
-        self.obj.title(sh.globs['mes'].paste_spec_symbol)
+        self.obj.title(_('Paste a special symbol'))
         self.frame  = sg.Frame(self.obj,expand=1)
         for i in range(len(sh.globs['var']['spec_syms'])):
             if i % 10 == 0:
@@ -832,7 +849,7 @@ class SpecSymbols:
 class History:
     
     def __init__(self):
-        self._title = sh.globs['mes'].btn_history
+        self._title = _('History')
         self._icon  = sh.globs['var']['icon_mclient']
         self.Active = False
         self.gui()
@@ -931,7 +948,6 @@ class WebFrame:
                             ,st_status = len(objs.ext_dics()._dics)
                             ,product   = product
                             ,version   = version
-                            ,ui_lang   = sh.globs['var']['ui_lang']
                             )
         self.fill(welcome.run())
         self.update_buttons()
@@ -985,8 +1001,8 @@ class WebFrame:
     def draw_buttons(self):
         # Кнопка для "чайников", заменяет Enter в search_field
         sg.Button (parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_translate
-                  ,hint                = sh.globs['mes'].btn_translate
+                  ,text                = _('Translate')
+                  ,hint                = _('Translate')
                   ,action              = self.go
                   ,inactive_image_path = sh.globs['var']['icon_go_search']
                   ,active_image_path   = sh.globs['var']['icon_go_search']
@@ -998,8 +1014,8 @@ class WebFrame:
         # Кнопка очистки строки поиска
         # note: Another style on trial
         sg.Button (parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_clear
-                  ,hint                = sh.globs['mes'].hint_clear_search_field
+                  ,text                = _('Clear')
+                  ,hint                = _('Clear search field')
                   ,action              = self.search_field.clear
                   ,inactive_image_path = sh.globs['var']['icon_clear_search_field']
                   ,active_image_path   = sh.globs['var']['icon_clear_search_field']
@@ -1008,8 +1024,8 @@ class WebFrame:
 
         # Кнопка вставки
         sg.Button (parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_paste
-                  ,hint                = sh.globs['mes'].hint_paste_clipboard
+                  ,text                = _('Paste')
+                  ,hint                = _('Paste text from clipboard')
                   ,action              = self.search_field.paste
                   ,inactive_image_path = sh.globs['var']['icon_paste']
                   ,active_image_path   = sh.globs['var']['icon_paste']
@@ -1018,8 +1034,8 @@ class WebFrame:
         # Кнопка вставки текущего запроса
         self.btn_repeat_sign = sg.Button (
                    parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_repeat_sign
-                  ,hint                = sh.globs['mes'].hint_paste_cur_request
+                  ,text                = '!'
+                  ,hint                = _('Paste current request')
                   ,action              = self.search_field.insert_repeat_sign
                   ,inactive_image_path = sh.globs['var']['icon_repeat_sign_off']
                   ,active_image_path   = sh.globs['var']['icon_repeat_sign']
@@ -1028,8 +1044,8 @@ class WebFrame:
         # Кнопка вставки предыдущего запроса
         self.btn_repeat_sign2 = sg.Button (
                    parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_repeat_sign2
-                  ,hint                = sh.globs['mes'].hint_paste_prev_request
+                  ,text                = '!!'
+                  ,hint                = _('Paste previous request')
                   ,action              = self.search_field.insert_repeat_sign2
                   ,inactive_image_path = sh.globs['var']['icon_repeat_sign2_off']
                   ,active_image_path   = sh.globs['var']['icon_repeat_sign2']
@@ -1037,8 +1053,8 @@ class WebFrame:
                                           )
         # Кнопка для вставки спец. символов
         sg.Button (parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_symbols
-                  ,hint                = sh.globs['mes'].hint_symbols
+                  ,text                = _('Symbols')
+                  ,hint                = _('Paste a special symbol')
                   ,action              = self.spec_symbols.show
                   ,inactive_image_path = sh.globs['var']['icon_spec_symbol']
                   ,active_image_path   = sh.globs['var']['icon_spec_symbol']
@@ -1047,7 +1063,7 @@ class WebFrame:
         self.menu_sources = sg.OptionMenu (parent_obj = self._panel
                                           ,items      = sources
                                           ,command    = self.set_source
-                                          ) # todo: mes
+                                          )
         # Выпадающий список с вариантами направлений перевода
         self.menu_pairs = sg.OptionMenu (parent_obj = self._panel
                                         ,items      = pairs
@@ -1062,8 +1078,8 @@ class WebFrame:
         # todo: Change active/inactive button logic in case of creating three or more views
         self.btn_toggle_view = sg.Button (
                    parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_toggle_view
-                  ,hint                = sh.globs['mes'].hint_toggle_view
+                  ,text                = _('Toggle view')
+                  ,hint                = _('Toggle the article view mode')
                   ,action              = self.toggle_view
                   ,inactive_image_path = sh.globs['var']['icon_toggle_view_ver']
                   ,active_image_path   = sh.globs['var']['icon_toggle_view_hor']
@@ -1074,8 +1090,8 @@ class WebFrame:
         # Кнопка включения/отключения режима блокировки словарей
         self.btn_toggle_block = sg.Button (
                    parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_toggle_block
-                  ,hint                = sh.globs['mes'].hint_toggle_block
+                  ,text                = _('Blacklist')
+                  ,hint                = _('Toggle the blacklist')
                   ,action              = self.toggle_block
                   ,inactive_image_path = sh.globs['var']['icon_block_off']
                   ,active_image_path   = sh.globs['var']['icon_block_on']
@@ -1084,8 +1100,8 @@ class WebFrame:
         # Кнопка включения/отключения режима приоритезации словарей
         self.btn_toggle_priority = sg.Button (
                    parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_toggle_priority
-                  ,hint                = sh.globs['mes'].hint_toggle_priority
+                  ,text                = _('Prioritize')
+                  ,hint                = _('Toggle prioritizing')
                   ,action              = self.toggle_priority
                   ,inactive_image_path = sh.globs['var']['icon_priority_off']
                   ,active_image_path   = sh.globs['var']['icon_priority_on']
@@ -1094,8 +1110,8 @@ class WebFrame:
         # Кнопка включения/отключения сортировки словарей по алфавиту
         self.btn_toggle_alphabet = sg.Button (
                    parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_toggle_alphabet
-                  ,hint                = sh.globs['mes'].hint_toggle_alphabet
+                  ,text                = _('Alphabetize')
+                  ,hint                = _('Toggle alphabetizing')
                   ,action              = self.toggle_alphabet
                   ,inactive_image_path = sh.globs['var']['icon_alphabet_off']
                   ,active_image_path   = sh.globs['var']['icon_alphabet_on']
@@ -1104,8 +1120,8 @@ class WebFrame:
         # Кнопка перехода на предыдущую статью
         self.btn_prev = sg.Button (
                    parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_prev
-                  ,hint                = sh.globs['mes'].hint_preceding_article
+                  ,text                = '←'
+                  ,hint                = _('Go to the preceding article')
                   ,action              = self.go_back
                   ,inactive_image_path = sh.globs['var']['icon_go_back_off']
                   ,active_image_path   = sh.globs['var']['icon_go_back']
@@ -1114,8 +1130,8 @@ class WebFrame:
         # Кнопка перехода на следующую статью
         self.btn_next = sg.Button (
                    parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_next
-                  ,hint                = sh.globs['mes'].hint_following_article
+                  ,text                = '→'
+                  ,hint                = _('Go to the following article')
                   ,action              = self.go_forward
                   ,inactive_image_path = sh.globs['var']['icon_go_forward_off']
                   ,active_image_path   = sh.globs['var']['icon_go_forward']
@@ -1124,15 +1140,15 @@ class WebFrame:
         # Кнопка включения/отключения и очистки истории
         # todo: fix: do not iconify on RMB (separate button frame from main frame)
         # We may hardcore the hotkey to clear the history because this hotkey is bound to the button
-        hint_history = sh.globs['mes'].hint_history                           \
+        hint_history = _('Show history')                                      \
                     + '\n'   + sh.globs['var']['bind_toggle_history']         \
                     + ', '   + sh.globs['var']['bind_toggle_history_alt']     \
-                    + '\n\n' + sh.globs['mes'].hint_clear_history             \
+                    + '\n\n' + _('Clear history')                             \
                     + '\n'   + sh.globs['var']['bind_clear_history']          \
                     + ', <ButtonRelease-3>'
         self.btn_history = sg.Button (
                    parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_history
+                  ,text                = _('History')
                   ,hint                = hint_history
                   ,action              = self.history.toggle
                   ,inactive_image_path = sh.globs['var']['icon_toggle_history']
@@ -1141,8 +1157,8 @@ class WebFrame:
                                      )
         # Кнопка перезагрузки статьи
         sg.Button (parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_reload
-                  ,hint                = sh.globs['mes'].hint_reload_article
+                  ,text                = _('Reload')
+                  ,hint                = _('Reload the article')
                   ,action              = self.reload
                   ,inactive_image_path = sh.globs['var']['icon_reload']
                   ,active_image_path   = sh.globs['var']['icon_reload']
@@ -1152,8 +1168,8 @@ class WebFrame:
                   )
         # Кнопка "Поиск в статье"
         sg.Button (parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_search
-                  ,hint                = sh.globs['mes'].hint_search_article
+                  ,text                = _('Search')
+                  ,hint                = _('Find in the current article')
                   ,action              = self.search_reset
                   ,inactive_image_path = sh.globs['var']['icon_search_article']
                   ,active_image_path   = sh.globs['var']['icon_search_article']
@@ -1161,8 +1177,8 @@ class WebFrame:
                   )
         # Кнопка "Сохранить"
         sg.Button (parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_save
-                  ,hint                = sh.globs['mes'].hint_save_article
+                  ,text                = _('Save')
+                  ,hint                = _('Save the current article')
                   ,action              = self.save_article.select
                   ,inactive_image_path = sh.globs['var']['icon_save_article']
                   ,active_image_path   = sh.globs['var']['icon_save_article']
@@ -1172,8 +1188,8 @@ class WebFrame:
                   )
         # Кнопка "Открыть в браузере"
         sg.Button (parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_in_browser
-                  ,hint                = sh.globs['mes'].hint_in_browser
+                  ,text                = _('Browse')
+                  ,hint                = _('Open the current article in a browser')
                   ,action              = self.open_in_browser
                   ,inactive_image_path = sh.globs['var']['icon_open_in_browser']
                   ,active_image_path   = sh.globs['var']['icon_open_in_browser']
@@ -1183,8 +1199,8 @@ class WebFrame:
                   )
         # Кнопка "Печать"
         sg.Button (parent_obj          = self._panel
-                  ,text                = 'Print' # todo: mes
-                  ,hint                = 'Create a print-ready preview' # todo: mes
+                  ,text                = _('Print')
+                  ,hint                = _('Create a print-ready preview')
                   ,action              = self.print
                   ,inactive_image_path = sh.globs['var']['icon_print']
                   ,active_image_path   = sh.globs['var']['icon_print']
@@ -1192,8 +1208,8 @@ class WebFrame:
                   )
         # Кнопка толкования термина
         sg.Button (parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_define
-                  ,hint                = sh.globs['mes'].hint_define
+                  ,text                = _('Define')
+                  ,hint                = _('Define the current term')
                   ,action              = lambda x:self.define(Selected=False)
                   ,inactive_image_path = sh.globs['var']['icon_define']
                   ,active_image_path   = sh.globs['var']['icon_define']
@@ -1202,8 +1218,8 @@ class WebFrame:
         # Кнопка "Перехват Ctrl-c-c"
         self.btn_clipboard = sg.Button (
                    parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_clipboard
-                  ,hint                = sh.globs['mes'].hint_watch_clipboard
+                  ,text                = _('Clipboard')
+                  ,hint                = _('Capture Ctrl-c-c and Ctrl-Ins-Ins')
                   ,action              = self.watch_clipboard
                   ,inactive_image_path = sh.globs['var']['icon_watch_clipboard_off']
                   ,active_image_path   = sh.globs['var']['icon_watch_clipboard_on']
@@ -1212,8 +1228,8 @@ class WebFrame:
                                        )
         # Кнопка "О программе"
         sg.Button (parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_about
-                  ,hint                = sh.globs['mes'].hint_about
+                  ,text                = _('About')
+                  ,hint                = _('View About')
                   ,action              = objs.about().show
                   ,inactive_image_path = sh.globs['var']['icon_show_about']
                   ,active_image_path   = sh.globs['var']['icon_show_about']
@@ -1221,8 +1237,8 @@ class WebFrame:
                   )
         # Кнопка выхода
         sg.Button (parent_obj          = self._panel
-                  ,text                = sh.globs['mes'].btn_x
-                  ,hint                = sh.globs['mes'].hint_x
+                  ,text                = _('Quit')
+                  ,hint                = _('Quit the program')
                   ,action              = self.close
                   ,inactive_image_path = sh.globs['var']['icon_quit_now']
                   ,active_image_path   = sh.globs['var']['icon_quit_now']
@@ -1502,8 +1518,13 @@ class WebFrame:
                 pos         = self.widget.text('offset',node1,node2)
             except ValueError: # Need more than 0 values to unpack
                 pass
-                # The error message is too frequent
-                #sh.log.append('WebFrame.get_pos',sh.lev_warn,'Unable to get the position!') # todo: mes
+                '''
+                # Too frequent
+                sh.log.append ('WebFrame.get_pos'
+                              ,_('WARNING')
+                              ,_('Unable to get the position!')
+                              )
+                '''
             if pos is not None:
                 objs.blocks_db().Selectable = False
                 result = objs._blocks_db.block_pos(pos=pos)
@@ -1512,33 +1533,62 @@ class WebFrame:
                     if result[7] == 1: # Selectable
                         self._pos = pos
                 else:
-                    # Too frequent
-                    #sh.log.append('WebFrame.get_pos',sh.lev_warn,sh.globs['mes'].empty_input) # todo: mes
                     pass
+                    '''
+                    # Too frequent
+                    sh.log.append ('WebFrame.get_pos'
+                                  ,_('WARNING')
+                                  ,_('Empty input is not allowed!')
+                                  )
+                    '''
             
     def select(self):
         result = objs.blocks_db().selection(pos=self._pos)
         if result:
             try:
-                self.widget.tag('delete','selection')
-                self.widget.tag('add','selection',result[0],result[2],result[1],result[3])
-                self.widget.tag('configure','selection','-background',sh.globs['var']['color_terms_sel_bg'])
-                self.widget.tag('configure','selection','-foreground',sh.globs['var']['color_terms_sel_fg'])
+                self.widget.tag ('delete','selection')
+                self.widget.tag ('add','selection',result[0]
+                                ,result[2],result[1],result[3]
+                                )
+                self.widget.tag ('configure','selection','-background'
+                                ,sh.globs['var']['color_terms_sel_bg']
+                                )
+                self.widget.tag ('configure','selection','-foreground'
+                                ,sh.globs['var']['color_terms_sel_fg']
+                                )
             except tk.TclError:
-                sh.log.append('WebFrame.select',sh.lev_warn,'Unable to set selection!') # todo: mes
+                sh.log.append ('WebFrame.select'
+                              ,_('WARNING')
+                              ,_('Unable to set selection!')
+                              )
         else:
-            # Too frequent
-            #sh.log.append('WebFrame.select',sh.lev_warn,sh.globs['mes'].empty_input)
             pass
+            '''
+            # Too frequent
+            sh.log.append ('WebFrame.select'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+            '''
         
     def height(self):
         sg.objs.root().widget.update_idletasks()
-        #sh.log.append('WebFrame.height',sh.lev_debug,'Widget height: %s' % str(_height)) # todo: mes
+        '''
+        sh.log.append ('WebFrame.height'
+                      ,_('DEBUG')
+                      ,_('Widget height: %s') % str(_height)
+                      )
+        '''
         return self.widget.winfo_height()
         
     def width(self):
         sg.objs.root().widget.update_idletasks()
-        #sh.log.append('WebFrame.width',sh.lev_debug,'Widget width: %s' % str(_width)) # todo: mes
+        '''
+        sh.log.append ('WebFrame.width'
+                      ,_('DEBUG')
+                      ,_('Widget width: %s') % str(_width)
+                      )
+        '''
         return self.widget.winfo_width()
     
     def shift_x(self,bbox1,bbox2,row_no):
@@ -1570,11 +1620,20 @@ class WebFrame:
                     if fraction:
                         self.widget.xview_moveto(fraction=fraction)
                 else:
-                    sh.log.append('WebFrame.shift_x',sh.lev_warn,sh.globs['mes'].empty_input)
+                    sh.log.append ('WebFrame.shift_x'
+                                  ,_('WARNING')
+                                  ,_('Empty input is not allowed!')
+                                  )
             else:
-                sh.log.append('WebFrame.shift_x',sh.lev_warn,sh.globs['mes'].empty_input)
+                sh.log.append ('WebFrame.shift_x'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
         else:
-            sh.log.append('WebFrame.shift_x',sh.lev_warn,sh.globs['mes'].empty_input)
+            sh.log.append ('WebFrame.shift_x'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
         
     def shift_y(self,bboy1,bboy2,row_no,node):
         _height  = self.height()
@@ -1591,7 +1650,10 @@ class WebFrame:
                 if node:
                     self.widget.yview_name(node)
                 else:
-                    sh.log.append('WebFrame.shift_screen',sh.lev_warn,sh.globs['mes'].empty_input)
+                    sh.log.append ('WebFrame.shift_screen'
+                                  ,_('WARNING')
+                                  ,_('Empty input is not allowed!')
+                                  )
             else:
                 # If a part of the selection is readable, then Tkinter thinks that the entire selection is readable. Moreover, in the majority of cases, NODE1 = NODE2 and BBOY1 and BBOY2 refer to the same node. Calculating 'moveto' proportion (max possible BBOY2/BBOY1) does not help, 'scan_dragto' is not implemented, so we use a little trick here. 
                 # 'Units' means 'lines'
@@ -1602,7 +1664,10 @@ class WebFrame:
                         self.widget.yview_scroll(number=-5,what='units')
                     self._row_no = row_no
         else:
-            sh.log.append('WebFrame.shift_y',sh.lev_warn,sh.globs['mes'].empty_input)
+            sh.log.append ('WebFrame.shift_y'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
     
     def shift_screen(self):
         result = objs.blocks_db().selection(pos=self._pos)
@@ -1610,7 +1675,10 @@ class WebFrame:
             self.shift_x(bbox1=result[4],bbox2=result[5],row_no=result[8])
             self.shift_y(bboy1=result[6],bboy2=result[7],row_no=result[8],node=result[0])
         else:
-            sh.log.append('WebFrame.shift_screen',sh.lev_warn,sh.globs['mes'].empty_input)
+            sh.log.append ('WebFrame.shift_screen'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
     
     def fill(self,code='<html><body><h1>Nothing has been loaded yet.</h1></body></html>'):
         self.widget.reset()
@@ -1625,7 +1693,9 @@ class WebFrame:
     def load_article(self):
         timer = sh.Timer(func_title='WebFrame.load_article')
         timer.start()
-        objs.blocks_db().request(source=objs.request()._source,search=objs._request._search)
+        objs.blocks_db().request (source = objs.request()._source
+                                 ,search = objs._request._search
+                                 )
         if not objs._blocks_db.present():
             ptimer = sh.Timer(func_title='WebFrame.load_article (Page)')
             ptimer.start()
@@ -1704,7 +1774,10 @@ class WebFrame:
                     objs._request._collimit += 1
                 else:
                     objs._request._collimit -= 1
-                sh.log.append('WebFrame.load_article',sh.lev_info,'Set the column limit to %d' % objs._request._collimit)
+                sh.log.append ('WebFrame.load_article'
+                              ,_('INFO')
+                              ,_('Set the column limit to %d') % objs._request._collimit
+                              )
         else:
             objs._request.SpecialPage = False # Otherwise, 'SpecialPage' will be inherited
         
@@ -1772,30 +1845,51 @@ class WebFrame:
             if url:
                 objs.request()._search = objs._blocks_db.text(pos=self._pos)
                 objs._request._url     = url
-                sh.log.append('WebFrame.go_url',sh.lev_info,sh.globs['mes'].opening_link % objs._request._url)
+                sh.log.append ('WebFrame.go_url'
+                              ,_('INFO')
+                              ,_('Open link: %s') % objs._request._url
+                              )
                 self.load_article()
             else:
-                sg.Message('WebFrame.go_url',sh.lev_warn,'This block does not contain a URL!') # todo: mes
+                sg.Message ('WebFrame.go_url'
+                           ,_('WARNING')
+                           ,_('This block does not contain a URL!')
+                           )
             
     def go_search(self):
         if self.control_length():
             self.get_url()
-            sh.log.append('WebFrame.go_search',sh.lev_debug,objs.request()._search)
+            sh.log.append ('WebFrame.go_search'
+                          ,_('DEBUG')
+                          ,objs.request()._search
+                          )
             self.load_article()
             
     def set_source(self,*args):
         objs.request()._source = sources[self.menu_sources.index]
-        sh.log.append('WebFrame.set_source',sh.lev_info,'Set source to "%s"' % objs._request._source)
+        sh.log.append ('WebFrame.set_source'
+                      ,_('INFO')
+                      ,_('Set source to "%s"') % objs._request._source
+                      )
         self.load_article()
         
     def get_url(self):
         # Note: encoding must be UTF-8 here
         if objs.request()._source == 'Offline':
-            objs.online().reset(self.get_pair(),objs.request()._search,MTSpecific=False)
+            objs.online().reset (self.get_pair()
+                                ,objs.request()._search
+                                ,MTSpecific=False
+                                )
         else:
-            objs.online().reset(self.get_pair(),objs.request()._search,MTSpecific=True)
+            objs.online().reset (self.get_pair()
+                                ,objs.request()._search
+                                ,MTSpecific=True
+                                )
             objs.request()._url = objs.online().url()
-        sh.log.append('WebFrame.get_url',sh.lev_debug,str(objs.request()._url))
+        sh.log.append ('WebFrame.get_url'
+                      ,_('DEBUG')
+                      ,str(objs.request()._url)
+                      )
     
     def key_move(self):
         self.select()
@@ -1910,7 +2004,10 @@ class WebFrame:
             if sh.globs['bool']['Iconify']:
                 sg.Geometry(parent_obj=self.obj).minimize()
         else:
-            sg.Message('WebFrame.copy_text',sh.lev_warn,'This block does not contain any text!') # todo: mes
+            sg.Message ('WebFrame.copy_text'
+                       ,_('WARNING')
+                       ,_('This block does not contain any text!')
+                       )
     
     # Скопировать URL текущей статьи
     def copy_url(self,*args):
@@ -1926,7 +2023,10 @@ class WebFrame:
             if sh.globs['bool']['Iconify']:
                 sg.Geometry(parent_obj=self.obj).minimize()
         else:
-            sg.Message('WebFrame.copy_block_url',sh.lev_warn,'This block does not contain a URL!') # todo: mes
+            sg.Message ('WebFrame.copy_block_url'
+                       ,_('WARNING')
+                       ,_('This block does not contain a URL!')
+                       )
     
     # Открыть веб-страницу с определением текущего термина
     def define(self,Selected=True): # Selected: True: Выделенный термин; False: Название статьи
@@ -1939,7 +2039,10 @@ class WebFrame:
             objs.online().reset(base_str=sh.globs['var']['web_search_url'],search_str=search_str)
             objs.online().browse()
         else:
-            sh.log.append('WebFrame.define',sh.lev_warn,sh.globs['mes'].empty_input)
+            sh.log.append ('WebFrame.define'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
     
     # Обновить рисунки на кнопках
     def update_buttons(self):
@@ -2003,7 +2106,10 @@ class WebFrame:
                 objs.request()._search = list(searches)[0]
                 self.load_article()
         else:
-            sh.log.append('WebFrame.go_back',sh.lev_warn,sh.globs['mes'].canceled)
+            sh.log.append ('WebFrame.go_back'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
 
     # Перейти на следующий запрос
     def go_forward(self,*args):
@@ -2019,15 +2125,18 @@ class WebFrame:
                 objs.request()._search = list(searches)[-1]
                 self.load_article()
         else:
-            sh.log.append('WebFrame.go_forward',sh.lev_warn,sh.globs['mes'].canceled)
+            sh.log.append ('WebFrame.go_forward'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
 
     def control_length(self): # Confirm too long requests
         Confirmed = True
         if len(objs.request()._search) >= 150:
-            if not sg.Message(func     = 'WebFrame.control_length'
-                              ,level   = sh.lev_ques
-                              ,message = sh.globs['mes'].long_request % len(objs._request._search)
-                             ).Yes:
+            if not sg.Message (func    = 'WebFrame.control_length'
+                              ,level   = _('QUESTION')
+                              ,message = _('The request is long (%d symbols). Do you really want to send it?') % len(objs._request._search)
+                              ).Yes:
                 Confirmed = False
         return Confirmed
     
@@ -2037,13 +2146,19 @@ class WebFrame:
     
     def set_lang(self,*args):
         objs.request()._lang = langs[self.menu_pairs.index]
-        sh.log.append('WebFrame.set_lang',sh.lev_info,'Set language to "%s"' % objs._request._lang)
+        sh.log.append ('WebFrame.set_lang'
+                      ,_('INFO')
+                      ,_('Set language to "%s"') % objs._request._lang
+                      )
         
     def get_pair(self):
         return online_dic_urls[self.menu_pairs.index]
     
     def set_columns(self,*args):
-        sh.log.append('WebFrame.set_columns',sh.lev_info,str(self.menu_columns.choice))
+        sh.log.append ('WebFrame.set_columns'
+                      ,_('INFO')
+                      ,str(self.menu_columns.choice)
+                      )
         objs.request()._collimit = self.menu_columns.choice + 4
         self.load_article()
         
@@ -2074,15 +2189,28 @@ class WebFrame:
     def toggle_block(self,*args):
         if objs.request().Block:
             objs._request.Block = False
-            #sg.Message(func='WebFrame.toggle_block',level=sh.lev_info,message='Blacklisting is now OFF.') # todo: mes
+            '''
+            sg.Message (func    = 'WebFrame.toggle_block'
+                       ,level   = _('INFO')
+                       ,message = _('Blacklisting is now OFF.')
+                       )
+            '''
             self.unblock()
         else:
             objs._request.Block = True
             if objs._blacklist:
-                #sg.Message(func='WebFrame.toggle_block',level=sh.lev_info,message='Blacklisting is now ON.')  # todo: mes
+                '''
+                sg.Message (func    = 'WebFrame.toggle_block'
+                           ,level   = _('INFO')
+                           ,message = _('Blacklisting is now ON.')
+                           )
+                '''
                 pass
             else:
-                sg.Message(func='WebFrame.toggle_block',level=sh.lev_warn,message='No dictionaries have been provided for blacklisting!') # todo: mes
+                sg.Message (func    = 'WebFrame.toggle_block'
+                           ,level   = _('WARNING')
+                           ,message = _('No dictionaries have been provided for blacklisting!')
+                           )
         self.load_article()
         
     def unblock(self):
@@ -2114,15 +2242,28 @@ class WebFrame:
     def toggle_priority(self,*args):
         if objs.request().Prioritize:
             objs._request.Prioritize = False
-            #sg.Message(func='WebFrame.toggle_priority',level=sh.lev_info,message='Prioritizing is now OFF.') # todo: mes
+            '''
+            sg.Message (func    = 'WebFrame.toggle_priority'
+                       ,level   = _('INFO')
+                       ,message = _('Prioritizing is now OFF.')
+                       )
+            '''
             self.unprioritize()
         else:
             objs._request.Prioritize = True
             if objs._prioritize:
-                #sg.Message(func='WebFrame.toggle_priority',level=sh.lev_info,message='Prioritizing is now ON.')  # todo: mes
+                '''
+                sg.Message (func    = 'WebFrame.toggle_priority'
+                           ,level   = _('INFO')
+                           ,message = _('Prioritizing is now ON.')
+                           )
+                '''
                 pass
             else:
-                sg.Message(func='WebFrame.toggle_priority',level=sh.lev_warn,message='No dictionaries have been provided for prioritizing!') # todo: mes
+                sg.Message (func    = 'WebFrame.toggle_priority'
+                           ,level   = _('WARNING')
+                           ,message = _('No dictionaries have been provided for prioritizing!')
+                           )
         self.load_article()
         
     def print(self,*args):
@@ -2134,7 +2275,10 @@ class WebFrame:
             sh.WriteTextFile(sh.objs.tmpfile(suffix='.htm',Delete=0),AskRewrite=0).write(code)
             sh.Launch(target=sh.objs._tmpfile).auto()
         else:
-            sh.log.append('WebFrame.print',sh.lev_warn,sh.globs['mes'].empty_input)
+            sh.log.append ('WebFrame.print'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
         
     def bbox(self,*args):
         return self.widget.tk.call(self.widget,"bbox",*args)
@@ -2157,9 +2301,15 @@ class Paths:
             if self.Success:
                 return instance.file
             else:
-                sh.log.append('Paths.blacklist',sh.lev_warn,sh.globs['mes'].canceled)
+                sh.log.append ('Paths.blacklist'
+                              ,_('WARNING')
+                              ,_('Operation has been canceled.')
+                              )
         else:
-            sh.log.append('Paths.blacklist',sh.lev_warn,sh.globs['mes'].canceled)
+            sh.log.append ('Paths.blacklist'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
             
     def prioritize(self):
         if self.Success:
@@ -2168,9 +2318,15 @@ class Paths:
             if self.Success:
                 return instance.file
             else:
-                sh.log.append('Paths.prioritize',sh.lev_warn,sh.globs['mes'].canceled)
+                sh.log.append ('Paths.prioritize'
+                              ,_('WARNING')
+                              ,_('Operation has been canceled.')
+                              )
         else:
-            sh.log.append('Paths.prioritize',sh.lev_warn,sh.globs['mes'].canceled)
+            sh.log.append ('Paths.prioritize'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
 
 
 
@@ -2189,7 +2345,10 @@ class Lists:
             text = sh.Text(text=text,Auto=1).text
             return text.splitlines()
         else:
-            sh.log.append('Lists.blacklist',sh.lev_warn,sh.globs['mes'].canceled)
+            sh.log.append ('Lists.blacklist'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
             
     def prioritize(self):
         if self.Success:
@@ -2197,7 +2356,10 @@ class Lists:
             text = sh.Text(text=text,Auto=1).text
             return text.splitlines()
         else:
-            sh.log.append('Lists.prioritize',sh.lev_warn,sh.globs['mes'].canceled)
+            sh.log.append ('Lists.prioritize'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
 
 
 objs = Objects()

@@ -58,7 +58,7 @@ assert(len(transc_orig) == len(transc_final))
          - Multitran:
              <em></em>
          - Stardict:
-             
+
     '''
 
 # Tag patterns
@@ -135,12 +135,15 @@ ptr1  = '<img SRC="/gif/'                      # MT
 ptr2  = '<tr>'                                 # ST
 ptr3  = '</tr>'                                # ST
 
-useful_tags = [pdic,purl1,purl2,pcom1,pcom2,pcom3,pcor1,ptr1,ptr2,pwf4,pwf6,ptm7,pph5,psp1]
+useful_tags = [pdic,purl1,purl2,pcom1,pcom2
+              ,pcom3,pcor1,ptr1,ptr2,pwf4
+              ,pwf6,ptm7,pph5,psp1
+              ]
 
 
 
 class Block:
-    
+
     def __init__(self):
         self._block    = -1
         self.i         = -1
@@ -166,7 +169,7 @@ class Block:
 
 
 class AnalyzeTag:
-    
+
     def __init__(self,tag,source='All',pair_root='http://www.multitran.ru/c/M.exe?'):
         self._tag       = tag
         self._pair_root = pair_root
@@ -175,7 +178,7 @@ class AnalyzeTag:
         self._blocks    = []
         self._elems     = []
         self._block     = ''
-        
+
     def run(self):
         self.split()
         self._blocks = [block for block in self._blocks if block.strip()]
@@ -208,18 +211,18 @@ class AnalyzeTag:
         for tag in tag_pattern_del:
             if tag in self._block:
                 return True
-                
+
     def useful(self):
         for tag in useful_tags:
             if tag in self._block:
                 return True
-    
+
     def plain(self):
         self._cur._text = self._block
         #note: The analysis must be reset after '</', otherwise, plain text following it will be marked as 'invalid' rather than 'comment'
         if self._cur._type != 'invalid':
             self._elems.append(copy.copy(self._cur))
-    
+
     # Use custom split because we need to preserve delimeters (cannot distinguish tags and contents otherwise)
     def split(self):
         tmp = ''
@@ -236,19 +239,19 @@ class AnalyzeTag:
                 tmp += sym
         if tmp:
             self._blocks.append(tmp)
-    
+
     def _comment_mt(self):
         if self._block.startswith(pcom1) or self._block.startswith(pcom2):
             self._cur._type = 'comment'
-            
+
     def _cor_comment_mt(self):
         if self._block.startswith(pcor1):
             self._cur._type = 'correction'
-            
+
     def _comment_sd(self):
         if self._block.startswith(pcom3):
             self._cur._type = 'comment'
-            
+
     def comment(self):
         # The tag has a different meaning in online and offline sources, so we must check the source first
         if self._source == 'All':
@@ -262,19 +265,25 @@ class AnalyzeTag:
         elif self._source == 'Offline':
             self._comment_sd()
         else:
-            sg.Message('AnalyzeTag.transc',sh.lev_err,sh.globs['mes'].unknown_mode % (str(self._source),'All, Online, Offline'))
-    
+            sg.Message ('AnalyzeTag.transc'
+                       ,_('ERROR')
+                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._source),'All, Online, Offline')
+                       )
+
     def dic(self):
         if self._block.startswith(pdic):
             tmp = self._block.replace(pdic,'',1)
             tmp = re.sub('".*','',tmp)
             if tmp == '' or tmp == ' ':
-                sh.log.append('AnalyzeTag.dic',sh.lev_warn,sh.globs['mes'].wrong_tag % tmp)
+                sh.log.append ('AnalyzeTag.dic'
+                              ,_('WARNING')
+                              ,_('Wrong tag "%s"!') % tmp
+                              )
             else:
                 self._cur._type = 'dic'
                 self._cur._text = tmp
                 self._elems.append(copy.copy(self._cur))
-                
+
     def wform(self):
         cond1 = pwf1 in self._block
         cond2 = pwf2 in self._block and not 'UserName' in self._block
@@ -285,7 +294,7 @@ class AnalyzeTag:
         cond7 = pwf6 in self._block
         if cond1 or cond2 or cond3 or cond4 or cond5 or cond6 or cond7:
             self._cur._type  = 'wform'
-            
+
     def phrases(self):
         # Old algorithm: 'startswith'
         cond1 = pph1 in self._block
@@ -295,7 +304,7 @@ class AnalyzeTag:
         cond5 = pph5 in self._block
         if cond1 or cond2 or cond3 or cond4 or cond5:
             self._cur._type = 'phrase'
-            
+
     def term(self):
         cond1 = ptm1 in self._block
         cond2 = ptm2 in self._block
@@ -306,7 +315,7 @@ class AnalyzeTag:
         cond7 = ptm7 in self._block
         if cond1 or cond2 or cond3 or cond4 or cond5 or cond6 or cond7:
             self._cur._type = 'term'
-            
+
     def url(self):
         # note: these additional checks can be shortened if we create a sub-source (e.g., 'Multitran') and check for it
         if self._source == 'All' or self._source == 'Online':
@@ -318,7 +327,7 @@ class AnalyzeTag:
                     self._cur._url = self._pair_root + self._cur._url
                 else:
                     self._cur._url = ''
-                
+
     def transc(self): # Transcription
         # '<tr>' has a different meaning in online and offline sources, so we must check the source first
         if self._source == 'All':
@@ -329,9 +338,12 @@ class AnalyzeTag:
         elif self._source == 'Offline':
             self._transc_sd()
         else:
-            sg.Message('AnalyzeTag.transc',sh.lev_err,sh.globs['mes'].unknown_mode % (str(self._source),'All, Online, Offline'))
-            
-            
+            sg.Message ('AnalyzeTag.transc'
+                       ,_('ERROR')
+                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._source),'All, Online, Offline')
+                       )
+
+
     def _transc_sd(self): # Stardict
         if ptr2 in self._block:
             _type = 'transc'
@@ -339,7 +351,7 @@ class AnalyzeTag:
             if _text: # Will be empty for non-Stardict sources
                 self._cur._type, self._cur._text = _type, _text
                 self._elems.append(copy.copy(self._cur))
-    
+
     def _transc_mt(self):
         # Extract a phonetic sign (Multitran-only)
         if ptr1 in self._block:
@@ -352,10 +364,16 @@ class AnalyzeTag:
                     self._cur._text = transc_final[ind]
                     self._elems.append(copy.copy(self._cur))
                 except ValueError:
-                    sh.log.append('Tags._transc_mt',sh.lev_warn,sh.globs['mes'].wrong_input3 % tmp)
+                    sh.log.append ('Tags._transc_mt'
+                                  ,_('WARNING')
+                                  ,_('Wrong input data: "%s"') % tmp
+                                  )
             else:
-                log.append('Tags._transc_mt',sh.lev_warn,sh.globs['mes'].empty_input)
-                
+                log.append ('Tags._transc_mt'
+                           ,_('WARNING')
+                           ,_('Empty input is not allowed!')
+                           )
+
     def speech(self):
         if psp1 in self._block:
             self._cur._type = 'speech'
@@ -363,14 +381,14 @@ class AnalyzeTag:
 
 
 class Tags:
-    
+
     def __init__(self,text,source='All',pair_root='http://www.multitran.ru/c/M.exe?'):
         self._text     = text
         self._source    = source
         self._pair_root = pair_root
         self._tags      = []
         self._blocks    = []
-        
+
     # Split the text by closing tags
     # To speed up, we remove closing tags right away
     def tags(self):
@@ -397,32 +415,32 @@ class Tags:
             if tmp:
                 self._tags.append(tmp)
         return self._tags
-            
+
     def debug_tags(self):
         message = ''
         for i in range(len(self._tags)):
             message += '%d:%s\n' % (i,self._tags[i])
-        #sg.Message('Tags.debug_tags',sh.lev_info,message)
+        #sg.Message('Tags.debug_tags',_('INFO'),message)
         words = sh.Words(text=message,OrigCyr=1,Auto=0)
         words.sent_nos()
         sg.objs.txt(words=words).reset_data()
         sg.objs._txt.title('Tags.debug_tags:')
         sg.objs._txt.insert(text=message)
         sg.objs._txt.show()
-        
+
     def debug_blocks(self,Shorten=1,MaxRow=20,MaxRows=20):
         print('\nTags.debug_blocks (Non-DB blocks):')
         headers = ['TYPE'
                   ,'TEXT'
                   ,'URL'
-                  ,'SAMECELL'          
+                  ,'SAMECELL'
                   ]
         rows = []
         for block in self._blocks:
             rows.append ([block._type
                          ,block._text
                          ,block._url
-                         ,block._same         
+                         ,block._same
                          ]
                         )
         sh.Table (headers = headers
@@ -431,11 +449,11 @@ class Tags:
                  ,MaxRow  = MaxRow
                  ,MaxRows = MaxRows
                  ).print()
-        
+
     def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
         self.debug_tags  ()
         self.debug_blocks(Shorten=Shorten,MaxRow=MaxRow,MaxRows=MaxRows)
-        
+
     def blocks(self):
         if not self._blocks:
             for tag in self._tags:
@@ -452,7 +470,7 @@ class Tags:
                         lst[i]._same = 0
                 self._blocks += lst
         return self._blocks
-        
+
     def run(self):
         self.tags         ()
         self.blocks       ()
@@ -463,20 +481,20 @@ class Tags:
 
 if __name__ == '__main__':
     import page as pg
-    
+
     # Modifiable
     source = 'Online'
     #search = 'preceding'
     search = 'tun'
     #file   = '/home/pete/tmp/ars/welcome back.txt'
     file   = '/home/pete/tmp/ars/tun.txt'
-    
+
     page = pg.Page (source = source
                    ,search = search
                    ,file   = file
                    )
     page.run()
-    
+
     timer = sh.Timer(func_title='Page')
     timer.start()
     tags = Tags(source=source,text=page._page)

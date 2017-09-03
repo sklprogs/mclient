@@ -39,7 +39,10 @@ class Block:
 '''
 class BlockPrioritize:
 	
-	def __init__(self,data,source,search,blacklist=[],prioritize=[],Block=False,Prioritize=False,phrase_dic=None):
+	def __init__(self,data,source,search,blacklist=[]
+	            ,prioritize=[],Block=False,Prioritize=False
+	            ,phrase_dic=None
+	            ):
 		self._data       = data
 		self._source     = source
 		self._search     = search
@@ -54,16 +57,22 @@ class BlockPrioritize:
 			self.Success = True
 		else:
 			self.Success = False
-			sh.log.append('BlockPrioritize.__init__',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('BlockPrioritize.__init__'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 	
 	def run(self):
 		if self.Success:
-			self.assign     ()
-			self.block      ()
-			self.prioritize ()
-			self.dump       ()
+			self.assign    ()
+			self.block     ()
+			self.prioritize()
+			self.dump      ()
 		else:
-			sh.log.append('BlockPrioritize.run',sh.lev_warn,sh.globs['mes'].canceled)
+			sh.log.append ('BlockPrioritize.run'
+			              ,_('WARNING')
+			              ,_('Operation has been canceled.')
+			              )
 	
 	def assign(self):
 		for item in self._data:
@@ -149,7 +158,10 @@ class Cells:
 			self.Success = True
 		else:
 			self.Success = False
-			sh.log.append('Cells.__init__',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('Cells.__init__'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 		
 	# The 'Phrases' section comes the latest in MT, therefore, it inherits fixed columns of the preceding dictionary which are irrelevant. Here we clear them.
 	def clear_phrases(self):
@@ -185,14 +197,17 @@ class Cells:
 					
 	def run(self):
 		if self.Success:
-			self.assign        ()
-			self.clear_fixed   ()
-			self.clear_phrases ()
-			self.wrap          ()
-			self.cell_no       ()
-			self.dump          ()
+			self.assign       ()
+			self.clear_fixed  ()
+			self.clear_phrases()
+			self.wrap         ()
+			self.cell_no      ()
+			self.dump         ()
 		else:
-			sh.log.append('Cells.run',sh.lev_warn,sh.globs['mes'].canceled)
+			sh.log.append ('Cells.run'
+			              ,_('WARNING')
+			              ,_('Operation has been canceled.')
+			              )
 		
 	def assign(self):
 		for item in self._data:
@@ -338,7 +353,10 @@ class Pos:
 			self.Success = True
 		else:
 			self.Success = False
-			sh.log.append('Pos.__init__',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('Pos.__init__'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 		
 	def run(self):
 		if self.Success:
@@ -346,7 +364,10 @@ class Pos:
 			self.gen_poses()
 			self.dump     ()
 		else:
-			sh.log.append('Pos.run',sh.lev_warn,sh.globs['mes'].canceled)
+			sh.log.append ('Pos.run'
+			              ,_('WARNING')
+			              ,_('Operation has been canceled.')
+			              )
 		
 	def assign(self):
 		for item in self._data:
@@ -404,11 +425,16 @@ class Pos:
 			if text:
 				search   = sh.Search(text=self._raw_text,search=text)
 				search.i = last
-				result   = sh.Input(val=search.next(),func_title='Pos.gen_poses').integer()
+				result   = sh.Input (val        = search.next()
+				                    ,func_title = 'Pos.gen_poses'
+				                    ).integer()
 				if result >= last:
 					block._first = result
 				else:
-					sg.Message('Pos.gen_poses',sh.lev_err,'Unable to find "%s"!' % str(text)) # todo: mes
+					sg.Message ('Pos.gen_poses'
+					           ,_('ERROR')
+					           ,_('Unable to find "%s"!') % str(text)
+					           )
 					block._first = last
 			else:
 				block._first = last
@@ -451,7 +477,10 @@ class Pages:
 			self.widget = self.obj.widget
 		else:
 			self.Success = False
-			sh.log.append('Pages.__init__',sh.lev_warn,sh.globs['mes'].empty_input)
+			sh.log.append ('Pages.__init__'
+			              ,_('WARNING')
+			              ,_('Empty input is not allowed!')
+			              )
 		
 	def create_index(self):
 		tmp = io.StringIO()
@@ -464,22 +493,34 @@ class Pages:
 					# BBOX: man says: The first two integers are the x and y coordinates of the top-left corner of the bounding-box, the later two are the x and y coordinates of the bottom-right corner of the same box. If the node does not generate content, then an empty string is returned.
 					tmp.write('update BLOCKS set NODE1="%s",NODE2="%s",OFFPOS1=%d,OFFPOS2=%d,BBOX1=%d,BBOX2=%d,BBOY1=%d,BBOY2=%d where NO=%d;' % (_index[0],_index[2],_index[1],_index[3],_bbox[0],_bbox[2],_bbox[1],_bbox[3],block._no))
 				else:
-					sh.log.append('Pages.create_index',sh.lev_warn,sh.globs['mes'].empty_input)
+					sh.log.append ('Pages.create_index'
+					              ,_('WARNING')
+					              ,_('Empty input is not allowed!')
+					              )
 			else:
-				sh.log.append('Pages.create_index',sh.lev_warn,sh.globs['mes'].empty_input)
+				sh.log.append ('Pages.create_index'
+				              ,_('WARNING')
+				              ,_('Empty input is not allowed!')
+				              )
 		tmp.write('commit;')
 		self._query = tmp.getvalue()
 		tmp.close()
 		return self._query
 			
 	def debug(self):
-		sg.Message('Pages.debug',sh.lev_info,self._query.replace(';',';\n'))
+		sg.Message ('Pages.debug'
+		           ,_('INFO')
+		           ,self._query.replace(';',';\n')
+		           )
 	
 	def run(self):
 		if self.Success:
 			self.create_index()
 		else:
-			sh.log.append('Pages.run',sh.lev_warn,sh.globs['mes'].canceled)
+			sh.log.append ('Pages.run'
+			              ,_('WARNING')
+			              ,_('Operation has been canceled.')
+			              )
 
 
 
