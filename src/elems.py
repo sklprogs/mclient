@@ -510,7 +510,10 @@ class PhraseTerma:
 	def dump(self):
 		# Autoincrement starts with 1 in sqlite
 		if self._no1 > 0 and self._no2 > 0:
-			sh.log.append('PhraseTerma.dump',_('INFO'),_('Update DB, range %d-%d') % (self._no1,self._no2))
+			sh.log.append ('PhraseTerma.dump'
+			              ,_('INFO')
+			              ,_('Update DB, range %d-%d') % (self._no1,self._no2)
+			              )
 			self.dbc.execute('update BLOCKS set TERMA=? where NO >= ? and NO < ?',('',self._no1,self._no2,))
 		else:
 			sh.log.append ('PhraseTerma.dump'

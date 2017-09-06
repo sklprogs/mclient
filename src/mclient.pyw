@@ -156,6 +156,8 @@ class ConfigMclient(sh.Config):
            ,'bind_save_article'           :'<F2>'
            ,'bind_search_article_backward':'<Shift-F3>'
            ,'bind_search_article_forward' :'<F3>'
+           ,'bind_settings'               :'<Alt-s>'
+           ,'bind_settings_alt'           :'<F12>'
            ,'bind_show_about'             :'<F1>'
            ,'bind_spec_symbol'            :'<Control-e>'
            ,'bind_toggle_alphabet'        :'<Alt-a>'
@@ -233,6 +235,7 @@ class ConfigMclient(sh.Config):
            ,'icon_repeat_sign2'       :'icon_36x36_repeat_sign2.gif'
            ,'icon_save_article'       :'icon_36x36_save_article.gif'
            ,'icon_search_article'     :'icon_36x36_search_article.gif'
+           ,'icon_settings'           :'icon_36x36_settings.gif'
            ,'icon_show_about'         :'icon_36x36_show_about.gif'
            ,'icon_spec_symbol'        :'icon_36x36_spec_symbol.gif'
            ,'icon_toggle_history'     :'icon_36x36_toggle_history.gif'
@@ -417,9 +420,11 @@ class CurRequest:
         self._collimit     = 8
         self._source       = 'All'
         self._lang         = 'English'
+        self._cols         = [_('Dictionaries'),_('Word forms'),_('Parts of speech')_('Transcription')]
         # Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
         self.Block         = True
         self.Prioritize    = True
+        self.SortRows      = True
         self.SortTerms     = True
         # *Temporary* turn off prioritizing and terms sorting for articles with 'sep_words_found' and in phrases; use previous settings for new articles
         self.SpecialPage   = False
@@ -989,6 +994,7 @@ class WebFrame:
         self.spec_symbols   = SpecSymbols   ()
         self.save_article   = SaveArticle   ()
         self.history        = History       ()
+        self.settings       = Settings      ()
         
     def frame_panel(self):
         self._panel = sg.Frame (parent_obj = self.bottom
@@ -1078,8 +1084,19 @@ class WebFrame:
                                           ,command    = self.set_columns
                                           ,default    = 4
                                           )
+        # Кнопка настроек
+        self.btn_settings = sg.Button (
+                   parent_obj          = self._panel
+                  ,text                = _('Settings')
+                  ,hint                = _('Tune up view settings')
+                  ,action              = self.settings.show
+                  ,inactive_image_path = sh.globs['var']['icon_settings']
+                  ,active_image_path   = sh.globs['var']['icon_settings']
+                  ,bindings            = [sh.globs['var']['bind_settings']
+                                         ,sh.globs['var']['bind_settings_alt']
+                                         ]
+                                      )
         # Кнопка изменения вида статьи
-        # todo: Change active/inactive button logic in case of creating three or more views
         self.btn_toggle_view = sg.Button (
                    parent_obj          = self._panel
                   ,text                = _('Toggle view')
@@ -1442,6 +1459,12 @@ class WebFrame:
                             ,sh.globs['var']['bind_next_pair_alt']
                             ]
                 ,action   = self.menu_pairs.set_next
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = [sh.globs['var']['bind_settings']
+                            ,sh.globs['var']['bind_settings_alt']
+                            ]
+                ,action   = self.settings.show
                 )
         sg.bind (obj      = self.obj
                 ,bindings = [sh.globs['var']['bind_toggle_view']
@@ -2364,6 +2387,329 @@ class Lists:
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
+
+
+
+class Settings:
+    
+    def __init__(self):
+        self._items = (_('Dictionaries')
+                      ,_('Word forms')
+                      ,_('Parts of speech')
+                      ,_('Transcription')
+                      ,_('Do not set')
+                      )
+        self._allowed = []
+        self._hint_width = 140
+        self.gui()
+        
+    def update_col1(self):
+        if self.col1.choice != _('Do not set'):
+            if self.col1.choice in self._allowed:
+                self._allowed.remove(self.col1.choice)
+            elif _('Dictionaries') in self._allowed:
+                self.col1.set(_('Dictionaries'))
+                self._allowed.remove(_('Dictionaries'))
+            elif self._allowed:
+                self.col1.set(self._allowed[0])
+                self._allowed.remove(self._allowed[0])
+            else:
+                sg.Message (func    = 'Settings.update_col1'
+                           ,level   = _('ERROR')
+                           ,message = _('Empty input is not allowed!')
+                           )
+                
+    def update_col2(self):
+        if self.col2.choice != _('Do not set'):
+            if self.col2.choice in self._allowed:
+                self._allowed.remove(self.col2.choice)
+            elif _('Word forms') in self._allowed:
+                self.col2.set(_('Word forms'))
+                self._allowed.remove(_('Word forms'))
+            elif self._allowed:
+                self.col2.set(self._allowed[0])
+                self._allowed.remove(self._allowed[0])
+            else:
+                sg.Message (func    = 'Settings.update_col2'
+                           ,level   = _('ERROR')
+                           ,message = _('Empty input is not allowed!')
+                           )
+    
+    def update_col3(self):
+        if self.col3.choice != _('Do not set'):
+            if self.col3.choice in self._allowed:
+                self._allowed.remove(self.col3.choice)
+            elif _('Parts of speech') in self._allowed:
+                self.col3.set(_('Parts of speech'))
+                self._allowed.remove(_('Parts of speech'))
+            elif self._allowed:
+                self.col3.set(self._allowed[0])
+                self._allowed.remove(self._allowed[0])
+            else:
+                sg.Message (func    = 'Settings.update_col3'
+                           ,level   = _('ERROR')
+                           ,message = _('Empty input is not allowed!')
+                           )
+                           
+    def update_col4(self):
+        if self.col4.choice != _('Do not set'):
+            if self.col4.choice in self._allowed:
+                self._allowed.remove(self.col4.choice)
+            elif _('Transcription') in self._allowed:
+                self.col4.set(_('Transcription'))
+                self._allowed.remove(_('Transcription'))
+            elif self._allowed:
+                self.col4.set(self._allowed[0])
+                self._allowed.remove(self._allowed[0])
+            else:
+                sg.Message (func    = 'Settings.update_col4'
+                           ,level   = _('ERROR')
+                           ,message = _('Empty input is not allowed!')
+                           )
+            
+    def update_by_col1(self,*args):
+        self._allowed = list(self._items)
+        self.update_col1()
+        self.update_col2()
+        self.update_col3()
+        self.update_col4()
+            
+    def update_by_col2(self,*args):
+        self._allowed = list(self._items)
+        self.update_col2()
+        self.update_col1()
+        self.update_col3()
+        self.update_col4()
+        
+    def update_by_col3(self,*args):
+        self._allowed = list(self._items)
+        self.update_col3()
+        self.update_col1()
+        self.update_col2()
+        self.update_col4()
+        
+    def update_by_col4(self,*args):
+        self._allowed = list(self._items)
+        self.update_col4()
+        self.update_col1()
+        self.update_col2()
+        self.update_col3()
+    
+    def gui(self):
+        self.obj = sg.objs.new_top(Maximize=0)
+        self.title()
+        self.frames()
+        self.columns()
+        self.sort_rows()
+        self.sort_terms()
+        self.block()
+        self.prioritize()
+        self.vertical()
+        self.buttons()
+        self.bindings()
+        
+    def vertical(self):
+        self.cb5 = sg.CheckBox (parent_obj = self.fr_cb5
+                               ,Active     = False
+                               ,side       = 'left'
+                               )
+        self.lb5 = sg.Label (parent_obj = self.fr_cb5
+                            ,text       = _('Vertical view')
+                            ,side       = 'left'
+                            )
+    
+    def sort_rows(self):
+        self.cb = sg.CheckBox (parent_obj = self.fr_cb
+                              ,Active     = True
+                              ,side       = 'left'
+                              )
+        self.lb = sg.Label (parent_obj = self.fr_cb
+                           ,text       = _('Sort by each column (if it is set) (except for transcription)')
+                           ,side       = 'left'
+                           )
+                           
+    def sort_terms(self):
+        self.cb2 = sg.CheckBox (parent_obj = self.fr_cb2
+                               ,Active     = True
+                               ,side       = 'left'
+                               )
+        self.lb2 = sg.Label (parent_obj = self.fr_cb2
+                            ,text       = _('Alphabetize terms')
+                            ,side       = 'left'
+                            )
+    
+    def block_settings(self,*args):
+        sg.Message (func    = 'Settings.block_settings'
+                   ,level   = _('INFO')
+                   ,message = _('Not implemented yet!')
+                   )
+                   
+    def priority_settings(self,*args):
+        sg.Message (func    = 'Settings.priority_settings'
+                   ,level   = _('INFO')
+                   ,message = _('Not implemented yet!')
+                   )
+    
+    def block(self):
+        self.cb3 = sg.CheckBox (parent_obj = self.fr_cb3
+                               ,Active     = True
+                               ,side       = 'left'
+                               )
+        self.lb3 = sg.Label (parent_obj = self.fr_cb3
+                            ,text       = _('Block dictionaries from blacklist')
+                            ,side       = 'left'
+                            )
+        sg.Button (parent_obj = self.fr_cb3
+                  ,action     = self.block_settings
+                  ,hint       = _('Tune up blacklisting')
+                  ,hint_width = self._hint_width
+                  ,text       = _('Add/Remove')
+                  ,side       = 'right'
+                  )
+        
+    def prioritize(self):
+        self.cb4 = sg.CheckBox (parent_obj = self.fr_cb4
+                               ,Active     = True
+                               ,side       = 'left'
+                               )
+        self.lb4 = sg.Label (parent_obj = self.fr_cb4
+                            ,text       = _('Prioritize dictionaries')
+                            ,side       = 'left'
+                            )
+        sg.Button (parent_obj = self.fr_cb4
+                  ,action     = self.priority_settings
+                  ,hint       = _('Tune up prioritizing')
+                  ,hint_width = self._hint_width
+                  ,text       = _('Add/Remove')
+                  ,side       = 'right'
+                  )
+    
+    def reset(self,*args):
+        self.col1.set(_('Dictionaries'))
+        self.col2.set(_('Word forms'))
+        self.col3.set(_('Parts of speech'))
+        self.col4.set(_('Transcription'))
+        self.cb.enable()
+        self.cb2.enable()
+        self.cb3.enable()
+        self.cb4.enable()
+        self.cb5.disable()
+        
+    def apply(self,*args):
+        self.close()
+        objs.request()._cols     = [choice for choice in (self.col1.choice,self.col2.choice,self.col3.choice,self.col4.choice) if choice != _('Do not set')]
+        objs._request.SortRows   = self.cb.get()
+        objs._request.SortTerms  = self.cb2.get()
+        objs._request.Block      = self.cb3.get()
+        objs._request.Prioritize = self.cb4.get()
+        objs._request.Reverse    = self.cb5.get()
+        objs.webframe().load_article()
+    
+    def buttons(self):
+        sg.Button (parent_obj = self.fr_but
+                  ,action     = self.reset
+                  ,hint       = _('Reset settings')
+                  ,hint_width = self._hint_width
+                  ,text       = _('Reset')
+                  ,side       = 'left'
+                  )
+                  
+        sg.Button (parent_obj = self.fr_but
+                  ,action     = self.apply
+                  ,hint       = _('Apply settings')
+                  ,hint_width = self._hint_width
+                  ,text       = _('Apply')
+                  ,side       = 'right'
+                  )
+    
+    def frames(self):
+        self.fr_col = sg.Frame (parent_obj = self.obj
+                               ,expand     = True
+                               ,fill       = 'both'
+                               )
+        self.fr_cb  = sg.Frame (parent_obj = self.obj
+                               ,expand     = False
+                               ,fill       = 'x'
+                               )
+        self.fr_cb2 = sg.Frame (parent_obj = self.obj
+                               ,expand     = False
+                               ,fill       = 'x'
+                               )
+        self.fr_cb3 = sg.Frame (parent_obj = self.obj
+                               ,expand     = False
+                               ,fill       = 'x'
+                               )
+        self.fr_cb4 = sg.Frame (parent_obj = self.obj
+                               ,expand     = False
+                               ,fill       = 'x'
+                               )
+        self.fr_cb5 = sg.Frame (parent_obj = self.obj
+                               ,expand     = False
+                               ,fill       = 'x'
+                               )
+        self.fr_but = sg.Frame (parent_obj = self.obj
+                               ,expand     = False
+                               ,fill       = 'x'
+                               ,side       = 'bottom'
+                               )
+    
+    def columns(self):
+        self.col1 = sg.OptionMenu (parent_obj = self.fr_col
+                                  ,items      = self._items
+                                  ,side       = 'left'
+                                  ,command    = self.update_by_col1
+                                  ,default    = _('Dictionaries')
+                                  )
+        self.col2 = sg.OptionMenu (parent_obj = self.fr_col
+                                  ,items      = self._items
+                                  ,side       = 'left'
+                                  ,command    = self.update_by_col2
+                                  ,default    = _('Word forms')
+                                  )
+        self.col3 = sg.OptionMenu (parent_obj = self.fr_col
+                                  ,items      = self._items
+                                  ,side       = 'left'
+                                  ,command    = self.update_by_col3
+                                  ,default    = _('Parts of speech')
+                                  )
+        self.col4 = sg.OptionMenu (parent_obj = self.fr_col
+                                  ,items      = self._items
+                                  ,side       = 'left'
+                                  ,command    = self.update_by_col4
+                                  ,default    = _('Transcription')
+                                  )
+    
+    def bindings(self):
+        sg.bind (obj      = self.lb
+                ,bindings = '<Button-1>'
+                ,action   = self.cb.toggle
+                )
+        sg.bind (obj      = self.lb2
+                ,bindings = '<Button-1>'
+                ,action   = self.cb2.toggle
+                )
+        sg.bind (obj      = self.lb3
+                ,bindings = '<Button-1>'
+                ,action   = self.cb3.toggle
+                )
+        sg.bind (obj      = self.lb4
+                ,bindings = '<Button-1>'
+                ,action   = self.cb4.toggle
+                )
+        sg.bind (obj      = self.lb5
+                ,bindings = '<Button-1>'
+                ,action   = self.cb5.toggle
+                )
+    
+    def title(self,text=_('View Settings')):
+        self.obj.title(text=text)
+        
+    def show(self,*args):
+        self.obj.show()
+        
+    def close(self,*args):
+        self.obj.close()
+
 
 
 objs = Objects()
