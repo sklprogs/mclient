@@ -420,7 +420,11 @@ class CurRequest:
         self._collimit     = 8
         self._source       = 'All'
         self._lang         = 'English'
-        self._cols         = [_('Dictionaries'),_('Word forms'),_('Parts of speech')_('Transcription')]
+        self._cols         = (_('Dictionaries')
+                             ,_('Word forms')
+                             ,_('Transcription')
+                             ,_('Parts of speech')
+                             )
         # Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
         self.Block         = True
         self.Prioritize    = True
@@ -1762,6 +1766,7 @@ class WebFrame:
             elems = el.Elems (blocks = tags._blocks
                              ,source = objs._request._source
                              ,search = objs._request._search
+                             ,cols   = objs._request._cols
                              ,urla   = objs._request._url
                              )
             elems.run()
@@ -2597,7 +2602,7 @@ class Settings:
         
     def apply(self,*args):
         self.close()
-        objs.request()._cols     = [choice for choice in (self.col1.choice,self.col2.choice,self.col3.choice,self.col4.choice) if choice != _('Do not set')]
+        objs.request()._cols     = set([choice for choice in (self.col1.choice,self.col2.choice,self.col3.choice,self.col4.choice) if choice != _('Do not set')])
         objs._request.SortRows   = self.cb.get()
         objs._request.SortTerms  = self.cb2.get()
         objs._request.Block      = self.cb3.get()

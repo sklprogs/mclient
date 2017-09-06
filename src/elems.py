@@ -59,10 +59,11 @@ class Block:
 '''
 class Elems:
 	
-	def __init__(self,blocks,source,search,urla=''):
+	def __init__(self,blocks,source,search,cols,urla=''):
 		self._blocks = blocks
 		self._source = source
 		self._search = search
+		self._cols   = cols
 		self._urla   = urla
 		self._data   = []
 		if self._blocks and self._source and self._search:
@@ -359,50 +360,35 @@ class Elems:
 		i = 0
 		while i < len(self._blocks):
 			if dica != self._blocks[i]._dica or wforma != self._blocks[i]._wforma or speecha != self._blocks[i]._speecha:
-				
-				block          = Block()
-				block._type    = 'speech'
-				block._text    = self._blocks[i]._speecha
-				block._dica    = self._blocks[i]._dica
-				block._wforma  = self._blocks[i]._wforma
-				block._speecha = self._blocks[i]._speecha
-				block._transca = self._blocks[i]._transca
-				block._terma   = self._blocks[i]._terma
-				block._same    = 0
-				self._blocks.insert(i,block)
-				
-				block          = Block()
-				block._type    = 'transc'
-				block._text    = self._blocks[i]._transca
-				block._dica    = self._blocks[i]._dica
-				block._wforma  = self._blocks[i]._wforma
-				block._speecha = self._blocks[i]._speecha
-				block._transca = self._blocks[i]._transca
-				block._terma   = self._blocks[i]._terma
-				block._same    = 0
-				self._blocks.insert(i,block)
-				
-				block          = Block()
-				block._type    = 'wform'
-				block._text    = self._blocks[i]._wforma
-				block._dica    = self._blocks[i]._dica
-				block._wforma  = self._blocks[i]._wforma
-				block._speecha = self._blocks[i]._speecha
-				block._transca = self._blocks[i]._transca
-				block._terma   = self._blocks[i]._terma
-				block._same    = 0
-				self._blocks.insert(i,block)
-				
-				block          = Block()
-				block._type    = 'dic'
-				block._text    = self._blocks[i]._dica
-				block._dica    = self._blocks[i]._dica
-				block._wforma  = self._blocks[i]._wforma
-				block._speecha = self._blocks[i]._speecha
-				block._transca = self._blocks[i]._transca
-				block._terma   = self._blocks[i]._terma
-				block._same    = 0
-				self._blocks.insert(i,block)
+				# Reverse order (because of 'insert')
+				j = len(self._cols) - 1
+				while j >= 0:
+					block = Block()
+					if self._cols[j] == _('Parts of speech'):
+						block._type    = 'speech'
+						block._text    = self._blocks[i]._speecha
+					elif self._cols[j] == _('Transcription'):
+						block._type    = 'transc'
+						block._text    = self._blocks[i]._transca
+					elif self._cols[j] == _('Word forms'):
+						block._type    = 'wform'
+						block._text    = self._blocks[i]._wforma
+					elif self._cols[j] == _('Dictionaries'):
+						block._type    = 'dic'
+						block._text    = self._blocks[i]._dica
+					else:
+						sg.Message (func    = 'Elems.insert_fixed'
+						           ,level   = _('ERROR')
+						           ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._cols[i]),', '.join(self._cols))
+						           )
+					block._dica    = self._blocks[i]._dica
+					block._wforma  = self._blocks[i]._wforma
+					block._speecha = self._blocks[i]._speecha
+					block._transca = self._blocks[i]._transca
+					block._terma   = self._blocks[i]._terma
+					block._same    = 0
+					self._blocks.insert(i,block)
+					j -= 1
 				
 				dica    = self._blocks[i]._dica
 				wforma  = self._blocks[i]._wforma
@@ -570,7 +556,13 @@ if __name__ == '__main__':
 	
 	elems = Elems (blocks = tags._blocks
 	              ,source = source
-	              ,search = search)
+	              ,search = search
+	              ,cols   = (_('Dictionaries')
+	                        ,_('Word forms')
+	                        ,_('Transcription')
+	                        ,_('Parts of speech')
+	                        )
+	              )
 	elems.run()
 	
 	if Debug:
