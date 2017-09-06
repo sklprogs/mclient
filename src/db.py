@@ -817,7 +817,7 @@ if __name__ == '__main__':
 	import mclient as mc
 	
 	# Modifiable
-	source     = 'Online'
+	source     = _('Online')
 	#search    = 'рабочая документация'
 	search     = 'таратайка'
 	#file      = '/home/pete/tmp/ars/рабочая документация.txt'
@@ -842,7 +842,11 @@ if __name__ == '__main__':
 	tags = tg.Tags(page._page)
 	tags.run()
 	
-	elems = el.Elems(blocks=tags._blocks,source=source,search=search)
+	elems = el.Elems (blocks = tags._blocks
+	                 ,source = source
+	                 ,search = search
+	                 ,cols   = ('dic','wform','transc','speech')
+	                 )
 	elems.run()
 	
 	blocks_db = DB()

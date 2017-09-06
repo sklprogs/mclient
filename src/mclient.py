@@ -320,7 +320,7 @@ langs = ('English'   # ENG <=> RUS
         ,'Estonian'  # ENG <=> EST
         )
 
-sources = ('All','Online','Offline')
+sources = (_('All'),_('Online'),_('Offline'))
 
 
 
@@ -388,7 +388,7 @@ class Objects:
         
     def online(self):
         # todo: create a sub-source
-        if objs.request()._source == 'All' or objs.request()._source == 'Online':
+        if objs.request()._source == _('All') or objs.request()._source == _('Online'):
             return self.online_mt()
         else:
             return self.online_other()
@@ -418,13 +418,9 @@ class CurRequest:
     def reset(self):
         # note: this should be synchronized with the 'default' value of objs.webframe().menu_columns
         self._collimit     = 8
-        self._source       = 'All'
+        self._source       = _('All')
         self._lang         = 'English'
-        self._cols         = (_('Dictionaries')
-                             ,_('Word forms')
-                             ,_('Transcription')
-                             ,_('Parts of speech')
-                             )
+        self._cols         = ('dic','wform','transc','speech')
         # Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
         self.Block         = True
         self.Prioritize    = True
@@ -1754,7 +1750,7 @@ class WebFrame:
             ptimer.end()
             # todo: # fix: assign this for already loaded articles too
             objs._request._page     = page._page
-            # note: # todo: 'Page' returns '_html_raw' for online pages only; this value can be separated for online & offline sources after introducing sub-sources instead of relying on 'All'
+            # note: # todo: 'Page' returns '_html_raw' for online pages only; this value can be separated for online & offline sources after introducing sub-sources instead of relying on _('All')
             objs._request._html_raw = page._html_raw
             
             tags = tg.Tags (text      = objs._request._page
@@ -1907,7 +1903,7 @@ class WebFrame:
         
     def get_url(self):
         # Note: encoding must be UTF-8 here
-        if objs.request()._source == 'Offline':
+        if objs.request()._source == _('Offline'):
             objs.online().reset (self.get_pair()
                                 ,objs.request()._search
                                 ,MTSpecific=False
@@ -2068,7 +2064,9 @@ class WebFrame:
         else:
             search_str = 'define:' + objs.request()._search
         if search_str != 'define:':
-            objs.online().reset(base_str=sh.globs['var']['web_search_url'],search_str=search_str)
+            objs.online().reset (base_str   = sh.globs['var']['web_search_url']
+                                ,search_str = search_str
+                                )
             objs.online().browse()
         else:
             sh.log.append ('WebFrame.define'
@@ -2405,7 +2403,7 @@ class Settings:
                       ,_('Do not set')
                       )
         self._allowed = []
-        self._hint_width = 140
+        self._hint_width = 200
         self.gui()
         
     def update_col1(self):
@@ -2602,7 +2600,23 @@ class Settings:
         
     def apply(self,*args):
         self.close()
-        objs.request()._cols     = set([choice for choice in (self.col1.choice,self.col2.choice,self.col3.choice,self.col4.choice) if choice != _('Do not set')])
+        # Do not use 'gettext' to name internal types - this will make the program ~0,6 s slower
+        lst = [choice for choice in (self.col1.choice,self.col2.choice,self.col3.choice,self.col4.choice) if choice != _('Do not set')]
+        for item in lst:
+            if item == _('Dictionaries'):
+                item = 'dic'
+            elif item == _('Word forms'):
+                item = 'wform'
+            elif item == _('Parts of speech'):
+                item = 'speech'
+            elif item == _('Transcription'):
+                item = 'transc'
+            else:
+                sg.Message (func    = 'Settings.apply'
+                           ,level   = _('ERROR')
+                           ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._cols[i]),'dic, wform, transc, speech')
+                           )
+        objs.request()._cols     = set(lst)
         objs._request.SortRows   = self.cb.get()
         objs._request.SortTerms  = self.cb2.get()
         objs._request.Block      = self.cb3.get()

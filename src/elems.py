@@ -364,22 +364,19 @@ class Elems:
 				j = len(self._cols) - 1
 				while j >= 0:
 					block = Block()
-					if self._cols[j] == _('Parts of speech'):
-						block._type    = 'speech'
+					block._type = self._cols[j]
+					if self._cols[j] == 'speech':
 						block._text    = self._blocks[i]._speecha
-					elif self._cols[j] == _('Transcription'):
-						block._type    = 'transc'
+					elif self._cols[j] == 'transc':
 						block._text    = self._blocks[i]._transca
-					elif self._cols[j] == _('Word forms'):
-						block._type    = 'wform'
+					elif self._cols[j] == 'wform':
 						block._text    = self._blocks[i]._wforma
-					elif self._cols[j] == _('Dictionaries'):
-						block._type    = 'dic'
+					elif self._cols[j] == 'dic':
 						block._text    = self._blocks[i]._dica
 					else:
 						sg.Message (func    = 'Elems.insert_fixed'
 						           ,level   = _('ERROR')
-						           ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._cols[i]),', '.join(self._cols))
+						           ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._cols[i]),'dic, wform, transc, speech')
 						           )
 					block._dica    = self._blocks[i]._dica
 					block._wforma  = self._blocks[i]._wforma
@@ -389,7 +386,6 @@ class Elems:
 					block._same    = 0
 					self._blocks.insert(i,block)
 					j -= 1
-				
 				dica    = self._blocks[i]._dica
 				wforma  = self._blocks[i]._wforma
 				speecha = self._blocks[i]._speecha
@@ -527,7 +523,7 @@ if __name__ == '__main__':
 	import mclient as mc
 	
 	# Modifiable
-	source  = 'Online'
+	source  = _('Online')
 	search  = 'preceding'
 	url     = 'http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
 	file    = '/home/pete/tmp/ars/preceding.txt'

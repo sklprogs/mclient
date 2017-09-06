@@ -175,7 +175,7 @@ class ExtDics:
 
 class Page:
 
-    def __init__(self,source='All',lang='English'
+    def __init__(self,source=_('All'),lang='English'
                 ,search='SEARCH',url='',win_encoding='windows-1251'
                 ,ext_dics=[],file=None
                 ):
@@ -221,7 +221,7 @@ class Page:
         self._page = self._page.replace('</a>, содержащие <strong>','</a><strong>')
 
     def article_not_found(self): # HTML specific
-        if self._source == 'All' or self._source == 'Online':
+        if self._source == _('All') or self._source == _('Online'):
             # If separate words are found instead of a phrase, prepare those words only
             if sep_words_found in self._page:
                 self._page = self._page.replace(sep_words_found,'')
@@ -254,14 +254,14 @@ class Page:
         self._page = re.sub(r'\>[\s]{0,1}\<','><',self._page)
 
     def mt_specific_replace(self):
-        if self._source == 'All' or self._source == 'Online':
+        if self._source == _('All') or self._source == _('Online'):
             self._page = self._page.replace('&nbsp;Вы знаете перевод этого выражения? Добавьте его в словарь:','').replace('&nbsp;Вы знаете перевод этого слова? Добавьте его в словарь:','').replace('&nbsp;Требуется авторизация<br>&nbsp;Пожалуйста, войдите на сайт под Вашим именем','').replace('Термины, содержащие ','')
             self._page = re.sub('[:]{0,1}[\s]{0,1}все формы слов[а]{0,1} \(\d+\)','',self._page)
 
     # Convert HTML entities to a human readable format, e.g., '&copy;' -> '©'
     def decode_entities(self): # HTML specific
         # todo: do we need to check this?
-        if self._source == 'All' or self._source == 'Online':
+        if self._source == _('All') or self._source == _('Online'):
             try:
                 self._page = html.unescape(self._page)
             except:
@@ -338,16 +338,16 @@ class Page:
             else:
                 page = ''
                 # todo: introduce sub-sources, make this code clear; assign '_html_raw' for each sub-source
-                if self._source == 'All':
+                if self._source == _('All'):
                     self._get_online()
                     self.disamb_mt()
                     page = self._page
                     self._get_offline()
                     self.disamb_sd()
-                elif self._source == 'Online':
+                elif self._source == _('Online'):
                     self._get_online()
                     self.disamb_mt()
-                elif self._source == 'Offline':
+                elif self._source == _('Offline'):
                     self._get_offline()
                     self.disamb_sd()
                 else:
@@ -443,7 +443,7 @@ if __name__ == '__main__':
     timer = sh.Timer(func_title='Page')
     timer.start()
     sg.objs.start()
-    page = Page (source = 'Online'
+    page = Page (source = _('Online')
                 ,search = 'preceding'
                 ,file   = '/home/pete/tmp/ars/preceding.txt'
                 )

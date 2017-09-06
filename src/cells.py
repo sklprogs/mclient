@@ -536,7 +536,7 @@ if __name__ == '__main__':
 	import mclient as mc
 	
 	# Modifiable
-	source     = 'Online'
+	source     = _('Online')
 	search     = 'working documentation'
 	url        = ''
 	file       = '/home/pete/tmp/ars/working documentation.txt'

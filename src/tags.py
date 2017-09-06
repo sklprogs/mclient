@@ -174,7 +174,7 @@ class Block:
 
 class AnalyzeTag:
 
-    def __init__(self,tag,source='All',pair_root='http://www.multitran.ru/c/M.exe?'):
+    def __init__(self,tag,source=_('All'),pair_root='http://www.multitran.ru/c/M.exe?'):
         self._tag       = tag
         self._pair_root = pair_root
         self._source    = source
@@ -258,20 +258,20 @@ class AnalyzeTag:
 
     def comment(self):
         # The tag has a different meaning in online and offline sources, so we must check the source first
-        if self._source == 'All':
+        if self._source == _('All'):
             # todo: analyze pages from different sources separately
             self._comment_mt()
             self._comment_sd()
             self._cor_comment_mt()
-        elif self._source == 'Online':
+        elif self._source == _('Online'):
             self._comment_mt()
             self._cor_comment_mt()
-        elif self._source == 'Offline':
+        elif self._source == _('Offline'):
             self._comment_sd()
         else:
             sg.Message ('AnalyzeTag.transc'
                        ,_('ERROR')
-                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._source),'All, Online, Offline')
+                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._source),', '.join(_('All'),_('Online'),_('Offline')))
                        )
 
     def dic(self):
@@ -322,7 +322,7 @@ class AnalyzeTag:
 
     def url(self):
         # note: these additional checks can be shortened if we create a sub-source (e.g., 'Multitran') and check for it
-        if self._source == 'All' or self._source == 'Online':
+        if self._source == _('All') or self._source == _('Online'):
             if purl1 in self._block or purl2 in self._block: # Otherwise, 'self._block' will be returned when there is no match
                 self._cur._url = self._block.replace(purl1,'',1).replace(purl2,'',1)
                 if self._cur._url.endswith(purl3):
@@ -334,17 +334,17 @@ class AnalyzeTag:
 
     def transc(self): # Transcription
         # '<tr>' has a different meaning in online and offline sources, so we must check the source first
-        if self._source == 'All':
+        if self._source == _('All'):
             self._transc_mt()
             self._transc_sd()
-        elif self._source == 'Online':
+        elif self._source == _('Online'):
             self._transc_mt()
-        elif self._source == 'Offline':
+        elif self._source == _('Offline'):
             self._transc_sd()
         else:
             sg.Message ('AnalyzeTag.transc'
                        ,_('ERROR')
-                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._source),'All, Online, Offline')
+                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._source),', '.join(_('All'),_('Online'),_('Offline')))
                        )
 
 
@@ -386,7 +386,7 @@ class AnalyzeTag:
 
 class Tags:
 
-    def __init__(self,text,source='All',pair_root='http://www.multitran.ru/c/M.exe?'):
+    def __init__(self,text,source=_('All'),pair_root='http://www.multitran.ru/c/M.exe?'):
         self._text     = text
         self._source    = source
         self._pair_root = pair_root
@@ -487,7 +487,7 @@ if __name__ == '__main__':
     import page as pg
 
     # Modifiable
-    source = 'Online'
+    source = _('Online')
     #search = 'preceding'
     search = 'tun'
     #file   = '/home/pete/tmp/ars/welcome back.txt'

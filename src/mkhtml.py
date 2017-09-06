@@ -234,7 +234,7 @@ if __name__ == '__main__':
     #'/home/pete/tmp/ars/preceding.txt'
 
     # Modifiable
-    source     = 'Offline'
+    source     = _('Offline')
     search     = 'preceding'
     file       = '/home/pete/tmp/ars/preceding.txt'
     collimit   = 7
