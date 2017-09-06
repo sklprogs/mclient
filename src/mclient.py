@@ -2396,16 +2396,20 @@ class Lists:
 class Settings:
     
     def __init__(self):
+        self.values()
+        self.gui()
+        
+    def values(self):
         self._items = (_('Dictionaries')
                       ,_('Word forms')
                       ,_('Parts of speech')
                       ,_('Transcription')
                       ,_('Do not set')
                       )
-        self._allowed = []
+        self._allowed    = []
         self._hint_width = 200
-        self.gui()
-        
+        self.Active      = False
+    
     def update_col1(self):
         if self.col1.choice != _('Do not set'):
             if self.col1.choice in self._allowed:
@@ -2719,15 +2723,30 @@ class Settings:
                 ,bindings = '<Button-1>'
                 ,action   = self.cb5.toggle
                 )
+        sg.bind (obj      = self.obj
+                ,bindings = [sh.globs['var']['bind_settings']
+                            ,sh.globs['var']['bind_settings_alt']
+                            ,'<Escape>'
+                            ]
+                ,action = self.toggle
+                )
     
     def title(self,text=_('View Settings')):
         self.obj.title(text=text)
         
     def show(self,*args):
+        self.Active = True
         self.obj.show()
         
     def close(self,*args):
+        self.Active = False
         self.obj.close()
+        
+    def toggle(self,*args):
+        if self.Active:
+            self.close()
+        else:
+            self.show()
 
 
 
