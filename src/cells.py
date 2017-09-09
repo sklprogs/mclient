@@ -151,8 +151,9 @@ class BlockPrioritize:
 '''
 class Cells:
 	
-	def __init__(self,data,collimit=10,phrase_dic=None,Reverse=False): # Including fixed columns
+	def __init__(self,data,cols,collimit=10,phrase_dic=None,Reverse=False): # Including fixed columns
 		self._data       = data # Sqlite fetch
+		self._cols       = cols
 		self._collimit   = collimit
 		self._phrase_dic = phrase_dic
 		self.Reverse     = Reverse
@@ -202,6 +203,7 @@ class Cells:
 	def run(self):
 		if self.Success:
 			self.assign       ()
+			self.del_types    ()
 			self.clear_fixed  ()
 			self.clear_phrases()
 			self.wrap         ()
@@ -258,10 +260,10 @@ class Cells:
 		else:
 			self.wrap_x()
 	
-	def wrap_x(self): # Dic-Wform-Transc-Speech
+	def wrap_x(self):
 		i = j = 0
 		for x in range(len(self._blocks)):
-			if self._blocks[x]._type == 'dic':
+			if self._cols and self._blocks[x]._type == self._cols[0]:
 				if x > 0:
 					i += 1
 					self._blocks[x].i = i
@@ -270,13 +272,13 @@ class Cells:
 					i += 1
 				self._blocks[x].j = 0
 				j = 3
-			elif self._blocks[x]._type == 'wform':
+			elif len(self._cols) > 1 and self._blocks[x]._type == self._cols[1]:
 				self._blocks[x].i = i
 				self._blocks[x].j = j = 1
-			elif self._blocks[x]._type == 'transc':
+			elif len(self._cols) > 2 and self._blocks[x]._type == self._cols[2]:
 				self._blocks[x].i = i
 				self._blocks[x].j = j = 2
-			elif self._blocks[x]._type == 'speech':
+			elif len(self._cols) > 3 and self._blocks[x]._type == self._cols[3]:
 				self._blocks[x].i = i
 				self._blocks[x].j = j = 3
 			elif self._blocks[x]._same > 0: # Must be before checking '_collimit'
@@ -285,21 +287,21 @@ class Cells:
 			elif j + 1 == self._collimit:
 				i += 1
 				self._blocks[x].i = i
-				self._blocks[x].j = j = 4 # Instead of creating empty non-selectable cells
+				self._blocks[x].j = j = len(self._cols) # Instead of creating empty non-selectable cells
 			else:
 				self._blocks[x].i = i
 				if x > 0:
 					j += 1
 					self._blocks[x].j = j
 				else:
-					self._blocks[x].j = 4
+					self._blocks[x].j = len(self._cols)
 					j += 1
 					
 	# Create a vertically reversed view. This generally differs from 'wrap' in that we do not use 'collimit'.
-	def wrap_y(self): # Dic-Wform-Transc-Speech
+	def wrap_y(self):
 		i = j = 0
 		for x in range(len(self._blocks)):
-			if self._blocks[x]._type == 'dic' and self._blocks[x]._text:
+			if self._cols and self._blocks[x]._type == self._cols[0] and self._blocks[x]._text:
 				if x > 0:
 					j += 1
 				self._blocks[x].j = j
@@ -338,8 +340,11 @@ class Cells:
 		self._query = tmp.getvalue()
 		tmp.close()
 		return self._query
-
-
+		
+	# Remove blocks of unused types here (so when some columns are not used we would not have problems with 'gen_poses' later
+	def del_types(self):
+		diff = [x for x in ('dic','wform','transc','speech') if x not in self._cols]
+		self._blocks = [block for block in self._blocks if block._type not in diff]
 
 # This is view-specific and should be recreated each time
 ''' We assume that sqlite has already sorted DB with 'BLOCK IS NOT 1' and all cell manipulations are completed
@@ -566,7 +571,9 @@ if __name__ == '__main__':
 	
 	elems = el.Elems (blocks = tags._blocks
 	                 ,source = source
-	                 ,search = search)
+	                 ,search = search
+	                 ,cols   = ('dic','wform','transc','speech')
+	                 )
 	elems.run()
 	
 	blocks_db = db.DB()
@@ -593,7 +600,10 @@ if __name__ == '__main__':
 	blocks_db.update(query=bp._query)
 	
 	data = blocks_db.assign_cells()
-	cells = Cells(data=data,collimit=collimit)
+	cells = Cells (data     = data
+	              ,cols     = ('dic','wform','transc','speech')
+	              ,collimit = collimit
+	              )
 	cells.run()
 	blocks_db.update(query=cells._query)
 	

@@ -77,24 +77,24 @@ class Elems:
 		
 	def run(self):
 		if self.Success:
-			self.transc            ()
-			self.phrases           ()
-			self.straight_line     ()
-			self.comments          ()
-			self.dic_abbr          ()
+			self.transc           ()
+			self.phrases          ()
+			self.straight_line    ()
+			self.comments         ()
+			self.dic_abbr         ()
 			# These 2 procedures should not be combined (otherwise, corrections will have the same color as comments)
-			self.unite_comments    ()
-			self.unite_corrections ()
-			self.speech            ()
-			self.comment_same      ()
-			self.add_space         ()
-			self.fill              ()
-			self.fill_terma        ()
-			self.remove_fixed      ()
-			self.insert_fixed      ()
-			self.fixed_terma       ()
-			self.selectables       ()
-			self.dump              ()
+			self.unite_comments   ()
+			self.unite_corrections()
+			self.speech           ()
+			self.comment_same     ()
+			self.add_space        ()
+			self.fill             ()
+			self.fill_terma       ()
+			self.remove_fixed     ()
+			self.insert_fixed     ()
+			self.fixed_terma      ()
+			self.selectables      ()
+			self.dump             ()
 		else:
 			sh.log.append ('Elems.run'
 			              ,_('WARNING')
@@ -354,7 +354,65 @@ class Elems:
 		for block in self._blocks:
 			if block._type in ('dic','wform','speech','transc'):
 				block._terma = ''
+				
+	# cur
+	def insert_fixed(self):
+		dica = wforma = speecha = ''
+		i = 0
+		while i < len(self._blocks):
+			if dica != self._blocks[i]._dica or wforma != self._blocks[i]._wforma or speecha != self._blocks[i]._speecha:
+				
+				block          = Block()
+				block._type    = 'speech'
+				block._text    = self._blocks[i]._speecha
+				block._dica    = self._blocks[i]._dica
+				block._wforma  = self._blocks[i]._wforma
+				block._speecha = self._blocks[i]._speecha
+				block._transca = self._blocks[i]._transca
+				block._terma   = self._blocks[i]._terma
+				block._same    = 0
+				self._blocks.insert(i,block)
+				
+				block          = Block()
+				block._type    = 'transc'
+				block._text    = self._blocks[i]._transca
+				block._dica    = self._blocks[i]._dica
+				block._wforma  = self._blocks[i]._wforma
+				block._speecha = self._blocks[i]._speecha
+				block._transca = self._blocks[i]._transca
+				block._terma   = self._blocks[i]._terma
+				block._same    = 0
+				self._blocks.insert(i,block)
+				
+				block          = Block()
+				block._type    = 'wform'
+				block._text    = self._blocks[i]._wforma
+				block._dica    = self._blocks[i]._dica
+				block._wforma  = self._blocks[i]._wforma
+				block._speecha = self._blocks[i]._speecha
+				block._transca = self._blocks[i]._transca
+				block._terma   = self._blocks[i]._terma
+				block._same    = 0
+				self._blocks.insert(i,block)
+				
+				block          = Block()
+				block._type    = 'dic'
+				block._text    = self._blocks[i]._dica
+				block._dica    = self._blocks[i]._dica
+				block._wforma  = self._blocks[i]._wforma
+				block._speecha = self._blocks[i]._speecha
+				block._transca = self._blocks[i]._transca
+				block._terma   = self._blocks[i]._terma
+				block._same    = 0
+				self._blocks.insert(i,block)
+				
+				dica    = self._blocks[i]._dica
+				wforma  = self._blocks[i]._wforma
+				speecha = self._blocks[i]._speecha
+				i += 4
+			i += 1
 			
+	'''
 	def insert_fixed(self):
 		dica = wforma = speecha = ''
 		i = 0
@@ -391,6 +449,7 @@ class Elems:
 				speecha = self._blocks[i]._speecha
 				i += 4
 			i += 1
+	'''
 		
 	def remove_fixed(self):
 		self._blocks = [block for block in self._blocks if block._type not in ['dic','wform','transc','speech']]
@@ -553,11 +612,7 @@ if __name__ == '__main__':
 	elems = Elems (blocks = tags._blocks
 	              ,source = source
 	              ,search = search
-	              ,cols   = (_('Dictionaries')
-	                        ,_('Word forms')
-	                        ,_('Transcription')
-	                        ,_('Parts of speech')
-	                        )
+	              ,cols   = ('dic','wform','transc','speech')
 	              )
 	elems.run()
 	
@@ -571,7 +626,8 @@ if __name__ == '__main__':
 	
 	ph_terma = PhraseTerma (dbc    = blocks_db.dbc
 	                       ,source = source
-	                       ,search = search)
+	                       ,search = search
+	                       )
 	ph_terma.run()
 	
 	timer.end()

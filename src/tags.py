@@ -103,6 +103,7 @@ purl3 = '">'                                   # MT
 pcom1 = '<i>'                                  # MT
 pcom2 = '<span STYLE="color:gray">'            # MT
 pcom3 = '<co>'                                 # ST
+pcom4 = '&&UserName='                          # MT
 
 # Corrective comments
 pcor1 = '<span STYLE="color:rgb(60,179,113)">' # MT
@@ -140,8 +141,8 @@ ptr2  = '<tr>'                                 # ST
 ptr3  = '</tr>'                                # ST
 
 useful_tags = [pdic,purl1,purl2,pcom1,pcom2
-              ,pcom3,pcor1,ptr1,ptr2,pwf4
-              ,pwf6,ptm7,pph5,psp1
+              ,pcom3,pcom4,pcor1,ptr1,ptr2
+              ,pwf4,pwf6,ptm7,pph5,psp1
               ]
 
 
@@ -245,7 +246,7 @@ class AnalyzeTag:
             self._blocks.append(tmp)
 
     def _comment_mt(self):
-        if self._block.startswith(pcom1) or self._block.startswith(pcom2):
+        if self._block.startswith(pcom1) or self._block.startswith(pcom2) or pcom4 in self._block:
             self._cur._type = 'comment'
 
     def _cor_comment_mt(self):
@@ -271,7 +272,7 @@ class AnalyzeTag:
         else:
             sg.Message ('AnalyzeTag.transc'
                        ,_('ERROR')
-                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._source),', '.join(_('All'),_('Online'),_('Offline')))
+                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._source),', '.join((_('All'),_('Online'),_('Offline'))))
                        )
 
     def dic(self):
@@ -344,7 +345,7 @@ class AnalyzeTag:
         else:
             sg.Message ('AnalyzeTag.transc'
                        ,_('ERROR')
-                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._source),', '.join(_('All'),_('Online'),_('Offline')))
+                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._source),', '.join((_('All'),_('Online'),_('Offline'))))
                        )
 
 
@@ -491,7 +492,8 @@ if __name__ == '__main__':
     #search = 'preceding'
     search = 'tun'
     #file   = '/home/pete/tmp/ars/welcome back.txt'
-    file   = '/home/pete/tmp/ars/tun.txt'
+    #file   = '/home/pete/tmp/ars/tun.txt'
+    file   = '/home/pete/tmp/ars/lottery.txt'
 
     page = pg.Page (source = source
                    ,search = search

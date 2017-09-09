@@ -10,6 +10,7 @@
     - Use the language pair as a part of an article ID. Otherwise, we cannot view same SEARCH in different languages ('RUS-XAL' -> 'липа' -> 'EN-RU')
     - Use borders of the cell, not borders of the block when calculating ShiftScreen
     - Store '_html_raw' value for all articles, not just for the latest new loaded one
+    - Move 'insert_fixed' outside of Elems (since fixed columns can vary now)
 '''
 
 ''' # fix
@@ -1022,7 +1023,6 @@ class WebFrame:
                   ) # В данном случае btn = hint
 
         # Кнопка очистки строки поиска
-        # note: Another style on trial
         sg.Button (parent_obj          = self._panel
                   ,text                = _('Clear')
                   ,hint                = _('Clear search field')
@@ -1741,7 +1741,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/set.txt'
                            #,file        = '/home/pete/tmp/ars/get.txt'
                            #,file        = '/home/pete/tmp/ars/pack.txt'
-                           #,file        = '/home/pete/tmp/ars/counterpart.txt'
+                           ,file        = '/home/pete/tmp/ars/counterpart.txt'
                            #,file        = '/home/pete/tmp/ars/test.txt'
                            #,file        = '/home/pete/tmp/ars/cut.txt'
                            #,file        = '/home/pete/tmp/ars/tun.txt'
@@ -1812,6 +1812,7 @@ class WebFrame:
         SortTerms = objs._request.SortTerms and not objs._request.SpecialPage
         data = objs._blocks_db.assign_cells(SortTerms=SortTerms)
         cells = cl.Cells (data       = data
+                         ,cols       = objs._request._cols
                          ,collimit   = objs._request._collimit
                          ,phrase_dic = phrase_dic
                          ,Reverse    = objs._request.Reverse
@@ -1820,6 +1821,7 @@ class WebFrame:
         objs._blocks_db.update(query=cells._query)
         
         get_html = mh.HTML (data       = objs._blocks_db.fetch()
+                           ,cols       = objs._request._cols
                            ,collimit   = objs._request._collimit
                            ,blacklist  = objs.blacklist()
                            ,prioritize = objs.prioritize()
@@ -1902,7 +1904,7 @@ class WebFrame:
         self.load_article()
         
     def get_url(self):
-        # Note: encoding must be UTF-8 here
+        # note: encoding must be UTF-8 here
         if objs.request()._source == _('Offline'):
             objs.online().reset (self.get_pair()
                                 ,objs.request()._search
@@ -2606,21 +2608,27 @@ class Settings:
         self.close()
         # Do not use 'gettext' to name internal types - this will make the program ~0,6 s slower
         lst = [choice for choice in (self.col1.choice,self.col2.choice,self.col3.choice,self.col4.choice) if choice != _('Do not set')]
-        for item in lst:
-            if item == _('Dictionaries'):
-                item = 'dic'
-            elif item == _('Word forms'):
-                item = 'wform'
-            elif item == _('Parts of speech'):
-                item = 'speech'
-            elif item == _('Transcription'):
-                item = 'transc'
+        '''
+        The following assignment does not change the list:
+            for item in lst:
+                if item == something:
+                    item = something_else
+        '''
+        for i in range(len(lst)):
+            if lst[i] == _('Dictionaries'):
+                lst[i] = 'dic'
+            elif lst[i] == _('Word forms'):
+                lst[i] = 'wform'
+            elif lst[i] == _('Parts of speech'):
+                lst[i] = 'speech'
+            elif lst[i] == _('Transcription'):
+                lst[i] = 'transc'
             else:
                 sg.Message (func    = 'Settings.apply'
                            ,level   = _('ERROR')
-                           ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._cols[i]),'dic, wform, transc, speech')
+                           ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._cols[i]),', '.join(_('Dictionaries'),_('Word forms'),_('Parts of speech'),_('Transcription')))
                            )
-        objs.request()._cols     = set(lst)
+        objs.request()._cols     = tuple(lst)
         objs._request.SortRows   = self.cb.get()
         objs._request.SortTerms  = self.cb2.get()
         objs._request.Block      = self.cb3.get()

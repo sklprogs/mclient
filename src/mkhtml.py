@@ -24,11 +24,12 @@ class Block:
 
 class HTML:
     
-    def __init__(self,data,collimit=9,Printer=False,blacklist=[]
+    def __init__(self,data,cols,collimit=9,Printer=False,blacklist=[]
                 ,prioritize=[],blocked_color='gray',priority_color='red'
                 ,width=0,Reverse=False
                 ): # 'collimit' includes fixed blocks
         self._data           = data
+        self._cols           = cols
         self._collimit       = collimit
         self.Printer         = Printer
         self._blacklist      = blacklist
@@ -187,16 +188,24 @@ class HTML:
                     j = 0
                 while self._block.j > j:
                     self.output.write('</td>\n      ')
-                    # note: hardcoded number of fixed columns (-1 because we define 'td' for the next column here)
-                    if self._width and self._block._text and (self._block.j > 3 or self.Reverse):
+                    # -1 because we define 'td' for the next column here
+                    if self._width and self._block._text and (self._block.j > len(self._cols) - 1 or self.Reverse):
                         self.output.write('<td col width="')
                         self.output.write(str(self._width))
                         self.output.write('">')
                     else:
                         self.output.write('<td>')
                     j += 1
-                self._dic       ()
-                self._wform     ()
+                if self._cols:
+                    if self._cols[0] == 'dic':
+                        self._dic()
+                    elif self._cols[0] == 'wform':
+                        self._wform()
+                    if len(self._cols) > 1:
+                        if self._cols[1] == 'dic':
+                            self._dic()
+                        elif self._cols[1] == 'wform':
+                            self._wform()
                 self._term      ()
                 self._comment   ()
                 self._correction()
@@ -271,6 +280,7 @@ if __name__ == '__main__':
     elems = el.Elems (blocks = tags._blocks
                      ,source = source
                      ,search = search
+                     ,cols   = ('dic','wform','transc','speech')
                      )
     elems.run()
 
@@ -314,6 +324,7 @@ if __name__ == '__main__':
     
     data  = blocks_db.assign_cells()
     cells = cl.Cells (data       = data
+                     ,cols       = ('dic','wform','transc','speech')
                      ,collimit   = collimit
                      ,phrase_dic = phrase_dic
                      )
@@ -347,6 +358,7 @@ if __name__ == '__main__':
         input('Return.')
     
     mkhtml = HTML (data     = blocks_db.fetch()
+                  ,cols     = ('dic','wform','transc','speech')
                   ,collimit = collimit
                   ,Printer  = 1
                   )
