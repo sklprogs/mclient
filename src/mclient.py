@@ -2544,6 +2544,7 @@ class Settings:
         self.vertical()
         self.buttons()
         self.bindings()
+        self.icon()
 
     def vertical(self):
         self.cb5 = sg.CheckBox (parent_obj = self.fr_cb5
@@ -2671,7 +2672,7 @@ class Settings:
             objs._blocks_db.ignore()
             objs.webframe().load_article()
         else:
-			# todo: do we really need this?
+            # todo: do we really need this?
             sg.Message (func    = 'Settings.apply'
                        ,level   = _('WARNING')
                        ,message = _('At least one column must be set!')
@@ -2796,6 +2797,14 @@ class Settings:
             self.close()
         else:
             self.show()
+
+    def icon(self,arg=None):
+        if not arg:
+            arg = sh.globs['var']['icon_mclient']
+        self.obj.icon(arg)
+
+    def zzz(self):
+        pass
 
 
 
