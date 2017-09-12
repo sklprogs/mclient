@@ -203,7 +203,6 @@ class Cells:
 	def run(self):
 		if self.Success:
 			self.assign       ()
-			self.del_types    ()
 			self.clear_fixed  ()
 			self.clear_phrases()
 			self.wrap         ()
@@ -341,11 +340,6 @@ class Cells:
 		tmp.close()
 		return self._query
 		
-	# Remove blocks of unused types here (so when some columns are not used we would not have problems with 'gen_poses' later
-	def del_types(self):
-		diff = [x for x in ('dic','wform','transc','speech') if x not in self._cols]
-		self._blocks = [block for block in self._blocks if block._type not in diff]
-
 # This is view-specific and should be recreated each time
 ''' We assume that sqlite has already sorted DB with 'BLOCK IS NOT 1' and all cell manipulations are completed
     Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL
@@ -572,7 +566,6 @@ if __name__ == '__main__':
 	elems = el.Elems (blocks = tags._blocks
 	                 ,source = source
 	                 ,search = search
-	                 ,cols   = ('dic','wform','transc','speech')
 	                 )
 	elems.run()
 	

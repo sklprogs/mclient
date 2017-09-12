@@ -14,7 +14,7 @@ import sharedGUI as sg
 
 # Shortened
 class Block:
-    
+
     def __init__(self):
         self._type = ''
         self._text = ''
@@ -23,7 +23,7 @@ class Block:
 
 
 class HTML:
-    
+
     def __init__(self,data,cols,collimit=9,Printer=False,blacklist=[]
                 ,prioritize=[],blocked_color='gray',priority_color='red'
                 ,width=0,Reverse=False
@@ -43,12 +43,12 @@ class HTML:
         self._html           = ''
         self._script         = '''
         <head>
-          
+
           <div align="center">
             <!-- A button to print the printable area -->
             <input type="button" onclick="printDiv('printableArea')" value="Print" />
           </div>
-          
+
           <script type="text/javascript">
             function printDiv(divName) {
               var printContents = document.getElementById(divName).innerHTML;
@@ -58,7 +58,7 @@ class HTML:
               document.body.innerHTML = originalContents;
             }
           </script>
-          
+
           <!-- Print in a landscape mode -->
           <style type="text/css">
             @page
@@ -67,7 +67,7 @@ class HTML:
               margin: 1.5cm;
             }
           </style>
-          
+
           <style type="text/css" media="print">
             @page
             {
@@ -75,12 +75,12 @@ class HTML:
               margin: 1.5cm;
             }
           </style>
-        
+
         </head>
         '''
         self.assign()
         self.html  ()
-            
+
     def assign(self):
         for item in self._data:
             block       = Block()
@@ -89,7 +89,7 @@ class HTML:
             block.i     = item[2]
             block.j     = item[3]
             self._blocks.append(block)
-        
+
     def _dic(self):
         if self._block._type == 'dic':
             self.output.write('<font face="')
@@ -106,7 +106,7 @@ class HTML:
             self.output.write('"><b>')
             self.output.write(self._block._text)
             self.output.write('</b></font>')
-    
+
     def _wform(self):
         if self._block._type == 'wform':
             self.output.write('<font face="')
@@ -118,7 +118,7 @@ class HTML:
             self.output.write('"><b>')
             self.output.write(self._block._text)
             self.output.write('</b></font>')
-        
+
     def _term(self):
         if self._block._type == 'term' or self._block._type == 'phrase':
             self.output.write('<font face="')
@@ -130,7 +130,7 @@ class HTML:
             self.output.write('">')
             self.output.write(self._block._text)
             self.output.write('</font>')
-    
+
     def _comment(self):
         if self._block._type == 'comment' or self._block._type == 'speech' or self._block._type == 'transc':
             self.output.write('<i><font face="')
@@ -142,7 +142,7 @@ class HTML:
             self.output.write('">')
             self.output.write(self._block._text)
             self.output.write('</i></font>')
-            
+
     def _correction(self):
         if self._block._type == 'correction':
             self.output.write('<i><font face="')
@@ -196,16 +196,8 @@ class HTML:
                     else:
                         self.output.write('<td>')
                     j += 1
-                if self._cols:
-                    if self._cols[0] == 'dic':
-                        self._dic()
-                    elif self._cols[0] == 'wform':
-                        self._wform()
-                    if len(self._cols) > 1:
-                        if self._cols[1] == 'dic':
-                            self._dic()
-                        elif self._cols[1] == 'wform':
-                            self._wform()
+                self._dic       ()
+                self._wform     ()
                 self._term      ()
                 self._comment   ()
                 self._correction()
@@ -231,8 +223,8 @@ if __name__ == '__main__':
     import elems   as el
     import cells   as cl
     import mclient as mc
-    
-    
+
+
     #'/home/pete/tmp/ars/star_test'
     #'/home/pete/tmp/ars/sampling.txt'
     #'/home/pete/tmp/ars/filter_get'
@@ -251,10 +243,10 @@ if __name__ == '__main__':
     blacklist  = []
     prioritize = ['Общая лексика']
     Debug      = 0
-    
+
     timer = sh.Timer(func_title='page, elems')
     timer.start()
-    
+
     page = pg.Page (source       = source
                    ,lang         = 'English'
                    ,search       = search
@@ -266,31 +258,30 @@ if __name__ == '__main__':
     page.run()
 
     mc.ConfigMclient ()
-    
+
     timer = sh.Timer(func_title='tags + elems + cells + pos + mkhtml')
     timer.start()
-    
+
     tags = tg.Tags(page._page)
     tags.run()
 
     if Debug:
         tags.debug(MaxRows=40)
         input('Tags step completed. Press Enter')
-    
+
     elems = el.Elems (blocks = tags._blocks
                      ,source = source
                      ,search = search
-                     ,cols   = ('dic','wform','transc','speech')
                      )
     elems.run()
 
     if Debug:
         elems.debug(MaxRows=40)
         input('Elems step completed. Press Enter')
-    
+
     blocks_db = db.DB()
     blocks_db.fill(elems._data)
-    
+
     blocks_db.request (source = source
                       ,search = search
                       )
@@ -299,10 +290,10 @@ if __name__ == '__main__':
                               ,search = search
                               )
     ph_terma.run()
-    
+
     phrase_dic = blocks_db.phrase_dic ()
     data       = blocks_db.assign_bp  ()
-    
+
     bp = cl.BlockPrioritize (data       = data
                             ,source     = source
                             ,search     = search
@@ -311,7 +302,7 @@ if __name__ == '__main__':
                             ,phrase_dic = phrase_dic
                             )
     bp.run()
-    
+
     if Debug:
         bp.debug(MaxRows=40)
         input('BlockPrioritize step completed. Press Enter')
@@ -321,7 +312,7 @@ if __name__ == '__main__':
                    )
 
     blocks_db.update(query=bp._query)
-    
+
     data  = blocks_db.assign_cells()
     cells = cl.Cells (data       = data
                      ,cols       = ('dic','wform','transc','speech')
@@ -329,7 +320,7 @@ if __name__ == '__main__':
                      ,phrase_dic = phrase_dic
                      )
     cells.run()
-    
+
     if Debug:
         cells.debug(MaxRows=40)
         input('Cells step completed. Press Enter')
@@ -350,22 +341,22 @@ if __name__ == '__main__':
                    ,_('INFO')
                    ,pos._query.replace(';',';\n')
                    )
-    
+
     blocks_db.update(query=pos._query)
-    
+
     if Debug:
         blocks_db.print(Shorten=1,MaxRows=100,MaxRow=18)
         input('Return.')
-    
+
     mkhtml = HTML (data     = blocks_db.fetch()
                   ,cols     = ('dic','wform','transc','speech')
                   ,collimit = collimit
                   ,Printer  = 1
                   )
-    
+
     timer.end()
-    
+
     file_w = '/tmp/test.html'
     sh.WriteTextFile(file=file_w,AskRewrite=0).write(text=mkhtml._html)
     sh.Launch(target=file_w).default()
-    
+

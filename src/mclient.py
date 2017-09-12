@@ -11,6 +11,8 @@
     - Use borders of the cell, not borders of the block when calculating ShiftScreen
     - Store '_html_raw' value for all articles, not just for the latest new loaded one
     - Move 'insert_fixed' outside of Elems (since fixed columns can vary now)
+    - Ignore blocks of 'phrase' type where 'dic' type is ignored
+    -
 '''
 
 ''' # fix
@@ -69,16 +71,16 @@ License: MIT
 Copyright (c) <year> aivarannamaa
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- 
+
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- 
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 '''
 
 
 
 class ConfigMclient(sh.Config):
-    
+
     def __init__(self):
         super().__init__()
         self.sections         = [sh.SectionBooleans
@@ -202,13 +204,13 @@ class ConfigMclient(sh.Config):
            ,'web_search_url'              :'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s'
            ,'win_encoding'                :'windows-1251'
                                })
-    
+
     def reset(self):
         sh.globs['bool']  = {}
         sh.globs['float'] = {}
         sh.globs['int']   = {}
         sh.globs['var']   = {}
-        
+
     def additional_keys(self):
         sh.globs['var'].update ({
             'icon_alphabet_off'       :'icon_36x36_alphabet_off.gif'
@@ -288,7 +290,7 @@ pairs = ('ENG <=> RUS'
         ,'ENG <=> DEU'
         ,'ENG <=> EST'
         )
-        
+
 online_dic_urls = (sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_rus']   # ENG <=> RUS, 'CL=1&s=%s'
                   ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_deu_rus']   # DEU <=> RUS, 'l1=3&l2=2&s=%s'
                   ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_spa_rus']   # SPA <=> RUS, 'l1=5&l2=2&s=%s'
@@ -304,7 +306,7 @@ online_dic_urls = (sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_rus'
                   ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_deu']   # ENG <=> DEU, 'l1=1&l2=3&s=%s'
                   ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_est']   # ENG <=> EST, 'l1=1&l2=26&s=%s'
                   )
-                  
+
 langs = ('English'   # ENG <=> RUS
         ,'German'    # DEU <=> RUS
         ,'Spanish'   # SPA <=> RUS
@@ -326,31 +328,31 @@ sources = (_('All'),_('Online'),_('Offline'))
 
 
 class Objects:
-    
+
     def __init__(self):
         self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = self._blacklist = self._prioritize = self._parties = self._request = self._ext_dics = self._webframe = self._blocks_db = self._moves = None
-        
+
     def blocks_db(self):
         if not self._blocks_db:
             self._blocks_db = db.Moves()
             self._blocks_db.Selectable = sh.globs['bool']['SelectTermsOnly']
         return self._blocks_db
-        
+
     def webframe(self):
         if not self._webframe:
             self._webframe = WebFrame()
         return self._webframe
-    
+
     def ext_dics(self):
         if not self._ext_dics:
             self._ext_dics = pg.ExtDics(path=sh.objs.pdir().add('dics'))
         return self._ext_dics
-    
+
     def request(self):
         if not self._request:
             self._request = CurRequest()
         return self._request
-    
+
     def parties(self):
         if not self._parties:
             top = sg.objs.new_top(Maximize=0)
@@ -361,14 +363,14 @@ class Objects:
             self._parties.insert(text=third_parties,MoveTop=1)
             self._parties.read_only()
         return self._parties
-            
+
     def entry(self):
         if not self._entry:
             self._entry = sg.Entry(parent_obj=sg.Top(sg.objs.root()))
             self._entry.icon(sh.globs['var']['icon_mclient'])
             self._entry.title(_('Enter a string to search:'))
         return self._entry
-        
+
     def textbox(self):
         if not self._textbox:
             h_top = sg.Top(sg.objs.root())
@@ -376,34 +378,34 @@ class Objects:
             sg.Geometry(parent_obj=h_top).set('500x400')
             self._textbox.icon(sh.globs['var']['icon_mclient'])
         return self._textbox
-        
+
     def online_mt(self):
         if not self._online_mt:
             self._online_mt = sh.Online(MTSpecific=True)
         return self._online_mt
-        
+
     def online_other(self):
         if not self._online_other:
             self._online_other = sh.Online(MTSpecific=False)
         return self._online_other
-        
+
     def online(self):
         # todo: create a sub-source
         if objs.request()._source == _('All') or objs.request()._source == _('Online'):
             return self.online_mt()
         else:
             return self.online_other()
-            
+
     def about(self):
         if not self._about:
             self._about = About()
         return self._about
-        
+
     def blacklist(self):
         if self._blacklist is None: # Allow empty lists
             self._blacklist = Lists().blacklist()
         return self._blacklist
-        
+
     def prioritize(self):
         if self._prioritize is None: # Allow empty lists
             self._prioritize = Lists().prioritize()
@@ -412,10 +414,10 @@ class Objects:
 
 
 class CurRequest:
-    
+
     def __init__(self):
         self.reset()
-        
+
     def reset(self):
         # note: this should be synchronized with the 'default' value of objs.webframe().menu_columns
         self._collimit     = 8
@@ -437,7 +439,7 @@ class CurRequest:
         self._html_raw     = ''
         self._search       = ''
         self._url          = ''
-        
+
 
 
 
@@ -470,7 +472,7 @@ def timed_update():
 
 
 class About:
-    
+
     def __init__(self):
         self.Active = False
         self.type   = 'About'
@@ -527,21 +529,21 @@ class About:
                 ,action   = self.close
                 )
         self.close()
-    
+
     def close(self,*args):
         self.obj.close()
         self.Active = False
-        
+
     def show(self,*args):
         self.obj.show()
         self.Active = True
-    
+
     def toggle(self,*args):
         if self.Active:
             self.close()
         else:
             self.show()
-    
+
     # Написать письмо автору
     def response_back(self,*args):
         sh.Email (email   = sh.email
@@ -558,9 +560,9 @@ class About:
         objs.parties().show()
 
 
-        
+
 class SaveArticle:
-    
+
     def __init__(self):
         self.type       = 'SaveArticle'
         self.parent_obj = sg.Top(sg.objs.root())
@@ -580,18 +582,18 @@ class SaveArticle:
         # Use this instead of 'close' because there is no selection yet
         self.obj.interrupt()
         self.file = ''
-        
+
     def close(self,*args):
         self.obj.close()
-        
+
     def show(self,*args):
         self.obj.show()
-        
+
     # Fix an extension for Windows
     def fix_ext(self,ext='.htm'):
         if not self.file.endswith(ext):
             self.file += ext
-            
+
     def select(self,*args):
         self.show()
         opt = self.obj._get
@@ -606,7 +608,7 @@ class SaveArticle:
                 self.copy_raw()
             elif opt == _('Copy the text of the article to clipboard'):
                 self.copy_txt()
-    
+
     def view_as_html(self):
         self.file = sg.dialog_save_file (
                     filetypes = ((_('Web-page'),'.htm')
@@ -623,7 +625,7 @@ class SaveArticle:
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-            
+
     def raw_as_html(self):
         # Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
         # Также меняем сокращенные гиперссылки на полные, чтобы они работали и в локальном файле.
@@ -642,7 +644,7 @@ class SaveArticle:
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-        
+
     def view_as_txt(self):
         self.file = sg.dialog_save_file (
                     filetypes = ((_('Plain text (UTF-8)'),'.txt')
@@ -658,10 +660,10 @@ class SaveArticle:
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-            
+
     def copy_raw(self):
         sg.Clipboard().copy(objs.request()._html_raw)
-            
+
     def copy_txt(self):
         text = objs.webframe().text()
         if text:
@@ -672,11 +674,11 @@ class SaveArticle:
                           ,_('Empty input is not allowed!')
                           )
 
-    
+
 
 # Search IN an article
 class SearchArticle:
-    
+
     def __init__(self):
         self.type   = 'SearchArticle'
         self.obj    = objs.entry()
@@ -694,7 +696,7 @@ class SearchArticle:
         self.obj.focus()
         self.close()
         self.reset()
-    
+
     def reset(self,*args):
         self._pos    = -1
         self._first  = -1
@@ -703,23 +705,23 @@ class SearchArticle:
         # Plus: keeping old input
         # Minus: searching old input after cancelling the search and searching again
         #self.clear()
-    
+
     def clear(self,*args):
         self.obj.clear_text()
-    
+
     def close(self,*args):
         self.obj.close()
-        
+
     def show(self,*args):
         self.obj.show()
         self.obj.select_all()
-    
+
     def search(self):
         if not self._search:
             self.show()
             self._search = self.widget.get().strip(' ').strip('\n').lower()
         return self._search
-    
+
     def forward(self,*args):
         pos = objs.blocks_db().search_forward(pos=self._pos,search=self.search())
         if pos or pos == 0:
@@ -737,12 +739,12 @@ class SearchArticle:
                        )
             self._pos = 0
             self.forward()
-            
+
     def first(self):
         if self._first == -1:
             self._first = objs.blocks_db().search_forward(pos=-1,search=self.search())
         return self._first
-    
+
     def last(self):
         if self._last == -1:
             max_cell = objs._blocks_db.max_cell()
@@ -754,7 +756,7 @@ class SearchArticle:
                               ,_('Empty input is not allowed!')
                               )
         return self._last
-    
+
     def backward(self,*args):
         if self.first():
             print('first:',self._first) # todo: del
@@ -783,7 +785,7 @@ class SearchArticle:
 
 # Search FOR an article
 class SearchField:
-    
+
     def __init__(self,parent_obj,side='left',ipady=5):
         self.type       = 'SearchField'
         self.parent_obj = parent_obj
@@ -794,10 +796,10 @@ class SearchField:
                                    ,ipady      = ipady
                                    )
         self.widget = self.obj.widget
-        
+
     def clear(self,*args):
         self.obj.clear_text()
-        
+
     # Очистить строку поиска и вставить в нее заданный текст или содержимое буфера обмена
     def paste(self,event=None,text=None):
         self.clear()
@@ -806,8 +808,8 @@ class SearchField:
         else:
             self.widget.insert(0,sg.Clipboard().paste())
         return 'break'
-        
-    # Вставить текущий запрос   
+
+    # Вставить текущий запрос
     def insert_repeat_sign(self,*args):
         sg.Clipboard().copy(str(objs.request()._search))
         self.paste()
@@ -820,7 +822,7 @@ class SearchField:
 
 
 class SpecSymbols:
-    
+
     def __init__(self):
         self.obj    = sg.Top(sg.objs.root())
         self.widget = self.obj.widget
@@ -841,29 +843,29 @@ class SpecSymbols:
                                     )
         self.bindings()
         self.close()
-        
+
     def bindings(self):
         sg.bind (obj      = self.obj
                 ,bindings = ['<Escape>',sh.globs['var']['bind_spec_symbol']]
                 ,action   = self.close
                 )
-    
+
     def show(self,*args):
         self.obj.show()
-        
+
     def close(self,*args):
         self.obj.close()
 
 
 
 class History:
-    
+
     def __init__(self):
         self._title = _('History')
         self._icon  = sh.globs['var']['icon_mclient']
         self.Active = False
         self.gui()
-        
+
     def gui(self):
         self.parent_obj = sg.Top(sg.objs.root())
         self.parent_obj.widget.geometry('250x350')
@@ -878,7 +880,7 @@ class History:
         self.widget = self.obj.widget
         self.bindings()
         self.close()
-        
+
     def bindings(self):
         sg.bind (obj      = self.parent_obj
                 ,bindings = [sh.globs['var']['bind_toggle_history']
@@ -895,40 +897,40 @@ class History:
                 ,bindings = sh.globs['var']['bind_clear_history']
                 ,action   = self.clear
                 )
-    
+
     def autoselect(self):
         self.obj.clear_selection()
         if objs.request()._search in self.obj.lst:
             self.obj.set(item=objs._request._search)
-    
+
     def show(self,*args):
         self.Active = True
         self.parent_obj.show()
-        
+
     def close(self,*args):
         self.Active = False
         self.parent_obj.close()
-        
+
     def fill(self):
         self.obj.reset(lst=objs.blocks_db().searches(),title=self._title)
-    
+
     def update(self):
         self.fill()
         self.autoselect()
-        
+
     def clear(self,*args):
         objs.blocks_db().clear()
         self.obj.clear()
         objs.webframe().reset()
         objs._webframe.search_article.obj.clear_text()
         objs.request().reset()
-    
+
     def toggle(self,*args):
         if self.Active:
             self.close()
         else:
             self.show()
-            
+
     def go(self,*args):
         objs.request()._search = self.obj.get()
         # Do not warn after clearing the widget
@@ -938,7 +940,7 @@ class History:
                                      )
             objs._request._url = objs._blocks_db.urla()
             objs.webframe().load_article()
-        
+
     # Скопировать элемент истории
     def copy(self,*args):
         sg.Clipboard().copy(self.obj.get())
@@ -946,12 +948,12 @@ class History:
 
 
 class WebFrame:
-    
+
     def __init__(self):
         self.values()
         self.widgets()
         self.gui()
-    
+
     def reset(self):
         #'widget.reset' is already done in 'self.fill'
         welcome = pg.Welcome(url       = sh.globs['var']['pair_root']
@@ -962,12 +964,12 @@ class WebFrame:
         self.fill(welcome.run())
         self.update_buttons()
         self.title()
-    
+
     def values(self):
         self._pos      = -1
         self.direction = 'right'
         self._row_no   = 0
-    
+
     def gui(self):
         self.obj     = sg.objs.new_top(Maximize=1)
         self.frame   = sg.Frame (parent_obj = self.obj)
@@ -989,14 +991,14 @@ class WebFrame:
         self.bindings   ()
         self.search_field.widget.focus_set()
         self.obj.widget.protocol("WM_DELETE_WINDOW",self.close)
-        
+
     def widgets(self):
         self.search_article = SearchArticle ()
         self.spec_symbols   = SpecSymbols   ()
         self.save_article   = SaveArticle   ()
         self.history        = History       ()
         self.settings       = Settings      ()
-        
+
     def frame_panel(self):
         self._panel = sg.Frame (parent_obj = self.bottom
                                ,expand     = 0
@@ -1006,7 +1008,7 @@ class WebFrame:
         # Поле ввода поисковой строки
         self.search_field = SearchField(parent_obj=self._panel)
         self.draw_buttons()
-        
+
     # Create buttons
     # Bindings are indicated here only to set hints. In order to set bindings, use 'self.bindings'.
     def draw_buttons(self):
@@ -1502,7 +1504,7 @@ class WebFrame:
                 ,bindings = sh.globs['var']['bind_print']
                 ,action   = self.print
                 )
-        
+
     def scrollbars(self):
         vsb = ttk.Scrollbar (self.frame_y.widget
                             ,orient  = 'vertical'
@@ -1516,26 +1518,26 @@ class WebFrame:
         hsb.pack(expand=1,fill='x')
         self.widget.configure(xscrollcommand=hsb.set)
         self.widget.configure(yscrollcommand=vsb.set)
-        
+
     def icon(self,arg=None):
         if not arg:
             arg = sh.globs['var']['icon_mclient']
         self.obj.icon(arg)
-    
+
     def title(self,arg=None):
         if not arg:
             arg = sh.List(lst1=[product,version]).space_items()
         self.obj.title(arg)
-        
+
     def text(self,event=None):
         # We will have a Segmentation Fault on empty input
         if objs.request()._html:
             return self.widget.text('text')
-        
+
     def mouse_sel(self,event=None):
         self.get_pos(event=event)
         self.select()
-    
+
     # todo: rework?
     def get_pos(self,event=None):
         if event:
@@ -1568,7 +1570,7 @@ class WebFrame:
                                   ,_('Empty input is not allowed!')
                                   )
                     '''
-            
+
     def select(self):
         result = objs.blocks_db().selection(pos=self._pos)
         if result:
@@ -1597,7 +1599,7 @@ class WebFrame:
                           ,_('Empty input is not allowed!')
                           )
             '''
-        
+
     def height(self):
         sg.objs.root().widget.update_idletasks()
         '''
@@ -1607,7 +1609,7 @@ class WebFrame:
                       )
         '''
         return self.widget.winfo_height()
-        
+
     def width(self):
         sg.objs.root().widget.update_idletasks()
         '''
@@ -1617,7 +1619,7 @@ class WebFrame:
                       )
         '''
         return self.widget.winfo_width()
-    
+
     def shift_x(self,bbox1,bbox2,row_no):
         _width  = self.width()
         if _width:
@@ -1661,7 +1663,7 @@ class WebFrame:
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-        
+
     def shift_y(self,bboy1,bboy2,row_no,node):
         _height  = self.height()
         if _height:
@@ -1675,18 +1677,26 @@ class WebFrame:
                 node = objs._blocks_db.node_y1(bboy=page_bboy)
                 objs._blocks_db.Selectable = sh.globs['bool']['SelectTermsOnly']
                 if node:
-                    self.widget.yview_name(node)
+                    try:
+                        self.widget.yview_name(node)
+                    except tk._tkinter.TclError:
+                        if node:
+                            node = node[0]
+                        sh.log.append ('WebFrame.shift_screen'
+                                      ,_('WARNING')
+                                      ,_('Failed to set node "%s"!') % str(node)
+                                      )
                 else:
                     sh.log.append ('WebFrame.shift_screen'
                                   ,_('WARNING')
                                   ,_('Empty input is not allowed!')
                                   )
             else:
-                # If a part of the selection is readable, then Tkinter thinks that the entire selection is readable. Moreover, in the majority of cases, NODE1 = NODE2 and BBOY1 and BBOY2 refer to the same node. Calculating 'moveto' proportion (max possible BBOY2/BBOY1) does not help, 'scan_dragto' is not implemented, so we use a little trick here. 
+                # If a part of the selection is readable, then Tkinter thinks that the entire selection is readable. Moreover, in the majority of cases, NODE1 = NODE2 and BBOY1 and BBOY2 refer to the same node. Calculating 'moveto' proportion (max possible BBOY2/BBOY1) does not help, 'scan_dragto' is not implemented, so we use a little trick here.
                 # 'Units' means 'lines'
                 if self._row_no != row_no:
                     if self.direction in ('down','right'):
-                        self.widget.yview_scroll(number=5,what='units') 
+                        self.widget.yview_scroll(number=5,what='units')
                     elif self.direction in ('up','left'):
                         self.widget.yview_scroll(number=-5,what='units')
                     self._row_no = row_no
@@ -1695,28 +1705,35 @@ class WebFrame:
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-    
+
     def shift_screen(self):
         result = objs.blocks_db().selection(pos=self._pos)
         if result:
-            self.shift_x(bbox1=result[4],bbox2=result[5],row_no=result[8])
-            self.shift_y(bboy1=result[6],bboy2=result[7],row_no=result[8],node=result[0])
+            self.shift_x (bbox1  = result[4]
+                         ,bbox2  = result[5]
+                         ,row_no = result[8]
+                         )
+            self.shift_y (bboy1  = result[6]
+                         ,bboy2  = result[7]
+                         ,row_no = result[8]
+                         ,node   = result[0]
+                         )
         else:
             sh.log.append ('WebFrame.shift_screen'
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-    
+
     def fill(self,code='<html><body><h1>Nothing has been loaded yet.</h1></body></html>'):
         self.widget.reset()
         self.widget.parse(code)
-        
+
     def show(self,*args):
         self.obj.show()
-        
+
     def close(self,*args):
         self.obj.close()
-        
+
     def load_article(self):
         timer = sh.Timer(func_title='WebFrame.load_article')
         timer.start()
@@ -1745,6 +1762,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/test.txt'
                            #,file        = '/home/pete/tmp/ars/cut.txt'
                            #,file        = '/home/pete/tmp/ars/tun.txt'
+                           #,file        = '/home/pete/tmp/ars/martyr.txt'
                            )
             page.run()
             ptimer.end()
@@ -1752,32 +1770,31 @@ class WebFrame:
             objs._request._page     = page._page
             # note: # todo: 'Page' returns '_html_raw' for online pages only; this value can be separated for online & offline sources after introducing sub-sources instead of relying on _('All')
             objs._request._html_raw = page._html_raw
-            
+
             tags = tg.Tags (text      = objs._request._page
                            ,source    = objs._request._source
                            ,pair_root = sh.globs['var']['pair_root']
                            )
             tags.run()
-            
+
             elems = el.Elems (blocks = tags._blocks
                              ,source = objs._request._source
                              ,search = objs._request._search
-                             ,cols   = objs._request._cols
                              ,urla   = objs._request._url
                              )
             elems.run()
 
             objs._blocks_db.fill(elems._data)
-            
+
             ph_terma = el.PhraseTerma (dbc    = objs._blocks_db.dbc
                                       ,source = objs._request._source
                                       ,search = objs._request._search
                                       )
             ph_terma.run()
-        
-        phrase_dic = objs._blocks_db.phrase_dic ()
-        data       = objs._blocks_db.assign_bp  ()
-        
+
+        phrase_dic = objs._blocks_db.phrase_dic()
+        data       = objs._blocks_db.assign_bp ()
+
         bp = cl.BlockPrioritize (data       = data
                                 ,source     = objs._request._source
                                 ,search     = objs._request._search
@@ -1789,7 +1806,7 @@ class WebFrame:
                                 )
         bp.run()
         objs._blocks_db.update(query=bp._query)
-        
+
         dics = objs._blocks_db.dics(Block=0)
         # todo: make this Multitran-only
         # note: if an article comprises only 1 dic/wform, this is usually a dictionary + terms from the 'Phrases' section
@@ -1808,9 +1825,13 @@ class WebFrame:
                               )
         else:
             objs._request.SpecialPage = False # Otherwise, 'SpecialPage' will be inherited
-        
+
         SortTerms = objs._request.SortTerms and not objs._request.SpecialPage
-        data = objs._blocks_db.assign_cells(SortTerms=SortTerms)
+        objs._blocks_db.reset (cols      = objs._request._cols
+                              ,SortRows  = objs._request.SortRows
+                              ,SortTerms = SortTerms
+                              )
+        data  = objs._blocks_db.assign_cells()
         cells = cl.Cells (data       = data
                          ,cols       = objs._request._cols
                          ,collimit   = objs._request._collimit
@@ -1819,7 +1840,7 @@ class WebFrame:
                          )
         cells.run()
         objs._blocks_db.update(query=cells._query)
-        
+
         get_html = mh.HTML (data       = objs._blocks_db.fetch()
                            ,cols       = objs._request._cols
                            ,collimit   = objs._request._collimit
@@ -1830,16 +1851,16 @@ class WebFrame:
                            )
         objs._request._html = get_html._html
         self.fill(code=objs._request._html)
-        
+
         data = objs._blocks_db.assign_pos()
         pos  = cl.Pos(data=data,raw_text=self.text())
         pos.run()
         objs._blocks_db.update(query=pos._query)
-        
+
         pages = cl.Pages(obj=objs.webframe(),blocks=pos._blocks)
         pages.run()
         objs._blocks_db.update(query=pages._query)
-        
+
         self.title(arg=objs._request._search)
         self.move_text_start()
         # Empty article is not added either to DB or history, so we just do not clear the search field to be able to correct the typo.
@@ -1849,12 +1870,12 @@ class WebFrame:
         self.search_article.reset()
         self.update_buttons()
         timer.end()
-        
+
         '''
         objs.blocks_db().dbc.execute('select CELLNO,NO,TYPE,TEXT,POS1,POS2,SELECTABLE from BLOCKS order by CELLNO,NO')
         objs.blocks_db().print(Selected=1,Shorten=1,MaxRow=20,MaxRows=300)
         '''
-        
+
     # Select either the search string or the URL
     def go(self,*args):
         search = self.search_field.widget.get().strip('\n').strip(' ')
@@ -1867,7 +1888,7 @@ class WebFrame:
         else:
             objs._request._search = search
             self.go_search()
-                
+
     # Перейти по URL текущей ячейки
     def go_url(self,*args):
         if not objs.request().MouseClicked:
@@ -1885,7 +1906,7 @@ class WebFrame:
                            ,_('WARNING')
                            ,_('This block does not contain a URL!')
                            )
-            
+
     def go_search(self):
         if self.control_length():
             self.get_url()
@@ -1894,7 +1915,7 @@ class WebFrame:
                           ,objs.request()._search
                           )
             self.load_article()
-            
+
     def set_source(self,*args):
         objs.request()._source = sources[self.menu_sources.index]
         sh.log.append ('WebFrame.set_source'
@@ -1902,7 +1923,7 @@ class WebFrame:
                       ,_('Set source to "%s"') % objs._request._source
                       )
         self.load_article()
-        
+
     def get_url(self):
         # note: encoding must be UTF-8 here
         if objs.request()._source == _('Offline'):
@@ -1920,13 +1941,13 @@ class WebFrame:
                       ,_('DEBUG')
                       ,str(objs.request()._url)
                       )
-    
+
     def key_move(self):
         self.select()
         self.shift_screen()
-    
+
     # todo: move 'move_*' procedures to Moves class
-    # Перейти на 1-й термин текущей строки  
+    # Перейти на 1-й термин текущей строки
     def move_line_start(self,*args):
         self.direction = 'left'
         self._pos = objs.blocks_db().line_start(pos=self._pos)
@@ -1995,7 +2016,7 @@ class WebFrame:
         self.direction = 'up'
         self._pos = objs.blocks_db().up(pos=self._pos)
         self.key_move()
-    
+
     # Задействование колеса мыши для пролистывания экрана
     def mouse_wheel(self,event):
         # todo: fix: too small delta in Windows
@@ -2012,7 +2033,7 @@ class WebFrame:
             else:
                 self.move_up()
         return 'break'
-    
+
     # Следить за буфером обмена
     def watch_clipboard(self,*args):
         if objs.request().CaptureHotkey:
@@ -2020,12 +2041,12 @@ class WebFrame:
         else:
             objs._request.CaptureHotkey = True
         self.update_buttons()
-    
+
     # Открыть URL текущей статьи в браузере
     def open_in_browser(self,*args):
         objs.online()._url = objs.request()._url
         objs.online().browse()
-    
+
     # Скопировать текст текущего блока
     def copy_text(self,*args):
         text = objs.blocks_db().text(pos=self._pos)
@@ -2038,13 +2059,13 @@ class WebFrame:
                        ,_('WARNING')
                        ,_('This block does not contain any text!')
                        )
-    
+
     # Скопировать URL текущей статьи
     def copy_url(self,*args):
         sg.Clipboard().copy(objs.request()._url)
         if sh.globs['bool']['Iconify']:
             sg.Geometry(parent_obj=self.obj).minimize()
-        
+
     # Скопировать URL выделенного блока
     def copy_block_url(self,*args):
         url = objs.blocks_db().url(pos=self._pos)
@@ -2057,7 +2078,7 @@ class WebFrame:
                        ,_('WARNING')
                        ,_('This block does not contain a URL!')
                        )
-    
+
     # Открыть веб-страницу с определением текущего термина
     def define(self,Selected=True): # Selected: True: Выделенный термин; False: Название статьи
         if Selected:
@@ -2075,7 +2096,7 @@ class WebFrame:
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-    
+
     # Обновить рисунки на кнопках
     def update_buttons(self):
         searches = objs.blocks_db().searches()
@@ -2103,27 +2124,27 @@ class WebFrame:
             self.btn_clipboard.active()
         else:
             self.btn_clipboard.inactive()
-            
+
         if objs._request.Reverse:
             self.btn_toggle_view.inactive()
         else:
             self.btn_toggle_view.active()
-            
+
         if not objs._request.SpecialPage and objs._request.SortTerms:
             self.btn_toggle_alphabet.active()
         else:
             self.btn_toggle_alphabet.inactive()
-        
+
         if objs._request.Block and objs._blocks_db.blocked():
             self.btn_toggle_block.active()
         else:
             self.btn_toggle_block.inactive()
-            
+
         if not objs._request.SpecialPage and objs._request.Prioritize and objs._blocks_db.prioritized():
             self.btn_toggle_priority.active()
         else:
             self.btn_toggle_priority.inactive()
-            
+
     # Перейти на предыдущий запрос
     def go_back(self,*args):
         searches = objs.blocks_db().searches()
@@ -2171,21 +2192,21 @@ class WebFrame:
                               ).Yes:
                 Confirmed = False
         return Confirmed
-    
+
     def search_reset(self,*args): # SearchArticle
         self.search_article.reset()
         self.search_article.forward()
-    
+
     def set_lang(self,*args):
         objs.request()._lang = langs[self.menu_pairs.index]
         sh.log.append ('WebFrame.set_lang'
                       ,_('INFO')
                       ,_('Set language to "%s"') % objs._request._lang
                       )
-        
+
     def get_pair(self):
         return online_dic_urls[self.menu_pairs.index]
-    
+
     def set_columns(self,*args):
         sh.log.append ('WebFrame.set_columns'
                       ,_('INFO')
@@ -2193,31 +2214,31 @@ class WebFrame:
                       )
         objs.request()._collimit = self.menu_columns.choice + 4
         self.load_article()
-        
+
     def reload(self,*args):
         objs.blocks_db().clear_cur()
         self.load_article()
-        
+
     # Вставить спец. символ в строку поиска
     def insert_sym(self,sym):
         self.search_field.widget.insert('end',sym)
         if sh.globs['bool']['AutoCloseSpecSymbol']:
             self.spec_symbols.close()
-            
+
     def toggle_view(self,*args):
         if objs.request().Reverse:
             objs._request.Reverse = False
         else:
             objs._request.Reverse = True
         self.load_article()
-        
+
     def toggle_alphabet(self,*args):
         if objs.request().SortTerms:
             objs._request.SortTerms = False
         else:
             objs._request.SortTerms = True
         self.load_article()
-    
+
     def toggle_block(self,*args):
         if objs.request().Block:
             objs._request.Block = False
@@ -2244,7 +2265,7 @@ class WebFrame:
                            ,message = _('No dictionaries have been provided for blacklisting!')
                            )
         self.load_article()
-        
+
     def unblock(self):
         result = objs.blocks_db().blocked()
         if result:
@@ -2257,7 +2278,7 @@ class WebFrame:
             query = tmp.getvalue()
             tmp.close()
             objs._blocks_db.update(query=query)
-            
+
     def unprioritize(self):
         result = objs.blocks_db().prioritized()
         if result:
@@ -2270,7 +2291,7 @@ class WebFrame:
             query = tmp.getvalue()
             tmp.close()
             objs._blocks_db.update(query=query)
-        
+
     def toggle_priority(self,*args):
         if objs.request().Prioritize:
             objs._request.Prioritize = False
@@ -2297,7 +2318,7 @@ class WebFrame:
                            ,message = _('No dictionaries have been provided for prioritizing!')
                            )
         self.load_article()
-        
+
     def print(self,*args):
         code = mh.HTML (data     = objs._blocks_db.fetch()
                        ,collimit = objs._request._collimit
@@ -2311,21 +2332,21 @@ class WebFrame:
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-        
+
     def bbox(self,*args):
         return self.widget.tk.call(self.widget,"bbox",*args)
-        
+
     def zzz(self): # Only needed to move quickly to the end of the class
         pass
 
 
 
 class Paths:
-    
+
     def __init__(self):
         self.dir = sh.Directory(path=sh.objs.pdir().add('dics'))
         self.Success = self.dir.Success
-        
+
     def blacklist(self):
         if self.Success:
             instance = sh.File(file=os.path.join(self.dir.dir,'block.txt'))
@@ -2342,7 +2363,7 @@ class Paths:
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
-            
+
     def prioritize(self):
         if self.Success:
             instance = sh.File(file=os.path.join(self.dir.dir,'prioritize.txt'))
@@ -2364,13 +2385,13 @@ class Paths:
 
 # Read the blocklist and the prioritize list
 class Lists:
-    
+
     def __init__(self):
         paths            = Paths()
         self._blacklist  = paths.blacklist()
         self._prioritize = paths.prioritize()
         self.Success     = paths.Success
-        
+
     def blacklist(self):
         if self.Success:
             text = sh.ReadTextFile(file=self._blacklist,Silent=1).get()
@@ -2381,7 +2402,7 @@ class Lists:
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
-            
+
     def prioritize(self):
         if self.Success:
             text = sh.ReadTextFile(file=self._prioritize,Silent=1).get()
@@ -2396,11 +2417,11 @@ class Lists:
 
 
 class Settings:
-    
+
     def __init__(self):
         self.values()
         self.gui()
-        
+
     def values(self):
         self._items = (_('Dictionaries')
                       ,_('Word forms')
@@ -2411,7 +2432,7 @@ class Settings:
         self._allowed    = []
         self._hint_width = 200
         self.Active      = False
-    
+
     def update_col1(self):
         if self.col1.choice != _('Do not set'):
             if self.col1.choice in self._allowed:
@@ -2427,7 +2448,7 @@ class Settings:
                            ,level   = _('ERROR')
                            ,message = _('Empty input is not allowed!')
                            )
-                
+
     def update_col2(self):
         if self.col2.choice != _('Do not set'):
             if self.col2.choice in self._allowed:
@@ -2443,7 +2464,7 @@ class Settings:
                            ,level   = _('ERROR')
                            ,message = _('Empty input is not allowed!')
                            )
-    
+
     def update_col3(self):
         if self.col3.choice != _('Do not set'):
             if self.col3.choice in self._allowed:
@@ -2459,7 +2480,7 @@ class Settings:
                            ,level   = _('ERROR')
                            ,message = _('Empty input is not allowed!')
                            )
-                           
+
     def update_col4(self):
         if self.col4.choice != _('Do not set'):
             if self.col4.choice in self._allowed:
@@ -2475,35 +2496,35 @@ class Settings:
                            ,level   = _('ERROR')
                            ,message = _('Empty input is not allowed!')
                            )
-            
+
     def update_by_col1(self,*args):
         self._allowed = list(self._items)
         self.update_col1()
         self.update_col2()
         self.update_col3()
         self.update_col4()
-            
+
     def update_by_col2(self,*args):
         self._allowed = list(self._items)
         self.update_col2()
         self.update_col1()
         self.update_col3()
         self.update_col4()
-        
+
     def update_by_col3(self,*args):
         self._allowed = list(self._items)
         self.update_col3()
         self.update_col1()
         self.update_col2()
         self.update_col4()
-        
+
     def update_by_col4(self,*args):
         self._allowed = list(self._items)
         self.update_col4()
         self.update_col1()
         self.update_col2()
         self.update_col3()
-    
+
     def gui(self):
         self.obj = sg.objs.new_top(Maximize=0)
         self.title()
@@ -2516,7 +2537,7 @@ class Settings:
         self.vertical()
         self.buttons()
         self.bindings()
-        
+
     def vertical(self):
         self.cb5 = sg.CheckBox (parent_obj = self.fr_cb5
                                ,Active     = False
@@ -2526,7 +2547,7 @@ class Settings:
                             ,text       = _('Vertical view')
                             ,side       = 'left'
                             )
-    
+
     def sort_rows(self):
         self.cb = sg.CheckBox (parent_obj = self.fr_cb
                               ,Active     = True
@@ -2536,7 +2557,7 @@ class Settings:
                            ,text       = _('Sort by each column (if it is set) (except for transcription)')
                            ,side       = 'left'
                            )
-                           
+
     def sort_terms(self):
         self.cb2 = sg.CheckBox (parent_obj = self.fr_cb2
                                ,Active     = True
@@ -2546,19 +2567,19 @@ class Settings:
                             ,text       = _('Alphabetize terms')
                             ,side       = 'left'
                             )
-    
+
     def block_settings(self,*args):
         sg.Message (func    = 'Settings.block_settings'
                    ,level   = _('INFO')
                    ,message = _('Not implemented yet!')
                    )
-                   
+
     def priority_settings(self,*args):
         sg.Message (func    = 'Settings.priority_settings'
                    ,level   = _('INFO')
                    ,message = _('Not implemented yet!')
                    )
-    
+
     def block(self):
         self.cb3 = sg.CheckBox (parent_obj = self.fr_cb3
                                ,Active     = True
@@ -2575,7 +2596,7 @@ class Settings:
                   ,text       = _('Add/Remove')
                   ,side       = 'right'
                   )
-        
+
     def prioritize(self):
         self.cb4 = sg.CheckBox (parent_obj = self.fr_cb4
                                ,Active     = True
@@ -2592,7 +2613,7 @@ class Settings:
                   ,text       = _('Add/Remove')
                   ,side       = 'right'
                   )
-    
+
     def reset(self,*args):
         self.col1.set(_('Dictionaries'))
         self.col2.set(_('Word forms'))
@@ -2603,9 +2624,8 @@ class Settings:
         self.cb3.enable()
         self.cb4.enable()
         self.cb5.disable()
-        
+
     def apply(self,*args):
-        self.close()
         # Do not use 'gettext' to name internal types - this will make the program ~0,6 s slower
         lst = [choice for choice in (self.col1.choice,self.col2.choice,self.col3.choice,self.col4.choice) if choice != _('Do not set')]
         '''
@@ -2628,14 +2648,28 @@ class Settings:
                            ,level   = _('ERROR')
                            ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._cols[i]),', '.join(_('Dictionaries'),_('Word forms'),_('Parts of speech'),_('Transcription')))
                            )
-        objs.request()._cols     = tuple(lst)
-        objs._request.SortRows   = self.cb.get()
-        objs._request.SortTerms  = self.cb2.get()
-        objs._request.Block      = self.cb3.get()
-        objs._request.Prioritize = self.cb4.get()
-        objs._request.Reverse    = self.cb5.get()
-        objs.webframe().load_article()
-    
+        if set(lst):
+            self.close()
+            objs.request()._cols     = tuple(lst)
+            objs._request.SortRows   = self.cb.get()
+            objs._request.SortTerms  = self.cb2.get()
+            objs._request.Block      = self.cb3.get()
+            objs._request.Prioritize = self.cb4.get()
+            objs._request.Reverse    = self.cb5.get()
+            objs.blocks_db().reset (cols      = objs._request._cols
+                                   ,SortRows  = objs._request.SortRows
+                                   ,SortTerms = objs._request.SortTerms
+                                   )
+            objs._blocks_db.unignore()
+            objs._blocks_db.ignore()
+            objs.webframe().load_article()
+        else:
+			# todo: do we really need this?
+            sg.Message (func    = 'Settings.apply'
+                       ,level   = _('WARNING')
+                       ,message = _('At least one column must be set!')
+                       )
+
     def buttons(self):
         sg.Button (parent_obj = self.fr_but
                   ,action     = self.reset
@@ -2644,7 +2678,7 @@ class Settings:
                   ,text       = _('Reset')
                   ,side       = 'left'
                   )
-                  
+
         sg.Button (parent_obj = self.fr_but
                   ,action     = self.apply
                   ,hint       = _('Apply settings')
@@ -2652,7 +2686,7 @@ class Settings:
                   ,text       = _('Apply')
                   ,side       = 'right'
                   )
-    
+
     def frames(self):
         self.fr_col = sg.Frame (parent_obj = self.obj
                                ,expand     = True
@@ -2683,7 +2717,7 @@ class Settings:
                                ,fill       = 'x'
                                ,side       = 'bottom'
                                )
-    
+
     def columns(self):
         self.col1 = sg.OptionMenu (parent_obj = self.fr_col
                                   ,items      = self._items
@@ -2709,7 +2743,7 @@ class Settings:
                                   ,command    = self.update_by_col4
                                   ,default    = _('Transcription')
                                   )
-    
+
     def bindings(self):
         sg.bind (obj      = self.lb
                 ,bindings = '<Button-1>'
@@ -2738,18 +2772,18 @@ class Settings:
                             ]
                 ,action = self.toggle
                 )
-    
+
     def title(self,text=_('View Settings')):
         self.obj.title(text=text)
-        
+
     def show(self,*args):
         self.Active = True
         self.obj.show()
-        
+
     def close(self,*args):
         self.Active = False
         self.obj.close()
-        
+
     def toggle(self,*args):
         if self.Active:
             self.close()
@@ -2763,14 +2797,14 @@ objs = Objects()
 
 if  __name__ == '__main__':
     sg.objs.start()
-    
+
     ConfigMclient()
-    
+
     timed_update()
 
     objs.webframe().reset()
     objs._webframe.show()
-    
+
     kl_mod.keylistener.cancel()
-    
+
     sg.objs.end()

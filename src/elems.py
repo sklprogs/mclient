@@ -59,11 +59,10 @@ class Block:
 '''
 class Elems:
 	
-	def __init__(self,blocks,source,search,cols,urla=''):
+	def __init__(self,blocks,source,search,urla=''):
 		self._blocks = blocks
 		self._source = source
 		self._search = search
-		self._cols   = cols
 		self._urla   = urla
 		self._data   = []
 		if self._blocks and self._source and self._search:
@@ -355,7 +354,6 @@ class Elems:
 			if block._type in ('dic','wform','speech','transc'):
 				block._terma = ''
 				
-	# cur
 	def insert_fixed(self):
 		dica = wforma = speecha = ''
 		i = 0
@@ -412,45 +410,6 @@ class Elems:
 				i += 4
 			i += 1
 			
-	'''
-	def insert_fixed(self):
-		dica = wforma = speecha = ''
-		i = 0
-		while i < len(self._blocks):
-			if dica != self._blocks[i]._dica or wforma != self._blocks[i]._wforma or speecha != self._blocks[i]._speecha:
-				# Reverse order (because of 'insert')
-				j = len(self._cols) - 1
-				while j >= 0:
-					block = Block()
-					block._type = self._cols[j]
-					if self._cols[j] == 'speech':
-						block._text    = self._blocks[i]._speecha
-					elif self._cols[j] == 'transc':
-						block._text    = self._blocks[i]._transca
-					elif self._cols[j] == 'wform':
-						block._text    = self._blocks[i]._wforma
-					elif self._cols[j] == 'dic':
-						block._text    = self._blocks[i]._dica
-					else:
-						sg.Message (func    = 'Elems.insert_fixed'
-						           ,level   = _('ERROR')
-						           ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._cols[i]),'dic, wform, transc, speech')
-						           )
-					block._dica    = self._blocks[i]._dica
-					block._wforma  = self._blocks[i]._wforma
-					block._speecha = self._blocks[i]._speecha
-					block._transca = self._blocks[i]._transca
-					block._terma   = self._blocks[i]._terma
-					block._same    = 0
-					self._blocks.insert(i,block)
-					j -= 1
-				dica    = self._blocks[i]._dica
-				wforma  = self._blocks[i]._wforma
-				speecha = self._blocks[i]._speecha
-				i += 4
-			i += 1
-	'''
-		
 	def remove_fixed(self):
 		self._blocks = [block for block in self._blocks if block._type not in ['dic','wform','transc','speech']]
 	
@@ -487,6 +446,7 @@ class Elems:
 			  ,-1                  # (27) BBOY1
 			  ,-1                  # (28) BBOY2
 			  ,block._text.lower() # (29) TEXTLOW
+			  ,0                   # (30) IGNORE
 			  )
 			                  )
 
@@ -612,7 +572,6 @@ if __name__ == '__main__':
 	elems = Elems (blocks = tags._blocks
 	              ,source = source
 	              ,search = search
-	              ,cols   = ('dic','wform','transc','speech')
 	              )
 	elems.run()
 	
