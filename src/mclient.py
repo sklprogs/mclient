@@ -1751,7 +1751,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/random fury.txt'
                            #,file        = '/home/pete/tmp/ars/lottery.txt'
                            #,file        = '/home/pete/tmp/ars/таратайка.txt'
-                           #,file        = '/home/pete/tmp/ars/painting.txt'
+                           ,file        = '/home/pete/tmp/ars/painting.txt'
                            #,file        = '/home/pete/tmp/ars/рабочая документация.txt'
                            #,file        = '/home/pete/tmp/ars/do.txt'
                            #,file        = '/home/pete/tmp/ars/set.txt'
@@ -1761,7 +1761,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/test.txt'
                            #,file        = '/home/pete/tmp/ars/cut.txt'
                            #,file        = '/home/pete/tmp/ars/tun.txt'
-                           ,file        = '/home/pete/tmp/ars/martyr.txt'
+                           #,file        = '/home/pete/tmp/ars/martyr.txt'
                            )
             page.run()
             ptimer.end()
@@ -2096,7 +2096,7 @@ class WebFrame:
                           ,_('Empty input is not allowed!')
                           )
 
-    # Обновить рисунки на кнопках
+    # Обновить рисунки на кнопках и галки в виджете Settings
     def update_buttons(self):
         searches = objs.blocks_db().searches()
         if searches:
@@ -2126,23 +2126,31 @@ class WebFrame:
 
         if objs._request.Reverse:
             self.btn_toggle_view.inactive()
+            self.settings.cb5.enable()
         else:
             self.btn_toggle_view.active()
+            self.settings.cb5.disable()
 
         if not objs._request.SpecialPage and objs._request.SortTerms:
             self.btn_toggle_alphabet.active()
+            self.settings.cb2.enable()
         else:
             self.btn_toggle_alphabet.inactive()
+            self.settings.cb2.disable()
 
         if objs._request.Block and objs._blocks_db.blocked():
             self.btn_toggle_block.active()
+            self.settings.cb3.enable()
         else:
             self.btn_toggle_block.inactive()
+            self.settings.cb3.disable()
 
         if not objs._request.SpecialPage and objs._request.Prioritize and objs._blocks_db.prioritized():
             self.btn_toggle_priority.active()
+            self.settings.cb4.enable()
         else:
             self.btn_toggle_priority.inactive()
+            self.settings.cb4.disable()
 
     # Перейти на предыдущий запрос
     def go_back(self,*args):
