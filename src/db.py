@@ -563,6 +563,8 @@ class DB:
 
     def ignore(self):
         self.dbc.execute('update BLOCKS set IGNORE = 1 where SOURCE = ? and SEARCH = ? and TYPE not in %s' % (self._types,),(self._source,self._search,))
+        if 'dic' not in self._types:
+            self.dbc.execute('update BLOCKS set IGNORE = 1 where SOURCE = ? and SEARCH = ? and TYPE = ?',(self._source,self._search,'phrase',))
 
     def zzz(self):
         pass

@@ -11,7 +11,6 @@
     - Use borders of the cell, not borders of the block when calculating ShiftScreen
     - Store '_html_raw' value for all articles, not just for the latest new loaded one
     - Move 'insert_fixed' outside of Elems (since fixed columns can vary now)
-    - Ignore blocks of 'phrase' type where 'dic' type is ignored
     -
 '''
 
@@ -1758,11 +1757,11 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/set.txt'
                            #,file        = '/home/pete/tmp/ars/get.txt'
                            #,file        = '/home/pete/tmp/ars/pack.txt'
-                           ,file        = '/home/pete/tmp/ars/counterpart.txt'
+                           #,file        = '/home/pete/tmp/ars/counterpart.txt'
                            #,file        = '/home/pete/tmp/ars/test.txt'
                            #,file        = '/home/pete/tmp/ars/cut.txt'
                            #,file        = '/home/pete/tmp/ars/tun.txt'
-                           #,file        = '/home/pete/tmp/ars/martyr.txt'
+                           ,file        = '/home/pete/tmp/ars/martyr.txt'
                            )
             page.run()
             ptimer.end()
