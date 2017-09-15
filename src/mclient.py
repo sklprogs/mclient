@@ -11,7 +11,7 @@
     - Use borders of the cell, not borders of the block when calculating ShiftScreen
     - Store '_html_raw' value for all articles, not just for the latest new loaded one
     - Move 'insert_fixed' outside of Elems (since fixed columns can vary now)
-    -
+    - Set a priority that is lower for phrases than for terms (in case the 1st fixed column is not Dictionaries)
 '''
 
 ''' # fix
@@ -1749,9 +1749,9 @@ class WebFrame:
                            ,win_encoding = sh.globs['var']['win_encoding']
                            ,ext_dics     = objs.ext_dics()
                            #,file        = '/home/pete/tmp/ars/random fury.txt'
-                           #,file        = '/home/pete/tmp/ars/lottery.txt'
+                           ,file        = '/home/pete/tmp/ars/lottery.txt'
                            #,file        = '/home/pete/tmp/ars/таратайка.txt'
-                           ,file        = '/home/pete/tmp/ars/painting.txt'
+                           #,file        = '/home/pete/tmp/ars/painting.txt'
                            #,file        = '/home/pete/tmp/ars/рабочая документация.txt'
                            #,file        = '/home/pete/tmp/ars/do.txt'
                            #,file        = '/home/pete/tmp/ars/set.txt'
@@ -1762,6 +1762,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/cut.txt'
                            #,file        = '/home/pete/tmp/ars/tun.txt'
                            #,file        = '/home/pete/tmp/ars/martyr.txt'
+                           #,file         = '/home/pete/tmp/ars/œuf.txt'
                            )
             page.run()
             ptimer.end()
@@ -1831,6 +1832,7 @@ class WebFrame:
                               ,SortTerms = SortTerms
                               )
         data  = objs._blocks_db.assign_cells()
+        
         cells = cl.Cells (data       = data
                          ,cols       = objs._request._cols
                          ,collimit   = objs._request._collimit
@@ -1839,7 +1841,7 @@ class WebFrame:
                          )
         cells.run()
         objs._blocks_db.update(query=cells._query)
-
+        
         get_html = mh.HTML (data       = objs._blocks_db.fetch()
                            ,cols       = objs._request._cols
                            ,collimit   = objs._request._collimit
@@ -1871,8 +1873,8 @@ class WebFrame:
         timer.end()
 
         '''
-        objs.blocks_db().dbc.execute('select CELLNO,NO,TYPE,TEXT,POS1,POS2,SELECTABLE from BLOCKS order by CELLNO,NO')
-        objs.blocks_db().print(Selected=1,Shorten=1,MaxRow=20,MaxRows=300)
+        objs._blocks_db.dbc.execute('select CELLNO,NO,ROWNO,COLNO,TYPE,TEXT,DICA,WFORMA,SPEECHA from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 order by CELLNO,NO',(objs._blocks_db._source,objs._blocks_db._search,))
+        objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=150)
         '''
 
     # Select either the search string or the URL

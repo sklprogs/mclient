@@ -194,7 +194,13 @@ class DB:
             elif item == 'speech':
                 query.append('SPEECHA')
             elif item == 'transc':
-                query.append('TRANSCA')
+                # There is no sense to sort by transcription
+                pass
+            else:
+                sg.Message (func    = 'DB.order_query'
+                           ,level   = _('ERROR')
+                           ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(item),'dic, wform, speech, transc')
+                           )
         if self.SortTerms:
             query.append('TERMA')
         return ','.join(query)
