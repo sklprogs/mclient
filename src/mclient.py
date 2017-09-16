@@ -1749,7 +1749,7 @@ class WebFrame:
                            ,win_encoding = sh.globs['var']['win_encoding']
                            ,ext_dics     = objs.ext_dics()
                            #,file        = '/home/pete/tmp/ars/random fury.txt'
-                           ,file        = '/home/pete/tmp/ars/lottery.txt'
+                           #,file        = '/home/pete/tmp/ars/lottery.txt'
                            #,file        = '/home/pete/tmp/ars/таратайка.txt'
                            #,file        = '/home/pete/tmp/ars/painting.txt'
                            #,file        = '/home/pete/tmp/ars/рабочая документация.txt'
@@ -1832,7 +1832,7 @@ class WebFrame:
                               ,SortTerms = SortTerms
                               )
         data  = objs._blocks_db.assign_cells()
-        
+
         cells = cl.Cells (data       = data
                          ,cols       = objs._request._cols
                          ,collimit   = objs._request._collimit
@@ -1841,7 +1841,7 @@ class WebFrame:
                          )
         cells.run()
         objs._blocks_db.update(query=cells._query)
-        
+
         get_html = mh.HTML (data       = objs._blocks_db.fetch()
                            ,cols       = objs._request._cols
                            ,collimit   = objs._request._collimit
@@ -2438,6 +2438,12 @@ class Settings:
                       ,_('Transcription')
                       ,_('Do not set')
                       )
+        self._sc_items = (product
+                         ,_('Multitran')
+                         ,_('Cut to the chase')
+                         ,_('Clearness')
+                         ,_('Custom')
+                         )
         self._allowed    = []
         self._hint_width = 200
         self.Active      = False
@@ -2506,12 +2512,66 @@ class Settings:
                            ,message = _('Empty input is not allowed!')
                            )
 
+    def update_sc(self,*args):
+        cond11 = self.col1.choice == _('Dictionaries')
+        cond12 = self.col1.choice == _('Word forms')
+        cond13 = self.col1.choice == _('Parts of speech')
+        cond21 = self.col2.choice == _('Word forms')
+        cond22 = self.col2.choice == _('Transcription')
+        cond31 = self.col3.choice == _('Transcription')
+        cond32 = self.col3.choice == _('Parts of speech')
+        cond33 = self.col3.choice == _('Do not set')
+        cond41 = self.col4.choice == _('Parts of speech')
+        cond42 = self.col4.choice == _('Dictionaries')
+        cond43 = self.col4.choice == _('Do not set')
+
+        if cond11 and cond21 and cond31 and cond41:
+            self.sc.set(product)
+        elif cond12 and cond22 and cond32 and cond42:
+            self.sc.set(_('Multitran'))
+        elif cond13 and cond21 and cond31 and cond42:
+            self.sc.set(_('Cut to the chase'))
+        elif cond13 and cond21 and cond33 and cond43:
+            self.sc.set(_('Clearness'))
+        else:
+            self.sc.set(_('Custom'))
+    
+    def update_by_sc(self,*args):
+        if self.sc.choice == product:
+            self.col1.set(_('Dictionaries'))
+            self.col2.set(_('Word forms'))
+            self.col3.set(_('Transcription'))
+            self.col4.set(_('Parts of speech'))
+        elif self.sc.choice == _('Multitran'):
+            self.col1.set(_('Word forms'))
+            self.col2.set(_('Transcription'))
+            self.col3.set(_('Parts of speech'))
+            self.col4.set(_('Dictionaries'))
+        elif self.sc.choice == _('Cut to the chase'):
+            self.col1.set(_('Parts of speech'))
+            self.col2.set(_('Word forms'))
+            self.col3.set(_('Transcription'))
+            self.col4.set(_('Dictionaries'))
+        elif self.sc.choice == _('Clearness'):
+            self.col1.set(_('Parts of speech'))
+            self.col2.set(_('Word forms'))
+            self.col3.set(_('Do not set'))
+            self.col4.set(_('Do not set'))
+        elif self.sc.choice == _('Custom'):
+            pass
+        else:
+            sg.Message (func    = 'Settings.update_by_sc'
+                       ,level   = _('ERROR')
+                       ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self.sc.choice),', '.join(self._sc_items))
+                       )
+
     def update_by_col1(self,*args):
         self._allowed = list(self._items)
         self.update_col1()
         self.update_col2()
         self.update_col3()
         self.update_col4()
+        self.update_sc()
 
     def update_by_col2(self,*args):
         self._allowed = list(self._items)
@@ -2519,6 +2579,7 @@ class Settings:
         self.update_col1()
         self.update_col3()
         self.update_col4()
+        self.update_sc()
 
     def update_by_col3(self,*args):
         self._allowed = list(self._items)
@@ -2526,6 +2587,7 @@ class Settings:
         self.update_col1()
         self.update_col2()
         self.update_col4()
+        self.update_sc()
 
     def update_by_col4(self,*args):
         self._allowed = list(self._items)
@@ -2533,30 +2595,20 @@ class Settings:
         self.update_col1()
         self.update_col2()
         self.update_col3()
+        self.update_sc()
 
     def gui(self):
         self.obj = sg.objs.new_top(Maximize=0)
         self.title()
         self.frames()
+        self.checkboxes()
+        self.labels()
         self.columns()
         self.sort_rows()
         self.sort_terms()
-        self.block()
-        self.prioritize()
-        self.vertical()
         self.buttons()
         self.bindings()
         self.icon()
-
-    def vertical(self):
-        self.cb5 = sg.CheckBox (parent_obj = self.fr_cb5
-                               ,Active     = False
-                               ,side       = 'left'
-                               )
-        self.lb5 = sg.Label (parent_obj = self.fr_cb5
-                            ,text       = _('Vertical view')
-                            ,side       = 'left'
-                            )
 
     def sort_rows(self):
         self.cb = sg.CheckBox (parent_obj = self.fr_cb
@@ -2590,39 +2642,21 @@ class Settings:
                    ,message = _('Not implemented yet!')
                    )
 
-    def block(self):
+    def checkboxes(self):
         self.cb3 = sg.CheckBox (parent_obj = self.fr_cb3
                                ,Active     = True
                                ,side       = 'left'
                                )
-        self.lb3 = sg.Label (parent_obj = self.fr_cb3
-                            ,text       = _('Block dictionaries from blacklist')
-                            ,side       = 'left'
-                            )
-        sg.Button (parent_obj = self.fr_cb3
-                  ,action     = self.block_settings
-                  ,hint       = _('Tune up blacklisting')
-                  ,hint_width = self._hint_width
-                  ,text       = _('Add/Remove')
-                  ,side       = 'right'
-                  )
 
-    def prioritize(self):
         self.cb4 = sg.CheckBox (parent_obj = self.fr_cb4
                                ,Active     = True
                                ,side       = 'left'
                                )
-        self.lb4 = sg.Label (parent_obj = self.fr_cb4
-                            ,text       = _('Prioritize dictionaries')
-                            ,side       = 'left'
-                            )
-        sg.Button (parent_obj = self.fr_cb4
-                  ,action     = self.priority_settings
-                  ,hint       = _('Tune up prioritizing')
-                  ,hint_width = self._hint_width
-                  ,text       = _('Add/Remove')
-                  ,side       = 'right'
-                  )
+
+        self.cb5 = sg.CheckBox (parent_obj = self.fr_cb5
+                               ,Active     = False
+                               ,side       = 'left'
+                               )
 
     def reset(self,*args):
         self.col1.set(_('Dictionaries'))
@@ -2697,9 +2731,55 @@ class Settings:
                   ,side       = 'right'
                   )
 
+        sg.Button (parent_obj = self.fr_cb3
+                  ,action     = self.block_settings
+                  ,hint       = _('Tune up blacklisting')
+                  ,hint_width = self._hint_width
+                  ,text       = _('Add/Remove')
+                  ,side       = 'right'
+                  )
+
+        sg.Button (parent_obj = self.fr_cb4
+                  ,action     = self.priority_settings
+                  ,hint       = _('Tune up prioritizing')
+                  ,hint_width = self._hint_width
+                  ,text       = _('Add/Remove')
+                  ,side       = 'right'
+                  )
+
+        self.lb5 = sg.Label (parent_obj = self.fr_cb5
+                            ,text       = _('Vertical view')
+                            ,side       = 'left'
+                            )
+
     def frames(self):
         self.fr_col = sg.Frame (parent_obj = self.obj
                                ,expand     = True
+                               ,fill       = 'both'
+                               )
+        self.fr_sc  = sg.Frame (parent_obj = self.fr_col
+                               ,side       = 'left'
+                               ,expand     = False
+                               ,fill       = 'both'
+                               )
+        self.fr_c1  = sg.Frame (parent_obj = self.fr_col
+                               ,side       = 'left'
+                               ,expand     = False
+                               ,fill       = 'both'
+                               )
+        self.fr_c2  = sg.Frame (parent_obj = self.fr_col
+                               ,side       = 'left'
+                               ,expand     = False
+                               ,fill       = 'both'
+                               )
+        self.fr_c3  = sg.Frame (parent_obj = self.fr_col
+                               ,expand     = False
+                               ,side       = 'left'
+                               ,fill       = 'both'
+                               )
+        self.fr_c4  = sg.Frame (parent_obj = self.fr_col
+                               ,side       = 'left'
+                               ,expand     = False
                                ,fill       = 'both'
                                )
         self.fr_cb  = sg.Frame (parent_obj = self.obj
@@ -2728,28 +2808,95 @@ class Settings:
                                ,side       = 'bottom'
                                )
 
+    def labels(self):
+        sg.Label (parent_obj = self.fr_sc
+                 ,text       = _('Style:')
+                 ,font       = 'Sans 9'
+                 ,side       = 'top'
+                 ,fill       = 'both'
+                 ,expand     = True
+                 ,fg         = 'PaleTurquoise1'
+                 ,bg         = 'RoyalBlue3'
+                 )
+
+        sg.Label (parent_obj = self.fr_c1
+                 ,text       = _('Column') + ' 1:'
+                 ,font       = 'Sans 9'
+                 ,side       = 'top'
+                 ,fill       = 'both'
+                 ,expand     = True
+                 ,fg         = 'PaleTurquoise1'
+                 ,bg         = 'RoyalBlue3'
+                 )
+
+        sg.Label (parent_obj = self.fr_c2
+                 ,text       = _('Column') + ' 2:'
+                 ,font       = 'Sans 9'
+                 ,side       = 'top'
+                 ,fill       = 'both'
+                 ,expand     = True
+                 ,fg         = 'PaleTurquoise1'
+                 ,bg         = 'RoyalBlue3'
+                 )
+
+        sg.Label (parent_obj = self.fr_c3
+                 ,text       = _('Column') + ' 3:'
+                 ,font       = 'Sans 9'
+                 ,side       = 'top'
+                 ,fill       = 'both'
+                 ,expand     = True
+                 ,fg         = 'PaleTurquoise1'
+                 ,bg         = 'RoyalBlue3'
+                 )
+
+        sg.Label (parent_obj = self.fr_c4
+                 ,text       = _('Column') + ' 4:'
+                 ,font       = 'Sans 9'
+                 ,side       = 'top'
+                 ,fill       = 'both'
+                 ,expand     = True
+                 ,fg         = 'PaleTurquoise1'
+                 ,bg         = 'RoyalBlue3'
+                 )
+
+        self.lb3 = sg.Label (parent_obj = self.fr_cb3
+                            ,text       = _('Block dictionaries from blacklist')
+                            ,side       = 'left'
+                            )
+
+        self.lb4 = sg.Label (parent_obj = self.fr_cb4
+                            ,text       = _('Prioritize dictionaries')
+                            ,side       = 'left'
+                            )
+
     def columns(self):
-        self.col1 = sg.OptionMenu (parent_obj = self.fr_col
+        self.sc   = sg.OptionMenu (parent_obj = self.fr_sc
+                                  ,items      = self._sc_items
+                                  ,side       = 'bottom'
+                                  ,command    = self.update_by_sc
+                                  ,default    = product
+                                  )
+        self.col1 = sg.OptionMenu (parent_obj = self.fr_c1
                                   ,items      = self._items
-                                  ,side       = 'left'
+                                  ,side       = 'bottom'
                                   ,command    = self.update_by_col1
                                   ,default    = _('Dictionaries')
                                   )
-        self.col2 = sg.OptionMenu (parent_obj = self.fr_col
+        self.col2 = sg.OptionMenu (parent_obj = self.fr_c2
                                   ,items      = self._items
-                                  ,side       = 'left'
+                                  ,side       = 'bottom'
                                   ,command    = self.update_by_col2
                                   ,default    = _('Word forms')
                                   )
-        self.col3 = sg.OptionMenu (parent_obj = self.fr_col
+        self.col3 = sg.OptionMenu (parent_obj = self.fr_c3
                                   ,items      = self._items
-                                  ,side       = 'left'
+                                  ,side       = 'bottom'
                                   ,command    = self.update_by_col3
                                   ,default    = _('Parts of speech')
                                   )
-        self.col4 = sg.OptionMenu (parent_obj = self.fr_col
+        self.col4 = sg.OptionMenu (parent_obj = self.fr_c4
                                   ,items      = self._items
-                                  ,side       = 'left'
+                                  ,side       = 'bottom'
                                   ,command    = self.update_by_col4
                                   ,default    = _('Transcription')
                                   )
