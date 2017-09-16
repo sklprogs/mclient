@@ -278,13 +278,15 @@ class Cells:
                     PrevFixed = True
                     i += 1
                 self._blocks[x].i = i
-                self._blocks[x].j = j = 1
+                self._blocks[x].j = 1
+                j = len(self._cols) - 1
             elif len(self._cols) > 2 and self._blocks[x]._type == self._cols[2]:
                 if not PrevFixed:
                     PrevFixed = True
                     i += 1
                 self._blocks[x].i = i
-                self._blocks[x].j = j = 2
+                self._blocks[x].j = 2
+                j = len(self._cols) - 1
             elif len(self._cols) > 3 and self._blocks[x]._type == self._cols[3]:
                 if not PrevFixed:
                     PrevFixed = True

@@ -38,6 +38,7 @@
     - When there is an article where all dictionaries are blocked, Previous-Next arrows are blank even if the history is not empty
     - Fix links in a saved raw html
     - 'gen_poses' cannot find Search items when Page is forced to use 'file=' (RU-DE, 'tun')
+    - Start ROWNO with 0
 '''
 
 import gettext
@@ -1872,10 +1873,9 @@ class WebFrame:
         self.update_buttons()
         timer.end()
 
-        '''
+        # cur
         objs._blocks_db.dbc.execute('select CELLNO,NO,ROWNO,COLNO,TYPE,TEXT,DICA,WFORMA,SPEECHA from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 order by CELLNO,NO',(objs._blocks_db._source,objs._blocks_db._search,))
         objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=150)
-        '''
 
     # Select either the search string or the URL
     def go(self,*args):
@@ -2535,7 +2535,7 @@ class Settings:
             self.sc.set(_('Clearness'))
         else:
             self.sc.set(_('Custom'))
-    
+
     def update_by_sc(self,*args):
         if self.sc.choice == product:
             self.col1.set(_('Dictionaries'))
@@ -2809,6 +2809,9 @@ class Settings:
                                )
 
     def labels(self):
+        ''' Other possible color schemes:
+            font = 'Sans 9 italic', fg = 'khaki4'
+        '''
         sg.Label (parent_obj = self.fr_sc
                  ,text       = _('Style:')
                  ,font       = 'Sans 9'
