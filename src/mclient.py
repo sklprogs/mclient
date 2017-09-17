@@ -1662,19 +1662,19 @@ class WebFrame:
                           ,_('Empty input is not allowed!')
                           )
 
-    def set_node_y(self,node):
+    def view_node_y(self,node):
         if node:
             try:
                 self.widget.yview_name(node)
             except tk._tkinter.TclError:
                 if node:
                     node = node[0]
-                    sh.log.append ('WebFrame.set_node_y'
+                    sh.log.append ('WebFrame.view_node_y'
                                   ,_('WARNING')
                                   ,_('Failed to set node "%s"!') % str(node)
                                   )
         else:
-            sh.log.append ('WebFrame.set_node_y'
+            sh.log.append ('WebFrame.view_node_y'
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
@@ -1691,7 +1691,7 @@ class WebFrame:
                 objs._blocks_db.Selectable = False
                 node = objs._blocks_db.node_y1(bboy=page_bboy)
                 objs._blocks_db.Selectable = sh.globs['bool']['SelectTermsOnly']
-                self.set_node_y(node)
+                self.view_node_y(node)
             else:
                 # If a part of the selection is readable, then Tkinter thinks that the entire selection is readable. Moreover, in the majority of cases, NODE1 = NODE2 and BBOY1 and BBOY2 refer to the same node. Calculating 'moveto' proportion (max possible BBOY2/BBOY1) does not help, 'scan_dragto' is not implemented, so we use a little trick here.
                 # 'Units' means 'lines'
