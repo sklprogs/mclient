@@ -475,7 +475,7 @@ class DB:
 
     def node_y1(self,bboy):
         if self._source and self._search:
-            self.dbc.execute('select NODE1,TEXT,BBOY1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and BBOY1 >= ? order by BBOY1',(self._source,self._search,bboy,))
+            self.dbc.execute('select NODE1,BBOY1,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and BBOY1 >= ? order by BBOY1',(self._source,self._search,bboy,))
             return self.dbc.fetchone()
         else:
             sh.log.append ('DB.node_y1'

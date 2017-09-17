@@ -724,7 +724,8 @@ class SearchArticle:
         pos = objs.blocks_db().search_forward(pos=self._pos,search=self.search())
         if pos or pos == 0:
             objs.webframe()._pos = self._pos = pos
-            objs._webframe.key_move()
+            objs._webframe.select()
+            objs._webframe.shift_screen()
         elif self._pos < 0:
             sg.Message (func    = 'SearchArticle.forward'
                        ,level   = _('INFO')
@@ -766,13 +767,15 @@ class SearchArticle:
                            ,message = _('The end has been reached. Searching from the start.')
                            )
                 objs.webframe()._pos = self._pos = self.last()
-                objs._webframe.key_move()
+                objs._webframe.select()
+                objs._webframe.shift_screen()
             else:
                 pos = objs.blocks_db().search_backward(pos=self._pos,search=self.search())
                 if pos or pos == 0:
                     self._pos = pos
                     objs.webframe()._pos = pos
-                    objs._webframe.key_move()
+                    objs._webframe.select()
+                    objs._webframe.shift_screen()
         else:
             sg.Message (func    = 'SearchArticle.backward'
                        ,level   = _('INFO')
@@ -965,7 +968,6 @@ class WebFrame:
 
     def values(self):
         self._pos      = -1
-        self.direction = 'right'
 
     def gui(self):
         self.obj     = sg.objs.new_top(Maximize=1)
@@ -1617,39 +1619,15 @@ class WebFrame:
         '''
         return self.widget.winfo_width()
 
-    def shift_x(self,bbox1,bbox2,row_no):
+    def shift_x(self,bbox1,bbox2):
         _width  = self.width()
         if _width:
-            page_no1 = int(bbox1 / _width)
-            page_no2 = int(bbox2 / _width)
-            min_col  = objs._blocks_db.min_col()
-            max_col  = objs._blocks_db.max_col()
-            if min_col and max_col:
-                min_bbox = min_col[2]
+            page_bbox = (int(bbox1 / _width)) * _width
+            max_col   = objs._blocks_db.max_col()
+            if max_col:
                 max_bbox = max_col[2]
-                page_no  = 0
-                bboxes   = objs._blocks_db.row(row_no=row_no)
-                if bboxes:
-                    for i in range(len(bboxes)):
-                        if page_no != int(bboxes[i][0] / _width) or page_no != int(bboxes[i][1] / _width):
-                            page_no += 1
-                        if bbox1 == bboxes[i][0]:
-                            bbox1 = page_no * _width
-                            break
-                    fraction = None
-                    if bbox1 == min_bbox:
-                        fraction = '0.0'
-                    elif self.direction == 'left':
-                        fraction = (bbox1-5)/max_bbox
-                    elif self.direction == 'right':
-                        fraction = (bbox1+5)/max_bbox
-                    if fraction:
-                        self.widget.xview_moveto(fraction=fraction)
-                else:
-                    sh.log.append ('WebFrame.shift_x'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                fraction = page_bbox / max_bbox
+                self.widget.xview_moveto(fraction=fraction)
             else:
                 sh.log.append ('WebFrame.shift_x'
                               ,_('WARNING')
@@ -1660,7 +1638,7 @@ class WebFrame:
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-
+    
     def view_node_y(self,node):
         if node:
             try:
@@ -1700,13 +1678,12 @@ class WebFrame:
     def shift_screen(self):
         result = objs.blocks_db().selection(pos=self._pos)
         if result:
-            row_no = result[8]
             self.shift_x (bbox1  = result[4]
                          ,bbox2  = result[5]
-                         ,row_no = row_no
                          )
 
-            result = objs._blocks_db.min_bboy(row_no=row_no)
+            # Probably, there is a bug in tkinter/tkinterhtml: minimal BBOY1 does not always match the topmost block
+            result = objs._blocks_db.min_bboy(row_no=result[8])
             if result:
                 self.shift_y (bboy1  = result[0]
                              ,node   = result[1]
@@ -1948,80 +1925,76 @@ class WebFrame:
                       ,str(objs.request()._url)
                       )
 
-    def key_move(self):
-        self.select()
-        self.shift_screen()
-
     # todo: move 'move_*' procedures to Moves class
     # Перейти на 1-й термин текущей строки
     def move_line_start(self,*args):
-        self.direction = 'left'
         self._pos = objs.blocks_db().line_start(pos=self._pos)
-        self.key_move()
+        self.select()
+        self.shift_screen()
 
     # Перейти на последний термин текущей строки
     def move_line_end(self,*args):
-        self.direction = 'right'
         self._pos = objs.blocks_db().line_end(pos=self._pos)
-        self.key_move()
+        self.select()
+        self.shift_screen()
 
     # Go to the 1st (non-)selectable block
     def move_text_start(self,*args):
-        self.direction = 'up'
         self._pos = objs.blocks_db().start()
-        self.key_move()
+        self.select()
+        self.shift_screen()
 
     # Перейти на последний термин статьи
     def move_text_end(self,*args):
-        self.direction = 'down'
         self._pos = objs.blocks_db().end()
-        self.key_move()
+        self.select()
+        self.shift_screen()
 
     # Перейти на страницу вверх
     def move_page_up(self,*args):
-        self.direction = 'up'
         result = objs.blocks_db().selection(pos=self._pos)
         height = self.height()
         if result and height:
             result = objs.blocks_db().page_up(bboy=result[6],height=height)
             if result:
                 self._pos = result
-                self.key_move()
+                self.select()
+                self.shift_screen()
 
     # Перейти на страницу вниз
     def move_page_down(self,*args):
-        self.direction = 'down'
         result = objs.blocks_db().selection(pos=self._pos)
         height = self.height()
         if result and height:
             result = objs.blocks_db().page_down(bboy=result[6],height=height)
             if result:
                 self._pos = result
-                self.key_move()
+                self.select()
+                self.shift_screen()
 
     # Перейти на предыдущий термин
     def move_left(self,*args):
-        self.direction = 'left'
         self._pos = objs.blocks_db().left(pos=self._pos)
-        self.key_move()
+        self.select()
+        self.shift_screen()
 
     # Перейти на следующий термин
     def move_right(self,*args):
-        self.direction = 'right'
         self._pos = objs.blocks_db().right(pos=self._pos)
-        self.key_move()
+        self.select()
+        self.shift_screen()
 
     # Перейти на строку вниз
     def move_down(self,*args):
-        self.direction = 'down'
         self._pos = objs.blocks_db().down(pos=self._pos)
-        self.key_move()
+        self.select()
+        self.shift_screen()
 
     # Перейти на строку вверх
     def move_up(self,*args):
-        self.direction = 'up'
         self._pos = objs.blocks_db().up(pos=self._pos)
-        self.key_move()
+        self.select()
+        self.shift_screen()
 
     # Задействование колеса мыши для пролистывания экрана
     def mouse_wheel(self,event):
