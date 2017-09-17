@@ -966,7 +966,6 @@ class WebFrame:
     def values(self):
         self._pos      = -1
         self.direction = 'right'
-        self._row_no   = 0
 
     def gui(self):
         self.obj     = sg.objs.new_top(Maximize=1)
@@ -1679,28 +1678,19 @@ class WebFrame:
                           ,_('Empty input is not allowed!')
                           )
     
-    def shift_y(self,bboy1,bboy2,row_no,node):
+    def shift_y(self,bboy1,node):
         _height  = self.height()
         if _height:
-            page_no1 = int(bboy1 / _height)
-            page_no2 = int(bboy2 / _height)
-            if page_no1 == page_no2:
-                # This prevents from extra scrolling the same row
-                self._row_no = row_no
-                page_bboy = page_no1 * _height
-                objs._blocks_db.Selectable = False
-                node = objs._blocks_db.node_y1(bboy=page_bboy)
-                objs._blocks_db.Selectable = sh.globs['bool']['SelectTermsOnly']
-                self.view_node_y(node)
+            page_bboy = (int(bboy1 / _height)) * _height
+            result = objs.blocks_db().node_y1(bboy=page_bboy)
+            if result:
+                node = result[0]
             else:
-                # If a part of the selection is readable, then Tkinter thinks that the entire selection is readable. Moreover, in the majority of cases, NODE1 = NODE2 and BBOY1 and BBOY2 refer to the same node. Calculating 'moveto' proportion (max possible BBOY2/BBOY1) does not help, 'scan_dragto' is not implemented, so we use a little trick here.
-                # 'Units' means 'lines'
-                if self._row_no != row_no:
-                    if self.direction in ('down','right'):
-                        self.widget.yview_scroll(number=5,what='units')
-                    elif self.direction in ('up','left'):
-                        self.widget.yview_scroll(number=-5,what='units')
-                    self._row_no = row_no
+                sh.log.append ('WebFrame.shift_y'
+                              ,_('WARNING')
+                              ,_('Using an alternative node.')
+                              )
+            self.view_node_y(node)
         else:
             sh.log.append ('WebFrame.shift_y'
                           ,_('WARNING')
@@ -1710,15 +1700,22 @@ class WebFrame:
     def shift_screen(self):
         result = objs.blocks_db().selection(pos=self._pos)
         if result:
+            row_no = result[8]
             self.shift_x (bbox1  = result[4]
                          ,bbox2  = result[5]
-                         ,row_no = result[8]
+                         ,row_no = row_no
                          )
-            self.shift_y (bboy1  = result[6]
-                         ,bboy2  = result[7]
-                         ,row_no = result[8]
-                         ,node   = result[0]
-                         )
+
+            result = objs._blocks_db.min_bboy(row_no=row_no)
+            if result:
+                self.shift_y (bboy1  = result[0]
+                             ,node   = result[1]
+                             )
+            else:
+                sh.log.append ('WebFrame.shift_screen'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
         else:
             sh.log.append ('WebFrame.shift_screen'
                           ,_('WARNING')

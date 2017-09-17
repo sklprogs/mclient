@@ -475,10 +475,7 @@ class DB:
 
     def node_y1(self,bboy):
         if self._source and self._search:
-            if self.Selectable:
-                self.dbc.execute('select NODE1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and BBOY1 >= ? order by CELLNO,NO',(self._source,self._search,'term','phrase',bboy,))
-            else:
-                self.dbc.execute('select NODE1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and BBOY1 >= ? order by CELLNO,NO',(self._source,self._search,bboy,))
+            self.dbc.execute('select NODE1,TEXT,BBOY1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and BBOY1 >= ? order by BBOY1',(self._source,self._search,bboy,))
             return self.dbc.fetchone()
         else:
             sh.log.append ('DB.node_y1'
@@ -572,17 +569,17 @@ class DB:
         if 'dic' not in self._types:
             self.dbc.execute('update BLOCKS set IGNORE = 1 where SOURCE = ? and SEARCH = ? and TYPE = ?',(self._source,self._search,'phrase',))
             
-    def any_block(self,pos): # orphan
+    # Get any block with the minimal BBOY1 for the set column number
+    def min_bboy(self,row_no=0):
         if self._source and self._search:
-            self.dbc.execute('select NODE1,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and POS1 <= ? and POS2 >= ? order by COLNO,NO',(self._source,self._search,pos,pos,))
+            self.dbc.execute('select BBOY1,NODE1,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and ROWNO = ? order by BBOY1',(self._source,self._search,row_no,))
             return self.dbc.fetchone()
         else:
-            # todo: check frequency
-            sh.log.append ('DB.any_block'
+            sh.log.append ('DB.min_bboy'
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-
+                          
     def zzz(self):
         pass
 
