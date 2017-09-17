@@ -1662,6 +1662,23 @@ class WebFrame:
                           ,_('Empty input is not allowed!')
                           )
 
+    def set_node_y(self,node):
+        if node:
+            try:
+                self.widget.yview_name(node)
+            except tk._tkinter.TclError:
+                if node:
+                    node = node[0]
+                    sh.log.append ('WebFrame.set_node_y'
+                                  ,_('WARNING')
+                                  ,_('Failed to set node "%s"!') % str(node)
+                                  )
+        else:
+            sh.log.append ('WebFrame.set_node_y'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def shift_y(self,bboy1,bboy2,row_no,node):
         _height  = self.height()
         if _height:
@@ -1674,21 +1691,7 @@ class WebFrame:
                 objs._blocks_db.Selectable = False
                 node = objs._blocks_db.node_y1(bboy=page_bboy)
                 objs._blocks_db.Selectable = sh.globs['bool']['SelectTermsOnly']
-                if node:
-                    try:
-                        self.widget.yview_name(node)
-                    except tk._tkinter.TclError:
-                        if node:
-                            node = node[0]
-                        sh.log.append ('WebFrame.shift_screen'
-                                      ,_('WARNING')
-                                      ,_('Failed to set node "%s"!') % str(node)
-                                      )
-                else:
-                    sh.log.append ('WebFrame.shift_screen'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                self.set_node_y(node)
             else:
                 # If a part of the selection is readable, then Tkinter thinks that the entire selection is readable. Moreover, in the majority of cases, NODE1 = NODE2 and BBOY1 and BBOY2 refer to the same node. Calculating 'moveto' proportion (max possible BBOY2/BBOY1) does not help, 'scan_dragto' is not implemented, so we use a little trick here.
                 # 'Units' means 'lines'
@@ -1722,8 +1725,10 @@ class WebFrame:
                           ,_('Empty input is not allowed!')
                           )
 
-    def fill(self,code='<html><body><h1>Nothing has been loaded yet.</h1></body></html>'):
+    def fill(self,code=None):
         self.widget.reset()
+        if not code:
+            code = '<html><body><h1>' + _('Nothing has been loaded yet.') + '</h1></body></html>'
         self.widget.parse(code)
 
     def show(self,*args):
@@ -1864,7 +1869,9 @@ class WebFrame:
         objs._blocks_db.update(query=pages._query)
 
         self.title(arg=objs._request._search)
-        self.move_text_start()
+        # Select the first block without shifting the screen
+        self._pos = objs.blocks_db().start()
+        self.select()
         # Empty article is not added either to DB or history, so we just do not clear the search field to be able to correct the typo.
         if pages._blocks:
             self.search_field.clear()

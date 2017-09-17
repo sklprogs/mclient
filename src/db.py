@@ -571,6 +571,17 @@ class DB:
         self.dbc.execute('update BLOCKS set IGNORE = 1 where SOURCE = ? and SEARCH = ? and TYPE not in %s' % (self._types,),(self._source,self._search,))
         if 'dic' not in self._types:
             self.dbc.execute('update BLOCKS set IGNORE = 1 where SOURCE = ? and SEARCH = ? and TYPE = ?',(self._source,self._search,'phrase',))
+            
+    def any_block(self,pos): # orphan
+        if self._source and self._search:
+            self.dbc.execute('select NODE1,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and POS1 <= ? and POS2 >= ? order by COLNO,NO',(self._source,self._search,pos,pos,))
+            return self.dbc.fetchone()
+        else:
+            # todo: check frequency
+            sh.log.append ('DB.any_block'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
 
     def zzz(self):
         pass
@@ -852,6 +863,9 @@ class Moves(DB):
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
+                          
+    def zzz(self):
+        pass
 
 
 
