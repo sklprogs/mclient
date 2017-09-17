@@ -1,5 +1,9 @@
 
 
+5.3
+* Select fixed columns
+* Settings menu
+
 5.2
 * Set a default column width
 * Add a key: col_width (set to 0 to select the column width automatically)

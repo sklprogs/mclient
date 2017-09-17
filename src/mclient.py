@@ -10,7 +10,6 @@
     - Use the language pair as a part of an article ID. Otherwise, we cannot view same SEARCH in different languages ('RUS-XAL' -> 'липа' -> 'EN-RU')
     - Use borders of the cell, not borders of the block when calculating ShiftScreen
     - Store '_html_raw' value for all articles, not just for the latest new loaded one
-    - Move 'insert_fixed' outside of Elems (since fixed columns can vary now)
     - Set a priority that is lower for phrases than for terms (in case the 1st fixed column is not Dictionaries)
 '''
 
@@ -62,7 +61,7 @@ import mkhtml      as mh
 
 
 product = 'MClient'
-version = '5.2'
+version = '5.3'
 
 third_parties = '''
 tkinterhtml
@@ -439,7 +438,6 @@ class CurRequest:
         self._html_raw     = ''
         self._search       = ''
         self._url          = ''
-
 
 
 
@@ -993,11 +991,11 @@ class WebFrame:
         self.obj.widget.protocol("WM_DELETE_WINDOW",self.close)
 
     def widgets(self):
+        self.settings       = Settings      ()
         self.search_article = SearchArticle ()
         self.spec_symbols   = SpecSymbols   ()
         self.save_article   = SaveArticle   ()
         self.history        = History       ()
-        self.settings       = Settings      ()
 
     def frame_panel(self):
         self._panel = sg.Frame (parent_obj = self.bottom
@@ -1832,6 +1830,8 @@ class WebFrame:
                               ,SortRows  = objs._request.SortRows
                               ,SortTerms = SortTerms
                               )
+        objs._blocks_db.unignore()
+        objs._blocks_db.ignore()
         data  = objs._blocks_db.assign_cells()
 
         cells = cl.Cells (data       = data
@@ -1873,9 +1873,10 @@ class WebFrame:
         self.update_buttons()
         timer.end()
 
-        # cur
+        '''
         objs._blocks_db.dbc.execute('select CELLNO,NO,ROWNO,COLNO,TYPE,TEXT,DICA,WFORMA,SPEECHA from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 order by CELLNO,NO',(objs._blocks_db._source,objs._blocks_db._search,))
         objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=150)
+        '''
 
     # Select either the search string or the URL
     def go(self,*args):
@@ -2670,10 +2671,9 @@ class Settings:
         self.cb5.disable()
 
     def apply(self,*args):
-        # Do not use 'gettext' to name internal types - this will make the program ~0,6 s slower
+        # Do not use 'gettext' to name internal types - this will make the program ~0,6s slower
         lst = [choice for choice in (self.col1.choice,self.col2.choice,self.col3.choice,self.col4.choice) if choice != _('Do not set')]
-        '''
-        The following assignment does not change the list:
+        ''' # note: The following assignment does not change the list:
             for item in lst:
                 if item == something:
                     item = something_else
@@ -2700,12 +2700,6 @@ class Settings:
             objs._request.Block      = self.cb3.get()
             objs._request.Prioritize = self.cb4.get()
             objs._request.Reverse    = self.cb5.get()
-            objs.blocks_db().reset (cols      = objs._request._cols
-                                   ,SortRows  = objs._request.SortRows
-                                   ,SortTerms = objs._request.SortTerms
-                                   )
-            objs._blocks_db.unignore()
-            objs._blocks_db.ignore()
             objs.webframe().load_article()
         else:
             # todo: do we really need this?
@@ -2713,7 +2707,7 @@ class Settings:
                        ,level   = _('WARNING')
                        ,message = _('At least one column must be set!')
                        )
-
+    
     def buttons(self):
         sg.Button (parent_obj = self.fr_but
                   ,action     = self.reset
