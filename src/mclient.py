@@ -1639,20 +1639,42 @@ class WebFrame:
                           ,_('Empty input is not allowed!')
                           )
     
-    def scroll_y(self,bboy,max_bboy):
+    def scroll_y(self,bboy,max_bboy,AddScroll=True):
         # note: This trick allows to make the top of a cell readable (in spite of an incorrect BBOY1 value returned by tkinterhtml). It seems that 'yview_move' is more accurate than 'yview_name' even without changing 'bboy'.
-        if bboy >= 5:
+        if AddScroll and bboy >= 5:
             bboy -= 5
         fraction = bboy / max_bboy
         self.widget.yview_moveto(fraction=fraction)
     
-    def shift_y(self,bboy1,node):
+    def shift_y(self,bboy1,bboy2):
         _height = self.height()
         result  = objs.blocks_db().max_bboy()
         if _height and result:
-            page_no   = int(bboy1 / _height)
-            page_bboy = page_no * _height
-            self.scroll_y(bboy=page_bboy,max_bboy=result[0])
+            max_bboy = result[0]
+            page1_no = int(bboy1 / _height)
+            page2_no = int(bboy2 / _height)
+            if page1_no == page2_no:
+                page_bboy = page1_no * _height
+                self.scroll_y (bboy      = page_bboy
+                              ,max_bboy  = max_bboy
+                              ,AddScroll = True
+                              )
+            else:
+                page1_bboy = page1_no * _height
+                page2_bboy = page2_no * _height
+                result     = objs._blocks_db.max_bboy(limit=page2_bboy)
+                if result:
+                    max_page_bboy = result[0]
+                    delta = page2_bboy - max_page_bboy
+                    self.scroll_y (bboy      = page1_bboy + delta
+                                  ,max_bboy  = max_bboy
+                                  ,AddScroll = False
+                                  )
+                else:
+                    sh.log.append ('WebFrame.shift_y'
+                                  ,_('WARNING')
+                                  ,_('Empty input is not allowed!')
+                                  )
         else:
             sh.log.append ('WebFrame.shift_y'
                           ,_('WARNING')
@@ -1668,7 +1690,7 @@ class WebFrame:
             if result2 and result3:
                 self.shift_x (bbox2 = result2[3])
                 self.shift_y (bboy1 = result3[0]
-                             ,node  = result3[1]
+                             ,bboy2 = result3[1]
                              )
             else:
                 sh.log.append ('WebFrame.shift_screen'

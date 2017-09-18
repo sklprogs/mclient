@@ -572,7 +572,7 @@ class DB:
     # Get any block with the minimal BBOY1 for the set column number
     def min_bboy(self,row_no=0):
         if self._source and self._search:
-            self.dbc.execute('select BBOY1,NODE1,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and ROWNO = ? order by BBOY1',(self._source,self._search,row_no,))
+            self.dbc.execute('select BBOY1,BBOY2,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and ROWNO = ? order by BBOY1',(self._source,self._search,row_no,))
             return self.dbc.fetchone()
         else:
             sh.log.append ('DB.min_bboy'
@@ -597,9 +597,12 @@ class DB:
                           )
     
     # Get any block with the maximal BBOY2
-    def max_bboy(self):
+    def max_bboy(self,limit=0):
         if self._source and self._search:
-            self.dbc.execute('select BBOY2,NODE1,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by BBOY2 desc',(self._source,self._search,))
+            if limit:
+                self.dbc.execute('select BBOY2,NODE1,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and BBOY2 < ? order by BBOY2 desc',(self._source,self._search,limit,))
+            else:
+                self.dbc.execute('select BBOY2,NODE1,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by BBOY2 desc',(self._source,self._search,))
             return self.dbc.fetchone()
         else:
             sh.log.append ('DB.max_bboy'
