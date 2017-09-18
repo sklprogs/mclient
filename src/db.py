@@ -596,6 +596,17 @@ class DB:
                           ,_('Empty input is not allowed!')
                           )
     
+    # Get any block with the maximal BBOY2
+    def max_bboy(self):
+        if self._source and self._search:
+            self.dbc.execute('select BBOY2,NODE1,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by BBOY2 desc',(self._source,self._search,))
+            return self.dbc.fetchone()
+        else:
+            sh.log.append ('DB.max_bboy'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def zzz(self):
         pass
 

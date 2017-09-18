@@ -968,7 +968,7 @@ class WebFrame:
         self.title()
 
     def values(self):
-        self._pos      = -1
+        self._pos = -1
 
     def gui(self):
         self.obj     = sg.objs.new_top(Maximize=1)
@@ -1639,36 +1639,20 @@ class WebFrame:
                           ,_('Empty input is not allowed!')
                           )
     
-    def view_node_y(self,node):
-        if node:
-            try:
-                self.widget.yview_name(node)
-            except tk._tkinter.TclError:
-                if node:
-                    node = node[0]
-                    sh.log.append ('WebFrame.view_node_y'
-                                  ,_('WARNING')
-                                  ,_('Failed to set node "%s"!') % str(node)
-                                  )
-        else:
-            sh.log.append ('WebFrame.view_node_y'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+    def scroll_y(self,bboy,max_bboy):
+        # note: This trick allows to make the top of a cell readable (in spite of an incorrect BBOY1 value returned by tkinterhtml). It seems that 'yview_move' is more accurate than 'yview_name' even without changing 'bboy'.
+        if bboy >= 5:
+            bboy -= 5
+        fraction = bboy / max_bboy
+        self.widget.yview_moveto(fraction=fraction)
     
     def shift_y(self,bboy1,node):
-        _height  = self.height()
-        if _height:
-            page_bboy = (int(bboy1 / _height)) * _height
-            result = objs.blocks_db().node_y1(bboy=page_bboy)
-            if result:
-                node = result[0]
-            else:
-                sh.log.append ('WebFrame.shift_y'
-                              ,_('WARNING')
-                              ,_('Using an alternative node.')
-                              )
-            self.view_node_y(node)
+        _height = self.height()
+        result  = objs.blocks_db().max_bboy()
+        if _height and result:
+            page_no   = int(bboy1 / _height)
+            page_bboy = page_no * _height
+            self.scroll_y(bboy=page_bboy,max_bboy=result[0])
         else:
             sh.log.append ('WebFrame.shift_y'
                           ,_('WARNING')
@@ -1739,6 +1723,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/tun.txt'
                            #,file        = '/home/pete/tmp/ars/martyr.txt'
                            #,file         = '/home/pete/tmp/ars/œuf.txt'
+                           ,file         = '/home/pete/tmp/ars/forward.txt'
                            )
             page.run()
             ptimer.end()
