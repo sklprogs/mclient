@@ -11,6 +11,7 @@
     - Use borders of the cell, not borders of the block when calculating ShiftScreen
     - Store '_html_raw' value for all articles, not just for the latest new loaded one
     - Set a priority that is lower for phrases than for terms (in case the 1st fixed column is not Dictionaries)
+    - Lower the priority of 'phrase' type instead of ignoring it in the Clarity mode
 '''
 
 ''' # fix
@@ -1619,14 +1620,13 @@ class WebFrame:
         '''
         return self.widget.winfo_width()
 
-    def shift_x(self,bbox1,bbox2):
+    def shift_x(self,bbox2):
         _width  = self.width()
         if _width:
-            page_bbox = (int(bbox1 / _width)) * _width
+            page_bbox = (int(bbox2 / _width)) * _width
             max_col   = objs._blocks_db.max_col()
             if max_col:
-                max_bbox = max_col[2]
-                fraction = page_bbox / max_bbox
+                fraction = page_bbox / max_col[2]
                 self.widget.xview_moveto(fraction=fraction)
             else:
                 sh.log.append ('WebFrame.shift_x'
@@ -1676,17 +1676,15 @@ class WebFrame:
                           )
 
     def shift_screen(self):
-        result = objs.blocks_db().selection(pos=self._pos)
-        if result:
-            self.shift_x (bbox1  = result[4]
-                         ,bbox2  = result[5]
-                         )
-
+        result1 = objs.blocks_db().block_pos(pos=self._pos)
+        if result1:
+            result2 = objs.blocks_db().cell(cell_no=result1[2])
             # Probably, there is a bug in tkinter/tkinterhtml: minimal BBOY1 does not always match the topmost block
-            result = objs._blocks_db.min_bboy(row_no=result[8])
-            if result:
-                self.shift_y (bboy1  = result[0]
-                             ,node   = result[1]
+            result3 = objs._blocks_db.min_bboy(row_no=result1[3])
+            if result2 and result3:
+                self.shift_x (bbox2 = result2[3])
+                self.shift_y (bboy1 = result3[0]
+                             ,node  = result3[1]
                              )
             else:
                 sh.log.append ('WebFrame.shift_screen'

@@ -580,6 +580,22 @@ class DB:
                           ,_('Empty input is not allowed!')
                           )
                           
+    # Only a cell number must be on input (in case of a pos, block parameters are returned)
+    def cell(self,cell_no=0):
+        if self._source and self._search:
+            self.dbc.execute('select NODE1,BBOX1,BBOY1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and CELLNO = ? order by NO',(self._source,self._search,cell_no,))
+            result1 = self.dbc.fetchone()
+            self.dbc.execute('select NODE2,BBOX2,BBOY2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and CELLNO = ? order by NO desc',(self._source,self._search,cell_no,))
+            result2 = self.dbc.fetchone()
+            if result1 and result2:
+                # NODE1,NODE2,BBOX1,BBOX2,BBOY1,BBOY2
+                return(result1[0],result2[0],result1[1],result2[1],result1[2],result2[2])
+        else:
+            sh.log.append ('DB.cell'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def zzz(self):
         pass
 

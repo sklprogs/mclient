@@ -3,6 +3,7 @@
 5.3
 * Select fixed columns
 * Settings menu
+* Make scrolling by keys more accurate
 
 5.2
 * Set a default column width
