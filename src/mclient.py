@@ -1758,7 +1758,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/рабочая документация.txt'
                            #,file        = '/home/pete/tmp/ars/do.txt'
                            #,file        = '/home/pete/tmp/ars/set.txt'
-                           ,file        = '/home/pete/tmp/ars/get.txt'
+                           #,file        = '/home/pete/tmp/ars/get.txt'
                            #,file        = '/home/pete/tmp/ars/pack.txt'
                            #,file        = '/home/pete/tmp/ars/counterpart.txt'
                            #,file        = '/home/pete/tmp/ars/test.txt'
@@ -2728,6 +2728,9 @@ class Settings:
                   ,side       = 'right'
                   )
 
+        # cur
+        # todo: elaborate
+        '''
         sg.Button (parent_obj = self.fr_cb3
                   ,action     = self.block_settings
                   ,hint       = _('Tune up blacklisting')
@@ -2743,6 +2746,7 @@ class Settings:
                   ,text       = _('Add/Remove')
                   ,side       = 'right'
                   )
+        '''
 
         self.lb5 = sg.Label (parent_obj = self.fr_cb5
                             ,text       = _('Vertical view')

@@ -73,6 +73,7 @@ class DB:
               ,SortRows=False,SortTerms=False
               ):
         self.SortTerms = SortTerms
+        self.SortRows  = SortRows
         self._cols     = cols
         if not self._cols: # Prevents None + tuple
             self._cols = ('dic','wform','transc','speech')
@@ -209,7 +210,10 @@ class DB:
     def assign_cells(self):
         if self._source and self._search:
             query = 'select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA,TRANSCA from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 order by '
-            order = self.order_query()
+            if self.SortRows:
+                order = self.order_query()
+            else:
+                order = None
             if order:
                 query += order + ',NO'
             else:

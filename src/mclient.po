@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-16 23:12+0300\n"
-"PO-Revision-Date: 2017-09-16 23:12+0300\n"
+"POT-Creation-Date: 2017-09-19 21:11+0300\n"
+"PO-Revision-Date: 2017-09-19 21:37+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -17,58 +17,59 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: /home/pete/bin/mclient/src\n"
 
-#: /home/pete/bin/mclient/src/db.py:80
-#: /home/pete/bin/mclient/src/db.py:113
-#: /home/pete/bin/mclient/src/db.py:126
-#: /home/pete/bin/mclient/src/db.py:139
-#: /home/pete/bin/mclient/src/db.py:149
-#: /home/pete/bin/mclient/src/db.py:182
-#: /home/pete/bin/mclient/src/db.py:221
-#: /home/pete/bin/mclient/src/db.py:232
-#: /home/pete/bin/mclient/src/db.py:244
-#: /home/pete/bin/mclient/src/db.py:250
-#: /home/pete/bin/mclient/src/db.py:260
-#: /home/pete/bin/mclient/src/db.py:267
-#: /home/pete/bin/mclient/src/db.py:292
-#: /home/pete/bin/mclient/src/db.py:304
-#: /home/pete/bin/mclient/src/db.py:316
-#: /home/pete/bin/mclient/src/db.py:330
-#: /home/pete/bin/mclient/src/db.py:343
-#: /home/pete/bin/mclient/src/db.py:357
-#: /home/pete/bin/mclient/src/db.py:371
-#: /home/pete/bin/mclient/src/db.py:385
-#: /home/pete/bin/mclient/src/db.py:399
-#: /home/pete/bin/mclient/src/db.py:413
-#: /home/pete/bin/mclient/src/db.py:427
-#: /home/pete/bin/mclient/src/db.py:441
+#: /home/pete/bin/mclient/src/db.py:81
+#: /home/pete/bin/mclient/src/db.py:114
+#: /home/pete/bin/mclient/src/db.py:127
+#: /home/pete/bin/mclient/src/db.py:140
+#: /home/pete/bin/mclient/src/db.py:150
+#: /home/pete/bin/mclient/src/db.py:183
+#: /home/pete/bin/mclient/src/db.py:225
+#: /home/pete/bin/mclient/src/db.py:236
+#: /home/pete/bin/mclient/src/db.py:248
+#: /home/pete/bin/mclient/src/db.py:254
+#: /home/pete/bin/mclient/src/db.py:264
+#: /home/pete/bin/mclient/src/db.py:271
+#: /home/pete/bin/mclient/src/db.py:296
+#: /home/pete/bin/mclient/src/db.py:308
+#: /home/pete/bin/mclient/src/db.py:320
+#: /home/pete/bin/mclient/src/db.py:334
+#: /home/pete/bin/mclient/src/db.py:347
+#: /home/pete/bin/mclient/src/db.py:361
+#: /home/pete/bin/mclient/src/db.py:375
+#: /home/pete/bin/mclient/src/db.py:389
+#: /home/pete/bin/mclient/src/db.py:403
+#: /home/pete/bin/mclient/src/db.py:417
+#: /home/pete/bin/mclient/src/db.py:444
 #: /home/pete/bin/mclient/src/db.py:455
-#: /home/pete/bin/mclient/src/db.py:485
-#: /home/pete/bin/mclient/src/db.py:498
-#: /home/pete/bin/mclient/src/db.py:508
-#: /home/pete/bin/mclient/src/db.py:519
-#: /home/pete/bin/mclient/src/db.py:533
-#: /home/pete/bin/mclient/src/db.py:548
-#: /home/pete/bin/mclient/src/db.py:563
-#: /home/pete/bin/mclient/src/db.py:597
-#: /home/pete/bin/mclient/src/db.py:612
-#: /home/pete/bin/mclient/src/db.py:630
-#: /home/pete/bin/mclient/src/db.py:635
-#: /home/pete/bin/mclient/src/db.py:653
-#: /home/pete/bin/mclient/src/db.py:658
-#: /home/pete/bin/mclient/src/db.py:681
-#: /home/pete/bin/mclient/src/db.py:686
-#: /home/pete/bin/mclient/src/db.py:691
-#: /home/pete/bin/mclient/src/db.py:714
-#: /home/pete/bin/mclient/src/db.py:719
-#: /home/pete/bin/mclient/src/db.py:724
-#: /home/pete/bin/mclient/src/db.py:763
-#: /home/pete/bin/mclient/src/db.py:768
-#: /home/pete/bin/mclient/src/db.py:773
-#: /home/pete/bin/mclient/src/db.py:812
-#: /home/pete/bin/mclient/src/db.py:817
-#: /home/pete/bin/mclient/src/db.py:822
-#: /home/pete/bin/mclient/src/db.py:837
-#: /home/pete/bin/mclient/src/db.py:852
+#: /home/pete/bin/mclient/src/db.py:469
+#: /home/pete/bin/mclient/src/db.py:484
+#: /home/pete/bin/mclient/src/db.py:499
+#: /home/pete/bin/mclient/src/db.py:521
+#: /home/pete/bin/mclient/src/db.py:535
+#: /home/pete/bin/mclient/src/db.py:550
+#: /home/pete/bin/mclient/src/db.py:555
+#: /home/pete/bin/mclient/src/db.py:570
+#: /home/pete/bin/mclient/src/db.py:575
+#: /home/pete/bin/mclient/src/db.py:601
+#: /home/pete/bin/mclient/src/db.py:616
+#: /home/pete/bin/mclient/src/db.py:634
+#: /home/pete/bin/mclient/src/db.py:639
+#: /home/pete/bin/mclient/src/db.py:657
+#: /home/pete/bin/mclient/src/db.py:662
+#: /home/pete/bin/mclient/src/db.py:685
+#: /home/pete/bin/mclient/src/db.py:690
+#: /home/pete/bin/mclient/src/db.py:695
+#: /home/pete/bin/mclient/src/db.py:718
+#: /home/pete/bin/mclient/src/db.py:723
+#: /home/pete/bin/mclient/src/db.py:728
+#: /home/pete/bin/mclient/src/db.py:767
+#: /home/pete/bin/mclient/src/db.py:772
+#: /home/pete/bin/mclient/src/db.py:777
+#: /home/pete/bin/mclient/src/db.py:816
+#: /home/pete/bin/mclient/src/db.py:821
+#: /home/pete/bin/mclient/src/db.py:826
+#: /home/pete/bin/mclient/src/db.py:841
+#: /home/pete/bin/mclient/src/db.py:856
 #: /home/pete/bin/mclient/src/sharedGUI.py:93
 #: /home/pete/bin/mclient/src/sharedGUI.py:242
 #: /home/pete/bin/mclient/src/sharedGUI.py:264
@@ -282,100 +283,100 @@ msgstr ""
 #: /home/pete/bin/mclient/src/cells.py:77
 #: /home/pete/bin/mclient/src/cells.py:167
 #: /home/pete/bin/mclient/src/cells.py:214
-#: /home/pete/bin/mclient/src/cells.py:377
-#: /home/pete/bin/mclient/src/cells.py:388
-#: /home/pete/bin/mclient/src/cells.py:501
-#: /home/pete/bin/mclient/src/cells.py:517
-#: /home/pete/bin/mclient/src/cells.py:522
-#: /home/pete/bin/mclient/src/cells.py:541
+#: /home/pete/bin/mclient/src/cells.py:379
+#: /home/pete/bin/mclient/src/cells.py:390
+#: /home/pete/bin/mclient/src/cells.py:503
+#: /home/pete/bin/mclient/src/cells.py:519
+#: /home/pete/bin/mclient/src/cells.py:524
+#: /home/pete/bin/mclient/src/cells.py:543
 #: /home/pete/bin/mclient/src/elems.py:73
 #: /home/pete/bin/mclient/src/elems.py:99
 #: /home/pete/bin/mclient/src/elems.py:476
 #: /home/pete/bin/mclient/src/elems.py:502
 #: /home/pete/bin/mclient/src/elems.py:521
 #: /home/pete/bin/mclient/src/elems.py:532
-#: /home/pete/bin/mclient/src/mclient.py:624
-#: /home/pete/bin/mclient/src/mclient.py:643
-#: /home/pete/bin/mclient/src/mclient.py:659
-#: /home/pete/bin/mclient/src/mclient.py:672
-#: /home/pete/bin/mclient/src/mclient.py:754
-#: /home/pete/bin/mclient/src/mclient.py:1589
+#: /home/pete/bin/mclient/src/mclient.py:625
+#: /home/pete/bin/mclient/src/mclient.py:644
+#: /home/pete/bin/mclient/src/mclient.py:660
+#: /home/pete/bin/mclient/src/mclient.py:673
+#: /home/pete/bin/mclient/src/mclient.py:756
+#: /home/pete/bin/mclient/src/mclient.py:1591
 #: /home/pete/bin/mclient/src/mclient.py:1652
-#: /home/pete/bin/mclient/src/mclient.py:1657
 #: /home/pete/bin/mclient/src/mclient.py:1662
-#: /home/pete/bin/mclient/src/mclient.py:1685
-#: /home/pete/bin/mclient/src/mclient.py:1690
-#: /home/pete/bin/mclient/src/mclient.py:1704
-#: /home/pete/bin/mclient/src/mclient.py:1722
-#: /home/pete/bin/mclient/src/mclient.py:1907
-#: /home/pete/bin/mclient/src/mclient.py:2060
-#: /home/pete/bin/mclient/src/mclient.py:2079
-#: /home/pete/bin/mclient/src/mclient.py:2097
-#: /home/pete/bin/mclient/src/mclient.py:2172
-#: /home/pete/bin/mclient/src/mclient.py:2191
-#: /home/pete/bin/mclient/src/mclient.py:2273
-#: /home/pete/bin/mclient/src/mclient.py:2326
-#: /home/pete/bin/mclient/src/mclient.py:2341
-#: /home/pete/bin/mclient/src/mclient.py:2367
-#: /home/pete/bin/mclient/src/mclient.py:2372
-#: /home/pete/bin/mclient/src/mclient.py:2384
-#: /home/pete/bin/mclient/src/mclient.py:2389
-#: /home/pete/bin/mclient/src/mclient.py:2411
-#: /home/pete/bin/mclient/src/mclient.py:2422
-#: /home/pete/bin/mclient/src/mclient.py:2713
+#: /home/pete/bin/mclient/src/mclient.py:1684
+#: /home/pete/bin/mclient/src/mclient.py:1694
+#: /home/pete/bin/mclient/src/mclient.py:1718
+#: /home/pete/bin/mclient/src/mclient.py:1723
+#: /home/pete/bin/mclient/src/mclient.py:1915
+#: /home/pete/bin/mclient/src/mclient.py:2064
+#: /home/pete/bin/mclient/src/mclient.py:2083
+#: /home/pete/bin/mclient/src/mclient.py:2101
+#: /home/pete/bin/mclient/src/mclient.py:2176
+#: /home/pete/bin/mclient/src/mclient.py:2195
+#: /home/pete/bin/mclient/src/mclient.py:2277
+#: /home/pete/bin/mclient/src/mclient.py:2330
+#: /home/pete/bin/mclient/src/mclient.py:2345
+#: /home/pete/bin/mclient/src/mclient.py:2371
+#: /home/pete/bin/mclient/src/mclient.py:2376
+#: /home/pete/bin/mclient/src/mclient.py:2388
+#: /home/pete/bin/mclient/src/mclient.py:2393
+#: /home/pete/bin/mclient/src/mclient.py:2415
+#: /home/pete/bin/mclient/src/mclient.py:2426
+#: /home/pete/bin/mclient/src/mclient.py:2710
 msgid "WARNING"
 msgstr "ПРЕДУПРЕЖДЕНИЕ"
 
-#: /home/pete/bin/mclient/src/db.py:81
-#: /home/pete/bin/mclient/src/db.py:114
-#: /home/pete/bin/mclient/src/db.py:127
-#: /home/pete/bin/mclient/src/db.py:140
-#: /home/pete/bin/mclient/src/db.py:150
-#: /home/pete/bin/mclient/src/db.py:183
-#: /home/pete/bin/mclient/src/db.py:222
-#: /home/pete/bin/mclient/src/db.py:233
-#: /home/pete/bin/mclient/src/db.py:245
-#: /home/pete/bin/mclient/src/db.py:268
-#: /home/pete/bin/mclient/src/db.py:293
-#: /home/pete/bin/mclient/src/db.py:305
-#: /home/pete/bin/mclient/src/db.py:317
-#: /home/pete/bin/mclient/src/db.py:331
-#: /home/pete/bin/mclient/src/db.py:344
-#: /home/pete/bin/mclient/src/db.py:358
-#: /home/pete/bin/mclient/src/db.py:372
-#: /home/pete/bin/mclient/src/db.py:386
-#: /home/pete/bin/mclient/src/db.py:400
-#: /home/pete/bin/mclient/src/db.py:414
-#: /home/pete/bin/mclient/src/db.py:428
-#: /home/pete/bin/mclient/src/db.py:442
+#: /home/pete/bin/mclient/src/db.py:82
+#: /home/pete/bin/mclient/src/db.py:115
+#: /home/pete/bin/mclient/src/db.py:128
+#: /home/pete/bin/mclient/src/db.py:141
+#: /home/pete/bin/mclient/src/db.py:151
+#: /home/pete/bin/mclient/src/db.py:184
+#: /home/pete/bin/mclient/src/db.py:226
+#: /home/pete/bin/mclient/src/db.py:237
+#: /home/pete/bin/mclient/src/db.py:249
+#: /home/pete/bin/mclient/src/db.py:272
+#: /home/pete/bin/mclient/src/db.py:297
+#: /home/pete/bin/mclient/src/db.py:309
+#: /home/pete/bin/mclient/src/db.py:321
+#: /home/pete/bin/mclient/src/db.py:335
+#: /home/pete/bin/mclient/src/db.py:348
+#: /home/pete/bin/mclient/src/db.py:362
+#: /home/pete/bin/mclient/src/db.py:376
+#: /home/pete/bin/mclient/src/db.py:390
+#: /home/pete/bin/mclient/src/db.py:404
+#: /home/pete/bin/mclient/src/db.py:418
+#: /home/pete/bin/mclient/src/db.py:445
 #: /home/pete/bin/mclient/src/db.py:456
-#: /home/pete/bin/mclient/src/db.py:486
-#: /home/pete/bin/mclient/src/db.py:499
-#: /home/pete/bin/mclient/src/db.py:509
-#: /home/pete/bin/mclient/src/db.py:520
-#: /home/pete/bin/mclient/src/db.py:534
-#: /home/pete/bin/mclient/src/db.py:549
-#: /home/pete/bin/mclient/src/db.py:564
-#: /home/pete/bin/mclient/src/db.py:598
-#: /home/pete/bin/mclient/src/db.py:613
-#: /home/pete/bin/mclient/src/db.py:631
-#: /home/pete/bin/mclient/src/db.py:636
-#: /home/pete/bin/mclient/src/db.py:654
-#: /home/pete/bin/mclient/src/db.py:659
-#: /home/pete/bin/mclient/src/db.py:682
-#: /home/pete/bin/mclient/src/db.py:687
-#: /home/pete/bin/mclient/src/db.py:692
-#: /home/pete/bin/mclient/src/db.py:715
-#: /home/pete/bin/mclient/src/db.py:720
-#: /home/pete/bin/mclient/src/db.py:725
-#: /home/pete/bin/mclient/src/db.py:764
-#: /home/pete/bin/mclient/src/db.py:769
-#: /home/pete/bin/mclient/src/db.py:774
-#: /home/pete/bin/mclient/src/db.py:813
-#: /home/pete/bin/mclient/src/db.py:818
-#: /home/pete/bin/mclient/src/db.py:823
-#: /home/pete/bin/mclient/src/db.py:838
-#: /home/pete/bin/mclient/src/db.py:853
+#: /home/pete/bin/mclient/src/db.py:470
+#: /home/pete/bin/mclient/src/db.py:485
+#: /home/pete/bin/mclient/src/db.py:500
+#: /home/pete/bin/mclient/src/db.py:522
+#: /home/pete/bin/mclient/src/db.py:536
+#: /home/pete/bin/mclient/src/db.py:551
+#: /home/pete/bin/mclient/src/db.py:556
+#: /home/pete/bin/mclient/src/db.py:571
+#: /home/pete/bin/mclient/src/db.py:576
+#: /home/pete/bin/mclient/src/db.py:602
+#: /home/pete/bin/mclient/src/db.py:617
+#: /home/pete/bin/mclient/src/db.py:635
+#: /home/pete/bin/mclient/src/db.py:640
+#: /home/pete/bin/mclient/src/db.py:658
+#: /home/pete/bin/mclient/src/db.py:663
+#: /home/pete/bin/mclient/src/db.py:686
+#: /home/pete/bin/mclient/src/db.py:691
+#: /home/pete/bin/mclient/src/db.py:696
+#: /home/pete/bin/mclient/src/db.py:719
+#: /home/pete/bin/mclient/src/db.py:724
+#: /home/pete/bin/mclient/src/db.py:729
+#: /home/pete/bin/mclient/src/db.py:768
+#: /home/pete/bin/mclient/src/db.py:773
+#: /home/pete/bin/mclient/src/db.py:778
+#: /home/pete/bin/mclient/src/db.py:817
+#: /home/pete/bin/mclient/src/db.py:822
+#: /home/pete/bin/mclient/src/db.py:827
+#: /home/pete/bin/mclient/src/db.py:842
+#: /home/pete/bin/mclient/src/db.py:857
 #: /home/pete/bin/mclient/src/sharedGUI.py:94
 #: /home/pete/bin/mclient/src/sharedGUI.py:612
 #: /home/pete/bin/mclient/src/sharedGUI.py:777
@@ -396,34 +397,32 @@ msgstr "ПРЕДУПРЕЖДЕНИЕ"
 #: /home/pete/bin/mclient/src/page.py:195
 #: /home/pete/bin/mclient/src/cells.py:66
 #: /home/pete/bin/mclient/src/cells.py:168
-#: /home/pete/bin/mclient/src/cells.py:378
-#: /home/pete/bin/mclient/src/cells.py:502
-#: /home/pete/bin/mclient/src/cells.py:518
-#: /home/pete/bin/mclient/src/cells.py:523
+#: /home/pete/bin/mclient/src/cells.py:380
+#: /home/pete/bin/mclient/src/cells.py:504
+#: /home/pete/bin/mclient/src/cells.py:520
+#: /home/pete/bin/mclient/src/cells.py:525
 #: /home/pete/bin/mclient/src/elems.py:74
 #: /home/pete/bin/mclient/src/elems.py:477
-#: /home/pete/bin/mclient/src/mclient.py:625
-#: /home/pete/bin/mclient/src/mclient.py:644
-#: /home/pete/bin/mclient/src/mclient.py:660
-#: /home/pete/bin/mclient/src/mclient.py:673
-#: /home/pete/bin/mclient/src/mclient.py:755
-#: /home/pete/bin/mclient/src/mclient.py:1653
-#: /home/pete/bin/mclient/src/mclient.py:1658
+#: /home/pete/bin/mclient/src/mclient.py:626
+#: /home/pete/bin/mclient/src/mclient.py:645
+#: /home/pete/bin/mclient/src/mclient.py:661
+#: /home/pete/bin/mclient/src/mclient.py:674
+#: /home/pete/bin/mclient/src/mclient.py:757
 #: /home/pete/bin/mclient/src/mclient.py:1663
-#: /home/pete/bin/mclient/src/mclient.py:1691
-#: /home/pete/bin/mclient/src/mclient.py:1705
-#: /home/pete/bin/mclient/src/mclient.py:1723
-#: /home/pete/bin/mclient/src/mclient.py:2098
-#: /home/pete/bin/mclient/src/mclient.py:2342
-#: /home/pete/bin/mclient/src/mclient.py:2464
-#: /home/pete/bin/mclient/src/mclient.py:2480
-#: /home/pete/bin/mclient/src/mclient.py:2496
-#: /home/pete/bin/mclient/src/mclient.py:2512
+#: /home/pete/bin/mclient/src/mclient.py:1695
+#: /home/pete/bin/mclient/src/mclient.py:1719
+#: /home/pete/bin/mclient/src/mclient.py:1724
+#: /home/pete/bin/mclient/src/mclient.py:2102
+#: /home/pete/bin/mclient/src/mclient.py:2346
+#: /home/pete/bin/mclient/src/mclient.py:2468
+#: /home/pete/bin/mclient/src/mclient.py:2484
+#: /home/pete/bin/mclient/src/mclient.py:2500
+#: /home/pete/bin/mclient/src/mclient.py:2516
 msgid "Empty input is not allowed!"
 msgstr "Пустые входные данные не допускаются!"
 
-#: /home/pete/bin/mclient/src/db.py:171
-#: /home/pete/bin/mclient/src/db.py:201
+#: /home/pete/bin/mclient/src/db.py:172
+#: /home/pete/bin/mclient/src/db.py:202
 #: /home/pete/bin/mclient/src/sharedGUI.py:25
 #: /home/pete/bin/mclient/src/sharedGUI.py:30
 #: /home/pete/bin/mclient/src/sharedGUI.py:35
@@ -525,17 +524,17 @@ msgstr "Пустые входные данные не допускаются!"
 #: /home/pete/bin/mclient/src/page.py:269
 #: /home/pete/bin/mclient/src/page.py:308
 #: /home/pete/bin/mclient/src/page.py:355
-#: /home/pete/bin/mclient/src/cells.py:455
-#: /home/pete/bin/mclient/src/mclient.py:2463
-#: /home/pete/bin/mclient/src/mclient.py:2479
-#: /home/pete/bin/mclient/src/mclient.py:2495
-#: /home/pete/bin/mclient/src/mclient.py:2511
-#: /home/pete/bin/mclient/src/mclient.py:2564
-#: /home/pete/bin/mclient/src/mclient.py:2692
+#: /home/pete/bin/mclient/src/cells.py:457
+#: /home/pete/bin/mclient/src/mclient.py:2467
+#: /home/pete/bin/mclient/src/mclient.py:2483
+#: /home/pete/bin/mclient/src/mclient.py:2499
+#: /home/pete/bin/mclient/src/mclient.py:2515
+#: /home/pete/bin/mclient/src/mclient.py:2568
+#: /home/pete/bin/mclient/src/mclient.py:2695
 msgid "ERROR"
 msgstr "ОШИБКА"
 
-#: /home/pete/bin/mclient/src/db.py:172
+#: /home/pete/bin/mclient/src/db.py:173
 #, python-format
 msgid ""
 "Unable to execute:\n"
@@ -544,7 +543,7 @@ msgstr ""
 "Не удалось выполнить:\n"
 "\"%s\""
 
-#: /home/pete/bin/mclient/src/db.py:202
+#: /home/pete/bin/mclient/src/db.py:203
 #: /home/pete/bin/mclient/src/sharedGUI.py:1226
 #: /home/pete/bin/mclient/src/sharedGUI.py:1595
 #: /home/pete/bin/mclient/src/sharedGUI.py:2571
@@ -554,8 +553,8 @@ msgstr ""
 #: /home/pete/bin/mclient/src/tags.py:275
 #: /home/pete/bin/mclient/src/tags.py:348
 #: /home/pete/bin/mclient/src/page.py:356
-#: /home/pete/bin/mclient/src/mclient.py:2565
-#: /home/pete/bin/mclient/src/mclient.py:2693
+#: /home/pete/bin/mclient/src/mclient.py:2569
+#: /home/pete/bin/mclient/src/mclient.py:2696
 #, python-format
 msgid ""
 "An unknown mode \"%s\"!\n"
@@ -566,17 +565,17 @@ msgstr ""
 "\n"
 "Поддерживаются следующие режимы: \"%s\"."
 
-#: /home/pete/bin/mclient/src/db.py:251
+#: /home/pete/bin/mclient/src/db.py:255
 #, python-format
 msgid "Delete all records from %s"
 msgstr "Удалить все записи из %s"
 
-#: /home/pete/bin/mclient/src/db.py:261
+#: /home/pete/bin/mclient/src/db.py:265
 #, python-format
 msgid "Delete records %d-%d from %s"
 msgstr "Удаление записей %d-%d из %s"
 
-#: /home/pete/bin/mclient/src/db.py:866
+#: /home/pete/bin/mclient/src/db.py:873
 #: /home/pete/bin/mclient/src/tags.py:267
 #: /home/pete/bin/mclient/src/tags.py:275
 #: /home/pete/bin/mclient/src/tags.py:326
@@ -588,10 +587,10 @@ msgstr "Удаление записей %d-%d из %s"
 #: /home/pete/bin/mclient/src/page.py:264
 #: /home/pete/bin/mclient/src/page.py:347
 #: /home/pete/bin/mclient/src/page.py:446
-#: /home/pete/bin/mclient/src/cells.py:555
+#: /home/pete/bin/mclient/src/cells.py:557
 #: /home/pete/bin/mclient/src/elems.py:545
-#: /home/pete/bin/mclient/src/mclient.py:325
-#: /home/pete/bin/mclient/src/mclient.py:393
+#: /home/pete/bin/mclient/src/mclient.py:327
+#: /home/pete/bin/mclient/src/mclient.py:395
 msgid "Online"
 msgstr "Онлайн"
 
@@ -662,7 +661,7 @@ msgstr "Текст:"
 #: /home/pete/bin/mclient/src/sharedGUI.py:934
 #: /home/pete/bin/mclient/src/sharedGUI.py:1369
 #: /home/pete/bin/mclient/src/sharedGUI.py:1370
-#: /home/pete/bin/mclient/src/mclient.py:1262
+#: /home/pete/bin/mclient/src/mclient.py:1264
 msgid "Quit"
 msgstr "Выйти"
 
@@ -761,19 +760,19 @@ msgstr "Недостаточно входных данных!"
 #: /home/pete/bin/mclient/src/page.py:170
 #: /home/pete/bin/mclient/src/page.py:278
 #: /home/pete/bin/mclient/src/page.py:284
-#: /home/pete/bin/mclient/src/cells.py:532
+#: /home/pete/bin/mclient/src/cells.py:534
 #: /home/pete/bin/mclient/src/elems.py:515
-#: /home/pete/bin/mclient/src/mclient.py:731
-#: /home/pete/bin/mclient/src/mclient.py:736
-#: /home/pete/bin/mclient/src/mclient.py:766
-#: /home/pete/bin/mclient/src/mclient.py:779
-#: /home/pete/bin/mclient/src/mclient.py:1823
-#: /home/pete/bin/mclient/src/mclient.py:1901
-#: /home/pete/bin/mclient/src/mclient.py:1923
-#: /home/pete/bin/mclient/src/mclient.py:2212
-#: /home/pete/bin/mclient/src/mclient.py:2221
-#: /home/pete/bin/mclient/src/mclient.py:2635
-#: /home/pete/bin/mclient/src/mclient.py:2641
+#: /home/pete/bin/mclient/src/mclient.py:733
+#: /home/pete/bin/mclient/src/mclient.py:738
+#: /home/pete/bin/mclient/src/mclient.py:768
+#: /home/pete/bin/mclient/src/mclient.py:783
+#: /home/pete/bin/mclient/src/mclient.py:1827
+#: /home/pete/bin/mclient/src/mclient.py:1909
+#: /home/pete/bin/mclient/src/mclient.py:1931
+#: /home/pete/bin/mclient/src/mclient.py:2216
+#: /home/pete/bin/mclient/src/mclient.py:2225
+#: /home/pete/bin/mclient/src/mclient.py:2639
+#: /home/pete/bin/mclient/src/mclient.py:2645
 msgid "INFO"
 msgstr "ИНФОРМАЦИЯ"
 
@@ -912,18 +911,18 @@ msgstr "Совпадений нет!"
 #: /home/pete/bin/mclient/src/page.py:137
 #: /home/pete/bin/mclient/src/cells.py:78
 #: /home/pete/bin/mclient/src/cells.py:215
-#: /home/pete/bin/mclient/src/cells.py:389
-#: /home/pete/bin/mclient/src/cells.py:542
+#: /home/pete/bin/mclient/src/cells.py:391
+#: /home/pete/bin/mclient/src/cells.py:544
 #: /home/pete/bin/mclient/src/elems.py:100
 #: /home/pete/bin/mclient/src/elems.py:533
-#: /home/pete/bin/mclient/src/mclient.py:2173
-#: /home/pete/bin/mclient/src/mclient.py:2192
-#: /home/pete/bin/mclient/src/mclient.py:2368
-#: /home/pete/bin/mclient/src/mclient.py:2373
-#: /home/pete/bin/mclient/src/mclient.py:2385
-#: /home/pete/bin/mclient/src/mclient.py:2390
-#: /home/pete/bin/mclient/src/mclient.py:2412
-#: /home/pete/bin/mclient/src/mclient.py:2423
+#: /home/pete/bin/mclient/src/mclient.py:2177
+#: /home/pete/bin/mclient/src/mclient.py:2196
+#: /home/pete/bin/mclient/src/mclient.py:2372
+#: /home/pete/bin/mclient/src/mclient.py:2377
+#: /home/pete/bin/mclient/src/mclient.py:2389
+#: /home/pete/bin/mclient/src/mclient.py:2394
+#: /home/pete/bin/mclient/src/mclient.py:2416
+#: /home/pete/bin/mclient/src/mclient.py:2427
 msgid "Operation has been canceled."
 msgstr "Операция отменена."
 
@@ -1002,9 +1001,9 @@ msgstr "Не удалось назначить тэгу \"%s\" шрифт \"%s\"
 #: /home/pete/bin/mclient/src/shared.py:3447
 #: /home/pete/bin/mclient/src/elems.py:487
 #: /home/pete/bin/mclient/src/elems.py:506
-#: /home/pete/bin/mclient/src/mclient.py:254
-#: /home/pete/bin/mclient/src/mclient.py:1915
-#: /home/pete/bin/mclient/src/mclient.py:1942
+#: /home/pete/bin/mclient/src/mclient.py:256
+#: /home/pete/bin/mclient/src/mclient.py:1923
+#: /home/pete/bin/mclient/src/mclient.py:1950
 msgid "DEBUG"
 msgstr "ОТЛАДКА"
 
@@ -1068,23 +1067,23 @@ msgid "Item \"%s\" is not in list!"
 msgstr "Элемент \"%s\" не в списке!"
 
 #: /home/pete/bin/mclient/src/sharedGUI.py:1521
-#: /home/pete/bin/mclient/src/mclient.py:649
+#: /home/pete/bin/mclient/src/mclient.py:650
 msgid "Plain text (UTF-8)"
 msgstr "Обычный текст (UTF-8)"
 
 #: /home/pete/bin/mclient/src/sharedGUI.py:1522
 #: /home/pete/bin/mclient/src/sharedGUI.py:1523
-#: /home/pete/bin/mclient/src/mclient.py:613
 #: /home/pete/bin/mclient/src/mclient.py:614
-#: /home/pete/bin/mclient/src/mclient.py:632
+#: /home/pete/bin/mclient/src/mclient.py:615
 #: /home/pete/bin/mclient/src/mclient.py:633
+#: /home/pete/bin/mclient/src/mclient.py:634
 msgid "Web-page"
 msgstr "Веб-страница"
 
 #: /home/pete/bin/mclient/src/sharedGUI.py:1524
-#: /home/pete/bin/mclient/src/mclient.py:615
-#: /home/pete/bin/mclient/src/mclient.py:634
-#: /home/pete/bin/mclient/src/mclient.py:650
+#: /home/pete/bin/mclient/src/mclient.py:616
+#: /home/pete/bin/mclient/src/mclient.py:635
+#: /home/pete/bin/mclient/src/mclient.py:651
 msgid "All files"
 msgstr "Все файлы"
 
@@ -1106,8 +1105,8 @@ msgid "Failed to return selection in the Tkinter widget!"
 msgstr "Не удается вернуть диапазон выделения в виджете Tkinter!"
 
 #: /home/pete/bin/mclient/src/sharedGUI.py:2180
-#: /home/pete/bin/mclient/src/mclient.py:829
-#: /home/pete/bin/mclient/src/mclient.py:1068
+#: /home/pete/bin/mclient/src/mclient.py:833
+#: /home/pete/bin/mclient/src/mclient.py:1070
 msgid "Paste a special symbol"
 msgstr "Вставить специальный символ"
 
@@ -1159,7 +1158,7 @@ msgstr "КРИТИЧЕСКАЯ ОШИБКА"
 #: /home/pete/bin/mclient/src/sharedGUI.py:2870
 #: /home/pete/bin/mclient/src/shared.py:137
 #: /home/pete/bin/mclient/src/page.py:296
-#: /home/pete/bin/mclient/src/mclient.py:2199
+#: /home/pete/bin/mclient/src/mclient.py:2203
 msgid "QUESTION"
 msgstr "ВОПРОС"
 
@@ -1215,8 +1214,8 @@ msgstr "Ничего не найдено."
 #: /home/pete/bin/mclient/src/tags.py:343
 #: /home/pete/bin/mclient/src/tags.py:348
 #: /home/pete/bin/mclient/src/page.py:350
-#: /home/pete/bin/mclient/src/mclient.py:325
-#: /home/pete/bin/mclient/src/mclient.py:1930
+#: /home/pete/bin/mclient/src/mclient.py:327
+#: /home/pete/bin/mclient/src/mclient.py:1938
 msgid "Offline"
 msgstr "Оффлайн"
 
@@ -1550,9 +1549,9 @@ msgstr "Задать максимальное число столбцов: %d"
 #: /home/pete/bin/mclient/src/page.py:257
 #: /home/pete/bin/mclient/src/page.py:264
 #: /home/pete/bin/mclient/src/page.py:341
-#: /home/pete/bin/mclient/src/mclient.py:325
-#: /home/pete/bin/mclient/src/mclient.py:393
-#: /home/pete/bin/mclient/src/mclient.py:423
+#: /home/pete/bin/mclient/src/mclient.py:327
+#: /home/pete/bin/mclient/src/mclient.py:395
+#: /home/pete/bin/mclient/src/mclient.py:425
 msgid "All"
 msgstr "Все"
 
@@ -1651,7 +1650,7 @@ msgstr "работает"
 msgid "not running"
 msgstr "не работает"
 
-#: /home/pete/bin/mclient/src/cells.py:456
+#: /home/pete/bin/mclient/src/cells.py:458
 #, python-format
 msgid "Unable to find \"%s\"!"
 msgstr "Не удалось найти %s!"
@@ -1661,26 +1660,26 @@ msgstr "Не удалось найти %s!"
 msgid "Update DB, range %d-%d"
 msgstr "Обновление БД, диапазон %d-%d"
 
-#: /home/pete/bin/mclient/src/mclient.py:97
+#: /home/pete/bin/mclient/src/mclient.py:99
 msgid "The following sections and/or keys are missing:"
 msgstr "Отсутствуют следующие разделы и/или ключи:"
 
-#: /home/pete/bin/mclient/src/mclient.py:361
-#: /home/pete/bin/mclient/src/mclient.py:503
+#: /home/pete/bin/mclient/src/mclient.py:363
+#: /home/pete/bin/mclient/src/mclient.py:504
 msgid "Third parties"
 msgstr "Третьи стороны"
 
-#: /home/pete/bin/mclient/src/mclient.py:370
-#: /home/pete/bin/mclient/src/mclient.py:684
+#: /home/pete/bin/mclient/src/mclient.py:372
+#: /home/pete/bin/mclient/src/mclient.py:685
 msgid "Enter a string to search:"
 msgstr "Строка для поиска:"
 
-#: /home/pete/bin/mclient/src/mclient.py:481
-#: /home/pete/bin/mclient/src/mclient.py:1253
+#: /home/pete/bin/mclient/src/mclient.py:482
+#: /home/pete/bin/mclient/src/mclient.py:1255
 msgid "About"
 msgstr "О программе"
 
-#: /home/pete/bin/mclient/src/mclient.py:498
+#: /home/pete/bin/mclient/src/mclient.py:499
 #, python-format
 msgid ""
 "Programming: Peter Sklyar, 2015, 2016.\n"
@@ -1699,453 +1698,455 @@ msgstr ""
 "\n"
 "Любые вопросы, пожелания и пр. излагайте по электронной почте.\n"
 
-#: /home/pete/bin/mclient/src/mclient.py:504
-#: /home/pete/bin/mclient/src/mclient.py:510
+#: /home/pete/bin/mclient/src/mclient.py:505
+#: /home/pete/bin/mclient/src/mclient.py:511
 msgid "View the license"
 msgstr "Информация о лицензии"
 
-#: /home/pete/bin/mclient/src/mclient.py:509
+#: /home/pete/bin/mclient/src/mclient.py:510
 msgid "License"
 msgstr "Лицензия"
 
-#: /home/pete/bin/mclient/src/mclient.py:516
 #: /home/pete/bin/mclient/src/mclient.py:517
+#: /home/pete/bin/mclient/src/mclient.py:518
 msgid "Send email to the author"
 msgstr "Написать письмо автору"
 
-#: /home/pete/bin/mclient/src/mclient.py:549
+#: /home/pete/bin/mclient/src/mclient.py:550
 #, python-format
 msgid "Concerning %s"
 msgstr "По поводу %s"
 
-#: /home/pete/bin/mclient/src/mclient.py:571
-#: /home/pete/bin/mclient/src/mclient.py:600
+#: /home/pete/bin/mclient/src/mclient.py:572
+#: /home/pete/bin/mclient/src/mclient.py:601
 msgid "Save the current view as a web-page (*.htm)"
 msgstr "Сохранить текущее представление как веб-страницу (*.htm)"
 
-#: /home/pete/bin/mclient/src/mclient.py:572
-#: /home/pete/bin/mclient/src/mclient.py:602
+#: /home/pete/bin/mclient/src/mclient.py:573
+#: /home/pete/bin/mclient/src/mclient.py:603
 msgid "Save the original article as a web-page (*.htm)"
 msgstr "Сохранить оригинальную статью как веб-страницу (*.htm)"
 
-#: /home/pete/bin/mclient/src/mclient.py:573
-#: /home/pete/bin/mclient/src/mclient.py:604
+#: /home/pete/bin/mclient/src/mclient.py:574
+#: /home/pete/bin/mclient/src/mclient.py:605
 msgid "Save the article as plain text in UTF-8 (*.txt)"
 msgstr "Сохранить статью как обычный текст в кодировке UTF-8 (*.txt)"
 
-#: /home/pete/bin/mclient/src/mclient.py:574
-#: /home/pete/bin/mclient/src/mclient.py:606
+#: /home/pete/bin/mclient/src/mclient.py:575
+#: /home/pete/bin/mclient/src/mclient.py:607
 msgid "Copy HTML code of the article to clipboard"
 msgstr "Скопировать HTML-код статьи в буфер обмена"
 
-#: /home/pete/bin/mclient/src/mclient.py:575
-#: /home/pete/bin/mclient/src/mclient.py:608
+#: /home/pete/bin/mclient/src/mclient.py:576
+#: /home/pete/bin/mclient/src/mclient.py:609
 msgid "Copy the text of the article to clipboard"
 msgstr "Скопировать текст статьи в буфер обмена"
 
-#: /home/pete/bin/mclient/src/mclient.py:577
+#: /home/pete/bin/mclient/src/mclient.py:578
 msgid "Select an action:"
 msgstr "Выберите действие:"
 
-#: /home/pete/bin/mclient/src/mclient.py:732
-#: /home/pete/bin/mclient/src/mclient.py:780
+#: /home/pete/bin/mclient/src/mclient.py:734
+#: /home/pete/bin/mclient/src/mclient.py:784
 msgid "Nothing has been found!"
 msgstr "Ничего не найдено."
 
-#: /home/pete/bin/mclient/src/mclient.py:737
+#: /home/pete/bin/mclient/src/mclient.py:739
 msgid "The start has been reached. Searching from the end."
 msgstr "Достигнуто начало. Поиск производится с конца."
 
-#: /home/pete/bin/mclient/src/mclient.py:767
+#: /home/pete/bin/mclient/src/mclient.py:769
 msgid "The end has been reached. Searching from the start."
 msgstr "Достигнут конец. Поиск производится с начала."
 
-#: /home/pete/bin/mclient/src/mclient.py:863
-#: /home/pete/bin/mclient/src/mclient.py:1173
+#: /home/pete/bin/mclient/src/mclient.py:867
+#: /home/pete/bin/mclient/src/mclient.py:1175
 msgid "History"
 msgstr "История"
 
-#: /home/pete/bin/mclient/src/mclient.py:1016
-#: /home/pete/bin/mclient/src/mclient.py:1017
+#: /home/pete/bin/mclient/src/mclient.py:1018
+#: /home/pete/bin/mclient/src/mclient.py:1019
 msgid "Translate"
 msgstr "Перевести"
 
-#: /home/pete/bin/mclient/src/mclient.py:1028
+#: /home/pete/bin/mclient/src/mclient.py:1030
 msgid "Clear"
 msgstr "Очистить"
 
-#: /home/pete/bin/mclient/src/mclient.py:1029
+#: /home/pete/bin/mclient/src/mclient.py:1031
 msgid "Clear search field"
 msgstr "Очистить строку поиска"
 
-#: /home/pete/bin/mclient/src/mclient.py:1038
+#: /home/pete/bin/mclient/src/mclient.py:1040
 msgid "Paste"
 msgstr "Вставить"
 
-#: /home/pete/bin/mclient/src/mclient.py:1039
+#: /home/pete/bin/mclient/src/mclient.py:1041
 msgid "Paste text from clipboard"
 msgstr "Вставить текст из буфера обмена"
 
-#: /home/pete/bin/mclient/src/mclient.py:1049
+#: /home/pete/bin/mclient/src/mclient.py:1051
 msgid "Paste current request"
 msgstr "Вставить текущий запрос"
 
-#: /home/pete/bin/mclient/src/mclient.py:1059
+#: /home/pete/bin/mclient/src/mclient.py:1061
 msgid "Paste previous request"
 msgstr "Вставить предыдущий запрос"
 
-#: /home/pete/bin/mclient/src/mclient.py:1067
+#: /home/pete/bin/mclient/src/mclient.py:1069
 msgid "Symbols"
 msgstr "Символы"
 
-#: /home/pete/bin/mclient/src/mclient.py:1091
+#: /home/pete/bin/mclient/src/mclient.py:1093
 msgid "Settings"
 msgstr "Настройки"
 
-#: /home/pete/bin/mclient/src/mclient.py:1092
+#: /home/pete/bin/mclient/src/mclient.py:1094
 msgid "Tune up view settings"
 msgstr "Изменить настройки вида"
 
-#: /home/pete/bin/mclient/src/mclient.py:1103
+#: /home/pete/bin/mclient/src/mclient.py:1105
 msgid "Toggle view"
 msgstr "Смена вида"
 
-#: /home/pete/bin/mclient/src/mclient.py:1104
+#: /home/pete/bin/mclient/src/mclient.py:1106
 msgid "Toggle the article view mode"
 msgstr "Переключить вид отображения статьи"
 
-#: /home/pete/bin/mclient/src/mclient.py:1115
+#: /home/pete/bin/mclient/src/mclient.py:1117
 msgid "Blacklist"
 msgstr "Черный список"
 
-#: /home/pete/bin/mclient/src/mclient.py:1116
+#: /home/pete/bin/mclient/src/mclient.py:1118
 msgid "Toggle the blacklist"
 msgstr "Включить/отключить черный список"
 
-#: /home/pete/bin/mclient/src/mclient.py:1125
+#: /home/pete/bin/mclient/src/mclient.py:1127
 msgid "Prioritize"
 msgstr "Приоритеты"
 
-#: /home/pete/bin/mclient/src/mclient.py:1126
+#: /home/pete/bin/mclient/src/mclient.py:1128
 msgid "Toggle prioritizing"
 msgstr "Включить/отключить список приоритетов"
 
-#: /home/pete/bin/mclient/src/mclient.py:1135
+#: /home/pete/bin/mclient/src/mclient.py:1137
 msgid "Alphabetize"
 msgstr "По алфавиту"
 
-#: /home/pete/bin/mclient/src/mclient.py:1136
+#: /home/pete/bin/mclient/src/mclient.py:1138
 msgid "Toggle alphabetizing"
 msgstr "Вкл./откл. сортировку по алфавиту"
 
-#: /home/pete/bin/mclient/src/mclient.py:1146
+#: /home/pete/bin/mclient/src/mclient.py:1148
 msgid "Go to the preceding article"
 msgstr "Предыдущая статья"
 
-#: /home/pete/bin/mclient/src/mclient.py:1156
+#: /home/pete/bin/mclient/src/mclient.py:1158
 msgid "Go to the following article"
 msgstr "Последующая статья"
 
-#: /home/pete/bin/mclient/src/mclient.py:1165
+#: /home/pete/bin/mclient/src/mclient.py:1167
 msgid "Show history"
 msgstr "Показать историю"
 
-#: /home/pete/bin/mclient/src/mclient.py:1168
+#: /home/pete/bin/mclient/src/mclient.py:1170
 msgid "Clear history"
 msgstr "Очистить историю"
 
-#: /home/pete/bin/mclient/src/mclient.py:1182
+#: /home/pete/bin/mclient/src/mclient.py:1184
 msgid "Reload"
 msgstr "Обновить"
 
-#: /home/pete/bin/mclient/src/mclient.py:1183
+#: /home/pete/bin/mclient/src/mclient.py:1185
 msgid "Reload the article"
 msgstr "Перезагрузить статью"
 
-#: /home/pete/bin/mclient/src/mclient.py:1193
+#: /home/pete/bin/mclient/src/mclient.py:1195
 msgid "Search"
 msgstr "Искать"
 
-#: /home/pete/bin/mclient/src/mclient.py:1194
+#: /home/pete/bin/mclient/src/mclient.py:1196
 msgid "Find in the current article"
 msgstr "Найти в текущей статье"
 
-#: /home/pete/bin/mclient/src/mclient.py:1202
+#: /home/pete/bin/mclient/src/mclient.py:1204
 msgid "Save"
 msgstr "Сохранить"
 
-#: /home/pete/bin/mclient/src/mclient.py:1203
+#: /home/pete/bin/mclient/src/mclient.py:1205
 msgid "Save the current article"
 msgstr "Сохранить текущую статью"
 
-#: /home/pete/bin/mclient/src/mclient.py:1213
+#: /home/pete/bin/mclient/src/mclient.py:1215
 msgid "Browse"
 msgstr "В браузере"
 
-#: /home/pete/bin/mclient/src/mclient.py:1214
+#: /home/pete/bin/mclient/src/mclient.py:1216
 msgid "Open the current article in a browser"
 msgstr "Открыть текущую статью в браузере"
 
-#: /home/pete/bin/mclient/src/mclient.py:1224
+#: /home/pete/bin/mclient/src/mclient.py:1226
 msgid "Print"
 msgstr "Печать"
 
-#: /home/pete/bin/mclient/src/mclient.py:1225
+#: /home/pete/bin/mclient/src/mclient.py:1227
 msgid "Create a print-ready preview"
 msgstr "Печать (предв. просмотр)"
 
-#: /home/pete/bin/mclient/src/mclient.py:1233
+#: /home/pete/bin/mclient/src/mclient.py:1235
 msgid "Define"
 msgstr "Что это?"
 
-#: /home/pete/bin/mclient/src/mclient.py:1234
+#: /home/pete/bin/mclient/src/mclient.py:1236
 msgid "Define the current term"
 msgstr "Дать определение термину"
 
-#: /home/pete/bin/mclient/src/mclient.py:1243
+#: /home/pete/bin/mclient/src/mclient.py:1245
 msgid "Clipboard"
 msgstr "Буфер обмена"
 
-#: /home/pete/bin/mclient/src/mclient.py:1244
+#: /home/pete/bin/mclient/src/mclient.py:1246
 msgid "Capture Ctrl-c-c and Ctrl-Ins-Ins"
 msgstr "Перехватывать Ctrl-c-c и Ctrl-Ins-Ins"
 
-#: /home/pete/bin/mclient/src/mclient.py:1254
+#: /home/pete/bin/mclient/src/mclient.py:1256
 msgid "View About"
 msgstr "Информация о программе"
 
-#: /home/pete/bin/mclient/src/mclient.py:1263
+#: /home/pete/bin/mclient/src/mclient.py:1265
 msgid "Quit the program"
 msgstr "Выйти из программы"
 
-#: /home/pete/bin/mclient/src/mclient.py:1590
+#: /home/pete/bin/mclient/src/mclient.py:1592
 msgid "Unable to set selection!"
 msgstr "Не удалось задать выделение!"
 
-#: /home/pete/bin/mclient/src/mclient.py:1686
-#, python-format
-msgid "Failed to set node \"%s\"!"
-msgstr "Не удалось задать узел \"%s\"!"
+#: /home/pete/bin/mclient/src/mclient.py:1653
+msgid "The column is too wide to be fully shown"
+msgstr "Столбец слишком широк для отображения"
 
-#: /home/pete/bin/mclient/src/mclient.py:1824
+#: /home/pete/bin/mclient/src/mclient.py:1685
+msgid "The row is too wide to be fully shown"
+msgstr "Строка слишком широка для отображения"
+
+#: /home/pete/bin/mclient/src/mclient.py:1730
+msgid "Nothing has been loaded yet."
+msgstr "Ничего еще не загружено."
+
+#: /home/pete/bin/mclient/src/mclient.py:1828
 #, python-format
 msgid "Set the column limit to %d"
 msgstr "Задать максимальное число столбцов: %d"
 
-#: /home/pete/bin/mclient/src/mclient.py:1902
+#: /home/pete/bin/mclient/src/mclient.py:1910
 #, python-format
 msgid "Open link: %s"
 msgstr "Открывается ссылка: %s"
 
-#: /home/pete/bin/mclient/src/mclient.py:1908
-#: /home/pete/bin/mclient/src/mclient.py:2080
+#: /home/pete/bin/mclient/src/mclient.py:1916
+#: /home/pete/bin/mclient/src/mclient.py:2084
 msgid "This block does not contain a URL!"
 msgstr "Этот блок не содержит URL!"
 
-#: /home/pete/bin/mclient/src/mclient.py:1924
+#: /home/pete/bin/mclient/src/mclient.py:1932
 #, python-format
 msgid "Set source to \"%s\""
 msgstr "Выбран источник \"%s\""
 
-#: /home/pete/bin/mclient/src/mclient.py:2061
+#: /home/pete/bin/mclient/src/mclient.py:2065
 msgid "This block does not contain any text!"
 msgstr "Этот блок не содержит текста!"
 
-#: /home/pete/bin/mclient/src/mclient.py:2200
+#: /home/pete/bin/mclient/src/mclient.py:2204
 #, python-format
 msgid "The request is long (%d symbols). Do you really want to send it?"
 msgstr "Запрос длинный (%d символов). Отправить?"
 
-#: /home/pete/bin/mclient/src/mclient.py:2213
+#: /home/pete/bin/mclient/src/mclient.py:2217
 #, python-format
 msgid "Set language to \"%s\""
 msgstr "Выбран язык \"%s\""
 
-#: /home/pete/bin/mclient/src/mclient.py:2274
+#: /home/pete/bin/mclient/src/mclient.py:2278
 msgid "No dictionaries have been provided for blacklisting!"
 msgstr "Список блокируемых словарей пуст!"
 
-#: /home/pete/bin/mclient/src/mclient.py:2327
+#: /home/pete/bin/mclient/src/mclient.py:2331
 msgid "No dictionaries have been provided for prioritizing!"
 msgstr "Список приоритетных словарей пуст!"
 
-#: /home/pete/bin/mclient/src/mclient.py:2435
-#: /home/pete/bin/mclient/src/mclient.py:2455
-#: /home/pete/bin/mclient/src/mclient.py:2456
-#: /home/pete/bin/mclient/src/mclient.py:2457
-#: /home/pete/bin/mclient/src/mclient.py:2516
-#: /home/pete/bin/mclient/src/mclient.py:2525
-#: /home/pete/bin/mclient/src/mclient.py:2541
-#: /home/pete/bin/mclient/src/mclient.py:2549
-#: /home/pete/bin/mclient/src/mclient.py:2554
-#: /home/pete/bin/mclient/src/mclient.py:2662
-#: /home/pete/bin/mclient/src/mclient.py:2682
-#: /home/pete/bin/mclient/src/mclient.py:2693
-#: /home/pete/bin/mclient/src/mclient.py:2883
+#: /home/pete/bin/mclient/src/mclient.py:2439
+#: /home/pete/bin/mclient/src/mclient.py:2459
+#: /home/pete/bin/mclient/src/mclient.py:2460
+#: /home/pete/bin/mclient/src/mclient.py:2461
+#: /home/pete/bin/mclient/src/mclient.py:2520
+#: /home/pete/bin/mclient/src/mclient.py:2529
+#: /home/pete/bin/mclient/src/mclient.py:2545
+#: /home/pete/bin/mclient/src/mclient.py:2553
+#: /home/pete/bin/mclient/src/mclient.py:2558
+#: /home/pete/bin/mclient/src/mclient.py:2666
+#: /home/pete/bin/mclient/src/mclient.py:2685
+#: /home/pete/bin/mclient/src/mclient.py:2696
+#: /home/pete/bin/mclient/src/mclient.py:2887
 msgid "Dictionaries"
 msgstr "Словари"
 
-#: /home/pete/bin/mclient/src/mclient.py:2436
-#: /home/pete/bin/mclient/src/mclient.py:2471
-#: /home/pete/bin/mclient/src/mclient.py:2472
-#: /home/pete/bin/mclient/src/mclient.py:2473
-#: /home/pete/bin/mclient/src/mclient.py:2517
-#: /home/pete/bin/mclient/src/mclient.py:2519
-#: /home/pete/bin/mclient/src/mclient.py:2542
+#: /home/pete/bin/mclient/src/mclient.py:2440
+#: /home/pete/bin/mclient/src/mclient.py:2475
+#: /home/pete/bin/mclient/src/mclient.py:2476
+#: /home/pete/bin/mclient/src/mclient.py:2477
+#: /home/pete/bin/mclient/src/mclient.py:2521
+#: /home/pete/bin/mclient/src/mclient.py:2523
 #: /home/pete/bin/mclient/src/mclient.py:2546
-#: /home/pete/bin/mclient/src/mclient.py:2552
-#: /home/pete/bin/mclient/src/mclient.py:2557
-#: /home/pete/bin/mclient/src/mclient.py:2663
-#: /home/pete/bin/mclient/src/mclient.py:2684
-#: /home/pete/bin/mclient/src/mclient.py:2693
-#: /home/pete/bin/mclient/src/mclient.py:2889
+#: /home/pete/bin/mclient/src/mclient.py:2550
+#: /home/pete/bin/mclient/src/mclient.py:2556
+#: /home/pete/bin/mclient/src/mclient.py:2561
+#: /home/pete/bin/mclient/src/mclient.py:2667
+#: /home/pete/bin/mclient/src/mclient.py:2687
+#: /home/pete/bin/mclient/src/mclient.py:2696
+#: /home/pete/bin/mclient/src/mclient.py:2893
 msgid "Word forms"
 msgstr "Словоформы"
 
-#: /home/pete/bin/mclient/src/mclient.py:2437
-#: /home/pete/bin/mclient/src/mclient.py:2487
-#: /home/pete/bin/mclient/src/mclient.py:2488
-#: /home/pete/bin/mclient/src/mclient.py:2489
-#: /home/pete/bin/mclient/src/mclient.py:2518
+#: /home/pete/bin/mclient/src/mclient.py:2441
+#: /home/pete/bin/mclient/src/mclient.py:2491
+#: /home/pete/bin/mclient/src/mclient.py:2492
+#: /home/pete/bin/mclient/src/mclient.py:2493
 #: /home/pete/bin/mclient/src/mclient.py:2522
-#: /home/pete/bin/mclient/src/mclient.py:2524
-#: /home/pete/bin/mclient/src/mclient.py:2544
+#: /home/pete/bin/mclient/src/mclient.py:2526
+#: /home/pete/bin/mclient/src/mclient.py:2528
 #: /home/pete/bin/mclient/src/mclient.py:2548
-#: /home/pete/bin/mclient/src/mclient.py:2551
-#: /home/pete/bin/mclient/src/mclient.py:2556
-#: /home/pete/bin/mclient/src/mclient.py:2664
-#: /home/pete/bin/mclient/src/mclient.py:2686
-#: /home/pete/bin/mclient/src/mclient.py:2693
-#: /home/pete/bin/mclient/src/mclient.py:2895
+#: /home/pete/bin/mclient/src/mclient.py:2552
+#: /home/pete/bin/mclient/src/mclient.py:2555
+#: /home/pete/bin/mclient/src/mclient.py:2560
+#: /home/pete/bin/mclient/src/mclient.py:2668
+#: /home/pete/bin/mclient/src/mclient.py:2689
+#: /home/pete/bin/mclient/src/mclient.py:2696
+#: /home/pete/bin/mclient/src/mclient.py:2899
 msgid "Parts of speech"
 msgstr "Части речи"
 
-#: /home/pete/bin/mclient/src/mclient.py:2438
-#: /home/pete/bin/mclient/src/mclient.py:2503
-#: /home/pete/bin/mclient/src/mclient.py:2504
-#: /home/pete/bin/mclient/src/mclient.py:2505
-#: /home/pete/bin/mclient/src/mclient.py:2520
-#: /home/pete/bin/mclient/src/mclient.py:2521
-#: /home/pete/bin/mclient/src/mclient.py:2543
+#: /home/pete/bin/mclient/src/mclient.py:2442
+#: /home/pete/bin/mclient/src/mclient.py:2507
+#: /home/pete/bin/mclient/src/mclient.py:2508
+#: /home/pete/bin/mclient/src/mclient.py:2509
+#: /home/pete/bin/mclient/src/mclient.py:2524
+#: /home/pete/bin/mclient/src/mclient.py:2525
 #: /home/pete/bin/mclient/src/mclient.py:2547
-#: /home/pete/bin/mclient/src/mclient.py:2553
-#: /home/pete/bin/mclient/src/mclient.py:2665
-#: /home/pete/bin/mclient/src/mclient.py:2688
-#: /home/pete/bin/mclient/src/mclient.py:2693
-#: /home/pete/bin/mclient/src/mclient.py:2901
+#: /home/pete/bin/mclient/src/mclient.py:2551
+#: /home/pete/bin/mclient/src/mclient.py:2557
+#: /home/pete/bin/mclient/src/mclient.py:2669
+#: /home/pete/bin/mclient/src/mclient.py:2691
+#: /home/pete/bin/mclient/src/mclient.py:2696
+#: /home/pete/bin/mclient/src/mclient.py:2905
 msgid "Transcription"
 msgstr "Транскрипция"
 
-#: /home/pete/bin/mclient/src/mclient.py:2439
-#: /home/pete/bin/mclient/src/mclient.py:2452
-#: /home/pete/bin/mclient/src/mclient.py:2468
-#: /home/pete/bin/mclient/src/mclient.py:2484
-#: /home/pete/bin/mclient/src/mclient.py:2500
-#: /home/pete/bin/mclient/src/mclient.py:2523
-#: /home/pete/bin/mclient/src/mclient.py:2526
-#: /home/pete/bin/mclient/src/mclient.py:2558
-#: /home/pete/bin/mclient/src/mclient.py:2559
-#: /home/pete/bin/mclient/src/mclient.py:2674
+#: /home/pete/bin/mclient/src/mclient.py:2443
+#: /home/pete/bin/mclient/src/mclient.py:2456
+#: /home/pete/bin/mclient/src/mclient.py:2472
+#: /home/pete/bin/mclient/src/mclient.py:2488
+#: /home/pete/bin/mclient/src/mclient.py:2504
+#: /home/pete/bin/mclient/src/mclient.py:2527
+#: /home/pete/bin/mclient/src/mclient.py:2530
+#: /home/pete/bin/mclient/src/mclient.py:2562
+#: /home/pete/bin/mclient/src/mclient.py:2563
+#: /home/pete/bin/mclient/src/mclient.py:2678
 msgid "Do not set"
 msgstr "Не задано"
 
-#: /home/pete/bin/mclient/src/mclient.py:2442
-#: /home/pete/bin/mclient/src/mclient.py:2531
-#: /home/pete/bin/mclient/src/mclient.py:2545
+#: /home/pete/bin/mclient/src/mclient.py:2446
+#: /home/pete/bin/mclient/src/mclient.py:2535
+#: /home/pete/bin/mclient/src/mclient.py:2549
 msgid "Multitran"
 msgstr "Мультитран "
 
-#: /home/pete/bin/mclient/src/mclient.py:2443
-#: /home/pete/bin/mclient/src/mclient.py:2533
-#: /home/pete/bin/mclient/src/mclient.py:2550
+#: /home/pete/bin/mclient/src/mclient.py:2447
+#: /home/pete/bin/mclient/src/mclient.py:2537
+#: /home/pete/bin/mclient/src/mclient.py:2554
 msgid "Cut to the chase"
 msgstr "Прямо к делу"
 
-#: /home/pete/bin/mclient/src/mclient.py:2444
-#: /home/pete/bin/mclient/src/mclient.py:2535
-#: /home/pete/bin/mclient/src/mclient.py:2555
+#: /home/pete/bin/mclient/src/mclient.py:2448
+#: /home/pete/bin/mclient/src/mclient.py:2539
+#: /home/pete/bin/mclient/src/mclient.py:2559
 msgid "Clearness"
 msgstr "Ясность"
 
-#: /home/pete/bin/mclient/src/mclient.py:2445
-#: /home/pete/bin/mclient/src/mclient.py:2537
-#: /home/pete/bin/mclient/src/mclient.py:2560
+#: /home/pete/bin/mclient/src/mclient.py:2449
+#: /home/pete/bin/mclient/src/mclient.py:2541
+#: /home/pete/bin/mclient/src/mclient.py:2564
 msgid "Custom"
 msgstr "Особый"
 
-#: /home/pete/bin/mclient/src/mclient.py:2619
+#: /home/pete/bin/mclient/src/mclient.py:2623
 msgid "Sort by each column (if it is set) (except for transcription)"
 msgstr "Сортировать по каждому столбцу (если он задан) (кроме транскрипции)"
 
-#: /home/pete/bin/mclient/src/mclient.py:2629
+#: /home/pete/bin/mclient/src/mclient.py:2633
 msgid "Alphabetize terms"
 msgstr "Сортировать термины по алфавиту"
 
-#: /home/pete/bin/mclient/src/mclient.py:2636
-#: /home/pete/bin/mclient/src/mclient.py:2642
+#: /home/pete/bin/mclient/src/mclient.py:2640
+#: /home/pete/bin/mclient/src/mclient.py:2646
 msgid "Not implemented yet!"
 msgstr "Еще не реализовано!"
 
-#: /home/pete/bin/mclient/src/mclient.py:2714
+#: /home/pete/bin/mclient/src/mclient.py:2711
 msgid "At least one column must be set!"
 msgstr "Необходимо задать хотя бы 1 столбец!"
 
-#: /home/pete/bin/mclient/src/mclient.py:2720
+#: /home/pete/bin/mclient/src/mclient.py:2717
 msgid "Reset settings"
 msgstr "Сброс настроек"
 
-#: /home/pete/bin/mclient/src/mclient.py:2722
+#: /home/pete/bin/mclient/src/mclient.py:2719
 msgid "Reset"
 msgstr "Сброс"
 
-#: /home/pete/bin/mclient/src/mclient.py:2728
+#: /home/pete/bin/mclient/src/mclient.py:2725
 msgid "Apply settings"
 msgstr "Применить настройки"
 
-#: /home/pete/bin/mclient/src/mclient.py:2730
+#: /home/pete/bin/mclient/src/mclient.py:2727
 msgid "Apply"
 msgstr "Применить"
 
-#: /home/pete/bin/mclient/src/mclient.py:2736
-msgid "Tune up blacklisting"
-msgstr "Настроить черный список"
-
-#: /home/pete/bin/mclient/src/mclient.py:2738
-#: /home/pete/bin/mclient/src/mclient.py:2746
-msgid "Add/Remove"
-msgstr "Добавить/удалить"
-
-#: /home/pete/bin/mclient/src/mclient.py:2744
-msgid "Tune up prioritizing"
-msgstr "Задать приоритеты"
-
-#: /home/pete/bin/mclient/src/mclient.py:2751
+#: /home/pete/bin/mclient/src/mclient.py:2752
 msgid "Vertical view"
 msgstr "Вертикальный вид"
 
-#: /home/pete/bin/mclient/src/mclient.py:2813
+#: /home/pete/bin/mclient/src/mclient.py:2817
 msgid "Style:"
 msgstr "Стиль:"
 
-#: /home/pete/bin/mclient/src/mclient.py:2823
-#: /home/pete/bin/mclient/src/mclient.py:2833
-#: /home/pete/bin/mclient/src/mclient.py:2843
-#: /home/pete/bin/mclient/src/mclient.py:2853
+#: /home/pete/bin/mclient/src/mclient.py:2827
+#: /home/pete/bin/mclient/src/mclient.py:2837
+#: /home/pete/bin/mclient/src/mclient.py:2847
+#: /home/pete/bin/mclient/src/mclient.py:2857
 msgid "Column"
 msgstr "Столбец"
 
-#: /home/pete/bin/mclient/src/mclient.py:2863
+#: /home/pete/bin/mclient/src/mclient.py:2867
 msgid "Block dictionaries from blacklist"
 msgstr "Блокировать словари из черного списка"
 
-#: /home/pete/bin/mclient/src/mclient.py:2868
+#: /home/pete/bin/mclient/src/mclient.py:2872
 msgid "Prioritize dictionaries"
 msgstr "Сортировать словари по приоритету"
 
-#: /home/pete/bin/mclient/src/mclient.py:2933
+#: /home/pete/bin/mclient/src/mclient.py:2937
 msgid "View Settings"
 msgstr "Настройки вида"
 
+#~ msgid "Failed to set node \"%s\"!"
+#~ msgstr "Не удалось задать узел \"%s\"!"
+#~ msgid "Tune up blacklisting"
+#~ msgstr "Настроить черный список"
+#~ msgid "Add/Remove"
+#~ msgstr "Добавить/удалить"
+#~ msgid "Tune up prioritizing"
+#~ msgstr "Задать приоритеты"
 #~ msgid "Tree"
 #~ msgstr "Дерево"
 
