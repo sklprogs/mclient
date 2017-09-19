@@ -386,20 +386,6 @@ class DB:
                           ,_('Empty input is not allowed!')
                           )
 
-    # Find the maximum available column number for the set row
-    def max_col_sp(self,row_no):
-        if self._source and self._search:
-            if self.Selectable:
-                self.dbc.execute('select COLNO,NO,BBOX2 from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 order by COLNO desc,NO desc',(row_no,self._source,self._search,'term','phrase',))
-            else:
-                self.dbc.execute('select COLNO,NO,BBOX2 from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by COLNO desc,NO desc',(row_no,self._source,self._search,))
-            return self.dbc.fetchone()
-        else:
-            sh.log.append ('DB.max_col_sp'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
-
     # Find the minimum available column number for the whole table; this should be the same as COLNO of 'self.min_cell' but we leave it for non-standard tables
     def min_col(self):
         if self._source and self._search:
@@ -414,20 +400,6 @@ class DB:
                           ,_('Empty input is not allowed!')
                           )
 
-    # Find the minimum available row number for the whole table; this should be the same as ROWNO of 'self.min_cell' but we leave it for non-standard tables
-    def min_row(self):
-        if self._source and self._search:
-            if self.Selectable:
-                self.dbc.execute('select ROWNO,NO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 order by ROWNO,NO',(self._source,self._search,'term','phrase',))
-            else:
-                self.dbc.execute('select ROWNO,NO from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by ROWNO,NO',(self._source,self._search,))
-            return self.dbc.fetchone()
-        else:
-            sh.log.append ('DB.min_row'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
-
     # Find the minimum available row number for the set column; this might not be the same as ROWNO of 'self.min_cell'
     def min_row_sp(self,col_no):
         if self._source and self._search:
@@ -438,20 +410,6 @@ class DB:
             return self.dbc.fetchone()
         else:
             sh.log.append ('DB.min_row_sp'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
-
-    # Find the minimum available column number for the set row
-    def min_col_sp(self,row_no):
-        if self._source and self._search:
-            if self.Selectable:
-                self.dbc.execute('select COLNO,NO,BBOX1 from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 order by COLNO,NO',(row_no,self._source,self._search,'term','phrase',))
-            else:
-                self.dbc.execute('select COLNO,NO,BBOX1 from BLOCKS where ROWNO = ? and SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by COLNO,NO',(row_no,self._source,self._search,))
-            return self.dbc.fetchone()
-        else:
-            sh.log.append ('DB.min_col_sp'
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
@@ -472,29 +430,6 @@ class DB:
                           ,_('Empty input is not allowed!')
                           )
             '''
-
-    def node_y1(self,bboy):
-        if self._source and self._search:
-            self.dbc.execute('select NODE1,BBOY1,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and BBOY1 >= ? order by BBOY1',(self._source,self._search,bboy,))
-            return self.dbc.fetchone()
-        else:
-            sh.log.append ('DB.node_y1'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
-
-    def row(self,row_no):
-        if self._source and self._search:
-            if self.Selectable:
-                self.dbc.execute('select BBOX1,BBOX2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and (TYPE = ? or TYPE = ?) and SELECTABLE = 1 and POS1 < POS2 and ROWNO = ? order by CELLNO,NO',(self._source,self._search,'term','phrase',row_no,))
-            else:
-                self.dbc.execute('select BBOX1,BBOX2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and ROWNO = ? order by CELLNO,NO',(self._source,self._search,row_no,))
-            return self.dbc.fetchall()
-        else:
-            sh.log.append ('DB.row'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
 
     def blocked(self):
         if self._source and self._search:
@@ -569,22 +504,6 @@ class DB:
         if 'dic' not in self._types:
             self.dbc.execute('update BLOCKS set IGNORE = 1 where SOURCE = ? and SEARCH = ? and TYPE = ?',(self._source,self._search,'phrase',))
             
-    # Only a cell number must be on input (in case of a pos, block parameters are returned)
-    def cell(self,cell_no=0):
-        if self._source and self._search:
-            self.dbc.execute('select NODE1,BBOX1,BBOY1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and CELLNO = ? order by BBOY1,BBOX1',(self._source,self._search,cell_no,))
-            result1 = self.dbc.fetchone()
-            self.dbc.execute('select NODE2,BBOX2,BBOY2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and CELLNO = ? order by BBOY2 desc,BBOX2 desc',(self._source,self._search,cell_no,))
-            result2 = self.dbc.fetchone()
-            if result1 and result2:
-                # NODE1,NODE2,BBOX1,BBOX2,BBOY1,BBOY2
-                return(result1[0],result2[0],result1[1],result2[1],result1[2],result2[2])
-        else:
-            sh.log.append ('DB.cell'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
-    
     # Get any block with the maximal BBOY2
     def max_bboy(self,limit=0):
         if self._source and self._search:
