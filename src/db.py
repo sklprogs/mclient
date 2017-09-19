@@ -569,23 +569,12 @@ class DB:
         if 'dic' not in self._types:
             self.dbc.execute('update BLOCKS set IGNORE = 1 where SOURCE = ? and SEARCH = ? and TYPE = ?',(self._source,self._search,'phrase',))
             
-    # Get any block with the minimal BBOY1 for the set column number
-    def min_bboy(self,row_no=0):
-        if self._source and self._search:
-            self.dbc.execute('select BBOY1,BBOY2,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and ROWNO = ? order by BBOY1',(self._source,self._search,row_no,))
-            return self.dbc.fetchone()
-        else:
-            sh.log.append ('DB.min_bboy'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
-                          
     # Only a cell number must be on input (in case of a pos, block parameters are returned)
     def cell(self,cell_no=0):
         if self._source and self._search:
-            self.dbc.execute('select NODE1,BBOX1,BBOY1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and CELLNO = ? order by NO',(self._source,self._search,cell_no,))
+            self.dbc.execute('select NODE1,BBOX1,BBOY1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and CELLNO = ? order by BBOY1,BBOX1',(self._source,self._search,cell_no,))
             result1 = self.dbc.fetchone()
-            self.dbc.execute('select NODE2,BBOX2,BBOY2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and CELLNO = ? order by NO desc',(self._source,self._search,cell_no,))
+            self.dbc.execute('select NODE2,BBOX2,BBOY2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and CELLNO = ? order by BBOY2 desc,BBOX2 desc',(self._source,self._search,cell_no,))
             result2 = self.dbc.fetchone()
             if result1 and result2:
                 # NODE1,NODE2,BBOX1,BBOX2,BBOY1,BBOY2
@@ -606,6 +595,60 @@ class DB:
             return self.dbc.fetchone()
         else:
             sh.log.append ('DB.max_bboy'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
+    # Get any block with the maximal BBOX2
+    def max_bbox(self,limit=0):
+        if self._source and self._search:
+            if limit:
+                self.dbc.execute('select BBOX2,NODE1,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and BBOX2 < ? order by BBOX2 desc',(self._source,self._search,limit,))
+            else:
+                self.dbc.execute('select BBOX2,NODE1,TEXT from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by BBOX2 desc',(self._source,self._search,))
+            return self.dbc.fetchone()
+        else:
+            sh.log.append ('DB.max_bbox'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
+    # Get the minimum BBOY1 and the maximum BBOY2 for the set row number
+    def bboy_limits(self,row_no=0):
+        if self._source and self._search:
+            self.dbc.execute('select BBOY1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and ROWNO = ? order by BBOY1',(self._source,self._search,row_no,))
+            min_result = self.dbc.fetchone()
+            self.dbc.execute('select BBOY2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and ROWNO = ? order by BBOY2 desc',(self._source,self._search,row_no,))
+            max_result = self.dbc.fetchone()
+            if min_result and max_result:
+                return(min_result[0],max_result[0])
+            else:
+                sh.log.append ('DB.bboy_limits'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('DB.bboy_limits'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+                          
+    # Get the minimum BBOX1 and the maximum BBOX2 for the set column number
+    def bbox_limits(self,col_no=0):
+        if self._source and self._search:
+            self.dbc.execute('select BBOX1 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and COLNO = ? order by BBOX1',(self._source,self._search,col_no,))
+            min_result = self.dbc.fetchone()
+            self.dbc.execute('select BBOX2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 and COLNO = ? order by BBOX2 desc',(self._source,self._search,col_no,))
+            max_result = self.dbc.fetchone()
+            if min_result and max_result:
+                return(min_result[0],max_result[0])
+            else:
+                sh.log.append ('DB.bbox_limits'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('DB.bbox_limits'
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )

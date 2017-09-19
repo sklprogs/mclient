@@ -12,6 +12,7 @@
     - Store '_html_raw' value for all articles, not just for the latest new loaded one
     - Set a priority that is lower for phrases than for terms (in case the 1st fixed column is not Dictionaries)
     - Lower the priority of 'phrase' type instead of ignoring it in the Clarity mode
+    - shift_screen is not precisely accurate, possibly due to incorrect binding of scrollbars
 '''
 
 ''' # fix
@@ -1620,31 +1621,47 @@ class WebFrame:
         '''
         return self.widget.winfo_width()
 
-    def shift_x(self,bbox2):
-        _width  = self.width()
-        if _width:
-            page_bbox = (int(bbox2 / _width)) * _width
-            max_col   = objs._blocks_db.max_col()
-            if max_col:
-                fraction = page_bbox / max_col[2]
-                self.widget.xview_moveto(fraction=fraction)
+    def scroll_x(self,bbox,max_bbox):
+        fraction = bbox / max_bbox
+        self.widget.xview_moveto(fraction=fraction)
+        
+    def scroll_y(self,bboy,max_bboy):
+        # 'tkinterhtml' may think that topmost blocks have higher BBOY1 than other blocks (this is probably a bug), but correcting this will make the code more complex and error-prone.
+        fraction = bboy / max_bboy
+        self.widget.yview_moveto(fraction=fraction)
+
+    def shift_x(self,bbox1,bbox2):
+        _width = self.width()
+        result = objs.blocks_db().max_bbox()
+        if _width and result:
+            max_bbox = result[0]
+            page1_no = int(bbox1 / _width)
+            page2_no = int(bbox2 / _width)
+
+            if page1_no == page2_no:
+                page_bbox = page1_no * _width
+                self.scroll_x (bbox     = page_bbox
+                              ,max_bbox = max_bbox
+                              )
             else:
-                sh.log.append ('WebFrame.shift_x'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
+                page1_bbox = page1_no * _width
+                page2_bbox = page2_no * _width
+                if page2_bbox - page1_bbox > _width:
+                    delta = 0
+                    sh.log.append ('WebFrame.shift_x'
+                                  ,_('WARNING')
+                                  ,_('The column is too wide to be fully shown')
+                                  )
+                else:
+                    delta = bbox2 - page2_bbox
+                self.scroll_x (bbox     = page1_bbox + delta
+                              ,max_bbox = max_bbox
                               )
         else:
             sh.log.append ('WebFrame.shift_x'
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-    
-    def scroll_y(self,bboy,max_bboy,AddScroll=True):
-        # note: This trick allows to make the top of a cell readable (in spite of an incorrect BBOY1 value returned by tkinterhtml). It seems that 'yview_move' is more accurate than 'yview_name' even without changing 'bboy'.
-        if AddScroll and bboy >= 5:
-            bboy -= 5
-        fraction = bboy / max_bboy
-        self.widget.yview_moveto(fraction=fraction)
     
     def shift_y(self,bboy1,bboy2):
         _height = self.height()
@@ -1655,40 +1672,44 @@ class WebFrame:
             page2_no = int(bboy2 / _height)
             if page1_no == page2_no:
                 page_bboy = page1_no * _height
-                self.scroll_y (bboy      = page_bboy
-                              ,max_bboy  = max_bboy
-                              ,AddScroll = True
+                self.scroll_y (bboy     = page_bboy
+                              ,max_bboy = max_bboy
                               )
             else:
                 page1_bboy = page1_no * _height
                 page2_bboy = page2_no * _height
-                result     = objs._blocks_db.max_bboy(limit=page2_bboy)
-                if result:
-                    max_page_bboy = result[0]
-                    delta = page2_bboy - max_page_bboy
-                    self.scroll_y (bboy      = page1_bboy + delta
-                                  ,max_bboy  = max_bboy
-                                  ,AddScroll = False
-                                  )
-                else:
+                if page2_bboy - page1_bboy > _height:
+                    delta = 0
                     sh.log.append ('WebFrame.shift_y'
                                   ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
+                                  ,_('The row is too wide to be fully shown')
                                   )
+                else:
+                    delta = bboy2 - page2_bboy
+                self.scroll_y (bboy     = page1_bboy + delta
+                              ,max_bboy = max_bboy
+                              )
         else:
             sh.log.append ('WebFrame.shift_y'
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
 
+    ''' In order to shift the screen correctly, we need to:
+        - make visible the minimum BBOY1 and the maximum BBOY2 of the current row;
+          - if BBOY2 - BBOY1 exceeds the current height, we should scroll to BBOY1 only
+        - make visible the minimum BBOX1 and the maximum BBOX2 of the current column;
+          - if BBOX2 - BBOX1 exceeds the current width, we should scroll to BBOX1 only
+    '''
     def shift_screen(self):
         result1 = objs.blocks_db().block_pos(pos=self._pos)
         if result1:
-            result2 = objs.blocks_db().cell(cell_no=result1[2])
-            # Probably, there is a bug in tkinter/tkinterhtml: minimal BBOY1 does not always match the topmost block
-            result3 = objs._blocks_db.min_bboy(row_no=result1[3])
+            result2 = objs._blocks_db.bbox_limits(col_no=result1[4])
+            result3 = objs._blocks_db.bboy_limits(row_no=result1[3])
             if result2 and result3:
-                self.shift_x (bbox2 = result2[3])
+                self.shift_x (bbox1 = result2[0]
+                             ,bbox2 = result2[1]
+                             )
                 self.shift_y (bboy1 = result3[0]
                              ,bboy2 = result3[1]
                              )
@@ -1737,7 +1758,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/рабочая документация.txt'
                            #,file        = '/home/pete/tmp/ars/do.txt'
                            #,file        = '/home/pete/tmp/ars/set.txt'
-                           #,file        = '/home/pete/tmp/ars/get.txt'
+                           ,file        = '/home/pete/tmp/ars/get.txt'
                            #,file        = '/home/pete/tmp/ars/pack.txt'
                            #,file        = '/home/pete/tmp/ars/counterpart.txt'
                            #,file        = '/home/pete/tmp/ars/test.txt'
@@ -1745,7 +1766,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/tun.txt'
                            #,file        = '/home/pete/tmp/ars/martyr.txt'
                            #,file         = '/home/pete/tmp/ars/œuf.txt'
-                           ,file         = '/home/pete/tmp/ars/forward.txt'
+                           #,file         = '/home/pete/tmp/ars/forward.txt'
                            )
             page.run()
             ptimer.end()
@@ -1846,7 +1867,7 @@ class WebFrame:
         pages = cl.Pages(obj=objs.webframe(),blocks=pos._blocks)
         pages.run()
         objs._blocks_db.update(query=pages._query)
-
+        
         self.title(arg=objs._request._search)
         # Select the first block without shifting the screen
         self._pos = objs.blocks_db().start()
@@ -1860,7 +1881,7 @@ class WebFrame:
         timer.end()
 
         '''
-        objs._blocks_db.dbc.execute('select CELLNO,NO,ROWNO,COLNO,TYPE,TEXT,DICA,WFORMA,SPEECHA from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 order by CELLNO,NO',(objs._blocks_db._source,objs._blocks_db._search,))
+        objs._blocks_db.dbc.execute('select CELLNO,NO,ROWNO,COLNO,TYPE,TEXT,BBOX1,BBOX2,BBOY1,BBOY2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by CELLNO,NO',(objs._blocks_db._source,objs._blocks_db._search,))
         objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=150)
         '''
 
