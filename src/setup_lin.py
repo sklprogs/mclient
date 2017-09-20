@@ -5,10 +5,10 @@ from cx_Freeze import setup, Executable
 buildOptions = dict(packages = [], includes = ["re"], excludes = [])
 
 executables = [
-    Executable('mclient.pyw', base = 'Console', icon = 'resources/icon_64x64_mclient.gif', targetName = 'mclient')
+    Executable('mclient.py', base = 'Console', icon = 'resources/icon_64x64_mclient.gif', targetName = 'mclient')
 ]
 
-setup(name='mclient.pyw',
+setup(name='mclient.py',
       version = '5',
       description = 'Multitran Online Client',
       options = dict(build_exe = buildOptions),

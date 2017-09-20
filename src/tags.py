@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import gettext
-
+import gettext, gettext_windows
+gettext_windows.setup_env()
 gettext.install('mclient','./locale')
 
 import re

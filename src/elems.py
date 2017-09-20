@@ -13,8 +13,8 @@
 	- unite cells if (?) the url is the same or similar. Example: 'sampling' -> Робототехника -> проведение выборочных замеров
 '''
 
-import gettext
-
+import gettext, gettext_windows
+gettext_windows.setup_env()
 gettext.install('mclient','./locale')
 
 import shared as sh
