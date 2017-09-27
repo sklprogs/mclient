@@ -13,6 +13,7 @@
     - Set a priority that is lower for phrases than for terms (in case the 1st fixed column is not Dictionaries)
     - Lower the priority of 'phrase' type instead of ignoring it in the Clarity mode
     - shift_screen is not precisely accurate, possibly due to incorrect binding of scrollbars
+    - Delete symbols that prevent URL from opening (e.g., 'символ' -> 'pilcrow')
 '''
 
 ''' # fix
@@ -40,6 +41,7 @@
     - Fix links in a saved raw html
     - 'gen_poses' cannot find Search items when Page is forced to use 'file=' (RU-DE, 'tun')
     - Start ROWNO with 0
+    - Column number is inappropriately increased when a Custom view is enabled (e.g. Word Forms + Parts of Speech)
 '''
 
 import gettext, gettext_windows
@@ -63,7 +65,7 @@ import mkhtml      as mh
 
 
 product = 'MClient'
-version = '5.3'
+version = '5.3.1'
 
 third_parties = '''
 tkinterhtml
@@ -1005,26 +1007,33 @@ class WebFrame:
                                 )
         self.widget  = th.TkinterHtml(self.frame.widget)
         self.widget.pack(expand='1',fill='both')
-        self.scrollbars ()
+        self.scrollbars()
         self.frame_panel()
-        self.icon       ()
-        self.title      ()
-        self.bindings   ()
+        # cur
+        '''
+        self.frame_b = sg.Frame (parent_obj = self.bottom
+                                ,expand     = 0
+                                ,side       = 'bottom'
+                                )
+        self.but_scrollbar()
+        '''
+        self.icon()
+        self.title()
+        self.bindings()
         self.search_field.widget.focus_set()
         self.obj.widget.protocol("WM_DELETE_WINDOW",self.close)
 
     def widgets(self):
-        self.settings       = Settings      ()
-        self.search_article = SearchArticle ()
-        self.spec_symbols   = SpecSymbols   ()
-        self.save_article   = SaveArticle   ()
-        self.history        = History       ()
+        self.settings       = Settings     ()
+        self.search_article = SearchArticle()
+        self.spec_symbols   = SpecSymbols  ()
+        self.save_article   = SaveArticle  ()
+        self.history        = History      ()
 
     def frame_panel(self):
         self._panel = sg.Frame (parent_obj = self.bottom
                                ,expand     = 0
                                ,fill       = 'x'
-                               ,side       = 'bottom'
                                )
         # Поле ввода поисковой строки
         self.search_field = SearchField(parent_obj=self._panel)
@@ -1539,6 +1548,18 @@ class WebFrame:
         hsb.pack(expand=1,fill='x')
         self.widget.configure(xscrollcommand=hsb.set)
         self.widget.configure(yscrollcommand=vsb.set)
+        
+    # cur
+    # A narrow horizontal scrollbar for small screens, allows to see all buttons
+    def but_scrollbar(self):
+        # 'Scrollbar' can be imported both from 'tk' and 'ttk', but the 'ttk' version does not have a 'width' option
+        ssb = tk.Scrollbar (self.frame_b.widget
+                           ,orient  = 'horizontal'
+                           ,command = self.widget.xview
+                           ,width   = 5
+                           )
+        ssb.pack(expand=1,fill='x',side='bottom')
+        self.widget.configure(xscrollcommand=ssb.set)
 
     def icon(self,arg=None):
         if not arg:
@@ -2354,6 +2375,7 @@ class WebFrame:
 
     def print(self,*args):
         code = mh.HTML (data     = objs._blocks_db.fetch()
+                       ,cols     = objs._request._cols
                        ,collimit = objs._request._collimit
                        ,Printer  = True
                        )._html

@@ -218,6 +218,7 @@ class Page:
         # Do this before 'common_replace'. Splitting terms is hindered without this.
         self._page = self._page.replace('>;  <','><')
         self._page = self._page.replace('Требуется авторизация','')
+        self._page = self._page.replace('Вы знаете перевод этого слова? Добавьте его в словарь:','')
         self._page = self._page.replace('</a>, содержащие <strong>','</a><strong>')
 
     def article_not_found(self): # HTML specific
