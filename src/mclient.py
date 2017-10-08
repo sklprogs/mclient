@@ -42,6 +42,7 @@
     - 'gen_poses' cannot find Search items when Page is forced to use 'file=' (RU-DE, 'tun')
     - Start ROWNO with 0
     - Column number is inappropriately increased when a Custom view is enabled (e.g. Word Forms + Parts of Speech)
+    - Resetting Settings with the button resets columns but not the style name
 '''
 
 import gettext, gettext_windows
@@ -65,7 +66,7 @@ import mkhtml      as mh
 
 
 product = 'MClient'
-version = '5.3.1'
+version = '5.4'
 
 third_parties = '''
 tkinterhtml
@@ -991,11 +992,15 @@ class WebFrame:
         self.title()
 
     def values(self):
-        self._pos = -1
+        self._pos    = -1
+        self._border = 24
+        self._shift  = 1
 
     def gui(self):
         self.obj     = sg.objs.new_top(Maximize=1)
-        self.frame   = sg.Frame (parent_obj = self.obj)
+        self.frame   = sg.Frame (parent_obj = self.obj
+                                ,expand     = 1
+                                )
         self.bottom  = sg.Frame (parent_obj = self.frame
                                 ,expand     = 0
                                 ,side       = 'bottom'
@@ -1009,17 +1014,10 @@ class WebFrame:
         self.widget.pack(expand='1',fill='both')
         self.scrollbars()
         self.frame_panel()
-        # cur
-        '''
-        self.frame_b = sg.Frame (parent_obj = self.bottom
-                                ,expand     = 0
-                                ,side       = 'bottom'
-                                )
-        self.but_scrollbar()
-        '''
         self.icon()
         self.title()
         self.bindings()
+        self.bind_children()
         self.search_field.widget.focus_set()
         self.obj.widget.protocol("WM_DELETE_WINDOW",self.close)
 
@@ -1031,19 +1029,42 @@ class WebFrame:
         self.history        = History      ()
 
     def frame_panel(self):
+        # Do not mix 'self._panel' and 'self.bottom', otherwise, they can overlap each other.
         self._panel = sg.Frame (parent_obj = self.bottom
                                ,expand     = 0
                                ,fill       = 'x'
                                )
+        # Canvas should be created within a frame
+        self.canvas = sg.Canvas (parent_obj = self._panel
+                                ,expand     = 0
+                                )
+        self.fr_but = sg.Frame (parent_obj = self._panel
+                               ,expand     = 0
+                               )
+        
         # Поле ввода поисковой строки
-        self.search_field = SearchField(parent_obj=self._panel)
+        self.search_field = SearchField(parent_obj=self.fr_but)
         self.draw_buttons()
+        self.canvas.embed(obj=self.fr_but)
+        # todo: Updating idletasks will show ExtDic messages for too long, however, we need to update in order to set canvas dimensions correctly.
+        sg.objs.root().widget.update_idletasks()
+        height = self.fr_but.widget.winfo_height()
+        width  = self.fr_but.widget.winfo_width()
+        self.canvas.widget.config(width=self.obj.resolution()[0])
+        self.canvas.widget.config(height=height)
+        x2 = (width / 2)
+        x1 = -x2
+        y2 = (height / 2)
+        y1 = -y2
+        self.canvas.widget.config(scrollregion=(x1,y1,x2,y2))
+        # The scrollbar is set at the end for some reason
+        self.canvas.widget.xview_moveto(0)
 
     # Create buttons
     # Bindings are indicated here only to set hints. In order to set bindings, use 'self.bindings'.
     def draw_buttons(self):
         # Кнопка для "чайников", заменяет Enter в search_field
-        sg.Button (parent_obj          = self._panel
+        sg.Button (parent_obj          = self.fr_but
                   ,text                = _('Translate')
                   ,hint                = _('Translate')
                   ,action              = self.go
@@ -1055,7 +1076,7 @@ class WebFrame:
                   ) # В данном случае btn = hint
 
         # Кнопка очистки строки поиска
-        sg.Button (parent_obj          = self._panel
+        sg.Button (parent_obj          = self.fr_but
                   ,text                = _('Clear')
                   ,hint                = _('Clear search field')
                   ,action              = self.search_field.clear
@@ -1065,7 +1086,7 @@ class WebFrame:
                   )
 
         # Кнопка вставки
-        sg.Button (parent_obj          = self._panel
+        sg.Button (parent_obj          = self.fr_but
                   ,text                = _('Paste')
                   ,hint                = _('Paste text from clipboard')
                   ,action              = self.search_field.paste
@@ -1075,7 +1096,7 @@ class WebFrame:
                   )
         # Кнопка вставки текущего запроса
         self.btn_repeat_sign = sg.Button (
-                   parent_obj          = self._panel
+                   parent_obj          = self.fr_but
                   ,text                = '!'
                   ,hint                = _('Paste current request')
                   ,action              = self.search_field.insert_repeat_sign
@@ -1085,7 +1106,7 @@ class WebFrame:
                                          )
         # Кнопка вставки предыдущего запроса
         self.btn_repeat_sign2 = sg.Button (
-                   parent_obj          = self._panel
+                   parent_obj          = self.fr_but
                   ,text                = '!!'
                   ,hint                = _('Paste previous request')
                   ,action              = self.search_field.insert_repeat_sign2
@@ -1094,7 +1115,7 @@ class WebFrame:
                   ,bindings            = sh.globs['var']['repeat_sign2']
                                           )
         # Кнопка для вставки спец. символов
-        sg.Button (parent_obj          = self._panel
+        sg.Button (parent_obj          = self.fr_but
                   ,text                = _('Symbols')
                   ,hint                = _('Paste a special symbol')
                   ,action              = self.spec_symbols.show
@@ -1102,23 +1123,23 @@ class WebFrame:
                   ,active_image_path   = sh.globs['var']['icon_spec_symbol']
                   ,bindings            = sh.globs['var']['bind_spec_symbol']
                   )
-        self.menu_sources = sg.OptionMenu (parent_obj = self._panel
+        self.menu_sources = sg.OptionMenu (parent_obj = self.fr_but
                                           ,items      = sources
                                           ,command    = self.set_source
                                           )
         # Выпадающий список с вариантами направлений перевода
-        self.menu_pairs = sg.OptionMenu (parent_obj = self._panel
+        self.menu_pairs = sg.OptionMenu (parent_obj = self.fr_but
                                         ,items      = pairs
                                         ,command    = self.set_lang
                                         )
-        self.menu_columns = sg.OptionMenu (parent_obj = self._panel
+        self.menu_columns = sg.OptionMenu (parent_obj = self.fr_but
                                           ,items      = (1,2,3,4,5,6,7,8,9,10)
                                           ,command    = self.set_columns
                                           ,default    = 4
                                           )
         # Кнопка настроек
         self.btn_settings = sg.Button (
-                   parent_obj          = self._panel
+                   parent_obj          = self.fr_but
                   ,text                = _('Settings')
                   ,hint                = _('Tune up view settings')
                   ,action              = self.settings.show
@@ -1130,7 +1151,7 @@ class WebFrame:
                                       )
         # Кнопка изменения вида статьи
         self.btn_toggle_view = sg.Button (
-                   parent_obj          = self._panel
+                   parent_obj          = self.fr_but
                   ,text                = _('Toggle view')
                   ,hint                = _('Toggle the article view mode')
                   ,action              = self.toggle_view
@@ -1142,7 +1163,7 @@ class WebFrame:
                                          )
         # Кнопка включения/отключения режима блокировки словарей
         self.btn_toggle_block = sg.Button (
-                   parent_obj          = self._panel
+                   parent_obj          = self.fr_but
                   ,text                = _('Blacklist')
                   ,hint                = _('Toggle the blacklist')
                   ,action              = self.toggle_block
@@ -1152,7 +1173,7 @@ class WebFrame:
                                           )
         # Кнопка включения/отключения режима приоритезации словарей
         self.btn_toggle_priority = sg.Button (
-                   parent_obj          = self._panel
+                   parent_obj          = self.fr_but
                   ,text                = _('Prioritize')
                   ,hint                = _('Toggle prioritizing')
                   ,action              = self.toggle_priority
@@ -1162,7 +1183,7 @@ class WebFrame:
                                              )
         # Кнопка включения/отключения сортировки словарей по алфавиту
         self.btn_toggle_alphabet = sg.Button (
-                   parent_obj          = self._panel
+                   parent_obj          = self.fr_but
                   ,text                = _('Alphabetize')
                   ,hint                = _('Toggle alphabetizing')
                   ,action              = self.toggle_alphabet
@@ -1172,7 +1193,7 @@ class WebFrame:
                                              )
         # Кнопка перехода на предыдущую статью
         self.btn_prev = sg.Button (
-                   parent_obj          = self._panel
+                   parent_obj          = self.fr_but
                   ,text                = '←'
                   ,hint                = _('Go to the preceding article')
                   ,action              = self.go_back
@@ -1182,7 +1203,7 @@ class WebFrame:
                                   )
         # Кнопка перехода на следующую статью
         self.btn_next = sg.Button (
-                   parent_obj          = self._panel
+                   parent_obj          = self.fr_but
                   ,text                = '→'
                   ,hint                = _('Go to the following article')
                   ,action              = self.go_forward
@@ -1200,7 +1221,7 @@ class WebFrame:
                     + '\n'   + sh.globs['var']['bind_clear_history']          \
                     + ', <ButtonRelease-3>'
         self.btn_history = sg.Button (
-                   parent_obj          = self._panel
+                   parent_obj          = self.fr_but
                   ,text                = _('History')
                   ,hint                = hint_history
                   ,action              = self.history.toggle
@@ -1209,7 +1230,7 @@ class WebFrame:
                   ,hint_height         = 80
                                      )
         # Кнопка перезагрузки статьи
-        sg.Button (parent_obj          = self._panel
+        sg.Button (parent_obj          = self.fr_but
                   ,text                = _('Reload')
                   ,hint                = _('Reload the article')
                   ,action              = self.reload
@@ -1220,7 +1241,7 @@ class WebFrame:
                                          ]
                   )
         # Кнопка "Поиск в статье"
-        sg.Button (parent_obj          = self._panel
+        sg.Button (parent_obj          = self.fr_but
                   ,text                = _('Search')
                   ,hint                = _('Find in the current article')
                   ,action              = self.search_reset
@@ -1229,7 +1250,7 @@ class WebFrame:
                   ,bindings            = sh.globs['var']['bind_re_search_article']
                   )
         # Кнопка "Сохранить"
-        sg.Button (parent_obj          = self._panel
+        sg.Button (parent_obj          = self.fr_but
                   ,text                = _('Save')
                   ,hint                = _('Save the current article')
                   ,action              = self.save_article.select
@@ -1240,7 +1261,7 @@ class WebFrame:
                                          ]
                   )
         # Кнопка "Открыть в браузере"
-        sg.Button (parent_obj          = self._panel
+        sg.Button (parent_obj          = self.fr_but
                   ,text                = _('Browse')
                   ,hint                = _('Open the current article in a browser')
                   ,action              = self.open_in_browser
@@ -1251,7 +1272,7 @@ class WebFrame:
                                          ]
                   )
         # Кнопка "Печать"
-        sg.Button (parent_obj          = self._panel
+        sg.Button (parent_obj          = self.fr_but
                   ,text                = _('Print')
                   ,hint                = _('Create a print-ready preview')
                   ,action              = self.print
@@ -1260,7 +1281,7 @@ class WebFrame:
                   ,bindings            = sh.globs['var']['bind_print']
                   )
         # Кнопка толкования термина
-        sg.Button (parent_obj          = self._panel
+        sg.Button (parent_obj          = self.fr_but
                   ,text                = _('Define')
                   ,hint                = _('Define the current term')
                   ,action              = lambda x:self.define(Selected=False)
@@ -1270,7 +1291,7 @@ class WebFrame:
                   )
         # Кнопка "Перехват Ctrl-c-c"
         self.btn_clipboard = sg.Button (
-                   parent_obj          = self._panel
+                   parent_obj          = self.fr_but
                   ,text                = _('Clipboard')
                   ,hint                = _('Capture Ctrl-c-c and Ctrl-Ins-Ins')
                   ,action              = self.watch_clipboard
@@ -1280,7 +1301,7 @@ class WebFrame:
                   ,bindings            = []
                                        )
         # Кнопка "О программе"
-        sg.Button (parent_obj          = self._panel
+        sg.Button (parent_obj          = self.fr_but
                   ,text                = _('About')
                   ,hint                = _('View About')
                   ,action              = objs.about().show
@@ -1289,7 +1310,7 @@ class WebFrame:
                   ,bindings            = sh.globs['var']['bind_show_about']
                   )
         # Кнопка выхода
-        sg.Button (parent_obj          = self._panel
+        sg.Button (parent_obj          = self.fr_but
                   ,text                = _('Quit')
                   ,hint                = _('Quit the program')
                   ,action              = self.close
@@ -1301,6 +1322,15 @@ class WebFrame:
                                          ]
                   )
 
+    def bind_children(self):
+        # We need to bind all buttons (inside 'self.fr_but') and also gaps between them and between top-bottom borders ('self.canvas').
+        sg.bind (obj      = self.canvas
+                ,bindings = '<Motion>'
+                ,action   = self.motion
+                )
+        for child in self.fr_but.widget.winfo_children():
+            child.bind('<Motion>',self.motion)
+    
     def bindings(self):
         sg.bind (obj      = self
                 ,bindings = '<Motion>'
@@ -1549,18 +1579,6 @@ class WebFrame:
         self.widget.configure(xscrollcommand=hsb.set)
         self.widget.configure(yscrollcommand=vsb.set)
         
-    # cur
-    # A narrow horizontal scrollbar for small screens, allows to see all buttons
-    def but_scrollbar(self):
-        # 'Scrollbar' can be imported both from 'tk' and 'ttk', but the 'ttk' version does not have a 'width' option
-        ssb = tk.Scrollbar (self.frame_b.widget
-                           ,orient  = 'horizontal'
-                           ,command = self.widget.xview
-                           ,width   = 5
-                           )
-        ssb.pack(expand=1,fill='x',side='bottom')
-        self.widget.configure(xscrollcommand=ssb.set)
-
     def icon(self,arg=None):
         if not arg:
             arg = sh.globs['var']['icon_mclient']
@@ -2390,6 +2408,34 @@ class WebFrame:
 
     def bbox(self,*args):
         return self.widget.tk.call(self.widget,"bbox",*args)
+        
+    def motion(self,*args):
+        scr_width = self.obj.resolution()[0]
+        x         = self.canvas.widget.winfo_pointerx()
+        # We read 'canvas' because it should return positive values (in comparison with 'self.fr_but', which is movable). 'rootx' should be negative only when 'canvas' is partially moved by a user out of screen (but we may need this case too).
+        rootx     = self.canvas.widget.winfo_rootx()
+        leftx     = max (0,rootx)
+        rightx    = min (rootx + self.canvas.widget.winfo_width()
+                        ,scr_width
+                        )
+        if x <= leftx + self._border:
+            self.scroll_left()
+        elif x >= rightx - self._border:
+            self.scroll_right()
+            
+    def scroll_left(self):
+        sh.log.append ('WebFrame.scroll_left'
+                      ,_('DEBUG')
+                      ,_('Scroll by %d units to left') % self._shift
+                      )
+        self.canvas.widget.xview_scroll(-self._shift,'units')
+        
+    def scroll_right(self):
+        sh.log.append ('WebFrame.scroll_right'
+                      ,_('DEBUG')
+                      ,_('Scroll by %d units to right') % self._shift
+                      )
+        self.canvas.widget.xview_scroll(self._shift,'units')
 
     def zzz(self): # Only needed to move quickly to the end of the class
         pass
