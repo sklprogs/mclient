@@ -173,7 +173,7 @@ class Cells:
         if self._phrase_dic:
             for block in self._blocks:
                 if block._dica == self._phrase_dic:
-                    if block._type == 'wform' or block._type == 'speech' or block._type == 'transc':
+                    if block._type in ('wform','speech','transc'):
                         block._text = ''
     
     def clear_fixed(self):

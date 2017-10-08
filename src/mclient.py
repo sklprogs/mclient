@@ -938,7 +938,9 @@ class History:
         self.parent_obj.close()
 
     def fill(self):
-        self.obj.reset(lst=objs.blocks_db().searches(),title=self._title)
+        self.obj.reset (lst   = objs.blocks_db().searches()
+                       ,title = self._title
+                       )
 
     def update(self):
         self.fill()
@@ -982,11 +984,11 @@ class WebFrame:
 
     def reset(self):
         #'widget.reset' is already done in 'self.fill'
-        welcome = pg.Welcome(url       = sh.globs['var']['pair_root']
-                            ,st_status = len(objs.ext_dics()._dics)
-                            ,product   = product
-                            ,version   = version
-                            )
+        welcome = pg.Welcome (url       = sh.globs['var']['pair_root']
+                             ,st_status = len(objs.ext_dics()._dics)
+                             ,product   = product
+                             ,version   = version
+                             )
         self.fill(welcome.run())
         self.update_buttons()
         self.title()
@@ -1787,7 +1789,16 @@ class WebFrame:
         self.widget.reset()
         if not code:
             code = '<html><body><h1>' + _('Nothing has been loaded yet.') + '</h1></body></html>'
-        self.widget.parse(code)
+        try:
+            self.widget.parse(code)
+        except tk._tkinter.TclError:
+            sg.Message (func    = 'WebFrame.fill'
+                       ,level   = _('ERROR')
+                       ,message = _('Cannot parse HTML code!\n\nProbably, some symbols are not supported by Tcl.')
+                       )
+            # Othewise, we will have a segmentation fault here
+            self.reset()
+            objs.request().reset()
 
     def show(self,*args):
         self.obj.show()
