@@ -1,5 +1,11 @@
 
 
+5.4.1
+* Align cells by top
+
+5.4
+* Scroll a button panel if it exceeds widget sizes. In order to scroll the panel, move the mouse pointer to a left or right corner.
+
 5.3
 * Select fixed columns
 * Settings menu

@@ -120,7 +120,7 @@ class HTML:
             self.output.write('</b></font>')
 
     def _term(self):
-        if self._block._type == 'term' or self._block._type == 'phrase':
+        if self._block._type in ('term','phrase'):
             self.output.write('<font face="')
             self.output.write(sh.globs['var']['font_terms_family'])
             self.output.write('" color="')
@@ -132,7 +132,7 @@ class HTML:
             self.output.write('</font>')
 
     def _comment(self):
-        if self._block._type == 'comment' or self._block._type == 'speech' or self._block._type == 'transc':
+        if self._block._type in ('comment','speech','transc'):
             self.output.write('<i><font face="')
             self.output.write(sh.globs['var']['font_comments_family'])
             self.output.write('" size="')
@@ -169,32 +169,32 @@ class HTML:
         if self._blocks:
             self.output.write('\n      <table>\n    <tr>')
             if self._width and self.Reverse:
-                self.output.write('<td col width="')
+                self.output.write('<td valign="top" col width="')
                 self.output.write(str(self._width))
                 self.output.write('">')
             else:
-                self.output.write('<td>')
+                self.output.write('<td valign="top">')
             i = j = 0
             for self._block in self._blocks:
                 while self._block.i > i:
                     self.output.write('</td></tr>\n    <tr>')
                     if self._width and self.Reverse:
-                        self.output.write('<td align="center" col width="')
+                        self.output.write('<td align="center" valign="top" col width="')
                         self.output.write(str(self._width))
                         self.output.write('">')
                     else:
-                        self.output.write('<td align="center">')
+                        self.output.write('<td align="center" valign="top">')
                     i = self._block.i
                     j = 0
                 while self._block.j > j:
                     self.output.write('</td>\n      ')
                     # -1 because we define 'td' for the next column here
                     if self._width and self._block._text and (self._block.j > len(self._cols) - 1 or self.Reverse):
-                        self.output.write('<td col width="')
+                        self.output.write('<td valign="top" col width="')
                         self.output.write(str(self._width))
                         self.output.write('">')
                     else:
-                        self.output.write('<td>')
+                        self.output.write('<td valign="top">')
                     j += 1
                 self._dic       ()
                 self._wform     ()
@@ -211,7 +211,7 @@ class HTML:
         self.output.write('\n</body>\n</html>')
         self._html = self.output.getvalue()
         # todo: enhance algorithm, drop this; I tried to monitor j, block._text, block.j, but they are all changing
-        self._html = self._html.replace('<td col width="%d"></td>' % self._width,'<td></td>')
+        self._html = self._html.replace('<td valign="top" col width="%d"></td>' % self._width,'<td valign="top"></td>')
         self.output.close()
 
 
@@ -332,7 +332,7 @@ if __name__ == '__main__':
     blocks_db.update(query=cells._query)
 
     data = blocks_db.assign_pos()
-    pos = cl.Pos(data=data)
+    pos = cl.Pos(data=data,raw_text='')
     pos.run()
     if Debug:
         pos.debug(MaxRows=40)

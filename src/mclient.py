@@ -66,7 +66,7 @@ import mkhtml      as mh
 
 
 product = 'MClient'
-version = '5.4'
+version = '5.4.1'
 
 third_parties = '''
 tkinterhtml
@@ -1791,6 +1791,7 @@ class WebFrame:
             code = '<html><body><h1>' + _('Nothing has been loaded yet.') + '</h1></body></html>'
         try:
             self.widget.parse(code)
+        # For example: 'et al.'
         except tk._tkinter.TclError:
             sg.Message (func    = 'WebFrame.fill'
                        ,level   = _('ERROR')
