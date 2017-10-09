@@ -923,6 +923,15 @@ class History:
                 ,bindings = sh.globs['var']['bind_clear_history']
                 ,action   = self.clear
                 )
+        # note: the History list is reversed, so we swap hotkeys
+        sg.bind (obj      = self.parent_obj
+                ,bindings = '<End>'
+                ,action   = self.go_first
+                )
+        sg.bind (obj      = self.parent_obj
+                ,bindings = '<Home>'
+                ,action   = self.go_last
+                )
 
     def autoselect(self):
         self.obj.clear_selection()
@@ -959,6 +968,12 @@ class History:
         else:
             self.show()
 
+    def go_first(self,*args):
+        objs.webframe().go_first()
+        
+    def go_last(self,*args):
+        objs.webframe().go_last()
+    
     def go(self,*args):
         objs.request()._search = self.obj.get()
         # Do not warn after clearing the widget
@@ -2242,6 +2257,11 @@ class WebFrame:
                 # The list is sorted in the descending order
                 objs.request()._search = list(searches)[0]
                 self.load_article()
+            else:
+                sh.log.append ('WebFrame.go_back'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
         else:
             sh.log.append ('WebFrame.go_back'
                           ,_('WARNING')
@@ -2261,6 +2281,11 @@ class WebFrame:
                 # The list is sorted in the descending order
                 objs.request()._search = list(searches)[-1]
                 self.load_article()
+            else:
+                sh.log.append ('WebFrame.go_forward'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
         else:
             sh.log.append ('WebFrame.go_forward'
                           ,_('WARNING')
@@ -2448,6 +2473,30 @@ class WebFrame:
                       ,_('Scroll by %d units to right') % self._shift
                       )
         self.canvas.widget.xview_scroll(self._shift,'units')
+        
+    # Go to the 1st article
+    def go_first(self,*args):
+        searches = objs.blocks_db().searches()
+        if searches:
+            objs.request()._search = searches[0]
+            self.load_article()
+        else:
+            sh.log.append ('WebFrame.go_first'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+                          
+    # Go to the last article
+    def go_last(self,*args):
+        searches = objs.blocks_db().searches()
+        if searches:
+            objs.request()._search = searches[-1]
+            self.load_article()
+        else:
+            sh.log.append ('WebFrame.go_last'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
 
     def zzz(self): # Only needed to move quickly to the end of the class
         pass

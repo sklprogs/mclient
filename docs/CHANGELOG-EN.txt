@@ -1,5 +1,7 @@
 
 
+* Set hotkeys for the History widget: Home - go to the start of the list, End - go to the end of the list. Note that the list is reversed.
+
 5.4.1
 * Align cells by top
 
