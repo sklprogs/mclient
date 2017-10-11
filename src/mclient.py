@@ -43,6 +43,7 @@
     - Start ROWNO with 0
     - Column number is inappropriately increased when a Custom view is enabled (e.g. Word Forms + Parts of Speech)
     - Resetting Settings with the button resets columns but not the style name
+    - Delete symbols that are not supported by Tcl before parsing HTML
 '''
 
 import gettext, gettext_windows
@@ -923,13 +924,13 @@ class History:
                 ,bindings = sh.globs['var']['bind_clear_history']
                 ,action   = self.clear
                 )
-        # note: the History list is reversed, so we swap hotkeys
+        # note: the list is reversed, but we think it is still more intuitive when Home goes top and End goes bottom
         sg.bind (obj      = self.parent_obj
-                ,bindings = '<End>'
+                ,bindings = '<Home>'
                 ,action   = self.go_first
                 )
         sg.bind (obj      = self.parent_obj
-                ,bindings = '<Home>'
+                ,bindings = '<End>'
                 ,action   = self.go_last
                 )
 
