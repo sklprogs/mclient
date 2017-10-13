@@ -1807,7 +1807,7 @@ class WebFrame:
             code = '<html><body><h1>' + _('Nothing has been loaded yet.') + '</h1></body></html>'
         try:
             self.widget.parse(code)
-        # For example: 'et al.'
+        # This should not happen now as we strip out non-supported characters
         except tk._tkinter.TclError:
             sg.Message (func    = 'WebFrame.fill'
                        ,level   = _('ERROR')
@@ -1907,6 +1907,7 @@ class WebFrame:
             # A dictionary from the 'Phrases' section usually has an 'original + translation' structure, so we need to switch off sorting terms and ensure that the number of columns is divisible by 2
             if objs._request._collimit % 2 != 0:
                 if objs._request._collimit == 5:
+                    # cur # todo set also in GUI
                     objs._request._collimit += 1
                 else:
                     objs._request._collimit -= 1

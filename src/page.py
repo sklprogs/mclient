@@ -204,8 +204,13 @@ class Page:
         self.mt_specific_replace()
         self.common_replace     () # HTML specific
         self.article_not_found  () # HTML specific
+        self.unsupported        ()
         return self._page
 
+    # Remove characters from a range not supported by Tcl (and causing a Tkinter error). Sample requests causing the error: Multitran, EN-RU: 'top', 'et al.'
+    def unsupported(self):
+        self._page = [char for char in self._page if ord(char) in range(65536)]
+    
     # todo: Make this MT-only
     def invalid(self):
         # Do this before unescaping, otherwise, some tags describing wforms will become exactly comments. It seems that 'wform' tags are already present. Replacing these tags with altertnative 'wform' tags does not work.
