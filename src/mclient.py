@@ -441,9 +441,10 @@ class Objects:
 class CurRequest:
 
     def __init__(self):
+        self.values()
         self.reset()
 
-    def reset(self):
+    def values(self):
         # note: this should be synchronized with the 'default' value of objs.webframe().menu_columns
         self._collimit     = 8
         self._source       = _('All')
@@ -459,6 +460,8 @@ class CurRequest:
         self.MouseClicked  = False
         self.CaptureHotkey = True
         self.Reverse       = False
+    
+    def reset(self):
         self._page         = ''
         self._html         = ''
         self._html_raw     = ''
@@ -1904,20 +1907,11 @@ class WebFrame:
         # Do not rely on the number of wforms; large articles like 'centre' may have only 1 wform (an a plurality of dics)
         if not dics or dics and len(dics) == 1:
             objs._request.SpecialPage = True
-            # A dictionary from the 'Phrases' section usually has an 'original + translation' structure, so we need to switch off sorting terms and ensure that the number of columns is divisible by 2
-            if objs._request._collimit % 2 != 0:
-                if objs._request._collimit == 5:
-                    # cur # todo set also in GUI
-                    objs._request._collimit += 1
-                else:
-                    objs._request._collimit -= 1
-                sh.log.append ('WebFrame.load_article'
-                              ,_('INFO')
-                              ,_('Set the column limit to %d') % objs._request._collimit
-                              )
         else:
             objs._request.SpecialPage = False # Otherwise, 'SpecialPage' will be inherited
 
+        self.update_columns()
+        
         SortTerms = objs._request.SortTerms and not objs._request.SpecialPage
         objs._blocks_db.reset (cols      = objs._request._cols
                               ,SortRows  = objs._request.SortRows
@@ -2323,7 +2317,8 @@ class WebFrame:
                       ,_('INFO')
                       ,str(self.menu_columns.choice)
                       )
-        objs.request()._collimit = self.menu_columns.choice + 4
+        fixed = [col for col in objs.request()._cols if col != _('Do not set')]
+        objs._request._collimit = self.menu_columns.choice + len(fixed)
         self.load_article()
 
     def reload(self,*args):
@@ -2499,6 +2494,28 @@ class WebFrame:
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
+                          
+    # Update a column number in GUI; adjust the column number (both logic and GUI) in special cases
+    def update_columns(self):
+        fixed = [col for col in objs.request()._cols if col != _('Do not set')]
+        if objs._request._collimit > len(fixed):
+            # A dictionary from the 'Phrases' section usually has an 'original + translation' structure, so we need to switch off sorting terms and ensure that the number of columns is divisible by 2
+            if objs._request.SpecialPage and objs._request._collimit % 2 != 0:
+                if objs._request._collimit == len(fixed) + 1:
+                    objs._request._collimit += 1
+                else:
+                    objs._request._collimit -= 1
+            non_fixed_len = objs._request._collimit - len(fixed)
+            self.menu_columns.set(non_fixed_len)
+            sh.log.append ('WebFrame.update_columns'
+                          ,_('INFO')
+                          ,_('Set the column limit to %d (%d in total)') % (non_fixed_len,objs._request._collimit)
+                          )
+        else:
+            sg.Message (func    = 'WebFrame.update_columns'
+                       ,level   = _('ERROR')
+                       ,message = _('The condition "%s" is not observed!') % '%d > %d' % (objs._request._collimit,len(fixed))
+                       )
 
     def zzz(self): # Only needed to move quickly to the end of the class
         pass
@@ -2826,7 +2843,12 @@ class Settings:
 
     def apply(self,*args):
         # Do not use 'gettext' to name internal types - this will make the program ~0,6s slower
-        lst = [choice for choice in (self.col1.choice,self.col2.choice,self.col3.choice,self.col4.choice) if choice != _('Do not set')]
+        lst = [choice for choice in (self.col1.choice
+                                    ,self.col2.choice
+                                    ,self.col3.choice
+                                    ,self.col4.choice
+                                    ) if choice != _('Do not set')
+              ]
         ''' # note: The following assignment does not change the list:
             for item in lst:
                 if item == something:
@@ -2854,7 +2876,7 @@ class Settings:
             objs._request.Block      = self.cb3.get()
             objs._request.Prioritize = self.cb4.get()
             objs._request.Reverse    = self.cb5.get()
-            objs.webframe().load_article()
+            objs.webframe().set_columns()
         else:
             # todo: do we really need this?
             sg.Message (func    = 'Settings.apply'
