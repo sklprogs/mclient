@@ -151,7 +151,9 @@ class BlockPrioritize:
 '''
 class Cells:
     
-    def __init__(self,data,cols,collimit=10,phrase_dic=None,Reverse=False): # Including fixed columns
+    def __init__ (self,data,cols,collimit=10
+                 ,phrase_dic=None,Reverse=False
+                 ): # Including fixed columns
         self._data       = data # Sqlite fetch
         self._cols       = cols
         self._collimit   = collimit

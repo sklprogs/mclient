@@ -29,16 +29,15 @@
     - When deleting/inserting fixed columns, preserve URL
     - EN-RU -> collimit: 4 (w/o fixed) -> 'bow' -> 'арчак' -> Up => No selection
     - EN-RU -> collimit: 4 (w/o fixed) -> 'bow' -> 'Ятенный спорт' -> Up => No selection
-    - bind RMB to tkinterhtml widget only, not top; check this on clear_history button
+    - RMB to clear History: this block does not contain a URL!
     - Clear CurRequest data after clearing history
     - Unable to load same phrase sections (e.g., 'Медицина' in different articles)
     - ShiftScreen: A -> Сельское хозяйство -> <Start>
     - Fix Moves (line_start, line_end, PgDown/PgUp) on 'random fury'
     - When there is an article where all dictionaries are blocked, Previous-Next arrows are blank even if the history is not empty
     - Fix links in a saved raw html
-    - 'gen_poses' cannot find Search items when Page is forced to use 'file=' (RU-DE, 'tun')
     - Start ROWNO with 0
-    - Vertical view does not work correctly with other styles besides 'MClient'
+    - Vertical view (maybe, with Styles): 1st column can be a single entry of 'dic' type
 '''
 
 import gettext, gettext_windows
@@ -62,7 +61,7 @@ import mkhtml      as mh
 
 
 product = 'MClient'
-version = '5.4.1'
+version = '5.4.2'
 
 third_parties = '''
 tkinterhtml
