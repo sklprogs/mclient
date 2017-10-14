@@ -17,7 +17,6 @@
 '''
 
 ''' # fix
-    - odd fixed columns are inserted
     - NODE1 < NODE2 in some rare cases
     - ShiftScreen with SelectTermsOnly=0 on 'painting'
     - ShiftScreen on 'делать' -> 'Вычислительная техника'
@@ -28,11 +27,9 @@
     - A Warning appears when only separate words are found
     - When adding a space between blocks, add it to the end of the preceding block; otherwise, sorting terms may not work correctly (башмак -> sabaton)
     - When deleting/inserting fixed columns, preserve URL
-    - Clicking the selected block outside the selection causes the 'URL is empty' message
     - EN-RU -> collimit: 4 (w/o fixed) -> 'bow' -> 'арчак' -> Up => No selection
     - EN-RU -> collimit: 4 (w/o fixed) -> 'bow' -> 'Ятенный спорт' -> Up => No selection
     - bind RMB to tkinterhtml widget only, not top; check this on clear_history button
-    - Do not warn about an empty URL after clearing history
     - Clear CurRequest data after clearing history
     - Unable to load same phrase sections (e.g., 'Медицина' in different articles)
     - ShiftScreen: A -> Сельское хозяйство -> <Start>
@@ -41,9 +38,7 @@
     - Fix links in a saved raw html
     - 'gen_poses' cannot find Search items when Page is forced to use 'file=' (RU-DE, 'tun')
     - Start ROWNO with 0
-    - Column number is inappropriately increased when a Custom view is enabled (e.g. Word Forms + Parts of Speech)
-    - Resetting Settings with the button resets columns but not the style name
-    - Delete symbols that are not supported by Tcl before parsing HTML
+    - Vertical view does not work correctly with other styles besides 'MClient'
 '''
 
 import gettext, gettext_windows
@@ -2831,6 +2826,7 @@ class Settings:
                                )
 
     def reset(self,*args):
+        self.sc.set(product)
         self.col1.set(_('Dictionaries'))
         self.col2.set(_('Word forms'))
         self.col3.set(_('Parts of speech'))
