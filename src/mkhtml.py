@@ -1,8 +1,5 @@
 #!/usr/bin/python3
 
-''' # todo:
-'''
-
 import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('mclient','./locale')
@@ -24,9 +21,11 @@ class Block:
 
 class HTML:
 
-    def __init__(self,data,cols,collimit=9,Printer=False,blacklist=[]
-                ,prioritize=[],blocked_color='gray',priority_color='red'
-                ,width=0,Reverse=False
+    def __init__(self,data,cols,collimit=9
+                ,Printer=False,blacklist=[]
+                ,prioritize=[],blocked_color='gray'
+                ,priority_color='red',width=0
+                ,Reverse=False
                 ): # 'collimit' includes fixed blocks
         self._data           = data
         self._cols           = cols

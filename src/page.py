@@ -29,7 +29,9 @@ p8 = '">'
 
 class ExtDic:
 
-    def __init__(self,path,lang='English',name='External',Block=False,Silent=False):
+    def __init__ (self,path,lang='English'
+                 ,name='External',Block=False,Silent=False
+                 ):
         self.Silent = Silent
         # Full path without extension (as managed by pystardict)
         self._path  = path
@@ -111,19 +113,39 @@ class ExtDics:
             sg.objs._waitbox.show()
             for elem in self._en:
                 path = os.path.join(self._path,elem)
-                self._dics.append(ExtDic(path=path,lang='English',name=elem))
+                self._dics.append (ExtDic (path = path
+                                          ,lang = 'English'
+                                          ,name = elem
+                                          )
+                                  )
             for elem in self._de:
                 path = os.path.join(self._path,elem)
-                self._dics.append(ExtDic(path=path,lang='German',name=elem))
+                self._dics.append (ExtDic (path = path
+                                          ,lang = 'German'
+                                          ,name = elem
+                                          )
+                                  )
             for elem in self._es:
                 path = os.path.join(self._path,elem)
-                self._dics.append(ExtDic(path=path,lang='Spanish',name=elem))
+                self._dics.append (ExtDic (path = path
+                                          ,lang = 'Spanish'
+                                          ,name = elem
+                                          )
+                                  )
             for elem in self._it:
                 path = os.path.join(self._path,elem)
-                self._dics.append(ExtDic(path=path,lang='Italian',name=elem))
+                self._dics.append (ExtDic (path = path
+                                          ,lang = 'Italian'
+                                          ,name = elem
+                                          )
+                                  )
             for elem in self._fr:
                 path = os.path.join(self._path,elem)
-                self._dics.append(ExtDic(path=path,lang='French',name=elem))
+                self._dics.append (ExtDic (path = path
+                                          ,lang = 'French'
+                                          ,name = elem
+                                          )
+                                  )
             sg.objs._waitbox.close()
             # Leave only those dictionaries that were successfully loaded
             self._dics = [x for x in self._dics if x._dic]
@@ -228,7 +250,7 @@ class Page:
         self._page = self._page.replace('</a>, содержащие <strong>','</a><strong>')
 
     def article_not_found(self): # HTML specific
-        if self._source == _('All') or self._source == _('Online'):
+        if self._source in (_('All'),_('Online')):
             # If separate words are found instead of a phrase, prepare those words only
             if sep_words_found in self._page:
                 self._page = self._page.replace(sep_words_found,'')
@@ -247,9 +269,7 @@ class Page:
                         self._page = self._page.replace(p4,p2,1)
                     else:
                         break
-                # Вставить sep_words_found перед названием 1-го словаря. Нельзя вставлять его в самое начало ввиду особенностей обработки delete_entries.
                 self._page = self._page[:board_pos] + p5 + p6 + sep_words_found + p7
-                # Поскольку message_board встречается между вхождениями, а не до них или после них, то обрабатываем его вне delete_entries.
                 self._page = self._page.replace(message_board,'')
 
     def common_replace(self): # HTML specific
@@ -268,7 +288,7 @@ class Page:
     # Convert HTML entities to a human readable format, e.g., '&copy;' -> '©'
     def decode_entities(self): # HTML specific
         # todo: do we need to check this?
-        if self._source == _('All') or self._source == _('Online'):
+        if self._source in (_('All'),_('Online')):
             try:
                 self._page = html.unescape(self._page)
             except:
@@ -318,7 +338,9 @@ class Page:
 
     def _get_offline(self):
         if self.ext_dics:
-            self._page = self.ext_dics.get(lang=self._lang,search=self._search)
+            self._page = self.ext_dics.get (lang   = self._lang
+                                           ,search = self._search
+                                           )
 
     def disamb_mt(self):
         # This is done to speed up and eliminate tag disambiguation
@@ -374,7 +396,9 @@ class Page:
 
 class Welcome:
 
-    def __init__(self,url=None,st_status=0,product='MClient',version='current'):
+    def __init__ (self,url=None,st_status=0
+                 ,product='MClient',version='current'
+                 ):
         if not url:
             # 'https://www.multitran.ru' is got faster than 'http://www.multitran.ru' (~0.2s)
             url = 'https://www.multitran.ru'

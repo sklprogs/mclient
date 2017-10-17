@@ -1,3 +1,20 @@
+- if all fixed cols are empty, renumber COLNO to start with 0 (otherwise, articles with sep_words_found look weird and this is no a problem of mkhtml)
+- (cells) selectables: make 'Phrases' DIC cell SELECTABLE
+- (elems) Check that _same of the 1st cell is always 1 (or fix such behavior)
+- (elems) unite cells if (?) the url is the same or similar. Example: 'sampling' -> Робототехника -> проведение выборочных замеров
+- Make transcriptions Selectable
+- Create an option to toggle SELECTABLE (no need to update DB) (see WebFrame.select)
+- Use NO/NODE instead of POS *where appropriate*
+- Loop WebFrame.move_page_up & WebFrame.move_page_down
+- Restore selection upon changing a setting and loading the article again
+- Use the language pair as a part of an article ID. Otherwise, we cannot view same SEARCH in different languages ('RUS-XAL' -> 'липа' -> 'EN-RU')
+- Use borders of the cell, not borders of the block when calculating ShiftScreen
+- Store '_html_raw' value for all articles, not just for the latest new loaded one
+- Set a priority that is lower for phrases than for terms (in case the 1st fixed column is not Dictionaries)
+- Lower the priority of 'phrase' type instead of ignoring it in the Clarity mode
+- shift_screen is not precisely accurate, possibly due to incorrect binding of scrollbars
+- Delete symbols that prevent URL from opening (e.g., 'символ' -> 'pilcrow')
+
 (Разобрать)
 ! Неверное выделение: "в качественном и количественном отношении"
 ! medicine: теряется "сущ."; notice: неверно расставлено "сущ." в режиме "Прямо к делу"

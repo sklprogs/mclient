@@ -1,45 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-''' # todo
-    - Make transcriptions Selectable
-    - Create an option to toggle SELECTABLE (no need to update DB) (see WebFrame.select)
-    - Use NO/NODE instead of POS *where appropriate*
-    - Loop WebFrame.move_page_up & WebFrame.move_page_down
-    - Restore selection upon changing a setting and loading the article again
-    - Use the language pair as a part of an article ID. Otherwise, we cannot view same SEARCH in different languages ('RUS-XAL' -> 'липа' -> 'EN-RU')
-    - Use borders of the cell, not borders of the block when calculating ShiftScreen
-    - Store '_html_raw' value for all articles, not just for the latest new loaded one
-    - Set a priority that is lower for phrases than for terms (in case the 1st fixed column is not Dictionaries)
-    - Lower the priority of 'phrase' type instead of ignoring it in the Clarity mode
-    - shift_screen is not precisely accurate, possibly due to incorrect binding of scrollbars
-    - Delete symbols that prevent URL from opening (e.g., 'символ' -> 'pilcrow')
-'''
-
-''' # fix
-    - NODE1 < NODE2 in some rare cases
-    - ShiftScreen with SelectTermsOnly=0 on 'painting'
-    - ShiftScreen on 'делать' -> 'Вычислительная техника'
-    - PageDown fails on the last block of MAXCOL (do, set) (we need to loop PgUp/PgDn)
-    - shift_y does not work properly when changing sizes on-the-fly
-    - Changing node still sometimes fails
-    - Some blocks on the borders of pages are still not fully readable
-    - A Warning appears when only separate words are found
-    - When adding a space between blocks, add it to the end of the preceding block; otherwise, sorting terms may not work correctly (башмак -> sabaton)
-    - When deleting/inserting fixed columns, preserve URL
-    - EN-RU -> collimit: 4 (w/o fixed) -> 'bow' -> 'арчак' -> Up => No selection
-    - EN-RU -> collimit: 4 (w/o fixed) -> 'bow' -> 'Ятенный спорт' -> Up => No selection
-    - RMB to clear History: this block does not contain a URL!
-    - Clear CurRequest data after clearing history
-    - Unable to load same phrase sections (e.g., 'Медицина' in different articles)
-    - ShiftScreen: A -> Сельское хозяйство -> <Start>
-    - Fix Moves (line_start, line_end, PgDown/PgUp) on 'random fury'
-    - When there is an article where all dictionaries are blocked, Previous-Next arrows are blank even if the history is not empty
-    - Fix links in a saved raw html
-    - Start ROWNO with 0
-    - Vertical view (maybe, with Styles): 1st column can be a single entry of 'dic' type
-'''
-
 import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('mclient','./locale')
@@ -1923,7 +1884,7 @@ class WebFrame:
                          )
         cells.run()
         objs._blocks_db.update(query=cells._query)
-
+        
         get_html = mh.HTML (data       = objs._blocks_db.fetch()
                            ,cols       = objs._request._cols
                            ,collimit   = objs._request._collimit

@@ -1,10 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-''' # todo:
-    - selectables: make 'Phrases' DIC cell SELECTABLE
-'''
-
 import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('mclient','./locale')
@@ -309,6 +305,8 @@ class Cells:
                 self._blocks[x].i = i
                 if x > 0:
                     j += 1
+                    if j < len(self._cols):
+                        j = len(self._cols) + 1
                     self._blocks[x].j = j
                 else:
                     self._blocks[x].j = len(self._cols)
