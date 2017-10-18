@@ -1,12 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-''' # todo:
-    - DB.reset: reset TEXT for DIC, WFORM, SPEECH, TRANSC; reset BLOCK, PRIORITY, CELLNO, SELECTABLE, ROWNO, COLNO, POS1, POS2
-    - Fix Moves.up on 'painting' (SelectTermsOnly=0)
-    - Fix Moves on 'рабочая документация' (SelectTermsOnly=0), selects ')' twice, but does not select corrections
-'''
-
 '''
     We need 'POS1 < POS2' to skip empty blocks; POS1 = POS2 causes Moves to work incorrectly
 '''

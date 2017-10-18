@@ -1,4 +1,4 @@
-- if all fixed cols are empty, renumber COLNO to start with 0 (otherwise, articles with sep_words_found look weird and this is no a problem of mkhtml)
+- (DB) DB.reset: reset TEXT for DIC, WFORM, SPEECH, TRANSC; reset BLOCK, PRIORITY, CELLNO, SELECTABLE, ROWNO, COLNO, POS1, POS2
 - (cells) selectables: make 'Phrases' DIC cell SELECTABLE
 - (elems) Check that _same of the 1st cell is always 1 (or fix such behavior)
 - (elems) unite cells if (?) the url is the same or similar. Example: 'sampling' -> Робототехника -> проведение выборочных замеров
@@ -22,7 +22,6 @@
 ! исправить многоуровневые корректировочные комментарии: их можно вычислить по конструкции [correction + Username + Comment + UserName]
 ! проверить Moves на 'twinkie'
 ! mud: неверный парсинг 'буровой шлам; илистый грунт' -> потеря 'грунт'
-! Неверный Moves на 'i call bullshit'
 ! Пустая строка добавляется, если перед 1-м термином словаря стоит комментарий
 ! dressing: в MT - "противопригарная противопригарный припыл", в mclient - "припыл противопригарная"
 ! Вернуть назад хоткеи для вставки/удаления ячейки (в некоторых случаях точное определение SAMECELL невозможно)
