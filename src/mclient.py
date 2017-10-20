@@ -913,7 +913,7 @@ class History:
         print('History.SEARCHES:',searches) # todo: del
         if searches:
             for item in searches:
-                lst.append(str(item[0]) + '\t' + item[1])
+                lst.append(str(item[0]) + ' ► ' + item[1])
             self.obj.reset (lst   = lst
                            ,title = self._title
                            )
@@ -943,7 +943,7 @@ class History:
     
     def go(self,*args):
         result = self.obj.get()
-        result = result.split('\t')
+        result = result.split(' ► ')
         print('go result: "%s"' % str(result)) # todo: del
         if len(result) == 2:
             objs.request()._articleid = objs.blocks_db()._articleid = int(result[0])
@@ -1962,6 +1962,8 @@ class WebFrame:
         pages.run()
         objs._blocks_db.update(query=pages._query)
         
+        # cur
+        # after WebFrame.go_back: unsupported operand types for +: int and str
         self.title(arg=objs._request._search)
         # Select the first block without shifting the screen
         self._pos = objs.blocks_db().start()
