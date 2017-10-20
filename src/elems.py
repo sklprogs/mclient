@@ -35,7 +35,6 @@ class Block:
         self._type     = 'comment' # 'wform', 'speech', 'dic', 'phrase', 'term', 'comment', 'correction', 'transc', 'invalid'
         self._text     = ''
         self._url      = ''
-        self._urla     = ''
         self._dica     = ''
         self._wforma   = ''
         self._speecha  = ''
@@ -54,13 +53,11 @@ class Block:
 '''
 class Elems:
     
-    def __init__(self,blocks,source,search,urla=''):
-        self._blocks = blocks
-        self._source = source
-        self._search = search
-        self._urla   = urla
-        self._data   = []
-        if self._blocks and self._source and self._search:
+    def __init__(self,blocks,articleid):
+        self._blocks    = blocks
+        self._articleid = articleid
+        self._data      = []
+        if self._blocks and self._articleid:
             self.Success = True
         else:
             self.Success = False
@@ -329,7 +326,6 @@ class Elems:
             block._transca = transca
             if block._same > 0:
                 block._terma = terma
-            block._urla    = self._urla
     
     def fill_terma(self):
         terma = ''
@@ -416,36 +412,34 @@ class Elems:
         for block in self._blocks:
             self._data.append (
               (None                # (00) Skips the autoincrement
-              ,self._source        # (01) SOURCE
-              ,self._search        # (02) SEARCH
-              ,self._urla          # (03) URLA
-              ,block._dica         # (04) DICA
-              ,block._wforma       # (05) WFORMA
-              ,block._speecha      # (06) SPEECHA
-              ,block._transca      # (07) TRANSCA
-              ,block._terma        # (08) TERMA
-              ,block._type         # (09) TYPE
-              ,block._text         # (10) TEXT
-              ,block._url          # (11) URL
-              ,block._block        # (12) BLOCK
-              ,block._priority     # (13) PRIORITY
-              ,block._select       # (14) SELECTABLE
-              ,block._same         # (15) SAMECELL
-              ,block._cell_no      # (16) CELLNO
-              ,-1                  # (17) ROWNO
-              ,-1                  # (18) COLNO
-              ,-1                  # (19) POS1
-              ,-1                  # (20) POS2
-              ,''                  # (21) NODE1
-              ,''                  # (22) NODE2
-              ,-1                  # (23) OFFPOS1
-              ,-1                  # (24) OFFPOS2
-              ,-1                  # (25) BBOX1
-              ,-1                  # (26) BBOX2
-              ,-1                  # (27) BBOY1
-              ,-1                  # (28) BBOY2
-              ,block._text.lower() # (29) TEXTLOW
-              ,0                   # (30) IGNORE
+              ,self._articleid     # (01) ARTICLEID
+              ,block._dica         # (02) DICA
+              ,block._wforma       # (03) WFORMA
+              ,block._speecha      # (04) SPEECHA
+              ,block._transca      # (05) TRANSCA
+              ,block._terma        # (06) TERMA
+              ,block._type         # (07) TYPE
+              ,block._text         # (08) TEXT
+              ,block._url          # (09) URL
+              ,block._block        # (10) BLOCK
+              ,block._priority     # (11) PRIORITY
+              ,block._select       # (12) SELECTABLE
+              ,block._same         # (13) SAMECELL
+              ,block._cell_no      # (14) CELLNO
+              ,-1                  # (15) ROWNO
+              ,-1                  # (16) COLNO
+              ,-1                  # (17) POS1
+              ,-1                  # (18) POS2
+              ,''                  # (19) NODE1
+              ,''                  # (20) NODE2
+              ,-1                  # (21) OFFPOS1
+              ,-1                  # (22) OFFPOS2
+              ,-1                  # (23) BBOX1
+              ,-1                  # (24) BBOX2
+              ,-1                  # (25) BBOY1
+              ,-1                  # (26) BBOY2
+              ,block._text.lower() # (27) TEXTLOW
+              ,0                   # (28) IGNORE
               )
                               )
 
@@ -461,13 +455,12 @@ class Elems:
 
 class PhraseTerma:
     
-    def __init__(self,dbc,source,search):
-        self.dbc     = dbc
-        self._source = source
-        self._search = search
-        self._no1    = -1
-        self._no2    = -1
-        if self.dbc and self._source and self._search:
+    def __init__(self,dbc,articleid):
+        self.dbc        = dbc
+        self._articleid = articleid
+        self._no1       = -1
+        self._no2       = -1
+        if self.dbc and self._articleid:
             self.Success = True
         else:
             self.Success = False
@@ -478,7 +471,7 @@ class PhraseTerma:
             
     def second_phrase(self):
         if self._no2 < 0:
-            self.dbc.execute('select NO from BLOCKS where SOURCE = ? and SEARCH = ? and TYPE = ? order by NO',(self._source,self._search,'phrase',))
+            self.dbc.execute('select NO from BLOCKS where ARTICLEID = ? and TYPE = ? order by NO',(self._articleid,'phrase',))
             result = self.dbc.fetchone()
             if result:
                 self._no2 = result[0]
@@ -491,7 +484,7 @@ class PhraseTerma:
     def phrase_dic(self):
         if self._no1 < 0:
             if self._no2 >= 0:
-                self.dbc.execute('select NO from BLOCKS where SOURCE = ? and SEARCH = ? and TYPE = ? and NO < ? order by NO desc',(self._source,self._search,'dic',self._no2,))
+                self.dbc.execute('select NO from BLOCKS where ARTICLEID = ? and TYPE = ? and NO < ? order by NO desc',(self._articleid,'dic',self._no2,))
                 result = self.dbc.fetchone()
                 if result:
                     self._no1 = result[0]
@@ -541,11 +534,12 @@ if __name__ == '__main__':
     import mclient as mc
     
     # Modifiable
-    source  = _('Online')
-    search  = 'preceding'
-    url     = 'http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
-    file    = '/home/pete/tmp/ars/preceding.txt'
-    Debug   = 0
+    source    = _('Online')
+    search    = 'preceding'
+    url       = 'http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
+    articleid = 1
+    file      = '/home/pete/tmp/ars/preceding.txt'
+    Debug     = 0
     
     
     timer = sh.Timer(func_title='page, elems')
@@ -562,15 +556,16 @@ if __name__ == '__main__':
                    ,file         = file)
     page.run()
     
-    tags = tg.Tags(source=source,text=page._page)
+    tags = tg.Tags (source = source
+                   ,text   = page._page
+                   )
     tags.run()
     
     if Debug:
         tags.debug()
     
-    elems = Elems (blocks = tags._blocks
-                  ,source = source
-                  ,search = search
+    elems = Elems (blocks    = tags._blocks
+                  ,articleid = articleid
                   )
     elems.run()
     
@@ -578,13 +573,12 @@ if __name__ == '__main__':
         elems.debug (MaxRows=200)
     
     blocks_db = db.DB()
-    blocks_db.fill(elems._data)
+    blocks_db.fill_blocks(elems._data)
     
-    blocks_db.request(source=source,search=search)
+    blocks_db._articleid = articleid
     
-    ph_terma = PhraseTerma (dbc    = blocks_db.dbc
-                           ,source = source
-                           ,search = search
+    ph_terma = PhraseTerma (dbc       = blocks_db.dbc
+                           ,articleid = articleid
                            )
     ph_terma.run()
     

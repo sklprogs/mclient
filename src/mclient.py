@@ -22,7 +22,7 @@ import mkhtml      as mh
 
 
 product = 'MClient'
-version = '5.4.2'
+version = '5.4.3'
 
 third_parties = '''
 tkinterhtml
@@ -402,6 +402,7 @@ class CurRequest:
     def values(self):
         # note: this should be synchronized with the 'default' value of objs.webframe().menu_columns
         self._collimit     = 8
+        self._articleid    = 0
         self._source       = _('All')
         self._lang         = 'English'
         self._cols         = ('dic','wform','transc','speech')
@@ -906,9 +907,16 @@ class History:
         self.parent_obj.close()
 
     def fill(self):
-        self.obj.reset (lst   = objs.blocks_db().searches()
-                       ,title = self._title
-                       )
+        # cur
+        searches = objs.blocks_db().searches()
+        lst = []
+        print('History.SEARCHES:',searches) # todo: del
+        if searches:
+            for item in searches:
+                lst.append(str(item[0]) + '\t' + item[1])
+            self.obj.reset (lst   = lst
+                           ,title = self._title
+                           )
 
     def update(self):
         self.fill()
@@ -934,14 +942,20 @@ class History:
         objs.webframe().go_last()
     
     def go(self,*args):
-        objs.request()._search = self.obj.get()
-        # Do not warn after clearing the widget
-        if objs._request._search:
-            objs.blocks_db().request (source = objs._request._source
-                                     ,search = objs._request._search
-                                     )
-            objs._request._url = objs._blocks_db.urla()
+        result = self.obj.get()
+        result = result.split('\t')
+        print('go result: "%s"' % str(result)) # todo: del
+        if len(result) == 2:
+            objs.request()._articleid = objs.blocks_db()._articleid = int(result[0])
+            print('GO TO: "%s"' % str(result[1])) # todo: del
+            objs.request()._search = result[1]
+            objs._request._url = objs._blocks_db.article_url()
             objs.webframe().load_article()
+        else:
+            sg.Message (func    = 'History.go'
+                       ,level   = _('ERROR')
+                       ,message = _('Wrong input data!')
+                       )
 
     # Скопировать элемент истории
     def copy(self,*args):
@@ -1784,10 +1798,25 @@ class WebFrame:
     def load_article(self):
         timer = sh.Timer(func_title='WebFrame.load_article')
         timer.start()
-        objs.blocks_db().request (source = objs.request()._source
-                                 ,search = objs._request._search
-                                 )
-        if not objs._blocks_db.present():
+        print() # todo: del
+        print('source:',objs.request()._source) # todo: del
+        print('title:',objs._request._search) # todo: del
+        print('url:',objs._request._url) # todo: del
+        articleid = objs._blocks_db.present (source = objs.request()._source
+                                            ,title  = objs._request._search
+                                            ,url    = objs._request._url
+                                            )
+        print('load_article: articleid:',articleid) # todo: del
+        if articleid:
+            print('ALREADY present!') # todo: del
+            # todo: 'unite objs._request._articleid' and 'objs._blocks_db._articleid'
+            objs.blocks_db()._articleid = objs.request()._articleid = articleid
+        else:
+            print('CREATING new!') # todo: del
+            
+            # cur
+            objs._blocks_db._articleid = objs._request._articleid = objs._request._articleid + 1
+            
             ptimer = sh.Timer(func_title='WebFrame.load_article (Page)')
             ptimer.start()
             page = pg.Page (source       = objs._request._source
@@ -1819,6 +1848,35 @@ class WebFrame:
             objs._request._page     = page._page
             # note: # todo: 'Page' returns '_html_raw' for online pages only; this value can be separated for online & offline sources after introducing sub-sources instead of relying on _('All')
             objs._request._html_raw = page._html_raw
+            
+            # None skips the autoincrement
+            # todo: implement BOOKMARK
+            #data = (None                 # (00) ARTICLEID
+            data = (objs._request._articleid # (00) ARTICLEID
+                   ,objs._request._source # (01) SOURCE
+                   ,objs._request._search # (02) TITLE
+                   ,objs._request._url    # (03) URL
+                   ,''                    # (04) BOOKMARK
+                   )
+            objs._blocks_db.fill_articles(data=data)
+            
+            #objs._request._articleid = objs._blocks_db._articleid = objs._request._articleid + 1
+            
+            
+            
+            '''
+            objs._request._articleid = objs._blocks_db._articleid = objs._blocks_db.articleid()
+            '''
+            
+            # cur
+            print('THIS TEST')
+            print('source:',objs.request()._source) # todo: del
+            print('title:',objs._request._search) # todo: del
+            print('url:',objs._request._url) # todo: del
+            print('request, articleid:',objs._request._articleid) # todo: del
+            print('db, articleid:',objs._blocks_db._articleid) # todo: del
+            print('type of: request, articleid:',type(objs._request._articleid)) # todo: del
+            print('type of: db, articleid:',type(objs._blocks_db._articleid)) # todo: del
 
             tags = tg.Tags (text      = objs._request._page
                            ,source    = objs._request._source
@@ -1826,18 +1884,15 @@ class WebFrame:
                            )
             tags.run()
 
-            elems = el.Elems (blocks = tags._blocks
-                             ,source = objs._request._source
-                             ,search = objs._request._search
-                             ,urla   = objs._request._url
+            elems = el.Elems (blocks    = tags._blocks
+                             ,articleid = objs._request._articleid
                              )
             elems.run()
 
-            objs._blocks_db.fill(elems._data)
-
-            ph_terma = el.PhraseTerma (dbc    = objs._blocks_db.dbc
-                                      ,source = objs._request._source
-                                      ,search = objs._request._search
+            objs._blocks_db.fill_blocks(elems._data)
+            
+            ph_terma = el.PhraseTerma (dbc       = objs._blocks_db.dbc
+                                      ,articleid = objs._request._articleid
                                       )
             ph_terma.run()
 
@@ -1845,8 +1900,6 @@ class WebFrame:
         data       = objs._blocks_db.assign_bp ()
 
         bp = cl.BlockPrioritize (data       = data
-                                ,source     = objs._request._source
-                                ,search     = objs._request._search
                                 ,blacklist  = objs.blacklist()
                                 ,prioritize = objs.prioritize()
                                 ,Block      = objs._request.Block
@@ -1897,11 +1950,15 @@ class WebFrame:
         self.fill(code=objs._request._html)
 
         data = objs._blocks_db.assign_pos()
-        pos  = cl.Pos(data=data,raw_text=self.text())
+        pos  = cl.Pos (data     = data
+                      ,raw_text = self.text()
+                      )
         pos.run()
         objs._blocks_db.update(query=pos._query)
 
-        pages = cl.Pages(obj=objs.webframe(),blocks=pos._blocks)
+        pages = cl.Pages (obj    = objs.webframe()
+                         ,blocks = pos._blocks
+                         )
         pages.run()
         objs._blocks_db.update(query=pages._query)
         
@@ -1917,6 +1974,13 @@ class WebFrame:
         self.update_buttons()
         timer.end()
 
+        '''
+        # cur
+        #objs._blocks_db.print(mode='ARTICLES')
+        objs._blocks_db.dbc.execute('select ARTICLEID,CELLNO,NO,TYPE,TEXT from BLOCKS where BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by ARTICLEID,CELLNO,NO')
+        objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=150)
+        '''
+        
         '''
         objs._blocks_db.dbc.execute('select CELLNO,NO,ROWNO,COLNO,TYPE,TEXT,BBOX1,BBOX2,BBOY1,BBOY2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by CELLNO,NO',(objs._blocks_db._source,objs._blocks_db._search,))
         objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=150)

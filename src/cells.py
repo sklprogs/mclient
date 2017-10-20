@@ -39,13 +39,11 @@ class Block:
 '''
 class BlockPrioritize:
     
-    def __init__(self,data,source,search,blacklist=[]
-                ,prioritize=[],Block=False,Prioritize=False
-                ,phrase_dic=None
+    def __init__(self,data,blacklist=[]
+                ,prioritize=[],Block=False
+                ,Prioritize=False,phrase_dic=None
                 ):
         self._data       = data
-        self._source     = source
-        self._search     = search
         self._blacklist  = blacklist
         self._prioritize = prioritize
         self.Block       = Block
@@ -53,7 +51,7 @@ class BlockPrioritize:
         self._phrase_dic = phrase_dic
         self._blocks     = []
         self._query      = ''
-        if self._data and self._source and self._search:
+        if self._data:
             self.Success = True
         else:
             self.Success = False
@@ -580,6 +578,7 @@ if __name__ == '__main__':
     prioritize = ['Общая лексика']
     collimit   = 10
     file_raw   = '/home/pete/tmp/ars/working documentation - extracted text'
+    articleid  = 1
     
     raw_text = sh.ReadTextFile(file=file_raw).get()
     
@@ -597,31 +596,38 @@ if __name__ == '__main__':
                    ,file         = file)
     page.run()
     
-    tags = tg.Tags(source=source,text=page._page)
+    tags = tg.Tags (source = source
+                   ,text   = page._page
+                   )
     tags.run()
     
-    elems = el.Elems (blocks = tags._blocks
-                     ,source = source
-                     ,search = search
+    elems = el.Elems (blocks    = tags._blocks
+                     ,articleid = articleid
                      )
     elems.run()
     
     blocks_db = db.DB()
-    blocks_db.fill(elems._data)
+    blocks_db.fill_blocks(elems._data)
     
-    blocks_db.request(source=source,search=search)
+    data = (None   # (00) ARTICLEID
+           ,source # (01) SOURCE
+           ,search # (02) TITLE
+           ,url    # (03) URL
+           ,''     # (04) BOOKMARK
+           )
+    blocks_db.fill_articles(data=data)
     
-    ph_terma = el.PhraseTerma (dbc    = blocks_db.dbc
-                              ,source = source
-                              ,search = search)
+    blocks_db._articleid = articleid
+    
+    ph_terma = el.PhraseTerma (dbc       = blocks_db.dbc
+                              ,articleid = articleid
+                              )
     ph_terma.run()
     
     data       = blocks_db.assign_bp()
     phrase_dic = blocks_db.phrase_dic ()
     
     bp = BlockPrioritize (data       = data
-                         ,source     = source
-                         ,search     = search
                          ,blacklist  = blacklist
                          ,prioritize = prioritize
                          ,phrase_dic = phrase_dic
@@ -638,11 +644,16 @@ if __name__ == '__main__':
     blocks_db.update(query=cells._query)
     
     data = blocks_db.assign_pos()
-    pos  = Pos(data=data,raw_text=raw_text)
+    pos  = Pos (data     = data
+               ,raw_text = raw_text
+               )
     pos.run()
     blocks_db.update(query=pos._query)
     
     timer.end()
+    
+    blocks_db.print(Shorten=0,mode='ARTICLES')
+    print()
     
     blocks_db.dbc.execute('select NO,DICA,TYPE,TEXT,SAMECELL,PRIORITY,CELLNO,POS1,POS2,SELECTABLE from BLOCKS order by CELLNO,NO')
     blocks_db.print(Selected=1,Shorten=1,MaxRows=200,MaxRow=18)

@@ -1,3 +1,5 @@
+
+- (History) Create 2 columns in ListBox instead of using delimiters
 - (DB) DB.reset: reset TEXT for DIC, WFORM, SPEECH, TRANSC; reset BLOCK, PRIORITY, CELLNO, SELECTABLE, ROWNO, COLNO, POS1, POS2
 - (cells) selectables: make 'Phrases' DIC cell SELECTABLE
 - (elems) Check that _same of the 1st cell is always 1 (or fix such behavior)
