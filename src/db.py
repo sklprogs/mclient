@@ -102,6 +102,7 @@ class DB:
     def present(self,source,title,url):
         # cur
         # Error binding parameter 1 - probably unsupported type
+        # because 'title' is tuple
         print('PRESENT.source:',source) # todo: del
         print('PRESENT.title:',title) # todo: del
         print('PRESENT.url:',url) # todo: del

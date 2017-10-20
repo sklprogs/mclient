@@ -402,7 +402,6 @@ class CurRequest:
     def values(self):
         # note: this should be synchronized with the 'default' value of objs.webframe().menu_columns
         self._collimit     = 8
-        self._articleid    = 0
         self._source       = _('All')
         self._lang         = 'English'
         self._cols         = ('dic','wform','transc','speech')
@@ -936,17 +935,31 @@ class History:
             self.show()
 
     def go_first(self,*args):
-        objs.webframe().go_first()
+        if self.obj.lst:
+            self.obj.set(item=self.obj.lst[0])
+            self.go()
+        else:
+            sh.log.append ('History.go_first'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
         
     def go_last(self,*args):
-        objs.webframe().go_last()
+        if self.obj.lst:
+            self.obj.set(item=self.obj.lst[-1])
+            self.go()
+        else:
+            sh.log.append ('History.go_last'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
     
     def go(self,*args):
         result = self.obj.get()
         result = result.split(' ► ')
         print('go result: "%s"' % str(result)) # todo: del
         if len(result) == 2:
-            objs.request()._articleid = objs.blocks_db()._articleid = int(result[0])
+            objs.blocks_db()._articleid = int(result[0])
             print('GO TO: "%s"' % str(result[1])) # todo: del
             objs.request()._search = result[1]
             objs._request._url = objs._blocks_db.article_url()
@@ -1809,13 +1822,12 @@ class WebFrame:
         print('load_article: articleid:',articleid) # todo: del
         if articleid:
             print('ALREADY present!') # todo: del
-            # todo: 'unite objs._request._articleid' and 'objs._blocks_db._articleid'
-            objs.blocks_db()._articleid = objs.request()._articleid = articleid
+            objs.blocks_db()._articleid = articleid
         else:
             print('CREATING new!') # todo: del
             
             # cur
-            objs._blocks_db._articleid = objs._request._articleid = objs._request._articleid + 1
+            objs._blocks_db._articleid += 1
             
             ptimer = sh.Timer(func_title='WebFrame.load_article (Page)')
             ptimer.start()
@@ -1852,7 +1864,7 @@ class WebFrame:
             # None skips the autoincrement
             # todo: implement BOOKMARK
             #data = (None                 # (00) ARTICLEID
-            data = (objs._request._articleid # (00) ARTICLEID
+            data = (objs.blocks_db()._articleid # (00) ARTICLEID
                    ,objs._request._source # (01) SOURCE
                    ,objs._request._search # (02) TITLE
                    ,objs._request._url    # (03) URL
@@ -1860,12 +1872,8 @@ class WebFrame:
                    )
             objs._blocks_db.fill_articles(data=data)
             
-            #objs._request._articleid = objs._blocks_db._articleid = objs._request._articleid + 1
-            
-            
-            
             '''
-            objs._request._articleid = objs._blocks_db._articleid = objs._blocks_db.articleid()
+            objs._blocks_db._articleid = objs._blocks_db.articleid()
             '''
             
             # cur
@@ -1873,9 +1881,7 @@ class WebFrame:
             print('source:',objs.request()._source) # todo: del
             print('title:',objs._request._search) # todo: del
             print('url:',objs._request._url) # todo: del
-            print('request, articleid:',objs._request._articleid) # todo: del
             print('db, articleid:',objs._blocks_db._articleid) # todo: del
-            print('type of: request, articleid:',type(objs._request._articleid)) # todo: del
             print('type of: db, articleid:',type(objs._blocks_db._articleid)) # todo: del
 
             tags = tg.Tags (text      = objs._request._page
@@ -1885,14 +1891,14 @@ class WebFrame:
             tags.run()
 
             elems = el.Elems (blocks    = tags._blocks
-                             ,articleid = objs._request._articleid
+                             ,articleid = objs._blocks_db._articleid
                              )
             elems.run()
 
             objs._blocks_db.fill_blocks(elems._data)
             
             ph_terma = el.PhraseTerma (dbc       = objs._blocks_db.dbc
-                                      ,articleid = objs._request._articleid
+                                      ,articleid = objs._blocks_db._articleid
                                       )
             ph_terma.run()
 
@@ -2492,30 +2498,6 @@ class WebFrame:
                       )
         self.canvas.widget.xview_scroll(self._shift,'units')
         
-    # Go to the 1st article
-    def go_first(self,*args):
-        searches = objs.blocks_db().searches()
-        if searches:
-            objs.request()._search = searches[0]
-            self.load_article()
-        else:
-            sh.log.append ('WebFrame.go_first'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
-                          
-    # Go to the last article
-    def go_last(self,*args):
-        searches = objs.blocks_db().searches()
-        if searches:
-            objs.request()._search = searches[-1]
-            self.load_article()
-        else:
-            sh.log.append ('WebFrame.go_last'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
-                          
     # Update a column number in GUI; adjust the column number (both logic and GUI) in special cases
     def update_columns(self):
         fixed = [col for col in objs.request()._cols if col != _('Do not set')]
