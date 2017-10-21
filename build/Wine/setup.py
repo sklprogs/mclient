@@ -14,7 +14,7 @@ executables = [Executable ('mclient.py'
                           )
               ]
 
-setup (name        = 'mclient.py'
+setup (name        = 'MClient'
       ,version     = '5'
       ,description = 'Multitran Online Client'
       ,options     = dict(build_exe=buildOptions)
