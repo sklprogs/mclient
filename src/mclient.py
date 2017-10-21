@@ -894,8 +894,8 @@ class History:
 
     def autoselect(self):
         self.obj.clear_selection()
-        if objs.request()._search in self.obj.lst:
-            self.obj.set(item=objs._request._search)
+        item = str(objs.blocks_db()._articleid) + ' ► ' + objs.request()._search
+        self.obj.set(item=item)
 
     def show(self,*args):
         self.Active = True
@@ -906,10 +906,8 @@ class History:
         self.parent_obj.close()
 
     def fill(self):
-        # cur
         searches = objs.blocks_db().searches()
         lst = []
-        print('History.SEARCHES:',searches) # todo: del
         if searches:
             for item in searches:
                 lst.append(str(item[0]) + ' ► ' + item[1])
@@ -936,6 +934,7 @@ class History:
 
     def go_first(self,*args):
         if self.obj.lst:
+            self.obj.clear_selection()
             self.obj.set(item=self.obj.lst[0])
             self.go()
         else:
@@ -946,6 +945,7 @@ class History:
         
     def go_last(self,*args):
         if self.obj.lst:
+            self.obj.clear_selection()
             self.obj.set(item=self.obj.lst[-1])
             self.go()
         else:
@@ -957,10 +957,8 @@ class History:
     def go(self,*args):
         result = self.obj.get()
         result = result.split(' ► ')
-        print('go result: "%s"' % str(result)) # todo: del
         if len(result) == 2:
             objs.blocks_db()._articleid = int(result[0])
-            print('GO TO: "%s"' % str(result[1])) # todo: del
             objs.request()._search = result[1]
             objs._request._url = objs._blocks_db.article_url()
             objs.webframe().load_article()
