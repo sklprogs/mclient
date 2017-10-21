@@ -198,20 +198,13 @@ class Cells:
                     
     # Reassign COLNO to start with 0 if separate words have been found (all fixed columns are empty). This allows to avoid the effect when a column with the 1st term is stretched owing to empty fixed columns.
     def sep_words(self):
-        Found = False
+        min_j = len(self._cols)
         for block in self._blocks:
-            if block._type in ('dic','wform','speech','transc') and block._text:
-                Found = True
-        if not Found:
+            if block._text and block.j < min_j:
+                min_j = block.j
+        if min_j == len(self._cols):
             for i in range(len(self._blocks)):
-                if self._blocks[i].j >= len(self._cols):
-                    self._blocks[i].j -= len(self._cols)
-                else:
-                    sg.Message (func    = 'Cells.sep_words'
-                               ,level   = _('ERROR')
-                               ,message = _('The condition "%s" is not observed!') % '%d >= %d' % (self._blocks[i].j,len(self._cols))
-                               )
-                    break
+                self._blocks[i].j -= len(self._cols)
     
     def run(self):
         if self.Success:
