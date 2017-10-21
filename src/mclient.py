@@ -742,9 +742,6 @@ class SearchArticle:
 
     def backward(self,*args):
         if self.first():
-            print('first:',self._first) # todo: del
-            print('last:',self.last()) # todo: del
-            print('_pos:',self._pos) # todo: del
             if self._pos == self._first:
                 sg.Message (func    = 'SearchArticle.backward'
                            ,level   = _('INFO')
@@ -1834,22 +1831,17 @@ class WebFrame:
     def load_article(self):
         timer = sh.Timer(func_title='WebFrame.load_article')
         timer.start()
-        print() # todo: del
-        print('source:',objs.request()._source) # todo: del
-        print('title:',objs._request._search) # todo: del
-        print('url:',objs._request._url) # todo: del
         articleid = objs._blocks_db.present (source = objs.request()._source
                                             ,title  = objs._request._search
                                             ,url    = objs._request._url
                                             )
-        print('load_article: articleid:',articleid) # todo: del
         if articleid:
-            print('ALREADY present!') # todo: del
+            sh.log.append (func    = 'WebFrame.load_article'
+                          ,level   = _('INFO')
+                          ,message = _('Load article No. %d from memory') % articleid
+                          )
             objs.blocks_db()._articleid = articleid
         else:
-            print('CREATING new!') # todo: del
-            
-            # cur
             objs._blocks_db._articleid += 1
             
             ptimer = sh.Timer(func_title='WebFrame.load_article (Page)')
@@ -1895,18 +1887,6 @@ class WebFrame:
                    )
             objs._blocks_db.fill_articles(data=data)
             
-            '''
-            objs._blocks_db._articleid = objs._blocks_db.articleid()
-            '''
-            
-            # cur
-            print('THIS TEST')
-            print('source:',objs.request()._source) # todo: del
-            print('title:',objs._request._search) # todo: del
-            print('url:',objs._request._url) # todo: del
-            print('db, articleid:',objs._blocks_db._articleid) # todo: del
-            print('type of: db, articleid:',type(objs._blocks_db._articleid)) # todo: del
-
             tags = tg.Tags (text      = objs._request._page
                            ,source    = objs._request._source
                            ,pair_root = sh.globs['var']['pair_root']
@@ -1991,8 +1971,6 @@ class WebFrame:
         pages.run()
         objs._blocks_db.update(query=pages._query)
         
-        # cur
-        # after WebFrame.go_back: unsupported operand types for +: int and str
         self.title(arg=objs._request._search)
         # Select the first block without shifting the screen
         self._pos = objs.blocks_db().start()
@@ -2006,8 +1984,7 @@ class WebFrame:
         timer.end()
 
         '''
-        # cur
-        #objs._blocks_db.print(mode='ARTICLES')
+        objs._blocks_db.print(Shorten=0,mode='ARTICLES')
         objs._blocks_db.dbc.execute('select ARTICLEID,CELLNO,NO,TYPE,TEXT from BLOCKS where BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by ARTICLEID,CELLNO,NO')
         objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=150)
         '''

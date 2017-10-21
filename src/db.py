@@ -100,25 +100,14 @@ class DB:
         return self.dbc.fetchall()
 
     def present(self,source,title,url):
-        # cur
-        # Error binding parameter 1 - probably unsupported type
-        # because 'title' is tuple
-        print('PRESENT.source:',source) # todo: del
-        print('PRESENT.title:',title) # todo: del
-        print('PRESENT.url:',url) # todo: del
         self.dbc.execute('select ARTICLEID from ARTICLES where SOURCE = ? and TITLE = ? and URL = ?',(source,title,url,))
         result = self.dbc.fetchone()
         if result:
             return result[0]
 
     def searches(self):
-        # cur
-        #distinct ARTICLEID,TITLE
         self.dbc.execute('select distinct ARTICLEID,TITLE from ARTICLES order by ARTICLEID desc')
         return self.dbc.fetchall()
-        #result = self.dbc.fetchall()
-        #if result:
-        #    return [item[0] for item in result]
 
     def prev_id(self,Loop=True):
         if self._articleid:
@@ -183,11 +172,8 @@ class DB:
     # Assign input data for BlockPrioritize
     def assign_bp(self):
         if self._articleid:
-            # cur
-            print('ARTICLEID',self._articleid)
-            print('type:',type(self._articleid))
+            # We need a 'str' type for some reason
             self.dbc.execute('select NO,TYPE,TEXT,DICA from BLOCKS where ARTICLEID = ? order by NO',(str(self._articleid)))
-            #self.dbc.execute('select NO,TYPE,TEXT,DICA from BLOCKS where ARTICLEID = ? order by NO',(self._articleid))
             return self.dbc.fetchall()
         else:
             sh.log.append ('DB.assign_bp'
