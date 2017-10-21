@@ -751,7 +751,8 @@ class SearchArticle:
                 objs._webframe.select()
                 objs._webframe.shift_screen()
             else:
-                pos = objs.blocks_db().search_backward(pos=self._pos,search=self.search())
+                pos = objs.blocks_db().search_backward (pos    = self._pos
+                                                       ,search = self.search())
                 if pos or pos == 0:
                     self._pos = pos
                     objs.webframe()._pos = pos
@@ -1831,18 +1832,28 @@ class WebFrame:
     def load_article(self):
         timer = sh.Timer(func_title='WebFrame.load_article')
         timer.start()
-        articleid = objs._blocks_db.present (source = objs.request()._source
-                                            ,title  = objs._request._search
-                                            ,url    = objs._request._url
-                                            )
+        articleid = objs.blocks_db().present (source = objs.request()._source
+                                             ,title  = objs._request._search
+                                             ,url    = objs._request._url
+                                             )
         if articleid:
             sh.log.append (func    = 'WebFrame.load_article'
                           ,level   = _('INFO')
                           ,message = _('Load article No. %d from memory') % articleid
                           )
-            objs.blocks_db()._articleid = articleid
+            objs._blocks_db._articleid = articleid
         else:
-            objs._blocks_db._articleid += 1
+            # todo: implement BOOKMARK
+            # None skips the autoincrement
+            data = (None                  # (00) ARTICLEID
+                   ,objs._request._source # (01) SOURCE
+                   ,objs._request._search # (02) TITLE
+                   ,objs._request._url    # (03) URL
+                   ,''                    # (04) BOOKMARK
+                   )
+            objs._blocks_db.fill_articles(data=data)
+            
+            objs._blocks_db._articleid = objs._blocks_db.max_articleid()
             
             ptimer = sh.Timer(func_title='WebFrame.load_article (Page)')
             ptimer.start()
@@ -1875,17 +1886,6 @@ class WebFrame:
             objs._request._page     = page._page
             # note: # todo: 'Page' returns '_html_raw' for online pages only; this value can be separated for online & offline sources after introducing sub-sources instead of relying on _('All')
             objs._request._html_raw = page._html_raw
-            
-            # None skips the autoincrement
-            # todo: implement BOOKMARK
-            #data = (None                 # (00) ARTICLEID
-            data = (objs.blocks_db()._articleid # (00) ARTICLEID
-                   ,objs._request._source # (01) SOURCE
-                   ,objs._request._search # (02) TITLE
-                   ,objs._request._url    # (03) URL
-                   ,''                    # (04) BOOKMARK
-                   )
-            objs._blocks_db.fill_articles(data=data)
             
             tags = tg.Tags (text      = objs._request._page
                            ,source    = objs._request._source

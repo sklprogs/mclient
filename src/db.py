@@ -67,7 +67,8 @@ class DB:
     def create_articles(self):
         self.dbc.execute (
                     'create table if not exists ARTICLES (\
-                     ARTICLEID  integer           \
+                     ARTICLEID  integer primary   \
+                                key autoincrement \
                     ,SOURCE     text              \
                     ,TITLE      text              \
                     ,URL        text              \
