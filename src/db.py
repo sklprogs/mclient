@@ -120,26 +120,30 @@ class DB:
         #if result:
         #    return [item[0] for item in result]
 
-    def prev_search(self):
+    def prev_id(self,Loop=True):
         if self._articleid:
-            self.dbc.execute('select ARTICLEID from BLOCKS where ARTICLEID < ? and BLOCK = 0 and IGNORE = 0 order by ARTICLEID desc',(self._articleid,))
+            self.dbc.execute('select ARTICLEID from ARTICLES where ARTICLEID < ? order by ARTICLEID desc',(self._articleid,))
             result = self.dbc.fetchone()
             if result:
                 return result[0]
+            elif Loop:
+                return self.max_articleid()
         else:
-            sh.log.append ('DB.prev_search'
+            sh.log.append ('DB.prev_id'
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
 
-    def next_search(self):
+    def next_id(self,Loop=True):
         if self._articleid:
-            self.dbc.execute('select ARTICLEID from BLOCKS where ARTICLEID > ? and BLOCK = 0 and IGNORE = 0 order by ARTICLEID desc',(self._articleid,))
+            self.dbc.execute('select ARTICLEID from ARTICLES where ARTICLEID > ? order by ARTICLEID',(self._articleid,))
             result = self.dbc.fetchone()
             if result:
                 return result[0]
+            elif Loop:
+                return self.min_articleid()
         else:
-            sh.log.append ('DB.next_search'
+            sh.log.append ('DB.next_id'
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
@@ -297,14 +301,12 @@ class DB:
             '''
             pass
 
-    def article_url(self):
+    def article(self):
         if self._articleid:
-            self.dbc.execute('select URL from ARTICLES where ARTICLEID = ?',(self._articleid,))
-            result = self.dbc.fetchone()
-            if result:
-                return result[0]
+            self.dbc.execute('select SOURCE,TITLE,URL from ARTICLES where ARTICLEID = ?',(self._articleid,))
+            return self.dbc.fetchone()
         else:
-            sh.log.append ('DB.article_url'
+            sh.log.append ('DB.article'
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
@@ -588,13 +590,25 @@ class DB:
                           ,_('Empty input is not allowed!')
                           )
     
-    def articleid(self):
+    def min_articleid(self):
         self.dbc.execute('select ARTICLEID from ARTICLES order by ARTICLEID')
         result = self.dbc.fetchone()
         if result:
             return result[0]
         else:
-            sh.log.append ('DB.articleid'
+            sh.log.append ('DB.min_articleid'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+            return 1 # Default minimal autoincrement in SQlite
+            
+    def max_articleid(self):
+        self.dbc.execute('select ARTICLEID from ARTICLES order by ARTICLEID desc')
+        result = self.dbc.fetchone()
+        if result:
+            return result[0]
+        else:
+            sh.log.append ('DB.max_articleid'
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )

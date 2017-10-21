@@ -801,8 +801,25 @@ class SearchField:
 
     # Вставить предыдущий запрос
     def insert_repeat_sign2(self,*args):
-        sg.Clipboard().copy(objs.blocks_db().prev_search())
-        self.paste()
+        result = objs.blocks_db().prev_id()
+        if result:
+            old = objs._blocks_db._articleid
+            objs._blocks_db._articleid = result
+            result = objs._blocks_db.article()
+            if result:
+                sg.Clipboard().copy(result[1])
+                self.paste()
+            else:
+                sh.log.append ('SearchField.insert_repeat_sign2'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+            objs._blocks_db._articleid = old
+        else:
+            sh.log.append ('SearchField.insert_repeat_sign2'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
 
 
 
@@ -959,9 +976,17 @@ class History:
         result = result.split(' ► ')
         if len(result) == 2:
             objs.blocks_db()._articleid = int(result[0])
-            objs.request()._search = result[1]
-            objs._request._url = objs._blocks_db.article_url()
-            objs.webframe().load_article()
+            result = objs._blocks_db.article()
+            if result:
+                objs._request._source = result[0]
+                objs._request._search = result[1]
+                objs._request._url    = result[2]
+                objs.webframe().load_article()
+            else:
+                sh.log.append ('History.go'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
         else:
             sg.Message (func    = 'History.go'
                        ,level   = _('ERROR')
@@ -2222,12 +2247,12 @@ class WebFrame:
         else:
             self.btn_repeat_sign2.inactive()
 
-        if objs.blocks_db().prev_search():
+        if objs.blocks_db().prev_id(Loop=False):
             self.btn_prev.active()
         else:
             self.btn_prev.inactive()
 
-        if objs.blocks_db().next_search():
+        if objs.blocks_db().next_id(Loop=False):
             self.btn_next.active()
         else:
             self.btn_next.inactive()
@@ -2267,17 +2292,15 @@ class WebFrame:
 
     # Перейти на предыдущий запрос
     def go_back(self,*args):
-        searches = objs.blocks_db().searches()
-        if searches:
-            result = objs._blocks_db.prev_search()
+        result = objs.blocks_db().prev_id()
+        if result:
+            objs._blocks_db._articleid = result
+            result = objs._blocks_db.article()
             if result:
-                objs.request()._search = result
-                self.load_article()
-            # No need to load the same article once again
-            elif len(searches) > 1:
-                # The list is sorted in the descending order
-                objs.request()._search = list(searches)[0]
-                self.load_article()
+                objs._request._source = result[0]
+                objs._request._search = result[1]
+                objs._request._url    = result[2]
+                objs.webframe().load_article()
             else:
                 sh.log.append ('WebFrame.go_back'
                               ,_('WARNING')
@@ -2285,23 +2308,21 @@ class WebFrame:
                               )
         else:
             sh.log.append ('WebFrame.go_back'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
 
     # Перейти на следующий запрос
     def go_forward(self,*args):
-        searches = objs.blocks_db().searches()
-        if searches:
-            result = objs.blocks_db().next_search()
+        result = objs.blocks_db().next_id()
+        if result:
+            objs._blocks_db._articleid = result
+            result = objs._blocks_db.article()
             if result:
-                objs.request()._search = result
-                self.load_article()
-            # No need to load the same article once again
-            elif len(searches) > 1:
-                # The list is sorted in the descending order
-                objs.request()._search = list(searches)[-1]
-                self.load_article()
+                objs._request._source = result[0]
+                objs._request._search = result[1]
+                objs._request._url    = result[2]
+                objs.webframe().load_article()
             else:
                 sh.log.append ('WebFrame.go_forward'
                               ,_('WARNING')
@@ -2309,9 +2330,9 @@ class WebFrame:
                               )
         else:
             sh.log.append ('WebFrame.go_forward'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
 
     def control_length(self): # Confirm too long requests
         Confirmed = True
