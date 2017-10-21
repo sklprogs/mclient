@@ -173,8 +173,7 @@ class DB:
     # Assign input data for BlockPrioritize
     def assign_bp(self):
         if self._articleid:
-            # We need a 'str' type for some reason
-            self.dbc.execute('select NO,TYPE,TEXT,DICA from BLOCKS where ARTICLEID = ? order by NO',(str(self._articleid)))
+            self.dbc.execute('select NO,TYPE,TEXT,DICA from BLOCKS where ARTICLEID = ? order by NO',(self._articleid,))
             return self.dbc.fetchall()
         else:
             sh.log.append ('DB.assign_bp'
@@ -250,7 +249,7 @@ class DB:
     def clear(self):
         sh.log.append ('DB.clear'
                       ,_('WARNING')
-                      ,_('Delete all records from %s') % 'BLOCKS'
+                      ,_('Delete all records from %s') % 'ARTICLES, BLOCKS'
                       )
         # VACUUM command is a no-op for in-memory databases
         self.dbc.execute('delete from BLOCKS')
