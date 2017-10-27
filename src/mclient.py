@@ -2468,17 +2468,19 @@ class WebFrame:
         
     def motion(self,*args):
         scr_width = self.obj.resolution()[0]
-        x         = self.canvas.widget.winfo_pointerx()
-        # We read 'canvas' because it should return positive values (in comparison with 'self.fr_but', which is movable). 'rootx' should be negative only when 'canvas' is partially moved by a user out of screen (but we may need this case too).
-        rootx     = self.canvas.widget.winfo_rootx()
-        leftx     = max (0,rootx)
-        rightx    = min (rootx + self.canvas.widget.winfo_width()
-                        ,scr_width
-                        )
-        if x <= leftx + self._border:
-            self.scroll_left()
-        elif x >= rightx - self._border:
-            self.scroll_right()
+        # Do not move button frame if it is entirely visible
+        if self.obj.widget.winfo_width() < self.fr_but.widget.winfo_reqwidth():
+            x         = self.canvas.widget.winfo_pointerx()
+            # We read 'canvas' because it should return positive values (in comparison with 'self.fr_but', which is movable). 'rootx' should be negative only when 'canvas' is partially moved by a user out of screen (but we may need this case too).
+            rootx     = self.canvas.widget.winfo_rootx()
+            leftx     = max (0,rootx)
+            rightx    = min (rootx + self.canvas.widget.winfo_width()
+                            ,scr_width
+                            )
+            if x <= leftx + self._border:
+                self.scroll_left()
+            elif x >= rightx - self._border:
+                self.scroll_right()
             
     def scroll_left(self):
         sh.log.append ('WebFrame.scroll_left'
