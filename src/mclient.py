@@ -105,8 +105,8 @@ class ConfigMclient(sh.Config):
         sh.globs['int'].update ({
             'col_width'         :250
            ,'font_comments_size':3
-           ,'font_dics_size'    :4
-           ,'font_speech_size'  :4
+           ,'font_col1_size'    :4
+           ,'font_col2_size'    :4
            ,'font_terms_size'   :4
                                })
         #---------------------------------------------------
@@ -151,15 +151,15 @@ class ConfigMclient(sh.Config):
            ,'bind_toggle_view'            :'<F6>'
            ,'bind_toggle_view_alt'        :'<Alt-v>'
            ,'color_comments'              :'gray'
-           ,'color_dics'                  :'cadet blue'
-           ,'color_speech'                :'red'
+           ,'color_col1'                  :'coral'
+           ,'color_col2'                  :'cadet blue'
            ,'color_terms_sel_bg'          :'cyan'
            ,'color_terms_sel_fg'          :'black'
            ,'color_terms'                 :'black'
            ,'font_comments_family'        :'Mono'
-           ,'font_dics_family'            :'Arial'
+           ,'font_col1_family'            :'Arial'
            ,'font_history'                :'Sans 12'
-           ,'font_speech_family'          :'Arial'
+           ,'font_col2_family'            :'Arial'
            ,'font_style'                  :'Sans 14'
            ,'font_terms_sel'              :'Sans 14 bold italic'
            ,'font_terms_family'           :'Serif'
@@ -1871,7 +1871,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/do.txt'
                            #,file        = '/home/pete/tmp/ars/set.txt'
                            #,file        = '/home/pete/tmp/ars/get.txt'
-                           #,file        = '/home/pete/tmp/ars/pack.txt'
+                           ,file        = '/home/pete/tmp/ars/pack.txt' # cur
                            #,file        = '/home/pete/tmp/ars/counterpart.txt'
                            #,file        = '/home/pete/tmp/ars/test.txt'
                            #,file        = '/home/pete/tmp/ars/cut.txt'

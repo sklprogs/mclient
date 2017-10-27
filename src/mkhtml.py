@@ -24,23 +24,29 @@ class HTML:
     def __init__(self,data,cols,collimit=9
                 ,Printer=False,blacklist=[]
                 ,prioritize=[],blocked_color='gray'
-                ,priority_color='red',width=0
-                ,Reverse=False
+                ,priority_color='red',priority_color2='blue'
+                ,width=0,Reverse=False
                 ): # 'collimit' includes fixed blocks
-        self._data           = data
-        self._cols           = cols
-        self._collimit       = collimit
-        self.Printer         = Printer
-        self._blacklist      = blacklist
-        self._prioritize     = prioritize
-        self._blocked_color  = blocked_color
-        self._priority_color = priority_color
-        self._width          = width
-        self.Reverse         = Reverse
-        self._blocks         = []
-        self._block          = None
-        self._html           = ''
-        self._script         = '''
+        self._data            = data
+        self._cols            = cols
+        self._collimit        = collimit
+        self.Printer          = Printer
+        self._blacklist       = blacklist
+        self._prioritize      = prioritize
+        self._blocked_color   = blocked_color
+        self._priority_color  = priority_color
+        self._priority_color2 = priority_color2
+        if len(self._cols) >= 4 and self._cols[3] == 'speech':
+            self._color_col3 = sh.globs['var']['color_comments']
+        else:
+            self._color_col3 = 'brown'
+            
+        self._width           = width
+        self.Reverse          = Reverse
+        self._blocks          = []
+        self._block           = None
+        self._html            = ''
+        self._script          = '''
         <head>
 
           <div align="center">
@@ -92,28 +98,80 @@ class HTML:
     def _dic(self):
         if self._block._type == 'dic':
             self.output.write('<font face="')
-            self.output.write(sh.globs['var']['font_dics_family'])
+            self.output.write(self._family())
             self.output.write('" color="')
             if self._block._text in self._blacklist:
                 self.output.write(self._blocked_color)
             elif self._block._text in self._prioritize:
-                self.output.write(self._priority_color)
+                self.output.write(self._color_p())
             else:
-                self.output.write(sh.globs['var']['color_dics'])
+                self.output.write(self._color())
             self.output.write('" size="')
-            self.output.write(str(sh.globs['int']['font_dics_size']))
+            self.output.write(str(self._size()))
             self.output.write('"><b>')
             self.output.write(self._block._text)
             self.output.write('</b></font>')
 
+    def _family(self):
+        if self._block.j == 0:
+            return sh.globs['var']['font_col1_family']
+        elif self._block.j == 1:
+            return sh.globs['var']['font_col2_family']
+        # COLNO 3 (last) in fact
+        elif self._block.j == 2 and len(self._cols) == 3:
+            # todo: set from Settings
+            return sh.globs['var']['font_comments_family']
+        elif self._block.j == 3:
+            # todo: set from Settings
+            return sh.globs['var']['font_comments_family']
+        else:
+            return sh.globs['var']['font_terms_family']
+            
+    def _size(self):
+        if self._block.j == 0:
+            return sh.globs['int']['font_col1_size']
+        elif self._block.j == 1:
+            return sh.globs['int']['font_col2_size']
+        # COLNO 3 (last) in fact
+        elif self._block.j == 2 and len(self._cols) == 3:
+            # todo: set from Settings
+            return sh.globs['int']['font_comments_size']
+        elif self._block.j == 3:
+            # todo: set from Settings
+            return sh.globs['int']['font_comments_size']
+        else:
+            return sh.globs['int']['font_terms_size']
+            
+    def _color_p(self):
+        if self._block.j == 1:
+            return self._priority_color2
+        else:
+            return self._priority_color
+    
+    def _color(self):
+        if self._block.j == 0:
+            return sh.globs['var']['color_col1']
+        elif self._block.j == 1:
+            return sh.globs['var']['color_col2']
+        # COLNO 3 (last) in fact
+        elif self._block.j == 2 and len(self._cols) == 3:
+            # todo: set from Settings
+            return sh.globs['var']['color_comments']
+        elif self._block.j == 3:
+            # todo: set from Settings
+            #return self._color_col3
+            return 'brown' # cur
+        else:
+            return sh.globs['var']['color_terms']
+    
     def _wform(self):
         if self._block._type == 'wform':
             self.output.write('<font face="')
-            self.output.write(sh.globs['var']['font_speech_family'])
+            self.output.write(self._family())
             self.output.write('" color="')
-            self.output.write(sh.globs['var']['color_speech'])
+            self.output.write(self._color())
             self.output.write('" size="')
-            self.output.write(str(sh.globs['int']['font_speech_size']))
+            self.output.write(str(self._size()))
             self.output.write('"><b>')
             self.output.write(self._block._text)
             self.output.write('</b></font>')
@@ -130,8 +188,27 @@ class HTML:
             self.output.write(self._block._text)
             self.output.write('</font>')
 
+    def _speech(self):
+        if self._block._type == 'speech':
+            self.output.write('<font face="')
+            self.output.write(self._family())
+            self.output.write('" color="')
+            self.output.write(self._color())
+            self.output.write('" size="')
+            self.output.write(str(self._size()))
+            self.output.write('">')
+            self.output.write('<i>')
+            if self._block.j == 0:
+                self.output.write('<b>')
+                self.output.write(self._block._text)
+                self.output.write('</b>')
+            else:
+                self.output.write(self._block._text)
+            self.output.write('</i>')
+            self.output.write('</font>')
+    
     def _comment(self):
-        if self._block._type in ('comment','speech','transc'):
+        if self._block._type in ('comment','transc'):
             self.output.write('<i><font face="')
             self.output.write(sh.globs['var']['font_comments_family'])
             self.output.write('" size="')
@@ -149,7 +226,6 @@ class HTML:
             self.output.write('" size="')
             self.output.write(str(sh.globs['int']['font_comments_size']))
             self.output.write('" color="')
-            #self.output.write(sh.globs['var']['color_comments'])
             # todo (?): add to config
             self.output.write('green')
             self.output.write('">')
@@ -197,6 +273,7 @@ class HTML:
                     j += 1
                 self._dic       ()
                 self._wform     ()
+                self._speech    ()
                 self._term      ()
                 self._comment   ()
                 self._correction()
@@ -242,6 +319,8 @@ if __name__ == '__main__':
     blacklist  = []
     prioritize = ['Общая лексика']
     Debug      = 0
+    articleid  = 1
+    url        = ''
 
     timer = sh.Timer(func_title='page, elems')
     timer.start()
@@ -256,7 +335,7 @@ if __name__ == '__main__':
                    )
     page.run()
 
-    mc.ConfigMclient ()
+    mc.ConfigMclient()
 
     timer = sh.Timer(func_title='tags + elems + cells + pos + mkhtml')
     timer.start()
@@ -268,9 +347,8 @@ if __name__ == '__main__':
         tags.debug(MaxRows=40)
         input('Tags step completed. Press Enter')
 
-    elems = el.Elems (blocks = tags._blocks
-                     ,source = source
-                     ,search = search
+    elems = el.Elems (blocks    = tags._blocks
+                     ,articleid = articleid
                      )
     elems.run()
 
@@ -279,14 +357,20 @@ if __name__ == '__main__':
         input('Elems step completed. Press Enter')
 
     blocks_db = db.DB()
-    blocks_db.fill(elems._data)
-
-    blocks_db.request (source = source
-                      ,search = search
-                      )
-    ph_terma = el.PhraseTerma (dbc = blocks_db.dbc
-                              ,source = source
-                              ,search = search
+    
+    data = (None   # (00) ARTICLEID
+           ,source # (01) SOURCE
+           ,search # (02) TITLE
+           ,url    # (03) URL
+           ,''     # (04) BOOKMARK
+           )
+    blocks_db.fill_articles(data=data)
+    blocks_db._articleid = blocks_db.max_articleid()
+    
+    blocks_db.fill_blocks(elems._data)
+    
+    ph_terma = el.PhraseTerma (dbc       = blocks_db.dbc
+                              ,articleid = articleid
                               )
     ph_terma.run()
 
@@ -294,8 +378,6 @@ if __name__ == '__main__':
     data       = blocks_db.assign_bp  ()
 
     bp = cl.BlockPrioritize (data       = data
-                            ,source     = source
-                            ,search     = search
                             ,blacklist  = blacklist
                             ,prioritize = prioritize
                             ,phrase_dic = phrase_dic
@@ -344,8 +426,9 @@ if __name__ == '__main__':
     blocks_db.update(query=pos._query)
 
     if Debug:
-        blocks_db.print(Shorten=1,MaxRows=100,MaxRow=18)
-        input('Return.')
+        blocks_db.dbc.execute('select CELLNO,ROWNO,COLNO,TYPE,TEXT from BLOCKS where BLOCK=0 and IGNORE=0 order by CELLNO,NO')
+        blocks_db.print(Selected=1,Shorten=1,MaxRows=200,MaxRow=18)
+        input('Blocks')
 
     mkhtml = HTML (data     = blocks_db.fetch()
                   ,cols     = ('dic','wform','transc','speech')

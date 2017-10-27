@@ -1,5 +1,13 @@
 
 
+5.5
+* Назначать цвет, гарнитуру и кегль шрифта в зависимости от номера столбца, а не типа блока
+* Переименованы ключи: color_dics -> color_col1; font_dics_family -> font_col1_family; font_dics_size -> font_col1_size; color_speech -> color_col2; font_speech_family -> font_col2_family; font_speech_size -> font_col2_size
+
+5.4.3
+* Исправлена ошибка, не позволяющая повторно заносить элемент с тем же именем в Историю
+* Переход на ARTICLEID
+
 5.4.2
 * Исправлено несколько ошибок
 * Горячие клавиши для виджета История: Home - перейти на начало списка, End - перейти в конец списка.
