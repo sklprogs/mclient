@@ -23,8 +23,7 @@ class HTML:
 
     def __init__(self,data,cols,collimit=9
                 ,Printer=False,blacklist=[]
-                ,prioritize=[],blocked_color='gray'
-                ,priority_color='red',priority_color2='blue'
+                ,prioritize=[],blocked_color='dim gray'
                 ,width=0,Reverse=False
                 ): # 'collimit' includes fixed blocks
         self._data            = data
@@ -34,13 +33,6 @@ class HTML:
         self._blacklist       = blacklist
         self._prioritize      = prioritize
         self._blocked_color   = blocked_color
-        self._priority_color  = priority_color
-        self._priority_color2 = priority_color2
-        if len(self._cols) >= 4 and self._cols[3] == 'speech':
-            self._color_col3 = sh.globs['var']['color_comments']
-        else:
-            self._color_col3 = 'brown'
-            
         self._width           = width
         self.Reverse          = Reverse
         self._blocks          = []
@@ -84,8 +76,45 @@ class HTML:
         </head>
         '''
         self.assign()
-        self.html  ()
+        self.priorities()
+        self.html()
 
+    def priorities(self):
+        default_color = 'red'
+        delta         = -76
+        # Column 1 color
+        result = sg.mod_color (color = sh.globs['var']['color_col1']
+                              ,delta = delta
+                              )
+        if result:
+            self._priority_color1 = result
+        else:
+            self._priority_color1 = default_color
+        # Column 2 color
+        result = sg.mod_color (color = sh.globs['var']['color_col2']
+                              ,delta = delta
+                              )
+        if result:
+            self._priority_color2 = result
+        else:
+            self._priority_color2 = default_color
+        # Column 3 color
+        result = sg.mod_color (color = sh.globs['var']['color_col3']
+                              ,delta = delta
+                              )
+        if result:
+            self._priority_color3 = result
+        else:
+            self._priority_color3 = default_color
+        # Column 4 color
+        result = sg.mod_color (color = sh.globs['var']['color_col4']
+                              ,delta = delta
+                              )
+        if result:
+            self._priority_color4 = result
+        else:
+            self._priority_color4 = default_color
+    
     def assign(self):
         for item in self._data:
             block       = Block()
@@ -117,13 +146,10 @@ class HTML:
             return sh.globs['var']['font_col1_family']
         elif self._block.j == 1:
             return sh.globs['var']['font_col2_family']
-        # COLNO 3 (last) in fact
-        elif self._block.j == 2 and len(self._cols) == 3:
-            # todo: set from Settings
-            return sh.globs['var']['font_comments_family']
+        elif self._block.j == 2:
+            return sh.globs['var']['font_col3_family']
         elif self._block.j == 3:
-            # todo: set from Settings
-            return sh.globs['var']['font_comments_family']
+            return sh.globs['var']['font_col4_family']
         else:
             return sh.globs['var']['font_terms_family']
             
@@ -132,35 +158,32 @@ class HTML:
             return sh.globs['int']['font_col1_size']
         elif self._block.j == 1:
             return sh.globs['int']['font_col2_size']
-        # COLNO 3 (last) in fact
-        elif self._block.j == 2 and len(self._cols) == 3:
-            # todo: set from Settings
-            return sh.globs['int']['font_comments_size']
+        elif self._block.j == 2:
+            return sh.globs['int']['font_col3_size']
         elif self._block.j == 3:
-            # todo: set from Settings
-            return sh.globs['int']['font_comments_size']
+            return sh.globs['int']['font_col4_size']
         else:
             return sh.globs['int']['font_terms_size']
             
     def _color_p(self):
-        if self._block.j == 1:
+        if self._block.j == 0:
+            return self._priority_color1
+        elif self._block.j == 1:
             return self._priority_color2
-        else:
-            return self._priority_color
+        elif self._block.j == 2:
+            return self._priority_color3
+        elif self._block.j == 3:
+            return self._priority_color4
     
     def _color(self):
         if self._block.j == 0:
             return sh.globs['var']['color_col1']
         elif self._block.j == 1:
             return sh.globs['var']['color_col2']
-        # COLNO 3 (last) in fact
-        elif self._block.j == 2 and len(self._cols) == 3:
-            # todo: set from Settings
-            return sh.globs['var']['color_comments']
+        elif self._block.j == 2:
+            return sh.globs['var']['color_col3']
         elif self._block.j == 3:
-            # todo: set from Settings
-            #return self._color_col3
-            return 'brown' # cur
+            return sh.globs['var']['color_col4']
         else:
             return sh.globs['var']['color_terms']
     

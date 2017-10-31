@@ -1,5 +1,11 @@
 
 
+5.5
+* Automatically set a color of priority elements on the basis of the column font color
+* Set a font color, family and size on the basis of the column number instead of the block type
+* Rename keys: color_dics -> color_col1; font_dics_family -> font_col1_family; font_dics_size -> font_col1_size; color_speech -> color_col2; font_speech_family -> font_col2_family; font_speech_size -> font_col2_size
+* Create new keys: font_col3_family,font_col4_family,font_col3_size=3,font_col4_size=3
+
 5.4.2
 * Fix some bugs
 * Set hotkeys for the History widget: Home - go to the start of the list, End - go to the end of the list.
