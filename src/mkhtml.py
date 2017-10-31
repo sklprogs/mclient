@@ -23,8 +23,8 @@ class HTML:
 
     def __init__(self,data,cols,collimit=9
                 ,Printer=False,blacklist=[]
-                ,prioritize=[],blocked_color='dim gray'
-                ,width=0,Reverse=False
+                ,prioritize=[],width=0
+                ,Reverse=False
                 ): # 'collimit' includes fixed blocks
         self._data            = data
         self._cols            = cols
@@ -32,7 +32,6 @@ class HTML:
         self.Printer          = Printer
         self._blacklist       = blacklist
         self._prioritize      = prioritize
-        self._blocked_color   = blocked_color
         self._width           = width
         self.Reverse          = Reverse
         self._blocks          = []
@@ -76,10 +75,11 @@ class HTML:
         </head>
         '''
         self.assign()
-        self.priorities()
+        self.priority_colors()
+        self.blocked_colors()
         self.html()
 
-    def priorities(self):
+    def priority_colors(self):
         default_color = 'red'
         delta         = -76
         # Column 1 color
@@ -114,6 +114,42 @@ class HTML:
             self._priority_color4 = result
         else:
             self._priority_color4 = default_color
+            
+    def blocked_colors(self):
+        default_color = 'dim gray'
+        delta         = 76
+        # Column 1 color
+        result = sg.mod_color (color = sh.globs['var']['color_col1']
+                              ,delta = delta
+                              )
+        if result:
+            self._blocked_color1 = result
+        else:
+            self._blocked_color1 = default_color
+        # Column 2 color
+        result = sg.mod_color (color = sh.globs['var']['color_col2']
+                              ,delta = delta
+                              )
+        if result:
+            self._blocked_color2 = result
+        else:
+            self._blocked_color2 = default_color
+        # Column 3 color
+        result = sg.mod_color (color = sh.globs['var']['color_col3']
+                              ,delta = delta
+                              )
+        if result:
+            self._blocked_color3 = result
+        else:
+            self._blocked_color3 = default_color
+        # Column 4 color
+        result = sg.mod_color (color = sh.globs['var']['color_col4']
+                              ,delta = delta
+                              )
+        if result:
+            self._blocked_color4 = result
+        else:
+            self._blocked_color4 = default_color
     
     def assign(self):
         for item in self._data:
@@ -130,7 +166,7 @@ class HTML:
             self.output.write(self._family())
             self.output.write('" color="')
             if self._block._text in self._blacklist:
-                self.output.write(self._blocked_color)
+                self.output.write(self._color_b())
             elif self._block._text in self._prioritize:
                 self.output.write(self._color_p())
             else:
@@ -174,6 +210,16 @@ class HTML:
             return self._priority_color3
         elif self._block.j == 3:
             return self._priority_color4
+            
+    def _color_b(self):
+        if self._block.j == 0:
+            return self._blocked_color1
+        elif self._block.j == 1:
+            return self._blocked_color2
+        elif self._block.j == 2:
+            return self._blocked_color3
+        elif self._block.j == 3:
+            return self._blocked_color4
     
     def _color(self):
         if self._block.j == 0:
