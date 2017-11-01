@@ -210,6 +210,8 @@ class HTML:
             return self._priority_color3
         elif self._block.j == 3:
             return self._priority_color4
+        else:
+            return 'red'
             
     def _color_b(self):
         if self._block.j == 0:
@@ -220,6 +222,8 @@ class HTML:
             return self._blocked_color3
         elif self._block.j == 3:
             return self._blocked_color4
+        else:
+            return 'dim gray'
     
     def _color(self):
         if self._block.j == 0:

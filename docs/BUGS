@@ -1,4 +1,4 @@
-
+- Some columns disappear when changing views
 - (DB) Fix Moves.up on 'painting' (SelectTermsOnly=0)
 - (DB) Fix Moves on 'рабочая документация' (SelectTermsOnly=0), selects ')' twice, but does not select corrections
 - NODE1 < NODE2 in some rare cases

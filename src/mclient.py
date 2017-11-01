@@ -1596,12 +1596,12 @@ class WebFrame:
                 )
 
     def scrollbars(self):
-        vsb = ttk.Scrollbar (self.frame_y.widget
+        vsb = ttk.Scrollbar (master  = self.frame_y.widget
                             ,orient  = 'vertical'
                             ,command = self.widget.yview
                             )
         vsb.pack(expand=1,fill='y')
-        hsb = ttk.Scrollbar (self.bottom.widget
+        hsb = ttk.Scrollbar (master  = self.bottom.widget
                             ,orient  = 'horizontal'
                             ,command = self.widget.xview
                             )
