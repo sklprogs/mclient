@@ -1,4 +1,4 @@
-
+- Do not warn about an empty URL in 'go_url' and 'copy_text' in case of the welcome page
 - (History) Create 2 columns in ListBox instead of using delimiters
 - (DB) DB.reset: reset TEXT for DIC, WFORM, SPEECH, TRANSC; reset BLOCK, PRIORITY, CELLNO, SELECTABLE, ROWNO, COLNO, POS1, POS2
 - (cells) selectables: make 'Phrases' DIC cell SELECTABLE

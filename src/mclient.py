@@ -22,7 +22,7 @@ import mkhtml      as mh
 
 
 product = 'MClient'
-version = '5.5.1'
+version = '5.5.2'
 
 third_parties = '''
 tkinterhtml
@@ -1371,7 +1371,7 @@ class WebFrame:
                 # todo: This currently means 'self.go_url'. Prioritize/unblock dictionaries in 'self.go'.
                 ,action   = self.go
                 )
-        sg.bind (obj      = self.obj
+        sg.bind (obj      = self
                 ,bindings = [sh.globs['var']['bind_copy_sel']
                             ,sh.globs['var']['bind_copy_sel_alt']
                             ,sh.globs['var']['bind_copy_sel_alt2']
