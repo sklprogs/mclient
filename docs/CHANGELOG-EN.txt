@@ -1,6 +1,7 @@
 
 
 5.5.2
+* Fix a bug (do not warn after clearing the History)
 * Delete a key: bind_copy_sel_alt2
 
 5.5.1
