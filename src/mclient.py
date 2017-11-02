@@ -463,50 +463,65 @@ class About:
     def __init__(self):
         self.Active = False
         self.type   = 'About'
+        self.gui()
+        
+    def gui(self):
         self.obj    = sg.Top(sg.objs.root())
         self.widget = self.obj.widget
         self.obj.icon (sh.globs['var']['icon_mclient'])
         self.obj.title(_('About'))
-        frame1 = sg.Frame (parent_obj = self
-                          ,expand     = 1
-                          ,fill       = 'both'
-                          ,side       = 'top'
-                          )
-        frame2 = sg.Frame (parent_obj = self
-                          ,expand     = 1
-                          ,fill       = 'both'
-                          ,side       = 'left'
-                          )
-        frame3 = sg.Frame (parent_obj = self
-                          ,expand     = 1
-                          ,fill       = 'both'
-                          ,side       = 'right'
-                          )
-        label  = sg.Label (parent_obj = frame1
-                          ,text       = _('Programming: Peter Sklyar, 2015-2017.\nVersion: %s\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n') % version
-                          ,font       = sh.globs['var']['font_style']
-                          )
+        self.frames()
+        self.labels()
+        self.buttons()
+        self.bindings()
+        self.widget.focus_set()
+        self.close()
+        
+    def labels(self):
+        sg.Label (parent_obj = self.frame1
+                 ,text       = _('Programming: Peter Sklyar, 2015-2017.\nVersion: %s\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n') % version
+                 ,font       = sh.globs['var']['font_style']
+                 )
+        
+    def frames(self):
+        self.frame1 = sg.Frame (parent_obj = self
+                               ,expand     = 1
+                               ,fill       = 'both'
+                               ,side       = 'top'
+                               )
+        self.frame2 = sg.Frame (parent_obj = self
+                               ,expand     = 1
+                               ,fill       = 'both'
+                               ,side       = 'left'
+                               )
+        self.frame3 = sg.Frame (parent_obj = self
+                               ,expand     = 1
+                               ,fill       = 'both'
+                               ,side       = 'right'
+                               )
+    def buttons(self):
         # Лицензия
-        sg.Button (parent_obj = frame2
+        sg.Button (parent_obj = self.frame2
                   ,text       = _('Third parties')
-                  ,hint       = _('View the license')
+                  ,hint       = _('Third-party licenses')
                   ,action     = self.show_third_parties
                   ,side       = 'left'
                   )
-        sg.Button (parent_obj = frame3
+        sg.Button (parent_obj = self.frame3
                   ,text       = _('License')
                   ,hint       = _('View the license')
                   ,action     = self.open_license_url
                   ,side       = 'left'
                   )
         # Отправить письмо автору
-        sg.Button (parent_obj = frame3
-                  ,text       = _('Send email to the author')
-                  ,hint       = _('Send email to the author')
+        sg.Button (parent_obj = self.frame3
+                  ,text       = _('Contact the author')
+                  ,hint       = _('Draft an email to the author')
                   ,action     = self.response_back
                   ,side       = 'right'
                   )
-        self.widget.focus_set()
+    
+    def bindings(self):
         sg.bind (obj      = self.obj
                 ,bindings = sh.globs['var']['bind_show_about']
                 ,action   = self.toggle
@@ -515,7 +530,6 @@ class About:
                 ,bindings = '<Escape>'
                 ,action   = self.close
                 )
-        self.close()
 
     def close(self,*args):
         self.obj.close()
