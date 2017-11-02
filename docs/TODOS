@@ -1,3 +1,4 @@
+- Sometimes we need to press F4 twice for History
 - Do not warn about an empty URL in 'go_url' and 'copy_text' in case of the welcome page
 - (History) Create 2 columns in ListBox instead of using delimiters
 - (DB) DB.reset: reset TEXT for DIC, WFORM, SPEECH, TRANSC; reset BLOCK, PRIORITY, CELLNO, SELECTABLE, ROWNO, COLNO, POS1, POS2
@@ -9,23 +10,13 @@
 - Use NO/NODE instead of POS *where appropriate*
 - Loop WebFrame.move_page_up & WebFrame.move_page_down
 - Restore selection upon changing a setting and loading the article again
-- Use the language pair as a part of an article ID. Otherwise, we cannot view same SEARCH in different languages ('RUS-XAL' -> 'липа' -> 'EN-RU')
-- Use borders of the cell, not borders of the block when calculating ShiftScreen
 - Store '_html_raw' value for all articles, not just for the latest new loaded one
-- Set a priority that is lower for phrases than for terms (in case the 1st fixed column is not Dictionaries)
 - Lower the priority of 'phrase' type instead of ignoring it in the Clarity mode
-- shift_screen is not precisely accurate, possibly due to incorrect binding of scrollbars
 - Delete symbols that prevent URL from opening (e.g., 'символ' -> 'pilcrow')
+- Control+Up/Down: показать и/или выделить следующий/предыдущий элемент 1-го столбца (особенно актуально для режима "Прямо к делу")
 
 (Разобрать)
-! Неверное выделение: "в качественном и количественном отношении"
-! medicine: теряется "сущ."; notice: неверно расставлено "сущ." в режиме "Прямо к делу"
-! Control+Up/Down: показать и/или выделить следующий/предыдущий элемент 1-го столбца (особенно актуально для режима "Прямо к делу")
-! исправить многоуровневые корректировочные комментарии: их можно вычислить по конструкции [correction + Username + Comment + UserName]
-! проверить Moves на 'twinkie'
-! mud: неверный парсинг 'буровой шлам; илистый грунт' -> потеря 'грунт'
 ! Пустая строка добавляется, если перед 1-м термином словаря стоит комментарий
-! dressing: в MT - "противопригарная противопригарный припыл", в mclient - "припыл противопригарная"
 ! Вернуть назад хоткеи для вставки/удаления ячейки (в некоторых случаях точное определение SAMECELL невозможно)
 ! Убрать "содержащее" и т.п. из статей из раздела "Фразы"
 ! Убрать "Требуется авторизация" и исправить выделение (double tumbler) для ненайденных слов
@@ -38,7 +29,6 @@
 ! При сохранении вида в html изменить заголовок на articles.current().search()
 ! http://www.multitran.ru/c/M.exe?a=3&&s=boze&l1=1&l2=2
 ! 1) Откуда берутся URL для: http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=glitch 2) Улучшить распределение терминов и комментариев на основе этой статьи
-! ползунок для кнопок
 ! Открытие/закрытие виджетов по F1-F12 на основании self.Active
 ! (http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=stringing): нет красного на глаголе
 ! http://www.multitran.ru/c/M.exe?t=7010165_2_1&s1=for%20the%20sake%20of%20argument
@@ -95,7 +85,6 @@
 ! В режиме просмотра словарей по вертикали объединить одни и те же словари, а части речи оставлять целую ячейку
 ! Не работает прокрутка экрана вверх стрелкой вверх при удалении/вставке ячеек
 ! "Вместе с тем", "оставить", "beg the question", 'GOP', 'симптом' -> Медицина - неверное выделение
-! Не все кнопки влезают
 ? переверстывать однострочную статью так, чтобы в ней было 2 столбца (вместо показа сетки)
 ! Конфиг: возможность удалить ссылки "только заданная форма слов (12)" и "в заданном порядке"
 ! Проверить, есть ли хоткей для копирования заголовка текущей статьи; если нет - ввести

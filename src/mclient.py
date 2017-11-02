@@ -118,7 +118,6 @@ class ConfigMclient(sh.Config):
            ,'bind_copy_article_url'       :'<Shift-F7>'
            ,'bind_copy_history'           :'<ButtonRelease-3>'
            ,'bind_copy_sel_alt'           :'<Control-KP_Enter>'
-           ,'bind_copy_sel_alt2'          :'<ButtonRelease-3>'
            ,'bind_copy_sel'               :'<Control-Return>'
            ,'bind_copy_url'               :'<Control-F7>'
            ,'bind_define'                 :'<Control-d>'
@@ -1371,18 +1370,33 @@ class WebFrame:
                 # todo: This currently means 'self.go_url'. Prioritize/unblock dictionaries in 'self.go'.
                 ,action   = self.go
                 )
+        
+        ''' Key and mouse bindings must have different parents,
+        otherwise, key bindings will not work, and mouse bindings
+        (such as RMB) may fire up when not required. Keys must be
+        bound to Top and mouse buttons - to specific widgets
+        (Tkinterhtml widget, buttons on the button frame, etc.)
+        Parents may be determined automatically, but this looks
+        clumsy and unreliable. So I think it is better to hardcode
+        mouse bindigs wherever possible and assume the config 
+        provides for key bindigs only (or at least they are not
+        to be bound to Top).
+        '''
         sg.bind (obj      = self
+                ,bindings = '<Button-3>'
+                ,action   = self.copy_text
+                )
+        sg.bind (obj      = self.obj
                 ,bindings = [sh.globs['var']['bind_copy_sel']
                             ,sh.globs['var']['bind_copy_sel_alt']
-                            ,sh.globs['var']['bind_copy_sel_alt2']
                             ]
                 ,action   = self.copy_text
                 )
-        sg.bind (obj = self.obj
+        sg.bind (obj      = self.obj
                 ,bindings = [sh.globs['var']['bind_quit_now']
                             ,sh.globs['var']['bind_quit_now_alt']
                             ]
-                ,action=self.close
+                ,action   = self.close
                 )
         # Привязки: горячие клавиши и кнопки мыши
         sg.bind (obj      = self.history

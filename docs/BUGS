@@ -1,3 +1,12 @@
+- for vertical view: concerning coloring, rely on row numbers instead of column numbers
+- dressing: в MT (браузер) - "противопригарная противопригарный припыл", в mclient - "припыл противопригарная". Вызвано сортировкой по терминам.
+- Search dialog appears again after changing the view and pressing F3
+- mud: неверный парсинг 'буровой шлам; илистый грунт' -> потеря 'грунт'
+- Moves на 'twinkie': работает правильно только при отключенной блокировке
+- исправить многоуровневые корректировочные комментарии (e.g., "working documentation"): их можно вычислить по конструкции [correction + Username + Comment + UserName]
+- medicine: теряется "сущ." при переключении в режим "Прямо к делу". Если же статья загружается в этом режиме, то "сущ." на месте
+- RUS-XAL: липа -> җөөлн цаhан модн -> Общая лексика -> <Нет связи>
+- glass bubble: why there are no items in red?
 - Some columns disappear when changing views
 - (DB) Fix Moves.up on 'painting' (SelectTermsOnly=0)
 - (DB) Fix Moves on 'рабочая документация' (SelectTermsOnly=0), selects ')' twice, but does not select corrections
@@ -8,13 +17,7 @@
 - Changing node still sometimes fails
 - When adding a space between blocks, add it to the end of the preceding block; otherwise, sorting terms may not work correctly (башмак -> sabaton)
 - When deleting/inserting fixed columns, preserve URL
-- RMB to clear History: this block does not contain a URL!
 - Clear CurRequest data after clearing history
-- ShiftScreen: A -> Сельское хозяйство -> <Start>
-- Fix Moves (line_start, line_end, PgDown/PgUp) on 'random fury'
-- When there is an article where all dictionaries are blocked, Previous-Next arrows are blank even if the history is not empty
 - Fix links in a saved raw html
 - Start ROWNO with 0
 - Vertical view (maybe, with Styles): 1st column can be a single entry of 'dic' type
-
-! drill down (http://www.multitran.ru/c/m.exe?t=3548597_1_2&ifp=1&s1=drill%20down) (ссылка из drilling down) не отмечается как часть речи. См. также: glass bubble (http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=glass%20bubble)
