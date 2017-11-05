@@ -1929,6 +1929,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/martyr.txt'
                            #,file         = '/home/pete/tmp/ars/œuf.txt'
                            #,file         = '/home/pete/tmp/ars/forward.txt'
+                           ,file         = '/home/pete/tmp/ars/palate.txt'
                            )
             page.run()
             ptimer.end()
