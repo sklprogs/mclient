@@ -1,3 +1,4 @@
+- vertical view, EN-RU: "поцелуй": fix Moves.up for the 1st element
 - for vertical view: concerning coloring, rely on row numbers instead of column numbers
 - dressing: в MT (браузер) - "противопригарная противопригарный припыл", в mclient - "припыл противопригарная". Вызвано сортировкой по терминам.
 - Search dialog appears again after changing the view and pressing F3

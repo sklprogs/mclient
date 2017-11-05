@@ -178,61 +178,61 @@ class HTML:
             self.output.write('</b></font>')
 
     def _family(self):
-        if self._block.j == 0:
+        if self._block.xj == 0:
             return sh.globs['var']['font_col1_family']
-        elif self._block.j == 1:
+        elif self._block.xj == 1:
             return sh.globs['var']['font_col2_family']
-        elif self._block.j == 2:
+        elif self._block.xj == 2:
             return sh.globs['var']['font_col3_family']
-        elif self._block.j == 3:
+        elif self._block.xj == 3:
             return sh.globs['var']['font_col4_family']
         else:
             return sh.globs['var']['font_terms_family']
             
     def _size(self):
-        if self._block.j == 0:
+        if self._block.xj == 0:
             return sh.globs['int']['font_col1_size']
-        elif self._block.j == 1:
+        elif self._block.xj == 1:
             return sh.globs['int']['font_col2_size']
-        elif self._block.j == 2:
+        elif self._block.xj == 2:
             return sh.globs['int']['font_col3_size']
-        elif self._block.j == 3:
+        elif self._block.xj == 3:
             return sh.globs['int']['font_col4_size']
         else:
             return sh.globs['int']['font_terms_size']
             
     def _color_p(self):
-        if self._block.j == 0:
+        if self._block.xj == 0:
             return self._priority_color1
-        elif self._block.j == 1:
+        elif self._block.xj == 1:
             return self._priority_color2
-        elif self._block.j == 2:
+        elif self._block.xj == 2:
             return self._priority_color3
-        elif self._block.j == 3:
+        elif self._block.xj == 3:
             return self._priority_color4
         else:
             return 'red'
             
     def _color_b(self):
-        if self._block.j == 0:
+        if self._block.xj == 0:
             return self._blocked_color1
-        elif self._block.j == 1:
+        elif self._block.xj == 1:
             return self._blocked_color2
-        elif self._block.j == 2:
+        elif self._block.xj == 2:
             return self._blocked_color3
-        elif self._block.j == 3:
+        elif self._block.xj == 3:
             return self._blocked_color4
         else:
             return 'dim gray'
     
     def _color(self):
-        if self._block.j == 0:
+        if self._block.xj == 0:
             return sh.globs['var']['color_col1']
-        elif self._block.j == 1:
+        elif self._block.xj == 1:
             return sh.globs['var']['color_col2']
-        elif self._block.j == 2:
+        elif self._block.xj == 2:
             return sh.globs['var']['color_col3']
-        elif self._block.j == 3:
+        elif self._block.xj == 3:
             return sh.globs['var']['color_col4']
         else:
             return sh.globs['var']['color_terms']
@@ -271,7 +271,7 @@ class HTML:
             self.output.write(str(self._size()))
             self.output.write('">')
             self.output.write('<i>')
-            if self._block.j == 0:
+            if self._block.xj == 0:
                 self.output.write('<b>')
                 self.output.write(self._block._text)
                 self.output.write('</b>')
@@ -346,6 +346,12 @@ class HTML:
                     else:
                         self.output.write('<td valign="top">')
                     j += 1
+                if self.Reverse:
+                    self._block.xi = self._block.j
+                    self._block.xj = self._block.i
+                else:
+                    self._block.xi = self._block.i
+                    self._block.xj = self._block.j
                 self._dic       ()
                 self._wform     ()
                 self._speech    ()
