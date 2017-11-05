@@ -820,22 +820,9 @@ class Moves(DB):
                 min_col    = self.min_col()
                 max_row_sp = self.max_row_sp(col_no=col_no)
                 max_col    = self.max_col()
-                # cur
-                print('min_col:',min_col) # todo: del
-                print('max_row_sp:',max_row_sp) # todo: del
-                print('max_col:',max_col) # todo: del
-                
-                collen = max_col[0] + 1
-                for col in range(collen):
-                    result = self.max_row_sp(col_no=col)
-                    if result:
-                        result = result[0]
-                    else:
-                        result = 0
-                    print('Column #%d: max row #%d' % (col,result))
-                
+
                 if min_col and max_row_sp and max_col:
-                    if no == max_row_sp[1] and no == max_col[1]:
+                    if row_no == max_row_sp[0] and col_no == max_col[0]:
                         if self.Selectable:
                             self.dbc.execute('select POS1 from BLOCKS where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 and TYPE in ("term","phrase") and SELECTABLE = 1 and COLNO = ? and POS1 < POS2 order by ROWNO,NO',(self._articleid,min_col[0],))
                         else:

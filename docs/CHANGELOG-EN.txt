@@ -6,6 +6,7 @@
   - Control-Up  : go to the previous element of the 1st column
   - Alt-Down    : go to the next element of the 2nd column
   - Alt-Up      : go to the previous element of the 2nd column
+* Fix a bug (Down arrow navigation)
 
 5.5.2
 * Fix a bug (do not warn after clearing the History)
@@ -25,6 +26,10 @@
   - font_speech_family -> font_col2_family
   - font_speech_size   -> font_col2_size
 * Create new keys: font_col3_family, font_col4_family, font_col3_size, font_col4_size
+
+5.4.3
+* Fix a bug (use an item with the same name in the History)
+* Migrate to ARTICLEID
 
 5.4.2
 * Fix some bugs

@@ -22,7 +22,7 @@ import mkhtml      as mh
 
 
 product = 'MClient'
-version = '5.5.2'
+version = '5.6'
 
 third_parties = '''
 tkinterhtml
@@ -1929,7 +1929,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/martyr.txt'
                            #,file         = '/home/pete/tmp/ars/œuf.txt'
                            #,file         = '/home/pete/tmp/ars/forward.txt'
-                           ,file         = '/home/pete/tmp/ars/palate.txt'
+                           #,file         = '/home/pete/tmp/ars/palate.txt'
                            )
             page.run()
             ptimer.end()
