@@ -311,11 +311,13 @@ class HTML:
         self.output.write('<html>\n')
         if self.Printer:
             self.output.write(self._script)
-        self.output.write('  <body>\n    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">')
+        self.output.write('\t<body>\n\t\t<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">')
+        # todo: this CSS does not work
+        #self.output.write('\n\t\t<style type="text/css">\n\t\t\t.line-separator{border-top: 2px dashed #4f94cd;}\n\t\t\t.indent{padding-bottom: 5px;}\n\t\t</style>')
         if self.Printer:
-            self.output.write('\n    <div id="printableArea">')
+            self.output.write('\n\t\t<div id="printableArea">')
         if self._blocks:
-            self.output.write('\n      <table>\n    <tr>')
+            self.output.write('\n\t\t\t<table>\n\t\t<tr>')
             if self._width and self.Reverse:
                 self.output.write('<td valign="top" col width="')
                 self.output.write(str(self._width))
@@ -325,7 +327,7 @@ class HTML:
             i = j = 0
             for self._block in self._blocks:
                 while self._block.i > i:
-                    self.output.write('</td></tr>\n    <tr>')
+                    self.output.write('</td></tr>\n\t\t<tr>')
                     if self._width and self.Reverse:
                         self.output.write('<td align="center" valign="top" col width="')
                         self.output.write(str(self._width))
@@ -335,7 +337,7 @@ class HTML:
                     i = self._block.i
                     j = 0
                 while self._block.j > j:
-                    self.output.write('</td>\n      ')
+                    self.output.write('</td>\n\t\t\t')
                     # -1 because we define 'td' for the next column here
                     if self._width and self._block._text and (self._block.j > len(self._cols) - 1 or self.Reverse):
                         self.output.write('<td valign="top" col width="')
@@ -350,13 +352,13 @@ class HTML:
                 self._term      ()
                 self._comment   ()
                 self._correction()
-            self.output.write('</td></tr>\n      </table>  ')
+            self.output.write('</td></tr>\n\t\t\t</table>\t')
         else:
             self.output.write('<h1>')
             self.output.write(_('Nothing has been found.'))
             self.output.write('</h1>')
         if self.Printer:
-            self.output.write('\n  </div>')
+            self.output.write('\n\t</div>')
         self.output.write('\n</body>\n</html>')
         self._html = self.output.getvalue()
         # todo: enhance algorithm, drop this; I tried to monitor j, block._text, block.j, but they are all changing

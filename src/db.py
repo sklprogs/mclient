@@ -278,14 +278,10 @@ class DB:
                 self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT,SELECTABLE from BLOCKS where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 and POS1 <= ? and POS2 > ? and POS1 < POS2',(self._articleid,pos,pos,))
             return self.dbc.fetchone()
         else:
-            # Too frequent
-            '''
             sh.log.append ('DB.block_pos'
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-            '''
-            pass
 
     def article(self):
         if self._articleid:
@@ -600,6 +596,20 @@ class DB:
                           )
             return 1 # Default minimal autoincrement in SQlite
     
+    def block_pos_next(self,pos):
+        if self._articleid:
+            if self.Selectable:
+                # 'POS2 > pos' instead of 'POS2 >= pos' allows to correctly navigate through blocks where separate words have been found
+                self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT,SELECTABLE from BLOCKS where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 and TYPE in ("term","phrase") and POS1 >= ? and POS1 < POS2 and SELECTABLE = 1 order by CELLNO,NO',(self._articleid,pos,))
+            else:
+                self.dbc.execute('select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT,SELECTABLE from BLOCKS where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 and POS1 >= ? and POS1 < POS2 order by CELLNO,NO',(self._articleid,pos,))
+            return self.dbc.fetchone()
+        else:
+            sh.log.append ('DB.block_pos_next'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+                          
     def zzz(self):
         pass
 
@@ -881,6 +891,68 @@ class Moves(DB):
                           ,_('Empty input is not allowed!')
                           )
                           
+    def first_section(self,col_no=0):
+        if self._articleid:
+            self.dbc.execute('select POS1,ROWNO,TEXT from BLOCKS where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 and COLNO = ? and POS1 < POS2 order by ROWNO,NO',(self._articleid,col_no,))
+            return self.dbc.fetchone()
+        else:
+            sh.log.append ('Moves.first_section'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+                          
+    def last_section(self,col_no=0):
+        if self._articleid:
+            self.dbc.execute('select POS1,ROWNO,TEXT from BLOCKS where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 and COLNO = ? and POS1 < POS2 order by ROWNO desc,NO',(self._articleid,col_no,))
+            return self.dbc.fetchone()
+        else:
+            sh.log.append ('Moves.last_section'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
+    def next_section(self,pos,col_no=0,Loop=True):
+        if self._articleid:
+            poses = self.block_pos(pos=pos)
+            if poses:
+                self.dbc.execute('select POS1,ROWNO,TEXT from BLOCKS where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 and ROWNO > ? and COLNO = ? and POS1 < POS2 order by CELLNO,NO',(self._articleid,poses[3],col_no,))
+                result = self.dbc.fetchone()
+                if result:
+                    return result
+                elif Loop:
+                    return self.first_section(col_no=col_no)
+            else:
+                sh.log.append ('Moves.next_section'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Moves.next_section'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+                          
+    def prev_section(self,pos,col_no=0,Loop=True):
+        if self._articleid:
+            poses = self.block_pos(pos=pos)
+            if poses:
+                self.dbc.execute('select POS1,ROWNO,TEXT from BLOCKS where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 and ROWNO < ? and COLNO = ? and POS1 < POS2 order by CELLNO desc,NO',(self._articleid,poses[3],col_no,))
+                result = self.dbc.fetchone()
+                if result:
+                    return result
+                elif Loop:
+                    return self.last_section(col_no=col_no)
+            else:
+                sh.log.append ('Moves.prev_section'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Moves.prev_section'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def zzz(self):
         pass
 

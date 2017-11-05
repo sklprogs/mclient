@@ -1,5 +1,12 @@
 
 
+5.6
+* Быстрый переход к элементам 1-го и 2-го столбца:
+  - Control-Down: перейти к следующему элементу 1-го столбца
+  - Control-Up  : перейти к предыдущему элементу 1-го столбца
+  - Alt-Down    : перейти к следующему элементу 2-го столбца
+  - Alt-Up      : перейти к предыдущему элементу 2-го столбца
+
 5.5.2
 * Исправлен баг (сообщение об ошибке при очистке Истории)
 * Удален ключ: bind_copy_sel_alt2
@@ -10,7 +17,13 @@
 5.5
 * Автоматически назначать цвет приоритетных элементов в зависимости от цвета шрифта столбца
 * Назначать цвет, гарнитуру и кегль шрифта в зависимости от номера столбца, а не типа блока
-* Переименованы ключи: color_dics -> color_col1; font_dics_family -> font_col1_family; font_dics_size -> font_col1_size; color_speech -> color_col2; font_speech_family -> font_col2_family; font_speech_size -> font_col2_size
+* Переименованы ключи:
+  - color_dics         -> color_col1
+  - font_dics_family   -> font_col1_family
+  - font_dics_size     -> font_col1_size
+  - color_speech       -> color_col2
+  - font_speech_family -> font_col2_family
+  - font_speech_size   -> font_col2_size
 * Созданы новые ключи: font_col3_family, font_col4_family, font_col3_size, font_col4_size
 
 5.4.3

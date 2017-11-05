@@ -1494,6 +1494,22 @@ class WebFrame:
                 ,action   = self.move_page_down
                 )
         sg.bind (obj      = self.obj
+                ,bindings = '<Control-Down>'
+                ,action   = lambda e:self.move_next_section(col_no=0)
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = '<Control-Up>'
+                ,action   = lambda e:self.move_prev_section(col_no=0)
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = '<Alt-Down>'
+                ,action   = lambda e:self.move_next_section(col_no=1)
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = '<Alt-Up>'
+                ,action   = lambda e:self.move_prev_section(col_no=1)
+                )
+        sg.bind (obj      = self.obj
                 ,bindings = '<Escape>'
                 ,action   = sg.Geometry(parent_obj=self.obj).minimize
                 )
@@ -2552,6 +2568,50 @@ class WebFrame:
                        ,message = _('The condition "%s" is not observed!') % '%d > %d' % (objs._request._collimit,len(fixed))
                        )
 
+    # Перейти на 1-й термин следующего раздела (относительно столбца col_no)
+    def move_next_section(self,col_no=0,*args):
+        result = objs.blocks_db().next_section (pos    = self._pos
+                                               ,col_no = col_no
+                                               )
+        if result:
+            result = objs.blocks_db().block_pos_next(pos=result[0])
+            if result:
+                self._pos = result[0]
+                self.select()
+                self.shift_screen()
+            else:
+                sh.log.append ('WebFrame.move_next_section'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('WebFrame.move_next_section'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+        
+    # Перейти на 1-й термин предыдущего раздела (относительно столбца col_no)
+    def move_prev_section(self,col_no=0,*args):
+        result = objs.blocks_db().prev_section (pos    = self._pos
+                                               ,col_no = col_no
+                                               )
+        if result:
+            result = objs.blocks_db().block_pos_next(pos=result[0])
+            if result:
+                self._pos = result[0]
+                self.select()
+                self.shift_screen()
+            else:
+                sh.log.append ('WebFrame.move_prev_section'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('WebFrame.move_prev_section'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def zzz(self): # Only needed to move quickly to the end of the class
         pass
 
