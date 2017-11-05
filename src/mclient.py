@@ -2039,12 +2039,11 @@ class WebFrame:
         objs._blocks_db.dbc.execute('select ARTICLEID,CELLNO,NO,TYPE,TEXT from BLOCKS where BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by ARTICLEID,CELLNO,NO')
         objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=150)
         '''
-        
         '''
-        objs._blocks_db.dbc.execute('select CELLNO,NO,ROWNO,COLNO,TYPE,TEXT,BBOX1,BBOX2,BBOY1,BBOY2 from BLOCKS where SOURCE = ? and SEARCH = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by CELLNO,NO',(objs._blocks_db._source,objs._blocks_db._search,))
+        objs._blocks_db.dbc.execute('select CELLNO,NO,ROWNO,COLNO,TYPE,TEXT,BBOX1,BBOX2,BBOY1,BBOY2 from BLOCKS where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by CELLNO,NO',(objs._blocks_db._articleid,))
         objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=150)
         '''
-
+        
     # Select either the search string or the URL
     def go(self,*args):
         search = self.search_field.widget.get().strip('\n').strip(' ')

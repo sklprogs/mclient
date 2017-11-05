@@ -268,7 +268,7 @@ class Cells:
             self.wrap_x()
     
     def wrap_x(self):
-        i = j = 0
+        i = j = -1
         PrevFixed = False
         for x in range(len(self._blocks)):
             if self._cols and self._blocks[x]._type == self._cols[0]:
