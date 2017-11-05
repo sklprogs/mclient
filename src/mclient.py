@@ -1989,11 +1989,17 @@ class WebFrame:
         objs._blocks_db.ignore()
         data  = objs._blocks_db.assign_cells()
 
+        if objs._request._cols and objs._request._cols[0] == 'speech':
+            ExpandAbbr = True
+        else:
+            ExpandAbbr = False
+        
         cells = cl.Cells (data       = data
                          ,cols       = objs._request._cols
                          ,collimit   = objs._request._collimit
                          ,phrase_dic = phrase_dic
                          ,Reverse    = objs._request.Reverse
+                         ,ExpandAbbr = ExpandAbbr
                          )
         cells.run()
         objs._blocks_db.update(query=cells._query)

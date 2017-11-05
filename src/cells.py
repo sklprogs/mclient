@@ -9,6 +9,9 @@ import io
 import shared as sh
 import sharedGUI as sg
 
+abbr     = ['гл.','сущ.','прил.','нареч.','сокр.']
+expanded = ['Глагол','Существительное','Прилагательное','Наречие','Сокращение']
+
 
 # Extended from tags.Block
 class Block:
@@ -147,12 +150,14 @@ class Cells:
     
     def __init__ (self,data,cols,collimit=10
                  ,phrase_dic=None,Reverse=False
+                 ,ExpandAbbr=False
                  ): # Including fixed columns
         self._data       = data # Sqlite fetch
         self._cols       = cols
         self._collimit   = collimit
         self._phrase_dic = phrase_dic
         self.Reverse     = Reverse
+        self.ExpandAbbr  = ExpandAbbr
         self._blocks     = []
         self._query      = ''
         if self._data:
@@ -171,7 +176,7 @@ class Cells:
                 if block._dica == self._phrase_dic:
                     if block._type in ('wform','speech','transc'):
                         block._text = ''
-    
+
     def clear_fixed(self):
         dica = wforma = speecha = transca = ''
         for block in self._blocks:
@@ -195,7 +200,7 @@ class Cells:
                     block._text = ''
                 else:
                     transca = block._transca
-                    
+
     # Reassign COLNO to start with 0 if separate words have been found (all fixed columns are empty). This allows to avoid the effect when a column with the 1st term is stretched owing to empty fixed columns.
     def sep_words(self):
         min_j = len(self._cols)
@@ -203,14 +208,15 @@ class Cells:
             if block._text and block.j < min_j:
                 min_j = block.j
         if min_j == len(self._cols):
-            for i in range(len(self._blocks)):
-                self._blocks[i].j -= len(self._cols)
+            for block in self._blocks:
+                block.j -= len(self._cols)
     
     def run(self):
         if self.Success:
             self.assign       ()
             self.clear_fixed  ()
             self.clear_phrases()
+            self.expand_abbr  ()
             self.wrap         ()
             self.sep_words    ()
             self.sort_cells   ()
@@ -358,16 +364,32 @@ class Cells:
         tmp = io.StringIO()
         tmp.write('begin;')
         for block in self._blocks:
-            # We do not want to mess around with screening quotes that can fail the query
-            if block._text:
-                tmp.write('update BLOCKS set ROWNO=%d,COLNO=%d,CELLNO=%d where NO=%d;' % (block.i,block.j,block._cell_no,block._no))
-            else:
-                tmp.write('update BLOCKS set TEXT="%s",ROWNO=%d,COLNO=%d,CELLNO=%d where NO=%d;' % (block._text,block.i,block.j,block._cell_no,block._no))
+            # Quotes in the text will fail the query, so we screen them
+            block._text = block._text.replace('"','""')
+            tmp.write('update BLOCKS set TEXT="%s",ROWNO=%d,COLNO=%d,CELLNO=%d where NO=%d;' % (block._text,block.i,block.j,block._cell_no,block._no))
         tmp.write('commit;')
         self._query = tmp.getvalue()
         tmp.close()
         return self._query
         
+    def expand_abbr(self):
+        if self.ExpandAbbr:
+            for block in self._blocks:
+                if block._type == 'speech' and block._text in abbr:
+                    ind = abbr.index(block._text)
+                    block._text = expanded[ind]
+        # In case of switching back from the 'Cut to the chase' mode
+        else:
+            for block in self._blocks:
+                if block._type == 'speech' and block._text in expanded:
+                    ind = expanded.index(block._text)
+                    block._text = abbr[ind]
+    
+    def zzz(self):
+        pass
+
+
+
 # This is view-specific and should be recreated each time
 ''' We assume that sqlite has already sorted DB with 'BLOCK IS NOT 1' and all cell manipulations are completed
     Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL
