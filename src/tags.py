@@ -10,8 +10,21 @@ import copy
 import shared as sh
 import sharedGUI as sg
 
-transc_orig  = ('[',']','2','3','34','39','40','41','58','65','68','69','73','78','79','80','81','83','84','86','90','97','98','100','101','102','103','104','105','106','107','108','109','110','112','113','114','115','116','117','118','119','120','122')
-transc_final = ('[',']','','','ˌ','′','(',')',':','ʌ','ð','ɜ','ı','ŋ','ɔ','ɒ','ɑ','ʃ','θ','ʋ','ʒ','a','b','d','e','f','g','h','i','j','k','l','m','n','p','ə','r','s','t','u','v','w','æ','z')
+transc_orig  = ('[',']','2','3','34','39','40','41'
+               ,'58','65','68','69','73','78','79'
+               ,'80','81','83','84','86','90','97'
+               ,'98','100','101','102','103','104'
+               ,'105','106','107','108','109','110'
+               ,'112','113','114','115','116','117'
+               ,'118','119','120','122'
+               )
+transc_final = ('[',']','','','ˌ','′','(',')',':'
+               ,'ʌ','ð','ɜ','ı','ŋ','ɔ','ɒ','ɑ'
+               ,'ʃ','θ','ʋ','ʒ','a','b','d','e'
+               ,'f','g','h','i','j','k','l','m'
+               ,'n','p','ə','r','s','t','u','v'
+               ,'w','æ','z'
+               )
 
 assert(len(transc_orig) == len(transc_final))
 
@@ -175,7 +188,9 @@ class Block:
 
 class AnalyzeTag:
 
-    def __init__(self,tag,source=_('All'),pair_root='http://www.multitran.ru/c/M.exe?'):
+    def __init__ (self,tag,source=_('All')
+                 ,pair_root='http://www.multitran.ru/c/M.exe?'
+                 ):
         self._tag       = tag
         self._pair_root = pair_root
         self._source    = source
@@ -224,7 +239,7 @@ class AnalyzeTag:
 
     def plain(self):
         self._cur._text = self._block
-        #note: The analysis must be reset after '</', otherwise, plain text following it will be marked as 'invalid' rather than 'comment'
+        # note: The analysis must be reset after '</', otherwise, plain text following it will be marked as 'invalid' rather than 'comment'
         if self._cur._type != 'invalid':
             self._elems.append(copy.copy(self._cur))
 
@@ -323,7 +338,7 @@ class AnalyzeTag:
 
     def url(self):
         # note: these additional checks can be shortened if we create a sub-source (e.g., 'Multitran') and check for it
-        if self._source == _('All') or self._source == _('Online'):
+        if self._source in (_('All'),_('Online')):
             if purl1 in self._block or purl2 in self._block: # Otherwise, 'self._block' will be returned when there is no match
                 self._cur._url = self._block.replace(purl1,'',1).replace(purl2,'',1)
                 if self._cur._url.endswith(purl3):
@@ -387,7 +402,9 @@ class AnalyzeTag:
 
 class Tags:
 
-    def __init__(self,text,source=_('All'),pair_root='http://www.multitran.ru/c/M.exe?'):
+    def __init__ (self,text,source=_('All')
+                 ,pair_root='http://www.multitran.ru/c/M.exe?'
+                 ):
         self._text     = text
         self._source    = source
         self._pair_root = pair_root
@@ -425,15 +442,25 @@ class Tags:
         message = ''
         for i in range(len(self._tags)):
             message += '%d:%s\n' % (i,self._tags[i])
-        #sg.Message('Tags.debug_tags',_('INFO'),message)
-        words = sh.Words(text=message,OrigCyr=1,Auto=0)
+        '''
+        sg.Message (func    = 'Tags.debug_tags'
+                   ,level   = _('INFO')
+                   ,message = message
+                   )
+        '''
+        words = sh.Words (text    = message
+                         ,OrigCyr = 1
+                         ,Auto    = 0
+                         )
         words.sent_nos()
         sg.objs.txt(words=words).reset_data()
         sg.objs._txt.title('Tags.debug_tags:')
         sg.objs._txt.insert(text=message)
         sg.objs._txt.show()
 
-    def debug_blocks(self,Shorten=1,MaxRow=20,MaxRows=20):
+    def debug_blocks (self,Shorten=1
+                     ,MaxRow=20,MaxRows=20
+                     ):
         print('\nTags.debug_blocks (Non-DB blocks):')
         headers = ['TYPE'
                   ,'TEXT'
@@ -455,9 +482,12 @@ class Tags:
                  ,MaxRows = MaxRows
                  ).print()
 
-    def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
+    def debug (self,Shorten=1,MaxRow=20,MaxRows=20):
         self.debug_tags  ()
-        self.debug_blocks(Shorten=Shorten,MaxRow=MaxRow,MaxRows=MaxRows)
+        self.debug_blocks (Shorten = Shorten
+                          ,MaxRow  = MaxRow
+                          ,MaxRows = MaxRows
+                          )
 
     def blocks(self):
         if not self._blocks:
@@ -503,8 +533,13 @@ if __name__ == '__main__':
 
     timer = sh.Timer(func_title='Page')
     timer.start()
-    tags = Tags(source=source,text=page._page)
+    tags = Tags (source = source
+                ,text   = page._page
+                )
     tags.run()
     timer.end()
     tags.debug_tags()
-    tags.debug_blocks(Shorten=1,MaxRow=30,MaxRows=300)
+    tags.debug_blocks (Shorten = 1
+                      ,MaxRow  = 30
+                      ,MaxRows = 300
+                      )

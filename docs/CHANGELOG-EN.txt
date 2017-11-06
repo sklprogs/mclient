@@ -8,6 +8,7 @@
   - Alt-Up      : go to the previous element of the 2nd column
 * Fix a bug (Down arrow navigation)
 * Improve color assignment in the Vertical mode
+* Expand abbreviations for column 1
 
 5.5.2
 * Fix a bug (do not warn after clearing the History)
