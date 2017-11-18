@@ -1930,6 +1930,9 @@ class WebFrame:
                            #,file         = '/home/pete/tmp/ars/œuf.txt'
                            #,file         = '/home/pete/tmp/ars/forward.txt'
                            #,file         = '/home/pete/tmp/ars/palate.txt'
+                           #,file          = '/home/pete/tmp/ars/sdict_EnRu_full - cut (manual).txt'
+                           #,file          = '/home/pete/tmp/ars/sdict_EnRu_full - cut (manual)2.txt'
+                           #,file          = '/home/pete/tmp/ars/sdict_EnRu_full - cut (auto).txt'
                            )
             page.run()
             ptimer.end()
