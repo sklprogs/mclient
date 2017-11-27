@@ -323,7 +323,7 @@ class HTML:
                 self.output.write(str(self._width))
                 self.output.write('">')
             else:
-                self.output.write('<td valign="top">')
+                self.output.write('<td align="center" valign="top">')
             i = j = 0
             for self._block in self._blocks:
                 while self._block.i > i:
