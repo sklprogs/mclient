@@ -1,5 +1,4 @@
 - slurry, cut to the chase mode: PageDown: move to the 1st cell that is invisible instead of showing the entire cell
-- The first prioritized dictionary title does not have attribute 'td align="center"' and therefore is not centered (e.g., "перегонка нефти")
 - Blocks from '<tr>̈ɪkʌt</tr><em>гл.</em>' (sdict_EnRu_full - cut (manual).txt) are not separated when sorting
 - prioritized dictionary titles can be lost in the "Cut to the chase" mode, e.g.: "set" (EN-RU) -> Существительное -> Техника -> ширина развода or Существительное -> Общая лексика -> стойка (собаки). These items are further lost when returning back to a previous mode.
 - vertical view, EN-RU: "поцелуй": fix Moves.up for the 1st element
@@ -24,5 +23,4 @@
 - When deleting/inserting fixed columns, preserve URL
 - Clear CurRequest data after clearing history
 - Fix links in a saved raw html
-- Start ROWNO with 0
 - Vertical view (maybe, with Styles): 1st column can be a single entry of 'dic' type

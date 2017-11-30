@@ -1927,12 +1927,13 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/cut.txt'
                            #,file        = '/home/pete/tmp/ars/tun.txt'
                            #,file        = '/home/pete/tmp/ars/martyr.txt'
-                           #,file         = '/home/pete/tmp/ars/œuf.txt'
-                           #,file         = '/home/pete/tmp/ars/forward.txt'
-                           #,file         = '/home/pete/tmp/ars/palate.txt'
-                           #,file          = '/home/pete/tmp/ars/sdict_EnRu_full - cut (manual).txt'
-                           #,file          = '/home/pete/tmp/ars/sdict_EnRu_full - cut (manual)2.txt'
-                           #,file          = '/home/pete/tmp/ars/sdict_EnRu_full - cut (auto).txt'
+                           #,file        = '/home/pete/tmp/ars/œuf.txt'
+                           #,file        = '/home/pete/tmp/ars/forward.txt'
+                           #,file        = '/home/pete/tmp/ars/palate.txt'
+                           #,file        = '/home/pete/tmp/ars/sdict_EnRu_full - cut (manual).txt'
+                           #,file        = '/home/pete/tmp/ars/sdict_EnRu_full - cut (manual)2.txt'
+                           #,file        = '/home/pete/tmp/ars/sdict_EnRu_full - cut (auto).txt'
+                           #,file         = '/home/pete/tmp/ars/scheming.txt'
                            )
             page.run()
             ptimer.end()
@@ -1958,7 +1959,7 @@ class WebFrame:
                                       ,articleid = objs._blocks_db._articleid
                                       )
             ph_terma.run()
-
+        
         phrase_dic = objs._blocks_db.phrase_dic()
         data       = objs._blocks_db.assign_bp ()
 
@@ -2048,9 +2049,17 @@ class WebFrame:
         objs._blocks_db.dbc.execute('select ARTICLEID,CELLNO,NO,TYPE,TEXT from BLOCKS where BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by ARTICLEID,CELLNO,NO')
         objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=150)
         '''
+        
         '''
-        objs._blocks_db.dbc.execute('select CELLNO,NO,ROWNO,COLNO,TYPE,TEXT,BBOX1,BBOX2,BBOY1,BBOY2 from BLOCKS where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by CELLNO,NO',(objs._blocks_db._articleid,))
-        objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=150)
+        print('Стойка:')
+        objs._blocks_db.dbc.execute('select CELLNO,NO,DICA,WFORMA,TYPE,TEXT,POS1,POS2 from BLOCKS where CELLNO >= ? and CELLNO <= ? order by CELLNO,NO',(1318,1323,))
+        #objs._blocks_db.dbc.execute('select CELLNO,NO,TEXT from BLOCKS where TEXT = ? and POS1 < POS2 order by CELLNO,NO',('стойка',))
+        #print(objs._blocks_db.dbc.fetchall())
+        objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=15,MaxRows=150)
+        '''
+        '''
+        objs._blocks_db.dbc.execute('select CELLNO,NO,DICA,WFORMA,SPEECHA,TYPE,TEXT from BLOCKS where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by CELLNO,NO',(objs._blocks_db._articleid,))
+        objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=14,MaxRows=150)
         '''
         
     # Select either the search string or the URL
