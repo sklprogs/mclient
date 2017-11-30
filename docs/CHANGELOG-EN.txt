@@ -1,4 +1,4 @@
-
+* Fix a bug (preserve fixed column contents upon changing views)
 
 5.6
 * Quickly go to elements of the 1st and 2nd column:

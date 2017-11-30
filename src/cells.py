@@ -216,6 +216,7 @@ class Cells:
     def run(self):
         if self.Success:
             self.assign       ()
+            self.restore_fixed()
             self.clear_fixed  ()
             self.clear_phrases()
             self.expand_abbr  ()
@@ -386,6 +387,17 @@ class Cells:
                 if block._type == 'speech' and block._text in expanded:
                     ind = expanded.index(block._text)
                     block._text = abbr[ind]
+    
+    def restore_fixed(self):
+        for block in self._blocks:
+            if block._type == 'dic':
+                block._text = block._dica
+            elif block._type == 'wform':
+                block._text = block._wforma
+            elif block._type == 'speech':
+                block._text = block._speecha
+            elif block._type == 'transc':
+                block._text = block._transca
     
     def zzz(self):
         pass

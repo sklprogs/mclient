@@ -2051,13 +2051,6 @@ class WebFrame:
         '''
         
         '''
-        print('Стойка:')
-        objs._blocks_db.dbc.execute('select CELLNO,NO,DICA,WFORMA,TYPE,TEXT,POS1,POS2 from BLOCKS where CELLNO >= ? and CELLNO <= ? order by CELLNO,NO',(1318,1323,))
-        #objs._blocks_db.dbc.execute('select CELLNO,NO,TEXT from BLOCKS where TEXT = ? and POS1 < POS2 order by CELLNO,NO',('стойка',))
-        #print(objs._blocks_db.dbc.fetchall())
-        objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=15,MaxRows=150)
-        '''
-        '''
         objs._blocks_db.dbc.execute('select CELLNO,NO,DICA,WFORMA,SPEECHA,TYPE,TEXT from BLOCKS where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by CELLNO,NO',(objs._blocks_db._articleid,))
         objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=14,MaxRows=150)
         '''
