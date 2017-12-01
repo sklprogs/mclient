@@ -22,7 +22,7 @@ import mkhtml      as mh
 
 
 product = 'MClient'
-version = '5.6'
+version = '5.6.1'
 
 third_parties = '''
 tkinterhtml
@@ -315,7 +315,11 @@ sources = (_('All'),_('Online'),_('Offline'))
 class Objects:
 
     def __init__(self):
-        self._top = self._entry = self._textbox = self._online_mt = self._online_other = self._about = self._blacklist = self._prioritize = self._parties = self._request = self._ext_dics = self._webframe = self._blocks_db = self._moves = None
+        self._top = self._entry        = self._textbox  = self._online_mt \
+                  = self._online_other = self._about    = self._blacklist \
+                  = self._prioritize   = self._parties  = self._request   \
+                  = self._ext_dics     = self._webframe = self._blocks_db \
+                  = self._moves        = None
 
     def blocks_db(self):
         if not self._blocks_db:
@@ -376,7 +380,7 @@ class Objects:
 
     def online(self):
         # todo: create a sub-source
-        if objs.request()._source == _('All') or objs.request()._source == _('Online'):
+        if objs.request()._source in (_('All'),_('Online')):
             return self.online_mt()
         else:
             return self.online_other()

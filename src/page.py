@@ -474,9 +474,10 @@ if __name__ == '__main__':
     timer = sh.Timer(func_title='Page')
     timer.start()
     sg.objs.start()
-    page = Page (source = _('Online')
-                ,search = 'preceding'
-                ,file   = '/home/pete/tmp/ars/preceding.txt'
+    page = Page (source   = _('Online')
+                ,search   = 'preceding'
+                ,file     = '/home/pete/tmp/ars/preceding.txt'
+                ,ext_dics = ExtDics(path=sh.objs.pdir().add('dics'))
                 )
     page.run()
     timer.end()
