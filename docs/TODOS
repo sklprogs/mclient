@@ -8,11 +8,9 @@
 - (elems) unite cells if (?) the url is the same or similar. Example: 'sampling' -> Робототехника -> проведение выборочных замеров
 - Make transcriptions Selectable
 - Create an option to toggle SELECTABLE (no need to update DB) (see WebFrame.select)
-- Use NO/NODE instead of POS *where appropriate*
 - Loop WebFrame.move_page_up & WebFrame.move_page_down
 - Restore selection upon changing a setting and loading the article again
 - Store '_html_raw' value for all articles, not just for the latest new loaded one
-- Lower the priority of 'phrase' type instead of ignoring it in the Clarity mode
 - Delete symbols that prevent URL from opening (e.g., 'символ' -> 'pilcrow')
 - Control+Up/Down: показать и/или выделить следующий/предыдущий элемент 1-го столбца (особенно актуально для режима "Прямо к делу")
 

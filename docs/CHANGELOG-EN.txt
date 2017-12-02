@@ -1,5 +1,8 @@
 
 
+5.6.2
+* Move phrases (at any view mode) at the end
+
 5.6.1
 * Fix a bug (preserve fixed column contents upon changing views)
 * Show the message on loading local dictionaries once only
