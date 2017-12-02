@@ -10,8 +10,8 @@ import shared as sh
 import sharedGUI as sg
 
 abbr     = ['гл.','сущ.','прил.','нареч.','сокр.','предл.']
-expanded = ['Глагол','Существительное','Прилагательное','Наречие','Сокращение'
-           ,'Предлог'
+expanded = ['Глагол','Существительное','Прилагательное','Наречие'
+           ,'Сокращение','Предлог'
            ]
 
 
@@ -220,6 +220,7 @@ class Cells:
             self.clear_fixed  ()
             self.clear_phrases()
             self.expand_abbr  ()
+            self.phrases2end  ()
             self.wrap         ()
             self.sep_words    ()
             self.sort_cells   ()
@@ -351,6 +352,17 @@ class Cells:
     # This is necessary because fixed columns are interchangeable now
     def sort_cells(self):
         self._blocks = sorted(self._blocks,key=lambda block:(block.i,block.j,block._no))
+    
+    def phrases2end(self):
+        if self._phrase_dic:
+            phrases = [block for block in self._blocks if block._dica == self._phrase_dic]
+            self._blocks = [block for block in self._blocks if block._dica != self._phrase_dic]
+            self._blocks = self._blocks + phrases
+        else:
+            sh.log.append ('Cells.phrases2end'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
     
     def cell_no(self):
         no = 0
