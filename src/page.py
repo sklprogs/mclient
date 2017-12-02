@@ -11,8 +11,9 @@ import re
 import urllib.request, urllib.parse
 import html
 import pystardict as pd
-import shared as sh
-import sharedGUI as sg
+import shared     as sh
+import sharedGUI  as sg
+import offline    as of
 
 sep_words_found = 'найдены отдельные слова'
 message_board   = 'спросить в форуме'
@@ -198,7 +199,7 @@ class ExtDics:
 class Page:
 
     def __init__(self,source=_('All'),lang='English'
-                ,search='SEARCH',url='',win_encoding='windows-1251'
+                ,search='~',url='',win_encoding='windows-1251'
                 ,ext_dics=[],file=None
                 ):
         self._html_raw     = self._page = ''
@@ -373,12 +374,16 @@ class Page:
                     page = self._page
                     self._get_offline()
                     self.disamb_sd()
+                    self._page = of.Stardict1 (text   = self._page
+                                              ,header = self._search).run()
                 elif self._source == _('Online'):
                     self._get_online()
                     self.disamb_mt()
                 elif self._source == _('Offline'):
                     self._get_offline()
                     self.disamb_sd()
+                    self._page = of.Stardict1 (text   = self._page
+                                              ,header = self._search).run()
                 else:
                     sg.Message ('Page.get'
                                ,_('ERROR')
