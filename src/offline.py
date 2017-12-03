@@ -134,7 +134,7 @@ class Stardict1:
             if '<' in block or '>' in block:
                 self._tags.append(block)
             elif block in speech_abbr:
-                self._tags.append('<k>' + block + '</k>')
+                self._tags.append('<gr>' + block + '</gr>')
             elif block in dic_abbr: # Risky
                 self._tags.append('<a title="%s"></a>' % block)
                 #self._tags.append('<co>' + block + '</co>')

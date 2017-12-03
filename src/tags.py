@@ -75,7 +75,8 @@ assert(len(transc_orig) == len(transc_final))
          - Multitran:
              <em></em>
          - Stardict:
-
+             # A XDXF tag meaning grammar information about the word
+             <gr></gr>
     '''
 
 # Tag patterns
@@ -131,6 +132,7 @@ pwf6  = '<k>'                                  # ST
 
 # Parts of speech
 psp1  = '<em>'                                 # MT
+psp2  = '<gr>'                                 # ST
 
 # Terms
 ptm1  = 'M.exe?t'                              # MT # Both terms and word forms
@@ -155,7 +157,7 @@ ptr3  = '</tr>'                                # ST
 
 useful_tags = [pdic,purl1,purl2,pcom1,pcom2
               ,pcom3,pcom4,pcor1,ptr1,ptr2
-              ,pwf4,pwf6,ptm7,pph5,psp1
+              ,pwf4,pwf6,ptm7,pph5,psp1,psp2
               ]
 
 
@@ -395,7 +397,7 @@ class AnalyzeTag:
                            )
 
     def speech(self):
-        if psp1 in self._block:
+        if psp1 in self._block or psp2 in self._block:
             self._cur._type = 'speech'
 
 
