@@ -350,13 +350,6 @@ class Page:
         except TypeError: # Encoding has failed
             self._page = ''
 
-    def disamb_sd(self):
-        # This is done to speed up and eliminate tag disambiguation
-        try:
-            self._page = self._page.replace('<i>','').replace('</i>','')
-        except TypeError: # Encoding has failed
-            self._page = ''
-
     def get(self):
         if not self._page:
             if self._file:
@@ -364,7 +357,6 @@ class Page:
                 self._page   = read.get()
                 self.Success = read.Success
                 self.disamb_mt()
-                self.disamb_sd()
             else:
                 page = ''
                 # todo: introduce sub-sources, make this code clear; assign '_html_raw' for each sub-source
@@ -373,17 +365,15 @@ class Page:
                     self.disamb_mt()
                     page = self._page
                     self._get_offline()
-                    self.disamb_sd()
-                    self._page = of.Stardict1 (text   = self._page
-                                              ,header = self._search).run()
+                    self._page = of.stardict (text   = self._page
+                                             ,header = self._search)
                 elif self._source == _('Online'):
                     self._get_online()
                     self.disamb_mt()
                 elif self._source == _('Offline'):
                     self._get_offline()
-                    self.disamb_sd()
-                    self._page = of.Stardict1 (text   = self._page
-                                              ,header = self._search).run()
+                    self._page = of.stardict (text   = self._page
+                                             ,header = self._search)
                 else:
                     sg.Message ('Page.get'
                                ,_('ERROR')

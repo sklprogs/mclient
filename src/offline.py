@@ -30,6 +30,9 @@ dic_titles  = ('(австралийское)'
 
 
 
+''' Formatting example:
+<a title="dicEnRu"><k>cut</k><tr>kʌt</tr> I 1. гл. 1) резать, разрезать I cut my arm. ≈ Я порезал руку. Cut the bread. ≈ Разрежьте хлеб. Syn : slash, lance, slit; slice 2) а) завершать, прекращать; кончать Cut the rap. ≈ Хватит болтать. б) жать, косить ∙ Syn : mow, prune
+'''
 class Stardict1:
     
     def __init__(self,text,header='~'):
@@ -164,6 +167,57 @@ class Stardict1:
 
 
 
+''' Formatting example:
+<a title="dicEnRu">1> порез; надрез; _Ex: I cut my arm _общ. Я порезал руку2> короткий путь3> _мат. раздел; _Ex: please refer to this cut обратитесь к этому разделу _Ex: to cut into pieces рассечь на части
+'''
+class Stardict2:
+    
+    def __init__(self,text,header='~'):
+        self._blocks = []
+        self._tags   = []
+        self.text    = text
+        self.header  = header
+        
+    def run(self):
+        sh.log.append ('Stardict2.run'
+                      ,_('INFO')
+                      ,_('Not implemented yet!')
+                      )
+        return self.text
+
+
+
+''' Formatting example:
+<a title="dicRuEn"><k>цель</k><b>I</b><dtrn>aim</dtrn><b>II</b><c><co>при стрельбе</co></c><dtrn>target</dtrn>
+'''
+class Stardict3:
+    
+    def __init__(self,text):
+        self.text = text
+        
+    def disamb(self):
+        # This is done to speed up and eliminate tag disambiguation
+        try:
+            self.text = self.text.replace('<i>','').replace('</i>','')
+        except TypeError: # Encoding has failed
+            self.text = ''
+        
+    def run(self):
+        self.disamb()
+        return self.text
+
+
+
+def stardict(text,header='~'):
+    if '<dtrn>' in text:
+        return Stardict3(text=text).run()
+    elif '_Ex:' in text:
+        return Stardict2(text=text,header=header).run()
+    else:
+        return Stardict1(text=text,header=header).run()
+    
+
+
 if __name__ == '__main__':
     sg.objs.start()
     
@@ -173,8 +227,7 @@ if __name__ == '__main__':
     timer = sh.Timer()
     timer.start()
     
-    sd = Stardict1(text=text,header='cut')
-    text = sd.run()
+    text = stardict(text=text,header='cut')
     
     timer.end()
     
