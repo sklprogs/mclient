@@ -285,7 +285,7 @@ class DB:
 
     def article(self):
         if self._articleid:
-            self.dbc.execute('select SOURCE,TITLE,URL from ARTICLES where ARTICLEID = ?',(self._articleid,))
+            self.dbc.execute('select SOURCE,TITLE,URL,BOOKMARK from ARTICLES where ARTICLEID = ?',(self._articleid,))
             return self.dbc.fetchone()
         else:
             sh.log.append ('DB.article'
@@ -609,7 +609,26 @@ class DB:
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-                          
+    
+    def set_bookmark(self,pos=0):
+        if pos is not None and pos >= 0:
+            if self._articleid:
+                sh.log.append ('DB.set_bookmark'
+                              ,_('DEBUG')
+                              ,_('Set bookmark %d') % pos
+                              )
+                self.dbc.execute('update ARTICLES set BOOKMARK = ? where ARTICLEID = ?',(pos,self._articleid,))
+            else:
+                sh.log.append ('DB.set_bookmark'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('DB.set_bookmark'
+                          ,_('WARNING')
+                          ,_('Wrong input data!')
+                          )
+    
     def zzz(self):
         pass
 

@@ -728,7 +728,9 @@ class SearchArticle:
         return self._search
 
     def forward(self,*args):
-        pos = objs.blocks_db().search_forward(pos=self._pos,search=self.search())
+        pos = objs.blocks_db().search_forward (pos    = self._pos
+                                              ,search = self.search()
+                                              )
         if pos or pos == 0:
             objs.webframe()._pos = self._pos = pos
             objs._webframe.select()
@@ -1709,25 +1711,29 @@ class WebFrame:
                                   )
                     '''
 
+    def _select(self,result):
+        try:
+            self.widget.tag ('delete','selection')
+            self.widget.tag ('add','selection',result[0]
+                            ,result[2],result[1],result[3]
+                            )
+            self.widget.tag ('configure','selection','-background'
+                            ,sh.globs['var']['color_terms_sel_bg']
+                            )
+            self.widget.tag ('configure','selection','-foreground'
+                            ,sh.globs['var']['color_terms_sel_fg']
+                            )
+        except tk.TclError:
+            sh.log.append ('WebFrame._select'
+                          ,_('WARNING')
+                          ,_('Unable to set selection!')
+                          )
+    
     def select(self):
         result = objs.blocks_db().selection(pos=self._pos)
         if result:
-            try:
-                self.widget.tag ('delete','selection')
-                self.widget.tag ('add','selection',result[0]
-                                ,result[2],result[1],result[3]
-                                )
-                self.widget.tag ('configure','selection','-background'
-                                ,sh.globs['var']['color_terms_sel_bg']
-                                )
-                self.widget.tag ('configure','selection','-foreground'
-                                ,sh.globs['var']['color_terms_sel_fg']
-                                )
-            except tk.TclError:
-                sh.log.append ('WebFrame.select'
-                              ,_('WARNING')
-                              ,_('Unable to set selection!')
-                              )
+            objs.blocks_db().set_bookmark(pos=self._pos)
+            self._select(result)
         else:
             pass
             '''
@@ -1896,14 +1902,14 @@ class WebFrame:
                           ,message = _('Load article No. %d from memory') % articleid
                           )
             objs._blocks_db._articleid = articleid
+            self.get_bookmark()
         else:
-            # todo: implement BOOKMARK
             # None skips the autoincrement
             data = (None                  # (00) ARTICLEID
                    ,objs._request._source # (01) SOURCE
                    ,objs._request._search # (02) TITLE
                    ,objs._request._url    # (03) URL
-                   ,''                    # (04) BOOKMARK
+                   ,self._pos             # (04) BOOKMARK
                    )
             objs._blocks_db.fill_articles(data=data)
             
@@ -1963,7 +1969,8 @@ class WebFrame:
                                       ,articleid = objs._blocks_db._articleid
                                       )
             ph_terma.run()
-        
+            self._pos = objs._blocks_db.start()
+            
         phrase_dic = objs._blocks_db.phrase_dic()
         data       = objs._blocks_db.assign_bp ()
 
@@ -1995,7 +2002,7 @@ class WebFrame:
                               )
         objs._blocks_db.unignore()
         objs._blocks_db.ignore()
-        data  = objs._blocks_db.assign_cells()
+        data = objs._blocks_db.assign_cells()
 
         if objs._request._cols and objs._request._cols[0] == 'speech':
             ExpandAbbr = True
@@ -2037,9 +2044,12 @@ class WebFrame:
         objs._blocks_db.update(query=pages._query)
         
         self.title(arg=objs._request._search)
-        # Select the first block without shifting the screen
-        self._pos = objs.blocks_db().start()
-        self.select()
+        if str(self._pos).isdigit() and self._pos >= 0:
+            self.select()
+            self.shift_screen()
+        else:
+            self._pos = objs._blocks_db.start()
+            self.select()
         # Empty article is not added either to DB or history, so we just do not clear the search field to be able to correct the typo.
         if pages._blocks:
             self.search_field.clear()
@@ -2049,7 +2059,11 @@ class WebFrame:
         timer.end()
 
         '''
+        objs._blocks_db.dbc.execute('select ARTICLEID,TITLE,BOOKMARK from ARTICLES where ARTICLEID = ?',(objs._blocks_db._articleid,))
         objs._blocks_db.print(Shorten=0,mode='ARTICLES')
+        '''
+        
+        '''
         objs._blocks_db.dbc.execute('select ARTICLEID,CELLNO,NO,TYPE,TEXT from BLOCKS where BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by ARTICLEID,CELLNO,NO')
         objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=150)
         '''
@@ -2155,7 +2169,9 @@ class WebFrame:
         result = objs.blocks_db().selection(pos=self._pos)
         height = self.height()
         if result and height:
-            result = objs.blocks_db().page_up(bboy=result[6],height=height)
+            result = objs.blocks_db().page_up (bboy   = result[6]
+                                              ,height = height
+                                              )
             if result:
                 self._pos = result
                 self.select()
@@ -2166,7 +2182,9 @@ class WebFrame:
         result = objs.blocks_db().selection(pos=self._pos)
         height = self.height()
         if result and height:
-            result = objs.blocks_db().page_down(bboy=result[6],height=height)
+            result = objs.blocks_db().page_down (bboy   = result[6]
+                                                ,height = height
+                                                )
             if result:
                 self._pos = result
                 self.select()
@@ -2626,6 +2644,27 @@ class WebFrame:
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
+    
+    def get_bookmark(self):
+        result = objs.blocks_db().article()
+        if result:
+            if str(result[3]).isdigit() and result[3] >= 0:
+                self._pos = result[3]
+                sh.log.append ('WebFrame.get_bookmark'
+                              ,_('DEBUG')
+                              ,_('Load bookmark %d for article #%d') % (self._pos,objs._blocks_db._articleid)
+                              )
+            else:
+                sh.log.append ('WebFrame.get_bookmark'
+                              ,_('WARNING')
+                              ,_('Wrong input data!')
+                              )
+        else:
+            sh.log.append ('WebFrame.get_bookmark'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+            self._pos = objs._blocks_db.start()
     
     def zzz(self): # Only needed to move quickly to the end of the class
         pass
