@@ -3,6 +3,8 @@
 5.7
 * Add a heuristic analysis for local Stardict dictionaries (Stardict1 type)
 * Insert "bookmarks" (restore a selection for articles from the History, but only when settings of the current view remain unchanged)
+* Navigate by sections of column 3 (Shift-Down, Shift-Up by default)
+* Add keys: bind_col1_down, bind_col1_up, bind_col2_down, bind_col2_up, bind_col3_down, bind_col3_up
 
 5.6.2
 * Move phrases (at any view mode) to the end
