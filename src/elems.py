@@ -376,7 +376,7 @@ class Elems:
                 block._terma   = self._blocks[i]._terma
                 block._same    = 0
                 self._blocks.insert(i,block)
-                
+
                 block          = Block()
                 block._type    = 'wform'
                 block._text    = self._blocks[i]._wforma

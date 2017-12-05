@@ -5,13 +5,13 @@
 * Insert "bookmarks" (restore a selection for articles from the History, but only when settings of the current view remain unchanged)
 * Navigate by sections of column 3 (Shift-Down, Shift-Up by default)
 * Add keys: bind_col1_down, bind_col1_up, bind_col2_down, bind_col2_up, bind_col3_down, bind_col3_up
+* Keep (if possible) the column when moving to a preceding/following section
 
 5.6.2
 * Move phrases (at any view mode) to the end
 
 5.6.1
 * Fix a bug (preserve fixed column contents upon changing views)
-* Show the message on loading local dictionaries once only
 
 5.6
 * Quickly go to elements of the 1st and 2nd column:

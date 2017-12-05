@@ -2897,8 +2897,8 @@ class Settings:
     def values(self):
         self._items = (_('Dictionaries')
                       ,_('Word forms')
-                      ,_('Parts of speech')
                       ,_('Transcription')
+                      ,_('Parts of speech')
                       ,_('Do not set')
                       )
         self._sc_items = (product
@@ -3361,13 +3361,13 @@ class Settings:
                                   ,items      = self._items
                                   ,side       = 'bottom'
                                   ,command    = self.update_by_col3
-                                  ,default    = _('Parts of speech')
+                                  ,default    = _('Transcription')
                                   )
         self.col4 = sg.OptionMenu (parent_obj = self.fr_c4
                                   ,items      = self._items
                                   ,side       = 'bottom'
                                   ,command    = self.update_by_col4
-                                  ,default    = _('Transcription')
+                                  ,default    = _('Parts of speech')
                                   )
 
     def bindings(self):
