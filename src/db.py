@@ -980,6 +980,16 @@ class Moves(DB):
                           ,_('Empty input is not allowed!')
                           )
     
+    def next_col(self,row_no=0,col_no=0):
+        if self._articleid:
+            self.dbc.execute('select POS1,ROWNO,COLNO,TEXT from BLOCKS where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 and ROWNO = ? and COLNO >= ? and POS1 < POS2 order by CELLNO,NO',(self._articleid,row_no,col_no,))
+            return self.dbc.fetchone()
+        else:
+            sh.log.append ('Moves.next_col'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def zzz(self):
         pass
 

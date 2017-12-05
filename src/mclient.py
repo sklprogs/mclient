@@ -2702,17 +2702,34 @@ class WebFrame:
                        ,message = _('The condition "%s" is not observed!') % '%d > %d' % (objs._request._collimit,len(fixed))
                        )
 
-    # Перейти на 1-й термин следующего раздела (относительно столбца col_no)
+    # Перейти к следующему разделу столбца col_no
     def move_next_section(self,col_no=0,*args):
-        result = objs.blocks_db().next_section (pos    = self._pos
+        result1 = objs.blocks_db().block_pos(pos=self._pos)
+        result2 = objs._blocks_db.next_section (pos    = self._pos
                                                ,col_no = col_no
                                                )
-        if result:
-            result = objs.blocks_db().block_pos_next(pos=result[0])
-            if result:
-                self._pos = result[0]
-                self.select()
-                self.shift_screen()
+        if result1 and result2:
+            result3 = objs._blocks_db.next_col (row_no = result2[1]
+                                               ,col_no = result1[4]
+                                               )
+            result4 = objs._blocks_db.next_col (row_no = result2[1]
+                                               ,col_no = 0
+                                               )
+            if result3 or result4:
+                if result4 and not result3:
+                    pos = result4[0]
+                else:
+                    pos = result3[0]
+                result = objs.blocks_db().block_pos_next(pos=pos)
+                if result:
+                    self._pos = result[0]
+                    self.select()
+                    self.shift_screen()
+                else:
+                    sh.log.append ('WebFrame.move_next_section'
+                                  ,_('WARNING')
+                                  ,_('Empty input is not allowed!')
+                                  )
             else:
                 sh.log.append ('WebFrame.move_next_section'
                               ,_('WARNING')
@@ -2724,17 +2741,34 @@ class WebFrame:
                           ,_('Empty input is not allowed!')
                           )
         
-    # Перейти на 1-й термин предыдущего раздела (относительно столбца col_no)
+    # Перейти к предыдущему разделу столбца col_no
     def move_prev_section(self,col_no=0,*args):
-        result = objs.blocks_db().prev_section (pos    = self._pos
+        result1 = objs.blocks_db().block_pos(pos=self._pos)
+        result2 = objs._blocks_db.prev_section (pos    = self._pos
                                                ,col_no = col_no
                                                )
-        if result:
-            result = objs.blocks_db().block_pos_next(pos=result[0])
-            if result:
-                self._pos = result[0]
-                self.select()
-                self.shift_screen()
+        if result1 and result2:
+            result3 = objs._blocks_db.next_col (row_no = result2[1]
+                                               ,col_no = result1[4]
+                                               )
+            result4 = objs._blocks_db.next_col (row_no = result2[1]
+                                               ,col_no = 0
+                                               )
+            if result3 or result4:
+                if result4 and not result3:
+                    pos = result4[0]
+                else:
+                    pos = result3[0]
+                result = objs.blocks_db().block_pos_next(pos=pos)
+                if result:
+                    self._pos = result[0]
+                    self.select()
+                    self.shift_screen()
+                else:
+                    sh.log.append ('WebFrame.move_prev_section'
+                                  ,_('WARNING')
+                                  ,_('Empty input is not allowed!')
+                                  )
             else:
                 sh.log.append ('WebFrame.move_prev_section'
                               ,_('WARNING')

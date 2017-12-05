@@ -1,4 +1,4 @@
-
+- Mclient mode: transcription must be set after parts of speechs, but actually it is set before
 - Blocks from '<tr>̈ɪkʌt</tr><em>гл.</em>' (sdict_EnRu_full - cut (manual).txt) are not separated when sorting
 - vertical view, EN-RU: "поцелуй": fix Moves.up for the 1st element
 - for vertical view: concerning coloring, rely on row numbers instead of column numbers
