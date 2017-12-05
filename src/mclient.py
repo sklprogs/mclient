@@ -750,14 +750,20 @@ class SearchArticle:
 
     def first(self):
         if self._first == -1:
-            self._first = objs.blocks_db().search_forward(pos=-1,search=self.search())
+            self._first = \
+            objs.blocks_db().search_forward (pos    = -1
+                                            ,search = self.search()
+                                            )
         return self._first
 
     def last(self):
         if self._last == -1:
             max_cell = objs._blocks_db.max_cell()
             if max_cell:
-                self._last = objs.blocks_db().search_backward(pos=max_cell[2]+1,search=self.search())
+                self._last = \
+                objs.blocks_db().search_backward (pos    = max_cell[2]+1
+                                                 ,search = self.search()
+                                                 )
             else:
                 sh.log.append ('SearchArticle.last'
                               ,_('WARNING')
@@ -772,13 +778,17 @@ class SearchArticle:
                            ,level   = _('INFO')
                            ,message = _('The end has been reached. Searching from the start.')
                            )
-                objs.webframe()._pos = self._pos = self.last()
-                objs._webframe.select()
-                objs._webframe.shift_screen()
+                result = self.last()
+                if str(result).isdigit():
+                    objs.webframe()._pos = self._pos = result
+                    objs._webframe.select()
+                    objs._webframe.shift_screen()
             else:
-                pos = objs.blocks_db().search_backward (pos    = self._pos
-                                                       ,search = self.search())
-                if pos or pos == 0:
+                pos = \
+                objs.blocks_db().search_backward (pos    = self._pos
+                                                 ,search = self.search()
+                                                 )
+                if str(pos).isdigit():
                     self._pos = pos
                     objs.webframe()._pos = pos
                     objs._webframe.select()
@@ -1681,7 +1691,7 @@ class WebFrame:
     # todo: rework?
     def get_pos(self,event=None):
         if event:
-            pos = None
+            pos = -1
             try:
                 node1,node2 = self.widget.node(True,event.x,event.y)
                 pos         = self.widget.text('offset',node1,node2)
@@ -1694,7 +1704,7 @@ class WebFrame:
                               ,_('Unable to get the position!')
                               )
                 '''
-            if pos is not None:
+            if str(pos).isdigit():
                 objs.blocks_db().Selectable = False
                 result = objs._blocks_db.block_pos(pos=pos)
                 objs._blocks_db.Selectable = True
@@ -1892,6 +1902,8 @@ class WebFrame:
     def load_article(self):
         timer = sh.Timer(func_title='WebFrame.load_article')
         timer.start()
+        # Do not allow selection positions from previous articles
+        self._pos = -1
         articleid = objs.blocks_db().present (source = objs.request()._source
                                              ,title  = objs._request._search
                                              ,url    = objs._request._url
@@ -1969,7 +1981,6 @@ class WebFrame:
                                       ,articleid = objs._blocks_db._articleid
                                       )
             ph_terma.run()
-            self._pos = objs._blocks_db.start()
             
         phrase_dic = objs._blocks_db.phrase_dic()
         data       = objs._blocks_db.assign_bp ()
@@ -2044,12 +2055,19 @@ class WebFrame:
         objs._blocks_db.update(query=pages._query)
         
         self.title(arg=objs._request._search)
-        if str(self._pos).isdigit() and self._pos >= 0:
+        if self._pos >= 0:
             self.select()
             self.shift_screen()
         else:
-            self._pos = objs._blocks_db.start()
-            self.select()
+            result = objs._blocks_db.start()
+            if str(result).isdigit():
+                self._pos = result
+                self.select()
+            else:
+                sh.log.append ('WebFrame.load_article'
+                              ,_('WARNING')
+                              ,_('Wrong input data!')
+                              )
         # Empty article is not added either to DB or history, so we just do not clear the search field to be able to correct the typo.
         if pages._blocks:
             self.search_field.clear()
@@ -2142,27 +2160,55 @@ class WebFrame:
     # todo: move 'move_*' procedures to Moves class
     # Перейти на 1-й термин текущей строки
     def move_line_start(self,*args):
-        self._pos = objs.blocks_db().line_start(pos=self._pos)
-        self.select()
-        self.shift_screen()
+        result = objs.blocks_db().line_start(pos=self._pos)
+        if str(result).isdigit():
+            self._pos = result
+            self.select()
+            self.shift_screen()
+        else:
+            sh.log.append ('WebFrame.move_line_start'
+                          ,_('WARNING')
+                          ,_('Wrong input data!')
+                          )
 
     # Перейти на последний термин текущей строки
     def move_line_end(self,*args):
-        self._pos = objs.blocks_db().line_end(pos=self._pos)
-        self.select()
-        self.shift_screen()
+        result = objs.blocks_db().line_end(pos=self._pos)
+        if str(result).isdigit():
+            self._pos = result
+            self.select()
+            self.shift_screen()
+        else:
+            sh.log.append ('WebFrame.move_line_end'
+                          ,_('WARNING')
+                          ,_('Wrong input data!')
+                          )
 
     # Go to the 1st (non-)selectable block
     def move_text_start(self,*args):
-        self._pos = objs.blocks_db().start()
-        self.select()
-        self.shift_screen()
+        result = objs.blocks_db().start()
+        if str(result).isdigit():
+            self._pos = result
+            self.select()
+            self.shift_screen()
+        else:
+            sh.log.append ('WebFrame.move_text_start'
+                          ,_('WARNING')
+                          ,_('Wrong input data!')
+                          )
 
     # Перейти на последний термин статьи
     def move_text_end(self,*args):
-        self._pos = objs.blocks_db().end()
-        self.select()
-        self.shift_screen()
+        result = objs.blocks_db().end()
+        if str(result).isdigit():
+            self._pos = result
+            self.select()
+            self.shift_screen()
+        else:
+            sh.log.append ('WebFrame.move_text_end'
+                          ,_('WARNING')
+                          ,_('Wrong input data!')
+                          )
 
     # Перейти на страницу вверх
     def move_page_up(self,*args):
@@ -2172,7 +2218,7 @@ class WebFrame:
             result = objs.blocks_db().page_up (bboy   = result[6]
                                               ,height = height
                                               )
-            if result:
+            if str(result).isdigit():
                 self._pos = result
                 self.select()
                 self.shift_screen()
@@ -2185,34 +2231,62 @@ class WebFrame:
             result = objs.blocks_db().page_down (bboy   = result[6]
                                                 ,height = height
                                                 )
-            if result:
+            if str(result).isdigit():
                 self._pos = result
                 self.select()
                 self.shift_screen()
 
     # Перейти на предыдущий термин
     def move_left(self,*args):
-        self._pos = objs.blocks_db().left(pos=self._pos)
-        self.select()
-        self.shift_screen()
+        result = objs.blocks_db().left(pos=self._pos)
+        if str(result).isdigit():
+            self._pos = result
+            self.select()
+            self.shift_screen()
+        else:
+            sh.log.append ('WebFrame.move_left'
+                          ,_('WARNING')
+                          ,_('Wrong input data!')
+                          )
 
     # Перейти на следующий термин
     def move_right(self,*args):
-        self._pos = objs.blocks_db().right(pos=self._pos)
-        self.select()
-        self.shift_screen()
+        result = objs.blocks_db().right(pos=self._pos)
+        if str(result).isdigit():
+            self._pos = result
+            self.select()
+            self.shift_screen()
+        else:
+            sh.log.append ('WebFrame.move_right'
+                          ,_('WARNING')
+                          ,_('Wrong input data!')
+                          )
 
     # Перейти на строку вниз
     def move_down(self,*args):
-        self._pos = objs.blocks_db().down(pos=self._pos)
-        self.select()
-        self.shift_screen()
+        result = objs.blocks_db().down(pos=self._pos)
+        if str(result).isdigit():
+            self._pos = result
+            self.select()
+            self.shift_screen()
+        else:
+            sh.log.append ('WebFrame.move_down'
+                          ,_('WARNING')
+                          ,_('Wrong input data!')
+                          )
 
     # Перейти на строку вверх
     def move_up(self,*args):
-        self._pos = objs.blocks_db().up(pos=self._pos)
-        self.select()
-        self.shift_screen()
+        result = objs.blocks_db().up(pos=self._pos)
+        if str(result).isdigit():
+            self._pos = result
+            self.select()
+            self.shift_screen()
+        else:
+            sh.log.append ('WebFrame.move_up'
+                          ,_('WARNING')
+                          ,_('Wrong input data!')
+                          )
 
     # Задействование колеса мыши для пролистывания экрана
     def mouse_wheel(self,event):
@@ -2648,7 +2722,7 @@ class WebFrame:
     def get_bookmark(self):
         result = objs.blocks_db().article()
         if result:
-            if str(result[3]).isdigit() and result[3] >= 0:
+            if str(result[3]).isdigit():
                 self._pos = result[3]
                 sh.log.append ('WebFrame.get_bookmark'
                               ,_('DEBUG')
@@ -2664,8 +2738,15 @@ class WebFrame:
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-            self._pos = objs._blocks_db.start()
-    
+            result = objs._blocks_db.start()
+            if str(result).isdigit():
+                self._pos = result()
+            else:
+                sh.log.append ('WebFrame.get_bookmark'
+                              ,_('WARNING')
+                              ,_('Wrong input data!')
+                              )
+
     def zzz(self): # Only needed to move quickly to the end of the class
         pass
 
@@ -3026,6 +3107,7 @@ class Settings:
             objs._request.Block      = self.cb3.get()
             objs._request.Prioritize = self.cb4.get()
             objs._request.Reverse    = self.cb5.get()
+            # cur
             objs.webframe().set_columns()
         else:
             # todo: do we really need this?
