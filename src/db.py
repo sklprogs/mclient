@@ -615,7 +615,7 @@ class DB:
             if self._articleid:
                 sh.log.append ('DB.set_bookmark'
                               ,_('DEBUG')
-                              ,_('Set bookmark %d') % pos
+                              ,_('Set bookmark %d for article %d') % (pos,self._articleid)
                               )
                 self.dbc.execute('update ARTICLES set BOOKMARK = ? where ARTICLEID = ?',(pos,self._articleid,))
             else:
@@ -630,17 +630,11 @@ class DB:
                           )
                           
     def delete_bookmarks(self):
-        if self._articleid:
-            sh.log.append ('DB.delete_bookmarks'
-                          ,_('DEBUG')
-                          ,_('Delete bookmarks')
-                          )
-            self.dbc.execute('update ARTICLES set BOOKMARK = ? where ARTICLEID != ?',(-1,self._articleid,))
-        else:
-            sh.log.append ('DB.delete_bookmarks'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+        sh.log.append ('DB.delete_bookmarks'
+                      ,_('DEBUG')
+                      ,_('Delete bookmarks for all articles')
+                      )
+        self.dbc.execute('update ARTICLES set BOOKMARK = -1')
     
     def zzz(self):
         pass
