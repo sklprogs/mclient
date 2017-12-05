@@ -615,7 +615,7 @@ class DB:
             if self._articleid:
                 sh.log.append ('DB.set_bookmark'
                               ,_('DEBUG')
-                              ,_('Set bookmark %d for article %d') % (pos,self._articleid)
+                              ,_('Set bookmark %d for article #%d') % (pos,self._articleid)
                               )
                 self.dbc.execute('update ARTICLES set BOOKMARK = ? where ARTICLEID = ?',(pos,self._articleid,))
             else:
