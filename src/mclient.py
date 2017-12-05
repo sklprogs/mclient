@@ -86,7 +86,7 @@ class ConfigMclient(sh.Config):
         h_read       = sh.ReadTextFile(self.path,Silent=self.Silent)
         self.text    = h_read.get()
         self.Success = h_read.Success
-        self._default()
+        self.default()
         if os.path.exists(self.path):
             self.open()
         else:
@@ -95,13 +95,19 @@ class ConfigMclient(sh.Config):
         self.load()
         self.additional_keys()
 
-    def _default(self):
+    def default(self):
+        self._default_bool()
+        self._default_int()
+        self._default_var()
+        
+    def _default_bool(self):
         sh.globs['bool'].update ({
             'AutoCloseSpecSymbol':False
            ,'SelectTermsOnly'    :True
            ,'Iconify'            :True
                                 })
-        #---------------------------------------------------
+    
+    def _default_int(self):
         sh.globs['int'].update ({
             'col_width'         :250
            ,'font_comments_size':3
@@ -111,10 +117,17 @@ class ConfigMclient(sh.Config):
            ,'font_col4_size'    :3
            ,'font_terms_size'   :4
                                })
-        #---------------------------------------------------
+    
+    def _default_var(self):
         sh.globs['var'].update ({
             'bind_clear_history'          :'<Control-Shift-Delete>'
            ,'bind_clear_search_field'     :'<ButtonRelease-3>'
+           ,'bind_col1_down'              :'<Control-Down>'
+           ,'bind_col1_up'                :'<Control-Up>'
+           ,'bind_col2_down'              :'<Alt-Down>'
+           ,'bind_col2_up'                :'<Alt-Up>'
+           ,'bind_col3_down'              :'<Shift-Down>'
+           ,'bind_col3_up'                :'<Shift-Up>'
            ,'bind_copy_article_url'       :'<Shift-F7>'
            ,'bind_copy_history'           :'<ButtonRelease-3>'
            ,'bind_copy_sel_alt'           :'<Control-KP_Enter>'
@@ -1470,6 +1483,30 @@ class WebFrame:
                 ,action   = self.go_forward
                 )
         sg.bind (obj      = self.obj
+                ,bindings = sh.globs['var']['bind_col1_down']
+                ,action   = lambda e:self.move_next_section(col_no=0)
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = sh.globs['var']['bind_col1_up']
+                ,action   = lambda e:self.move_prev_section(col_no=0)
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = sh.globs['var']['bind_col2_down']
+                ,action   = lambda e:self.move_next_section(col_no=1)
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = sh.globs['var']['bind_col2_up']
+                ,action   = lambda e:self.move_prev_section(col_no=1)
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = sh.globs['var']['bind_col3_down']
+                ,action   = lambda e:self.move_next_section(col_no=2)
+                )
+        sg.bind (obj      = self.obj
+                ,bindings = sh.globs['var']['bind_col3_up']
+                ,action   = lambda e:self.move_prev_section(col_no=2)
+                )
+        sg.bind (obj      = self.obj
                 ,bindings = '<Left>'
                 ,action   = self.move_left
                 )
@@ -1480,7 +1517,7 @@ class WebFrame:
         sg.bind (obj      = self.obj
                 ,bindings = '<Down>'
                 ,action   = self.move_down
-            )
+                )
         sg.bind (obj      = self.obj
                 ,bindings = '<Up>'
                 ,action   = self.move_up
@@ -1508,22 +1545,6 @@ class WebFrame:
         sg.bind (obj      = self.obj
                 ,bindings = '<Next>'
                 ,action   = self.move_page_down
-                )
-        sg.bind (obj      = self.obj
-                ,bindings = '<Control-Down>'
-                ,action   = lambda e:self.move_next_section(col_no=0)
-                )
-        sg.bind (obj      = self.obj
-                ,bindings = '<Control-Up>'
-                ,action   = lambda e:self.move_prev_section(col_no=0)
-                )
-        sg.bind (obj      = self.obj
-                ,bindings = '<Alt-Down>'
-                ,action   = lambda e:self.move_next_section(col_no=1)
-                )
-        sg.bind (obj      = self.obj
-                ,bindings = '<Alt-Up>'
-                ,action   = lambda e:self.move_prev_section(col_no=1)
                 )
         sg.bind (obj      = self.obj
                 ,bindings = '<Escape>'
