@@ -2702,8 +2702,19 @@ class WebFrame:
                        ,message = _('The condition "%s" is not observed!') % '%d > %d' % (objs._request._collimit,len(fixed))
                        )
 
+    def ignore_column(self,col_no):
+        if len(objs.request()._cols) > col_no + 1:
+            if objs._request._cols[col_no] == 'transc':
+                sh.log.append ('WebFrame.ignore_column'
+                              ,_('DEBUG')
+                              ,_('Select column "%s" instead of "%s"') % (objs._request._cols[col_no],objs._request._cols[col_no+1])
+                              )
+                col_no += 1
+        return col_no
+    
     # Перейти к следующему разделу столбца col_no
     def move_next_section(self,col_no=0,*args):
+        col_no = self.ignore_column(col_no=col_no)
         result1 = objs.blocks_db().block_pos(pos=self._pos)
         result2 = objs._blocks_db.next_section (pos    = self._pos
                                                ,col_no = col_no
@@ -2743,6 +2754,7 @@ class WebFrame:
         
     # Перейти к предыдущему разделу столбца col_no
     def move_prev_section(self,col_no=0,*args):
+        col_no = self.ignore_column(col_no=col_no)
         result1 = objs.blocks_db().block_pos(pos=self._pos)
         result2 = objs._blocks_db.prev_section (pos    = self._pos
                                                ,col_no = col_no
@@ -3139,7 +3151,8 @@ class Settings:
                                     ,self.col2.choice
                                     ,self.col3.choice
                                     ,self.col4.choice
-                                    ) if choice != _('Do not set')
+                                    ) \
+               if choice != _('Do not set')
               ]
         ''' # note: The following assignment does not change the list:
             for item in lst:
@@ -3158,7 +3171,7 @@ class Settings:
             else:
                 sg.Message (func    = 'Settings.apply'
                            ,level   = _('ERROR')
-                           ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._cols[i]),', '.join(_('Dictionaries'),_('Word forms'),_('Parts of speech'),_('Transcription')))
+                           ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._cols[i]),', '.join(_('Dictionaries'),_('Word forms'),_('Transcription'),_('Parts of speech')))
                            )
         if set(lst):
             self.close()
