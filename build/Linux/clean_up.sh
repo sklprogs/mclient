@@ -12,7 +12,7 @@ rm -f ./resources/{error.gif,info.gif,question.gif,warning.gif}
 rm -rf ./{locale,dics,mclient.cfg}
 
 # Remove mclient Python files
-rm -f ./{cells.py,db.py,elems.py,mclient.py,mkhtml.py,page.py,tags.py}
+rm -f ./{cells.py,db.py,elems.py,mclient.py,mkhtml.py,offline.py,page.py,tags.py}
 
 # Remove shared Python files
 rm -f ./{gettext_windows.py,regexp.py,shared.py,sharedGUI.py}

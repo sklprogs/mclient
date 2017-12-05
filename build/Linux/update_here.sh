@@ -14,7 +14,7 @@ cp -u /usr/local/bin/shared/resources/{error.gif,info.gif,question.gif,warning.g
 cp -ru /usr/local/bin/mclient/src/{locale,dics,mclient.cfg} .
 
 # Copy mclient Python files
-cp -u /usr/local/bin/mclient/src/{cells.py,db.py,elems.py,mclient.py,mkhtml.py,page.py,tags.py} .
+cp -u /usr/local/bin/mclient/src/{cells.py,db.py,elems.py,mclient.py,mkhtml.py,offline.py,page.py,tags.py} .
 
 # Copy shared Python files
 cp -u /usr/local/bin/shared/{gettext_windows.py,regexp.py,shared.py,sharedGUI.py} .
