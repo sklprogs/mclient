@@ -611,7 +611,7 @@ class DB:
                           )
     
     def set_bookmark(self,pos=0):
-        if pos is not None and pos >= 0:
+        if str(pos).isdigit():
             if self._articleid:
                 sh.log.append ('DB.set_bookmark'
                               ,_('DEBUG')
@@ -627,6 +627,19 @@ class DB:
             sh.log.append ('DB.set_bookmark'
                           ,_('WARNING')
                           ,_('Wrong input data!')
+                          )
+                          
+    def delete_bookmarks(self):
+        if self._articleid:
+            sh.log.append ('DB.delete_bookmarks'
+                          ,_('DEBUG')
+                          ,_('Delete bookmarks')
+                          )
+            self.dbc.execute('update ARTICLES set BOOKMARK = ? where ARTICLEID != ?',(-1,self._articleid,))
+        else:
+            sh.log.append ('DB.delete_bookmarks'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
                           )
     
     def zzz(self):

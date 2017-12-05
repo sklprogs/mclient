@@ -1900,6 +1900,7 @@ class WebFrame:
         self.obj.close()
 
     def load_article(self):
+        # note: each time the contents of the current page is changed (e.g., due to prioritizing), bookmarks must be deleted.
         timer = sh.Timer(func_title='WebFrame.load_article')
         timer.start()
         # Do not allow selection positions from previous articles
@@ -2499,6 +2500,7 @@ class WebFrame:
                       )
         fixed = [col for col in objs.request()._cols if col != _('Do not set')]
         objs._request._collimit = self.menu_columns.choice + len(fixed)
+        objs.blocks_db().delete_bookmarks()
         self.load_article()
 
     def reload(self,*args):
@@ -2516,6 +2518,7 @@ class WebFrame:
             objs._request.Reverse = False
         else:
             objs._request.Reverse = True
+        objs.blocks_db().delete_bookmarks()
         self.load_article()
 
     def toggle_alphabet(self,*args):
@@ -2523,6 +2526,7 @@ class WebFrame:
             objs._request.SortTerms = False
         else:
             objs._request.SortTerms = True
+        objs.blocks_db().delete_bookmarks()
         self.load_article()
 
     def toggle_block(self,*args):
@@ -2550,6 +2554,7 @@ class WebFrame:
                            ,level   = _('WARNING')
                            ,message = _('No dictionaries have been provided for blacklisting!')
                            )
+        objs.blocks_db().delete_bookmarks()
         self.load_article()
 
     def unblock(self):
@@ -2603,6 +2608,7 @@ class WebFrame:
                            ,level   = _('WARNING')
                            ,message = _('No dictionaries have been provided for prioritizing!')
                            )
+        objs.blocks_db().delete_bookmarks()
         self.load_article()
 
     def print(self,*args):
@@ -3107,7 +3113,6 @@ class Settings:
             objs._request.Block      = self.cb3.get()
             objs._request.Prioritize = self.cb4.get()
             objs._request.Reverse    = self.cb5.get()
-            # cur
             objs.webframe().set_columns()
         else:
             # todo: do we really need this?
