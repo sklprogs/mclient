@@ -6,6 +6,7 @@
 * Navigate by sections of column 3 (Shift-Down, Shift-Up by default)
 * Add keys: bind_col1_down, bind_col1_up, bind_col2_down, bind_col2_up, bind_col3_down, bind_col3_up
 * Keep (if possible) the column when moving to a preceding/following section
+* Ignore the Transcription column when navigating through sections
 
 5.6.2
 * Move phrases (at any view mode) to the end
