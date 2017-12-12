@@ -22,7 +22,7 @@ import mkhtml      as mh
 
 
 product = 'MClient'
-version = '5.7'
+version = '5.7.1'
 
 third_parties = '''
 tkinterhtml

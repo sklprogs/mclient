@@ -1,5 +1,8 @@
 
 
+5.7.1
+* Set a timeout (6 seconds by default)
+
 5.7
 * Add a heuristic analysis for local Stardict dictionaries (Stardict1 type)
 * Insert "bookmarks" (restore a selection for articles from the History, but only when settings of the current view remain unchanged)
