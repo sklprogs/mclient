@@ -10,6 +10,7 @@ import re
 # В Python 3 не работает просто import urllib, импорт должен быть именно такой, как здесь
 import urllib.request, urllib.parse
 import html
+import ssl
 import pystardict as pd
 import shared     as sh
 import sharedGUI  as sg
@@ -407,12 +408,17 @@ class Welcome:
         self._mt_status = 'not running'
         self._mt_color  = 'red'
         self._st_color  = 'red'
-        self._desc      = sh.List(lst1=[self._product
-                                       ,self._version
-                                       ]
-                                 ).space_items()
+        self._desc      = sh.List (lst1 = [self._product
+                                          ,self._version
+                                          ]
+                                  ).space_items()
 
     def online(self):
+        ''' On *some* systems we can get urllib.error.URLError: 
+            <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED].
+            To get rid of this error, we use this small workaround.
+        '''
+        ssl._create_default_https_context = ssl._create_unverified_context
         try:
             code = urllib.request.urlopen(self._url).code
             if (code / 100 < 4):
