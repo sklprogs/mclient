@@ -52,7 +52,8 @@ class ExtDic:
         except:
             sg.Message ('ExtDic.load'
                        ,_('WARNING')
-                       ,_('Failed to load "%s"!') % self._path,self.Silent
+                       ,_('Failed to load "%s"!') % self._path
+                       ,self.Silent
                        )
 
     def get(self,search):
@@ -63,7 +64,8 @@ class ExtDic:
             except:
                 sg.Message ('ExtDic.get'
                            ,_('WARNING')
-                           ,_('Failed to parse "%s"!') % self._path,self.Silent
+                           ,_('Failed to parse "%s"!') % self._path
+                           ,self.Silent
                            )
         else:
             sh.log.append ('ExtDic.get'
@@ -200,7 +202,7 @@ class Page:
 
     def __init__(self,source=_('All'),lang='English'
                 ,search='~',url='',win_encoding='windows-1251'
-                ,ext_dics=[],file=None
+                ,ext_dics=[],file=None,timeout=6
                 ):
         self._html_raw     = self._page = ''
         self._source       = source
@@ -210,6 +212,7 @@ class Page:
         self._win_encoding = win_encoding
         self.ext_dics      = ext_dics
         self._file         = file
+        self._timeout      = timeout
         self.Success       = True
         if not self._source or not self._lang or not self._search or not self._win_encoding:
             self.Success   = False
@@ -307,7 +310,7 @@ class Page:
                               ,_('Get online: "%s"') % self._search
                               )
                 # Если загружать страницу с помощью "page=urllib.request.urlopen(my_url)", то в итоге получится HTTPResponse, что полезно только для удаления тэгов JavaScript. Поскольку мы вручную удаляем все лишние тэги, то на выходе нам нужна строка.
-                self._page = urllib.request.urlopen(self._url).read()
+                self._page = urllib.request.urlopen(self._url,None,self._timeout).read()
                 sh.log.append ('Page._get_online'
                               ,_('INFO')
                               ,_('[OK]: "%s"') % self._search

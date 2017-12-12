@@ -116,6 +116,7 @@ class ConfigMclient(sh.Config):
            ,'font_col3_size'    :3
            ,'font_col4_size'    :3
            ,'font_terms_size'   :4
+           ,'timeout'           :5
                                })
     
     def _default_var(self):
@@ -1957,6 +1958,7 @@ class WebFrame:
                            ,url          = objs._request._url
                            ,win_encoding = sh.globs['var']['win_encoding']
                            ,ext_dics     = objs.ext_dics()
+                           ,timeout      = sh.globs['int']['timeout']
                            #,file        = '/home/pete/tmp/ars/random fury.txt'
                            #,file        = '/home/pete/tmp/ars/lottery.txt'
                            #,file        = '/home/pete/tmp/ars/таратайка.txt'
@@ -1977,7 +1979,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/sdict_EnRu_full - cut (manual).txt'
                            #,file        = '/home/pete/tmp/ars/sdict_EnRu_full - cut (manual)2.txt'
                            #,file        = '/home/pete/tmp/ars/sdict_EnRu_full - cut (auto).txt'
-                           #,file         = '/home/pete/tmp/ars/scheming.txt'
+                           #,file        = '/home/pete/tmp/ars/scheming.txt'
                            )
             page.run()
             ptimer.end()
