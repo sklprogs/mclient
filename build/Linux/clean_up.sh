@@ -24,6 +24,6 @@ rm -f ./kl_mod_lin.py
 rm -f ./resources/icon_64x64_mclient.gif
 
 # (Linux-only) Remove build scripts
-rm -f ./{build.sh,clean_up.sh,setup.py,update_mclient.sh}
+rm -f ./{build.sh,clean_up.sh,find_shared_libs.sh,pack.sh,setup.py,update_mclient.sh}
 
 ls .

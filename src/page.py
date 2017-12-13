@@ -418,7 +418,13 @@ class Welcome:
             <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED].
             To get rid of this error, we use this small workaround.
         '''
-        ssl._create_default_https_context = ssl._create_unverified_context
+        if hasattr(ssl,'_create_unverified_context'):
+            ssl._create_default_https_context = ssl._create_unverified_context
+        else:
+            sh.log.append ('Welcome.online'
+                          ,_('WARNING')
+                          ,_('Unable to use unverified certificates!')
+                          )
         try:
             code = urllib.request.urlopen(self._url).code
             if (code / 100 < 4):

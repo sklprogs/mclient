@@ -4,10 +4,12 @@
 
 ./update_here.sh
 ./build.sh
-mkdir -p ./mclient/tkhtml/Linux
+mkdir ./mclient
 mv ./build/exe.linux-i686-3.4/* mclient
 rmdir ./build/exe.linux-i686-3.4
 rmdir ./build
 cp -ru dics locale resources mclient.cfg mclient/
-cp -rv /usr/lib/python3.4/site-packages/tkinterhtml/tkhtml/Linux/* ./mclient/tkhtml/Linux/
+cp -rv ./mclient_bin_extra/* ./mclient/
+./pack.sh
+rm -rf ./mclient
 ./clean_up.sh

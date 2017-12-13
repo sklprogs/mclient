@@ -26,6 +26,6 @@ cp -u /usr/local/bin/mclient/src/kl_mod_lin.py .
 cp -u /usr/local/bin/mclient/src/resources/icon_64x64_mclient.gif ./resources/
 
 # (Linux-only) Copy build scripts
-cp -u /usr/local/bin/mclient/build/Linux/{build.sh,clean_up.sh,setup.py,update_mclient.sh} .
+cp -u /usr/local/bin/mclient/build/Linux/{build.sh,clean_up.sh,find_shared_libs.sh,pack.sh,setup.py,update_mclient.sh} .
 
 ls .
