@@ -1,3 +1,4 @@
+- Hotkeys for moving to the end of a column and/or page
 - CSS for drawing a dash line for each section: mkhtml.py:315
 - Sometimes we need to press F4 twice for History
 - Do not warn about an empty URL in 'go_url' and 'copy_text' in case of the welcome page

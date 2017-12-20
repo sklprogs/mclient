@@ -121,6 +121,7 @@ pcom4 = '&&UserName='                          # MT
 
 # Corrective comments
 pcor1 = '<span STYLE="color:rgb(60,179,113)">' # MT
+pcor2 = '<font color=DarkGoldenrod>'           # MT
 
 # Word Forms
 pwf1  = '<td bgcolor='                         # MT
@@ -156,8 +157,9 @@ ptr2  = '<tr>'                                 # ST
 ptr3  = '</tr>'                                # ST
 
 useful_tags = [pdic,purl1,purl2,pcom1,pcom2
-              ,pcom3,pcom4,pcor1,ptr1,ptr2
-              ,pwf4,pwf6,ptm7,pph5,psp1,psp2
+              ,pcom3,pcom4,pcor1,pcor2,ptr1
+              ,ptr2,pwf4,pwf6,ptm7,pph5,psp1
+              ,psp2
               ]
 
 
@@ -267,7 +269,7 @@ class AnalyzeTag:
             self._cur._type = 'comment'
 
     def _cor_comment_mt(self):
-        if self._block.startswith(pcor1):
+        if self._block.startswith(pcor1) or self._block.startswith(pcor2):
             self._cur._type = 'correction'
 
     def _comment_sd(self):

@@ -8,7 +8,7 @@ gettext.install('mclient','./locale')
 import os
 import re
 # В Python 3 не работает просто import urllib, импорт должен быть именно такой, как здесь
-import urllib.request, urllib.parse
+import urllib.request #,urllib.parse
 import html
 import ssl
 import pystardict as pd
@@ -247,6 +247,8 @@ class Page:
     def invalid2(self):
         # We need to close the tag since all following blocks with be 'SAMECELL == 1' otherwise
         self._page = self._page.replace('<span STYLE="color:black">','</span>')
+        # These tags shall be replaced since they are not related to 'useful_tags' (useless/undefined tags with their contents are further removed), but we need the contents, and we cannot determine the type of the block yet.
+        self._page = self._page.replace('<b>','').replace('</b>','')
         # Do this before 'common_replace'. Splitting terms is hindered without this.
         self._page = self._page.replace('>;  <','><')
         self._page = self._page.replace('Требуется авторизация','')
