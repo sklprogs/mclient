@@ -215,7 +215,8 @@ class Page:
         self._file         = file
         self._timeout      = timeout
         self.Success       = True
-        if not self._source or not self._lang or not self._search or not self._win_encoding:
+        if not self._source or not self._lang or not self._search \
+                            or not self._win_encoding:
             self.Success   = False
             sh.log.append ('Page.__init__'
                           ,_('WARNING')
@@ -234,9 +235,14 @@ class Page:
         self.unsupported        ()
         return self._page
 
-    # Remove characters from a range not supported by Tcl (and causing a Tkinter error). Sample requests causing the error: Multitran, EN-RU: 'top', 'et al.'
+    ''' Remove characters from a range not supported by Tcl 
+        (and causing a Tkinter error). Sample requests causing 
+        the error: Multitran, EN-RU: 'top', 'et al.'
+     '''
     def unsupported(self):
-        self._page = [char for char in self._page if ord(char) in range(65536)]
+        self._page = [char for char in self._page if ord(char) \
+                      in range(65536)
+                     ]
     
     # todo: Make this MT-only
     def invalid(self):
