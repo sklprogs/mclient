@@ -6,10 +6,10 @@ import shared as sh
 import sharedGUI as sg
 
 
-# todo (?): use shared
+#todo (?): use shared
 speech_abbr = ('гл.','нареч.','прил.','сокр.','сущ.')
 dic_abbr    = ('вчт.','карт.','мор.','разг.','уст.','хир.','эл.')
-# todo: read from file
+#todo: read from file
 dic_titles  = ('(австралийское)'
               ,'(американизм)'
               ,'(военное)'
@@ -41,7 +41,7 @@ class Stardict1:
         self.text    = text
         self.header  = header
         
-    # todo: do this before anything else
+    #todo: do this before anything else
     def decode(self):
         try:
             self.text = html.unescape(self.text)
@@ -53,7 +53,7 @@ class Stardict1:
     
     def trash(self):
         self.text = self.text.replace(' ∙ ',';').replace(' - ',';')
-        # todo: Can we allow decoding before extracting tags?
+        #todo: Can we allow decoding before extracting tags?
         self.text = self.text.replace('&gt;','')
         
     def numbering(self):
@@ -127,13 +127,19 @@ class Stardict1:
                     block = ''
             else:
                 block += sym
-        self._blocks = [block.strip() for block in self._blocks if block.strip()]
-        self._blocks = [block.strip(',') for block in self._blocks if block.strip(',')]
+        self._blocks = [block.strip() for block in self._blocks \
+                        if block.strip()
+                       ]
+        self._blocks = [block.strip(',') for block in self._blocks \
+                        if block.strip(',')
+                       ]
         return self._blocks
 
     def tags(self):
         for block in self._blocks:
-            # note: either do html decode before that or use specific tags
+            ''' #note: either do html decode before that or use specific
+                tags
+            '''
             if '<' in block or '>' in block:
                 self._tags.append(block)
             elif block in speech_abbr:
@@ -144,9 +150,12 @@ class Stardict1:
             elif block in dic_titles:
                 self._tags.append('<a title="%s"></a>' % block)
                 #self._tags.append('<co>' + block + '</co>')
-            # todo: create a 'Synonyms' dictionary, split items after it and set 'term' type to them
-            elif block.startswith('(') or '≈' in block or 'Syn :' in block:
-                # todo (?) use variables instead of hardcoding
+                ''' #todo: create a 'Synonyms' dictionary, split items after
+                    it and set 'term' type to them
+                '''
+            elif block.startswith('(') or '≈' in block or 'Syn :' \
+            in block:
+                #todo (?) use variables instead of hardcoding
                 self._tags.append('<co>' + block + '</co>')
             else:
                 self._tags.append('<dtrn>' + block + '</dtrn>')
@@ -157,9 +166,11 @@ class Stardict1:
             if self._blocks[i] in dic_titles:
                 Condition = False
                 if i > 0:
-                    if sh.Text(text=self._blocks[i]).has_cyrillic() and sh.Text(text=self._blocks[i-1]).has_latin():
+                    if sh.Text(text=self._blocks[i]).has_cyrillic() \
+                    and sh.Text(text=self._blocks[i-1]).has_latin():
                         Condition = True
-                    elif sh.Text(text=self._blocks[i]).has_latin() and sh.Text(text=self._blocks[i-1]).has_cyrillic():
+                    elif sh.Text(text=self._blocks[i]).has_latin() \
+                    and sh.Text(text=self._blocks[i-1]).has_cyrillic():
                         Condition = True
                 if Condition:
                     self._blocks[i-1], self._blocks[i] = self._blocks[i], self._blocks[i-1]

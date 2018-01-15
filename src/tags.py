@@ -175,9 +175,15 @@ class Block:
         self._no       = -1
         self._cell_no  = -1 # Applies to non-blocked cells only
         self._same     = -1
-        # '_select' is an attribute of a *cell* which is valid if the cell has a non-blocked block of types 'term', 'phrase' or 'transc'
+        ''' '_select' is an attribute of a *cell* which is valid if the
+            cell has a non-blocked block of types 'term', 'phrase' or
+            'transc'
+        '''
         self._select   = -1
-        self._type     = 'comment' # 'wform', 'speech', 'dic', 'phrase', 'term', 'comment', 'correction', 'transc', 'invalid'
+        ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
+            'correction', 'transc', 'invalid'
+        '''
+        self._type     = 'comment'
         self._text     = ''
         self._url      = ''
         self._urla     = ''
@@ -243,11 +249,16 @@ class AnalyzeTag:
 
     def plain(self):
         self._cur._text = self._block
-        # note: The analysis must be reset after '</', otherwise, plain text following it will be marked as 'invalid' rather than 'comment'
+        ''' #note: The analysis must be reset after '</', otherwise,
+            plain text following it will be marked as 'invalid' rather
+            than 'comment'
+        '''
         if self._cur._type != 'invalid':
             self._elems.append(copy.copy(self._cur))
 
-    # Use custom split because we need to preserve delimeters (cannot distinguish tags and contents otherwise)
+    ''' Use custom split because we need to preserve delimeters (cannot
+        distinguish tags and contents otherwise)
+    '''
     def split(self):
         tmp = ''
         for sym in self._tag:
@@ -265,11 +276,13 @@ class AnalyzeTag:
             self._blocks.append(tmp)
 
     def _comment_mt(self):
-        if self._block.startswith(pcom1) or self._block.startswith(pcom2) or pcom4 in self._block:
+        if self._block.startswith(pcom1) \
+        or self._block.startswith(pcom2) or pcom4 in self._block:
             self._cur._type = 'comment'
 
     def _cor_comment_mt(self):
-        if self._block.startswith(pcor1) or self._block.startswith(pcor2):
+        if self._block.startswith(pcor1) \
+        or self._block.startswith(pcor2):
             self._cur._type = 'correction'
 
     def _comment_sd(self):
@@ -277,9 +290,11 @@ class AnalyzeTag:
             self._cur._type = 'comment'
 
     def comment(self):
-        # The tag has a different meaning in online and offline sources, so we must check the source first
+        ''' The tag has a different meaning in online and offline
+            sources, so we must check the source first
+        '''
         if self._source == _('All'):
-            # todo: analyze pages from different sources separately
+            #todo: analyze pages from different sources separately
             self._comment_mt()
             self._comment_sd()
             self._cor_comment_mt()
@@ -291,7 +306,14 @@ class AnalyzeTag:
         else:
             sg.Message ('AnalyzeTag.transc'
                        ,_('ERROR')
-                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._source),', '.join((_('All'),_('Online'),_('Offline'))))
+                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                       % (str(self._source)
+                         ,', '.join ((_('All')
+                                     ,_('Online')
+                                     ,_('Offline')
+                                     )
+                                    )
+                        )
                        )
 
     def dic(self):
@@ -341,19 +363,28 @@ class AnalyzeTag:
             self._cur._type = 'term'
 
     def url(self):
-        # note: these additional checks can be shortened if we create a sub-source (e.g., 'Multitran') and check for it
+        ''' #note: these additional checks can be shortened if we create
+            a sub-source (e.g., 'Multitran') and check for it
+        '''
         if self._source in (_('All'),_('Online')):
-            if purl1 in self._block or purl2 in self._block: # Otherwise, 'self._block' will be returned when there is no match
+            ''' Otherwise, 'self._block' will be returned when there is
+                no match
+            '''
+            if purl1 in self._block or purl2 in self._block:
                 self._cur._url = self._block.replace(purl1,'',1).replace(purl2,'',1)
                 if self._cur._url.endswith(purl3):
                     self._cur._url = self._cur._url.replace(purl3,'')
-                    # note: adding a non-Multitran online source will require code modification
+                    ''' #note: adding a non-Multitran online source will
+                        require code modification
+                    '''
                     self._cur._url = self._pair_root + self._cur._url
                 else:
                     self._cur._url = ''
 
     def transc(self): # Transcription
-        # '<tr>' has a different meaning in online and offline sources, so we must check the source first
+        ''' '<tr>' has a different meaning in online and offline
+            sources, so we must check the source first
+        '''
         if self._source == _('All'):
             self._transc_mt()
             self._transc_sd()
@@ -523,10 +554,10 @@ if __name__ == '__main__':
 
     # Modifiable
     source = _('Online')
-    #search = 'preceding'
+    #search= 'preceding'
     search = 'tun'
-    #file   = '/home/pete/tmp/ars/welcome back.txt'
-    #file   = '/home/pete/tmp/ars/tun.txt'
+    #file  = '/home/pete/tmp/ars/welcome back.txt'
+    #file  = '/home/pete/tmp/ars/tun.txt'
     file   = '/home/pete/tmp/ars/lottery.txt'
 
     page = pg.Page (source = source

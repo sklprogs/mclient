@@ -29,7 +29,9 @@ class KeyListener(threading.Thread):
         keylistener = KeyListener()
         Изначально:
         keylistener.addKeyListener("L_CTRL+L_SHIFT+y", callable)
-        Обратить внимание, что необходимо присвоить все возможные комбинации, поскольку порядок нажатия может быть иной, например, "L_CTRL+y+L_SHIFT"
+        Обратить внимание, что необходимо присвоить все возможные
+        комбинации, поскольку порядок нажатия может быть иной, например,
+        "L_CTRL+y+L_SHIFT"
         Теперь:
         keylistener.addKeyListener("Control_L+c+c", callable)
     '''
@@ -44,10 +46,15 @@ class KeyListener(threading.Thread):
         self.pressed = []
         self.listeners = {}
         self.character = None
-        self.status = 0 # 0: Nothing caught; 1: Read buffer and call main module; 2: Call main module
+        ''' 0: Nothing caught; 1: Read buffer and call main module;
+            2: Call main module
+        '''
+        self.status = 0
         
-    # need the following because XK.keysym_to_string() only does printable chars
-    # rather than being the correct inverse of XK.string_to_keysym()
+    ''' need the following because XK.keysym_to_string() only does
+        printable chars rather than being the correct inverse of
+        XK.string_to_keysym()
+    '''
     def lookup_keysym(self, keysym):
         for name in dir(XK):
             if name.startswith("XK_") and getattr(XK, name) == keysym:
@@ -82,7 +89,10 @@ class KeyListener(threading.Thread):
             print_v("RECORD extension not found")
             sys.exit(1)
         r = self.record_dpy.record_get_version(0, 0)
-        print_v("RECORD extension version %d.%d" % (r.major_version, r.minor_version))
+        print_v ("RECORD extension version %d.%d" % (r.major_version
+                                                    ,r.minor_version
+                                                    )
+                )
         # Create a recording context; we only want key events
         self.ctx = self.record_dpy.record_create_context (
                 0
@@ -93,7 +103,8 @@ class KeyListener(threading.Thread):
                  ,'ext_requests'    : (0, 0, 0, 0)
                  ,'ext_replies'     : (0, 0, 0, 0)
                  ,'delivered_events': (0, 0)
-                 ,'device_events'   : tuple(self.contextEventMask) #(X.KeyPress, X.ButtonPress)
+                 # (X.KeyPress, X.ButtonPress)
+                 ,'device_events'   : tuple(self.contextEventMask)
                  ,'errors'          : (0, 0)
                  ,'client_started'  : False
                  ,'client_died'     : False
@@ -102,8 +113,10 @@ class KeyListener(threading.Thread):
                 ]
                                                          )
 
-        # Enable the context; this only returns after a call to record_disable_context,
-        # while calling the callback function in the meantime
+        ''' Enable the context; this only returns after a call to
+            record_disable_context, while calling the callback function
+            in the meantime
+        '''
         self.record_dpy.record_enable_context(self.ctx, self.processevents)
         # Finally free the context
         self.record_dpy.record_free_context(self.ctx)
@@ -115,7 +128,9 @@ class KeyListener(threading.Thread):
 
     def append(self):
         if len(self.pressed) > 0:
-            if self.pressed[0] == 'Control_L' or self.pressed[0] == 'Control_R' or self.pressed[0] == 'Alt_L' or self.pressed[0] == 'Alt_R':
+            if self.pressed[0] in ('Control_L','Control_R','Alt_L'
+                                  ,'Alt_R'
+                                  ):
                 self.pressed.append(self.character)
     
     def press(self):
@@ -124,9 +139,9 @@ class KeyListener(threading.Thread):
                 self.pressed = []
         elif len(self.pressed) == 3:
             self.pressed = []
-        if self.character == 'Control_L' or self.character == 'Control_R' or self.character == 'Alt_L' or self.character == 'Alt_R':
+        if self.character in ('Control_L','Control_R','Alt_L','Alt_R'):
             self.pressed = [self.character]
-        elif self.character == 'c' or self.character == 'Insert' or self.character == 'grave':
+        elif self.character in ('c','Insert','grave'):
             self.append()
         action = self.listeners.get(tuple(self.pressed), False)
         print_v('Current action:', str(tuple(self.pressed)))
@@ -137,7 +152,7 @@ class KeyListener(threading.Thread):
         """must be called whenever a key release event has occurred."""
         # Не засчитывает отпущенный Control
         # Кириллическую 'с' распознает как латинскую
-        if self.character != 'c' and self.character != 'Insert' and self.character != 'grave':
+        if not self.character in ('c','Insert','grave'):
             self.pressed = []
 
     def addKeyListener(self, hotkeys, callable):
@@ -158,14 +173,27 @@ class KeyListener(threading.Thread):
 
 
 Verbose = False
-signal.signal(signal.SIGINT,catch_control_c) # do not quit when Control-c is pressed
+# do not quit when Control-c is pressed
+signal.signal(signal.SIGINT,catch_control_c)
 keylistener = KeyListener()
-keylistener.addKeyListener("Control_L+c+c",lambda: keylistener.set_status(status=1))
-keylistener.addKeyListener("Control_R+c+c",lambda: keylistener.set_status(status=1))
-keylistener.addKeyListener("Control_L+Insert+Insert",lambda: keylistener.set_status(status=1))
-keylistener.addKeyListener("Control_R+Insert+Insert",lambda: keylistener.set_status(status=1))
-keylistener.addKeyListener("Alt_L+grave",lambda: keylistener.set_status(status=2))
-keylistener.addKeyListener("Alt_R+grave",lambda: keylistener.set_status(status=2))
+keylistener.addKeyListener ("Control_L+c+c"
+                           ,lambda:keylistener.set_status(status=1)
+                           )
+keylistener.addKeyListener ("Control_R+c+c"
+                           ,lambda:keylistener.set_status(status=1)
+                           )
+keylistener.addKeyListener ("Control_L+Insert+Insert"
+                           ,lambda:keylistener.set_status(status=1)
+                           )
+keylistener.addKeyListener ("Control_R+Insert+Insert"
+                           ,lambda:keylistener.set_status(status=1)
+                           )
+keylistener.addKeyListener ("Alt_L+grave"
+                           ,lambda:keylistener.set_status(status=2)
+                           )
+keylistener.addKeyListener ("Alt_R+grave"
+                           ,lambda:keylistener.set_status(status=2)
+                           )
 keylistener.start()
 
 if __name__ == '__main__':

@@ -15,7 +15,7 @@ import shared as sh
 import sharedGUI as sg
 
 
-''' # note: don't forget to change 'self.Selectable', 'self._cols',
+''' #note: don't forget to change 'self.Selectable', 'self._cols',
     'self.SortTerms' externally
 '''
 class DB:
@@ -636,7 +636,7 @@ class DB:
 
     def prioritized(self):
         if self._articleid:
-            ''' # note: We assume that 'Phrases' section has -1000
+            ''' #note: We assume that 'Phrases' section has -1000
                 priority and this is always used despite user settings.
             '''
             self.dbc.execute ('select NO from BLOCKS \

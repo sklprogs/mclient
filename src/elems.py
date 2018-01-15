@@ -1,11 +1,17 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-''' This module prepares blocks after extracting tags for permanently storing in DB
-    Needs attributes in blocks: TYPE, DICA, WFORMA, SPEECHA, TRANSCA, TERMA, SAMECELL
-    Modifies attributes:        TYPE, TEXT, DICA, WFORMA, SPEECHA, TRANSCA, TERMA, SAMECELL
+''' This module prepares blocks after extracting tags for permanently
+    storing in DB.
+    Needs attributes in blocks: TYPE, DICA, WFORMA, SPEECHA, TRANSCA,
+    TERMA, SAMECELL
+    Modifies attributes:        TYPE, TEXT, DICA, WFORMA, SPEECHA,
+    TRANSCA, TERMA, SAMECELL
     SAMECELL is based on Tags and TYPE and is filled fully
-    SELECTABLE cannot be filled because it depends on CELLNO which is created in Cells; Cells modifies TEXT of DIC, WFORM, SPEECH, TRANSC types, and we do not need to make empty cells SELECTABLE, so we calculate SELECTABLE fully in Cells
+    SELECTABLE cannot be filled because it depends on CELLNO which is
+    created in Cells; Cells modifies TEXT of DIC, WFORM, SPEECH, TRANSC
+    types, and we do not need to make empty cells SELECTABLE, so we
+    calculate SELECTABLE fully in Cells.
 '''
 
 import gettext, gettext_windows
@@ -27,12 +33,19 @@ class Block:
         self._first    = -1
         self._last     = -1
         self._no       = -1
-        self._cell_no  = -1 # Applies to non-blocked cells only
+        # Applies to non-blocked cells only
+        self._cell_no  = -1
         self._same     = -1
-        # '_select' is an attribute of a *cell* which is valid if the cell has a non-blocked block of types 'term', 'phrase' or 'transc'
+        ''' '_select' is an attribute of a *cell* which is valid
+            if the cell has a non-blocked block of types 'term',
+            'phrase' or 'transc'
+        '''
         self._select   = -1
         self._priority = 0
-        self._type     = 'comment' # 'wform', 'speech', 'dic', 'phrase', 'term', 'comment', 'correction', 'transc', 'invalid'
+        ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
+            'correction', 'transc', 'invalid'
+        '''
+        self._type     = 'comment'
         self._text     = ''
         self._url      = ''
         self._dica     = ''
@@ -45,11 +58,21 @@ class Block:
 
 # Process blocks before dumping to DB
 ''' About filling 'terma':
-    - We fill 'terma' from the start in order to ensure the correct 'terma' value for blocks having '_same == 1'
-    - We fill 'terma' from the end in order to ensure that 'terma' of blocks of non-selectable types will have the value of the 'term' AFTER those blocks
-    - We fill 'terma' from the end in order to ensure that 'terma' is also filled for blocks having '_same == 0'
-    - When filling 'terma' from the start to the end, in order to set a default 'terma' value, we also search for blocks of the 'phrase' type (just to be safe in such cases when 'phrase' blocks anticipate 'term' blocks). However, we fill 'terma' for 'phrase' blocks from the end to the start because we want the 'phrase' dictionary to have the 'terma' value of the first 'phrase' block AFTER it
-    - Finally, we clear TERMA values for fixed columns. Sqlite sorts '' before a non-empty string, so we ensure thereby that sorting by TERMA will be correct. Otherwise, we would have to correctly calculate TERMA values for fixed columns that will vary depending on the view. Incorrect sorting by TERMA may result in putting a TERM item before fixed columns.
+    - We fill 'terma' from the start in order to ensure the correct
+      'terma' value for blocks having '_same == 1'
+    - We fill 'terma' from the end in order to ensure that 'terma' of
+      blocks of non-selectable types will have the value of the 'term'
+      AFTER those blocks
+    - We fill 'terma' from the end in order to ensure that 'terma' is
+      also filled for blocks having '_same == 0'
+    - When filling 'terma' from the start to the end, in order to set
+      a default 'terma' value, we also search for blocks of the 'phrase' type (just to be safe in such cases when 'phrase' blocks anticipate 'term' blocks). However, we fill 'terma' for 'phrase' blocks from the end to the start because we want the 'phrase' dictionary to have the 'terma' value of the first 'phrase' block AFTER it
+    - Finally, we clear TERMA values for fixed columns. Sqlite sorts ''
+      before a non-empty string, so we ensure thereby that sorting by
+      TERMA will be correct. Otherwise, we would have to correctly
+      calculate TERMA values for fixed columns that will vary depending
+      on the view. Incorrect sorting by TERMA may result in putting
+      a TERM item before fixed columns.
 '''
 class Elems:
     
@@ -73,7 +96,9 @@ class Elems:
             self.straight_line    ()
             self.comments         ()
             self.dic_abbr         ()
-            # These 2 procedures should not be combined (otherwise, corrections will have the same color as comments)
+            ''' These 2 procedures should not be combined (otherwise,
+                corrections will have the same color as comments)
+            '''
             self.unite_comments   ()
             self.unite_corrections()
             self.speech           ()
@@ -122,7 +147,10 @@ class Elems:
                  ,MaxRows = MaxRows
                  ).print()
         
-    # 'speech' blocks have '_same = 1' when analyzing MT because they are within a single tag. We fix it here, not in Tags, because Tags are assumed to output the result 'as is'.
+    ''' 'speech' blocks have '_same = 1' when analyzing MT because they
+        are within a single tag. We fix it here, not in Tags, because
+        Tags are assumed to output the result 'as is'.
+    '''
     def speech(self):
         for i in range(len(self._blocks)):
             if self._blocks[i]._type == 'speech':
@@ -133,7 +161,8 @@ class Elems:
     def transc(self):
         i = 0
         while i < len(self._blocks):
-            if self._blocks[i]._type == 'transc' and self._blocks[i]._same > 0:
+            if self._blocks[i]._type == 'transc' \
+            and self._blocks[i]._same > 0:
                 if i > 0 and self._blocks[i-1]._type == 'transc':
                     self._blocks[i-1]._text += self._blocks[i]._text
                     del self._blocks[i]
@@ -143,9 +172,14 @@ class Elems:
     def unite_comments(self):
         i = 0
         while i < len(self._blocks):
-            if self._blocks[i]._type == 'comment' and self._blocks[i]._same > 0:
+            if self._blocks[i]._type == 'comment' \
+            and self._blocks[i]._same > 0:
                 if i > 0 and self._blocks[i-1]._type == 'comment':
-                    self._blocks[i-1]._text = sh.List(lst1=[self._blocks[i-1]._text,self._blocks[i]._text]).space_items()
+                    self._blocks[i-1]._text \
+                    = sh.List (lst1 = [self._blocks[i-1]._text
+                                      ,self._blocks[i]._text
+                                      ]
+                              ).space_items()
                     del self._blocks[i]
                     i -= 1
             i += 1
@@ -153,9 +187,14 @@ class Elems:
     def unite_corrections(self):
         i = 0
         while i < len(self._blocks):
-            if self._blocks[i]._type == 'correction' and self._blocks[i]._same > 0:
+            if self._blocks[i]._type == 'correction' \
+            and self._blocks[i]._same > 0:
                 if i > 0 and self._blocks[i-1]._type == 'correction':
-                    self._blocks[i-1]._text = sh.List(lst1=[self._blocks[i-1]._text,self._blocks[i]._text]).space_items()
+                    self._blocks[i-1]._text \
+                    = sh.List (lst1 = [self._blocks[i-1]._text
+                                      ,self._blocks[i]._text
+                                      ]
+                              ).space_items()
                     del self._blocks[i]
                     i -= 1
             i += 1
@@ -163,23 +202,36 @@ class Elems:
     def dic_abbr(self):
         i = 0
         while i < len(self._blocks):
-            # We suppose that these are abbreviations of dictionary titles. If the full dictionary title is not preceding (this can happen if the whole article is occupied by the 'Phrases' section), we keep these abbreviations as comments.
-            # note: checking 'self._blocks[i]._type == 'dic' and self._blocks[i]._same > 0' is not enough.
-            if i > 0 and self._blocks[i-1]._type == 'dic' and self._blocks[i]._same > 0:
+            ''' We suppose that these are abbreviations of dictionary
+                titles. If the full dictionary title is not preceding
+                (this can happen if the whole article is occupied by
+                the 'Phrases' section), we keep these abbreviations as
+                comments.
+                #note: checking 'self._blocks[i]._type == 'dic' and
+                self._blocks[i]._same > 0' is not enough.
+            '''
+            if i > 0 and self._blocks[i-1]._type == 'dic' \
+            and self._blocks[i]._same > 0:
                 del self._blocks[i]
                 i -= 1
             i += 1
             
     def straight_line(self):
-        self._blocks = [block for block in self._blocks if block._text.strip() != '|']
+        self._blocks = [block for block in self._blocks \
+                        if block._text.strip() != '|'
+                       ]
     
     def comments(self):
         i = 0
         while i < len(self._blocks):
             if self._blocks[i]._type in ('comment','correction'):
                 text_str = self._blocks[i]._text.strip()
-                # Delete comments that are just ';' or ',' (we don't need them, we have a table view)
-                # We delete instead of assigning Block attribute because we may need to unblock blocked dictionaries later
+                ''' Delete comments that are just ';' or ',' (we don't
+                    need them, we have a table view).
+                    We delete instead of assigning Block attribute
+                    because we may need to unblock blocked dictionaries
+                    later.
+                '''
                 if text_str == ';' or text_str == ',':
                     del self._blocks[i]
                     i -= 1
@@ -188,47 +240,66 @@ class Elems:
                     if i > 0 and self._blocks[i-1]._type == 'phrase':
                         self._blocks[i]._same = 1
                     # Move the comment to the preceding cell
-                    if text_str.startswith(',') or text_str.startswith(';') or text_str.startswith('(') or text_str.startswith(')') or text_str.startswith('|'):
+                    if text_str.startswith(',') \
+                    or text_str.startswith(';') \
+                    or text_str.startswith('(') \
+                    or text_str.startswith(')') \
+                    or text_str.startswith('|'):
                         self._blocks[i]._same = 1
                         # Mark the next block as a start of a new cell
-                        if i < len(self._blocks) - 1 and self._blocks[i+1]._type not in ('comment','correction'):
+                        if i < len(self._blocks) - 1 \
+                        and self._blocks[i+1]._type \
+                        not in ('comment','correction'):
                             self._blocks[i+1]._same = 0
             i += 1
             
-    ''' Sometimes sources do not provide sufficient information on SAMECELL blocks, 
-        and the tag parser cannot handle sequences such as 'any type (not _same) -> comment (not _same) -> any type (not _same)'.
+    ''' Sometimes sources do not provide sufficient information on
+        SAMECELL blocks, and the tag parser cannot handle sequences such
+        as 'any type (not _same) -> comment (not _same) -> any type (not
+        _same)'.
         Rules:
         1) (Should be always correct)
             'i >= 0 -> correction (not _same)
                 =>
             'i >= 0 -> correction (_same)
         2) (Preferable)
-            'term (not _same) -> comment (not _same) -> any type (not _same)'
+            'term (not _same) -> comment (not _same) -> any type
+            (not _same)'
                 =>
-            'term (not _same) -> comment (_same) -> any type (not _same)'
+            'term (not _same) -> comment (_same) -> any type
+            (not _same)'
         3) (Generally correct before removing fixed columns)
-            'dic/wform/speech/transc -> comment (not _same) -> term (not _same)'
+            'dic/wform/speech/transc -> comment (not _same) -> term
+            (not _same)'
                 =>
-            'dic/wform/speech/transc -> comment (not _same) -> term (_same)'
+            'dic/wform/speech/transc -> comment (not _same) -> term
+            (_same)'
         4) (By guess, check only after ##2&3)
-            'any type (_same) -> comment (not _same) -> any type (not _same)'
+            'any type (_same) -> comment (not _same) -> any type
+            (not _same)'
                 =>
-            'any type (_same) -> comment (_same) -> any type (not _same)'
+            'any type (_same) -> comment (_same) -> any type
+            (not _same)'
         5) (Always correct)
             'any type -> comment/correction (not _same) -> END'
                 =>
             'any type -> comment/correction (_same) -> END'
-        6) (Do this in the end of the loop; + Readability improvement ("в 42 тематиках"))
-            'any type (not same) -> comment (not same) -> any type (not _same)'
+        6) (Do this in the end of the loop; + Readability improvement
+           ("в 42 тематиках"))
+            'any type (not same) -> comment (not same) -> any type
+            (not _same)'
                 =>
-            'any type (not same) -> comment (_same) -> any type (not _same)'
+            'any type (not same) -> comment (_same) -> any type
+            (not _same)'
     '''
     def comment_same(self):
         for i in range(len(self._blocks)):
             cond1  = i > 0 and self._blocks[i]._type == 'correction'
             cond2  = self._blocks[i]._same <= 0
-            cond3  = i > 0 and self._blocks[i-1]._type == 'comment' and self._blocks[i-1]._same <= 0
-            cond4  = i > 1 and self._blocks[i-2]._type == 'term' and self._blocks[i-2]._same <= 0
+            cond3  = i > 0 and self._blocks[i-1]._type == 'comment' \
+            and self._blocks[i-1]._same <= 0
+            cond4  = i > 1 and self._blocks[i-2]._type == 'term' \
+            and self._blocks[i-2]._same <= 0
             cond5  = i > 1 and self._blocks[i-2]._same <= 0
             cond6  = self._blocks[i]._type == 'term'
             cond7a = i > 1 and self._blocks[i-2]._type == 'dic'
@@ -317,7 +388,9 @@ class Elems:
                 speecha = block._text
             elif block._type == 'transc':
                 transca = block._text
-            # todo: Is there a difference if we use both term/phrase here or the term only?
+                ''' #todo: Is there a difference if we use both
+                    term/phrase here or the term only?
+                '''
             elif block._type in ('term','phrase'):
                 terma = block._text
             block._dica    = dica
@@ -329,7 +402,10 @@ class Elems:
     
     def fill_terma(self):
         terma = ''
-        # This is just to get a non-empty value of 'terma' if some other types besides 'phrase' and 'term' follow them in the end.
+        ''' This is just to get a non-empty value of 'terma' if some
+            other types besides 'phrase' and 'term' follow them in the
+            end.
+        '''
         i = len(self._blocks) - 1
         while i >= 0:
             if self._blocks[i]._type in ('term','phrase'):
@@ -353,7 +429,9 @@ class Elems:
         dica = wforma = speecha = ''
         i = 0
         while i < len(self._blocks):
-            if dica != self._blocks[i]._dica or wforma != self._blocks[i]._wforma or speecha != self._blocks[i]._speecha:
+            if dica != self._blocks[i]._dica \
+            or wforma != self._blocks[i]._wforma \
+            or speecha != self._blocks[i]._speecha:
                 
                 block          = Block()
                 block._type    = 'speech'
@@ -406,7 +484,9 @@ class Elems:
             i += 1
             
     def remove_fixed(self):
-        self._blocks = [block for block in self._blocks if block._type not in ('dic','wform','transc','speech')]
+        self._blocks = [block for block in self._blocks if block._type \
+                        not in ('dic','wform','transc','speech')
+                       ]
     
     def dump(self):
         for block in self._blocks:
@@ -446,7 +526,8 @@ class Elems:
     def selectables(self):
         # block._no is set only after creating DB
         for block in self._blocks:
-            if block._type in ('phrase','term','transc') and block._text and block._select < 1:
+            if block._type in ('phrase','term','transc') \
+            and block._text and block._select < 1:
                 block._select = 1
             else:
                 block._select = 0
@@ -471,7 +552,10 @@ class PhraseTerma:
             
     def second_phrase(self):
         if self._no2 < 0:
-            self.dbc.execute('select NO from BLOCKS where ARTICLEID = ? and TYPE = ? order by NO',(self._articleid,'phrase',))
+            self.dbc.execute ('select NO from BLOCKS \
+                               where ARTICLEID = ? and TYPE = ? \
+                               order by NO',(self._articleid,'phrase',)
+                             )
             result = self.dbc.fetchone()
             if result:
                 self._no2 = result[0]
@@ -484,11 +568,17 @@ class PhraseTerma:
     def phrase_dic(self):
         if self._no1 < 0:
             if self._no2 >= 0:
-                self.dbc.execute('select NO from BLOCKS where ARTICLEID = ? and TYPE = ? and NO < ? order by NO desc',(self._articleid,'dic',self._no2,))
+                self.dbc.execute ('select NO from BLOCKS \
+                                   where ARTICLEID = ? and TYPE = ? \
+                                   and NO < ? order by NO desc'
+                                   ,(self._articleid,'dic',self._no2,)
+                                 )
                 result = self.dbc.fetchone()
                 if result:
                     self._no1 = result[0]
-                    self.dbc.execute('update BLOCKS set SELECTABLE=1 where NO = ?',(self._no1,))
+                    self.dbc.execute ('update BLOCKS set SELECTABLE=1 \
+                                       where NO = ?',(self._no1,)
+                                     )
             else:
                 sh.log.append ('PhraseTerma.phrase_dic'
                               ,_('WARNING')
@@ -505,9 +595,12 @@ class PhraseTerma:
         if self._no1 > 0 and self._no2 > 0:
             sh.log.append ('PhraseTerma.dump'
                           ,_('INFO')
-                          ,_('Update DB, range %d-%d') % (self._no1,self._no2)
+                          ,_('Update DB, range %d-%d') \
+                          % (self._no1,self._no2)
                           )
-            self.dbc.execute('update BLOCKS set TERMA=? where NO >= ? and NO < ?',('',self._no1,self._no2,))
+            self.dbc.execute ('update BLOCKS set TERMA=? where NO >= ? \
+                               and NO < ?',('',self._no1,self._no2,)
+                             )
         else:
             sh.log.append ('PhraseTerma.dump'
                           ,_('WARNING')
@@ -584,5 +677,7 @@ if __name__ == '__main__':
     
     timer.end()
     
-    blocks_db.dbc.execute('select NO,DICA,TERMA,TYPE,TEXT,SAMECELL from BLOCKS order by NO')
+    blocks_db.dbc.execute ('select NO,DICA,TERMA,TYPE,TEXT,SAMECELL \
+                            from BLOCKS order by NO'
+                          )
     blocks_db.print(Selected=1,Shorten=1,MaxRows=200,MaxRow=20)

@@ -7,7 +7,9 @@ gettext.install('mclient','./locale')
 
 import os
 import re
-# В Python 3 не работает просто import urllib, импорт должен быть именно такой, как здесь
+''' В Python 3 не работает просто import urllib, импорт должен быть
+    именно такой, как здесь
+'''
 import urllib.request #,urllib.parse
 import html
 import ssl
@@ -95,7 +97,9 @@ class ExtDics:
 
     def get(self,lang='English',search=''):
         if self.Success:
-            dics = [dic for dic in self._dics if dic._lang == lang and not dic.Block]
+            dics = [dic for dic in self._dics if dic._lang == lang \
+                    and not dic.Block
+                   ]
             lst  = []
             for dic in dics:
                 tmp = dic.get(search=search)
@@ -151,7 +155,9 @@ class ExtDics:
                                           )
                                   )
             sg.objs._waitbox.close()
-            # Leave only those dictionaries that were successfully loaded
+            ''' Leave only those dictionaries that were successfully
+                loaded
+            '''
             self._dics = [x for x in self._dics if x._dic]
             sh.log.append ('ExtDics.load'
                           ,_('INFO')
@@ -166,13 +172,23 @@ class ExtDics:
     def _list(self):
         if self._files:
             self._filenames = set([sh.Path(file).filename().replace('.dict','') for file in self._files])
-            # todo: elaborate (make automatical, use language codes)
-            # todo: forget 'Ru', check for 1st upper and 2nd lower letters
-            self._en        = [elem for elem in self._filenames if 'RuEn' in elem or 'EnRu' in elem]
-            self._de        = [elem for elem in self._filenames if 'RuDe' in elem or 'DeRu' in elem]
-            self._es        = [elem for elem in self._filenames if 'RuEs' in elem or 'EsRu' in elem]
-            self._it        = [elem for elem in self._filenames if 'RuIt' in elem or 'ItRu' in elem]
-            self._fr        = [elem for elem in self._filenames if 'RuFr' in elem or 'FrRu' in elem]
+            #todo: elaborate (make automatical, use language codes)
+            #todo: forget 'Ru', check for 1st upper and 2nd lower letters
+            self._en        = [elem for elem in self._filenames \
+                               if 'RuEn' in elem or 'EnRu' in elem
+                              ]
+            self._de        = [elem for elem in self._filenames \
+                               if 'RuDe' in elem or 'DeRu' in elem
+                              ]
+            self._es        = [elem for elem in self._filenames \
+                               if 'RuEs' in elem or 'EsRu' in elem
+                              ]
+            self._it        = [elem for elem in self._filenames \
+                               if 'RuIt' in elem or 'ItRu' in elem
+                              ]
+            self._fr        = [elem for elem in self._filenames \
+                               if 'RuFr' in elem or 'FrRu' in elem
+                              ]
         else:
             self._filenames = []
             self._en        = []
@@ -244,27 +260,44 @@ class Page:
                       in range(65536)
                      ]
     
-    # todo: Make this MT-only
+    #todo: Make this MT-only
     def invalid(self):
-        # Do this before unescaping, otherwise, some tags describing wforms will become exactly comments. It seems that 'wform' tags are already present. Replacing these tags with altertnative 'wform' tags does not work.
+        ''' Do this before unescaping, otherwise, some tags describing
+            wforms will become exactly comments. It seems that 'wform'
+            tags are already present. Replacing these tags with
+            altertnative 'wform' tags does not work.
+        '''
         self._page = self._page.replace('<span STYLE=&#34;color:gray&#34;>','').replace('<span STYLE=&#34;color:black&#34;>','')
 
-    # todo: Make this MT-only
+    #todo: Make this MT-only
     def invalid2(self):
-        # We need to close the tag since all following blocks with be 'SAMECELL == 1' otherwise
-        self._page = self._page.replace('<span STYLE="color:black">','</span>')
-        # These tags shall be replaced since they are not related to 'useful_tags' (useless/undefined tags with their contents are further removed), but we need the contents, and we cannot determine the type of the block yet.
+        ''' We need to close the tag since all following blocks with be
+            'SAMECELL == 1' otherwise
+        '''
+        self._page = self._page.replace ('<span STYLE="color:black">'
+                                        ,'</span>'
+                                        )
+        ''' These tags shall be replaced since they are not related to
+            'useful_tags' (useless/undefined tags with their contents
+            are further removed), but we need the contents, and we
+            cannot determine the type of the block yet.
+        '''
         self._page = self._page.replace('<b>','').replace('</b>','')
-        # Do this before 'common_replace'. Splitting terms is hindered without this.
+        ''' Do this before 'common_replace'. Splitting terms is hindered
+            without this.
+        '''
         self._page = self._page.replace('>;  <','><')
         self._page = self._page.replace('Требуется авторизация','')
         self._page = self._page.replace('Вы знаете перевод этого слова? Добавьте его в словарь:','')
         self._page = self._page.replace('Вы знаете перевод этого выражения? Добавьте его в словарь:','')
         self._page = self._page.replace('</a>, содержащие <strong>','</a><strong>')
 
-    def article_not_found(self): # HTML specific
+    # HTML specific
+    def article_not_found(self):
         if self._source in (_('All'),_('Online')):
-            # If separate words are found instead of a phrase, prepare those words only
+            ''' If separate words are found instead of a phrase, prepare
+                those words only
+            '''
             if sep_words_found in self._page:
                 self._page = self._page.replace(sep_words_found,'')
                 if message_board in self._page:
@@ -282,7 +315,8 @@ class Page:
                         self._page = self._page.replace(p4,p2,1)
                     else:
                         break
-                self._page = self._page[:board_pos] + p5 + p6 + sep_words_found + p7
+                self._page = self._page[:board_pos] + p5 + p6 \
+                             + sep_words_found + p7
                 self._page = self._page.replace(message_board,'')
 
     def common_replace(self): # HTML specific
@@ -294,13 +328,16 @@ class Page:
         self._page = re.sub(r'\>[\s]{0,1}\<','><',self._page)
 
     def mt_specific_replace(self):
-        if self._source == _('All') or self._source == _('Online'):
+        if self._source in (_('All'),_('Online')):
             self._page = self._page.replace('&nbsp;Вы знаете перевод этого выражения? Добавьте его в словарь:','').replace('&nbsp;Вы знаете перевод этого слова? Добавьте его в словарь:','').replace('&nbsp;Требуется авторизация<br>&nbsp;Пожалуйста, войдите на сайт под Вашим именем','').replace('Термины, содержащие ','')
             self._page = re.sub('[:]{0,1}[\s]{0,1}все формы слов[а]{0,1} \(\d+\)','',self._page)
 
-    # Convert HTML entities to a human readable format, e.g., '&copy;' -> '©'
-    def decode_entities(self): # HTML specific
-        # todo: do we need to check this?
+    ''' Convert HTML entities to a human readable format, e.g.,
+        '&copy;' -> '©'
+    '''
+    # HTML specific
+    def decode_entities(self):
+        #todo: do we need to check this?
         if self._source in (_('All'),_('Online')):
             try:
                 self._page = html.unescape(self._page)
@@ -318,8 +355,17 @@ class Page:
                               ,_('INFO')
                               ,_('Get online: "%s"') % self._search
                               )
-                # Если загружать страницу с помощью "page=urllib.request.urlopen(my_url)", то в итоге получится HTTPResponse, что полезно только для удаления тэгов JavaScript. Поскольку мы вручную удаляем все лишние тэги, то на выходе нам нужна строка.
-                self._page = urllib.request.urlopen(self._url,None,self._timeout).read()
+                ''' Если загружать страницу с помощью
+                    "page=urllib.request.urlopen(my_url)", то в итоге
+                    получится HTTPResponse, что полезно только для
+                    удаления тэгов JavaScript. Поскольку мы вручную
+                    удаляем все лишние тэги, то на выходе нам нужна
+                    строка.
+                '''
+                self._page = urllib.request.urlopen (self._url
+                                                    ,None
+                                                    ,self._timeout
+                                                    ).read()
                 sh.log.append ('Page._get_online'
                               ,_('INFO')
                               ,_('[OK]: "%s"') % self._search
@@ -339,10 +385,16 @@ class Page:
                     self._page = 'CANCELED'
         if self._page == 'CANCELED':
             self._page = ''
-        if Got: # Если страница не загружена, то понятно, что ее кодировку изменить не удастся
+        ''' Если страница не загружена, то понятно, что ее кодировку
+            изменить не удастся
+        '''
+        if Got:
             try:
-                # Меняем кодировку sh.globs['var']['win_encoding'] на нормальную
-                self._html_raw = self._page = self._page.decode(self._win_encoding)
+                ''' Меняем кодировку sh.globs['var']['win_encoding'] на
+                    нормальную
+                '''
+                self._html_raw = self._page \
+                               = self._page.decode(self._win_encoding)
             except:
                 sg.Message (func    = 'Page._get_online'
                            ,level   = _('ERROR')
@@ -371,7 +423,9 @@ class Page:
                 self.disamb_mt()
             else:
                 page = ''
-                # todo: introduce sub-sources, make this code clear; assign '_html_raw' for each sub-source
+                ''' #todo: introduce sub-sources, make this code clear;
+                    assign '_html_raw' for each sub-source
+                '''
                 if self._source == _('All'):
                     self._get_online()
                     self.disamb_mt()
@@ -389,7 +443,8 @@ class Page:
                 else:
                     sg.Message ('Page.get'
                                ,_('ERROR')
-                               ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._source),';'.join(sources))
+                               ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                               % (str(self._source),';'.join(sources))
                                )
                 if self._page is None:
                     self._page = ''
@@ -407,7 +462,9 @@ class Welcome:
                  ,product='MClient',version='current'
                  ):
         if not url:
-            # 'https://www.multitran.ru' is got faster than 'http://www.multitran.ru' (~0.2s)
+            ''' 'https://www.multitran.ru' is got faster than
+                'http://www.multitran.ru' (~0.2s)
+            '''
             url = 'https://www.multitran.ru'
         self._url       = url
         self._product   = product
@@ -499,7 +556,10 @@ if __name__ == '__main__':
                 )
     page.run()
     timer.end()
-    #sh.WriteTextFile(file='/home/pete/tmp/ars/do.txt',AskRewrite=0).write(text=text)
+    '''sh.WriteTextFile (file       = '/home/pete/tmp/ars/do.txt'
+                        ,AskRewrite = 0
+                        ).write(text=text)
+    '''
     sg.objs.txt().insert(text=page._page)
     sg.objs._txt.show()
     sg.objs.end()

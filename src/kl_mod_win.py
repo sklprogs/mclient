@@ -1,7 +1,11 @@
 # !/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-# Замечание: в pyhook есть баг, из-за которого данная программа валится, если на передний план выходит приложение с кириллицей в заголовке, поэтому в коде на C pyHook необходимо закомментировать случаи присваивания win_name и пересобрать библиотеку.
+''' Замечание: в pyhook есть баг, из-за которого данная программа
+    валится, если на передний план выходит приложение с кириллицей в
+    заголовке, поэтому в коде на C pyHook необходимо закомментировать
+    случаи присваивания win_name и пересобрать библиотеку.
+'''
 
 from pyHook import HookManager
 # Если нужно делать вывод в консоль
@@ -19,13 +23,28 @@ class KeyListener(threading.Thread):
 		self.pressed = []
 		self.listeners = {}
 		self.status = 0
-		# Иногда по непонятной причине символы выходят в верхнем регистре, но мы их приводим в нижний регистр в классе, поэтому здесь достаточно указать 'c'
-		self.addKeyListener("Lcontrol+c+c",lambda: keylistener.set_status(status=1))
-		self.addKeyListener("Rcontrol+c+c",lambda: keylistener.set_status(status=1))
-		self.addKeyListener("Lcontrol+Insert+Insert",lambda: keylistener.set_status(status=1))
-		self.addKeyListener("Rcontrol+Insert+Insert",lambda: keylistener.set_status(status=1))
-		self.addKeyListener("Lmenu+Oem_3",lambda: keylistener.set_status(status=2))
-		self.addKeyListener("Rmenu+Oem_3",lambda: keylistener.set_status(status=2))
+		''' Иногда по непонятной причине символы выходят в верхнем
+            регистре, но мы их приводим в нижний регистр в классе,
+            поэтому здесь достаточно указать 'c'
+        '''
+		self.addKeyListener ("Lcontrol+c+c"
+                            ,lambda:keylistener.set_status(status=1)
+                            )
+		self.addKeyListener ("Rcontrol+c+c"
+                            ,lambda:keylistener.set_status(status=1)
+                            )
+		self.addKeyListener ("Lcontrol+Insert+Insert"
+                            ,lambda:keylistener.set_status(status=1)
+                            )
+		self.addKeyListener ("Rcontrol+Insert+Insert"
+                            ,lambda:keylistener.set_status(status=1)
+                            )
+		self.addKeyListener ("Lmenu+Oem_3"
+                            ,lambda:keylistener.set_status(status=2)
+                            )
+		self.addKeyListener ("Rmenu+Oem_3"
+                            ,lambda:keylistener.set_status(status=2)
+                            )
 		self.restart()
 
 	def cancel(self):
@@ -51,11 +70,13 @@ class KeyListener(threading.Thread):
 					self.pressed = []
 			elif len(self.pressed) == 3:
 				self.pressed = []
-			if character == 'Lcontrol' or character == 'Rcontrol' or character == 'Lmenu' or character == 'Rmenu':
+			if character in ('Lcontrol','Rcontrol','Lmenu','Rmenu'):
 				self.pressed = [character]
-			elif character == 'c' or character == 'C' or character == 'Insert' or character == 'Oem_3':
+			elif character in ('c','C','Insert','Oem_3'):
 				if len(self.pressed) > 0:
-					if self.pressed[0] == 'Lcontrol' or self.pressed[0] == 'Rcontrol' or self.pressed[0] == 'Lmenu' or self.pressed[0] == 'Rmenu':
+					if self.pressed[0] in ('Lcontrol','Rcontrol','Lmenu'
+                                          ,'Rmenu'
+                                          ):
 						self.pressed.append(character)
 			action = self.listeners.get(tuple(self.pressed), False)
 			print_v('Current action: ' + str(tuple(self.pressed)))
@@ -73,7 +94,7 @@ class KeyListener(threading.Thread):
 			print_v('Key released: %s' % str(character))
 			# Не засчитывает отпущенный Control
 			# Кириллическую 'с' распознает как латинскую
-			if character != 'c' and character != 'C' and character != 'Insert' and character != 'Oem_3':
+			if not character in ('c','C','Insert','Oem_3'):
 				self.pressed = []
 		# Без этого получаем ошибку (an integer is required)
 		return True
@@ -87,7 +108,8 @@ class KeyListener(threading.Thread):
 		self.status = status
 		print_v('Setting status to %d!' % self.status)
 		
-	def check(self): # Returns 0..2
+	# Returns 0..2
+    def check(self):
 		if self.status:
 			print_v('Hotkey has been caught!')
 			status = self.status
@@ -106,10 +128,16 @@ def print_v(*args):
 def wait_example():
 	from time import sleep
 	while not keylistener.check():
-		# Нельзя делать одновременно pythoncom.PumpMessages() и pythoncom.PumpWaitingMessages() - они оба создают циклы
-		# Без этого result вообще почему-то не работает (видимо, здесь есть какой-то цикл, который необходим). Если же создать поток, он не сможет обнаружить flags['HotkeyCaught'].
+		''' Нельзя делать одновременно pythoncom.PumpMessages() и
+            pythoncom.PumpWaitingMessages() - они оба создают циклы
+            Без этого result вообще почему-то не работает (видимо, здесь
+            есть какой-то цикл, который необходим). Если же создать
+            поток, он не сможет обнаружить flags['HotkeyCaught'].
+        '''
 		pythoncom.PumpWaitingMessages()
-		# Если поставить слишком большой интервал, например, 1, то вообще ничего не получим!
+		''' Если поставить слишком большой интервал, например, 1, то
+            вообще ничего не получим!
+        '''
 		sleep(0.1)
 	keylistener.cancel()
 	

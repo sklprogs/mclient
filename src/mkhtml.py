@@ -26,18 +26,18 @@ class HTML:
                 ,prioritize=[],width=0
                 ,Reverse=False
                 ): # 'collimit' includes fixed blocks
-        self._data            = data
-        self._cols            = cols
-        self._collimit        = collimit
-        self.Printer          = Printer
-        self._blacklist       = blacklist
-        self._prioritize      = prioritize
-        self._width           = width
-        self.Reverse          = Reverse
-        self._blocks          = []
-        self._block           = None
-        self._html            = ''
-        self._script          = '''
+        self._data       = data
+        self._cols       = cols
+        self._collimit   = collimit
+        self.Printer     = Printer
+        self._blacklist  = blacklist
+        self._prioritize = prioritize
+        self._width      = width
+        self.Reverse     = Reverse
+        self._blocks     = []
+        self._block      = None
+        self._html       = ''
+        self._script     = '''
         <head>
 
           <div align="center">
@@ -299,20 +299,22 @@ class HTML:
             self.output.write('" size="')
             self.output.write(str(sh.globs['int']['font_comments_size']))
             self.output.write('" color="')
-            # todo (?): add to config
+            #todo (?): add to config
             self.output.write('green')
             self.output.write('">')
             self.output.write(self._block._text)
             self.output.write('</i></font>')
 
     def html(self):
-        # Default Python string concatenation is too slow, so we use this module instead
+        ''' Default Python string concatenation is too slow, so we use
+            this module instead
+        '''
         self.output = io.StringIO()
         self.output.write('<html>\n')
         if self.Printer:
             self.output.write(self._script)
         self.output.write('\t<body>\n\t\t<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">')
-        # todo: this CSS does not work
+        #todo: this CSS does not work
         #self.output.write('\n\t\t<style type="text/css">\n\t\t\t.line-separator{border-top: 2px dashed #4f94cd;}\n\t\t\t.indent{padding-bottom: 5px;}\n\t\t</style>')
         if self.Printer:
             self.output.write('\n\t\t<div id="printableArea">')
@@ -339,7 +341,9 @@ class HTML:
                 while self._block.j > j:
                     self.output.write('</td>\n\t\t\t')
                     # -1 because we define 'td' for the next column here
-                    if self._width and self._block._text and (self._block.j > len(self._cols) - 1 or self.Reverse):
+                    if self._width and self._block._text \
+                    and (self._block.j > len(self._cols) - 1 \
+                    or self.Reverse):
                         self.output.write('<td valign="top" col width="')
                         self.output.write(str(self._width))
                         self.output.write('">')
@@ -367,8 +371,13 @@ class HTML:
             self.output.write('\n\t</div>')
         self.output.write('\n</body>\n</html>')
         self._html = self.output.getvalue()
-        # todo: enhance algorithm, drop this; I tried to monitor j, block._text, block.j, but they are all changing
-        self._html = self._html.replace('<td valign="top" col width="%d"></td>' % self._width,'<td valign="top"></td>')
+        ''' #todo: enhance algorithm, drop this; I tried to monitor j,
+            block._text, block.j, but they are all changing
+        '''
+        self._html = self._html.replace ('<td valign="top" col width="%d"></td>' \
+                                        % self._width
+                                        ,'<td valign="top"></td>'
+                                        )
         self.output.close()
 
 
@@ -507,7 +516,10 @@ if __name__ == '__main__':
     blocks_db.update(query=pos._query)
 
     if Debug:
-        blocks_db.dbc.execute('select CELLNO,ROWNO,COLNO,TYPE,TEXT from BLOCKS where BLOCK=0 and IGNORE=0 order by CELLNO,NO')
+        blocks_db.dbc.execute ('select CELLNO,ROWNO,COLNO,TYPE,TEXT \
+                                from BLOCKS where BLOCK=0 and IGNORE=0 \
+                                order by CELLNO,NO'
+                              )
         blocks_db.print(Selected=1,Shorten=1,MaxRows=200,MaxRow=18)
         input('Blocks')
 

@@ -359,8 +359,8 @@ class Objects:
     def parties(self):
         if not self._parties:
             top = sg.objs.new_top(Maximize=0)
-            sg.Geometry(parent_obj=top).set('800x600')
-            self._parties = sg.TextBox(parent_obj=top)
+            sg.Geometry(parent=top).set('800x600')
+            self._parties = sg.TextBox(parent=top)
             self._parties.icon(sh.globs['var']['icon_mclient'])
             self._parties.title(text=_('Third parties')+':')
             self._parties.insert(text=third_parties,MoveTop=1)
@@ -369,7 +369,7 @@ class Objects:
 
     def entry(self):
         if not self._entry:
-            self._entry = sg.Entry(parent_obj=sg.Top(sg.objs.root()))
+            self._entry = sg.Entry(parent=sg.Top(sg.objs.root()))
             self._entry.icon(sh.globs['var']['icon_mclient'])
             self._entry.title(_('Enter a string to search:'))
         return self._entry
@@ -377,8 +377,8 @@ class Objects:
     def textbox(self):
         if not self._textbox:
             h_top = sg.Top(sg.objs.root())
-            self._textbox = sg.TextBox(parent_obj=h_top)
-            sg.Geometry(parent_obj=h_top).set('500x400')
+            self._textbox = sg.TextBox(parent=h_top)
+            sg.Geometry(parent=h_top).set('500x400')
             self._textbox.icon(sh.globs['var']['icon_mclient'])
         return self._textbox
 
@@ -393,7 +393,7 @@ class Objects:
         return self._online_other
 
     def online(self):
-        # todo: create a sub-source
+        #todo: create a sub-source
         if objs.request()._source in (_('All'),_('Online')):
             return self.online_mt()
         else:
@@ -423,7 +423,7 @@ class CurRequest:
         self.reset()
 
     def values(self):
-        # note: this should be synchronized with the 'default' value of objs.webframe().menu_columns
+        #note: this should be synchronized with the 'default' value of objs.webframe().menu_columns
         self._collimit     = 8
         self._source       = _('All')
         self._lang         = 'English'
@@ -450,8 +450,8 @@ class CurRequest:
 
 def call_app():
     # Использовать то же сочетание клавиш для вызова окна
-    sg.Geometry(parent_obj=objs.webframe().obj).activate(MouseClicked=objs.request().MouseClicked)
-    # todo: check if this is still the problem
+    sg.Geometry(parent=objs.webframe().obj).activate(MouseClicked=objs.request().MouseClicked)
+    #todo: check if this is still the problem
     # In case of .focus_set() *first* Control-c-c can call an inactive widget
     objs.webframe().search_field.widget.focus_force()
 
@@ -496,47 +496,47 @@ class About:
         self.close()
         
     def labels(self):
-        sg.Label (parent_obj = self.frame1
-                 ,text       = _('Programming: Peter Sklyar, 2015-2017.\nVersion: %s\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n') % version
-                 ,font       = sh.globs['var']['font_style']
+        sg.Label (parent = self.frame1
+                 ,text   = _('Programming: Peter Sklyar, 2015-2017.\nVersion: %s\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n') % version
+                 ,font   = sh.globs['var']['font_style']
                  )
         
     def frames(self):
-        self.frame1 = sg.Frame (parent_obj = self
-                               ,expand     = 1
-                               ,fill       = 'both'
-                               ,side       = 'top'
+        self.frame1 = sg.Frame (parent = self
+                               ,expand = 1
+                               ,fill   = 'both'
+                               ,side   = 'top'
                                )
-        self.frame2 = sg.Frame (parent_obj = self
-                               ,expand     = 1
-                               ,fill       = 'both'
-                               ,side       = 'left'
+        self.frame2 = sg.Frame (parent = self
+                               ,expand = 1
+                               ,fill   = 'both'
+                               ,side   = 'left'
                                )
-        self.frame3 = sg.Frame (parent_obj = self
-                               ,expand     = 1
-                               ,fill       = 'both'
-                               ,side       = 'right'
+        self.frame3 = sg.Frame (parent = self
+                               ,expand = 1
+                               ,fill   = 'both'
+                               ,side   = 'right'
                                )
     def buttons(self):
         # Лицензия
-        sg.Button (parent_obj = self.frame2
-                  ,text       = _('Third parties')
-                  ,hint       = _('Third-party licenses')
-                  ,action     = self.show_third_parties
-                  ,side       = 'left'
+        sg.Button (parent = self.frame2
+                  ,text   = _('Third parties')
+                  ,hint   = _('Third-party licenses')
+                  ,action = self.show_third_parties
+                  ,side   = 'left'
                   )
-        sg.Button (parent_obj = self.frame3
-                  ,text       = _('License')
-                  ,hint       = _('View the license')
-                  ,action     = self.open_license_url
-                  ,side       = 'left'
+        sg.Button (parent = self.frame3
+                  ,text   = _('License')
+                  ,hint   = _('View the license')
+                  ,action = self.open_license_url
+                  ,side   = 'left'
                   )
         # Отправить письмо автору
-        sg.Button (parent_obj = self.frame3
-                  ,text       = _('Contact the author')
-                  ,hint       = _('Draft an email to the author')
-                  ,action     = self.response_back
-                  ,side       = 'right'
+        sg.Button (parent = self.frame3
+                  ,text   = _('Contact the author')
+                  ,hint   = _('Draft an email to the author')
+                  ,action = self.response_back
+                  ,side   = 'right'
                   )
     
     def bindings(self):
@@ -583,20 +583,20 @@ class About:
 class SaveArticle:
 
     def __init__(self):
-        self.type       = 'SaveArticle'
-        self.parent_obj = sg.Top(sg.objs.root())
-        self.obj        = sg.ListBox (
-                    parent_obj = self.parent_obj
-                   ,Multiple   = False
-                   ,lst        = [_('Save the current view as a web-page (*.htm)')
-                                 ,_('Save the original article as a web-page (*.htm)')
-                                 ,_('Save the article as plain text in UTF-8 (*.txt)')
-                                 ,_('Copy HTML code of the article to clipboard')
-                                 ,_('Copy the text of the article to clipboard')
-                                 ]
-                   ,title      = _('Select an action:')
-                   ,icon       = sh.globs['var']['icon_mclient']
-                                     )
+        self.type   = 'SaveArticle'
+        self.parent = sg.Top(sg.objs.root())
+        self.obj    = sg.ListBox (
+        parent    = self.parent
+        ,Multiple = False
+        ,lst      = [_('Save the current view as a web-page (*.htm)')
+                    ,_('Save the original article as a web-page (*.htm)')
+                    ,_('Save the article as plain text in UTF-8 (*.txt)')
+                    ,_('Copy HTML code of the article to clipboard')
+                    ,_('Copy the text of the article to clipboard')
+                    ]
+        ,title      = _('Select an action:')
+        ,icon       = sh.globs['var']['icon_mclient']
+                                 )
         self.widget = self.obj.widget
         # Use this instead of 'close' because there is no selection yet
         self.obj.interrupt()
@@ -608,7 +608,7 @@ class SaveArticle:
     def show(self,*args):
         self.obj.show()
 
-    # Fix an extension for Windows
+    #fix an extension for Windows
     def fix_ext(self,ext='.htm'):
         if not self.file.endswith(ext):
             self.file += ext
@@ -656,7 +656,7 @@ class SaveArticle:
                                         )
         if self.file and objs.request()._html_raw:
             self.fix_ext(ext='.htm')
-            # todo: fix remaining links to localhost
+            #todo: fix remaining links to localhost
             sh.WriteTextFile(self.file,AskRewrite=False).write(objs._request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/M.exe?',sh.globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/m.exe?',sh.globs['var']['pair_root']))
         else:
             sh.log.append ('SaveArticle.raw_as_html'
@@ -818,15 +818,15 @@ class SearchArticle:
 # Search FOR an article
 class SearchField:
 
-    def __init__(self,parent_obj,side='left',ipady=5):
-        self.type       = 'SearchField'
-        self.parent_obj = parent_obj
+    def __init__(self,parent,side='left',ipady=5):
+        self.type   = 'SearchField'
+        self.parent = parent
         # Поле ввода поисковой строки
-        self.obj        = sg.Entry (parent_obj = self.parent_obj
-                                   ,Composite  = True
-                                   ,side       = side
-                                   ,ipady      = ipady
-                                   )
+        self.obj    = sg.Entry (parent    = self.parent
+                               ,Composite = True
+                               ,side      = side
+                               ,ipady     = ipady
+                               )
         self.widget = self.obj.widget
 
     def clear(self,*args):
@@ -916,9 +916,9 @@ class History:
         self.gui()
 
     def gui(self):
-        self.parent_obj = sg.Top(sg.objs.root())
-        self.parent_obj.widget.geometry('250x350')
-        self.obj = sg.ListBox (parent_obj      = self.parent_obj
+        self.parent = sg.Top(sg.objs.root())
+        self.parent.widget.geometry('250x350')
+        self.obj = sg.ListBox (parent          = self.parent
                               ,title           = self._title
                               ,icon            = self._icon
                               ,SelectionCloses = False
@@ -931,7 +931,7 @@ class History:
         self.close()
 
     def bindings(self):
-        sg.bind (obj      = self.parent_obj
+        sg.bind (obj      = self.parent
                 ,bindings = [sh.globs['var']['bind_toggle_history']
                             ,sh.globs['var']['bind_toggle_history_alt']
                             ,'<Escape>'
@@ -942,16 +942,16 @@ class History:
                 ,bindings = '<ButtonRelease-3>'
                 ,action   = self.copy
                 )
-        sg.bind (obj      = self.parent_obj
+        sg.bind (obj      = self.parent
                 ,bindings = sh.globs['var']['bind_clear_history']
                 ,action   = self.clear
                 )
-        # note: the list is reversed, but we think it is still more intuitive when Home goes top and End goes bottom
-        sg.bind (obj      = self.parent_obj
+        #note: the list is reversed, but we think it is still more intuitive when Home goes top and End goes bottom
+        sg.bind (obj      = self.parent
                 ,bindings = '<Home>'
                 ,action   = self.go_first
                 )
-        sg.bind (obj      = self.parent_obj
+        sg.bind (obj      = self.parent
                 ,bindings = '<End>'
                 ,action   = self.go_last
                 )
@@ -963,11 +963,11 @@ class History:
 
     def show(self,*args):
         self.Active = True
-        self.parent_obj.show()
+        self.parent.show()
 
     def close(self,*args):
         self.Active = False
-        self.parent_obj.close()
+        self.parent.close()
 
     def fill(self):
         searches = objs.blocks_db().searches()
@@ -1071,17 +1071,17 @@ class WebFrame:
 
     def gui(self):
         self.obj     = sg.objs.new_top(Maximize=1)
-        self.frame   = sg.Frame (parent_obj = self.obj
-                                ,expand     = 1
+        self.frame   = sg.Frame (parent = self.obj
+                                ,expand = 1
                                 )
-        self.bottom  = sg.Frame (parent_obj = self.frame
-                                ,expand     = 0
-                                ,side       = 'bottom'
+        self.bottom  = sg.Frame (parent = self.frame
+                                ,expand = 0
+                                ,side   = 'bottom'
                                 )
-        self.frame_y = sg.Frame (parent_obj = self.frame
-                                ,expand     = 0
-                                ,fill       = 'y'
-                                ,side       = 'right'
+        self.frame_y = sg.Frame (parent = self.frame
+                                ,expand = 0
+                                ,fill   = 'y'
+                                ,side   = 'right'
                                 )
         self.widget  = th.TkinterHtml(self.frame.widget)
         self.widget.pack(expand='1',fill='both')
@@ -1102,24 +1102,29 @@ class WebFrame:
         self.history        = History      ()
 
     def frame_panel(self):
-        # Do not mix 'self._panel' and 'self.bottom', otherwise, they can overlap each other.
-        self._panel = sg.Frame (parent_obj = self.bottom
-                               ,expand     = 0
-                               ,fill       = 'x'
+        ''' Do not mix 'self._panel' and 'self.bottom', otherwise, they
+            can overlap each other.
+        '''
+        self._panel = sg.Frame (parent = self.bottom
+                               ,expand = 0
+                               ,fill   = 'x'
                                )
         # Canvas should be created within a frame
-        self.canvas = sg.Canvas (parent_obj = self._panel
-                                ,expand     = 0
+        self.canvas = sg.Canvas (parent = self._panel
+                                ,expand = 0
                                 )
-        self.fr_but = sg.Frame (parent_obj = self._panel
-                               ,expand     = 0
+        self.fr_but = sg.Frame (parent = self._panel
+                               ,expand = 0
                                )
         
         # Поле ввода поисковой строки
-        self.search_field = SearchField(parent_obj=self.fr_but)
+        self.search_field = SearchField(parent=self.fr_but)
         self.draw_buttons()
         self.canvas.embed(obj=self.fr_but)
-        # todo: Updating idletasks will show ExtDic messages for too long, however, we need to update in order to set canvas dimensions correctly.
+        ''' #todo: Updating idletasks will show ExtDic messages for too
+            long, however, we need to update in order to set canvas
+            dimensions correctly.
+        '''
         sg.objs.root().widget.update_idletasks()
         height = self.fr_but.widget.winfo_height()
         width  = self.fr_but.widget.winfo_width()
@@ -1133,11 +1138,13 @@ class WebFrame:
         # The scrollbar is set at the end for some reason
         self.canvas.widget.xview_moveto(0)
 
-    # Create buttons
-    # Bindings are indicated here only to set hints. In order to set bindings, use 'self.bindings'.
+    ''' Create buttons
+        Bindings are indicated here only to set hints. In order to set
+        bindings, use 'self.bindings'.
+    '''
     def draw_buttons(self):
         # Кнопка для "чайников", заменяет Enter в search_field
-        sg.Button (parent_obj          = self.fr_but
+        sg.Button (parent              = self.fr_but
                   ,text                = _('Translate')
                   ,hint                = _('Translate')
                   ,action              = self.go
@@ -1149,7 +1156,7 @@ class WebFrame:
                   ) # В данном случае btn = hint
 
         # Кнопка очистки строки поиска
-        sg.Button (parent_obj          = self.fr_but
+        sg.Button (parent              = self.fr_but
                   ,text                = _('Clear')
                   ,hint                = _('Clear search field')
                   ,action              = self.search_field.clear
@@ -1159,7 +1166,7 @@ class WebFrame:
                   )
 
         # Кнопка вставки
-        sg.Button (parent_obj          = self.fr_but
+        sg.Button (parent              = self.fr_but
                   ,text                = _('Paste')
                   ,hint                = _('Paste text from clipboard')
                   ,action              = self.search_field.paste
@@ -1169,7 +1176,7 @@ class WebFrame:
                   )
         # Кнопка вставки текущего запроса
         self.btn_repeat_sign = sg.Button (
-                   parent_obj          = self.fr_but
+                   parent              = self.fr_but
                   ,text                = '!'
                   ,hint                = _('Paste current request')
                   ,action              = self.search_field.insert_repeat_sign
@@ -1179,7 +1186,7 @@ class WebFrame:
                                          )
         # Кнопка вставки предыдущего запроса
         self.btn_repeat_sign2 = sg.Button (
-                   parent_obj          = self.fr_but
+                   parent              = self.fr_but
                   ,text                = '!!'
                   ,hint                = _('Paste previous request')
                   ,action              = self.search_field.insert_repeat_sign2
@@ -1188,7 +1195,7 @@ class WebFrame:
                   ,bindings            = sh.globs['var']['repeat_sign2']
                                           )
         # Кнопка для вставки спец. символов
-        sg.Button (parent_obj          = self.fr_but
+        sg.Button (parent              = self.fr_but
                   ,text                = _('Symbols')
                   ,hint                = _('Paste a special symbol')
                   ,action              = self.spec_symbols.show
@@ -1196,23 +1203,25 @@ class WebFrame:
                   ,active_image_path   = sh.globs['var']['icon_spec_symbol']
                   ,bindings            = sh.globs['var']['bind_spec_symbol']
                   )
-        self.menu_sources = sg.OptionMenu (parent_obj = self.fr_but
-                                          ,items      = sources
-                                          ,command    = self.set_source
+        self.menu_sources = sg.OptionMenu (parent  = self.fr_but
+                                          ,items   = sources
+                                          ,command = self.set_source
                                           )
         # Выпадающий список с вариантами направлений перевода
-        self.menu_pairs = sg.OptionMenu (parent_obj = self.fr_but
-                                        ,items      = pairs
-                                        ,command    = self.set_lang
+        self.menu_pairs = sg.OptionMenu (parent  = self.fr_but
+                                        ,items   = pairs
+                                        ,command = self.set_lang
                                         )
-        self.menu_columns = sg.OptionMenu (parent_obj = self.fr_but
-                                          ,items      = (1,2,3,4,5,6,7,8,9,10)
-                                          ,command    = self.set_columns
-                                          ,default    = 4
+        self.menu_columns = sg.OptionMenu (parent  = self.fr_but
+                                          ,items   = (1,2,3,4,5,6,7,8,9
+                                                     ,10
+                                                     )
+                                          ,command = self.set_columns
+                                          ,default = 4
                                           )
         # Кнопка настроек
         self.btn_settings = sg.Button (
-                   parent_obj          = self.fr_but
+                   parent              = self.fr_but
                   ,text                = _('Settings')
                   ,hint                = _('Tune up view settings')
                   ,action              = self.settings.show
@@ -1224,7 +1233,7 @@ class WebFrame:
                                       )
         # Кнопка изменения вида статьи
         self.btn_toggle_view = sg.Button (
-                   parent_obj          = self.fr_but
+                   parent              = self.fr_but
                   ,text                = _('Toggle view')
                   ,hint                = _('Toggle the article view mode')
                   ,action              = self.toggle_view
@@ -1236,7 +1245,7 @@ class WebFrame:
                                          )
         # Кнопка включения/отключения режима блокировки словарей
         self.btn_toggle_block = sg.Button (
-                   parent_obj          = self.fr_but
+                   parent              = self.fr_but
                   ,text                = _('Blacklist')
                   ,hint                = _('Toggle the blacklist')
                   ,action              = self.toggle_block
@@ -1246,7 +1255,7 @@ class WebFrame:
                                           )
         # Кнопка включения/отключения режима приоритезации словарей
         self.btn_toggle_priority = sg.Button (
-                   parent_obj          = self.fr_but
+                   parent              = self.fr_but
                   ,text                = _('Prioritize')
                   ,hint                = _('Toggle prioritizing')
                   ,action              = self.toggle_priority
@@ -1256,7 +1265,7 @@ class WebFrame:
                                              )
         # Кнопка включения/отключения сортировки словарей по алфавиту
         self.btn_toggle_alphabet = sg.Button (
-                   parent_obj          = self.fr_but
+                   parent              = self.fr_but
                   ,text                = _('Alphabetize')
                   ,hint                = _('Toggle alphabetizing')
                   ,action              = self.toggle_alphabet
@@ -1266,7 +1275,7 @@ class WebFrame:
                                              )
         # Кнопка перехода на предыдущую статью
         self.btn_prev = sg.Button (
-                   parent_obj          = self.fr_but
+                   parent              = self.fr_but
                   ,text                = '←'
                   ,hint                = _('Go to the preceding article')
                   ,action              = self.go_back
@@ -1276,7 +1285,7 @@ class WebFrame:
                                   )
         # Кнопка перехода на следующую статью
         self.btn_next = sg.Button (
-                   parent_obj          = self.fr_but
+                   parent              = self.fr_but
                   ,text                = '→'
                   ,hint                = _('Go to the following article')
                   ,action              = self.go_forward
@@ -1285,7 +1294,7 @@ class WebFrame:
                   ,bindings            = sh.globs['var']['bind_go_forward']
                                   )
         # Кнопка включения/отключения и очистки истории
-        # todo: fix: do not iconify on RMB (separate button frame from main frame)
+        #todo: fix: do not iconify on RMB (separate button frame from main frame)
         # We may hardcore the hotkey to clear the history because this hotkey is bound to the button
         hint_history = _('Show history')                                      \
                     + '\n'   + sh.globs['var']['bind_toggle_history']         \
@@ -1294,7 +1303,7 @@ class WebFrame:
                     + '\n'   + sh.globs['var']['bind_clear_history']          \
                     + ', <ButtonRelease-3>'
         self.btn_history = sg.Button (
-                   parent_obj          = self.fr_but
+                   parent              = self.fr_but
                   ,text                = _('History')
                   ,hint                = hint_history
                   ,action              = self.history.toggle
@@ -1303,7 +1312,7 @@ class WebFrame:
                   ,hint_height         = 80
                                      )
         # Кнопка перезагрузки статьи
-        sg.Button (parent_obj          = self.fr_but
+        sg.Button (parent              = self.fr_but
                   ,text                = _('Reload')
                   ,hint                = _('Reload the article')
                   ,action              = self.reload
@@ -1314,7 +1323,7 @@ class WebFrame:
                                          ]
                   )
         # Кнопка "Поиск в статье"
-        sg.Button (parent_obj          = self.fr_but
+        sg.Button (parent              = self.fr_but
                   ,text                = _('Search')
                   ,hint                = _('Find in the current article')
                   ,action              = self.search_reset
@@ -1323,7 +1332,7 @@ class WebFrame:
                   ,bindings            = sh.globs['var']['bind_re_search_article']
                   )
         # Кнопка "Сохранить"
-        sg.Button (parent_obj          = self.fr_but
+        sg.Button (parent              = self.fr_but
                   ,text                = _('Save')
                   ,hint                = _('Save the current article')
                   ,action              = self.save_article.select
@@ -1334,7 +1343,7 @@ class WebFrame:
                                          ]
                   )
         # Кнопка "Открыть в браузере"
-        sg.Button (parent_obj          = self.fr_but
+        sg.Button (parent              = self.fr_but
                   ,text                = _('Browse')
                   ,hint                = _('Open the current article in a browser')
                   ,action              = self.open_in_browser
@@ -1345,7 +1354,7 @@ class WebFrame:
                                          ]
                   )
         # Кнопка "Печать"
-        sg.Button (parent_obj          = self.fr_but
+        sg.Button (parent              = self.fr_but
                   ,text                = _('Print')
                   ,hint                = _('Create a print-ready preview')
                   ,action              = self.print
@@ -1354,7 +1363,7 @@ class WebFrame:
                   ,bindings            = sh.globs['var']['bind_print']
                   )
         # Кнопка толкования термина
-        sg.Button (parent_obj          = self.fr_but
+        sg.Button (parent              = self.fr_but
                   ,text                = _('Define')
                   ,hint                = _('Define the current term')
                   ,action              = lambda x:self.define(Selected=False)
@@ -1364,7 +1373,7 @@ class WebFrame:
                   )
         # Кнопка "Перехват Ctrl-c-c"
         self.btn_clipboard = sg.Button (
-                   parent_obj          = self.fr_but
+                   parent              = self.fr_but
                   ,text                = _('Clipboard')
                   ,hint                = _('Capture Ctrl-c-c and Ctrl-Ins-Ins')
                   ,action              = self.watch_clipboard
@@ -1374,7 +1383,7 @@ class WebFrame:
                   ,bindings            = []
                                        )
         # Кнопка "О программе"
-        sg.Button (parent_obj          = self.fr_but
+        sg.Button (parent              = self.fr_but
                   ,text                = _('About')
                   ,hint                = _('View About')
                   ,action              = objs.about().show
@@ -1383,7 +1392,7 @@ class WebFrame:
                   ,bindings            = sh.globs['var']['bind_show_about']
                   )
         # Кнопка выхода
-        sg.Button (parent_obj          = self.fr_but
+        sg.Button (parent              = self.fr_but
                   ,text                = _('Quit')
                   ,hint                = _('Quit the program')
                   ,action              = self.close
@@ -1411,7 +1420,7 @@ class WebFrame:
                 )
         sg.bind (obj      = self
                 ,bindings = '<Button-1>'
-                # todo: This currently means 'self.go_url'. Prioritize/unblock dictionaries in 'self.go'.
+                #todo: This currently means 'self.go_url'. Prioritize/unblock dictionaries in 'self.go'.
                 ,action   = self.go
                 )
         
@@ -1453,7 +1462,7 @@ class WebFrame:
                             ]
                 ,action   = self.go
                 )
-        # todo: do not iconify at <ButtonRelease-3>
+        #todo: do not iconify at <ButtonRelease-3>
         sg.bind (obj      = self.search_field
                 ,bindings = sh.globs['var']['bind_clear_search_field']
                 ,action   = self.search_field.clear
@@ -1549,11 +1558,11 @@ class WebFrame:
                 )
         sg.bind (obj      = self.obj
                 ,bindings = '<Escape>'
-                ,action   = sg.Geometry(parent_obj=self.obj).minimize
+                ,action   = sg.Geometry(parent=self.obj).minimize
                 )
         sg.bind (obj      = self
                 ,bindings = '<ButtonRelease-2>'
-                ,action   = sg.Geometry(parent_obj=self.obj).minimize
+                ,action   = sg.Geometry(parent=self.obj).minimize
                 )
         # Дополнительные горячие клавиши
         sg.bind (obj      = self.obj
@@ -1710,7 +1719,7 @@ class WebFrame:
         self.get_pos(event=event)
         self.select()
 
-    # todo: rework?
+    #todo: rework?
     def get_pos(self,event=None):
         if event:
             pos = -1
@@ -1922,7 +1931,7 @@ class WebFrame:
         self.obj.close()
 
     def load_article(self):
-        # note: each time the contents of the current page is changed (e.g., due to prioritizing), bookmarks must be deleted.
+        #note: each time the contents of the current page is changed (e.g., due to prioritizing), bookmarks must be deleted.
         timer = sh.Timer(func_title='WebFrame.load_article')
         timer.start()
         # Do not allow selection positions from previous articles
@@ -1983,9 +1992,9 @@ class WebFrame:
                            )
             page.run()
             ptimer.end()
-            # todo: # fix: assign this for already loaded articles too
+            #todo: #fix: assign this for already loaded articles too
             objs._request._page     = page._page
-            # note: # todo: 'Page' returns '_html_raw' for online pages only; this value can be separated for online & offline sources after introducing sub-sources instead of relying on _('All')
+            #note: #todo: 'Page' returns '_html_raw' for online pages only; this value can be separated for online & offline sources after introducing sub-sources instead of relying on _('All')
             objs._request._html_raw = page._html_raw
             
             tags = tg.Tags (text      = objs._request._page
@@ -2020,8 +2029,8 @@ class WebFrame:
         objs._blocks_db.update(query=bp._query)
 
         dics = objs._blocks_db.dics(Block=0)
-        # todo: make this Multitran-only
-        # note: if an article comprises only 1 dic/wform, this is usually a dictionary + terms from the 'Phrases' section
+        #todo: make this Multitran-only
+        #note: if an article comprises only 1 dic/wform, this is usually a dictionary + terms from the 'Phrases' section
         # Do not rely on the number of wforms; large articles like 'centre' may have only 1 wform (an a plurality of dics)
         if not dics or dics and len(dics) == 1:
             objs._request.SpecialPage = True
@@ -2164,7 +2173,7 @@ class WebFrame:
         self.load_article()
 
     def get_url(self):
-        # note: encoding must be UTF-8 here
+        #note: encoding must be UTF-8 here
         if objs.request()._source == _('Offline'):
             objs.online().reset (self.get_pair()
                                 ,objs.request()._search
@@ -2181,7 +2190,7 @@ class WebFrame:
                       ,str(objs.request()._url)
                       )
 
-    # todo: move 'move_*' procedures to Moves class
+    #todo: move 'move_*' procedures to Moves class
     # Перейти на 1-й термин текущей строки
     def move_line_start(self,*args):
         result = objs.blocks_db().line_start(pos=self._pos)
@@ -2314,7 +2323,7 @@ class WebFrame:
 
     # Задействование колеса мыши для пролистывания экрана
     def mouse_wheel(self,event):
-        # todo: fix: too small delta in Windows
+        #todo: fix: too small delta in Windows
         # В Windows XP delta == -120, однако, в других версиях оно другое
         if event.num == 5 or event.delta < 0:
             if sh.oss.lin():
@@ -2348,7 +2357,7 @@ class WebFrame:
         if text:
             sg.Clipboard().copy(text)
             if sh.globs['bool']['Iconify']:
-                sg.Geometry(parent_obj=self.obj).minimize()
+                sg.Geometry(parent=self.obj).minimize()
         else:
             sg.Message ('WebFrame.copy_text'
                        ,_('WARNING')
@@ -2359,7 +2368,7 @@ class WebFrame:
     def copy_url(self,*args):
         sg.Clipboard().copy(objs.request()._url)
         if sh.globs['bool']['Iconify']:
-            sg.Geometry(parent_obj=self.obj).minimize()
+            sg.Geometry(parent=self.obj).minimize()
 
     # Скопировать URL выделенного блока
     def copy_block_url(self,*args):
@@ -2367,7 +2376,7 @@ class WebFrame:
         if url:
             sg.Clipboard().copy(url)
             if sh.globs['bool']['Iconify']:
-                sg.Geometry(parent_obj=self.obj).minimize()
+                sg.Geometry(parent=self.obj).minimize()
         else:
             sg.Message ('WebFrame.copy_block_url'
                        ,_('WARNING')
@@ -3088,23 +3097,23 @@ class Settings:
         self.icon()
 
     def sort_rows(self):
-        self.cb = sg.CheckBox (parent_obj = self.fr_cb
-                              ,Active     = True
-                              ,side       = 'left'
+        self.cb = sg.CheckBox (parent = self.fr_cb
+                              ,Active = True
+                              ,side   = 'left'
                               )
-        self.lb = sg.Label (parent_obj = self.fr_cb
-                           ,text       = _('Sort by each column (if it is set) (except for transcription)')
-                           ,side       = 'left'
+        self.lb = sg.Label (parent = self.fr_cb
+                           ,text   = _('Sort by each column (if it is set) (except for transcription)')
+                           ,side   = 'left'
                            )
 
     def sort_terms(self):
-        self.cb2 = sg.CheckBox (parent_obj = self.fr_cb2
-                               ,Active     = True
-                               ,side       = 'left'
+        self.cb2 = sg.CheckBox (parent = self.fr_cb2
+                               ,Active = True
+                               ,side   = 'left'
                                )
-        self.lb2 = sg.Label (parent_obj = self.fr_cb2
-                            ,text       = _('Alphabetize terms')
-                            ,side       = 'left'
+        self.lb2 = sg.Label (parent = self.fr_cb2
+                            ,text   = _('Alphabetize terms')
+                            ,side   = 'left'
                             )
 
     def block_settings(self,*args):
@@ -3120,19 +3129,19 @@ class Settings:
                    )
 
     def checkboxes(self):
-        self.cb3 = sg.CheckBox (parent_obj = self.fr_cb3
-                               ,Active     = True
-                               ,side       = 'left'
+        self.cb3 = sg.CheckBox (parent = self.fr_cb3
+                               ,Active = True
+                               ,side   = 'left'
                                )
 
-        self.cb4 = sg.CheckBox (parent_obj = self.fr_cb4
-                               ,Active     = True
-                               ,side       = 'left'
+        self.cb4 = sg.CheckBox (parent = self.fr_cb4
+                               ,Active = True
+                               ,side   = 'left'
                                )
 
-        self.cb5 = sg.CheckBox (parent_obj = self.fr_cb5
-                               ,Active     = False
-                               ,side       = 'left'
+        self.cb5 = sg.CheckBox (parent = self.fr_cb5
+                               ,Active = False
+                               ,side   = 'left'
                                )
 
     def reset(self,*args):
@@ -3148,7 +3157,9 @@ class Settings:
         self.cb5.disable()
 
     def apply(self,*args):
-        # Do not use 'gettext' to name internal types - this will make the program ~0,6s slower
+        ''' Do not use 'gettext' to name internal types - this will make
+            the program ~0,6s slower
+        '''
         lst = [choice for choice in (self.col1.choice
                                     ,self.col2.choice
                                     ,self.col3.choice
@@ -3156,7 +3167,7 @@ class Settings:
                                     ) \
                if choice != _('Do not set')
               ]
-        ''' # note: The following assignment does not change the list:
+        ''' #note: The following assignment does not change the list:
             for item in lst:
                 if item == something:
                     item = something_else
@@ -3173,7 +3184,14 @@ class Settings:
             else:
                 sg.Message (func    = 'Settings.apply'
                            ,level   = _('ERROR')
-                           ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._cols[i]),', '.join(_('Dictionaries'),_('Word forms'),_('Transcription'),_('Parts of speech')))
+                           ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                           % (str(self._cols[i])
+                             ,', '.join (_('Dictionaries')
+                                        ,_('Word forms')
+                                        ,_('Transcription')
+                                        ,_('Parts of speech')
+                                        )
+                             )
                            )
         if set(lst):
             self.close()
@@ -3185,14 +3203,14 @@ class Settings:
             objs._request.Reverse    = self.cb5.get()
             objs.webframe().set_columns()
         else:
-            # todo: do we really need this?
+            #todo: do we really need this?
             sg.Message (func    = 'Settings.apply'
                        ,level   = _('WARNING')
                        ,message = _('At least one column must be set!')
                        )
     
     def buttons(self):
-        sg.Button (parent_obj = self.fr_but
+        sg.Button (parent     = self.fr_but
                   ,action     = self.reset
                   ,hint       = _('Reset settings')
                   ,hint_width = self._hint_width
@@ -3200,7 +3218,7 @@ class Settings:
                   ,side       = 'left'
                   )
 
-        sg.Button (parent_obj = self.fr_but
+        sg.Button (parent     = self.fr_but
                   ,action     = self.apply
                   ,hint       = _('Apply settings')
                   ,hint_width = self._hint_width
@@ -3209,9 +3227,9 @@ class Settings:
                   )
 
         # cur
-        # todo: elaborate
+        #todo: elaborate
         '''
-        sg.Button (parent_obj = self.fr_cb3
+        sg.Button (parent     = self.fr_cb3
                   ,action     = self.block_settings
                   ,hint       = _('Tune up blacklisting')
                   ,hint_width = self._hint_width
@@ -3219,7 +3237,7 @@ class Settings:
                   ,side       = 'right'
                   )
 
-        sg.Button (parent_obj = self.fr_cb4
+        sg.Button (parent     = self.fr_cb4
                   ,action     = self.priority_settings
                   ,hint       = _('Tune up prioritizing')
                   ,hint_width = self._hint_width
@@ -3228,161 +3246,161 @@ class Settings:
                   )
         '''
 
-        self.lb5 = sg.Label (parent_obj = self.fr_cb5
-                            ,text       = _('Vertical view')
-                            ,side       = 'left'
+        self.lb5 = sg.Label (parent = self.fr_cb5
+                            ,text   = _('Vertical view')
+                            ,side   = 'left'
                             )
 
     def frames(self):
-        self.fr_col = sg.Frame (parent_obj = self.obj
-                               ,expand     = True
-                               ,fill       = 'both'
+        self.fr_col = sg.Frame (parent = self.obj
+                               ,expand = True
+                               ,fill   = 'both'
                                )
-        self.fr_sc  = sg.Frame (parent_obj = self.fr_col
-                               ,side       = 'left'
-                               ,expand     = False
-                               ,fill       = 'both'
+        self.fr_sc  = sg.Frame (parent = self.fr_col
+                               ,side   = 'left'
+                               ,expand = False
+                               ,fill   = 'both'
                                )
-        self.fr_c1  = sg.Frame (parent_obj = self.fr_col
-                               ,side       = 'left'
-                               ,expand     = False
-                               ,fill       = 'both'
+        self.fr_c1  = sg.Frame (parent = self.fr_col
+                               ,side   = 'left'
+                               ,expand = False
+                               ,fill   = 'both'
                                )
-        self.fr_c2  = sg.Frame (parent_obj = self.fr_col
-                               ,side       = 'left'
-                               ,expand     = False
-                               ,fill       = 'both'
+        self.fr_c2  = sg.Frame (parent = self.fr_col
+                               ,side   = 'left'
+                               ,expand = False
+                               ,fill   = 'both'
                                )
-        self.fr_c3  = sg.Frame (parent_obj = self.fr_col
-                               ,expand     = False
-                               ,side       = 'left'
-                               ,fill       = 'both'
+        self.fr_c3  = sg.Frame (parent = self.fr_col
+                               ,expand = False
+                               ,side   = 'left'
+                               ,fill   = 'both'
                                )
-        self.fr_c4  = sg.Frame (parent_obj = self.fr_col
-                               ,side       = 'left'
-                               ,expand     = False
-                               ,fill       = 'both'
+        self.fr_c4  = sg.Frame (parent = self.fr_col
+                               ,side   = 'left'
+                               ,expand = False
+                               ,fill   = 'both'
                                )
-        self.fr_cb  = sg.Frame (parent_obj = self.obj
-                               ,expand     = False
-                               ,fill       = 'x'
+        self.fr_cb  = sg.Frame (parent = self.obj
+                               ,expand = False
+                               ,fill   = 'x'
                                )
-        self.fr_cb2 = sg.Frame (parent_obj = self.obj
-                               ,expand     = False
-                               ,fill       = 'x'
+        self.fr_cb2 = sg.Frame (parent = self.obj
+                               ,expand = False
+                               ,fill   = 'x'
                                )
-        self.fr_cb3 = sg.Frame (parent_obj = self.obj
-                               ,expand     = False
-                               ,fill       = 'x'
+        self.fr_cb3 = sg.Frame (parent = self.obj
+                               ,expand = False
+                               ,fill   = 'x'
                                )
-        self.fr_cb4 = sg.Frame (parent_obj = self.obj
-                               ,expand     = False
-                               ,fill       = 'x'
+        self.fr_cb4 = sg.Frame (parent = self.obj
+                               ,expand = False
+                               ,fill   = 'x'
                                )
-        self.fr_cb5 = sg.Frame (parent_obj = self.obj
-                               ,expand     = False
-                               ,fill       = 'x'
+        self.fr_cb5 = sg.Frame (parent = self.obj
+                               ,expand = False
+                               ,fill   = 'x'
                                )
-        self.fr_but = sg.Frame (parent_obj = self.obj
-                               ,expand     = False
-                               ,fill       = 'x'
-                               ,side       = 'bottom'
+        self.fr_but = sg.Frame (parent = self.obj
+                               ,expand = False
+                               ,fill   = 'x'
+                               ,side   = 'bottom'
                                )
 
     def labels(self):
         ''' Other possible color schemes:
             font = 'Sans 9 italic', fg = 'khaki4'
         '''
-        sg.Label (parent_obj = self.fr_sc
-                 ,text       = _('Style:')
-                 ,font       = 'Sans 9'
-                 ,side       = 'top'
-                 ,fill       = 'both'
-                 ,expand     = True
-                 ,fg         = 'PaleTurquoise1'
-                 ,bg         = 'RoyalBlue3'
+        sg.Label (parent = self.fr_sc
+                 ,text   = _('Style:')
+                 ,font   = 'Sans 9'
+                 ,side   = 'top'
+                 ,fill   = 'both'
+                 ,expand = True
+                 ,fg     = 'PaleTurquoise1'
+                 ,bg     = 'RoyalBlue3'
                  )
 
-        sg.Label (parent_obj = self.fr_c1
-                 ,text       = _('Column') + ' 1:'
-                 ,font       = 'Sans 9'
-                 ,side       = 'top'
-                 ,fill       = 'both'
-                 ,expand     = True
-                 ,fg         = 'PaleTurquoise1'
-                 ,bg         = 'RoyalBlue3'
+        sg.Label (parent = self.fr_c1
+                 ,text   = _('Column') + ' 1:'
+                 ,font   = 'Sans 9'
+                 ,side   = 'top'
+                 ,fill   = 'both'
+                 ,expand = True
+                 ,fg     = 'PaleTurquoise1'
+                 ,bg     = 'RoyalBlue3'
                  )
 
-        sg.Label (parent_obj = self.fr_c2
-                 ,text       = _('Column') + ' 2:'
-                 ,font       = 'Sans 9'
-                 ,side       = 'top'
-                 ,fill       = 'both'
-                 ,expand     = True
-                 ,fg         = 'PaleTurquoise1'
-                 ,bg         = 'RoyalBlue3'
+        sg.Label (parent = self.fr_c2
+                 ,text   = _('Column') + ' 2:'
+                 ,font   = 'Sans 9'
+                 ,side   = 'top'
+                 ,fill   = 'both'
+                 ,expand = True
+                 ,fg     = 'PaleTurquoise1'
+                 ,bg     = 'RoyalBlue3'
                  )
 
-        sg.Label (parent_obj = self.fr_c3
-                 ,text       = _('Column') + ' 3:'
-                 ,font       = 'Sans 9'
-                 ,side       = 'top'
-                 ,fill       = 'both'
-                 ,expand     = True
-                 ,fg         = 'PaleTurquoise1'
-                 ,bg         = 'RoyalBlue3'
+        sg.Label (parent = self.fr_c3
+                 ,text   = _('Column') + ' 3:'
+                 ,font   = 'Sans 9'
+                 ,side   = 'top'
+                 ,fill   = 'both'
+                 ,expand = True
+                 ,fg     = 'PaleTurquoise1'
+                 ,bg     = 'RoyalBlue3'
                  )
 
-        sg.Label (parent_obj = self.fr_c4
-                 ,text       = _('Column') + ' 4:'
-                 ,font       = 'Sans 9'
-                 ,side       = 'top'
-                 ,fill       = 'both'
-                 ,expand     = True
-                 ,fg         = 'PaleTurquoise1'
-                 ,bg         = 'RoyalBlue3'
+        sg.Label (parent = self.fr_c4
+                 ,text   = _('Column') + ' 4:'
+                 ,font   = 'Sans 9'
+                 ,side   = 'top'
+                 ,fill   = 'both'
+                 ,expand = True
+                 ,fg     = 'PaleTurquoise1'
+                 ,bg     = 'RoyalBlue3'
                  )
 
-        self.lb3 = sg.Label (parent_obj = self.fr_cb3
-                            ,text       = _('Block dictionaries from blacklist')
-                            ,side       = 'left'
+        self.lb3 = sg.Label (parent = self.fr_cb3
+                            ,text   = _('Block dictionaries from blacklist')
+                            ,side   = 'left'
                             )
 
-        self.lb4 = sg.Label (parent_obj = self.fr_cb4
-                            ,text       = _('Prioritize dictionaries')
-                            ,side       = 'left'
+        self.lb4 = sg.Label (parent = self.fr_cb4
+                            ,text   = _('Prioritize dictionaries')
+                            ,side   = 'left'
                             )
 
     def columns(self):
-        self.sc   = sg.OptionMenu (parent_obj = self.fr_sc
-                                  ,items      = self._sc_items
-                                  ,side       = 'bottom'
-                                  ,command    = self.update_by_sc
-                                  ,default    = product
+        self.sc   = sg.OptionMenu (parent  = self.fr_sc
+                                  ,items   = self._sc_items
+                                  ,side    = 'bottom'
+                                  ,command = self.update_by_sc
+                                  ,default = product
                                   )
-        self.col1 = sg.OptionMenu (parent_obj = self.fr_c1
-                                  ,items      = self._items
-                                  ,side       = 'bottom'
-                                  ,command    = self.update_by_col1
-                                  ,default    = _('Dictionaries')
+        self.col1 = sg.OptionMenu (parent  = self.fr_c1
+                                  ,items   = self._items
+                                  ,side    = 'bottom'
+                                  ,command = self.update_by_col1
+                                  ,default = _('Dictionaries')
                                   )
-        self.col2 = sg.OptionMenu (parent_obj = self.fr_c2
-                                  ,items      = self._items
-                                  ,side       = 'bottom'
-                                  ,command    = self.update_by_col2
-                                  ,default    = _('Word forms')
+        self.col2 = sg.OptionMenu (parent  = self.fr_c2
+                                  ,items   = self._items
+                                  ,side    = 'bottom'
+                                  ,command = self.update_by_col2
+                                  ,default = _('Word forms')
                                   )
-        self.col3 = sg.OptionMenu (parent_obj = self.fr_c3
-                                  ,items      = self._items
-                                  ,side       = 'bottom'
-                                  ,command    = self.update_by_col3
-                                  ,default    = _('Transcription')
+        self.col3 = sg.OptionMenu (parent  = self.fr_c3
+                                  ,items   = self._items
+                                  ,side    = 'bottom'
+                                  ,command = self.update_by_col3
+                                  ,default = _('Transcription')
                                   )
-        self.col4 = sg.OptionMenu (parent_obj = self.fr_c4
-                                  ,items      = self._items
-                                  ,side       = 'bottom'
-                                  ,command    = self.update_by_col4
-                                  ,default    = _('Parts of speech')
+        self.col4 = sg.OptionMenu (parent  = self.fr_c4
+                                  ,items   = self._items
+                                  ,side    = 'bottom'
+                                  ,command = self.update_by_col4
+                                  ,default = _('Parts of speech')
                                   )
 
     def bindings(self):
