@@ -87,7 +87,8 @@ class DB:
         self.SortTerms = SortTerms
         self.SortRows  = SortRows
         self._cols     = cols
-        if not self._cols: # Prevents None + tuple
+        # Prevents None + tuple
+        if not self._cols:
             self._cols = ('dic','wform','transc','speech')
             sh.log.append ('DB.reset'
                           ,_('WARNING')
@@ -873,7 +874,8 @@ class DB:
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-            return 1 # Default minimal autoincrement in SQlite
+            # Default minimal autoincrement in SQlite
+            return 1
             
     def max_articleid(self):
         self.dbc.execute ('select ARTICLEID from ARTICLES \
@@ -887,7 +889,8 @@ class DB:
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-            return 1 # Default minimal autoincrement in SQlite
+            # Default minimal autoincrement in SQlite
+            return 1
     
     def block_pos_next(self,pos):
         if self._articleid:
@@ -1150,7 +1153,8 @@ class Moves(DB):
                 min_cell = self.min_cell()
                 if min_cell and max_cell:
                     if no == max_cell[1]:
-                        return min_cell[2] # Loop moves
+                        # Loop moves
+                        return min_cell[2]
                     elif self.Selectable:
                         self.dbc.execute ('select POS1 from BLOCKS \
                                            where ARTICLEID = ? \
