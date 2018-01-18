@@ -1,3 +1,4 @@
+- Elems.order_speech: make priorizing optional & tweakable
 - Move selection automatically when using scrollbar arrows
 - Hotkeys for moving to the end of a column and/or page
 - CSS for drawing a dash line for each section: mkhtml.py:315

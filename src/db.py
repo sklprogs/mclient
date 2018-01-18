@@ -33,6 +33,7 @@ class DB:
         ''' We use integers instead of booleans; -1 means not set.
             Must indicate 'integer' fully before 'primary key 
             autoincrement'.
+            30 columns for now.
         '''
         self.dbc.execute (
            'create table if not exists BLOCKS (\
@@ -66,6 +67,7 @@ class DB:
            ,BBOY2      integer           \
            ,TEXTLOW    text              \
            ,IGNORE     integer           \
+           ,SPEECHPR   integer           \
                                               )'
                          )
                          
@@ -82,11 +84,12 @@ class DB:
                          )
 
     def reset (self,cols=('dic','wform','transc','speech')
-              ,SortRows=False,SortTerms=False
+              ,SortRows=False,SortTerms=False,OrderSpeech=True
               ):
-        self.SortTerms = SortTerms
-        self.SortRows  = SortRows
-        self._cols     = cols
+        self.SortTerms   = SortTerms
+        self.SortRows    = SortRows
+        self.OrderSpeech = OrderSpeech
+        self._cols       = cols
         # Prevents None + tuple
         if not self._cols:
             self._cols = ('dic','wform','transc','speech')
@@ -101,7 +104,7 @@ class DB:
     def fill_blocks(self,data):
         self.dbc.executemany ('insert into BLOCKS values \
                                (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?\
-                               ,?,?,?,?,?,?,?,?,?\
+                               ,?,?,?,?,?,?,?,?,?,?\
                                )'
                                ,data
                               )
@@ -186,7 +189,7 @@ class DB:
                 sg.Message (func    = 'DB.print'
                            ,level   = _('ERROR')
                            ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                           % (str(mode),'ARTICLES, BLOCKS')
+                                      % (str(mode),'ARTICLES, BLOCKS')
                            )
         headers = [cn[0] for cn in self.dbc.description]
         rows    = self.dbc.fetchall()
@@ -230,6 +233,8 @@ class DB:
             elif item == 'wform':
                 query.append('WFORMA')
             elif item == 'speech':
+                if self.OrderSpeech:
+                    query.append('SPEECHPR desc')
                 query.append('SPEECHA')
             elif item == 'transc':
                 # There is no sense to sort by transcription
@@ -238,7 +243,9 @@ class DB:
                 sg.Message (func    = 'DB.order_query'
                            ,level   = _('ERROR')
                            ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                           % (str(item),'dic, wform, speech, transc')
+                                      % (str(item)
+                                        ,'dic, wform, speech, transc'
+                                        )
                            )
         if self.SortTerms:
             query.append('TERMA')

@@ -9,9 +9,9 @@ import io
 import shared as sh
 import sharedGUI as sg
 
-abbr     = ['гл.','сущ.','прил.','нареч.','сокр.','предл.']
+abbr     = ['гл.','сущ.','прил.','нареч.','сокр.','предл.','мест.']
 expanded = ['Глагол','Существительное','Прилагательное','Наречие'
-           ,'Сокращение','Предлог'
+           ,'Сокращение','Предлог','Местоимение'
            ]
 
 
@@ -25,10 +25,14 @@ class Block:
         self._first    = -1
         self._last     = -1
         self._no       = -1
-        self._cell_no  = -1 # Applies to non-blocked cells only
+        # Applies to non-blocked cells only
+        self._cell_no  = -1
         self._same     = -1
         self._priority = 0
-        self._type     = 'comment' # 'wform', 'speech', 'dic', 'phrase', 'term', 'comment', 'correction', 'transc', 'invalid'
+        ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
+            'correction', 'transc', 'invalid'
+        '''
+        self._type     = 'comment'
         self._text     = ''
         self._dica     = ''
         self._wforma   = ''
@@ -38,8 +42,10 @@ class Block:
 
 
 # Update Block and Priority in DB before sorting cells
-''' This complements DB with values that must be dumped into DB before sorting it
-    Needs attributes in blocks: NO, DICA, TYPE, TEXT (test purposes only)
+''' This complements DB with values that must be dumped into DB before
+    sorting it
+    Needs attributes in blocks: NO, DICA, TYPE, TEXT (test purposes
+    only)
     Modifies attributes:        BLOCK, PRIORITY
 '''
 class BlockPrioritize:
@@ -97,7 +103,11 @@ class BlockPrioritize:
         if self._phrase_dic:
             for block in self._blocks:
                 if self._phrase_dic == block._dica:
-                    # Set the (presumably) lowest priority for a 'Phrases' dictionary. This must be a quite small value as not to conflict with other dictionaries.
+                    ''' Set the (presumably) lowest priority for
+                        a 'Phrases' dictionary. This must be a quite
+                        small value as not to conflict with other
+                        dictionaries.
+                    '''
                     block._priority = -1000
         if self.Prioritize:
             for i in range(len(self._prioritize)):
@@ -110,7 +120,11 @@ class BlockPrioritize:
         tmp = io.StringIO()
         tmp.write('begin;')
         for block in self._blocks:
-            tmp.write('update BLOCKS set BLOCK=%d,PRIORITY=%d where NO=%d;' % (block._block,block._priority,block._no))
+            tmp.write ('update BLOCKS set BLOCK=%d,PRIORITY=%d \
+                        where NO=%d;' % (block._block,block._priority
+                                        ,block._no
+                                        )
+                      )
         tmp.write('commit;')
         self._query = tmp.getvalue()
         tmp.close()
@@ -145,16 +159,19 @@ class BlockPrioritize:
 
 ''' This re-assigns DIC, WFORM, SPEECH, TRANSC types
     We assume that sqlite has already sorted DB with 'BLOCK IS NOT 1'
-    Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL, DICA, WFORMA, SPEECHA, TRANSCA
+    Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL, DICA, WFORMA,
+                                SPEECHA, TRANSCA
     Modifies attributes:        TEXT, ROWNO, COLNO, CELLNO
 '''
 class Cells:
     
+    # Including fixed columns
     def __init__ (self,data,cols,collimit=10
                  ,phrase_dic=None,Reverse=False
                  ,ExpandAbbr=False
-                 ): # Including fixed columns
-        self._data       = data # Sqlite fetch
+                 ):
+        # Sqlite fetch
+        self._data       = data
         self._cols       = cols
         self._collimit   = collimit
         self._phrase_dic = phrase_dic
@@ -171,7 +188,10 @@ class Cells:
                           ,_('Empty input is not allowed!')
                           )
         
-    # The 'Phrases' section comes the latest in MT, therefore, it inherits fixed columns of the preceding dictionary which are irrelevant. Here we clear them.
+    ''' The 'Phrases' section comes the latest in MT, therefore,
+        it inherits fixed columns of the preceding dictionary which are
+        irrelevant. Here we clear them.
+    '''
     def clear_phrases(self):
         if self._phrase_dic:
             for block in self._blocks:
@@ -203,7 +223,11 @@ class Cells:
                 else:
                     transca = block._transca
 
-    # Reassign COLNO to start with 0 if separate words have been found (all fixed columns are empty). This allows to avoid the effect when a column with the 1st term is stretched owing to empty fixed columns.
+    ''' Reassign COLNO to start with 0 if separate words have been found
+        (all fixed columns are empty). This allows to avoid the effect
+        when a column with the 1st term is stretched owing to empty
+        fixed columns.
+    '''
     def sep_words(self):
         min_j = len(self._cols)
         for block in self._blocks:
@@ -290,27 +314,31 @@ class Cells:
                     self._blocks[x].i = i
                 self._blocks[x].j = 0
                 j = len(self._cols) - 1
-            elif len(self._cols) > 1 and self._blocks[x]._type == self._cols[1]:
+            elif len(self._cols) > 1 \
+            and self._blocks[x]._type == self._cols[1]:
                 if not PrevFixed:
                     PrevFixed = True
                     i += 1
                 self._blocks[x].i = i
                 self._blocks[x].j = 1
                 j = len(self._cols) - 1
-            elif len(self._cols) > 2 and self._blocks[x]._type == self._cols[2]:
+            elif len(self._cols) > 2 \
+            and self._blocks[x]._type == self._cols[2]:
                 if not PrevFixed:
                     PrevFixed = True
                     i += 1
                 self._blocks[x].i = i
                 self._blocks[x].j = 2
                 j = len(self._cols) - 1
-            elif len(self._cols) > 3 and self._blocks[x]._type == self._cols[3]:
+            elif len(self._cols) > 3 \
+            and self._blocks[x]._type == self._cols[3]:
                 if not PrevFixed:
                     PrevFixed = True
                     i += 1
                 self._blocks[x].i = i
                 self._blocks[x].j = j = len(self._cols) - 1
-            elif self._blocks[x]._same > 0: # Must be before checking '_collimit'
+            # Must be before checking '_collimit'
+            elif self._blocks[x]._same > 0:
                 PrevFixed = False
                 self._blocks[x].i = i
                 self._blocks[x].j = j
@@ -318,7 +346,8 @@ class Cells:
                 PrevFixed = False
                 i += 1
                 self._blocks[x].i = i
-                self._blocks[x].j = j = len(self._cols) # Instead of creating empty non-selectable cells
+                # Instead of creating empty non-selectable cells
+                self._blocks[x].j = j = len(self._cols)
             else:
                 PrevFixed = False
                 self._blocks[x].i = i
@@ -331,11 +360,14 @@ class Cells:
                     self._blocks[x].j = len(self._cols)
                     j += 1
                     
-    # Create a vertically reversed view. This generally differs from 'wrap' in that we do not use 'collimit'.
+    ''' Create a vertically reversed view. This generally differs from
+        'wrap' in that we do not use 'collimit'.
+    '''
     def wrap_y(self):
         i = j = 0
         for x in range(len(self._blocks)):
-            if self._cols and self._blocks[x]._type == self._cols[0] and self._blocks[x]._text:
+            if self._cols and self._blocks[x]._type == self._cols[0] \
+            and self._blocks[x]._text:
                 if x > 0:
                     j += 1
                 self._blocks[x].j = j
@@ -351,12 +383,19 @@ class Cells:
     
     # This is necessary because fixed columns are interchangeable now
     def sort_cells(self):
-        self._blocks = sorted(self._blocks,key=lambda block:(block.i,block.j,block._no))
+        self._blocks = sorted (self._blocks
+                              ,key=lambda block:(block.i
+                                                ,block.j
+                                                ,block._no
+                                                )
+                              )
     
     def phrases2end(self):
         if self._phrase_dic:
-            phrases = [block for block in self._blocks if block._dica == self._phrase_dic]
-            self._blocks = [block for block in self._blocks if block._dica != self._phrase_dic]
+            phrases = [block for block in self._blocks \
+                       if block._dica == self._phrase_dic]
+            self._blocks = [block for block in self._blocks \
+                            if block._dica != self._phrase_dic]
             self._blocks = self._blocks + phrases
         else:
             sh.log.append ('Cells.phrases2end'
@@ -369,7 +408,8 @@ class Cells:
         for i in range(len(self._blocks)):
             if self._blocks[i]._same > 0:
                 self._blocks[i]._cell_no = no
-            elif i > 0: # i != no
+            # i != no
+            elif i > 0:
                 no += 1
                 self._blocks[i]._cell_no = no
             else:
@@ -381,7 +421,12 @@ class Cells:
         for block in self._blocks:
             # Quotes in the text will fail the query, so we screen them
             block._text = block._text.replace('"','""')
-            tmp.write('update BLOCKS set TEXT="%s",ROWNO=%d,COLNO=%d,CELLNO=%d where NO=%d;' % (block._text,block.i,block.j,block._cell_no,block._no))
+            tmp.write ('update BLOCKS \
+                        set TEXT="%s",ROWNO=%d,COLNO=%d,CELLNO=%d \
+                        where NO=%d;' % (block._text,block.i,block.j
+                                        ,block._cell_no,block._no
+                                        )
+                      )
         tmp.write('commit;')
         self._query = tmp.getvalue()
         tmp.close()
@@ -416,16 +461,19 @@ class Cells:
 
 
 
-# This is view-specific and should be recreated each time
-''' We assume that sqlite has already sorted DB with 'BLOCK IS NOT 1' and all cell manipulations are completed
+''' This is view-specific and should be recreated each time.
+    We assume that sqlite has already sorted DB with 'BLOCK IS NOT 1'
+    and all cell manipulations are completed
     Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL
     Modifies attributes:        POS1, POS2
 '''
 class Pos:
     
     def __init__(self,data,raw_text):
-        self._data     = data     # Sqlite fetch
-        self._raw_text = raw_text # Retrieved from the TkinterHTML widget
+        # Sqlite fetch
+        self._data     = data
+        # Retrieved from the TkinterHTML widget
+        self._raw_text = raw_text
         self._blocks   = []
         self._query    = ''
         if self._data and self._raw_text:
@@ -524,7 +572,9 @@ class Pos:
         tmp = io.StringIO()
         tmp.write('begin;')
         for block in self._blocks:
-            tmp.write('update BLOCKS set POS1=%d,POS2=%d where NO=%d;' % (block._first,block._last,block._no))
+            tmp.write ('update BLOCKS set POS1=%d,POS2=%d where NO=%d;'\
+                      % (block._first,block._last,block._no)
+                      )
         tmp.write('commit;')
         self._query = tmp.getvalue()
         tmp.close()
@@ -533,17 +583,17 @@ class Pos:
 
 
 ''' Creating a selection requires 4 parameters to be calculated:
-"self.widget.tag('add','selection',node1,pos1,node2,pos2)"
-'node1' usually equals to 'node2' (for a single block this is 
-always true because it represents a single tag and therefore 
-lies within a single node).
-The current node can be calculated using:
-"node1,node2 = self.widget.node(True,event.x,event.y)"
-The main catch here is that the remaining pos1 and pos2 
-are not equal for some reason to positions calculated
-for the text generated by 'widget.text()' (_index[1], 
-_index[3]). Therefore, we need an additional 'index' 
-command.
+    "self.widget.tag('add','selection',node1,pos1,node2,pos2)"
+    'node1' usually equals to 'node2' (for a single block this is 
+    always true because it represents a single tag and therefore 
+    lies within a single node).
+    The current node can be calculated using:
+    "node1,node2 = self.widget.node(True,event.x,event.y)"
+    The main catch here is that the remaining pos1 and pos2 
+    are not equal for some reason to positions calculated
+    for the text generated by 'widget.text()' (_index[1], 
+    _index[3]). Therefore, we need an additional 'index' 
+    command.
 '''
 class Pages:
     
@@ -551,7 +601,8 @@ class Pages:
         self.obj     = obj
         self._blocks = blocks
         self._query  = ''
-        if self._blocks and self.obj and hasattr(self.obj,'widget') and hasattr(self.obj,'bbox'):
+        if self._blocks and self.obj and hasattr(self.obj,'widget') \
+        and hasattr(self.obj,'bbox'):
             self.Success = True
             self.widget = self.obj.widget
         else:
@@ -569,8 +620,22 @@ class Pages:
             if _index:
                 _bbox  = self.obj.bbox(_index[0])
                 if _bbox:
-                    # BBOX: man says: The first two integers are the x and y coordinates of the top-left corner of the bounding-box, the later two are the x and y coordinates of the bottom-right corner of the same box. If the node does not generate content, then an empty string is returned.
-                    tmp.write('update BLOCKS set NODE1="%s",NODE2="%s",OFFPOS1=%d,OFFPOS2=%d,BBOX1=%d,BBOX2=%d,BBOY1=%d,BBOY2=%d where NO=%d;' % (_index[0],_index[2],_index[1],_index[3],_bbox[0],_bbox[2],_bbox[1],_bbox[3],block._no))
+                    ''' BBOX: man says: The first two integers are the x
+                        and y coordinates of the top-left corner of
+                        the bounding-box, the later two are the x and y
+                        coordinates of the bottom-right corner of
+                        the same box. If the node does not generate
+                        content, then an empty string is returned.
+                    '''
+                    tmp.write ('update BLOCKS \
+                                set NODE1="%s",NODE2="%s",OFFPOS1=%d\
+                                   ,OFFPOS2=%d,BBOX1=%d,BBOX2=%d\
+                                   ,BBOY1=%d,BBOY2=%d where NO=%d;' \
+                               % (_index[0],_index[2],_index[1]
+                                 ,_index[3],_bbox[0],_bbox[2],_bbox[1]
+                                 ,_bbox[3],block._no
+                                 )
+                              )
                 else:
                     sh.log.append ('Pages.create_index'
                                   ,_('WARNING')
@@ -696,5 +761,8 @@ if __name__ == '__main__':
     blocks_db.print(Shorten=0,mode='ARTICLES')
     print()
     
-    blocks_db.dbc.execute('select NO,DICA,TYPE,TEXT,SAMECELL,PRIORITY,CELLNO,POS1,POS2,SELECTABLE from BLOCKS order by CELLNO,NO')
+    blocks_db.dbc.execute ('select NO,DICA,TYPE,TEXT,SAMECELL,PRIORITY\
+                                  ,CELLNO,POS1,POS2,SELECTABLE \
+                            from BLOCKS order by CELLNO,NO'
+                          )
     blocks_db.print(Selected=1,Shorten=1,MaxRows=200,MaxRow=18)

@@ -252,7 +252,9 @@ class ConfigMclient(sh.Config):
                 sh.globs['var'][key] = sh.objs.pdir().add('resources',sh.globs['var'][key])
                 sh.log.append ('ConfigMclient.additional_keys'
                               ,_('DEBUG')
-                              ,'%s -> %s' % (old_val,sh.globs['var'][key])
+                              ,'%s -> %s' % (old_val
+                                            ,sh.globs['var'][key]
+                                            )
                               )
 
 
@@ -271,7 +273,6 @@ sh.globs['_tkhtml_loaded'] = False
 sh.globs['geom_top'] = {}
 sh.globs['top'] = {}
 
-online_url_safe = sh.globs['var']['pair_root'] + 'l1=2&l2=1&s=%ED%E5%E2%E5%F0%ED%E0%FF+%F1%F1%FB%EB%EA%E0' # 'неверная ссылка'
 sep_words_found = 'найдены отдельные слова'
 
 pairs = ('ENG <=> RUS'
@@ -329,11 +330,11 @@ sources = (_('All'),_('Online'),_('Offline'))
 class Objects:
 
     def __init__(self):
-        self._top = self._entry        = self._textbox  = self._online_mt \
-                  = self._online_other = self._about    = self._blacklist \
-                  = self._prioritize   = self._parties  = self._request   \
-                  = self._ext_dics     = self._webframe = self._blocks_db \
-                  = self._moves        = None
+        self._top = self._entry = self._textbox = self._online_mt \
+                  = self._online_other = self._about = self._blacklist \
+                  = self._prioritize = self._parties = self._request \
+                  = self._ext_dics = self._webframe = self._blocks_db \
+                  = self._moves = None
 
     def blocks_db(self):
         if not self._blocks_db:
@@ -405,12 +406,14 @@ class Objects:
         return self._about
 
     def blacklist(self):
-        if self._blacklist is None: # Allow empty lists
+        # Allow empty lists
+        if self._blacklist is None:
             self._blacklist = Lists().blacklist()
         return self._blacklist
 
     def prioritize(self):
-        if self._prioritize is None: # Allow empty lists
+        # Allow empty lists
+        if self._prioritize is None:
             self._prioritize = Lists().prioritize()
         return self._prioritize
 
@@ -423,17 +426,25 @@ class CurRequest:
         self.reset()
 
     def values(self):
-        #note: this should be synchronized with the 'default' value of objs.webframe().menu_columns
+        ''' #note: this should be synchronized with the 'default' value
+            of objs.webframe().menu_columns
+        '''
         self._collimit     = 8
         self._source       = _('All')
         self._lang         = 'English'
         self._cols         = ('dic','wform','transc','speech')
-        # Toggling blacklisting should not depend on a number of blocked dictionaries (otherwise, it is not clear how blacklisting should be toggled)
+        ''' Toggling blacklisting should not depend on a number of
+            blocked dictionaries (otherwise, it is not clear how
+            blacklisting should be toggled)
+        '''
         self.Block         = True
         self.Prioritize    = True
         self.SortRows      = True
         self.SortTerms     = True
-        # *Temporary* turn off prioritizing and terms sorting for articles with 'sep_words_found' and in phrases; use previous settings for new articles
+        ''' *Temporary* turn off prioritizing and terms sorting for
+            articles with 'sep_words_found' and in phrases; use previous
+            settings for new articles
+        '''
         self.SpecialPage   = False
         self.MouseClicked  = False
         self.CaptureHotkey = True
@@ -451,8 +462,10 @@ class CurRequest:
 def call_app():
     # Использовать то же сочетание клавиш для вызова окна
     sg.Geometry(parent=objs.webframe().obj).activate(MouseClicked=objs.request().MouseClicked)
-    #todo: check if this is still the problem
-    # In case of .focus_set() *first* Control-c-c can call an inactive widget
+    ''' #todo: check if this is still the problem
+        In case of .focus_set() *first* Control-c-c can call an inactive
+        widget.
+    '''
     objs.webframe().search_field.widget.focus_force()
 
 # Перехватить нажатие Control-c-c
@@ -461,7 +474,9 @@ def timed_update():
     check = kl_mod.keylistener.check()
     if check:
         if check == 1 and objs._request.CaptureHotkey:
-            # Позволяет предотвратить зависание потока в версиях Windows старше XP
+            ''' Позволяет предотвратить зависание потока в версиях
+                Windows старше XP
+            '''
             if sh.oss.win():
                 kl_mod.keylistener.cancel()
                 kl_mod.keylistener.restart()
@@ -637,8 +652,12 @@ class SaveArticle:
                                         )
         if self.file and objs.request()._html:
             self.fix_ext(ext='.htm')
-            # We disable AskRewrite because the confirmation is already built in the internal dialog
-            sh.WriteTextFile(self.file,AskRewrite=False).write(objs._request._html)
+            ''' We disable AskRewrite because the confirmation is
+                already built in the internal dialog
+            '''
+            sh.WriteTextFile (file       = self.file
+                             ,AskRewrite = False
+                             ).write(objs._request._html)
         else:
             sh.log.append ('SaveArticle.view_as_html'
                           ,_('WARNING')
@@ -646,8 +665,12 @@ class SaveArticle:
                           )
 
     def raw_as_html(self):
-        # Ключ 'html' может быть необходим для записи файла, которая производится в кодировке UTF-8, поэтому, чтобы полученная веб-страница нормально читалась, меняем кодировку вручную.
-        # Также меняем сокращенные гиперссылки на полные, чтобы они работали и в локальном файле.
+        ''' Ключ 'html' может быть необходим для записи файла, которая
+            производится в кодировке UTF-8, поэтому, чтобы полученная
+            веб-страница нормально читалась, меняем кодировку вручную.
+            Также меняем сокращенные гиперссылки на полные, чтобы они
+            работали и в локальном файле.
+        '''
         self.file = sg.dialog_save_file (
                     filetypes = ((_('Web-page'),'.htm')
                                 ,(_('Web-page'),'.html')
@@ -657,7 +680,9 @@ class SaveArticle:
         if self.file and objs.request()._html_raw:
             self.fix_ext(ext='.htm')
             #todo: fix remaining links to localhost
-            sh.WriteTextFile(self.file,AskRewrite=False).write(objs._request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/M.exe?',sh.globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/m.exe?',sh.globs['var']['pair_root']))
+            sh.WriteTextFile (file       = self.file
+                             ,AskRewrite = False
+                             ).write(objs._request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/M.exe?',sh.globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/m.exe?',sh.globs['var']['pair_root']))
         else:
             sh.log.append ('SaveArticle.raw_as_html'
                           ,_('WARNING')
@@ -673,7 +698,9 @@ class SaveArticle:
         text = objs.webframe().text()
         if self.file and text:
             self.fix_ext(ext='.txt')
-            sh.WriteTextFile(self.file,AskRewrite=False).write(text.strip())
+            sh.WriteTextFile (file       = self.file
+                             ,AskRewrite = False
+                             ).write(text.strip())
         else:
             sh.log.append ('SaveArticle.view_as_txt'
                           ,_('WARNING')
@@ -721,9 +748,11 @@ class SearchArticle:
         self._first  = -1
         self._last   = -1
         self._search = ''
-        # Plus: keeping old input
-        # Minus: searching old input after cancelling the search and searching again
-        #self.clear()
+        ''' Plus: keeping old input
+            Minus: searching old input after cancelling the search and
+            searching again
+            #self.clear()
+        '''
 
     def clear(self,*args):
         self.obj.clear_text()
@@ -832,7 +861,9 @@ class SearchField:
     def clear(self,*args):
         self.obj.clear_text()
 
-    # Очистить строку поиска и вставить в нее заданный текст или содержимое буфера обмена
+    ''' Очистить строку поиска и вставить в нее заданный текст или
+        содержимое буфера обмена
+    '''
     def paste(self,event=None,text=None):
         self.clear()
         if text:
@@ -881,10 +912,17 @@ class SpecSymbols:
         for i in range(len(sh.globs['var']['spec_syms'])):
             if i % 10 == 0:
                 self.frame = sg.Frame(self.obj,expand=1)
-            # lambda сработает правильно только при моментальной упаковке, которая не поддерживается create_button (моментальная упаковка возвращает None вместо виджета), поэтому не используем эту функцию. По этой же причине нельзя привязать кнопкам '<Return>' и '<KP_Enter>', сработают только встроенные '<space>' и '<ButtonRelease-1>'.
-            # width и height нужны для Windows
+            ''' lambda сработает правильно только при моментальной
+                упаковке, которая не поддерживается create_button
+                (моментальная упаковка возвращает None вместо виджета),
+                поэтому не используем эту функцию. По этой же причине
+                нельзя привязать кнопкам '<Return>' и '<KP_Enter>',
+                сработают только встроенные '<space>' и
+                '<ButtonRelease-1>'.
+                width и height нужны для Windows
+            '''
             self.button = tk.Button (
-                    self.frame.widget
+                    master  = self.frame.widget
                    ,text    = sh.globs['var']['spec_syms'][i]
                    ,command = lambda i=i:objs.webframe().insert_sym(sh.globs['var']['spec_syms'][i])
                    ,width   = 2
@@ -946,7 +984,9 @@ class History:
                 ,bindings = sh.globs['var']['bind_clear_history']
                 ,action   = self.clear
                 )
-        #note: the list is reversed, but we think it is still more intuitive when Home goes top and End goes bottom
+        ''' #note: the list is reversed, but we think it is still more
+            intuitive when Home goes top and End goes bottom
+        '''
         sg.bind (obj      = self.parent
                 ,bindings = '<Home>'
                 ,action   = self.go_first
@@ -958,7 +998,8 @@ class History:
 
     def autoselect(self):
         self.obj.clear_selection()
-        item = str(objs.blocks_db()._articleid) + ' ► ' + objs.request()._search
+        item = str(objs.blocks_db()._articleid) + ' ► ' \
+                                                + objs.request()._search
         self.obj.set(item=item)
 
     def show(self,*args):
@@ -1293,9 +1334,12 @@ class WebFrame:
                   ,active_image_path   = sh.globs['var']['icon_go_forward']
                   ,bindings            = sh.globs['var']['bind_go_forward']
                                   )
-        # Кнопка включения/отключения и очистки истории
-        #todo: fix: do not iconify on RMB (separate button frame from main frame)
-        # We may hardcore the hotkey to clear the history because this hotkey is bound to the button
+        ''' Кнопка включения/отключения и очистки истории
+            #todo: fix: do not iconify on RMB (separate button frame
+            from main frame)
+            We may hardcore the hotkey to clear the history because this
+            hotkey is bound to the button
+        '''
         hint_history = _('Show history')                                      \
                     + '\n'   + sh.globs['var']['bind_toggle_history']         \
                     + ', '   + sh.globs['var']['bind_toggle_history_alt']     \
@@ -1405,7 +1449,10 @@ class WebFrame:
                   )
 
     def bind_children(self):
-        # We need to bind all buttons (inside 'self.fr_but') and also gaps between them and between top-bottom borders ('self.canvas').
+        ''' We need to bind all buttons (inside 'self.fr_but') and also
+            gaps between them and between top-bottom borders
+            ('self.canvas').
+        '''
         sg.bind (obj      = self.canvas
                 ,bindings = '<Motion>'
                 ,action   = self.motion
@@ -1420,7 +1467,9 @@ class WebFrame:
                 )
         sg.bind (obj      = self
                 ,bindings = '<Button-1>'
-                #todo: This currently means 'self.go_url'. Prioritize/unblock dictionaries in 'self.go'.
+                ''' #todo: This currently means 'self.go_url'.
+                    Prioritize/unblock dictionaries in 'self.go'.
+                '''
                 ,action   = self.go
                 )
         
@@ -1726,7 +1775,8 @@ class WebFrame:
             try:
                 node1,node2 = self.widget.node(True,event.x,event.y)
                 pos         = self.widget.text('offset',node1,node2)
-            except ValueError: # Need more than 0 values to unpack
+            # Need more than 0 values to unpack
+            except ValueError:
                 pass
                 '''
                 # Too frequent
@@ -1810,7 +1860,11 @@ class WebFrame:
         self.widget.xview_moveto(fraction=fraction)
         
     def scroll_y(self,bboy,max_bboy):
-        # 'tkinterhtml' may think that topmost blocks have higher BBOY1 than other blocks (this is probably a bug), but correcting this will make the code more complex and error-prone.
+        ''' 'tkinterhtml' may think that topmost blocks have higher
+            BBOY1 than other blocks (this is probably a bug), but
+            correcting this will make the code more complex and
+            error-prone.
+        '''
         fraction = bboy / max_bboy
         self.widget.yview_moveto(fraction=fraction)
 
@@ -1880,10 +1934,14 @@ class WebFrame:
                           )
 
     ''' In order to shift the screen correctly, we need to:
-        - make visible the minimum BBOY1 and the maximum BBOY2 of the current row;
-          - if BBOY2 - BBOY1 exceeds the current height, we should scroll to BBOY1 only
-        - make visible the minimum BBOX1 and the maximum BBOX2 of the current column;
-          - if BBOX2 - BBOX1 exceeds the current width, we should scroll to BBOX1 only
+        - make visible the minimum BBOY1 and the maximum BBOY2 of
+          the current row;
+          - if BBOY2 - BBOY1 exceeds the current height, we should
+            scroll to BBOY1 only
+        - make visible the minimum BBOX1 and the maximum BBOX2 of
+          the current column;
+          - if BBOX2 - BBOX1 exceeds the current width, we should
+            scroll to BBOX1 only
     '''
     def shift_screen(self):
         result1 = objs.blocks_db().block_pos(pos=self._pos)
@@ -1914,7 +1972,9 @@ class WebFrame:
             code = '<html><body><h1>' + _('Nothing has been loaded yet.') + '</h1></body></html>'
         try:
             self.widget.parse(code)
-        # This should not happen now as we strip out non-supported characters
+            ''' This should not happen now as we strip out non-supported
+                characters
+            '''
         except tk._tkinter.TclError:
             sg.Message (func    = 'WebFrame.fill'
                        ,level   = _('ERROR')
@@ -1931,7 +1991,9 @@ class WebFrame:
         self.obj.close()
 
     def load_article(self):
-        #note: each time the contents of the current page is changed (e.g., due to prioritizing), bookmarks must be deleted.
+        ''' #note: each time the contents of the current page is changed
+            (e.g., due to prioritizing), bookmarks must be deleted.
+        '''
         timer = sh.Timer(func_title='WebFrame.load_article')
         timer.start()
         # Do not allow selection positions from previous articles
@@ -1994,7 +2056,11 @@ class WebFrame:
             ptimer.end()
             #todo: #fix: assign this for already loaded articles too
             objs._request._page     = page._page
-            #note: #todo: 'Page' returns '_html_raw' for online pages only; this value can be separated for online & offline sources after introducing sub-sources instead of relying on _('All')
+            ''' #note: #todo: 'Page' returns '_html_raw' for online
+                pages only; this value can be separated for
+                online & offline sources after introducing sub-sources
+                instead of relying on _('All')
+            '''
             objs._request._html_raw = page._html_raw
             
             tags = tg.Tags (text      = objs._request._page
@@ -2029,17 +2095,22 @@ class WebFrame:
         objs._blocks_db.update(query=bp._query)
 
         dics = objs._blocks_db.dics(Block=0)
-        #todo: make this Multitran-only
-        #note: if an article comprises only 1 dic/wform, this is usually a dictionary + terms from the 'Phrases' section
-        # Do not rely on the number of wforms; large articles like 'centre' may have only 1 wform (an a plurality of dics)
+        ''' #todo: make this Multitran-only
+            #note: if an article comprises only 1 dic/wform, this is
+            usually a dictionary + terms from the 'Phrases' section
+            Do not rely on the number of wforms; large articles like
+            'centre' may have only 1 wform (an a plurality of dics)
+        '''
         if not dics or dics and len(dics) == 1:
             objs._request.SpecialPage = True
         else:
-            objs._request.SpecialPage = False # Otherwise, 'SpecialPage' will be inherited
+            # Otherwise, 'SpecialPage' will be inherited
+            objs._request.SpecialPage = False
 
         self.update_columns()
         
-        SortTerms = objs._request.SortTerms and not objs._request.SpecialPage
+        SortTerms = objs._request.SortTerms \
+                    and not objs._request.SpecialPage
         objs._blocks_db.reset (cols      = objs._request._cols
                               ,SortRows  = objs._request.SortRows
                               ,SortTerms = SortTerms
@@ -2101,7 +2172,10 @@ class WebFrame:
                               ,_('WARNING')
                               ,_('Wrong input data!')
                               )
-        # Empty article is not added either to DB or history, so we just do not clear the search field to be able to correct the typo.
+        ''' Empty article is not added either to DB or history, so we
+            just do not clear the search field to be able to correct
+            the typo.
+        '''
         if pages._blocks:
             self.search_field.clear()
         self.history.update()
@@ -2110,18 +2184,35 @@ class WebFrame:
         timer.end()
 
         '''
-        objs._blocks_db.dbc.execute('select ARTICLEID,TITLE,BOOKMARK from ARTICLES where ARTICLEID = ?',(objs._blocks_db._articleid,))
+        objs._blocks_db.dbc.execute ('select ARTICLEID,TITLE,BOOKMARK \
+                                      from ARTICLES where ARTICLEID = ?'
+                                    ,(objs._blocks_db._articleid,)
+                                    )
         objs._blocks_db.print(Shorten=0,mode='ARTICLES')
         '''
         
         '''
-        objs._blocks_db.dbc.execute('select ARTICLEID,CELLNO,NO,TYPE,TEXT from BLOCKS where BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by ARTICLEID,CELLNO,NO')
+        objs._blocks_db.dbc.execute ('select ARTICLEID,CELLNO,NO,TYPE\
+                                            ,TEXT from BLOCKS \
+                                      where BLOCK = 0 and IGNORE = 0 \
+                                      and POS1 < POS2 \
+                                      order by ARTICLEID,CELLNO,NO'
+                                    )
         objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=150)
         '''
         
         '''
-        objs._blocks_db.dbc.execute('select CELLNO,NO,DICA,WFORMA,SPEECHA,TYPE,TEXT from BLOCKS where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 order by CELLNO,NO',(objs._blocks_db._articleid,))
-        objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=14,MaxRows=150)
+        objs._blocks_db.dbc.execute ('select CELLNO,NO,DICA,WFORMA\
+                                            ,SPEECHA,TYPE,TEXT \
+                                      from BLOCKS where ARTICLEID = ? \
+                                      and BLOCK = 0 and IGNORE = 0 \
+                                      and POS1 < POS2 \
+                                      order by CELLNO,NO'
+                                    ,(objs._blocks_db._articleid,)
+                                    )
+        objs._blocks_db.print (Selected=1,Shorten=1
+                              ,MaxRow=14,MaxRows=150
+                              )
         '''
         
     # Select either the search string or the URL
@@ -2323,14 +2414,18 @@ class WebFrame:
 
     # Задействование колеса мыши для пролистывания экрана
     def mouse_wheel(self,event):
-        #todo: fix: too small delta in Windows
-        # В Windows XP delta == -120, однако, в других версиях оно другое
+        ''' #todo: fix: too small delta in Windows
+            В Windows XP delta == -120, однако, в других версиях оно
+            другое
+        '''
         if event.num == 5 or event.delta < 0:
             if sh.oss.lin():
                 self.move_page_down()
             else:
                 self.move_down()
-        # В Windows XP delta == 120, однако, в других версиях оно другое
+            ''' В Windows XP delta == 120, однако, в других версиях оно
+                другое
+            '''
         if event.num == 4 or event.delta > 0:
             if sh.oss.lin():
                 self.move_page_up()
@@ -2384,7 +2479,8 @@ class WebFrame:
                        )
 
     # Открыть веб-страницу с определением текущего термина
-    def define(self,Selected=True): # Selected: True: Выделенный термин; False: Название статьи
+    # Selected: True: Выделенный термин; False: Название статьи
+    def define(self,Selected=True):
         if Selected:
             result = objs.blocks_db().block_pos(pos=self._pos)
             search_str = 'define:' + result[6]
@@ -2450,7 +2546,8 @@ class WebFrame:
             self.btn_toggle_block.inactive()
             self.settings.cb3.disable()
 
-        if not objs._request.SpecialPage and objs._request.Prioritize and objs._blocks_db.prioritized():
+        if not objs._request.SpecialPage and objs._request.Prioritize \
+        and objs._blocks_db.prioritized():
             self.btn_toggle_priority.active()
             self.settings.cb4.enable()
         else:
@@ -2506,12 +2603,14 @@ class WebFrame:
         if len(objs.request()._search) >= 150:
             if not sg.Message (func    = 'WebFrame.control_length'
                               ,level   = _('QUESTION')
-                              ,message = _('The request is long (%d symbols). Do you really want to send it?') % len(objs._request._search)
+                              ,message = _('The request is long (%d symbols). Do you really want to send it?') \
+                                         % len(objs._request._search)
                               ).Yes:
                 Confirmed = False
         return Confirmed
 
-    def search_reset(self,*args): # SearchArticle
+    # SearchArticle
+    def search_reset(self,*args):
         self.search_article.reset()
         self.search_article.forward()
 
@@ -2530,7 +2629,9 @@ class WebFrame:
                       ,_('INFO')
                       ,str(self.menu_columns.choice)
                       )
-        fixed = [col for col in objs.request()._cols if col != _('Do not set')]
+        fixed = [col for col in objs.request()._cols \
+                 if col != _('Do not set')
+                ]
         objs._request._collimit = self.menu_columns.choice + len(fixed)
         objs.blocks_db().delete_bookmarks()
         self.load_article()
@@ -2609,7 +2710,9 @@ class WebFrame:
             query = ''
             tmp.write('begin;')
             for no in result:
-                tmp.write('update BLOCKS set PRIORITY=0 where NO=%d;' % no)
+                tmp.write ('update BLOCKS set PRIORITY=0 where NO=%d;' \
+                          % no
+                          )
             tmp.write('commit;')
             query = tmp.getvalue()
             tmp.close()
@@ -2650,7 +2753,11 @@ class WebFrame:
                        ,Printer  = True
                        )._html
         if code:
-            sh.WriteTextFile(sh.objs.tmpfile(suffix='.htm',Delete=0),AskRewrite=0).write(code)
+            sh.WriteTextFile (file       = sh.objs.tmpfile(suffix='.htm'
+                                                          ,Delete=0
+                                                          )
+                             ,AskRewrite = False
+                             ).write(code)
             sh.Launch(target=sh.objs._tmpfile).auto()
         else:
             sh.log.append ('WebFrame.print'
@@ -2666,7 +2773,12 @@ class WebFrame:
         # Do not move button frame if it is entirely visible
         if self.obj.widget.winfo_width() < self.fr_but.widget.winfo_reqwidth():
             x         = self.canvas.widget.winfo_pointerx()
-            # We read 'canvas' because it should return positive values (in comparison with 'self.fr_but', which is movable). 'rootx' should be negative only when 'canvas' is partially moved by a user out of screen (but we may need this case too).
+            ''' We read 'canvas' because it should return positive
+                values (in comparison with 'self.fr_but', which is
+                movable). 'rootx' should be negative only when 'canvas'
+                is partially moved by a user out of screen (but we may
+                need this case too).
+            '''
             rootx     = self.canvas.widget.winfo_rootx()
             leftx     = max (0,rootx)
             rightx    = min (rootx + self.canvas.widget.winfo_width()
@@ -2691,12 +2803,21 @@ class WebFrame:
                       )
         self.canvas.widget.xview_scroll(self._shift,'units')
         
-    # Update a column number in GUI; adjust the column number (both logic and GUI) in special cases
+    ''' Update a column number in GUI; adjust the column number (both
+        logic and GUI) in special cases
+    '''
     def update_columns(self):
-        fixed = [col for col in objs.request()._cols if col != _('Do not set')]
+        fixed = [col for col in objs.request()._cols \
+                 if col != _('Do not set')
+                ]
         if objs._request._collimit > len(fixed):
-            # A dictionary from the 'Phrases' section usually has an 'original + translation' structure, so we need to switch off sorting terms and ensure that the number of columns is divisible by 2
-            if objs._request.SpecialPage and objs._request._collimit % 2 != 0:
+            ''' A dictionary from the 'Phrases' section usually has
+                an 'original + translation' structure, so we need to
+                switch off sorting terms and ensure that the number of
+                columns is divisible by 2
+            '''
+            if objs._request.SpecialPage \
+            and objs._request._collimit % 2 != 0:
                 if objs._request._collimit == len(fixed) + 1:
                     objs._request._collimit += 1
                 else:
@@ -2705,12 +2826,16 @@ class WebFrame:
             self.menu_columns.set(non_fixed_len)
             sh.log.append ('WebFrame.update_columns'
                           ,_('INFO')
-                          ,_('Set the column limit to %d (%d in total)') % (non_fixed_len,objs._request._collimit)
+                          ,_('Set the column limit to %d (%d in total)')\
+                          % (non_fixed_len,objs._request._collimit)
                           )
         else:
             sg.Message (func    = 'WebFrame.update_columns'
                        ,level   = _('ERROR')
-                       ,message = _('The condition "%s" is not observed!') % '%d > %d' % (objs._request._collimit,len(fixed))
+                       ,message = _('The condition "%s" is not observed!')\
+                                  % '%d > %d' % (objs._request._collimit
+                                                ,len(fixed)
+                                                )
                        )
 
     def ignore_column(self,col_no):
@@ -2718,7 +2843,10 @@ class WebFrame:
             if objs._request._cols[col_no] == 'transc':
                 sh.log.append ('WebFrame.ignore_column'
                               ,_('DEBUG')
-                              ,_('Select column "%s" instead of "%s"') % (objs._request._cols[col_no],objs._request._cols[col_no+1])
+                              ,_('Select column "%s" instead of "%s"')\
+                              % (objs._request._cols[col_no]
+                                ,objs._request._cols[col_no+1]
+                                )
                               )
                 col_no += 1
         return col_no
@@ -2810,7 +2938,8 @@ class WebFrame:
                 self._pos = result[3]
                 sh.log.append ('WebFrame.get_bookmark'
                               ,_('DEBUG')
-                              ,_('Load bookmark %d for article #%d') % (self._pos,objs._blocks_db._articleid)
+                              ,_('Load bookmark %d for article #%d') \
+                              % (self._pos,objs._blocks_db._articleid)
                               )
             else:
                 sh.log.append ('WebFrame.get_bookmark'
@@ -2831,7 +2960,8 @@ class WebFrame:
                               ,_('Wrong input data!')
                               )
 
-    def zzz(self): # Only needed to move quickly to the end of the class
+    # Only needed to move quickly to the end of the class
+    def zzz(self):
         pass
 
 
@@ -2844,7 +2974,10 @@ class Paths:
 
     def blacklist(self):
         if self.Success:
-            instance = sh.File(file=os.path.join(self.dir.dir,'block.txt'))
+            instance = sh.File (file = os.path.join (self.dir.dir
+                                                    ,'block.txt'
+                                                    )
+                               )
             self.Success = instance.Success
             if self.Success:
                 return instance.file
@@ -2861,7 +2994,10 @@ class Paths:
 
     def prioritize(self):
         if self.Success:
-            instance = sh.File(file=os.path.join(self.dir.dir,'prioritize.txt'))
+            instance = sh.File (file = os.path.join (self.dir.dir
+                                                    ,'prioritize.txt'
+                                                    )
+                               )
             self.Success = instance.Success
             if self.Success:
                 return instance.file
@@ -3048,7 +3184,10 @@ class Settings:
         else:
             sg.Message (func    = 'Settings.update_by_sc'
                        ,level   = _('ERROR')
-                       ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self.sc.choice),', '.join(self._sc_items))
+                       ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                                  % (str(self.sc.choice)
+                                    ,', '.join(self._sc_items)
+                                    )
                        )
 
     def update_by_col1(self,*args):
@@ -3185,13 +3324,13 @@ class Settings:
                 sg.Message (func    = 'Settings.apply'
                            ,level   = _('ERROR')
                            ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                           % (str(self._cols[i])
-                             ,', '.join (_('Dictionaries')
-                                        ,_('Word forms')
-                                        ,_('Transcription')
-                                        ,_('Parts of speech')
+                                      % (str(self._cols[i])
+                                        ,', '.join (_('Dictionaries')
+                                                   ,_('Word forms')
+                                                   ,_('Transcription')
+                                                   ,_('Parts of speech')
+                                                   )
                                         )
-                             )
                            )
         if set(lst):
             self.close()
