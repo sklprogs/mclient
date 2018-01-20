@@ -1,22 +1,38 @@
-- 'невыполнение обязательств': 'невыполнение денежных обязательств': mixed on sorting 
-- An incorrect selection at the end while searching "document is original without a signature"
+- tests: Commands.search does not work
+- Unknown mode "" in Elems.order_speech when using local dictionaries
+  (Stardict 2)
+- Do not open a Multitran-based URL for local dictionaries (F7)
+- 'невыполнение обязательств': 'невыполнение денежных обязательств':
+  mixed on sorting 
+- An incorrect selection at the end while searching "document is
+  original without a signature"
 - Do not move at the beginning of the article after cancelling the search
-- Mclient mode: transcription must be set after parts of speechs, but actually it is set before
-- Blocks from '<tr>̈ɪkʌt</tr><em>гл.</em>' (sdict_EnRu_full - cut (manual).txt) are not separated when sorting
+- Mclient mode: transcription must be set after parts of speechs, but
+  actually it is set before
+- Blocks from '<tr>̈ɪkʌt</tr><em>гл.</em>'
+  (sdict_EnRu_full - cut (manual).txt) are not separated when sorting
 - vertical view, EN-RU: "поцелуй": fix Moves.up for the 1st element
-- for vertical view: concerning coloring, rely on row numbers instead of column numbers
-- dressing: в MT (браузер) - "противопригарная противопригарный припыл", в mclient - "припыл противопригарная". Вызвано сортировкой по терминам.
+- for vertical view: concerning coloring, rely on row numbers instead of
+  column numbers
+- dressing: в MT (браузер) - "противопригарная противопригарный припыл",
+  в mclient - "припыл противопригарная". Вызвано сортировкой по терминам.
 - Search dialog appears again after changing the view and pressing F3
 - mud: неверный парсинг 'буровой шлам; илистый грунт' -> потеря 'грунт'
-- исправить многоуровневые корректировочные комментарии (e.g., "working documentation"): их можно вычислить по конструкции [correction + Username + Comment + UserName]
+- исправить многоуровневые корректировочные комментарии
+  (e.g., "working documentation"): их можно вычислить по конструкции
+  [correction + Username + Comment + UserName]
 - RUS-XAL: липа -> җөөлн цаhан модн -> Общая лексика -> <Нет связи>
 - glass bubble: why there are no items in red?
-- (DB) Fix Moves on 'рабочая документация' (SelectTermsOnly=0), selects ')' twice, but does not select corrections
+- (DB) Fix Moves on 'рабочая документация' (SelectTermsOnly=0), selects
+  ')' twice, but does not select corrections
 - NODE1 < NODE2 in some rare cases
 - shift_y does not work properly when changing sizes on-the-fly
 - Changing node still sometimes fails
-- When adding a space between blocks, add it to the end of the preceding block; otherwise, sorting terms may not work correctly (башмак -> sabaton)
+- When adding a space between blocks, add it to the end of the preceding
+  block; otherwise, sorting terms may not work correctly
+  (башмак -> sabaton)
 - When deleting/inserting fixed columns, preserve URL
 - Clear CurRequest data after clearing history
 - Fix links in a saved raw html
-- Vertical view (maybe, with Styles): 1st column can be a single entry of 'dic' type
+- Vertical view (maybe, with Styles): 1st column can be a single entry
+  of 'dic' type
