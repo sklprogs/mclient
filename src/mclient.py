@@ -2009,6 +2009,7 @@ class WebFrame:
                           )
             objs._blocks_db._articleid = articleid
             self.get_bookmark()
+            page = None
         else:
             # None skips the autoincrement
             data = (None                  # (00) ARTICLEID
@@ -2095,13 +2096,12 @@ class WebFrame:
         objs._blocks_db.update(query=bp._query)
 
         dics = objs._blocks_db.dics(Block=0)
-        ''' #todo: make this Multitran-only
-            #note: if an article comprises only 1 dic/wform, this is
+        ''' #note: if an article comprises only 1 dic/wform, this is
             usually a dictionary + terms from the 'Phrases' section
             Do not rely on the number of wforms; large articles like
             'centre' may have only 1 wform (an a plurality of dics)
         '''
-        if not dics or dics and len(dics) == 1:
+        if not dics or dics and len(dics) == 1 or page and page.HasLocal:
             objs._request.SpecialPage = True
         else:
             # Otherwise, 'SpecialPage' will be inherited

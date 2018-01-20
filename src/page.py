@@ -221,7 +221,7 @@ class Page:
                 ,search='~',url='',win_encoding='windows-1251'
                 ,ext_dics=[],file=None,timeout=6
                 ):
-        self._html_raw     = self._page = ''
+        self.values()
         self._source       = source
         self._lang         = lang
         self._search       = search
@@ -230,7 +230,6 @@ class Page:
         self.ext_dics      = ext_dics
         self._file         = file
         self._timeout      = timeout
-        self.Success       = True
         if not self._source or not self._lang or not self._search \
                             or not self._win_encoding:
             self.Success   = False
@@ -239,10 +238,16 @@ class Page:
                           ,_('Empty input is not allowed!')
                           )
 
+    def values(self):
+        self.Success   = True
+        self._html_raw = self._page = ''
+        self.HasLocal  = True
+    
     def run(self):
         self.get                ()
         self.invalid            ()
-        self.decode_entities    () # HTML specific
+        # HTML specific
+        self.decode_entities    ()
         self.invalid2           ()
         # An excessive space must be removed after unescaping the page
         self.mt_specific_replace()
@@ -406,6 +411,8 @@ class Page:
             self._page = self.ext_dics.get (lang   = self._lang
                                            ,search = self._search
                                            )
+            if self._page:
+                self.HasLocal = True
 
     def disamb_mt(self):
         # This is done to speed up and eliminate tag disambiguation
