@@ -371,7 +371,7 @@ def stardict(text,header='~'):
                       ,_('Type 3')
                       )
         return Stardict3(text=text).run()
-    elif '_Ex:' in text or re.match('\d\>',text):
+    elif '_Ex:' in text or re.search('\d\>',text):
         sh.log.append ('stardict'
                       ,_('DEBUG')
                       ,_('Type 2')
