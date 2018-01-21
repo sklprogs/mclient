@@ -1,4 +1,3 @@
-!! LMB does not work
 - tests: Commands.search does not work
 - Unknown mode "" in Elems.order_speech when using local dictionaries
   (Stardict 2)

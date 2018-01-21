@@ -1465,11 +1465,11 @@ class WebFrame:
                 ,bindings = '<Motion>'
                 ,action   = self.mouse_sel
                 )
+        ''' #todo: This currently means 'self.go_url'.
+            Prioritize/unblock dictionaries in 'self.go'.
+        '''
         sg.bind (obj      = self
                 ,bindings = '<Button-1>'
-                ''' #todo: This currently means 'self.go_url'.
-                    Prioritize/unblock dictionaries in 'self.go'.
-                '''
                 ,action   = self.go
                 )
         
