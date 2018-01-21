@@ -241,7 +241,7 @@ class Page:
     def values(self):
         self.Success   = True
         self._html_raw = self._page = ''
-        self.HasLocal  = True
+        self.HasLocal  = False
     
     def run(self):
         self.get                ()
