@@ -3658,7 +3658,7 @@ class Settings:
                  )
                  
         self.lb6 = sg.Label (parent = self.fr_cb6
-                            ,text   = _('Use a special order of speech in "%s" mode') \
+                            ,text   = _('Use a special order of parts of speech in "%s" mode') \
                                       % self._sc_items[2]
                             ,side   = 'left'
                             )
