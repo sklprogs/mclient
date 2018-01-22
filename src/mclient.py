@@ -438,7 +438,11 @@ class CurRequest:
             blacklisting should be toggled)
         '''
         self.Block         = True
+        self.CaptureHotkey = True
+        self.MouseClicked  = False
+        self.OrderSpeech   = True
         self.Prioritize    = True
+        self.Reverse       = False
         self.SortRows      = True
         self.SortTerms     = True
         ''' *Temporary* turn off prioritizing and terms sorting for
@@ -446,9 +450,6 @@ class CurRequest:
             settings for new articles
         '''
         self.SpecialPage   = False
-        self.MouseClicked  = False
-        self.CaptureHotkey = True
-        self.Reverse       = False
     
     def reset(self):
         self._page         = ''
@@ -2111,9 +2112,12 @@ class WebFrame:
         
         SortTerms = objs._request.SortTerms \
                     and not objs._request.SpecialPage
-        objs._blocks_db.reset (cols      = objs._request._cols
-                              ,SortRows  = objs._request.SortRows
-                              ,SortTerms = SortTerms
+        OrderSpeech = objs._request.OrderSpeech \
+                      and not objs._request.SpecialPage
+        objs._blocks_db.reset (cols        = objs._request._cols
+                              ,OrderSpeech = objs._request.OrderSpeech
+                              ,SortRows    = objs._request.SortRows
+                              ,SortTerms   = SortTerms
                               )
         objs._blocks_db.unignore()
         objs._blocks_db.ignore()
@@ -3066,6 +3070,10 @@ class Settings:
                          ,_('Clearness')
                          ,_('Custom')
                          )
+        self._sp_items = (_('Noun'),_('Verb'),_('Adjective')
+                         ,_('Abbreviation'),_('Adverb'),_('Preposition')
+                         ,_('Pronoun')
+                         )
         self._allowed    = []
         self._hint_width = 200
         self.Active      = False
@@ -3221,6 +3229,27 @@ class Settings:
         self.update_col2()
         self.update_col3()
         self.update_sc()
+        
+    def update_by_sp1(self,*args):
+        pass
+        
+    def update_by_sp2(self,*args):
+        pass
+        
+    def update_by_sp3(self,*args):
+        pass
+        
+    def update_by_sp4(self,*args):
+        pass
+        
+    def update_by_sp5(self,*args):
+        pass
+        
+    def update_by_sp6(self,*args):
+        pass
+        
+    def update_by_sp7(self,*args):
+        pass
 
     def gui(self):
         self.obj = sg.objs.new_top(Maximize=0)
@@ -3229,31 +3258,9 @@ class Settings:
         self.checkboxes()
         self.labels()
         self.columns()
-        self.sort_rows()
-        self.sort_terms()
         self.buttons()
         self.bindings()
         self.icon()
-
-    def sort_rows(self):
-        self.cb = sg.CheckBox (parent = self.fr_cb
-                              ,Active = True
-                              ,side   = 'left'
-                              )
-        self.lb = sg.Label (parent = self.fr_cb
-                           ,text   = _('Sort by each column (if it is set) (except for transcription)')
-                           ,side   = 'left'
-                           )
-
-    def sort_terms(self):
-        self.cb2 = sg.CheckBox (parent = self.fr_cb2
-                               ,Active = True
-                               ,side   = 'left'
-                               )
-        self.lb2 = sg.Label (parent = self.fr_cb2
-                            ,text   = _('Alphabetize terms')
-                            ,side   = 'left'
-                            )
 
     def block_settings(self,*args):
         sg.Message (func    = 'Settings.block_settings'
@@ -3268,6 +3275,16 @@ class Settings:
                    )
 
     def checkboxes(self):
+        self.cb1 = sg.CheckBox (parent = self.fr_cb1
+                               ,Active = True
+                               ,side   = 'left'
+                               )
+                               
+        self.cb2 = sg.CheckBox (parent = self.fr_cb2
+                               ,Active = True
+                               ,side   = 'left'
+                               )
+                               
         self.cb3 = sg.CheckBox (parent = self.fr_cb3
                                ,Active = True
                                ,side   = 'left'
@@ -3282,6 +3299,11 @@ class Settings:
                                ,Active = False
                                ,side   = 'left'
                                )
+                               
+        self.cb6 = sg.CheckBox (parent = self.fr_cb6
+                               ,Active = True
+                               ,side   = 'left'
+                               )
 
     def reset(self,*args):
         self.sc.set(product)
@@ -3289,11 +3311,12 @@ class Settings:
         self.col2.set(_('Word forms'))
         self.col3.set(_('Parts of speech'))
         self.col4.set(_('Transcription'))
-        self.cb.enable()
+        self.cb1.enable()
         self.cb2.enable()
         self.cb3.enable()
         self.cb4.enable()
         self.cb5.disable()
+        self.cb6.enable()
 
     def apply(self,*args):
         ''' Do not use 'gettext' to name internal types - this will make
@@ -3334,12 +3357,13 @@ class Settings:
                            )
         if set(lst):
             self.close()
-            objs.request()._cols     = tuple(lst)
-            objs._request.SortRows   = self.cb.get()
-            objs._request.SortTerms  = self.cb2.get()
-            objs._request.Block      = self.cb3.get()
-            objs._request.Prioritize = self.cb4.get()
-            objs._request.Reverse    = self.cb5.get()
+            objs.request()._cols      = tuple(lst)
+            objs._request.SortRows    = self.cb1.get()
+            objs._request.SortTerms   = self.cb2.get()
+            objs._request.Block       = self.cb3.get()
+            objs._request.Prioritize  = self.cb4.get()
+            objs._request.Reverse     = self.cb5.get()
+            objs._request.OrderSpeech = self.cb6.get()
             objs.webframe().set_columns()
         else:
             #todo: do we really need this?
@@ -3365,7 +3389,7 @@ class Settings:
                   ,side       = 'right'
                   )
 
-        # cur
+        #cur
         #todo: elaborate
         '''
         sg.Button (parent     = self.fr_cb3
@@ -3385,13 +3409,12 @@ class Settings:
                   )
         '''
 
-        self.lb5 = sg.Label (parent = self.fr_cb5
-                            ,text   = _('Vertical view')
-                            ,side   = 'left'
-                            )
-
     def frames(self):
         self.fr_col = sg.Frame (parent = self.obj
+                               ,expand = True
+                               ,fill   = 'both'
+                               )
+        self.fr_sp  = sg.Frame (parent = self.obj
                                ,expand = True
                                ,fill   = 'both'
                                )
@@ -3420,7 +3443,46 @@ class Settings:
                                ,expand = False
                                ,fill   = 'both'
                                )
-        self.fr_cb  = sg.Frame (parent = self.obj
+        self.fr_sp1 = sg.Frame (parent = self.fr_sp
+                               ,side   = 'left'
+                               ,expand = False
+                               ,fill   = 'both'
+                               )
+        self.fr_sp2 = sg.Frame (parent = self.fr_sp
+                               ,side   = 'left'
+                               ,expand = False
+                               ,fill   = 'both'
+                               )
+        self.fr_sp3 = sg.Frame (parent = self.fr_sp
+                               ,side   = 'left'
+                               ,expand = False
+                               ,fill   = 'both'
+                               )
+        self.fr_sp4 = sg.Frame (parent = self.fr_sp
+                               ,side   = 'left'
+                               ,expand = False
+                               ,fill   = 'both'
+                               )
+        self.fr_sp5 = sg.Frame (parent = self.fr_sp
+                               ,side   = 'left'
+                               ,expand = False
+                               ,fill   = 'both'
+                               )
+        self.fr_sp6 = sg.Frame (parent = self.fr_sp
+                               ,side   = 'left'
+                               ,expand = False
+                               ,fill   = 'both'
+                               )
+        self.fr_sp7 = sg.Frame (parent = self.fr_sp
+                               ,side   = 'left'
+                               ,expand = False
+                               ,fill   = 'both'
+                               )
+        self.fr_cb6 = sg.Frame (parent = self.obj
+                               ,expand = False
+                               ,fill   = 'x'
+                               )
+        self.fr_cb1 = sg.Frame (parent = self.obj
                                ,expand = False
                                ,fill   = 'x'
                                )
@@ -3500,6 +3562,16 @@ class Settings:
                  ,bg     = 'RoyalBlue3'
                  )
 
+        self.lb1 = sg.Label (parent = self.fr_cb1
+                            ,text   = _('Sort by each column (if it is set) (except for transcription)')
+                            ,side   = 'left'
+                            )
+        
+        self.lb2 = sg.Label (parent = self.fr_cb2
+                            ,text   = _('Alphabetize terms')
+                            ,side   = 'left'
+                            )
+        
         self.lb3 = sg.Label (parent = self.fr_cb3
                             ,text   = _('Block dictionaries from blacklist')
                             ,side   = 'left'
@@ -3507,6 +3579,87 @@ class Settings:
 
         self.lb4 = sg.Label (parent = self.fr_cb4
                             ,text   = _('Prioritize dictionaries')
+                            ,side   = 'left'
+                            )
+        
+        self.lb5 = sg.Label (parent = self.fr_cb5
+                            ,text   = _('Vertical view')
+                            ,side   = 'left'
+                            )
+        
+        sg.Label (parent = self.fr_sp1
+                 ,text   = _('Part of speech') + ' 1:'
+                 ,font   = 'Sans 8'
+                 ,side   = 'top'
+                 ,fill   = 'both'
+                 ,expand = True
+                 ,fg     = 'PaleTurquoise1'
+                 ,bg     = 'RoyalBlue3'
+                 )
+
+        sg.Label (parent = self.fr_sp2
+                 ,text   = _('Part of speech') + ' 2:'
+                 ,font   = 'Sans 8'
+                 ,side   = 'top'
+                 ,fill   = 'both'
+                 ,expand = True
+                 ,fg     = 'PaleTurquoise1'
+                 ,bg     = 'RoyalBlue3'
+                 )
+
+        sg.Label (parent = self.fr_sp3
+                 ,text   = _('Part of speech') + ' 3:'
+                 ,font   = 'Sans 8'
+                 ,side   = 'top'
+                 ,fill   = 'both'
+                 ,expand = True
+                 ,fg     = 'PaleTurquoise1'
+                 ,bg     = 'RoyalBlue3'
+                 )
+
+        sg.Label (parent = self.fr_sp4
+                 ,text   = _('Part of speech') + ' 4:'
+                 ,font   = 'Sans 8'
+                 ,side   = 'top'
+                 ,fill   = 'both'
+                 ,expand = True
+                 ,fg     = 'PaleTurquoise1'
+                 ,bg     = 'RoyalBlue3'
+                 )
+                 
+        sg.Label (parent = self.fr_sp5
+                 ,text   = _('Part of speech') + ' 5:'
+                 ,font   = 'Sans 8'
+                 ,side   = 'top'
+                 ,fill   = 'both'
+                 ,expand = True
+                 ,fg     = 'PaleTurquoise1'
+                 ,bg     = 'RoyalBlue3'
+                 )
+                 
+        sg.Label (parent = self.fr_sp6
+                 ,text   = _('Part of speech') + ' 6:'
+                 ,font   = 'Sans 8'
+                 ,side   = 'top'
+                 ,fill   = 'both'
+                 ,expand = True
+                 ,fg     = 'PaleTurquoise1'
+                 ,bg     = 'RoyalBlue3'
+                 )
+                 
+        sg.Label (parent = self.fr_sp7
+                 ,text   = _('Part of speech') + ' 7:'
+                 ,font   = 'Sans 8'
+                 ,side   = 'top'
+                 ,fill   = 'both'
+                 ,expand = True
+                 ,fg     = 'PaleTurquoise1'
+                 ,bg     = 'RoyalBlue3'
+                 )
+                 
+        self.lb6 = sg.Label (parent = self.fr_cb6
+                            ,text   = _('Use a special order of speech in "%s" mode') \
+                                      % self._sc_items[2]
                             ,side   = 'left'
                             )
 
@@ -3517,24 +3670,28 @@ class Settings:
                                   ,command = self.update_by_sc
                                   ,default = product
                                   )
+
         self.col1 = sg.OptionMenu (parent  = self.fr_c1
                                   ,items   = self._items
                                   ,side    = 'bottom'
                                   ,command = self.update_by_col1
                                   ,default = _('Dictionaries')
                                   )
+
         self.col2 = sg.OptionMenu (parent  = self.fr_c2
                                   ,items   = self._items
                                   ,side    = 'bottom'
                                   ,command = self.update_by_col2
                                   ,default = _('Word forms')
                                   )
+
         self.col3 = sg.OptionMenu (parent  = self.fr_c3
                                   ,items   = self._items
                                   ,side    = 'bottom'
                                   ,command = self.update_by_col3
                                   ,default = _('Transcription')
                                   )
+
         self.col4 = sg.OptionMenu (parent  = self.fr_c4
                                   ,items   = self._items
                                   ,side    = 'bottom'
@@ -3542,10 +3699,59 @@ class Settings:
                                   ,default = _('Parts of speech')
                                   )
 
+        self.sp1  = sg.OptionMenu (parent  = self.fr_sp1
+                                  ,items   = self._sp_items
+                                  ,side    = 'bottom'
+                                  ,command = self.update_by_sp1
+                                  ,default = self._sp_items[0]
+                                  )
+                                  
+        self.sp2  = sg.OptionMenu (parent  = self.fr_sp2
+                                  ,items   = self._sp_items
+                                  ,side    = 'bottom'
+                                  ,command = self.update_by_sp2
+                                  ,default = self._sp_items[1]
+                                  )
+                                  
+        self.sp3  = sg.OptionMenu (parent  = self.fr_sp3
+                                  ,items   = self._sp_items
+                                  ,side    = 'bottom'
+                                  ,command = self.update_by_sp3
+                                  ,default = self._sp_items[2]
+                                  )
+                                  
+        self.sp4  = sg.OptionMenu (parent  = self.fr_sp4
+                                  ,items   = self._sp_items
+                                  ,side    = 'bottom'
+                                  ,command = self.update_by_sp4
+                                  ,default = self._sp_items[3]
+                                  )
+                                  
+        self.sp5  = sg.OptionMenu (parent  = self.fr_sp5
+                                  ,items   = self._sp_items
+                                  ,side    = 'bottom'
+                                  ,command = self.update_by_sp5
+                                  ,default = self._sp_items[4]
+                                  )
+                                  
+        self.sp6  = sg.OptionMenu (parent  = self.fr_sp6
+                                  ,items   = self._sp_items
+                                  ,side    = 'bottom'
+                                  ,command = self.update_by_sp6
+                                  ,default = self._sp_items[5]
+                                  )
+                                  
+        self.sp7  = sg.OptionMenu (parent  = self.fr_sp7
+                                  ,items   = self._sp_items
+                                  ,side    = 'bottom'
+                                  ,command = self.update_by_sp7
+                                  ,default = self._sp_items[6]
+                                  )
+
     def bindings(self):
-        sg.bind (obj      = self.lb
+        sg.bind (obj      = self.lb1
                 ,bindings = '<Button-1>'
-                ,action   = self.cb.toggle
+                ,action   = self.cb1.toggle
                 )
         sg.bind (obj      = self.lb2
                 ,bindings = '<Button-1>'
@@ -3562,6 +3768,10 @@ class Settings:
         sg.bind (obj      = self.lb5
                 ,bindings = '<Button-1>'
                 ,action   = self.cb5.toggle
+                )
+        sg.bind (obj      = self.lb6
+                ,bindings = '<Button-1>'
+                ,action   = self.cb6.toggle
                 )
         sg.bind (obj      = self.obj
                 ,bindings = [sh.globs['var']['bind_settings']

@@ -84,7 +84,7 @@ class DB:
                          )
 
     def reset (self,cols=('dic','wform','transc','speech')
-              ,SortRows=False,SortTerms=False,OrderSpeech=True
+              ,OrderSpeech=True,SortRows=False,SortTerms=False
               ):
         self.SortTerms   = SortTerms
         self.SortRows    = SortRows
