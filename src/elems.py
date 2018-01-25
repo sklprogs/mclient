@@ -42,7 +42,6 @@ class Block:
         '''
         self._select   = -1
         self._priority = 0
-        self._speechpr  = 0
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'correction', 'transc', 'invalid'
         '''
@@ -111,7 +110,6 @@ class Elems:
             self.insert_fixed     ()
             self.fixed_terma      ()
             self.selectables      ()
-            self.order_speech     ()
             self.dump             ()
         else:
             sh.log.append ('Elems.run'
@@ -129,7 +127,6 @@ class Elems:
                   ,'TEXT'
                   ,'SAMECELL'
                   ,'SELECTABLE'
-                  ,'SPEECHPR'
                   ]
         rows = []
         for block in self._blocks:
@@ -141,7 +138,6 @@ class Elems:
                          ,block._text
                          ,block._same
                          ,block._select
-                         ,block._speechpr
                          ]
                         )
         sh.Table (headers = headers
@@ -524,7 +520,7 @@ class Elems:
               ,-1                  # (26) BBOY2
               ,block._text.lower() # (27) TEXTLOW
               ,0                   # (28) IGNORE
-              ,block._speechpr     # (29) SPEECHPR
+              ,0                   # (29) SPEECHPR
               )
                               )
 
@@ -536,35 +532,6 @@ class Elems:
                 block._select = 1
             else:
                 block._select = 0
-    
-    def order_speech(self):
-        abbr = ['гл.','мест.','нареч.','предл.','прил.','сокр.','сущ.']
-        for block in self._blocks:
-            ''' We use 'in' in order to ensure that all possible SPEECHA
-                items are being grouped (in German the gender is a part
-                of SPEECHA)
-            '''
-            if 'мест.' in block._speecha:
-                block._speechpr = 10
-            elif 'предл.' in block._speecha:
-                block._speechpr = 20
-            elif 'нареч.' in block._speecha:
-                block._speechpr = 30
-            elif 'сокр.' in block._speecha:
-                block._speechpr = 40
-            elif 'прил.' in block._speecha:
-                block._speechpr = 50
-            elif 'гл.' in block._speecha:
-                block._speechpr = 60
-            elif 'сущ.' in block._speecha:
-                block._speechpr = 70
-            else:
-                sh.log.append ('Elems.order_speech'
-                              ,_('WARNING')
-                              ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                              % (str(block._speecha),', '.join(abbr))
-                              )
-                block._speechpr = 0
     
     def zzz(self):
         pass

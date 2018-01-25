@@ -1,4 +1,4 @@
-- tests: Commands.search does not work
+- 'lottery', EN-RU: user submitted URL is absent
 - Unknown mode "" in Elems.order_speech when using local dictionaries
   (Stardict 2)
 - Do not open a Multitran-based URL for local dictionaries (F7)

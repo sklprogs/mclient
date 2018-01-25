@@ -21,13 +21,16 @@ import sharedGUI as sg
 class DB:
 
     def __init__(self):
-        self._articleid = 0
-        self.Selectable = True
+        self.values()
         self.reset()
         self.db         = sqlite3.connect(':memory:')
         self.dbc        = self.db.cursor()
         self.create_blocks()
         self.create_articles()
+        
+    def values(self):
+        self.Selectable = True
+        self._articleid = 0
         
     def create_blocks(self):
         ''' We use integers instead of booleans; -1 means not set.
@@ -84,12 +87,11 @@ class DB:
                          )
 
     def reset (self,cols=('dic','wform','transc','speech')
-              ,OrderSpeech=True,SortRows=False,SortTerms=False
+              ,SortRows=False,SortTerms=False
               ):
-        self.SortTerms   = SortTerms
-        self.SortRows    = SortRows
-        self.OrderSpeech = OrderSpeech
-        self._cols       = cols
+        self.SortTerms = SortTerms
+        self.SortRows  = SortRows
+        self._cols     = cols
         # Prevents None + tuple
         if not self._cols:
             self._cols = ('dic','wform','transc','speech')
@@ -233,8 +235,7 @@ class DB:
             elif item == 'wform':
                 query.append('WFORMA')
             elif item == 'speech':
-                if self.OrderSpeech:
-                    query.append('SPEECHPR desc')
+                query.append('SPEECHPR desc')
                 query.append('SPEECHA')
             elif item == 'transc':
                 # There is no sense to sort by transcription
@@ -959,7 +960,10 @@ class DB:
                       ,_('Delete bookmarks for all articles')
                       )
         self.dbc.execute('update ARTICLES set BOOKMARK = -1')
-    
+        
+    def unprioritize_speech(self):
+        self.dbc.execute('update BLOCKS set SPEECHPR = 0')
+        
     def zzz(self):
         pass
 

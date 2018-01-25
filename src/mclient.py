@@ -22,7 +22,7 @@ import mkhtml      as mh
 
 
 product = 'MClient'
-version = '5.7.2'
+version = '5.8'
 
 third_parties = '''
 tkinterhtml
@@ -334,8 +334,13 @@ class Objects:
                   = self._online_other = self._about = self._blacklist \
                   = self._prioritize = self._parties = self._request \
                   = self._ext_dics = self._webframe = self._blocks_db \
-                  = self._moves = None
+                  = self._moves = self._logic = None
 
+    def logic(self):
+        if not self._logic:
+            self._logic = Logic()
+        return self._logic
+    
     def blocks_db(self):
         if not self._blocks_db:
             self._blocks_db = db.Moves()
@@ -430,6 +435,14 @@ class CurRequest:
             of objs.webframe().menu_columns
         '''
         self._collimit     = 8
+        # Default priorities of parts of speech
+        self._pr_n         = 7
+        self._pr_v         = 6
+        self._pr_adj       = 5
+        self._pr_abbr      = 4
+        self._pr_adv       = 3
+        self._pr_prep      = 2
+        self._pr_pron      = 1
         self._source       = _('All')
         self._lang         = 'English'
         self._cols         = ('dic','wform','transc','speech')
@@ -440,7 +453,6 @@ class CurRequest:
         self.Block         = True
         self.CaptureHotkey = True
         self.MouseClicked  = False
-        self.OrderSpeech   = True
         self.Prioritize    = True
         self.Reverse       = False
         self.SortRows      = True
@@ -2053,6 +2065,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/sdict_EnRu_full - cut (manual)2.txt'
                            #,file        = '/home/pete/tmp/ars/sdict_EnRu_full - cut (auto).txt'
                            #,file        = '/home/pete/tmp/ars/scheming.txt'
+                           #,file        = '/home/pete/tmp/ars/work.txt'
                            )
             page.run()
             ptimer.end()
@@ -2083,6 +2096,12 @@ class WebFrame:
                                       )
             ph_terma.run()
             
+            ''' The order of parts of speech must be changed only for
+                new articles and after changing settings (Settings.apply)
+            '''
+            # todo (?) insert SPEECHPR in Elems instead of updating
+            objs.logic().prioritize_speech()
+            
         phrase_dic = objs._blocks_db.phrase_dic()
         data       = objs._blocks_db.assign_bp ()
 
@@ -2112,15 +2131,13 @@ class WebFrame:
         
         SortTerms = objs._request.SortTerms \
                     and not objs._request.SpecialPage
-        OrderSpeech = objs._request.OrderSpeech \
-                      and not objs._request.SpecialPage
-        objs._blocks_db.reset (cols        = objs._request._cols
-                              ,OrderSpeech = objs._request.OrderSpeech
-                              ,SortRows    = objs._request.SortRows
-                              ,SortTerms   = SortTerms
+        objs._blocks_db.reset (cols         = objs._request._cols
+                              ,SortRows     = objs._request.SortRows
+                              ,SortTerms    = SortTerms
                               )
         objs._blocks_db.unignore()
         objs._blocks_db.ignore()
+        
         data = objs._blocks_db.assign_cells()
 
         if objs._request._cols and objs._request._cols[0] == 'speech':
@@ -2188,11 +2205,14 @@ class WebFrame:
         timer.end()
 
         '''
-        objs._blocks_db.dbc.execute ('select ARTICLEID,TITLE,BOOKMARK \
-                                      from ARTICLES where ARTICLEID = ?'
+        objs._blocks_db.dbc.execute ('select SPEECHPR,SPEECHA,TYPE,TEXT\
+                                      from BLOCKS where ARTICLEID = ?\
+                                      and POS2 > POS1'
                                     ,(objs._blocks_db._articleid,)
                                     )
-        objs._blocks_db.print(Shorten=0,mode='ARTICLES')
+        objs._blocks_db.print (Selected=1,Shorten=1,MaxRows=50
+                              ,mode='BLOCKS'
+                              )
         '''
         
         '''
@@ -2963,7 +2983,7 @@ class WebFrame:
                               ,_('WARNING')
                               ,_('Wrong input data!')
                               )
-
+    
     # Only needed to move quickly to the end of the class
     def zzz(self):
         pass
@@ -3075,6 +3095,7 @@ class Settings:
                          ,_('Pronoun')
                          )
         self._allowed    = []
+        self._sp_allowed = []
         self._hint_width = 200
         self.Active      = False
 
@@ -3231,25 +3252,74 @@ class Settings:
         self.update_sc()
         
     def update_by_sp1(self,*args):
-        pass
+        self._sp_allowed = list(self._sp_items)
+        self.update_sp1()
+        self.update_sp2()
+        self.update_sp3()
+        self.update_sp4()
+        self.update_sp5()
+        self.update_sp6()
+        self.update_sp7()
         
     def update_by_sp2(self,*args):
-        pass
+        self._sp_allowed = list(self._sp_items)
+        self.update_sp2()
+        self.update_sp1()
+        self.update_sp3()
+        self.update_sp4()
+        self.update_sp5()
+        self.update_sp6()
+        self.update_sp7()
         
     def update_by_sp3(self,*args):
-        pass
+        self._sp_allowed = list(self._sp_items)
+        self.update_sp3()
+        self.update_sp1()
+        self.update_sp2()
+        self.update_sp4()
+        self.update_sp5()
+        self.update_sp6()
+        self.update_sp7()
         
     def update_by_sp4(self,*args):
-        pass
+        self._sp_allowed = list(self._sp_items)
+        self.update_sp4()
+        self.update_sp1()
+        self.update_sp2()
+        self.update_sp3()
+        self.update_sp5()
+        self.update_sp6()
+        self.update_sp7()
         
     def update_by_sp5(self,*args):
-        pass
+        self._sp_allowed = list(self._sp_items)
+        self.update_sp5()
+        self.update_sp1()
+        self.update_sp2()
+        self.update_sp3()
+        self.update_sp4()
+        self.update_sp6()
+        self.update_sp7()
         
     def update_by_sp6(self,*args):
-        pass
+        self._sp_allowed = list(self._sp_items)
+        self.update_sp6()
+        self.update_sp1()
+        self.update_sp2()
+        self.update_sp3()
+        self.update_sp4()
+        self.update_sp5()
+        self.update_sp7()
         
     def update_by_sp7(self,*args):
-        pass
+        self._sp_allowed = list(self._sp_items)
+        self.update_sp7()
+        self.update_sp1()
+        self.update_sp2()
+        self.update_sp3()
+        self.update_sp4()
+        self.update_sp5()
+        self.update_sp6()
 
     def gui(self):
         self.obj = sg.objs.new_top(Maximize=0)
@@ -3300,23 +3370,24 @@ class Settings:
                                ,side   = 'left'
                                )
                                
-        self.cb6 = sg.CheckBox (parent = self.fr_cb6
-                               ,Active = True
-                               ,side   = 'left'
-                               )
-
     def reset(self,*args):
         self.sc.set(product)
         self.col1.set(_('Dictionaries'))
         self.col2.set(_('Word forms'))
         self.col3.set(_('Parts of speech'))
         self.col4.set(_('Transcription'))
+        self.sp1.set(_('Noun'))
+        self.sp2.set(_('Verb'))
+        self.sp3.set(_('Adjective'))
+        self.sp4.set(_('Abbreviation'))
+        self.sp5.set(_('Adverb'))
+        self.sp6.set(_('Preposition'))
+        self.sp7.set(_('Pronoun'))
         self.cb1.enable()
         self.cb2.enable()
         self.cb3.enable()
         self.cb4.enable()
         self.cb5.disable()
-        self.cb6.enable()
 
     def apply(self,*args):
         ''' Do not use 'gettext' to name internal types - this will make
@@ -3357,13 +3428,17 @@ class Settings:
                            )
         if set(lst):
             self.close()
-            objs.request()._cols      = tuple(lst)
-            objs._request.SortRows    = self.cb1.get()
-            objs._request.SortTerms   = self.cb2.get()
-            objs._request.Block       = self.cb3.get()
-            objs._request.Prioritize  = self.cb4.get()
-            objs._request.Reverse     = self.cb5.get()
-            objs._request.OrderSpeech = self.cb6.get()
+            objs.request()._cols     = tuple(lst)
+            objs._request.SortRows   = self.cb1.get()
+            objs._request.SortTerms  = self.cb2.get()
+            objs._request.Block      = self.cb3.get()
+            objs._request.Prioritize = self.cb4.get()
+            objs._request.Reverse    = self.cb5.get()
+            if objs._request.SortRows:
+                self.prioritize_speech()
+                objs.logic().prioritize_speech()
+            else:
+                objs.blocks_db().unprioritize_speech()
             objs.webframe().set_columns()
         else:
             #todo: do we really need this?
@@ -3478,10 +3553,6 @@ class Settings:
                                ,expand = False
                                ,fill   = 'both'
                                )
-        self.fr_cb6 = sg.Frame (parent = self.obj
-                               ,expand = False
-                               ,fill   = 'x'
-                               )
         self.fr_cb1 = sg.Frame (parent = self.obj
                                ,expand = False
                                ,fill   = 'x'
@@ -3563,7 +3634,7 @@ class Settings:
                  )
 
         self.lb1 = sg.Label (parent = self.fr_cb1
-                            ,text   = _('Sort by each column (if it is set) (except for transcription)')
+                            ,text   = _('Sort by each column (if it is set) (except for transcription) and by parts of speech')
                             ,side   = 'left'
                             )
         
@@ -3657,12 +3728,6 @@ class Settings:
                  ,bg     = 'RoyalBlue3'
                  )
                  
-        self.lb6 = sg.Label (parent = self.fr_cb6
-                            ,text   = _('Use a special order of parts of speech in "%s" mode') \
-                                      % self._sc_items[2]
-                            ,side   = 'left'
-                            )
-
     def columns(self):
         self.sc   = sg.OptionMenu (parent  = self.fr_sc
                                   ,items   = self._sc_items
@@ -3769,10 +3834,7 @@ class Settings:
                 ,bindings = '<Button-1>'
                 ,action   = self.cb5.toggle
                 )
-        sg.bind (obj      = self.lb6
-                ,bindings = '<Button-1>'
-                ,action   = self.cb6.toggle
-                )
+
         sg.bind (obj      = self.obj
                 ,bindings = [sh.globs['var']['bind_settings']
                             ,sh.globs['var']['bind_settings_alt']
@@ -3802,9 +3864,175 @@ class Settings:
         if not arg:
             arg = sh.globs['var']['icon_mclient']
         self.obj.icon(arg)
-
+    
+    def update_sp1(self):
+        if self.sp1.choice in self._sp_allowed:
+            self._sp_allowed.remove(self.sp1.choice)
+        elif _('Noun') in self._sp_allowed:
+            self.sp1.set(_('Noun'))
+            self._sp_allowed.remove(_('Noun'))
+        elif self._sp_allowed:
+            self.sp1.set(self._sp_allowed[0])
+            self._sp_allowed.remove(self._sp_allowed[0])
+        else:
+            sg.Message (func    = 'Settings.update_sp1'
+                       ,level   = _('ERROR')
+                       ,message = _('Empty input is not allowed!')
+                       )
+    
+    def update_sp2(self):
+        if self.sp2.choice in self._sp_allowed:
+            self._sp_allowed.remove(self.sp2.choice)
+        elif _('Verb') in self._sp_allowed:
+            self.sp2.set(_('Verb'))
+            self._sp_allowed.remove(_('Verb'))
+        elif self._sp_allowed:
+            self.sp2.set(self._sp_allowed[0])
+            self._sp_allowed.remove(self._sp_allowed[0])
+        else:
+            sg.Message (func    = 'Settings.update_sp2'
+                       ,level   = _('ERROR')
+                       ,message = _('Empty input is not allowed!')
+                       )
+                       
+    def update_sp3(self):
+        if self.sp3.choice in self._sp_allowed:
+            self._sp_allowed.remove(self.sp3.choice)
+        elif _('Adjective') in self._sp_allowed:
+            self.sp3.set(_('Adjective'))
+            self._sp_allowed.remove(_('Adjective'))
+        elif self._sp_allowed:
+            self.sp3.set(self._sp_allowed[0])
+            self._sp_allowed.remove(self._sp_allowed[0])
+        else:
+            sg.Message (func    = 'Settings.update_sp3'
+                       ,level   = _('ERROR')
+                       ,message = _('Empty input is not allowed!')
+                       )
+                       
+    def update_sp4(self):
+        if self.sp4.choice in self._sp_allowed:
+            self._sp_allowed.remove(self.sp4.choice)
+        elif _('Abbreviation') in self._sp_allowed:
+            self.sp4.set(_('Abbreviation'))
+            self._sp_allowed.remove(_('Abbreviation'))
+        elif self._sp_allowed:
+            self.sp4.set(self._sp_allowed[0])
+            self._sp_allowed.remove(self._sp_allowed[0])
+        else:
+            sg.Message (func    = 'Settings.update_sp4'
+                       ,level   = _('ERROR')
+                       ,message = _('Empty input is not allowed!')
+                       )
+                       
+    def update_sp5(self):
+        if self.sp5.choice in self._sp_allowed:
+            self._sp_allowed.remove(self.sp5.choice)
+        elif _('Adverb') in self._sp_allowed:
+            self.sp5.set(_('Adverb'))
+            self._sp_allowed.remove(_('Adverb'))
+        elif self._sp_allowed:
+            self.sp5.set(self._sp_allowed[0])
+            self._sp_allowed.remove(self._sp_allowed[0])
+        else:
+            sg.Message (func    = 'Settings.update_sp5'
+                       ,level   = _('ERROR')
+                       ,message = _('Empty input is not allowed!')
+                       )
+                       
+    def update_sp6(self):
+        if self.sp6.choice in self._sp_allowed:
+            self._sp_allowed.remove(self.sp6.choice)
+        elif _('Preposition') in self._sp_allowed:
+            self.sp6.set(_('Preposition'))
+            self._sp_allowed.remove(_('Preposition'))
+        elif self._sp_allowed:
+            self.sp6.set(self._sp_allowed[0])
+            self._sp_allowed.remove(self._sp_allowed[0])
+        else:
+            sg.Message (func    = 'Settings.update_sp6'
+                       ,level   = _('ERROR')
+                       ,message = _('Empty input is not allowed!')
+                       )
+                       
+    def update_sp7(self):
+        if self.sp7.choice in self._sp_allowed:
+            self._sp_allowed.remove(self.sp7.choice)
+        elif _('Pronoun') in self._sp_allowed:
+            self.sp7.set(_('Pronoun'))
+            self._sp_allowed.remove(_('Pronoun'))
+        elif self._sp_allowed:
+            self.sp7.set(self._sp_allowed[0])
+            self._sp_allowed.remove(self._sp_allowed[0])
+        else:
+            sg.Message (func    = 'Settings.update_sp7'
+                       ,level   = _('ERROR')
+                       ,message = _('Empty input is not allowed!')
+                       )
+    
+    def prioritize_speech(self):
+        objs.request()
+        choices = (self.sp1.choice,self.sp2.choice,self.sp3.choice
+                  ,self.sp4.choice,self.sp5.choice,self.sp6.choice
+                  ,self.sp7.choice
+                  )
+        for i in range(len(choices)):
+            if choices[i] == _('Noun'):
+                objs._request._pr_n = len(choices) - i
+            elif choices[i] == _('Verb'):
+                objs._request._pr_v = len(choices) - i
+            elif choices[i] == _('Adjective'):
+                objs._request._pr_adj = len(choices) - i
+            elif choices[i] == _('Abbreviation'):
+                objs._request._pr_abbr = len(choices) - i
+            elif choices[i] == _('Adverb'):
+                objs._request._pr_adv = len(choices) - i
+            elif choices[i] == _('Preposition'):
+                objs._request._pr_prep = len(choices) - i
+            elif choices[i] == _('Pronoun'):
+                objs._request._pr_pron = len(choices) - i
+            else:
+                sg.Message ('Settings.prioritize_speech'
+                           ,_('ERROR')
+                           ,_('Wrong input data: "%s"') % str(choices[i])
+                           )
+    
     def zzz(self):
         pass
+
+
+
+class Logic:
+    
+    def prioritize_speech(self):
+        # This function takes ~0,07s on 'do'
+        query_root = 'update BLOCKS set SPEECHPR = %d where SPEECHA = "%s" or SPEECHA = "%s"'
+        query = ['begin']
+        # Parts of speech here must be non-localized
+        query.append (query_root
+                     % (objs._request._pr_n,'Существительное','сущ.')
+                     )
+        query.append (query_root
+                     % (objs._request._pr_v,'Глагол','гл.')
+                     )
+        query.append (query_root
+                     % (objs._request._pr_adj,'Прилагательное','прил.')
+                     )
+        query.append (query_root
+                     % (objs._request._pr_abbr,'Сокращение','сокр.')
+                     )
+        query.append (query_root
+                     % (objs._request._pr_adv,'Наречие','нареч.')
+                     )
+        query.append (query_root
+                     % (objs._request._pr_prep,'Предлог','предл.')
+                     )
+        query.append (query_root
+                     % (objs._request._pr_pron,'Местоимение','мест.')
+                     )
+        query.append('commit;')
+        query = ';'.join(query)
+        objs.blocks_db().update(query=query)
 
 
 
