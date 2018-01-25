@@ -1,3 +1,4 @@
+- order of parts of speech is lost after deleting history
 - 'lottery', EN-RU: user submitted URL is absent
 - Unknown mode "" in Elems.order_speech when using local dictionaries
   (Stardict 2)
