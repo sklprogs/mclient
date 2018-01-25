@@ -3634,7 +3634,7 @@ class Settings:
                  )
 
         self.lb1 = sg.Label (parent = self.fr_cb1
-                            ,text   = _('Sort by each column (if it is set) (except for transcription) and by parts of speech')
+                            ,text   = _('Sort by each column (if it is set, except for transcription) and order parts of speech')
                             ,side   = 'left'
                             )
         
