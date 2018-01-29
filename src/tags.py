@@ -388,7 +388,8 @@ class AnalyzeTag:
                 else:
                     self._cur._url = ''
 
-    def transc(self): # Transcription
+    # Transcription
+    def transc(self):
         ''' '<tr>' has a different meaning in online and offline
             sources, so we must check the source first
         '''

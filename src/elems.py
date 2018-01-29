@@ -80,6 +80,7 @@ class Elems:
         self._blocks    = blocks
         self._articleid = articleid
         self._data      = []
+        self._dic_urls  = {}
         if self._blocks and self._articleid:
             self.Success = True
         else:
@@ -94,6 +95,7 @@ class Elems:
             self.transc           ()
             self.phrases          ()
             self.straight_line    ()
+            self.dic_urls         ()
             self.comments         ()
             self.dic_abbr         ()
             ''' These 2 procedures should not be combined (otherwise,
@@ -110,6 +112,7 @@ class Elems:
             self.insert_fixed     ()
             self.fixed_terma      ()
             self.selectables      ()
+            self.restore_dic_urls ()
             self.dump             ()
         else:
             sh.log.append ('Elems.run'
@@ -119,25 +122,14 @@ class Elems:
     
     def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
         print('\nElems.debug (Non-DB blocks):')
-        headers = ['DICA'
-                  ,'WFORMA'
-                  ,'SPEECHA'
-                  ,'TRANSCA'
-                  ,'TYPE'
-                  ,'TEXT'
-                  ,'SAMECELL'
-                  ,'SELECTABLE'
+        headers = ['DICA','WFORMA','SPEECHA','TRANSCA','TYPE','TEXT'
+                  ,'SAMECELL','SELECTABLE'
                   ]
         rows = []
         for block in self._blocks:
-            rows.append ([block._dica
-                         ,block._wforma
-                         ,block._speecha
-                         ,block._transca
-                         ,block._type
-                         ,block._text
-                         ,block._same
-                         ,block._select
+            rows.append ([block._dica,block._wforma,block._speecha
+                         ,block._transca,block._type,block._text
+                         ,block._same,block._select
                          ]
                         )
         sh.Table (headers = headers
@@ -487,7 +479,7 @@ class Elems:
         self._blocks = [block for block in self._blocks if block._type \
                         not in ('dic','wform','transc','speech')
                        ]
-    
+                       
     def dump(self):
         for block in self._blocks:
             self._data.append (
@@ -532,6 +524,28 @@ class Elems:
                 block._select = 1
             else:
                 block._select = 0
+    
+    ''' URLs assigned to dictionary titles in Multitran actually lead to
+        a page where word forms are given. Dictionary abbreviations that
+        are further deleted have URLs that we need.
+    '''
+    def dic_urls(self):
+        url = ''
+        i = len(self._blocks) - 1
+        while i >= 0:
+            if self._blocks[i]._url:
+                url = self._blocks[i]._url
+            if self._blocks[i]._type == 'dic':
+                # Keep dic URL to be restored later for DICA
+                if not self._blocks[i]._text in self._dic_urls:
+                    self._dic_urls[self._blocks[i]._text] = url
+            i -= 1
+    
+    def restore_dic_urls(self):
+        for i in range(len(self._blocks)):
+            if self._blocks[i]._type == 'dic' \
+            and self._blocks[i]._text in self._dic_urls:
+                self._blocks[i]._url = self._dic_urls[self._blocks[i]._text]
     
     def zzz(self):
         pass
@@ -681,7 +695,8 @@ if __name__ == '__main__':
     
     timer.end()
     
-    blocks_db.dbc.execute ('select NO,DICA,TERMA,TYPE,TEXT,SAMECELL \
-                            from BLOCKS order by NO'
+    blocks_db.dbc.execute ('select NO,TYPE,TEXT,URL from BLOCKS \
+                            order by NO'
                           )
-    blocks_db.print(Selected=1,Shorten=1,MaxRows=200,MaxRow=20)
+    #blocks_db.print(Selected=1,Shorten=1,MaxRows=200,MaxRow=50)
+    blocks_db.print(Selected=1,Shorten=0)
