@@ -108,12 +108,15 @@ tag_pattern_del = ['.exe?a=5&s=AboutMultitran.htm' # О словаре
 pdic  = '<a title="'                           # MT
 
 # URLs
-purl1 = '<a href="M.exe?'                      # MT
-purl2 = '<a href="m.exe?'                      # MT
-purl3 = '">'                                   # MT
+purl1 = 'href="M.exe?'                         # MT
+purl2 = 'href="m.exe?'                         # MT
+purl3 = 'href="'                               # MT
+purl4 = '">'                                   # MT
 
 # Comments
-# May also need to look at: '<a href="#start', '<a href="#phrases', '<a href="', '<span STYLE="color:gray"> (ед.ч., мн.ч.)<span STYLE="color:black">'
+''' May also need to look at: '<a href="#start', '<a href="#phrases',
+    '<a href="', '<span STYLE="color:gray"> (ед.ч., мн.ч.)<span STYLE="color:black">'
+'''
 pcom1 = '<i>'                                  # MT
 pcom2 = '<span STYLE="color:gray">'            # MT
 pcom3 = '<co>'                                 # ST
@@ -173,7 +176,8 @@ class Block:
         self._first    = -1
         self._last     = -1
         self._no       = -1
-        self._cell_no  = -1 # Applies to non-blocked cells only
+        # Applies to non-blocked cells only
+        self._cell_no  = -1
         self._same     = -1
         ''' '_select' is an attribute of a *cell* which is valid if the
             cell has a non-blocked block of types 'term', 'phrase' or
@@ -364,16 +368,19 @@ class AnalyzeTag:
 
     def url(self):
         ''' #note: these additional checks can be shortened if we create
-            a sub-source (e.g., 'Multitran') and check for it
+            a sub-source (e.g., 'Multitran') and check for it.
         '''
         if self._source in (_('All'),_('Online')):
             ''' Otherwise, 'self._block' will be returned when there is
                 no match
             '''
             if purl1 in self._block or purl2 in self._block:
-                self._cur._url = self._block.replace(purl1,'',1).replace(purl2,'',1)
-                if self._cur._url.endswith(purl3):
-                    self._cur._url = self._cur._url.replace(purl3,'')
+                ind = self._block.find(purl3)
+                if ind > 0:
+                    ind += len(purl1)
+                    self._cur._url = self._block[ind:]
+                if self._cur._url.endswith(purl4):
+                    self._cur._url = self._cur._url.replace(purl4,'')
                     ''' #note: adding a non-Multitran online source will
                         require code modification
                     '''
@@ -395,9 +402,11 @@ class AnalyzeTag:
         else:
             sg.Message ('AnalyzeTag.transc'
                        ,_('ERROR')
-                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') % (str(self._source),', '.join((_('All'),_('Online'),_('Offline'))))
+                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                       % (str(self._source)
+                         ,', '.join((_('All'),_('Online'),_('Offline')))
+                         )
                        )
-
 
     def _transc_sd(self): # Stardict
         if ptr2 in self._block:
@@ -440,7 +449,7 @@ class Tags:
     def __init__ (self,text,source=_('All')
                  ,pair_root='http://www.multitran.ru/c/M.exe?'
                  ):
-        self._text     = text
+        self._text      = text
         self._source    = source
         self._pair_root = pair_root
         self._tags      = []
@@ -517,8 +526,8 @@ class Tags:
                  ,MaxRows = MaxRows
                  ).print()
 
-    def debug (self,Shorten=1,MaxRow=20,MaxRows=20):
-        self.debug_tags  ()
+    def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
+        self.debug_tags()
         self.debug_blocks (Shorten = Shorten
                           ,MaxRow  = MaxRow
                           ,MaxRows = MaxRows
