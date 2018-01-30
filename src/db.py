@@ -604,7 +604,6 @@ class DB:
                                   ,BBOX1,BBOX2,BBOY1,BBOY2,ROWNO \
                                    from BLOCKS where ARTICLEID = ? \
                                    and BLOCK = 0 and IGNORE = 0 \
-                                   and TYPE in ("term","phrase") \
                                    and SELECTABLE = 1 and POS1 < POS2 \
                                    and POS1 <= ? and POS2 >= ? \
                                    order by COLNO,NO'
