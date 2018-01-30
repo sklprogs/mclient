@@ -1,3 +1,5 @@
+- 'block', EN-RU: '0' is inserted instead of empty wforms
+- The 'dic' block is selected even with SelectTermsOnly=1
 - 'lottery', EN-RU: user submitted URL is absent
 - Unknown mode "" in Elems.order_speech when using local dictionaries
   (Stardict 2)

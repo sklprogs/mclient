@@ -275,27 +275,18 @@ sh.globs['top'] = {}
 
 sep_words_found = 'найдены отдельные слова'
 
-pairs = ('ENG <=> RUS'
-        ,'DEU <=> RUS'
-        ,'SPA <=> RUS'
-        ,'FRA <=> RUS'
-        ,'NLD <=> RUS'
-        ,'ITA <=> RUS'
-        ,'LAV <=> RUS'
-        ,'EST <=> RUS'
-        ,'AFR <=> RUS'
-        ,'EPO <=> RUS'
-        ,'RUS <=> XAL'
-        ,'XAL <=> RUS'
-        ,'ENG <=> DEU'
-        ,'ENG <=> EST'
+pairs = ('ENG <=> RUS','DEU <=> RUS','SPA <=> RUS'
+        ,'FRA <=> RUS','NLD <=> RUS','ITA <=> RUS'
+        ,'LAV <=> RUS','EST <=> RUS','AFR <=> RUS'
+        ,'EPO <=> RUS','RUS <=> XAL','XAL <=> RUS'
+        ,'ENG <=> DEU','ENG <=> EST'
         )
 
 online_dic_urls = (sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_rus']   # ENG <=> RUS, 'CL=1&s=%s'
                   ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_deu_rus']   # DEU <=> RUS, 'l1=3&l2=2&s=%s'
                   ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_spa_rus']   # SPA <=> RUS, 'l1=5&l2=2&s=%s'
                   ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_fra_rus']   # FRA <=> RUS, 'l1=4&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_nld_rus']   # NLD <=> RUS, 'l1=24&l2=2&s=%s',
+                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_nld_rus']   # NLD <=> RUS, 'l1=24&l2=2&s=%s'
                   ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_ita_rus']   # ITA <=> RUS, 'l1=23&l2=2&s=%s'
                   ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_lav_rus']   # LAV <=> RUS, 'l1=27&l2=2&s=%s'
                   ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_est_rus']   # EST <=> RUS, 'l1=26&l2=2&s=%s'
@@ -1478,12 +1469,9 @@ class WebFrame:
                 ,bindings = '<Motion>'
                 ,action   = self.mouse_sel
                 )
-        ''' #todo: This currently means 'self.go_url'.
-            Prioritize/unblock dictionaries in 'self.go'.
-        '''
         sg.bind (obj      = self
                 ,bindings = '<Button-1>'
-                ,action   = self.go
+                ,action   = lambda x:self.go(Mouse=True)
                 )
         
         ''' Key and mouse bindings must have different parents,
@@ -1799,12 +1787,17 @@ class WebFrame:
                               )
                 '''
             if str(pos).isdigit():
-                objs.blocks_db().Selectable = False
+                Selectable = objs.blocks_db().Selectable
+                objs._blocks_db.Selectable = False
                 result = objs._blocks_db.block_pos(pos=pos)
-                objs._blocks_db.Selectable = True
+                objs._blocks_db.Selectable = Selectable
                 if result:
-                    if result[7] == 1: # Selectable
+                    if Selectable:
+                        if result[7] == 1:
+                            self._pos = pos
+                    else:
                         self._pos = pos
+                    self._pos = pos
                 else:
                     pass
                     '''
@@ -2238,27 +2231,60 @@ class WebFrame:
                               ,MaxRow=14,MaxRows=150
                               )
         '''
-        
+    
     # Select either the search string or the URL
-    def go(self,*args):
-        search = self.search_field.widget.get().strip('\n').strip(' ')
-        if search == '':
-            self.go_url()
-        elif search == sh.globs['var']['repeat_sign']:
-            self.search_field.insert_repeat_sign()
-        elif search == sh.globs['var']['repeat_sign2']:
-            self.search_field.insert_repeat_sign2()
+    def go(self,event=None,Mouse=False):
+        if Mouse:
+            if sh.globs['bool']['SelectTermsOnly']:
+                Selectable = objs.blocks_db().Selectable
+                pos = self._pos
+                objs._blocks_db.Selectable = False
+                self.get_pos(event=event)
+                result = objs._blocks_db.block_pos(pos=self._pos)
+                if result and result[8] == 'dic':
+                    ''' Variants:
+                        1) A LM click on:
+                           1) A common dictionary - prioritize
+                           2) A prioritized dictionary - increase
+                              priority
+                           A RM click on:
+                           1) A prioritized dictionary - unprioritize
+                           2) A blocked dictionary - unblock
+                           3) A common dictionary - block
+                        or:
+                        2) A LM click on:
+                           1) A common dictionary - prioritize
+                           2) A prioritized dictionary - unprioritize
+                           3) A blocked dictionary - unblock
+                    '''
+                    objs.logic().toggle_dic(dic=result[6])
+                    objs.blocks_db().delete_bookmarks()
+                    self.load_article()
+                else:
+                    self.go_url()
+                objs._blocks_db.Selectable = Selectable
+                self._pos = pos
+            else:
+                self.go_url()
         else:
-            objs._request._search = search
-            self.go_search()
+            search = self.search_field.widget.get().strip('\n').strip(' ')
+            if search == '':
+                self.go_url()
+            elif search == sh.globs['var']['repeat_sign']:
+                self.search_field.insert_repeat_sign()
+            elif search == sh.globs['var']['repeat_sign2']:
+                self.search_field.insert_repeat_sign2()
+            else:
+                objs._request._search = search
+                self.go_search()
 
-    # Перейти по URL текущей ячейки
+    # Follow the URL of the current block
     def go_url(self,*args):
         if not objs.request().MouseClicked:
             url = objs.blocks_db().url(pos=self._pos)
             if url:
-                objs.request()._search = objs._blocks_db.text(pos=self._pos)
-                objs._request._url     = url
+                objs._request._search = objs._blocks_db.text(pos=self._pos)
+                objs._request._url    = url
                 sh.log.append ('WebFrame.go_url'
                               ,_('INFO')
                               ,_('Open link: %s') % objs._request._url
@@ -4045,6 +4071,82 @@ class Logic:
         query.append('commit;')
         query = ';'.join(query)
         objs.blocks_db().update(query=query)
+    
+    def prioritize_dic(self,dic=None):
+        if dic:
+            objs.prioritize()
+            if dic in objs._prioritize:
+                sh.log.append ('Logic.prioritize_dic'
+                              ,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+            else:
+                objs._prioritize.append(dic)
+        else:
+            sh.log.append ('Logic.prioritize_dic'
+                          ,_('WARNING')
+                          ,_('Empty input data!')
+                          )
+                          
+    def unprioritize_dic(self,dic=None):
+        if dic:
+            if dic in objs.prioritize():
+                objs._prioritize.remove(dic)
+            else:
+                sh.log.append ('Logic.unprioritize_dic'
+                              ,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+        else:
+            sh.log.append ('Logic.unprioritize_dic'
+                          ,_('WARNING')
+                          ,_('Empty input data!')
+                          )
+    
+    def block_dic(self,dic=None):
+        if dic:
+            objs.blacklist()
+            if dic in objs._blacklist:
+                sh.log.append ('Logic.block_dic'
+                              ,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+            else:
+                objs._blacklist.append(dic)
+        else:
+            sh.log.append ('Logic.block_dic'
+                          ,_('WARNING')
+                          ,_('Empty input data!')
+                          )
+    
+    def unblock_dic(self,dic=None):
+        if dic:
+            if dic in objs.blacklist():
+                objs._blacklist.remove(dic)
+            else:
+                sh.log.append ('Logic.unblock_dic'
+                              ,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+        else:
+            sh.log.append ('Logic.unblock_dic'
+                          ,_('WARNING')
+                          ,_('Empty input data!')
+                          )
+                          
+    def toggle_dic(self,dic=None):
+        if dic:
+            if dic in objs.prioritize():
+                self.unprioritize_dic(dic=dic)
+            elif dic in objs.blacklist():
+                self.unblock_dic(dic=dic)
+            else:
+                self.prioritize_dic(dic=dic)
+        else:
+            sh.log.append ('Logic.toggle_dic'
+                          ,_('WARNING')
+                          ,_('Empty input data!')
+                          )
 
 
 
