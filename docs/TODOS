@@ -1,3 +1,5 @@
+- expand dictionary abbreviations and set them to be a 'dic' type for
+  articles retrieved from 'phrase dic'
 - offline: do not close a block if the previous block comprises '(', but
   not '(' (even when a different language is detected)
 - If there are WFORMA that are identical to the input (e.g., "balls up"),
@@ -7,17 +9,13 @@
 - Hotkeys for moving to the end of a column and/or page
 - CSS for drawing a dash line for each section: mkhtml.py:315
 - Sometimes we need to press F4 twice for History
-- Do not warn about an empty URL in 'go_url' and 'copy_text' in case of
-  the welcome page
 - (History) Create 2 columns in ListBox instead of using delimiters
 - (DB) DB.reset: reset TEXT for DIC, WFORM, SPEECH, TRANSC; reset BLOCK,
   PRIORITY, CELLNO, SELECTABLE, ROWNO, COLNO, POS1, POS2
-- (cells) selectables: make 'Phrases' DIC cell SELECTABLE
 - (elems) Check that _same of the 1st cell is always 1 (or fix such
   behavior)
 - (elems) unite cells if (?) the url is the same or similar. Example:
   'sampling' -> Робототехника -> проведение выборочных замеров
-- Make transcriptions Selectable
 - Turn off sorting when local dictionaries are used
 - Create an option to toggle SELECTABLE (no need to update DB) (see
   WebFrame.select)

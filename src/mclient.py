@@ -2264,6 +2264,12 @@ class WebFrame:
                               ,_('Open link: %s') % objs._request._url
                               )
                 self.load_article()
+            # Do not warn when there are no articles yet
+            elif objs._blocks_db._articleid == 0:
+                sh.log.append ('WebFrame.go_url'
+                              ,_('INFO')
+                              ,_('Nothing to do!')
+                              )
             else:
                 sg.Message ('WebFrame.go_url'
                            ,_('WARNING')
@@ -2477,6 +2483,12 @@ class WebFrame:
             sg.Clipboard().copy(text)
             if sh.globs['bool']['Iconify']:
                 sg.Geometry(parent=self.obj).minimize()
+        # Do not warn when there are no articles yet
+        elif objs._blocks_db._articleid == 0:
+            sh.log.append ('WebFrame.copy_text'
+                          ,_('INFO')
+                          ,_('Nothing to do!')
+                          )
         else:
             sg.Message ('WebFrame.copy_text'
                        ,_('WARNING')
