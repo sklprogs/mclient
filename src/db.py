@@ -933,11 +933,13 @@ class DB:
     def set_bookmark(self,pos=0):
         if str(pos).isdigit():
             if self._articleid:
+                ''' # Too frequent
                 sh.log.append ('DB.set_bookmark'
                               ,_('DEBUG')
                               ,_('Set bookmark %d for article #%d') \
                               % (pos,self._articleid)
                               )
+                '''
                 self.dbc.execute ('update ARTICLES set BOOKMARK = ? \
                                    where ARTICLEID = ?'
                                  ,(pos,self._articleid,)

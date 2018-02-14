@@ -1111,8 +1111,10 @@ class WebFrame:
 
     def values(self):
         self._pos    = -1
+        self._posn   = -1
         self._border = 24
         self._shift  = 1
+        self._phdic  = ''
 
     def gui(self):
         self.obj     = sg.objs.new_top(Maximize=1)
@@ -1769,7 +1771,6 @@ class WebFrame:
         self.get_pos(event=event)
         self.select()
 
-    #todo: rework?
     def get_pos(self,event=None):
         if event:
             pos = -1
@@ -1790,23 +1791,16 @@ class WebFrame:
                 Selectable = objs.blocks_db().Selectable
                 objs._blocks_db.Selectable = False
                 result = objs._blocks_db.block_pos(pos=pos)
-                objs._blocks_db.Selectable = Selectable
                 if result:
-                    if Selectable:
-                        if result[7] == 1:
-                            self._pos = pos
-                    else:
+                    self._posn = pos
+                if Selectable:
+                    objs._blocks_db.Selectable = True
+                    result = objs._blocks_db.block_pos(pos=pos)
+                    if result:
                         self._pos = pos
-                    self._pos = pos
                 else:
-                    pass
-                    '''
-                    # Too frequent
-                    sh.log.append ('WebFrame.get_pos'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
-                    '''
+                    self._pos = self._posn
+                objs._blocks_db.Selectable = Selectable
 
     def _select(self,result):
         try:
@@ -1827,9 +1821,14 @@ class WebFrame:
                           )
     
     def select(self):
-        result = objs.blocks_db().selection(pos=self._pos)
+        #cur
+        if objs.blocks_db().Selectable:
+            pos = self._pos
+        else:
+            pos = self._posn
+        result = objs._blocks_db.selection(pos=pos)
         if result:
-            objs.blocks_db().set_bookmark(pos=self._pos)
+            objs.blocks_db().set_bookmark(pos=pos)
             self._select(result)
         else:
             pass
@@ -2011,7 +2010,8 @@ class WebFrame:
         if articleid:
             sh.log.append (func    = 'WebFrame.load_article'
                           ,level   = _('INFO')
-                          ,message = _('Load article No. %d from memory') % articleid
+                          ,message = _('Load article No. %d from memory')\
+                                     % articleid
                           )
             objs._blocks_db._articleid = articleid
             self.get_bookmark()
@@ -2095,15 +2095,18 @@ class WebFrame:
             # todo (?) insert SPEECHPR in Elems instead of updating
             objs.logic().prioritize_speech()
             
-        phrase_dic = objs._blocks_db.phrase_dic()
-        data       = objs._blocks_db.assign_bp ()
+        self._phdic = sh.Input (val        = objs._blocks_db.phrase_dic()
+                               ,func_title = 'WebFrame.load_article'
+                               ,Silent     = True
+                               ).not_none()
+        data = objs._blocks_db.assign_bp ()
 
         bp = cl.BlockPrioritize (data       = data
                                 ,blacklist  = objs.blacklist()
                                 ,prioritize = objs.prioritize()
                                 ,Block      = objs._request.Block
                                 ,Prioritize = objs._request.Prioritize
-                                ,phrase_dic = phrase_dic
+                                ,phrase_dic = self._phdic
                                 )
         bp.run()
         objs._blocks_db.update(query=bp._query)
@@ -2141,7 +2144,7 @@ class WebFrame:
         cells = cl.Cells (data       = data
                          ,cols       = objs._request._cols
                          ,collimit   = objs._request._collimit
-                         ,phrase_dic = phrase_dic
+                         ,phrase_dic = self._phdic
                          ,Reverse    = objs._request.Reverse
                          ,ExpandAbbr = ExpandAbbr
                          )
@@ -2235,13 +2238,14 @@ class WebFrame:
     # Select either the search string or the URL
     def go(self,event=None,Mouse=False):
         if Mouse:
-            if sh.globs['bool']['SelectTermsOnly']:
-                Selectable = objs.blocks_db().Selectable
-                pos = self._pos
+            if objs.blocks_db().Selectable:
                 objs._blocks_db.Selectable = False
-                self.get_pos(event=event)
-                result = objs._blocks_db.block_pos(pos=self._pos)
-                if result and result[8] == 'dic':
+                result = objs._blocks_db.block_pos(pos=self._posn)
+                objs._blocks_db.Selectable = True
+                #cur
+                print('Phrase_dic: "%s"' % str(self._phdic)) #todo: del
+                if result and result[8] == 'dic' \
+                and result[6] != self._phdic:
                     ''' Variants:
                         1) A LM click on:
                            1) A common dictionary - prioritize
@@ -2258,12 +2262,10 @@ class WebFrame:
                            3) A blocked dictionary - unblock
                     '''
                     objs.logic().toggle_dic(dic=result[6])
-                    objs.blocks_db().delete_bookmarks()
+                    objs._blocks_db.delete_bookmarks()
                     self.load_article()
                 else:
                     self.go_url()
-                objs._blocks_db.Selectable = Selectable
-                self._pos = pos
             else:
                 self.go_url()
         else:
