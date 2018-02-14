@@ -1821,14 +1821,9 @@ class WebFrame:
                           )
     
     def select(self):
-        #cur
-        if objs.blocks_db().Selectable:
-            pos = self._pos
-        else:
-            pos = self._posn
-        result = objs._blocks_db.selection(pos=pos)
+        result = objs.blocks_db().selection(pos=self._pos)
         if result:
-            objs.blocks_db().set_bookmark(pos=pos)
+            objs.blocks_db().set_bookmark(pos=self._pos)
             self._select(result)
         else:
             pass
