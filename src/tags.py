@@ -317,7 +317,7 @@ class AnalyzeTag:
                                      ,_('Offline')
                                      )
                                     )
-                        )
+                         )
                        )
 
     def dic(self):
@@ -409,11 +409,13 @@ class AnalyzeTag:
                          )
                        )
 
-    def _transc_sd(self): # Stardict
+    # Stardict
+    def _transc_sd(self):
         if ptr2 in self._block:
             _type = 'transc'
             _text = self._block.replace(ptr2,'',1).replace(ptr3,'',1)
-            if _text: # Will be empty for non-Stardict sources
+            # Will be empty for non-Stardict sources
+            if _text:
                 self._cur._type, self._cur._text = _type, _text
                 self._elems.append(copy.copy(self._cur))
 
@@ -464,7 +466,8 @@ class Tags:
             tmp = ''
             for i in range(len(self._text)):
                 if self._text[i] == '<':
-                    if i < len(self._text) - 1 and self._text[i+1] == '/':
+                    if i < len(self._text) - 1 \
+                    and self._text[i+1] == '/':
                         Ignore = True
                         if tmp:
                             self._tags.append(tmp)
@@ -563,12 +566,14 @@ if __name__ == '__main__':
     import page as pg
 
     # Modifiable
-    source = _('Online')
-    #search= 'preceding'
-    search = 'tun'
-    #file  = '/home/pete/tmp/ars/welcome back.txt'
-    #file  = '/home/pete/tmp/ars/tun.txt'
-    file   = '/home/pete/tmp/ars/lottery.txt'
+    source  = _('Online')
+    #search = 'preceding'
+    #search = 'tun'
+    search  = 'mayhem'
+    #file   = '/home/pete/tmp/ars/welcome back.txt'
+    #file   = '/home/pete/tmp/ars/tun.txt'
+    #file   = '/home/pete/tmp/ars/lottery.txt'
+    file    = '/home/pete/tmp/ars/mayhem - phrases.html'
 
     page = pg.Page (source = source
                    ,search = search

@@ -2054,6 +2054,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/sdict_EnRu_full - cut (auto).txt'
                            #,file        = '/home/pete/tmp/ars/scheming.txt'
                            #,file        = '/home/pete/tmp/ars/work.txt'
+                           #,file        = '/home/pete/tmp/ars/mayhem - phrases.html'
                            )
             page.run()
             ptimer.end()
@@ -2237,8 +2238,6 @@ class WebFrame:
                 objs._blocks_db.Selectable = False
                 result = objs._blocks_db.block_pos(pos=self._posn)
                 objs._blocks_db.Selectable = True
-                #cur
-                print('Phrase_dic: "%s"' % str(self._phdic)) #todo: del
                 if result and result[8] == 'dic' \
                 and result[6] != self._phdic:
                     ''' Variants:

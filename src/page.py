@@ -418,7 +418,8 @@ class Page:
         # This is done to speed up and eliminate tag disambiguation
         try:
             self._page = self._page.replace('<tr>','').replace('</tr>','')
-        except TypeError: # Encoding has failed
+        # Encoding has failed
+        except TypeError:
             self._page = ''
 
     def get(self):
@@ -438,15 +439,17 @@ class Page:
                     self.disamb_mt()
                     page = self._page
                     self._get_offline()
-                    self._page = of.stardict (text   = self._page
-                                             ,header = self._search)
+                    if self.HasLocal:
+                        self._page = of.stardict (text   = self._page
+                                                 ,header = self._search)
                 elif self._source == _('Online'):
                     self._get_online()
                     self.disamb_mt()
                 elif self._source == _('Offline'):
                     self._get_offline()
-                    self._page = of.stardict (text   = self._page
-                                             ,header = self._search)
+                    if self.HasLocal:
+                        self._page = of.stardict (text   = self._page
+                                                 ,header = self._search)
                 else:
                     sg.Message ('Page.get'
                                ,_('ERROR')

@@ -92,12 +92,13 @@ class Elems:
         
     def run(self):
         if self.Success:
+            self.convert_dic_abbr ()
             self.transc           ()
             self.phrases          ()
             self.straight_line    ()
             self.dic_urls         ()
             self.comments         ()
-            self.dic_abbr         ()
+            self.delete_dic_abbr  ()
             ''' These 2 procedures should not be combined (otherwise,
                 corrections will have the same color as comments)
             '''
@@ -191,7 +192,7 @@ class Elems:
                     i -= 1
             i += 1
             
-    def dic_abbr(self):
+    def delete_dic_abbr(self):
         i = 0
         while i < len(self._blocks):
             ''' We suppose that these are abbreviations of dictionary
@@ -547,6 +548,27 @@ class Elems:
             and self._blocks[i]._text in self._dic_urls:
                 self._blocks[i]._url = self._dic_urls[self._blocks[i]._text]
     
+    ''' In articles that are entirely related to the Phrases section,
+        full dictionary titles are entirely replaced by dictionary
+        abbreviations, so we treat the latter as the former.
+        Do this before setting a phrase dic.
+        #todo: make this Multitran-only
+        #todo: expand these abbreviations
+        #todo: do not allow SortTerms for such articles
+    '''
+    def convert_dic_abbr(self):
+        Dics = False
+        for block in self._blocks:
+            if block._type == 'dic':
+                Dics = True
+                break
+        if not Dics:
+            for i in range(len(self._blocks)):
+                if self._blocks[i]._type == 'comment' \
+                and self._blocks[i]._url \
+                and not 'UserName' in self._blocks[i]._url:
+                    self._blocks[i]._type = 'dic'
+    
     def zzz(self):
         pass
 
@@ -646,10 +668,12 @@ if __name__ == '__main__':
     
     # Modifiable
     source    = _('Online')
-    search    = 'preceding'
+    #search   = 'preceding'
+    search    = 'mayhem'
     url       = 'http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
     articleid = 1
-    file      = '/home/pete/tmp/ars/preceding.txt'
+    #file     = '/home/pete/tmp/ars/preceding.txt'
+    file      = '/home/pete/tmp/ars/mayhem - phrases.html'
     Debug     = 0
     
     
@@ -695,8 +719,7 @@ if __name__ == '__main__':
     
     timer.end()
     
-    blocks_db.dbc.execute ('select NO,TYPE,TEXT,URL from BLOCKS \
+    blocks_db.dbc.execute ('select NO,TYPE,TEXT from BLOCKS \
                             order by NO'
                           )
-    #blocks_db.print(Selected=1,Shorten=1,MaxRows=200,MaxRow=50)
-    blocks_db.print(Selected=1,Shorten=0)
+    blocks_db.print(Selected=1,Shorten=1,MaxRows=200,MaxRow=50)

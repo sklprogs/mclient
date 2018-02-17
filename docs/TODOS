@@ -1,3 +1,8 @@
+- Distinguish between SpecialPage and a PhraseDic page
+- Do not allow SortTerms for PhraseDic articles
+- Expand dictionary abbreviations for PhraseDic articles
+- (after previous is done) Remove todos in Elems.convert_dic_abbr
+- toggle SelectTermsOnly on-the-fly
 - expand dictionary abbreviations and set them to be a 'dic' type for
   articles retrieved from 'phrase dic'
 - offline: do not close a block if the previous block comprises '(', but
