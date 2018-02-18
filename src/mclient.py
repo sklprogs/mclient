@@ -9,7 +9,7 @@ import os
 import sys
 import io
 import tkinter     as tk
-from tkinter import ttk
+import tkinter.ttk as ttk
 import tkinterhtml as th
 import shared      as sh
 import sharedGUI   as sg
@@ -2111,7 +2111,7 @@ class WebFrame:
         ''' #note: if an article comprises only 1 dic/wform, this is
             usually a dictionary + terms from the 'Phrases' section
             Do not rely on the number of wforms; large articles like
-            'centre' may have only 1 wform (an a plurality of dics)
+            'centre' may have only 1 wform (and a plurality of dics)
         '''
         if not dics or dics and len(dics) == 1 or page and page.HasLocal:
             objs._request.SpecialPage = True
@@ -2123,9 +2123,9 @@ class WebFrame:
         
         SortTerms = objs._request.SortTerms \
                     and not objs._request.SpecialPage
-        objs._blocks_db.reset (cols         = objs._request._cols
-                              ,SortRows     = objs._request.SortRows
-                              ,SortTerms    = SortTerms
+        objs._blocks_db.reset (cols      = objs._request._cols
+                              ,SortRows  = objs._request.SortRows
+                              ,SortTerms = SortTerms
                               )
         objs._blocks_db.unignore()
         objs._blocks_db.ignore()
