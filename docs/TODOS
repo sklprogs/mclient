@@ -1,3 +1,4 @@
+- Add WelcomeScreen bool (DB.block_pos slows down)
 - Distinguish between SpecialPage and a PhraseDic page
 - Do not allow SortTerms for PhraseDic articles
 - Expand dictionary abbreviations for PhraseDic articles

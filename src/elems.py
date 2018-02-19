@@ -77,10 +77,10 @@ class Block:
 class Elems:
     
     def __init__(self,blocks,articleid):
-        self._blocks    = blocks
-        self._articleid = articleid
         self._data      = []
         self._dic_urls  = {}
+        self._blocks    = blocks
+        self._articleid = articleid
         if self._blocks and self._articleid:
             self.Success = True
         else:

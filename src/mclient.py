@@ -2113,7 +2113,12 @@ class WebFrame:
             Do not rely on the number of wforms; large articles like
             'centre' may have only 1 wform (and a plurality of dics)
         '''
-        if not dics or dics and len(dics) == 1 or page and page.HasLocal:
+        
+        if not dics \
+        or dics and len(dics) == 1 \
+        or page and page.HasLocal \
+        or not self._phdic:
+            # or check 'objs._request._search' by pattern '\d+ фраз'
             objs._request.SpecialPage = True
         else:
             # Otherwise, 'SpecialPage' will be inherited
