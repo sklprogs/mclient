@@ -23,8 +23,8 @@ class DB:
     def __init__(self):
         self.values()
         self.reset()
-        self.db         = sqlite3.connect(':memory:')
-        self.dbc        = self.db.cursor()
+        self.db  = sqlite3.connect(':memory:')
+        self.dbc = self.db.cursor()
         self.create_blocks()
         self.create_articles()
         

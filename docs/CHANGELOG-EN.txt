@@ -1,6 +1,7 @@
 
 
 5.9
+* Fix SelectTermsOnly mode and toggle it on-the-fly (Control-t by default)
 * Expand abbreviations for parts of speech comprising an additional
   information (e.g., "нареч. n -(e)s" => "Наречие n -(e)s")
 * Click on a dictionary to (un-)prioritize or (un-)block it,
@@ -14,10 +15,10 @@
     - prioritized dictionary: unprioritize it
     - blocked dictionary: unblock it
 * Do not load the config file twice
-* Fix selection for terms and non-terms modes (SelectTermsOnly=0)
 * Do not warn about an empty URL or text when there are no articles yet
 * Select transcription and dictionary "... фраз" by mouse
 * Parse the article following "... фраз"
+* Add a key: bind_toggle_sel
 
 5.8
 * Add a heuristic analysis for local Stardict dictionaries (Stardict2

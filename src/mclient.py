@@ -163,6 +163,7 @@ class ConfigMclient(sh.Config):
            ,'bind_toggle_history_alt'     :'<Control-h>'
            ,'bind_toggle_history'         :'<F4>'
            ,'bind_toggle_priority'        :'<Alt-p>'
+           ,'bind_toggle_sel'             :'<Control-t>'
            ,'bind_toggle_view'            :'<F6>'
            ,'bind_toggle_view_alt'        :'<Alt-v>'
            ,'color_comments'              :'gray'
@@ -1737,6 +1738,10 @@ class WebFrame:
                 ,bindings = sh.globs['var']['bind_print']
                 ,action   = self.print
                 )
+        sg.bind (obj      = self.obj
+                ,bindings = sh.globs['var']['bind_toggle_sel']
+                ,action   = self.toggle_sel
+                )
 
     def scrollbars(self):
         vsb = ttk.Scrollbar (master  = self.frame_y.widget
@@ -3048,6 +3053,16 @@ class WebFrame:
                 self.copy_text()
         else:
             self.copy_text()
+    
+    def toggle_sel(self,event=None):
+        if objs.blocks_db().Selectable:
+            objs.blocks_db().Selectable = False
+            objs._blocks_db.delete_bookmarks()
+            self.load_article()
+        else:
+            objs.blocks_db().Selectable = True
+            objs._blocks_db.delete_bookmarks()
+            self.load_article()
     
     # Only needed to move quickly to the end of the class
     def zzz(self):
