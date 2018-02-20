@@ -1489,7 +1489,7 @@ class WebFrame:
         '''
         sg.bind (obj      = self
                 ,bindings = '<Button-3>'
-                ,action   = self.copy_text
+                ,action   = lambda x:self.go_alt(Mouse=True)
                 )
         sg.bind (obj      = self.obj
                 ,bindings = [sh.globs['var']['bind_copy_sel']
@@ -2246,7 +2246,7 @@ class WebFrame:
                 if result and result[8] == 'dic' \
                 and result[6] != self._phdic:
                     ''' Variants:
-                        1) A LM click on:
+                        1) (current) A LM click on:
                            1) A common dictionary - prioritize
                            2) A prioritized dictionary - increase
                               priority
@@ -2255,12 +2255,15 @@ class WebFrame:
                            2) A blocked dictionary - unblock
                            3) A common dictionary - block
                         or:
-                        2) A LM click on:
+                        2) (easy, LM-only) A LM click on:
                            1) A common dictionary - prioritize
                            2) A prioritized dictionary - unprioritize
                            3) A blocked dictionary - unblock
                     '''
-                    objs.logic().toggle_dic(dic=result[6])
+                    if result[6] in objs.blacklist():
+                        objs.logic().unblock_dic(dic=result[6])
+                    else:
+                        objs.logic().prioritize_dic(dic=result[6])
                     objs._blocks_db.delete_bookmarks()
                     self.load_article()
                 else:
@@ -2504,7 +2507,7 @@ class WebFrame:
         objs.online().browse()
 
     # Скопировать текст текущего блока
-    def copy_text(self,*args):
+    def copy_text(self,event=None):
         text = objs.blocks_db().text(pos=self._pos)
         if text:
             sg.Clipboard().copy(text)
@@ -3022,6 +3025,29 @@ class WebFrame:
                               ,_('WARNING')
                               ,_('Wrong input data!')
                               )
+    
+    def go_alt(self,event=None,Mouse=False):
+        if Mouse:
+            if objs.blocks_db().Selectable:
+                objs._blocks_db.Selectable = False
+                result = objs._blocks_db.block_pos(pos=self._posn)
+                objs._blocks_db.Selectable = True
+                if result and result[8] == 'dic' \
+                and result[6] != self._phdic:
+                    if result[6] in objs.prioritize():
+                        objs.logic().unprioritize_dic(dic=result[6])
+                    elif result[6] in objs.blacklist():
+                        objs.logic().unblock_dic(dic=result[6])
+                    else:
+                        objs.logic().block_dic(dic=result[6])
+                    objs._blocks_db.delete_bookmarks()
+                    self.load_article()
+                else:
+                    self.copy_text()
+            else:
+                self.copy_text()
+        else:
+            self.copy_text()
     
     # Only needed to move quickly to the end of the class
     def zzz(self):
@@ -4131,20 +4157,6 @@ class Logic:
                               )
         else:
             sh.log.append ('Logic.unblock_dic'
-                          ,_('WARNING')
-                          ,_('Empty input data!')
-                          )
-                          
-    def toggle_dic(self,dic=None):
-        if dic:
-            if dic in objs.prioritize():
-                self.unprioritize_dic(dic=dic)
-            elif dic in objs.blacklist():
-                self.unblock_dic(dic=dic)
-            else:
-                self.prioritize_dic(dic=dic)
-        else:
-            sh.log.append ('Logic.toggle_dic'
                           ,_('WARNING')
                           ,_('Empty input data!')
                           )
