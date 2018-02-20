@@ -1,6 +1,5 @@
 - Add WelcomeScreen bool (DB.block_pos slows down)
 - Distinguish between SpecialPage and a PhraseDic page
-- Do not allow SortTerms for PhraseDic articles
 - Expand dictionary abbreviations for PhraseDic articles
 - (after previous is done) Remove todos in Elems.convert_dic_abbr
 - toggle SelectTermsOnly on-the-fly
@@ -22,7 +21,6 @@
   behavior)
 - (elems) unite cells if (?) the url is the same or similar. Example:
   'sampling' -> Робототехника -> проведение выборочных замеров
-- Turn off sorting when local dictionaries are used
 - Create an option to toggle SELECTABLE (no need to update DB) (see
   WebFrame.select)
 - Loop WebFrame.move_page_up & WebFrame.move_page_down

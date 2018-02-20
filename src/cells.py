@@ -435,16 +435,24 @@ class Cells:
         
     def expand_abbr(self):
         if self.ExpandAbbr:
-            for block in self._blocks:
-                if block._type == 'speech' and block._text in abbr:
-                    ind = abbr.index(block._text)
-                    block._text = expanded[ind]
+            for i in range(len(self._blocks)):
+                if self._blocks[i]._type == 'speech':
+                    lst = self._blocks[i]._text.split(' ')
+                    for j in range(len(lst)):
+                        if lst[j] in abbr:
+                            ind    = abbr.index(lst[j])
+                            lst[j] = expanded[ind]
+                    self._blocks[i]._text = ' '.join(lst)
         # In case of switching back from the 'Cut to the chase' mode
         else:
-            for block in self._blocks:
-                if block._type == 'speech' and block._text in expanded:
-                    ind = expanded.index(block._text)
-                    block._text = abbr[ind]
+            for i in range(len(self._blocks)):
+                if self._blocks[i]._type == 'speech':
+                    lst = self._blocks[i]._text.split(' ')
+                    for j in range(len(lst)):
+                        if lst[j] in expanded:
+                            ind    = expanded.index(lst[j])
+                            lst[j] = abbr[ind]
+                    self._blocks[i]._text = ' '.join(lst)
     
     def restore_fixed(self):
         for block in self._blocks:

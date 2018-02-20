@@ -554,7 +554,6 @@ class Elems:
         Do this before setting a phrase dic.
         #todo: make this Multitran-only
         #todo: expand these abbreviations
-        #todo: do not allow SortTerms for such articles
     '''
     def convert_dic_abbr(self):
         Dics = False

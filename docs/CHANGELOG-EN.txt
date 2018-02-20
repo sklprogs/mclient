@@ -1,3 +1,6 @@
+* Expand abbreviations for parts of speech comprising an additional
+  information (e.g., "нареч. n -(e)s" => "Наречие n -(e)s")
+* Click on a dictionary to (un-)prioritize or (un-)block it
 * Do not load the config file twice
 * Fix selection for terms and non-terms modes (SelectTermsOnly=0)
 * Do not warn about an empty URL or text when there are no articles yet
