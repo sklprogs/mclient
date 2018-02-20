@@ -4157,8 +4157,6 @@ objs = Objects()
 if  __name__ == '__main__':
     sg.objs.start()
 
-    ConfigMclient()
-
     timed_update()
 
     objs.webframe().reset()

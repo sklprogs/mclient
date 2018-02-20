@@ -1,4 +1,3 @@
-- config keys are loaded twice
 - 'block', EN-RU: '0' is inserted instead of empty wforms
 - 'lottery', EN-RU: user submitted URL is absent
 - Unknown mode "" in Elems.order_speech when using local dictionaries
