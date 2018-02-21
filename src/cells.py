@@ -179,7 +179,6 @@ class Cells:
         self.Reverse     = Reverse
         self.ExpandAbbr  = ExpandAbbr
         self._blocks     = []
-        self._query      = ''
         if self._data:
             self.Success = True
         else:
@@ -250,7 +249,6 @@ class Cells:
             self.sep_words    ()
             self.sort_cells   ()
             self.cell_no      ()
-            self.dump         ()
         else:
             sh.log.append ('Cells.run'
                           ,_('WARNING')
@@ -416,22 +414,23 @@ class Cells:
             else:
                 self._blocks[i]._cell_no = no
         
-    def dump(self):
-        tmp = io.StringIO()
-        tmp.write('begin;')
+    def dump(self,blocks_db):
+        ''' Do not use 'executescript' to update TEXT field. SQLITE may
+            recognize a keyword (e.g., 'block') and replace it with '0'.
+            Takes ~0,08s for 'block' on AMD E-300.
+        '''
+        timer = sh.Timer('Cells.dump')
+        timer.start()
         for block in self._blocks:
-            # Quotes in the text will fail the query, so we screen them
-            block._text = block._text.replace('"','""')
-            tmp.write ('update BLOCKS \
-                        set TEXT="%s",ROWNO=%d,COLNO=%d,CELLNO=%d \
-                        where NO=%d;' % (block._text,block.i,block.j
-                                        ,block._cell_no,block._no
-                                        )
-                      )
-        tmp.write('commit;')
-        self._query = tmp.getvalue()
-        tmp.close()
-        return self._query
+            blocks_db.dbc.execute ('update BLOCKS \
+                                    set    TEXT=?,ROWNO=?,COLNO=?\
+                                          ,CELLNO=?\
+                                    where  NO=?',(block._text,block.i
+                                                 ,block.j,block._cell_no
+                                                 ,block._no
+                                                 )
+                                  )
+        timer.end()
         
     def expand_abbr(self):
         if self.ExpandAbbr:
@@ -679,28 +678,30 @@ class Pages:
 
 if __name__ == '__main__':
     import db
-    import page    as pg
-    import tags    as tg
-    import elems   as el
-    import mclient as mc
+    import page  as pg
+    import tags  as tg
+    import elems as el
     
     # Modifiable
     source     = _('Online')
     search     = 'working documentation'
     url        = ''
-    file       = '/home/pete/tmp/ars/working documentation.txt'
+    #file      = '/home/pete/tmp/ars/working documentation.txt'
+    file       = '/home/pete/tmp/ars/block.txt'
     blacklist  = []
     prioritize = ['Общая лексика']
     collimit   = 10
     file_raw   = '/home/pete/tmp/ars/working documentation - extracted text'
     articleid  = 1
+    Debug      = 0
+    Shorten    = 1
+    MaxRow     = 18
+    MaxRows    = 2000
     
-    raw_text = sh.ReadTextFile(file=file_raw).get()
+    #raw_text = sh.ReadTextFile(file=file_raw).get()
     
     timer = sh.Timer(func_title='page, tags, elems, ph_terma, cells')
     timer.start()
-    
-    mc.ConfigMclient ()
     
     page = pg.Page (source       = source
                    ,lang         = 'English'
@@ -716,11 +717,26 @@ if __name__ == '__main__':
                    )
     tags.run()
     
+    if Debug:
+        tags.debug_tags()
+        tags.debug_blocks (Shorten = Shorten
+                          ,MaxRow  = MaxRow
+                          ,MaxRows = MaxRows
+                          )
+        input('Tags debugged. Press Return')
+        
     elems = el.Elems (blocks    = tags._blocks
                      ,articleid = articleid
                      )
     elems.run()
     
+    if Debug:
+        elems.debug (Shorten = Shorten
+                    ,MaxRow  = MaxRow
+                    ,MaxRows = MaxRows
+                    )
+        input('Elems debugged. Press Return')
+        
     blocks_db = db.DB()
     blocks_db.fill_blocks(elems._data)
     
@@ -750,28 +766,51 @@ if __name__ == '__main__':
     bp.run()
     blocks_db.update(query=bp._query)
     
+    if Debug:
+        bp.debug (Shorten = Shorten
+                 ,MaxRow  = MaxRow
+                 ,MaxRows = MaxRows
+                 )
+        input('BP debugged. Press Return')
+        
     data = blocks_db.assign_cells()
     cells = Cells (data     = data
                   ,cols     = ('dic','wform','transc','speech')
                   ,collimit = collimit
                   )
     cells.run()
-    blocks_db.update(query=cells._query)
     
+    cells.dump(blocks_db=blocks_db)
+    
+    if Debug:
+        cells.debug (Shorten = Shorten
+                    ,MaxRow  = MaxRow
+                    ,MaxRows = MaxRows
+                    )
+        input('Cells debugged. Press Return')
+        
+    '''
     data = blocks_db.assign_pos()
     pos  = Pos (data     = data
                ,raw_text = raw_text
                )
     pos.run()
     blocks_db.update(query=pos._query)
+    '''
     
-    timer.end()
+    #timer.end()
     
-    blocks_db.print(Shorten=0,mode='ARTICLES')
-    print()
+    #blocks_db.print(Shorten=0,mode='ARTICLES')
+    #print()
     
-    blocks_db.dbc.execute ('select NO,DICA,TYPE,TEXT,SAMECELL,PRIORITY\
-                                  ,CELLNO,POS1,POS2,SELECTABLE \
-                            from BLOCKS order by CELLNO,NO'
+    '''
+    blocks_db.dbc.execute ('select NO,DICA,WFORMA,TYPE,TEXT \
+                            from BLOCKS where TEXT = ? order by NO'
+                          ,('0',)
                           )
-    blocks_db.print(Selected=1,Shorten=1,MaxRows=200,MaxRow=18)
+    blocks_db.print (Selected = 1
+                    ,Shorten  = Shorten
+                    ,MaxRows  = MaxRows
+                    ,MaxRow   = MaxRow
+                    )
+    '''

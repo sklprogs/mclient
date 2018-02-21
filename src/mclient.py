@@ -2060,6 +2060,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/scheming.txt'
                            #,file        = '/home/pete/tmp/ars/work.txt'
                            #,file        = '/home/pete/tmp/ars/mayhem - phrases.html'
+                           #,file        = '/home/pete/tmp/ars/block.txt'
                            )
             page.run()
             ptimer.end()
@@ -2155,7 +2156,8 @@ class WebFrame:
                          ,ExpandAbbr = ExpandAbbr
                          )
         cells.run()
-        objs._blocks_db.update(query=cells._query)
+        
+        cells.dump(blocks_db=objs._blocks_db)
         
         get_html = mh.HTML (data       = objs._blocks_db.fetch()
                            ,cols       = objs._request._cols

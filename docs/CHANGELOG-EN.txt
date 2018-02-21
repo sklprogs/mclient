@@ -1,6 +1,7 @@
 
 
 5.9
+* Set Multitran timeout for 6s at loading
 * Fix SelectTermsOnly mode and toggle it on-the-fly (Control-t by default)
 * Expand abbreviations for parts of speech comprising an additional
   information (e.g., "нареч. n -(e)s" => "Наречие n -(e)s")

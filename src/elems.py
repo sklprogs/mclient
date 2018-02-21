@@ -661,26 +661,25 @@ class PhraseTerma:
 
 if __name__ == '__main__':
     import db
-    import page    as pg
-    import tags    as tg
-    import mclient as mc
+    import page as pg
+    import tags as tg
     
     # Modifiable
     source    = _('Online')
     #search   = 'preceding'
-    search    = 'mayhem'
+    #search   = 'mayhem'
+    search    = 'block'
     url       = 'http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
     articleid = 1
     #file     = '/home/pete/tmp/ars/preceding.txt'
-    file      = '/home/pete/tmp/ars/mayhem - phrases.html'
+    #file     = '/home/pete/tmp/ars/mayhem - phrases.html'
+    file      = '/home/pete/tmp/ars/block.txt'
     Debug     = 0
     
     
     timer = sh.Timer(func_title='page, elems')
     timer.start()
     
-    mc.ConfigMclient()
-
     page = pg.Page (source       = source
                    ,lang         = 'English'
                    ,search       = search

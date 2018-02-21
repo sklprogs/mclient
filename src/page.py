@@ -470,6 +470,7 @@ class Welcome:
 
     def __init__ (self,url=None,st_status=0
                  ,product='MClient',version='current'
+                 ,timeout=6
                  ):
         if not url:
             ''' 'https://www.multitran.ru' is got faster than
@@ -480,6 +481,7 @@ class Welcome:
         self._product   = product
         self._version   = version
         self._st_status = st_status #len(ext_dics._dics)
+        self._timeout   = timeout
         self._mt_status = 'not running'
         self._mt_color  = 'red'
         self._st_color  = 'red'
@@ -501,10 +503,12 @@ class Welcome:
                           ,_('Unable to use unverified certificates!')
                           )
         try:
-            code = urllib.request.urlopen(self._url).code
+            code = urllib.request.urlopen (url     = self._url
+                                          ,timeout = self._timeout
+                                          ).code
             if (code / 100 < 4):
                 return True
-        except urllib.error.URLError:
+        except: #urllib.error.URLError, socket.timeout
             return False
 
     def generate(self):
