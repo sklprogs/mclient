@@ -417,10 +417,8 @@ class Cells:
     def dump(self,blocks_db):
         ''' Do not use 'executescript' to update TEXT field. SQLITE may
             recognize a keyword (e.g., 'block') and replace it with '0'.
-            Takes ~0,08s for 'block' on AMD E-300.
+            Takes ~0,08s for 'block', ~0,13s for 'set' on AMD E-300.
         '''
-        timer = sh.Timer('Cells.dump')
-        timer.start()
         for block in self._blocks:
             blocks_db.dbc.execute ('update BLOCKS \
                                     set    TEXT=?,ROWNO=?,COLNO=?\
@@ -430,7 +428,6 @@ class Cells:
                                                  ,block._no
                                                  )
                                   )
-        timer.end()
         
     def expand_abbr(self):
         if self.ExpandAbbr:

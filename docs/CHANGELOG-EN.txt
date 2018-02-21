@@ -1,6 +1,7 @@
 
 
 5.9
+* Fix a bug causing word forms to be shown as "0" in rare cases
 * Set Multitran timeout for 6s at loading
 * Fix SelectTermsOnly mode and toggle it on-the-fly (Control-t by default)
 * Expand abbreviations for parts of speech comprising an additional

@@ -2,7 +2,6 @@
   block.txt and original view saved by the program - block.htm) are
   parsed differently (have a different look when loaded with 'file='
   option)
-- 'block', EN-RU: '0' is inserted instead of empty wforms
 - 'lottery', EN-RU: user submitted URL is absent
 - Unknown mode "" in Elems.order_speech when using local dictionaries
   (Stardict 2)
