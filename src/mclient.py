@@ -1192,64 +1192,64 @@ class WebFrame:
     '''
     def draw_buttons(self):
         # Кнопка для "чайников", заменяет Enter в search_field
-        sg.Button (parent              = self.fr_but
-                  ,text                = _('Translate')
-                  ,hint                = _('Translate')
-                  ,action              = self.go
-                  ,inactive_image_path = sh.globs['var']['icon_go_search']
-                  ,active_image_path   = sh.globs['var']['icon_go_search']
-                  ,bindings            = ['<Return>'
-                                         ,'<KP_Enter>'
-                                         ]
+        sg.Button (parent   = self.fr_but
+                  ,text     = _('Translate')
+                  ,hint     = _('Translate')
+                  ,action   = self.go
+                  ,inactive = sh.globs['var']['icon_go_search']
+                  ,active   = sh.globs['var']['icon_go_search']
+                  ,bindings = ['<Return>'
+                              ,'<KP_Enter>'
+                              ]
                   ) # В данном случае btn = hint
 
         # Кнопка очистки строки поиска
-        sg.Button (parent              = self.fr_but
-                  ,text                = _('Clear')
-                  ,hint                = _('Clear search field')
-                  ,action              = self.search_field.clear
-                  ,inactive_image_path = sh.globs['var']['icon_clear_search_field']
-                  ,active_image_path   = sh.globs['var']['icon_clear_search_field']
-                  ,bindings            = sh.globs['var']['bind_clear_search_field']
+        sg.Button (parent   = self.fr_but
+                  ,text     = _('Clear')
+                  ,hint     = _('Clear search field')
+                  ,action   = self.search_field.clear
+                  ,inactive = sh.globs['var']['icon_clear_search_field']
+                  ,active   = sh.globs['var']['icon_clear_search_field']
+                  ,bindings = sh.globs['var']['bind_clear_search_field']
                   )
 
         # Кнопка вставки
-        sg.Button (parent              = self.fr_but
-                  ,text                = _('Paste')
-                  ,hint                = _('Paste text from clipboard')
-                  ,action              = self.search_field.paste
-                  ,inactive_image_path = sh.globs['var']['icon_paste']
-                  ,active_image_path   = sh.globs['var']['icon_paste']
-                  ,bindings            = ['<Control-v>']
+        sg.Button (parent   = self.fr_but
+                  ,text     = _('Paste')
+                  ,hint     = _('Paste text from clipboard')
+                  ,action   = self.search_field.paste
+                  ,inactive = sh.globs['var']['icon_paste']
+                  ,active   = sh.globs['var']['icon_paste']
+                  ,bindings = ['<Control-v>']
                   )
         # Кнопка вставки текущего запроса
         self.btn_repeat_sign = sg.Button (
-                   parent              = self.fr_but
-                  ,text                = '!'
-                  ,hint                = _('Paste current request')
-                  ,action              = self.search_field.insert_repeat_sign
-                  ,inactive_image_path = sh.globs['var']['icon_repeat_sign_off']
-                  ,active_image_path   = sh.globs['var']['icon_repeat_sign']
-                  ,bindings            = sh.globs['var']['repeat_sign']
+                   parent   = self.fr_but
+                  ,text     = '!'
+                  ,hint     = _('Paste current request')
+                  ,action   = self.search_field.insert_repeat_sign
+                  ,inactive = sh.globs['var']['icon_repeat_sign_off']
+                  ,active   = sh.globs['var']['icon_repeat_sign']
+                  ,bindings = sh.globs['var']['repeat_sign']
                                          )
         # Кнопка вставки предыдущего запроса
         self.btn_repeat_sign2 = sg.Button (
-                   parent              = self.fr_but
-                  ,text                = '!!'
-                  ,hint                = _('Paste previous request')
-                  ,action              = self.search_field.insert_repeat_sign2
-                  ,inactive_image_path = sh.globs['var']['icon_repeat_sign2_off']
-                  ,active_image_path   = sh.globs['var']['icon_repeat_sign2']
-                  ,bindings            = sh.globs['var']['repeat_sign2']
+                   parent   = self.fr_but
+                  ,text     = '!!'
+                  ,hint     = _('Paste previous request')
+                  ,action   = self.search_field.insert_repeat_sign2
+                  ,inactive = sh.globs['var']['icon_repeat_sign2_off']
+                  ,active   = sh.globs['var']['icon_repeat_sign2']
+                  ,bindings = sh.globs['var']['repeat_sign2']
                                           )
         # Кнопка для вставки спец. символов
-        sg.Button (parent              = self.fr_but
-                  ,text                = _('Symbols')
-                  ,hint                = _('Paste a special symbol')
-                  ,action              = self.spec_symbols.show
-                  ,inactive_image_path = sh.globs['var']['icon_spec_symbol']
-                  ,active_image_path   = sh.globs['var']['icon_spec_symbol']
-                  ,bindings            = sh.globs['var']['bind_spec_symbol']
+        sg.Button (parent   = self.fr_but
+                  ,text     = _('Symbols')
+                  ,hint     = _('Paste a special symbol')
+                  ,action   = self.spec_symbols.show
+                  ,inactive = sh.globs['var']['icon_spec_symbol']
+                  ,active   = sh.globs['var']['icon_spec_symbol']
+                  ,bindings = sh.globs['var']['bind_spec_symbol']
                   )
         self.menu_sources = sg.OptionMenu (parent  = self.fr_but
                                           ,items   = sources
@@ -1269,77 +1269,77 @@ class WebFrame:
                                           )
         # Кнопка настроек
         self.btn_settings = sg.Button (
-                   parent              = self.fr_but
-                  ,text                = _('Settings')
-                  ,hint                = _('Tune up view settings')
-                  ,action              = self.settings.show
-                  ,inactive_image_path = sh.globs['var']['icon_settings']
-                  ,active_image_path   = sh.globs['var']['icon_settings']
-                  ,bindings            = [sh.globs['var']['bind_settings']
-                                         ,sh.globs['var']['bind_settings_alt']
-                                         ]
+                   parent   = self.fr_but
+                  ,text     = _('Settings')
+                  ,hint     = _('Tune up view settings')
+                  ,action   = self.settings.show
+                  ,inactive = sh.globs['var']['icon_settings']
+                  ,active   = sh.globs['var']['icon_settings']
+                  ,bindings = [sh.globs['var']['bind_settings']
+                              ,sh.globs['var']['bind_settings_alt']
+                              ]
                                       )
         # Кнопка изменения вида статьи
         self.btn_toggle_view = sg.Button (
-                   parent              = self.fr_but
-                  ,text                = _('Toggle view')
-                  ,hint                = _('Toggle the article view mode')
-                  ,action              = self.toggle_view
-                  ,inactive_image_path = sh.globs['var']['icon_toggle_view_ver']
-                  ,active_image_path   = sh.globs['var']['icon_toggle_view_hor']
-                  ,bindings            = [sh.globs['var']['bind_toggle_view']
-                                         ,sh.globs['var']['bind_toggle_view_alt']
-                                         ]
+                   parent   = self.fr_but
+                  ,text     = _('Toggle view')
+                  ,hint     = _('Toggle the article view mode')
+                  ,action   = self.toggle_view
+                  ,inactive = sh.globs['var']['icon_toggle_view_ver']
+                  ,active   = sh.globs['var']['icon_toggle_view_hor']
+                  ,bindings = [sh.globs['var']['bind_toggle_view']
+                              ,sh.globs['var']['bind_toggle_view_alt']
+                              ]
                                          )
         # Кнопка включения/отключения режима блокировки словарей
         self.btn_toggle_block = sg.Button (
-                   parent              = self.fr_but
-                  ,text                = _('Blacklist')
-                  ,hint                = _('Toggle the blacklist')
-                  ,action              = self.toggle_block
-                  ,inactive_image_path = sh.globs['var']['icon_block_off']
-                  ,active_image_path   = sh.globs['var']['icon_block_on']
-                  ,bindings            = sh.globs['var']['bind_toggle_block']
+                   parent   = self.fr_but
+                  ,text     = _('Blacklist')
+                  ,hint     = _('Toggle the blacklist')
+                  ,action   = self.toggle_block
+                  ,inactive = sh.globs['var']['icon_block_off']
+                  ,active   = sh.globs['var']['icon_block_on']
+                  ,bindings = sh.globs['var']['bind_toggle_block']
                                           )
         # Кнопка включения/отключения режима приоритезации словарей
         self.btn_toggle_priority = sg.Button (
-                   parent              = self.fr_but
-                  ,text                = _('Prioritize')
-                  ,hint                = _('Toggle prioritizing')
-                  ,action              = self.toggle_priority
-                  ,inactive_image_path = sh.globs['var']['icon_priority_off']
-                  ,active_image_path   = sh.globs['var']['icon_priority_on']
-                  ,bindings            = sh.globs['var']['bind_toggle_priority']
+                   parent   = self.fr_but
+                  ,text     = _('Prioritize')
+                  ,hint     = _('Toggle prioritizing')
+                  ,action   = self.toggle_priority
+                  ,inactive = sh.globs['var']['icon_priority_off']
+                  ,active   = sh.globs['var']['icon_priority_on']
+                  ,bindings = sh.globs['var']['bind_toggle_priority']
                                              )
         # Кнопка включения/отключения сортировки словарей по алфавиту
         self.btn_toggle_alphabet = sg.Button (
-                   parent              = self.fr_but
-                  ,text                = _('Alphabetize')
-                  ,hint                = _('Toggle alphabetizing')
-                  ,action              = self.toggle_alphabet
-                  ,inactive_image_path = sh.globs['var']['icon_alphabet_off']
-                  ,active_image_path   = sh.globs['var']['icon_alphabet_on']
-                  ,bindings            = sh.globs['var']['bind_toggle_alphabet']
+                   parent   = self.fr_but
+                  ,text     = _('Alphabetize')
+                  ,hint     = _('Toggle alphabetizing')
+                  ,action   = self.toggle_alphabet
+                  ,inactive = sh.globs['var']['icon_alphabet_off']
+                  ,active   = sh.globs['var']['icon_alphabet_on']
+                  ,bindings = sh.globs['var']['bind_toggle_alphabet']
                                              )
         # Кнопка перехода на предыдущую статью
         self.btn_prev = sg.Button (
-                   parent              = self.fr_but
-                  ,text                = '←'
-                  ,hint                = _('Go to the preceding article')
-                  ,action              = self.go_back
-                  ,inactive_image_path = sh.globs['var']['icon_go_back_off']
-                  ,active_image_path   = sh.globs['var']['icon_go_back']
-                  ,bindings            = sh.globs['var']['bind_go_back']
+                   parent   = self.fr_but
+                  ,text     = '←'
+                  ,hint     = _('Go to the preceding article')
+                  ,action   = self.go_back
+                  ,inactive = sh.globs['var']['icon_go_back_off']
+                  ,active   = sh.globs['var']['icon_go_back']
+                  ,bindings = sh.globs['var']['bind_go_back']
                                   )
         # Кнопка перехода на следующую статью
         self.btn_next = sg.Button (
-                   parent              = self.fr_but
-                  ,text                = '→'
-                  ,hint                = _('Go to the following article')
-                  ,action              = self.go_forward
-                  ,inactive_image_path = sh.globs['var']['icon_go_forward_off']
-                  ,active_image_path   = sh.globs['var']['icon_go_forward']
-                  ,bindings            = sh.globs['var']['bind_go_forward']
+                   parent   = self.fr_but
+                  ,text     = '→'
+                  ,hint     = _('Go to the following article')
+                  ,action   = self.go_forward
+                  ,inactive = sh.globs['var']['icon_go_forward_off']
+                  ,active   = sh.globs['var']['icon_go_forward']
+                  ,bindings = sh.globs['var']['bind_go_forward']
                                   )
         ''' Кнопка включения/отключения и очистки истории
             #todo: fix: do not iconify on RMB (separate button frame
@@ -1354,105 +1354,105 @@ class WebFrame:
                     + '\n'   + sh.globs['var']['bind_clear_history']          \
                     + ', <ButtonRelease-3>'
         self.btn_history = sg.Button (
-                   parent              = self.fr_but
-                  ,text                = _('History')
-                  ,hint                = hint_history
-                  ,action              = self.history.toggle
-                  ,inactive_image_path = sh.globs['var']['icon_toggle_history']
-                  ,active_image_path   = sh.globs['var']['icon_toggle_history']
-                  ,hint_height         = 80
+                   parent      = self.fr_but
+                  ,text        = _('History')
+                  ,hint        = hint_history
+                  ,action      = self.history.toggle
+                  ,inactive    = sh.globs['var']['icon_toggle_history']
+                  ,active      = sh.globs['var']['icon_toggle_history']
+                  ,hint_height = 80
                                      )
         # Кнопка перезагрузки статьи
-        sg.Button (parent              = self.fr_but
-                  ,text                = _('Reload')
-                  ,hint                = _('Reload the article')
-                  ,action              = self.reload
-                  ,inactive_image_path = sh.globs['var']['icon_reload']
-                  ,active_image_path   = sh.globs['var']['icon_reload']
-                  ,bindings            = [sh.globs['var']['bind_reload_article']
-                                         ,sh.globs['var']['bind_reload_article_alt']
-                                         ]
+        sg.Button (parent   = self.fr_but
+                  ,text     = _('Reload')
+                  ,hint     = _('Reload the article')
+                  ,action   = self.reload
+                  ,inactive = sh.globs['var']['icon_reload']
+                  ,active   = sh.globs['var']['icon_reload']
+                  ,bindings = [sh.globs['var']['bind_reload_article']
+                              ,sh.globs['var']['bind_reload_article_alt']
+                              ]
                   )
         # Кнопка "Поиск в статье"
-        sg.Button (parent              = self.fr_but
-                  ,text                = _('Search')
-                  ,hint                = _('Find in the current article')
-                  ,action              = self.search_reset
-                  ,inactive_image_path = sh.globs['var']['icon_search_article']
-                  ,active_image_path   = sh.globs['var']['icon_search_article']
-                  ,bindings            = sh.globs['var']['bind_re_search_article']
+        sg.Button (parent   = self.fr_but
+                  ,text     = _('Search')
+                  ,hint     = _('Find in the current article')
+                  ,action   = self.search_reset
+                  ,inactive = sh.globs['var']['icon_search_article']
+                  ,active   = sh.globs['var']['icon_search_article']
+                  ,bindings = sh.globs['var']['bind_re_search_article']
                   )
         # Кнопка "Сохранить"
-        sg.Button (parent              = self.fr_but
-                  ,text                = _('Save')
-                  ,hint                = _('Save the current article')
-                  ,action              = self.save_article.select
-                  ,inactive_image_path = sh.globs['var']['icon_save_article']
-                  ,active_image_path   = sh.globs['var']['icon_save_article']
-                  ,bindings            = [sh.globs['var']['bind_save_article']
-                                         ,sh.globs['var']['bind_save_article_alt']
-                                         ]
+        sg.Button (parent   = self.fr_but
+                  ,text     = _('Save')
+                  ,hint     = _('Save the current article')
+                  ,action   = self.save_article.select
+                  ,inactive = sh.globs['var']['icon_save_article']
+                  ,active   = sh.globs['var']['icon_save_article']
+                  ,bindings = [sh.globs['var']['bind_save_article']
+                              ,sh.globs['var']['bind_save_article_alt']
+                              ]
                   )
         # Кнопка "Открыть в браузере"
-        sg.Button (parent              = self.fr_but
-                  ,text                = _('Browse')
-                  ,hint                = _('Open the current article in a browser')
-                  ,action              = self.open_in_browser
-                  ,inactive_image_path = sh.globs['var']['icon_open_in_browser']
-                  ,active_image_path   = sh.globs['var']['icon_open_in_browser']
-                  ,bindings            = [sh.globs['var']['bind_open_in_browser']
-                                         ,sh.globs['var']['bind_open_in_browser_alt']
-                                         ]
+        sg.Button (parent   = self.fr_but
+                  ,text     = _('Browse')
+                  ,hint     = _('Open the current article in a browser')
+                  ,action   = self.open_in_browser
+                  ,inactive = sh.globs['var']['icon_open_in_browser']
+                  ,active   = sh.globs['var']['icon_open_in_browser']
+                  ,bindings = [sh.globs['var']['bind_open_in_browser']
+                              ,sh.globs['var']['bind_open_in_browser_alt']
+                              ]
                   )
         # Кнопка "Печать"
-        sg.Button (parent              = self.fr_but
-                  ,text                = _('Print')
-                  ,hint                = _('Create a print-ready preview')
-                  ,action              = self.print
-                  ,inactive_image_path = sh.globs['var']['icon_print']
-                  ,active_image_path   = sh.globs['var']['icon_print']
-                  ,bindings            = sh.globs['var']['bind_print']
+        sg.Button (parent   = self.fr_but
+                  ,text     = _('Print')
+                  ,hint     = _('Create a print-ready preview')
+                  ,action   = self.print
+                  ,inactive = sh.globs['var']['icon_print']
+                  ,active   = sh.globs['var']['icon_print']
+                  ,bindings = sh.globs['var']['bind_print']
                   )
         # Кнопка толкования термина
-        sg.Button (parent              = self.fr_but
-                  ,text                = _('Define')
-                  ,hint                = _('Define the current term')
-                  ,action              = lambda x:self.define(Selected=False)
-                  ,inactive_image_path = sh.globs['var']['icon_define']
-                  ,active_image_path   = sh.globs['var']['icon_define']
-                  ,bindings            = sh.globs['var']['bind_define']
+        sg.Button (parent   = self.fr_but
+                  ,text     = _('Define')
+                  ,hint     = _('Define the current term')
+                  ,action   = lambda x:self.define(Selected=False)
+                  ,inactive = sh.globs['var']['icon_define']
+                  ,active   = sh.globs['var']['icon_define']
+                  ,bindings = sh.globs['var']['bind_define']
                   )
         # Кнопка "Перехват Ctrl-c-c"
-        self.btn_clipboard = sg.Button (
-                   parent              = self.fr_but
-                  ,text                = _('Clipboard')
-                  ,hint                = _('Capture Ctrl-c-c and Ctrl-Ins-Ins')
-                  ,action              = self.watch_clipboard
-                  ,inactive_image_path = sh.globs['var']['icon_watch_clipboard_off']
-                  ,active_image_path   = sh.globs['var']['icon_watch_clipboard_on']
-                  ,fg                  = 'red'
-                  ,bindings            = []
+        self.btn_clipboard  = sg.Button (
+                   parent   = self.fr_but
+                  ,text     = _('Clipboard')
+                  ,hint     = _('Capture Ctrl-c-c and Ctrl-Ins-Ins')
+                  ,action   = self.watch_clipboard
+                  ,inactive = sh.globs['var']['icon_watch_clipboard_off']
+                  ,active   = sh.globs['var']['icon_watch_clipboard_on']
+                  ,fg       = 'red'
+                  ,bindings = []
                                        )
         # Кнопка "О программе"
-        sg.Button (parent              = self.fr_but
-                  ,text                = _('About')
-                  ,hint                = _('View About')
-                  ,action              = objs.about().show
-                  ,inactive_image_path = sh.globs['var']['icon_show_about']
-                  ,active_image_path   = sh.globs['var']['icon_show_about']
-                  ,bindings            = sh.globs['var']['bind_show_about']
+        sg.Button (parent   = self.fr_but
+                  ,text     = _('About')
+                  ,hint     = _('View About')
+                  ,action   = objs.about().show
+                  ,inactive = sh.globs['var']['icon_show_about']
+                  ,active   = sh.globs['var']['icon_show_about']
+                  ,bindings = sh.globs['var']['bind_show_about']
                   )
         # Кнопка выхода
-        sg.Button (parent              = self.fr_but
-                  ,text                = _('Quit')
-                  ,hint                = _('Quit the program')
-                  ,action              = self.close
-                  ,inactive_image_path = sh.globs['var']['icon_quit_now']
-                  ,active_image_path   = sh.globs['var']['icon_quit_now']
-                  ,side                = 'right'
-                  ,bindings            = [sh.globs['var']['bind_quit_now']
-                                         ,sh.globs['var']['bind_quit_now_alt']
-                                         ]
+        sg.Button (parent   = self.fr_but
+                  ,text     = _('Quit')
+                  ,hint     = _('Quit the program')
+                  ,action   = self.close
+                  ,inactive = sh.globs['var']['icon_quit_now']
+                  ,active   = sh.globs['var']['icon_quit_now']
+                  ,side     = 'right'
+                  ,bindings = [sh.globs['var']['bind_quit_now']
+                              ,sh.globs['var']['bind_quit_now_alt']
+                              ]
                   )
 
     def bind_children(self):
