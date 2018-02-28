@@ -1253,18 +1253,18 @@ class WebFrame:
                   )
         self.menu_sources = sg.OptionMenu (parent  = self.fr_but
                                           ,items   = sources
-                                          ,command = self.set_source
+                                          ,action  = self.set_source
                                           )
         # Выпадающий список с вариантами направлений перевода
         self.menu_pairs = sg.OptionMenu (parent  = self.fr_but
                                         ,items   = pairs
-                                        ,command = self.set_lang
+                                        ,action  = self.set_lang
                                         )
         self.menu_columns = sg.OptionMenu (parent  = self.fr_but
                                           ,items   = (1,2,3,4,5,6,7,8,9
                                                      ,10
                                                      )
-                                          ,command = self.set_columns
+                                          ,action  = self.set_columns
                                           ,default = 4
                                           )
         # Кнопка настроек
@@ -3814,84 +3814,84 @@ class Settings:
         self.sc   = sg.OptionMenu (parent  = self.fr_sc
                                   ,items   = self._sc_items
                                   ,side    = 'bottom'
-                                  ,command = self.update_by_sc
+                                  ,action  = self.update_by_sc
                                   ,default = product
                                   )
 
         self.col1 = sg.OptionMenu (parent  = self.fr_c1
                                   ,items   = self._items
                                   ,side    = 'bottom'
-                                  ,command = self.update_by_col1
+                                  ,action  = self.update_by_col1
                                   ,default = _('Dictionaries')
                                   )
 
         self.col2 = sg.OptionMenu (parent  = self.fr_c2
                                   ,items   = self._items
                                   ,side    = 'bottom'
-                                  ,command = self.update_by_col2
+                                  ,action  = self.update_by_col2
                                   ,default = _('Word forms')
                                   )
 
         self.col3 = sg.OptionMenu (parent  = self.fr_c3
                                   ,items   = self._items
                                   ,side    = 'bottom'
-                                  ,command = self.update_by_col3
+                                  ,action  = self.update_by_col3
                                   ,default = _('Transcription')
                                   )
 
         self.col4 = sg.OptionMenu (parent  = self.fr_c4
                                   ,items   = self._items
                                   ,side    = 'bottom'
-                                  ,command = self.update_by_col4
+                                  ,action  = self.update_by_col4
                                   ,default = _('Parts of speech')
                                   )
 
         self.sp1  = sg.OptionMenu (parent  = self.fr_sp1
                                   ,items   = self._sp_items
                                   ,side    = 'bottom'
-                                  ,command = self.update_by_sp1
+                                  ,action  = self.update_by_sp1
                                   ,default = self._sp_items[0]
                                   )
                                   
         self.sp2  = sg.OptionMenu (parent  = self.fr_sp2
                                   ,items   = self._sp_items
                                   ,side    = 'bottom'
-                                  ,command = self.update_by_sp2
+                                  ,action  = self.update_by_sp2
                                   ,default = self._sp_items[1]
                                   )
                                   
         self.sp3  = sg.OptionMenu (parent  = self.fr_sp3
                                   ,items   = self._sp_items
                                   ,side    = 'bottom'
-                                  ,command = self.update_by_sp3
+                                  ,action  = self.update_by_sp3
                                   ,default = self._sp_items[2]
                                   )
                                   
         self.sp4  = sg.OptionMenu (parent  = self.fr_sp4
                                   ,items   = self._sp_items
                                   ,side    = 'bottom'
-                                  ,command = self.update_by_sp4
+                                  ,action  = self.update_by_sp4
                                   ,default = self._sp_items[3]
                                   )
                                   
         self.sp5  = sg.OptionMenu (parent  = self.fr_sp5
                                   ,items   = self._sp_items
                                   ,side    = 'bottom'
-                                  ,command = self.update_by_sp5
+                                  ,action  = self.update_by_sp5
                                   ,default = self._sp_items[4]
                                   )
                                   
         self.sp6  = sg.OptionMenu (parent  = self.fr_sp6
                                   ,items   = self._sp_items
                                   ,side    = 'bottom'
-                                  ,command = self.update_by_sp6
+                                  ,action  = self.update_by_sp6
                                   ,default = self._sp_items[5]
                                   )
                                   
         self.sp7  = sg.OptionMenu (parent  = self.fr_sp7
                                   ,items   = self._sp_items
                                   ,side    = 'bottom'
-                                  ,command = self.update_by_sp7
+                                  ,action  = self.update_by_sp7
                                   ,default = self._sp_items[6]
                                   )
 
