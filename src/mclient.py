@@ -569,33 +569,33 @@ class About:
                 ,action   = self.close
                 )
 
-    def close(self,*args):
+    def close(self,event=None):
         self.obj.close()
         self.Active = False
 
-    def show(self,*args):
+    def show(self,event=None):
         self.obj.show()
         self.Active = True
 
-    def toggle(self,*args):
+    def toggle(self,event=None):
         if self.Active:
             self.close()
         else:
             self.show()
 
     # Написать письмо автору
-    def response_back(self,*args):
+    def response_back(self,event=None):
         sh.Email (email   = sh.email
                  ,subject = _('Concerning %s') % product
                  ).create()
 
     # Открыть веб-страницу с лицензией
-    def open_license_url(self,*args):
+    def open_license_url(self,event=None):
         objs.online()._url = sh.globs['license_url']
         objs.online().browse()
 
     # Отобразить информацию о лицензии третьих сторон
-    def show_third_parties(self,*args):
+    def show_third_parties(self,event=None):
         objs.parties().show()
 
 
@@ -622,10 +622,10 @@ class SaveArticle:
         self.obj.interrupt()
         self.file = ''
 
-    def close(self,*args):
+    def close(self,event=None):
         self.obj.close()
 
-    def show(self,*args):
+    def show(self,event=None):
         self.obj.show()
 
     #fix an extension for Windows
@@ -633,7 +633,7 @@ class SaveArticle:
         if not self.file.endswith(ext):
             self.file += ext
 
-    def select(self,*args):
+    def select(self,event=None):
         self.show()
         opt = self.obj._get
         if opt:
@@ -748,7 +748,7 @@ class SearchArticle:
         self.close()
         self.reset()
 
-    def reset(self,*args):
+    def reset(self,event=None):
         self._pos    = -1
         self._first  = -1
         self._last   = -1
@@ -759,13 +759,13 @@ class SearchArticle:
             #self.clear()
         '''
 
-    def clear(self,*args):
+    def clear(self,event=None):
         self.obj.clear_text()
 
-    def close(self,*args):
+    def close(self,event=None):
         self.obj.close()
 
-    def show(self,*args):
+    def show(self,event=None):
         self.obj.show()
         self.obj.select_all()
 
@@ -775,7 +775,7 @@ class SearchArticle:
             self._search = self.widget.get().strip(' ').strip('\n').lower()
         return self._search
 
-    def forward(self,*args):
+    def forward(self,event=None):
         pos = objs.blocks_db().search_forward (pos    = self._pos
                                               ,search = self.search()
                                               )
@@ -819,7 +819,7 @@ class SearchArticle:
                               )
         return self._last
 
-    def backward(self,*args):
+    def backward(self,event=None):
         if self.first():
             if self._pos == self._first:
                 sg.Message (func    = 'SearchArticle.backward'
@@ -863,7 +863,7 @@ class SearchField:
                                )
         self.widget = self.obj.widget
 
-    def clear(self,*args):
+    def clear(self,event=None):
         self.obj.clear_text()
 
     ''' Очистить строку поиска и вставить в нее заданный текст или
@@ -878,12 +878,12 @@ class SearchField:
         return 'break'
 
     # Вставить текущий запрос
-    def insert_repeat_sign(self,*args):
+    def insert_repeat_sign(self,event=None):
         sg.Clipboard().copy(str(objs.request()._search))
         self.paste()
 
     # Вставить предыдущий запрос
-    def insert_repeat_sign2(self,*args):
+    def insert_repeat_sign2(self,event=None):
         result = objs.blocks_db().prev_id()
         if result:
             old = objs._blocks_db._articleid
@@ -942,10 +942,10 @@ class SpecSymbols:
                 ,action   = self.close
                 )
 
-    def show(self,*args):
+    def show(self,event=None):
         self.obj.show()
 
-    def close(self,*args):
+    def close(self,event=None):
         self.obj.close()
 
 
@@ -1007,11 +1007,11 @@ class History:
                                                 + objs.request()._search
         self.obj.set(item=item)
 
-    def show(self,*args):
+    def show(self,event=None):
         self.Active = True
         self.parent.show()
 
-    def close(self,*args):
+    def close(self,event=None):
         self.Active = False
         self.parent.close()
 
@@ -1029,20 +1029,20 @@ class History:
         self.fill()
         self.autoselect()
 
-    def clear(self,*args):
+    def clear(self,event=None):
         objs.blocks_db().clear()
         self.obj.clear()
         objs.webframe().reset()
         objs._webframe.search_article.obj.clear_text()
         objs.request().reset()
 
-    def toggle(self,*args):
+    def toggle(self,event=None):
         if self.Active:
             self.close()
         else:
             self.show()
 
-    def go_first(self,*args):
+    def go_first(self,event=None):
         if self.obj.lst:
             self.obj.clear_selection()
             self.obj.set(item=self.obj.lst[0])
@@ -1053,7 +1053,7 @@ class History:
                           ,_('Empty input is not allowed!')
                           )
         
-    def go_last(self,*args):
+    def go_last(self,event=None):
         if self.obj.lst:
             self.obj.clear_selection()
             self.obj.set(item=self.obj.lst[-1])
@@ -1064,7 +1064,7 @@ class History:
                           ,_('Empty input is not allowed!')
                           )
     
-    def go(self,*args):
+    def go(self,event=None):
         result = self.obj.get()
         result = result.split(' ► ')
         if len(result) == 2:
@@ -1087,7 +1087,7 @@ class History:
                        )
 
     # Скопировать элемент истории
-    def copy(self,*args):
+    def copy(self,event=None):
         sg.Clipboard().copy(self.obj.get())
 
 
@@ -1989,10 +1989,10 @@ class WebFrame:
             self.reset()
             objs.request().reset()
 
-    def show(self,*args):
+    def show(self,event=None):
         self.obj.show()
 
-    def close(self,*args):
+    def close(self,event=None):
         self.obj.close()
 
     def load_article(self):
@@ -2290,7 +2290,7 @@ class WebFrame:
                 self.go_search()
 
     # Follow the URL of the current block
-    def go_url(self,*args):
+    def go_url(self,event=None):
         if not objs.request().MouseClicked:
             url = objs.blocks_db().url(pos=self._pos)
             if url:
@@ -2322,7 +2322,7 @@ class WebFrame:
                           )
             self.load_article()
 
-    def set_source(self,*args):
+    def set_source(self,event=None):
         objs.request()._source = sources[self.menu_sources.index]
         sh.log.append ('WebFrame.set_source'
                       ,_('INFO')
@@ -2350,7 +2350,7 @@ class WebFrame:
 
     #todo: move 'move_*' procedures to Moves class
     # Перейти на 1-й термин текущей строки
-    def move_line_start(self,*args):
+    def move_line_start(self,event=None):
         result = objs.blocks_db().line_start(pos=self._pos)
         if str(result).isdigit():
             self._pos = result
@@ -2363,7 +2363,7 @@ class WebFrame:
                           )
 
     # Перейти на последний термин текущей строки
-    def move_line_end(self,*args):
+    def move_line_end(self,event=None):
         result = objs.blocks_db().line_end(pos=self._pos)
         if str(result).isdigit():
             self._pos = result
@@ -2376,7 +2376,7 @@ class WebFrame:
                           )
 
     # Go to the 1st (non-)selectable block
-    def move_text_start(self,*args):
+    def move_text_start(self,event=None):
         result = objs.blocks_db().start()
         if str(result).isdigit():
             self._pos = result
@@ -2389,7 +2389,7 @@ class WebFrame:
                           )
 
     # Перейти на последний термин статьи
-    def move_text_end(self,*args):
+    def move_text_end(self,event=None):
         result = objs.blocks_db().end()
         if str(result).isdigit():
             self._pos = result
@@ -2402,7 +2402,7 @@ class WebFrame:
                           )
 
     # Перейти на страницу вверх
-    def move_page_up(self,*args):
+    def move_page_up(self,event=None):
         result = objs.blocks_db().selection(pos=self._pos)
         height = self.height()
         if result and height:
@@ -2415,7 +2415,7 @@ class WebFrame:
                 self.shift_screen()
 
     # Перейти на страницу вниз
-    def move_page_down(self,*args):
+    def move_page_down(self,event=None):
         result = objs.blocks_db().selection(pos=self._pos)
         height = self.height()
         if result and height:
@@ -2428,7 +2428,7 @@ class WebFrame:
                 self.shift_screen()
 
     # Перейти на предыдущий термин
-    def move_left(self,*args):
+    def move_left(self,event=None):
         result = objs.blocks_db().left(pos=self._pos)
         if str(result).isdigit():
             self._pos = result
@@ -2441,7 +2441,7 @@ class WebFrame:
                           )
 
     # Перейти на следующий термин
-    def move_right(self,*args):
+    def move_right(self,event=None):
         result = objs.blocks_db().right(pos=self._pos)
         if str(result).isdigit():
             self._pos = result
@@ -2454,7 +2454,7 @@ class WebFrame:
                           )
 
     # Перейти на строку вниз
-    def move_down(self,*args):
+    def move_down(self,event=None):
         result = objs.blocks_db().down(pos=self._pos)
         if str(result).isdigit():
             self._pos = result
@@ -2467,7 +2467,7 @@ class WebFrame:
                           )
 
     # Перейти на строку вверх
-    def move_up(self,*args):
+    def move_up(self,event=None):
         result = objs.blocks_db().up(pos=self._pos)
         if str(result).isdigit():
             self._pos = result
@@ -2501,7 +2501,7 @@ class WebFrame:
         return 'break'
 
     # Следить за буфером обмена
-    def watch_clipboard(self,*args):
+    def watch_clipboard(self,event=None):
         if objs.request().CaptureHotkey:
             objs._request.CaptureHotkey = False
         else:
@@ -2509,7 +2509,7 @@ class WebFrame:
         self.update_buttons()
 
     # Открыть URL текущей статьи в браузере
-    def open_in_browser(self,*args):
+    def open_in_browser(self,event=None):
         objs.online()._url = objs.request()._url
         objs.online().browse()
 
@@ -2533,13 +2533,13 @@ class WebFrame:
                        )
 
     # Скопировать URL текущей статьи
-    def copy_url(self,*args):
+    def copy_url(self,event=None):
         sg.Clipboard().copy(objs.request()._url)
         if sh.globs['bool']['Iconify']:
             sg.Geometry(parent=self.obj).minimize()
 
     # Скопировать URL выделенного блока
-    def copy_block_url(self,*args):
+    def copy_block_url(self,event=None):
         url = objs.blocks_db().url(pos=self._pos)
         if url:
             sg.Clipboard().copy(url)
@@ -2628,7 +2628,7 @@ class WebFrame:
             self.settings.cb4.disable()
 
     # Перейти на предыдущий запрос
-    def go_back(self,*args):
+    def go_back(self,event=None):
         result = objs.blocks_db().prev_id()
         if result:
             objs._blocks_db._articleid = result
@@ -2650,7 +2650,7 @@ class WebFrame:
                               )
 
     # Перейти на следующий запрос
-    def go_forward(self,*args):
+    def go_forward(self,event=None):
         result = objs.blocks_db().next_id()
         if result:
             objs._blocks_db._articleid = result
@@ -2683,11 +2683,11 @@ class WebFrame:
         return Confirmed
 
     # SearchArticle
-    def search_reset(self,*args):
+    def search_reset(self,event=None):
         self.search_article.reset()
         self.search_article.forward()
 
-    def set_lang(self,*args):
+    def set_lang(self,event=None):
         objs.request()._lang = langs[self.menu_pairs.index]
         sh.log.append ('WebFrame.set_lang'
                       ,_('INFO')
@@ -2697,7 +2697,7 @@ class WebFrame:
     def get_pair(self):
         return online_dic_urls[self.menu_pairs.index]
 
-    def set_columns(self,*args):
+    def set_columns(self,event=None):
         sh.log.append ('WebFrame.set_columns'
                       ,_('INFO')
                       ,str(self.menu_columns.choice)
@@ -2709,7 +2709,7 @@ class WebFrame:
         objs.blocks_db().delete_bookmarks()
         self.load_article()
 
-    def reload(self,*args):
+    def reload(self,event=None):
         objs.blocks_db().clear_cur()
         self.load_article()
 
@@ -2719,7 +2719,7 @@ class WebFrame:
         if sh.globs['bool']['AutoCloseSpecSymbol']:
             self.spec_symbols.close()
 
-    def toggle_view(self,*args):
+    def toggle_view(self,event=None):
         if objs.request().Reverse:
             objs._request.Reverse = False
         else:
@@ -2727,7 +2727,7 @@ class WebFrame:
         objs.blocks_db().delete_bookmarks()
         self.load_article()
 
-    def toggle_alphabet(self,*args):
+    def toggle_alphabet(self,event=None):
         if objs.request().SortTerms:
             objs._request.SortTerms = False
         else:
@@ -2735,7 +2735,7 @@ class WebFrame:
         objs.blocks_db().delete_bookmarks()
         self.load_article()
 
-    def toggle_block(self,*args):
+    def toggle_block(self,event=None):
         if objs.request().Block:
             objs._request.Block = False
             '''
@@ -2791,7 +2791,7 @@ class WebFrame:
             tmp.close()
             objs._blocks_db.update(query=query)
 
-    def toggle_priority(self,*args):
+    def toggle_priority(self,event=None):
         if objs.request().Prioritize:
             objs._request.Prioritize = False
             '''
@@ -2819,7 +2819,7 @@ class WebFrame:
         objs.blocks_db().delete_bookmarks()
         self.load_article()
 
-    def print(self,*args):
+    def print(self,event=None):
         code = mh.HTML (data     = objs._blocks_db.fetch()
                        ,cols     = objs._request._cols
                        ,collimit = objs._request._collimit
@@ -2841,7 +2841,7 @@ class WebFrame:
     def bbox(self,*args):
         return self.widget.tk.call(self.widget,"bbox",*args)
         
-    def motion(self,*args):
+    def motion(self,event=None):
         scr_width = self.obj.resolution()[0]
         # Do not move button frame if it is entirely visible
         if self.obj.widget.winfo_width() < self.fr_but.widget.winfo_reqwidth():
@@ -2925,7 +2925,7 @@ class WebFrame:
         return col_no
     
     # Перейти к следующему разделу столбца col_no
-    def move_next_section(self,col_no=0,*args):
+    def move_next_section(self,event=None,col_no=0):
         col_no = self.ignore_column(col_no=col_no)
         result1 = objs.blocks_db().block_pos(pos=self._pos)
         result2 = objs._blocks_db.next_section (pos    = self._pos
@@ -2965,7 +2965,7 @@ class WebFrame:
                           )
         
     # Перейти к предыдущему разделу столбца col_no
-    def move_prev_section(self,col_no=0,*args):
+    def move_prev_section(self,event=None,col_no=0):
         col_no = self.ignore_column(col_no=col_no)
         result1 = objs.blocks_db().block_pos(pos=self._pos)
         result2 = objs._blocks_db.prev_section (pos    = self._pos
@@ -3245,7 +3245,7 @@ class Settings:
                            ,message = _('Empty input is not allowed!')
                            )
 
-    def update_sc(self,*args):
+    def update_sc(self,event=None):
         cond11 = self.col1.choice == _('Dictionaries')
         cond12 = self.col1.choice == _('Word forms')
         cond13 = self.col1.choice == _('Parts of speech')
@@ -3269,7 +3269,7 @@ class Settings:
         else:
             self.sc.set(_('Custom'))
 
-    def update_by_sc(self,*args):
+    def update_by_sc(self,event=None):
         if self.sc.choice == product:
             self.col1.set(_('Dictionaries'))
             self.col2.set(_('Word forms'))
@@ -3301,7 +3301,7 @@ class Settings:
                                     )
                        )
 
-    def update_by_col1(self,*args):
+    def update_by_col1(self,event=None):
         self._allowed = list(self._items)
         self.update_col1()
         self.update_col2()
@@ -3309,7 +3309,7 @@ class Settings:
         self.update_col4()
         self.update_sc()
 
-    def update_by_col2(self,*args):
+    def update_by_col2(self,event=None):
         self._allowed = list(self._items)
         self.update_col2()
         self.update_col1()
@@ -3317,7 +3317,7 @@ class Settings:
         self.update_col4()
         self.update_sc()
 
-    def update_by_col3(self,*args):
+    def update_by_col3(self,event=None):
         self._allowed = list(self._items)
         self.update_col3()
         self.update_col1()
@@ -3325,7 +3325,7 @@ class Settings:
         self.update_col4()
         self.update_sc()
 
-    def update_by_col4(self,*args):
+    def update_by_col4(self,event=None):
         self._allowed = list(self._items)
         self.update_col4()
         self.update_col1()
@@ -3333,7 +3333,7 @@ class Settings:
         self.update_col3()
         self.update_sc()
         
-    def update_by_sp1(self,*args):
+    def update_by_sp1(self,event=None):
         self._sp_allowed = list(self._sp_items)
         self.update_sp1()
         self.update_sp2()
@@ -3343,7 +3343,7 @@ class Settings:
         self.update_sp6()
         self.update_sp7()
         
-    def update_by_sp2(self,*args):
+    def update_by_sp2(self,event=None):
         self._sp_allowed = list(self._sp_items)
         self.update_sp2()
         self.update_sp1()
@@ -3353,7 +3353,7 @@ class Settings:
         self.update_sp6()
         self.update_sp7()
         
-    def update_by_sp3(self,*args):
+    def update_by_sp3(self,event=None):
         self._sp_allowed = list(self._sp_items)
         self.update_sp3()
         self.update_sp1()
@@ -3363,7 +3363,7 @@ class Settings:
         self.update_sp6()
         self.update_sp7()
         
-    def update_by_sp4(self,*args):
+    def update_by_sp4(self,event=None):
         self._sp_allowed = list(self._sp_items)
         self.update_sp4()
         self.update_sp1()
@@ -3373,7 +3373,7 @@ class Settings:
         self.update_sp6()
         self.update_sp7()
         
-    def update_by_sp5(self,*args):
+    def update_by_sp5(self,event=None):
         self._sp_allowed = list(self._sp_items)
         self.update_sp5()
         self.update_sp1()
@@ -3383,7 +3383,7 @@ class Settings:
         self.update_sp6()
         self.update_sp7()
         
-    def update_by_sp6(self,*args):
+    def update_by_sp6(self,event=None):
         self._sp_allowed = list(self._sp_items)
         self.update_sp6()
         self.update_sp1()
@@ -3393,7 +3393,7 @@ class Settings:
         self.update_sp5()
         self.update_sp7()
         
-    def update_by_sp7(self,*args):
+    def update_by_sp7(self,event=None):
         self._sp_allowed = list(self._sp_items)
         self.update_sp7()
         self.update_sp1()
@@ -3414,13 +3414,13 @@ class Settings:
         self.bindings()
         self.icon()
 
-    def block_settings(self,*args):
+    def block_settings(self,event=None):
         sg.Message (func    = 'Settings.block_settings'
                    ,level   = _('INFO')
                    ,message = _('Not implemented yet!')
                    )
 
-    def priority_settings(self,*args):
+    def priority_settings(self,event=None):
         sg.Message (func    = 'Settings.priority_settings'
                    ,level   = _('INFO')
                    ,message = _('Not implemented yet!')
@@ -3452,7 +3452,7 @@ class Settings:
                                ,side   = 'left'
                                )
                                
-    def reset(self,*args):
+    def reset(self,event=None):
         self.sc.set(product)
         self.col1.set(_('Dictionaries'))
         self.col2.set(_('Word forms'))
@@ -3471,7 +3471,7 @@ class Settings:
         self.cb4.enable()
         self.cb5.disable()
 
-    def apply(self,*args):
+    def apply(self,event=None):
         ''' Do not use 'gettext' to name internal types - this will make
             the program ~0,6s slower
         '''
@@ -3928,15 +3928,15 @@ class Settings:
     def title(self,text=_('View Settings')):
         self.obj.title(text=text)
 
-    def show(self,*args):
+    def show(self,event=None):
         self.Active = True
         self.obj.show()
 
-    def close(self,*args):
+    def close(self,event=None):
         self.Active = False
         self.obj.close()
 
-    def toggle(self,*args):
+    def toggle(self,event=None):
         if self.Active:
             self.close()
         else:
