@@ -1,3 +1,5 @@
+- Do not fill history when search is empty (e.g., when changing
+  the source to 'Offline')
 - Different views (source code of original page with UTF-8 encoding - 
   block.txt and original view saved by the program - block.htm) are
   parsed differently (have a different look when loaded with 'file='

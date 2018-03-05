@@ -193,10 +193,6 @@ class About:
         self.gui.label.font(sh.globs['var']['font_style'])
         
     def bindings(self):
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_show_about']
-                ,action   = self.gui.toggle
-                )
         self.gui.btn_thd.action = self.show_third_parties
         self.gui.btn_lic.action = self.open_license_url
         self.gui.btn_eml.action = self.response_back
@@ -647,7 +643,7 @@ class WebFrame:
         self.spec_symbols   = SpecSymbols  ()
         self.save_article   = SaveArticle  ()
         self.history        = History      ()
-        #cur
+        # Close child widgets in order not to overlap the parent widget
         self.about.parties.gui.close()
         self.about.gui.close()
         self.settings.gui.close()
@@ -657,29 +653,6 @@ class WebFrame:
         self.history.gui.close()
 
     def bindings(self):
-        sg.bind (obj      = self.gui
-                ,bindings = '<Motion>'
-                ,action   = self.mouse_sel
-                )
-        sg.bind (obj      = self.gui
-                ,bindings = '<Button-1>'
-                ,action   = lambda x:self.go(Mouse=True)
-                )
-        ''' Key and mouse bindings must have different parents,
-        otherwise, key bindings will not work, and mouse bindings
-        (such as RMB) may fire up when not required. Keys must be
-        bound to Top and mouse buttons - to specific widgets
-        (Tkinterhtml widget, buttons on the button frame, etc.)
-        Parents may be determined automatically, but this looks
-        clumsy and unreliable. So I think it is better to hardcode
-        mouse bindigs wherever possible and assume the config 
-        provides for key bindigs only (or at least they are not
-        to be bound to Top).
-        '''
-        sg.bind (obj      = self.gui
-                ,bindings = '<Button-3>'
-                ,action   = lambda x:self.go_alt(Mouse=True)
-                )
         sg.bind (obj      = self.gui.obj
                 ,bindings = [sh.globs['var']['bind_copy_sel']
                             ,sh.globs['var']['bind_copy_sel_alt']
@@ -707,18 +680,6 @@ class WebFrame:
                 ,bindings = sh.globs['var']['bind_paste_search_field']
                 ,action   = lambda e:self.gui.paste_search()
                 )
-        if sh.oss.win() or sh.oss.mac():
-            sg.bind (obj      = self.gui.obj
-                    ,bindings = '<MouseWheel>'
-                    ,action   = self.mouse_wheel
-                    )
-        else:
-            sg.bind (obj      = self.gui.obj
-                    ,bindings = ['<Button 4>'
-                                ,'<Button 5>'
-                                ]
-                    ,action   = self.mouse_wheel
-                    )
         # Перейти на предыдущую/следующую статью
         sg.bind (obj      = self.gui.obj
                 ,bindings = sh.globs['var']['bind_go_back']
@@ -753,47 +714,6 @@ class WebFrame:
                 ,action   = lambda e:self.move_prev_section(col_no=2)
                 )
         sg.bind (obj      = self.gui.obj
-                ,bindings = '<Left>'
-                ,action   = self.move_left
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Right>'
-                ,action   = self.move_right
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Down>'
-                ,action   = self.move_down
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Up>'
-                ,action   = self.move_up
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Home>'
-                ,action   = self.move_line_start
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<End>'
-                ,action   = self.move_line_end
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Control-Home>'
-                ,action   = self.move_text_start
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Control-End>'
-                ,action   = self.move_text_end
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Prior>'
-                ,action   = self.move_page_up
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Next>'
-                ,action   = self.move_page_down
-                )
-        # Дополнительные горячие клавиши
-        sg.bind (obj      = self.gui.obj
                 ,bindings = sh.globs['var']['bind_search_article_forward']
                 ,action   = self.search_article.forward
                 )
@@ -818,6 +738,10 @@ class WebFrame:
                 ,action   = self.save_article.select
                 )
         sg.bind (obj      = self.gui.obj
+                ,bindings = sh.globs['var']['bind_show_about']
+                ,action   = self.about.gui.toggle
+                )
+        sg.bind (obj      = self.about.gui.obj
                 ,bindings = sh.globs['var']['bind_show_about']
                 ,action   = self.about.gui.toggle
                 )
@@ -850,10 +774,6 @@ class WebFrame:
         sg.bind (obj      = self.gui.obj
                 ,bindings = sh.globs['var']['bind_spec_symbol']
                 ,action   = self.spec_symbols.gui.show
-                )
-        sg.bind (obj      = self.gui.search_field
-                ,bindings = '<Control-a>'
-                ,action   = self.gui.search_field.select_all
                 )
         sg.bind (obj      = self.gui.obj
                 ,bindings = sh.globs['var']['bind_define']
@@ -916,6 +836,85 @@ class WebFrame:
         sg.bind (obj      = self.gui.obj
                 ,bindings = sh.globs['var']['bind_toggle_sel']
                 ,action   = self.toggle_sel
+                )
+        sg.bind (obj      = self.gui
+                ,bindings = '<Motion>'
+                ,action   = self.mouse_sel
+                )
+        sg.bind (obj      = self.gui
+                ,bindings = '<Button-1>'
+                ,action   = lambda x:self.go(Mouse=True)
+                )
+        ''' Key and mouse bindings must have different parents,
+        otherwise, key bindings will not work, and mouse bindings
+        (such as RMB) may fire up when not required. Keys must be
+        bound to Top and mouse buttons - to specific widgets
+        (Tkinterhtml widget, buttons on the button frame, etc.)
+        Parents may be determined automatically, but this looks
+        clumsy and unreliable. So I think it is better to hardcode
+        mouse bindigs wherever possible and assume the config 
+        provides for key bindigs only (or at least they are not
+        to be bound to Top).
+        '''
+        sg.bind (obj      = self.gui
+                ,bindings = '<Button-3>'
+                ,action   = lambda x:self.go_alt(Mouse=True)
+                )
+        if sh.oss.win() or sh.oss.mac():
+            sg.bind (obj      = self.gui.obj
+                    ,bindings = '<MouseWheel>'
+                    ,action   = self.mouse_wheel
+                    )
+        else:
+            sg.bind (obj      = self.gui.obj
+                    ,bindings = ['<Button 4>'
+                                ,'<Button 5>'
+                                ]
+                    ,action   = self.mouse_wheel
+                    )
+        sg.bind (obj      = self.gui.obj
+                ,bindings = '<Left>'
+                ,action   = self.move_left
+                )
+        sg.bind (obj      = self.gui.obj
+                ,bindings = '<Right>'
+                ,action   = self.move_right
+                )
+        sg.bind (obj      = self.gui.obj
+                ,bindings = '<Down>'
+                ,action   = self.move_down
+                )
+        sg.bind (obj      = self.gui.obj
+                ,bindings = '<Up>'
+                ,action   = self.move_up
+                )
+        sg.bind (obj      = self.gui.obj
+                ,bindings = '<Home>'
+                ,action   = self.move_line_start
+                )
+        sg.bind (obj      = self.gui.obj
+                ,bindings = '<End>'
+                ,action   = self.move_line_end
+                )
+        sg.bind (obj      = self.gui.obj
+                ,bindings = '<Control-Home>'
+                ,action   = self.move_text_start
+                )
+        sg.bind (obj      = self.gui.obj
+                ,bindings = '<Control-End>'
+                ,action   = self.move_text_end
+                )
+        sg.bind (obj      = self.gui.obj
+                ,bindings = '<Prior>'
+                ,action   = self.move_page_up
+                )
+        sg.bind (obj      = self.gui.obj
+                ,bindings = '<Next>'
+                ,action   = self.move_page_down
+                )
+        sg.bind (obj      = self.gui.search_field
+                ,bindings = '<Control-a>'
+                ,action   = self.gui.search_field.select_all
                 )
         # Set config bindings
         self.gui.btn_hist.hint = _('Show history') \
@@ -983,7 +982,7 @@ class WebFrame:
         self.gui.btn_trns.set_hint()
         self.gui.btn_view.set_hint()
         # Set controller actions
-        self.gui.btn_abot.action = self.about.gui.show
+        self.gui.btn_abot.action = self.about.gui.toggle
         self.gui.btn_clip.action = self.watch_clipboard
         self.gui.btn_expl.action = lambda x:self.define(Selected=False)
         self.gui.btn_prnt.action = self.print
@@ -1651,7 +1650,7 @@ class WebFrame:
     # Перейти на страницу вниз
     def move_page_down(self,event=None):
         result = objs.blocks_db().selection(pos=self._pos)
-        height = self.height()
+        height = self.gui.height()
         if result and height:
             result = objs.blocks_db().page_down (bboy   = result[6]
                                                 ,height = height
@@ -2496,12 +2495,8 @@ objs = Objects()
 
 if  __name__ == '__main__':
     sg.objs.start()
-
     timed_update()
-
     objs.webframe().reset()
     objs._webframe.gui.show()
-
     kl_mod.keylistener.cancel()
-
     sg.objs.end()

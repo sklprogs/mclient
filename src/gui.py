@@ -93,12 +93,12 @@ class About:
                 )
 
     def close(self,event=None):
-        self.obj.close()
         self.Active = False
+        self.obj.close()
 
     def show(self,event=None):
-        self.obj.show()
         self.Active = True
+        self.obj.show()
 
     def toggle(self,event=None):
         if self.Active:
