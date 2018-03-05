@@ -90,13 +90,8 @@ class Objects:
         self._top = self._online_mt = self._online_other = self._about \
                   = self._blacklist = self._prioritize = self._request \
                   = self._ext_dics = self._webframe = self._blocks_db \
-                  = self._moves = self._logic = None
+                  = self._moves = None
 
-    def logic(self):
-        if not self._logic:
-            self._logic = Logic()
-        return self._logic
-    
     def blocks_db(self):
         if not self._blocks_db:
             self._blocks_db = db.Moves()
@@ -607,6 +602,98 @@ class WebFrame:
         self.gui = gi.WebFrame()
         self.widgets()
         self.bindings()
+    
+    def prioritize_speech(self):
+        # This function takes ~0,07s on 'do'
+        query_root = 'update BLOCKS set SPEECHPR = %d where SPEECHA = "%s" or SPEECHA = "%s"'
+        query = ['begin']
+        # Parts of speech here must be non-localized
+        query.append (query_root
+                     % (objs._request._pr_n,'Существительное','сущ.')
+                     )
+        query.append (query_root
+                     % (objs._request._pr_v,'Глагол','гл.')
+                     )
+        query.append (query_root
+                     % (objs._request._pr_adj,'Прилагательное','прил.')
+                     )
+        query.append (query_root
+                     % (objs._request._pr_abbr,'Сокращение','сокр.')
+                     )
+        query.append (query_root
+                     % (objs._request._pr_adv,'Наречие','нареч.')
+                     )
+        query.append (query_root
+                     % (objs._request._pr_prep,'Предлог','предл.')
+                     )
+        query.append (query_root
+                     % (objs._request._pr_pron,'Местоимение','мест.')
+                     )
+        query.append('commit;')
+        query = ';'.join(query)
+        objs.blocks_db().update(query=query)
+    
+    def prioritize_dic(self,dic=None):
+        if dic:
+            objs.prioritize()
+            if dic in objs._prioritize:
+                sh.log.append ('WebFrame.prioritize_dic'
+                              ,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+            else:
+                objs._prioritize.append(dic)
+        else:
+            sh.log.append ('WebFrame.prioritize_dic'
+                          ,_('WARNING')
+                          ,_('Empty input data!')
+                          )
+                          
+    def unprioritize_dic(self,dic=None):
+        if dic:
+            if dic in objs.prioritize():
+                objs._prioritize.remove(dic)
+            else:
+                sh.log.append ('WebFrame.unprioritize_dic'
+                              ,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+        else:
+            sh.log.append ('WebFrame.unprioritize_dic'
+                          ,_('WARNING')
+                          ,_('Empty input data!')
+                          )
+    
+    def block_dic(self,dic=None):
+        if dic:
+            objs.blacklist()
+            if dic in objs._blacklist:
+                sh.log.append ('WebFrame.block_dic'
+                              ,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+            else:
+                objs._blacklist.append(dic)
+        else:
+            sh.log.append ('WebFrame.block_dic'
+                          ,_('WARNING')
+                          ,_('Empty input data!')
+                          )
+    
+    def unblock_dic(self,dic=None):
+        if dic:
+            if dic in objs.blacklist():
+                objs._blacklist.remove(dic)
+            else:
+                sh.log.append ('WebFrame.unblock_dic'
+                              ,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+        else:
+            sh.log.append ('WebFrame.unblock_dic'
+                          ,_('WARNING')
+                          ,_('Empty input data!')
+                          )
     
     # Вставить предыдущий запрос
     def insert_repeat_sign2(self,event=None):
@@ -1343,7 +1430,7 @@ class WebFrame:
                 new articles and after changing settings (Settings.apply)
             '''
             # todo (?) insert SPEECHPR in Elems instead of updating
-            objs.logic().prioritize_speech()
+            self.prioritize_speech()
             
         self._phdic = sh.Input (val        = objs._blocks_db.phrase_dic()
                                ,func_title = 'WebFrame.load_article'
@@ -1516,9 +1603,9 @@ class WebFrame:
                            3) A blocked dictionary - unblock
                     '''
                     if result[6] in objs.blacklist():
-                        objs.logic().unblock_dic(dic=result[6])
+                        self.unblock_dic(dic=result[6])
                     else:
-                        objs.logic().prioritize_dic(dic=result[6])
+                        self.prioritize_dic(dic=result[6])
                     objs._blocks_db.delete_bookmarks()
                     self.load_article()
                 else:
@@ -2253,11 +2340,11 @@ class WebFrame:
                 if result and result[8] == 'dic' \
                 and result[6] != self._phdic:
                     if result[6] in objs.prioritize():
-                        objs.logic().unprioritize_dic(dic=result[6])
+                        self.unprioritize_dic(dic=result[6])
                     elif result[6] in objs.blacklist():
-                        objs.logic().unblock_dic(dic=result[6])
+                        self.unblock_dic(dic=result[6])
                     else:
-                        objs.logic().block_dic(dic=result[6])
+                        self.block_dic(dic=result[6])
                     objs._blocks_db.delete_bookmarks()
                     self.load_article()
                 else:
@@ -2344,7 +2431,7 @@ class Settings:
             objs._request.Reverse    = self.gui.cb5.get()
             if objs._request.SortRows:
                 self.prioritize_speech()
-                objs.logic().prioritize_speech()
+                objs.webframe().prioritize_speech()
             else:
                 objs.blocks_db().unprioritize_speech()
             objs.webframe().set_columns()
@@ -2395,102 +2482,6 @@ class Settings:
                            ,_('ERROR')
                            ,_('Wrong input data: "%s"') % str(choices[i])
                            )
-
-
-
-class Logic:
-    
-    def prioritize_speech(self):
-        # This function takes ~0,07s on 'do'
-        query_root = 'update BLOCKS set SPEECHPR = %d where SPEECHA = "%s" or SPEECHA = "%s"'
-        query = ['begin']
-        # Parts of speech here must be non-localized
-        query.append (query_root
-                     % (objs._request._pr_n,'Существительное','сущ.')
-                     )
-        query.append (query_root
-                     % (objs._request._pr_v,'Глагол','гл.')
-                     )
-        query.append (query_root
-                     % (objs._request._pr_adj,'Прилагательное','прил.')
-                     )
-        query.append (query_root
-                     % (objs._request._pr_abbr,'Сокращение','сокр.')
-                     )
-        query.append (query_root
-                     % (objs._request._pr_adv,'Наречие','нареч.')
-                     )
-        query.append (query_root
-                     % (objs._request._pr_prep,'Предлог','предл.')
-                     )
-        query.append (query_root
-                     % (objs._request._pr_pron,'Местоимение','мест.')
-                     )
-        query.append('commit;')
-        query = ';'.join(query)
-        objs.blocks_db().update(query=query)
-    
-    def prioritize_dic(self,dic=None):
-        if dic:
-            objs.prioritize()
-            if dic in objs._prioritize:
-                sh.log.append ('Logic.prioritize_dic'
-                              ,_('INFO')
-                              ,_('Nothing to do!')
-                              )
-            else:
-                objs._prioritize.append(dic)
-        else:
-            sh.log.append ('Logic.prioritize_dic'
-                          ,_('WARNING')
-                          ,_('Empty input data!')
-                          )
-                          
-    def unprioritize_dic(self,dic=None):
-        if dic:
-            if dic in objs.prioritize():
-                objs._prioritize.remove(dic)
-            else:
-                sh.log.append ('Logic.unprioritize_dic'
-                              ,_('INFO')
-                              ,_('Nothing to do!')
-                              )
-        else:
-            sh.log.append ('Logic.unprioritize_dic'
-                          ,_('WARNING')
-                          ,_('Empty input data!')
-                          )
-    
-    def block_dic(self,dic=None):
-        if dic:
-            objs.blacklist()
-            if dic in objs._blacklist:
-                sh.log.append ('Logic.block_dic'
-                              ,_('INFO')
-                              ,_('Nothing to do!')
-                              )
-            else:
-                objs._blacklist.append(dic)
-        else:
-            sh.log.append ('Logic.block_dic'
-                          ,_('WARNING')
-                          ,_('Empty input data!')
-                          )
-    
-    def unblock_dic(self,dic=None):
-        if dic:
-            if dic in objs.blacklist():
-                objs._blacklist.remove(dic)
-            else:
-                sh.log.append ('Logic.unblock_dic'
-                              ,_('INFO')
-                              ,_('Nothing to do!')
-                              )
-        else:
-            sh.log.append ('Logic.unblock_dic'
-                          ,_('WARNING')
-                          ,_('Empty input data!')
-                          )
 
 
 
