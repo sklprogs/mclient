@@ -567,9 +567,6 @@ class Elems:
                 and self._blocks[i]._url \
                 and not 'UserName' in self._blocks[i]._url:
                     self._blocks[i]._type = 'dic'
-    
-    def zzz(self):
-        pass
 
 
 

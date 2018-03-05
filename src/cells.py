@@ -460,9 +460,6 @@ class Cells:
                 block._text = block._speecha
             elif block._type == 'transc':
                 block._text = block._transca
-    
-    def zzz(self):
-        pass
 
 
 

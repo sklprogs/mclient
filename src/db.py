@@ -964,9 +964,6 @@ class DB:
         
     def unprioritize_speech(self):
         self.dbc.execute('update BLOCKS set SPEECHPR = 0')
-        
-    def zzz(self):
-        pass
 
 
 
@@ -1624,10 +1621,6 @@ class Moves(DB):
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
-    
-    def zzz(self):
-        pass
-
 
 
 if __name__ == '__main__':
