@@ -329,7 +329,7 @@ class SaveArticle:
 class SearchArticle:
 
     def __init__(self):
-        self.gui = gi.Entry()
+        self.gui = gi.SearchArticle()
         self.bindings()
         self.reset()
 
@@ -551,7 +551,7 @@ class History:
         objs.blocks_db().clear()
         self.gui.obj.clear()
         objs.webframe().reset()
-        objs._webframe.search_article.obj.clear_text()
+        objs._webframe.search_article.gui.obj.clear_text()
         objs.request().reset()
 
     def go_first(self,event=None):

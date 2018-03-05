@@ -143,7 +143,7 @@ class ThirdParties:
 
 
 
-class Entry:
+class SearchArticle:
     
     def __init__(self):
         self.gui()
