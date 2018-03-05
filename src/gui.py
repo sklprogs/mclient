@@ -189,6 +189,7 @@ class Entry:
 class SaveArticle:
 
     def __init__(self):
+        self.Active = False
         self.type   = 'SaveArticle'
         self._items = [_('Save the current view as a web-page (*.htm)')
                       ,_('Save the original article as a web-page (*.htm)')
@@ -209,9 +210,11 @@ class SaveArticle:
         self.icon()
 
     def close(self,event=None):
+        self.Active = False
         self.parent.close()
 
     def show(self,event=None):
+        self.Active = True
         self.parent.show()
         
     def icon(self,path=None):
@@ -222,6 +225,12 @@ class SaveArticle:
                                                  ,'icon_64x64_mclient.gif'
                                                  )
                              )
+                             
+    def toggle(self,event=None):
+        if self.Active:
+            self.close()
+        else:
+            self.show()
 
 
 

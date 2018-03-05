@@ -151,12 +151,12 @@ class Objects:
 
 def call_app():
     # Использовать то же сочетание клавиш для вызова окна
-    sg.Geometry(parent=objs.webframe().obj).activate(MouseClicked=objs.request().MouseClicked)
+    sg.Geometry(parent=objs.webframe().gui.obj).activate(MouseClicked=objs.request().MouseClicked)
     ''' #todo: check if this is still the problem
         In case of .focus_set() *first* Control-c-c can call an inactive
         widget.
     '''
-    objs.webframe().search_field.widget.focus_force()
+    objs.webframe().gui.search_field.widget.focus_force()
 
 # Перехватить нажатие Control-c-c
 def timed_update():
@@ -225,6 +225,13 @@ class SaveArticle:
                            ,(_('All files'),'*')
                            )
         self.gui = gi.SaveArticle()
+        self.bindings()
+    
+    def bindings(self):
+        sg.bind (obj      = self.gui
+                ,bindings = ['<<ListboxSelect>>','<Return>','<KP_Enter>']
+                ,action   = self.select
+                )
     
     #fix an extension for Windows
     def fix_ext(self,ext='.htm'):
@@ -233,6 +240,10 @@ class SaveArticle:
 
     def select(self,event=None):
         opt = self.gui.obj._get
+        self.gui.close()
+        #cur
+        print('ListBox activated') #todo: del
+        print('opt: "%s"' % str(opt))
         if opt:
             if opt == _('Save the current view as a web-page (*.htm)'):
                 self.view_as_html()
@@ -735,7 +746,7 @@ class WebFrame:
                 ,bindings = [sh.globs['var']['bind_save_article']
                             ,sh.globs['var']['bind_save_article_alt']
                             ]
-                ,action   = self.save_article.select
+                ,action   = self.save_article.gui.toggle
                 )
         sg.bind (obj      = self.gui.obj
                 ,bindings = sh.globs['var']['bind_show_about']
@@ -987,7 +998,7 @@ class WebFrame:
         self.gui.btn_expl.action = lambda x:self.define(Selected=False)
         self.gui.btn_prnt.action = self.print
         self.gui.btn_brws.action = self.open_in_browser
-        self.gui.btn_save.action = self.save_article.select
+        self.gui.btn_save.action = self.save_article.gui.toggle
         self.gui.btn_srch.action = self.search_reset
         self.gui.btn_reld.action = self.reload
         self.gui.btn_hist.action = self.history.gui.toggle
