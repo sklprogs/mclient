@@ -504,13 +504,28 @@ class WebFrame:
                                   ,inactive = self.icon_spec_symbol
                                   ,active   = self.icon_spec_symbol
                                   )
-        self.men_srcs = sg.OptionMenu (parent  = self.fr_but)
+        self.men_srcs = sg.OptionMenu(parent=self.fr_but)
         # Выпадающий список с вариантами направлений перевода
-        self.men_pair = sg.OptionMenu (parent  = self.fr_but)
+        self.men_pair = sg.OptionMenu(parent=self.fr_but)
         self.men_cols = sg.OptionMenu (parent  = self.fr_but
                                       ,items   = (1,2,3,4,5,6,7,8,9,10)
                                       ,default = 4
                                       )
+        ''' After text in optionmenus is reset, tkinter will grow these
+            optionmenus and correspondingly shift widgets on the left
+            to the left. To prevent this, we set the width of
+            the optionmenus by the longest item.
+        '''
+        self.men_srcs.widget.config (width = len(max((_('All')
+                                                     ,_('Online')
+                                                     ,_('Offline')
+                                                     )
+                                                    )
+                                                )
+                                    )
+        # All items of the 'pairs' sequence are of the same length
+        self.men_pair.widget.config(width=11)
+        self.men_cols.widget.config(width=2)
         # Кнопка настроек
         self.btn_sets = sg.Button (parent   = self.fr_but
                                   ,text     = _('Settings')
@@ -1594,7 +1609,41 @@ class Settings:
 
 
 
+class SpecSymbols:
+
+    def __init__(self):
+        self.gui()
+        
+    def gui(self):
+        self.obj    = sg.objs.new_top(Maximize=0)
+        self.widget = self.obj.widget
+        self.frame  = sg.Frame(self.obj,expand=1)
+        self.icon()
+        self.title()
+        
+    def icon(self,path=None):
+        if path:
+            self.obj.icon(path)
+        else:
+            self.obj.icon (sh.objs.pdir().add ('resources'
+                                              ,'icon_64x64_mclient.gif'
+                                              )
+                          )
+                          
+    def title(self,text=None):
+        if not text:
+            text = _('Paste a special symbol')
+        self.obj.title(text)
+
+    def show(self,event=None):
+        self.obj.show()
+
+    def close(self,event=None):
+        self.obj.close()
+
+
+
 if __name__ == '__main__':
     sg.objs.start()
-    Settings().show()
+    WebFrame().show()
     sg.objs.end()

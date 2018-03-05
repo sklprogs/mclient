@@ -39,11 +39,6 @@ sh.globs['_tkhtml_loaded'] = False
 sh.globs['geom_top'] = {}
 sh.globs['top'] = {}
 
-#cur #todo: del
-sh.globs['var']['icon_mclient'] = sh.objs.pdir().add ('resources'
-                                                     ,'icon_64x64_mclient.gif'
-                                                     )
-
 sep_words_found = 'найдены отдельные слова'
 
 pairs = ('ENG <=> RUS','DEU <=> RUS','SPA <=> RUS'
@@ -436,14 +431,16 @@ class SearchArticle:
 class SpecSymbols:
 
     def __init__(self):
-        self.obj    = sg.Top(sg.objs.root())
-        self.widget = self.obj.widget
-        self.obj.icon (sh.globs['var']['icon_mclient'])
-        self.obj.title(_('Paste a special symbol'))
-        self.frame  = sg.Frame(self.obj,expand=1)
+        self.gui = gi.SpecSymbols()
+        self.buttons()
+        self.bindings()
+        
+    def buttons(self):
         for i in range(len(sh.globs['var']['spec_syms'])):
             if i % 10 == 0:
-                self.frame = sg.Frame(self.obj,expand=1)
+                self.frame = sg.Frame (parent = self.gui.obj
+                                      ,expand = True
+                                      )
             ''' lambda сработает правильно только при моментальной
                 упаковке, которая не поддерживается create_button
                 (моментальная упаковка возвращает None вместо виджета),
@@ -453,27 +450,23 @@ class SpecSymbols:
                 '<ButtonRelease-1>'.
                 width и height нужны для Windows
             '''
-            self.button = tk.Button (
+            tk.Button (
                     master  = self.frame.widget
                    ,text    = sh.globs['var']['spec_syms'][i]
                    ,command = lambda i=i:objs.webframe().insert_sym(sh.globs['var']['spec_syms'][i])
                    ,width   = 2
-                   ,height  = 2).pack(side='left',expand=1
-                                    )
-        self.bindings()
-        self.close()
+                   ,height  = 2
+                      ).pack (side   = 'left'
+                             ,expand = True
+                             )
 
     def bindings(self):
-        sg.bind (obj      = self.obj
-                ,bindings = ['<Escape>',sh.globs['var']['bind_spec_symbol']]
-                ,action   = self.close
+        sg.bind (obj      = self.gui.obj
+                ,bindings = ['<Escape>'
+                            ,sh.globs['var']['bind_spec_symbol']
+                            ]
+                ,action   = self.gui.close
                 )
-
-    def show(self,event=None):
-        self.obj.show()
-
-    def close(self,event=None):
-        self.obj.close()
 
 
 
@@ -659,7 +652,7 @@ class WebFrame:
         self.about.gui.close()
         self.settings.gui.close()
         self.search_article.gui.close()
-        #self.spec_symbols.gui.close()
+        self.spec_symbols.gui.close()
         self.save_article.gui.close()
         self.history.gui.close()
 
@@ -856,7 +849,7 @@ class WebFrame:
                 )
         sg.bind (obj      = self.gui.obj
                 ,bindings = sh.globs['var']['bind_spec_symbol']
-                ,action   = self.spec_symbols.show
+                ,action   = self.spec_symbols.gui.show
                 )
         sg.bind (obj      = self.gui.search_field
                 ,bindings = '<Control-a>'
@@ -1007,7 +1000,7 @@ class WebFrame:
         self.gui.btn_view.action = self.toggle_view
         self.gui.btn_sets.action = self.settings.gui.toggle
         self.gui.men_cols.action = self.set_columns
-        self.gui.btn_spec.action = self.spec_symbols.show
+        self.gui.btn_spec.action = self.spec_symbols.gui.show
         self.gui.btn_rep2.action = self.insert_repeat_sign2
         self.gui.btn_rep1.action = self.insert_repeat_sign
         self.gui.btn_past.action = self.gui.paste_search
@@ -1017,8 +1010,8 @@ class WebFrame:
         self.gui.men_pair.reset (items  = pairs
                                 ,action = self.set_lang
                                 )
-        self.gui.men_srcs.reset (items  = sources
-                                ,action = self.set_source
+        self.gui.men_srcs.reset (items   = sources
+                                ,action  = self.set_source
                                 )
     def title(self,arg=None):
         if not arg:
@@ -1066,7 +1059,6 @@ class WebFrame:
                 objs._blocks_db.Selectable = Selectable
 
     def _select(self,result):
-        '''
         try:
             self.gui.widget.tag ('delete','selection')
             self.gui.widget.tag ('add','selection',result[0]
@@ -1079,12 +1071,15 @@ class WebFrame:
                                 ,sh.globs['var']['color_terms_sel_fg']
                                 )
         except tk.TclError:
+            pass
+            '''
             sh.log.append ('WebFrame._select'
                           ,_('WARNING')
                           ,_('Unable to set selection!')
                           )
-        '''
+            '''
         #cur
+        '''
         #No such node: ''
         print('result[0]: "%s"' % str(result[0])) #todo: del
         print('result[1]: "%s"' % str(result[1])) #todo: del
@@ -1100,6 +1095,8 @@ class WebFrame:
         self.gui.widget.tag ('configure','selection','-foreground'
                             ,sh.globs['var']['color_terms_sel_fg']
                             )
+        
+        '''
     
     def select(self):
         result = objs.blocks_db().selection(pos=self._pos)
@@ -2324,7 +2321,7 @@ class Settings:
                                         )
                            )
         if set(lst):
-            self.close()
+            self.gui.close()
             objs.request()._cols     = tuple(lst)
             objs._request.SortRows   = self.gui.cb1.get()
             objs._request.SortTerms  = self.gui.cb2.get()
