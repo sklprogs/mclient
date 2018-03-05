@@ -228,6 +228,12 @@ class SaveArticle:
         self.bindings()
     
     def bindings(self):
+        sg.bind (obj      = self.gui.obj
+                ,bindings = [sh.globs['var']['bind_save_article']
+                            ,sh.globs['var']['bind_save_article_alt']
+                            ]
+                ,action   = self.gui.toggle
+                )
         sg.bind (obj      = self.gui
                 ,bindings = ['<<ListboxSelect>>','<Return>','<KP_Enter>']
                 ,action   = self.select
