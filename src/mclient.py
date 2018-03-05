@@ -232,6 +232,7 @@ class SaveArticle:
                 ,bindings = ['<<ListboxSelect>>','<Return>','<KP_Enter>']
                 ,action   = self.select
                 )
+        self.gui.parent.close_button.action = self.select
     
     #fix an extension for Windows
     def fix_ext(self,ext='.htm'):
@@ -239,11 +240,8 @@ class SaveArticle:
             self.file += ext
 
     def select(self,event=None):
-        opt = self.gui.obj._get
+        opt = self.gui.obj.get()
         self.gui.close()
-        #cur
-        print('ListBox activated') #todo: del
-        print('opt: "%s"' % str(opt))
         if opt:
             if opt == _('Save the current view as a web-page (*.htm)'):
                 self.view_as_html()
@@ -1950,7 +1948,7 @@ class WebFrame:
         fixed = [col for col in objs.request()._cols \
                  if col != _('Do not set')
                 ]
-        objs._request._collimit = self.gui.men_col.choice + len(fixed)
+        objs._request._collimit = self.gui.men_cols.choice + len(fixed)
         objs.blocks_db().delete_bookmarks()
         self.load_article()
 
