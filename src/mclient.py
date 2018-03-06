@@ -1172,32 +1172,10 @@ class WebFrame:
                                 ,sh.globs['var']['color_terms_sel_fg']
                                 )
         except tk.TclError:
-            pass
-            '''
             sh.log.append ('WebFrame._select'
                           ,_('WARNING')
                           ,_('Unable to set selection!')
                           )
-            '''
-        #cur
-        '''
-        #No such node: ''
-        print('result[0]: "%s"' % str(result[0])) #todo: del
-        print('result[1]: "%s"' % str(result[1])) #todo: del
-        print('result[2]: "%s"' % str(result[2])) #todo: del
-        print('result[3]: "%s"' % str(result[3])) #todo: del
-        self.gui.widget.tag ('delete','selection')
-        self.gui.widget.tag ('add','selection',result[0]
-                            ,result[2],result[1],result[3]
-                            )
-        self.gui.widget.tag ('configure','selection','-background'
-                            ,sh.globs['var']['color_terms_sel_bg']
-                            )
-        self.gui.widget.tag ('configure','selection','-foreground'
-                            ,sh.globs['var']['color_terms_sel_fg']
-                            )
-        
-        '''
     
     def select(self):
         result = objs.blocks_db().selection(pos=self._pos)
@@ -1512,7 +1490,7 @@ class WebFrame:
         pos.run()
         objs._blocks_db.update(query=pos._query)
 
-        pages = cl.Pages (obj    = objs.webframe()
+        pages = cl.Pages (obj    = objs.webframe().gui
                          ,blocks = pos._blocks
                          )
         pages.run()
