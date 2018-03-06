@@ -114,7 +114,7 @@ class ThirdParties:
         self.gui()
         
     def gui(self):
-        self.parent = sg.objs.new_top(Maximize=0)
+        self.parent = sg.objs.new_top()
         sg.Geometry(parent=self.parent).set('800x600')
         self.obj = sg.TextBox(parent=self.parent)
         self.icon()
@@ -149,7 +149,7 @@ class SearchArticle:
         self.gui()
         
     def gui(self):
-        self.parent = sg.objs.new_top(Maximize=0)
+        self.parent = sg.objs.new_top()
         self.obj    = sg.Entry(parent=self.parent)
         self.widget = self.obj.widget
         self.title()
@@ -200,7 +200,7 @@ class SaveArticle:
         self.gui()
         
     def gui(self):
-        self.parent = sg.objs.new_top(Maximize=0)
+        self.parent = sg.objs.new_top()
         self.obj    = sg.ListBox (parent   = self.parent
                                  ,Multiple = False
                                  ,lst      = self._items
@@ -244,7 +244,7 @@ class History:
         self.gui()
 
     def gui(self):
-        self.parent = sg.objs.new_top(Maximize=False)
+        self.parent = sg.objs.new_top()
         self.parent.widget.geometry('250x350')
         self.obj = sg.ListBox (parent          = self.parent
                               ,title           = _('History')
@@ -400,7 +400,7 @@ class WebFrame:
                                                           )
 
     def gui(self):
-        self.obj     = sg.objs.new_top(Maximize=1)
+        self.obj     = sg.objs.new_top(Maximize=True)
         self.frame   = sg.Frame (parent = self.obj
                                 ,expand = 1
                                 )
@@ -1035,7 +1035,7 @@ class Settings:
         self.update_sp6()
 
     def gui(self):
-        self.obj = sg.objs.new_top(Maximize=0)
+        self.obj = sg.objs.new_top()
         self.title()
         self.frames()
         self.checkboxes()
@@ -1624,7 +1624,7 @@ class SpecSymbols:
         self.gui()
         
     def gui(self):
-        self.obj    = sg.objs.new_top(Maximize=0)
+        self.obj    = sg.objs.new_top()
         self.widget = self.obj.widget
         self.frame  = sg.Frame(self.obj,expand=1)
         self.icon()
