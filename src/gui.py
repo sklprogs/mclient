@@ -250,7 +250,7 @@ class History:
                               ,title           = _('History')
                               ,icon            = self._icon
                               ,SelectionCloses = False
-                              ,SingleClick     = False
+                              ,SingleClick     = True
                               ,Composite       = True
                               )
         self.widget = self.obj.widget
@@ -260,6 +260,10 @@ class History:
         sg.bind (obj      = self
                 ,bindings = '<ButtonRelease-3>'
                 ,action   = self.copy
+                )
+        sg.bind (obj      = self
+                ,bindings = '<Escape>'
+                ,action   = self.close
                 )
 
     def show(self,event=None):
@@ -1464,6 +1468,10 @@ class Settings:
                                   )
 
     def bindings(self):
+        sg.bind (obj      = self.obj
+                ,bindings = '<Escape>'
+                ,action   = self.close
+                )
         sg.bind (obj      = self.lb1
                 ,bindings = '<Button-1>'
                 ,action   = self.cb1.toggle
@@ -1630,7 +1638,14 @@ class SpecSymbols:
         self.frame  = sg.Frame(self.obj,expand=1)
         self.icon()
         self.title()
+        self.bindings()
         
+    def bindings(self):
+        sg.bind (obj      = self.obj
+                ,bindings = '<Escape>'
+                ,action   = self.close
+                )
+    
     def icon(self,path=None):
         if path:
             self.obj.icon(path)

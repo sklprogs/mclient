@@ -79,7 +79,6 @@ class ConfigMclient(sh.Config):
            ,'bind_col3_down'              :'<Shift-Down>'
            ,'bind_col3_up'                :'<Shift-Up>'
            ,'bind_copy_article_url'       :'<Shift-F7>'
-           ,'bind_copy_history'           :'<ButtonRelease-3>'
            ,'bind_copy_sel_alt'           :'<Control-KP_Enter>'
            ,'bind_copy_sel'               :'<Control-Return>'
            ,'bind_copy_url'               :'<Control-F7>'

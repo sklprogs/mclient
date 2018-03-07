@@ -468,10 +468,6 @@ class SpecSymbols:
 
     def bindings(self):
         sg.bind (obj      = self.gui.obj
-                ,bindings = '<Escape>'
-                ,action   = self.gui.close
-                )
-        sg.bind (obj      = self.gui.obj
                 ,bindings = sh.globs['var']['bind_spec_symbol']
                 ,action   = self.gui.toggle
                 )
@@ -488,7 +484,6 @@ class History:
         sg.bind (obj      = self.gui.parent
                 ,bindings = [sh.globs['var']['bind_toggle_history']
                             ,sh.globs['var']['bind_toggle_history_alt']
-                            ,'<Escape>'
                             ]
                 ,action = self.gui.toggle
                 )
@@ -507,14 +502,7 @@ class History:
                 ,bindings = '<End>'
                 ,action   = self.go_last
                 )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<<ListboxSelect>>'
-                ,action   = self.go
-                )
-        sg.bind (obj      = self.gui
-                ,bindings = sh.globs['var']['bind_copy_history']
-                ,action   = self.gui.copy
-                )
+        self.gui.obj.user_function = self.go
 
     def autoselect(self):
         self.gui.obj.clear_selection()
@@ -2430,7 +2418,6 @@ class Settings:
         sg.bind (obj      = self.gui.obj
                 ,bindings = [sh.globs['var']['bind_settings']
                             ,sh.globs['var']['bind_settings_alt']
-                            ,'<Escape>'
                             ]
                 ,action = self.gui.toggle
                 )
