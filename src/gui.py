@@ -1621,6 +1621,7 @@ class Settings:
 class SpecSymbols:
 
     def __init__(self):
+        self.Active = False
         self.gui()
         
     def gui(self):
@@ -1645,10 +1646,18 @@ class SpecSymbols:
         self.obj.title(text)
 
     def show(self,event=None):
+        self.Active = True
         self.obj.show()
 
     def close(self,event=None):
+        self.Active = False
         self.obj.close()
+        
+    def toggle(self,event=None):
+        if self.Active:
+            self.close()
+        else:
+            self.show()
 
 
 

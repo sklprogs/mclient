@@ -22,7 +22,7 @@ gettext.install('mclient','./locale')
 
 
 product = 'MClient'
-version = '5.9'
+version = '5.9.1'
 
 
 lg.ConfigMclient()
@@ -468,10 +468,12 @@ class SpecSymbols:
 
     def bindings(self):
         sg.bind (obj      = self.gui.obj
-                ,bindings = ['<Escape>'
-                            ,sh.globs['var']['bind_spec_symbol']
-                            ]
+                ,bindings = '<Escape>'
                 ,action   = self.gui.close
+                )
+        sg.bind (obj      = self.gui.obj
+                ,bindings = sh.globs['var']['bind_spec_symbol']
+                ,action   = self.gui.toggle
                 )
 
 
@@ -875,7 +877,7 @@ class WebFrame:
                 )
         sg.bind (obj      = self.gui.obj
                 ,bindings = sh.globs['var']['bind_spec_symbol']
-                ,action   = self.spec_symbols.gui.show
+                ,action   = self.spec_symbols.gui.toggle
                 )
         sg.bind (obj      = self.gui.obj
                 ,bindings = sh.globs['var']['bind_define']
@@ -897,7 +899,7 @@ class WebFrame:
                 ,bindings = [sh.globs['var']['bind_settings']
                             ,sh.globs['var']['bind_settings_alt']
                             ]
-                ,action   = self.settings.gui.show
+                ,action   = self.settings.gui.toggle
                 )
         sg.bind (obj      = self.gui.obj
                 ,bindings = [sh.globs['var']['bind_toggle_view']
@@ -1101,7 +1103,7 @@ class WebFrame:
         self.gui.btn_view.action = self.toggle_view
         self.gui.btn_sets.action = self.settings.gui.toggle
         self.gui.men_cols.action = self.set_columns
-        self.gui.btn_spec.action = self.spec_symbols.gui.show
+        self.gui.btn_spec.action = self.spec_symbols.gui.toggle
         self.gui.btn_rep2.action = self.insert_repeat_sign2
         self.gui.btn_rep1.action = self.insert_repeat_sign
         self.gui.btn_past.action = self.gui.paste_search
