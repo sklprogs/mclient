@@ -502,7 +502,7 @@ class History:
                 ,bindings = '<End>'
                 ,action   = self.go_last
                 )
-        self.gui.obj.user_function = self.go
+        self.gui.obj.action = self.go
 
     def autoselect(self):
         self.gui.obj.clear_selection()
