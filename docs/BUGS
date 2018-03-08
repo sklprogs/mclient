@@ -1,3 +1,5 @@
+- Widget is not shown immediately when using F2 -> Esc -> F2 (probably
+  due to Tkinter/WM focusing/minimization behavior)
 - Do not fill history when search is empty (e.g., when changing
   the source to 'Offline')
 - Different views (source code of original page with UTF-8 encoding - 
