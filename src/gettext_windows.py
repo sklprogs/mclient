@@ -1,1 +1,1 @@
-/usr/local/bin/shared/gettext_windows.py
+/usr/local/bin/gettext_windows.py
