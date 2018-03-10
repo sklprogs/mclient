@@ -6,13 +6,12 @@
     Moves to work incorrectly
 '''
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
-gettext.install('mclient','./locale')
-
 import sqlite3
 import shared as sh
-import sharedGUI as sg
+
+import gettext, gettext_windows
+gettext_windows.setup_env()
+gettext.install('mclient','./resources/locale')
 
 
 ''' #note: don't forget to change 'self.Selectable', 'self._cols',
@@ -188,11 +187,11 @@ class DB:
                                    order by ARTICLEID'
                                  )
             else:
-                sg.Message (func    = 'DB.print'
-                           ,level   = _('ERROR')
-                           ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                                      % (str(mode),'ARTICLES, BLOCKS')
-                           )
+                sh.objs.mes (func    = 'DB.print'
+                            ,level   = _('ERROR')
+                            ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                                       % (str(mode),'ARTICLES, BLOCKS')
+                            )
         headers = [cn[0] for cn in self.dbc.description]
         rows    = self.dbc.fetchall()
         sh.Table (headers = headers
@@ -206,11 +205,11 @@ class DB:
         try:
             self.dbc.executescript(query)
         except sqlite3.OperationalError:
-            sg.Message ('DB.update'
-                       ,_('ERROR')
-                       ,_('Unable to execute:\n"%s"') \
-                       % str(query).replace(';',';\n')
-                       )
+            sh.objs.mes ('DB.update'
+                        ,_('ERROR')
+                        ,_('Unable to execute:\n"%s"') \
+                        % str(query).replace(';',';\n')
+                        )
 
     # Assign input data for BlockPrioritize
     def assign_bp(self):
@@ -241,13 +240,13 @@ class DB:
                 # There is no sense to sort by transcription
                 pass
             else:
-                sg.Message (func    = 'DB.order_query'
-                           ,level   = _('ERROR')
-                           ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                                      % (str(item)
-                                        ,'dic, wform, speech, transc'
-                                        )
-                           )
+                sh.objs.mes (func    = 'DB.order_query'
+                            ,level   = _('ERROR')
+                            ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                                       % (str(item)
+                                         ,'dic, wform, speech, transc'
+                                         )
+                            )
         if self.SortTerms:
             query.append('TERMA')
         return ','.join(query)

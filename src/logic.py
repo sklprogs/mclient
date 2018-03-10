@@ -6,7 +6,7 @@ import shared as sh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
-gettext.install('mclient','./locale')
+gettext.install('mclient','./resources/locale')
 
 
 class ConfigMclient(sh.Config):
@@ -31,9 +31,9 @@ class ConfigMclient(sh.Config):
         self.missing_keys     = 0
         self.missing_sections = 0
         # Create these keys before reading the config
-        self.path    = sh.objs.pdir().add('mclient.cfg')
+        self.path    = sh.objs.pdir().add('resources','mclient.cfg')
         self.reset()
-        h_read       = sh.ReadTextFile(self.path,Silent=self.Silent)
+        h_read       = sh.ReadTextFile(self.path)
         self.text    = h_read.get()
         self.Success = h_read.Success
         self.default()
@@ -212,7 +212,10 @@ class CurRequest:
 class Paths:
 
     def __init__(self):
-        self.dir = sh.Directory(path=sh.objs.pdir().add('dics'))
+        self.dir = sh.Directory (path=sh.objs.pdir().add ('resources'
+                                                         ,'dics'
+                                                         )
+                                )
         self.Success = self.dir.Success
 
     def blacklist(self):
@@ -268,9 +271,7 @@ class Lists:
 
     def blacklist(self):
         if self.Success:
-            text = sh.ReadTextFile (file   = self._blacklist
-                                   ,Silent = True
-                                   ).get()
+            text = sh.ReadTextFile(file=self._blacklist).get()
             text = sh.Text(text=text,Auto=1).text
             return text.splitlines()
         else:
@@ -281,9 +282,7 @@ class Lists:
 
     def prioritize(self):
         if self.Success:
-            text = sh.ReadTextFile (file   = self._prioritize
-                                   ,Silent = True
-                                   ).get()
+            text = sh.ReadTextFile(file=self._prioritize).get()
             text = sh.Text(text=text,Auto=1).text
             return text.splitlines()
         else:

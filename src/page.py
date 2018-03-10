@@ -1,10 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
-gettext.install('mclient','./locale')
-
 import os
 import re
 ''' В Python 3 не работает просто import urllib, импорт должен быть
@@ -17,6 +13,10 @@ import pystardict as pd
 import shared     as sh
 import sharedGUI  as sg
 import offline    as of
+
+import gettext, gettext_windows
+gettext_windows.setup_env()
+gettext.install('mclient','./resources/locale')
 
 sep_words_found = 'найдены отдельные слова'
 message_board   = 'спросить в форуме'
@@ -34,15 +34,14 @@ p8 = '">'
 class ExtDic:
 
     def __init__ (self,path,lang='English'
-                 ,name='External',Block=False,Silent=False
+                 ,name='External',Block=False
                  ):
-        self.Silent = Silent
         # Full path without extension (as managed by pystardict)
-        self._path  = path
-        self._lang  = lang
-        self._name  = name
-        self.Block  = Block
-        self._dic   = None
+        self._path = path
+        self._lang = lang
+        self._name = name
+        self.Block = Block
+        self._dic  = None
         self.load()
 
     def load(self):
@@ -53,11 +52,10 @@ class ExtDic:
         try:
             self._dic = pd.Dictionary(self._path)
         except:
-            sg.Message ('ExtDic.load'
-                       ,_('WARNING')
-                       ,_('Failed to load "%s"!') % self._path
-                       ,self.Silent
-                       )
+            sh.objs.mes ('ExtDic.load'
+                        ,_('WARNING')
+                        ,_('Failed to load "%s"!') % self._path
+                        )
 
     def get(self,search):
         result = ''
@@ -65,11 +63,10 @@ class ExtDic:
             try:
                 result = self._dic.get(k=search)
             except:
-                sg.Message ('ExtDic.get'
-                           ,_('WARNING')
-                           ,_('Failed to parse "%s"!') % self._path
-                           ,self.Silent
-                           )
+                sh.objs.mes ('ExtDic.get'
+                            ,_('WARNING')
+                            ,_('Failed to parse "%s"!') % self._path
+                            )
         else:
             sh.log.append ('ExtDic.get'
                           ,_('WARNING')
@@ -208,10 +205,10 @@ class ExtDics:
         message += '\n'.join(self._es) + '\n\n'
         message += 'Italian:\n'
         message += '\n'.join(self._it) + '\n\n'
-        sg.Message (func    = 'ExtDics.debug'
-                   ,level   = _('INFO')
-                   ,message = message
-                   )
+        sh.objs.mes (func    = 'ExtDics.debug'
+                    ,level   = _('INFO')
+                    ,message = message
+                    )
 
 
 
@@ -347,10 +344,10 @@ class Page:
             try:
                 self._page = html.unescape(self._page)
             except:
-                sg.Message ('Page.decode_entities'
-                           ,_('ERROR')
-                           ,_('Unable to convert HTML entities to UTF-8!')
-                           )
+                sh.objs.mes ('Page.decode_entities'
+                            ,_('ERROR')
+                            ,_('Unable to convert HTML entities to UTF-8!')
+                            )
 
     def _get_online(self):
         Got = False
@@ -401,10 +398,10 @@ class Page:
                 self._html_raw = self._page \
                                = self._page.decode(self._win_encoding)
             except:
-                sg.Message (func    = 'Page._get_online'
-                           ,level   = _('ERROR')
-                           ,message = _('Unable to change the web-page encoding!')
-                           )
+                sh.objs.mes (func    = 'Page._get_online'
+                            ,level   = _('ERROR')
+                            ,message = _('Unable to change the web-page encoding!')
+                            )
 
     def _get_offline(self):
         if self.ext_dics:
@@ -451,11 +448,11 @@ class Page:
                         self._page = of.stardict (text   = self._page
                                                  ,header = self._search)
                 else:
-                    sg.Message ('Page.get'
-                               ,_('ERROR')
-                               ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                               % (str(self._source),';'.join(sources))
-                               )
+                    sh.objs.mes ('Page.get'
+                                ,_('ERROR')
+                                ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                                % (str(self._source),';'.join(sources))
+                                )
                 if self._page is None:
                     self._page = ''
                 if page and self._page:
@@ -566,7 +563,10 @@ if __name__ == '__main__':
     page = Page (source   = _('Online')
                 ,search   = 'preceding'
                 ,file     = '/home/pete/tmp/ars/preceding.txt'
-                ,ext_dics = ExtDics(path=sh.objs.pdir().add('dics'))
+                ,ext_dics = ExtDics (path=sh.objs.pdir().add ('resources'
+                                                             ,'dics'
+                                                             )
+                                    )
                 )
     page.run()
     timer.end()

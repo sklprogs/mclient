@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
 import re
-import shared as sh
+import shared    as sh
 import sharedGUI as sg
-import page as pg
+import page      as pg
 
 
 class Commands:

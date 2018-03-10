@@ -3,7 +3,6 @@
 import re
 import html
 import shared as sh
-import sharedGUI as sg
 
 
 #todo (?): use shared
@@ -46,10 +45,10 @@ class Stardict1:
         try:
             self.text = html.unescape(self.text)
         except:
-            sg.Message ('Stardict1.decode'
-                       ,_('ERROR')
-                       ,_('Unable to convert HTML entities to UTF-8!')
-                       )
+            sh.objs.mes ('Stardict1.decode'
+                        ,_('ERROR')
+                        ,_('Unable to convert HTML entities to UTF-8!')
+                        )
     
     def trash(self):
         self.text = self.text.replace(' ∙ ',';').replace(' - ',';')
@@ -261,10 +260,10 @@ class Stardict2:
         try:
             self.text = html.unescape(self.text)
         except:
-            sg.Message ('Stardict2.decode'
-                       ,_('ERROR')
-                       ,_('Unable to convert HTML entities to UTF-8!')
-                       )
+            sh.objs.mes ('Stardict2.decode'
+                        ,_('ERROR')
+                        ,_('Unable to convert HTML entities to UTF-8!')
+                        )
     
     def trash(self):
         self.text = self.text.replace(' - ',';')
@@ -387,7 +386,9 @@ def stardict(text,header='~'):
 
 
 if __name__ == '__main__':
+    import sharedGUI as sg
     sg.objs.start()
+    sh.objs.mes(Silent=False)
     
     #text = sh.ReadTextFile(file='/home/pete/tmp/ars/sdict_EnRu_full - cut (fragm).txt').get()
     #text = sh.ReadTextFile(file='/home/pete/tmp/ars/sdict_EnRu_full - cut.txt').get()

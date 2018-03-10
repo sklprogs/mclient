@@ -1,14 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
-gettext.install('mclient','./locale')
-
 import re
 import copy
 import shared as sh
-import sharedGUI as sg
+
+import gettext, gettext_windows
+gettext_windows.setup_env()
+gettext.install('mclient','./resources/locale')
 
 transc_orig  = ('[',']','2','3','34','39','40','41'
                ,'58','65','68','69','73','78','79'
@@ -308,17 +307,17 @@ class AnalyzeTag:
         elif self._source == _('Offline'):
             self._comment_sd()
         else:
-            sg.Message ('AnalyzeTag.transc'
-                       ,_('ERROR')
-                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                       % (str(self._source)
-                         ,', '.join ((_('All')
-                                     ,_('Online')
-                                     ,_('Offline')
+            sh.objs.mes ('AnalyzeTag.transc'
+                        ,_('ERROR')
+                        ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                        % (str(self._source)
+                          ,', '.join ((_('All')
+                                      ,_('Online')
+                                      ,_('Offline')
+                                      )
                                      )
-                                    )
-                         )
-                       )
+                          )
+                        )
 
     def dic(self):
         if self._block.startswith(pdic):
@@ -401,13 +400,13 @@ class AnalyzeTag:
         elif self._source == _('Offline'):
             self._transc_sd()
         else:
-            sg.Message ('AnalyzeTag.transc'
-                       ,_('ERROR')
-                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                       % (str(self._source)
-                         ,', '.join((_('All'),_('Online'),_('Offline')))
-                         )
-                       )
+            sh.objs.mes ('AnalyzeTag.transc'
+                        ,_('ERROR')
+                        ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                        % (str(self._source)
+                          ,', '.join((_('All'),_('Online'),_('Offline')))
+                          )
+                        )
 
     # Stardict
     def _transc_sd(self):
@@ -487,14 +486,15 @@ class Tags:
         return self._tags
 
     def debug_tags(self):
+        import sharedGUI as sg
         message = ''
         for i in range(len(self._tags)):
             message += '%d:%s\n' % (i,self._tags[i])
         '''
-        sg.Message (func    = 'Tags.debug_tags'
-                   ,level   = _('INFO')
-                   ,message = message
-                   )
+        sh.objs.mes (func    = 'Tags.debug_tags'
+                    ,level   = _('INFO')
+                    ,message = message
+                    )
         '''
         words = sh.Words (text    = message
                          ,OrigCyr = 1

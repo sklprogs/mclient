@@ -1,13 +1,12 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
-gettext.install('mclient','./locale')
-
 import io
 import shared as sh
-import sharedGUI as sg
+
+import gettext, gettext_windows
+gettext_windows.setup_env()
+gettext.install('mclient','./resources/locale')
 
 #todo: share
 abbr     = ['гл.','сущ.','прил.','нареч.','сокр.','предл.','мест.']
@@ -560,10 +559,10 @@ class Pos:
                 if result >= last:
                     block._first = result
                 else:
-                    sg.Message ('Pos.gen_poses'
-                               ,_('ERROR')
-                               ,_('Unable to find "%s"!') % str(text)
-                               )
+                    sh.objs.mes ('Pos.gen_poses'
+                                ,_('ERROR')
+                                ,_('Unable to find "%s"!') % str(text)
+                                )
                     block._first = last
             else:
                 block._first = last
@@ -654,10 +653,10 @@ class Pages:
         return self._query
             
     def debug(self):
-        sg.Message ('Pages.debug'
-                   ,_('INFO')
-                   ,self._query.replace(';',';\n')
-                   )
+        sh.objs.mes ('Pages.debug'
+                    ,_('INFO')
+                    ,self._query.replace(';',';\n')
+                    )
     
     def run(self):
         if self.Success:
