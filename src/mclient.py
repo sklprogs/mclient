@@ -105,7 +105,7 @@ class Objects:
 
     def ext_dics(self):
         if not self._ext_dics:
-            self._ext_dics = pg.ExtDics(path=sh.objs.pdir().add('..','resources','dics'))
+            self._ext_dics = pg.ExtDics(path=sh.objs.pdir().add('..','user','dics'))
         return self._ext_dics
 
     def request(self):

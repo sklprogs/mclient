@@ -564,7 +564,7 @@ if __name__ == '__main__':
                 ,search   = 'preceding'
                 ,file     = '/home/pete/tmp/ars/preceding.txt'
                 ,ext_dics = ExtDics (path=sh.objs.pdir().add ('..'
-                                                             ,'resources'
+                                                             ,'user'
                                                              ,'dics'
                                                              )
                                     )
