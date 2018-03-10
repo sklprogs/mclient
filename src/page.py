@@ -16,7 +16,7 @@ import offline    as of
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
-gettext.install('mclient','./resources/locale')
+gettext.install('mclient','../resources/locale')
 
 sep_words_found = 'найдены отдельные слова'
 message_board   = 'спросить в форуме'
@@ -563,7 +563,8 @@ if __name__ == '__main__':
     page = Page (source   = _('Online')
                 ,search   = 'preceding'
                 ,file     = '/home/pete/tmp/ars/preceding.txt'
-                ,ext_dics = ExtDics (path=sh.objs.pdir().add ('resources'
+                ,ext_dics = ExtDics (path=sh.objs.pdir().add ('..'
+                                                             ,'resources'
                                                              ,'dics'
                                                              )
                                     )

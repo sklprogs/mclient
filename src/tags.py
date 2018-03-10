@@ -7,7 +7,7 @@ import shared as sh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
-gettext.install('mclient','./resources/locale')
+gettext.install('mclient','../resources/locale')
 
 transc_orig  = ('[',']','2','3','34','39','40','41'
                ,'58','65','68','69','73','78','79'

@@ -7,7 +7,7 @@ import sharedGUI   as sg
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
-gettext.install('mclient','./resources/locale')
+gettext.install('mclient','../resources/locale')
 
 product = 'MClient'
 
@@ -39,7 +39,8 @@ class About:
         if path:
             self.obj.icon(path)
         else:
-            self.obj.icon (sh.objs.pdir().add ('resources'
+            self.obj.icon (sh.objs.pdir().add ('..'
+                                              ,'resources'
                                               ,'icon_64x64_mclient.gif'
                                               )
                           )
@@ -130,7 +131,8 @@ class ThirdParties:
         if path:
             self.parent.icon(path)
         else:
-            self.parent.icon (sh.objs.pdir().add ('resources'
+            self.parent.icon (sh.objs.pdir().add ('..'
+                                                 ,'resources'
                                                  ,'icon_64x64_mclient.gif'
                                                  )
                              )
@@ -172,7 +174,8 @@ class SearchArticle:
         if path:
             self.parent.icon(path)
         else:
-            self.parent.icon (sh.objs.pdir().add ('resources'
+            self.parent.icon (sh.objs.pdir().add ('..'
+                                                 ,'resources'
                                                  ,'icon_64x64_mclient.gif'
                                                  )
                              )
@@ -221,7 +224,8 @@ class SaveArticle:
         if path:
             self.parent.icon(path)
         else:
-            self.parent.icon (sh.objs.pdir().add ('resources'
+            self.parent.icon (sh.objs.pdir().add ('..'
+                                                 ,'resources'
                                                  ,'icon_64x64_mclient.gif'
                                                  )
                              )
@@ -238,7 +242,8 @@ class History:
 
     def __init__(self):
         self.Active = False
-        self._icon  = sh.objs.pdir().add ('resources'
+        self._icon  = sh.objs.pdir().add ('..'
+                                         ,'resources'
                                          ,'icon_64x64_mclient.gif'
                                          )
         self.gui()
@@ -306,100 +311,164 @@ class WebFrame:
     def values(self):
         self._shift  = 1
         self._border = 24
-        self.icon_alphabet_off        = sh.objs.pdir().add ('resources'
+        self.icon_alphabet_off        = sh.objs.pdir().add ('..'
+                                                           ,'resources'
+                                                           ,'buttons'
                                                            ,'icon_36x36_alphabet_off.gif'
                                                            )
-        self.icon_alphabet_on         = sh.objs._pdir.add ('resources'
+        self.icon_alphabet_on         = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_alphabet_on.gif'
                                                           )
-        self.icon_block_off           = sh.objs._pdir.add ('resources'
+        self.icon_block_off           = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_block_off.gif'
                                                           )
-        self.icon_block_on            = sh.objs._pdir.add ('resources'
+        self.icon_block_on            = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_block_on.gif'
                                                           )
-        self.icon_clear_search_field  = sh.objs._pdir.add ('resources'
+        self.icon_clear_search_field  = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_clear_search_field.gif'
                                                           )
-        self.icon_define              = sh.objs._pdir.add ('resources'
+        self.icon_define              = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_define.gif'
                                                           )
-        self.icon_go_back_off         = sh.objs._pdir.add ('resources'
+        self.icon_go_back_off         = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_go_back_off.gif'
                                                           )
-        self.icon_go_back             = sh.objs._pdir.add ('resources'
+        self.icon_go_back             = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_go_back.gif'
                                                           )
-        self.icon_go_forward_off      = sh.objs._pdir.add ('resources'
+        self.icon_go_forward_off      = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_go_forward_off.gif'
                                                           )
-        self.icon_go_forward          = sh.objs._pdir.add ('resources'
+        self.icon_go_forward          = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_go_forward.gif'
                                                           )
-        self.icon_go_search           = sh.objs._pdir.add ('resources'
+        self.icon_go_search           = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_go_search.gif'
                                                           )
-        self.icon_open_in_browser     = sh.objs._pdir.add ('resources'
+        self.icon_open_in_browser     = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_open_in_browser.gif'
                                                           )
-        self.icon_paste               = sh.objs._pdir.add ('resources'
+        self.icon_paste               = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_paste.gif'
                                                           )
-        self.icon_print               = sh.objs._pdir.add ('resources'
+        self.icon_print               = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_print.gif'
                                                           )
-        self.icon_priority_off        = sh.objs._pdir.add ('resources'
+        self.icon_priority_off        = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_priority_off.gif'
                                                           )
-        self.icon_priority_on         = sh.objs._pdir.add ('resources'
+        self.icon_priority_on         = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_priority_on.gif'
                                                           )
-        self.icon_quit_now            = sh.objs._pdir.add ('resources'
+        self.icon_quit_now            = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_quit_now.gif'
                                                           )
-        self.icon_reload              = sh.objs._pdir.add ('resources'
+        self.icon_reload              = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_reload.gif'
                                                           )
-        self.icon_repeat_sign_off     = sh.objs._pdir.add ('resources'
+        self.icon_repeat_sign_off     = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_repeat_sign_off.gif'
                                                           )
-        self.icon_repeat_sign         = sh.objs._pdir.add ('resources'
+        self.icon_repeat_sign         = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_repeat_sign.gif'
                                                           )
-        self.icon_repeat_sign2_off    = sh.objs._pdir.add ('resources'
+        self.icon_repeat_sign2_off    = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_repeat_sign2_off.gif'
                                                           )
-        self.icon_repeat_sign2        = sh.objs._pdir.add ('resources'
+        self.icon_repeat_sign2        = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_repeat_sign2.gif'
                                                           )
-        self.icon_save_article        = sh.objs._pdir.add ('resources'
+        self.icon_save_article        = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_save_article.gif'
                                                           )
-        self.icon_search_article      = sh.objs._pdir.add ('resources'
+        self.icon_search_article      = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_search_article.gif'
                                                           )
-        self.icon_settings            = sh.objs._pdir.add ('resources'
+        self.icon_settings            = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_settings.gif'
                                                           )
-        self.icon_show_about          = sh.objs._pdir.add ('resources'
+        self.icon_show_about          = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_show_about.gif'
                                                           )
-        self.icon_spec_symbol         = sh.objs._pdir.add ('resources'
+        self.icon_spec_symbol         = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_spec_symbol.gif'
                                                           )
-        self.icon_toggle_history      = sh.objs._pdir.add ('resources'
+        self.icon_toggle_history      = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_toggle_history.gif'
                                                           )
-        self.icon_toggle_view_hor     = sh.objs._pdir.add ('resources'
+        self.icon_toggle_view_hor     = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_toggle_view_hor.gif'
                                                           )
-        self.icon_toggle_view_ver     = sh.objs._pdir.add ('resources'
+        self.icon_toggle_view_ver     = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_toggle_view_ver.gif'
                                                           )
-        self.icon_watch_clipboard_off = sh.objs._pdir.add ('resources'
+        self.icon_watch_clipboard_off = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_watch_clipboard_off.gif'
                                                           )
-        self.icon_watch_clipboard_on  = sh.objs._pdir.add ('resources'
+        self.icon_watch_clipboard_on  = sh.objs._pdir.add ('..'
+                                                          ,'resources'
+                                                          ,'buttons'
                                                           ,'icon_36x36_watch_clipboard_on.gif'
                                                           )
 
@@ -699,7 +768,8 @@ class WebFrame:
         if path:
             self.obj.icon(path)
         else:
-            self.obj.icon (sh.objs.pdir().add ('resources'
+            self.obj.icon (sh.objs.pdir().add ('..'
+                                              ,'resources'
                                               ,'icon_64x64_mclient.gif'
                                               )
                           )
@@ -1514,7 +1584,8 @@ class Settings:
         if path:
             self.obj.icon(path)
         else:
-            self.obj.icon (sh.objs.pdir().add ('resources'
+            self.obj.icon (sh.objs.pdir().add ('..'
+                                              ,'resources'
                                               ,'icon_64x64_mclient.gif'
                                               )
                           )
@@ -1650,7 +1721,8 @@ class SpecSymbols:
         if path:
             self.obj.icon(path)
         else:
-            self.obj.icon (sh.objs.pdir().add ('resources'
+            self.obj.icon (sh.objs.pdir().add ('..'
+                                              ,'resources'
                                               ,'icon_64x64_mclient.gif'
                                               )
                           )

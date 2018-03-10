@@ -6,7 +6,7 @@ import shared as sh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
-gettext.install('mclient','./resources/locale')
+gettext.install('mclient','../resources/locale')
 
 #todo: share
 abbr     = ['гл.','сущ.','прил.','нареч.','сокр.','предл.','мест.']

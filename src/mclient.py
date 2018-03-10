@@ -18,7 +18,7 @@ import mkhtml    as mh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
-gettext.install('mclient','./resources/locale')
+gettext.install('mclient','../resources/locale')
 
 
 product = 'MClient'
@@ -105,7 +105,7 @@ class Objects:
 
     def ext_dics(self):
         if not self._ext_dics:
-            self._ext_dics = pg.ExtDics(path=sh.objs.pdir().add('resources','dics'))
+            self._ext_dics = pg.ExtDics(path=sh.objs.pdir().add('..','resources','dics'))
         return self._ext_dics
 
     def request(self):
@@ -2455,7 +2455,7 @@ class ThirdParties:
     
     def __init__(self):
         self.gui = gi.ThirdParties()
-        file = sh.objs.pdir().add('resources','third parties.txt')
+        file = sh.objs.pdir().add('..','resources','third parties.txt')
         self._text = sh.ReadTextFile(file=file).get()
         self.gui.obj.insert(text=self._text)
         self.gui.obj.read_only()

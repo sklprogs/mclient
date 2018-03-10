@@ -4,6 +4,10 @@ import re
 import html
 import shared as sh
 
+import gettext, gettext_windows
+gettext_windows.setup_env()
+gettext.install('mclient','../resources/locale')
+
 
 #todo (?): use shared
 speech_abbr = ('гл.','нареч.','прил.','сокр.','сущ.')

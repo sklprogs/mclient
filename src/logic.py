@@ -6,7 +6,7 @@ import shared as sh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
-gettext.install('mclient','./resources/locale')
+gettext.install('mclient','../resources/locale')
 
 
 class ConfigMclient(sh.Config):
@@ -31,7 +31,7 @@ class ConfigMclient(sh.Config):
         self.missing_keys     = 0
         self.missing_sections = 0
         # Create these keys before reading the config
-        self.path    = sh.objs.pdir().add('resources','mclient.cfg')
+        self.path    = sh.objs.pdir().add('..','resources','mclient.cfg')
         self.reset()
         h_read       = sh.ReadTextFile(self.path)
         self.text    = h_read.get()
@@ -212,7 +212,8 @@ class CurRequest:
 class Paths:
 
     def __init__(self):
-        self.dir = sh.Directory (path=sh.objs.pdir().add ('resources'
+        self.dir = sh.Directory (path=sh.objs.pdir().add ('..'
+                                                         ,'resources'
                                                          ,'dics'
                                                          )
                                 )

@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
-gettext.install('mclient','./resources/locale')
-
 import io
 import shared    as sh
 import sharedGUI as sg
+
+import gettext, gettext_windows
+gettext_windows.setup_env()
+gettext.install('mclient','../resources/locale')
 
 
 # Shortened
