@@ -1,2 +1,13 @@
-src/__pycache__/
+__pycache__
 *.pyc
+*.dict
+*.idx
+*.ifo
+*.gz
+*.dz
+*.bz2
+*.ann
+*.bmp
+*.dsl
+*.lsd
+*.zip
