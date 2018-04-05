@@ -6,7 +6,7 @@ import re
 ''' В Python 3 не работает просто import urllib, импорт должен быть
     именно такой, как здесь
 '''
-import urllib.request #,urllib.parse
+import urllib.request
 import html
 import ssl
 import pystardict as pd
@@ -158,7 +158,8 @@ class ExtDics:
             self._dics = [x for x in self._dics if x._dic]
             sh.log.append ('ExtDics.load'
                           ,_('INFO')
-                          ,_('%d offline dictionaries have been loaded') % len(self._dics)
+                          ,_('%d offline dictionaries have been loaded')\
+                          % len(self._dics)
                           )
         else:
             sh.log.append ('ExtDics.load'
@@ -292,6 +293,8 @@ class Page:
         self._page = self._page.replace('Требуется авторизация','')
         self._page = self._page.replace('Вы знаете перевод этого слова? Добавьте его в словарь:','')
         self._page = self._page.replace('Вы знаете перевод этого выражения? Добавьте его в словарь:','')
+        self._page = self._page.replace('</span>Наблюдаются проблемы со входом из Хрома<span lang="en-us"> (</span>на','</span><span lang="en-us"></span>')
+        self._page = self._page.replace('сайте кое-что устарело, но пока не удаётся поменять','')
         self._page = self._page.replace('</a>, содержащие <strong>','</a><strong>')
 
     # HTML specific
@@ -363,6 +366,8 @@ class Page:
                     удаления тэгов JavaScript. Поскольку мы вручную
                     удаляем все лишние тэги, то на выходе нам нужна
                     строка.
+                    Если задан пустой 'self._url', то получим сообщение
+                    об ошибке.
                 '''
                 self._page = urllib.request.urlopen (self._url
                                                     ,None
@@ -557,9 +562,9 @@ class Welcome:
 
 
 if __name__ == '__main__':
+    sg.objs.start()
     timer = sh.Timer(func_title='Page')
     timer.start()
-    sg.objs.start()
     page = Page (source   = _('Online')
                 ,search   = 'preceding'
                 ,file     = '/home/pete/tmp/ars/preceding.txt'
@@ -569,12 +574,20 @@ if __name__ == '__main__':
                                                              )
                                     )
                 )
+    '''
+    page = Page (source = _('Online')
+                ,search = 'иммуногенная'
+                ,url    = 'https://www.multitran.ru/c/M.exe?l1=1&l2=2&s=%E8%EC%F3%ED%ED%EE%E3%E5%ED%ED%E0%FF'
+                )
+    '''
     page.run()
     timer.end()
     '''sh.WriteTextFile (file       = '/home/pete/tmp/ars/do.txt'
                         ,AskRewrite = 0
                         ).write(text=text)
     '''
-    sg.objs.txt().insert(text=page._page)
-    sg.objs._txt.show()
+    if page._page:
+        page._page = ''.join(page._page)
+        sg.objs.txt().insert(text=page._page)
+        sg.objs._txt.show()
     sg.objs.end()
