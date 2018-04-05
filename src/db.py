@@ -288,7 +288,10 @@ class DB:
                           ,_('Empty input is not allowed!')
                           )
 
-    def phrase_dic(self):
+    ''' Get 'PhraseDic' before 'Cells' are built when 'PhraseDic' is
+        still of a 'phrase' type.
+    '''
+    def phrase_dic_primary(self):
         if self._articleid:
             self.dbc.execute ('select DICA from BLOCKS \
                                where ARTICLEID = ? and TYPE = ? \
@@ -297,6 +300,27 @@ class DB:
             result = self.dbc.fetchone()
             if result:
                 return result[0]
+        else:
+            sh.log.append ('DB.phrase_dic_primary'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+                          
+    def phrase_dic(self):
+        if self._articleid:
+            result = self.phrase_dic_primary()
+            if result:
+                self.dbc.execute ('select POS1,URL,TEXT from BLOCKS \
+                                   where ARTICLEID = ? and DICA = ? \
+                                   order by NO'
+                                 ,(self._articleid,result,)
+                                 )
+                return self.dbc.fetchone()
+            else:
+                sh.log.append ('DB.phrase_dic'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
         else:
             sh.log.append ('DB.phrase_dic'
                           ,_('WARNING')

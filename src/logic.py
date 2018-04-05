@@ -85,6 +85,7 @@ class ConfigMclient(sh.Config):
            ,'bind_define'                 :'<Control-d>'
            ,'bind_go_back'                :'<Alt-Left>'
            ,'bind_go_forward'             :'<Alt-Right>'
+           ,'bind_go_phrases'             :'<Alt-f>'
            ,'bind_next_pair'              :'<F8>'
            ,'bind_next_pair_alt'          :'<Control-l>'
            ,'bind_prev_pair'              :'<Shift-F8>'

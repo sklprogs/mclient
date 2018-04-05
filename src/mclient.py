@@ -593,6 +593,22 @@ class WebFrame:
         self.widgets()
         self.bindings()
     
+    def go_phrase_dic(self,event=None):
+        phrase_dic = objs.blocks_db().phrase_dic()
+        if phrase_dic:
+            self._posn = phrase_dic[0]
+            if objs._blocks_db.Selectable:
+                objs.request()._url   = phrase_dic[1]
+                objs._request._search = phrase_dic[2]
+                self.load_article()
+            else:
+                self.go_url()
+        else:
+            sh.log.append ('WebFrame.go_phrase_dic'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def prioritize_speech(self):
         # This function takes ~0,07s on 'do'
         query_root = 'update BLOCKS set SPEECHPR = %d where SPEECHA = "%s" or SPEECHA = "%s"'
@@ -804,6 +820,10 @@ class WebFrame:
         sg.bind (obj      = self.gui.obj
                 ,bindings = sh.globs['var']['bind_col3_up']
                 ,action   = lambda e:self.move_prev_section(col_no=2)
+                )
+        sg.bind (obj      = self.gui.obj
+                ,bindings = sh.globs['var']['bind_go_phrases']
+                ,action   = self.go_phrase_dic
                 )
         sg.bind (obj      = self.gui.obj
                 ,bindings = sh.globs['var']['bind_search_article_forward']
@@ -1400,11 +1420,11 @@ class WebFrame:
             # todo (?) insert SPEECHPR in Elems instead of updating
             self.prioritize_speech()
             
-        self._phdic = sh.Input (val        = objs._blocks_db.phrase_dic()
-                               ,func_title = 'WebFrame.load_article'
+        self._phdic = sh.Input (func_title = 'WebFrame.load_article'
+                               ,val        = objs._blocks_db.phrase_dic_primary()
                                ).not_none()
-        data = objs._blocks_db.assign_bp ()
 
+        data = objs._blocks_db.assign_bp ()
         bp = cl.BlockPrioritize (data       = data
                                 ,blacklist  = objs.blacklist()
                                 ,prioritize = objs.prioritize()

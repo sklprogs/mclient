@@ -1,5 +1,13 @@
 
 
+5.9.1
+* Use Alt-f (by default) to go to a list of phrases
+* Separate logic and GUI
+* Close child windows with the same hotkeys they are shown
+* Fix the size of option menus
+* Add a key bind_go_phrases
+* Delete a key bind_copy_history
+
 5.9
 * Fix a bug causing word forms to be shown as "0" in rare cases
 * Set Multitran timeout for 6s at loading
