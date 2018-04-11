@@ -12,35 +12,17 @@ gettext.install('shared','../resources/locale')
 
 class Topics:
     
-    def __init__(self):
+    def __init__(self,url='https://www.multitran.ru/c/m.exe?a=112&l1=1&l2=2'):
         self.values()
+        self._url = url
         
     def values(self):
-        self.Success    = True
-        self._list_file = '/tmp/topics'
-        self._url       = 'https://www.multitran.ru/c/m.exe?a=112&l1=1&l2=2'
-        self._html      = ''
-        self._list      = []
-        self._titles    = []
-        self._abbrs     = []
+        self.Success = True
+        self._html   = ''
+        self._titles = []
+        self._abbrs  = []
         
-    def get_list(self):
-        if self.Success:
-            read         = sh.ReadTextFile(file=self._list_file)
-            self._list   = read.get()
-            self.Success = read.Success
-            self._list   = sh.Input (func_title = 'Topics.get_list'
-                                    ,val        = self._list
-                                    ).not_none()
-            self._list = self._list.splitlines()
-        else:
-            sh.log.append ('Topics.get_list'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
-    
     def run(self):
-        self.get_list()
         self.get_html()
         self.tags()
         
@@ -420,13 +402,96 @@ class Tags:
 
 class Commands:
     
+    # Compare dictionary abbreviations for different languages
+    def new_abbrs(self):
+        file1 = '/tmp/abbr.txt'
+        file2 = '/tmp/abbr2.txt'
+        dic1  = sh.Dic(file=file1)
+        dic1.get()
+        dic2  = sh.Dic(file=file2)
+        dic2.get()
+        if dic1.Success and dic2.Success:
+            missing = []
+            for i in range(len(dic2.orig)):
+                if dic2.orig[i] not in dic1.orig:
+                    missing.append(dic2.orig[i] + '\t' + dic2.transl[i])
+            if missing:
+                sh.objs.mes ('Commands.new_abbrs'
+                            ,_('INFO')
+                            ,'\n'.join(missing)
+                            )
+            else:
+                sh.log.append ('Commands.new_abbrs'
+                              ,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+        else:
+            sh.log.append ('Commands.new_abbrs'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    # Compare dictionary topics for different languages
+    def compare_topics(self):
+        file1 = '/tmp/topics'
+        file2 = '/tmp/topics2'
+        text1 = sh.ReadTextFile(file=file1).get()
+        text2 = sh.ReadTextFile(file=file2).get()
+        if text1 and text2:
+            text1 = text1.splitlines()
+            text2 = text2.splitlines()
+            missing = [item for item in text2 if item not in text1]
+            if missing:
+                sh.objs.mes ('Commands.compare_topics'
+                            ,_('INFO')
+                            ,'\n'.join(missing)
+                            )
+            else:
+                sh.log.append ('Commands.compare_topics'
+                              ,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+        else:
+            sh.log.append ('Commands.compare_topics'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def get_abbrs(self):
-        topics = Topics()
+        file_w = '/tmp/abbr.txt'
+        # English
+        #url = 'https://www.multitran.ru/c/m.exe?a=112&l1=1&l2=2'
+        # German
+        #url = 'https://www.multitran.ru/c/m.exe?a=112&l1=3&l2=2'
+        # Spanish
+        #url = 'https://www.multitran.ru/c/m.exe?a=112&l1=5&l2=2'
+        # French
+        #url = 'https://www.multitran.ru/c/m.exe?a=112&l1=4&l2=2'
+        # Dutch
+        #url = 'https://www.multitran.ru/c/m.exe?a=112&l1=24&l2=2'
+        # Italian
+        #url = 'https://www.multitran.ru/c/m.exe?a=112&l1=23&l2=2'
+        # Latvian
+        #url = 'https://www.multitran.ru/c/m.exe?a=112&l1=27&l2=2'
+        # Estonian
+        #url = 'https://www.multitran.ru/c/m.exe?a=112&l1=26&l2=2'
+        # Afrikaans
+        #url = 'https://www.multitran.ru/c/m.exe?a=112&l1=31&l2=2'
+        # English-German
+        #url = 'https://www.multitran.ru/c/m.exe?a=112&l1=1&l2=3'
+        # Esperanto
+        #url = 'https://www.multitran.ru/c/m.exe?a=112&l1=34&l2=2'
+        # Kalmyk
+        url = 'https://www.multitran.ru/c/m.exe?a=112&l1=35&l2=2'
+        topics = Topics(url=url)
         topics.run()
         if topics._abbrs and topics._titles:
             text = ''
             for i in range(len(topics._abbrs)):
                 text += topics._abbrs[i] + '\t' + topics._titles[i] + '\n'
+            sh.WriteTextFile (file       = file_w
+                             ,AskRewrite = False
+                             ).write(text)
             sg.objs.txt().reset_data()
             sg.objs._txt.title(_('Abbreviations:'))
             sg.objs._txt.insert(text)
@@ -437,7 +502,7 @@ class Commands:
                           ,_('Empty input is not allowed!')
                           )
                           
-    def select_abbrs(self):
+    def missing_titles(self):
         ''' This is a list of dictionaries from
             https://www.multitran.ru/c/m.exe?a=112&l1=1&l2=2.
         '''
@@ -446,7 +511,7 @@ class Commands:
             with some trash deleted. 'dic.orig' - dictionary
             abbreviations, 'dic.transl' - full titles.
         '''
-        file2 = '/tmp/abbrs'
+        file2 = '/tmp/abbr.txt'
         topics = sh.ReadTextFile(file=file1).get()
         dic  = sh.Dic (file     = file2
                       ,Sortable = True
@@ -465,7 +530,7 @@ class Commands:
                     count += 1
                     i -= 1
                 i += 1
-            sh.log.append ('Commands.select_abbrs'
+            sh.log.append ('Commands.missing_titles'
                           ,_('INFO')
                           ,_('%d duplicates have been deleted') % count
                           )
@@ -476,12 +541,9 @@ class Commands:
                    )
                                    )
             message = ''
-            timer = sh.Timer('string concatenation') #todo: del
-            timer.start() #todo: del
             for i in range(len(dic.orig)):
                 message += dic.orig[i] + '\t' + dic.transl[i] + '\n'
-            timer.end() #todo: del
-            sh.objs.mes ('Commands.select_abbrs'
+            sh.objs.mes ('Commands.missing_titles'
                         ,_('INFO')
                         ,message
                         )
@@ -495,12 +557,12 @@ class Commands:
                 message = _('The following dictionary titles do not have abbreviations:')
                 message += '\n'
                 message += '\n'.join(missing)
-                sh.objs.mes ('Commands.select_abbrs'
+                sh.objs.mes ('Commands.missing_titles'
                             ,_('WARNING')
                             ,message
                             )
         else:
-            sh.log.append ('Commands.select_abbrs'
+            sh.log.append ('Commands.missing_titles'
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
@@ -510,14 +572,9 @@ class Commands:
 if __name__ == '__main__':
     import sharedGUI as sg
     sg.objs.start()
-    #Commands().select_abbrs()
-    abbr = Abbr (url   = 'https://www.multitran.ru/c/m.exe?a=110&sc=753&l1=1&l2=2'
-                ,title = 'Астроспектроскопия'
-                )
-    abbr.run()
-    text = abbr.debug()
-    sg.objs.txt().reset_data()
-    sg.objs._txt.insert(text)
-    sg.objs._txt.show()
+    #Commands().get_abbrs()
+    #Commands().missing_titles()
+    #Commands().new_abbrs()
+    Commands().compare_topics()
     sg.objs.end()
                 
