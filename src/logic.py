@@ -262,9 +262,11 @@ class Paths:
                           
     def abbr(self):
         if self.Success:
-            instance = sh.File (file = os.path.join (self.dir.dir
-                                                    ,'dic_abbr.txt'
-                                                    )
+            instance = sh.File (file = sh.objs.pdir().add ('..'
+                                                          ,'user'
+                                                          ,'dic_abbr.txt'
+                                                          )
+                                                    
                                )
             self.Success = instance.Success
             if self.Success:
