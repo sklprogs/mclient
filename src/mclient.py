@@ -90,7 +90,7 @@ class Objects:
         self._top = self._online_mt = self._online_other = self._about \
                   = self._blacklist = self._prioritize = self._request \
                   = self._ext_dics = self._webframe = self._blocks_db \
-                  = self._moves = None
+                  = self._moves = self._abbr = None
 
     def blocks_db(self):
         if not self._blocks_db:
@@ -141,6 +141,11 @@ class Objects:
         if self._prioritize is None:
             self._prioritize = lg.Lists().prioritize()
         return self._prioritize
+        
+    def abbr(self):
+        if self._abbr is None:
+            self._abbr = lg.Lists().abbr()
+        return self._abbr
 
 
 

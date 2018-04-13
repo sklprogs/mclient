@@ -259,6 +259,26 @@ class Paths:
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
+                          
+    def abbr(self):
+        if self.Success:
+            instance = sh.File (file = os.path.join (self.dir.dir
+                                                    ,'dic_abbr.txt'
+                                                    )
+                               )
+            self.Success = instance.Success
+            if self.Success:
+                return instance.file
+            else:
+                sh.log.append ('Paths.abbr'
+                              ,_('WARNING')
+                              ,_('Operation has been canceled.')
+                              )
+        else:
+            sh.log.append ('Paths.abbr'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
 
 
 
@@ -269,8 +289,22 @@ class Lists:
         paths            = Paths()
         self._blacklist  = paths.blacklist()
         self._prioritize = paths.prioritize()
+        self._abbr       = paths.abbr()
         self.Success     = paths.Success
 
+    def abbr(self):
+        if self.Success:
+            dic = sh.Dic (file     = self._abbr
+                         ,Sortable = True
+                         )
+            self.Success = dic.Success
+            return dic
+        else:
+            sh.log.append ('Lists.abbr'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
     def blacklist(self):
         if self.Success:
             text = sh.ReadTextFile(file=self._blacklist).get()
