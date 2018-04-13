@@ -91,13 +91,13 @@ class Elems:
         
     def run(self):
         if self.Success:
-            self.convert_dic_abbr ()
             self.transc           ()
             self.phrases          ()
             self.straight_line    ()
             self.dic_urls         ()
             self.comments         ()
-            self.delete_dic_abbr  ()
+            self.dic_abbr         ()
+            self.dic_abbr_phrases ()
             ''' These 2 procedures should not be combined (otherwise,
                 corrections will have the same color as comments)
             '''
@@ -191,7 +191,7 @@ class Elems:
                     i -= 1
             i += 1
             
-    def delete_dic_abbr(self):
+    def dic_abbr(self):
         i = 0
         while i < len(self._blocks):
             ''' We suppose that these are abbreviations of dictionary
@@ -204,9 +204,30 @@ class Elems:
             '''
             if i > 0 and self._blocks[i-1]._type == 'dic' \
             and self._blocks[i]._same > 0:
-                del self._blocks[i]
+                self._blocks[i]._type = 'dic'
+                del self._blocks[i-1]
                 i -= 1
             i += 1
+            
+    ''' In articles that are entirely related to the Phrases section,
+        full dictionary titles are entirely replaced by dictionary
+        abbreviations, so we treat the latter as the former.
+        Do this before setting a phrase dic.
+        #todo: make this Multitran-only
+        #todo: expand these abbreviations
+    '''
+    def dic_abbr_phrases(self):
+        Dics = False
+        for block in self._blocks:
+            if block._type == 'dic':
+                Dics = True
+                break
+        if not Dics:
+            for i in range(len(self._blocks)):
+                if self._blocks[i]._type == 'comment' \
+                and self._blocks[i]._url \
+                and not 'UserName' in self._blocks[i]._url:
+                    self._blocks[i]._type = 'dic'
             
     def straight_line(self):
         self._blocks = [block for block in self._blocks \
@@ -546,26 +567,6 @@ class Elems:
             if self._blocks[i]._type == 'dic' \
             and self._blocks[i]._text in self._dic_urls:
                 self._blocks[i]._url = self._dic_urls[self._blocks[i]._text]
-    
-    ''' In articles that are entirely related to the Phrases section,
-        full dictionary titles are entirely replaced by dictionary
-        abbreviations, so we treat the latter as the former.
-        Do this before setting a phrase dic.
-        #todo: make this Multitran-only
-        #todo: expand these abbreviations
-    '''
-    def convert_dic_abbr(self):
-        Dics = False
-        for block in self._blocks:
-            if block._type == 'dic':
-                Dics = True
-                break
-        if not Dics:
-            for i in range(len(self._blocks)):
-                if self._blocks[i]._type == 'comment' \
-                and self._blocks[i]._url \
-                and not 'UserName' in self._blocks[i]._url:
-                    self._blocks[i]._type = 'dic'
 
 
 

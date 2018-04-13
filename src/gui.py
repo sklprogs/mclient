@@ -1157,6 +1157,11 @@ class Settings:
                                ,side   = 'left'
                                )
                                
+        self.cb6 = sg.CheckBox (parent = self.fr_cb6
+                               ,Active = False
+                               ,side   = 'left'
+                               )
+                               
     def reset(self,event=None):
         self.sc.set(product)
         self.col1.set(_('Dictionaries'))
@@ -1175,6 +1180,7 @@ class Settings:
         self.cb3.enable()
         self.cb4.enable()
         self.cb5.disable()
+        self.cb6.disable()
 
     def buttons(self):
         sg.Button (parent     = self.fr_but
@@ -1297,6 +1303,10 @@ class Settings:
                                ,expand = False
                                ,fill   = 'x'
                                )
+        self.fr_cb6 = sg.Frame (parent = self.obj
+                               ,expand = False
+                               ,fill   = 'x'
+                               )
         self.fr_but = sg.Frame (parent = self.obj
                                ,expand = False
                                ,fill   = 'x'
@@ -1379,6 +1389,11 @@ class Settings:
         
         self.lb5 = sg.Label (parent = self.fr_cb5
                             ,text   = _('Vertical view')
+                            ,side   = 'left'
+                            )
+                            
+        self.lb6 = sg.Label (parent = self.fr_cb6
+                            ,text   = _('Use abbreviations for dictionaries')
                             ,side   = 'left'
                             )
         
@@ -1561,6 +1576,10 @@ class Settings:
         sg.bind (obj      = self.lb5
                 ,bindings = '<Button-1>'
                 ,action   = self.cb5.toggle
+                )
+        sg.bind (obj      = self.lb6
+                ,bindings = '<Button-1>'
+                ,action   = self.cb6.toggle
                 )
 
     def title(self,text=_('View Settings')):
@@ -1750,5 +1769,7 @@ class SpecSymbols:
 
 if __name__ == '__main__':
     sg.objs.start()
-    WebFrame().show()
+    #WebFrame().show()
+    settings = Settings()
+    settings.show()
     sg.objs.end()

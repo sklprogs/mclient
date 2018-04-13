@@ -145,6 +145,7 @@ class Objects:
     def abbr(self):
         if self._abbr is None:
             self._abbr = lg.Lists().abbr()
+            self._abbr.sort()
         return self._abbr
 
 
@@ -1371,7 +1372,8 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/painting.txt'
                            #,file        = '/home/pete/tmp/ars/рабочая документация.txt'
                            #,file        = '/home/pete/tmp/ars/do.txt'
-                           #,file        = '/home/pete/tmp/ars/set.txt'
+                           #cur
+                           ,file        = '/home/pete/tmp/ars/set.txt'
                            #,file        = '/home/pete/tmp/ars/get.txt'
                            #,file        = '/home/pete/tmp/ars/pack.txt'
                            #,file        = '/home/pete/tmp/ars/counterpart.txt'
@@ -1471,16 +1473,18 @@ class WebFrame:
         data = objs._blocks_db.assign_cells()
 
         if objs._request._cols and objs._request._cols[0] == 'speech':
-            ExpandAbbr = True
+            ExpandSpeech = True
         else:
-            ExpandAbbr = False
+            ExpandSpeech = False
         
-        cells = cl.Cells (data       = data
-                         ,cols       = objs._request._cols
-                         ,collimit   = objs._request._collimit
-                         ,phrase_dic = self._phdic
-                         ,Reverse    = objs._request.Reverse
-                         ,ExpandAbbr = ExpandAbbr
+        cells = cl.Cells (data         = data
+                         ,cols         = objs._request._cols
+                         ,collimit     = objs._request._collimit
+                         ,phrase_dic   = self._phdic
+                         ,Reverse      = objs._request.Reverse
+                         ,ExpandDic    = not self.settings.gui.cb6.get()
+                         ,ExpandSpeech = ExpandSpeech
+                         ,dic_abbr     = objs.abbr()
                          )
         cells.run()
         
