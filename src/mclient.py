@@ -1327,8 +1327,7 @@ class WebFrame:
                            #,file        = '/home/pete/tmp/ars/painting.txt'
                            #,file        = '/home/pete/tmp/ars/рабочая документация.txt'
                            #,file        = '/home/pete/tmp/ars/do.txt'
-                           #cur
-                           ,file        = '/home/pete/tmp/ars/set.txt'
+                           #,file        = '/home/pete/tmp/ars/set.txt'
                            #,file        = '/home/pete/tmp/ars/get.txt'
                            #,file        = '/home/pete/tmp/ars/pack.txt'
                            #,file        = '/home/pete/tmp/ars/counterpart.txt'

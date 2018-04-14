@@ -98,9 +98,10 @@ class BlockPrioritize:
             
     def block(self):
         for block in self._blocks:
+            lst = block._dica.lower().split(', ')
             Block = False
-            for item in self._blacklist:
-                if item in block._dica.lower():
+            for item in lst:
+                if item in self._blacklist:
                     Block = True
                     break
             if self.Block and Block:
@@ -122,7 +123,8 @@ class BlockPrioritize:
             for i in range(len(self._prioritize)):
                 priority = len(self._prioritize) - i
                 for block in self._blocks:
-                    if self._prioritize[i] in block._dica.lower():
+                    lst = block._dica.lower().split(', ')
+                    if self._prioritize[i].lower() in lst:
                         block._priority = priority
                     
     def dump(self):
