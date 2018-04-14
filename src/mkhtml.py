@@ -174,9 +174,22 @@ class HTML:
             self.output.write('<font face="')
             self.output.write(self._family())
             self.output.write('" color="')
-            if self._block._text in self._blacklist:
+            lower = self._block._text.lower()
+            lst = lower.split(',')
+            lst = [item.strip() for item in lst]
+            Block = False
+            for item in lst:
+                if item in self._blacklist:
+                    Block = True
+                    break
+            Prioritize = False
+            for item in lst:
+                if item in self._prioritize:
+                    Prioritize = True
+                    break
+            if Block:
                 self.output.write(self._color_b())
-            elif self._block._text in self._prioritize:
+            elif Prioritize:
                 self.output.write(self._color_p())
             else:
                 self.output.write(self._color())
