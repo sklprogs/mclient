@@ -1496,6 +1496,7 @@ class WebFrame:
 
             elems = el.Elems (blocks    = tags._blocks
                              ,articleid = objs._blocks_db._articleid
+                             ,abbr      = objs.abbr()
                              )
             elems.run()
 
@@ -1623,6 +1624,17 @@ class WebFrame:
         self.search_article.reset()
         self.update_buttons()
         timer.end()
+        
+        '''
+        objs._blocks_db.dbc.execute ('select TEXT from BLOCKS \
+                                      where TYPE = ? \
+                                      order by ARTICLEID,CELLNO,NO'
+                                    ,('dic',)
+                                    )
+        objs._blocks_db.print (Selected=1,Shorten=1,MaxRows=50
+                              ,mode='BLOCKS'
+                              )
+        '''
 
         '''
         objs._blocks_db.dbc.execute ('select SPEECHPR,SPEECHA,TYPE,TEXT\

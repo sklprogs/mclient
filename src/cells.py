@@ -177,7 +177,7 @@ class Cells:
     # Including fixed columns
     def __init__ (self,data,cols,collimit=10
                  ,phrase_dic=None,Reverse=False
-                 ,ExpandSpeech=False,ExpandDic=False
+                 ,ExpandDic=False,ExpandSpeech=False
                  ,dic_abbr=None
                  ):
         # Sqlite fetch
@@ -199,30 +199,6 @@ class Cells:
                           ,_('Empty input is not allowed!')
                           )
         
-    # Takes ~0,033s on 'set'
-    def expand_dic(self):
-        if self.dic_abbr:
-            if self.ExpandDic:
-                for i in range(len(self._blocks)):
-                    if self._blocks[i]._type == 'dic':
-                        ''' For some reason, splitting ', ' still needs
-                            deleting extra space later on.
-                        '''
-                        lst = self._blocks[i]._text.split(',')
-                        for j in range(len(lst)):
-                            lst[j] = lst[j].strip()
-                            try:
-                                ind = self.dic_abbr.orig.index(lst[j])
-                                lst[j] = self.dic_abbr.transl[ind]
-                            except ValueError:
-                                pass
-                        self._blocks[i]._text = ', '.join(lst)
-        else:
-            sh.log.append ('Cells.expand_dic'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
-    
     ''' The 'Phrases' section comes the latest in MT, therefore,
         it inherits fixed columns of the preceding dictionary which are
         irrelevant. Here we clear them.
@@ -278,7 +254,6 @@ class Cells:
             self.restore_fixed()
             self.clear_fixed  ()
             self.clear_phrases()
-            self.expand_dic   ()
             self.expand_speech()
             self.phrases2end  ()
             self.wrap         ()

@@ -230,7 +230,7 @@ class DB:
         for item in self._cols:
             if item == 'dic':
                 query.append('PRIORITY desc')
-                query.append('DICA')
+                query.append('LOWER(DICA)')
             elif item == 'wform':
                 query.append('WFORMA')
             elif item == 'speech':

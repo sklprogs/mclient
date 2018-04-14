@@ -75,11 +75,12 @@ class Block:
 '''
 class Elems:
     
-    def __init__(self,blocks,articleid):
+    def __init__(self,blocks,articleid,abbr=None):
         self._data      = []
         self._dic_urls  = {}
         self._blocks    = blocks
         self._articleid = articleid
+        self.abbr       = abbr
         if self._blocks and self._articleid:
             self.Success = True
         else:
@@ -89,6 +90,25 @@ class Elems:
                           ,_('Empty input is not allowed!')
                           )
         
+    def expand_dica(self):
+        if self.abbr:
+            for i in range(len(self._blocks)):
+                lst = self._blocks[i]._dica.split(',')
+                for j in range(len(lst)):
+                    lst[j] = lst[j].strip()
+                    try:
+                        ind = self.abbr.orig.index(lst[j])
+                        lst[j] = self.abbr.transl[ind]
+                    except ValueError:
+                        pass
+                self._blocks[i]._dica = ', '.join(lst)
+        else:
+            sh.log.append ('Elems.expand_dica'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+
+    
     def run(self):
         if self.Success:
             self.transc           ()
@@ -108,6 +128,7 @@ class Elems:
             self.add_space        ()
             self.fill             ()
             self.fill_terma       ()
+            self.expand_dica      ()
             self.remove_fixed     ()
             self.insert_fixed     ()
             self.fixed_terma      ()
