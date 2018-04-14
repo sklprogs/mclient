@@ -54,14 +54,18 @@ class BlockPrioritize:
                 ,prioritize=[],Block=False
                 ,Prioritize=False,phrase_dic=None
                 ):
+        self._blocks     = []
+        self._query      = ''
         self._data       = data
-        self._blacklist  = blacklist
-        self._prioritize = prioritize
         self.Block       = Block
         self.Prioritize  = Prioritize
         self._phrase_dic = phrase_dic
-        self._blocks     = []
-        self._query      = ''
+        self._blacklist  = sh.Input (func_title = 'BlockPrioritize.__init__'
+                                    ,val        = blacklist
+                                    ).list()
+        self._prioritize = sh.Input (func_title = 'BlockPrioritize.__init__'
+                                    ,val        = prioritize
+                                    ).list()
         if self._data:
             self.Success = True
         else:
@@ -94,7 +98,12 @@ class BlockPrioritize:
             
     def block(self):
         for block in self._blocks:
-            if self.Block and block._dica in self._blacklist:
+            Block = False
+            for item in self._blacklist:
+                if item in block._dica.lower():
+                    Block = True
+                    break
+            if self.Block and Block:
                 block._block = 1
             else:
                 block._block = 0
@@ -113,7 +122,7 @@ class BlockPrioritize:
             for i in range(len(self._prioritize)):
                 priority = len(self._prioritize) - i
                 for block in self._blocks:
-                    if self._prioritize[i].lower() == block._dica.lower():
+                    if self._prioritize[i] in block._dica.lower():
                         block._priority = priority
                     
     def dump(self):

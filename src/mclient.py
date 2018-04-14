@@ -90,7 +90,8 @@ class Objects:
         self._top = self._online_mt = self._online_other = self._about \
                   = self._blacklist = self._prioritize = self._request \
                   = self._ext_dics = self._webframe = self._blocks_db \
-                  = self._moves = self._abbr = None
+                  = self._moves = self._abbr = self._abbrs_low \
+                  = self._titles_low = None
 
     def blocks_db(self):
         if not self._blocks_db:
@@ -133,19 +134,103 @@ class Objects:
     def blacklist(self):
         # Allow empty lists
         if self._blacklist is None:
-            self._blacklist = lg.Lists().blacklist()
+            self._blacklist = sh.Input (func_title = 'Objects.blacklist'
+                                        ,val        = lg.Lists().blacklist()
+                                        ).list()
+            abbrs = sh.Input (func_title = 'Objects.prioritize'
+                             ,val        = self.abbrs_low()
+                             ).list()
+            titles = sh.Input (func_title = 'Objects.prioritize'
+                              ,val        = self.titles_low()
+                              ).list()
+            
+            tmp = []
+            for i in range(len(self._blacklist)):
+                # Fool-proof
+                title = self._blacklist[i].strip()
+                title = title.lower()
+                if title in abbrs:
+                    ind = abbrs.index(title)
+                    tmp.append(title)
+                    tmp.append(titles[ind])
+                elif title in titles:
+                    ind = titles.index(title)
+                    tmp.append(title)
+                    tmp.append(abbrs[ind])
+                else:
+                    tmp.append(title)
+            self._blacklist = tmp
         return self._blacklist
 
     def prioritize(self):
         # Allow empty lists
         if self._prioritize is None:
-            self._prioritize = lg.Lists().prioritize()
+            self._prioritize = sh.Input (func_title = 'Objects.prioritize'
+                                        ,val        = lg.Lists().prioritize()
+                                        ).list()
+            abbrs = sh.Input (func_title = 'Objects.prioritize'
+                             ,val        = self.abbrs_low()
+                             ).list()
+            titles = sh.Input (func_title = 'Objects.prioritize'
+                              ,val        = self.titles_low()
+                              ).list()
+            
+            tmp = []
+            for i in range(len(self._prioritize)):
+                # Fool-proof
+                title = self._prioritize[i].strip()
+                title = title.lower()
+                if title in abbrs:
+                    ind = abbrs.index(title)
+                    tmp.append(title)
+                    tmp.append(titles[ind])
+                elif title in titles:
+                    ind = titles.index(title)
+                    tmp.append(title)
+                    tmp.append(abbrs[ind])
+                else:
+                    tmp.append(title)
+            self._prioritize = tmp
         return self._prioritize
         
+    def abbrs_low(self):
+        if self._abbrs_low is None:
+            dic = self.abbr()
+            if dic:
+                self._abbrs_low = [item.lower() \
+                                   for item in list(dic.orig)
+                                  ]
+            else:
+                sh.log.append ('Objects.abbrs_low'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        return self._abbrs_low
+        
+    def titles_low(self):
+        if self._titles_low is None:
+            dic = self.abbr()
+            if dic:
+                self._titles_low = [item.lower() \
+                                    for item in list(dic.transl)
+                                   ]
+            else:
+                sh.log.append ('Objects.titles_low'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        return self._titles_low
+    
     def abbr(self):
         if self._abbr is None:
             self._abbr = lg.Lists().abbr()
-            self._abbr.sort()
+            if self._abbr:
+                self._abbr.sort()
+            else:
+                sh.log.append ('Objects.abbr'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
         return self._abbr
 
 
