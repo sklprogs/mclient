@@ -1576,15 +1576,16 @@ class WebFrame:
         
         cells.dump(blocks_db=objs._blocks_db)
         
-        get_html = mh.HTML (data       = objs._blocks_db.fetch()
-                           ,cols       = objs._request._cols
-                           ,collimit   = objs._request._collimit
-                           ,blacklist  = objs.blacklist()
-                           ,prioritize = objs.prioritize()
-                           ,width      = sh.globs['int']['col_width']
-                           ,Reverse    = objs._request.Reverse
-                           )
-        objs._request._html = get_html._html
+        mh.objs.html().reset (data       = objs._blocks_db.fetch()
+                             ,cols       = objs._request._cols
+                             ,collimit   = objs._request._collimit
+                             ,blacklist  = objs.blacklist()
+                             ,prioritize = objs.prioritize()
+                             ,width      = sh.globs['int']['col_width']
+                             ,Reverse    = objs._request.Reverse
+                             )
+        mh.objs._html.run()
+        objs._request._html = mh.objs._html._html
         self.fill(code=objs._request._html)
 
         data = objs._blocks_db.assign_pos()

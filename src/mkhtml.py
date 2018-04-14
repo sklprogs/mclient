@@ -21,11 +21,18 @@ class Block:
 
 class HTML:
 
-    def __init__(self,data,cols,collimit=9
-                ,Printer=False,blacklist=[]
-                ,prioritize=[],width=0
-                ,Reverse=False
-                ): # 'collimit' includes fixed blocks
+    def __init__(self):
+        self.values()
+        self.priority_colors()
+        self.blocked_colors()
+
+    # 'collimit' includes fixed blocks
+    def reset (self,data,cols,collimit=9
+              ,Printer=False,blacklist=[]
+              ,prioritize=[],width=0
+              ,Reverse=False
+              ):
+        self.values()
         self._data       = data
         self._cols       = cols
         self._collimit   = collimit
@@ -34,10 +41,16 @@ class HTML:
         self._prioritize = prioritize
         self._width      = width
         self.Reverse     = Reverse
-        self._blocks     = []
-        self._block      = None
-        self._html       = ''
-        self._script     = '''
+        
+    def run(self):
+        self.assign()
+        self.html()
+    
+    def values(self):
+        self._blocks = []
+        self._block  = None
+        self._html   = ''
+        self._script = '''
         <head>
 
           <div align="center">
@@ -74,11 +87,7 @@ class HTML:
 
         </head>
         '''
-        self.assign()
-        self.priority_colors()
-        self.blocked_colors()
-        self.html()
-
+    
     def priority_colors(self):
         default_color = 'red'
         delta         = -76
@@ -382,7 +391,23 @@ class HTML:
 
 
 
+class Objects:
+    
+    def __init__(self):
+        self._html = None
+        
+    def html(self):
+        if self._html is None:
+            self._html = HTML()
+        return self._html
+
+
+objs = Objects()
+
+
+
 if __name__ == '__main__':
+    #todo: synchronize arguments
     import page    as pg
     import tags    as tg
     import db
