@@ -87,11 +87,7 @@ sources = (_('All'),_('Online'),_('Offline'))
 class Objects:
 
     def __init__(self):
-        self._top = self._online_mt = self._online_other = self._about \
-                  = self._blacklist = self._prioritize = self._request \
-                  = self._ext_dics = self._webframe = self._blocks_db \
-                  = self._moves = self._abbr = self._abbrs_low \
-                  = self._titles_low = None
+        self._ext_dics = self._webframe = self._blocks_db = None
 
     def blocks_db(self):
         if not self._blocks_db:
@@ -109,135 +105,11 @@ class Objects:
             self._ext_dics = pg.ExtDics(path=sh.objs.pdir().add('..','user','dics'))
         return self._ext_dics
 
-    def request(self):
-        if not self._request:
-            self._request = lg.CurRequest()
-        return self._request
-
-    def online_mt(self):
-        if not self._online_mt:
-            self._online_mt = sh.Online(MTSpecific=True)
-        return self._online_mt
-
-    def online_other(self):
-        if not self._online_other:
-            self._online_other = sh.Online(MTSpecific=False)
-        return self._online_other
-
-    def online(self):
-        #todo: create a sub-source
-        if objs.request()._source in (_('All'),_('Online')):
-            return self.online_mt()
-        else:
-            return self.online_other()
-
-    def blacklist(self):
-        # Allow empty lists
-        if self._blacklist is None:
-            self._blacklist = sh.Input (func_title = 'Objects.blacklist'
-                                        ,val        = lg.Lists().blacklist()
-                                        ).list()
-            abbrs = sh.Input (func_title = 'Objects.prioritize'
-                             ,val        = self.abbrs_low()
-                             ).list()
-            titles = sh.Input (func_title = 'Objects.prioritize'
-                              ,val        = self.titles_low()
-                              ).list()
-            
-            tmp = []
-            for i in range(len(self._blacklist)):
-                # Fool-proof
-                title = self._blacklist[i].strip()
-                title = title.lower()
-                if title in abbrs:
-                    ind = abbrs.index(title)
-                    tmp.append(title)
-                    tmp.append(titles[ind])
-                elif title in titles:
-                    ind = titles.index(title)
-                    tmp.append(title)
-                    tmp.append(abbrs[ind])
-                else:
-                    tmp.append(title)
-            self._blacklist = tmp
-        return self._blacklist
-
-    def prioritize(self):
-        # Allow empty lists
-        if self._prioritize is None:
-            self._prioritize = sh.Input (func_title = 'Objects.prioritize'
-                                        ,val        = lg.Lists().prioritize()
-                                        ).list()
-            abbrs = sh.Input (func_title = 'Objects.prioritize'
-                             ,val        = self.abbrs_low()
-                             ).list()
-            titles = sh.Input (func_title = 'Objects.prioritize'
-                              ,val        = self.titles_low()
-                              ).list()
-            
-            tmp = []
-            for i in range(len(self._prioritize)):
-                # Fool-proof
-                title = self._prioritize[i].strip()
-                title = title.lower()
-                if title in abbrs:
-                    ind = abbrs.index(title)
-                    tmp.append(title)
-                    tmp.append(titles[ind])
-                elif title in titles:
-                    ind = titles.index(title)
-                    tmp.append(title)
-                    tmp.append(abbrs[ind])
-                else:
-                    tmp.append(title)
-            self._prioritize = tmp
-        return self._prioritize
-        
-    def abbrs_low(self):
-        if self._abbrs_low is None:
-            dic = self.abbr()
-            if dic:
-                self._abbrs_low = [item.lower() \
-                                   for item in list(dic.orig)
-                                  ]
-            else:
-                sh.log.append ('Objects.abbrs_low'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
-        return self._abbrs_low
-        
-    def titles_low(self):
-        if self._titles_low is None:
-            dic = self.abbr()
-            if dic:
-                self._titles_low = [item.lower() \
-                                    for item in list(dic.transl)
-                                   ]
-            else:
-                sh.log.append ('Objects.titles_low'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
-        return self._titles_low
-    
-    def abbr(self):
-        if self._abbr is None:
-            self._abbr = lg.Lists().abbr()
-            if self._abbr:
-                self._abbr.sort()
-            else:
-                sh.log.append ('Objects.abbr'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
-        return self._abbr
-
 
 
 def call_app():
     # Использовать то же сочетание клавиш для вызова окна
-    sg.Geometry(parent=objs.webframe().gui.obj).activate(MouseClicked=objs.request().MouseClicked)
+    sg.Geometry(parent=objs.webframe().gui.obj).activate(MouseClicked=lg.objs.request().MouseClicked)
     ''' #todo: check if this is still the problem
         In case of .focus_set() *first* Control-c-c can call an inactive
         widget.
@@ -246,22 +118,22 @@ def call_app():
 
 # Перехватить нажатие Control-c-c
 def timed_update():
-    objs.request().MouseClicked = False
+    lg.objs.request().MouseClicked = False
     check = kl_mod.keylistener.check()
     if check:
-        if check == 1 and objs._request.CaptureHotkey:
+        if check == 1 and lg.objs._request.CaptureHotkey:
             ''' Позволяет предотвратить зависание потока в версиях
                 Windows старше XP
             '''
             if sh.oss.win():
                 kl_mod.keylistener.cancel()
                 kl_mod.keylistener.restart()
-            objs._request.MouseClicked = True
+            lg.objs._request.MouseClicked = True
             new_clipboard = sg.Clipboard().paste()
             if new_clipboard:
-                objs._request._search = new_clipboard
+                lg.objs._request._search = new_clipboard
                 objs.webframe().go_search()
-        if check == 2 or objs._request.CaptureHotkey:
+        if check == 2 or lg.objs._request.CaptureHotkey:
             call_app()
     sg.objs.root().widget.after(300,timed_update)
 
@@ -291,8 +163,8 @@ class About:
 
     # Открыть веб-страницу с лицензией
     def open_license_url(self,event=None):
-        objs.online()._url = sh.globs['license_url']
-        objs.online().browse()
+        lg.objs.online()._url = sh.globs['license_url']
+        lg.objs.online().browse()
 
     # Отобразить информацию о лицензии третьих сторон
     def show_third_parties(self,event=None):
@@ -348,14 +220,14 @@ class SaveArticle:
 
     def view_as_html(self):
         self.file = sg.dialog_save_file(filetypes=self._html_types)
-        if self.file and objs.request()._html:
+        if self.file and lg.objs.request()._html:
             self.fix_ext(ext='.htm')
             ''' We disable AskRewrite because the confirmation is
                 already built in the internal dialog
             '''
             sh.WriteTextFile (file       = self.file
                              ,AskRewrite = False
-                             ).write(objs._request._html)
+                             ).write(lg.objs._request._html)
         else:
             sh.log.append ('SaveArticle.view_as_html'
                           ,_('WARNING')
@@ -370,12 +242,12 @@ class SaveArticle:
             работали и в локальном файле.
         '''
         self.file = sg.dialog_save_file(filetypes=self._html_types)
-        if self.file and objs.request()._html_raw:
+        if self.file and lg.objs.request()._html_raw:
             self.fix_ext(ext='.htm')
             #todo: fix remaining links to localhost
             sh.WriteTextFile (file       = self.file
                              ,AskRewrite = False
-                             ).write(objs._request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/M.exe?',sh.globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/m.exe?',sh.globs['var']['pair_root']))
+                             ).write(lg.objs._request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/M.exe?',sh.globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/m.exe?',sh.globs['var']['pair_root']))
         else:
             sh.log.append ('SaveArticle.raw_as_html'
                           ,_('WARNING')
@@ -397,7 +269,7 @@ class SaveArticle:
                           )
 
     def copy_raw(self):
-        sg.Clipboard().copy(objs.request()._html_raw)
+        sg.Clipboard().copy(lg.objs.request()._html_raw)
 
     def copy_txt(self):
         text = objs.webframe().text()
@@ -597,8 +469,8 @@ class History:
 
     def autoselect(self):
         self.gui.obj.clear_selection()
-        item = str(objs.blocks_db()._articleid) + ' ► ' \
-                                                + objs.request()._search
+        item = str(objs.blocks_db()._articleid) \
+               + ' ► ' + lg.objs.request()._search
         self.gui.obj.set(item=item)
 
     def show(self,event=None):
@@ -628,7 +500,7 @@ class History:
         self.gui.obj.clear()
         objs.webframe().reset()
         objs._webframe.search_article.gui.obj.clear_text()
-        objs.request().reset()
+        lg.objs.request().reset()
 
     def go_first(self,event=None):
         if self.gui.obj.lst:
@@ -659,9 +531,9 @@ class History:
             objs.blocks_db()._articleid = int(result[0])
             result = objs._blocks_db.article()
             if result:
-                objs._request._source = result[0]
-                objs._request._search = result[1]
-                objs._request._url    = result[2]
+                lg.objs._request._source = result[0]
+                lg.objs._request._search = result[1]
+                lg.objs._request._url    = result[2]
                 objs.webframe().load_article()
             else:
                 sh.log.append ('History.go'
@@ -689,8 +561,8 @@ class WebFrame:
         if phrase_dic:
             self._posn = phrase_dic[0]
             if objs._blocks_db.Selectable:
-                objs.request()._url   = phrase_dic[1]
-                objs._request._search = phrase_dic[2]
+                lg.objs.request()._url   = phrase_dic[1]
+                lg.objs._request._search = phrase_dic[2]
                 self.load_article()
             else:
                 self.go_url()
@@ -706,25 +578,25 @@ class WebFrame:
         query = ['begin']
         # Parts of speech here must be non-localized
         query.append (query_root
-                     % (objs._request._pr_n,'Существительное','сущ.')
+                     % (lg.objs._request._pr_n,'Существительное','сущ.')
                      )
         query.append (query_root
-                     % (objs._request._pr_v,'Глагол','гл.')
+                     % (lg.objs._request._pr_v,'Глагол','гл.')
                      )
         query.append (query_root
-                     % (objs._request._pr_adj,'Прилагательное','прил.')
+                     % (lg.objs._request._pr_adj,'Прилагательное','прил.')
                      )
         query.append (query_root
-                     % (objs._request._pr_abbr,'Сокращение','сокр.')
+                     % (lg.objs._request._pr_abbr,'Сокращение','сокр.')
                      )
         query.append (query_root
-                     % (objs._request._pr_adv,'Наречие','нареч.')
+                     % (lg.objs._request._pr_adv,'Наречие','нареч.')
                      )
         query.append (query_root
-                     % (objs._request._pr_prep,'Предлог','предл.')
+                     % (lg.objs._request._pr_prep,'Предлог','предл.')
                      )
         query.append (query_root
-                     % (objs._request._pr_pron,'Местоимение','мест.')
+                     % (lg.objs._request._pr_pron,'Местоимение','мест.')
                      )
         query.append('commit;')
         query = ';'.join(query)
@@ -732,14 +604,13 @@ class WebFrame:
     
     def prioritize_dic(self,dic=None):
         if dic:
-            objs.prioritize()
-            if dic in objs._prioritize:
+            if dic in lg.objs.prioritize():
                 sh.log.append ('WebFrame.prioritize_dic'
                               ,_('INFO')
                               ,_('Nothing to do!')
                               )
             else:
-                objs._prioritize.append(dic)
+                lg.objs._prioritize.append(dic)
         else:
             sh.log.append ('WebFrame.prioritize_dic'
                           ,_('WARNING')
@@ -748,8 +619,8 @@ class WebFrame:
                           
     def unprioritize_dic(self,dic=None):
         if dic:
-            if dic in objs.prioritize():
-                objs._prioritize.remove(dic)
+            if dic in lg.objs.prioritize():
+                lg.objs._prioritize.remove(dic)
             else:
                 sh.log.append ('WebFrame.unprioritize_dic'
                               ,_('INFO')
@@ -763,14 +634,13 @@ class WebFrame:
     
     def block_dic(self,dic=None):
         if dic:
-            objs.blacklist()
-            if dic in objs._blacklist:
+            if dic in lg.objs.blacklist():
                 sh.log.append ('WebFrame.block_dic'
                               ,_('INFO')
                               ,_('Nothing to do!')
                               )
             else:
-                objs._blacklist.append(dic)
+                lg.objs._blacklist.append(dic)
         else:
             sh.log.append ('WebFrame.block_dic'
                           ,_('WARNING')
@@ -779,8 +649,8 @@ class WebFrame:
     
     def unblock_dic(self,dic=None):
         if dic:
-            if dic in objs.blacklist():
-                objs._blacklist.remove(dic)
+            if dic in lg.objs.blacklist():
+                lg.objs._blacklist.remove(dic)
             else:
                 sh.log.append ('WebFrame.unblock_dic'
                               ,_('INFO')
@@ -816,7 +686,7 @@ class WebFrame:
     
     # Вставить текущий запрос
     def insert_repeat_sign(self,event=None):
-        sg.Clipboard().copy(str(objs.request()._search))
+        sg.Clipboard().copy(str(lg.objs.request()._search))
         self.gui.paste_search()
         
     def reset(self):
@@ -1222,7 +1092,7 @@ class WebFrame:
 
     def text(self,event=None):
         # We will have a Segmentation Fault on empty input
-        if objs.request()._html:
+        if lg.objs.request()._html:
             return self.gui.widget.text('text')
 
     def mouse_sel(self,event=None):
@@ -1407,7 +1277,7 @@ class WebFrame:
                        )
             # Othewise, we will have a segmentation fault here
             self.reset()
-            objs.request().reset()
+            lg.objs.request().reset()
 
     def load_article(self):
         ''' #note: each time the contents of the current page is changed
@@ -1417,9 +1287,9 @@ class WebFrame:
         timer.start()
         # Do not allow selection positions from previous articles
         self._pos = -1
-        articleid = objs.blocks_db().present (source = objs.request()._source
-                                             ,title  = objs._request._search
-                                             ,url    = objs._request._url
+        articleid = objs.blocks_db().present (source = lg.objs.request()._source
+                                             ,title  = lg.objs._request._search
+                                             ,url    = lg.objs._request._url
                                              )
         if articleid:
             sh.log.append (func    = 'WebFrame.load_article'
@@ -1432,11 +1302,11 @@ class WebFrame:
             page = None
         else:
             # None skips the autoincrement
-            data = (None                  # (00) ARTICLEID
-                   ,objs._request._source # (01) SOURCE
-                   ,objs._request._search # (02) TITLE
-                   ,objs._request._url    # (03) URL
-                   ,self._pos             # (04) BOOKMARK
+            data = (None                     # (00) ARTICLEID
+                   ,lg.objs._request._source # (01) SOURCE
+                   ,lg.objs._request._search # (02) TITLE
+                   ,lg.objs._request._url    # (03) URL
+                   ,self._pos                # (04) BOOKMARK
                    )
             objs._blocks_db.fill_articles(data=data)
             
@@ -1444,10 +1314,10 @@ class WebFrame:
             
             ptimer = sh.Timer(func_title='WebFrame.load_article (Page)')
             ptimer.start()
-            page = pg.Page (source       = objs._request._source
-                           ,lang         = objs._request._lang
-                           ,search       = objs._request._search
-                           ,url          = objs._request._url
+            page = pg.Page (source       = lg.objs._request._source
+                           ,lang         = lg.objs._request._lang
+                           ,search       = lg.objs._request._search
+                           ,url          = lg.objs._request._url
                            ,win_encoding = sh.globs['var']['win_encoding']
                            ,ext_dics     = objs.ext_dics()
                            ,timeout      = sh.globs['int']['timeout']
@@ -1480,23 +1350,23 @@ class WebFrame:
             page.run()
             ptimer.end()
             #todo: #fix: assign this for already loaded articles too
-            objs._request._page = page._page
+            lg.objs._request._page = page._page
             ''' #note: #todo: 'Page' returns '_html_raw' for online
                 pages only; this value can be separated for
                 online & offline sources after introducing sub-sources
                 instead of relying on _('All')
             '''
-            objs._request._html_raw = page._html_raw
+            lg.objs._request._html_raw = page._html_raw
             
-            tags = tg.Tags (text      = objs._request._page
-                           ,source    = objs._request._source
+            tags = tg.Tags (text      = lg.objs._request._page
+                           ,source    = lg.objs._request._source
                            ,pair_root = sh.globs['var']['pair_root']
                            )
             tags.run()
 
             elems = el.Elems (blocks    = tags._blocks
                              ,articleid = objs._blocks_db._articleid
-                             ,abbr      = objs.abbr()
+                             ,abbr      = lg.objs.abbr()
                              )
             elems.run()
 
@@ -1519,10 +1389,10 @@ class WebFrame:
 
         data = objs._blocks_db.assign_bp ()
         bp = cl.BlockPrioritize (data       = data
-                                ,blacklist  = objs.blacklist()
-                                ,prioritize = objs.prioritize()
-                                ,Block      = objs._request.Block
-                                ,Prioritize = objs._request.Prioritize
+                                ,blacklist  = lg.objs.blacklist()
+                                ,prioritize = lg.objs.prioritize()
+                                ,Block      = lg.objs._request.Block
+                                ,Prioritize = lg.objs._request.Prioritize
                                 ,phrase_dic = self._phdic
                                 )
         bp.run()
@@ -1539,18 +1409,18 @@ class WebFrame:
         or dics and len(dics) == 1 \
         or page and page.HasLocal \
         or not self._phdic:
-            # or check 'objs._request._search' by pattern '\d+ фраз'
-            objs._request.SpecialPage = True
+            # or check 'lg.objs._request._search' by pattern '\d+ фраз'
+            lg.objs._request.SpecialPage = True
         else:
             # Otherwise, 'SpecialPage' will be inherited
-            objs._request.SpecialPage = False
+            lg.objs._request.SpecialPage = False
 
         self.update_columns()
         
-        SortTerms = objs._request.SortTerms \
-                    and not objs._request.SpecialPage
-        objs._blocks_db.reset (cols      = objs._request._cols
-                              ,SortRows  = objs._request.SortRows
+        SortTerms = lg.objs._request.SortTerms \
+                    and not lg.objs._request.SpecialPage
+        objs._blocks_db.reset (cols      = lg.objs._request._cols
+                              ,SortRows  = lg.objs._request.SortRows
                               ,SortTerms = SortTerms
                               )
         objs._blocks_db.unignore()
@@ -1558,35 +1428,35 @@ class WebFrame:
         
         data = objs._blocks_db.assign_cells()
 
-        if objs._request._cols and objs._request._cols[0] == 'speech':
+        if lg.objs._request._cols and lg.objs._request._cols[0] == 'speech':
             ExpandSpeech = True
         else:
             ExpandSpeech = False
         
         cells = cl.Cells (data         = data
-                         ,cols         = objs._request._cols
-                         ,collimit     = objs._request._collimit
+                         ,cols         = lg.objs._request._cols
+                         ,collimit     = lg.objs._request._collimit
                          ,phrase_dic   = self._phdic
-                         ,Reverse      = objs._request.Reverse
+                         ,Reverse      = lg.objs._request.Reverse
                          ,ExpandDic    = not self.settings.gui.cb6.get()
                          ,ExpandSpeech = ExpandSpeech
-                         ,dic_abbr     = objs.abbr()
+                         ,dic_abbr     = lg.objs.abbr()
                          )
         cells.run()
         
         cells.dump(blocks_db=objs._blocks_db)
         
         mh.objs.html().reset (data       = objs._blocks_db.fetch()
-                             ,cols       = objs._request._cols
-                             ,collimit   = objs._request._collimit
-                             ,blacklist  = objs.blacklist()
-                             ,prioritize = objs.prioritize()
+                             ,cols       = lg.objs._request._cols
+                             ,collimit   = lg.objs._request._collimit
+                             ,blacklist  = lg.objs.blacklist()
+                             ,prioritize = lg.objs.prioritize()
                              ,width      = sh.globs['int']['col_width']
-                             ,Reverse    = objs._request.Reverse
+                             ,Reverse    = lg.objs._request.Reverse
                              )
         mh.objs._html.run()
-        objs._request._html = mh.objs._html._html
-        self.fill(code=objs._request._html)
+        lg.objs._request._html = mh.objs._html._html
+        self.fill(code=lg.objs._request._html)
 
         data = objs._blocks_db.assign_pos()
         pos  = cl.Pos (data     = data
@@ -1601,7 +1471,7 @@ class WebFrame:
         pages.run()
         objs._blocks_db.update(query=pages._query)
         
-        self.title(arg=objs._request._search)
+        self.title(arg=lg.objs._request._search)
         if self._pos >= 0:
             self.select()
             self.shift_screen()
@@ -1696,7 +1566,7 @@ class WebFrame:
                            2) A prioritized dictionary - unprioritize
                            3) A blocked dictionary - unblock
                     '''
-                    if result[6] in objs.blacklist():
+                    if result[6] in lg.objs.blacklist():
                         self.unblock_dic(dic=result[6])
                     else:
                         self.prioritize_dic(dic=result[6])
@@ -1715,19 +1585,19 @@ class WebFrame:
             elif search == sh.globs['var']['repeat_sign2']:
                 self.insert_repeat_sign2()
             else:
-                objs._request._search = search
+                lg.objs._request._search = search
                 self.go_search()
 
     # Follow the URL of the current block
     def go_url(self,event=None):
-        if not objs.request().MouseClicked:
+        if not lg.objs.request().MouseClicked:
             url = objs.blocks_db().url(pos=self._pos)
             if url:
-                objs._request._search = objs._blocks_db.text(pos=self._pos)
-                objs._request._url    = url
+                lg.objs._request._search = objs._blocks_db.text(pos=self._pos)
+                lg.objs._request._url    = url
                 sh.log.append ('WebFrame.go_url'
                               ,_('INFO')
-                              ,_('Open link: %s') % objs._request._url
+                              ,_('Open link: %s') % lg.objs._request._url
                               )
                 self.load_article()
             # Do not warn when there are no articles yet
@@ -1747,34 +1617,34 @@ class WebFrame:
             self.get_url()
             sh.log.append ('WebFrame.go_search'
                           ,_('DEBUG')
-                          ,objs.request()._search
+                          ,lg.objs.request()._search
                           )
             self.load_article()
 
     def set_source(self,event=None):
-        objs.request()._source = sources[self.gui.men_srcs.index]
+        lg.objs.request()._source = sources[self.gui.men_srcs.index]
         sh.log.append ('WebFrame.set_source'
                       ,_('INFO')
-                      ,_('Set source to "%s"') % objs._request._source
+                      ,_('Set source to "%s"') % lg.objs._request._source
                       )
         self.load_article()
 
     def get_url(self):
         #note: encoding must be UTF-8 here
-        if objs.request()._source == _('Offline'):
-            objs.online().reset (self.get_pair()
-                                ,objs.request()._search
-                                ,MTSpecific=False
-                                )
+        if lg.objs.request()._source == _('Offline'):
+            lg.objs.online().reset (base_str   = self.get_pair()
+                                   ,search_str = lg.objs.request()._search
+                                   ,MTSpecific = False
+                                   )
         else:
-            objs.online().reset (self.get_pair()
-                                ,objs.request()._search
-                                ,MTSpecific=True
-                                )
-            objs.request()._url = objs.online().url()
+            lg.objs.online().reset (base_str   = self.get_pair()
+                                   ,search_str = lg.objs.request()._search
+                                   ,MTSpecific = True
+                                   )
+            lg.objs._request._url = lg.objs.online().url()
         sh.log.append ('WebFrame.get_url'
                       ,_('DEBUG')
-                      ,str(objs.request()._url)
+                      ,str(lg.objs._request._url)
                       )
 
     #todo: move 'move_*' procedures to Moves class
@@ -1931,16 +1801,16 @@ class WebFrame:
 
     # Следить за буфером обмена
     def watch_clipboard(self,event=None):
-        if objs.request().CaptureHotkey:
-            objs._request.CaptureHotkey = False
+        if lg.objs.request().CaptureHotkey:
+            lg.objs._request.CaptureHotkey = False
         else:
-            objs._request.CaptureHotkey = True
+            lg.objs._request.CaptureHotkey = True
         self.update_buttons()
 
     # Открыть URL текущей статьи в браузере
     def open_in_browser(self,event=None):
-        objs.online()._url = objs.request()._url
-        objs.online().browse()
+        lg.objs.online()._url = lg.objs.request()._url
+        lg.objs.online().browse()
 
     # Скопировать текст текущего блока
     def copy_text(self,event=None):
@@ -1963,7 +1833,7 @@ class WebFrame:
 
     # Скопировать URL текущей статьи
     def copy_url(self,event=None):
-        sg.Clipboard().copy(objs.request()._url)
+        sg.Clipboard().copy(lg.objs.request()._url)
         if sh.globs['bool']['Iconify']:
             sg.Geometry(parent=self.gui.obj).minimize()
 
@@ -1987,12 +1857,12 @@ class WebFrame:
             result = objs.blocks_db().block_pos(pos=self._pos)
             search_str = 'define:' + result[6]
         else:
-            search_str = 'define:' + objs.request()._search
+            search_str = 'define:' + lg.objs.request()._search
         if search_str != 'define:':
-            objs.online().reset (base_str   = sh.globs['var']['web_search_url']
-                                ,search_str = search_str
-                                )
-            objs.online().browse()
+            lg.objs.online().reset (base_str   = sh.globs['var']['web_search_url']
+                                   ,search_str = search_str
+                                   )
+            lg.objs.online().browse()
         else:
             sh.log.append ('WebFrame.define'
                           ,_('WARNING')
@@ -2022,33 +1892,33 @@ class WebFrame:
         else:
             self.gui.btn_next.inactive()
 
-        if objs.request().CaptureHotkey:
+        if lg.objs.request().CaptureHotkey:
             self.gui.btn_clip.active()
         else:
             self.gui.btn_clip.inactive()
 
-        if objs._request.Reverse:
+        if lg.objs._request.Reverse:
             self.gui.btn_view.inactive()
             self.settings.gui.cb5.enable()
         else:
             self.gui.btn_view.active()
             self.settings.gui.cb5.disable()
 
-        if not objs._request.SpecialPage and objs._request.SortTerms:
+        if not lg.objs._request.SpecialPage and lg.objs._request.SortTerms:
             self.gui.btn_alph.active()
             self.settings.gui.cb2.enable()
         else:
             self.gui.btn_alph.inactive()
             self.settings.gui.cb2.disable()
 
-        if objs._request.Block and objs._blocks_db.blocked():
+        if lg.objs._request.Block and objs._blocks_db.blocked():
             self.gui.btn_blok.active()
             self.settings.gui.cb3.enable()
         else:
             self.gui.btn_blok.inactive()
             self.settings.gui.cb3.disable()
 
-        if not objs._request.SpecialPage and objs._request.Prioritize \
+        if not lg.objs._request.SpecialPage and lg.objs._request.Prioritize \
         and objs._blocks_db.prioritized():
             self.gui.btn_prio.active()
             self.settings.gui.cb4.enable()
@@ -2063,9 +1933,9 @@ class WebFrame:
             objs._blocks_db._articleid = result
             result = objs._blocks_db.article()
             if result:
-                objs._request._source = result[0]
-                objs._request._search = result[1]
-                objs._request._url    = result[2]
+                lg.objs._request._source = result[0]
+                lg.objs._request._search = result[1]
+                lg.objs._request._url    = result[2]
                 self.load_article()
             else:
                 sh.log.append ('WebFrame.go_back'
@@ -2085,9 +1955,9 @@ class WebFrame:
             objs._blocks_db._articleid = result
             result = objs._blocks_db.article()
             if result:
-                objs._request._source = result[0]
-                objs._request._search = result[1]
-                objs._request._url    = result[2]
+                lg.objs._request._source = result[0]
+                lg.objs._request._search = result[1]
+                lg.objs._request._url    = result[2]
                 self.load_article()
             else:
                 sh.log.append ('WebFrame.go_forward'
@@ -2103,11 +1973,11 @@ class WebFrame:
     # Confirm too long requests
     def control_length(self):
         Confirmed = True
-        if len(objs.request()._search) >= 150:
+        if len(lg.objs.request()._search) >= 150:
             if not sg.Message (func    = 'WebFrame.control_length'
                               ,level   = _('QUESTION')
                               ,message = _('The request is long (%d symbols). Do you really want to send it?') \
-                                         % len(objs._request._search)
+                                         % len(lg.objs._request._search)
                               ).Yes:
                 Confirmed = False
         return Confirmed
@@ -2118,10 +1988,10 @@ class WebFrame:
         self.search_article.forward()
 
     def set_lang(self,event=None):
-        objs.request()._lang = langs[self.gui.men_pair.index]
+        lg.objs.request()._lang = langs[self.gui.men_pair.index]
         sh.log.append ('WebFrame.set_lang'
                       ,_('INFO')
-                      ,_('Set language to "%s"') % objs._request._lang
+                      ,_('Set language to "%s"') % lg.objs._request._lang
                       )
 
     def get_pair(self):
@@ -2132,10 +2002,10 @@ class WebFrame:
                       ,_('INFO')
                       ,str(self.gui.men_cols.choice)
                       )
-        fixed = [col for col in objs.request()._cols \
+        fixed = [col for col in lg.objs.request()._cols \
                  if col != _('Do not set')
                 ]
-        objs._request._collimit = self.gui.men_cols.choice + len(fixed)
+        lg.objs._request._collimit = self.gui.men_cols.choice + len(fixed)
         objs.blocks_db().delete_bookmarks()
         self.load_article()
 
@@ -2150,24 +2020,24 @@ class WebFrame:
             self.spec_symbols.gui.close()
 
     def toggle_view(self,event=None):
-        if objs.request().Reverse:
-            objs._request.Reverse = False
+        if lg.objs.request().Reverse:
+            lg.objs._request.Reverse = False
         else:
-            objs._request.Reverse = True
+            lg.objs._request.Reverse = True
         objs.blocks_db().delete_bookmarks()
         self.load_article()
 
     def toggle_alphabet(self,event=None):
-        if objs.request().SortTerms:
-            objs._request.SortTerms = False
+        if lg.objs.request().SortTerms:
+            lg.objs._request.SortTerms = False
         else:
-            objs._request.SortTerms = True
+            lg.objs._request.SortTerms = True
         objs.blocks_db().delete_bookmarks()
         self.load_article()
 
     def toggle_block(self,event=None):
-        if objs.request().Block:
-            objs._request.Block = False
+        if lg.objs.request().Block:
+            lg.objs._request.Block = False
             '''
             sg.Message (func    = 'WebFrame.toggle_block'
                        ,level   = _('INFO')
@@ -2176,8 +2046,8 @@ class WebFrame:
             '''
             self.unblock()
         else:
-            objs._request.Block = True
-            if objs._blacklist:
+            lg.objs._request.Block = True
+            if lg.objs._blacklist:
                 '''
                 sg.Message (func    = 'WebFrame.toggle_block'
                            ,level   = _('INFO')
@@ -2222,8 +2092,8 @@ class WebFrame:
             objs._blocks_db.update(query=query)
 
     def toggle_priority(self,event=None):
-        if objs.request().Prioritize:
-            objs._request.Prioritize = False
+        if lg.objs.request().Prioritize:
+            lg.objs._request.Prioritize = False
             '''
             sg.Message (func    = 'WebFrame.toggle_priority'
                        ,level   = _('INFO')
@@ -2232,8 +2102,8 @@ class WebFrame:
             '''
             self.unprioritize()
         else:
-            objs._request.Prioritize = True
-            if objs._prioritize:
+            lg.objs._request.Prioritize = True
+            if lg.objs._prioritize:
                 '''
                 sg.Message (func    = 'WebFrame.toggle_priority'
                            ,level   = _('INFO')
@@ -2251,8 +2121,8 @@ class WebFrame:
 
     def print(self,event=None):
         code = mh.HTML (data     = objs._blocks_db.fetch()
-                       ,cols     = objs._request._cols
-                       ,collimit = objs._request._collimit
+                       ,cols     = lg.objs._request._cols
+                       ,collimit = lg.objs._request._collimit
                        ,Printer  = True
                        )._html
         if code:
@@ -2272,45 +2142,45 @@ class WebFrame:
         logic and GUI) in special cases
     '''
     def update_columns(self):
-        fixed = [col for col in objs.request()._cols \
+        fixed = [col for col in lg.objs.request()._cols \
                  if col != _('Do not set')
                 ]
-        if objs._request._collimit > len(fixed):
+        if lg.objs._request._collimit > len(fixed):
             ''' A dictionary from the 'Phrases' section usually has
                 an 'original + translation' structure, so we need to
                 switch off sorting terms and ensure that the number of
                 columns is divisible by 2
             '''
-            if objs._request.SpecialPage \
-            and objs._request._collimit % 2 != 0:
-                if objs._request._collimit == len(fixed) + 1:
-                    objs._request._collimit += 1
+            if lg.objs._request.SpecialPage \
+            and lg.objs._request._collimit % 2 != 0:
+                if lg.objs._request._collimit == len(fixed) + 1:
+                    lg.objs._request._collimit += 1
                 else:
-                    objs._request._collimit -= 1
-            non_fixed_len = objs._request._collimit - len(fixed)
+                    lg.objs._request._collimit -= 1
+            non_fixed_len = lg.objs._request._collimit - len(fixed)
             self.gui.men_cols.set(non_fixed_len)
             sh.log.append ('WebFrame.update_columns'
                           ,_('INFO')
                           ,_('Set the column limit to %d (%d in total)')\
-                          % (non_fixed_len,objs._request._collimit)
+                          % (non_fixed_len,lg.objs._request._collimit)
                           )
         else:
             sg.Message (func    = 'WebFrame.update_columns'
                        ,level   = _('ERROR')
                        ,message = _('The condition "%s" is not observed!')\
-                                  % '%d > %d' % (objs._request._collimit
+                                  % '%d > %d' % (lg.objs._request._collimit
                                                 ,len(fixed)
                                                 )
                        )
 
     def ignore_column(self,col_no):
-        if len(objs.request()._cols) > col_no + 1:
-            if objs._request._cols[col_no] == 'transc':
+        if len(lg.objs.request()._cols) > col_no + 1:
+            if lg.objs._request._cols[col_no] == 'transc':
                 sh.log.append ('WebFrame.ignore_column'
                               ,_('DEBUG')
                               ,_('Select column "%s" instead of "%s"')\
-                              % (objs._request._cols[col_no]
-                                ,objs._request._cols[col_no+1]
+                              % (lg.objs._request._cols[col_no]
+                                ,lg.objs._request._cols[col_no+1]
                                 )
                               )
                 col_no += 1
@@ -2433,9 +2303,9 @@ class WebFrame:
                 objs._blocks_db.Selectable = True
                 if result and result[8] == 'dic' \
                 and result[6] != self._phdic:
-                    if result[6] in objs.prioritize():
+                    if result[6] in lg.objs.prioritize():
                         self.unprioritize_dic(dic=result[6])
-                    elif result[6] in objs.blacklist():
+                    elif result[6] in lg.objs.blacklist():
                         self.unblock_dic(dic=result[6])
                     else:
                         self.block_dic(dic=result[6])
@@ -2517,13 +2387,13 @@ class Settings:
                            )
         if set(lst):
             self.gui.close()
-            objs.request()._cols     = tuple(lst)
-            objs._request.SortRows   = self.gui.cb1.get()
-            objs._request.SortTerms  = self.gui.cb2.get()
-            objs._request.Block      = self.gui.cb3.get()
-            objs._request.Prioritize = self.gui.cb4.get()
-            objs._request.Reverse    = self.gui.cb5.get()
-            if objs._request.SortRows:
+            lg.objs.request()._cols     = tuple(lst)
+            lg.objs._request.SortRows   = self.gui.cb1.get()
+            lg.objs._request.SortTerms  = self.gui.cb2.get()
+            lg.objs._request.Block      = self.gui.cb3.get()
+            lg.objs._request.Prioritize = self.gui.cb4.get()
+            lg.objs._request.Reverse    = self.gui.cb5.get()
+            if lg.objs._request.SortRows:
                 self.prioritize_speech()
                 objs.webframe().prioritize_speech()
             else:
@@ -2549,7 +2419,7 @@ class Settings:
                 )
 
     def prioritize_speech(self):
-        objs.request()
+        lg.objs.request()
         choices = (self.gui.sp1.choice,self.gui.sp2.choice
                   ,self.gui.sp3.choice,self.gui.sp4.choice
                   ,self.gui.sp5.choice,self.gui.sp6.choice
@@ -2557,19 +2427,19 @@ class Settings:
                   )
         for i in range(len(choices)):
             if choices[i] == _('Noun'):
-                objs._request._pr_n = len(choices) - i
+                lg.objs._request._pr_n = len(choices) - i
             elif choices[i] == _('Verb'):
-                objs._request._pr_v = len(choices) - i
+                lg.objs._request._pr_v = len(choices) - i
             elif choices[i] == _('Adjective'):
-                objs._request._pr_adj = len(choices) - i
+                lg.objs._request._pr_adj = len(choices) - i
             elif choices[i] == _('Abbreviation'):
-                objs._request._pr_abbr = len(choices) - i
+                lg.objs._request._pr_abbr = len(choices) - i
             elif choices[i] == _('Adverb'):
-                objs._request._pr_adv = len(choices) - i
+                lg.objs._request._pr_adv = len(choices) - i
             elif choices[i] == _('Preposition'):
-                objs._request._pr_prep = len(choices) - i
+                lg.objs._request._pr_prep = len(choices) - i
             elif choices[i] == _('Pronoun'):
-                objs._request._pr_pron = len(choices) - i
+                lg.objs._request._pr_pron = len(choices) - i
             else:
                 sg.Message ('Settings.prioritize_speech'
                            ,_('ERROR')
