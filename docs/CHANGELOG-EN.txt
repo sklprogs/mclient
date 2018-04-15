@@ -1,6 +1,10 @@
 
 
-5.9.1
+5.10
+* Support several dictionary titles
+* Support both full and shortened dictionary titles in the prioritized
+  dictionary list and the blacklist
+* Toggle full and shortened dictionary titles
 * Use Alt-f (by default) to go to a list of phrases
 * Separate logic and GUI
 * Close child windows with the same hotkeys they are shown
