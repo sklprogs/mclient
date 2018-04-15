@@ -48,6 +48,7 @@ class Block:
         self._text     = ''
         self._url      = ''
         self._dica     = ''
+        self._dicaf    = ''
         self._wforma   = ''
         self._speecha  = ''
         self._transca  = ''
@@ -101,7 +102,7 @@ class Elems:
                         lst[j] = self.abbr.transl[ind]
                     except ValueError:
                         pass
-                self._blocks[i]._dica = ', '.join(lst)
+                self._blocks[i]._dicaf = ', '.join(lst)
         else:
             sh.log.append ('Elems.expand_dica'
                           ,_('WARNING')
@@ -128,10 +129,10 @@ class Elems:
             self.add_space        ()
             self.fill             ()
             self.fill_terma       ()
-            self.expand_dica      ()
             self.remove_fixed     ()
             self.insert_fixed     ()
             self.fixed_terma      ()
+            self.expand_dica      ()
             self.selectables      ()
             self.restore_dic_urls ()
             self.dump             ()
@@ -527,7 +528,7 @@ class Elems:
             self._data.append (
               (None                # (00) Skips the autoincrement
               ,self._articleid     # (01) ARTICLEID
-              ,block._dica         # (02) DICA
+              ,block._dica         # (02) DICA (abbreviation)
               ,block._wforma       # (03) WFORMA
               ,block._speecha      # (04) SPEECHA
               ,block._transca      # (05) TRANSCA
@@ -555,6 +556,7 @@ class Elems:
               ,block._text.lower() # (27) TEXTLOW
               ,0                   # (28) IGNORE
               ,0                   # (29) SPEECHPR
+              ,block._dicaf        # (30) DICA (full title)
               )
                               )
 

@@ -179,8 +179,7 @@ class Cells:
     # Including fixed columns
     def __init__ (self,data,cols,collimit=10
                  ,phrase_dic=None,Reverse=False
-                 ,ExpandDic=False,ExpandSpeech=False
-                 ,dic_abbr=None
+                 ,ExpandSpeech=False
                  ):
         # Sqlite fetch
         self._data        = data
@@ -188,9 +187,7 @@ class Cells:
         self._collimit    = collimit
         self._phrase_dic  = phrase_dic
         self.Reverse      = Reverse
-        self.ExpandDic    = ExpandDic
         self.ExpandSpeech = ExpandSpeech
-        self.dic_abbr     = dic_abbr
         self._blocks      = []
         if self._data:
             self.Success  = True

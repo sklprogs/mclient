@@ -35,7 +35,7 @@ class DB:
         ''' We use integers instead of booleans; -1 means not set.
             Must indicate 'integer' fully before 'primary key 
             autoincrement'.
-            30 columns for now.
+            31 columns for now.
         '''
         self.dbc.execute (
            'create table if not exists BLOCKS (\
@@ -70,6 +70,7 @@ class DB:
            ,TEXTLOW    text              \
            ,IGNORE     integer           \
            ,SPEECHPR   integer           \
+           ,DICAF      text              \
                                               )'
                          )
                          
@@ -86,10 +87,11 @@ class DB:
                          )
 
     def reset (self,cols=('dic','wform','transc','speech')
-              ,SortRows=False,SortTerms=False
+              ,SortRows=False,SortTerms=False,ExpandDic=False
               ):
         self.SortTerms = SortTerms
         self.SortRows  = SortRows
+        self.ExpandDic = ExpandDic
         self._cols     = cols
         # Prevents None + tuple
         if not self._cols:
@@ -105,7 +107,7 @@ class DB:
     def fill_blocks(self,data):
         self.dbc.executemany ('insert into BLOCKS values \
                                (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?\
-                               ,?,?,?,?,?,?,?,?,?,?\
+                               ,?,?,?,?,?,?,?,?,?,?,?\
                                )'
                                ,data
                               )
@@ -230,7 +232,14 @@ class DB:
         for item in self._cols:
             if item == 'dic':
                 query.append('PRIORITY desc')
-                query.append('LOWER(DICA)')
+                ''' Full dictionary titles and abbreviations can be
+                    sorted differently, for example, in case of
+                    'файл.расшир.' -> 'Расширение файла'
+                '''
+                if self.ExpandDic:
+                    query.append('LOWER(DICAF)')
+                else:
+                    query.append('LOWER(DICA)')
             elif item == 'wform':
                 query.append('WFORMA')
             elif item == 'speech':
@@ -254,9 +263,14 @@ class DB:
     # Assign input data for Cells
     def assign_cells(self):
         if self._articleid:
-            query = 'select NO,TYPE,TEXT,SAMECELL,DICA,WFORMA,SPEECHA\
-                    ,TRANSCA from BLOCKS where ARTICLEID = ? \
-                    and BLOCK = 0 and IGNORE = 0 order by '
+            query = 'select NO,TYPE,TEXT,SAMECELL,'
+            if self.ExpandDic:
+                query += 'DICAF,'
+            else:
+                query += 'DICA,'
+            query += 'WFORMA,SPEECHA,TRANSCA from BLOCKS \
+                      where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 \
+                      order by '
             if self.SortRows:
                 order = self.order_query()
             else:

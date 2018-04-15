@@ -1326,7 +1326,7 @@ class WebFrame:
                                ,val        = objs._blocks_db.phrase_dic_primary()
                                ).not_none()
 
-        data = objs._blocks_db.assign_bp ()
+        data = objs._blocks_db.assign_bp()
         bp = cl.BlockPrioritize (data       = data
                                 ,blacklist  = lg.objs.blacklist()
                                 ,prioritize = lg.objs.prioritize()
@@ -1361,6 +1361,7 @@ class WebFrame:
         objs._blocks_db.reset (cols      = lg.objs._request._cols
                               ,SortRows  = lg.objs._request.SortRows
                               ,SortTerms = SortTerms
+                              ,ExpandDic = not self.settings.gui.cb6.get()
                               )
         objs._blocks_db.unignore()
         objs._blocks_db.ignore()
@@ -1377,9 +1378,7 @@ class WebFrame:
                          ,collimit     = lg.objs._request._collimit
                          ,phrase_dic   = self._phdic
                          ,Reverse      = lg.objs._request.Reverse
-                         ,ExpandDic    = not self.settings.gui.cb6.get()
                          ,ExpandSpeech = ExpandSpeech
-                         ,dic_abbr     = lg.objs.abbr()
                          )
         cells.run()
         
@@ -1434,6 +1433,16 @@ class WebFrame:
         self.search_article.reset()
         self.update_buttons()
         timer.end()
+        
+        '''
+        objs._blocks_db.dbc.execute ('select CELLNO,TYPE,DICA,DICAF,TEXT\
+                                      from BLOCKS\
+                                      order by ARTICLEID,CELLNO,NO'
+                                    )
+        objs._blocks_db.print (Selected=1,Shorten=1,MaxRows=50
+                              ,mode='BLOCKS'
+                              )
+        '''
         
         '''
         objs._blocks_db.dbc.execute ('select TEXT from BLOCKS \
