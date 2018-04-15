@@ -9,10 +9,9 @@ rm ./resources/buttons/icon_36x36_{alphabet_off,alphabet_on,block_off,block_on,c
 rm ./resources/{error,info,question,warning}.gif
 
 # Remove other mclient resources
-rm ./user/{dic_abbr.txt,mclient.cfg}
 rm ./resources/third\ parties.txt
 rm ./resources/locale/ru/LC_MESSAGES/mclient.mo
-rm ./user/dics/{block.txt,prioritize.txt}
+rm ./user/{abbr.txt,block.txt,mclient.cfg,prioritize.txt}
 
 # Remove mclient Python files
 rm ./{cells,db,elems,gui,logic,mclient,mkhtml,offline,page,tags}.py

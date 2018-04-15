@@ -11,10 +11,9 @@ cp -u /usr/local/bin/mclient/resources/buttons/icon_36x36_{alphabet_off,alphabet
 cp -u /usr/local/bin/shared/resources/{error,info,question,warning}.gif ./resources/
 
 # Copy other mclient resources
-cp -u /usr/local/bin/mclient/user/{dic_abbr.txt,mclient.cfg} ./user/
 cp -u /usr/local/bin/mclient/resources/locale/ru/LC_MESSAGES/mclient.mo ./resources/locale/ru/LC_MESSAGES/
 cp -u /usr/local/bin/mclient/resources/third\ parties.txt ./resources/
-cp -u /usr/local/bin/mclient/user/dics/{block.txt,prioritize.txt} ./user/dics/
+cp -u /usr/local/bin/mclient/user/{abbr.txt,block.txt,mclient.cfg,prioritize.txt} ./user/
 
 # Copy mclient Python files
 cp -u /usr/local/bin/mclient/src/{cells,db,elems,gui,logic,mclient,mkhtml,offline,page,tags}.py .
