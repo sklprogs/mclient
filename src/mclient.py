@@ -602,66 +602,6 @@ class WebFrame:
         query = ';'.join(query)
         objs.blocks_db().update(query=query)
     
-    def prioritize_dic(self,dic=None):
-        if dic:
-            if dic in lg.objs.prioritize():
-                sh.log.append ('WebFrame.prioritize_dic'
-                              ,_('INFO')
-                              ,_('Nothing to do!')
-                              )
-            else:
-                lg.objs._prioritize.append(dic)
-        else:
-            sh.log.append ('WebFrame.prioritize_dic'
-                          ,_('WARNING')
-                          ,_('Empty input data!')
-                          )
-                          
-    def unprioritize_dic(self,dic=None):
-        if dic:
-            if dic in lg.objs.prioritize():
-                lg.objs._prioritize.remove(dic)
-            else:
-                sh.log.append ('WebFrame.unprioritize_dic'
-                              ,_('INFO')
-                              ,_('Nothing to do!')
-                              )
-        else:
-            sh.log.append ('WebFrame.unprioritize_dic'
-                          ,_('WARNING')
-                          ,_('Empty input data!')
-                          )
-    
-    def block_dic(self,dic=None):
-        if dic:
-            if dic in lg.objs.blacklist():
-                sh.log.append ('WebFrame.block_dic'
-                              ,_('INFO')
-                              ,_('Nothing to do!')
-                              )
-            else:
-                lg.objs._blacklist.append(dic)
-        else:
-            sh.log.append ('WebFrame.block_dic'
-                          ,_('WARNING')
-                          ,_('Empty input data!')
-                          )
-    
-    def unblock_dic(self,dic=None):
-        if dic:
-            if dic in lg.objs.blacklist():
-                lg.objs._blacklist.remove(dic)
-            else:
-                sh.log.append ('WebFrame.unblock_dic'
-                              ,_('INFO')
-                              ,_('Nothing to do!')
-                              )
-        else:
-            sh.log.append ('WebFrame.unblock_dic'
-                          ,_('WARNING')
-                          ,_('Empty input data!')
-                          )
-    
     # Вставить предыдущий запрос
     def insert_repeat_sign2(self,event=None):
         result = objs.blocks_db().prev_id()
@@ -1565,10 +1505,16 @@ class WebFrame:
                            2) A prioritized dictionary - unprioritize
                            3) A blocked dictionary - unblock
                     '''
-                    if result[6] in lg.objs.blacklist():
-                        self.unblock_dic(dic=result[6])
+                    lst = result[6].lower().split(', ')
+                    Block = False
+                    for item in lst:
+                        if item in lg.objs.blacklist():
+                            Block = True
+                            break
+                    if Block:
+                        lg.Order(lst).unblock()
                     else:
-                        self.prioritize_dic(dic=result[6])
+                        lg.Order(lst).prioritize()
                     objs._blocks_db.delete_bookmarks()
                     self.load_article()
                 else:
@@ -2302,12 +2248,23 @@ class WebFrame:
                 objs._blocks_db.Selectable = True
                 if result and result[8] == 'dic' \
                 and result[6] != self._phdic:
-                    if result[6] in lg.objs.prioritize():
-                        self.unprioritize_dic(dic=result[6])
-                    elif result[6] in lg.objs.blacklist():
-                        self.unblock_dic(dic=result[6])
+                    lst = result[6].lower().split(', ')
+                    Prioritize = False
+                    for item in lst:
+                        if item in lg.objs.prioritize():
+                            Prioritize = True
+                            break
+                    Block = False
+                    for item in lst:
+                        if item in lg.objs.blacklist():
+                            Block = True
+                            break
+                    if Prioritize:
+                        lg.Order(lst).unprioritize()
+                    elif Block:
+                        lg.Order(lst).unblock()
                     else:
-                        self.block_dic(dic=result[6])
+                        lg.Order(lst).block()
                     objs._blocks_db.delete_bookmarks()
                     self.load_article()
                 else:

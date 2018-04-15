@@ -459,4 +459,60 @@ class Objects:
 
 
 
+class Order:
+    
+    def __init__(self,lst=[]):
+        self.reset(lst=lst)
+        
+    def reset(self,lst):
+        self.lst = lst
+        if self.lst:
+            self.Success = True
+        else:
+            self.Success = False
+    
+    def prioritize(self):
+        if self.Success:
+            for item in self.lst:
+                objs.prioritize().append(item)
+        else:
+            sh.log.append ('Order.prioritize'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+                          
+    def unprioritize(self):
+        if self.Success:
+            for item in self.lst:
+                if item in objs.prioritize():
+                    objs._prioritize.remove(item)
+        else:
+            sh.log.append ('Order.unprioritize'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def block(self):
+        if self.Success:
+            for item in self.lst:
+                objs.blacklist().append(item)
+        else:
+            sh.log.append ('Order.block'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def unblock(self):
+        if self.Success:
+            for item in self.lst:
+                if item in objs.blacklist():
+                    objs._blacklist.remove(item)
+        else:
+            sh.log.append ('Order.unblock'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+
+
+
 objs = Objects()
