@@ -215,7 +215,6 @@ class Paths:
     def __init__(self):
         self.dir = sh.Directory (path=sh.objs.pdir().add ('..'
                                                          ,'user'
-                                                         ,'dics'
                                                          )
                                 )
         self.Success = self.dir.Success
@@ -262,11 +261,9 @@ class Paths:
                           
     def abbr(self):
         if self.Success:
-            instance = sh.File (file = sh.objs.pdir().add ('..'
-                                                          ,'user'
-                                                          ,'dic_abbr.txt'
-                                                          )
-                                                    
+            instance = sh.File (file = os.path.join (self.dir.dir
+                                                    ,'abbr.txt'
+                                                    )
                                )
             self.Success = instance.Success
             if self.Success:
