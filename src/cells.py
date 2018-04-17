@@ -50,22 +50,16 @@ class Block:
 '''
 class BlockPrioritize:
     
-    def __init__(self,data,blacklist=[]
-                ,prioritize=[],Block=False
+    def __init__(self,data,order,Block=False
                 ,Prioritize=False,phrase_dic=None
                 ):
         self._blocks     = []
         self._query      = ''
+        self.order       = order
+        self._phrase_dic = phrase_dic
         self._data       = data
         self.Block       = Block
         self.Prioritize  = Prioritize
-        self._phrase_dic = phrase_dic
-        self._blacklist  = sh.Input (func_title = 'BlockPrioritize.__init__'
-                                    ,val        = blacklist
-                                    ).list()
-        self._prioritize = sh.Input (func_title = 'BlockPrioritize.__init__'
-                                    ,val        = prioritize
-                                    ).list()
         if self._data:
             self.Success = True
         else:
@@ -98,17 +92,13 @@ class BlockPrioritize:
             
     def block(self):
         for block in self._blocks:
-            lst = block._dica.lower().split(', ')
-            Block = False
-            for item in lst:
-                if item in self._blacklist:
-                    Block = True
-                    break
-            if self.Block and Block:
+            if self.Block and block._dica \
+            and self.order.is_blocked(search=block._dica):
                 block._block = 1
             else:
                 block._block = 0
             
+    # Takes ~0,084s for 'set' on AMD E-300.
     def prioritize(self):
         if self._phrase_dic:
             for block in self._blocks:
@@ -120,13 +110,16 @@ class BlockPrioritize:
                     '''
                     block._priority = -1000
         if self.Prioritize:
-            for i in range(len(self._prioritize)):
-                priority = len(self._prioritize) - i
+            if self.order.Success:
                 for block in self._blocks:
-                    lst = block._dica.lower().split(', ')
-                    if self._prioritize[i].lower() in lst:
-                        block._priority = priority
-                    
+                    if block._dica:
+                        block._priority = self.order.priority(search=block._dica)
+            else:
+                sh.log.append ('BlockPrioritize.prioritize'
+                              ,_('WARNING')
+                              ,_('Operation has been canceled.')
+                              )
+
     def dump(self):
         tmp = io.StringIO()
         tmp.write('begin;')
@@ -483,12 +476,12 @@ class Cells:
 class Pos:
     
     def __init__(self,data,raw_text):
+        self._blocks   = []
+        self._query    = ''
         # Sqlite fetch
         self._data     = data
         # Retrieved from the TkinterHTML widget
         self._raw_text = raw_text
-        self._blocks   = []
-        self._query    = ''
         if self._data and self._raw_text:
             self.Success = True
         else:

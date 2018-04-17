@@ -1305,7 +1305,7 @@ class WebFrame:
 
             elems = el.Elems (blocks    = tags._blocks
                              ,articleid = objs._blocks_db._articleid
-                             ,abbr      = lg.objs.abbr()
+                             ,abbr      = lg.objs.order().dic
                              )
             elems.run()
 
@@ -1328,8 +1328,7 @@ class WebFrame:
 
         data = objs._blocks_db.assign_bp()
         bp = cl.BlockPrioritize (data       = data
-                                ,blacklist  = lg.objs.blacklist()
-                                ,prioritize = lg.objs.prioritize()
+                                ,order      = lg.objs.order()
                                 ,Block      = lg.objs._request.Block
                                 ,Prioritize = lg.objs._request.Prioritize
                                 ,phrase_dic = self._phdic
@@ -1368,7 +1367,8 @@ class WebFrame:
         
         data = objs._blocks_db.assign_cells()
 
-        if lg.objs._request._cols and lg.objs._request._cols[0] == 'speech':
+        if lg.objs._request._cols \
+        and lg.objs._request._cols[0] == 'speech':
             ExpandSpeech = True
         else:
             ExpandSpeech = False
@@ -1387,8 +1387,7 @@ class WebFrame:
         mh.objs.html().reset (data       = objs._blocks_db.fetch()
                              ,cols       = lg.objs._request._cols
                              ,collimit   = lg.objs._request._collimit
-                             ,blacklist  = lg.objs.blacklist()
-                             ,prioritize = lg.objs.prioritize()
+                             ,order      = lg.objs.order()
                              ,width      = sh.globs['int']['col_width']
                              ,Reverse    = lg.objs._request.Reverse
                              )
@@ -1435,58 +1434,13 @@ class WebFrame:
         timer.end()
         
         '''
-        objs._blocks_db.dbc.execute ('select CELLNO,TYPE,DICA,DICAF,TEXT\
-                                      from BLOCKS\
+        objs._blocks_db.dbc.execute ('select   CELLNO,PRIORITY,TYPE,DICA\
+                                              ,DICAF,TEXT\
+                                      from     BLOCKS\
                                       order by ARTICLEID,CELLNO,NO'
                                     )
-        objs._blocks_db.print (Selected=1,Shorten=1,MaxRows=50
+        objs._blocks_db.print (Selected=1,Shorten=1,MaxRows=1000
                               ,mode='BLOCKS'
-                              )
-        '''
-        
-        '''
-        objs._blocks_db.dbc.execute ('select TEXT from BLOCKS \
-                                      where TYPE = ? \
-                                      order by ARTICLEID,CELLNO,NO'
-                                    ,('dic',)
-                                    )
-        objs._blocks_db.print (Selected=1,Shorten=1,MaxRows=50
-                              ,mode='BLOCKS'
-                              )
-        '''
-
-        '''
-        objs._blocks_db.dbc.execute ('select SPEECHPR,SPEECHA,TYPE,TEXT\
-                                      from BLOCKS where ARTICLEID = ?\
-                                      and POS2 > POS1'
-                                    ,(objs._blocks_db._articleid,)
-                                    )
-        objs._blocks_db.print (Selected=1,Shorten=1,MaxRows=50
-                              ,mode='BLOCKS'
-                              )
-        '''
-        
-        '''
-        objs._blocks_db.dbc.execute ('select ARTICLEID,CELLNO,NO,TYPE\
-                                            ,TEXT from BLOCKS \
-                                      where BLOCK = 0 and IGNORE = 0 \
-                                      and POS1 < POS2 \
-                                      order by ARTICLEID,CELLNO,NO'
-                                    )
-        objs._blocks_db.print(Selected=1,Shorten=1,MaxRow=18,MaxRows=150)
-        '''
-        
-        '''
-        objs._blocks_db.dbc.execute ('select CELLNO,NO,DICA,WFORMA\
-                                            ,SPEECHA,TYPE,TEXT \
-                                      from BLOCKS where ARTICLEID = ? \
-                                      and BLOCK = 0 and IGNORE = 0 \
-                                      and POS1 < POS2 \
-                                      order by CELLNO,NO'
-                                    ,(objs._blocks_db._articleid,)
-                                    )
-        objs._blocks_db.print (Selected=1,Shorten=1
-                              ,MaxRow=14,MaxRows=150
                               )
         '''
     
@@ -1499,31 +1453,7 @@ class WebFrame:
                 objs._blocks_db.Selectable = True
                 if result and result[8] == 'dic' \
                 and result[6] != self._phdic:
-                    ''' Variants:
-                        1) (current) A LM click on:
-                           1) A common dictionary - prioritize
-                           2) A prioritized dictionary - increase
-                              priority
-                           A RM click on:
-                           1) A prioritized dictionary - unprioritize
-                           2) A blocked dictionary - unblock
-                           3) A common dictionary - block
-                        or:
-                        2) (easy, LM-only) A LM click on:
-                           1) A common dictionary - prioritize
-                           2) A prioritized dictionary - unprioritize
-                           3) A blocked dictionary - unblock
-                    '''
-                    lst = result[6].lower().split(', ')
-                    Block = False
-                    for item in lst:
-                        if item in lg.objs.blacklist():
-                            Block = True
-                            break
-                    if Block:
-                        lg.Order(lst).unblock()
-                    else:
-                        lg.Order(lst).prioritize()
+                    lg.objs.order().lm_auto(search=result[6])
                     objs._blocks_db.delete_bookmarks()
                     self.load_article()
                 else:
@@ -1872,7 +1802,8 @@ class WebFrame:
             self.gui.btn_blok.inactive()
             self.settings.gui.cb3.disable()
 
-        if not lg.objs._request.SpecialPage and lg.objs._request.Prioritize \
+        if not lg.objs._request.SpecialPage \
+        and lg.objs._request.Prioritize \
         and objs._blocks_db.prioritized():
             self.gui.btn_prio.active()
             self.settings.gui.cb4.enable()
@@ -2001,7 +1932,7 @@ class WebFrame:
             self.unblock()
         else:
             lg.objs._request.Block = True
-            if lg.objs._blacklist:
+            if lg.objs.order()._blacklist:
                 '''
                 sg.Message (func    = 'WebFrame.toggle_block'
                            ,level   = _('INFO')
@@ -2057,7 +1988,7 @@ class WebFrame:
             self.unprioritize()
         else:
             lg.objs._request.Prioritize = True
-            if lg.objs._prioritize:
+            if lg.objs.order()._prioritize:
                 '''
                 sg.Message (func    = 'WebFrame.toggle_priority'
                            ,level   = _('INFO')
@@ -2077,6 +2008,7 @@ class WebFrame:
         code = mh.HTML (data     = objs._blocks_db.fetch()
                        ,cols     = lg.objs._request._cols
                        ,collimit = lg.objs._request._collimit
+                       ,order    = lg.objs.order()
                        ,Printer  = True
                        )._html
         if code:
@@ -2257,23 +2189,7 @@ class WebFrame:
                 objs._blocks_db.Selectable = True
                 if result and result[8] == 'dic' \
                 and result[6] != self._phdic:
-                    lst = result[6].lower().split(', ')
-                    Prioritize = False
-                    for item in lst:
-                        if item in lg.objs.prioritize():
-                            Prioritize = True
-                            break
-                    Block = False
-                    for item in lst:
-                        if item in lg.objs.blacklist():
-                            Block = True
-                            break
-                    if Prioritize:
-                        lg.Order(lst).unprioritize()
-                    elif Block:
-                        lg.Order(lst).unblock()
-                    else:
-                        lg.Order(lst).block()
+                    lg.objs.order().rm_auto(search=result[6])
                     objs._blocks_db.delete_bookmarks()
                     self.load_article()
                 else:

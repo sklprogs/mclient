@@ -331,100 +331,8 @@ class Lists:
 class Objects:
     
     def __init__(self):
-        self._abbr = self._lists = self._request = self._online \
-                   = self._blacklist = self._prioritize \
-                   = self._abbrs_low = self._titles_low = None
+        self._online = self._request = self._order = None
         
-    def titles_low(self):
-        if self._titles_low is None:
-            dic = self.abbr()
-            if dic:
-                self._titles_low = [item.lower() \
-                                    for item in list(dic.transl)
-                                   ]
-            else:
-                sh.log.append ('Objects.titles_low'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
-        return self._titles_low
-    
-    def abbrs_low(self):
-        if self._abbrs_low is None:
-            dic = self.abbr()
-            if dic:
-                self._abbrs_low = [item.lower() \
-                                   for item in list(dic.orig)
-                                  ]
-            else:
-                sh.log.append ('Objects.abbrs_low'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
-        return self._abbrs_low
-    
-    def prioritize(self):
-        # Allow empty lists
-        if self._prioritize is None:
-            self._prioritize = sh.Input (func_title = 'Objects.prioritize'
-                                        ,val        = self.lists().prioritize()
-                                        ).list()
-            abbrs = sh.Input (func_title = 'Objects.prioritize'
-                             ,val        = self.abbrs_low()
-                             ).list()
-            titles = sh.Input (func_title = 'Objects.prioritize'
-                              ,val        = self.titles_low()
-                              ).list()
-            
-            tmp = []
-            for i in range(len(self._prioritize)):
-                # Fool-proof
-                title = self._prioritize[i].strip()
-                title = title.lower()
-                if title in abbrs:
-                    ind = abbrs.index(title)
-                    tmp.append(title)
-                    tmp.append(titles[ind])
-                elif title in titles:
-                    ind = titles.index(title)
-                    tmp.append(title)
-                    tmp.append(abbrs[ind])
-                else:
-                    tmp.append(title)
-            self._prioritize = tmp
-        return self._prioritize
-    
-    def blacklist(self):
-        # Allow empty lists
-        if self._blacklist is None:
-            self._blacklist = sh.Input (func_title = 'Objects.blacklist'
-                                       ,val        = self.lists().blacklist()
-                                       ).list()
-            abbrs = sh.Input (func_title = 'Objects.prioritize'
-                             ,val        = self.abbrs_low()
-                             ).list()
-            titles = sh.Input (func_title = 'Objects.prioritize'
-                              ,val        = self.titles_low()
-                              ).list()
-            
-            tmp = []
-            for i in range(len(self._blacklist)):
-                # Fool-proof
-                title = self._blacklist[i].strip()
-                title = title.lower()
-                if title in abbrs:
-                    ind = abbrs.index(title)
-                    tmp.append(title)
-                    tmp.append(titles[ind])
-                elif title in titles:
-                    ind = titles.index(title)
-                    tmp.append(title)
-                    tmp.append(abbrs[ind])
-                else:
-                    tmp.append(title)
-            self._blacklist = tmp
-        return self._blacklist
-    
     def online(self):
         #todo: create a sub-source
         if self.request()._source in (_('All'),_('Online')):
@@ -436,80 +344,468 @@ class Objects:
         if self._request is None:
             self._request = CurRequest()
         return self._request
+        
+    def order(self):
+        if self._order is None:
+            self._order = Order()
+        return self._order
+
+
+
+# Create block and priority lists and complement them
+class Order:
     
-    def lists(self):
-        if self._lists is None:
-           self._lists = Lists()
-        return self._lists
-    
-    def abbr(self):
-        if self._abbr is None:
-            self._abbr = self.lists().abbr()
-            if self._abbr:
-                self._abbr.sort()
+    # Takes ~0,046s
+    def __init__(self):
+        self.values()
+        self._lists()
+        self._dic()
+        self._conform()
+            
+    def priority(self,search):
+        if self.Success:
+            if search:
+                lst   = search.split(',')
+                lst   = [item.lower().strip() for item in lst]
+                prior = []
+                for item in lst:
+                    try:
+                        ind = self._prioritize.index(item)
+                        prior.append(len(self._prioritize)-ind)
+                    except ValueError:
+                        pass
+                if prior:
+                    return max(prior)
+                else:
+                    return 0
             else:
-                sh.log.append ('Objects.abbr'
+                sh.log.append ('Order.priority'
                               ,_('WARNING')
                               ,_('Empty input is not allowed!')
                               )
-        return self._abbr
-
-
-
-class Order:
-    
-    def __init__(self,lst=[]):
-        self.reset(lst=lst)
-        
-    def reset(self,lst):
-        self.lst = lst
-        if self.lst:
-            self.Success = True
         else:
-            self.Success = False
+            sh.log.append ('Order.priority'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
     
-    def prioritize(self):
+    ''' A LM click on:
+        1) A blocked dictionary     - unblock
+        2) A common dictionary      - prioritize
+        3) A prioritized dictionary - increase priority
+    '''
+    def lm_auto(self,search):
         if self.Success:
-            for item in self.lst:
-                objs.prioritize().append(item)
+            if self.is_blocked(search=search):
+                self.unblock_mult(search=search)
+            else:
+                self.prioritize_mult(search=search)
+        else:
+            sh.log.append ('Order.lm_auto'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    ''' A RM click on:
+        1) A prioritized dictionary - decrease priority or unprioritize
+                                      (at minimal priority)
+        2) A blocked dictionary     - unblock
+        3) A common dictionary      - block
+    '''
+    def rm_auto(self,search):
+        if self.Success:
+            if self.is_blocked(search=search):
+                self.unblock_mult(search=search)
+            elif self.is_prioritized(search=search):
+                self.unprioritize_mult(search=search)
+            else:
+                self.block_mult(search=search)
+        else:
+            sh.log.append ('Order.rm_auto'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def is_prioritized(self,search):
+        if self.Success:
+            if search:
+                lst = search.split(',')
+                lst = [item.lower().strip() for item in lst]
+                for item in lst:
+                    if item in self._prioritize:
+                        return True
+            else:
+                sh.log.append ('Order.is_prioritized'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Order.is_prioritized'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def is_blocked(self,search):
+        if self.Success:
+            if search:
+                lst = search.split(',')
+                lst = [item.lower().strip() for item in lst]
+                for item in lst:
+                    if item in self._blacklist:
+                        return True
+            else:
+                sh.log.append ('Order.is_blocked'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Order.is_blocked'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    ''' Create new block and priority lists based on those that were
+        read from user files. Lists from user files may comprise either
+        dictionary abbreviations or full dictionary titles. New lists
+        will be lowercased and stripped and will comprise both
+        abbreviations and full titles.
+    '''
+    def _conform(self):
+        if self.Success:
+            self._abbrs  = [item.lower().strip() \
+                            for item in self.dic.orig
+                           ]
+            self._titles = [item.lower().strip() \
+                            for item in self.dic.transl
+                           ]
+            ''' We recreate lists in order to preserve 
+                the abbreviation + title order.
+            '''
+            if self._blacklist:
+                blacklist = list(self._blacklist)
+                self._blacklist = []
+                for item in blacklist:
+                    self.block(search=item)
+            else:
+                sh.log.append ('Order._conform'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+            if self._prioritize:
+                prioritize = list(self._prioritize)
+                self._prioritize = []
+                for item in prioritize:
+                    self.prioritize(search=item)
+            else:
+                sh.log.append ('Order._conform'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Order._conform'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def _lists(self):
+        if self.Success:
+            self.lists       = Lists()
+            self._blacklist  = sh.Input (func_title = 'Order._lists'
+                                        ,val        = self.lists.blacklist()
+                                        ).list()
+            self._prioritize = sh.Input (func_title = 'Order._lists'
+                                        ,val        = self.lists.prioritize()
+                                        ).list()
+            self.Success     = self.lists.Success
+        else:
+            sh.log.append ('Order._lists'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+        
+    def _dic(self):
+        if self.Success:
+            self.dic     = self.lists.abbr()
+            self.Success = self.dic.Success
+        else:
+            sh.log.append ('Order._dic'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def values(self):
+        self.Success     = True
+        self.lists       = None
+        self.dic         = None
+        self._abbrs      = []
+        self._titles     = []
+        self._blacklist  = []
+        self._prioritize = []
+        self._abbr       = ''
+        self._title      = ''
+            
+    def title(self):
+        if self.Success:
+            if not self._title:
+                if self._abbr in self._abbrs:
+                    ind = self._abbrs.index(self._abbr)
+                    self._title = self._titles[ind]
+                else:
+                    sh.log.append ('Order.title'
+                                  ,_('WARNING')
+                                  ,_('Wrong input data!')
+                                  )
+            return self._title
+        else:
+            sh.log.append ('Order.title'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+        
+    def abbr(self):
+        if self.Success:
+            if not self._abbr:
+                if self._title in self._titles:
+                    ind = self._titles.index(self._title)
+                    self._abbr = self._abbrs[ind]
+                else:
+                    sh.log.append ('Order.abbr'
+                                  ,_('WARNING')
+                                  ,_('Wrong input data!')
+                                  )
+            return self._abbr
+        else:
+            sh.log.append ('Order.abbr'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def search(self,text):
+        if self.Success:
+            self._abbr  = ''
+            self._title = ''
+            text = str(text).lower().strip()
+            if text:
+                if text in self._abbrs:
+                    self._abbr = text
+                    self.title()
+                elif text in self._titles:
+                    self._title = text
+                    self.abbr()
+                else:
+                    sh.log.append ('Order.search'
+                                  ,_('WARNING')
+                                  ,_('Unknown dictionary "%s"!') % text
+                                  )
+                    self._abbr = self._title = text
+            else:
+                sh.log.append ('Order.search'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Order.search'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def block_mult(self,search):
+        if self.Success:
+            if search:
+                lst = search.split(',')
+                for item in lst:
+                    self.block(search=item)
+            else:
+                sh.log.append ('Order.block_mult'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Order.block_mult'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def block(self,search):
+        if self.Success:
+            self.search(text=search)
+            if self._abbr and self._title:
+                if self._abbr in self._blacklist \
+                and self._title in self._blacklist:
+                    sh.log.append ('Order.block'
+                                  ,_('INFO')
+                                  ,_('Nothing to do!')
+                                  )
+                else:
+                    self._blacklist.append(self._abbr)
+                    self._blacklist.append(self._title)
+            else:
+                sh.log.append ('Order.block'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Order.block'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+                          
+    def unblock(self,search):
+        if self.Success:
+            self.search(text=search)
+            if self._abbr and self._title:
+                if self._abbr in self._blacklist \
+                and self._title in self._blacklist:
+                    self._blacklist.remove(self._abbr)
+                    self._blacklist.remove(self._title)
+                else:
+                    sh.log.append ('Order.unblock'
+                                  ,_('INFO')
+                                  ,_('Nothing to do!')
+                                  )
+            else:
+                sh.log.append ('Order.unblock'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Order.unblock'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+                          
+    def prioritize(self,search):
+        if self.Success:
+            self.search(text=search)
+            if self._abbr and self._title:
+                if self._abbr in self._prioritize \
+                and self._title in self._prioritize:
+                    ind1 = self._prioritize.index(self._abbr)
+                    ind2 = self._prioritize.index(self._title)
+                    max_ind = max(ind1,ind2)
+                    min_ind = min(ind1,ind2)
+                    del self._prioritize[max_ind]
+                    del self._prioritize[min_ind]
+                    ''' We assume that 1 record occupies 2 lines
+                        (abbreviation + title), thus, we move the record
+                        2 lines up.
+                    '''
+                    if min_ind > 1:
+                        min_ind -= 2
+                    self._prioritize.insert(min_ind,self._title)
+                    self._prioritize.insert(min_ind,self._abbr)
+                else:
+                    self._prioritize.append(self._abbr)
+                    self._prioritize.append(self._title)
+            else:
+                sh.log.append ('Order.prioritize'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
         else:
             sh.log.append ('Order.prioritize'
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
-                          
-    def unprioritize(self):
+    
+    def prioritize_mult(self,search):
         if self.Success:
-            for item in self.lst:
-                if item in objs.prioritize():
-                    objs._prioritize.remove(item)
+            if search:
+                lst = search.split(',')
+                for item in lst:
+                    self.prioritize(search=item)
+            else:
+                sh.log.append ('Order.prioritize_mult'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Order.prioritize_mult'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+                          
+    def unprioritize_mult(self,search):
+        if self.Success:
+            if search:
+                lst = search.split(',')
+                for item in lst:
+                    self.unprioritize(search=item)
+            else:
+                sh.log.append ('Order.unprioritize_mult'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Order.unprioritize_mult'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+                          
+    def unblock_mult(self,search):
+        if self.Success:
+            if search:
+                lst = search.split(',')
+                for item in lst:
+                    self.unblock(search=item)
+            else:
+                sh.log.append ('Order.unblock_mult'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Order.unblock_mult'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def unprioritize(self,search):
+        if self.Success:
+            self.search(text=search)
+            if self._abbr and self._title:
+                if self._abbr in self._prioritize \
+                and self._title in self._prioritize:
+                    ind1 = self._prioritize.index(self._abbr)
+                    ind2 = self._prioritize.index(self._title)
+                    max_ind = max(ind1,ind2)
+                    min_ind = min(ind1,ind2)
+                    del self._prioritize[max_ind]
+                    del self._prioritize[min_ind]
+                    if min_ind == len(self._prioritize):
+                        ''' Higher index means lower priority.
+                            If a dictionary title + abbreviation pair
+                            reaches the end, we just delete it from
+                            the list (the prioritized dictionary becomes
+                            a common one).
+                        '''
+                        pass
+                    else:
+                        min_ind += 2
+                        self._prioritize.insert(min_ind,self._title)
+                        self._prioritize.insert(min_ind,self._abbr)
+                else:
+                    sh.log.append ('Order.unprioritize'
+                                  ,_('INFO')
+                                  ,_('Nothing to do!')
+                                  )
+            else:
+                sh.log.append ('Order.unprioritize'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
         else:
             sh.log.append ('Order.unprioritize'
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
     
-    def block(self):
-        if self.Success:
-            for item in self.lst:
-                objs.blacklist().append(item)
-        else:
-            sh.log.append ('Order.block'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
     
-    def unblock(self):
-        if self.Success:
-            for item in self.lst:
-                if item in objs.blacklist():
-                    objs._blacklist.remove(item)
-        else:
-            sh.log.append ('Order.unblock'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
 
 
 
 objs = Objects()
+
+
+if __name__ == '__main__':
+    print('Priorities:',objs.order()._prioritize)
+    print(objs._order.priority(search='юр.н.п., воен.'))

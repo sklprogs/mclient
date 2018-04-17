@@ -27,20 +27,18 @@ class HTML:
         self.blocked_colors()
 
     # 'collimit' includes fixed blocks
-    def reset (self,data,cols,collimit=9
-              ,Printer=False,blacklist=[]
-              ,prioritize=[],width=0
-              ,Reverse=False
+    def reset (self,data,cols,order
+              ,collimit=9,Printer=False
+              ,Reverse=False,width=0
               ):
         self.values()
-        self._data       = data
-        self._cols       = cols
-        self._collimit   = collimit
-        self.Printer     = Printer
-        self._blacklist  = blacklist
-        self._prioritize = prioritize
-        self._width      = width
-        self.Reverse     = Reverse
+        self.order     = order
+        self._data     = data
+        self._cols     = cols
+        self._collimit = collimit
+        self._width    = width
+        self.Printer   = Printer
+        self.Reverse   = Reverse
         
     def run(self):
         self.assign()
@@ -170,26 +168,13 @@ class HTML:
             self._blocks.append(block)
 
     def _dic(self):
-        if self._block._type == 'dic':
+        if self._block._type == 'dic' and self._block._text:
             self.output.write('<font face="')
             self.output.write(self._family())
             self.output.write('" color="')
-            lower = self._block._text.lower()
-            lst = lower.split(',')
-            lst = [item.strip() for item in lst]
-            Block = False
-            for item in lst:
-                if item in self._blacklist:
-                    Block = True
-                    break
-            Prioritize = False
-            for item in lst:
-                if item in self._prioritize:
-                    Prioritize = True
-                    break
-            if Block:
+            if self.order.is_blocked(search=self._block._text):
                 self.output.write(self._color_b())
-            elif Prioritize:
+            elif self.order.is_prioritized(search=self._block._text):
                 self.output.write(self._color_p())
             else:
                 self.output.write(self._color())

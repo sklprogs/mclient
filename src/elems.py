@@ -76,7 +76,7 @@ class Block:
 '''
 class Elems:
     
-    def __init__(self,blocks,articleid,abbr=None):
+    def __init__(self,blocks,articleid,abbr):
         self._data      = []
         self._dic_urls  = {}
         self._blocks    = blocks
@@ -91,25 +91,34 @@ class Elems:
                           ,_('Empty input is not allowed!')
                           )
         
+    ''' Use directly the dictionary of abbreviations because
+        'Order.search' is case-insensitive.
+        Takes ~0,26s for 'set' on AMD E-300.
+    '''
     def expand_dica(self):
         if self.abbr:
-            for i in range(len(self._blocks)):
-                lst = self._blocks[i]._dica.split(',')
-                for j in range(len(lst)):
-                    lst[j] = lst[j].strip()
-                    try:
-                        ind = self.abbr.orig.index(lst[j])
-                        lst[j] = self.abbr.transl[ind]
-                    except ValueError:
-                        pass
-                self._blocks[i]._dicaf = ', '.join(lst)
+            if self.abbr.Success:
+                for block in self._blocks:
+                    lst = block._dica.split(',')
+                    for i in range(len(lst)):
+                        lst[i] = lst[i].strip()
+                        try:
+                            ind = self.abbr.orig.index(lst[i])
+                            lst[i] = self.abbr.transl[ind]
+                        except ValueError:
+                            pass
+                    block._dicaf = ', '.join(lst)
+            else:
+                sh.log.append ('Elems.expand_dica'
+                              ,_('WARNING')
+                              ,_('Operation has been canceled.')
+                              )
         else:
             sh.log.append ('Elems.expand_dica'
                           ,_('WARNING')
                           ,_('Empty input is not allowed!')
                           )
 
-    
     def run(self):
         if self.Success:
             self.transc           ()
