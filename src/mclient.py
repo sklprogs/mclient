@@ -2005,12 +2005,15 @@ class WebFrame:
         self.load_article()
 
     def print(self,event=None):
-        code = mh.HTML (data     = objs._blocks_db.fetch()
-                       ,cols     = lg.objs._request._cols
-                       ,collimit = lg.objs._request._collimit
-                       ,order    = lg.objs.order()
-                       ,Printer  = True
-                       )._html
+        mh.objs.html().reset (data     = objs._blocks_db.fetch()
+                             ,cols     = lg.objs._request._cols
+                             ,collimit = lg.objs._request._collimit
+                             ,order    = lg.objs.order()
+                             ,width    = sh.globs['int']['col_width']
+                             ,Printer  = True
+                             ,Reverse  = lg.objs._request.Reverse
+                             )
+        code = mh.objs._html.run()
         if code:
             sh.WriteTextFile (file       = sh.objs.tmpfile(suffix='.htm'
                                                           ,Delete=0

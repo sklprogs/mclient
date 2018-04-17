@@ -43,6 +43,7 @@ class HTML:
     def run(self):
         self.assign()
         self.html()
+        return self._html
     
     def values(self):
         self._blocks = []
@@ -386,6 +387,7 @@ class HTML:
                                         ,'<td valign="top"></td>'
                                         )
         self.output.close()
+        return self._html
 
 
 
