@@ -729,6 +729,13 @@ class Order:
         if self.Success:
             if search:
                 lst = search.split(',')
+                ''' We need to prioritize multiple items in a direct
+                    order, from a higher priority to a lower priority
+                    (which is intuitive), but unprioritize them in
+                    a reverse order (otherwise, unprioritizing will have
+                    no effect: 'x1, x2' -> 'x2, x1' -> 'x1, x2').
+                '''
+                lst = lst[::-1]
                 for item in lst:
                     self.unprioritize(search=item)
             else:
@@ -807,5 +814,10 @@ objs = Objects()
 
 
 if __name__ == '__main__':
-    print('Priorities:',objs.order()._prioritize)
-    print(objs._order.priority(search='юр.н.п., воен.'))
+    print('Old Priorities:',objs.order()._prioritize)
+    #objs._order.prioritize(search='пив.')
+    #objs._order.prioritize(search='тех.')
+    objs._order.prioritize_mult(search='Британский английский, Пивное производство')
+    print('New Priorities:',objs.order()._prioritize)
+    objs._order.unprioritize_mult(search='Британский английский, Пивное производство')
+    print('New Priorities:',objs.order()._prioritize)
