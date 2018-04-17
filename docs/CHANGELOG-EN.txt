@@ -5,6 +5,21 @@
 * Support both full and shortened dictionary titles in the prioritized
   dictionary list and the blacklist
 * Toggle full and shortened dictionary titles
+* Click on a dictionary to (un-)prioritize or (un-)block it,
+  in particular:
+  LMB on:
+    - a common dictionary: prioritize it
+    - prioritized dictionary: increase priority
+    - blocked dictionary: unblock it
+  RMB on:
+    - a common dictionary: block it
+    - prioritized dictionary: decrease priority/unprioritize it
+    - blocked dictionary: unblock it
+  If several dictionary titles are selected, then this rule will be
+  applied to each of these titles. For example, increasing a priority
+  for a title 'Британский английский, Пивное производство'
+  will also increase a priority for titles 'Британский английский',
+  'Пивное производство' separately.
 * Use Alt-f (by default) to go to a list of phrases
 * Separate logic and GUI
 * Close child windows with the same hotkeys they are shown
