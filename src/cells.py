@@ -556,11 +556,13 @@ class Pos:
         for block in self._blocks:
             text = sh.Text(text=block._text.strip()).delete_duplicate_spaces()
             if text:
-                search   = sh.Search(text=self._raw_text,search=text)
+                search = sh.Search (text   = self._raw_text
+                                   ,search = text
+                                   )
                 search.i = last
-                result   = sh.Input (val        = search.next()
-                                    ,func_title = 'Pos.gen_poses'
-                                    ).integer()
+                result = sh.Input (title = 'Pos.gen_poses'
+                                  ,value = search.next()
+                                  ).integer()
                 if result >= last:
                     block._first = result
                 else:

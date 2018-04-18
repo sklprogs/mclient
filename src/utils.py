@@ -222,8 +222,8 @@ class Abbr:
                     pos = sh.Search (text   = self._titles[i]
                                     ,search = '" href'
                                     ).next()
-                    pos = sh.Input (func_title = 'Abbr.titles'
-                                   ,val        = pos
+                    pos = sh.Input (title = 'Abbr.titles'
+                                   ,value = pos
                                    ).integer()
                     self._titles[i] = self._titles[i][:pos]
                     self._titles[i] = self._titles[i].strip()
@@ -367,8 +367,8 @@ class Tags:
                 pos = sh.Search (text   = tag
                                 ,search = '>'
                                 ).next()
-                pos = sh.Input (func_title = 'Tags.links'
-                               ,val        = pos
+                pos = sh.Input (title = 'Tags.links'
+                               ,value = pos
                                ).integer()
                 self._urls.append(tag[:pos])
                 self._titles.append(tag[pos+1:])

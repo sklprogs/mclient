@@ -510,11 +510,11 @@ class Order:
     def _lists(self):
         if self.Success:
             self.lists       = Lists()
-            self._blacklist  = sh.Input (func_title = 'Order._lists'
-                                        ,val        = self.lists.blacklist()
+            self._blacklist  = sh.Input (title = 'Order._lists'
+                                        ,value = self.lists.blacklist()
                                         ).list()
-            self._prioritize = sh.Input (func_title = 'Order._lists'
-                                        ,val        = self.lists.prioritize()
+            self._prioritize = sh.Input (title = 'Order._lists'
+                                        ,value = self.lists.prioritize()
                                         ).list()
             self.Success     = self.lists.Success
         else:

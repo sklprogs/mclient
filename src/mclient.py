@@ -1322,8 +1322,8 @@ class WebFrame:
             # todo (?) insert SPEECHPR in Elems instead of updating
             self.prioritize_speech()
             
-        self._phdic = sh.Input (func_title = 'WebFrame.load_article'
-                               ,val        = objs._blocks_db.phrase_dic_primary()
+        self._phdic = sh.Input (title = 'WebFrame.load_article'
+                               ,value = objs._blocks_db.phrase_dic_primary()
                                ).not_none()
 
         data = objs._blocks_db.assign_bp()

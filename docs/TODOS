@@ -1,3 +1,4 @@
+- Return URLs for dics
 - Add WelcomeScreen bool (DB.block_pos slows down)
 - Distinguish between SpecialPage and a PhraseDic page
 - Expand dictionary abbreviations for PhraseDic articles
