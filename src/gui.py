@@ -273,6 +273,7 @@ class History:
 
     def show(self,event=None):
         self.Active = True
+        self.obj.focus()
         self.parent.show()
 
     def close(self,event=None):

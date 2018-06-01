@@ -1,3 +1,5 @@
+- Cannot go to URL in 'https://www.multitran.ru/c/M.exe?t=7519384_2_1&s1=you’re%20killing%20me'
+- comme il faut, фразы, FR: остается только 1 столбец
 - Widget is not shown immediately when using F2 -> Esc -> F2 (probably
   due to Tkinter/WM focusing/minimization behavior)
 - Do not fill history when search is empty (e.g., when changing
