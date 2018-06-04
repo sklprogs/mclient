@@ -76,6 +76,7 @@ class ConfigMclient(sh.Config):
     def _default_bool(self):
         sh.globs['bool'].update ({
             'AutoCloseSpecSymbol':False
+           ,'Autocompletion'     :True
            ,'SelectTermsOnly'    :True
            ,'Iconify'            :True
                                 })
@@ -835,7 +836,7 @@ class Order:
 # Multitran-only
 class Suggestion:
     
-    def __init__(self,search,pair,limit=10):
+    def __init__(self,search,pair,limit=0):
         self._search = search
         self._pair   = pair
         self._limit  = limit
@@ -920,7 +921,8 @@ class Suggestion:
                                        in self._items.splitlines() \
                                        if item
                                       ]
-                        self._items = self._items[0:self._limit]
+                        if self._limit:
+                            self._items = self._items[0:self._limit]
                         return self._items
                     else:
                         sh.log.append ('Suggestion.get'

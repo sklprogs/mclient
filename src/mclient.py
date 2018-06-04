@@ -2419,10 +2419,9 @@ class Suggestion:
             self._select()
     
     def suggest(self,event=None):
-        if event:
+        if sh.globs['bool']['Autocompletion'] and event:
             text = self.entry.get()
             #todo: avoid modifiers
-            # and len(text) > 2
             if text:
                 ''' Retrieving suggestions is very slow, so we just do
                     this after a space.
@@ -2430,6 +2429,7 @@ class Suggestion:
                 if event.char == ' ':
                     text = lg.Suggestion (search = text
                                          ,pair   = objs.webframe().get_pair()
+                                         ,limit  = 20
                                          ).get()
                     if text:
                         self.reset()

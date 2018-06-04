@@ -1,5 +1,9 @@
 
 
+5.11
+* Autocomplete input
+* Add a key Autocompletion
+
 5.10
 * Support several dictionary titles
 * Support both full and shortened dictionary titles in the prioritized
