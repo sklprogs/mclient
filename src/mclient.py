@@ -509,6 +509,16 @@ class WebFrame:
         self.gui = gi.WebFrame()
         self.widgets()
         self.bindings()
+        
+    def escape(self,event=None):
+        if self.suggestion.gui.lbox:
+            self.suggestion.close()
+        else:
+            sg.Geometry(parent=self.gui.obj).minimize()
+    
+    def minimize(self,event=None):
+        self.suggestion.close()
+        sg.Geometry(parent=self.gui.obj).minimize()
     
     def go_phrase_dic(self,event=None):
         phrase_dic = objs.blocks_db().phrase_dic()
@@ -880,6 +890,14 @@ class WebFrame:
                 ,bindings = '<Next>'
                 ,action   = self.move_page_down
                 )
+        sg.bind (obj      = self.gui.obj
+                ,bindings = '<Escape>'
+                ,action   = self.escape
+                )
+        sg.bind (obj      = self.gui
+                ,bindings = '<ButtonRelease-2>'
+                ,action   = self.minimize
+                )
         sg.bind (obj      = self.gui.search_field
                 ,bindings = '<Control-a>'
                 ,action   = self.gui.search_field.select_all
@@ -887,6 +905,22 @@ class WebFrame:
         sg.bind (obj      = self.gui.search_field
                 ,bindings = '<KeyRelease>'
                 ,action   = self.suggestion.suggest
+                )
+        sg.bind (obj      = self.gui.search_field
+                ,bindings = '<Up>'
+                ,action   = self.suggestion.move_up
+                )
+        sg.bind (obj      = self.gui.search_field
+                ,bindings = '<Down>'
+                ,action   = self.suggestion.move_down
+                )
+        sg.bind (obj      = self.gui.search_field
+                ,bindings = '<Control-Home>'
+                ,action   = self.suggestion.move_top
+                )
+        sg.bind (obj      = self.gui.search_field
+                ,bindings = '<Control-End>'
+                ,action   = self.suggestion.move_bottom
                 )
         # Set config bindings
         self.gui.btn_hist.hint = _('Show history') \
@@ -1661,7 +1695,7 @@ class WebFrame:
         if text:
             sg.Clipboard().copy(text)
             if sh.globs['bool']['Iconify']:
-                sg.Geometry(parent=self.gui.obj).minimize()
+                self.minimize()
         # Do not warn when there are no articles yet
         elif objs._blocks_db._articleid == 0:
             sh.log.append ('WebFrame.copy_text'
@@ -1678,7 +1712,7 @@ class WebFrame:
     def copy_url(self,event=None):
         sg.Clipboard().copy(lg.objs.request()._url)
         if sh.globs['bool']['Iconify']:
-            sg.Geometry(parent=self.gui.obj).minimize()
+            self.minimize()
 
     # Скопировать URL выделенного блока
     def copy_block_url(self,event=None):
@@ -1686,7 +1720,7 @@ class WebFrame:
         if url:
             sg.Clipboard().copy(url)
             if sh.globs['bool']['Iconify']:
-                sg.Geometry(parent=self.gui.obj).minimize()
+                self.minimize()
         else:
             sg.Message ('WebFrame.copy_block_url'
                        ,_('WARNING')
@@ -2339,9 +2373,9 @@ class Suggestion:
         self.close_box()
         
     def _select(self):
-        if self.lbox:
+        if self.gui.lbox:
             self.entry.clear_text()
-            self.entry.insert(text=self.lbox.get())
+            self.entry.insert(text=self.gui.lbox.get())
             self.entry.select_all()
             self.entry.focus()
         

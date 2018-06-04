@@ -745,14 +745,6 @@ class WebFrame:
                 ,bindings = '<Control-q>'
                 ,action   = self.close
                 )
-        sg.bind (obj      = self.obj
-                ,bindings = '<Escape>'
-                ,action   = sg.Geometry(parent=self.obj).minimize
-                )
-        sg.bind (obj      = self
-                ,bindings = '<ButtonRelease-2>'
-                ,action   = sg.Geometry(parent=self.obj).minimize
-                )
         for child in self.fr_but.widget.winfo_children():
             child.bind('<Motion>',self.motion)
 
