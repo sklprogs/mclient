@@ -2379,9 +2379,9 @@ class Suggestion:
     
     def select(self,event=None):
         self._select()
-        self.close_box()
+        objs.webframe().go()
         
-    def _select(self):
+    def _select(self,event=None):
         if self.gui.lbox:
             self.entry.clear_text()
             self.entry.insert(text=self.gui.lbox.get())
@@ -2433,7 +2433,9 @@ class Suggestion:
                                          ).get()
                     if text:
                         self.reset()
-                        self.gui.show_box(lst=list(text))
+                        self.gui.show_box (lst    = list(text)
+                                          ,action = self._select
+                                          )
                         self.gui.show()
                         sg.objs._root.idle()
                         sg.AttachWidget (obj1   = self.entry
@@ -2465,12 +2467,12 @@ class Suggestion:
                 ,bindings = '<Control-End>'
                 ,action   = self.move_bottom
                 )
-        
-    def loop_bindings(self):
-        sg.bind (obj      = self.gui.lbox
-                ,bindings = ['<Return>','<KP_Enter>'
-                            ,'<ButtonRelease-1>'
-                            ]
+        sg.bind (obj      = self.parent
+                ,bindings = '<Escape>'
+                ,action   = self.close
+                )
+        sg.bind (obj      = self.parent
+                ,bindings = '<ButtonRelease-1>'
                 ,action   = self.select
                 )
 

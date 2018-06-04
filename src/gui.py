@@ -1779,7 +1779,7 @@ class Suggestion:
                                 ,expand = 0
                                 )
         
-    def show_box(self,lst,event=None):
+    def show_box(self,lst,event=None,action=None):
         if self.lbox is None:
             self.frame1b = sg.Frame (parent = self.frame1
                                     ,expand = 0
@@ -1787,6 +1787,7 @@ class Suggestion:
             self.lbox = sg.ListBox (parent          = self.frame1b
                                    ,title           = ''
                                    ,lst             = lst
+                                   ,action          = action
                                    ,Composite       = True
                                    ,Scrollbar       = False
                                    ,SelectionCloses = False
