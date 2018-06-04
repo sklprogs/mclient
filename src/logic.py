@@ -911,7 +911,9 @@ class Suggestion:
         if self.Success:
             if not self._items:
                 if self.url():
-                    self._items = sh.Get(url=self._url).run()
+                    self._items = sh.Get (url      = self._url
+                                         ,encoding = sh.globs['var']['win_encoding']
+                                         ).run()
                     if self._items:
                         self._items = html.unescape(self._items)
                         self._items = [item for item \
