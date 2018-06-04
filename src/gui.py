@@ -1768,6 +1768,56 @@ class SpecSymbols:
 
 
 
+class Suggestion:
+    
+    def __init__(self,parent):
+        self.lbox   = None
+        self.parent = parent
+        self.gui()
+        
+    def gui(self):
+        self.frame  = sg.Frame (parent = self.parent)
+        self.frame1 = sg.Frame (parent = self.frame
+                               ,expand = 0
+                               )
+        ''' A hack to force shrinking the parent after doing
+            'pack_forget' on the child.
+        '''
+        self.frame1b = sg.Frame (parent = self.frame1
+                                ,expand = 0
+                                )
+        
+    def show_box(self,lst,event=None):
+        if self.lbox is None:
+            self.frame1b = sg.Frame (parent = self.frame1
+                                    ,expand = 0
+                                    )
+            self.lbox = sg.ListBox (parent          = self.frame1b
+                                   ,title           = ''
+                                   ,lst             = lst
+                                   ,Composite       = True
+                                   ,Scrollbar       = False
+                                   ,SelectionCloses = False
+                                   )
+                                 
+    def close_box(self,event=None):
+        if self.lbox:
+            self.frame1b.widget.pack_forget()
+            self.lbox = None
+        else:
+            sh.log.append ('Suggestion.close_box'
+                          ,_('INFO')
+                          ,_('Nothing to do!')
+                          )
+    
+    def show(self,event=None):
+        self.parent.show()
+    
+    def close(self,event=None):
+        self.parent.close()
+
+
+
 if __name__ == '__main__':
     sg.objs.start()
     #WebFrame().show()

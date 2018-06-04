@@ -22,10 +22,7 @@ gettext.install('mclient','../resources/locale')
 
 
 product = 'MClient'
-version = '5.10'
-
-
-lg.ConfigMclient()
+version = '5.11'
 
 
 if __name__ == '__main__':
@@ -38,49 +35,6 @@ if __name__ == '__main__':
 sh.globs['_tkhtml_loaded'] = False
 sh.globs['geom_top'] = {}
 sh.globs['top'] = {}
-
-sep_words_found = 'найдены отдельные слова'
-
-pairs = ('ENG <=> RUS','DEU <=> RUS','SPA <=> RUS'
-        ,'FRA <=> RUS','NLD <=> RUS','ITA <=> RUS'
-        ,'LAV <=> RUS','EST <=> RUS','AFR <=> RUS'
-        ,'EPO <=> RUS','RUS <=> XAL','XAL <=> RUS'
-        ,'ENG <=> DEU','ENG <=> EST'
-        )
-
-online_dic_urls = (sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_rus']   # ENG <=> RUS, 'CL=1&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_deu_rus']   # DEU <=> RUS, 'l1=3&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_spa_rus']   # SPA <=> RUS, 'l1=5&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_fra_rus']   # FRA <=> RUS, 'l1=4&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_nld_rus']   # NLD <=> RUS, 'l1=24&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_ita_rus']   # ITA <=> RUS, 'l1=23&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_lav_rus']   # LAV <=> RUS, 'l1=27&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_est_rus']   # EST <=> RUS, 'l1=26&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_afr_rus']   # AFR <=> RUS, 'l1=31&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_epo_rus']   # EPO <=> RUS, 'l1=34&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_rus_xal']   # RUS <=> XAL, 'l1=2&l2=35&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_xal_rus']   # XAL <=> RUS, 'l1=35&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_deu']   # ENG <=> DEU, 'l1=1&l2=3&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_est']   # ENG <=> EST, 'l1=1&l2=26&s=%s'
-                  )
-
-langs = ('English'   # ENG <=> RUS
-        ,'German'    # DEU <=> RUS
-        ,'Spanish'   # SPA <=> RUS
-        ,'French'    # FRA <=> RUS
-        ,'Dutch'     # NLD <=> RUS
-        ,'Italian'   # ITA <=> RUS
-        ,'Latvian'   # LAV <=> RUS
-        ,'Estonian'  # EST <=> RUS
-        ,'Afrikaans' # AFR <=> RUS
-        ,'Esperanto' # EPO <=> RUS
-        ,'Kazakh'    # RUS <=> XAL
-        ,'Kazakh'    # XAL <=> RUS
-        ,'German'    # ENG <=> DEU
-        ,'Estonian'  # ENG <=> EST
-        )
-
-sources = (_('All'),_('Online'),_('Offline'))
 
 
 
@@ -652,6 +606,7 @@ class WebFrame:
         self.spec_symbols   = SpecSymbols  ()
         self.save_article   = SaveArticle  ()
         self.history        = History      ()
+        self.suggestion     = Suggestion   (entry=self.gui.search_field)
         # Close child widgets in order not to overlap the parent widget
         self.about.parties.gui.close()
         self.about.gui.close()
@@ -929,6 +884,10 @@ class WebFrame:
                 ,bindings = '<Control-a>'
                 ,action   = self.gui.search_field.select_all
                 )
+        sg.bind (obj      = self.gui.search_field
+                ,bindings = '<KeyRelease>'
+                ,action   = self.suggestion.suggest
+                )
         # Set config bindings
         self.gui.btn_hist.hint = _('Show history') \
                 + '\n'   + sh.globs['var']['bind_toggle_history'] \
@@ -1019,10 +978,10 @@ class WebFrame:
         self.gui.btn_cler.action = self.gui.search_field.clear_text
         self.gui.btn_trns.action = self.go
         # Reset OptionMenus
-        self.gui.men_pair.reset (items  = pairs
+        self.gui.men_pair.reset (items  = lg.pairs
                                 ,action = self.set_lang
                                 )
-        self.gui.men_srcs.reset (items   = sources
+        self.gui.men_srcs.reset (items   = lg.sources
                                 ,action  = self.set_source
                                 )
     def title(self,arg=None):
@@ -1506,7 +1465,7 @@ class WebFrame:
             self.load_article()
 
     def set_source(self,event=None):
-        lg.objs.request()._source = sources[self.gui.men_srcs.index]
+        lg.objs.request()._source = lg.sources[self.gui.men_srcs.index]
         sh.log.append ('WebFrame.set_source'
                       ,_('INFO')
                       ,_('Set source to "%s"') % lg.objs._request._source
@@ -1873,14 +1832,15 @@ class WebFrame:
         self.search_article.forward()
 
     def set_lang(self,event=None):
-        lg.objs.request()._lang = langs[self.gui.men_pair.index]
+        lg.objs.request()._lang = lg.langs[self.gui.men_pair.index]
         sh.log.append ('WebFrame.set_lang'
                       ,_('INFO')
-                      ,_('Set language to "%s"') % lg.objs._request._lang
+                      ,_('Set language to "%s"') \
+                      % lg.objs._request._lang
                       )
 
-    def get_pair(self):
-        return online_dic_urls[self.gui.men_pair.index]
+    def get_pair(self,event=None):
+        return lg.online_dic_urls[self.gui.men_pair.index]
 
     def set_columns(self,event=None):
         sh.log.append ('WebFrame.set_columns'
@@ -2340,6 +2300,136 @@ class ThirdParties:
         self._text = sh.ReadTextFile(file=file).get()
         self.gui.obj.insert(text=self._text)
         self.gui.obj.read_only()
+
+
+
+class Suggestion:
+    
+    def __init__(self,entry):
+        self.gui   = None
+        self.entry = entry
+        self.reset()
+    
+    def reset(self):
+        if self.gui:
+            self.close()
+        self.parent = sg.SimpleTop(parent=sg.objs.root())
+        self.parent.widget.wm_overrideredirect(1)
+        self.gui = gi.Suggestion(parent=self.parent)
+        self.bindings()
+    
+    def show(self,event=None):
+        if self.gui:
+            self.gui.show()
+    
+    def close(self,event=None):
+        if self.gui:
+            self.gui.close()
+            self.gui.close_box()
+            #cur
+            if self.gui.lbox:
+                self.gui.lbox.widget.destroy()
+            self.gui.frame1b.widget.destroy()
+            self.gui.frame1.widget.destroy()
+            self.gui.frame.widget.destroy()
+            self.gui.parent.widget.destroy()
+    
+    def select(self,event=None):
+        self._select()
+        self.close_box()
+        
+    def _select(self):
+        if self.lbox:
+            self.entry.clear_text()
+            self.entry.insert(text=self.lbox.get())
+            self.entry.select_all()
+            self.entry.focus()
+        
+    def move_down(self,event=None):
+        if self.gui.lbox:
+            # Necessary to use arrows on ListBox
+            self.gui.lbox.focus()
+            self.gui.lbox.index_add()
+            self.gui.lbox.select()
+            self._select()
+        
+    def move_up(self,event=None):
+        if self.gui.lbox:
+            # Necessary to use arrows on ListBox
+            self.gui.lbox.focus()
+            self.gui.lbox.index_subtract()
+            self.gui.lbox.select()
+            self._select()
+        
+    def move_top(self,event=None):
+        if self.gui.lbox:
+            # Necessary to use arrows on ListBox
+            self.gui.lbox.focus()
+            self.gui.lbox.move_top()
+            self._select()
+                          
+    def move_bottom(self,event=None):
+        if self.gui.lbox:
+            # Necessary to use arrows on ListBox
+            self.gui.lbox.focus()
+            self.gui.lbox.move_bottom()
+            self._select()
+    
+    def suggest(self,event=None):
+        if event:
+            text = self.entry.get()
+            #todo: avoid modifiers
+            # and len(text) > 2
+            if text:
+                ''' Retrieving suggestions is very slow, so we just do
+                    this after a space.
+                '''
+                if event.char == ' ':
+                    text = lg.Suggestion (search = text
+                                         ,pair   = objs.webframe().get_pair()
+                                         ).get()
+                    if text:
+                        self.reset()
+                        self.gui.show_box(lst=list(text))
+                        self.gui.show()
+                        sg.objs._root.idle()
+                        sg.AttachWidget (obj1   = self.entry
+                                        ,obj2   = self.parent
+                                        ,anchor = 'NE'
+                                        ).run()
+                    else:
+                        sh.log.append ('Suggestion.suggest'
+                                      ,_('WARNING')
+                                      ,_('Empty input is not allowed!')
+                                      )
+            else:
+                self.close()
+    
+    def bindings(self):
+        sg.bind (obj      = self.parent
+                ,bindings = '<Down>'
+                ,action   = self.move_down
+                )
+        sg.bind (obj      = self.parent
+                ,bindings = '<Up>'
+                ,action   = self.move_up
+                )
+        sg.bind (obj      = self.parent
+                ,bindings = '<Control-Home>'
+                ,action   = self.move_top
+                )
+        sg.bind (obj      = self.parent
+                ,bindings = '<Control-End>'
+                ,action   = self.move_bottom
+                )
+        
+    def loop_bindings(self):
+        sg.bind (obj      = self.gui.lbox
+                ,bindings = ['<Return>','<KP_Enter>'
+                            ,'<ButtonRelease-1>'
+                            ]
+                ,action   = self.select
+                )
 
 
 

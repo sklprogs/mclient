@@ -2,11 +2,35 @@
 # -*- coding: UTF-8 -*-
 
 import os
+import html
 import shared as sh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
+
+pairs = ('ENG <=> RUS','DEU <=> RUS','SPA <=> RUS'
+        ,'FRA <=> RUS','NLD <=> RUS','ITA <=> RUS'
+        ,'LAV <=> RUS','EST <=> RUS','AFR <=> RUS'
+        ,'EPO <=> RUS','RUS <=> XAL','XAL <=> RUS'
+        ,'ENG <=> DEU','ENG <=> EST'
+        )
+langs = ('English'   # ENG <=> RUS
+        ,'German'    # DEU <=> RUS
+        ,'Spanish'   # SPA <=> RUS
+        ,'French'    # FRA <=> RUS
+        ,'Dutch'     # NLD <=> RUS
+        ,'Italian'   # ITA <=> RUS
+        ,'Latvian'   # LAV <=> RUS
+        ,'Estonian'  # EST <=> RUS
+        ,'Afrikaans' # AFR <=> RUS
+        ,'Esperanto' # EPO <=> RUS
+        ,'Kazakh'    # RUS <=> XAL
+        ,'Kazakh'    # XAL <=> RUS
+        ,'German'    # ENG <=> DEU
+        ,'Estonian'  # ENG <=> EST
+        )
+sources = (_('All'),_('Online'),_('Offline'))
 
 
 class ConfigMclient(sh.Config):
@@ -805,12 +829,133 @@ class Order:
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
+
+
+
+# Multitran-only
+class Suggestion:
     
+    def __init__(self,search,pair,limit=10):
+        self._search = search
+        self._pair   = pair
+        self._limit  = limit
+        self.values()
+        self.check()
+        self.pair()
+        
+    def values(self):
+        self._url    = ''
+        self._items  = []
+        self.Success = True
     
+    def pair(self):
+        if self.Success:
+            self._pair = self._pair.replace('M.exe?','ms.exe?').replace('m.exe?','ms.exe?')
+        else:
+            sh.log.append ('Suggestion.pair'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def check(self):
+        if self._search:
+            if not isinstance(self._search,str):
+                self.Success = False
+                sh.log.append ('Suggestion.check'
+                              ,_('WARNING')
+                              ,_('Wrong input data: "%s"') \
+                              % str(self._search)
+                              )
+        else:
+            self.Success = False
+            sh.log.append ('Suggestion.check'
+                          ,_('INFO')
+                          ,_('Nothing to do!')
+                          )
+        if self._pair:
+            if not self._pair in online_dic_urls:
+                self.Success = False
+                sh.log.append ('Suggestion.check'
+                              ,_('WARNING')
+                              ,_('Wrong input data: "%s"') \
+                              % str(self._pair)
+                              )
+        else:
+            self.Success = False
+            sh.log.append ('Suggestion.check'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+        if not isinstance(self._limit,int):
+            self.Success = False
+            sh.log.append ('Suggestion.check'
+                          ,_('WARNING')
+                          ,_('Wrong input data: "%s"') \
+                          % str(self._limit)
+                          )
+    
+    def url(self):
+        if self.Success:
+            if not self._url:
+                self._url = sh.Online (base_str   = self._pair
+                                      ,search_str = self._search
+                                      ).url()
+            return self._url
+        else:
+            sh.log.append ('Suggestion.url'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def get(self):
+        if self.Success:
+            if not self._items:
+                if self.url():
+                    self._items = sh.Get(url=self._url).run()
+                    if self._items:
+                        self._items = html.unescape(self._items)
+                        self._items = [item for item \
+                                       in self._items.splitlines() \
+                                       if item
+                                      ]
+                        self._items = self._items[0:self._limit]
+                        return self._items
+                    else:
+                        sh.log.append ('Suggestion.get'
+                                      ,_('WARNING')
+                                      ,_('Empty input is not allowed!')
+                                      )
+                else:
+                    sh.log.append ('Suggestion.get'
+                                  ,_('WARNING')
+                                  ,_('Empty input is not allowed!')
+                                  )
+        else:
+            sh.log.append ('Suggestion.get'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
 
 
 
 objs = Objects()
+ConfigMclient()
+
+online_dic_urls = (sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_rus']   # ENG <=> RUS, 'l1=1&l2=2&s=%s'
+                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_deu_rus']   # DEU <=> RUS, 'l1=3&l2=2&s=%s'
+                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_spa_rus']   # SPA <=> RUS, 'l1=5&l2=2&s=%s'
+                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_fra_rus']   # FRA <=> RUS, 'l1=4&l2=2&s=%s'
+                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_nld_rus']   # NLD <=> RUS, 'l1=24&l2=2&s=%s'
+                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_ita_rus']   # ITA <=> RUS, 'l1=23&l2=2&s=%s'
+                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_lav_rus']   # LAV <=> RUS, 'l1=27&l2=2&s=%s'
+                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_est_rus']   # EST <=> RUS, 'l1=26&l2=2&s=%s'
+                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_afr_rus']   # AFR <=> RUS, 'l1=31&l2=2&s=%s'
+                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_epo_rus']   # EPO <=> RUS, 'l1=34&l2=2&s=%s'
+                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_rus_xal']   # RUS <=> XAL, 'l1=2&l2=35&s=%s'
+                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_xal_rus']   # XAL <=> RUS, 'l1=35&l2=2&s=%s'
+                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_deu']   # ENG <=> DEU, 'l1=1&l2=3&s=%s'
+                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_est']   # ENG <=> EST, 'l1=1&l2=26&s=%s'
+                  )
 
 
 if __name__ == '__main__':
