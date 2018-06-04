@@ -510,6 +510,14 @@ class WebFrame:
         self.widgets()
         self.bindings()
         
+    def paste_search_field(self,event=None):
+        self.suggestion.close()
+        self.gui.paste_search()
+    
+    def clear_search_field(self,event=None):
+        self.suggestion.close()
+        self.gui.search_field.clear_text()
+        
     def escape(self,event=None):
         if self.suggestion.gui.lbox:
             self.suggestion.close()
@@ -1008,8 +1016,8 @@ class WebFrame:
         self.gui.btn_spec.action = self.spec_symbols.gui.toggle
         self.gui.btn_rep2.action = self.insert_repeat_sign2
         self.gui.btn_rep1.action = self.insert_repeat_sign
-        self.gui.btn_past.action = self.gui.paste_search
-        self.gui.btn_cler.action = self.gui.search_field.clear_text
+        self.gui.btn_past.action = self.paste_search_field
+        self.gui.btn_cler.action = self.clear_search_field
         self.gui.btn_trns.action = self.go
         # Reset OptionMenus
         self.gui.men_pair.reset (items  = lg.pairs
@@ -1423,6 +1431,7 @@ class WebFrame:
             self.gui.search_field.clear_text()
         self.history.update()
         self.search_article.reset()
+        self.suggestion.close()
         self.update_buttons()
         timer.end()
         
