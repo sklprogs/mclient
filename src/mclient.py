@@ -2381,6 +2381,10 @@ class Suggestion:
         self._select()
         objs.webframe().go()
         
+    ''' #note: this works differently in Windows and Linux. In Windows
+        selecting an item will hide suggestions, in Linux they will be
+        kept open.
+    '''
     def _select(self,event=None):
         if self.gui.lbox:
             self.entry.clear_text()
