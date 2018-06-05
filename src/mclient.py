@@ -511,21 +511,21 @@ class WebFrame:
         self.bindings()
         
     def paste_search_field(self,event=None):
-        self.suggestion.close()
+        self.suggestion.gui.close()
         self.gui.paste_search()
     
     def clear_search_field(self,event=None):
-        self.suggestion.close()
+        self.suggestion.gui.close()
         self.gui.search_field.clear_text()
         
     def escape(self,event=None):
-        if self.suggestion.gui.lbox:
-            self.suggestion.close()
+        if self.suggestion.gui.parent:
+            self.suggestion.gui.close()
         else:
             sg.Geometry(parent=self.gui.obj).minimize()
     
     def minimize(self,event=None):
-        self.suggestion.close()
+        self.suggestion.gui.close()
         sg.Geometry(parent=self.gui.obj).minimize()
     
     def go_phrase_dic(self,event=None):
@@ -1431,7 +1431,7 @@ class WebFrame:
             self.gui.search_field.clear_text()
         self.history.update()
         self.search_article.reset()
-        self.suggestion.close()
+        self.suggestion.gui.close()
         self.update_buttons()
         timer.end()
         
@@ -2349,33 +2349,8 @@ class ThirdParties:
 class Suggestion:
     
     def __init__(self,entry):
-        self.gui   = None
         self.entry = entry
-        self.reset()
-    
-    def reset(self):
-        if self.gui:
-            self.close()
-        self.parent = sg.SimpleTop(parent=sg.objs.root())
-        self.parent.widget.wm_overrideredirect(1)
-        self.gui = gi.Suggestion(parent=self.parent)
-        self.bindings()
-    
-    def show(self,event=None):
-        if self.gui:
-            self.gui.show()
-    
-    def close(self,event=None):
-        if self.gui:
-            self.gui.close()
-            self.gui.close_box()
-            #cur
-            if self.gui.lbox:
-                self.gui.lbox.widget.destroy()
-            self.gui.frame1b.widget.destroy()
-            self.gui.frame1.widget.destroy()
-            self.gui.frame.widget.destroy()
-            self.gui.parent.widget.destroy()
+        self.gui   = gi.Suggestion()
     
     def select(self,event=None):
         self._select()
@@ -2386,49 +2361,78 @@ class Suggestion:
         kept open.
     '''
     def _select(self,event=None):
-        if self.gui.lbox:
+        if self.gui.parent:
             self.entry.clear_text()
             self.entry.insert(text=self.gui.lbox.get())
             self.entry.select_all()
             self.entry.focus()
+        else:
+            sh.log.append ('Suggestion._select'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
         
     def move_down(self,event=None):
-        if self.gui.lbox:
+        if self.gui.parent:
             # Necessary to use arrows on ListBox
             self.gui.lbox.focus()
             self.gui.lbox.index_add()
             self.gui.lbox.select()
             self._select()
+        else:
+            sh.log.append ('Suggestion.move_down'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
         
     def move_up(self,event=None):
-        if self.gui.lbox:
+        if self.gui.parent:
             # Necessary to use arrows on ListBox
             self.gui.lbox.focus()
             self.gui.lbox.index_subtract()
             self.gui.lbox.select()
             self._select()
+        else:
+            sh.log.append ('Suggestion.move_up'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
         
     def move_top(self,event=None):
-        if self.gui.lbox:
+        if self.gui.parent:
             # Necessary to use arrows on ListBox
             self.gui.lbox.focus()
             self.gui.lbox.move_top()
             self._select()
+        else:
+            sh.log.append ('Suggestion.move_top'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
                           
     def move_bottom(self,event=None):
-        if self.gui.lbox:
+        if self.gui.parent:
             # Necessary to use arrows on ListBox
             self.gui.lbox.focus()
             self.gui.lbox.move_bottom()
             self._select()
+        else:
+            sh.log.append ('Suggestion.move_bottom'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
     
     def suggest(self,event=None):
         if sh.globs['bool']['Autocompletion'] and event:
             text = self.entry.get()
             #todo: avoid modifiers
             if text:
-                ''' Retrieving suggestions is very slow, so we just do
-                    this after a space.
+                ''' Retrieving suggestions online is very slow, so we
+                    just do this after a space. We may bind this
+                    procedure to '<space>' as well, however, we also
+                    would like to hide suggestions if there is no text
+                    present in 'search_field', so we bind to
+                    '<KeyRelease>'.
                 '''
                 if event.char == ' ':
                     text = lg.Suggestion (search = text
@@ -2436,14 +2440,14 @@ class Suggestion:
                                          ,limit  = 20
                                          ).get()
                     if text:
-                        self.reset()
-                        self.gui.show_box (lst    = list(text)
-                                          ,action = self._select
-                                          )
-                        self.gui.show()
+                        self.gui.close()
+                        self.gui.show (lst    = list(text)
+                                      ,action = self._select
+                                      )
+                        self.bindings()
                         sg.objs._root.idle()
                         sg.AttachWidget (obj1   = self.entry
-                                        ,obj2   = self.parent
+                                        ,obj2   = self.gui.parent
                                         ,anchor = 'NE'
                                         ).run()
                     else:
@@ -2452,34 +2456,14 @@ class Suggestion:
                                       ,_('Empty input is not allowed!')
                                       )
             else:
-                self.close()
+                self.gui.close()
     
     def bindings(self):
-        sg.bind (obj      = self.parent
-                ,bindings = '<Down>'
-                ,action   = self.move_down
-                )
-        sg.bind (obj      = self.parent
-                ,bindings = '<Up>'
-                ,action   = self.move_up
-                )
-        sg.bind (obj      = self.parent
-                ,bindings = '<Control-Home>'
-                ,action   = self.move_top
-                )
-        sg.bind (obj      = self.parent
-                ,bindings = '<Control-End>'
-                ,action   = self.move_bottom
-                )
-        sg.bind (obj      = self.parent
-                ,bindings = '<Escape>'
-                ,action   = self.close
-                )
-        sg.bind (obj      = self.parent
-                ,bindings = '<ButtonRelease-1>'
-                ,action   = self.select
-                )
-
+        if self.gui.parent:
+            sg.bind (obj      = self.gui.parent
+                    ,bindings = '<ButtonRelease-1>'
+                    ,action   = self.select
+                    )
 
 
 objs = Objects()

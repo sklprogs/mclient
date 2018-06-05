@@ -1760,31 +1760,23 @@ class SpecSymbols:
 
 
 
+#todo: make this widget reusable
 class Suggestion:
     
-    def __init__(self,parent):
-        self.lbox   = None
-        self.parent = parent
-        self.gui()
+    def __init__(self):
+        self.parent = None
         
-    def gui(self):
-        self.frame  = sg.Frame (parent = self.parent)
-        self.frame1 = sg.Frame (parent = self.frame
-                               ,expand = 0
-                               )
-        ''' A hack to force shrinking the parent after doing
-            'pack_forget' on the child.
-        '''
-        self.frame1b = sg.Frame (parent = self.frame1
-                                ,expand = 0
-                                )
+    def bindings(self):
+        sg.bind (obj      = self.parent
+                ,bindings = '<Escape>'
+                ,action   = self.close
+                )
         
-    def show_box(self,lst,event=None,action=None):
-        if self.lbox is None:
-            self.frame1b = sg.Frame (parent = self.frame1
-                                    ,expand = 0
-                                    )
-            self.lbox = sg.ListBox (parent          = self.frame1b
+    def show(self,lst=['a','b','c'],action=None):
+        if not self.parent:
+            self.parent = sg.SimpleTop(parent=sg.objs.root())
+            self.parent.widget.wm_overrideredirect(1)
+            self.lbox = sg.ListBox (parent          = self.parent
                                    ,title           = ''
                                    ,lst             = lst
                                    ,action          = action
@@ -1792,22 +1784,12 @@ class Suggestion:
                                    ,Scrollbar       = False
                                    ,SelectionCloses = False
                                    )
-                                 
-    def close_box(self,event=None):
-        if self.lbox:
-            self.frame1b.widget.pack_forget()
-            self.lbox = None
-        else:
-            sh.log.append ('Suggestion.close_box'
-                          ,_('INFO')
-                          ,_('Nothing to do!')
-                          )
-    
-    def show(self,event=None):
-        self.parent.show()
-    
-    def close(self,event=None):
-        self.parent.close()
+            self.bindings()
+                               
+    def close(self):
+        if self.parent:
+            self.parent.kill()
+            self.parent = None
 
 
 
