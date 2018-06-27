@@ -1,5 +1,9 @@
 
 
+* By default, Control-F7 now copies the URL of the current article and
+  Shift-F7 copies the URL of the selected term (set this behavior in
+  mclient.cfg)
+
 5.11
 * Autocomplete input
 * Add a key Autocompletion
