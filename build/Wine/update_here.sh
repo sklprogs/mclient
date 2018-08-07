@@ -34,4 +34,4 @@ cp -u /usr/local/bin/mclient/resources/icon_64x64_mclient.ico ./resources/
 # (Wine-only) Copy build scripts
 cp -u /usr/local/bin/mclient/build/Wine/{build.sh,clean_up.sh,setup.py,update_mclient.sh} .
 
-ls .
+ls --color=always .

@@ -1,3 +1,7 @@
+
+- Make selecting faster
+- Fix the color for correctional comments
+  (https://www.multitran.ru/c/M.exe?&s=Vanity&l1=1&l2=2)
 - Return URLs for dics
 - Add WelcomeScreen bool (DB.block_pos slows down)
 - Distinguish between SpecialPage and a PhraseDic page
