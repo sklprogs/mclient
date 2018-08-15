@@ -1336,7 +1336,7 @@ class WebFrame:
                                 )
         bp.run()
         objs._blocks_db.update(query=bp._query)
-
+        
         dics = objs._blocks_db.dics(Block=0)
         ''' #note: if an article comprises only 1 dic/wform, this is
             usually a dictionary + terms from the 'Phrases' section
@@ -1344,10 +1344,8 @@ class WebFrame:
             'centre' may have only 1 wform (and a plurality of dics)
         '''
         
-        if not dics \
-        or dics and len(dics) == 1 \
-        or page and page.HasLocal \
-        or not self._phdic:
+        if not dics or dics and len(dics) == 1 \
+        or page and page.HasLocal or not self._phdic:
             # or check 'lg.objs._request._search' by pattern '\d+ фраз'
             lg.objs._request.SpecialPage = True
         else:
@@ -1382,17 +1380,18 @@ class WebFrame:
                          ,ExpandSpeech = ExpandSpeech
                          )
         cells.run()
-        
         cells.dump(blocks_db=objs._blocks_db)
         
-        mh.objs.html().reset (data       = objs._blocks_db.fetch()
-                             ,cols       = lg.objs._request._cols
-                             ,collimit   = lg.objs._request._collimit
-                             ,order      = lg.objs.order()
-                             ,width      = sh.globs['int']['col_width']
-                             ,Reverse    = lg.objs._request.Reverse
+        mh.objs.html().reset (data     = objs._blocks_db.fetch()
+                             ,cols     = lg.objs._request._cols
+                             ,collimit = lg.objs._request._collimit
+                             ,order    = lg.objs.order()
+                             ,width    = sh.globs['int']['col_width']
+                             ,Reverse  = lg.objs._request.Reverse
+                             ,phdic    = self._phdic
                              )
         mh.objs._html.run()
+        
         lg.objs._request._html = mh.objs._html._html
         self.fill(code=lg.objs._request._html)
 
@@ -1455,7 +1454,27 @@ class WebFrame:
                 objs._blocks_db.Selectable = True
                 if result and result[8] == 'dic' \
                 and result[6] != self._phdic:
-                    lg.objs.order().lm_auto(search=result[6])
+                    dica = objs._blocks_db.prev_dica (pos  = result[0]
+                                                     ,dica = result[6]
+                                                     )
+                    if dica:
+                        sh.log.append ('WebFrame.go'
+                                      ,_('DEBUG')
+                                      ,_('Selected dictionary: "%s". Previous dictionary: "%s" (abbreviation), "%s" (full).') \
+                                      % (result[6],str(dica[0])
+                                        ,str(dica[1])
+                                        ,
+                                        )
+                                      )
+                        dica = dica[1]
+                    else:
+                        sh.log.append ('WebFrame.go'
+                                      ,_('DEBUG')
+                                      ,_('Selected dictionary: "%s". No previous dictionary.')
+                                      )
+                    lg.objs.order().lm_auto (dic1 = result[6]
+                                            ,dic2 = dica
+                                            )
                     objs._blocks_db.delete_bookmarks()
                     self.load_article()
                 else:
@@ -2195,7 +2214,27 @@ class WebFrame:
                 objs._blocks_db.Selectable = True
                 if result and result[8] == 'dic' \
                 and result[6] != self._phdic:
-                    lg.objs.order().rm_auto(search=result[6])
+                    dica = objs._blocks_db.next_dica (pos  = result[0]
+                                                     ,dica = result[6]
+                                                     )
+                    if dica:
+                        sh.log.append ('WebFrame.go'
+                                      ,_('DEBUG')
+                                      ,_('Selected dictionary: "%s". Next dictionary: "%s" (abbreviation), "%s" (full).') \
+                                      % (result[6],str(dica[0])
+                                        ,str(dica[1])
+                                        ,
+                                        )
+                                      )
+                        dica = dica[1]
+                    else:
+                        sh.log.append ('WebFrame.go_alt'
+                                      ,_('DEBUG')
+                                      ,_('Selected dictionary: "%s". No next dictionary.')
+                                      )
+                    lg.objs.order().rm_auto (dic1 = result[6]
+                                            ,dic2 = dica
+                                            )
                     objs._blocks_db.delete_bookmarks()
                     self.load_article()
                 else:

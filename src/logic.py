@@ -380,18 +380,142 @@ class Objects:
 # Create block and priority lists and complement them
 class Order:
     
-    # Takes ~0,046s
     def __init__(self):
         self.values()
         self._lists()
         self._dic()
         self._conform()
+        
+    def _fill_dic(self,lst,ind):
+        lst = lst[1:]
+        lst = lst[::-1]
+        for item in lst:
+            self._prioritize.insert(ind,item)
+    
+    def prioritize_by(self,Down=False):
+        if self.Success:
+            if self._dic1 and self._dic2:
+                ''' - Multiple dictionary titles share same blocks
+                      for now, so we cannot distinguish them. Thus, all
+                      titles of the same block must have the same
+                      priority. Moreover, if any item of 'dic1' is
+                      (un)prioritized, then all other items should be
+                      (un)prioritized as well.
+                    - Since we (un)prioritize one dictionary against
+                      another here instead of simply (un)prioritizing
+                      one dictionary (this logic is set in
+                      'lm_auto'/'rm_auto'), both 'dic1' and 'dic2'
+                      should comprise prioritized dictionaries. Since we
+                      cannot distinguish multiple dictionary titles for
+                      now, both 'dic1' and 'dic2' should be fully
+                      introduced into 'self._prioritize'.
+                    - The only way to get a position of 'dic1' being
+                      prioritized over 'dic2' is to get the position of
+                      'dic2' in 'self._prioritize' first. Since both
+                      'dic1' and 'dic2' have prioritized items (this
+                      logic is set in 'lm_auto'/'rm_auto') and are
+                      previously sorted by priority, first items of
+                      'dic1' and 'dic2' should always exist (otherwise,
+                      it is a logic error).
+                '''
+                if self._dic1[0] in self._prioritize \
+                and self._dic2[0] in self._prioritize:
+                    
+                    if Down:
+                        message = _('Mode: "%s"') \
+                                  % _('Decrease priority')
+                    else:
+                        message = _('Mode: "%s"') \
+                                  % _('Increase priority')
+                    sh.log.append ('Order.prioritize_by'
+                                  ,_('DEBUG')
+                                  ,message
+                                  )
+                    
+                    # This allows not to delete duplicates later
+                    for i in range(len(self._dic1)):
+                        if i > 0:
+                            self.unprioritize(self._dic1[i])
+                    for i in range(len(self._dic2)):
+                        if i > 0:
+                            self.unprioritize(self._dic2[i])
+                    
+                    ind1 = self._prioritize.index(self._dic1[0])
+                    ind2 = self._prioritize.index(self._dic2[0])
+                    
+                    if Down:
+                        Swap = ind1 < ind2
+                    else:
+                        Swap = ind1 > ind2
+                    if Swap:
+                        sh.log.append ('Order.prioritize_by'
+                                      ,_('DEBUG')
+                                      ,_('Swap items: %d <-> %d; "%s" <-> "%s"') \
+                                      % (ind1,ind2
+                                        ,self._prioritize[ind1],self._prioritize[ind2]
+                                        )
+                                      )
+                        self._prioritize[ind1], self._prioritize[ind2] \
+                        = self._prioritize[ind2], self._prioritize[ind1]
+                    
+                    ind1 += 1
+                    ind2 += 1
+                    
+                    if Swap:
+                        dic1 = self._dic2
+                        dic2 = self._dic1
+                    else:
+                        dic1 = self._dic1
+                        dic2 = self._dic2
+                    
+                    if ind2 > ind1:
+                        self._fill_dic(dic2,ind2)
+                        self._fill_dic(dic1,ind1)
+                    else:
+                        self._fill_dic(dic1,ind1)
+                        self._fill_dic(dic2,ind2)
+                        
+                    lst = sh.List(lst1=self._prioritize).duplicates()
+                    if lst:
+                        self._prioritize = list(lst)
+                    else:
+                        sh.log.append ('Order.prioritize_by'
+                                      ,_('WARNING')
+                                      ,_('Empty input is not allowed!')
+                                      )
+                    
+                    sh.log.append ('Order.prioritize_by'
+                                  ,_('DEBUG')
+                                  ,'Dic1: ' + str(self._dic1)
+                                  )
+                    sh.log.append ('Order.prioritize_by'
+                                  ,_('DEBUG')
+                                  ,'Dic2: ' + str(self._dic2)
+                                  )
+                    sh.log.append ('Order.prioritize_by'
+                                  ,_('DEBUG')
+                                  ,str(self._prioritize)
+                                  )
+                else:
+                    sh.objs.mes ('Order.prioritize_by'
+                                ,_('ERROR')
+                                ,_('Logic error!')
+                                )
+            else:
+                sh.log.append ('Order.prioritize_by'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Order.prioritize_by'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
             
     def priority(self,search):
         if self.Success:
-            if search:
-                lst   = search.split(',')
-                lst   = [item.lower().strip() for item in lst]
+            lst = self.get_list(search)
+            if lst:
                 prior = []
                 for item in lst:
                     try:
@@ -419,12 +543,18 @@ class Order:
         2) A common dictionary      - prioritize
         3) A prioritized dictionary - increase priority
     '''
-    def lm_auto(self,search):
+    def lm_auto(self,dic1,dic2=''):
         if self.Success:
-            if self.is_blocked(search=search):
-                self.unblock_mult(search=search)
+            self.set(dic1,dic2)
+            if self.is_blocked(self._dic1):
+                for item in self._dic1:
+                    self.unblock(item)
+            elif self.is_prioritized(self._dic1) \
+            and self.is_prioritized(self._dic2):
+                self.prioritize_by()
             else:
-                self.prioritize_mult(search=search)
+                for item in self._dic1:
+                    self.prioritize(item)
         else:
             sh.log.append ('Order.lm_auto'
                           ,_('WARNING')
@@ -437,25 +567,35 @@ class Order:
         2) A blocked dictionary     - unblock
         3) A common dictionary      - block
     '''
-    def rm_auto(self,search):
+    def rm_auto(self,dic1,dic2=''):
         if self.Success:
-            if self.is_blocked(search=search):
-                self.unblock_mult(search=search)
-            elif self.is_prioritized(search=search):
-                self.unprioritize_mult(search=search)
+            self.set(dic1,dic2)
+            if self.is_blocked(self._dic1):
+                for item in self._dic1:
+                    self.unblock(item)
+            elif self.is_prioritized(self._dic1):
+                if self.is_prioritized(self._dic2):
+                    self.prioritize_by(Down=True)
+                else:
+                    for item in self._dic1:
+                        self.unprioritize(item)
             else:
-                self.block_mult(search=search)
+                ''' Multiple dictionary titles share same blocks
+                    for now, so we cannot distinguish them. Thus,
+                    if any item of 'dic1' is blocked, then all
+                    other items should be blocked as well.
+                '''
+                for item in self._dic1:
+                    self.block(item)
         else:
             sh.log.append ('Order.rm_auto'
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
     
-    def is_prioritized(self,search):
+    def is_prioritized(self,lst):
         if self.Success:
-            if search:
-                lst = search.split(',')
-                lst = [item.lower().strip() for item in lst]
+            if lst:
                 for item in lst:
                     if item in self._prioritize:
                         return True
@@ -470,11 +610,9 @@ class Order:
                           ,_('Operation has been canceled.')
                           )
     
-    def is_blocked(self,search):
+    def is_blocked(self,lst):
         if self.Success:
-            if search:
-                lst = search.split(',')
-                lst = [item.lower().strip() for item in lst]
+            if lst:
                 for item in lst:
                     if item in self._blacklist:
                         return True
@@ -510,7 +648,15 @@ class Order:
                 blacklist = list(self._blacklist)
                 self._blacklist = []
                 for item in blacklist:
-                    self.block(search=item)
+                    pair = self.get_pair(item)
+                    if pair:
+                        self.block(pair[0])
+                        self.block(pair[1])
+                    else:
+                        sh.log.append ('Order._conform'
+                                      ,_('WARNING')
+                                      ,_('Empty input is not allowed!')
+                                      )
             else:
                 sh.log.append ('Order._conform'
                               ,_('WARNING')
@@ -520,7 +666,15 @@ class Order:
                 prioritize = list(self._prioritize)
                 self._prioritize = []
                 for item in prioritize:
-                    self.prioritize(search=item)
+                    pair = self.get_pair(item)
+                    if pair:
+                        self.prioritize(pair[0])
+                        self.prioritize(pair[1])
+                    else:
+                        sh.log.append ('Order._conform'
+                                      ,_('WARNING')
+                                      ,_('Empty input is not allowed!')
+                                      )
             else:
                 sh.log.append ('Order._conform'
                               ,_('WARNING')
@@ -566,265 +720,172 @@ class Order:
         self._titles     = []
         self._blacklist  = []
         self._prioritize = []
-        self._abbr       = ''
-        self._title      = ''
+        self._dic1       = ''
+        self._dic2       = ''
             
-    def title(self):
+    def sort_dic(self,lst):
         if self.Success:
-            if not self._title:
-                if self._abbr in self._abbrs:
-                    ind = self._abbrs.index(self._abbr)
-                    self._title = self._titles[ind]
-                else:
-                    sh.log.append ('Order.title'
-                                  ,_('WARNING')
-                                  ,_('Wrong input data!')
-                                  )
-            return self._title
+            if lst:
+                indexes = []
+                for item in lst:
+                    try:
+                        ind = self._prioritize.index(item)
+                    except ValueError:
+                        # Place an unpriotitized dictionary at the end
+                        ind = 1000
+                    indexes.append(ind)
+                lst = sorted(zip(indexes,lst))
+                lst = [item[1] for item in lst]
+                return lst
+            else:
+                sh.log.append ('Order.sort_dic'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('Order.sort_dic'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def set(self,dic1,dic2=''):
+        if self.Success:
+            if dic1:
+                dic1 = self.get_list(dic1)
+                dic1 = self.sort_dic(dic1)
+                self._dic1 = list(dic1)
+            else:
+                sh.log.append ('Order.set'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+            if dic2:
+                dic2 = self.get_list(dic2)
+                dic2 = self.sort_dic(dic2)
+                self._dic2 = list(dic2)
+        else:
+            sh.log.append ('Order.set'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def title(self,abbr):
+        if self.Success:
+            try:
+                ind = self._abbrs.index(abbr)
+                return self._titles[ind]
+            except ValueError:
+                sh.log.append ('Order.title'
+                              ,_('WARNING')
+                              ,_('Wrong input data!')
+                              )
         else:
             sh.log.append ('Order.title'
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
         
-    def abbr(self):
+    def abbr(self,title):
         if self.Success:
-            if not self._abbr:
-                if self._title in self._titles:
-                    ind = self._titles.index(self._title)
-                    self._abbr = self._abbrs[ind]
-                else:
-                    sh.log.append ('Order.abbr'
-                                  ,_('WARNING')
-                                  ,_('Wrong input data!')
-                                  )
-            return self._abbr
+            try:
+                ind = self._titles.index(title)
+                return self._abbrs[ind]
+            except ValueError:
+                sh.log.append ('Order.abbr'
+                              ,_('WARNING')
+                              ,_('Wrong input data!')
+                              )
         else:
             sh.log.append ('Order.abbr'
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
     
-    def search(self,text):
+    def get_pair(self,item):
         if self.Success:
-            self._abbr  = ''
-            self._title = ''
-            text = str(text).lower().strip()
-            if text:
-                if text in self._abbrs:
-                    self._abbr = text
-                    self.title()
-                elif text in self._titles:
-                    self._title = text
-                    self.abbr()
+            if item:
+                item = item.lower().strip()
+                abbr = title = ''
+                if item in self._titles:
+                    title = item
+                    abbr  = self.abbr(title)
+                elif item in self._abbrs:
+                    abbr  = item
+                    title = self.title(abbr)
                 else:
-                    sh.log.append ('Order.search'
+                    sh.log.append ('Order.get_pair'
                                   ,_('WARNING')
-                                  ,_('Unknown dictionary "%s"!') % text
+                                  ,_('Unknown dictionary "%s"!') \
+                                  % str(item)
                                   )
-                    self._abbr = self._title = text
+                    abbr = title = str(item)
+                return([abbr,title])
             else:
-                sh.log.append ('Order.search'
+                sh.log.append ('Order.get_pair'
                               ,_('WARNING')
                               ,_('Empty input is not allowed!')
                               )
         else:
-            sh.log.append ('Order.search'
+            sh.log.append ('Order.get_pair'
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
     
-    def block_mult(self,search):
+    def get_list(self,search):
         if self.Success:
             if search:
-                lst = search.split(',')
-                for item in lst:
-                    self.block(search=item)
+                search = search.split(',')
+                lst    = []
+                for item in search:
+                    pair = self.get_pair(item)
+                    if pair:
+                        lst += pair
+                return lst
+            # Prevents from None
             else:
-                sh.log.append ('Order.block_mult'
+                sh.log.append ('Order.get_list'
                               ,_('WARNING')
                               ,_('Empty input is not allowed!')
                               )
         else:
-            sh.log.append ('Order.block_mult'
+            sh.log.append ('Order.get_list'
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
     
-    def block(self,search):
+    def block(self,item):
         if self.Success:
-            self.search(text=search)
-            if self._abbr and self._title:
-                if self._abbr in self._blacklist \
-                and self._title in self._blacklist:
-                    sh.log.append ('Order.block'
-                                  ,_('INFO')
-                                  ,_('Nothing to do!')
-                                  )
-                else:
-                    self._blacklist.append(self._abbr)
-                    self._blacklist.append(self._title)
-            else:
-                sh.log.append ('Order.block'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
-        else:
-            sh.log.append ('Order.block'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            if not item in self._blacklist:
+                self._blacklist.append(item)
                           
-    def unblock(self,search):
+    def unblock(self,item):
         if self.Success:
-            self.search(text=search)
-            if self._abbr and self._title:
-                if self._abbr in self._blacklist \
-                and self._title in self._blacklist:
-                    self._blacklist.remove(self._abbr)
-                    self._blacklist.remove(self._title)
-                else:
-                    sh.log.append ('Order.unblock'
-                                  ,_('INFO')
-                                  ,_('Nothing to do!')
-                                  )
-            else:
-                sh.log.append ('Order.unblock'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+            try:
+                self._blacklist.remove(item)
+            except ValueError:
+                pass
         else:
             sh.log.append ('Order.unblock'
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
                           
-    def prioritize(self,search):
+    def prioritize(self,item):
         if self.Success:
-            self.search(text=search)
-            if self._abbr and self._title:
-                if self._abbr in self._prioritize \
-                and self._title in self._prioritize:
-                    ind1 = self._prioritize.index(self._abbr)
-                    ind2 = self._prioritize.index(self._title)
-                    max_ind = max(ind1,ind2)
-                    min_ind = min(ind1,ind2)
-                    del self._prioritize[max_ind]
-                    del self._prioritize[min_ind]
-                    ''' We assume that 1 record occupies 2 lines
-                        (abbreviation + title), thus, we move the record
-                        2 lines up.
-                    '''
-                    if min_ind > 1:
-                        min_ind -= 2
-                    self._prioritize.insert(min_ind,self._title)
-                    self._prioritize.insert(min_ind,self._abbr)
-                else:
-                    self._prioritize.append(self._abbr)
-                    self._prioritize.append(self._title)
-            else:
-                sh.log.append ('Order.prioritize'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+            if not item in self._prioritize:
+                self._prioritize.append(item)
         else:
             sh.log.append ('Order.prioritize'
                           ,_('WARNING')
                           ,_('Operation has been canceled.')
                           )
     
-    def prioritize_mult(self,search):
+    def unprioritize(self,item):
         if self.Success:
-            if search:
-                lst = search.split(',')
-                for item in lst:
-                    self.prioritize(search=item)
-            else:
-                sh.log.append ('Order.prioritize_mult'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
-        else:
-            sh.log.append ('Order.prioritize_mult'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
-                          
-    def unprioritize_mult(self,search):
-        if self.Success:
-            if search:
-                lst = search.split(',')
-                ''' We need to prioritize multiple items in a direct
-                    order, from a higher priority to a lower priority
-                    (which is intuitive), but unprioritize them in
-                    a reverse order (otherwise, unprioritizing will have
-                    no effect: 'x1, x2' -> 'x2, x1' -> 'x1, x2').
-                '''
-                lst = lst[::-1]
-                for item in lst:
-                    self.unprioritize(search=item)
-            else:
-                sh.log.append ('Order.unprioritize_mult'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
-        else:
-            sh.log.append ('Order.unprioritize_mult'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
-                          
-    def unblock_mult(self,search):
-        if self.Success:
-            if search:
-                lst = search.split(',')
-                for item in lst:
-                    self.unblock(search=item)
-            else:
-                sh.log.append ('Order.unblock_mult'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
-        else:
-            sh.log.append ('Order.unblock_mult'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
-    
-    def unprioritize(self,search):
-        if self.Success:
-            self.search(text=search)
-            if self._abbr and self._title:
-                if self._abbr in self._prioritize \
-                and self._title in self._prioritize:
-                    ind1 = self._prioritize.index(self._abbr)
-                    ind2 = self._prioritize.index(self._title)
-                    max_ind = max(ind1,ind2)
-                    min_ind = min(ind1,ind2)
-                    del self._prioritize[max_ind]
-                    del self._prioritize[min_ind]
-                    if min_ind == len(self._prioritize):
-                        ''' Higher index means lower priority.
-                            If a dictionary title + abbreviation pair
-                            reaches the end, we just delete it from
-                            the list (the prioritized dictionary becomes
-                            a common one).
-                        '''
-                        pass
-                    else:
-                        min_ind += 2
-                        self._prioritize.insert(min_ind,self._title)
-                        self._prioritize.insert(min_ind,self._abbr)
-                else:
-                    sh.log.append ('Order.unprioritize'
-                                  ,_('INFO')
-                                  ,_('Nothing to do!')
-                                  )
-            else:
-                sh.log.append ('Order.unprioritize'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+            try:
+                self._prioritize.remove(item)
+            except ValueError:
+                pass
         else:
             sh.log.append ('Order.unprioritize'
                           ,_('WARNING')
@@ -963,10 +1024,12 @@ online_dic_urls = (sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_rus'
 
 
 if __name__ == '__main__':
-    print('Old Priorities:',objs.order()._prioritize)
-    #objs._order.prioritize(search='пив.')
-    #objs._order.prioritize(search='тех.')
-    objs._order.prioritize_mult(search='Британский английский, Пивное производство')
-    print('New Priorities:',objs.order()._prioritize)
-    objs._order.unprioritize_mult(search='Британский английский, Пивное производство')
-    print('New Priorities:',objs.order()._prioritize)
+    order = Order()
+    #dic1 = 'Нефть, газ.турб., общ., юр.'
+    #dic2 = 'Нефть, Техника'
+    dic1 = 'Нефть, газ.турб., общ., юр.'
+    dic2 = 'воен., Техника'
+    #dic1 = 'Нефть, газ.турб., Техника'
+    #dic2 = 'воен., юр.'
+    order.lm_auto(dic1,dic2)
+    #order.rm_auto(dic1,dic2)

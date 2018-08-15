@@ -27,6 +27,38 @@ class DB:
         self.create_blocks()
         self.create_articles()
         
+    def next_dica(self,pos,dica):
+        if self._articleid:
+            self.dbc.execute ('select DICA,DICAF,NO,CELLNO from BLOCKS \
+                               where ARTICLEID = ? and POS1 > ? \
+                               and not DICA = ? and not DICAF = ? \
+                               and BLOCK = 0 and IGNORE = 0 \
+                               order by CELLNO,NO'
+                             ,(self._articleid,pos,dica,dica,)
+                             )
+            return self.dbc.fetchone()
+        else:
+            sh.log.append ('DB.next_dica'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
+    def prev_dica(self,pos,dica):
+        if self._articleid:
+            self.dbc.execute ('select DICA,DICAF,NO,CELLNO from BLOCKS \
+                               where ARTICLEID = ? and POS1 < ? \
+                               and not DICA = ? and not DICAF = ? \
+                               and BLOCK = 0 and IGNORE = 0 \
+                               order by CELLNO desc,NO desc'
+                             ,(self._articleid,pos,dica,dica,)
+                             )
+            return self.dbc.fetchone()
+        else:
+            sh.log.append ('DB.prev_dica'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def values(self):
         self.Selectable = True
         self._articleid = 0

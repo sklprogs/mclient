@@ -30,6 +30,7 @@ class HTML:
     def reset (self,data,cols,order
               ,collimit=9,Printer=False
               ,Reverse=False,width=0
+              ,phdic=''
               ):
         self.values()
         self.order     = order
@@ -39,6 +40,7 @@ class HTML:
         self._width    = width
         self.Printer   = Printer
         self.Reverse   = Reverse
+        self._phdic    = phdic
         
     def run(self):
         self.assign()
@@ -49,6 +51,7 @@ class HTML:
         self._blocks = []
         self._block  = None
         self._html   = ''
+        self._phdic  = ''
         self._script = '''
         <head>
 
@@ -173,9 +176,17 @@ class HTML:
             self.output.write('<font face="')
             self.output.write(self._family())
             self.output.write('" color="')
-            if self.order.is_blocked(search=self._block._text):
+            # Suppress useless error output
+            if self._block._text != self._phdic:
+                lst         = self.order.get_list(search=self._block._text)
+                Blocked     = self.order.is_blocked(lst)
+                Prioritized = self.order.is_prioritized(lst)
+            else:
+                Blocked     = False
+                Prioritized = False
+            if Blocked:
                 self.output.write(self._color_b())
-            elif self.order.is_prioritized(search=self._block._text):
+            elif Prioritized:
                 self.output.write(self._color_p())
             else:
                 self.output.write(self._color())

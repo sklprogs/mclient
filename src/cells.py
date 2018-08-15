@@ -92,33 +92,37 @@ class BlockPrioritize:
             
     def block(self):
         for block in self._blocks:
-            if self.Block and block._dica \
-            and self.order.is_blocked(search=block._dica):
+            # Suppress useless error output
+            if block._dica and block._dica != self._phrase_dic:
+                lst     = self.order.get_list(search=block._dica)
+                Blocked = self.order.is_blocked(lst)
+            else:
+                Blocked = False
+            if self.Block and Blocked:
                 block._block = 1
             else:
                 block._block = 0
             
-    # Takes ~0,084s for 'set' on AMD E-300.
     def prioritize(self):
-        if self._phrase_dic:
+        if self.order.Success:
             for block in self._blocks:
-                if self._phrase_dic == block._dica:
-                    ''' Set the (presumably) lowest priority for
-                        a 'Phrases' dictionary. This must be a quite
-                        small value as not to conflict with other
-                        dictionaries.
-                    '''
-                    block._priority = -1000
-        if self.Prioritize:
-            if self.order.Success:
-                for block in self._blocks:
-                    if block._dica:
+                if block._dica:
+                    if self._phrase_dic == block._dica:
+                        ''' - This value should be set irrespectively of
+                              'self.Prioritize'.
+                            - Set the (presumably) lowest priority for
+                              a 'Phrases' dictionary. This must be
+                              a quite small value as not to conflict
+                              with other dictionaries.
+                        '''
+                        block._priority = -1000
+                    elif self.Prioritize:
                         block._priority = self.order.priority(search=block._dica)
-            else:
-                sh.log.append ('BlockPrioritize.prioritize'
-                              ,_('WARNING')
-                              ,_('Operation has been canceled.')
-                              )
+        else:
+            sh.log.append ('BlockPrioritize.prioritize'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
 
     def dump(self):
         tmp = io.StringIO()

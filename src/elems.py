@@ -91,10 +91,7 @@ class Elems:
                           ,_('Empty input is not allowed!')
                           )
         
-    ''' Use directly the dictionary of abbreviations because
-        'Order.search' is case-insensitive.
-        Takes ~0,26s for 'set' on AMD E-300.
-    '''
+    # Takes ~0,26s for 'set' on AMD E-300.
     def expand_dica(self):
         if self.abbr:
             if self.abbr.Success:
