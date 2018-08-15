@@ -1,5 +1,11 @@
 
 
+5.11.1
+* Rework prioritization: only one click is required now in order to
+  increase/decrease a priority of a dictionary or a group of
+  dictionaries. Please note, however, that dictionary group having
+  shared dictionary titles are considered to have the same priority.
+* Fix a search field focusing bug
 * By default, Control-F7 now copies the URL of the current article and
   Shift-F7 copies the URL of the selected term (set this behavior in
   mclient.cfg)

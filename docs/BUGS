@@ -1,6 +1,3 @@
-- Only 1 click should be needed to move dictionaries up/down (check on
-  "clean-out", dictionaries "Бурение", "Нефть и газ")
-- (Windows-only) The search field does not have a focus on the first run
 - Navigation does not work properly for 'doing a Bradbury'
 - Cannot go to URL in 'https://www.multitran.ru/c/M.exe?t=7519384_2_1&s1=you’re%20killing%20me'
 - comme il faut, фразы, FR: остается только 1 столбец

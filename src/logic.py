@@ -550,7 +550,8 @@ class Order:
                 for item in self._dic1:
                     self.unblock(item)
             elif self.is_prioritized(self._dic1) \
-            and self.is_prioritized(self._dic2):
+            and self.is_prioritized(self._dic2) \
+            and not sh.List(self._dic1,self._dic2).shared():
                 self.prioritize_by()
             else:
                 for item in self._dic1:
@@ -574,7 +575,8 @@ class Order:
                 for item in self._dic1:
                     self.unblock(item)
             elif self.is_prioritized(self._dic1):
-                if self.is_prioritized(self._dic2):
+                if self.is_prioritized(self._dic2) \
+                and not sh.List(self._dic1,self._dic2).shared():
                     self.prioritize_by(Down=True)
                 else:
                     for item in self._dic1:
@@ -1027,9 +1029,13 @@ if __name__ == '__main__':
     order = Order()
     #dic1 = 'Нефть, газ.турб., общ., юр.'
     #dic2 = 'Нефть, Техника'
-    dic1 = 'Нефть, газ.турб., общ., юр.'
-    dic2 = 'воен., Техника'
+    #dic1 = 'Нефть, газ.турб., общ., юр.'
+    #dic2 = 'воен., Техника'
     #dic1 = 'Нефть, газ.турб., Техника'
     #dic2 = 'воен., юр.'
+    #dic1 = 'Военный термин, Техника'
+    dic1 = 'Военный термин, Бурение'
+    dic2 = 'Бурение'
     order.lm_auto(dic1,dic2)
     #order.rm_auto(dic1,dic2)
+    print(order._prioritize)
