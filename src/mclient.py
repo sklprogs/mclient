@@ -2230,7 +2230,8 @@ class WebFrame:
                     else:
                         sh.log.append ('WebFrame.go_alt'
                                       ,_('DEBUG')
-                                      ,_('Selected dictionary: "%s". No next dictionary.')
+                                      ,_('Selected dictionary: "%s". No next dictionary.') \
+                                      % result[6]
                                       )
                     lg.objs.order().rm_auto (dic1 = result[6]
                                             ,dic2 = dica

@@ -752,6 +752,10 @@ class Order:
     
     def set(self,dic1,dic2=''):
         if self.Success:
+            ''' This allows to return an empty value instead of the last
+                memory in case there is no previous/next dictionary.
+            '''
+            self._dic1 = self._dic2 = ''
             if dic1:
                 dic1 = self.get_list(dic1)
                 dic1 = self.sort_dic(dic1)
