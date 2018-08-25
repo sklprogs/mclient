@@ -35,4 +35,4 @@ rm ./{build.sh,clean_up.sh,setup.py,update_here.sh,update_mclient.sh}
 rmdir resources/buttons
 rmdir -p resources/locale/ru/LC_MESSAGES user/dics
 
-ls .
+ls --color=always .

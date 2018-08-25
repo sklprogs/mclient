@@ -1,3 +1,3 @@
 #!/bin/sh
 
-tar -cvjSf mclient.tar.bz2 mclient
+tar -cvjSf $HOME/binaries/mclient/lin32.tar.bz2 ./mclient

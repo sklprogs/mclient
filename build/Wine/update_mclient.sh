@@ -14,7 +14,7 @@ rm -r ./mclient/app/PIL*
 cd mclient/app && wine mclient.exe
 read -p "Update the archive? (y/n) " choice
 if [ "$choice" = "y" ] || [ "$choice" = "Y" ]; then
-	mv -fv $HOME/tmp/ars/binaries/mclient/windows.7z $HOME/tmp/ars/binaries/mclient/windows\ \(OLD\).7z
-	cd ../.. && 7z a $HOME/tmp/ars/binaries/mclient/windows.7z mclient/ && rm -r mclient
+	mv -fv $HOME/binaries/mclient/windows.7z $HOME/binaries/mclient/windows\ \(OLD\).7z
+	cd ../.. && 7z a $HOME/binaries/mclient/windows.7z mclient/ && rm -r mclient
 	./clean_up.sh
 fi
