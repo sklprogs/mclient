@@ -392,7 +392,7 @@ class Elems:
             if block._type == 'phrase':
                 block._type   = 'dic'
                 block._select = 1
-                block._dica   = block._text
+                block._dica   = block._text.strip()
                 break
                 
     def fill(self):
@@ -434,7 +434,7 @@ class Elems:
                 '''
             elif block._type in ('term','phrase'):
                 terma = block._text
-            block._dica    = dica
+            block._dica    = dica.strip()
             block._wforma  = wforma
             block._speecha = speecha
             block._transca = transca
@@ -687,15 +687,17 @@ class PhraseTerma:
 
 if __name__ == '__main__':
     import db
-    import page as pg
-    import tags as tg
+    import page  as pg
+    import tags  as tg
+    import logic as lg
     
     # Modifiable
     source    = _('Online')
     #search   = 'preceding'
     #search   = 'mayhem'
     search    = 'block'
-    url       = 'http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
+    #url      = 'http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=preceding&l1=1&l2=2&s=preceding'
+    url       = 'http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=block&l1=1&l2=2&s=block'
     articleid = 1
     #file     = '/home/pete/tmp/ars/preceding.txt'
     #file     = '/home/pete/tmp/ars/mayhem - phrases.html'
@@ -725,6 +727,7 @@ if __name__ == '__main__':
     
     elems = Elems (blocks    = tags._blocks
                   ,articleid = articleid
+                  ,abbr      = lg.objs.order().dic
                   )
     elems.run()
     

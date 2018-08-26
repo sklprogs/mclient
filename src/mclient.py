@@ -1384,8 +1384,6 @@ class WebFrame:
         
         skipped = objs._blocks_db.skipped_dicas()
         if skipped:
-            #todo: strip dicas before this
-            skipped = [item.strip() for item in skipped]
             skipped = ', '.join(skipped)
             skipped = skipped.split(', ')
             skipped = len(set(skipped))
@@ -1436,7 +1434,7 @@ class WebFrame:
             just do not clear the search field to be able to correct
             the typo.
         '''
-        if pages._blocks:
+        if pages._blocks or skipped:
             self.gui.search_field.clear_text()
         self.history.update()
         self.search_article.reset()
@@ -2039,8 +2037,6 @@ class WebFrame:
     def print(self,event=None):
         skipped = objs._blocks_db.skipped_dicas()
         if skipped:
-            #todo: strip dicas before this
-            skipped = [item.strip() for item in skipped]
             skipped = ', '.join(skipped)
             skipped = skipped.split(', ')
             skipped = len(set(skipped))

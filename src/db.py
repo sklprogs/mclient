@@ -707,15 +707,7 @@ class DB:
                              )
             result = self.dbc.fetchall()
             if result:
-                #return [item[0] for item in result]
-                #cur
-                #todo: del
-                result = [item[0] for item in result]
-                sh.log.append ('DB.skipped_dicas'
-                              ,_('DEBUG')
-                              ,str(result)
-                              )
-                return result
+                return [item[0] for item in result]
         else:
             sh.log.append ('DB.skipped_dicas'
                           ,_('WARNING')
