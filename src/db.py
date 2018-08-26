@@ -698,6 +698,20 @@ class DB:
                           )
             '''
 
+    def skipped_dicas(self):
+        if self._articleid:
+            self.dbc.execute ('select distinct DICA from BLOCKS \
+                               where ARTICLEID = ? \
+                               and (BLOCK = 1 or IGNORE = 1)'
+                             ,(self._articleid,)
+                             )
+            return self.dbc.fetchall()
+        else:
+            sh.log.append ('DB.skipped_dicas'
+                          ,_('WARNING')
+                          ,_('Empty input is not allowed!')
+                          )
+    
     def blocked(self):
         if self._articleid:
             self.dbc.execute ('select NO from BLOCKS \

@@ -1382,6 +1382,11 @@ class WebFrame:
         cells.run()
         cells.dump(blocks_db=objs._blocks_db)
         
+        skipped = objs._blocks_db.skipped_dicas()
+        if skipped:
+            skipped = len(skipped)
+        else:
+            skipped = 0
         mh.objs.html().reset (data     = objs._blocks_db.fetch()
                              ,cols     = lg.objs._request._cols
                              ,collimit = lg.objs._request._collimit
@@ -1389,6 +1394,7 @@ class WebFrame:
                              ,width    = sh.globs['int']['col_width']
                              ,Reverse  = lg.objs._request.Reverse
                              ,phdic    = self._phdic
+                             ,skipped  = skipped
                              )
         mh.objs._html.run()
         
@@ -2027,6 +2033,11 @@ class WebFrame:
         self.load_article()
 
     def print(self,event=None):
+        skipped = objs._blocks_db.skipped_dicas()
+        if skipped:
+            skipped = len(skipped)
+        else:
+            skipped = 0
         mh.objs.html().reset (data     = objs._blocks_db.fetch()
                              ,cols     = lg.objs._request._cols
                              ,collimit = lg.objs._request._collimit
@@ -2034,6 +2045,7 @@ class WebFrame:
                              ,width    = sh.globs['int']['col_width']
                              ,Printer  = True
                              ,Reverse  = lg.objs._request.Reverse
+                             ,skipped  = skipped
                              )
         code = mh.objs._html.run()
         if code:

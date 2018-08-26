@@ -30,7 +30,7 @@ class HTML:
     def reset (self,data,cols,order
               ,collimit=9,Printer=False
               ,Reverse=False,width=0
-              ,phdic=''
+              ,phdic='',skipped=0
               ):
         self.values()
         self.order     = order
@@ -41,6 +41,7 @@ class HTML:
         self.Printer   = Printer
         self.Reverse   = Reverse
         self._phdic    = phdic
+        self._skipped  = skipped
         
     def run(self):
         self.assign()
@@ -48,11 +49,12 @@ class HTML:
         return self._html
     
     def values(self):
-        self._blocks = []
-        self._block  = None
-        self._html   = ''
-        self._phdic  = ''
-        self._script = '''
+        self._blocks  = []
+        self._skipped = 0
+        self._block   = None
+        self._html    = ''
+        self._phdic   = ''
+        self._script  = '''
         <head>
 
           <div align="center">
@@ -382,6 +384,10 @@ class HTML:
                 self._comment   ()
                 self._correction()
             self.output.write('</td></tr>\n\t\t\t</table>\t')
+        elif self._skipped:
+            self.output.write('<h1>')
+            self.output.write(_('Nothing has been found (%d dictionaries are skipped).') % self._skipped)
+            self.output.write('</h1>')
         else:
             self.output.write('<h1>')
             self.output.write(_('Nothing has been found.'))
