@@ -1384,7 +1384,11 @@ class WebFrame:
         
         skipped = objs._blocks_db.skipped_dicas()
         if skipped:
-            skipped = len(skipped)
+            #todo: strip dicas before this
+            skipped = [item.strip() for item in skipped]
+            skipped = ', '.join(skipped)
+            skipped = skipped.split(', ')
+            skipped = len(set(skipped))
         else:
             skipped = 0
         mh.objs.html().reset (data     = objs._blocks_db.fetch()
@@ -2035,7 +2039,11 @@ class WebFrame:
     def print(self,event=None):
         skipped = objs._blocks_db.skipped_dicas()
         if skipped:
-            skipped = len(skipped)
+            #todo: strip dicas before this
+            skipped = [item.strip() for item in skipped]
+            skipped = ', '.join(skipped)
+            skipped = skipped.split(', ')
+            skipped = len(set(skipped))
         else:
             skipped = 0
         mh.objs.html().reset (data     = objs._blocks_db.fetch()
