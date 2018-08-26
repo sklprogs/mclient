@@ -386,7 +386,7 @@ class HTML:
             self.output.write('</td></tr>\n\t\t\t</table>\t')
         elif self._skipped:
             self.output.write('<h1>')
-            self.output.write(_('Nothing has been found (%d dictionaries are skipped).') % self._skipped)
+            self.output.write(_('Nothing has been found (skipped dictionaries: %d).') % self._skipped)
             self.output.write('</h1>')
         else:
             self.output.write('<h1>')
