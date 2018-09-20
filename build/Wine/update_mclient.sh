@@ -1,13 +1,16 @@
-#!/bin/sh
+#!/bin/bash
+
+ver='3.4'
+vers='34'
 
 ./update_here.sh
 ./build.sh
 mkdir -p ./mclient/app/tkhtml
-mv ./build/exe.win32-3.4/* ./mclient/app/
-rmdir -p build/exe.win32-3.4
+mv ./build/exe.win32-$ver/* ./mclient/app/
+rmdir -p build/exe.win32-$ver
 cp -r /usr/local/bin/shared_bin_win/* ./mclient/app/
-cp -r /usr/lib/python3.4/site-packages/tkinterhtml/tkhtml/Windows/ ./mclient/app/tkhtml/
-cp -r ./resources ./user ./mclient/
+cp -r $HOME/.wine/drive_c/Python$vers/Lib/site-packages/tkinterhtml/tkhtml/Windows/ ./mclient/app/tkhtml/
+cp -r ./resources ./mclient/
 cp ./mclient.cmd ./mclient/
 rm -r ./mclient/app/PIL*
 

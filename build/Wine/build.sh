@@ -1,3 +1,5 @@
-#!/bin/sh
+#!/bin/bash
 
-wine $HOME/.wine/drive_c/Python34/python.exe setup.py build
+ver='34'
+
+wine $HOME/.wine/drive_c/Python$ver/python.exe setup.py build

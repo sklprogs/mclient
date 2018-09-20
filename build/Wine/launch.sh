@@ -1,2 +1,5 @@
-#!/bin/sh
-wine ~/.wine/drive_c/Python34/python.exe ./mclient.py
+#!/bin/bash
+
+ver='34'
+
+wine $HOME/.wine/drive_c/Python$ver/python.exe ./mclient.py
