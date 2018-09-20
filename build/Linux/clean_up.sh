@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Do not use "verbose" in order to spot errors easily
 
@@ -9,9 +9,8 @@ rm ./resources/buttons/icon_36x36_{alphabet_off,alphabet_on,block_off,block_on,c
 rm ./resources/{error,info,question,warning}.gif
 
 # Remove other mclient resources
-rm ./resources/third\ parties.txt
 rm ./resources/locale/ru/LC_MESSAGES/mclient.mo
-rm ./user/{abbr.txt,block.txt,mclient.cfg,prioritize.txt}
+rm ./resources/{abbr.txt,default.cfg,third\ parties.txt}
 
 # Remove mclient Python files
 rm ./{cells,db,elems,gui,logic,mclient,mkhtml,offline,page,tags}.py
@@ -21,7 +20,6 @@ rm ./{gettext_windows,shared,sharedGUI}.py
 
 # (Linux-only) Remove platform-specific mclient files
 rm ./kl_mod_lin.py
-rm ./user/dics/rm_dics.sh
 
 # (All platforms) Remove mclient icon
 rm ./resources/icon_64x64_mclient.gif
@@ -30,6 +28,6 @@ rm ./resources/icon_64x64_mclient.gif
 rm ./{build.sh,clean_up.sh,find_shared_libs.sh,pack.sh,setup.py,update_here.sh,update_mclient.sh}
 
 rmdir resources/buttons
-rmdir -p resources/locale/ru/LC_MESSAGES user/dics
+rmdir -p resources/locale/ru/LC_MESSAGES
 
 ls --color=always .

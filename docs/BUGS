@@ -1,4 +1,7 @@
 
+- Put
+  <body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  before the script when creating a page to print
 - Navigation does not work properly for 'doing a Bradbury'
 - Cannot go to URL in 'https://www.multitran.ru/c/M.exe?t=7519384_2_1&s1=you’re%20killing%20me'
 - comme il faut, фразы, FR: остается только 1 столбец
