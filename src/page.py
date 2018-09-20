@@ -562,17 +562,14 @@ class Welcome:
 
 
 if __name__ == '__main__':
+    import logic as lg
     sg.objs.start()
     timer = sh.Timer(func_title='Page')
     timer.start()
     page = Page (source   = _('Online')
                 ,search   = 'preceding'
                 ,file     = '/home/pete/tmp/ars/preceding.txt'
-                ,ext_dics = ExtDics (path=sh.objs.pdir().add ('..'
-                                                             ,'user'
-                                                             ,'dics'
-                                                             )
-                                    )
+                ,ext_dics = ExtDics(path=lg.objs.default().dics())
                 )
     '''
     page = Page (source = _('Online')

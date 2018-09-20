@@ -13,10 +13,7 @@ class Commands:
         pass
     
     def search_local(self,search='test'):
-        ext_dics = pg.ExtDics (path = sh.objs.pdir().add ('..','user'
-                                                         ,'dics'
-                                                         )
-                              )
+        ext_dics = pg.ExtDics(path=lg.objs.default().dics())
         text = ext_dics.get (lang   = 'English'
                             ,search = search
                             )

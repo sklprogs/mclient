@@ -1,4 +1,5 @@
 
+* Move user files to $HOME/.config/mclient
 
 5.11.1
 * Rework prioritization: only one click is required now in order to

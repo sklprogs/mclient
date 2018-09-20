@@ -31,6 +31,188 @@ langs = ('English'   # ENG <=> RUS
         ,'Estonian'  # ENG <=> EST
         )
 sources = (_('All'),_('Online'),_('Offline'))
+sample_block = '''Австралийский сленг
+Архаизм
+Бранное выражение
+Воровское выражение
+Грубое выражение
+Диалект
+Жаргон
+Презрительное выражение
+Просторечие
+Разговорное выражение
+Расширение файла
+Редкое выражение
+Ругательство
+Сленг
+Табуированная лексика
+Тюремный жаргон
+Устаревшее слово
+Фамильярное выражение
+Шутливое выражение
+Эвфемизм
+'''
+sample_prior = '''Общая лексика
+Техника
+Юридический термин
+Юридический (Н.П.)
+'''
+
+
+
+class DefaultConfig:
+    
+    def __init__(self,product='mclient'):
+        self.values()
+        self.ihome   = sh.Home(app_name=product.lower())
+        self.Success = self.ihome.create_conf()
+    
+    def values(self):
+        self._dics   = ''
+        self._fabbr  = ''
+        self._fblock = ''
+        self._fprior = ''
+        self._fdconf = ''
+        self._fconf  = ''
+    
+    def dics(self):
+        if self.Success:
+            if not self._dics:
+                self._dics = self.ihome.add_config('dics')
+                if self._dics:
+                    if os.path.exists(self._dics):
+                        self.Success = sh.Directory(path=self._dics).Success
+                    else:
+                        self.Success = sh.Path(path=self._dics).create()
+                else:
+                    self.Success = False
+                    sh.log.append ('DefaultConfig.dics'
+                                  ,_('WARNING')
+                                  ,_('Empty input is not allowed!')
+                                  )
+            return self._dics
+        else:
+            sh.log.append ('DefaultConfig.dics'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def block(self):
+        if self.Success:
+            self._fblock = self.ihome.add_config('block.txt')
+            if self._fblock:
+                if os.path.exists(self._fblock):
+                    self.Success = sh.File(file=self._fblock).Success
+                else:
+                    iwrite = sh.WriteTextFile (file       = self._fblock
+                                              ,AskRewrite = False
+                                              )
+                    iwrite.write(sample_block)
+                    self.Success = iwrite.Success
+            else:
+                self.Success = False
+                sh.log.append ('DefaultConfig.block'
+                              ,_('WARNING')
+                              ,_('Empty input is not allowed!')
+                              )
+        else:
+            sh.log.append ('DefaultConfig.block'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def prioritize(self):
+        if self.Success:
+            if not self._fprior:
+                self._fprior = self.ihome.add_config('prioritize.txt')
+                if self._fprior:
+                    if os.path.exists(self._fprior):
+                        self.Success = sh.File(file=self._fprior).Success
+                    else:
+                        iwrite = sh.WriteTextFile (file       = self._fprior
+                                                  ,AskRewrite = False
+                                                  )
+                        iwrite.write(sample_prior)
+                        self.Success = iwrite.Success
+                else:
+                    self.Success = False
+                    sh.log.append ('DefaultConfig.prioritize'
+                                  ,_('WARNING')
+                                  ,_('Empty input is not allowed!')
+                                  )
+            return self._fprior
+        else:
+            sh.log.append ('DefaultConfig.prioritize'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def abbr(self):
+        if self.Success:
+            if not self._fabbr:
+                self._fabbr  = sh.objs.pdir().add ('..','resources'
+                                                  ,'abbr.txt'
+                                                  )
+                self.Success = sh.File(file=self._fabbr).Success
+            return self._fabbr
+        else:
+            sh.log.append ('DefaultConfig.abbr'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def default_config(self):
+        if self.Success:
+            if not self._fdconf:
+                self._fdconf = sh.objs.pdir().add ('..','resources'
+                                                  ,'default.cfg'
+                                                  )
+                self.Success = sh.File(file=self._fdconf).Success
+            return self._fdconf
+        else:
+            sh.log.append ('DefaultConfig.default_config'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def config(self):
+        if self.Success:
+            if not self._fconf:
+                self._fconf = self.ihome.add_config('mclient.cfg')
+                if os.path.exists(self._fconf):
+                    self.Success = sh.File(file=self._fconf).Success
+                else:
+                    self.default_config()
+                    if self.Success:
+                        self.Success = sh.File (file = self._fdconf
+                                               ,dest = self._fconf
+                                               ).copy()
+                    else:
+                        sh.log.append ('DefaultConfig.config'
+                                      ,_('WARNING')
+                                      ,_('Operation has been canceled.')
+                                      )
+            return self._fconf
+        else:
+            sh.log.append ('DefaultConfig.config'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+    
+    def run(self):
+        if self.Success:
+            self.default_config()
+            self.config()
+            self.abbr()
+            self.dics()
+            self.block()
+            self.prioritize()
+        else:
+            sh.log.append ('DefaultConfig.run'
+                          ,_('WARNING')
+                          ,_('Operation has been canceled.')
+                          )
+
 
 
 class ConfigMclient(sh.Config):
@@ -55,7 +237,7 @@ class ConfigMclient(sh.Config):
         self.missing_keys     = 0
         self.missing_sections = 0
         # Create these keys before reading the config
-        self.path    = sh.objs.pdir().add('..','user','mclient.cfg')
+        self.path    = objs.default().ihome.add_config('mclient.cfg')
         self.reset()
         h_read       = sh.ReadTextFile(self.path)
         self.text    = h_read.get()
@@ -235,86 +417,14 @@ class CurRequest:
 
 
 
-class Paths:
-
-    def __init__(self):
-        self.dir = sh.Directory (path=sh.objs.pdir().add ('..'
-                                                         ,'user'
-                                                         )
-                                )
-        self.Success = self.dir.Success
-
-    def blacklist(self):
-        if self.Success:
-            instance = sh.File (file = os.path.join (self.dir.dir
-                                                    ,'block.txt'
-                                                    )
-                               )
-            self.Success = instance.Success
-            if self.Success:
-                return instance.file
-            else:
-                sh.log.append ('Paths.blacklist'
-                              ,_('WARNING')
-                              ,_('Operation has been canceled.')
-                              )
-        else:
-            sh.log.append ('Paths.blacklist'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
-
-    def prioritize(self):
-        if self.Success:
-            instance = sh.File (file = os.path.join (self.dir.dir
-                                                    ,'prioritize.txt'
-                                                    )
-                               )
-            self.Success = instance.Success
-            if self.Success:
-                return instance.file
-            else:
-                sh.log.append ('Paths.prioritize'
-                              ,_('WARNING')
-                              ,_('Operation has been canceled.')
-                              )
-        else:
-            sh.log.append ('Paths.prioritize'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
-                          
-    def abbr(self):
-        if self.Success:
-            instance = sh.File (file = os.path.join (self.dir.dir
-                                                    ,'abbr.txt'
-                                                    )
-                               )
-            self.Success = instance.Success
-            if self.Success:
-                return instance.file
-            else:
-                sh.log.append ('Paths.abbr'
-                              ,_('WARNING')
-                              ,_('Operation has been canceled.')
-                              )
-        else:
-            sh.log.append ('Paths.abbr'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
-
-
-
 # Read the blocklist and the prioritize list
 class Lists:
 
     def __init__(self):
-        paths            = Paths()
-        self._blacklist  = paths.blacklist()
-        self._prioritize = paths.prioritize()
-        self._abbr       = paths.abbr()
-        self.Success     = paths.Success
+        self._blacklist  = objs.default()._fblock
+        self._prioritize = objs._default._fprior
+        self._abbr       = objs._default._fabbr
+        self.Success     = objs._default.Success
 
     def abbr(self):
         if self.Success:
@@ -356,8 +466,15 @@ class Lists:
 class Objects:
     
     def __init__(self):
-        self._online = self._request = self._order = None
+        self._online = self._request = self._order = self._default \
+                     = None
         
+    def default(self,product='mclient'):
+        if not self._default:
+            self._default = DefaultConfig(product=product)
+            self._default.run()
+        return self._default
+    
     def online(self):
         #todo: create a sub-source
         if self.request()._source in (_('All'),_('Online')):

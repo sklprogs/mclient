@@ -56,7 +56,7 @@ class Objects:
 
     def ext_dics(self):
         if not self._ext_dics:
-            self._ext_dics = pg.ExtDics(path=sh.objs.pdir().add('..','user','dics'))
+            self._ext_dics = pg.ExtDics(path=lg.objs.default().dics())
         return self._ext_dics
 
 
@@ -2527,8 +2527,15 @@ objs = Objects()
 
 if  __name__ == '__main__':
     sg.objs.start()
-    timed_update()
-    objs.webframe().reset()
-    objs._webframe.gui.show()
-    kl_mod.keylistener.cancel()
+    lg.objs.default(product=gi.product)
+    if lg.objs._default.Success:
+        timed_update()
+        objs.webframe().reset()
+        objs._webframe.gui.show()
+        kl_mod.keylistener.cancel()
+    else:
+        sh.objs.mes ('mclient'
+                    ,_('WARNING')
+                    ,_('Unable to continue due to an invalid configuration.')
+                    )
     sg.objs.end()
