@@ -8,7 +8,7 @@ vers='34'
 mkdir -p ./mclient/app/tkhtml
 mv ./build/exe.win32-$ver/* ./mclient/app/
 rmdir -p build/exe.win32-$ver
-cp -r /usr/local/bin/shared_bin_win/* ./mclient/app/
+cp -r $HOME/bin/shared_bin_win/* ./mclient/app/
 cp -r $HOME/.wine/drive_c/Python$vers/Lib/site-packages/tkinterhtml/tkhtml/Windows/ ./mclient/app/tkhtml/
 cp -r ./resources ./mclient/
 cp ./mclient.cmd ./mclient/
