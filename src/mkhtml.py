@@ -31,6 +31,7 @@ class HTML:
               ,collimit=9,Printer=False
               ,Reverse=False,width=0
               ,phdic='',skipped=0
+              ,max_syms=30
               ):
         self.values()
         self.order     = order
@@ -42,6 +43,11 @@ class HTML:
         self.Reverse   = Reverse
         self._phdic    = phdic
         self._skipped  = skipped
+        ''' Maximum number of symbols in a column. If the column exceeds
+            this number and 'self._width' is set - wrap the column.
+            #todo: calculate font width to be more precise
+        '''
+        self._max_syms = max_syms
         
     def run(self):
         self.assign()
@@ -351,7 +357,10 @@ class HTML:
             for self._block in self._blocks:
                 while self._block.i > i:
                     self.output.write('</td></tr>\n\t\t<tr>')
-                    if self._width and self.Reverse:
+                    cond1 = self._width and self.Reverse
+                    cond2 = self._width \
+                            and len(self._block._text) > self._max_syms
+                    if cond1 or cond2:
                         self.output.write('<td align="center" valign="top" col width="')
                         self.output.write(str(self._width))
                         self.output.write('">')
@@ -362,9 +371,12 @@ class HTML:
                 while self._block.j > j:
                     self.output.write('</td>\n\t\t\t')
                     # -1 because we define 'td' for the next column here
-                    if self._width and self._block._text \
-                    and (self._block.j > len(self._cols) - 1 \
-                    or self.Reverse):
+                    cond1 = self._width and self._block._text
+                    cond2 = self._block.j > len(self._cols) - 1 \
+                            or self.Reverse
+                    cond3 = self._width \
+                            and len(self._block._text) > self._max_syms
+                    if cond1 and cond2 or cond3:
                         self.output.write('<td valign="top" col width="')
                         self.output.write(str(self._width))
                         self.output.write('">')
