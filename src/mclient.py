@@ -32,10 +32,6 @@ if __name__ == '__main__':
     else:
         import kl_mod_lin as kl_mod
 
-sh.globs['_tkhtml_loaded'] = False
-sh.globs['geom_top'] = {}
-sh.globs['top'] = {}
-
 
 
 class Objects:

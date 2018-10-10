@@ -311,6 +311,8 @@ class DB:
                 query += order + ',NO'
             else:
                 query += 'NO'
+            #fix: this will not work for Cyrillic
+            query += ' collate nocase'
             self.dbc.execute(query,(self._articleid,))
             return self.dbc.fetchall()
         else:
