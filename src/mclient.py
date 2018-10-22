@@ -58,7 +58,7 @@ class Objects:
 
 
 def call_app():
-    # Использовать то же сочетание клавиш для вызова окна
+    # Use the same key binding to call the window
     sg.Geometry(parent=objs.webframe().gui.obj).activate(MouseClicked=lg.objs.request().MouseClicked)
     ''' #todo: check if this is still the problem
         In case of .focus_set() *first* Control-c-c can call an inactive
@@ -66,14 +66,14 @@ def call_app():
     '''
     objs.webframe().gui.search_field.widget.focus_force()
 
-# Перехватить нажатие Control-c-c
+# Capture Control-c-c
 def timed_update():
     lg.objs.request().MouseClicked = False
     check = kl_mod.keylistener.check()
     if check:
         if check == 1 and lg.objs._request.CaptureHotkey:
-            ''' Позволяет предотвратить зависание потока в версиях
-                Windows старше XP
+            ''' Allows to prevent thread freezing in Windows newer
+                than XP.
             '''
             if sh.oss.win():
                 kl_mod.keylistener.cancel()
@@ -105,18 +105,18 @@ class About:
         self.gui.btn_lic.action = self.open_license_url
         self.gui.btn_eml.action = self.response_back
 
-    # Написать письмо автору
+    # Compose an email to the author
     def response_back(self,event=None):
         sh.Email (email   = sh.email
                  ,subject = _('Concerning %s') % product
                  ).create()
 
-    # Открыть веб-страницу с лицензией
+    # Open a license web-page
     def open_license_url(self,event=None):
         lg.objs.online()._url = sh.globs['license_url']
         lg.objs.online().browse()
 
-    # Отобразить информацию о лицензии третьих сторон
+    # Show info about third-party licenses
     def show_third_parties(self,event=None):
         self.parties.gui.show()
 
@@ -169,27 +169,26 @@ class SaveArticle:
                 self.copy_txt()
 
     def view_as_html(self):
+        f = 'mclient.SaveArticle.view_as_html'
         self.file = sg.dialog_save_file(filetypes=self._html_types)
         if self.file and lg.objs.request()._html:
             self.fix_ext(ext='.htm')
             ''' We disable AskRewrite because the confirmation is
-                already built in the internal dialog
+                already built in the internal dialog.
             '''
             sh.WriteTextFile (file       = self.file
                              ,AskRewrite = False
                              ).write(lg.objs._request._html)
         else:
-            sh.log.append ('SaveArticle.view_as_html'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def raw_as_html(self):
-        ''' Ключ 'html' может быть необходим для записи файла, которая
-            производится в кодировке UTF-8, поэтому, чтобы полученная
-            веб-страница нормально читалась, меняем кодировку вручную.
-            Также меняем сокращенные гиперссылки на полные, чтобы они
-            работали и в локальном файле.
+        f = 'mclient.SaveArticle.raw_as_html'
+        ''' Key 'html' may be needed to write a file in the UTF-8
+            encoding, therefore, in order to ensure that the web-page
+            is read correctly, we change the encoding manually. We also
+            replace abbreviated hyperlinks with full ones in order to
+            ensure that they are also valid in the local file.
         '''
         self.file = sg.dialog_save_file(filetypes=self._html_types)
         if self.file and lg.objs.request()._html_raw:
@@ -199,12 +198,10 @@ class SaveArticle:
                              ,AskRewrite = False
                              ).write(lg.objs._request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/M.exe?',sh.globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/m.exe?',sh.globs['var']['pair_root']))
         else:
-            sh.log.append ('SaveArticle.raw_as_html'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def view_as_txt(self):
+        f = 'mclient.SaveArticle.raw_as_html'
         self.file = sg.dialog_save_file(filetypes=self._txt_types)
         text = objs.webframe().text()
         if self.file and text:
@@ -213,23 +210,18 @@ class SaveArticle:
                              ,AskRewrite = False
                              ).write(text.strip())
         else:
-            sh.log.append ('SaveArticle.view_as_txt'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def copy_raw(self):
         sg.Clipboard().copy(lg.objs.request()._html_raw)
 
     def copy_txt(self):
+        f = 'mclient.SaveArticle.copy_txt'
         text = objs.webframe().text()
         if text:
             sg.Clipboard().copy(text.strip())
         else:
-            sh.log.append ('SaveArticle.copy_txt'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
 
 
@@ -274,6 +266,7 @@ class SearchArticle:
         return self._search
 
     def forward(self,event=None):
+        f = 'mclient.SearchArticle.forward'
         pos = objs.blocks_db().search_forward (pos    = self._pos
                                               ,search = self.search()
                                               )
@@ -282,14 +275,12 @@ class SearchArticle:
             objs._webframe.select()
             objs._webframe.shift_screen()
         elif self._pos < 0:
-            sg.Message (func    = 'SearchArticle.forward'
-                       ,level   = _('INFO')
-                       ,message = _('Nothing has been found!')
+            sg.Message (f,_('INFO')
+                       ,_('Nothing has been found!')
                        )
         else:
-            sg.Message (func    = 'SearchArticle.forward'
-                       ,level   = _('INFO')
-                       ,message = _('The start has been reached. Searching from the end.')
+            sg.Message (f,_('INFO')
+                       ,_('The start has been reached. Searching from the end.')
                        )
             self._pos = 0
             self.forward()
@@ -303,6 +294,7 @@ class SearchArticle:
         return self._first
 
     def last(self):
+        f = 'mclient.SearchArticle.last'
         if self._last == -1:
             max_cell = objs._blocks_db.max_cell()
             if max_cell:
@@ -311,18 +303,15 @@ class SearchArticle:
                                                  ,search = self.search()
                                                  )
             else:
-                sh.log.append ('SearchArticle.last'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         return self._last
 
     def backward(self,event=None):
+        f = 'mclient.SearchArticle.backward'
         if self.first():
             if self._pos == self._first:
-                sg.Message (func    = 'SearchArticle.backward'
-                           ,level   = _('INFO')
-                           ,message = _('The end has been reached. Searching from the start.')
+                sg.Message (f,_('INFO')
+                           ,_('The end has been reached. Searching from the start.')
                            )
                 result = self.last()
                 if str(result).isdigit():
@@ -340,9 +329,8 @@ class SearchArticle:
                     objs._webframe.select()
                     objs._webframe.shift_screen()
         else:
-            sg.Message (func    = 'SearchArticle.backward'
-                       ,level   = _('INFO')
-                       ,message = _('Nothing has been found!')
+            sg.Message (f,_('INFO')
+                       ,_('Nothing has been found!')
                        )
 
 
@@ -453,28 +441,25 @@ class History:
         lg.objs.request().reset()
 
     def go_first(self,event=None):
+        f = 'mclient.History.go_first'
         if self.gui.obj.lst:
             self.gui.obj.clear_selection()
             self.gui.obj.set(item=self.gui.obj.lst[0])
             self.go()
         else:
-            sh.log.append ('History.go_first'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         
     def go_last(self,event=None):
+        f = 'mclient.History.go_last'
         if self.gui.obj.lst:
             self.gui.obj.clear_selection()
             self.gui.obj.set(item=self.gui.obj.lst[-1])
             self.go()
         else:
-            sh.log.append ('History.go_last'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def go(self,event=None):
+        f = 'mclient.History.go'
         result = self.gui.obj.get()
         result = result.split(' ► ')
         if len(result) == 2:
@@ -486,14 +471,10 @@ class History:
                 lg.objs._request._url    = result[2]
                 objs.webframe().load_article()
             else:
-                sh.log.append ('History.go'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sg.Message (func    = 'History.go'
-                       ,level   = _('ERROR')
-                       ,message = _('Wrong input data!')
+            sg.Message (f,_('ERROR')
+                       ,_('Wrong input data!')
                        )
 
 
@@ -525,6 +506,7 @@ class WebFrame:
         sg.Geometry(parent=self.gui.obj).minimize()
     
     def go_phrase_dic(self,event=None):
+        f = 'mclient.WebFrame.go_phrase_dic'
         phrase_dic = objs.blocks_db().phrase_dic()
         if phrase_dic:
             self._posn = phrase_dic[0]
@@ -535,10 +517,7 @@ class WebFrame:
             else:
                 self.go_url()
         else:
-            sh.log.append ('WebFrame.go_phrase_dic'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def prioritize_speech(self):
         # This function takes ~0,07s on 'do'
@@ -570,8 +549,9 @@ class WebFrame:
         query = ';'.join(query)
         objs.blocks_db().update(query=query)
     
-    # Вставить предыдущий запрос
+    # Insert the previous search
     def insert_repeat_sign2(self,event=None):
+        f = 'mclient.WebFrame.insert_repeat_sign2'
         result = objs.blocks_db().prev_id()
         if result:
             old = objs._blocks_db._articleid
@@ -581,16 +561,10 @@ class WebFrame:
                 sg.Clipboard().copy(result[1])
                 self.gui.paste_search()
             else:
-                sh.log.append ('WebFrame.insert_repeat_sign2'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
             objs._blocks_db._articleid = old
         else:
-            sh.log.append ('WebFrame.insert_repeat_sign2'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     # Вставить текущий запрос
     def insert_repeat_sign(self,event=None):
@@ -658,7 +632,7 @@ class WebFrame:
                 ,bindings = sh.globs['var']['bind_paste_search_field']
                 ,action   = lambda e:self.gui.paste_search()
                 )
-        # Перейти на предыдущую/следующую статью
+        # Go to the previous/next article
         sg.bind (obj      = self.gui.obj
                 ,bindings = sh.globs['var']['bind_go_back']
                 ,action   = self.go_back
@@ -1037,6 +1011,7 @@ class WebFrame:
         self.select()
 
     def get_pos(self,event=None):
+        f = 'mclient.WebFrame.get_pos'
         if event:
             pos = -1
             try:
@@ -1047,8 +1022,7 @@ class WebFrame:
                 pass
                 '''
                 # Too frequent
-                sh.log.append ('WebFrame.get_pos'
-                              ,_('WARNING')
+                sh.log.append (f,_('WARNING')
                               ,_('Unable to get the position!')
                               )
                 '''
@@ -1080,27 +1054,23 @@ class WebFrame:
                                 ,sh.globs['var']['color_terms_sel_fg']
                                 )
         except tk.TclError:
-            sh.log.append ('WebFrame._select'
-                          ,_('WARNING')
+            sh.log.append (f,_('WARNING')
                           ,_('Unable to set selection!')
                           )
     
     def select(self):
+        f = 'mclient.WebFrame.select'
         result = objs.blocks_db().selection(pos=self._pos)
         if result:
             objs.blocks_db().set_bookmark(pos=self._pos)
             self._select(result)
         else:
             pass
-            '''
             # Too frequent
-            sh.log.append ('WebFrame.select'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
-            '''
+            #sh.com.empty(f)
 
     def shift_x(self,bbox1,bbox2):
+        f = 'mclient.WebFrame.shift_x'
         _width = self.gui.width()
         result = objs.blocks_db().max_bbox()
         if _width and result:
@@ -1118,8 +1088,7 @@ class WebFrame:
                 page2_bbox = page2_no * _width
                 if page2_bbox - page1_bbox > _width:
                     delta = 0
-                    sh.log.append ('WebFrame.shift_x'
-                                  ,_('WARNING')
+                    sh.log.append (f,_('WARNING')
                                   ,_('The column is too wide to be fully shown')
                                   )
                 else:
@@ -1128,12 +1097,10 @@ class WebFrame:
                                   ,max_bbox = max_bbox
                                   )
         else:
-            sh.log.append ('WebFrame.shift_x'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def shift_y(self,bboy1,bboy2):
+        f = 'mclient.WebFrame.shift_y'
         _height = self.gui.height()
         result  = objs.blocks_db().max_bboy()
         if _height and result:
@@ -1150,8 +1117,7 @@ class WebFrame:
                 page2_bboy = page2_no * _height
                 if page2_bboy - page1_bboy > _height:
                     delta = 0
-                    sh.log.append ('WebFrame.shift_y'
-                                  ,_('WARNING')
+                    sh.log.append (f,_('WARNING')
                                   ,_('The row is too wide to be fully shown')
                                   )
                 else:
@@ -1160,22 +1126,20 @@ class WebFrame:
                                   ,max_bboy = max_bboy
                                   )
         else:
-            sh.log.append ('WebFrame.shift_y'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
-    ''' In order to shift the screen correctly, we need to:
-        - make visible the minimum BBOY1 and the maximum BBOY2 of
-          the current row;
-          - if BBOY2 - BBOY1 exceeds the current height, we should
-            scroll to BBOY1 only
-        - make visible the minimum BBOX1 and the maximum BBOX2 of
-          the current column;
-          - if BBOX2 - BBOX1 exceeds the current width, we should
-            scroll to BBOX1 only
-    '''
     def shift_screen(self):
+        ''' In order to shift the screen correctly, we need to:
+            - make visible the minimum BBOY1 and the maximum BBOY2 of
+              the current row;
+            - if BBOY2 - BBOY1 exceeds the current height, we should
+              scroll to BBOY1 only
+            - make visible the minimum BBOX1 and the maximum BBOX2 of
+              the current column;
+            - if BBOX2 - BBOX1 exceeds the current width, we should
+              scroll to BBOX1 only
+        '''
+        f = 'mclient.WebFrame.shift_screen'
         result1 = objs.blocks_db().block_pos(pos=self._pos)
         if result1:
             result2 = objs._blocks_db.bbox_limits(col_no=result1[4])
@@ -1188,17 +1152,12 @@ class WebFrame:
                              ,bboy2 = result3[1]
                              )
             else:
-                sh.log.append ('WebFrame.shift_screen'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('WebFrame.shift_screen'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def fill(self,code=None):
+        f = 'mclient.WebFrame.fill'
         self.gui.widget.reset()
         if not code:
             code = '<html><body><h1>' + _('Nothing has been loaded yet.') + '</h1></body></html>'
@@ -1208,19 +1167,19 @@ class WebFrame:
                 characters
             '''
         except tk._tkinter.TclError:
-            sg.Message (func    = 'WebFrame.fill'
-                       ,level   = _('ERROR')
-                       ,message = _('Cannot parse HTML code!\n\nProbably, some symbols are not supported by Tcl.')
+            sg.Message (f,_('ERROR')
+                       ,_('Cannot parse HTML code!\n\nProbably, some symbols are not supported by Tcl.')
                        )
             # Othewise, we will have a segmentation fault here
             self.reset()
             lg.objs.request().reset()
 
     def load_article(self):
+        f = 'mclient.WebFrame.load_article'
         ''' #note: each time the contents of the current page is changed
             (e.g., due to prioritizing), bookmarks must be deleted.
         '''
-        timer = sh.Timer(func_title='WebFrame.load_article')
+        timer = sh.Timer(func_title=f)
         timer.start()
         # Do not allow selection positions from previous articles
         self._pos = -1
@@ -1229,10 +1188,9 @@ class WebFrame:
                                              ,url    = lg.objs._request._url
                                              )
         if articleid:
-            sh.log.append (func    = 'WebFrame.load_article'
-                          ,level   = _('INFO')
-                          ,message = _('Load article No. %d from memory')\
-                                     % articleid
+            sh.log.append (f,_('INFO')
+                          ,_('Load article No. %d from memory')\
+                          % articleid
                           )
             objs._blocks_db._articleid = articleid
             self.get_bookmark()
@@ -1249,7 +1207,7 @@ class WebFrame:
             
             objs._blocks_db._articleid = objs._blocks_db.max_articleid()
             
-            ptimer = sh.Timer(func_title='WebFrame.load_article (Page)')
+            ptimer = sh.Timer(func_title=f+' (Page)')
             ptimer.start()
             page = pg.Page (source       = lg.objs._request._source
                            ,lang         = lg.objs._request._lang
@@ -1319,7 +1277,7 @@ class WebFrame:
             # todo (?) insert SPEECHPR in Elems instead of updating
             self.prioritize_speech()
             
-        self._phdic = sh.Input (title = 'WebFrame.load_article'
+        self._phdic = sh.Input (title = f
                                ,value = objs._blocks_db.phrase_dic_primary()
                                ).not_none()
 
@@ -1422,8 +1380,7 @@ class WebFrame:
                 self._pos = result
                 self.select()
             else:
-                sh.log.append ('WebFrame.load_article'
-                              ,_('WARNING')
+                sh.log.append (f,_('WARNING')
                               ,_('Wrong input data!')
                               )
         ''' Empty article is not added either to DB or history, so we
@@ -1451,6 +1408,7 @@ class WebFrame:
     
     # Select either the search string or the URL
     def go(self,event=None,Mouse=False):
+        f = 'mclient.WebFrame.go'
         if Mouse:
             if objs.blocks_db().Selectable:
                 objs._blocks_db.Selectable = False
@@ -1462,8 +1420,7 @@ class WebFrame:
                                                      ,dica = result[6]
                                                      )
                     if dica:
-                        sh.log.append ('WebFrame.go'
-                                      ,_('DEBUG')
+                        sh.log.append (f,_('DEBUG')
                                       ,_('Selected dictionary: "%s". Previous dictionary: "%s" (abbreviation), "%s" (full).') \
                                       % (result[6],str(dica[0])
                                         ,str(dica[1])
@@ -1472,8 +1429,7 @@ class WebFrame:
                                       )
                         dica = dica[1]
                     else:
-                        sh.log.append ('WebFrame.go'
-                                      ,_('DEBUG')
+                        sh.log.append (f,_('DEBUG')
                                       ,_('Selected dictionary: "%s". No previous dictionary.')
                                       )
                     lg.objs.order().lm_auto (dic1 = result[6]
@@ -1499,46 +1455,45 @@ class WebFrame:
 
     # Follow the URL of the current block
     def go_url(self,event=None):
+        f = 'mclient.WebFrame.go_url'
         if not lg.objs.request().MouseClicked:
             url = objs.blocks_db().url(pos=self._pos)
             if url:
                 lg.objs._request._search = objs._blocks_db.text(pos=self._pos)
                 lg.objs._request._url    = url
-                sh.log.append ('WebFrame.go_url'
-                              ,_('INFO')
+                sh.log.append (f,_('INFO')
                               ,_('Open link: %s') % lg.objs._request._url
                               )
                 self.load_article()
             # Do not warn when there are no articles yet
             elif objs._blocks_db._articleid == 0:
-                sh.log.append ('WebFrame.go_url'
-                              ,_('INFO')
+                sh.log.append (f,_('INFO')
                               ,_('Nothing to do!')
                               )
             else:
-                sg.Message ('WebFrame.go_url'
-                           ,_('WARNING')
+                sg.Message (f,_('WARNING')
                            ,_('This block does not contain a URL!')
                            )
 
     def go_search(self):
+        f = 'mclient.WebFrame.go_search'
         if self.control_length():
             self.get_url()
-            sh.log.append ('WebFrame.go_search'
-                          ,_('DEBUG')
+            sh.log.append (f,_('DEBUG')
                           ,lg.objs.request()._search
                           )
             self.load_article()
 
     def set_source(self,event=None):
+        f = 'mclient.WebFrame.set_source'
         lg.objs.request()._source = lg.sources[self.gui.men_srcs.index]
-        sh.log.append ('WebFrame.set_source'
-                      ,_('INFO')
+        sh.log.append (f,_('INFO')
                       ,_('Set source to "%s"') % lg.objs._request._source
                       )
         self.load_article()
 
     def get_url(self):
+        f = 'mclient.WebFrame.get_url'
         #note: encoding must be UTF-8 here
         if lg.objs.request()._source == _('Offline'):
             lg.objs.online().reset (base_str   = self.get_pair()
@@ -1551,65 +1506,64 @@ class WebFrame:
                                    ,MTSpecific = True
                                    )
             lg.objs._request._url = lg.objs.online().url()
-        sh.log.append ('WebFrame.get_url'
-                      ,_('DEBUG')
+        sh.log.append (f,_('DEBUG')
                       ,str(lg.objs._request._url)
                       )
 
     #todo: move 'move_*' procedures to Moves class
-    # Перейти на 1-й термин текущей строки
+    # Go to the 1st term of the current row
     def move_line_start(self,event=None):
+        f = 'mclient.WebFrame.move_line_start'
         result = objs.blocks_db().line_start(pos=self._pos)
         if str(result).isdigit():
             self._pos = result
             self.select()
             self.shift_screen()
         else:
-            sh.log.append ('WebFrame.move_line_start'
-                          ,_('WARNING')
+            sh.log.append (f,_('WARNING')
                           ,_('Wrong input data!')
                           )
 
-    # Перейти на последний термин текущей строки
+    # Go to the last term of the current row
     def move_line_end(self,event=None):
+        f = 'mclient.WebFrame.move_line_end'
         result = objs.blocks_db().line_end(pos=self._pos)
         if str(result).isdigit():
             self._pos = result
             self.select()
             self.shift_screen()
         else:
-            sh.log.append ('WebFrame.move_line_end'
-                          ,_('WARNING')
+            sh.log.append (f,_('WARNING')
                           ,_('Wrong input data!')
                           )
 
     # Go to the 1st (non-)selectable block
     def move_text_start(self,event=None):
+        f = 'mclient.WebFrame.move_text_start'
         result = objs.blocks_db().start()
         if str(result).isdigit():
             self._pos = result
             self.select()
             self.shift_screen()
         else:
-            sh.log.append ('WebFrame.move_text_start'
-                          ,_('WARNING')
+            sh.log.append (f,_('WARNING')
                           ,_('Wrong input data!')
                           )
 
-    # Перейти на последний термин статьи
+    # Go to the last term in the article
     def move_text_end(self,event=None):
+        f = 'mclient.WebFrame.move_text_end'
         result = objs.blocks_db().end()
         if str(result).isdigit():
             self._pos = result
             self.select()
             self.shift_screen()
         else:
-            sh.log.append ('WebFrame.move_text_end'
-                          ,_('WARNING')
+            sh.log.append (f,_('WARNING')
                           ,_('Wrong input data!')
                           )
 
-    # Перейти на страницу вверх
+    # Go to the previous page
     def move_page_up(self,event=None):
         result = objs.blocks_db().selection(pos=self._pos)
         height = self.gui.height()
@@ -1622,7 +1576,7 @@ class WebFrame:
                 self.select()
                 self.shift_screen()
 
-    # Перейти на страницу вниз
+    # Go to the next page
     def move_page_down(self,event=None):
         result = objs.blocks_db().selection(pos=self._pos)
         height = self.gui.height()
@@ -1635,71 +1589,71 @@ class WebFrame:
                 self.select()
                 self.shift_screen()
 
-    # Перейти на предыдущий термин
+    # Go to the previous term
     def move_left(self,event=None):
+        f = 'mclient.WebFrame.move_left'
         result = objs.blocks_db().left(pos=self._pos)
         if str(result).isdigit():
             self._pos = result
             self.select()
             self.shift_screen()
         else:
-            sh.log.append ('WebFrame.move_left'
-                          ,_('WARNING')
+            sh.log.append (f,_('WARNING')
                           ,_('Wrong input data!')
                           )
 
-    # Перейти на следующий термин
+    # Go to the next term
     def move_right(self,event=None):
+        f = 'mclient.WebFrame.move_right'
         result = objs.blocks_db().right(pos=self._pos)
         if str(result).isdigit():
             self._pos = result
             self.select()
             self.shift_screen()
         else:
-            sh.log.append ('WebFrame.move_right'
-                          ,_('WARNING')
+            sh.log.append (f,_('WARNING')
                           ,_('Wrong input data!')
                           )
 
-    # Перейти на строку вниз
+    # Go to the next row
     def move_down(self,event=None):
+        f = 'mclient.WebFrame.move_down'
         result = objs.blocks_db().down(pos=self._pos)
         if str(result).isdigit():
             self._pos = result
             self.select()
             self.shift_screen()
         else:
-            sh.log.append ('WebFrame.move_down'
-                          ,_('WARNING')
+            sh.log.append (f,_('WARNING')
                           ,_('Wrong input data!')
                           )
 
-    # Перейти на строку вверх
+    # Go to the previous row
     def move_up(self,event=None):
+        f = 'mclient.WebFrame.move_up'
         result = objs.blocks_db().up(pos=self._pos)
         if str(result).isdigit():
             self._pos = result
             self.select()
             self.shift_screen()
         else:
-            sh.log.append ('WebFrame.move_up'
-                          ,_('WARNING')
+            sh.log.append (f,_('WARNING')
                           ,_('Wrong input data!')
                           )
 
-    # Задействование колеса мыши для пролистывания экрана
+    # Use mouse wheel to scroll screen
     def mouse_wheel(self,event):
         ''' #todo: fix: too small delta in Windows
-            В Windows XP delta == -120, однако, в других версиях оно
-            другое
+            delta is -120 in Windows XP, however, it is different in
+            other versions.
         '''
         if event.num == 5 or event.delta < 0:
             if sh.oss.lin():
                 self.move_page_down()
             else:
                 self.move_down()
-            ''' В Windows XP delta == 120, однако, в других версиях оно
-                другое
+            ''' delta is 120 in Windows XP, however, it is different in
+                other versions.
             '''
         if event.num == 4 or event.delta > 0:
             if sh.oss.lin():
@@ -1708,7 +1662,7 @@ class WebFrame:
                 self.move_up()
         return 'break'
 
-    # Следить за буфером обмена
+    # Watch clipboard
     def watch_clipboard(self,event=None):
         if lg.objs.request().CaptureHotkey:
             lg.objs._request.CaptureHotkey = False
@@ -1716,13 +1670,14 @@ class WebFrame:
             lg.objs._request.CaptureHotkey = True
         self.update_buttons()
 
-    # Открыть URL текущей статьи в браузере
+    # Open URL of the current article in a browser
     def open_in_browser(self,event=None):
         lg.objs.online()._url = lg.objs.request()._url
         lg.objs.online().browse()
 
-    # Скопировать текст текущего блока
+    # Copy text of the current block
     def copy_text(self,event=None):
+        f = 'mclient.WebFrame.copy_text'
         text = objs.blocks_db().text(pos=self._pos)
         if text:
             sg.Clipboard().copy(text)
@@ -1730,38 +1685,37 @@ class WebFrame:
                 self.minimize()
         # Do not warn when there are no articles yet
         elif objs._blocks_db._articleid == 0:
-            sh.log.append ('WebFrame.copy_text'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('Nothing to do!')
                           )
         else:
-            sg.Message ('WebFrame.copy_text'
-                       ,_('WARNING')
+            sg.Message (f,_('WARNING')
                        ,_('This block does not contain any text!')
                        )
 
-    # Скопировать URL текущей статьи
+    # Copy URL of the current article
     def copy_url(self,event=None):
         sg.Clipboard().copy(lg.objs.request()._url)
         if sh.globs['bool']['Iconify']:
             self.minimize()
 
-    # Скопировать URL выделенного блока
+    # Copy URL of the selected block
     def copy_block_url(self,event=None):
+        f = 'mclient.WebFrame.copy_block_url'
         url = objs.blocks_db().url(pos=self._pos)
         if url:
             sg.Clipboard().copy(url)
             if sh.globs['bool']['Iconify']:
                 self.minimize()
         else:
-            sg.Message ('WebFrame.copy_block_url'
-                       ,_('WARNING')
+            sg.Message (f,_('WARNING')
                        ,_('This block does not contain a URL!')
                        )
 
-    # Открыть веб-страницу с определением текущего термина
-    # Selected: True: Выделенный термин; False: Название статьи
+    # Open a web-page with a definition of the current term
+    # Selected: True: Selected term; False: Article title
     def define(self,Selected=True):
+        f = 'mclient.WebFrame.define'
         if Selected:
             result = objs.blocks_db().block_pos(pos=self._pos)
             search_str = 'define:' + result[6]
@@ -1773,12 +1727,9 @@ class WebFrame:
                                    )
             lg.objs.online().browse()
         else:
-            sh.log.append ('WebFrame.define'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
-    # Обновить рисунки на кнопках и галки в виджете Settings
+    # Update button icons and checkboxes in the 'Settings' widget
     def update_buttons(self):
         searches = objs.blocks_db().searches()
         if searches:
@@ -1836,8 +1787,9 @@ class WebFrame:
             self.gui.btn_prio.inactive()
             self.settings.gui.cb4.disable()
 
-    # Перейти на предыдущий запрос
+    # Go to the previous search
     def go_back(self,event=None):
+        f = 'mclient.WebFrame.go_back'
         result = objs.blocks_db().prev_id()
         if result:
             objs._blocks_db._articleid = result
@@ -1848,18 +1800,13 @@ class WebFrame:
                 lg.objs._request._url    = result[2]
                 self.load_article()
             else:
-                sh.log.append ('WebFrame.go_back'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('WebFrame.go_back'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+            sh.com.empty(f)
 
-    # Перейти на следующий запрос
+    # Go to the next search
     def go_forward(self,event=None):
+        f = 'mclient.WebFrame.go_forward'
         result = objs.blocks_db().next_id()
         if result:
             objs._blocks_db._articleid = result
@@ -1870,24 +1817,18 @@ class WebFrame:
                 lg.objs._request._url    = result[2]
                 self.load_article()
             else:
-                sh.log.append ('WebFrame.go_forward'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('WebFrame.go_forward'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+            sh.com.empty(f)
 
     # Confirm too long requests
     def control_length(self):
+        f = 'mclient.WebFrame.control_length'
         Confirmed = True
         if len(lg.objs.request()._search) >= 150:
-            if not sg.Message (func    = 'WebFrame.control_length'
-                              ,level   = _('QUESTION')
-                              ,message = _('The request is long (%d symbols). Do you really want to send it?') \
-                                         % len(lg.objs._request._search)
+            if not sg.Message (f,_('QUESTION')
+                              ,_('The request is long (%d symbols). Do you really want to send it?')\
+                              % len(lg.objs._request._search)
                               ).Yes:
                 Confirmed = False
         return Confirmed
@@ -1898,9 +1839,9 @@ class WebFrame:
         self.search_article.forward()
 
     def set_lang(self,event=None):
+        f = 'mclient.WebFrame.set_lang'
         lg.objs.request()._lang = lg.langs[self.gui.men_pair.index]
-        sh.log.append ('WebFrame.set_lang'
-                      ,_('INFO')
+        sh.log.append (f,_('INFO')
                       ,_('Set language to "%s"') \
                       % lg.objs._request._lang
                       )
@@ -1909,8 +1850,8 @@ class WebFrame:
         return lg.online_dic_urls[self.gui.men_pair.index]
 
     def set_columns(self,event=None):
-        sh.log.append ('WebFrame.set_columns'
-                      ,_('INFO')
+        f = 'mclient.WebFrame.set_columns'
+        sh.log.append (f,_('INFO')
                       ,str(self.gui.men_cols.choice)
                       )
         fixed = [col for col in lg.objs.request()._cols \
@@ -1924,7 +1865,7 @@ class WebFrame:
         objs.blocks_db().clear_cur()
         self.load_article()
 
-    # Вставить спец. символ в строку поиска
+    # Insert a special symbol into the search field
     def insert_sym(self,sym):
         self.gui.search_field.insert(pos='end',text=sym)
         if sh.globs['bool']['AutoCloseSpecSymbol']:
@@ -1947,12 +1888,12 @@ class WebFrame:
         self.load_article()
 
     def toggle_block(self,event=None):
+        f = 'mclient.WebFrame.toggle_block'
         if lg.objs.request().Block:
             lg.objs._request.Block = False
             '''
-            sg.Message (func    = 'WebFrame.toggle_block'
-                       ,level   = _('INFO')
-                       ,message = _('Blacklisting is now OFF.')
+            sg.Message (f,_('INFO')
+                       ,_('Blacklisting is now OFF.')
                        )
             '''
             self.unblock()
@@ -1960,16 +1901,14 @@ class WebFrame:
             lg.objs._request.Block = True
             if lg.objs.order()._blacklist:
                 '''
-                sg.Message (func    = 'WebFrame.toggle_block'
-                           ,level   = _('INFO')
-                           ,message = _('Blacklisting is now ON.')
+                sg.Message (f,_('INFO')
+                           ,_('Blacklisting is now ON.')
                            )
                 '''
                 pass
             else:
-                sg.Message (func    = 'WebFrame.toggle_block'
-                           ,level   = _('WARNING')
-                           ,message = _('No dictionaries have been provided for blacklisting!')
+                sg.Message (f,_('WARNING')
+                           ,_('No dictionaries have been provided for blacklisting!')
                            )
         objs.blocks_db().delete_bookmarks()
         self.load_article()
@@ -2003,12 +1942,12 @@ class WebFrame:
             objs._blocks_db.update(query=query)
 
     def toggle_priority(self,event=None):
+        f = 'mclient.WebFrame.toggle_priority'
         if lg.objs.request().Prioritize:
             lg.objs._request.Prioritize = False
             '''
-            sg.Message (func    = 'WebFrame.toggle_priority'
-                       ,level   = _('INFO')
-                       ,message = _('Prioritizing is now OFF.')
+            sg.Message (f,_('INFO')
+                       ,_('Prioritizing is now OFF.')
                        )
             '''
             self.unprioritize()
@@ -2016,21 +1955,20 @@ class WebFrame:
             lg.objs._request.Prioritize = True
             if lg.objs.order()._prioritize:
                 '''
-                sg.Message (func    = 'WebFrame.toggle_priority'
-                           ,level   = _('INFO')
-                           ,message = _('Prioritizing is now ON.')
+                sg.Message (f,_('INFO')
+                           ,_('Prioritizing is now ON.')
                            )
                 '''
                 pass
             else:
-                sg.Message (func    = 'WebFrame.toggle_priority'
-                           ,level   = _('WARNING')
-                           ,message = _('No dictionaries have been provided for prioritizing!')
+                sg.Message (f,_('WARNING')
+                           ,_('No dictionaries have been provided for prioritizing!')
                            )
         objs.blocks_db().delete_bookmarks()
         self.load_article()
 
     def print(self,event=None):
+        f = 'mclient.WebFrame.print'
         skipped = objs._blocks_db.skipped_dicas()
         if skipped:
             skipped = ', '.join(skipped)
@@ -2056,15 +1994,13 @@ class WebFrame:
                              ).write(code)
             sh.Launch(target=sh.objs._tmpfile).auto()
         else:
-            sh.log.append ('WebFrame.print'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
-    ''' Update a column number in GUI; adjust the column number (both
-        logic and GUI) in special cases
-    '''
     def update_columns(self):
+        ''' Update a column number in GUI; adjust the column number
+            (both logic and GUI) in special cases.
+        '''
+        f = 'mclient.WebFrame.update_columns'
         fixed = [col for col in lg.objs.request()._cols \
                  if col != _('Do not set')
                 ]
@@ -2082,25 +2018,23 @@ class WebFrame:
                     lg.objs._request._collimit -= 1
             non_fixed_len = lg.objs._request._collimit - len(fixed)
             self.gui.men_cols.set(non_fixed_len)
-            sh.log.append ('WebFrame.update_columns'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('Set the column limit to %d (%d in total)')\
                           % (non_fixed_len,lg.objs._request._collimit)
                           )
         else:
-            sg.Message (func    = 'WebFrame.update_columns'
-                       ,level   = _('ERROR')
-                       ,message = _('The condition "%s" is not observed!')\
-                                  % '%d > %d' % (lg.objs._request._collimit
-                                                ,len(fixed)
-                                                )
+            sg.Message (f,_('ERROR')
+                       ,_('The condition "%s" is not observed!')\
+                       % '%d > %d' % (lg.objs._request._collimit
+                                     ,len(fixed)
+                                     )
                        )
 
     def ignore_column(self,col_no):
+        f = 'mclient.WebFrame.ignore_column'
         if len(lg.objs.request()._cols) > col_no + 1:
             if lg.objs._request._cols[col_no] == 'transc':
-                sh.log.append ('WebFrame.ignore_column'
-                              ,_('DEBUG')
+                sh.log.append (f,_('DEBUG')
                               ,_('Select column "%s" instead of "%s"')\
                               % (lg.objs._request._cols[col_no]
                                 ,lg.objs._request._cols[col_no+1]
@@ -2109,8 +2043,9 @@ class WebFrame:
                 col_no += 1
         return col_no
     
-    # Перейти к следующему разделу столбца col_no
+    # Go to the next section of column #col_no
     def move_next_section(self,event=None,col_no=0):
+        f = 'mclient.WebFrame.move_next_section'
         col_no  = self.ignore_column(col_no=col_no)
         result1 = objs.blocks_db().block_pos(pos=self._pos)
         result2 = objs._blocks_db.next_section (pos    = self._pos
@@ -2134,23 +2069,15 @@ class WebFrame:
                     self.select()
                     self.shift_screen()
                 else:
-                    sh.log.append ('WebFrame.move_next_section'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
             else:
-                sh.log.append ('WebFrame.move_next_section'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('WebFrame.move_next_section'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         
-    # Перейти к предыдущему разделу столбца col_no
+    # Go to the previous section of column #col_no
     def move_prev_section(self,event=None,col_no=0):
+        f = 'mclient.WebFrame.move_prev_section'
         col_no  = self.ignore_column(col_no=col_no)
         result1 = objs.blocks_db().block_pos(pos=self._pos)
         result2 = objs._blocks_db.prev_section (pos    = self._pos
@@ -2174,51 +2101,38 @@ class WebFrame:
                     self.select()
                     self.shift_screen()
                 else:
-                    sh.log.append ('WebFrame.move_prev_section'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
             else:
-                sh.log.append ('WebFrame.move_prev_section'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('WebFrame.move_prev_section'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def get_bookmark(self):
+        f = 'mclient.WebFrame.get_bookmark'
         result = objs.blocks_db().article()
         if result:
             if str(result[3]).isdigit():
                 self._pos = result[3]
-                sh.log.append ('WebFrame.get_bookmark'
-                              ,_('DEBUG')
+                sh.log.append (f,_('DEBUG')
                               ,_('Load bookmark %d for article #%d') \
                               % (self._pos,objs._blocks_db._articleid)
                               )
             else:
-                sh.log.append ('WebFrame.get_bookmark'
-                              ,_('WARNING')
+                sh.log.append (f,_('WARNING')
                               ,_('Wrong input data!')
                               )
         else:
-            sh.log.append ('WebFrame.get_bookmark'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
             result = objs._blocks_db.start()
             if str(result).isdigit():
                 self._pos = result()
             else:
-                sh.log.append ('WebFrame.get_bookmark'
-                              ,_('WARNING')
+                sh.log.append (f,_('WARNING')
                               ,_('Wrong input data!')
                               )
     
     def go_alt(self,event=None,Mouse=False):
+        f = 'mclient.WebFrame.go_alt'
         if Mouse:
             if objs.blocks_db().Selectable:
                 objs._blocks_db.Selectable = False
@@ -2230,8 +2144,7 @@ class WebFrame:
                                                      ,dica = result[6]
                                                      )
                     if dica:
-                        sh.log.append ('WebFrame.go'
-                                      ,_('DEBUG')
+                        sh.log.append (f,_('DEBUG')
                                       ,_('Selected dictionary: "%s". Next dictionary: "%s" (abbreviation), "%s" (full).') \
                                       % (result[6],str(dica[0])
                                         ,str(dica[1])
@@ -2240,8 +2153,7 @@ class WebFrame:
                                       )
                         dica = dica[1]
                     else:
-                        sh.log.append ('WebFrame.go_alt'
-                                      ,_('DEBUG')
+                        sh.log.append (f,_('DEBUG')
                                       ,_('Selected dictionary: "%s". No next dictionary.') \
                                       % result[6]
                                       )
@@ -2276,18 +2188,19 @@ class Settings:
         self.bindings()
 
     def block_settings(self,event=None):
-        sg.Message (func    = 'Settings.block_settings'
-                   ,level   = _('INFO')
-                   ,message = _('Not implemented yet!')
+        f = 'mclient.Settings.block_settings'
+        sg.Message (f,_('INFO')
+                   ,_('Not implemented yet!')
                    )
 
     def priority_settings(self,event=None):
-        sg.Message (func    = 'Settings.priority_settings'
-                   ,level   = _('INFO')
-                   ,message = _('Not implemented yet!')
+        f = 'mclient.Settings.priority_settings'
+        sg.Message (f,_('INFO')
+                   ,_('Not implemented yet!')
                    )
 
     def apply(self,event=None):
+        f = 'mclient.Settings.apply'
         ''' Do not use 'gettext' to name internal types - this will make
             the program ~0,6s slower
         '''
@@ -2313,16 +2226,15 @@ class Settings:
             elif lst[i] == _('Transcription'):
                 lst[i] = 'transc'
             else:
-                sg.Message (func    = 'Settings.apply'
-                           ,level   = _('ERROR')
-                           ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                                      % (str(self._cols[i])
-                                        ,', '.join (_('Dictionaries')
-                                                   ,_('Word forms')
-                                                   ,_('Transcription')
-                                                   ,_('Parts of speech')
-                                                   )
+                sg.Message (f,_('ERROR')
+                           ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                           % (str(self._cols[i])
+                             ,', '.join (_('Dictionaries')
+                                        ,_('Word forms')
+                                        ,_('Transcription')
+                                        ,_('Parts of speech')
                                         )
+                             )
                            )
         if set(lst):
             self.gui.close()
@@ -2340,9 +2252,8 @@ class Settings:
             objs.webframe().set_columns()
         else:
             #todo: do we really need this?
-            sg.Message (func    = 'Settings.apply'
-                       ,level   = _('WARNING')
-                       ,message = _('At least one column must be set!')
+            sg.Message (f,_('WARNING')
+                       ,_('At least one column must be set!')
                        )
     
     def bindings(self):
@@ -2358,6 +2269,7 @@ class Settings:
                 )
 
     def prioritize_speech(self):
+        f = 'mclient.Settings.prioritize_speech'
         lg.objs.request()
         choices = (self.gui.sp1.choice,self.gui.sp2.choice
                   ,self.gui.sp3.choice,self.gui.sp4.choice
@@ -2380,8 +2292,7 @@ class Settings:
             elif choices[i] == _('Pronoun'):
                 lg.objs._request._pr_pron = len(choices) - i
             else:
-                sg.Message ('Settings.prioritize_speech'
-                           ,_('ERROR')
+                sg.Message (f,_('ERROR')
                            ,_('Wrong input data: "%s"') % str(choices[i])
                            )
 
@@ -2413,18 +2324,17 @@ class Suggestion:
         kept open.
     '''
     def _select(self,event=None):
+        f = 'mclient.Suggestion._select'
         if self.gui.parent:
             self.entry.clear_text()
             self.entry.insert(text=self.gui.lbox.get())
             self.entry.select_all()
             self.entry.focus()
         else:
-            sh.log.append ('Suggestion._select'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         
     def move_down(self,event=None):
+        f = 'mclient.Suggestion.move_down'
         if self.gui.parent:
             # Necessary to use arrows on ListBox
             self.gui.lbox.focus()
@@ -2432,12 +2342,10 @@ class Suggestion:
             self.gui.lbox.select()
             self._select()
         else:
-            sh.log.append ('Suggestion.move_down'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         
     def move_up(self,event=None):
+        f = 'mclient.Suggestion.move_up'
         if self.gui.parent:
             # Necessary to use arrows on ListBox
             self.gui.lbox.focus()
@@ -2445,36 +2353,30 @@ class Suggestion:
             self.gui.lbox.select()
             self._select()
         else:
-            sh.log.append ('Suggestion.move_up'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         
     def move_top(self,event=None):
+        f = 'mclient.Suggestion.move_top'
         if self.gui.parent:
             # Necessary to use arrows on ListBox
             self.gui.lbox.focus()
             self.gui.lbox.move_top()
             self._select()
         else:
-            sh.log.append ('Suggestion.move_top'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
                           
     def move_bottom(self,event=None):
+        f = 'mclient.Suggestion.move_bottom'
         if self.gui.parent:
             # Necessary to use arrows on ListBox
             self.gui.lbox.focus()
             self.gui.lbox.move_bottom()
             self._select()
         else:
-            sh.log.append ('Suggestion.move_bottom'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def suggest(self,event=None):
+        f = 'mclient.Suggestion.suggest'
         if sh.globs['bool']['Autocompletion'] and event:
             text = self.entry.get()
             #todo: avoid modifiers
@@ -2503,10 +2405,7 @@ class Suggestion:
                                         ,anchor = 'NE'
                                         ).run()
                     else:
-                        sh.log.append ('Suggestion.suggest'
-                                      ,_('WARNING')
-                                      ,_('Empty input is not allowed!')
-                                      )
+                        sh.com.empty(f)
             else:
                 self.gui.close()
     
@@ -2522,6 +2421,7 @@ objs = Objects()
 
 
 if  __name__ == '__main__':
+    f = 'mclient.__main__'
     sg.objs.start()
     lg.objs.default(product=gi.product)
     if lg.objs._default.Success:
@@ -2530,8 +2430,7 @@ if  __name__ == '__main__':
         objs._webframe.gui.show()
         kl_mod.keylistener.cancel()
     else:
-        sh.objs.mes ('mclient'
-                    ,_('WARNING')
+        sh.objs.mes (f,_('WARNING')
                     ,_('Unable to continue due to an invalid configuration.')
                     )
     sg.objs.end()

@@ -28,6 +28,7 @@ class DB:
         self.create_articles()
         
     def next_dica(self,pos,dica):
+        f = 'db.DB.next_dica'
         if self._articleid:
             self.dbc.execute ('select DICA,DICAF,NO,CELLNO from BLOCKS \
                                where ARTICLEID = ? and POS1 > ? \
@@ -38,12 +39,10 @@ class DB:
                              )
             return self.dbc.fetchone()
         else:
-            sh.log.append ('DB.next_dica'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def prev_dica(self,pos,dica):
+        f = 'db.DB.prev_dica'
         if self._articleid:
             self.dbc.execute ('select DICA,DICAF,NO,CELLNO from BLOCKS \
                                where ARTICLEID = ? and POS1 < ? \
@@ -54,10 +53,7 @@ class DB:
                              )
             return self.dbc.fetchone()
         else:
-            sh.log.append ('DB.prev_dica'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def values(self):
         self.Selectable = True
@@ -121,6 +117,7 @@ class DB:
     def reset (self,cols=('dic','wform','transc','speech')
               ,SortRows=False,SortTerms=False,ExpandDic=False
               ):
+        f = 'db.DB.reset'
         self.SortTerms = SortTerms
         self.SortRows  = SortRows
         self.ExpandDic = ExpandDic
@@ -128,10 +125,7 @@ class DB:
         # Prevents None + tuple
         if not self._cols:
             self._cols = ('dic','wform','transc','speech')
-            sh.log.append ('DB.reset'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         self._types = self._cols + ('term','phrase','comment'
                                    ,'correction'
                                    )
@@ -171,6 +165,7 @@ class DB:
         return self.dbc.fetchall()
 
     def prev_id(self,Loop=True):
+        f = 'db.DB.prev_id'
         if self._articleid:
             self.dbc.execute ('select ARTICLEID from ARTICLES \
                                where ARTICLEID < ? \
@@ -183,12 +178,10 @@ class DB:
             elif Loop:
                 return self.max_articleid()
         else:
-            sh.log.append ('DB.prev_id'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def next_id(self,Loop=True):
+        f = 'db.DB.next_id'
         if self._articleid:
             self.dbc.execute ('select ARTICLEID from ARTICLES \
                                where ARTICLEID > ? order by ARTICLEID'
@@ -200,10 +193,7 @@ class DB:
             elif Loop:
                 return self.min_articleid()
         else:
-            sh.log.append ('DB.next_id'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def print (self,Selected=False,Shorten=False
               ,MaxRow=20,MaxRows=20,mode='BLOCKS'
@@ -211,6 +201,7 @@ class DB:
         ''' 'self.dbc.description' is 'None' without performing
             'select' first
         '''
+        f = 'db.DB.print'
         if not Selected:
             if mode == 'BLOCKS':
                 self.dbc.execute ('select * from BLOCKS \
@@ -221,10 +212,9 @@ class DB:
                                    order by ARTICLEID'
                                  )
             else:
-                sh.objs.mes (func    = 'DB.print'
-                            ,level   = _('ERROR')
-                            ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                                       % (str(mode),'ARTICLES, BLOCKS')
+                sh.objs.mes (f,_('ERROR')
+                            ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                            % (str(mode),'ARTICLES, BLOCKS')
                             )
         headers = [cn[0] for cn in self.dbc.description]
         rows    = self.dbc.fetchall()
@@ -236,17 +226,18 @@ class DB:
                  ).print()
 
     def update(self,query):
+        f = 'db.DB.update'
         try:
             self.dbc.executescript(query)
         except sqlite3.OperationalError:
-            sh.objs.mes ('DB.update'
-                        ,_('ERROR')
+            sh.objs.mes (f,_('ERROR')
                         ,_('Unable to execute:\n"%s"') \
                         % str(query).replace(';',';\n')
                         )
 
     # Assign input data for BlockPrioritize
     def assign_bp(self):
+        f = 'db.DB.assign_bp'
         if self._articleid:
             self.dbc.execute ('select NO,TYPE,TEXT,DICA from BLOCKS \
                                where ARTICLEID = ? order by NO'
@@ -254,12 +245,10 @@ class DB:
                              )
             return self.dbc.fetchall()
         else:
-            sh.log.append ('DB.assign_bp'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def order_query(self):
+        f = 'db.DB.order_query'
         query = []
         for item in self._cols:
             if item == 'dic':
@@ -281,12 +270,9 @@ class DB:
                 # There is no sense to sort by transcription
                 pass
             else:
-                sh.objs.mes (func    = 'DB.order_query'
-                            ,level   = _('ERROR')
-                            ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                                       % (str(item)
-                                         ,'dic, wform, speech, transc'
-                                         )
+                sh.objs.mes (f,_('ERROR')
+                            ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                            % (str(item),'dic, wform, speech, transc')
                             )
         if self.SortTerms:
             query.append('TERMA')
@@ -294,6 +280,7 @@ class DB:
 
     # Assign input data for Cells
     def assign_cells(self):
+        f = 'db.DB.assign_cells'
         if self._articleid:
             query = 'select NO,TYPE,TEXT,SAMECELL,'
             if self.ExpandDic:
@@ -316,13 +303,11 @@ class DB:
             self.dbc.execute(query,(self._articleid,))
             return self.dbc.fetchall()
         else:
-            sh.log.append ('DB.assign_cells'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     # Assign input data for Pos
     def assign_pos(self):
+        f = 'db.DB.assign_pos'
         if self._articleid:
             self.dbc.execute ('select NO,TYPE,TEXT,SAMECELL,ROWNO \
                                from BLOCKS where ARTICLEID = ? \
@@ -331,15 +316,13 @@ class DB:
                              )
             return self.dbc.fetchall()
         else:
-            sh.log.append ('DB.assign_pos'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
-    ''' Get 'PhraseDic' before 'Cells' are built when 'PhraseDic' is
-        still of a 'phrase' type.
-    '''
     def phrase_dic_primary(self):
+        ''' Get 'PhraseDic' before 'Cells' are built when 'PhraseDic' is
+            still of a 'phrase' type.
+        '''
+        f = 'db.DB.phrase_dic_primary'
         if self._articleid:
             self.dbc.execute ('select DICA from BLOCKS \
                                where ARTICLEID = ? and TYPE = ? \
@@ -349,12 +332,10 @@ class DB:
             if result:
                 return result[0]
         else:
-            sh.log.append ('DB.phrase_dic_primary'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
                           
     def phrase_dic(self):
+        f = 'db.DB.phrase_dic'
         if self._articleid:
             result = self.phrase_dic_primary()
             if result:
@@ -365,19 +346,13 @@ class DB:
                                  )
                 return self.dbc.fetchone()
             else:
-                sh.log.append ('DB.phrase_dic'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('DB.phrase_dic'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def clear(self):
-        sh.log.append ('DB.clear'
-                      ,_('WARNING')
+        f = 'db.DB.clear'
+        sh.log.append (f,_('WARNING')
                       ,_('Delete all records from %s') \
                       % 'ARTICLES, BLOCKS'
                       )
@@ -386,9 +361,9 @@ class DB:
         self.dbc.execute('delete from ARTICLES')
 
     def clear_cur(self):
+        f = 'db.DB.clear_cur'
         if self._articleid:
-            sh.log.append ('DB.clear_cur'
-                          ,_('WARNING')
+            sh.log.append (f,_('WARNING')
                           ,_('Delete records of article No. %d from %s')\
                           % (self._articleid,'BLOCKS, ARTICLES')
                           )
@@ -399,12 +374,10 @@ class DB:
                              ,(self._articleid,)
                              )
         else:
-            sh.log.append ('DB.clear_cur'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def block_pos(self,pos):
+        f = 'db.DB.block_pos'
         if self._articleid:
             if self.Selectable:
                 ''' 'POS2 > pos' instead of 'POS2 >= pos' allows to
@@ -429,12 +402,10 @@ class DB:
                                  )
             return self.dbc.fetchone()
         else:
-            sh.log.append ('DB.block_pos'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def article(self):
+        f = 'db.DB.article'
         if self._articleid:
             self.dbc.execute ('select SOURCE,TITLE,URL,BOOKMARK \
                                from ARTICLES where ARTICLEID = ?'
@@ -442,12 +413,10 @@ class DB:
                              )
             return self.dbc.fetchone()
         else:
-            sh.log.append ('DB.article'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def url(self,pos):
+        f = 'db.DB.url'
         if self._articleid:
             self.dbc.execute ('select URL from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
@@ -458,12 +427,10 @@ class DB:
             if result:
                 return result[0]
         else:
-            sh.log.append ('DB.url'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def text(self,pos):
+        f = 'db.DB.text'
         if self._articleid:
             self.dbc.execute ('select TEXT from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
@@ -475,12 +442,10 @@ class DB:
             if result:
                 return result[0]
         else:
-            sh.log.append ('DB.text'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def min_cell(self):
+        f = 'db.DB.min_cell'
         if self._articleid:
             if self.Selectable:
                 ''' This function is made for calculating moves; if we
@@ -503,12 +468,10 @@ class DB:
                                  )
             return self.dbc.fetchone()
         else:
-            sh.log.append ('DB.min_cell'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def max_cell(self):
+        f = 'db.DB.max_cell'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select CELLNO,NO,POS1,BBOX1,BBOX2 \
@@ -528,15 +491,13 @@ class DB:
                                  )
             return self.dbc.fetchone()
         else:
-            sh.log.append ('DB.max_cell'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
-    ''' Find the maximum available row number for the whole table;
-        this might not be the same as ROWNO of 'self.max_cell'
-    '''
     def max_row(self):
+        ''' Find the maximum available row number for the whole table;
+            this might not be the same as ROWNO of 'self.max_cell'
+        '''
+        f = 'db.DB.max_row'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select ROWNO,NO from BLOCKS \
@@ -555,15 +516,14 @@ class DB:
                                  )
             return self.dbc.fetchone()
         else:
-            sh.log.append ('DB.max_row'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
-    ''' Find the maximum available column number for the whole table;
-        this might not be the same as COLNO of 'self.max_cell'
-    '''
     def max_col(self):
+        ''' Find the maximum available column number for the whole
+            table; this might not be the same as COLNO of
+            'self.max_cell'
+        '''
+        f = 'db.DB.max_col'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select COLNO,NO,BBOX2 from BLOCKS \
@@ -582,13 +542,11 @@ class DB:
                                  )
             return self.dbc.fetchone()
         else:
-            sh.log.append ('DB.max_col'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     # Find the maximum available row number for the set column
     def max_row_sp(self,col_no):
+        f = 'db.DB.max_row_sp'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select ROWNO,NO from BLOCKS \
@@ -608,16 +566,14 @@ class DB:
                                  )
             return self.dbc.fetchone()
         else:
-            sh.log.append ('DB.max_row_sp'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
-    ''' Find the minimum available column number for the whole table;
-        this should be the same as COLNO of 'self.min_cell' but we leave
-        it for non-standard tables
-    '''
     def min_col(self):
+        ''' Find the minimum available column number for the whole
+            table; this should be the same as COLNO of 'self.min_cell'
+            but we leave it for non-standard tables.
+        '''
+        f = 'db.DB.min_col'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select COLNO,NO,BBOX1 from BLOCKS \
@@ -635,15 +591,13 @@ class DB:
                                  )
             return self.dbc.fetchone()
         else:
-            sh.log.append ('DB.min_col'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
-    ''' Find the minimum available row number for the set column;
-        this might not be the same as ROWNO of 'self.min_cell'
-    '''
     def min_row_sp(self,col_no):
+        ''' Find the minimum available row number for the set column;
+            this might not be the same as ROWNO of 'self.min_cell'
+        '''
+        f = 'db.DB.min_row_sp'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select ROWNO,NO from BLOCKS \
@@ -663,12 +617,10 @@ class DB:
                                  )
             return self.dbc.fetchone()
         else:
-            sh.log.append ('DB.min_row_sp'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def selection(self,pos):
+        f = 'db.DB.selection'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select NODE1,NODE2,OFFPOS1,OFFPOS2\
@@ -694,13 +646,11 @@ class DB:
             pass
             '''
             # Too frequent
-            sh.log.append ('DB.selection'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
             '''
 
     def skipped_dicas(self):
+        f = 'db.DB.skipped_dicas'
         if self._articleid:
             self.dbc.execute ('select distinct DICA from BLOCKS \
                                where ARTICLEID = ? \
@@ -711,12 +661,10 @@ class DB:
             if result:
                 return [item[0] for item in result]
         else:
-            sh.log.append ('DB.skipped_dicas'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def blocked(self):
+        f = 'db.DB.blocked'
         if self._articleid:
             self.dbc.execute ('select NO from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 1'
@@ -724,12 +672,10 @@ class DB:
                              )
             return self.dbc.fetchall()
         else:
-            sh.log.append ('DB.blocked'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def prioritized(self):
+        f = 'db.DB.prioritized'
         if self._articleid:
             ''' #note: We assume that 'Phrases' section has -1000
                 priority and this is always used despite user settings.
@@ -741,12 +687,10 @@ class DB:
                              )
             return self.dbc.fetchall()
         else:
-            sh.log.append ('DB.prioritized'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def dics(self,Block=False):
+        f = 'db.DB.dics'
         if self._articleid:
             # Do not use 'POS1 < POS2', it might be not set yet
             if Block:
@@ -762,12 +706,10 @@ class DB:
                                  )
             return self.dbc.fetchall()
         else:
-            sh.log.append ('DB.dics'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def search_forward(self,pos,search):
+        f = 'db.DB.search_forward'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
@@ -793,12 +735,10 @@ class DB:
             if result:
                 return result[0]
         else:
-            sh.log.append ('DB.search_forward'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def search_backward(self,pos,search):
+        f = 'db.DB.search_backward'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
@@ -825,10 +765,7 @@ class DB:
             if result:
                 return result[0]
         else:
-            sh.log.append ('DB.search_backward'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def unignore(self):
         self.dbc.execute ('update BLOCKS set IGNORE = 0 \
@@ -848,6 +785,7 @@ class DB:
             
     # Get any block with the maximal BBOY2
     def max_bboy(self,limit=0):
+        f = 'db.DB.max_bboy'
         if self._articleid:
             if limit:
                 self.dbc.execute ('select BBOY2,NODE1,TEXT from BLOCKS \
@@ -865,13 +803,11 @@ class DB:
                                  )
             return self.dbc.fetchone()
         else:
-            sh.log.append ('DB.max_bboy'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     # Get any block with the maximal BBOX2
     def max_bbox(self,limit=0):
+        f = 'db.DB.max_bbox'
         if self._articleid:
             if limit:
                 self.dbc.execute ('select BBOX2,NODE1,TEXT from BLOCKS \
@@ -889,13 +825,11 @@ class DB:
                                  )
             return self.dbc.fetchone()
         else:
-            sh.log.append ('DB.max_bbox'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     # Get the minimum BBOY1 and the maximum BBOY2 for the set row number
     def bboy_limits(self,row_no=0):
+        f = 'db.DB.bboy_limits'
         if self._articleid:
             self.dbc.execute ('select BBOY1 from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
@@ -914,20 +848,15 @@ class DB:
             if min_result and max_result:
                 return(min_result[0],max_result[0])
             else:
-                sh.log.append ('DB.bboy_limits'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('DB.bboy_limits'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
                           
     ''' Get the minimum BBOX1 and the maximum BBOX2 for the set column
         number
     '''
     def bbox_limits(self,col_no=0):
+        f = 'db.DB.bbox_limits'
         if self._articleid:
             self.dbc.execute ('select BBOX1 from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
@@ -946,17 +875,12 @@ class DB:
             if min_result and max_result:
                 return(min_result[0],max_result[0])
             else:
-                sh.log.append ('DB.bbox_limits'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('DB.bbox_limits'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def min_articleid(self):
+        f = 'db.DB.min_articleid'
         self.dbc.execute ('select ARTICLEID from ARTICLES \
                            order by ARTICLEID'
                          )
@@ -964,14 +888,12 @@ class DB:
         if result:
             return result[0]
         else:
-            sh.log.append ('DB.min_articleid'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
             # Default minimal autoincrement in SQlite
             return 1
             
     def max_articleid(self):
+        f = 'db.DB.max_articleid'
         self.dbc.execute ('select ARTICLEID from ARTICLES \
                            order by ARTICLEID desc'
                          )
@@ -979,14 +901,12 @@ class DB:
         if result:
             return result[0]
         else:
-            sh.log.append ('DB.max_articleid'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
             # Default minimal autoincrement in SQlite
             return 1
     
     def block_pos_next(self,pos):
+        f = 'db.DB.block_pos_next'
         if self._articleid:
             if self.Selectable:
                 ''' 'POS2 > pos' instead of 'POS2 >= pos' allows to
@@ -1012,12 +932,10 @@ class DB:
                                  )
             return self.dbc.fetchone()
         else:
-            sh.log.append ('DB.block_pos_next'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def set_bookmark(self,pos=0):
+        f = 'db.DB.set_bookmark'
         if str(pos).isdigit():
             if self._articleid:
                 ''' # Too frequent
@@ -1032,19 +950,15 @@ class DB:
                                  ,(pos,self._articleid,)
                                  )
             else:
-                sh.log.append ('DB.set_bookmark'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('DB.set_bookmark'
-                          ,_('WARNING')
+            sh.log.append (f,_('WARNING')
                           ,_('Wrong input data!')
                           )
                           
     def delete_bookmarks(self):
-        sh.log.append ('DB.delete_bookmarks'
-                      ,_('DEBUG')
+        f = 'db.DB.delete_bookmarks'
+        sh.log.append (f,_('DEBUG')
                       ,_('Delete bookmarks for all articles')
                       )
         self.dbc.execute('update ARTICLES set BOOKMARK = -1')
@@ -1061,6 +975,7 @@ class Moves(DB):
         super().__init__()
 
     def start(self):
+        f = 'db.Moves.start'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
@@ -1081,12 +996,10 @@ class Moves(DB):
             if result:
                 return result[0]
         else:
-            sh.log.append ('Moves.start'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def end(self):
+        f = 'db.Moves.end'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
@@ -1108,12 +1021,10 @@ class Moves(DB):
             if result:
                 return result[0]
         else:
-            sh.log.append ('Moves.end'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def line_start(self,pos):
+        f = 'db.Moves.line_start'
         if self._articleid:
             poses = self.block_pos(pos=pos)
             if poses:
@@ -1141,17 +1052,12 @@ class Moves(DB):
                 if result:
                     return result[0]
             else:
-                sh.log.append ('Moves.line_start'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Moves.line_start'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def line_end(self,pos):
+        f = 'db.Moves.line_end'
         if self._articleid:
             poses = self.block_pos(pos=pos)
             if poses:
@@ -1179,17 +1085,12 @@ class Moves(DB):
                 if result:
                     return result[0]
             else:
-                sh.log.append ('Moves.line_end'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Moves.line_end'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def left(self,pos):
+        f = 'db.Moves.left'
         if self._articleid:
             poses = self.block_pos(pos=pos)
             if poses:
@@ -1225,22 +1126,14 @@ class Moves(DB):
                     if result:
                         return result[0]
                 else:
-                    sh.log.append ('Moves.left'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
             else:
-                sh.log.append ('Moves.left'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Moves.left'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def right(self,pos):
+        f = 'db.Moves.right'
         if self._articleid:
             poses = self.block_pos(pos=pos)
             if poses:
@@ -1276,22 +1169,14 @@ class Moves(DB):
                     if result:
                         return result[0]
                 else:
-                    sh.log.append ('Moves.right'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
             else:
-                sh.log.append ('Moves.right'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Moves.right'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def up(self,pos):
+        f = 'db.Moves.up'
         if self._articleid:
             poses = self.block_pos(pos=pos)
             if poses:
@@ -1403,22 +1288,14 @@ class Moves(DB):
                         if result:
                             return result[0]
                 else:
-                    sh.log.append ('Moves.up'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
             else:
-                sh.log.append ('Moves.up'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Moves.up'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def down(self,pos):
+        f = 'db.Moves.down'
         if self._articleid:
             poses = self.block_pos(pos=pos)
             if poses:
@@ -1528,22 +1405,14 @@ class Moves(DB):
                         if result:
                             return result[0]
                 else:
-                    sh.log.append ('Moves.down'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
             else:
-                sh.log.append ('Moves.down'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Moves.down'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def page_down(self,bboy,height):
+        f = 'db.Moves.page_down'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
@@ -1571,12 +1440,10 @@ class Moves(DB):
             if result:
                 return result[0]
         else:
-            sh.log.append ('Moves.page_down'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def page_up(self,bboy,height):
+        f = 'db.Moves.page_up'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
@@ -1604,12 +1471,10 @@ class Moves(DB):
             if result:
                 return result[0]
         else:
-            sh.log.append ('Moves.page_up'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
                           
     def first_section(self,col_no=0):
+        f = 'db.Moves.first_section'
         if self._articleid:
             self.dbc.execute ('select POS1,ROWNO,TEXT from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
@@ -1619,12 +1484,10 @@ class Moves(DB):
                              )
             return self.dbc.fetchone()
         else:
-            sh.log.append ('Moves.first_section'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
                           
     def last_section(self,col_no=0):
+        f = 'db.Moves.last_section'
         if self._articleid:
             self.dbc.execute ('select POS1,ROWNO,TEXT from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
@@ -1634,12 +1497,10 @@ class Moves(DB):
                              )
             return self.dbc.fetchone()
         else:
-            sh.log.append ('Moves.last_section'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def next_section(self,pos,col_no=0,Loop=True):
+        f = 'db.Moves.next_section'
         if self._articleid:
             poses = self.block_pos(pos=pos)
             if poses:
@@ -1656,17 +1517,12 @@ class Moves(DB):
                 elif Loop:
                     return self.first_section(col_no=col_no)
             else:
-                sh.log.append ('Moves.next_section'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Moves.next_section'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
                           
     def prev_section(self,pos,col_no=0,Loop=True):
+        f = 'db.Moves.prev_section'
         if self._articleid:
             poses = self.block_pos(pos=pos)
             if poses:
@@ -1683,17 +1539,12 @@ class Moves(DB):
                 elif Loop:
                     return self.last_section(col_no=col_no)
             else:
-                sh.log.append ('Moves.prev_section'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Moves.prev_section'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def next_col(self,row_no=0,col_no=0):
+        f = 'db.Moves.next_col'
         if self._articleid:
             self.dbc.execute ('select POS1,ROWNO,COLNO,TEXT \
                                from BLOCKS where ARTICLEID = ? \
@@ -1704,10 +1555,7 @@ class Moves(DB):
                              )
             return self.dbc.fetchone()
         else:
-            sh.log.append ('Moves.next_col'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
 
 if __name__ == '__main__':

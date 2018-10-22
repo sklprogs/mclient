@@ -45,33 +45,29 @@ class ExtDic:
         self.load()
 
     def load(self):
-        sh.log.append ('ExtDic.load'
-                      ,_('INFO')
+        f = 'page.ExtDic.load'
+        sh.log.append (f,_('INFO')
                       ,_('Load "%s"') % self._path
                       )
         try:
             self._dic = pd.Dictionary(self._path)
         except:
-            sh.objs.mes ('ExtDic.load'
-                        ,_('WARNING')
+            sh.objs.mes (f,_('WARNING')
                         ,_('Failed to load "%s"!') % self._path
                         )
 
     def get(self,search):
+        f = 'page.ExtDic.get'
         result = ''
         if self._dic:
             try:
                 result = self._dic.get(k=search)
             except:
-                sh.objs.mes ('ExtDic.get'
-                            ,_('WARNING')
+                sh.objs.mes (f,_('WARNING')
                             ,_('Failed to parse "%s"!') % self._path
                             )
         else:
-            sh.log.append ('ExtDic.get'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         return result
 
 
@@ -93,6 +89,7 @@ class ExtDics:
         self.load()
 
     def get(self,lang='English',search=''):
+        f = 'page.ExtDics.get'
         if self.Success:
             dics = [dic for dic in self._dics if dic._lang == lang \
                     and not dic.Block
@@ -105,14 +102,12 @@ class ExtDics:
                     lst.append(p4 + dic._name + p8 + tmp)
             return '\n'.join(lst)
         else:
-            sh.log.append ('ExtDics.get'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
     def load(self):
+        f = 'page.ExtDics.load'
         if self.Success:
-            sg.objs.waitbox().reset (func_title = 'ExtDic.load'
+            sg.objs.waitbox().reset (func_title = f
                                     ,message    = _('Load offline dictionaries')
                                     )
             sg.objs._waitbox.show()
@@ -156,16 +151,12 @@ class ExtDics:
                 loaded
             '''
             self._dics = [x for x in self._dics if x._dic]
-            sh.log.append ('ExtDics.load'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('%d offline dictionaries have been loaded')\
                           % len(self._dics)
                           )
         else:
-            sh.log.append ('ExtDics.load'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
     def _list(self):
         if self._files:
@@ -196,6 +187,7 @@ class ExtDics:
             self._fr        = []
 
     def debug(self):
+        f = 'page.ExtDics.debug'
         message = 'English:\n'
         message += '\n'.join(self._en) + '\n\n'
         message += 'German:\n'
@@ -206,9 +198,8 @@ class ExtDics:
         message += '\n'.join(self._es) + '\n\n'
         message += 'Italian:\n'
         message += '\n'.join(self._it) + '\n\n'
-        sh.objs.mes (func    = 'ExtDics.debug'
-                    ,level   = _('INFO')
-                    ,message = message
+        sh.objs.mes (f,_('INFO')
+                    ,message
                     )
 
 
@@ -219,6 +210,7 @@ class Page:
                 ,search='~',url='',win_encoding='windows-1251'
                 ,ext_dics=[],file=None,timeout=6
                 ):
+        f = 'page.Page.__init__'
         self.values()
         self._source       = source
         self._lang         = lang
@@ -231,10 +223,7 @@ class Page:
         if not self._source or not self._lang or not self._search \
                             or not self._win_encoding:
             self.Success   = False
-            sh.log.append ('Page.__init__'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def values(self):
         self.Success   = True
@@ -324,7 +313,8 @@ class Page:
                              + sep_words_found + p7
                 self._page = self._page.replace(message_board,'')
 
-    def common_replace(self): # HTML specific
+    # HTML specific
+    def common_replace(self):
         self._page = self._page.replace('\r\n','')
         self._page = self._page.replace('\n','')
         self._page = self._page.replace('\xa0',' ')
@@ -342,70 +332,65 @@ class Page:
     '''
     # HTML specific
     def decode_entities(self):
+        f = 'page.Page.decode_entities'
         #todo: do we need to check this?
         if self._source in (_('All'),_('Online')):
             try:
                 self._page = html.unescape(self._page)
             except:
-                sh.objs.mes ('Page.decode_entities'
-                            ,_('ERROR')
+                sh.objs.mes (f,_('ERROR')
                             ,_('Unable to convert HTML entities to UTF-8!')
                             )
 
     def _get_online(self):
+        f = 'page.Page._get_online'
         Got = False
         while not self._page:
             try:
-                sh.log.append ('Page._get_online'
-                              ,_('INFO')
+                sh.log.append (f,_('INFO')
                               ,_('Get online: "%s"') % self._search
                               )
-                ''' Если загружать страницу с помощью
-                    "page=urllib.request.urlopen(my_url)", то в итоге
-                    получится HTTPResponse, что полезно только для
-                    удаления тэгов JavaScript. Поскольку мы вручную
-                    удаляем все лишние тэги, то на выходе нам нужна
-                    строка.
-                    Если задан пустой 'self._url', то получим сообщение
-                    об ошибке.
+                ''' If the page is loaded using
+                    "page=urllib.request.urlopen(my_url)", we get
+                    HTTPResponse as a result, which is useful only
+                    to remove JavaScript tags. Thus, if we remove all
+                    excessive tags manually, then we need a string
+                    as output.
+                    If 'self._url' is empty, then an error is thrown.
                 '''
                 self._page = urllib.request.urlopen (self._url
                                                     ,None
                                                     ,self._timeout
                                                     ).read()
-                sh.log.append ('Page._get_online'
-                              ,_('INFO')
+                sh.log.append (f,_('INFO')
                               ,_('[OK]: "%s"') % self._search
                               )
                 Got = True
             # Too many possible exceptions
             except:
-                sh.log.append ('Page._get_online'
-                              ,_('WARNING')
+                sh.log.append (f,_('WARNING')
                               ,_('[FAILED]: "%s"') % self._search
                               )
                 # For some reason, 'break' does not work here
-                if not sg.Message (func    = 'Page._get_online'
-                                  ,level   = _('QUESTION')
-                                  ,message = _('Unable to get the webpage. Check website accessibility.\n\nPress OK to try again.')
+                if not sg.Message (f,_('QUESTION')
+                                  ,_('Unable to get the webpage. Check website accessibility.\n\nPress OK to try again.')
                                   ).Yes:
                     self._page = 'CANCELED'
         if self._page == 'CANCELED':
             self._page = ''
-        ''' Если страница не загружена, то понятно, что ее кодировку
-            изменить не удастся
+        ''' If the page is not loaded, it is obvious that we cannot
+            change its encoding.
         '''
         if Got:
             try:
-                ''' Меняем кодировку sh.globs['var']['win_encoding'] на
-                    нормальную
+                ''' Replace sh.globs['var']['win_encoding'] with
+                    the UTF-8 encoding.
                 '''
                 self._html_raw = self._page \
                                = self._page.decode(self._win_encoding)
             except:
-                sh.objs.mes (func    = 'Page._get_online'
-                            ,level   = _('ERROR')
-                            ,message = _('Unable to change the web-page encoding!')
+                sh.objs.mes (f,_('ERROR')
+                            ,_('Unable to change the web-page encoding!')
                             )
 
     def _get_offline(self):
@@ -425,6 +410,7 @@ class Page:
             self._page = ''
 
     def get(self):
+        f = 'page.Page.get'
         if not self._page:
             if self._file:
                 read = sh.ReadTextFile(file=self._file)
@@ -453,8 +439,7 @@ class Page:
                         self._page = of.stardict (text   = self._page
                                                  ,header = self._search)
                 else:
-                    sh.objs.mes ('Page.get'
-                                ,_('ERROR')
+                    sh.objs.mes (f,_('ERROR')
                                 ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
                                 % (str(self._source),';'.join(sources))
                                 )
@@ -493,6 +478,7 @@ class Welcome:
                                   ).space_items()
 
     def online(self):
+        f = 'page.Welcome.online'
         ''' On *some* systems we can get urllib.error.URLError: 
             <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED].
             To get rid of this error, we use this small workaround.
@@ -500,8 +486,7 @@ class Welcome:
         if hasattr(ssl,'_create_unverified_context'):
             ssl._create_default_https_context = ssl._create_unverified_context
         else:
-            sh.log.append ('Welcome.online'
-                          ,_('WARNING')
+            sh.log.append (f,_('WARNING')
                           ,_('Unable to use unverified certificates!')
                           )
         try:
@@ -562,9 +547,10 @@ class Welcome:
 
 
 if __name__ == '__main__':
+    f = 'page.__main__'
     import logic as lg
     sg.objs.start()
-    timer = sh.Timer(func_title='Page')
+    timer = sh.Timer(func_title=f)
     timer.start()
     page = Page (source   = _('Online')
                 ,search   = 'preceding'

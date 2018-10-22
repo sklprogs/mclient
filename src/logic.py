@@ -76,6 +76,7 @@ class DefaultConfig:
         self._fconf  = ''
     
     def dics(self):
+        f = 'logic.DefaultConfig.dics'
         if self.Success:
             if not self._dics:
                 self._dics = self.ihome.add_config('dics')
@@ -86,18 +87,13 @@ class DefaultConfig:
                         self.Success = sh.Path(path=self._dics).create()
                 else:
                     self.Success = False
-                    sh.log.append ('DefaultConfig.dics'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
             return self._dics
         else:
-            sh.log.append ('DefaultConfig.dics'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def block(self):
+        f = 'logic.DefaultConfig.block'
         if self.Success:
             self._fblock = self.ihome.add_config('block.txt')
             if self._fblock:
@@ -111,17 +107,12 @@ class DefaultConfig:
                     self.Success = iwrite.Success
             else:
                 self.Success = False
-                sh.log.append ('DefaultConfig.block'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('DefaultConfig.block'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def prioritize(self):
+        f = 'logic.DefaultConfig.prioritize'
         if self.Success:
             if not self._fprior:
                 self._fprior = self.ihome.add_config('prioritize.txt')
@@ -136,18 +127,13 @@ class DefaultConfig:
                         self.Success = iwrite.Success
                 else:
                     self.Success = False
-                    sh.log.append ('DefaultConfig.prioritize'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
             return self._fprior
         else:
-            sh.log.append ('DefaultConfig.prioritize'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def abbr(self):
+        f = 'logic.DefaultConfig.abbr'
         if self.Success:
             if not self._fabbr:
                 self._fabbr  = sh.objs.pdir().add ('..','resources'
@@ -156,12 +142,10 @@ class DefaultConfig:
                 self.Success = sh.File(file=self._fabbr).Success
             return self._fabbr
         else:
-            sh.log.append ('DefaultConfig.abbr'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def default_config(self):
+        f = 'logic.DefaultConfig.default_config'
         if self.Success:
             if not self._fdconf:
                 self._fdconf = sh.objs.pdir().add ('..','resources'
@@ -170,12 +154,10 @@ class DefaultConfig:
                 self.Success = sh.File(file=self._fdconf).Success
             return self._fdconf
         else:
-            sh.log.append ('DefaultConfig.default_config'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def config(self):
+        f = 'logic.DefaultConfig.config'
         if self.Success:
             if not self._fconf:
                 self._fconf = self.ihome.add_config('mclient.cfg')
@@ -188,18 +170,13 @@ class DefaultConfig:
                                                ,dest = self._fconf
                                                ).copy()
                     else:
-                        sh.log.append ('DefaultConfig.config'
-                                      ,_('WARNING')
-                                      ,_('Operation has been canceled.')
-                                      )
+                        sh.com.cancel(f)
             return self._fconf
         else:
-            sh.log.append ('DefaultConfig.config'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def run(self):
+        f = 'logic.DefaultConfig.run'
         if self.Success:
             self.default_config()
             self.config()
@@ -208,10 +185,7 @@ class DefaultConfig:
             self.block()
             self.prioritize()
         else:
-            sh.log.append ('DefaultConfig.run'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
 
 
@@ -421,6 +395,7 @@ class CurRequest:
 class Lists:
 
     def __init__(self):
+        f = 'logic.Lists.__init__'
         self._blacklist  = objs.default()._fblock
         self._prioritize = objs._default._fprior
         self._abbr       = objs._default._fabbr
@@ -434,32 +409,25 @@ class Lists:
             self.Success = dic.Success
             return dic
         else:
-            sh.log.append ('Lists.abbr'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def blacklist(self):
+        f = 'logic.Lists.blacklist'
         if self.Success:
             text = sh.ReadTextFile(file=self._blacklist).get()
             text = sh.Text(text=text,Auto=1).text
             return text.splitlines()
         else:
-            sh.log.append ('Lists.blacklist'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
     def prioritize(self):
+        f = 'logic.Lists.prioritize'
         if self.Success:
             text = sh.ReadTextFile(file=self._prioritize).get()
             text = sh.Text(text=text,Auto=1).text
             return text.splitlines()
         else:
-            sh.log.append ('Lists.prioritize'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
 
 
@@ -510,6 +478,7 @@ class Order:
             self._prioritize.insert(ind,item)
     
     def prioritize_by(self,Down=False):
+        f = 'logic.Order.prioritize_by'
         if self.Success:
             if self._dic1 and self._dic2:
                 ''' - Multiple dictionary titles share same blocks
@@ -544,8 +513,7 @@ class Order:
                     else:
                         message = _('Mode: "%s"') \
                                   % _('Increase priority')
-                    sh.log.append ('Order.prioritize_by'
-                                  ,_('DEBUG')
+                    sh.log.append (f,_('DEBUG')
                                   ,message
                                   )
                     
@@ -565,8 +533,7 @@ class Order:
                     else:
                         Swap = ind1 > ind2
                     if Swap:
-                        sh.log.append ('Order.prioritize_by'
-                                      ,_('DEBUG')
+                        sh.log.append (f,_('DEBUG')
                                       ,_('Swap items: %d <-> %d; "%s" <-> "%s"') \
                                       % (ind1,ind2
                                         ,self._prioritize[ind1],self._prioritize[ind2]
@@ -596,40 +563,28 @@ class Order:
                     if lst:
                         self._prioritize = list(lst)
                     else:
-                        sh.log.append ('Order.prioritize_by'
-                                      ,_('WARNING')
-                                      ,_('Empty input is not allowed!')
-                                      )
+                        sh.com.empty(f)
                     
-                    sh.log.append ('Order.prioritize_by'
-                                  ,_('DEBUG')
+                    sh.log.append (f,_('DEBUG')
                                   ,'Dic1: ' + str(self._dic1)
                                   )
-                    sh.log.append ('Order.prioritize_by'
-                                  ,_('DEBUG')
+                    sh.log.append (f,_('DEBUG')
                                   ,'Dic2: ' + str(self._dic2)
                                   )
-                    sh.log.append ('Order.prioritize_by'
-                                  ,_('DEBUG')
+                    sh.log.append (f,_('DEBUG')
                                   ,str(self._prioritize)
                                   )
                 else:
-                    sh.objs.mes ('Order.prioritize_by'
-                                ,_('ERROR')
+                    sh.objs.mes (f,_('ERROR')
                                 ,_('Logic error!')
                                 )
             else:
-                sh.log.append ('Order.prioritize_by'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Order.prioritize_by'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
             
     def priority(self,search):
+        f = 'logic.Order.priority'
         if self.Success:
             lst = self.get_list(search)
             if lst:
@@ -645,22 +600,17 @@ class Order:
                 else:
                     return 0
             else:
-                sh.log.append ('Order.priority'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Order.priority'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
-    ''' A LM click on:
-        1) A blocked dictionary     - unblock
-        2) A common dictionary      - prioritize
-        3) A prioritized dictionary - increase priority
-    '''
     def lm_auto(self,dic1,dic2=''):
+        ''' A LM click on:
+            1) A blocked dictionary     - unblock
+            2) A common dictionary      - prioritize
+            3) A prioritized dictionary - increase priority
+        '''
+        f = 'logic.Order.lm_auto'
         if self.Success:
             self.set(dic1,dic2)
             if self.is_blocked(self._dic1):
@@ -674,18 +624,17 @@ class Order:
                 for item in self._dic1:
                     self.prioritize(item)
         else:
-            sh.log.append ('Order.lm_auto'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
-    ''' A RM click on:
-        1) A prioritized dictionary - decrease priority or unprioritize
-                                      (at minimal priority)
-        2) A blocked dictionary     - unblock
-        3) A common dictionary      - block
-    '''
     def rm_auto(self,dic1,dic2=''):
+        ''' A RM click on:
+            1) A prioritized dictionary - decrease priority or
+                                          unprioritize
+                                          (at minimal priority)
+            2) A blocked dictionary     - unblock
+            3) A common dictionary      - block
+        '''
+        f = 'logic.Order.rm_auto'
         if self.Success:
             self.set(dic1,dic2)
             if self.is_blocked(self._dic1):
@@ -707,52 +656,40 @@ class Order:
                 for item in self._dic1:
                     self.block(item)
         else:
-            sh.log.append ('Order.rm_auto'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def is_prioritized(self,lst):
+        f = 'logic.Order.is_prioritized'
         if self.Success:
             if lst:
                 for item in lst:
                     if item in self._prioritize:
                         return True
             else:
-                sh.log.append ('Order.is_prioritized'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Order.is_prioritized'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def is_blocked(self,lst):
+        f = 'logic.Order.is_blocked'
         if self.Success:
             if lst:
                 for item in lst:
                     if item in self._blacklist:
                         return True
             else:
-                sh.log.append ('Order.is_blocked'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Order.is_blocked'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
-    ''' Create new block and priority lists based on those that were
-        read from user files. Lists from user files may comprise either
-        dictionary abbreviations or full dictionary titles. New lists
-        will be lowercased and stripped and will comprise both
-        abbreviations and full titles.
-    '''
     def _conform(self):
+        f = 'logic.Order._conform'
+        ''' Create new block and priority lists based on those that were
+            read from user files. Lists from user files may comprise
+            either dictionary abbreviations or full dictionary titles.
+            New lists will be lowercased and stripped and will comprise
+            both abbreviations and full titles.
+        '''
         if self.Success:
             self._abbrs  = [item.lower().strip() \
                             for item in self.dic.orig
@@ -772,15 +709,9 @@ class Order:
                         self.block(pair[0])
                         self.block(pair[1])
                     else:
-                        sh.log.append ('Order._conform'
-                                      ,_('WARNING')
-                                      ,_('Empty input is not allowed!')
-                                      )
+                        sh.com.empty(f)
             else:
-                sh.log.append ('Order._conform'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
             if self._prioritize:
                 prioritize = list(self._prioritize)
                 self._prioritize = []
@@ -790,46 +721,33 @@ class Order:
                         self.prioritize(pair[0])
                         self.prioritize(pair[1])
                     else:
-                        sh.log.append ('Order._conform'
-                                      ,_('WARNING')
-                                      ,_('Empty input is not allowed!')
-                                      )
+                        sh.com.empty(f)
             else:
-                sh.log.append ('Order._conform'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Order._conform'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def _lists(self):
+        f = 'logic.Order._lists'
         if self.Success:
             self.lists       = Lists()
-            self._blacklist  = sh.Input (title = 'Order._lists'
+            self._blacklist  = sh.Input (title = f
                                         ,value = self.lists.blacklist()
                                         ).list()
-            self._prioritize = sh.Input (title = 'Order._lists'
+            self._prioritize = sh.Input (title = f
                                         ,value = self.lists.prioritize()
                                         ).list()
             self.Success     = self.lists.Success
         else:
-            sh.log.append ('Order._lists'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
         
     def _dic(self):
+        f = 'logic.Order._dic'
         if self.Success:
             self.dic     = self.lists.abbr()
             self.Success = self.dic.Success
         else:
-            sh.log.append ('Order._dic'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def values(self):
         self.Success     = True
@@ -843,6 +761,7 @@ class Order:
         self._dic2       = ''
             
     def sort_dic(self,lst):
+        f = 'logic.Order.sort_dic'
         if self.Success:
             if lst:
                 indexes = []
@@ -857,17 +776,12 @@ class Order:
                 lst = [item[1] for item in lst]
                 return lst
             else:
-                sh.log.append ('Order.sort_dic'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Order.sort_dic'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def set(self,dic1,dic2=''):
+        f = 'logic.Order.set'
         if self.Success:
             ''' This allows to return an empty value instead of the last
                 memory in case there is no previous/next dictionary.
@@ -878,53 +792,42 @@ class Order:
                 dic1 = self.sort_dic(dic1)
                 self._dic1 = list(dic1)
             else:
-                sh.log.append ('Order.set'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
             if dic2:
                 dic2 = self.get_list(dic2)
                 dic2 = self.sort_dic(dic2)
                 self._dic2 = list(dic2)
         else:
-            sh.log.append ('Order.set'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def title(self,abbr):
+        f = 'logic.Order.title'
         if self.Success:
             try:
                 ind = self._abbrs.index(abbr)
                 return self._titles[ind]
             except ValueError:
-                sh.log.append ('Order.title'
-                              ,_('WARNING')
+                sh.log.append (f,_('WARNING')
                               ,_('Wrong input data!')
                               )
         else:
-            sh.log.append ('Order.title'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
         
     def abbr(self,title):
+        f = 'logic.Order.abbr'
         if self.Success:
             try:
                 ind = self._titles.index(title)
                 return self._abbrs[ind]
             except ValueError:
-                sh.log.append ('Order.abbr'
-                              ,_('WARNING')
+                sh.log.append (f,_('WARNING')
                               ,_('Wrong input data!')
                               )
         else:
-            sh.log.append ('Order.abbr'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def get_pair(self,item):
+        f = 'logic.Order.get_pair'
         if self.Success:
             if item:
                 item = item.lower().strip()
@@ -936,25 +839,19 @@ class Order:
                     abbr  = item
                     title = self.title(abbr)
                 else:
-                    sh.log.append ('Order.get_pair'
-                                  ,_('WARNING')
+                    sh.log.append (f,_('WARNING')
                                   ,_('Unknown dictionary "%s"!') \
                                   % str(item)
                                   )
                     abbr = title = str(item)
                 return([abbr,title])
             else:
-                sh.log.append ('Order.get_pair'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Order.get_pair'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def get_list(self,search):
+        f = 'logic.Order.get_list'
         if self.Success:
             if search:
                 search = search.split(',')
@@ -966,15 +863,9 @@ class Order:
                 return lst
             # Prevents from None
             else:
-                sh.log.append ('Order.get_list'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Order.get_list'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def block(self,item):
         if self.Success:
@@ -982,38 +873,32 @@ class Order:
                 self._blacklist.append(item)
                           
     def unblock(self,item):
+        f = 'logic.Order.unblock'
         if self.Success:
             try:
                 self._blacklist.remove(item)
             except ValueError:
                 pass
         else:
-            sh.log.append ('Order.unblock'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
                           
     def prioritize(self,item):
+        f = 'logic.Order.prioritize'
         if self.Success:
             if not item in self._prioritize:
                 self._prioritize.append(item)
         else:
-            sh.log.append ('Order.prioritize'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def unprioritize(self,item):
+        f = 'logic.Order.unprioritize'
         if self.Success:
             try:
                 self._prioritize.remove(item)
             except ValueError:
                 pass
         else:
-            sh.log.append ('Order.unprioritize'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
 
 
@@ -1034,52 +919,45 @@ class Suggestion:
         self.Success = True
     
     def pair(self):
+        f = 'logic.Suggestion.pair'
         if self.Success:
             self._pair = self._pair.replace('M.exe?','ms.exe?').replace('m.exe?','ms.exe?')
         else:
-            sh.log.append ('Suggestion.pair'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def check(self):
+        f = 'logic.Suggestion.check'
         if self._search:
             if not isinstance(self._search,str):
                 self.Success = False
-                sh.log.append ('Suggestion.check'
-                              ,_('WARNING')
+                sh.log.append (f,_('WARNING')
                               ,_('Wrong input data: "%s"') \
                               % str(self._search)
                               )
         else:
             self.Success = False
-            sh.log.append ('Suggestion.check'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('Nothing to do!')
                           )
         if self._pair:
             if not self._pair in online_dic_urls:
                 self.Success = False
-                sh.log.append ('Suggestion.check'
-                              ,_('WARNING')
+                sh.log.append (f,_('WARNING')
                               ,_('Wrong input data: "%s"') \
                               % str(self._pair)
                               )
         else:
             self.Success = False
-            sh.log.append ('Suggestion.check'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         if not isinstance(self._limit,int):
             self.Success = False
-            sh.log.append ('Suggestion.check'
-                          ,_('WARNING')
+            sh.log.append (f,_('WARNING')
                           ,_('Wrong input data: "%s"') \
                           % str(self._limit)
                           )
     
     def url(self):
+        f = 'logic.Suggestion.url'
         if self.Success:
             if not self._url:
                 self._url = sh.Online (base_str   = self._pair
@@ -1087,12 +965,10 @@ class Suggestion:
                                       ).url()
             return self._url
         else:
-            sh.log.append ('Suggestion.url'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def get(self):
+        f = 'logic.Suggestion.get'
         if self.Success:
             if not self._items:
                 if self.url():
@@ -1109,20 +985,11 @@ class Suggestion:
                             self._items = self._items[0:self._limit]
                         return self._items
                     else:
-                        sh.log.append ('Suggestion.get'
-                                      ,_('WARNING')
-                                      ,_('Empty input is not allowed!')
-                                      )
+                        sh.com.empty(f)
                 else:
-                    sh.log.append ('Suggestion.get'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
         else:
-            sh.log.append ('Suggestion.get'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
 
 

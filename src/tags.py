@@ -259,10 +259,10 @@ class AnalyzeTag:
         if self._cur._type != 'invalid':
             self._elems.append(copy.copy(self._cur))
 
-    ''' Use custom split because we need to preserve delimeters (cannot
-        distinguish tags and contents otherwise)
-    '''
     def split(self):
+        ''' Use custom split because we need to preserve delimeters
+            (cannot distinguish tags and contents otherwise).
+        '''
         tmp = ''
         for sym in self._tag:
             if sym == '>':
@@ -293,6 +293,7 @@ class AnalyzeTag:
             self._cur._type = 'comment'
 
     def comment(self):
+        f = 'tags.AnalyzeTag.comment'
         ''' The tag has a different meaning in online and offline
             sources, so we must check the source first
         '''
@@ -307,8 +308,7 @@ class AnalyzeTag:
         elif self._source == _('Offline'):
             self._comment_sd()
         else:
-            sh.objs.mes ('AnalyzeTag.transc'
-                        ,_('ERROR')
+            sh.objs.mes (f,_('ERROR')
                         ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
                         % (str(self._source)
                           ,', '.join ((_('All')
@@ -320,12 +320,12 @@ class AnalyzeTag:
                         )
 
     def dic(self):
+        f = 'tags.AnalyzeTag.dic'
         if self._block.startswith(pdic):
             tmp = self._block.replace(pdic,'',1)
             tmp = re.sub('".*','',tmp)
             if tmp == '' or tmp == ' ':
-                sh.log.append ('AnalyzeTag.dic'
-                              ,_('WARNING')
+                sh.log.append (f,_('WARNING')
                               ,_('Wrong tag "%s"!') % tmp
                               )
             else:
@@ -389,6 +389,7 @@ class AnalyzeTag:
 
     # Transcription
     def transc(self):
+        f = 'tags.AnalyzeTag.transc'
         ''' '<tr>' has a different meaning in online and offline
             sources, so we must check the source first
         '''
@@ -400,8 +401,7 @@ class AnalyzeTag:
         elif self._source == _('Offline'):
             self._transc_sd()
         else:
-            sh.objs.mes ('AnalyzeTag.transc'
-                        ,_('ERROR')
+            sh.objs.mes (f,_('ERROR')
                         ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
                         % (str(self._source)
                           ,', '.join((_('All'),_('Online'),_('Offline')))
@@ -419,6 +419,7 @@ class AnalyzeTag:
                 self._elems.append(copy.copy(self._cur))
 
     def _transc_mt(self):
+        f = 'tags.AnalyzeTag._transc_mt'
         # Extract a phonetic sign (Multitran-only)
         if ptr1 in self._block:
             tmp = re.sub(r'\.gif.*','',self._block)
@@ -430,15 +431,11 @@ class AnalyzeTag:
                     self._cur._text = transc_final[ind]
                     self._elems.append(copy.copy(self._cur))
                 except ValueError:
-                    sh.log.append ('Tags._transc_mt'
-                                  ,_('WARNING')
+                    sh.log.append (f,_('WARNING')
                                   ,_('Wrong input data: "%s"') % tmp
                                   )
             else:
-                log.append ('Tags._transc_mt'
-                           ,_('WARNING')
-                           ,_('Empty input is not allowed!')
-                           )
+                sh.com.empty(f)
 
     def speech(self):
         if psp1 in self._block or psp2 in self._block:
@@ -486,14 +483,14 @@ class Tags:
         return self._tags
 
     def debug_tags(self):
+        f = 'tags.Tags.debug_tags'
         import sharedGUI as sg
         message = ''
         for i in range(len(self._tags)):
             message += '%d:%s\n' % (i,self._tags[i])
         '''
-        sh.objs.mes (func    = 'Tags.debug_tags'
-                    ,level   = _('INFO')
-                    ,message = message
+        sh.objs.mes (f,_('INFO')
+                    ,message
                     )
         '''
         words = sh.Words (text    = message
@@ -502,7 +499,7 @@ class Tags:
                          )
         words.sent_nos()
         sg.objs.txt(words=words).reset_data()
-        sg.objs._txt.title('Tags.debug_tags:')
+        sg.objs._txt.title(f)
         sg.objs._txt.insert(text=message)
         sg.objs._txt.show()
 
@@ -563,6 +560,7 @@ class Tags:
 
 
 if __name__ == '__main__':
+    f = 'tags.__main__'
     import page as pg
 
     # Modifiable
@@ -581,7 +579,7 @@ if __name__ == '__main__':
                    )
     page.run()
 
-    timer = sh.Timer(func_title='Page')
+    timer = sh.Timer(func_title=f)
     timer.start()
     tags = Tags (source = source
                 ,text   = page._page

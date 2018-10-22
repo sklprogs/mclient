@@ -298,10 +298,10 @@ class WebFrame:
         self.values()
         self.gui()
         
-    ''' Очистить строку поиска и вставить в нее заданный текст или
-        содержимое буфера обмена
-    '''
     def paste_search(self,event=None,text=None):
+        ''' Clear the search field and insert set text or
+            clipboard contents.
+        '''
         self.search_field.clear_text()
         if text:
             self.search_field.insert(text=text)
@@ -538,12 +538,12 @@ class WebFrame:
         # The scrollbar is set at the end for some reason
         self.canvas.widget.xview_moveto(0)
 
-    ''' Create buttons
-        Bindings are indicated here only to set hints. In order to set
-        bindings, use 'self.bindings'.
-    '''
     def draw_buttons(self):
-        # Кнопка для "чайников", заменяет Enter в search_field
+        ''' Create buttons
+            Bindings are indicated here only to set hints. In order to
+            set bindings, use 'self.bindings'.
+        '''
+        # A button for newbies, substitutes Enter in search_field
         self.btn_trns = sg.Button (parent   = self.fr_but
                                   ,text     = _('Translate')
                                   ,hint     = _('Translate')
@@ -551,7 +551,7 @@ class WebFrame:
                                   ,active   = self.icon_go_search
                                   )
 
-        # Кнопка очистки строки поиска
+        # A button to clear the search field
         self.btn_cler = sg.Button (parent   = self.fr_but
                                   ,text     = _('Clear')
                                   ,hint     = _('Clear search field')
@@ -559,28 +559,28 @@ class WebFrame:
                                   ,active   = self.icon_clear_search_field
                                   )
 
-        # Кнопка вставки
+        # A button to insert text into the search field
         self.btn_past = sg.Button (parent   = self.fr_but
                                   ,text     = _('Paste')
                                   ,hint     = _('Paste text from clipboard')
                                   ,inactive = self.icon_paste
                                   ,active   = self.icon_paste
                                   )
-        # Кнопка вставки текущего запроса
+        # A button to insert a current search
         self.btn_rep1 = sg.Button (parent   = self.fr_but
                                   ,text     = '!'
                                   ,hint     = _('Paste current request')
                                   ,inactive = self.icon_repeat_sign_off
                                   ,active   = self.icon_repeat_sign
                                   )
-        # Кнопка вставки предыдущего запроса
+        # A button to insert a previous search
         self.btn_rep2 = sg.Button (parent   = self.fr_but
                                   ,text     = '!!'
                                   ,hint     = _('Paste previous request')
                                   ,inactive = self.icon_repeat_sign2_off
                                   ,active   = self.icon_repeat_sign2
                                   )
-        # Кнопка для вставки спец. символов
+        # A button to insert special symbols
         self.btn_spec = sg.Button (parent   = self.fr_but
                                   ,text     = _('Symbols')
                                   ,hint     = _('Paste a special symbol')
@@ -588,7 +588,7 @@ class WebFrame:
                                   ,active   = self.icon_spec_symbol
                                   )
         self.men_srcs = sg.OptionMenu(parent=self.fr_but)
-        # Выпадающий список с вариантами направлений перевода
+        # A drop-down list with translation pairs
         self.men_pair = sg.OptionMenu(parent=self.fr_but)
         self.men_cols = sg.OptionMenu (parent  = self.fr_but
                                       ,items   = (1,2,3,4,5,6,7,8,9,10)
@@ -609,105 +609,105 @@ class WebFrame:
         # All items of the 'pairs' sequence are of the same length
         self.men_pair.widget.config(width=11)
         self.men_cols.widget.config(width=2)
-        # Кнопка настроек
+        # A settings button
         self.btn_sets = sg.Button (parent   = self.fr_but
                                   ,text     = _('Settings')
                                   ,hint     = _('Tune up view settings')
                                   ,inactive = self.icon_settings
                                   ,active   = self.icon_settings
                                   )
-        # Кнопка изменения вида статьи
+        # A button to change the article view
         self.btn_view = sg.Button (parent   = self.fr_but
                                   ,text     = _('Toggle view')
                                   ,hint     = _('Toggle the article view mode')
                                   ,inactive = self.icon_toggle_view_ver
                                   ,active   = self.icon_toggle_view_hor
                                   )
-        # Кнопка включения/отключения режима блокировки словарей
+        # A button to toggle dictionary blocking
         self.btn_blok = sg.Button (parent   = self.fr_but
                                   ,text     = _('Blacklist')
                                   ,hint     = _('Toggle the blacklist')
                                   ,inactive = self.icon_block_off
                                   ,active   = self.icon_block_on
                                   )
-        # Кнопка включения/отключения режима приоритезации словарей
+        # A button to toggle dictionary prioritization
         self.btn_prio = sg.Button (parent   = self.fr_but
                                   ,text     = _('Prioritize')
                                   ,hint     = _('Toggle prioritizing')
                                   ,inactive = self.icon_priority_off
                                   ,active   = self.icon_priority_on
                                   )
-        # Кнопка включения/отключения сортировки словарей по алфавиту
+        # A button to toggle dictionary alphabetization
         self.btn_alph = sg.Button (parent   = self.fr_but
                                   ,text     = _('Alphabetize')
                                   ,hint     = _('Toggle alphabetizing')
                                   ,inactive = self.icon_alphabet_off
                                   ,active   = self.icon_alphabet_on
                                   )
-        # Кнопка перехода на предыдущую статью
+        # A button to move to the previous article
         self.btn_prev = sg.Button (parent   = self.fr_but
                                   ,text     = '←'
                                   ,hint     = _('Go to the preceding article')
                                   ,inactive = self.icon_go_back_off
                                   ,active   = self.icon_go_back
                                   )
-        # Кнопка перехода на следующую статью
+        # A button to move to the next article
         self.btn_next = sg.Button (parent   = self.fr_but
                                   ,text     = '→'
                                   ,hint     = _('Go to the following article')
                                   ,inactive = self.icon_go_forward_off
                                   ,active   = self.icon_go_forward
                                   )
-        # Кнопка включения/отключения и очистки истории
+        # A button to toggle and clear history
         self.btn_hist = sg.Button (parent      = self.fr_but
                                   ,text        = _('History')
                                   ,inactive    = self.icon_toggle_history
                                   ,active      = self.icon_toggle_history
                                   ,hint_height = 80
                                   )
-        # Кнопка перезагрузки статьи
+        # A button to reload the article
         self.btn_reld = sg.Button (parent   = self.fr_but
                                   ,text     = _('Reload')
                                   ,hint     = _('Reload the article')
                                   ,inactive = self.icon_reload
                                   ,active   = self.icon_reload
                                   )
-        # Кнопка "Поиск в статье"
+        # A button to search within the article
         self.btn_srch = sg.Button (parent   = self.fr_but
                                   ,text     = _('Search')
                                   ,hint     = _('Find in the current article')
                                   ,inactive = self.icon_search_article
                                   ,active   = self.icon_search_article
                                   )
-        # Кнопка "Сохранить"
+        # A button to save the article
         self.btn_save = sg.Button (parent   = self.fr_but
                                   ,text     = _('Save')
                                   ,hint     = _('Save the current article')
                                   ,inactive = self.icon_save_article
                                   ,active   = self.icon_save_article
                                   )
-        # Кнопка "Открыть в браузере"
+        # A button to open the current article in a browser
         self.btn_brws = sg.Button (parent   = self.fr_but
                                   ,text     = _('Browse')
                                   ,hint     = _('Open the current article in a browser')
                                   ,inactive = self.icon_open_in_browser
                                   ,active   = self.icon_open_in_browser
                                   )
-        # Кнопка "Печать"
+        # A button to print the article
         self.btn_prnt = sg.Button (parent   = self.fr_but
                                   ,text     = _('Print')
                                   ,hint     = _('Create a print-ready preview')
                                   ,inactive = self.icon_print
                                   ,active   = self.icon_print
                                   )
-        # Кнопка толкования термина
+        # A button to define a term
         self.btn_expl = sg.Button (parent   = self.fr_but
                                   ,text     = _('Define')
                                   ,hint     = _('Define the current term')
                                   ,inactive = self.icon_define
                                   ,active   = self.icon_define
                                   )
-        # Кнопка "Перехват Ctrl-c-c"
+        # A button to toggle capturing Ctrl-c-c and Ctrl-Ins-Ins
         self.btn_clip = sg.Button (parent   = self.fr_but
                                   ,text     = _('Clipboard')
                                   ,hint     = _('Capture Ctrl-c-c and Ctrl-Ins-Ins')
@@ -715,14 +715,14 @@ class WebFrame:
                                   ,active   = self.icon_watch_clipboard_on
                                   ,fg       = 'red'
                                   )
-        # Кнопка "О программе"
+        # A button to show info about the program
         self.btn_abot = sg.Button (parent   = self.fr_but
                                   ,text     = _('About')
                                   ,hint     = _('View About')
                                   ,inactive = self.icon_show_about
                                   ,active   = self.icon_show_about
                                   )
-        # Кнопка выхода
+        # A button to quit the program
         self.btn_quit = sg.Button (parent   = self.fr_but
                                   ,text     = _('Quit')
                                   ,hint     = _('Quit the program')
@@ -783,10 +783,10 @@ class WebFrame:
         return self.widget.winfo_height()
 
     def width(self):
+        f = 'gui.WebFrame.width'
         sg.objs.root().widget.update_idletasks()
         '''
-        sh.log.append ('WebFrame.width'
-                      ,_('DEBUG')
+        sh.log.append (f,_('DEBUG')
                       ,_('Widget width: %s') % str(_width)
                       )
         '''
@@ -836,15 +836,15 @@ class WebFrame:
                 self.scroll_right()
             
     def scroll_left(self):
-        sh.log.append ('WebFrame.scroll_left'
-                      ,_('DEBUG')
+        f = 'gui.WebFrame.scroll_left'
+        sh.log.append (f,_('DEBUG')
                       ,_('Scroll by %d units to left') % self._shift
                       )
         self.canvas.widget.xview_scroll(-self._shift,'units')
         
     def scroll_right(self):
-        sh.log.append ('WebFrame.scroll_right'
-                      ,_('DEBUG')
+        f = 'gui.WebFrame.scroll_right'
+        sh.log.append (f,_('DEBUG')
                       ,_('Scroll by %d units to right') % self._shift
                       )
         self.canvas.widget.xview_scroll(self._shift,'units')
@@ -880,6 +880,7 @@ class Settings:
         self.Active      = False
 
     def update_col1(self):
+        f = 'gui.Settings.update_col1'
         if self.col1.choice != _('Do not set'):
             if self.col1.choice in self._allowed:
                 self._allowed.remove(self.col1.choice)
@@ -890,12 +891,12 @@ class Settings:
                 self.col1.set(self._allowed[0])
                 self._allowed.remove(self._allowed[0])
             else:
-                sg.Message (func    = 'Settings.update_col1'
-                           ,level   = _('ERROR')
-                           ,message = _('Empty input is not allowed!')
+                sg.Message (f,_('ERROR')
+                           ,_('Empty input is not allowed!')
                            )
 
     def update_col2(self):
+        f = 'gui.Settings.update_col2'
         if self.col2.choice != _('Do not set'):
             if self.col2.choice in self._allowed:
                 self._allowed.remove(self.col2.choice)
@@ -906,12 +907,12 @@ class Settings:
                 self.col2.set(self._allowed[0])
                 self._allowed.remove(self._allowed[0])
             else:
-                sg.Message (func    = 'Settings.update_col2'
-                           ,level   = _('ERROR')
-                           ,message = _('Empty input is not allowed!')
+                sg.Message (f,_('ERROR')
+                           ,_('Empty input is not allowed!')
                            )
 
     def update_col3(self):
+        f = 'gui.Settings.update_col3'
         if self.col3.choice != _('Do not set'):
             if self.col3.choice in self._allowed:
                 self._allowed.remove(self.col3.choice)
@@ -922,12 +923,12 @@ class Settings:
                 self.col3.set(self._allowed[0])
                 self._allowed.remove(self._allowed[0])
             else:
-                sg.Message (func    = 'Settings.update_col3'
-                           ,level   = _('ERROR')
-                           ,message = _('Empty input is not allowed!')
+                sg.Message (f,_('ERROR')
+                           ,_('Empty input is not allowed!')
                            )
 
     def update_col4(self):
+        f = 'gui.Settings.update_col4'
         if self.col4.choice != _('Do not set'):
             if self.col4.choice in self._allowed:
                 self._allowed.remove(self.col4.choice)
@@ -938,9 +939,8 @@ class Settings:
                 self.col4.set(self._allowed[0])
                 self._allowed.remove(self._allowed[0])
             else:
-                sg.Message (func    = 'Settings.update_col4'
-                           ,level   = _('ERROR')
-                           ,message = _('Empty input is not allowed!')
+                sg.Message (f,_('ERROR')
+                           ,_('Empty input is not allowed!')
                            )
 
     def update_sc(self,event=None):
@@ -968,6 +968,7 @@ class Settings:
             self.sc.set(_('Custom'))
 
     def update_by_sc(self,event=None):
+        f = 'gui.Settings.update_by_sc'
         if self.sc.choice == product:
             self.col1.set(_('Dictionaries'))
             self.col2.set(_('Word forms'))
@@ -991,12 +992,11 @@ class Settings:
         elif self.sc.choice == _('Custom'):
             pass
         else:
-            sg.Message (func    = 'Settings.update_by_sc'
-                       ,level   = _('ERROR')
-                       ,message = _('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                                  % (str(self.sc.choice)
-                                    ,', '.join(self._sc_items)
-                                    )
+            sg.Message (f,_('ERROR')
+                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".')\
+                       % (str(self.sc.choice)
+                         ,', '.join(self._sc_items)
+                         )
                        )
 
     def update_by_col1(self,event=None):
@@ -1113,15 +1113,15 @@ class Settings:
         self.icon()
 
     def block_settings(self,event=None):
-        sg.Message (func    = 'Settings.block_settings'
-                   ,level   = _('INFO')
-                   ,message = _('Not implemented yet!')
+        f = 'gui.Settings.block_settings'
+        sg.Message (f,_('INFO')
+                   ,_('Not implemented yet!')
                    )
 
     def priority_settings(self,event=None):
-        sg.Message (func    = 'Settings.priority_settings'
-                   ,level   = _('INFO')
-                   ,message = _('Not implemented yet!')
+        f = 'gui.Settings.priority_settings'
+        sg.Message (f,_('INFO')
+                   ,_('Not implemented yet!')
                    )
 
     def checkboxes(self):
@@ -1603,6 +1603,7 @@ class Settings:
                           )
     
     def update_sp1(self):
+        f = 'gui.Settings.update_sp1'
         if self.sp1.choice in self._sp_allowed:
             self._sp_allowed.remove(self.sp1.choice)
         elif _('Noun') in self._sp_allowed:
@@ -1612,12 +1613,12 @@ class Settings:
             self.sp1.set(self._sp_allowed[0])
             self._sp_allowed.remove(self._sp_allowed[0])
         else:
-            sg.Message (func    = 'Settings.update_sp1'
-                       ,level   = _('ERROR')
-                       ,message = _('Empty input is not allowed!')
+            sg.Message (f,_('ERROR')
+                       ,_('Empty input is not allowed!')
                        )
     
     def update_sp2(self):
+        f = 'gui.Settings.update_sp2'
         if self.sp2.choice in self._sp_allowed:
             self._sp_allowed.remove(self.sp2.choice)
         elif _('Verb') in self._sp_allowed:
@@ -1627,12 +1628,12 @@ class Settings:
             self.sp2.set(self._sp_allowed[0])
             self._sp_allowed.remove(self._sp_allowed[0])
         else:
-            sg.Message (func    = 'Settings.update_sp2'
-                       ,level   = _('ERROR')
-                       ,message = _('Empty input is not allowed!')
+            sg.Message (f,_('ERROR')
+                       ,_('Empty input is not allowed!')
                        )
                        
     def update_sp3(self):
+        f = 'gui.Settings.update_sp3'
         if self.sp3.choice in self._sp_allowed:
             self._sp_allowed.remove(self.sp3.choice)
         elif _('Adjective') in self._sp_allowed:
@@ -1642,12 +1643,12 @@ class Settings:
             self.sp3.set(self._sp_allowed[0])
             self._sp_allowed.remove(self._sp_allowed[0])
         else:
-            sg.Message (func    = 'Settings.update_sp3'
-                       ,level   = _('ERROR')
-                       ,message = _('Empty input is not allowed!')
+            sg.Message (f,_('ERROR')
+                       ,_('Empty input is not allowed!')
                        )
                        
     def update_sp4(self):
+        f = 'gui.Settings.update_sp4'
         if self.sp4.choice in self._sp_allowed:
             self._sp_allowed.remove(self.sp4.choice)
         elif _('Abbreviation') in self._sp_allowed:
@@ -1657,12 +1658,12 @@ class Settings:
             self.sp4.set(self._sp_allowed[0])
             self._sp_allowed.remove(self._sp_allowed[0])
         else:
-            sg.Message (func    = 'Settings.update_sp4'
-                       ,level   = _('ERROR')
-                       ,message = _('Empty input is not allowed!')
+            sg.Message (f,_('ERROR')
+                       ,_('Empty input is not allowed!')
                        )
                        
     def update_sp5(self):
+        f = 'gui.Settings.update_sp5'
         if self.sp5.choice in self._sp_allowed:
             self._sp_allowed.remove(self.sp5.choice)
         elif _('Adverb') in self._sp_allowed:
@@ -1672,12 +1673,12 @@ class Settings:
             self.sp5.set(self._sp_allowed[0])
             self._sp_allowed.remove(self._sp_allowed[0])
         else:
-            sg.Message (func    = 'Settings.update_sp5'
-                       ,level   = _('ERROR')
-                       ,message = _('Empty input is not allowed!')
+            sg.Message (f,_('ERROR')
+                       ,_('Empty input is not allowed!')
                        )
                        
     def update_sp6(self):
+        f = 'gui.Settings.update_sp6'
         if self.sp6.choice in self._sp_allowed:
             self._sp_allowed.remove(self.sp6.choice)
         elif _('Preposition') in self._sp_allowed:
@@ -1687,12 +1688,12 @@ class Settings:
             self.sp6.set(self._sp_allowed[0])
             self._sp_allowed.remove(self._sp_allowed[0])
         else:
-            sg.Message (func    = 'Settings.update_sp6'
-                       ,level   = _('ERROR')
-                       ,message = _('Empty input is not allowed!')
+            sg.Message (f,_('ERROR')
+                       ,_('Empty input is not allowed!')
                        )
                        
     def update_sp7(self):
+        f = 'gui.Settings.update_sp7'
         if self.sp7.choice in self._sp_allowed:
             self._sp_allowed.remove(self.sp7.choice)
         elif _('Pronoun') in self._sp_allowed:
@@ -1702,9 +1703,8 @@ class Settings:
             self.sp7.set(self._sp_allowed[0])
             self._sp_allowed.remove(self._sp_allowed[0])
         else:
-            sg.Message (func    = 'Settings.update_sp7'
-                       ,level   = _('ERROR')
-                       ,message = _('Empty input is not allowed!')
+            sg.Message (f,_('ERROR')
+                       ,_('Empty input is not allowed!')
                        )
 
 

@@ -66,7 +66,12 @@ class Block:
     - We fill 'terma' from the end in order to ensure that 'terma' is
       also filled for blocks having '_same == 0'
     - When filling 'terma' from the start to the end, in order to set
-      a default 'terma' value, we also search for blocks of the 'phrase' type (just to be safe in such cases when 'phrase' blocks anticipate 'term' blocks). However, we fill 'terma' for 'phrase' blocks from the end to the start because we want the 'phrase' dictionary to have the 'terma' value of the first 'phrase' block AFTER it
+      a default 'terma' value, we also search for blocks of the 'phrase'
+      type (just to be safe in such cases when 'phrase' blocks
+      anticipate 'term' blocks). However, we fill 'terma' for 'phrase'
+      blocks from the end to the start because we want the 'phrase'
+      dictionary to have the 'terma' value of the first 'phrase' block
+      AFTER it
     - Finally, we clear TERMA values for fixed columns. Sqlite sorts ''
       before a non-empty string, so we ensure thereby that sorting by
       TERMA will be correct. Otherwise, we would have to correctly
@@ -77,6 +82,7 @@ class Block:
 class Elems:
     
     def __init__(self,blocks,articleid,abbr):
+        f = 'elems.Elems.__init__'
         self._data      = []
         self._dic_urls  = {}
         self._blocks    = blocks
@@ -86,13 +92,11 @@ class Elems:
             self.Success = True
         else:
             self.Success = False
-            sh.log.append ('Elems.__init__'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         
     # Takes ~0,26s for 'set' on AMD E-300.
     def expand_dica(self):
+        f = 'elems.Elems.expand_dica'
         if self.abbr:
             if self.abbr.Success:
                 for block in self._blocks:
@@ -106,17 +110,12 @@ class Elems:
                             pass
                     block._dicaf = ', '.join(lst)
             else:
-                sh.log.append ('Elems.expand_dica'
-                              ,_('WARNING')
-                              ,_('Operation has been canceled.')
-                              )
+                sh.com.cancel(f)
         else:
-            sh.log.append ('Elems.expand_dica'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
 
     def run(self):
+        f = 'elems.Elems.run'
         if self.Success:
             self.transc           ()
             self.phrases          ()
@@ -143,10 +142,7 @@ class Elems:
             self.restore_dic_urls ()
             self.dump             ()
         else:
-            sh.log.append ('Elems.run'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
         print('\nElems.debug (Non-DB blocks):')
@@ -167,11 +163,11 @@ class Elems:
                  ,MaxRows = MaxRows
                  ).print()
         
-    ''' 'speech' blocks have '_same = 1' when analyzing MT because they
-        are within a single tag. We fix it here, not in Tags, because
-        Tags are assumed to output the result 'as is'.
-    '''
     def speech(self):
+        ''' 'speech' blocks have '_same = 1' when analyzing MT because
+            they are within a single tag. We fix it here, not in Tags,
+            because Tags are assumed to output the result 'as is'.
+        '''
         for i in range(len(self._blocks)):
             if self._blocks[i]._type == 'speech':
                 self._blocks[i]._same = 0
@@ -237,14 +233,14 @@ class Elems:
                 i -= 1
             i += 1
             
-    ''' In articles that are entirely related to the Phrases section,
-        full dictionary titles are entirely replaced by dictionary
-        abbreviations, so we treat the latter as the former.
-        Do this before setting a phrase dic.
-        #todo: make this Multitran-only
-        #todo: expand these abbreviations
-    '''
     def dic_abbr_phrases(self):
+        ''' In articles that are entirely related to the Phrases
+            section, full dictionary titles are entirely replaced by
+            dictionary abbreviations, so we treat the latter as
+            the former.
+            Do this before setting a phrase dic.
+            #todo: make this Multitran-only
+        '''
         Dics = False
         for block in self._blocks:
             if block._type == 'dic':
@@ -294,7 +290,8 @@ class Elems:
                             self._blocks[i+1]._same = 0
             i += 1
             
-    ''' Sometimes sources do not provide sufficient information on
+    def comment_same(self):
+        ''' Sometimes sources do not provide sufficient information on
         SAMECELL blocks, and the tag parser cannot handle sequences such
         as 'any type (not _same) -> comment (not _same) -> any type (not
         _same)'.
@@ -332,8 +329,7 @@ class Elems:
                 =>
             'any type (not same) -> comment (_same) -> any type
             (not _same)'
-    '''
-    def comment_same(self):
+        '''
         for i in range(len(self._blocks)):
             cond1  = i > 0 and self._blocks[i]._type == 'correction'
             cond2  = self._blocks[i]._same <= 0
@@ -575,11 +571,12 @@ class Elems:
             else:
                 block._select = 0
     
-    ''' URLs assigned to dictionary titles in Multitran actually lead to
-        a page where word forms are given. Dictionary abbreviations that
-        are further deleted have URLs that we need.
-    '''
     def dic_urls(self):
+        ''' URLs assigned to dictionary titles in Multitran actually
+            lead to a page where word forms are given. Dictionary
+            abbreviations that are further deleted have URLs that we
+            need.
+        '''
         url = ''
         i = len(self._blocks) - 1
         while i >= 0:
@@ -602,6 +599,7 @@ class Elems:
 class PhraseTerma:
     
     def __init__(self,dbc,articleid):
+        f = 'elems.PhraseTerma.__init__'
         self.dbc        = dbc
         self._articleid = articleid
         self._no1       = -1
@@ -610,12 +608,10 @@ class PhraseTerma:
             self.Success = True
         else:
             self.Success = False
-            sh.log.append ('PhraseTerma.__init__'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
             
     def second_phrase(self):
+        f = 'elems.PhraseTerma.second_phrase'
         if self._no2 < 0:
             self.dbc.execute ('select NO from BLOCKS \
                                where ARTICLEID = ? and TYPE = ? \
@@ -624,13 +620,13 @@ class PhraseTerma:
             result = self.dbc.fetchone()
             if result:
                 self._no2 = result[0]
-            sh.log.append ('PhraseTerma.second_phrase'
-                          ,_('DEBUG')
+            sh.log.append (f,_('DEBUG')
                           ,str(self._no2)
                           )
         return self._no2
         
     def phrase_dic(self):
+        f = 'elems.PhraseTerma.phrase_dic'
         if self._no1 < 0:
             if self._no2 >= 0:
                 self.dbc.execute ('select NO from BLOCKS \
@@ -645,21 +641,19 @@ class PhraseTerma:
                                        where NO = ?',(self._no1,)
                                      )
             else:
-                sh.log.append ('PhraseTerma.phrase_dic'
-                              ,_('WARNING')
+                sh.log.append (f,_('WARNING')
                               ,_('Wrong input data!')
                               )
-            sh.log.append ('PhraseTerma.phrase_dic'
-                          ,_('DEBUG')
+            sh.log.append (f,_('DEBUG')
                           ,str(self._no1)
                           )
         return self._no1
         
     def dump(self):
+        f = 'elems.PhraseTerma.dump'
         # Autoincrement starts with 1 in sqlite
         if self._no1 > 0 and self._no2 > 0:
-            sh.log.append ('PhraseTerma.dump'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('Update DB, range %d-%d') \
                           % (self._no1,self._no2)
                           )
@@ -667,21 +661,18 @@ class PhraseTerma:
                                and NO < ?',('',self._no1,self._no2,)
                              )
         else:
-            sh.log.append ('PhraseTerma.dump'
-                          ,_('WARNING')
+            sh.log.append (f,_('WARNING')
                           ,_('Wrong input data!')
                           )
         
     def run(self):
+        f = 'elems.PhraseTerma.run'
         if self.Success:
             self.second_phrase()
             self.phrase_dic   ()
             self.dump         ()
         else:
-            sh.log.append ('PhraseTerma.run'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
 
 

@@ -46,11 +46,11 @@ class Stardict1:
         
     #todo: do this before anything else
     def decode(self):
+        f = 'offline.Stardict1.decode'
         try:
             self.text = html.unescape(self.text)
         except:
-            sh.objs.mes ('Stardict1.decode'
-                        ,_('ERROR')
+            sh.objs.mes (f,_('ERROR')
                         ,_('Unable to convert HTML entities to UTF-8!')
                         )
     
@@ -85,10 +85,11 @@ class Stardict1:
         self.swap_dics()
         return '\n'.join(self.tags())
         
-    ''' Stripping blocks can be necessary after splitting ';'
-        Allow empty blocks because wrong types can be assigned otherwise
-    '''
     def strip(self):
+        ''' Stripping blocks can be necessary after splitting ';'
+            Allow empty blocks because wrong types can be assigned
+            otherwise.
+        '''
         self._blocks = [block.strip() for block in self._blocks]
 
     def split(self):
@@ -261,11 +262,11 @@ class Stardict2:
     
     #todo: do this before anything else
     def decode(self):
+        f = 'offline.Stardict2.decode'
         try:
             self.text = html.unescape(self.text)
         except:
-            sh.objs.mes ('Stardict2.decode'
-                        ,_('ERROR')
+            sh.objs.mes (f,_('ERROR')
                         ,_('Unable to convert HTML entities to UTF-8!')
                         )
     
@@ -368,21 +369,19 @@ class Stardict3:
 
 #todo: combine shared operations for all Stardict classes
 def stardict(text,header='~'):
+    f = 'offline.stardict'
     if '<dtrn>' in text:
-        sh.log.append ('stardict'
-                      ,_('DEBUG')
+        sh.log.append (f,_('DEBUG')
                       ,_('Type 3')
                       )
         return Stardict3(text=text).run()
     elif '_Ex:' in text or re.search('\d\>',text):
-        sh.log.append ('stardict'
-                      ,_('DEBUG')
+        sh.log.append (f,_('DEBUG')
                       ,_('Type 2')
                       )
         return Stardict2(text=text,header=header).run()
     else:
-        sh.log.append ('stardict'
-                      ,_('DEBUG')
+        sh.log.append (f,_('DEBUG')
                       ,_('Type 1')
                       )
         return Stardict1(text=text,header=header).run()

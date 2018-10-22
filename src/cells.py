@@ -53,6 +53,7 @@ class BlockPrioritize:
     def __init__(self,data,order,Block=False
                 ,Prioritize=False,phrase_dic=None
                 ):
+        f = 'cells.BlockPrioritize.__init__'
         self._blocks     = []
         self._query      = ''
         self.order       = order
@@ -64,22 +65,17 @@ class BlockPrioritize:
             self.Success = True
         else:
             self.Success = False
-            sh.log.append ('BlockPrioritize.__init__'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def run(self):
+        f = 'cells.BlockPrioritize.run'
         if self.Success:
             self.assign    ()
             self.block     ()
             self.prioritize()
             self.dump      ()
         else:
-            sh.log.append ('BlockPrioritize.run'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def assign(self):
         for item in self._data:
@@ -104,6 +100,7 @@ class BlockPrioritize:
                 block._block = 0
             
     def prioritize(self):
+        f = 'cells.BlockPrioritize.prioritize'
         if self.order.Success:
             for block in self._blocks:
                 if block._dica:
@@ -119,10 +116,7 @@ class BlockPrioritize:
                     elif self.Prioritize:
                         block._priority = self.order.priority(search=block._dica)
         else:
-            sh.log.append ('BlockPrioritize.prioritize'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
     def dump(self):
         tmp = io.StringIO()
@@ -178,6 +172,7 @@ class Cells:
                  ,phrase_dic=None,Reverse=False
                  ,ExpandSpeech=False
                  ):
+        f = 'cells.Cells.__init__'
         # Sqlite fetch
         self._data        = data
         self._cols        = cols
@@ -190,10 +185,7 @@ class Cells:
             self.Success  = True
         else:
             self.Success  = False
-            sh.log.append ('Cells.__init__'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         
     ''' The 'Phrases' section comes the latest in MT, therefore,
         it inherits fixed columns of the preceding dictionary which are
@@ -245,6 +237,7 @@ class Cells:
                 block.j -= len(self._cols)
     
     def run(self):
+        f = 'cells.Cells.run'
         if self.Success:
             self.assign       ()
             self.restore_fixed()
@@ -257,10 +250,7 @@ class Cells:
             self.sort_cells   ()
             self.cell_no      ()
         else:
-            sh.log.append ('Cells.run'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
         
     def assign(self):
         for item in self._data:
@@ -397,6 +387,7 @@ class Cells:
                               )
     
     def phrases2end(self):
+        f = 'cells.Cells.phrases2end'
         if self._phrase_dic:
             phrases = [block for block in self._blocks \
                        if block._dica == self._phrase_dic]
@@ -404,10 +395,7 @@ class Cells:
                             if block._dica != self._phrase_dic]
             self._blocks = self._blocks + phrases
         else:
-            sh.log.append ('Cells.phrases2end'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def cell_no(self):
         no = 0
@@ -480,6 +468,7 @@ class Cells:
 class Pos:
     
     def __init__(self,data,raw_text):
+        f = 'cells.Pos.__init__'
         self._blocks   = []
         self._query    = ''
         # Sqlite fetch
@@ -490,21 +479,16 @@ class Pos:
             self.Success = True
         else:
             self.Success = False
-            sh.log.append ('Pos.__init__'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         
     def run(self):
+        f = 'cells.Pos.run'
         if self.Success:
             self.assign   ()
             self.gen_poses()
             self.dump     ()
         else:
-            sh.log.append ('Pos.run'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
         
     def assign(self):
         for item in self._data:
@@ -540,22 +524,24 @@ class Pos:
                  ,MaxRows = MaxRows
                  ).print()
     
-    ''' We generate positions here according to the text produced by 
-        TkinterHtml's 'widget.text()' command.
-        Peculiarities of the retrieved text:
-        - TkinterHtml adds some empty lines from the top and the bottom;
-          the number of these lines varies each time (and we don't know
-          the rule according to which they are generated)
-        - Each cell occupies a single line
-        - Blocks within a cell are spaced with a single space (except
-          for the blocks having such text as '(')
-        - Each line is stripped
-        - Pos2 of the previous cell and pos1 of the next cell are
-          sometimes equal; this corresponds to the position system
-          used by Tkinter
-        - Duplicate spaces are removed
-    '''
     def gen_poses(self):
+        f = 'cells.Pos.gen_poses'
+        ''' We generate positions here according to the text produced by 
+            TkinterHtml's 'widget.text()' command.
+            Peculiarities of the retrieved text:
+            - TkinterHtml adds some empty lines from the top and
+              the bottom;
+            - The number of these lines varies each time (and we don't
+              know the rule according to which they are generated)
+            - Each cell occupies a single line
+            - Blocks within a cell are spaced with a single space
+              (except for the blocks having such text as '(')
+            - Each line is stripped
+            - Pos2 of the previous cell and pos1 of the next cell are
+              sometimes equal; this corresponds to the position system
+              used by Tkinter
+            - Duplicate spaces are removed
+        '''
         last = 0
         for block in self._blocks:
             text = sh.Text(text=block._text.strip()).delete_duplicate_spaces()
@@ -564,14 +550,13 @@ class Pos:
                                    ,search = text
                                    )
                 search.i = last
-                result = sh.Input (title = 'Pos.gen_poses'
+                result = sh.Input (title = f
                                   ,value = search.next()
                                   ).integer()
                 if result >= last:
                     block._first = result
                 else:
-                    sh.objs.mes ('Pos.gen_poses'
-                                ,_('ERROR')
+                    sh.objs.mes (f,_('ERROR')
                                 ,_('Unable to find "%s"!') % str(text)
                                 )
                     block._first = last
@@ -610,6 +595,7 @@ class Pos:
 class Pages:
     
     def __init__(self,obj,blocks):
+        f = 'cells.Pages.__init__'
         self.obj     = obj
         self._blocks = blocks
         self._query  = ''
@@ -619,12 +605,10 @@ class Pages:
             self.widget = self.obj.widget
         else:
             self.Success = False
-            sh.log.append ('Pages.__init__'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         
     def create_index(self):
+        f = 'cells.Pages.create_index'
         tmp = io.StringIO()
         tmp.write('begin;')
         for block in self._blocks:
@@ -649,34 +633,26 @@ class Pages:
                                  )
                               )
                 else:
-                    sh.log.append ('Pages.create_index'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
             else:
-                sh.log.append ('Pages.create_index'
-                              ,_('WARNING')
-                              ,_('Empty input is not allowed!')
-                              )
+                sh.com.empty(f)
         tmp.write('commit;')
         self._query = tmp.getvalue()
         tmp.close()
         return self._query
             
     def debug(self):
-        sh.objs.mes ('Pages.debug'
-                    ,_('INFO')
+        f = 'cells.Pages.debug'
+        sh.objs.mes (f,_('INFO')
                     ,self._query.replace(';',';\n')
                     )
     
     def run(self):
+        f = 'cells.Pages.run'
         if self.Success:
             self.create_index()
         else:
-            sh.log.append ('Pages.run'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
 
 
