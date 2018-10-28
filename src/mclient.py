@@ -1857,7 +1857,8 @@ class WebFrame:
         fixed = [col for col in lg.objs.request()._cols \
                  if col != _('Do not set')
                 ]
-        lg.objs._request._collimit = self.gui.men_cols.choice + len(fixed)
+        lg.objs._request._collimit = int(self.gui.men_cols.choice) \
+                                   + len(fixed)
         objs.blocks_db().delete_bookmarks()
         self.load_article()
 
