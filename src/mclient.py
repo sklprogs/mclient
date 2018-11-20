@@ -22,7 +22,7 @@ gettext.install('mclient','../resources/locale')
 
 
 product = 'MClient'
-version = '5.11.1'
+version = '5.12'
 
 
 if __name__ == '__main__':
