@@ -23,10 +23,6 @@ if [ ! -d "$tkhtmldir" ]; then
     echo "Folder $tkhtmldir does not exist!"; exit
 fi
 
-if [ ! -d "$tkhtmldir" ]; then
-    echo "Folder $tkhtmldir does not exist!"; exit
-fi
-
 if [ ! -d "$binariesdir/$product" ]; then
     echo "Folder $binariesdir/$product does not exist!"; exit
 fi
