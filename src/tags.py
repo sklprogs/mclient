@@ -293,7 +293,7 @@ class AnalyzeTag:
             self._cur._type = 'comment'
 
     def comment(self):
-        f = 'tags.AnalyzeTag.comment'
+        f = '[MClient] tags.AnalyzeTag.comment'
         ''' The tag has a different meaning in online and offline
             sources, so we must check the source first
         '''
@@ -320,7 +320,7 @@ class AnalyzeTag:
                         )
 
     def dic(self):
-        f = 'tags.AnalyzeTag.dic'
+        f = '[MClient] tags.AnalyzeTag.dic'
         if self._block.startswith(pdic):
             tmp = self._block.replace(pdic,'',1)
             tmp = re.sub('".*','',tmp)
@@ -389,7 +389,7 @@ class AnalyzeTag:
 
     # Transcription
     def transc(self):
-        f = 'tags.AnalyzeTag.transc'
+        f = '[MClient] tags.AnalyzeTag.transc'
         ''' '<tr>' has a different meaning in online and offline
             sources, so we must check the source first
         '''
@@ -419,7 +419,7 @@ class AnalyzeTag:
                 self._elems.append(copy.copy(self._cur))
 
     def _transc_mt(self):
-        f = 'tags.AnalyzeTag._transc_mt'
+        f = '[MClient] tags.AnalyzeTag._transc_mt'
         # Extract a phonetic sign (Multitran-only)
         if ptr1 in self._block:
             tmp = re.sub(r'\.gif.*','',self._block)
@@ -483,7 +483,7 @@ class Tags:
         return self._tags
 
     def debug_tags(self):
-        f = 'tags.Tags.debug_tags'
+        f = '[MClient] tags.Tags.debug_tags'
         import sharedGUI as sg
         message = ''
         for i in range(len(self._tags)):
@@ -560,7 +560,7 @@ class Tags:
 
 
 if __name__ == '__main__':
-    f = 'tags.__main__'
+    f = '[MClient] tags.__main__'
     import page as pg
 
     # Modifiable

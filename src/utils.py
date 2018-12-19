@@ -3,11 +3,12 @@
 
 import os
 import html
-import shared as sh
+import shared    as sh
+import sharedGUI as sg
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
-gettext.install('shared','../resources/locale')
+gettext.install('mclient','../resources/locale')
 
 
 class Topics:
@@ -27,23 +28,19 @@ class Topics:
         self.tags()
         
     def get_html(self):
+        f = '[MClient] utils.Topics.get_html'
         if self.Success:
             self._html = sh.Get (url      = self._url
                                 ,encoding = 'windows-1251'
                                 ).run()
             if not self._html:
                 self.Success = False
-                sh.log.append ('Topics.get_html'
-                              ,_('WARNING')
-                              ,_('Empty output is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Topics.get_html'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
                           
     def tags(self):
+        f = '[MClient] utils.Topics.tags'
         if self.Success:
             tags = Tags (text   = self._html
                         ,search = '<a href="m.exe?a='
@@ -64,29 +61,23 @@ class Topics:
                     else:
                         #todo: Should we toggle 'self.Success' here?
                         #self.Success = False
-                        sh.objs.mes ('Topics.tags'
-                                    ,_('WARNING')
+                        sh.objs.mes (f,_('WARNING')
                                     ,_('The condition "%s" is not observed!') \
                                     % '%d == %d' % (len(abbr._titles)
                                                    ,len(abbr._abbrs)
                                                    )
                                     )
             else:
-                sh.log.append ('Topics.tags'
-                              ,_('WARNING')
-                              ,_('Operation has been canceled.')
-                              )
+                sh.com.cancel(f)
         else:
-            sh.log.append ('Topics.tags'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
 
 
 class Abbr:
     
     def __init__(self,url,title):
+        f = '[MClient] utils.Abbr.__init__'
         self.values()
         self._url   = url
         self._title = title
@@ -94,12 +85,10 @@ class Abbr:
             self.Success = True
         else:
             self.Success = False
-            sh.log.append ('Abbr.__init__'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
                           
     def debug(self):
+        f = '[MClient] utils.Abbr.debug'
         if self.Success:
             text = ''
             for i in range(len(self._abbrs)):
@@ -108,10 +97,7 @@ class Abbr:
                                              )
             return text
         else:
-            sh.log.append ('Abbr.debug'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def values(self):
         self._html   = ''
@@ -121,40 +107,31 @@ class Abbr:
         self._abbrs  = []
                           
     def get(self):
+        f = '[MClient] utils.Abbr.get'
         if self.Success:
             self._html = sh.Get (url      = self._url
                                 ,encoding = 'windows-1251'
                                 ).run()
             if not self._html:
                 self.Success = False
-                sh.log.append ('Abbr.get'
-                              ,_('WARNING')
-                              ,_('Empty output is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Abbr.get'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def get2(self):
+        f = '[MClient] utils.Abbr.get2'
         if self.Success:
             self._html2 = sh.Get (url      = self._url2
                                  ,encoding = 'windows-1251'
                                  ).run()
             if not self._html2:
                 self.Success = False
-                sh.log.append ('Abbr.get2'
-                              ,_('WARNING')
-                              ,_('Empty output is not allowed!')
-                              )
+                sh.com.empty(f)
         else:
-            sh.log.append ('Abbr.get2'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def tags(self):
+        f = '[MClient] utils.Abbr.tags'
         if self.Success:
             tags = Tags (text   = self._html
                         ,search = '<a href="m.exe?t='
@@ -174,22 +151,14 @@ class Abbr:
                     '''
                     self._url2 = self._url2.replace('\t','')
                 else:
-                    sh.log.append ('Abbr.tags'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
             else:
-                sh.log.append ('Abbr.tags'
-                              ,_('WARNING')
-                              ,_('Operation has been canceled.')
-                              )
+                sh.com.cancel(f)
         else:
-            sh.log.append ('Abbr.tags'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def tags2(self):
+        f = '[MClient] utils.Abbr.tags2'
         if self.Success:
             ''' Replace this so that 'Tags' would not treat this as
                 a new tag.
@@ -204,17 +173,12 @@ class Abbr:
                 self._titles = tags._urls
                 self._abbrs  = tags._titles
             else:
-                sh.log.append ('Abbr.tags2'
-                              ,_('WARNING')
-                              ,_('Operation has been canceled.')
-                              )
+                sh.com.cancel(f)
         else:
-            sh.log.append ('Abbr.tags2'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def titles(self):
+        f = '[MClient] utils.Abbr.titles'
         if self.Success:
             for i in range(len(self._titles)):
                 if self._titles[i]:
@@ -222,32 +186,24 @@ class Abbr:
                     pos = sh.Search (text   = self._titles[i]
                                     ,search = '" href'
                                     ).next()
-                    pos = sh.Input (title = 'Abbr.titles'
+                    pos = sh.Input (title = f
                                    ,value = pos
                                    ).integer()
                     self._titles[i] = self._titles[i][:pos]
                     self._titles[i] = self._titles[i].strip()
                 else:
-                    sh.log.append ('Abbr.titles'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
         else:
-            sh.log.append ('Abbr.titles'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def abbrs(self):
+        f = '[MClient] utils.Abbr.abbrs'
         if self.Success:
             for i in range(len(self._abbrs)):
                 self._abbrs[i] = self._abbrs[i].replace('<i>','').replace('</i>','')
                 self._abbrs[i] = self._abbrs[i].strip()
         else:
-            sh.log.append ('Abbr.abbrs'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def run(self):
         self.get()
@@ -262,15 +218,13 @@ class Abbr:
 class Tags:
     
     def __init__(self,text,search='<a href="m.exe?a='):
+        f = '[MClient] utils.Tags.__init__'
         self.values()
         self.text   = text
         self.search = search
         if not self.text:
             self.Success = False
-            sh.log.append ('Tags.__init__'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         
     def values(self):
         self.Success = True
@@ -281,6 +235,7 @@ class Tags:
         self._end    = []
         
     def equalize(self):
+        f = '[MClient] utils.Tags.equalize'
         if self.Success:
             if len(self._end) > len(self._start):
                 tmp = []
@@ -290,17 +245,14 @@ class Tags:
                     tmp.append(self._end[i])
                 self._end = tmp
             else:
-                sh.log.append ('Tags.equalize'
-                              ,_('INFO')
+                sh.log.append (f,_('INFO')
                               ,_('Nothing to do!')
                               )
         else:
-            sh.log.append ('Tags.equalize'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def split(self):
+        f = '[MClient] utils.Tags.split'
         if self.Success:
             self._start = sh.Search (text   = self.text
                                     ,search = self.search
@@ -314,20 +266,17 @@ class Tags:
                     self._tags.append(self.text[self._start[i]:self._end[i]])
             else:
                 self.Success = False
-                sh.objs.mes ('Tags.split'
-                            ,_('WARNING')
+                sh.objs.mes (f,_('WARNING')
                             ,_('The condition "%s" is not observed!') \
                             % '%d == %d' % (len(self._start)
                                            ,len(self._end)
                                            )
                             )
         else:
-            sh.log.append ('Tags.split'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
                           
     def trash_urls(self):
+        f = '[MClient] utils.Tags.trash_urls'
         if self.Success:
             for i in range(len(self._urls)):
                 if self._urls[i]:
@@ -335,33 +284,25 @@ class Tags:
                     if self._urls[i].endswith('"'):
                         self._urls[i] = self._urls[i][:-1]
                     else:
-                        sh.log.append ('Tags.trash_urls'
-                                      ,_('WARNING')
+                        sh.log.append (f,_('WARNING')
                                       ,_('Wrong input data: "%s"!') \
                                       % str(self._urls[i])
                                       )
                 else:
-                    sh.log.append ('Tags.trash_urls'
-                                  ,_('WARNING')
-                                  ,_('Empty input is not allowed!')
-                                  )
+                    sh.com.empty(f)
         else:
-            sh.log.append ('Tags.trash_urls'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
 
     def trash_titles(self):
+        f = '[MClient] utils.Tags.trash_titles'
         if self.Success:
             for i in range(len(self._titles)):
                 self._titles[i] = html.unescape(self._titles[i])
         else:
-            sh.log.append ('Tags.trash_titles'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def links(self):
+        f = '[MClient] utils.Tags.links'
         if self.Success:
             for tag in self._tags:
                 pos = sh.Search (text   = tag
@@ -373,12 +314,10 @@ class Tags:
                 self._urls.append(tag[:pos])
                 self._titles.append(tag[pos+1:])
         else:
-            sh.log.append ('Tags.links'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
         
     def debug(self):
+        f = '[MClient] utils.Tags.debug'
         if self.Success:
             text = ''
             for i in range(len(self._urls)):
@@ -387,10 +326,7 @@ class Tags:
                                              )
             return text
         else:
-            sh.log.append ('Tags.debug'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     def run(self):
         self.split()
@@ -404,6 +340,7 @@ class Commands:
     
     # Compare dictionary abbreviations for different languages
     def new_abbrs(self):
+        f = '[MClient] utils.Commands.new_abbrs'
         file1 = '/tmp/abbr.txt'
         file2 = '/tmp/abbr2.txt'
         dic1  = sh.Dic(file=file1)
@@ -416,23 +353,19 @@ class Commands:
                 if dic2.orig[i] not in dic1.orig:
                     missing.append(dic2.orig[i] + '\t' + dic2.transl[i])
             if missing:
-                sh.objs.mes ('Commands.new_abbrs'
-                            ,_('INFO')
+                sh.objs.mes (f,_('INFO')
                             ,'\n'.join(missing)
                             )
             else:
-                sh.log.append ('Commands.new_abbrs'
-                              ,_('INFO')
+                sh.log.append (f,_('INFO')
                               ,_('Nothing to do!')
                               )
         else:
-            sh.log.append ('Commands.new_abbrs'
-                          ,_('WARNING')
-                          ,_('Operation has been canceled.')
-                          )
+            sh.com.cancel(f)
     
     # Compare dictionary topics for different languages
     def compare_topics(self):
+        f = '[MClient] utils.Commands.compare_topics'
         file1 = '/tmp/topics'
         file2 = '/tmp/topics2'
         text1 = sh.ReadTextFile(file=file1).get()
@@ -442,22 +375,18 @@ class Commands:
             text2 = text2.splitlines()
             missing = [item for item in text2 if item not in text1]
             if missing:
-                sh.objs.mes ('Commands.compare_topics'
-                            ,_('INFO')
+                sh.objs.mes (f,_('INFO')
                             ,'\n'.join(missing)
                             )
             else:
-                sh.log.append ('Commands.compare_topics'
-                              ,_('INFO')
+                sh.log.append (f,_('INFO')
                               ,_('Nothing to do!')
                               )
         else:
-            sh.log.append ('Commands.compare_topics'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
     
     def get_abbrs(self):
+        f = '[MClient] utils.Commands.get_abbrs'
         file_w = '/tmp/abbr.txt'
         # English
         #url = 'https://www.multitran.ru/c/m.exe?a=112&l1=1&l2=2'
@@ -497,12 +426,10 @@ class Commands:
             sg.objs._txt.insert(text)
             sg.objs._txt.show()
         else:
-            sh.log.append ('Commands.get_abbrs'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
                           
     def missing_titles(self):
+        f = '[MClient] utils.Commands.missing_titles'
         ''' This is a list of dictionaries from
             https://www.multitran.ru/c/m.exe?a=112&l1=1&l2=2.
         '''
@@ -530,8 +457,7 @@ class Commands:
                     count += 1
                     i -= 1
                 i += 1
-            sh.log.append ('Commands.missing_titles'
-                          ,_('INFO')
+            sh.log.append (f,_('INFO')
                           ,_('%d duplicates have been deleted') % count
                           )
             dic.orig, dic.transl = (list(x) for x \
@@ -543,8 +469,7 @@ class Commands:
             message = ''
             for i in range(len(dic.orig)):
                 message += dic.orig[i] + '\t' + dic.transl[i] + '\n'
-            sh.objs.mes ('Commands.missing_titles'
-                        ,_('INFO')
+            sh.objs.mes (f,_('INFO')
                         ,message
                         )
             topics  = topics.splitlines()
@@ -557,15 +482,11 @@ class Commands:
                 message = _('The following dictionary titles do not have abbreviations:')
                 message += '\n'
                 message += '\n'.join(missing)
-                sh.objs.mes ('Commands.missing_titles'
-                            ,_('WARNING')
+                sh.objs.mes (f,_('WARNING')
                             ,message
                             )
         else:
-            sh.log.append ('Commands.missing_titles'
-                          ,_('WARNING')
-                          ,_('Empty input is not allowed!')
-                          )
+            sh.com.empty(f)
         
 
 

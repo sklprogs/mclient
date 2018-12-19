@@ -46,7 +46,7 @@ class Stardict1:
         
     #todo: do this before anything else
     def decode(self):
-        f = 'offline.Stardict1.decode'
+        f = '[MClient] offline.Stardict1.decode'
         try:
             self.text = html.unescape(self.text)
         except:
@@ -262,7 +262,7 @@ class Stardict2:
     
     #todo: do this before anything else
     def decode(self):
-        f = 'offline.Stardict2.decode'
+        f = '[MClient] offline.Stardict2.decode'
         try:
             self.text = html.unescape(self.text)
         except:
@@ -369,7 +369,7 @@ class Stardict3:
 
 #todo: combine shared operations for all Stardict classes
 def stardict(text,header='~'):
-    f = 'offline.stardict'
+    f = '[MClient] offline.stardict'
     if '<dtrn>' in text:
         sh.log.append (f,_('DEBUG')
                       ,_('Type 3')

@@ -82,7 +82,7 @@ class Block:
 class Elems:
     
     def __init__(self,blocks,articleid,abbr):
-        f = 'elems.Elems.__init__'
+        f = '[MClient] elems.Elems.__init__'
         self._data      = []
         self._dic_urls  = {}
         self._blocks    = blocks
@@ -96,7 +96,7 @@ class Elems:
         
     # Takes ~0,26s for 'set' on AMD E-300.
     def expand_dica(self):
-        f = 'elems.Elems.expand_dica'
+        f = '[MClient] elems.Elems.expand_dica'
         if self.abbr:
             if self.abbr.Success:
                 for block in self._blocks:
@@ -115,7 +115,7 @@ class Elems:
             sh.com.empty(f)
 
     def run(self):
-        f = 'elems.Elems.run'
+        f = '[MClient] elems.Elems.run'
         if self.Success:
             self.transc           ()
             self.phrases          ()
@@ -599,7 +599,7 @@ class Elems:
 class PhraseTerma:
     
     def __init__(self,dbc,articleid):
-        f = 'elems.PhraseTerma.__init__'
+        f = '[MClient] elems.PhraseTerma.__init__'
         self.dbc        = dbc
         self._articleid = articleid
         self._no1       = -1
@@ -611,7 +611,7 @@ class PhraseTerma:
             sh.com.empty(f)
             
     def second_phrase(self):
-        f = 'elems.PhraseTerma.second_phrase'
+        f = '[MClient] elems.PhraseTerma.second_phrase'
         if self._no2 < 0:
             self.dbc.execute ('select NO from BLOCKS \
                                where ARTICLEID = ? and TYPE = ? \
@@ -626,7 +626,7 @@ class PhraseTerma:
         return self._no2
         
     def phrase_dic(self):
-        f = 'elems.PhraseTerma.phrase_dic'
+        f = '[MClient] elems.PhraseTerma.phrase_dic'
         if self._no1 < 0:
             if self._no2 >= 0:
                 self.dbc.execute ('select NO from BLOCKS \
@@ -650,7 +650,7 @@ class PhraseTerma:
         return self._no1
         
     def dump(self):
-        f = 'elems.PhraseTerma.dump'
+        f = '[MClient] elems.PhraseTerma.dump'
         # Autoincrement starts with 1 in sqlite
         if self._no1 > 0 and self._no2 > 0:
             sh.log.append (f,_('INFO')
@@ -666,7 +666,7 @@ class PhraseTerma:
                           )
         
     def run(self):
-        f = 'elems.PhraseTerma.run'
+        f = '[MClient] elems.PhraseTerma.run'
         if self.Success:
             self.second_phrase()
             self.phrase_dic   ()

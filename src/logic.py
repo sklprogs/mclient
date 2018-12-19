@@ -76,7 +76,7 @@ class DefaultConfig:
         self._fconf  = ''
     
     def dics(self):
-        f = 'logic.DefaultConfig.dics'
+        f = '[MClient] logic.DefaultConfig.dics'
         if self.Success:
             if not self._dics:
                 self._dics = self.ihome.add_config('dics')
@@ -93,7 +93,7 @@ class DefaultConfig:
             sh.com.cancel(f)
     
     def block(self):
-        f = 'logic.DefaultConfig.block'
+        f = '[MClient] logic.DefaultConfig.block'
         if self.Success:
             self._fblock = self.ihome.add_config('block.txt')
             if self._fblock:
@@ -112,7 +112,7 @@ class DefaultConfig:
             sh.com.cancel(f)
     
     def prioritize(self):
-        f = 'logic.DefaultConfig.prioritize'
+        f = '[MClient] logic.DefaultConfig.prioritize'
         if self.Success:
             if not self._fprior:
                 self._fprior = self.ihome.add_config('prioritize.txt')
@@ -133,7 +133,7 @@ class DefaultConfig:
             sh.com.cancel(f)
     
     def abbr(self):
-        f = 'logic.DefaultConfig.abbr'
+        f = '[MClient] logic.DefaultConfig.abbr'
         if self.Success:
             if not self._fabbr:
                 self._fabbr  = sh.objs.pdir().add ('..','resources'
@@ -145,7 +145,7 @@ class DefaultConfig:
             sh.com.cancel(f)
     
     def default_config(self):
-        f = 'logic.DefaultConfig.default_config'
+        f = '[MClient] logic.DefaultConfig.default_config'
         if self.Success:
             if not self._fdconf:
                 self._fdconf = sh.objs.pdir().add ('..','resources'
@@ -157,7 +157,7 @@ class DefaultConfig:
             sh.com.cancel(f)
     
     def config(self):
-        f = 'logic.DefaultConfig.config'
+        f = '[MClient] logic.DefaultConfig.config'
         if self.Success:
             if not self._fconf:
                 self._fconf = self.ihome.add_config('mclient.cfg')
@@ -176,7 +176,7 @@ class DefaultConfig:
             sh.com.cancel(f)
     
     def run(self):
-        f = 'logic.DefaultConfig.run'
+        f = '[MClient] logic.DefaultConfig.run'
         if self.Success:
             self.default_config()
             self.config()
@@ -395,7 +395,7 @@ class CurRequest:
 class Lists:
 
     def __init__(self):
-        f = 'logic.Lists.__init__'
+        f = '[MClient] logic.Lists.__init__'
         self._blacklist  = objs.default()._fblock
         self._prioritize = objs._default._fprior
         self._abbr       = objs._default._fabbr
@@ -412,7 +412,7 @@ class Lists:
             sh.com.cancel(f)
     
     def blacklist(self):
-        f = 'logic.Lists.blacklist'
+        f = '[MClient] logic.Lists.blacklist'
         if self.Success:
             text = sh.ReadTextFile(file=self._blacklist).get()
             text = sh.Text(text=text,Auto=1).text
@@ -421,7 +421,7 @@ class Lists:
             sh.com.cancel(f)
 
     def prioritize(self):
-        f = 'logic.Lists.prioritize'
+        f = '[MClient] logic.Lists.prioritize'
         if self.Success:
             text = sh.ReadTextFile(file=self._prioritize).get()
             text = sh.Text(text=text,Auto=1).text
@@ -478,7 +478,7 @@ class Order:
             self._prioritize.insert(ind,item)
     
     def prioritize_by(self,Down=False):
-        f = 'logic.Order.prioritize_by'
+        f = '[MClient] logic.Order.prioritize_by'
         if self.Success:
             if self._dic1 and self._dic2:
                 ''' - Multiple dictionary titles share same blocks
@@ -584,7 +584,7 @@ class Order:
             sh.com.cancel(f)
             
     def priority(self,search):
-        f = 'logic.Order.priority'
+        f = '[MClient] logic.Order.priority'
         if self.Success:
             lst = self.get_list(search)
             if lst:
@@ -610,7 +610,7 @@ class Order:
             2) A common dictionary      - prioritize
             3) A prioritized dictionary - increase priority
         '''
-        f = 'logic.Order.lm_auto'
+        f = '[MClient] logic.Order.lm_auto'
         if self.Success:
             self.set(dic1,dic2)
             if self.is_blocked(self._dic1):
@@ -634,7 +634,7 @@ class Order:
             2) A blocked dictionary     - unblock
             3) A common dictionary      - block
         '''
-        f = 'logic.Order.rm_auto'
+        f = '[MClient] logic.Order.rm_auto'
         if self.Success:
             self.set(dic1,dic2)
             if self.is_blocked(self._dic1):
@@ -659,7 +659,7 @@ class Order:
             sh.com.cancel(f)
     
     def is_prioritized(self,lst):
-        f = 'logic.Order.is_prioritized'
+        f = '[MClient] logic.Order.is_prioritized'
         if self.Success:
             if lst:
                 for item in lst:
@@ -671,7 +671,7 @@ class Order:
             sh.com.cancel(f)
     
     def is_blocked(self,lst):
-        f = 'logic.Order.is_blocked'
+        f = '[MClient] logic.Order.is_blocked'
         if self.Success:
             if lst:
                 for item in lst:
@@ -683,7 +683,7 @@ class Order:
             sh.com.cancel(f)
     
     def _conform(self):
-        f = 'logic.Order._conform'
+        f = '[MClient] logic.Order._conform'
         ''' Create new block and priority lists based on those that were
             read from user files. Lists from user files may comprise
             either dictionary abbreviations or full dictionary titles.
@@ -728,7 +728,7 @@ class Order:
             sh.com.cancel(f)
     
     def _lists(self):
-        f = 'logic.Order._lists'
+        f = '[MClient] logic.Order._lists'
         if self.Success:
             self.lists       = Lists()
             self._blacklist  = sh.Input (title = f
@@ -742,7 +742,7 @@ class Order:
             sh.com.cancel(f)
         
     def _dic(self):
-        f = 'logic.Order._dic'
+        f = '[MClient] logic.Order._dic'
         if self.Success:
             self.dic     = self.lists.abbr()
             self.Success = self.dic.Success
@@ -761,7 +761,7 @@ class Order:
         self._dic2       = ''
             
     def sort_dic(self,lst):
-        f = 'logic.Order.sort_dic'
+        f = '[MClient] logic.Order.sort_dic'
         if self.Success:
             if lst:
                 indexes = []
@@ -781,7 +781,7 @@ class Order:
             sh.com.cancel(f)
     
     def set(self,dic1,dic2=''):
-        f = 'logic.Order.set'
+        f = '[MClient] logic.Order.set'
         if self.Success:
             ''' This allows to return an empty value instead of the last
                 memory in case there is no previous/next dictionary.
@@ -801,7 +801,7 @@ class Order:
             sh.com.cancel(f)
     
     def title(self,abbr):
-        f = 'logic.Order.title'
+        f = '[MClient] logic.Order.title'
         if self.Success:
             try:
                 ind = self._abbrs.index(abbr)
@@ -814,7 +814,7 @@ class Order:
             sh.com.cancel(f)
         
     def abbr(self,title):
-        f = 'logic.Order.abbr'
+        f = '[MClient] logic.Order.abbr'
         if self.Success:
             try:
                 ind = self._titles.index(title)
@@ -827,7 +827,7 @@ class Order:
             sh.com.cancel(f)
     
     def get_pair(self,item):
-        f = 'logic.Order.get_pair'
+        f = '[MClient] logic.Order.get_pair'
         if self.Success:
             if item:
                 item = item.lower().strip()
@@ -851,7 +851,7 @@ class Order:
             sh.com.cancel(f)
     
     def get_list(self,search):
-        f = 'logic.Order.get_list'
+        f = '[MClient] logic.Order.get_list'
         if self.Success:
             if search:
                 search = search.split(',')
@@ -873,7 +873,7 @@ class Order:
                 self._blacklist.append(item)
                           
     def unblock(self,item):
-        f = 'logic.Order.unblock'
+        f = '[MClient] logic.Order.unblock'
         if self.Success:
             try:
                 self._blacklist.remove(item)
@@ -883,7 +883,7 @@ class Order:
             sh.com.cancel(f)
                           
     def prioritize(self,item):
-        f = 'logic.Order.prioritize'
+        f = '[MClient] logic.Order.prioritize'
         if self.Success:
             if not item in self._prioritize:
                 self._prioritize.append(item)
@@ -891,7 +891,7 @@ class Order:
             sh.com.cancel(f)
     
     def unprioritize(self,item):
-        f = 'logic.Order.unprioritize'
+        f = '[MClient] logic.Order.unprioritize'
         if self.Success:
             try:
                 self._prioritize.remove(item)
@@ -919,14 +919,14 @@ class Suggestion:
         self.Success = True
     
     def pair(self):
-        f = 'logic.Suggestion.pair'
+        f = '[MClient] logic.Suggestion.pair'
         if self.Success:
             self._pair = self._pair.replace('M.exe?','ms.exe?').replace('m.exe?','ms.exe?')
         else:
             sh.com.cancel(f)
     
     def check(self):
-        f = 'logic.Suggestion.check'
+        f = '[MClient] logic.Suggestion.check'
         if self._search:
             if not isinstance(self._search,str):
                 self.Success = False
@@ -957,7 +957,7 @@ class Suggestion:
                           )
     
     def url(self):
-        f = 'logic.Suggestion.url'
+        f = '[MClient] logic.Suggestion.url'
         if self.Success:
             if not self._url:
                 self._url = sh.Online (base_str   = self._pair
@@ -968,7 +968,7 @@ class Suggestion:
             sh.com.cancel(f)
     
     def get(self):
-        f = 'logic.Suggestion.get'
+        f = '[MClient] logic.Suggestion.get'
         if self.Success:
             if not self._items:
                 if self.url():

@@ -783,7 +783,7 @@ class WebFrame:
         return self.widget.winfo_height()
 
     def width(self):
-        f = 'gui.WebFrame.width'
+        f = '[MClient] gui.WebFrame.width'
         sg.objs.root().widget.update_idletasks()
         '''
         sh.log.append (f,_('DEBUG')
@@ -836,14 +836,14 @@ class WebFrame:
                 self.scroll_right()
             
     def scroll_left(self):
-        f = 'gui.WebFrame.scroll_left'
+        f = '[MClient] gui.WebFrame.scroll_left'
         sh.log.append (f,_('DEBUG')
                       ,_('Scroll by %d units to left') % self._shift
                       )
         self.canvas.widget.xview_scroll(-self._shift,'units')
         
     def scroll_right(self):
-        f = 'gui.WebFrame.scroll_right'
+        f = '[MClient] gui.WebFrame.scroll_right'
         sh.log.append (f,_('DEBUG')
                       ,_('Scroll by %d units to right') % self._shift
                       )
@@ -880,7 +880,7 @@ class Settings:
         self.Active      = False
 
     def update_col1(self):
-        f = 'gui.Settings.update_col1'
+        f = '[MClient] gui.Settings.update_col1'
         if self.col1.choice != _('Do not set'):
             if self.col1.choice in self._allowed:
                 self._allowed.remove(self.col1.choice)
@@ -896,7 +896,7 @@ class Settings:
                            )
 
     def update_col2(self):
-        f = 'gui.Settings.update_col2'
+        f = '[MClient] gui.Settings.update_col2'
         if self.col2.choice != _('Do not set'):
             if self.col2.choice in self._allowed:
                 self._allowed.remove(self.col2.choice)
@@ -912,7 +912,7 @@ class Settings:
                            )
 
     def update_col3(self):
-        f = 'gui.Settings.update_col3'
+        f = '[MClient] gui.Settings.update_col3'
         if self.col3.choice != _('Do not set'):
             if self.col3.choice in self._allowed:
                 self._allowed.remove(self.col3.choice)
@@ -928,7 +928,7 @@ class Settings:
                            )
 
     def update_col4(self):
-        f = 'gui.Settings.update_col4'
+        f = '[MClient] gui.Settings.update_col4'
         if self.col4.choice != _('Do not set'):
             if self.col4.choice in self._allowed:
                 self._allowed.remove(self.col4.choice)
@@ -968,7 +968,7 @@ class Settings:
             self.sc.set(_('Custom'))
 
     def update_by_sc(self,event=None):
-        f = 'gui.Settings.update_by_sc'
+        f = '[MClient] gui.Settings.update_by_sc'
         if self.sc.choice == product:
             self.col1.set(_('Dictionaries'))
             self.col2.set(_('Word forms'))
@@ -1113,13 +1113,13 @@ class Settings:
         self.icon()
 
     def block_settings(self,event=None):
-        f = 'gui.Settings.block_settings'
+        f = '[MClient] gui.Settings.block_settings'
         sg.Message (f,_('INFO')
                    ,_('Not implemented yet!')
                    )
 
     def priority_settings(self,event=None):
-        f = 'gui.Settings.priority_settings'
+        f = '[MClient] gui.Settings.priority_settings'
         sg.Message (f,_('INFO')
                    ,_('Not implemented yet!')
                    )
@@ -1603,7 +1603,7 @@ class Settings:
                           )
     
     def update_sp1(self):
-        f = 'gui.Settings.update_sp1'
+        f = '[MClient] gui.Settings.update_sp1'
         if self.sp1.choice in self._sp_allowed:
             self._sp_allowed.remove(self.sp1.choice)
         elif _('Noun') in self._sp_allowed:
@@ -1618,7 +1618,7 @@ class Settings:
                        )
     
     def update_sp2(self):
-        f = 'gui.Settings.update_sp2'
+        f = '[MClient] gui.Settings.update_sp2'
         if self.sp2.choice in self._sp_allowed:
             self._sp_allowed.remove(self.sp2.choice)
         elif _('Verb') in self._sp_allowed:
@@ -1633,7 +1633,7 @@ class Settings:
                        )
                        
     def update_sp3(self):
-        f = 'gui.Settings.update_sp3'
+        f = '[MClient] gui.Settings.update_sp3'
         if self.sp3.choice in self._sp_allowed:
             self._sp_allowed.remove(self.sp3.choice)
         elif _('Adjective') in self._sp_allowed:
@@ -1648,7 +1648,7 @@ class Settings:
                        )
                        
     def update_sp4(self):
-        f = 'gui.Settings.update_sp4'
+        f = '[MClient] gui.Settings.update_sp4'
         if self.sp4.choice in self._sp_allowed:
             self._sp_allowed.remove(self.sp4.choice)
         elif _('Abbreviation') in self._sp_allowed:
@@ -1663,7 +1663,7 @@ class Settings:
                        )
                        
     def update_sp5(self):
-        f = 'gui.Settings.update_sp5'
+        f = '[MClient] gui.Settings.update_sp5'
         if self.sp5.choice in self._sp_allowed:
             self._sp_allowed.remove(self.sp5.choice)
         elif _('Adverb') in self._sp_allowed:
@@ -1678,7 +1678,7 @@ class Settings:
                        )
                        
     def update_sp6(self):
-        f = 'gui.Settings.update_sp6'
+        f = '[MClient] gui.Settings.update_sp6'
         if self.sp6.choice in self._sp_allowed:
             self._sp_allowed.remove(self.sp6.choice)
         elif _('Preposition') in self._sp_allowed:
@@ -1693,7 +1693,7 @@ class Settings:
                        )
                        
     def update_sp7(self):
-        f = 'gui.Settings.update_sp7'
+        f = '[MClient] gui.Settings.update_sp7'
         if self.sp7.choice in self._sp_allowed:
             self._sp_allowed.remove(self.sp7.choice)
         elif _('Pronoun') in self._sp_allowed:

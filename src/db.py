@@ -28,7 +28,7 @@ class DB:
         self.create_articles()
         
     def next_dica(self,pos,dica):
-        f = 'db.DB.next_dica'
+        f = '[MClient] db.DB.next_dica'
         if self._articleid:
             self.dbc.execute ('select DICA,DICAF,NO,CELLNO from BLOCKS \
                                where ARTICLEID = ? and POS1 > ? \
@@ -42,7 +42,7 @@ class DB:
             sh.com.empty(f)
     
     def prev_dica(self,pos,dica):
-        f = 'db.DB.prev_dica'
+        f = '[MClient] db.DB.prev_dica'
         if self._articleid:
             self.dbc.execute ('select DICA,DICAF,NO,CELLNO from BLOCKS \
                                where ARTICLEID = ? and POS1 < ? \
@@ -117,7 +117,7 @@ class DB:
     def reset (self,cols=('dic','wform','transc','speech')
               ,SortRows=False,SortTerms=False,ExpandDic=False
               ):
-        f = 'db.DB.reset'
+        f = '[MClient] db.DB.reset'
         self.SortTerms = SortTerms
         self.SortRows  = SortRows
         self.ExpandDic = ExpandDic
@@ -165,7 +165,7 @@ class DB:
         return self.dbc.fetchall()
 
     def prev_id(self,Loop=True):
-        f = 'db.DB.prev_id'
+        f = '[MClient] db.DB.prev_id'
         if self._articleid:
             self.dbc.execute ('select ARTICLEID from ARTICLES \
                                where ARTICLEID < ? \
@@ -181,7 +181,7 @@ class DB:
             sh.com.empty(f)
 
     def next_id(self,Loop=True):
-        f = 'db.DB.next_id'
+        f = '[MClient] db.DB.next_id'
         if self._articleid:
             self.dbc.execute ('select ARTICLEID from ARTICLES \
                                where ARTICLEID > ? order by ARTICLEID'
@@ -201,7 +201,7 @@ class DB:
         ''' 'self.dbc.description' is 'None' without performing
             'select' first
         '''
-        f = 'db.DB.print'
+        f = '[MClient] db.DB.print'
         if not Selected:
             if mode == 'BLOCKS':
                 self.dbc.execute ('select * from BLOCKS \
@@ -226,7 +226,7 @@ class DB:
                  ).print()
 
     def update(self,query):
-        f = 'db.DB.update'
+        f = '[MClient] db.DB.update'
         try:
             self.dbc.executescript(query)
         except sqlite3.OperationalError:
@@ -237,7 +237,7 @@ class DB:
 
     # Assign input data for BlockPrioritize
     def assign_bp(self):
-        f = 'db.DB.assign_bp'
+        f = '[MClient] db.DB.assign_bp'
         if self._articleid:
             self.dbc.execute ('select NO,TYPE,TEXT,DICA from BLOCKS \
                                where ARTICLEID = ? order by NO'
@@ -248,7 +248,7 @@ class DB:
             sh.com.empty(f)
 
     def order_query(self):
-        f = 'db.DB.order_query'
+        f = '[MClient] db.DB.order_query'
         query = []
         for item in self._cols:
             if item == 'dic':
@@ -280,7 +280,7 @@ class DB:
 
     # Assign input data for Cells
     def assign_cells(self):
-        f = 'db.DB.assign_cells'
+        f = '[MClient] db.DB.assign_cells'
         if self._articleid:
             query = 'select NO,TYPE,TEXT,SAMECELL,'
             if self.ExpandDic:
@@ -307,7 +307,7 @@ class DB:
 
     # Assign input data for Pos
     def assign_pos(self):
-        f = 'db.DB.assign_pos'
+        f = '[MClient] db.DB.assign_pos'
         if self._articleid:
             self.dbc.execute ('select NO,TYPE,TEXT,SAMECELL,ROWNO \
                                from BLOCKS where ARTICLEID = ? \
@@ -322,7 +322,7 @@ class DB:
         ''' Get 'PhraseDic' before 'Cells' are built when 'PhraseDic' is
             still of a 'phrase' type.
         '''
-        f = 'db.DB.phrase_dic_primary'
+        f = '[MClient] db.DB.phrase_dic_primary'
         if self._articleid:
             self.dbc.execute ('select DICA from BLOCKS \
                                where ARTICLEID = ? and TYPE = ? \
@@ -335,7 +335,7 @@ class DB:
             sh.com.empty(f)
                           
     def phrase_dic(self):
-        f = 'db.DB.phrase_dic'
+        f = '[MClient] db.DB.phrase_dic'
         if self._articleid:
             result = self.phrase_dic_primary()
             if result:
@@ -351,7 +351,7 @@ class DB:
             sh.com.empty(f)
 
     def clear(self):
-        f = 'db.DB.clear'
+        f = '[MClient] db.DB.clear'
         sh.log.append (f,_('WARNING')
                       ,_('Delete all records from %s') \
                       % 'ARTICLES, BLOCKS'
@@ -361,7 +361,7 @@ class DB:
         self.dbc.execute('delete from ARTICLES')
 
     def clear_cur(self):
-        f = 'db.DB.clear_cur'
+        f = '[MClient] db.DB.clear_cur'
         if self._articleid:
             sh.log.append (f,_('WARNING')
                           ,_('Delete records of article No. %d from %s')\
@@ -377,7 +377,7 @@ class DB:
             sh.com.empty(f)
 
     def block_pos(self,pos):
-        f = 'db.DB.block_pos'
+        f = '[MClient] db.DB.block_pos'
         if self._articleid:
             if self.Selectable:
                 ''' 'POS2 > pos' instead of 'POS2 >= pos' allows to
@@ -405,7 +405,7 @@ class DB:
             sh.com.empty(f)
 
     def article(self):
-        f = 'db.DB.article'
+        f = '[MClient] db.DB.article'
         if self._articleid:
             self.dbc.execute ('select SOURCE,TITLE,URL,BOOKMARK \
                                from ARTICLES where ARTICLEID = ?'
@@ -416,7 +416,7 @@ class DB:
             sh.com.empty(f)
 
     def url(self,pos):
-        f = 'db.DB.url'
+        f = '[MClient] db.DB.url'
         if self._articleid:
             self.dbc.execute ('select URL from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
@@ -430,7 +430,7 @@ class DB:
             sh.com.empty(f)
 
     def text(self,pos):
-        f = 'db.DB.text'
+        f = '[MClient] db.DB.text'
         if self._articleid:
             self.dbc.execute ('select TEXT from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
@@ -445,7 +445,7 @@ class DB:
             sh.com.empty(f)
 
     def min_cell(self):
-        f = 'db.DB.min_cell'
+        f = '[MClient] db.DB.min_cell'
         if self._articleid:
             if self.Selectable:
                 ''' This function is made for calculating moves; if we
@@ -471,7 +471,7 @@ class DB:
             sh.com.empty(f)
 
     def max_cell(self):
-        f = 'db.DB.max_cell'
+        f = '[MClient] db.DB.max_cell'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select CELLNO,NO,POS1,BBOX1,BBOX2 \
@@ -497,7 +497,7 @@ class DB:
         ''' Find the maximum available row number for the whole table;
             this might not be the same as ROWNO of 'self.max_cell'
         '''
-        f = 'db.DB.max_row'
+        f = '[MClient] db.DB.max_row'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select ROWNO,NO from BLOCKS \
@@ -523,7 +523,7 @@ class DB:
             table; this might not be the same as COLNO of
             'self.max_cell'
         '''
-        f = 'db.DB.max_col'
+        f = '[MClient] db.DB.max_col'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select COLNO,NO,BBOX2 from BLOCKS \
@@ -546,7 +546,7 @@ class DB:
 
     # Find the maximum available row number for the set column
     def max_row_sp(self,col_no):
-        f = 'db.DB.max_row_sp'
+        f = '[MClient] db.DB.max_row_sp'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select ROWNO,NO from BLOCKS \
@@ -573,7 +573,7 @@ class DB:
             table; this should be the same as COLNO of 'self.min_cell'
             but we leave it for non-standard tables.
         '''
-        f = 'db.DB.min_col'
+        f = '[MClient] db.DB.min_col'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select COLNO,NO,BBOX1 from BLOCKS \
@@ -597,7 +597,7 @@ class DB:
         ''' Find the minimum available row number for the set column;
             this might not be the same as ROWNO of 'self.min_cell'
         '''
-        f = 'db.DB.min_row_sp'
+        f = '[MClient] db.DB.min_row_sp'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select ROWNO,NO from BLOCKS \
@@ -620,7 +620,7 @@ class DB:
             sh.com.empty(f)
 
     def selection(self,pos):
-        f = 'db.DB.selection'
+        f = '[MClient] db.DB.selection'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select NODE1,NODE2,OFFPOS1,OFFPOS2\
@@ -650,7 +650,7 @@ class DB:
             '''
 
     def skipped_dicas(self):
-        f = 'db.DB.skipped_dicas'
+        f = '[MClient] db.DB.skipped_dicas'
         if self._articleid:
             self.dbc.execute ('select distinct DICA from BLOCKS \
                                where ARTICLEID = ? \
@@ -664,7 +664,7 @@ class DB:
             sh.com.empty(f)
     
     def blocked(self):
-        f = 'db.DB.blocked'
+        f = '[MClient] db.DB.blocked'
         if self._articleid:
             self.dbc.execute ('select NO from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 1'
@@ -675,7 +675,7 @@ class DB:
             sh.com.empty(f)
 
     def prioritized(self):
-        f = 'db.DB.prioritized'
+        f = '[MClient] db.DB.prioritized'
         if self._articleid:
             ''' #note: We assume that 'Phrases' section has -1000
                 priority and this is always used despite user settings.
@@ -690,7 +690,7 @@ class DB:
             sh.com.empty(f)
 
     def dics(self,Block=False):
-        f = 'db.DB.dics'
+        f = '[MClient] db.DB.dics'
         if self._articleid:
             # Do not use 'POS1 < POS2', it might be not set yet
             if Block:
@@ -709,7 +709,7 @@ class DB:
             sh.com.empty(f)
 
     def search_forward(self,pos,search):
-        f = 'db.DB.search_forward'
+        f = '[MClient] db.DB.search_forward'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
@@ -738,7 +738,7 @@ class DB:
             sh.com.empty(f)
 
     def search_backward(self,pos,search):
-        f = 'db.DB.search_backward'
+        f = '[MClient] db.DB.search_backward'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
@@ -785,7 +785,7 @@ class DB:
             
     # Get any block with the maximal BBOY2
     def max_bboy(self,limit=0):
-        f = 'db.DB.max_bboy'
+        f = '[MClient] db.DB.max_bboy'
         if self._articleid:
             if limit:
                 self.dbc.execute ('select BBOY2,NODE1,TEXT from BLOCKS \
@@ -807,7 +807,7 @@ class DB:
     
     # Get any block with the maximal BBOX2
     def max_bbox(self,limit=0):
-        f = 'db.DB.max_bbox'
+        f = '[MClient] db.DB.max_bbox'
         if self._articleid:
             if limit:
                 self.dbc.execute ('select BBOX2,NODE1,TEXT from BLOCKS \
@@ -829,7 +829,7 @@ class DB:
     
     # Get the minimum BBOY1 and the maximum BBOY2 for the set row number
     def bboy_limits(self,row_no=0):
-        f = 'db.DB.bboy_limits'
+        f = '[MClient] db.DB.bboy_limits'
         if self._articleid:
             self.dbc.execute ('select BBOY1 from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
@@ -856,7 +856,7 @@ class DB:
         number
     '''
     def bbox_limits(self,col_no=0):
-        f = 'db.DB.bbox_limits'
+        f = '[MClient] db.DB.bbox_limits'
         if self._articleid:
             self.dbc.execute ('select BBOX1 from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
@@ -880,7 +880,7 @@ class DB:
             sh.com.empty(f)
     
     def min_articleid(self):
-        f = 'db.DB.min_articleid'
+        f = '[MClient] db.DB.min_articleid'
         self.dbc.execute ('select ARTICLEID from ARTICLES \
                            order by ARTICLEID'
                          )
@@ -893,7 +893,7 @@ class DB:
             return 1
             
     def max_articleid(self):
-        f = 'db.DB.max_articleid'
+        f = '[MClient] db.DB.max_articleid'
         self.dbc.execute ('select ARTICLEID from ARTICLES \
                            order by ARTICLEID desc'
                          )
@@ -906,7 +906,7 @@ class DB:
             return 1
     
     def block_pos_next(self,pos):
-        f = 'db.DB.block_pos_next'
+        f = '[MClient] db.DB.block_pos_next'
         if self._articleid:
             if self.Selectable:
                 ''' 'POS2 > pos' instead of 'POS2 >= pos' allows to
@@ -935,7 +935,7 @@ class DB:
             sh.com.empty(f)
     
     def set_bookmark(self,pos=0):
-        f = 'db.DB.set_bookmark'
+        f = '[MClient] db.DB.set_bookmark'
         if str(pos).isdigit():
             if self._articleid:
                 ''' # Too frequent
@@ -957,7 +957,7 @@ class DB:
                           )
                           
     def delete_bookmarks(self):
-        f = 'db.DB.delete_bookmarks'
+        f = '[MClient] db.DB.delete_bookmarks'
         sh.log.append (f,_('DEBUG')
                       ,_('Delete bookmarks for all articles')
                       )
@@ -975,7 +975,7 @@ class Moves(DB):
         super().__init__()
 
     def start(self):
-        f = 'db.Moves.start'
+        f = '[MClient] db.Moves.start'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
@@ -999,7 +999,7 @@ class Moves(DB):
             sh.com.empty(f)
 
     def end(self):
-        f = 'db.Moves.end'
+        f = '[MClient] db.Moves.end'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
@@ -1024,7 +1024,7 @@ class Moves(DB):
             sh.com.empty(f)
 
     def line_start(self,pos):
-        f = 'db.Moves.line_start'
+        f = '[MClient] db.Moves.line_start'
         if self._articleid:
             poses = self.block_pos(pos=pos)
             if poses:
@@ -1057,7 +1057,7 @@ class Moves(DB):
             sh.com.empty(f)
 
     def line_end(self,pos):
-        f = 'db.Moves.line_end'
+        f = '[MClient] db.Moves.line_end'
         if self._articleid:
             poses = self.block_pos(pos=pos)
             if poses:
@@ -1090,7 +1090,7 @@ class Moves(DB):
             sh.com.empty(f)
 
     def left(self,pos):
-        f = 'db.Moves.left'
+        f = '[MClient] db.Moves.left'
         if self._articleid:
             poses = self.block_pos(pos=pos)
             if poses:
@@ -1133,7 +1133,7 @@ class Moves(DB):
             sh.com.empty(f)
 
     def right(self,pos):
-        f = 'db.Moves.right'
+        f = '[MClient] db.Moves.right'
         if self._articleid:
             poses = self.block_pos(pos=pos)
             if poses:
@@ -1176,7 +1176,7 @@ class Moves(DB):
             sh.com.empty(f)
 
     def up(self,pos):
-        f = 'db.Moves.up'
+        f = '[MClient] db.Moves.up'
         if self._articleid:
             poses = self.block_pos(pos=pos)
             if poses:
@@ -1295,7 +1295,7 @@ class Moves(DB):
             sh.com.empty(f)
 
     def down(self,pos):
-        f = 'db.Moves.down'
+        f = '[MClient] db.Moves.down'
         if self._articleid:
             poses = self.block_pos(pos=pos)
             if poses:
@@ -1412,7 +1412,7 @@ class Moves(DB):
             sh.com.empty(f)
 
     def page_down(self,bboy,height):
-        f = 'db.Moves.page_down'
+        f = '[MClient] db.Moves.page_down'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
@@ -1443,7 +1443,7 @@ class Moves(DB):
             sh.com.empty(f)
 
     def page_up(self,bboy,height):
-        f = 'db.Moves.page_up'
+        f = '[MClient] db.Moves.page_up'
         if self._articleid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
@@ -1474,7 +1474,7 @@ class Moves(DB):
             sh.com.empty(f)
                           
     def first_section(self,col_no=0):
-        f = 'db.Moves.first_section'
+        f = '[MClient] db.Moves.first_section'
         if self._articleid:
             self.dbc.execute ('select POS1,ROWNO,TEXT from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
@@ -1487,7 +1487,7 @@ class Moves(DB):
             sh.com.empty(f)
                           
     def last_section(self,col_no=0):
-        f = 'db.Moves.last_section'
+        f = '[MClient] db.Moves.last_section'
         if self._articleid:
             self.dbc.execute ('select POS1,ROWNO,TEXT from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
@@ -1500,7 +1500,7 @@ class Moves(DB):
             sh.com.empty(f)
     
     def next_section(self,pos,col_no=0,Loop=True):
-        f = 'db.Moves.next_section'
+        f = '[MClient] db.Moves.next_section'
         if self._articleid:
             poses = self.block_pos(pos=pos)
             if poses:
@@ -1522,7 +1522,7 @@ class Moves(DB):
             sh.com.empty(f)
                           
     def prev_section(self,pos,col_no=0,Loop=True):
-        f = 'db.Moves.prev_section'
+        f = '[MClient] db.Moves.prev_section'
         if self._articleid:
             poses = self.block_pos(pos=pos)
             if poses:
@@ -1544,7 +1544,7 @@ class Moves(DB):
             sh.com.empty(f)
     
     def next_col(self,row_no=0,col_no=0):
-        f = 'db.Moves.next_col'
+        f = '[MClient] db.Moves.next_col'
         if self._articleid:
             self.dbc.execute ('select POS1,ROWNO,COLNO,TEXT \
                                from BLOCKS where ARTICLEID = ? \

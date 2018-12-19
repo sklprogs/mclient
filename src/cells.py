@@ -53,7 +53,7 @@ class BlockPrioritize:
     def __init__(self,data,order,Block=False
                 ,Prioritize=False,phrase_dic=None
                 ):
-        f = 'cells.BlockPrioritize.__init__'
+        f = '[MClient] cells.BlockPrioritize.__init__'
         self._blocks     = []
         self._query      = ''
         self.order       = order
@@ -68,7 +68,7 @@ class BlockPrioritize:
             sh.com.empty(f)
     
     def run(self):
-        f = 'cells.BlockPrioritize.run'
+        f = '[MClient] cells.BlockPrioritize.run'
         if self.Success:
             self.assign    ()
             self.block     ()
@@ -100,7 +100,7 @@ class BlockPrioritize:
                 block._block = 0
             
     def prioritize(self):
-        f = 'cells.BlockPrioritize.prioritize'
+        f = '[MClient] cells.BlockPrioritize.prioritize'
         if self.order.Success:
             for block in self._blocks:
                 if block._dica:
@@ -172,7 +172,7 @@ class Cells:
                  ,phrase_dic=None,Reverse=False
                  ,ExpandSpeech=False
                  ):
-        f = 'cells.Cells.__init__'
+        f = '[MClient] cells.Cells.__init__'
         # Sqlite fetch
         self._data        = data
         self._cols        = cols
@@ -237,7 +237,7 @@ class Cells:
                 block.j -= len(self._cols)
     
     def run(self):
-        f = 'cells.Cells.run'
+        f = '[MClient] cells.Cells.run'
         if self.Success:
             self.assign       ()
             self.restore_fixed()
@@ -387,7 +387,7 @@ class Cells:
                               )
     
     def phrases2end(self):
-        f = 'cells.Cells.phrases2end'
+        f = '[MClient] cells.Cells.phrases2end'
         if self._phrase_dic:
             phrases = [block for block in self._blocks \
                        if block._dica == self._phrase_dic]
@@ -468,7 +468,7 @@ class Cells:
 class Pos:
     
     def __init__(self,data,raw_text):
-        f = 'cells.Pos.__init__'
+        f = '[MClient] cells.Pos.__init__'
         self._blocks   = []
         self._query    = ''
         # Sqlite fetch
@@ -482,7 +482,7 @@ class Pos:
             sh.com.empty(f)
         
     def run(self):
-        f = 'cells.Pos.run'
+        f = '[MClient] cells.Pos.run'
         if self.Success:
             self.assign   ()
             self.gen_poses()
@@ -525,7 +525,7 @@ class Pos:
                  ).print()
     
     def gen_poses(self):
-        f = 'cells.Pos.gen_poses'
+        f = '[MClient] cells.Pos.gen_poses'
         ''' We generate positions here according to the text produced by 
             TkinterHtml's 'widget.text()' command.
             Peculiarities of the retrieved text:
@@ -595,7 +595,7 @@ class Pos:
 class Pages:
     
     def __init__(self,obj,blocks):
-        f = 'cells.Pages.__init__'
+        f = '[MClient] cells.Pages.__init__'
         self.obj     = obj
         self._blocks = blocks
         self._query  = ''
@@ -608,7 +608,7 @@ class Pages:
             sh.com.empty(f)
         
     def create_index(self):
-        f = 'cells.Pages.create_index'
+        f = '[MClient] cells.Pages.create_index'
         tmp = io.StringIO()
         tmp.write('begin;')
         for block in self._blocks:
@@ -642,13 +642,13 @@ class Pages:
         return self._query
             
     def debug(self):
-        f = 'cells.Pages.debug'
+        f = '[MClient] cells.Pages.debug'
         sh.objs.mes (f,_('INFO')
                     ,self._query.replace(';',';\n')
                     )
     
     def run(self):
-        f = 'cells.Pages.run'
+        f = '[MClient] cells.Pages.run'
         if self.Success:
             self.create_index()
         else:

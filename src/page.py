@@ -45,7 +45,7 @@ class ExtDic:
         self.load()
 
     def load(self):
-        f = 'page.ExtDic.load'
+        f = '[MClient] page.ExtDic.load'
         sh.log.append (f,_('INFO')
                       ,_('Load "%s"') % self._path
                       )
@@ -57,7 +57,7 @@ class ExtDic:
                         )
 
     def get(self,search):
-        f = 'page.ExtDic.get'
+        f = '[MClient] page.ExtDic.get'
         result = ''
         if self._dic:
             try:
@@ -89,7 +89,7 @@ class ExtDics:
         self.load()
 
     def get(self,lang='English',search=''):
-        f = 'page.ExtDics.get'
+        f = '[MClient] page.ExtDics.get'
         if self.Success:
             dics = [dic for dic in self._dics if dic._lang == lang \
                     and not dic.Block
@@ -105,7 +105,7 @@ class ExtDics:
             sh.com.cancel(f)
 
     def load(self):
-        f = 'page.ExtDics.load'
+        f = '[MClient] page.ExtDics.load'
         if self.Success:
             sg.objs.waitbox().reset (func_title = f
                                     ,message    = _('Load offline dictionaries')
@@ -187,7 +187,7 @@ class ExtDics:
             self._fr        = []
 
     def debug(self):
-        f = 'page.ExtDics.debug'
+        f = '[MClient] page.ExtDics.debug'
         message = 'English:\n'
         message += '\n'.join(self._en) + '\n\n'
         message += 'German:\n'
@@ -210,7 +210,7 @@ class Page:
                 ,search='~',url='',win_encoding='windows-1251'
                 ,ext_dics=[],file=None,timeout=6
                 ):
-        f = 'page.Page.__init__'
+        f = '[MClient] page.Page.__init__'
         self.values()
         self._source       = source
         self._lang         = lang
@@ -332,7 +332,7 @@ class Page:
     '''
     # HTML specific
     def decode_entities(self):
-        f = 'page.Page.decode_entities'
+        f = '[MClient] page.Page.decode_entities'
         #todo: do we need to check this?
         if self._source in (_('All'),_('Online')):
             try:
@@ -343,7 +343,7 @@ class Page:
                             )
 
     def _get_online(self):
-        f = 'page.Page._get_online'
+        f = '[MClient] page.Page._get_online'
         Got = False
         while not self._page:
             try:
@@ -410,7 +410,7 @@ class Page:
             self._page = ''
 
     def get(self):
-        f = 'page.Page.get'
+        f = '[MClient] page.Page.get'
         if not self._page:
             if self._file:
                 read = sh.ReadTextFile(file=self._file)
@@ -478,7 +478,7 @@ class Welcome:
                                   ).space_items()
 
     def online(self):
-        f = 'page.Welcome.online'
+        f = '[MClient] page.Welcome.online'
         ''' On *some* systems we can get urllib.error.URLError: 
             <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED].
             To get rid of this error, we use this small workaround.
@@ -547,7 +547,7 @@ class Welcome:
 
 
 if __name__ == '__main__':
-    f = 'page.__main__'
+    f = '[MClient] page.__main__'
     import logic as lg
     sg.objs.start()
     timer = sh.Timer(func_title=f)
