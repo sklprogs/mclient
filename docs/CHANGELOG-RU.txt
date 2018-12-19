@@ -2,7 +2,9 @@
 
 5.12
 * Укорочение слишком широких столбцов
-* Вынос пользовательских файлов в $HOME/.config/mclient
+* Вынос пользовательских файлов
+  в C:\Documents and Settings\<user>\Application Data\mclient (Windows)
+  и $HOME/.config/mclient (Linux)
 * Сборка для Linux (32-битный и 64-битный AppImage)
 
 5.11.1

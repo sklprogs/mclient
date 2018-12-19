@@ -2,7 +2,9 @@
 
 5.12
 * Wrap up too broad columns
-* Move user files to $HOME/.config/mclient
+* Move user files to
+  C:\Documents and Settings\<user>\Application Data\mclient (Windows)
+  and $HOME/.config/mclient (Linux)
 * Add a Linux build (32-bit and 64-bit AppImage)
 
 5.11.1
