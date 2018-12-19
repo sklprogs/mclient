@@ -1,18 +1,21 @@
 #!/bin/bash
 
 product="mclient"
+productlow='mclient'
 arch="i686"
 os="Linux" # Linux or Wine
 oslow="linux"
 # oldstable debian has glibc 2.19, whereas current stable debian has glibc 2.24
-glibc="2.24"
+glibc="2.19"
 binariesdir="$HOME/binaries"
 appimagedir="$binariesdir/appimage"
 srcdir="$HOME/bin/$product/src"
 resdir="$HOME/bin/$product/resources"
-tkhtmldir="/usr/local/lib/python3.5/dist-packages/tkinterhtml/tkhtml/Linux"
+tkhtmldir="/usr/local/lib/python3.4/dist-packages/tkinterhtml/tkhtml/Linux"
 tmpdir="/tmp/$product"   # Will be deleted!
 builddir="$tmpdir/build" # Will be deleted!
+
+export "ARCH=$arch"
 
 if [ "`which pyinstaller`" = "" ]; then
     echo "pyinstaller is not installed!"; exit
@@ -76,6 +79,6 @@ read -p "Update the AppImage? (Y/n) " choice
 if [ "$choice" = "N" ] || [ "$choice" = "n" ]; then
     exit;
 fi
-# Probably a bug in 'appimagetool' (.appdata.xml)
-mv -fv "$tmpdir/$product.appdata.xml" "$HOME/binaries/$product/$product-$oslow-$arch-glibc$glibc.AppImage"
+# The tool is i686, but creates i386
+mv -fv "$tmpdir/$product-i386.AppImage" "$HOME/binaries/$product/$productlow-$oslow-i386-glibc$glibc.AppImage"
 rm -rf "$tmpdir"
