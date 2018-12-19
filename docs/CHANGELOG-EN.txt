@@ -3,6 +3,7 @@
 5.12
 * Wrap up too broad columns
 * Move user files to $HOME/.config/mclient
+* Add a Linux build (32-bit and 64-bit AppImage)
 
 5.11.1
 * Rework prioritization: only one click is required now in order to
