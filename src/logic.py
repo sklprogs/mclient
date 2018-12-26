@@ -100,8 +100,8 @@ class DefaultConfig:
                 if os.path.exists(self._fblock):
                     self.Success = sh.File(file=self._fblock).Success
                 else:
-                    iwrite = sh.WriteTextFile (file       = self._fblock
-                                              ,AskRewrite = False
+                    iwrite = sh.WriteTextFile (file    = self._fblock
+                                              ,Rewrite = True
                                               )
                     iwrite.write(sample_block)
                     self.Success = iwrite.Success
@@ -120,8 +120,8 @@ class DefaultConfig:
                     if os.path.exists(self._fprior):
                         self.Success = sh.File(file=self._fprior).Success
                     else:
-                        iwrite = sh.WriteTextFile (file       = self._fprior
-                                                  ,AskRewrite = False
+                        iwrite = sh.WriteTextFile (file    = self._fprior
+                                                  ,Rewrite = True
                                                   )
                         iwrite.write(sample_prior)
                         self.Success = iwrite.Success

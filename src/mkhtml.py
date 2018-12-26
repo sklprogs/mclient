@@ -586,6 +586,8 @@ if __name__ == '__main__':
     timer.end()
 
     file_w = '/tmp/test.html'
-    sh.WriteTextFile(file=file_w,AskRewrite=0).write(text=mkhtml._html)
+    sh.WriteTextFile (file    = file_w
+                     ,Rewrite = True
+                     ).write(text=mkhtml._html)
     sh.Launch(target=file_w).default()
 

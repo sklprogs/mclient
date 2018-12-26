@@ -418,8 +418,8 @@ class Commands:
             text = ''
             for i in range(len(topics._abbrs)):
                 text += topics._abbrs[i] + '\t' + topics._titles[i] + '\n'
-            sh.WriteTextFile (file       = file_w
-                             ,AskRewrite = False
+            sh.WriteTextFile (file    = file_w
+                             ,Rewrite = True
                              ).write(text)
             sg.objs.txt().reset_data()
             sg.objs._txt.title(_('Abbreviations:'))

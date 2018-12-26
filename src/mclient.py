@@ -173,11 +173,11 @@ class SaveArticle:
         self.file = sg.dialog_save_file(filetypes=self._html_types)
         if self.file and lg.objs.request()._html:
             self.fix_ext(ext='.htm')
-            ''' We disable AskRewrite because the confirmation is
-                already built in the internal dialog.
+            ''' We enable 'Rewrite' because the confirmation is already
+                built in the internal dialog.
             '''
-            sh.WriteTextFile (file       = self.file
-                             ,AskRewrite = False
+            sh.WriteTextFile (file    = self.file
+                             ,Rewrite = True
                              ).write(lg.objs._request._html)
         else:
             sh.com.empty(f)
@@ -194,8 +194,8 @@ class SaveArticle:
         if self.file and lg.objs.request()._html_raw:
             self.fix_ext(ext='.htm')
             #todo: fix remaining links to localhost
-            sh.WriteTextFile (file       = self.file
-                             ,AskRewrite = False
+            sh.WriteTextFile (file    = self.file
+                             ,Rewrite = True
                              ).write(lg.objs._request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/M.exe?',sh.globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/m.exe?',sh.globs['var']['pair_root']))
         else:
             sh.com.empty(f)
@@ -206,8 +206,8 @@ class SaveArticle:
         text = objs.webframe().text()
         if self.file and text:
             self.fix_ext(ext='.txt')
-            sh.WriteTextFile (file       = self.file
-                             ,AskRewrite = False
+            sh.WriteTextFile (file    = self.file
+                             ,Rewrite = True
                              ).write(text.strip())
         else:
             sh.com.empty(f)
@@ -1988,10 +1988,10 @@ class WebFrame:
                              )
         code = mh.objs._html.run()
         if code:
-            sh.WriteTextFile (file       = sh.objs.tmpfile(suffix='.htm'
-                                                          ,Delete=0
-                                                          )
-                             ,AskRewrite = False
+            sh.WriteTextFile (file    = sh.objs.tmpfile (suffix = '.htm'
+                                                        ,Delete = 0
+                                                        )
+                             ,Rewrite = True
                              ).write(code)
             sh.Launch(target=sh.objs._tmpfile).auto()
         else:

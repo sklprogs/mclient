@@ -565,8 +565,8 @@ if __name__ == '__main__':
     '''
     page.run()
     timer.end()
-    '''sh.WriteTextFile (file       = '/home/pete/tmp/ars/do.txt'
-                        ,AskRewrite = 0
+    '''sh.WriteTextFile (file    = '/home/pete/tmp/ars/do.txt'
+                        ,Rewrite = True
                         ).write(text=text)
     '''
     if page._page:
