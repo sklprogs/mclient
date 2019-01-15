@@ -2434,4 +2434,7 @@ if  __name__ == '__main__':
         sh.objs.mes (f,_('WARNING')
                     ,_('Unable to continue due to an invalid configuration.')
                     )
+    sh.log.append (f,_('DEBUG')
+                  ,_('Goodbye!')
+                  )
     sg.objs.end()
