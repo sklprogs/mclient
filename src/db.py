@@ -14,11 +14,10 @@ gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 
-''' #note: don't forget to change 'self.Selectable', 'self._cols',
-    'self.SortTerms' externally
-'''
 class DB:
-
+    ''' #note: don't forget to change 'self.Selectable', 'self._cols',
+        'self.SortTerms' externally.
+    '''
     def __init__(self):
         self.values()
         self.reset()

@@ -1078,27 +1078,6 @@ class Text:
             if match:
                 return match.group(1)
 
-    #todo: del
-    def extract_date_hash(self):
-        f = '[shared] shared.Text.extract_date_hash'
-        hash = -1
-        # Only strings at input
-        result = self.text.split('-')
-        if len(result) == 3:
-            self.text = result[0]
-            hash = self.str2int() * 365
-            self.text = result[1]
-            hash += self.str2int() * 12
-            self.text = result[2]
-            hash += self.str2int()
-        '''
-        else:
-           objs.mes (f,_('WARNING')
-                    ,_('Wrong input data!')
-                    )
-        '''
-        return hash
-
     def enclose(self,sym='"'):
         open_sym = close_sym = sym
         if sym == '(':
@@ -4587,6 +4566,31 @@ class Commands:
 
     def __init__(self):
         self.lang()
+    
+    def easy_time(self,length=0):
+        f = '[shared] shared.Commands.easy_time'
+        result = '00:00:00'
+        if length:
+            hours   = length // 3600
+            all_sec = hours * 3600
+            minutes = (length - all_sec) // 60
+            all_sec += minutes * 60
+            seconds = length - all_sec
+            mes     = []
+            if hours:
+                mes.append(str(hours))
+            item = str(minutes)
+            if hours and len(item) == 1:
+                item = '0' + item
+            mes.append(item)
+            item = str(seconds)
+            if len(item) == 1:
+                item = '0' + item
+            mes.append(item)
+            result = ':'.join(mes)
+        else:
+            com.empty(f)
+        return result
     
     def yt_date(self,date):
         # Convert a date provided by Youtube API to a timestamp
