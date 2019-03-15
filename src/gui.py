@@ -752,9 +752,9 @@ class WebFrame:
         sg.Scrollbar (parent = self.frame_y
                      ,scroll = self
                      )
-        sg.Scrollbar (parent     = self.bottom
-                     ,scroll     = self
-                     ,Horizontal = True
+        sg.Scrollbar (parent = self.bottom
+                     ,scroll = self
+                     ,Horiz  = True
                      )
         
     def icon(self,path=None):
