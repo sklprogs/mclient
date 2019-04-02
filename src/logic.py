@@ -436,7 +436,7 @@ class Objects:
     def __init__(self):
         self._online = self._request = self._order = self._default \
                      = None
-        
+    
     def default(self,product='mclient'):
         if not self._default:
             self._default = DefaultConfig(product=product)

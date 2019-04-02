@@ -9,6 +9,7 @@ import shared    as sh
 import sharedGUI as sg
 import logic     as lg
 import gui       as gi
+import stardict  as st
 import page      as pg
 import tags      as tg
 import elems     as el
@@ -37,7 +38,19 @@ if __name__ == '__main__':
 class Objects:
 
     def __init__(self):
-        self._ext_dics = self._webframe = self._blocks_db = None
+        self._webframe = self._blocks_db = self._ext_dics = None
+    
+    def ext_dics(self):
+        if self._ext_dics is None:
+            idics = st.AllDics(lg.objs.default().dics())
+            sg.objs.waitbox().reset (func_title = f
+                                    ,message    = _('Load local dictionaries')
+                                    )
+            sg.objs._waitbox.show()
+            idics.load()
+            sg.objs._waitbox.close()
+            self._ext_dics = idics
+        return self._ext_dics
 
     def blocks_db(self):
         if not self._blocks_db:
@@ -49,11 +62,6 @@ class Objects:
         if not self._webframe:
             self._webframe = WebFrame()
         return self._webframe
-
-    def ext_dics(self):
-        if not self._ext_dics:
-            self._ext_dics = pg.ExtDics(path=lg.objs.default().dics())
-        return self._ext_dics
 
 
 
@@ -1210,36 +1218,12 @@ class WebFrame:
             ptimer = sh.Timer(func_title=f+' (Page)')
             ptimer.start()
             page = pg.Page (source       = lg.objs._request._source
-                           ,lang         = lg.objs._request._lang
                            ,search       = lg.objs._request._search
                            ,url          = lg.objs._request._url
                            ,win_encoding = sh.globs['var']['win_encoding']
                            ,ext_dics     = objs.ext_dics()
                            ,timeout      = sh.globs['int']['timeout']
-                           #,file        = '/home/pete/tmp/ars/random fury.txt'
-                           #,file        = '/home/pete/tmp/ars/lottery.txt'
-                           #,file        = '/home/pete/tmp/ars/таратайка.txt'
-                           #,file        = '/home/pete/tmp/ars/painting.txt'
-                           #,file        = '/home/pete/tmp/ars/рабочая документация.txt'
-                           #,file        = '/home/pete/tmp/ars/do.txt'
-                           #,file        = '/home/pete/tmp/ars/set.txt'
-                           #,file        = '/home/pete/tmp/ars/get.txt'
-                           #,file        = '/home/pete/tmp/ars/pack.txt'
-                           #,file        = '/home/pete/tmp/ars/counterpart.txt'
-                           #,file        = '/home/pete/tmp/ars/test.txt'
-                           #,file        = '/home/pete/tmp/ars/cut.txt'
-                           #,file        = '/home/pete/tmp/ars/tun.txt'
-                           #,file        = '/home/pete/tmp/ars/martyr.txt'
-                           #,file        = '/home/pete/tmp/ars/œuf.txt'
-                           #,file        = '/home/pete/tmp/ars/forward.txt'
-                           #,file        = '/home/pete/tmp/ars/palate.txt'
-                           #,file        = '/home/pete/tmp/ars/sdict_EnRu_full - cut (manual).txt'
-                           #,file        = '/home/pete/tmp/ars/sdict_EnRu_full - cut (manual)2.txt'
-                           #,file        = '/home/pete/tmp/ars/sdict_EnRu_full - cut (auto).txt'
-                           #,file        = '/home/pete/tmp/ars/scheming.txt'
-                           #,file        = '/home/pete/tmp/ars/work.txt'
-                           #,file        = '/home/pete/tmp/ars/mayhem - phrases.html'
-                           #,file        = '/home/pete/tmp/ars/block.txt'
+                           #,file        = '/tmp/painting.txt'
                            )
             page.run()
             ptimer.end()

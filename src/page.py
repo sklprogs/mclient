@@ -9,10 +9,9 @@ import re
 import urllib.request
 import html
 import ssl
-import pystardict as pd
-import shared     as sh
-import sharedGUI  as sg
-import offline    as of
+import shared    as sh
+import sharedGUI as sg
+import offline   as of
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -31,196 +30,22 @@ p7 = '<span STYLE="color:black">'
 p8 = '">'
 
 
-class ExtDic:
-
-    def __init__ (self,path,lang='English'
-                 ,name='External',Block=False
-                 ):
-        # Full path without extension (as managed by pystardict)
-        self._path = path
-        self._lang = lang
-        self._name = name
-        self.Block = Block
-        self._dic  = None
-        self.load()
-
-    def load(self):
-        f = '[MClient] page.ExtDic.load'
-        sh.log.append (f,_('INFO')
-                      ,_('Load "%s"') % self._path
-                      )
-        try:
-            self._dic = pd.Dictionary(self._path)
-        except:
-            sh.objs.mes (f,_('WARNING')
-                        ,_('Failed to load "%s"!') % self._path
-                        )
-
-    def get(self,search):
-        f = '[MClient] page.ExtDic.get'
-        result = ''
-        if self._dic:
-            try:
-                result = self._dic.get(k=search)
-            except:
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Failed to parse "%s"!') % self._path
-                            )
-        else:
-            sh.com.empty(f)
-        return result
-
-
-
-class ExtDics:
-
-    def __init__(self,path):
-        self._dics    = []
-        self._dics_en = []
-        self._dics_de = []
-        self._dics_es = []
-        self._dics_it = []
-        self._dics_fr = []
-        self._path    = path
-        self.dir      = sh.Directory(path=self._path)
-        self._files   = self.dir.files()
-        self.Success  = self.dir.Success
-        self._list()
-        self.load()
-
-    def get(self,lang='English',search=''):
-        f = '[MClient] page.ExtDics.get'
-        if self.Success:
-            dics = [dic for dic in self._dics if dic._lang == lang \
-                    and not dic.Block
-                   ]
-            lst  = []
-            for dic in dics:
-                tmp = dic.get(search=search)
-                if tmp:
-                    # Set offline dictionary title
-                    lst.append(p4 + dic._name + p8 + tmp)
-            return '\n'.join(lst)
-        else:
-            sh.com.cancel(f)
-
-    def load(self):
-        f = '[MClient] page.ExtDics.load'
-        if self.Success:
-            sg.objs.waitbox().reset (func_title = f
-                                    ,message    = _('Load offline dictionaries')
-                                    )
-            sg.objs._waitbox.show()
-            for elem in self._en:
-                path = os.path.join(self._path,elem)
-                self._dics.append (ExtDic (path = path
-                                          ,lang = 'English'
-                                          ,name = elem
-                                          )
-                                  )
-            for elem in self._de:
-                path = os.path.join(self._path,elem)
-                self._dics.append (ExtDic (path = path
-                                          ,lang = 'German'
-                                          ,name = elem
-                                          )
-                                  )
-            for elem in self._es:
-                path = os.path.join(self._path,elem)
-                self._dics.append (ExtDic (path = path
-                                          ,lang = 'Spanish'
-                                          ,name = elem
-                                          )
-                                  )
-            for elem in self._it:
-                path = os.path.join(self._path,elem)
-                self._dics.append (ExtDic (path = path
-                                          ,lang = 'Italian'
-                                          ,name = elem
-                                          )
-                                  )
-            for elem in self._fr:
-                path = os.path.join(self._path,elem)
-                self._dics.append (ExtDic (path = path
-                                          ,lang = 'French'
-                                          ,name = elem
-                                          )
-                                  )
-            sg.objs._waitbox.close()
-            ''' Leave only those dictionaries that were successfully
-                loaded
-            '''
-            self._dics = [x for x in self._dics if x._dic]
-            sh.log.append (f,_('INFO')
-                          ,_('%d offline dictionaries have been loaded')\
-                          % len(self._dics)
-                          )
-        else:
-            sh.com.cancel(f)
-
-    def _list(self):
-        if self._files:
-            self._filenames = set([sh.Path(file).filename().replace('.dict','') for file in self._files])
-            #todo: elaborate (make automatical, use language codes)
-            #todo: forget 'Ru', check for 1st upper and 2nd lower letters
-            self._en        = [elem for elem in self._filenames \
-                               if 'RuEn' in elem or 'EnRu' in elem
-                              ]
-            self._de        = [elem for elem in self._filenames \
-                               if 'RuDe' in elem or 'DeRu' in elem
-                              ]
-            self._es        = [elem for elem in self._filenames \
-                               if 'RuEs' in elem or 'EsRu' in elem
-                              ]
-            self._it        = [elem for elem in self._filenames \
-                               if 'RuIt' in elem or 'ItRu' in elem
-                              ]
-            self._fr        = [elem for elem in self._filenames \
-                               if 'RuFr' in elem or 'FrRu' in elem
-                              ]
-        else:
-            self._filenames = []
-            self._en        = []
-            self._de        = []
-            self._es        = []
-            self._it        = []
-            self._fr        = []
-
-    def debug(self):
-        f = '[MClient] page.ExtDics.debug'
-        message = 'English:\n'
-        message += '\n'.join(self._en) + '\n\n'
-        message += 'German:\n'
-        message += '\n'.join(self._de) + '\n\n'
-        message += 'French:\n'
-        message += '\n'.join(self._fr) + '\n\n'
-        message += 'Spanish:\n'
-        message += '\n'.join(self._es) + '\n\n'
-        message += 'Italian:\n'
-        message += '\n'.join(self._it) + '\n\n'
-        sh.objs.mes (f,_('INFO')
-                    ,message
-                    )
-
-
-
 class Page:
 
-    def __init__(self,source=_('All'),lang='English'
-                ,search='~',url='',win_encoding='windows-1251'
-                ,ext_dics=[],file=None,timeout=6
-                ):
+    def __init__ (self,source=_('All'),search='~'
+                 ,url='',win_encoding='windows-1251'
+                 ,ext_dics=None,file=None,timeout=6
+                 ):
         f = '[MClient] page.Page.__init__'
         self.values()
         self._source       = source
-        self._lang         = lang
         self._search       = search
         self._url          = url
         self._win_encoding = win_encoding
         self.ext_dics      = ext_dics
         self._file         = file
         self._timeout      = timeout
-        if not self._source or not self._lang or not self._search \
+        if not self._source or not self._search \
                             or not self._win_encoding:
             self.Success   = False
             sh.com.empty(f)
@@ -231,16 +56,18 @@ class Page:
         self.HasLocal  = False
     
     def run(self):
-        self.get                ()
-        self.invalid            ()
+        self.get()
+        self.invalid()
         # HTML specific
-        self.decode_entities    ()
-        self.invalid2           ()
+        self.decode_entities()
+        self.invalid2()
         # An excessive space must be removed after unescaping the page
         self.mt_specific_replace()
-        self.common_replace     () # HTML specific
-        self.article_not_found  () # HTML specific
-        self.unsupported        ()
+        # HTML specific
+        self.common_replace()
+        # HTML specific
+        self.article_not_found()
+        self.unsupported()
         return self._page
 
     ''' Remove characters from a range not supported by Tcl 
@@ -278,13 +105,25 @@ class Page:
         ''' Do this before 'common_replace'. Splitting terms is hindered
             without this.
         '''
-        self._page = self._page.replace('>;  <','><')
-        self._page = self._page.replace('Требуется авторизация','')
-        self._page = self._page.replace('Вы знаете перевод этого слова? Добавьте его в словарь:','')
-        self._page = self._page.replace('Вы знаете перевод этого выражения? Добавьте его в словарь:','')
+        self._page = self._page.replace ('>;  <'
+                                        ,'><'
+                                        )
+        self._page = self._page.replace ('Требуется авторизация'
+                                        ,''
+                                        )
+        self._page = self._page.replace ('Вы знаете перевод этого слова? Добавьте его в словарь:'
+                                        ,''
+                                        )
+        self._page = self._page.replace ('Вы знаете перевод этого выражения? Добавьте его в словарь:'
+                                        ,''
+                                        )
         self._page = self._page.replace('</span>Наблюдаются проблемы со входом из Хрома<span lang="en-us"> (</span>на','</span><span lang="en-us"></span>')
-        self._page = self._page.replace('сайте кое-что устарело, но пока не удаётся поменять','')
-        self._page = self._page.replace('</a>, содержащие <strong>','</a><strong>')
+        self._page = self._page.replace ('сайте кое-что устарело, но пока не удаётся поменять'
+                                        ,''
+                                        )
+        self._page = self._page.replace ('</a>, содержащие <strong>'
+                                        ,'</a><strong>'
+                                        )
 
     # HTML specific
     def article_not_found(self):
@@ -327,11 +166,11 @@ class Page:
             self._page = self._page.replace('&nbsp;Вы знаете перевод этого выражения? Добавьте его в словарь:','').replace('&nbsp;Вы знаете перевод этого слова? Добавьте его в словарь:','').replace('&nbsp;Требуется авторизация<br>&nbsp;Пожалуйста, войдите на сайт под Вашим именем','').replace('Термины, содержащие ','')
             self._page = re.sub('[:]{0,1}[\s]{0,1}все формы слов[а]{0,1} \(\d+\)','',self._page)
 
-    ''' Convert HTML entities to a human readable format, e.g.,
-        '&copy;' -> '©'
-    '''
-    # HTML specific
     def decode_entities(self):
+        ''' HTML-specific
+            Convert HTML entities to a human readable format, e.g.,
+            '&copy;' -> '©'
+        '''
         f = '[MClient] page.Page.decode_entities'
         #todo: do we need to check this?
         if self._source in (_('All'),_('Online')):
@@ -394,12 +233,13 @@ class Page:
                             )
 
     def _get_offline(self):
+        f = '[MClient] page.Page._get_offline'
         if self.ext_dics:
-            self._page = self.ext_dics.get (lang   = self._lang
-                                           ,search = self._search
-                                           )
+            self._page = self.ext_dics.get(self._search)
             if self._page:
                 self.HasLocal = True
+        else:
+            sh.com.empty(f)
 
     def disamb_mt(self):
         # This is done to speed up and eliminate tag disambiguation
@@ -413,7 +253,7 @@ class Page:
         f = '[MClient] page.Page.get'
         if not self._page:
             if self._file:
-                read = sh.ReadTextFile(file=self._file)
+                read         = sh.ReadTextFile(file=self._file)
                 self._page   = read.get()
                 self.Success = read.Success
                 self.disamb_mt()
@@ -429,7 +269,8 @@ class Page:
                     self._get_offline()
                     if self.HasLocal:
                         self._page = of.stardict (text   = self._page
-                                                 ,header = self._search)
+                                                 ,header = self._search
+                                                 )
                 elif self._source == _('Online'):
                     self._get_online()
                     self.disamb_mt()
@@ -437,7 +278,8 @@ class Page:
                     self._get_offline()
                     if self.HasLocal:
                         self._page = of.stardict (text   = self._page
-                                                 ,header = self._search)
+                                                 ,header = self._search
+                                                 )
                 else:
                     sh.objs.mes (f,_('ERROR')
                                 ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
@@ -552,10 +394,9 @@ if __name__ == '__main__':
     sg.objs.start()
     timer = sh.Timer(func_title=f)
     timer.start()
-    page = Page (source   = _('Online')
-                ,search   = 'preceding'
-                ,file     = '/home/pete/tmp/ars/preceding.txt'
-                ,ext_dics = ExtDics(path=lg.objs.default().dics())
+    page = Page (source = _('Online')
+                ,search = 'preceding'
+                ,file   = '/tmp/dics/painting.txt'
                 )
     '''
     page = Page (source = _('Online')

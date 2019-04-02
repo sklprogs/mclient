@@ -493,9 +493,8 @@ class Tags:
                     ,message
                     )
         '''
-        words = sh.Words (text    = message
-                         ,OrigCyr = 1
-                         ,Auto    = 0
+        words = sh.Words (text = message
+                         ,Auto = 1
                          )
         words.sent_nos()
         sg.objs.txt(words=words).reset_data()
