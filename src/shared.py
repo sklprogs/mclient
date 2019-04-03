@@ -4377,10 +4377,9 @@ class Links:
 
 
 class FilterList:
-    ''' Filter base names (case-ignorant) of files and folders in a path
-        Blacklist is a list of patterns, not obligatory full names
+    ''' Filter base names (case-ignorant) of files & folders in a path.
+        Blacklist is a list of patterns, not obligatory full names.
     '''
-
     def __init__(self,path,blacklist=[]):
         self._list   = []
         self._path   = path
