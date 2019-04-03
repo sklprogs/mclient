@@ -1,5 +1,4 @@
 
-- Rename *.idx.gz to *.idx
 - Add Control-Q for History
 - Unite cells of the same language if the direction is bilingual (to prevent from erroneously dividing parts of the same cell: https://www.multitran.ru/c/M.exe?a=3&&s=flight%20idle&l1=1&l2=2)
 - implement "define:" in the search field
