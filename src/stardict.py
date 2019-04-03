@@ -374,8 +374,7 @@ class AllDics:
                         if result:
                             # Set offline dictionary title
                             lst.append ('<a title="' + dic._title \
-                                                     + '">' + result \
-                                                     + '</a>'
+                                                     + '"></a>' + result
                                        )
                     else:
                         sh.com.empty(f)
