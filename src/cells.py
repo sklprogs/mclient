@@ -41,15 +41,14 @@ class Block:
 
 
 
-# Update Block and Priority in DB before sorting cells
-''' This complements DB with values that must be dumped into DB before
-    sorting it
-    Needs attributes in blocks: NO, DICA, TYPE, TEXT (test purposes
-    only)
-    Modifies attributes:        BLOCK, PRIORITY
-'''
 class BlockPrioritize:
-    
+    ''' Update Block and Priority in DB before sorting cells.
+        This complements DB with values that must be dumped into DB
+        before sorting it.
+        Needs attributes in blocks: NO, DICA, TYPE, TEXT (test purposes
+        only).
+        Modifies attributes:        BLOCK, PRIORITY
+    '''
     def __init__(self,data,order,Block=False
                 ,Prioritize=False,phrase_dic=None
                 ):
@@ -159,15 +158,15 @@ class BlockPrioritize:
 
 
 
-''' This re-assigns DIC, WFORM, SPEECH, TRANSC types
-    We assume that sqlite has already sorted DB with 'BLOCK IS NOT 1'
-    Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL, DICA, WFORMA,
-                                SPEECHA, TRANSCA
-    Modifies attributes:        TEXT, ROWNO, COLNO, CELLNO
-'''
 class Cells:
-    
-    # Including fixed columns
+    ''' This re-assigns DIC, WFORM, SPEECH, TRANSC types.
+        We assume that sqlite has already sorted DB with
+        'BLOCK IS NOT 1'.
+        Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL, DICA,
+                                    WFORMA, SPEECHA, TRANSCA
+        Modifies attributes:        TEXT, ROWNO, COLNO, CELLNO
+        #note: collimit at input: fixed columns are included
+    '''
     def __init__ (self,data,cols,collimit=10
                  ,phrase_dic=None,Reverse=False
                  ,ExpandSpeech=False
@@ -187,11 +186,11 @@ class Cells:
             self.Success  = False
             sh.com.empty(f)
         
-    ''' The 'Phrases' section comes the latest in MT, therefore,
-        it inherits fixed columns of the preceding dictionary which are
-        irrelevant. Here we clear them.
-    '''
     def clear_phrases(self):
+        ''' The 'Phrases' section comes the latest in MT, therefore,
+            it inherits fixed columns of the preceding dictionary which
+            are irrelevant. Here we clear them.
+        '''
         if self._phrase_dic:
             for block in self._blocks:
                 if block._dica == self._phrase_dic:
@@ -222,12 +221,12 @@ class Cells:
                 else:
                     transca = block._transca
 
-    ''' Reassign COLNO to start with 0 if separate words have been found
-        (all fixed columns are empty). This allows to avoid the effect
-        when a column with the 1st term is stretched owing to empty
-        fixed columns.
-    '''
     def sep_words(self):
+        ''' Reassign COLNO to start with 0 if separate words have been
+            found (all fixed columns are empty). This allows to avoid
+            the effect when a column with the 1st term is stretched
+            owing to empty fixed columns.
+        '''
         min_j = len(self._cols)
         for block in self._blocks:
             if block._text and block.j < min_j:
@@ -356,10 +355,10 @@ class Cells:
                     self._blocks[x].j = len(self._cols)
                     j += 1
                     
-    ''' Create a vertically reversed view. This generally differs from
-        'wrap' in that we do not use 'collimit'.
-    '''
     def wrap_y(self):
+        ''' Create a vertically reversed view. This generally differs
+            from 'wrap' in that we do not use 'collimit'.
+        '''
         i = j = 0
         for x in range(len(self._blocks)):
             if self._cols and self._blocks[x]._type == self._cols[0] \
@@ -459,14 +458,13 @@ class Cells:
 
 
 
-''' This is view-specific and should be recreated each time.
-    We assume that sqlite has already sorted DB with 'BLOCK IS NOT 1'
-    and all cell manipulations are completed
-    Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL
-    Modifies attributes:        POS1, POS2
-'''
 class Pos:
-    
+    ''' This is view-specific and should be recreated each time.
+        We assume that sqlite has already sorted DB with
+        'BLOCK IS NOT 1' and all cell manipulations are completed.
+        Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL
+        Modifies attributes:        POS1, POS2
+    '''
     def __init__(self,data,raw_text):
         f = '[MClient] cells.Pos.__init__'
         self._blocks   = []
@@ -525,7 +523,6 @@ class Pos:
                  ).print()
     
     def gen_poses(self):
-        f = '[MClient] cells.Pos.gen_poses'
         ''' We generate positions here according to the text produced by 
             TkinterHtml's 'widget.text()' command.
             Peculiarities of the retrieved text:
@@ -542,6 +539,7 @@ class Pos:
               used by Tkinter
             - Duplicate spaces are removed
         '''
+        f = '[MClient] cells.Pos.gen_poses'
         last = 0
         for block in self._blocks:
             text = sh.Text(text=block._text.strip()).delete_duplicate_spaces()
@@ -579,21 +577,19 @@ class Pos:
 
 
 
-''' Creating a selection requires 4 parameters to be calculated:
-    "self.widget.tag('add','selection',node1,pos1,node2,pos2)"
-    'node1' usually equals to 'node2' (for a single block this is 
-    always true because it represents a single tag and therefore 
-    lies within a single node).
-    The current node can be calculated using:
-    "node1,node2 = self.widget.node(True,event.x,event.y)"
-    The main catch here is that the remaining pos1 and pos2 
-    are not equal for some reason to positions calculated
-    for the text generated by 'widget.text()' (_index[1], 
-    _index[3]). Therefore, we need an additional 'index' 
-    command.
-'''
 class Pages:
-    
+    ''' Creating a selection requires 4 parameters to be calculated:
+        "self.widget.tag('add','selection',node1,pos1,node2,pos2)"
+        'node1' usually equals to 'node2' (for a single block this is
+        always true because it represents a single tag and therefore 
+        lies within a single node).
+        The current node can be calculated using:
+        "node1,node2 = self.widget.node(True,event.x,event.y)"
+        The main catch here is that the remaining pos1 and pos2 are not
+        equal for some reason to positions calculated for the text
+        generated by 'widget.text()' (_index[1], _index[3]). Therefore,
+        we need an additional 'index' command.
+    '''
     def __init__(self,obj,blocks):
         f = '[MClient] cells.Pages.__init__'
         self.obj     = obj

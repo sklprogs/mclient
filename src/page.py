@@ -70,11 +70,11 @@ class Page:
         self.unsupported()
         return self._page
 
-    ''' Remove characters from a range not supported by Tcl 
-        (and causing a Tkinter error). Sample requests causing 
-        the error: Multitran, EN-RU: 'top', 'et al.'
-     '''
     def unsupported(self):
+        ''' Remove characters from a range not supported by Tcl 
+            (and causing a Tkinter error). Sample requests causing
+            the error: Multitran, EN-RU: 'top', 'et al.'
+        '''
         self._page = [char for char in self._page if ord(char) \
                       in range(65536)
                      ]
@@ -168,6 +168,7 @@ class Page:
 
     def decode_entities(self):
         ''' HTML-specific
+            Needed both for MT and Stardict
             Convert HTML entities to a human readable format, e.g.,
             '&copy;' -> '©'
         '''

@@ -56,31 +56,30 @@ class Block:
 
 
 
-# Process blocks before dumping to DB
-''' About filling 'terma':
-    - We fill 'terma' from the start in order to ensure the correct
-      'terma' value for blocks having '_same == 1'
-    - We fill 'terma' from the end in order to ensure that 'terma' of
-      blocks of non-selectable types will have the value of the 'term'
-      AFTER those blocks
-    - We fill 'terma' from the end in order to ensure that 'terma' is
-      also filled for blocks having '_same == 0'
-    - When filling 'terma' from the start to the end, in order to set
-      a default 'terma' value, we also search for blocks of the 'phrase'
-      type (just to be safe in such cases when 'phrase' blocks
-      anticipate 'term' blocks). However, we fill 'terma' for 'phrase'
-      blocks from the end to the start because we want the 'phrase'
-      dictionary to have the 'terma' value of the first 'phrase' block
-      AFTER it
-    - Finally, we clear TERMA values for fixed columns. Sqlite sorts ''
-      before a non-empty string, so we ensure thereby that sorting by
-      TERMA will be correct. Otherwise, we would have to correctly
-      calculate TERMA values for fixed columns that will vary depending
-      on the view. Incorrect sorting by TERMA may result in putting
-      a TERM item before fixed columns.
-'''
 class Elems:
-    
+    ''' Process blocks before dumping to DB.
+        About filling 'terma':
+        - We fill 'terma' from the start in order to ensure the correct
+          'terma' value for blocks having '_same == 1'
+        - We fill 'terma' from the end in order to ensure that 'terma'
+          of blocks of non-selectable types will have the value of
+          the 'term' AFTER those blocks
+        - We fill 'terma' from the end in order to ensure that 'terma'
+          is also filled for blocks having '_same == 0'
+        - When filling 'terma' from the start to the end, in order
+          to set a default 'terma' value, we also search for blocks of
+          the 'phrase' type (just to be safe in such cases when
+          'phrase' blocks anticipate 'term' blocks). However, we fill
+          'terma' for 'phrase' blocks from the end to the start because
+          we want the 'phrase' dictionary to have the 'terma' value of
+          the first 'phrase' block AFTER it
+        - Finally, we clear TERMA values for fixed columns. Sqlite
+          sorts '' before a non-empty string, so we ensure thereby that
+          sorting by TERMA will be correct. Otherwise, we would have to
+          correctly calculate TERMA values for fixed columns that will
+          vary depending on the view. Incorrect sorting by TERMA may
+          result in putting a TERM item before fixed columns.
+    '''
     def __init__(self,blocks,articleid,abbr):
         f = '[MClient] elems.Elems.__init__'
         self._data      = []
@@ -117,30 +116,30 @@ class Elems:
     def run(self):
         f = '[MClient] elems.Elems.run'
         if self.Success:
-            self.transc           ()
-            self.phrases          ()
-            self.straight_line    ()
-            self.dic_urls         ()
-            self.comments         ()
-            self.dic_abbr         ()
-            self.dic_abbr_phrases ()
+            self.transc()
+            self.phrases()
+            self.straight_line()
+            self.dic_urls()
+            self.comments()
+            self.dic_abbr()
+            self.dic_abbr_phrases()
             ''' These 2 procedures should not be combined (otherwise,
                 corrections will have the same color as comments)
             '''
-            self.unite_comments   ()
+            self.unite_comments()
             self.unite_corrections()
-            self.speech           ()
-            self.comment_same     ()
-            self.add_space        ()
-            self.fill             ()
-            self.fill_terma       ()
-            self.remove_fixed     ()
-            self.insert_fixed     ()
-            self.fixed_terma      ()
-            self.expand_dica      ()
-            self.selectables      ()
-            self.restore_dic_urls ()
-            self.dump             ()
+            self.speech()
+            self.comment_same()
+            self.add_space()
+            self.fill()
+            self.fill_terma()
+            self.remove_fixed()
+            self.insert_fixed()
+            self.fixed_terma()
+            self.expand_dica()
+            self.selectables()
+            self.restore_dic_urls()
+            self.dump()
         else:
             sh.com.cancel(f)
     
@@ -669,8 +668,8 @@ class PhraseTerma:
         f = '[MClient] elems.PhraseTerma.run'
         if self.Success:
             self.second_phrase()
-            self.phrase_dic   ()
-            self.dump         ()
+            self.phrase_dic()
+            self.dump()
         else:
             sh.com.cancel(f)
 
