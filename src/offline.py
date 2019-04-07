@@ -33,11 +33,10 @@ dic_titles  = ('(австралийское)'
 
 
 
-''' Formatting example:
-<a title="dicEnRu"><k>cut</k><tr>kʌt</tr> I 1. гл. 1) резать, разрезать I cut my arm. ≈ Я порезал руку. Cut the bread. ≈ Разрежьте хлеб. Syn : slash, lance, slit; slice 2) а) завершать, прекращать; кончать Cut the rap. ≈ Хватит болтать. б) жать, косить ∙ Syn : mow, prune
-'''
 class Stardict1:
-    
+    ''' Formatting example:
+        <a title="dicEnRu"><k>cut</k><tr>kʌt</tr> I 1. гл. 1) резать, разрезать I cut my arm. ≈ Я порезал руку. Cut the bread. ≈ Разрежьте хлеб. Syn : slash, lance, slit; slice 2) а) завершать, прекращать; кончать Cut the rap. ≈ Хватит болтать. б) жать, косить ∙ Syn : mow, prune
+    '''
     def __init__(self,text,header='~'):
         self._blocks = []
         self._tags   = []
@@ -188,11 +187,10 @@ class Stardict1:
 
 
 
-''' Formatting example:
-<a title="dicEnRu">1> порез; надрез; _Ex: I cut my arm _общ. Я порезал руку2> короткий путь3> _мат. раздел; _Ex: please refer to this cut обратитесь к этому разделу _Ex: to cut into pieces рассечь на части
-'''
 class Stardict2:
-    
+    ''' Formatting example:
+        <a title="dicEnRu">1> порез; надрез; _Ex: I cut my arm _общ. Я порезал руку2> короткий путь3> _мат. раздел; _Ex: please refer to this cut обратитесь к этому разделу _Ex: to cut into pieces рассечь на части
+    '''
     def __init__(self,text,header='~'):
         self._blocks = []
         self._tags   = []
@@ -275,10 +273,11 @@ class Stardict2:
         #todo: Can we allow decoding before extracting tags?
         self.text = self.text.replace('&gt;','')
     
-    ''' Stripping blocks can be necessary after splitting ';'
-        Allow empty blocks because wrong types can be assigned otherwise
-    '''
     def strip(self):
+        ''' Stripping blocks can be necessary after splitting ';'.
+            Allow empty blocks because wrong types can be assigned
+            otherwise.
+        '''
         self._blocks = [block.strip() for block in self._blocks]
         for i in range(len(self._blocks)):
             if self._blocks[i].endswith(';'):
@@ -345,11 +344,10 @@ class Stardict2:
 
 
 
-''' Formatting example:
-<a title="dicRuEn"><k>цель</k><b>I</b><dtrn>aim</dtrn><b>II</b><c><co>при стрельбе</co></c><dtrn>target</dtrn>
-'''
 class Stardict3:
-    
+    ''' Formatting example:
+        <a title="dicRuEn"><k>цель</k><b>I</b><dtrn>aim</dtrn><b>II</b><c><co>при стрельбе</co></c><dtrn>target</dtrn>
+    '''
     def __init__(self,text):
         self.text = text
         

@@ -84,7 +84,7 @@ class Page:
         ''' Do this before unescaping, otherwise, some tags describing
             wforms will become exactly comments. It seems that 'wform'
             tags are already present. Replacing these tags with
-            altertnative 'wform' tags does not work.
+            alternative 'wform' tags does not work.
         '''
         self._page = self._page.replace('<span STYLE=&#34;color:gray&#34;>','').replace('<span STYLE=&#34;color:black&#34;>','')
 
