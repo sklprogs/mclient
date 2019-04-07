@@ -178,9 +178,9 @@ class Block:
         # Applies to non-blocked cells only
         self._cell_no  = -1
         self._same     = -1
-        ''' '_select' is an attribute of a *cell* which is valid if the
-            cell has a non-blocked block of types 'term', 'phrase' or
-            'transc'
+        ''' '_select' is an attribute of a *cell* which is valid
+            if the cell has a non-blocked block of types 'term',
+            'phrase' or 'transc'.
         '''
         self._select   = -1
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
@@ -254,7 +254,7 @@ class AnalyzeTag:
         self._cur._text = self._block
         ''' #note: The analysis must be reset after '</', otherwise,
             plain text following it will be marked as 'invalid' rather
-            than 'comment'
+            than 'comment'.
         '''
         if self._cur._type != 'invalid':
             self._elems.append(copy.copy(self._cur))
@@ -295,7 +295,7 @@ class AnalyzeTag:
     def comment(self):
         f = '[MClient] tags.AnalyzeTag.comment'
         ''' The tag has a different meaning in online and offline
-            sources, so we must check the source first
+            sources, so we must check the source first.
         '''
         if self._source == _('All'):
             #todo: analyze pages from different sources separately
@@ -371,7 +371,7 @@ class AnalyzeTag:
         '''
         if self._source in (_('All'),_('Online')):
             ''' Otherwise, 'self._block' will be returned when there is
-                no match
+                no match.
             '''
             if purl1 in self._block or purl2 in self._block:
                 ind = self._block.find(purl3)
@@ -381,7 +381,7 @@ class AnalyzeTag:
                 if self._cur._url.endswith(purl4):
                     self._cur._url = self._cur._url.replace(purl4,'')
                     ''' #note: adding a non-Multitran online source will
-                        require code modification
+                        require code modification.
                     '''
                     self._cur._url = self._pair_root + self._cur._url
                 else:
@@ -391,7 +391,7 @@ class AnalyzeTag:
     def transc(self):
         f = '[MClient] tags.AnalyzeTag.transc'
         ''' '<tr>' has a different meaning in online and offline
-            sources, so we must check the source first
+            sources, so we must check the source first.
         '''
         if self._source == _('All'):
             self._transc_mt()
@@ -454,9 +454,10 @@ class Tags:
         self._tags      = []
         self._blocks    = []
 
-    # Split the text by closing tags
-    # To speed up, we remove closing tags right away
     def tags(self):
+        ''' Split the text by closing tags. To speed up, we remove
+            closing tags right away.
+        '''
         if not self._tags:
             Ignore = False
             tmp = ''
@@ -551,9 +552,9 @@ class Tags:
         return self._blocks
 
     def run(self):
-        self.tags         ()
-        self.blocks       ()
-        #self.debug_tags  ()
+        self.tags()
+        self.blocks()
+        #self.debug_tags()
         #self.debug_blocks()
 
 
