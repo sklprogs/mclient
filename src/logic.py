@@ -59,6 +59,33 @@ sample_prior = '''Общая лексика
 '''
 
 
+class Online(sh.Online):
+
+    def __init__ (self,base_str='%s',search_str=''
+                 ,encoding='UTF-8'
+                 ):
+        super().__init__()
+    
+    def get_bytes(self):
+        if not self._bytes:
+            # Otherwise, will not be able to encode 'Ъ'
+            try:
+                self._bytes = bytes (self.search_str
+                                    ,encoding = globs['var']['win_encoding']
+                                    )
+            except:
+                ''' Otherwise, will not be able to encode specific
+                    characters
+                '''
+                try:
+                    self._bytes = bytes (self.search_str
+                                        ,encoding='UTF-8'
+                                        )
+                except:
+                    self._bytes = ''
+        return self._bytes
+
+
 
 class DefaultConfig:
     
@@ -435,7 +462,7 @@ class Objects:
     
     def __init__(self):
         self._online = self._request = self._order = self._default \
-                     = None
+                     = self._online_mt = None
     
     def default(self,product='mclient'):
         if not self._default:
@@ -443,12 +470,17 @@ class Objects:
             self._default.run()
         return self._default
     
+    def online_mt(self):
+        if self._online_mt is None:
+            self._online_mt = Online()
+        return self._online_mt
+    
     def online(self):
         #todo: create a sub-source
         if self.request()._source in (_('All'),_('Online')):
-            return sh.objs.online_mt()
+            return objs.online_mt()
         else:
-            return sh.objs.online_other()
+            return sh.objs.online()
     
     def request(self):
         if self._request is None:

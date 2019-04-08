@@ -1482,12 +1482,10 @@ class WebFrame:
         if lg.objs.request()._source == _('Offline'):
             lg.objs.online().reset (base_str   = self.get_pair()
                                    ,search_str = lg.objs.request()._search
-                                   ,MTSpecific = False
                                    )
         else:
             lg.objs.online().reset (base_str   = self.get_pair()
                                    ,search_str = lg.objs.request()._search
-                                   ,MTSpecific = True
                                    )
             lg.objs._request._url = lg.objs.online().url()
         sh.log.append (f,_('DEBUG')

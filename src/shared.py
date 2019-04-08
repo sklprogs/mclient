@@ -2405,77 +2405,57 @@ class Config:
 
 
 class Online:
-
+    ''' If you get 'TypeError("quote_from_bytes() expected bytes")',
+        then you probably forgot to call 'self.reset' here or
+        in children classes.
+    '''
     def __init__ (self,base_str='%s',search_str=''
-                 ,encoding='UTF-8',MTSpecific=False
+                 ,encoding='UTF-8'
                  ):
         self.reset (base_str   = base_str
                    ,search_str = search_str
                    ,encoding   = encoding
-                   ,MTSpecific = MTSpecific
                    )
 
-    def bytes_common(self):
+    def get_bytes(self):
         if not self._bytes:
             self._bytes = bytes (self.search_str
                                 ,encoding = self.encoding
                                 )
-
-    def bytes_multitran(self):
-        if not self._bytes:
-            # Otherwise, will not be able to encode 'Ъ'
-            try:
-                self._bytes = bytes (self.search_str
-                                    ,encoding = globs['var']['win_encoding']
-                                    )
-            except:
-                ''' Otherwise, will not be able to encode specific
-                    characters
-                '''
-                try:
-                    self._bytes = bytes (self.search_str
-                                        ,encoding='UTF-8'
-                                        )
-                except:
-                    self._bytes = ''
-
-    def bytes(self):
-        if self.MTSpecific:
-            self.bytes_multitran()
-        else:
-            self.bytes_common()
         return self._bytes
 
     # Open a URL in a default browser
     def browse(self):
         f = '[shared] shared.Online.browse'
         try:
-            webbrowser.open(self.url(),new=2,autoraise=True)
-        except:
+            webbrowser.open (url       = self.url()
+                            ,new       = 2
+                            ,autoraise = True
+                            )
+        except Exception as e:
             objs.mes (f,_('ERROR')
-                     ,_('Failed to open URL "%s" in a default browser!')\
-                     % self._url
+                     ,_('Failed to open URL "%s" in a default browser!\n\nDetails: %s')\
+                     % (self._url,str(e))
                      )
 
     # Create a correct online link (URI => URL)
     def url(self):
         f = '[shared] shared.Online.url'
         if not self._url:
-            self._url = self.base_str % urllib.parse.quote(self.bytes())
+            self._url = self.base_str % urllib.parse.quote(self.get_bytes())
             log.append (f,_('DEBUG')
                        ,str(self._url)
                        )
         return self._url
 
     def reset (self,base_str='',search_str=''
-              ,encoding='UTF-8',MTSpecific=False
+              ,encoding='UTF-8'
               ):
-        self.encoding   = encoding
-        self.MTSpecific = MTSpecific
-        self.base_str   = base_str
-        self.search_str = search_str
         self._bytes     = None
         self._url       = None
+        self.encoding   = encoding
+        self.base_str   = base_str
+        self.search_str = search_str
 
 
 
@@ -3783,8 +3763,7 @@ class Objects:
     '''
     def __init__(self):
         self._enchant = self._morph = self._pretty_table = self._pdir \
-                      = self._mes = self._online_mt \
-                      = self._online_other = self._tmpfile = None
+                      = self._mes = self._online = self._tmpfile = None
 
     def tmpfile(self,suffix='.htm',Delete=0):
         if self._tmpfile is None:
@@ -3793,15 +3772,10 @@ class Objects:
                                         )
         return self._tmpfile
     
-    def online_mt(self):
-        if self._online_mt is None:
-            self._online_mt = Online(MTSpecific=True)
-        return self._online_mt
-
-    def online_other(self):
-        if self._online_other is None:
-            self._online_other = Online(MTSpecific=False)
-        return self._online_other
+    def online(self):
+        if self._online is None:
+            self._online = Online()
+        return self._online
     
     def mes (self,func='MAIN',level=_('DEBUG')
             ,message='',Silent=False
