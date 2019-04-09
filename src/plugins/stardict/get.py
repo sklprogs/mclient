@@ -15,6 +15,14 @@ gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 
+''' A directory storing all stardict files.
+    #note: Do not forget to change this variable externally before
+    calling anything from this module.
+'''
+PATH = ''
+
+
+
 class DictZip:
     # Based on https://github.com/cz7asm/pyStarDictViewer
     # Read archives in '.dict.dz' format
@@ -40,7 +48,7 @@ class DictZip:
         self.load()
     
     def load(self):
-        f = '[MClient] stardict.DictZip.load'
+        f = '[MClient] plugins.stardict.get.DictZip.load'
         if self.Success:
             try:
                 self.obj      = open(self._path,'rb')
@@ -101,7 +109,7 @@ class DictZip:
             - Do not rename this function since 'read' can be called
               on a different class.
         '''
-        f = '[MClient] stardict.DictZip.read'
+        f = '[MClient] plugins.stardict.get.DictZip.read'
         if self.Success:
             # Prevent 'ZeroDivisionError'
             if self._len:
@@ -127,7 +135,7 @@ class DictZip:
             sh.com.cancel(f)
 
     def close(self):
-        f = '[MClient] stardict.DictZip.close'
+        f = '[MClient] plugins.stardict.get.DictZip.close'
         if self.Success:
             self.obj.close()
         else:
@@ -168,7 +176,7 @@ class StarDict:
         self._transl = ''
     
     def meta(self):
-        f = '[MClient] stardict.Stardict.meta'
+        f = '[MClient] plugins.stardict.get.Stardict.meta'
         if self.Success:
             if self._ifo:
                 if 'bookname' in self._ifo and 'wordcount' in self._ifo:
@@ -198,7 +206,7 @@ class StarDict:
         ''' Load .ifo data and check that all needed dictionary files
             are present.
         '''
-        f = '[MClient] stardict.Stardict.check'
+        f = '[MClient] plugins.stardict.get.Stardict.check'
         if self.Success:
             try:
                 for line in open(self._fname+'.ifo').readlines()[1:]:
@@ -220,7 +228,7 @@ class StarDict:
         ''' Build a list of (word, (dict_index, length)) tuples
             from .idx and open .dict[.dz] file for reading.
         '''
-        f = '[MClient] stardict.Stardict.load'
+        f = '[MClient] plugins.stardict.get.Stardict.load'
         if self.Success:
             idx   = self._fname + '.idx'
             iopen = open(idx,'rb')
@@ -230,13 +238,12 @@ class StarDict:
             b = data.find(b'\0',a)
             while b > 0:
                 try:
-                    bts = data[a:b].decode('utf-8')
-                except UnicodeDecodeError as e:
-                    print('type of data:',type(data))
-                    self.Success = False
-                self._idx.append ((bts,
-                                   struct.unpack('>LL',data[b+1:b+9])
-                                 ))
+                    self._idx.append ((data[a:b].decode('utf-8'),
+                                       struct.unpack('>LL',data[b+1:b+9])
+                                     ))
+                except Exception as e:
+                    self.fail(f,e)
+                    return
                 a = b + 9
                 b = data.find(b'\0',a)
             if self._wcount != len(self._idx):
@@ -259,7 +266,7 @@ class StarDict:
 
     def unload(self):
         # Release idx word list and opened .dict file
-        f = '[MClient] stardict.Stardict.unload'
+        f = '[MClient] plugins.stardict.get.Stardict.unload'
         if self.Success:
             self._idx = []
             self.dictf.close()
@@ -273,7 +280,7 @@ class StarDict:
         ''' int and slice return coresponding words string key is used
             for reverse lookup.
         '''
-        f = '[MClient] stardict.Stardict.__getitem__'
+        f = '[MClient] plugins.stardict.get.Stardict.__getitem__'
         if self.Success:
             if type(key) is int:
                 return self._idx[key][0]
@@ -291,7 +298,7 @@ class StarDict:
             the search will be performed for the lowest record
             with 'word' as its prefix.
         '''
-        f = '[MClient] stardict.Stardict.search'
+        f = '[MClient] plugins.stardict.get.Stardict.search'
         if self.Success:
             if word == '':
                 return -1
@@ -327,7 +334,7 @@ class StarDict:
             sh.com.cancel(f)
     
     def dict_link(self,index):
-        f = '[MClient] stardict.Stardict.dict_link'
+        f = '[MClient] plugins.stardict.get.Stardict.dict_link'
         if self.Success:
             # Return (dict_index, len) tuple of a word on a given index
             return self._idx[index][1]
@@ -335,7 +342,7 @@ class StarDict:
             sh.com.cancel(f)
 
     def dict_data(self,index):
-        f = '[MClient] stardict.Stardict.dict_link'
+        f = '[MClient] plugins.stardict.get.Stardict.dict_link'
         if self.Success:
             # Return a translation for a word on the given index
             if self.dictf:
@@ -355,13 +362,12 @@ class StarDict:
 
 class AllDics:
     
-    def __init__(self,path=''):
+    def __init__(self):
         self.values()
-        if path:
-            self.reset(path)
+        self.reset()
     
     def rename_idx_gz(self):
-        f = '[MClient] stardict.AllDics.rename_idx_gz'
+        f = '[MClient] plugins.stardict.get.AllDics.rename_idx_gz'
         if self.Success:
             for file in sh.Directory(self._path).files():
                 new_file = file.replace('.idx.gz','.idx')
@@ -373,7 +379,7 @@ class AllDics:
             sh.com.cancel(f)
     
     def get(self,search=''):
-        f = '[MClient] stardict.AllDics.get'
+        f = '[MClient] plugins.stardict.get.AllDics.get'
         if self.Success:
             if search:
                 dics = [dic for dic in self._dics if not dic.Block]
@@ -403,9 +409,9 @@ class AllDics:
         # Do not run anything if 'self.reset' was not run
         self.Success = False
     
-    def reset(self,path):
+    def reset(self):
         self.values()
-        self._path   = path
+        self._path   = PATH
         self.Success = sh.Directory(self._path).Success
         self.rename_idx_gz()
     
@@ -413,7 +419,7 @@ class AllDics:
         ''' Explore all subdirectories of path searching for filenames
             that have all three .ifo, .idx and .dict[.dz] suffixes.
         '''
-        f = '[MClient] stardict.AllDics.walk'
+        f = '[MClient] plugins.stardict.get.AllDics.walk'
         if self.Success:
             if not self._ifos:
                 for root, dirs, files in os.walk(self._path):
@@ -434,7 +440,7 @@ class AllDics:
             sh.com.cancel(f)
     
     def locate(self):
-        f = '[MClient] stardict.AllDics.locate'
+        f = '[MClient] plugins.stardict.get.AllDics.locate'
         if self.Success:
             if not self._dics:
                 if self.walk():
@@ -452,9 +458,13 @@ class AllDics:
             sh.com.cancel(f)
     
     def load(self):
-        f = '[MClient] stardict.AllDics.load'
+        f = '[MClient] plugins.stardict.get.AllDics.load'
         if self.Success:
             if self.locate():
+                sg.objs.waitbox().reset (func_title = f
+                                        ,message    = _('Load local dictionaries')
+                                        )
+                sg.objs._waitbox.show()
                 sh.log.append (f,_('INFO')
                               ,_('Load offline dictionaries')
                               )
@@ -469,23 +479,33 @@ class AllDics:
                               ,_('Dictionaries loaded: %d/%d') \
                               % (len(self._dics),total_no)
                               )
+                sg.objs._waitbox.close()
             else:
                 sh.com.empty(f)
         else:
             sh.com.cancel(f)
 
 
+
+class Objects:
+    
+    def __init__(self):
+        self._all_dics = None
+        
+    def all_dics(self):
+        if self._all_dics is None:
+            self._all_dics = AllDics()
+            self._all_dics.load()
+        return self._all_dics
+
+
+objs = Objects()
+
+
 if __name__ == '__main__':
-    f = '[MClient] stardict.__main__'
+    f = '[MClient] plugins.stardict.get.__main__'
     sg.objs.start()
-    folder = '/home/pete/.config/mclient/dics/'
+    PATH = '/home/pete/.config/mclient/dics/'
     search = 'компьютер'
-    dics = AllDics(folder)
-    sg.objs.waitbox().reset (func_title = f
-                            ,message    = _('Load local dictionaries')
-                            )
-    sg.objs._waitbox.show()
-    dics.load()
-    sg.objs._waitbox.close()
-    sg.fast_txt(dics.get(search))
+    sg.fast_txt(objs.all_dics().get(search))
     sg.objs.end()

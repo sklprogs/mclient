@@ -2,8 +2,11 @@
 # -*- coding: UTF-8 -*-
 
 import os
+import urllib.request
 import html
+import ssl
 import shared as sh
+import plugins.stardict.get
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -57,6 +60,98 @@ sample_prior = '''Общая лексика
 Юридический термин
 Юридический (Н.П.)
 '''
+
+
+class Welcome:
+
+    def __init__ (self,url=None,product='MClient'
+                 ,version='current',timeout=6
+                 ):
+        if not url:
+            ''' 'https://www.multitran.ru' is got faster than
+                'http://www.multitran.ru' (~0.2s)
+            '''
+            url = 'https://www.multitran.ru'
+        self._url       = url
+        self._product   = product
+        self._version   = version
+        self._st_status = len(plugins.stardict.get.objs.all_dics()._dics)
+        self._timeout   = timeout
+        self._mt_status = 'not running'
+        self._mt_color  = 'red'
+        self._st_color  = 'red'
+        self._desc      = sh.List (lst1 = [self._product
+                                          ,self._version
+                                          ]
+                                  ).space_items()
+
+    def online(self):
+        f = '[MClient] logic.Welcome.online'
+        ''' On *some* systems we can get urllib.error.URLError: 
+            <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED].
+            To get rid of this error, we use this small workaround.
+        '''
+        if hasattr(ssl,'_create_unverified_context'):
+            ssl._create_default_https_context = ssl._create_unverified_context
+        else:
+            sh.log.append (f,_('WARNING')
+                          ,_('Unable to use unverified certificates!')
+                          )
+        try:
+            code = urllib.request.urlopen (url     = self._url
+                                          ,timeout = self._timeout
+                                          ).code
+            if (code / 100 < 4):
+                return True
+        except: #urllib.error.URLError, socket.timeout
+            return False
+
+    def generate(self):
+        return '''<html>
+                <body>
+                  <h1>
+                    %s
+                  </h1>
+                  <font face='Serif' size='6'>
+                  <br>
+                    %s
+                  <br>
+                    %s
+                  <br>
+                    %s
+                  <br><br>
+                    %s
+                  <font face='Serif' color='%s' size='6'>%s</font>.
+                  <br>
+                    %s <font color='%s'>%d</font>.
+                  </font>
+                </body>
+              </html>
+        ''' % (_('Welcome to %s!') % self._desc
+              ,_('This program retrieves translation from online/offline sources.')
+              ,_('Use an entry area below to enter a word/phrase to be translated.')
+              ,_('Click the left mouse button on the selection to return its translation. Click the right mouse button on the selection to copy it to clipboard.')
+              ,_('Multitran is ')
+              ,self._mt_color
+              ,self._mt_status
+              ,_('Offline dictionaries loaded:')
+              ,self._st_color
+              ,self._st_status
+              )
+
+    def run(self):
+        if self.online():
+            self._mt_status = _('running')
+            self._mt_color  = 'green'
+        else:
+            self._mt_status = _('not running')
+            self._mt_color  = 'red'
+        if self._st_status == 0:
+            self._st_color = 'red'
+        else:
+            self._st_color = 'green'
+        return self.generate()
+
 
 
 class Online(sh.Online):
@@ -240,9 +335,9 @@ class ConfigMclient(sh.Config):
         # Create these keys before reading the config
         self.path    = objs.default().ihome.add_config('mclient.cfg')
         self.reset()
-        h_read       = sh.ReadTextFile(self.path)
-        self.text    = h_read.get()
-        self.Success = h_read.Success
+        iread        = sh.ReadTextFile(self.path)
+        self.text    = iread.get()
+        self.Success = iread.Success
         self.default()
         if os.path.exists(self.path):
             self.open()
@@ -1043,6 +1138,9 @@ online_dic_urls = (sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_rus'
                   ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_deu']   # ENG <=> DEU, 'l1=1&l2=3&s=%s'
                   ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_est']   # ENG <=> EST, 'l1=1&l2=26&s=%s'
                   )
+
+plugins.stardict.get.PATH = objs.default().dics()
+plugins.stardict.get.objs.all_dics()
 
 
 if __name__ == '__main__':

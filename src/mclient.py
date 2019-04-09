@@ -9,7 +9,6 @@ import shared    as sh
 import sharedGUI as sg
 import logic     as lg
 import gui       as gi
-import stardict  as st
 import page      as pg
 import tags      as tg
 import elems     as el
@@ -23,7 +22,7 @@ gettext.install('mclient','../resources/locale')
 
 
 product = 'MClient'
-version = '5.12'
+version = '6.0'
 
 
 if __name__ == '__main__':
@@ -38,19 +37,7 @@ if __name__ == '__main__':
 class Objects:
 
     def __init__(self):
-        self._webframe = self._blocks_db = self._ext_dics = None
-    
-    def ext_dics(self):
-        if self._ext_dics is None:
-            idics = st.AllDics(lg.objs.default().dics())
-            sg.objs.waitbox().reset (func_title = f
-                                    ,message    = _('Load local dictionaries')
-                                    )
-            sg.objs._waitbox.show()
-            idics.load()
-            sg.objs._waitbox.close()
-            self._ext_dics = idics
-        return self._ext_dics
+        self._webframe = self._blocks_db = None
 
     def blocks_db(self):
         if not self._blocks_db:
@@ -581,10 +568,9 @@ class WebFrame:
         
     def reset(self):
         #'widget.reset' is already done in 'self.fill'
-        welcome = pg.Welcome (url       = sh.globs['var']['pair_root']
-                             ,st_status = len(objs.ext_dics()._dics)
-                             ,product   = product
-                             ,version   = version
+        welcome = lg.Welcome (url     = sh.globs['var']['pair_root']
+                             ,product = product
+                             ,version = version
                              )
         self.fill(welcome.run())
         self.update_buttons()
@@ -1215,26 +1201,17 @@ class WebFrame:
             
             objs._blocks_db._articleid = objs._blocks_db.max_articleid()
             
-            ptimer = sh.Timer(func_title=f+' (Page)')
-            ptimer.start()
-            page = pg.Page (source       = lg.objs._request._source
-                           ,search       = lg.objs._request._search
-                           ,url          = lg.objs._request._url
-                           ,win_encoding = sh.globs['var']['win_encoding']
-                           ,ext_dics     = objs.ext_dics()
-                           ,timeout      = sh.globs['int']['timeout']
-                           #,file        = '/tmp/painting.txt'
-                           )
-            page.run()
-            ptimer.end()
+            text = pg.Page (source   = lg.objs._request._source
+                           ,search   = lg.objs._request._search
+                           ,url      = lg.objs._request._url
+                           ,encoding = sh.globs['var']['win_encoding']
+                           ,timeout  = sh.globs['int']['timeout']
+                           ).run()
             #todo: #fix: assign this for already loaded articles too
-            lg.objs._request._page = page._page
-            ''' #note: #todo: 'Page' returns '_html_raw' for online
-                pages only; this value can be separated for
-                online & offline sources after introducing sub-sources
-                instead of relying on _('All')
-            '''
-            lg.objs._request._html_raw = page._html_raw
+            lg.objs._request._page     = text
+            #cur
+            #todo: redo
+            lg.objs._request._html_raw = ''
             
             tags = tg.Tags (text      = lg.objs._request._page
                            ,source    = lg.objs._request._source
@@ -1282,8 +1259,9 @@ class WebFrame:
             'centre' may have only 1 wform (and a plurality of dics)
         '''
         
-        if not dics or dics and len(dics) == 1 \
-        or page and page.HasLocal or not self._phdic:
+        #cur
+        #todo: redo HasLocal
+        if not dics or dics and len(dics) == 1 or not self._phdic:
             # or check 'lg.objs._request._search' by pattern '\d+ фраз'
             lg.objs._request.SpecialPage = True
         else:

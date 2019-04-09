@@ -1,4 +1,10 @@
 
+- Hardcode 'win_encoding' for multitran.ru and remove config and globs
+  keys
+- Diversify lg.Welcome for different sources (multitran.ru/com)
+- (?) Delete _html_raw
+- stardict.cleanup: move block-creating code to stardict.parse
+- Reimplement: Page.file, delete Page.HasLocal (analyze tags separately).
 - Add Control-Q for History
 - Unite cells of the same language if the direction is bilingual (to prevent from erroneously dividing parts of the same cell: https://www.multitran.ru/c/M.exe?a=3&&s=flight%20idle&l1=1&l2=2)
 - implement "define:" in the search field
@@ -14,8 +20,6 @@
 - Expand dictionary abbreviations for PhraseDic articles
 - (after previous is done) Remove todos in Elems.convert_dic_abbr
 - toggle SelectTermsOnly on-the-fly
-- expand dictionary abbreviations and set them to be a 'dic' type for
-  articles retrieved from 'phrase dic'
 - offline: do not close a block if the previous block comprises '(', but
   not '(' (even when a different language is detected)
 - If there are WFORMA that are identical to the input (e.g., "balls up"),

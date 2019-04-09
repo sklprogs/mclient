@@ -47,7 +47,7 @@ class About:
         
     def labels(self):
         self.label = sg.Label (parent = self.frame1
-                              ,text   = _('Programming: Peter Sklyar, 2015-2018.\nVersion: %s\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n') \
+                              ,text   = _('Programming: Peter Sklyar, 2015-2019.\nVersion: %s\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n') \
                                         % '0.0'
                               ,font   = 'Sans 14'
                               )

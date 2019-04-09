@@ -448,7 +448,10 @@ class Tags:
     def __init__ (self,text,source=_('All')
                  ,pair_root='http://www.multitran.ru/c/M.exe?'
                  ):
-        self._text      = text
+        if text:
+            self._text = list(text)
+        else:
+            self._text = ''
         self._source    = source
         self._pair_root = pair_root
         self._tags      = []

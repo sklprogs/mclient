@@ -2,7 +2,8 @@
 
 import re
 import html
-import shared as sh
+import shared    as sh
+import sharedGUI as sg
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -33,7 +34,50 @@ dic_titles  = ('(австралийское)'
 
 
 
-class Stardict1:
+class Common:
+    
+    def __init__(self,text):
+        self._text = text
+    
+    def unsupported(self):
+        ''' Remove characters from a range not supported by Tcl 
+            (and causing a Tkinter error). Sample requests causing
+            the error: Multitran, EN-RU: 'top', 'et al.'
+        '''
+        self._text = [char for char in self._text if ord(char) \
+                      in range(65536)
+                     ]
+        self._text = ''.join(self._text)
+    
+    def decode_entities(self):
+        ''' Needed both for MT and Stardict. Convert HTML entities
+            to a human readable format, e.g., '&copy;' -> '©'.
+        '''
+        f = '[MClient] plugins.stardict.cleanup.Common.decode_entities'
+        try:
+            self._text = html.unescape(self._text)
+        except:
+            sh.objs.mes (f,_('ERROR')
+                        ,_('Unable to convert HTML entities to UTF-8!')
+                        )
+    
+    def trash(self):
+        self._text = self._text.replace('\r\n','')
+        self._text = self._text.replace('\n','')
+        self._text = self._text.replace('\xa0',' ')
+        while '  ' in self._text:
+            self._text = self._text.replace('  ',' ')
+        self._text = re.sub(r'\>[\s]{0,1}\<','><',self._text)
+    
+    def run(self):
+        self.decode_entities()
+        self.trash()
+        self.unsupported()
+        return self._text
+
+
+
+class Type1:
     ''' Formatting example:
         <a title="dicEnRu"><k>cut</k><tr>kʌt</tr> I 1. гл. 1) резать, разрезать I cut my arm. ≈ Я порезал руку. Cut the bread. ≈ Разрежьте хлеб. Syn : slash, lance, slit; slice 2) а) завершать, прекращать; кончать Cut the rap. ≈ Хватит болтать. б) жать, косить ∙ Syn : mow, prune
     '''
@@ -45,7 +89,7 @@ class Stardict1:
         
     #todo: do this before anything else
     def decode(self):
-        f = '[MClient] offline.Stardict1.decode'
+        f = '[MClient] plugins.stardict.cleanup.Type1.decode'
         try:
             self.text = html.unescape(self.text)
         except:
@@ -187,7 +231,7 @@ class Stardict1:
 
 
 
-class Stardict2:
+class Type2:
     ''' Formatting example:
         <a title="dicEnRu">1> порез; надрез; _Ex: I cut my arm _общ. Я порезал руку2> короткий путь3> _мат. раздел; _Ex: please refer to this cut обратитесь к этому разделу _Ex: to cut into pieces рассечь на части
     '''
@@ -260,7 +304,7 @@ class Stardict2:
     
     #todo: do this before anything else
     def decode(self):
-        f = '[MClient] offline.Stardict2.decode'
+        f = '[MClient] plugins.stardict.cleanup.Type2.decode'
         try:
             self.text = html.unescape(self.text)
         except:
@@ -298,7 +342,7 @@ class Stardict2:
         for block in self._blocks:
             if '<' in block or '>' in block:
                 self._tags.append(block)
-                ''' #todo: create 'dic_abbr' for Stardict2 in order to
+                ''' #todo: create 'dic_abbr' for Type2 in order to
                     expand dictionary abbreviations later.
                 '''
             elif self.dic(block):
@@ -344,7 +388,7 @@ class Stardict2:
 
 
 
-class Stardict3:
+class Type3:
     ''' Formatting example:
         <a title="dicRuEn"><k>цель</k><b>I</b><dtrn>aim</dtrn><b>II</b><c><co>при стрельбе</co></c><dtrn>target</dtrn>
     '''
@@ -365,29 +409,35 @@ class Stardict3:
 
 
 
-#todo: combine shared operations for all Stardict classes
-def stardict(text,header='~'):
-    f = '[MClient] offline.stardict'
-    if '<dtrn>' in text:
-        sh.log.append (f,_('DEBUG')
-                      ,_('Type 3')
-                      )
-        return Stardict3(text=text).run()
-    elif '_Ex:' in text or re.search('\d\>',text):
-        sh.log.append (f,_('DEBUG')
-                      ,_('Type 2')
-                      )
-        return Stardict2(text=text,header=header).run()
+def run(text,header='~'):
+    #todo: combine shared operations for all Stardict classes
+    f = '[MClient] plugins.stardict.cleanup.run'
+    if text and header:
+        text = Common(text).run()
+        if '<dtrn>' in text:
+            sh.log.append (f,_('DEBUG')
+                          ,_('Type 3')
+                          )
+            return Type3(text=text).run()
+        elif '_Ex:' in text or re.search('\d\>',text):
+            sh.log.append (f,_('DEBUG')
+                          ,_('Type 2')
+                          )
+            return Type2 (text   = text
+                         ,header = header
+                         ).run()
+        else:
+            sh.log.append (f,_('DEBUG')
+                          ,_('Type 1')
+                          )
+            return Type1 (text   = text
+                         ,header = header
+                         ).run()
     else:
-        sh.log.append (f,_('DEBUG')
-                      ,_('Type 1')
-                      )
-        return Stardict1(text=text,header=header).run()
-    
+        sh.com.empty(f)
 
 
 if __name__ == '__main__':
-    import sharedGUI as sg
     sg.objs.start()
     sh.objs.mes(Silent=False)
     

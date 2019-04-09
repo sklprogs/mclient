@@ -1,5 +1,10 @@
 
 
+6.0
+* Reimplement reading Stardict files, make import faster and
+  add a support for GZIP files
+* Import dictionary sources as plugins
+
 5.12
 * Wrap up too broad columns
 * Move user files to
