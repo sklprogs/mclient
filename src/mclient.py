@@ -1204,7 +1204,7 @@ class WebFrame:
             text = pg.Page (source   = lg.objs._request._source
                            ,search   = lg.objs._request._search
                            ,url      = lg.objs._request._url
-                           ,encoding = sh.globs['var']['win_encoding']
+                           ,encoding = 'windows-1251'
                            ,timeout  = sh.globs['int']['timeout']
                            ).run()
             #todo: #fix: assign this for already loaded articles too

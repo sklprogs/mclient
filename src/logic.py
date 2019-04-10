@@ -166,7 +166,7 @@ class Online(sh.Online):
             # Otherwise, will not be able to encode 'Ъ'
             try:
                 self._bytes = bytes (self.search_str
-                                    ,encoding = globs['var']['win_encoding']
+                                    ,encoding = 'windows-1251'
                                     )
             except:
                 ''' Otherwise, will not be able to encode specific
@@ -454,7 +454,6 @@ class ConfigMclient(sh.Config):
            ,'repeat_sign2'                :'!!'
            ,'spec_syms'                   :'àáâäāæßćĉçèéêēёëəғĝģĥìíîïīĵķļñņòóôõöōœøšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒЁËƏҒĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒØŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ'
            ,'web_search_url'              :'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s'
-           ,'win_encoding'                :'windows-1251'
                                })
 
     def reset(self):
@@ -1100,7 +1099,7 @@ class Suggestion:
             if not self._items:
                 if self.url():
                     self._items = sh.Get (url      = self._url
-                                         ,encoding = sh.globs['var']['win_encoding']
+                                         ,encoding = 'windows-1251'
                                          ).run()
                     if self._items:
                         self._items = html.unescape(self._items)
