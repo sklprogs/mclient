@@ -500,12 +500,3 @@ class Objects:
 
 
 objs = Objects()
-
-
-if __name__ == '__main__':
-    f = '[MClient] plugins.stardict.get.__main__'
-    sg.objs.start()
-    PATH = '/home/pete/.config/mclient/dics/'
-    search = 'компьютер'
-    sg.fast_txt(objs.all_dics().get(search))
-    sg.objs.end()

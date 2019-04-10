@@ -3,7 +3,8 @@
 
 import re
 import copy
-import shared as sh
+import shared    as sh
+import sharedGUI as sg
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -30,52 +31,26 @@ assert(len(transc_orig) == len(transc_final))
 
 ''' Tag patterns:
     •  Dictionary titles:
-         - Multitran:
-             <a title="...">
-         - Stardict:
-             define them manually by the file name
+        <a title="...">
     •  Abbreviations of dictionaries:
-         - Multitran:
-             <a title="Общая лексика" href="m.exe?a=110&t=60148_1_2&sc=0"><i>общ.</i>&nbsp;</a>
-         - Stardict:
-             define them manually by the file name
+         <a title="Общая лексика" href="m.exe?a=110&t=60148_1_2&sc=0"><i>общ.</i>&nbsp;</a>
     •  Terms:
-         - Multitran:
-             <a href="M.exe?..."></a>
-         - Stardict:
-             <dtrn></dtrn>
-             <kref></kref> (in phrases)
+         <a href="M.exe?..."></a>
     •  Comments:
-         - Multitran:
-             <span STYLE="color:gray"...<
-         - Stardict:
-             <co></co>
+         <span STYLE="color:gray"...<
     •  Corrections:
-         - Multitran:
-             <span STYLE="color:rgb(60,179,113)">
+         <span STYLE="color:rgb(60,179,113)">
     •  Users:
-         - Multitran:
-             <a href="M.exe?..."><i>...</i></a>
-               OR without 1st <
+         <a href="M.exe?..."><i>...</i></a>
+         OR without 1st <
     •  Genders:
-         - Multitran:
-             <span STYLE="color:gray"<i>...</i>
+         <span STYLE="color:gray"<i>...</i>
     •  Word forms:
-         - Multitran:
-             '<a href="M.exe?a=118&t='
-         - Stardict:
-             <k></k>
+         <a href="M.exe?a=118&t=
     •  Transcription: (a digit in 'width="9"' may vary)
-         - Multitran:
-             '<img SRC="/gif/..." width="9" height="16" align="absbottom">'
-         - Stardict:
-             <tr></tr>
+         <img SRC="/gif/..." width="9" height="16" align="absbottom">
     •  Parts of speech:
-         - Multitran:
-             <em></em>
-         - Stardict:
-             # A XDXF tag meaning grammar information about the word
-             <gr></gr>
+         <em></em>
     '''
 
 # Tag patterns
@@ -102,67 +77,60 @@ tag_pattern_del = ['.exe?a=5&s=AboutMultitran.htm' # О словаре
                   ,'.exe?a=5&s=EnterProblems'      # проблемы со входом или использованием форума?
                   ]
 
-# Stardict: ST, Multitran: MT
 # Full dictionary titles
-pdic  = '<a title="'                           # MT
+pdic = '<a title="'
 
 # URLs
-purl1 = 'href="M.exe?'                         # MT
-purl2 = 'href="m.exe?'                         # MT
-purl3 = 'href="'                               # MT
-purl4 = '">'                                   # MT
+purl1 = 'href="M.exe?'
+purl2 = 'href="m.exe?'
+purl3 = 'href="'
+purl4 = '">'
 
 # Comments
 ''' May also need to look at: '<a href="#start', '<a href="#phrases',
     '<a href="', '<span STYLE="color:gray"> (ед.ч., мн.ч.)<span STYLE="color:black">'
 '''
-pcom1 = '<i>'                                  # MT
-pcom2 = '<span STYLE="color:gray">'            # MT
-pcom3 = '<co>'                                 # ST
-pcom4 = '&&UserName='                          # MT
+pcom1 = '<i>'
+pcom2 = '<span STYLE="color:gray">'
+pcom3 = '&&UserName='
 
 # Corrective comments
-pcor1 = '<span STYLE="color:rgb(60,179,113)">' # MT
-pcor2 = '<font color=DarkGoldenrod>'           # MT
+pcor1 = '<span STYLE="color:rgb(60,179,113)">'
+pcor2 = '<font color=DarkGoldenrod>'
 
 # Word Forms
-pwf1  = '<td bgcolor='                         # MT
-pwf2  = '<a href="M.exe?a='                    # MT # Do not shorten
-pwf3  = '<a href="m.exe?a='                    # MT # Do not shorten
-pwf4  = '<td bgcolor="#DBDBDB"'                # MT
-pwf5  = '&ifp='                                # MT
-pwf6  = '<k>'                                  # ST
+pwf1 = '<td bgcolor='
+pwf2 = '<a href="M.exe?a='     # Do not shorten
+pwf3 = '<a href="m.exe?a='     # Do not shorten
+pwf4 = '<td bgcolor="#DBDBDB"'
+pwf5 = '&ifp='
 
 # Parts of speech
-psp1  = '<em>'                                 # MT
-psp2  = '<gr>'                                 # ST
+psp1 = '<em>'
 
 # Terms
-ptm1  = 'M.exe?t'                              # MT # Both terms and word forms
-ptm2  = 'm.exe?t'                              # MT # Both terms and word forms
-ptm3  = '<a href="M.exe?&s='                   # MT
-ptm4  = '<a href="m.exe?&s='                   # MT
-ptm5  = '<a href="M.exe?s='                    # MT
-ptm6  = '<a href="m.exe?s='                    # MT
-ptm7  = '<dtrn>'                               # ST
+ptm1 = 'M.exe?t'            # Both terms and word forms
+ptm2 = 'm.exe?t'            # Both terms and word forms
+ptm3 = '<a href="M.exe?&s='
+ptm4 = '<a href="m.exe?&s='
+ptm5 = '<a href="M.exe?s='
+ptm6 = '<a href="m.exe?s='
 
 # Terms in the 'Phrases' section
-pph1  = '<a href="M.exe?a=3&&s='               # MT
-pph2  = '<a href="m.exe?a=3&&s='               # MT
-pph3  = '<a href="M.exe?a=3&s='                # MT
-pph4  = '<a href="m.exe?a=3&s='                # MT
-pph5  = '<kref>'                               # ST
+pph1 = '<a href="M.exe?a=3&&s='
+pph2 = '<a href="m.exe?a=3&&s='
+pph3 = '<a href="M.exe?a=3&s='
+pph4 = '<a href="m.exe?a=3&s='
 
 # Transcription
-ptr1  = '<img SRC="/gif/'                      # MT
-ptr2  = '<tr>'                                 # ST
-ptr3  = '</tr>'                                # ST
+ptr1 = '<img SRC="/gif/'
 
 useful_tags = [pdic,purl1,purl2,pcom1,pcom2
-              ,pcom3,pcom4,pcor1,pcor2,ptr1
-              ,ptr2,pwf4,pwf6,ptm7,pph5,psp1
-              ,psp2
+              ,pcom3,pcor1,pcor2,ptr1,pwf4
+              ,psp1
               ]
+
+pair_root = 'http://www.multitran.ru/c/M.exe?'
 
 
 
@@ -201,16 +169,12 @@ class Block:
 
 class AnalyzeTag:
 
-    def __init__ (self,tag,source=_('All')
-                 ,pair_root='http://www.multitran.ru/c/M.exe?'
-                 ):
-        self._tag       = tag
-        self._pair_root = pair_root
-        self._source    = source
-        self._cur       = Block()
-        self._blocks    = []
-        self._elems     = []
-        self._block     = ''
+    def __init__(self,tag):
+        self._tag    = tag
+        self._cur    = Block()
+        self._blocks = []
+        self._elems  = []
+        self._block  = ''
 
     def run(self):
         self.split()
@@ -232,6 +196,7 @@ class AnalyzeTag:
                         self.speech()
                     if not self._cur._type:
                         self.comment()
+                        self.cor_comment()
                     if not self._cur._type:
                         self.transc()
                     self.url()
@@ -278,49 +243,18 @@ class AnalyzeTag:
         if tmp:
             self._blocks.append(tmp)
 
-    def _comment_mt(self):
+    def comment(self):
         if self._block.startswith(pcom1) \
-        or self._block.startswith(pcom2) or pcom4 in self._block:
+        or self._block.startswith(pcom2) or pcom3 in self._block:
             self._cur._type = 'comment'
 
-    def _cor_comment_mt(self):
+    def cor_comment(self):
         if self._block.startswith(pcor1) \
         or self._block.startswith(pcor2):
             self._cur._type = 'correction'
 
-    def _comment_sd(self):
-        if self._block.startswith(pcom3):
-            self._cur._type = 'comment'
-
-    def comment(self):
-        f = '[MClient] tags.AnalyzeTag.comment'
-        ''' The tag has a different meaning in online and offline
-            sources, so we must check the source first.
-        '''
-        if self._source == _('All'):
-            #todo: analyze pages from different sources separately
-            self._comment_mt()
-            self._comment_sd()
-            self._cor_comment_mt()
-        elif self._source == _('Online'):
-            self._comment_mt()
-            self._cor_comment_mt()
-        elif self._source == _('Offline'):
-            self._comment_sd()
-        else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                        % (str(self._source)
-                          ,', '.join ((_('All')
-                                      ,_('Online')
-                                      ,_('Offline')
-                                      )
-                                     )
-                          )
-                        )
-
     def dic(self):
-        f = '[MClient] tags.AnalyzeTag.dic'
+        f = '[MClient] plugins.multitranru.tags.AnalyzeTag.dic'
         if self._block.startswith(pdic):
             tmp = self._block.replace(pdic,'',1)
             tmp = re.sub('".*','',tmp)
@@ -333,7 +267,6 @@ class AnalyzeTag:
                 self._cur._text = tmp
                 self._elems.append(copy.copy(self._cur))
 
-    # Both
     def wform(self):
         cond1 = pwf1 in self._block
         cond2 = pwf2 in self._block and not 'UserName' in self._block
@@ -341,22 +274,18 @@ class AnalyzeTag:
         cond4 = pwf4 in self._block
         cond5 = pwf5 in self._block and ptm1 in self._block
         cond6 = pwf5 in self._block and ptm2 in self._block
-        cond7 = pwf6 in self._block
-        if cond1 or cond2 or cond3 or cond4 or cond5 or cond6 or cond7:
+        if cond1 or cond2 or cond3 or cond4 or cond5 or cond6:
             self._cur._type  = 'wform'
 
-    # Both
     def phrases(self):
         # Old algorithm: 'startswith'
         cond1 = pph1 in self._block
         cond2 = pph2 in self._block
         cond3 = pph3 in self._block
         cond4 = pph4 in self._block
-        cond5 = pph5 in self._block
-        if cond1 or cond2 or cond3 or cond4 or cond5:
+        if cond1 or cond2 or cond3 or cond4:
             self._cur._type = 'phrase'
 
-    # Both
     def term(self):
         cond1 = ptm1 in self._block
         cond2 = ptm2 in self._block
@@ -364,66 +293,30 @@ class AnalyzeTag:
         cond4 = ptm4 in self._block
         cond5 = ptm5 in self._block
         cond6 = ptm6 in self._block
-        cond7 = ptm7 in self._block
-        if cond1 or cond2 or cond3 or cond4 or cond5 or cond6 or cond7:
+        if cond1 or cond2 or cond3 or cond4 or cond5 or cond6:
             self._cur._type = 'term'
 
     def url(self):
-        ''' #note: these additional checks can be shortened if we create
-            a sub-source (e.g., 'Multitran') and check for it.
+        ''' Otherwise, 'self._block' will be returned when there is
+            no match.
         '''
-        if self._source in (_('All'),_('Online')):
-            ''' Otherwise, 'self._block' will be returned when there is
-                no match.
-            '''
-            if purl1 in self._block or purl2 in self._block:
-                ind = self._block.find(purl3)
-                if ind > 0:
-                    ind += len(purl1)
-                    self._cur._url = self._block[ind:]
-                if self._cur._url.endswith(purl4):
-                    self._cur._url = self._cur._url.replace(purl4,'')
-                    ''' #note: adding a non-Multitran online source will
-                        require code modification.
-                    '''
-                    self._cur._url = self._pair_root + self._cur._url
-                else:
-                    self._cur._url = ''
+        if purl1 in self._block or purl2 in self._block:
+            ind = self._block.find(purl3)
+            if ind > 0:
+                ind += len(purl1)
+                self._cur._url = self._block[ind:]
+            if self._cur._url.endswith(purl4):
+                self._cur._url = self._cur._url.replace(purl4,'')
+                ''' #note: adding a non-Multitran online source will
+                    require code modification.
+                '''
+                self._cur._url = pair_root + self._cur._url
+            else:
+                self._cur._url = ''
 
-    # Transcription
     def transc(self):
-        f = '[MClient] tags.AnalyzeTag.transc'
-        ''' '<tr>' has a different meaning in online and offline
-            sources, so we must check the source first.
-        '''
-        if self._source == _('All'):
-            self._transc_mt()
-            self._transc_sd()
-        elif self._source == _('Online'):
-            self._transc_mt()
-        elif self._source == _('Offline'):
-            self._transc_sd()
-        else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                        % (str(self._source)
-                          ,', '.join((_('All'),_('Online'),_('Offline')))
-                          )
-                        )
-
-    # Stardict
-    def _transc_sd(self):
-        if ptr2 in self._block:
-            _type = 'transc'
-            _text = self._block.replace(ptr2,'',1).replace(ptr3,'',1)
-            # Will be empty for non-Stardict sources
-            if _text:
-                self._cur._type, self._cur._text = _type, _text
-                self._elems.append(copy.copy(self._cur))
-
-    def _transc_mt(self):
-        f = '[MClient] tags.AnalyzeTag._transc_mt'
-        # Extract a phonetic sign (Multitran-only)
+        f = '[MClient] plugins.multitranru.tags.AnalyzeTag.transc'
+        # Extract a phonetic sign
         if ptr1 in self._block:
             tmp = re.sub(r'\.gif.*','',self._block)
             tmp = tmp.replace(ptr1,'')
@@ -440,26 +333,21 @@ class AnalyzeTag:
             else:
                 sh.com.empty(f)
 
-    # Both
     def speech(self):
-        if psp1 in self._block or psp2 in self._block:
+        if psp1 in self._block:
             self._cur._type = 'speech'
 
 
 
 class Tags:
 
-    def __init__ (self,text,source=_('All')
-                 ,pair_root='http://www.multitran.ru/c/M.exe?'
-                 ):
+    def __init__(self,text):
         if text:
             self._text = list(text)
         else:
             self._text = ''
-        self._source    = source
-        self._pair_root = pair_root
-        self._tags      = []
-        self._blocks    = []
+        self._tags   = []
+        self._blocks = []
 
     def tags(self):
         ''' Split the text by closing tags. To speed up, we remove
@@ -491,8 +379,7 @@ class Tags:
         return self._tags
 
     def debug_tags(self):
-        f = '[MClient] tags.Tags.debug_tags'
-        import sharedGUI as sg
+        f = '[MClient] plugins.multitranru.tags.Tags.debug_tags'
         message = ''
         for i in range(len(self._tags)):
             message += '%d:%s\n' % (i,self._tags[i])
@@ -544,10 +431,7 @@ class Tags:
     def blocks(self):
         if not self._blocks:
             for tag in self._tags:
-                analyze = AnalyzeTag (tag       = tag
-                                     ,source    = self._source
-                                     ,pair_root = self._pair_root
-                                     )
+                analyze = AnalyzeTag(tag)
                 analyze.run()
                 lst = analyze._elems
                 for i in range(len(lst)):
@@ -563,38 +447,3 @@ class Tags:
         self.blocks()
         #self.debug_tags()
         #self.debug_blocks()
-
-
-
-if __name__ == '__main__':
-    f = '[MClient] tags.__main__'
-    import page as pg
-
-    # Modifiable
-    source  = _('Online')
-    #search = 'preceding'
-    #search = 'tun'
-    search  = 'mayhem'
-    #file   = '/home/pete/tmp/ars/welcome back.txt'
-    #file   = '/home/pete/tmp/ars/tun.txt'
-    #file   = '/home/pete/tmp/ars/lottery.txt'
-    file    = '/home/pete/tmp/ars/mayhem - phrases.html'
-
-    page = pg.Page (source = source
-                   ,search = search
-                   ,file   = file
-                   )
-    page.run()
-
-    timer = sh.Timer(func_title=f)
-    timer.start()
-    tags = Tags (source = source
-                ,text   = page._page
-                )
-    tags.run()
-    timer.end()
-    tags.debug_tags()
-    tags.debug_blocks (Shorten = 1
-                      ,MaxRow  = 30
-                      ,MaxRows = 300
-                      )

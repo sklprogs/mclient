@@ -435,28 +435,3 @@ def run(text,header='~'):
                          ).run()
     else:
         sh.com.empty(f)
-
-
-if __name__ == '__main__':
-    sg.objs.start()
-    sh.objs.mes(Silent=False)
-    
-    #text = sh.ReadTextFile(file='/home/pete/tmp/ars/sdict_EnRu_full - cut (fragm).txt').get()
-    #text = sh.ReadTextFile(file='/home/pete/tmp/ars/sdict_EnRu_full - cut.txt').get()
-    
-    text = '''<a title="dicEnRu">1> порез; надрез; _Ex: I cut my arm _общ. Я порезал руку2> короткий путь3> _мат. раздел; _Ex: please refer to this cut обратитесь к этому разделу _Ex: to cut into pieces рассечь на части
-    '''
-    
-    timer = sh.Timer()
-    timer.start()
-    
-    text = stardict(text=text,header='cut')
-    
-    timer.end()
-    
-    #sg.objs.txt().reset_logic(words=words1)
-    sg.objs.txt().reset_data()
-    sg.objs._txt.insert(text)
-    sg.objs._txt.show()
-    
-    sg.objs.end()
