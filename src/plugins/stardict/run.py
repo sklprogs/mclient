@@ -6,6 +6,7 @@ import sharedGUI                as sg
 import plugins.stardict.get     as gt
 import plugins.stardict.cleanup as cu
 import plugins.stardict.tags    as tg
+import plugins.stardict.elems   as el
 
 import gettext, gettext_windows
 
@@ -18,6 +19,7 @@ class Plugin:
     
     def __init__ (self,search='',url=''
                  ,timeout=6,Debug=False
+                 ,articleid=0,iabbr=None
                  ):
         ''' - Extra unused input variables are preserved so it would be
               easy to use an abstract class for all dictionary sources.
@@ -25,23 +27,30 @@ class Plugin:
               earlier.
         '''
         self.values()
-        self._search = search
-        self.Debug   = Debug
+        self._search    = search
+        self.Debug      = Debug
+        self._articleid = articleid
+        self.iabbr      = iabbr
     
     def values(self):
         self._text   = ''
         self._html   = ''
         self._blocks = []
+        self._data   = []
     
     def run(self):
-        iget         = gt.Get(self._search)
-        self._text   = iget.run()
-        self._html   = iget._html
-        self._text   = cu.CleanUp(self._text).run()
+        iget       = gt.Get(self._search)
+        self._text = iget.run()
+        self._html = iget._html
+        self._text = cu.CleanUp(self._text).run()
+        if self._text is None:
+            self._text = ''
         self._blocks = tg.Tags (text  = self._text
                                ,Debug = self.Debug
                                ).run()
-        if self._text is None:
-            self._text = ''
-        return self._blocks
+        self._data = el.Elems (blocks    = self._blocks
+                              ,articleid = self._articleid
+                              ,iabbr     = self.iabbr
+                              ).run()
+        return self._data
         

@@ -65,19 +65,98 @@ sample_prior = '''Общая лексика
 Юридический (Н.П.)
 '''
 
-SOURCES = (_('All'),_('Online'),_('Offline'))
+
+class PhraseTerma:
+    
+    def __init__(self,dbc,articleid):
+        f = '[MClient] logic.PhraseTerma.__init__'
+        self.dbc        = dbc
+        self._articleid = articleid
+        self._no1       = -1
+        self._no2       = -1
+        if self.dbc and self._articleid:
+            self.Success = True
+        else:
+            self.Success = False
+            sh.com.empty(f)
+            
+    def second_phrase(self):
+        f = '[MClient] logic.PhraseTerma.second_phrase'
+        if self._no2 < 0:
+            self.dbc.execute ('select NO from BLOCKS \
+                               where ARTICLEID = ? and TYPE = ? \
+                               order by NO',(self._articleid,'phrase',)
+                             )
+            result = self.dbc.fetchone()
+            if result:
+                self._no2 = result[0]
+            sh.log.append (f,_('DEBUG')
+                          ,str(self._no2)
+                          )
+        return self._no2
+        
+    def phrase_dic(self):
+        f = '[MClient] logic.PhraseTerma.phrase_dic'
+        if self._no1 < 0:
+            if self._no2 >= 0:
+                self.dbc.execute ('select NO from BLOCKS \
+                                   where ARTICLEID = ? and TYPE = ? \
+                                   and NO < ? order by NO desc'
+                                   ,(self._articleid,'dic',self._no2,)
+                                 )
+                result = self.dbc.fetchone()
+                if result:
+                    self._no1 = result[0]
+                    self.dbc.execute ('update BLOCKS set SELECTABLE=1 \
+                                       where NO = ?',(self._no1,)
+                                     )
+            else:
+                sh.log.append (f,_('WARNING')
+                              ,_('Wrong input data!')
+                              )
+            sh.log.append (f,_('DEBUG')
+                          ,str(self._no1)
+                          )
+        return self._no1
+        
+    def dump(self):
+        f = '[MClient] logic.PhraseTerma.dump'
+        # Autoincrement starts with 1 in sqlite
+        if self._no1 > 0 and self._no2 > 0:
+            sh.log.append (f,_('INFO')
+                          ,_('Update DB, range %d-%d') \
+                          % (self._no1,self._no2)
+                          )
+            self.dbc.execute ('update BLOCKS set TERMA=? where NO >= ? \
+                               and NO < ?',('',self._no1,self._no2,)
+                             )
+        else:
+            sh.log.append (f,_('WARNING')
+                          ,_('Wrong input data!')
+                          )
+        
+    def run(self):
+        f = '[MClient] logic.PhraseTerma.run'
+        if self.Success:
+            self.second_phrase()
+            self.phrase_dic()
+            self.dump()
+        else:
+            sh.com.cancel(f)
+
 
 
 class Translate:
 
     def __init__ (self,source=_('All'),search=''
-                 ,url='',timeout=6
+                 ,url='',timeout=6,articleid=0
                  ):
         self.values()
-        self._source  = source
-        self._search  = search
-        self._url     = url
-        self._timeout = timeout
+        self._source    = source
+        self._search    = search
+        self._url       = url
+        self._timeout   = timeout
+        self._articleid = articleid
     
     def values(self):
         self._plugin  = None
@@ -85,24 +164,33 @@ class Translate:
         self._text    = ''
         self._html    = ''
         self._blocks  = []
+        self._data_sd = []
+        self._data_mr = []
+        self._data_mc = []
     
     def run(self):
         f = '[MClient] logic.Translate.run'
         if self._source and self._search:
-            if self._source in SOURCES:
+            if self._source in sources:
                 timer = sh.Timer(f)
                 timer.start()
-                plugin_sd = plugins.stardict.run.Plugin (search  = self._search
-                                                        ,url     = self._url
-                                                        ,timeout = self._timeout
+                plugin_sd = plugins.stardict.run.Plugin (search    = self._search
+                                                        ,url       = self._url
+                                                        ,timeout   = self._timeout
+                                                        ,articleid = self._articleid
+                                                        ,iabbr     = objs.order().dic
                                                         )
-                plugin_mr = plugins.multitranru.run.Plugin (search  = self._search
-                                                           ,url     = self._url
-                                                           ,timeout = self._timeout
+                plugin_mr = plugins.multitranru.run.Plugin (search    = self._search
+                                                           ,url       = self._url
+                                                           ,timeout   = self._timeout
+                                                           ,articleid = self._articleid
+                                                           ,iabbr     = objs._order.dic
                                                            )
-                plugin_mc = plugins.multitrancom.run.Plugin (search  = self._search
-                                                            ,url     = self._url
-                                                            ,timeout = self._timeout
+                plugin_mc = plugins.multitrancom.run.Plugin (search    = self._search
+                                                            ,url       = self._url
+                                                            ,timeout   = self._timeout
+                                                            ,articleid = self._articleid
+                                                            ,iabbr     = objs._order.dic
                                                             )
                 if self._source in (_('All'),_('Offline')):
                     plugin_sd.run()
@@ -123,11 +211,14 @@ class Translate:
                                                  + plugin_mc._blocks
                 if plugin_sd._blocks:
                     self.HasLocal = True
+                self._data_sd = plugin_sd._data
+                self._data_mr = plugin_mr._data
+                self._data_mc = plugin_mc._data
                 timer.end()
             else:
                 sh.objs.mes (f,_('ERROR')
                             ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                            % (str(self._source),';'.join(SOURCES))
+                            % (str(self._source),';'.join(sources))
                             )
         else:
             sh.com.empty(f)
@@ -734,7 +825,8 @@ class Order:
                         sh.log.append (f,_('DEBUG')
                                       ,_('Swap items: %d <-> %d; "%s" <-> "%s"') \
                                       % (ind1,ind2
-                                        ,self._prioritize[ind1],self._prioritize[ind2]
+                                        ,self._prioritize[ind1]
+                                        ,self._prioritize[ind2]
                                         )
                                       )
                         self._prioritize[ind1], self._prioritize[ind2] \

@@ -9,7 +9,6 @@ import shared    as sh
 import sharedGUI as sg
 import logic     as lg
 import gui       as gi
-import elems     as el
 import cells     as cl
 import db
 import mkhtml    as mh
@@ -88,7 +87,7 @@ class About:
         self.parties = ThirdParties()
         self.gui = gi.About()
         self.bindings()
-        self.gui.label.text (_('Programming: Peter Sklyar, 2015-2018.\nVersion: %s\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n') \
+        self.gui.label.text (_('Programming: Peter Sklyar, 2015-2019.\nVersion: %s\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n') \
                              % version
                             )
         self.gui.label.font(sh.globs['var']['font_style'])
@@ -1179,11 +1178,6 @@ class WebFrame:
                                              ,title  = lg.objs._request._search
                                              ,url    = lg.objs._request._url
                                              )
-        transl = lg.Translate (source  = lg.objs._request._source
-                              ,search  = lg.objs._request._search
-                              ,url     = lg.objs._request._url
-                              ,timeout = sh.globs['int']['timeout']
-                              )
         if articleid:
             sh.log.append (f,_('INFO')
                           ,_('Load article No. %d from memory')\
@@ -1192,6 +1186,15 @@ class WebFrame:
             objs._blocks_db._articleid = articleid
             self.get_bookmark()
             page = None
+            ''' Create 'lg.Translate' for both if-else cases because
+                'articleid' will be different.
+            '''
+            transl = lg.Translate (source    = lg.objs._request._source
+                                  ,search    = lg.objs._request._search
+                                  ,url       = lg.objs._request._url
+                                  ,timeout   = sh.globs['int']['timeout']
+                                  ,articleid = objs._blocks_db._articleid
+                                  )
         else:
             # None skips the autoincrement
             data = (None                     # (00) ARTICLEID
@@ -1204,23 +1207,27 @@ class WebFrame:
             
             objs._blocks_db._articleid = objs._blocks_db.max_articleid()
             
+            transl = lg.Translate (source    = lg.objs._request._source
+                                  ,search    = lg.objs._request._search
+                                  ,url       = lg.objs._request._url
+                                  ,timeout   = sh.globs['int']['timeout']
+                                  ,articleid = objs._blocks_db._articleid
+                                  )
             transl.run()
             #todo: #fix: assign this for already loaded articles too
             lg.objs._request._page     = transl._text
             lg.objs._request._html_raw = transl._html
 
-            elems = el.Elems (blocks    = transl._blocks
-                             ,articleid = objs._blocks_db._articleid
-                             ,abbr      = lg.objs.order().dic
-                             )
-            elems.run()
-
-            objs._blocks_db.fill_blocks(elems._data)
+            if transl._data_sd:
+                objs._blocks_db.fill_blocks(transl._data_sd)
+            if transl._data_mr:
+                objs._blocks_db.fill_blocks(transl._data_mr)
+            if transl._data_mc:
+                objs._blocks_db.fill_blocks(transl._data_mc)
             
-            ph_terma = el.PhraseTerma (dbc       = objs._blocks_db.dbc
-                                      ,articleid = objs._blocks_db._articleid
-                                      )
-            ph_terma.run()
+            lg.PhraseTerma (dbc       = objs._blocks_db.dbc
+                           ,articleid = objs._blocks_db._articleid
+                           ).run()
             
             ''' The order of parts of speech must be changed only for
                 new articles and after changing settings (Settings.apply)

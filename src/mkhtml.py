@@ -389,11 +389,11 @@ class HTML:
                 else:
                     self._block.xi = self._block.i
                     self._block.xj = self._block.j
-                self._dic       ()
-                self._wform     ()
-                self._speech    ()
-                self._term      ()
-                self._comment   ()
+                self._dic()
+                self._wform()
+                self._speech()
+                self._term()
+                self._comment()
                 self._correction()
             self.output.write('</td></tr>\n\t\t\t</table>\t')
         elif self._skipped:

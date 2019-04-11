@@ -14,7 +14,8 @@
     calculate SELECTABLE fully in Cells.
 '''
 
-import shared as sh
+import shared    as sh
+import sharedGUI as sg
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -80,13 +81,13 @@ class Elems:
           vary depending on the view. Incorrect sorting by TERMA may
           result in putting a TERM item before fixed columns.
     '''
-    def __init__(self,blocks,articleid,abbr):
-        f = '[MClient] elems.Elems.__init__'
+    def __init__(self,blocks,articleid,iabbr):
+        f = '[MClient] plugins.stardict.elems.Elems.__init__'
         self._data      = []
         self._dic_urls  = {}
         self._blocks    = blocks
         self._articleid = articleid
-        self.abbr       = abbr
+        self.abbr       = iabbr
         if self._blocks and self._articleid:
             self.Success = True
         else:
@@ -95,7 +96,7 @@ class Elems:
         
     # Takes ~0,26s for 'set' on AMD E-300.
     def expand_dica(self):
-        f = '[MClient] elems.Elems.expand_dica'
+        f = '[MClient] plugins.stardict.elems.Elems.expand_dica'
         if self.abbr:
             if self.abbr.Success:
                 for block in self._blocks:
@@ -114,21 +115,15 @@ class Elems:
             sh.com.empty(f)
 
     def run(self):
-        f = '[MClient] elems.Elems.run'
+        f = '[MClient] plugins.stardict.elems.Elems.run'
         if self.Success:
-            self.transc()
             self.phrases()
             self.straight_line()
-            self.dic_urls()
             self.comments()
-            self.dic_abbr()
-            self.dic_abbr_phrases()
             ''' These 2 procedures should not be combined (otherwise,
                 corrections will have the same color as comments)
             '''
             self.unite_comments()
-            self.unite_corrections()
-            self.speech()
             self.comment_same()
             self.add_space()
             self.fill()
@@ -138,8 +133,8 @@ class Elems:
             self.fixed_terma()
             self.expand_dica()
             self.selectables()
-            self.restore_dic_urls()
             self.dump()
+            return self._data
         else:
             sh.com.cancel(f)
     
@@ -162,28 +157,6 @@ class Elems:
                  ,MaxRows = MaxRows
                  ).print()
         
-    def speech(self):
-        ''' 'speech' blocks have '_same = 1' when analyzing MT because
-            they are within a single tag. We fix it here, not in Tags,
-            because Tags are assumed to output the result 'as is'.
-        '''
-        for i in range(len(self._blocks)):
-            if self._blocks[i]._type == 'speech':
-                self._blocks[i]._same = 0
-                if i < len(self._blocks) - 1:
-                    self._blocks[i+1]._same = 0
-    
-    def transc(self):
-        i = 0
-        while i < len(self._blocks):
-            if self._blocks[i]._type == 'transc' \
-            and self._blocks[i]._same > 0:
-                if i > 0 and self._blocks[i-1]._type == 'transc':
-                    self._blocks[i-1]._text += self._blocks[i]._text
-                    del self._blocks[i]
-                    i -= 1
-            i += 1
-                            
     def unite_comments(self):
         i = 0
         while i < len(self._blocks):
@@ -198,59 +171,6 @@ class Elems:
                     del self._blocks[i]
                     i -= 1
             i += 1
-            
-    def unite_corrections(self):
-        i = 0
-        while i < len(self._blocks):
-            if self._blocks[i]._type == 'correction' \
-            and self._blocks[i]._same > 0:
-                if i > 0 and self._blocks[i-1]._type == 'correction':
-                    self._blocks[i-1]._text \
-                    = sh.List (lst1 = [self._blocks[i-1]._text
-                                      ,self._blocks[i]._text
-                                      ]
-                              ).space_items()
-                    del self._blocks[i]
-                    i -= 1
-            i += 1
-            
-    def dic_abbr(self):
-        i = 0
-        while i < len(self._blocks):
-            ''' We suppose that these are abbreviations of dictionary
-                titles. If the full dictionary title is not preceding
-                (this can happen if the whole article is occupied by
-                the 'Phrases' section), we keep these abbreviations as
-                comments.
-                #note: checking 'self._blocks[i]._type == 'dic' and
-                self._blocks[i]._same > 0' is not enough.
-            '''
-            if i > 0 and self._blocks[i-1]._type == 'dic' \
-            and self._blocks[i]._same > 0:
-                self._blocks[i]._type = 'dic'
-                del self._blocks[i-1]
-                i -= 1
-            i += 1
-            
-    def dic_abbr_phrases(self):
-        ''' In articles that are entirely related to the Phrases
-            section, full dictionary titles are entirely replaced by
-            dictionary abbreviations, so we treat the latter as
-            the former.
-            Do this before setting a phrase dic.
-            #todo: make this Multitran-only
-        '''
-        Dics = False
-        for block in self._blocks:
-            if block._type == 'dic':
-                Dics = True
-                break
-        if not Dics:
-            for i in range(len(self._blocks)):
-                if self._blocks[i]._type == 'comment' \
-                and self._blocks[i]._url \
-                and not 'UserName' in self._blocks[i]._url:
-                    self._blocks[i]._type = 'dic'
             
     def straight_line(self):
         self._blocks = [block for block in self._blocks \
@@ -569,106 +489,3 @@ class Elems:
                 block._select = 1
             else:
                 block._select = 0
-    
-    def dic_urls(self):
-        ''' URLs assigned to dictionary titles in Multitran actually
-            lead to a page where word forms are given. Dictionary
-            abbreviations that are further deleted have URLs that we
-            need.
-        '''
-        url = ''
-        i = len(self._blocks) - 1
-        while i >= 0:
-            if self._blocks[i]._url:
-                url = self._blocks[i]._url
-            if self._blocks[i]._type == 'dic':
-                # Keep dic URL to be restored later for DICA
-                if not self._blocks[i]._text in self._dic_urls:
-                    self._dic_urls[self._blocks[i]._text] = url
-            i -= 1
-    
-    def restore_dic_urls(self):
-        for i in range(len(self._blocks)):
-            if self._blocks[i]._type == 'dic' \
-            and self._blocks[i]._text in self._dic_urls:
-                self._blocks[i]._url = self._dic_urls[self._blocks[i]._text]
-
-
-
-class PhraseTerma:
-    
-    def __init__(self,dbc,articleid):
-        f = '[MClient] elems.PhraseTerma.__init__'
-        self.dbc        = dbc
-        self._articleid = articleid
-        self._no1       = -1
-        self._no2       = -1
-        if self.dbc and self._articleid:
-            self.Success = True
-        else:
-            self.Success = False
-            sh.com.empty(f)
-            
-    def second_phrase(self):
-        f = '[MClient] elems.PhraseTerma.second_phrase'
-        if self._no2 < 0:
-            self.dbc.execute ('select NO from BLOCKS \
-                               where ARTICLEID = ? and TYPE = ? \
-                               order by NO',(self._articleid,'phrase',)
-                             )
-            result = self.dbc.fetchone()
-            if result:
-                self._no2 = result[0]
-            sh.log.append (f,_('DEBUG')
-                          ,str(self._no2)
-                          )
-        return self._no2
-        
-    def phrase_dic(self):
-        f = '[MClient] elems.PhraseTerma.phrase_dic'
-        if self._no1 < 0:
-            if self._no2 >= 0:
-                self.dbc.execute ('select NO from BLOCKS \
-                                   where ARTICLEID = ? and TYPE = ? \
-                                   and NO < ? order by NO desc'
-                                   ,(self._articleid,'dic',self._no2,)
-                                 )
-                result = self.dbc.fetchone()
-                if result:
-                    self._no1 = result[0]
-                    self.dbc.execute ('update BLOCKS set SELECTABLE=1 \
-                                       where NO = ?',(self._no1,)
-                                     )
-            else:
-                sh.log.append (f,_('WARNING')
-                              ,_('Wrong input data!')
-                              )
-            sh.log.append (f,_('DEBUG')
-                          ,str(self._no1)
-                          )
-        return self._no1
-        
-    def dump(self):
-        f = '[MClient] elems.PhraseTerma.dump'
-        # Autoincrement starts with 1 in sqlite
-        if self._no1 > 0 and self._no2 > 0:
-            sh.log.append (f,_('INFO')
-                          ,_('Update DB, range %d-%d') \
-                          % (self._no1,self._no2)
-                          )
-            self.dbc.execute ('update BLOCKS set TERMA=? where NO >= ? \
-                               and NO < ?',('',self._no1,self._no2,)
-                             )
-        else:
-            sh.log.append (f,_('WARNING')
-                          ,_('Wrong input data!')
-                          )
-        
-    def run(self):
-        f = '[MClient] elems.PhraseTerma.run'
-        if self.Success:
-            self.second_phrase()
-            self.phrase_dic()
-            self.dump()
-        else:
-            sh.com.cancel(f)
