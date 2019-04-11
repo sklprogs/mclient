@@ -25,8 +25,8 @@ PATH = ''
 class Get:
     # This class is basically needed for compliance with other code
     def __init__(self,search):
-        self._html_raw = ''
-        self._search   = search
+        self._html   = ''
+        self._search = search
     
     def run(self):
         f = '[MClient] plugins.stardict.get.Get.run'

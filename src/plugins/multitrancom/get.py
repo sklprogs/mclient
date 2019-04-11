@@ -29,9 +29,9 @@ class Get:
             sh.com.empty(f)
     
     def values(self):
-        self.Success   = True
-        self._html_raw = ''
-        self._text     = ''
+        self.Success = True
+        self._html   = ''
+        self._text   = ''
     
     def run(self):
         self.get()
@@ -46,12 +46,12 @@ class Get:
             '''
             if self._text:
                 try:
-                    self._html_raw = self._text \
-                                   = self._text.decode(ENCODING)
+                    self._html = self._text \
+                               = self._text.decode(ENCODING)
                 except:
-                    self.Success   = False
-                    self._html_raw = ''
-                    self._text     = ''
+                    self.Success = False
+                    self._html   = ''
+                    self._text   = ''
                     sh.objs.mes (f,_('ERROR')
                                 ,_('Unable to change the web-page encoding!')
                                 )

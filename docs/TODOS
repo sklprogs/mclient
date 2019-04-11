@@ -1,5 +1,5 @@
 
-- Hardcode 'win_encoding' for multitran.ru and remove config and globs
+- Hardcode 'pair_root' and language pairs and remove config and globs
   keys
 - Diversify lg.Welcome for different sources (multitran.ru/com)
 - (?) Delete _html_raw

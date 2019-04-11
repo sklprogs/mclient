@@ -5,8 +5,12 @@ import os
 import urllib.request
 import html
 import ssl
-import shared as sh
+import shared    as sh
+import sharedGUI as sg
 import plugins.stardict.get
+import plugins.stardict.run
+import plugins.multitranru.run
+import plugins.multitrancom.run
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -60,6 +64,64 @@ sample_prior = '''Общая лексика
 Юридический термин
 Юридический (Н.П.)
 '''
+
+SOURCES = (_('All'),_('Online'),_('Offline'))
+
+
+class Translate:
+
+    def __init__ (self,source=_('All'),search=''
+                 ,url='',timeout=6
+                 ):
+        self._plugin  = None
+        self._text    = ''
+        self._source  = source
+        self._search  = search
+        self._url     = url
+        self._timeout = timeout
+    
+    def get_source(self,source):
+        f = '[MClient] logic.Translate.get_source'
+        if hasattr(source,'run'):
+            return source.run (path    = objs.default().dics()
+                              ,search  = self._search
+                              ,url     = self._url
+                              ,timeout = self._timeout
+                              )
+        else:
+            sh.objs.mes (f,_('ERROR')
+                        ,_('An invalid plugin!')
+                        )
+
+    def run(self):
+        f = '[MClient] logic.Translate.run'
+        if not self._text:
+            if self._source in SOURCES:
+                timer = sh.Timer(f)
+                timer.start()
+                text_sd = ''
+                text_mr = ''
+                text_mc = ''
+                if self._source in (_('All'),_('Offline')):
+                    text_sd = self.get_source(sd)
+                if self._source in (_('All'),_('Online')):
+                    text_mr = self.get_source(mr)
+                    text_mc = self.get_source(mc)
+                if text_sd is None:
+                    text_sd = ''
+                if text_mr is None:
+                    text_mr = ''
+                if text_mc is None:
+                    text_mc = ''
+                self._text = text_sd + text_mr + text_mc
+                timer.end()
+            else:
+                sh.objs.mes (f,_('ERROR')
+                            ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
+                            % (str(self._source),';'.join(SOURCES))
+                            )
+        return self._text
+
 
 
 class Welcome:
@@ -1140,19 +1202,3 @@ online_dic_urls = (sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_rus'
 
 plugins.stardict.get.PATH = objs.default().dics()
 plugins.stardict.get.objs.all_dics()
-
-
-if __name__ == '__main__':
-    order = Order()
-    #dic1 = 'Нефть, газ.турб., общ., юр.'
-    #dic2 = 'Нефть, Техника'
-    #dic1 = 'Нефть, газ.турб., общ., юр.'
-    #dic2 = 'воен., Техника'
-    #dic1 = 'Нефть, газ.турб., Техника'
-    #dic2 = 'воен., юр.'
-    #dic1 = 'Военный термин, Техника'
-    dic1 = 'Военный термин, Бурение'
-    dic2 = 'Бурение'
-    order.lm_auto(dic1,dic2)
-    #order.rm_auto(dic1,dic2)
-    print(order._prioritize)

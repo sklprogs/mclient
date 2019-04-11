@@ -6,35 +6,49 @@ import sharedGUI as sg
 
 class Get:
     
+    def multitrancom(self):
+        f = '[MClient] tests.Get.multitrancom'
+        import plugins.multitrancom.get as gt
+        #search = 'компьютер'
+        search  = 'computer'
+        url     = 'https://multitran.com/m.exe?s=computer&l1=1&l2=2'
+        timeout = 6
+        timer   = sh.Timer(f)
+        timer.start()
+        result = gt.Get (search  = search
+                        ,url     = url
+                        ,timeout = timeout
+                        ).run()
+        timer.end()
+        sg.fast_txt(result)
+    
     def multitranru(self):
         f = '[MClient] tests.Get.multitranru'
-        import plugins.multitranru.run as mr
-        #search  = 'компьютер'
-        search   = 'computer'
-        url      = 'https://www.multitran.ru/c/m.exe?CL=1&s=computer&l1=1'
-        encoding = 'windows-1251'
-        timeout  = 6
-        timer = sh.Timer(f)
+        import plugins.multitranru.get as gt
+        #search = 'компьютер'
+        search  = 'computer'
+        url     = 'https://www.multitran.ru/c/m.exe?CL=1&s=computer&l1=1'
+        timeout = 6
+        timer   = sh.Timer(f)
         timer.start()
-        result = mr.run (search   = search
-                        ,url      = url
-                        ,encoding = encoding
-                        ,timeout  = timeout
-                        )
+        result = gt.Get (search  = search
+                        ,url     = url
+                        ,timeout = timeout
+                        ).run()
         timer.end()
-        return result
+        sg.fast_txt(result)
     
     def stardict(self):
         f = '[MClient] tests.Get.stardict'
         import logic                as lg
-        import plugins.stardict.run as sd
+        import plugins.stardict.get as sd
         #search = 'компьютер'
         search  = 'computer'
         timer   = sh.Timer(f)
         timer.start()
-        result = sd.run(lg.objs.default().dics(),search)
+        result = sd.Get(search).run()
         timer.end()
-        return result
+        sg.fast_txt(result)
 
 
 
@@ -46,17 +60,10 @@ class Tags:
         import plugins.stardict.tags    as sdtags
         file = '/home/pete/.config/mclient/tests/(stardict) EnRu_full - cut.txt'
         text = sh.ReadTextFile(file).get()
-        text  = sdcleanup.run(text)
-        timer = sh.Timer(f)
-        timer.start()
-        tags  = sdtags.Tags(text)
-        tags.run()
-        timer.end()
-        tags.debug_tags()
-        tags.debug_blocks (Shorten = 1
-                          ,MaxRow  = 30
-                          ,MaxRows = 300
-                          )
+        text = sdcleanup.CleanUp(text).run()
+        sdtags.Tags (text  = text
+                    ,Debug = True
+                    ).run()
     
     def multitranru(self):
         f = '[MClient] tests.Tags.multitranru'
@@ -64,17 +71,21 @@ class Tags:
         import plugins.multitranru.tags    as mrtags
         file = '/home/pete/.config/mclient/tests/(multitran.ru) set.txt'
         text = sh.ReadTextFile(file).get()
-        text  = mrcleanup.run(text)
-        timer = sh.Timer(f)
-        timer.start()
-        tags  = mrtags.Tags(text)
-        tags.run()
-        timer.end()
-        tags.debug_tags()
-        tags.debug_blocks (Shorten = 1
-                          ,MaxRow  = 30
-                          ,MaxRows = 300
-                          )
+        text = mrcleanup.CleanUp(text).run()
+        mrtags.Tags (text  = text
+                    ,Debug = True
+                    ).run()
+    
+    def multitrancom(self):
+        f = '[MClient] tests.Tags.multitrancom'
+        import plugins.multitranru.cleanup as mrcleanup
+        import plugins.multitranru.tags    as mrtags
+        file = '/home/pete/.config/mclient/tests/(multitran.com) computer.txt'
+        text = sh.ReadTextFile(file).get()
+        text = mrcleanup.CleanUp(text).run()
+        mrtags.Tags (text  = text
+                    ,Debug = True
+                    ).run()
 
 
 
@@ -83,8 +94,7 @@ class Plugin:
     def stardict(self):
         f = '[MClient] tests.Plugin.stardict'
         import plugins.stardict.run as sr
-        blocks = sr.Plugin (path   = '/home/pete/.config/mclient/dics'
-                           ,search = 'computer'
+        blocks = sr.Plugin (search = 'computer'
                            ,Debug  = True
                            ).run()
     
@@ -115,7 +125,6 @@ plug = Plugin()
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
-    plug.stardict()
-    plug.multitranru()
-    plug.multitrancom()
+    # This will also set plugins.stardict.get.PATH
+    #import logic as lg
     sg.objs.end()
