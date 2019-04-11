@@ -9,8 +9,6 @@ import shared    as sh
 import sharedGUI as sg
 import logic     as lg
 import gui       as gi
-import page      as pg
-import tags      as tg
 import elems     as el
 import cells     as cl
 import db
@@ -1181,6 +1179,11 @@ class WebFrame:
                                              ,title  = lg.objs._request._search
                                              ,url    = lg.objs._request._url
                                              )
+        transl = lg.Translate (source  = lg.objs._request._source
+                              ,search  = lg.objs._request._search
+                              ,url     = lg.objs._request._url
+                              ,timeout = sh.globs['int']['timeout']
+                              )
         if articleid:
             sh.log.append (f,_('INFO')
                           ,_('Load article No. %d from memory')\
@@ -1201,25 +1204,12 @@ class WebFrame:
             
             objs._blocks_db._articleid = objs._blocks_db.max_articleid()
             
-            text = pg.Page (source   = lg.objs._request._source
-                           ,search   = lg.objs._request._search
-                           ,url      = lg.objs._request._url
-                           ,encoding = 'windows-1251'
-                           ,timeout  = sh.globs['int']['timeout']
-                           ).run()
+            transl.run()
             #todo: #fix: assign this for already loaded articles too
-            lg.objs._request._page     = text
-            #cur
-            #todo: redo
-            lg.objs._request._html_raw = ''
-            
-            tags = tg.Tags (text      = lg.objs._request._page
-                           ,source    = lg.objs._request._source
-                           ,pair_root = sh.globs['var']['pair_root']
-                           )
-            tags.run()
+            lg.objs._request._page     = transl._text
+            lg.objs._request._html_raw = transl._html
 
-            elems = el.Elems (blocks    = tags._blocks
+            elems = el.Elems (blocks    = transl._blocks
                              ,articleid = objs._blocks_db._articleid
                              ,abbr      = lg.objs.order().dic
                              )
@@ -1259,9 +1249,8 @@ class WebFrame:
             'centre' may have only 1 wform (and a plurality of dics)
         '''
         
-        #cur
-        #todo: redo HasLocal
-        if not dics or dics and len(dics) == 1 or not self._phdic:
+        if not dics or dics and len(dics) == 1 or not self._phdic \
+                    or transl.HasLocal:
             # or check 'lg.objs._request._search' by pattern '\d+ фраз'
             lg.objs._request.SpecialPage = True
         else:

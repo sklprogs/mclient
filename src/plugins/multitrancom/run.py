@@ -22,22 +22,28 @@ class Plugin:
         ''' Extra unused input variables are preserved so it would be
             easy to use an abstract class for all dictionary sources.
         '''
-        self._html    = ''
-        self._blocks  = []
+        self.values()
         self._search  = search
         self._url     = url
         self._timeout = timeout
         self.Debug    = Debug
+    
+    def values(self):
+        self._html   = ''
+        self._text   = ''
+        self._blocks = []
     
     def run(self):
         iget = gt.Get (search  = self._search
                       ,url     = self._url
                       ,timeout = self._timeout
                       )
-        text         = iget.run()
+        self._text   = iget.run()
         self._html   = iget._html
-        text         = cu.CleanUp(text).run()
-        self._blocks = tg.Tags (text  = text
+        self._text   = cu.CleanUp(self._text).run()
+        self._blocks = tg.Tags (text  = self._text
                                ,Debug = self.Debug
                                ).run()
+        if self._text is None:
+            self._text = ''
         return self._blocks

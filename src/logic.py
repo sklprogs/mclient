@@ -73,54 +73,64 @@ class Translate:
     def __init__ (self,source=_('All'),search=''
                  ,url='',timeout=6
                  ):
-        self._plugin  = None
-        self._text    = ''
+        self.values()
         self._source  = source
         self._search  = search
         self._url     = url
         self._timeout = timeout
     
-    def get_source(self,source):
-        f = '[MClient] logic.Translate.get_source'
-        if hasattr(source,'run'):
-            return source.run (path    = objs.default().dics()
-                              ,search  = self._search
-                              ,url     = self._url
-                              ,timeout = self._timeout
-                              )
-        else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('An invalid plugin!')
-                        )
-
+    def values(self):
+        self._plugin  = None
+        self.HasLocal = False
+        self._text    = ''
+        self._html    = ''
+        self._blocks  = []
+    
     def run(self):
         f = '[MClient] logic.Translate.run'
-        if not self._text:
+        if self._source and self._search:
             if self._source in SOURCES:
                 timer = sh.Timer(f)
                 timer.start()
-                text_sd = ''
-                text_mr = ''
-                text_mc = ''
+                plugin_sd = plugins.stardict.run.Plugin (search  = self._search
+                                                        ,url     = self._url
+                                                        ,timeout = self._timeout
+                                                        )
+                plugin_mr = plugins.multitranru.run.Plugin (search  = self._search
+                                                           ,url     = self._url
+                                                           ,timeout = self._timeout
+                                                           )
+                plugin_mc = plugins.multitrancom.run.Plugin (search  = self._search
+                                                            ,url     = self._url
+                                                            ,timeout = self._timeout
+                                                            )
                 if self._source in (_('All'),_('Offline')):
-                    text_sd = self.get_source(sd)
+                    plugin_sd.run()
                 if self._source in (_('All'),_('Online')):
-                    text_mr = self.get_source(mr)
-                    text_mc = self.get_source(mc)
-                if text_sd is None:
-                    text_sd = ''
-                if text_mr is None:
-                    text_mr = ''
-                if text_mc is None:
-                    text_mc = ''
-                self._text = text_sd + text_mr + text_mc
+                    plugin_mr.run()
+                    #cur
+                    #todo: uncomment when URLs are fixed
+                    #plugin_mc.run()
+                self._text = [plugin_sd._text,plugin_mr._text
+                             ,plugin_mc._text
+                             ]
+                self._text = [item for item in self._text if item]
+                self._text = '\n'.join(self._text)
+                #todo: integrate htmls
+                self._html   = plugin_sd._html + plugin_mr._html \
+                                               + plugin_mc._html
+                self._blocks = plugin_sd._blocks + plugin_mr._blocks \
+                                                 + plugin_mc._blocks
+                if plugin_sd._blocks:
+                    self.HasLocal = True
                 timer.end()
             else:
                 sh.objs.mes (f,_('ERROR')
                             ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
                             % (str(self._source),';'.join(SOURCES))
                             )
-        return self._text
+        else:
+            sh.com.empty(f)
 
 
 

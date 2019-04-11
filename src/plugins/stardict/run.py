@@ -24,18 +24,24 @@ class Plugin:
             - #note: Do not forget to set plugins.stardict.get.PATH
               earlier.
         '''
-        self._html   = ''
-        self._blocks = []
+        self.values()
         self._search = search
         self.Debug   = Debug
     
+    def values(self):
+        self._text   = ''
+        self._html   = ''
+        self._blocks = []
+    
     def run(self):
         iget         = gt.Get(self._search)
-        text         = iget.run()
+        self._text   = iget.run()
         self._html   = iget._html
-        text         = cu.CleanUp(text).run()
-        self._blocks = tg.Tags (text  = text
+        self._text   = cu.CleanUp(self._text).run()
+        self._blocks = tg.Tags (text  = self._text
                                ,Debug = self.Debug
                                ).run()
+        if self._text is None:
+            self._text = ''
         return self._blocks
         

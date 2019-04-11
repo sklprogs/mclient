@@ -12,7 +12,7 @@ gettext.install('mclient','../resources/locale')
 
 ''' Tag patterns:
     •  Dictionary titles:
-         define them manually by the file name
+         define them by the .ifo file, set the tag manually
     •  Abbreviations of dictionaries:
          define them manually by the file name
     •  Terms:
@@ -28,6 +28,9 @@ gettext.install('mclient','../resources/locale')
          # A XDXF tag meaning grammar information about the word
          <gr></gr>
     '''
+
+# Full dictionary titles
+pdic = '<a title="'
 
 # Comments
 pcom = '<co>'
@@ -48,7 +51,7 @@ pph = '<kref>'
 ptr1 = '<tr>'
 ptr2 = '</tr>'
 
-useful_tags = [pcom,ptr1,pwf,ptm,pph,psp]
+useful_tags = [pdic,pcom,ptr1,pwf,ptm,pph,psp]
 
 
 
@@ -94,6 +97,20 @@ class AnalyzeTag:
         self._elems  = []
         self._block  = ''
 
+    def dic(self):
+        f = '[MClient] plugins.stardict.tags.AnalyzeTag.dic'
+        if self._block.startswith(pdic):
+            tmp = self._block.replace(pdic,'',1)
+            tmp = re.sub('".*','',tmp)
+            if tmp == '' or tmp == ' ':
+                sh.log.append (f,_('WARNING')
+                              ,_('Wrong tag "%s"!') % tmp
+                              )
+            else:
+                self._cur._type = 'dic'
+                self._cur._text = tmp
+                self._elems.append(copy.copy(self._cur))
+    
     def run(self):
         self.split()
         self._blocks = [block for block in self._blocks if block.strip()]
@@ -106,6 +123,8 @@ class AnalyzeTag:
                     # We check '_type' to speed up
                     if not self._cur._type:
                         self.wform()
+                    if not self._cur._type:
+                        self.dic()
                     if not self._cur._type:
                         self.term()
                     if not self._cur._type:
