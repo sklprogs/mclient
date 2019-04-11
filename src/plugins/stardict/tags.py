@@ -186,13 +186,14 @@ class AnalyzeTag:
 
 class Tags:
 
-    def __init__(self,text):
+    def __init__(self,text,Debug=False):
+        self._tags   = []
+        self._blocks = []
         if text:
             self._text = list(text)
         else:
             self._text = ''
-        self._tags   = []
-        self._blocks = []
+        self.Debug = Debug
 
     def tags(self):
         ''' Split the text by closing tags. To speed up, we remove
@@ -290,6 +291,8 @@ class Tags:
 
     def run(self):
         self.tags()
-        return self.blocks()
-        #self.debug_tags()
-        #self.debug_blocks()
+        self.blocks()
+        if self.Debug:
+            self.debug_tags()
+            self.debug_blocks()
+        return self._blocks

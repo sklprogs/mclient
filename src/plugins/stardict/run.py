@@ -34,12 +34,8 @@ class Plugin:
         text           = iget.run()
         self._html_raw = iget._html_raw
         text           = cu.CleanUp(text).run()
-        itags          = tg.Tags(text)
-        result         = itags.run()
-        if result:
-            self._blocks = itags._blocks
-        if self.Debug:
-            itags.debug_tags()
-            itags.debug_blocks()
+        self._blocks   = tg.Tags (text  = text
+                                 ,Debug = self.Debug
+                                 ).run()
         return self._blocks
         
