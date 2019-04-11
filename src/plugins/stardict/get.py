@@ -22,6 +22,20 @@ gettext.install('mclient','../resources/locale')
 PATH = ''
 
 
+class Get:
+    # This class is basically needed for compliance with other code
+    def __init__(self,search):
+        self._html_raw = ''
+        self._search   = search
+    
+    def run(self):
+        f = '[MClient] plugins.stardict.get.Get.run'
+        if PATH and self._search:
+            return objs.all_dics().get(self._search)
+        else:
+            sh.com.empty(f)
+
+
 
 class DictZip:
     # Based on https://github.com/cz7asm/pyStarDictViewer

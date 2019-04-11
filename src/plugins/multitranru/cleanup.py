@@ -148,7 +148,3 @@ class CleanUp:
         else:
             sh.com.empty(f)
         return self._text
-
-
-def run(text):
-    return CleanUp(text).run()

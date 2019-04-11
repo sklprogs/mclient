@@ -11,7 +11,7 @@ gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 
-ENCODING = 'windows-1251'
+ENCODING = 'utf-8'
 
 
 class Get:
@@ -19,7 +19,7 @@ class Get:
     def __init__ (self,search='',url=''
                  ,timeout=6
                  ):
-        f = '[MClient] plugins.multitranru.get.Get.__init__'
+        f = '[MClient] plugins.multitrancom.get.Get.__init__'
         self.values()
         self._search  = search
         self._url     = url
@@ -39,7 +39,7 @@ class Get:
         return self._text
         
     def decode(self):
-        f = '[MClient] plugins.multitranru.get.Get.decode'
+        f = '[MClient] plugins.multitrancom.get.Get.decode'
         if self.Success:
             ''' If the page is not loaded, we obviously cannot change
                 its encoding.
@@ -61,7 +61,7 @@ class Get:
             sh.com.cancel(f)
     
     def get(self):
-        f = '[MClient] plugins.multitranru.get.Get.get'
+        f = '[MClient] plugins.multitrancom.get.Get.get'
         if self.Success:
             while not self._text:
                 try:

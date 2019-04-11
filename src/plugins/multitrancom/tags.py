@@ -130,7 +130,7 @@ useful_tags = [pdic,purl1,purl2,pcom1,pcom2
               ,psp1
               ]
 
-pair_root = 'https://www.multitran.ru/c/M.exe?'
+pair_root = 'https://www.multitran.com/m.exe?'
 
 
 
@@ -254,7 +254,7 @@ class AnalyzeTag:
             self._cur._type = 'correction'
 
     def dic(self):
-        f = '[MClient] plugins.multitranru.tags.AnalyzeTag.dic'
+        f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.dic'
         if self._block.startswith(pdic):
             tmp = self._block.replace(pdic,'',1)
             tmp = re.sub('".*','',tmp)
@@ -315,7 +315,7 @@ class AnalyzeTag:
                 self._cur._url = ''
 
     def transc(self):
-        f = '[MClient] plugins.multitranru.tags.AnalyzeTag.transc'
+        f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.transc'
         # Extract a phonetic sign
         if ptr1 in self._block:
             tmp = re.sub(r'\.gif.*','',self._block)
@@ -379,7 +379,7 @@ class Tags:
         return self._tags
 
     def debug_tags(self):
-        f = '[MClient] plugins.multitranru.tags.Tags.debug_tags'
+        f = '[MClient] plugins.multitrancom.tags.Tags.debug_tags'
         message = ''
         for i in range(len(self._tags)):
             message += '%d:%s\n' % (i,self._tags[i])

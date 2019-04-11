@@ -44,7 +44,7 @@ class Tags:
         f = '[MClient] tests.Tags.stardict'
         import plugins.stardict.cleanup as sdcleanup
         import plugins.stardict.tags    as sdtags
-        file = '/home/pete/.config/mclient/tests/sdict_EnRu_full - cut.txt'
+        file = '/home/pete/.config/mclient/tests/(stardict) EnRu_full - cut.txt'
         text = sh.ReadTextFile(file).get()
         text  = sdcleanup.run(text)
         timer = sh.Timer(f)
@@ -62,7 +62,7 @@ class Tags:
         f = '[MClient] tests.Tags.multitranru'
         import plugins.multitranru.cleanup as mrcleanup
         import plugins.multitranru.tags    as mrtags
-        file = '/home/pete/.config/mclient/tests/(multitran.ru) set.ru'
+        file = '/home/pete/.config/mclient/tests/(multitran.ru) set.txt'
         text = sh.ReadTextFile(file).get()
         text  = mrcleanup.run(text)
         timer = sh.Timer(f)
@@ -77,12 +77,45 @@ class Tags:
                           )
 
 
+
+class Plugin:
+    
+    def stardict(self):
+        f = '[MClient] tests.Plugin.stardict'
+        import plugins.stardict.run as sr
+        blocks = sr.Plugin (path   = '/home/pete/.config/mclient/dics'
+                           ,search = 'computer'
+                           ,Debug  = True
+                           ).run()
+    
+    def multitranru(self):
+        f = '[MClient] tests.Plugin.multitranru'
+        import plugins.multitranru.run as mr
+        blocks = mr.Plugin (url     = 'https://www.multitran.ru/c/m.exe?CL=1&s=computer&l1=1'
+                           ,search  = 'computer'
+                           ,timeout = 6
+                           ,Debug   = True
+                           ).run()
+    
+    def multitrancom(self):
+        f = '[MClient] tests.Plugin.multitranru'
+        import plugins.multitrancom.run as mr
+        blocks = mr.Plugin (url     = 'https://multitran.com/m.exe?s=computer&l1=1&l2=2'
+                           ,search  = 'computer'
+                           ,timeout = 6
+                           ,Debug   = True
+                           ).run()
+
+
 get  = Get()
 tags = Tags()
+plug = Plugin()
 
 
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
-    tags.multitranru()
+    plug.stardict()
+    plug.multitranru()
+    plug.multitrancom()
     sg.objs.end()

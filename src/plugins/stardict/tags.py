@@ -290,6 +290,6 @@ class Tags:
 
     def run(self):
         self.tags()
-        self.blocks()
+        return self.blocks()
         #self.debug_tags()
         #self.debug_blocks()

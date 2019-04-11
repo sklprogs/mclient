@@ -31,6 +31,7 @@ dic_titles  = ('(австралийское)'
               ,'(химическое)'
               ,'(электротехника)'
               )
+header = '~'
 
 
 
@@ -81,11 +82,10 @@ class Type1:
     ''' Formatting example:
         <a title="dicEnRu"><k>cut</k><tr>kʌt</tr> I 1. гл. 1) резать, разрезать I cut my arm. ≈ Я порезал руку. Cut the bread. ≈ Разрежьте хлеб. Syn : slash, lance, slit; slice 2) а) завершать, прекращать; кончать Cut the rap. ≈ Хватит болтать. б) жать, косить ∙ Syn : mow, prune
     '''
-    def __init__(self,text,header='~'):
+    def __init__(self,text):
         self._blocks = []
         self._tags   = []
         self.text    = text
-        self.header  = header
         
     #todo: do this before anything else
     def decode(self):
@@ -114,7 +114,7 @@ class Type1:
         self.text = self.text.replace('II','').replace('III','').replace(' IV ','').replace(' V ','')
         
     def restore_header(self):
-        self.text = self.text.replace('*',self.header).replace('~',self.header)
+        self.text = self.text.replace('*',header).replace('~',header)
     
     def run(self):
         self.trash()
@@ -235,11 +235,10 @@ class Type2:
     ''' Formatting example:
         <a title="dicEnRu">1> порез; надрез; _Ex: I cut my arm _общ. Я порезал руку2> короткий путь3> _мат. раздел; _Ex: please refer to this cut обратитесь к этому разделу _Ex: to cut into pieces рассечь на части
     '''
-    def __init__(self,text,header='~'):
+    def __init__(self,text):
         self._blocks = []
         self._tags   = []
         self.text    = text
-        self.header  = header
         
     def split(self):
         block   = ''
@@ -298,9 +297,9 @@ class Type2:
     def numbering(self):
         self.text = re.sub('\d+\> ',';',self.text)
     
-    #todo: are there are other types of headers?
     def restore_header(self):
-        self.text = self.text.replace('~',self.header)
+        #todo: are there are other types of headers?
+        self.text = self.text.replace('~',header)
     
     #todo: do this before anything else
     def decode(self):
@@ -409,29 +408,31 @@ class Type3:
 
 
 
-def run(text,header='~'):
-    #todo: combine shared operations for all Stardict classes
-    f = '[MClient] plugins.stardict.cleanup.run'
-    if text and header:
-        text = Common(text).run()
-        if '<dtrn>' in text:
-            sh.log.append (f,_('DEBUG')
-                          ,_('Type 3')
-                          )
-            return Type3(text=text).run()
-        elif '_Ex:' in text or re.search('\d\>',text):
-            sh.log.append (f,_('DEBUG')
-                          ,_('Type 2')
-                          )
-            return Type2 (text   = text
-                         ,header = header
-                         ).run()
+class CleanUp:
+    # This class is basically needed for compliance with other code
+    def __init__(self,text):
+        self._text = text
+
+    def run(self):
+        #todo: combine shared operations for all Stardict classes
+        f = '[MClient] plugins.stardict.cleanup.CleanUp.run'
+        if self._text and header:
+            self._text = Common(self._text).run()
+            if '<dtrn>' in self._text:
+                sh.log.append (f,_('DEBUG')
+                              ,_('Type 3')
+                              )
+                self._text = Type3(self._text).run()
+            elif '_Ex:' in self._text or re.search('\d\>',self._text):
+                sh.log.append (f,_('DEBUG')
+                              ,_('Type 2')
+                              )
+                self._text = Type2(self._text).run()
+            else:
+                sh.log.append (f,_('DEBUG')
+                              ,_('Type 1')
+                              )
+                self._text = Type1(self._text).run()
         else:
-            sh.log.append (f,_('DEBUG')
-                          ,_('Type 1')
-                          )
-            return Type1 (text   = text
-                         ,header = header
-                         ).run()
-    else:
-        sh.com.empty(f)
+            sh.com.empty(f)
+        return self._text
