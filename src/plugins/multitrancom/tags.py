@@ -5,98 +5,64 @@ import re
 import copy
 import shared    as sh
 import sharedGUI as sg
+import plugins.multitrancom.get
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
-transc_orig  = ('[',']','2','3','34','39','40','41'
-               ,'58','65','68','69','73','78','79'
-               ,'80','81','83','84','86','90','97'
-               ,'98','100','101','102','103','104'
-               ,'105','106','107','108','109','110'
-               ,'112','113','114','115','116','117'
-               ,'118','119','120','122'
-               )
-transc_final = ('[',']','','','ˌ','′','(',')',':'
-               ,'ʌ','ð','ɜ','ı','ŋ','ɔ','ɒ','ɑ'
-               ,'ʃ','θ','ʋ','ʒ','a','b','d','e'
-               ,'f','g','h','i','j','k','l','m'
-               ,'n','p','ə','r','s','t','u','v'
-               ,'w','æ','z'
-               )
-
-assert(len(transc_orig) == len(transc_final))
 
 
 ''' Tag patterns:
-    •  Dictionary titles:
-        <a title="...">
     •  Abbreviations of dictionaries:
-         <a title="Общая лексика" href="m.exe?a=110&t=60148_1_2&sc=0"><i>общ.</i>&nbsp;</a>
+         <td class="subj" width="1"><a href="/m.exe?a=110&amp;l1=1&amp;l2=2&amp;s=computer&amp;sc=197">astronaut.</a>
+         td class="subj"
     •  Terms:
-         <a href="M.exe?..."></a>
+         <td class="trans" width="100%"><a href="/m.exe?s=компьютер&amp;l1=2&amp;l2=1"> компьютер</a>
+         td class="trans"
     •  Comments:
-         <span STYLE="color:gray"...<
-    •  Corrections:
-         <span STYLE="color:rgb(60,179,113)">
+         <span style="color:gray">(прибора)</span>
+         span style="color:gray"
     •  Users:
-         <a href="M.exe?..."><i>...</i></a>
-         OR without 1st <
+         (116 is for everyone)
+         <a href="/m.exe?a=116&UserName=Буткова">Буткова</a>
+         a href="/m.exe?a=116&UserName=
     •  Genders:
-         <span STYLE="color:gray"<i>...</i>
-    •  Word forms:
-         <a href="M.exe?a=118&t=
-    •  Transcription: (a digit in 'width="9"' may vary)
-         <img SRC="/gif/..." width="9" height="16" align="absbottom">
-    •  Parts of speech:
-         <em></em>
+         <em>n</em>
+         em
+    •  Word forms + thesaurus:
+         <td colspan="2" class="gray">&nbsp;(quantity) computer <em>n</em></td>
+         td colspan="2" class="gray"
+    •  Transcription:
+         <td colspan="2" class="gray">&nbsp;computer <span style="color:gray">kəm'pju:tə</span> <em>n</em> <span style="color:gray">|</span>
+         (same as word forms) ', ə and other marks
+    •  Phrase dics (25 is the number of entries in the dic)
+        <td class="phras"><a href="/m.exe?a=3&amp;sc=448&amp;s=computer&amp;l1=1&amp;l2=2">Chemical weapons</a></td><td class="phras_cnt">25</td>
+        td class="phras"
     '''
 
 # Tag patterns
-tag_pattern_del = ['.exe?a=5&s=AboutMultitran.htm' # О словаре
-                  ,'.exe?a=5&s=FAQ.htm'            # FAQ
-                  ,'.exe?a=40'                     # Вход
-                  ,'.exe?a=113'                    # Регистрация
-                  ,'.exe?a=24&s='                  # Настройки
-                  ,'.exe?a=5&s=searches'           # Словари
-                  ,'.exe?a=2&l1=1&l2=2'            # Форум
-                  ,'.exe?a=44&nadd=1'              # Купить
-                  ,'.exe?a=5&s=DownloadFile'       # Скачать
-                  ,'.exe?a=45'                     # Отзывы
-                  ,'.exe?a=5&s=s_contacts'         # Контакты
-                  ,'.exe?a=104&&'                  # Добавить
-                  ,'.exe?a=134&s='                 # Удалить
-                  ,'.exe?a=11&l1='                 # Изменить
-                  ,'.exe?a=26&&s='                 # Сообщить об ошибке
-                  ,'.exe?a=136'                    # Оценить сайт
-                  ,'&ex=1'                         # только заданная форма слова
-                  ,'&order=1'                      # в заданном порядке
-                  ,'.exe?a=46&&short_value'        # спросить в форуме
-                  ,'.exe?a=5&s=SendPassword'       # я забыл пароль
-                  ,'.exe?a=5&s=EnterProblems'      # проблемы со входом или использованием форума?
+tag_pattern_del = ['m.exe?a=40&'      # Log in, Вход
+                  ,'m.exe?a=256'      # English, Русский
+                  ,'m.exe?a=1&'       # Dictionary, Словари
+                  ,'&fl=1'            # ⇄
+                  ,'a href="#phrases' # phrases, фразы
+                  ,'?fscreen=1'       # Full screen, Полный экран
                   ]
 
-# Full dictionary titles
-pdic = '<a title="'
+# Abbreviated dictionary titles
+pdic = 'td class="subj"'
 
 # URLs
-purl1 = 'href="M.exe?'
-purl2 = 'href="m.exe?'
+purl1 = 'href="/m.exe?'
+# Failsafe
+purl2 = 'href="/M.exe?'
 purl3 = 'href="'
 purl4 = '">'
 
 # Comments
-''' May also need to look at: '<a href="#start', '<a href="#phrases',
-    '<a href="', '<span STYLE="color:gray"> (ед.ч., мн.ч.)<span STYLE="color:black">'
-'''
-pcom1 = '<i>'
-pcom2 = '<span STYLE="color:gray">'
-pcom3 = '&&UserName='
-
-# Corrective comments
-pcor1 = '<span STYLE="color:rgb(60,179,113)">'
-pcor2 = '<font color=DarkGoldenrod>'
+pcom1 = 'span style="color:gray"'
+pcom2 = '&UserName='
 
 # Word Forms
 pwf1 = '<td bgcolor='
@@ -122,15 +88,20 @@ pph2 = '<a href="m.exe?a=3&&s='
 pph3 = '<a href="M.exe?a=3&s='
 pph4 = '<a href="m.exe?a=3&s='
 
-# Transcription
-ptr1 = '<img SRC="/gif/'
 
-useful_tags = [pdic,purl1,purl2,pcom1,pcom2
-              ,pcom3,pcor1,pcor2,ptr1,pwf4
+useful_tags = [pdic,purl1,purl2
+              ,pcom1,pcom2,pwf4
               ,psp1
               ]
 
-pair_root = 'https://www.multitran.com/m.exe?'
+if hasattr(plugins.multitrancom.get,'PAIR_ROOT'):
+    pair_root = plugins.multitrancom.get.PAIR_ROOT
+else:
+    pair_root = ''
+    sh.objs.mes ('[MClient] plugins.multitrancom.tags.__main__'
+                ,_('ERROR')
+                ,_('An invalid plugin!')
+                )
 
 
 
@@ -196,9 +167,6 @@ class AnalyzeTag:
                         self.speech()
                     if not self._cur._type:
                         self.comment()
-                        self.cor_comment()
-                    if not self._cur._type:
-                        self.transc()
                     self.url()
                 else:
                     self._cur._type = 'invalid'
@@ -244,14 +212,8 @@ class AnalyzeTag:
             self._blocks.append(tmp)
 
     def comment(self):
-        if self._block.startswith(pcom1) \
-        or self._block.startswith(pcom2) or pcom3 in self._block:
+        if pcom1 in self._block or pcom2 in self._block:
             self._cur._type = 'comment'
-
-    def cor_comment(self):
-        if self._block.startswith(pcor1) \
-        or self._block.startswith(pcor2):
-            self._cur._type = 'correction'
 
     def dic(self):
         f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.dic'
@@ -313,25 +275,6 @@ class AnalyzeTag:
                 self._cur._url = pair_root + self._cur._url
             else:
                 self._cur._url = ''
-
-    def transc(self):
-        f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.transc'
-        # Extract a phonetic sign
-        if ptr1 in self._block:
-            tmp = re.sub(r'\.gif.*','',self._block)
-            tmp = tmp.replace(ptr1,'')
-            if tmp:
-                self._cur._type = 'transc'
-                try:
-                    ind = transc_orig.index(tmp)
-                    self._cur._text = transc_final[ind]
-                    self._elems.append(copy.copy(self._cur))
-                except ValueError:
-                    sh.log.append (f,_('WARNING')
-                                  ,_('Wrong input data: "%s"') % tmp
-                                  )
-            else:
-                sh.com.empty(f)
 
     def speech(self):
         if psp1 in self._block:

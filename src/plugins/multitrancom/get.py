@@ -14,7 +14,7 @@ gettext.install('mclient','../resources/locale')
 ENCODING  = 'utf-8'
 # 'https' is got faster than 'http' (~0.2s)
 URL       = 'https://www.multitran.com'
-PAIR_ROOT = URL + '/c/M.exe?'
+PAIR_ROOT = URL + '/m.exe?'
 PAIRS = ('ENG <=> RUS','DEU <=> RUS','SPA <=> RUS'
         ,'FRA <=> RUS','NLD <=> RUS','ITA <=> RUS'
         ,'LAV <=> RUS','EST <=> RUS','AFR <=> RUS'

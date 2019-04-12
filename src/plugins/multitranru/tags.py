@@ -5,6 +5,7 @@ import re
 import copy
 import shared    as sh
 import sharedGUI as sg
+import plugins.multitranru.get
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -130,7 +131,14 @@ useful_tags = [pdic,purl1,purl2,pcom1,pcom2
               ,psp1
               ]
 
-pair_root = 'https://www.multitran.ru/c/M.exe?'
+if hasattr(plugins.multitranru.get,'PAIR_ROOT'):
+    pair_root = plugins.multitranru.get.PAIR_ROOT
+else:
+    pair_root = ''
+    sh.objs.mes ('[MClient] plugins.multitranru.tags.__main__'
+                ,_('ERROR')
+                ,_('An invalid plugin!')
+                )
 
 
 
