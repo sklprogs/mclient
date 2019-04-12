@@ -2,9 +2,6 @@
 - Form new URLs when using multitran.com (otherwise, there will be
   a decoding error since we still use multitran.ru patterns)
 - (?) Redo SpecialPage: alphebitize online and offline dics separately
-- Hardcode 'pair_root' and language pairs and remove config and globs
-  keys
-- Diversify lg.Welcome for different sources (multitran.ru/com)
 - stardict.cleanup: move block-creating code to stardict.parse
 - Reimplement: Page.file, delete Page.HasLocal (analyze tags separately).
 - Add Control-Q for History

@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-'''
-    We need 'POS1 < POS2' to skip empty blocks; POS1 = POS2 causes
-    Moves to work incorrectly
+''' We need 'POS1 < POS2' to skip empty blocks; POS1 = POS2 causes
+    Moves to work incorrectly.
 '''
 
 import sqlite3
-import shared as sh
+import shared    as sh
+import sharedGUI as sg
 
 import gettext, gettext_windows
 gettext_windows.setup_env()

@@ -334,7 +334,7 @@ class HTML:
 
     def html(self):
         ''' Default Python string concatenation is too slow, so we use
-            this module instead
+            this module instead.
         '''
         self.output = io.StringIO()
         self.output.write('<html>\n')
@@ -409,7 +409,7 @@ class HTML:
         self.output.write('\n</body>\n</html>')
         self._html = self.output.getvalue()
         ''' #todo: enhance algorithm, drop this; I tried to monitor j,
-            block._text, block.j, but they are all changing
+            block._text, block.j, but they are all changing.
         '''
         self._html = self._html.replace ('<td valign="top" col width="%d"></td>' \
                                         % self._width

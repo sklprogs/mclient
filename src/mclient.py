@@ -12,6 +12,9 @@ import gui       as gi
 import cells     as cl
 import db
 import mkhtml    as mh
+import plugins.multitranru.get
+import plugins.multitrancom.get
+import plugins.stardict.get
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -186,9 +189,21 @@ class SaveArticle:
         if self.file and lg.objs.request()._html_raw:
             self.fix_ext(ext='.htm')
             #todo: fix remaining links to localhost
-            sh.WriteTextFile (file    = self.file
-                             ,Rewrite = True
-                             ).write(lg.objs._request._html_raw.replace('charset=windows-1251"','charset=utf-8"').replace('<a href="M.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/M.exe?',sh.globs['var']['pair_root']).replace('<a href="m.exe?','<a href="'+sh.globs['var']['pair_root']).replace('../c/m.exe?',sh.globs['var']['pair_root']))
+            #todo: replace multitran.com urls
+            if hasattr(lg.objs._request.plugin_get,'PAIR_ROOT'):
+                pair_root = lg.objs._request.plugin_get.PAIR_ROOT
+                code = lg.objs._request._html_raw.replace('charset=windows-1251"','charset=utf-8"')
+                code = code.replace('<a href="M.exe?','<a href="'+pair_root)
+                code = code.replace('../c/M.exe?',pair_root)
+                code = code.replace('<a href="m.exe?','<a href="'+pair_root)
+                code = code.replace('../c/m.exe?',pair_root)
+                sh.WriteTextFile (file    = self.file
+                                 ,Rewrite = True
+                                 ).write(code)
+            else:
+                sh.objs.mes (f,_('ERROR')
+                            ,_('An invalid plugin!')
+                            )
         else:
             sh.com.empty(f)
 
@@ -565,8 +580,7 @@ class WebFrame:
         
     def reset(self):
         #'widget.reset' is already done in 'self.fill'
-        welcome = lg.Welcome (url     = sh.globs['var']['pair_root']
-                             ,product = product
+        welcome = lg.Welcome (product = product
                              ,version = version
                              )
         self.fill(welcome.run())
@@ -579,13 +593,13 @@ class WebFrame:
         self._phdic = ''
 
     def widgets(self):
-        self.about          = About        ()
-        self.settings       = Settings     ()
+        self.about          = About()
+        self.settings       = Settings()
         self.search_article = SearchArticle()
-        self.spec_symbols   = SpecSymbols  ()
-        self.save_article   = SaveArticle  ()
-        self.history        = History      ()
-        self.suggestion     = Suggestion   (entry=self.gui.search_field)
+        self.spec_symbols   = SpecSymbols()
+        self.save_article   = SaveArticle()
+        self.history        = History()
+        self.suggestion     = Suggestion(entry=self.gui.search_field)
         # Close child widgets in order not to overlap the parent widget
         self.about.parties.gui.close()
         self.about.gui.close()
@@ -596,6 +610,7 @@ class WebFrame:
         self.history.gui.close()
 
     def bindings(self):
+        f = '[MClient] mclient.WebFrame.bindings'
         sg.bind (obj      = self.gui.obj
                 ,bindings = [sh.globs['var']['bind_copy_sel']
                             ,sh.globs['var']['bind_copy_sel_alt']
@@ -793,15 +808,15 @@ class WebFrame:
                 ,action   = lambda x:self.go(Mouse=True)
                 )
         ''' Key and mouse bindings must have different parents,
-        otherwise, key bindings will not work, and mouse bindings
-        (such as RMB) may fire up when not required. Keys must be
-        bound to Top and mouse buttons - to specific widgets
-        (Tkinterhtml widget, buttons on the button frame, etc.)
-        Parents may be determined automatically, but this looks
-        clumsy and unreliable. So I think it is better to hardcode
-        mouse bindigs wherever possible and assume the config 
-        provides for key bindigs only (or at least they are not
-        to be bound to Top).
+            otherwise, key bindings will not work, and mouse bindings
+            (such as RMB) may fire up when not required. Keys must be
+            bound to Top and mouse buttons - to specific widgets
+            (Tkinterhtml widget, buttons on the button frame, etc.)
+            Parents may be determined automatically, but this looks
+            clumsy and unreliable. So I think it is better to hardcode
+            mouse bindigs wherever possible and assume the config 
+            provides for key bindigs only (or at least they are not
+            to be bound to Top).
         '''
         sg.bind (obj      = self.gui
                 ,bindings = '<Button-3>'
@@ -981,9 +996,14 @@ class WebFrame:
         self.gui.btn_cler.action = self.clear_search_field
         self.gui.btn_trns.action = self.go
         # Reset OptionMenus
-        self.gui.men_pair.reset (items  = lg.pairs
-                                ,action = self.set_lang
-                                )
+        if hasattr(lg.objs.request().plugin_get,'PAIRS'):
+            self.gui.men_pair.reset (items  = lg.objs._request.plugin_get.PAIRS
+                                    ,action = self.set_lang
+                                    )
+        else:
+            sh.objs.mes (f,_('ERROR')
+                        ,_('An invalid plugin!')
+                        )
         self.gui.men_srcs.reset (items   = lg.sources
                                 ,action  = self.set_source
                                 )
@@ -1448,6 +1468,11 @@ class WebFrame:
         sh.log.append (f,_('INFO')
                       ,_('Set source to "%s"') % lg.objs._request._source
                       )
+        #todo: make more specific
+        if lg.objs._request._source in (_('All'),_('Online')):
+            lg.objs._request.plugin_get = plugins.multitranru.get
+        else:
+            lg.objs._request.plugin_get = plugins.stardict.get
         self.load_article()
 
     def get_url(self):
@@ -1796,14 +1821,37 @@ class WebFrame:
 
     def set_lang(self,event=None):
         f = '[MClient] mclient.WebFrame.set_lang'
-        lg.objs.request()._lang = lg.langs[self.gui.men_pair.index]
-        sh.log.append (f,_('INFO')
-                      ,_('Set language to "%s"') \
-                      % lg.objs._request._lang
-                      )
+        if hasattr(lg.objs.request().plugin_get,'LANGS'):
+            langs = lg.objs._request.plugin_get.LANGS
+            try:
+                lg.objs._request._lang = langs[self.gui.men_pair.index]
+            except IndexError:
+                sh.objs.mes (f,_('ERROR')
+                            ,_('Wrong input data!')
+                            )
+            sh.log.append (f,_('INFO')
+                          ,_('Set language to "%s"') \
+                          % lg.objs._request._lang
+                          )
+        else:
+            sh.objs.mes (f,_('ERROR')
+                        ,_('An invalid plugin!')
+                        )
 
     def get_pair(self,event=None):
-        return lg.online_dic_urls[self.gui.men_pair.index]
+        f = '[MClient] mclient.WebFrame.get_pair'
+        if hasattr(lg.objs.request().plugin_get,'PAIR_URLS'):
+            pair_urls = lg.objs._request.plugin_get.PAIR_URLS
+            try:
+                return pair_urls[self.gui.men_pair.index]
+            except IndexError:
+                sh.objs.mes (f,_('ERROR')
+                            ,_('Wrong input data!')
+                            )
+        else:
+            sh.objs.mes (f,_('ERROR')
+                        ,_('An invalid plugin!')
+                        )
 
     def set_columns(self,event=None):
         f = '[MClient] mclient.WebFrame.set_columns'
@@ -2276,11 +2324,11 @@ class Suggestion:
         self._select()
         objs.webframe().go()
         
-    ''' #note: this works differently in Windows and Linux. In Windows
-        selecting an item will hide suggestions, in Linux they will be
-        kept open.
-    '''
     def _select(self,event=None):
+        ''' #note: this works differently in Windows and Linux.
+            In Windows selecting an item will hide suggestions,
+            in Linux they will be kept open.
+        '''
         f = '[MClient] mclient.Suggestion._select'
         if self.gui.parent:
             self.entry.clear_text()

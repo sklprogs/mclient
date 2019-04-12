@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import os
+import io
 import urllib.request
 import html
 import ssl
@@ -9,34 +10,15 @@ import shared    as sh
 import sharedGUI as sg
 import plugins.stardict.get
 import plugins.stardict.run
+import plugins.multitranru.get
 import plugins.multitranru.run
+import plugins.multitrancom.get
 import plugins.multitrancom.run
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
-pairs = ('ENG <=> RUS','DEU <=> RUS','SPA <=> RUS'
-        ,'FRA <=> RUS','NLD <=> RUS','ITA <=> RUS'
-        ,'LAV <=> RUS','EST <=> RUS','AFR <=> RUS'
-        ,'EPO <=> RUS','RUS <=> XAL','XAL <=> RUS'
-        ,'ENG <=> DEU','ENG <=> EST'
-        )
-langs = ('English'   # ENG <=> RUS
-        ,'German'    # DEU <=> RUS
-        ,'Spanish'   # SPA <=> RUS
-        ,'French'    # FRA <=> RUS
-        ,'Dutch'     # NLD <=> RUS
-        ,'Italian'   # ITA <=> RUS
-        ,'Latvian'   # LAV <=> RUS
-        ,'Estonian'  # EST <=> RUS
-        ,'Afrikaans' # AFR <=> RUS
-        ,'Esperanto' # EPO <=> RUS
-        ,'Kazakh'    # RUS <=> XAL
-        ,'Kazakh'    # XAL <=> RUS
-        ,'German'    # ENG <=> DEU
-        ,'Estonian'  # ENG <=> EST
-        )
 sources = (_('All'),_('Online'),_('Offline'))
 sample_block = '''Австралийский сленг
 Архаизм
@@ -227,28 +209,39 @@ class Translate:
 
 class Welcome:
 
-    def __init__ (self,url=None,product='MClient'
+    def __init__ (self,product='MClient'
                  ,version='current',timeout=6
                  ):
-        if not url:
-            ''' 'https://www.multitran.ru' is got faster than
-                'http://www.multitran.ru' (~0.2s)
-            '''
-            url = 'https://www.multitran.ru'
-        self._url       = url
+        self.set_urls()
         self._product   = product
         self._version   = version
         self._st_status = len(plugins.stardict.get.objs.all_dics()._dics)
         self._timeout   = timeout
-        self._mt_status = 'not running'
-        self._mt_color  = 'red'
+        self._mr_status = 'not running'
+        self._mc_status = 'not running'
+        self._mr_color  = 'red'
+        self._mc_color  = 'red'
         self._st_color  = 'red'
         self._desc      = sh.List (lst1 = [self._product
                                           ,self._version
                                           ]
                                   ).space_items()
 
-    def online(self):
+    def set_urls(self):
+        f = '[MClient] logic.Welcome.set_urls'
+        #todo: use abstract plugins
+        if hasattr(plugins.multitranru.get,'URL') \
+        and hasattr(plugins.multitrancom.get,'URL'):
+            self._mr_url = plugins.multitranru.get.URL
+            self._mc_url = plugins.multitrancom.get.URL
+        else:
+            self._mr_url = ''
+            self._mc_url = ''
+            sh.objs.mes (f,_('ERROR')
+                        ,_('An invalid plugin!')
+                        )
+    
+    def online(self,url):
         f = '[MClient] logic.Welcome.online'
         ''' On *some* systems we can get urllib.error.URLError: 
             <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED].
@@ -261,7 +254,7 @@ class Welcome:
                           ,_('Unable to use unverified certificates!')
                           )
         try:
-            code = urllib.request.urlopen (url     = self._url
+            code = urllib.request.urlopen (url     = url
                                           ,timeout = self._timeout
                                           ).code
             if (code / 100 < 4):
@@ -270,45 +263,73 @@ class Welcome:
             return False
 
     def generate(self):
-        return '''<html>
-                <body>
-                  <h1>
-                    %s
-                  </h1>
-                  <font face='Serif' size='6'>
-                  <br>
-                    %s
-                  <br>
-                    %s
-                  <br>
-                    %s
-                  <br><br>
-                    %s
-                  <font face='Serif' color='%s' size='6'>%s</font>.
-                  <br>
-                    %s <font color='%s'>%d</font>.
-                  </font>
-                </body>
-              </html>
-        ''' % (_('Welcome to %s!') % self._desc
-              ,_('This program retrieves translation from online/offline sources.')
-              ,_('Use an entry area below to enter a word/phrase to be translated.')
-              ,_('Click the left mouse button on the selection to return its translation. Click the right mouse button on the selection to copy it to clipboard.')
-              ,_('Multitran is ')
-              ,self._mt_color
-              ,self._mt_status
-              ,_('Offline dictionaries loaded:')
-              ,self._st_color
-              ,self._st_status
-              )
+        f = '[MClient] logic.Welcome.generate'
+        istr = io.StringIO()
+        istr.write('<html>\n')
+        istr.write('  <body>\n')
+        istr.write('    <h1>')
+        istr.write(_('Welcome to {}!').format(self._desc))
+        istr.write('</h1>\n')
+        istr.write('    <font face="Serif" size="6">\n')
+        istr.write('      <br>\n')
+        istr.write('      {}'.format(_('This program retrieves translation from online/offline sources.')))
+        istr.write('\n')
+        istr.write('      <br>\n')
+        istr.write('      {}'.format(_('Use an entry area below to enter a word/phrase to be translated.')))
+        istr.write('\n')
+        istr.write('      <br>\n')
+        istr.write('      {}'.format(_('Click the left mouse button on the selection to return its translation. Click the right mouse button on the selection to copy it to clipboard.')))
+        istr.write('\n')
+        istr.write('      <br><br>\n')
+        if self._mr_url:
+            url = self._mr_url.replace('https://','').replace('http://','').replace('www.','')
+            istr.write('      <b>{}</b>\n'.format(url))
+            istr.write('      <font face="Serif" color="')
+            istr.write(self._mr_color)
+            istr.write('" size="6">')
+            istr.write(self._mr_status)
+            istr.write('</font>.\n')
+            istr.write('      <br>\n')
+        else:
+            sh.com.empty(f)
+        if self._mc_url:
+            url = self._mc_url.replace('https://','').replace('http://','').replace('www.','')
+            istr.write('      <b>{}</b>\n'.format(url))
+            istr.write('      <font face="Serif" color="')
+            istr.write(self._mc_color)
+            istr.write('" size="6">')
+            istr.write(self._mc_status)
+            istr.write('</font>.\n')
+            istr.write('      <br>\n')
+        else:
+            sh.com.empty(f)
+        istr.write('      {}'.format(_('Offline dictionaries loaded:')))
+        istr.write('\n')
+        istr.write('      <font color="')
+        istr.write(self._st_color)
+        istr.write('">')
+        istr.write('{}'.format(self._st_status))
+        istr.write('</font>.\n')
+        istr.write('    </font>\n')
+        istr.write('  </body>\n')
+        istr.write('</html>')
+        code = istr.getvalue()
+        istr.close()
+        return code
 
     def run(self):
-        if self.online():
-            self._mt_status = _('running')
-            self._mt_color  = 'green'
+        if self.online(self._mr_url):
+            self._mr_status = _('running')
+            self._mr_color  = 'green'
         else:
-            self._mt_status = _('not running')
-            self._mt_color  = 'red'
+            self._mr_status = _('not running')
+            self._mr_color  = 'red'
+        if self.online(self._mc_url):
+            self._mc_status = _('running')
+            self._mc_color  = 'green'
+        else:
+            self._mc_status = _('not running')
+            self._mc_color  = 'red'
         if self._st_status == 0:
             self._st_color = 'red'
         else:
@@ -598,21 +619,6 @@ class ConfigMclient(sh.Config):
            ,'font_style'                  :'Sans 14'
            ,'font_terms_sel'              :'Sans 14 bold italic'
            ,'font_terms_family'           :'Serif'
-           ,'pair_afr_rus'                :'l1=31&l2=2&s=%s'
-           ,'pair_deu_rus'                :'l1=3&l2=2&s=%s'
-           ,'pair_eng_deu'                :'l1=1&l2=3&s=%s'
-           ,'pair_eng_est'                :'l1=1&l2=26&s=%s'
-           ,'pair_eng_rus'                :'l1=1&l2=2&s=%s'
-           ,'pair_epo_rus'                :'l1=34&l2=2&s=%s'
-           ,'pair_est_rus'                :'l1=26&l2=2&s=%s'
-           ,'pair_fra_rus'                :'l1=4&l2=2&s=%s'
-           ,'pair_ita_rus'                :'l1=23&l2=2&s=%s'
-           ,'pair_lav_rus'                :'l1=27&l2=2&s=%s'
-           ,'pair_nld_rus'                :'l1=24&l2=2&s=%s'
-           ,'pair_root'                   :'https://www.multitran.ru/c/M.exe?'
-           ,'pair_rus_xal'                :'l1=2&l2=35&s=%s'
-           ,'pair_spa_rus'                :'l1=5&l2=2&s=%s'
-           ,'pair_xal_rus'                :'l1=35&l2=2&s=%s'
            ,'repeat_sign'                 :'!'
            ,'repeat_sign2'                :'!!'
            ,'spec_syms'                   :'àáâäāæßćĉçèéêēёëəғĝģĥìíîïīĵķļñņòóôõöōœøšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒЁËƏҒĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒØŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ'
@@ -637,6 +643,7 @@ class CurRequest:
         ''' #note: this should be synchronized with the 'default' value
             of objs.webframe().menu_columns
         '''
+        self.plugin_get    = plugins.multitranru.get
         self._collimit     = 8
         # Default priorities of parts of speech
         self._pr_n         = 7
@@ -1230,12 +1237,18 @@ class Suggestion:
                           ,_('Nothing to do!')
                           )
         if self._pair:
-            if not self._pair in online_dic_urls:
+            if hasattr(objs.request().plugin_get,'PAIR_URLS'):
+                if not self._pair in objs._request.plugin_get.PAIR_URLS:
+                    self.Success = False
+                    sh.log.append (f,_('WARNING')
+                                  ,_('Wrong input data: "%s"') \
+                                  % str(self._pair)
+                                  )
+            else:
                 self.Success = False
-                sh.log.append (f,_('WARNING')
-                              ,_('Wrong input data: "%s"') \
-                              % str(self._pair)
-                              )
+                sh.objs.mes (f,_('ERROR')
+                            ,_('An invalid plugin!')
+                            )
         else:
             self.Success = False
             sh.com.empty(f)
@@ -1285,22 +1298,6 @@ class Suggestion:
 
 objs = Objects()
 ConfigMclient()
-
-online_dic_urls = (sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_rus']   # ENG <=> RUS, 'l1=1&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_deu_rus']   # DEU <=> RUS, 'l1=3&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_spa_rus']   # SPA <=> RUS, 'l1=5&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_fra_rus']   # FRA <=> RUS, 'l1=4&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_nld_rus']   # NLD <=> RUS, 'l1=24&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_ita_rus']   # ITA <=> RUS, 'l1=23&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_lav_rus']   # LAV <=> RUS, 'l1=27&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_est_rus']   # EST <=> RUS, 'l1=26&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_afr_rus']   # AFR <=> RUS, 'l1=31&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_epo_rus']   # EPO <=> RUS, 'l1=34&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_rus_xal']   # RUS <=> XAL, 'l1=2&l2=35&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_xal_rus']   # XAL <=> RUS, 'l1=35&l2=2&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_deu']   # ENG <=> DEU, 'l1=1&l2=3&s=%s'
-                  ,sh.globs['var']['pair_root'] + sh.globs['var']['pair_eng_est']   # ENG <=> EST, 'l1=1&l2=26&s=%s'
-                  )
 
 plugins.stardict.get.PATH = objs.default().dics()
 plugins.stardict.get.objs.all_dics()

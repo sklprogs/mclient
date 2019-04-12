@@ -11,7 +11,46 @@ gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 
-ENCODING = 'utf-8'
+ENCODING  = 'utf-8'
+# 'https' is got faster than 'http' (~0.2s)
+URL       = 'https://www.multitran.com'
+PAIR_ROOT = URL + '/c/M.exe?'
+PAIRS = ('ENG <=> RUS','DEU <=> RUS','SPA <=> RUS'
+        ,'FRA <=> RUS','NLD <=> RUS','ITA <=> RUS'
+        ,'LAV <=> RUS','EST <=> RUS','AFR <=> RUS'
+        ,'EPO <=> RUS','RUS <=> XAL','XAL <=> RUS'
+        ,'ENG <=> DEU','ENG <=> EST'
+        )
+LANGS = ('English'   # ENG <=> RUS
+        ,'German'    # DEU <=> RUS
+        ,'Spanish'   # SPA <=> RUS
+        ,'French'    # FRA <=> RUS
+        ,'Dutch'     # NLD <=> RUS
+        ,'Italian'   # ITA <=> RUS
+        ,'Latvian'   # LAV <=> RUS
+        ,'Estonian'  # EST <=> RUS
+        ,'Afrikaans' # AFR <=> RUS
+        ,'Esperanto' # EPO <=> RUS
+        ,'Kazakh'    # RUS <=> XAL
+        ,'Kazakh'    # XAL <=> RUS
+        ,'German'    # ENG <=> DEU
+        ,'Estonian'  # ENG <=> EST
+        )
+PAIR_URLS = (PAIR_ROOT + 'l1=1&l2=2&s=%s'  # ENG <=> RUS
+            ,PAIR_ROOT + 'l1=3&l2=2&s=%s'  # DEU <=> RUS
+            ,PAIR_ROOT + 'l1=5&l2=2&s=%s'  # SPA <=> RUS
+            ,PAIR_ROOT + 'l1=4&l2=2&s=%s'  # FRA <=> RUS
+            ,PAIR_ROOT + 'l1=24&l2=2&s=%s' # NLD <=> RUS
+            ,PAIR_ROOT + 'l1=23&l2=2&s=%s' # ITA <=> RUS
+            ,PAIR_ROOT + 'l1=27&l2=2&s=%s' # LAV <=> RUS
+            ,PAIR_ROOT + 'l1=26&l2=2&s=%s' # EST <=> RUS
+            ,PAIR_ROOT + 'l1=31&l2=2&s=%s' # AFR <=> RUS
+            ,PAIR_ROOT + 'l1=34&l2=2&s=%s' # EPO <=> RUS
+            ,PAIR_ROOT + 'l1=2&l2=35&s=%s' # RUS <=> XAL
+            ,PAIR_ROOT + 'l1=35&l2=2&s=%s' # XAL <=> RUS
+            ,PAIR_ROOT + 'l1=1&l2=3&s=%s'  # ENG <=> DEU
+            ,PAIR_ROOT + 'l1=1&l2=26&s=%s' # ENG <=> EST
+            )
 
 
 class Get:
