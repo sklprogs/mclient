@@ -94,8 +94,9 @@ class Plugin:
     def stardict(self):
         f = '[MClient] tests.Plugin.stardict'
         import plugins.stardict.run as sr
-        blocks = sr.Plugin (search = 'computer'
-                           ,Debug  = True
+        blocks = sr.Plugin (search  = 'about'
+                           ,Debug   = True
+                           ,Shorten = False
                            ).run()
     
     def multitranru(self):
@@ -105,6 +106,9 @@ class Plugin:
                            ,search  = 'computer'
                            ,timeout = 6
                            ,Debug   = True
+                           ,Shorten = True
+                           ,MaxRow  = 20
+                           ,MaxRows = 100
                            ).run()
     
     def multitrancom(self):
@@ -114,6 +118,9 @@ class Plugin:
                            ,search  = 'computer'
                            ,timeout = 6
                            ,Debug   = True
+                           ,Shorten = True
+                           ,MaxRow  = 20
+                           ,MaxRows = 200
                            ).run()
 
 
@@ -127,5 +134,5 @@ if __name__ == '__main__':
     sg.objs.start()
     # This will also set plugins.stardict.get.PATH
     #import logic as lg
-    get.multitrancom()
+    plug.multitranru()
     sg.objs.end()

@@ -238,16 +238,16 @@ class Cells:
     def run(self):
         f = '[MClient] cells.Cells.run'
         if self.Success:
-            self.assign       ()
+            self.assign()
             self.restore_fixed()
-            self.clear_fixed  ()
+            self.clear_fixed()
             self.clear_phrases()
             self.expand_speech()
-            self.phrases2end  ()
-            self.wrap         ()
-            self.sep_words    ()
-            self.sort_cells   ()
-            self.cell_no      ()
+            self.phrases2end()
+            self.wrap()
+            self.sep_words()
+            self.sort_cells()
+            self.cell_no()
         else:
             sh.com.cancel(f)
         
@@ -389,9 +389,11 @@ class Cells:
         f = '[MClient] cells.Cells.phrases2end'
         if self._phrase_dic:
             phrases = [block for block in self._blocks \
-                       if block._dica == self._phrase_dic]
+                       if block._dica == self._phrase_dic
+                      ]
             self._blocks = [block for block in self._blocks \
-                            if block._dica != self._phrase_dic]
+                            if block._dica != self._phrase_dic
+                           ]
             self._blocks = self._blocks + phrases
         else:
             sh.com.empty(f)
@@ -482,9 +484,9 @@ class Pos:
     def run(self):
         f = '[MClient] cells.Pos.run'
         if self.Success:
-            self.assign   ()
+            self.assign()
             self.gen_poses()
-            self.dump     ()
+            self.dump()
         else:
             sh.com.cancel(f)
         

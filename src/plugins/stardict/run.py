@@ -20,6 +20,8 @@ class Plugin:
     def __init__ (self,search='',url=''
                  ,timeout=6,Debug=False
                  ,articleid=0,iabbr=None
+                 ,Shorten=True,MaxRow=20
+                 ,MaxRows=50
                  ):
         ''' - Extra unused input variables are preserved so it would be
               easy to use an abstract class for all dictionary sources.
@@ -31,6 +33,9 @@ class Plugin:
         self.Debug      = Debug
         self._articleid = articleid
         self.iabbr      = iabbr
+        self.Shorten    = Shorten
+        self.MaxRow     = MaxRow
+        self.MaxRows    = MaxRows
     
     def values(self):
         self._text   = ''
@@ -45,8 +50,11 @@ class Plugin:
         self._text = cu.CleanUp(self._text).run()
         if self._text is None:
             self._text = ''
-        self._blocks = tg.Tags (text  = self._text
-                               ,Debug = self.Debug
+        self._blocks = tg.Tags (text    = self._text
+                               ,Debug   = self.Debug
+                               ,Shorten = self.Shorten
+                               ,MaxRow  = self.MaxRow
+                               ,MaxRows = self.MaxRows
                                ).run()
         self._data = el.Elems (blocks    = self._blocks
                               ,articleid = self._articleid

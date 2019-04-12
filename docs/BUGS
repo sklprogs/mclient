@@ -1,5 +1,5 @@
 
-- 'about': 'они передвигали мебель' in a wrong dic (must be local)
+- 'about': 'они передвигали мебель' in a wrong dic (must be general)
 - logic, 817: logic.Order.prioritize_by: .index: ValueError
 - mt, sp-ru: Feliz Navidad -> URLs are not working
 - mt, en-ru: icon

@@ -341,14 +341,20 @@ class AnalyzeTag:
 
 class Tags:
 
-    def __init__(self,text,Debug=False):
+    def __init__ (self,text,Debug=False
+                 ,Shorten=True,MaxRow=20
+                 ,MaxRows=20
+                 ):
         self._tags   = []
         self._blocks = []
         if text:
             self._text = list(text)
         else:
             self._text = ''
-        self.Debug = Debug
+        self.Debug   = Debug
+        self.Shorten = Shorten
+        self.MaxRow  = MaxRow
+        self.MaxRows = MaxRows
 
     def tags(self):
         ''' Split the text by closing tags. To speed up, we remove
@@ -398,9 +404,7 @@ class Tags:
         sg.objs._txt.insert(text=message)
         sg.objs._txt.show()
 
-    def debug_blocks (self,Shorten=1
-                     ,MaxRow=20,MaxRows=20
-                     ):
+    def debug_blocks(self):
         print('\nTags.debug_blocks (Non-DB blocks):')
         headers = ['TYPE'
                   ,'TEXT'
@@ -417,17 +421,15 @@ class Tags:
                         )
         sh.Table (headers = headers
                  ,rows    = rows
-                 ,Shorten = Shorten
-                 ,MaxRow  = MaxRow
-                 ,MaxRows = MaxRows
+                 ,Shorten = self.Shorten
+                 ,MaxRow  = self.MaxRow
+                 ,MaxRows = self.MaxRows
                  ).print()
 
-    def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
-        self.debug_tags()
-        self.debug_blocks (Shorten = Shorten
-                          ,MaxRow  = MaxRow
-                          ,MaxRows = MaxRows
-                          )
+    def debug(self):
+        if self.Debug:
+            self.debug_tags()
+            self.debug_blocks()
 
     def blocks(self):
         if not self._blocks:
@@ -446,7 +448,5 @@ class Tags:
     def run(self):
         self.tags()
         self.blocks()
-        if self.Debug:
-            self.debug_tags()
-            self.debug_blocks()
+        self.debug()
         return self._blocks
