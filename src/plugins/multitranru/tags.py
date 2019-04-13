@@ -167,6 +167,7 @@ class Block:
         self._url      = ''
         self._urla     = ''
         self._dica     = ''
+        self._dicaf    = ''
         self._wforma   = ''
         self._speecha  = ''
         self._transca  = ''

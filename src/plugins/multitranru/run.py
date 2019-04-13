@@ -62,5 +62,9 @@ class Plugin:
         self._data = el.Elems (blocks    = self._blocks
                               ,articleid = self._articleid
                               ,iabbr     = self.iabbr
+                              ,Debug     = self.Debug
+                              ,Shorten   = self.Shorten
+                              ,MaxRow    = self.MaxRow
+                              ,MaxRows   = self.MaxRows
                               ).run()
         return self._data

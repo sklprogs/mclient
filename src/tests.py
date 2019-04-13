@@ -114,7 +114,7 @@ class Plugin:
                            ,Debug   = True
                            ,Shorten = True
                            ,MaxRow  = 20
-                           ,MaxRows = 100
+                           ,MaxRows = 300
                            ).run()
     
     def multitrancom(self):

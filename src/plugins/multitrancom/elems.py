@@ -181,15 +181,16 @@ class Elems:
     
     def debug(self):
         if self.Debug:
-            print('\nplugins.multitrancom.Elems.debug (Non-DB blocks):')
-            headers = ['DICA','WFORMA','SPEECHA','TRANSCA','TYPE','TEXT'
-                      ,'URL','SAMECELL','SELECTABLE'
+            print('\nplugins.multitrancom.elems.Elems.debug (Non-DB blocks):')
+            headers = ['DICA','WFORMA','SPEECHA','TRANSCA','TERMA'
+                      ,'TYPE','TEXT','URL','SAMECELL','SELECTABLE'
                       ]
             rows = []
             for block in self._blocks:
                 rows.append ([block._dica,block._wforma,block._speecha
-                             ,block._transca,block._type,block._text
-                             ,block._url,block._same,block._select
+                             ,block._transca,block._terma,block._type
+                             ,block._text,block._url,block._same
+                             ,block._select
                              ]
                             )
             sh.Table (headers = headers

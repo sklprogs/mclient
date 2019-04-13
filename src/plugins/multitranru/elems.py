@@ -81,13 +81,21 @@ class Elems:
           vary depending on the view. Incorrect sorting by TERMA may
           result in putting a TERM item before fixed columns.
     '''
-    def __init__(self,blocks,articleid,iabbr):
+    def __init__ (self,blocks,articleid
+                 ,iabbr,Debug=False
+                 ,Shorten=True,MaxRow=20
+                 ,MaxRows=20
+                 ):
         f = '[MClient] plugins.multitranru.elems.Elems.__init__'
         self._data      = []
         self._dic_urls  = {}
         self._blocks    = blocks
         self._articleid = articleid
         self.abbr       = iabbr
+        self.Debug      = Debug
+        self.Shorten    = Shorten
+        self.MaxRow     = MaxRow
+        self.MaxRows    = MaxRows
         if self._blocks and self._articleid:
             self.Success = True
         else:
@@ -140,29 +148,31 @@ class Elems:
             self.expand_dica()
             self.selectables()
             self.restore_dic_urls()
+            self.debug()
             self.dump()
             return self._data
         else:
             sh.com.cancel(f)
     
-    def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
-        print('\nElems.debug (Non-DB blocks):')
-        headers = ['DICA','WFORMA','SPEECHA','TRANSCA','TYPE','TEXT'
-                  ,'SAMECELL','SELECTABLE'
-                  ]
-        rows = []
-        for block in self._blocks:
-            rows.append ([block._dica,block._wforma,block._speecha
-                         ,block._transca,block._type,block._text
-                         ,block._same,block._select
-                         ]
-                        )
-        sh.Table (headers = headers
-                 ,rows    = rows
-                 ,Shorten = Shorten
-                 ,MaxRow  = MaxRow
-                 ,MaxRows = MaxRows
-                 ).print()
+    def debug(self):
+        if self.Debug:
+            print('\nplugins.multitranru.elems.Elems.debug (Non-DB blocks):')
+            headers = ['DICA','WFORMA','SPEECHA','TRANSCA','TERMA'
+                      ,'TYPE','TEXT','SAMECELL','SELECTABLE'
+                      ]
+            rows = []
+            for block in self._blocks:
+                rows.append ([block._dica,block._wforma,block._speecha
+                             ,block._transca,block._terma,block._type
+                             ,block._text,block._same,block._select
+                             ]
+                            )
+            sh.Table (headers = headers
+                     ,rows    = rows
+                     ,Shorten = self.Shorten
+                     ,MaxRow  = self.MaxRow
+                     ,MaxRows = self.MaxRows
+                     ).print()
         
     def speech(self):
         ''' 'speech' blocks have '_same = 1' when analyzing MT because
