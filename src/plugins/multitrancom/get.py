@@ -108,13 +108,14 @@ class Get:
                     sh.log.append (f,_('INFO')
                                   ,_('Get online: "%s"') % self._search
                                   )
-                    ''' If the page is loaded using
-                        "page=urllib.request.urlopen(my_url)", we get
-                        HTTPResponse as a result, which is useful only
-                        to remove JavaScript tags. Thus, if we remove all
-                        excessive tags manually, then we need a string
-                        as output.
-                        If 'self._url' is empty, then an error is thrown.
+                    ''' - If the page is loaded using
+                          "page=urllib.request.urlopen(my_url)", we get
+                          HTTPResponse as a result, which is useful only
+                          to remove JavaScript tags. Thus, if we remove
+                          all excessive tags manually, then we need
+                          a string as output.
+                        - If 'self._url' is empty, then an error is
+                          thrown.
                     '''
                     self._text = urllib.request.urlopen (self._url
                                                         ,None
