@@ -177,10 +177,10 @@ class Translate:
                 if self._source in (_('All'),_('Offline')):
                     plugin_sd.run()
                 if self._source in (_('All'),_('Online')):
-                    plugin_mr.run()
+                    #plugin_mr.run()
                     #cur
                     #todo: uncomment when URLs are fixed
-                    #plugin_mc.run()
+                    plugin_mc.run()
                 self._text = [plugin_sd._text,plugin_mr._text
                              ,plugin_mc._text
                              ]

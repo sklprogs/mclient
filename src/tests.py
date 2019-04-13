@@ -72,19 +72,25 @@ class Tags:
         file = '/home/pete/.config/mclient/tests/(multitran.ru) set.txt'
         text = sh.ReadTextFile(file).get()
         text = mrcleanup.CleanUp(text).run()
-        mrtags.Tags (text  = text
-                    ,Debug = True
+        mrtags.Tags (text    = text
+                    ,Debug   = True
+                    ,Shorten = True
+                    ,MaxRow  = 20
+                    ,MaxRows = 100
                     ).run()
     
     def multitrancom(self):
         f = '[MClient] tests.Tags.multitrancom'
-        import plugins.multitranru.cleanup as mrcleanup
-        import plugins.multitranru.tags    as mrtags
+        import plugins.multitrancom.cleanup as mccleanup
+        import plugins.multitrancom.tags    as mctags
         file = '/home/pete/.config/mclient/tests/(multitran.com) computer.txt'
         text = sh.ReadTextFile(file).get()
-        text = mrcleanup.CleanUp(text).run()
-        mrtags.Tags (text  = text
-                    ,Debug = True
+        text = mccleanup.CleanUp(text).run()
+        mctags.Tags (text    = text
+                    ,Debug   = True
+                    ,Shorten = True
+                    ,MaxRow  = 20
+                    ,MaxRows = 1000
                     ).run()
 
 
@@ -112,9 +118,9 @@ class Plugin:
                            ).run()
     
     def multitrancom(self):
-        f = '[MClient] tests.Plugin.multitranru'
-        import plugins.multitrancom.run as mr
-        blocks = mr.Plugin (url     = 'https://multitran.com/m.exe?s=computer&l1=1&l2=2'
+        f = '[MClient] tests.Plugin.multitrancom'
+        import plugins.multitrancom.run as mc
+        blocks = mc.Plugin (url     = 'https://multitran.com/m.exe?s=computer&l1=1&l2=2'
                            ,search  = 'computer'
                            ,timeout = 6
                            ,Debug   = True
@@ -134,5 +140,5 @@ if __name__ == '__main__':
     sg.objs.start()
     # This will also set plugins.stardict.get.PATH
     #import logic as lg
-    plug.multitranru()
+    plug.multitrancom()
     sg.objs.end()

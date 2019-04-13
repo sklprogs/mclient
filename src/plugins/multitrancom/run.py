@@ -19,7 +19,7 @@ class Plugin:
     
     def __init__ (self,search='',url=''
                  ,timeout=6,Debug=False
-                 ,articleid=0,iabbr=None
+                 ,articleid=1,iabbr=None
                  ,Shorten=True,MaxRow=20
                  ,MaxRows=20
                  ):

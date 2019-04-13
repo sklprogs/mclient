@@ -41,14 +41,6 @@ gettext.install('mclient','../resources/locale')
         td class="phras"
     '''
 
-# Tag patterns
-tag_pattern_del = ['m.exe?a=40&'      # Log in, Вход
-                  ,'m.exe?a=256'      # English, Русский
-                  ,'m.exe?a=1&'       # Dictionary, Словари
-                  ,'&fl=1'            # ⇄
-                  ,'a href="#phrases' # phrases, фразы
-                  ,'?fscreen=1'       # Full screen, Полный экран
-                  ]
 
 # Abbreviated dictionary titles
 pdic = 'td class="subj"'
@@ -65,33 +57,31 @@ pcom1 = 'span style="color:gray"'
 pcom2 = '&UserName='
 
 # Word Forms
-pwf1 = '<td bgcolor='
-pwf2 = '<a href="M.exe?a='     # Do not shorten
-pwf3 = '<a href="m.exe?a='     # Do not shorten
-pwf4 = '<td bgcolor="#DBDBDB"'
-pwf5 = '&ifp='
+pwf1 = 'td colspan="'
+pwf2 = '" class="gray"'
 
 # Parts of speech
-psp1 = '<em>'
+psp = '<em>'
 
 # Terms
-ptm1 = 'M.exe?t'            # Both terms and word forms
-ptm2 = 'm.exe?t'            # Both terms and word forms
-ptm3 = '<a href="M.exe?&s='
-ptm4 = '<a href="m.exe?&s='
-ptm5 = '<a href="M.exe?s='
-ptm6 = '<a href="m.exe?s='
+ptm = 'td class="trans"'
 
 # Terms in the 'Phrases' section
-pph1 = '<a href="M.exe?a=3&&s='
-pph2 = '<a href="m.exe?a=3&&s='
-pph3 = '<a href="M.exe?a=3&s='
-pph4 = '<a href="m.exe?a=3&s='
+pph = 'td class="phras"'
 
+# Tag patterns
+tag_pattern_del = ['m.exe?a=40&'          # Log in, Вход
+                  ,'m.exe?a=256'          # English, Русский
+                  ,'m.exe?a=1&'           # Dictionary, Словари
+                  ,'&fl=1'                # ⇄
+                  ,'a href="#phrases'     # phrases, фразы
+                  ,'?fscreen=1'           # Full screen, Полный экран
+                  ,'td class="phras_cnt"' # Phrase entries count number
+                  ]
 
 useful_tags = [pdic,purl1,purl2
-              ,pcom1,pcom2,pwf4
-              ,psp1
+              ,pcom1,pcom2,pwf1
+              ,pwf2,psp,ptm,pph
               ]
 
 if hasattr(plugins.multitrancom.get,'PAIR_ROOT'):
@@ -123,13 +113,14 @@ class Block:
         '''
         self._select   = -1
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
-            'correction', 'transc', 'invalid'
+            'transc', 'invalid'
         '''
         self._type     = 'comment'
         self._text     = ''
         self._url      = ''
         self._urla     = ''
         self._dica     = ''
+        self._dicaf    = ''
         self._wforma   = ''
         self._speecha  = ''
         self._transca  = ''
@@ -141,11 +132,15 @@ class Block:
 class AnalyzeTag:
 
     def __init__(self,tag):
-        self._tag    = tag
-        self._cur    = Block()
+        self.values()
+        self._tag = tag
+    
+    def values(self):
+        self._prev   = 'term'
+        self._block  = ''
         self._blocks = []
         self._elems  = []
-        self._block  = ''
+        self._cur    = Block()
 
     def run(self):
         self.split()
@@ -154,9 +149,8 @@ class AnalyzeTag:
             if self._block.startswith('<'):
                 if self.useful() and not self.useless():
                     self._cur._type = ''
-                    self.phrases()
-                    # Phrases and word forms have conflicting tags
                     # We check '_type' to speed up
+                    self.phrases()
                     if not self._cur._type:
                         self.wform()
                     if not self._cur._type:
@@ -189,7 +183,8 @@ class AnalyzeTag:
             plain text following it will be marked as 'invalid' rather
             than 'comment'.
         '''
-        if self._cur._type != 'invalid':
+        if self._cur._text and self._prev != 'invalid':
+            self._cur._type = self._prev
             self._elems.append(copy.copy(self._cur))
 
     def split(self):
@@ -213,50 +208,25 @@ class AnalyzeTag:
 
     def comment(self):
         if pcom1 in self._block or pcom2 in self._block:
-            self._cur._type = 'comment'
+            self._cur._type = self._prev = 'comment'
 
     def dic(self):
         f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.dic'
-        if self._block.startswith(pdic):
-            tmp = self._block.replace(pdic,'',1)
-            tmp = re.sub('".*','',tmp)
-            if tmp == '' or tmp == ' ':
-                sh.log.append (f,_('WARNING')
-                              ,_('Wrong tag "%s"!') % tmp
-                              )
-            else:
-                self._cur._type = 'dic'
-                self._cur._text = tmp
-                self._elems.append(copy.copy(self._cur))
+        if pdic in self._block:
+            self._cur._type = self._prev = 'dic'
 
     def wform(self):
-        cond1 = pwf1 in self._block
-        cond2 = pwf2 in self._block and not 'UserName' in self._block
-        cond3 = pwf3 in self._block and not 'UserName' in self._block
-        cond4 = pwf4 in self._block
-        cond5 = pwf5 in self._block and ptm1 in self._block
-        cond6 = pwf5 in self._block and ptm2 in self._block
-        if cond1 or cond2 or cond3 or cond4 or cond5 or cond6:
-            self._cur._type  = 'wform'
+        if pwf1 in self._block and pwf2 in self._block:
+            self._cur._type  = self._prev = 'wform'
 
     def phrases(self):
-        # Old algorithm: 'startswith'
-        cond1 = pph1 in self._block
-        cond2 = pph2 in self._block
-        cond3 = pph3 in self._block
-        cond4 = pph4 in self._block
-        if cond1 or cond2 or cond3 or cond4:
-            self._cur._type = 'phrase'
+        if pph in self._block:
+            self._cur._type = self._prev = 'phrase'
 
     def term(self):
-        cond1 = ptm1 in self._block
-        cond2 = ptm2 in self._block
-        cond3 = ptm3 in self._block
-        cond4 = ptm4 in self._block
-        cond5 = ptm5 in self._block
-        cond6 = ptm6 in self._block
-        if cond1 or cond2 or cond3 or cond4 or cond5 or cond6:
-            self._cur._type = 'term'
+        f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.term'
+        if ptm in self._block:
+            self._cur._type = self._prev = 'term'
 
     def url(self):
         ''' Otherwise, 'self._block' will be returned when there is
@@ -269,16 +239,13 @@ class AnalyzeTag:
                 self._cur._url = self._block[ind:]
             if self._cur._url.endswith(purl4):
                 self._cur._url = self._cur._url.replace(purl4,'')
-                ''' #note: adding a non-Multitran online source will
-                    require code modification.
-                '''
                 self._cur._url = pair_root + self._cur._url
             else:
                 self._cur._url = ''
 
     def speech(self):
-        if psp1 in self._block:
-            self._cur._type = 'speech'
+        if psp in self._block:
+            self._cur._type = self._prev = 'speech'
 
 
 

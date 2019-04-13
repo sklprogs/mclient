@@ -11,7 +11,10 @@ gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 
-ENCODING  = 'utf-8'
+''' The charset indicated in multitran.com's code is 'utf-8', however,
+    it is actually 'windows-1251'!
+'''
+ENCODING  = 'windows-1251'
 # 'https' is got faster than 'http' (~0.2s)
 URL       = 'https://www.multitran.com'
 PAIR_ROOT = URL + '/m.exe?'
@@ -36,7 +39,7 @@ LANGS = ('English'   # ENG <=> RUS
         ,'German'    # ENG <=> DEU
         ,'Estonian'  # ENG <=> EST
         )
-PAIR_URLS = (PAIR_ROOT + 'l1=1&l2=2&s=%s'  # ENG <=> RUS
+PAIR_URLS = (PAIR_ROOT + 's=%s&l1=2&l2=1'  # ENG <=> RUS
             ,PAIR_ROOT + 'l1=3&l2=2&s=%s'  # DEU <=> RUS
             ,PAIR_ROOT + 'l1=5&l2=2&s=%s'  # SPA <=> RUS
             ,PAIR_ROOT + 'l1=4&l2=2&s=%s'  # FRA <=> RUS
@@ -87,12 +90,16 @@ class Get:
                 try:
                     self._html = self._text \
                                = self._text.decode(ENCODING)
-                except:
+                except Exception as e:
                     self.Success = False
                     self._html   = ''
                     self._text   = ''
                     sh.objs.mes (f,_('ERROR')
                                 ,_('Unable to change the web-page encoding!')
+                                )
+                    #cur
+                    sh.objs.mes (f,_('ERROR')
+                                ,str(e)
                                 )
             else:
                 sh.com.empty(f)
