@@ -11,10 +11,7 @@ gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 
-''' The charset indicated in multitran.com's code is 'utf-8', however,
-    it is actually 'windows-1251'!
-'''
-ENCODING  = 'windows-1251'
+ENCODING  = 'UTF-8'
 # 'https' is got faster than 'http' (~0.2s)
 URL       = 'https://www.multitran.com'
 PAIR_ROOT = URL + '/m.exe?'
