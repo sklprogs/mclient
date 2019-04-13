@@ -95,11 +95,8 @@ class Get:
                     self._html   = ''
                     self._text   = ''
                     sh.objs.mes (f,_('ERROR')
-                                ,_('Unable to change the web-page encoding!')
-                                )
-                    #cur
-                    sh.objs.mes (f,_('ERROR')
-                                ,str(e)
+                                ,_('Unable to change the web-page encoding!\n\nDetails: %s')\
+                                % str(e)
                                 )
             else:
                 sh.com.empty(f)

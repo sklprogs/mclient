@@ -87,12 +87,13 @@ class Get:
                 try:
                     self._html = self._text \
                                = self._text.decode(ENCODING)
-                except:
+                except Exception as e:
                     self.Success = False
                     self._html   = ''
                     self._text   = ''
                     sh.objs.mes (f,_('ERROR')
-                                ,_('Unable to change the web-page encoding!')
+                                ,_('Unable to change the web-page encoding!\n\nDetails: %s')\
+                                % str(e)
                                 )
             else:
                 sh.com.empty(f)
