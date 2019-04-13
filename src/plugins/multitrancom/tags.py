@@ -2,7 +2,6 @@
 # -*- coding: UTF-8 -*-
 
 import re
-import copy
 import shared    as sh
 import sharedGUI as sg
 import plugins.multitrancom.get
@@ -115,7 +114,7 @@ class Block:
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'transc', 'invalid'
         '''
-        self._type     = 'comment'
+        self._type     = ''
         self._text     = ''
         self._url      = ''
         self._urla     = ''
@@ -136,57 +135,80 @@ class AnalyzeTag:
         self._tag = tag
     
     def values(self):
-        self._prev   = 'term'
-        self._block  = ''
+        self._fragms = []
         self._blocks = []
-        self._elems  = []
-        self._cur    = Block()
 
     def run(self):
         self.split()
-        self._blocks = [block for block in self._blocks if block.strip()]
+        self._fragms = [fragm.strip() for fragm in self._fragms \
+                        if fragm.strip()
+                       ]
+        for fragm in self._fragms:
+            self._blocks.append(Block())
+            self._blocks[-1]._text = fragm
         for self._block in self._blocks:
-            if self._block.startswith('<'):
+            if self._block._text.startswith('<'):
                 if self.useful() and not self.useless():
-                    self._cur._type = ''
-                    # We check '_type' to speed up
                     self.phrases()
-                    if not self._cur._type:
+                    if not self._block._type:
                         self.wform()
-                    if not self._cur._type:
+                    if not self._block._type:
                         self.dic()
-                    if not self._cur._type:
+                    if not self._block._type:
                         self.term()
-                    if not self._cur._type:
+                    if not self._block._type:
                         self.speech()
-                    if not self._cur._type:
+                    if not self._block._type:
                         self.comment()
                     self.url()
                 else:
-                    self._cur._type = 'invalid'
-            else:
-                self.plain()
+                    self._block._type = 'invalid'
+        
+        self.set_types()
+        return self._blocks
 
+    def set_types(self):
+        self._blocks = [self.strip() for self._block in self._blocks]
+        prev_url  = ''
+        prev_type = 'comment'
+        for block in self._blocks:
+            if block._url:
+                prev_url = block._url
+            else:
+                block._url = prev_url
+            if block._type:
+                prev_type = block._type
+            else:
+                block._type = prev_type
+        self._blocks = [block for block in self._blocks 
+                        if block._text and block._type != 'invalid'
+                       ]
+        for block in self._blocks:
+            if block._type == 'comment' and block._url \
+            and not pcom2 in block._url:
+                block._type = 'term'
+        for i in range(len(self._blocks)):
+            if i > 0:
+                self._blocks[i]._same = 1
+            else:
+                self._blocks[i]._same = 0
+                
+    
     def useless(self):
         for tag in tag_pattern_del:
-            if tag in self._block:
+            if tag in self._block._text:
                 return True
 
     def useful(self):
         for tag in useful_tags:
-            if tag in self._block:
+            if tag in self._block._text:
                 return True
 
-    def plain(self):
-        self._cur._text = self._block
-        ''' #note: The analysis must be reset after '</', otherwise,
-            plain text following it will be marked as 'invalid' rather
-            than 'comment'.
-        '''
-        if self._cur._text and self._prev != 'invalid':
-            self._cur._type = self._prev
-            self._elems.append(copy.copy(self._cur))
-
+    def strip(self):
+        self._block._text = re.sub('<.*>','',self._block._text)
+        self._block._text = self._block._text.strip()
+        return self._block
+    
     def split(self):
         ''' Use custom split because we need to preserve delimeters
             (cannot distinguish tags and contents otherwise).
@@ -195,57 +217,57 @@ class AnalyzeTag:
         for sym in self._tag:
             if sym == '>':
                 tmp += sym
-                self._blocks.append(tmp)
+                self._fragms.append(tmp)
                 tmp = ''
             elif sym == '<':
                 if tmp:
-                    self._blocks.append(tmp)
+                    self._fragms.append(tmp)
                 tmp = sym
             else:
                 tmp += sym
         if tmp:
-            self._blocks.append(tmp)
+            self._fragms.append(tmp)
 
     def comment(self):
-        if pcom1 in self._block or pcom2 in self._block:
-            self._cur._type = self._prev = 'comment'
+        if pcom1 in self._block._text or pcom2 in self._block._text:
+            self._block._type = 'comment'
 
     def dic(self):
         f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.dic'
-        if pdic in self._block:
-            self._cur._type = self._prev = 'dic'
+        if pdic in self._block._text:
+            self._block._type = 'dic'
 
     def wform(self):
-        if pwf1 in self._block and pwf2 in self._block:
-            self._cur._type  = self._prev = 'wform'
+        if pwf1 in self._block._text and pwf2 in self._block._text:
+            self._block._type  = 'wform'
 
     def phrases(self):
-        if pph in self._block:
-            self._cur._type = self._prev = 'phrase'
+        if pph in self._block._text:
+            self._block._type = 'phrase'
 
     def term(self):
         f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.term'
-        if ptm in self._block:
-            self._cur._type = self._prev = 'term'
+        if ptm in self._block._text:
+            self._block._type = 'term'
 
     def url(self):
         ''' Otherwise, 'self._block' will be returned when there is
             no match.
         '''
-        if purl1 in self._block or purl2 in self._block:
-            ind = self._block.find(purl3)
+        if purl1 in self._block._text or purl2 in self._block._text:
+            ind = self._block._text.find(purl3)
             if ind > 0:
                 ind += len(purl1)
-                self._cur._url = self._block[ind:]
-            if self._cur._url.endswith(purl4):
-                self._cur._url = self._cur._url.replace(purl4,'')
-                self._cur._url = pair_root + self._cur._url
+                self._block._url = self._block._text[ind:]
+            if self._block._url.endswith(purl4):
+                self._block._url = self._block._url.replace(purl4,'')
+                self._block._url = pair_root + self._block._url
             else:
-                self._cur._url = ''
+                self._block._url = ''
 
     def speech(self):
-        if psp in self._block:
-            self._cur._type = self._prev = 'speech'
+        if psp in self._block._text:
+            self._block._type = 'speech'
 
 
 
@@ -344,15 +366,7 @@ class Tags:
     def blocks(self):
         if not self._blocks:
             for tag in self._tags:
-                analyze = AnalyzeTag(tag)
-                analyze.run()
-                lst = analyze._elems
-                for i in range(len(lst)):
-                    if i > 0:
-                        lst[i]._same = 1
-                    else:
-                        lst[i]._same = 0
-                self._blocks += lst
+                self._blocks += AnalyzeTag(tag).run()
         return self._blocks
 
     def run(self):

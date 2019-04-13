@@ -89,8 +89,8 @@ class Tags:
         mctags.Tags (text    = text
                     ,Debug   = True
                     ,Shorten = True
-                    ,MaxRow  = 20
-                    ,MaxRows = 1000
+                    ,MaxRow  = 70
+                    ,MaxRows = 300
                     ).run()
 
 
@@ -140,5 +140,5 @@ if __name__ == '__main__':
     sg.objs.start()
     # This will also set plugins.stardict.get.PATH
     #import logic as lg
-    get.multitrancom()
+    tags.multitrancom()
     sg.objs.end()
