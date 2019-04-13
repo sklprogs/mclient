@@ -36,20 +36,33 @@ LANGS = ('English'   # ENG <=> RUS
         ,'German'    # ENG <=> DEU
         ,'Estonian'  # ENG <=> EST
         )
-PAIR_URLS = (PAIR_ROOT + 's=%s&l1=2&l2=1'  # ENG <=> RUS
-            ,PAIR_ROOT + 'l1=3&l2=2&s=%s'  # DEU <=> RUS
-            ,PAIR_ROOT + 'l1=5&l2=2&s=%s'  # SPA <=> RUS
-            ,PAIR_ROOT + 'l1=4&l2=2&s=%s'  # FRA <=> RUS
-            ,PAIR_ROOT + 'l1=24&l2=2&s=%s' # NLD <=> RUS
-            ,PAIR_ROOT + 'l1=23&l2=2&s=%s' # ITA <=> RUS
-            ,PAIR_ROOT + 'l1=27&l2=2&s=%s' # LAV <=> RUS
-            ,PAIR_ROOT + 'l1=26&l2=2&s=%s' # EST <=> RUS
-            ,PAIR_ROOT + 'l1=31&l2=2&s=%s' # AFR <=> RUS
-            ,PAIR_ROOT + 'l1=34&l2=2&s=%s' # EPO <=> RUS
-            ,PAIR_ROOT + 'l1=2&l2=35&s=%s' # RUS <=> XAL
-            ,PAIR_ROOT + 'l1=35&l2=2&s=%s' # XAL <=> RUS
-            ,PAIR_ROOT + 'l1=1&l2=3&s=%s'  # ENG <=> DEU
-            ,PAIR_ROOT + 'l1=1&l2=26&s=%s' # ENG <=> EST
+''' English  : 1
+    Russian  : 2
+    German   : 3
+    French   : 4
+    Spanish  : 5
+    Italian  : 23
+    Dutch    : 24
+    Estonian : 26
+    Latvian  : 27
+    Afrikaans: 31
+    Esperanto: 34
+    Kalmyk   : 35
+'''
+PAIR_URLS = (PAIR_ROOT + 's=%s&l1=2&l2=1&SHL=2'  # ENG <=> RUS
+            ,PAIR_ROOT + 's=%s&l1=3&l2=2&SHL=2'  # DEU <=> RUS
+            ,PAIR_ROOT + 's=%s&l1=5&l2=2&SHL=2'  # SPA <=> RUS
+            ,PAIR_ROOT + 's=%s&l1=4&l2=2&SHL=2'  # FRA <=> RUS
+            ,PAIR_ROOT + 's=%s&l1=24&l2=2&SHL=2' # NLD <=> RUS
+            ,PAIR_ROOT + 's=%s&l1=23&l2=2&SHL=2' # ITA <=> RUS
+            ,PAIR_ROOT + 's=%s&l1=27&l2=2&SHL=2' # LAV <=> RUS
+            ,PAIR_ROOT + 's=%s&l1=26&l2=2&SHL=2' # EST <=> RUS
+            ,PAIR_ROOT + 's=%s&l1=31&l2=2&SHL=2' # AFR <=> RUS
+            ,PAIR_ROOT + 's=%s&l1=34&l2=2&SHL=2' # EPO <=> RUS
+            ,PAIR_ROOT + 's=%s&l1=2&l2=35&SHL=2' # RUS <=> XAL
+            ,PAIR_ROOT + 's=%s&l1=35&l2=2&SHL=2' # XAL <=> RUS
+            ,PAIR_ROOT + 's=%s&l1=1&l2=3&SHL=2'  # ENG <=> DEU
+            ,PAIR_ROOT + 's=%s&l1=1&l2=26&SHL=2' # ENG <=> EST
             )
 
 

@@ -740,8 +740,7 @@ class Objects:
         return self._online_mt
     
     def online(self):
-        #todo: create a sub-source
-        if self.request()._source in (_('All'),_('Online')):
+        if self.request().plugin_get == plugins.multitranru.get:
             return objs.online_mt()
         else:
             return sh.objs.online()

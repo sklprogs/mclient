@@ -120,7 +120,7 @@ class Plugin:
     def multitrancom(self):
         f = '[MClient] tests.Plugin.multitrancom'
         import plugins.multitrancom.run as mc
-        blocks = mc.Plugin (url     = 'https://multitran.com/m.exe?s=computer&l1=1&l2=2'
+        blocks = mc.Plugin (url     = 'https://multitran.com/m.exe?s=computer&l1=1&l2=2&SHL=2'
                            ,search  = 'computer'
                            ,timeout = 6
                            ,Debug   = True
