@@ -90,7 +90,7 @@ class Tags:
                     ,Debug   = True
                     ,Shorten = True
                     ,MaxRow  = 70
-                    ,MaxRows = 300
+                    ,MaxRows = 10000
                     ).run()
 
 
@@ -126,7 +126,7 @@ class Plugin:
                            ,Debug   = True
                            ,Shorten = True
                            ,MaxRow  = 20
-                           ,MaxRows = 200
+                           ,MaxRows = 300
                            ).run()
 
 
@@ -140,5 +140,5 @@ if __name__ == '__main__':
     sg.objs.start()
     # This will also set plugins.stardict.get.PATH
     #import logic as lg
-    tags.multitrancom()
+    plug.multitrancom()
     sg.objs.end()

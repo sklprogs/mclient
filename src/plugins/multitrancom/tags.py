@@ -187,12 +187,6 @@ class AnalyzeTag:
             if block._type == 'comment' and block._url \
             and not pcom2 in block._url:
                 block._type = 'term'
-        for i in range(len(self._blocks)):
-            if i > 0:
-                self._blocks[i]._same = 1
-            else:
-                self._blocks[i]._same = 0
-                
     
     def useless(self):
         for tag in tag_pattern_del:

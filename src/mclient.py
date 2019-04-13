@@ -189,7 +189,6 @@ class SaveArticle:
         if self.file and lg.objs.request()._html_raw:
             self.fix_ext(ext='.htm')
             #todo: fix remaining links to localhost
-            #todo: replace multitran.com urls
             if hasattr(lg.objs._request.plugin_get,'PAIR_ROOT'):
                 pair_root = lg.objs._request.plugin_get.PAIR_ROOT
                 code = lg.objs._request._html_raw.replace('charset=windows-1251"','charset=utf-8"')

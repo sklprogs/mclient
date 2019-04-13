@@ -7,13 +7,14 @@
     TERMA, SAMECELL
     Modifies attributes:        TYPE, TEXT, DICA, WFORMA, SPEECHA,
     TRANSCA, TERMA, SAMECELL
-    SAMECELL is based on Tags and TYPE and is filled fully
+    Since TYPE is modified here, SAMECELL is filled here.
     SELECTABLE cannot be filled because it depends on CELLNO which is
     created in Cells; Cells modifies TEXT of DIC, WFORM, SPEECH, TRANSC
     types, and we do not need to make empty cells SELECTABLE, so we
     calculate SELECTABLE fully in Cells.
 '''
 
+import re
 import shared    as sh
 import sharedGUI as sg
 
@@ -81,19 +82,34 @@ class Elems:
           vary depending on the view. Incorrect sorting by TERMA may
           result in putting a TERM item before fixed columns.
     '''
-    def __init__(self,blocks,articleid,iabbr):
+    def __init__ (self,blocks,articleid,iabbr
+                 ,Debug=False,Shorten=True
+                 ,MaxRow=20,MaxRows=20
+                 ):
         f = '[MClient] plugins.multitrancom.elems.Elems.__init__'
         self._data      = []
         self._dic_urls  = {}
         self._blocks    = blocks
         self._articleid = articleid
         self.abbr       = iabbr
+        self.Debug      = Debug
+        self.Shorten    = Shorten
+        self.MaxRow     = MaxRow
+        self.MaxRows    = MaxRows
         if self._blocks and self._articleid:
             self.Success = True
         else:
             self.Success = False
             sh.com.empty(f)
         
+    def thesaurus(self):
+        ''' Explanations are tagged just like word forms, and we can
+            judge upon the type only by the length of the block.
+        '''
+        for block in self._blocks:
+            if block._type == 'wform' and len(block._text) > 25:
+                block._type = 'comment'
+    
     # Takes ~0,26s for 'set' on AMD E-300.
     def expand_dica(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.expand_dica'
@@ -114,23 +130,39 @@ class Elems:
         else:
             sh.com.empty(f)
 
+    def same_cells(self):
+        for i in range(len(self._blocks)):
+            if self._blocks[i]._type == 'dic':
+                if i > 0 and self._blocks[i-1]._type == 'dic':
+                    self._blocks[i]._same = 1
+                else:
+                    self._blocks[i]._same = 0
+            elif self._blocks[i]._type == 'transc':
+                self._blocks[i]._same = 0
+            elif self._blocks[i]._type == 'comment':
+                if i > 0:
+                    self._blocks[i]._same = 1
+                else:
+                    self._blocks[i]._same = 0
+            elif self._blocks[i]._type in ('term','speech','phrase'):
+                self._blocks[i]._same = 0
+            elif self._blocks[i]._type == 'wform':
+                if i > 0 and self._blocks[i-1]._type == 'wform':
+                    self._blocks[i]._same = 1
+                else:
+                    self._blocks[i]._same = 0
+    
     def run(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.run'
         if self.Success:
-            self.unite_transc()
+            self.transc()
+            self.thesaurus()
+            # Change types before this
+            self.same_cells()
             self.phrases()
-            self.straight_line()
+            self.trash()
             self.dic_urls()
-            self.comments()
-            self.dic_abbr()
-            self.dic_abbr_phrases()
-            ''' These 2 procedures should not be combined (otherwise,
-                corrections will have the same color as comments)
-            '''
             self.unite_comments()
-            self.unite_corrections()
-            self.speech()
-            self.comment_same()
             self.add_space()
             self.fill()
             self.fill_terma()
@@ -138,53 +170,50 @@ class Elems:
             self.insert_fixed()
             self.fixed_terma()
             self.expand_dica()
+            #todo: expand parts of speech (n -> noun, etc.)
             self.selectables()
             self.restore_dic_urls()
+            self.debug()
             self.dump()
             return self._data
         else:
             sh.com.cancel(f)
     
-    def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
-        print('\nElems.debug (Non-DB blocks):')
-        headers = ['DICA','WFORMA','SPEECHA','TRANSCA','TYPE','TEXT'
-                  ,'SAMECELL','SELECTABLE'
-                  ]
-        rows = []
-        for block in self._blocks:
-            rows.append ([block._dica,block._wforma,block._speecha
-                         ,block._transca,block._type,block._text
-                         ,block._same,block._select
-                         ]
-                        )
-        sh.Table (headers = headers
-                 ,rows    = rows
-                 ,Shorten = Shorten
-                 ,MaxRow  = MaxRow
-                 ,MaxRows = MaxRows
-                 ).print()
+    def debug(self):
+        if self.Debug:
+            print('\nplugins.multitrancom.Elems.debug (Non-DB blocks):')
+            headers = ['DICA','WFORMA','SPEECHA','TRANSCA','TYPE','TEXT'
+                      ,'URL','SAMECELL','SELECTABLE'
+                      ]
+            rows = []
+            for block in self._blocks:
+                rows.append ([block._dica,block._wforma,block._speecha
+                             ,block._transca,block._type,block._text
+                             ,block._url,block._same,block._select
+                             ]
+                            )
+            sh.Table (headers = headers
+                     ,rows    = rows
+                     ,Shorten = self.Shorten
+                     ,MaxRow  = self.MaxRow
+                     ,MaxRows = self.MaxRows
+                     ).print()
         
-    def speech(self):
-        ''' 'speech' blocks have '_same = 1' when analyzing MT because
-            they are within a single tag. We fix it here, not in Tags,
-            because Tags are assumed to output the result 'as is'.
+    def has_transc(self,text):
+        ''' There are no square brackets in phonetics anymore, so we
+            need to guess.
         '''
-        for i in range(len(self._blocks)):
-            if self._blocks[i]._type == 'speech':
-                self._blocks[i]._same = 0
-                if i < len(self._blocks) - 1:
-                    self._blocks[i+1]._same = 0
+        if 'ʌ' in text or 'ɔ' in text or 'ə' in text or 'æ' in text \
+        or 'ɑ' in text or 'ɛ' in text or 'ʒ' in text or 'ʤ' in text \
+        or 'ð' in text or 'ʃ' in text or 'ʧ'in text or 'θ' in text \
+        or 'ŋ' in text:
+            return True
     
-    def unite_transc(self):
-        i = 0
-        while i < len(self._blocks):
-            if self._blocks[i]._type == 'transc' \
-            and self._blocks[i]._same > 0:
-                if i > 0 and self._blocks[i-1]._type == 'transc':
-                    self._blocks[i-1]._text += self._blocks[i]._text
-                    del self._blocks[i]
-                    i -= 1
-            i += 1
+    def transc(self):
+        for block in self._blocks:
+            if block._type == 'comment' \
+            and self.has_transc(block._text):
+                block._type = 'transc'
                             
     def unite_comments(self):
         i = 0
@@ -201,173 +230,11 @@ class Elems:
                     i -= 1
             i += 1
             
-    def unite_corrections(self):
-        i = 0
-        while i < len(self._blocks):
-            if self._blocks[i]._type == 'correction' \
-            and self._blocks[i]._same > 0:
-                if i > 0 and self._blocks[i-1]._type == 'correction':
-                    self._blocks[i-1]._text \
-                    = sh.List (lst1 = [self._blocks[i-1]._text
-                                      ,self._blocks[i]._text
-                                      ]
-                              ).space_items()
-                    del self._blocks[i]
-                    i -= 1
-            i += 1
-            
-    def dic_abbr(self):
-        i = 0
-        while i < len(self._blocks):
-            ''' We suppose that these are abbreviations of dictionary
-                titles. If the full dictionary title is not preceding
-                (this can happen if the whole article is occupied by
-                the 'Phrases' section), we keep these abbreviations as
-                comments.
-                #note: checking 'self._blocks[i]._type == 'dic' and
-                self._blocks[i]._same > 0' is not enough.
-            '''
-            if i > 0 and self._blocks[i-1]._type == 'dic' \
-            and self._blocks[i]._same > 0:
-                self._blocks[i]._type = 'dic'
-                del self._blocks[i-1]
-                i -= 1
-            i += 1
-            
-    def dic_abbr_phrases(self):
-        ''' In articles that are entirely related to the Phrases
-            section, full dictionary titles are entirely replaced by
-            dictionary abbreviations, so we treat the latter as
-            the former.
-            Do this before setting a phrase dic.
-        '''
-        Dics = False
-        for block in self._blocks:
-            if block._type == 'dic':
-                Dics = True
-                break
-        if not Dics:
-            for i in range(len(self._blocks)):
-                if self._blocks[i]._type == 'comment' \
-                and self._blocks[i]._url \
-                and not 'UserName' in self._blocks[i]._url:
-                    self._blocks[i]._type = 'dic'
-            
-    def straight_line(self):
+    def trash(self):
         self._blocks = [block for block in self._blocks \
-                        if block._text.strip() != '|'
+                        if not block._text \
+                        in ('|',';','English','Russian')
                        ]
-    
-    def comments(self):
-        i = 0
-        while i < len(self._blocks):
-            if self._blocks[i]._type in ('comment','correction'):
-                text_str = self._blocks[i]._text.strip()
-                ''' Delete comments that are just ';' or ',' (we don't
-                    need them, we have a table view).
-                    We delete instead of assigning Block attribute
-                    because we may need to unblock blocked dictionaries
-                    later.
-                '''
-                if text_str == ';' or text_str == ',':
-                    del self._blocks[i]
-                    i -= 1
-                elif not self._blocks[i]._same > 0:
-                    # For the following cases: "23 фраз в 9 тематиках"
-                    if i > 0 and self._blocks[i-1]._type == 'phrase':
-                        self._blocks[i]._same = 1
-                    # Move the comment to the preceding cell
-                    if text_str.startswith(',') \
-                    or text_str.startswith(';') \
-                    or text_str.startswith('(') \
-                    or text_str.startswith(')') \
-                    or text_str.startswith('|'):
-                        self._blocks[i]._same = 1
-                        # Mark the next block as a start of a new cell
-                        if i < len(self._blocks) - 1 \
-                        and self._blocks[i+1]._type \
-                        not in ('comment','correction'):
-                            self._blocks[i+1]._same = 0
-            i += 1
-            
-    def comment_same(self):
-        ''' Sometimes sources do not provide sufficient information on
-        SAMECELL blocks, and the tag parser cannot handle sequences such
-        as 'any type (not _same) -> comment (not _same) -> any type (not
-        _same)'.
-        Rules:
-        1) (Should be always correct)
-            'i >= 0 -> correction (not _same)
-                =>
-            'i >= 0 -> correction (_same)
-        2) (Preferable)
-            'term (not _same) -> comment (not _same) -> any type
-            (not _same)'
-                =>
-            'term (not _same) -> comment (_same) -> any type
-            (not _same)'
-        3) (Generally correct before removing fixed columns)
-            'dic/wform/speech/transc -> comment (not _same) -> term
-            (not _same)'
-                =>
-            'dic/wform/speech/transc -> comment (not _same) -> term
-            (_same)'
-        4) (By guess, check only after ##2&3)
-            'any type (_same) -> comment (not _same) -> any type
-            (not _same)'
-                =>
-            'any type (_same) -> comment (_same) -> any type
-            (not _same)'
-        5) (Always correct)
-            'any type -> comment/correction (not _same) -> END'
-                =>
-            'any type -> comment/correction (_same) -> END'
-        6) (Do this in the end of the loop; + Readability improvement
-           ("в 42 тематиках"))
-            'any type (not same) -> comment (not same) -> any type
-            (not _same)'
-                =>
-            'any type (not same) -> comment (_same) -> any type
-            (not _same)'
-        '''
-        for i in range(len(self._blocks)):
-            cond1  = i > 0 and self._blocks[i]._type == 'correction'
-            cond2  = self._blocks[i]._same <= 0
-            cond3  = i > 0 and self._blocks[i-1]._type == 'comment' \
-            and self._blocks[i-1]._same <= 0
-            cond4  = i > 1 and self._blocks[i-2]._type == 'term' \
-            and self._blocks[i-2]._same <= 0
-            cond5  = i > 1 and self._blocks[i-2]._same <= 0
-            cond6  = self._blocks[i]._type == 'term'
-            cond7a = i > 1 and self._blocks[i-2]._type == 'dic'
-            cond7b = i > 1 and self._blocks[i-2]._type == 'wform'
-            cond7c = i > 1 and self._blocks[i-2]._type == 'speech'
-            cond7d = i > 1 and self._blocks[i-2]._type == 'transc'
-            cond7  = cond7a or cond7b or cond7c or cond7d
-            # not equivalent to 'not cond5' because of 'i'
-            cond8  = i > 1 and self._blocks[i-2]._same == 1
-            # Rule 1
-            if cond1 and cond2:
-                self._blocks[i]._same = 1
-            # Rule 2
-            elif cond4 and cond3 and cond2:
-                self._blocks[i-1]._same = 1
-            # Rule 3
-            elif cond7 and cond3 and cond6 and cond2:
-                self._blocks[i]._same = 1
-            # Rule 4:
-            elif cond8 and cond3 and cond2:
-                self._blocks[i-1]._same = 1
-            # Rule 6:
-            elif cond5 and cond3 and cond2:
-                self._blocks[i-1]._same = 1
-        # Rule 5
-        if self._blocks:
-            # After exiting the loop, the last block
-            cond1 = self._blocks[i]._type in ('comment','correction')
-            cond2 = self._blocks[i]._same <= 0
-            if cond1 and cond2:
-                self._blocks[i]._same = 1
     
     def add_space(self):
         for i in range(len(self._blocks)):
@@ -385,10 +252,12 @@ class Elems:
 
     def phrases(self):
         for block in self._blocks:
-            if block._type == 'phrase':
+            if re.match('\d+ phrases',block._text) \
+            or re.match('\d+ фраз',block._text):
                 block._type   = 'dic'
                 block._select = 1
-                block._dica   = block._text.strip()
+                block._dica   = block._text
+                block._same   = 0
                 break
                 
     def fill(self):
@@ -572,21 +441,10 @@ class Elems:
                 block._select = 0
     
     def dic_urls(self):
-        ''' URLs assigned to dictionary titles in Multitran actually
-            lead to a page where word forms are given. Dictionary
-            abbreviations that are further deleted have URLs that we
-            need.
-        '''
-        url = ''
-        i = len(self._blocks) - 1
-        while i >= 0:
-            if self._blocks[i]._url:
-                url = self._blocks[i]._url
-            if self._blocks[i]._type == 'dic':
-                # Keep dic URL to be restored later for DICA
-                if not self._blocks[i]._text in self._dic_urls:
-                    self._dic_urls[self._blocks[i]._text] = url
-            i -= 1
+        for block in self._blocks:
+            if block._type == 'dic' \
+            and not block._text in self._dic_urls:
+                self._dic_urls[block._text] = block._url
     
     def restore_dic_urls(self):
         for i in range(len(self._blocks)):
