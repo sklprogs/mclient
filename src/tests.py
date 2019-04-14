@@ -140,5 +140,8 @@ if __name__ == '__main__':
     sg.objs.start()
     # This will also set plugins.stardict.get.PATH
     #import logic as lg
-    plug.multitrancom()
+    import mclient
+    sources = mclient.Sources()
+    sources.reset()
+    sources.show()
     sg.objs.end()

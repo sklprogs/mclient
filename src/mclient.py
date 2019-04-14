@@ -24,6 +24,12 @@ gettext.install('mclient','../resources/locale')
 product = 'MClient'
 version = '6.0'
 
+#todo: use PluginManager
+SOURCES = (_('Offline')
+          ,'multitran.ru'
+          ,'multitran.com'
+          )
+
 
 if __name__ == '__main__':
     if sh.oss.win():
@@ -31,6 +37,51 @@ if __name__ == '__main__':
         import pythoncom
     else:
         import kl_mod_lin as kl_mod
+
+
+class Sources:
+    
+    def __init__(self):
+        self.values()
+        self.gui = gi.Sources()
+        self.bindings()
+    
+    def reset(self):
+        self.values()
+        self.gui.reset(SOURCES)
+    
+    def values(self):
+        self.Success = True
+        self._select = []
+    
+    def selection(self):
+        f = '[MClient] mclient.Sources.selection'
+        if self.Success:
+            for i in range(len(self.gui._cboxes)):
+                if self.gui._cboxes[i].get():
+                    try:
+                        self._select.append(SOURCES[i])
+                    except IndexError:
+                        self.Success = False
+                        sh.objs.mes (f,_('ERROR')
+                                    ,_('Wrong input data!')
+                                    )
+            return self._select
+        else:
+            sh.com.cancel(f)
+    
+    def bindings(self):
+        self.gui.btn_apl.action = self.apply
+    
+    def show(self,event=None):
+        self.gui.show()
+    
+    def apply(self,event=None):
+        selection = self.selection()
+        print(selection)
+    
+    def close(self,event=None):
+        self.gui.close()
 
 
 
@@ -1479,13 +1530,17 @@ class WebFrame:
         #note: encoding must be UTF-8 here
         if lg.objs.request()._source == _('Offline'):
             lg.objs.online().reset (base_str   = self.get_pair()
-                                   ,search_str = lg.objs.request()._search
+                                   ,search_str = lg.objs._request._search
                                    )
-        else:
+        elif lg.objs._request.plugin_get == plugins.multitranru.get:
             lg.objs.online().reset (base_str   = self.get_pair()
-                                   ,search_str = lg.objs.request()._search
+                                   ,search_str = lg.objs._request._search
                                    )
             lg.objs._request._url = lg.objs.online().url()
+        else:
+            lg.objs._request._url = sh.Online (base_str   = self.get_pair()
+                                              ,search_str = lg.objs._request._search
+                                              ).url()
         sh.log.append (f,_('DEBUG')
                       ,str(lg.objs._request._url)
                       )

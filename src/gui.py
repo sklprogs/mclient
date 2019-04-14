@@ -12,6 +12,197 @@ gettext.install('mclient','../resources/locale')
 product = 'MClient'
 
 
+class Sources:
+
+    def __init__(self,width=350,height=300):
+        self.values()
+        self._width  = width
+        self._height = height
+        self.parent = sg.Top(parent=sg.objs.root())
+        sg.Geometry(parent=self.parent).set ('%dx%d' % (self._width
+                                                       ,self._height
+                                                       )
+                                            )
+        self.gui()
+        
+    def icon(self,path=None):
+        if path:
+            self.parent.icon(path)
+        else:
+            self.parent.icon (sh.objs.pdir().add ('..'
+                                                 ,'resources'
+                                                 ,'icon_64x64_mclient.gif'
+                                                 )
+                             )
+    
+    def bindings(self):
+        sg.bind (obj      = self.parent
+                ,bindings = ('<Escape>','<Control-q>','<Control-w>')
+                ,action   = self.close
+                )
+        self.cvs_prm.top_bindings (top     = self.parent
+                                  ,Control = False
+                                  )
+    
+    def selected(self,event=None):
+        active = []
+        for i in range(len(self._cboxes)):
+            if self._cboxes[i].get():
+                active.append(self._lbls[i]._text)
+        return active
+    
+    def title(self,text=None):
+        if not text:
+            text = _('Sources')
+        self.parent.title(text)
+    
+    def region(self):
+        f = '[MClient] gui.Sources.region'
+        if self._frms:
+            self.cvs_prm.region (x        = self._width
+                                ,y        = 22 * len(self._frms)
+                                ,x_border = 10
+                                ,y_border = 20
+                                )
+            self.cvs_prm.scroll()
+        else:
+            sh.log.append (f,_('INFO')
+                          ,_('Nothing to do!')
+                          )
+        
+    def values(self):
+        self._frms   = []
+        self._cboxes = []
+        self._lbls   = []
+        
+    def buttons(self):
+        self.btn_tgl = sg.Button (parent = self.frm_btl
+                                 ,text   = _('Select all')
+                                 ,hint   = _('Mark/unmark all checkboxes')
+                                 ,side   = 'left'
+                                 ,action = self.toggle
+                                 )
+        self.btn_rst = sg.Button (parent = self.frm_btl
+                                 ,text   = _('Reset')
+                                 ,hint   = _('Reset to default')
+                                 ,side   = 'right'
+                                 )
+        self.btn_apl = sg.Button (parent = self.frm_btr
+                                 ,text   = _('Apply')
+                                 ,hint   = _('Close & Apply')
+                                 ,side   = 'right'
+                                 )
+    
+    def widgets(self):
+        self.cvs_prm = sg.Canvas(parent=self.frm_cnt)
+        self.frm_emb = sg.Frame(parent=self.frm_cnt)
+        self.cvs_prm.embed(self.frm_emb)
+        self.buttons()
+        
+    def add_row(self,text):
+        frm = sg.Frame (parent = self.frm_emb
+                       ,expand = False
+                       )
+        cbx = sg.CheckBox (parent = frm
+                          ,side   = 'left'
+                          )
+        lbl = sg.Label (parent = frm
+                       ,text   = text
+                       ,side   = 'left'
+                       ,Close  = False
+                       )
+        sg.bind (obj      = lbl
+                ,bindings = '<ButtonRelease-1>'
+                ,action   = cbx.toggle
+                )
+        self._frms.append(frm)
+        self._cboxes.append(cbx)
+        self._lbls.append(lbl)
+        
+    def toggle(self,event=None):
+        Marked = False
+        for cbox in self._cboxes:
+            if cbox.get():
+                Marked = True
+                break
+        if Marked:
+            for cbox in self._cboxes:
+                cbox.disable()
+        else:
+            for cbox in self._cboxes:
+                cbox.enable()
+    
+    def reset(self,lst=[]):
+        lst = [str(item) for item in lst]
+        for frame in self._frms:
+            frame.widget.destroy()
+        self.values()
+        for item in lst:
+            self.add_row(item)
+        self.region()
+    
+    def gui(self):
+        self.frames()
+        self.widgets()
+        self.scrollbars()
+        self.bindings()
+        self.title()
+        self.btn_apl.focus()
+        
+    def frames(self):
+        self.frm_prm = sg.Frame (parent = self.parent)
+        self.frm_top = sg.Frame (parent = self.frm_prm
+                                ,side   = 'top'
+                                )
+        self.frm_btm = sg.Frame (parent = self.frm_prm
+                                ,side   = 'bottom'
+                                ,expand = False
+                                ,fill   = 'x'
+                                )
+        self.frm_cnt = sg.Frame (parent = self.frm_top
+                                ,side   = 'left'
+                                )
+        self.frm_ver = sg.Frame (parent = self.frm_top
+                                ,expand = False
+                                ,fill   = 'y'
+                                ,side   = 'right'
+                                )
+        self.frm_hor = sg.Frame (parent = self.frm_btm
+                                ,expand = False
+                                ,fill   = 'x'
+                                ,side   = 'top'
+                                )
+        self.frm_btn = sg.Frame (parent = self.frm_btm
+                                ,expand = False
+                                ,fill   = 'both'
+                                ,side   = 'bottom'
+                                )
+        self.frm_btl = sg.Frame (parent = self.frm_btn
+                                ,fill   = 'both'
+                                ,side   = 'left'
+                                )
+        self.frm_btr = sg.Frame (parent = self.frm_btn
+                                ,fill   = 'both'
+                                ,side   = 'right'
+                                )
+        
+    def scrollbars(self):
+        self.scr_hor = sg.Scrollbar (parent = self.frm_hor
+                                    ,scroll = self.cvs_prm
+                                    ,Horiz  = True
+                                    )
+        self.scr_ver = sg.Scrollbar (parent = self.frm_ver
+                                    ,scroll = self.cvs_prm
+                                    )
+                                 
+    def show(self,event=None):
+        self.parent.show()
+        
+    def close(self,event=None):
+        self.parent.close()
+
+
+
 class About:
 
     def __init__(self):
@@ -1796,6 +1987,11 @@ class Suggestion:
 if __name__ == '__main__':
     sg.objs.start()
     #WebFrame().show()
-    settings = Settings()
-    settings.show()
+    sources = Sources()
+    sources.reset ((_('Offline')
+                   ,'multitran.ru'
+                   ,'multitran.com'
+                   )
+                  )
+    sources.show()
     sg.objs.end()
