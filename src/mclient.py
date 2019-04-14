@@ -1054,8 +1054,8 @@ class WebFrame:
             sh.objs.mes (f,_('ERROR')
                         ,_('An invalid plugin!')
                         )
-        self.gui.men_srcs.reset (items   = lg.sources
-                                ,action  = self.set_source
+        self.gui.men_srcs.reset (items  = lg.sources
+                                ,action = self.set_source
                                 )
     def title(self,arg=None):
         if not arg:
@@ -1255,16 +1255,6 @@ class WebFrame:
                           )
             objs._blocks_db._articleid = articleid
             self.get_bookmark()
-            page = None
-            ''' Create 'lg.Translate' for both if-else cases because
-                'articleid' will be different.
-            '''
-            transl = lg.Translate (source    = lg.objs._request._source
-                                  ,search    = lg.objs._request._search
-                                  ,url       = lg.objs._request._url
-                                  ,timeout   = sh.globs['int']['timeout']
-                                  ,articleid = objs._blocks_db._articleid
-                                  )
         else:
             # None skips the autoincrement
             data = (None                     # (00) ARTICLEID
@@ -1324,10 +1314,10 @@ class WebFrame:
             usually a dictionary + terms from the 'Phrases' section
             Do not rely on the number of wforms; large articles like
             'centre' may have only 1 wform (and a plurality of dics)
+            #todo: do we need this?
+            #or transl.HasLocal
         '''
-        
-        if not dics or dics and len(dics) == 1 or not self._phdic \
-                    or transl.HasLocal:
+        if not dics or dics and len(dics) == 1 or not self._phdic:
             # or check 'lg.objs._request._search' by pattern '\d+ фраз'
             lg.objs._request.SpecialPage = True
         else:
@@ -1519,28 +1509,29 @@ class WebFrame:
                       ,_('Set source to "%s"') % lg.objs._request._source
                       )
         #todo: make more specific
-        if lg.objs._request._source in (_('All'),_('Online')):
-            lg.objs._request.plugin_get = plugins.multitranru.get
+        if lg.objs._request._source in lg.sources:
+            if lg.objs._request._source == _('Offline'):
+                lg.objs._request.plugin_get = plugins.stardict.get
+            elif lg.objs._request._source == 'multitran.ru':
+                lg.objs._request.plugin_get = plugins.multitranru.get
+            elif lg.objs._request._source == 'multitran.com':
+                lg.objs._request.plugin_get = plugins.multitrancom.get
+            self.load_article()
         else:
-            lg.objs._request.plugin_get = plugins.stardict.get
-        self.load_article()
+            sh.objs.mes (f,_('ERROR')
+                        ,'An unknown mode "%s"!\n\nThe following modes are supported: "%s".'\
+                        % (str(lg.objs._request._source)
+                          ,'; '.join(lg.sources)
+                          )
+                        )
 
     def get_url(self):
         f = '[MClient] mclient.WebFrame.get_url'
-        #note: encoding must be UTF-8 here
-        if lg.objs.request()._source == _('Offline'):
-            lg.objs.online().reset (base_str   = self.get_pair()
-                                   ,search_str = lg.objs._request._search
-                                   )
-        elif lg.objs._request.plugin_get == plugins.multitranru.get:
-            lg.objs.online().reset (base_str   = self.get_pair()
-                                   ,search_str = lg.objs._request._search
-                                   )
+        lg.objs.online().reset (base_str   = self.get_pair()
+                               ,search_str = lg.objs.request()._search
+                               )
+        if lg.objs._request._source != _('Offline'):
             lg.objs._request._url = lg.objs.online().url()
-        else:
-            lg.objs._request._url = sh.Online (base_str   = self.get_pair()
-                                              ,search_str = lg.objs._request._search
-                                              ).url()
         sh.log.append (f,_('DEBUG')
                       ,str(lg.objs._request._url)
                       )

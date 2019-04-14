@@ -1,4 +1,5 @@
 
+- WebFrame.set_source is not always triggered when necessary
 - deu-rus: работа: genders are in a wrong place
 - 'about': 'они передвигали мебель' in a wrong dic (must be general)
 - logic, 817: logic.Order.prioritize_by: .index: ValueError

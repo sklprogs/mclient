@@ -19,7 +19,8 @@ import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
-sources = (_('All'),_('Online'),_('Offline'))
+#todo: use PluginManager
+sources = ('multitran.ru','multitran.com',_('Offline'))
 sample_block = '''Австралийский сленг
 Архаизм
 Бранное выражение
@@ -130,7 +131,7 @@ class PhraseTerma:
 
 class Translate:
 
-    def __init__ (self,source=_('All'),search=''
+    def __init__ (self,source='multitran.ru',search=''
                  ,url='',timeout=6,articleid=0
                  ):
         self.values()
@@ -174,13 +175,24 @@ class Translate:
                                                             ,articleid = self._articleid
                                                             ,iabbr     = objs._order.dic
                                                             )
-                if self._source in (_('All'),_('Offline')):
-                    plugin_sd.run()
-                if self._source in (_('All'),_('Online')):
-                    #plugin_mr.run()
-                    #cur
-                    #todo: uncomment when URLs are fixed
-                    plugin_mc.run()
+                #todo: run all offline/online dictionaries
+                if objs.request()._source in sources:
+                    if objs._request._source == _('Offline'):
+                        objs._request.plugin_get = plugins.stardict.get
+                        plugin_sd.run()
+                    elif objs._request._source == 'multitran.ru':
+                        objs._request.plugin_get = plugins.multitranru.get
+                        plugin_mr.run()
+                    elif objs._request._source == 'multitran.com':
+                        objs._request.plugin_get = plugins.multitrancom.get
+                        plugin_mc.run()
+                else:
+                    sh.objs.mes (f,_('ERROR')
+                                ,'An unknown mode "%s"!\n\nThe following modes are supported: "%s".'\
+                                % (str(objs._request._source)
+                                  ,'; '.join(sources)
+                                  )
+                                )
                 self._text = [plugin_sd._text,plugin_mr._text
                              ,plugin_mc._text
                              ]
@@ -653,7 +665,7 @@ class CurRequest:
         self._pr_adv       = 3
         self._pr_prep      = 2
         self._pr_pron      = 1
-        self._source       = _('All')
+        self._source       = 'multitran.ru'
         self._lang         = 'English'
         self._cols         = ('dic','wform','transc','speech')
         ''' Toggling blacklisting should not depend on a number of
@@ -740,7 +752,7 @@ class Objects:
         return self._online_mt
     
     def online(self):
-        if self.request().plugin_get == plugins.multitranru.get:
+        if objs.request()._source == 'multitran.ru':
             return objs.online_mt()
         else:
             return sh.objs.online()
@@ -1300,3 +1312,5 @@ ConfigMclient()
 
 plugins.stardict.get.PATH = objs.default().dics()
 plugins.stardict.get.objs.all_dics()
+#todo: use PluginManager
+objs.request().plugin_get = plugins.multitranru.get

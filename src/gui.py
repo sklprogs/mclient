@@ -790,8 +790,8 @@ class WebFrame:
             to the left. To prevent this, we set the width of
             the optionmenus by the longest item.
         '''
-        self.men_srcs.widget.config (width = len(max((_('All')
-                                                     ,_('Online')
+        self.men_srcs.widget.config (width = len(max(('multitran.ru'
+                                                     ,'multitran.com'
                                                      ,_('Offline')
                                                      )
                                                     )
