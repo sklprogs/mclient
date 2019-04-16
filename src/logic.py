@@ -253,34 +253,6 @@ class Welcome:
 
 
 
-class Online(sh.Online):
-
-    def __init__ (self,base_str='%s',search_str=''
-                 ,encoding='UTF-8'
-                 ):
-        super().__init__()
-    
-    def get_bytes(self):
-        if not self._bytes:
-            # Otherwise, will not be able to encode 'Ъ'
-            try:
-                self._bytes = bytes (self.search_str
-                                    ,encoding = 'windows-1251'
-                                    )
-            except:
-                ''' Otherwise, will not be able to encode specific
-                    characters
-                '''
-                try:
-                    self._bytes = bytes (self.search_str
-                                        ,encoding='UTF-8'
-                                        )
-                except:
-                    self._bytes = ''
-        return self._bytes
-
-
-
 class DefaultConfig:
     
     def __init__(self,product='mclient'):
@@ -640,7 +612,7 @@ class Objects:
     
     def __init__(self):
         self._online = self._request = self._order = self._default \
-                     = self._online_mt = self._plugins = None
+                     = self._plugins = None
     
     def plugins(self):
         if self._plugins is None:
@@ -659,17 +631,6 @@ class Objects:
             self._default = DefaultConfig(product=product)
             self._default.run()
         return self._default
-    
-    def online_mt(self):
-        if self._online_mt is None:
-            self._online_mt = Online()
-        return self._online_mt
-    
-    def online(self):
-        if objs.request()._source == 'multitran.ru':
-            return objs.online_mt()
-        else:
-            return sh.objs.online()
     
     def request(self):
         if self._request is None:

@@ -158,8 +158,9 @@ class About:
 
     # Open a license web-page
     def open_license_url(self,event=None):
-        lg.objs.online()._url = sh.globs['license_url']
-        lg.objs.online().browse()
+        ionline      = sh.Online()
+        ionline._url = sh.globs['license_url']
+        ionline.browse()
 
     # Show info about third-party licenses
     def show_third_parties(self,event=None):
@@ -669,6 +670,13 @@ class WebFrame:
             self.gui.men_srcs.reset (items  = sources
                                     ,action = self.set_source
                                     )
+            ''' After text in optionmenus is reset, tkinter will grow
+                these optionmenus and correspondingly shift widgets
+                on the left to the left. To prevent this, we set
+                the width of the optionmenus by the longest item.
+            '''
+            width = len(max(sources)) + 3
+            self.gui.men_srcs.widget.config(width=width)
         else:
             sh.com.empty(f)
     
@@ -1684,8 +1692,9 @@ class WebFrame:
 
     # Open URL of the current article in a browser
     def open_in_browser(self,event=None):
-        lg.objs.online()._url = lg.objs.request()._url
-        lg.objs.online().browse()
+        ionline      = sh.Online()
+        ionline._url = lg.objs.request()._url
+        ionline.browse()
 
     # Copy text of the current block
     def copy_text(self,event=None):
@@ -1734,10 +1743,9 @@ class WebFrame:
         else:
             search_str = 'define:' + lg.objs.request()._search
         if search_str != 'define:':
-            lg.objs.online().reset (base_str   = sh.globs['var']['web_search_url']
-                                   ,search_str = search_str
-                                   )
-            lg.objs.online().browse()
+            sh.Online (base_str   = sh.globs['var']['web_search_url']
+                      ,search_str = search_str
+                      ).browse()
         else:
             sh.com.empty(f)
 

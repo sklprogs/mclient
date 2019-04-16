@@ -230,8 +230,7 @@ class About:
         if path:
             self.obj.icon(path)
         else:
-            self.obj.icon (sh.objs.pdir().add ('..'
-                                              ,'resources'
+            self.obj.icon (sh.objs.pdir().add ('..','resources'
                                               ,'icon_64x64_mclient.gif'
                                               )
                           )
@@ -322,8 +321,7 @@ class ThirdParties:
         if path:
             self.parent.icon(path)
         else:
-            self.parent.icon (sh.objs.pdir().add ('..'
-                                                 ,'resources'
+            self.parent.icon (sh.objs.pdir().add ('..','resources'
                                                  ,'icon_64x64_mclient.gif'
                                                  )
                              )
@@ -365,8 +363,7 @@ class SearchArticle:
         if path:
             self.parent.icon(path)
         else:
-            self.parent.icon (sh.objs.pdir().add ('..'
-                                                 ,'resources'
+            self.parent.icon (sh.objs.pdir().add ('..','resources'
                                                  ,'icon_64x64_mclient.gif'
                                                  )
                              )
@@ -415,8 +412,7 @@ class SaveArticle:
         if path:
             self.parent.icon(path)
         else:
-            self.parent.icon (sh.objs.pdir().add ('..'
-                                                 ,'resources'
+            self.parent.icon (sh.objs.pdir().add ('..','resources'
                                                  ,'icon_64x64_mclient.gif'
                                                  )
                              )
@@ -433,8 +429,7 @@ class History:
 
     def __init__(self):
         self.Active = False
-        self._icon  = sh.objs.pdir().add ('..'
-                                         ,'resources'
+        self._icon  = sh.objs.pdir().add ('..','resources'
                                          ,'icon_64x64_mclient.gif'
                                          )
         self.gui()
@@ -785,18 +780,6 @@ class WebFrame:
                                       ,items   = (1,2,3,4,5,6,7,8,9,10)
                                       ,default = 4
                                       )
-        ''' After text in optionmenus is reset, tkinter will grow these
-            optionmenus and correspondingly shift widgets on the left
-            to the left. To prevent this, we set the width of
-            the optionmenus by the longest item.
-        '''
-        self.men_srcs.widget.config (width = len(max(('multitran.ru'
-                                                     ,'multitran.com'
-                                                     ,_('Offline')
-                                                     )
-                                                    )
-                                                )
-                                    )
         # All items of the 'pairs' sequence are of the same length
         self.men_pair.widget.config(width=11)
         self.men_cols.widget.config(width=2)
@@ -1787,8 +1770,7 @@ class Settings:
         if path:
             self.obj.icon(path)
         else:
-            self.obj.icon (sh.objs.pdir().add ('..'
-                                              ,'resources'
+            self.obj.icon (sh.objs.pdir().add ('..','resources'
                                               ,'icon_64x64_mclient.gif'
                                               )
                           )
@@ -1924,8 +1906,7 @@ class SpecSymbols:
         if path:
             self.obj.icon(path)
         else:
-            self.obj.icon (sh.objs.pdir().add ('..'
-                                              ,'resources'
+            self.obj.icon (sh.objs.pdir().add ('..','resources'
                                               ,'icon_64x64_mclient.gif'
                                               )
                           )
