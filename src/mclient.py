@@ -670,13 +670,6 @@ class WebFrame:
             self.gui.men_srcs.reset (items  = sources
                                     ,action = self.set_source
                                     )
-            ''' After text in optionmenus is reset, tkinter will grow
-                these optionmenus and correspondingly shift widgets
-                on the left to the left. To prevent this, we set
-                the width of the optionmenus by the longest item.
-            '''
-            width = len(max(sources)) + 3
-            self.gui.men_srcs.widget.config(width=width)
         else:
             sh.com.empty(f)
     

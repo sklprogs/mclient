@@ -774,6 +774,12 @@ class WebFrame:
                                   ,active   = self.icon_spec_symbol
                                   )
         self.men_srcs = sg.OptionMenu(parent=self.fr_but)
+        ''' Configure the option menu at the GUI creation time to avoid
+            glitches with the search field.
+        '''
+        self.men_srcs.widget.configure (width = 14
+                                       ,font  = 'Sans 10'
+                                       )
         # A drop-down list with translation pairs
         self.men_pair = sg.OptionMenu(parent=self.fr_but)
         self.men_cols = sg.OptionMenu (parent  = self.fr_but
@@ -1967,7 +1973,8 @@ class Suggestion:
 
 if __name__ == '__main__':
     sg.objs.start()
-    #WebFrame().show()
+    WebFrame().show()
+    '''
     sources = Sources()
     sources.reset ((_('Offline')
                    ,'multitran.ru'
@@ -1975,4 +1982,5 @@ if __name__ == '__main__':
                    )
                   )
     sources.show()
+    '''
     sg.objs.end()
