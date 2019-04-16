@@ -21,6 +21,9 @@ class CleanUp:
         self._text = self._text.replace('\r\n','')
         self._text = self._text.replace('\n','')
         self._text = self._text.replace('\xa0',' ')
+        self._text = self._text.replace('<a href="/m.exe?a=256">Русский</a>','')
+        self._text = self._text.replace('</a>Русский <a href','</a><a href')
+        self._text = self._text.replace('</a> Английский<p>','</a><p>')
         while '  ' in self._text:
             self._text = self._text.replace('  ',' ')
         self._text = re.sub(r'\>[\s]{0,1}\<','><',self._text)

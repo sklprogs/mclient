@@ -1138,6 +1138,7 @@ class Suggestion:
             if not self._url:
                 self._url = sh.Online (base_str   = self._pair
                                       ,search_str = self._search
+                                      ,encoding   = objs.plugins().encoding()
                                       ).url()
             return self._url
         else:
@@ -1149,7 +1150,7 @@ class Suggestion:
             if not self._items:
                 if self.url():
                     self._items = sh.Get (url      = self._url
-                                         ,encoding = 'windows-1251'
+                                         ,encoding = objs.plugins().encoding()
                                          ).run()
                     if self._items:
                         self._items = html.unescape(self._items)
