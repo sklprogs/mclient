@@ -12,9 +12,6 @@ import gui       as gi
 import cells     as cl
 import db
 import mkhtml    as mh
-import plugins.multitranru.get
-import plugins.multitrancom.get
-import plugins.stardict.get
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -23,12 +20,6 @@ gettext.install('mclient','../resources/locale')
 
 product = 'MClient'
 version = '6.0'
-
-#todo: use PluginManager
-SOURCES = (_('Offline')
-          ,'multitran.ru'
-          ,'multitran.com'
-          )
 
 
 if __name__ == '__main__':
@@ -42,17 +33,25 @@ if __name__ == '__main__':
 class Sources:
     
     def __init__(self):
+        f = '[MClient] mclient.Sources.__init__'
         self.values()
         self.gui = gi.Sources()
         self.bindings()
+        sources = lg.objs.plugins().sources()
+        if sources:
+            self._sources = sources
+        else:
+            self.Success = False
+            sh.com.empty(f)
     
     def reset(self):
         self.values()
-        self.gui.reset(SOURCES)
+        self.gui.reset(self._sources)
     
     def values(self):
-        self.Success = True
-        self._select = []
+        self.Success  = True
+        self._select  = []
+        self._sources = []
     
     def selection(self):
         f = '[MClient] mclient.Sources.selection'
@@ -60,7 +59,7 @@ class Sources:
             for i in range(len(self.gui._cboxes)):
                 if self.gui._cboxes[i].get():
                     try:
-                        self._select.append(SOURCES[i])
+                        self._select.append(self._sources)
                     except IndexError:
                         self.Success = False
                         sh.objs.mes (f,_('ERROR')
@@ -240,8 +239,8 @@ class SaveArticle:
         if self.file and lg.objs.request()._html_raw:
             self.fix_ext(ext='.htm')
             #todo: fix remaining links to localhost
-            if hasattr(lg.objs._request.plugin_get,'PAIR_ROOT'):
-                pair_root = lg.objs._request.plugin_get.PAIR_ROOT
+            pair_root = lg.objs.plugins().pair_root()
+            if pair_root:
                 code = lg.objs._request._html_raw.replace('charset=windows-1251"','charset=utf-8"')
                 code = code.replace('<a href="M.exe?','<a href="'+pair_root)
                 code = code.replace('../c/M.exe?',pair_root)
@@ -251,9 +250,7 @@ class SaveArticle:
                                  ,Rewrite = True
                                  ).write(code)
             else:
-                sh.objs.mes (f,_('ERROR')
-                            ,_('An invalid plugin!')
-                            )
+                sh.com.empty(f)
         else:
             sh.com.empty(f)
 
@@ -543,6 +540,7 @@ class WebFrame:
         self.gui = gi.WebFrame()
         self.widgets()
         self.bindings()
+        self.reset_opt()
         
     def paste_search_field(self,event=None):
         self.suggestion.gui.close()
@@ -659,8 +657,22 @@ class WebFrame:
         self.save_article.gui.close()
         self.history.gui.close()
 
+    def reset_opt(self):
+        f = '[MClient] mclient.WebFrame.reset_opt'
+        # Reset OptionMenus
+        pairs   = lg.objs.plugins().pairs()
+        sources = lg.objs._plugins.sources()
+        if pairs and sources:
+            self.gui.men_pair.reset (items  = pairs
+                                    ,action = self.set_lang
+                                    )
+            self.gui.men_srcs.reset (items  = sources
+                                    ,action = self.set_source
+                                    )
+        else:
+            sh.com.empty(f)
+    
     def bindings(self):
-        f = '[MClient] mclient.WebFrame.bindings'
         sg.bind (obj      = self.gui.obj
                 ,bindings = [sh.globs['var']['bind_copy_sel']
                             ,sh.globs['var']['bind_copy_sel_alt']
@@ -1045,18 +1057,7 @@ class WebFrame:
         self.gui.btn_past.action = self.paste_search_field
         self.gui.btn_cler.action = self.clear_search_field
         self.gui.btn_trns.action = self.go
-        # Reset OptionMenus
-        if hasattr(lg.objs.request().plugin_get,'PAIRS'):
-            self.gui.men_pair.reset (items  = lg.objs._request.plugin_get.PAIRS
-                                    ,action = self.set_lang
-                                    )
-        else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('An invalid plugin!')
-                        )
-        self.gui.men_srcs.reset (items  = lg.sources
-                                ,action = self.set_source
-                                )
+        
     def title(self,arg=None):
         if not arg:
             arg = sh.List(lst1=[product,version]).space_items()
@@ -1267,23 +1268,19 @@ class WebFrame:
             
             objs._blocks_db._articleid = objs._blocks_db.max_articleid()
             
-            transl = lg.Translate (source    = lg.objs._request._source
-                                  ,search    = lg.objs._request._search
-                                  ,url       = lg.objs._request._url
-                                  ,timeout   = sh.globs['int']['timeout']
-                                  ,articleid = objs._blocks_db._articleid
-                                  )
-            transl.run()
+            data = lg.objs.plugins().request (search    = lg.objs._request._search
+                                             ,url       = lg.objs._request._url
+                                             ,articleid = objs._blocks_db._articleid
+                                             )
             #todo: #fix: assign this for already loaded articles too
-            lg.objs._request._page     = transl._text
-            lg.objs._request._html_raw = transl._html
-
-            if transl._data_sd:
-                objs._blocks_db.fill_blocks(transl._data_sd)
-            if transl._data_mr:
-                objs._blocks_db.fill_blocks(transl._data_mr)
-            if transl._data_mc:
-                objs._blocks_db.fill_blocks(transl._data_mc)
+            text = lg.objs._plugins.get_text()
+            if text is not None:
+                lg.objs._request._page = text
+            code = lg.objs._plugins.get_html()
+            if code is not None:
+                lg.objs._request._html_raw = code
+            if data:
+                objs._blocks_db.fill_blocks(data)
             
             lg.PhraseTerma (dbc       = objs._blocks_db.dbc
                            ,articleid = objs._blocks_db._articleid
@@ -1314,8 +1311,6 @@ class WebFrame:
             usually a dictionary + terms from the 'Phrases' section
             Do not rely on the number of wforms; large articles like
             'centre' may have only 1 wform (and a plurality of dics)
-            #todo: do we need this?
-            #or transl.HasLocal
         '''
         if not dics or dics and len(dics) == 1 or not self._phdic:
             # or check 'lg.objs._request._search' by pattern '\d+ фраз'
@@ -1504,37 +1499,28 @@ class WebFrame:
 
     def set_source(self,event=None):
         f = '[MClient] mclient.WebFrame.set_source'
-        lg.objs.request()._source = lg.sources[self.gui.men_srcs.index]
+        lg.objs.request()._source = self.gui.men_srcs.choice
         sh.log.append (f,_('INFO')
-                      ,_('Set source to "%s"') % lg.objs._request._source
+                      ,_('Set source to "%s"') \
+                      % lg.objs._request._source
                       )
-        #todo: make more specific
-        if lg.objs._request._source in lg.sources:
-            if lg.objs._request._source == _('Offline'):
-                lg.objs._request.plugin_get = plugins.stardict.get
-            elif lg.objs._request._source == 'multitran.ru':
-                lg.objs._request.plugin_get = plugins.multitranru.get
-            elif lg.objs._request._source == 'multitran.com':
-                lg.objs._request.plugin_get = plugins.multitrancom.get
-            self.load_article()
-        else:
-            sh.objs.mes (f,_('ERROR')
-                        ,'An unknown mode "%s"!\n\nThe following modes are supported: "%s".'\
-                        % (str(lg.objs._request._source)
-                          ,'; '.join(lg.sources)
-                          )
-                        )
+        lg.objs.plugins().set(lg.objs._request._source)
+        self.load_article()
 
     def get_url(self):
         f = '[MClient] mclient.WebFrame.get_url'
-        lg.objs.online().reset (base_str   = self.get_pair()
-                               ,search_str = lg.objs.request()._search
-                               )
-        if lg.objs._request._source != _('Offline'):
-            lg.objs._request._url = lg.objs.online().url()
-        sh.log.append (f,_('DEBUG')
-                      ,str(lg.objs._request._url)
-                      )
+        if lg.objs.request()._source == _('Offline'):
+            sh.log.append (f,_('INFO')
+                          ,_('Nothing to do!')
+                          )
+        else:
+            lg.objs._request._url = sh.Online (base_str   = self.get_pair()
+                                              ,search_str = lg.objs._request._search
+                                              ,encoding   = lg.objs.plugins().encoding()
+                                              ).url() 
+            sh.log.append (f,_('DEBUG')
+                          ,str(lg.objs._request._url)
+                          )
 
     #todo: move 'move_*' procedures to Moves class
     # Go to the 1st term of the current row
@@ -1866,8 +1852,8 @@ class WebFrame:
 
     def set_lang(self,event=None):
         f = '[MClient] mclient.WebFrame.set_lang'
-        if hasattr(lg.objs.request().plugin_get,'LANGS'):
-            langs = lg.objs._request.plugin_get.LANGS
+        langs = lg.objs.plugins().langs()
+        if langs:
             try:
                 lg.objs._request._lang = langs[self.gui.men_pair.index]
             except IndexError:
@@ -1879,14 +1865,12 @@ class WebFrame:
                           % lg.objs._request._lang
                           )
         else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('An invalid plugin!')
-                        )
+            sh.com.empty(f)
 
     def get_pair(self,event=None):
         f = '[MClient] mclient.WebFrame.get_pair'
-        if hasattr(lg.objs.request().plugin_get,'PAIR_URLS'):
-            pair_urls = lg.objs._request.plugin_get.PAIR_URLS
+        pair_urls = lg.objs.plugins().pair_urls()
+        if pair_urls:
             try:
                 return pair_urls[self.gui.men_pair.index]
             except IndexError:
@@ -1894,9 +1878,7 @@ class WebFrame:
                             ,_('Wrong input data!')
                             )
         else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('An invalid plugin!')
-                        )
+            sh.com.empty(f)
 
     def set_columns(self,event=None):
         f = '[MClient] mclient.WebFrame.set_columns'

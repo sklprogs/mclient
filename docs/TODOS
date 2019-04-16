@@ -1,4 +1,5 @@
 
+- multitran.com: pattern: too long columns
 - Form new URLs when using multitran.com (otherwise, there will be
   a decoding error since we still use multitran.ru patterns)
 - (?) Redo SpecialPage: alphebitize online and offline dics separately

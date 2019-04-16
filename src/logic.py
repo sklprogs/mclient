@@ -8,19 +8,13 @@ import html
 import ssl
 import shared    as sh
 import sharedGUI as sg
-import plugins.stardict.get
-import plugins.stardict.run
-import plugins.multitranru.get
-import plugins.multitranru.run
-import plugins.multitrancom.get
-import plugins.multitrancom.run
+import manager
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
-#todo: use PluginManager
-sources = ('multitran.ru','multitran.com',_('Offline'))
+
 sample_block = '''Австралийский сленг
 Архаизм
 Бранное выражение
@@ -129,93 +123,13 @@ class PhraseTerma:
 
 
 
-class Translate:
-
-    def __init__ (self,source='multitran.ru',search=''
-                 ,url='',timeout=6,articleid=0
-                 ):
-        self.values()
-        self._source    = source
-        self._search    = search
-        self._url       = url
-        self._timeout   = timeout
-        self._articleid = articleid
+class Source:
     
-    def values(self):
-        self._plugin  = None
-        self.HasLocal = False
-        self._text    = ''
-        self._html    = ''
-        self._blocks  = []
-        self._data_sd = []
-        self._data_mr = []
-        self._data_mc = []
-    
-    def run(self):
-        f = '[MClient] logic.Translate.run'
-        if self._source and self._search:
-            if self._source in sources:
-                timer = sh.Timer(f)
-                timer.start()
-                plugin_sd = plugins.stardict.run.Plugin (search    = self._search
-                                                        ,url       = self._url
-                                                        ,timeout   = self._timeout
-                                                        ,articleid = self._articleid
-                                                        ,iabbr     = objs.order().dic
-                                                        )
-                plugin_mr = plugins.multitranru.run.Plugin (search    = self._search
-                                                           ,url       = self._url
-                                                           ,timeout   = self._timeout
-                                                           ,articleid = self._articleid
-                                                           ,iabbr     = objs._order.dic
-                                                           )
-                plugin_mc = plugins.multitrancom.run.Plugin (search    = self._search
-                                                            ,url       = self._url
-                                                            ,timeout   = self._timeout
-                                                            ,articleid = self._articleid
-                                                            ,iabbr     = objs._order.dic
-                                                            )
-                #todo: run all offline/online dictionaries
-                if objs.request()._source in sources:
-                    if objs._request._source == _('Offline'):
-                        objs._request.plugin_get = plugins.stardict.get
-                        plugin_sd.run()
-                    elif objs._request._source == 'multitran.ru':
-                        objs._request.plugin_get = plugins.multitranru.get
-                        plugin_mr.run()
-                    elif objs._request._source == 'multitran.com':
-                        objs._request.plugin_get = plugins.multitrancom.get
-                        plugin_mc.run()
-                else:
-                    sh.objs.mes (f,_('ERROR')
-                                ,'An unknown mode "%s"!\n\nThe following modes are supported: "%s".'\
-                                % (str(objs._request._source)
-                                  ,'; '.join(sources)
-                                  )
-                                )
-                self._text = [plugin_sd._text,plugin_mr._text
-                             ,plugin_mc._text
-                             ]
-                self._text = [item for item in self._text if item]
-                self._text = '\n'.join(self._text)
-                #todo: integrate htmls
-                self._html   = plugin_sd._html + plugin_mr._html \
-                                               + plugin_mc._html
-                self._blocks = plugin_sd._blocks + plugin_mr._blocks \
-                                                 + plugin_mc._blocks
-                if plugin_sd._blocks:
-                    self.HasLocal = True
-                self._data_sd = plugin_sd._data
-                self._data_mr = plugin_mr._data
-                self._data_mc = plugin_mc._data
-                timer.end()
-            else:
-                sh.objs.mes (f,_('ERROR')
-                            ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                            % (str(self._source),';'.join(sources))
-                            )
-        else:
-            sh.com.empty(f)
+    def __init__(self):
+        self._title  = ''
+        self._url    = ''
+        self._status = _('not running')
+        self._color  = 'red'
 
 
 
@@ -224,34 +138,41 @@ class Welcome:
     def __init__ (self,product='MClient'
                  ,version='current',timeout=6
                  ):
-        self.set_urls()
+        self._sources   = []
         self._product   = product
         self._version   = version
-        self._st_status = len(plugins.stardict.get.objs.all_dics()._dics)
+        self._st_status = objs.plugins().sdstat()
         self._timeout   = timeout
-        self._mr_status = 'not running'
-        self._mc_status = 'not running'
-        self._mr_color  = 'red'
-        self._mc_color  = 'red'
-        self._st_color  = 'red'
         self._desc      = sh.List (lst1 = [self._product
                                           ,self._version
                                           ]
                                   ).space_items()
 
-    def set_urls(self):
-        f = '[MClient] logic.Welcome.set_urls'
-        #todo: use abstract plugins
-        if hasattr(plugins.multitranru.get,'URL') \
-        and hasattr(plugins.multitrancom.get,'URL'):
-            self._mr_url = plugins.multitranru.get.URL
-            self._mc_url = plugins.multitrancom.get.URL
+    def sources(self):
+        f = '[MClient] logic.Welcome.sources'
+        dics = objs.plugins().online_sources()
+        urls = objs._plugins.online_urls()
+        if dics and urls:
+            urls = [url for url in urls if url]
+            if len(dics) == len(urls):
+                self._sources = []
+                for url in urls:
+                    source = Source()
+                    source._url = url
+                    if self.online(url):
+                        source._status = _('running')
+                        source._color  = 'green'
+                    else:
+                        source._status = _('not running')
+                        source._color  = 'red'
+                    self._sources.append(source)
+            else:
+                sh.objs.mes (f,_('ERROR')
+                            ,_('The condition "%s" is not observed!') \
+                            % '%d = %d' % (len(sources),len(urls))
+                            )
         else:
-            self._mr_url = ''
-            self._mc_url = ''
-            sh.objs.mes (f,_('ERROR')
-                        ,_('An invalid plugin!')
-                        )
+            sh.com.empty(f)
     
     def online(self,url):
         f = '[MClient] logic.Welcome.online'
@@ -274,74 +195,56 @@ class Welcome:
         except: #urllib.error.URLError, socket.timeout
             return False
 
+    def source_code(self,url,status,color):
+        url = url.replace('https://','').replace('http://','').replace('www.','')
+        self.istr.write('      <b>{}</b>\n'.format(url))
+        self.istr.write('      <font face="Serif" color="')
+        self.istr.write(color)
+        self.istr.write('" size="6">')
+        self.istr.write(status)
+        self.istr.write('</font>.\n')
+        self.istr.write('      <br>\n')
+    
     def generate(self):
         f = '[MClient] logic.Welcome.generate'
-        istr = io.StringIO()
-        istr.write('<html>\n')
-        istr.write('  <body>\n')
-        istr.write('    <h1>')
-        istr.write(_('Welcome to {}!').format(self._desc))
-        istr.write('</h1>\n')
-        istr.write('    <font face="Serif" size="6">\n')
-        istr.write('      <br>\n')
-        istr.write('      {}'.format(_('This program retrieves translation from online/offline sources.')))
-        istr.write('\n')
-        istr.write('      <br>\n')
-        istr.write('      {}'.format(_('Use an entry area below to enter a word/phrase to be translated.')))
-        istr.write('\n')
-        istr.write('      <br>\n')
-        istr.write('      {}'.format(_('Click the left mouse button on the selection to return its translation. Click the right mouse button on the selection to copy it to clipboard.')))
-        istr.write('\n')
-        istr.write('      <br><br>\n')
-        if self._mr_url:
-            url = self._mr_url.replace('https://','').replace('http://','').replace('www.','')
-            istr.write('      <b>{}</b>\n'.format(url))
-            istr.write('      <font face="Serif" color="')
-            istr.write(self._mr_color)
-            istr.write('" size="6">')
-            istr.write(self._mr_status)
-            istr.write('</font>.\n')
-            istr.write('      <br>\n')
-        else:
-            sh.com.empty(f)
-        if self._mc_url:
-            url = self._mc_url.replace('https://','').replace('http://','').replace('www.','')
-            istr.write('      <b>{}</b>\n'.format(url))
-            istr.write('      <font face="Serif" color="')
-            istr.write(self._mc_color)
-            istr.write('" size="6">')
-            istr.write(self._mc_status)
-            istr.write('</font>.\n')
-            istr.write('      <br>\n')
-        else:
-            sh.com.empty(f)
-        istr.write('      {}'.format(_('Offline dictionaries loaded:')))
-        istr.write('\n')
-        istr.write('      <font color="')
-        istr.write(self._st_color)
-        istr.write('">')
-        istr.write('{}'.format(self._st_status))
-        istr.write('</font>.\n')
-        istr.write('    </font>\n')
-        istr.write('  </body>\n')
-        istr.write('</html>')
-        code = istr.getvalue()
-        istr.close()
+        self.istr = io.StringIO()
+        self.istr.write('<html>\n')
+        self.istr.write('  <body>\n')
+        self.istr.write('    <h1>')
+        self.istr.write(_('Welcome to {}!').format(self._desc))
+        self.istr.write('</h1>\n')
+        self.istr.write('    <font face="Serif" size="6">\n')
+        self.istr.write('      <br>\n')
+        self.istr.write('      {}'.format(_('This program retrieves translation from online/offline sources.')))
+        self.istr.write('\n')
+        self.istr.write('      <br>\n')
+        self.istr.write('      {}'.format(_('Use an entry area below to enter a word/phrase to be translated.')))
+        self.istr.write('\n')
+        self.istr.write('      <br>\n')
+        self.istr.write('      {}'.format(_('Click the left mouse button on the selection to return its translation. Click the right mouse button on the selection to copy it to clipboard.')))
+        self.istr.write('\n')
+        self.istr.write('      <br><br>\n')
+        for source in self._sources:
+            self.source_code (url    = source._url
+                             ,status = source._status
+                             ,color  = source._color
+                             )
+        self.istr.write('      {}'.format(_('Offline dictionaries loaded:')))
+        self.istr.write('\n')
+        self.istr.write('      <font color="')
+        self.istr.write(self._st_color)
+        self.istr.write('">')
+        self.istr.write('{}'.format(self._st_status))
+        self.istr.write('</font>.\n')
+        self.istr.write('    </font>\n')
+        self.istr.write('  </body>\n')
+        self.istr.write('</html>')
+        code = self.istr.getvalue()
+        self.istr.close()
         return code
 
     def run(self):
-        if self.online(self._mr_url):
-            self._mr_status = _('running')
-            self._mr_color  = 'green'
-        else:
-            self._mr_status = _('not running')
-            self._mr_color  = 'red'
-        if self.online(self._mc_url):
-            self._mc_status = _('running')
-            self._mc_color  = 'green'
-        else:
-            self._mc_status = _('not running')
-            self._mc_color  = 'red'
+        self.sources()
         if self._st_status == 0:
             self._st_color = 'red'
         else:
@@ -655,7 +558,6 @@ class CurRequest:
         ''' #note: this should be synchronized with the 'default' value
             of objs.webframe().menu_columns
         '''
-        self.plugin_get    = plugins.multitranru.get
         self._collimit     = 8
         # Default priorities of parts of speech
         self._pr_n         = 7
@@ -738,7 +640,19 @@ class Objects:
     
     def __init__(self):
         self._online = self._request = self._order = self._default \
-                     = self._online_mt = None
+                     = self._online_mt = self._plugins = None
+    
+    def plugins(self):
+        if self._plugins is None:
+            self._plugins = manager.Plugins (sdpath  = self.default().dics()
+                                            ,timeout = sh.globs['int']['timeout']
+                                            ,iabbr   = self.order().dic
+                                            ,Debug   = False
+                                            ,Shorten = True
+                                            ,MaxRow  = 20
+                                            ,MaxRows = 20
+                                            )
+        return self._plugins
     
     def default(self,product='mclient'):
         if not self._default:
@@ -1247,20 +1161,7 @@ class Suggestion:
             sh.log.append (f,_('INFO')
                           ,_('Nothing to do!')
                           )
-        if self._pair:
-            if hasattr(objs.request().plugin_get,'PAIR_URLS'):
-                if not self._pair in objs._request.plugin_get.PAIR_URLS:
-                    self.Success = False
-                    sh.log.append (f,_('WARNING')
-                                  ,_('Wrong input data: "%s"') \
-                                  % str(self._pair)
-                                  )
-            else:
-                self.Success = False
-                sh.objs.mes (f,_('ERROR')
-                            ,_('An invalid plugin!')
-                            )
-        else:
+        if not self._pair:
             self.Success = False
             sh.com.empty(f)
         if not isinstance(self._limit,int):
@@ -1309,8 +1210,3 @@ class Suggestion:
 
 objs = Objects()
 ConfigMclient()
-
-plugins.stardict.get.PATH = objs.default().dics()
-plugins.stardict.get.objs.all_dics()
-#todo: use PluginManager
-objs.request().plugin_get = plugins.multitranru.get

@@ -17,25 +17,17 @@ gettext.install('mclient','../resources/locale')
 
 class Plugin:
     
-    def __init__ (self,search='',url=''
-                 ,timeout=6,Debug=False
-                 ,articleid=1,iabbr=None
-                 ,Shorten=True,MaxRow=20
-                 ,MaxRows=20
+    def __init__ (self,timeout=6,iabbr=None
+                 ,Debug=False,Shorten=True
+                 ,MaxRow=20,MaxRows=20
                  ):
-        ''' Extra unused input variables are preserved so it would be
-            easy to use an abstract class for all dictionary sources.
-        '''
         self.values()
-        self._search    = search
-        self._url       = url
-        self._timeout   = timeout
-        self._articleid = articleid
-        self.iabbr      = iabbr
-        self.Debug      = Debug
-        self.Shorten    = Shorten
-        self.MaxRow     = MaxRow
-        self.MaxRows    = MaxRows
+        self._timeout = timeout
+        self.iabbr    = iabbr
+        self.Debug    = Debug
+        self.Shorten  = Shorten
+        self.MaxRow   = MaxRow
+        self.MaxRows  = MaxRows
     
     def values(self):
         self._html   = ''
@@ -43,9 +35,29 @@ class Plugin:
         self._blocks = []
         self._data   = []
     
-    def run(self):
-        iget = gt.Get (search  = self._search
-                      ,url     = self._url
+    def encoding(self):
+        return gt.ENCODING
+    
+    def langs(self):
+        return gt.LANGS
+    
+    def pair_urls(self):
+        return gt.PAIR_URLS
+    
+    def pairs(self):
+        return gt.PAIRS
+    
+    def pair_root(self):
+        return gt.PAIR_ROOT
+    
+    def root_url(self):
+        return gt.URL
+    
+    def request (self,search='',url=''
+                ,articleid=1
+                ):
+        iget = gt.Get (search  = search
+                      ,url     = url
                       ,timeout = self._timeout
                       )
         self._text = iget.run()
@@ -60,7 +72,7 @@ class Plugin:
                                ,MaxRows = self.MaxRows
                                ).run()
         self._data = el.Elems (blocks    = self._blocks
-                              ,articleid = self._articleid
+                              ,articleid = articleid
                               ,iabbr     = self.iabbr
                               ,Debug     = self.Debug
                               ,Shorten   = self.Shorten

@@ -17,11 +17,9 @@ gettext.install('mclient','../resources/locale')
 
 class Plugin:
     
-    def __init__ (self,search='',url=''
-                 ,timeout=6,Debug=False
-                 ,articleid=0,iabbr=None
-                 ,Shorten=True,MaxRow=20
-                 ,MaxRows=50
+    def __init__ (self,timeout=6,iabbr=None
+                 ,Debug=False,Shorten=True
+                 ,MaxRow=20,MaxRows=50
                  ):
         ''' - Extra unused input variables are preserved so it would be
               easy to use an abstract class for all dictionary sources.
@@ -29,13 +27,11 @@ class Plugin:
               earlier.
         '''
         self.values()
-        self._search    = search
-        self.Debug      = Debug
-        self._articleid = articleid
-        self.iabbr      = iabbr
-        self.Shorten    = Shorten
-        self.MaxRow     = MaxRow
-        self.MaxRows    = MaxRows
+        self.iabbr   = iabbr
+        self.Debug   = Debug
+        self.Shorten = Shorten
+        self.MaxRow  = MaxRow
+        self.MaxRows = MaxRows
     
     def values(self):
         self._text   = ''
@@ -43,8 +39,28 @@ class Plugin:
         self._blocks = []
         self._data   = []
     
-    def run(self):
-        iget       = gt.Get(self._search)
+    def encoding(self):
+        return gt.ENCODING
+    
+    def langs(self):
+        return gt.LANGS
+    
+    def pair_urls(self):
+        return gt.PAIR_URLS
+    
+    def pairs(self):
+        return gt.PAIRS
+    
+    def pair_root(self):
+        return gt.PAIR_ROOT
+    
+    def root_url(self):
+        return gt.URL
+    
+    def request (self,search='',url=''
+                ,articleid=0
+                ):
+        iget       = gt.Get(search)
         self._text = iget.run()
         self._html = iget._html
         self._text = cu.CleanUp(self._text).run()
@@ -57,7 +73,7 @@ class Plugin:
                                ,MaxRows = self.MaxRows
                                ).run()
         self._data = el.Elems (blocks    = self._blocks
-                              ,articleid = self._articleid
+                              ,articleid = articleid
                               ,iabbr     = self.iabbr
                               ).run()
         return self._data

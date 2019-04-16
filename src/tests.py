@@ -130,18 +130,15 @@ class Plugin:
                            ).run()
 
 
-get  = Get()
-tags = Tags()
-plug = Plugin()
+#get  = Get()
+#tags = Tags()
+#plug = Plugin()
 
 
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
-    # This will also set plugins.stardict.get.PATH
-    #import logic as lg
-    import mclient
-    sources = mclient.Sources()
-    sources.reset()
-    sources.show()
+    import logic as lg
+    print('Source:',lg.objs.plugins()._source)
+    print('Root URL:',lg.objs._plugins.root_url())
     sg.objs.end()
