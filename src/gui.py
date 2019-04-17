@@ -29,8 +29,7 @@ class Sources:
         if path:
             self.parent.icon(path)
         else:
-            self.parent.icon (sh.objs.pdir().add ('..'
-                                                 ,'resources'
+            self.parent.icon (sh.objs.pdir().add ('..','resources'
                                                  ,'icon_64x64_mclient.gif'
                                                  )
                              )

@@ -1506,7 +1506,7 @@ class WebFrame:
                       % lg.objs._request._source
                       )
         lg.objs.plugins().set(lg.objs._request._source)
-        self.load_article()
+        self.go_search()
 
     def get_url(self):
         f = '[MClient] mclient.WebFrame.get_url'
