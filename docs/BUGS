@@ -1,4 +1,9 @@
 
+- History: fix selecting the same term but from different resources
+- remove 'Английский' and 'Русский' comments in eng-rus, multitran.com:
+  'counting machine'
+- eng-rus: multitran.com: A&E: transcription is set as a comment before
+  "Adolphus and Ellis's Queen's Bench Reports"
 - deu-rus: работа: genders are in a wrong place
 - 'about': 'они передвигали мебель' in a wrong dic (must be general)
 - logic, 817: logic.Order.prioritize_by: .index: ValueError

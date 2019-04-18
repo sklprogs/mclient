@@ -441,14 +441,14 @@ class History:
                 ,bindings = [sh.globs['var']['bind_toggle_history']
                             ,sh.globs['var']['bind_toggle_history_alt']
                             ]
-                ,action = self.gui.toggle
+                ,action   = self.gui.toggle
                 )
         sg.bind (obj      = self.gui.parent
                 ,bindings = sh.globs['var']['bind_clear_history']
                 ,action   = self.clear
                 )
-        ''' #note: the list is reversed, but we think it is still more
-            intuitive when Home goes top and End goes bottom
+        ''' #note: the list is reversed, but I think it is still more
+            intuitive when Home goes top and End goes bottom.
         '''
         sg.bind (obj      = self.gui.parent
                 ,bindings = '<Home>'
@@ -524,7 +524,9 @@ class History:
                 lg.objs._request._source = result[0]
                 lg.objs._request._search = result[1]
                 lg.objs._request._url    = result[2]
-                objs.webframe().load_article()
+                lg.objs.plugins().set(lg.objs._request._source)
+                objs.webframe().gui.men_srcs.set(lg.objs._request._source)
+                objs._webframe.go_search()
             else:
                 sh.com.empty(f)
         else:
