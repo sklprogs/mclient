@@ -71,6 +71,11 @@ class Plugin:
                                ,MaxRow  = self.MaxRow
                                ,MaxRows = self.MaxRows
                                ).run()
+        if self._blocks:
+            for block in self._blocks:
+                # Prevent useless error output
+                if block._url:
+                    block._url = gt.fix_url(block._url)
         self._data = el.Elems (blocks    = self._blocks
                               ,articleid = articleid
                               ,iabbr     = self.iabbr

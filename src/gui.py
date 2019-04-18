@@ -706,9 +706,9 @@ class WebFrame:
                                      )
         self.draw_buttons()
         self.canvas.embed(obj=self.fr_but)
-        ''' #todo: Updating idletasks will show ExtDic messages for too
-            long, however, we need to update in order to set canvas
-            dimensions correctly.
+        ''' #todo: Updating idletasks will show the AllDic 'Please wait'
+            message for too long, however, we need to update in order to
+            set canvas dimensions correctly.
         '''
         sg.objs.root().widget.update_idletasks()
         height = self.fr_but.widget.winfo_height()
@@ -1369,7 +1369,6 @@ class Settings:
                                   ,text       = _('Apply')
                                   ,side       = 'right'
                                   )
-        #cur
         #todo: elaborate
         '''
         self.btn_blok = sg.Button (parent     = self.fr_cb3

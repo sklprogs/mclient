@@ -5,7 +5,6 @@ import re
 import copy
 import shared    as sh
 import sharedGUI as sg
-import plugins.multitranru.get
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -130,16 +129,6 @@ useful_tags = [pdic,purl1,purl2,pcom1,pcom2
               ,pcom3,pcor1,pcor2,ptr1,pwf4
               ,psp1
               ]
-
-if hasattr(plugins.multitranru.get,'PAIR_ROOT'):
-    pair_root = plugins.multitranru.get.PAIR_ROOT
-else:
-    pair_root = ''
-    sh.objs.mes ('[MClient] plugins.multitranru.tags.__main__'
-                ,_('ERROR')
-                ,_('An invalid plugin!')
-                )
-
 
 
 class Block:
@@ -316,10 +305,6 @@ class AnalyzeTag:
                 self._cur._url = self._block[ind:]
             if self._cur._url.endswith(purl4):
                 self._cur._url = self._cur._url.replace(purl4,'')
-                ''' #note: adding a non-Multitran online source will
-                    require code modification.
-                '''
-                self._cur._url = pair_root + self._cur._url
             else:
                 self._cur._url = ''
 

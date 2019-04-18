@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import urllib.request
+import urllib.parse
 import shared    as sh
 import sharedGUI as sg
 
@@ -74,7 +75,7 @@ class Get:
         f = '[MClient] plugins.multitrancom.get.Get.__init__'
         self.values()
         self._search  = search
-        self._url     = url
+        self._url     = fix_url(url)
         self._timeout = timeout
         if not self._url or not self._search or not ENCODING:
             self.Success = False
@@ -138,14 +139,48 @@ class Get:
                                   ,_('[OK]: "%s"') % self._search
                                   )
                 # Too many possible exceptions
-                except:
+                except Exception as e:
                     sh.log.append (f,_('WARNING')
                                   ,_('[FAILED]: "%s"') % self._search
                                   )
                     # For some reason, 'break' does not work here
                     if not sg.Message (f,_('QUESTION')
-                                      ,_('Unable to get the webpage. Check website accessibility.\n\nPress OK to try again.')
+                                      ,_('Unable to get the webpage. Press OK to try again.\n\nDetails: %s')\
+                                      % str(e)
                                       ).Yes:
                         return
         else:
             sh.com.cancel(f)
+
+
+def fix_url(url):
+    f = '[MClient] plugins.multitrancom.fix_url'
+    ''' multitran.com provides for URLs that are not entirely correct:
+        they still can contain spaces and unquoted symbols (such as 'à'
+        or 'ф'). Browsers deal with this correctly but we must perform
+        this additional step of quoting. Some symbols like '=', however,
+        should not be quoted.
+    '''
+    if url:
+        ''' We assume that 'multitran.com' does not provide for full
+            URLs so that we would not have to run quoting for the entire
+            URL which can increase a probability of errors.
+        '''
+        if not url.startswith('http'):
+            url = list(url)
+            for i in range(len(url)):
+                if not url[i] in (':','/','=','&','?'):
+                    url[i] = urllib.parse.quote(url[i])
+            url = PAIR_ROOT + ''.join(url)
+            ''' #note: this will change the UI language of
+                'multitran.com' so we would not have to add English
+                equivalents of dictionary titles into the 'abbr' file.
+                Still, we should probably add those titles if we want
+                our program to serve international users.
+            '''
+            if not '&SHL=2' in url:
+                url += '&SHL=2'
+        return url
+    else:
+        sh.com.empty(f)
+        return ''

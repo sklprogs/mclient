@@ -1,5 +1,7 @@
 
-- multitran.com: add Russian UI request to term URLs
+- change plugin when navigating through history
+- multitran.com: parse phrases correctly: https://www.multitran.com/m.exe?a=3&l1=2&l2=3&s=%D0%BF%D1%80%D0%BE%D0%B5%D0%B7%D0%B6%D0%B0%D1%8F%20%D0%B4%D0%BE%D1%80%D0%BE%D0%B3%D0%B0
+- multitran.com: remove 'Немецкий' and other comments
 - multitran.com: pattern: too long columns
 - Form new URLs when using multitran.com (otherwise, there will be
   a decoding error since we still use multitran.ru patterns)

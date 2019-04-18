@@ -4,7 +4,6 @@
 import re
 import shared    as sh
 import sharedGUI as sg
-import plugins.multitrancom.get
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -82,16 +81,6 @@ useful_tags = [pdic,purl1,purl2
               ,pcom1,pcom2,pwf1
               ,pwf2,psp,ptm,pph
               ]
-
-if hasattr(plugins.multitrancom.get,'PAIR_ROOT'):
-    pair_root = plugins.multitrancom.get.PAIR_ROOT
-else:
-    pair_root = ''
-    sh.objs.mes ('[MClient] plugins.multitrancom.tags.__main__'
-                ,_('ERROR')
-                ,_('An invalid plugin!')
-                )
-
 
 
 class Block:
@@ -255,7 +244,6 @@ class AnalyzeTag:
                 self._block._url = self._block._text[ind:]
             if self._block._url.endswith(purl4):
                 self._block._url = self._block._url.replace(purl4,'')
-                self._block._url = pair_root + self._block._url
             else:
                 self._block._url = ''
 
