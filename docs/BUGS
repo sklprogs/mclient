@@ -1,7 +1,10 @@
 
 - History: fix selecting the same term but from different resources
 - remove 'Английский' and 'Русский' comments in eng-rus, multitran.com:
-  'counting machine'
+  'counting machine':
+  <td bgcolor="#DBDBDB" width="100%">&nbsp;
+<a name="phrases"></a>
+ counting machine: <a href="/m.exe?a=3&amp;l1=1&amp;l2=2&amp;s=counting machine">13 фраз</a>  в 6 тематиках</td>
 - eng-rus: multitran.com: A&E: transcription is set as a comment before
   "Adolphus and Ellis's Queen's Bench Reports"
 - deu-rus: работа: genders are in a wrong place
