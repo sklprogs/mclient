@@ -683,9 +683,7 @@ class WebFrame:
                 ,action   = self.copy_text
                 )
         sg.bind (obj      = self.gui.obj
-                ,bindings = [sh.globs['var']['bind_quit_now']
-                            ,sh.globs['var']['bind_quit_now_alt']
-                            ]
+                ,bindings = sh.globs['var']['bind_quit']
                 ,action   = self.gui.close
                 )
         sg.bind (obj      = self.gui.obj
@@ -990,9 +988,7 @@ class WebFrame:
         self.gui.btn_past._bindings = '<Control-v>'
         self.gui.btn_prev._bindings = sh.globs['var']['bind_go_back']
         self.gui.btn_prnt._bindings = sh.globs['var']['bind_print']
-        self.gui.btn_quit._bindings = [sh.globs['var']['bind_quit_now']
-                                      ,sh.globs['var']['bind_quit_now_alt']
-                                      ]
+        self.gui.btn_quit._bindings = sh.globs['var']['bind_quit']
         self.gui.btn_prio._bindings = sh.globs['var']['bind_toggle_priority']
         self.gui.btn_reld._bindings = [sh.globs['var']['bind_reload_article']
                                       ,sh.globs['var']['bind_reload_article_alt']
