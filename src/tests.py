@@ -139,6 +139,8 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
     import logic as lg
-    print('Source:',lg.objs.plugins()._source)
-    print('Root URL:',lg.objs._plugins.root_url())
+    import gui   as gi
+    web = gi.WebFrame()
+    web.widget.parse(lg.Welcome().generate())
+    web.show()
     sg.objs.end()

@@ -141,6 +141,7 @@ class Welcome:
         self._sources   = []
         self._product   = product
         self._version   = version
+        self._st_color  = 'red'
         self._st_status = objs.plugins().sdstat()
         self._timeout   = timeout
         self._desc      = sh.List (lst1 = [self._product
@@ -205,6 +206,103 @@ class Welcome:
         self.istr.write('</font>.\n')
         self.istr.write('      <br>\n')
     
+    def humanize(self,hotkey):
+        hotkey = hotkey.replace('<','').replace('>','')
+        return hotkey
+    
+    def gen_hint(self,hint):
+        self.istr.write('<td align="left" valign="top" col width="200">')
+        self.istr.write(hint)
+        self.istr.write('</td>')
+    
+    def gen_hotkey(self,hotkey):
+        self.istr.write('<td align="center" valign="top" col width="100">')
+        self.istr.write(self.humanize(hotkey))
+        self.istr.write('</td>')
+    
+    def gen_row(self,hint1,hotkey1,hint2,hotkey2):
+        self.istr.write('<tr>')
+        self.gen_hint(hint1)
+        self.gen_hotkey(hotkey1)
+        self.gen_hint(hint2)
+        self.gen_hotkey(hotkey2)
+        self.istr.write('</tr>')
+    
+    def hotkeys(self):
+        self.istr.write('<font face="Serif" size="5">')
+        self.istr.write('<table>')
+
+        hint1    = _('Translate the current input or selection')
+        hotkey1  = '<Return>'
+        hint2    = _('Copy the current selection')
+        hotkey2  = sh.globs['var']['bind_copy_sel']
+        #self.gen_hotkey(sh.globs['var']['bind_copy_sel_alt'])
+        hint3    = _('Copy the URL of the selected term')
+        hotkey3  = sh.globs['var']['bind_copy_url']
+        hint4    = _('Copy the URL of the current article')
+        hotkey4  = sh.globs['var']['bind_copy_article_url']
+        hint5    = _('Go to the previous section of column #%d' % 1)
+        hotkey5  = sh.globs['var']['bind_col1_up']
+        hint6    = _('Go to the next section of column #%d') % 1
+        hotkey6  = sh.globs['var']['bind_col1_down']
+        hint7    = _('Go to the previous section of column #%d' % 2)
+        hotkey7  = sh.globs['var']['bind_col2_up']
+        hint8    = _('Go to the next section of column #%d') % 2
+        hotkey8  = sh.globs['var']['bind_col2_down']
+        hint9    = _('Go to the previous section of column #%d' % 3)
+        hotkey9  = sh.globs['var']['bind_col3_up']
+        hint10   = _('Go to the next section of column #%d') % 3
+        hotkey10 = sh.globs['var']['bind_col3_down']
+        hint11   = _('Open a webpage with a definition of the current term')
+        hotkey11 = sh.globs['var']['bind_define']
+        hint12   = _('Look up phrases')
+        hotkey12 = sh.globs['var']['bind_go_phrases']
+        hint13   = _('Go to the preceding article')
+        hotkey13 = sh.globs['var']['bind_go_back']
+        hint14   = _('Go to the following article')
+        hotkey14 = sh.globs['var']['bind_go_forward']
+        hint15   = _('Select the next language pair')
+        hotkey15 = sh.globs['var']['bind_next_pair']
+        #sh.globs['var']['bind_next_pair_alt']
+        hint16   = _('Select the previous language pair')
+        hotkey16 = sh.globs['var']['bind_prev_pair']
+        #sh.globs['var']['bind_prev_pair_alt']
+        hint17   = _('Create a printer-friendly page')
+        hotkey17 = sh.globs['var']['bind_print']
+        hint18   = _('Open the current article in a default browser')
+        hotkey18 = sh.globs['var']['bind_open_in_browser']
+        #sh.globs['var']['bind_open_in_browser_alt']
+        hint19   = _('Reload the current article')
+        hotkey19 = sh.globs['var']['bind_reload_article']
+        #sh.globs['var']['bind_reload_article_alt']
+        hint20   = _('Save or copy the current article')
+        hotkey20 = sh.globs['var']['bind_save_article']
+        #sh.globs['var']['bind_save_article_alt']
+        hint21   = _('Start a new search in the current article')
+        hotkey21 = sh.globs['var']['bind_re_search_article']
+        hint22   = _('Search the article forward')
+        hotkey22 = sh.globs['var']['bind_search_article_forward']
+        hint23   = _('Search the article backward')
+        hotkey23 = sh.globs['var']['bind_search_article_backward']
+        hint24   = _('Show settings')
+        hotkey24 = sh.globs['var']['bind_settings']
+        
+        self.gen_row(hint1,hotkey1,hint2,hotkey2)
+        self.gen_row(hint3,hotkey3,hint4,hotkey4)
+        self.gen_row(hint5,hotkey5,hint6,hotkey6)
+        self.gen_row(hint7,hotkey7,hint8,hotkey8)
+        self.gen_row(hint9,hotkey9,hint10,hotkey10)
+        self.gen_row(hint11,hotkey11,hint12,hotkey12)
+        self.gen_row(hint13,hotkey13,hint14,hotkey14)
+        self.gen_row(hint15,hotkey15,hint16,hotkey16)
+        self.gen_row(hint17,hotkey17,hint18,hotkey18)
+        self.gen_row(hint19,hotkey19,hint20,hotkey20)
+        self.gen_row(hint22,hotkey22,hint23,hotkey23)
+        self.gen_row(hint21,hotkey21,hint24,hotkey24)
+        
+        self.istr.write('</font>')
+        self.istr.write('</table>')
+    
     def generate(self):
         f = '[MClient] logic.Welcome.generate'
         self.istr = io.StringIO()
@@ -237,6 +335,14 @@ class Welcome:
         self.istr.write('{}'.format(self._st_status))
         self.istr.write('</font>.\n')
         self.istr.write('    </font>\n')
+        self.istr.write('<br><br>')
+        self.istr.write('<h1>')
+        self.istr.write(_('Main hotkeys'))
+        self.istr.write('</h1>')
+        self.istr.write('<h2>')
+        self.istr.write(_('(see documentation for other hotkeys, mouse bindings and functions)'))
+        self.istr.write('</h2>')
+        self.hotkeys()
         self.istr.write('  </body>\n')
         self.istr.write('</html>')
         code = self.istr.getvalue()
@@ -245,9 +351,7 @@ class Welcome:
 
     def run(self):
         self.sources()
-        if self._st_status == 0:
-            self._st_color = 'red'
-        else:
+        if self._st_status:
             self._st_color = 'green'
         return self.generate()
 
