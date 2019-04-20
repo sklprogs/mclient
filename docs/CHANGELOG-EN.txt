@@ -7,6 +7,7 @@
 * Add multitran.com support
 * Delete bind_quit_now key, rename bind_quit_now_alt key to bind_quit
 * Update documentation
+* Add main hotkeys to the Welcome screen
 
 5.12
 * Wrap up too broad columns
