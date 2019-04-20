@@ -206,10 +206,6 @@ class Welcome:
         self.istr.write('</font>.\n')
         self.istr.write('      <br>\n')
     
-    def humanize(self,hotkey):
-        hotkey = hotkey.replace('<','').replace('>','')
-        return hotkey
-    
     def gen_hint(self,hint):
         self.istr.write('<td align="left" valign="top" col width="200">')
         self.istr.write(hint)
@@ -217,7 +213,7 @@ class Welcome:
     
     def gen_hotkey(self,hotkey):
         self.istr.write('<td align="center" valign="top" col width="100">')
-        self.istr.write(self.humanize(hotkey))
+        self.istr.write(sh.com.human_binding(hotkey))
         self.istr.write('</td>')
     
     def gen_row(self,hint1,hotkey1,hint2,hotkey2):
@@ -235,8 +231,9 @@ class Welcome:
         hint1    = _('Translate the current input or selection')
         hotkey1  = '<Return>'
         hint2    = _('Copy the current selection')
-        hotkey2  = sh.globs['var']['bind_copy_sel']
-        #self.gen_hotkey(sh.globs['var']['bind_copy_sel_alt'])
+        hotkey2  = (sh.globs['var']['bind_copy_sel']
+                   ,sh.globs['var']['bind_copy_sel_alt']
+                   )
         hint3    = _('Copy the URL of the selected term')
         hotkey3  = sh.globs['var']['bind_copy_url']
         hint4    = _('Copy the URL of the current article')
@@ -262,22 +259,27 @@ class Welcome:
         hint14   = _('Go to the following article')
         hotkey14 = sh.globs['var']['bind_go_forward']
         hint15   = _('Select the next language pair')
-        hotkey15 = sh.globs['var']['bind_next_pair']
-        #sh.globs['var']['bind_next_pair_alt']
+        hotkey15 = (sh.globs['var']['bind_next_pair']
+                   ,sh.globs['var']['bind_next_pair_alt']
+                   )
         hint16   = _('Select the previous language pair')
-        hotkey16 = sh.globs['var']['bind_prev_pair']
-        #sh.globs['var']['bind_prev_pair_alt']
+        hotkey16 = (sh.globs['var']['bind_prev_pair']
+                   ,sh.globs['var']['bind_prev_pair_alt']
+                   )
         hint17   = _('Create a printer-friendly page')
         hotkey17 = sh.globs['var']['bind_print']
         hint18   = _('Open the current article in a default browser')
-        hotkey18 = sh.globs['var']['bind_open_in_browser']
-        #sh.globs['var']['bind_open_in_browser_alt']
+        hotkey18 = (sh.globs['var']['bind_open_in_browser']
+                   ,sh.globs['var']['bind_open_in_browser_alt']
+                   )
         hint19   = _('Reload the current article')
-        hotkey19 = sh.globs['var']['bind_reload_article']
-        #sh.globs['var']['bind_reload_article_alt']
+        hotkey19 = (sh.globs['var']['bind_reload_article']
+                   ,sh.globs['var']['bind_reload_article_alt']
+                   )
         hint20   = _('Save or copy the current article')
-        hotkey20 = sh.globs['var']['bind_save_article']
-        #sh.globs['var']['bind_save_article_alt']
+        hotkey20 = (sh.globs['var']['bind_save_article']
+                   ,sh.globs['var']['bind_save_article_alt']
+                   )
         hint21   = _('Start a new search in the current article')
         hotkey21 = sh.globs['var']['bind_re_search_article']
         hint22   = _('Search the article forward')
@@ -285,8 +287,9 @@ class Welcome:
         hint23   = _('Search the article backward')
         hotkey23 = sh.globs['var']['bind_search_article_backward']
         hint24   = _('Show settings')
-        hotkey24 = sh.globs['var']['bind_settings']
-        #sh.globs['var']['bind_settings_alt']
+        hotkey24 = (sh.globs['var']['bind_settings']
+                   ,sh.globs['var']['bind_settings_alt']
+                   )
         hint25   = _('About the program')
         hotkey25 = sh.globs['var']['bind_show_about']
         hint26   = _('Paste a special symbol')
@@ -296,15 +299,19 @@ class Welcome:
         hint28   = _('Toggle blacklisting')
         hotkey28 = sh.globs['var']['bind_toggle_block']
         hint29   = _('Toggle History')
-        hotkey29 = sh.globs['var']['bind_toggle_history']
-        #sh.globs['var']['bind_toggle_history_alt']
+        hotkey29 = (sh.globs['var']['bind_toggle_history']
+                   ,sh.globs['var']['bind_toggle_history_alt']
+                   )
         hint30   = _('Toggle prioritizing')
         hotkey30 = sh.globs['var']['bind_toggle_priority']
+        '''
         hint31   = _('Toggle terms-only selection')
         hotkey31 = sh.globs['var']['bind_toggle_sel']
+        '''
         hint32   = _('Toggle the current article view')
-        hotkey32 = sh.globs['var']['bind_toggle_view']
-        #sh.globs['var']['bind_toggle_view_alt']
+        hotkey32 = (sh.globs['var']['bind_toggle_view']
+                   ,sh.globs['var']['bind_toggle_view_alt']
+                   )
         hint33   = _('Clear History')
         hotkey33 = sh.globs['var']['bind_clear_history']
         
@@ -323,8 +330,7 @@ class Welcome:
         self.gen_row(hint25,hotkey25,hint26,hotkey26)
         self.gen_row(hint27,hotkey27,hint28,hotkey28)
         self.gen_row(hint29,hotkey29,hint30,hotkey30)
-        self.gen_row(hint31,hotkey31,hint32,hotkey32)
-        self.gen_row(hint33,hotkey33,'','')
+        self.gen_row(hint32,hotkey32,hint33,hotkey33)
         
         self.istr.write('</font>')
         self.istr.write('</table>')
@@ -361,7 +367,7 @@ class Welcome:
         self.istr.write('{}'.format(self._st_status))
         self.istr.write('</font>.\n')
         self.istr.write('    </font>\n')
-        self.istr.write('<br><br>')
+        self.istr.write('<br><br><br><br>')
         self.istr.write('<h1>')
         self.istr.write(_('Main hotkeys'))
         self.istr.write('</h1>')

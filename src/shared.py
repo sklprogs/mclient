@@ -4462,6 +4462,89 @@ class Commands:
     def __init__(self):
         self.lang()
     
+    def human_binding(self,bindings):
+        ''' - Both 'Return' (main key) and 'KP_Enter' (numeric keypad)
+              usually do the same thing, so we just remove KP_Enter.
+              The same relates to other keypad bindings.
+            - Use the following key names:
+              http://infohost.nmt.edu/tcc/help/pubs/tkinter/web/key-names.html
+            - #todo: add remaining keypad bindings
+        '''
+        f = '[shared] shared.Commands.human_binding'
+        if bindings:
+            bindings = str(bindings)
+            ''' Do not use '<' and '>' signs here since the combination
+                can actually be '<Control-KP_Enter>'.
+            '''
+            if 'Return' in bindings:
+                bindings = bindings.replace('KP_Enter','')
+            if 'Home' in bindings:
+                bindings = bindings.replace('KP_Home','')
+            if 'End' in bindings:
+                bindings = bindings.replace('KP_End','')
+            if 'Delete' in bindings:
+                bindings = bindings.replace('KP_Delete','')
+            if 'Insert' in bindings:
+                bindings = bindings.replace('KP_Insert','')
+            bindings = bindings.replace('[','').replace(']','')
+            bindings = bindings.replace('<','').replace('>','')
+            bindings = bindings.replace("'",'').replace('(','')
+            bindings = bindings.replace(')','')
+            # Left and right Alt and Shift are usually interchangeable
+            bindings = bindings.replace('Alt_R','Alt_L')
+            bindings = bindings.replace('Alt_L','Alt')
+            bindings = bindings.replace('Control_L','Control')
+            bindings = bindings.replace('Control_R','Control')
+            bindings = bindings.replace('Control','Ctrl')
+            bindings = bindings.replace('Shift_R','Shift_L')
+            bindings = bindings.replace('Shift_L','Shift')
+            bindings = bindings.replace('-Key-','')
+            bindings = bindings.replace('Delete','Del')
+            bindings = bindings.replace('Insert','Ins')
+            bindings = bindings.replace('Scroll_Lock','ScrollLock')
+            bindings = bindings.replace('Print','PrintScrn')
+            bindings = bindings.replace('Up','↑').replace('Down','↓')
+            bindings = bindings.replace('Left','←').replace('Right','→')
+            bindings = bindings.replace('Execute','SysReq')
+            bindings = bindings.replace('Num_Lock','NumLock')
+            bindings = bindings.replace('Prior','PgUp')
+            bindings = bindings.replace('Next','PgDn')
+            ''' We should leave only 1 binding if there are bindings
+                both for keyboard and keypad. Thus, we generally should
+                not have to use keypad bindings without keyboard
+                analogs. If we do, we should excplicitly indicate that
+                it is keypad.
+            '''
+            bindings = bindings.replace('KP_Delete','Del (keypad)')
+            bindings = bindings.replace('KP_Divide','/ (keypad)')
+            bindings = bindings.replace('KP_Down','↓ (keypad)')
+            ''' '<Control-S>' actually means 'Ctrl-Shift-s' in tkinter.
+                Insert 'Shift' before making bindings upper-case.
+            '''
+            match = re.match('.*-([A-Z])$',bindings)
+            if match:
+                group    = match.group(1)
+                bindings = bindings.replace ('-'       + group
+                                            ,'-Shift-' + group
+                                            )
+            ''' We make letters upper-case in order to avoid confusion,
+                e.g., when using 'i', 'l' and '1'.
+            '''
+            match = re.match('.*-([a-z])$',bindings)
+            if match:
+                group    = match.group(1)
+                bindings = bindings.replace ('-' + group
+                                            ,'-' + group.upper()
+                                            )
+            #bindings = bindings.replace('-','+')
+            bindings = bindings.strip()
+            bindings = Text(bindings).delete_end_punc()
+            return bindings
+        else:
+            #todo: do we need this warning?
+            self.empty(f)
+            return ''
+    
     def split_time(self,length=0):
         hours   = length // 3600
         all_sec = hours * 3600

@@ -400,8 +400,9 @@ class DB:
                                  ,(self._articleid,pos,pos,)
                                  )
             return self.dbc.fetchone()
-        else:
-            sh.com.empty(f)
+        # Too frequent, especially on the Welcome screen
+        #else:
+        #    sh.com.empty(f)
 
     def article(self):
         f = '[MClient] db.DB.article'
