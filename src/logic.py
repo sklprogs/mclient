@@ -286,6 +286,27 @@ class Welcome:
         hotkey23 = sh.globs['var']['bind_search_article_backward']
         hint24   = _('Show settings')
         hotkey24 = sh.globs['var']['bind_settings']
+        #sh.globs['var']['bind_settings_alt']
+        hint25   = _('About the program')
+        hotkey25 = sh.globs['var']['bind_show_about']
+        hint26   = _('Paste a special symbol')
+        hotkey26 = sh.globs['var']['bind_spec_symbol']
+        hint27   = _('Toggle alphabetizing')
+        hotkey27 = sh.globs['var']['bind_toggle_alphabet']
+        hint28   = _('Toggle blacklisting')
+        hotkey28 = sh.globs['var']['bind_toggle_block']
+        hint29   = _('Toggle History')
+        hotkey29 = sh.globs['var']['bind_toggle_history']
+        #sh.globs['var']['bind_toggle_history_alt']
+        hint30   = _('Toggle prioritizing')
+        hotkey30 = sh.globs['var']['bind_toggle_priority']
+        hint31   = _('Toggle terms-only selection')
+        hotkey31 = sh.globs['var']['bind_toggle_sel']
+        hint32   = _('Toggle the current article view')
+        hotkey32 = sh.globs['var']['bind_toggle_view']
+        #sh.globs['var']['bind_toggle_view_alt']
+        hint33   = _('Clear History')
+        hotkey33 = sh.globs['var']['bind_clear_history']
         
         self.gen_row(hint1,hotkey1,hint2,hotkey2)
         self.gen_row(hint3,hotkey3,hint4,hotkey4)
@@ -299,6 +320,11 @@ class Welcome:
         self.gen_row(hint19,hotkey19,hint20,hotkey20)
         self.gen_row(hint22,hotkey22,hint23,hotkey23)
         self.gen_row(hint21,hotkey21,hint24,hotkey24)
+        self.gen_row(hint25,hotkey25,hint26,hotkey26)
+        self.gen_row(hint27,hotkey27,hint28,hotkey28)
+        self.gen_row(hint29,hotkey29,hint30,hotkey30)
+        self.gen_row(hint31,hotkey31,hint32,hotkey32)
+        self.gen_row(hint33,hotkey33,'','')
         
         self.istr.write('</font>')
         self.istr.write('</table>')
