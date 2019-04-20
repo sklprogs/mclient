@@ -213,7 +213,7 @@ class Welcome:
     
     def gen_hotkey(self,hotkey):
         self.istr.write('<td align="center" valign="top" col width="100">')
-        self.istr.write(sh.com.human_binding(hotkey))
+        self.istr.write(sh.Hotkeys(hotkey).run())
         self.istr.write('</td>')
     
     def gen_row(self,hint1,hotkey1,hint2,hotkey2):
