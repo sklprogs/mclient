@@ -17,6 +17,22 @@ class CleanUp:
     def __init__(self,text):
         self._text = text
     
+    def distinguish(self):
+        ''' Substitute some tags to make tag analysis easier. We should
+            delete '<i>' as well, otherwise, there will be no dictionary
+            titles.
+        '''
+        self._text = self._text.replace (' class="phraselist1"><i>'
+                                        ,'><td class="subj">'
+                                        )
+        self._text = self._text.replace (' class="phraselist1">'
+                                        ,'><td class="trans">'
+                                        )
+                                        
+        self._text = self._text.replace (' class="phraselist2">'
+                                        ,'><td class="trans">'
+                                        )
+    
     def common(self):
         self._text = self._text.replace('\r\n','')
         self._text = self._text.replace('\n','')
@@ -55,6 +71,7 @@ class CleanUp:
         if self._text:
             self.decode_entities() # Shared
             self.common()          # Shared
+            self.distinguish()
             self.unsupported()     # Shared
         else:
             sh.com.empty(f)

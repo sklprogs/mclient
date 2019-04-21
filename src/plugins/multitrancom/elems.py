@@ -234,7 +234,9 @@ class Elems:
     def trash(self):
         self._blocks = [block for block in self._blocks \
                         if not block._text \
-                        in ('|',';','English','Russian')
+                        in ('|',';','English','Russian','Английский'
+                           ,'Русский','-->','точно','все формы'
+                           )
                        ]
     
     def add_space(self):

@@ -83,14 +83,15 @@ class Tags:
         f = '[MClient] tests.Tags.multitrancom'
         import plugins.multitrancom.cleanup as mccleanup
         import plugins.multitrancom.tags    as mctags
-        file = '/home/pete/.config/mclient/tests/(multitran.com) computer.txt'
+        #file = '/home/pete/.config/mclient/tests/(multitran.com) computer.txt'
+        file = '/home/pete/.config/mclient/tests/(multitran.com) counting machine (phrases).txt'
         text = sh.ReadTextFile(file).get()
         text = mccleanup.CleanUp(text).run()
         mctags.Tags (text    = text
                     ,Debug   = True
                     ,Shorten = True
-                    ,MaxRow  = 70
-                    ,MaxRows = 10000
+                    ,MaxRow  = 20
+                    ,MaxRows = 150
                     ).run()
 
 
@@ -100,47 +101,48 @@ class Plugin:
     def stardict(self):
         f = '[MClient] tests.Plugin.stardict'
         import plugins.stardict.run as sr
-        blocks = sr.Plugin (search  = 'about'
-                           ,Debug   = True
-                           ,Shorten = False
-                           ).run()
+        search = 'about'
+        iplug = sr.Plugin (Debug   = True
+                          ,Shorten = False
+                          )
+        iplug.request(search=search)
     
     def multitranru(self):
         f = '[MClient] tests.Plugin.multitranru'
         import plugins.multitranru.run as mr
-        blocks = mr.Plugin (url     = 'https://www.multitran.ru/c/m.exe?CL=1&s=computer&l1=1'
-                           ,search  = 'computer'
-                           ,timeout = 6
-                           ,Debug   = True
-                           ,Shorten = True
-                           ,MaxRow  = 20
-                           ,MaxRows = 300
-                           ).run()
+        url    = 'https://www.multitran.ru/c/m.exe?CL=1&s=computer&l1=1'
+        search = 'computer'
+        iplug = mr.Plugin (timeout = 6
+                          ,Debug   = True
+                          ,Shorten = True
+                          ,MaxRow  = 20
+                          ,MaxRows = 300
+                          )
+        iplug.request (url    = url
+                      ,search = search
+                      )
     
     def multitrancom(self):
         f = '[MClient] tests.Plugin.multitrancom'
         import plugins.multitrancom.run as mc
-        blocks = mc.Plugin (url     = 'https://multitran.com/m.exe?s=computer&l1=1&l2=2&SHL=2'
-                           ,search  = 'computer'
-                           ,timeout = 6
-                           ,Debug   = True
-                           ,Shorten = True
-                           ,MaxRow  = 20
-                           ,MaxRows = 300
-                           ).run()
-
-
-#get  = Get()
-#tags = Tags()
-#plug = Plugin()
+        #url    = 'https://multitran.com/m.exe?s=computer&l1=1&l2=2&SHL=2'
+        #search = 'computer'
+        url     = 'https://multitran.com/m.exe?a=3&l1=1&l2=2&s=counting%20machine'
+        search  = 'counting machine'
+        
+        iplug = mc.Plugin (timeout = 6
+                          ,Debug   = True
+                          ,Shorten = True
+                          ,MaxRow  = 20
+                          ,MaxRows = 150
+                          )
+        iplug.request (url    = url
+                      ,search = search
+                      )
 
 
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
-    import logic as lg
-    import gui   as gi
-    web = gi.WebFrame()
-    web.widget.parse(lg.Welcome().generate())
-    web.show()
+    Tags().multitrancom()
     sg.objs.end()
