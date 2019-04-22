@@ -1418,7 +1418,7 @@ class WebFrame:
                               )
         '''
     
-    # Select either the search string or the URL
+    # Process either the search string or the URL
     def go(self,event=None,Mouse=False):
         f = '[MClient] mclient.WebFrame.go'
         if Mouse:

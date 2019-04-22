@@ -11,11 +11,30 @@ import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
+sep_words_found = 'найдены отдельные слова'
+
 
 class CleanUp:
     
     def __init__(self,text):
         self._text = text
+    
+    def article_not_found(self):
+        ''' If separate words are found instead of a phrase, prepare
+            those words only.
+        '''
+        if sep_words_found in self._text:
+            pos = sh.Search (text   = self._text
+                            ,search = sep_words_found
+                            ).next()
+            # -1 gives False
+            if str(pos).isdigit():
+                pos += len(sep_words_found)
+                self._text = self._text[:pos]
+                self._text = self._text.replace (sep_words_found
+                                                ,'<span style="color:gray">%s</span>'\
+                                                % sep_words_found
+                                                )
     
     def distinguish(self):
         ''' Substitute some tags to make tag analysis easier. We should
@@ -71,6 +90,7 @@ class CleanUp:
         if self._text:
             self.decode_entities() # Shared
             self.common()          # Shared
+            self.article_not_found()
             self.distinguish()
             self.unsupported()     # Shared
         else:
