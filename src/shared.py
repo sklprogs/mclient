@@ -4196,7 +4196,9 @@ class FixBaseName:
 
 class Get:
     
-    def __init__(self,url,encoding='UTF-8',Verbose=True,Verify=False):
+    def __init__ (self,url,encoding='UTF-8'
+                 ,Verbose=True,Verify=False
+                 ):
         self._timeout  = 6
         self._html     = ''
         self._url      = url

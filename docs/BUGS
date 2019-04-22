@@ -1,4 +1,6 @@
 
+- Change plugin (especially OptionMenu) when navigating articles
+  (Alt-Left, Alt-Right)
 - Test and fix getting non-terms (when everything is selectable)
 - History: fix selecting the same term but from different resources
 - remove 'Английский' and 'Русский' comments in eng-rus, multitran.com:
