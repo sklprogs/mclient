@@ -1,4 +1,6 @@
 
+- multitran.com: fix Suggestion
+- multitran.com: go: fix unsearchable fragment
 - Change plugin (especially OptionMenu) when navigating articles
   (Alt-Left, Alt-Right)
 - Test and fix getting non-terms (when everything is selectable)

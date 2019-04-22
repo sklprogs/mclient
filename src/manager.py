@@ -129,18 +129,21 @@ class Plugins:
     
     def set(self,source):
         f = '[MClient] manager.Plugins.set'
-        self._source = source
-        if source == _('Offline'):
-            self.plugin = self.sdplugin
-        elif source == 'multitran.ru':
-            self.plugin = self.mrplugin
-        elif source == 'multitran.com':
-            self.plugin = self.mcplugin
+        if source:
+            self._source = source
+            if source == _('Offline'):
+                self.plugin = self.sdplugin
+            elif source == 'multitran.ru':
+                self.plugin = self.mrplugin
+            elif source == 'multitran.com':
+                self.plugin = self.mcplugin
+            else:
+                sh.objs.mes (f,_('ERROR')
+                            ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".')\
+                            % (str(self._source),';'.join(self.sources()))
+                            )
         else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".')\
-                        % (str(self._source),';'.join(self.sources()))
-                        )
+            sh.com.empty(f)
     
     def get_text(self):
         f = '[MClient] manager.Plugins.get_text'

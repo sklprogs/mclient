@@ -1809,6 +1809,8 @@ class WebFrame:
                 lg.objs._request._source = result[0]
                 lg.objs._request._search = result[1]
                 lg.objs._request._url    = result[2]
+                lg.objs.plugins().set(lg.objs._request._source)
+                self.gui.men_srcs.set(lg.objs._request._source)
                 self.load_article()
             else:
                 sh.com.empty(f)
@@ -1826,6 +1828,8 @@ class WebFrame:
                 lg.objs._request._source = result[0]
                 lg.objs._request._search = result[1]
                 lg.objs._request._url    = result[2]
+                lg.objs.plugins().set(lg.objs._request._source)
+                self.gui.men_srcs.set(lg.objs._request._source)
                 self.load_article()
             else:
                 sh.com.empty(f)
