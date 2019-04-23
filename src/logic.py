@@ -1220,90 +1220,23 @@ class Order:
 
 
 
-# Multitran-only
-class Suggestion:
+class Commands:
     
-    def __init__(self,search,pair,limit=0):
-        self._search = search
-        self._pair   = pair
-        self._limit  = limit
-        self.values()
-        self.check()
-        self.pair()
-        
-    def values(self):
-        self._url    = ''
-        self._items  = []
-        self.Success = True
-    
-    def pair(self):
-        f = '[MClient] logic.Suggestion.pair'
-        if self.Success:
-            self._pair = self._pair.replace('M.exe?','ms.exe?').replace('m.exe?','ms.exe?')
+    def suggest(self,search,pair='',limit=0):
+        f = '[MClient] logic.Commands.suggest'
+        items = objs.plugins().suggest (search = search
+                                       ,pair   = pair
+                                       )
+        if items:
+            if limit:
+                items = items[0:limit]
         else:
-            sh.com.cancel(f)
-    
-    def check(self):
-        f = '[MClient] logic.Suggestion.check'
-        if self._search:
-            if not isinstance(self._search,str):
-                self.Success = False
-                sh.log.append (f,_('WARNING')
-                              ,_('Wrong input data: "%s"') \
-                              % str(self._search)
-                              )
-        else:
-            self.Success = False
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
-        if not self._pair:
-            self.Success = False
+            items = []
             sh.com.empty(f)
-        if not isinstance(self._limit,int):
-            self.Success = False
-            sh.log.append (f,_('WARNING')
-                          ,_('Wrong input data: "%s"') \
-                          % str(self._limit)
-                          )
-    
-    def url(self):
-        f = '[MClient] logic.Suggestion.url'
-        if self.Success:
-            if not self._url:
-                self._url = sh.Online (base_str   = self._pair
-                                      ,search_str = self._search
-                                      ,encoding   = objs.plugins().encoding()
-                                      ).url()
-            return self._url
-        else:
-            sh.com.cancel(f)
-    
-    def get(self):
-        f = '[MClient] logic.Suggestion.get'
-        if self.Success:
-            if not self._items:
-                if self.url():
-                    self._items = sh.Get (url      = self._url
-                                         ,encoding = objs.plugins().encoding()
-                                         ).run()
-                    if self._items:
-                        self._items = html.unescape(self._items)
-                        self._items = [item for item \
-                                       in self._items.splitlines() \
-                                       if item
-                                      ]
-                        if self._limit:
-                            self._items = self._items[0:self._limit]
-                        return self._items
-                    else:
-                        sh.com.empty(f)
-                else:
-                    sh.com.empty(f)
-        else:
-            sh.com.cancel(f)
+        return items
 
 
 
 objs = Objects()
+com  = Commands()
 ConfigMclient()

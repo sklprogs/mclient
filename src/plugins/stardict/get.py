@@ -29,6 +29,23 @@ LANGS     = ('English')
 PAIR_URLS = (_('Nothing to do!'))
 
 
+class Suggest:
+    
+    def __init__(self,search):
+        f = '[MClient] plugins.stardict.get.Suggest.__init__'
+        self._search = search
+        if self._search:
+            self.Success = True
+        else:
+            self.Success = False
+            sh.com.empty(f)
+    
+    def run(self):
+        #todo: implement
+        return []
+
+
+
 class Get:
     # This class is basically needed for compliance with other code
     def __init__(self,search):

@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import urllib.request
+import html
 import shared    as sh
 import sharedGUI as sg
 
@@ -51,6 +52,82 @@ PAIR_URLS = (PAIR_ROOT + 'l1=1&l2=2&s=%s'  # ENG <=> RUS
             ,PAIR_ROOT + 'l1=1&l2=3&s=%s'  # ENG <=> DEU
             ,PAIR_ROOT + 'l1=1&l2=26&s=%s' # ENG <=> EST
             )
+
+
+class Suggest:
+    
+    def __init__(self,search,pair):
+        self.values()
+        if search:
+            self.reset (search = search
+                       ,pair   = pair
+                       )
+    
+    def values(self):
+        self.Success = True
+        self._search = ''
+        self._url    = ''
+        self._pair   = ''
+    
+    def reset(self,search,pair):
+        f = '[MClient] plugins.multitranru.get.Suggest.reset'
+        self._search = search
+        self._pair   = pair
+        if not self._search or not self._pair:
+            self.Success = False
+            sh.com.empty(f)
+    
+    def pair(self):
+        f = '[MClient] plugins.multitranru.get.Suggest.pair'
+        if self.Success:
+            self._pair = self._pair.replace('M.exe?','ms.exe?')
+            self._pair = self._pair.replace('m.exe?','ms.exe?')
+        else:
+            sh.com.cancel(f)
+    
+    def url(self):
+        f = '[MClient] plugins.multitranru.get.Suggest.url'
+        if self.Success:
+            ''' #NOTE: the encoding here MUST be 'utf-8' irrespective
+                of the plugin!
+            '''
+            self._url = sh.Online (base_str   = self._pair
+                                  ,search_str = self._search
+                                  ,encoding   = 'utf-8'
+                                  ).url()
+            if not self._url:
+                sh.log.append (f,_('WARNING')
+                              ,_('Empty output is not allowed!')
+                              )
+                self.Success = False
+        else:
+            sh.com.cancel(f)
+    
+    def get(self):
+        f = '[MClient] plugins.multitranru.get.Suggest.get'
+        if self.Success:
+            ''' #NOTE: the encoding here (unlike 'self.url')
+                is plugin-dependent.
+            '''
+            self._items = sh.Get (url      = self._url
+                                 ,encoding = ENCODING
+                                 ).run()
+            if self._items:
+                self._items = html.unescape(self._items)
+                self._items = [item for item \
+                               in self._items.splitlines() if item
+                              ]
+                return self._items
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def run(self):
+        self.pair()
+        self.url()
+        return self.get()
+
 
 
 class Get:

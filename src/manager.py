@@ -38,6 +38,13 @@ class Plugins:
         #note: this should be synchronized with GUI
         self.set('multitran.ru')
     
+    def suggest(self,search,pair):
+        f = '[MClient] manager.Plugins.suggest'
+        if self.plugin:
+            return self.plugin.suggest(search,pair)
+        else:
+            sh.com.empty(f)
+    
     def sources(self):
         return ('multitran.ru'
                ,'multitran.com'

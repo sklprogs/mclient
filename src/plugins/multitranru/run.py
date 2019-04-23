@@ -35,6 +35,9 @@ class Plugin:
         self._blocks = []
         self._data   = []
     
+    def suggest(self,search,pair):
+        return gt.Suggest(search,pair).run()
+    
     def encoding(self):
         return gt.ENCODING
     
