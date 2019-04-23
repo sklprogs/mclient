@@ -546,21 +546,21 @@ class WebFrame:
         self.reset_opt()
         
     def paste_search_field(self,event=None):
-        self.suggestion.gui.close()
+        self.suggest.gui.close()
         self.gui.paste_search()
     
     def clear_search_field(self,event=None):
-        self.suggestion.gui.close()
+        self.suggest.gui.close()
         self.gui.search_field.clear_text()
         
     def escape(self,event=None):
-        if self.suggestion.gui.parent:
-            self.suggestion.gui.close()
+        if self.suggest.gui.parent:
+            self.suggest.gui.close()
         else:
             sg.Geometry(parent=self.gui.obj).minimize()
     
     def minimize(self,event=None):
-        self.suggestion.gui.close()
+        self.suggest.gui.close()
         sg.Geometry(parent=self.gui.obj).minimize()
     
     def go_phrase_dic(self,event=None):
@@ -650,7 +650,7 @@ class WebFrame:
         self.spec_symbols   = SpecSymbols()
         self.save_article   = SaveArticle()
         self.history        = History()
-        self.suggestion     = Suggestion(entry=self.gui.search_field)
+        self.suggest        = Suggest(entry=self.gui.search_field)
         # Close child widgets in order not to overlap the parent widget
         self.about.parties.gui.close()
         self.about.gui.close()
@@ -951,23 +951,23 @@ class WebFrame:
                 )
         sg.bind (obj      = self.gui.search_field
                 ,bindings = '<KeyRelease>'
-                ,action   = self.suggestion.suggest
+                ,action   = self.suggest.suggest
                 )
         sg.bind (obj      = self.gui.search_field
                 ,bindings = '<Up>'
-                ,action   = self.suggestion.move_up
+                ,action   = self.suggest.move_up
                 )
         sg.bind (obj      = self.gui.search_field
                 ,bindings = '<Down>'
-                ,action   = self.suggestion.move_down
+                ,action   = self.suggest.move_down
                 )
         sg.bind (obj      = self.gui.search_field
                 ,bindings = '<Control-Home>'
-                ,action   = self.suggestion.move_top
+                ,action   = self.suggest.move_top
                 )
         sg.bind (obj      = self.gui.search_field
                 ,bindings = '<Control-End>'
-                ,action   = self.suggestion.move_bottom
+                ,action   = self.suggest.move_bottom
                 )
         # Set config bindings
         self.gui.btn_hist.hint = _('Show history') \
@@ -1403,7 +1403,7 @@ class WebFrame:
             self.gui.search_field.clear_text()
         self.history.update()
         self.search_article.reset()
-        self.suggestion.gui.close()
+        self.suggest.gui.close()
         self.update_buttons()
         timer.end()
         
@@ -2344,11 +2344,11 @@ class ThirdParties:
 
 
 
-class Suggestion:
+class Suggest:
     
     def __init__(self,entry):
         self.entry = entry
-        self.gui   = gi.Suggestion()
+        self.gui   = gi.Suggest()
     
     def select(self,event=None):
         self._select()
@@ -2359,7 +2359,7 @@ class Suggestion:
             In Windows selecting an item will hide suggestions,
             in Linux they will be kept open.
         '''
-        f = '[MClient] mclient.Suggestion._select'
+        f = '[MClient] mclient.Suggest._select'
         if self.gui.parent:
             self.entry.clear_text()
             self.entry.insert(text=self.gui.lbox.get())
@@ -2369,7 +2369,7 @@ class Suggestion:
             sh.com.empty(f)
         
     def move_down(self,event=None):
-        f = '[MClient] mclient.Suggestion.move_down'
+        f = '[MClient] mclient.Suggest.move_down'
         if self.gui.parent:
             # Necessary to use arrows on ListBox
             self.gui.lbox.focus()
@@ -2380,7 +2380,7 @@ class Suggestion:
             sh.com.empty(f)
         
     def move_up(self,event=None):
-        f = '[MClient] mclient.Suggestion.move_up'
+        f = '[MClient] mclient.Suggest.move_up'
         if self.gui.parent:
             # Necessary to use arrows on ListBox
             self.gui.lbox.focus()
@@ -2391,7 +2391,7 @@ class Suggestion:
             sh.com.empty(f)
         
     def move_top(self,event=None):
-        f = '[MClient] mclient.Suggestion.move_top'
+        f = '[MClient] mclient.Suggest.move_top'
         if self.gui.parent:
             # Necessary to use arrows on ListBox
             self.gui.lbox.focus()
@@ -2401,7 +2401,7 @@ class Suggestion:
             sh.com.empty(f)
                           
     def move_bottom(self,event=None):
-        f = '[MClient] mclient.Suggestion.move_bottom'
+        f = '[MClient] mclient.Suggest.move_bottom'
         if self.gui.parent:
             # Necessary to use arrows on ListBox
             self.gui.lbox.focus()
@@ -2411,7 +2411,7 @@ class Suggestion:
             sh.com.empty(f)
     
     def suggest(self,event=None):
-        f = '[MClient] mclient.Suggestion.suggest'
+        f = '[MClient] mclient.Suggest.suggest'
         if sh.globs['bool']['Autocompletion'] and event:
             text = self.entry.get()
             #todo: avoid modifiers
@@ -2424,10 +2424,10 @@ class Suggestion:
                     '<KeyRelease>'.
                 '''
                 if event.char == ' ':
-                    text = lg.Suggestion (search = text
-                                         ,pair   = objs.webframe().get_pair()
-                                         ,limit  = 20
-                                         ).get()
+                    text = lg.com.suggest (search = text
+                                          ,pair   = objs.webframe().get_pair()
+                                          ,limit  = 20
+                                          )
                     if text:
                         self.gui.close()
                         self.gui.show (lst    = list(text)

@@ -1,4 +1,5 @@
 
+- plugins.stardict.get.AllDics.rename_idx_gz: is renaming enough?
 - multitran.com.Elems.trash: treat 'точно' and 'все формы' as elements
   with a URL
 - multitran.com: complement 'abbr' with dictionary titles in both

@@ -32,17 +32,42 @@ PAIR_URLS = (_('Nothing to do!'))
 class Suggest:
     
     def __init__(self,search):
-        f = '[MClient] plugins.stardict.get.Suggest.__init__'
+        self.values()
+        if search:
+            self.reset(search)
+    
+    def values(self):
+        self.Success = True
+        self._search = ''
+    
+    def reset(self,search):
+        f = '[MClient] plugins.stardict.get.Suggest.reset'
         self._search = search
-        if self._search:
-            self.Success = True
-        else:
+        if not self._search:
             self.Success = False
             sh.com.empty(f)
     
+    def get(self):
+        f = '[MClient] plugins.stardict.get.Suggest.get'
+        if self.Success:
+            items = objs.all_dics().get_index()
+            if items:
+                timer = sh.Timer(f)
+                timer.start()
+                search = self._search.lower()
+                result = [item for item in items \
+                          if str(item).lower().startswith(search)
+                         ]
+                timer.end()
+                return result
+            else:
+                self.Success = False
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
     def run(self):
-        #todo: implement
-        return []
+        return self.get()
 
 
 
@@ -404,6 +429,17 @@ class AllDics:
         self.values()
         self.reset()
     
+    def get_index(self):
+        f = '[MClient] plugins.stardict.get.AllDics.get_index'
+        if self.Success:
+            if not self._index:
+                for idic in self._dics:
+                    if idic._idx:
+                        self._index += [item[0] for item in idic._idx]
+            return self._index
+        else:
+            sh.com.cancel(f)
+    
     def rename_idx_gz(self):
         f = '[MClient] plugins.stardict.get.AllDics.rename_idx_gz'
         if self.Success:
@@ -416,7 +452,7 @@ class AllDics:
         else:
             sh.com.cancel(f)
     
-    def get(self,search=''):
+    def get(self,search):
         f = '[MClient] plugins.stardict.get.AllDics.get'
         if self.Success:
             if search:
@@ -443,6 +479,7 @@ class AllDics:
     def values(self):
         self._ifos   = []
         self._dics   = []
+        self._index  = []
         self._path   = ''
         # Do not run anything if 'self.reset' was not run
         self.Success = False

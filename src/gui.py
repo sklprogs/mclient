@@ -1937,7 +1937,7 @@ class SpecSymbols:
 
 
 #todo: make this widget reusable
-class Suggestion:
+class Suggest:
     
     def __init__(self):
         self.parent = None

@@ -145,11 +145,22 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
     import logic as lg
-    lg.objs.plugins().set('multitran.com')
-    search = 'good faith'
+    lg.objs.plugins().set(_('Offline'))
+    #search = 'good faith'
     #search  = 'азбука'
+    search  = 'компьютер'
     print ( lg.com.suggest (search = search
                            ,pair   = None
                            )
           )
+    '''
+    lg.objs.plugins()
+    import plugins.stardict.get as gt
+    ind = gt.objs.all_dics().get_index()
+    if ind:
+        ind = ind[0:200]
+        sg.fast_txt('\n'.join(ind))
+    else:
+        sh.com.empty(f)
+    '''
     sg.objs.end()
