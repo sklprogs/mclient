@@ -19,6 +19,35 @@ class CleanUp:
     def __init__(self,text):
         self._text = text
     
+    def langs(self):
+        self._text = self._text.replace ('<a href="/m.exe?a=256">Русский</a>'
+                                        ,''
+                                        )
+        self._text = self._text.replace ('</a>Русский <a href'
+                                        ,'</a><a href'
+                                        )
+        self._text = self._text.replace ('</a> Английский<p>'
+                                        ,'</a><p>'
+                                        )
+        ''' Do not set a closing tag here; it can be both <p> and <div>.
+            The space before '<' can be either missing or present.
+        '''
+        self._text = self._text.replace ('>⇄</a> Немецкий <'
+                                        ,'></a><'
+                                        )
+        self._text = self._text.replace ('>⇄</a> Немецкий<'
+                                        ,'></a><'
+                                        )
+        self._text = self._text.replace ('>Немецкий</a> <div id="suggest">'
+                                        ,'></a><div id="suggest">'
+                                        )
+        self._text = self._text.replace ('>Словари</a>Немецкий <a href'
+                                        ,'></a><a href'
+                                        )
+        self._text = self._text.replace ('class="phraselist2"><b>Немецкий</b>'
+                                        ,'class="phraselist2">'
+                                        )
+    
     def article_not_found(self):
         ''' If separate words are found instead of a phrase, prepare
             those words only.
@@ -56,9 +85,6 @@ class CleanUp:
         self._text = self._text.replace('\r\n','')
         self._text = self._text.replace('\n','')
         self._text = self._text.replace('\xa0',' ')
-        self._text = self._text.replace('<a href="/m.exe?a=256">Русский</a>','')
-        self._text = self._text.replace('</a>Русский <a href','</a><a href')
-        self._text = self._text.replace('</a> Английский<p>','</a><p>')
         while '  ' in self._text:
             self._text = self._text.replace('  ',' ')
         self._text = re.sub(r'\>[\s]{0,1}\<','><',self._text)
@@ -89,6 +115,7 @@ class CleanUp:
         f = '[MClient] plugins.multitrancom.CleanUp.run'
         if self._text:
             self.decode_entities() # Shared
+            self.langs()
             self.common()          # Shared
             self.article_not_found()
             self.distinguish()
