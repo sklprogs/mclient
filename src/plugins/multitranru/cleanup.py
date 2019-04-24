@@ -100,7 +100,7 @@ class CleanUp:
         # An excessive space must be removed after unescaping the page
         self._text = re.sub('[:]{0,1}[\s]{0,1}все формы слов[а]{0,1} \(\d+\)','',self._text)
     
-    def article_not_found(self):
+    def sep_words(self):
         ''' If separate words are found instead of a phrase, prepare
             those words only.
         '''
@@ -143,7 +143,7 @@ class CleanUp:
             self.trash()
             self.word_forms()
             self.common()            # Shared
-            self.article_not_found()
+            self.sep_words()
             self.unsupported()       # Shared
         else:
             sh.com.empty(f)

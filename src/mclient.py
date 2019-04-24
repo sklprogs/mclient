@@ -2426,7 +2426,7 @@ class Suggest:
                 if event.char == ' ':
                     text = lg.com.suggest (search = text
                                           ,pair   = objs.webframe().get_pair()
-                                          ,limit  = 50
+                                          ,limit  = 35
                                           )
                     if text:
                         self.gui.close()

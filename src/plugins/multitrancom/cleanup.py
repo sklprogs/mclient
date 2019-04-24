@@ -48,7 +48,11 @@ class CleanUp:
                                         ,'class="phraselist2">'
                                         )
     
-    def article_not_found(self):
+    def no_matches(self):
+        if 'Не найдено<p>' in self._text:
+            self._text = ''
+    
+    def sep_words(self):
         ''' If separate words are found instead of a phrase, prepare
             those words only.
         '''
@@ -117,7 +121,8 @@ class CleanUp:
             self.decode_entities() # Shared
             self.langs()
             self.common()          # Shared
-            self.article_not_found()
+            self.sep_words()
+            self.no_matches()
             self.distinguish()
             self.unsupported()     # Shared
         else:
