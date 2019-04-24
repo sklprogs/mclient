@@ -2,12 +2,13 @@
 
 6.0
 * Reimplement reading Stardict files, make import faster and
-  add a support for GZIP files
+  add support for GZIP files
 * Import dictionary sources as plugins
 * Add multitran.com support
 * Delete bind_quit_now key, rename bind_quit_now_alt key to bind_quit
 * Update documentation
 * Add main hotkeys to the Welcome screen
+* Enable autocompletion for all sources
 
 5.12
 * Wrap up too broad columns
