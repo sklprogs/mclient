@@ -1,4 +1,8 @@
 
+- plugins.stardict: test: 'a title' is visible
+- plugins.stardict: eng-rus, full: search gate: found by 'Suggest' and
+  logged as found by 'AllDics.get', but could not be shown
+- plugins.stardict: eng-rus, full: lips: fix unsearchable fragment
 - multitran.com: go, moniker: fix unsearchable fragment
 - Test and fix getting non-terms (when everything is selectable)
 - History: fix selecting the same term but from different resources

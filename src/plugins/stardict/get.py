@@ -468,6 +468,10 @@ class AllDics:
                             lst.append ('<a title="' + dic._title \
                                                      + '"></a>' + result
                                        )
+                            sh.log.append (f,_('DEBUG')
+                                          ,_('"%s" has matches for "%s"')\
+                                          % (dic._title,search)
+                                          )
                     else:
                         sh.log.append (f,_('INFO')
                                       ,_('No matches for "%s"!') \

@@ -1483,16 +1483,19 @@ class WebFrame:
                               ,_('Nothing to do!')
                               )
             else:
-                sg.Message (f,_('WARNING')
-                           ,_('This block does not contain a URL!')
-                           )
+                lg.objs._request._search = objs._blocks_db.text(pos=self._pos)
+                self.go_search()
 
     def go_search(self):
         f = '[MClient] mclient.WebFrame.go_search'
+        ''' Text returned by 'objs.blocks_db().text' may have a space
+            as the first symbol for some reason.
+        '''
+        lg.objs.request()._search = lg.objs._request._search.strip()
         if self.control_length():
             self.get_url()
             sh.log.append (f,_('DEBUG')
-                          ,lg.objs.request()._search
+                          ,'"' + lg.objs._request._search + '"'
                           )
             self.load_article()
 
