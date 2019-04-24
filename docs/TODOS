@@ -1,4 +1,7 @@
 
+- multitran.com: fix: "Вы попались на удочку" (ComputersRE,
+  EngineeringRE) - found by autosuggestion, but not found by
+  'plugins.stardict.get.AllDics.get'
 - plugins.stardict.get.AllDics.rename_idx_gz: is renaming enough?
 - multitran.com.Elems.trash: treat 'точно' and 'все формы' as elements
   with a URL

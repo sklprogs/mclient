@@ -469,7 +469,11 @@ class AllDics:
                                                      + '"></a>' + result
                                        )
                     else:
-                        sh.com.empty(f)
+                        sh.log.append (f,_('INFO')
+                                      ,_('No matches for "%s"!') \
+                                      % dic._title
+                                      )
+                                      
                 return '\n'.join(lst)
             else:
                 sh.com.empty(f)
