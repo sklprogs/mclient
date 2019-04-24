@@ -12,7 +12,7 @@ import plugins.stardict.get
 import plugins.stardict.run     as sdrun
 import plugins.multitranru.run  as mrrun
 import plugins.multitrancom.run as mcrun
-
+import plugins.multitran.run    as marun
 
 
 class Plugins:
@@ -25,8 +25,9 @@ class Plugins:
         self.sdplugin = None
         self.mrplugin = None
         self.mcplugin = None
-        self.plugin   = self.mrplugin
-        self._source  = 'multitran.ru'
+        self.maplugin = None
+        self.plugin   = self.maplugin
+        self._source  = _('Multitran')
         self._sdpath  = sdpath
         self._timeout = timeout
         self.Debug    = Debug
@@ -35,8 +36,10 @@ class Plugins:
         self.MaxRow   = MaxRow
         self.MaxRows  = MaxRows
         self.load()
-        #note: this should be synchronized with GUI
-        self.set('multitran.ru')
+        ''' #note: either put this on top of 'self.sources' or
+            synchronize with GUI.
+        '''
+        self.set(_('Multitran'))
     
     def suggest(self,search,pair):
         f = '[MClient] manager.Plugins.suggest'
@@ -46,15 +49,25 @@ class Plugins:
             sh.com.empty(f)
     
     def sources(self):
-        return ('multitran.ru'
+        return (_('Multitran')
+               ,'multitran.ru'
                ,'multitran.com'
                ,_('Offline')
                )
     
     def online_sources(self):
-        return('multitran.ru','multitran.com')
+        ''' This is used by lg.Welcome to check the availability of
+            online sources. Do not put here combined sources such as
+            _('Multitran').
+        '''
+        return ('multitran.ru'
+               ,'multitran.com'
+               )
     
     def online_urls(self):
+        ''' The output length of this procedure shall be equal to
+            the output length of 'self.online_sources'.
+        '''
         old = self._source
         self.set('multitran.ru')
         url1 = self.root_url()
@@ -130,6 +143,13 @@ class Plugins:
                                      ,MaxRow  = self.MaxRow
                                      ,MaxRows = self.MaxRows
                                      )
+        self.maplugin = marun.Plugin (timeout = self._timeout
+                                     ,Debug   = self.Debug
+                                     ,iabbr   = self.iabbr
+                                     ,Shorten = self.Shorten
+                                     ,MaxRow  = self.MaxRow
+                                     ,MaxRows = self.MaxRows
+                                     )
     
     def sdstat(self):
         return len(plugins.stardict.get.objs.all_dics()._dics)
@@ -140,6 +160,8 @@ class Plugins:
             self._source = source
             if source == _('Offline'):
                 self.plugin = self.sdplugin
+            elif source == _('Multitran'):
+                self.plugin = self.maplugin
             elif source == 'multitran.ru':
                 self.plugin = self.mrplugin
             elif source == 'multitran.com':
@@ -147,7 +169,9 @@ class Plugins:
             else:
                 sh.objs.mes (f,_('ERROR')
                             ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".')\
-                            % (str(self._source),';'.join(self.sources()))
+                            % (str(self._source)
+                              ,';'.join(self.sources())
+                              )
                             )
         else:
             sh.com.empty(f)

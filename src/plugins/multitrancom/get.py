@@ -120,6 +120,9 @@ class Suggest:
                 self._items = [item for item \
                                in self._items.splitlines() if item
                               ]
+                sh.log.append (f,_('DEBUG')
+                              ,'; '.join(self._items)
+                              )
                 return self._items
             else:
                 sh.com.empty(f)

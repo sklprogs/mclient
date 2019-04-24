@@ -59,6 +59,9 @@ class Suggest:
                           if str(item).lower().startswith(search)
                          ]
                 timer.end()
+                sh.log.append (f,_('DEBUG')
+                              ,'; '.join(result)
+                              )
                 return result
             else:
                 self.Success = False

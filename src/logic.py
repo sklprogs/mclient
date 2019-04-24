@@ -170,7 +170,7 @@ class Welcome:
             else:
                 sh.objs.mes (f,_('ERROR')
                             ,_('The condition "%s" is not observed!') \
-                            % '%d = %d' % (len(sources),len(urls))
+                            % '%d = %d' % (len(dics),len(urls))
                             )
         else:
             sh.com.empty(f)

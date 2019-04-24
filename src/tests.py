@@ -145,14 +145,13 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
     import logic as lg
-    lg.objs.plugins().set(_('Offline'))
-    #search = 'good faith'
-    #search  = 'азбука'
-    search  = 'компьютер'
-    print ( lg.com.suggest (search = search
-                           ,pair   = None
-                           )
-          )
+    search = 'азбука'
+    pair   = 'https://www.multitran.ru/c/M.exe?l1=1&l2=2&s=%s'
+    
+    data = lg.objs.plugins().request (search = search
+                                     ,url    = ''
+                                     )
+    print(data)
     '''
     lg.objs.plugins()
     import plugins.stardict.get as gt

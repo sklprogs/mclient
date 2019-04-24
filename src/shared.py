@@ -1317,6 +1317,20 @@ class List:
                 return False
         return True
     
+    def duplicates_low(self):
+        ''' Remove (case-insensitively) duplicate items (positioned
+            after original items). Both lists must consist of strings.
+        '''
+        cilst = [item.lower() for item in self.lst1]
+        i = len(cilst) - 1
+        while i >= 0:
+            ind = cilst.index(cilst[i])
+            if ind < i:
+                del cilst[i]
+                del self.lst1[i]
+            i -= 1
+        return self.lst1
+    
     # Remove duplicate items (positioned after original items)
     def duplicates(self):
         i = len(self.lst1) - 1
