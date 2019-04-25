@@ -667,7 +667,7 @@ class WebFrame:
         sources = lg.objs._plugins.sources()
         if pairs and sources:
             self.gui.men_pair.reset (items  = pairs
-                                    ,action = self.set_lang
+                                    ,action = self.set_pair
                                     )
             self.gui.men_srcs.reset (items  = sources
                                     ,action = self.set_source
@@ -1511,18 +1511,10 @@ class WebFrame:
 
     def get_url(self):
         f = '[MClient] mclient.WebFrame.get_url'
-        if lg.objs.request()._source == _('Offline'):
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
-        else:
-            lg.objs._request._url = sh.Online (base_str   = self.get_pair()
-                                              ,search_str = lg.objs._request._search
-                                              ,encoding   = lg.objs.plugins().encoding()
-                                              ).url() 
-            sh.log.append (f,_('DEBUG')
-                          ,str(lg.objs._request._url)
-                          )
+        lg.objs._request._url = lg.objs.plugins().get_url(lg.objs._request._search)
+        sh.log.append (f,_('DEBUG')
+                      ,str(lg.objs._request._url)
+                      )
 
     #todo: move 'move_*' procedures to Moves class
     # Go to the 1st term of the current row
@@ -1856,35 +1848,12 @@ class WebFrame:
         self.search_article.reset()
         self.search_article.forward()
 
-    def set_lang(self,event=None):
-        f = '[MClient] mclient.WebFrame.set_lang'
-        langs = lg.objs.plugins().langs()
-        if langs:
-            try:
-                lg.objs._request._lang = langs[self.gui.men_pair.index]
-            except IndexError:
-                sh.objs.mes (f,_('ERROR')
-                            ,_('Wrong input data!')
-                            )
-            sh.log.append (f,_('INFO')
-                          ,_('Set language to "%s"') \
-                          % lg.objs._request._lang
-                          )
-        else:
-            sh.com.empty(f)
-
-    def get_pair(self,event=None):
-        f = '[MClient] mclient.WebFrame.get_pair'
-        pair_urls = lg.objs.plugins().pair_urls()
-        if pair_urls:
-            try:
-                return pair_urls[self.gui.men_pair.index]
-            except IndexError:
-                sh.objs.mes (f,_('ERROR')
-                            ,_('Wrong input data!')
-                            )
-        else:
-            sh.com.empty(f)
+    def set_pair(self,event=None):
+        f = '[MClient] mclient.WebFrame.set_pair'
+        sh.log.append (f,_('INFO')
+                      ,_('Set pair: %s') % self.gui.men_pair.choice
+                      )
+        lg.objs.plugins().set_pair(self.gui.men_pair.choice)
 
     def set_columns(self,event=None):
         f = '[MClient] mclient.WebFrame.set_columns'
@@ -2428,7 +2397,6 @@ class Suggest:
                 '''
                 if event.char == ' ':
                     text = lg.com.suggest (search = text
-                                          ,pair   = objs.webframe().get_pair()
                                           ,limit  = 35
                                           )
                     if text:

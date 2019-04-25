@@ -223,6 +223,16 @@ class Get:
 
 class Commands:
     
+    def get_url(self,search):
+        f = '[MClient] plugins.multitrancom.get.Commands.get_url'
+        if search:
+            return sh.Online (base_str   = PAIR
+                             ,search_str = search
+                             ,encoding   = ENCODING
+                             ).url()
+        else:
+            sh.com.empty(f)
+    
     def fix_url(self,url):
         f = '[MClient] plugins.multitrancom.get.Commands.fix_url'
         ''' multitran.com provides for URLs that are not entirely

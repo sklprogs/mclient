@@ -48,6 +48,12 @@ class Plugin:
         self._blocks = []
         self._data   = []
     
+    def get_url(self,search,Com=False):
+        if Com:
+            return self.mcplugin.get_url(search)
+        else:
+            return self.mrplugin.get_url(search)
+    
     def set_pair(self,pair):
         self.mrplugin.set_pair(pair)
         self.mcplugin.set_pair(pair)

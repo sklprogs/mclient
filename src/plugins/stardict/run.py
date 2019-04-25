@@ -40,6 +40,10 @@ class Plugin:
         self._data   = []
     
     # This is needed only for compliance with a general method
+    def get_url(self,search=''):
+        return ''
+    
+    # This is needed only for compliance with a general method
     def set_pair(self,pair=''):
         pass
     

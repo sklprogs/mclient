@@ -144,6 +144,46 @@ class Plugin:
 
 class Commands:
     
+    def get_url(self):
+        f = '[MClient] tests.Commands.get_url'
+        #1
+        source  = 'multitran.ru'
+        pair    = 'DEU <=> RUS'
+        search  = 'привет'
+        message = 'Source: "%s"; pair: "%s"; search: "%s"' % (source,pair,search)
+        lg.objs.plugins().set(source)
+        lg.objs._plugins.set_pair(pair)
+        sh.log.append (f,_('INFO')
+                      ,message
+                      )
+        lg.objs._plugins.get_url(search)
+        #2
+        source  = 'multitran.com'
+        pair    = 'RUS <=> XAL'
+        search  = 'До свидания!'
+        message = 'Source: "%s"; pair: "%s"; search: "%s"' % (source,pair,search)
+        lg.objs.plugins().set(source)
+        lg.objs._plugins.set_pair(pair)
+        sh.log.append (f,_('INFO')
+                      ,message
+                      )
+        lg.objs._plugins.get_url(search)
+        #3
+        ''' Since 'plugins.multitran.get.Commands.get_url' has several
+            modes, this default request should actually return the same
+            as 'multitran.ru' (if 'pair' and 'search' are the same).
+        '''
+        source  = _('Multitran')
+        pair    = 'XAL <=> RUS'
+        search  = 'До свидания!'
+        message = 'Source: "%s"; pair: "%s"; search: "%s"' % (source,pair,search)
+        lg.objs.plugins().set(source)
+        lg.objs._plugins.set_pair(pair)
+        sh.log.append (f,_('INFO')
+                      ,message
+                      )
+        lg.objs._plugins.get_url(search)
+    
     def suggest(self):
         f = '[MClient] tests.Commands.suggest'
         #1
@@ -304,7 +344,7 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
     import logic as lg
-    com.suggest()
+    com.get_url()
     
     '''
     search = 'азбука'

@@ -34,6 +34,9 @@ class Plugin:
         self._blocks = []
         self._data   = []
     
+    def get_url(self,search):
+        return gt.com.get_url(search)
+    
     def set_pair(self,pair):
         f = '[MClient] plugins.multitrancom.run.Plugin.set_pair'
         if pair:

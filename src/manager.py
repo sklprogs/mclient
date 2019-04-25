@@ -42,18 +42,36 @@ class Plugins:
         self.set(_('Multitran'))
         self.set_timeout(self._timeout)
     
-    def set_pair(self,pair):
-        # Input is a pair abbreviation such as 'ENG <=> RUS'
-        f = '[MClient] manager.Plugins.set_pair'
+    def get_url(self,search):
+        f = '[MClient] manager.Plugins.get_url'
+        url = ''
         if self.plugin:
-            return self.plugin.set_pair(pair)
+            url = self.plugin.get_url(search)
+            if not url:
+                url = ''
         else:
             sh.com.empty(f)
+        return url
+    
+    # Return all non-combined plugins
+    def unique(self):
+        return (self.sdplugin
+               ,self.mrplugin
+               ,self.mcplugin
+               )
+    
+    def set_pair(self,pair):
+        ''' Input is a pair abbreviation such as 'ENG <=> RUS'. Since we
+            use the same pair for all sources, in order to avoid errors,
+            we change the pair for all plugins.
+        '''
+        for plugin in self.unique():
+            plugin.set_pair(pair)
     
     def set_timeout(self,timeout=6):
         f = '[MClient] manager.Plugins.set_timeout'
         if self.plugin:
-            return self.plugin.set_timeout(timeout)
+            self.plugin.set_timeout(timeout)
         else:
             sh.com.empty(f)
     
