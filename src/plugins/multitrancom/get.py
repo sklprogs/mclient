@@ -67,6 +67,7 @@ PAIR_URLS = (PAIR_ROOT + 's=%s&l1=2&l2=1&SHL=2'  # ENG <=> RUS
             ,PAIR_ROOT + 's=%s&l1=1&l2=3&SHL=2'  # ENG <=> DEU
             ,PAIR_ROOT + 's=%s&l1=1&l2=26&SHL=2' # ENG <=> EST
             )
+PAIR = PAIR_URLS[0]
 
 
 class Suggest:
@@ -221,9 +222,9 @@ class Get:
 
 
 class Commands:
-
+    
     def fix_url(self,url):
-        f = '[MClient] plugins.multitrancom.Commands.fix_url'
+        f = '[MClient] plugins.multitrancom.get.Commands.fix_url'
         ''' multitran.com provides for URLs that are not entirely
             correct: they still can contain spaces and unquoted symbols
             (such as 'à' or 'ф'). Browsers deal with this correctly but

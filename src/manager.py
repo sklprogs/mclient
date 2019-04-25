@@ -42,6 +42,14 @@ class Plugins:
         self.set(_('Multitran'))
         self.set_timeout(self._timeout)
     
+    def set_pair(self,pair):
+        # An abbreviation of a pair such as 'ENG <=> RUS'
+        f = '[MClient] manager.Plugins.set_pair'
+        if self.plugin:
+            return self.plugin.set_pair(pair)
+        else:
+            sh.com.empty(f)
+    
     def set_timeout(self,timeout=6):
         f = '[MClient] manager.Plugins.set_timeout'
         if self.plugin:

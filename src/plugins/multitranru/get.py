@@ -53,6 +53,7 @@ PAIR_URLS = (PAIR_ROOT + 'l1=1&l2=2&s=%s'  # ENG <=> RUS
             ,PAIR_ROOT + 'l1=1&l2=3&s=%s'  # ENG <=> DEU
             ,PAIR_ROOT + 'l1=1&l2=26&s=%s' # ENG <=> EST
             )
+PAIR = PAIR_URLS[0]
 
 
 class Suggest:

@@ -34,6 +34,28 @@ class Plugin:
         self._blocks = []
         self._data   = []
     
+    def set_pair(self,pair):
+        f = '[MClient] plugins.multitranru.run.Plugin.set_pair'
+        if pair:
+            if pair in gt.PAIRS:
+                ind = gt.PAIRS.index(pair)
+                if ind < len(gt.PAIR_URLS):
+                    gt.PAIR = gt.PAIR_URLS[ind]
+                else:
+                    sh.objs.mes (f,_('ERROR')
+                                ,_('The condition "%s" is not observed!')\
+                                % ('0 <= ' + str(ind) + ' < %d' \
+                                % len(gt.PAIR_URLS)
+                                )
+                                )
+            else:
+                sh.objs.mes (f,_('ERROR')
+                            ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".')\
+                            % (str(pair),';'.join(gt.PAIRS))
+                            )
+        else:
+            sh.com.empty(f)
+    
     def set_timeout(self,timeout=6):
         gt.TIMEOUT = timeout
     

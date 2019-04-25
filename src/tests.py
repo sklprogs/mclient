@@ -219,6 +219,46 @@ class Commands:
             sh.Launch(file_w).default()
         else:
             sh.com.empty(f)
+    
+    def set_pair(self):
+        f = '[MClient] tests.Commands.set_pair'
+        import plugins.multitranru.get
+        import plugins.multitrancom.get
+        pair   = 'RUS <=> XAL'
+        source = 'multitran.com'
+        lg.objs.plugins().set(source)
+        lg.objs._plugins.set_pair(pair)
+        
+        sh.log.append (f,_('DEBUG')
+                      ,source + ': ' + plugins.multitrancom.get.PAIR
+                      )
+        pair   = 'ENG <=> DEU'
+        source = 'multitran.ru'
+        lg.objs._plugins.set(source)
+        lg.objs._plugins.set_pair(pair)
+        sh.log.append (f,_('DEBUG')
+                      ,source + ': ' + plugins.multitranru.get.PAIR
+                      )
+        pair   = 'XAL <=> RUS'
+        source = _('Multitran')
+        lg.objs._plugins.set(source)
+        lg.objs._plugins.set_pair(pair)
+        sh.log.append (f,_('DEBUG')
+                      ,'multitranru: ' + plugins.multitranru.get.PAIR
+                      )
+        sh.log.append (f,_('DEBUG')
+                      ,'multitrancom: ' + plugins.multitrancom.get.PAIR
+                      )
+        pair   = 'XAL <=> FAIL'
+        source = _('Multitran')
+        lg.objs._plugins.set(source)
+        lg.objs._plugins.set_pair(pair)
+        sh.log.append (f,_('DEBUG')
+                      ,'multitranru: ' + plugins.multitranru.get.PAIR
+                      )
+        sh.log.append (f,_('DEBUG')
+                      ,'multitrancom: ' + plugins.multitrancom.get.PAIR
+                      )
 
 
 com = Commands()
@@ -228,7 +268,7 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
     import logic as lg
-    com.welcome()
+    com.set_pair()
     
     '''
     search = 'азбука'

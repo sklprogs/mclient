@@ -48,6 +48,10 @@ class Plugin:
         self._blocks = []
         self._data   = []
     
+    def set_pair(self,pair):
+        self.mrplugin.set_pair(pair)
+        self.mcplugin.set_pair(pair)
+    
     def set_timeout(self,timeout=6):
         self.mrplugin.set_timeout(timeout)
         self.mcplugin.set_timeout(timeout)

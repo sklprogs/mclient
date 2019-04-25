@@ -39,9 +39,13 @@ class Plugin:
         self._blocks = []
         self._data   = []
     
-    # This is needed for compliance with a general method only
+    # This is needed only for compliance with a general method
+    def set_pair(self,pair=''):
+        pass
+    
+    # This is needed only for compliance with a general method
     def set_timeout(self,timeout=0):
-        gt.TIMEOUT = timeout
+        pass
     
     def accessible(self):
         return gt.com.accessible()
