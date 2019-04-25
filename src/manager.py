@@ -116,38 +116,10 @@ class Plugins:
                ,'multitran.com'
                )
     
-    def encoding(self):
-        f = '[MClient] manager.Plugins.encoding'
-        if self.plugin:
-            return self.plugin.encoding()
-        else:
-            sh.com.empty(f)
-    
-    def root_url(self):
-        f = '[MClient] manager.Plugins.root_url'
-        if self.plugin:
-            return self.plugin.root_url()
-        else:
-            sh.com.empty(f)
-    
-    def pair_urls(self):
-        f = '[MClient] manager.Plugins.pair_urls'
-        if self.plugin:
-            return self.plugin.pair_urls()
-        else:
-            sh.com.empty(f)
-    
     def pairs(self):
         f = '[MClient] manager.Plugins.pairs'
         if self.plugin:
             return self.plugin.pairs()
-        else:
-            sh.com.empty(f)
-    
-    def pair_root(self):
-        f = '[MClient] manager.Plugins.pair_root'
-        if self.plugin:
-            return self.plugin.pair_root()
         else:
             sh.com.empty(f)
     

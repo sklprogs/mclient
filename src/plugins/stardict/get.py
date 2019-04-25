@@ -19,15 +19,7 @@ gettext.install('mclient','../resources/locale')
     #note: Do not forget to change this variable externally before
     calling anything from this module.
 '''
-PATH      = ''
-# These variables are just needed to easily use a parent class
-ENCODING  = 'utf-8'
-URL       = ''
-PAIR_ROOT = ''
-PAIRS     = ('ENG <=> RUS')
-LANGS     = ('English')
-PAIR_URLS = (_('Nothing to do!'))
-PAIR      = PAIR_URLS[0]
+PATH = ''
 
 
 class Suggest:

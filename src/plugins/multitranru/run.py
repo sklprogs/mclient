@@ -71,23 +71,11 @@ class Plugin:
     def suggest(self,search):
         return gt.Suggest(search).run()
     
-    def encoding(self):
-        return gt.ENCODING
-    
     def langs(self):
         return gt.LANGS
     
-    def pair_urls(self):
-        return gt.PAIR_URLS
-    
     def pairs(self):
         return gt.PAIRS
-    
-    def pair_root(self):
-        return gt.PAIR_ROOT
-    
-    def root_url(self):
-        return gt.URL
     
     def request (self,search='',url=''
                 ,articleid=1

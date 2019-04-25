@@ -86,23 +86,11 @@ class Plugin:
         result = sh.List(lst1=result).duplicates_low()
         return sorted(result,key=lambda s:s.lower())
     
-    def encoding(self):
-        return self.mrplugin.encoding()
-    
     def langs(self):
         return self.mrplugin.langs()
     
-    def pair_urls(self):
-        return self.mrplugin.pair_urls()
-    
     def pairs(self):
         return self.mrplugin.pairs()
-    
-    def pair_root(self):
-        return self.mrplugin.pair_root()
-    
-    def root_url(self):
-        return self.mrplugin.root_url()
     
     def request (self,search=''
                 ,url='',articleid=1
