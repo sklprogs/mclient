@@ -4,6 +4,77 @@ import shared    as sh
 import sharedGUI as sg
 
 
+class Block:
+    
+    def __init__(self):
+        self._id        = None # (00) Autoincrement
+        self._articleid = 0    # (01) ARTICLEID
+        self._dica      = ''   # (02) DICA (abbreviation)
+        self._wforma    = ''   # (03) WFORMA
+        self._speecha   = ''   # (04) SPEECHA
+        self._transca   = ''   # (05) TRANSCA
+        self._terma     = ''   # (06) TERMA
+        self._type      = ''   # (07) TYPE
+        self._text      = ''   # (08) TEXT
+        self._url       = ''   # (09) URL
+        self._block     = 0    # (10) BLOCK
+        self._priority  = 0    # (11) PRIORITY
+        self._select    = 0    # (12) SELECTABLE
+        self._same      = 0    # (13) SAMECELL
+        self._cell_no   = 0    # (14) CELLNO
+        self._rowno     = -1   # (15) ROWNO
+        self._colno     = -1   # (16) COLNO
+        self._pos1      = -1   # (17) POS1
+        self._pos2      = -1   # (18) POS2
+        self._node1     = ''   # (19) NODE1
+        self._node2     = ''   # (20) NODE2
+        self._offpos1   = -1   # (21) OFFPOS1
+        self._offpos2   = -1   # (22) OFFPOS2
+        self._bbox1     = -1   # (23) BBOX1
+        self._bbox2     = -1   # (24) BBOX2
+        self._bboy1     = -1   # (25) BBOY1
+        self._bboy2     = -1   # (26) BBOY2
+        self._textlow   = ''   # (27) TEXTLOW
+        self._ignore    = 0    # (28) IGNORE
+        self._speech    = 0    # (29) SPEECHPR
+        self._dicaf     = ''   # (30) DICA (full title)
+    
+    def dump(self):
+        return (self._id
+               ,self._articleid
+               ,self._dica
+               ,self._wforma
+               ,self._speecha
+               ,self._transca
+               ,self._terma
+               ,self._type
+               ,self._text
+               ,self._url
+               ,self._block
+               ,self._priority
+               ,self._select
+               ,self._same
+               ,self._cell_no
+               ,self._rowno
+               ,self._colno
+               ,self._pos1
+               ,self._pos2
+               ,self._node1
+               ,self._node2
+               ,self._offpos1
+               ,self._offpos2
+               ,self._bbox1
+               ,self._bbox2
+               ,self._bboy1
+               ,self._bboy2
+               ,self._textlow
+               ,self._ignore
+               ,self._speech
+               ,self._dicaf
+               )
+
+
+
 class Get:
     
     def multitrancom(self):
@@ -144,11 +215,89 @@ class Plugin:
 
 class Commands:
     
+    def compare_elems(self):
+        f = '[MClient] tests.Commands.compare_elems'
+        import plugins.multitran.elems as el
+        data1 = []
+        data2 = []
+        # Create blocks
+        #1 #1
+        block = list(Block().dump())
+        # DICA
+        block[2]  = 'Общая лексика'
+        # DICAF
+        block[30] = 'общ.'
+        # TYPE
+        block[7]  = 'term'
+        # TEXT
+        block[8]  = 'hello'
+        data1.append(block)
+        #1 #2
+        block = list(Block().dump())
+        # DICA
+        block[2]  = 'Общая лексика'
+        # DICAF
+        block[30] = 'общ.'
+        # TYPE
+        block[7]  = 'comment'
+        # TEXT
+        block[8]  = 'yes'
+        data1.append(block)
+        #1 #3
+        block = list(Block().dump())
+        # DICA
+        block[2]  = 'Общая лексика'
+        # DICAF
+        block[30] = 'общ.'
+        # TYPE
+        block[7]  = 'term'
+        # TEXT
+        block[8]  = 'goodbye'
+        data1.append(block)
+        #2 #1
+        block = list(Block().dump())
+        # DICA
+        block[2]  = 'Общая лексика'
+        # DICAF
+        block[30] = 'общ.'
+        # TYPE
+        block[7]  = 'term'
+        # TEXT
+        block[8]  = 'goodbye'
+        data2.append(block)
+        #2 #2
+        block = list(Block().dump())
+        # DICA
+        block[2]  = 'Физиология'
+        # DICAF
+        block[30] = 'физиол.'
+        # TYPE
+        block[7]  = 'comment'
+        # TEXT
+        block[8]  = 'yes'
+        data2.append(block)
+        #2 #3
+        block = list(Block().dump())
+        # DICA
+        block[2]  = 'Общая лексика'
+        # DICAF
+        block[30] = 'общ.'
+        # TYPE
+        block[7]  = 'term'
+        # TEXT
+        block[8]  = 'hello'
+        data2.append(block)
+        # Compare
+        data = el.Elems(data1,data2).run()
+        data = [str(item) for item in data]
+        data = '\n'.join(data)
+        sg.fast_txt(data)
+    
     def request(self):
         f = '[MClient] tests.Commands.request'
         source = _('Multitran')
         pair   = 'DEU <=> RUS'
-        search = 'карандаш'
+        search = 'ernährung'
         message = 'Source: "%s"; pair: "%s"; search: "%s"' % (source,pair,search)
         lg.objs.plugins().set(source)
         lg.objs._plugins.set_pair(pair)
@@ -363,25 +512,5 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
     import logic as lg
-    com.request()
-    
-    '''
-    search = 'азбука'
-    pair   = 'https://www.multitran.ru/c/M.exe?l1=1&l2=2&s=%s'
-    
-    data = lg.objs.plugins().request (search = search
-                                     ,url    = ''
-                                     )
-    print(data)
-    '''
-    '''
-    lg.objs.plugins()
-    import plugins.stardict.get as gt
-    ind = gt.objs.all_dics().get_index()
-    if ind:
-        ind = ind[0:200]
-        sg.fast_txt('\n'.join(ind))
-    else:
-        sh.com.empty(f)
-    '''
+    com.compare_elems()
     sg.objs.end()

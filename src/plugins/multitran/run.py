@@ -3,6 +3,7 @@
 
 import shared                   as sh
 import sharedGUI                as sg
+import plugins.multitran.elems  as el
 import plugins.multitranru.run  as mr
 import plugins.multitrancom.run as mc
 
@@ -108,11 +109,15 @@ class Plugin:
                                        ,url       = mcurl
                                        ,articleid = articleid
                                        )
-        tmp = [mrdata,mcdata]
-        tmp = [list(item) for item in tmp if item]
-        self._data = []
-        for item in tmp:
-            self._data += item
+        if mrdata and mcdata:
+            self._data = el.Elems(mrdata,mcdata).run()
+        elif mrdata:
+            self._data = mrdata
+        elif mcdata:
+            self._data = mcdata
+        else:
+            sh.com.empty(f)
+        
         tmp = [self.mrplugin._text,self.mcplugin._text]
         tmp = [item for item in tmp if item]
         self._text = ' '.join(tmp)
