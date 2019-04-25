@@ -217,6 +217,25 @@ class Get:
 
 class Commands:
     
+    #todo: fix remaining links to localhost
+    def fix_raw_html(self,code):
+        f = '[MClient] plugins.multitranru.get.Commands.fix_raw_html'
+        if code:
+            code = code.replace ('charset={}"'.format(ENCODING)
+                                ,'charset=utf-8"'
+                                )
+            code = code.replace ('<a href="M.exe?'
+                                ,'<a href="' + PAIR_ROOT
+                                )
+            code = code.replace ('<a href="m.exe?'
+                                ,'<a href="' + PAIR_ROOT
+                                )
+            code = code.replace('../c/M.exe?',PAIR_ROOT)
+            code = code.replace('../c/m.exe?',PAIR_ROOT)
+            return code
+        else:
+            sh.com.empty(f)
+    
     def get_url(self,search):
         f = '[MClient] plugins.multitranru.get.Commands.get_url'
         if search:

@@ -239,19 +239,10 @@ class SaveArticle:
         self.file = sg.dialog_save_file(filetypes=self._html_types)
         if self.file and lg.objs.request()._html_raw:
             self.fix_ext(ext='.htm')
-            #todo: fix remaining links to localhost
-            pair_root = lg.objs.plugins().pair_root()
-            if pair_root:
-                code = lg.objs._request._html_raw.replace('charset=windows-1251"','charset=utf-8"')
-                code = code.replace('<a href="M.exe?','<a href="'+pair_root)
-                code = code.replace('../c/M.exe?',pair_root)
-                code = code.replace('<a href="m.exe?','<a href="'+pair_root)
-                code = code.replace('../c/m.exe?',pair_root)
-                sh.WriteTextFile (file    = self.file
-                                 ,Rewrite = True
-                                 ).write(code)
-            else:
-                sh.com.empty(f)
+            lg.objs._request._html_raw = lg.objs.plugins().fix_raw_html()
+            sh.WriteTextFile (file    = self.file
+                             ,Rewrite = True
+                             ).write(lg.objs._request._html_raw)
         else:
             sh.com.empty(f)
 

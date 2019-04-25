@@ -34,10 +34,14 @@ class Plugin:
         self.MaxRows = MaxRows
     
     def values(self):
-        self._text   = ''
-        self._html   = ''
         self._blocks = []
         self._data   = []
+        self._text   = ''
+        self._html   = ''
+    
+    # This is needed only for compliance with a general method
+    def fix_raw_html(self):
+        return ''
     
     # This is needed only for compliance with a general method
     def get_url(self,search=''):

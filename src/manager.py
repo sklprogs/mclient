@@ -42,6 +42,17 @@ class Plugins:
         self.set(_('Multitran'))
         self.set_timeout(self._timeout)
     
+    def fix_raw_html(self):
+        f = '[MClient] manager.Plugins.fix_raw_html'
+        code = ''
+        if self.plugin:
+            code = self.plugin.fix_raw_html()
+            if not code:
+                code = ''
+        else:
+            sh.com.empty(f)
+        return code
+    
     def get_url(self,search):
         f = '[MClient] manager.Plugins.get_url'
         url = ''

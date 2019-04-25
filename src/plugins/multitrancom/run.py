@@ -34,6 +34,9 @@ class Plugin:
         self._blocks = []
         self._data   = []
     
+    def fix_raw_html(self):
+        return gt.com.fix_raw_html(self._html)
+    
     def get_url(self,search):
         return gt.com.get_url(search)
     

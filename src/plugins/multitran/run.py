@@ -48,6 +48,16 @@ class Plugin:
         self._blocks = []
         self._data   = []
     
+    def fix_raw_html(self):
+        #todo: merge htmls
+        code1 = self.mrplugin.fix_raw_html()
+        code2 = self.mcplugin.fix_raw_html()
+        if not code1:
+            code1 = ''
+        if not code2:
+            code2 = ''
+        return code1 + code2
+    
     def get_url(self,search,Com=False):
         if Com:
             return self.mcplugin.get_url(search)
