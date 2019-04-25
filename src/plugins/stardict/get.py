@@ -19,6 +19,7 @@ gettext.install('mclient','../resources/locale')
     #note: Do not forget to change this variable externally before
     calling anything from this module.
 '''
+TIMEOUT   = 0
 PATH      = ''
 # These variables are just needed to easily use a parent class
 ENCODING  = 'utf-8'
@@ -585,4 +586,12 @@ class Objects:
         return self._all_dics
 
 
+
+class Commands:
+    
+    def accessible(self):
+        return len(objs.all_dics()._dics)
+
+
 objs = Objects()
+com  = Commands()

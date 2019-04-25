@@ -17,9 +17,9 @@ gettext.install('mclient','../resources/locale')
 
 class Plugin:
     
-    def __init__ (self,timeout=6,iabbr=None
-                 ,Debug=False,Shorten=True
-                 ,MaxRow=20,MaxRows=50
+    def __init__ (self,iabbr=None,Debug=False
+                 ,Shorten=True,MaxRow=20
+                 ,MaxRows=50
                  ):
         ''' - Extra unused input variables are preserved so it would be
               easy to use an abstract class for all dictionary sources.
@@ -38,6 +38,13 @@ class Plugin:
         self._html   = ''
         self._blocks = []
         self._data   = []
+    
+    # This is needed for compliance with a general method only
+    def set_timeout(self,timeout=0):
+        gt.TIMEOUT = timeout
+    
+    def accessible(self):
+        return gt.com.accessible()
     
     def suggest(self,search,pair=None):
         return gt.Suggest(search).run()
@@ -80,4 +87,3 @@ class Plugin:
                               ,iabbr     = self.iabbr
                               ).run()
         return self._data
-        

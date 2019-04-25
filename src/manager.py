@@ -40,6 +40,21 @@ class Plugins:
             synchronize with GUI.
         '''
         self.set(_('Multitran'))
+        self.set_timeout(self._timeout)
+    
+    def set_timeout(self,timeout=6):
+        f = '[MClient] manager.Plugins.set_timeout'
+        if self.plugin:
+            return self.plugin.set_timeout(timeout)
+        else:
+            sh.com.empty(f)
+    
+    def accessible(self):
+        f = '[MClient] manager.Plugins.accessible'
+        if self.plugin:
+            return self.plugin.accessible()
+        else:
+            sh.com.empty(f)
     
     def suggest(self,search,pair):
         f = '[MClient] manager.Plugins.suggest'
@@ -122,37 +137,30 @@ class Plugins:
     def load(self):
         plugins.stardict.get.PATH = self._sdpath
         plugins.stardict.get.objs.all_dics()
-        self.sdplugin = sdrun.Plugin (timeout = self._timeout
-                                     ,Debug   = self.Debug
+        self.sdplugin = sdrun.Plugin (Debug   = self.Debug
                                      ,iabbr   = self.iabbr
                                      ,Shorten = self.Shorten
                                      ,MaxRow  = self.MaxRow
                                      ,MaxRows = self.MaxRows
                                      )
-        self.mrplugin = mrrun.Plugin (timeout = self._timeout
-                                     ,Debug   = self.Debug
+        self.mrplugin = mrrun.Plugin (Debug   = self.Debug
                                      ,iabbr   = self.iabbr
                                      ,Shorten = self.Shorten
                                      ,MaxRow  = self.MaxRow
                                      ,MaxRows = self.MaxRows
                                      )
-        self.mcplugin = mcrun.Plugin (timeout = self._timeout
-                                     ,Debug   = self.Debug
+        self.mcplugin = mcrun.Plugin (Debug   = self.Debug
                                      ,iabbr   = self.iabbr
                                      ,Shorten = self.Shorten
                                      ,MaxRow  = self.MaxRow
                                      ,MaxRows = self.MaxRows
                                      )
-        self.maplugin = marun.Plugin (timeout = self._timeout
-                                     ,Debug   = self.Debug
+        self.maplugin = marun.Plugin (Debug   = self.Debug
                                      ,iabbr   = self.iabbr
                                      ,Shorten = self.Shorten
                                      ,MaxRow  = self.MaxRow
                                      ,MaxRows = self.MaxRows
                                      )
-    
-    def sdstat(self):
-        return len(plugins.stardict.get.objs.all_dics()._dics)
     
     def set(self,source):
         f = '[MClient] manager.Plugins.set'

@@ -141,10 +141,102 @@ class Plugin:
                       )
 
 
+
+class Commands:
+    
+    def _set_timeout(self,module,source,timeout):
+        f = '[MClient] tests.Commands._set_timeout'
+        lg.objs.plugins().set(source)
+        lg.objs._plugins.set_timeout(timeout)
+        message = 'Source: %s; Timeout: %d' % (source,module.TIMEOUT)
+        sh.log.append (f,_('DEBUG')
+                      ,message
+                      )
+    
+    def set_timeout(self):
+        f = '[MClient] tests.Commands.set_timeout'
+        import plugins.multitrancom.get as mc
+        import plugins.multitranru.get  as mr
+        import plugins.stardict.get     as sd
+        self._set_timeout (module  = sd
+                          ,source  = _('Offline')
+                          ,timeout = 1
+                          )
+        self._set_timeout (module  = mr
+                          ,source  = _('Multitran')
+                          ,timeout = 2
+                          )
+        self._set_timeout (module  = mc
+                          ,source  = _('Multitran')
+                          ,timeout = 2
+                          )
+        self._set_timeout (module  = mc
+                          ,source  = 'multitran.com'
+                          ,timeout = 3
+                          )
+        self._set_timeout (module  = mr
+                          ,source  = 'multitran.ru'
+                          ,timeout = 4
+                          )
+    
+    def accessibility(self):
+        f = '[MClient] tests.Commands.accessibility'
+        source = _('Offline')
+        lg.objs.plugins().set(source)
+        result  = lg.objs._plugins.accessible()
+        message = 'Source: {}; Accessibility: {}'.format(source,result)
+        sh.log.append (f,_('DEBUG')
+                      ,message
+                      )
+        source = 'multitran.ru'
+        lg.objs._plugins.set(source)
+        result  = lg.objs._plugins.accessible()
+        message = 'Source: {}; Accessibility: {}'.format(source,result)
+        sh.log.append (f,_('DEBUG')
+                      ,message
+                      )
+        source = 'multitran.com'
+        lg.objs._plugins.set(source)
+        result  = lg.objs._plugins.accessible()
+        message = 'Source: {}; Accessibility: {}'.format(source,result)
+        sh.log.append (f,_('DEBUG')
+                      ,message
+                      )
+        source = _('Multitran')
+        lg.objs._plugins.set(source)
+        result  = lg.objs._plugins.accessible()
+        message = 'Source: {}; Accessibility: {}'.format(source,result)
+        sh.log.append (f,_('DEBUG')
+                      ,message
+                      )
+
+
+com = Commands()
+
+
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
     import logic as lg
+    com.accessibility()
+    '''
+    
+    print('Check accessibility:')
+    source = _('Offline')
+    lg.objs.plugins().set(source)
+    print(source,lg.objs._plugins.accessible())
+    source = 'multitran.ru'
+    lg.objs._plugins.set(source)
+    print(source,lg.objs._plugins.accessible())
+    source = 'multitran.com'
+    lg.objs._plugins.set(source)
+    print(source,lg.objs._plugins.accessible())
+    source = _('Multitran')
+    lg.objs._plugins.set(source)
+    print(source,lg.objs._plugins.accessible())
+    '''
+    
+    '''
     search = 'азбука'
     pair   = 'https://www.multitran.ru/c/M.exe?l1=1&l2=2&s=%s'
     
@@ -152,6 +244,7 @@ if __name__ == '__main__':
                                      ,url    = ''
                                      )
     print(data)
+    '''
     '''
     lg.objs.plugins()
     import plugins.stardict.get as gt

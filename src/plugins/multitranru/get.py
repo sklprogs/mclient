@@ -15,6 +15,7 @@ gettext.install('mclient','../resources/locale')
 ENCODING  = 'windows-1251'
 # 'https' is got faster than 'http' (~0.2s)
 URL       = 'https://www.multitran.ru'
+TIMEOUT   = 6
 PAIR_ROOT = URL + '/c/M.exe?'
 PAIRS = ('ENG <=> RUS','DEU <=> RUS','SPA <=> RUS'
         ,'FRA <=> RUS','NLD <=> RUS','ITA <=> RUS'
@@ -135,14 +136,11 @@ class Suggest:
 
 class Get:
     
-    def __init__ (self,search='',url=''
-                 ,timeout=6
-                 ):
+    def __init__(self,search='',url=''):
         f = '[MClient] plugins.multitranru.get.Get.__init__'
         self.values()
-        self._search  = search
-        self._url     = fix_url(url)
-        self._timeout = timeout
+        self._search = search
+        self._url    = com.fix_url(url)
         if not self._url or not self._search or not ENCODING:
             self.Success = False
             sh.com.empty(f)
@@ -198,7 +196,7 @@ class Get:
                     '''
                     self._text = urllib.request.urlopen (self._url
                                                         ,None
-                                                        ,self._timeout
+                                                        ,TIMEOUT
                                                         ).read()
                     sh.log.append (f,_('INFO')
                                   ,_('[OK]: "%s"') % self._search
@@ -218,12 +216,28 @@ class Get:
             sh.com.cancel(f)
 
 
-def fix_url(url):
-    f = '[MClient] plugins.multitranru.get.fix_url'
-    if url:
-        if not url.startswith('http'):
-            url = PAIR_ROOT + url
-        return url
-    else:
-        sh.com.empty(f)
-        return ''
+
+class Commands:
+
+    def fix_url(self,url):
+        f = '[MClient] plugins.multitranru.get.Commands.fix_url'
+        if url:
+            if not url.startswith('http'):
+                url = PAIR_ROOT + url
+            return url
+        else:
+            sh.com.empty(f)
+            return ''
+
+    def accessible(self):
+        try:
+            code = urllib.request.urlopen (url     = URL
+                                          ,timeout = TIMEOUT
+                                          ).code
+            if (code / 100 < 4):
+                return True
+        except: #urllib.error.URLError, socket.timeout
+            return False
+
+
+com = Commands()

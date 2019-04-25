@@ -142,7 +142,7 @@ class Welcome:
         self._product   = product
         self._version   = version
         self._st_color  = 'red'
-        self._st_status = objs.plugins().sdstat()
+        self._st_status = objs.plugins().accessible()
         self._timeout   = timeout
         self._desc      = sh.List (lst1 = [self._product
                                           ,self._version
@@ -174,27 +174,6 @@ class Welcome:
                             )
         else:
             sh.com.empty(f)
-    
-    def online(self,url):
-        f = '[MClient] logic.Welcome.online'
-        ''' On *some* systems we can get urllib.error.URLError: 
-            <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED].
-            To get rid of this error, we use this small workaround.
-        '''
-        if hasattr(ssl,'_create_unverified_context'):
-            ssl._create_default_https_context = ssl._create_unverified_context
-        else:
-            sh.log.append (f,_('WARNING')
-                          ,_('Unable to use unverified certificates!')
-                          )
-        try:
-            code = urllib.request.urlopen (url     = url
-                                          ,timeout = self._timeout
-                                          ).code
-            if (code / 100 < 4):
-                return True
-        except: #urllib.error.URLError, socket.timeout
-            return False
 
     def source_code(self,url,status,color):
         url = url.replace('https://','').replace('http://','').replace('www.','')
@@ -1222,6 +1201,9 @@ class Order:
 
 class Commands:
     
+    def __init__(self):
+        self.unverified()
+    
     def suggest(self,search,pair='',limit=0):
         f = '[MClient] logic.Commands.suggest'
         items = objs.plugins().suggest (search = search
@@ -1234,6 +1216,19 @@ class Commands:
             items = []
             sh.com.empty(f)
         return items
+        
+    def unverified(self):
+        f = '[MClient] logic.Commands.unverified'
+        ''' On *some* systems we can get urllib.error.URLError: 
+            <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED].
+            To get rid of this error, we use this small workaround.
+        '''
+        if hasattr(ssl,'_create_unverified_context'):
+            ssl._create_default_https_context = ssl._create_unverified_context
+        else:
+            sh.log.append (f,_('WARNING')
+                          ,_('Unable to use unverified certificates!')
+                          )
 
 
 

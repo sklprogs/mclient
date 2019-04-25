@@ -15,26 +15,23 @@ gettext.install('mclient','../resources/locale')
 
 class Plugin:
     
-    def __init__ (self,timeout=6,iabbr=None
-                 ,Debug=False,Shorten=True
-                 ,MaxRow=20,MaxRows=20
+    def __init__ (self,iabbr=None,Debug=False
+                 ,Shorten=True,MaxRow=20
+                 ,MaxRows=20
                  ):
         self.values()
-        self._timeout = timeout
         self.iabbr    = iabbr
         self.Debug    = Debug
         self.Shorten  = Shorten
         self.MaxRow   = MaxRow
         self.MaxRows  = MaxRows
-        self.mrplugin = mr.Plugin (timeout = self._timeout
-                                  ,Debug   = self.Debug
+        self.mrplugin = mr.Plugin (Debug   = self.Debug
                                   ,iabbr   = self.iabbr
                                   ,Shorten = self.Shorten
                                   ,MaxRow  = self.MaxRow
                                   ,MaxRows = self.MaxRows
                                   )
-        self.mcplugin = mc.Plugin (timeout = self._timeout
-                                  ,Debug   = self.Debug
+        self.mcplugin = mc.Plugin (Debug   = self.Debug
                                   ,iabbr   = self.iabbr
                                   ,Shorten = self.Shorten
                                   ,MaxRow  = self.MaxRow
@@ -50,6 +47,13 @@ class Plugin:
         '''
         self._blocks = []
         self._data   = []
+    
+    def set_timeout(self,timeout=6):
+        self.mrplugin.set_timeout(timeout)
+        self.mcplugin.set_timeout(timeout)
+    
+    def accessible(self):
+        return self.mrplugin.accessible() and self.mcplugin.accessible()
     
     def suggest(self,search,pair=None):
         lst1 = self.mrplugin.suggest (search = search

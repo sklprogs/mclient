@@ -17,23 +17,28 @@ gettext.install('mclient','../resources/locale')
 
 class Plugin:
     
-    def __init__ (self,timeout=6,iabbr=None
-                 ,Debug=False,Shorten=True
-                 ,MaxRow=20,MaxRows=20
+    def __init__ (self,iabbr=None,Debug=False
+                 ,Shorten=True,MaxRow=20
+                 ,MaxRows=20
                  ):
         self.values()
-        self._timeout = timeout
-        self.iabbr    = iabbr
-        self.Debug    = Debug
-        self.Shorten  = Shorten
-        self.MaxRow   = MaxRow
-        self.MaxRows  = MaxRows
+        self.iabbr   = iabbr
+        self.Debug   = Debug
+        self.Shorten = Shorten
+        self.MaxRow  = MaxRow
+        self.MaxRows = MaxRows
     
     def values(self):
         self._html   = ''
         self._text   = ''
         self._blocks = []
         self._data   = []
+    
+    def set_timeout(self,timeout=6):
+        gt.TIMEOUT = timeout
+    
+    def accessible(self):
+        return gt.com.accessible()
     
     def suggest(self,search,pair):
         return gt.Suggest(search,pair).run()
@@ -59,9 +64,8 @@ class Plugin:
     def request (self,search='',url=''
                 ,articleid=1
                 ):
-        iget = gt.Get (search  = search
-                      ,url     = url
-                      ,timeout = self._timeout
+        iget = gt.Get (search = search
+                      ,url    = url
                       )
         self._text = iget.run()
         self._html = iget._html
@@ -78,7 +82,7 @@ class Plugin:
             for block in self._blocks:
                 # Prevent useless error output
                 if block._url:
-                    block._url = gt.fix_url(block._url)
+                    block._url = gt.com.fix_url(block._url)
         self._data = el.Elems (blocks    = self._blocks
                               ,articleid = articleid
                               ,iabbr     = self.iabbr
