@@ -127,7 +127,6 @@ class Source:
     
     def __init__(self):
         self._title  = ''
-        self._url    = ''
         self._status = _('not running')
         self._color  = 'red'
 
@@ -136,48 +135,47 @@ class Source:
 class Welcome:
 
     def __init__ (self,product='MClient'
-                 ,version='current',timeout=6
+                 ,version='current'
                  ):
-        self._sources   = []
+        self.values()
         self._product   = product
         self._version   = version
-        self._st_color  = 'red'
-        self._st_status = objs.plugins().accessible()
-        self._timeout   = timeout
         self._desc      = sh.List (lst1 = [self._product
                                           ,self._version
                                           ]
                                   ).space_items()
 
+    def values(self):
+        self._sources   = []
+        self._sd_status = 0
+        self._sd_color  = 'red'
+        self._product   = ''
+        self._version   = ''
+        self._desc      = ''
+    
     def sources(self):
         f = '[MClient] logic.Welcome.sources'
-        dics = objs.plugins().online_sources()
-        urls = objs._plugins.online_urls()
-        if dics and urls:
-            urls = [url for url in urls if url]
-            if len(dics) == len(urls):
-                self._sources = []
-                for url in urls:
-                    source = Source()
-                    source._url = url
-                    if self.online(url):
-                        source._status = _('running')
-                        source._color  = 'green'
-                    else:
-                        source._status = _('not running')
-                        source._color  = 'red'
-                    self._sources.append(source)
-            else:
-                sh.objs.mes (f,_('ERROR')
-                            ,_('The condition "%s" is not observed!') \
-                            % '%d = %d' % (len(dics),len(urls))
-                            )
+        old  = objs.plugins()._source
+        dics = objs._plugins.online_sources()
+        if dics:
+            for dic in dics:
+                objs._plugins.set(dic)
+                source        = Source()
+                source._title = dic
+                if objs._plugins.accessible():
+                    source._status = _('running')
+                    source._color  = 'green'
+                self._sources.append(source)
         else:
             sh.com.empty(f)
+        objs._plugins.set(_('Offline'))
+        self._sd_status = objs.plugins().accessible()
+        if self._sd_status:
+            self._sd_color = 'green'
+        objs._plugins.set(old)
 
-    def source_code(self,url,status,color):
-        url = url.replace('https://','').replace('http://','').replace('www.','')
-        self.istr.write('      <b>{}</b>\n'.format(url))
+    def source_code(self,title,status,color):
+        self.istr.write('      <b>{}</b>\n'.format(title))
         self.istr.write('      <font face="Serif" color="')
         self.istr.write(color)
         self.istr.write('" size="6">')
@@ -334,16 +332,16 @@ class Welcome:
         self.istr.write('\n')
         self.istr.write('      <br><br>\n')
         for source in self._sources:
-            self.source_code (url    = source._url
+            self.source_code (title  = source._title
                              ,status = source._status
                              ,color  = source._color
                              )
         self.istr.write('      {}'.format(_('Offline dictionaries loaded:')))
         self.istr.write('\n')
         self.istr.write('      <font color="')
-        self.istr.write(self._st_color)
+        self.istr.write(self._sd_color)
         self.istr.write('">')
-        self.istr.write('{}'.format(self._st_status))
+        self.istr.write('{}'.format(self._sd_status))
         self.istr.write('</font>.\n')
         self.istr.write('    </font>\n')
         self.istr.write('<br><br><br><br>')
@@ -362,8 +360,6 @@ class Welcome:
 
     def run(self):
         self.sources()
-        if self._st_status:
-            self._st_color = 'green'
         return self.generate()
 
 

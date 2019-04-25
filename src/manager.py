@@ -79,19 +79,6 @@ class Plugins:
                ,'multitran.com'
                )
     
-    def online_urls(self):
-        ''' The output length of this procedure shall be equal to
-            the output length of 'self.online_sources'.
-        '''
-        old = self._source
-        self.set('multitran.ru')
-        url1 = self.root_url()
-        self.set('multitran.com')
-        url2 = self.root_url()
-        self._source = old
-        self.set(self._source)
-        return(url1,url2)
-    
     def encoding(self):
         f = '[MClient] manager.Plugins.encoding'
         if self.plugin:

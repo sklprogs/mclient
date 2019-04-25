@@ -209,6 +209,16 @@ class Commands:
         sh.log.append (f,_('DEBUG')
                       ,message
                       )
+    
+    def welcome(self):
+        f = '[MClient] tests.Commands.welcome'
+        file_w = '/tmp/test.html'
+        code   = lg.Welcome().run()
+        if code:
+            sh.WriteTextFile(file_w).write(code)
+            sh.Launch(file_w).default()
+        else:
+            sh.com.empty(f)
 
 
 com = Commands()
@@ -218,23 +228,7 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
     import logic as lg
-    com.accessibility()
-    '''
-    
-    print('Check accessibility:')
-    source = _('Offline')
-    lg.objs.plugins().set(source)
-    print(source,lg.objs._plugins.accessible())
-    source = 'multitran.ru'
-    lg.objs._plugins.set(source)
-    print(source,lg.objs._plugins.accessible())
-    source = 'multitran.com'
-    lg.objs._plugins.set(source)
-    print(source,lg.objs._plugins.accessible())
-    source = _('Multitran')
-    lg.objs._plugins.set(source)
-    print(source,lg.objs._plugins.accessible())
-    '''
+    com.welcome()
     
     '''
     search = 'азбука'
