@@ -59,13 +59,9 @@ class Plugin:
     def accessible(self):
         return self.mrplugin.accessible() and self.mcplugin.accessible()
     
-    def suggest(self,search,pair=None):
-        lst1 = self.mrplugin.suggest (search = search
-                                     ,pair   = pair
-                                     )
-        lst2 = self.mcplugin.suggest (search = search
-                                     ,pair   = pair
-                                     )
+    def suggest(self,search):
+        lst1 = self.mrplugin.suggest(search)
+        lst2 = self.mcplugin.suggest(search)
         lst = [lst1,lst2]
         lst = [list(item) for item in lst if item]
         result = []

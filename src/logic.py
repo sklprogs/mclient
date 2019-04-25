@@ -1200,11 +1200,9 @@ class Commands:
     def __init__(self):
         self.unverified()
     
-    def suggest(self,search,pair='',limit=0):
+    def suggest(self,search,limit=0):
         f = '[MClient] logic.Commands.suggest'
-        items = objs.plugins().suggest (search = search
-                                       ,pair   = pair
-                                       )
+        items = objs.plugins().suggest(search)
         if items:
             if limit:
                 items = items[0:limit]

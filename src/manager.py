@@ -43,7 +43,7 @@ class Plugins:
         self.set_timeout(self._timeout)
     
     def set_pair(self,pair):
-        # An abbreviation of a pair such as 'ENG <=> RUS'
+        # Input is a pair abbreviation such as 'ENG <=> RUS'
         f = '[MClient] manager.Plugins.set_pair'
         if self.plugin:
             return self.plugin.set_pair(pair)
@@ -64,10 +64,10 @@ class Plugins:
         else:
             sh.com.empty(f)
     
-    def suggest(self,search,pair):
+    def suggest(self,search):
         f = '[MClient] manager.Plugins.suggest'
         if self.plugin:
-            return self.plugin.suggest(search,pair)
+            return self.plugin.suggest(search)
         else:
             sh.com.empty(f)
     

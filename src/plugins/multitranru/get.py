@@ -58,23 +58,20 @@ PAIR = PAIR_URLS[0]
 
 class Suggest:
     
-    def __init__(self,search,pair):
+    def __init__(self,search):
         self.values()
         if search:
-            self.reset (search = search
-                       ,pair   = pair
-                       )
+            self.reset(search)
     
     def values(self):
+        self._pair   = PAIR
         self.Success = True
         self._search = ''
         self._url    = ''
-        self._pair   = ''
     
-    def reset(self,search,pair):
+    def reset(self,search):
         f = '[MClient] plugins.multitranru.get.Suggest.reset'
         self._search = search
-        self._pair   = pair
         if not self._search or not self._pair:
             self.Success = False
             sh.com.empty(f)

@@ -144,6 +144,42 @@ class Plugin:
 
 class Commands:
     
+    def suggest(self):
+        f = '[MClient] tests.Commands.suggest'
+        #1
+        source  = 'multitran.ru'
+        pair    = 'ENG <=> RUS'
+        search  = 'привет'
+        message = 'Source: "%s"; pair: "%s"; search: "%s"' % (source,pair,search)
+        lg.objs.plugins().set(source)
+        lg.objs._plugins.set_pair(pair)
+        sh.log.append (f,_('INFO')
+                      ,message
+                      )
+        lg.com.suggest(search)
+        #2
+        source  = 'multitran.com'
+        pair    = 'DEU <=> RUS'
+        search  = 'Scheiße'
+        message = 'Source: "%s"; pair: "%s"; search: "%s"' % (source,pair,search)
+        lg.objs.plugins().set(source)
+        lg.objs._plugins.set_pair(pair)
+        sh.log.append (f,_('INFO')
+                      ,message
+                      )
+        lg.com.suggest(search)
+        #3
+        source  = _('Multitran')
+        pair    = 'FRA <=> RUS'
+        search  = 'œuf'
+        message = 'Source: "%s"; pair: "%s"; search: "%s"' % (source,pair,search)
+        lg.objs.plugins().set(source)
+        lg.objs._plugins.set_pair(pair)
+        sh.log.append (f,_('INFO')
+                      ,message
+                      )
+        lg.com.suggest(search)
+    
     def _set_timeout(self,module,source,timeout):
         f = '[MClient] tests.Commands._set_timeout'
         lg.objs.plugins().set(source)
@@ -268,7 +304,7 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
     import logic as lg
-    com.set_pair()
+    com.suggest()
     
     '''
     search = 'азбука'

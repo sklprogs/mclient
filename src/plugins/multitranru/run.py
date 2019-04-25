@@ -62,8 +62,8 @@ class Plugin:
     def accessible(self):
         return gt.com.accessible()
     
-    def suggest(self,search,pair):
-        return gt.Suggest(search,pair).run()
+    def suggest(self,search):
+        return gt.Suggest(search).run()
     
     def encoding(self):
         return gt.ENCODING

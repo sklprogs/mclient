@@ -50,7 +50,7 @@ class Plugin:
     def accessible(self):
         return gt.com.accessible()
     
-    def suggest(self,search,pair=None):
+    def suggest(self,search):
         return gt.Suggest(search).run()
     
     def encoding(self):
