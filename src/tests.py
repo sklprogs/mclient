@@ -144,6 +144,25 @@ class Plugin:
 
 class Commands:
     
+    def request(self):
+        f = '[MClient] tests.Commands.request'
+        source = _('Multitran')
+        pair   = 'DEU <=> RUS'
+        search = 'карандаш'
+        message = 'Source: "%s"; pair: "%s"; search: "%s"' % (source,pair,search)
+        lg.objs.plugins().set(source)
+        lg.objs._plugins.set_pair(pair)
+        sh.log.append (f,_('INFO')
+                      ,message
+                      )
+        data = lg.objs._plugins.request (search = search
+                                        ,url    = ''
+                                        )
+        if data:
+            sg.fast_txt(data)
+        else:
+            sh.com.empty(f)
+    
     def get_url(self):
         f = '[MClient] tests.Commands.get_url'
         #1
@@ -344,7 +363,7 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
     import logic as lg
-    com.get_url()
+    com.request()
     
     '''
     search = 'азбука'

@@ -97,12 +97,17 @@ class Plugin:
     def request (self,search=''
                 ,url='',articleid=1
                 ):
+        ''' We cannot use the same URL for different plugins, so we
+            create a plugin-specific URL.
+        '''
+        mrurl  = self.get_url(search)
+        mcurl  = self.get_url(search,Com=True)
         mrdata = self.mrplugin.request (search    = search
-                                       ,url       = url
+                                       ,url       = mrurl
                                        ,articleid = articleid
                                        )
         mcdata = self.mcplugin.request (search    = search
-                                       ,url       = url
+                                       ,url       = mcurl
                                        ,articleid = articleid
                                        )
         tmp = [mrdata,mcdata]

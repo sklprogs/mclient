@@ -220,9 +220,10 @@ class Commands:
     def get_url(self,search):
         f = '[MClient] plugins.multitranru.get.Commands.get_url'
         if search:
+            #note: The encoding here should always be 'utf-8'!
             return sh.Online (base_str   = PAIR
                              ,search_str = search
-                             ,encoding   = ENCODING
+                             ,encoding   = 'utf-8'
                              ).url()
         else:
             sh.com.empty(f)
