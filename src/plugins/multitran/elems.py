@@ -29,8 +29,8 @@ class Elems:
             self.Success = False
             sh.com.empty(f)
     
-    def topics(self):
-        f = '[MClient] plugins.multitran.elems.Elems.topics'
+    def subjects(self):
+        f = '[MClient] plugins.multitran.elems.Elems.subjects'
         if self.Success:
             pattern = '[\s]{0,1}(в|in) \d+ (тематиках|тематике|subjects)'
             count = 0
@@ -255,7 +255,7 @@ class Elems:
         self.purge()
         self.debug_both()
         self.sumup()
-        self.topics()
+        self.subjects()
         self.debug()
         return self._data
         

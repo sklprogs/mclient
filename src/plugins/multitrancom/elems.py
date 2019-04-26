@@ -84,7 +84,7 @@ class Elems:
     '''
     def __init__ (self,blocks,articleid,iabbr
                  ,Debug=False,Shorten=True
-                 ,MaxRow=20,MaxRows=20
+                 ,MaxRow=20,MaxRows=20,search=''
                  ):
         f = '[MClient] plugins.multitrancom.elems.Elems.__init__'
         self._data      = []
@@ -96,12 +96,41 @@ class Elems:
         self.Shorten    = Shorten
         self.MaxRow     = MaxRow
         self.MaxRows    = MaxRows
+        self._search    = search.strip()
         if self._blocks and self._articleid:
             self.Success = True
         else:
             self.Success = False
             sh.com.empty(f)
         
+    def delete_search(self):
+        ''' Remove a block that looks like "SEARCH:" and comes before
+            the phrase "NUMBER phrases in NUMBER subjects".
+            Interestingly enough, the server preserves the case of
+            mY sEaRch, so there is no need to make the search
+            lower-case.
+        '''
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_search'
+        if self.Success:
+            if self._search:
+                count = 0
+                i = 0
+                while i < len(self._blocks):
+                    if self._blocks[i]._type == 'comment' \
+                    and self._blocks[i]._text.strip() == self._search \
+                    + ':':
+                        del self._blocks[i]
+                        count += 1
+                        i -= 1
+                    i += 1
+                sh.log.append (f,_('INFO')
+                              ,_('Blocks removed: %d') % count
+                              )
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
     def thesaurus(self):
         ''' Explanations are tagged just like word forms, and we can
             judge upon the type only by the length of the block.
@@ -161,6 +190,7 @@ class Elems:
             self.same_cells()
             self.phrases()
             self.trash()
+            self.delete_search()
             self.dic_urls()
             self.unite_comments()
             self.add_space()

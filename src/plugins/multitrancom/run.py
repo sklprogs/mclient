@@ -102,6 +102,7 @@ class Plugin:
         self._data = el.Elems (blocks    = self._blocks
                               ,articleid = articleid
                               ,iabbr     = self.iabbr
+                              ,search    = search
                               ,Debug     = self.Debug
                               ,Shorten   = self.Shorten
                               ,MaxRow    = self.MaxRow
