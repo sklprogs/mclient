@@ -207,7 +207,7 @@ class Elems:
         if 'ʌ' in text or 'ɔ' in text or 'ə' in text or 'æ' in text \
         or 'ɑ' in text or 'ɛ' in text or 'ʒ' in text or 'ʤ' in text \
         or 'ð' in text or 'ʃ' in text or 'ʧ'in text or 'θ' in text \
-        or 'ŋ' in text:
+        or 'ŋ' in text or 'ɪ' in text:
             return True
     
     def transc(self):
