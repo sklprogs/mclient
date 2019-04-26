@@ -29,6 +29,53 @@ class Elems:
             self.Success = False
             sh.com.empty(f)
     
+    def topics(self):
+        f = '[MClient] plugins.multitran.elems.Elems.topics'
+        if self.Success:
+            pattern = '[\s]{0,1}(в|in) \d+ (тематиках|тематике|subjects)'
+            count = 0
+            i = 0
+            while i < len(self._data):
+                if re.match(pattern,self._data[i][8]):
+                    del self._data[i]
+                    count += 1
+                    i -= 1
+                i += 1
+            sh.log.append (f,_('INFO')
+                          ,_('Blocks removed: %d') % count
+                          )
+        else:
+            sh.com.cancel(f)
+    
+    def purge(self):
+        ''' Delete blocks that are empty, likely duplicates or have
+            no value.
+        '''
+        f = '[MClient] plugins.multitran.elems.Elems.purge'
+        if self.Success:
+            count = 0
+            i = 0
+            while i < len(self._data1):
+                btype = self._data1[i][7]
+                text  = self._data1[i][8]
+                ''' It is not easy to distinguish comments and
+                    transcriptions at 'multitran.com'. Since
+                    'multitran.com' is a development branch of
+                    'multitran.ru', we assume that if an article at
+                    'multitran.ru' have transcriptions, so does
+                    an article at 'multitran.com'.
+                '''
+                if not text or btype == 'transc':
+                    del self._data1[i]
+                    count += 1
+                    i -= 1
+                i += 1
+            sh.log.append (f,_('INFO')
+                          ,_('Blocks removed: %d') % count
+                          )
+        else:
+            sh.com.cancel(f)
+    
     def tolist(self):
         f = '[MClient] plugins.multitran.elems.Elems.tolist'
         if self.Success:
@@ -205,8 +252,10 @@ class Elems:
         self.tolist()
         self.join_phrases()
         self.duplicates()
+        self.purge()
         self.debug_both()
         self.sumup()
+        self.topics()
         self.debug()
         return self._data
         

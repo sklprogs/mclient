@@ -110,7 +110,13 @@ class Plugin:
                                        ,articleid = articleid
                                        )
         if mrdata and mcdata:
-            self._data = el.Elems(mrdata,mcdata).run()
+            self._data = el.Elems (data1   = mrdata
+                                  ,data2   = mcdata
+                                  ,Debug   = self.Debug
+                                  ,Shorten = self.Shorten
+                                  ,MaxRow  = self.MaxRow
+                                  ,MaxRows = self.MaxRows
+                                  ).run()
         elif mrdata:
             self._data = mrdata
         elif mcdata:
