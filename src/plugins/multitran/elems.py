@@ -29,6 +29,40 @@ class Elems:
             self.Success = False
             sh.com.empty(f)
     
+    def phrase_block(self):
+        f = '[MClient] plugins.multitran.elems.Elems.phrase_block'
+        if self.Success:
+            if self._phblock is None:
+                if self._phdic:
+                    for i in range(len(self._data2)):
+                        if self._phdic == self._data2[i][8]:
+                            self._phblock = self._data2[i]
+                            break
+                else:
+                    sh.com.empty(f)
+            return self._phblock
+        else:
+            sh.com.cancel(f)
+    
+    def phrase_prop(self):
+        ''' In order to be in the same section, phrases must have
+            the same DICA, WFORMA and (probably) SPEECHA, TRANSCA.
+        '''
+        f = '[MClient] plugins.multitran.elems.Elems.phrase_prop'
+        if self.Success:
+            if self.phrase_block():
+                for block in self._data1:
+                    if block[7] == 'phrase':
+                        block[2] = self._phblock[2]
+                        block[3] = self._phblock[3]
+                        block[4] = self._phblock[4]
+            else:
+                sh.log.append (f,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+        else:
+            sh.com.cancel(f)
+    
     def subjects(self):
         f = '[MClient] plugins.multitran.elems.Elems.subjects'
         if self.Success:
@@ -91,55 +125,69 @@ class Elems:
         '''
         f = '[MClient] plugins.multitran.elems.Elems.join_phrases'
         if self.Success:
-            phrase1 = self._data1[-1][2]
-            phrase2 = self._data2[-1][2]
-            pattern = '(\d+)\s(phrases|фраза|фраз)'
-            match1  = re.match(pattern,phrase1)
-            match2  = re.match(pattern,phrase2)
-            if match1 and match2:
-                sh.log.append (f,_('DEBUG')
-                              ,_('Phrase dic 1: "%s"') % match1.group(0)
-                              )
-                sh.log.append (f,_('DEBUG')
-                              ,_('Phrase dic 2: "%s"') % match2.group(0)
-                              )
-                val1 = int(match1.group(1))
-                val2 = int(match2.group(1))
-                val  = max(val1,val2)
-                dica = _('%d phrases') % val
-                sh.log.append (f,_('DEBUG')
-                              ,_('Common phrase dic: "%s"') % dica
-                              )
-                for i in range(len(self._data1)):
-                    # DICA
-                    if self._data1[i][2] == phrase1:
-                        self._data1[i][2] = dica
-                    # DICAF
-                    if self._data1[i][30] == phrase1:
-                        self._data1[i][30] = dica
-                    # TEXT
-                    if self._data1[i][8] == phrase1:
-                        self._data1[i][8] = dica
-                for i in range(len(self._data2)):
-                    # DICA
-                    if self._data2[i][2] == phrase2:
-                        self._data2[i][2] = dica
-                    # DICAF
-                    if self._data2[i][30] == phrase2:
-                        self._data2[i][30] = dica
-                    # TEXT
-                    if self._data2[i][8] == phrase2:
-                        self._data2[i][8] = dica
+            ''' 'self._data1' can be empty after removing duplicates,
+                but this still should be considered a successful case.
+            '''
+            if self._data1 and self._data2:
+                phrase1 = self._data1[-1][2]
+                phrase2 = self._data2[-1][2]
+                pattern = '(\d+)\s(phrases|фраза|фраз)'
+                match1  = re.match(pattern,phrase1)
+                match2  = re.match(pattern,phrase2)
+                if match1 and match2:
+                    sh.log.append (f,_('DEBUG')
+                                  ,_('Phrase dic 1: "%s"') \
+                                  % match1.group(0)
+                                  )
+                    sh.log.append (f,_('DEBUG')
+                                  ,_('Phrase dic 2: "%s"') \
+                                  % match2.group(0)
+                                  )
+                    val1 = int(match1.group(1))
+                    val2 = int(match2.group(1))
+                    val  = max(val1,val2)
+                    self._phdic = _('%d phrases') % val
+                    sh.log.append (f,_('DEBUG')
+                                  ,_('Common phrase dic: "%s"') \
+                                  % self._phdic
+                                  )
+                    for i in range(len(self._data1)):
+                        # DICA
+                        if self._data1[i][2] == phrase1:
+                            self._data1[i][2] = self._phdic
+                        # DICAF
+                        if self._data1[i][30] == phrase1:
+                            self._data1[i][30] = self._phdic
+                        # TEXT
+                        if self._data1[i][8] == phrase1:
+                            self._data1[i][8] = self._phdic
+                    for i in range(len(self._data2)):
+                        # DICA
+                        if self._data2[i][2] == phrase2:
+                            self._data2[i][2] = self._phdic
+                        # DICAF
+                        if self._data2[i][30] == phrase2:
+                            self._data2[i][30] = self._phdic
+                        # TEXT
+                        if self._data2[i][8] == phrase2:
+                            self._data2[i][8] = self._phdic
+                else:
+                    sh.log.append (f,_('INFO')
+                                  ,_('Nothing to do!')
+                                  )
+            elif not self._data1:
+                self._data = list(self._data2)
             else:
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
+                # 'self._data2' cannot be empty in any case
+                sh.com.empty(f)
         else:
             sh.com.cancel(f)
     
     def values(self):
-        self._data   = []
-        self.Success = True
+        self._phdic   = ''
+        self._data    = []
+        self.Success  = True
+        self._phblock = None
     
     def duplicates(self):
         ''' Remove duplicate blocks generated by both plugins.
@@ -253,9 +301,9 @@ class Elems:
         self.join_phrases()
         self.duplicates()
         self.purge()
+        self.phrase_prop()
         self.debug_both()
         self.sumup()
         self.subjects()
         self.debug()
         return self._data
-        

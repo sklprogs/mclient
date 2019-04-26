@@ -512,5 +512,7 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
     import logic as lg
-    com.compare_elems()
+    lg.objs.plugins().set(_('Multitran'))
+    lg.objs._plugins.set_pair('DEU <=> RUS')
+    lg.objs._plugins.request(search='ernährung')
     sg.objs.end()

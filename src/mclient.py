@@ -536,6 +536,14 @@ class WebFrame:
         self.bindings()
         self.reset_opt()
         
+    def next_pair(self,event=None):
+        self.gui.men_pair.set_next()
+        self.set_pair()
+    
+    def prev_pair(self,event=None):
+        self.gui.men_pair.set_prev()
+        self.set_pair()
+    
     def paste_search_field(self,event=None):
         self.suggest.gui.close()
         self.gui.paste_search()
@@ -799,13 +807,13 @@ class WebFrame:
                 ,bindings = [sh.globs['var']['bind_prev_pair']
                             ,sh.globs['var']['bind_prev_pair_alt']
                             ]
-                ,action   = self.gui.men_pair.set_prev
+                ,action   = self.prev_pair
                 )
         sg.bind (obj      = self.gui.obj
                 ,bindings = [sh.globs['var']['bind_next_pair']
                             ,sh.globs['var']['bind_next_pair_alt']
                             ]
-                ,action   = self.gui.men_pair.set_next
+                ,action   = self.next_pair
                 )
         sg.bind (obj      = self.gui.obj
                 ,bindings = [sh.globs['var']['bind_settings']

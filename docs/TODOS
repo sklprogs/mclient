@@ -1,4 +1,5 @@
 
+- multitran: enable going by dic phrase URL
 - multitran.com: fix: "Вы попались на удочку" (ComputersRE,
   EngineeringRE) - found by autosuggestion, but not found by
   'plugins.stardict.get.AllDics.get'

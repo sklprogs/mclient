@@ -69,10 +69,10 @@ class BlockPrioritize:
     def run(self):
         f = '[MClient] cells.BlockPrioritize.run'
         if self.Success:
-            self.assign    ()
-            self.block     ()
+            self.assign()
+            self.block()
             self.prioritize()
-            self.dump      ()
+            self.dump()
         else:
             sh.com.cancel(f)
     
