@@ -49,6 +49,15 @@ class Plugin:
         self._blocks = []
         self._data   = []
     
+    def server(self):
+        return self.mrplugin.server()
+    
+    def combined(self):
+        ''' Whether or not the plugin is actually a wrapper over other
+            plugins.
+        '''
+        return True
+    
     def fix_raw_html(self):
         #todo: merge htmls
         code1 = self.mrplugin.fix_raw_html()
@@ -93,12 +102,11 @@ class Plugin:
     def pairs(self):
         return self.mrplugin.pairs()
     
-    def request (self,search=''
-                ,url='',articleid=1
-                ):
+    def request_mult(self,search='',articleid=1):
         ''' We cannot use the same URL for different plugins, so we
             create a plugin-specific URL.
         '''
+        f = '[MClient] plugins.multitran.run.Plugin.request_mult'
         mrurl  = self.get_url(search)
         mcurl  = self.get_url(search,Com=True)
         mrdata = self.mrplugin.request (search    = search
@@ -132,3 +140,35 @@ class Plugin:
         tmp = [item for item in tmp if item]
         self._html = ' '.join(tmp)
         return self._data
+    
+    def request_single (self,search=''
+                       ,url='',articleid=1
+                       ):
+        f = '[MClient] plugins.multitran.run.Plugin.request_single'
+        if self.mrplugin.server() in url:
+            return self.mrplugin.request (search    = search
+                                         ,url       = url
+                                         ,articleid = articleid
+                                         )
+        elif self.mcplugin.server() in url:
+            return self.mcplugin.request (search    = search
+                                         ,url       = url
+                                         ,articleid = articleid
+                                         )
+        else:
+            sh.objs.mes (f,_('WARNING')
+                        ,_('URL "%s" is unsupported!') % str(url)
+                        )
+    
+    def request (self,search=''
+                ,url='',articleid=1
+                ):
+        if url:
+            return self.request_single (search    = search
+                                       ,url       = url
+                                       ,articleid = articleid
+                                       )
+        else:
+            return self.request_mult (search    = search
+                                     ,articleid = articleid
+                                     )

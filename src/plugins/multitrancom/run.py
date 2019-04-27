@@ -34,6 +34,15 @@ class Plugin:
         self._blocks = []
         self._data   = []
     
+    def server(self):
+        return gt.URL
+    
+    def combined(self):
+        ''' Whether or not the plugin is actually a wrapper over other
+            plugins.
+        '''
+        return False
+    
     def fix_raw_html(self):
         return gt.com.fix_raw_html(self._html)
     

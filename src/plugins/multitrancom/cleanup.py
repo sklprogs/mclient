@@ -19,6 +19,12 @@ class CleanUp:
     def __init__(self,text):
         self._text = text
     
+    def trash(self):
+        # Термины по тематике <...>, содержащие
+        self._text = self._text.replace ('</a>, содержащие <strong>'
+                                        ,'</a><strong>'
+                                        )
+    
     def langs(self):
         self._text = self._text.replace ('<a href="/m.exe?a=256">Русский</a>'
                                         ,''
@@ -119,6 +125,7 @@ class CleanUp:
         f = '[MClient] plugins.multitrancom.CleanUp.run'
         if self._text:
             self.decode_entities() # Shared
+            self.trash()
             self.langs()
             self.common()          # Shared
             self.sep_words()

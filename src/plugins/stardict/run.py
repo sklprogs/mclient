@@ -40,6 +40,10 @@ class Plugin:
         self._html   = ''
     
     # This is needed only for compliance with a general method
+    def server(self):
+        return ''
+    
+    # This is needed only for compliance with a general method
     def fix_raw_html(self):
         return ''
     
@@ -62,6 +66,12 @@ class Plugin:
     # This is needed only for compliance with a general method
     def pairs(self):
         return ()
+    
+    def combined(self):
+        ''' Whether or not the plugin is actually a wrapper over other
+            plugins.
+        '''
+        return False
     
     def accessible(self):
         return gt.com.accessible()

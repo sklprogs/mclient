@@ -42,6 +42,16 @@ class Plugins:
         self.set(_('Multitran'))
         self.set_timeout(self._timeout)
     
+    def combined(self):
+        ''' Whether or not the plugin is actually a wrapper over other
+            plugins.
+        '''
+        f = '[MClient] manager.Plugins.combined'
+        if self.plugin:
+            return self.plugin.combined()
+        else:
+            sh.com.empty(f)
+    
     def fix_raw_html(self):
         f = '[MClient] manager.Plugins.fix_raw_html'
         code = ''

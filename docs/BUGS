@@ -1,6 +1,6 @@
 
-- plugins.multitran: changing pair at startup (ENG<=>RUS -> DEU<=>RUS)
-  does not always work (ernährung)
+- plugins.multitranru: may load nothing (do not empty
+  lg.objs.request()._url)
 - plugins.stardict: test: 'a title' is visible
 - plugins.stardict: eng-rus, full: search gate: found by 'Suggest' and
   logged as found by 'AllDics.get', but could not be shown

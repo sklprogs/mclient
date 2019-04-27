@@ -689,7 +689,7 @@ class WebFrame:
                 ,bindings = ['<Return>'
                             ,'<KP_Enter>'
                             ]
-                ,action   = self.go
+                ,action   = self.go_keyboard
                 )
         #todo: do not iconify at <ButtonRelease-3>
         sg.bind (obj      = self.gui.search_field
@@ -867,7 +867,7 @@ class WebFrame:
                 )
         sg.bind (obj      = self.gui
                 ,bindings = '<Button-1>'
-                ,action   = lambda x:self.go(Mouse=True)
+                ,action   = self.go_mouse
                 )
         ''' Key and mouse bindings must have different parents,
             otherwise, key bindings will not work, and mouse bindings
@@ -1224,7 +1224,7 @@ class WebFrame:
         try:
             self.gui.widget.parse(code)
             ''' This should not happen now as we strip out non-supported
-                characters
+                characters.
             '''
         except tk._tkinter.TclError:
             sg.Message (f,_('ERROR')
@@ -1417,41 +1417,53 @@ class WebFrame:
                               )
         '''
     
-    # Process either the search string or the URL
-    def go(self,event=None,Mouse=False):
-        f = '[MClient] mclient.WebFrame.go'
-        if Mouse:
-            if objs.blocks_db().Selectable:
-                objs._blocks_db.Selectable = False
-                result = objs._blocks_db.block_pos(pos=self._posn)
-                objs._blocks_db.Selectable = True
-                if result and result[8] == 'dic' \
-                and result[6] != self._phdic:
-                    dica = objs._blocks_db.prev_dica (pos  = result[0]
-                                                     ,dica = result[6]
-                                                     )
-                    if dica:
-                        sh.log.append (f,_('DEBUG')
-                                      ,_('Selected dictionary: "%s". Previous dictionary: "%s" (abbreviation), "%s" (full).') \
-                                      % (result[6],str(dica[0])
-                                        ,str(dica[1])
-                                        ,
-                                        )
-                                      )
-                        dica = dica[1]
-                    else:
-                        sh.log.append (f,_('DEBUG')
-                                      ,_('Selected dictionary: "%s". No previous dictionary.')
-                                      )
-                    lg.objs.order().lm_auto (dic1 = result[6]
-                                            ,dic2 = dica
-                                            )
-                    objs._blocks_db.delete_bookmarks()
-                    self.load_article()
+    def go_mouse(self,event=None):
+        f = '[MClient] mclient.WebFrame.go_mouse'
+        if objs.blocks_db().Selectable:
+            objs._blocks_db.Selectable = False
+            result = objs._blocks_db.block_pos(pos=self._posn)
+            objs._blocks_db.Selectable = True
+            if result and result[8] == 'dic' \
+            and result[6] != self._phdic:
+                dica = objs._blocks_db.prev_dica (pos  = result[0]
+                                                 ,dica = result[6]
+                                                 )
+                if dica:
+                    sh.log.append (f,_('DEBUG')
+                                  ,_('Selected dictionary: "%s". Previous dictionary: "%s" (abbreviation), "%s" (full).')\
+                                  % (result[6],str(dica[0])
+                                    ,str(dica[1])
+                                    ,
+                                    )
+                                  )
+                    dica = dica[1]
                 else:
-                    self.go_url()
+                    sh.log.append (f,_('DEBUG')
+                                  ,_('Selected dictionary: "%s". No previous dictionary.')
+                                  )
+                lg.objs.order().lm_auto (dic1 = result[6]
+                                        ,dic2 = dica
+                                        )
+                objs._blocks_db.delete_bookmarks()
+                self.load_article()
+            elif result and result[8] == 'term' \
+            and lg.objs.plugins().combined:
+                lg.objs._request._search = result[6].strip()
+                lg.objs._request._url = ''
+                self.load_article()
             else:
                 self.go_url()
+        else:
+            self.go_url()
+    
+    def go_keyboard(self,event=None):
+        f = '[MClient] mclient.WebFrame.go_keyboard'
+        result = objs.blocks_db().block_pos(pos=self._pos)
+        if result and result[8] == 'term' \
+        and lg.objs.plugins().combined:
+            lg.objs.request()._search = result[6].strip()
+            lg.objs._request._url = ''
+            self.load_article()
         else:
             search = self.gui.search_field.widget.get().strip('\n').strip(' ')
             if search == '':
@@ -1461,8 +1473,16 @@ class WebFrame:
             elif search == sh.globs['var']['repeat_sign2']:
                 self.insert_repeat_sign2()
             else:
-                lg.objs._request._search = search
+                lg.objs.request()._search = search
                 self.go_search()
+    
+    # Process either the search string or the URL
+    def go(self,event=None,Mouse=False):
+        f = '[MClient] mclient.WebFrame.go'
+        if Mouse:
+            self.go_mouse()
+        else:
+            self.go_keyboard()
 
     # Follow the URL of the current block
     def go_url(self,event=None):

@@ -1,4 +1,6 @@
 
+- multitran: when loading a page, use URLs of both multitran.ru and
+  multitran.com for all types
 - multitran: enable going by dic phrase URL
 - multitran.com: fix: "Вы попались на удочку" (ComputersRE,
   EngineeringRE) - found by autosuggestion, but not found by
