@@ -1446,11 +1446,6 @@ class WebFrame:
                                         )
                 objs._blocks_db.delete_bookmarks()
                 self.load_article()
-            elif result and result[8] == 'term' \
-            and lg.objs.plugins().combined:
-                lg.objs._request._search = result[6].strip()
-                lg.objs._request._url = ''
-                self.load_article()
             else:
                 self.go_url()
         else:
@@ -1458,23 +1453,16 @@ class WebFrame:
     
     def go_keyboard(self,event=None):
         f = '[MClient] mclient.WebFrame.go_keyboard'
-        result = objs.blocks_db().block_pos(pos=self._pos)
-        if result and result[8] == 'term' \
-        and lg.objs.plugins().combined:
-            lg.objs.request()._search = result[6].strip()
-            lg.objs._request._url = ''
-            self.load_article()
+        search = self.gui.search_field.widget.get().strip('\n').strip(' ')
+        if search == '':
+            self.go_url()
+        elif search == sh.globs['var']['repeat_sign']:
+            self.insert_repeat_sign()
+        elif search == sh.globs['var']['repeat_sign2']:
+            self.insert_repeat_sign2()
         else:
-            search = self.gui.search_field.widget.get().strip('\n').strip(' ')
-            if search == '':
-                self.go_url()
-            elif search == sh.globs['var']['repeat_sign']:
-                self.insert_repeat_sign()
-            elif search == sh.globs['var']['repeat_sign2']:
-                self.insert_repeat_sign2()
-            else:
-                lg.objs.request()._search = search
-                self.go_search()
+            lg.objs.request()._search = search
+            self.go_search()
     
     # Process either the search string or the URL
     def go(self,event=None,Mouse=False):
@@ -1530,7 +1518,7 @@ class WebFrame:
 
     def get_url(self):
         f = '[MClient] mclient.WebFrame.get_url'
-        lg.objs._request._url = lg.objs.plugins().get_url(lg.objs._request._search)
+        lg.objs.request()._url = lg.objs.plugins().get_url(lg.objs._request._search)
         sh.log.append (f,_('DEBUG')
                       ,str(lg.objs._request._url)
                       )

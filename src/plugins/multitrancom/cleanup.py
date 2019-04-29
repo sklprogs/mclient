@@ -20,8 +20,17 @@ class CleanUp:
         self._text = text
     
     def trash(self):
+        self._text = self._text.replace ('>\xa0Terms for subject <a href'
+                                        ,'><a href'
+                                        )
+        self._text = self._text.replace ('>\xa0Термины по тематике <a href'
+                                        ,'><a href'
+                                        )
         # Термины по тематике <...>, содержащие
         self._text = self._text.replace ('</a>, содержащие <strong>'
+                                        ,'</a><strong>'
+                                        )
+        self._text = self._text.replace ('</a> containing <strong>'
                                         ,'</a><strong>'
                                         )
     
@@ -52,6 +61,12 @@ class CleanUp:
                                         )
         self._text = self._text.replace ('class="phraselist2"><b>Немецкий</b>'
                                         ,'class="phraselist2">'
+                                        )
+        self._text = self._text.replace ('class="phraselist1"><b>English</b></td>'
+                                        ,'class="phraselist1"></td>'
+                                        )
+        self._text = self._text.replace ('class="phraselist1"><b>Russian</b></td>'
+                                        ,'class="phraselist1"></td>'
                                         )
     
     def no_matches(self):
@@ -92,6 +107,10 @@ class CleanUp:
                                         )
     
     def common(self):
+        self._text = self._text.replace('','')
+        self._text = self._text.replace('','')
+        self._text = self._text.replace('','')
+        self._text = self._text.replace('','')
         self._text = self._text.replace('\r\n','')
         self._text = self._text.replace('\n','')
         self._text = self._text.replace('\xa0',' ')

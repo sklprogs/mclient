@@ -102,21 +102,8 @@ class Plugin:
     def pairs(self):
         return self.mrplugin.pairs()
     
-    def request_mult(self,search='',articleid=1):
-        ''' We cannot use the same URL for different plugins, so we
-            create a plugin-specific URL.
-        '''
-        f = '[MClient] plugins.multitran.run.Plugin.request_mult'
-        mrurl  = self.get_url(search)
-        mcurl  = self.get_url(search,Com=True)
-        mrdata = self.mrplugin.request (search    = search
-                                       ,url       = mrurl
-                                       ,articleid = articleid
-                                       )
-        mcdata = self.mcplugin.request (search    = search
-                                       ,url       = mcurl
-                                       ,articleid = articleid
-                                       )
+    def elems(self,mrdata,mcdata):
+        f = '[MClient] plugins.multitran.run.Plugin.elems'
         if mrdata and mcdata:
             self._data = el.Elems (data1   = mrdata
                                   ,data2   = mcdata
@@ -131,7 +118,6 @@ class Plugin:
             self._data = mcdata
         else:
             sh.com.empty(f)
-        
         tmp = [self.mrplugin._text,self.mcplugin._text]
         tmp = [item for item in tmp if item]
         self._text = ' '.join(tmp)
@@ -141,34 +127,66 @@ class Plugin:
         self._html = ' '.join(tmp)
         return self._data
     
-    def request_single (self,search=''
-                       ,url='',articleid=1
-                       ):
-        f = '[MClient] plugins.multitran.run.Plugin.request_single'
-        if self.mrplugin.server() in url:
-            return self.mrplugin.request (search    = search
-                                         ,url       = url
-                                         ,articleid = articleid
-                                         )
-        elif self.mcplugin.server() in url:
-            return self.mcplugin.request (search    = search
-                                         ,url       = url
-                                         ,articleid = articleid
-                                         )
+    def request_search(self,search='',articleid=1):
+        ''' We cannot use the same URL for different plugins, so we
+            create a plugin-specific URL.
+        '''
+        f = '[MClient] plugins.multitran.run.Plugin.request_search'
+        mrurl  = self.get_url(search)
+        mcurl  = self.get_url(search,Com=True)
+        mrdata = self.mrplugin.request (search    = search
+                                       ,url       = mrurl
+                                       ,articleid = articleid
+                                       )
+        mcdata = self.mcplugin.request (search    = search
+                                       ,url       = mcurl
+                                       ,articleid = articleid
+                                       )
+        return self.elems(mrdata,mcdata)
+    
+    def request_url (self,search=''
+                    ,url='',articleid=1
+                    ):
+        f = '[MClient] plugins.multitran.run.Plugin.request_url'
+        if url:
+            mrserver = self.mrplugin.server()
+            mcserver = self.mcplugin.server()
+            if mrserver in url or mcserver in url:
+                if mrserver in url:
+                    mrurl = url
+                    mcurl = mrurl.replace('.ru/c/m.exe','.com/m.exe')
+                    mcurl = mcurl.replace('.ru/c/M.exe','.com/m.exe')
+                    mcurl += '&SHL=2'
+                else:
+                    mcurl = url
+                    mrurl = mcurl.replace('.com/m.exe','.ru/c/m.exe')
+                    mrurl = mrurl.replace('&SHL=1','')
+                    mrurl = mrurl.replace('&SHL=2','')
+                mrdata = self.mrplugin.request (search    = search
+                                               ,url       = mrurl
+                                               ,articleid = articleid
+                                               )
+                mcdata = self.mcplugin.request (search    = search
+                                               ,url       = mcurl
+                                               ,articleid = articleid
+                                               )
+                return self.elems(mrdata,mcdata)
+            else:
+                sh.objs.mes (f,_('WARNING')
+                            ,_('URL "%s" is unsupported!') % str(url)
+                            )
         else:
-            sh.objs.mes (f,_('WARNING')
-                        ,_('URL "%s" is unsupported!') % str(url)
-                        )
+            sh.com.empty(f)
     
     def request (self,search=''
                 ,url='',articleid=1
                 ):
         if url:
-            return self.request_single (search    = search
-                                       ,url       = url
+            return self.request_url (search    = search
+                                    ,url       = url
+                                    ,articleid = articleid
+                                    )
+        else:
+            return self.request_search (search    = search
                                        ,articleid = articleid
                                        )
-        else:
-            return self.request_mult (search    = search
-                                     ,articleid = articleid
-                                     )

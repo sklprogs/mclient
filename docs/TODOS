@@ -1,6 +1,9 @@
 
-- multitran: when loading a page, use URLs of both multitran.ru and
-  multitran.com for all types
+- Multitran: educate dogs: when only separate words are found in one
+  source, and a full article is found in another source, show only
+  the full article
+- multitran.com: eng-rus: живой: shorten the column with corrections
+- multitran.com: propaganda: add space between items
 - multitran: enable going by dic phrase URL
 - multitran.com: fix: "Вы попались на удочку" (ComputersRE,
   EngineeringRE) - found by autosuggestion, but not found by
