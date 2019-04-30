@@ -1,4 +1,7 @@
 
+- Wrong URL substitution: "слинять" (https://www.multitran.ru/c/m.exe?t=7547319_2_1&s1=go%20between%20the%20moon%20and%20the%20milkman)
+  is replaced with (https://www.multitran.com/m.exe?t=7547319_2_1&s1=go%20between%20the%20moon%20and%20the%20milkman)
+  which is "питание"
 - plugins.multitranru: may load nothing (do not empty
   lg.objs.request()._url)
 - plugins.stardict: test: 'a title' is visible

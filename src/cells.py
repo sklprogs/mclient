@@ -542,7 +542,8 @@ class Pos:
             - Duplicate spaces are removed
         '''
         f = '[MClient] cells.Pos.gen_poses'
-        last = 0
+        last      = 0
+        not_found = []
         for block in self._blocks:
             text = sh.Text(text=block._text.strip()).delete_duplicate_spaces()
             if text:
@@ -556,14 +557,18 @@ class Pos:
                 if result >= last:
                     block._first = result
                 else:
-                    sh.objs.mes (f,_('ERROR')
-                                ,_('Unable to find "%s"!') % str(text)
-                                )
                     block._first = last
+                    not_found.append(text)
             else:
                 block._first = last
             block._last = block._first + len(text)
             last        = block._last
+        if not_found:
+            not_found = ['"' + item + '"' for item in not_found]
+            not_found = '\n' + '\n'.join(not_found)
+            sh.objs.mes (f,_('ERROR')
+                        ,_('Unable to find: %s') % not_found
+                        )
             
     def dump(self):
         tmp = io.StringIO()
