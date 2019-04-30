@@ -186,10 +186,10 @@ class Elems:
         if self.Success:
             self.transc()
             self.thesaurus()
-            # Change types before this
-            self.same_cells()
             self.phrases()
             self.trash()
+            # Change types and delete garbage blocks before this
+            self.same_cells()
             self.delete_search()
             self.dic_urls()
             self.unite_comments()
@@ -212,15 +212,14 @@ class Elems:
     def debug(self):
         if self.Debug:
             print('\nplugins.multitrancom.elems.Elems.debug (Non-DB blocks):')
-            headers = ['DICA','WFORMA','SPEECHA','TRANSCA','TERMA'
-                      ,'TYPE','TEXT','URL','SAMECELL','SELECTABLE'
+            headers = ['TYPE','TEXT','SAMECELL','CELLNO','ROWNO','COLNO'
+                      ,'POS1','POS2'
                       ]
             rows = []
             for block in self._blocks:
-                rows.append ([block._dica,block._wforma,block._speecha
-                             ,block._transca,block._terma,block._type
-                             ,block._text,block._url,block._same
-                             ,block._select
+                rows.append ([block._type,block._text,block._same
+                             ,block._cell_no,block.i,block.j
+                             ,block._first,block._last
                              ]
                             )
             sh.Table (headers = headers

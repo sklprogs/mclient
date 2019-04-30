@@ -345,6 +345,9 @@ class Cells:
                 self._blocks[x].j = j = len(self._cols)
             else:
                 PrevFixed = False
+                # This can happen if there are no fixed columns
+                if i < 0:
+                    i += 1
                 self._blocks[x].i = i
                 if x > 0:
                     j += 1

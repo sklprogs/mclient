@@ -731,7 +731,7 @@ class Objects:
                                             ,Debug   = False
                                             ,Shorten = True
                                             ,MaxRow  = 20
-                                            ,MaxRows = 20
+                                            ,MaxRows = 100
                                             )
         return self._plugins
     
