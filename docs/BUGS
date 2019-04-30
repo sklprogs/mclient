@@ -1,14 +1,17 @@
 
+- plugins.multitran: eng-rus: по списку: phrase dics "Военный жаргон"
+  and "Производство" are of the phrase dic section.
+- plugins.multitran: eng-rus: knob: wrong place of comments and dics
+- plugins.multitran: eng-rus: complex: wrong place of corrections
 - Wrong URL substitution: "слинять" (https://www.multitran.ru/c/m.exe?t=7547319_2_1&s1=go%20between%20the%20moon%20and%20the%20milkman)
   is replaced with (https://www.multitran.com/m.exe?t=7547319_2_1&s1=go%20between%20the%20moon%20and%20the%20milkman)
   which is "питание"
-- plugins.multitranru: may load nothing (do not empty
-  lg.objs.request()._url)
 - plugins.stardict: test: 'a title' is visible
 - plugins.stardict: eng-rus, full: search gate: found by 'Suggest' and
   logged as found by 'AllDics.get', but could not be shown
 - plugins.stardict: eng-rus, full: lips: fix unsearchable fragment
 - multitran.com: go, moniker: fix unsearchable fragment
+  <a href="/m.exe?a=110&amp;l1=1&amp;l2=2&amp;s=moniker (The descriptive form, or explicit connecting points, of referring to the location of a link source)&amp;sc=847">Майкр.</a></td>
 - Test and fix getting non-terms (when everything is selectable)
 - History: fix selecting the same term but from different resources
 - eng-rus: multitran.com: A&E: transcription is set as a comment before
