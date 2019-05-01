@@ -46,15 +46,15 @@ class Block:
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'correction', 'transc', 'invalid'
         '''
-        self._type     = 'comment'
-        self._text     = ''
-        self._url      = ''
-        self._dica     = ''
-        self._dicaf    = ''
-        self._wforma   = ''
-        self._speecha  = ''
-        self._transca  = ''
-        self._terma    = ''
+        self._type    = 'invalid'
+        self._text    = ''
+        self._url     = ''
+        self._dica    = ''
+        self._dicaf   = ''
+        self._wforma  = ''
+        self._speecha = ''
+        self._transca = ''
+        self._terma   = ''
 
 
 
@@ -181,6 +181,15 @@ class Elems:
                 else:
                     self._blocks[i]._same = 0
     
+    def comment_term(self):
+        # Fix the case when a comment refers to a term to the right
+        if len(self._blocks) > 1:
+            if self._blocks[0]._type == 'comment' \
+            and self._blocks[0]._same == 0:
+                if self._blocks[1]._type == 'term' \
+                and self._blocks[1]._same == 0:
+                    self._blocks[1]._same = 1
+    
     def run(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.run'
         if self.Success:
@@ -193,6 +202,7 @@ class Elems:
             self.delete_search()
             self.dic_urls()
             self.unite_comments()
+            self.comment_term()
             self.add_space()
             self.fill()
             self.fill_terma()

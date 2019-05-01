@@ -272,6 +272,7 @@ class Cells:
                   ,'ROWNO'
                   ,'COLNO'
                   ,'CELLNO'
+                  ,'SAME'
                   ]
         rows = []
         for block in self._blocks:
@@ -281,6 +282,7 @@ class Cells:
                          ,block.i
                          ,block.j
                          ,block._cell_no
+                         ,block._same
                          ]
                         )
         sh.Table (headers = headers
@@ -335,6 +337,11 @@ class Cells:
             # Must be before checking '_collimit'
             elif self._blocks[x]._same > 0:
                 PrevFixed = False
+                # This can happen if there are no fixed columns
+                if i < 0:
+                    i = 0
+                if j < len(self._cols):
+                    j = len(self._cols)
                 self._blocks[x].i = i
                 self._blocks[x].j = j
             elif j + 1 == self._collimit:
@@ -347,7 +354,7 @@ class Cells:
                 PrevFixed = False
                 # This can happen if there are no fixed columns
                 if i < 0:
-                    i += 1
+                    i = 0
                 self._blocks[x].i = i
                 if x > 0:
                     j += 1

@@ -519,13 +519,19 @@ if __name__ == '__main__':
     '''
     lg.objs.plugins().set('multitran.com')
     lg.objs._plugins.set_pair('ENG <=> RUS')
+    
+    '''
+    lg.objs.request()._search = 'засека'
+    lg.objs._request._url     = 'https://www.multitran.com/m.exe?a=3&sc=24&s=%D0%B7%D0%B0%D1%81%D0%B5%D0%BA%D0%B0&l1=2&l2=1&SHL=2'
+    import mclient
+    mclient.objs.webframe().load_article()
+    mclient.objs._webframe.gui.show()
+    '''
+
     data = lg.objs._plugins.request (search = 'засека'
                                     ,url    = 'https://www.multitran.com/m.exe?a=3&sc=24&s=%D0%B7%D0%B0%D1%81%D0%B5%D0%BA%D0%B0&l1=2&l2=1&SHL=2'
                                     )
     data = [list(row) for row in data]
-    print(data[0])
-    '''
-    data[0][13] = 0
     cldata = []
     for i in range(len(data)):
         row = [i,data[i][7],data[i][8],data[i][13],data[i][2],data[i][3]
@@ -542,5 +548,5 @@ if __name__ == '__main__':
                      )
     cells.run()
     cells.debug()
-    '''
+
     sg.objs.end()
