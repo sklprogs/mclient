@@ -672,8 +672,9 @@ class WebFrame:
             self.gui.men_pair.reset (items  = pairs
                                     ,action = self.set_pair
                                     )
-            self.gui.men_srcs.reset (items  = sources
-                                    ,action = self.set_source
+            self.gui.men_srcs.reset (items   = sources
+                                    ,action  = self.set_source
+                                    ,default = 'multitran.com'
                                     )
         else:
             sh.com.empty(f)

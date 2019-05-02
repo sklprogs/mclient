@@ -27,7 +27,7 @@ class Plugins:
         self.mcplugin = None
         self.maplugin = None
         self.plugin   = self.maplugin
-        self._source  = _('Multitran')
+        self._source  = 'multitran.com'
         self._sdpath  = sdpath
         self._timeout = timeout
         self.Debug    = Debug
@@ -39,7 +39,7 @@ class Plugins:
         ''' #note: either put this on top of 'self.sources' or
             synchronize with GUI.
         '''
-        self.set(_('Multitran'))
+        self.set(self._source)
         self.set_timeout(self._timeout)
     
     def combined(self):
