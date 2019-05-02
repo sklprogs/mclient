@@ -503,52 +503,92 @@ class Commands:
         sh.log.append (f,_('DEBUG')
                       ,'multitrancom: ' + plugins.multitrancom.get.PAIR
                       )
-    
-    def ernahrung(self):
-        f = '[MClient] tests.Commands.ernahrung'
+        
+    def translate_gui (self,source,pair
+                      ,search,url
+                      ):
+        f = '[MClient] tests.Commands.translate_gui'
         import mclient
-        lg.objs.plugins().set(_('Multitran'))
-        lg.objs._plugins.set_pair('DEU <=> RUS')
-        lg.objs._plugins.request(search='ernährung')
+        lg.objs.plugins().set(source)
+        lg.objs._plugins.set_pair(pair)
+        lg.objs.request()._search = search
+        lg.objs._request._url     = url
         mclient.objs.webframe().load_article()
         mclient.objs._webframe.gui.show()
     
-    def abatis(self):
-        f = '[MClient] tests.Commands.abatis'
+    def translate_cli (self,source,pair
+                      ,search,url,MaxRows=100
+                      ):
+        f = '[MClient] tests.Commands.translate_cli'
         import cells as cl
-        lg.objs.plugins().set('multitran.com')
-        lg.objs._plugins.set_pair('ENG <=> RUS')
-        lg.objs.request()._search = 'засека'
-        lg.objs._request._url     = 'https://www.multitran.com/m.exe?a=3&sc=24&s=%D0%B7%D0%B0%D1%81%D0%B5%D0%BA%D0%B0&l1=2&l2=1&SHL=2'
-        data   = lg.objs._plugins.request (search = 'засека'
-                                          ,url    = 'https://www.multitran.com/m.exe?a=3&sc=24&s=%D0%B7%D0%B0%D1%81%D0%B5%D0%BA%D0%B0&l1=2&l2=1&SHL=2'
+        lg.objs.plugins().set(source)
+        lg.objs._plugins.set_pair(pair)
+        lg.objs.request()._search = search
+        lg.objs._request._url     = url
+        data   = lg.objs._plugins.request (search = search
+                                          ,url    = url
                                           )
         data   = [list(row) for row in data]
         cldata = []
         for i in range(len(data)):
-            row = [i,data[i][7],data[i][8],data[i][13],data[i][2],data[i][3]
-                  ,data[i][4],data[i][5]
+            row = [i,data[i][7],data[i][8],data[i][13],data[i][2]
+                  ,data[i][3],data[i][4],data[i][5]
                   ]
             cldata.append(row)
         cells = cl.Cells (data         = cldata
-                         ,cols         = ('dic','wform','transc','speech')
+                         ,cols         = ('dic','wform','transc'
+                                         ,'speech'
+                                         )
                          ,collimit     = 8
                          ,phrase_dic   = ''
                          ,Reverse      = False
                          ,ExpandSpeech = False
                          )
         cells.run()
-        cells.debug()
-        
-    def abatis_gui(self):
-        f = '[MClient] tests.Commands.abatis_gui'
-        import mclient
-        lg.objs.plugins().set('multitran.com')
-        lg.objs._plugins.set_pair('ENG <=> RUS')
-        lg.objs.request()._search = 'засека'
-        lg.objs._request._url     = 'https://www.multitran.com/m.exe?a=3&sc=24&s=%D0%B7%D0%B0%D1%81%D0%B5%D0%BA%D0%B0&l1=2&l2=1&SHL=2'
-        mclient.objs.webframe().load_article()
-        mclient.objs._webframe.gui.show()
+        cells.debug(MaxRows=MaxRows)
+    
+    def translate (self,source,pair
+                  ,search,url,MaxRows=100
+                  ,GUI=False
+                  ):
+        if GUI:
+            self.translate_gui (source  = source
+                               ,pair    = pair
+                               ,search  = search
+                               ,url     = url
+                               )
+        else:
+            self.translate_cli (source  = source
+                               ,pair    = pair
+                               ,search  = search
+                               ,url     = url
+                               ,MaxRows = MaxRows
+                               )
+            
+    
+    def complex(self,GUI=False):
+        self.translate (source = 'multitran.com'
+                       ,pair   = 'ENG <=> RUS'
+                       ,search = 'complex'
+                       ,url    = 'https://www.multitran.com/m.exe?s=complex&l1=2&l2=1&SHL=2'
+                       ,GUI    = GUI
+                       )
+    
+    def abatis(self,GUI=False):
+        self.translate (source = 'multitran.com'
+                       ,pair   = 'ENG <=> RUS'
+                       ,search = 'abatis'
+                       ,url    = 'https://www.multitran.com/m.exe?s=abatis&l1=2&l2=1&SHL=2'
+                       ,GUI    = GUI
+                       )
+    
+    def ernahrung(self,GUI=False):
+        self.translate (source = _('Multitran')
+                       ,pair   = 'DEU <=> RUS'
+                       ,search = 'ernährung'
+                       ,url    = 'https://www.multitran.com/m.exe?s=ern%C3%A4hrung&l1=3&l2=2&SHL=2'
+                       ,GUI    = GUI
+                       )
 
 
 com = Commands()
@@ -558,5 +598,5 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
     import logic as lg
-    
+    com.abatis(GUI=1)
     sg.objs.end()

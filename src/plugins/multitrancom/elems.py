@@ -102,7 +102,89 @@ class Elems:
         else:
             self.Success = False
             sh.com.empty(f)
-        
+    
+    def same_punc(self):
+        f = '[MClient] plugins.multitrancom.elems.Elems.same_punc'
+        if self.Success:
+            for i in range(len(self._blocks)):
+                text = self._blocks[i]._text.strip()
+                for sym in sh.punc_array:
+                    if text.startswith(sym):
+                        self._blocks[i]._same = 1
+                        break
+        else:
+            sh.com.cancel(f)
+    
+    def three(self,i):
+        # Check for the 'term-comment-term' construct
+        if 0 < i < len(self._blocks) - 1:
+            if self._blocks[i-1]._type == 'term' \
+            and self._blocks[i+1]._type == 'term':
+                cond1 = sh.Text(self._blocks[i-1]._text).has_cyrillic()\
+                        and sh.Text(self._blocks[i]._text).has_cyrillic()\
+                        and sh.Text(self._blocks[i+1]._text).has_cyrillic()
+                cond2 = sh.Text(self._blocks[i-1]._text).has_latin()\
+                        and sh.Text(self._blocks[i]._text).has_latin()\
+                        and sh.Text(self._blocks[i+1]._text).has_latin()
+                ''' There can be a 'comment-term; comment-term' case
+                    (with the comments having SAME=1) which shouldn't
+                    be matched. See multitran.com: eng-rus: 'tree limb'.
+                '''
+                Allow = True
+                if i > 1:
+                    if self._blocks[i-2]._type == 'comment' \
+                    and not '(' in self._blocks[i-2]._text \
+                    and not ')' in self._blocks[i-2]._text:
+                        Allow = False
+                if (cond1 or cond2) and Allow:
+                    return True
+    
+    def same_comments(self):
+        f = '[MClient] plugins.multitrancom.elems.Elems.same_comments'
+        if self.Success:
+            for i in range(len(self._blocks)):
+                if self._blocks[i]._type == 'comment':
+                    if '(' in self._blocks[i]._text \
+                    or ')' in self._blocks[i]._text:
+                        if i > 0:
+                            self._blocks[i]._same = 1
+                        else:
+                            self._blocks[i]._same = 0
+                    else:
+                        if self.three(i):
+                            self._blocks[i-1]._same = 0
+                            self._blocks[i  ]._same = 1
+                            self._blocks[i+1]._same = 1
+                        elif i < len(self._blocks):
+                            self._blocks[i  ]._same = 0
+                            self._blocks[i+1]._same = 1
+                        else:
+                            self._blocks[i]._same = 1
+        else:
+            sh.com.cancel(f)
+    
+    def same_non_comments(self):
+        ''' If a comment has SAME=0, then the next non-fixed type block
+            must have SAME=1 because the comment cannot occupy
+            an entire cell (otherwise, this is actually, for example,
+            a word form).
+        '''
+        f = '[MClient] plugins.multitrancom.elems.Elems.same_non_comments'
+        if self.Success:
+            for i in range(len(self._blocks)):
+                if self._blocks[i]._type == 'comment' \
+                and self._blocks[i]._same == 0:
+                    if i < len(self._blocks) - 1:
+                        if self._blocks[i+1]._type in ('dic','wform'
+                                                      ,'speech','transc'
+                                                      ):
+                            self._blocks[i]._same = 1
+                        elif self._blocks[i+1]._type == 'term' \
+                        and self._blocks[i+1]._same == 0:
+                            self._blocks[i+1]._same == 1
+        else:
+            sh.com.cancel(f)
+    
     def delete_search(self):
         ''' Remove a block that looks like "SEARCH:" and comes before
             the phrase "NUMBER phrases in NUMBER subjects".
@@ -123,9 +205,11 @@ class Elems:
                         count += 1
                         i -= 1
                     i += 1
-                sh.log.append (f,_('INFO')
-                              ,_('Blocks removed: %d') % count
-                              )
+                if count:
+                    sh.log.append (f,_('INFO')
+                                  ,_('%d blocks have been deleted') \
+                                  % count
+                                  )
             else:
                 sh.com.empty(f)
         else:
@@ -168,11 +252,6 @@ class Elems:
                     self._blocks[i]._same = 0
             elif self._blocks[i]._type == 'transc':
                 self._blocks[i]._same = 0
-            elif self._blocks[i]._type == 'comment':
-                if i > 0:
-                    self._blocks[i]._same = 1
-                else:
-                    self._blocks[i]._same = 0
             elif self._blocks[i]._type in ('term','speech','phrase'):
                 self._blocks[i]._same = 0
             elif self._blocks[i]._type == 'wform':
@@ -181,15 +260,6 @@ class Elems:
                 else:
                     self._blocks[i]._same = 0
     
-    def comment_term(self):
-        # Fix the case when a comment refers to a term to the right
-        if len(self._blocks) > 1:
-            if self._blocks[0]._type == 'comment' \
-            and self._blocks[0]._same == 0:
-                if self._blocks[1]._type == 'term' \
-                and self._blocks[1]._same == 0:
-                    self._blocks[1]._same = 1
-    
     def run(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.run'
         if self.Success:
@@ -197,12 +267,18 @@ class Elems:
             self.thesaurus()
             self.phrases()
             self.trash()
+            self.delete_search()
             # Change types and delete garbage blocks before this
             self.same_cells()
-            self.delete_search()
             self.dic_urls()
             self.unite_comments()
-            self.comment_term()
+            self.add_brackets()
+            ''' Comments also can be separate in this source, so do this
+                after uniting them.
+            '''
+            self.same_comments()
+            self.same_punc()
+            self.same_non_comments()
             self.add_space()
             self.fill()
             self.fill_terma()
@@ -258,17 +334,30 @@ class Elems:
     def unite_comments(self):
         i = 0
         while i < len(self._blocks):
-            if self._blocks[i]._type == 'comment' \
-            and self._blocks[i]._same > 0:
-                if i > 0 and self._blocks[i-1]._type == 'comment':
-                    self._blocks[i-1]._text \
-                    = sh.List (lst1 = [self._blocks[i-1]._text
-                                      ,self._blocks[i]._text
-                                      ]
-                              ).space_items()
+            if i > 0:
+                if self._blocks[i]._type == 'comment' \
+                and self._blocks[i-1]._type == 'comment':
+                    if i < len(self._blocks) - 1 \
+                    and self._blocks[i+1]._text.strip().startswith(')'):
+                        cond = True
+                    else:
+                        cond = False
+                    if self._blocks[i]._text.strip().endswith('(') \
+                    or cond:
+                        self._blocks[i-1]._text \
+                        = sh.List (lst1 = [self._blocks[i-1]._text
+                                          ,self._blocks[i]._text
+                                          ]
+                                  ).space_items()
                     del self._blocks[i]
                     i -= 1
             i += 1
+    
+    def add_brackets(self):
+        for block in self._blocks:
+            if block._type == 'comment' and '(' in block._text \
+            and not ')' in block._text:
+                block._text += ')'
             
     def trash(self):
         self._blocks = [block for block in self._blocks \
