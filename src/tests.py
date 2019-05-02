@@ -503,6 +503,52 @@ class Commands:
         sh.log.append (f,_('DEBUG')
                       ,'multitrancom: ' + plugins.multitrancom.get.PAIR
                       )
+    
+    def ernahrung(self):
+        f = '[MClient] tests.Commands.ernahrung'
+        import mclient
+        lg.objs.plugins().set(_('Multitran'))
+        lg.objs._plugins.set_pair('DEU <=> RUS')
+        lg.objs._plugins.request(search='ernährung')
+        mclient.objs.webframe().load_article()
+        mclient.objs._webframe.gui.show()
+    
+    def abatis(self):
+        f = '[MClient] tests.Commands.abatis'
+        import cells as cl
+        lg.objs.plugins().set('multitran.com')
+        lg.objs._plugins.set_pair('ENG <=> RUS')
+        lg.objs.request()._search = 'засека'
+        lg.objs._request._url     = 'https://www.multitran.com/m.exe?a=3&sc=24&s=%D0%B7%D0%B0%D1%81%D0%B5%D0%BA%D0%B0&l1=2&l2=1&SHL=2'
+        data   = lg.objs._plugins.request (search = 'засека'
+                                          ,url    = 'https://www.multitran.com/m.exe?a=3&sc=24&s=%D0%B7%D0%B0%D1%81%D0%B5%D0%BA%D0%B0&l1=2&l2=1&SHL=2'
+                                          )
+        data   = [list(row) for row in data]
+        cldata = []
+        for i in range(len(data)):
+            row = [i,data[i][7],data[i][8],data[i][13],data[i][2],data[i][3]
+                  ,data[i][4],data[i][5]
+                  ]
+            cldata.append(row)
+        cells = cl.Cells (data         = cldata
+                         ,cols         = ('dic','wform','transc','speech')
+                         ,collimit     = 8
+                         ,phrase_dic   = ''
+                         ,Reverse      = False
+                         ,ExpandSpeech = False
+                         )
+        cells.run()
+        cells.debug()
+        
+    def abatis_gui(self):
+        f = '[MClient] tests.Commands.abatis_gui'
+        import mclient
+        lg.objs.plugins().set('multitran.com')
+        lg.objs._plugins.set_pair('ENG <=> RUS')
+        lg.objs.request()._search = 'засека'
+        lg.objs._request._url     = 'https://www.multitran.com/m.exe?a=3&sc=24&s=%D0%B7%D0%B0%D1%81%D0%B5%D0%BA%D0%B0&l1=2&l2=1&SHL=2'
+        mclient.objs.webframe().load_article()
+        mclient.objs._webframe.gui.show()
 
 
 com = Commands()
@@ -512,41 +558,5 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
     import logic as lg
-    '''
-    lg.objs.plugins().set(_('Multitran'))
-    lg.objs._plugins.set_pair('DEU <=> RUS')
-    lg.objs._plugins.request(search='ernährung')
-    '''
-    lg.objs.plugins().set('multitran.com')
-    lg.objs._plugins.set_pair('ENG <=> RUS')
     
-    '''
-    lg.objs.request()._search = 'засека'
-    lg.objs._request._url     = 'https://www.multitran.com/m.exe?a=3&sc=24&s=%D0%B7%D0%B0%D1%81%D0%B5%D0%BA%D0%B0&l1=2&l2=1&SHL=2'
-    import mclient
-    mclient.objs.webframe().load_article()
-    mclient.objs._webframe.gui.show()
-    '''
-
-    data = lg.objs._plugins.request (search = 'засека'
-                                    ,url    = 'https://www.multitran.com/m.exe?a=3&sc=24&s=%D0%B7%D0%B0%D1%81%D0%B5%D0%BA%D0%B0&l1=2&l2=1&SHL=2'
-                                    )
-    data = [list(row) for row in data]
-    cldata = []
-    for i in range(len(data)):
-        row = [i,data[i][7],data[i][8],data[i][13],data[i][2],data[i][3]
-              ,data[i][4],data[i][5]
-              ]
-        cldata.append(row)
-    import cells as cl
-    cells = cl.Cells (data         = cldata
-                     ,cols         = ('dic','wform','transc','speech')
-                     ,collimit     = 8
-                     ,phrase_dic   = ''
-                     ,Reverse      = False
-                     ,ExpandSpeech = False
-                     )
-    cells.run()
-    cells.debug()
-
     sg.objs.end()

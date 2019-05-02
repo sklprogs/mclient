@@ -263,17 +263,19 @@ class Tags:
                  ,Shorten=True,MaxRow=20
                  ,MaxRows=20
                  ):
-        self._tags   = []
-        self._blocks = []
+        self.values()
         if text:
             self._text = list(text)
-        else:
-            self._text = ''
         self.Debug   = Debug
         self.Shorten = Shorten
         self.MaxRow  = MaxRow
         self.MaxRows = MaxRows
 
+    def values(self):
+        self._tags   = []
+        self._blocks = []
+        self._text   = ''
+    
     def tags(self):
         ''' Split the text by closing tags. To speed up, we remove
             closing tags right away.

@@ -515,6 +515,10 @@ class History:
                 lg.objs._request._source = result[0]
                 lg.objs._request._search = result[1]
                 lg.objs._request._url    = result[2]
+                sh.log.append (f,_('INFO')
+                              ,_('Set source to "%s"') \
+                              % lg.objs._request._source
+                              )
                 lg.objs.plugins().set(lg.objs._request._source)
                 objs.webframe().gui.men_srcs.set(lg.objs._request._source)
                 objs._webframe.go_search()
