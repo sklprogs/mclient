@@ -28,6 +28,7 @@ class CleanUp:
         self._text = text
     
     def common(self):
+        self._text = self._text.replace('','')
         self._text = self._text.replace('','')
         self._text = self._text.replace('','')
         self._text = self._text.replace('','')
