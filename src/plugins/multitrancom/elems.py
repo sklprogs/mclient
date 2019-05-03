@@ -155,7 +155,7 @@ class Elems:
                             self._blocks[i-1]._same = 0
                             self._blocks[i  ]._same = 1
                             self._blocks[i+1]._same = 1
-                        elif i < len(self._blocks):
+                        elif i < len(self._blocks) - 1:
                             self._blocks[i  ]._same = 0
                             self._blocks[i+1]._same = 1
                         else:

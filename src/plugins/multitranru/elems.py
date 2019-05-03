@@ -102,6 +102,98 @@ class Elems:
             self.Success = False
             sh.com.empty(f)
         
+    def same_non_comments(self):
+        ''' If a comment has SAME=0, then the next non-fixed type block
+            must have SAME=1 because the comment cannot occupy
+            an entire cell (otherwise, this is actually, for example,
+            a word form). I do not use 'correction' type here since
+            corrections come only after other blocks.
+        '''
+        f = '[MClient] plugins.multitranru.elems.Elems.same_non_comments'
+        if self.Success:
+            for i in range(len(self._blocks)):
+                if self._blocks[i]._type == 'comment' \
+                and self._blocks[i]._same == 0:
+                    if i < len(self._blocks) - 1:
+                        if self._blocks[i+1]._type in ('dic','wform'
+                                                      ,'speech','transc'
+                                                      ):
+                            self._blocks[i]._same = 1
+                        elif self._blocks[i+1]._type == 'term' \
+                        and self._blocks[i+1]._same == 0:
+                            self._blocks[i+1]._same == 1
+        else:
+            sh.com.cancel(f)
+    
+    def three(self,i):
+        # Check for the 'term-comment-term' construct
+        if 0 < i < len(self._blocks) - 1:
+            if self._blocks[i-1]._type == 'term' \
+            and self._blocks[i+1]._type == 'term':
+                cond1 = sh.Text(self._blocks[i-1]._text).has_cyrillic()\
+                        and sh.Text(self._blocks[i]._text).has_cyrillic()\
+                        and sh.Text(self._blocks[i+1]._text).has_cyrillic()
+                cond2 = sh.Text(self._blocks[i-1]._text).has_latin()\
+                        and sh.Text(self._blocks[i]._text).has_latin()\
+                        and sh.Text(self._blocks[i+1]._text).has_latin()
+                ''' There can be a 'comment-term; comment-term' case
+                    (with the comments having SAME=1) which shouldn't
+                    be matched. See multitran.com: eng-rus: 'tree limb'.
+                '''
+                Allow = True
+                if i > 1:
+                    if self._blocks[i-2]._type in ('comment'
+                                                  ,'correction'
+                                                  ) \
+                    and not '(' in self._blocks[i-2]._text \
+                    and not ')' in self._blocks[i-2]._text:
+                        Allow = False
+                if (cond1 or cond2) and Allow:
+                    return True
+    
+    def same_punc(self):
+        f = '[MClient] plugins.multitranru.elems.Elems.same_punc'
+        if self.Success:
+            for i in range(len(self._blocks)):
+                text = self._blocks[i]._text.strip()
+                for sym in sh.punc_array:
+                    if text.startswith(sym):
+                        self._blocks[i]._same = 1
+                        break
+        else:
+            sh.com.cancel(f)
+    
+    def same_comments(self):
+        f = '[MClient] plugins.multitranru.elems.Elems.same_comments'
+        if self.Success:
+            for i in range(len(self._blocks)):
+                if self._blocks[i]._type in ('comment','correction'):
+                    if '(' in self._blocks[i]._text \
+                    or ')' in self._blocks[i]._text:
+                        if i > 0:
+                            self._blocks[i]._same = 1
+                        else:
+                            self._blocks[i]._same = 0
+                    else:
+                        if self.three(i):
+                            self._blocks[i-1]._same = 0
+                            self._blocks[i  ]._same = 1
+                            self._blocks[i+1]._same = 1
+                        elif i < len(self._blocks) - 1 \
+                        and self._blocks[i]._type == 'comment':
+                            self._blocks[i  ]._same = 0
+                            self._blocks[i+1]._same = 1
+                        else:
+                            self._blocks[i]._same = 1
+        else:
+            sh.com.cancel(f)
+    
+    def add_brackets(self):
+        for block in self._blocks:
+            if block._type in ('comment','correction') \
+            and '(' in block._text and not ')' in block._text:
+                block._text += ')'
+    
     # Takes ~0,26s for 'set' on AMD E-300.
     def expand_dica(self):
         f = '[MClient] plugins.multitranru.elems.Elems.expand_dica'
@@ -127,9 +219,8 @@ class Elems:
         if self.Success:
             self.unite_transc()
             self.phrases()
-            self.straight_line()
+            self.trash()
             self.dic_urls()
-            self.comments()
             self.dic_abbr()
             self.dic_abbr_phrases()
             ''' These 2 procedures should not be combined (otherwise,
@@ -137,8 +228,14 @@ class Elems:
             '''
             self.unite_comments()
             self.unite_corrections()
+            self.add_brackets()
             self.speech()
-            self.comment_same()
+            ''' Comments can be separate in this source, so do this
+                after uniting them.
+            '''
+            self.same_comments()
+            self.same_punc()
+            self.same_non_comments()
             self.add_space()
             self.fill()
             self.fill_terma()
@@ -199,14 +296,21 @@ class Elems:
     def unite_comments(self):
         i = 0
         while i < len(self._blocks):
-            if self._blocks[i]._type == 'comment' \
-            and self._blocks[i]._same > 0:
-                if i > 0 and self._blocks[i-1]._type == 'comment':
-                    self._blocks[i-1]._text \
-                    = sh.List (lst1 = [self._blocks[i-1]._text
-                                      ,self._blocks[i]._text
-                                      ]
-                              ).space_items()
+            if i > 0:
+                if self._blocks[i]._type == 'comment' \
+                and self._blocks[i-1]._type == 'comment':
+                    if i < len(self._blocks) - 1 \
+                    and self._blocks[i+1]._text.strip().startswith(')'):
+                        cond = True
+                    else:
+                        cond = False
+                    if self._blocks[i]._text.strip().endswith('(') \
+                    or cond:
+                        self._blocks[i-1]._text \
+                        = sh.List (lst1 = [self._blocks[i-1]._text
+                                          ,self._blocks[i]._text
+                                          ]
+                                  ).space_items()
                     del self._blocks[i]
                     i -= 1
             i += 1
@@ -214,14 +318,21 @@ class Elems:
     def unite_corrections(self):
         i = 0
         while i < len(self._blocks):
-            if self._blocks[i]._type == 'correction' \
-            and self._blocks[i]._same > 0:
-                if i > 0 and self._blocks[i-1]._type == 'correction':
-                    self._blocks[i-1]._text \
-                    = sh.List (lst1 = [self._blocks[i-1]._text
-                                      ,self._blocks[i]._text
-                                      ]
-                              ).space_items()
+            if i > 0:
+                if self._blocks[i]._type == 'correction' \
+                and self._blocks[i-1]._type == 'correction':
+                    if i < len(self._blocks) - 1 \
+                    and self._blocks[i+1]._text.strip().startswith(')'):
+                        cond = True
+                    else:
+                        cond = False
+                    if self._blocks[i]._text.strip().endswith('(') \
+                    or cond:
+                        self._blocks[i-1]._text \
+                        = sh.List (lst1 = [self._blocks[i-1]._text
+                                          ,self._blocks[i]._text
+                                          ]
+                                  ).space_items()
                     del self._blocks[i]
                     i -= 1
             i += 1
@@ -263,121 +374,10 @@ class Elems:
                 and not 'UserName' in self._blocks[i]._url:
                     self._blocks[i]._type = 'dic'
             
-    def straight_line(self):
+    def trash(self):
         self._blocks = [block for block in self._blocks \
                         if block._text.strip() != '|'
                        ]
-    
-    def comments(self):
-        i = 0
-        while i < len(self._blocks):
-            if self._blocks[i]._type in ('comment','correction'):
-                text_str = self._blocks[i]._text.strip()
-                ''' Delete comments that are just ';' or ',' (we don't
-                    need them, we have a table view).
-                    We delete instead of assigning Block attribute
-                    because we may need to unblock blocked dictionaries
-                    later.
-                '''
-                if text_str == ';' or text_str == ',':
-                    del self._blocks[i]
-                    i -= 1
-                elif not self._blocks[i]._same > 0:
-                    # For the following cases: "23 фраз в 9 тематиках"
-                    if i > 0 and self._blocks[i-1]._type == 'phrase':
-                        self._blocks[i]._same = 1
-                    # Move the comment to the preceding cell
-                    if text_str.startswith(',') \
-                    or text_str.startswith(';') \
-                    or text_str.startswith('(') \
-                    or text_str.startswith(')') \
-                    or text_str.startswith('|'):
-                        self._blocks[i]._same = 1
-                        # Mark the next block as a start of a new cell
-                        if i < len(self._blocks) - 1 \
-                        and self._blocks[i+1]._type \
-                        not in ('comment','correction'):
-                            self._blocks[i+1]._same = 0
-            i += 1
-            
-    def comment_same(self):
-        ''' Sometimes sources do not provide sufficient information on
-        SAMECELL blocks, and the tag parser cannot handle sequences such
-        as 'any type (not _same) -> comment (not _same) -> any type (not
-        _same)'.
-        Rules:
-        1) (Should be always correct)
-            'i >= 0 -> correction (not _same)
-                =>
-            'i >= 0 -> correction (_same)
-        2) (Preferable)
-            'term (not _same) -> comment (not _same) -> any type
-            (not _same)'
-                =>
-            'term (not _same) -> comment (_same) -> any type
-            (not _same)'
-        3) (Generally correct before removing fixed columns)
-            'dic/wform/speech/transc -> comment (not _same) -> term
-            (not _same)'
-                =>
-            'dic/wform/speech/transc -> comment (not _same) -> term
-            (_same)'
-        4) (By guess, check only after ##2&3)
-            'any type (_same) -> comment (not _same) -> any type
-            (not _same)'
-                =>
-            'any type (_same) -> comment (_same) -> any type
-            (not _same)'
-        5) (Always correct)
-            'any type -> comment/correction (not _same) -> END'
-                =>
-            'any type -> comment/correction (_same) -> END'
-        6) (Do this in the end of the loop; + Readability improvement
-           ("в 42 тематиках"))
-            'any type (not same) -> comment (not same) -> any type
-            (not _same)'
-                =>
-            'any type (not same) -> comment (_same) -> any type
-            (not _same)'
-        '''
-        for i in range(len(self._blocks)):
-            cond1  = i > 0 and self._blocks[i]._type == 'correction'
-            cond2  = self._blocks[i]._same <= 0
-            cond3  = i > 0 and self._blocks[i-1]._type == 'comment' \
-            and self._blocks[i-1]._same <= 0
-            cond4  = i > 1 and self._blocks[i-2]._type == 'term' \
-            and self._blocks[i-2]._same <= 0
-            cond5  = i > 1 and self._blocks[i-2]._same <= 0
-            cond6  = self._blocks[i]._type == 'term'
-            cond7a = i > 1 and self._blocks[i-2]._type == 'dic'
-            cond7b = i > 1 and self._blocks[i-2]._type == 'wform'
-            cond7c = i > 1 and self._blocks[i-2]._type == 'speech'
-            cond7d = i > 1 and self._blocks[i-2]._type == 'transc'
-            cond7  = cond7a or cond7b or cond7c or cond7d
-            # not equivalent to 'not cond5' because of 'i'
-            cond8  = i > 1 and self._blocks[i-2]._same == 1
-            # Rule 1
-            if cond1 and cond2:
-                self._blocks[i]._same = 1
-            # Rule 2
-            elif cond4 and cond3 and cond2:
-                self._blocks[i-1]._same = 1
-            # Rule 3
-            elif cond7 and cond3 and cond6 and cond2:
-                self._blocks[i]._same = 1
-            # Rule 4:
-            elif cond8 and cond3 and cond2:
-                self._blocks[i-1]._same = 1
-            # Rule 6:
-            elif cond5 and cond3 and cond2:
-                self._blocks[i-1]._same = 1
-        # Rule 5
-        if self._blocks:
-            # After exiting the loop, the last block
-            cond1 = self._blocks[i]._type in ('comment','correction')
-            cond2 = self._blocks[i]._same <= 0
-            if cond1 and cond2:
-                self._blocks[i]._same = 1
     
     def add_space(self):
         for i in range(len(self._blocks)):
