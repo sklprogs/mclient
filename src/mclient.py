@@ -672,6 +672,7 @@ class WebFrame:
             self.gui.men_pair.reset (items  = pairs
                                     ,action = self.set_pair
                                     )
+            #note: change this upon the change of the default source
             self.gui.men_srcs.reset (items   = sources
                                     ,action  = self.set_source
                                     ,default = 'multitran.com'

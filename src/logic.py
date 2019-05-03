@@ -649,7 +649,7 @@ class CurRequest:
         self._pr_adv       = 3
         self._pr_prep      = 2
         self._pr_pron      = 1
-        self._source       = _('Multitran')
+        self._source       = objs.plugins()._source
         self._cols         = ('dic','wform','transc','speech')
         ''' Toggling blacklisting should not depend on a number of
             blocked dictionaries (otherwise, it is not clear how
