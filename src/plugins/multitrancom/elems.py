@@ -108,32 +108,24 @@ class Elems:
             sh.com.empty(f)
     
     def same_users(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.same_users'
-        if self.Success:
-            for block in self._blocks:
-                if block._type == 'user':
-                    block._same = 1
-                    text = block._text.strip()
-                    if not text.startswith('('):
-                        text = '(' + text
-                    if not text.endswith(')'):
-                        text += ')'
-                    if block._text != text:
-                        block._text = text
-        else:
-            sh.com.cancel(f)
+        for block in self._blocks:
+            if block._type == 'user':
+                block._same = 1
+                text = block._text.strip()
+                if not text.startswith('('):
+                    text = '(' + text
+                if not text.endswith(')'):
+                    text += ')'
+                if block._text != text:
+                    block._text = text
     
     def same_punc(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.same_punc'
-        if self.Success:
-            for i in range(len(self._blocks)):
-                text = self._blocks[i]._text.strip()
-                for sym in sh.punc_array:
-                    if text.startswith(sym):
-                        self._blocks[i]._same = 1
-                        break
-        else:
-            sh.com.cancel(f)
+        for i in range(len(self._blocks)):
+            text = self._blocks[i]._text.strip()
+            for sym in sh.punc_array:
+                if text.startswith(sym):
+                    self._blocks[i]._same = 1
+                    break
     
     def three(self,i):
         # Check for the 'term-comment-term' construct
@@ -160,30 +152,26 @@ class Elems:
                     return True
     
     def same_comments(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.same_comments'
-        if self.Success:
-            for i in range(len(self._blocks)):
-                if self._blocks[i]._type in ('comment','correction'):
-                    if '(' in self._blocks[i]._text \
-                    or ')' in self._blocks[i]._text:
-                        if i > 0:
-                            self._blocks[i]._same = 1
-                        else:
-                            self._blocks[i]._same = 0
+        for i in range(len(self._blocks)):
+            if self._blocks[i]._type in ('comment','correction'):
+                if '(' in self._blocks[i]._text \
+                or ')' in self._blocks[i]._text:
+                    if i > 0:
+                        self._blocks[i]._same = 1
                     else:
-                        if self._blocks[i]._type == 'comment' \
-                        and self.three(i):
-                            self._blocks[i-1]._same = 0
-                            self._blocks[i  ]._same = 1
-                            self._blocks[i+1]._same = 1
-                        elif i < len(self._blocks) - 1 \
-                        and self._blocks[i]._type == 'comment':
-                            self._blocks[i  ]._same = 0
-                            self._blocks[i+1]._same = 1
-                        else:
-                            self._blocks[i]._same = 1
-        else:
-            sh.com.cancel(f)
+                        self._blocks[i]._same = 0
+                else:
+                    if self._blocks[i]._type == 'comment' \
+                    and self.three(i):
+                        self._blocks[i-1]._same = 0
+                        self._blocks[i  ]._same = 1
+                        self._blocks[i+1]._same = 1
+                    elif i < len(self._blocks) - 1 \
+                    and self._blocks[i]._type == 'comment':
+                        self._blocks[i  ]._same = 0
+                        self._blocks[i+1]._same = 1
+                    else:
+                        self._blocks[i]._same = 1
     
     def same_non_comments(self):
         ''' If a comment has SAME=0, then the next non-fixed type block
@@ -191,21 +179,17 @@ class Elems:
             an entire cell (otherwise, this is actually, for example,
             a word form).
         '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.same_non_comments'
-        if self.Success:
-            for i in range(len(self._blocks)):
-                if self._blocks[i]._type == 'comment' \
-                and self._blocks[i]._same == 0:
-                    if i < len(self._blocks) - 1:
-                        if self._blocks[i+1]._type in ('dic','wform'
-                                                      ,'speech','transc'
-                                                      ):
-                            self._blocks[i]._same = 1
-                        elif self._blocks[i+1]._type == 'term' \
-                        and self._blocks[i+1]._same == 0:
-                            self._blocks[i+1]._same == 1
-        else:
-            sh.com.cancel(f)
+        for i in range(len(self._blocks)):
+            if self._blocks[i]._type == 'comment' \
+            and self._blocks[i]._same == 0:
+                if i < len(self._blocks) - 1:
+                    if self._blocks[i+1]._type in ('dic','wform'
+                                                  ,'speech','transc'
+                                                  ):
+                        self._blocks[i]._same = 1
+                    elif self._blocks[i+1]._type == 'term' \
+                    and self._blocks[i+1]._same == 0:
+                        self._blocks[i+1]._same == 1
     
     def delete_search(self):
         ''' Remove a block that looks like "SEARCH:" and comes before
@@ -215,27 +199,22 @@ class Elems:
             lower-case.
         '''
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_search'
-        if self.Success:
-            if self._search:
-                count = 0
-                i = 0
-                while i < len(self._blocks):
-                    if self._blocks[i]._type == 'comment' \
-                    and self._blocks[i]._text.strip() == self._search \
-                    + ':':
-                        del self._blocks[i]
-                        count += 1
-                        i -= 1
-                    i += 1
-                if count:
-                    sh.log.append (f,_('INFO')
-                                  ,_('%d blocks have been deleted') \
-                                  % count
-                                  )
-            else:
-                sh.com.empty(f)
+        if self._search:
+            count = 0
+            i = 0
+            while i < len(self._blocks):
+                if self._blocks[i]._type == 'comment' \
+                and self._blocks[i]._text.strip() == self._search + ':':
+                    del self._blocks[i]
+                    count += 1
+                    i -= 1
+                i += 1
+            if count:
+                sh.log.append (f,_('INFO')
+                              ,_('%d blocks have been deleted') % count
+                              )
         else:
-            sh.com.cancel(f)
+            sh.com.empty(f)
     
     def thesaurus(self):
         ''' Explanations are tagged just like word forms, and we can
@@ -294,9 +273,6 @@ class Elems:
             self.same_cells()
             self.dic_urls()
             self.add_brackets()
-            ''' Comments also can be separate in this source, so do this
-                after uniting them.
-            '''
             self.same_comments()
             self.same_users()
             self.same_punc()
