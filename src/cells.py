@@ -30,7 +30,7 @@ class Block:
         self._same     = -1
         self._priority = 0
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
-            'correction', 'transc', 'invalid'
+            'correction', 'user', 'transc', 'invalid'
         '''
         self._type     = 'comment'
         self._text     = ''

@@ -3,6 +3,10 @@
 
 ''' This module prepares blocks after extracting tags for permanently
     storing in DB.
+    #note: 'multitran.com' does not support corrections yet, so,
+    if necessary, refer to 'plugins.multitranru' on how to implement
+    them. Especially see 'unite_comments', which is different for
+    different plugins.
     Needs attributes in blocks: TYPE, DICA, WFORMA, SPEECHA, TRANSCA,
     TERMA, SAMECELL
     Modifies attributes:        TYPE, TEXT, DICA, WFORMA, SPEECHA,
@@ -44,7 +48,7 @@ class Block:
         self._select   = -1
         self._priority = 0
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
-            'correction', 'transc', 'invalid'
+            'correction', 'transc', 'user', 'invalid'
         '''
         self._type    = 'invalid'
         self._text    = ''
@@ -103,6 +107,22 @@ class Elems:
             self.Success = False
             sh.com.empty(f)
     
+    def same_users(self):
+        f = '[MClient] plugins.multitrancom.elems.Elems.same_users'
+        if self.Success:
+            for block in self._blocks:
+                if block._type == 'user':
+                    block._same = 1
+                    text = block._text.strip()
+                    if not text.startswith('('):
+                        text = '(' + text
+                    if not text.endswith(')'):
+                        text += ')'
+                    if block._text != text:
+                        block._text = text
+        else:
+            sh.com.cancel(f)
+    
     def same_punc(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.same_punc'
         if self.Success:
@@ -143,7 +163,7 @@ class Elems:
         f = '[MClient] plugins.multitrancom.elems.Elems.same_comments'
         if self.Success:
             for i in range(len(self._blocks)):
-                if self._blocks[i]._type == 'comment':
+                if self._blocks[i]._type in ('comment','correction'):
                     if '(' in self._blocks[i]._text \
                     or ')' in self._blocks[i]._text:
                         if i > 0:
@@ -151,11 +171,13 @@ class Elems:
                         else:
                             self._blocks[i]._same = 0
                     else:
-                        if self.three(i):
+                        if self._blocks[i]._type == 'comment' \
+                        and self.three(i):
                             self._blocks[i-1]._same = 0
                             self._blocks[i  ]._same = 1
                             self._blocks[i+1]._same = 1
-                        elif i < len(self._blocks) - 1:
+                        elif i < len(self._blocks) - 1 \
+                        and self._blocks[i]._type == 'comment':
                             self._blocks[i  ]._same = 0
                             self._blocks[i+1]._same = 1
                         else:
@@ -271,12 +293,12 @@ class Elems:
             # Change types and delete garbage blocks before this
             self.same_cells()
             self.dic_urls()
-            self.unite_comments()
             self.add_brackets()
             ''' Comments also can be separate in this source, so do this
                 after uniting them.
             '''
             self.same_comments()
+            self.same_users()
             self.same_punc()
             self.same_non_comments()
             self.add_space()
@@ -330,28 +352,6 @@ class Elems:
             if block._type == 'comment' \
             and self.has_transc(block._text):
                 block._type = 'transc'
-                            
-    def unite_comments(self):
-        i = 0
-        while i < len(self._blocks):
-            if i > 0:
-                if self._blocks[i]._type == 'comment' \
-                and self._blocks[i-1]._type == 'comment':
-                    if i < len(self._blocks) - 1 \
-                    and self._blocks[i+1]._text.strip().startswith(')'):
-                        cond = True
-                    else:
-                        cond = False
-                    if self._blocks[i]._text.strip().endswith('(') \
-                    or cond:
-                        self._blocks[i-1]._text \
-                        = sh.List (lst1 = [self._blocks[i-1]._text
-                                          ,self._blocks[i]._text
-                                          ]
-                                  ).space_items()
-                    del self._blocks[i]
-                    i -= 1
-            i += 1
     
     def add_brackets(self):
         for block in self._blocks:
@@ -361,9 +361,10 @@ class Elems:
             
     def trash(self):
         self._blocks = [block for block in self._blocks \
-                        if not block._text \
-                        in ('|',';',':','English','Russian','Английский'
-                           ,'Русский','-->','точно','все формы'
+                        if not block._text.strip() \
+                        in ('|',';',':','(',')','English','Russian'
+                           ,'Английский','Русский','-->','точно'
+                           ,'все формы'
                            )
                        ]
     

@@ -102,6 +102,22 @@ class Elems:
             self.Success = False
             sh.com.empty(f)
         
+    def same_users(self):
+        f = '[MClient] plugins.multitranru.elems.Elems.same_users'
+        if self.Success:
+            for block in self._blocks:
+                if block._type == 'user':
+                    block._same = 1
+                    text = block._text.strip()
+                    if not text.startswith('('):
+                        text = '(' + text
+                    if not text.endswith(')'):
+                        text += ')'
+                    if block._text != text:
+                        block._text = text
+        else:
+            sh.com.cancel(f)
+    
     def same_non_comments(self):
         ''' If a comment has SAME=0, then the next non-fixed type block
             must have SAME=1 because the comment cannot occupy
@@ -175,7 +191,8 @@ class Elems:
                         else:
                             self._blocks[i]._same = 0
                     else:
-                        if self.three(i):
+                        if self._blocks[i]._type == 'comment' \
+                        and self.three(i):
                             self._blocks[i-1]._same = 0
                             self._blocks[i  ]._same = 1
                             self._blocks[i+1]._same = 1
@@ -226,14 +243,13 @@ class Elems:
             ''' These 2 procedures should not be combined (otherwise,
                 corrections will have the same color as comments)
             '''
-            self.unite_comments()
-            self.unite_corrections()
             self.add_brackets()
             self.speech()
             ''' Comments can be separate in this source, so do this
                 after uniting them.
             '''
             self.same_comments()
+            self.same_users()
             self.same_punc()
             self.same_non_comments()
             self.add_space()
@@ -293,50 +309,6 @@ class Elems:
                     i -= 1
             i += 1
                             
-    def unite_comments(self):
-        i = 0
-        while i < len(self._blocks):
-            if i > 0:
-                if self._blocks[i]._type == 'comment' \
-                and self._blocks[i-1]._type == 'comment':
-                    if i < len(self._blocks) - 1 \
-                    and self._blocks[i+1]._text.strip().startswith(')'):
-                        cond = True
-                    else:
-                        cond = False
-                    if self._blocks[i]._text.strip().endswith('(') \
-                    or cond:
-                        self._blocks[i-1]._text \
-                        = sh.List (lst1 = [self._blocks[i-1]._text
-                                          ,self._blocks[i]._text
-                                          ]
-                                  ).space_items()
-                    del self._blocks[i]
-                    i -= 1
-            i += 1
-            
-    def unite_corrections(self):
-        i = 0
-        while i < len(self._blocks):
-            if i > 0:
-                if self._blocks[i]._type == 'correction' \
-                and self._blocks[i-1]._type == 'correction':
-                    if i < len(self._blocks) - 1 \
-                    and self._blocks[i+1]._text.strip().startswith(')'):
-                        cond = True
-                    else:
-                        cond = False
-                    if self._blocks[i]._text.strip().endswith('(') \
-                    or cond:
-                        self._blocks[i-1]._text \
-                        = sh.List (lst1 = [self._blocks[i-1]._text
-                                          ,self._blocks[i]._text
-                                          ]
-                                  ).space_items()
-                    del self._blocks[i]
-                    i -= 1
-            i += 1
-            
     def dic_abbr(self):
         i = 0
         while i < len(self._blocks):
@@ -371,12 +343,12 @@ class Elems:
             for i in range(len(self._blocks)):
                 if self._blocks[i]._type == 'comment' \
                 and self._blocks[i]._url \
-                and not 'UserName' in self._blocks[i]._url:
+                and not self._blocks[i]._type == 'user':
                     self._blocks[i]._type = 'dic'
             
     def trash(self):
         self._blocks = [block for block in self._blocks \
-                        if block._text.strip() != '|'
+                        if not block._text.strip() in ('|','(',')')
                        ]
     
     def add_space(self):

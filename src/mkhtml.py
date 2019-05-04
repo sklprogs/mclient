@@ -308,7 +308,7 @@ class HTML:
             self.output.write('</font>')
     
     def _comment(self):
-        if self._block._type in ('comment','transc'):
+        if self._block._type in ('comment','transc','user'):
             self.output.write('<i><font face="')
             self.output.write(sh.globs['var']['font_comments_family'])
             self.output.write('" size="')

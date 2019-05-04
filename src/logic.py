@@ -723,15 +723,17 @@ class Objects:
         self._online = self._request = self._order = self._default \
                      = self._plugins = None
     
-    def plugins(self):
+    def plugins (self,Debug=False,Shorten=True
+                ,MaxRow=20,MaxRows=100
+                ):
         if self._plugins is None:
             self._plugins = manager.Plugins (sdpath  = self.default().dics()
                                             ,timeout = sh.globs['int']['timeout']
                                             ,iabbr   = self.order().dic
-                                            ,Debug   = False
-                                            ,Shorten = True
-                                            ,MaxRow  = 20
-                                            ,MaxRows = 100
+                                            ,Debug   = Debug
+                                            ,Shorten = Shorten
+                                            ,MaxRow  = MaxRow
+                                            ,MaxRows = MaxRows
                                             )
         return self._plugins
     

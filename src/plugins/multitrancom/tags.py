@@ -51,8 +51,10 @@ purl3 = 'href="'
 purl4 = '">'
 
 # Comments
-pcom1 = 'span style="color:gray"'
-pcom2 = '&UserName='
+pcom = 'span style="color:gray"'
+
+# Users
+puser = '&UserName='
 
 # Word Forms
 pwf1 = 'td colspan="'
@@ -82,7 +84,7 @@ tag_pattern_del = ['m.exe?a=40&'              # Log in, Вход
                   ]
 
 useful_tags = [pdic,purl1,purl2
-              ,pcom1,pcom2,pwf1
+              ,pcom,puser,pwf1
               ,pwf2,psp,ptm,pph
               ]
 
@@ -105,7 +107,7 @@ class Block:
         '''
         self._select   = -1
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
-            'transc', 'invalid'
+            'transc', 'user', 'invalid'
         '''
         self._type     = ''
         self._text     = ''
@@ -152,6 +154,8 @@ class AnalyzeTag:
                     if not self._block._type:
                         self.speech()
                     if not self._block._type:
+                        self.user()
+                    if not self._block._type:
                         self.comment()
                     self.url()
                 else:
@@ -177,8 +181,7 @@ class AnalyzeTag:
                         if block._text and block._type != 'invalid'
                        ]
         for block in self._blocks:
-            if block._type == 'comment' and block._url \
-            and not pcom2 in block._url:
+            if block._type == 'comment' and block._url:
                 block._type = 'term'
     
     def useless(self):
@@ -216,8 +219,12 @@ class AnalyzeTag:
             self._fragms.append(tmp)
 
     def comment(self):
-        if pcom1 in self._block._text or pcom2 in self._block._text:
+        if pcom in self._block._text:
             self._block._type = 'comment'
+    
+    def user(self):
+        if puser in self._block._text:
+            self._block._type = 'user'
 
     def dic(self):
         f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.dic'

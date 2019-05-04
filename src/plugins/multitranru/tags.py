@@ -92,7 +92,9 @@ purl4 = '">'
 '''
 pcom1 = '<i>'
 pcom2 = '<span STYLE="color:gray">'
-pcom3 = '&&UserName='
+
+# Users
+puser = '&&UserName='
 
 # Corrective comments
 pcor1 = '<span STYLE="color:rgb(60,179,113)">'
@@ -126,7 +128,7 @@ pph4 = '<a href="m.exe?a=3&s='
 ptr1 = '<img SRC="/gif/'
 
 useful_tags = [pdic,purl1,purl2,pcom1,pcom2
-              ,pcom3,pcor1,pcor2,ptr1,pwf4
+              ,puser,pcor1,pcor2,ptr1,pwf4
               ,psp1
               ]
 
@@ -149,7 +151,7 @@ class Block:
         '''
         self._select   = -1
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
-            'correction', 'transc', 'invalid'
+            'correction', 'user', 'transc', 'invalid'
         '''
         self._type     = 'comment'
         self._text     = ''
@@ -193,6 +195,7 @@ class AnalyzeTag:
                     if not self._cur._type:
                         self.speech()
                     if not self._cur._type:
+                        self.user()
                         self.comment()
                         self.cor_comment()
                     if not self._cur._type:
@@ -243,8 +246,12 @@ class AnalyzeTag:
 
     def comment(self):
         if self._block.startswith(pcom1) \
-        or self._block.startswith(pcom2) or pcom3 in self._block:
+        or self._block.startswith(pcom2):
             self._cur._type = 'comment'
+    
+    def user(self):
+        if puser in self._block:
+            self._cur._type = 'user'
 
     def cor_comment(self):
         if self._block.startswith(pcor1) \

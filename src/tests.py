@@ -589,6 +589,22 @@ class Commands:
                        ,url    = 'https://www.multitran.com/m.exe?s=ern%C3%A4hrung&l1=3&l2=2&SHL=2'
                        ,GUI    = GUI
                        )
+    
+    def working_documentation(self,GUI=False):
+        self.translate (source = 'multitran.ru'
+                       ,pair   = 'ENG <=> RUS'
+                       ,search = 'working_documentation'
+                       ,url    = 'https://www.multitran.ru/c/M.exe?l1=1&l2=2&s=working%20documentation'
+                       ,GUI    = GUI
+                       )
+    
+    def mud(self,GUI=False):
+        self.translate (source = 'multitran.com'
+                       ,pair   = 'ENG <=> RUS'
+                       ,search = 'mud'
+                       ,url    = 'https://multitran.com/m.exe?s=mud&l1=1&l2=2&SHL=2'
+                       ,GUI    = GUI
+                       )
 
 
 com = Commands()
@@ -598,5 +614,7 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
     import logic as lg
-    com.abatis(GUI=1)
+    lg.objs.plugins(Debug=1)
+    #com.working_documentation(GUI=1)
+    com.mud(GUI=1)
     sg.objs.end()
