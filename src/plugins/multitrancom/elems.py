@@ -447,8 +447,13 @@ class Elems:
                     self._blocks[i]._text = ' ' + self._blocks[i]._text
 
     def phrases(self):
+        ''' #note: this must differ from
+            'plugins.multitranru.elems.Elems.phrases' since the block to
+            be found is of the 'term' (not 'phrase') type here.
+        '''
         for block in self._blocks:
-            if block._type == 'phrase':
+            if re.match('\d+ phrases',block._text) \
+            or re.match('\d+ фраз',block._text):
                 block._type   = 'dic'
                 block._select = 1
                 block._dica   = block._text

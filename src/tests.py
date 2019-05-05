@@ -632,6 +632,14 @@ class Commands:
                        ,url    = 'https://multitran.ru/c/m.exe?s=mud&l1=1&l2=2'
                        ,GUI    = GUI
                        )
+    
+    def com_systemwide(self,GUI=False):
+        self.translate (source = 'multitran.com'
+                       ,pair   = 'ENG <=> RUS'
+                       ,search = 'system-wide'
+                       ,url    = 'https://www.multitran.com/m.exe?s=system-wide&l1=2&l2=1&SHL=2'
+                       ,GUI    = GUI
+                       )
 
 
 com = Commands()
@@ -645,5 +653,6 @@ if __name__ == '__main__':
     #com.ru_working_documentation(GUI=0)
     #com.ru_mud(GUI=1)
     #com.com_abatis(GUI=1)
-    com.ru_abatis(GUI=1)
+    #com.ru_abatis(GUI=1)
+    com.com_systemwide(GUI=1)
     sg.objs.end()
