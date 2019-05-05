@@ -1,4 +1,6 @@
 
+- plugins.multitrancom: system-wide: '131 фраза' is not a phrase dic,
+  fix alphabetizing
 - plugins.multitrancom/ru: eng-rus: tree limb: wrong SAME
 - plugins.multitrancom: eng-rus: in dire need: no fragment
   "найдены отдельные слова"

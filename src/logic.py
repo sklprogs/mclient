@@ -206,10 +206,23 @@ class Welcome:
         self.istr.write('<table>')
 
         hint1    = _('Translate the current input or selection')
-        hotkey1  = '<Return>'
+        hotkey1  = ('<Button-1>','<Return>')
         hint2    = _('Copy the current selection')
-        hotkey2  = (sh.globs['var']['bind_copy_sel']
+        hotkey2  = ('<Button-3>'
+                   ,sh.globs['var']['bind_copy_sel']
                    ,sh.globs['var']['bind_copy_sel_alt']
+                   )
+        hint34   = _('Show the program window (system-wide)')
+        hotkey34 = '<Alt_L-grave>'
+        hint35   = _('Translate selection from an external program')
+        hotkey35 = ('<Control_L-Insert-Insert>'
+                   ,'<Control_L-c-c>'
+                   )
+        hint36   = _('Minimize the program window')
+        hotkey36 = '<Escape>'
+        hint37   = _('Quit the program')
+        hotkey37 = ('<Control-q>'
+                   ,sh.globs['var']['bind_quit']
                    )
         hint3    = _('Copy the URL of the selected term')
         hotkey3  = sh.globs['var']['bind_copy_url']
@@ -291,8 +304,11 @@ class Welcome:
                    )
         hint33   = _('Clear History')
         hotkey33 = sh.globs['var']['bind_clear_history']
+        #hint38 = 
         
         self.gen_row(hint1,hotkey1,hint2,hotkey2)
+        self.gen_row(hint34,hotkey34,hint35,hotkey35)
+        self.gen_row(hint36,hotkey36,hint37,hotkey37)
         self.gen_row(hint3,hotkey3,hint4,hotkey4)
         self.gen_row(hint5,hotkey5,hint6,hotkey6)
         self.gen_row(hint7,hotkey7,hint8,hotkey8)
@@ -327,8 +343,6 @@ class Welcome:
         self.istr.write('      <br>\n')
         self.istr.write('      {}'.format(_('Use an entry area below to enter a word/phrase to be translated.')))
         self.istr.write('\n')
-        self.istr.write('      <br>\n')
-        self.istr.write('      {}'.format(_('Click the left mouse button on the selection to return its translation. Click the right mouse button on the selection to copy it to clipboard.')))
         self.istr.write('\n')
         self.istr.write('      <br><br>\n')
         for source in self._sources:

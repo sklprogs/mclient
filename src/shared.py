@@ -169,6 +169,26 @@ class Hotkeys:
         f = '[shared] shared.Hotkeys.replace'
         if key:
             key = key.replace('<','').replace('>','')
+            key = key.replace('Left','←').replace('Right','→')
+            key = key.replace ('Button-1'
+                              ,_('Left mouse button')
+                              )
+            key = key.replace ('ButtonRelease-1'
+                              ,_('Left mouse button')
+                              )
+            key = key.replace ('Button-2'
+                              ,_('Middle mouse button')
+                              )
+            key = key.replace ('ButtonRelease-2'
+                              ,_('Middle mouse button')
+                              )
+            key = key.replace ('Button-3'
+                              ,_('Right mouse button')
+                              )
+            key = key.replace ('ButtonRelease-3'
+                              ,_('Right mouse button')
+                              )
+            key = key.replace('grave','~')
             # Left and right Alt and Shift are usually interchangeable
             key = key.replace('Alt_R','Alt_L')
             key = key.replace('Alt_L','Alt')
@@ -183,7 +203,6 @@ class Hotkeys:
             key = key.replace('Scroll_Lock','ScrollLock')
             key = key.replace('Print','PrintScrn')
             key = key.replace('Up','↑').replace('Down','↓')
-            key = key.replace('Left','←').replace('Right','→')
             key = key.replace('Execute','SysReq')
             key = key.replace('Num_Lock','NumLock')
             key = key.replace('Prior','PgUp')
