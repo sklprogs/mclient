@@ -324,8 +324,8 @@ class Elems:
             self.expand_dica()
             self.selectables()
             self.restore_dic_urls()
-            self.debug()
             self.dump()
+            self.debug()
             return self._data
         else:
             sh.com.cancel(f)

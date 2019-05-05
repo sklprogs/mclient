@@ -125,8 +125,9 @@ class DB:
         if not self._cols:
             self._cols = ('dic','wform','transc','speech')
             sh.com.empty(f)
+        #NOTE: do not forget to add new block types here
         self._types = self._cols + ('term','phrase','comment'
-                                   ,'correction'
+                                   ,'correction','user'
                                    )
 
     def fill_blocks(self,data):
