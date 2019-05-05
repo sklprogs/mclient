@@ -577,11 +577,19 @@ class Commands:
                        ,GUI    = GUI
                        )
     
-    def com_abatis(self,GUI=False):
+    def com_abatis2(self,GUI=False):
         self.translate (source = 'multitran.com'
                        ,pair   = 'ENG <=> RUS'
                        ,search = 'abatis'
                        ,url    = 'https://www.multitran.com/m.exe?s=abatis&l1=2&l2=1&SHL=2'
+                       ,GUI    = GUI
+                       )
+    
+    def com_abatis(self,GUI=False):
+        self.translate (source = 'multitran.com'
+                       ,pair   = 'ENG <=> RUS'
+                       ,search = 'засека'
+                       ,url    = 'https://www.multitran.com/m.exe?s=%D0%B7%D0%B0%D1%81%D0%B5%D0%BA%D0%B0&l1=2&l2=1&SHL=2'
                        ,GUI    = GUI
                        )
     
@@ -636,5 +644,6 @@ if __name__ == '__main__':
     lg.objs.plugins(Debug=DEBUG)
     #com.ru_working_documentation(GUI=0)
     #com.ru_mud(GUI=1)
+    #com.com_abatis(GUI=1)
     com.ru_abatis(GUI=1)
     sg.objs.end()

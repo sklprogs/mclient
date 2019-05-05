@@ -97,7 +97,12 @@ class Block:
         self._no       = -1
         # Applies to non-blocked cells only
         self._cell_no  = -1
-        self._same     = -1
+        ''' Tag extraction algorithm is different in comparison with
+            the one of 'plugins.multitranru' (in particular, see
+            'Tags.blocks'). We need either to fill default SAME values
+            after tag extraction or to set the initial SAME value to 0.
+        '''
+        self._same     = 0
         ''' '_select' is an attribute of a *cell* which is valid
             if the cell has a non-blocked block of types 'term',
             'phrase' or 'transc'.
@@ -163,7 +168,6 @@ class AnalyzeTag:
                     self.url()
                 else:
                     self._block._type = 'invalid'
-        
         self.set_types()
         return self._blocks
 
