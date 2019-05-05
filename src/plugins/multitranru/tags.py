@@ -93,9 +93,6 @@ purl4 = '">'
 pcom1 = '<i>'
 pcom2 = '<span STYLE="color:gray">'
 
-# Users
-puser = '&&UserName='
-
 # Corrective comments
 pcor1 = '<span STYLE="color:rgb(60,179,113)">'
 pcor2 = '<font color=DarkGoldenrod>'
@@ -128,8 +125,7 @@ pph4 = '<a href="m.exe?a=3&s='
 ptr1 = '<img SRC="/gif/'
 
 useful_tags = [pdic,purl1,purl2,pcom1,pcom2
-              ,puser,pcor1,pcor2,ptr1,pwf4
-              ,psp1
+              ,pcor1,pcor2,ptr1,pwf4,psp1
               ]
 
 
@@ -151,7 +147,7 @@ class Block:
         '''
         self._select   = -1
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
-            'correction', 'user', 'transc', 'invalid'
+            'correction', 'transc', 'invalid'
         '''
         self._type     = 'comment'
         self._text     = ''
@@ -195,8 +191,8 @@ class AnalyzeTag:
                     if not self._cur._type:
                         self.speech()
                     if not self._cur._type:
-                        self.user()
                         self.comment()
+                    if not self._cur._type:
                         self.cor_comment()
                     if not self._cur._type:
                         self.transc()
@@ -248,10 +244,6 @@ class AnalyzeTag:
         if self._block.startswith(pcom1) \
         or self._block.startswith(pcom2):
             self._cur._type = 'comment'
-    
-    def user(self):
-        if puser in self._block:
-            self._cur._type = 'user'
 
     def cor_comment(self):
         if self._block.startswith(pcor1) \
@@ -344,7 +336,7 @@ class Tags:
 
     def __init__ (self,text,Debug=False
                  ,Shorten=True,MaxRow=20
-                 ,MaxRows=20
+                 ,MaxRows=50
                  ):
         self._tags   = []
         self._blocks = []
@@ -406,7 +398,10 @@ class Tags:
         sg.objs._txt.show()
 
     def debug_blocks(self):
-        print('\nTags.debug_blocks (Non-DB blocks):')
+        f = '[MClient] plugins.multitranru.tags.Tags.debug_blocks'
+        sh.log.append (f,_('INFO')
+                      ,_('Debug table:')
+                      )
         headers = ['TYPE'
                   ,'TEXT'
                   ,'URL'
@@ -429,7 +424,7 @@ class Tags:
 
     def debug(self):
         if self.Debug:
-            self.debug_tags()
+            #self.debug_tags()
             self.debug_blocks()
 
     def blocks(self):

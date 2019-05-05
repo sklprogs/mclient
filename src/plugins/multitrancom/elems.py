@@ -294,8 +294,11 @@ class Elems:
             sh.com.cancel(f)
     
     def debug(self):
+        f = 'plugins.multitrancom.elems.Elems.debug'
         if self.Debug:
-            print('\nplugins.multitrancom.elems.Elems.debug (Non-DB blocks):')
+            sh.log.append (f,_('INFO')
+                          ,_('Debug table:')
+                          )
             headers = ['TYPE','TEXT','SAMECELL','CELLNO','ROWNO','COLNO'
                       ,'POS1','POS2'
                       ]

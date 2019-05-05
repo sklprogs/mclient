@@ -51,6 +51,8 @@ class BlockPrioritize:
     '''
     def __init__(self,data,order,Block=False
                 ,Prioritize=False,phrase_dic=None
+                ,Debug=False,Shorten=True
+                ,MaxRow=20,MaxRows=50
                 ):
         f = '[MClient] cells.BlockPrioritize.__init__'
         self._blocks     = []
@@ -60,6 +62,10 @@ class BlockPrioritize:
         self._data       = data
         self.Block       = Block
         self.Prioritize  = Prioritize
+        self.Debug       = Debug
+        self.Shorten     = Shorten
+        self.MaxRow      = MaxRow
+        self.MaxRows     = MaxRows
         if self._data:
             self.Success = True
         else:
@@ -73,6 +79,7 @@ class BlockPrioritize:
             self.block()
             self.prioritize()
             self.dump()
+            self.debug()
         else:
             sh.com.cancel(f)
     
@@ -130,31 +137,35 @@ class BlockPrioritize:
         self._query = tmp.getvalue()
         tmp.close()
 
-    def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
-        print('\nBlockPrioritize.debug (Non-DB blocks):')
-        headers = ['NO'
-                  ,'DICA'
-                  ,'TYPE'
-                  ,'TEXT'
-                  ,'BLOCK'
-                  ,'PRIORITY'          
-                  ]
-        rows = []
-        for block in self._blocks:
-            rows.append ([block._no
-                         ,block._dica
-                         ,block._type
-                         ,block._text
-                         ,block._block
-                         ,block._priority        
-                         ]
-                        )
-        sh.Table (headers = headers
-                 ,rows    = rows
-                 ,Shorten = Shorten
-                 ,MaxRow  = MaxRow
-                 ,MaxRows = MaxRows
-                 ).print()
+    def debug(self):
+        f = '[MClient] cells.BlockPrioritize.debug'
+        if self.Debug:
+            sh.log.append (f,_('INFO')
+                          ,_('Debug table:')
+                          )
+            headers = ['NO'
+                      ,'DICA'
+                      ,'TYPE'
+                      ,'TEXT'
+                      ,'BLOCK'
+                      ,'PRIORITY'          
+                      ]
+            rows = []
+            for block in self._blocks:
+                rows.append ([block._no
+                             ,block._dica
+                             ,block._type
+                             ,block._text
+                             ,block._block
+                             ,block._priority        
+                             ]
+                            )
+            sh.Table (headers = headers
+                     ,rows    = rows
+                     ,Shorten = self.Shorten
+                     ,MaxRow  = self.MaxRow
+                     ,MaxRows = self.MaxRows
+                     ).print()
 
 
 
@@ -169,7 +180,8 @@ class Cells:
     '''
     def __init__ (self,data,cols,collimit=10
                  ,phrase_dic=None,Reverse=False
-                 ,ExpandSpeech=False
+                 ,ExpandSpeech=False,Debug=False
+                 ,Shorten=True,MaxRow=20,MaxRows=50
                  ):
         f = '[MClient] cells.Cells.__init__'
         # Sqlite fetch
@@ -179,6 +191,10 @@ class Cells:
         self._phrase_dic  = phrase_dic
         self.Reverse      = Reverse
         self.ExpandSpeech = ExpandSpeech
+        self.Debug        = Debug
+        self.Shorten      = Shorten
+        self.MaxRow       = MaxRow
+        self.MaxRows      = MaxRows
         self._blocks      = []
         if self._data:
             self.Success  = True
@@ -248,6 +264,7 @@ class Cells:
             self.sep_words()
             self.sort_cells()
             self.cell_no()
+            self.debug()
         else:
             sh.com.cancel(f)
         
@@ -264,33 +281,37 @@ class Cells:
             block._transca = item[7]
             self._blocks.append(block)
         
-    def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
-        print('\nCells.debug (Non-DB blocks):')
-        headers = ['NO'
-                  ,'TYPE'
-                  ,'TEXT'
-                  ,'ROWNO'
-                  ,'COLNO'
-                  ,'CELLNO'
-                  ,'SAME'
-                  ]
-        rows = []
-        for block in self._blocks:
-            rows.append ([block._no
-                         ,block._type
-                         ,block._text
-                         ,block.i
-                         ,block.j
-                         ,block._cell_no
-                         ,block._same
-                         ]
-                        )
-        sh.Table (headers = headers
-                 ,rows    = rows
-                 ,Shorten = Shorten
-                 ,MaxRow  = MaxRow
-                 ,MaxRows = MaxRows
-                 ).print()
+    def debug(self):
+        f = '[MClient] cells.Cells.debug'
+        if self.Debug:
+            sh.log.append (f,_('INFO')
+                          ,_('Debug table:')
+                          )
+            headers = ['NO'
+                      ,'TYPE'
+                      ,'TEXT'
+                      ,'ROWNO'
+                      ,'COLNO'
+                      ,'CELLNO'
+                      ,'SAME'
+                      ]
+            rows = []
+            for block in self._blocks:
+                rows.append ([block._no
+                             ,block._type
+                             ,block._text
+                             ,block.i
+                             ,block.j
+                             ,block._cell_no
+                             ,block._same
+                             ]
+                            )
+            sh.Table (headers = headers
+                     ,rows    = rows
+                     ,Shorten = self.Shorten
+                     ,MaxRow  = self.MaxRow
+                     ,MaxRows = self.MaxRows
+                     ).print()
     
     def wrap(self):
         if self.Reverse:
@@ -477,7 +498,10 @@ class Pos:
         Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL
         Modifies attributes:        POS1, POS2
     '''
-    def __init__(self,data,raw_text):
+    def __init__ (self,data,raw_text
+                 ,Debug=False,Shorten=True
+                 ,MaxRow=20,MaxRows=50
+                 ):
         f = '[MClient] cells.Pos.__init__'
         self._blocks   = []
         self._query    = ''
@@ -485,6 +509,10 @@ class Pos:
         self._data     = data
         # Retrieved from the TkinterHTML widget
         self._raw_text = raw_text
+        self.Debug     = Debug
+        self.Shorten   = Shorten
+        self.MaxRow    = MaxRow
+        self.MaxRows   = MaxRows
         if self._data and self._raw_text:
             self.Success = True
         else:
@@ -497,6 +525,7 @@ class Pos:
             self.assign()
             self.gen_poses()
             self.dump()
+            self.debug()
         else:
             sh.com.cancel(f)
         
@@ -510,29 +539,33 @@ class Pos:
             block.i     = item[4]
             self._blocks.append(block)
         
-    def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
-        print('\nPos.debug (Non-DB blocks):')
-        headers = ['NO'
-                  ,'TYPE'
-                  ,'TEXT'
-                  ,'POS1'
-                  ,'POS2'
-                  ]
-        rows = []
-        for block in self._blocks:
-            rows.append ([block._no
-                         ,block._type
-                         ,block._text
-                         ,block._first
-                         ,block._last
-                         ]
-                        )
-        sh.Table (headers = headers
-                 ,rows    = rows
-                 ,Shorten = Shorten
-                 ,MaxRow  = MaxRow
-                 ,MaxRows = MaxRows
-                 ).print()
+    def debug(self):
+        f = '[MClient] cells.Pos.debug'
+        if self.Debug:
+            sh.log.append (f,_('INFO')
+                          ,_('Debug table:')
+                          )
+            headers = ['NO'
+                      ,'TYPE'
+                      ,'TEXT'
+                      ,'POS1'
+                      ,'POS2'
+                      ]
+            rows = []
+            for block in self._blocks:
+                rows.append ([block._no
+                             ,block._type
+                             ,block._text
+                             ,block._first
+                             ,block._last
+                             ]
+                            )
+            sh.Table (headers = headers
+                     ,rows    = rows
+                     ,Shorten = self.Shorten
+                     ,MaxRow  = self.MaxRow
+                     ,MaxRows = self.MaxRows
+                     ).print()
     
     def gen_poses(self):
         ''' We generate positions here according to the text produced by 
@@ -607,11 +640,14 @@ class Pages:
         generated by 'widget.text()' (_index[1], _index[3]). Therefore,
         we need an additional 'index' command.
     '''
-    def __init__(self,obj,blocks):
+    def __init__ (self,obj,blocks
+                 ,Debug=False
+                 ):
         f = '[MClient] cells.Pages.__init__'
+        self._query  = ''
         self.obj     = obj
         self._blocks = blocks
-        self._query  = ''
+        self.Debug   = Debug
         if self._blocks and self.obj and hasattr(self.obj,'widget') \
         and hasattr(self.obj,'bbox'):
             self.Success = True
@@ -656,13 +692,15 @@ class Pages:
             
     def debug(self):
         f = '[MClient] cells.Pages.debug'
-        sh.objs.mes (f,_('INFO')
-                    ,self._query.replace(';',';\n')
-                    )
+        if self.Debug:
+            sh.objs.mes (f,_('INFO')
+                        ,self._query.replace(';',';\n')
+                        )
     
     def run(self):
         f = '[MClient] cells.Pages.run'
         if self.Success:
             self.create_index()
+            self.debug()
         else:
             sh.com.cancel(f)

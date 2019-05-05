@@ -22,6 +22,136 @@ gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 
+class Same:
+    ''' Finely adjust SAME fields here. Default SAME values are already
+        set (as early as in 'Tags'), so rewrite them carefully.
+    '''
+    def __init__ (self,blocks,Debug=False
+                 ,Shorten=True,MaxRow=70
+                 ,MaxRows=200
+                 ):
+        self._blocks = blocks
+        self.Debug   = Debug
+        self.Shorten = Shorten
+        self.MaxRow  = MaxRow
+        self.MaxRows = MaxRows
+    
+    def term_comment_fixed(self):
+        ''' Set SAME value of a comment prior to a fixed type to 1
+            even if it does not comprise brackets.
+        '''
+        if len(self._blocks) > 2:
+            i = 2
+            while i < len(self._blocks):
+                if self._blocks[i-2]._type == 'term' \
+                and self._blocks[i-1]._type == 'comment' \
+                and self._blocks[i]._type in ('dic','wform','speech'
+                                             ,'transc'
+                                             ):
+                    self._blocks[i-1]._same = 1
+                i += 1
+    
+    def all_comments(self):
+        for block in self._blocks:
+            if (block._type == 'comment' \
+                and block._text.startswith('(')
+               ) or block._type in ('user','correction'):
+                block._same = 1
+    
+    def term_comment_term(self):
+        if len(self._blocks) > 2:
+            i = 2
+            while i < len(self._blocks):
+                if self._blocks[i-2]._type == 'term' \
+                and self._blocks[i-1]._type == 'comment' \
+                and self._blocks[i]._type == 'term':
+                    ''' There can be a 'comment-term; comment-term' case
+                        (with the comments having SAME=1) which
+                        shouldn't be matched. See multitran.com:
+                        eng-rus: 'tree limb'.
+                    '''
+                    if not self._blocks[i-1]._text.startswith('('):
+                        cond1 = sh.Text(self._blocks[i-2]._text).has_cyrillic()\
+                                and sh.Text(self._blocks[i-1]._text).has_cyrillic()\
+                                and sh.Text(self._blocks[i]._text).has_cyrillic()
+                        cond2 = sh.Text(self._blocks[i-2]._text).has_latin()\
+                                and sh.Text(self._blocks[i-1]._text).has_latin()\
+                                and sh.Text(self._blocks[i]._text).has_latin()
+                        if cond1 or cond2:
+                            self._blocks[i-1]._same = 1
+                            self._blocks[i  ]._same = 1
+                i += 1
+    
+    def adjacent(self):
+        ''' If a comment has SAME=0, then the next non-fixed type block
+            must have SAME=1 because the comment cannot occupy
+            an entire cell (otherwise, this is actually, for example,
+            a word form). I do not use 'correction' and 'user' types
+            here since they come only after other blocks.
+        '''
+        for i in range(len(self._blocks)):
+            if self._blocks[i]._type == 'comment' \
+            and self._blocks[i]._same == 0:
+                if i < len(self._blocks) - 1:
+                    if self._blocks[i+1]._type in ('dic','wform'
+                                                  ,'speech','transc'
+                                                  ):
+                        self._blocks[i]._same = 1
+                    elif self._blocks[i+1]._type == 'term' \
+                    and self._blocks[i+1]._same == 0:
+                        self._blocks[i+1]._same == 1
+    
+    def speech(self):
+        ''' 'speech' blocks have '_same = 1' when analyzing MT because
+            they are within a single tag. We fix it here, not in Tags,
+            because Tags are assumed to output the result 'as is'.
+        '''
+        for i in range(len(self._blocks)):
+            if self._blocks[i]._type == 'speech':
+                self._blocks[i]._same = 0
+                if i < len(self._blocks) - 1:
+                    self._blocks[i+1]._same = 0
+    
+    def punc(self):
+        for block in self._blocks:
+            for sym in sh.punc_array:
+                if block._text.startswith(sym):
+                    block._same = 1
+                    break
+    
+    def debug(self):
+        f = 'plugins.multitranru.elems.Same.debug'
+        if self.Debug:
+            sh.log.append (f,_('INFO')
+                          ,_('Debug table:')
+                          )
+            headers = ['TYPE','TEXT','SAMECELL']
+            rows = []
+            for block in self._blocks:
+                rows.append([block._type,block._text,block._same])
+            sh.Table (headers = headers
+                     ,rows    = rows
+                     ,Shorten = self.Shorten
+                     ,MaxRow  = self.MaxRow
+                     ,MaxRows = self.MaxRows
+                     ).print()
+    
+    def run(self):
+        f = 'plugins.multitranru.elems.Same.run'
+        if self._blocks:
+            self.speech()
+            self.all_comments()
+            self.term_comment_term()
+            self.term_comment_fixed()
+            self.adjacent()
+            self.punc()
+            self.debug()
+            return self._blocks
+        else:
+            sh.com.empty(f)
+            return []
+
+
 
 # A copy of Tags.Block
 class Block:
@@ -102,92 +232,36 @@ class Elems:
             self.Success = False
             sh.com.empty(f)
         
-    def same_users(self):
+    def users(self):
+        for block in self._blocks:
+            if block._type == 'comment' and 'UserName' in block._url:
+                block._type = 'user'
+    
+    def corrections(self):
+        ''' Replace 'comment' with 'correction' in
+            the 'correction-user-comment-user' structure.
+        '''
+        if len(self._blocks) > 3:
+            i = 3
+            while i < len(self._blocks):
+                if self._blocks[i-3]._type == 'correction' \
+                and self._blocks[i-2]._type == 'user' \
+                and self._blocks[i-1]._type == 'comment' \
+                and self._blocks[i]._type == 'user':
+                    self._blocks[i-1]._type = 'correction'
+                i += 1
+    
+    def strip(self):
+        for block in self._blocks:
+            block._text = block._text.strip()
+    
+    def user_brackets(self):
         for block in self._blocks:
             if block._type == 'user':
-                block._same = 1
-                text = block._text.strip()
-                if not text.startswith('('):
-                    text = '(' + text
-                if not text.endswith(')'):
-                    text += ')'
-                if block._text != text:
-                    block._text = text
-    
-    def same_non_comments(self):
-        ''' If a comment has SAME=0, then the next non-fixed type block
-            must have SAME=1 because the comment cannot occupy
-            an entire cell (otherwise, this is actually, for example,
-            a word form). I do not use 'correction' type here since
-            corrections come only after other blocks.
-        '''
-        for i in range(len(self._blocks)):
-            if self._blocks[i]._type == 'comment' \
-            and self._blocks[i]._same == 0:
-                if i < len(self._blocks) - 1:
-                    if self._blocks[i+1]._type in ('dic','wform'
-                                                  ,'speech','transc'
-                                                  ):
-                        self._blocks[i]._same = 1
-                    elif self._blocks[i+1]._type == 'term' \
-                    and self._blocks[i+1]._same == 0:
-                        self._blocks[i+1]._same == 1
-    
-    def three(self,i):
-        # Check for the 'term-comment-term' construct
-        if 0 < i < len(self._blocks) - 1:
-            if self._blocks[i-1]._type == 'term' \
-            and self._blocks[i+1]._type == 'term':
-                cond1 = sh.Text(self._blocks[i-1]._text).has_cyrillic()\
-                        and sh.Text(self._blocks[i]._text).has_cyrillic()\
-                        and sh.Text(self._blocks[i+1]._text).has_cyrillic()
-                cond2 = sh.Text(self._blocks[i-1]._text).has_latin()\
-                        and sh.Text(self._blocks[i]._text).has_latin()\
-                        and sh.Text(self._blocks[i+1]._text).has_latin()
-                ''' There can be a 'comment-term; comment-term' case
-                    (with the comments having SAME=1) which shouldn't
-                    be matched. See multitran.com: eng-rus: 'tree limb'.
-                '''
-                Allow = True
-                if i > 1:
-                    if self._blocks[i-2]._type in ('comment'
-                                                  ,'correction'
-                                                  ) \
-                    and not '(' in self._blocks[i-2]._text \
-                    and not ')' in self._blocks[i-2]._text:
-                        Allow = False
-                if (cond1 or cond2) and Allow:
-                    return True
-    
-    def same_punc(self):
-        for i in range(len(self._blocks)):
-            text = self._blocks[i]._text.strip()
-            for sym in sh.punc_array:
-                if text.startswith(sym):
-                    self._blocks[i]._same = 1
-                    break
-    
-    def same_comments(self):
-        for i in range(len(self._blocks)):
-            if self._blocks[i]._type in ('comment','correction'):
-                if '(' in self._blocks[i]._text \
-                or ')' in self._blocks[i]._text:
-                    if i > 0:
-                        self._blocks[i]._same = 1
-                    else:
-                        self._blocks[i]._same = 0
-                else:
-                    if self._blocks[i]._type == 'comment' \
-                    and self.three(i):
-                        self._blocks[i-1]._same = 0
-                        self._blocks[i  ]._same = 1
-                        self._blocks[i+1]._same = 1
-                    elif i < len(self._blocks) - 1 \
-                    and self._blocks[i]._type == 'comment':
-                        self._blocks[i  ]._same = 0
-                        self._blocks[i+1]._same = 1
-                    else:
-                        self._blocks[i]._same = 1
+                if not block._text.startswith('('):
+                    block._text = '(' + block._text
+                if not block._text.endswith(')'):
+                    block._text += ')'
     
     def add_brackets(self):
         for block in self._blocks:
@@ -218,21 +292,29 @@ class Elems:
     def run(self):
         f = '[MClient] plugins.multitranru.elems.Elems.run'
         if self.Success:
-            self.unite_transc()
-            self.phrases()
+            # Do some cleanup
+            self.strip()
             self.trash()
-            self.dic_urls()
+            self.unite_transc()
+            # Reassign types
+            self.users()
+            self.phrases()
             self.dic_abbr()
             self.dic_abbr_phrases()
-            ''' These 2 procedures should not be combined (otherwise,
-                corrections will have the same color as comments)
-            '''
+            self.corrections()
+            # Prepare contents
+            self.dic_urls()
             self.add_brackets()
-            self.speech()
-            self.same_comments()
-            self.same_users()
-            self.same_punc()
-            self.same_non_comments()
+            self.user_brackets()
+            # Set SAME
+            ''' We do not pass debug options here since Same debug has
+                few columns and it is reasonable to make them wider than
+                for Elems.
+            '''
+            self._blocks = Same (blocks = self._blocks
+                                ,Debug  = self.Debug
+                                ).run()
+            # Prepare for cells
             self.add_space()
             self.fill()
             self.fill_terma()
@@ -249,8 +331,11 @@ class Elems:
             sh.com.cancel(f)
     
     def debug(self):
+        f = 'plugins.multitranru.elems.Elems.debug'
         if self.Debug:
-            print('\nplugins.multitranru.elems.Elems.debug (Non-DB blocks):')
+            sh.log.append (f,_('INFO')
+                          ,_('Debug table:')
+                          )
             headers = ['DICA','WFORMA','SPEECHA','TRANSCA','TERMA'
                       ,'TYPE','TEXT','SAMECELL','SELECTABLE'
                       ]
@@ -267,17 +352,6 @@ class Elems:
                      ,MaxRow  = self.MaxRow
                      ,MaxRows = self.MaxRows
                      ).print()
-        
-    def speech(self):
-        ''' 'speech' blocks have '_same = 1' when analyzing MT because
-            they are within a single tag. We fix it here, not in Tags,
-            because Tags are assumed to output the result 'as is'.
-        '''
-        for i in range(len(self._blocks)):
-            if self._blocks[i]._type == 'speech':
-                self._blocks[i]._same = 0
-                if i < len(self._blocks) - 1:
-                    self._blocks[i+1]._same = 0
     
     def unite_transc(self):
         i = 0
@@ -329,7 +403,7 @@ class Elems:
             
     def trash(self):
         self._blocks = [block for block in self._blocks \
-                        if not block._text.strip() in ('|','(',')')
+                        if not block._text in ('|','(',')')
                        ]
     
     def add_space(self):
@@ -351,7 +425,7 @@ class Elems:
             if block._type == 'phrase':
                 block._type   = 'dic'
                 block._select = 1
-                block._dica   = block._text.strip()
+                block._dica   = block._text
                 break
                 
     def fill(self):
@@ -393,7 +467,7 @@ class Elems:
                 '''
             elif block._type in ('term','phrase'):
                 terma = block._text
-            block._dica    = dica.strip()
+            block._dica    = dica
             block._wforma  = wforma
             block._speecha = speecha
             block._transca = transca

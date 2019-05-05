@@ -53,9 +53,6 @@ purl4 = '">'
 # Comments
 pcom = 'span style="color:gray"'
 
-# Users
-puser = '&UserName='
-
 # Word Forms
 pwf1 = 'td colspan="'
 pwf2 = '" class="gray"'
@@ -84,8 +81,8 @@ tag_pattern_del = ['m.exe?a=40&'              # Log in, Вход
                   ]
 
 useful_tags = [pdic,purl1,purl2
-              ,pcom,puser,pwf1
-              ,pwf2,psp,ptm,pph
+              ,pcom,pwf1,pwf2
+              ,psp,ptm,pph
               ]
 
 
@@ -107,7 +104,7 @@ class Block:
         '''
         self._select   = -1
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
-            'transc', 'user', 'invalid'
+            'transc', 'invalid'
         '''
         self._type     = ''
         self._text     = ''
@@ -133,6 +130,12 @@ class AnalyzeTag:
         self._fragms = []
         self._blocks = []
 
+    def correction(self):
+        ''' Set here a 'correction' type determination algorithm when
+            the author of 'multitran.com' implements corrections.
+        '''
+        pass
+    
     def run(self):
         self.split()
         self._fragms = [fragm.strip() for fragm in self._fragms \
@@ -154,9 +157,9 @@ class AnalyzeTag:
                     if not self._block._type:
                         self.speech()
                     if not self._block._type:
-                        self.user()
-                    if not self._block._type:
                         self.comment()
+                    if not self._block._type:
+                        self.correction()
                     self.url()
                 else:
                     self._block._type = 'invalid'
@@ -222,10 +225,6 @@ class AnalyzeTag:
         if pcom in self._block._text:
             self._block._type = 'comment'
     
-    def user(self):
-        if puser in self._block._text:
-            self._block._type = 'user'
-
     def dic(self):
         f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.dic'
         if pdic in self._block._text:
@@ -268,7 +267,7 @@ class Tags:
 
     def __init__ (self,text,Debug=False
                  ,Shorten=True,MaxRow=20
-                 ,MaxRows=20
+                 ,MaxRows=50
                  ):
         self.values()
         if text:
@@ -332,7 +331,10 @@ class Tags:
         sg.objs._txt.show()
 
     def debug_blocks(self):
-        print('\nTags.debug_blocks (Non-DB blocks):')
+        f = '[MClient] plugins.multitrancom.tags.Tags.debug_blocks'
+        sh.log.append (f,_('INFO')
+                      ,_('Debug table:')
+                      )
         headers = ['TYPE'
                   ,'TEXT'
                   ,'URL'
@@ -355,7 +357,7 @@ class Tags:
 
     def debug(self):
         if self.Debug:
-            self.debug_tags()
+            #self.debug_tags()
             self.debug_blocks()
 
     def blocks(self):

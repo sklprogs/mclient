@@ -3,6 +3,8 @@
 import shared    as sh
 import sharedGUI as sg
 
+DEBUG = True
+
 
 class Block:
     
@@ -133,7 +135,7 @@ class Tags:
         text = sh.ReadTextFile(file).get()
         text = sdcleanup.CleanUp(text).run()
         sdtags.Tags (text  = text
-                    ,Debug = True
+                    ,Debug = DEBUG
                     ).run()
     
     def multitranru(self):
@@ -144,7 +146,7 @@ class Tags:
         text = sh.ReadTextFile(file).get()
         text = mrcleanup.CleanUp(text).run()
         mrtags.Tags (text    = text
-                    ,Debug   = True
+                    ,Debug   = DEBUG
                     ,Shorten = True
                     ,MaxRow  = 20
                     ,MaxRows = 100
@@ -159,7 +161,7 @@ class Tags:
         text = sh.ReadTextFile(file).get()
         text = mccleanup.CleanUp(text).run()
         mctags.Tags (text    = text
-                    ,Debug   = True
+                    ,Debug   = DEBUG
                     ,Shorten = True
                     ,MaxRow  = 20
                     ,MaxRows = 150
@@ -173,7 +175,7 @@ class Plugin:
         f = '[MClient] tests.Plugin.stardict'
         import plugins.stardict.run as sr
         search = 'about'
-        iplug = sr.Plugin (Debug   = True
+        iplug = sr.Plugin (Debug   = DEBUG
                           ,Shorten = False
                           )
         iplug.request(search=search)
@@ -184,7 +186,7 @@ class Plugin:
         url    = 'https://www.multitran.ru/c/m.exe?CL=1&s=computer&l1=1'
         search = 'computer'
         iplug = mr.Plugin (timeout = 6
-                          ,Debug   = True
+                          ,Debug   = DEBUG
                           ,Shorten = True
                           ,MaxRow  = 20
                           ,MaxRows = 300
@@ -202,7 +204,7 @@ class Plugin:
         search  = 'counting machine'
         
         iplug = mc.Plugin (timeout = 6
-                          ,Debug   = True
+                          ,Debug   = DEBUG
                           ,Shorten = True
                           ,MaxRow  = 20
                           ,MaxRows = 150
@@ -543,9 +545,10 @@ class Commands:
                          ,phrase_dic   = ''
                          ,Reverse      = False
                          ,ExpandSpeech = False
+                         ,Debug        = DEBUG
+                         ,MaxRows      = MaxRows
                          )
         cells.run()
-        cells.debug(MaxRows=MaxRows)
     
     def translate (self,source,pair
                   ,search,url,MaxRows=100
@@ -566,7 +569,7 @@ class Commands:
                                )
             
     
-    def complex(self,GUI=False):
+    def com_complex(self,GUI=False):
         self.translate (source = 'multitran.com'
                        ,pair   = 'ENG <=> RUS'
                        ,search = 'complex'
@@ -574,7 +577,7 @@ class Commands:
                        ,GUI    = GUI
                        )
     
-    def abatis(self,GUI=False):
+    def com_abatis(self,GUI=False):
         self.translate (source = 'multitran.com'
                        ,pair   = 'ENG <=> RUS'
                        ,search = 'abatis'
@@ -582,7 +585,7 @@ class Commands:
                        ,GUI    = GUI
                        )
     
-    def ernahrung(self,GUI=False):
+    def all_ernahrung(self,GUI=False):
         self.translate (source = _('Multitran')
                        ,pair   = 'DEU <=> RUS'
                        ,search = 'ernährung'
@@ -590,7 +593,7 @@ class Commands:
                        ,GUI    = GUI
                        )
     
-    def working_documentation(self,GUI=False):
+    def ru_working_documentation(self,GUI=False):
         self.translate (source = 'multitran.ru'
                        ,pair   = 'ENG <=> RUS'
                        ,search = 'working_documentation'
@@ -598,11 +601,19 @@ class Commands:
                        ,GUI    = GUI
                        )
     
-    def mud(self,GUI=False):
+    def com_mud(self,GUI=False):
         self.translate (source = 'multitran.com'
                        ,pair   = 'ENG <=> RUS'
                        ,search = 'mud'
                        ,url    = 'https://multitran.com/m.exe?s=mud&l1=1&l2=2&SHL=2'
+                       ,GUI    = GUI
+                       )
+    
+    def ru_mud(self,GUI=False):
+        self.translate (source = 'multitran.ru'
+                       ,pair   = 'ENG <=> RUS'
+                       ,search = 'mud'
+                       ,url    = 'https://multitran.ru/c/m.exe?s=mud&l1=1&l2=2'
                        ,GUI    = GUI
                        )
 
@@ -614,7 +625,7 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
     import logic as lg
-    lg.objs.plugins(Debug=1)
-    #com.working_documentation(GUI=1)
-    com.mud(GUI=1)
+    lg.objs.plugins(Debug=DEBUG)
+    com.ru_working_documentation(GUI=1)
+    #com.ru_mud(GUI=1)
     sg.objs.end()
