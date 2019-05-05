@@ -585,6 +585,14 @@ class Commands:
                        ,GUI    = GUI
                        )
     
+    def ru_abatis(self,GUI=False):
+        self.translate (source = 'multitran.ru'
+                       ,pair   = 'ENG <=> RUS'
+                       ,search = 'засека'
+                       ,url    = 'https://www.multitran.ru/c/m.exe?l1=2&l2=1&s=%E7%E0%F1%E5%EA%E0'
+                       ,GUI    = GUI
+                       )
+    
     def all_ernahrung(self,GUI=False):
         self.translate (source = _('Multitran')
                        ,pair   = 'DEU <=> RUS'
@@ -626,6 +634,7 @@ if __name__ == '__main__':
     sg.objs.start()
     import logic as lg
     lg.objs.plugins(Debug=DEBUG)
-    com.ru_working_documentation(GUI=1)
+    #com.ru_working_documentation(GUI=0)
     #com.ru_mud(GUI=1)
+    com.ru_abatis(GUI=1)
     sg.objs.end()

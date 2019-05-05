@@ -36,6 +36,25 @@ class Same:
         self.MaxRow  = MaxRow
         self.MaxRows = MaxRows
     
+    def comment_next(self):
+        ''' If a comment has SAME=0, then the next non-fixed type block
+            must have SAME=1 because the comment cannot occupy
+            an entire cell (otherwise, this is actually, for example,
+            a word form). I do not use 'correction' and 'user' types
+            here since they come only after other blocks and always have
+            SAME=1.
+        '''
+        if len(self._blocks) > 1:
+            i = 1
+            while i < len(self._blocks):
+                if self._blocks[i-1]._type == 'comment' \
+                and self._blocks[i-1]._same == 0:
+                    if self._blocks[i]._type == 'term':
+                        self._blocks[i]._same = 1
+                    else:
+                        self._blocks[i-1]._same = 1
+                i += 1
+    
     def term_comment_fixed(self):
         ''' Set SAME value of a comment prior to a fixed type to 1
             even if it does not comprise brackets.
@@ -82,25 +101,6 @@ class Same:
                             self._blocks[i  ]._same = 1
                 i += 1
     
-    def adjacent(self):
-        ''' If a comment has SAME=0, then the next non-fixed type block
-            must have SAME=1 because the comment cannot occupy
-            an entire cell (otherwise, this is actually, for example,
-            a word form). I do not use 'correction' and 'user' types
-            here since they come only after other blocks.
-        '''
-        for i in range(len(self._blocks)):
-            if self._blocks[i]._type == 'comment' \
-            and self._blocks[i]._same == 0:
-                if i < len(self._blocks) - 1:
-                    if self._blocks[i+1]._type in ('dic','wform'
-                                                  ,'speech','transc'
-                                                  ):
-                        self._blocks[i]._same = 1
-                    elif self._blocks[i+1]._type == 'term' \
-                    and self._blocks[i+1]._same == 0:
-                        self._blocks[i+1]._same == 1
-    
     def speech(self):
         ''' 'speech' blocks have '_same = 1' when analyzing MT because
             they are within a single tag. We fix it here, not in Tags,
@@ -143,7 +143,7 @@ class Same:
             self.all_comments()
             self.term_comment_term()
             self.term_comment_fixed()
-            self.adjacent()
+            self.comment_next()
             self.punc()
             self.debug()
             return self._blocks
