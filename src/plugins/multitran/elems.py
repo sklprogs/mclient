@@ -63,24 +63,6 @@ class Elems:
         else:
             sh.com.cancel(f)
     
-    def subjects(self):
-        f = '[MClient] plugins.multitran.elems.Elems.subjects'
-        if self.Success:
-            pattern = '[\s]{0,1}(в|in) \d+ (тематиках|тематике|subjects)'
-            count = 0
-            i = 0
-            while i < len(self._data):
-                if re.match(pattern,self._data[i][8]):
-                    del self._data[i]
-                    count += 1
-                    i -= 1
-                i += 1
-            sh.log.append (f,_('INFO')
-                          ,_('Blocks removed: %d') % count
-                          )
-        else:
-            sh.com.cancel(f)
-    
     def purge(self):
         ''' Delete blocks that are empty, likely duplicates or have
             no value.
@@ -304,6 +286,5 @@ class Elems:
         self.phrase_prop()
         self.debug_both()
         self.sumup()
-        self.subjects()
         self.debug()
         return self._data

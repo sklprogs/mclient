@@ -14,6 +14,7 @@
     calculate SELECTABLE fully in Cells.
 '''
 
+import re
 import shared    as sh
 import sharedGUI as sg
 
@@ -232,6 +233,20 @@ class Elems:
             self.Success = False
             sh.com.empty(f)
         
+    def subjects(self):
+        f = '[MClient] plugins.multitranru.elems.Elems.subjects'
+        pattern = '(в|in) \d+ (тематиках|тематике|subjects)'
+        count = 0
+        i = 0
+        while i < len(self._blocks):
+            if re.match(pattern,self._blocks[i]._text):
+                del self._blocks[i]
+                count += 1
+                i -= 1
+            i += 1
+        sh.log.append (f,_('INFO')
+                      ,_('%d blocks have been removed') % count
+                      )
     def users(self):
         for block in self._blocks:
             if block._type == 'comment' and 'UserName' in block._url:
@@ -295,6 +310,7 @@ class Elems:
             # Do some cleanup
             self.strip()
             self.trash()
+            self.subjects()
             self.unite_transc()
             # Reassign types
             self.users()

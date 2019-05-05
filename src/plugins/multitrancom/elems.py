@@ -235,6 +235,21 @@ class Elems:
             self.Success = False
             sh.com.empty(f)
     
+    def subjects(self):
+        f = '[MClient] plugins.multitrancom.elems.Elems.subjects'
+        pattern = '(в|in) \d+ (тематиках|тематике|subjects)'
+        count = 0
+        i = 0
+        while i < len(self._blocks):
+            if re.match(pattern,self._blocks[i]._text):
+                del self._blocks[i]
+                count += 1
+                i -= 1
+            i += 1
+        sh.log.append (f,_('INFO')
+                      ,_('%d blocks have been removed') % count
+                      )
+    
     def corrections(self):
         ''' Replace 'comment' with 'correction' in
             the 'correction-user-comment-user' structure.
@@ -317,6 +332,7 @@ class Elems:
             # Do some cleanup
             self.strip()
             self.trash()
+            self.subjects()
             self.delete_search()
             # Reassign types
             self.transc()

@@ -207,6 +207,7 @@ class Hotkeys:
             key = key.replace('Num_Lock','NumLock')
             key = key.replace('Prior','PgUp')
             key = key.replace('Next','PgDn')
+            key = key.replace('Escape','Esc')
             ''' We should leave only 1 key if there are key
                 both for keyboard and keypad. Thus, we generally should
                 not have to use keypad key without keyboard
