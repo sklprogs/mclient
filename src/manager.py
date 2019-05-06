@@ -28,7 +28,7 @@ class Plugins:
         self.maplugin = None
         self.plugin   = self.maplugin
         #note: change this upon the change of the default source
-        self._source  = 'multitran.com'
+        self._source  = _('Multitran')
         self._sdpath  = sdpath
         self._timeout = timeout
         self.Debug    = Debug

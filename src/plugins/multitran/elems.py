@@ -87,7 +87,7 @@ class Elems:
                     i -= 1
                 i += 1
             sh.log.append (f,_('INFO')
-                          ,_('Blocks removed: %d') % count
+                          ,_('%d blocks have been deleted') % count
                           )
         else:
             sh.com.cancel(f)
@@ -209,7 +209,7 @@ class Elems:
                         count += 1
                     i += 1
             sh.log.append (f,_('INFO')
-                          ,_('Blocks removed: %d') % count
+                          ,_('%d blocks have been deleted') % count
                           )
         else:
             sh.com.cancel(f)

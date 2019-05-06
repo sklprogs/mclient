@@ -675,7 +675,7 @@ class WebFrame:
             #note: change this upon the change of the default source
             self.gui.men_srcs.reset (items   = sources
                                     ,action  = self.set_source
-                                    ,default = 'multitran.com'
+                                    ,default = _('Multitran')
                                     )
         else:
             sh.com.empty(f)
