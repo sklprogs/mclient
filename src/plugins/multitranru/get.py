@@ -88,7 +88,10 @@ class Suggest:
         f = '[MClient] plugins.multitranru.get.Suggest.url'
         if self.Success:
             ''' #NOTE: the encoding here MUST be 'utf-8' irrespective
-                of the plugin!
+                of the plugin! It seems that getting suggestions for
+                such words as 'объект' is impossible ('обе...' will be
+                returned). The autosuggestion at 'multitran.ru' works
+                the same way, so this is a site-specific bug.
             '''
             self._url = sh.Online (base_str   = self._pair
                                   ,search_str = self._search
@@ -239,11 +242,20 @@ class Commands:
     def get_url(self,search):
         f = '[MClient] plugins.multitranru.get.Commands.get_url'
         if search:
-            #note: The encoding here should always be 'utf-8'!
-            return sh.Online (base_str   = PAIR
-                             ,search_str = search
-                             ,encoding   = 'utf-8'
-                             ).url()
+            ''' Due to 'multitran.ru' peculiarities, we should try
+                the windows-1251 encoding first, otherwise, we won't be
+                able to search for such words as 'объект'.
+            '''
+            try:
+                return sh.Online (base_str   = PAIR
+                                 ,search_str = search
+                                 ,encoding   = 'windows-1251'
+                                 ).url()
+            except:
+                return sh.Online (base_str   = PAIR
+                                 ,search_str = search
+                                 ,encoding   = 'utf-8'
+                                 ).url()
         else:
             sh.com.empty(f)
 
