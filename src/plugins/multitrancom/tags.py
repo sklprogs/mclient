@@ -51,7 +51,8 @@ purl3 = 'href="'
 purl4 = '">'
 
 # Comments
-pcom = 'span style="color:gray"'
+pcom1 = '<i>'
+pcom2 = 'span style="color:gray"'
 
 # Word Forms
 pwf1 = 'td colspan="'
@@ -81,8 +82,8 @@ tag_pattern_del = ['m.exe?a=40&'              # Log in, Вход
                   ]
 
 useful_tags = [pdic,purl1,purl2
-              ,pcom,pwf1,pwf2
-              ,psp,ptm,pph
+              ,pcom1,pcom2,pwf1
+              ,pwf2,psp,ptm,pph
               ]
 
 
@@ -226,7 +227,7 @@ class AnalyzeTag:
             self._fragms.append(tmp)
 
     def comment(self):
-        if pcom in self._block._text:
+        if pcom1 in self._block._text or pcom2 in self._block._text:
             self._block._type = 'comment'
     
     def dic(self):

@@ -311,8 +311,11 @@ class Elems:
                 i += 1
     
     def users(self):
+        ''' User names are initially comments at 'multitran.ru', and
+            terms at 'multitran.com'.
+        '''
         for block in self._blocks:
-            if block._type == 'comment' and 'UserName' in block._url:
+            if block._type == 'term' and 'UserName' in block._url:
                 block._type = 'user'
     
     def strip(self):
