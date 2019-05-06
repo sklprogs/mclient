@@ -500,7 +500,7 @@ class Pos:
     '''
     def __init__ (self,data,raw_text
                  ,Debug=False,Shorten=True
-                 ,MaxRow=20,MaxRows=50
+                 ,MaxRow=70,MaxRows=50
                  ):
         f = '[MClient] cells.Pos.__init__'
         self._blocks   = []

@@ -640,6 +640,14 @@ class Commands:
                        ,url    = 'https://www.multitran.com/m.exe?s=system-wide&l1=2&l2=1&SHL=2'
                        ,GUI    = GUI
                        )
+    
+    def ru_systemwide(self,GUI=False):
+        self.translate (source = 'multitran.ru'
+                       ,pair   = 'ENG <=> RUS'
+                       ,search = 'system-wide'
+                       ,url    = 'https://www.multitran.ru/c//m.exe?s=system-wide&l1=2&l2=1'
+                       ,GUI    = GUI
+                       )
 
 
 com = Commands()
@@ -649,10 +657,13 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
     import logic as lg
-    lg.objs.plugins(Debug=DEBUG)
+    #lg.objs.plugins(Debug=DEBUG)
+    lg.objs.plugins(Debug=0)
     #com.ru_working_documentation(GUI=0)
     #com.ru_mud(GUI=1)
     #com.com_abatis(GUI=1)
     #com.ru_abatis(GUI=1)
-    com.com_systemwide(GUI=1)
+    #com.com_systemwide(GUI=0)
+    #com.ru_systemwide(GUI=1)
+    com.com_complex(GUI=1)
     sg.objs.end()

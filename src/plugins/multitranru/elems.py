@@ -233,6 +233,18 @@ class Elems:
             self.Success = False
             sh.com.empty(f)
         
+    def terma_same(self):
+        ''' #note: all blocks of the same cell must have the same TERMA,
+            otherwise, alphabetizing may put blocks with SAME=1 outside
+            of their cells.
+        '''
+        terma = ''
+        for block in self._blocks:
+            if block._same == 0:
+                terma = block._terma
+            elif block._same == 1:
+                block._terma = terma
+    
     def subjects(self):
         f = '[MClient] plugins.multitranru.elems.Elems.subjects'
         pattern = '(в|in) \d+ (тематиках|тематике|subjects)'
@@ -245,7 +257,7 @@ class Elems:
                 i -= 1
             i += 1
         sh.log.append (f,_('INFO')
-                      ,_('%d blocks have been removed') % count
+                      ,_('%d blocks have been deleted') % count
                       )
     def users(self):
         for block in self._blocks:
@@ -331,13 +343,15 @@ class Elems:
                                 ,Debug  = self.Debug
                                 ).run()
             # Prepare for cells
-            self.add_space()
             self.fill()
             self.fill_terma()
             self.remove_fixed()
             self.insert_fixed()
             self.fixed_terma()
             self.expand_dica()
+            self.terma_same()
+            # Extra spaces in the beginning may cause sorting problems
+            self.add_space()
             self.selectables()
             self.restore_dic_urls()
             self.dump()
@@ -426,7 +440,7 @@ class Elems:
         for i in range(len(self._blocks)):
             if self._blocks[i]._same > 0:
                 cond = False
-                if i > 0:
+                if i > 0 and self._blocks[i-1]._text:
                     if self._blocks[i-1]._text[-1] in ['(','[','{']:
                         cond = True
                 if self._blocks[i]._text \

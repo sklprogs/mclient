@@ -18,8 +18,8 @@ gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 
-product = 'MClient'
-version = '6.0'
+PRODUCT = 'MClient'
+VERSION = '6.0'
 
 
 if __name__ == '__main__':
@@ -141,7 +141,7 @@ class About:
         self.gui = gi.About()
         self.bindings()
         self.gui.label.text (_('Programming: Peter Sklyar, 2015-2019.\nVersion: %s\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n') \
-                             % version
+                            % VERSION
                             )
         self.gui.label.font(sh.globs['var']['font_style'])
         
@@ -153,7 +153,7 @@ class About:
     # Compose an email to the author
     def response_back(self,event=None):
         sh.Email (email   = sh.email
-                 ,subject = _('Concerning %s') % product
+                 ,subject = _('Concerning %s') % PRODUCT
                  ).create()
 
     # Open a license web-page
@@ -634,8 +634,8 @@ class WebFrame:
         
     def reset(self):
         #'widget.reset' is already done in 'self.fill'
-        welcome = lg.Welcome (product = product
-                             ,version = version
+        welcome = lg.Welcome (product = PRODUCT
+                             ,version = VERSION
                              )
         self.fill(welcome.run())
         self.update_buttons()
@@ -1064,7 +1064,7 @@ class WebFrame:
         
     def title(self,arg=None):
         if not arg:
-            arg = sh.List(lst1=[product,version]).space_items()
+            arg = sh.List(lst1=[PRODUCT,VERSION]).space_items()
         self.gui.title(arg)
 
     def text(self,event=None):
@@ -1108,6 +1108,7 @@ class WebFrame:
                 objs._blocks_db.Selectable = Selectable
 
     def _select(self,result):
+        f = '[MClient] mclient.WebFrame._select'
         try:
             self.gui.widget.tag ('delete','selection')
             self.gui.widget.tag ('add','selection',result[0]
@@ -1306,6 +1307,7 @@ class WebFrame:
                                 ,Block      = lg.objs._request.Block
                                 ,Prioritize = lg.objs._request.Prioritize
                                 ,phrase_dic = self._phdic
+                                ,Debug      = lg.objs.plugins().Debug
                                 )
         bp.run()
         objs._blocks_db.update(query=bp._query)
@@ -1349,6 +1351,7 @@ class WebFrame:
                          ,phrase_dic   = self._phdic
                          ,Reverse      = lg.objs._request.Reverse
                          ,ExpandSpeech = ExpandSpeech
+                         ,Debug        = lg.objs._plugins.Debug
                          )
         cells.run()
         cells.dump(blocks_db=objs._blocks_db)
@@ -1377,6 +1380,7 @@ class WebFrame:
         data = objs._blocks_db.assign_pos()
         pos  = cl.Pos (data     = data
                       ,raw_text = self.text()
+                      ,Debug    = lg.objs._plugins.Debug
                       )
         pos.run()
         objs._blocks_db.update(query=pos._query)
@@ -1413,9 +1417,12 @@ class WebFrame:
         timer.end()
         
         '''
-        objs._blocks_db.dbc.execute ('select   CELLNO,PRIORITY,TYPE,DICA\
-                                              ,DICAF,TEXT\
-                                      from     BLOCKS\
+        sh.log.append (f,_('INFO')
+                      ,_('Debug table:')
+                      )
+        objs._blocks_db.dbc.execute ('select   CELLNO,NO,PRIORITY,DICA \
+                                              ,TYPE,TERMA,TEXT \
+                                      from     BLOCKS \
                                       order by ARTICLEID,CELLNO,NO'
                                     )
         objs._blocks_db.print (Selected=1,Shorten=1,MaxRows=1000
@@ -1783,7 +1790,8 @@ class WebFrame:
             self.gui.btn_view.active()
             self.settings.gui.cb5.disable()
 
-        if not lg.objs._request.SpecialPage and lg.objs._request.SortTerms:
+        if not lg.objs._request.SpecialPage \
+        and lg.objs._request.SortTerms:
             self.gui.btn_alph.active()
             self.settings.gui.cb2.enable()
         else:
