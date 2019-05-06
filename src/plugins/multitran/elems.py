@@ -13,19 +13,19 @@ gettext.install('mclient','../resources/locale')
 
 class Elems:
     
-    def __init__ (self,data1,data2,Debug=False
-                 ,Shorten=True,MaxRow=20
-                 ,MaxRows=200
+    def __init__ (self,blocks1,blocks2
+                 ,Debug=False,Shorten=True
+                 ,MaxRow=20,MaxRows=200
                  ):
         f = '[MClient] plugins.multitran.elems.Elems.__init__'
         self.values()
-        self._data1  = data1
-        self._data2  = data2
-        self.Debug   = Debug
-        self.Shorten = Shorten
-        self.MaxRow  = MaxRow
-        self.MaxRows = MaxRows
-        if not self._data1 or not self._data2:
+        self._blocks1 = blocks1
+        self._blocks2 = blocks2
+        self.Debug    = Debug
+        self.Shorten  = Shorten
+        self.MaxRow   = MaxRow
+        self.MaxRows  = MaxRows
+        if not self._blocks1 or not self._blocks2:
             self.Success = False
             sh.com.empty(f)
     
@@ -34,9 +34,9 @@ class Elems:
         if self.Success:
             if self._phblock is None:
                 if self._phdic:
-                    for i in range(len(self._data2)):
-                        if self._phdic == self._data2[i][8]:
-                            self._phblock = self._data2[i]
+                    for block in self._blocks2:
+                        if self._phdic == block._text:
+                            self._phblock = block
                             break
                 else:
                     sh.com.empty(f)
@@ -51,11 +51,11 @@ class Elems:
         f = '[MClient] plugins.multitran.elems.Elems.phrase_prop'
         if self.Success:
             if self.phrase_block():
-                for block in self._data1:
-                    if block[7] == 'phrase':
-                        block[2] = self._phblock[2]
-                        block[3] = self._phblock[3]
-                        block[4] = self._phblock[4]
+                for block in self._blocks1:
+                    if block._type == 'phrase':
+                        block._dica = self._phblock._dica
+                        block._wforma  = self._phblock._wforma
+                        block._speecha = self._phblock._speecha
             else:
                 sh.log.append (f,_('INFO')
                               ,_('Nothing to do!')
@@ -71,9 +71,9 @@ class Elems:
         if self.Success:
             count = 0
             i = 0
-            while i < len(self._data1):
-                btype = self._data1[i][7]
-                text  = self._data1[i][8]
+            while i < len(self._blocks1):
+                btype = self._blocks1[i]._type
+                text  = self._blocks1[i]._text
                 ''' It is not easy to distinguish comments and
                     transcriptions at 'multitran.com'. Since
                     'multitran.com' is a development branch of
@@ -82,21 +82,13 @@ class Elems:
                     an article at 'multitran.com'.
                 '''
                 if not text or btype == 'transc':
-                    del self._data1[i]
+                    del self._blocks1[i]
                     count += 1
                     i -= 1
                 i += 1
             sh.log.append (f,_('INFO')
                           ,_('%d blocks have been deleted') % count
                           )
-        else:
-            sh.com.cancel(f)
-    
-    def tolist(self):
-        f = '[MClient] plugins.multitran.elems.Elems.tolist'
-        if self.Success:
-            self._data1 = [list(item) for item in self._data1]
-            self._data2 = [list(item) for item in self._data2]
         else:
             sh.com.cancel(f)
     
@@ -107,12 +99,12 @@ class Elems:
         '''
         f = '[MClient] plugins.multitran.elems.Elems.join_phrases'
         if self.Success:
-            ''' 'self._data1' can be empty after removing duplicates,
+            ''' 'self._blocks1' can be empty after removing duplicates,
                 but this still should be considered a successful case.
             '''
-            if self._data1 and self._data2:
-                phrase1 = self._data1[-1][2]
-                phrase2 = self._data2[-1][2]
+            if self._blocks1 and self._blocks2:
+                phrase1 = self._blocks1[-1]._dica
+                phrase2 = self._blocks2[-1]._dica
                 pattern = '(\d+)\s(phrases|фраза|фраз)'
                 match1  = re.match(pattern,phrase1)
                 match2  = re.match(pattern,phrase2)
@@ -133,41 +125,35 @@ class Elems:
                                   ,_('Common phrase dic: "%s"') \
                                   % self._phdic
                                   )
-                    for i in range(len(self._data1)):
-                        # DICA
-                        if self._data1[i][2] == phrase1:
-                            self._data1[i][2] = self._phdic
-                        # DICAF
-                        if self._data1[i][30] == phrase1:
-                            self._data1[i][30] = self._phdic
-                        # TEXT
-                        if self._data1[i][8] == phrase1:
-                            self._data1[i][8] = self._phdic
-                    for i in range(len(self._data2)):
-                        # DICA
-                        if self._data2[i][2] == phrase2:
-                            self._data2[i][2] = self._phdic
-                        # DICAF
-                        if self._data2[i][30] == phrase2:
-                            self._data2[i][30] = self._phdic
-                        # TEXT
-                        if self._data2[i][8] == phrase2:
-                            self._data2[i][8] = self._phdic
+                    for block in self._blocks1:
+                        if block._dica == phrase1:
+                            block._dica = self._phdic
+                        if block._dicaf == phrase1:
+                            block._dicaf = self._phdic
+                        if block._text == phrase1:
+                            block._text = self._phdic
+                    for block in self._blocks2:
+                        if block._dica == phrase2:
+                            block._dica = self._phdic
+                        if block._dicaf == phrase2:
+                            block._dicaf = self._phdic
+                        if block._text == phrase2:
+                            block._text = self._phdic
                 else:
                     sh.log.append (f,_('INFO')
                                   ,_('Nothing to do!')
                                   )
-            elif not self._data1:
-                self._data = list(self._data2)
+            elif not self._blocks1:
+                self._blocks = list(self._blocks2)
             else:
-                # 'self._data2' cannot be empty in any case
+                # 'self._blocks2' cannot be empty in any case
                 sh.com.empty(f)
         else:
             sh.com.cancel(f)
     
     def values(self):
+        self._blocks  = []
         self._phdic   = ''
-        self._data    = []
         self.Success  = True
         self._phblock = None
     
@@ -186,25 +172,25 @@ class Elems:
         '''
         f = '[MClient] plugins.multitran.elems.Elems.duplicates'
         if self.Success:
-            for block in self._data1:
-                block[8] = block[8].strip()
+            for block in self._blocks1:
+                block._text = block._text.strip()
             count = 0
-            for block in self._data2:
-                dica  = block[2]
-                dicaf = block[30]
-                btype = block[7]
-                text  = block[8].strip()
+            for block in self._blocks2:
+                dica  = block._dica
+                dicaf = block._dicaf
+                btype = block._type
+                text  = block._text.strip()
                 i = 0
-                while i < len(self._data1):
-                    dica1  = self._data1[i][2]
-                    dicaf1 = self._data1[i][30]
-                    btype1 = self._data1[i][7]
-                    text1  = self._data1[i][8]
+                while i < len(self._blocks1):
+                    dica1  = self._blocks1[i]._dica
+                    dicaf1 = self._blocks1[i]._dicaf
+                    btype1 = self._blocks1[i]._type
+                    text1  = self._blocks1[i]._text
                     cond1  = text and (text == text1)
                     cond2  = dica == dica1 or dicaf == dicaf1
                     cond3  = btype and (btype == btype1)
                     if cond1 and cond2 and cond3:
-                        del self._data1[i]
+                        del self._blocks1[i]
                         i -= 1
                         count += 1
                     i += 1
@@ -223,8 +209,11 @@ class Elems:
                               )
                 headers = ('DICA','DICAF','TYPE','TEXT')
                 rows    = []
-                for row in self._data1:
-                    rows.append([row[2],row[30],row[7],row[8]])
+                for block in self._blocks1:
+                    rows.append ([block._dica,block._dicaf
+                                 ,block._type,block._text
+                                 ]
+                                )
                 sh.Table (headers = headers
                          ,rows    = rows
                          ,Shorten = self.Shorten
@@ -236,8 +225,11 @@ class Elems:
                               )
                 headers = ('DICA','DICAF','TYPE','TEXT')
                 rows    = []
-                for row in self._data2:
-                    rows.append([row[2],row[30],row[7],row[8]])
+                for row in self._blocks2:
+                    rows.append ([block._dica,block._dicaf
+                                 ,block._type,block._text
+                                 ]
+                                )
                 sh.Table (headers = headers
                          ,rows    = rows
                          ,Shorten = self.Shorten
@@ -252,12 +244,15 @@ class Elems:
         if self.Success:
             if self.Debug:
                 sh.log.append (f,_('DEBUG')
-                              ,_('The resulting table:')
+                              ,_('Debug table:')
                               )
                 headers = ('DICA','DICAF','TYPE','TEXT')
                 rows    = []
-                for row in self._data:
-                    rows.append([row[2],row[30],row[7],row[8]])
+                for row in self._blocks:
+                    rows.append ([block._dica,block._dicaf
+                                 ,block._type,block._text
+                                 ]
+                                )
                 sh.Table (headers = headers
                          ,rows    = rows
                          ,Shorten = self.Shorten
@@ -267,24 +262,12 @@ class Elems:
         else:
             sh.com.cancel(f)
     
-    def sumup(self):
-        f = '[MClient] plugins.multitran.elems.Elems.sumup'
-        if self.Success:
-            tmp = [self._data1,self._data2]
-            tmp = [list(item) for item in tmp if item]
-            self._data = []
-            for item in tmp:
-                self._data += item
-        else:
-            sh.com.cancel(f)
-    
     def run(self):
-        self.tolist()
         self.join_phrases()
         self.duplicates()
         self.purge()
         self.phrase_prop()
         self.debug_both()
-        self.sumup()
+        self._blocks = self._blocks1 + self._blocks2
         self.debug()
-        return self._data
+        return self._blocks

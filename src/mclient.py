@@ -1273,10 +1273,12 @@ class WebFrame:
             
             objs._blocks_db._articleid = objs._blocks_db.max_articleid()
             
-            data = lg.objs.plugins().request (search    = lg.objs._request._search
-                                             ,url       = lg.objs._request._url
-                                             ,articleid = objs._blocks_db._articleid
-                                             )
+            blocks = lg.objs.plugins().request (search = lg.objs._request._search
+                                               ,url    = lg.objs._request._url
+                                               )
+            data = lg.com.dump_elems (blocks    = blocks
+                                     ,articleid = objs._blocks_db._articleid
+                                     )
             #todo: #fix: assign this for already loaded articles too
             text = lg.objs._plugins.get_text()
             if text is not None:

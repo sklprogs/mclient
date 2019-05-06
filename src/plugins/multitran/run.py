@@ -47,7 +47,6 @@ class Plugin:
             inside 'tags' modules.
         '''
         self._blocks = []
-        self._data   = []
     
     def server(self):
         return self.mrplugin.server()
@@ -102,20 +101,20 @@ class Plugin:
     def pairs(self):
         return self.mrplugin.pairs()
     
-    def elems(self,mrdata,mcdata):
+    def elems(self,mrblocks,mcblocks):
         f = '[MClient] plugins.multitran.run.Plugin.elems'
-        if mrdata and mcdata:
-            self._data = el.Elems (data1   = mrdata
-                                  ,data2   = mcdata
-                                  ,Debug   = self.Debug
-                                  ,Shorten = self.Shorten
-                                  ,MaxRow  = self.MaxRow
-                                  ,MaxRows = self.MaxRows
-                                  ).run()
-        elif mrdata:
-            self._data = mrdata
+        if mrblocks and mcblocks:
+            self._blocks = el.Elems (blocks1 = mrblocks
+                                    ,blocks2 = mcblocks
+                                    ,Debug   = self.Debug
+                                    ,Shorten = self.Shorten
+                                    ,MaxRow  = self.MaxRow
+                                    ,MaxRows = self.MaxRows
+                                    ).run()
+        elif mrblocks:
+            self._blocks = mrblocks
         elif mcdata:
-            self._data = mcdata
+            self._blocks = mcblocks
         else:
             sh.com.empty(f)
         tmp = [self.mrplugin._text,self.mcplugin._text]
@@ -125,28 +124,24 @@ class Plugin:
         tmp = [self.mrplugin._html,self.mcplugin._html]
         tmp = [item for item in tmp if item]
         self._html = ' '.join(tmp)
-        return self._data
+        return self._blocks
     
-    def request_search(self,search='',articleid=1):
+    def request_search(self,search=''):
         ''' We cannot use the same URL for different plugins, so we
             create a plugin-specific URL.
         '''
         f = '[MClient] plugins.multitran.run.Plugin.request_search'
-        mrurl  = self.get_url(search)
-        mcurl  = self.get_url(search,Com=True)
-        mrdata = self.mrplugin.request (search    = search
-                                       ,url       = mrurl
-                                       ,articleid = articleid
-                                       )
-        mcdata = self.mcplugin.request (search    = search
-                                       ,url       = mcurl
-                                       ,articleid = articleid
-                                       )
-        return self.elems(mrdata,mcdata)
+        mrurl    = self.get_url(search)
+        mcurl    = self.get_url(search,Com=True)
+        mrblocks = self.mrplugin.request (search = search
+                                         ,url    = mrurl
+                                         )
+        mcblocks = self.mcplugin.request (search = search
+                                         ,url    = mcurl
+                                         )
+        return self.elems(mrblocks,mcblocks)
     
-    def request_url (self,search=''
-                    ,url='',articleid=1
-                    ):
+    def request_url(self,search='',url=''):
         f = '[MClient] plugins.multitran.run.Plugin.request_url'
         if url:
             mrserver = self.mrplugin.server()
@@ -162,15 +157,13 @@ class Plugin:
                     mrurl = mcurl.replace('.com/m.exe','.ru/c/m.exe')
                     mrurl = mrurl.replace('&SHL=1','')
                     mrurl = mrurl.replace('&SHL=2','')
-                mrdata = self.mrplugin.request (search    = search
-                                               ,url       = mrurl
-                                               ,articleid = articleid
-                                               )
-                mcdata = self.mcplugin.request (search    = search
-                                               ,url       = mcurl
-                                               ,articleid = articleid
-                                               )
-                return self.elems(mrdata,mcdata)
+                mrblocks = self.mrplugin.request (search = search
+                                                 ,url    = mrurl
+                                                 )
+                mcblocks = self.mcplugin.request (search = search
+                                                 ,url    = mcurl
+                                                 )
+                return self.elems(mrblocks,mcblocks)
             else:
                 sh.objs.mes (f,_('WARNING')
                             ,_('URL "%s" is unsupported!') % str(url)
@@ -178,15 +171,10 @@ class Plugin:
         else:
             sh.com.empty(f)
     
-    def request (self,search=''
-                ,url='',articleid=1
-                ):
+    def request(self,search='',url=''):
         if url:
-            return self.request_url (search    = search
-                                    ,url       = url
-                                    ,articleid = articleid
+            return self.request_url (search = search
+                                    ,url    = url
                                     )
         else:
-            return self.request_search (search    = search
-                                       ,articleid = articleid
-                                       )
+            return self.request_search(search)

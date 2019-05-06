@@ -32,7 +32,6 @@ class Plugin:
         self._html   = ''
         self._text   = ''
         self._blocks = []
-        self._data   = []
     
     def server(self):
         return gt.URL
@@ -86,9 +85,7 @@ class Plugin:
     def pairs(self):
         return gt.PAIRS
     
-    def request (self,search='',url=''
-                ,articleid=1
-                ):
+    def request(self,search='',url=''):
         iget = gt.Get (search = search
                       ,url    = url
                       )
@@ -108,12 +105,11 @@ class Plugin:
                 # Prevent useless error output
                 if block._url:
                     block._url = gt.com.fix_url(block._url)
-        self._data = el.Elems (blocks    = self._blocks
-                              ,articleid = articleid
-                              ,iabbr     = self.iabbr
-                              ,Debug     = self.Debug
-                              ,Shorten   = self.Shorten
-                              ,MaxRow    = self.MaxRow
-                              ,MaxRows   = self.MaxRows
-                              ).run()
-        return self._data
+        self._blocks = el.Elems (blocks    = self._blocks
+                                ,iabbr     = self.iabbr
+                                ,Debug     = self.Debug
+                                ,Shorten   = self.Shorten
+                                ,MaxRow    = self.MaxRow
+                                ,MaxRows   = self.MaxRows
+                                ).run()
+        return self._blocks

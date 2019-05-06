@@ -35,7 +35,6 @@ class Plugin:
     
     def values(self):
         self._blocks = []
-        self._data   = []
         self._text   = ''
         self._html   = ''
     
@@ -79,9 +78,7 @@ class Plugin:
     def suggest(self,search):
         return gt.Suggest(search).run()
     
-    def request (self,search='',url=''
-                ,articleid=0
-                ):
+    def request(self,search='',url=''):
         iget       = gt.Get(search)
         self._text = iget.run()
         self._html = iget._html
@@ -94,8 +91,7 @@ class Plugin:
                                ,MaxRow  = self.MaxRow
                                ,MaxRows = self.MaxRows
                                ).run()
-        self._data = el.Elems (blocks    = self._blocks
-                              ,articleid = articleid
-                              ,iabbr     = self.iabbr
-                              ).run()
-        return self._data
+        self._blocks = el.Elems (blocks    = self._blocks
+                                ,iabbr     = self.iabbr
+                                ).run()
+        return self._blocks

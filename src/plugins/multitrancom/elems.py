@@ -248,22 +248,20 @@ class Elems:
           vary depending on the view. Incorrect sorting by TERMA may
           result in putting a TERM item before fixed columns.
     '''
-    def __init__ (self,blocks,articleid,iabbr
+    def __init__ (self,blocks,iabbr
                  ,Debug=False,Shorten=True
                  ,MaxRow=20,MaxRows=20,search=''
                  ):
         f = '[MClient] plugins.multitrancom.elems.Elems.__init__'
-        self._data      = []
-        self._dic_urls  = {}
-        self._blocks    = blocks
-        self._articleid = articleid
-        self.abbr       = iabbr
-        self.Debug      = Debug
-        self.Shorten    = Shorten
-        self.MaxRow     = MaxRow
-        self.MaxRows    = MaxRows
-        self._search    = search.strip()
-        if self._blocks and self._articleid:
+        self._dic_urls = {}
+        self._blocks   = blocks
+        self.abbr      = iabbr
+        self.Debug     = Debug
+        self.Shorten   = Shorten
+        self.MaxRow    = MaxRow
+        self.MaxRows   = MaxRows
+        self._search   = search.strip()
+        if self._blocks:
             self.Success = True
         else:
             self.Success = False
@@ -415,9 +413,8 @@ class Elems:
             #todo: expand parts of speech (n -> noun, etc.)
             self.selectables()
             self.restore_dic_urls()
-            self.dump()
             self.debug()
-            return self._data
+            return self._blocks
         else:
             sh.com.cancel(f)
     
@@ -644,43 +641,6 @@ class Elems:
                         not in ('dic','wform','transc','speech')
                        ]
                        
-    def dump(self):
-        for block in self._blocks:
-            self._data.append (
-              (None                # (00) Skips the autoincrement
-              ,self._articleid     # (01) ARTICLEID
-              ,block._dica         # (02) DICA (abbreviation)
-              ,block._wforma       # (03) WFORMA
-              ,block._speecha      # (04) SPEECHA
-              ,block._transca      # (05) TRANSCA
-              ,block._terma        # (06) TERMA
-              ,block._type         # (07) TYPE
-              ,block._text         # (08) TEXT
-              ,block._url          # (09) URL
-              ,block._block        # (10) BLOCK
-              ,block._priority     # (11) PRIORITY
-              ,block._select       # (12) SELECTABLE
-              ,block._same         # (13) SAMECELL
-              ,block._cell_no      # (14) CELLNO
-              ,-1                  # (15) ROWNO
-              ,-1                  # (16) COLNO
-              ,-1                  # (17) POS1
-              ,-1                  # (18) POS2
-              ,''                  # (19) NODE1
-              ,''                  # (20) NODE2
-              ,-1                  # (21) OFFPOS1
-              ,-1                  # (22) OFFPOS2
-              ,-1                  # (23) BBOX1
-              ,-1                  # (24) BBOX2
-              ,-1                  # (25) BBOY1
-              ,-1                  # (26) BBOY2
-              ,block._text.lower() # (27) TEXTLOW
-              ,0                   # (28) IGNORE
-              ,0                   # (29) SPEECHPR
-              ,block._dicaf        # (30) DICA (full title)
-              )
-                              )
-
     def selectables(self):
         # block._no is set only after creating DB
         for block in self._blocks:

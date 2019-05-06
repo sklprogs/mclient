@@ -205,14 +205,11 @@ class Plugins:
         else:
             sh.com.empty(f)
     
-    def request (self,search=''
-                ,url='',articleid=1
-                ):
+    def request(self,search='',url=''):
         f = '[MClient] manager.Plugins.request'
         if self.plugin:
-            return self.plugin.request (search    = search
-                                       ,url       = url
-                                       ,articleid = articleid
+            return self.plugin.request (search = search
+                                       ,url    = url
                                        )
         else:
             sh.com.empty(f)

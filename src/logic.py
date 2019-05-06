@@ -1215,6 +1215,49 @@ class Commands:
     def __init__(self):
         self.unverified()
     
+    def dump_elems(self,blocks,articleid):
+        f = '[MClient] logic.Commands.dump_elems'
+        if blocks and articleid:
+            data = []
+            for block in blocks:
+                data.append (
+                  (None                # (00) Skips the autoincrement
+                  ,articleid           # (01) ARTICLEID
+                  ,block._dica         # (02) DICA (abbreviation)
+                  ,block._wforma       # (03) WFORMA
+                  ,block._speecha      # (04) SPEECHA
+                  ,block._transca      # (05) TRANSCA
+                  ,block._terma        # (06) TERMA
+                  ,block._type         # (07) TYPE
+                  ,block._text         # (08) TEXT
+                  ,block._url          # (09) URL
+                  ,block._block        # (10) BLOCK
+                  ,block._priority     # (11) PRIORITY
+                  ,block._select       # (12) SELECTABLE
+                  ,block._same         # (13) SAMECELL
+                  ,block._cell_no      # (14) CELLNO
+                  ,-1                  # (15) ROWNO
+                  ,-1                  # (16) COLNO
+                  ,-1                  # (17) POS1
+                  ,-1                  # (18) POS2
+                  ,''                  # (19) NODE1
+                  ,''                  # (20) NODE2
+                  ,-1                  # (21) OFFPOS1
+                  ,-1                  # (22) OFFPOS2
+                  ,-1                  # (23) BBOX1
+                  ,-1                  # (24) BBOX2
+                  ,-1                  # (25) BBOY1
+                  ,-1                  # (26) BBOY2
+                  ,block._text.lower() # (27) TEXTLOW
+                  ,0                   # (28) IGNORE
+                  ,0                   # (29) SPEECHPR
+                  ,block._dicaf        # (30) DICA (full title)
+                  )
+                            )
+            return data
+        else:
+            sh.com.empty(f)
+    
     def suggest(self,search,limit=0):
         f = '[MClient] logic.Commands.suggest'
         items = objs.plugins().suggest(search)
