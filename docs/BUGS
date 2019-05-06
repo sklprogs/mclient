@@ -1,6 +1,5 @@
 
-- Fix the 'comment (SAME=0) - comment (SAME=0)' structure
-  (complex -> ", с детства значимыми для личности")
+- plugins.multitranru: объект: cannot search "ъ"
 - plugins.multitrancom: system-wide: No users
 - plugins.multitrancom/ru: eng-rus: tree limb: wrong SAME
 - plugins.multitrancom: eng-rus: in dire need: no fragment

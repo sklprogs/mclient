@@ -39,6 +39,38 @@ class Same:
         self.MaxRow  = MaxRow
         self.MaxRows = MaxRows
     
+    def wform_comment_term(self):
+        # Source-specific
+        if len(self._blocks) > 2:
+            i = 2
+            while i < len(self._blocks):
+                if self._blocks[i-2]._type == 'wform' \
+                and self._blocks[i-2]._same == 0 \
+                and self._blocks[i-2]._url \
+                and self._blocks[i-1]._type == 'comment' \
+                and self._blocks[i-1]._same == 0 \
+                and self._blocks[i]._type == 'term' \
+                and self._blocks[i]._same == 1:
+                   self._blocks[i-2]._type = 'term'
+                   self._blocks[i-1]._same = 1
+                i += 1
+    
+    def comment_comment(self):
+        ''' Fix the 'comment (SAME=0) - comment (SAME=0)' structure
+            which may be encountered due to that word forms can be
+            indistinguishable from comments. The latter happens only in
+            the present source, so this code is plugin-specific.
+        '''
+        if len(self._blocks) > 1:
+            i = 1
+            while i < len(self._blocks):
+                if self._blocks[i-1]._type == 'comment' \
+                and self._blocks[i-1]._same == 0 \
+                and self._blocks[i]._type == 'comment' \
+                and self._blocks[i]._same == 0:
+                   self._blocks[i-1]._type = 'wform' 
+                i += 1
+    
     def comment_next(self):
         ''' If a comment has SAME=0, then the next non-fixed type block
             must have SAME=1 because the comment cannot occupy
@@ -146,7 +178,9 @@ class Same:
             self.all_comments()
             self.term_comment_term()
             self.term_comment_fixed()
+            self.comment_comment()
             self.comment_next()
+            self.wform_comment_term()
             self.punc()
             self.debug()
             return self._blocks

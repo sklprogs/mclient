@@ -657,8 +657,8 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sg.objs.start()
     import logic as lg
-    #lg.objs.plugins(Debug=DEBUG)
-    lg.objs.plugins(Debug=0)
+    lg.objs.plugins(Debug=DEBUG)
+    #lg.objs.plugins(Debug=0)
     #com.ru_working_documentation(GUI=0)
     #com.ru_mud(GUI=1)
     #com.com_abatis(GUI=1)
