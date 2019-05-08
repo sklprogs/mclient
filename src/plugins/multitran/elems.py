@@ -17,80 +17,66 @@ class Elems:
                  ,Debug=False,Shorten=True
                  ,MaxRow=20,MaxRows=200
                  ):
-        f = '[MClient] plugins.multitran.elems.Elems.__init__'
         self.values()
-        self._blocks1 = blocks1
-        self._blocks2 = blocks2
-        self.Debug    = Debug
-        self.Shorten  = Shorten
-        self.MaxRow   = MaxRow
-        self.MaxRows  = MaxRows
-        if not self._blocks1 or not self._blocks2:
-            self.Success = False
-            sh.com.empty(f)
+        if blocks1:
+            self._blocks1 = blocks1
+        if blocks2:
+            self._blocks2 = blocks2
+        self.Debug   = Debug
+        self.Shorten = Shorten
+        self.MaxRow  = MaxRow
+        self.MaxRows = MaxRows
+    
+    def join_blocks(self):
+        if self._blocks1 and self._blocks2:
+            #todo: elaborate
+            self._blocks = self._blocks1 + self._blocks2
+        elif self._blocks1:
+            self._blocks = list(self._blocks1)
+        elif self._blocks2:
+            self._blocks = list(self._blocks2)
     
     def phrase_block(self):
         f = '[MClient] plugins.multitran.elems.Elems.phrase_block'
-        if self.Success:
-            if self._phblock is None:
-                if self._phdic:
-                    for block in self._blocks2:
-                        if self._phdic == block._text:
-                            self._phblock = block
-                            break
-                else:
-                    sh.com.empty(f)
-            return self._phblock
-        else:
-            sh.com.cancel(f)
+        if self._phblock is None:
+            if self._phdic:
+                for block in self._blocks2:
+                    if self._phdic == block._text:
+                        self._phblock = block
+                        break
+            else:
+                sh.com.empty(f)
+        return self._phblock
     
     def phrase_prop(self):
         ''' In order to be in the same section, phrases must have
             the same DICA, WFORMA and (probably) SPEECHA, TRANSCA.
         '''
         f = '[MClient] plugins.multitran.elems.Elems.phrase_prop'
-        if self.Success:
-            if self.phrase_block():
-                for block in self._blocks1:
-                    if block._type == 'phrase':
-                        block._dica = self._phblock._dica
-                        block._wforma  = self._phblock._wforma
-                        block._speecha = self._phblock._speecha
-            else:
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
+        if self.phrase_block():
+            for block in self._blocks:
+                if block._type == 'phrase':
+                    block._dica = self._phblock._dica
+                    block._wforma  = self._phblock._wforma
+                    block._speecha = self._phblock._speecha
         else:
-            sh.com.cancel(f)
-    
-    def purge(self):
-        ''' Delete blocks that are empty, likely duplicates or have
-            no value.
-        '''
-        f = '[MClient] plugins.multitran.elems.Elems.purge'
-        if self.Success:
-            count = 0
-            i = 0
-            while i < len(self._blocks1):
-                btype = self._blocks1[i]._type
-                text  = self._blocks1[i]._text
-                ''' It is not easy to distinguish comments and
-                    transcriptions at 'multitran.com'. Since
-                    'multitran.com' is a development branch of
-                    'multitran.ru', we assume that if an article at
-                    'multitran.ru' have transcriptions, so does
-                    an article at 'multitran.com'.
-                '''
-                if not text or btype == 'transc':
-                    del self._blocks1[i]
-                    count += 1
-                    i -= 1
-                i += 1
             sh.log.append (f,_('INFO')
-                          ,_('%d blocks have been deleted') % count
+                          ,_('Nothing to do!')
                           )
-        else:
-            sh.com.cancel(f)
+    
+    def delete_empty(self):
+        self._blocks1 = [block for block in self._blocks1 if block._text]
+        self._blocks2 = [block for block in self._blocks2 if block._text]
+    
+    def delete_transc(self):
+        ''' Since 'multitran.com' is a development branch of
+            'multitran.ru', we assume that if an article at
+            'multitran.ru' has transcriptions, so does an article at
+            'multitran.com'.
+        '''
+        self._blocks1 = [block for block in self._blocks1
+                         if block._type != 'transc'
+                        ]
     
     def join_phrases(self):
         ''' In order to join phrase sections of different plugins, we
@@ -98,151 +84,56 @@ class Elems:
             DICAs with the same DICA.
         '''
         f = '[MClient] plugins.multitran.elems.Elems.join_phrases'
-        if self.Success:
-            ''' 'self._blocks1' can be empty after removing duplicates,
-                but this still should be considered a successful case.
-            '''
-            if self._blocks1 and self._blocks2:
-                phrase1 = self._blocks1[-1]._dica
-                phrase2 = self._blocks2[-1]._dica
-                pattern = '(\d+)\s(phrases|фраза|фраз)'
-                match1  = re.match(pattern,phrase1)
-                match2  = re.match(pattern,phrase2)
-                if match1 and match2:
-                    sh.log.append (f,_('DEBUG')
-                                  ,_('Phrase dic 1: "%s"') \
-                                  % match1.group(0)
-                                  )
-                    sh.log.append (f,_('DEBUG')
-                                  ,_('Phrase dic 2: "%s"') \
-                                  % match2.group(0)
-                                  )
-                    val1 = int(match1.group(1))
-                    val2 = int(match2.group(1))
-                    val  = max(val1,val2)
-                    self._phdic = _('%d phrases') % val
-                    sh.log.append (f,_('DEBUG')
-                                  ,_('Common phrase dic: "%s"') \
-                                  % self._phdic
-                                  )
-                    for block in self._blocks1:
-                        if block._dica == phrase1:
-                            block._dica = self._phdic
-                        if block._dicaf == phrase1:
-                            block._dicaf = self._phdic
-                        if block._text == phrase1:
-                            block._text = self._phdic
-                    for block in self._blocks2:
-                        if block._dica == phrase2:
-                            block._dica = self._phdic
-                        if block._dicaf == phrase2:
-                            block._dicaf = self._phdic
-                        if block._text == phrase2:
-                            block._text = self._phdic
-                else:
-                    sh.log.append (f,_('INFO')
-                                  ,_('Nothing to do!')
-                                  )
-            elif not self._blocks1:
-                self._blocks = list(self._blocks2)
-            else:
-                # 'self._blocks2' cannot be empty in any case
-                sh.com.empty(f)
+        if self._blocks1 and self._blocks2:
+            phrase1 = self._blocks1[-1]._dica
+            phrase2 = self._blocks2[-1]._dica
+            pattern = '(\d+)\s(phrases|фраза|фраз)'
+            match1  = re.match(pattern,phrase1)
+            match2  = re.match(pattern,phrase2)
+            if match1 and match2:
+                sh.log.append (f,_('DEBUG')
+                              ,_('Phrase dic 1: "%s"') % match1.group(0)
+                              )
+                sh.log.append (f,_('DEBUG')
+                              ,_('Phrase dic 2: "%s"') % match2.group(0)
+                              )
+                val1 = int(match1.group(1))
+                val2 = int(match2.group(1))
+                val  = max(val1,val2)
+                self._phdic = _('%d phrases') % val
+                sh.log.append (f,_('DEBUG')
+                              ,_('Common phrase dic: "%s"') % self._phdic
+                              )
+                for block in self._blocks1:
+                    if block._dica == phrase1:
+                        block._dica = self._phdic
+                    if block._dicaf == phrase1:
+                        block._dicaf = self._phdic
+                    if block._text == phrase1:
+                        block._text = self._phdic
+                for block in self._blocks2:
+                    if block._dica == phrase2:
+                        block._dica = self._phdic
+                    if block._dicaf == phrase2:
+                        block._dicaf = self._phdic
+                    if block._text == phrase2:
+                        block._text = self._phdic
         else:
-            sh.com.cancel(f)
+            sh.log.append (f,_('INFO')
+                          ,_('Nothing to do!')
+                          )
     
     def values(self):
         self._blocks  = []
+        self._blocks1 = []
+        self._blocks2 = []
         self._phdic   = ''
-        self.Success  = True
         self._phblock = None
-    
-    def duplicates(self):
-        ''' Remove duplicate blocks generated by both plugins.
-            #note: the analysis is block-based, so, if one plugin has
-            generated some block with an adjacent block having
-            SameCell=1 (e.g., term + comment), and the other plugin has
-            generated an identical block but without adjacent blocks
-            having SameCell=1 (e.g., a term without a comment), then
-            adjacent blocks having SameCell=1 may loose their implied
-            order. If 'self._dica1' represents 'multitran.ru' and
-            'self._dica2' - 'multitran.com', this should never happen,
-            because 'multitran.com' should comprise all items of
-            'multitran.ru' and also new ones.
-        '''
-        f = '[MClient] plugins.multitran.elems.Elems.duplicates'
-        if self.Success:
-            for block in self._blocks1:
-                block._text = block._text.strip()
-            count = 0
-            for block in self._blocks2:
-                dica  = block._dica
-                dicaf = block._dicaf
-                btype = block._type
-                text  = block._text.strip()
-                i = 0
-                while i < len(self._blocks1):
-                    dica1  = self._blocks1[i]._dica
-                    dicaf1 = self._blocks1[i]._dicaf
-                    btype1 = self._blocks1[i]._type
-                    text1  = self._blocks1[i]._text
-                    cond1  = text and (text == text1)
-                    cond2  = dica == dica1 or dicaf == dicaf1
-                    cond3  = btype and (btype == btype1)
-                    if cond1 and cond2 and cond3:
-                        del self._blocks1[i]
-                        i -= 1
-                        count += 1
-                    i += 1
-            sh.log.append (f,_('INFO')
-                          ,_('%d blocks have been deleted') % count
-                          )
-        else:
-            sh.com.cancel(f)
-    
-    def debug_both(self):
-        f = '[MClient] plugins.multitran.elems.Elems.debug_both'
-        if self.Success:
-            if self.Debug:
-                sh.log.append (f,_('DEBUG')
-                              ,_('Table %d:') % 1
-                              )
-                headers = ('DICA','DICAF','TYPE','TEXT')
-                rows    = []
-                for block in self._blocks1:
-                    rows.append ([block._dica,block._dicaf
-                                 ,block._type,block._text
-                                 ]
-                                )
-                sh.Table (headers = headers
-                         ,rows    = rows
-                         ,Shorten = self.Shorten
-                         ,MaxRow  = self.MaxRow
-                         ,MaxRows = self.MaxRows
-                         ).print()
-                sh.log.append (f,_('DEBUG')
-                              ,_('Table %d:') % 2
-                              )
-                headers = ('DICA','DICAF','TYPE','TEXT')
-                rows    = []
-                for row in self._blocks2:
-                    rows.append ([block._dica,block._dicaf
-                                 ,block._type,block._text
-                                 ]
-                                )
-                sh.Table (headers = headers
-                         ,rows    = rows
-                         ,Shorten = self.Shorten
-                         ,MaxRow  = self.MaxRow
-                         ,MaxRows = self.MaxRows
-                         ).print()
-        else:
-            sh.com.cancel(f)
     
     def debug(self):
         f = '[MClient] plugins.multitran.elems.Elems.debug'
-        if self.Success:
-            if self.Debug:
+        if self.Debug:
+            if self._blocks:
                 sh.log.append (f,_('DEBUG')
                               ,_('Debug table:')
                               )
@@ -259,15 +150,15 @@ class Elems:
                          ,MaxRow  = self.MaxRow
                          ,MaxRows = self.MaxRows
                          ).print()
-        else:
-            sh.com.cancel(f)
+            else:
+                sh.com.empty(f)
     
     def run(self):
+        f = '[MClient] plugins.multitran.elems.Elems.run'
+        self.delete_transc()
+        self.delete_empty()
         self.join_phrases()
-        self.duplicates()
-        self.purge()
+        self.join_blocks()
         self.phrase_prop()
-        self.debug_both()
-        self._blocks = self._blocks1 + self._blocks2
         self.debug()
         return self._blocks

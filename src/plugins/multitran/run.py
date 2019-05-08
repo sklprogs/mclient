@@ -113,7 +113,7 @@ class Plugin:
                                     ).run()
         elif mrblocks:
             self._blocks = mrblocks
-        elif mcdata:
+        elif mcblocks:
             self._blocks = mcblocks
         else:
             sh.com.empty(f)

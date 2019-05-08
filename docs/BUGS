@@ -4,8 +4,8 @@
   "найдены отдельные слова"
 - plugins.multitran: eng-rus: по списку: phrase dics "Военный жаргон"
   and "Производство" are of the phrase dic section.
-- plugins.multitran: eng-rus: knob, tick off, counterpart: wrong place
-  of comments and dics
+- plugins.multitran: eng-rus: knob, tick off, counterpart, layout,
+  противник: wrong layout
 - plugins.multitran: eng-rus: complex: wrong place of corrections
 - Wrong URL substitution: "слинять" (https://www.multitran.ru/c/m.exe?t=7547319_2_1&s1=go%20between%20the%20moon%20and%20the%20milkman)
   is replaced with (https://www.multitran.com/m.exe?t=7547319_2_1&s1=go%20between%20the%20moon%20and%20the%20milkman)
