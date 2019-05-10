@@ -1,9 +1,14 @@
 
+- plugins.multitrancom: fra-rus: œuf: delete "Французский"
+- plugins.multitranru: deu-rus: работа: Sache,  Schaffen,  Stelle: move
+blocks to separate cells
+- plugins.multitran: eng-rus: tree entanglement: get transcription
+  higher
 - Good tests: big, block, counterpart, cut, do, forward, get,
   the bottom of the heap, mud, et al. (for Multitran)
-- Multitran: educate dogs: when only separate words are found in one
-  source, and a full article is found in another source, show only
-  the full article
+- Multitran: educate dogs, deflection of a blockader: when only separate
+  words are found in one source, and a full article is found in another
+  source, show only the full article
 - multitran.com: eng-rus: живой: shorten the column with corrections
 - multitran.com: propaganda: add space between items
 - multitran: enable going by dic phrase URL

@@ -27,10 +27,64 @@ class Elems:
         self.MaxRow  = MaxRow
         self.MaxRows = MaxRows
     
-    def join_blocks(self):
+    def add_non_same(self,block):
+        if not self.match(self._blocks,block):
+            self._blocks.append(block)
+    
+    def search(self,block,same=0):
+        for i in range(len(self._blocks)):
+            if self._blocks[i]._same == same \
+            and self._blocks[i]._dica == block._dica \
+            and self._blocks[i]._type == block._type \
+            and self._blocks[i]._text == block._text:
+                return i
+    
+    def get_same_blocks(self,block):
+        f = '[MClient] plugins.multitran.elems.Elems.get_same_blocks'
+        sames = []
+        pos = self.search(block,same=0)
+        if str(pos).isdigit():
+            i = pos + 1
+            while i < len(self._blocks) and self._blocks[i]._same == 1:
+                sames.append(self._blocks[i])
+                i += 1
+        else:
+            sh.log.append (f,_('WARNING')
+                          ,_('No matches!')
+                          )
+        return sames
+    
+    def match(self,blocks,block):
+        for tblock in blocks:
+            if tblock._dica == block._dica \
+            and tblock._same == block._same \
+            and tblock._type == block._type \
+            and tblock._text == block._text:
+                return True
+    
+    def add_same(self,non_same,same):
+        f = '[MClient] plugins.multitran.elems.Elems.add_same'
+        pos = self.search(non_same,same=0)
+        if str(pos).isdigit():
+            pos += len(self.get_same_blocks(non_same)) + 1
+            self._blocks.insert(pos,same)
+        else:
+            sh.log.append (f,_('WARNING')
+                          ,_('No matches!')
+                          )
+    
+    def merge(self):
         if self._blocks1 and self._blocks2:
-            #todo: elaborate
-            self._blocks = self._blocks1 + self._blocks2
+            self._blocks = list(self._blocks1)
+            bsame = self._blocks2[0]
+            for block in self._blocks2:
+                if block._same == 0:
+                    bsame = block
+                    self.add_non_same(block)
+                else:
+                    sames = self.get_same_blocks(bsame)
+                    if not self.match(sames,block):
+                        self.add_same(bsame,block)
         elif self._blocks1:
             self._blocks = list(self._blocks1)
         elif self._blocks2:
@@ -158,7 +212,7 @@ class Elems:
         self.delete_transc()
         self.delete_empty()
         self.join_phrases()
-        self.join_blocks()
+        self.merge()
         self.phrase_prop()
         self.debug()
         return self._blocks

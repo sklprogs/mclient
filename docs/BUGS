@@ -1,12 +1,16 @@
 
+- plugins.multitran: eng-rus: layout: cannot decrease a priority of
+  a dictionary which priority is higher than the priority of the unknown
+  dictionary (Gruzovik) following it
+- plugins.multitran: working out of design documentation
 - plugins.multitrancom/ru: eng-rus: tree limb: wrong SAME
 - plugins.multitrancom: eng-rus: in dire need: no fragment
   "найдены отдельные слова"
-- plugins.multitran: eng-rus: по списку: phrase dics "Военный жаргон"
-  and "Производство" are of the phrase dic section.
-- plugins.multitran: eng-rus: knob, tick off, counterpart, layout,
-  противник: wrong layout
-- plugins.multitran: eng-rus: complex: wrong place of corrections
+- plugins.multitran: eng-rus: knob: "общ." is a comment
+- plugins.multitrancom: eng-rus: tick off: "tick someone off": wrong
+  parsing
+- plugins.multitrancom: eng-rus: layout: "the arrangement, size...":
+  wrong alphabetizing
 - Wrong URL substitution: "слинять" (https://www.multitran.ru/c/m.exe?t=7547319_2_1&s1=go%20between%20the%20moon%20and%20the%20milkman)
   is replaced with (https://www.multitran.com/m.exe?t=7547319_2_1&s1=go%20between%20the%20moon%20and%20the%20milkman)
   which is "питание"
