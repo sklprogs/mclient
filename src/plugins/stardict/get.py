@@ -436,18 +436,6 @@ class AllDics:
         else:
             sh.com.cancel(f)
     
-    def rename_idx_gz(self):
-        f = '[MClient] plugins.stardict.get.AllDics.rename_idx_gz'
-        if self.Success:
-            for file in sh.Directory(self._path).files():
-                new_file = file.replace('.idx.gz','.idx')
-                if file != new_file:
-                    sh.File (file = file
-                            ,dest = new_file
-                            ).move()
-        else:
-            sh.com.cancel(f)
-    
     def get(self,search):
         f = '[MClient] plugins.stardict.get.AllDics.get'
         if self.Success:
@@ -492,7 +480,6 @@ class AllDics:
         self.values()
         self._path   = PATH
         self.Success = sh.Directory(self._path).Success
-        self.rename_idx_gz()
     
     def walk(self):
         ''' Explore all subdirectories of path searching for filenames

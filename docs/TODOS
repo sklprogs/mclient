@@ -1,4 +1,6 @@
 
+- plugins.stardict: support idx.gz files
+- plugins.multitrancom: use URLs of both sources when going by URL
 - plugins.multitrancom: fra-rus: œuf: delete "Французский"
 - plugins.multitranru: deu-rus: работа: Sache,  Schaffen,  Stelle: move
 blocks to separate cells
@@ -15,7 +17,6 @@ blocks to separate cells
 - multitran.com: fix: "Вы попались на удочку" (ComputersRE,
   EngineeringRE) - found by autosuggestion, but not found by
   'plugins.stardict.get.AllDics.get'
-- plugins.stardict.get.AllDics.rename_idx_gz: is renaming enough?
 - multitran.com.Elems.trash: treat 'точно' and 'все формы' as elements
   with a URL
 - multitran.com: complement 'abbr' with dictionary titles in both
