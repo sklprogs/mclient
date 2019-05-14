@@ -10,9 +10,7 @@ gettext.install('mclient','../resources/locale')
 
 import plugins.stardict.get
 import plugins.stardict.run     as sdrun
-import plugins.multitranru.run  as mrrun
 import plugins.multitrancom.run as mcrun
-import plugins.multitran.run    as marun
 
 
 class Plugins:
@@ -23,10 +21,8 @@ class Plugins:
                  ,MaxRows=20
                  ):
         self.sdplugin = None
-        self.mrplugin = None
         self.mcplugin = None
-        self.maplugin = None
-        self.plugin   = self.maplugin
+        self.plugin   = self.mcplugin
         #note: change this upon the change of the default source
         self._source  = _('Multitran')
         self._sdpath  = sdpath
@@ -78,7 +74,6 @@ class Plugins:
     # Return all non-combined plugins
     def unique(self):
         return (self.sdplugin
-               ,self.mrplugin
                ,self.mcplugin
                )
     
@@ -113,19 +108,14 @@ class Plugins:
     
     def sources(self):
         return (_('Multitran')
-               ,'multitran.ru'
-               ,'multitran.com'
                ,_('Offline')
                )
     
     def online_sources(self):
         ''' This is used by lg.Welcome to check the availability of
-            online sources. Do not put here combined sources such as
-            _('Multitran').
+            online sources. Do not put combined sources here.
         '''
-        return ('multitran.ru'
-               ,'multitran.com'
-               )
+        return ['multitran.com']
     
     def pairs(self):
         f = '[MClient] manager.Plugins.pairs'
@@ -150,19 +140,7 @@ class Plugins:
                                      ,MaxRow  = self.MaxRow
                                      ,MaxRows = self.MaxRows
                                      )
-        self.mrplugin = mrrun.Plugin (Debug   = self.Debug
-                                     ,iabbr   = self.iabbr
-                                     ,Shorten = self.Shorten
-                                     ,MaxRow  = self.MaxRow
-                                     ,MaxRows = self.MaxRows
-                                     )
         self.mcplugin = mcrun.Plugin (Debug   = self.Debug
-                                     ,iabbr   = self.iabbr
-                                     ,Shorten = self.Shorten
-                                     ,MaxRow  = self.MaxRow
-                                     ,MaxRows = self.MaxRows
-                                     )
-        self.maplugin = marun.Plugin (Debug   = self.Debug
                                      ,iabbr   = self.iabbr
                                      ,Shorten = self.Shorten
                                      ,MaxRow  = self.MaxRow
@@ -175,11 +153,7 @@ class Plugins:
             self._source = source
             if source == _('Offline'):
                 self.plugin = self.sdplugin
-            elif source == _('Multitran'):
-                self.plugin = self.maplugin
-            elif source == 'multitran.ru':
-                self.plugin = self.mrplugin
-            elif source == 'multitran.com':
+            elif source in (_('Multitran'),'multitran.com'):
                 self.plugin = self.mcplugin
             else:
                 sh.objs.mes (f,_('ERROR')

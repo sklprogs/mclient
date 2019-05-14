@@ -95,22 +95,6 @@ class Get:
         timer.end()
         sg.fast_txt(result)
     
-    def multitranru(self):
-        f = '[MClient] tests.Get.multitranru'
-        import plugins.multitranru.get as gt
-        #search = 'компьютер'
-        search  = 'computer'
-        url     = 'https://www.multitran.ru/c/m.exe?CL=1&s=computer&l1=1'
-        timeout = 6
-        timer   = sh.Timer(f)
-        timer.start()
-        result = gt.Get (search  = search
-                        ,url     = url
-                        ,timeout = timeout
-                        ).run()
-        timer.end()
-        sg.fast_txt(result)
-    
     def stardict(self):
         f = '[MClient] tests.Get.stardict'
         import logic                as lg
@@ -136,20 +120,6 @@ class Tags:
         text = sdcleanup.CleanUp(text).run()
         sdtags.Tags (text  = text
                     ,Debug = DEBUG
-                    ).run()
-    
-    def multitranru(self):
-        f = '[MClient] tests.Tags.multitranru'
-        import plugins.multitranru.cleanup as mrcleanup
-        import plugins.multitranru.tags    as mrtags
-        file = '/home/pete/.config/mclient/tests/(multitran.ru) set.txt'
-        text = sh.ReadTextFile(file).get()
-        text = mrcleanup.CleanUp(text).run()
-        mrtags.Tags (text    = text
-                    ,Debug   = DEBUG
-                    ,Shorten = True
-                    ,MaxRow  = 20
-                    ,MaxRows = 100
                     ).run()
     
     def multitrancom(self):
@@ -179,21 +149,6 @@ class Plugin:
                           ,Shorten = False
                           )
         iplug.request(search=search)
-    
-    def multitranru(self):
-        f = '[MClient] tests.Plugin.multitranru'
-        import plugins.multitranru.run as mr
-        url    = 'https://www.multitran.ru/c/m.exe?CL=1&s=computer&l1=1'
-        search = 'computer'
-        iplug = mr.Plugin (timeout = 6
-                          ,Debug   = DEBUG
-                          ,Shorten = True
-                          ,MaxRow  = 20
-                          ,MaxRows = 300
-                          )
-        iplug.request (url    = url
-                      ,search = search
-                      )
     
     def multitrancom(self):
         f = '[MClient] tests.Plugin.multitrancom'
@@ -316,35 +271,8 @@ class Commands:
     
     def get_url(self):
         f = '[MClient] tests.Commands.get_url'
-        #1
-        source  = 'multitran.ru'
-        pair    = 'DEU <=> RUS'
-        search  = 'привет'
-        message = 'Source: "%s"; pair: "%s"; search: "%s"' % (source,pair,search)
-        lg.objs.plugins().set(source)
-        lg.objs._plugins.set_pair(pair)
-        sh.log.append (f,_('INFO')
-                      ,message
-                      )
-        lg.objs._plugins.get_url(search)
-        #2
         source  = 'multitran.com'
         pair    = 'RUS <=> XAL'
-        search  = 'До свидания!'
-        message = 'Source: "%s"; pair: "%s"; search: "%s"' % (source,pair,search)
-        lg.objs.plugins().set(source)
-        lg.objs._plugins.set_pair(pair)
-        sh.log.append (f,_('INFO')
-                      ,message
-                      )
-        lg.objs._plugins.get_url(search)
-        #3
-        ''' Since 'plugins.multitran.get.Commands.get_url' has several
-            modes, this default request should actually return the same
-            as 'multitran.ru' (if 'pair' and 'search' are the same).
-        '''
-        source  = _('Multitran')
-        pair    = 'XAL <=> RUS'
         search  = 'До свидания!'
         message = 'Source: "%s"; pair: "%s"; search: "%s"' % (source,pair,search)
         lg.objs.plugins().set(source)
@@ -356,32 +284,9 @@ class Commands:
     
     def suggest(self):
         f = '[MClient] tests.Commands.suggest'
-        #1
-        source  = 'multitran.ru'
-        pair    = 'ENG <=> RUS'
-        search  = 'привет'
-        message = 'Source: "%s"; pair: "%s"; search: "%s"' % (source,pair,search)
-        lg.objs.plugins().set(source)
-        lg.objs._plugins.set_pair(pair)
-        sh.log.append (f,_('INFO')
-                      ,message
-                      )
-        lg.com.suggest(search)
-        #2
         source  = 'multitran.com'
         pair    = 'DEU <=> RUS'
         search  = 'Scheiße'
-        message = 'Source: "%s"; pair: "%s"; search: "%s"' % (source,pair,search)
-        lg.objs.plugins().set(source)
-        lg.objs._plugins.set_pair(pair)
-        sh.log.append (f,_('INFO')
-                      ,message
-                      )
-        lg.com.suggest(search)
-        #3
-        source  = _('Multitran')
-        pair    = 'FRA <=> RUS'
-        search  = 'œuf'
         message = 'Source: "%s"; pair: "%s"; search: "%s"' % (source,pair,search)
         lg.objs.plugins().set(source)
         lg.objs._plugins.set_pair(pair)
@@ -402,15 +307,10 @@ class Commands:
     def set_timeout(self):
         f = '[MClient] tests.Commands.set_timeout'
         import plugins.multitrancom.get as mc
-        import plugins.multitranru.get  as mr
         import plugins.stardict.get     as sd
         self._set_timeout (module  = sd
                           ,source  = _('Offline')
                           ,timeout = 1
-                          )
-        self._set_timeout (module  = mr
-                          ,source  = _('Multitran')
-                          ,timeout = 2
                           )
         self._set_timeout (module  = mc
                           ,source  = _('Multitran')
@@ -419,10 +319,6 @@ class Commands:
         self._set_timeout (module  = mc
                           ,source  = 'multitran.com'
                           ,timeout = 3
-                          )
-        self._set_timeout (module  = mr
-                          ,source  = 'multitran.ru'
-                          ,timeout = 4
                           )
     
     def accessibility(self):
@@ -434,21 +330,7 @@ class Commands:
         sh.log.append (f,_('DEBUG')
                       ,message
                       )
-        source = 'multitran.ru'
-        lg.objs._plugins.set(source)
-        result  = lg.objs._plugins.accessible()
-        message = 'Source: {}; Accessibility: {}'.format(source,result)
-        sh.log.append (f,_('DEBUG')
-                      ,message
-                      )
         source = 'multitran.com'
-        lg.objs._plugins.set(source)
-        result  = lg.objs._plugins.accessible()
-        message = 'Source: {}; Accessibility: {}'.format(source,result)
-        sh.log.append (f,_('DEBUG')
-                      ,message
-                      )
-        source = _('Multitran')
         lg.objs._plugins.set(source)
         result  = lg.objs._plugins.accessible()
         message = 'Source: {}; Accessibility: {}'.format(source,result)
@@ -468,7 +350,6 @@ class Commands:
     
     def set_pair(self):
         f = '[MClient] tests.Commands.set_pair'
-        import plugins.multitranru.get
         import plugins.multitrancom.get
         pair   = 'RUS <=> XAL'
         source = 'multitran.com'
@@ -478,30 +359,10 @@ class Commands:
         sh.log.append (f,_('DEBUG')
                       ,source + ': ' + plugins.multitrancom.get.PAIR
                       )
-        pair   = 'ENG <=> DEU'
-        source = 'multitran.ru'
-        lg.objs._plugins.set(source)
-        lg.objs._plugins.set_pair(pair)
-        sh.log.append (f,_('DEBUG')
-                      ,source + ': ' + plugins.multitranru.get.PAIR
-                      )
         pair   = 'XAL <=> RUS'
         source = _('Multitran')
         lg.objs._plugins.set(source)
         lg.objs._plugins.set_pair(pair)
-        sh.log.append (f,_('DEBUG')
-                      ,'multitranru: ' + plugins.multitranru.get.PAIR
-                      )
-        sh.log.append (f,_('DEBUG')
-                      ,'multitrancom: ' + plugins.multitrancom.get.PAIR
-                      )
-        pair   = 'XAL <=> FAIL'
-        source = _('Multitran')
-        lg.objs._plugins.set(source)
-        lg.objs._plugins.set_pair(pair)
-        sh.log.append (f,_('DEBUG')
-                      ,'multitranru: ' + plugins.multitranru.get.PAIR
-                      )
         sh.log.append (f,_('DEBUG')
                       ,'multitrancom: ' + plugins.multitrancom.get.PAIR
                       )
@@ -530,7 +391,6 @@ class Commands:
         data   = lg.objs._plugins.request (search = search
                                           ,url    = url
                                           )
-        data   = [list(row) for row in data]
         cldata = []
         for i in range(len(data)):
             row = [i,data[i][7],data[i][8],data[i][13],data[i][2]
@@ -593,27 +453,11 @@ class Commands:
                        ,GUI    = GUI
                        )
     
-    def ru_abatis(self,GUI=False):
-        self.translate (source = 'multitran.ru'
-                       ,pair   = 'ENG <=> RUS'
-                       ,search = 'засека'
-                       ,url    = 'https://www.multitran.ru/c/m.exe?l1=2&l2=1&s=%E7%E0%F1%E5%EA%E0'
-                       ,GUI    = GUI
-                       )
-    
     def all_ernahrung(self,GUI=False):
         self.translate (source = _('Multitran')
                        ,pair   = 'DEU <=> RUS'
                        ,search = 'ernährung'
                        ,url    = 'https://www.multitran.com/m.exe?s=ern%C3%A4hrung&l1=3&l2=2&SHL=2'
-                       ,GUI    = GUI
-                       )
-    
-    def ru_working_documentation(self,GUI=False):
-        self.translate (source = 'multitran.ru'
-                       ,pair   = 'ENG <=> RUS'
-                       ,search = 'working_documentation'
-                       ,url    = 'https://www.multitran.ru/c/M.exe?l1=1&l2=2&s=working%20documentation'
                        ,GUI    = GUI
                        )
     
@@ -625,27 +469,11 @@ class Commands:
                        ,GUI    = GUI
                        )
     
-    def ru_mud(self,GUI=False):
-        self.translate (source = 'multitran.ru'
-                       ,pair   = 'ENG <=> RUS'
-                       ,search = 'mud'
-                       ,url    = 'https://multitran.ru/c/m.exe?s=mud&l1=1&l2=2'
-                       ,GUI    = GUI
-                       )
-    
     def com_systemwide(self,GUI=False):
         self.translate (source = 'multitran.com'
                        ,pair   = 'ENG <=> RUS'
                        ,search = 'system-wide'
                        ,url    = 'https://www.multitran.com/m.exe?s=system-wide&l1=2&l2=1&SHL=2'
-                       ,GUI    = GUI
-                       )
-    
-    def ru_systemwide(self,GUI=False):
-        self.translate (source = 'multitran.ru'
-                       ,pair   = 'ENG <=> RUS'
-                       ,search = 'system-wide'
-                       ,url    = 'https://www.multitran.ru/c//m.exe?s=system-wide&l1=2&l2=1'
                        ,GUI    = GUI
                        )
 
@@ -659,11 +487,7 @@ if __name__ == '__main__':
     import logic as lg
     lg.objs.plugins(Debug=DEBUG)
     #lg.objs.plugins(Debug=0)
-    #com.ru_working_documentation(GUI=0)
-    #com.ru_mud(GUI=1)
     #com.com_abatis(GUI=1)
-    #com.ru_abatis(GUI=1)
     com.com_systemwide(GUI=0)
-    #com.ru_systemwide(GUI=1)
     #com.com_complex(GUI=1)
     sg.objs.end()

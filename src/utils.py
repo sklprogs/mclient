@@ -4,7 +4,6 @@
 import shared    as sh
 import sharedGUI as sg
 import plugins.multitrancom.utils as utcom
-import plugins.multitranru.utils  as utru
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
