@@ -1,4 +1,6 @@
 
+- plugins.stardict: accelerate suggestions (especially for 2+ passes)
+- plugins.stardict: alphabetize suggestions from several dictionaries
 - plugins.stardict: support idx.gz files
 - plugins.multitrancom: use URLs of both sources when going by URL
 - plugins.multitrancom: fra-rus: œuf: delete "Французский"
