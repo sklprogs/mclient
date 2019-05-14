@@ -1,4 +1,7 @@
 
+- plugins.multitrancom: eng-rus, метильное: do not delete the phrase
+  section when only separate words have been found: Найдено во фразах -
+  найдены отдельные слова
 - plugins.stardict: accelerate suggestions (especially for 2+ passes)
 - plugins.stardict: alphabetize suggestions from several dictionaries
 - plugins.stardict: support idx.gz files
