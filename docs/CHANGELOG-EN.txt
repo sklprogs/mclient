@@ -5,7 +5,6 @@
   add support for GZIP files
 * Import dictionary sources as plugins
 * Add multitran.com support
-* Add a "Multitran" source (multitran.ru and multitran.com together)
 * Delete bind_quit_now key, rename bind_quit_now_alt key to bind_quit
 * Update documentation
 * Add main hotkeys to the Welcome screen
