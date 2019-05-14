@@ -1,29 +1,10 @@
 
 
-999:[MClient] mclient.WebFrame.load_article:ПРЕДУПРЕЖДЕНИЕ:Недопустимые входные данные!
-Exception in Tkinter callback
-Traceback (most recent call last):
-  File "/usr/lib/python3.5/tkinter/__init__.py", line 1562, in __call__
-    return self.func(*args)
-  File "/usr/lib/python3.5/tkinter/__init__.py", line 3300, in __call__
-    self.__callback(self.__value, *args)
-  File "/home/pete/bin/mclient/src/sharedGUI.py", line 1954, in trigger
-    self.action()
-  File "./mclient.py", line 1892, in set_columns
-    self.load_article()
-  File "./mclient.py", line 1415, in load_article
-    self.history.update()
-  File "./mclient.py", line 479, in update
-    self.fill()
-  File "./mclient.py", line 473, in fill
-    lst.append(str(item[0]) + ' ► ' + item[1])
-TypeError: Can't convert 'NoneType' object to str implicitly
-
 - plugins.multitran: eng-rus: layout: cannot decrease a priority of
   a dictionary which priority is higher than the priority of the unknown
   dictionary (Gruzovik) following it
 - plugins.multitran: working out of design documentation
-- plugins.multitrancom/ru: eng-rus: tree limb: wrong SAME
+- plugins.multitrancom: eng-rus: tree limb: wrong SAME
 - plugins.multitrancom: eng-rus: in dire need: no fragment
   "найдены отдельные слова"
 - plugins.multitran: eng-rus: knob: "общ." is a comment

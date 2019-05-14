@@ -7,8 +7,6 @@
 - plugins.stardict: support idx.gz files
 - plugins.multitrancom: use URLs of both sources when going by URL
 - plugins.multitrancom: fra-rus: œuf: delete "Французский"
-- plugins.multitranru: deu-rus: работа: Sache,  Schaffen,  Stelle: move
-blocks to separate cells
 - plugins.multitran: eng-rus: tree entanglement: get transcription
   higher
 - Good tests: big, block, counterpart, cut, do, forward, get,

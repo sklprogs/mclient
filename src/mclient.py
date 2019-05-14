@@ -470,7 +470,7 @@ class History:
         lst = []
         if searches:
             for item in searches:
-                lst.append(str(item[0]) + ' ► ' + item[1])
+                lst.append(str(item[0]) + ' ► ' + str(item[1]))
             self.gui.obj.reset (lst   = lst
                                ,title = _('History')
                                )
