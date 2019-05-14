@@ -54,6 +54,10 @@ purl4 = '">'
 pcom1 = '<i>'
 pcom2 = 'span style="color:gray"'
 
+# Corrective comments
+pcor1 = '<span STYLE="color:rgb(60,179,113)">'
+pcor2 = '<font color=DarkGoldenrod>'
+
 # Word Forms
 pwf1 = 'td colspan="'
 pwf2 = '" class="gray"'
@@ -84,6 +88,7 @@ tag_pattern_del = ['m.exe?a=40&'              # Log in, Вход
 useful_tags = [pdic,purl1,purl2
               ,pcom1,pcom2,pwf1
               ,pwf2,psp,ptm,pph
+              ,pcor1,pcor2
               ]
 
 
@@ -137,10 +142,8 @@ class AnalyzeTag:
         self._blocks = []
 
     def correction(self):
-        ''' Set here a 'correction' type determination algorithm when
-            the author of 'multitran.com' implements corrections.
-        '''
-        pass
+        if pcor1 in self._block._text or pcor2 in self._block._text:
+            self._block._type = 'correction'
     
     def run(self):
         self.split()
