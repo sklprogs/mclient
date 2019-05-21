@@ -388,6 +388,21 @@ class Tags:
 
 class Commands:
     
+    # Transform new-line-delimited text into a list of languages
+    def format_pairs(self):
+        f = '[MClient] plugins.multitrancom.utils.Commands.format_pairs'
+        text = sg.Clipboard().paste()
+        if text:
+            lst  = text.splitlines()
+            lst  = ["_('" + item.strip() + ")" for item in lst \
+                    if item.strip()
+                   ]
+            text = '(' + ','.join(lst) + ')'
+            sg.Clipboard().copy(text)
+            input(_('Press any key to continue.'))
+        else:
+            sh.com.empty(f)
+    
     # Compare dictionary abbreviations for different languages
     def new_abbrs(self):
         f = '[MClient] plugins.multitrancom.utils.Commands.new_abbrs'
@@ -547,9 +562,6 @@ com = Commands()
 
 if __name__ == '__main__':
     sg.objs.start()
-    com.get_abbrs()
-    #com.missing_titles()
-    #com.new_abbrs()
-    #com.compare_topics()
+    
     sg.objs.end()
                 
