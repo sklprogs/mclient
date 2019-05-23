@@ -17,6 +17,158 @@ gettext.install('mclient','../resources/locale')
 '''
 
 
+class Pairs:
+    # Determine language pairs supported by MT
+    def __init__(self):
+        self.values()
+    
+    def get_dead(self):
+        f = '[MClient] plugins.multitrancom.utils.Pairs.get_dead'
+        dead = []
+        for i in range(len(self._langs)):
+            if self.isdead(i+1):
+                dead.append(self._langs[i])
+        self._alive = [lang for lang in self._langs if not lang in dead]
+        message = _('Dead languages: %s') % ', '.join(dead)
+        message += '\n'
+        message += _('Languages: total: %d; alive: %d; dead: %d') \
+                   % (len(self._langs),len(self._alive),len(dead))
+        message += '\n'
+        sh.log.append (f,_('INFO')
+                      ,message
+                      )
+        message = _('Alive languages:') + '\n' + ', '.join(self._alive)
+        message += '\n\n'
+        message += _('The entire dictionary:') + '\n' + str(self._dic)
+        sh.objs.mes (f,_('INFO')
+                    ,message
+                    )
+    
+    def isdead(self,code1):
+        f = '[MClient] plugins.multitrancom.utils.Pairs.isdead'
+        url = self._deadr.format(code1)
+        # We use '<=' since a language code starts with 1
+        if 0 < code1 <= len(self._langs):
+            code = ''
+            while not code:
+                code = sh.Get(url=url).run()
+            if self._zero in code.replace('\n','').replace('\r',''):
+                return True
+        else:
+            sh.objs.mes (f,_('ERROR')
+                        ,_('The condition "%s" is not observed!') \
+                        % ('0 < %d <= %d' % (code,len(self._alive)))
+                        )
+    
+    def fill(self):
+        for i in range(len(self._langs)):
+            self._dic[self._langs[i]] = {'code':i+1
+                                        ,'pair':()
+                                        }
+    
+    def get_pairs(self,lang1):
+        f = '[MClient] plugins.multitrancom.utils.Pairs.get_pairs'
+        if lang1:
+            if lang1 in self._alive:
+                lst = []
+                code1 = self._langs.index(lang1) + 1
+                for lang2 in self._alive:
+                    code2 = self._langs.index(lang2) + 1
+                    if self.ispair(code1,code2):
+                        lst.append(lang2)
+                if lst:
+                    lst.sort()
+                    self._dic[lang1]['pair'] = tuple(lst)
+                else:
+                    sh.objs.mes (f,_('WARNING')
+                                ,_('Language "%s" is alive but has no pairs!')\
+                                % lang1
+                                )
+            else:
+                # We should pass only alive languages to this procedure
+                sh.objs.mes (f,_('WARNING')
+                            ,_('Language "%s" is dead!') % lang1
+                            )
+        else:
+            sh.com.empty(f)
+    
+    def loop(self):
+        f = '[MClient] plugins.multitrancom.utils.Pairs.loop'
+        for lang in self._alive:
+            sh.log.append (f,_('INFO')
+                          ,lang
+                          )
+            self.get_pairs(lang)
+            self.write(lang)
+    
+    def write(self,lang):
+        message = _('Last processed language:') + ' ' + lang + '\n\n' \
+                  + str(self._dic)
+        sh.WriteTextFile (file    = self._filew
+                         ,Rewrite = True
+                         ).write(message)
+    
+    def run(self):
+        f = '[MClient] plugins.multitrancom.utils.Pairs.run'
+        timer = sh.Timer(f)
+        timer.start()
+        self.fill()
+        self.get_pairs(_('Abaza'))
+        for lang in self._dic:
+            if self._dic[lang]['pair']:
+                print(self._dic[lang]['pair'])
+                break
+        #self.loop()
+        timer.end()
+        #self.write()
+        #sh.Launch(self._filew).default()
+    
+    def ispair(self,code1,code2):
+        f = '[MClient] plugins.multitrancom.utils.Pairs.ispair'
+        # We use '<=' since a language code starts with 1
+        if 0 < code1 <= len(self._langs) \
+        and 0 < code2 <= len(self._langs):
+            if code1 == code2:
+                sh.log.append (f,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+            else:
+                url  = self._root.format(code1,code2)
+                code = ''
+                while not code:
+                    code = sh.Get(url=url).run()
+                if 'Тематика' in code:
+                    return True
+        else:
+            sh.objs.mes (f,_('ERROR')
+                        ,_('The condition "%s" is not observed!') \
+                        % ('0 < %d <= %d, 0 < %d <= %d' \
+                          % (code1,len(self._langs),code2
+                            ,len(self._langs)
+                            )
+                          )
+                        )
+    
+    def values(self):
+        self.Success = True
+        self._root   = 'https://www.multitran.com/m.exe?l1={}&l2={}&SHL=2&s='
+        self._deadr  = 'https://www.multitran.com/m.exe?l1={}&SHL=2&s='
+        self._zero   = 'Количество терминов</a></td></tr><tr bgcolor=#DBDBDB><td>Всего</td><td></td><td align="right">0</td>'
+        ''' A list of languages that have terms (and therefore pairs).
+            This list is based on the output of 'self.get_dead'.
+            Recreate it when necessary.
+        '''
+        self._alive  = (_('Abkhazian'),_('Afrikaans'),_('Albanian'),_('Amharic'),_('Arabic'),_('Armenian'),_('Assamese'),_('Azerbaijani'),_('Bashkir'),_('Basque'),_('Belarusian'),_('Bengali'),_('Bosnian'),_('Bosnian cyrillic'),_('Breton'),_('Bulgarian'),_('Burmese'),_('Catalan'),_('Chechen'),_('Chinese'),_('Chinese Taiwan'),_('Chinese simplified'),_('Chuvash'),_('Cornish'),_('Croatian'),_('Czech'),_('Danish'),_('Dutch'),_('English'),_('Esperanto'),_('Estonian'),_('Faroese'),_('Filipino'),_('Finnish'),_('French'),_('Frisian'),_('Friulian'),_('Galician'),_('Gallegan'),_('Georgian'),_('German'),_('Gothic'),_('Greek'),_('Gujarati'),_('Hausa'),_('Hebrew'),_('Hindi'),_('Hungarian'),_('Icelandic'),_('Igbo'),_('Indonesian'),_('Ingush'),_('Inuktitut'),_('Irish'),_('IsiXhosa'),_('Italian'),_('Japanese'),_('Kalmyk'),_('Kannada'),_('Kazakh'),_('Khmer'),_('Kinyarwanda'),_('Kirghiz'),_('Konkani'),_('Korean'),_('Ladin'),_('Lao'),_('Latin'),_('Latvian'),_('Lithuanian'),_('Lower Sorbian'),_('Luxembourgish'),_('Macedonian'),_('Malay'),_('Malayalam'),_('Maltese'),_('Manh'),_('Maori'),_('Marathi'),_('Mongolian'),_('Montenegrin'),_('Nepali'),_('Norwegian Bokmal'),_('Norwegian Nynorsk'),_('Occitan'),_('Odia'),_('Pashto'),_('Persian'),_('Polish'),_('Portuguese'),_('Punjabi'),_('Quechua'),_('Romanian'),_('Romansh'),_('Romany'),_('Russian'),_('Sami'),_('Sardinian'),_('Scottish Gaelic'),_('Serbian'),_('Serbian latin'),_('Sesotho'),_('Sesotho sa leboa'),_('Sinhala'),_('Slovak'),_('Slovenian'),_('South Ndebele'),_('Spanish'),_('Swahili'),_('Swati'),_('Swedish'),_('Tajik'),_('Tamil'),_('Tatar'),_('Telugu'),_('Thai'),_('Tsonga'),_('Tswana'),_('Turkish'),_('Turkmen'),_('Ukrainian'),_('Upper Sorbian'),_('Urdu'),_('Uzbek'),_('Venda'),_('Vietnamese'),_('Wayana'),_('Welsh'),_('Wolof'),_('Yakut'),_('Yoruba'),_('Zulu'))
+        ''' A total list of languages supported by Multitran.
+            #note: Must be sorted by a language code in an ascending
+            order.
+        '''
+        self._langs  = (_('English'),_('Russian'),_('German'),_('French'),_('Spanish'),_('Hebrew'),_('Serbian'),_('Croatian'),_('Tatar'),_('Arabic'),_('Portuguese'),_('Lithuanian'),_('Romanian'),_('Polish'),_('Bulgarian'),_('Czech'),_('Chinese'),_('Hindi'),_('Bengali'),_('Punjabi'),_('Vietnamese'),_('Danish'),_('Italian'),_('Dutch'),_('Azerbaijani'),_('Estonian'),_('Latvian'),_('Japanese'),_('Swedish'),_('Norwegian Bokmal'),_('Afrikaans'),_('Turkish'),_('Ukrainian'),_('Esperanto'),_('Kalmyk'),_('Finnish'),_('Latin'),_('Greek'),_('Korean'),_('Georgian'),_('Armenian'),_('Hungarian'),_('Kazakh'),_('Kirghiz'),_('Uzbek'),_('Romany'),_('Albanian'),_('Welsh'),_('Irish'),_('Icelandic'),_('Kurdish'),_('Persian'),_('Catalan'),_('Corsican'),_('Galician'),_('Mirandese'),_('Romansh'),_('Belarusian'),_('Ruthene'),_('Slovak'),_('Upper Sorbian'),_('Lower Sorbian'),_('Bosnian'),_('Montenegrin'),_('Macedonian'),_('Church Slavonic'),_('Slovenian'),_('Basque'),_('Svan'),_('Mingrelian'),_('Abkhazian'),_('Adyghe'),_('Chechen'),_('Avar'),_('Ingush'),_('Crimean Tatar'),_('Chuvash'),_('Maltese'),_('Khmer'),_('Nepali'),_('Amharic'),_('Assamese'),_('Lao'),_('Asturian'),_('Odia'),_('Indonesian'),_('Pashto'),_('Quechua'),_('Maori'),_('Marathi'),_('Tamil'),_('Telugu'),_('Thai'),_('Turkmen'),_('Yoruba'),_('Bosnian cyrillic'),_('Chinese simplified'),_('Chinese Taiwan'),_('Filipino'),_('Gujarati'),_('Hausa'),_('Igbo'),_('Inuktitut'),_('IsiXhosa'),_('Zulu'),_('Kannada'),_('Kinyarwanda'),_('Swahili'),_('Konkani'),_('Luxembourgish'),_('Malayalam'),_('Wolof'),_('Wayuu'),_('Serbian latin'),_('Tswana'),_('Sinhala'),_('Urdu'),_('Sesotho sa leboa'),_('Norwegian Nynorsk'),_('Malay'),_('Mongolian'),_('Frisian'),_('Faroese'),_('Friulian'),_('Ladin'),_('Sardinian'),_('Occitan'),_('Gaulish'),_('Gallegan'),_('Sami'),_('Breton'),_('Cornish'),_('Manh'),_('Scottish Gaelic'),_('Yiddish'),_('Tajik'),_('Tagalog'),_('Soninke'),_('Baoulé'),_('Javanese'),_('Wayana'),_('French Guiana Creole'),_('Mauritian Creole'),_('Seychellois Creole'),_('Guadeloupe Creole'),_('Rodriguan Creole'),_('Haitian Creole'),_('Mandinka'),_('Surigaonon'),_('Adangme'),_('Tok Pisin'),_('Cameroonian Creole'),_('Suriname Creole'),_('Belizean Creole'),_('Virgin Islands Creole'),_('Fon'),_('Kim'),_('Ivatan'),_('Gen'),_('Marshallese'),_('Wallisian'),_('Old Prussian'),_('Yom'),_('Tokelauan'),_('Zande'),_('Yao'),_('Waray'),_('Walmajarri'),_('Visayan'),_('Vili'),_('Venda'),_('Achinese'),_('Adjukru'),_('Agutaynen'),_('Afar'),_('Acoli'),_('Afrihili'),_('Ainu'),_('Akan'),_('Akkadian'),_('Aleut'),_('Southern Altai'),_('Old English'),_('Angika'),_('Official Aramaic'),_('Aragonese'),_('Mapudungun'),_('Arapaho'),_('Arawak'),_('Avestan'),_('Awadhi'),_('Aymara'),_('Bashkir'),_('Baluchi'),_('Bambara'),_('Balinese'),_('Basaa'),_('Beja'),_('Bemba'),_('Bhojpuri'),_('Bikol'),_('Bini'),_('Bislama'),_('Siksika'),_('Tibetan'),_('Braj'),_('Buriat'),_('Buginese'),_('Burmese'),_('Bilin'),_('Caddo'),_('Galibi Carib'),_('Cebuano'),_('Chamorro'),_('Chibcha'),_('Chagatai'),_('Chuukese'),_('Mari'),_('Chinook jargon'),_('Choctaw'),_('Chipewyan'),_('Cherokee'),_('Cheyenne'),_('Coptic'),_('Cree'),_('Kashubian'),_('Dakota'),_('Dargwa'),_('Delaware'),_('Slave'),_('Dogrib'),_('Dinka'),_('Dhivehi'),_('Dogri'),_('Duala'),_('Middle Dutch'),_('Dyula'),_('Dzongkha'),_('Efik'),_('Egyptian'),_('Ekajuk'),_('Elamite'),_('Middle English'),_('Ewe'),_('Ewondo'),_('Fang'),_('Fanti'),_('Fijian'),_('Middle French'),_('Old French'),_('Eastern Frisian'),_('Fulah'),_('Ga'),_('Gayo'),_('Gbaya'),_('Ge\'ez'),_('Gilbertese'),_('Middle High German'),_('Old High German'),_('Gondi'),_('Gorontalo'),_('Gothic'),_('Grebo'),_('Ancient Greek'),_('Guarani'),_('Swiss German'),_('Gwichʼin'),_('Haida'),_('Kikuyu'),_('Hawaiian'),_('Herero'),_('Hiligaynon'),_('Hittite'),_('Hmong'),_('Hiri Motu'),_('Hupa'),_('Iban'),_('Ido'),_('Sichuan Yi'),_('Interlingue'),_('Ilocano'),_('Interlingua'),_('Inupiaq'),_('Lojban'),_('Judeo-Persian'),_('Judeo-Arabic'),_('Kara-Kalpak'),_('Kabyle'),_('Kachin'),_('Kalaallisut'),_('Kamba'),_('Kashmiri'),_('Kanuri'),_('Kawi'),_('Kabardian'),_('Khasi'),_('Khotanese'),_('Kimbundu'),_('Komi'),_('Kongo'),_('Kosraean'),_('Kpelle'),_('Karachay-Balkar'),_('Karelian'),_('Kurukh'),_('Kuanyama'),_('Kumyk'),_('Kutenai'),_('Lahnda'),_('Lamba'),_('Lezghian'),_('Limburgan'),_('Lingala'),_('Mongo'),_('Lozi'),_('Luba-Lulua'),_('Luba-Katanga'),_('Ganda'),_('Luiseno'),_('Lunda'),_('Luo'),_('Lushai'),_('Madurese'),_('Magahi'),_('Maithili'),_('Makasar'),_('Masai'),_('Moksha'),_('Mandar'),_('Mende'),_('Middle Irish'),_('Mi\'kmaq'),_('Minangkabau'),_('Malagasy'),_('Manchu'),_('Manipuri'),_('Mohawk'),_('Mossi'),_('Creek'),_('Marwari'),_('Erzya'),_('Neapolitan'),_('Nauru'),_('Navajo'),_('South Ndebele'),_('North Ndebele'),_('Ndonga'),_('Low German'),_('Nepal Bhasa'),_('Nias'),_('Niuean'),_('Nogai'),_('Old Norse'),_('Sandawe'),_('N\'Ko'),_('Classical Newari'),_('Nyanja'),_('Nyamwezi'),_('Nyankole'),_('Nyoro'),_('Nzima'),_('Ojibwa'),_('Oromo'),_('Osage'),_('Ossetian'),_('Ottoman Turkish'),_('Pangasinan'),_('Pahlavi'),_('Pampanga'),_('Papiamento'),_('Palauan'),_('Old Persian'),_('Phoenician'),_('Pali'),_('Pohnpeian'),_('Old Occitan'),_('Rajasthani'),_('Rapanui'),_('Rarotongan'),_('Reunionese'),_('Rundi'),_('Macedo-Romanian'),_('Sango'),_('Yakut'),_('Samaritan Aramaic'),_('Sanskrit'),_('Sasak'),_('Sicilian'),_('Scots'),_('Selkup'),_('Old Irish'),_('Shan'),_('Sidamo'),_('Southern Sami'),_('Northern Sami'),_('Lule Sami'),_('Inari Sami'),_('Samoan'),_('Skolt Sami'),_('Shona'),_('Sindhi'),_('Sogdian'),_('Somali'),_('Sesotho'),_('Sranan Tongo'),_('Serer'),_('Swati'),_('Sukuma'),_('Sundanese'),_('Susu'),_('Sumerian'),_('Santali'),_('Syriac'),_('Tahitian'),_('Timne'),_('Tonga'),_('Tetum'),_('Tigre'),_('Tigrinya'),_('Tiv'),_('Shilluk'),_('Klingon'),_('Tlingit'),_('Tamashek'),_('Carolinian'),_('Portuguese creole'),_('Tuamotuan'),_('Numèè'),_('Gela'),_('Comorian'),_('Rennellese'),_('Emilian-Romagnol'),_('Mayan'),_('Caribbean Hindustani'),_('Khakas'),_('Kinga'),_('Kurmanji'),_('Kwangali'),_('Lango'),_('Ligurian'),_('Lombard'),_('Luguru'),_('Mamasa'),_('Mashi'),_('Meru'),_('Rotokas'),_('Moldovan'),_('Mongolian script'),_('Nasioi'),_('Nyakyusa'),_('Piedmontese'),_('Pinyin'),_('Sangu'),_('Shambala'),_('Shor'),_('Central Atlas Tamazight'),_('Thai Transliteration'),_('Tsonga'),_('Tuvan'),_('Valencian'),_('Venetian'),_('Walloon'),_('Wanji'),_('Zigula'),_('Korean Transliteration'),_('Mongolian Transliteration'),_('Assyrian'),_('Kaguru'),_('Kimakonde'),_('Kirufiji'),_('Mbwera'),_('Gronings'),_('Hadza'),_('Iraqw'),_('Kami'),_('Krio'),_('Tweants'),_('Abaza'))
+        self._filew  = '/home/pete/tmp/ars/pairs'
+        self._dic    = {}
+
+
+
 class Topics:
     
     def __init__(self,url='https://www.multitran.com/m.exe?a=112&l1=1&l2=2'):
@@ -393,8 +545,9 @@ class Commands:
         f = '[MClient] plugins.multitrancom.utils.Commands.format_pairs'
         text = sg.Clipboard().paste()
         if text:
+            text = text.replace(r"'",r"\'")
             lst  = text.splitlines()
-            lst  = ["_('" + item.strip() + ")" for item in lst \
+            lst  = ["_('" + item.strip() + "')" for item in lst \
                     if item.strip()
                    ]
             text = '(' + ','.join(lst) + ')'

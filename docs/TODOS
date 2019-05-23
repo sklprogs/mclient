@@ -1,4 +1,6 @@
 
+- plugins.multitrancom: eng-rus, phylogenetically -> phrases: set
+  "раст." as a dic title
 - plugins.multitrancom: Fix not finding anything
 - plugins.multitrancom: eng-rus, метильное: do not delete the phrase
   section when only separate words have been found: Найдено во фразах -
