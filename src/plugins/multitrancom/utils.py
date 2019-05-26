@@ -1,8 +1,11 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import re
 import os
 import html
+import operator
+import urllib.request
 import shared    as sh
 import sharedGUI as sg
 
@@ -21,6 +24,94 @@ class Pairs:
     # Determine language pairs supported by MT
     def __init__(self):
         self.values()
+    
+    def bad_gateway(self):
+        f = '[MClient] plugins.multitrancom.utils.Pairs.bad_gateway'
+        file    = '/tmp/urls'
+        text    = sh.ReadTextFile(file).get()
+        if text:
+            lst = text.splitlines()
+            lst = [item.strip() for item in lst if item.strip()]
+            if lst:
+                errors = []
+                for i in range(len(lst)):
+                    message = '%d/%d' % (i+1,len(lst))
+                    sh.log.append (f,_('INFO')
+                                  ,message
+                                  )
+                    try:
+                        req = urllib.request.Request (url     = lst[i]
+                                                     ,data    = None
+                                                     ,headers = {'User-Agent': \
+                                                                 'Mozilla'
+                                                                }
+                                                     )
+                        urllib.request.urlopen(req,timeout=12).read()
+                        if self.Verbose:
+                            sh.log.append (f,_('INFO')
+                                          ,_('[OK]: "%s"') % lst[i]
+                                          )
+                    except Exception as e:
+                        if 'gateway' in str(e).lower():
+                            errors.append(lst[i])
+                if errors:
+                    sh.objs.mes (f,_('INFO')
+                                ,'\n'.join(errors)
+                                )
+                else:
+                    sh.log.append (f,_('INFO')
+                                  ,_('No matches!')
+                                  )
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.empty(f)
+    
+    def get_lang(self,code):
+        f = '[MClient] plugins.multitrancom.utils.Pairs.get_lang'
+        if isinstance(code,int):
+            for lang in self._dic.keys():
+                if self._dic[lang]['code'] == code:
+                    return lang
+        else:
+            sh.objs.mes (f,_('ERROR')
+                        ,_('Wrong input data: "%s"!') % str(code)
+                        )
+    
+    def remaining(self):
+        f = '[MClient] plugins.multitrancom.utils.Pairs.remaining'
+        file    = '/tmp/urls'
+        pattern = 'https\:\/\/www.multitran.com\/m.exe\?l1=(\d+)\&l2=(\d+)\&SHL=2\&s='
+        text    = sh.ReadTextFile(file).get()
+        if text:
+            lst = text.splitlines()
+            lst = [item.strip() for item in lst if item.strip()]
+            if lst:
+                pairs = []
+                for url in lst:
+                    match = re.match(pattern,url)
+                    if match:
+                        code1 = int(match.group(1))
+                        code2 = int(match.group(2))
+                        if self.ispair(code1,code2):
+                            lang1 = self.get_lang(code1)
+                            lang2 = self.get_lang(code2)
+                            if lang1 and lang2:
+                                pairs.append(lang1 + ' <=> ' + lang2)
+                            else:
+                                sh.com.empty(f)
+                if pairs:
+                    sh.objs.mes (f,_('INFO')
+                                ,'\n'.join(pairs)
+                                )
+                else:
+                    sh.log.append (f,_('INFO')
+                                  ,_('No matches!')
+                                  )
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.empty(f)
     
     def get_dead(self):
         f = '[MClient] plugins.multitrancom.utils.Pairs.get_dead'
@@ -51,7 +142,9 @@ class Pairs:
         if 0 < code1 <= len(self._langs):
             code = ''
             while not code:
-                code = sh.Get(url=url).run()
+                code = sh.Get (url     = url
+                              ,timeout = 20
+                              ).run()
             if self._zero in code.replace('\n','').replace('\r',''):
                 return True
         else:
@@ -71,19 +164,23 @@ class Pairs:
         if lang1:
             if lang1 in self._alive:
                 lst = []
-                code1 = self._langs.index(lang1) + 1
                 for lang2 in self._alive:
-                    code2 = self._langs.index(lang2) + 1
-                    if self.ispair(code1,code2):
+                    if self.ispair (self._dic[lang1]['code']
+                                   ,self._dic[lang2]['code']
+                                   ):
                         lst.append(lang2)
                 if lst:
                     lst.sort()
                     self._dic[lang1]['pair'] = tuple(lst)
                 else:
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('Language "%s" is alive but has no pairs!')\
-                                % lang1
-                                )
+                    ''' This error can be caused by network issues, so
+                        we make it silent.
+                    '''
+                    #sh.objs.mes
+                    sh.log.append (f,_('WARNING')
+                                  ,_('Language "%s" is alive but has no pairs!')\
+                                  % lang1
+                                  )
             else:
                 # We should pass only alive languages to this procedure
                 sh.objs.mes (f,_('WARNING')
@@ -94,16 +191,24 @@ class Pairs:
     
     def loop(self):
         f = '[MClient] plugins.multitrancom.utils.Pairs.loop'
-        for lang in self._alive:
+        #note: Set this to the last processed language
+        i = 0
+        while i < len(self._alive):
+            lang = self._alive[i]
             sh.log.append (f,_('INFO')
                           ,lang
                           )
             self.get_pairs(lang)
             self.write(lang)
+            i += 1
     
-    def write(self,lang):
+    def write(self,lang='Last'):
+        struct  = sorted(self._dic.items(),key=operator.itemgetter(0))
         message = _('Last processed language:') + ' ' + lang + '\n\n' \
-                  + str(self._dic)
+                  + str(struct)
+        if self._errors:
+            message += '\n\n' + _('URLs that caused errors:') + '\n'
+            message += '\n'.join(self._errors)
         sh.WriteTextFile (file    = self._filew
                          ,Rewrite = True
                          ).write(message)
@@ -113,15 +218,10 @@ class Pairs:
         timer = sh.Timer(f)
         timer.start()
         self.fill()
-        self.get_pairs(_('Abaza'))
-        for lang in self._dic:
-            if self._dic[lang]['pair']:
-                print(self._dic[lang]['pair'])
-                break
-        #self.loop()
+        self.loop()
         timer.end()
-        #self.write()
-        #sh.Launch(self._filew).default()
+        self.write()
+        sh.Launch(self._filew).default()
     
     def ispair(self,code1,code2):
         f = '[MClient] plugins.multitrancom.utils.Pairs.ispair'
@@ -134,11 +234,21 @@ class Pairs:
                               )
             else:
                 url  = self._root.format(code1,code2)
+                '''
                 code = ''
                 while not code:
                     code = sh.Get(url=url).run()
+                '''
+                code = sh.Get (url     = url
+                              ,timeout = 20
+                              ).run()
                 if 'Тематика' in code:
                     return True
+                elif not code:
+                    ''' Sometimes 'Bad Gateway' error is received which
+                        can be witnessed in a browser too.
+                    '''
+                    self._errors.append(url)
         else:
             sh.objs.mes (f,_('ERROR')
                         ,_('The condition "%s" is not observed!') \
@@ -166,6 +276,7 @@ class Pairs:
         self._langs  = (_('English'),_('Russian'),_('German'),_('French'),_('Spanish'),_('Hebrew'),_('Serbian'),_('Croatian'),_('Tatar'),_('Arabic'),_('Portuguese'),_('Lithuanian'),_('Romanian'),_('Polish'),_('Bulgarian'),_('Czech'),_('Chinese'),_('Hindi'),_('Bengali'),_('Punjabi'),_('Vietnamese'),_('Danish'),_('Italian'),_('Dutch'),_('Azerbaijani'),_('Estonian'),_('Latvian'),_('Japanese'),_('Swedish'),_('Norwegian Bokmal'),_('Afrikaans'),_('Turkish'),_('Ukrainian'),_('Esperanto'),_('Kalmyk'),_('Finnish'),_('Latin'),_('Greek'),_('Korean'),_('Georgian'),_('Armenian'),_('Hungarian'),_('Kazakh'),_('Kirghiz'),_('Uzbek'),_('Romany'),_('Albanian'),_('Welsh'),_('Irish'),_('Icelandic'),_('Kurdish'),_('Persian'),_('Catalan'),_('Corsican'),_('Galician'),_('Mirandese'),_('Romansh'),_('Belarusian'),_('Ruthene'),_('Slovak'),_('Upper Sorbian'),_('Lower Sorbian'),_('Bosnian'),_('Montenegrin'),_('Macedonian'),_('Church Slavonic'),_('Slovenian'),_('Basque'),_('Svan'),_('Mingrelian'),_('Abkhazian'),_('Adyghe'),_('Chechen'),_('Avar'),_('Ingush'),_('Crimean Tatar'),_('Chuvash'),_('Maltese'),_('Khmer'),_('Nepali'),_('Amharic'),_('Assamese'),_('Lao'),_('Asturian'),_('Odia'),_('Indonesian'),_('Pashto'),_('Quechua'),_('Maori'),_('Marathi'),_('Tamil'),_('Telugu'),_('Thai'),_('Turkmen'),_('Yoruba'),_('Bosnian cyrillic'),_('Chinese simplified'),_('Chinese Taiwan'),_('Filipino'),_('Gujarati'),_('Hausa'),_('Igbo'),_('Inuktitut'),_('IsiXhosa'),_('Zulu'),_('Kannada'),_('Kinyarwanda'),_('Swahili'),_('Konkani'),_('Luxembourgish'),_('Malayalam'),_('Wolof'),_('Wayuu'),_('Serbian latin'),_('Tswana'),_('Sinhala'),_('Urdu'),_('Sesotho sa leboa'),_('Norwegian Nynorsk'),_('Malay'),_('Mongolian'),_('Frisian'),_('Faroese'),_('Friulian'),_('Ladin'),_('Sardinian'),_('Occitan'),_('Gaulish'),_('Gallegan'),_('Sami'),_('Breton'),_('Cornish'),_('Manh'),_('Scottish Gaelic'),_('Yiddish'),_('Tajik'),_('Tagalog'),_('Soninke'),_('Baoulé'),_('Javanese'),_('Wayana'),_('French Guiana Creole'),_('Mauritian Creole'),_('Seychellois Creole'),_('Guadeloupe Creole'),_('Rodriguan Creole'),_('Haitian Creole'),_('Mandinka'),_('Surigaonon'),_('Adangme'),_('Tok Pisin'),_('Cameroonian Creole'),_('Suriname Creole'),_('Belizean Creole'),_('Virgin Islands Creole'),_('Fon'),_('Kim'),_('Ivatan'),_('Gen'),_('Marshallese'),_('Wallisian'),_('Old Prussian'),_('Yom'),_('Tokelauan'),_('Zande'),_('Yao'),_('Waray'),_('Walmajarri'),_('Visayan'),_('Vili'),_('Venda'),_('Achinese'),_('Adjukru'),_('Agutaynen'),_('Afar'),_('Acoli'),_('Afrihili'),_('Ainu'),_('Akan'),_('Akkadian'),_('Aleut'),_('Southern Altai'),_('Old English'),_('Angika'),_('Official Aramaic'),_('Aragonese'),_('Mapudungun'),_('Arapaho'),_('Arawak'),_('Avestan'),_('Awadhi'),_('Aymara'),_('Bashkir'),_('Baluchi'),_('Bambara'),_('Balinese'),_('Basaa'),_('Beja'),_('Bemba'),_('Bhojpuri'),_('Bikol'),_('Bini'),_('Bislama'),_('Siksika'),_('Tibetan'),_('Braj'),_('Buriat'),_('Buginese'),_('Burmese'),_('Bilin'),_('Caddo'),_('Galibi Carib'),_('Cebuano'),_('Chamorro'),_('Chibcha'),_('Chagatai'),_('Chuukese'),_('Mari'),_('Chinook jargon'),_('Choctaw'),_('Chipewyan'),_('Cherokee'),_('Cheyenne'),_('Coptic'),_('Cree'),_('Kashubian'),_('Dakota'),_('Dargwa'),_('Delaware'),_('Slave'),_('Dogrib'),_('Dinka'),_('Dhivehi'),_('Dogri'),_('Duala'),_('Middle Dutch'),_('Dyula'),_('Dzongkha'),_('Efik'),_('Egyptian'),_('Ekajuk'),_('Elamite'),_('Middle English'),_('Ewe'),_('Ewondo'),_('Fang'),_('Fanti'),_('Fijian'),_('Middle French'),_('Old French'),_('Eastern Frisian'),_('Fulah'),_('Ga'),_('Gayo'),_('Gbaya'),_('Ge\'ez'),_('Gilbertese'),_('Middle High German'),_('Old High German'),_('Gondi'),_('Gorontalo'),_('Gothic'),_('Grebo'),_('Ancient Greek'),_('Guarani'),_('Swiss German'),_('Gwichʼin'),_('Haida'),_('Kikuyu'),_('Hawaiian'),_('Herero'),_('Hiligaynon'),_('Hittite'),_('Hmong'),_('Hiri Motu'),_('Hupa'),_('Iban'),_('Ido'),_('Sichuan Yi'),_('Interlingue'),_('Ilocano'),_('Interlingua'),_('Inupiaq'),_('Lojban'),_('Judeo-Persian'),_('Judeo-Arabic'),_('Kara-Kalpak'),_('Kabyle'),_('Kachin'),_('Kalaallisut'),_('Kamba'),_('Kashmiri'),_('Kanuri'),_('Kawi'),_('Kabardian'),_('Khasi'),_('Khotanese'),_('Kimbundu'),_('Komi'),_('Kongo'),_('Kosraean'),_('Kpelle'),_('Karachay-Balkar'),_('Karelian'),_('Kurukh'),_('Kuanyama'),_('Kumyk'),_('Kutenai'),_('Lahnda'),_('Lamba'),_('Lezghian'),_('Limburgan'),_('Lingala'),_('Mongo'),_('Lozi'),_('Luba-Lulua'),_('Luba-Katanga'),_('Ganda'),_('Luiseno'),_('Lunda'),_('Luo'),_('Lushai'),_('Madurese'),_('Magahi'),_('Maithili'),_('Makasar'),_('Masai'),_('Moksha'),_('Mandar'),_('Mende'),_('Middle Irish'),_('Mi\'kmaq'),_('Minangkabau'),_('Malagasy'),_('Manchu'),_('Manipuri'),_('Mohawk'),_('Mossi'),_('Creek'),_('Marwari'),_('Erzya'),_('Neapolitan'),_('Nauru'),_('Navajo'),_('South Ndebele'),_('North Ndebele'),_('Ndonga'),_('Low German'),_('Nepal Bhasa'),_('Nias'),_('Niuean'),_('Nogai'),_('Old Norse'),_('Sandawe'),_('N\'Ko'),_('Classical Newari'),_('Nyanja'),_('Nyamwezi'),_('Nyankole'),_('Nyoro'),_('Nzima'),_('Ojibwa'),_('Oromo'),_('Osage'),_('Ossetian'),_('Ottoman Turkish'),_('Pangasinan'),_('Pahlavi'),_('Pampanga'),_('Papiamento'),_('Palauan'),_('Old Persian'),_('Phoenician'),_('Pali'),_('Pohnpeian'),_('Old Occitan'),_('Rajasthani'),_('Rapanui'),_('Rarotongan'),_('Reunionese'),_('Rundi'),_('Macedo-Romanian'),_('Sango'),_('Yakut'),_('Samaritan Aramaic'),_('Sanskrit'),_('Sasak'),_('Sicilian'),_('Scots'),_('Selkup'),_('Old Irish'),_('Shan'),_('Sidamo'),_('Southern Sami'),_('Northern Sami'),_('Lule Sami'),_('Inari Sami'),_('Samoan'),_('Skolt Sami'),_('Shona'),_('Sindhi'),_('Sogdian'),_('Somali'),_('Sesotho'),_('Sranan Tongo'),_('Serer'),_('Swati'),_('Sukuma'),_('Sundanese'),_('Susu'),_('Sumerian'),_('Santali'),_('Syriac'),_('Tahitian'),_('Timne'),_('Tonga'),_('Tetum'),_('Tigre'),_('Tigrinya'),_('Tiv'),_('Shilluk'),_('Klingon'),_('Tlingit'),_('Tamashek'),_('Carolinian'),_('Portuguese creole'),_('Tuamotuan'),_('Numèè'),_('Gela'),_('Comorian'),_('Rennellese'),_('Emilian-Romagnol'),_('Mayan'),_('Caribbean Hindustani'),_('Khakas'),_('Kinga'),_('Kurmanji'),_('Kwangali'),_('Lango'),_('Ligurian'),_('Lombard'),_('Luguru'),_('Mamasa'),_('Mashi'),_('Meru'),_('Rotokas'),_('Moldovan'),_('Mongolian script'),_('Nasioi'),_('Nyakyusa'),_('Piedmontese'),_('Pinyin'),_('Sangu'),_('Shambala'),_('Shor'),_('Central Atlas Tamazight'),_('Thai Transliteration'),_('Tsonga'),_('Tuvan'),_('Valencian'),_('Venetian'),_('Walloon'),_('Wanji'),_('Zigula'),_('Korean Transliteration'),_('Mongolian Transliteration'),_('Assyrian'),_('Kaguru'),_('Kimakonde'),_('Kirufiji'),_('Mbwera'),_('Gronings'),_('Hadza'),_('Iraqw'),_('Kami'),_('Krio'),_('Tweants'),_('Abaza'))
         self._filew  = '/home/pete/tmp/ars/pairs'
         self._dic    = {}
+        self._errors = []
 
 
 
@@ -540,13 +651,30 @@ class Tags:
 
 class Commands:
     
+    def format_gettext(self):
+        f = '[MClient] plugins.multitrancom.utils.Commands.format_gettext'
+        text = sg.Clipboard().paste()
+        if text:
+            text = text.replace("('",'')
+            text = text.replace("')",'')
+            text = text.replace("', '",',')
+            lst  = text.split(',')
+            lst  = ["_('" + item.strip() + "')" for item in lst \
+                    if item.strip()
+                   ]
+            text = '(' + ','.join(lst) + ')'
+            sg.Clipboard().copy(text)
+            input(_('Press any key to continue.'))
+        else:
+            sh.com.empty(f)
+    
     # Transform new-line-delimited text into a list of languages
     def format_pairs(self):
         f = '[MClient] plugins.multitrancom.utils.Commands.format_pairs'
         text = sg.Clipboard().paste()
         if text:
-            text = text.replace(r"'",r"\'")
-            lst  = text.splitlines()
+            text= text.replace(r"'",r"\'")
+            lst = text.splitlines()
             lst  = ["_('" + item.strip() + "')" for item in lst \
                     if item.strip()
                    ]

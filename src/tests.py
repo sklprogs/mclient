@@ -3,7 +3,7 @@
 import shared    as sh
 import sharedGUI as sg
 
-DEBUG = True
+DEBUG = False
 
 
 class Block:
@@ -486,8 +486,6 @@ if __name__ == '__main__':
     sg.objs.start()
     import logic as lg
     lg.objs.plugins(Debug=DEBUG)
-    #lg.objs.plugins(Debug=0)
-    #com.com_abatis(GUI=1)
-    com.com_systemwide(GUI=0)
-    #com.com_complex(GUI=1)
+    import plugins.multitrancom.pairs as pairs
+    print(pairs.LANGS['Zulu']['code'])
     sg.objs.end()
