@@ -13,13 +13,8 @@ gettext.install('mclient','../resources/locale')
 if __name__ == '__main__':
     f = '[MClient] utils.__main__'
     sg.objs.start()
-    utcom.com.format_gettext()
+    #utcom.com.format_gettext()
     #utcom.Pairs().run()
-    '''
-    ipairs = utcom.Pairs()
-    ipairs.fill()
-    print('Code: %d; Language: %s' % (209,ipairs.get_lang(209)))
-    print('Code: %d; Language: %s' % (262,ipairs.get_lang(262)))
-    '''
+    print(utcom.Pairs().blacklist())
     sg.objs.end()
                 

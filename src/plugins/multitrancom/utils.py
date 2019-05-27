@@ -25,6 +25,32 @@ class Pairs:
     def __init__(self):
         self.values()
     
+    def blacklist(self):
+        ''' Read a list of URLs leading to network errors and return
+            a list of pairs represented by language codes that
+            cannot be used.
+        '''
+        f = '[MClient] plugins.multitrancom.utils.Pairs.blacklist'
+        file    = '/tmp/urls'
+        pattern = 'https\:\/\/www.multitran.com\/m.exe\?l1=(\d+)\&l2=(\d+)\&SHL=2\&s='
+        text    = sh.ReadTextFile(file).get()
+        if text:
+            lst = text.splitlines()
+            lst = [item.strip() for item in lst if item.strip()]
+            if lst:
+                codes = []
+                for url in lst:
+                    match = re.match(pattern,url)
+                    if match:
+                        code1 = int(match.group(1))
+                        code2 = int(match.group(2))
+                        codes.append((code1,code2))
+                return codes
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.empty(f)
+    
     def bad_gateway(self):
         f = '[MClient] plugins.multitrancom.utils.Pairs.bad_gateway'
         file    = '/tmp/urls'

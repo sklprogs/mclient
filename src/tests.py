@@ -487,5 +487,8 @@ if __name__ == '__main__':
     import logic as lg
     lg.objs.plugins(Debug=DEBUG)
     import plugins.multitrancom.pairs as pairs
-    print(pairs.LANGS['Zulu']['code'])
+    pairs.Pairs()
+    for lang in pairs.LANGS.keys():
+        if _('Gothic') in pairs.LANGS[lang]['pair']:
+            print(_('Gothic'),'is in',lang)
     sg.objs.end()
