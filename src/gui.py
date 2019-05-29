@@ -694,25 +694,25 @@ class WebFrame:
         self.canvas = sg.Canvas (parent = self._panel
                                 ,expand = 0
                                 )
-        self.fr_but = sg.Frame (parent = self._panel
-                               ,expand = 0
-                               )
+        self.frm_btn = sg.Frame (parent = self._panel
+                                ,expand = 0
+                                )
         
         # Поле ввода поисковой строки
-        self.search_field = sg.Entry (parent    = self.fr_but
+        self.search_field = sg.Entry (parent    = self.frm_btn
                                      ,Composite = True
                                      ,side      = 'left'
                                      ,ipady     = 5
                                      )
         self.draw_buttons()
-        self.canvas.embed(obj=self.fr_but)
+        self.canvas.embed(obj=self.frm_btn)
         ''' #todo: Updating idletasks will show the AllDic 'Please wait'
             message for too long, however, we need to update in order to
             set canvas dimensions correctly.
         '''
         sg.objs.root().widget.update_idletasks()
-        height = self.fr_but.widget.winfo_height()
-        width  = self.fr_but.widget.winfo_width()
+        height = self.frm_btn.widget.winfo_height()
+        width  = self.frm_btn.widget.winfo_width()
         self.canvas.widget.config(width=self.obj.resolution()[0])
         self.canvas.widget.config(height=height)
         x2 = (width / 2)
@@ -729,190 +729,190 @@ class WebFrame:
             set bindings, use 'self.bindings'.
         '''
         # A button for newbies, substitutes Enter in search_field
-        self.btn_trns = sg.Button (parent   = self.fr_but
-                                  ,text     = _('Translate')
-                                  ,hint     = _('Translate')
-                                  ,inactive = self.icon_go_search
-                                  ,active   = self.icon_go_search
-                                  )
+        self.btn_trn = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('Translate')
+                                 ,hint     = _('Translate')
+                                 ,inactive = self.icon_go_search
+                                 ,active   = self.icon_go_search
+                                 )
 
         # A button to clear the search field
-        self.btn_cler = sg.Button (parent   = self.fr_but
-                                  ,text     = _('Clear')
-                                  ,hint     = _('Clear search field')
-                                  ,inactive = self.icon_clear_search_field
-                                  ,active   = self.icon_clear_search_field
-                                  )
+        self.btn_clr = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('Clear')
+                                 ,hint     = _('Clear search field')
+                                 ,inactive = self.icon_clear_search_field
+                                 ,active   = self.icon_clear_search_field
+                                 )
 
         # A button to insert text into the search field
-        self.btn_past = sg.Button (parent   = self.fr_but
-                                  ,text     = _('Paste')
-                                  ,hint     = _('Paste text from clipboard')
-                                  ,inactive = self.icon_paste
-                                  ,active   = self.icon_paste
-                                  )
+        self.btn_ins = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('Paste')
+                                 ,hint     = _('Paste text from clipboard')
+                                 ,inactive = self.icon_paste
+                                 ,active   = self.icon_paste
+                                 )
         # A button to insert a current search
-        self.btn_rep1 = sg.Button (parent   = self.fr_but
-                                  ,text     = '!'
-                                  ,hint     = _('Paste current request')
-                                  ,inactive = self.icon_repeat_sign_off
-                                  ,active   = self.icon_repeat_sign
-                                  )
+        self.btn_rp1 = sg.Button (parent   = self.frm_btn
+                                 ,text     = '!'
+                                 ,hint     = _('Paste current request')
+                                 ,inactive = self.icon_repeat_sign_off
+                                 ,active   = self.icon_repeat_sign
+                                 )
         # A button to insert a previous search
-        self.btn_rep2 = sg.Button (parent   = self.fr_but
-                                  ,text     = '!!'
-                                  ,hint     = _('Paste previous request')
-                                  ,inactive = self.icon_repeat_sign2_off
-                                  ,active   = self.icon_repeat_sign2
-                                  )
+        self.btn_rp2 = sg.Button (parent   = self.frm_btn
+                                 ,text     = '!!'
+                                 ,hint     = _('Paste previous request')
+                                 ,inactive = self.icon_repeat_sign2_off
+                                 ,active   = self.icon_repeat_sign2
+                                 )
         # A button to insert special symbols
-        self.btn_spec = sg.Button (parent   = self.fr_but
-                                  ,text     = _('Symbols')
-                                  ,hint     = _('Paste a special symbol')
-                                  ,inactive = self.icon_spec_symbol
-                                  ,active   = self.icon_spec_symbol
-                                  )
-        self.men_srcs = sg.OptionMenu(parent=self.fr_but)
+        self.btn_sym = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('Symbols')
+                                 ,hint     = _('Paste a special symbol')
+                                 ,inactive = self.icon_spec_symbol
+                                 ,active   = self.icon_spec_symbol
+                                 )
+        self.opt_src = sg.OptionMenu(parent=self.frm_btn)
         ''' Configure the option menu at the GUI creation time to avoid
             glitches with the search field.
         '''
-        self.men_srcs.widget.configure (width = 14
-                                       ,font  = 'Sans 10'
-                                       )
-        # A drop-down list with translation pairs
-        self.men_pair = sg.OptionMenu(parent=self.fr_but)
-        self.men_cols = sg.OptionMenu (parent  = self.fr_but
-                                      ,items   = (1,2,3,4,5,6,7,8,9,10)
-                                      ,default = 4
+        self.opt_src.widget.configure (width = 14
+                                      ,font  = 'Sans 10'
                                       )
+        # A drop-down list with translation pairs
+        self.men_pair = sg.OptionMenu(parent=self.frm_btn)
+        self.opt_col = sg.OptionMenu (parent  = self.frm_btn
+                                     ,items   = (1,2,3,4,5,6,7,8,9,10)
+                                     ,default = 4
+                                     )
         # All items of the 'pairs' sequence are of the same length
         self.men_pair.widget.config(width=11)
-        self.men_cols.widget.config(width=2)
+        self.opt_col.widget.config(width=2)
         # A settings button
-        self.btn_sets = sg.Button (parent   = self.fr_but
-                                  ,text     = _('Settings')
-                                  ,hint     = _('Tune up view settings')
-                                  ,inactive = self.icon_settings
-                                  ,active   = self.icon_settings
-                                  )
+        self.btn_set = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('Settings')
+                                 ,hint     = _('Tune up view settings')
+                                 ,inactive = self.icon_settings
+                                 ,active   = self.icon_settings
+                                 )
         # A button to change the article view
-        self.btn_view = sg.Button (parent   = self.fr_but
-                                  ,text     = _('Toggle view')
-                                  ,hint     = _('Toggle the article view mode')
-                                  ,inactive = self.icon_toggle_view_ver
-                                  ,active   = self.icon_toggle_view_hor
-                                  )
+        self.btn_viw = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('Toggle view')
+                                 ,hint     = _('Toggle the article view mode')
+                                 ,inactive = self.icon_toggle_view_ver
+                                 ,active   = self.icon_toggle_view_hor
+                                 )
         # A button to toggle dictionary blocking
-        self.btn_blok = sg.Button (parent   = self.fr_but
-                                  ,text     = _('Blacklist')
-                                  ,hint     = _('Toggle the blacklist')
-                                  ,inactive = self.icon_block_off
-                                  ,active   = self.icon_block_on
-                                  )
+        self.btn_blk = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('Blacklist')
+                                 ,hint     = _('Toggle the blacklist')
+                                 ,inactive = self.icon_block_off
+                                 ,active   = self.icon_block_on
+                                 )
         # A button to toggle dictionary prioritization
-        self.btn_prio = sg.Button (parent   = self.fr_but
-                                  ,text     = _('Prioritize')
-                                  ,hint     = _('Toggle prioritizing')
-                                  ,inactive = self.icon_priority_off
-                                  ,active   = self.icon_priority_on
-                                  )
+        self.btn_pri = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('Prioritize')
+                                 ,hint     = _('Toggle prioritizing')
+                                 ,inactive = self.icon_priority_off
+                                 ,active   = self.icon_priority_on
+                                 )
         # A button to toggle dictionary alphabetization
-        self.btn_alph = sg.Button (parent   = self.fr_but
-                                  ,text     = _('Alphabetize')
-                                  ,hint     = _('Toggle alphabetizing')
-                                  ,inactive = self.icon_alphabet_off
-                                  ,active   = self.icon_alphabet_on
-                                  )
+        self.btn_alp = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('Alphabetize')
+                                 ,hint     = _('Toggle alphabetizing')
+                                 ,inactive = self.icon_alphabet_off
+                                 ,active   = self.icon_alphabet_on
+                                 )
         # A button to move to the previous article
-        self.btn_prev = sg.Button (parent   = self.fr_but
-                                  ,text     = '←'
-                                  ,hint     = _('Go to the preceding article')
-                                  ,inactive = self.icon_go_back_off
-                                  ,active   = self.icon_go_back
-                                  )
+        self.btn_prv = sg.Button (parent   = self.frm_btn
+                                 ,text     = '←'
+                                 ,hint     = _('Go to the preceding article')
+                                 ,inactive = self.icon_go_back_off
+                                 ,active   = self.icon_go_back
+                                 )
         # A button to move to the next article
-        self.btn_next = sg.Button (parent   = self.fr_but
-                                  ,text     = '→'
-                                  ,hint     = _('Go to the following article')
-                                  ,inactive = self.icon_go_forward_off
-                                  ,active   = self.icon_go_forward
-                                  )
+        self.btn_nxt = sg.Button (parent   = self.frm_btn
+                                 ,text     = '→'
+                                 ,hint     = _('Go to the following article')
+                                 ,inactive = self.icon_go_forward_off
+                                 ,active   = self.icon_go_forward
+                                 )
         # A button to toggle and clear history
-        self.btn_hist = sg.Button (parent      = self.fr_but
-                                  ,text        = _('History')
-                                  ,inactive    = self.icon_toggle_history
-                                  ,active      = self.icon_toggle_history
-                                  ,hint_height = 80
-                                  )
+        self.btn_hst = sg.Button (parent      = self.frm_btn
+                                 ,text        = _('History')
+                                 ,inactive    = self.icon_toggle_history
+                                 ,active      = self.icon_toggle_history
+                                 ,hint_height = 80
+                                 )
         # A button to reload the article
-        self.btn_reld = sg.Button (parent   = self.fr_but
-                                  ,text     = _('Reload')
-                                  ,hint     = _('Reload the article')
-                                  ,inactive = self.icon_reload
-                                  ,active   = self.icon_reload
-                                  )
+        self.btn_rld = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('Reload')
+                                 ,hint     = _('Reload the article')
+                                 ,inactive = self.icon_reload
+                                 ,active   = self.icon_reload
+                                 )
         # A button to search within the article
-        self.btn_srch = sg.Button (parent   = self.fr_but
-                                  ,text     = _('Search')
-                                  ,hint     = _('Find in the current article')
-                                  ,inactive = self.icon_search_article
-                                  ,active   = self.icon_search_article
-                                  )
+        self.btn_ser = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('Search')
+                                 ,hint     = _('Find in the current article')
+                                 ,inactive = self.icon_search_article
+                                 ,active   = self.icon_search_article
+                                 )
         # A button to save the article
-        self.btn_save = sg.Button (parent   = self.fr_but
-                                  ,text     = _('Save')
-                                  ,hint     = _('Save the current article')
-                                  ,inactive = self.icon_save_article
-                                  ,active   = self.icon_save_article
-                                  )
+        self.btn_sav = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('Save')
+                                 ,hint     = _('Save the current article')
+                                 ,inactive = self.icon_save_article
+                                 ,active   = self.icon_save_article
+                                 )
         # A button to open the current article in a browser
-        self.btn_brws = sg.Button (parent   = self.fr_but
-                                  ,text     = _('Browse')
-                                  ,hint     = _('Open the current article in a browser')
-                                  ,inactive = self.icon_open_in_browser
-                                  ,active   = self.icon_open_in_browser
-                                  )
+        self.btn_brw = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('Browse')
+                                 ,hint     = _('Open the current article in a browser')
+                                 ,inactive = self.icon_open_in_browser
+                                 ,active   = self.icon_open_in_browser
+                                 )
         # A button to print the article
-        self.btn_prnt = sg.Button (parent   = self.fr_but
-                                  ,text     = _('Print')
-                                  ,hint     = _('Create a print-ready preview')
-                                  ,inactive = self.icon_print
-                                  ,active   = self.icon_print
-                                  )
+        self.btn_prn = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('Print')
+                                 ,hint     = _('Create a print-ready preview')
+                                 ,inactive = self.icon_print
+                                 ,active   = self.icon_print
+                                 )
         # A button to define a term
-        self.btn_expl = sg.Button (parent   = self.fr_but
-                                  ,text     = _('Define')
-                                  ,hint     = _('Define the current term')
-                                  ,inactive = self.icon_define
-                                  ,active   = self.icon_define
-                                  )
+        self.btn_def = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('Define')
+                                 ,hint     = _('Define the current term')
+                                 ,inactive = self.icon_define
+                                 ,active   = self.icon_define
+                                 )
         # A button to toggle capturing Ctrl-c-c and Ctrl-Ins-Ins
-        self.btn_clip = sg.Button (parent   = self.fr_but
-                                  ,text     = _('Clipboard')
-                                  ,hint     = _('Capture Ctrl-c-c and Ctrl-Ins-Ins')
-                                  ,inactive = self.icon_watch_clipboard_off
-                                  ,active   = self.icon_watch_clipboard_on
-                                  ,fg       = 'red'
-                                  )
+        self.btn_cap = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('Clipboard')
+                                 ,hint     = _('Capture Ctrl-c-c and Ctrl-Ins-Ins')
+                                 ,inactive = self.icon_watch_clipboard_off
+                                 ,active   = self.icon_watch_clipboard_on
+                                 ,fg       = 'red'
+                                 )
         # A button to show info about the program
-        self.btn_abot = sg.Button (parent   = self.fr_but
-                                  ,text     = _('About')
-                                  ,hint     = _('View About')
-                                  ,inactive = self.icon_show_about
-                                  ,active   = self.icon_show_about
-                                  )
+        self.btn_abt = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('About')
+                                 ,hint     = _('View About')
+                                 ,inactive = self.icon_show_about
+                                 ,active   = self.icon_show_about
+                                 )
         # A button to quit the program
-        self.btn_quit = sg.Button (parent   = self.fr_but
-                                  ,text     = _('Quit')
-                                  ,hint     = _('Quit the program')
-                                  ,action   = self.close
-                                  ,inactive = self.icon_quit_now
-                                  ,active   = self.icon_quit_now
-                                  ,side     = 'right'
-                                  )
+        self.btn_qit = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('Quit')
+                                 ,hint     = _('Quit the program')
+                                 ,action   = self.close
+                                 ,inactive = self.icon_quit_now
+                                 ,active   = self.icon_quit_now
+                                 ,side     = 'right'
+                                 )
 
     def bindings(self):
-        ''' We need to bind all buttons (inside 'self.fr_but') and also
+        ''' We need to bind all buttons (inside 'self.frm_btn') and also
             gaps between them and between top-bottom borders
             ('self.canvas').
         '''
@@ -924,7 +924,7 @@ class WebFrame:
                 ,bindings = '<Control-q>'
                 ,action   = self.close
                 )
-        for child in self.fr_but.widget.winfo_children():
+        for child in self.frm_btn.widget.winfo_children():
             child.bind('<Motion>',self.motion)
 
     def scrollbars(self):
@@ -996,10 +996,10 @@ class WebFrame:
     def motion(self,event=None):
         scr_width = self.obj.resolution()[0]
         # Do not move button frame if it is entirely visible
-        if self.obj.widget.winfo_width() < self.fr_but.widget.winfo_reqwidth():
+        if self.obj.widget.winfo_width() < self.frm_btn.widget.winfo_reqwidth():
             x         = self.canvas.widget.winfo_pointerx()
             ''' We read 'canvas' because it should return positive
-                values (in comparison with 'self.fr_but', which is
+                values (in comparison with 'self.frm_btn', which is
                 movable). 'rootx' should be negative only when 'canvas'
                 is partially moved by a user out of screen (but we may
                 need this case too).
@@ -1355,7 +1355,7 @@ class Settings:
         self.cb6.disable()
 
     def buttons(self):
-        sg.Button (parent     = self.fr_but
+        sg.Button (parent     = self.frm_btn
                   ,action     = self.reset
                   ,hint       = _('Reset settings')
                   ,hint_width = self._hint_width
@@ -1363,58 +1363,58 @@ class Settings:
                   ,side       = 'left'
                   )
 
-        self.btn_aply = sg.Button (parent     = self.fr_but
-                                  ,hint       = _('Apply settings')
-                                  ,hint_width = self._hint_width
-                                  ,text       = _('Apply')
-                                  ,side       = 'right'
-                                  )
+        self.btn_apl = sg.Button (parent     = self.frm_btn
+                                 ,hint       = _('Apply settings')
+                                 ,hint_width = self._hint_width
+                                 ,text       = _('Apply')
+                                 ,side       = 'right'
+                                 )
         #todo: elaborate
         '''
-        self.btn_blok = sg.Button (parent     = self.fr_cb3
-                                  ,hint       = _('Tune up blacklisting')
-                                  ,hint_width = self._hint_width
-                                  ,text       = _('Add/Remove')
-                                  ,side       = 'right'
-                                  )
-        self.btn_prio = sg.Button (parent     = self.fr_cb4
-                                  ,hint       = _('Tune up prioritizing')
-                                  ,hint_width = self._hint_width
-                                  ,text       = _('Add/Remove')
-                                  ,side       = 'right'
-                                  )
+        self.btn_blk = sg.Button (parent     = self.fr_cb3
+                                 ,hint       = _('Tune up blacklisting')
+                                 ,hint_width = self._hint_width
+                                 ,text       = _('Add/Remove')
+                                 ,side       = 'right'
+                                 )
+        self.btn_pri = sg.Button (parent     = self.fr_cb4
+                                 ,hint       = _('Tune up prioritizing')
+                                 ,hint_width = self._hint_width
+                                 ,text       = _('Add/Remove')
+                                 ,side       = 'right'
+                                 )
         '''
 
     def frames(self):
-        self.fr_col = sg.Frame (parent = self.obj
-                               ,expand = True
-                               ,fill   = 'both'
-                               )
+        self.frm_col = sg.Frame (parent = self.obj
+                                ,expand = True
+                                ,fill   = 'both'
+                                )
         self.fr_sp  = sg.Frame (parent = self.obj
                                ,expand = True
                                ,fill   = 'both'
                                )
-        self.fr_sc  = sg.Frame (parent = self.fr_col
+        self.fr_sc  = sg.Frame (parent = self.frm_col
                                ,side   = 'left'
                                ,expand = False
                                ,fill   = 'both'
                                )
-        self.fr_c1  = sg.Frame (parent = self.fr_col
+        self.fr_c1  = sg.Frame (parent = self.frm_col
                                ,side   = 'left'
                                ,expand = False
                                ,fill   = 'both'
                                )
-        self.fr_c2  = sg.Frame (parent = self.fr_col
+        self.fr_c2  = sg.Frame (parent = self.frm_col
                                ,side   = 'left'
                                ,expand = False
                                ,fill   = 'both'
                                )
-        self.fr_c3  = sg.Frame (parent = self.fr_col
+        self.fr_c3  = sg.Frame (parent = self.frm_col
                                ,expand = False
                                ,side   = 'left'
                                ,fill   = 'both'
                                )
-        self.fr_c4  = sg.Frame (parent = self.fr_col
+        self.fr_c4  = sg.Frame (parent = self.frm_col
                                ,side   = 'left'
                                ,expand = False
                                ,fill   = 'both'
@@ -1478,11 +1478,11 @@ class Settings:
                                ,expand = False
                                ,fill   = 'x'
                                )
-        self.fr_but = sg.Frame (parent = self.obj
-                               ,expand = False
-                               ,fill   = 'x'
-                               ,side   = 'bottom'
-                               )
+        self.frm_btn = sg.Frame (parent = self.obj
+                                ,expand = False
+                                ,fill   = 'x'
+                                ,side   = 'bottom'
+                                )
 
     def labels(self):
         ''' Other possible color schemes:

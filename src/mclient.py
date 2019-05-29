@@ -520,7 +520,7 @@ class History:
                               % lg.objs._request._source
                               )
                 lg.objs.plugins().set(lg.objs._request._source)
-                objs.webframe().gui.men_srcs.set(lg.objs._request._source)
+                objs.webframe().gui.opt_src.set(lg.objs._request._source)
                 objs._webframe.go_search()
             else:
                 sh.com.empty(f)
@@ -666,17 +666,18 @@ class WebFrame:
     def reset_opt(self):
         f = '[MClient] mclient.WebFrame.reset_opt'
         # Reset OptionMenus
-        pairs   = lg.objs.plugins().pairs()
+        #cur
+        pairs = (['ENG <=> RUS'])
         sources = lg.objs._plugins.sources()
         if pairs and sources:
             self.gui.men_pair.reset (items  = pairs
                                     ,action = self.set_pair
                                     )
             #note: change this upon the change of the default source
-            self.gui.men_srcs.reset (items   = sources
-                                    ,action  = self.set_source
-                                    ,default = _('Multitran')
-                                    )
+            self.gui.opt_src.reset (items   = sources
+                                   ,action  = self.set_source
+                                   ,default = _('Multitran')
+                                   )
         else:
             sh.com.empty(f)
     
@@ -855,7 +856,7 @@ class WebFrame:
                 ,bindings = sh.globs['var']['bind_toggle_priority']
                 ,action   = self.toggle_priority
                 )
-        sg.bind (obj      = self.gui.btn_hist
+        sg.bind (obj      = self.gui.btn_hst
                 ,bindings = '<ButtonRelease-3>'
                 ,action   = self.history.clear
                 )
@@ -975,92 +976,92 @@ class WebFrame:
                 ,action   = self.suggest.move_bottom
                 )
         # Set config bindings
-        self.gui.btn_hist.hint = _('Show history') \
+        self.gui.btn_hst.hint = _('Show history') \
                 + '\n'   + sh.globs['var']['bind_toggle_history'] \
                 + ', '   + sh.globs['var']['bind_toggle_history_alt'] \
                 + '\n\n' + _('Clear history') \
                 + '\n'   + sh.globs['var']['bind_clear_history'] \
                 + ', <ButtonRelease-3>'
-        self.gui.btn_abot._bindings = sh.globs['var']['bind_show_about']
-        self.gui.btn_alph._bindings = sh.globs['var']['bind_toggle_alphabet']
-        self.gui.btn_blok._bindings = sh.globs['var']['bind_toggle_block']
-        self.gui.btn_brws._bindings = [sh.globs['var']['bind_open_in_browser']
-                                      ,sh.globs['var']['bind_open_in_browser_alt']
-                                      ]
-        self.gui.btn_cler._bindings = sh.globs['var']['bind_clear_search_field']
-        self.gui.btn_expl._bindings = sh.globs['var']['bind_define']
-        self.gui.btn_next._bindings = sh.globs['var']['bind_go_forward']
-        self.gui.btn_past._bindings = '<Control-v>'
-        self.gui.btn_prev._bindings = sh.globs['var']['bind_go_back']
-        self.gui.btn_prnt._bindings = sh.globs['var']['bind_print']
-        self.gui.btn_quit._bindings = sh.globs['var']['bind_quit']
-        self.gui.btn_prio._bindings = sh.globs['var']['bind_toggle_priority']
-        self.gui.btn_reld._bindings = [sh.globs['var']['bind_reload_article']
-                                      ,sh.globs['var']['bind_reload_article_alt']
-                                      ]
-        self.gui.btn_rep1._bindings = sh.globs['var']['repeat_sign']
-        self.gui.btn_rep2._bindings = sh.globs['var']['repeat_sign2']
-        self.gui.btn_save._bindings = [sh.globs['var']['bind_save_article']
-                                      ,sh.globs['var']['bind_save_article_alt']
-                                      ]
-        self.gui.btn_sets._bindings = [sh.globs['var']['bind_settings']
-                                      ,sh.globs['var']['bind_settings_alt']
-                                      ]
-        self.gui.btn_spec._bindings = sh.globs['var']['bind_spec_symbol']
-        self.gui.btn_srch._bindings = sh.globs['var']['bind_re_search_article']
-        self.gui.btn_trns._bindings = ['<Return>','<KP_Enter>']
-        self.gui.btn_view._bindings = [sh.globs['var']['bind_toggle_view']
-                                      ,sh.globs['var']['bind_toggle_view_alt']
-                                      ]
+        self.gui.btn_abt._bindings = sh.globs['var']['bind_show_about']
+        self.gui.btn_alp._bindings = sh.globs['var']['bind_toggle_alphabet']
+        self.gui.btn_blk._bindings = sh.globs['var']['bind_toggle_block']
+        self.gui.btn_brw._bindings = [sh.globs['var']['bind_open_in_browser']
+                                     ,sh.globs['var']['bind_open_in_browser_alt']
+                                     ]
+        self.gui.btn_clr._bindings = sh.globs['var']['bind_clear_search_field']
+        self.gui.btn_def._bindings = sh.globs['var']['bind_define']
+        self.gui.btn_nxt._bindings = sh.globs['var']['bind_go_forward']
+        self.gui.btn_ins._bindings = '<Control-v>'
+        self.gui.btn_prv._bindings = sh.globs['var']['bind_go_back']
+        self.gui.btn_prn._bindings = sh.globs['var']['bind_print']
+        self.gui.btn_qit._bindings = sh.globs['var']['bind_quit']
+        self.gui.btn_pri._bindings = sh.globs['var']['bind_toggle_priority']
+        self.gui.btn_rld._bindings = [sh.globs['var']['bind_reload_article']
+                                     ,sh.globs['var']['bind_reload_article_alt']
+                                     ]
+        self.gui.btn_rp1._bindings = sh.globs['var']['repeat_sign']
+        self.gui.btn_rp2._bindings = sh.globs['var']['repeat_sign2']
+        self.gui.btn_sav._bindings = [sh.globs['var']['bind_save_article']
+                                     ,sh.globs['var']['bind_save_article_alt']
+                                     ]
+        self.gui.btn_set._bindings = [sh.globs['var']['bind_settings']
+                                     ,sh.globs['var']['bind_settings_alt']
+                                     ]
+        self.gui.btn_sym._bindings = sh.globs['var']['bind_spec_symbol']
+        self.gui.btn_ser._bindings = sh.globs['var']['bind_re_search_article']
+        self.gui.btn_trn._bindings = ['<Return>','<KP_Enter>']
+        self.gui.btn_viw._bindings = [sh.globs['var']['bind_toggle_view']
+                                     ,sh.globs['var']['bind_toggle_view_alt']
+                                     ]
         ''' Reset 'hint' for those buttons which bindings have changed
             (in order to show these bindings in tooltip)
         '''
-        self.gui.btn_abot.set_hint()
-        self.gui.btn_alph.set_hint()
-        self.gui.btn_blok.set_hint()
-        self.gui.btn_brws.set_hint()
-        self.gui.btn_cler.set_hint()
-        self.gui.btn_expl.set_hint()
-        self.gui.btn_hist.set_hint()
-        self.gui.btn_next.set_hint()
-        self.gui.btn_past.set_hint()
-        self.gui.btn_prev.set_hint()
-        self.gui.btn_prio.set_hint()
-        self.gui.btn_prnt.set_hint()
-        self.gui.btn_quit.set_hint()
-        self.gui.btn_reld.set_hint()
-        self.gui.btn_rep1.set_hint()
-        self.gui.btn_rep2.set_hint()
-        self.gui.btn_save.set_hint()
-        self.gui.btn_sets.set_hint()
-        self.gui.btn_spec.set_hint()
-        self.gui.btn_srch.set_hint()
-        self.gui.btn_trns.set_hint()
-        self.gui.btn_view.set_hint()
+        self.gui.btn_abt.set_hint()
+        self.gui.btn_alp.set_hint()
+        self.gui.btn_blk.set_hint()
+        self.gui.btn_brw.set_hint()
+        self.gui.btn_clr.set_hint()
+        self.gui.btn_def.set_hint()
+        self.gui.btn_hst.set_hint()
+        self.gui.btn_nxt.set_hint()
+        self.gui.btn_ins.set_hint()
+        self.gui.btn_prv.set_hint()
+        self.gui.btn_pri.set_hint()
+        self.gui.btn_prn.set_hint()
+        self.gui.btn_qit.set_hint()
+        self.gui.btn_rld.set_hint()
+        self.gui.btn_rp1.set_hint()
+        self.gui.btn_rp2.set_hint()
+        self.gui.btn_sav.set_hint()
+        self.gui.btn_set.set_hint()
+        self.gui.btn_sym.set_hint()
+        self.gui.btn_ser.set_hint()
+        self.gui.btn_trn.set_hint()
+        self.gui.btn_viw.set_hint()
         # Set controller actions
-        self.gui.btn_abot.action = self.about.gui.toggle
-        self.gui.btn_clip.action = self.watch_clipboard
-        self.gui.btn_expl.action = lambda x:self.define(Selected=False)
-        self.gui.btn_prnt.action = self.print
-        self.gui.btn_brws.action = self.open_in_browser
-        self.gui.btn_save.action = self.save_article.gui.toggle
-        self.gui.btn_srch.action = self.search_reset
-        self.gui.btn_reld.action = self.reload
-        self.gui.btn_hist.action = self.history.gui.toggle
-        self.gui.btn_next.action = self.go_forward
-        self.gui.btn_prev.action = self.go_back
-        self.gui.btn_alph.action = self.toggle_alphabet
-        self.gui.btn_prio.action = self.toggle_priority
-        self.gui.btn_blok.action = self.toggle_block
-        self.gui.btn_view.action = self.toggle_view
-        self.gui.btn_sets.action = self.settings.gui.toggle
-        self.gui.men_cols.action = self.set_columns
-        self.gui.btn_spec.action = self.spec_symbols.gui.toggle
-        self.gui.btn_rep2.action = self.insert_repeat_sign2
-        self.gui.btn_rep1.action = self.insert_repeat_sign
-        self.gui.btn_past.action = self.paste_search_field
-        self.gui.btn_cler.action = self.clear_search_field
-        self.gui.btn_trns.action = self.go
+        self.gui.btn_abt.action = self.about.gui.toggle
+        self.gui.btn_cap.action = self.watch_clipboard
+        self.gui.btn_def.action = lambda x:self.define(Selected=False)
+        self.gui.btn_prn.action = self.print
+        self.gui.btn_brw.action = self.open_in_browser
+        self.gui.btn_sav.action = self.save_article.gui.toggle
+        self.gui.btn_ser.action = self.search_reset
+        self.gui.btn_rld.action = self.reload
+        self.gui.btn_hst.action = self.history.gui.toggle
+        self.gui.btn_nxt.action = self.go_forward
+        self.gui.btn_prv.action = self.go_back
+        self.gui.btn_alp.action = self.toggle_alphabet
+        self.gui.btn_pri.action = self.toggle_priority
+        self.gui.btn_blk.action = self.toggle_block
+        self.gui.btn_viw.action = self.toggle_view
+        self.gui.btn_set.action = self.settings.gui.toggle
+        self.gui.opt_col.action = self.set_columns
+        self.gui.btn_sym.action = self.spec_symbols.gui.toggle
+        self.gui.btn_rp1.action = self.insert_repeat_sign
+        self.gui.btn_rp2.action = self.insert_repeat_sign2
+        self.gui.btn_ins.action = self.paste_search_field
+        self.gui.btn_clr.action = self.clear_search_field
+        self.gui.btn_trn.action = self.go
         
     def title(self,arg=None):
         if not arg:
@@ -1523,7 +1524,7 @@ class WebFrame:
 
     def set_source(self,event=None):
         f = '[MClient] mclient.WebFrame.set_source'
-        lg.objs.request()._source = self.gui.men_srcs.choice
+        lg.objs.request()._source = self.gui.opt_src.choice
         sh.log.append (f,_('INFO')
                       ,_('Set source to "%s"') \
                       % lg.objs._request._source
@@ -1761,59 +1762,59 @@ class WebFrame:
     def update_buttons(self):
         searches = objs.blocks_db().searches()
         if searches:
-            self.gui.btn_rep1.active()
+            self.gui.btn_rp1.active()
         else:
-            self.gui.btn_rep1.inactive()
+            self.gui.btn_rp1.inactive()
 
         if searches and len(searches) > 1:
-            self.gui.btn_rep2.active()
+            self.gui.btn_rp2.active()
         else:
-            self.gui.btn_rep2.inactive()
+            self.gui.btn_rp2.inactive()
 
         if objs.blocks_db().prev_id(Loop=False):
-            self.gui.btn_prev.active()
+            self.gui.btn_prv.active()
         else:
-            self.gui.btn_prev.inactive()
+            self.gui.btn_prv.inactive()
 
         if objs.blocks_db().next_id(Loop=False):
-            self.gui.btn_next.active()
+            self.gui.btn_nxt.active()
         else:
-            self.gui.btn_next.inactive()
+            self.gui.btn_nxt.inactive()
 
         if lg.objs.request().CaptureHotkey:
-            self.gui.btn_clip.active()
+            self.gui.btn_cap.active()
         else:
-            self.gui.btn_clip.inactive()
+            self.gui.btn_cap.inactive()
 
         if lg.objs._request.Reverse:
-            self.gui.btn_view.inactive()
+            self.gui.btn_viw.inactive()
             self.settings.gui.cb5.enable()
         else:
-            self.gui.btn_view.active()
+            self.gui.btn_viw.active()
             self.settings.gui.cb5.disable()
 
         if not lg.objs._request.SpecialPage \
         and lg.objs._request.SortTerms:
-            self.gui.btn_alph.active()
+            self.gui.btn_alp.active()
             self.settings.gui.cb2.enable()
         else:
-            self.gui.btn_alph.inactive()
+            self.gui.btn_alp.inactive()
             self.settings.gui.cb2.disable()
 
         if lg.objs._request.Block and objs._blocks_db.blocked():
-            self.gui.btn_blok.active()
+            self.gui.btn_blk.active()
             self.settings.gui.cb3.enable()
         else:
-            self.gui.btn_blok.inactive()
+            self.gui.btn_blk.inactive()
             self.settings.gui.cb3.disable()
 
         if not lg.objs._request.SpecialPage \
         and lg.objs._request.Prioritize \
         and objs._blocks_db.prioritized():
-            self.gui.btn_prio.active()
+            self.gui.btn_pri.active()
             self.settings.gui.cb4.enable()
         else:
-            self.gui.btn_prio.inactive()
+            self.gui.btn_pri.inactive()
             self.settings.gui.cb4.disable()
 
     # Go to the previous search
@@ -1828,7 +1829,7 @@ class WebFrame:
                 lg.objs._request._search = result[1]
                 lg.objs._request._url    = result[2]
                 lg.objs.plugins().set(lg.objs._request._source)
-                self.gui.men_srcs.set(lg.objs._request._source)
+                self.gui.opt_src.set(lg.objs._request._source)
                 self.load_article()
             else:
                 sh.com.empty(f)
@@ -1847,7 +1848,7 @@ class WebFrame:
                 lg.objs._request._search = result[1]
                 lg.objs._request._url    = result[2]
                 lg.objs.plugins().set(lg.objs._request._source)
-                self.gui.men_srcs.set(lg.objs._request._source)
+                self.gui.opt_src.set(lg.objs._request._source)
                 self.load_article()
             else:
                 sh.com.empty(f)
@@ -1881,12 +1882,12 @@ class WebFrame:
     def set_columns(self,event=None):
         f = '[MClient] mclient.WebFrame.set_columns'
         sh.log.append (f,_('INFO')
-                      ,str(self.gui.men_cols.choice)
+                      ,str(self.gui.opt_col.choice)
                       )
         fixed = [col for col in lg.objs.request()._cols \
                  if col != _('Do not set')
                 ]
-        lg.objs._request._collimit = int(self.gui.men_cols.choice) \
+        lg.objs._request._collimit = int(self.gui.opt_col.choice) \
                                    + len(fixed)
         objs.blocks_db().delete_bookmarks()
         self.load_article()
@@ -2047,7 +2048,7 @@ class WebFrame:
                 else:
                     lg.objs._request._collimit -= 1
             non_fixed_len = lg.objs._request._collimit - len(fixed)
-            self.gui.men_cols.set(non_fixed_len)
+            self.gui.opt_col.set(non_fixed_len)
             sh.log.append (f,_('INFO')
                           ,_('Set the column limit to %d (%d in total)')\
                           % (non_fixed_len,lg.objs._request._collimit)
@@ -2287,15 +2288,15 @@ class Settings:
                        )
     
     def bindings(self):
-        self.gui.btn_aply.action = self.apply
+        self.gui.btn_apl.action = self.apply
         #todo: implement
-        #selb.btn_blok.action = self.block_settings
-        #self.btn_prio.action = self.priority_settings
+        #self.btn_blk.action = self.block_settings
+        #self.btn_pri.action = self.priority_settings
         sg.bind (obj      = self.gui.obj
                 ,bindings = [sh.globs['var']['bind_settings']
                             ,sh.globs['var']['bind_settings_alt']
                             ]
-                ,action = self.gui.toggle
+                ,action   = self.gui.toggle
                 )
 
     def prioritize_speech(self):
