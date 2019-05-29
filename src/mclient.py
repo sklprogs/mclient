@@ -539,14 +539,14 @@ class WebFrame:
         self.widgets()
         self.bindings()
         self.reset_opt()
-        
-    def next_pair(self,event=None):
-        self.gui.men_pair.set_next()
-        self.set_pair()
     
-    def prev_pair(self,event=None):
-        self.gui.men_pair.set_prev()
-        self.set_pair()
+    def next_lang1(self,event=None):
+        self.gui.opt_lg1.set_next()
+        self.set_lang1()
+    
+    def prev_lang1(self,event=None):
+        self.gui.opt_lg1.set_prev()
+        self.set_lang1()
     
     def paste_search_field(self,event=None):
         self.suggest.gui.close()
@@ -666,13 +666,20 @@ class WebFrame:
     def reset_opt(self):
         f = '[MClient] mclient.WebFrame.reset_opt'
         # Reset OptionMenus
-        #cur
-        pairs = (['ENG <=> RUS'])
+        lang1   = lg.objs.plugins().lang1()
+        lang2   = lg.objs._plugins.lang2()
+        langs1  = lg.objs._plugins.langs1()
+        langs2  = lg.objs._plugins.langs2(lang1)
         sources = lg.objs._plugins.sources()
-        if pairs and sources:
-            self.gui.men_pair.reset (items  = pairs
-                                    ,action = self.set_pair
-                                    )
+        if langs1 and langs2 and lang1 and lang2 and sources:
+            self.gui.opt_lg1.reset (items   = langs1
+                                   ,default = lang1
+                                   ,action  = self.set_lang1
+                                   )
+            self.gui.opt_lg2.reset (items   = langs2
+                                   ,default = lang2
+                                   ,action  = self.set_lang2
+                                   )
             #note: change this upon the change of the default source
             self.gui.opt_src.reset (items   = sources
                                    ,action  = self.set_source
@@ -814,13 +821,13 @@ class WebFrame:
                 ,bindings = [sh.globs['var']['bind_prev_pair']
                             ,sh.globs['var']['bind_prev_pair_alt']
                             ]
-                ,action   = self.prev_pair
+                ,action   = self.prev_lang1
                 )
         sg.bind (obj      = self.gui.obj
                 ,bindings = [sh.globs['var']['bind_next_pair']
                             ,sh.globs['var']['bind_next_pair_alt']
                             ]
-                ,action   = self.next_pair
+                ,action   = self.next_lang1
                 )
         sg.bind (obj      = self.gui.obj
                 ,bindings = [sh.globs['var']['bind_settings']
@@ -1872,12 +1879,21 @@ class WebFrame:
         self.search_article.reset()
         self.search_article.forward()
 
-    def set_pair(self,event=None):
-        f = '[MClient] mclient.WebFrame.set_pair'
+    def set_lang1(self,event=None):
+        f = '[MClient] mclient.WebFrame.set_lang1'
         sh.log.append (f,_('INFO')
-                      ,_('Set pair: %s') % self.gui.men_pair.choice
+                      ,_('Set language: %s') % self.gui.opt_lg1.choice
                       )
-        lg.objs.plugins().set_pair(self.gui.men_pair.choice)
+        lg.objs.plugins().set_lang1(self.gui.opt_lg1.choice)
+        self.gui.search_field.focus()
+    
+    def set_lang2(self,event=None):
+        f = '[MClient] mclient.WebFrame.set_lang2'
+        sh.log.append (f,_('INFO')
+                      ,_('Set language: %s') % self.gui.opt_lg2.choice
+                      )
+        lg.objs.plugins().set_lang2(self.gui.opt_lg2.choice)
+        self.gui.search_field.focus()
 
     def set_columns(self,event=None):
         f = '[MClient] mclient.WebFrame.set_columns'

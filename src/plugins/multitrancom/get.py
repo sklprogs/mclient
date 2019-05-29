@@ -187,11 +187,12 @@ class Commands:
         else:
             sh.com.empty(f)
     
-    def get_url(self,search):
+    def get_url(self,code1,code2,search):
         f = '[MClient] plugins.multitrancom.get.Commands.get_url'
-        if search:
+        if search and code1 and code2:
             #note: The encoding here should always be 'utf-8'!
-            return sh.Online (base_str   = PAIR
+            base_str = 'https://www.multitran.com/m.exe?s=%s&l1={}&l2={}&SHL=2'.format(code1,code2)
+            return sh.Online (base_str   = base_str
                              ,search_str = search
                              ,encoding   = 'utf-8'
                              ).url()

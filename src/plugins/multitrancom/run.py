@@ -34,6 +34,12 @@ class Plugin:
         self._text   = ''
         self._blocks = []
     
+    def lang1(self):
+        return pr.LANG1
+    
+    def lang2(self):
+        return pr.LANG2
+    
     def server(self):
         return gt.URL
     
@@ -47,17 +53,38 @@ class Plugin:
         return gt.com.fix_raw_html(self._html)
     
     def get_url(self,search):
-        return gt.com.get_url(search)
+        f = '[MClient] plugins.multitrancom.run.Plugin.get_url'
+        code1 = pr.objs.pairs().code(pr.LANG1)
+        code2 = pr.objs._pairs.code(pr.LANG2)
+        if code1 and code2 and search:
+            return gt.com.get_url (code1  = code1
+                                  ,code2  = code2
+                                  ,search = search
+                                  )
+        else:
+            sh.com.empty(f)
+            return ''
     
-    def set_pair(self,lang1,lang2):
-        f = '[MClient] plugins.multitrancom.run.Plugin.set_pair'
-        if lang1 and lang2:
-            if lang1 in pr.LANGS and lang2 in pr.LANGS:
+    def set_lang1(self,lang1):
+        f = '[MClient] plugins.multitrancom.run.Plugin.set_lang1'
+        if lang1:
+            if lang1 in pr.LANGS:
                 pr.LANG1 = lang1
+            else:
+                sh.objs.mes (f,_('ERROR')
+                            ,_('Wrong input data: "%s"!') % str(lang1)
+                            )
+        else:
+            sh.com.empty(f)
+    
+    def set_lang2(self,lang2):
+        f = '[MClient] plugins.multitrancom.run.Plugin.set_lang2'
+        if lang2:
+            if lang2 in pr.LANGS:
                 pr.LANG2 = lang2
             else:
                 sh.objs.mes (f,_('ERROR')
-                            ,_('Wrong input data!')
+                            ,_('Wrong input data: "%s"!') % str(lang2)
                             )
         else:
             sh.com.empty(f)

@@ -39,6 +39,20 @@ class Plugins:
         self.set(self._source)
         self.set_timeout(self._timeout)
     
+    def lang1(self):
+        f = '[MClient] manager.Plugins.lang1'
+        if self.plugin:
+            return self.plugin.lang1()
+        else:
+            sh.com.empty(f)
+    
+    def lang2(self):
+        f = '[MClient] manager.Plugins.lang2'
+        if self.plugin:
+            return self.plugin.lang2()
+        else:
+            sh.com.empty(f)
+    
     def combined(self):
         ''' Whether or not the plugin is actually a wrapper over other
             plugins.
@@ -77,13 +91,19 @@ class Plugins:
                ,self.mcplugin
                )
     
-    def set_pair(self,pair):
-        ''' Input is a pair abbreviation such as 'ENG <=> RUS'. Since we
-            use the same pair for all sources, in order to avoid errors,
-            we change the pair for all plugins.
+    def set_lang1(self,lang1):
+        ''' Since we use the same pair for all sources, in order to
+            avoid errors, we change the pair for all plugins.
         '''
         for plugin in self.unique():
-            plugin.set_pair(pair)
+            plugin.set_lang1(lang1)
+    
+    def set_lang2(self,lang2):
+        ''' Since we use the same pair for all sources, in order to
+            avoid errors, we change the pair for all plugins.
+        '''
+        for plugin in self.unique():
+            plugin.set_lang2(lang2)
     
     def set_timeout(self,timeout=6):
         f = '[MClient] manager.Plugins.set_timeout'

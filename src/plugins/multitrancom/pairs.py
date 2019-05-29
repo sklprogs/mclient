@@ -2650,6 +2650,18 @@ class Pairs:
         self._flawed = []
         self._alive  = []
     
+    def code(self,lang):
+        f = '[MClient] plugins.multitrancom.utils.Pairs.code'
+        if lang:
+            try:
+                return LANGS[lang]['code']
+            except KeyError:
+                sh.objs.mes (f,_('ERROR')
+                            ,_('Wrong input data: "%s"!') % str(lang)
+                            )
+        else:
+            sh.com.empty(f)
+    
     def alive(self):
         if not self._alive:
             for lang in LANGS.keys():

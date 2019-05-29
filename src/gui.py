@@ -780,13 +780,18 @@ class WebFrame:
                                       ,font  = 'Sans 10'
                                       )
         # A drop-down list with translation pairs
-        self.men_pair = sg.OptionMenu(parent=self.frm_btn)
+        self.opt_lg1 = sg.OptionMenu (parent = self.frm_btn
+                                     ,Combo  = True
+                                     )
+        self.opt_lg2 = sg.OptionMenu (parent = self.frm_btn
+                                     ,Combo  = True
+                                     )
         self.opt_col = sg.OptionMenu (parent  = self.frm_btn
                                      ,items   = (1,2,3,4,5,6,7,8,9,10)
                                      ,default = 4
                                      )
-        # All items of the 'pairs' sequence are of the same length
-        self.men_pair.widget.config(width=11)
+        self.opt_lg1.widget.config(width=11)
+        self.opt_lg2.widget.config(width=11)
         self.opt_col.widget.config(width=2)
         # A settings button
         self.btn_set = sg.Button (parent   = self.frm_btn

@@ -39,6 +39,14 @@ class Plugin:
         self._html   = ''
     
     # This is needed only for compliance with a general method
+    def lang1(self):
+        return _('English')
+    
+    # This is needed only for compliance with a general method
+    def lang2(self):
+        return _('Russian')
+    
+    # This is needed only for compliance with a general method
     def server(self):
         return ''
     
@@ -51,7 +59,11 @@ class Plugin:
         return ''
     
     # This is needed only for compliance with a general method
-    def set_pair(self,lang1='',lang2=''):
+    def set_lang1(self,lang1=''):
+        pass
+    
+    # This is needed only for compliance with a general method
+    def set_lang2(self,lang2=''):
         pass
     
     # This is needed only for compliance with a general method
