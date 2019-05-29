@@ -117,17 +117,17 @@ class Plugins:
         '''
         return ['multitran.com']
     
-    def pairs(self):
-        f = '[MClient] manager.Plugins.pairs'
+    def langs1(self):
+        f = '[MClient] manager.Plugins.langs1'
         if self.plugin:
-            return self.plugin.pairs()
+            return self.plugin.langs1()
         else:
             sh.com.empty(f)
     
-    def langs(self):
-        f = '[MClient] manager.Plugins.langs'
+    def langs2(self,lang1):
+        f = '[MClient] manager.Plugins.langs2'
         if self.plugin:
-            return self.plugin.langs()
+            return self.plugin.langs2(lang1)
         else:
             sh.com.empty(f)
     

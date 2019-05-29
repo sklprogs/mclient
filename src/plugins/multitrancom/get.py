@@ -18,56 +18,6 @@ ENCODING  = 'UTF-8'
 URL       = 'https://www.multitran.com'
 TIMEOUT   = 6
 PAIR_ROOT = URL + '/m.exe?'
-PAIRS = ('ENG <=> RUS','DEU <=> RUS','SPA <=> RUS'
-        ,'FRA <=> RUS','NLD <=> RUS','ITA <=> RUS'
-        ,'LAV <=> RUS','EST <=> RUS','AFR <=> RUS'
-        ,'EPO <=> RUS','RUS <=> XAL','XAL <=> RUS'
-        ,'ENG <=> DEU','ENG <=> EST'
-        )
-LANGS = ('English'   # ENG <=> RUS
-        ,'German'    # DEU <=> RUS
-        ,'Spanish'   # SPA <=> RUS
-        ,'French'    # FRA <=> RUS
-        ,'Dutch'     # NLD <=> RUS
-        ,'Italian'   # ITA <=> RUS
-        ,'Latvian'   # LAV <=> RUS
-        ,'Estonian'  # EST <=> RUS
-        ,'Afrikaans' # AFR <=> RUS
-        ,'Esperanto' # EPO <=> RUS
-        ,'Kazakh'    # RUS <=> XAL
-        ,'Kazakh'    # XAL <=> RUS
-        ,'German'    # ENG <=> DEU
-        ,'Estonian'  # ENG <=> EST
-        )
-''' English  : 1
-    Russian  : 2
-    German   : 3
-    French   : 4
-    Spanish  : 5
-    Italian  : 23
-    Dutch    : 24
-    Estonian : 26
-    Latvian  : 27
-    Afrikaans: 31
-    Esperanto: 34
-    Kalmyk   : 35
-'''
-PAIR_URLS = (PAIR_ROOT + 's=%s&l1=2&l2=1&SHL=2'  # ENG <=> RUS
-            ,PAIR_ROOT + 's=%s&l1=3&l2=2&SHL=2'  # DEU <=> RUS
-            ,PAIR_ROOT + 's=%s&l1=5&l2=2&SHL=2'  # SPA <=> RUS
-            ,PAIR_ROOT + 's=%s&l1=4&l2=2&SHL=2'  # FRA <=> RUS
-            ,PAIR_ROOT + 's=%s&l1=24&l2=2&SHL=2' # NLD <=> RUS
-            ,PAIR_ROOT + 's=%s&l1=23&l2=2&SHL=2' # ITA <=> RUS
-            ,PAIR_ROOT + 's=%s&l1=27&l2=2&SHL=2' # LAV <=> RUS
-            ,PAIR_ROOT + 's=%s&l1=26&l2=2&SHL=2' # EST <=> RUS
-            ,PAIR_ROOT + 's=%s&l1=31&l2=2&SHL=2' # AFR <=> RUS
-            ,PAIR_ROOT + 's=%s&l1=34&l2=2&SHL=2' # EPO <=> RUS
-            ,PAIR_ROOT + 's=%s&l1=2&l2=35&SHL=2' # RUS <=> XAL
-            ,PAIR_ROOT + 's=%s&l1=35&l2=2&SHL=2' # XAL <=> RUS
-            ,PAIR_ROOT + 's=%s&l1=1&l2=3&SHL=2'  # ENG <=> DEU
-            ,PAIR_ROOT + 's=%s&l1=1&l2=26&SHL=2' # ENG <=> EST
-            )
-PAIR = PAIR_URLS[0]
 
 
 class Suggest:

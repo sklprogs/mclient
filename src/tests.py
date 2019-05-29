@@ -486,9 +486,5 @@ if __name__ == '__main__':
     sg.objs.start()
     import logic as lg
     lg.objs.plugins(Debug=DEBUG)
-    import plugins.multitrancom.pairs as pairs
-    pairs.Pairs()
-    for lang in pairs.LANGS.keys():
-        if _('Gothic') in pairs.LANGS[lang]['pair']:
-            print(_('Gothic'),'is in',lang)
+    print(lg.objs._plugins.langs2(_('Japanese')))
     sg.objs.end()

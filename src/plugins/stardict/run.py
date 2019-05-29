@@ -51,7 +51,7 @@ class Plugin:
         return ''
     
     # This is needed only for compliance with a general method
-    def set_pair(self,pair=''):
+    def set_pair(self,lang1='',lang2=''):
         pass
     
     # This is needed only for compliance with a general method
@@ -59,12 +59,12 @@ class Plugin:
         pass
     
     # This is needed only for compliance with a general method
-    def langs(self):
-        return ()
+    def langs1(self):
+        return([_('Any')])
     
     # This is needed only for compliance with a general method
-    def pairs(self):
-        return ()
+    def langs2(self,lang1=''):
+        return([_('Any')])
     
     def combined(self):
         ''' Whether or not the plugin is actually a wrapper over other

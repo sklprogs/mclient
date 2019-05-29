@@ -8,8 +8,10 @@ import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
-# Bad Gateway:209 (Burmese), 262 (Gothic)
+LANG1 = _('English')
+LANG2 = _('Russian')
 
+# Bad Gateway:209 (Burmese), 262 (Gothic)
 LANGS = {_('Abaza'):
             {'code': 478
             ,'pair': ()
@@ -2590,7 +2592,7 @@ LANGS = {_('Abaza'):
 ''' This is a list of pairs (represented by language codes) that cannot
     be used owing to network errors.
 '''
-ERRORS = [(209,71),(209,31),(209,47),(209,81),(209,10),(209,41)
+FLAWED = [(209,71),(209,31),(209,47),(209,81),(209,10),(209,41)
          ,(209,82),(209,25),(209,193),(209,68),(209,58),(209,19)
          ,(209,63),(209,96),(209,131),(209,15),(209,53),(209,73)
          ,(209,17),(209,98),(209,97),(209,77),(209,132),(209,8)
@@ -2646,7 +2648,15 @@ class Pairs:
     
     def __init__(self):
         self._flawed = []
-        self.delete_flawed()
+        self._alive  = []
+    
+    def alive(self):
+        if not self._alive:
+            for lang in LANGS.keys():
+                if LANGS[lang]['pair']:
+                    self._alive.append(lang)
+            self._alive.sort()
+        return self._alive
     
     def lang(self,code):
         f = '[MClient] plugins.multitrancom.utils.Pairs.lang'
@@ -2675,21 +2685,22 @@ class Pairs:
                 LANGS[pair[1]]['pair'].remove(pair[0])
                 LANGS[pair[1]]['pair'] = tuple(LANGS[pair[1]]['pair'])
                 count += 1
+        # This message may be not shown, but the procedure runs anyway
         sh.log.append (f,_('INFO')
                       ,_('%d items have been deleted') % count
                       )
     
     def flawed(self):
         if not self._flawed:
-            for pair in ERRORS:
+            for pair in FLAWED:
                 self._flawed.append ((self.lang(pair[0])
                                      ,self.lang(pair[1])
                                      )
                                     )
         return self._flawed
     
-    def pair(self,lang):
-        f = '[MClient] plugins.multitrancom.Pairs.pair'
+    def pairs(self,lang):
+        f = '[MClient] plugins.multitrancom.Pairs.pairs'
         if lang:
             try:
                 return sorted(LANGS[lang]['pair'])
@@ -2699,3 +2710,20 @@ class Pairs:
                             )
         else:
             sh.com.empty(f)
+
+
+
+class Objects:
+    
+    def __init__(self):
+        self._pairs = None
+    
+    def pairs(self):
+        if self._pairs is None:
+            self._pairs = Pairs()
+            self._pairs.delete_flawed()
+        return self._pairs
+
+
+objs = Objects()
+objs.pairs()

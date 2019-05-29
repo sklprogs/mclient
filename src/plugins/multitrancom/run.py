@@ -7,6 +7,7 @@ import plugins.multitrancom.get     as gt
 import plugins.multitrancom.cleanup as cu
 import plugins.multitrancom.tags    as tg
 import plugins.multitrancom.elems   as el
+import plugins.multitrancom.pairs   as pr
 
 import gettext, gettext_windows
 
@@ -48,24 +49,15 @@ class Plugin:
     def get_url(self,search):
         return gt.com.get_url(search)
     
-    def set_pair(self,pair):
+    def set_pair(self,lang1,lang2):
         f = '[MClient] plugins.multitrancom.run.Plugin.set_pair'
-        if pair:
-            if pair in gt.PAIRS:
-                ind = gt.PAIRS.index(pair)
-                if ind < len(gt.PAIR_URLS):
-                    gt.PAIR = gt.PAIR_URLS[ind]
-                else:
-                    sh.objs.mes (f,_('ERROR')
-                                ,_('The condition "%s" is not observed!')\
-                                % ('0 <= ' + str(ind) + ' < %d' \
-                                % len(gt.PAIR_URLS)
-                                )
-                                )
+        if lang1 and lang2:
+            if lang1 in pr.LANGS and lang2 in pr.LANGS:
+                pr.LANG1 = lang1
+                pr.LANG2 = lang2
             else:
                 sh.objs.mes (f,_('ERROR')
-                            ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".')\
-                            % (str(pair),';'.join(gt.PAIRS))
+                            ,_('Wrong input data!')
                             )
         else:
             sh.com.empty(f)
@@ -79,11 +71,11 @@ class Plugin:
     def suggest(self,search):
         return gt.Suggest(search).run()
     
-    def langs(self):
-        return gt.LANGS
+    def langs1(self):
+        return pr.objs.pairs().alive()
     
-    def pairs(self):
-        return gt.PAIRS
+    def langs2(self,lang1):
+        return pr.objs.pairs().pairs(lang1)
     
     def request(self,search='',url=''):
         iget = gt.Get (search = search
