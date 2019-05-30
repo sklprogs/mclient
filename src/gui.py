@@ -772,14 +772,16 @@ class WebFrame:
                                  ,inactive = self.icon_spec_symbol
                                  ,active   = self.icon_spec_symbol
                                  )
-        self.opt_src = sg.OptionMenu(parent=self.frm_btn)
+        self.opt_src = sg.OptionMenu (parent = self.frm_btn
+                                     ,Combo  = True
+                                     )
         ''' Configure the option menu at the GUI creation time to avoid
             glitches with the search field.
         '''
         self.opt_src.widget.configure (width = 14
                                       ,font  = 'Sans 10'
                                       )
-        # A drop-down list with translation pairs
+        # Drop-down lists with languages
         self.opt_lg1 = sg.OptionMenu (parent = self.frm_btn
                                      ,Combo  = True
                                      )
@@ -789,9 +791,17 @@ class WebFrame:
         self.opt_col = sg.OptionMenu (parent  = self.frm_btn
                                      ,items   = (1,2,3,4,5,6,7,8,9,10)
                                      ,default = 4
+                                     ,Combo   = True
                                      )
-        self.opt_lg1.widget.config(width=11)
-        self.opt_lg2.widget.config(width=11)
+        ''' The 'height' argument changes a height of the drop-down
+            list and not the main widget.
+        '''
+        self.opt_lg1.widget.config (width  = 11
+                                   ,height = 15
+                                   )
+        self.opt_lg2.widget.config (width  = 11
+                                   ,height = 15
+                                   )
         self.opt_col.widget.config(width=2)
         # A settings button
         self.btn_set = sg.Button (parent   = self.frm_btn

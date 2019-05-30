@@ -1888,6 +1888,8 @@ class OptionMenu:
           do this here to avoid problems with iterating ("in requires
           int as the left operand") later (this happens when we pass
           a sequence of chars instead of a list of strings).
+        - 'expand' seems to has no effect at the time, but I leave it
+          for testing purposes.
     '''
     def __init__ (self
                  ,parent
@@ -1898,6 +1900,8 @@ class OptionMenu:
                  ,takefocus = 1
                  ,default   = None
                  ,Combo     = False
+                 ,expand    = False
+                 ,fill      = None
                  ):
         self.parent  = parent
         self.items   = items
@@ -1924,7 +1928,11 @@ class OptionMenu:
                                         ,*self.items
                                         ,command = self.trigger
                                         )
-        self.widget.pack(side=side,anchor=anchor)
+        self.widget.pack (side   = side
+                         ,anchor = anchor
+                         ,expand = expand
+                         ,fill   = fill
+                         )
         # Must be 1/True to be operational from keyboard
         self.widget.configure(takefocus=takefocus)
         self.default_set()
