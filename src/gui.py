@@ -774,24 +774,28 @@ class WebFrame:
                                  )
         self.opt_src = sg.OptionMenu (parent = self.frm_btn
                                      ,Combo  = True
+                                     ,font   = 'Sans 11'
                                      )
         ''' Configure the option menu at the GUI creation time to avoid
             glitches with the search field.
         '''
         self.opt_src.widget.configure (width = 14
-                                      ,font  = 'Sans 10'
+                                      ,font  = 'Sans 11'
                                       )
         # Drop-down lists with languages
         self.opt_lg1 = sg.OptionMenu (parent = self.frm_btn
                                      ,Combo  = True
+                                     ,font   = 'Sans 11'
                                      )
         self.opt_lg2 = sg.OptionMenu (parent = self.frm_btn
                                      ,Combo  = True
+                                     ,font   = 'Sans 11'
                                      )
         self.opt_col = sg.OptionMenu (parent  = self.frm_btn
                                      ,items   = (1,2,3,4,5,6,7,8,9,10)
                                      ,default = 4
                                      ,Combo   = True
+                                     ,font    = 'Sans 11'
                                      )
         ''' The 'height' argument changes a height of the drop-down
             list and not the main widget.

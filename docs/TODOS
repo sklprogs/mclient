@@ -1,4 +1,6 @@
 
+- Fix history navigation with 2 identical words (e.g., 'bad') in
+  separate languages (English, German)
 - plugins.multitrancom: eng-rus, phylogenetically -> phrases: set
   "раст." as a dic title
 - plugins.multitrancom: Fix not finding anything
@@ -71,15 +73,9 @@
   'символ' -> 'pilcrow')
 
 (Разобрать)
-! Пустая строка добавляется, если перед 1-м термином словаря стоит
-  комментарий
-! Вернуть назад хоткеи для вставки/удаления ячейки (в некоторых случаях
-  точное определение SAMECELL невозможно)
 ! Убрать "содержащее" и т.п. из статей из раздела "Фразы"
 ! Убрать "Требуется авторизация" и исправить выделение (double tumbler)
   для ненайденных слов
-! Нельзя искать то же самое слово (например, bad) в другом языке без
-  очистки истории
 ! SPEECHA для Phrases присваивается SPEECHA стоящего до этого словаря,
   поэтому необходимо обнулить SPEECHA для Phrases
 ! Понять, что мы имеем дело с секцией Фразы можно, если в текущей статье

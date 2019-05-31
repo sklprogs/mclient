@@ -1538,6 +1538,7 @@ class WebFrame:
                       )
         lg.objs.plugins().set(lg.objs._request._source)
         self.go_search()
+        self.gui.search_field.focus()
 
     def get_url(self):
         f = '[MClient] mclient.WebFrame.get_url'
@@ -1907,6 +1908,7 @@ class WebFrame:
                                    + len(fixed)
         objs.blocks_db().delete_bookmarks()
         self.load_article()
+        self.gui.search_field.focus()
 
     def reload(self,event=None):
         objs.blocks_db().clear_cur()

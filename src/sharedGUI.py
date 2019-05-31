@@ -1902,6 +1902,7 @@ class OptionMenu:
                  ,Combo     = False
                  ,expand    = False
                  ,fill      = None
+                 ,font      = None
                  ):
         self.parent  = parent
         self.items   = items
@@ -1934,7 +1935,9 @@ class OptionMenu:
                          ,fill   = fill
                          )
         # Must be 1/True to be operational from keyboard
-        self.widget.configure(takefocus=takefocus)
+        self.widget.configure (takefocus = takefocus
+                              ,font      = font
+                              )
         self.default_set()
 
     # Allow to use digits at input
