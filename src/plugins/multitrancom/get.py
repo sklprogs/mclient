@@ -201,12 +201,6 @@ class Commands:
     
     def fix_url(self,url):
         f = '[MClient] plugins.multitrancom.get.Commands.fix_url'
-        ''' multitran.com provides for URLs that are not entirely
-            correct: they still can contain spaces and unquoted symbols
-            (such as 'à' or 'ф'). Browsers deal with this correctly but
-            we must perform this additional step of quoting. Some
-            symbols like '=', however, should not be quoted.
-        '''
         if url:
             ''' We assume that 'multitran.com' does not provide for full
                 URLs so that we would not have to run quoting for
@@ -214,11 +208,7 @@ class Commands:
                 errors.
             '''
             if not url.startswith('http'):
-                url = list(url)
-                for i in range(len(url)):
-                    if not url[i] in (':','/','=','&','?'):
-                        url[i] = urllib.parse.quote(url[i])
-                url = PAIR_ROOT + ''.join(url)
+                url = PAIR_ROOT + url
                 ''' #note: this will change the UI language of
                     'multitran.com' so we would not have to add English
                     equivalents of dictionary titles into the 'abbr'

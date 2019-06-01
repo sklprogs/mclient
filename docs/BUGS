@@ -18,9 +18,6 @@
 - plugins.stardict: eng-rus, full: search gate: found by 'Suggest' and
   logged as found by 'AllDics.get', but could not be shown
 - plugins.stardict: eng-rus, full: lips: fix unsearchable fragment
-- multitran.com: go, moniker, accessions, passport, псевдоним, process:
-  fix unsearchable fragment
-  <a href="/m.exe?a=110&amp;l1=1&amp;l2=2&amp;s=moniker (The descriptive form, or explicit connecting points, of referring to the location of a link source)&amp;sc=847">Майкр.</a></td>
 - Test and fix getting non-terms (when everything is selectable)
 - History: fix selecting the same term but from different resources
 - eng-rus: multitran.com: A&E: transcription is set as a comment before

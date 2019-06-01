@@ -2,7 +2,8 @@
 # -*- coding: UTF-8 -*-
 
 import io
-import shared as sh
+import shared    as sh
+import sharedGUI as sg
 
 import gettext, gettext_windows
 gettext_windows.setup_env()

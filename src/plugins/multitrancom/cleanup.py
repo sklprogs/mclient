@@ -3,6 +3,7 @@
 
 import re
 import html
+import urllib
 import shared    as sh
 import sharedGUI as sg
 
@@ -18,6 +19,46 @@ class CleanUp:
     
     def __init__(self,text):
         self._text = text
+    
+    def fix_href(self):
+        ''' # Fix a malformed URL, e.g., 'href="/m.exe?a=110&l1=1&l2=2&s=process (<редк.>)&sc=671"'
+            multitran.com provides for URLs that are not entirely
+            correct: they still can contain spaces and unquoted symbols
+            (such as 'à' or 'ф'). Browsers deal with this correctly but
+            we must perform this additional step of quoting. Some
+            symbols like '=', however, should not be quoted.
+        '''
+        f = '[MClient] plugins.multitrancom.CleanUp.fix_href'
+        if self._text:
+            isearch = sh.Search (text   = self._text
+                                ,search = 'href="'
+                                )
+            poses = isearch.next_loop()
+            poses = poses[::-1]
+            for pos in poses:
+                pos += len('href="')
+                isearch.reset (text   = self._text
+                              ,search = '"'
+                              )
+                isearch.i = pos
+                pos1 = isearch.next()
+                if str(pos1).isdigit():
+                    fragm = self._text[pos:pos1]
+                    # This is the first sign of a malformed URL
+                    if ' ' in fragm:
+                        fragm = list(fragm)
+                        for i in range(len(fragm)):
+                            if not fragm[i] in (':','/','=','&','?'):
+                                fragm[i] = urllib.parse.quote(fragm[i])
+                        fragm = ''.join(fragm)
+                        self._text = self._text[0:pos] + fragm \
+                                     + self._text[pos1:]
+                else:
+                    sh.log.append (f,_('WARNING')
+                                  ,_('Malformed HTML code!')
+                                  )
+        else:
+            sh.com.empty(f)
     
     def trash(self):
         self._text = self._text.replace ('>\xa0Terms for subject <a href'
@@ -107,11 +148,14 @@ class CleanUp:
                                         )
     
     def common(self):
+        self._text = self._text.replace('','')
         self._text = self._text.replace('','')
-        self._text = self._text.replace('','')
+        self._text = self._text.replace('','')
         self._text = self._text.replace('','')
+        self._text = self._text.replace('','')
         self._text = self._text.replace('','')
         self._text = self._text.replace('','')
+        self._text = self._text.replace('','')
         self._text = self._text.replace('\r\n','')
         self._text = self._text.replace('\n','')
         self._text = self._text.replace('\xa0',' ')
@@ -144,14 +188,15 @@ class CleanUp:
     def run(self):
         f = '[MClient] plugins.multitrancom.CleanUp.run'
         if self._text:
-            self.decode_entities() # Shared
+            self.decode_entities()
             self.trash()
             self.langs()
-            self.common()          # Shared
+            self.common()
             self.sep_words()
             self.no_matches()
             self.distinguish()
-            self.unsupported()     # Shared
+            self.unsupported()
+            self.fix_href()
         else:
             sh.com.empty(f)
         return self._text

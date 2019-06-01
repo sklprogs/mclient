@@ -109,8 +109,7 @@ class Plugin:
                       ,url    = url
                       )
         self._text = iget.run()
-        self._html = iget._html
-        self._text = cu.CleanUp(self._text).run()
+        self._text = self._html = cu.CleanUp(self._text).run()
         if self._text is None:
             self._text = ''
         self._blocks = tg.Tags (text    = self._text

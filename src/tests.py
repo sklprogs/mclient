@@ -486,5 +486,11 @@ if __name__ == '__main__':
     sg.objs.start()
     import logic as lg
     lg.objs.plugins(Debug=DEBUG)
-    print(lg.objs._plugins.langs2(_('Japanese')))
+    import plugins.multitrancom.cleanup as cleanup
+    # moniker
+    text1 = '<a title="Майкрософт" href="/m.exe?a=110&l1=1&l2=2&s=moniker (The descriptive form, or explicit connecting points, of referring to the location of a link source)&sc=847">Майкр.</a></td>'
+    # process
+    text2 = '<td class="subj" width="1"><a title="Нефтеперерабатывающие заводы" href="/m.exe?a=110&l1=1&l2=2&s=process (<редк.>)&sc=671">нпз.</a></td>'
+    text = text1 + ';' + text2
+    print(cleanup.CleanUp(text).run())
     sg.objs.end()
