@@ -2,7 +2,6 @@
 # -*- coding: UTF-8 -*-
 
 import urllib.request
-import urllib.parse
 import html
 import shared    as sh
 import sharedGUI as sg

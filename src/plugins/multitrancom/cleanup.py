@@ -3,7 +3,7 @@
 
 import re
 import html
-import urllib
+import urllib.parse
 import shared    as sh
 import sharedGUI as sg
 
@@ -43,15 +43,12 @@ class CleanUp:
                 isearch.i = pos
                 pos1 = isearch.next()
                 if str(pos1).isdigit():
-                    fragm = self._text[pos:pos1]
-                    # This is the first sign of a malformed URL
-                    if ' ' in fragm:
-                        fragm = list(fragm)
-                        for i in range(len(fragm)):
-                            if not fragm[i] in (':','/','=','&','?'):
-                                fragm[i] = urllib.parse.quote(fragm[i])
-                        fragm = ''.join(fragm)
-                        self._text = self._text[0:pos] + fragm \
+                    fragm = list(self._text[pos:pos1])
+                    for i in range(len(fragm)):
+                        if not fragm[i] in (':','/','=','&','?','%'):
+                            fragm[i] = urllib.parse.quote(fragm[i])
+                    fragm = ''.join(fragm)
+                    self._text = self._text[0:pos] + fragm \
                                      + self._text[pos1:]
                 else:
                     sh.log.append (f,_('WARNING')

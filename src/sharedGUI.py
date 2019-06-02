@@ -1378,8 +1378,6 @@ class Button:
                  ,font        = None
                  ):
         self.Status         = False
-        self.hint_width     = 0
-        self.hint_height    = 0
         self.parent         = parent
         self.family         = 'Sans'
         self.size           = 12
@@ -1405,21 +1403,6 @@ class Button:
         self.active_image   = self.image(active)
         self.inactive_image = self.image(inactive)
         self.gui()
-    
-    def calc_hint(self):
-        f = '[shared] sharedGUI.Button.calc_hint'
-        if not self.hint_width or not self.hint_height:
-            if self.hint:
-                if not self.font:
-                    self.font = 'Sans 11'
-                ifont = Font(self.font)
-                ifont.set_text(self.hint)
-                self.hint_width  = ifont.width()
-                self.hint_height = ifont.height()
-            else:
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
     
     def bindings(self):
         bind (obj      = self
@@ -1468,19 +1451,17 @@ class Button:
 
     def set_hint(self):
         if self.hint:
-            self.calc_hint()
             if self._bindings:
                 self.hint_extended = self.hint + '\n' \
                                      + sh.Hotkeys(self._bindings).run()
             else:
                 self.hint_extended = self.hint
-            self.tip = ToolTip (obj         = self
-                               ,text        = self.hint_extended
-                               ,hint_delay  = self.hint_delay
-                               ,hint_width  = self.hint_width
-                               ,hint_height = self.hint_height
-                               ,hint_bg     = self.hint_bg
-                               ,hint_dir    = self.hint_dir
+            self.tip = ToolTip (obj        = self
+                               ,text       = self.hint_extended
+                               ,hint_delay = self.hint_delay
+                               ,hint_font  = self.font
+                               ,hint_bg    = self.hint_bg
+                               ,hint_dir   = self.hint_dir
                                )
     
     def title(self,button_text='Press me'):
@@ -1635,22 +1616,37 @@ class ToolTipBase:
 class ToolTip(ToolTipBase):
 
     def __init__(self,obj,text='Sample text'
-                ,hint_delay=800,hint_width=280
-                ,hint_height=40,hint_bg='#ffffe0'
+                ,hint_delay=800,hint_bg='#ffffe0'
                 ,hint_dir='top',hint_bwidth=1
                 ,hint_bcolor='navy',hint_font='Sans 11'
                 ):
+        self.hint_height = 0
+        self.hint_width  = 0
         self.text        = text
         self.hint_delay  = hint_delay
         self.hint_dir    = hint_dir
         self.hint_bg     = hint_bg
         self.hint_bcolor = hint_bcolor
-        self.hint_height = hint_height
-        self.hint_width  = hint_width
         self.hint_bwidth = hint_bwidth
         self.hint_font   = hint_font
+        self.calc_hint()
         ToolTipBase.__init__(self,obj=obj)
 
+    def calc_hint(self):
+        f = '[shared] sharedGUI.ToolTip.calc_hint'
+        if not self.hint_width or not self.hint_height:
+            if self.text:
+                if not self.hint_font:
+                    self.hint_font = 'Sans 11'
+                ifont = Font(self.hint_font)
+                ifont.set_text(self.text)
+                self.hint_width  = ifont.width()
+                self.hint_height = ifont.height()
+            else:
+                sh.log.append (f,_('INFO')
+                              ,_('Nothing to do!')
+                              )
+    
     def showcontents(self):
         # Assign this boolean externally to stop showing hints
         if SHOW_HINTS:
