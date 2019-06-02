@@ -699,7 +699,14 @@ class WebFrame:
                 ,bindings = sh.globs['var']['bind_quit']
                 ,action   = self.gui.close
                 )
-        sg.bind (obj      = self.gui.obj
+        # 'gui.obj.widget' is 'Toplevel'; 'gui.widget' is 'TkinterHtml'
+        sg.bind (obj      = self.gui
+                ,bindings = ['<Return>'
+                            ,'<KP_Enter>'
+                            ]
+                ,action   = self.go_keyboard
+                )
+        sg.bind (obj      = self.gui.search_field
                 ,bindings = ['<Return>'
                             ,'<KP_Enter>'
                             ]
