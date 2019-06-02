@@ -857,11 +857,10 @@ class WebFrame:
                                  ,active   = self.icon_go_forward
                                  )
         # A button to toggle and clear history
-        self.btn_hst = sg.Button (parent      = self.frm_btn
-                                 ,text        = _('History')
-                                 ,inactive    = self.icon_toggle_history
-                                 ,active      = self.icon_toggle_history
-                                 ,hint_height = 80
+        self.btn_hst = sg.Button (parent   = self.frm_btn
+                                 ,text     = _('History')
+                                 ,inactive = self.icon_toggle_history
+                                 ,active   = self.icon_toggle_history
                                  )
         # A button to reload the article
         self.btn_rld = sg.Button (parent   = self.frm_btn
@@ -1074,7 +1073,6 @@ class Settings:
                          )
         self._allowed    = []
         self._sp_allowed = []
-        self._hint_width = 200
         self.Active      = False
 
     def update_col1(self):
@@ -1374,33 +1372,29 @@ class Settings:
         self.cb6.disable()
 
     def buttons(self):
-        sg.Button (parent     = self.frm_btn
-                  ,action     = self.reset
-                  ,hint       = _('Reset settings')
-                  ,hint_width = self._hint_width
-                  ,text       = _('Reset')
-                  ,side       = 'left'
+        sg.Button (parent = self.frm_btn
+                  ,action = self.reset
+                  ,hint   = _('Reset settings')
+                  ,text   = _('Reset')
+                  ,side   = 'left'
                   )
 
-        self.btn_apl = sg.Button (parent     = self.frm_btn
-                                 ,hint       = _('Apply settings')
-                                 ,hint_width = self._hint_width
-                                 ,text       = _('Apply')
-                                 ,side       = 'right'
+        self.btn_apl = sg.Button (parent = self.frm_btn
+                                 ,hint   = _('Apply settings')
+                                 ,text   = _('Apply')
+                                 ,side   = 'right'
                                  )
         #todo: elaborate
         '''
-        self.btn_blk = sg.Button (parent     = self.fr_cb3
-                                 ,hint       = _('Tune up blacklisting')
-                                 ,hint_width = self._hint_width
-                                 ,text       = _('Add/Remove')
-                                 ,side       = 'right'
+        self.btn_blk = sg.Button (parent = self.fr_cb3
+                                 ,hint   = _('Tune up blacklisting')
+                                 ,text   = _('Add/Remove')
+                                 ,side   = 'right'
                                  )
-        self.btn_pri = sg.Button (parent     = self.fr_cb4
-                                 ,hint       = _('Tune up prioritizing')
-                                 ,hint_width = self._hint_width
-                                 ,text       = _('Add/Remove')
-                                 ,side       = 'right'
+        self.btn_pri = sg.Button (parent = self.fr_cb4
+                                 ,hint   = _('Tune up prioritizing')
+                                 ,text   = _('Add/Remove')
+                                 ,side   = 'right'
                                  )
         '''
 
