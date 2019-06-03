@@ -654,17 +654,17 @@ class CurRequest:
         ''' #note: this should be synchronized with the 'default' value
             of objs.webframe().menu_columns
         '''
-        self._collimit     = 8
+        self._collimit = 8
         # Default priorities of parts of speech
-        self._pr_n         = 7
-        self._pr_v         = 6
-        self._pr_adj       = 5
-        self._pr_abbr      = 4
-        self._pr_adv       = 3
-        self._pr_prep      = 2
-        self._pr_pron      = 1
-        self._source       = objs.plugins()._source
-        self._cols         = ('dic','wform','transc','speech')
+        self._pr_n    = 7
+        self._pr_v    = 6
+        self._pr_adj  = 5
+        self._pr_abbr = 4
+        self._pr_adv  = 3
+        self._pr_prep = 2
+        self._pr_pron = 1
+        self._source  = objs.plugins()._source
+        self._cols    = ('dic','wform','transc','speech')
         ''' Toggling blacklisting should not depend on a number of
             blocked dictionaries (otherwise, it is not clear how
             blacklisting should be toggled)
@@ -680,14 +680,14 @@ class CurRequest:
             articles with 'sep_words_found' and in phrases; use previous
             settings for new articles
         '''
-        self.SpecialPage   = False
+        self.SpecialPage = False
     
     def reset(self):
-        self._page         = ''
-        self._html         = ''
-        self._html_raw     = ''
-        self._search       = ''
-        self._url          = ''
+        self._page     = ''
+        self._html     = ''
+        self._html_raw = ''
+        self._search   = ''
+        self._url      = ''
 
 
 
