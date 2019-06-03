@@ -674,11 +674,11 @@ class WebFrame:
         if langs1 and langs2 and lang1 and lang2 and sources:
             self.gui.opt_lg1.reset (items   = langs1
                                    ,default = lang1
-                                   ,action  = self.set_lang1
+                                   ,action  = self.go_search
                                    )
             self.gui.opt_lg2.reset (items   = langs2
                                    ,default = lang2
-                                   ,action  = self.set_lang2
+                                   ,action  = self.go_search
                                    )
             #note: change this upon the change of the default source
             self.gui.opt_src.reset (items   = sources
@@ -1560,6 +1560,8 @@ class WebFrame:
         '''
         lg.objs.request()._search = lg.objs._request._search.strip()
         if self.control_length():
+            self.set_lang1()
+            self.set_lang2()
             self.get_url()
             sh.log.append (f,_('DEBUG')
                           ,'"' + lg.objs._request._search + '"'
@@ -1579,6 +1581,7 @@ class WebFrame:
 
     def get_url(self):
         f = '[MClient] mclient.WebFrame.get_url'
+        #note: update source and target languages first
         lg.objs.request()._url = lg.objs.plugins().get_url(lg.objs._request._search)
         sh.log.append (f,_('DEBUG')
                       ,str(lg.objs._request._url)
@@ -1919,23 +1922,21 @@ class WebFrame:
 
     def set_lang1(self,event=None):
         f = '[MClient] mclient.WebFrame.set_lang1'
-        sh.log.append (f,_('INFO')
-                      ,_('Set language: %s') % self.gui.opt_lg1.choice
-                      )
-        objs.blocks_db().delete_bookmarks()
-        lg.objs.plugins().set_lang1(self.gui.opt_lg1.choice)
-        self.load_article()
-        self.gui.search_field.focus()
+        if lg.objs.plugins().lang1() != self.gui.opt_lg1.choice:
+            sh.log.append (f,_('INFO')
+                          ,_('Set language: %s') \
+                          % self.gui.opt_lg1.choice
+                          )
+            lg.objs.plugins().set_lang1(self.gui.opt_lg1.choice)
     
     def set_lang2(self,event=None):
         f = '[MClient] mclient.WebFrame.set_lang2'
-        sh.log.append (f,_('INFO')
-                      ,_('Set language: %s') % self.gui.opt_lg2.choice
-                      )
-        lg.objs.plugins().set_lang2(self.gui.opt_lg2.choice)
-        objs.blocks_db().delete_bookmarks()
-        self.load_article()
-        self.gui.search_field.focus()
+        if lg.objs.plugins().lang2() != self.gui.opt_lg2.choice:
+            sh.log.append (f,_('INFO')
+                          ,_('Set language: %s') \
+                          % self.gui.opt_lg2.choice
+                          )
+            lg.objs.plugins().set_lang2(self.gui.opt_lg2.choice)
 
     def set_columns(self,event=None):
         f = '[MClient] mclient.WebFrame.set_columns'

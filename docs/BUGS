@@ -1,4 +1,5 @@
 
+- plugins.multitrancom: Russian-Japanese: дело: Control-Return
 - plugins.multitrancom: eng-rus: вручать: fix dic prioritization
 - OptionMenus (Combo): fix changing the number of columns using keyboard
 - plugins.multitran: eng-rus: layout: cannot decrease a priority of
