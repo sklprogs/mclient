@@ -86,9 +86,11 @@ class Font:
                     if lines:
                         self._height = self._height * lines
                     self._height += border
+                '''
                 sh.log.append (f,_('DEBUG')
                               ,'%d' % self._height
                               )
+                '''
             else:
                 sh.com.empty(f)
         return self._height
@@ -109,9 +111,11 @@ class Font:
                                   )
                 if self._width:
                     self._width += border
+                '''
                 sh.log.append (f,_('DEBUG')
                               ,'%d' % self._width
                               )
+                '''
             else:
                 sh.com.empty(f)
         return self._width

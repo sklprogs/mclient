@@ -689,10 +689,38 @@ class WebFrame:
             sh.com.empty(f)
     
     def bindings(self):
+        ''' When binding OptionMenus, calling 'trigger' instead of
+            directly setting an action allows to set a modified value
+            if navigating using keyboard.
+        '''
+        sg.bind (obj      = self.gui.opt_lg1
+                ,bindings = ('<Return>'
+                            ,'<KP_Enter>'
+                            )
+                ,action   = self.gui.opt_lg1.trigger
+                )
+        sg.bind (obj      = self.gui.opt_lg2
+                ,bindings = ('<Return>'
+                            ,'<KP_Enter>'
+                            )
+                ,action   = self.gui.opt_lg2.trigger
+                )
+        sg.bind (obj      = self.gui.opt_src
+                ,bindings = ('<Return>'
+                            ,'<KP_Enter>'
+                            )
+                ,action   = self.gui.opt_src.trigger
+                )
+        sg.bind (obj      = self.gui.opt_col
+                ,bindings = ('<Return>'
+                            ,'<KP_Enter>'
+                            )
+                ,action   = self.gui.opt_col.trigger
+                )
         sg.bind (obj      = self.gui.obj
-                ,bindings = [sh.globs['var']['bind_copy_sel']
+                ,bindings = (sh.globs['var']['bind_copy_sel']
                             ,sh.globs['var']['bind_copy_sel_alt']
-                            ]
+                            )
                 ,action   = self.copy_text
                 )
         sg.bind (obj      = self.gui.obj
@@ -701,15 +729,15 @@ class WebFrame:
                 )
         # 'gui.obj.widget' is 'Toplevel'; 'gui.widget' is 'TkinterHtml'
         sg.bind (obj      = self.gui
-                ,bindings = ['<Return>'
+                ,bindings = ('<Return>'
                             ,'<KP_Enter>'
-                            ]
+                            )
                 ,action   = self.go_keyboard
                 )
         sg.bind (obj      = self.gui.search_field
-                ,bindings = ['<Return>'
+                ,bindings = ('<Return>'
                             ,'<KP_Enter>'
-                            ]
+                            )
                 ,action   = self.go_keyboard
                 )
         #todo: do not iconify at <ButtonRelease-3>
@@ -771,15 +799,15 @@ class WebFrame:
                 ,action   = self.search_reset
                 )
         sg.bind (obj      = self.gui.obj
-                ,bindings = [sh.globs['var']['bind_reload_article']
+                ,bindings = (sh.globs['var']['bind_reload_article']
                             ,sh.globs['var']['bind_reload_article_alt']
-                            ]
+                            )
                 ,action   = self.reload
                 )
         sg.bind (obj      = self.gui.obj
-                ,bindings = [sh.globs['var']['bind_save_article']
+                ,bindings = (sh.globs['var']['bind_save_article']
                             ,sh.globs['var']['bind_save_article_alt']
-                            ]
+                            )
                 ,action   = self.save_article.gui.toggle
                 )
         sg.bind (obj      = self.gui.obj
@@ -791,21 +819,21 @@ class WebFrame:
                 ,action   = self.about.gui.toggle
                 )
         sg.bind (obj      = self.gui.obj
-                ,bindings = [sh.globs['var']['bind_toggle_history']
+                ,bindings = (sh.globs['var']['bind_toggle_history']
                             ,sh.globs['var']['bind_toggle_history']
-                            ]
+                            )
                 ,action   = self.history.gui.toggle
                 )
         sg.bind (obj      = self.gui.obj
-                ,bindings = [sh.globs['var']['bind_toggle_history']
+                ,bindings = (sh.globs['var']['bind_toggle_history']
                             ,sh.globs['var']['bind_toggle_history_alt']
-                            ]
+                            )
                 ,action   = self.history.gui.toggle
                 )
         sg.bind (obj      = self.gui.obj
-                ,bindings = [sh.globs['var']['bind_open_in_browser']
+                ,bindings = (sh.globs['var']['bind_open_in_browser']
                             ,sh.globs['var']['bind_open_in_browser_alt']
-                            ]
+                            )
                 ,action   = self.open_in_browser
                 )
         sg.bind (obj      = self.gui.obj
@@ -825,33 +853,33 @@ class WebFrame:
                 ,action   = lambda e:self.define(Selected=True)
                 )
         sg.bind (obj      = self.gui.obj
-                ,bindings = [sh.globs['var']['bind_prev_pair']
+                ,bindings = (sh.globs['var']['bind_prev_pair']
                             ,sh.globs['var']['bind_prev_pair_alt']
-                            ]
+                            )
                 ,action   = self.prev_lang1
                 )
         sg.bind (obj      = self.gui.obj
-                ,bindings = [sh.globs['var']['bind_next_pair']
+                ,bindings = (sh.globs['var']['bind_next_pair']
                             ,sh.globs['var']['bind_next_pair_alt']
-                            ]
+                            )
                 ,action   = self.next_lang1
                 )
         sg.bind (obj      = self.gui.obj
-                ,bindings = [sh.globs['var']['bind_settings']
+                ,bindings = (sh.globs['var']['bind_settings']
                             ,sh.globs['var']['bind_settings_alt']
-                            ]
+                            )
                 ,action   = self.settings.gui.toggle
                 )
         sg.bind (obj      = self.gui.obj
-                ,bindings = [sh.globs['var']['bind_toggle_view']
+                ,bindings = (sh.globs['var']['bind_toggle_view']
                             ,sh.globs['var']['bind_toggle_view_alt']
-                            ]
+                            )
                 ,action   = self.toggle_view
                 )
         sg.bind (obj      = self.gui.obj
-                ,bindings = [sh.globs['var']['bind_toggle_history']
+                ,bindings = (sh.globs['var']['bind_toggle_history']
                             ,sh.globs['var']['bind_toggle_history_alt']
-                            ]
+                            )
                 ,action   = self.history.gui.toggle
                 )
         sg.bind (obj      = self.gui.obj
@@ -912,9 +940,9 @@ class WebFrame:
                     )
         else:
             sg.bind (obj      = self.gui.obj
-                    ,bindings = ['<Button 4>'
+                    ,bindings = ('<Button 4>'
                                 ,'<Button 5>'
-                                ]
+                                )
                     ,action   = self.mouse_wheel
                     )
         sg.bind (obj      = self.gui.obj
@@ -999,9 +1027,9 @@ class WebFrame:
         self.gui.btn_abt._bindings = sh.globs['var']['bind_show_about']
         self.gui.btn_alp._bindings = sh.globs['var']['bind_toggle_alphabet']
         self.gui.btn_blk._bindings = sh.globs['var']['bind_toggle_block']
-        self.gui.btn_brw._bindings = [sh.globs['var']['bind_open_in_browser']
+        self.gui.btn_brw._bindings = (sh.globs['var']['bind_open_in_browser']
                                      ,sh.globs['var']['bind_open_in_browser_alt']
-                                     ]
+                                     )
         self.gui.btn_clr._bindings = sh.globs['var']['bind_clear_search_field']
         self.gui.btn_def._bindings = sh.globs['var']['bind_define']
         self.gui.btn_nxt._bindings = sh.globs['var']['bind_go_forward']
@@ -1010,23 +1038,25 @@ class WebFrame:
         self.gui.btn_prn._bindings = sh.globs['var']['bind_print']
         self.gui.btn_qit._bindings = sh.globs['var']['bind_quit']
         self.gui.btn_pri._bindings = sh.globs['var']['bind_toggle_priority']
-        self.gui.btn_rld._bindings = [sh.globs['var']['bind_reload_article']
+        self.gui.btn_rld._bindings = (sh.globs['var']['bind_reload_article']
                                      ,sh.globs['var']['bind_reload_article_alt']
-                                     ]
+                                     )
         self.gui.btn_rp1._bindings = sh.globs['var']['repeat_sign']
         self.gui.btn_rp2._bindings = sh.globs['var']['repeat_sign2']
-        self.gui.btn_sav._bindings = [sh.globs['var']['bind_save_article']
+        self.gui.btn_sav._bindings = (sh.globs['var']['bind_save_article']
                                      ,sh.globs['var']['bind_save_article_alt']
-                                     ]
-        self.gui.btn_set._bindings = [sh.globs['var']['bind_settings']
+                                     )
+        self.gui.btn_set._bindings = (sh.globs['var']['bind_settings']
                                      ,sh.globs['var']['bind_settings_alt']
-                                     ]
+                                     )
         self.gui.btn_sym._bindings = sh.globs['var']['bind_spec_symbol']
         self.gui.btn_ser._bindings = sh.globs['var']['bind_re_search_article']
-        self.gui.btn_trn._bindings = ['<Return>','<KP_Enter>']
-        self.gui.btn_viw._bindings = [sh.globs['var']['bind_toggle_view']
+        self.gui.btn_trn._bindings = ('<Return>'
+                                     ,'<KP_Enter>'
+                                     )
+        self.gui.btn_viw._bindings = (sh.globs['var']['bind_toggle_view']
                                      ,sh.globs['var']['bind_toggle_view_alt']
-                                     ]
+                                     )
         ''' Reset 'hint' for those buttons which bindings have changed
             (in order to show these bindings in tooltip)
         '''
@@ -1892,7 +1922,9 @@ class WebFrame:
         sh.log.append (f,_('INFO')
                       ,_('Set language: %s') % self.gui.opt_lg1.choice
                       )
+        objs.blocks_db().delete_bookmarks()
         lg.objs.plugins().set_lang1(self.gui.opt_lg1.choice)
+        self.load_article()
         self.gui.search_field.focus()
     
     def set_lang2(self,event=None):
@@ -1901,6 +1933,8 @@ class WebFrame:
                       ,_('Set language: %s') % self.gui.opt_lg2.choice
                       )
         lg.objs.plugins().set_lang2(self.gui.opt_lg2.choice)
+        objs.blocks_db().delete_bookmarks()
+        self.load_article()
         self.gui.search_field.focus()
 
     def set_columns(self,event=None):
