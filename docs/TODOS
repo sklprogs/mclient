@@ -1,8 +1,8 @@
 
 - Fix history navigation with 2 identical words (e.g., 'bad') in
   separate languages (English, German)
-- plugins.multitrancom: eng-rus, phylogenetically -> phrases: set
-  "раст." as a dic title
+- plugins.multitrancom: eng-rus, phylogenetically, structured notation
+  -> phrases: set dic titles
 - plugins.multitrancom: Fix not finding anything
 - plugins.multitrancom: eng-rus, метильное: do not delete the phrase
   section when only separate words have been found: Найдено во фразах -
