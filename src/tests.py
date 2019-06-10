@@ -476,6 +476,18 @@ class Commands:
                        ,url    = 'https://www.multitran.com/m.exe?s=system-wide&l1=2&l2=1&SHL=2'
                        ,GUI    = GUI
                        )
+    
+    def go_keyboard(self,event=None):
+        f = '[MClient] tests.Commands.go_keyboard'
+        sh.log.append (f,_('DEBUG')
+                      ,'Triggered'
+                      )
+    
+    def copy_text(self,event=None):
+        f = '[MClient] tests.Commands.copy_text'
+        sh.log.append (f,_('DEBUG')
+                      ,'Triggered'
+                      )
 
 
 com = Commands()
@@ -486,11 +498,20 @@ if __name__ == '__main__':
     sg.objs.start()
     import logic as lg
     lg.objs.plugins(Debug=DEBUG)
-    import plugins.multitrancom.cleanup as cleanup
-    # moniker
-    text1 = '<a title="Майкрософт" href="/m.exe?a=110&l1=1&l2=2&s=moniker (The descriptive form, or explicit connecting points, of referring to the location of a link source)&sc=847">Майкр.</a></td>'
-    # process
-    text2 = '<td class="subj" width="1"><a title="Нефтеперерабатывающие заводы" href="/m.exe?a=110&l1=1&l2=2&s=process (<редк.>)&sc=671">нпз.</a></td>'
-    text = text1 + ';' + text2
-    print(cleanup.CleanUp(text).run())
+    import gui as gi
+    web = gi.WebFrame()
+    # 'gui.obj.widget' is 'Toplevel'; 'gui.widget' is 'TkinterHtml'
+    sg.bind (obj      = web.obj
+            ,bindings = ('<Return>'
+                        ,'<KP_Enter>'
+                        )
+            ,action   = com.go_keyboard
+            )
+    sg.bind (obj      = web.obj
+            ,bindings = ('<Control-Return>'
+                        ,'<Control-KP_Enter>'
+                        )
+            ,action   = com.copy_text
+            )
+    web.show()
     sg.objs.end()

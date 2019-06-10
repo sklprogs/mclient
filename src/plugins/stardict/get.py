@@ -514,7 +514,9 @@ class AllDics:
                         self._dics.append(StarDict(ifo))
                     self._dics = sorted(self._dics,key=lambda d:d._title+str(d._wcount))
                 else:
-                    sh.com.empty(f)
+                    sh.log.append (f,_('INFO')
+                                  ,_('Nothing to do!')
+                                  )
             sh.log.append (f,_('INFO')
                           ,_('%d offline dictionaries are available') \
                           % len(self._dics)
@@ -547,7 +549,9 @@ class AllDics:
                               )
                 sg.objs._waitbox.close()
             else:
-                sh.com.empty(f)
+                sh.log.append (f,_('INFO')
+                              ,_('Nothing to do!')
+                              )
         else:
             sh.com.cancel(f)
 

@@ -19,7 +19,7 @@ gettext.install('mclient','../resources/locale')
 
 
 PRODUCT = 'MClient'
-VERSION = '6.0'
+VERSION = '6.1'
 
 
 if __name__ == '__main__':
@@ -663,6 +663,15 @@ class WebFrame:
         self.save_article.gui.close()
         self.history.gui.close()
 
+    def go_search_focus(self,event=None):
+        ''' Setting the focus explicitly can be useful in case of
+            activating OptionMenus. Otherwise, it's preferred not to
+            explicitly set the focus since loading an article may be
+            triggered by History which should remain active.
+        '''
+        self.go_search()
+        self.gui.search_field.focus()
+    
     def reset_opt(self):
         f = '[MClient] mclient.WebFrame.reset_opt'
         # Reset OptionMenus
@@ -674,11 +683,11 @@ class WebFrame:
         if langs1 and langs2 and lang1 and lang2 and sources:
             self.gui.opt_lg1.reset (items   = langs1
                                    ,default = lang1
-                                   ,action  = self.go_search
+                                   ,action  = self.go_search_focus
                                    )
             self.gui.opt_lg2.reset (items   = langs2
                                    ,default = lang2
-                                   ,action  = self.go_search
+                                   ,action  = self.go_search_focus
                                    )
             #note: change this upon the change of the default source
             self.gui.opt_src.reset (items   = sources
@@ -689,6 +698,7 @@ class WebFrame:
             sh.com.empty(f)
     
     def bindings(self):
+        # 'gui.obj.widget' is 'Toplevel'; 'gui.widget' is 'TkinterHtml'
         ''' When binding OptionMenus, calling 'trigger' instead of
             directly setting an action allows to set a modified value
             if navigating using keyboard.
@@ -718,21 +728,18 @@ class WebFrame:
                 ,action   = self.gui.opt_col.trigger
                 )
         sg.bind (obj      = self.gui.obj
+                ,bindings = sh.globs['var']['bind_quit']
+                ,action   = self.gui.close
+                )
+        sg.bind (obj      = self.gui.search_field
                 ,bindings = (sh.globs['var']['bind_copy_sel']
                             ,sh.globs['var']['bind_copy_sel_alt']
                             )
                 ,action   = self.copy_text
                 )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_quit']
-                ,action   = self.gui.close
-                )
-        # 'gui.obj.widget' is 'Toplevel'; 'gui.widget' is 'TkinterHtml'
         sg.bind (obj      = self.gui
-                ,bindings = ('<Return>'
-                            ,'<KP_Enter>'
-                            )
-                ,action   = self.go_keyboard
+                ,bindings = '<Button-1>'
+                ,action   = self.go_mouse
                 )
         sg.bind (obj      = self.gui.search_field
                 ,bindings = ('<Return>'
@@ -914,10 +921,6 @@ class WebFrame:
                 ,bindings = '<Motion>'
                 ,action   = self.mouse_sel
                 )
-        sg.bind (obj      = self.gui
-                ,bindings = '<Button-1>'
-                ,action   = self.go_mouse
-                )
         ''' Key and mouse bindings must have different parents,
             otherwise, key bindings will not work, and mouse bindings
             (such as RMB) may fire up when not required. Keys must be
@@ -1018,6 +1021,7 @@ class WebFrame:
                 ,action   = self.suggest.move_bottom
                 )
         # Set config bindings
+        #cur
         self.gui.btn_hst.hint = _('Show history') \
                 + '\n'   + sh.globs['var']['bind_toggle_history'] \
                 + ', '   + sh.globs['var']['bind_toggle_history_alt'] \
