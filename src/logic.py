@@ -248,11 +248,11 @@ class Welcome:
         hotkey13 = sh.globs['var']['bind_go_back']
         hint14   = _('Go to the following article')
         hotkey14 = sh.globs['var']['bind_go_forward']
-        hint15   = _('Select the next source language')
+        hint15   = _('Next source language')
         hotkey15 = (sh.globs['var']['bind_next_lang1']
                    ,sh.globs['var']['bind_next_lang1_alt']
                    )
-        hint16   = _('Select the previous source language')
+        hint16   = _('Previous source language')
         hotkey16 = (sh.globs['var']['bind_prev_lang1']
                    ,sh.globs['var']['bind_prev_lang1_alt']
                    )
@@ -304,11 +304,11 @@ class Welcome:
                    )
         hint33   = _('Clear History')
         hotkey33 = sh.globs['var']['bind_clear_history']
-        hint38   = _('Select the next target language')
+        hint38   = _('Next target language')
         hotkey38 = (sh.globs['var']['bind_next_lang2']
                    ,sh.globs['var']['bind_next_lang2_alt']
                    )
-        hint39   = _('Select the previous target language')
+        hint39   = _('Previous target language')
         hotkey39 = (sh.globs['var']['bind_prev_lang2']
                    ,sh.globs['var']['bind_prev_lang2_alt']
                    )

@@ -1582,7 +1582,9 @@ class WebFrame:
         ''' Text returned by 'objs.blocks_db().text' may have a space
             as the first symbol for some reason.
         '''
-        lg.objs.request()._search = lg.objs._request._search.strip()
+        if lg.objs.request()._search is None:
+            lg.objs._request._search = ''
+        lg.objs._request._search = lg.objs._request._search.strip()
         if self.control_length():
             self.set_lang1()
             self.set_lang2()
