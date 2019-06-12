@@ -3,7 +3,7 @@
 import shared    as sh
 import sharedGUI as sg
 
-DEBUG = False
+DEBUG = True
 
 
 class Block:
@@ -126,8 +126,7 @@ class Tags:
         f = '[MClient] tests.Tags.multitrancom'
         import plugins.multitrancom.cleanup as mccleanup
         import plugins.multitrancom.tags    as mctags
-        #file = '/home/pete/.config/mclient/tests/(multitran.com) computer.txt'
-        file = '/home/pete/.config/mclient/tests/(multitran.com) counting machine (phrases).txt'
+        file = '/home/pete/bin/mclient/tests/multitrancom/конъюгаты (фразы).txt'
         text = sh.ReadTextFile(file).get()
         text = mccleanup.CleanUp(text).run()
         mctags.Tags (text    = text
@@ -498,20 +497,5 @@ if __name__ == '__main__':
     sg.objs.start()
     import logic as lg
     lg.objs.plugins(Debug=DEBUG)
-    import gui as gi
-    web = gi.WebFrame()
-    # 'gui.obj.widget' is 'Toplevel'; 'gui.widget' is 'TkinterHtml'
-    sg.bind (obj      = web.obj
-            ,bindings = ('<Return>'
-                        ,'<KP_Enter>'
-                        )
-            ,action   = com.go_keyboard
-            )
-    sg.bind (obj      = web.obj
-            ,bindings = ('<Control-Return>'
-                        ,'<Control-KP_Enter>'
-                        )
-            ,action   = com.copy_text
-            )
-    web.show()
+    Tags().multitrancom()
     sg.objs.end()

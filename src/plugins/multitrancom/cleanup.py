@@ -133,6 +133,9 @@ class CleanUp:
             delete '<i>' as well, otherwise, there will be no dictionary
             titles.
         '''
+        self._text = self._text.replace (' class="phraselist0"><i>'
+                                        ,'><td class="subj">'
+                                        )
         self._text = self._text.replace (' class="phraselist1"><i>'
                                         ,'><td class="subj">'
                                         )

@@ -15,6 +15,8 @@ gettext.install('mclient','../resources/locale')
     •  Abbreviations of dictionaries:
          <td class="subj" width="1"><a href="/m.exe?a=110&amp;l1=1&amp;l2=2&amp;s=computer&amp;sc=197">astronaut.</a>
          td class="subj"
+         <td class="phraselist0"><i><a href="/m.exe?a=110&l1=2&l2=1&s=акушерская конъюгата">мед.</a></i></td>
+         td class="phraselist0"
     •  Terms:
          <td class="trans" width="100%"><a href="/m.exe?s=компьютер&amp;l1=2&amp;l2=1"> компьютер</a>
          td class="trans"
@@ -85,10 +87,9 @@ tag_pattern_del = ['m.exe?a=40&'              # Log in, Вход
                   ,'td class="phras_cnt"'     # Phrase entries count number
                   ]
 
-useful_tags = [pdic,purl1,purl2
-              ,pcom1,pcom2,pwf1
-              ,pwf2,psp,ptm,pph
-              ,pcor1,pcor2
+useful_tags = [pdic,purl1,purl2,pcom1
+              ,pcom2,pwf1,pwf2,psp
+              ,ptm,pph,pcor1,pcor2
               ]
 
 
