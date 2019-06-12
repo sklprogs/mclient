@@ -1,5 +1,9 @@
 
 
+6.1
+* Add language pairs supported by multitran.com
+* Recognize dictionary titles for phrase-type articles
+
 6.0
 * Reimplement reading Stardict files, make import faster and
   add support for GZIP files
