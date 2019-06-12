@@ -248,13 +248,13 @@ class Welcome:
         hotkey13 = sh.globs['var']['bind_go_back']
         hint14   = _('Go to the following article')
         hotkey14 = sh.globs['var']['bind_go_forward']
-        hint15   = _('Select the next language pair')
-        hotkey15 = (sh.globs['var']['bind_next_pair']
-                   ,sh.globs['var']['bind_next_pair_alt']
+        hint15   = _('Select the next source language')
+        hotkey15 = (sh.globs['var']['bind_next_lang1']
+                   ,sh.globs['var']['bind_next_lang1_alt']
                    )
-        hint16   = _('Select the previous language pair')
-        hotkey16 = (sh.globs['var']['bind_prev_pair']
-                   ,sh.globs['var']['bind_prev_pair_alt']
+        hint16   = _('Select the previous source language')
+        hotkey16 = (sh.globs['var']['bind_prev_lang1']
+                   ,sh.globs['var']['bind_prev_lang1_alt']
                    )
         hint17   = _('Create a printer-friendly page')
         hotkey17 = sh.globs['var']['bind_print']
@@ -304,7 +304,14 @@ class Welcome:
                    )
         hint33   = _('Clear History')
         hotkey33 = sh.globs['var']['bind_clear_history']
-        #hint38 = 
+        hint38   = _('Select the next target language')
+        hotkey38 = (sh.globs['var']['bind_next_lang2']
+                   ,sh.globs['var']['bind_next_lang2_alt']
+                   )
+        hint39   = _('Select the previous target language')
+        hotkey39 = (sh.globs['var']['bind_prev_lang2']
+                   ,sh.globs['var']['bind_prev_lang2_alt']
+                   )
         
         self.gen_row(hint1,hotkey1,hint2,hotkey2)
         self.gen_row(hint34,hotkey34,hint35,hotkey35)
@@ -316,6 +323,7 @@ class Welcome:
         self.gen_row(hint11,hotkey11,hint12,hotkey12)
         self.gen_row(hint13,hotkey13,hint14,hotkey14)
         self.gen_row(hint15,hotkey15,hint16,hotkey16)
+        self.gen_row(hint38,hotkey38,hint39,hotkey39)
         self.gen_row(hint17,hotkey17,hint18,hotkey18)
         self.gen_row(hint19,hotkey19,hint20,hotkey20)
         self.gen_row(hint22,hotkey22,hint23,hotkey23)
@@ -585,10 +593,14 @@ class ConfigMclient(sh.Config):
            ,'bind_go_back'                :'<Alt-Left>'
            ,'bind_go_forward'             :'<Alt-Right>'
            ,'bind_go_phrases'             :'<Alt-f>'
-           ,'bind_next_pair'              :'<F8>'
-           ,'bind_next_pair_alt'          :'<Control-l>'
-           ,'bind_prev_pair'              :'<Shift-F8>'
-           ,'bind_prev_pair_alt'          :'<Control-L>'
+           ,'bind_next_lang1'             :'<F8>'
+           ,'bind_next_lang1_alt'         :'<Control-k>'
+           ,'bind_next_lang2'             :'<F9>'
+           ,'bind_next_lang2_alt'         :'<Control-l>'
+           ,'bind_prev_lang1'             :'<Shift-F8>'
+           ,'bind_prev_lang1_alt'         :'<Control-K>'
+           ,'bind_prev_lang2'             :'<Shift-F9>'
+           ,'bind_prev_lang2_alt'         :'<Control-L>'
            ,'bind_open_in_browser_alt'    :'<Control-b>'
            ,'bind_open_in_browser'        :'<F7>'
            ,'bind_paste_search_field'     :'<ButtonRelease-2>'

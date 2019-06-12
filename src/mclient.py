@@ -548,6 +548,14 @@ class WebFrame:
         self.gui.opt_lg1.set_prev()
         self.set_lang1()
     
+    def next_lang2(self,event=None):
+        self.gui.opt_lg2.set_next()
+        self.set_lang2()
+    
+    def prev_lang2(self,event=None):
+        self.gui.opt_lg2.set_prev()
+        self.set_lang2()
+    
     def paste_search_field(self,event=None):
         self.suggest.gui.close()
         self.gui.paste_search()
@@ -860,16 +868,28 @@ class WebFrame:
                 ,action   = lambda e:self.define(Selected=True)
                 )
         sg.bind (obj      = self.gui.obj
-                ,bindings = (sh.globs['var']['bind_prev_pair']
-                            ,sh.globs['var']['bind_prev_pair_alt']
+                ,bindings = (sh.globs['var']['bind_prev_lang1']
+                            ,sh.globs['var']['bind_prev_lang1_alt']
                             )
                 ,action   = self.prev_lang1
                 )
         sg.bind (obj      = self.gui.obj
-                ,bindings = (sh.globs['var']['bind_next_pair']
-                            ,sh.globs['var']['bind_next_pair_alt']
+                ,bindings = (sh.globs['var']['bind_next_lang1']
+                            ,sh.globs['var']['bind_next_lang1_alt']
                             )
                 ,action   = self.next_lang1
+                )
+        sg.bind (obj      = self.gui.obj
+                ,bindings = (sh.globs['var']['bind_prev_lang2']
+                            ,sh.globs['var']['bind_prev_lang2_alt']
+                            )
+                ,action   = self.prev_lang2
+                )
+        sg.bind (obj      = self.gui.obj
+                ,bindings = (sh.globs['var']['bind_next_lang2']
+                            ,sh.globs['var']['bind_next_lang2_alt']
+                            )
+                ,action   = self.next_lang2
                 )
         sg.bind (obj      = self.gui.obj
                 ,bindings = (sh.globs['var']['bind_settings']
