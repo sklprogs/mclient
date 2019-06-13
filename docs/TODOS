@@ -1,4 +1,5 @@
 
+- Store settings in the config file
 - Fix history navigation with 2 identical words (e.g., 'bad') in
   separate languages (English, German)
 - plugins.multitrancom: eng-rus, phylogenetically, structured notation,
