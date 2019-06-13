@@ -18,10 +18,6 @@ gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 
-PRODUCT = 'MClient'
-VERSION = '6.1'
-
-
 if __name__ == '__main__':
     if sh.oss.win():
         import kl_mod_win as kl_mod
@@ -109,7 +105,7 @@ def call_app():
         In case of .focus_set() *first* Control-c-c can call an inactive
         widget.
     '''
-    objs.webframe().gui.search_field.widget.focus_force()
+    objs.webframe().gui.ent_src.widget.focus_force()
 
 # Capture Control-c-c
 def timed_update():
@@ -140,10 +136,7 @@ class About:
         self.parties = ThirdParties()
         self.gui = gi.About()
         self.bindings()
-        self.gui.label.text (_('Programming: Peter Sklyar, 2015-2019.\nVersion: %s\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n') \
-                            % VERSION
-                            )
-        self.gui.label.font(sh.globs['var']['font_style'])
+        self.gui.lbl_abt.font(sh.globs['var']['font_style'])
         
     def bindings(self):
         self.gui.btn_thd.action = self.show_third_parties
@@ -153,7 +146,7 @@ class About:
     # Compose an email to the author
     def response_back(self,event=None):
         sh.Email (email   = sh.email
-                 ,subject = _('Concerning %s') % PRODUCT
+                 ,subject = _('Concerning %s') % gi.PRODUCT
                  ).create()
 
     # Open a license web-page
@@ -562,7 +555,7 @@ class WebFrame:
     
     def clear_search_field(self,event=None):
         self.suggest.gui.close()
-        self.gui.search_field.clear_text()
+        self.gui.ent_src.clear_text()
         
     def escape(self,event=None):
         if self.suggest.gui.parent:
@@ -642,8 +635,8 @@ class WebFrame:
         
     def reset(self):
         #'widget.reset' is already done in 'self.fill'
-        welcome = lg.Welcome (product = PRODUCT
-                             ,version = VERSION
+        welcome = lg.Welcome (product = gi.PRODUCT
+                             ,version = gi.VERSION
                              )
         self.fill(welcome.run())
         self.update_buttons()
@@ -661,7 +654,7 @@ class WebFrame:
         self.spec_symbols   = SpecSymbols()
         self.save_article   = SaveArticle()
         self.history        = History()
-        self.suggest        = Suggest(entry=self.gui.search_field)
+        self.suggest        = Suggest(entry=self.gui.ent_src)
         # Close child widgets in order not to overlap the parent widget
         self.about.parties.gui.close()
         self.about.gui.close()
@@ -678,7 +671,7 @@ class WebFrame:
             triggered by History which should remain active.
         '''
         self.go_search()
-        self.gui.search_field.focus()
+        self.gui.ent_src.focus()
     
     def reset_opt(self):
         f = '[MClient] mclient.WebFrame.reset_opt'
@@ -739,7 +732,7 @@ class WebFrame:
                 ,bindings = sh.globs['var']['bind_quit']
                 ,action   = self.gui.close
                 )
-        sg.bind (obj      = self.gui.search_field
+        sg.bind (obj      = self.gui.ent_src
                 ,bindings = (sh.globs['var']['bind_copy_sel']
                             ,sh.globs['var']['bind_copy_sel_alt']
                             )
@@ -749,18 +742,18 @@ class WebFrame:
                 ,bindings = '<Button-1>'
                 ,action   = self.go_mouse
                 )
-        sg.bind (obj      = self.gui.search_field
+        sg.bind (obj      = self.gui.ent_src
                 ,bindings = ('<Return>'
                             ,'<KP_Enter>'
                             )
                 ,action   = self.go_keyboard
                 )
         #todo: do not iconify at <ButtonRelease-3>
-        sg.bind (obj      = self.gui.search_field
+        sg.bind (obj      = self.gui.ent_src
                 ,bindings = sh.globs['var']['bind_clear_search_field']
-                ,action   = self.gui.search_field.clear_text
+                ,action   = self.gui.ent_src.clear_text
                 )
-        sg.bind (obj      = self.gui.search_field
+        sg.bind (obj      = self.gui.ent_src
                 ,bindings = sh.globs['var']['bind_paste_search_field']
                 ,action   = lambda e:self.gui.paste_search()
                 )
@@ -1016,27 +1009,27 @@ class WebFrame:
                 ,bindings = '<ButtonRelease-2>'
                 ,action   = self.minimize
                 )
-        sg.bind (obj      = self.gui.search_field
+        sg.bind (obj      = self.gui.ent_src
                 ,bindings = '<Control-a>'
-                ,action   = self.gui.search_field.select_all
+                ,action   = self.gui.ent_src.select_all
                 )
-        sg.bind (obj      = self.gui.search_field
+        sg.bind (obj      = self.gui.ent_src
                 ,bindings = '<KeyRelease>'
                 ,action   = self.suggest.suggest
                 )
-        sg.bind (obj      = self.gui.search_field
+        sg.bind (obj      = self.gui.ent_src
                 ,bindings = '<Up>'
                 ,action   = self.suggest.move_up
                 )
-        sg.bind (obj      = self.gui.search_field
+        sg.bind (obj      = self.gui.ent_src
                 ,bindings = '<Down>'
                 ,action   = self.suggest.move_down
                 )
-        sg.bind (obj      = self.gui.search_field
+        sg.bind (obj      = self.gui.ent_src
                 ,bindings = '<Control-Home>'
                 ,action   = self.suggest.move_top
                 )
-        sg.bind (obj      = self.gui.search_field
+        sg.bind (obj      = self.gui.ent_src
                 ,bindings = '<Control-End>'
                 ,action   = self.suggest.move_bottom
                 )
@@ -1133,7 +1126,7 @@ class WebFrame:
         
     def title(self,arg=None):
         if not arg:
-            arg = sh.List(lst1=[PRODUCT,VERSION]).space_items()
+            arg = sh.List(lst1=[gi.PRODUCT,gi.VERSION]).space_items()
         self.gui.title(arg)
 
     def text(self,event=None):
@@ -1403,7 +1396,7 @@ class WebFrame:
         objs._blocks_db.reset (cols      = lg.objs._request._cols
                               ,SortRows  = lg.objs._request.SortRows
                               ,SortTerms = SortTerms
-                              ,ExpandDic = not self.settings.gui.cb6.get()
+                              ,ExpandDic = not self.settings.gui.cbx_no6.get()
                               )
         objs._blocks_db.unignore()
         objs._blocks_db.ignore()
@@ -1480,7 +1473,7 @@ class WebFrame:
             the typo.
         '''
         if pages._blocks or skipped:
-            self.gui.search_field.clear_text()
+            self.gui.ent_src.clear_text()
         self.history.update()
         self.search_article.reset()
         self.suggest.gui.close()
@@ -1537,7 +1530,7 @@ class WebFrame:
     
     def go_keyboard(self,event=None):
         f = '[MClient] mclient.WebFrame.go_keyboard'
-        search = self.gui.search_field.widget.get().strip('\n').strip(' ')
+        search = self.gui.ent_src.widget.get().strip('\n').strip(' ')
         if search == '':
             self.go_url()
         elif search == sh.globs['var']['repeat_sign']:
@@ -1603,7 +1596,7 @@ class WebFrame:
                       )
         lg.objs.plugins().set(lg.objs._request._source)
         self.go_search()
-        self.gui.search_field.focus()
+        self.gui.ent_src.focus()
 
     def get_url(self):
         f = '[MClient] mclient.WebFrame.get_url'
@@ -1862,34 +1855,34 @@ class WebFrame:
 
         if lg.objs._request.Reverse:
             self.gui.btn_viw.inactive()
-            self.settings.gui.cb5.enable()
+            self.settings.gui.cbx_no5.enable()
         else:
             self.gui.btn_viw.active()
-            self.settings.gui.cb5.disable()
+            self.settings.gui.cbx_no5.disable()
 
         if not lg.objs._request.SpecialPage \
         and lg.objs._request.SortTerms:
             self.gui.btn_alp.active()
-            self.settings.gui.cb2.enable()
+            self.settings.gui.cbx_no2.enable()
         else:
             self.gui.btn_alp.inactive()
-            self.settings.gui.cb2.disable()
+            self.settings.gui.cbx_no2.disable()
 
         if lg.objs._request.Block and objs._blocks_db.blocked():
             self.gui.btn_blk.active()
-            self.settings.gui.cb3.enable()
+            self.settings.gui.cbx_no3.enable()
         else:
             self.gui.btn_blk.inactive()
-            self.settings.gui.cb3.disable()
+            self.settings.gui.cbx_no3.disable()
 
         if not lg.objs._request.SpecialPage \
         and lg.objs._request.Prioritize \
         and objs._blocks_db.prioritized():
             self.gui.btn_pri.active()
-            self.settings.gui.cb4.enable()
+            self.settings.gui.cbx_no4.enable()
         else:
             self.gui.btn_pri.inactive()
-            self.settings.gui.cb4.disable()
+            self.settings.gui.cbx_no4.disable()
 
     # Go to the previous search
     def go_back(self,event=None):
@@ -1976,7 +1969,7 @@ class WebFrame:
                                    + len(fixed)
         objs.blocks_db().delete_bookmarks()
         self.load_article()
-        self.gui.search_field.focus()
+        self.gui.ent_src.focus()
 
     def reload(self,event=None):
         objs.blocks_db().clear_cur()
@@ -1984,7 +1977,7 @@ class WebFrame:
 
     # Insert a special symbol into the search field
     def insert_sym(self,sym):
-        self.gui.search_field.insert(pos='end',text=sym)
+        self.gui.ent_src.insert(pos='end',text=sym)
         if sh.globs['bool']['AutoCloseSpecSymbol']:
             self.spec_symbols.gui.close()
 
@@ -2321,10 +2314,10 @@ class Settings:
         ''' Do not use 'gettext' to name internal types - this will make
             the program ~0,6s slower
         '''
-        lst = [choice for choice in (self.gui.col1.choice
-                                    ,self.gui.col2.choice
-                                    ,self.gui.col3.choice
-                                    ,self.gui.col4.choice
+        lst = [choice for choice in (self.gui.opt_cl1.choice
+                                    ,self.gui.opt_cl2.choice
+                                    ,self.gui.opt_cl3.choice
+                                    ,self.gui.opt_cl4.choice
                                     ) \
                if choice != _('Do not set')
               ]
@@ -2356,11 +2349,11 @@ class Settings:
         if set(lst):
             self.gui.close()
             lg.objs.request()._cols     = tuple(lst)
-            lg.objs._request.SortRows   = self.gui.cb1.get()
-            lg.objs._request.SortTerms  = self.gui.cb2.get()
-            lg.objs._request.Block      = self.gui.cb3.get()
-            lg.objs._request.Prioritize = self.gui.cb4.get()
-            lg.objs._request.Reverse    = self.gui.cb5.get()
+            lg.objs._request.SortRows   = self.gui.cbx_no1.get()
+            lg.objs._request.SortTerms  = self.gui.cbx_no2.get()
+            lg.objs._request.Block      = self.gui.cbx_no3.get()
+            lg.objs._request.Prioritize = self.gui.cbx_no4.get()
+            lg.objs._request.Reverse    = self.gui.cbx_no5.get()
             if lg.objs._request.SortRows:
                 self.prioritize_speech()
                 objs.webframe().prioritize_speech()
@@ -2388,10 +2381,10 @@ class Settings:
     def prioritize_speech(self):
         f = '[MClient] mclient.Settings.prioritize_speech'
         lg.objs.request()
-        choices = (self.gui.sp1.choice,self.gui.sp2.choice
-                  ,self.gui.sp3.choice,self.gui.sp4.choice
-                  ,self.gui.sp5.choice,self.gui.sp6.choice
-                  ,self.gui.sp7.choice
+        choices = (self.gui.opt_sp1.choice,self.gui.opt_sp2.choice
+                  ,self.gui.opt_sp3.choice,self.gui.opt_sp4.choice
+                  ,self.gui.opt_sp5.choice,self.gui.opt_sp6.choice
+                  ,self.gui.opt_sp7.choice
                   )
         for i in range(len(choices)):
             if choices[i] == _('Noun'):
@@ -2539,7 +2532,7 @@ objs = Objects()
 if  __name__ == '__main__':
     f = '[MClient] mclient.__main__'
     sg.objs.start()
-    lg.objs.default(product=gi.product)
+    lg.objs.default(product=gi.PRODUCT)
     if lg.objs._default.Success:
         timed_update()
         objs.webframe().reset()
