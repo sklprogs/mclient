@@ -3,6 +3,7 @@
 6.1
 * Добавлены языковые пары, поддерживаемые multitran.com
 * Распознавание названий словарей для статей "Фразы"
+* Названия языков удалены из текста статей
 * Удалены ключи bind_prev_pair, bind_prev_pair_alt, bind_next_pair,
   bind_next_pair_alt
 * Добавлены ключи bind_next_lang1 (F8 по умолчанию), bind_next_lang1_alt

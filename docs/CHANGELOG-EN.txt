@@ -3,6 +3,7 @@
 6.1
 * Add language pairs supported by multitran.com
 * Recognize dictionary titles for phrase-type articles
+* Delete language names from articles
 * Delete keys bind_prev_pair, bind_prev_pair_alt, bind_next_pair,
   bind_next_pair_alt
 * Add keys bind_next_lang1 (F8 by default), bind_next_lang1_alt
