@@ -442,20 +442,11 @@ class Elems:
                      ,MaxRows = self.MaxRows
                      ).print()
         
-    def has_transc(self,text):
-        ''' There are no square brackets in phonetics anymore, so we
-            need to guess.
-        '''
-        if 'ʌ' in text or 'ɔ' in text or 'ə' in text or 'æ' in text \
-        or 'ɑ' in text or 'ɛ' in text or 'ʒ' in text or 'ʤ' in text \
-        or 'ð' in text or 'ʃ' in text or 'ʧ'in text or 'θ' in text \
-        or 'ŋ' in text or 'ɪ' in text:
-            return True
-    
     def transc(self):
         for block in self._blocks:
             if block._type == 'comment' \
-            and self.has_transc(block._text):
+            and block._text.startswith('[') \
+            and block._text.endswith(']'):
                 block._type = 'transc'
     
     def add_brackets(self):
