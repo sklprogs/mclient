@@ -10,7 +10,7 @@
   bind_prev_lang1_alt (Ctrl-Shift-K по умолчанию), bind_next_lang2
   (F9 по умолчанию), bind_next_lang2_alt (Ctrl-L по умолчанию),
   bind_prev_lang2 (Shift-F9 по умолчанию), bind_prev_lang2_alt
-  (Ctrl-Shift-L по умолчанию)
+  (Ctrl-Shift-L по умолчанию), bind_swap_langs (Ctrl-Пробел по умолчанию)
 
 6.0
 * Алгоритм чтения файлов Stardict переработан: импорт стал быстрее,
