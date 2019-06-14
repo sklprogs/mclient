@@ -137,14 +137,14 @@ class Plugins:
         '''
         return ['multitran.com']
     
-    def langs1(self):
+    def langs1(self,lang2=''):
         f = '[MClient] manager.Plugins.langs1'
         if self.plugin:
-            return self.plugin.langs1()
+            return self.plugin.langs1(lang2)
         else:
             sh.com.empty(f)
     
-    def langs2(self,lang1):
+    def langs2(self,lang1=''):
         f = '[MClient] manager.Plugins.langs2'
         if self.plugin:
             return self.plugin.langs2(lang1)

@@ -98,11 +98,17 @@ class Plugin:
     def suggest(self,search):
         return gt.Suggest(search).run()
     
-    def langs1(self):
-        return pr.objs.pairs().alive()
+    def langs1(self,lang2=''):
+        if lang2:
+            return pr.objs.pairs().pairs1(lang2)
+        else:
+            return pr.objs.pairs().alive()
     
-    def langs2(self,lang1):
-        return pr.objs.pairs().pairs(lang1)
+    def langs2(self,lang1=''):
+        if lang1:
+            return pr.objs.pairs().pairs2(lang1)
+        else:
+            return pr.objs.pairs().alive()
     
     def request(self,search='',url=''):
         iget = gt.Get (search = search

@@ -171,6 +171,35 @@ class Plugin:
 
 class Commands:
     
+    def nonpairs(self):
+        ''' Get languages that are not supported by multitran.com for
+            both directions.
+        '''
+        f = '[MClient] tests.Commands.nonpairs'
+        import plugins.multitrancom.pairs as pairs
+        lst = []
+        for lang in pairs.LANGS:
+            pairs1 = pairs.objs.pairs().pairs1(lang)
+            pairs2 = pairs.objs.pairs().pairs2(lang)
+            if not pairs1:
+                pairs1 = []
+            if not pairs2:
+                pairs2 = []
+            if pairs1 != pairs2:
+                for xlang in pairs1:
+                    if xlang not in pairs2:
+                        lst.append('%s-%s' % (xlang,lang))
+                for xlang in pairs2:
+                    if xlang not in pairs1:
+                        lst.append('%s-%s' % (lang,xlang))
+        lst = list(set(lst))
+        lst.sort()
+        message = _('The following pairs are not supported:') + '\n' \
+                  + '; '.join(lst)
+        sh.log.append (f,_('INFO')
+                      ,message
+                      )    
+    
     def compare_elems(self):
         f = '[MClient] tests.Commands.compare_elems'
         import plugins.multitran.elems as el
@@ -497,5 +526,5 @@ if __name__ == '__main__':
     sg.objs.start()
     import logic as lg
     lg.objs.plugins(Debug=DEBUG)
-    Tags().multitrancom()
+    print(lg.objs._plugins.langs1())
     sg.objs.end()

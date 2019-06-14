@@ -71,7 +71,7 @@ class Plugin:
         pass
     
     # This is needed only for compliance with a general method
-    def langs1(self):
+    def langs1(self,lang2=''):
         return([_('Any')])
     
     # This is needed only for compliance with a general method

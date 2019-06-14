@@ -8,17 +8,21 @@ import gettext, gettext_windows
 gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
-LANG1 = _('English')
-LANG2 = _('Russian')
+LANG1 = _('Russian')
+LANG2 = _('English')
 
-# Bad Gateway:209 (Burmese), 262 (Gothic)
+'''
+Bad Gateway:209 (Burmese), 262 (Gothic)
+#note: do not forget to put ',' at the end of a pair tuple (otherwise,
+single symbols will be iterated).
+'''
 LANGS = {_('Abaza'):
             {'code': 478
             ,'pair': ()
             }
         ,_('Abkhazian'):
             {'code': 71
-            ,'pair': (_('Russian'))
+            ,'pair': (_('Russian'),)
             }
         ,_('Achinese'):
             {'code': 172
@@ -356,7 +360,7 @@ LANGS = {_('Abaza'):
             }
         ,_('Bashkir'):
             {'code': 193
-            ,'pair': (_('Russian'))
+            ,'pair': (_('Russian'),)
             }
         ,_('Basque'):
             {'code': 68
@@ -702,7 +706,7 @@ LANGS = {_('Abaza'):
             }
         ,_('Chechen'):
             {'code': 73
-            ,'pair': (_('Russian'))
+            ,'pair': (_('Russian'),)
             }
         ,_('Cherokee'):
             {'code': 222
@@ -838,7 +842,7 @@ LANGS = {_('Abaza'):
             }
         ,_('Chuvash'):
             {'code': 77
-            ,'pair': (_('Russian'))
+            ,'pair': (_('Russian'),)
             }
         ,_('Classical Newari'):
             {'code': 356
@@ -1297,7 +1301,7 @@ LANGS = {_('Abaza'):
             }
         ,_('Ingush'):
             {'code': 75
-            ,'pair': (_('Russian'))
+            ,'pair': (_('Russian'),)
             }
         ,_('Interlingua'):
             {'code': 282
@@ -1373,7 +1377,7 @@ LANGS = {_('Abaza'):
             }
         ,_('Kalmyk'):
             {'code': 35
-            ,'pair': (_('Russian'))
+            ,'pair': (_('Russian'),)
             }
         ,_('Kamba'):
             {'code': 291
@@ -1805,7 +1809,7 @@ LANGS = {_('Abaza'):
             }
         ,_('Mongolian'):
             {'code': 121
-            ,'pair': (_('Russian'))
+            ,'pair': (_('Russian'),)
             }
         ,_('Mongolian Transliteration'):
             {'code': 466
@@ -1817,7 +1821,7 @@ LANGS = {_('Abaza'):
             }
         ,_('Montenegrin'):
             {'code': 64
-            ,'pair': (_('Russian'))
+            ,'pair': (_('Russian'),)
             }
         ,_('Mossi'):
             {'code': 338
@@ -2336,7 +2340,7 @@ LANGS = {_('Abaza'):
             }
         ,_('Swati'):
             {'code': 407
-            ,'pair': (_('Tsonga'))
+            ,'pair': (_('Tsonga'),)
             }
         ,_('Swedish'):
             {'code': 29
@@ -2360,7 +2364,7 @@ LANGS = {_('Abaza'):
             }
         ,_('Tajik'):
             {'code': 136
-            ,'pair': (_('Russian'))
+            ,'pair': (_('Russian'),)
             }
         ,_('Tamashek'):
             {'code': 424
@@ -2566,7 +2570,7 @@ LANGS = {_('Abaza'):
             }
         ,_('Yakut'):
             {'code': 384
-            ,'pair': (_('Russian'))
+            ,'pair': (_('Russian'),)
             }
         ,_('Yao'):
             {'code': 166
@@ -2750,15 +2754,25 @@ class Pairs:
                                     )
         return self._flawed
     
-    def pairs(self,lang):
+    def pairs2(self,lang1):
         f = '[MClient] plugins.multitrancom.Pairs.pairs'
-        if lang:
+        if lang1:
             try:
-                return sorted(LANGS[lang]['pair'])
+                return sorted(LANGS[lang1]['pair'])
             except KeyError:
                 sh.objs.mes (f,_('ERROR')
                             ,_('Wrong input data!')
                             )
+        else:
+            sh.com.empty(f)
+    
+    def pairs1(self,lang2):
+        f = '[MClient] plugins.multitrancom.Pairs.pairs1'
+        if lang2:
+            langs = [xlang for xlang in LANGS \
+                     if lang2 in LANGS[xlang]['pair']
+                    ]
+            return sorted(langs)
         else:
             sh.com.empty(f)
 

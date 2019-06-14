@@ -533,17 +533,48 @@ class WebFrame:
         self.bindings()
         self.reset_opt()
     
+    def update_lang1(self,event=None):
+        f = '[MClient] mclient.WebFrame.update_lang1'
+        self.set_lang1()
+        self.set_lang2()
+        lang1  = lg.objs.plugins().lang1()
+        lang2  = lg.objs._plugins.lang2()
+        langs1 = lg.objs._plugins.langs1()
+        if langs1:
+            self.gui.opt_lg1.set(lang1)
+            self.set_lang1()
+        else:
+            sh.com.empty(f)
+    
+    def update_lang2(self,event=None):
+        f = '[MClient] mclient.WebFrame.update_lang2'
+        self.set_lang1()
+        self.set_lang2()
+        lang1  = lg.objs.plugins().lang1()
+        lang2  = lg.objs._plugins.lang2()
+        langs2 = lg.objs._plugins.langs2(lang1)
+        if langs2:
+            if not lang2 in langs2:
+                lang2 = langs2[0]
+            self.gui.opt_lg2.reset (items   = langs2
+                                   ,default = lang2
+                                   ,action  = self.go_search_focus
+                                   )
+            self.set_lang2()
+        else:
+            sh.com.empty(f)
+    
     def swap_langs(self,event=None):
         f = '[MClient] mclient.WebFrame.swap_langs'
-        self.gui.opt_lg1._get()
-        self.gui.opt_lg2._get()
+        self.update_lang1()
+        self.update_lang2()
         lang1 = self.gui.opt_lg1.choice
         lang2 = self.gui.opt_lg2.choice
         lang1, lang2 = lang2, lang1
         langs1 = lg.objs.plugins().langs1()
         langs2 = lg.objs._plugins.langs2(lang1)
-        if langs1 and langs2:
-            if lang1 in langs1 and lang2 in langs2:
+        if langs1:
+            if langs2 and lang1 in langs1 and lang2 in langs2:
                 self.gui.opt_lg1.reset (items   = langs1
                                        ,default = lang1
                                        ,action  = self.go_search_focus
@@ -552,10 +583,8 @@ class WebFrame:
                                        ,default = lang2
                                        ,action  = self.go_search_focus
                                        )
-                self.gui.opt_lg1.set(lang1)
-                self.gui.opt_lg2.set(lang2)
-                self.set_lang1()
-                self.set_lang2()
+                self.update_lang1()
+                self.update_lang2()
             else:
                 sh.objs.mes (f,_('WARNING')
                             ,_('Pair %s-%s is not supported!') % (lang1
@@ -566,20 +595,48 @@ class WebFrame:
             sh.com.empty(f)
     
     def next_lang1(self,event=None):
+        ''' We want to navigate through the full list of supported
+            languages rather than through the list of 'lang2' pairs
+            so we reset the widget first.
+        '''
+        self.gui.opt_lg1._get()
+        old = self.gui.opt_lg1.choice
+        self.gui.opt_lg1.reset (items   = lg.objs.plugins().langs1()
+                               ,default = old
+                               ,action  = self.go_search_focus
+                               )
         self.gui.opt_lg1.set_next()
-        self.set_lang1()
-    
-    def prev_lang1(self,event=None):
-        self.gui.opt_lg1.set_prev()
-        self.set_lang1()
+        self.update_lang1()
+        self.update_lang2()
     
     def next_lang2(self,event=None):
+        # We want to navigate through the limited list here
+        self.update_lang1()
+        self.update_lang2()
         self.gui.opt_lg2.set_next()
-        self.set_lang2()
+        self.update_lang2()
+    
+    def prev_lang1(self,event=None):
+        ''' We want to navigate through the full list of supported
+            languages rather than through the list of 'lang2' pairs
+            so we reset the widget first.
+        '''
+        self.gui.opt_lg1._get()
+        old = self.gui.opt_lg1.choice
+        self.gui.opt_lg1.reset (items   = lg.objs.plugins().langs1()
+                               ,default = old
+                               ,action  = self.go_search_focus
+                               )
+        self.gui.opt_lg1.set_prev()
+        self.update_lang1()
+        self.update_lang2()
     
     def prev_lang2(self,event=None):
+        # We want to navigate through the limited list here
+        self.update_lang1()
+        self.update_lang2()
         self.gui.opt_lg2.set_prev()
-        self.set_lang2()
+        self.update_lang2()
     
     def paste_search_field(self,event=None):
         self.suggest.gui.close()
@@ -1612,8 +1669,8 @@ class WebFrame:
             lg.objs._request._search = ''
         lg.objs._request._search = lg.objs._request._search.strip()
         if self.control_length():
-            self.set_lang1()
-            self.set_lang2()
+            self.update_lang1()
+            self.update_lang2()
             self.get_url()
             sh.log.append (f,_('DEBUG')
                           ,'"' + lg.objs._request._search + '"'
