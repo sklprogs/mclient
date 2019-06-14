@@ -131,6 +131,7 @@ class Plugin:
                     block._url = gt.com.fix_url(block._url)
         self._blocks = el.Elems (blocks  = self._blocks
                                 ,iabbr   = self.iabbr
+                                ,langs   = pr.objs.pairs().alive()
                                 ,search  = search
                                 ,Debug   = self.Debug
                                 ,Shorten = self.Shorten

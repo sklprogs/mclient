@@ -248,7 +248,7 @@ class Elems:
           vary depending on the view. Incorrect sorting by TERMA may
           result in putting a TERM item before fixed columns.
     '''
-    def __init__ (self,blocks,iabbr
+    def __init__ (self,blocks,iabbr,langs
                  ,Debug=False,Shorten=True
                  ,MaxRow=20,MaxRows=20,search=''
                  ):
@@ -261,6 +261,7 @@ class Elems:
         self.MaxRow    = MaxRow
         self.MaxRows   = MaxRows
         self._search   = search.strip()
+        self._langs    = langs
         if self._blocks:
             self.Success = True
         else:
@@ -472,12 +473,14 @@ class Elems:
                     block._text += ')'
             
     def trash(self):
+        f = '[MClient] plugins.multitrancom.elems.Elems.trash'
+        patterns = ['|',';',':','(',')','-->','⇄','точно','все формы']
+        if self._langs:
+            patterns += list(self._langs)
+        else:
+            sh.com.empty(f)
         self._blocks = [block for block in self._blocks \
-                        if not block._text in ('|',';',':','(',')'
-                                              ,'English','Russian'
-                                              ,'Английский','Русский'
-                                              ,'-->','точно','все формы'
-                                              )
+                        if not block._text in patterns
                        ]
     
     def add_space(self):

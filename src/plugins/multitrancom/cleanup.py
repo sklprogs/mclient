@@ -72,41 +72,6 @@ class CleanUp:
                                         ,'</a><strong>'
                                         )
     
-    def langs(self):
-        self._text = self._text.replace ('<a href="/m.exe?a=256">Русский</a>'
-                                        ,''
-                                        )
-        self._text = self._text.replace ('</a>Русский <a href'
-                                        ,'</a><a href'
-                                        )
-        self._text = self._text.replace ('</a> Английский<p>'
-                                        ,'</a><p>'
-                                        )
-        ''' Do not set a closing tag here; it can be both <p> and <div>.
-            The space before '<' can be either missing or present.
-        '''
-        self._text = self._text.replace ('>⇄</a> Немецкий <'
-                                        ,'></a><'
-                                        )
-        self._text = self._text.replace ('>⇄</a> Немецкий<'
-                                        ,'></a><'
-                                        )
-        self._text = self._text.replace ('>Немецкий</a> <div id="suggest">'
-                                        ,'></a><div id="suggest">'
-                                        )
-        self._text = self._text.replace ('>Словари</a>Немецкий <a href'
-                                        ,'></a><a href'
-                                        )
-        self._text = self._text.replace ('class="phraselist2"><b>Немецкий</b>'
-                                        ,'class="phraselist2">'
-                                        )
-        self._text = self._text.replace ('class="phraselist1"><b>English</b></td>'
-                                        ,'class="phraselist1"></td>'
-                                        )
-        self._text = self._text.replace ('class="phraselist1"><b>Russian</b></td>'
-                                        ,'class="phraselist1"></td>'
-                                        )
-    
     def no_matches(self):
         if 'Не найдено<p>' in self._text:
             self._text = ''
@@ -190,7 +155,6 @@ class CleanUp:
         if self._text:
             self.decode_entities()
             self.trash()
-            self.langs()
             self.common()
             self.sep_words()
             self.no_matches()
