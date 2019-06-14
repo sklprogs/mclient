@@ -188,6 +188,9 @@ class Hotkeys:
             key = key.replace ('ButtonRelease-3'
                               ,_('Right mouse button')
                               )
+            key = key.replace ('space'
+                              ,_('Space')
+                              )
             key = key.replace('grave','~')
             # Left and right Alt and Shift are usually interchangeable
             key = key.replace('Alt_R','Alt_L')

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-15 00:57+0300\n"
-"PO-Revision-Date: 2019-06-15 00:57+0300\n"
+"POT-Creation-Date: 2019-06-15 01:07+0300\n"
+"PO-Revision-Date: 2019-06-15 01:08+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -72,45 +72,45 @@ msgstr ""
 #: /home/pete/bin/mclient/src/plugins/stardict/get.py:536
 #: /home/pete/bin/mclient/src/plugins/stardict/get.py:546
 #: /home/pete/bin/mclient/src/plugins/stardict/get.py:552
-#: /home/pete/bin/mclient/src/shared.py:439
-#: /home/pete/bin/mclient/src/shared.py:501
-#: /home/pete/bin/mclient/src/shared.py:536
-#: /home/pete/bin/mclient/src/shared.py:568
-#: /home/pete/bin/mclient/src/shared.py:862
-#: /home/pete/bin/mclient/src/shared.py:926
-#: /home/pete/bin/mclient/src/shared.py:1530
-#: /home/pete/bin/mclient/src/shared.py:1666
-#: /home/pete/bin/mclient/src/shared.py:1682
-#: /home/pete/bin/mclient/src/shared.py:1726
-#: /home/pete/bin/mclient/src/shared.py:1739
-#: /home/pete/bin/mclient/src/shared.py:1786
-#: /home/pete/bin/mclient/src/shared.py:1799
-#: /home/pete/bin/mclient/src/shared.py:1842
-#: /home/pete/bin/mclient/src/shared.py:1852
-#: /home/pete/bin/mclient/src/shared.py:1954
-#: /home/pete/bin/mclient/src/shared.py:1998
-#: /home/pete/bin/mclient/src/shared.py:2028
-#: /home/pete/bin/mclient/src/shared.py:2265
-#: /home/pete/bin/mclient/src/shared.py:2377
-#: /home/pete/bin/mclient/src/shared.py:2465
-#: /home/pete/bin/mclient/src/shared.py:2478
-#: /home/pete/bin/mclient/src/shared.py:2515
-#: /home/pete/bin/mclient/src/shared.py:2521
-#: /home/pete/bin/mclient/src/shared.py:2693
-#: /home/pete/bin/mclient/src/shared.py:2753
-#: /home/pete/bin/mclient/src/shared.py:2776
-#: /home/pete/bin/mclient/src/shared.py:2792
-#: /home/pete/bin/mclient/src/shared.py:2805
-#: /home/pete/bin/mclient/src/shared.py:2835
-#: /home/pete/bin/mclient/src/shared.py:2990
-#: /home/pete/bin/mclient/src/shared.py:3314
-#: /home/pete/bin/mclient/src/shared.py:4075
-#: /home/pete/bin/mclient/src/shared.py:4121
-#: /home/pete/bin/mclient/src/shared.py:4277
-#: /home/pete/bin/mclient/src/shared.py:4396
-#: /home/pete/bin/mclient/src/shared.py:4401
-#: /home/pete/bin/mclient/src/shared.py:4406
-#: /home/pete/bin/mclient/src/shared.py:4850
+#: /home/pete/bin/mclient/src/shared.py:442
+#: /home/pete/bin/mclient/src/shared.py:504
+#: /home/pete/bin/mclient/src/shared.py:539
+#: /home/pete/bin/mclient/src/shared.py:571
+#: /home/pete/bin/mclient/src/shared.py:865
+#: /home/pete/bin/mclient/src/shared.py:929
+#: /home/pete/bin/mclient/src/shared.py:1533
+#: /home/pete/bin/mclient/src/shared.py:1669
+#: /home/pete/bin/mclient/src/shared.py:1685
+#: /home/pete/bin/mclient/src/shared.py:1729
+#: /home/pete/bin/mclient/src/shared.py:1742
+#: /home/pete/bin/mclient/src/shared.py:1789
+#: /home/pete/bin/mclient/src/shared.py:1802
+#: /home/pete/bin/mclient/src/shared.py:1845
+#: /home/pete/bin/mclient/src/shared.py:1855
+#: /home/pete/bin/mclient/src/shared.py:1957
+#: /home/pete/bin/mclient/src/shared.py:2001
+#: /home/pete/bin/mclient/src/shared.py:2031
+#: /home/pete/bin/mclient/src/shared.py:2268
+#: /home/pete/bin/mclient/src/shared.py:2380
+#: /home/pete/bin/mclient/src/shared.py:2468
+#: /home/pete/bin/mclient/src/shared.py:2481
+#: /home/pete/bin/mclient/src/shared.py:2518
+#: /home/pete/bin/mclient/src/shared.py:2524
+#: /home/pete/bin/mclient/src/shared.py:2696
+#: /home/pete/bin/mclient/src/shared.py:2756
+#: /home/pete/bin/mclient/src/shared.py:2779
+#: /home/pete/bin/mclient/src/shared.py:2795
+#: /home/pete/bin/mclient/src/shared.py:2808
+#: /home/pete/bin/mclient/src/shared.py:2838
+#: /home/pete/bin/mclient/src/shared.py:2993
+#: /home/pete/bin/mclient/src/shared.py:3317
+#: /home/pete/bin/mclient/src/shared.py:4078
+#: /home/pete/bin/mclient/src/shared.py:4124
+#: /home/pete/bin/mclient/src/shared.py:4280
+#: /home/pete/bin/mclient/src/shared.py:4399
+#: /home/pete/bin/mclient/src/shared.py:4404
+#: /home/pete/bin/mclient/src/shared.py:4409
+#: /home/pete/bin/mclient/src/shared.py:4853
 #: /home/pete/bin/mclient/src/sharedGUI.py:465
 #: /home/pete/bin/mclient/src/sharedGUI.py:573
 #: /home/pete/bin/mclient/src/sharedGUI.py:577
@@ -188,42 +188,42 @@ msgstr "Таблица для отладки:"
 #: /home/pete/bin/mclient/src/plugins/stardict/cleanup.py:96
 #: /home/pete/bin/mclient/src/plugins/stardict/cleanup.py:310
 #: /home/pete/bin/mclient/src/plugins/stardict/get.py:310
-#: /home/pete/bin/mclient/src/shared.py:339
-#: /home/pete/bin/mclient/src/shared.py:344
-#: /home/pete/bin/mclient/src/shared.py:353
-#: /home/pete/bin/mclient/src/shared.py:362
-#: /home/pete/bin/mclient/src/shared.py:371
-#: /home/pete/bin/mclient/src/shared.py:431
-#: /home/pete/bin/mclient/src/shared.py:447
-#: /home/pete/bin/mclient/src/shared.py:451
-#: /home/pete/bin/mclient/src/shared.py:467
-#: /home/pete/bin/mclient/src/shared.py:485
-#: /home/pete/bin/mclient/src/shared.py:511
-#: /home/pete/bin/mclient/src/shared.py:662
-#: /home/pete/bin/mclient/src/shared.py:685
-#: /home/pete/bin/mclient/src/shared.py:792
-#: /home/pete/bin/mclient/src/shared.py:802
-#: /home/pete/bin/mclient/src/shared.py:880
-#: /home/pete/bin/mclient/src/shared.py:903
-#: /home/pete/bin/mclient/src/shared.py:931
-#: /home/pete/bin/mclient/src/shared.py:1649
-#: /home/pete/bin/mclient/src/shared.py:1673
-#: /home/pete/bin/mclient/src/shared.py:1689
-#: /home/pete/bin/mclient/src/shared.py:1717
-#: /home/pete/bin/mclient/src/shared.py:1860
-#: /home/pete/bin/mclient/src/shared.py:1866
-#: /home/pete/bin/mclient/src/shared.py:1966
-#: /home/pete/bin/mclient/src/shared.py:1970
-#: /home/pete/bin/mclient/src/shared.py:1982
-#: /home/pete/bin/mclient/src/shared.py:2132
-#: /home/pete/bin/mclient/src/shared.py:2156
-#: /home/pete/bin/mclient/src/shared.py:2461
-#: /home/pete/bin/mclient/src/shared.py:2610
-#: /home/pete/bin/mclient/src/shared.py:2782
-#: /home/pete/bin/mclient/src/shared.py:2815
-#: /home/pete/bin/mclient/src/shared.py:4361
-#: /home/pete/bin/mclient/src/shared.py:4381
-#: /home/pete/bin/mclient/src/shared.py:4432
+#: /home/pete/bin/mclient/src/shared.py:342
+#: /home/pete/bin/mclient/src/shared.py:347
+#: /home/pete/bin/mclient/src/shared.py:356
+#: /home/pete/bin/mclient/src/shared.py:365
+#: /home/pete/bin/mclient/src/shared.py:374
+#: /home/pete/bin/mclient/src/shared.py:434
+#: /home/pete/bin/mclient/src/shared.py:450
+#: /home/pete/bin/mclient/src/shared.py:454
+#: /home/pete/bin/mclient/src/shared.py:470
+#: /home/pete/bin/mclient/src/shared.py:488
+#: /home/pete/bin/mclient/src/shared.py:514
+#: /home/pete/bin/mclient/src/shared.py:665
+#: /home/pete/bin/mclient/src/shared.py:688
+#: /home/pete/bin/mclient/src/shared.py:795
+#: /home/pete/bin/mclient/src/shared.py:805
+#: /home/pete/bin/mclient/src/shared.py:883
+#: /home/pete/bin/mclient/src/shared.py:906
+#: /home/pete/bin/mclient/src/shared.py:934
+#: /home/pete/bin/mclient/src/shared.py:1652
+#: /home/pete/bin/mclient/src/shared.py:1676
+#: /home/pete/bin/mclient/src/shared.py:1692
+#: /home/pete/bin/mclient/src/shared.py:1720
+#: /home/pete/bin/mclient/src/shared.py:1863
+#: /home/pete/bin/mclient/src/shared.py:1869
+#: /home/pete/bin/mclient/src/shared.py:1969
+#: /home/pete/bin/mclient/src/shared.py:1973
+#: /home/pete/bin/mclient/src/shared.py:1985
+#: /home/pete/bin/mclient/src/shared.py:2135
+#: /home/pete/bin/mclient/src/shared.py:2159
+#: /home/pete/bin/mclient/src/shared.py:2464
+#: /home/pete/bin/mclient/src/shared.py:2613
+#: /home/pete/bin/mclient/src/shared.py:2785
+#: /home/pete/bin/mclient/src/shared.py:2818
+#: /home/pete/bin/mclient/src/shared.py:4364
+#: /home/pete/bin/mclient/src/shared.py:4384
+#: /home/pete/bin/mclient/src/shared.py:4435
 #: /home/pete/bin/mclient/src/sharedGUI.py:35
 #: /home/pete/bin/mclient/src/sharedGUI.py:81
 #: /home/pete/bin/mclient/src/sharedGUI.py:109
@@ -302,8 +302,8 @@ msgstr "Не удалось найти: %s"
 #: /home/pete/bin/mclient/src/gui.py:1140
 #: /home/pete/bin/mclient/src/manager.py:180
 #: /home/pete/bin/mclient/src/mclient.py:2452
-#: /home/pete/bin/mclient/src/shared.py:452
-#: /home/pete/bin/mclient/src/shared.py:1971
+#: /home/pete/bin/mclient/src/shared.py:455
+#: /home/pete/bin/mclient/src/shared.py:1974
 #: /home/pete/bin/mclient/src/sharedGUI.py:1595
 #: /home/pete/bin/mclient/src/sharedGUI.py:2112
 #: /home/pete/bin/mclient/src/sharedGUI.py:2835
@@ -371,172 +371,172 @@ msgstr ""
 #: /home/pete/bin/mclient/src/plugins/stardict/get.py:259
 #: /home/pete/bin/mclient/src/plugins/stardict/tags.py:106
 #: /home/pete/bin/mclient/src/shared.py:102
-#: /home/pete/bin/mclient/src/shared.py:402
-#: /home/pete/bin/mclient/src/shared.py:416
-#: /home/pete/bin/mclient/src/shared.py:471
-#: /home/pete/bin/mclient/src/shared.py:489
-#: /home/pete/bin/mclient/src/shared.py:511
-#: /home/pete/bin/mclient/src/shared.py:530
-#: /home/pete/bin/mclient/src/shared.py:580
-#: /home/pete/bin/mclient/src/shared.py:585
-#: /home/pete/bin/mclient/src/shared.py:599
-#: /home/pete/bin/mclient/src/shared.py:623
-#: /home/pete/bin/mclient/src/shared.py:642
-#: /home/pete/bin/mclient/src/shared.py:646
-#: /home/pete/bin/mclient/src/shared.py:669
-#: /home/pete/bin/mclient/src/shared.py:692
-#: /home/pete/bin/mclient/src/shared.py:739
-#: /home/pete/bin/mclient/src/shared.py:743
-#: /home/pete/bin/mclient/src/shared.py:762
-#: /home/pete/bin/mclient/src/shared.py:774
-#: /home/pete/bin/mclient/src/shared.py:797
-#: /home/pete/bin/mclient/src/shared.py:821
-#: /home/pete/bin/mclient/src/shared.py:832
-#: /home/pete/bin/mclient/src/shared.py:843
-#: /home/pete/bin/mclient/src/shared.py:853
-#: /home/pete/bin/mclient/src/shared.py:885
-#: /home/pete/bin/mclient/src/shared.py:915
-#: /home/pete/bin/mclient/src/shared.py:1077
-#: /home/pete/bin/mclient/src/shared.py:1121
-#: /home/pete/bin/mclient/src/shared.py:1227
-#: /home/pete/bin/mclient/src/shared.py:1252
-#: /home/pete/bin/mclient/src/shared.py:1264
-#: /home/pete/bin/mclient/src/shared.py:1459
-#: /home/pete/bin/mclient/src/shared.py:1464
-#: /home/pete/bin/mclient/src/shared.py:1477
-#: /home/pete/bin/mclient/src/shared.py:1481
-#: /home/pete/bin/mclient/src/shared.py:1495
-#: /home/pete/bin/mclient/src/shared.py:1500
-#: /home/pete/bin/mclient/src/shared.py:1514
-#: /home/pete/bin/mclient/src/shared.py:1518
-#: /home/pete/bin/mclient/src/shared.py:1534
-#: /home/pete/bin/mclient/src/shared.py:1549
-#: /home/pete/bin/mclient/src/shared.py:1581
-#: /home/pete/bin/mclient/src/shared.py:1597
-#: /home/pete/bin/mclient/src/shared.py:1614
-#: /home/pete/bin/mclient/src/shared.py:1618
-#: /home/pete/bin/mclient/src/shared.py:1654
-#: /home/pete/bin/mclient/src/shared.py:1659
-#: /home/pete/bin/mclient/src/shared.py:1703
-#: /home/pete/bin/mclient/src/shared.py:1708
-#: /home/pete/bin/mclient/src/shared.py:1730
-#: /home/pete/bin/mclient/src/shared.py:1746
-#: /home/pete/bin/mclient/src/shared.py:1750
-#: /home/pete/bin/mclient/src/shared.py:1763
-#: /home/pete/bin/mclient/src/shared.py:1768
-#: /home/pete/bin/mclient/src/shared.py:1777
-#: /home/pete/bin/mclient/src/shared.py:1790
-#: /home/pete/bin/mclient/src/shared.py:1806
-#: /home/pete/bin/mclient/src/shared.py:1813
-#: /home/pete/bin/mclient/src/shared.py:1848
-#: /home/pete/bin/mclient/src/shared.py:1948
-#: /home/pete/bin/mclient/src/shared.py:1986
-#: /home/pete/bin/mclient/src/shared.py:2002
-#: /home/pete/bin/mclient/src/shared.py:2040
-#: /home/pete/bin/mclient/src/shared.py:2044
-#: /home/pete/bin/mclient/src/shared.py:2058
-#: /home/pete/bin/mclient/src/shared.py:2094
-#: /home/pete/bin/mclient/src/shared.py:2111
-#: /home/pete/bin/mclient/src/shared.py:2115
-#: /home/pete/bin/mclient/src/shared.py:2139
-#: /home/pete/bin/mclient/src/shared.py:2163
-#: /home/pete/bin/mclient/src/shared.py:2214
-#: /home/pete/bin/mclient/src/shared.py:2218
-#: /home/pete/bin/mclient/src/shared.py:2237
-#: /home/pete/bin/mclient/src/shared.py:2249
-#: /home/pete/bin/mclient/src/shared.py:2276
-#: /home/pete/bin/mclient/src/shared.py:2287
-#: /home/pete/bin/mclient/src/shared.py:2322
-#: /home/pete/bin/mclient/src/shared.py:2347
-#: /home/pete/bin/mclient/src/shared.py:2358
-#: /home/pete/bin/mclient/src/shared.py:2370
-#: /home/pete/bin/mclient/src/shared.py:2383
-#: /home/pete/bin/mclient/src/shared.py:2388
-#: /home/pete/bin/mclient/src/shared.py:2410
-#: /home/pete/bin/mclient/src/shared.py:2437
-#: /home/pete/bin/mclient/src/shared.py:2452
-#: /home/pete/bin/mclient/src/shared.py:2472
-#: /home/pete/bin/mclient/src/shared.py:2485
-#: /home/pete/bin/mclient/src/shared.py:2526
-#: /home/pete/bin/mclient/src/shared.py:2554
-#: /home/pete/bin/mclient/src/shared.py:2559
-#: /home/pete/bin/mclient/src/shared.py:2570
-#: /home/pete/bin/mclient/src/shared.py:2575
-#: /home/pete/bin/mclient/src/shared.py:2706
-#: /home/pete/bin/mclient/src/shared.py:2721
-#: /home/pete/bin/mclient/src/shared.py:2759
-#: /home/pete/bin/mclient/src/shared.py:2770
-#: /home/pete/bin/mclient/src/shared.py:2797
-#: /home/pete/bin/mclient/src/shared.py:2841
-#: /home/pete/bin/mclient/src/shared.py:2853
-#: /home/pete/bin/mclient/src/shared.py:2898
-#: /home/pete/bin/mclient/src/shared.py:2904
-#: /home/pete/bin/mclient/src/shared.py:2914
-#: /home/pete/bin/mclient/src/shared.py:2946
-#: /home/pete/bin/mclient/src/shared.py:2950
-#: /home/pete/bin/mclient/src/shared.py:2964
-#: /home/pete/bin/mclient/src/shared.py:2986
-#: /home/pete/bin/mclient/src/shared.py:3017
-#: /home/pete/bin/mclient/src/shared.py:3022
-#: /home/pete/bin/mclient/src/shared.py:3048
-#: /home/pete/bin/mclient/src/shared.py:3053
-#: /home/pete/bin/mclient/src/shared.py:3270
-#: /home/pete/bin/mclient/src/shared.py:3289
-#: /home/pete/bin/mclient/src/shared.py:3328
-#: /home/pete/bin/mclient/src/shared.py:3365
-#: /home/pete/bin/mclient/src/shared.py:3375
-#: /home/pete/bin/mclient/src/shared.py:3408
-#: /home/pete/bin/mclient/src/shared.py:3427
-#: /home/pete/bin/mclient/src/shared.py:3437
-#: /home/pete/bin/mclient/src/shared.py:3456
-#: /home/pete/bin/mclient/src/shared.py:3475
-#: /home/pete/bin/mclient/src/shared.py:3490
-#: /home/pete/bin/mclient/src/shared.py:3505
-#: /home/pete/bin/mclient/src/shared.py:3525
-#: /home/pete/bin/mclient/src/shared.py:3537
-#: /home/pete/bin/mclient/src/shared.py:3551
-#: /home/pete/bin/mclient/src/shared.py:3565
-#: /home/pete/bin/mclient/src/shared.py:3580
-#: /home/pete/bin/mclient/src/shared.py:3611
-#: /home/pete/bin/mclient/src/shared.py:3615
-#: /home/pete/bin/mclient/src/shared.py:3619
-#: /home/pete/bin/mclient/src/shared.py:3640
-#: /home/pete/bin/mclient/src/shared.py:3645
-#: /home/pete/bin/mclient/src/shared.py:3663
-#: /home/pete/bin/mclient/src/shared.py:3688
-#: /home/pete/bin/mclient/src/shared.py:3699
-#: /home/pete/bin/mclient/src/shared.py:3712
-#: /home/pete/bin/mclient/src/shared.py:3727
-#: /home/pete/bin/mclient/src/shared.py:3743
-#: /home/pete/bin/mclient/src/shared.py:3760
-#: /home/pete/bin/mclient/src/shared.py:4020
-#: /home/pete/bin/mclient/src/shared.py:4029
-#: /home/pete/bin/mclient/src/shared.py:4038
-#: /home/pete/bin/mclient/src/shared.py:4099
-#: /home/pete/bin/mclient/src/shared.py:4148
-#: /home/pete/bin/mclient/src/shared.py:4161
-#: /home/pete/bin/mclient/src/shared.py:4258
-#: /home/pete/bin/mclient/src/shared.py:4282
-#: /home/pete/bin/mclient/src/shared.py:4299
-#: /home/pete/bin/mclient/src/shared.py:4304
-#: /home/pete/bin/mclient/src/shared.py:4322
-#: /home/pete/bin/mclient/src/shared.py:4326
-#: /home/pete/bin/mclient/src/shared.py:4346
-#: /home/pete/bin/mclient/src/shared.py:4366
-#: /home/pete/bin/mclient/src/shared.py:4386
-#: /home/pete/bin/mclient/src/shared.py:4418
-#: /home/pete/bin/mclient/src/shared.py:4437
-#: /home/pete/bin/mclient/src/shared.py:4451
-#: /home/pete/bin/mclient/src/shared.py:4490
-#: /home/pete/bin/mclient/src/shared.py:4499
-#: /home/pete/bin/mclient/src/shared.py:4547
-#: /home/pete/bin/mclient/src/shared.py:4559
-#: /home/pete/bin/mclient/src/shared.py:4577
-#: /home/pete/bin/mclient/src/shared.py:4716
-#: /home/pete/bin/mclient/src/shared.py:4806
-#: /home/pete/bin/mclient/src/shared.py:4810
-#: /home/pete/bin/mclient/src/shared.py:4817
-#: /home/pete/bin/mclient/src/shared.py:4823
+#: /home/pete/bin/mclient/src/shared.py:405
+#: /home/pete/bin/mclient/src/shared.py:419
+#: /home/pete/bin/mclient/src/shared.py:474
+#: /home/pete/bin/mclient/src/shared.py:492
+#: /home/pete/bin/mclient/src/shared.py:514
+#: /home/pete/bin/mclient/src/shared.py:533
+#: /home/pete/bin/mclient/src/shared.py:583
+#: /home/pete/bin/mclient/src/shared.py:588
+#: /home/pete/bin/mclient/src/shared.py:602
+#: /home/pete/bin/mclient/src/shared.py:626
+#: /home/pete/bin/mclient/src/shared.py:645
+#: /home/pete/bin/mclient/src/shared.py:649
+#: /home/pete/bin/mclient/src/shared.py:672
+#: /home/pete/bin/mclient/src/shared.py:695
+#: /home/pete/bin/mclient/src/shared.py:742
+#: /home/pete/bin/mclient/src/shared.py:746
+#: /home/pete/bin/mclient/src/shared.py:765
+#: /home/pete/bin/mclient/src/shared.py:777
+#: /home/pete/bin/mclient/src/shared.py:800
+#: /home/pete/bin/mclient/src/shared.py:824
+#: /home/pete/bin/mclient/src/shared.py:835
+#: /home/pete/bin/mclient/src/shared.py:846
+#: /home/pete/bin/mclient/src/shared.py:856
+#: /home/pete/bin/mclient/src/shared.py:888
+#: /home/pete/bin/mclient/src/shared.py:918
+#: /home/pete/bin/mclient/src/shared.py:1080
+#: /home/pete/bin/mclient/src/shared.py:1124
+#: /home/pete/bin/mclient/src/shared.py:1230
+#: /home/pete/bin/mclient/src/shared.py:1255
+#: /home/pete/bin/mclient/src/shared.py:1267
+#: /home/pete/bin/mclient/src/shared.py:1462
+#: /home/pete/bin/mclient/src/shared.py:1467
+#: /home/pete/bin/mclient/src/shared.py:1480
+#: /home/pete/bin/mclient/src/shared.py:1484
+#: /home/pete/bin/mclient/src/shared.py:1498
+#: /home/pete/bin/mclient/src/shared.py:1503
+#: /home/pete/bin/mclient/src/shared.py:1517
+#: /home/pete/bin/mclient/src/shared.py:1521
+#: /home/pete/bin/mclient/src/shared.py:1537
+#: /home/pete/bin/mclient/src/shared.py:1552
+#: /home/pete/bin/mclient/src/shared.py:1584
+#: /home/pete/bin/mclient/src/shared.py:1600
+#: /home/pete/bin/mclient/src/shared.py:1617
+#: /home/pete/bin/mclient/src/shared.py:1621
+#: /home/pete/bin/mclient/src/shared.py:1657
+#: /home/pete/bin/mclient/src/shared.py:1662
+#: /home/pete/bin/mclient/src/shared.py:1706
+#: /home/pete/bin/mclient/src/shared.py:1711
+#: /home/pete/bin/mclient/src/shared.py:1733
+#: /home/pete/bin/mclient/src/shared.py:1749
+#: /home/pete/bin/mclient/src/shared.py:1753
+#: /home/pete/bin/mclient/src/shared.py:1766
+#: /home/pete/bin/mclient/src/shared.py:1771
+#: /home/pete/bin/mclient/src/shared.py:1780
+#: /home/pete/bin/mclient/src/shared.py:1793
+#: /home/pete/bin/mclient/src/shared.py:1809
+#: /home/pete/bin/mclient/src/shared.py:1816
+#: /home/pete/bin/mclient/src/shared.py:1851
+#: /home/pete/bin/mclient/src/shared.py:1951
+#: /home/pete/bin/mclient/src/shared.py:1989
+#: /home/pete/bin/mclient/src/shared.py:2005
+#: /home/pete/bin/mclient/src/shared.py:2043
+#: /home/pete/bin/mclient/src/shared.py:2047
+#: /home/pete/bin/mclient/src/shared.py:2061
+#: /home/pete/bin/mclient/src/shared.py:2097
+#: /home/pete/bin/mclient/src/shared.py:2114
+#: /home/pete/bin/mclient/src/shared.py:2118
+#: /home/pete/bin/mclient/src/shared.py:2142
+#: /home/pete/bin/mclient/src/shared.py:2166
+#: /home/pete/bin/mclient/src/shared.py:2217
+#: /home/pete/bin/mclient/src/shared.py:2221
+#: /home/pete/bin/mclient/src/shared.py:2240
+#: /home/pete/bin/mclient/src/shared.py:2252
+#: /home/pete/bin/mclient/src/shared.py:2279
+#: /home/pete/bin/mclient/src/shared.py:2290
+#: /home/pete/bin/mclient/src/shared.py:2325
+#: /home/pete/bin/mclient/src/shared.py:2350
+#: /home/pete/bin/mclient/src/shared.py:2361
+#: /home/pete/bin/mclient/src/shared.py:2373
+#: /home/pete/bin/mclient/src/shared.py:2386
+#: /home/pete/bin/mclient/src/shared.py:2391
+#: /home/pete/bin/mclient/src/shared.py:2413
+#: /home/pete/bin/mclient/src/shared.py:2440
+#: /home/pete/bin/mclient/src/shared.py:2455
+#: /home/pete/bin/mclient/src/shared.py:2475
+#: /home/pete/bin/mclient/src/shared.py:2488
+#: /home/pete/bin/mclient/src/shared.py:2529
+#: /home/pete/bin/mclient/src/shared.py:2557
+#: /home/pete/bin/mclient/src/shared.py:2562
+#: /home/pete/bin/mclient/src/shared.py:2573
+#: /home/pete/bin/mclient/src/shared.py:2578
+#: /home/pete/bin/mclient/src/shared.py:2709
+#: /home/pete/bin/mclient/src/shared.py:2724
+#: /home/pete/bin/mclient/src/shared.py:2762
+#: /home/pete/bin/mclient/src/shared.py:2773
+#: /home/pete/bin/mclient/src/shared.py:2800
+#: /home/pete/bin/mclient/src/shared.py:2844
+#: /home/pete/bin/mclient/src/shared.py:2856
+#: /home/pete/bin/mclient/src/shared.py:2901
+#: /home/pete/bin/mclient/src/shared.py:2907
+#: /home/pete/bin/mclient/src/shared.py:2917
+#: /home/pete/bin/mclient/src/shared.py:2949
+#: /home/pete/bin/mclient/src/shared.py:2953
+#: /home/pete/bin/mclient/src/shared.py:2967
+#: /home/pete/bin/mclient/src/shared.py:2989
+#: /home/pete/bin/mclient/src/shared.py:3020
+#: /home/pete/bin/mclient/src/shared.py:3025
+#: /home/pete/bin/mclient/src/shared.py:3051
+#: /home/pete/bin/mclient/src/shared.py:3056
+#: /home/pete/bin/mclient/src/shared.py:3273
+#: /home/pete/bin/mclient/src/shared.py:3292
+#: /home/pete/bin/mclient/src/shared.py:3331
+#: /home/pete/bin/mclient/src/shared.py:3368
+#: /home/pete/bin/mclient/src/shared.py:3378
+#: /home/pete/bin/mclient/src/shared.py:3411
+#: /home/pete/bin/mclient/src/shared.py:3430
+#: /home/pete/bin/mclient/src/shared.py:3440
+#: /home/pete/bin/mclient/src/shared.py:3459
+#: /home/pete/bin/mclient/src/shared.py:3478
+#: /home/pete/bin/mclient/src/shared.py:3493
+#: /home/pete/bin/mclient/src/shared.py:3508
+#: /home/pete/bin/mclient/src/shared.py:3528
+#: /home/pete/bin/mclient/src/shared.py:3540
+#: /home/pete/bin/mclient/src/shared.py:3554
+#: /home/pete/bin/mclient/src/shared.py:3568
+#: /home/pete/bin/mclient/src/shared.py:3583
+#: /home/pete/bin/mclient/src/shared.py:3614
+#: /home/pete/bin/mclient/src/shared.py:3618
+#: /home/pete/bin/mclient/src/shared.py:3622
+#: /home/pete/bin/mclient/src/shared.py:3643
+#: /home/pete/bin/mclient/src/shared.py:3648
+#: /home/pete/bin/mclient/src/shared.py:3666
+#: /home/pete/bin/mclient/src/shared.py:3691
+#: /home/pete/bin/mclient/src/shared.py:3702
+#: /home/pete/bin/mclient/src/shared.py:3715
+#: /home/pete/bin/mclient/src/shared.py:3730
+#: /home/pete/bin/mclient/src/shared.py:3746
+#: /home/pete/bin/mclient/src/shared.py:3763
+#: /home/pete/bin/mclient/src/shared.py:4023
+#: /home/pete/bin/mclient/src/shared.py:4032
+#: /home/pete/bin/mclient/src/shared.py:4041
+#: /home/pete/bin/mclient/src/shared.py:4102
+#: /home/pete/bin/mclient/src/shared.py:4151
+#: /home/pete/bin/mclient/src/shared.py:4164
+#: /home/pete/bin/mclient/src/shared.py:4261
+#: /home/pete/bin/mclient/src/shared.py:4285
+#: /home/pete/bin/mclient/src/shared.py:4302
+#: /home/pete/bin/mclient/src/shared.py:4307
+#: /home/pete/bin/mclient/src/shared.py:4325
+#: /home/pete/bin/mclient/src/shared.py:4329
+#: /home/pete/bin/mclient/src/shared.py:4349
+#: /home/pete/bin/mclient/src/shared.py:4369
+#: /home/pete/bin/mclient/src/shared.py:4389
+#: /home/pete/bin/mclient/src/shared.py:4421
+#: /home/pete/bin/mclient/src/shared.py:4440
+#: /home/pete/bin/mclient/src/shared.py:4454
+#: /home/pete/bin/mclient/src/shared.py:4493
+#: /home/pete/bin/mclient/src/shared.py:4502
+#: /home/pete/bin/mclient/src/shared.py:4550
+#: /home/pete/bin/mclient/src/shared.py:4562
+#: /home/pete/bin/mclient/src/shared.py:4580
+#: /home/pete/bin/mclient/src/shared.py:4719
+#: /home/pete/bin/mclient/src/shared.py:4809
+#: /home/pete/bin/mclient/src/shared.py:4813
+#: /home/pete/bin/mclient/src/shared.py:4820
+#: /home/pete/bin/mclient/src/shared.py:4826
 #: /home/pete/bin/mclient/src/sharedGUI.py:186
 #: /home/pete/bin/mclient/src/sharedGUI.py:190
 #: /home/pete/bin/mclient/src/sharedGUI.py:471
@@ -615,16 +615,16 @@ msgstr "Удаление записей статьи №%d из %s"
 #: /home/pete/bin/mclient/src/mclient.py:2344
 #: /home/pete/bin/mclient/src/mclient.py:2353
 #: /home/pete/bin/mclient/src/plugins/multitrancom/pairs.py:2764
-#: /home/pete/bin/mclient/src/shared.py:600
-#: /home/pete/bin/mclient/src/shared.py:803
-#: /home/pete/bin/mclient/src/shared.py:916
-#: /home/pete/bin/mclient/src/shared.py:1582
-#: /home/pete/bin/mclient/src/shared.py:2059
-#: /home/pete/bin/mclient/src/shared.py:2722
-#: /home/pete/bin/mclient/src/shared.py:2798
-#: /home/pete/bin/mclient/src/shared.py:3689
-#: /home/pete/bin/mclient/src/shared.py:4323
-#: /home/pete/bin/mclient/src/shared.py:4500
+#: /home/pete/bin/mclient/src/shared.py:603
+#: /home/pete/bin/mclient/src/shared.py:806
+#: /home/pete/bin/mclient/src/shared.py:919
+#: /home/pete/bin/mclient/src/shared.py:1585
+#: /home/pete/bin/mclient/src/shared.py:2062
+#: /home/pete/bin/mclient/src/shared.py:2725
+#: /home/pete/bin/mclient/src/shared.py:2801
+#: /home/pete/bin/mclient/src/shared.py:3692
+#: /home/pete/bin/mclient/src/shared.py:4326
+#: /home/pete/bin/mclient/src/shared.py:4503
 #: /home/pete/bin/mclient/src/sharedGUI.py:148
 #: /home/pete/bin/mclient/src/sharedGUI.py:527
 #: /home/pete/bin/mclient/src/sharedGUI.py:2427
@@ -669,12 +669,12 @@ msgstr "Недопустимые входные данные!"
 #: /home/pete/bin/mclient/src/plugins/stardict/cleanup.py:432
 #: /home/pete/bin/mclient/src/plugins/stardict/get.py:55
 #: /home/pete/bin/mclient/src/plugins/stardict/get.py:455
-#: /home/pete/bin/mclient/src/shared.py:328
-#: /home/pete/bin/mclient/src/shared.py:2620
-#: /home/pete/bin/mclient/src/shared.py:3201
-#: /home/pete/bin/mclient/src/shared.py:3606
-#: /home/pete/bin/mclient/src/shared.py:3927
-#: /home/pete/bin/mclient/src/shared.py:3954
+#: /home/pete/bin/mclient/src/shared.py:331
+#: /home/pete/bin/mclient/src/shared.py:2623
+#: /home/pete/bin/mclient/src/shared.py:3204
+#: /home/pete/bin/mclient/src/shared.py:3609
+#: /home/pete/bin/mclient/src/shared.py:3930
+#: /home/pete/bin/mclient/src/shared.py:3957
 #: /home/pete/bin/mclient/src/sharedGUI.py:1112
 #: /home/pete/bin/mclient/src/sharedGUI.py:1152
 #: /home/pete/bin/mclient/src/sharedGUI.py:1735
@@ -707,7 +707,7 @@ msgstr "Источники"
 #: /home/pete/bin/mclient/src/plugins/multitrancom/utils.py:755
 #: /home/pete/bin/mclient/src/plugins/stardict/get.py:518
 #: /home/pete/bin/mclient/src/plugins/stardict/get.py:553
-#: /home/pete/bin/mclient/src/shared.py:4851
+#: /home/pete/bin/mclient/src/shared.py:4854
 #: /home/pete/bin/mclient/src/sharedGUI.py:1496
 #: /home/pete/bin/mclient/src/sharedGUI.py:1651
 #: /home/pete/bin/mclient/src/sharedGUI.py:2086
@@ -1191,19 +1191,19 @@ msgstr "Местоимение"
 #: /home/pete/bin/mclient/src/gui.py:1782
 #: /home/pete/bin/mclient/src/gui.py:1797
 #: /home/pete/bin/mclient/src/gui.py:1812
-#: /home/pete/bin/mclient/src/shared.py:643
-#: /home/pete/bin/mclient/src/shared.py:1650
-#: /home/pete/bin/mclient/src/shared.py:1983
-#: /home/pete/bin/mclient/src/shared.py:2112
-#: /home/pete/bin/mclient/src/shared.py:2707
-#: /home/pete/bin/mclient/src/shared.py:2899
-#: /home/pete/bin/mclient/src/shared.py:4021
-#: /home/pete/bin/mclient/src/shared.py:4100
-#: /home/pete/bin/mclient/src/shared.py:4305
-#: /home/pete/bin/mclient/src/shared.py:4327
-#: /home/pete/bin/mclient/src/shared.py:4347
-#: /home/pete/bin/mclient/src/shared.py:4811
-#: /home/pete/bin/mclient/src/shared.py:4824
+#: /home/pete/bin/mclient/src/shared.py:646
+#: /home/pete/bin/mclient/src/shared.py:1653
+#: /home/pete/bin/mclient/src/shared.py:1986
+#: /home/pete/bin/mclient/src/shared.py:2115
+#: /home/pete/bin/mclient/src/shared.py:2710
+#: /home/pete/bin/mclient/src/shared.py:2902
+#: /home/pete/bin/mclient/src/shared.py:4024
+#: /home/pete/bin/mclient/src/shared.py:4103
+#: /home/pete/bin/mclient/src/shared.py:4308
+#: /home/pete/bin/mclient/src/shared.py:4330
+#: /home/pete/bin/mclient/src/shared.py:4350
+#: /home/pete/bin/mclient/src/shared.py:4814
+#: /home/pete/bin/mclient/src/shared.py:4827
 #: /home/pete/bin/mclient/src/sharedGUI.py:862
 #: /home/pete/bin/mclient/src/sharedGUI.py:1093
 #: /home/pete/bin/mclient/src/sharedGUI.py:1881
@@ -1452,7 +1452,7 @@ msgstr ""
 "кнопок мыши и возможностях)"
 
 #: /home/pete/bin/mclient/src/logic.py:537
-#: /home/pete/bin/mclient/src/shared.py:2502
+#: /home/pete/bin/mclient/src/shared.py:2505
 msgid "The following sections and/or keys are missing:"
 msgstr "Отсутствуют следующие разделы и/или ключи:"
 
@@ -1485,7 +1485,7 @@ msgid "Unknown dictionary \"%s\"!"
 msgstr "Неизвестный словарь \"%s\"!"
 
 #: /home/pete/bin/mclient/src/logic.py:1298
-#: /home/pete/bin/mclient/src/shared.py:4259
+#: /home/pete/bin/mclient/src/shared.py:4262
 msgid "Unable to use unverified certificates!"
 msgstr "Не удается использовать неподтвержденные сертификаты!"
 
@@ -1604,7 +1604,7 @@ msgstr "Этот блок не содержит URL!"
 
 #: /home/pete/bin/mclient/src/mclient.py:2030
 #: /home/pete/bin/mclient/src/plugins/multitrancom/get.py:163
-#: /home/pete/bin/mclient/src/shared.py:4735
+#: /home/pete/bin/mclient/src/shared.py:4738
 #: /home/pete/bin/mclient/src/sharedGUI.py:2831
 #: /home/pete/bin/mclient/src/sharedGUI.py:2838
 #: /home/pete/bin/mclient/src/sharedGUI.py:2882
@@ -1647,13 +1647,13 @@ msgstr "Задать максимальное число столбцов: %d (�
 #: /home/pete/bin/mclient/src/plugins/multitrancom/utils.py:364
 #: /home/pete/bin/mclient/src/plugins/multitrancom/utils.py:573
 #: /home/pete/bin/mclient/src/plugins/stardict/get.py:311
-#: /home/pete/bin/mclient/src/shared.py:663
-#: /home/pete/bin/mclient/src/shared.py:686
-#: /home/pete/bin/mclient/src/shared.py:2133
-#: /home/pete/bin/mclient/src/shared.py:2157
-#: /home/pete/bin/mclient/src/shared.py:4362
-#: /home/pete/bin/mclient/src/shared.py:4382
-#: /home/pete/bin/mclient/src/shared.py:4433
+#: /home/pete/bin/mclient/src/shared.py:666
+#: /home/pete/bin/mclient/src/shared.py:689
+#: /home/pete/bin/mclient/src/shared.py:2136
+#: /home/pete/bin/mclient/src/shared.py:2160
+#: /home/pete/bin/mclient/src/shared.py:4365
+#: /home/pete/bin/mclient/src/shared.py:4385
+#: /home/pete/bin/mclient/src/shared.py:4436
 #: /home/pete/bin/mclient/src/sharedGUI.py:191
 #, python-format
 msgid "The condition \"%s\" is not observed!"
@@ -1688,9 +1688,9 @@ msgid "At least one column must be set!"
 msgstr "Необходимо задать хотя бы 1 столбец!"
 
 #: /home/pete/bin/mclient/src/mclient.py:2518
-#: /home/pete/bin/mclient/src/shared.py:2323
-#: /home/pete/bin/mclient/src/shared.py:3612
-#: /home/pete/bin/mclient/src/shared.py:3616
+#: /home/pete/bin/mclient/src/shared.py:2326
+#: /home/pete/bin/mclient/src/shared.py:3615
+#: /home/pete/bin/mclient/src/shared.py:3619
 #: /home/pete/bin/mclient/src/sharedGUI.py:143
 #: /home/pete/bin/mclient/src/sharedGUI.py:2126
 #: /home/pete/bin/mclient/src/sharedGUI.py:2180
@@ -1754,7 +1754,7 @@ msgstr "Поиск онлайн: \"%s\""
 
 #: /home/pete/bin/mclient/src/plugins/multitrancom/get.py:155
 #: /home/pete/bin/mclient/src/plugins/multitrancom/utils.py:78
-#: /home/pete/bin/mclient/src/shared.py:4278
+#: /home/pete/bin/mclient/src/shared.py:4281
 #, python-format
 msgid "[OK]: \"%s\""
 msgstr "[Успешно]: \"%s\""
@@ -15011,8 +15011,8 @@ msgstr "Зигула"
 #: /home/pete/bin/mclient/src/plugins/multitrancom/utils.py:104
 #: /home/pete/bin/mclient/src/plugins/multitrancom/utils.py:613
 #: /home/pete/bin/mclient/src/shared.py:103
-#: /home/pete/bin/mclient/src/shared.py:4717
-#: /home/pete/bin/mclient/src/shared.py:4807
+#: /home/pete/bin/mclient/src/shared.py:4720
+#: /home/pete/bin/mclient/src/shared.py:4810
 #: /home/pete/bin/mclient/src/sharedGUI.py:36
 #, python-format
 msgid "Wrong input data: \"%s\"!"
@@ -15199,35 +15199,39 @@ msgstr "Средняя кнопка мыши"
 msgid "Right mouse button"
 msgstr "Правая кнопка мыши"
 
-#: /home/pete/bin/mclient/src/shared.py:329
+#: /home/pete/bin/mclient/src/shared.py:192
+msgid "Space"
+msgstr "Пробел"
+
+#: /home/pete/bin/mclient/src/shared.py:332
 #, python-format
 msgid "Custom arguments: \"%s\""
 msgstr "Дополнительные параметры: \"%s\""
 
-#: /home/pete/bin/mclient/src/shared.py:340
-#: /home/pete/bin/mclient/src/shared.py:3018
-#: /home/pete/bin/mclient/src/shared.py:3049
+#: /home/pete/bin/mclient/src/shared.py:343
+#: /home/pete/bin/mclient/src/shared.py:3021
+#: /home/pete/bin/mclient/src/shared.py:3052
 #, python-format
 msgid "Failed to run \"%s\"!"
 msgstr "Не удалось запустить \"%s\"!"
 
-#: /home/pete/bin/mclient/src/shared.py:345
-#: /home/pete/bin/mclient/src/shared.py:432
-#: /home/pete/bin/mclient/src/shared.py:468
-#: /home/pete/bin/mclient/src/shared.py:486
-#: /home/pete/bin/mclient/src/shared.py:793
-#: /home/pete/bin/mclient/src/shared.py:1867
-#: /home/pete/bin/mclient/src/shared.py:3271
-#: /home/pete/bin/mclient/src/shared.py:3290
+#: /home/pete/bin/mclient/src/shared.py:348
+#: /home/pete/bin/mclient/src/shared.py:435
+#: /home/pete/bin/mclient/src/shared.py:471
+#: /home/pete/bin/mclient/src/shared.py:489
+#: /home/pete/bin/mclient/src/shared.py:796
+#: /home/pete/bin/mclient/src/shared.py:1870
+#: /home/pete/bin/mclient/src/shared.py:3274
+#: /home/pete/bin/mclient/src/shared.py:3293
 #: /home/pete/bin/mclient/src/sharedGUI.py:1164
 #: /home/pete/bin/mclient/src/sharedGUI.py:2565
 #: /home/pete/bin/mclient/src/sharedGUI.py:2823
 msgid "Not enough input data!"
 msgstr "Недостаточно входных данных!"
 
-#: /home/pete/bin/mclient/src/shared.py:354
-#: /home/pete/bin/mclient/src/shared.py:363
-#: /home/pete/bin/mclient/src/shared.py:372
+#: /home/pete/bin/mclient/src/shared.py:357
+#: /home/pete/bin/mclient/src/shared.py:366
+#: /home/pete/bin/mclient/src/shared.py:375
 msgid ""
 "Unable to open the file in an external program. You should probably check "
 "the file associations."
@@ -15235,101 +15239,101 @@ msgstr ""
 "Не удается открыть файл во внешней программе. Возможно, Вам стоит проверить "
 "ассоциации файлов."
 
-#: /home/pete/bin/mclient/src/shared.py:403
-#: /home/pete/bin/mclient/src/shared.py:417
-#: /home/pete/bin/mclient/src/shared.py:472
-#: /home/pete/bin/mclient/src/shared.py:490
-#: /home/pete/bin/mclient/src/shared.py:586
-#: /home/pete/bin/mclient/src/shared.py:647
-#: /home/pete/bin/mclient/src/shared.py:670
-#: /home/pete/bin/mclient/src/shared.py:693
-#: /home/pete/bin/mclient/src/shared.py:744
-#: /home/pete/bin/mclient/src/shared.py:763
-#: /home/pete/bin/mclient/src/shared.py:775
-#: /home/pete/bin/mclient/src/shared.py:822
-#: /home/pete/bin/mclient/src/shared.py:833
-#: /home/pete/bin/mclient/src/shared.py:844
-#: /home/pete/bin/mclient/src/shared.py:854
-#: /home/pete/bin/mclient/src/shared.py:886
-#: /home/pete/bin/mclient/src/shared.py:1465
-#: /home/pete/bin/mclient/src/shared.py:1482
-#: /home/pete/bin/mclient/src/shared.py:1501
-#: /home/pete/bin/mclient/src/shared.py:1519
-#: /home/pete/bin/mclient/src/shared.py:1535
-#: /home/pete/bin/mclient/src/shared.py:1550
-#: /home/pete/bin/mclient/src/shared.py:1598
-#: /home/pete/bin/mclient/src/shared.py:1619
-#: /home/pete/bin/mclient/src/shared.py:1709
-#: /home/pete/bin/mclient/src/shared.py:1731
-#: /home/pete/bin/mclient/src/shared.py:1751
-#: /home/pete/bin/mclient/src/shared.py:1769
-#: /home/pete/bin/mclient/src/shared.py:1791
-#: /home/pete/bin/mclient/src/shared.py:1814
-#: /home/pete/bin/mclient/src/shared.py:1949
-#: /home/pete/bin/mclient/src/shared.py:1987
-#: /home/pete/bin/mclient/src/shared.py:2003
-#: /home/pete/bin/mclient/src/shared.py:2045
-#: /home/pete/bin/mclient/src/shared.py:2116
-#: /home/pete/bin/mclient/src/shared.py:2140
-#: /home/pete/bin/mclient/src/shared.py:2164
-#: /home/pete/bin/mclient/src/shared.py:2219
-#: /home/pete/bin/mclient/src/shared.py:2238
-#: /home/pete/bin/mclient/src/shared.py:2250
-#: /home/pete/bin/mclient/src/shared.py:2288
-#: /home/pete/bin/mclient/src/shared.py:2348
-#: /home/pete/bin/mclient/src/shared.py:2359
-#: /home/pete/bin/mclient/src/shared.py:2371
-#: /home/pete/bin/mclient/src/shared.py:2389
-#: /home/pete/bin/mclient/src/shared.py:2411
-#: /home/pete/bin/mclient/src/shared.py:2438
-#: /home/pete/bin/mclient/src/shared.py:2453
-#: /home/pete/bin/mclient/src/shared.py:2473
-#: /home/pete/bin/mclient/src/shared.py:2527
-#: /home/pete/bin/mclient/src/shared.py:2560
-#: /home/pete/bin/mclient/src/shared.py:2576
-#: /home/pete/bin/mclient/src/shared.py:2771
-#: /home/pete/bin/mclient/src/shared.py:2842
-#: /home/pete/bin/mclient/src/shared.py:2854
-#: /home/pete/bin/mclient/src/shared.py:2905
-#: /home/pete/bin/mclient/src/shared.py:2915
-#: /home/pete/bin/mclient/src/shared.py:2951
-#: /home/pete/bin/mclient/src/shared.py:2965
-#: /home/pete/bin/mclient/src/shared.py:3023
-#: /home/pete/bin/mclient/src/shared.py:3054
-#: /home/pete/bin/mclient/src/shared.py:3329
-#: /home/pete/bin/mclient/src/shared.py:3366
-#: /home/pete/bin/mclient/src/shared.py:3376
-#: /home/pete/bin/mclient/src/shared.py:3409
-#: /home/pete/bin/mclient/src/shared.py:3428
-#: /home/pete/bin/mclient/src/shared.py:3438
-#: /home/pete/bin/mclient/src/shared.py:3457
-#: /home/pete/bin/mclient/src/shared.py:3476
-#: /home/pete/bin/mclient/src/shared.py:3491
-#: /home/pete/bin/mclient/src/shared.py:3506
-#: /home/pete/bin/mclient/src/shared.py:3526
-#: /home/pete/bin/mclient/src/shared.py:3538
-#: /home/pete/bin/mclient/src/shared.py:3552
-#: /home/pete/bin/mclient/src/shared.py:3566
-#: /home/pete/bin/mclient/src/shared.py:3581
-#: /home/pete/bin/mclient/src/shared.py:3620
-#: /home/pete/bin/mclient/src/shared.py:3646
-#: /home/pete/bin/mclient/src/shared.py:3664
-#: /home/pete/bin/mclient/src/shared.py:3700
-#: /home/pete/bin/mclient/src/shared.py:3713
-#: /home/pete/bin/mclient/src/shared.py:3728
-#: /home/pete/bin/mclient/src/shared.py:3744
-#: /home/pete/bin/mclient/src/shared.py:3761
-#: /home/pete/bin/mclient/src/shared.py:4149
-#: /home/pete/bin/mclient/src/shared.py:4162
-#: /home/pete/bin/mclient/src/shared.py:4367
-#: /home/pete/bin/mclient/src/shared.py:4387
-#: /home/pete/bin/mclient/src/shared.py:4419
-#: /home/pete/bin/mclient/src/shared.py:4438
-#: /home/pete/bin/mclient/src/shared.py:4452
-#: /home/pete/bin/mclient/src/shared.py:4548
-#: /home/pete/bin/mclient/src/shared.py:4560
-#: /home/pete/bin/mclient/src/shared.py:4578
-#: /home/pete/bin/mclient/src/shared.py:4818
+#: /home/pete/bin/mclient/src/shared.py:406
+#: /home/pete/bin/mclient/src/shared.py:420
+#: /home/pete/bin/mclient/src/shared.py:475
+#: /home/pete/bin/mclient/src/shared.py:493
+#: /home/pete/bin/mclient/src/shared.py:589
+#: /home/pete/bin/mclient/src/shared.py:650
+#: /home/pete/bin/mclient/src/shared.py:673
+#: /home/pete/bin/mclient/src/shared.py:696
+#: /home/pete/bin/mclient/src/shared.py:747
+#: /home/pete/bin/mclient/src/shared.py:766
+#: /home/pete/bin/mclient/src/shared.py:778
+#: /home/pete/bin/mclient/src/shared.py:825
+#: /home/pete/bin/mclient/src/shared.py:836
+#: /home/pete/bin/mclient/src/shared.py:847
+#: /home/pete/bin/mclient/src/shared.py:857
+#: /home/pete/bin/mclient/src/shared.py:889
+#: /home/pete/bin/mclient/src/shared.py:1468
+#: /home/pete/bin/mclient/src/shared.py:1485
+#: /home/pete/bin/mclient/src/shared.py:1504
+#: /home/pete/bin/mclient/src/shared.py:1522
+#: /home/pete/bin/mclient/src/shared.py:1538
+#: /home/pete/bin/mclient/src/shared.py:1553
+#: /home/pete/bin/mclient/src/shared.py:1601
+#: /home/pete/bin/mclient/src/shared.py:1622
+#: /home/pete/bin/mclient/src/shared.py:1712
+#: /home/pete/bin/mclient/src/shared.py:1734
+#: /home/pete/bin/mclient/src/shared.py:1754
+#: /home/pete/bin/mclient/src/shared.py:1772
+#: /home/pete/bin/mclient/src/shared.py:1794
+#: /home/pete/bin/mclient/src/shared.py:1817
+#: /home/pete/bin/mclient/src/shared.py:1952
+#: /home/pete/bin/mclient/src/shared.py:1990
+#: /home/pete/bin/mclient/src/shared.py:2006
+#: /home/pete/bin/mclient/src/shared.py:2048
+#: /home/pete/bin/mclient/src/shared.py:2119
+#: /home/pete/bin/mclient/src/shared.py:2143
+#: /home/pete/bin/mclient/src/shared.py:2167
+#: /home/pete/bin/mclient/src/shared.py:2222
+#: /home/pete/bin/mclient/src/shared.py:2241
+#: /home/pete/bin/mclient/src/shared.py:2253
+#: /home/pete/bin/mclient/src/shared.py:2291
+#: /home/pete/bin/mclient/src/shared.py:2351
+#: /home/pete/bin/mclient/src/shared.py:2362
+#: /home/pete/bin/mclient/src/shared.py:2374
+#: /home/pete/bin/mclient/src/shared.py:2392
+#: /home/pete/bin/mclient/src/shared.py:2414
+#: /home/pete/bin/mclient/src/shared.py:2441
+#: /home/pete/bin/mclient/src/shared.py:2456
+#: /home/pete/bin/mclient/src/shared.py:2476
+#: /home/pete/bin/mclient/src/shared.py:2530
+#: /home/pete/bin/mclient/src/shared.py:2563
+#: /home/pete/bin/mclient/src/shared.py:2579
+#: /home/pete/bin/mclient/src/shared.py:2774
+#: /home/pete/bin/mclient/src/shared.py:2845
+#: /home/pete/bin/mclient/src/shared.py:2857
+#: /home/pete/bin/mclient/src/shared.py:2908
+#: /home/pete/bin/mclient/src/shared.py:2918
+#: /home/pete/bin/mclient/src/shared.py:2954
+#: /home/pete/bin/mclient/src/shared.py:2968
+#: /home/pete/bin/mclient/src/shared.py:3026
+#: /home/pete/bin/mclient/src/shared.py:3057
+#: /home/pete/bin/mclient/src/shared.py:3332
+#: /home/pete/bin/mclient/src/shared.py:3369
+#: /home/pete/bin/mclient/src/shared.py:3379
+#: /home/pete/bin/mclient/src/shared.py:3412
+#: /home/pete/bin/mclient/src/shared.py:3431
+#: /home/pete/bin/mclient/src/shared.py:3441
+#: /home/pete/bin/mclient/src/shared.py:3460
+#: /home/pete/bin/mclient/src/shared.py:3479
+#: /home/pete/bin/mclient/src/shared.py:3494
+#: /home/pete/bin/mclient/src/shared.py:3509
+#: /home/pete/bin/mclient/src/shared.py:3529
+#: /home/pete/bin/mclient/src/shared.py:3541
+#: /home/pete/bin/mclient/src/shared.py:3555
+#: /home/pete/bin/mclient/src/shared.py:3569
+#: /home/pete/bin/mclient/src/shared.py:3584
+#: /home/pete/bin/mclient/src/shared.py:3623
+#: /home/pete/bin/mclient/src/shared.py:3649
+#: /home/pete/bin/mclient/src/shared.py:3667
+#: /home/pete/bin/mclient/src/shared.py:3703
+#: /home/pete/bin/mclient/src/shared.py:3716
+#: /home/pete/bin/mclient/src/shared.py:3731
+#: /home/pete/bin/mclient/src/shared.py:3747
+#: /home/pete/bin/mclient/src/shared.py:3764
+#: /home/pete/bin/mclient/src/shared.py:4152
+#: /home/pete/bin/mclient/src/shared.py:4165
+#: /home/pete/bin/mclient/src/shared.py:4370
+#: /home/pete/bin/mclient/src/shared.py:4390
+#: /home/pete/bin/mclient/src/shared.py:4422
+#: /home/pete/bin/mclient/src/shared.py:4441
+#: /home/pete/bin/mclient/src/shared.py:4455
+#: /home/pete/bin/mclient/src/shared.py:4551
+#: /home/pete/bin/mclient/src/shared.py:4563
+#: /home/pete/bin/mclient/src/shared.py:4581
+#: /home/pete/bin/mclient/src/shared.py:4821
 #: /home/pete/bin/mclient/src/sharedGUI.py:472
 #: /home/pete/bin/mclient/src/sharedGUI.py:488
 #: /home/pete/bin/mclient/src/sharedGUI.py:499
@@ -15349,111 +15353,111 @@ msgstr ""
 msgid "Operation has been canceled."
 msgstr "Операция отменена."
 
-#: /home/pete/bin/mclient/src/shared.py:440
-#: /home/pete/bin/mclient/src/shared.py:1955
+#: /home/pete/bin/mclient/src/shared.py:443
+#: /home/pete/bin/mclient/src/shared.py:1958
 #, python-format
 msgid "Write file \"%s\""
 msgstr "Запись файла \"%s\""
 
-#: /home/pete/bin/mclient/src/shared.py:448
-#: /home/pete/bin/mclient/src/shared.py:1967
+#: /home/pete/bin/mclient/src/shared.py:451
+#: /home/pete/bin/mclient/src/shared.py:1970
 #, python-format
 msgid "Unable to write file \"%s\"!"
 msgstr "Не удается записать файл \"%s\"!"
 
-#: /home/pete/bin/mclient/src/shared.py:531
+#: /home/pete/bin/mclient/src/shared.py:534
 msgid "Cannot print the message!"
 msgstr "Не удаётся показать сообщение!"
 
-#: /home/pete/bin/mclient/src/shared.py:569
-#: /home/pete/bin/mclient/src/shared.py:2029
+#: /home/pete/bin/mclient/src/shared.py:572
+#: /home/pete/bin/mclient/src/shared.py:2032
 #, python-format
 msgid "Entries deleted: %d (%d-%d)"
 msgstr "Удалено вхождений: %d (%d-%d)"
 
-#: /home/pete/bin/mclient/src/shared.py:581
-#: /home/pete/bin/mclient/src/shared.py:740
-#: /home/pete/bin/mclient/src/shared.py:2041
-#: /home/pete/bin/mclient/src/shared.py:2215
+#: /home/pete/bin/mclient/src/shared.py:584
+#: /home/pete/bin/mclient/src/shared.py:743
+#: /home/pete/bin/mclient/src/shared.py:2044
+#: /home/pete/bin/mclient/src/shared.py:2218
 #, python-format
 msgid "File \"%s\" is not sortable!"
 msgstr "Файл \"%s\" не подлежит сортировке!"
 
-#: /home/pete/bin/mclient/src/shared.py:624
+#: /home/pete/bin/mclient/src/shared.py:627
 #, python-format
 msgid "Dictionary \"%s\": Incorrect line #%d: \"%s\"!"
 msgstr "Словарь \"%s\": Неправильная строка №%d: \"%s\"!"
 
-#: /home/pete/bin/mclient/src/shared.py:798
-#: /home/pete/bin/mclient/src/shared.py:1655
+#: /home/pete/bin/mclient/src/shared.py:801
+#: /home/pete/bin/mclient/src/shared.py:1658
 #: /home/pete/bin/mclient/src/sharedGUI.py:333
 #, python-format
 msgid "File \"%s\" has not been found!"
 msgstr "Файл \"%s\" не найден!"
 
-#: /home/pete/bin/mclient/src/shared.py:863
-#: /home/pete/bin/mclient/src/shared.py:2266
+#: /home/pete/bin/mclient/src/shared.py:866
+#: /home/pete/bin/mclient/src/shared.py:2269
 #, python-format
 msgid "Load file \"%s\""
 msgstr "Загрузка файла \"%s\""
 
-#: /home/pete/bin/mclient/src/shared.py:881
+#: /home/pete/bin/mclient/src/shared.py:884
 #, python-format
 msgid "Unable to read file \"%s\"!"
 msgstr "Не удается прочитать файл \"%s\"!"
 
-#: /home/pete/bin/mclient/src/shared.py:904
+#: /home/pete/bin/mclient/src/shared.py:907
 #, python-format
 msgid "Float is required at input, but found \"%s\"! Return 0.0"
 msgstr ""
 "На входе должно быть число с плавающей запятой, но получено \"%s\"! "
 "Возвращаю 0.0"
 
-#: /home/pete/bin/mclient/src/shared.py:927
+#: /home/pete/bin/mclient/src/shared.py:930
 #, python-format
 msgid "Convert \"%s\" to an integer"
 msgstr "Конвертация \"%s\" в целое число"
 
-#: /home/pete/bin/mclient/src/shared.py:932
+#: /home/pete/bin/mclient/src/shared.py:935
 #, python-format
 msgid "Integer is required at input, but found \"%s\"! Return 0"
 msgstr "На входе должно быть целое число, но получено \"%s\"! Возвращаю 0"
 
-#: /home/pete/bin/mclient/src/shared.py:1078
+#: /home/pete/bin/mclient/src/shared.py:1081
 #, python-format
 msgid ""
 "Different number of opening and closing brackets: \"%s\": %d; \"%s\": %d!"
 msgstr "Разное число открывающих и закрывающих скобок: \"%s\": %d; \"%s\": %d!"
 
-#: /home/pete/bin/mclient/src/shared.py:1122
+#: /home/pete/bin/mclient/src/shared.py:1125
 msgid "Empty strings are not supported!"
 msgstr "Поддерживаются только непустые строки!"
 
-#: /home/pete/bin/mclient/src/shared.py:1228
+#: /home/pete/bin/mclient/src/shared.py:1231
 msgid ""
 "Commas and/or semicolons or line breaks can be used, but not altogether!"
 msgstr ""
 "Можно использовать запятые и/или точки с запятой или переносы строк, но не "
 "все сразу!"
 
-#: /home/pete/bin/mclient/src/shared.py:1253
+#: /home/pete/bin/mclient/src/shared.py:1256
 #, python-format
 msgid "Failed to convert \"%s\" to an integer!"
 msgstr "Не удалось конвертировать \"%s\" в целое число!"
 
-#: /home/pete/bin/mclient/src/shared.py:1265
+#: /home/pete/bin/mclient/src/shared.py:1268
 #, python-format
 msgid "Failed to convert \"%s\" to a floating-point number!"
 msgstr "Не удалось конвертировать \"%s\" в число с плавающей точкой!"
 
-#: /home/pete/bin/mclient/src/shared.py:1460
-#: /home/pete/bin/mclient/src/shared.py:1478
-#: /home/pete/bin/mclient/src/shared.py:1515
-#: /home/pete/bin/mclient/src/shared.py:1615
+#: /home/pete/bin/mclient/src/shared.py:1463
+#: /home/pete/bin/mclient/src/shared.py:1481
+#: /home/pete/bin/mclient/src/shared.py:1518
+#: /home/pete/bin/mclient/src/shared.py:1618
 msgid "Set time parameters are incorrect or not supported."
 msgstr "Заданные параметры времени неверны или не поддерживаются."
 
-#: /home/pete/bin/mclient/src/shared.py:1496
+#: /home/pete/bin/mclient/src/shared.py:1499
 #, python-format
 msgid ""
 "Set time parameters are incorrect or not supported.\n"
@@ -15464,113 +15468,113 @@ msgstr ""
 "\n"
 "Подробности: %s"
 
-#: /home/pete/bin/mclient/src/shared.py:1531
+#: /home/pete/bin/mclient/src/shared.py:1534
 msgid "Note: it will be Monday!"
 msgstr "Обратите внимание: указанная дата - понедельник!"
 
-#: /home/pete/bin/mclient/src/shared.py:1557
+#: /home/pete/bin/mclient/src/shared.py:1560
 msgid "Jan"
 msgstr "янв"
 
-#: /home/pete/bin/mclient/src/shared.py:1559
+#: /home/pete/bin/mclient/src/shared.py:1562
 msgid "Feb"
 msgstr "фев"
 
-#: /home/pete/bin/mclient/src/shared.py:1561
+#: /home/pete/bin/mclient/src/shared.py:1564
 msgid "Mar"
 msgstr "мар"
 
-#: /home/pete/bin/mclient/src/shared.py:1563
+#: /home/pete/bin/mclient/src/shared.py:1566
 msgid "Apr"
 msgstr "апр"
 
-#: /home/pete/bin/mclient/src/shared.py:1565
+#: /home/pete/bin/mclient/src/shared.py:1568
 msgid "May"
 msgstr "май"
 
-#: /home/pete/bin/mclient/src/shared.py:1567
+#: /home/pete/bin/mclient/src/shared.py:1570
 msgid "Jun"
 msgstr "июн"
 
-#: /home/pete/bin/mclient/src/shared.py:1569
+#: /home/pete/bin/mclient/src/shared.py:1572
 msgid "Jul"
 msgstr "июл"
 
-#: /home/pete/bin/mclient/src/shared.py:1571
+#: /home/pete/bin/mclient/src/shared.py:1574
 msgid "Aug"
 msgstr "авг"
 
-#: /home/pete/bin/mclient/src/shared.py:1573
+#: /home/pete/bin/mclient/src/shared.py:1576
 msgid "Sep"
 msgstr "сен"
 
-#: /home/pete/bin/mclient/src/shared.py:1575
+#: /home/pete/bin/mclient/src/shared.py:1578
 msgid "Oct"
 msgstr "окт"
 
-#: /home/pete/bin/mclient/src/shared.py:1577
+#: /home/pete/bin/mclient/src/shared.py:1580
 msgid "Nov"
 msgstr "ноя"
 
-#: /home/pete/bin/mclient/src/shared.py:1579
+#: /home/pete/bin/mclient/src/shared.py:1582
 msgid "Dec"
 msgstr "дек"
 
-#: /home/pete/bin/mclient/src/shared.py:1660
+#: /home/pete/bin/mclient/src/shared.py:1663
 #, python-format
 msgid "The object \"%s\" is not a file!"
 msgstr "Объект \"%s\" не является файлом!"
 
-#: /home/pete/bin/mclient/src/shared.py:1667
-#: /home/pete/bin/mclient/src/shared.py:2479
+#: /home/pete/bin/mclient/src/shared.py:1670
+#: /home/pete/bin/mclient/src/shared.py:2482
 #, python-format
 msgid "Copy \"%s\" to \"%s\""
 msgstr "Копирование \"%s\" в \"%s\""
 
-#: /home/pete/bin/mclient/src/shared.py:1674
+#: /home/pete/bin/mclient/src/shared.py:1677
 #, python-format
 msgid "Failed to copy file \"%s\" to \"%s\"!"
 msgstr "Не удалось скопировать файл \"%s\" в \"%s\"!"
 
-#: /home/pete/bin/mclient/src/shared.py:1683
+#: /home/pete/bin/mclient/src/shared.py:1686
 #, python-format
 msgid "Move \"%s\" to \"%s\""
 msgstr "Перемещение \"%s\" в \"%s\""
 
-#: /home/pete/bin/mclient/src/shared.py:1690
+#: /home/pete/bin/mclient/src/shared.py:1693
 #, python-format
 msgid "Failed to move \"%s\" to \"%s\"!"
 msgstr "Не удалось переместить \"%s\" в \"%s\"!"
 
-#: /home/pete/bin/mclient/src/shared.py:1704
-#: /home/pete/bin/mclient/src/shared.py:1764
+#: /home/pete/bin/mclient/src/shared.py:1707
+#: /home/pete/bin/mclient/src/shared.py:1767
 #, python-format
 msgid "Failed to get the date of the file \"%s\"!"
 msgstr "Не удалось определить дату файла \"%s\"!"
 
-#: /home/pete/bin/mclient/src/shared.py:1718
+#: /home/pete/bin/mclient/src/shared.py:1721
 #, python-format
 msgid "Unable to copy the file \"%s\" to iself!"
 msgstr "Нельзя скопировать файл \"%s\" сам в себя!"
 
-#: /home/pete/bin/mclient/src/shared.py:1727
-#: /home/pete/bin/mclient/src/shared.py:1787
-#: /home/pete/bin/mclient/src/shared.py:1999
+#: /home/pete/bin/mclient/src/shared.py:1730
+#: /home/pete/bin/mclient/src/shared.py:1790
+#: /home/pete/bin/mclient/src/shared.py:2002
 msgid "Operation has been canceled by the user."
 msgstr "Операция отменена пользователем."
 
-#: /home/pete/bin/mclient/src/shared.py:1740
-#: /home/pete/bin/mclient/src/shared.py:2378
+#: /home/pete/bin/mclient/src/shared.py:1743
+#: /home/pete/bin/mclient/src/shared.py:2381
 #, python-format
 msgid "Delete \"%s\""
 msgstr "Удаление \"%s\""
 
-#: /home/pete/bin/mclient/src/shared.py:1747
+#: /home/pete/bin/mclient/src/shared.py:1750
 #, python-format
 msgid "Failed to delete file \"%s\"!"
 msgstr "Не удается удалить файл \"%s\"!"
 
-#: /home/pete/bin/mclient/src/shared.py:1778
+#: /home/pete/bin/mclient/src/shared.py:1781
 #, python-format
 msgid ""
 "Moving is not necessary, because the source and destination are identical "
@@ -15578,42 +15582,42 @@ msgid ""
 msgstr ""
 "Перемещение не требуется, поскольку начальный и конечный пути совпадают (%s)."
 
-#: /home/pete/bin/mclient/src/shared.py:1800
+#: /home/pete/bin/mclient/src/shared.py:1803
 #, python-format
 msgid "Change the time of the file \"%s\" to %s"
 msgstr "Изменение времени файла \"%s\" на %s"
 
-#: /home/pete/bin/mclient/src/shared.py:1807
+#: /home/pete/bin/mclient/src/shared.py:1810
 #, python-format
 msgid "Failed to change the time of the file \"%s\" to \"%s\"!"
 msgstr "Не удалось изменить время файла \"%s\" на \"%s\"!"
 
-#: /home/pete/bin/mclient/src/shared.py:1843
-#: /home/pete/bin/mclient/src/shared.py:2466
+#: /home/pete/bin/mclient/src/shared.py:1846
+#: /home/pete/bin/mclient/src/shared.py:2469
 #, python-format
 msgid "Directory \"%s\" already exists."
 msgstr "Каталог \"%s\" уже существует."
 
-#: /home/pete/bin/mclient/src/shared.py:1849
+#: /home/pete/bin/mclient/src/shared.py:1852
 #, python-format
 msgid "The path \"%s\" is invalid!"
 msgstr "Путь \"%s\" неверен!"
 
-#: /home/pete/bin/mclient/src/shared.py:1853
+#: /home/pete/bin/mclient/src/shared.py:1856
 #, python-format
 msgid "Create directory \"%s\""
 msgstr "Создание каталога \"%s\""
 
-#: /home/pete/bin/mclient/src/shared.py:1861
+#: /home/pete/bin/mclient/src/shared.py:1864
 #, python-format
 msgid "Failed to create directory \"%s\"!"
 msgstr "Не удается создать каталог \"%s\"!"
 
-#: /home/pete/bin/mclient/src/shared.py:2095
+#: /home/pete/bin/mclient/src/shared.py:2098
 msgid "The following lines cannot be parsed:"
 msgstr "Не удалось обработать следующие строки:"
 
-#: /home/pete/bin/mclient/src/shared.py:2277
+#: /home/pete/bin/mclient/src/shared.py:2280
 #, python-format
 msgid ""
 "Unable to read file \"%s\"!\n"
@@ -15624,46 +15628,46 @@ msgstr ""
 "\n"
 "Подробности: %s"
 
-#: /home/pete/bin/mclient/src/shared.py:2384
+#: /home/pete/bin/mclient/src/shared.py:2387
 #, python-format
 msgid "Failed to delete directory \"%s\"! Delete it manually."
 msgstr "Не удается удалить каталог \"%s\"! Удалите его вручную."
 
-#: /home/pete/bin/mclient/src/shared.py:2462
+#: /home/pete/bin/mclient/src/shared.py:2465
 #, python-format
 msgid "Unable to copy \"%s\" to iself!"
 msgstr "Нельзя скопировать \"%s\" сам в себя!"
 
-#: /home/pete/bin/mclient/src/shared.py:2486
+#: /home/pete/bin/mclient/src/shared.py:2489
 #, python-format
 msgid "Failed to copy \"%s\" to \"%s\"!"
 msgstr "Не удалось скопировать \"%s\" в \"%s\"!"
 
-#: /home/pete/bin/mclient/src/shared.py:2516
+#: /home/pete/bin/mclient/src/shared.py:2519
 #, python-format
 msgid "New value of the key \"%s\" has been loaded."
 msgstr "Загружено новое значение ключа \"%s\"."
 
-#: /home/pete/bin/mclient/src/shared.py:2522
+#: /home/pete/bin/mclient/src/shared.py:2525
 #, python-format
 msgid "Keys loaded in total: %d, whereas %d are modified."
 msgstr "Всего загружено ключей: %d, из них измененных: %d"
 
-#: /home/pete/bin/mclient/src/shared.py:2548
+#: /home/pete/bin/mclient/src/shared.py:2551
 #, python-format
 msgid "Missing sections: %d"
 msgstr "Отсутствующих разделов: %d"
 
-#: /home/pete/bin/mclient/src/shared.py:2550
+#: /home/pete/bin/mclient/src/shared.py:2553
 #, python-format
 msgid "Missing keys: %d"
 msgstr "Отсутствующих ключей: %d"
 
-#: /home/pete/bin/mclient/src/shared.py:2552
+#: /home/pete/bin/mclient/src/shared.py:2555
 msgid "The default configuration has been loaded."
 msgstr "Загружена конфигурация по умолчанию."
 
-#: /home/pete/bin/mclient/src/shared.py:2571
+#: /home/pete/bin/mclient/src/shared.py:2574
 #, python-format
 msgid ""
 "Failed to read the configuration file \"%s\". This file must share the same "
@@ -15674,7 +15678,7 @@ msgstr ""
 "находиться в одном каталоге с программой и иметь кодировку utf-8 (без BOM), "
 "тип разрыва строки - UNIX."
 
-#: /home/pete/bin/mclient/src/shared.py:2611
+#: /home/pete/bin/mclient/src/shared.py:2614
 #, python-format
 msgid ""
 "Failed to open URL \"%s\" in a default browser!\n"
@@ -15685,48 +15689,48 @@ msgstr ""
 "\n"
 "Подробности: %s"
 
-#: /home/pete/bin/mclient/src/shared.py:2669
+#: /home/pete/bin/mclient/src/shared.py:2672
 msgid "Differences:"
 msgstr "Различия:"
 
-#: /home/pete/bin/mclient/src/shared.py:2694
+#: /home/pete/bin/mclient/src/shared.py:2697
 msgid "Texts are identical!"
 msgstr "Различий нет!"
 
-#: /home/pete/bin/mclient/src/shared.py:2754
+#: /home/pete/bin/mclient/src/shared.py:2757
 #, python-format
 msgid "Delete the symbolic link \"%s\""
 msgstr "Удаление ярлыка \"%s\""
 
-#: /home/pete/bin/mclient/src/shared.py:2760
+#: /home/pete/bin/mclient/src/shared.py:2763
 #, python-format
 msgid "Failed to remove shortcut \"%s\". Remove it manually and press OK."
 msgstr "Не удается удалить ярлык \"%s\". Удалите его вручную и нажмите OK."
 
-#: /home/pete/bin/mclient/src/shared.py:2777
-#: /home/pete/bin/mclient/src/shared.py:2806
+#: /home/pete/bin/mclient/src/shared.py:2780
+#: /home/pete/bin/mclient/src/shared.py:2809
 #, python-format
 msgid "Create a symbolic link \"%s\""
 msgstr "Создание ярлыка \"%s\""
 
-#: /home/pete/bin/mclient/src/shared.py:2783
-#: /home/pete/bin/mclient/src/shared.py:2816
+#: /home/pete/bin/mclient/src/shared.py:2786
+#: /home/pete/bin/mclient/src/shared.py:2819
 #, python-format
 msgid "Failed to create shortcut \"%s\". Create it manually and press OK."
 msgstr "Не удается создать ярлык \"%s\". Создайте его вручную и нажмите OK."
 
-#: /home/pete/bin/mclient/src/shared.py:2793
-#: /home/pete/bin/mclient/src/shared.py:2836
+#: /home/pete/bin/mclient/src/shared.py:2796
+#: /home/pete/bin/mclient/src/shared.py:2839
 #: /home/pete/bin/mclient/src/sharedGUI.py:3538
 #: /home/pete/bin/mclient/src/sharedGUI.py:3545
 msgid "Nothing to do."
 msgstr "Действие не требуется."
 
-#: /home/pete/bin/mclient/src/shared.py:2947
+#: /home/pete/bin/mclient/src/shared.py:2950
 msgid "Failed to load an e-mail client."
 msgstr "Не удалось загрузить почтовый клиент."
 
-#: /home/pete/bin/mclient/src/shared.py:2987
+#: /home/pete/bin/mclient/src/shared.py:2990
 #, python-format
 msgid ""
 "Operation has failed!\n"
@@ -15735,91 +15739,91 @@ msgstr ""
 "Операция завершилась с ошибкой!\n"
 "Подробности: %s"
 
-#: /home/pete/bin/mclient/src/shared.py:2991
+#: /home/pete/bin/mclient/src/shared.py:2994
 msgid "This operation cannot be executed on your operating system."
 msgstr "Эта операция не может быть выполнена на вашей операционной системе."
 
-#: /home/pete/bin/mclient/src/shared.py:3315
+#: /home/pete/bin/mclient/src/shared.py:3318
 msgid "Analyze the text"
 msgstr "Анализ текста"
 
-#: /home/pete/bin/mclient/src/shared.py:3641
+#: /home/pete/bin/mclient/src/shared.py:3644
 #, python-format
 msgid "Failed to find words of paragraph #%d!"
 msgstr "Не удалось найти слова абзаца #%d!"
 
-#: /home/pete/bin/mclient/src/shared.py:4030
-#: /home/pete/bin/mclient/src/shared.py:4039
+#: /home/pete/bin/mclient/src/shared.py:4033
+#: /home/pete/bin/mclient/src/shared.py:4042
 msgid "The pool is empty!"
 msgstr "Пул пуст!"
 
-#: /home/pete/bin/mclient/src/shared.py:4076
+#: /home/pete/bin/mclient/src/shared.py:4079
 #, python-format
 msgid "The operation has taken %f s."
 msgstr "Операция завершена за %f с."
 
-#: /home/pete/bin/mclient/src/shared.py:4122
+#: /home/pete/bin/mclient/src/shared.py:4125
 #, python-format
 msgid "Set the max number of rows to %d"
 msgstr "Задать максимальное число столбцов: %d"
 
-#: /home/pete/bin/mclient/src/shared.py:4283
+#: /home/pete/bin/mclient/src/shared.py:4286
 #, python-format
 msgid "[FAILED]: \"%s\". Details: %s"
 msgstr "[ОШИБКА]: \"%s\". Подробности: %s"
 
-#: /home/pete/bin/mclient/src/shared.py:4300
+#: /home/pete/bin/mclient/src/shared.py:4303
 #, python-format
 msgid "Unable to decode \"%s\"!"
 msgstr "Не удается декодировать \"%s\"!"
 
-#: /home/pete/bin/mclient/src/shared.py:4397
+#: /home/pete/bin/mclient/src/shared.py:4400
 msgid "No references have been found!"
 msgstr "Ориентиры не найдены!"
 
-#: /home/pete/bin/mclient/src/shared.py:4402
+#: /home/pete/bin/mclient/src/shared.py:4405
 msgid "No references to the right!"
 msgstr "Справа ориентиров нет!"
 
-#: /home/pete/bin/mclient/src/shared.py:4407
+#: /home/pete/bin/mclient/src/shared.py:4410
 msgid "No references to the left!"
 msgstr "лева ориентиров нет!"
 
-#: /home/pete/bin/mclient/src/shared.py:4491
+#: /home/pete/bin/mclient/src/shared.py:4494
 msgid "Unexpected end of text!"
 msgstr "Неожиданный конец текста!"
 
-#: /home/pete/bin/mclient/src/shared.py:4736
+#: /home/pete/bin/mclient/src/shared.py:4739
 #, python-format
 msgid "ATTENTION: Do yo really want to rewrite file \"%s\"?"
 msgstr "ВНИМАНИЕ: Перезаписать файл \"%s\"?"
 
-#: /home/pete/bin/mclient/src/shared.py:4769
-#: /home/pete/bin/mclient/src/shared.py:4802
+#: /home/pete/bin/mclient/src/shared.py:4772
+#: /home/pete/bin/mclient/src/shared.py:4805
 msgid "sec"
 msgstr "сек"
 
-#: /home/pete/bin/mclient/src/shared.py:4790
+#: /home/pete/bin/mclient/src/shared.py:4793
 msgid "yrs"
 msgstr "лет"
 
-#: /home/pete/bin/mclient/src/shared.py:4792
+#: /home/pete/bin/mclient/src/shared.py:4795
 msgid "mths"
 msgstr "мес"
 
-#: /home/pete/bin/mclient/src/shared.py:4794
+#: /home/pete/bin/mclient/src/shared.py:4797
 msgid "wks"
 msgstr "нед"
 
-#: /home/pete/bin/mclient/src/shared.py:4796
+#: /home/pete/bin/mclient/src/shared.py:4799
 msgid "days"
 msgstr "дн"
 
-#: /home/pete/bin/mclient/src/shared.py:4798
+#: /home/pete/bin/mclient/src/shared.py:4801
 msgid "hrs"
 msgstr "ч"
 
-#: /home/pete/bin/mclient/src/shared.py:4800
+#: /home/pete/bin/mclient/src/shared.py:4803
 msgid "min"
 msgstr "мин"
 
