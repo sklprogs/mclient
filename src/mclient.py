@@ -533,6 +533,38 @@ class WebFrame:
         self.bindings()
         self.reset_opt()
     
+    def swap_langs(self,event=None):
+        f = '[MClient] mclient.WebFrame.swap_langs'
+        self.gui.opt_lg1._get()
+        self.gui.opt_lg2._get()
+        lang1 = self.gui.opt_lg1.choice
+        lang2 = self.gui.opt_lg2.choice
+        lang1, lang2 = lang2, lang1
+        langs1 = lg.objs.plugins().langs1()
+        langs2 = lg.objs._plugins.langs2(lang1)
+        if langs1 and langs2:
+            if lang1 in langs1 and lang2 in langs2:
+                self.gui.opt_lg1.reset (items   = langs1
+                                       ,default = lang1
+                                       ,action  = self.go_search_focus
+                                       )
+                self.gui.opt_lg2.reset (items   = langs2
+                                       ,default = lang2
+                                       ,action  = self.go_search_focus
+                                       )
+                self.gui.opt_lg1.set(lang1)
+                self.gui.opt_lg2.set(lang2)
+                self.set_lang1()
+                self.set_lang2()
+            else:
+                sh.objs.mes (f,_('WARNING')
+                            ,_('Pair %s-%s is not supported!') % (lang1
+                                                                 ,lang2
+                                                                 )
+                            )
+        else:
+            sh.com.empty(f)
+    
     def next_lang1(self,event=None):
         self.gui.opt_lg1.set_next()
         self.set_lang1()
@@ -700,33 +732,29 @@ class WebFrame:
     
     def bindings(self):
         # 'gui.obj.widget' is 'Toplevel'; 'gui.widget' is 'TkinterHtml'
-        ''' When binding OptionMenus, calling 'trigger' instead of
-            directly setting an action allows to set a modified value
-            if navigating using keyboard.
-        '''
         sg.bind (obj      = self.gui.opt_lg1
                 ,bindings = ('<Return>'
                             ,'<KP_Enter>'
                             )
-                ,action   = self.gui.opt_lg1.trigger
+                ,action   = self.go_search_focus
                 )
         sg.bind (obj      = self.gui.opt_lg2
                 ,bindings = ('<Return>'
                             ,'<KP_Enter>'
                             )
-                ,action   = self.gui.opt_lg2.trigger
+                ,action   = self.go_search_focus
                 )
         sg.bind (obj      = self.gui.opt_src
                 ,bindings = ('<Return>'
                             ,'<KP_Enter>'
                             )
-                ,action   = self.gui.opt_src.trigger
+                ,action   = self.set_source
                 )
         sg.bind (obj      = self.gui.opt_col
                 ,bindings = ('<Return>'
                             ,'<KP_Enter>'
                             )
-                ,action   = self.gui.opt_col.trigger
+                ,action   = self.set_columns
                 )
         sg.bind (obj      = self.gui.obj
                 ,bindings = sh.globs['var']['bind_quit']
@@ -1034,13 +1062,17 @@ class WebFrame:
                 ,action   = self.suggest.move_bottom
                 )
         # Set config bindings
-        #cur
-        self.gui.btn_hst.hint = _('Show history') \
-                + '\n'   + sh.globs['var']['bind_toggle_history'] \
-                + ', '   + sh.globs['var']['bind_toggle_history_alt'] \
-                + '\n\n' + _('Clear history') \
-                + '\n'   + sh.globs['var']['bind_clear_history'] \
-                + ', <ButtonRelease-3>'
+        hotkeys1 = (sh.globs['var']['bind_toggle_history']
+                   ,sh.globs['var']['bind_toggle_history_alt']
+                   )
+        hotkeys1 = sh.Hotkeys(hotkeys1).run()
+        hotkeys2 = (sh.globs['var']['bind_clear_history']
+                   ,'<ButtonRelease-3>'
+                   )
+        hotkeys2 = sh.Hotkeys(hotkeys2).run()
+        self.gui.btn_hst.hint = _('Show history') + '\n' + hotkeys1 \
+                                + '\n\n' + _('Clear history') + '\n' \
+                                + hotkeys2
         self.gui.btn_abt._bindings = sh.globs['var']['bind_show_about']
         self.gui.btn_alp._bindings = sh.globs['var']['bind_toggle_alphabet']
         self.gui.btn_blk._bindings = sh.globs['var']['bind_toggle_block']
@@ -1123,6 +1155,7 @@ class WebFrame:
         self.gui.btn_ins.action = self.paste_search_field
         self.gui.btn_clr.action = self.clear_search_field
         self.gui.btn_trn.action = self.go
+        self.gui.btn_swp.action = self.swap_langs
         
     def title(self,arg=None):
         if not arg:
@@ -1589,6 +1622,10 @@ class WebFrame:
 
     def set_source(self,event=None):
         f = '[MClient] mclient.WebFrame.set_source'
+        ''' Since Combo-type OptionMenus can be edited manually, we must
+            get an actual value first.
+        '''
+        self.gui.opt_src._get()
         lg.objs.request()._source = self.gui.opt_src.choice
         sh.log.append (f,_('INFO')
                       ,_('Set source to "%s"') \
@@ -1941,6 +1978,10 @@ class WebFrame:
 
     def set_lang1(self,event=None):
         f = '[MClient] mclient.WebFrame.set_lang1'
+        ''' Since Combo-type OptionMenus can be edited manually, we must
+            get an actual value first.
+        '''
+        self.gui.opt_lg1._get()
         if lg.objs.plugins().lang1() != self.gui.opt_lg1.choice:
             sh.log.append (f,_('INFO')
                           ,_('Set language: %s') \
@@ -1950,6 +1991,10 @@ class WebFrame:
     
     def set_lang2(self,event=None):
         f = '[MClient] mclient.WebFrame.set_lang2'
+        ''' Since Combo-type OptionMenus can be edited manually, we must
+            get an actual value first.
+        '''
+        self.gui.opt_lg2._get()
         if lg.objs.plugins().lang2() != self.gui.opt_lg2.choice:
             sh.log.append (f,_('INFO')
                           ,_('Set language: %s') \
@@ -1959,6 +2004,10 @@ class WebFrame:
 
     def set_columns(self,event=None):
         f = '[MClient] mclient.WebFrame.set_columns'
+        ''' Since Combo-type OptionMenus can be edited manually, we must
+            get an actual value first.
+        '''
+        self.gui.opt_col._get()
         sh.log.append (f,_('INFO')
                       ,str(self.gui.opt_col.choice)
                       )

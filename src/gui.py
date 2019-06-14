@@ -594,6 +594,9 @@ class WebFrame:
         self.icn_cp1 = sh.objs._pdir.add ('..','resources','buttons'
                                          ,'icon_36x36_watch_clipboard_on.gif'
                                          )
+        self.icn_swp = sh.objs._pdir.add ('..','resources','buttons'
+                                         ,'icon_36x36_swap_langs.gif'
+                                         )
 
     def gui(self):
         self.obj     = sg.objs.new_top(Maximize=True)
@@ -723,6 +726,12 @@ class WebFrame:
                                      ,Combo  = True
                                      ,font   = 'Sans 11'
                                      )
+        self.btn_swp = sg.Button (parent   = self.frm_btn
+                                 ,hint     = _('Swap languages')
+                                 ,inactive = self.icn_swp
+                                 ,active   = self.icn_swp
+                                 ,text     = _('Swap')
+                                 )
         self.opt_lg2 = sg.OptionMenu (parent = self.frm_btn
                                      ,Combo  = True
                                      ,font   = 'Sans 11'
