@@ -1,11 +1,8 @@
 
-- No 'Russian-English' pair
 - plugins.multitrancom: eng-rus: вручать: fix dic prioritization
-- OptionMenus (Combo): fix changing the number of columns using keyboard
 - plugins.multitran: eng-rus: layout: cannot decrease a priority of
   a dictionary which priority is higher than the priority of the unknown
   dictionary (Gruzovik) following it
-- plugins.multitran: working out of design documentation
 - plugins.multitrancom: eng-rus: tree limb: wrong SAME
 - plugins.multitrancom: eng-rus: in dire need: no fragment
   "найдены отдельные слова"

@@ -312,6 +312,8 @@ class Welcome:
         hotkey39 = (sh.globs['var']['bind_prev_lang2']
                    ,sh.globs['var']['bind_prev_lang2_alt']
                    )
+        hint40   = _('Swap source and target languages')
+        hotkey40 = sh.globs['var']['bind_swap_langs']
         
         self.gen_row(hint1,hotkey1,hint2,hotkey2)
         self.gen_row(hint34,hotkey34,hint35,hotkey35)
@@ -324,14 +326,15 @@ class Welcome:
         self.gen_row(hint13,hotkey13,hint14,hotkey14)
         self.gen_row(hint15,hotkey15,hint16,hotkey16)
         self.gen_row(hint38,hotkey38,hint39,hotkey39)
-        self.gen_row(hint17,hotkey17,hint18,hotkey18)
-        self.gen_row(hint19,hotkey19,hint20,hotkey20)
-        self.gen_row(hint22,hotkey22,hint23,hotkey23)
-        self.gen_row(hint21,hotkey21,hint24,hotkey24)
-        self.gen_row(hint25,hotkey25,hint26,hotkey26)
-        self.gen_row(hint27,hotkey27,hint28,hotkey28)
-        self.gen_row(hint29,hotkey29,hint30,hotkey30)
-        self.gen_row(hint32,hotkey32,hint33,hotkey33)
+        self.gen_row(hint40,hotkey40,hint17,hotkey17)
+        self.gen_row(hint18,hotkey18,hint19,hotkey19)
+        self.gen_row(hint20,hotkey20,hint22,hotkey22)
+        self.gen_row(hint23,hotkey23,hint21,hotkey21)
+        self.gen_row(hint24,hotkey24,hint25,hotkey25)
+        self.gen_row(hint26,hotkey26,hint27,hotkey27)
+        self.gen_row(hint28,hotkey28,hint29,hotkey29)
+        self.gen_row(hint30,hotkey30,hint32,hotkey32)
+        self.gen_row(hint33,hotkey33,'','')
         
         self.istr.write('</font>')
         self.istr.write('</table>')
@@ -617,6 +620,7 @@ class ConfigMclient(sh.Config):
            ,'bind_settings_alt'           :'<F12>'
            ,'bind_show_about'             :'<F1>'
            ,'bind_spec_symbol'            :'<Control-e>'
+           ,'bind_swap_langs'             :'<Control-space>'
            ,'bind_toggle_alphabet'        :'<Alt-a>'
            ,'bind_toggle_block'           :'<Alt-b>'
            ,'bind_toggle_history_alt'     :'<Control-h>'

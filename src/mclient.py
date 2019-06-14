@@ -789,6 +789,10 @@ class WebFrame:
     
     def bindings(self):
         # 'gui.obj.widget' is 'Toplevel'; 'gui.widget' is 'TkinterHtml'
+        sg.bind (obj      = self.gui.obj
+                ,bindings = sh.globs['var']['bind_swap_langs']
+                ,action   = self.swap_langs
+                )
         sg.bind (obj      = self.gui.opt_lg1
                 ,bindings = ('<Return>'
                             ,'<KP_Enter>'
@@ -1155,6 +1159,7 @@ class WebFrame:
         self.gui.btn_set._bindings = (sh.globs['var']['bind_settings']
                                      ,sh.globs['var']['bind_settings_alt']
                                      )
+        self.gui.btn_swp._bindings = sh.globs['var']['bind_swap_langs']
         self.gui.btn_sym._bindings = sh.globs['var']['bind_spec_symbol']
         self.gui.btn_ser._bindings = sh.globs['var']['bind_re_search_article']
         self.gui.btn_trn._bindings = ('<Return>'
@@ -1163,8 +1168,8 @@ class WebFrame:
         self.gui.btn_viw._bindings = (sh.globs['var']['bind_toggle_view']
                                      ,sh.globs['var']['bind_toggle_view_alt']
                                      )
-        ''' Reset 'hint' for those buttons which bindings have changed
-            (in order to show these bindings in tooltip)
+        '''#note: Reset 'hint' for those buttons which bindings have
+           changed (in order to show these bindings in tooltip)
         '''
         self.gui.btn_abt.set_hint()
         self.gui.btn_alp.set_hint()
@@ -1183,6 +1188,7 @@ class WebFrame:
         self.gui.btn_rp1.set_hint()
         self.gui.btn_rp2.set_hint()
         self.gui.btn_sav.set_hint()
+        self.gui.btn_swp.set_hint()
         self.gui.btn_set.set_hint()
         self.gui.btn_sym.set_hint()
         self.gui.btn_ser.set_hint()
@@ -1190,29 +1196,29 @@ class WebFrame:
         self.gui.btn_viw.set_hint()
         # Set controller actions
         self.gui.btn_abt.action = self.about.gui.toggle
-        self.gui.btn_cap.action = self.watch_clipboard
-        self.gui.btn_def.action = lambda x:self.define(Selected=False)
-        self.gui.btn_prn.action = self.print
-        self.gui.btn_brw.action = self.open_in_browser
-        self.gui.btn_sav.action = self.save_article.gui.toggle
-        self.gui.btn_ser.action = self.search_reset
-        self.gui.btn_rld.action = self.reload
-        self.gui.btn_hst.action = self.history.gui.toggle
-        self.gui.btn_nxt.action = self.go_forward
-        self.gui.btn_prv.action = self.go_back
         self.gui.btn_alp.action = self.toggle_alphabet
-        self.gui.btn_pri.action = self.toggle_priority
         self.gui.btn_blk.action = self.toggle_block
-        self.gui.btn_viw.action = self.toggle_view
-        self.gui.btn_set.action = self.settings.gui.toggle
-        self.gui.opt_col.action = self.set_columns
-        self.gui.btn_sym.action = self.spec_symbols.gui.toggle
+        self.gui.btn_brw.action = self.open_in_browser
+        self.gui.btn_cap.action = self.watch_clipboard
+        self.gui.btn_clr.action = self.clear_search_field
+        self.gui.btn_def.action = lambda x:self.define(Selected=False)
+        self.gui.btn_hst.action = self.history.gui.toggle
+        self.gui.btn_ins.action = self.paste_search_field
+        self.gui.btn_nxt.action = self.go_forward
+        self.gui.btn_pri.action = self.toggle_priority
+        self.gui.btn_prn.action = self.print
+        self.gui.btn_prv.action = self.go_back
+        self.gui.btn_rld.action = self.reload
         self.gui.btn_rp1.action = self.insert_repeat_sign
         self.gui.btn_rp2.action = self.insert_repeat_sign2
-        self.gui.btn_ins.action = self.paste_search_field
-        self.gui.btn_clr.action = self.clear_search_field
-        self.gui.btn_trn.action = self.go
+        self.gui.btn_sav.action = self.save_article.gui.toggle
+        self.gui.btn_ser.action = self.search_reset
+        self.gui.btn_set.action = self.settings.gui.toggle
         self.gui.btn_swp.action = self.swap_langs
+        self.gui.btn_sym.action = self.spec_symbols.gui.toggle
+        self.gui.btn_trn.action = self.go
+        self.gui.btn_viw.action = self.toggle_view
+        self.gui.opt_col.action = self.set_columns
         
     def title(self,arg=None):
         if not arg:

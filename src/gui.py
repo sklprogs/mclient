@@ -727,7 +727,7 @@ class WebFrame:
                                      ,font   = 'Sans 11'
                                      )
         self.btn_swp = sg.Button (parent   = self.frm_btn
-                                 ,hint     = _('Swap languages')
+                                 ,hint     = _('Swap source and target languages')
                                  ,inactive = self.icn_swp
                                  ,active   = self.icn_swp
                                  ,text     = _('Swap')
