@@ -1,22 +1,6 @@
 
 rule: unsearchable fragment
 
-5:Config.check:ПРЕДУПРЕЖДЕНИЕ:Отсутствуют следующие разделы и/или ключи:
-bind_swap_langs; bind_next_lang1; bind_prev_lang1_alt; bind_next_lang1_alt; bind_next_lang2_alt; bind_next_lang2; bind_prev_lang2; bind_prev_lang2_alt; bind_prev_lang1; 
-Отсутствующих разделов: 0
-Отсутствующих ключей: 9
-Загружена конфигурация по умолчанию.
-Traceback (most recent call last):
-  File "./mclient.py", line 10, in <module>
-    import logic     as lg
-  File "/home/pete/base/bin/mclient/src/logic.py", line 1305, in <module>
-    ConfigMclient()
-  File "/home/pete/base/bin/mclient/src/logic.py", line 553, in __init__
-    self.check()
-  File "/home/pete/base/bin/mclient/src/shared.py", line 2560, in check
-    self._default()
-AttributeError: 'ConfigMclient' object has no attribute '_default'
-
 - French: зонд: parts of speech (abbreviations) are lost
 - plugins.multitrancom: eng-rus: вручать: fix dic prioritization
 - plugins.multitran: eng-rus: layout: cannot decrease a priority of

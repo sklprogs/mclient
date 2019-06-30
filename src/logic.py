@@ -545,7 +545,7 @@ class ConfigMclient(sh.Config):
         iread        = sh.ReadTextFile(self.path)
         self.text    = iread.get()
         self.Success = iread.Success
-        self.default()
+        self._default()
         if os.path.exists(self.path):
             self.open()
         else:
@@ -553,7 +553,8 @@ class ConfigMclient(sh.Config):
         self.check()
         self.load()
 
-    def default(self):
+    # Do not rename, this procedure is called by 'shared'
+    def _default(self):
         self._default_bool()
         self._default_int()
         self._default_var()
