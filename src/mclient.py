@@ -762,7 +762,7 @@ class WebFrame:
         self.go_search()
         self.gui.ent_src.focus()
     
-    def reset_opt(self):
+    def reset_opt(self,default=_('Multitran')):
         f = '[MClient] mclient.WebFrame.reset_opt'
         # Reset OptionMenus
         lang1   = lg.objs.plugins().lang1()
@@ -782,7 +782,7 @@ class WebFrame:
             #note: change this upon the change of the default source
             self.gui.opt_src.reset (items   = sources
                                    ,action  = self.set_source
-                                   ,default = _('Multitran')
+                                   ,default = default
                                    )
         else:
             sh.com.empty(f)
@@ -1695,6 +1695,7 @@ class WebFrame:
                       % lg.objs._request._source
                       )
         lg.objs.plugins().set(lg.objs._request._source)
+        self.reset_opt(lg.objs._request._source)
         self.go_search()
         self.gui.ent_src.focus()
 

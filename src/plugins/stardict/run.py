@@ -40,11 +40,11 @@ class Plugin:
     
     # This is needed only for compliance with a general method
     def lang1(self):
-        return _('English')
+        return _('Any')
     
     # This is needed only for compliance with a general method
     def lang2(self):
-        return _('Russian')
+        return _('Any')
     
     # This is needed only for compliance with a general method
     def server(self):
@@ -72,11 +72,11 @@ class Plugin:
     
     # This is needed only for compliance with a general method
     def langs1(self,lang2=''):
-        return([_('Any')])
+        return(_('Any'),)
     
     # This is needed only for compliance with a general method
     def langs2(self,lang1=''):
-        return([_('Any')])
+        return(_('Any'),)
     
     def combined(self):
         ''' Whether or not the plugin is actually a wrapper over other
