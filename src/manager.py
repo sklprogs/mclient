@@ -92,18 +92,10 @@ class Plugins:
                )
     
     def set_lang1(self,lang1):
-        ''' Since we use the same pair for all sources, in order to
-            avoid errors, we change the pair for all plugins.
-        '''
-        for plugin in self.unique():
-            plugin.set_lang1(lang1)
+        self.plugin.set_lang1(lang1)
     
     def set_lang2(self,lang2):
-        ''' Since we use the same pair for all sources, in order to
-            avoid errors, we change the pair for all plugins.
-        '''
-        for plugin in self.unique():
-            plugin.set_lang2(lang2)
+        self.plugin.set_lang2(lang2)
     
     def set_timeout(self,timeout=6):
         f = '[MClient] manager.Plugins.set_timeout'

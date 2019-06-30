@@ -505,15 +505,17 @@ class History:
             objs.blocks_db()._articleid = int(result[0])
             result = objs._blocks_db.article()
             if result:
-                lg.objs._request._source = result[0]
-                lg.objs._request._search = result[1]
-                lg.objs._request._url    = result[2]
+                lg.objs._request._source = result[0] # SOURCE
+                lg.objs._request._search = result[1] # TITLE
+                lg.objs._request._url    = result[2] # URL
                 sh.log.append (f,_('INFO')
                               ,_('Set source to "%s"') \
                               % lg.objs._request._source
                               )
                 lg.objs.plugins().set(lg.objs._request._source)
-                objs.webframe().gui.opt_src.set(lg.objs._request._source)
+                lg.objs._plugins.set_lang1(result[4])
+                lg.objs._plugins.set_lang2(result[5])
+                objs._webframe.reset_opt(lg.objs._request._source)
                 objs._webframe.go_search()
             else:
                 sh.com.empty(f)
@@ -1410,7 +1412,8 @@ class WebFrame:
         self._pos = -1
         articleid = objs.blocks_db().present (source = lg.objs.request()._source
                                              ,title  = lg.objs._request._search
-                                             ,url    = lg.objs._request._url
+                                             ,lang1  = lg.objs.plugins().lang1()
+                                             ,lang2  = lg.objs._plugins.lang2()
                                              )
         if articleid:
             sh.log.append (f,_('INFO')
@@ -1420,12 +1423,14 @@ class WebFrame:
             objs._blocks_db._articleid = articleid
             self.get_bookmark()
         else:
-            # None skips the autoincrement
-            data = (None                     # (00) ARTICLEID
-                   ,lg.objs._request._source # (01) SOURCE
-                   ,lg.objs._request._search # (02) TITLE
-                   ,lg.objs._request._url    # (03) URL
-                   ,self._pos                # (04) BOOKMARK
+            # 'None' skips the autoincrement
+            data = (None                      # (00) ARTICLEID
+                   ,lg.objs._request._source  # (01) SOURCE
+                   ,lg.objs._request._search  # (02) TITLE
+                   ,lg.objs._request._url     # (03) URL
+                   ,lg.objs.plugins().lang1() # (04) LANG1
+                   ,lg.objs._plugins.lang2()  # (05) LANG2
+                   ,self._pos                 # (06) BOOKMARK
                    )
             objs._blocks_db.fill_articles(data=data)
             

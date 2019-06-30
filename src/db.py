@@ -102,6 +102,7 @@ class DB:
                          )
                          
     def create_articles(self):
+        # 7 columns for now
         self.dbc.execute (
             'create table if not exists ARTICLES (\
              ARTICLEID  integer primary   \
@@ -109,6 +110,8 @@ class DB:
             ,SOURCE     text              \
             ,TITLE      text              \
             ,URL        text              \
+            ,LANG1      text              \
+            ,LANG2      text              \
             ,BOOKMARK   integer           \
                                                  )'
                          )
@@ -139,7 +142,9 @@ class DB:
                               )
         
     def fill_articles(self,data):
-        self.dbc.execute('insert into ARTICLES values (?,?,?,?,?)',data)
+        self.dbc.execute ('insert into ARTICLES values (?,?,?,?,?,?,?)'
+                         ,data
+                         )
 
     def fetch(self):
         self.dbc.execute ('select TYPE,TEXT,ROWNO,COLNO from BLOCKS \
@@ -149,10 +154,11 @@ class DB:
                          )
         return self.dbc.fetchall()
 
-    def present(self,source,title,url):
+    def present(self,source,title,lang1,lang2):
         self.dbc.execute ('select ARTICLEID from ARTICLES \
-                           where SOURCE = ? and TITLE = ? and URL = ?'
-                         ,(source,title,url,)
+                           where SOURCE = ? and TITLE = ? and LANG1 = ?\
+                           and LANG2 = ?'
+                         ,(source,title,lang1,lang2,)
                          )
         result = self.dbc.fetchone()
         if result:
@@ -408,7 +414,8 @@ class DB:
     def article(self):
         f = '[MClient] db.DB.article'
         if self._articleid:
-            self.dbc.execute ('select SOURCE,TITLE,URL,BOOKMARK \
+            self.dbc.execute ('select SOURCE,TITLE,URL,BOOKMARK,LANG1\
+                                     ,LANG2 \
                                from ARTICLES where ARTICLEID = ?'
                              ,(self._articleid,)
                              )
