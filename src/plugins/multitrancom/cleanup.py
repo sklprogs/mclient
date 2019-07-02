@@ -121,6 +121,7 @@ class CleanUp:
         self._text = self._text.replace('','')
         self._text = self._text.replace('','')
         self._text = self._text.replace('','')
+        self._text = self._text.replace('','')
         self._text = self._text.replace('\r\n','')
         self._text = self._text.replace('\n','')
         self._text = self._text.replace('\xa0',' ')

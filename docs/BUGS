@@ -1,6 +1,5 @@
 
-RU-EN, rule, определять: unsearchable fragment
-
+- RU-EN, определять: '>' as a word form
 - French: зонд: parts of speech (abbreviations) are lost
 - plugins.multitrancom: eng-rus: вручать: fix dic prioritization
 - plugins.multitran: eng-rus: layout: cannot decrease a priority of

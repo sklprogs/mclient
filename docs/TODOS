@@ -1,4 +1,6 @@
 
+- EN-RU, rule: Шахматы: do not center words in the first column if there
+  are no fixed columns
 - EN-RU, vow: of silence: analyze 'dic-comment-term' patterns
 - Store settings in the config file
 - Fix history navigation with 2 identical words (e.g., 'bad') in
@@ -109,11 +111,7 @@
 ! Проверить Ctrl-F7 и Shift-F7 для 'pretty much' (есть ли замены для
   %20 в http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=pretty%20much%20)
 ! Неправильный переход: follow => Бурение => Alt + <-
-!! статья не парсится после '<переносн.>': http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%EF%EE%E4%FB%F2%EE%E6%E8%F2%FC
 ! "отбор" (RU-EN): неинтуитивная сортировка словарей в конце
-! Control-Delete и Control-Insert не работают после перемещения по
-  истории с помощью <- и ->.
-! Возможность игнорировать словари (на примере hunk)
 ! Исправить красные в горизонтальном режиме (на примере "матрица")
 ! Улучшить группировку по типам (на основе БД) (на примере venerable)
 ! Неверный анализ тэгов для "Welcome home",  out" parameters (вместе с
