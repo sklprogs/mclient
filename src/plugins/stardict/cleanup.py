@@ -68,7 +68,7 @@ class Common:
         self._text = self._text.replace('\xa0',' ')
         while '  ' in self._text:
             self._text = self._text.replace('  ',' ')
-        self._text = re.sub(r'\>[\s]{0,1}\<','><',self._text)
+        self._text = re.sub(r'\>[\s]{0,1}\<','\><',self._text)
     
     def run(self):
         self.decode_entities()
@@ -80,7 +80,7 @@ class Common:
 
 class Type1:
     ''' Formatting example:
-        <a title="dicEnRu"><k>cut</k><tr>kʌt</tr> I 1. гл. 1) резать, разрезать I cut my arm. ≈ Я порезал руку. Cut the bread. ≈ Разрежьте хлеб. Syn : slash, lance, slit; slice 2) а) завершать, прекращать; кончать Cut the rap. ≈ Хватит болтать. б) жать, косить ∙ Syn : mow, prune
+        <dic>dicEnRu</dic><k>cut</k><tr>kʌt</tr> I 1. гл. 1) резать, разрезать I cut my arm. ≈ Я порезал руку. Cut the bread. ≈ Разрежьте хлеб. Syn : slash, lance, slit; slice 2) а) завершать, прекращать; кончать Cut the rap. ≈ Хватит болтать. б) жать, косить ∙ Syn : mow, prune
     '''
     def __init__(self,text):
         self._blocks = []
@@ -198,11 +198,9 @@ class Type1:
                 self._tags.append('<gr>' + block + '</gr>')
             # Risky
             elif block in dic_abbr:
-                self._tags.append('<a title="%s"></a>' % block)
-                #self._tags.append('<co>' + block + '</co>')
+                self._tags.append('<dic>' + block + '</dic>')
             elif block in dic_titles:
-                self._tags.append('<a title="%s"></a>' % block)
-                #self._tags.append('<co>' + block + '</co>')
+                self._tags.append('<dic>' + block + '</dic>')
                 ''' #todo: create a 'Synonyms' dictionary, split items
                     after it and set 'term' type to them
                 '''
@@ -233,7 +231,7 @@ class Type1:
 
 class Type2:
     ''' Formatting example:
-        <a title="dicEnRu">1> порез; надрез; _Ex: I cut my arm _общ. Я порезал руку2> короткий путь3> _мат. раздел; _Ex: please refer to this cut обратитесь к этому разделу _Ex: to cut into pieces рассечь на части
+        <dic>dicEnRu</dic>1> порез; надрез; _Ex: I cut my arm _общ. Я порезал руку2> короткий путь3> _мат. раздел; _Ex: please refer to this cut обратитесь к этому разделу _Ex: to cut into pieces рассечь на части
     '''
     def __init__(self,text):
         self._blocks = []
@@ -346,7 +344,7 @@ class Type2:
                 '''
             elif self.dic(block):
                 block = block.replace('_','',1)
-                self._tags.append('<a title="%s"></a>' % block)
+                self._tags.append('<dic>' + block + '</dic>')
             elif block.startswith('_Ex:'):
                 block = block.replace('_Ex:','',1)
                 ''' Examples are essentially comments, but we draft
@@ -389,7 +387,7 @@ class Type2:
 
 class Type3:
     ''' Formatting example:
-        <a title="dicRuEn"><k>цель</k><b>I</b><dtrn>aim</dtrn><b>II</b><c><co>при стрельбе</co></c><dtrn>target</dtrn>
+        <dic>dicEnRu</dic><k>цель</k><b>I</b><dtrn>aim</dtrn><b>II</b><c><co>при стрельбе</co></c><dtrn>target</dtrn>
     '''
     def __init__(self,text):
         self.text = text

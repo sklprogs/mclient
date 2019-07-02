@@ -449,8 +449,9 @@ class AllDics:
                         result = dic.dict_data(ind)
                         if result:
                             # Set offline dictionary title
-                            lst.append ('<a title="' + dic._title \
-                                                     + '"></a>' + result
+                            lst.append ('<dic>{}</dic>{}'.format (dic._title
+                                                                 ,result
+                                                                 )
                                        )
                             sh.log.append (f,_('DEBUG')
                                           ,_('"%s" has matches for "%s"')\

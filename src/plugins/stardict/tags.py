@@ -30,7 +30,7 @@ gettext.install('mclient','../resources/locale')
     '''
 
 # Full dictionary titles
-pdic = '<a title="'
+pdic = '<dic>'
 
 # Comments
 pcom = '<co>'
@@ -99,17 +99,8 @@ class AnalyzeTag:
 
     def dic(self):
         f = '[MClient] plugins.stardict.tags.AnalyzeTag.dic'
-        if self._block.startswith(pdic):
-            tmp = self._block.replace(pdic,'',1)
-            tmp = re.sub('".*','',tmp)
-            if tmp == '' or tmp == ' ':
-                sh.log.append (f,_('WARNING')
-                              ,_('Wrong tag "%s"!') % tmp
-                              )
-            else:
-                self._cur._type = 'dic'
-                self._cur._text = tmp
-                self._elems.append(copy.copy(self._cur))
+        if pdic in self._block:
+            self._cur._type  = 'dic'
     
     def run(self):
         self.split()
