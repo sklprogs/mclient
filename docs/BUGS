@@ -1,5 +1,5 @@
 
-rule: unsearchable fragment
+RU-EN, rule, определять: unsearchable fragment
 
 - French: зонд: parts of speech (abbreviations) are lost
 - plugins.multitrancom: eng-rus: вручать: fix dic prioritization
