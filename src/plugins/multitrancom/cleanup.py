@@ -113,15 +113,8 @@ class CleanUp:
                                         )
     
     def common(self):
-        self._text = self._text.replace('','')
-        self._text = self._text.replace('','')
-        self._text = self._text.replace('','')
-        self._text = self._text.replace('','')
-        self._text = self._text.replace('','')
-        self._text = self._text.replace('','')
-        self._text = self._text.replace('','')
-        self._text = self._text.replace('','')
-        self._text = self._text.replace('','')
+        # Delete unicode control codes
+        self._text = re.sub(r'[\x00-\x1f\x7f-\x9f]','',self._text)
         self._text = self._text.replace('\r\n','')
         self._text = self._text.replace('\n','')
         self._text = self._text.replace('\xa0',' ')
