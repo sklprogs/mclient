@@ -3,12 +3,9 @@
   are no fixed columns
 - EN-RU, vow: of silence: analyze 'dic-comment-term' patterns
 - Store settings in the config file
-- Fix history navigation with 2 identical words (e.g., 'bad') in
-  separate languages (English, German)
 - plugins.multitrancom: eng-rus, phylogenetically, structured notation,
   кольцевой выступ
   -> phrases: set dic titles
-- plugins.multitrancom: Fix not finding anything
 - plugins.multitrancom: eng-rus, метильное: do not delete the phrase
   section when only separate words have been found: Найдено во фразах -
   найдены отдельные слова
@@ -34,8 +31,6 @@
   with a URL
 - multitran.com: complement 'abbr' with dictionary titles in both
   English and Russian (when missing)
-- multitran.com: pattern: too long columns
-- (?) Redo SpecialPage: alphebitize online and offline dics separately
 - stardict.cleanup: move block-creating code to stardict.parse
 - Add Control-Q for History
 - Unite cells of the same language if the direction is bilingual (to prevent from erroneously dividing parts of the same cell: https://www.multitran.ru/c/M.exe?a=3&&s=flight%20idle&l1=1&l2=2)
