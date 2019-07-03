@@ -732,6 +732,12 @@ class WebFrame:
         self.fill(welcome.run())
         self.update_buttons()
         self.title()
+        ''' We should ensure that a number of columns is based on
+            a GUI value instead of relying on a default 'lg.CurRequest'
+            value. This is especially needed when the column limit
+            value is preset, for example, is read from a config file.
+        '''
+        self.reset_columns()
 
     def values(self):
         self._pos   = -1
@@ -2071,20 +2077,24 @@ class WebFrame:
                           )
             lg.objs.plugins().set_lang2(self.gui.opt_lg2.choice)
 
-    def set_columns(self,event=None):
-        f = '[MClient] mclient.WebFrame.set_columns'
+    def reset_columns(self,event=None):
+        f = '[MClient] mclient.WebFrame.reset_columns'
         ''' Since Combo-type OptionMenus can be edited manually, we must
             get an actual value first.
         '''
         self.gui.opt_col._get()
-        sh.log.append (f,_('INFO')
-                      ,str(self.gui.opt_col.choice)
-                      )
         fixed = [col for col in lg.objs.request()._cols \
                  if col != _('Do not set')
                 ]
-        lg.objs._request._collimit = int(self.gui.opt_col.choice) \
-                                   + len(fixed)
+        lg.objs._request._collimit = sh.Input (title = f
+                                              ,value = self.gui.opt_col.choice
+                                              ).integer() + len(fixed)
+        sh.log.append (f,_('INFO')
+                      ,_('Set the number of columns to {}').format(lg.objs._request._collimit)
+                      )
+    
+    def set_columns(self,event=None):
+        self.reset_columns()
         objs.blocks_db().delete_bookmarks()
         self.load_article()
         self.gui.ent_src.focus()
