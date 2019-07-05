@@ -2,7 +2,9 @@
 - have bouts with -> 2 phrases, masseuse -> 2 phrases: loading the same
   article
 - RU-EN, определять: '>' as a word form
-- French: зонд: parts of speech (abbreviations) are lost
+- French: зонд: parts of speech (abbreviations) are lost;
+  German: работа: genders are lost (previously were in a wrong place)
+  test French -> 'comme il faut' -> phrases
 - plugins.multitrancom: eng-rus: вручать: fix dic prioritization
 - plugins.multitran: eng-rus: layout: cannot decrease a priority of
   a dictionary which priority is higher than the priority of the unknown
@@ -10,33 +12,23 @@
 - plugins.multitrancom: eng-rus: tree limb: wrong SAME
 - plugins.multitrancom: eng-rus: in dire need: no fragment
   "найдены отдельные слова"
-- plugins.multitran: eng-rus: knob: "общ." is a comment
+- plugins.multitran: eng-rus: knob: Биология: ручка: the following URL
+  is not a part of the preceding comment
 - plugins.multitrancom: eng-rus: tick off: "tick someone off": wrong
   parsing
-- plugins.multitrancom: eng-rus: layout: "the arrangement, size...":
-  wrong alphabetizing
 - Wrong URL substitution: "слинять" (https://www.multitran.ru/c/m.exe?t=7547319_2_1&s1=go%20between%20the%20moon%20and%20the%20milkman)
   is replaced with (https://www.multitran.com/m.exe?t=7547319_2_1&s1=go%20between%20the%20moon%20and%20the%20milkman)
   which is "питание"
-- plugins.stardict: test: 'a title' is visible
 - plugins.stardict: eng-rus, full: search gate: found by 'Suggest' and
   logged as found by 'AllDics.get', but could not be shown
-- plugins.stardict: eng-rus, full: lips: fix unsearchable fragment
 - Test and fix getting non-terms (when everything is selectable)
-- History: fix selecting the same term but from different resources
 - eng-rus: multitran.com: A&E: transcription is set as a comment before
   "Adolphus and Ellis's Queen's Bench Reports"
-- deu-rus: работа: genders are in a wrong place
 - 'about': 'они передвигали мебель' in a wrong dic (must be general)
 - logic, 817: logic.Order.prioritize_by: .index: ValueError
-- mt, sp-ru: Feliz Navidad -> URLs are not working
-- mt, en-ru: icon
 - Put
   <body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
   before the script when creating a page to print
-- Navigation does not work properly for 'doing a Bradbury'
-- Cannot go to URL in 'https://www.multitran.ru/c/M.exe?t=7519384_2_1&s1=you’re%20killing%20me'
-- comme il faut, фразы, FR: остается только 1 столбец
 - Widget is not shown immediately when using F2 -> Esc -> F2 (probably
   due to Tkinter/WM focusing/minimization behavior)
 - Do not fill history when search is empty (e.g., when changing
@@ -49,8 +41,6 @@
 - Unknown mode "" in Elems.order_speech when using local dictionaries
   (Stardict 2)
 - Do not open a Multitran-based URL for local dictionaries (F7)
-- 'невыполнение обязательств': 'невыполнение денежных обязательств':
-  mixed on sorting 
 - An incorrect selection at the end while searching "document is
   original without a signature"
 - Do not move at the beginning of the article after cancelling the search
@@ -61,15 +51,8 @@
 - vertical view, EN-RU: "поцелуй": fix Moves.up for the 1st element
 - for vertical view: concerning coloring, rely on row numbers instead of
   column numbers
-- dressing: в MT (браузер) - "противопригарная противопригарный припыл",
-  в mclient - "припыл противопригарная". Вызвано сортировкой по терминам.
+- dressing: "противопригарная" is a word form.
 - Search dialog appears again after changing the view and pressing F3
-- mud: неверный парсинг 'буровой шлам; илистый грунт' -> потеря 'грунт'
-- исправить многоуровневые корректировочные комментарии
-  (e.g., "working documentation"): их можно вычислить по конструкции
-  [correction + Username + Comment + UserName]
-- RUS-XAL: липа -> җөөлн цаhан модн -> Общая лексика -> <Нет связи>
-- glass bubble: why there are no items in red?
 - (DB) Fix Moves on 'рабочая документация' (SelectTermsOnly=0), selects
   ')' twice, but does not select corrections
 - NODE1 < NODE2 in some rare cases

@@ -10,7 +10,7 @@ gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 PRODUCT = 'MClient'
-VERSION = '6.1'
+VERSION = '6.1.1'
 
 
 class Sources:

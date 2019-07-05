@@ -1,5 +1,12 @@
 
 
+6.1.1
+* Delete unicode control codes
+* Fix titles of Stardict dictionaries
+* Fix an error upon an incorrect config
+* Restore a source and languages when navigating History
+* Fix switching sources
+
 6.1
 * Add language pairs supported by multitran.com
 * Recognize dictionary titles for phrase-type articles
