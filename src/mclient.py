@@ -2009,11 +2009,13 @@ class WebFrame:
             objs._blocks_db._articleid = result
             result = objs._blocks_db.article()
             if result:
-                lg.objs._request._source = result[0]
-                lg.objs._request._search = result[1]
-                lg.objs._request._url    = result[2]
+                lg.objs.request()._source = result[0]
+                lg.objs._request._search  = result[1]
+                lg.objs._request._url     = result[2]
                 lg.objs.plugins().set(lg.objs._request._source)
-                self.gui.opt_src.set(lg.objs._request._source)
+                lg.objs._plugins.set_lang1(result[4])
+                lg.objs._plugins.set_lang2(result[5])
+                self.reset_opt(lg.objs._request._source)
                 self.load_article()
             else:
                 sh.com.empty(f)
@@ -2028,11 +2030,13 @@ class WebFrame:
             objs._blocks_db._articleid = result
             result = objs._blocks_db.article()
             if result:
-                lg.objs._request._source = result[0]
-                lg.objs._request._search = result[1]
-                lg.objs._request._url    = result[2]
+                lg.objs.request()._source = result[0]
+                lg.objs._request._search  = result[1]
+                lg.objs._request._url     = result[2]
                 lg.objs.plugins().set(lg.objs._request._source)
-                self.gui.opt_src.set(lg.objs._request._source)
+                lg.objs._plugins.set_lang1(result[4])
+                lg.objs._plugins.set_lang2(result[5])
+                self.reset_opt(lg.objs._request._source)
                 self.load_article()
             else:
                 sh.com.empty(f)
