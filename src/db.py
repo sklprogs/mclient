@@ -154,11 +154,17 @@ class DB:
                          )
         return self.dbc.fetchall()
 
-    def present(self,source,title,lang1,lang2):
+    def present(self,source,title,url):
+        ''' We also need to pass URL in case History has two phrase
+            dictionary titles of the same name.
+            URL will be empty for local dictionaries so we need to pass
+            TITLE as well.
+            #note: add LANG1 and LANG2 when pairs are enabled for local
+            dictionaries.
+        '''
         self.dbc.execute ('select ARTICLEID from ARTICLES \
-                           where SOURCE = ? and TITLE = ? and LANG1 = ?\
-                           and LANG2 = ?'
-                         ,(source,title,lang1,lang2,)
+                           where URL = ? and SOURCE = ? and TITLE = ?'
+                         ,(url,source,title,)
                          )
         result = self.dbc.fetchone()
         if result:

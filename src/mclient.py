@@ -516,7 +516,13 @@ class History:
                 lg.objs._plugins.set_lang1(result[4])
                 lg.objs._plugins.set_lang2(result[5])
                 objs._webframe.reset_opt(lg.objs._request._source)
-                objs._webframe.go_search()
+                ''' #note: Do not use wrapper procedures such as
+                    'objs._webframe.go_url' (modifies
+                    'lg.objs._request._search') and
+                    'objs._webframe.go_search' (modifies
+                    'lg.objs._request._url').
+                '''
+                objs._webframe.load_article()
             else:
                 sh.com.empty(f)
         else:
@@ -1418,8 +1424,7 @@ class WebFrame:
         self._pos = -1
         articleid = objs.blocks_db().present (source = lg.objs.request()._source
                                              ,title  = lg.objs._request._search
-                                             ,lang1  = lg.objs.plugins().lang1()
-                                             ,lang2  = lg.objs._plugins.lang2()
+                                             ,url    = lg.objs._request._url
                                              )
         if articleid:
             sh.log.append (f,_('INFO')

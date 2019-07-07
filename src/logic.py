@@ -666,7 +666,7 @@ class CurRequest:
     def __init__(self):
         self.values()
         self.reset()
-
+    
     def values(self):
         ''' #note: this should be synchronized with the 'default' value
             of objs.webframe().menu_columns
