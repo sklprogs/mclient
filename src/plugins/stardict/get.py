@@ -268,7 +268,9 @@ class StarDict:
         f = '[MClient] plugins.stardict.get.Stardict.check'
         if self.Success:
             try:
-                for line in open(self._fname+'.ifo').readlines()[1:]:
+                for line in open (file     = self._fname + '.ifo'
+                                 ,encoding = 'UTF-8'
+                                 ).readlines()[1:]:
                     pair = line.split('=')
                     self._ifo[pair[0]] = pair[1][:-1]
 
