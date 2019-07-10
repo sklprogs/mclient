@@ -20,6 +20,8 @@ gettext.install('mclient','../resources/locale')
     •  Terms:
          <td class="trans" width="100%"><a href="/m.exe?s=компьютер&amp;l1=2&amp;l2=1"> компьютер</a>
          td class="trans"
+         <td class="termsforsubject">
+         td class="termsforsubject"
     •  Comments:
          <span style="color:gray">(прибора)</span>
          span style="color:gray"
@@ -68,7 +70,8 @@ pwf2 = '" class="gray"'
 psp = '<em>'
 
 # Terms
-ptm = 'td class="trans"'
+ptm1 = 'td class="trans"'
+ptm2 = 'td class="termsforsubject"'
 
 # Terms in the 'Phrases' section
 pph = 'td class="phras"'
@@ -87,9 +90,10 @@ tag_pattern_del = ['m.exe?a=40&'              # Log in, Вход
                   ,'td class="phras_cnt"'     # Phrase entries count number
                   ]
 
-useful_tags = [pdic,purl1,purl2,pcom1
-              ,pcom2,pwf1,pwf2,psp
-              ,ptm,pph,pcor1,pcor2
+useful_tags = [pdic ,purl1,purl2,pcom1
+              ,pcom2,pwf1 ,pwf2 ,psp
+              ,ptm1 ,ptm2 ,pph  ,pcor1
+              ,pcor2
               ]
 
 
@@ -249,7 +253,7 @@ class AnalyzeTag:
 
     def term(self):
         f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.term'
-        if ptm in self._block._text:
+        if ptm1 in self._block._text or ptm2 in self._block._text:
             self._block._type = 'term'
 
     def url(self):
