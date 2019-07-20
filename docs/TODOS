@@ -4,7 +4,8 @@
 - Restore true user collimit choice when not a SpecialPage
 - EN-RU, rule: Шахматы: do not center words in the first column if there
   are no fixed columns
-- EN-RU, vow: of silence: analyze 'dic-comment-term' patterns
+- EN-RU, vow: of silence; abuse of a dominant position:
+  analyze 'dic-comment-term' patterns
 - Store settings in the config file
 - plugins.multitrancom: eng-rus, phylogenetically, structured notation,
   кольцевой выступ
