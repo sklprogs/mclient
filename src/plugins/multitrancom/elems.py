@@ -16,8 +16,7 @@
 '''
 
 import re
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -125,12 +124,12 @@ class Same:
                         eng-rus: 'tree limb'.
                     '''
                     if not self._blocks[i-1]._text.startswith('('):
-                        cond1 = sh.Text(self._blocks[i-2]._text).has_cyrillic()\
-                                and sh.Text(self._blocks[i-1]._text).has_cyrillic()\
-                                and sh.Text(self._blocks[i]._text).has_cyrillic()
-                        cond2 = sh.Text(self._blocks[i-2]._text).has_latin()\
-                                and sh.Text(self._blocks[i-1]._text).has_latin()\
-                                and sh.Text(self._blocks[i]._text).has_latin()
+                        cond1 = sh.lg.Text(self._blocks[i-2]._text).has_cyrillic()\
+                                and sh.lg.Text(self._blocks[i-1]._text).has_cyrillic()\
+                                and sh.lg.Text(self._blocks[i]._text).has_cyrillic()
+                        cond2 = sh.lg.Text(self._blocks[i-2]._text).has_latin()\
+                                and sh.lg.Text(self._blocks[i-1]._text).has_latin()\
+                                and sh.lg.Text(self._blocks[i]._text).has_latin()
                         if cond1 or cond2:
                             self._blocks[i-1]._same = 1
                             self._blocks[i  ]._same = 1
@@ -149,7 +148,7 @@ class Same:
     
     def punc(self):
         for block in self._blocks:
-            for sym in sh.punc_array:
+            for sym in sh.lg.punc_array:
                 if block._text.startswith(sym):
                     block._same = 1
                     break
@@ -157,19 +156,18 @@ class Same:
     def debug(self):
         f = 'plugins.multitrancom.elems.Same.debug'
         if self.Debug:
-            sh.log.append (f,_('INFO')
-                          ,_('Debug table:')
-                          )
+            mes = _('Debug table:')
+            sh.objs.mes(f,mes,True).debug()
             headers = ['TYPE','TEXT','SAMECELL']
             rows = []
             for block in self._blocks:
                 rows.append([block._type,block._text,block._same])
-            sh.Table (headers = headers
-                     ,rows    = rows
-                     ,Shorten = self.Shorten
-                     ,MaxRow  = self.MaxRow
-                     ,MaxRows = self.MaxRows
-                     ).print()
+            sh.lg.Table (headers = headers
+                        ,rows    = rows
+                        ,Shorten = self.Shorten
+                        ,MaxRow  = self.MaxRow
+                        ,MaxRows = self.MaxRows
+                        ).print()
     
     def run(self):
         f = 'plugins.multitrancom.elems.Same.run'
@@ -291,9 +289,8 @@ class Elems:
                 count += 1
                 i -= 1
             i += 1
-        sh.log.append (f,_('INFO')
-                      ,_('%d blocks have been deleted') % count
-                      )
+        mes = _('{} blocks have been deleted').format(count)
+        sh.objs.mes(f,mes,True).info()
     
     def corrections(self):
         ''' Replace 'comment' with 'correction' in
@@ -340,9 +337,8 @@ class Elems:
                     i -= 1
                 i += 1
             if count:
-                sh.log.append (f,_('INFO')
-                              ,_('%d blocks have been deleted') % count
-                              )
+                mes = _('{} blocks have been deleted').format(count)
+                sh.objs.mes(f,mes,True).info()
         else:
             sh.com.empty(f)
     
@@ -422,9 +418,8 @@ class Elems:
     def debug(self):
         f = 'plugins.multitrancom.elems.Elems.debug'
         if self.Debug:
-            sh.log.append (f,_('INFO')
-                          ,_('Debug table:')
-                          )
+            mes = _('Debug table:')
+            sh.objs.mes(f,mes,True).debug()
             headers = ['TYPE','TEXT','SAMECELL','CELLNO','ROWNO','COLNO'
                       ,'POS1','POS2'
                       ]
@@ -435,12 +430,12 @@ class Elems:
                              ,block._first,block._last
                              ]
                             )
-            sh.Table (headers = headers
-                     ,rows    = rows
-                     ,Shorten = self.Shorten
-                     ,MaxRow  = self.MaxRow
-                     ,MaxRows = self.MaxRows
-                     ).print()
+            sh.lg.Table (headers = headers
+                        ,rows    = rows
+                        ,Shorten = self.Shorten
+                        ,MaxRow  = self.MaxRow
+                        ,MaxRows = self.MaxRows
+                        ).print()
         
     def transc(self):
         for block in self._blocks:
@@ -483,7 +478,7 @@ class Elems:
                         cond = True
                 if self._blocks[i]._text \
                   and not self._blocks[i]._text[0].isspace() \
-                  and not self._blocks[i]._text[0] in sh.punc_array \
+                  and not self._blocks[i]._text[0] in sh.lg.punc_array \
                   and not self._blocks[i]._text[0] in [')',']','}'] \
                   and not cond:
                     self._blocks[i]._text = ' ' + self._blocks[i]._text

@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 # -*- coding:UTF-8 -*-
 
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -2699,9 +2698,8 @@ class Pairs:
             try:
                 return LANGS[lang]['code']
             except KeyError:
-                sh.objs.mes (f,_('ERROR')
-                            ,_('Wrong input data: "%s"!') % str(lang)
-                            )
+                mes = _('Wrong input data: "{}"!').format(lang)
+                sh.objs.mes(f,mes).error()
         else:
             sh.com.empty(f)
     
@@ -2720,9 +2718,8 @@ class Pairs:
                 if LANGS[lang]['code'] == code:
                     return lang
         else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('Wrong input data: "%s"!') % str(code)
-                        )
+            mes = _('Wrong input data: "{}"!').format(code)
+            sh.objs.mes(f,mes).error()
     
     def delete_flawed(self):
         # Takes ~0,18s on Intel Atom
@@ -2741,9 +2738,8 @@ class Pairs:
                 LANGS[pair[1]]['pair'] = tuple(LANGS[pair[1]]['pair'])
                 count += 1
         # This message may be not shown, but the procedure runs anyway
-        sh.log.append (f,_('INFO')
-                      ,_('%d items have been deleted') % count
-                      )
+        mes = _('{} items have been deleted').format(count)
+        sh.objs.mes(f,mes,True).info()
     
     def flawed(self):
         if not self._flawed:
@@ -2760,9 +2756,8 @@ class Pairs:
             try:
                 return sorted(LANGS[lang1]['pair'])
             except KeyError:
-                sh.objs.mes (f,_('ERROR')
-                            ,_('Wrong input data!')
-                            )
+                mes = _('Wrong input data!')
+                sh.objs.mes(f,mes).error()
         else:
             sh.com.empty(f)
     

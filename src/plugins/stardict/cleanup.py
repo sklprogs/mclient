@@ -2,8 +2,7 @@
 
 import re
 import html
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -57,10 +56,8 @@ class Common:
         f = '[MClient] plugins.stardict.cleanup.Common.decode_entities'
         try:
             self._text = html.unescape(self._text)
-        except:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('Unable to convert HTML entities to UTF-8!')
-                        )
+        except Exception as e:
+            sh.com.failed(f,e)
     
     def trash(self):
         self._text = self._text.replace('\r\n','')
@@ -92,10 +89,8 @@ class Type1:
         f = '[MClient] plugins.stardict.cleanup.Type1.decode'
         try:
             self.text = html.unescape(self.text)
-        except:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('Unable to convert HTML entities to UTF-8!')
-                        )
+        except Exception as e:
+            sh.com.failed(f,e)
     
     def trash(self):
         self.text = self.text.replace(' ∙ ',';').replace(' - ',';')
@@ -154,14 +149,14 @@ class Type1:
                 else:
                     self._blocks.append(block)
                     block = ''
-            elif CurLang == 'LAT' and sym in sh.ru_alphabet:
+            elif CurLang == 'LAT' and sym in sh.lg.ru_alphabet:
                 CurLang = 'CYR'
                 if '≈' in block or '(' in block:
                     block += sym
                 else:
                     self._blocks.append(block)
                     block = sym
-            elif CurLang == 'CYR' and sym in sh.lat_alphabet:
+            elif CurLang == 'CYR' and sym in sh.lg.lat_alphabet:
                 CurLang = 'LAT'
                 if '≈' in block or '(' in block:
                     block += sym
@@ -217,11 +212,11 @@ class Type1:
             if self._blocks[i] in dic_titles:
                 Condition = False
                 if i > 0:
-                    if sh.Text(text=self._blocks[i]).has_cyrillic() \
-                    and sh.Text(text=self._blocks[i-1]).has_latin():
+                    if sh.lg.Text(text=self._blocks[i]).has_cyrillic() \
+                    and sh.lg.Text(text=self._blocks[i-1]).has_latin():
                         Condition = True
-                    elif sh.Text(text=self._blocks[i]).has_latin() \
-                    and sh.Text(text=self._blocks[i-1]).has_cyrillic():
+                    elif sh.lg.Text(text=self._blocks[i]).has_latin() \
+                    and sh.lg.Text(text=self._blocks[i-1]).has_cyrillic():
                         Condition = True
                 if Condition:
                     self._blocks[i-1], self._blocks[i] = self._blocks[i], self._blocks[i-1]
@@ -253,7 +248,7 @@ class Type2:
                 else:
                     self._blocks.append(block)
                     block = ''
-            elif CurLang == 'LAT' and self.text[i] in sh.ru_alphabet:
+            elif CurLang == 'LAT' and self.text[i] in sh.lg.ru_alphabet:
                 CurLang = 'CYR'
                 if i > 0 and self.text[i-1] == '_':
                     block += self.text[i]
@@ -263,7 +258,7 @@ class Type2:
                     else:
                         self._blocks.append(block)
                         block = self.text[i]
-            elif CurLang == 'CYR' and self.text[i] in sh.lat_alphabet:
+            elif CurLang == 'CYR' and self.text[i] in sh.lg.lat_alphabet:
                 CurLang = 'LAT'
                 if i > 0 and self.text[i-1] == '_':
                     block += self.text[i]
@@ -304,10 +299,8 @@ class Type2:
         f = '[MClient] plugins.stardict.cleanup.Type2.decode'
         try:
             self.text = html.unescape(self.text)
-        except:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('Unable to convert HTML entities to UTF-8!')
-                        )
+        except Exception as e:
+            sh.com.failed(f,e)
     
     def trash(self):
         self.text = self.text.replace(' - ',';')
@@ -373,11 +366,11 @@ class Type2:
             if self.dic(self._blocks[i]):
                 Condition = False
                 if i > 0:
-                    if sh.Text(text=self._blocks[i]).has_cyrillic() \
-                    and sh.Text(text=self._blocks[i-1]).has_latin():
+                    if sh.lg.Text(text=self._blocks[i]).has_cyrillic() \
+                    and sh.lg.Text(text=self._blocks[i-1]).has_latin():
                         Condition = True
-                    elif sh.Text(text=self._blocks[i]).has_latin() \
-                    and sh.Text(text=self._blocks[i-1]).has_cyrillic():
+                    elif sh.lg.Text(text=self._blocks[i]).has_latin() \
+                    and sh.lg.Text(text=self._blocks[i-1]).has_cyrillic():
                         Condition = True
                 if Condition:
                     self._blocks[i-1], self._blocks[i] = self._blocks[i], self._blocks[i-1]
@@ -417,19 +410,16 @@ class CleanUp:
         if self._text and header:
             self._text = Common(self._text).run()
             if '<dtrn>' in self._text:
-                sh.log.append (f,_('DEBUG')
-                              ,_('Type 3')
-                              )
+                mes = _('Type 3')
+                sh.objs.mes(f,mes,True).debug()
                 self._text = Type3(self._text).run()
             elif '_Ex:' in self._text or re.search('\d\>',self._text):
-                sh.log.append (f,_('DEBUG')
-                              ,_('Type 2')
-                              )
+                mes = _('Type 2')
+                sh.objs.mes(f,mes,True).debug()
                 self._text = Type2(self._text).run()
             else:
-                sh.log.append (f,_('DEBUG')
-                              ,_('Type 1')
-                              )
+                mes = _('Type 1')
+                sh.objs.mes(f,mes,True).debug()
                 self._text = Type1(self._text).run()
         else:
             sh.com.empty(f)

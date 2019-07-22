@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import tkinterhtml as th
-import shared      as sh
-import sharedGUI   as sg
+import tkinterhtml       as th
+import skl_shared.shared as sh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -11,6 +10,7 @@ gettext.install('mclient','../resources/locale')
 
 PRODUCT = 'MClient'
 VERSION = '6.1.1'
+ICON    = sh.objs.pdir().add('..','resources','icon_64x64_mclient.gif')
 
 
 class Sources:
@@ -19,29 +19,26 @@ class Sources:
         self.values()
         self._width  = width
         self._height = height
-        self.parent = sg.Top(parent=sg.objs.root())
-        sg.Geometry(parent=self.parent).set ('%dx%d' % (self._width
-                                                       ,self._height
-                                                       )
-                                            )
+        self.parent  = sh.Top()
+        sh.Geometry(self.parent).set ('%dx%d' % (self._width
+                                                ,self._height
+                                                )
+                                     )
         self.gui()
         
     def icon(self,path=None):
         if path:
             self.parent.icon(path)
         else:
-            self.parent.icon (sh.objs.pdir().add ('..','resources'
-                                                 ,'icon_64x64_mclient.gif'
-                                                 )
-                             )
+            self.parent.icon(ICON)
     
     def bindings(self):
-        sg.bind (obj      = self.parent
-                ,bindings = ('<Escape>','<Control-q>','<Control-w>')
-                ,action   = self.close
-                )
-        self.cvs_prm.top_bindings (top     = self.parent
-                                  ,Control = False
+        sh.com.bind (obj      = self.parent
+                    ,bindings = ('<Escape>','<Control-q>','<Control-w>')
+                    ,action   = self.close
+                    )
+        self.cvs_prm.top_bindings (top  = self.parent
+                                  ,Ctrl = False
                                   )
     
     def selected(self,event=None):
@@ -66,9 +63,7 @@ class Sources:
                                 )
             self.cvs_prm.scroll()
         else:
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
+            sh.com.lazy()
         
     def values(self):
         self._frms   = []
@@ -76,45 +71,44 @@ class Sources:
         self._lbls   = []
         
     def buttons(self):
-        self.btn_tgl = sg.Button (parent = self.frm_btl
+        self.btn_tgl = sh.Button (parent = self.frm_btl
                                  ,text   = _('Select all')
                                  ,hint   = _('Mark/unmark all checkboxes')
                                  ,side   = 'left'
                                  ,action = self.toggle
                                  )
-        self.btn_rst = sg.Button (parent = self.frm_btl
+        self.btn_rst = sh.Button (parent = self.frm_btl
                                  ,text   = _('Reset')
                                  ,hint   = _('Reset to default')
                                  ,side   = 'right'
                                  )
-        self.btn_apl = sg.Button (parent = self.frm_btr
+        self.btn_apl = sh.Button (parent = self.frm_btr
                                  ,text   = _('Apply')
                                  ,hint   = _('Close & Apply')
                                  ,side   = 'right'
                                  )
     
     def widgets(self):
-        self.cvs_prm = sg.Canvas(parent=self.frm_cnt)
-        self.frm_emb = sg.Frame(parent=self.frm_cnt)
+        self.cvs_prm = sh.Canvas(parent=self.frm_cnt)
+        self.frm_emb = sh.Frame(parent=self.frm_cnt)
         self.cvs_prm.embed(self.frm_emb)
         self.buttons()
         
     def add_row(self,text):
-        frm = sg.Frame (parent = self.frm_emb
+        frm = sh.Frame (parent = self.frm_emb
                        ,expand = False
                        )
-        cbx = sg.CheckBox (parent = frm
+        cbx = sh.CheckBox (parent = frm
                           ,side   = 'left'
                           )
-        lbl = sg.Label (parent = frm
+        lbl = sh.Label (parent = frm
                        ,text   = text
                        ,side   = 'left'
-                       ,Close  = False
                        )
-        sg.bind (obj      = lbl
-                ,bindings = '<ButtonRelease-1>'
-                ,action   = cbx.toggle
-                )
+        sh.com.bind (obj      = lbl
+                    ,bindings = '<ButtonRelease-1>'
+                    ,action   = cbx.toggle
+                    )
         self._frms.append(frm)
         self._cboxes.append(cbx)
         self._lbls.append(lbl)
@@ -150,48 +144,48 @@ class Sources:
         self.btn_apl.focus()
         
     def frames(self):
-        self.frm_prm = sg.Frame (parent = self.parent)
-        self.frm_top = sg.Frame (parent = self.frm_prm
+        self.frm_prm = sh.Frame (parent = self.parent)
+        self.frm_top = sh.Frame (parent = self.frm_prm
                                 ,side   = 'top'
                                 )
-        self.frm_btm = sg.Frame (parent = self.frm_prm
+        self.frm_btm = sh.Frame (parent = self.frm_prm
                                 ,side   = 'bottom'
                                 ,expand = False
                                 ,fill   = 'x'
                                 )
-        self.frm_cnt = sg.Frame (parent = self.frm_top
+        self.frm_cnt = sh.Frame (parent = self.frm_top
                                 ,side   = 'left'
                                 )
-        self.frm_ver = sg.Frame (parent = self.frm_top
+        self.frm_ver = sh.Frame (parent = self.frm_top
                                 ,expand = False
                                 ,fill   = 'y'
                                 ,side   = 'right'
                                 )
-        self.frm_hor = sg.Frame (parent = self.frm_btm
+        self.frm_hor = sh.Frame (parent = self.frm_btm
                                 ,expand = False
                                 ,fill   = 'x'
                                 ,side   = 'top'
                                 )
-        self.frm_btn = sg.Frame (parent = self.frm_btm
+        self.frm_btn = sh.Frame (parent = self.frm_btm
                                 ,expand = False
                                 ,fill   = 'both'
                                 ,side   = 'bottom'
                                 )
-        self.frm_btl = sg.Frame (parent = self.frm_btn
+        self.frm_btl = sh.Frame (parent = self.frm_btn
                                 ,fill   = 'both'
                                 ,side   = 'left'
                                 )
-        self.frm_btr = sg.Frame (parent = self.frm_btn
+        self.frm_btr = sh.Frame (parent = self.frm_btn
                                 ,fill   = 'both'
                                 ,side   = 'right'
                                 )
         
     def scrollbars(self):
-        self.scr_hor = sg.Scrollbar (parent = self.frm_hor
+        self.scr_hor = sh.Scrollbar (parent = self.frm_hor
                                     ,scroll = self.cvs_prm
                                     ,Horiz  = True
                                     )
-        self.scr_ver = sg.Scrollbar (parent = self.frm_ver
+        self.scr_ver = sh.Scrollbar (parent = self.frm_ver
                                     ,scroll = self.cvs_prm
                                     )
                                  
@@ -211,7 +205,7 @@ class About:
         self.gui()
         
     def gui(self):
-        self.obj    = sg.Top(sg.objs.root())
+        self.obj    = sh.Top()
         self.widget = self.obj.widget
         self.frames()
         self.labels()
@@ -230,58 +224,56 @@ class About:
         if path:
             self.obj.icon(path)
         else:
-            self.obj.icon (sh.objs.pdir().add ('..','resources'
-                                              ,'icon_64x64_mclient.gif'
-                                              )
-                          )
+            self.obj.icon(ICON)
         
     def labels(self):
-        self.lbl_abt = sg.Label (parent = self.frm_prm
-                                ,text   = _('Programming: Peter Sklyar, 2015-2019.\nVersion: %s\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n') \
-                                          % VERSION
+        text = _('Programming: Peter Sklyar, 2015-2019.\nVersion: {}\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n')
+        text = text.format(VERSION)
+        self.lbl_abt = sh.Label (parent = self.frm_prm
+                                ,text   = text
                                 ,font   = 'Sans 14'
                                 )
         
     def frames(self):
-        self.frm_prm = sg.Frame (parent = self
+        self.frm_prm = sh.Frame (parent = self
                                 ,expand = 1
                                 ,fill   = 'both'
                                 ,side   = 'top'
                                 )
-        self.frm_sec = sg.Frame (parent = self
+        self.frm_sec = sh.Frame (parent = self
                                 ,expand = 1
                                 ,fill   = 'both'
                                 ,side   = 'left'
                                 )
-        self.frm_ter = sg.Frame (parent = self
+        self.frm_ter = sh.Frame (parent = self
                                 ,expand = 1
                                 ,fill   = 'both'
                                 ,side   = 'right'
                                 )
     def buttons(self):
         # Show the license
-        self.btn_thd = sg.Button (parent = self.frm_sec
+        self.btn_thd = sh.Button (parent = self.frm_sec
                                  ,text   = _('Third parties')
                                  ,hint   = _('Third-party licenses')
                                  ,side   = 'left'
                                  )
-        self.btn_lic = sg.Button (parent = self.frm_ter
+        self.btn_lic = sh.Button (parent = self.frm_ter
                                  ,text   = _('License')
                                  ,hint   = _('View the license')
                                  ,side   = 'left'
                                  )
         # Send mail to the author
-        self.btn_eml = sg.Button (parent = self.frm_ter
+        self.btn_eml = sh.Button (parent = self.frm_ter
                                  ,text   = _('Contact the author')
                                  ,hint   = _('Draft an email to the author')
                                  ,side   = 'right'
                                  )
     
     def bindings(self):
-        sg.bind (obj      = self.obj
-                ,bindings = '<Escape>'
-                ,action   = self.close
-                )
+        sh.com.bind (obj      = self.obj
+                    ,bindings = '<Escape>'
+                    ,action   = self.close
+                    )
 
     def close(self,event=None):
         self.Active = False
@@ -305,32 +297,18 @@ class ThirdParties:
         self.gui()
         
     def gui(self):
-        self.parent = sg.objs.new_top()
-        sg.Geometry(parent=self.parent).set('800x600')
-        self.obj = sg.TextBox(parent=self.parent)
-        self.icon()
-        self.title()
+        title = _('Third parties') + ':'
+        self.obj = sh.TextBoxC (title  = title
+                               ,icon   = ICON
+                               )
+        sh.Geometry(self.obj.parent).set('800x600')
         self.obj.focus()
     
-    def title(self,text=None):
-        if not text:
-            text = _('Third parties') + ':'
-        self.parent.title(text)
-    
-    def icon(self,path=None):
-        if path:
-            self.parent.icon(path)
-        else:
-            self.parent.icon (sh.objs.pdir().add ('..','resources'
-                                                 ,'icon_64x64_mclient.gif'
-                                                 )
-                             )
-    
     def show(self,event=None):
-        self.parent.show()
+        self.obj.show()
     
     def close(self,event=None):
-        self.parent.close()
+        self.obj.close()
 
 
 
@@ -340,36 +318,21 @@ class SearchArticle:
         self.gui()
         
     def gui(self):
-        self.parent = sg.objs.new_top()
-        self.obj    = sg.Entry(parent=self.parent)
-        self.widget = self.obj.widget
-        self.title()
-        self.icon()
+        self.parent = sh.EntryC (title = _('Enter a string to search:')
+                                ,icon  = ICON
+                                )
+        self.widget = self.parent.widget
         self.bindings()
-        self.obj.focus()
+        self.parent.focus()
     
     def bindings(self):
-        sg.bind (obj      = self.parent
-                ,bindings = '<Escape>'
-                ,action   = self.parent.close
-                )
-    
-    def title(self,text=None):
-        if not text:
-            text = _('Enter a string to search:')
-        self.parent.title(text)
-    
-    def icon(self,path=None):
-        if path:
-            self.parent.icon(path)
-        else:
-            self.parent.icon (sh.objs.pdir().add ('..','resources'
-                                                 ,'icon_64x64_mclient.gif'
-                                                 )
-                             )
+        sh.com.bind (obj      = self.parent
+                    ,bindings = '<Escape>'
+                    ,action   = self.parent.close
+                    )
                              
     def show(self,event=None):
-        self.obj.select_all()
+        self.parent.select_all()
         self.parent.show()
     
     def close(self,event=None):
@@ -391,14 +354,11 @@ class SaveArticle:
         self.gui()
         
     def gui(self):
-        self.parent = sg.objs.new_top()
-        self.obj    = sg.ListBox (parent   = self.parent
-                                 ,Multiple = False
-                                 ,lst      = self._items
-                                 ,title    = _('Select an action:')
-                                 )
-        self.widget = self.obj.widget
-        self.icon()
+        self.parent = sh.ListBoxC (lst   = self._items
+                                  ,title = _('Select an action:')
+                                  ,icon  = ICON
+                                  )
+        self.widget = self.parent.widget
 
     def close(self,event=None):
         self.Active = False
@@ -408,15 +368,6 @@ class SaveArticle:
         self.Active = True
         self.parent.show()
         
-    def icon(self,path=None):
-        if path:
-            self.parent.icon(path)
-        else:
-            self.parent.icon (sh.objs.pdir().add ('..','resources'
-                                                 ,'icon_64x64_mclient.gif'
-                                                 )
-                             )
-                             
     def toggle(self,event=None):
         if self.Active:
             self.close()
@@ -429,37 +380,30 @@ class History:
 
     def __init__(self):
         self.Active = False
-        self._icon  = sh.objs.pdir().add ('..','resources'
-                                         ,'icon_64x64_mclient.gif'
-                                         )
         self.gui()
 
     def gui(self):
-        self.parent = sg.objs.new_top()
-        self.parent.widget.geometry('250x350')
-        self.obj = sg.ListBox (parent          = self.parent
-                              ,title           = _('History')
-                              ,icon            = self._icon
-                              ,SelectionCloses = False
-                              ,SingleClick     = True
-                              ,Composite       = True
-                              )
-        self.widget = self.obj.widget
+        self.parent = sh.ListBoxC (title = _('History')
+                                  ,icon  = ICON
+                                  )
+        sh.Geometry(self.parent).set('250x350')
+        self.widget = self.parent.widget
+        self.obj    = self.parent
         self.bindings()
 
     def bindings(self):
-        sg.bind (obj      = self
-                ,bindings = '<ButtonRelease-3>'
-                ,action   = self.copy
-                )
-        sg.bind (obj      = self
-                ,bindings = '<Escape>'
-                ,action   = self.close
-                )
+        sh.com.bind (obj      = self
+                    ,bindings = '<ButtonRelease-3>'
+                    ,action   = self.copy
+                    )
+        sh.com.bind (obj      = self
+                    ,bindings = '<Escape>'
+                    ,action   = self.close
+                    )
 
     def show(self,event=None):
         self.Active = True
-        self.obj.focus()
+        self.parent.focus()
         self.parent.show()
 
     def close(self,event=None):
@@ -474,7 +418,7 @@ class History:
 
     # Скопировать элемент истории
     def copy(self,event=None):
-        sg.Clipboard().copy(self.obj.get())
+        sh.Clipboard().copy(self.parent.get())
 
 
 
@@ -492,7 +436,7 @@ class WebFrame:
         if text:
             self.ent_src.insert(text=text)
         else:
-            self.ent_src.insert(text=sg.Clipboard().paste())
+            self.ent_src.insert(text=sh.Clipboard().paste())
         return 'break'
 
     def values(self):
@@ -599,15 +543,15 @@ class WebFrame:
                                          )
 
     def gui(self):
-        self.obj     = sg.objs.new_top(Maximize=True)
-        self.frm_prm = sg.Frame (parent = self.obj
+        self.obj     = sh.Top(Maximize=True)
+        self.frm_prm = sh.Frame (parent = self.obj
                                 ,expand = 1
                                 )
-        self.frm_btm = sg.Frame (parent = self.frm_prm
+        self.frm_btm = sh.Frame (parent = self.frm_prm
                                 ,expand = 0
                                 ,side   = 'bottom'
                                 )
-        self.frm_ver = sg.Frame (parent = self.frm_prm
+        self.frm_ver = sh.Frame (parent = self.frm_prm
                                 ,expand = 0
                                 ,fill   = 'y'
                                 ,side   = 'right'
@@ -619,29 +563,28 @@ class WebFrame:
         self.icon()
         self.title()
         self.bindings()
-        self.ent_src.focus_set()
+        self.ent_src.focus()
         self.obj.widget.protocol("WM_DELETE_WINDOW",self.close)
 
     def frame_panel(self):
         ''' Do not mix 'self.frm_pnl' and 'self.frm_btm', otherwise,
             they may overlap each other.
         '''
-        self.frm_pnl = sg.Frame (parent = self.frm_btm
+        self.frm_pnl = sh.Frame (parent = self.frm_btm
                                 ,expand = 0
                                 ,fill   = 'x'
                                 )
         # Canvas should be created within a frame
-        self.cvs_prm = sg.Canvas (parent = self.frm_pnl
+        self.cvs_prm = sh.Canvas (parent = self.frm_pnl
                                  ,expand = 0
                                  )
-        self.frm_btn = sg.Frame (parent = self.frm_pnl
+        self.frm_btn = sh.Frame (parent = self.frm_pnl
                                 ,expand = 0
                                 )
         # A search entry field
-        self.ent_src = sg.Entry (parent    = self.frm_btn
-                                ,Composite = True
-                                ,side      = 'left'
-                                ,ipady     = 5
+        self.ent_src = sh.Entry (parent = self.frm_btn
+                                ,side   = 'left'
+                                ,ipady  = 5
                                 )
         self.draw_buttons()
         self.cvs_prm.embed(obj=self.frm_btn)
@@ -649,9 +592,9 @@ class WebFrame:
             message for too long, however, we need to update in order to
             set canvas dimensions correctly.
         '''
-        sg.objs.root().widget.update_idletasks()
-        height = self.frm_btn.widget.winfo_height()
-        width  = self.frm_btn.widget.winfo_width()
+        sh.objs.root().idle()
+        height = self.frm_btn.height()
+        width  = self.frm_btn.width()
         self.cvs_prm.widget.config(width=self.obj.resolution()[0])
         self.cvs_prm.widget.config(height=height)
         x2 = (width / 2)
@@ -668,7 +611,7 @@ class WebFrame:
             set bindings, use 'self.bindings'.
         '''
         # A button for newbies, substitutes Enter in search_field
-        self.btn_trn = sg.Button (parent   = self.frm_btn
+        self.btn_trn = sh.Button (parent   = self.frm_btn
                                  ,text     = _('Translate')
                                  ,hint     = _('Translate')
                                  ,inactive = self.icn_ret
@@ -676,7 +619,7 @@ class WebFrame:
                                  )
 
         # A button to clear the search field
-        self.btn_clr = sg.Button (parent   = self.frm_btn
+        self.btn_clr = sh.Button (parent   = self.frm_btn
                                  ,text     = _('Clear')
                                  ,hint     = _('Clear search field')
                                  ,inactive = self.icn_clr
@@ -684,34 +627,34 @@ class WebFrame:
                                  )
 
         # A button to insert text into the search field
-        self.btn_ins = sg.Button (parent   = self.frm_btn
+        self.btn_ins = sh.Button (parent   = self.frm_btn
                                  ,text     = _('Paste')
                                  ,hint     = _('Paste text from clipboard')
                                  ,inactive = self.icn_ins
                                  ,active   = self.icn_ins
                                  )
         # A button to insert a current search
-        self.btn_rp1 = sg.Button (parent   = self.frm_btn
+        self.btn_rp1 = sh.Button (parent   = self.frm_btn
                                  ,text     = '!'
                                  ,hint     = _('Paste current request')
                                  ,inactive = self.icn_rp0
                                  ,active   = self.icn_rp1
                                  )
         # A button to insert a previous search
-        self.btn_rp2 = sg.Button (parent   = self.frm_btn
+        self.btn_rp2 = sh.Button (parent   = self.frm_btn
                                  ,text     = '!!'
                                  ,hint     = _('Paste previous request')
                                  ,inactive = self.icn_r20
                                  ,active   = self.icn_r21
                                  )
         # A button to insert special symbols
-        self.btn_sym = sg.Button (parent   = self.frm_btn
+        self.btn_sym = sh.Button (parent   = self.frm_btn
                                  ,text     = _('Symbols')
                                  ,hint     = _('Paste a special symbol')
                                  ,inactive = self.icn_sym
                                  ,active   = self.icn_sym
                                  )
-        self.opt_src = sg.OptionMenu (parent = self.frm_btn
+        self.opt_src = sh.OptionMenu (parent = self.frm_btn
                                      ,Combo  = True
                                      ,font   = 'Sans 11'
                                      )
@@ -722,21 +665,21 @@ class WebFrame:
                                       ,font  = 'Sans 11'
                                       )
         # Drop-down lists with languages
-        self.opt_lg1 = sg.OptionMenu (parent = self.frm_btn
+        self.opt_lg1 = sh.OptionMenu (parent = self.frm_btn
                                      ,Combo  = True
                                      ,font   = 'Sans 11'
                                      )
-        self.btn_swp = sg.Button (parent   = self.frm_btn
+        self.btn_swp = sh.Button (parent   = self.frm_btn
                                  ,hint     = _('Swap source and target languages')
                                  ,inactive = self.icn_swp
                                  ,active   = self.icn_swp
                                  ,text     = _('Swap')
                                  )
-        self.opt_lg2 = sg.OptionMenu (parent = self.frm_btn
+        self.opt_lg2 = sh.OptionMenu (parent = self.frm_btn
                                      ,Combo  = True
                                      ,font   = 'Sans 11'
                                      )
-        self.opt_col = sg.OptionMenu (parent  = self.frm_btn
+        self.opt_col = sh.OptionMenu (parent  = self.frm_btn
                                      ,items   = (1,2,3,4,5,6,7,8,9,10)
                                      ,default = 4
                                      ,Combo   = True
@@ -753,104 +696,104 @@ class WebFrame:
                                    )
         self.opt_col.widget.config(width=2)
         # A settings button
-        self.btn_set = sg.Button (parent   = self.frm_btn
+        self.btn_set = sh.Button (parent   = self.frm_btn
                                  ,text     = _('Settings')
                                  ,hint     = _('Tune up view settings')
                                  ,inactive = self.icn_set
                                  ,active   = self.icn_set
                                  )
         # A button to change the article view
-        self.btn_viw = sg.Button (parent   = self.frm_btn
+        self.btn_viw = sh.Button (parent   = self.frm_btn
                                  ,text     = _('Toggle view')
                                  ,hint     = _('Toggle the article view mode')
                                  ,inactive = self.icn_ver
                                  ,active   = self.icn_hor
                                  )
         # A button to toggle dictionary blocking
-        self.btn_blk = sg.Button (parent   = self.frm_btn
+        self.btn_blk = sh.Button (parent   = self.frm_btn
                                  ,text     = _('Blacklist')
                                  ,hint     = _('Toggle the blacklist')
                                  ,inactive = self.icn_bl0
                                  ,active   = self.icn_bl1
                                  )
         # A button to toggle dictionary prioritization
-        self.btn_pri = sg.Button (parent   = self.frm_btn
+        self.btn_pri = sh.Button (parent   = self.frm_btn
                                  ,text     = _('Prioritize')
                                  ,hint     = _('Toggle prioritizing')
                                  ,inactive = self.icn_pr0
                                  ,active   = self.icn_pr1
                                  )
         # A button to toggle dictionary alphabetization
-        self.btn_alp = sg.Button (parent   = self.frm_btn
+        self.btn_alp = sh.Button (parent   = self.frm_btn
                                  ,text     = _('Alphabetize')
                                  ,hint     = _('Toggle alphabetizing')
                                  ,inactive = self.icn_al0
                                  ,active   = self.icn_al1
                                  )
         # A button to move to the previous article
-        self.btn_prv = sg.Button (parent   = self.frm_btn
+        self.btn_prv = sh.Button (parent   = self.frm_btn
                                  ,text     = '←'
                                  ,hint     = _('Go to the preceding article')
                                  ,inactive = self.icn_bk0
                                  ,active   = self.icn_bk1
                                  )
         # A button to move to the next article
-        self.btn_nxt = sg.Button (parent   = self.frm_btn
+        self.btn_nxt = sh.Button (parent   = self.frm_btn
                                  ,text     = '→'
                                  ,hint     = _('Go to the following article')
                                  ,inactive = self.icn_fw0
                                  ,active   = self.icn_fw1
                                  )
         # A button to toggle and clear history
-        self.btn_hst = sg.Button (parent   = self.frm_btn
+        self.btn_hst = sh.Button (parent   = self.frm_btn
                                  ,text     = _('History')
                                  ,inactive = self.icn_hst
                                  ,active   = self.icn_hst
                                  )
         # A button to reload the article
-        self.btn_rld = sg.Button (parent   = self.frm_btn
+        self.btn_rld = sh.Button (parent   = self.frm_btn
                                  ,text     = _('Reload')
                                  ,hint     = _('Reload the article')
                                  ,inactive = self.icn_rld
                                  ,active   = self.icn_rld
                                  )
         # A button to search within the article
-        self.btn_ser = sg.Button (parent   = self.frm_btn
+        self.btn_ser = sh.Button (parent   = self.frm_btn
                                  ,text     = _('Search')
                                  ,hint     = _('Find in the current article')
                                  ,inactive = self.icn_src
                                  ,active   = self.icn_src
                                  )
         # A button to save the article
-        self.btn_sav = sg.Button (parent   = self.frm_btn
+        self.btn_sav = sh.Button (parent   = self.frm_btn
                                  ,text     = _('Save')
                                  ,hint     = _('Save the current article')
                                  ,inactive = self.icn_sav
                                  ,active   = self.icn_sav
                                  )
         # A button to open the current article in a browser
-        self.btn_brw = sg.Button (parent   = self.frm_btn
+        self.btn_brw = sh.Button (parent   = self.frm_btn
                                  ,text     = _('Browse')
                                  ,hint     = _('Open the current article in a browser')
                                  ,inactive = self.icn_brw
                                  ,active   = self.icn_brw
                                  )
         # A button to print the article
-        self.btn_prn = sg.Button (parent   = self.frm_btn
+        self.btn_prn = sh.Button (parent   = self.frm_btn
                                  ,text     = _('Print')
                                  ,hint     = _('Create a print-ready preview')
                                  ,inactive = self.icn_prn
                                  ,active   = self.icn_prn
                                  )
         # A button to define a term
-        self.btn_def = sg.Button (parent   = self.frm_btn
+        self.btn_def = sh.Button (parent   = self.frm_btn
                                  ,text     = _('Define')
                                  ,hint     = _('Define the current term')
                                  ,inactive = self.icn_def
                                  ,active   = self.icn_def
                                  )
         # A button to toggle capturing Ctrl-c-c and Ctrl-Ins-Ins
-        self.btn_cap = sg.Button (parent   = self.frm_btn
+        self.btn_cap = sh.Button (parent   = self.frm_btn
                                  ,text     = _('Clipboard')
                                  ,hint     = _('Capture Ctrl-c-c and Ctrl-Ins-Ins')
                                  ,inactive = self.icn_cp0
@@ -858,14 +801,14 @@ class WebFrame:
                                  ,fg       = 'red'
                                  )
         # A button to show info about the program
-        self.btn_abt = sg.Button (parent   = self.frm_btn
+        self.btn_abt = sh.Button (parent   = self.frm_btn
                                  ,text     = _('About')
                                  ,hint     = _('View About')
                                  ,inactive = self.icn_abt
                                  ,active   = self.icn_abt
                                  )
         # A button to quit the program
-        self.btn_qit = sg.Button (parent   = self.frm_btn
+        self.btn_qit = sh.Button (parent   = self.frm_btn
                                  ,text     = _('Quit')
                                  ,hint     = _('Quit the program')
                                  ,action   = self.close
@@ -879,22 +822,22 @@ class WebFrame:
             gaps between them and between top-bottom borders
             ('self.cvs_prm').
         '''
-        sg.bind (obj      = self.cvs_prm
-                ,bindings = '<Motion>'
-                ,action   = self.motion
-                )
-        sg.bind (obj      = self.obj
-                ,bindings = '<Control-q>'
-                ,action   = self.close
-                )
+        sh.com.bind (obj      = self.cvs_prm
+                    ,bindings = '<Motion>'
+                    ,action   = self.motion
+                    )
+        sh.com.bind (obj      = self.obj
+                    ,bindings = '<Control-q>'
+                    ,action   = self.close
+                    )
         for child in self.frm_btn.widget.winfo_children():
             child.bind('<Motion>',self.motion)
 
     def scrollbars(self):
-        sg.Scrollbar (parent = self.frm_ver
+        sh.Scrollbar (parent = self.frm_ver
                      ,scroll = self
                      )
-        sg.Scrollbar (parent = self.frm_btm
+        sh.Scrollbar (parent = self.frm_btm
                      ,scroll = self
                      ,Horiz  = True
                      )
@@ -903,10 +846,7 @@ class WebFrame:
         if path:
             self.obj.icon(path)
         else:
-            self.obj.icon (sh.objs.pdir().add ('..','resources'
-                                              ,'icon_64x64_mclient.gif'
-                                              )
-                          )
+            self.obj.icon(ICON)
                           
     def title(self,text=None):
         if not text:
@@ -914,23 +854,12 @@ class WebFrame:
         self.obj.title(text)
 
     def height(self):
-        sg.objs.root().widget.update_idletasks()
-        '''
-        sh.log.append ('WebFrame.height'
-                      ,_('DEBUG')
-                      ,_('Widget height: %s') % str(_height)
-                      )
-        '''
+        sh.objs.root().idle()
         return self.widget.winfo_height()
 
     def width(self):
         f = '[MClient] gui.WebFrame.width'
-        sg.objs.root().widget.update_idletasks()
-        '''
-        sh.log.append (f,_('DEBUG')
-                      ,_('Widget width: %s') % str(_width)
-                      )
-        '''
+        sh.objs.root().idle()
         return self.widget.winfo_width()
 
     def scroll_x(self,bbox,max_bbox):
@@ -979,18 +908,16 @@ class WebFrame:
     def scroll_left(self):
         f = '[MClient] gui.WebFrame.scroll_left'
         '''
-        sh.log.append (f,_('DEBUG')
-                      ,_('Scroll by %d units to left') % self._shift
-                      )
+        mes = _('Scroll by {} units to the left').format(self._shift)
+        sh.objs.mes(f,mes,True).debug()
         '''
         self.cvs_prm.widget.xview_scroll(-self._shift,'units')
         
     def scroll_right(self):
         f = '[MClient] gui.WebFrame.scroll_right'
         '''
-        sh.log.append (f,_('DEBUG')
-                      ,_('Scroll by %d units to right') % self._shift
-                      )
+        mes = _('Scroll by {} units to the right').format(self._shift)
+        sh.objs.mes(f,mes,True).debug()
         '''
         self.cvs_prm.widget.xview_scroll(self._shift,'units')
 
@@ -1035,9 +962,8 @@ class Settings:
                 self.opt_cl1.set(self._allowed[0])
                 self._allowed.remove(self._allowed[0])
             else:
-                sg.Message (f,_('ERROR')
-                           ,_('Empty input is not allowed!')
-                           )
+                mes = _('Empty input is not allowed!')
+                sh.objs.mes(f,mes).error()
 
     def update_col2(self):
         f = '[MClient] gui.Settings.update_col2'
@@ -1051,9 +977,8 @@ class Settings:
                 self.opt_cl2.set(self._allowed[0])
                 self._allowed.remove(self._allowed[0])
             else:
-                sg.Message (f,_('ERROR')
-                           ,_('Empty input is not allowed!')
-                           )
+                mes = _('Empty input is not allowed!')
+                sh.objs.mes(f,mes).error()
 
     def update_col3(self):
         f = '[MClient] gui.Settings.update_col3'
@@ -1067,9 +992,8 @@ class Settings:
                 self.opt_cl3.set(self._allowed[0])
                 self._allowed.remove(self._allowed[0])
             else:
-                sg.Message (f,_('ERROR')
-                           ,_('Empty input is not allowed!')
-                           )
+                mes = _('Empty input is not allowed!')
+                sh.objs.mes(f,mes).error()
 
     def update_col4(self):
         f = '[MClient] gui.Settings.update_col4'
@@ -1083,9 +1007,8 @@ class Settings:
                 self.opt_cl4.set(self._allowed[0])
                 self._allowed.remove(self._allowed[0])
             else:
-                sg.Message (f,_('ERROR')
-                           ,_('Empty input is not allowed!')
-                           )
+                mes = _('Empty input is not allowed!')
+                sh.objs.mes(f,mes).error()
 
     def update_sc(self,event=None):
         cond11 = self.opt_cl1.choice == _('Dictionaries')
@@ -1136,12 +1059,9 @@ class Settings:
         elif self.opt_scm.choice == _('Custom'):
             pass
         else:
-            sg.Message (f,_('ERROR')
-                       ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".')\
-                       % (str(self.opt_scm.choice)
-                         ,', '.join(self._sc_items)
-                         )
-                       )
+            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+            mes = mes.format(self.opt_scm.choice,self._sc_items)
+            sh.objs.mes(f,mes).error()
 
     def update_by_col1(self,event=None):
         self._allowed = list(self._items)
@@ -1246,7 +1166,7 @@ class Settings:
         self.update_sp6()
 
     def gui(self):
-        self.obj = sg.objs.new_top()
+        self.obj = sh.Top()
         self.title()
         self.frames()
         self.checkboxes()
@@ -1258,38 +1178,36 @@ class Settings:
 
     def block_settings(self,event=None):
         f = '[MClient] gui.Settings.block_settings'
-        sg.Message (f,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
+        mes = _('Not implemented yet!')
+        sh.objs.mes(f,mes).info()
 
     def priority_settings(self,event=None):
         f = '[MClient] gui.Settings.priority_settings'
-        sg.Message (f,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
+        mes = _('Not implemented yet!')
+        sh.objs.mes(f,mes).info()
 
     def checkboxes(self):
-        self.cbx_no1 = sg.CheckBox (parent = self.frm_cb1
+        self.cbx_no1 = sh.CheckBox (parent = self.frm_cb1
                                    ,Active = True
                                    ,side   = 'left'
                                    )
-        self.cbx_no2 = sg.CheckBox (parent = self.frm_cb2
+        self.cbx_no2 = sh.CheckBox (parent = self.frm_cb2
                                    ,Active = True
                                    ,side   = 'left'
                                    )
-        self.cbx_no3 = sg.CheckBox (parent = self.frm_cb3
+        self.cbx_no3 = sh.CheckBox (parent = self.frm_cb3
                                    ,Active = True
                                    ,side   = 'left'
                                    )
-        self.cbx_no4 = sg.CheckBox (parent = self.frm_cb4
+        self.cbx_no4 = sh.CheckBox (parent = self.frm_cb4
                                    ,Active = True
                                    ,side   = 'left'
                                    )
-        self.cbx_no5 = sg.CheckBox (parent = self.frm_cb5
+        self.cbx_no5 = sh.CheckBox (parent = self.frm_cb5
                                    ,Active = False
                                    ,side   = 'left'
                                    )
-        self.cbx_no6 = sg.CheckBox (parent = self.frm_cb6
+        self.cbx_no6 = sh.CheckBox (parent = self.frm_cb6
                                    ,Active = False
                                    ,side   = 'left'
                                    )
@@ -1315,26 +1233,26 @@ class Settings:
         self.cbx_no6.disable()
 
     def buttons(self):
-        sg.Button (parent = self.frm_btn
+        sh.Button (parent = self.frm_btn
                   ,action = self.reset
                   ,hint   = _('Reset settings')
                   ,text   = _('Reset')
                   ,side   = 'left'
                   )
 
-        self.btn_apl = sg.Button (parent = self.frm_btn
+        self.btn_apl = sh.Button (parent = self.frm_btn
                                  ,hint   = _('Apply settings')
                                  ,text   = _('Apply')
                                  ,side   = 'right'
                                  )
         #todo: elaborate
         '''
-        self.btn_blk = sg.Button (parent = self.frm_cb3
+        self.btn_blk = sh.Button (parent = self.frm_cb3
                                  ,hint   = _('Tune up blacklisting')
                                  ,text   = _('Add/Remove')
                                  ,side   = 'right'
                                  )
-        self.btn_pri = sg.Button (parent = self.frm_cb4
+        self.btn_pri = sh.Button (parent = self.frm_cb4
                                  ,hint   = _('Tune up prioritizing')
                                  ,text   = _('Add/Remove')
                                  ,side   = 'right'
@@ -1342,99 +1260,99 @@ class Settings:
         '''
 
     def frames(self):
-        self.frm_col = sg.Frame (parent = self.obj
+        self.frm_col = sh.Frame (parent = self.obj
                                 ,expand = True
                                 ,fill   = 'both'
                                 )
-        self.frm_spc = sg.Frame (parent = self.obj
+        self.frm_spc = sh.Frame (parent = self.obj
                                 ,expand = True
                                 ,fill   = 'both'
                                 )
-        self.frm_scm = sg.Frame (parent = self.frm_col
+        self.frm_scm = sh.Frame (parent = self.frm_col
                                 ,side   = 'left'
                                 ,expand = False
                                 ,fill   = 'both'
                                 )
-        self.frm_cl1 = sg.Frame (parent = self.frm_col
+        self.frm_cl1 = sh.Frame (parent = self.frm_col
                                 ,side   = 'left'
                                 ,expand = False
                                 ,fill   = 'both'
                                 )
-        self.frm_cl2 = sg.Frame (parent = self.frm_col
+        self.frm_cl2 = sh.Frame (parent = self.frm_col
                                 ,side   = 'left'
                                 ,expand = False
                                 ,fill   = 'both'
                                 )
-        self.frm_cl3 = sg.Frame (parent = self.frm_col
+        self.frm_cl3 = sh.Frame (parent = self.frm_col
                                 ,expand = False
                                 ,side   = 'left'
                                 ,fill   = 'both'
                                 )
-        self.frm_cl4 = sg.Frame (parent = self.frm_col
+        self.frm_cl4 = sh.Frame (parent = self.frm_col
                                 ,side   = 'left'
                                 ,expand = False
                                 ,fill   = 'both'
                                 )
-        self.frm_sp1 = sg.Frame (parent = self.frm_spc
+        self.frm_sp1 = sh.Frame (parent = self.frm_spc
                                 ,side   = 'left'
                                 ,expand = False
                                 ,fill   = 'both'
                                 )
-        self.frm_sp2 = sg.Frame (parent = self.frm_spc
+        self.frm_sp2 = sh.Frame (parent = self.frm_spc
                                 ,side   = 'left'
                                 ,expand = False
                                 ,fill   = 'both'
                                 )
-        self.frm_sp3 = sg.Frame (parent = self.frm_spc
+        self.frm_sp3 = sh.Frame (parent = self.frm_spc
                                 ,side   = 'left'
                                 ,expand = False
                                 ,fill   = 'both'
                                 )
-        self.frm_sp4 = sg.Frame (parent = self.frm_spc
+        self.frm_sp4 = sh.Frame (parent = self.frm_spc
                                 ,side   = 'left'
                                 ,expand = False
                                 ,fill   = 'both'
                                 )
-        self.frm_sp5 = sg.Frame (parent = self.frm_spc
+        self.frm_sp5 = sh.Frame (parent = self.frm_spc
                                 ,side   = 'left'
                                 ,expand = False
                                 ,fill   = 'both'
                                 )
-        self.frm_sp6 = sg.Frame (parent = self.frm_spc
+        self.frm_sp6 = sh.Frame (parent = self.frm_spc
                                 ,side   = 'left'
                                 ,expand = False
                                 ,fill   = 'both'
                                 )
-        self.frm_sp7 = sg.Frame (parent = self.frm_spc
+        self.frm_sp7 = sh.Frame (parent = self.frm_spc
                                 ,side   = 'left'
                                 ,expand = False
                                 ,fill   = 'both'
                                 )
-        self.frm_cb1 = sg.Frame (parent = self.obj
+        self.frm_cb1 = sh.Frame (parent = self.obj
                                 ,expand = False
                                 ,fill   = 'x'
                                 )
-        self.frm_cb2 = sg.Frame (parent = self.obj
+        self.frm_cb2 = sh.Frame (parent = self.obj
                                 ,expand = False
                                 ,fill   = 'x'
                                 )
-        self.frm_cb3 = sg.Frame (parent = self.obj
+        self.frm_cb3 = sh.Frame (parent = self.obj
                                 ,expand = False
                                 ,fill   = 'x'
                                 )
-        self.frm_cb4 = sg.Frame (parent = self.obj
+        self.frm_cb4 = sh.Frame (parent = self.obj
                                 ,expand = False
                                 ,fill   = 'x'
                                 )
-        self.frm_cb5 = sg.Frame (parent = self.obj
+        self.frm_cb5 = sh.Frame (parent = self.obj
                                 ,expand = False
                                 ,fill   = 'x'
                                 )
-        self.frm_cb6 = sg.Frame (parent = self.obj
+        self.frm_cb6 = sh.Frame (parent = self.obj
                                 ,expand = False
                                 ,fill   = 'x'
                                 )
-        self.frm_btn = sg.Frame (parent = self.obj
+        self.frm_btn = sh.Frame (parent = self.obj
                                 ,expand = False
                                 ,fill   = 'x'
                                 ,side   = 'bottom'
@@ -1444,7 +1362,7 @@ class Settings:
         ''' Other possible color schemes:
             font = 'Sans 9 italic', fg = 'khaki4'
         '''
-        sg.Label (parent = self.frm_scm
+        sh.Label (parent = self.frm_scm
                  ,text   = _('Style:')
                  ,font   = 'Sans 9'
                  ,side   = 'top'
@@ -1453,7 +1371,7 @@ class Settings:
                  ,fg     = 'PaleTurquoise1'
                  ,bg     = 'RoyalBlue3'
                  )
-        sg.Label (parent = self.frm_cl1
+        sh.Label (parent = self.frm_cl1
                  ,text   = _('Column') + ' 1:'
                  ,font   = 'Sans 9'
                  ,side   = 'top'
@@ -1462,7 +1380,7 @@ class Settings:
                  ,fg     = 'PaleTurquoise1'
                  ,bg     = 'RoyalBlue3'
                  )
-        sg.Label (parent = self.frm_cl2
+        sh.Label (parent = self.frm_cl2
                  ,text   = _('Column') + ' 2:'
                  ,font   = 'Sans 9'
                  ,side   = 'top'
@@ -1471,7 +1389,7 @@ class Settings:
                  ,fg     = 'PaleTurquoise1'
                  ,bg     = 'RoyalBlue3'
                  )
-        sg.Label (parent = self.frm_cl3
+        sh.Label (parent = self.frm_cl3
                  ,text   = _('Column') + ' 3:'
                  ,font   = 'Sans 9'
                  ,side   = 'top'
@@ -1480,7 +1398,7 @@ class Settings:
                  ,fg     = 'PaleTurquoise1'
                  ,bg     = 'RoyalBlue3'
                  )
-        sg.Label (parent = self.frm_cl4
+        sh.Label (parent = self.frm_cl4
                  ,text   = _('Column') + ' 4:'
                  ,font   = 'Sans 9'
                  ,side   = 'top'
@@ -1489,31 +1407,31 @@ class Settings:
                  ,fg     = 'PaleTurquoise1'
                  ,bg     = 'RoyalBlue3'
                  )
-        self.lbl_no1 = sg.Label (parent = self.frm_cb1
+        self.lbl_no1 = sh.Label (parent = self.frm_cb1
                                 ,text   = _('Sort by each column (if it is set, except for transcription) and order parts of speech')
                                 ,side   = 'left'
                                 )
-        self.lbl_no2 = sg.Label (parent = self.frm_cb2
+        self.lbl_no2 = sh.Label (parent = self.frm_cb2
                                 ,text   = _('Alphabetize terms')
                                 ,side   = 'left'
                                 )
-        self.lbl_no3 = sg.Label (parent = self.frm_cb3
+        self.lbl_no3 = sh.Label (parent = self.frm_cb3
                                 ,text   = _('Block dictionaries from blacklist')
                                 ,side   = 'left'
                                 )
-        self.lbl_no4 = sg.Label (parent = self.frm_cb4
+        self.lbl_no4 = sh.Label (parent = self.frm_cb4
                                 ,text   = _('Prioritize dictionaries')
                                 ,side   = 'left'
                                 )
-        self.lbl_no5 = sg.Label (parent = self.frm_cb5
+        self.lbl_no5 = sh.Label (parent = self.frm_cb5
                                 ,text   = _('Vertical view')
                                 ,side   = 'left'
                                 )
-        self.lbl_no6 = sg.Label (parent = self.frm_cb6
+        self.lbl_no6 = sh.Label (parent = self.frm_cb6
                                 ,text   = _('Use abbreviations for dictionaries')
                                 ,side   = 'left'
                                 )
-        sg.Label (parent = self.frm_sp1
+        sh.Label (parent = self.frm_sp1
                  ,text   = _('Part of speech') + ' 1:'
                  ,font   = 'Sans 8'
                  ,side   = 'top'
@@ -1522,7 +1440,7 @@ class Settings:
                  ,fg     = 'PaleTurquoise1'
                  ,bg     = 'RoyalBlue3'
                  )
-        sg.Label (parent = self.frm_sp2
+        sh.Label (parent = self.frm_sp2
                  ,text   = _('Part of speech') + ' 2:'
                  ,font   = 'Sans 8'
                  ,side   = 'top'
@@ -1531,7 +1449,7 @@ class Settings:
                  ,fg     = 'PaleTurquoise1'
                  ,bg     = 'RoyalBlue3'
                  )
-        sg.Label (parent = self.frm_sp3
+        sh.Label (parent = self.frm_sp3
                  ,text   = _('Part of speech') + ' 3:'
                  ,font   = 'Sans 8'
                  ,side   = 'top'
@@ -1540,7 +1458,7 @@ class Settings:
                  ,fg     = 'PaleTurquoise1'
                  ,bg     = 'RoyalBlue3'
                  )
-        sg.Label (parent = self.frm_sp4
+        sh.Label (parent = self.frm_sp4
                  ,text   = _('Part of speech') + ' 4:'
                  ,font   = 'Sans 8'
                  ,side   = 'top'
@@ -1549,7 +1467,7 @@ class Settings:
                  ,fg     = 'PaleTurquoise1'
                  ,bg     = 'RoyalBlue3'
                  )
-        sg.Label (parent = self.frm_sp5
+        sh.Label (parent = self.frm_sp5
                  ,text   = _('Part of speech') + ' 5:'
                  ,font   = 'Sans 8'
                  ,side   = 'top'
@@ -1558,7 +1476,7 @@ class Settings:
                  ,fg     = 'PaleTurquoise1'
                  ,bg     = 'RoyalBlue3'
                  )
-        sg.Label (parent = self.frm_sp6
+        sh.Label (parent = self.frm_sp6
                  ,text   = _('Part of speech') + ' 6:'
                  ,font   = 'Sans 8'
                  ,side   = 'top'
@@ -1567,7 +1485,7 @@ class Settings:
                  ,fg     = 'PaleTurquoise1'
                  ,bg     = 'RoyalBlue3'
                  )
-        sg.Label (parent = self.frm_sp7
+        sh.Label (parent = self.frm_sp7
                  ,text   = _('Part of speech') + ' 7:'
                  ,font   = 'Sans 8'
                  ,side   = 'top'
@@ -1578,73 +1496,73 @@ class Settings:
                  )
                  
     def columns(self):
-        self.opt_scm = sg.OptionMenu (parent  = self.frm_scm
+        self.opt_scm = sh.OptionMenu (parent  = self.frm_scm
                                      ,items   = self._sc_items
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_sc
                                      ,default = PRODUCT
                                      )
-        self.opt_cl1 = sg.OptionMenu (parent  = self.frm_cl1
+        self.opt_cl1 = sh.OptionMenu (parent  = self.frm_cl1
                                      ,items   = self._items
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_col1
                                      ,default = _('Dictionaries')
                                      )
-        self.opt_cl2 = sg.OptionMenu (parent  = self.frm_cl2
+        self.opt_cl2 = sh.OptionMenu (parent  = self.frm_cl2
                                      ,items   = self._items
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_col2
                                      ,default = _('Word forms')
                                      )
-        self.opt_cl3 = sg.OptionMenu (parent  = self.frm_cl3
+        self.opt_cl3 = sh.OptionMenu (parent  = self.frm_cl3
                                      ,items   = self._items
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_col3
                                      ,default = _('Transcription')
                                      )
-        self.opt_cl4 = sg.OptionMenu (parent  = self.frm_cl4
+        self.opt_cl4 = sh.OptionMenu (parent  = self.frm_cl4
                                      ,items   = self._items
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_col4
                                      ,default = _('Parts of speech')
                                      )
-        self.opt_sp1 = sg.OptionMenu (parent  = self.frm_sp1
+        self.opt_sp1 = sh.OptionMenu (parent  = self.frm_sp1
                                      ,items   = self._sp_items
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_sp1
                                      ,default = self._sp_items[0]
                                      )
-        self.opt_sp2 = sg.OptionMenu (parent  = self.frm_sp2
+        self.opt_sp2 = sh.OptionMenu (parent  = self.frm_sp2
                                      ,items   = self._sp_items
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_sp2
                                      ,default = self._sp_items[1]
                                      )
-        self.opt_sp3 = sg.OptionMenu (parent  = self.frm_sp3
+        self.opt_sp3 = sh.OptionMenu (parent  = self.frm_sp3
                                      ,items   = self._sp_items
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_sp3
                                      ,default = self._sp_items[2]
                                      )
-        self.opt_sp4 = sg.OptionMenu (parent  = self.frm_sp4
+        self.opt_sp4 = sh.OptionMenu (parent  = self.frm_sp4
                                      ,items   = self._sp_items
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_sp4
                                      ,default = self._sp_items[3]
                                      )
-        self.opt_sp5 = sg.OptionMenu (parent  = self.frm_sp5
+        self.opt_sp5 = sh.OptionMenu (parent  = self.frm_sp5
                                      ,items   = self._sp_items
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_sp5
                                      ,default = self._sp_items[4]
                                      )
-        self.opt_sp6 = sg.OptionMenu (parent  = self.frm_sp6
+        self.opt_sp6 = sh.OptionMenu (parent  = self.frm_sp6
                                      ,items   = self._sp_items
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_sp6
                                      ,default = self._sp_items[5]
                                      )
-        self.opt_sp7 = sg.OptionMenu (parent  = self.frm_sp7
+        self.opt_sp7 = sh.OptionMenu (parent  = self.frm_sp7
                                      ,items   = self._sp_items
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_sp7
@@ -1652,34 +1570,34 @@ class Settings:
                                      )
 
     def bindings(self):
-        sg.bind (obj      = self.obj
-                ,bindings = '<Escape>'
-                ,action   = self.close
-                )
-        sg.bind (obj      = self.lbl_no1
-                ,bindings = '<Button-1>'
-                ,action   = self.cbx_no1.toggle
-                )
-        sg.bind (obj      = self.lbl_no2
-                ,bindings = '<Button-1>'
-                ,action   = self.cbx_no2.toggle
-                )
-        sg.bind (obj      = self.lbl_no3
-                ,bindings = '<Button-1>'
-                ,action   = self.cbx_no3.toggle
-                )
-        sg.bind (obj      = self.lbl_no4
-                ,bindings = '<Button-1>'
-                ,action   = self.cbx_no4.toggle
-                )
-        sg.bind (obj      = self.lbl_no5
-                ,bindings = '<Button-1>'
-                ,action   = self.cbx_no5.toggle
-                )
-        sg.bind (obj      = self.lbl_no6
-                ,bindings = '<Button-1>'
-                ,action   = self.cbx_no6.toggle
-                )
+        sh.com.bind (obj      = self.obj
+                    ,bindings = '<Escape>'
+                    ,action   = self.close
+                    )
+        sh.com.bind (obj      = self.lbl_no1
+                    ,bindings = '<Button-1>'
+                    ,action   = self.cbx_no1.toggle
+                    )
+        sh.com.bind (obj      = self.lbl_no2
+                    ,bindings = '<Button-1>'
+                    ,action   = self.cbx_no2.toggle
+                    )
+        sh.com.bind (obj      = self.lbl_no3
+                    ,bindings = '<Button-1>'
+                    ,action   = self.cbx_no3.toggle
+                    )
+        sh.com.bind (obj      = self.lbl_no4
+                    ,bindings = '<Button-1>'
+                    ,action   = self.cbx_no4.toggle
+                    )
+        sh.com.bind (obj      = self.lbl_no5
+                    ,bindings = '<Button-1>'
+                    ,action   = self.cbx_no5.toggle
+                    )
+        sh.com.bind (obj      = self.lbl_no6
+                    ,bindings = '<Button-1>'
+                    ,action   = self.cbx_no6.toggle
+                    )
 
     def title(self,text=_('View Settings')):
         self.obj.title(text=text)
@@ -1702,10 +1620,7 @@ class Settings:
         if path:
             self.obj.icon(path)
         else:
-            self.obj.icon (sh.objs.pdir().add ('..','resources'
-                                              ,'icon_64x64_mclient.gif'
-                                              )
-                          )
+            self.obj.icon(ICON)
     
     def update_sp1(self):
         f = '[MClient] gui.Settings.update_sp1'
@@ -1718,9 +1633,8 @@ class Settings:
             self.opt_sp1.set(self._sp_allowed[0])
             self._sp_allowed.remove(self._sp_allowed[0])
         else:
-            sg.Message (f,_('ERROR')
-                       ,_('Empty input is not allowed!')
-                       )
+            mes = _('Empty input is not allowed!')
+            sh.objs.mes(f,mes).error()
     
     def update_sp2(self):
         f = '[MClient] gui.Settings.update_sp2'
@@ -1733,9 +1647,8 @@ class Settings:
             self.opt_sp2.set(self._sp_allowed[0])
             self._sp_allowed.remove(self._sp_allowed[0])
         else:
-            sg.Message (f,_('ERROR')
-                       ,_('Empty input is not allowed!')
-                       )
+            mes = _('Empty input is not allowed!')
+            sh.objs.mes(f,mes).error()
                        
     def update_sp3(self):
         f = '[MClient] gui.Settings.update_sp3'
@@ -1748,9 +1661,8 @@ class Settings:
             self.opt_sp3.set(self._sp_allowed[0])
             self._sp_allowed.remove(self._sp_allowed[0])
         else:
-            sg.Message (f,_('ERROR')
-                       ,_('Empty input is not allowed!')
-                       )
+            mes = _('Empty input is not allowed!')
+            sh.objs.mes(f,mes).error()
                        
     def update_sp4(self):
         f = '[MClient] gui.Settings.update_sp4'
@@ -1763,9 +1675,8 @@ class Settings:
             self.opt_sp4.set(self._sp_allowed[0])
             self._sp_allowed.remove(self._sp_allowed[0])
         else:
-            sg.Message (f,_('ERROR')
-                       ,_('Empty input is not allowed!')
-                       )
+            mes = _('Empty input is not allowed!')
+            sh.objs.mes(f,mes).error()
                        
     def update_sp5(self):
         f = '[MClient] gui.Settings.update_sp5'
@@ -1778,9 +1689,8 @@ class Settings:
             self.opt_sp5.set(self._sp_allowed[0])
             self._sp_allowed.remove(self._sp_allowed[0])
         else:
-            sg.Message (f,_('ERROR')
-                       ,_('Empty input is not allowed!')
-                       )
+            mes = _('Empty input is not allowed!')
+            sh.objs.mes(f,mes).error()
                        
     def update_sp6(self):
         f = '[MClient] gui.Settings.update_sp6'
@@ -1793,9 +1703,8 @@ class Settings:
             self.opt_sp6.set(self._sp_allowed[0])
             self._sp_allowed.remove(self._sp_allowed[0])
         else:
-            sg.Message (f,_('ERROR')
-                       ,_('Empty input is not allowed!')
-                       )
+            mes = _('Empty input is not allowed!')
+            sh.objs.mes(f,mes).error()
                        
     def update_sp7(self):
         f = '[MClient] gui.Settings.update_sp7'
@@ -1808,59 +1717,8 @@ class Settings:
             self.opt_sp7.set(self._sp_allowed[0])
             self._sp_allowed.remove(self._sp_allowed[0])
         else:
-            sg.Message (f,_('ERROR')
-                       ,_('Empty input is not allowed!')
-                       )
-
-
-
-class SpecSymbols:
-
-    def __init__(self):
-        self.Active = False
-        self.gui()
-        
-    def gui(self):
-        self.obj    = sg.objs.new_top()
-        self.widget = self.obj.widget
-        self.frm_prm  = sg.Frame(self.obj,expand=1)
-        self.icon()
-        self.title()
-        self.bindings()
-        
-    def bindings(self):
-        sg.bind (obj      = self.obj
-                ,bindings = '<Escape>'
-                ,action   = self.close
-                )
-    
-    def icon(self,path=None):
-        if path:
-            self.obj.icon(path)
-        else:
-            self.obj.icon (sh.objs.pdir().add ('..','resources'
-                                              ,'icon_64x64_mclient.gif'
-                                              )
-                          )
-                          
-    def title(self,text=None):
-        if not text:
-            text = _('Paste a special symbol')
-        self.obj.title(text)
-
-    def show(self,event=None):
-        self.Active = True
-        self.obj.show()
-
-    def close(self,event=None):
-        self.Active = False
-        self.obj.close()
-        
-    def toggle(self,event=None):
-        if self.Active:
-            self.close()
-        else:
-            self.show()
+            mes = _('Empty input is not allowed!')
+            sh.objs.mes(f,mes).error()
 
 
 
@@ -1871,22 +1729,18 @@ class Suggest:
         self.parent = None
         
     def bindings(self):
-        sg.bind (obj      = self.parent
-                ,bindings = '<Escape>'
-                ,action   = self.close
-                )
+        sh.com.bind (obj      = self.parent
+                    ,bindings = '<Escape>'
+                    ,action   = self.close
+                    )
         
     def show(self,lst=['a','b','c'],action=None):
         if not self.parent:
-            self.parent = sg.SimpleTop(parent=sg.objs.root())
+            self.parent = sh.Top(Lock=False)
             self.parent.widget.wm_overrideredirect(1)
-            self.lbox = sg.ListBox (parent          = self.parent
-                                   ,title           = ''
-                                   ,lst             = lst
-                                   ,action          = action
-                                   ,Composite       = True
-                                   ,Scrollbar       = False
-                                   ,SelectionCloses = False
+            self.lbox = sh.ListBox (parent = self.parent
+                                   ,lst    = lst
+                                   ,action = action
                                    )
             self.bindings()
                                
@@ -1898,15 +1752,6 @@ class Suggest:
 
 
 if __name__ == '__main__':
-    sg.objs.start()
+    sh.com.start()
     WebFrame().show()
-    '''
-    sources = Sources()
-    sources.reset ((_('Offline')
-                   ,'multitran.ru'
-                   ,'multitran.com'
-                   )
-                  )
-    sources.show()
-    '''
-    sg.objs.end()
+    sh.com.end()

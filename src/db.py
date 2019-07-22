@@ -6,8 +6,7 @@
 '''
 
 import sqlite3
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -224,28 +223,26 @@ class DB:
                                    order by ARTICLEID'
                                  )
             else:
-                sh.objs.mes (f,_('ERROR')
-                            ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                            % (str(mode),'ARTICLES, BLOCKS')
-                            )
+                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+                mes = mes.format(mode,'ARTICLES, BLOCKS')
+                sh.objs.mes(f,mes).error()
         headers = [cn[0] for cn in self.dbc.description]
         rows    = self.dbc.fetchall()
-        sh.Table (headers = headers
-                 ,rows    = rows
-                 ,Shorten = Shorten
-                 ,MaxRow  = MaxRow
-                 ,MaxRows = MaxRows
-                 ).print()
+        sh.lg.Table (headers = headers
+                    ,rows    = rows
+                    ,Shorten = Shorten
+                    ,MaxRow  = MaxRow
+                    ,MaxRows = MaxRows
+                    ).print()
 
     def update(self,query):
         f = '[MClient] db.DB.update'
         try:
             self.dbc.executescript(query)
         except sqlite3.OperationalError:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('Unable to execute:\n"%s"') \
-                        % str(query).replace(';',';\n')
-                        )
+            sub = str(query).replace(';',';\n')
+            mes = _('Unable to execute:\n"{}"').format(sub)
+            sh.objs.mes(f,mes).error()
 
     # Assign input data for BlockPrioritize
     def assign_bp(self):
@@ -282,10 +279,9 @@ class DB:
                 # There is no sense to sort by transcription
                 pass
             else:
-                sh.objs.mes (f,_('ERROR')
-                            ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                            % (str(item),'dic, wform, speech, transc')
-                            )
+                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+                mes = mes.format(item,'dic, wform, speech, transc')
+                sh.objs.mes(f,mes).error()
         if self.SortTerms:
             query.append('TERMA')
         return ','.join(query)
@@ -364,10 +360,8 @@ class DB:
 
     def clear(self):
         f = '[MClient] db.DB.clear'
-        sh.log.append (f,_('WARNING')
-                      ,_('Delete all records from %s') \
-                      % 'ARTICLES, BLOCKS'
-                      )
+        mes = _('Delete all records from {}').format('ARTICLES, BLOCKS')
+        sh.objs.mes(f,mes,True).warning()
         # VACUUM command is a no-op for in-memory databases
         self.dbc.execute('delete from BLOCKS')
         self.dbc.execute('delete from ARTICLES')
@@ -375,10 +369,9 @@ class DB:
     def clear_cur(self):
         f = '[MClient] db.DB.clear_cur'
         if self._articleid:
-            sh.log.append (f,_('WARNING')
-                          ,_('Delete records of article No. %d from %s')\
-                          % (self._articleid,'BLOCKS, ARTICLES')
-                          )
+            mes = _('Delete records of article No. {} from {}')
+            mes = mes.format(self._articleid,'BLOCKS, ARTICLES')
+            sh.objs.mes(f,mes,True).warning()
             self.dbc.execute ('delete from BLOCKS where ARTICLEID = ?'
                              ,(self._articleid,)
                              )
@@ -953,11 +946,9 @@ class DB:
         if str(pos).isdigit():
             if self._articleid:
                 ''' # Too frequent
-                sh.log.append ('DB.set_bookmark'
-                              ,_('DEBUG')
-                              ,_('Set bookmark %d for article #%d') \
-                              % (pos,self._articleid)
-                              )
+                    mes = _('Set bookmark {} for article #{}')
+                    mes = mes.format(pos,self._articleid)
+                    sh.objs.mes(f,mes,True).debug()
                 '''
                 self.dbc.execute ('update ARTICLES set BOOKMARK = ? \
                                    where ARTICLEID = ?'
@@ -966,15 +957,13 @@ class DB:
             else:
                 sh.com.empty(f)
         else:
-            sh.log.append (f,_('WARNING')
-                          ,_('Wrong input data!')
-                          )
+            mes = _('Wrong input data!')
+            sh.objs.mes(f,mes,True).warning()
                           
     def delete_bookmarks(self):
         f = '[MClient] db.DB.delete_bookmarks'
-        sh.log.append (f,_('DEBUG')
-                      ,_('Delete bookmarks for all articles')
-                      )
+        mes = _('Delete bookmarks for all articles')
+        sh.objs.mes(f,mes,True).debug()
         self.dbc.execute('update ARTICLES set BOOKMARK = -1')
         
     def unprioritize_speech(self):

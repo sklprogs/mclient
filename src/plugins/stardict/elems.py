@@ -14,8 +14,7 @@
     calculate SELECTABLE fully in Cells.
 '''
 
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -147,12 +146,12 @@ class Elems:
                          ,block._same,block._select
                          ]
                         )
-        sh.Table (headers = headers
-                 ,rows    = rows
-                 ,Shorten = Shorten
-                 ,MaxRow  = MaxRow
-                 ,MaxRows = MaxRows
-                 ).print()
+        sh.lg.Table (headers = headers
+                    ,rows    = rows
+                    ,Shorten = Shorten
+                    ,MaxRow  = MaxRow
+                    ,MaxRows = MaxRows
+                    ).print()
         
     def unite_comments(self):
         i = 0
@@ -161,10 +160,10 @@ class Elems:
             and self._blocks[i]._same > 0:
                 if i > 0 and self._blocks[i-1]._type == 'comment':
                     self._blocks[i-1]._text \
-                    = sh.List (lst1 = [self._blocks[i-1]._text
-                                      ,self._blocks[i]._text
-                                      ]
-                              ).space_items()
+                    = sh.lg.List (lst1 = [self._blocks[i-1]._text
+                                         ,self._blocks[i]._text
+                                         ]
+                                 ).space_items()
                     del self._blocks[i]
                     i -= 1
             i += 1
@@ -294,7 +293,7 @@ class Elems:
                         cond = True
                 if self._blocks[i]._text \
                   and not self._blocks[i]._text[0].isspace() \
-                  and not self._blocks[i]._text[0] in sh.punc_array \
+                  and not self._blocks[i]._text[0] in sh.lg.punc_array \
                   and not self._blocks[i]._text[0] in [')',']','}'] \
                   and not cond:
                     self._blocks[i]._text = ' ' + self._blocks[i]._text

@@ -3,8 +3,7 @@
 
 import urllib.request
 import html
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
 
 import gettext, gettext_windows
 
@@ -45,14 +44,12 @@ class Suggest:
             ''' #NOTE: the encoding here MUST be 'utf-8' irrespective
                 of the plugin!
             '''
-            self._url = sh.Online (base_str   = self._pair
-                                  ,search_str = self._search
-                                  ,encoding   = 'utf-8'
-                                  ).url()
+            self._url = sh.lg.Online (base_str   = self._pair
+                                     ,search_str = self._search
+                                     ,encoding   = 'utf-8'
+                                     ).url()
             if not self._url:
-                sh.log.append (f,_('WARNING')
-                              ,_('Empty output is not allowed!')
-                              )
+                sh.com.empty(f)
                 self.Success = False
         else:
             sh.com.cancel(f)
@@ -63,17 +60,15 @@ class Suggest:
             ''' #NOTE: the encoding here (unlike 'self.url')
                 is plugin-dependent.
             '''
-            self._items = sh.Get (url      = self._url
-                                 ,encoding = ENCODING
-                                 ).run()
+            self._items = sh.lg.Get (url      = self._url
+                                    ,encoding = ENCODING
+                                    ).run()
             if self._items:
                 self._items = html.unescape(self._items)
                 self._items = [item for item \
                                in self._items.splitlines() if item
                               ]
-                sh.log.append (f,_('DEBUG')
-                              ,'; '.join(self._items)
-                              )
+                sh.objs.mes(f,self._items,True).debug()
                 return self._items
             else:
                 sh.com.empty(f)
@@ -121,10 +116,9 @@ class Get:
                     self.Success = False
                     self._html   = ''
                     self._text   = ''
-                    sh.objs.mes (f,_('ERROR')
-                                ,_('Unable to change the web-page encoding!\n\nDetails: %s')\
-                                % str(e)
-                                )
+                    mes = _('Unable to change the web-page encoding!\n\nDetails: {}')
+                    mes = mes.format(e)
+                    sh.objs.mes(f,mes).error()
             else:
                 sh.com.empty(f)
         else:
@@ -135,9 +129,8 @@ class Get:
         if self.Success:
             while not self._text:
                 try:
-                    sh.log.append (f,_('INFO')
-                                  ,_('Get online: "%s"') % self._search
-                                  )
+                    mes = _('Get online: "{}"').format(self._search)
+                    sh.objs.mes(f,mes,True).info()
                     ''' - If the page is loaded using
                           "page=urllib.request.urlopen(my_url)", we get
                           HTTPResponse as a result, which is useful only
@@ -151,19 +144,16 @@ class Get:
                                                         ,None
                                                         ,TIMEOUT
                                                         ).read()
-                    sh.log.append (f,_('INFO')
-                                  ,_('[OK]: "%s"') % self._search
-                                  )
+                    mes = _('[OK]: "{}"').format(self._search)
+                    sh.objs.mes(f,mes,True).info()
                 # Too many possible exceptions
                 except Exception as e:
-                    sh.log.append (f,_('WARNING')
-                                  ,_('[FAILED]: "%s"') % self._search
-                                  )
+                    mes = _('[FAILED]: "{}"').format(self._search)
+                    sh.objs.mes(f,mes,True).error()
                     # For some reason, 'break' does not work here
-                    if not sg.Message (f,_('QUESTION')
-                                      ,_('Unable to get the webpage. Press OK to try again.\n\nDetails: %s')\
-                                      % str(e)
-                                      ).Yes:
+                    mes = _('Unable to get the webpage. Press OK to try again.\n\nDetails: {}')
+                    mes = mes.format(e)
+                    if not sh.objs.mes(f,mes).question():
                         return
         else:
             sh.com.cancel(f)
@@ -191,10 +181,10 @@ class Commands:
         if search and code1 and code2:
             #note: The encoding here should always be 'utf-8'!
             base_str = 'https://www.multitran.com/m.exe?s=%s&l1={}&l2={}&SHL=2'.format(code1,code2)
-            return sh.Online (base_str   = base_str
-                             ,search_str = search
-                             ,encoding   = 'utf-8'
-                             ).url()
+            return sh.lg.Online (base_str   = base_str
+                                ,search_str = search
+                                ,encoding   = 'utf-8'
+                                ).url()
         else:
             sh.com.empty(f)
     

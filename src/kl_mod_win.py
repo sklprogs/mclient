@@ -1,14 +1,14 @@
 # !/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-''' Замечание: в pyhook есть баг, из-за которого данная программа
-    валится, если на передний план выходит приложение с кириллицей в
-    заголовке, поэтому в коде на C pyHook необходимо закомментировать
-    случаи присваивания win_name и пересобрать библиотеку.
+''' There is a bug in 'pyhook' which crashes the program if a focus is
+    set on a program having Cyrillic symbols in its title, therefore we
+    need to comment out assigning 'win_name' in pyHook's C code and
+    recompile the library.
 '''
 
 from pyHook import HookManager
-# Если нужно делать вывод в консоль
+# If we need to output to console
 import pythoncom
 import threading
 
@@ -19,30 +19,30 @@ class KeyListener(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.finished = threading.Event()
-        # Переменные должны быть инициализированы до вызова HookManager
-        self.pressed = []
+        # Variables must be initialized before calling 'HookManager'
+        self.pressed   = []
         self.listeners = {}
-        self.status = 0
-        ''' Иногда по непонятной причине символы выходят в верхнем
-            регистре, но мы их приводим в нижний регистр в классе,
-            поэтому здесь достаточно указать 'c'
+        self.status    = 0
+        ''' Sometimes symbols are uppercased by an unknown reason,
+            however, we lowercase them, therefore it is sufficient
+            to have 'c' here.
         '''
-        self.addKeyListener ("Lcontrol+c+c"
+        self.addKeyListener ('Lcontrol+c+c'
                             ,lambda:keylistener.set_status(status=1)
                             )
-        self.addKeyListener ("Rcontrol+c+c"
+        self.addKeyListener ('Rcontrol+c+c'
                             ,lambda:keylistener.set_status(status=1)
                             )
-        self.addKeyListener ("Lcontrol+Insert+Insert"
+        self.addKeyListener ('Lcontrol+Insert+Insert'
                             ,lambda:keylistener.set_status(status=1)
                             )
-        self.addKeyListener ("Rcontrol+Insert+Insert"
+        self.addKeyListener ('Rcontrol+Insert+Insert'
                             ,lambda:keylistener.set_status(status=1)
                             )
-        self.addKeyListener ("Lmenu+Oem_3"
+        self.addKeyListener ('Lmenu+Oem_3'
                             ,lambda:keylistener.set_status(status=2)
                             )
-        self.addKeyListener ("Rmenu+Oem_3"
+        self.addKeyListener ('Rmenu+Oem_3'
                             ,lambda:keylistener.set_status(status=2)
                             )
         self.restart()
@@ -64,7 +64,7 @@ class KeyListener(threading.Thread):
         if character:
             if len(character) == 1:
                 character = character.lower()
-            print_v('Key released: %s' % str(character))
+            print_v('Key released: {}'.format(character))
             if len(self.pressed) == 2:
                 if self.pressed[1] == 'Oem_3':
                     self.pressed = []
@@ -79,10 +79,10 @@ class KeyListener(threading.Thread):
                                           ):
                         self.pressed.append(character)
             action = self.listeners.get(tuple(self.pressed), False)
-            print_v('Current action: ' + str(tuple(self.pressed)))
+            print_v('Current action: {}'.format(self.pressed))
             if action:
                 action()
-        # Без этого получаем ошибку (an integer is required)
+        # We receive an error without this (an integer is required)
         return True
 
     def release(self,event):
@@ -92,21 +92,21 @@ class KeyListener(threading.Thread):
             if len(character) == 1:
                 character = character.lower()
             print_v('Key released: %s' % str(character))
-            # Не засчитывает отпущенный Control
-            # Кириллическую 'с' распознает как латинскую
+            # A released Control key is not taken into account
+            # A cyrillic 'с' symbol is recognized as Latin 'c'
             if not character in ('c','C','Insert','Oem_3'):
                 self.pressed = []
-        # Без этого получаем ошибку (an integer is required)
+        # We receive an error without this (an integer is required)
         return True
 
     def addKeyListener(self, hotkeys, callable):
-        keys = tuple(hotkeys.split("+"))
-        print_v("Added new keylistener for :" + str(keys))
+        keys = tuple(hotkeys.split('+'))
+        print_v('Added new keylistener for: {}'.format(keys))
         self.listeners[keys] = callable
         
     def set_status(self,status=0):
         self.status = status
-        print_v('Setting status to %d!' % self.status)
+        print_v('Setting status to {}!'.format(self.status))
         
     # Returns 0..2
     def check(self):
@@ -116,8 +116,7 @@ class KeyListener(threading.Thread):
             self.status = 0
             return status
 
-'''
-    Linux: Control_L, Control_R
+''' Linux: Control_L, Control_R
     Windows: Lcontrol, Rcontrol
 '''
 
@@ -128,15 +127,17 @@ def print_v(*args):
 def wait_example():
     from time import sleep
     while not keylistener.check():
-        ''' Нельзя делать одновременно pythoncom.PumpMessages() и
-            pythoncom.PumpWaitingMessages() - они оба создают циклы
-            Без этого result вообще почему-то не работает (видимо, здесь
-            есть какой-то цикл, который необходим). Если же создать
-            поток, он не сможет обнаружить flags['HotkeyCaught'].
+        ''' Do not call 'pythoncom.PumpMessages()' and
+            'pythoncom.PumpWaitingMessages()' simultaneously - they both
+            create loops.
+            Without this the result does not work for some reason
+            (probably, a loop of some kind is required there).
+            If we create a thread, it will not find
+            flags['HotkeyCaught'].
         '''
         pythoncom.PumpWaitingMessages()
-        ''' Если поставить слишком большой интервал, например, 1, то
-            вообще ничего не получим!
+        ''' If we set a too large interval, e.g., 1, we will have
+            no result at all!
         '''
         sleep(0.1)
     keylistener.cancel()
@@ -152,7 +153,7 @@ def wait_cycle():
 lock = threading.Lock()
 Verbose = False
 keylistener = KeyListener()
-# Лучше это делать в 2 строчки, иначе можем получать ошибки
+# It is better to do this in 2 lines, otherwise, we can receive errors
 keylistener.start()
 
 if __name__ == '__main__':

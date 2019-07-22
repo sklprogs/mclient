@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 
 import io
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -102,33 +101,33 @@ class HTML:
         default_color = 'red'
         delta         = -76
         # Column 1 color
-        result = sg.mod_color (color = sh.globs['var']['color_col1']
-                              ,delta = delta
-                              )
+        result = sh.com.mod_color (color = sh.lg.globs['var']['color_col1']
+                                  ,delta = delta
+                                  )
         if result:
             self._priority_color1 = result
         else:
             self._priority_color1 = default_color
         # Column 2 color
-        result = sg.mod_color (color = sh.globs['var']['color_col2']
-                              ,delta = delta
-                              )
+        result = sh.com.mod_color (color = sh.lg.globs['var']['color_col2']
+                                  ,delta = delta
+                                  )
         if result:
             self._priority_color2 = result
         else:
             self._priority_color2 = default_color
         # Column 3 color
-        result = sg.mod_color (color = sh.globs['var']['color_col3']
-                              ,delta = delta
-                              )
+        result = sh.com.mod_color (color = sh.lg.globs['var']['color_col3']
+                                  ,delta = delta
+                                  )
         if result:
             self._priority_color3 = result
         else:
             self._priority_color3 = default_color
         # Column 4 color
-        result = sg.mod_color (color = sh.globs['var']['color_col4']
-                              ,delta = delta
-                              )
+        result = sh.com.mod_color (color = sh.lg.globs['var']['color_col4']
+                                  ,delta = delta
+                                  )
         if result:
             self._priority_color4 = result
         else:
@@ -138,33 +137,33 @@ class HTML:
         default_color = 'dim gray'
         delta         = 76
         # Column 1 color
-        result = sg.mod_color (color = sh.globs['var']['color_col1']
-                              ,delta = delta
-                              )
+        result = sh.com.mod_color (color = sh.lg.globs['var']['color_col1']
+                                  ,delta = delta
+                                  )
         if result:
             self._blocked_color1 = result
         else:
             self._blocked_color1 = default_color
         # Column 2 color
-        result = sg.mod_color (color = sh.globs['var']['color_col2']
-                              ,delta = delta
-                              )
+        result = sh.com.mod_color (color = sh.lg.globs['var']['color_col2']
+                                  ,delta = delta
+                                  )
         if result:
             self._blocked_color2 = result
         else:
             self._blocked_color2 = default_color
         # Column 3 color
-        result = sg.mod_color (color = sh.globs['var']['color_col3']
-                              ,delta = delta
-                              )
+        result = sh.com.mod_color (color = sh.lg.globs['var']['color_col3']
+                                  ,delta = delta
+                                  )
         if result:
             self._blocked_color3 = result
         else:
             self._blocked_color3 = default_color
         # Column 4 color
-        result = sg.mod_color (color = sh.globs['var']['color_col4']
-                              ,delta = delta
-                              )
+        result = sh.com.mod_color (color = sh.lg.globs['var']['color_col4']
+                                  ,delta = delta
+                                  )
         if result:
             self._blocked_color4 = result
         else:
@@ -206,27 +205,27 @@ class HTML:
 
     def _family(self):
         if self._block.xj == 0:
-            return sh.globs['var']['font_col1_family']
+            return sh.lg.globs['var']['font_col1_family']
         elif self._block.xj == 1:
-            return sh.globs['var']['font_col2_family']
+            return sh.lg.globs['var']['font_col2_family']
         elif self._block.xj == 2:
-            return sh.globs['var']['font_col3_family']
+            return sh.lg.globs['var']['font_col3_family']
         elif self._block.xj == 3:
-            return sh.globs['var']['font_col4_family']
+            return sh.lg.globs['var']['font_col4_family']
         else:
-            return sh.globs['var']['font_terms_family']
+            return sh.lg.globs['var']['font_terms_family']
             
     def _size(self):
         if self._block.xj == 0:
-            return sh.globs['int']['font_col1_size']
+            return sh.lg.globs['int']['font_col1_size']
         elif self._block.xj == 1:
-            return sh.globs['int']['font_col2_size']
+            return sh.lg.globs['int']['font_col2_size']
         elif self._block.xj == 2:
-            return sh.globs['int']['font_col3_size']
+            return sh.lg.globs['int']['font_col3_size']
         elif self._block.xj == 3:
-            return sh.globs['int']['font_col4_size']
+            return sh.lg.globs['int']['font_col4_size']
         else:
-            return sh.globs['int']['font_terms_size']
+            return sh.lg.globs['int']['font_terms_size']
             
     def _color_p(self):
         if self._block.xj == 0:
@@ -254,15 +253,15 @@ class HTML:
     
     def _color(self):
         if self._block.xj == 0:
-            return sh.globs['var']['color_col1']
+            return sh.lg.globs['var']['color_col1']
         elif self._block.xj == 1:
-            return sh.globs['var']['color_col2']
+            return sh.lg.globs['var']['color_col2']
         elif self._block.xj == 2:
-            return sh.globs['var']['color_col3']
+            return sh.lg.globs['var']['color_col3']
         elif self._block.xj == 3:
-            return sh.globs['var']['color_col4']
+            return sh.lg.globs['var']['color_col4']
         else:
-            return sh.globs['var']['color_terms']
+            return sh.lg.globs['var']['color_terms']
     
     def _wform(self):
         if self._block._type == 'wform':
@@ -279,11 +278,11 @@ class HTML:
     def _term(self):
         if self._block._type in ('term','phrase'):
             self.output.write('<font face="')
-            self.output.write(sh.globs['var']['font_terms_family'])
+            self.output.write(sh.lg.globs['var']['font_terms_family'])
             self.output.write('" color="')
-            self.output.write(sh.globs['var']['color_terms'])
+            self.output.write(sh.lg.globs['var']['color_terms'])
             self.output.write('" size="')
-            self.output.write(str(sh.globs['int']['font_terms_size']))
+            self.output.write(str(sh.lg.globs['int']['font_terms_size']))
             self.output.write('">')
             self.output.write(self._block._text)
             self.output.write('</font>')
@@ -310,11 +309,11 @@ class HTML:
     def _comment(self):
         if self._block._type in ('comment','transc','user'):
             self.output.write('<i><font face="')
-            self.output.write(sh.globs['var']['font_comments_family'])
+            self.output.write(sh.lg.globs['var']['font_comments_family'])
             self.output.write('" size="')
-            self.output.write(str(sh.globs['int']['font_comments_size']))
+            self.output.write(str(sh.lg.globs['int']['font_comments_size']))
             self.output.write('" color="')
-            self.output.write(sh.globs['var']['color_comments'])
+            self.output.write(sh.lg.globs['var']['color_comments'])
             self.output.write('">')
             self.output.write(self._block._text)
             self.output.write('</i></font>')
@@ -322,9 +321,9 @@ class HTML:
     def _correction(self):
         if self._block._type == 'correction':
             self.output.write('<i><font face="')
-            self.output.write(sh.globs['var']['font_comments_family'])
+            self.output.write(sh.lg.globs['var']['font_comments_family'])
             self.output.write('" size="')
-            self.output.write(str(sh.globs['int']['font_comments_size']))
+            self.output.write(str(sh.lg.globs['int']['font_comments_size']))
             self.output.write('" color="')
             #todo (?): add to config
             self.output.write('green')

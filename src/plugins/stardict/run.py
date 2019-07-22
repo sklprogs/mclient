@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import shared                   as sh
-import sharedGUI                as sg
+import skl_shared.shared        as sh
 import plugins.stardict.get     as gt
 import plugins.stardict.cleanup as cu
 import plugins.stardict.tags    as tg

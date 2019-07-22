@@ -23,16 +23,16 @@ def catch_control_c(*args):
 
 
 
-# Определить нажатие горячих клавиш глобально в системе
+# Determine if hotkeys are pressed (globally in the system)
 class KeyListener(threading.Thread):
-    ''' Использование: 
+    ''' Usage: 
         keylistener = KeyListener()
-        Изначально:
+        Initially:
         keylistener.addKeyListener("L_CTRL+L_SHIFT+y", callable)
-        Обратить внимание, что необходимо присвоить все возможные
-        комбинации, поскольку порядок нажатия может быть иной, например,
+        Note that it is necessary to bind all possible combinations
+        because an order of key presses can be different, for example,
         "L_CTRL+y+L_SHIFT"
-        Теперь:
+        Now:
         keylistener.addKeyListener("Control_L+c+c", callable)
     '''
     def __init__(self):
@@ -59,21 +59,21 @@ class KeyListener(threading.Thread):
         for name in dir(XK):
             if name.startswith("XK_") and getattr(XK, name) == keysym:
                 return name.lstrip("XK_")
-        return "[%d]" % keysym
+        return '[%d]' % keysym
 
     def processevents(self, reply):
         if reply.category != record.FromServer:
             return
         if reply.client_swapped:
-            print_v("* received swapped protocol data, cowardly ignored")
+            print_v('* received swapped protocol data, cowardly ignored')
             return
-        # Добавил str, иначе получаем ошибку
+        # I added 'str', since we receive an error without it
         if not len(str(reply.data)) or ord(str(reply.data[0])) < 2:
             # not an event
             return
         data = reply.data
         while len(data):
-            event, data = rq.EventField(None).parse_binary_value(data, self.record_dpy.display, None, None)
+            event, data = rq.EventField(None).parse_binary_value(data,self.record_dpy.display,None,None)
             keycode = event.detail
             keysym = self.local_dpy.keycode_to_keysym(event.detail, 0)
             self.character = self.lookup_keysym(keysym)
@@ -85,14 +85,14 @@ class KeyListener(threading.Thread):
 
     def run(self):
         # Check if the extension is present
-        if not self.record_dpy.has_extension("RECORD"):
-            print_v("RECORD extension not found")
+        if not self.record_dpy.has_extension('RECORD'):
+            print_v('RECORD extension not found')
             sys.exit(1)
         r = self.record_dpy.record_get_version(0, 0)
-        print_v ("RECORD extension version %d.%d" % (r.major_version
-                                                    ,r.minor_version
-                                                    )
-                )
+        mes = 'RECORD extension version {}.{}'.format (r.major_version
+                                                      ,r.minor_version
+                                                      )
+        print_v(mes)
         # Create a recording context; we only want key events
         self.ctx = self.record_dpy.record_create_context (
                 0
@@ -150,14 +150,14 @@ class KeyListener(threading.Thread):
 
     def release(self):
         """must be called whenever a key release event has occurred."""
-        # Не засчитывает отпущенный Control
-        # Кириллическую 'с' распознает как латинскую
+        # A released Control key is not taken into account
+        # A cyrillic 'с' symbol is recognized as Latin 'c'
         if not self.character in ('c','Insert','grave'):
             self.pressed = []
 
     def addKeyListener(self, hotkeys, callable):
-        keys = tuple(hotkeys.split("+"))
-        print_v("Added new keylistener for :",str(keys))
+        keys = tuple(hotkeys.split('+'))
+        print_v('Added new keylistener for :',str(keys))
         self.listeners[keys] = callable
         
     def check(self): # Returns 0..2
@@ -176,22 +176,22 @@ Verbose = False
 # do not quit when Control-c is pressed
 signal.signal(signal.SIGINT,catch_control_c)
 keylistener = KeyListener()
-keylistener.addKeyListener ("Control_L+c+c"
+keylistener.addKeyListener ('Control_L+c+c'
                            ,lambda:keylistener.set_status(status=1)
                            )
-keylistener.addKeyListener ("Control_R+c+c"
+keylistener.addKeyListener ('Control_R+c+c'
                            ,lambda:keylistener.set_status(status=1)
                            )
-keylistener.addKeyListener ("Control_L+Insert+Insert"
+keylistener.addKeyListener ('Control_L+Insert+Insert'
                            ,lambda:keylistener.set_status(status=1)
                            )
-keylistener.addKeyListener ("Control_R+Insert+Insert"
+keylistener.addKeyListener ('Control_R+Insert+Insert'
                            ,lambda:keylistener.set_status(status=1)
                            )
-keylistener.addKeyListener ("Alt_L+grave"
+keylistener.addKeyListener ('Alt_L+grave'
                            ,lambda:keylistener.set_status(status=2)
                            )
-keylistener.addKeyListener ("Alt_R+grave"
+keylistener.addKeyListener ('Alt_R+grave'
                            ,lambda:keylistener.set_status(status=2)
                            )
 keylistener.start()

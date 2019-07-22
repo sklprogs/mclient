@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
 
 DEBUG = True
 
@@ -86,14 +85,14 @@ class Get:
         search  = 'computer'
         url     = 'https://multitran.com/m.exe?s=computer&l1=1&l2=2'
         timeout = 6
-        timer   = sh.Timer(f)
+        timer   = sh.lg.Timer(f)
         timer.start()
         result = gt.Get (search  = search
                         ,url     = url
                         ,timeout = timeout
                         ).run()
         timer.end()
-        sg.fast_txt(result)
+        sh.com.fast_txt(result)
     
     def stardict(self):
         f = '[MClient] tests.Get.stardict'
@@ -101,11 +100,11 @@ class Get:
         import plugins.stardict.get as sd
         #search = 'компьютер'
         search  = 'computer'
-        timer   = sh.Timer(f)
+        timer   = sh.lg.Timer(f)
         timer.start()
         result = sd.Get(search).run()
         timer.end()
-        sg.fast_txt(result)
+        sh.com.fast_txt(result)
 
 
 
@@ -116,7 +115,7 @@ class Tags:
         import plugins.stardict.cleanup as sdcleanup
         import plugins.stardict.tags    as sdtags
         file = '/home/pete/.config/mclient/tests/(stardict) EnRu_full - cut.txt'
-        text = sh.ReadTextFile(file).get()
+        text = sh.lg.ReadTextFile(file).get()
         text = sdcleanup.CleanUp(text).run()
         sdtags.Tags (text  = text
                     ,Debug = DEBUG
@@ -127,7 +126,7 @@ class Tags:
         import plugins.multitrancom.cleanup as mccleanup
         import plugins.multitrancom.tags    as mctags
         file = '/home/pete/bin/mclient/tests/multitrancom/конъюгаты (фразы).txt'
-        text = sh.ReadTextFile(file).get()
+        text = sh.lg.ReadTextFile(file).get()
         text = mccleanup.CleanUp(text).run()
         mctags.Tags (text    = text
                     ,Debug   = DEBUG
@@ -188,17 +187,15 @@ class Commands:
             if pairs1 != pairs2:
                 for xlang in pairs1:
                     if xlang not in pairs2:
-                        lst.append('%s-%s' % (xlang,lang))
+                        lst.append('{}-{}'.format(xlang,lang))
                 for xlang in pairs2:
                     if xlang not in pairs1:
-                        lst.append('%s-%s' % (lang,xlang))
+                        lst.append('{}-{}'.format(lang,xlang))
         lst = list(set(lst))
         lst.sort()
-        message = _('The following pairs are not supported:') + '\n' \
-                  + '; '.join(lst)
-        sh.log.append (f,_('INFO')
-                      ,message
-                      )    
+        mes = _('The following pairs are not supported:\n{}')
+        mes = mes.format(lst)
+        sh.objs.mes(f,mes,True).info()
     
     def compare_elems(self):
         f = '[MClient] tests.Commands.compare_elems'
@@ -276,24 +273,25 @@ class Commands:
         data = el.Elems(data1,data2).run()
         data = [str(item) for item in data]
         data = '\n'.join(data)
-        sg.fast_txt(data)
+        sh.com.fast_txt(data)
     
     def request(self):
         f = '[MClient] tests.Commands.request'
         source = _('Multitran')
         pair   = 'DEU <=> RUS'
         search = 'ernährung'
-        message = 'Source: "%s"; pair: "%s"; search: "%s"' % (source,pair,search)
+        mes = 'Source: "{}"; pair: "{}"; search: "{}"'.format (source
+                                                              ,pair
+                                                              ,search
+                                                              )
         lg.objs.plugins().set(source)
         lg.objs._plugins.set_pair(pair)
-        sh.log.append (f,_('INFO')
-                      ,message
-                      )
+        sh.objs.mes(f,mes,True).info()
         data = lg.objs._plugins.request (search = search
                                         ,url    = ''
                                         )
         if data:
-            sg.fast_txt(data)
+            sh.com.fast_txt(data)
         else:
             sh.com.empty(f)
     
@@ -302,12 +300,11 @@ class Commands:
         source  = 'multitran.com'
         pair    = 'RUS <=> XAL'
         search  = 'До свидания!'
-        message = 'Source: "%s"; pair: "%s"; search: "%s"' % (source,pair,search)
+        mes     = 'Source: "{}"; pair: "{}"; search: "{}"'
+        mes     = mes.format(source,pair,search)
         lg.objs.plugins().set(source)
         lg.objs._plugins.set_pair(pair)
-        sh.log.append (f,_('INFO')
-                      ,message
-                      )
+        sh.objs.mes(f,mes,True).info()
         lg.objs._plugins.get_url(search)
     
     def suggest(self):
@@ -315,22 +312,21 @@ class Commands:
         source  = 'multitran.com'
         pair    = 'DEU <=> RUS'
         search  = 'Scheiße'
-        message = 'Source: "%s"; pair: "%s"; search: "%s"' % (source,pair,search)
+        mes     = 'Source: "{}"; pair: "{}"; search: "{}"'
+        mes     = mes.format(source,pair,search)
         lg.objs.plugins().set(source)
         lg.objs._plugins.set_pair(pair)
-        sh.log.append (f,_('INFO')
-                      ,message
-                      )
+        sh.objs.mes(f,mes,True).info()
         lg.com.suggest(search)
     
     def _set_timeout(self,module,source,timeout):
         f = '[MClient] tests.Commands._set_timeout'
         lg.objs.plugins().set(source)
         lg.objs._plugins.set_timeout(timeout)
-        message = 'Source: %s; Timeout: %d' % (source,module.TIMEOUT)
-        sh.log.append (f,_('DEBUG')
-                      ,message
-                      )
+        mes = 'Source: {}; Timeout: {}'.format (source
+                                               ,module.TIMEOUT
+                                               )
+        sh.objs.mes(f,mes,True).debug()
     
     def set_timeout(self):
         f = '[MClient] tests.Commands.set_timeout'
@@ -354,25 +350,21 @@ class Commands:
         source = _('Offline')
         lg.objs.plugins().set(source)
         result  = lg.objs._plugins.accessible()
-        message = 'Source: {}; Accessibility: {}'.format(source,result)
-        sh.log.append (f,_('DEBUG')
-                      ,message
-                      )
+        mes     = 'Source: {}; Accessibility: {}'.format(source,result)
+        sh.objs.mes(f,mes,True).debug()
         source = 'multitran.com'
         lg.objs._plugins.set(source)
         result  = lg.objs._plugins.accessible()
-        message = 'Source: {}; Accessibility: {}'.format(source,result)
-        sh.log.append (f,_('DEBUG')
-                      ,message
-                      )
+        mes     = 'Source: {}; Accessibility: {}'.format(source,result)
+        sh.objs.mes(f,mes,True).debug()
     
     def welcome(self):
         f = '[MClient] tests.Commands.welcome'
         file_w = '/tmp/test.html'
         code   = lg.Welcome().run()
         if code:
-            sh.WriteTextFile(file_w).write(code)
-            sh.Launch(file_w).default()
+            sh.lg.WriteTextFile(file_w).write(code)
+            sh.lg.Launch(file_w).default()
         else:
             sh.com.empty(f)
     
@@ -384,16 +376,14 @@ class Commands:
         lg.objs.plugins().set(source)
         lg.objs._plugins.set_pair(pair)
         
-        sh.log.append (f,_('DEBUG')
-                      ,source + ': ' + plugins.multitrancom.get.PAIR
-                      )
+        mes = '{}: {}'.format(source,plugins.multitrancom.get.PAIR)
+        sh.objs.mes(f,mes,True).debug()
         pair   = 'XAL <=> RUS'
         source = _('Multitran')
         lg.objs._plugins.set(source)
         lg.objs._plugins.set_pair(pair)
-        sh.log.append (f,_('DEBUG')
-                      ,'multitrancom: ' + plugins.multitrancom.get.PAIR
-                      )
+        mes = 'multitrancom: {}'.format(plugins.multitrancom.get.PAIR)
+        sh.objs.mes(f,mes,True).debug()
         
     def translate_gui (self,source,pair
                       ,search,url
@@ -507,15 +497,13 @@ class Commands:
     
     def go_keyboard(self,event=None):
         f = '[MClient] tests.Commands.go_keyboard'
-        sh.log.append (f,_('DEBUG')
-                      ,'Triggered'
-                      )
+        mes = _('Triggered!')
+        sh.objs.mes(f,mes,True).debug()
     
     def copy_text(self,event=None):
         f = '[MClient] tests.Commands.copy_text'
-        sh.log.append (f,_('DEBUG')
-                      ,'Triggered'
-                      )
+        mes = _('Triggered!')
+        sh.objs.mes(f,mes,True).debug()
 
 
 com = Commands()
@@ -523,8 +511,8 @@ com = Commands()
 
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
-    sg.objs.start()
+    sh.com.start()
     import logic as lg
     lg.objs.plugins(Debug=DEBUG)
     print(lg.objs._plugins.langs1())
-    sg.objs.end()
+    sh.com.end()

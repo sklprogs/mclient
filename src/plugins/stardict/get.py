@@ -5,12 +5,9 @@ import struct
 import os
 import gzip
 import zlib
-
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
 
 import gettext, gettext_windows
-
 gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
@@ -45,16 +42,15 @@ class Suggest:
         if self.Success:
             items = objs.all_dics().get_index()
             if items:
-                timer = sh.Timer(f)
+                timer = sh.lg.Timer(f)
                 timer.start()
                 search = self._search.lower()
                 result = [item for item in items \
                           if str(item).lower().startswith(search)
                          ]
                 timer.end()
-                sh.log.append (f,_('DEBUG')
-                              ,'; '.join(result)
-                              )
+                mes = '; '.join(result)
+                sh.objs.mes(f,mes,True).debug()
                 return result
             else:
                 self.Success = False
@@ -103,7 +99,7 @@ class DictZip:
     def reset(self,path):
         self.values()
         self._path   = path
-        self.Success = sh.File(self._path).Success
+        self.Success = sh.lg.File(self._path).Success
         self.load()
     
     def load(self):
@@ -118,10 +114,9 @@ class DictZip:
                 self._count   = len(self._size)
             except Exception as e:
                 self.Success = False
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Failed to load "%s"!\n\nDetails: %s') \
-                            % (str(self._path),str(e))
-                            )
+                mes = _('Failed to load "{}"!\n\nDetails: {}')
+                mes = mes.format(self._path,e)
+                sh.objs.mes(f,mes).warning()
         else:
             sh.com.cancel(f)
 
@@ -211,14 +206,14 @@ class StarDict:
     def reset(self,ifopath):
         self.values()
         self._path = ifopath
-        ipath      = sh.Path(self._path)
+        ipath      = sh.lg.Path(self._path)
         ''' We need a filename with an absolute path here.
             'file'[:-4] basically does the same thing (providing that
-            extensions are only 3 symbols long). 'sh.Path' is more
+            extensions are only 3 symbols long). 'sh.lg.Path' is more
             precise for other cases.
         '''
         self._fname  = os.path.join(ipath.dirname(),ipath.filename())
-        self.Success = sh.File(self._path).Success
+        self.Success = sh.lg.File(self._path).Success
         self.check()
         self.meta()
 
@@ -240,15 +235,14 @@ class StarDict:
             if self._ifo:
                 if 'bookname' in self._ifo and 'wordcount' in self._ifo:
                     self._title  = str(self._ifo['bookname'])
-                    self._wcount = sh.Input (title = f
-                                            ,value = self._ifo['wordcount']
-                                            ).integer()
+                    self._wcount = sh.lg.Input (title = f
+                                               ,value = self._ifo['wordcount']
+                                               ).integer()
                 else:
                     self.Success = False
-                    sh.objs.mes (f,_('WARNING')
-                                ,_('File "%s" is incorrect!') \
-                                % (self._fname + '.ifo')
-                                )
+                    mes = _('File "{}" is incorrect!')
+                    mes = mes.format(self._fname + '.ifo')
+                    sh.objs.mes(f,mes).warning()
             else:
                 sh.com.empty(f)
         else:
@@ -256,10 +250,9 @@ class StarDict:
     
     def fail(self,f,e):
         self.Success = False
-        sh.objs.mes (f,_('WARNING')
-                    ,_('Failed to load "%s"!\n\nDetails: %s') \
-                    % (str(self._path),str(e))
-                    )
+        mes = _('Failed to load "{}"!\n\nDetails: {}')
+        mes = mes.format(self._path,e)
+        sh.objs.mes(f,mes).warning()
     
     def check(self):
         ''' Load .ifo data and check that all needed dictionary files
@@ -309,11 +302,12 @@ class StarDict:
                 b = data.find(b'\0',a)
             if self._wcount != len(self._idx):
                 self.Success = False
-                sh.objs.mes (f,_('ERROR')
-                            ,_('The condition "%s" is not observed!') \
-                            % ('%d = %d') % (self._wcount,len(self._idx)
-                                            )
-                            )
+                sub = '{} = {}'.format (self._wcount
+                                       ,len(self._idx)
+                                       )
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.mes(f,mes).error()
             if self.Success:
                 # Compression of .dict is optional
                 try:
@@ -348,9 +342,9 @@ class StarDict:
             if type(key) is slice:
                 return [w[0] for w in self._idx[key]]
             if type(key) is str:
-                return sh.Input (title = f
-                                ,value = self.search(key)
-                                ).integer()
+                return sh.lg.Input (title = f
+                                   ,value = self.search(key)
+                                   ).integer()
         else:
             sh.com.cancel(f)
 
@@ -455,16 +449,13 @@ class AllDics:
                                                                  ,result
                                                                  )
                                        )
-                            sh.log.append (f,_('DEBUG')
-                                          ,_('"%s" has matches for "%s"')\
-                                          % (dic._title,search)
-                                          )
+                            mes = _('"{}" has matches for "{}"')
+                            mes = mes.format(dic._title,search)
+                            sh.objs.mes(f,mes,True).debug()
                     else:
-                        sh.log.append (f,_('INFO')
-                                      ,_('No matches for "%s"!') \
-                                      % dic._title
-                                      )
-                                      
+                        mes = _('No matches for "{}"!')
+                        mes = mes.format(dic._title)
+                        sh.objs.mes(f,mes,True).info()
                 return '\n'.join(lst)
             else:
                 sh.com.empty(f)
@@ -482,7 +473,7 @@ class AllDics:
     def reset(self):
         self.values()
         self._path   = PATH
-        self.Success = sh.Directory(self._path).Success
+        self.Success = sh.lg.Directory(self._path).Success
     
     def walk(self):
         ''' Explore all subdirectories of path searching for filenames
@@ -495,7 +486,7 @@ class AllDics:
                     for file in files:
                         if not file.endswith('.ifo'):
                             continue
-                        ''' #todo: #fix: sh.Path.basename works
+                        ''' #todo: #fix: sh.lg.Path.basename works
                             incorrectly for cases like file.dict.dz.
                         '''
                         name = file[:-4]
@@ -517,13 +508,10 @@ class AllDics:
                         self._dics.append(StarDict(ifo))
                     self._dics = sorted(self._dics,key=lambda d:d._title+str(d._wcount))
                 else:
-                    sh.log.append (f,_('INFO')
-                                  ,_('Nothing to do!')
-                                  )
-            sh.log.append (f,_('INFO')
-                          ,_('%d offline dictionaries are available') \
-                          % len(self._dics)
-                          )
+                    sh.com.lazy(f)
+            mes = _('{} offline dictionaries are available')
+            mes = mes.format(len(self._dics))
+            sh.objs.mes(f,mes,True).info()
             return self._dics
         else:
             sh.com.cancel(f)
@@ -532,29 +520,25 @@ class AllDics:
         f = '[MClient] plugins.stardict.get.AllDics.load'
         if self.Success:
             if self.locate():
-                sg.objs.waitbox().reset (func_title = f
-                                        ,message    = _('Load local dictionaries')
+                sh.objs.waitbox().reset (func    = f
+                                        ,message = _('Load local dictionaries')
                                         )
-                sg.objs._waitbox.show()
-                sh.log.append (f,_('INFO')
-                              ,_('Load offline dictionaries')
-                              )
-                timer = sh.Timer(f)
+                sh.objs._waitbox.show()
+                mes = _('Load offline dictionaries')
+                sh.objs.mes(f,mes,True).info()
+                timer = sh.lg.Timer(f)
                 timer.start()
                 for idic in self._dics:
                     idic.load()
                 timer.end()
                 total_no   = len(self._dics)
                 self._dics = [dic for dic in self._dics if dic.Success]
-                sh.log.append (f,_('INFO')
-                              ,_('Dictionaries loaded: %d/%d') \
-                              % (len(self._dics),total_no)
-                              )
-                sg.objs._waitbox.close()
+                mes = _('Dictionaries loaded: {}/{}')
+                mes = mes.format(len(self._dics),total_no)
+                sh.objs.mes(f,mes,True).info()
+                sh.objs._waitbox.close()
             else:
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
+                sh.com.lazy(f)
         else:
             sh.com.cancel(f)
 

@@ -4,14 +4,13 @@
 import os
 import sys
 import io
-import tkinter   as tk
-import shared    as sh
-import sharedGUI as sg
-import logic     as lg
-import gui       as gi
-import cells     as cl
+import tkinter           as tk
+import skl_shared.shared as sh
+import logic             as lg
+import gui               as gi
+import cells             as cl
 import db
-import mkhtml    as mh
+import mkhtml            as mh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -19,7 +18,7 @@ gettext.install('mclient','../resources/locale')
 
 
 if __name__ == '__main__':
-    if sh.oss.win():
+    if sh.objs.os().win():
         import kl_mod_win as kl_mod
         import pythoncom
     else:
@@ -58,9 +57,8 @@ class Sources:
                         self._select.append(self._sources)
                     except IndexError:
                         self.Success = False
-                        sh.objs.mes (f,_('ERROR')
-                                    ,_('Wrong input data!')
-                                    )
+                        mes = _('Wrong input data!')
+                        sh.objs.mes(f,mes).error()
             return self._select
         else:
             sh.com.cancel(f)
@@ -88,7 +86,7 @@ class Objects:
     def blocks_db(self):
         if not self._blocks_db:
             self._blocks_db = db.Moves()
-            self._blocks_db.Selectable = sh.globs['bool']['SelectTermsOnly']
+            self._blocks_db.Selectable = sh.lg.globs['bool']['SelectTermsOnly']
         return self._blocks_db
 
     def webframe(self):
@@ -100,7 +98,7 @@ class Objects:
 
 def call_app():
     # Use the same key binding to call the window
-    sg.Geometry(parent=objs.webframe().gui.obj).activate(MouseClicked=lg.objs.request().MouseClicked)
+    sh.Geometry(parent=objs.webframe().gui.obj).activate(MouseClicked=lg.objs.request().MouseClicked)
     ''' #todo: check if this is still the problem
         In case of .focus_set() *first* Control-c-c can call an inactive
         widget.
@@ -116,17 +114,17 @@ def timed_update():
             ''' Allows to prevent thread freezing in Windows newer
                 than XP.
             '''
-            if sh.oss.win():
+            if sh.objs.os().win():
                 kl_mod.keylistener.cancel()
                 kl_mod.keylistener.restart()
             lg.objs._request.MouseClicked = True
-            new_clipboard = sg.Clipboard().paste()
+            new_clipboard = sh.Clipboard().paste()
             if new_clipboard:
                 lg.objs._request._search = new_clipboard
                 objs.webframe().go_search()
         if check == 2 or lg.objs._request.CaptureHotkey:
             call_app()
-    sg.objs.root().widget.after(300,timed_update)
+    sh.objs.root().widget.after(300,timed_update)
 
 
 
@@ -136,7 +134,7 @@ class About:
         self.parties = ThirdParties()
         self.gui = gi.About()
         self.bindings()
-        self.gui.lbl_abt.font(sh.globs['var']['font_style'])
+        self.gui.lbl_abt.font(sh.lg.globs['var']['font_style'])
         
     def bindings(self):
         self.gui.btn_thd.action = self.show_third_parties
@@ -145,14 +143,14 @@ class About:
 
     # Compose an email to the author
     def response_back(self,event=None):
-        sh.Email (email   = sh.email
-                 ,subject = _('Concerning %s') % gi.PRODUCT
-                 ).create()
+        sh.lg.Email (email   = sh.lg.email
+                    ,subject = _('Concerning {}').format(gi.PRODUCT)
+                    ).create()
 
     # Open a license web-page
     def open_license_url(self,event=None):
-        ionline      = sh.Online()
-        ionline._url = sh.globs['license_url']
+        ionline      = sh.lg.Online()
+        ionline._url = sh.lg.globs['license_url']
         ionline.browse()
 
     # Show info about third-party licenses
@@ -175,17 +173,19 @@ class SaveArticle:
         self.bindings()
     
     def bindings(self):
-        sg.bind (obj      = self.gui.obj
-                ,bindings = [sh.globs['var']['bind_save_article']
-                            ,sh.globs['var']['bind_save_article_alt']
-                            ]
-                ,action   = self.gui.toggle
-                )
-        sg.bind (obj      = self.gui
-                ,bindings = ['<<ListboxSelect>>','<Return>','<KP_Enter>']
-                ,action   = self.select
-                )
-        self.gui.parent.close_button.action = self.select
+        sh.com.bind (obj      = self.gui
+                    ,bindings = [sh.lg.globs['var']['bind_save_article']
+                                ,sh.lg.globs['var']['bind_save_article_alt']
+                                ]
+                    ,action   = self.gui.toggle
+                    )
+        sh.com.bind (obj      = self.gui
+                    ,bindings = ('<<ListboxSelect>>','<Return>'
+                                ,'<KP_Enter>'
+                                )
+                    ,action   = self.select
+                    )
+        self.gui.parent.btn_cls.action = self.select
     
     #fix an extension for Windows
     def fix_ext(self,ext='.htm'):
@@ -209,15 +209,15 @@ class SaveArticle:
 
     def view_as_html(self):
         f = '[MClient] mclient.SaveArticle.view_as_html'
-        self.file = sg.dialog_save_file(filetypes=self._html_types)
+        self.file = sh.com.dialog_save_file(self._html_types)
         if self.file and lg.objs.request()._html:
             self.fix_ext(ext='.htm')
             ''' We enable 'Rewrite' because the confirmation is already
                 built in the internal dialog.
             '''
-            sh.WriteTextFile (file    = self.file
-                             ,Rewrite = True
-                             ).write(lg.objs._request._html)
+            sh.lg.WriteTextFile (file    = self.file
+                                ,Rewrite = True
+                                ).write(lg.objs._request._html)
         else:
             sh.com.empty(f)
 
@@ -229,36 +229,36 @@ class SaveArticle:
             replace abbreviated hyperlinks with full ones in order to
             ensure that they are also valid in the local file.
         '''
-        self.file = sg.dialog_save_file(filetypes=self._html_types)
+        self.file = sh.com.dialog_save_file(self._html_types)
         if self.file and lg.objs.request()._html_raw:
             self.fix_ext(ext='.htm')
             lg.objs._request._html_raw = lg.objs.plugins().fix_raw_html()
-            sh.WriteTextFile (file    = self.file
-                             ,Rewrite = True
-                             ).write(lg.objs._request._html_raw)
+            sh.lg.WriteTextFile (file    = self.file
+                                ,Rewrite = True
+                                ).write(lg.objs._request._html_raw)
         else:
             sh.com.empty(f)
 
     def view_as_txt(self):
         f = '[MClient] mclient.SaveArticle.raw_as_html'
-        self.file = sg.dialog_save_file(filetypes=self._txt_types)
+        self.file = sh.com.dialog_save_file(self._txt_types)
         text = objs.webframe().text()
         if self.file and text:
             self.fix_ext(ext='.txt')
-            sh.WriteTextFile (file    = self.file
-                             ,Rewrite = True
-                             ).write(text.strip())
+            sh.lg.WriteTextFile (file    = self.file
+                                ,Rewrite = True
+                                ).write(text.strip())
         else:
             sh.com.empty(f)
 
     def copy_raw(self):
-        sg.Clipboard().copy(lg.objs.request()._html_raw)
+        sh.Clipboard().copy(lg.objs.request()._html_raw)
 
     def copy_txt(self):
         f = '[MClient] mclient.SaveArticle.copy_txt'
         text = objs.webframe().text()
         if text:
-            sg.Clipboard().copy(text.strip())
+            sh.Clipboard().copy(text.strip())
         else:
             sh.com.empty(f)
 
@@ -273,10 +273,10 @@ class SearchArticle:
         self.reset()
 
     def bindings(self):
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_search_article_forward']
-                ,action   = self.gui.close
-                )
+        sh.com.bind (obj      = self.gui
+                    ,bindings = sh.lg.globs['var']['bind_search_article_forward']
+                    ,action   = self.gui.close
+                    )
     
     def reset(self,event=None):
         self._pos    = -1
@@ -290,7 +290,7 @@ class SearchArticle:
         '''
 
     def clear(self,event=None):
-        self.gui.obj.clear_text()
+        self.gui.parent.clear_text()
 
     def close(self,event=None):
         self.gui.close()
@@ -314,13 +314,11 @@ class SearchArticle:
             objs._webframe.select()
             objs._webframe.shift_screen()
         elif self._pos < 0:
-            sg.Message (f,_('INFO')
-                       ,_('Nothing has been found!')
-                       )
+            mes = _('No matches!')
+            sh.objs.mes(f,mes).info()
         else:
-            sg.Message (f,_('INFO')
-                       ,_('The start has been reached. Searching from the end.')
-                       )
+            mes = _('The start has been reached. Searching from the end.')
+            sh.objs.mes(f,mes).info()
             self._pos = 0
             self.forward()
 
@@ -349,9 +347,8 @@ class SearchArticle:
         f = '[MClient] mclient.SearchArticle.backward'
         if self.first():
             if self._pos == self._first:
-                sg.Message (f,_('INFO')
-                           ,_('The end has been reached. Searching from the start.')
-                           )
+                mes = _('The end has been reached. Searching from the start.')
+                sh.objs.mes(f,mes).info()
                 result = self.last()
                 if str(result).isdigit():
                     objs.webframe()._pos = self._pos = result
@@ -368,49 +365,8 @@ class SearchArticle:
                     objs._webframe.select()
                     objs._webframe.shift_screen()
         else:
-            sg.Message (f,_('INFO')
-                       ,_('Nothing has been found!')
-                       )
-
-
-
-class SpecSymbols:
-
-    def __init__(self):
-        self.gui = gi.SpecSymbols()
-        self.buttons()
-        self.bindings()
-        
-    def buttons(self):
-        for i in range(len(sh.globs['var']['spec_syms'])):
-            if i % 10 == 0:
-                self.frame = sg.Frame (parent = self.gui.obj
-                                      ,expand = True
-                                      )
-            ''' lambda сработает правильно только при моментальной
-                упаковке, которая не поддерживается create_button
-                (моментальная упаковка возвращает None вместо виджета),
-                поэтому не используем эту функцию. По этой же причине
-                нельзя привязать кнопкам '<Return>' и '<KP_Enter>',
-                сработают только встроенные '<space>' и
-                '<ButtonRelease-1>'.
-                width и height нужны для Windows
-            '''
-            tk.Button (
-                    master  = self.frame.widget
-                   ,text    = sh.globs['var']['spec_syms'][i]
-                   ,command = lambda i=i:objs.webframe().insert_sym(sh.globs['var']['spec_syms'][i])
-                   ,width   = 2
-                   ,height  = 2
-                      ).pack (side   = 'left'
-                             ,expand = True
-                             )
-
-    def bindings(self):
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_spec_symbol']
-                ,action   = self.gui.toggle
-                )
+            mes = _('No matches!')
+            sh.objs.mes(f,mes).info()
 
 
 
@@ -421,28 +377,28 @@ class History:
         self.bindings()
 
     def bindings(self):
-        sg.bind (obj      = self.gui.parent
-                ,bindings = [sh.globs['var']['bind_toggle_history']
-                            ,sh.globs['var']['bind_toggle_history_alt']
-                            ]
-                ,action   = self.gui.toggle
-                )
-        sg.bind (obj      = self.gui.parent
-                ,bindings = sh.globs['var']['bind_clear_history']
-                ,action   = self.clear
-                )
+        sh.com.bind (obj      = self.gui.parent
+                    ,bindings = [sh.lg.globs['var']['bind_toggle_history']
+                                ,sh.lg.globs['var']['bind_toggle_history_alt']
+                                ]
+                    ,action   = self.gui.toggle
+                    )
+        sh.com.bind (obj      = self.gui.parent
+                    ,bindings = sh.lg.globs['var']['bind_clear_history']
+                    ,action   = self.clear
+                    )
         ''' #note: the list is reversed, but I think it is still more
             intuitive when Home goes top and End goes bottom.
         '''
-        sg.bind (obj      = self.gui.parent
-                ,bindings = '<Home>'
-                ,action   = self.go_first
-                )
-        sg.bind (obj      = self.gui.parent
-                ,bindings = '<End>'
-                ,action   = self.go_last
-                )
-        self.gui.obj.action = self.go
+        sh.com.bind (obj      = self.gui.parent
+                    ,bindings = '<Home>'
+                    ,action   = self.go_first
+                    )
+        sh.com.bind (obj      = self.gui.parent
+                    ,bindings = '<End>'
+                    ,action   = self.go_last
+                    )
+        self.gui.action = self.go
 
     def autoselect(self):
         self.gui.obj.clear_selection()
@@ -508,10 +464,9 @@ class History:
                 lg.objs._request._source = result[0] # SOURCE
                 lg.objs._request._search = result[1] # TITLE
                 lg.objs._request._url    = result[2] # URL
-                sh.log.append (f,_('INFO')
-                              ,_('Set source to "%s"') \
-                              % lg.objs._request._source
-                              )
+                mes = _('Set source to "{}"')
+                mes = mes.format(lg.objs._request._source)
+                sh.objs.mes(f,mes,True).info()
                 lg.objs.plugins().set(lg.objs._request._source)
                 lg.objs._plugins.set_lang1(result[4])
                 lg.objs._plugins.set_lang2(result[5])
@@ -526,9 +481,8 @@ class History:
             else:
                 sh.com.empty(f)
         else:
-            sg.Message (f,_('ERROR')
-                       ,_('Wrong input data!')
-                       )
+            mes = _('Wrong input data!')
+            sh.objs.mes(f,mes).error()
 
 
 
@@ -540,6 +494,12 @@ class WebFrame:
         self.widgets()
         self.bindings()
         self.reset_opt()
+    
+    def insert_sym(self,event=None):
+        self.spec_symbols.show()
+        self.gui.ent_src.insert (pos  = 'end'
+                                ,text = self.spec_symbols.get()
+                                )
     
     def update_lang1(self,event=None):
         f = '[MClient] mclient.WebFrame.update_lang1'
@@ -594,11 +554,9 @@ class WebFrame:
                 self.update_lang1()
                 self.update_lang2()
             else:
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Pair %s-%s is not supported!') % (lang1
-                                                                 ,lang2
-                                                                 )
-                            )
+                mes = _('Pair {}-{} is not supported!')
+                mes = mes.format(lang1,lang2)
+                sh.objs.mes(f,mes).warning()
         else:
             sh.com.empty(f)
     
@@ -658,11 +616,11 @@ class WebFrame:
         if self.suggest.gui.parent:
             self.suggest.gui.close()
         else:
-            sg.Geometry(parent=self.gui.obj).minimize()
+            sh.Geometry(self.gui.obj).minimize()
     
     def minimize(self,event=None):
         self.suggest.gui.close()
-        sg.Geometry(parent=self.gui.obj).minimize()
+        sh.Geometry(self.gui.obj).minimize()
     
     def go_phrase_dic(self,event=None):
         f = '[MClient] mclient.WebFrame.go_phrase_dic'
@@ -717,7 +675,7 @@ class WebFrame:
             objs._blocks_db._articleid = result
             result = objs._blocks_db.article()
             if result:
-                sg.Clipboard().copy(result[1])
+                sh.Clipboard().copy(result[1])
                 self.gui.paste_search()
             else:
                 sh.com.empty(f)
@@ -727,7 +685,7 @@ class WebFrame:
     
     # Вставить текущий запрос
     def insert_repeat_sign(self,event=None):
-        sg.Clipboard().copy(str(lg.objs.request()._search))
+        sh.Clipboard().copy(lg.objs.request()._search)
         self.gui.paste_search()
         
     def reset(self):
@@ -751,10 +709,15 @@ class WebFrame:
         self._phdic = ''
 
     def widgets(self):
+        ''' #cur #todo: try removing '.close' or replacing '.gui.close'
+            with '.close'.
+        '''
         self.about          = About()
         self.settings       = Settings()
         self.search_article = SearchArticle()
-        self.spec_symbols   = SpecSymbols()
+        self.spec_symbols   = sh.SymbolMap (items = sh.lg.globs['var']['spec_syms']
+                                           ,icon  = gi.ICON
+                                           )
         self.save_article   = SaveArticle()
         self.history        = History()
         self.suggest        = Suggest(entry=self.gui.ent_src)
@@ -763,7 +726,7 @@ class WebFrame:
         self.about.gui.close()
         self.settings.gui.close()
         self.search_article.gui.close()
-        self.spec_symbols.gui.close()
+        self.spec_symbols.close()
         self.save_article.gui.close()
         self.history.gui.close()
 
@@ -803,240 +766,240 @@ class WebFrame:
     
     def bindings(self):
         # 'gui.obj.widget' is 'Toplevel'; 'gui.widget' is 'TkinterHtml'
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_swap_langs']
-                ,action   = self.swap_langs
-                )
-        sg.bind (obj      = self.gui.opt_lg1
-                ,bindings = ('<Return>'
-                            ,'<KP_Enter>'
-                            )
-                ,action   = self.go_search_focus
-                )
-        sg.bind (obj      = self.gui.opt_lg2
-                ,bindings = ('<Return>'
-                            ,'<KP_Enter>'
-                            )
-                ,action   = self.go_search_focus
-                )
-        sg.bind (obj      = self.gui.opt_src
-                ,bindings = ('<Return>'
-                            ,'<KP_Enter>'
-                            )
-                ,action   = self.set_source
-                )
-        sg.bind (obj      = self.gui.opt_col
-                ,bindings = ('<Return>'
-                            ,'<KP_Enter>'
-                            )
-                ,action   = self.set_columns
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_quit']
-                ,action   = self.gui.close
-                )
-        sg.bind (obj      = self.gui.ent_src
-                ,bindings = (sh.globs['var']['bind_copy_sel']
-                            ,sh.globs['var']['bind_copy_sel_alt']
-                            )
-                ,action   = self.copy_text
-                )
-        sg.bind (obj      = self.gui
-                ,bindings = '<Button-1>'
-                ,action   = self.go_mouse
-                )
-        sg.bind (obj      = self.gui.ent_src
-                ,bindings = ('<Return>'
-                            ,'<KP_Enter>'
-                            )
-                ,action   = self.go_keyboard
-                )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_swap_langs']
+                    ,action   = self.swap_langs
+                    )
+        sh.com.bind (obj      = self.gui.opt_lg1
+                    ,bindings = ('<Return>'
+                                ,'<KP_Enter>'
+                                )
+                    ,action   = self.go_search_focus
+                    )
+        sh.com.bind (obj      = self.gui.opt_lg2
+                    ,bindings = ('<Return>'
+                                ,'<KP_Enter>'
+                                )
+                    ,action   = self.go_search_focus
+                    )
+        sh.com.bind (obj      = self.gui.opt_src
+                    ,bindings = ('<Return>'
+                                ,'<KP_Enter>'
+                                )
+                    ,action   = self.set_source
+                    )
+        sh.com.bind (obj      = self.gui.opt_col
+                    ,bindings = ('<Return>'
+                                ,'<KP_Enter>'
+                                )
+                    ,action   = self.set_columns
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_quit']
+                    ,action   = self.gui.close
+                    )
+        sh.com.bind (obj      = self.gui.ent_src
+                    ,bindings = (sh.lg.globs['var']['bind_copy_sel']
+                                ,sh.lg.globs['var']['bind_copy_sel_alt']
+                                )
+                    ,action   = self.copy_text
+                    )
+        sh.com.bind (obj      = self.gui
+                    ,bindings = '<Button-1>'
+                    ,action   = self.go_mouse
+                    )
+        sh.com.bind (obj      = self.gui.ent_src
+                    ,bindings = ('<Return>'
+                                ,'<KP_Enter>'
+                                )
+                    ,action   = self.go_keyboard
+                    )
         #todo: do not iconify at <ButtonRelease-3>
-        sg.bind (obj      = self.gui.ent_src
-                ,bindings = sh.globs['var']['bind_clear_search_field']
-                ,action   = self.gui.ent_src.clear_text
-                )
-        sg.bind (obj      = self.gui.ent_src
-                ,bindings = sh.globs['var']['bind_paste_search_field']
-                ,action   = lambda e:self.gui.paste_search()
-                )
+        sh.com.bind (obj      = self.gui.ent_src
+                    ,bindings = sh.lg.globs['var']['bind_clear_search_field']
+                    ,action   = self.gui.ent_src.clear_text
+                    )
+        sh.com.bind (obj      = self.gui.ent_src
+                    ,bindings = sh.lg.globs['var']['bind_paste_search_field']
+                    ,action   = lambda e:self.gui.paste_search()
+                    )
         # Go to the previous/next article
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_go_back']
-                ,action   = self.go_back
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_go_forward']
-                ,action   = self.go_forward
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_col1_down']
-                ,action   = lambda e:self.move_next_section(col_no=0)
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_col1_up']
-                ,action   = lambda e:self.move_prev_section(col_no=0)
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_col2_down']
-                ,action   = lambda e:self.move_next_section(col_no=1)
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_col2_up']
-                ,action   = lambda e:self.move_prev_section(col_no=1)
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_col3_down']
-                ,action   = lambda e:self.move_next_section(col_no=2)
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_col3_up']
-                ,action   = lambda e:self.move_prev_section(col_no=2)
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_go_phrases']
-                ,action   = self.go_phrase_dic
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_search_article_forward']
-                ,action   = self.search_article.forward
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_search_article_backward']
-                ,action   = self.search_article.backward
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_re_search_article']
-                ,action   = self.search_reset
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = (sh.globs['var']['bind_reload_article']
-                            ,sh.globs['var']['bind_reload_article_alt']
-                            )
-                ,action   = self.reload
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = (sh.globs['var']['bind_save_article']
-                            ,sh.globs['var']['bind_save_article_alt']
-                            )
-                ,action   = self.save_article.gui.toggle
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_show_about']
-                ,action   = self.about.gui.toggle
-                )
-        sg.bind (obj      = self.about.gui.obj
-                ,bindings = sh.globs['var']['bind_show_about']
-                ,action   = self.about.gui.toggle
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = (sh.globs['var']['bind_toggle_history']
-                            ,sh.globs['var']['bind_toggle_history']
-                            )
-                ,action   = self.history.gui.toggle
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = (sh.globs['var']['bind_toggle_history']
-                            ,sh.globs['var']['bind_toggle_history_alt']
-                            )
-                ,action   = self.history.gui.toggle
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = (sh.globs['var']['bind_open_in_browser']
-                            ,sh.globs['var']['bind_open_in_browser_alt']
-                            )
-                ,action   = self.open_in_browser
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_copy_url']
-                ,action   = self.copy_block_url
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_copy_article_url']
-                ,action   = self.copy_url
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_spec_symbol']
-                ,action   = self.spec_symbols.gui.toggle
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_define']
-                ,action   = lambda e:self.define(Selected=True)
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = (sh.globs['var']['bind_prev_lang1']
-                            ,sh.globs['var']['bind_prev_lang1_alt']
-                            )
-                ,action   = self.prev_lang1
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = (sh.globs['var']['bind_next_lang1']
-                            ,sh.globs['var']['bind_next_lang1_alt']
-                            )
-                ,action   = self.next_lang1
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = (sh.globs['var']['bind_prev_lang2']
-                            ,sh.globs['var']['bind_prev_lang2_alt']
-                            )
-                ,action   = self.prev_lang2
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = (sh.globs['var']['bind_next_lang2']
-                            ,sh.globs['var']['bind_next_lang2_alt']
-                            )
-                ,action   = self.next_lang2
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = (sh.globs['var']['bind_settings']
-                            ,sh.globs['var']['bind_settings_alt']
-                            )
-                ,action   = self.settings.gui.toggle
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = (sh.globs['var']['bind_toggle_view']
-                            ,sh.globs['var']['bind_toggle_view_alt']
-                            )
-                ,action   = self.toggle_view
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = (sh.globs['var']['bind_toggle_history']
-                            ,sh.globs['var']['bind_toggle_history_alt']
-                            )
-                ,action   = self.history.gui.toggle
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_clear_history']
-                ,action   = self.history.clear
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_toggle_alphabet']
-                ,action   = self.toggle_alphabet
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_toggle_block']
-                ,action   = self.toggle_block
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_toggle_priority']
-                ,action   = self.toggle_priority
-                )
-        sg.bind (obj      = self.gui.btn_hst
-                ,bindings = '<ButtonRelease-3>'
-                ,action   = self.history.clear
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_print']
-                ,action   = self.print
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = sh.globs['var']['bind_toggle_sel']
-                ,action   = self.toggle_sel
-                )
-        sg.bind (obj      = self.gui
-                ,bindings = '<Motion>'
-                ,action   = self.mouse_sel
-                )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_go_back']
+                    ,action   = self.go_back
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_go_forward']
+                    ,action   = self.go_forward
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_col1_down']
+                    ,action   = lambda e:self.move_next_section(col_no=0)
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_col1_up']
+                    ,action   = lambda e:self.move_prev_section(col_no=0)
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_col2_down']
+                    ,action   = lambda e:self.move_next_section(col_no=1)
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_col2_up']
+                    ,action   = lambda e:self.move_prev_section(col_no=1)
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_col3_down']
+                    ,action   = lambda e:self.move_next_section(col_no=2)
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_col3_up']
+                    ,action   = lambda e:self.move_prev_section(col_no=2)
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_go_phrases']
+                    ,action   = self.go_phrase_dic
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_search_article_forward']
+                    ,action   = self.search_article.forward
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_search_article_backward']
+                    ,action   = self.search_article.backward
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_re_search_article']
+                    ,action   = self.search_reset
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = (sh.lg.globs['var']['bind_reload_article']
+                                ,sh.lg.globs['var']['bind_reload_article_alt']
+                                )
+                    ,action   = self.reload
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = (sh.lg.globs['var']['bind_save_article']
+                                ,sh.lg.globs['var']['bind_save_article_alt']
+                                )
+                    ,action   = self.save_article.gui.toggle
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_show_about']
+                    ,action   = self.about.gui.toggle
+                    )
+        sh.com.bind (obj      = self.about.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_show_about']
+                    ,action   = self.about.gui.toggle
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = (sh.lg.globs['var']['bind_toggle_history']
+                                ,sh.lg.globs['var']['bind_toggle_history']
+                                )
+                    ,action   = self.history.gui.toggle
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = (sh.lg.globs['var']['bind_toggle_history']
+                                ,sh.lg.globs['var']['bind_toggle_history_alt']
+                                )
+                    ,action   = self.history.gui.toggle
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = (sh.lg.globs['var']['bind_open_in_browser']
+                                ,sh.lg.globs['var']['bind_open_in_browser_alt']
+                                )
+                    ,action   = self.open_in_browser
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_copy_url']
+                    ,action   = self.copy_block_url
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_copy_article_url']
+                    ,action   = self.copy_url
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_spec_symbol']
+                    ,action   = self.insert_sym
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_define']
+                    ,action   = lambda e:self.define(Selected=True)
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = (sh.lg.globs['var']['bind_prev_lang1']
+                                ,sh.lg.globs['var']['bind_prev_lang1_alt']
+                                )
+                    ,action   = self.prev_lang1
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = (sh.lg.globs['var']['bind_next_lang1']
+                                ,sh.lg.globs['var']['bind_next_lang1_alt']
+                                )
+                    ,action   = self.next_lang1
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = (sh.lg.globs['var']['bind_prev_lang2']
+                                ,sh.lg.globs['var']['bind_prev_lang2_alt']
+                                )
+                    ,action   = self.prev_lang2
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = (sh.lg.globs['var']['bind_next_lang2']
+                                ,sh.lg.globs['var']['bind_next_lang2_alt']
+                                )
+                    ,action   = self.next_lang2
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = (sh.lg.globs['var']['bind_settings']
+                                ,sh.lg.globs['var']['bind_settings_alt']
+                                )
+                    ,action   = self.settings.gui.toggle
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = (sh.lg.globs['var']['bind_toggle_view']
+                                ,sh.lg.globs['var']['bind_toggle_view_alt']
+                                )
+                    ,action   = self.toggle_view
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = (sh.lg.globs['var']['bind_toggle_history']
+                                ,sh.lg.globs['var']['bind_toggle_history_alt']
+                                )
+                    ,action   = self.history.gui.toggle
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_clear_history']
+                    ,action   = self.history.clear
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_toggle_alphabet']
+                    ,action   = self.toggle_alphabet
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_toggle_block']
+                    ,action   = self.toggle_block
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_toggle_priority']
+                    ,action   = self.toggle_priority
+                    )
+        sh.com.bind (obj      = self.gui.btn_hst
+                    ,bindings = '<ButtonRelease-3>'
+                    ,action   = self.history.clear
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_print']
+                    ,action   = self.print
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_toggle_sel']
+                    ,action   = self.toggle_sel
+                    )
+        sh.com.bind (obj      = self.gui
+                    ,bindings = '<Motion>'
+                    ,action   = self.mouse_sel
+                    )
         ''' Key and mouse bindings must have different parents,
             otherwise, key bindings will not work, and mouse bindings
             (such as RMB) may fire up when not required. Keys must be
@@ -1048,139 +1011,139 @@ class WebFrame:
             provides for key bindigs only (or at least they are not
             to be bound to Top).
         '''
-        sg.bind (obj      = self.gui
-                ,bindings = '<Button-3>'
-                ,action   = lambda x:self.go_alt(Mouse=True)
-                )
-        if sh.oss.win() or sh.oss.mac():
-            sg.bind (obj      = self.gui.obj
-                    ,bindings = '<MouseWheel>'
-                    ,action   = self.mouse_wheel
+        sh.com.bind (obj      = self.gui
+                    ,bindings = '<Button-3>'
+                    ,action   = lambda x:self.go_alt(Mouse=True)
                     )
+        if sh.objs.os().win() or sh.objs._os.mac():
+            sh.com.bind (obj      = self.gui.obj
+                        ,bindings = '<MouseWheel>'
+                        ,action   = self.mouse_wheel
+                        )
         else:
-            sg.bind (obj      = self.gui.obj
-                    ,bindings = ('<Button 4>'
-                                ,'<Button 5>'
-                                )
-                    ,action   = self.mouse_wheel
+            sh.com.bind (obj      = self.gui.obj
+                        ,bindings = ('<Button 4>'
+                                    ,'<Button 5>'
+                                    )
+                        ,action   = self.mouse_wheel
+                        )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = '<Left>'
+                    ,action   = self.move_left
                     )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Left>'
-                ,action   = self.move_left
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Right>'
-                ,action   = self.move_right
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Down>'
-                ,action   = self.move_down
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Up>'
-                ,action   = self.move_up
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Home>'
-                ,action   = self.move_line_start
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<End>'
-                ,action   = self.move_line_end
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Control-Home>'
-                ,action   = self.move_text_start
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Control-End>'
-                ,action   = self.move_text_end
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Prior>'
-                ,action   = self.move_page_up
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Next>'
-                ,action   = self.move_page_down
-                )
-        sg.bind (obj      = self.gui.obj
-                ,bindings = '<Escape>'
-                ,action   = self.escape
-                )
-        sg.bind (obj      = self.gui
-                ,bindings = '<ButtonRelease-2>'
-                ,action   = self.minimize
-                )
-        sg.bind (obj      = self.gui.ent_src
-                ,bindings = '<Control-a>'
-                ,action   = self.gui.ent_src.select_all
-                )
-        sg.bind (obj      = self.gui.ent_src
-                ,bindings = '<KeyRelease>'
-                ,action   = self.suggest.suggest
-                )
-        sg.bind (obj      = self.gui.ent_src
-                ,bindings = '<Up>'
-                ,action   = self.suggest.move_up
-                )
-        sg.bind (obj      = self.gui.ent_src
-                ,bindings = '<Down>'
-                ,action   = self.suggest.move_down
-                )
-        sg.bind (obj      = self.gui.ent_src
-                ,bindings = '<Control-Home>'
-                ,action   = self.suggest.move_top
-                )
-        sg.bind (obj      = self.gui.ent_src
-                ,bindings = '<Control-End>'
-                ,action   = self.suggest.move_bottom
-                )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = '<Right>'
+                    ,action   = self.move_right
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = '<Down>'
+                    ,action   = self.move_down
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = '<Up>'
+                    ,action   = self.move_up
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = '<Home>'
+                    ,action   = self.move_line_start
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = '<End>'
+                    ,action   = self.move_line_end
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = '<Control-Home>'
+                    ,action   = self.move_text_start
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = '<Control-End>'
+                    ,action   = self.move_text_end
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = '<Prior>'
+                    ,action   = self.move_page_up
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = '<Next>'
+                    ,action   = self.move_page_down
+                    )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = '<Escape>'
+                    ,action   = self.escape
+                    )
+        sh.com.bind (obj      = self.gui
+                    ,bindings = '<ButtonRelease-2>'
+                    ,action   = self.minimize
+                    )
+        sh.com.bind (obj      = self.gui.ent_src
+                    ,bindings = '<Control-a>'
+                    ,action   = self.gui.ent_src.select_all
+                    )
+        sh.com.bind (obj      = self.gui.ent_src
+                    ,bindings = '<KeyRelease>'
+                    ,action   = self.suggest.suggest
+                    )
+        sh.com.bind (obj      = self.gui.ent_src
+                    ,bindings = '<Up>'
+                    ,action   = self.suggest.move_up
+                    )
+        sh.com.bind (obj      = self.gui.ent_src
+                    ,bindings = '<Down>'
+                    ,action   = self.suggest.move_down
+                    )
+        sh.com.bind (obj      = self.gui.ent_src
+                    ,bindings = '<Control-Home>'
+                    ,action   = self.suggest.move_top
+                    )
+        sh.com.bind (obj      = self.gui.ent_src
+                    ,bindings = '<Control-End>'
+                    ,action   = self.suggest.move_bottom
+                    )
         # Set config bindings
-        hotkeys1 = (sh.globs['var']['bind_toggle_history']
-                   ,sh.globs['var']['bind_toggle_history_alt']
+        hotkeys1 = (sh.lg.globs['var']['bind_toggle_history']
+                   ,sh.lg.globs['var']['bind_toggle_history_alt']
                    )
-        hotkeys1 = sh.Hotkeys(hotkeys1).run()
-        hotkeys2 = (sh.globs['var']['bind_clear_history']
+        hotkeys1 = sh.lg.Hotkeys(hotkeys1).run()
+        hotkeys2 = (sh.lg.globs['var']['bind_clear_history']
                    ,'<ButtonRelease-3>'
                    )
-        hotkeys2 = sh.Hotkeys(hotkeys2).run()
+        hotkeys2 = sh.lg.Hotkeys(hotkeys2).run()
         self.gui.btn_hst.hint = _('Show history') + '\n' + hotkeys1 \
                                 + '\n\n' + _('Clear history') + '\n' \
                                 + hotkeys2
-        self.gui.btn_abt._bindings = sh.globs['var']['bind_show_about']
-        self.gui.btn_alp._bindings = sh.globs['var']['bind_toggle_alphabet']
-        self.gui.btn_blk._bindings = sh.globs['var']['bind_toggle_block']
-        self.gui.btn_brw._bindings = (sh.globs['var']['bind_open_in_browser']
-                                     ,sh.globs['var']['bind_open_in_browser_alt']
+        self.gui.btn_abt._bindings = sh.lg.globs['var']['bind_show_about']
+        self.gui.btn_alp._bindings = sh.lg.globs['var']['bind_toggle_alphabet']
+        self.gui.btn_blk._bindings = sh.lg.globs['var']['bind_toggle_block']
+        self.gui.btn_brw._bindings = (sh.lg.globs['var']['bind_open_in_browser']
+                                     ,sh.lg.globs['var']['bind_open_in_browser_alt']
                                      )
-        self.gui.btn_clr._bindings = sh.globs['var']['bind_clear_search_field']
-        self.gui.btn_def._bindings = sh.globs['var']['bind_define']
-        self.gui.btn_nxt._bindings = sh.globs['var']['bind_go_forward']
+        self.gui.btn_clr._bindings = sh.lg.globs['var']['bind_clear_search_field']
+        self.gui.btn_def._bindings = sh.lg.globs['var']['bind_define']
+        self.gui.btn_nxt._bindings = sh.lg.globs['var']['bind_go_forward']
         self.gui.btn_ins._bindings = '<Control-v>'
-        self.gui.btn_prv._bindings = sh.globs['var']['bind_go_back']
-        self.gui.btn_prn._bindings = sh.globs['var']['bind_print']
-        self.gui.btn_qit._bindings = sh.globs['var']['bind_quit']
-        self.gui.btn_pri._bindings = sh.globs['var']['bind_toggle_priority']
-        self.gui.btn_rld._bindings = (sh.globs['var']['bind_reload_article']
-                                     ,sh.globs['var']['bind_reload_article_alt']
+        self.gui.btn_prv._bindings = sh.lg.globs['var']['bind_go_back']
+        self.gui.btn_prn._bindings = sh.lg.globs['var']['bind_print']
+        self.gui.btn_qit._bindings = sh.lg.globs['var']['bind_quit']
+        self.gui.btn_pri._bindings = sh.lg.globs['var']['bind_toggle_priority']
+        self.gui.btn_rld._bindings = (sh.lg.globs['var']['bind_reload_article']
+                                     ,sh.lg.globs['var']['bind_reload_article_alt']
                                      )
-        self.gui.btn_rp1._bindings = sh.globs['var']['repeat_sign']
-        self.gui.btn_rp2._bindings = sh.globs['var']['repeat_sign2']
-        self.gui.btn_sav._bindings = (sh.globs['var']['bind_save_article']
-                                     ,sh.globs['var']['bind_save_article_alt']
+        self.gui.btn_rp1._bindings = sh.lg.globs['var']['repeat_sign']
+        self.gui.btn_rp2._bindings = sh.lg.globs['var']['repeat_sign2']
+        self.gui.btn_sav._bindings = (sh.lg.globs['var']['bind_save_article']
+                                     ,sh.lg.globs['var']['bind_save_article_alt']
                                      )
-        self.gui.btn_set._bindings = (sh.globs['var']['bind_settings']
-                                     ,sh.globs['var']['bind_settings_alt']
+        self.gui.btn_set._bindings = (sh.lg.globs['var']['bind_settings']
+                                     ,sh.lg.globs['var']['bind_settings_alt']
                                      )
-        self.gui.btn_swp._bindings = sh.globs['var']['bind_swap_langs']
-        self.gui.btn_sym._bindings = sh.globs['var']['bind_spec_symbol']
-        self.gui.btn_ser._bindings = sh.globs['var']['bind_re_search_article']
+        self.gui.btn_swp._bindings = sh.lg.globs['var']['bind_swap_langs']
+        self.gui.btn_sym._bindings = sh.lg.globs['var']['bind_spec_symbol']
+        self.gui.btn_ser._bindings = sh.lg.globs['var']['bind_re_search_article']
         self.gui.btn_trn._bindings = ('<Return>'
                                      ,'<KP_Enter>'
                                      )
-        self.gui.btn_viw._bindings = (sh.globs['var']['bind_toggle_view']
-                                     ,sh.globs['var']['bind_toggle_view_alt']
+        self.gui.btn_viw._bindings = (sh.lg.globs['var']['bind_toggle_view']
+                                     ,sh.lg.globs['var']['bind_toggle_view_alt']
                                      )
         '''#note: Reset 'hint' for those buttons which bindings have
            changed (in order to show these bindings in tooltip)
@@ -1229,14 +1192,14 @@ class WebFrame:
         self.gui.btn_ser.action = self.search_reset
         self.gui.btn_set.action = self.settings.gui.toggle
         self.gui.btn_swp.action = self.swap_langs
-        self.gui.btn_sym.action = self.spec_symbols.gui.toggle
+        self.gui.btn_sym.action = self.insert_sym
         self.gui.btn_trn.action = self.go
         self.gui.btn_viw.action = self.toggle_view
         self.gui.opt_col.action = self.set_columns
         
     def title(self,arg=None):
         if not arg:
-            arg = sh.List(lst1=[gi.PRODUCT,gi.VERSION]).space_items()
+            arg = sh.lg.List(lst1=[gi.PRODUCT,gi.VERSION]).space_items()
         self.gui.title(arg)
 
     def text(self,event=None):
@@ -1260,9 +1223,8 @@ class WebFrame:
                 pass
                 '''
                 # Too frequent
-                sh.log.append (f,_('WARNING')
-                              ,_('Unable to get the position!')
-                              )
+                mes = _('Unable to get the position!')
+                sh.objs.mes(f,mes,True).warning()
                 '''
             if str(pos).isdigit():
                 Selectable = objs.blocks_db().Selectable
@@ -1287,15 +1249,13 @@ class WebFrame:
                                 ,result[2],result[1],result[3]
                                 )
             self.gui.widget.tag ('configure','selection','-background'
-                                ,sh.globs['var']['color_terms_sel_bg']
+                                ,sh.lg.globs['var']['color_terms_sel_bg']
                                 )
             self.gui.widget.tag ('configure','selection','-foreground'
-                                ,sh.globs['var']['color_terms_sel_fg']
+                                ,sh.lg.globs['var']['color_terms_sel_fg']
                                 )
-        except tk.TclError:
-            sh.log.append (f,_('WARNING')
-                          ,_('Unable to set selection!')
-                          )
+        except Exception as e:
+            sh.com.failed(f,e)
     
     def select(self):
         f = '[MClient] mclient.WebFrame.select'
@@ -1327,9 +1287,8 @@ class WebFrame:
                 page2_bbox = page2_no * _width
                 if page2_bbox - page1_bbox > _width:
                     delta = 0
-                    sh.log.append (f,_('WARNING')
-                                  ,_('The column is too wide to be fully shown')
-                                  )
+                    mes = _('The column is too wide to be fully shown')
+                    sh.objs.mes(f,mes,True).warning()
                 else:
                     delta = bbox2 - page2_bbox
                 self.gui.scroll_x (bbox     = page1_bbox + delta
@@ -1356,9 +1315,8 @@ class WebFrame:
                 page2_bboy = page2_no * _height
                 if page2_bboy - page1_bboy > _height:
                     delta = 0
-                    sh.log.append (f,_('WARNING')
-                                  ,_('The row is too wide to be fully shown')
-                                  )
+                    mes = _('The row is too wide to be fully shown')
+                    sh.objs.mes(f,mes,True).warning()
                 else:
                     delta = bboy2 - page2_bboy
                 self.gui.scroll_y (bboy     = page1_bboy + delta
@@ -1405,10 +1363,8 @@ class WebFrame:
             ''' This should not happen now as we strip out non-supported
                 characters.
             '''
-        except tk._tkinter.TclError:
-            sg.Message (f,_('ERROR')
-                       ,_('Cannot parse HTML code!\n\nProbably, some symbols are not supported by Tcl.')
-                       )
+        except Exception as e:
+            sh.com.failed(f,e)
             # Othewise, we will have a segmentation fault here
             self.reset()
             lg.objs.request().reset()
@@ -1418,7 +1374,7 @@ class WebFrame:
         ''' #note: each time the contents of the current page is changed
             (e.g., due to prioritizing), bookmarks must be deleted.
         '''
-        timer = sh.Timer(func_title=f)
+        timer = sh.lg.Timer(func_title=f)
         timer.start()
         # Do not allow selection positions from previous articles
         self._pos = -1
@@ -1427,10 +1383,8 @@ class WebFrame:
                                              ,url    = lg.objs._request._url
                                              )
         if articleid:
-            sh.log.append (f,_('INFO')
-                          ,_('Load article No. %d from memory')\
-                          % articleid
-                          )
+            mes = _('Load article No. {} from memory').format(articleid)
+            sh.objs.mes(f,mes,True).info()
             objs._blocks_db._articleid = articleid
             self.get_bookmark()
         else:
@@ -1473,9 +1427,9 @@ class WebFrame:
             # todo (?) insert SPEECHPR in Elems instead of updating
             self.prioritize_speech()
             
-        self._phdic = sh.Input (title = f
-                               ,value = objs._blocks_db.phrase_dic_primary()
-                               ).not_none()
+        self._phdic = objs._blocks_db.phrase_dic_primary()
+        if self._phdic is None:
+            self._phdic = ''
 
         data = objs._blocks_db.assign_bp()
         bp = cl.BlockPrioritize (data       = data
@@ -1543,7 +1497,7 @@ class WebFrame:
                              ,cols     = lg.objs._request._cols
                              ,collimit = lg.objs._request._collimit
                              ,order    = lg.objs.order()
-                             ,width    = sh.globs['int']['col_width']
+                             ,width    = sh.lg.globs['int']['col_width']
                              ,Reverse  = lg.objs._request.Reverse
                              ,phdic    = self._phdic
                              ,skipped  = skipped
@@ -1577,9 +1531,8 @@ class WebFrame:
                 self._pos = result
                 self.select()
             else:
-                sh.log.append (f,_('WARNING')
-                              ,_('Wrong input data!')
-                              )
+                mes = _('Wrong input data!')
+                sh.objs.mes(f,mes,True).warning()
         ''' Empty article is not added either to DB or history, so we
             just do not clear the search field to be able to correct
             the typo.
@@ -1593,9 +1546,8 @@ class WebFrame:
         timer.end()
         
         '''
-        sh.log.append (f,_('INFO')
-                      ,_('Debug table:')
-                      )
+        mes = _('Debug table:')
+        sh.objs.mes(f,mes,True).info()
         objs._blocks_db.dbc.execute ('select   CELLNO,NO,PRIORITY,DICA \
                                               ,TYPE,TERMA,TEXT \
                                       from     BLOCKS \
@@ -1618,18 +1570,16 @@ class WebFrame:
                                                  ,dica = result[6]
                                                  )
                 if dica:
-                    sh.log.append (f,_('DEBUG')
-                                  ,_('Selected dictionary: "%s". Previous dictionary: "%s" (abbreviation), "%s" (full).')\
-                                  % (result[6],str(dica[0])
-                                    ,str(dica[1])
-                                    ,
-                                    )
-                                  )
+                    mes = _('Selected dictionary: "{}". Previous dictionary: "{}" (abbreviation), "{}" (full).')
+                    mes = mes.format (result[6]
+                                     ,dica[0]
+                                     ,dica[1]
+                                     )
+                    sh.objs.mes(f,mes,True).debug()
                     dica = dica[1]
                 else:
-                    sh.log.append (f,_('DEBUG')
-                                  ,_('Selected dictionary: "%s". No previous dictionary.')
-                                  )
+                    mes = _('No previous dictionary.')
+                    sh.objs.mes(f,mes,True).debug()
                 lg.objs.order().lm_auto (dic1 = result[6]
                                         ,dic2 = dica
                                         )
@@ -1645,9 +1595,9 @@ class WebFrame:
         search = self.gui.ent_src.widget.get().strip('\n').strip(' ')
         if search == '':
             self.go_url()
-        elif search == sh.globs['var']['repeat_sign']:
+        elif search == sh.lg.globs['var']['repeat_sign']:
             self.insert_repeat_sign()
-        elif search == sh.globs['var']['repeat_sign2']:
+        elif search == sh.lg.globs['var']['repeat_sign2']:
             self.insert_repeat_sign2()
         else:
             lg.objs.request()._search = search
@@ -1669,15 +1619,12 @@ class WebFrame:
             if url:
                 lg.objs._request._search = objs._blocks_db.text(pos=self._pos)
                 lg.objs._request._url    = url
-                sh.log.append (f,_('INFO')
-                              ,_('Open link: %s') % lg.objs._request._url
-                              )
+                mes = _('Open link: {}').format(lg.objs._request._url)
+                sh.objs.mes(f,mes,True).info()
                 self.load_article()
             # Do not warn when there are no articles yet
             elif objs._blocks_db._articleid == 0:
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
+                sh.com.lazy(f)
             else:
                 lg.objs._request._search = objs._blocks_db.text(pos=self._pos)
                 self.go_search()
@@ -1694,9 +1641,8 @@ class WebFrame:
             self.update_lang1()
             self.update_lang2()
             self.get_url()
-            sh.log.append (f,_('DEBUG')
-                          ,'"' + lg.objs._request._search + '"'
-                          )
+            mes = '"{}"'.format(lg.objs._request._search)
+            sh.objs.mes(f,mes,True).debug()
             self.load_article()
 
     def set_source(self,event=None):
@@ -1706,10 +1652,8 @@ class WebFrame:
         '''
         self.gui.opt_src._get()
         lg.objs.request()._source = self.gui.opt_src.choice
-        sh.log.append (f,_('INFO')
-                      ,_('Set source to "%s"') \
-                      % lg.objs._request._source
-                      )
+        mes = _('Set source to "{}"').format(lg.objs._request._source)
+        sh.objs.mes(f,mes,True).info()
         lg.objs.plugins().set(lg.objs._request._source)
         self.reset_opt(lg.objs._request._source)
         self.go_search()
@@ -1719,9 +1663,8 @@ class WebFrame:
         f = '[MClient] mclient.WebFrame.get_url'
         #note: update source and target languages first
         lg.objs.request()._url = lg.objs.plugins().get_url(lg.objs._request._search)
-        sh.log.append (f,_('DEBUG')
-                      ,str(lg.objs._request._url)
-                      )
+        mes = lg.objs._request._url
+        sh.objs.mes(f,mes,True).debug()
 
     #todo: move 'move_*' procedures to Moves class
     # Go to the 1st term of the current row
@@ -1733,9 +1676,8 @@ class WebFrame:
             self.select()
             self.shift_screen()
         else:
-            sh.log.append (f,_('WARNING')
-                          ,_('Wrong input data!')
-                          )
+            mes = _('Wrong input data!')
+            sh.objs.mes(f,mes,True).warning()
 
     # Go to the last term of the current row
     def move_line_end(self,event=None):
@@ -1746,9 +1688,8 @@ class WebFrame:
             self.select()
             self.shift_screen()
         else:
-            sh.log.append (f,_('WARNING')
-                          ,_('Wrong input data!')
-                          )
+            mes = _('Wrong input data!')
+            sh.objs.mes(f,mes,True).warning()
 
     # Go to the 1st (non-)selectable block
     def move_text_start(self,event=None):
@@ -1759,9 +1700,8 @@ class WebFrame:
             self.select()
             self.shift_screen()
         else:
-            sh.log.append (f,_('WARNING')
-                          ,_('Wrong input data!')
-                          )
+            mes = _('Wrong input data!')
+            sh.objs.mes(f,mes,True).warning()
 
     # Go to the last term in the article
     def move_text_end(self,event=None):
@@ -1772,9 +1712,8 @@ class WebFrame:
             self.select()
             self.shift_screen()
         else:
-            sh.log.append (f,_('WARNING')
-                          ,_('Wrong input data!')
-                          )
+            mes = _('Wrong input data!')
+            sh.objs.mes(f,mes,True).warning()
 
     # Go to the previous page
     def move_page_up(self,event=None):
@@ -1811,9 +1750,8 @@ class WebFrame:
             self.select()
             self.shift_screen()
         else:
-            sh.log.append (f,_('WARNING')
-                          ,_('Wrong input data!')
-                          )
+            mes = _('Wrong input data!')
+            sh.objs.mes(f,mes,True).warning()
 
     # Go to the next term
     def move_right(self,event=None):
@@ -1824,9 +1762,8 @@ class WebFrame:
             self.select()
             self.shift_screen()
         else:
-            sh.log.append (f,_('WARNING')
-                          ,_('Wrong input data!')
-                          )
+            mes = _('Wrong input data!')
+            sh.objs.mes(f,mes,True).warning()
 
     # Go to the next row
     def move_down(self,event=None):
@@ -1837,9 +1774,8 @@ class WebFrame:
             self.select()
             self.shift_screen()
         else:
-            sh.log.append (f,_('WARNING')
-                          ,_('Wrong input data!')
-                          )
+            mes = _('Wrong input data!')
+            sh.objs.mes(f,mes,True).warning()
 
     # Go to the previous row
     def move_up(self,event=None):
@@ -1850,9 +1786,8 @@ class WebFrame:
             self.select()
             self.shift_screen()
         else:
-            sh.log.append (f,_('WARNING')
-                          ,_('Wrong input data!')
-                          )
+            mes = _('Wrong input data!')
+            sh.objs.mes(f,mes,True).warning()
 
     # Use mouse wheel to scroll screen
     def mouse_wheel(self,event):
@@ -1861,7 +1796,7 @@ class WebFrame:
             other versions.
         '''
         if event.num == 5 or event.delta < 0:
-            if sh.oss.lin():
+            if sh.objs.os().lin():
                 self.move_page_down()
             else:
                 self.move_down()
@@ -1869,7 +1804,7 @@ class WebFrame:
                 other versions.
             '''
         if event.num == 4 or event.delta > 0:
-            if sh.oss.lin():
+            if sh.objs.os().lin():
                 self.move_page_up()
             else:
                 self.move_up()
@@ -1885,7 +1820,7 @@ class WebFrame:
 
     # Open URL of the current article in a browser
     def open_in_browser(self,event=None):
-        ionline      = sh.Online()
+        ionline      = sh.lg.Online()
         ionline._url = lg.objs.request()._url
         ionline.browse()
 
@@ -1894,23 +1829,20 @@ class WebFrame:
         f = '[MClient] mclient.WebFrame.copy_text'
         text = objs.blocks_db().text(pos=self._pos)
         if text:
-            sg.Clipboard().copy(text)
-            if sh.globs['bool']['Iconify']:
+            sh.Clipboard().copy(text)
+            if sh.lg.globs['bool']['Iconify']:
                 self.minimize()
         # Do not warn when there are no articles yet
         elif objs._blocks_db._articleid == 0:
-            sh.log.append (f,_('INFO')
-                          ,_('Nothing to do!')
-                          )
+            sh.com.lazy(f)
         else:
-            sg.Message (f,_('WARNING')
-                       ,_('This block does not contain any text!')
-                       )
+            mes = _('This block does not contain any text!')
+            sh.objs.mes(f,mes).warning()
 
     # Copy URL of the current article
     def copy_url(self,event=None):
-        sg.Clipboard().copy(lg.objs.request()._url)
-        if sh.globs['bool']['Iconify']:
+        sh.Clipboard().copy(lg.objs.request()._url)
+        if sh.lg.globs['bool']['Iconify']:
             self.minimize()
 
     # Copy URL of the selected block
@@ -1918,13 +1850,12 @@ class WebFrame:
         f = '[MClient] mclient.WebFrame.copy_block_url'
         url = objs.blocks_db().url(pos=self._pos)
         if url:
-            sg.Clipboard().copy(url)
-            if sh.globs['bool']['Iconify']:
+            sh.Clipboard().copy(url)
+            if sh.lg.globs['bool']['Iconify']:
                 self.minimize()
         else:
-            sg.Message (f,_('WARNING')
-                       ,_('This block does not contain a URL!')
-                       )
+            mes = _('This block does not contain a URL!')
+            sh.objs.mes(f,mes).warning()
 
     # Open a web-page with a definition of the current term
     # Selected: True: Selected term; False: Article title
@@ -1936,9 +1867,9 @@ class WebFrame:
         else:
             search_str = 'define:' + lg.objs.request()._search
         if search_str != 'define:':
-            sh.Online (base_str   = sh.globs['var']['web_search_url']
-                      ,search_str = search_str
-                      ).browse()
+            sh.lg.Online (base_str   = sh.lg.globs['var']['web_search_url']
+                         ,search_str = search_str
+                         ).browse()
         else:
             sh.com.empty(f)
 
@@ -2048,10 +1979,9 @@ class WebFrame:
         f = '[MClient] mclient.WebFrame.control_length'
         Confirmed = True
         if len(lg.objs.request()._search) >= 150:
-            if not sg.Message (f,_('QUESTION')
-                              ,_('The request is long (%d symbols). Do you really want to send it?')\
-                              % len(lg.objs._request._search)
-                              ).Yes:
+            mes = _('The request is long ({} symbols). Do you really want to send it?')
+            mes = mes.format(len(lg.objs._request._search))
+            if not sh.objs.mes(f,mes).question():
                 Confirmed = False
         return Confirmed
 
@@ -2067,10 +1997,8 @@ class WebFrame:
         '''
         self.gui.opt_lg1._get()
         if lg.objs.plugins().lang1() != self.gui.opt_lg1.choice:
-            sh.log.append (f,_('INFO')
-                          ,_('Set language: %s') \
-                          % self.gui.opt_lg1.choice
-                          )
+            mes = _('Set language: {}').format(self.gui.opt_lg1.choice)
+            sh.objs.mes(f,mes,True).info()
             lg.objs.plugins().set_lang1(self.gui.opt_lg1.choice)
     
     def set_lang2(self,event=None):
@@ -2080,10 +2008,8 @@ class WebFrame:
         '''
         self.gui.opt_lg2._get()
         if lg.objs.plugins().lang2() != self.gui.opt_lg2.choice:
-            sh.log.append (f,_('INFO')
-                          ,_('Set language: %s') \
-                          % self.gui.opt_lg2.choice
-                          )
+            mes = _('Set language: {}').format(self.gui.opt_lg2.choice)
+            sh.objs.mes(f,mes,True).info()
             lg.objs.plugins().set_lang2(self.gui.opt_lg2.choice)
 
     def reset_columns(self,event=None):
@@ -2095,12 +2021,12 @@ class WebFrame:
         fixed = [col for col in lg.objs.request()._cols \
                  if col != _('Do not set')
                 ]
-        lg.objs._request._collimit = sh.Input (title = f
-                                              ,value = self.gui.opt_col.choice
-                                              ).integer() + len(fixed)
-        sh.log.append (f,_('INFO')
-                      ,_('Set the number of columns to {}').format(lg.objs._request._collimit)
-                      )
+        lg.objs._request._collimit = sh.lg.Input (title = f
+                                                 ,value = self.gui.opt_col.choice
+                                                 ).integer() + len(fixed)
+        mes = _('Set the number of columns to {}')
+        mes = mes.format(lg.objs._request._collimit)
+        sh.objs.mes(f,mes,True).info()
     
     def set_columns(self,event=None):
         self.reset_columns()
@@ -2111,12 +2037,6 @@ class WebFrame:
     def reload(self,event=None):
         objs.blocks_db().clear_cur()
         self.load_article()
-
-    # Insert a special symbol into the search field
-    def insert_sym(self,sym):
-        self.gui.ent_src.insert(pos='end',text=sym)
-        if sh.globs['bool']['AutoCloseSpecSymbol']:
-            self.spec_symbols.gui.close()
 
     def toggle_view(self,event=None):
         if lg.objs.request().Reverse:
@@ -2139,24 +2059,21 @@ class WebFrame:
         if lg.objs.request().Block:
             lg.objs._request.Block = False
             '''
-            sg.Message (f,_('INFO')
-                       ,_('Blacklisting is now OFF.')
-                       )
+            mes = _('Blacklisting is now OFF.')
+            sh.objs.mes(f,mes).info()
             '''
             self.unblock()
         else:
             lg.objs._request.Block = True
             if lg.objs.order()._blacklist:
                 '''
-                sg.Message (f,_('INFO')
-                           ,_('Blacklisting is now ON.')
-                           )
+                mes = _('Blacklisting is now ON.')
+                sh.objs.mes(f,mes).info()
                 '''
                 pass
             else:
-                sg.Message (f,_('WARNING')
-                           ,_('No dictionaries have been provided for blacklisting!')
-                           )
+                mes = _('No dictionaries have been provided for blacklisting!')
+                sh.objs.mes(f,mes).warning()
         objs.blocks_db().delete_bookmarks()
         self.load_article()
 
@@ -2193,24 +2110,21 @@ class WebFrame:
         if lg.objs.request().Prioritize:
             lg.objs._request.Prioritize = False
             '''
-            sg.Message (f,_('INFO')
-                       ,_('Prioritizing is now OFF.')
-                       )
+            mes = _('Prioritizing is now OFF.')
+            sh.objs.mes(f,mes).info()
             '''
             self.unprioritize()
         else:
             lg.objs._request.Prioritize = True
             if lg.objs.order()._prioritize:
                 '''
-                sg.Message (f,_('INFO')
-                           ,_('Prioritizing is now ON.')
-                           )
+                mes = _('Prioritizing is now ON.')
+                sh.objs.mes(f,mes).info()
                 '''
                 pass
             else:
-                sg.Message (f,_('WARNING')
-                           ,_('No dictionaries have been provided for prioritizing!')
-                           )
+                mes = _('No dictionaries have been provided for prioritizing!')
+                sh.objs.mes(f,mes).warning()
         objs.blocks_db().delete_bookmarks()
         self.load_article()
 
@@ -2227,19 +2141,19 @@ class WebFrame:
                              ,cols     = lg.objs._request._cols
                              ,collimit = lg.objs._request._collimit
                              ,order    = lg.objs.order()
-                             ,width    = sh.globs['int']['col_width']
+                             ,width    = sh.lg.globs['int']['col_width']
                              ,Printer  = True
                              ,Reverse  = lg.objs._request.Reverse
                              ,skipped  = skipped
                              )
         code = mh.objs._html.run()
         if code:
-            sh.WriteTextFile (file    = sh.objs.tmpfile (suffix = '.htm'
-                                                        ,Delete = 0
-                                                        )
-                             ,Rewrite = True
-                             ).write(code)
-            sh.Launch(target=sh.objs._tmpfile).auto()
+            sh.lg.WriteTextFile (file    = sh.lg.objs.tmpfile (suffix = '.htm'
+                                                              ,Delete = 0
+                                                              )
+                                ,Rewrite = True
+                                ).write(code)
+            sh.lg.Launch(target=sh.lg.objs._tmpfile).auto()
         else:
             sh.com.empty(f)
 
@@ -2265,28 +2179,25 @@ class WebFrame:
                     lg.objs._request._collimit -= 1
             non_fixed_len = lg.objs._request._collimit - len(fixed)
             self.gui.opt_col.set(non_fixed_len)
-            sh.log.append (f,_('INFO')
-                          ,_('Set the column limit to %d (%d in total)')\
-                          % (non_fixed_len,lg.objs._request._collimit)
-                          )
+            mes = _('Set the column limit to {} ({} in total)')
+            mes = mes.format(non_fixed_len,lg.objs._request._collimit)
+            sh.objs.mes(f,mes,True).info()
         else:
-            sg.Message (f,_('ERROR')
-                       ,_('The condition "%s" is not observed!')\
-                       % '%d > %d' % (lg.objs._request._collimit
-                                     ,len(fixed)
-                                     )
-                       )
+            sub = '{} > {}'.format (lg.objs._request._collimit
+                                   ,len(fixed)
+                                   )
+            mes = _('The condition "{}" is not observed!').format(sub)
+            sh.objs.mes(f,mes).error()
 
     def ignore_column(self,col_no):
         f = '[MClient] mclient.WebFrame.ignore_column'
         if len(lg.objs.request()._cols) > col_no + 1:
             if lg.objs._request._cols[col_no] == 'transc':
-                sh.log.append (f,_('DEBUG')
-                              ,_('Select column "%s" instead of "%s"')\
-                              % (lg.objs._request._cols[col_no]
-                                ,lg.objs._request._cols[col_no+1]
-                                )
-                              )
+                mes = _('Select column "{}" instead of "{}"')
+                mes = mes.format (lg.objs._request._cols[col_no]
+                                 ,lg.objs._request._cols[col_no+1]
+                                 )
+                sh.objs.mes(f,mes,True).debug()
                 col_no += 1
         return col_no
     
@@ -2360,23 +2271,20 @@ class WebFrame:
         if result:
             if str(result[3]).isdigit():
                 self._pos = result[3]
-                sh.log.append (f,_('DEBUG')
-                              ,_('Load bookmark %d for article #%d') \
-                              % (self._pos,objs._blocks_db._articleid)
-                              )
+                mes = _('Load bookmark {} for article #{}')
+                mes = mes.format(self._pos,objs._blocks_db._articleid)
+                sh.objs.mes(f,mes,True).debug()
             else:
-                sh.log.append (f,_('WARNING')
-                              ,_('Wrong input data!')
-                              )
+                mes = _('Wrong input data!')
+                sh.objs.mes(f,mes,True).warning()
         else:
             sh.com.empty(f)
             result = objs._blocks_db.start()
             if str(result).isdigit():
                 self._pos = result()
             else:
-                sh.log.append (f,_('WARNING')
-                              ,_('Wrong input data!')
-                              )
+                mes = _('Wrong input data!')
+                sh.objs.mes(f,mes,True).warning()
     
     def go_alt(self,event=None,Mouse=False):
         f = '[MClient] mclient.WebFrame.go_alt'
@@ -2391,19 +2299,17 @@ class WebFrame:
                                                      ,dica = result[6]
                                                      )
                     if dica:
-                        sh.log.append (f,_('DEBUG')
-                                      ,_('Selected dictionary: "%s". Next dictionary: "%s" (abbreviation), "%s" (full).') \
-                                      % (result[6],str(dica[0])
-                                        ,str(dica[1])
-                                        ,
-                                        )
-                                      )
+                        mes = _('Selected dictionary: "{}". Next dictionary: "{}" (abbreviation), "{}" (full).')
+                        mes = mes.format (result[6]
+                                         ,dica[0]
+                                         ,dica[1]
+                                         )
+                        sh.objs.mes(f,mes,True).debug()
                         dica = dica[1]
                     else:
-                        sh.log.append (f,_('DEBUG')
-                                      ,_('Selected dictionary: "%s". No next dictionary.') \
-                                      % result[6]
-                                      )
+                        mes = _('Selected dictionary: "{}". No next dictionary.')
+                        mes = mes.format(result[6])
+                        sh.objs.mes(f,mes,True).debug()
                     lg.objs.order().rm_auto (dic1 = result[6]
                                             ,dic2 = dica
                                             )
@@ -2436,15 +2342,13 @@ class Settings:
 
     def block_settings(self,event=None):
         f = '[MClient] mclient.Settings.block_settings'
-        sg.Message (f,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
+        mes = _('Not implemented yet!')
+        sh.objs.mes(f,mes).info()
 
     def priority_settings(self,event=None):
         f = '[MClient] mclient.Settings.priority_settings'
-        sg.Message (f,_('INFO')
-                   ,_('Not implemented yet!')
-                   )
+        mes = _('Not implemented yet!')
+        sh.objs.mes(f,mes).info()
 
     def apply(self,event=None):
         f = '[MClient] mclient.Settings.apply'
@@ -2473,16 +2377,15 @@ class Settings:
             elif lst[i] == _('Transcription'):
                 lst[i] = 'transc'
             else:
-                sg.Message (f,_('ERROR')
-                           ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".') \
-                           % (str(self._cols[i])
-                             ,', '.join (_('Dictionaries')
-                                        ,_('Word forms')
-                                        ,_('Transcription')
-                                        ,_('Parts of speech')
-                                        )
-                             )
-                           )
+                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+                mes = mes.format (self._cols[i]
+                                 ,(_('Dictionaries')
+                                  ,_('Word forms')
+                                  ,_('Transcription')
+                                  ,_('Parts of speech')
+                                  )
+                                 )
+                sh.objs.mes(f,mes).error()
         if set(lst):
             self.gui.close()
             lg.objs.request()._cols     = tuple(lst)
@@ -2499,21 +2402,20 @@ class Settings:
             objs.webframe().set_columns()
         else:
             #todo: do we really need this?
-            sg.Message (f,_('WARNING')
-                       ,_('At least one column must be set!')
-                       )
+            mes = _('At least one column must be set!')
+            sh.objs.mes(f,mes).warning()
     
     def bindings(self):
         self.gui.btn_apl.action = self.apply
         #todo: implement
         #self.btn_blk.action = self.block_settings
         #self.btn_pri.action = self.priority_settings
-        sg.bind (obj      = self.gui.obj
-                ,bindings = [sh.globs['var']['bind_settings']
-                            ,sh.globs['var']['bind_settings_alt']
-                            ]
-                ,action   = self.gui.toggle
-                )
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = [sh.lg.globs['var']['bind_settings']
+                                ,sh.lg.globs['var']['bind_settings_alt']
+                                ]
+                    ,action   = self.gui.toggle
+                    )
 
     def prioritize_speech(self):
         f = '[MClient] mclient.Settings.prioritize_speech'
@@ -2539,9 +2441,8 @@ class Settings:
             elif choices[i] == _('Pronoun'):
                 lg.objs._request._pr_pron = len(choices) - i
             else:
-                sg.Message (f,_('ERROR')
-                           ,_('Wrong input data: "%s"') % str(choices[i])
-                           )
+                mes = _('Wrong input data: "{}"!').format(choices[i])
+                sh.objs.mes(f,mes).error()
 
 
 
@@ -2550,9 +2451,9 @@ class ThirdParties:
     def __init__(self):
         self.gui = gi.ThirdParties()
         file = sh.objs.pdir().add('..','resources','third parties.txt')
-        self._text = sh.ReadTextFile(file=file).get()
+        self._text = sh.lg.ReadTextFile(file=file).get()
         self.gui.obj.insert(text=self._text)
-        self.gui.obj.read_only()
+        self.gui.obj.disable()
 
 
 
@@ -2624,7 +2525,7 @@ class Suggest:
     
     def suggest(self,event=None):
         f = '[MClient] mclient.Suggest.suggest'
-        if sh.globs['bool']['Autocompletion'] and event:
+        if sh.lg.globs['bool']['Autocompletion'] and event:
             text = self.entry.get()
             #todo: avoid modifiers
             if text:
@@ -2645,8 +2546,8 @@ class Suggest:
                                       ,action = self._select
                                       )
                         self.bindings()
-                        sg.objs._root.idle()
-                        sg.AttachWidget (obj1   = self.entry
+                        sh.objs.root().idle()
+                        sh.AttachWidget (obj1   = self.entry
                                         ,obj2   = self.gui.parent
                                         ,anchor = 'NE'
                                         ).run()
@@ -2657,10 +2558,10 @@ class Suggest:
     
     def bindings(self):
         if self.gui.parent:
-            sg.bind (obj      = self.gui.parent
-                    ,bindings = '<ButtonRelease-1>'
-                    ,action   = self.select
-                    )
+            sh.com.bind (obj      = self.gui.parent
+                        ,bindings = '<ButtonRelease-1>'
+                        ,action   = self.select
+                        )
 
 
 objs = Objects()
@@ -2668,7 +2569,7 @@ objs = Objects()
 
 if  __name__ == '__main__':
     f = '[MClient] mclient.__main__'
-    sg.objs.start()
+    sh.com.start()
     lg.objs.default(product=gi.PRODUCT)
     if lg.objs._default.Success:
         timed_update()
@@ -2676,10 +2577,8 @@ if  __name__ == '__main__':
         objs._webframe.gui.show()
         kl_mod.keylistener.cancel()
     else:
-        sh.objs.mes (f,_('WARNING')
-                    ,_('Unable to continue due to an invalid configuration.')
-                    )
-    sh.log.append (f,_('DEBUG')
-                  ,_('Goodbye!')
-                  )
-    sg.objs.end()
+        mes = _('Unable to continue due to an invalid configuration.')
+        sh.objs.mes(f,mes).warning()
+    mes = _('Goodbye!')
+    sh.objs.mes(f,mes,True).debug()
+    sh.com.end()

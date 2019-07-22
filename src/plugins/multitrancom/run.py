@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import shared                       as sh
-import sharedGUI                    as sg
+import skl_shared.shared            as sh
 import plugins.multitrancom.get     as gt
 import plugins.multitrancom.cleanup as cu
 import plugins.multitrancom.tags    as tg
@@ -71,9 +70,8 @@ class Plugin:
             if lang1 in pr.LANGS:
                 pr.LANG1 = lang1
             else:
-                sh.objs.mes (f,_('ERROR')
-                            ,_('Wrong input data: "%s"!') % str(lang1)
-                            )
+                mes = _('Wrong input data: "{}"!').format(lang1)
+                sh.objs.mes(f,mes).error()
         else:
             sh.com.empty(f)
     
@@ -83,9 +81,8 @@ class Plugin:
             if lang2 in pr.LANGS:
                 pr.LANG2 = lang2
             else:
-                sh.objs.mes (f,_('ERROR')
-                            ,_('Wrong input data: "%s"!') % str(lang2)
-                            )
+                mes = _('Wrong input data: "{}"!').format(lang2)
+                sh.objs.mes(f,mes).error()
         else:
             sh.com.empty(f)
     

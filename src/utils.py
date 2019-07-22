@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared          as sh
 import plugins.multitrancom.utils as utcom
 
 import gettext, gettext_windows
@@ -12,7 +11,7 @@ gettext.install('mclient','../resources/locale')
 
 if __name__ == '__main__':
     f = '[MClient] utils.__main__'
-    sg.objs.start()
+    sh.com.start()
     
-    sg.objs.end()
+    sh.com.end()
                 

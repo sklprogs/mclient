@@ -6,8 +6,7 @@ import os
 import html
 import operator
 import urllib.request
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -33,7 +32,7 @@ class Pairs:
         f = '[MClient] plugins.multitrancom.utils.Pairs.blacklist'
         file    = '/tmp/urls'
         pattern = 'https\:\/\/www.multitran.com\/m.exe\?l1=(\d+)\&l2=(\d+)\&SHL=2\&s='
-        text    = sh.ReadTextFile(file).get()
+        text    = sh.lg.ReadTextFile(file).get()
         if text:
             lst = text.splitlines()
             lst = [item.strip() for item in lst if item.strip()]
@@ -54,17 +53,15 @@ class Pairs:
     def bad_gateway(self):
         f = '[MClient] plugins.multitrancom.utils.Pairs.bad_gateway'
         file    = '/tmp/urls'
-        text    = sh.ReadTextFile(file).get()
+        text    = sh.lg.ReadTextFile(file).get()
         if text:
             lst = text.splitlines()
             lst = [item.strip() for item in lst if item.strip()]
             if lst:
                 errors = []
                 for i in range(len(lst)):
-                    message = '%d/%d' % (i+1,len(lst))
-                    sh.log.append (f,_('INFO')
-                                  ,message
-                                  )
+                    mes = '{}/{}'.format(i+1,len(lst))
+                    sh.objs.mes(f,mes,True).info()
                     try:
                         req = urllib.request.Request (url     = lst[i]
                                                      ,data    = None
@@ -74,20 +71,17 @@ class Pairs:
                                                      )
                         urllib.request.urlopen(req,timeout=12).read()
                         if self.Verbose:
-                            sh.log.append (f,_('INFO')
-                                          ,_('[OK]: "%s"') % lst[i]
-                                          )
+                            mes = _('[OK]: "{}"').format(lst[i])
+                            sh.objs.mes(f,mes,True).info()
                     except Exception as e:
                         if 'gateway' in str(e).lower():
                             errors.append(lst[i])
                 if errors:
-                    sh.objs.mes (f,_('INFO')
-                                ,'\n'.join(errors)
-                                )
+                    mes = '\n'.join(errors)
+                    sh.objs.mes(f,mes,True).info()
                 else:
-                    sh.log.append (f,_('INFO')
-                                  ,_('No matches!')
-                                  )
+                    mes = _('No matches!')
+                    sh.objs.mes(f,mes,True).info()
             else:
                 sh.com.empty(f)
         else:
@@ -100,15 +94,14 @@ class Pairs:
                 if self._dic[lang]['code'] == code:
                     return lang
         else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('Wrong input data: "%s"!') % str(code)
-                        )
+            mes = _('Wrong input data: "{}"!').format(code)
+            sh.objs.mes(f,mes).error()
     
     def remaining(self):
         f = '[MClient] plugins.multitrancom.utils.Pairs.remaining'
         file    = '/tmp/urls'
         pattern = 'https\:\/\/www.multitran.com\/m.exe\?l1=(\d+)\&l2=(\d+)\&SHL=2\&s='
-        text    = sh.ReadTextFile(file).get()
+        text    = sh.lg.ReadTextFile(file).get()
         if text:
             lst = text.splitlines()
             lst = [item.strip() for item in lst if item.strip()]
@@ -127,13 +120,11 @@ class Pairs:
                             else:
                                 sh.com.empty(f)
                 if pairs:
-                    sh.objs.mes (f,_('INFO')
-                                ,'\n'.join(pairs)
-                                )
+                    mes = '\n'.join(pairs)
+                    sh.objs.mes(f,mes).info()
                 else:
-                    sh.log.append (f,_('INFO')
-                                  ,_('No matches!')
-                                  )
+                    mes = _('No matches!')
+                    sh.objs.mes(f,mes,True).info()
             else:
                 sh.com.empty(f)
         else:
@@ -151,15 +142,11 @@ class Pairs:
         message += _('Languages: total: %d; alive: %d; dead: %d') \
                    % (len(self._langs),len(self._alive),len(dead))
         message += '\n'
-        sh.log.append (f,_('INFO')
-                      ,message
-                      )
+        sh.objs.mes(f,message,True).info()
         message = _('Alive languages:') + '\n' + ', '.join(self._alive)
         message += '\n\n'
         message += _('The entire dictionary:') + '\n' + str(self._dic)
-        sh.objs.mes (f,_('INFO')
-                    ,message
-                    )
+        sh.objs.mes(f,message).info()
     
     def isdead(self,code1):
         f = '[MClient] plugins.multitrancom.utils.Pairs.isdead'
@@ -168,16 +155,15 @@ class Pairs:
         if 0 < code1 <= len(self._langs):
             code = ''
             while not code:
-                code = sh.Get (url     = url
-                              ,timeout = 20
-                              ).run()
+                code = sh.lg.Get (url     = url
+                                 ,timeout = 20
+                                 ).run()
             if self._zero in code.replace('\n','').replace('\r',''):
                 return True
         else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('The condition "%s" is not observed!') \
-                        % ('0 < %d <= %d' % (code,len(self._alive)))
-                        )
+            sub = '0 < {} <= {}'.format(code,len(self._alive))
+            mes = _('The condition "{}" is not observed!').format(sub)
+            sh.objs.mes(f,mes).error()
     
     def fill(self):
         for i in range(len(self._langs)):
@@ -202,16 +188,13 @@ class Pairs:
                     ''' This error can be caused by network issues, so
                         we make it silent.
                     '''
-                    #sh.objs.mes
-                    sh.log.append (f,_('WARNING')
-                                  ,_('Language "%s" is alive but has no pairs!')\
-                                  % lang1
-                                  )
+                    mes = _('Language "{}" is alive but has no pairs!')
+                    mes = mes.format(lang1)
+                    sh.objs.mes(f,mes,True).warning()
             else:
                 # We should pass only alive languages to this procedure
-                sh.objs.mes (f,_('WARNING')
-                            ,_('Language "%s" is dead!') % lang1
-                            )
+                mes = _('Language "{}" is dead!').format(lang1)
+                sh.objs.mes(f,mes).warning()
         else:
             sh.com.empty(f)
     
@@ -221,9 +204,7 @@ class Pairs:
         i = 0
         while i < len(self._alive):
             lang = self._alive[i]
-            sh.log.append (f,_('INFO')
-                          ,lang
-                          )
+            sh.objs.mes(f,lang,True).info()
             self.get_pairs(lang)
             self.write(lang)
             i += 1
@@ -235,19 +216,19 @@ class Pairs:
         if self._errors:
             message += '\n\n' + _('URLs that caused errors:') + '\n'
             message += '\n'.join(self._errors)
-        sh.WriteTextFile (file    = self._filew
-                         ,Rewrite = True
-                         ).write(message)
+        sh.lg.WriteTextFile (file    = self._filew
+                            ,Rewrite = True
+                            ).write(message)
     
     def run(self):
         f = '[MClient] plugins.multitrancom.utils.Pairs.run'
-        timer = sh.Timer(f)
+        timer = sh.lg.Timer(f)
         timer.start()
         self.fill()
         self.loop()
         timer.end()
         self.write()
-        sh.Launch(self._filew).default()
+        sh.lg.Launch(self._filew).default()
     
     def ispair(self,code1,code2):
         f = '[MClient] plugins.multitrancom.utils.Pairs.ispair'
@@ -255,19 +236,17 @@ class Pairs:
         if 0 < code1 <= len(self._langs) \
         and 0 < code2 <= len(self._langs):
             if code1 == code2:
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
+                sh.com.lazy(f)
             else:
                 url  = self._root.format(code1,code2)
                 '''
                 code = ''
                 while not code:
-                    code = sh.Get(url=url).run()
+                    code = sh.lg.Get(url=url).run()
                 '''
-                code = sh.Get (url     = url
-                              ,timeout = 20
-                              ).run()
+                code = sh.lg.Get (url     = url
+                                 ,timeout = 20
+                                 ).run()
                 if 'Тематика' in code:
                     return True
                 elif not code:
@@ -276,14 +255,13 @@ class Pairs:
                     '''
                     self._errors.append(url)
         else:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('The condition "%s" is not observed!') \
-                        % ('0 < %d <= %d, 0 < %d <= %d' \
-                          % (code1,len(self._langs),code2
-                            ,len(self._langs)
-                            )
-                          )
-                        )
+            sub = '0 < {} <= {}, 0 < {} <= {}'.format (code1
+                                                      ,len(self._langs)
+                                                      ,code2
+                                                      ,len(self._langs)
+                                                      )
+            mes = _('The condition "{}" is not observed!').format(sub)
+            sh.objs.mes(f,mes).error()
     
     def values(self):
         self.Success = True
@@ -325,9 +303,9 @@ class Topics:
     def get_html(self):
         f = '[MClient] plugins.multitrancom.utils.Topics.get_html'
         if self.Success:
-            self._html = sh.Get (url      = self._url
-                                ,encoding = 'utf-8'
-                                ).run()
+            self._html = sh.lg.Get (url      = self._url
+                                   ,encoding = 'utf-8'
+                                   ).run()
             if self._html:
                 self._html = self._html.replace('&amp;','&')
             else:
@@ -360,12 +338,12 @@ class Topics:
                     else:
                         #todo: Should we toggle 'self.Success' here?
                         #self.Success = False
-                        sh.objs.mes (f,_('WARNING')
-                                    ,_('The condition "%s" is not observed!') \
-                                    % '%d == %d' % (len(abbr._titles)
-                                                   ,len(abbr._abbrs)
-                                                   )
-                                    )
+                        sub = '{} == {}'.format (len(abbr._titles)
+                                                ,len(abbr._abbrs)
+                                                )
+                        mes = _('The condition "{}" is not observed!')
+                        mes = mes.format(sub)
+                        sh.objs.mes(f,mes).warning()
             else:
                 sh.com.cancel(f)
         else:
@@ -408,9 +386,9 @@ class Abbr:
     def get(self):
         f = '[MClient] plugins.multitrancom.utils.Abbr.get'
         if self.Success:
-            self._html = sh.Get (url      = self._url
-                                ,encoding = 'utf-8'
-                                ).run()
+            self._html = sh.lg.Get (url      = self._url
+                                   ,encoding = 'utf-8'
+                                   ).run()
             if self._html:
                 self._html = self._html.replace('&amp;','&')
             else:
@@ -422,9 +400,9 @@ class Abbr:
     def get2(self):
         f = '[MClient] plugins.multitrancom.utils.Abbr.get2'
         if self.Success:
-            self._html2 = sh.Get (url      = self._url2
-                                 ,encoding = 'utf-8'
-                                 ).run()
+            self._html2 = sh.lg.Get (url      = self._url2
+                                    ,encoding = 'utf-8'
+                                    ).run()
             if self._html2:
                 self._html2 = self._html2.replace('&amp;','&')
             else:
@@ -486,12 +464,12 @@ class Abbr:
             for i in range(len(self._titles)):
                 if self._titles[i]:
                     self._titles[i] = self._titles[i].replace('<a title="','')
-                    pos = sh.Search (text   = self._titles[i]
-                                    ,search = '" href'
-                                    ).next()
-                    pos = sh.Input (title = f
-                                   ,value = pos
-                                   ).integer()
+                    pos = sh.lg.Search (text   = self._titles[i]
+                                       ,search = '" href'
+                                       ).next()
+                    pos = sh.lg.Input (title = f
+                                      ,value = pos
+                                      ).integer()
                     self._titles[i] = self._titles[i][:pos]
                     self._titles[i] = self._titles[i].strip()
                 else:
@@ -548,37 +526,34 @@ class Tags:
                     tmp.append(self._end[i])
                 self._end = tmp
             else:
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
+                sh.com.lazy(f)
         else:
             sh.com.cancel(f)
     
     def split(self):
         f = '[MClient] plugins.multitrancom.utils.Tags.split'
         if self.Success:
-            self._start = sh.Search (text   = self.text
-                                    ,search = self.search
-                                    ).next_loop()
-            self._end   = sh.Search (text   = self.text
-                                    ,search = '</a>'
-                                    ).next_loop()
+            self._start = sh.lg.Search (text   = self.text
+                                       ,search = self.search
+                                       ).next_loop()
+            self._end = sh.lg.Search (text   = self.text
+                                     ,search = '</a>'
+                                     ).next_loop()
             self.equalize()
             if len(self._start) == len(self._end):
                 for i in range(len(self._start)):
                     self._tags.append(self.text[self._start[i]:self._end[i]])
             else:
                 self.Success = False
-                sh.objs.mes (f,_('WARNING')
-                            ,_('The condition "%s" is not observed!') \
-                            % '%d == %d' % (len(self._start)
-                                           ,len(self._end)
-                                           )
-                            )
-            sh.log.append (f,_('DEBUG')
-                          ,_('%d tags have been extracted') \
-                          % len(self._tags)
-                          )
+                sub = '{} == {}'.format (len(self._start)
+                                        ,len(self._end)
+                                        )
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.mes(f,mes).warning()
+            mes = _('{} tags have been extracted')
+            mes = mes.format(len(self._tags))
+            sh.objs.mes(f,mes,True).debug()
         else:
             sh.com.cancel(f)
                           
@@ -603,16 +578,9 @@ class Tags:
                     if self._urls[i].endswith('"'):
                         self._urls[i] = self._urls[i][:-1]
                     else:
-                        #cur
-                        '''
-                        sh.objs.mes (f,_('CRITICAL')
-                                    ,'\n'.join(self._urls)
-                                    )
-                        '''
-                        sh.log.append (f,_('WARNING')
-                                      ,_('Wrong input data: "%s"!') \
-                                      % str(self._urls[i])
-                                      )
+                        mes = _('Wrong input data: "{}"!')
+                        mes = mes.format(self._urls[i])
+                        sh.objs.mes(f,mes,True).warning()
                 else:
                     sh.com.empty(f)
         else:
@@ -631,27 +599,24 @@ class Tags:
         if self.Success:
             if self._tags:
                 for tag in self._tags:
-                    pos = sh.Search (text   = tag
-                                    ,search = '>'
-                                    ).next()
-                    pos = sh.Input (title = 'Tags.links'
-                                   ,value = pos
-                                   ).integer()
+                    pos = sh.lg.Search (text   = tag
+                                       ,search = '>'
+                                       ).next()
+                    pos = sh.lg.Input (title = 'Tags.links'
+                                      ,value = pos
+                                      ).integer()
                     self._urls.append(tag[:pos])
                     self._titles.append(tag[pos+1:])
             else:
                 sh.com.empty(f)
-            #cur
             self._urls = [url.replace(' ','%20') for url in self._urls]
             self._urls = [url.replace('href="/m.exe?','https://www.multitran.com/m.exe?') for url in self._urls]
-            sh.log.append (f,_('DEBUG')
-                          ,_('%d URLs have been extracted') \
-                          % len(self._urls)
-                          )
-            sh.log.append (f,_('DEBUG')
-                          ,_('%d titles have been extracted') \
-                          % len(self._titles)
-                          )
+            mes = _('{} URLs have been extracted')
+            mes = mes.format(len(self._urls))
+            sh.objs.mes(f,mes,True).debug()
+            mes = _('{} titles have been extracted')
+            mes = mes.format(len(self._titles))
+            sh.objs.mes(f,mes,True).debug()
         else:
             sh.com.cancel(f)
         
@@ -660,9 +625,9 @@ class Tags:
         if self.Success:
             text = ''
             for i in range(len(self._urls)):
-                text += '%d: "%s": "%s"\n' % (i,self._urls[i]
-                                             ,self._titles[i]
-                                             )
+                text += '{}: "{}": "{}"\n'.format (i,self._urls[i]
+                                                  ,self._titles[i]
+                                                  )
             return text
         else:
             sh.com.cancel(f)
@@ -679,7 +644,7 @@ class Commands:
     
     def format_gettext(self):
         f = '[MClient] plugins.multitrancom.utils.Commands.format_gettext'
-        text = sg.Clipboard().paste()
+        text = sh.Clipboard().paste()
         if text:
             text = text.replace("('",'')
             text = text.replace("')",'')
@@ -689,7 +654,7 @@ class Commands:
                     if item.strip()
                    ]
             text = '(' + ','.join(lst) + ')'
-            sg.Clipboard().copy(text)
+            sh.Clipboard().copy(text)
             input(_('Press any key to continue.'))
         else:
             sh.com.empty(f)
@@ -697,7 +662,7 @@ class Commands:
     # Transform new-line-delimited text into a list of languages
     def format_pairs(self):
         f = '[MClient] plugins.multitrancom.utils.Commands.format_pairs'
-        text = sg.Clipboard().paste()
+        text = sh.Clipboard().paste()
         if text:
             text= text.replace(r"'",r"\'")
             lst = text.splitlines()
@@ -705,7 +670,7 @@ class Commands:
                     if item.strip()
                    ]
             text = '(' + ','.join(lst) + ')'
-            sg.Clipboard().copy(text)
+            sh.Clipboard().copy(text)
             input(_('Press any key to continue.'))
         else:
             sh.com.empty(f)
@@ -715,9 +680,9 @@ class Commands:
         f = '[MClient] plugins.multitrancom.utils.Commands.new_abbrs'
         file1 = '/tmp/abbr.txt'
         file2 = '/tmp/abbr2.txt'
-        dic1  = sh.Dic(file=file1)
+        dic1  = sh.lg.Dic(file=file1)
         dic1.get()
-        dic2  = sh.Dic(file=file2)
+        dic2  = sh.lg.Dic(file=file2)
         dic2.get()
         if dic1.Success and dic2.Success:
             missing = []
@@ -725,13 +690,10 @@ class Commands:
                 if dic2.orig[i] not in dic1.orig:
                     missing.append(dic2.orig[i] + '\t' + dic2.transl[i])
             if missing:
-                sh.objs.mes (f,_('INFO')
-                            ,'\n'.join(missing)
-                            )
+                mes = '\n'.join(missing)
+                sh.objs.mes(f,mes).info()
             else:
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
+                sh.com.lazy(f)
         else:
             sh.com.cancel(f)
     
@@ -740,20 +702,17 @@ class Commands:
         f = '[MClient] plugins.multitrancom.utils.Commands.compare_topics'
         file1 = '/tmp/topics'
         file2 = '/tmp/topics2'
-        text1 = sh.ReadTextFile(file=file1).get()
-        text2 = sh.ReadTextFile(file=file2).get()
+        text1 = sh.lg.ReadTextFile(file=file1).get()
+        text2 = sh.lg.ReadTextFile(file=file2).get()
         if text1 and text2:
             text1 = text1.splitlines()
             text2 = text2.splitlines()
             missing = [item for item in text2 if item not in text1]
             if missing:
-                sh.objs.mes (f,_('INFO')
-                            ,'\n'.join(missing)
-                            )
+                mes = '\n'.join(missing)
+                sh.objs.mes(f,mes).info()
             else:
-                sh.log.append (f,_('INFO')
-                              ,_('Nothing to do!')
-                              )
+                sh.com.lazy(f)
         else:
             sh.com.empty(f)
     
@@ -793,13 +752,13 @@ class Commands:
             text = ''
             for i in range(len(topics._abbrs)):
                 text += topics._abbrs[i] + '\t' + topics._titles[i] + '\n'
-            sh.WriteTextFile (file    = file_w
-                             ,Rewrite = True
-                             ).write(text)
-            sg.objs.txt().reset_data()
-            sg.objs._txt.title(_('Abbreviations:'))
-            sg.objs._txt.insert(text)
-            sg.objs._txt.show()
+            sh.lg.WriteTextFile (file    = file_w
+                                ,Rewrite = True
+                                ).write(text)
+            sh.objs.txt().reset()
+            sh.objs._txt.title(_('Abbreviations:'))
+            sh.objs._txt.insert(text)
+            sh.objs._txt.show()
         else:
             sh.com.empty(f)
                           
@@ -814,10 +773,10 @@ class Commands:
             abbreviations, 'dic.transl' - full titles.
         '''
         file2 = '/tmp/abbr.txt'
-        topics = sh.ReadTextFile(file=file1).get()
-        dic  = sh.Dic (file     = file2
-                      ,Sortable = True
-                      )
+        topics = sh.lg.ReadTextFile(file=file1).get()
+        dic  = sh.lg.Dic (file     = file2
+                         ,Sortable = True
+                         )
         if topics and dic.orig and dic.transl:
             i = 0
             count = 0
@@ -832,9 +791,8 @@ class Commands:
                     count += 1
                     i -= 1
                 i += 1
-            sh.log.append (f,_('INFO')
-                          ,_('%d duplicates have been deleted') % count
-                          )
+            mes = _('{} duplicates have been deleted').format(count)
+            sh.objs.mes(f,mes,True).info()
             dic.orig, dic.transl = (list(x) for x \
             in zip (*sorted (zip (dic.orig, dic.transl)
                             ,key = lambda x:x[0].lower()
@@ -844,9 +802,7 @@ class Commands:
             message = ''
             for i in range(len(dic.orig)):
                 message += dic.orig[i] + '\t' + dic.transl[i] + '\n'
-            sh.objs.mes (f,_('INFO')
-                        ,message
-                        )
+            sh.objs.mes(f,message).info()
             topics  = topics.splitlines()
             missing = []
             for i in range(len(topics)):
@@ -857,9 +813,7 @@ class Commands:
                 message = _('The following dictionary titles do not have abbreviations:')
                 message += '\n'
                 message += '\n'.join(missing)
-                sh.objs.mes (f,_('WARNING')
-                            ,message
-                            )
+                sh.objs.mes(f,message).warning()
         else:
             sh.com.empty(f)
 
@@ -868,7 +822,6 @@ com = Commands()
 
 
 if __name__ == '__main__':
-    sg.objs.start()
+    sh.com.start()
     
-    sg.objs.end()
-                
+    sh.com.end()

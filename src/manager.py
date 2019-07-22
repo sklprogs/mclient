@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -168,12 +167,9 @@ class Plugins:
             elif source in (_('Multitran'),'multitran.com'):
                 self.plugin = self.mcplugin
             else:
-                sh.objs.mes (f,_('ERROR')
-                            ,_('An unknown mode "%s"!\n\nThe following modes are supported: "%s".')\
-                            % (str(self._source)
-                              ,';'.join(self.sources())
-                              )
-                            )
+                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+                mes = mes(self._source,self.sources())
+                sh.objs.mes(f,mes).error()
         else:
             sh.com.empty(f)
     

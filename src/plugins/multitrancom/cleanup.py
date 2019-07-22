@@ -4,11 +4,9 @@
 import re
 import html
 import urllib.parse
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
 
 import gettext, gettext_windows
-
 gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
@@ -30,9 +28,9 @@ class CleanUp:
         '''
         f = '[MClient] plugins.multitrancom.CleanUp.fix_href'
         if self._text:
-            isearch = sh.Search (text   = self._text
-                                ,search = 'href="'
-                                )
+            isearch = sh.lg.Search (text   = self._text
+                                   ,search = 'href="'
+                                   )
             poses = isearch.next_loop()
             poses = poses[::-1]
             for pos in poses:
@@ -51,9 +49,8 @@ class CleanUp:
                     self._text = self._text[0:pos] + fragm \
                                      + self._text[pos1:]
                 else:
-                    sh.log.append (f,_('WARNING')
-                                  ,_('Malformed HTML code!')
-                                  )
+                    mes = _('Malformed HTML code!')
+                    sh.objs.mes(f,mes).warning()
         else:
             sh.com.empty(f)
     
@@ -81,9 +78,9 @@ class CleanUp:
             those words only.
         '''
         if sep_words_found in self._text:
-            pos = sh.Search (text   = self._text
-                            ,search = sep_words_found
-                            ).next()
+            pos = sh.lg.Search (text   = self._text
+                               ,search = sep_words_found
+                               ).next()
             # -1 gives False
             if str(pos).isdigit():
                 pos += len(sep_words_found)
@@ -129,10 +126,8 @@ class CleanUp:
         f = '[MClient] plugins.multitrancom.CleanUp.decode_entities'
         try:
             self._text = html.unescape(self._text)
-        except:
-            sh.objs.mes (f,_('ERROR')
-                        ,_('Unable to convert HTML entities to UTF-8!')
-                        )
+        except Exception as e:
+            sh.com.failed(f,e)
     
     def unsupported(self):
         ''' Remove characters from a range not supported by Tcl 

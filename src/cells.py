@@ -2,8 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import io
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -141,9 +140,8 @@ class BlockPrioritize:
     def debug(self):
         f = '[MClient] cells.BlockPrioritize.debug'
         if self.Debug:
-            sh.log.append (f,_('INFO')
-                          ,_('Debug table:')
-                          )
+            mes = _('Debug table:')
+            sh.objs.mes(f,mes,True).info()
             headers = ['NO'
                       ,'DICA'
                       ,'TYPE'
@@ -161,12 +159,12 @@ class BlockPrioritize:
                              ,block._priority        
                              ]
                             )
-            sh.Table (headers = headers
-                     ,rows    = rows
-                     ,Shorten = self.Shorten
-                     ,MaxRow  = self.MaxRow
-                     ,MaxRows = self.MaxRows
-                     ).print()
+            sh.lg.Table (headers = headers
+                        ,rows    = rows
+                        ,Shorten = self.Shorten
+                        ,MaxRow  = self.MaxRow
+                        ,MaxRows = self.MaxRows
+                        ).print()
 
 
 
@@ -285,9 +283,8 @@ class Cells:
     def debug(self):
         f = '[MClient] cells.Cells.debug'
         if self.Debug:
-            sh.log.append (f,_('INFO')
-                          ,_('Debug table:')
-                          )
+            mes = _('Debug table:')
+            sh.objs.mes(f,mes,True).info()
             headers = ['NO'
                       ,'TYPE'
                       ,'TEXT'
@@ -307,12 +304,12 @@ class Cells:
                              ,block._same
                              ]
                             )
-            sh.Table (headers = headers
-                     ,rows    = rows
-                     ,Shorten = self.Shorten
-                     ,MaxRow  = self.MaxRow
-                     ,MaxRows = self.MaxRows
-                     ).print()
+            sh.lg.Table (headers = headers
+                        ,rows    = rows
+                        ,Shorten = self.Shorten
+                        ,MaxRow  = self.MaxRow
+                        ,MaxRows = self.MaxRows
+                        ).print()
     
     def wrap(self):
         if self.Reverse:
@@ -543,9 +540,8 @@ class Pos:
     def debug(self):
         f = '[MClient] cells.Pos.debug'
         if self.Debug:
-            sh.log.append (f,_('INFO')
-                          ,_('Debug table:')
-                          )
+            mes = _('Debug table:')
+            sh.objs.mes(f,mes,True).info()
             headers = ['NO'
                       ,'TYPE'
                       ,'TEXT'
@@ -561,12 +557,12 @@ class Pos:
                              ,block._last
                              ]
                             )
-            sh.Table (headers = headers
-                     ,rows    = rows
-                     ,Shorten = self.Shorten
-                     ,MaxRow  = self.MaxRow
-                     ,MaxRows = self.MaxRows
-                     ).print()
+            sh.lg.Table (headers = headers
+                        ,rows    = rows
+                        ,Shorten = self.Shorten
+                        ,MaxRow  = self.MaxRow
+                        ,MaxRows = self.MaxRows
+                        ).print()
     
     def gen_poses(self):
         ''' We generate positions here according to the text produced by 
@@ -589,15 +585,15 @@ class Pos:
         last      = 0
         not_found = []
         for block in self._blocks:
-            text = sh.Text(text=block._text.strip()).delete_duplicate_spaces()
+            text = sh.lg.Text(text=block._text.strip()).delete_duplicate_spaces()
             if text:
-                search = sh.Search (text   = self._raw_text
-                                   ,search = text
-                                   )
+                search = sh.lg.Search (text   = self._raw_text
+                                      ,search = text
+                                      )
                 search.i = last
-                result = sh.Input (title = f
-                                  ,value = search.next()
-                                  ).integer()
+                result = sh.lg.Input (title = f
+                                     ,value = search.next()
+                                     ).integer()
                 if result >= last:
                     block._first = result
                 else:
@@ -610,9 +606,8 @@ class Pos:
         if not_found:
             not_found = ['"' + item + '"' for item in not_found]
             not_found = '\n' + '\n'.join(not_found)
-            sh.objs.mes (f,_('ERROR')
-                        ,_('Unable to find: %s') % not_found
-                        )
+            mes = _('Unable to find: {}').format(not_found)
+            sh.objs.mes(f,mes).error()
             
     def dump(self):
         tmp = io.StringIO()
@@ -694,9 +689,8 @@ class Pages:
     def debug(self):
         f = '[MClient] cells.Pages.debug'
         if self.Debug:
-            sh.objs.mes (f,_('INFO')
-                        ,self._query.replace(';',';\n')
-                        )
+            mes = self._query.replace(';',';\n')
+            sh.objs.mes(f,mes).debug()
     
     def run(self):
         f = '[MClient] cells.Pages.run'

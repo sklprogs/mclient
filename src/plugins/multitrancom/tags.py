@@ -2,8 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import re
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -328,26 +327,21 @@ class Tags:
         f = '[MClient] plugins.multitrancom.tags.Tags.debug_tags'
         message = ''
         for i in range(len(self._tags)):
-            message += '%d:%s\n' % (i,self._tags[i])
-        '''
-        sh.objs.mes (f,_('INFO')
-                    ,message
-                    )
-        '''
-        words = sh.Words (text = message
-                         ,Auto = 1
-                         )
+            message += '{}:{}\n'.format(i,self._tags[i])
+        #sh.objs.mes(f,message,True).debug()
+        words = sh.lg.Words (text = message
+                            ,Auto = 1
+                            )
         words.sent_nos()
-        sg.objs.txt(words=words).reset_data()
-        sg.objs._txt.title(f)
-        sg.objs._txt.insert(text=message)
-        sg.objs._txt.show()
+        sh.objs.txt().reset(words=words).reset_data()
+        sh.objs._txt.title(f)
+        sh.objs._txt.insert(text=message)
+        sh.objs._txt.show()
 
     def debug_blocks(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.debug_blocks'
-        sh.log.append (f,_('INFO')
-                      ,_('Debug table:')
-                      )
+        mes = _('Debug table:')
+        sh.objs.mes(f,mes,True).info()
         headers = ['TYPE'
                   ,'TEXT'
                   ,'URL'
@@ -361,12 +355,12 @@ class Tags:
                          ,block._same
                          ]
                         )
-        sh.Table (headers = headers
-                 ,rows    = rows
-                 ,Shorten = self.Shorten
-                 ,MaxRow  = self.MaxRow
-                 ,MaxRows = self.MaxRows
-                 ).print()
+        sh.lg.Table (headers = headers
+                    ,rows    = rows
+                    ,Shorten = self.Shorten
+                    ,MaxRow  = self.MaxRow
+                    ,MaxRows = self.MaxRows
+                    ).print()
 
     def debug(self):
         if self.Debug:

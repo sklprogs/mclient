@@ -6,8 +6,7 @@ import io
 import urllib.request
 import html
 import ssl
-import shared    as sh
-import sharedGUI as sg
+import skl_shared.shared as sh
 import manager
 
 import gettext, gettext_windows
@@ -67,9 +66,8 @@ class PhraseTerma:
             result = self.dbc.fetchone()
             if result:
                 self._no2 = result[0]
-            sh.log.append (f,_('DEBUG')
-                          ,str(self._no2)
-                          )
+            mes = str(self._no2)
+            sh.objs.mes(f,mes,True).debug()
         return self._no2
         
     def phrase_dic(self):
@@ -88,29 +86,25 @@ class PhraseTerma:
                                        where NO = ?',(self._no1,)
                                      )
             else:
-                sh.log.append (f,_('WARNING')
-                              ,_('Wrong input data!')
-                              )
-            sh.log.append (f,_('DEBUG')
-                          ,str(self._no1)
-                          )
+                mes = _('Wrong input data!')
+                sh.objs.mes(f,mes,True).warning()
+            mes = str(self._no1)
+            sh.objs.mes(f,mes,True).debug()
         return self._no1
         
     def dump(self):
         f = '[MClient] logic.PhraseTerma.dump'
         # Autoincrement starts with 1 in sqlite
         if self._no1 > 0 and self._no2 > 0:
-            sh.log.append (f,_('INFO')
-                          ,_('Update DB, range %d-%d') \
-                          % (self._no1,self._no2)
-                          )
+            mes = _('Update DB, range {}-{}')
+            mes = mes.format(self._no1,self._no2)
+            sh.objs.mes(f,mes,True).info()
             self.dbc.execute ('update BLOCKS set TERMA=? where NO >= ? \
                                and NO < ?',('',self._no1,self._no2,)
                              )
         else:
-            sh.log.append (f,_('WARNING')
-                          ,_('Wrong input data!')
-                          )
+            mes = _('Wrong input data!')
+            sh.objs.mes(f,mes,True).warning()
         
     def run(self):
         f = '[MClient] logic.PhraseTerma.run'
@@ -138,12 +132,12 @@ class Welcome:
                  ,version='current'
                  ):
         self.values()
-        self._product   = product
-        self._version   = version
-        self._desc      = sh.List (lst1 = [self._product
-                                          ,self._version
-                                          ]
-                                  ).space_items()
+        self._product = product
+        self._version = version
+        self._desc    = sh.lg.List (lst1 = [self._product
+                                           ,self._version
+                                           ]
+                                   ).space_items()
 
     def values(self):
         self._sources   = []
@@ -190,7 +184,7 @@ class Welcome:
     
     def gen_hotkey(self,hotkey):
         self.istr.write('<td align="center" valign="top" col width="100">')
-        self.istr.write(sh.Hotkeys(hotkey).run())
+        self.istr.write(sh.lg.Hotkeys(hotkey).run())
         self.istr.write('</td>')
     
     def gen_row(self,hint1,hotkey1,hint2,hotkey2):
@@ -209,8 +203,8 @@ class Welcome:
         hotkey1  = ('<Button-1>','<Return>')
         hint2    = _('Copy the current selection')
         hotkey2  = ('<Button-3>'
-                   ,sh.globs['var']['bind_copy_sel']
-                   ,sh.globs['var']['bind_copy_sel_alt']
+                   ,sh.lg.globs['var']['bind_copy_sel']
+                   ,sh.lg.globs['var']['bind_copy_sel_alt']
                    )
         hint34   = _('Show the program window (system-wide)')
         hotkey34 = '<Alt_L-grave>'
@@ -222,98 +216,98 @@ class Welcome:
         hotkey36 = '<Escape>'
         hint37   = _('Quit the program')
         hotkey37 = ('<Control-q>'
-                   ,sh.globs['var']['bind_quit']
+                   ,sh.lg.globs['var']['bind_quit']
                    )
         hint3    = _('Copy the URL of the selected term')
-        hotkey3  = sh.globs['var']['bind_copy_url']
+        hotkey3  = sh.lg.globs['var']['bind_copy_url']
         hint4    = _('Copy the URL of the current article')
-        hotkey4  = sh.globs['var']['bind_copy_article_url']
+        hotkey4  = sh.lg.globs['var']['bind_copy_article_url']
         hint5    = _('Go to the previous section of column #%d') % 1
-        hotkey5  = sh.globs['var']['bind_col1_up']
+        hotkey5  = sh.lg.globs['var']['bind_col1_up']
         hint6    = _('Go to the next section of column #%d') % 1
-        hotkey6  = sh.globs['var']['bind_col1_down']
+        hotkey6  = sh.lg.globs['var']['bind_col1_down']
         hint7    = _('Go to the previous section of column #%d') % 2
-        hotkey7  = sh.globs['var']['bind_col2_up']
+        hotkey7  = sh.lg.globs['var']['bind_col2_up']
         hint8    = _('Go to the next section of column #%d') % 2
-        hotkey8  = sh.globs['var']['bind_col2_down']
+        hotkey8  = sh.lg.globs['var']['bind_col2_down']
         hint9    = _('Go to the previous section of column #%d') % 3
-        hotkey9  = sh.globs['var']['bind_col3_up']
+        hotkey9  = sh.lg.globs['var']['bind_col3_up']
         hint10   = _('Go to the next section of column #%d') % 3
-        hotkey10 = sh.globs['var']['bind_col3_down']
+        hotkey10 = sh.lg.globs['var']['bind_col3_down']
         hint11   = _('Open a webpage with a definition of the current term')
-        hotkey11 = sh.globs['var']['bind_define']
+        hotkey11 = sh.lg.globs['var']['bind_define']
         hint12   = _('Look up phrases')
-        hotkey12 = sh.globs['var']['bind_go_phrases']
+        hotkey12 = sh.lg.globs['var']['bind_go_phrases']
         hint13   = _('Go to the preceding article')
-        hotkey13 = sh.globs['var']['bind_go_back']
+        hotkey13 = sh.lg.globs['var']['bind_go_back']
         hint14   = _('Go to the following article')
-        hotkey14 = sh.globs['var']['bind_go_forward']
+        hotkey14 = sh.lg.globs['var']['bind_go_forward']
         hint15   = _('Next source language')
-        hotkey15 = (sh.globs['var']['bind_next_lang1']
-                   ,sh.globs['var']['bind_next_lang1_alt']
+        hotkey15 = (sh.lg.globs['var']['bind_next_lang1']
+                   ,sh.lg.globs['var']['bind_next_lang1_alt']
                    )
         hint16   = _('Previous source language')
-        hotkey16 = (sh.globs['var']['bind_prev_lang1']
-                   ,sh.globs['var']['bind_prev_lang1_alt']
+        hotkey16 = (sh.lg.globs['var']['bind_prev_lang1']
+                   ,sh.lg.globs['var']['bind_prev_lang1_alt']
                    )
         hint17   = _('Create a printer-friendly page')
-        hotkey17 = sh.globs['var']['bind_print']
+        hotkey17 = sh.lg.globs['var']['bind_print']
         hint18   = _('Open the current article in a default browser')
-        hotkey18 = (sh.globs['var']['bind_open_in_browser']
-                   ,sh.globs['var']['bind_open_in_browser_alt']
+        hotkey18 = (sh.lg.globs['var']['bind_open_in_browser']
+                   ,sh.lg.globs['var']['bind_open_in_browser_alt']
                    )
         hint19   = _('Reload the current article')
-        hotkey19 = (sh.globs['var']['bind_reload_article']
-                   ,sh.globs['var']['bind_reload_article_alt']
+        hotkey19 = (sh.lg.globs['var']['bind_reload_article']
+                   ,sh.lg.globs['var']['bind_reload_article_alt']
                    )
         hint20   = _('Save or copy the current article')
-        hotkey20 = (sh.globs['var']['bind_save_article']
-                   ,sh.globs['var']['bind_save_article_alt']
+        hotkey20 = (sh.lg.globs['var']['bind_save_article']
+                   ,sh.lg.globs['var']['bind_save_article_alt']
                    )
         hint21   = _('Start a new search in the current article')
-        hotkey21 = sh.globs['var']['bind_re_search_article']
+        hotkey21 = sh.lg.globs['var']['bind_re_search_article']
         hint22   = _('Search the article forward')
-        hotkey22 = sh.globs['var']['bind_search_article_forward']
+        hotkey22 = sh.lg.globs['var']['bind_search_article_forward']
         hint23   = _('Search the article backward')
-        hotkey23 = sh.globs['var']['bind_search_article_backward']
+        hotkey23 = sh.lg.globs['var']['bind_search_article_backward']
         hint24   = _('Show settings')
-        hotkey24 = (sh.globs['var']['bind_settings']
-                   ,sh.globs['var']['bind_settings_alt']
+        hotkey24 = (sh.lg.globs['var']['bind_settings']
+                   ,sh.lg.globs['var']['bind_settings_alt']
                    )
         hint25   = _('About the program')
-        hotkey25 = sh.globs['var']['bind_show_about']
+        hotkey25 = sh.lg.globs['var']['bind_show_about']
         hint26   = _('Paste a special symbol')
-        hotkey26 = sh.globs['var']['bind_spec_symbol']
+        hotkey26 = sh.lg.globs['var']['bind_spec_symbol']
         hint27   = _('Toggle alphabetizing')
-        hotkey27 = sh.globs['var']['bind_toggle_alphabet']
+        hotkey27 = sh.lg.globs['var']['bind_toggle_alphabet']
         hint28   = _('Toggle blacklisting')
-        hotkey28 = sh.globs['var']['bind_toggle_block']
+        hotkey28 = sh.lg.globs['var']['bind_toggle_block']
         hint29   = _('Toggle History')
-        hotkey29 = (sh.globs['var']['bind_toggle_history']
-                   ,sh.globs['var']['bind_toggle_history_alt']
+        hotkey29 = (sh.lg.globs['var']['bind_toggle_history']
+                   ,sh.lg.globs['var']['bind_toggle_history_alt']
                    )
         hint30   = _('Toggle prioritizing')
-        hotkey30 = sh.globs['var']['bind_toggle_priority']
+        hotkey30 = sh.lg.globs['var']['bind_toggle_priority']
         '''
         hint31   = _('Toggle terms-only selection')
-        hotkey31 = sh.globs['var']['bind_toggle_sel']
+        hotkey31 = sh.lg.globs['var']['bind_toggle_sel']
         '''
         hint32   = _('Toggle the current article view')
-        hotkey32 = (sh.globs['var']['bind_toggle_view']
-                   ,sh.globs['var']['bind_toggle_view_alt']
+        hotkey32 = (sh.lg.globs['var']['bind_toggle_view']
+                   ,sh.lg.globs['var']['bind_toggle_view_alt']
                    )
         hint33   = _('Clear History')
-        hotkey33 = sh.globs['var']['bind_clear_history']
+        hotkey33 = sh.lg.globs['var']['bind_clear_history']
         hint38   = _('Next target language')
-        hotkey38 = (sh.globs['var']['bind_next_lang2']
-                   ,sh.globs['var']['bind_next_lang2_alt']
+        hotkey38 = (sh.lg.globs['var']['bind_next_lang2']
+                   ,sh.lg.globs['var']['bind_next_lang2_alt']
                    )
         hint39   = _('Previous target language')
-        hotkey39 = (sh.globs['var']['bind_prev_lang2']
-                   ,sh.globs['var']['bind_prev_lang2_alt']
+        hotkey39 = (sh.lg.globs['var']['bind_prev_lang2']
+                   ,sh.lg.globs['var']['bind_prev_lang2_alt']
                    )
         hint40   = _('Swap source and target languages')
-        hotkey40 = sh.globs['var']['bind_swap_langs']
+        hotkey40 = sh.lg.globs['var']['bind_swap_langs']
         
         self.gen_row(hint1,hotkey1,hint2,hotkey2)
         self.gen_row(hint34,hotkey34,hint35,hotkey35)
@@ -393,7 +387,7 @@ class DefaultConfig:
     
     def __init__(self,product='mclient'):
         self.values()
-        self.ihome   = sh.Home(app_name=product.lower())
+        self.ihome   = sh.lg.Home(app_name=product.lower())
         self.Success = self.ihome.create_conf()
     
     def values(self):
@@ -411,9 +405,9 @@ class DefaultConfig:
                 self._dics = self.ihome.add_config('dics')
                 if self._dics:
                     if os.path.exists(self._dics):
-                        self.Success = sh.Directory(path=self._dics).Success
+                        self.Success = sh.lg.Directory(path=self._dics).Success
                     else:
-                        self.Success = sh.Path(path=self._dics).create()
+                        self.Success = sh.lg.Path(path=self._dics).create()
                 else:
                     self.Success = False
                     sh.com.empty(f)
@@ -427,11 +421,11 @@ class DefaultConfig:
             self._fblock = self.ihome.add_config('block.txt')
             if self._fblock:
                 if os.path.exists(self._fblock):
-                    self.Success = sh.File(file=self._fblock).Success
+                    self.Success = sh.lg.File(file=self._fblock).Success
                 else:
-                    iwrite = sh.WriteTextFile (file    = self._fblock
-                                              ,Rewrite = True
-                                              )
+                    iwrite = sh.lg.WriteTextFile (file    = self._fblock
+                                                 ,Rewrite = True
+                                                 )
                     iwrite.write(sample_block)
                     self.Success = iwrite.Success
             else:
@@ -447,11 +441,11 @@ class DefaultConfig:
                 self._fprior = self.ihome.add_config('prioritize.txt')
                 if self._fprior:
                     if os.path.exists(self._fprior):
-                        self.Success = sh.File(file=self._fprior).Success
+                        self.Success = sh.lg.File(file=self._fprior).Success
                     else:
-                        iwrite = sh.WriteTextFile (file    = self._fprior
-                                                  ,Rewrite = True
-                                                  )
+                        iwrite = sh.lg.WriteTextFile (file    = self._fprior
+                                                     ,Rewrite = True
+                                                     )
                         iwrite.write(sample_prior)
                         self.Success = iwrite.Success
                 else:
@@ -465,10 +459,10 @@ class DefaultConfig:
         f = '[MClient] logic.DefaultConfig.abbr'
         if self.Success:
             if not self._fabbr:
-                self._fabbr  = sh.objs.pdir().add ('..','resources'
-                                                  ,'abbr.txt'
-                                                  )
-                self.Success = sh.File(file=self._fabbr).Success
+                self._fabbr  = sh.lg.objs.pdir().add ('..','resources'
+                                                     ,'abbr.txt'
+                                                     )
+                self.Success = sh.lg.File(file=self._fabbr).Success
             return self._fabbr
         else:
             sh.com.cancel(f)
@@ -477,10 +471,10 @@ class DefaultConfig:
         f = '[MClient] logic.DefaultConfig.default_config'
         if self.Success:
             if not self._fdconf:
-                self._fdconf = sh.objs.pdir().add ('..','resources'
-                                                  ,'default.cfg'
-                                                  )
-                self.Success = sh.File(file=self._fdconf).Success
+                self._fdconf = sh.lg.objs.pdir().add ('..','resources'
+                                                     ,'default.cfg'
+                                                     )
+                self.Success = sh.lg.File(file=self._fdconf).Success
             return self._fdconf
         else:
             sh.com.cancel(f)
@@ -491,13 +485,13 @@ class DefaultConfig:
             if not self._fconf:
                 self._fconf = self.ihome.add_config('mclient.cfg')
                 if os.path.exists(self._fconf):
-                    self.Success = sh.File(file=self._fconf).Success
+                    self.Success = sh.lg.File(file=self._fconf).Success
                 else:
                     self.default_config()
                     if self.Success:
-                        self.Success = sh.File (file = self._fdconf
-                                               ,dest = self._fconf
-                                               ).copy()
+                        self.Success = sh.lg.File (file = self._fdconf
+                                                  ,dest = self._fconf
+                                                  ).copy()
                     else:
                         sh.com.cancel(f)
             return self._fconf
@@ -518,21 +512,21 @@ class DefaultConfig:
 
 
 
-class ConfigMclient(sh.Config):
+class ConfigMclient(sh.lg.Config):
 
     def __init__(self):
         super().__init__()
-        self.sections         = [sh.SectionBooleans
-                                ,sh.SectionIntegers
-                                ,sh.SectionVariables
+        self.sections         = [sh.lg.SectionBooleans
+                                ,sh.lg.SectionIntegers
+                                ,sh.lg.SectionVariables
                                 ]
-        self.sections_abbr    = [sh.SectionBooleans_abbr
-                                ,sh.SectionIntegers_abbr
-                                ,sh.SectionVariables_abbr
+        self.sections_abbr    = [sh.lg.SectionBooleans_abbr
+                                ,sh.lg.SectionIntegers_abbr
+                                ,sh.lg.SectionVariables_abbr
                                 ]
-        self.sections_func    = [sh.config_parser.getboolean
-                                ,sh.config_parser.getint
-                                ,sh.config_parser.get
+        self.sections_func    = [sh.lg.config_parser.getboolean
+                                ,sh.lg.config_parser.getint
+                                ,sh.lg.config_parser.get
                                 ]
         self.message          = _('The following sections and/or keys are missing:') + '\n'
         self.total_keys       = 0
@@ -542,7 +536,7 @@ class ConfigMclient(sh.Config):
         # Create these keys before reading the config
         self.path    = objs.default().ihome.add_config('mclient.cfg')
         self.reset()
-        iread        = sh.ReadTextFile(self.path)
+        iread        = sh.lg.ReadTextFile(self.path)
         self.text    = iread.get()
         self.Success = iread.Success
         self._default()
@@ -560,15 +554,15 @@ class ConfigMclient(sh.Config):
         self._default_var()
         
     def _default_bool(self):
-        sh.globs['bool'].update ({
+        sh.lg.globs['bool'].update ({
             'AutoCloseSpecSymbol':False
            ,'Autocompletion'     :True
            ,'SelectTermsOnly'    :True
            ,'Iconify'            :True
-                                })
+                                   })
     
     def _default_int(self):
-        sh.globs['int'].update ({
+        sh.lg.globs['int'].update ({
             'col_width'         :250
            ,'font_comments_size':3
            ,'font_col1_size'    :4
@@ -577,10 +571,10 @@ class ConfigMclient(sh.Config):
            ,'font_col4_size'    :3
            ,'font_terms_size'   :4
            ,'timeout'           :5
-                               })
+                                  })
     
     def _default_var(self):
-        sh.globs['var'].update ({
+        sh.lg.globs['var'].update ({
             'bind_clear_history'          :'<Control-Shift-Delete>'
            ,'bind_clear_search_field'     :'<ButtonRelease-3>'
            ,'bind_col1_down'              :'<Control-Down>'
@@ -651,13 +645,13 @@ class ConfigMclient(sh.Config):
            ,'repeat_sign2'                :'!!'
            ,'spec_syms'                   :'àáâäāæßćĉçèéêēёëəғĝģĥìíîïīĵķļñņòóôõöōœøšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒЁËƏҒĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒØŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ'
            ,'web_search_url'              :'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s'
-                               })
+                                  })
 
     def reset(self):
-        sh.globs['bool']  = {}
-        sh.globs['float'] = {}
-        sh.globs['int']   = {}
-        sh.globs['var']   = {}
+        sh.lg.globs['bool']  = {}
+        sh.lg.globs['float'] = {}
+        sh.lg.globs['int']   = {}
+        sh.lg.globs['var']   = {}
 
 
 
@@ -720,9 +714,9 @@ class Lists:
 
     def abbr(self):
         if self.Success:
-            dic = sh.Dic (file     = self._abbr
-                         ,Sortable = True
-                         )
+            dic = sh.lg.Dic (file     = self._abbr
+                            ,Sortable = True
+                            )
             self.Success = dic.Success
             return dic
         else:
@@ -731,8 +725,8 @@ class Lists:
     def blacklist(self):
         f = '[MClient] logic.Lists.blacklist'
         if self.Success:
-            text = sh.ReadTextFile(file=self._blacklist).get()
-            text = sh.Text(text=text,Auto=1).text
+            text = sh.lg.ReadTextFile(file=self._blacklist).get()
+            text = sh.lg.Text(text=text,Auto=1).text
             return text.splitlines()
         else:
             sh.com.cancel(f)
@@ -740,8 +734,8 @@ class Lists:
     def prioritize(self):
         f = '[MClient] logic.Lists.prioritize'
         if self.Success:
-            text = sh.ReadTextFile(file=self._prioritize).get()
-            text = sh.Text(text=text,Auto=1).text
+            text = sh.lg.ReadTextFile(file=self._prioritize).get()
+            text = sh.lg.Text(text=text,Auto=1).text
             return text.splitlines()
         else:
             sh.com.cancel(f)
@@ -759,7 +753,7 @@ class Objects:
                 ):
         if self._plugins is None:
             self._plugins = manager.Plugins (sdpath  = self.default().dics()
-                                            ,timeout = sh.globs['int']['timeout']
+                                            ,timeout = sh.lg.globs['int']['timeout']
                                             ,iabbr   = self.order().dic
                                             ,Debug   = Debug
                                             ,Shorten = Shorten
@@ -830,16 +824,13 @@ class Order:
                 '''
                 if self._dic1[0] in self._prioritize \
                 and self._dic2[0] in self._prioritize:
-                    
                     if Down:
-                        message = _('Mode: "%s"') \
-                                  % _('Decrease priority')
+                        message = _('Mode: "{}"')
+                        message = message.format(_('Decrease priority'))
                     else:
-                        message = _('Mode: "%s"') \
-                                  % _('Increase priority')
-                    sh.log.append (f,_('DEBUG')
-                                  ,message
-                                  )
+                        message = _('Mode: "{}"')
+                        message = message.format(_('Increase priority'))
+                    sh.objs.mes(f,message,True).debug()
                     
                     # This allows not to delete duplicates later
                     for i in range(len(self._dic1)):
@@ -857,13 +848,12 @@ class Order:
                     else:
                         Swap = ind1 > ind2
                     if Swap:
-                        sh.log.append (f,_('DEBUG')
-                                      ,_('Swap items: %d <-> %d; "%s" <-> "%s"') \
-                                      % (ind1,ind2
-                                        ,self._prioritize[ind1]
-                                        ,self._prioritize[ind2]
-                                        )
-                                      )
+                        mes = _('Swap items: {} <-> {}; "{}" <-> "{}"')
+                        mes = mes.format (ind1,ind2
+                                         ,self._prioritize[ind1]
+                                         ,self._prioritize[ind2]
+                                         )
+                        sh.objs.mes(f,mes,True).debug()
                         self._prioritize[ind1], self._prioritize[ind2] \
                         = self._prioritize[ind2], self._prioritize[ind1]
                     
@@ -884,25 +874,21 @@ class Order:
                         self._fill_dic(dic1,ind1)
                         self._fill_dic(dic2,ind2)
                         
-                    lst = sh.List(lst1=self._prioritize).duplicates()
+                    lst = sh.lg.List(lst1=self._prioritize).duplicates()
                     if lst:
                         self._prioritize = list(lst)
                     else:
                         sh.com.empty(f)
                     
-                    sh.log.append (f,_('DEBUG')
-                                  ,'Dic1: ' + str(self._dic1)
-                                  )
-                    sh.log.append (f,_('DEBUG')
-                                  ,'Dic2: ' + str(self._dic2)
-                                  )
-                    sh.log.append (f,_('DEBUG')
-                                  ,str(self._prioritize)
-                                  )
+                    mes = 'Dic1: {}'.format(self._dic1)
+                    sh.objs.mes(f,mes,True).debug()
+                    mes = 'Dic2: {}'.format(self._dic2)
+                    sh.objs.mes(f,mes,True).debug()
+                    mes = str(self._prioritize)
+                    sh.objs.mes(f,mes,True).debug()
                 else:
-                    sh.objs.mes (f,_('ERROR')
-                                ,_('Logic error!')
-                                )
+                    mes = _('Logic error!')
+                    sh.objs.mes(f,mes).error()
             else:
                 sh.com.empty(f)
         else:
@@ -943,7 +929,7 @@ class Order:
                     self.unblock(item)
             elif self.is_prioritized(self._dic1) \
             and self.is_prioritized(self._dic2) \
-            and not sh.List(self._dic1,self._dic2).shared():
+            and not sh.lg.List(self._dic1,self._dic2).shared():
                 self.prioritize_by()
             else:
                 for item in self._dic1:
@@ -967,7 +953,7 @@ class Order:
                     self.unblock(item)
             elif self.is_prioritized(self._dic1):
                 if self.is_prioritized(self._dic2) \
-                and not sh.List(self._dic1,self._dic2).shared():
+                and not sh.lg.List(self._dic1,self._dic2).shared():
                     self.prioritize_by(Down=True)
                 else:
                     for item in self._dic1:
@@ -1055,14 +1041,14 @@ class Order:
     def _lists(self):
         f = '[MClient] logic.Order._lists'
         if self.Success:
-            self.lists       = Lists()
-            self._blacklist  = sh.Input (title = f
-                                        ,value = self.lists.blacklist()
-                                        ).list()
-            self._prioritize = sh.Input (title = f
-                                        ,value = self.lists.prioritize()
-                                        ).list()
-            self.Success     = self.lists.Success
+            self.lists = Lists()
+            self._blacklist = sh.lg.Input (title = f
+                                          ,value = self.lists.blacklist()
+                                          ).list()
+            self._prioritize = sh.lg.Input (title = f
+                                           ,value = self.lists.prioritize()
+                                           ).list()
+            self.Success = self.lists.Success
         else:
             sh.com.cancel(f)
         
@@ -1132,9 +1118,8 @@ class Order:
                 ind = self._abbrs.index(abbr)
                 return self._titles[ind]
             except ValueError:
-                sh.log.append (f,_('WARNING')
-                              ,_('Wrong input data!')
-                              )
+                mes = _('Wrong input data!')
+                sh.objs.mes(f,mes,True).warning()
         else:
             sh.com.cancel(f)
         
@@ -1145,9 +1130,8 @@ class Order:
                 ind = self._titles.index(title)
                 return self._abbrs[ind]
             except ValueError:
-                sh.log.append (f,_('WARNING')
-                              ,_('Wrong input data!')
-                              )
+                mes = _('Wrong input data!')
+                sh.objs.mes(f,mes,True).warning()
         else:
             sh.com.cancel(f)
     
@@ -1164,10 +1148,8 @@ class Order:
                     abbr  = item
                     title = self.title(abbr)
                 else:
-                    sh.log.append (f,_('WARNING')
-                                  ,_('Unknown dictionary "%s"!') \
-                                  % str(item)
-                                  )
+                    mes = _('Unknown dictionary "{}"!').format(item)
+                    sh.objs.mes(f,mes,True).warning()
                     abbr = title = str(item)
                 return([abbr,title])
             else:
@@ -1295,9 +1277,8 @@ class Commands:
         if hasattr(ssl,'_create_unverified_context'):
             ssl._create_default_https_context = ssl._create_unverified_context
         else:
-            sh.log.append (f,_('WARNING')
-                          ,_('Unable to use unverified certificates!')
-                          )
+            mes = _('Unable to use unverified certificates!')
+            sh.objs.mes(f,mes,True).warning()
 
 
 

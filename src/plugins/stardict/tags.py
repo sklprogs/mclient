@@ -3,7 +3,7 @@
 
 import re
 import copy
-import shared as sh
+import skl_shared.shared as sh
 
 import gettext, gettext_windows
 gettext_windows.setup_env()
@@ -242,23 +242,18 @@ class Tags:
 
     def debug_tags(self):
         f = '[MClient] plugins.stardict.tags.Tags.debug_tags'
-        import sharedGUI as sg
         message = ''
         for i in range(len(self._tags)):
             message += '%d:%s\n' % (i,self._tags[i])
-        '''
-        sh.objs.mes (f,_('INFO')
-                    ,message
-                    )
-        '''
-        words = sh.Words (text = message
-                         ,Auto = 1
-                         )
+        #sh.objs.mes(f,message,True).info()
+        words = sh.lg.Words (text = message
+                            ,Auto = 1
+                            )
         words.sent_nos()
-        sg.objs.txt(words=words).reset_data()
-        sg.objs._txt.title(f)
-        sg.objs._txt.insert(text=message)
-        sg.objs._txt.show()
+        sh.objs.txt().reset(words)
+        sh.objs._txt.title(f)
+        sh.objs._txt.insert(message)
+        sh.objs._txt.show()
 
     def debug_blocks (self):
         print('\nTags.debug_blocks (Non-DB blocks):')
@@ -275,12 +270,12 @@ class Tags:
                          ,block._same
                          ]
                         )
-        sh.Table (headers = headers
-                 ,rows    = rows
-                 ,Shorten = self.Shorten
-                 ,MaxRow  = self.MaxRow
-                 ,MaxRows = self.MaxRows
-                 ).print()
+        sh.lg.Table (headers = headers
+                    ,rows    = rows
+                    ,Shorten = self.Shorten
+                    ,MaxRow  = self.MaxRow
+                    ,MaxRows = self.MaxRows
+                    ).print()
 
     def debug(self):
         if self.Debug:
