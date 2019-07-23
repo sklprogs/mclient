@@ -301,7 +301,7 @@ class SearchArticle:
     def search(self):
         if not self._search:
             self.show()
-            self._search = self.gui.widget.get().strip(' ').strip('\n').lower()
+            self._search = self.gui.parent.get().strip(' ').strip('\n').lower()
         return self._search
 
     def forward(self,event=None):
@@ -709,9 +709,6 @@ class WebFrame:
         self._phdic = ''
 
     def widgets(self):
-        ''' #cur #todo: try removing '.close' or replacing '.gui.close'
-            with '.close'.
-        '''
         self.about          = About()
         self.settings       = Settings()
         self.search_article = SearchArticle()
@@ -721,6 +718,16 @@ class WebFrame:
         self.save_article   = SaveArticle()
         self.history        = History()
         self.suggest        = Suggest(entry=self.gui.ent_src)
+        
+        self.about.parties.gui.parent.center()
+        self.about.gui.parent.center()
+        self.settings.gui.parent.center()
+        self.search_article.gui.parent.parent.center()
+        self.spec_symbols.parent.center()
+        self.save_article.gui.parent.parent.center()
+        self.history.gui.parent.parent.center()
+        
+        #cur
         # Close child widgets in order not to overlap the parent widget
         self.about.parties.gui.close()
         self.about.gui.close()
@@ -729,6 +736,16 @@ class WebFrame:
         self.spec_symbols.close()
         self.save_article.gui.close()
         self.history.gui.close()
+        
+        '''
+        self.about.parties.gui.parent.center()
+        self.about.gui.parent.center()
+        self.settings.gui.parent.center()
+        self.search_article.gui.parent.parent.center()
+        self.spec_symbols.parent.center()
+        self.save_article.gui.parent.parent.center()
+        self.history.gui.parent.parent.center()
+        '''
 
     def go_search_focus(self,event=None):
         ''' Setting the focus explicitly can be useful in case of

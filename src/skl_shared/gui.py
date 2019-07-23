@@ -607,6 +607,9 @@ class ListBoxC:
         self.parent = parent
         self.widget = self.parent.widget
     
+    def focus(self,event=None):
+        self.widget.focus()
+    
     def show(self,event=None):
         self.parent.show()
     

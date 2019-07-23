@@ -205,7 +205,7 @@ class About:
         self.gui()
         
     def gui(self):
-        self.obj    = sh.Top()
+        self.obj = self.parent = sh.Top()
         self.widget = self.obj.widget
         self.frames()
         self.labels()
@@ -301,7 +301,8 @@ class ThirdParties:
         self.obj = sh.TextBoxC (title  = title
                                ,icon   = ICON
                                )
-        sh.Geometry(self.obj.parent).set('800x600')
+        self.parent = self.obj.parent
+        sh.Geometry(self.parent).set('800x600')
         self.obj.focus()
     
     def show(self,event=None):
@@ -1166,7 +1167,7 @@ class Settings:
         self.update_sp6()
 
     def gui(self):
-        self.obj = sh.Top()
+        self.obj = self.parent = sh.Top()
         self.title()
         self.frames()
         self.checkboxes()

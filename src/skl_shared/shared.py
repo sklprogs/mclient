@@ -877,6 +877,8 @@ class TextBox:
                 return result.strip()
             else:
                 return result.strip('\n')
+        else:
+            return ''
 
     def insert(self,text='',pos='1.0',MoveTop=True):
         f = '[shared] shared.TextBox.insert'
@@ -1091,6 +1093,8 @@ class EntryC:
     def get(self,event=None):
         if self.Save:
             return self.obj.get()
+        else:
+            return ''
     
     def icon(self,path=''):
         if path:
@@ -2385,6 +2389,9 @@ class ListBoxC:
         self.ScrollX  = ScrollX
         self.ScrollY  = ScrollY
         self.add_gui()
+    
+    def focus(self,event=None):
+        self.gui.focus()
     
     def set(self,item):
         self.lbx_prm.set(item)
