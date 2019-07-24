@@ -127,8 +127,8 @@ class DictZip:
         header = self.obj.read(10)
         #todo: fail on error
         if header[:2] != b'\x1f\x8b':
-            message = _('GZIP signature is expected, but found "%s"!') \
-                      % str(header[:2])
+            message = _('GZIP signature is expected, but found "{}"!')
+            message = message.format(header[:2])
             raise ValueError(message)
         if header[2] != 8:
             raise ValueError(_('Only DEFLATE archives are supported!'))

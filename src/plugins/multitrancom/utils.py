@@ -137,10 +137,13 @@ class Pairs:
             if self.isdead(i+1):
                 dead.append(self._langs[i])
         self._alive = [lang for lang in self._langs if not lang in dead]
-        message = _('Dead languages: %s') % ', '.join(dead)
+        message = _('Dead languages: {}').format(', '.join(dead))
         message += '\n'
-        message += _('Languages: total: %d; alive: %d; dead: %d') \
-                   % (len(self._langs),len(self._alive),len(dead))
+        message += _('Languages: total: {}; alive: {}; dead: {}')
+        message = message.format (len(self._langs)
+                                 ,len(self._alive)
+                                 ,len(dead)
+                                 )
         message += '\n'
         sh.objs.mes(f,message,True).info()
         message = _('Alive languages:') + '\n' + ', '.join(self._alive)
