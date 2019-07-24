@@ -81,16 +81,55 @@ class Sources:
 class Objects:
 
     def __init__(self):
-        self._webframe = self._blocks_db = None
+        self._webframe = self._blocks_db = self._about = self._settings\
+                       = self._search = self._symbols = self._save \
+                       = self._history = self._suggest = None
 
+    def suggest(self):
+        if self._suggest is None:
+            self._suggest = Suggest(entry=objs.webframe().gui.ent_src)
+        return self._suggest
+    
+    def history(self):
+        if self._history is None:
+            self._history = History()
+        return self._history
+    
+    def save(self):
+        if self._save is None:
+            self._save = SaveArticle()
+        return self._save
+    
+    def symbols(self):
+        if self._symbols is None:
+            self._symbols = sh.SymbolMap (items = sh.lg.globs['var']['spec_syms']
+                                         ,icon  = gi.ICON
+                                         )
+        return self._symbols
+    
+    def search(self):
+        if self._search is None:
+            self._search = SearchArticle()
+        return self._search
+    
+    def settings(self):
+        if self._settings is None:
+            self._settings = Settings()
+        return self._settings
+    
+    def about(self):
+        if self._about is None:
+            self._about = About()
+        return self._about
+    
     def blocks_db(self):
-        if not self._blocks_db:
+        if self._blocks_db is None:
             self._blocks_db = db.Moves()
             self._blocks_db.Selectable = sh.lg.globs['bool']['SelectTermsOnly']
         return self._blocks_db
 
     def webframe(self):
-        if not self._webframe:
+        if self._webframe is None:
             self._webframe = WebFrame()
         return self._webframe
 
@@ -137,6 +176,10 @@ class About:
         self.gui.lbl_abt.font(sh.lg.globs['var']['font_style'])
         
     def bindings(self):
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_show_about']
+                    ,action   = self.gui.toggle
+                    )
         self.gui.btn_thd.action = self.show_third_parties
         self.gui.btn_lic.action = self.open_license_url
         self.gui.btn_eml.action = self.response_back
@@ -432,7 +475,7 @@ class History:
         objs.blocks_db().clear()
         self.gui.obj.clear()
         objs.webframe().reset()
-        objs._webframe.search_article.gui.obj.clear_text()
+        objs.search().gui.obj.clear_text()
         lg.objs.request().reset()
 
     def go_first(self,event=None):
@@ -491,14 +534,49 @@ class WebFrame:
     def __init__(self):
         self.values()
         self.gui = gi.WebFrame()
-        self.widgets()
         self.bindings()
         self.reset_opt()
     
+    def suggest_bottom(self,event=None):
+        objs.suggest().move_bottom()
+    
+    def suggest_top(self,event=None):
+        objs.suggest().move_top()
+    
+    def suggest_down(self,event=None):
+        objs.suggest().move_down()
+    
+    def suggest_up(self,event=None):
+        objs.suggest().move_up()
+    
+    def suggest_show(self,event=None):
+        objs.suggest().suggest()
+    
+    def clear_history(self,event=None):
+        objs.history().clear()
+    
+    def toggle_history(self,event=None):
+        objs.history().gui.toggle()
+    
+    def toggle_save(self,event=None):
+        objs.save().gui.toggle()
+    
+    def search_prev(self,event=None):
+        objs.search().backward()
+    
+    def search_next(self,event=None):
+        objs.search().forward()
+    
+    def toggle_settings(self,event=None):
+        objs.settings().gui.toggle()
+    
+    def toggle_about(self,event=None):
+        objs.about().gui.toggle()
+    
     def insert_sym(self,event=None):
-        self.spec_symbols.show()
+        objs.symbols().show()
         self.gui.ent_src.insert (pos  = 'end'
-                                ,text = self.spec_symbols.get()
+                                ,text = objs._symbols.get()
                                 )
     
     def update_lang1(self,event=None):
@@ -605,21 +683,21 @@ class WebFrame:
         self.update_lang2()
     
     def paste_search_field(self,event=None):
-        self.suggest.gui.close()
+        objs.suggest().gui.close()
         self.gui.paste_search()
     
     def clear_search_field(self,event=None):
-        self.suggest.gui.close()
+        objs.suggest().gui.close()
         self.gui.ent_src.clear_text()
         
     def escape(self,event=None):
-        if self.suggest.gui.parent:
-            self.suggest.gui.close()
+        if objs.suggest().gui.parent:
+            objs._suggest.gui.close()
         else:
             sh.Geometry(self.gui.obj).minimize()
     
     def minimize(self,event=None):
-        self.suggest.gui.close()
+        objs.suggest().gui.close()
         sh.Geometry(self.gui.obj).minimize()
     
     def go_phrase_dic(self,event=None):
@@ -707,45 +785,6 @@ class WebFrame:
         self._pos   = -1
         self._posn  = -1
         self._phdic = ''
-
-    def widgets(self):
-        self.about          = About()
-        self.settings       = Settings()
-        self.search_article = SearchArticle()
-        self.spec_symbols   = sh.SymbolMap (items = sh.lg.globs['var']['spec_syms']
-                                           ,icon  = gi.ICON
-                                           )
-        self.save_article   = SaveArticle()
-        self.history        = History()
-        self.suggest        = Suggest(entry=self.gui.ent_src)
-        
-        self.about.parties.gui.parent.center()
-        self.about.gui.parent.center()
-        self.settings.gui.parent.center()
-        self.search_article.gui.parent.parent.center()
-        self.spec_symbols.parent.center()
-        self.save_article.gui.parent.parent.center()
-        self.history.gui.parent.parent.center()
-        
-        #cur
-        # Close child widgets in order not to overlap the parent widget
-        self.about.parties.gui.close()
-        self.about.gui.close()
-        self.settings.gui.close()
-        self.search_article.gui.close()
-        self.spec_symbols.close()
-        self.save_article.gui.close()
-        self.history.gui.close()
-        
-        '''
-        self.about.parties.gui.parent.center()
-        self.about.gui.parent.center()
-        self.settings.gui.parent.center()
-        self.search_article.gui.parent.parent.center()
-        self.spec_symbols.parent.center()
-        self.save_article.gui.parent.parent.center()
-        self.history.gui.parent.parent.center()
-        '''
 
     def go_search_focus(self,event=None):
         ''' Setting the focus explicitly can be useful in case of
@@ -879,11 +918,11 @@ class WebFrame:
                     )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = sh.lg.globs['var']['bind_search_article_forward']
-                    ,action   = self.search_article.forward
+                    ,action   = self.search_next
                     )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = sh.lg.globs['var']['bind_search_article_backward']
-                    ,action   = self.search_article.backward
+                    ,action   = self.search_prev
                     )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = sh.lg.globs['var']['bind_re_search_article']
@@ -899,27 +938,23 @@ class WebFrame:
                     ,bindings = (sh.lg.globs['var']['bind_save_article']
                                 ,sh.lg.globs['var']['bind_save_article_alt']
                                 )
-                    ,action   = self.save_article.gui.toggle
+                    ,action   = self.toggle_save
                     )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = sh.lg.globs['var']['bind_show_about']
-                    ,action   = self.about.gui.toggle
-                    )
-        sh.com.bind (obj      = self.about.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_show_about']
-                    ,action   = self.about.gui.toggle
+                    ,action   = self.toggle_about
                     )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = (sh.lg.globs['var']['bind_toggle_history']
                                 ,sh.lg.globs['var']['bind_toggle_history']
                                 )
-                    ,action   = self.history.gui.toggle
+                    ,action   = self.toggle_history
                     )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = (sh.lg.globs['var']['bind_toggle_history']
                                 ,sh.lg.globs['var']['bind_toggle_history_alt']
                                 )
-                    ,action   = self.history.gui.toggle
+                    ,action   = self.toggle_history
                     )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = (sh.lg.globs['var']['bind_open_in_browser']
@@ -971,7 +1006,7 @@ class WebFrame:
                     ,bindings = (sh.lg.globs['var']['bind_settings']
                                 ,sh.lg.globs['var']['bind_settings_alt']
                                 )
-                    ,action   = self.settings.gui.toggle
+                    ,action   = self.toggle_settings
                     )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = (sh.lg.globs['var']['bind_toggle_view']
@@ -983,11 +1018,11 @@ class WebFrame:
                     ,bindings = (sh.lg.globs['var']['bind_toggle_history']
                                 ,sh.lg.globs['var']['bind_toggle_history_alt']
                                 )
-                    ,action   = self.history.gui.toggle
+                    ,action   = self.toggle_history
                     )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = sh.lg.globs['var']['bind_clear_history']
-                    ,action   = self.history.clear
+                    ,action   = self.clear_history
                     )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = sh.lg.globs['var']['bind_toggle_alphabet']
@@ -1003,7 +1038,7 @@ class WebFrame:
                     )
         sh.com.bind (obj      = self.gui.btn_hst
                     ,bindings = '<ButtonRelease-3>'
-                    ,action   = self.history.clear
+                    ,action   = self.clear_history
                     )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = sh.lg.globs['var']['bind_print']
@@ -1098,23 +1133,23 @@ class WebFrame:
                     )
         sh.com.bind (obj      = self.gui.ent_src
                     ,bindings = '<KeyRelease>'
-                    ,action   = self.suggest.suggest
+                    ,action   = self.suggest_show
                     )
         sh.com.bind (obj      = self.gui.ent_src
                     ,bindings = '<Up>'
-                    ,action   = self.suggest.move_up
+                    ,action   = self.suggest_up
                     )
         sh.com.bind (obj      = self.gui.ent_src
                     ,bindings = '<Down>'
-                    ,action   = self.suggest.move_down
+                    ,action   = self.suggest_down
                     )
         sh.com.bind (obj      = self.gui.ent_src
                     ,bindings = '<Control-Home>'
-                    ,action   = self.suggest.move_top
+                    ,action   = self.suggest_top
                     )
         sh.com.bind (obj      = self.gui.ent_src
                     ,bindings = '<Control-End>'
-                    ,action   = self.suggest.move_bottom
+                    ,action   = self.suggest_bottom
                     )
         # Set config bindings
         hotkeys1 = (sh.lg.globs['var']['bind_toggle_history']
@@ -1189,14 +1224,14 @@ class WebFrame:
         self.gui.btn_trn.set_hint()
         self.gui.btn_viw.set_hint()
         # Set controller actions
-        self.gui.btn_abt.action = self.about.gui.toggle
+        self.gui.btn_abt.action = self.toggle_about
         self.gui.btn_alp.action = self.toggle_alphabet
         self.gui.btn_blk.action = self.toggle_block
         self.gui.btn_brw.action = self.open_in_browser
         self.gui.btn_cap.action = self.watch_clipboard
         self.gui.btn_clr.action = self.clear_search_field
         self.gui.btn_def.action = lambda x:self.define(Selected=False)
-        self.gui.btn_hst.action = self.history.gui.toggle
+        self.gui.btn_hst.action = self.toggle_history
         self.gui.btn_ins.action = self.paste_search_field
         self.gui.btn_nxt.action = self.go_forward
         self.gui.btn_pri.action = self.toggle_priority
@@ -1205,9 +1240,9 @@ class WebFrame:
         self.gui.btn_rld.action = self.reload
         self.gui.btn_rp1.action = self.insert_repeat_sign
         self.gui.btn_rp2.action = self.insert_repeat_sign2
-        self.gui.btn_sav.action = self.save_article.gui.toggle
+        self.gui.btn_sav.action = self.toggle_save
         self.gui.btn_ser.action = self.search_reset
-        self.gui.btn_set.action = self.settings.gui.toggle
+        self.gui.btn_set.action = self.toggle_settings
         self.gui.btn_swp.action = self.swap_langs
         self.gui.btn_sym.action = self.insert_sym
         self.gui.btn_trn.action = self.go
@@ -1479,7 +1514,7 @@ class WebFrame:
         objs._blocks_db.reset (cols      = lg.objs._request._cols
                               ,SortRows  = lg.objs._request.SortRows
                               ,SortTerms = SortTerms
-                              ,ExpandDic = not self.settings.gui.cbx_no6.get()
+                              ,ExpandDic = not objs.settings().gui.cbx_no6.get()
                               )
         objs._blocks_db.unignore()
         objs._blocks_db.ignore()
@@ -1556,9 +1591,9 @@ class WebFrame:
         '''
         if pages._blocks or skipped:
             self.gui.ent_src.clear_text()
-        self.history.update()
-        self.search_article.reset()
-        self.suggest.gui.close()
+        objs.history().update()
+        objs.search().reset()
+        objs.suggest().gui.close()
         self.update_buttons()
         timer.end()
         
@@ -1920,34 +1955,34 @@ class WebFrame:
 
         if lg.objs._request.Reverse:
             self.gui.btn_viw.inactive()
-            self.settings.gui.cbx_no5.enable()
+            objs.settings().gui.cbx_no5.enable()
         else:
             self.gui.btn_viw.active()
-            self.settings.gui.cbx_no5.disable()
+            objs.settings().gui.cbx_no5.disable()
 
         if not lg.objs._request.SpecialPage \
         and lg.objs._request.SortTerms:
             self.gui.btn_alp.active()
-            self.settings.gui.cbx_no2.enable()
+            objs.settings().gui.cbx_no2.enable()
         else:
             self.gui.btn_alp.inactive()
-            self.settings.gui.cbx_no2.disable()
+            objs.settings().gui.cbx_no2.disable()
 
         if lg.objs._request.Block and objs._blocks_db.blocked():
             self.gui.btn_blk.active()
-            self.settings.gui.cbx_no3.enable()
+            objs.settings().gui.cbx_no3.enable()
         else:
             self.gui.btn_blk.inactive()
-            self.settings.gui.cbx_no3.disable()
+            objs.settings().gui.cbx_no3.disable()
 
         if not lg.objs._request.SpecialPage \
         and lg.objs._request.Prioritize \
         and objs._blocks_db.prioritized():
             self.gui.btn_pri.active()
-            self.settings.gui.cbx_no4.enable()
+            objs.settings().gui.cbx_no4.enable()
         else:
             self.gui.btn_pri.inactive()
-            self.settings.gui.cbx_no4.disable()
+            objs.settings().gui.cbx_no4.disable()
 
     # Go to the previous search
     def go_back(self,event=None):
@@ -2004,8 +2039,8 @@ class WebFrame:
 
     # SearchArticle
     def search_reset(self,event=None):
-        self.search_article.reset()
-        self.search_article.forward()
+        objs.search().reset()
+        objs._search.forward()
 
     def set_lang1(self,event=None):
         f = '[MClient] mclient.WebFrame.set_lang1'
