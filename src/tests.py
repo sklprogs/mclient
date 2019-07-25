@@ -512,7 +512,6 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sh.com.start()
-    import logic as lg
-    lg.objs.plugins(Debug=DEBUG)
-    print(lg.objs._plugins.langs1())
+    import mclient as mc
+    mc.objs.webframe().show()
     sh.com.end()

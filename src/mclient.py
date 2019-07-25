@@ -537,6 +537,12 @@ class WebFrame:
         self.bindings()
         self.reset_opt()
     
+    def show(self,event=None):
+        self.gui.show()
+    
+    def close(self,event=None):
+        self.gui.close()
+    
     def suggest_bottom(self,event=None):
         objs.suggest().move_bottom()
     
@@ -2392,6 +2398,12 @@ class Settings:
         self.gui = gi.Settings()
         self.bindings()
 
+    def show(self,event=None):
+        self.gui.show()
+    
+    def close(self,event=None):
+        self.gui.close()
+    
     def block_settings(self,event=None):
         f = '[MClient] mclient.Settings.block_settings'
         mes = _('Not implemented yet!')
@@ -2626,7 +2638,14 @@ if  __name__ == '__main__':
     if lg.objs._default.Success:
         timed_update()
         objs.webframe().reset()
-        objs._webframe.gui.show()
+        ''' 'Settings' is called in 'WebFrame.update_buttons'.
+            Since both 'Settings' and 'WebFrame' are 'Top', we need
+            to close 'Settings' and call 'center' manually
+            (AutoCr=1 and 'center' or 'center' twice) before 'close').
+        '''
+        objs._settings.gui.parent.center()
+        objs._settings.close()
+        objs._webframe.show()
         kl_mod.keylistener.cancel()
     else:
         mes = _('Unable to continue due to an invalid configuration.')

@@ -9,7 +9,8 @@ import tkinter.ttk
 from PIL import Image   as pilimage
 from PIL import ImageTk as piltk
 
-import gettext, gettext_windows
+import gettext
+import skl_shared.gettext_windows as gettext_windows
 gettext_windows.setup_env()
 gettext.install('shared','../resources/locale')
 

@@ -7,7 +7,8 @@ import io
 import skl_shared.logic as lg
 import skl_shared.gui   as gi
 
-import gettext, gettext_windows
+import gettext
+import skl_shared.gettext_windows as gettext_windows
 gettext_windows.setup_env()
 gettext.install('shared','../resources/locale')
 

@@ -544,7 +544,7 @@ class WebFrame:
                                          )
 
     def gui(self):
-        self.obj     = sh.Top(Maximize=True)
+        self.obj = sh.Top(Maximize=True)
         self.frm_prm = sh.Frame (parent = self.obj
                                 ,expand = 1
                                 )
@@ -557,7 +557,7 @@ class WebFrame:
                                 ,fill   = 'y'
                                 ,side   = 'right'
                                 )
-        self.widget  = th.TkinterHtml(self.frm_prm.widget)
+        self.widget = th.TkinterHtml(self.frm_prm.widget)
         self.widget.pack(expand='1',fill='both')
         self.scrollbars()
         self.frame_panel()
@@ -1167,7 +1167,7 @@ class Settings:
         self.update_sp6()
 
     def gui(self):
-        self.obj = self.parent = sh.Top()
+        self.obj = self.parent = sh.Top(AutoCr=True)
         self.title()
         self.frames()
         self.checkboxes()
@@ -1572,7 +1572,7 @@ class Settings:
 
     def bindings(self):
         sh.com.bind (obj      = self.obj
-                    ,bindings = '<Escape>'
+                    ,bindings = ('<Escape>','<Control-q>','<Control-w>')
                     ,action   = self.close
                     )
         sh.com.bind (obj      = self.lbl_no1
