@@ -30,7 +30,6 @@
 - multitran.com: complement 'abbr' with dictionary titles in both
   English and Russian (when missing)
 - stardict.cleanup: move block-creating code to stardict.parse
-- Add Control-Q for History
 - Unite cells of the same language if the direction is bilingual (to prevent from erroneously dividing parts of the same cell: https://www.multitran.ru/c/M.exe?a=3&&s=flight%20idle&l1=1&l2=2)
 - implement "define:" in the search field
 - угол: error with local RuEn dics

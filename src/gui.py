@@ -9,7 +9,7 @@ gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 PRODUCT = 'MClient'
-VERSION = '6.1.1'
+VERSION = '6.1.2'
 ICON    = sh.objs.pdir().add('..','resources','icon_64x64_mclient.gif')
 
 
@@ -271,7 +271,7 @@ class About:
     
     def bindings(self):
         sh.com.bind (obj      = self.obj
-                    ,bindings = '<Escape>'
+                    ,bindings = ('<Escape>','<Control-q>','<Control-w>')
                     ,action   = self.close
                     )
 
@@ -296,6 +296,12 @@ class ThirdParties:
     def __init__(self):
         self.gui()
         
+    def bindings(self):
+        sh.com.bind (obj      = self.obj
+                    ,bindings = ('<Escape>','<Control-q>','<Control-w>')
+                    ,action   = self.close
+                    )
+    
     def gui(self):
         title = _('Third parties') + ':'
         self.obj = sh.TextBoxC (title  = title
@@ -303,6 +309,7 @@ class ThirdParties:
                                )
         self.parent = self.obj.parent
         sh.Geometry(self.parent).set('800x600')
+        self.bindings()
         self.obj.focus()
     
     def show(self,event=None):
@@ -328,7 +335,7 @@ class SearchArticle:
     
     def bindings(self):
         sh.com.bind (obj      = self.parent
-                    ,bindings = '<Escape>'
+                    ,bindings = ('<Escape>','<Control-q>','<Control-w>')
                     ,action   = self.parent.close
                     )
                              
@@ -354,12 +361,19 @@ class SaveArticle:
                       ]
         self.gui()
         
+    def bindings(self):
+        sh.com.bind (obj      = self.parent
+                    ,bindings = ('<Escape>','<Control-q>','<Control-w>')
+                    ,action   = self.close
+                    )
+    
     def gui(self):
         self.parent = sh.ListBoxC (lst   = self._items
                                   ,title = _('Select an action:')
                                   ,icon  = ICON
                                   )
         self.widget = self.parent.widget
+        self.bindings()
 
     def close(self,event=None):
         self.Active = False
@@ -398,7 +412,7 @@ class History:
                     ,action   = self.copy
                     )
         sh.com.bind (obj      = self
-                    ,bindings = '<Escape>'
+                    ,bindings = ('<Escape>','<Control-q>','<Control-w>')
                     ,action   = self.close
                     )
 

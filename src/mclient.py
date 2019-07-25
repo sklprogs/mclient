@@ -83,8 +83,14 @@ class Objects:
     def __init__(self):
         self._webframe = self._blocks_db = self._about = self._settings\
                        = self._search = self._symbols = self._save \
-                       = self._history = self._suggest = None
+                       = self._history = self._suggest = self._parties \
+                       = None
 
+    def parties(self):
+        if self._parties is None:
+            self._parties = ThirdParties()
+        return self._parties
+    
     def suggest(self):
         if self._suggest is None:
             self._suggest = Suggest(entry=objs.webframe().gui.ent_src)
@@ -170,7 +176,6 @@ def timed_update():
 class About:
 
     def __init__(self):
-        self.parties = ThirdParties()
         self.gui = gi.About()
         self.bindings()
         self.gui.lbl_abt.font(sh.lg.globs['var']['font_style'])
@@ -198,7 +203,7 @@ class About:
 
     # Show info about third-party licenses
     def show_third_parties(self,event=None):
-        self.parties.gui.show()
+        objs.parties().show()
 
 
 
@@ -451,11 +456,11 @@ class History:
 
     def show(self,event=None):
         self.Active = True
-        self.parent.show()
+        self.gui.show()
 
     def close(self,event=None):
         self.Active = False
-        self.parent.close()
+        self.gui.close()
 
     def fill(self):
         searches = objs.blocks_db().searches()
@@ -2518,6 +2523,12 @@ class ThirdParties:
         self._text = sh.lg.ReadTextFile(file=file).get()
         self.gui.obj.insert(text=self._text)
         self.gui.obj.disable()
+    
+    def show(self,event=None):
+        self.gui.show()
+
+    def close(self,event=None):
+        self.gui.close()
 
 
 
@@ -2643,8 +2654,12 @@ if  __name__ == '__main__':
             to close 'Settings' and call 'center' manually
             (AutoCr=1 and 'center' or 'center' twice) before 'close').
         '''
-        objs._settings.gui.parent.center()
+        objs.settings().gui.parent.center()
+        objs.search().gui.parent.parent.center()
+        objs.history().gui.parent.parent.center()
         objs._settings.close()
+        objs._search.close()
+        objs._history.close()
         objs._webframe.show()
         kl_mod.keylistener.cancel()
     else:

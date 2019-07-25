@@ -1,5 +1,8 @@
 
 
+6.1.2
+* Refactor the code
+
 6.1.1
 * Delete unicode control codes
 * Fix titles of Stardict dictionaries
