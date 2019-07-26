@@ -741,7 +741,7 @@ class ToolTipBase:
         return self.widget.winfo_rooty()
     
     def schedule(self,hint_delay,showtip):
-        self.widget.after(hint_delay,showtip)
+        return self.widget.after(hint_delay,showtip)
     
     def unschedule(self,myid):
         self.widget.after_cancel(myid)
@@ -1167,6 +1167,15 @@ class Root:
         self.type   = 'Root'
         self.widget = tk.Tk()
 
+    def icon(self,file):
+        image = tk.PhotoImage (master = self.widget
+                              ,file   = file
+                              )
+        self.widget.tk.call('wm','iconphoto',self.widget._w,image)
+
+    def title(self,text):
+        self.widget.title(text)
+    
     def resolution(self):
         self.idle()
         return (self.widget.winfo_screenwidth()

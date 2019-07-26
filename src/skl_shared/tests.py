@@ -15,19 +15,21 @@ class Commands:
         pass
     
     def textboxc(self):
-        file   = '/home/pete/base/[unmusic] corrupted tags.txt'
-        text   = sh.lg.ReadTextFile(file).get()
-        words  = sh.lg.Words (text = text
-                             ,Auto = True
-                             )
+        #file  = '/home/pete/base/[unmusic] corrupted tags.txt'
+        file  = '/tmp/test.txt'
+        text  = sh.lg.ReadTextFile(file).get()
+        words = sh.lg.Words (text = text
+                            ,Auto = True
+                            )
         words.sent_nos()
         itxt = sh.TextBoxC (SpReturn = True
                            ,Maximize = False
-                           ,title   = 'TextBoxC with Selection and Search'
+                           ,title    = 'TextBoxC with Selection and Search'
                            ,icon     = '/home/pete/bin/Yatube/resources/icon_64x64_yatube.gif'
                            ,words    = words
                            )
         itxt.insert(text)
+        itxt.spelling()
         itxt.focus()
         itxt.show()
         result = sh.lg.Text(itxt.get()).shorten(max_len=20)
@@ -150,11 +152,13 @@ class Commands:
         parent.show()
     
     def progressbar(self):
-        top = sh.Top(AutoCr=False)
-        iprog  = sh.ProgressBar (width   = 750
-                                ,height  = 200
-                                ,YScroll = True
-                                )
+        top   = sh.Top(AutoCr=False)
+        iprog = sh.ProgressBar (width   = 750
+                               ,height  = 200
+                               ,YScroll = True
+                               ,title   = 'Load dictionaries'
+                               ,icon    = '/home/pete/bin/Yatube/resources/icon_64x64_yatube.gif'
+                               )
         for i in range(10):
             iprog.add()
         iprog.show()
@@ -824,5 +828,6 @@ com = Commands()
 if __name__ == '__main__':
     f = '[shared] tests.__main__'
     sh.com.start()
-    com.textboxc()
+    #com.textboxc()
+    com.progressbar()
     sh.com.end()

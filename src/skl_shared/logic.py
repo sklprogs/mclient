@@ -68,7 +68,7 @@ punc_array      = ['.',',','!','?',':',';']
 #todo: why there were no opening brackets?
 #punc_ext_array = ['"','”','»',']','}',')']
 punc_ext_array  = ['"','“','”','','«','»','[',']'
-                  ,'{','}','(',')','’',"'"
+                  ,'{','}','(',')','’',"'",'*'
                   ]
 
 forbidden_win = '/\?%*:|"<>'
@@ -1065,6 +1065,11 @@ class Text:
             '''
             self.text = self.text.strip()
 
+    def has_digits(self):
+        for sym in self.text:
+            if sym in digits:
+                return True
+    
     def delete_comments(self):
         self.text = self.text.splitlines()
         self.text = [line for line in self.text \
@@ -3140,7 +3145,7 @@ class Word:
                      = self._pl = self._nf = self._nl = self._cyr \
                      = self._lat = self._greek = self._digit \
                      = self._empty = self._ref = self._sent_no \
-                     = self._spell_ru = self._sents_len = self._tf \
+                     = self._spell = self._sents_len = self._tf \
                      = self._tl = None
 
     def empty(self):
@@ -3191,11 +3196,11 @@ class Word:
     # Do only after Words.sent_nos
     def print(self,no=0):
         f = '[shared] logic.Word.print'
-        mes = 'no: {}; _p: {}; _n: {}; _nm: {}; _pf: {}; _pl: {}; _nf: {}; _nl: {}; _cyr: {}; _lat: {}; _greek: {}; _digit: {}; _empty: {}; _ref: {}; _sent_no: {}; _sents_len: {}; _spell_ru: {}; _nmf: {}; _nml: {}'
+        mes = 'no: {}; _p: {}; _n: {}; _nm: {}; _pf: {}; _pl: {}; _nf: {}; _nl: {}; _cyr: {}; _lat: {}; _greek: {}; _digit: {}; _empty: {}; _ref: {}; _sent_no: {}; _sents_len: {}; _spell: {}; _nmf: {}; _nml: {}'
         mes = mes.format (no,self._p,self._n,self._nm,self._pf,self._pl
                          ,self._nf,self._nl,self._cyr,self._lat
                          ,self._greek,self._digit,self._empty,self._ref
-                         ,self._sent_no,self._sents_len,self._spell_ru
+                         ,self._sent_no,self._sents_len,self._spell
                          ,self._nmf,self._nml)
         objs.mes(f,mes,True).debug()
 
@@ -3237,17 +3242,51 @@ class Word:
         return self._ref
 
     def spell_ru(self):
+        return objs.enchant(lang='ru').check(self._n)
+    
+    def spell_yo(self):
+        words = []
+        for i in range(len(self._n)):
+            if self._n[i] == 'е':
+                word    = list(self._n)
+                word[i] = 'ё'
+                word    = ''.join(word)
+                words.append(word)
+        for word in words:
+            if objs.enchant(lang='ru').check(word):
+                return True
+    
+    def spell_us(self):
+        return objs.enchant(lang='us').check(self._n)
+    
+    def spell_gb(self):
+        return objs.enchant(lang='gb').check(self._n)
+    
+    def spell(self):
         ''' Enchant:
             1) Lower-case, upper-case and words where the first letter
-               is capital, are all accepted. Mixed case is not accepted.
-            2) Punctuation is not accepted
-            3) Empty input raises an exception
+               is capital, are all accepted. Mixed case is not accepted;
+            2) Punctuation is not accepted;
+            3) Empty input raises an exception;
+            4) 'е' instead of 'ё' returns False, however, 'ё' in
+               a wrong place returns True.
         '''
-        if self._spell_ru is None:
-            self._spell_ru = True
+        if self._spell is None:
+            self._spell = False
             if self._n:
-                self._spell_ru = objs.enchant().check(self._n)
-        return self._spell_ru
+                if Text(self._n).has_digits():
+                    self._spell = True
+                elif Text(self._n).has_cyrillic():
+                    if self.spell_ru() or self.spell_yo():
+                        self._spell = True
+                elif Text(self._n).has_latin():
+                    if self.spell_us() or self.spell_gb():
+                        self._spell = True
+                else:
+                    self._spell = True
+            else:
+                self._spell = True
+        return self._spell
 
     # Wrong selection upon search: see an annotation to SearchBox
     def tf(self):
@@ -3444,16 +3483,13 @@ class Words:
         else:
             com.cancel(f)
 
-    def _spellcheck_ru(self):
-        for i in range(self.len()):
-            self.words[i].spell_ru()
-
-    def spellcheck_ru(self):
-        f = '[shared] logic.Words.spellcheck_ru'
+    def spellcheck(self):
+        f = '[shared] logic.Words.spellcheck'
         if self.Success:
             if self.len() > 0:
-                if self.words[0]._spell_ru is None:
-                    self._spellcheck_ru()
+                if self.words[0]._spell is None:
+                    for i in range(self.len()):
+                        self.words[i].spell()
         else:
             com.cancel(f)
 
@@ -3600,7 +3636,7 @@ class Words:
                 self.words[i].empty()
                 self.words[i].ref()
                 self.words[i].nm()
-                self.words[i].spell_ru()
+                self.words[i].spell()
                 self.words[i].tf()
                 self.words[i].tl()
             self.text_nm()
@@ -3865,9 +3901,9 @@ class Objects:
         through different programs both using 'shared.py').
     '''
     def __init__(self):
-        self._enchant = self._morph = self._pretty_table = self._pdir \
-                      = self._online = self._tmpfile = self._os \
-                      = self._mes = None
+        self._enchant_ru = self._morph = self._pretty_table \
+                         = self._pdir = self._online = self._tmpfile \
+                         = self._os = self._mes = None
 
     def mes (self,func='Logic error'
             ,message='Logic error'
@@ -3899,11 +3935,23 @@ class Objects:
             self._pdir = ProgramDir()
         return self._pdir
 
-    def enchant(self):
-        if not self._enchant:
-            import enchant
-            self._enchant = enchant.Dict("ru_RU")
-        return self._enchant
+    def enchant(self,lang='ru'):
+        import enchant
+        if not self._enchant_ru:
+            self._enchant_ru = enchant.Dict('ru_RU')
+            self._enchant_gb = enchant.Dict('en_GB')
+            self._enchant_us = enchant.Dict('en_US')
+        if lang == 'ru':
+            return self._enchant_ru
+        elif lang == 'gb':
+            return self._enchant_gb
+        elif lang == 'us':
+            return self._enchant_us
+        else:
+            mes = 'An unknown mode "{}"!\n\nThe following modes are supported: "{}".'
+            mes = mes.format(lang,'ru; gb; us')
+            objs.mes(f,mes).error()
+            return self._enchant_ru
 
     def morph(self):
         if not self._morph:

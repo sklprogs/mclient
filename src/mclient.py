@@ -12,8 +12,9 @@ import cells             as cl
 import db
 import mkhtml            as mh
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
+import gettext
+import skl_shared.gettext_windows
+skl_shared.gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 
@@ -480,7 +481,7 @@ class History:
         objs.blocks_db().clear()
         self.gui.obj.clear()
         objs.webframe().reset()
-        objs.search().gui.obj.clear_text()
+        objs.search().gui.parent.clear()
         lg.objs.request().reset()
 
     def go_first(self,event=None):

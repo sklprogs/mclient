@@ -605,6 +605,47 @@ class TextBoxC:
         self.add_gui()
         self.focus()
     
+    def mark_remove(self,mark='insert'):
+        self.obj.mark_remove(mark)
+    
+    def mark_add(self,mark='insert',pos='1.0'):
+        self.obj.mark_add (mark = mark
+                          ,pos  = pos
+                          )
+    
+    def clear_marks(self,event=None):
+        self.obj.clear_marks()
+    
+    def clear_tags(self,event=None):
+        self.obj.clear_tags()
+    
+    def tag_config (self,tag='sel',bg=None
+                   ,fg=None,font=None
+                   ):
+        self.obj.tag_config (tag  = tag
+                            ,bg   = bg
+                            ,fg   = fg
+                            ,font = font
+                            )
+    
+    def tag_remove (self,tag='sel'
+                   ,pos1='1.0'
+                   ,pos2='end'
+                   ):
+        self.obj.tag_remove (tag  = tag
+                            ,pos1 = pos1
+                            ,pos2 = pos2
+                            )
+    
+    def tag_add (self,tag='sel',pos1='1.0'
+                ,pos2='end',DelPrev=True
+                ):
+        self.obj.tag_add (tag     = tag
+                         ,pos1    = pos1
+                         ,pos2    = pos2
+                         ,DelPrev = DelPrev
+                         )
+    
     def enable(self,event=None):
         self.obj.enable()
     
@@ -648,7 +689,7 @@ class TextBoxC:
             self.words.sent_nos()
             result = []
             for i in range(self.words.len()):
-                if not self.words.words[i].spell_ru():
+                if not self.words.words[i].spell():
                     result.append(i)
             if result:
                 self.clear_tags()
@@ -656,12 +697,11 @@ class TextBoxC:
                     no   = self.words._no = result[i]
                     pos1 = self.words.words[no].tf()
                     pos2 = self.words.words[no].tl()
-                    #todo: apply IGNORE_SPELLING
                     if pos1 and pos2:
-                        self.tag_add (tag   = 'spell'
-                                     ,pos1  = pos1
-                                     ,pos2  = pos2
-                                     ,DelPr = False
+                        self.tag_add (tag     = 'spell'
+                                     ,pos1    = pos1
+                                     ,pos2    = pos2
+                                     ,DelPrev = False
                                      )
                 
                 mes = _('{} tags to assign').format(len(result))
@@ -1109,30 +1149,26 @@ class EntryC:
         self.gui.title(self._title)
     
     def buttons(self):
-        # Hints are too annoying here
         self.btn_cls = Button (parent = self.frm_btl
                               ,action = self.close
-                              #,hint   = _('Reject and close')
+                              ,hint   = _('Reject and close')
                               ,text   = _('Close')
                               ,side   = 'left'
                               ,hdir   = 'bottom'
-                              ,hdelay = 1500
                               )
         self.btn_clr = Button (parent = self.frm_btl
                               ,action = self.clear
-                              #,hint   = _('Clear the field')
+                              ,hint   = _('Clear the field')
                               ,text   = _('Clear')
                               ,side   = 'right'
                               ,hdir   = 'bottom'
-                              ,hdelay = 1500
                               )
         self.btn_sav = Button (parent = self.frm_btr
                               ,action = self.save
-                              #,hint   = _('Accept and close')
+                              ,hint   = _('Accept and close')
                               ,text   = _('Save and close')
                               ,side   = 'right'
                               ,hdir   = 'bottom'
-                              ,hdelay = 1500
                               )
     
     def bindings(self):
@@ -1553,11 +1589,14 @@ class CheckBox:
 class ProgressBar:
     
     def __init__ (self,width=750,height=200
-                 ,YScroll = True
+                 ,YScroll=True,title=_('Download progress')
+                 ,icon=''
                  ):
         self.values()
         self._width  = width
         self._height = height
+        self._icon   = icon
+        self._title  = title
         self.YScroll = YScroll
         self.add_gui()
         
@@ -1582,12 +1621,14 @@ class ProgressBar:
         self.frm_sec = Frame (parent = self.frm_prm)
     
     def icon(self,path=''):
-        self.gui.icon(path)
+        if path:
+            self._icon = path
+        self.gui.icon(self._icon)
     
     def title(self,text=''):
-        if not text:
-            text = _('Download progress')
-        self.gui.title(text)
+        if text:
+            self._title = text
+        self.gui.title(self._title)
         
     def show(self,event=None):
         self.gui.show()
@@ -1608,6 +1649,7 @@ class ProgressBar:
         self.gui = gi.ProgressBar(self.parent)
         self.bindings()
         self.title()
+        self.icon()
         
     def bindings(self):
         com.bind (obj      = self.parent
@@ -2390,6 +2432,9 @@ class ListBoxC:
         self.ScrollX  = ScrollX
         self.ScrollY  = ScrollY
         self.add_gui()
+    
+    def clear(self,event=None):
+        self.lbx_prm.clear()
     
     def focus(self,event=None):
         self.gui.focus()
@@ -3474,8 +3519,8 @@ class Objects:
     def os(self):
         return lg.objs.os()
     
-    def root(self):
-        return gi.objs.root()
+    def root(self,Close=True):
+        return gi.objs.root(Close)
     
     def error(self):
         if self._error is None:
