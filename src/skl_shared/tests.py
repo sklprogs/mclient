@@ -568,10 +568,9 @@ class Commands:
         itop = sh.Top (Maximize = False
                       ,AutoCr   = True
                       ,Lock     = True
-                      ,ForceCr  = False
+                      ,icon     = icon_path
                       )
         itop.title('Welcome to shared')
-        itop.icon(icon_path)
         itop.show()
     
     def messages(self):
@@ -829,5 +828,5 @@ if __name__ == '__main__':
     f = '[shared] tests.__main__'
     sh.com.start()
     #com.textboxc()
-    com.progressbar()
+    com.top()
     sh.com.end()

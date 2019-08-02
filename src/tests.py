@@ -85,7 +85,7 @@ class Get:
         search  = 'computer'
         url     = 'https://multitran.com/m.exe?s=computer&l1=1&l2=2'
         timeout = 6
-        timer   = sh.lg.Timer(f)
+        timer   = sh.Timer(f)
         timer.start()
         result = gt.Get (search  = search
                         ,url     = url
@@ -100,7 +100,7 @@ class Get:
         import plugins.stardict.get as sd
         #search = 'компьютер'
         search  = 'computer'
-        timer   = sh.lg.Timer(f)
+        timer   = sh.Timer(f)
         timer.start()
         result = sd.Get(search).run()
         timer.end()
@@ -115,7 +115,7 @@ class Tags:
         import plugins.stardict.cleanup as sdcleanup
         import plugins.stardict.tags    as sdtags
         file = '/home/pete/.config/mclient/tests/(stardict) EnRu_full - cut.txt'
-        text = sh.lg.ReadTextFile(file).get()
+        text = sh.ReadTextFile(file).get()
         text = sdcleanup.CleanUp(text).run()
         sdtags.Tags (text  = text
                     ,Debug = DEBUG
@@ -126,7 +126,7 @@ class Tags:
         import plugins.multitrancom.cleanup as mccleanup
         import plugins.multitrancom.tags    as mctags
         file = '/home/pete/bin/mclient/tests/multitrancom/конъюгаты (фразы).txt'
-        text = sh.lg.ReadTextFile(file).get()
+        text = sh.ReadTextFile(file).get()
         text = mccleanup.CleanUp(text).run()
         mctags.Tags (text    = text
                     ,Debug   = DEBUG
@@ -363,8 +363,8 @@ class Commands:
         file_w = '/tmp/test.html'
         code   = lg.Welcome().run()
         if code:
-            sh.lg.WriteTextFile(file_w).write(code)
-            sh.lg.Launch(file_w).default()
+            sh.WriteTextFile(file_w).write(code)
+            sh.Launch(file_w).default()
         else:
             sh.com.empty(f)
     

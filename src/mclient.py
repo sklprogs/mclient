@@ -192,13 +192,13 @@ class About:
 
     # Compose an email to the author
     def response_back(self,event=None):
-        sh.lg.Email (email   = sh.lg.email
-                    ,subject = _('Concerning {}').format(gi.PRODUCT)
-                    ).create()
+        sh.Email (email   = sh.lg.email
+                 ,subject = _('Concerning {}').format(gi.PRODUCT)
+                 ).create()
 
     # Open a license web-page
     def open_license_url(self,event=None):
-        ionline      = sh.lg.Online()
+        ionline      = sh.Online()
         ionline._url = sh.lg.globs['license_url']
         ionline.browse()
 
@@ -264,9 +264,9 @@ class SaveArticle:
             ''' We enable 'Rewrite' because the confirmation is already
                 built in the internal dialog.
             '''
-            sh.lg.WriteTextFile (file    = self.file
-                                ,Rewrite = True
-                                ).write(lg.objs._request._html)
+            sh.WriteTextFile (file    = self.file
+                             ,Rewrite = True
+                             ).write(lg.objs._request._html)
         else:
             sh.com.empty(f)
 
@@ -282,9 +282,9 @@ class SaveArticle:
         if self.file and lg.objs.request()._html_raw:
             self.fix_ext(ext='.htm')
             lg.objs._request._html_raw = lg.objs.plugins().fix_raw_html()
-            sh.lg.WriteTextFile (file    = self.file
-                                ,Rewrite = True
-                                ).write(lg.objs._request._html_raw)
+            sh.WriteTextFile (file    = self.file
+                             ,Rewrite = True
+                             ).write(lg.objs._request._html_raw)
         else:
             sh.com.empty(f)
 
@@ -294,9 +294,9 @@ class SaveArticle:
         text = objs.webframe().text()
         if self.file and text:
             self.fix_ext(ext='.txt')
-            sh.lg.WriteTextFile (file    = self.file
-                                ,Rewrite = True
-                                ).write(text.strip())
+            sh.WriteTextFile (file    = self.file
+                             ,Rewrite = True
+                             ).write(text.strip())
         else:
             sh.com.empty(f)
 
@@ -1167,11 +1167,11 @@ class WebFrame:
         hotkeys1 = (sh.lg.globs['var']['bind_toggle_history']
                    ,sh.lg.globs['var']['bind_toggle_history_alt']
                    )
-        hotkeys1 = sh.lg.Hotkeys(hotkeys1).run()
+        hotkeys1 = sh.Hotkeys(hotkeys1).run()
         hotkeys2 = (sh.lg.globs['var']['bind_clear_history']
                    ,'<ButtonRelease-3>'
                    )
-        hotkeys2 = sh.lg.Hotkeys(hotkeys2).run()
+        hotkeys2 = sh.Hotkeys(hotkeys2).run()
         self.gui.btn_hst.hint = _('Show history') + '\n' + hotkeys1 \
                                 + '\n\n' + _('Clear history') + '\n' \
                                 + hotkeys2
@@ -1263,7 +1263,7 @@ class WebFrame:
         
     def title(self,arg=None):
         if not arg:
-            arg = sh.lg.List(lst1=[gi.PRODUCT,gi.VERSION]).space_items()
+            arg = sh.List(lst1=[gi.PRODUCT,gi.VERSION]).space_items()
         self.gui.title(arg)
 
     def text(self,event=None):
@@ -1438,7 +1438,7 @@ class WebFrame:
         ''' #note: each time the contents of the current page is changed
             (e.g., due to prioritizing), bookmarks must be deleted.
         '''
-        timer = sh.lg.Timer(func_title=f)
+        timer = sh.Timer(func_title=f)
         timer.start()
         # Do not allow selection positions from previous articles
         self._pos = -1
@@ -1884,7 +1884,7 @@ class WebFrame:
 
     # Open URL of the current article in a browser
     def open_in_browser(self,event=None):
-        ionline      = sh.lg.Online()
+        ionline      = sh.Online()
         ionline._url = lg.objs.request()._url
         ionline.browse()
 
@@ -1931,9 +1931,9 @@ class WebFrame:
         else:
             search_str = 'define:' + lg.objs.request()._search
         if search_str != 'define:':
-            sh.lg.Online (base_str   = sh.lg.globs['var']['web_search_url']
-                         ,search_str = search_str
-                         ).browse()
+            sh.Online (base_str   = sh.lg.globs['var']['web_search_url']
+                      ,search_str = search_str
+                      ).browse()
         else:
             sh.com.empty(f)
 
@@ -2085,9 +2085,9 @@ class WebFrame:
         fixed = [col for col in lg.objs.request()._cols \
                  if col != _('Do not set')
                 ]
-        lg.objs._request._collimit = sh.lg.Input (title = f
-                                                 ,value = self.gui.opt_col.choice
-                                                 ).integer() + len(fixed)
+        lg.objs._request._collimit = sh.Input (title = f
+                                              ,value = self.gui.opt_col.choice
+                                              ).integer() + len(fixed)
         mes = _('Set the number of columns to {}')
         mes = mes.format(lg.objs._request._collimit)
         sh.objs.mes(f,mes,True).info()
@@ -2212,12 +2212,13 @@ class WebFrame:
                              )
         code = mh.objs._html.run()
         if code:
-            sh.lg.WriteTextFile (file    = sh.lg.objs.tmpfile (suffix = '.htm'
-                                                              ,Delete = 0
-                                                              )
-                                ,Rewrite = True
-                                ).write(code)
-            sh.lg.Launch(target=sh.lg.objs._tmpfile).auto()
+            tmp_file = sh.objs.tmpfile (suffix = '.htm'
+                                       ,Delete = 0
+                                       )
+            sh.WriteTextFile (file    = tmp_file
+                             ,Rewrite = True
+                             ).write(code)
+            sh.Launch(target=sh.objs._tmpfile).auto()
         else:
             sh.com.empty(f)
 
@@ -2521,7 +2522,7 @@ class ThirdParties:
     def __init__(self):
         self.gui = gi.ThirdParties()
         file = sh.objs.pdir().add('..','resources','third parties.txt')
-        self._text = sh.lg.ReadTextFile(file=file).get()
+        self._text = sh.ReadTextFile(file).get()
         self.gui.obj.insert(text=self._text)
         self.gui.obj.disable()
     

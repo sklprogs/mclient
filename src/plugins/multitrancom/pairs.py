@@ -3,8 +3,9 @@
 
 import skl_shared.shared as sh
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
+import gettext
+import skl_shared.gettext_windows
+skl_shared.gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 LANG1 = _('Russian')

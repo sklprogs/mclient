@@ -228,12 +228,12 @@ class DB:
                 sh.objs.mes(f,mes).error()
         headers = [cn[0] for cn in self.dbc.description]
         rows    = self.dbc.fetchall()
-        sh.lg.Table (headers = headers
-                    ,rows    = rows
-                    ,Shorten = Shorten
-                    ,MaxRow  = MaxRow
-                    ,MaxRows = MaxRows
-                    ).print()
+        sh.Table (headers = headers
+                 ,rows    = rows
+                 ,Shorten = Shorten
+                 ,MaxRow  = MaxRow
+                 ,MaxRows = MaxRows
+                 ).print()
 
     def update(self,query):
         f = '[MClient] db.DB.update'

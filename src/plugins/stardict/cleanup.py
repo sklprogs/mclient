@@ -4,8 +4,9 @@ import re
 import html
 import skl_shared.shared as sh
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
+import gettext
+import skl_shared.gettext_windows
+skl_shared.gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 
@@ -212,11 +213,11 @@ class Type1:
             if self._blocks[i] in dic_titles:
                 Condition = False
                 if i > 0:
-                    if sh.lg.Text(text=self._blocks[i]).has_cyrillic() \
-                    and sh.lg.Text(text=self._blocks[i-1]).has_latin():
+                    if sh.Text(text=self._blocks[i]).has_cyrillic() \
+                    and sh.Text(text=self._blocks[i-1]).has_latin():
                         Condition = True
-                    elif sh.lg.Text(text=self._blocks[i]).has_latin() \
-                    and sh.lg.Text(text=self._blocks[i-1]).has_cyrillic():
+                    elif sh.Text(text=self._blocks[i]).has_latin() \
+                    and sh.Text(text=self._blocks[i-1]).has_cyrillic():
                         Condition = True
                 if Condition:
                     self._blocks[i-1], self._blocks[i] = self._blocks[i], self._blocks[i-1]
@@ -366,11 +367,11 @@ class Type2:
             if self.dic(self._blocks[i]):
                 Condition = False
                 if i > 0:
-                    if sh.lg.Text(text=self._blocks[i]).has_cyrillic() \
-                    and sh.lg.Text(text=self._blocks[i-1]).has_latin():
+                    if sh.Text(text=self._blocks[i]).has_cyrillic() \
+                    and sh.Text(text=self._blocks[i-1]).has_latin():
                         Condition = True
-                    elif sh.lg.Text(text=self._blocks[i]).has_latin() \
-                    and sh.lg.Text(text=self._blocks[i-1]).has_cyrillic():
+                    elif sh.Text(text=self._blocks[i]).has_latin() \
+                    and sh.Text(text=self._blocks[i-1]).has_cyrillic():
                         Condition = True
                 if Condition:
                     self._blocks[i-1], self._blocks[i] = self._blocks[i], self._blocks[i-1]

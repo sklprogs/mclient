@@ -7,9 +7,10 @@ import plugins.stardict.cleanup as cu
 import plugins.stardict.tags    as tg
 import plugins.stardict.elems   as el
 
-import gettext, gettext_windows
+import gettext
+import skl_shared.gettext_windows
 
-gettext_windows.setup_env()
+skl_shared.gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 

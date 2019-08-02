@@ -6,8 +6,9 @@ import html
 import urllib.parse
 import skl_shared.shared as sh
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
+import gettext
+import skl_shared.gettext_windows
+skl_shared.gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 sep_words_found = 'найдены отдельные слова'
@@ -28,9 +29,9 @@ class CleanUp:
         '''
         f = '[MClient] plugins.multitrancom.CleanUp.fix_href'
         if self._text:
-            isearch = sh.lg.Search (text   = self._text
-                                   ,search = 'href="'
-                                   )
+            isearch = sh.Search (text   = self._text
+                                ,search = 'href="'
+                                )
             poses = isearch.next_loop()
             poses = poses[::-1]
             for pos in poses:
@@ -78,9 +79,9 @@ class CleanUp:
             those words only.
         '''
         if sep_words_found in self._text:
-            pos = sh.lg.Search (text   = self._text
-                               ,search = sep_words_found
-                               ).next()
+            pos = sh.Search (text   = self._text
+                            ,search = sep_words_found
+                            ).next()
             # -1 gives False
             if str(pos).isdigit():
                 pos += len(sep_words_found)

@@ -16,8 +16,9 @@
 
 import skl_shared.shared as sh
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
+import gettext
+import skl_shared.gettext_windows
+skl_shared.gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 
@@ -146,12 +147,12 @@ class Elems:
                          ,block._same,block._select
                          ]
                         )
-        sh.lg.Table (headers = headers
-                    ,rows    = rows
-                    ,Shorten = Shorten
-                    ,MaxRow  = MaxRow
-                    ,MaxRows = MaxRows
-                    ).print()
+        sh.Table (headers = headers
+                 ,rows    = rows
+                 ,Shorten = Shorten
+                 ,MaxRow  = MaxRow
+                 ,MaxRows = MaxRows
+                 ).print()
         
     def unite_comments(self):
         i = 0
@@ -160,10 +161,10 @@ class Elems:
             and self._blocks[i]._same > 0:
                 if i > 0 and self._blocks[i-1]._type == 'comment':
                     self._blocks[i-1]._text \
-                    = sh.lg.List (lst1 = [self._blocks[i-1]._text
-                                         ,self._blocks[i]._text
-                                         ]
-                                 ).space_items()
+                    = sh.List (lst1 = [self._blocks[i-1]._text
+                                      ,self._blocks[i]._text
+                                      ]
+                              ).space_items()
                     del self._blocks[i]
                     i -= 1
             i += 1

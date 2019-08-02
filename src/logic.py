@@ -134,10 +134,10 @@ class Welcome:
         self.values()
         self._product = product
         self._version = version
-        self._desc    = sh.lg.List (lst1 = [self._product
-                                           ,self._version
-                                           ]
-                                   ).space_items()
+        self._desc    = sh.List (lst1 = [self._product
+                                        ,self._version
+                                        ]
+                                ).space_items()
 
     def values(self):
         self._sources   = []
@@ -184,7 +184,7 @@ class Welcome:
     
     def gen_hotkey(self,hotkey):
         self.istr.write('<td align="center" valign="top" col width="100">')
-        self.istr.write(sh.lg.Hotkeys(hotkey).run())
+        self.istr.write(sh.Hotkeys(hotkey).run())
         self.istr.write('</td>')
     
     def gen_row(self,hint1,hotkey1,hint2,hotkey2):
@@ -387,7 +387,7 @@ class DefaultConfig:
     
     def __init__(self,product='mclient'):
         self.values()
-        self.ihome   = sh.lg.Home(app_name=product.lower())
+        self.ihome   = sh.Home(app_name=product.lower())
         self.Success = self.ihome.create_conf()
     
     def values(self):
@@ -405,9 +405,9 @@ class DefaultConfig:
                 self._dics = self.ihome.add_config('dics')
                 if self._dics:
                     if os.path.exists(self._dics):
-                        self.Success = sh.lg.Directory(path=self._dics).Success
+                        self.Success = sh.Directory(path=self._dics).Success
                     else:
-                        self.Success = sh.lg.Path(path=self._dics).create()
+                        self.Success = sh.Path(path=self._dics).create()
                 else:
                     self.Success = False
                     sh.com.empty(f)
@@ -421,11 +421,11 @@ class DefaultConfig:
             self._fblock = self.ihome.add_config('block.txt')
             if self._fblock:
                 if os.path.exists(self._fblock):
-                    self.Success = sh.lg.File(file=self._fblock).Success
+                    self.Success = sh.File(file=self._fblock).Success
                 else:
-                    iwrite = sh.lg.WriteTextFile (file    = self._fblock
-                                                 ,Rewrite = True
-                                                 )
+                    iwrite = sh.WriteTextFile (file    = self._fblock
+                                              ,Rewrite = True
+                                              )
                     iwrite.write(sample_block)
                     self.Success = iwrite.Success
             else:
@@ -441,11 +441,11 @@ class DefaultConfig:
                 self._fprior = self.ihome.add_config('prioritize.txt')
                 if self._fprior:
                     if os.path.exists(self._fprior):
-                        self.Success = sh.lg.File(file=self._fprior).Success
+                        self.Success = sh.File(file=self._fprior).Success
                     else:
-                        iwrite = sh.lg.WriteTextFile (file    = self._fprior
-                                                     ,Rewrite = True
-                                                     )
+                        iwrite = sh.WriteTextFile (file    = self._fprior
+                                                  ,Rewrite = True
+                                                  )
                         iwrite.write(sample_prior)
                         self.Success = iwrite.Success
                 else:
@@ -459,10 +459,10 @@ class DefaultConfig:
         f = '[MClient] logic.DefaultConfig.abbr'
         if self.Success:
             if not self._fabbr:
-                self._fabbr  = sh.lg.objs.pdir().add ('..','resources'
-                                                     ,'abbr.txt'
-                                                     )
-                self.Success = sh.lg.File(file=self._fabbr).Success
+                self._fabbr = sh.objs.pdir().add ('..','resources'
+                                                 ,'abbr.txt'
+                                                 )
+                self.Success = sh.File(file=self._fabbr).Success
             return self._fabbr
         else:
             sh.com.cancel(f)
@@ -471,10 +471,10 @@ class DefaultConfig:
         f = '[MClient] logic.DefaultConfig.default_config'
         if self.Success:
             if not self._fdconf:
-                self._fdconf = sh.lg.objs.pdir().add ('..','resources'
-                                                     ,'default.cfg'
-                                                     )
-                self.Success = sh.lg.File(file=self._fdconf).Success
+                self._fdconf = sh.objs.pdir().add ('..','resources'
+                                                  ,'default.cfg'
+                                                  )
+                self.Success = sh.File(file=self._fdconf).Success
             return self._fdconf
         else:
             sh.com.cancel(f)
@@ -485,13 +485,13 @@ class DefaultConfig:
             if not self._fconf:
                 self._fconf = self.ihome.add_config('mclient.cfg')
                 if os.path.exists(self._fconf):
-                    self.Success = sh.lg.File(file=self._fconf).Success
+                    self.Success = sh.File(file=self._fconf).Success
                 else:
                     self.default_config()
                     if self.Success:
-                        self.Success = sh.lg.File (file = self._fdconf
-                                                  ,dest = self._fconf
-                                                  ).copy()
+                        self.Success = sh.File (file = self._fdconf
+                                               ,dest = self._fconf
+                                               ).copy()
                     else:
                         sh.com.cancel(f)
             return self._fconf
@@ -512,7 +512,7 @@ class DefaultConfig:
 
 
 
-class ConfigMclient(sh.lg.Config):
+class ConfigMclient(sh.Config):
 
     def __init__(self):
         super().__init__()
@@ -536,7 +536,7 @@ class ConfigMclient(sh.lg.Config):
         # Create these keys before reading the config
         self.path    = objs.default().ihome.add_config('mclient.cfg')
         self.reset()
-        iread        = sh.lg.ReadTextFile(self.path)
+        iread        = sh.ReadTextFile(self.path)
         self.text    = iread.get()
         self.Success = iread.Success
         self._default()
@@ -714,9 +714,9 @@ class Lists:
 
     def abbr(self):
         if self.Success:
-            dic = sh.lg.Dic (file     = self._abbr
-                            ,Sortable = True
-                            )
+            dic = sh.Dic (file     = self._abbr
+                         ,Sortable = True
+                         )
             self.Success = dic.Success
             return dic
         else:
@@ -725,8 +725,8 @@ class Lists:
     def blacklist(self):
         f = '[MClient] logic.Lists.blacklist'
         if self.Success:
-            text = sh.lg.ReadTextFile(file=self._blacklist).get()
-            text = sh.lg.Text(text=text,Auto=1).text
+            text = sh.ReadTextFile(file=self._blacklist).get()
+            text = sh.Text(text=text,Auto=1).text
             return text.splitlines()
         else:
             sh.com.cancel(f)
@@ -734,8 +734,8 @@ class Lists:
     def prioritize(self):
         f = '[MClient] logic.Lists.prioritize'
         if self.Success:
-            text = sh.lg.ReadTextFile(file=self._prioritize).get()
-            text = sh.lg.Text(text=text,Auto=1).text
+            text = sh.ReadTextFile(file=self._prioritize).get()
+            text = sh.Text(text=text,Auto=1).text
             return text.splitlines()
         else:
             sh.com.cancel(f)
@@ -874,7 +874,7 @@ class Order:
                         self._fill_dic(dic1,ind1)
                         self._fill_dic(dic2,ind2)
                         
-                    lst = sh.lg.List(lst1=self._prioritize).duplicates()
+                    lst = sh.List(lst1=self._prioritize).duplicates()
                     if lst:
                         self._prioritize = list(lst)
                     else:
@@ -929,7 +929,7 @@ class Order:
                     self.unblock(item)
             elif self.is_prioritized(self._dic1) \
             and self.is_prioritized(self._dic2) \
-            and not sh.lg.List(self._dic1,self._dic2).shared():
+            and not sh.List(self._dic1,self._dic2).shared():
                 self.prioritize_by()
             else:
                 for item in self._dic1:
@@ -953,7 +953,7 @@ class Order:
                     self.unblock(item)
             elif self.is_prioritized(self._dic1):
                 if self.is_prioritized(self._dic2) \
-                and not sh.lg.List(self._dic1,self._dic2).shared():
+                and not sh.List(self._dic1,self._dic2).shared():
                     self.prioritize_by(Down=True)
                 else:
                     for item in self._dic1:
@@ -1042,12 +1042,12 @@ class Order:
         f = '[MClient] logic.Order._lists'
         if self.Success:
             self.lists = Lists()
-            self._blacklist = sh.lg.Input (title = f
-                                          ,value = self.lists.blacklist()
-                                          ).list()
-            self._prioritize = sh.lg.Input (title = f
-                                           ,value = self.lists.prioritize()
-                                           ).list()
+            self._blacklist = sh.Input (title = f
+                                       ,value = self.lists.blacklist()
+                                       ).list()
+            self._prioritize = sh.Input (title = f
+                                        ,value = self.lists.prioritize()
+                                        ).list()
             self.Success = self.lists.Success
         else:
             sh.com.cancel(f)

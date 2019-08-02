@@ -7,8 +7,9 @@ import gzip
 import zlib
 import skl_shared.shared as sh
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
+import gettext
+import skl_shared.gettext_windows
+skl_shared.gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 
@@ -42,7 +43,7 @@ class Suggest:
         if self.Success:
             items = objs.all_dics().get_index()
             if items:
-                timer = sh.lg.Timer(f)
+                timer = sh.Timer(f)
                 timer.start()
                 search = self._search.lower()
                 result = [item for item in items \
@@ -99,7 +100,7 @@ class DictZip:
     def reset(self,path):
         self.values()
         self._path   = path
-        self.Success = sh.lg.File(self._path).Success
+        self.Success = sh.File(self._path).Success
         self.load()
     
     def load(self):
@@ -206,14 +207,14 @@ class StarDict:
     def reset(self,ifopath):
         self.values()
         self._path = ifopath
-        ipath      = sh.lg.Path(self._path)
+        ipath      = sh.Path(self._path)
         ''' We need a filename with an absolute path here.
             'file'[:-4] basically does the same thing (providing that
-            extensions are only 3 symbols long). 'sh.lg.Path' is more
+            extensions are only 3 symbols long). 'sh.Path' is more
             precise for other cases.
         '''
         self._fname  = os.path.join(ipath.dirname(),ipath.filename())
-        self.Success = sh.lg.File(self._path).Success
+        self.Success = sh.File(self._path).Success
         self.check()
         self.meta()
 
@@ -235,9 +236,9 @@ class StarDict:
             if self._ifo:
                 if 'bookname' in self._ifo and 'wordcount' in self._ifo:
                     self._title  = str(self._ifo['bookname'])
-                    self._wcount = sh.lg.Input (title = f
-                                               ,value = self._ifo['wordcount']
-                                               ).integer()
+                    self._wcount = sh.Input (title = f
+                                            ,value = self._ifo['wordcount']
+                                            ).integer()
                 else:
                     self.Success = False
                     mes = _('File "{}" is incorrect!')
@@ -342,9 +343,9 @@ class StarDict:
             if type(key) is slice:
                 return [w[0] for w in self._idx[key]]
             if type(key) is str:
-                return sh.lg.Input (title = f
-                                   ,value = self.search(key)
-                                   ).integer()
+                return sh.Input (title = f
+                                ,value = self.search(key)
+                                ).integer()
         else:
             sh.com.cancel(f)
 
@@ -473,7 +474,7 @@ class AllDics:
     def reset(self):
         self.values()
         self._path   = PATH
-        self.Success = sh.lg.Directory(self._path).Success
+        self.Success = sh.Directory(self._path).Success
     
     def walk(self):
         ''' Explore all subdirectories of path searching for filenames
@@ -486,7 +487,7 @@ class AllDics:
                     for file in files:
                         if not file.endswith('.ifo'):
                             continue
-                        ''' #todo: #fix: sh.lg.Path.basename works
+                        ''' #todo: #fix: sh.Path.basename works
                             incorrectly for cases like file.dict.dz.
                         '''
                         name = file[:-4]
@@ -526,7 +527,7 @@ class AllDics:
                 sh.objs._waitbox.show()
                 mes = _('Load offline dictionaries')
                 sh.objs.mes(f,mes,True).info()
-                timer = sh.lg.Timer(f)
+                timer = sh.Timer(f)
                 timer.start()
                 for idic in self._dics:
                     idic.load()

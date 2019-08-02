@@ -8,9 +8,10 @@ import plugins.multitrancom.tags    as tg
 import plugins.multitrancom.elems   as el
 import plugins.multitrancom.pairs   as pr
 
-import gettext, gettext_windows
+import gettext
+import skl_shared.gettext_windows
 
-gettext_windows.setup_env()
+skl_shared.gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 

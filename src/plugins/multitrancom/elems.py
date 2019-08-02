@@ -124,12 +124,12 @@ class Same:
                         eng-rus: 'tree limb'.
                     '''
                     if not self._blocks[i-1]._text.startswith('('):
-                        cond1 = sh.lg.Text(self._blocks[i-2]._text).has_cyrillic()\
-                                and sh.lg.Text(self._blocks[i-1]._text).has_cyrillic()\
-                                and sh.lg.Text(self._blocks[i]._text).has_cyrillic()
-                        cond2 = sh.lg.Text(self._blocks[i-2]._text).has_latin()\
-                                and sh.lg.Text(self._blocks[i-1]._text).has_latin()\
-                                and sh.lg.Text(self._blocks[i]._text).has_latin()
+                        cond1 = sh.Text(self._blocks[i-2]._text).has_cyrillic()\
+                                and sh.Text(self._blocks[i-1]._text).has_cyrillic()\
+                                and sh.Text(self._blocks[i]._text).has_cyrillic()
+                        cond2 = sh.Text(self._blocks[i-2]._text).has_latin()\
+                                and sh.Text(self._blocks[i-1]._text).has_latin()\
+                                and sh.Text(self._blocks[i]._text).has_latin()
                         if cond1 or cond2:
                             self._blocks[i-1]._same = 1
                             self._blocks[i  ]._same = 1
@@ -162,12 +162,12 @@ class Same:
             rows = []
             for block in self._blocks:
                 rows.append([block._type,block._text,block._same])
-            sh.lg.Table (headers = headers
-                        ,rows    = rows
-                        ,Shorten = self.Shorten
-                        ,MaxRow  = self.MaxRow
-                        ,MaxRows = self.MaxRows
-                        ).print()
+            sh.Table (headers = headers
+                     ,rows    = rows
+                     ,Shorten = self.Shorten
+                     ,MaxRow  = self.MaxRow
+                     ,MaxRows = self.MaxRows
+                     ).print()
     
     def run(self):
         f = 'plugins.multitrancom.elems.Same.run'
@@ -430,12 +430,12 @@ class Elems:
                              ,block._first,block._last
                              ]
                             )
-            sh.lg.Table (headers = headers
-                        ,rows    = rows
-                        ,Shorten = self.Shorten
-                        ,MaxRow  = self.MaxRow
-                        ,MaxRows = self.MaxRows
-                        ).print()
+            sh.Table (headers = headers
+                     ,rows    = rows
+                     ,Shorten = self.Shorten
+                     ,MaxRow  = self.MaxRow
+                     ,MaxRows = self.MaxRows
+                     ).print()
         
     def transc(self):
         for block in self._blocks:

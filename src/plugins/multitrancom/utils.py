@@ -8,8 +8,9 @@ import operator
 import urllib.request
 import skl_shared.shared as sh
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
+import gettext
+import skl_shared.gettext_windows
+skl_shared.gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 ''' It seems to be highly difficult to extract abbreviation - full-title
@@ -32,7 +33,7 @@ class Pairs:
         f = '[MClient] plugins.multitrancom.utils.Pairs.blacklist'
         file    = '/tmp/urls'
         pattern = 'https\:\/\/www.multitran.com\/m.exe\?l1=(\d+)\&l2=(\d+)\&SHL=2\&s='
-        text    = sh.lg.ReadTextFile(file).get()
+        text    = sh.ReadTextFile(file).get()
         if text:
             lst = text.splitlines()
             lst = [item.strip() for item in lst if item.strip()]
@@ -53,7 +54,7 @@ class Pairs:
     def bad_gateway(self):
         f = '[MClient] plugins.multitrancom.utils.Pairs.bad_gateway'
         file    = '/tmp/urls'
-        text    = sh.lg.ReadTextFile(file).get()
+        text    = sh.ReadTextFile(file).get()
         if text:
             lst = text.splitlines()
             lst = [item.strip() for item in lst if item.strip()]
@@ -101,7 +102,7 @@ class Pairs:
         f = '[MClient] plugins.multitrancom.utils.Pairs.remaining'
         file    = '/tmp/urls'
         pattern = 'https\:\/\/www.multitran.com\/m.exe\?l1=(\d+)\&l2=(\d+)\&SHL=2\&s='
-        text    = sh.lg.ReadTextFile(file).get()
+        text    = sh.ReadTextFile(file).get()
         if text:
             lst = text.splitlines()
             lst = [item.strip() for item in lst if item.strip()]
@@ -158,9 +159,9 @@ class Pairs:
         if 0 < code1 <= len(self._langs):
             code = ''
             while not code:
-                code = sh.lg.Get (url     = url
-                                 ,timeout = 20
-                                 ).run()
+                code = sh.Get (url     = url
+                              ,timeout = 20
+                              ).run()
             if self._zero in code.replace('\n','').replace('\r',''):
                 return True
         else:
@@ -219,19 +220,19 @@ class Pairs:
         if self._errors:
             message += '\n\n' + _('URLs that caused errors:') + '\n'
             message += '\n'.join(self._errors)
-        sh.lg.WriteTextFile (file    = self._filew
-                            ,Rewrite = True
-                            ).write(message)
+        sh.WriteTextFile (file    = self._filew
+                         ,Rewrite = True
+                         ).write(message)
     
     def run(self):
         f = '[MClient] plugins.multitrancom.utils.Pairs.run'
-        timer = sh.lg.Timer(f)
+        timer = sh.Timer(f)
         timer.start()
         self.fill()
         self.loop()
         timer.end()
         self.write()
-        sh.lg.Launch(self._filew).default()
+        sh.Launch(self._filew).default()
     
     def ispair(self,code1,code2):
         f = '[MClient] plugins.multitrancom.utils.Pairs.ispair'
@@ -245,11 +246,11 @@ class Pairs:
                 '''
                 code = ''
                 while not code:
-                    code = sh.lg.Get(url=url).run()
+                    code = sh.Get(url=url).run()
                 '''
-                code = sh.lg.Get (url     = url
-                                 ,timeout = 20
-                                 ).run()
+                code = sh.Get (url     = url
+                              ,timeout = 20
+                              ).run()
                 if 'Тематика' in code:
                     return True
                 elif not code:
@@ -306,9 +307,9 @@ class Topics:
     def get_html(self):
         f = '[MClient] plugins.multitrancom.utils.Topics.get_html'
         if self.Success:
-            self._html = sh.lg.Get (url      = self._url
-                                   ,encoding = 'utf-8'
-                                   ).run()
+            self._html = sh.Get (url      = self._url
+                                ,encoding = 'utf-8'
+                                ).run()
             if self._html:
                 self._html = self._html.replace('&amp;','&')
             else:
@@ -389,9 +390,9 @@ class Abbr:
     def get(self):
         f = '[MClient] plugins.multitrancom.utils.Abbr.get'
         if self.Success:
-            self._html = sh.lg.Get (url      = self._url
-                                   ,encoding = 'utf-8'
-                                   ).run()
+            self._html = sh.Get (url      = self._url
+                                ,encoding = 'utf-8'
+                                ).run()
             if self._html:
                 self._html = self._html.replace('&amp;','&')
             else:
@@ -403,9 +404,9 @@ class Abbr:
     def get2(self):
         f = '[MClient] plugins.multitrancom.utils.Abbr.get2'
         if self.Success:
-            self._html2 = sh.lg.Get (url      = self._url2
-                                    ,encoding = 'utf-8'
-                                    ).run()
+            self._html2 = sh.Get (url      = self._url2
+                                 ,encoding = 'utf-8'
+                                 ).run()
             if self._html2:
                 self._html2 = self._html2.replace('&amp;','&')
             else:
@@ -467,12 +468,12 @@ class Abbr:
             for i in range(len(self._titles)):
                 if self._titles[i]:
                     self._titles[i] = self._titles[i].replace('<a title="','')
-                    pos = sh.lg.Search (text   = self._titles[i]
-                                       ,search = '" href'
-                                       ).next()
-                    pos = sh.lg.Input (title = f
-                                      ,value = pos
-                                      ).integer()
+                    pos = sh.Search (text   = self._titles[i]
+                                    ,search = '" href'
+                                    ).next()
+                    pos = sh.Input (title = f
+                                   ,value = pos
+                                   ).integer()
                     self._titles[i] = self._titles[i][:pos]
                     self._titles[i] = self._titles[i].strip()
                 else:
@@ -536,12 +537,12 @@ class Tags:
     def split(self):
         f = '[MClient] plugins.multitrancom.utils.Tags.split'
         if self.Success:
-            self._start = sh.lg.Search (text   = self.text
-                                       ,search = self.search
-                                       ).next_loop()
-            self._end = sh.lg.Search (text   = self.text
-                                     ,search = '</a>'
-                                     ).next_loop()
+            self._start = sh.Search (text   = self.text
+                                    ,search = self.search
+                                    ).next_loop()
+            self._end = sh.Search (text   = self.text
+                                  ,search = '</a>'
+                                  ).next_loop()
             self.equalize()
             if len(self._start) == len(self._end):
                 for i in range(len(self._start)):
@@ -602,12 +603,12 @@ class Tags:
         if self.Success:
             if self._tags:
                 for tag in self._tags:
-                    pos = sh.lg.Search (text   = tag
-                                       ,search = '>'
-                                       ).next()
-                    pos = sh.lg.Input (title = 'Tags.links'
-                                      ,value = pos
-                                      ).integer()
+                    pos = sh.Search (text   = tag
+                                    ,search = '>'
+                                    ).next()
+                    pos = sh.Input (title = 'Tags.links'
+                                   ,value = pos
+                                   ).integer()
                     self._urls.append(tag[:pos])
                     self._titles.append(tag[pos+1:])
             else:
@@ -683,9 +684,9 @@ class Commands:
         f = '[MClient] plugins.multitrancom.utils.Commands.new_abbrs'
         file1 = '/tmp/abbr.txt'
         file2 = '/tmp/abbr2.txt'
-        dic1  = sh.lg.Dic(file=file1)
+        dic1  = sh.Dic(file=file1)
         dic1.get()
-        dic2  = sh.lg.Dic(file=file2)
+        dic2  = sh.Dic(file=file2)
         dic2.get()
         if dic1.Success and dic2.Success:
             missing = []
@@ -705,8 +706,8 @@ class Commands:
         f = '[MClient] plugins.multitrancom.utils.Commands.compare_topics'
         file1 = '/tmp/topics'
         file2 = '/tmp/topics2'
-        text1 = sh.lg.ReadTextFile(file=file1).get()
-        text2 = sh.lg.ReadTextFile(file=file2).get()
+        text1 = sh.ReadTextFile(file=file1).get()
+        text2 = sh.ReadTextFile(file=file2).get()
         if text1 and text2:
             text1 = text1.splitlines()
             text2 = text2.splitlines()
@@ -755,9 +756,9 @@ class Commands:
             text = ''
             for i in range(len(topics._abbrs)):
                 text += topics._abbrs[i] + '\t' + topics._titles[i] + '\n'
-            sh.lg.WriteTextFile (file    = file_w
-                                ,Rewrite = True
-                                ).write(text)
+            sh.WriteTextFile (file    = file_w
+                             ,Rewrite = True
+                             ).write(text)
             sh.objs.txt().reset()
             sh.objs._txt.title(_('Abbreviations:'))
             sh.objs._txt.insert(text)
@@ -776,10 +777,10 @@ class Commands:
             abbreviations, 'dic.transl' - full titles.
         '''
         file2 = '/tmp/abbr.txt'
-        topics = sh.lg.ReadTextFile(file=file1).get()
-        dic  = sh.lg.Dic (file     = file2
-                         ,Sortable = True
-                         )
+        topics = sh.ReadTextFile(file=file1).get()
+        dic  = sh.Dic (file     = file2
+                      ,Sortable = True
+                      )
         if topics and dic.orig and dic.transl:
             i = 0
             count = 0

@@ -5,9 +5,10 @@ import urllib.request
 import html
 import skl_shared.shared as sh
 
-import gettext, gettext_windows
+import gettext
+import skl_shared.gettext_windows
 
-gettext_windows.setup_env()
+skl_shared.gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 
@@ -44,10 +45,10 @@ class Suggest:
             ''' #NOTE: the encoding here MUST be 'utf-8' irrespective
                 of the plugin!
             '''
-            self._url = sh.lg.Online (base_str   = self._pair
-                                     ,search_str = self._search
-                                     ,encoding   = 'utf-8'
-                                     ).url()
+            self._url = sh.Online (base_str   = self._pair
+                                  ,search_str = self._search
+                                  ,encoding   = 'utf-8'
+                                  ).url()
             if not self._url:
                 sh.com.empty(f)
                 self.Success = False
@@ -60,9 +61,9 @@ class Suggest:
             ''' #NOTE: the encoding here (unlike 'self.url')
                 is plugin-dependent.
             '''
-            self._items = sh.lg.Get (url      = self._url
-                                    ,encoding = ENCODING
-                                    ).run()
+            self._items = sh.Get (url      = self._url
+                                 ,encoding = ENCODING
+                                 ).run()
             if self._items:
                 self._items = html.unescape(self._items)
                 self._items = [item for item \
@@ -181,10 +182,10 @@ class Commands:
         if search and code1 and code2:
             #note: The encoding here should always be 'utf-8'!
             base_str = 'https://www.multitran.com/m.exe?s=%s&l1={}&l2={}&SHL=2'.format(code1,code2)
-            return sh.lg.Online (base_str   = base_str
-                                ,search_str = search
-                                ,encoding   = 'utf-8'
-                                ).url()
+            return sh.Online (base_str   = base_str
+                             ,search_str = search
+                             ,encoding   = 'utf-8'
+                             ).url()
         else:
             sh.com.empty(f)
     

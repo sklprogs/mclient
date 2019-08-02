@@ -5,8 +5,9 @@ import re
 import copy
 import skl_shared.shared as sh
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
+import gettext
+import skl_shared.gettext_windows
+skl_shared.gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 
@@ -246,9 +247,9 @@ class Tags:
         for i in range(len(self._tags)):
             message += '%d:%s\n' % (i,self._tags[i])
         #sh.objs.mes(f,message,True).info()
-        words = sh.lg.Words (text = message
-                            ,Auto = 1
-                            )
+        words = sh.Words (text = message
+                         ,Auto = True
+                         )
         words.sent_nos()
         sh.objs.txt().reset(words)
         sh.objs._txt.title(f)
@@ -270,12 +271,12 @@ class Tags:
                          ,block._same
                          ]
                         )
-        sh.lg.Table (headers = headers
-                    ,rows    = rows
-                    ,Shorten = self.Shorten
-                    ,MaxRow  = self.MaxRow
-                    ,MaxRows = self.MaxRows
-                    ).print()
+        sh.Table (headers = headers
+                 ,rows    = rows
+                 ,Shorten = self.Shorten
+                 ,MaxRow  = self.MaxRow
+                 ,MaxRows = self.MaxRows
+                 ).print()
 
     def debug(self):
         if self.Debug:

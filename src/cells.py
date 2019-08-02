@@ -159,12 +159,12 @@ class BlockPrioritize:
                              ,block._priority        
                              ]
                             )
-            sh.lg.Table (headers = headers
-                        ,rows    = rows
-                        ,Shorten = self.Shorten
-                        ,MaxRow  = self.MaxRow
-                        ,MaxRows = self.MaxRows
-                        ).print()
+            sh.Table (headers = headers
+                     ,rows    = rows
+                     ,Shorten = self.Shorten
+                     ,MaxRow  = self.MaxRow
+                     ,MaxRows = self.MaxRows
+                     ).print()
 
 
 
@@ -304,12 +304,12 @@ class Cells:
                              ,block._same
                              ]
                             )
-            sh.lg.Table (headers = headers
-                        ,rows    = rows
-                        ,Shorten = self.Shorten
-                        ,MaxRow  = self.MaxRow
-                        ,MaxRows = self.MaxRows
-                        ).print()
+            sh.Table (headers = headers
+                     ,rows    = rows
+                     ,Shorten = self.Shorten
+                     ,MaxRow  = self.MaxRow
+                     ,MaxRows = self.MaxRows
+                     ).print()
     
     def wrap(self):
         if self.Reverse:
@@ -557,12 +557,12 @@ class Pos:
                              ,block._last
                              ]
                             )
-            sh.lg.Table (headers = headers
-                        ,rows    = rows
-                        ,Shorten = self.Shorten
-                        ,MaxRow  = self.MaxRow
-                        ,MaxRows = self.MaxRows
-                        ).print()
+            sh.Table (headers = headers
+                     ,rows    = rows
+                     ,Shorten = self.Shorten
+                     ,MaxRow  = self.MaxRow
+                     ,MaxRows = self.MaxRows
+                     ).print()
     
     def gen_poses(self):
         ''' We generate positions here according to the text produced by 
@@ -585,15 +585,15 @@ class Pos:
         last      = 0
         not_found = []
         for block in self._blocks:
-            text = sh.lg.Text(text=block._text.strip()).delete_duplicate_spaces()
+            text = sh.Text(text=block._text.strip()).delete_duplicate_spaces()
             if text:
-                search = sh.lg.Search (text   = self._raw_text
-                                      ,search = text
-                                      )
+                search = sh.Search (text   = self._raw_text
+                                   ,search = text
+                                   )
                 search.i = last
-                result = sh.lg.Input (title = f
-                                     ,value = search.next()
-                                     ).integer()
+                result = sh.Input (title = f
+                                  ,value = search.next()
+                                  ).integer()
                 if result >= last:
                     block._first = result
                 else:
