@@ -25,6 +25,20 @@ class DB:
         self.create_blocks()
         self.create_articles()
         
+    def wforma(self,pos):
+        f = '[MClient] db.DB.wforma'
+        if self._articleid:
+            self.dbc.execute ('select WFORMA from BLOCKS \
+                               where ARTICLEID = ? and BLOCK = 0 \
+                               and IGNORE = 0 and POS1 <= ? \
+                               and POS2 > ?',(self._articleid,pos,pos,)
+                             )
+            result = self.dbc.fetchone()
+            if result:
+                return result[0]
+        else:
+            sh.com.empty(f)
+    
     def next_dica(self,pos,dica):
         f = '[MClient] db.DB.next_dica'
         if self._articleid:

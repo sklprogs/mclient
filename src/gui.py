@@ -9,7 +9,7 @@ gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 PRODUCT = 'MClient'
-VERSION = '6.1.2'
+VERSION = '6.2'
 ICON    = sh.objs.pdir().add('..','resources','icon_64x64_mclient.gif')
 
 

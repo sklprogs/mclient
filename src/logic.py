@@ -309,6 +309,9 @@ class Welcome:
         hint40   = _('Swap source and target languages')
         hotkey40 = sh.lg.globs['var']['bind_swap_langs']
         
+        hint41   = _('Copy the nominative case')
+        hotkey41 = sh.lg.globs['var']['bind_copy_nominative']
+        
         self.gen_row(hint1,hotkey1,hint2,hotkey2)
         self.gen_row(hint34,hotkey34,hint35,hotkey35)
         self.gen_row(hint36,hotkey36,hint37,hotkey37)
@@ -328,7 +331,7 @@ class Welcome:
         self.gen_row(hint26,hotkey26,hint27,hotkey27)
         self.gen_row(hint28,hotkey28,hint29,hotkey29)
         self.gen_row(hint30,hotkey30,hint32,hotkey32)
-        self.gen_row(hint33,hotkey33,'','')
+        self.gen_row(hint33,hotkey33,hint41,hotkey41)
         
         self.istr.write('</font>')
         self.istr.write('</table>')
@@ -584,6 +587,7 @@ class ConfigMclient(sh.Config):
            ,'bind_col3_down'              :'<Shift-Down>'
            ,'bind_col3_up'                :'<Shift-Up>'
            ,'bind_copy_article_url'       :'<Control-F7>'
+           ,'bind_copy_nominative'        :'<Control-w>'
            ,'bind_copy_sel_alt'           :'<Control-KP_Enter>'
            ,'bind_copy_sel'               :'<Control-Return>'
            ,'bind_copy_url'               :'<Shift-F7>'

@@ -543,6 +543,16 @@ class WebFrame:
         self.bindings()
         self.reset_opt()
     
+    def copy_wform(self,event=None):
+        f = '[MClient] mclient.WebFrame.copy_wform'
+        wforma = objs.blocks_db().wforma(pos=self._pos)
+        if wforma:
+            sh.Clipboard().copy(wforma)
+            if sh.lg.globs['bool']['Iconify']:
+                self.minimize()
+        else:
+            sh.com.empty(f)
+    
     def show(self,event=None):
         self.gui.show()
     
@@ -834,6 +844,10 @@ class WebFrame:
     
     def bindings(self):
         # 'gui.obj.widget' is 'Toplevel'; 'gui.widget' is 'TkinterHtml'
+        sh.com.bind (obj      = self.gui.obj
+                    ,bindings = sh.lg.globs['var']['bind_copy_nominative']
+                    ,action   = self.copy_wform
+                    )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = sh.lg.globs['var']['bind_swap_langs']
                     ,action   = self.swap_langs
