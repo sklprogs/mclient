@@ -423,27 +423,28 @@ class History:
 
     def __init__(self):
         self.gui = gi.History()
+        self.gui.obj.action = self.go
         self.bindings()
 
     def bindings(self):
-        sh.com.bind (obj      = self.gui.parent
+        sh.com.bind (obj      = self.gui
                     ,bindings = [sh.lg.globs['var']['bind_toggle_history']
                                 ,sh.lg.globs['var']['bind_toggle_history_alt']
                                 ]
                     ,action   = self.gui.toggle
                     )
-        sh.com.bind (obj      = self.gui.parent
+        sh.com.bind (obj      = self.gui
                     ,bindings = sh.lg.globs['var']['bind_clear_history']
                     ,action   = self.clear
                     )
         ''' #note: the list is reversed, but I think it is still more
             intuitive when Home goes top and End goes bottom.
         '''
-        sh.com.bind (obj      = self.gui.parent
+        sh.com.bind (obj      = self.gui
                     ,bindings = '<Home>'
                     ,action   = self.go_first
                     )
-        sh.com.bind (obj      = self.gui.parent
+        sh.com.bind (obj      = self.gui
                     ,bindings = '<End>'
                     ,action   = self.go_last
                     )
@@ -469,9 +470,7 @@ class History:
         if searches:
             for item in searches:
                 lst.append(str(item[0]) + ' ► ' + str(item[1]))
-            self.gui.obj.reset (lst   = lst
-                               ,title = _('History')
-                               )
+            self.gui.obj.reset(lst=lst)
 
     def update(self):
         self.fill()
@@ -2665,14 +2664,15 @@ if  __name__ == '__main__':
     if lg.objs._default.Success:
         timed_update()
         objs.webframe().reset()
-        ''' 'Settings' is called in 'WebFrame.update_buttons'.
+        ''' #todo: clean this up
+            'Settings' is called in 'WebFrame.update_buttons'.
             Since both 'Settings' and 'WebFrame' are 'Top', we need
             to close 'Settings' and call 'center' manually
             (AutoCr=1 and 'center' or 'center' twice) before 'close').
         '''
         objs.settings().gui.parent.center()
         objs.search().gui.parent.parent.center()
-        objs.history().gui.parent.parent.center()
+        objs.history().gui.parent.center()
         objs._settings.close()
         objs._search.close()
         objs._history.close()

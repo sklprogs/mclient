@@ -398,12 +398,12 @@ class History:
         self.gui()
 
     def gui(self):
-        self.parent = sh.ListBoxC (title = _('History')
-                                  ,icon  = ICON
-                                  )
+        self.parent = sh.Top (icon  = ICON
+                             ,title = _('History')
+                             )
+        self.obj = sh.ListBox(self.parent)
         sh.Geometry(self.parent).set('250x350')
-        self.widget = self.parent.widget
-        self.obj    = self.parent
+        self.widget = self.obj.widget
         self.bindings()
 
     def bindings(self):
@@ -411,14 +411,14 @@ class History:
                     ,bindings = '<ButtonRelease-3>'
                     ,action   = self.copy
                     )
-        sh.com.bind (obj      = self
+        sh.com.bind (obj      = self.parent
                     ,bindings = ('<Escape>','<Control-q>','<Control-w>')
                     ,action   = self.close
                     )
 
     def show(self,event=None):
         self.Active = True
-        self.parent.focus()
+        self.obj.focus()
         self.parent.show()
 
     def close(self,event=None):
@@ -433,7 +433,7 @@ class History:
 
     # Скопировать элемент истории
     def copy(self,event=None):
-        sh.Clipboard().copy(self.parent.get())
+        sh.Clipboard().copy(self.obj.get())
 
 
 

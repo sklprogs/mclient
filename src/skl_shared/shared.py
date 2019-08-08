@@ -2735,6 +2735,9 @@ class ListBoxC:
     def get(self):
         if self.Save:
             return self.lbx_prm.get()
+        else:
+            # Always return a string
+            return ''
     
     def scrollx(self):
         if self.ScrollX:
