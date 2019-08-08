@@ -571,7 +571,7 @@ class WebFrame:
         objs.suggest().move_up()
     
     def suggest_show(self,event=None):
-        objs.suggest().suggest()
+        objs.suggest().suggest(event=event)
     
     def clear_history(self,event=None):
         objs.history().clear()
