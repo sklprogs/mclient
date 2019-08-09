@@ -1352,6 +1352,11 @@ class EntryC:
         self.add_gui()
         self.reset()
     
+    def insert(self,text='text',pos=0):
+        self.obj.insert (text = text
+                        ,pos  = pos
+                        )
+    
     def select_all(self,event=None):
         self.obj.select_all()
     
@@ -1365,8 +1370,19 @@ class EntryC:
         self.title()
         self.clear()
     
-    def clear(self,event=None):
-        self.obj.clear()
+    def clear_text (self,event=None
+                   ,pos1=0,pos2='end'
+                   ):
+        self.obj.clear_text (pos1 = pos1
+                            ,pos2 = pos2
+                            )
+    
+    def clear (self,event=None
+              ,pos1=0,pos2='end'
+              ):
+        self.clear_text (pos1 = pos1
+                        ,pos2 = pos2
+                        )
     
     def add_gui(self):
         self.parent = Top(AutoCr=False)
@@ -1566,12 +1582,16 @@ class Entry:
     def select_all(self,event=None):
         return self.gui.select_all()
 
-    def clear(self,event=None,pos1=0,pos2='end'):
+    def clear (self,event=None
+              ,pos1=0,pos2='end'
+              ):
         self.clear_text (pos1 = pos1
                         ,pos2 = pos2
                         )
     
-    def clear_text(self,event=None,pos1=0,pos2='end'):
+    def clear_text (self,event=None
+                   ,pos1=0,pos2='end'
+                   ):
         f = '[shared] shared.Entry.clear_text'
         try:
             self.gui.clear_text (pos1 = pos1
@@ -2699,6 +2719,9 @@ class ListBoxC:
         self.ScrollY  = ScrollY
         self.add_gui()
     
+    def index(self,event=None):
+        return self.lbx_prm._index
+    
     def clear(self,event=None):
         self.lbx_prm.clear()
     
@@ -2711,7 +2734,10 @@ class ListBoxC:
     def clear_selection(self,event=None):
         self.lbx_prm.clear_selection()
     
-    def reset(self,lst=(1,2,3,4,5),action=None,title='',icon=''):
+    def reset (self,lst=(1,2,3,4,5)
+              ,action=None,title=''
+              ,icon=''
+              ):
         self.Save = False
         self.lbx_prm.reset (lst    = lst
                            ,action = action

@@ -3,8 +3,9 @@
 import io
 import skl_shared.shared as sh
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
+import gettext
+import skl_shared.gettext_windows
+skl_shared.gettext_windows.setup_env()
 gettext.install('mclient','../resources/locale')
 
 
@@ -64,7 +65,7 @@ class HTML:
 
           <div align="center">
             <!-- A button to print the printable area -->
-            <input type="button" onclick="printDiv('printableArea')" value="Print" />
+            <input type="button" onclick="printDiv('printableArea')" value="%s" />
           </div>
 
           <script type="text/javascript">
@@ -96,6 +97,10 @@ class HTML:
 
         </head>
         '''
+        ''' Either don't use 'format' here or double all curly braces
+            in the script.
+        '''
+        self._script = self._script % _('Print')
     
     def priority_colors(self):
         default_color = 'red'
@@ -337,9 +342,9 @@ class HTML:
         '''
         self.output = io.StringIO()
         self.output.write('<html>\n')
+        self.output.write('\t<body>\n\t\t<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">')
         if self.Printer:
             self.output.write(self._script)
-        self.output.write('\t<body>\n\t\t<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">')
         #todo: this CSS does not work
         #self.output.write('\n\t\t<style type="text/css">\n\t\t\t.line-separator{border-top: 2px dashed #4f94cd;}\n\t\t\t.indent{padding-bottom: 5px;}\n\t\t</style>')
         if self.Printer:

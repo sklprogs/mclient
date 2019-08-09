@@ -2,10 +2,11 @@
 
 import re
 import sre_constants
-import shared as sh
+import skl_shared.shared as sh
 
-import gettext, gettext_windows
-gettext_windows.setup_env()
+import gettext
+import skl_shared.gettext_windows
+skl_shared.gettext_windows.setup_env()
 gettext.install('shared','../resources/locale')
 
 
