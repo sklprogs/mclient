@@ -1,10 +1,10 @@
 
+- EN-RU: knickers: WFORMA not in place
+- EN-RU: судебный пристав: wrong parsing owing to URL in comments
+  <span style="color:gray">(<a target="_blank"  href="http://www.berkeleycountycomm.org/job_court_bailiff_2005.htm;" rel="nofollow">http://www.berkeleycountycomm.org/job_court_bailiff_2005.htm;</a>
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"
 - throw a book at: phrases are not shown
-- RU-EN, определять, итого, судебный пристав, оперативно, end-to-end, 
-  hospitality:
-  '>' as a word form
 - French: зонд: parts of speech (abbreviations) are lost;
   German: работа: genders are lost (previously were in a wrong place)
 - plugins.multitrancom: eng-rus: вручать: fix dic prioritization

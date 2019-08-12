@@ -1451,7 +1451,7 @@ class WebFrame:
         ''' #note: each time the contents of the current page is changed
             (e.g., due to prioritizing), bookmarks must be deleted.
         '''
-        timer = sh.Timer(func_title=f)
+        timer = sh.Timer(f)
         timer.start()
         # Do not allow selection positions from previous articles
         self._pos = -1

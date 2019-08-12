@@ -2,7 +2,6 @@
 # -*- coding: UTF-8 -*-
 
 import re
-import html
 import urllib.parse
 import skl_shared.shared as sh
 
@@ -19,6 +18,18 @@ class CleanUp:
     def __init__(self,text):
         self._text = text
     
+    def fix_tags(self):
+        ''' Multitran does not escape '<' and '>' in user terms/comments
+            properly. We try to fix this here.
+        '''
+        # Loop because of structures like ' >>>'
+        #cur
+        self._text = re.sub(' >+',r' &gt',self._text)
+        '''
+        while ' >' in self._text:
+            self._text = self._text.replace(' >',' &gt;')
+        '''
+    
     def fix_href(self):
         ''' # Fix a malformed URL, e.g., 'href="/m.exe?a=110&l1=1&l2=2&s=process (<редк.>)&sc=671"'
             multitran.com provides for URLs that are not entirely
@@ -27,7 +38,7 @@ class CleanUp:
             we must perform this additional step of quoting. Some
             symbols like '=', however, should not be quoted.
         '''
-        f = '[MClient] plugins.multitrancom.CleanUp.fix_href'
+        f = '[MClient] plugins.multitrancom.cleanup.CleanUp.fix_href'
         if self._text:
             isearch = sh.Search (text   = self._text
                                 ,search = 'href="'
@@ -44,7 +55,7 @@ class CleanUp:
                 if str(pos1).isdigit():
                     fragm = list(self._text[pos:pos1])
                     for i in range(len(fragm)):
-                        if not fragm[i] in (':','/','=','&','?','%'):
+                        if not fragm[i] in (':',';','/','=','&','?','%'):
                             fragm[i] = urllib.parse.quote(fragm[i])
                     fragm = ''.join(fragm)
                     self._text = self._text[0:pos] + fragm \
@@ -120,16 +131,6 @@ class CleanUp:
             self._text = self._text.replace('  ',' ')
         self._text = re.sub(r'\>[\s]{0,1}\<','><',self._text)
     
-    def decode_entities(self):
-        ''' Needed both for MT and Stardict. Convert HTML entities
-            to a human readable format, e.g., '&copy;' -> '©'.
-        '''
-        f = '[MClient] plugins.multitrancom.CleanUp.decode_entities'
-        try:
-            self._text = html.unescape(self._text)
-        except Exception as e:
-            sh.com.failed(f,e)
-    
     def unsupported(self):
         ''' Remove characters from a range not supported by Tcl 
             (and causing a Tkinter error). Sample requests causing
@@ -141,9 +142,9 @@ class CleanUp:
         self._text = ''.join(self._text)
     
     def run(self):
-        f = '[MClient] plugins.multitrancom.CleanUp.run'
+        f = '[MClient] plugins.multitrancom.cleanup.CleanUp.run'
         if self._text:
-            self.decode_entities()
+            self.fix_tags()
             self.trash()
             self.common()
             self.sep_words()

@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import re
+import html
 import skl_shared.shared as sh
 
 import gettext
@@ -334,7 +335,7 @@ class Tags:
                          ,Auto = 1
                          )
         words.sent_nos()
-        sh.objs.txt().reset(words=words).reset_data()
+        sh.objs.txt().reset(words=words)
         sh.objs._txt.title(f)
         sh.objs._txt.insert(text=message)
         sh.objs._txt.show()
@@ -365,9 +366,30 @@ class Tags:
 
     def debug(self):
         if self.Debug:
-            #self.debug_tags()
+            self.debug_tags()
             self.debug_blocks()
 
+    def decode_entities(self):
+        ''' - Needed both for MT and Stardict. Convert HTML entities
+              to a human readable format, e.g., '&copy;' -> '©'.
+            - We should decode entities only after extracting tags since
+              user terms/comments in Multitran often contain such
+              symbols as '<' or '>'.
+              #note: currently this does not help since Multitran
+              does not escape '<' and '>' in user terms/comments
+              properly!
+        '''
+        f = '[MClient] plugins.multitrancom.tags.Tags.decode_entities'
+        try:
+            for block in self._blocks:
+                block._text = html.unescape(block._text)
+                ''' This is done since we do not unescape
+                    the entire text any more.
+                '''
+                block._url = block._url.replace('&amp;','&')
+        except Exception as e:
+            sh.com.failed(f,e)
+    
     def blocks(self):
         if not self._blocks:
             for tag in self._tags:
@@ -377,5 +399,6 @@ class Tags:
     def run(self):
         self.tags()
         self.blocks()
+        self.decode_entities()
         self.debug()
         return self._blocks

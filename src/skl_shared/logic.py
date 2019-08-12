@@ -2590,9 +2590,7 @@ class Config:
                 self.message += _('Missing keys: {}').format(self.missing_keys)
                 self.message += '\n'
                 self.message += _('The default configuration has been loaded.')
-                #cur
-                #todo: set as GUI
-                Message(f,self.message).warning()
+                objs.mes(f,self.message).warning()
                 self._default()
         else:
             com.cancel(f)
