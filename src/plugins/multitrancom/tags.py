@@ -78,17 +78,17 @@ ptm2 = 'td class="termsforsubject"'
 pph = 'td class="phras"'
 
 # Tag patterns
-tag_pattern_del = ['m.exe?a=40&'              # Log in, Вход
-                  ,'m.exe?a=44'               # Купить
-                  ,'m.exe?a=45'               # Отзывы
-                  ,'m.exe?a=5&s=s_contacts'   # Contacts, Контакты
-                  ,'m.exe?a=5&s=DownloadFile' # Скачать
-                  ,'m.exe?a=256'              # English, Русский
-                  ,'m.exe?a=1&'               # Dictionary, Словари
-                  ,'&fl=1'                    # ⇄
-                  ,'a href="#phrases'         # phrases, фразы
-                  ,'?fscreen=1'               # Full screen, Полный экран
-                  ,'td class="phras_cnt"'     # Phrase entries count number
+tag_pattern_del = ['m.exe?a=40&'          # Log in, Вход
+                  ,'m.exe?a=44'           # Купить
+                  ,'m.exe?a=45'           # Отзывы
+                  ,'m.exe?a=5&'           # Contacts, Контакты, Скачать
+                  ,'m.exe?a=256'          # English, Русский
+                  ,'m.exe?a=1&'           # Dictionary, Словари
+                  ,'m.exe?a=2&'           # Forum, Форум
+                  ,'&fl=1'                # ⇄
+                  ,'a href="#phrases'     # phrases, фразы
+                  ,'?fscreen=1'           # Full screen, Полный экран
+                  ,'td class="phras_cnt"' # Phrase entries count number
                   ]
 
 useful_tags = [pdic ,purl1,purl2,pcom1

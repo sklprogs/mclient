@@ -22,13 +22,7 @@ class CleanUp:
         ''' Multitran does not escape '<' and '>' in user terms/comments
             properly. We try to fix this here.
         '''
-        # Loop because of structures like ' >>>'
-        #cur
         self._text = re.sub(' >+',r' &gt',self._text)
-        '''
-        while ' >' in self._text:
-            self._text = self._text.replace(' >',' &gt;')
-        '''
     
     def fix_href(self):
         ''' # Fix a malformed URL, e.g., 'href="/m.exe?a=110&l1=1&l2=2&s=process (<редк.>)&sc=671"'
