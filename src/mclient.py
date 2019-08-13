@@ -2619,14 +2619,16 @@ class Suggest:
             text = self.entry.get()
             #todo: avoid modifiers
             if text:
-                ''' Retrieving suggestions online is very slow, so we
-                    just do this after a space. We may bind this
-                    procedure to '<space>' as well, however, we also
-                    would like to hide suggestions if there is no text
-                    present in 'search_field', so we bind to
-                    '<KeyRelease>'.
+                ''' - Retrieving suggestions online is very slow, so we
+                      just do this after a space. We may bind this
+                      procedure to '<space>' as well, however, we also
+                      would like to hide suggestions if there is no text
+                      present in 'search_field', so we bind to
+                      '<KeyRelease>'.
+                    - For some reason, 'event.char' is always empty here
+                      in Python 3.7.3.
                 '''
-                if event.char == ' ':
+                if event.keysym == 'space':
                     text = lg.com.suggest (search = text
                                           ,limit  = 35
                                           )
