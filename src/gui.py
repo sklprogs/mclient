@@ -304,9 +304,9 @@ class ThirdParties:
     
     def gui(self):
         title = _('Third parties') + ':'
-        self.obj = sh.TextBoxC (title  = title
-                               ,icon   = ICON
-                               )
+        self.obj = sh.TextBoxRO (title = title
+                                ,icon  = ICON
+                                )
         self.parent = self.obj.parent
         sh.Geometry(self.parent).set('800x600')
         self.bindings()
