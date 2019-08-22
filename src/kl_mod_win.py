@@ -1,4 +1,4 @@
-# !/usr/bin/python3
+#!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
 ''' There is a bug in 'pyhook' which crashes the program if a focus is

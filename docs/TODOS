@@ -1,4 +1,9 @@
 
+- EN-RU: хроматографического выделения:
+  dic + comment (sep) + term -> dic + comment (non-sep) + term
+  EN-RU: закрытая нуклеиновая кислота,
+  nucleoside reverse transcriptase inhibitors:
+  dic + comment (sep) + term -> dic + wform + term
 - EN-RU: entity: too long columns
 - When corrections are supported: test "working documentation";
   eng-rus: живой: shorten the column with corrections

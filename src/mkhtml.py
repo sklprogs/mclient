@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# -*- coding: UTF-8 -*-
 
 import io
 import skl_shared.shared as sh
