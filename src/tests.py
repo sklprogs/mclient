@@ -126,7 +126,7 @@ class Tags:
         f = '[MClient] tests.Tags.multitrancom'
         import plugins.multitrancom.cleanup as mccleanup
         import plugins.multitrancom.tags    as mctags
-        file = '/home/pete/bin/mclient/tests/multitrancom/конъюгаты (фразы).txt'
+        file = '/home/pete/bin/mclient/tests/multitrancom/трос.txt'
         text = sh.ReadTextFile(file).get()
         text = mccleanup.CleanUp(text).run()
         mctags.Tags (text    = text
@@ -152,13 +152,10 @@ class Plugin:
     def multitrancom(self):
         f = '[MClient] tests.Plugin.multitrancom'
         import plugins.multitrancom.run as mc
-        #url    = 'https://multitran.com/m.exe?s=computer&l1=1&l2=2&SHL=2'
-        #search = 'computer'
-        url     = 'https://multitran.com/m.exe?a=3&l1=1&l2=2&s=counting%20machine'
-        search  = 'counting machine'
+        url     = 'https://www.multitran.com/m.exe?s=%D1%82%D1%80%D0%BE%D1%81&l1=2&l2=1&SHL=2'
+        search  = 'трос'
         
-        iplug = mc.Plugin (timeout = 6
-                          ,Debug   = DEBUG
+        iplug = mc.Plugin (Debug   = DEBUG
                           ,Shorten = True
                           ,MaxRow  = 20
                           ,MaxRows = 150
@@ -513,6 +510,5 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sh.com.start()
-    import mclient as mc
-    mc.objs.webframe().show()
+    Plugin().multitrancom()
     sh.com.end()

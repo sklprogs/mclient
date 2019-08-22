@@ -266,6 +266,18 @@ class Elems:
             self.Success = False
             sh.com.empty(f)
     
+    def delete_empty(self):
+        ''' - Empty blocks are useless since we recreate fixed columns
+              anyways.
+            - This is required since we decode HTML entities after
+              extracting tags now. Empty blocks may lead to a wrong
+              analysis of blocks, e.g.,
+              'comment (SAME=0) - comment (SAME=1)' structure, where
+              the second block is empty, will be mistakenly converted
+              to 'wform - comment'.
+        '''
+        self._blocks = [block for block in self._blocks if block._text]
+    
     def terma_same(self):
         ''' #note: all blocks of the same cell must have the same TERMA,
             otherwise, alphabetizing may put blocks with SAME=1 outside
@@ -375,6 +387,7 @@ class Elems:
         if self.Success:
             # Do some cleanup
             self.strip()
+            self.delete_empty()
             self.trash()
             self.subjects()
             self.delete_search()

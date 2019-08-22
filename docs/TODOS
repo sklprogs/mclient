@@ -1,4 +1,6 @@
-
+- 
+- EN-RU: мостик (mclient mode): wform + comment (SAME=0) + <fixed>:
+  unite wform and comment
 - EN-RU: хроматографического выделения:
   dic + comment (sep) + term -> dic + comment (non-sep) + term
   EN-RU: закрытая нуклеиновая кислота,
