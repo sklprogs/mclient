@@ -54,20 +54,26 @@ class Same:
                    self._blocks[i-1]._same = 1
                 i += 1
     
-    def comment_comment(self):
+    def prev_comment_comment(self):
         ''' Fix the 'comment (SAME=0) - comment (SAME=0)' structure
             which may be encountered due to that word forms can be
             indistinguishable from comments. The latter happens only in
             the present source, so this code is plugin-specific.
         '''
-        if len(self._blocks) > 1:
-            i = 1
+        if len(self._blocks) > 2:
+            i = 2
             while i < len(self._blocks):
                 if self._blocks[i-1]._type == 'comment' \
                 and self._blocks[i-1]._same == 0 \
                 and self._blocks[i]._type == 'comment' \
                 and self._blocks[i]._same == 0:
-                   self._blocks[i-1]._type = 'wform' 
+                    if self._blocks[i-2]._type in ('dic','wform'
+                                                  ,'speech','transc'
+                                                  ):
+                        self._blocks[i-1]._type = 'wform'
+                        self._blocks[i]._same = 1
+                    else:
+                        self._blocks[i-1]._same = 1
                 i += 1
     
     def comment_next(self):
@@ -176,7 +182,7 @@ class Same:
             self.all_comments()
             self.term_comment_term()
             self.term_comment_fixed()
-            self.comment_comment()
+            self.prev_comment_comment()
             self.comment_next()
             self.wform_comment_term()
             self.punc()

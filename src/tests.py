@@ -152,8 +152,8 @@ class Plugin:
     def multitrancom(self):
         f = '[MClient] tests.Plugin.multitrancom'
         import plugins.multitrancom.run as mc
-        url     = 'https://www.multitran.com/m.exe?s=%D1%82%D1%80%D0%BE%D1%81&l1=2&l2=1&SHL=2'
-        search  = 'трос'
+        url    = 'https://www.multitran.com/m.exe?s=memory%20pressure&l1=2&l2=1&SHL=2'
+        search = 'memory pressure'
         
         iplug = mc.Plugin (Debug   = DEBUG
                           ,Shorten = True
