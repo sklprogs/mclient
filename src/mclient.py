@@ -542,6 +542,22 @@ class WebFrame:
         self.bindings()
         self.reset_opt()
     
+    def final_debug(self,event=None):
+        f = '[MClient] mclient.WebFrame.final_debug'
+        if lg.objs.plugins().Debug:
+            mes = _('Debug table:')
+            sh.objs.mes(f,mes,True).info()
+            objs._blocks_db.dbc.execute ('select   CELLNO,NO,PRIORITY \
+                                                  ,TYPE,DICA,WFORMA \
+                                                  ,SPEECHA,TERMA \
+                                                  ,SAMECELL,TEXT \
+                                          from     BLOCKS \
+                                          order by ARTICLEID,CELLNO,NO'
+                                        )
+            objs._blocks_db.print (Selected=1,Shorten=1,MaxRows=1000
+                                  ,mode='BLOCKS'
+                                  )
+    
     def copy_wform(self,event=None):
         f = '[MClient] mclient.WebFrame.copy_wform'
         wforma = objs.blocks_db().wforma(pos=self._pos)
@@ -1621,19 +1637,7 @@ class WebFrame:
         objs.suggest().gui.close()
         self.update_buttons()
         timer.end()
-        
-        '''
-        mes = _('Debug table:')
-        sh.objs.mes(f,mes,True).info()
-        objs._blocks_db.dbc.execute ('select   CELLNO,NO,PRIORITY,DICA \
-                                              ,TYPE,TERMA,TEXT \
-                                      from     BLOCKS \
-                                      order by ARTICLEID,CELLNO,NO'
-                                    )
-        objs._blocks_db.print (Selected=1,Shorten=1,MaxRows=1000
-                              ,mode='BLOCKS'
-                              )
-        '''
+        self.final_debug()
     
     def go_mouse(self,event=None):
         f = '[MClient] mclient.WebFrame.go_mouse'
@@ -2662,6 +2666,7 @@ objs = Objects()
 if  __name__ == '__main__':
     f = '[MClient] mclient.__main__'
     sh.com.start()
+    lg.objs.plugins(Debug=False)
     lg.objs.default(product=gi.PRODUCT)
     if lg.objs._default.Success:
         timed_update()

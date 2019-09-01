@@ -1,4 +1,5 @@
 - 
+- Do not center the 1st column when there are no fixed columns
 - At startup: if only local dictionaries are available, then set
   the mode to Offline.
 - Improve parsing of EN-RU, memory pressure (wform + comment + term and

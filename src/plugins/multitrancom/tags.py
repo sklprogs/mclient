@@ -366,7 +366,7 @@ class Tags:
 
     def debug(self):
         if self.Debug:
-            self.debug_tags()
+            #self.debug_tags()
             self.debug_blocks()
 
     def decode_entities(self):
