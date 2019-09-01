@@ -82,6 +82,11 @@ class Sources:
 class Objects:
 
     def __init__(self):
+        ''' #NOTE: Do not use 'super' to integrate with 'logic.Objects',
+            since we modify some logic attributes in the controller,
+            and, in case of integration, such changes will not be
+            reflected in 'logic.Objects'.
+        '''
         self._webframe = self._blocks_db = self._about = self._settings\
                        = self._search = self._symbols = self._save \
                        = self._history = self._suggest = self._parties \
@@ -130,6 +135,11 @@ class Objects:
         return self._about
     
     def blocks_db(self):
+        ''' #NOTE: Do not move this function to 'logic.Objects', since
+            we modify attributes of the present object in
+            the controller, and, in case of moving, such changes
+            will not be reflected in 'logic.Objects'.
+        '''
         if self._blocks_db is None:
             self._blocks_db = db.Moves()
             self._blocks_db.Selectable = sh.lg.globs['bool']['SelectTermsOnly']
