@@ -143,7 +143,7 @@ class DB:
             sh.com.empty(f)
         #NOTE: do not forget to add new block types here
         self._types = self._cols + ('term','phrase','comment'
-                                   ,'correction','user'
+                                   ,'correction','user','definition'
                                    )
 
     def fill_blocks(self,data):

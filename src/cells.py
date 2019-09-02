@@ -354,6 +354,13 @@ class Cells:
                     i += 1
                 self._blocks[x].i = i
                 self._blocks[x].j = j = len(self._cols) - 1
+            elif self._blocks[x]._type == 'definition':
+                try:
+                    j = self._cols.index('wform')
+                except ValueError:
+                    j = len(self._cols)
+                self._blocks[x].i = i
+                self._blocks[x].j = j
             # Must be before checking '_collimit'
             elif self._blocks[x]._same > 0:
                 PrevFixed = False

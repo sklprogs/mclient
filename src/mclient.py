@@ -557,12 +557,19 @@ class WebFrame:
         if lg.objs.plugins().Debug:
             mes = _('Debug table:')
             sh.objs.mes(f,mes,True).info()
+            ''' #NOTE: If all of a sudden you get IGNORE=1, then you
+                have probably forgot to add new block types in
+                'db.DB.reset'.
+            '''
             objs._blocks_db.dbc.execute ('select   ROWNO,CELLNO,NO \
                                                   ,PRIORITY,TYPE,DICA \
                                                   ,WFORMA,SPEECHA,TERMA\
-                                                  ,SAMECELL,TEXT \
+                                                  ,SAMECELL,TEXT,BLOCK\
+                                                  ,IGNORE \
                                           from     BLOCKS \
-                                          order by ARTICLEID,CELLNO,NO'
+                                          where ARTICLEID = ? \
+                                          order by CELLNO,NO'
+                                        ,(objs.blocks_db()._articleid,)
                                         )
             objs._blocks_db.print (Selected=1,Shorten=1,MaxRows=1000
                                   ,mode='BLOCKS'
