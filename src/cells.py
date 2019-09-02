@@ -29,8 +29,9 @@ class Block:
         self._cell_no  = -1
         self._same     = -1
         self._priority = 0
-        ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
-            'correction', 'user', 'transc', 'invalid'
+        ''' Block types:
+            'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
+            'correction', 'user', 'definition', 'transc', 'invalid'
         '''
         self._type     = 'comment'
         self._text     = ''
@@ -115,7 +116,7 @@ class BlockPrioritize:
                               'self.Prioritize'.
                             - Set the (presumably) lowest priority for
                               a 'Phrases' dictionary. This must be
-                              a quite small value as not to conflict
+                              quite a small value as not to conflict
                               with other dictionaries.
                         '''
                         block._priority = -1000

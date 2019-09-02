@@ -557,9 +557,9 @@ class WebFrame:
         if lg.objs.plugins().Debug:
             mes = _('Debug table:')
             sh.objs.mes(f,mes,True).info()
-            objs._blocks_db.dbc.execute ('select   CELLNO,NO,PRIORITY \
-                                                  ,TYPE,DICA,WFORMA \
-                                                  ,SPEECHA,TERMA \
+            objs._blocks_db.dbc.execute ('select   ROWNO,CELLNO,NO \
+                                                  ,PRIORITY,TYPE,DICA \
+                                                  ,WFORMA,SPEECHA,TERMA\
                                                   ,SAMECELL,TEXT \
                                           from     BLOCKS \
                                           order by ARTICLEID,CELLNO,NO'
@@ -2676,7 +2676,7 @@ objs = Objects()
 if  __name__ == '__main__':
     f = '[MClient] mclient.__main__'
     sh.com.start()
-    lg.objs.plugins(Debug=False)
+    lg.objs.plugins(Debug=True)
     lg.objs.default(product=gi.PRODUCT)
     if lg.objs._default.Success:
         timed_update()

@@ -313,7 +313,7 @@ class HTML:
             self.output.write('</font>')
     
     def _comment(self):
-        if self._block._type in ('comment','transc','user'):
+        if self._block._type in ('comment','transc','user','definition'):
             self.output.write('<i><font face="')
             self.output.write(sh.lg.globs['var']['font_comments_family'])
             self.output.write('" size="')
@@ -346,7 +346,7 @@ class HTML:
         self.output.write('\t<body>\n\t\t<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">')
         if self.Printer:
             self.output.write(self._script)
-        #todo: this CSS does not work
+        #fix: this CSS does not work
         #self.output.write('\n\t\t<style type="text/css">\n\t\t\t.line-separator{border-top: 2px dashed #4f94cd;}\n\t\t\t.indent{padding-bottom: 5px;}\n\t\t</style>')
         if self.Printer:
             self.output.write('\n\t\t<div id="printableArea">')
@@ -403,7 +403,9 @@ class HTML:
             self.output.write('</td></tr>\n\t\t\t</table>\t')
         elif self._skipped:
             self.output.write('<h1>')
-            self.output.write(_('Nothing has been found (skipped dictionaries: %d).') % self._skipped)
+            mes = _('Nothing has been found (skipped dictionaries: {}).')
+            mes = mes.format(self._skipped)
+            self.output.write(mes)
             self.output.write('</h1>')
         else:
             self.output.write('<h1>')

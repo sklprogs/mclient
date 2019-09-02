@@ -38,6 +38,37 @@ class Same:
         self.MaxRow  = MaxRow
         self.MaxRows = MaxRows
     
+    def wform_comment_fixed(self):
+        ''' Set a specific 'definition' type for blocks that are tagged
+            by multitran.com as comments (or word forms, see
+            'Elems.definitions') but are placed next to word forms.
+            We create the new type since after removing fixed types
+            there could be no other way to reinsert them without
+            associating definitions with wrong cells (fixed types are
+            reinserted when DICA, WFORMA or SPEECHA change, but there
+            are cases when a definition block is duplicated
+            by multitran.com and those fields remain unchanged, see,
+            for example, 'memory pressure').
+        '''
+        if len(self._blocks) > 2:
+            i = 2
+            while i < len(self._blocks):
+                ''' Do not check the '_same' value of a definition block
+                    since it can (and should) already be set to 1.
+                '''
+                if self._blocks[i-2]._type == 'wform' \
+                and self._blocks[i-1]._type == 'comment' \
+                and self._blocks[i]._type in ('dic','wform','transc'
+                                             ,'speech'
+                                             ):
+                   self._blocks[i-1]._type = 'definition'
+                   ''' '_same' value of the definition block should
+                       already be set to 1, but we assign it just to be
+                       on a safe side.
+                   '''
+                   self._blocks[i-1]._same = 1
+                i += 1
+    
     def wform_comment_term(self):
         # Source-specific
         if len(self._blocks) > 2:
@@ -54,7 +85,7 @@ class Same:
                    self._blocks[i-1]._same = 1
                 i += 1
     
-    def prev_comment_comment(self):
+    def comment_comment(self):
         ''' Fix the 'comment (SAME=0) - comment (SAME=0)' structure
             which may be encountered due to that word forms can be
             indistinguishable from comments. The latter happens only in
@@ -76,7 +107,7 @@ class Same:
                         self._blocks[i-1]._same = 1
                 i += 1
     
-    def comment_next(self):
+    def comment_term(self):
         ''' If a comment has SAME=0, then the next non-fixed type block
             must have SAME=1 because the comment cannot occupy
             an entire cell (otherwise, this is actually, for example,
@@ -182,9 +213,10 @@ class Same:
             self.all_comments()
             self.term_comment_term()
             self.term_comment_fixed()
-            self.prev_comment_comment()
-            self.comment_next()
+            self.comment_comment()
             self.wform_comment_term()
+            self.comment_term()
+            self.wform_comment_fixed()
             self.punc()
             self.debug()
             return self._blocks
@@ -258,6 +290,7 @@ class Elems:
                  ):
         f = '[MClient] plugins.multitrancom.elems.Elems.__init__'
         self._dic_urls = {}
+        self._defins   = []
         self._blocks   = blocks
         self.abbr      = iabbr
         self.Debug     = Debug
@@ -271,6 +304,52 @@ class Elems:
         else:
             self.Success = False
             sh.com.empty(f)
+    
+    def search_definition(self,block):
+        f = '[MClient] plugins.multitrancom.elems.Elems.search_definition'
+        if block:
+            for definition in self._defins:
+                if block._dica == definition._dica \
+                and block._wforma == definition._wforma \
+                and block._speecha == definition._speecha:
+                    mes = '"{}"'.format(definition._text)
+                    sh.objs.mes(f,mes,True).debug()
+                    self._defins.remove(definition)
+                    return definition
+        else:
+            sh.com.empty(f)
+    
+    def insert_definitions(self):
+        ''' Reisert definitions after word forms
+            #NOTE: Do this after reinserting fixed types.
+        '''
+        f = '[MClient] plugins.multitrancom.elems.Elems.insert_definitions'
+        if self._defins:
+            i = 0
+            while i < len(self._blocks):
+                if self._blocks[i]._type == 'wform':
+                    block = self.search_definition(self._blocks[i])
+                    if block:
+                        self._blocks.insert(i+1,block)
+                        i += 1
+                i += 1
+        else:
+            sh.com.lazy(f)
+    
+    def delete_definitions(self):
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_definitions'
+        self._defins = [block for block in self._blocks
+                        if block._type == 'definition'
+                       ]
+        self._blocks = [block for block in self._blocks
+                        if block._type != 'definition'
+                       ]
+        if self._defins:
+            mes = _('{} blocks have been deleted')
+            mes = mes.format(len(self._defins))
+            sh.objs.mes(f,mes,True).info()
+        else:
+            sh.com.lazy(f)
     
     def delete_empty(self):
         ''' - Empty blocks are useless since we recreate fixed columns
@@ -360,13 +439,13 @@ class Elems:
         else:
             sh.com.empty(f)
     
-    def thesaurus(self):
-        ''' Explanations are tagged just like word forms, and we can
+    def definitions(self):
+        ''' Definitions are tagged just like word forms, and we can
             judge upon the type only by the length of the block.
         '''
         for block in self._blocks:
             if block._type == 'wform' and len(block._text) > 25:
-                block._type = 'comment'
+                block._type = 'definition'
     
     # Takes ~0,26s for 'set' on AMD E-300.
     def expand_dica(self):
@@ -401,14 +480,13 @@ class Elems:
             self.transc()
             self.users()
             self.phrases()
-            #todo: uncomment when 'multitran.com' supports corrections
-            #self.corrections()
-            self.thesaurus()
+            self.corrections()
+            self.definitions()
             # Prepare contents
             self.dic_urls()
             self.add_brackets()
             self.user_brackets()
-            # Set SAME
+            # Set '_same' attribute and further change some types
             ''' We do not pass debug options here since Same debug has
                 few columns and it is reasonable to make them wider than
                 for Elems.
@@ -419,8 +497,10 @@ class Elems:
             # Prepare for cells
             self.fill()
             self.fill_terma()
+            self.delete_definitions()
             self.remove_fixed()
             self.insert_fixed()
+            self.insert_definitions()
             self.fixed_terma()
             self.expand_dica()
             self.terma_same()
