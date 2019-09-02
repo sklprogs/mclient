@@ -2683,7 +2683,7 @@ objs = Objects()
 if  __name__ == '__main__':
     f = '[MClient] mclient.__main__'
     sh.com.start()
-    lg.objs.plugins(Debug=True)
+    lg.objs.plugins(Debug=False)
     lg.objs.default(product=gi.PRODUCT)
     if lg.objs._default.Success:
         timed_update()
