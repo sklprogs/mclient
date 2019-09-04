@@ -442,9 +442,11 @@ class Elems:
     def definitions(self):
         ''' Definitions are tagged just like word forms, and we can
             judge upon the type only by the length of the block.
+            An example of a long word form (28 symbols):
+            'закрытая нуклеиновая кислота'.
         '''
         for block in self._blocks:
-            if block._type == 'wform' and len(block._text) > 25:
+            if block._type == 'wform' and len(block._text) > 30:
                 block._type = 'definition'
     
     # Takes ~0,26s for 'set' on AMD E-300.
