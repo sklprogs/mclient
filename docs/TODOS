@@ -5,13 +5,6 @@
   the mode to Offline.
 - Improve parsing of EN-RU, memory pressure (wform + comment + term and
   the user URL)
-- EN-RU: мостик (mclient mode): wform + comment (SAME=0) + <fixed>:
-  unite wform and comment
-- EN-RU: хроматографического выделения, between a rock and a hard place:
-  dic + comment (sep) + term -> dic + comment (non-sep) + term
-  EN-RU: закрытая нуклеиновая кислота,
-  nucleoside reverse transcriptase inhibitors:
-  dic + comment (sep) + term -> dic + wform + term
 - EN-RU: entity: too long columns
 - When corrections are supported: test "working documentation";
   eng-rus: живой: shorten the column with corrections
@@ -31,11 +24,6 @@
 - plugins.stardict: alphabetize suggestions from several dictionaries
 - plugins.stardict: support idx.gz files
 - plugins.multitrancom: use URLs of both sources when going by URL
-- plugins.multitrancom: fra-rus: œuf: delete "Французский"
-- plugins.multitran: eng-rus: tree entanglement: get transcription
-  higher
-- multitran.com: propaganda: add space between items
-- multitran: enable going by dic phrase URL
 - multitran.com: fix: "Вы попались на удочку" (ComputersRE,
   EngineeringRE) - found by autosuggestion, but not found by
   'plugins.stardict.get.AllDics.get'

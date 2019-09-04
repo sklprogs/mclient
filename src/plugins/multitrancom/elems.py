@@ -442,12 +442,20 @@ class Elems:
     def definitions(self):
         ''' Definitions are tagged just like word forms, and we can
             judge upon the type only by the length of the block.
-            An example of a long word form (28 symbols):
-            'закрытая нуклеиновая кислота'.
+            The value of 30 is picked up on the basis of
+            a trial-and-error method.
+            Examples of long word forms (28+ symbols):
+            'закрытая нуклеиновая кислота',
+            'nucleoside reverse transcriptase inhibitors'.
         '''
+        HasWform = False
         for block in self._blocks:
-            if block._type == 'wform' and len(block._text) > 30:
-                block._type = 'definition'
+            # The 'definition' type cannot precede word forms
+            if block._type == 'wform':
+                if len(block._text) > 30 and HasWform:
+                    block._type = 'definition'
+                    block._same = 1
+                HasWform = True
     
     # Takes ~0,26s for 'set' on AMD E-300.
     def expand_dica(self):
