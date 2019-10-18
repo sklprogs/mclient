@@ -569,8 +569,8 @@ class Elems:
             
     def trash(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.trash'
-        patterns = ['|',';',':','(',')','-->','⇄','точно','все формы'
-                   ,'// -->'
+        patterns = ['|',';',':','(',')','-->','// -->','⇄','точно'
+                   ,'все формы','точные совпадения'
                    ]
         if self._langs:
             patterns += list(self._langs)
