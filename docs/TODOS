@@ -1,5 +1,8 @@
 
-- Make a column with wform + definition narrower
+- public office -> Патенты: remove or implement "точные совпадения"
+- Delete "кодон:" from "кодон UGA"
+- business-to-business, Interim, decimal, KPI:
+  Make a column with wform + definition narrower
 - Do not center the 1st column when there are no fixed columns
 - At startup: if only local dictionaries are available, then set
   the mode to Offline.
