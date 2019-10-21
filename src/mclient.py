@@ -1961,10 +1961,11 @@ class WebFrame:
         f = '[MClient] mclient.WebFrame.define'
         if Selected:
             result = objs.blocks_db().block_pos(pos=self._pos)
-            search_str = 'define:' + result[6]
+            search_str = result[6]
         else:
-            search_str = 'define:' + lg.objs.request()._search
-        if search_str != 'define:':
+            search_str = lg.objs.request()._search
+        if search_str:
+            search_str = _('what is {}?').format(search_str)
             sh.Online (base_str   = sh.lg.globs['var']['web_search_url']
                       ,search_str = search_str
                       ).browse()
