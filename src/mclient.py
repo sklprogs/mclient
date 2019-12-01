@@ -1965,7 +1965,7 @@ class WebFrame:
         else:
             search_str = lg.objs.request()._search
         if search_str:
-            search_str = _('what is {}?').format(search_str)
+            search_str = _('what is "{}"?').format(search_str)
             sh.Online (base_str   = sh.lg.globs['var']['web_search_url']
                       ,search_str = search_str
                       ).browse()

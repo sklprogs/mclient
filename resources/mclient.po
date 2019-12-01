@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-02 18:40+0300\n"
-"PO-Revision-Date: 2019-09-02 18:41+0300\n"
+"POT-Creation-Date: 2019-10-21 10:05+0300\n"
+"PO-Revision-Date: 2019-10-21 10:05+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: cells.py:144 cells.py:287 cells.py:551 mclient.py:558
-#: plugins/multitrancom/elems.py:196 plugins/multitrancom/elems.py:520
+#: plugins/multitrancom/elems.py:196 plugins/multitrancom/elems.py:530
 #: plugins/multitrancom/tags.py:345
 msgid "Debug table:"
 msgstr "Таблица для отладки:"
@@ -28,7 +28,7 @@ msgstr "Таблица для отладки:"
 msgid "Unable to find: {}"
 msgstr "Не удалось найти: {}"
 
-#: db.py:240 db.py:296 gui.py:1077 manager.py:170 mclient.py:2485
+#: db.py:240 db.py:296 gui.py:1077 manager.py:170 mclient.py:2486
 msgid ""
 "An unknown mode \"{}\"!\n"
 "\n"
@@ -57,7 +57,7 @@ msgstr "Удаление записей статьи №{} из {}"
 #: db.py:974 logic.py:89 logic.py:106 logic.py:1125 logic.py:1137 mclient.py:61
 #: mclient.py:542 mclient.py:1644 mclient.py:1777 mclient.py:1789
 #: mclient.py:1801 mclient.py:1813 mclient.py:1851 mclient.py:1863
-#: mclient.py:1875 mclient.py:1887 mclient.py:2377 mclient.py:2385
+#: mclient.py:1875 mclient.py:1887 mclient.py:2378 mclient.py:2386
 #: plugins/multitrancom/pairs.py:2760
 msgid "Wrong input data!"
 msgstr "Недопустимые входные данные!"
@@ -336,38 +336,38 @@ msgid "Quit the program"
 msgstr "Выйти из программы"
 
 #: gui.py:948 gui.py:973 gui.py:974 gui.py:975 gui.py:1029 gui.py:1038
-#: gui.py:1055 gui.py:1063 gui.py:1068 gui.py:1232 gui.py:1524 mclient.py:2476
-#: mclient.py:2487
+#: gui.py:1055 gui.py:1063 gui.py:1068 gui.py:1232 gui.py:1524 mclient.py:2477
+#: mclient.py:2488
 msgid "Dictionaries"
 msgstr "Словари"
 
 #: gui.py:949 gui.py:988 gui.py:989 gui.py:990 gui.py:1030 gui.py:1032
 #: gui.py:1056 gui.py:1060 gui.py:1066 gui.py:1071 gui.py:1233 gui.py:1530
-#: mclient.py:2478 mclient.py:2488
+#: mclient.py:2479 mclient.py:2489
 msgid "Word forms"
 msgstr "Словоформы"
 
 #: gui.py:950 gui.py:1018 gui.py:1019 gui.py:1020 gui.py:1033 gui.py:1034
-#: gui.py:1057 gui.py:1061 gui.py:1067 gui.py:1235 gui.py:1536 mclient.py:2482
-#: mclient.py:2489
+#: gui.py:1057 gui.py:1061 gui.py:1067 gui.py:1235 gui.py:1536 mclient.py:2483
+#: mclient.py:2490
 msgid "Transcription"
 msgstr "Транскрипция"
 
 #: gui.py:951 gui.py:1003 gui.py:1004 gui.py:1005 gui.py:1031 gui.py:1035
 #: gui.py:1037 gui.py:1058 gui.py:1062 gui.py:1065 gui.py:1070 gui.py:1234
-#: gui.py:1542 mclient.py:2480 mclient.py:2490
+#: gui.py:1542 mclient.py:2481 mclient.py:2491
 msgid "Parts of speech"
 msgstr "Части речи"
 
 #: gui.py:952 gui.py:970 gui.py:985 gui.py:1000 gui.py:1015 gui.py:1036
-#: gui.py:1039 gui.py:1072 gui.py:1073 mclient.py:2120 mclient.py:2265
-#: mclient.py:2468
+#: gui.py:1039 gui.py:1072 gui.py:1073 mclient.py:2121 mclient.py:2266
+#: mclient.py:2469
 msgid "Do not set"
 msgstr "Не задано"
 
 #: gui.py:955 gui.py:1044 gui.py:1059 manager.py:26 manager.py:121
-#: manager.py:167 mclient.py:852 tests.py:278 tests.py:338 tests.py:380
-#: tests.py:473
+#: manager.py:167 mclient.py:852 tests.py:280 tests.py:340 tests.py:382
+#: tests.py:475
 msgid "Multitran"
 msgstr "Мультитран "
 
@@ -383,31 +383,31 @@ msgstr "Ясность"
 msgid "Custom"
 msgstr "Особый"
 
-#: gui.py:960 gui.py:1236 gui.py:1644 gui.py:1645 gui.py:1646 mclient.py:2534
+#: gui.py:960 gui.py:1236 gui.py:1644 gui.py:1645 gui.py:1646 mclient.py:2535
 msgid "Noun"
 msgstr "Существительное"
 
-#: gui.py:960 gui.py:1237 gui.py:1658 gui.py:1659 gui.py:1660 mclient.py:2536
+#: gui.py:960 gui.py:1237 gui.py:1658 gui.py:1659 gui.py:1660 mclient.py:2537
 msgid "Verb"
 msgstr "Глагол"
 
-#: gui.py:960 gui.py:1238 gui.py:1672 gui.py:1673 gui.py:1674 mclient.py:2538
+#: gui.py:960 gui.py:1238 gui.py:1672 gui.py:1673 gui.py:1674 mclient.py:2539
 msgid "Adjective"
 msgstr "Прилагательное"
 
-#: gui.py:961 gui.py:1239 gui.py:1686 gui.py:1687 gui.py:1688 mclient.py:2540
+#: gui.py:961 gui.py:1239 gui.py:1686 gui.py:1687 gui.py:1688 mclient.py:2541
 msgid "Abbreviation"
 msgstr "Сокращение"
 
-#: gui.py:961 gui.py:1240 gui.py:1700 gui.py:1701 gui.py:1702 mclient.py:2542
+#: gui.py:961 gui.py:1240 gui.py:1700 gui.py:1701 gui.py:1702 mclient.py:2543
 msgid "Adverb"
 msgstr "Наречие"
 
-#: gui.py:961 gui.py:1241 gui.py:1714 gui.py:1715 gui.py:1716 mclient.py:2544
+#: gui.py:961 gui.py:1241 gui.py:1714 gui.py:1715 gui.py:1716 mclient.py:2545
 msgid "Preposition"
 msgstr "Предлог"
 
-#: gui.py:962 gui.py:1242 gui.py:1728 gui.py:1729 gui.py:1730 mclient.py:2546
+#: gui.py:962 gui.py:1242 gui.py:1728 gui.py:1729 gui.py:1730 mclient.py:2547
 msgid "Pronoun"
 msgstr "Местоимение"
 
@@ -416,7 +416,7 @@ msgstr "Местоимение"
 msgid "Empty input is not allowed!"
 msgstr "Пустые входные данные не допускаются!"
 
-#: gui.py:1196 gui.py:1201 mclient.py:2450 mclient.py:2455
+#: gui.py:1196 gui.py:1201 mclient.py:2451 mclient.py:2456
 msgid "Not implemented yet!"
 msgstr "Еще не реализовано!"
 
@@ -485,7 +485,7 @@ msgstr "не работает"
 msgid "running"
 msgstr "работает"
 
-#: logic.py:165 manager.py:122 manager.py:165 tests.py:334 tests.py:348
+#: logic.py:165 manager.py:122 manager.py:165 tests.py:336 tests.py:350
 msgid "Offline"
 msgstr "Оффлайн"
 
@@ -750,45 +750,49 @@ msgstr "Этот блок не содержит текста!"
 msgid "This block does not contain a URL!"
 msgstr "Этот блок не содержит URL!"
 
-#: mclient.py:2080
+#: mclient.py:1968
+msgid "what is \"{}\"?"
+msgstr "что такое \"{}\"?"
+
+#: mclient.py:2081
 msgid "The request is long ({} symbols). Do you really want to send it?"
 msgstr "Запрос длинный ({} символов). Отправить?"
 
-#: mclient.py:2098 mclient.py:2109
+#: mclient.py:2099 mclient.py:2110
 msgid "Set language: {}"
 msgstr "Установка языка: \"{}\""
 
-#: mclient.py:2125
+#: mclient.py:2126
 msgid "Set the number of columns to {}"
 msgstr "Задать число столбцов: {}"
 
-#: mclient.py:2173
+#: mclient.py:2174
 msgid "No dictionaries have been provided for blacklisting!"
 msgstr "Список блокируемых словарей пуст!"
 
-#: mclient.py:2224
+#: mclient.py:2225
 msgid "No dictionaries have been provided for prioritizing!"
 msgstr "Список приоритетных словарей пуст!"
 
-#: mclient.py:2281
+#: mclient.py:2282
 msgid "Set the column limit to {} ({} in total)"
 msgstr "Задать максимальное число столбцов: {} (всего: {})"
 
-#: mclient.py:2288 plugins/multitrancom/utils.py:169
+#: mclient.py:2289 plugins/multitrancom/utils.py:169
 #: plugins/multitrancom/utils.py:267 plugins/multitrancom/utils.py:348
 #: plugins/multitrancom/utils.py:555 plugins/stardict/get.py:309
 msgid "The condition \"{}\" is not observed!"
 msgstr "Условие \"{}\" не выполнено!"
 
-#: mclient.py:2295
+#: mclient.py:2296
 msgid "Select column \"{}\" instead of \"{}\""
 msgstr "Выбор столбца \"{}\" вместо \"{}\""
 
-#: mclient.py:2373
+#: mclient.py:2374
 msgid "Load bookmark {} for article #{}"
 msgstr "Загрузка закладки {} для статьи №{}"
 
-#: mclient.py:2401
+#: mclient.py:2402
 msgid ""
 "Selected dictionary: \"{}\". Next dictionary: \"{}\" (abbreviation), "
 "\"{}\" (full)."
@@ -796,26 +800,26 @@ msgstr ""
 "Выбран словарь: \"{}\". Следующий словарь: \"{}\" (аббревиатура), "
 "\"{}\" (полное название)."
 
-#: mclient.py:2409
+#: mclient.py:2410
 msgid "Selected dictionary: \"{}\". No next dictionary."
 msgstr "Выбран словарь: \"{}\". Следующего словаря нет."
 
-#: mclient.py:2510
+#: mclient.py:2511
 msgid "At least one column must be set!"
 msgstr "Необходимо задать хотя бы 1 столбец!"
 
-#: mclient.py:2549 plugins/multitrancom/pairs.py:2702
+#: mclient.py:2550 plugins/multitrancom/pairs.py:2702
 #: plugins/multitrancom/pairs.py:2722 plugins/multitrancom/run.py:74
 #: plugins/multitrancom/run.py:85 plugins/multitrancom/utils.py:98
 #: plugins/multitrancom/utils.py:585
 msgid "Wrong input data: \"{}\"!"
 msgstr "Недопустимые входные данные: \"{}\"!"
 
-#: mclient.py:2706
+#: mclient.py:2707
 msgid "Unable to continue due to an invalid configuration."
 msgstr "Невозможно продолжить ввиду некорректной конфигурации."
 
-#: mclient.py:2708
+#: mclient.py:2709
 msgid "Goodbye!"
 msgstr "До свидания!"
 
@@ -8369,7 +8373,7 @@ msgstr "Загружено словарей: {}/{}"
 msgid "Any"
 msgstr "Любой"
 
-#: tests.py:194
+#: tests.py:196
 msgid ""
 "The following pairs are not supported:\n"
 "{}"
@@ -8377,7 +8381,7 @@ msgstr ""
 "Следующие пары не поддерживаются:\n"
 "{}"
 
-#: tests.py:498 tests.py:503
+#: tests.py:500 tests.py:505
 msgid "Triggered!"
 msgstr "Сработало!"
 
