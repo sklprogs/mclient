@@ -305,6 +305,11 @@ class Elems:
             self.Success = False
             sh.com.empty(f)
     
+    def delete_numeration(self):
+        self._blocks = [block for block in self._blocks \
+                        if not re.match('^\d+\.$',block._text)
+                       ]
+    
     def search_definition(self,block):
         f = '[MClient] plugins.multitrancom.elems.Elems.search_definition'
         if block:
@@ -486,6 +491,7 @@ class Elems:
             self.trash()
             self.subjects()
             self.delete_search()
+            self.delete_numeration()
             # Reassign types
             self.transc()
             self.users()
