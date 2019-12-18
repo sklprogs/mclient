@@ -85,6 +85,7 @@ tag_pattern_del = ['m.exe?a=40&'          # Log in, Вход
                   ,'m.exe?a=256'          # English, Русский
                   ,'m.exe?a=1&'           # Dictionary, Словари
                   ,'m.exe?a=2&'           # Forum, Форум
+                  ,'m.exe?a=28&'          # +
                   ,'&fl=1'                # ⇄
                   ,'a href="#phrases'     # phrases, фразы
                   ,'?fscreen=1'           # Full screen, Полный экран

@@ -1,4 +1,5 @@
 
+- Process stays alive if main GUI is quitted, then - the message window about connection failure
 - EN-RU, be cut out: comment has SAME=0
 - EN-RU, decaffeinated: transcription not in place
 - EN-RU, проблемный -> Программирование: wrong block separation: "Refactoring is the process of..."
