@@ -7,12 +7,7 @@ import plugins.multitrancom.cleanup as cu
 import plugins.multitrancom.tags    as tg
 import plugins.multitrancom.elems   as el
 import plugins.multitrancom.pairs   as pr
-
-import gettext
-import skl_shared.gettext_windows
-
-skl_shared.gettext_windows.setup_env()
-gettext.install('mclient','../resources/locale')
+from skl_shared.localize import _
 
 
 

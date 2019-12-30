@@ -8,10 +8,7 @@ import html
 import ssl
 import skl_shared.shared as sh
 import manager
-
-import gettext, gettext_windows
-gettext_windows.setup_env()
-gettext.install('mclient','../resources/locale')
+from skl_shared.localize import _
 
 
 sample_block = '''Австралийский сленг

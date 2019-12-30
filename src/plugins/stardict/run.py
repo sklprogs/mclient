@@ -6,12 +6,7 @@ import plugins.stardict.get     as gt
 import plugins.stardict.cleanup as cu
 import plugins.stardict.tags    as tg
 import plugins.stardict.elems   as el
-
-import gettext
-import skl_shared.gettext_windows
-
-skl_shared.gettext_windows.setup_env()
-gettext.install('mclient','../resources/locale')
+from skl_shared.localize import _
 
 
 

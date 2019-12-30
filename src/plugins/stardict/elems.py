@@ -15,11 +15,7 @@
 '''
 
 import skl_shared.shared as sh
-
-import gettext
-import skl_shared.gettext_windows
-skl_shared.gettext_windows.setup_env()
-gettext.install('mclient','../resources/locale')
+from skl_shared.localize import _
 
 
 

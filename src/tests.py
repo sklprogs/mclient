@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import skl_shared.shared as sh
+from skl_shared.localize import _
 
 DEBUG = True
 

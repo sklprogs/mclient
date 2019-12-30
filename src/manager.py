@@ -2,14 +2,10 @@
 # -*- coding: UTF-8 -*-
 
 import skl_shared.shared as sh
-
-import gettext, gettext_windows
-gettext_windows.setup_env()
-gettext.install('mclient','../resources/locale')
-
 import plugins.stardict.get
 import plugins.stardict.run     as sdrun
 import plugins.multitrancom.run as mcrun
+from skl_shared.localize import _
 
 
 class Plugins:

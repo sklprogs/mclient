@@ -3,10 +3,7 @@
 
 import tkinterhtml       as th
 import skl_shared.shared as sh
-
-import gettext, gettext_windows
-gettext_windows.setup_env()
-gettext.install('mclient','../resources/locale')
+from skl_shared.localize import _
 
 PRODUCT = 'MClient'
 VERSION = '6.2'

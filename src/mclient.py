@@ -11,11 +11,7 @@ import gui               as gi
 import cells             as cl
 import db
 import mkhtml            as mh
-
-import gettext
-import skl_shared.gettext_windows
-skl_shared.gettext_windows.setup_env()
-gettext.install('mclient','../resources/locale')
+from skl_shared.localize import _
 
 
 if __name__ == '__main__':
