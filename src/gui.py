@@ -7,6 +7,7 @@ from skl_shared.localize import _
 
 PRODUCT = 'MClient'
 VERSION = '6.2'
+CURYEAR = 2020
 ICON    = sh.objs.pdir().add('..','resources','icon_64x64_mclient.gif')
 
 
@@ -224,8 +225,8 @@ class About:
             self.obj.icon(ICON)
         
     def labels(self):
-        text = _('Programming: Peter Sklyar, 2015-2019.\nVersion: {}\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n')
-        text = text.format(VERSION)
+        text = _('Programming: Peter Sklyar, 2015-{}.\nVersion: {}\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n')
+        text = text.format(CURYEAR,VERSION)
         self.lbl_abt = sh.Label (parent = self.frm_prm
                                 ,text   = text
                                 ,font   = 'Sans 14'

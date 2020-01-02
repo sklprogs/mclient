@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-30 16:01+0300\n"
-"PO-Revision-Date: 2019-12-30 16:01+0300\n"
+"POT-Creation-Date: 2020-01-02 21:50+0300\n"
+"PO-Revision-Date: 2020-01-02 21:50+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -28,10 +28,9 @@ msgstr "Таблица для отладки:"
 msgid "Unable to find: {}"
 msgstr "Не удалось найти: {}"
 
-#: db.py:237 db.py:293 del/shared/logic.py:756 del/shared/logic.py:2225
-#: del/shared/shared.py:1405 del/shared/shared.py:2698
-#: del/shared/shared.py:3238 del/shared/shared.py:3624
-#: del/shared/shared.py:3703 gui.py:1074 manager.py:166 mclient.py:2482
+#: db.py:237 db.py:293 del/logic.py:756 del/logic.py:2225 del/shared.py:1405
+#: del/shared.py:2698 del/shared.py:3238 del/shared.py:3624 del/shared.py:3703
+#: gui.py:1075 manager.py:166 mclient.py:2482
 msgid ""
 "An unknown mode \"{}\"!\n"
 "\n"
@@ -57,16 +56,15 @@ msgstr "Удаление всех записей из {}"
 msgid "Delete records of article No. {} from {}"
 msgstr "Удаление записей статьи №{} из {}"
 
-#: db.py:971 del/shared/logic.py:890 del/shared/logic.py:1070
-#: del/shared/logic.py:1167 del/shared/logic.py:1837 del/shared/logic.py:2299
-#: del/shared/logic.py:2929 del/shared/logic.py:2996 del/shared/logic.py:3847
-#: del/shared/logic.py:4607 del/shared/shared.py:667 del/shared/shared.py:2479
-#: del/shared/shared.py:3170 del/shared/shared.py:3617
-#: del/shared/shared.py:4448 logic.py:86 logic.py:103 logic.py:1122
-#: logic.py:1134 mclient.py:57 mclient.py:538 mclient.py:1640 mclient.py:1773
-#: mclient.py:1785 mclient.py:1797 mclient.py:1809 mclient.py:1847
-#: mclient.py:1859 mclient.py:1871 mclient.py:1883 mclient.py:2374
-#: mclient.py:2382 plugins/multitrancom/pairs.py:2756
+#: db.py:971 del/logic.py:890 del/logic.py:1070 del/logic.py:1167
+#: del/logic.py:1837 del/logic.py:2299 del/logic.py:2929 del/logic.py:2996
+#: del/logic.py:3847 del/logic.py:4607 del/shared.py:667 del/shared.py:2479
+#: del/shared.py:3170 del/shared.py:3617 del/shared.py:4448 logic.py:86
+#: logic.py:103 logic.py:1122 logic.py:1134 mclient.py:57 mclient.py:538
+#: mclient.py:1640 mclient.py:1773 mclient.py:1785 mclient.py:1797
+#: mclient.py:1809 mclient.py:1847 mclient.py:1859 mclient.py:1871
+#: mclient.py:1883 mclient.py:2374 mclient.py:2382
+#: plugins/multitrancom/pairs.py:2756
 msgid "Wrong input data!"
 msgstr "Недопустимые входные данные!"
 
@@ -74,92 +72,88 @@ msgstr "Недопустимые входные данные!"
 msgid "Delete bookmarks for all articles"
 msgstr "Удаление закладок во всех статьях"
 
-#: del/shared/gui.py:1252 del/shared/logic.py:249 del/shared/logic.py:294
-#: del/shared/logic.py:809 del/shared/logic.py:828 del/shared/logic.py:4825
-#: del/shared/shared.py:4139
+#: del/gui.py:1252 del/logic.py:249 del/logic.py:294 del/logic.py:809
+#: del/logic.py:828 del/logic.py:4825 del/shared.py:4139
 msgid "WARNING"
 msgstr "ПРЕДУПРЕЖДЕНИЕ"
 
-#: del/shared/gui.py:1259 del/shared/logic.py:288 del/shared/logic.py:809
-#: del/shared/shared.py:4131
+#: del/gui.py:1259 del/logic.py:288 del/logic.py:809 del/shared.py:4131
 msgid "ERROR"
 msgstr "ОШИБКА"
 
-#: del/shared/gui.py:1266 del/shared/logic.py:251 del/shared/logic.py:312
-#: del/shared/shared.py:4164 del/shared/shared.py:4368
+#: del/gui.py:1266 del/logic.py:251 del/logic.py:312 del/shared.py:4164
+#: del/shared.py:4368
 msgid "QUESTION"
 msgstr "ВОПРОС"
 
-#: del/shared/gui.py:1273 del/shared/logic.py:247 del/shared/logic.py:272
-#: del/shared/logic.py:300 del/shared/logic.py:799 del/shared/logic.py:834
-#: del/shared/logic.py:4833 del/shared/shared.py:4148 del/shared/shared.py:4156
+#: del/gui.py:1273 del/logic.py:247 del/logic.py:272 del/logic.py:300
+#: del/logic.py:799 del/logic.py:834 del/logic.py:4833 del/shared.py:4148
+#: del/shared.py:4156
 msgid "INFO"
 msgstr "ИНФОРМАЦИЯ"
 
-#: del/shared/logic.py:104 del/shared/logic.py:4260
+#: del/logic.py:104 del/logic.py:4260
 msgid "Set the max number of rows to {}"
 msgstr "Задать максимальное число столбцов: {}"
 
-#: del/shared/logic.py:117
+#: del/logic.py:117
 msgid "Set the max column width to {} symbols"
 msgstr "Ограничить максимальную ширину столбца {} символами"
 
-#: del/shared/logic.py:153 del/shared/logic.py:948 del/shared/logic.py:967
-#: del/shared/logic.py:2368 del/shared/logic.py:2388 del/shared/logic.py:4484
-#: del/shared/logic.py:4502 del/shared/logic.py:4546 del/shared/shared.py:4403
-#: mclient.py:2285 plugins/multitrancom/utils.py:165
+#: del/logic.py:153 del/logic.py:948 del/logic.py:967 del/logic.py:2368
+#: del/logic.py:2388 del/logic.py:4484 del/logic.py:4502 del/logic.py:4546
+#: del/shared.py:4403 mclient.py:2285 plugins/multitrancom/utils.py:165
 #: plugins/multitrancom/utils.py:263 plugins/multitrancom/utils.py:344
 #: plugins/multitrancom/utils.py:551 plugins/stardict/get.py:305
 msgid "The condition \"{}\" is not observed!"
 msgstr "Условие \"{}\" не выполнено!"
 
-#: del/shared/logic.py:217
+#: del/logic.py:217
 msgid "Only iterable objects are supported!"
 msgstr "Поддерживаются только итерируемые объекты!"
 
-#: del/shared/logic.py:247 del/shared/logic.py:306
+#: del/logic.py:247 del/logic.py:306
 msgid "DEBUG"
 msgstr "ОТЛАДКА"
 
-#: del/shared/logic.py:258
+#: del/logic.py:258
 msgid "File \"{}\" was not found!"
 msgstr "Файл \"{}\" не найден!"
 
-#: del/shared/logic.py:393 del/shared/logic.py:421 del/shared/logic.py:2076
-#: del/shared/logic.py:2543 del/shared/logic.py:3779 del/shared/logic.py:4757
-#: del/shared/logic.py:4939 del/shared/logic.py:5025 del/shared/shared.py:2711
-#: del/shared/shared.py:2747 mclient.py:2546 plugins/multitrancom/pairs.py:2698
-#: plugins/multitrancom/pairs.py:2718 plugins/multitrancom/run.py:69
-#: plugins/multitrancom/run.py:80 plugins/multitrancom/utils.py:94
-#: plugins/multitrancom/utils.py:581
+#: del/logic.py:393 del/logic.py:421 del/logic.py:2076 del/logic.py:2543
+#: del/logic.py:3779 del/logic.py:4757 del/logic.py:4939 del/logic.py:5025
+#: del/shared.py:2711 del/shared.py:2747 mclient.py:2546
+#: plugins/multitrancom/pairs.py:2698 plugins/multitrancom/pairs.py:2718
+#: plugins/multitrancom/run.py:69 plugins/multitrancom/run.py:80
+#: plugins/multitrancom/utils.py:94 plugins/multitrancom/utils.py:581
 msgid "Wrong input data: \"{}\"!"
 msgstr "Недопустимые входные данные: \"{}\"!"
 
-#: del/shared/logic.py:491 del/shared/logic.py:494
+#: del/logic.py:491 del/logic.py:494
 msgid "Left mouse button"
 msgstr "Левая кнопка мыши"
 
-#: del/shared/logic.py:497 del/shared/logic.py:500
+#: del/logic.py:497 del/logic.py:500
 msgid "Middle mouse button"
 msgstr "Средняя кнопка мыши"
 
-#: del/shared/logic.py:503 del/shared/logic.py:506
+#: del/logic.py:503 del/logic.py:506
 msgid "Right mouse button"
 msgstr "Правая кнопка мыши"
 
-#: del/shared/logic.py:509
+#: del/logic.py:509
 msgid "Space"
 msgstr "Пробел"
 
-#: del/shared/logic.py:648
+#: del/logic.py:648
 msgid "Custom arguments: \"{}\""
 msgstr "Дополнительные параметры: \"{}\""
 
-#: del/shared/logic.py:657 del/shared/logic.py:3198 del/shared/logic.py:3226
+#: del/logic.py:657 del/logic.py:3198 del/logic.py:3226
 msgid "Failed to run \"{}\"!"
 msgstr "Не удалось запустить \"{}\"!"
 
-#: del/shared/logic.py:667 del/shared/logic.py:675 del/shared/logic.py:683
+#: del/logic.py:667 del/logic.py:675 del/logic.py:683
 msgid ""
 "Unable to open the file in an external program. You should probably check "
 "the file associations."
@@ -167,95 +161,92 @@ msgstr ""
 "Не удается открыть файл во внешней программе. Возможно, Вам стоит проверить "
 "ассоциации файлов."
 
-#: del/shared/logic.py:740 del/shared/logic.py:771 del/shared/logic.py:786
-#: del/shared/regexp.py:45 del/shared/regexp.py:107
+#: del/logic.py:740 del/logic.py:771 del/logic.py:786 del/regexp.py:45
+#: del/regexp.py:107
 msgid "Not enough input data!"
 msgstr "Недостаточно входных данных!"
 
-#: del/shared/logic.py:746 del/shared/logic.py:2210
+#: del/logic.py:746 del/logic.py:2210
 msgid "Write file \"{}\""
 msgstr "Запись файла \"{}\""
 
-#: del/shared/logic.py:753
+#: del/logic.py:753
 msgid "Unable to write file \"{}\"!"
 msgstr "Не удается записать файл \"{}\"!"
 
-#: del/shared/logic.py:829
+#: del/logic.py:829
 msgid "Cannot print the message!"
 msgstr "Не удаётся показать сообщение!"
 
-#: del/shared/logic.py:866 del/shared/logic.py:2275
+#: del/logic.py:866 del/logic.py:2275
 msgid "Entries deleted: {} ({}-{})"
 msgstr "Удалено вхождений: {} ({}-{})"
 
-#: del/shared/logic.py:875 del/shared/logic.py:1016 del/shared/logic.py:2284
-#: del/shared/logic.py:2441
+#: del/logic.py:875 del/logic.py:1016 del/logic.py:2284 del/logic.py:2441
 msgid "File \"{}\" is not sortable!"
 msgstr "Файл \"{}\" не подлежит сортировке!"
 
-#: del/shared/logic.py:913
+#: del/logic.py:913
 msgid "Dictionary \"{}\": Incorrect line #{}: \"{}\"!"
 msgstr "Словарь \"{}\": Неправильная строка №{}: \"{}\"!"
 
-#: del/shared/logic.py:1062 del/shared/logic.py:1899 del/shared/logic.py:5038
-#: gui.py:977 gui.py:992 gui.py:1007 gui.py:1022 gui.py:1648 gui.py:1662
-#: gui.py:1676 gui.py:1690 gui.py:1704 gui.py:1718 gui.py:1732
+#: del/logic.py:1062 del/logic.py:1899 del/logic.py:5038 gui.py:978 gui.py:993
+#: gui.py:1008 gui.py:1023 gui.py:1649 gui.py:1663 gui.py:1677 gui.py:1691
+#: gui.py:1705 gui.py:1719 gui.py:1733
 msgid "Empty input is not allowed!"
 msgstr "Пустые входные данные не допускаются!"
 
-#: del/shared/logic.py:1066 del/shared/logic.py:1903 del/shared/shared.py:3336
-#: del/shared/shared.py:4046
+#: del/logic.py:1066 del/logic.py:1903 del/shared.py:3336 del/shared.py:4046
 msgid "File \"{}\" has not been found!"
 msgstr "Файл \"{}\" не найден!"
 
-#: del/shared/logic.py:1121 del/shared/logic.py:2485
+#: del/logic.py:1121 del/logic.py:2485
 msgid "Load file \"{}\""
 msgstr "Загрузка файла \"{}\""
 
-#: del/shared/logic.py:1138
+#: del/logic.py:1138
 msgid "Unable to read file \"{}\"!"
 msgstr "Не удается прочитать файл \"{}\"!"
 
-#: del/shared/logic.py:1157
+#: del/logic.py:1157
 msgid "Float is required at input, but found \"{}\"! Return 0.0"
 msgstr ""
 "На входе должно быть число с плавающей запятой, но получено \"{}\"! "
 "Возвращаю 0.0"
 
-#: del/shared/logic.py:1179 del/shared/logic.py:1188
+#: del/logic.py:1179 del/logic.py:1188
 msgid "Convert \"{}\" to an integer"
 msgstr "Конвертация \"{}\" в целое число"
 
-#: del/shared/logic.py:1191
+#: del/logic.py:1191
 msgid "Integer is required at input, but found \"{}\"! Return 0"
 msgstr "На входе должно быть целое число, но получено \"{}\"! Возвращаю 0"
 
-#: del/shared/logic.py:1365
+#: del/logic.py:1365
 msgid ""
 "Different number of opening and closing brackets: \"{}\": {}; \"{}\": {}!"
 msgstr "Разное число открывающих и закрывающих скобок: \"{}\": {}; \"{}\": {}!"
 
-#: del/shared/logic.py:1512
+#: del/logic.py:1512
 msgid ""
 "Commas and/or semicolons or line breaks can be used, but not altogether!"
 msgstr ""
 "Можно использовать запятые и/или точки с запятой или переносы строк, но не "
 "все сразу!"
 
-#: del/shared/logic.py:1536
+#: del/logic.py:1536
 msgid "Failed to convert \"{}\" to an integer!"
 msgstr "Не удалось конвертировать \"{}\" в целое число!"
 
-#: del/shared/logic.py:1547
+#: del/logic.py:1547
 msgid "Failed to convert \"{}\" to a floating-point number!"
 msgstr "Не удалось конвертировать \"{}\" в число с плавающей точкой!"
 
-#: del/shared/logic.py:1735 del/shared/logic.py:1749 del/shared/logic.py:1780
-#: del/shared/logic.py:1867
+#: del/logic.py:1735 del/logic.py:1749 del/logic.py:1780 del/logic.py:1867
 msgid "Set time parameters are incorrect or not supported."
 msgstr "Заданные параметры времени неверны или не поддерживаются."
 
-#: del/shared/logic.py:1764
+#: del/logic.py:1764
 msgid ""
 "Set time parameters are incorrect or not supported.\n"
 "\n"
@@ -265,60 +256,59 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: del/shared/logic.py:1813
+#: del/logic.py:1813
 msgid "Jan"
 msgstr "янв"
 
-#: del/shared/logic.py:1815
+#: del/logic.py:1815
 msgid "Feb"
 msgstr "фев"
 
-#: del/shared/logic.py:1817
+#: del/logic.py:1817
 msgid "Mar"
 msgstr "мар"
 
-#: del/shared/logic.py:1819
+#: del/logic.py:1819
 msgid "Apr"
 msgstr "апр"
 
-#: del/shared/logic.py:1821
+#: del/logic.py:1821
 msgid "May"
 msgstr "май"
 
-#: del/shared/logic.py:1823
+#: del/logic.py:1823
 msgid "Jun"
 msgstr "июн"
 
-#: del/shared/logic.py:1825
+#: del/logic.py:1825
 msgid "Jul"
 msgstr "июл"
 
-#: del/shared/logic.py:1827
+#: del/logic.py:1827
 msgid "Aug"
 msgstr "авг"
 
-#: del/shared/logic.py:1829
+#: del/logic.py:1829
 msgid "Sep"
 msgstr "сен"
 
-#: del/shared/logic.py:1831
+#: del/logic.py:1831
 msgid "Oct"
 msgstr "окт"
 
-#: del/shared/logic.py:1833
+#: del/logic.py:1833
 msgid "Nov"
 msgstr "ноя"
 
-#: del/shared/logic.py:1835
+#: del/logic.py:1835
 msgid "Dec"
 msgstr "дек"
 
-#: del/shared/logic.py:1907
+#: del/logic.py:1907
 msgid "The object \"{}\" is not a file!"
 msgstr "Объект \"{}\" не является файлом!"
 
-#: del/shared/logic.py:1926 del/shared/logic.py:2072 del/shared/logic.py:2565
-#: del/shared/logic.py:3169
+#: del/logic.py:1926 del/logic.py:2072 del/logic.py:2565 del/logic.py:3169
 msgid ""
 "Operation has failed!\n"
 "Details: {}"
@@ -326,44 +316,43 @@ msgstr ""
 "Операция завершилась с ошибкой!\n"
 "Подробности: {}"
 
-#: del/shared/logic.py:1935 del/shared/logic.py:2704
+#: del/logic.py:1935 del/logic.py:2704
 msgid "Copy \"{}\" to \"{}\""
 msgstr "Копирование \"{}\" в \"{}\""
 
-#: del/shared/logic.py:1941
+#: del/logic.py:1941
 msgid "Failed to copy file \"{}\" to \"{}\"!"
 msgstr "Не удалось скопировать файл \"{}\" в \"{}\"!"
 
-#: del/shared/logic.py:1949
+#: del/logic.py:1949
 msgid "Move \"{}\" to \"{}\""
 msgstr "Перемещение \"{}\" в \"{}\""
 
-#: del/shared/logic.py:1955
+#: del/logic.py:1955
 msgid "Failed to move \"{}\" to \"{}\"!"
 msgstr "Не удалось переместить \"{}\" в \"{}\"!"
 
-#: del/shared/logic.py:1968 del/shared/logic.py:2015
+#: del/logic.py:1968 del/logic.py:2015
 msgid "Failed to get the date of the file \"{}\"!"
 msgstr "Не удалось определить дату файла \"{}\"!"
 
-#: del/shared/logic.py:1979
+#: del/logic.py:1979
 msgid "Unable to copy the file \"{}\" to iself!"
 msgstr "Нельзя скопировать файл \"{}\" сам в себя!"
 
-#: del/shared/logic.py:1987 del/shared/logic.py:2034 del/shared/logic.py:2248
-#: del/shared/shared.py:2297
+#: del/logic.py:1987 del/logic.py:2034 del/logic.py:2248 del/shared.py:2297
 msgid "Operation has been canceled by the user."
 msgstr "Операция отменена пользователем."
 
-#: del/shared/logic.py:1996 del/shared/logic.py:2616
+#: del/logic.py:1996 del/logic.py:2616
 msgid "Delete \"{}\""
 msgstr "Удаление \"{}\""
 
-#: del/shared/logic.py:2002
+#: del/logic.py:2002
 msgid "Failed to delete file \"{}\"!"
 msgstr "Не удается удалить файл \"{}\"!"
 
-#: del/shared/logic.py:2026
+#: del/logic.py:2026
 msgid ""
 "Moving is not necessary, because the source and destination are identical "
 "({})."
@@ -371,31 +360,31 @@ msgstr ""
 "Перемещение не требуется, поскольку на входе и выходе указан один и тот же "
 "объект ({})."
 
-#: del/shared/logic.py:2044
+#: del/logic.py:2044
 msgid "Change the time of the file \"{}\" to {}"
 msgstr "Изменение времени файла \"{}\" на {}"
 
-#: del/shared/logic.py:2050
+#: del/logic.py:2050
 msgid "Failed to change the time of the file \"{}\" to \"{}\"!"
 msgstr "Не удалось изменить время файла \"{}\" на \"{}\"!"
 
-#: del/shared/logic.py:2100 del/shared/logic.py:2694
+#: del/logic.py:2100 del/logic.py:2694
 msgid "Directory \"{}\" already exists."
 msgstr "Каталог \"{}\" уже существует."
 
-#: del/shared/logic.py:2105
+#: del/logic.py:2105
 msgid "The path \"{}\" is invalid!"
 msgstr "Путь \"{}\" неверен!"
 
-#: del/shared/logic.py:2109
+#: del/logic.py:2109
 msgid "Create directory \"{}\""
 msgstr "Создание каталога \"{}\""
 
-#: del/shared/logic.py:2116
+#: del/logic.py:2116
 msgid "Failed to create directory \"{}\"!"
 msgstr "Не удается создать каталог \"{}\"!"
 
-#: del/shared/logic.py:2221
+#: del/logic.py:2221
 msgid ""
 "Unable to write file \"{}\"!\n"
 "\n"
@@ -405,11 +394,11 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: del/shared/logic.py:2334
+#: del/logic.py:2334
 msgid "The following lines cannot be parsed:"
 msgstr "Не удалось обработать следующие строки:"
 
-#: del/shared/logic.py:2495
+#: del/logic.py:2495
 msgid ""
 "Unable to read file \"{}\"!\n"
 "\n"
@@ -419,43 +408,43 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: del/shared/logic.py:2622
+#: del/logic.py:2622
 msgid "Failed to delete directory \"{}\"! Delete it manually."
 msgstr "Не удается удалить каталог \"{}\"! Удалите его вручную."
 
-#: del/shared/logic.py:2691
+#: del/logic.py:2691
 msgid "Unable to copy \"{}\" to iself!"
 msgstr "Нельзя скопировать \"{}\" сам в себя!"
 
-#: del/shared/logic.py:2710
+#: del/logic.py:2710
 msgid "Failed to copy \"{}\" to \"{}\"!"
 msgstr "Не удалось скопировать \"{}\" в \"{}\"!"
 
-#: del/shared/logic.py:2726 logic.py:531
+#: del/logic.py:2726 logic.py:531
 msgid "The following sections and/or keys are missing:"
 msgstr "Отсутствуют следующие разделы и/или ключи:"
 
-#: del/shared/logic.py:2739
+#: del/logic.py:2739
 msgid "New value of the key \"{}\" has been loaded."
 msgstr "Загружено новое значение ключа \"{}\"."
 
-#: del/shared/logic.py:2744
+#: del/logic.py:2744
 msgid "Keys loaded in total: {}, whereas {} are modified."
 msgstr "Всего загружено ключей: {}, из них измененных: {}"
 
-#: del/shared/logic.py:2769
+#: del/logic.py:2769
 msgid "Missing sections: {}"
 msgstr "Отсутствующих разделов: {}"
 
-#: del/shared/logic.py:2771
+#: del/logic.py:2771
 msgid "Missing keys: {}"
 msgstr "Отсутствующих ключей: {}"
 
-#: del/shared/logic.py:2773
+#: del/logic.py:2773
 msgid "The default configuration has been loaded."
 msgstr "Загружена конфигурация по умолчанию."
 
-#: del/shared/logic.py:2786
+#: del/logic.py:2786
 msgid ""
 "Failed to read the configuration file \"{}\". This file must share the same "
 "directory with the program and have UTF-8 encoding (no BOM) and UNIX line "
@@ -465,7 +454,7 @@ msgstr ""
 "находиться в одном каталоге с программой и иметь кодировку UTF-8 (без BOM), "
 "тип разрыва строки - UNIX."
 
-#: del/shared/logic.py:2823
+#: del/logic.py:2823
 msgid ""
 "Failed to open URL \"{}\" in a default browser!\n"
 "\n"
@@ -475,102 +464,101 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: del/shared/logic.py:2880
+#: del/logic.py:2880
 msgid "Differences:"
 msgstr "Различия:"
 
-#: del/shared/logic.py:2904
+#: del/logic.py:2904
 msgid "Texts are identical!"
 msgstr "Различий нет!"
 
-#: del/shared/logic.py:2960
+#: del/logic.py:2960
 msgid "Delete the symbolic link \"{}\""
 msgstr "Удаление ярлыка \"{}\""
 
-#: del/shared/logic.py:2965
+#: del/logic.py:2965
 msgid "Failed to remove shortcut \"{}\". Remove it manually and press OK."
 msgstr "Не удается удалить ярлык \"{}\". Удалите его вручную и нажмите OK."
 
-#: del/shared/logic.py:2979 del/shared/logic.py:3003
+#: del/logic.py:2979 del/logic.py:3003
 msgid "Create a symbolic link \"{}\""
 msgstr "Создание ярлыка \"{}\""
 
-#: del/shared/logic.py:2984 del/shared/logic.py:3012
+#: del/logic.py:2984 del/logic.py:3012
 msgid "Failed to create shortcut \"{}\". Create it manually and press OK."
 msgstr "Не удается создать ярлык \"{}\". Создайте его вручную и нажмите OK."
 
-#: del/shared/logic.py:3134
+#: del/logic.py:3134
 msgid "Failed to load an e-mail client."
 msgstr "Не удалось загрузить почтовый клиент."
 
-#: del/shared/logic.py:3172
+#: del/logic.py:3172
 msgid "This operation cannot be executed on your operating system."
 msgstr "Эта операция не может быть выполнена на вашей операционной системе."
 
-#: del/shared/logic.py:3517
+#: del/logic.py:3517
 msgid "Analyze the text"
 msgstr "Анализ текста"
 
-#: del/shared/logic.py:3803
+#: del/logic.py:3803
 msgid "Failed to find words of paragraph #{}!"
 msgstr "Не удалось найти слова абзаца #{}!"
 
-#: del/shared/logic.py:4088 del/shared/logic.py:4089 del/shared/logic.py:4816
-#: del/shared/logic.py:4821 del/shared/logic.py:4822 del/shared/logic.py:4829
-#: del/shared/logic.py:4830 logic.py:891
+#: del/logic.py:4088 del/logic.py:4089 del/logic.py:4816 del/logic.py:4821
+#: del/logic.py:4822 del/logic.py:4829 del/logic.py:4830 logic.py:891
 msgid "Logic error!"
 msgstr "Логическая ошибка!"
 
-#: del/shared/logic.py:4173 del/shared/logic.py:4181
+#: del/logic.py:4173 del/logic.py:4181
 msgid "The pool is empty!"
 msgstr "Пул пуст!"
 
-#: del/shared/logic.py:4216
+#: del/logic.py:4216
 msgid "The operation has taken {} s."
 msgstr "Операция завершена за {} с."
 
-#: del/shared/logic.py:4392 logic.py:1281
+#: del/logic.py:4392 logic.py:1281
 msgid "Unable to use unverified certificates!"
 msgstr "Не удается использовать неподтвержденные сертификаты!"
 
-#: del/shared/logic.py:4410 plugins/multitrancom/get.py:143
+#: del/logic.py:4410 plugins/multitrancom/get.py:143
 #: plugins/multitrancom/utils.py:71
 msgid "[OK]: \"{}\""
 msgstr "[Успешно]: \"{}\""
 
-#: del/shared/logic.py:4414
+#: del/logic.py:4414
 msgid "[FAILED]: \"{}\". Details: {}"
 msgstr "[ОШИБКА]: \"{}\". Подробности: {}"
 
-#: del/shared/logic.py:4430
+#: del/logic.py:4430
 msgid "Unable to decode \"{}\"!"
 msgstr "Не удается изменить кодировку \"{}\"!"
 
-#: del/shared/logic.py:4449
+#: del/logic.py:4449
 msgid "Wrong input data: {}!"
 msgstr "Недопустимые входные данные: \"{}\"!"
 
-#: del/shared/logic.py:4514
+#: del/logic.py:4514
 msgid "No references have been found!"
 msgstr "Ориентиры не найдены!"
 
-#: del/shared/logic.py:4518
+#: del/logic.py:4518
 msgid "No references to the right!"
 msgstr "Справа ориентиров нет!"
 
-#: del/shared/logic.py:4522
+#: del/logic.py:4522
 msgid "No references to the left!"
 msgstr "лева ориентиров нет!"
 
-#: del/shared/logic.py:4599
+#: del/logic.py:4599
 msgid "Unexpected end of text!"
 msgstr "Неожиданный конец текста!"
 
-#: del/shared/logic.py:4775
+#: del/logic.py:4775
 msgid ","
 msgstr "."
 
-#: del/shared/logic.py:4787
+#: del/logic.py:4787
 msgid ""
 "Operation has failed!\n"
 "\n"
@@ -580,93 +568,91 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: del/shared/logic.py:4805 mclient.py:224
+#: del/logic.py:4805 mclient.py:224
 msgid "Plain text (UTF-8)"
 msgstr "Обычный текст (UTF-8)"
 
-#: del/shared/logic.py:4806 del/shared/logic.py:4807 mclient.py:220
-#: mclient.py:221
+#: del/logic.py:4806 del/logic.py:4807 mclient.py:220 mclient.py:221
 msgid "Web-page"
 msgstr "Веб-страница"
 
-#: del/shared/logic.py:4808 mclient.py:222 mclient.py:225
+#: del/logic.py:4808 mclient.py:222 mclient.py:225
 msgid "All files"
 msgstr "Все файлы"
 
-#: del/shared/logic.py:4813
+#: del/logic.py:4813
 msgid "Save As:"
 msgstr "Сохранить как:"
 
-#: del/shared/logic.py:4818
+#: del/logic.py:4818
 msgid "Nothing to do!"
 msgstr "Действие не требуется."
 
-#: del/shared/logic.py:4839 del/shared/logic.py:4861
+#: del/logic.py:4839 del/logic.py:4861
 msgid "B"
 msgstr "Б"
 
-#: del/shared/logic.py:4852
+#: del/logic.py:4852
 msgid "TiB"
 msgstr "ТиБ"
 
-#: del/shared/logic.py:4854
+#: del/logic.py:4854
 msgid "GiB"
 msgstr "ГиБ"
 
-#: del/shared/logic.py:4856
+#: del/logic.py:4856
 msgid "MiB"
 msgstr "МиБ"
 
-#: del/shared/logic.py:4859
+#: del/logic.py:4859
 msgid "KiB"
 msgstr "КиБ"
 
-#: del/shared/logic.py:4957
+#: del/logic.py:4957
 msgid "ATTENTION: Do yo really want to rewrite file \"{}\"?"
 msgstr "ВНИМАНИЕ: Перезаписать файл \"{}\"?"
 
-#: del/shared/logic.py:4987 del/shared/logic.py:5020
+#: del/logic.py:4987 del/logic.py:5020
 msgid "sec"
 msgstr "сек"
 
-#: del/shared/logic.py:5008
+#: del/logic.py:5008
 msgid "yrs"
 msgstr "лет"
 
-#: del/shared/logic.py:5010
+#: del/logic.py:5010
 msgid "mths"
 msgstr "мес"
 
-#: del/shared/logic.py:5012
+#: del/logic.py:5012
 msgid "wks"
 msgstr "нед"
 
-#: del/shared/logic.py:5014
+#: del/logic.py:5014
 msgid "days"
 msgstr "дн"
 
-#: del/shared/logic.py:5016
+#: del/logic.py:5016
 msgid "hrs"
 msgstr "ч"
 
-#: del/shared/logic.py:5018
+#: del/logic.py:5018
 msgid "min"
 msgstr "мин"
 
-#: del/shared/logic.py:5033
+#: del/logic.py:5033
 msgid "Operation has been canceled."
 msgstr "Операция отменена."
 
-#: del/shared/logic.py:5043 gui.py:1193 gui.py:1198 mclient.py:2447
-#: mclient.py:2452
+#: del/logic.py:5043 gui.py:1194 gui.py:1199 mclient.py:2447 mclient.py:2452
 msgid "Not implemented yet!"
 msgstr "Еще не реализовано!"
 
-#: del/shared/regexp.py:56
+#: del/regexp.py:56
 msgid "A syntax error in the regular expression (id: {})!"
 msgstr "Синтаксическая ошибка в регулярном выражении (запись: {})!"
 
-#: del/shared/regexp.py:69
+#: del/regexp.py:69
 msgid ""
 "Regular expression {} has failed: we were expecting\n"
 "\"{}\",\n"
@@ -678,106 +664,103 @@ msgstr ""
 "получили\n"
 "\"{}\"."
 
-#: del/shared/shared.py:390
+#: del/shared.py:390
 msgid "Compare texts:"
 msgstr "Сравните тексты:"
 
-#: del/shared/shared.py:574
+#: del/shared.py:574
 msgid "Find:"
 msgstr "Найти:"
 
-#: del/shared/shared.py:621 del/shared/shared.py:720 del/shared/shared.py:743
-#: mclient.py:372 mclient.py:423 plugins/multitrancom/utils.py:80
+#: del/shared.py:621 del/shared.py:720 del/shared.py:743 mclient.py:372
+#: mclient.py:423 plugins/multitrancom/utils.py:80
 #: plugins/multitrancom/utils.py:123
 msgid "No matches!"
 msgstr "Совпадений нет!"
 
-#: del/shared/shared.py:712 del/shared/shared.py:734
+#: del/shared.py:712 del/shared.py:734
 msgid "Only one match has been found!"
 msgstr "Найдено 1 совпадение!"
 
-#: del/shared/shared.py:716
+#: del/shared.py:716
 msgid "No more matches, continuing from the top!"
 msgstr "Совпадений больше нет, поиск продолжен с начала!"
 
-#: del/shared/shared.py:739
+#: del/shared.py:739
 msgid "No more matches, continuing from the bottom!"
 msgstr "Совпадений больше нет, поиск продолжен с конца!"
 
-#: del/shared/shared.py:1012
+#: del/shared.py:1012
 msgid "{} tags to assign"
 msgstr "Создание {} тэгов"
 
-#: del/shared/shared.py:1018
+#: del/shared.py:1018
 msgid "Spelling seems to be correct."
 msgstr "Ошибок правописания не обнаружено."
 
-#: del/shared/shared.py:1081 del/shared/shared.py:1153
-#: del/shared/shared.py:1651 del/shared/shared.py:1932
-#: del/shared/shared.py:3036
+#: del/shared.py:1081 del/shared.py:1153 del/shared.py:1651 del/shared.py:1932
+#: del/shared.py:3036
 msgid "Close"
 msgstr "Закрыть"
 
-#: del/shared/shared.py:1082 del/shared/shared.py:1933
+#: del/shared.py:1082 del/shared.py:1933
 msgid "Close this window"
 msgstr "Закрыть это окно"
 
-#: del/shared/shared.py:1154 del/shared/shared.py:1650
-#: del/shared/shared.py:3035 del/shared/shared.py:4246
+#: del/shared.py:1154 del/shared.py:1650 del/shared.py:3035 del/shared.py:4246
 msgid "Reject and close"
 msgstr "Отказаться и закрыть"
 
-#: del/shared/shared.py:1162 gui.py:78 gui.py:1251
+#: del/shared.py:1162 gui.py:79 gui.py:1252
 msgid "Reset"
 msgstr "Сброс"
 
-#: del/shared/shared.py:1163
+#: del/shared.py:1163
 msgid "Restore the text"
 msgstr "Восстановить текст"
 
-#: del/shared/shared.py:1169 gui.py:781
+#: del/shared.py:1169 gui.py:782
 msgid "Save"
 msgstr "Сохранить"
 
-#: del/shared/shared.py:1170 del/shared/shared.py:1664
-#: del/shared/shared.py:3043 del/shared/shared.py:4238
-#: del/shared/shared.py:4252
+#: del/shared.py:1170 del/shared.py:1664 del/shared.py:3043 del/shared.py:4238
+#: del/shared.py:4252
 msgid "Accept and close"
 msgstr "Принять и закрыть"
 
-#: del/shared/shared.py:1657
+#: del/shared.py:1657
 msgid "Clear the field"
 msgstr "Очистить поле"
 
-#: del/shared/shared.py:1658 gui.py:635
+#: del/shared.py:1658 gui.py:636
 msgid "Clear"
 msgstr "Очистить"
 
-#: del/shared/shared.py:1665 del/shared/shared.py:3044
+#: del/shared.py:1665 del/shared.py:3044
 msgid "Save and close"
 msgstr "Запомнить и выйти"
 
-#: del/shared/shared.py:1926
+#: del/shared.py:1926
 msgid "Toggle all"
 msgstr "Переключить все"
 
-#: del/shared/shared.py:1927 gui.py:73
+#: del/shared.py:1927 gui.py:74
 msgid "Mark/unmark all checkboxes"
 msgstr "Переключить все галки"
 
-#: del/shared/shared.py:1959
+#: del/shared.py:1959
 msgid "Select files:"
 msgstr "Выберите файлы:"
 
-#: del/shared/shared.py:2121
+#: del/shared.py:2121
 msgid "Download progress"
 msgstr "Ход загрузок"
 
-#: del/shared/shared.py:2269
+#: del/shared.py:2269
 msgid "File: \"{}\"; {}/{} MB; Rate: {} kbps; ETA: {}s"
 msgstr "Файл: \"{}\"; {}/{} Мб; Скорость: {} Кб/с; Осталось: {}с"
 
-#: del/shared/shared.py:2284
+#: del/shared.py:2284
 msgid ""
 "Third-party module has failed!\n"
 "\n"
@@ -787,157 +770,155 @@ msgstr ""
 "\n"
 "Детали: {}"
 
-#: del/shared/shared.py:2552 gui.py:665 logic.py:276
+#: del/shared.py:2552 gui.py:666 logic.py:276
 msgid "Paste a special symbol"
 msgstr "Вставить специальный символ"
 
-#: del/shared/shared.py:2827
+#: del/shared.py:2827
 msgid "Remove item #{}"
 msgstr "Удаление элемента №{}"
 
-#: del/shared/shared.py:2830
+#: del/shared.py:2830
 msgid "No item #{}!"
 msgstr "Элемент №{} отсутствует!"
 
-#: del/shared/shared.py:2898
+#: del/shared.py:2898
 msgid "Item \"{}\" is not in list!"
 msgstr "Элемент \"{}\" не в списке!"
 
-#: del/shared/shared.py:3244
+#: del/shared.py:3244
 msgid "Set the geometry to \"{}x{}+{}+{}\""
 msgstr "Изменение геометрии виджета на \"{}x{}+{}+{}\""
 
-#: del/shared/shared.py:3326 del/shared/shared.py:3369
-#: del/shared/shared.py:3371
+#: del/shared.py:3326 del/shared.py:3369 del/shared.py:3371
 msgid "Please wait..."
 msgstr "Подождите..."
 
-#: del/shared/shared.py:3727
+#: del/shared.py:3727
 msgid "Widget 1 geometry: {}x{}+{}+{}"
 msgstr "Геометрия виджета 1: {}x{}+{}+{}"
 
-#: del/shared/shared.py:3733
+#: del/shared.py:3733
 msgid "Widget 2 geometry: {}x{}+{}+{}"
 msgstr "Геометрия виджета 2: {}x{}+{}+{}"
 
-#: del/shared/shared.py:3830
+#: del/shared.py:3830
 msgid "Wrong font: \"{}\"!"
 msgstr "Неправильный шрифт: \"{}\"!"
 
-#: del/shared/shared.py:3880
+#: del/shared.py:3880
 msgid "Save geometry: {}"
 msgstr "Сохранение геометрии: {}"
 
-#: del/shared/shared.py:3889
+#: del/shared.py:3889
 msgid "Restore geometry: {}"
 msgstr "Восстановление геометрии: {}"
 
-#: del/shared/shared.py:3893
+#: del/shared.py:3893
 msgid "Failed to restore geometry!"
 msgstr "Не удалось восстановить геометрию!"
 
-#: del/shared/shared.py:3911
+#: del/shared.py:3911
 msgid "Failed to change window properties!"
 msgstr "Не удалось изменить свойства окна!"
 
-#: del/shared/shared.py:3994
+#: del/shared.py:3994
 msgid "Failed to get the window handle!"
 msgstr "Не удалось получить дескриптор окна!"
 
-#: del/shared/shared.py:4105
+#: del/shared.py:4105
 msgid "Test:"
 msgstr "Тест:"
 
-#: del/shared/shared.py:4230
+#: del/shared.py:4230
 msgid "Yes"
 msgstr "Да"
 
-#: del/shared/shared.py:4231
+#: del/shared.py:4231
 msgid "No"
 msgstr "Нет"
 
-#: del/shared/shared.py:4234
+#: del/shared.py:4234
 msgid "Cancel"
 msgstr "Отмена"
 
-#: del/shared/shared.py:4399
+#: del/shared.py:4399
 msgid "An unknown color \"{}\"!"
 msgstr "Неизвестный цвет \"{}\"!"
 
-#: del/shared/shared.py:4425
+#: del/shared.py:4425
 msgid "Failed to select a file!"
 msgstr "Не удалось выбрать файл!"
 
-#: del/shared/shared.py:4441
+#: del/shared.py:4441
 msgid "Failed to enable key combination \"{}\"!"
 msgstr "Не удалось задействовать сочетание клавиш \"{}\"!"
 
-#: del/shared/shared.py:4445
+#: del/shared.py:4445
 msgid "Wrong input data: \"{}\""
 msgstr "Недопустимые входные данные: \"{}\"!"
 
-#: del/shared/tests.py:20 del/shared/tests.py:37 del/shared/tests.py:57
-#: del/shared/tests.py:76
+#: del/tests.py:20 del/tests.py:37 del/tests.py:57 del/tests.py:76
 msgid "Variant #{}"
 msgstr "Вариант №{}"
 
-#: del/shared/tests.py:23
+#: del/tests.py:23
 msgid "Description: no settings"
 msgstr "Описание: нет настроек"
 
-#: del/shared/tests.py:40
+#: del/tests.py:40
 msgid "Description: headers"
 msgstr "Описание: заголовки"
 
-#: del/shared/tests.py:60
+#: del/tests.py:60
 msgid "Description: transposition"
 msgstr "Описание: транспозиция"
 
-#: del/shared/tests.py:79
+#: del/tests.py:79
 msgid "Description: transposition and headers"
 msgstr "Описание: транспозиция и заголовки"
 
-#: del/shared/tests.py:345
+#: del/tests.py:345
 msgid "Copy something to clipboard"
 msgstr "Скопируйте что-нибудь в буфер обмена"
 
-#: del/shared/tests.py:348 del/shared/tests.py:355
+#: del/tests.py:348 del/tests.py:355
 msgid "Clipboard contents: \"{}\""
 msgstr "Содержание буфера обмена: \"{}\""
 
-#: del/shared/tests.py:351
+#: del/tests.py:351
 msgid "The following will be copied: \"{}\""
 msgstr "Будет скопировано следующее: \"{}\""
 
-#: del/shared/tests.py:387
+#: del/tests.py:387
 msgid "New settings"
 msgstr "Новые настройки"
 
-#: del/shared/tests.py:513
+#: del/tests.py:513
 msgid "The event has been triggered!"
 msgstr "Событие вызвано!"
 
-#: del/shared/tests.py:528
+#: del/tests.py:528
 msgid "Button"
 msgstr "Кнопка"
 
-#: del/shared/tests.py:532
+#: del/tests.py:532
 msgid "Trigger an event"
 msgstr "Вызвать событие"
 
-#: del/shared/tests.py:593
+#: del/tests.py:593
 msgid "Screen resolution: {}x{}"
 msgstr "Разрешение экрана: {}x{}"
 
-#: del/shared/tests.py:599
+#: del/tests.py:599
 msgid "Random coordinates: x: {}; y: {}"
 msgstr "Случайные координаты: x: {}; y: {}"
 
-#: del/shared/tests.py:877 del/shared/tests.py:910
+#: del/tests.py:877 del/tests.py:910
 msgid "Press Return to place widgets randomly"
 msgstr "Нажмите Ввод, чтобы расположить виджеты случайным образом"
 
-#: del/shared/tests.py:881
+#: del/tests.py:881
 msgid ""
 "Anchor: {}\n"
 "Press Return to adjust Widget 2"
@@ -945,37 +926,37 @@ msgstr ""
 "Привязка: {}\n"
 "Нажмите Ввод для подгонки Виджета 2"
 
-#: del/shared/tests.py:933
+#: del/tests.py:933
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
 
-#: gui.py:50
+#: gui.py:51
 msgid "Sources"
 msgstr "Источники"
 
-#: gui.py:72
+#: gui.py:73
 msgid "Select all"
 msgstr "Выбрать все"
 
-#: gui.py:79
+#: gui.py:80
 msgid "Reset to default"
 msgstr "Сброс настроек"
 
-#: gui.py:83 gui.py:1257
+#: gui.py:84 gui.py:1258
 msgid "Apply"
 msgstr "Применить"
 
-#: gui.py:84
+#: gui.py:85
 msgid "Close & Apply"
 msgstr "Закрыть и применить"
 
-#: gui.py:217 gui.py:817
+#: gui.py:218 gui.py:818
 msgid "About"
 msgstr "О программе"
 
-#: gui.py:227
+#: gui.py:228
 msgid ""
-"Programming: Peter Sklyar, 2015-2019.\n"
+"Programming: Peter Sklyar, 2015-{}.\n"
 "Version: {}\n"
 "\n"
 "This program is free and opensource. You can use and modify it freely\n"
@@ -985,7 +966,7 @@ msgid ""
 "If you have any questions, requests, etc., please do not hesitate to contact "
 "me.\n"
 msgstr ""
-"Программирование: Петр Скляр, 2015-2019.\n"
+"Программирование: Петр Скляр, 2015-{}.\n"
 "Версия: {}\n"
 "\n"
 "Эта программа является открытой и бесплатной. Вы можете свободно "
@@ -994,303 +975,303 @@ msgstr ""
 "\n"
 "Любые вопросы, пожелания и пр. излагайте по электронной почте.\n"
 
-#: gui.py:253 gui.py:303
+#: gui.py:254 gui.py:304
 msgid "Third parties"
 msgstr "Третьи стороны"
 
-#: gui.py:254
+#: gui.py:255
 msgid "Third-party licenses"
 msgstr "Лицензии третьих сторон"
 
-#: gui.py:258
+#: gui.py:259
 msgid "License"
 msgstr "Лицензия"
 
-#: gui.py:259
+#: gui.py:260
 msgid "View the license"
 msgstr "Информация о лицензии"
 
-#: gui.py:264
+#: gui.py:265
 msgid "Contact the author"
 msgstr "Связаться с автором"
 
-#: gui.py:265
+#: gui.py:266
 msgid "Draft an email to the author"
 msgstr "Написать письмо автору"
 
-#: gui.py:326
+#: gui.py:327
 msgid "Enter a string to search:"
 msgstr "Строка для поиска:"
 
-#: gui.py:353 mclient.py:254
+#: gui.py:354 mclient.py:254
 msgid "Save the current view as a web-page (*.htm)"
 msgstr "Сохранить текущее представление как веб-страницу (*.htm)"
 
-#: gui.py:354 mclient.py:256
+#: gui.py:355 mclient.py:256
 msgid "Save the original article as a web-page (*.htm)"
 msgstr "Сохранить оригинальную статью как веб-страницу (*.htm)"
 
-#: gui.py:355 mclient.py:258
+#: gui.py:356 mclient.py:258
 msgid "Save the article as plain text in UTF-8 (*.txt)"
 msgstr "Сохранить статью как обычный текст в кодировке UTF-8 (*.txt)"
 
-#: gui.py:356 mclient.py:260
+#: gui.py:357 mclient.py:260
 msgid "Copy HTML code of the article to clipboard"
 msgstr "Скопировать HTML-код статьи в буфер обмена"
 
-#: gui.py:357 mclient.py:262
+#: gui.py:358 mclient.py:262
 msgid "Copy the text of the article to clipboard"
 msgstr "Скопировать текст статьи в буфер обмена"
 
-#: gui.py:369
+#: gui.py:370
 msgid "Select an action:"
 msgstr "Выберите действие:"
 
-#: gui.py:399 gui.py:761
+#: gui.py:400 gui.py:762
 msgid "History"
 msgstr "История"
 
-#: gui.py:627 gui.py:628
+#: gui.py:628 gui.py:629
 msgid "Translate"
 msgstr "Перевести"
 
-#: gui.py:636
+#: gui.py:637
 msgid "Clear search field"
 msgstr "Очистить строку поиска"
 
-#: gui.py:643
+#: gui.py:644
 msgid "Paste"
 msgstr "Вставить"
 
-#: gui.py:644
+#: gui.py:645
 msgid "Paste text from clipboard"
 msgstr "Вставить текст из буфера обмена"
 
-#: gui.py:651
+#: gui.py:652
 msgid "Paste current request"
 msgstr "Вставить текущий запрос"
 
-#: gui.py:658
+#: gui.py:659
 msgid "Paste previous request"
 msgstr "Вставить предыдущий запрос"
 
-#: gui.py:664
+#: gui.py:665
 msgid "Symbols"
 msgstr "Символы"
 
-#: gui.py:685 logic.py:306
+#: gui.py:686 logic.py:306
 msgid "Swap source and target languages"
 msgstr "Поменять местами языки оригинала и перевода"
 
-#: gui.py:688
+#: gui.py:689
 msgid "Swap"
 msgstr "Поменять местами"
 
-#: gui.py:712
+#: gui.py:713
 msgid "Settings"
 msgstr "Настройки"
 
-#: gui.py:713
+#: gui.py:714
 msgid "Tune up view settings"
 msgstr "Изменить настройки вида"
 
-#: gui.py:719
+#: gui.py:720
 msgid "Toggle view"
 msgstr "Смена вида"
 
-#: gui.py:720
+#: gui.py:721
 msgid "Toggle the article view mode"
 msgstr "Переключить вид отображения статьи"
 
-#: gui.py:726
+#: gui.py:727
 msgid "Blacklist"
 msgstr "Черный список"
 
-#: gui.py:727
+#: gui.py:728
 msgid "Toggle the blacklist"
 msgstr "Включить/отключить черный список"
 
-#: gui.py:733
+#: gui.py:734
 msgid "Prioritize"
 msgstr "Приоритеты"
 
-#: gui.py:734 logic.py:286
+#: gui.py:735 logic.py:286
 msgid "Toggle prioritizing"
 msgstr "Включить/отключить список приоритетов"
 
-#: gui.py:740
+#: gui.py:741
 msgid "Alphabetize"
 msgstr "По алфавиту"
 
-#: gui.py:741 logic.py:278
+#: gui.py:742 logic.py:278
 msgid "Toggle alphabetizing"
 msgstr "Вкл./откл. сортировку по алфавиту"
 
-#: gui.py:748 logic.py:238
+#: gui.py:749 logic.py:238
 msgid "Go to the preceding article"
 msgstr "Предыдущая статья"
 
-#: gui.py:755 logic.py:240
+#: gui.py:756 logic.py:240
 msgid "Go to the following article"
 msgstr "Следующая статья"
 
-#: gui.py:767
+#: gui.py:768
 msgid "Reload"
 msgstr "Обновить"
 
-#: gui.py:768
+#: gui.py:769
 msgid "Reload the article"
 msgstr "Перезагрузить статью"
 
-#: gui.py:774
+#: gui.py:775
 msgid "Search"
 msgstr "Искать"
 
-#: gui.py:775
+#: gui.py:776
 msgid "Find in the current article"
 msgstr "Найти в текущей статье"
 
-#: gui.py:782
+#: gui.py:783
 msgid "Save the current article"
 msgstr "Сохранить текущую статью"
 
-#: gui.py:788
+#: gui.py:789
 msgid "Browse"
 msgstr "В браузере"
 
-#: gui.py:789
+#: gui.py:790
 msgid "Open the current article in a browser"
 msgstr "Открыть текущую статью в браузере"
 
-#: gui.py:795 mkhtml.py:99
+#: gui.py:796 mkhtml.py:100
 msgid "Print"
 msgstr "Печать"
 
-#: gui.py:796
+#: gui.py:797
 msgid "Create a print-ready preview"
 msgstr "Печать (предв. просмотр)"
 
-#: gui.py:802
+#: gui.py:803
 msgid "Define"
 msgstr "Что это?"
 
-#: gui.py:803
+#: gui.py:804
 msgid "Define the current term"
 msgstr "Дать определение термину"
 
-#: gui.py:809
+#: gui.py:810
 msgid "Clipboard"
 msgstr "Буфер обмена"
 
-#: gui.py:810
+#: gui.py:811
 msgid "Capture Ctrl-c-c and Ctrl-Ins-Ins"
 msgstr "Перехватывать Ctrl-c-c и Ctrl-Ins-Ins"
 
-#: gui.py:818
+#: gui.py:819
 msgid "View About"
 msgstr "Информация о программе"
 
-#: gui.py:824
+#: gui.py:825
 msgid "Quit"
 msgstr "Выйти"
 
-#: gui.py:825 logic.py:214
+#: gui.py:826 logic.py:214
 msgid "Quit the program"
 msgstr "Выйти из программы"
 
-#: gui.py:945 gui.py:970 gui.py:971 gui.py:972 gui.py:1026 gui.py:1035
-#: gui.py:1052 gui.py:1060 gui.py:1065 gui.py:1229 gui.py:1521 mclient.py:2473
+#: gui.py:946 gui.py:971 gui.py:972 gui.py:973 gui.py:1027 gui.py:1036
+#: gui.py:1053 gui.py:1061 gui.py:1066 gui.py:1230 gui.py:1522 mclient.py:2473
 #: mclient.py:2484
 msgid "Dictionaries"
 msgstr "Словари"
 
-#: gui.py:946 gui.py:985 gui.py:986 gui.py:987 gui.py:1027 gui.py:1029
-#: gui.py:1053 gui.py:1057 gui.py:1063 gui.py:1068 gui.py:1230 gui.py:1527
+#: gui.py:947 gui.py:986 gui.py:987 gui.py:988 gui.py:1028 gui.py:1030
+#: gui.py:1054 gui.py:1058 gui.py:1064 gui.py:1069 gui.py:1231 gui.py:1528
 #: mclient.py:2475 mclient.py:2485
 msgid "Word forms"
 msgstr "Словоформы"
 
-#: gui.py:947 gui.py:1015 gui.py:1016 gui.py:1017 gui.py:1030 gui.py:1031
-#: gui.py:1054 gui.py:1058 gui.py:1064 gui.py:1232 gui.py:1533 mclient.py:2479
+#: gui.py:948 gui.py:1016 gui.py:1017 gui.py:1018 gui.py:1031 gui.py:1032
+#: gui.py:1055 gui.py:1059 gui.py:1065 gui.py:1233 gui.py:1534 mclient.py:2479
 #: mclient.py:2486
 msgid "Transcription"
 msgstr "Транскрипция"
 
-#: gui.py:948 gui.py:1000 gui.py:1001 gui.py:1002 gui.py:1028 gui.py:1032
-#: gui.py:1034 gui.py:1055 gui.py:1059 gui.py:1062 gui.py:1067 gui.py:1231
-#: gui.py:1539 mclient.py:2477 mclient.py:2487
+#: gui.py:949 gui.py:1001 gui.py:1002 gui.py:1003 gui.py:1029 gui.py:1033
+#: gui.py:1035 gui.py:1056 gui.py:1060 gui.py:1063 gui.py:1068 gui.py:1232
+#: gui.py:1540 mclient.py:2477 mclient.py:2487
 msgid "Parts of speech"
 msgstr "Части речи"
 
-#: gui.py:949 gui.py:967 gui.py:982 gui.py:997 gui.py:1012 gui.py:1033
-#: gui.py:1036 gui.py:1069 gui.py:1070 mclient.py:2117 mclient.py:2262
+#: gui.py:950 gui.py:968 gui.py:983 gui.py:998 gui.py:1013 gui.py:1034
+#: gui.py:1037 gui.py:1070 gui.py:1071 mclient.py:2117 mclient.py:2262
 #: mclient.py:2465
 msgid "Do not set"
 msgstr "Не задано"
 
-#: gui.py:952 gui.py:1041 gui.py:1056 manager.py:22 manager.py:117
+#: gui.py:953 gui.py:1042 gui.py:1057 manager.py:22 manager.py:117
 #: manager.py:163 mclient.py:848 tests.py:281 tests.py:341 tests.py:383
 #: tests.py:476
 msgid "Multitran"
 msgstr "Мультитран "
 
-#: gui.py:953 gui.py:1043 gui.py:1061
+#: gui.py:954 gui.py:1044 gui.py:1062
 msgid "Cut to the chase"
 msgstr "Прямо к делу"
 
-#: gui.py:954 gui.py:1045 gui.py:1066
+#: gui.py:955 gui.py:1046 gui.py:1067
 msgid "Clearness"
 msgstr "Ясность"
 
-#: gui.py:955 gui.py:1047 gui.py:1071
+#: gui.py:956 gui.py:1048 gui.py:1072
 msgid "Custom"
 msgstr "Особый"
 
-#: gui.py:957 gui.py:1233 gui.py:1641 gui.py:1642 gui.py:1643 mclient.py:2531
+#: gui.py:958 gui.py:1234 gui.py:1642 gui.py:1643 gui.py:1644 mclient.py:2531
 msgid "Noun"
 msgstr "Существительное"
 
-#: gui.py:957 gui.py:1234 gui.py:1655 gui.py:1656 gui.py:1657 mclient.py:2533
+#: gui.py:958 gui.py:1235 gui.py:1656 gui.py:1657 gui.py:1658 mclient.py:2533
 msgid "Verb"
 msgstr "Глагол"
 
-#: gui.py:957 gui.py:1235 gui.py:1669 gui.py:1670 gui.py:1671 mclient.py:2535
+#: gui.py:958 gui.py:1236 gui.py:1670 gui.py:1671 gui.py:1672 mclient.py:2535
 msgid "Adjective"
 msgstr "Прилагательное"
 
-#: gui.py:958 gui.py:1236 gui.py:1683 gui.py:1684 gui.py:1685 mclient.py:2537
+#: gui.py:959 gui.py:1237 gui.py:1684 gui.py:1685 gui.py:1686 mclient.py:2537
 msgid "Abbreviation"
 msgstr "Сокращение"
 
-#: gui.py:958 gui.py:1237 gui.py:1697 gui.py:1698 gui.py:1699 mclient.py:2539
+#: gui.py:959 gui.py:1238 gui.py:1698 gui.py:1699 gui.py:1700 mclient.py:2539
 msgid "Adverb"
 msgstr "Наречие"
 
-#: gui.py:958 gui.py:1238 gui.py:1711 gui.py:1712 gui.py:1713 mclient.py:2541
+#: gui.py:959 gui.py:1239 gui.py:1712 gui.py:1713 gui.py:1714 mclient.py:2541
 msgid "Preposition"
 msgstr "Предлог"
 
-#: gui.py:959 gui.py:1239 gui.py:1725 gui.py:1726 gui.py:1727 mclient.py:2543
+#: gui.py:960 gui.py:1240 gui.py:1726 gui.py:1727 gui.py:1728 mclient.py:2543
 msgid "Pronoun"
 msgstr "Местоимение"
 
-#: gui.py:1250
+#: gui.py:1251
 msgid "Reset settings"
 msgstr "Сброс настроек"
 
-#: gui.py:1256
+#: gui.py:1257
 msgid "Apply settings"
 msgstr "Применить настройки"
 
-#: gui.py:1378
+#: gui.py:1379
 msgid "Style:"
 msgstr "Стиль:"
 
-#: gui.py:1387 gui.py:1396 gui.py:1405 gui.py:1414
+#: gui.py:1388 gui.py:1397 gui.py:1406 gui.py:1415
 msgid "Column"
 msgstr "Столбец"
 
-#: gui.py:1423
+#: gui.py:1424
 msgid ""
 "Sort by each column (if it is set, except for transcription) and order parts "
 "of speech"
@@ -1298,32 +1279,32 @@ msgstr ""
 "Сортировать по каждому столбцу (если он задан, кроме транскрипции) и "
 "упорядочить части речи"
 
-#: gui.py:1427
+#: gui.py:1428
 msgid "Alphabetize terms"
 msgstr "Сортировать термины по алфавиту"
 
-#: gui.py:1431
+#: gui.py:1432
 msgid "Block dictionaries from blacklist"
 msgstr "Блокировать словари из черного списка"
 
-#: gui.py:1435
+#: gui.py:1436
 msgid "Prioritize dictionaries"
 msgstr "Сортировать словари по приоритету"
 
-#: gui.py:1439
+#: gui.py:1440
 msgid "Vertical view"
 msgstr "Вертикальный вид"
 
-#: gui.py:1443
+#: gui.py:1444
 msgid "Use abbreviations for dictionaries"
 msgstr "Сокращать заголовки словарей"
 
-#: gui.py:1447 gui.py:1456 gui.py:1465 gui.py:1474 gui.py:1483 gui.py:1492
-#: gui.py:1501
+#: gui.py:1448 gui.py:1457 gui.py:1466 gui.py:1475 gui.py:1484 gui.py:1493
+#: gui.py:1502
 msgid "Part of speech"
 msgstr "Часть речи"
 
-#: gui.py:1614
+#: gui.py:1615
 msgid "View Settings"
 msgstr "Настройки вида"
 
@@ -1635,11 +1616,11 @@ msgstr "Невозможно продолжить ввиду некоррект�
 msgid "Goodbye!"
 msgstr "До свидания!"
 
-#: mkhtml.py:401
+#: mkhtml.py:402
 msgid "Nothing has been found (skipped dictionaries: {})."
 msgstr "Ничего не найдено (игнорировано словарей: {})."
 
-#: mkhtml.py:407
+#: mkhtml.py:408
 msgid "Nothing has been found."
 msgstr "Ничего не найдено."
 
@@ -9192,6 +9173,26 @@ msgstr ""
 #: tests.py:501 tests.py:506
 msgid "Triggered!"
 msgstr "Сработало!"
+
+#~ msgid ""
+#~ "Programming: Peter Sklyar, 2015-2019.\n"
+#~ "Version: {}\n"
+#~ "\n"
+#~ "This program is free and opensource. You can use and modify it freely\n"
+#~ "within the scope of the provisions set forth in GPL v.3 and the active "
+#~ "legislation.\n"
+#~ "\n"
+#~ "If you have any questions, requests, etc., please do not hesitate to "
+#~ "contact me.\n"
+#~ msgstr ""
+#~ "Программирование: Петр Скляр, 2015-2019.\n"
+#~ "Версия: {}\n"
+#~ "\n"
+#~ "Эта программа является открытой и бесплатной. Вы можете свободно "
+#~ "использовать\n"
+#~ "и видоизменять ее в рамках лицензии GPL v.3 и текущего законодательства.\n"
+#~ "\n"
+#~ "Любые вопросы, пожелания и пр. излагайте по электронной почте.\n"
 
 #~ msgid "Nothing has been found (skipped dictionaries: %d)."
 #~ msgstr "Ничего не найдено (игнорировано словарей: %d)."
