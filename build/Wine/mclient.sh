@@ -37,7 +37,7 @@ fi
 
 # Build with pyinstaller
 rm -rf "$tmpdir"
-mkdir -p "$builddir/app/tkhtml"
+mkdir -p "$builddir/app/tkinterhtml/tkhtml"
 cp -r "$srcdir"/* "$tmpdir"
 cp -r "$resdir" "$builddir"
 cp "$cmd" "$builddir"
@@ -45,7 +45,7 @@ cd "$tmpdir"
 # Icon path should be windows-compliant
 wine "$pyinstaller" -w -i ./$product/resources/icon_64x64_$product.ico "$product.py"
 mv "$tmpdir/dist/$product"/* "$builddir/app"
-cp -r "$tkhtmldir" "$builddir/app/tkhtml/"
+cp -r "$tkhtmldir" "$builddir/app/tkinterhtml/tkhtml/"
 # Tesh launch
 cd "$builddir/app"
 wine ./$product.exe&
