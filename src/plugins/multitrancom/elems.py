@@ -302,6 +302,39 @@ class Elems:
             self.Success = False
             sh.com.empty(f)
     
+    def delete_phantom(self):
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_phantom'
+        ''' Delete a block that looks like a WFORM but has pluses
+            instead of spaces and a colon on its end, e.g.,
+            'data vector' -> 'data+vector:'. If the block ends with '!',
+            then '!' will be omitted. Case is preserved.
+        '''
+        wformas = [block._text for block in self._blocks \
+                   if block._text and block._type == 'wform'
+                  ]
+        wformas = sorted(set(wformas))
+        compare = []
+        for item in wformas:
+            item = item.replace(' ','+')
+            # We have already deleted empty items
+            if item[-1] in sh.lg.punc_array:
+                item = item[:-1]
+            item += ':'
+            compare.append(item)
+        i = 0
+        count = 0
+        while i in range(len(self._blocks)):
+            if self._blocks[i]._text in compare:
+                count += 1
+                del self._blocks[i]
+                i -= 1
+            i += 1
+        if count:
+            mes = _('{} blocks have been deleted').format(count)
+            sh.objs.mes(f,mes,True).info()
+        else:
+            sh.com.lazy(f)
+    
     def delete_numeration(self):
         self._blocks = [block for block in self._blocks \
                         if not re.match('^\d+\.$',block._text)
@@ -488,6 +521,7 @@ class Elems:
             self.trash()
             self.subjects()
             self.delete_search()
+            self.delete_phantom()
             self.delete_numeration()
             # Reassign types
             self.transc()
