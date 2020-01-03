@@ -4,7 +4,8 @@
 * Refactor the code
 * Add bind_copy_nominative key (copy the source word/phrase in
   the nominative case; Ctrl-W by default)
-* Enhance multitran.com parser
+* Slightly improve multitran.com parser
+* Delete "+", "Сообщить об ошибке"
 
 6.1.1
 * Delete unicode control codes
