@@ -1,5 +1,8 @@
 
 
+6.3
+
+
 6.2
 * Refactor the code
 * Add bind_copy_nominative key (copy the source word/phrase in
