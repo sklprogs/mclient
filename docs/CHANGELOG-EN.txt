@@ -1,7 +1,8 @@
 
 
-6.3
-
+6.2.1
+* Fix URLs for "only individual words found" section
+* Delete "phantom" parts of a word form
 
 6.2
 * Refactor the code
