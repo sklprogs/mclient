@@ -193,6 +193,11 @@ class Commands:
                 the entire URL which can increase a probability of
                 errors.
             '''
+            try:
+                ind = url.index('" title')
+                url = url[:ind]
+            except ValueError:
+                pass
             if not url.startswith('http'):
                 url = PAIR_ROOT + url
                 ''' #note: this will change the UI language of
