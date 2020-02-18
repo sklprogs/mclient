@@ -52,6 +52,14 @@ class AllDics:
         self.values()
         self.reset()
     
+    def langs(self):
+        # Return all available languages
+        f = '[MClient] plugins.multitranbin.get.AllDics.langs'
+        if self.Success:
+            pass
+        else:
+            sh.com.cancel(f)
+    
     def get(self,search):
         f = '[MClient] plugins.multitranbin.get.AllDics.get'
         if self.Success:
@@ -865,6 +873,7 @@ class Get:
         self.Success = True
         self.pattern = ''
         self.coded   = b''
+        self._html   = ''
     
     def encode(self):
         f = '[MClient] plugins.multitranbin.get.Get.encode'
@@ -882,9 +891,11 @@ class Get:
         if self.Success:
             stem_nos = objs.stems().search(self.coded)
             if stem_nos:
+                chunks = []
                 for stem_no in stem_nos:
                     article_nos = objs.glue().get_article_nos(stem_no)
-                    objs.articles().get_articles(article_nos)
+                    chunks.append(objs.articles().get_articles(article_nos))
+                return [chunk for chunk in chunks if chunk]
             else:
                 sh.com.empty(f)
         else:
@@ -892,7 +903,7 @@ class Get:
     
     def run(self):
         self.encode()
-        self.search()        
+        return self.search()
 
 
 objs = Objects()

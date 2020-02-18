@@ -84,15 +84,28 @@ class Plugin:
     
     def request(self,search='',url=''):
         iget       = gt.Get(search)
-        self._text = iget.run()
+        chunks     = iget.run()
         self._html = iget._html
-        self._blocks = tg.Tags (text    = self._text
-                               ,Debug   = self.Debug
-                               ,Shorten = self.Shorten
-                               ,MaxRow  = self.MaxRow
-                               ,MaxRows = self.MaxRows
-                               ).run()
-        self._blocks = el.Elems (blocks = self._blocks
-                                ,iabbr  = self.iabbr
+        #TODO: implement
+        self._text  = ''
+        if not chunks:
+            chunks = []
+        for chunk in chunks:
+            blocks = tg.Tags (chunk   = self._chunk
+                             ,Debug   = self.Debug
+                             ,Shorten = self.Shorten
+                             ,MaxRow  = self.MaxRow
+                             ,MaxRows = self.MaxRows
+                             ).run()
+            if blocks:
+                self._blocks.append(result)
+        self._blocks = el.Elems (blocks  = self._blocks
+                                ,iabbr   = self.iabbr
+                                ,langs   = gt.objs.all_dics().langs()
+                                ,search  = search
+                                ,Debug   = self.Debug
+                                ,Shorten = self.Shorten
+                                ,MaxRow  = self.MaxRow
+                                ,MaxRows = self.MaxRows
                                 ).run()
         return self._blocks
