@@ -3,7 +3,6 @@
 
 ''' This module prepares blocks after extracting tags for permanently
     storing in DB.
-    #note: 'multitran.com' does not support corrections yet
     Needs attributes in blocks: TYPE, DICA, WFORMA, SPEECHA, TRANSCA,
     TERMA, SAMECELL
     Modifies attributes:        TYPE, TEXT, DICA, WFORMA, SPEECHA,

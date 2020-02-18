@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import skl_shared.shared        as sh
-import plugins.stardict.get     as gt
-import plugins.stardict.cleanup as cu
-import plugins.stardict.tags    as tg
-import plugins.stardict.elems   as el
+import skl_shared.shared            as sh
+import plugins.multitranbin.get     as gt
+import plugins.multitranbin.tags    as tg
+import plugins.multitranbin.elems   as el
 from skl_shared.localize import _
 
 
@@ -18,7 +17,7 @@ class Plugin:
                  ):
         ''' - Extra unused input variables are preserved so it would be
               easy to use an abstract class for all dictionary sources.
-            - #note: Do not forget to set plugins.stardict.get.PATH
+            - #NOTE: Do not forget to set plugins.multitranbin.get.PATH
               earlier.
         '''
         self.values()
@@ -33,13 +32,11 @@ class Plugin:
         self._text   = ''
         self._html   = ''
     
-    # This is needed only for compliance with a general method
     def lang1(self):
-        return _('Any')
+        return gt.LANG1
     
-    # This is needed only for compliance with a general method
     def lang2(self):
-        return _('Any')
+        return gt.LANG2
     
     # This is needed only for compliance with a general method
     def server(self):
@@ -65,12 +62,12 @@ class Plugin:
     def set_timeout(self,timeout=0):
         pass
     
-    # This is needed only for compliance with a general method
     def langs1(self,lang2=''):
+        #TODO: implement
         return(_('Any'),)
     
-    # This is needed only for compliance with a general method
     def langs2(self,lang1=''):
+        #TODO: implement
         return(_('Any'),)
     
     def combined(self):
@@ -89,9 +86,6 @@ class Plugin:
         iget       = gt.Get(search)
         self._text = iget.run()
         self._html = iget._html
-        self._text = cu.CleanUp(self._text).run()
-        if self._text is None:
-            self._text = ''
         self._blocks = tg.Tags (text    = self._text
                                ,Debug   = self.Debug
                                ,Shorten = self.Shorten

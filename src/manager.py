@@ -5,30 +5,33 @@ import skl_shared.shared as sh
 import plugins.stardict.get
 import plugins.stardict.run     as sdrun
 import plugins.multitrancom.run as mcrun
+import plugins.multitranbin.run as mbrun
 from skl_shared.localize import _
 
 
 class Plugins:
     
-    def __init__ (self,sdpath,timeout=6
-                 ,iabbr=None,Debug=False
-                 ,Shorten=True,MaxRow=20
-                 ,MaxRows=20
+    def __init__ (self,sdpath,mbpath
+                 ,timeout=6,iabbr=None
+                 ,Debug=False,Shorten=True
+                 ,MaxRow=20,MaxRows=20
                  ):
         self.sdplugin = None
         self.mcplugin = None
+        self.mbplugin = None
         self.plugin   = self.mcplugin
-        #note: change this upon the change of the default source
+        #NOTE: change this upon the change of the default source
         self._source  = _('Multitran')
         self._sdpath  = sdpath
+        self._mbpath  = sdpath
         self._timeout = timeout
-        self.Debug    = Debug
         self.iabbr    = iabbr
+        self.Debug    = Debug
         self.Shorten  = Shorten
         self.MaxRow   = MaxRow
         self.MaxRows  = MaxRows
         self.load()
-        ''' #note: either put this on top of 'self.sources' or
+        ''' #NOTE: either put this on top of 'self.sources' or
             synchronize with GUI.
         '''
         self.set(self._source)
@@ -84,6 +87,7 @@ class Plugins:
     def unique(self):
         return (self.sdplugin
                ,self.mcplugin
+               ,self.mbplugin
                )
     
     def set_lang1(self,lang1):
@@ -115,7 +119,8 @@ class Plugins:
     
     def sources(self):
         return (_('Multitran')
-               ,_('Offline')
+               ,_('Stardict')
+               ,_('Local MT')
                )
     
     def online_sources(self):
@@ -141,6 +146,8 @@ class Plugins:
     def load(self):
         plugins.stardict.get.PATH = self._sdpath
         plugins.stardict.get.objs.all_dics()
+        plugins.multitranbin.get.PATH = self._mbpath
+        plugins.multitranbin.get.objs.all_dics()
         self.sdplugin = sdrun.Plugin (Debug   = self.Debug
                                      ,iabbr   = self.iabbr
                                      ,Shorten = self.Shorten
@@ -153,15 +160,23 @@ class Plugins:
                                      ,MaxRow  = self.MaxRow
                                      ,MaxRows = self.MaxRows
                                      )
+        self.mbplugin = mbrun.Plugin (Debug   = self.Debug
+                                     ,iabbr   = self.iabbr
+                                     ,Shorten = self.Shorten
+                                     ,MaxRow  = self.MaxRow
+                                     ,MaxRows = self.MaxRows
+                                     )
     
     def set(self,source):
         f = '[MClient] manager.Plugins.set'
         if source:
             self._source = source
-            if source == _('Offline'):
+            if source == _('Stardict'):
                 self.plugin = self.sdplugin
             elif source in (_('Multitran'),'multitran.com'):
                 self.plugin = self.mcplugin
+            elif source == _('Local MT'):
+                self.plugin = self.mbplugin
             else:
                 mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
                 mes = mes(self._source,self.sources())

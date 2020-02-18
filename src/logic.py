@@ -159,7 +159,7 @@ class Welcome:
                 self._sources.append(source)
         else:
             sh.com.empty(f)
-        objs._plugins.set(_('Offline'))
+        objs._plugins.set(_('Stardict'))
         self._sd_status = objs.plugins().accessible()
         if self._sd_status:
             self._sd_color = 'green'
@@ -754,6 +754,7 @@ class Objects:
                 ):
         if self._plugins is None:
             self._plugins = manager.Plugins (sdpath  = self.default().dics()
+                                            ,mbpath  = self._default.dics()
                                             ,timeout = sh.lg.globs['int']['timeout']
                                             ,iabbr   = self.order().dic
                                             ,Debug   = Debug

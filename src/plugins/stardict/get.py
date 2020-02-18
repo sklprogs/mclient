@@ -10,7 +10,7 @@ from skl_shared.localize import _
 
 
 ''' A directory storing all stardict files.
-    #note: Do not forget to change this variable externally before
+    #NOTE: Do not forget to change this variable externally before
     calling anything from this module.
 '''
 PATH = ''
