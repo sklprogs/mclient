@@ -221,105 +221,6 @@ class Xor:
 
 
 
-class Blocks:
-    
-    def __init__(self,entry,lang1=1,lang2=2):
-        self.values()
-        self.entry = entry
-        self.lang1 = lang1
-        self.lang2 = lang2
-    
-    def decode(self):
-        f = '[MClient] plugins.multitranbin.get.Blocks.decode'
-        if self.Success:
-            i = 1
-            while i < len(self.tags):
-                if self.tags[i-1] in self.seps:
-                    self.tags[i] = self.tags[i].decode(ENCODING,'replace')
-                i += 1
-        else:
-            sh.com.cancel(f)
-    
-    def set_seps(self):
-        f = '[MClient] plugins.multitranbin.get.Blocks.set_seps'
-        if self.Success:
-            self.seps = [self.seplg1,self.seplg2
-                         ,self.sepdic,self.sepcom
-                         ]
-        else:
-            sh.com.cancel(f)
-    
-    def split(self):
-        f = '[MClient] plugins.multitranbin.get.Blocks.split'
-        if self.Success:
-            tmp = b''
-            for i in range(len(self.entry)):
-                if self.entry[i:i+1] in self.seps:
-                    if tmp:
-                        self.tags.append(tmp)
-                        tmp = b''
-                    self.tags.append(self.entry[i:i+1])
-                else:
-                    tmp += self.entry[i:i+1]
-            if tmp:
-                self.tags.append(tmp)
-        else:
-            sh.com.cancel(f)
-    
-    def set_langs(self):
-        f = '[MClient] plugins.multitranbin.get.Blocks.set_langs'
-        if self.Success:
-            if self.lang1 and self.lang2:
-                try:
-                    self.seplg1 = struct.pack('<b',self.lang1)
-                    self.seplg2 = struct.pack('<b',self.lang2)
-                except:
-                    self.Success = False
-                    mes = _('Wrong input data!')
-                    sh.objs.mes(f,mes).warning()
-            else:
-                self.Success = False
-                sh.com.empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def check(self):
-        f = '[MClient] plugins.multitranbin.get.Blocks.check'
-        # Dictionary section is optional, so we do not check for it
-        if self.entry and self.lang1 and self.lang2:
-            if self.lang1 in self.entry \
-            and self.lang2 in self.entry:
-                return True
-            else:
-                mes = _('Wrong input data: "{}"!').format(self.entry)
-                sh.objs.mes(f,mes).warning()
-        else:
-            self.Success = False
-            sh.com.empty(f)
-    
-    def values(self):
-        self.Success = True
-        self.entry   = ''
-        # The result of 'struct.pack('<b',15)'
-        self.sepdic  = b'\x0f'
-        self.sepcom  = b'\x06'
-        self.lang1   = 0
-        self.lang2   = 0
-        self.seplg1  = b''
-        self.seplg2  = b''
-        self.blocks  = []
-        self.tags    = []
-        self.seps    = []
-    
-    def run(self):
-        self.set_langs()
-        self.check()
-        self.set_seps()
-        self.split()
-        self.decode()
-
-
-
 class Articles:
     # Parse files like 'dict.ert'
     def __init__(self):
@@ -409,9 +310,7 @@ class Articles:
                         dexorred = Xor (data   = read
                                        ,offset = -251
                                        ).dexor()
-                        iblocks = Blocks(dexorred)
-                        iblocks.run()
-                        sh.objs.mes(f,iblocks.tags,True).debug()
+                        return dexorred
                 else:
                     sh.com.empty(f)
             else:
@@ -423,14 +322,10 @@ class Articles:
         f = '[MClient] plugins.multitranbin.get.Articles.get_articles'
         if self.Success:
             if nos:
+                chunks = []
                 for no in nos:
-                    blocks = self.get_article(no)
-                    '''
-                    if blocks:
-                        self.blocks += blocks
-                    else:
-                        sh.com.empty(f)
-                    '''
+                    chunks.append(self.get_article(no))
+                return chunks
             else:
                 sh.com.empty(f)
         else:
@@ -894,7 +789,7 @@ class Get:
                 chunks = []
                 for stem_no in stem_nos:
                     article_nos = objs.glue().get_article_nos(stem_no)
-                    chunks.append(objs.articles().get_articles(article_nos))
+                    chunks += objs.articles().get_articles(article_nos)
                 return [chunk for chunk in chunks if chunk]
             else:
                 sh.com.empty(f)

@@ -91,7 +91,7 @@ class Plugin:
         if not chunks:
             chunks = []
         for chunk in chunks:
-            blocks = tg.Tags (chunk   = self._chunk
+            blocks = tg.Tags (chunk   = chunk
                              ,Debug   = self.Debug
                              ,Shorten = self.Shorten
                              ,MaxRow  = self.MaxRow
