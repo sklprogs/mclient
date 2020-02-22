@@ -35,34 +35,51 @@ class Tags:
         self.lang1   = lang1
         self.lang2   = lang2
     
-    def set_types(self):
-        f = '[MClient] plugins.multitranbin.tags.Tags.set_types'
+    def set_dic_ahead(self):
+        f = '[MClient] plugins.multitranbin.tags.Tags.set_dic_ahead'
+        if self.Success:
+            try:
+                ind = self.types.index(self.sepdic)
+                self.types.remove(self.sepdic)
+                self.types.insert(0,self.sepdic)
+                dic = self.content[ind]
+                del self.content[ind]
+                self.content.insert(0,dic)
+            except ValueError:
+                sh.com.lazy(f)
+        else:
+            sh.com.cancel(f)
+    
+    def get_types(self):
+        f = '[MClient] plugins.multitranbin.tags.Tags.get_types'
         if self.Success:
             if len(self._tags) % 2 == 0:
-                types  = []
-                values = []
                 for i in range(len(self._tags)):
                     if i % 2 == 0:
-                        types.append(self._tags[i])
+                        self.types.append(self._tags[i])
                     else:
-                        values.append(self._tags[i])
-                for i in range(len(values)):
-                    self._blocks.append(Block())
-                    self._blocks[-1]._text = values[i]
-                    if types[i] in (self.seplg1,self.seplg2):
-                        self._blocks[i]._type = 'term'
-                    elif types[i] == self.sepcom:
-                        self._blocks[i]._type = 'comment'
-                    elif types[i] == self.sepdic:
-                        self._blocks[i]._type = 'dic'
-                    else:
-                        self._blocks[i]._type = 'invalid'
-                        #TODO: convert to a string
-                        mes = _('Unknown type "{}"!').format(types[i])
-                        sh.objs.mes(f,mes).warning()
+                        self.content.append(self._tags[i])
             else:
                 mes = _('Wrong input data: "{}"').format(self._tags)
                 sh.objs.mes(f,mes,True).warning()
+    
+    def set_types(self):
+        f = '[MClient] plugins.multitranbin.tags.Tags.set_types'
+        if self.Success:
+            for i in range(len(self.content)):
+                self._blocks.append(Block())
+                self._blocks[-1]._text = self.content[i]
+                if self.types[i] in (self.seplg1,self.seplg2):
+                    self._blocks[i]._type = 'term'
+                elif self.types[i] == self.sepcom:
+                    self._blocks[i]._type = 'comment'
+                elif self.types[i] == self.sepdic:
+                    self._blocks[i]._type = 'dic'
+                else:
+                    self._blocks[i]._type = 'invalid'
+                    #TODO: convert to a string
+                    mes = _('Unknown type "{}"!').format(self.types[i])
+                    sh.objs.mes(f,mes,True).warning()    
         else:
             sh.com.cancel(f)
     
@@ -177,6 +194,8 @@ class Tags:
         self._blocks = []
         self._tags   = []
         self.seps    = []
+        self.types   = []
+        self.content = []
     
     def run(self):
         self.set_langs()
@@ -184,7 +203,10 @@ class Tags:
         self.set_seps()
         self.split()
         self.decode()
+        self.get_types()
+        self.set_dic_ahead()
         self.set_types()
+        return self._blocks
 
 
 
@@ -226,4 +248,9 @@ if __name__ == '__main__':
                  ,Debug = True
                  )
     itags.run()
-    itags.debug()
+    #itags.debug()
+    for i in range(len(itags._blocks)):
+        mes = '{}: {}: "{}"'.format (i,itags._blocks[i]._type
+                                    ,itags._blocks[i]._text
+                                    )
+        print(mes)

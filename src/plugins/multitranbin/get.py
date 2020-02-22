@@ -4,12 +4,14 @@
 import mmap
 import struct
 import codecs
+import itertools
 import skl_shared.shared as sh
 from skl_shared.localize import _
 
 ENCODING = 'windows-1251'
 LANG1    = _('Russian')
 LANG2    = _('English')
+PATH     = ''
 #TODO: elaborate
 STEM1    = '/home/pete/.wine/drive_c/mt_demo/mt/network/english/stem.eng'
 DICTD1   = '/home/pete/.wine/drive_c/mt_demo/mt/network/eng_rus/dict.erd'
@@ -744,8 +746,13 @@ class Stems:
             if coded:
                 self.coded = coded
                 indexes = self.indexes()
-                chunk = self.chunk2(indexes)
-                return self.stem_nos(chunk)
+                ''' Empty output is a common situation and should not
+                    be warned. 'self.indexes' already outputs a message
+                    about that.
+                '''
+                if indexes:
+                    chunk = self.chunk2(indexes)
+                    return self.stem_nos(chunk)
             else:
                 sh.com.empty(f)
         else:
@@ -753,8 +760,8 @@ class Stems:
     
     def values(self):
         self.Success = True
-        self.coded  = b''
-        self.chunk  = b''
+        self.coded   = b''
+        self.chunk   = b''
 
 
 
@@ -764,41 +771,99 @@ class Get:
         self.values()
         self.pattern = pattern
     
+    def combos(self):
+        f = '[MClient] plugins.multitranbin.get.Get.combos'
+        if self.Success:
+            self.stemnos = list(itertools.product(*self.stemnos))
+            sh.objs.mes(f,self.stemnos,True).debug()
+        else:
+            sh.com.cancel(f)
+    
+    def check(self):
+        f = '[MClient] plugins.multitranbin.get.Get.check'
+        if not self.pattern:
+            self.Success = False
+            sh.com.empty(f)
+    
+    def strip(self):
+        f = '[MClient] plugins.multitranbin.get.Get.strip'
+        if self.Success:
+            self.pattern = self.pattern.strip()
+            self.pattern = sh.Text(self.pattern).convert_line_breaks()
+            self.pattern = sh.Text(self.pattern).delete_line_breaks()
+            self.pattern = sh.Text(self.pattern).delete_punctuation()
+            self.pattern = sh.Text(self.pattern).delete_duplicate_spaces()
+            self.pattern = self.pattern.lower()
+        else:
+            sh.com.cancel(f)
+    
+    def get_stems(self):
+        f = '[MClient] plugins.multitranbin.get.Get.get_stems'
+        if self.Success:
+            words = self.pattern.split(' ')
+            for word in words:
+                i = len(word)
+                while i >= 0:
+                    stem = word[0:i]
+                    mes = _('Try for "{}"').format(stem)
+                    sh.objs.mes(f,mes,True).debug()
+                    coded = bytes(stem,ENCODING,'ignore')
+                    stem_nos = objs.stems().search(coded)
+                    if stem_nos:
+                        mes = _('Found stem: "{}"').format(stem)
+                        sh.objs.mes(f,mes,True).debug()
+                        self.stemnos.append(stem_nos)
+                        break
+                    i -= 1
+            
+        else:
+            sh.com.cancel(f)
+    
     def values(self):
         self.Success = True
         self.pattern = ''
         self.coded   = b''
         self._html   = ''
+        self.stems   = []
+        self.stemnos = []
+    
+    def _encode(self,stem):
+        return bytes(stem,ENCODING,'ignore')
     
     def encode(self):
         f = '[MClient] plugins.multitranbin.get.Get.encode'
         if self.Success:
-            if self.pattern:
-                self.coded = bytes(self.pattern,ENCODING,'ignore')
-            else:
-                self.Success = False
-                sh.com.empty(f)
+            self.coded = [self._encode(stem) for stem in self.stems]
         else:
             sh.com.cancel(f)
     
     def search(self):
         f = '[MClient] plugins.multitranbin.get.Get.search'
         if self.Success:
-            stem_nos = objs.stems().search(self.coded)
+            coded = b''
+            for item in self.coded:
+                coded += item
+            stem_nos = objs.stems().search(coded)
             if stem_nos:
                 chunks = []
                 for stem_no in stem_nos:
                     article_nos = objs.glue().get_article_nos(stem_no)
-                    chunks += objs.articles().get_articles(article_nos)
-                return [chunk for chunk in chunks if chunk]
+                    result = objs.articles().get_articles(article_nos)
+                    if result:
+                        chunks += result # None will cause an error
+                return chunks
             else:
                 sh.com.empty(f)
         else:
             sh.com.cancel(f)
     
     def run(self):
-        self.encode()
-        return self.search()
+        self.check()
+        self.strip()
+        self.get_stems()
+        self.combos()
+        #self.encode()
+        #return self.search()
 
 
 objs = Objects()
@@ -806,7 +871,7 @@ com  = Commands()
 
 
 if __name__ == '__main__':
-    f = 'parser.__main__'
+    f = '[MClient] plugins.multitranbin.get.__main__'
     ''' stem.eng, position 8,455:
         b'\x06\x0fabasin\x01\x9am\x04\x03\x80C\x00\x9bm\x04\x14\x80 \x00'
         b'\x06\x0f' -> (6,15)
@@ -824,7 +889,9 @@ if __name__ == '__main__':
     '''
     timer = sh.Timer(f)
     timer.start()
-    iget = Get('abasin')
+    # 'abasin'
+    # 'абсолютный способ измерения'
+    iget = Get('absolute measurements')
     iget.run()
     objs.stems().close()
     objs.glue().close()

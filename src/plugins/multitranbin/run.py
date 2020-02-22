@@ -98,7 +98,10 @@ class Plugin:
                              ,MaxRows = self.MaxRows
                              ).run()
             if blocks:
-                self._blocks.append(result)
+                #FIX: Where self._blocks is assigned to None?
+                if not self._blocks:
+                    self._blocks = []
+                self._blocks += blocks
         self._blocks = el.Elems (blocks  = self._blocks
                                 ,iabbr   = self.iabbr
                                 ,langs   = gt.objs.all_dics().langs()

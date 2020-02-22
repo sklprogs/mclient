@@ -141,6 +141,43 @@ class Tags:
 
 class Plugin:
     
+    def multitranbin(self):
+        f = '[MClient] tests.Plugin.multitranbin'
+        import plugins.multitranbin.get
+        import plugins.multitranbin.run as mb
+        #search = 'Kafir'
+        #search = 'abasin'
+        #search = 'a posteriori'
+        #search = 'abed'
+        #search  = 'accommodation coefficient'
+        #search = 'according'
+        #search = 'фабричный корпус'
+        #search = 'build market'
+        #search = 'bunching device'
+        #search = 'valve rocker shank'
+        # пласт, характеризуемый определённой скоростью
+        search  = 'velocity bed'
+        #отравление хинной коркой и её алкалоидами = quininism
+        url    = ''
+        
+        plugins.multitranbin.get.PATH = '/home/pete/.config/mclient/dics/eng_rus'
+        iplug = mb.Plugin (Debug   = DEBUG
+                          ,Shorten = True
+                          ,MaxRow  = 20
+                          ,MaxRows = 150
+                          )
+        
+        blocks = iplug.request (url    = url
+                               ,search = search
+                               )
+        if not blocks:
+            blocks = []
+        for i in range(len(blocks)):
+            mes = '{}: {}: "{}"'.format (i,blocks[i]._type
+                                        ,blocks[i]._text
+                                        )
+            print(mes)
+    
     def stardict(self):
         f = '[MClient] tests.Plugin.stardict'
         import plugins.stardict.run as sr
@@ -513,5 +550,6 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sh.com.start()
-    Plugin().multitrancom()
+    Plugin().multitranbin()
+    #NOTE: nltk: according -> accord -> No matches!
     sh.com.end()
