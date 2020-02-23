@@ -365,14 +365,13 @@ class Glue:
         f = '[MClient] plugins.multitranbin.get.Glue.get_pos'
         if self.Success:
             pos = self.bin.find(chunk)
+            sub = com.get_string(chunk)
             if pos:
-                #TODO: Convert to a string
-                mes = _('Chunk "{}": position {}').format(chunk,pos)
+                mes = _('Chunk "{}": position {}').format(sub,pos)
                 sh.objs.mes(f,mes,True).info()
                 return pos
             else:
-                #TODO: Convert to a string
-                mes = _('Chunk "{}": no matches').format(chunk)
+                mes = _('Chunk "{}": no matches').format(sub)
                 sh.objs.mes(f,mes,True).debug()
         else:
             sh.com.cancel(f)
@@ -663,7 +662,8 @@ class Stems:
                     sh.objs.mes(f,nos,True).debug()
                     return nos
                 else:
-                    mes = _('Wrong input data!')
+                    sub = com.get_string(chunk)
+                    mes = _('Wrong input data: "{}"!').format(sub)
                     sh.objs.mes(f,mes,True).warning()
             else:
                 sh.com.empty(f)
@@ -716,7 +716,7 @@ class Stems:
                     else:
                         sh.com.empty(f)
                 else:
-                    mes = _('Wrong input data!')
+                    mes = _('Wrong input data: "{}"!').format(ind)
                     sh.objs.mes(f,mes).warning()
         else:
             sh.com.cancel(f)
@@ -891,7 +891,7 @@ if __name__ == '__main__':
     ''' absolute distribution
         [188481, 2604] 5 [41, 6400]
     '''
-    iget = Get('absolute distribution')
+    iget = Get('abatement of tax')
     print(iget.run())
     objs.stems().close()
     objs.glue().close()
