@@ -361,6 +361,22 @@ class Glue:
         self.values()
         self.load()
     
+    def get_pos(self,chunk):
+        f = '[MClient] plugins.multitranbin.get.Glue.get_pos'
+        if self.Success:
+            pos = self.bin.find(chunk)
+            if pos:
+                #TODO: Convert to a string
+                mes = _('Chunk "{}": position {}').format(chunk,pos)
+                sh.objs.mes(f,mes,True).info()
+                return pos
+            else:
+                #TODO: Convert to a string
+                mes = _('Chunk "{}": no matches').format(chunk)
+                sh.objs.mes(f,mes,True).debug()
+        else:
+            sh.com.cancel(f)
+    
     def pack(self,stem_no):
         f = '[MClient] plugins.multitranbin.get.Glue.pack'
         if self.Success:
@@ -394,7 +410,7 @@ class Glue:
                             mes = com.get_string(read)
                             sh.objs.mes(f,mes,True).debug()
                             value = struct.unpack('<b',read)[0]
-                            if value in (5,8):
+                            if (value - 2) % 3 == 0 and value != 2:
                                 return value
                         else:
                             sh.com.empty(f)
@@ -407,63 +423,39 @@ class Glue:
         else:
             sh.com.cancel(f)
     
-    def get_article_pos(self,stem_no):
-        f = '[MClient] plugins.multitranbin.get.Glue.get_article_pos'
-        if self.Success:
-            packed = self.pack(stem_no)
-            start  = 0
-            while True:
-                sub = com.get_string(packed)
-                mes = _('Search for stem #{} ({})').format(stem_no,sub)
-                sh.objs.mes(f,mes,True).debug()
-                pos  = self.bin.find(packed,start)
-                pos2 = None
-                if pos is None:
-                    mes = _('No matches!')
-                    sh.objs.mes(f,mes,True).info()
-                    break
-                else:
-                    length = self.check_pos(pos)
-                    if length:
-                        pos1 = pos + len(packed)
-                        pos2 = pos1 + length
-                        mes = '{}:{}'.format(pos1,pos2)
-                        sh.objs.mes(f,mes,True).debug()
-                        return(pos1,pos2)
-                    else:
-                        start = pos + 1
-    
-    def get_article_nos(self,stem_no):
+    def get_article_nos(self,chunk):
         f = '[MClient] plugins.multitranbin.get.Glue.get_article_nos'
         if self.Success:
-            if stem_no:
-                poses = self.get_article_pos(stem_no)
-                if poses:
-                    read = self.bin.read(poses[0],poses[1])
-                    if read:
-                        mes = com.get_string(read)
-                        sh.objs.mes(f,mes,True).debug()
-                        if len(read) in (5,8):
-                            read = read[2:]
-                            chunks = com.get_chunks(read,3)
-                            nos = []
-                            for chunk in chunks:
-                                chunk += b'\x00'
-                                try:
-                                    nos.append(struct.unpack('<L',chunk)[0])
-                                except Exception as e:
-                                    mes = _('Third-party module has failed!\n\nDetails: {}')
-                                    mes = mes.format(e)
-                                    sh.objs.mes(f,mes,True).warning()
-                            sh.objs.mes(f,nos,True).debug()
-                            return nos
-                        else:
-                            mes = _('Wrong input data!')
-                            sh.objs.mes(f,mes,True).warning()
-                    else:
-                        sh.com.empty(f)
-                else:
-                    sh.com.empty(f)
+            if chunk:
+                pos = self.get_pos(chunk)
+                if pos:
+                    delta = self.check_pos(pos)
+                    if delta:
+                        pos1 = pos + len(chunk)
+                        pos2 = pos1 + delta
+                        read = self.bin.read(pos1,pos2)
+                        if read:
+                            mes = com.get_string(read)
+                            sh.objs.mes(f,mes,True).debug()
+                            if (len(read) - 2) % 3 == 0 \
+                            and len(read) != 2:
+                                read = read[2:]
+                                chunks = com.get_chunks(read,3)
+                                nos = []
+                                for chunk in chunks:
+                                    chunk += b'\x00'
+                                    try:
+                                        nos.append(struct.unpack('<L',chunk)[0])
+                                    except Exception as e:
+                                        mes = _('Third-party module has failed!\n\nDetails: {}')
+                                        mes = mes.format(e)
+                                        sh.objs.mes(f,mes,True).warning()
+                                sh.objs.mes(f,nos,True).debug()
+                                return nos
+                            else:
+                                mes = _('Wrong input data: "{}"!')
+                                mes = mes.format(com.get_string(read))
+                                sh.objs.mes(f,mes).warning()
             else:
                 sh.com.empty(f)
         else:
@@ -822,38 +814,35 @@ class Get:
     def values(self):
         self.Success = True
         self.pattern = ''
-        self.coded   = b''
         self._html   = ''
         self.stems   = []
         self.stemnos = []
+        self.packed  = []
     
-    def _encode(self,stem):
-        return bytes(stem,ENCODING,'ignore')
+    def _pack(self,item):
+        packed = b''
+        for subitem in item:
+            subitem = struct.pack('<L',subitem)
+            subitem = subitem[:-1]
+            packed += subitem
+        return packed
     
-    def encode(self):
-        f = '[MClient] plugins.multitranbin.get.Get.encode'
+    def pack(self):
+        f = '[MClient] plugins.multitranbin.get.Get.pack'
         if self.Success:
-            self.coded = [self._encode(stem) for stem in self.stems]
+            self.packed = [self._pack(item) for item in self.stemnos]
         else:
             sh.com.cancel(f)
     
     def search(self):
         f = '[MClient] plugins.multitranbin.get.Get.search'
         if self.Success:
-            coded = b''
-            for item in self.coded:
-                coded += item
-            stem_nos = objs.stems().search(coded)
-            if stem_nos:
-                chunks = []
-                for stem_no in stem_nos:
-                    article_nos = objs.glue().get_article_nos(stem_no)
-                    result = objs.articles().get_articles(article_nos)
-                    if result:
-                        chunks += result # None will cause an error
-                return chunks
-            else:
-                sh.com.empty(f)
+            article_nos = []
+            for chunk in self.packed:
+                article_nos = objs.glue().get_article_nos(chunk)
+                if article_nos:
+                    break
+            return objs.articles().get_articles(article_nos)
         else:
             sh.com.cancel(f)
     
@@ -862,8 +851,8 @@ class Get:
         self.strip()
         self.get_stems()
         self.combos()
-        #self.encode()
-        #return self.search()
+        self.pack()
+        return self.search()
 
 
 objs = Objects()
@@ -874,13 +863,13 @@ if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.get.__main__'
     ''' stem.eng, position 8,455:
         b'\x06\x0fabasin\x01\x9am\x04\x03\x80C\x00\x9bm\x04\x14\x80 \x00'
-        b'\x06\x0f' -> (6,15)
+        b'\x06\x0f' -> (6;15)
         6 -> b'abasin'
         15 -> b'\x01\x9am\x04\x03\x80C\x00\x9bm\x04\x14\x80 \x00':
             b'\x9am\x04' -> 290,202
         dict.erd, find b'\x9am\x04 (290,202):
             b'\x9am\x04%\x00( \x00' ->
-            3 [290,202] 5 [37, 8,232]
+            3 [290,202] 5 [37; 8,232]
         290,203: not found
         dict.ert, find b'( \x00\' (8,232):
         181,793 3 b'( \x00' [8232] 17 b"\xfcbin\x86\x82\x8d'\x0b\x12\x17$+6^\x88\x92"
@@ -890,9 +879,20 @@ if __name__ == '__main__':
     timer = sh.Timer(f)
     timer.start()
     # 'abasin'
-    # 'абсолютный способ измерения'
-    iget = Get('absolute measurements')
-    iget.run()
+    # 'absolute measurements' = 'абсолютный способ измерения'
+    # 'Bachelor of Vocational Education'
+    # baby fish
+    # sack duty
+    # he has not a sou
+    # habitable room
+    # a posteriori
+    # ashlar line
+    # abatement of tax
+    ''' absolute distribution
+        [188481, 2604] 5 [41, 6400]
+    '''
+    iget = Get('absolute distribution')
+    print(iget.run())
     objs.stems().close()
     objs.glue().close()
     objs.articles().close()
