@@ -20,7 +20,7 @@ DICTT    = '/home/pete/.wine/drive_c/mt_demo/mt/network/eng_rus/dict.ert'
 
 class Tests:
     
-    def get_parts(self):
+    def get_part2(self):
         # stem.eng
         file = STEM1
         ''' 13 ['aberrationist']
@@ -29,7 +29,7 @@ class Tests:
         pattern = 'aberrationist'
         pattern = bytes(pattern,ENCODING)
         ibin = Binary(file)
-        ibin.get_parts(pattern)
+        ibin.get_part2(pattern)
         ibin.close()
         # dict.erd
         file = DICTD1
@@ -38,8 +38,20 @@ class Tests:
         '''
         pattern = b'\x83\x8e\x02' # 167,555
         ibin = Binary(file)
-        ibin.get_parts(pattern)
+        ibin.get_part2(pattern)
         ibin.close()
+        # dict.ert
+        file = DICTT
+        ''' 3 b'\\\x0b\x00' [2908]
+            55 b'\xfcbir\x85\x8b\x80\x99\x94\xa0\xa5\xa6\xb6\xbdQL@LUOXc\x9fv\xab~|\x8c\x93\x8e\x93\xa6\xa5\xa1\xae\xc0\xb8\xc5\xda\xd1\x0b\xe0\xe5\xdf\xe8\xed\xf4\x02\x03\x06\x13<div'
+        '''
+        pattern = b'\\\x0b\x00'
+        ibin = Binary(file)
+        xorred = ibin.get_part2(pattern)
+        ibin.close()
+        Xor (data   = xorred
+            ,offset = -251
+            ).dexor()
     
     def translate(self):
         f = '[MClient] plugins.multitranbin.get.Tests.translate'
@@ -631,18 +643,15 @@ class Binary:
         else:
             sh.com.cancel(f)
     
-    def get_parts(self,pattern,start=0):
-        f = '[MClient] plugins.multitranbin.get.Binary.get_parts'
+    def get_part2(self,pattern,start=0):
+        f = '[MClient] plugins.multitranbin.get.Binary.get_part2'
         if self.Success:
             pos11   = self.find(pattern,start)
             lengths = self.get_lengths(pos11)
             if self.check_lengths(pattern,lengths):
-                pos12 = pos11 + lengths[0]
-                #pos21 = pos12
-                pos22 = pos12 + lengths[1]
-                part1 = self.read(pos11,pos12)
-                part2 = self.read(pos12,pos22)
-                return(part1,part2)
+                pos21 = pos11 + lengths[0]
+                pos22 = pos21 + lengths[1]
+                return self.read(pos21,pos22)
         else:
             sh.com.cancel(f)
     
@@ -652,7 +661,9 @@ class Binary:
             ''' There are 'M' pages at the beginning, so an index of
                 the 1st part will always be positive.
             '''
-            if index_ > 2:
+            if index_ is None:
+                sh.com.empty(f)
+            elif index_ > 2:
                 pos1 = index_ - 2
                 pos2 = index_ - 1
                 len1 = self.read(pos1,pos1+1)
@@ -667,6 +678,11 @@ class Binary:
                     return(len1,len2)
                 else:
                     sh.com.empty(f)
+            else:
+                sub = '{} > 2'.format(index_)
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.mes(f,mes,True).warning()
         else:
             sh.com.cancel(f)
     
@@ -987,4 +1003,4 @@ if __name__ == '__main__':
         [b'\x01', 'abasin', b'\x02', 'абазин', b'\x0f', '37']
     '''
     #Tests().translate()
-    Tests().get_parts()
+    Tests().get_part2()
