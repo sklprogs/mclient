@@ -750,11 +750,12 @@ class Binary:
 
 
 
-class Stems:
+class Stems(Binary):
     
-    def __init__(self):
-        self.values()
-        self.load()
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.coded = b''
+        self.chunk = b''
     
     def stem_nos(self,chunk):
         ''' According to "libmtquery-0.0.1alpha3/doc/README.rus":
@@ -801,85 +802,18 @@ class Stems:
         else:
             sh.com.cancel(f)
     
-    def load(self):
-        f = '[MClient] plugins.multitranbin.get.Stems.load'
-        if self.Success:
-            self.bin = Binary(STEM1)
-            self.bin.open()
-            self.Success = self.bin.Success
-        else:
-            sh.com.cancel(f)
-    
-    def indexes(self):
-        f = '[MClient] plugins.multitranbin.get.Stems.indexes'
-        if self.Success:
-            while True:
-                ind = self.bin.find(self.coded)
-                if ind is None:
-                    mes = _('No matches!')
-                    sh.objs.mes(f,mes,True).info()
-                    break
-                else:
-                    if ind > 1:
-                        sizes = self.bin.read(ind-2,ind)
-                        indexes = ()
-                        try:
-                            indexes = struct.unpack('<2b',sizes)
-                        except Exception as e:
-                            mes = _('Third-party module has failed!\n\nDetails: {}')
-                            mes = mes.format(e)
-                            sh.objs.mes(f,mes).warning()
-                        if indexes:
-                            pos1 = ind + indexes[0]
-                            pos2 = pos1 + indexes[1]
-                            mes = '{} -> {}; {} -> {}'.format (indexes[0]
-                                                              ,pos1
-                                                              ,indexes[1]
-                                                              ,pos2
-                                                              )
-                            sh.objs.mes(f,mes,True).debug()
-                            return(pos1,pos2)
-                        else:
-                            sh.com.empty(f)
-                    else:
-                        mes = _('Wrong input data: "{}"!').format(ind)
-                        sh.objs.mes(f,mes).warning()
-        else:
-            sh.com.cancel(f)
-    
-    def chunk2(self,poses):
-        f = '[MClient] plugins.multitranbin.get.Stems.chunk2'
-        if self.Success:
-            if poses:
-                return self.bin.read(poses[0],poses[1])
-            else:
-                sh.com.empty(f)
-        else:
-            sh.com.cancel(f)
-    
     def search(self,coded):
         # Do not fail the whole class on a failed search
         f = '[MClient] plugins.multitranbin.get.Stems.search'
         if self.Success:
             if coded:
                 self.coded = coded
-                indexes = self.indexes()
-                ''' Empty output is a common situation and should not
-                    be warned. 'self.indexes' already outputs a message
-                    about that.
-                '''
-                if indexes:
-                    chunk = self.chunk2(indexes)
-                    return self.stem_nos(chunk)
+                chunk = self.get_part2(self.coded)
+                return self.stem_nos(chunk)
             else:
                 sh.com.empty(f)
         else:
             sh.com.cancel(f)
-    
-    def values(self):
-        self.Success = True
-        self.coded   = b''
-        self.chunk   = b''
 
 
 
@@ -1003,4 +937,7 @@ if __name__ == '__main__':
         [b'\x01', 'abasin', b'\x02', 'абазин', b'\x0f', '37']
     '''
     #Tests().translate()
-    Tests().get_part2()
+    #Tests().get_part2()
+    istems = Stems(STEM1)
+    istems.search(b'abasin')
+    istems.close()
