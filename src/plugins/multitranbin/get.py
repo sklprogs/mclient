@@ -18,6 +18,55 @@ DICTD1   = '/home/pete/.wine/drive_c/mt_demo/mt/network/eng_rus/dict.erd'
 DICTT    = '/home/pete/.wine/drive_c/mt_demo/mt/network/eng_rus/dict.ert'
 
 
+class Tests:
+    
+    def get_parts(self):
+        # stem.eng
+        file = STEM1
+        ''' 13 ['aberrationist']
+            8 b'\x01\x83\x8e\x02\x03\x00C\x00' -> [167,555; 3; 67]
+        '''
+        pattern = 'aberrationist'
+        pattern = bytes(pattern,ENCODING)
+        ibin = Binary(file)
+        ibin.get_parts(pattern)
+        ibin.close()
+        # dict.erd
+        file = DICTD1
+        ''' 3 b'\x83\x8e\x02' -> [167,555]
+            5 b'k\x00\\\x0b\x00' -> [107; 2,908]
+        '''
+        pattern = b'\x83\x8e\x02' # 167,555
+        ibin = Binary(file)
+        ibin.get_parts(pattern)
+        ibin.close()
+    
+    def translate(self):
+        f = '[MClient] plugins.multitranbin.get.Tests.translate'
+        timer = sh.Timer(f)
+        timer.start()
+        # 'abasin'
+        # 'absolute measurements' = 'абсолютный способ измерения'
+        # 'Bachelor of Vocational Education'
+        # baby fish
+        # sack duty
+        # he has not a sou
+        # habitable room
+        # a posteriori
+        # ashlar line
+        # abatement of tax
+        ''' absolute distribution
+            [188481, 2604] 5 [41, 6400]
+        '''
+        iget = Get('abatement of tax')
+        print(iget.run())
+        objs.stems().close()
+        objs.glue().close()
+        objs.articles().close()
+        timer.end()
+
+
+
 class Suggest:
     
     def __init__(self,search):
@@ -566,16 +615,75 @@ class Binary:
     def __init__(self,file):
         self.file    = file
         self.Success = sh.File(self.file).Success
+        self.open()
+    
+    def check_lengths(self,pattern,lengths):
+        f = '[MClient] plugins.multitranbin.get.Binary.check_lengths'
+        if self.Success:
+            if lengths:
+                if lengths[0] == len(pattern) and lengths[1] > 0:
+                    return True
+                else:
+                    mes = _('The check has failed!')
+                    sh.objs.mes(f,mes,True).debug()
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def get_parts(self,pattern,start=0):
+        f = '[MClient] plugins.multitranbin.get.Binary.get_parts'
+        if self.Success:
+            pos11   = self.find(pattern,start)
+            lengths = self.get_lengths(pos11)
+            if self.check_lengths(pattern,lengths):
+                pos12 = pos11 + lengths[0]
+                #pos21 = pos12
+                pos22 = pos12 + lengths[1]
+                part1 = self.read(pos11,pos12)
+                part2 = self.read(pos12,pos22)
+                return(part1,part2)
+        else:
+            sh.com.cancel(f)
+    
+    def get_lengths(self,index_):
+        f = '[MClient] plugins.multitranbin.get.Binary.get_lengths'
+        if self.Success:
+            ''' There are 'M' pages at the beginning, so an index of
+                the 1st part will always be positive.
+            '''
+            if index_ > 2:
+                pos1 = index_ - 2
+                pos2 = index_ - 1
+                len1 = self.read(pos1,pos1+1)
+                len2 = self.read(pos2,pos2+1)
+                if len1 and len2:
+                    len1 = struct.unpack('<b',len1)[0]
+                    len2 = struct.unpack('<b',len2)[0]
+                    mes = _('Part #{} length: {}').format(1,len1)
+                    sh.objs.mes(f,mes,True).debug()
+                    mes = _('Part #{} length: {}').format(2,len2)
+                    sh.objs.mes(f,mes,True).debug()
+                    return(len1,len2)
+                else:
+                    sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
     
     def read(self,start,end):
         f = '[MClient] plugins.multitranbin.get.Binary.read'
         if self.Success:
-            if end > start:
+            if start is None or end is None:
+                sh.com.empty(f)
+            elif 0 <= start < end:
                 self.imap.seek(start)
-                return self.imap.read(end-start)
+                chunk = self.imap.read(end-start)
+                mes = '"{}"'.format(com.get_string(chunk))
+                sh.objs.mes(f,mes,True).debug()
+                return chunk
             else:
                 self.Success = False
-                sub = '{} < {}'.format(start,end)
+                sub = '0 <= {} < {}'.format(start,end)
                 mes = _('The condition "{}" is not observed!')
                 mes = mes.format(sub)
                 sh.objs.mes(f,mes).warning()
@@ -689,35 +797,37 @@ class Stems:
     def indexes(self):
         f = '[MClient] plugins.multitranbin.get.Stems.indexes'
         if self.Success:
-            ind = self.bin.find(self.coded)
-            if ind is None:
-                mes = _('No matches!')
-                sh.objs.mes(f,mes,True).info()
-            else:
-                if ind > 1:
-                    sizes = self.bin.read(ind-2,ind)
-                    indexes = ()
-                    try:
-                        indexes = struct.unpack('<2b',sizes)
-                    except Exception as e:
-                        mes = _('Third-party module has failed!\n\nDetails: {}')
-                        mes = mes.format(e)
-                        sh.objs.mes(f,mes).warning()
-                    if indexes:
-                        pos1 = ind + indexes[0]
-                        pos2 = pos1 + indexes[1]
-                        mes = '{} -> {}; {} -> {}'.format (indexes[0]
-                                                          ,pos1
-                                                          ,indexes[1]
-                                                          ,pos2
-                                                          )
-                        sh.objs.mes(f,mes,True).debug()
-                        return(pos1,pos2)
-                    else:
-                        sh.com.empty(f)
+            while True:
+                ind = self.bin.find(self.coded)
+                if ind is None:
+                    mes = _('No matches!')
+                    sh.objs.mes(f,mes,True).info()
+                    break
                 else:
-                    mes = _('Wrong input data: "{}"!').format(ind)
-                    sh.objs.mes(f,mes).warning()
+                    if ind > 1:
+                        sizes = self.bin.read(ind-2,ind)
+                        indexes = ()
+                        try:
+                            indexes = struct.unpack('<2b',sizes)
+                        except Exception as e:
+                            mes = _('Third-party module has failed!\n\nDetails: {}')
+                            mes = mes.format(e)
+                            sh.objs.mes(f,mes).warning()
+                        if indexes:
+                            pos1 = ind + indexes[0]
+                            pos2 = pos1 + indexes[1]
+                            mes = '{} -> {}; {} -> {}'.format (indexes[0]
+                                                              ,pos1
+                                                              ,indexes[1]
+                                                              ,pos2
+                                                              )
+                            sh.objs.mes(f,mes,True).debug()
+                            return(pos1,pos2)
+                        else:
+                            sh.com.empty(f)
+                    else:
+                        mes = _('Wrong input data: "{}"!').format(ind)
+                        sh.objs.mes(f,mes).warning()
         else:
             sh.com.cancel(f)
     
@@ -876,24 +986,5 @@ if __name__ == '__main__':
         \x01abasin\x02\xe0\xe1\xe0\xe7\xe8\xed\x0f37
         [b'\x01', 'abasin', b'\x02', 'абазин', b'\x0f', '37']
     '''
-    timer = sh.Timer(f)
-    timer.start()
-    # 'abasin'
-    # 'absolute measurements' = 'абсолютный способ измерения'
-    # 'Bachelor of Vocational Education'
-    # baby fish
-    # sack duty
-    # he has not a sou
-    # habitable room
-    # a posteriori
-    # ashlar line
-    # abatement of tax
-    ''' absolute distribution
-        [188481, 2604] 5 [41, 6400]
-    '''
-    iget = Get('abatement of tax')
-    print(iget.run())
-    objs.stems().close()
-    objs.glue().close()
-    objs.articles().close()
-    timer.end()
+    #Tests().translate()
+    Tests().get_parts()
