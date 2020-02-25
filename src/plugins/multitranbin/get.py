@@ -434,133 +434,32 @@ class Xor:
 
 
 
-class Articles:
+class Articles(Binary):
     # Parse files like 'dict.ert'
-    def __init__(self):
-        self.values()
-        self.load()
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
     
-    def check_pos(self,pos):
-        f = '[MClient] plugins.multitranbin.get.Articles.check_pos'
+    def parse(self,chunk):
+        f = '[MClient] plugins.multitranbin.get.Articles.parse'
         if self.Success:
-            if pos:
-                read = self.bin.read(pos-2,pos-1)
-                if read:
-                    mes = com.get_string(read)
-                    sh.objs.mes(f,mes,True).debug()
-                    value = struct.unpack('<b',read)[0]
-                    if value == 3:
-                        read = self.bin.read(pos-1,pos)
-                        if read:
-                            mes = com.get_string(read)
-                            sh.objs.mes(f,mes,True).debug()
-                            return struct.unpack('<b',read)[0]
-                        else:
-                            sh.com.empty(f)
-                else:
-                    sh.com.empty(f)
-            else:
-                sh.com.empty(f)
-            mes = _('The check has failed')
-            sh.objs.mes(f,mes,True).debug()
-        else:
-            sh.com.cancel(f)
-    
-    def get_article_pos(self,no):
-        f = '[MClient] plugins.multitranbin.get.Articles.get_article_pos'
-        if self.Success:
-            packed = self.pack(no)
-            start  = 0
-            while True:
-                sub = com.get_string(packed)
-                mes = _('Search for article #{} ({})').format(no,sub)
-                sh.objs.mes(f,mes,True).debug()
-                pos  = self.bin.find(packed,start)
-                pos2 = None
-                if pos is None:
-                    mes = _('No matches!')
-                    sh.objs.mes(f,mes,True).info()
-                    break
-                else:
-                    length = self.check_pos(pos)
-                    if length:
-                        pos1 = pos + len(packed)
-                        pos2 = pos1 + length
-                        mes = '{}:{}'.format(pos1,pos2)
-                        sh.objs.mes(f,mes,True).debug()
-                        return(pos1,pos2)
-                    else:
-                        start = pos + 1
-    
-    def pack(self,no):
-        f = '[MClient] plugins.multitranbin.get.Articles.pack'
-        if self.Success:
-            if no:
-                packed = b''
-                try:
-                    packed = struct.pack('<L',no)
-                    packed = packed[0:3]
-                except Exception as e:
-                    mes = _('Third-party module has failed!\n\nDetails: {}')
-                    mes = mes.format(e)
-                    sh.objs.mes(f,mes,True).warning()
-                return packed
+            if chunk:
+                return Xor (data   = chunk
+                           ,offset = -251
+                           ).dexor()
             else:
                 sh.com.empty(f)
         else:
             sh.com.cancel(f)
     
-    def get_article(self,no):
-        f = '[MClient] plugins.multitranbin.get.Articles.get_article'
+    def search(self,coded):
+        # Do not fail the whole class on a failed search
+        f = '[MClient] plugins.multitranbin.get.Articles.search'
         if self.Success:
-            if no:
-                poses = self.get_article_pos(no)
-                if poses:
-                    read = self.bin.read(poses[0],poses[1])
-                    if read:
-                        mes = com.get_string(read)
-                        sh.objs.mes(f,mes,True).debug()
-                        dexorred = Xor (data   = read
-                                       ,offset = -251
-                                       ).dexor()
-                        return dexorred
-                else:
-                    sh.com.empty(f)
+            if coded:
+                chunk = self.get_part2(coded)
+                return self.parse(chunk)
             else:
                 sh.com.empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def get_articles(self,nos):
-        f = '[MClient] plugins.multitranbin.get.Articles.get_articles'
-        if self.Success:
-            if nos:
-                chunks = []
-                for no in nos:
-                    chunks.append(self.get_article(no))
-                return chunks
-            else:
-                sh.com.empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def values(self):
-        self.Success = True
-        self.blocks  = []
-    
-    def close(self):
-        f = '[MClient] plugins.multitranbin.get.Articles.close'
-        if self.Success:
-            self.bin.close()
-        else:
-            sh.com.cancel(f)
-    
-    def load(self):
-        f = '[MClient] plugins.multitranbin.get.Articles.load'
-        if self.Success:
-            self.bin = Binary(DICTT)
-            self.bin.open()
-            self.Success = self.bin.Success
         else:
             sh.com.cancel(f)
 
@@ -870,5 +769,16 @@ if __name__ == '__main__':
     chnos = objs.stems().search(b'abasin')
     objs._stems.close()
     #290202, 290203
+    glued = []
     for chno in chnos:
-        objs.glue().search(chno)
+        chunk = objs.glue().search(chno)
+        if chunk:
+            glued += chunk
+    objs._glue.close()
+    sh.objs.mes(f,glued,True).debug()
+    articles = []
+    for chno in glued:
+        articles.append(objs.articles().search(chno))
+    objs._articles.close()
+    articles = [article for article in articles if article]
+    sh.objs.mes(f,articles,True).debug()
