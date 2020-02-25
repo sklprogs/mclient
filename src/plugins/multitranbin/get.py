@@ -18,6 +18,156 @@ DICTD1   = '/home/pete/.wine/drive_c/mt_demo/mt/network/eng_rus/dict.erd'
 DICTT    = '/home/pete/.wine/drive_c/mt_demo/mt/network/eng_rus/dict.ert'
 
 
+class Binary:
+    
+    def __init__(self,file):
+        self.file    = file
+        self.Success = sh.File(self.file).Success
+        self.open()
+    
+    def unpack(self,chno):
+        f = '[MClient] plugins.multitranbin.get.Binary.check_lengths'
+        if self.Success:
+            if chno:
+                chno += b'\x00'
+                try:
+                    return struct.unpack('<L',chno)[0]
+                except Exception as e:
+                    mes = _('Third-party module has failed!\n\nDetails: {}')
+                    mes = mes.format(e)
+                    sh.objs.mes(f,mes,True).warning()
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def check_lengths(self,pattern,lengths):
+        f = '[MClient] plugins.multitranbin.get.Binary.check_lengths'
+        if self.Success:
+            if lengths:
+                if lengths[0] == len(pattern) and lengths[1] > 0:
+                    return True
+                else:
+                    mes = _('The check has failed!')
+                    sh.objs.mes(f,mes,True).debug()
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def get_part2(self,pattern,start=0):
+        f = '[MClient] plugins.multitranbin.get.Binary.get_part2'
+        if self.Success:
+            pos11 = self.find(pattern,start)
+            if pos11 is None:
+                sub = com.get_string(pattern)
+                mes = _('Pattern: "{}": no matches starting from {}!')
+                mes = mes.format(sub,start)
+                sh.objs.mes(f,mes,True).info()
+            else:
+                lengths = self.get_lengths(pos11)
+                if self.check_lengths(pattern,lengths):
+                    pos21 = pos11 + lengths[0]
+                    pos22 = pos21 + lengths[1]
+                    return self.read(pos21,pos22)
+        else:
+            sh.com.cancel(f)
+    
+    def get_lengths(self,index_):
+        f = '[MClient] plugins.multitranbin.get.Binary.get_lengths'
+        if self.Success:
+            ''' There are 'M' pages at the beginning, so an index of
+                the 1st part will always be positive.
+            '''
+            if index_ is None:
+                sh.com.empty(f)
+            elif index_ > 2:
+                pos1 = index_ - 2
+                pos2 = index_ - 1
+                len1 = self.read(pos1,pos1+1)
+                len2 = self.read(pos2,pos2+1)
+                if len1 and len2:
+                    len1 = struct.unpack('<b',len1)[0]
+                    len2 = struct.unpack('<b',len2)[0]
+                    mes = _('Part #{} length: {}').format(1,len1)
+                    sh.objs.mes(f,mes,True).debug()
+                    mes = _('Part #{} length: {}').format(2,len2)
+                    sh.objs.mes(f,mes,True).debug()
+                    return(len1,len2)
+                else:
+                    sh.com.empty(f)
+            else:
+                sub = '{} > 2'.format(index_)
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+    
+    def read(self,start,end):
+        f = '[MClient] plugins.multitranbin.get.Binary.read'
+        if self.Success:
+            if start is None or end is None:
+                sh.com.empty(f)
+            elif 0 <= start < end:
+                self.imap.seek(start)
+                chunk = self.imap.read(end-start)
+                mes = '"{}"'.format(com.get_string(chunk))
+                sh.objs.mes(f,mes,True).debug()
+                return chunk
+            else:
+                self.Success = False
+                sub = '0 <= {} < {}'.format(start,end)
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.mes(f,mes).warning()
+        else:
+            sh.com.cancel(f)
+    
+    def find(self,pattern,start=0):
+        f = '[MClient] plugins.multitranbin.get.Binary.find'
+        if self.Success:
+            if pattern:
+                self.imap.seek(start)
+                result = self.imap.find(pattern)
+                if result >= 0:
+                    return result
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def open(self):
+        f = '[MClient] plugins.multitranbin.get.Binary.open'
+        if self.Success:
+            mes = _('Open "{}"').format(self.file)
+            sh.objs.mes(f,mes,True).info()
+            self.bin = open(self.file,'rb')
+            # 'mmap' fails upon opening an empty file!
+            try:
+                self.imap = mmap.mmap (self.bin.fileno(),0
+                                      ,prot=mmap.PROT_READ
+                                      )
+            except Exception as e:
+                self.Success = False
+                mes = _('Third-party module has failed!\n\nDetails: {}')
+                mes = mes.format(e)
+                sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+    
+    def close(self):
+        f = '[MClient] plugins.multitranbin.get.Binary.close'
+        if self.Success:
+            mes = _('Close "{}"').format(self.file)
+            sh.objs.mes(f,mes,True).info()
+            self.imap.flush()
+            self.bin.close()
+        else:
+            sh.com.cancel(f)
+
+
+
 class Tests:
     
     def get_part2(self):
@@ -416,129 +566,49 @@ class Articles:
 
 
 
-class Glue:
+class Glue(Binary):
     # Parse files like 'dict.erd'
-    def __init__(self):
-        self.values()
-        self.load()
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
     
-    def get_pos(self,chunk):
-        f = '[MClient] plugins.multitranbin.get.Glue.get_pos'
+    def search(self,coded):
+        # Do not fail the whole class on a failed search
+        f = '[MClient] plugins.multitranbin.get.Glue.search'
         if self.Success:
-            pos = self.bin.find(chunk)
-            sub = com.get_string(chunk)
-            if pos:
-                mes = _('Chunk "{}": position {}').format(sub,pos)
-                sh.objs.mes(f,mes,True).info()
-                return pos
-            else:
-                mes = _('Chunk "{}": no matches').format(sub)
-                sh.objs.mes(f,mes,True).debug()
-        else:
-            sh.com.cancel(f)
-    
-    def pack(self,stem_no):
-        f = '[MClient] plugins.multitranbin.get.Glue.pack'
-        if self.Success:
-            if stem_no or stem_no == 0:
-                packed = b''
-                try:
-                    packed = struct.pack('<L',stem_no)
-                    packed = packed[0:3]
-                except Exception as e:
-                    mes = _('Third-party module has failed!\n\nDetails: {}')
-                    mes = mes.format(e)
-                    sh.objs.mes(f,mes,True).warning()
-                return packed
-            else:
-                sh.com.empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def check_pos(self,pos):
-        f = '[MClient] plugins.multitranbin.get.Glue.check_pos'
-        if self.Success:
-            if pos:
-                read = self.bin.read(pos-2,pos-1)
-                if read:
-                    mes = com.get_string(read)
-                    sh.objs.mes(f,mes,True).debug()
-                    value = struct.unpack('<b',read)[0]
-                    if value % 3 == 0:
-                        read = self.bin.read(pos-1,pos)
-                        if read:
-                            mes = com.get_string(read)
-                            sh.objs.mes(f,mes,True).debug()
-                            value = struct.unpack('<b',read)[0]
-                            if (value - 2) % 3 == 0 and value != 2:
-                                return value
-                        else:
-                            sh.com.empty(f)
+            if coded:
+                chunk = self.get_part2(coded)
+                if chunk:
+                    return self.parse(chunk)
                 else:
-                    sh.com.empty(f)
+                    ''' 'dict.erd' sometimes does not comprise
+                        stem numbers provided by 'stem.eng' (at least
+                        in the demo version).
+                    '''
+                    sh.com.lazy(f)
             else:
                 sh.com.empty(f)
-            mes = _('The check has failed')
-            sh.objs.mes(f,mes,True).debug()
         else:
             sh.com.cancel(f)
     
-    def get_article_nos(self,chunk):
-        f = '[MClient] plugins.multitranbin.get.Glue.get_article_nos'
+    def parse(self,chunk):
+        f = '[MClient] plugins.multitranbin.get.Glue.parse'
         if self.Success:
             if chunk:
-                pos = self.get_pos(chunk)
-                if pos:
-                    delta = self.check_pos(pos)
-                    if delta:
-                        pos1 = pos + len(chunk)
-                        pos2 = pos1 + delta
-                        read = self.bin.read(pos1,pos2)
-                        if read:
-                            mes = com.get_string(read)
-                            sh.objs.mes(f,mes,True).debug()
-                            if (len(read) - 2) % 3 == 0 \
-                            and len(read) != 2:
-                                read = read[2:]
-                                chunks = com.get_chunks(read,3)
-                                nos = []
-                                for chunk in chunks:
-                                    chunk += b'\x00'
-                                    try:
-                                        nos.append(struct.unpack('<L',chunk)[0])
-                                    except Exception as e:
-                                        mes = _('Third-party module has failed!\n\nDetails: {}')
-                                        mes = mes.format(e)
-                                        sh.objs.mes(f,mes,True).warning()
-                                sh.objs.mes(f,nos,True).debug()
-                                return nos
-                            else:
-                                mes = _('Wrong input data: "{}"!')
-                                mes = mes.format(com.get_string(read))
-                                sh.objs.mes(f,mes).warning()
+                if (len(chunk) - 2) % 3 == 0 and len(chunk) != 2:
+                    chunk = chunk[2:]
+                    nos   = []
+                    chnos = com.get_chunks(chunk,3)
+                    for chno in chnos:
+                        nos.append(self.unpack(chno))
+                    sh.objs.mes(f,chnos,True).debug()
+                    sh.objs.mes(f,nos,True).debug()
+                    return chnos
+                else:
+                    mes = _('Wrong input data: "{}"!')
+                    mes = mes.format(com.get_string(chunk))
+                    sh.objs.mes(f,mes).warning()
             else:
                 sh.com.empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def values(self):
-        self.Success = True
-        self.stems   = []
-        self.arts    = []
-    
-    def close(self):
-        f = '[MClient] plugins.multitranbin.get.Glue.close'
-        if self.Success:
-            self.bin.close()
-        else:
-            sh.com.cancel(f)
-    
-    def load(self):
-        f = '[MClient] plugins.multitranbin.get.Glue.load'
-        if self.Success:
-            self.bin = Binary(DICTD1)
-            self.bin.open()
-            self.Success = self.bin.Success
         else:
             sh.com.cancel(f)
 
@@ -608,156 +678,27 @@ class Objects:
     
     def articles(self):
         if self._articles is None:
-            self._articles = Articles()
+            self._articles = Articles(DICTT)
         return self._articles
     
     def glue(self):
         if self._glue is None:
-            self._glue = Glue()
+            self._glue = Glue(DICTD1)
         return self._glue
     
     def stems(self):
         if self._stems is None:
-            self._stems = Stems()
+            self._stems = Stems(STEM1)
         return self._stems
-
-
-class Binary:
-    
-    def __init__(self,file):
-        self.file    = file
-        self.Success = sh.File(self.file).Success
-        self.open()
-    
-    def check_lengths(self,pattern,lengths):
-        f = '[MClient] plugins.multitranbin.get.Binary.check_lengths'
-        if self.Success:
-            if lengths:
-                if lengths[0] == len(pattern) and lengths[1] > 0:
-                    return True
-                else:
-                    mes = _('The check has failed!')
-                    sh.objs.mes(f,mes,True).debug()
-            else:
-                sh.com.empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def get_part2(self,pattern,start=0):
-        f = '[MClient] plugins.multitranbin.get.Binary.get_part2'
-        if self.Success:
-            pos11   = self.find(pattern,start)
-            lengths = self.get_lengths(pos11)
-            if self.check_lengths(pattern,lengths):
-                pos21 = pos11 + lengths[0]
-                pos22 = pos21 + lengths[1]
-                return self.read(pos21,pos22)
-        else:
-            sh.com.cancel(f)
-    
-    def get_lengths(self,index_):
-        f = '[MClient] plugins.multitranbin.get.Binary.get_lengths'
-        if self.Success:
-            ''' There are 'M' pages at the beginning, so an index of
-                the 1st part will always be positive.
-            '''
-            if index_ is None:
-                sh.com.empty(f)
-            elif index_ > 2:
-                pos1 = index_ - 2
-                pos2 = index_ - 1
-                len1 = self.read(pos1,pos1+1)
-                len2 = self.read(pos2,pos2+1)
-                if len1 and len2:
-                    len1 = struct.unpack('<b',len1)[0]
-                    len2 = struct.unpack('<b',len2)[0]
-                    mes = _('Part #{} length: {}').format(1,len1)
-                    sh.objs.mes(f,mes,True).debug()
-                    mes = _('Part #{} length: {}').format(2,len2)
-                    sh.objs.mes(f,mes,True).debug()
-                    return(len1,len2)
-                else:
-                    sh.com.empty(f)
-            else:
-                sub = '{} > 2'.format(index_)
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                sh.objs.mes(f,mes,True).warning()
-        else:
-            sh.com.cancel(f)
-    
-    def read(self,start,end):
-        f = '[MClient] plugins.multitranbin.get.Binary.read'
-        if self.Success:
-            if start is None or end is None:
-                sh.com.empty(f)
-            elif 0 <= start < end:
-                self.imap.seek(start)
-                chunk = self.imap.read(end-start)
-                mes = '"{}"'.format(com.get_string(chunk))
-                sh.objs.mes(f,mes,True).debug()
-                return chunk
-            else:
-                self.Success = False
-                sub = '0 <= {} < {}'.format(start,end)
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                sh.objs.mes(f,mes).warning()
-        else:
-            sh.com.cancel(f)
-    
-    def find(self,pattern,start=0):
-        f = '[MClient] plugins.multitranbin.get.Binary.find'
-        if self.Success:
-            if pattern:
-                self.imap.seek(start)
-                result = self.imap.find(pattern)
-                if result >= 0:
-                    return result
-            else:
-                sh.com.empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def open(self):
-        f = '[MClient] plugins.multitranbin.get.Binary.open'
-        if self.Success:
-            mes = _('Open "{}"').format(self.file)
-            sh.objs.mes(f,mes,True).info()
-            self.bin = open(self.file,'rb')
-            # 'mmap' fails upon opening an empty file!
-            try:
-                self.imap = mmap.mmap (self.bin.fileno(),0
-                                      ,prot=mmap.PROT_READ
-                                      )
-            except Exception as e:
-                self.Success = False
-                mes = _('Third-party module has failed!\n\nDetails: {}')
-                mes = mes.format(e)
-                sh.objs.mes(f,mes,True).warning()
-        else:
-            sh.com.cancel(f)
-    
-    def close(self):
-        f = '[MClient] plugins.multitranbin.get.Binary.close'
-        if self.Success:
-            mes = _('Close "{}"').format(self.file)
-            sh.objs.mes(f,mes,True).info()
-            self.imap.flush()
-            self.bin.close()
-        else:
-            sh.com.cancel(f)
 
 
 
 class Stems(Binary):
-    
+    # Parse files like 'stem.eng'
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.coded = b''
-        self.chunk = b''
     
-    def stem_nos(self,chunk):
+    def parse(self,chunk):
         ''' According to "libmtquery-0.0.1alpha3/doc/README.rus":
             the 1st byte - a type designating the use of capital letters
             (not used), further - a vector of 7-byte codes, each code
@@ -767,25 +708,21 @@ class Stems(Binary):
             2 bytes - sik (terminations)
             2 bytes - lgk (speech part codes)
         '''
-        f = '[MClient] plugins.multitranbin.get.Stems.stem_nos'
+        f = '[MClient] plugins.multitranbin.get.Stems.parse'
         if self.Success:
             if chunk:
-                nos = []
+                nos   = []
+                chnos = []
                 #NOTE: 0 % 7 == 0
                 if len(chunk) > 1 and (len(chunk) - 1) % 7 == 0:
                     chunks = com.get_chunks(chunk[1:],7)
-                    #mes = com.get_string(chunk)
-                    #sh.objs.mes(f,mes,True).debug()
                     for i in range(len(chunks)):
-                        no = chunks[i][0:3] + b'\x00'
-                        try:
-                            nos.append(struct.unpack('<L',no)[0])
-                        except Exception as e:
-                            mes = _('Third-party module has failed!\n\nDetails: {}')
-                            mes = mes.format(e)
-                            sh.objs.mes(f,mes,True).warning()
+                        chnos.append(chunks[i][0:3])
+                    for chno in chnos:
+                        nos.append(self.unpack(chno))
+                    sh.objs.mes(f,chnos,True).debug()
                     sh.objs.mes(f,nos,True).debug()
-                    return nos
+                    return chnos
                 else:
                     sub = com.get_string(chunk)
                     mes = _('Wrong input data: "{}"!').format(sub)
@@ -795,21 +732,13 @@ class Stems(Binary):
         else:
             sh.com.cancel(f)
     
-    def close(self):
-        f = '[MClient] plugins.multitranbin.get.Stems.close'
-        if self.Success:
-            self.bin.close()
-        else:
-            sh.com.cancel(f)
-    
     def search(self,coded):
         # Do not fail the whole class on a failed search
         f = '[MClient] plugins.multitranbin.get.Stems.search'
         if self.Success:
             if coded:
-                self.coded = coded
-                chunk = self.get_part2(self.coded)
-                return self.stem_nos(chunk)
+                chunk = self.get_part2(coded)
+                return self.parse(chunk)
             else:
                 sh.com.empty(f)
         else:
@@ -938,6 +867,8 @@ if __name__ == '__main__':
     '''
     #Tests().translate()
     #Tests().get_part2()
-    istems = Stems(STEM1)
-    istems.search(b'abasin')
-    istems.close()
+    chnos = objs.stems().search(b'abasin')
+    objs._stems.close()
+    #290202, 290203
+    for chno in chnos:
+        objs.glue().search(chno)
