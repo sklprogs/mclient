@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-23 00:15+0300\n"
-"PO-Revision-Date: 2020-02-23 00:16+0300\n"
+"POT-Creation-Date: 2020-02-26 00:39+0300\n"
+"PO-Revision-Date: 2020-02-26 00:50+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -71,10 +71,7 @@ msgstr "Удаление записей статьи №{} из {}"
 #: mclient/src/mclient.py:1809 mclient/src/mclient.py:1847
 #: mclient/src/mclient.py:1859 mclient/src/mclient.py:1871
 #: mclient/src/mclient.py:1883 mclient/src/mclient.py:2374
-#: mclient/src/mclient.py:2382 mclient/src/plugins/multitranbin/get.py:461
-#: mclient/src/plugins/multitranbin/get.py:674
-#: mclient/src/plugins/multitranbin/get.py:727
-#: mclient/src/plugins/multitranbin/tags.py:162
+#: mclient/src/mclient.py:2382 mclient/src/plugins/multitranbin/tags.py:162
 #: mclient/src/plugins/multitrancom/pairs.py:2756 skl_shared/src/logic.py:914
 #: skl_shared/src/logic.py:1094 skl_shared/src/logic.py:1191
 #: skl_shared/src/logic.py:1861 skl_shared/src/logic.py:2323
@@ -743,9 +740,6 @@ msgid "Plain text (UTF-8)"
 msgstr "Обычный текст (UTF-8)"
 
 #: mclient/src/mclient.py:372 mclient/src/mclient.py:423
-#: mclient/src/plugins/multitranbin/get.py:270
-#: mclient/src/plugins/multitranbin/get.py:422
-#: mclient/src/plugins/multitranbin/get.py:702
 #: mclient/src/plugins/multitrancom/utils.py:80
 #: mclient/src/plugins/multitrancom/utils.py:123 skl_shared/src/shared.py:621
 #: skl_shared/src/shared.py:720 skl_shared/src/shared.py:743
@@ -844,7 +838,8 @@ msgstr "Список приоритетных словарей пуст!"
 msgid "Set the column limit to {} ({} in total)"
 msgstr "Задать максимальное число столбцов: {} (всего: {})"
 
-#: mclient/src/mclient.py:2285 mclient/src/plugins/multitranbin/get.py:588
+#: mclient/src/mclient.py:2285 mclient/src/plugins/multitranbin/get.py:101
+#: mclient/src/plugins/multitranbin/get.py:121
 #: mclient/src/plugins/multitrancom/utils.py:165
 #: mclient/src/plugins/multitrancom/utils.py:263
 #: mclient/src/plugins/multitrancom/utils.py:344
@@ -881,7 +876,9 @@ msgstr "Выбран словарь: \"{}\". Следующего словаря
 msgid "At least one column must be set!"
 msgstr "Необходимо задать хотя бы 1 столбец!"
 
-#: mclient/src/mclient.py:2546 mclient/src/plugins/multitranbin/tags.py:178
+#: mclient/src/mclient.py:2546 mclient/src/plugins/multitranbin/get.py:522
+#: mclient/src/plugins/multitranbin/get.py:643
+#: mclient/src/plugins/multitranbin/tags.py:178
 #: mclient/src/plugins/multitrancom/pairs.py:2698
 #: mclient/src/plugins/multitrancom/pairs.py:2718
 #: mclient/src/plugins/multitrancom/run.py:69
@@ -1166,31 +1163,8 @@ msgstr "Русский"
 msgid "English"
 msgstr "Английский"
 
-#: mclient/src/plugins/multitranbin/get.py:102
-#: mclient/src/plugins/stardict/get.py:509
-msgid "{} offline dictionaries are available"
-msgstr "Доступно {} локальных словарей"
-
-#: mclient/src/plugins/multitranbin/get.py:164
-#: mclient/src/plugins/multitranbin/get.py:213
-msgid "Invalid value \"{}\" at position {}!"
-msgstr "Неверное значение \"{}\" в позиции {}!"
-
-#: mclient/src/plugins/multitranbin/get.py:253
-#: mclient/src/plugins/multitranbin/get.py:405
-msgid "The check has failed"
-msgstr "Проверка завершилась неуспешно"
-
-#: mclient/src/plugins/multitranbin/get.py:265
-msgid "Search for article #{} ({})"
-msgstr "Поиск статьи №{} ({})"
-
-#: mclient/src/plugins/multitranbin/get.py:293
-#: mclient/src/plugins/multitranbin/get.py:373
-#: mclient/src/plugins/multitranbin/get.py:455
-#: mclient/src/plugins/multitranbin/get.py:620
-#: mclient/src/plugins/multitranbin/get.py:668
-#: mclient/src/plugins/multitranbin/get.py:711 skl_shared/src/shared.py:2284
+#: mclient/src/plugins/multitranbin/get.py:36
+#: mclient/src/plugins/multitranbin/get.py:153 skl_shared/src/shared.py:2284
 msgid ""
 "Third-party module has failed!\n"
 "\n"
@@ -1200,27 +1174,52 @@ msgstr ""
 "\n"
 "Детали: {}"
 
-#: mclient/src/plugins/multitranbin/get.py:417
-msgid "Search for stem #{} ({})"
-msgstr "Поиск основы №{} ({})"
+#: mclient/src/plugins/multitranbin/get.py:51
+msgid "The check has failed!"
+msgstr "Проверка завершилась неуспешно!"
 
-#: mclient/src/plugins/multitranbin/get.py:610
+#: mclient/src/plugins/multitranbin/get.py:64
+msgid "Pattern: \"{}\": no matches starting from {}!"
+msgstr "Образец: \"{}\": нет совпадений с позиции {}!"
+
+#: mclient/src/plugins/multitranbin/get.py:92
+#: mclient/src/plugins/multitranbin/get.py:94
+msgid "Part #{} length: {}"
+msgstr "Длина части №{}: {}"
+
+#: mclient/src/plugins/multitranbin/get.py:143
 msgid "Open \"{}\""
 msgstr "Открытие \"{}\""
 
-#: mclient/src/plugins/multitranbin/get.py:629
+#: mclient/src/plugins/multitranbin/get.py:162
 msgid "Close \"{}\""
 msgstr "Закрытие \"{}\""
 
-#: mclient/src/plugins/multitranbin/get.py:808
-#| msgid "Wrong font: \"{}\"!"
+#: mclient/src/plugins/multitranbin/get.py:329
+#: mclient/src/plugins/stardict/get.py:509
+msgid "{} offline dictionaries are available"
+msgstr "Доступно {} локальных словарей"
+
+#: mclient/src/plugins/multitranbin/get.py:391
+#: mclient/src/plugins/multitranbin/get.py:440
+msgid "Invalid value \"{}\" at position {}!"
+msgstr "Неверное значение \"{}\" в позиции {}!"
+
+#: mclient/src/plugins/multitranbin/get.py:706
 msgid "Try for \"{}\""
 msgstr "Тест \"{}\""
 
-#: mclient/src/plugins/multitranbin/get.py:813
-#| msgid "Mode: \"{}\""
+#: mclient/src/plugins/multitranbin/get.py:711
 msgid "Found stem: \"{}\""
 msgstr "Найдена основа: \"{}\""
+
+#: mclient/src/plugins/multitranbin/get.py:736
+msgid "Found combinations: {}"
+msgstr "Найденные комбинации: {}"
+
+#: mclient/src/plugins/multitranbin/get.py:738
+msgid "No stem combinations have been found!"
+msgstr "Комбинаций основ не найдено!"
 
 #: mclient/src/plugins/multitranbin/run.py:67
 #: mclient/src/plugins/multitranbin/run.py:71
@@ -15182,6 +15181,15 @@ msgstr ""
 #: skl_shared/src/tests.py:933
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
+
+#~ msgid "The check has failed"
+#~ msgstr "Проверка завершилась неуспешно"
+
+#~ msgid "Search for article #{} ({})"
+#~ msgstr "Поиск статьи №{} ({})"
+
+#~ msgid "Search for stem #{} ({})"
+#~ msgstr "Поиск основы №{} ({})"
 
 #~ msgid "Cannot print the message!"
 #~ msgstr "Не удаётся показать сообщение!"
