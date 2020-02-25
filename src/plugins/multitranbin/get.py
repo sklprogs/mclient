@@ -170,6 +170,25 @@ class Binary:
 
 class Tests:
     
+    def translate_stem(self):
+        f = '[MClient] plugins.multitranbin.get.Tests.translate_stem'
+        chnos = objs.stems().search(b'abasin')
+        objs._stems.close()
+        #290202, 290203
+        glued = []
+        for chno in chnos:
+            chunk = objs.glue().search(chno)
+            if chunk:
+                glued += chunk
+        objs._glue.close()
+        sh.objs.mes(f,glued,True).debug()
+        articles = []
+        for chno in glued:
+            articles.append(objs.articles().search(chno))
+        objs._articles.close()
+        articles = [article for article in articles if article]
+        sh.objs.mes(f,articles,True).debug()
+    
     def get_part2(self):
         # stem.eng
         file = STEM1
@@ -220,11 +239,8 @@ class Tests:
         ''' absolute distribution
             [188481, 2604] 5 [41, 6400]
         '''
-        iget = Get('abatement of tax')
+        iget = Get('absolute distribution')
         print(iget.run())
-        objs.stems().close()
-        objs.glue().close()
-        objs.articles().close()
         timer.end()
 
 
@@ -656,6 +672,8 @@ class Get:
         if self.Success:
             self.stemnos = list(itertools.product(*self.stemnos))
             sh.objs.mes(f,self.stemnos,True).debug()
+            self.stemnos = [b''.join(item) for item in self.stemnos]
+            sh.objs.mes(f,self.stemnos,True).debug()
         else:
             sh.com.cancel(f)
     
@@ -695,7 +713,7 @@ class Get:
                         self.stemnos.append(stem_nos)
                         break
                     i -= 1
-            
+            sh.objs.mes(f,self.stemnos,True).debug()
         else:
             sh.com.cancel(f)
     
@@ -705,32 +723,25 @@ class Get:
         self._html   = ''
         self.stems   = []
         self.stemnos = []
-        self.packed  = []
-    
-    def _pack(self,item):
-        packed = b''
-        for subitem in item:
-            subitem = struct.pack('<L',subitem)
-            subitem = subitem[:-1]
-            packed += subitem
-        return packed
-    
-    def pack(self):
-        f = '[MClient] plugins.multitranbin.get.Get.pack'
-        if self.Success:
-            self.packed = [self._pack(item) for item in self.stemnos]
-        else:
-            sh.com.cancel(f)
     
     def search(self):
         f = '[MClient] plugins.multitranbin.get.Get.search'
         if self.Success:
-            article_nos = []
-            for chunk in self.packed:
-                article_nos = objs.glue().get_article_nos(chunk)
-                if article_nos:
-                    break
-            return objs.articles().get_articles(article_nos)
+            art_nos = []
+            for combo in self.stemnos:
+                art_no = objs.glue().search(combo)
+                if art_no:
+                    art_nos += art_no
+            if art_nos:
+                mes = _('Found combinations: {}').format(art_nos)
+            else:
+                mes = _('No stem combinations have been found!')
+            sh.objs.mes(f,mes,True).info()
+            articles = []
+            for art_no in art_nos:
+                articles.append(objs.articles().search(art_no))
+            articles = [article for article in articles if article]
+            return articles
         else:
             sh.com.cancel(f)
     
@@ -739,7 +750,6 @@ class Get:
         self.strip()
         self.get_stems()
         self.combos()
-        self.pack()
         return self.search()
 
 
@@ -764,21 +774,5 @@ if __name__ == '__main__':
         \x01abasin\x02\xe0\xe1\xe0\xe7\xe8\xed\x0f37
         [b'\x01', 'abasin', b'\x02', 'абазин', b'\x0f', '37']
     '''
-    #Tests().translate()
+    Tests().translate()
     #Tests().get_part2()
-    chnos = objs.stems().search(b'abasin')
-    objs._stems.close()
-    #290202, 290203
-    glued = []
-    for chno in chnos:
-        chunk = objs.glue().search(chno)
-        if chunk:
-            glued += chunk
-    objs._glue.close()
-    sh.objs.mes(f,glued,True).debug()
-    articles = []
-    for chno in glued:
-        articles.append(objs.articles().search(chno))
-    objs._articles.close()
-    articles = [article for article in articles if article]
-    sh.objs.mes(f,articles,True).debug()
