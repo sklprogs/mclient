@@ -70,6 +70,8 @@ class CleanUp:
         self._text = self._text.replace ('</a> containing <strong>'
                                         ,'</a><strong>'
                                         )
+        self._text = self._text.replace('<u>','')
+        self._text = self._text.replace('</u>','')
     
     def no_matches(self):
         if 'Не найдено<p>' in self._text:

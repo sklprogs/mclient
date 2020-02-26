@@ -248,7 +248,7 @@ class SaveArticle:
             self.file += ext
 
     def select(self,event=None):
-        opt = self.gui.obj.get()
+        opt = self.gui.parent.get()
         self.gui.close()
         if opt:
             if opt == _('Save the current view as a web-page (*.htm)'):
