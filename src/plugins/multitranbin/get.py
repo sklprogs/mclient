@@ -70,6 +70,8 @@ class Binary:
                     pos21 = pos11 + lengths[0]
                     pos22 = pos21 + lengths[1]
                     return self.read(pos21,pos22)
+                else:
+                    return self.get_part2(pattern,pos11+1)
         else:
             sh.com.cancel(f)
     
@@ -236,11 +238,18 @@ class Tests:
         # a posteriori
         # ashlar line
         # abatement of tax
+        # 'habitable room'
         ''' absolute distribution
             [188481, 2604] 5 [41, 6400]
+            baby fish
+            3 ['bab'] 22 [10950, 33, 67, 65869, 35, 32, 65870, 43, 32]
+            4 ['fish'] 36 [9969, 2, 67, 48823, 10, 129, 48824, 35, 32, 57060, 20, 32, 220871, 2, 66]
+            
         '''
-        iget = Get('absolute distribution')
-        print(iget.run())
+        #cur
+        #'absolute measurements'
+        iget = Get('ashlar line')
+        sh.objs.mes(f,iget.run(),True).debug()
         timer.end()
 
 
@@ -775,4 +784,3 @@ if __name__ == '__main__':
         [b'\x01', 'abasin', b'\x02', 'абазин', b'\x0f', '37']
     '''
     Tests().translate()
-    #Tests().get_part2()
