@@ -1,4 +1,6 @@
 
+! format -> SAP технические термины: underlined term "format" is not
+  shown
 - plugins.multitranbin.get: (?) Find duplicates of the same stem
   (may have different stem numbers)
 - downtime: make columns narrower

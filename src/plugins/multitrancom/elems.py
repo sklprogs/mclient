@@ -301,6 +301,29 @@ class Elems:
             self.Success = False
             sh.com.empty(f)
     
+    def delete_set_form(self):
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_set_form'
+        patterns = ['только в заданном порядке \d+'
+                   ,'только заданная форма слов \d+'
+                   ,'exact matches only \d+'
+                   ,'in specified order only \d+'
+                   ]
+        i = 0
+        count = 0
+        while i < len(self._blocks):
+            for pattern in patterns:
+                if re.match(pattern,self._blocks[i]._text):
+                    del self._blocks[i]
+                    i -= 1
+                    count += 1
+                    break
+            i += 1
+        if count:
+            mes = _('{} blocks have been deleted').format(count)
+            sh.objs.mes(f,mes,True).info()
+        else:
+            sh.com.lazy(f)
+    
     def delete_phantom(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_phantom'
         ''' Delete a block that looks like a WFORM but has pluses
@@ -521,6 +544,7 @@ class Elems:
             self.subjects()
             self.delete_search()
             self.delete_phantom()
+            self.delete_set_form()
             self.delete_numeration()
             # Reassign types
             self.transc()
@@ -607,8 +631,6 @@ class Elems:
         f = '[MClient] plugins.multitrancom.elems.Elems.trash'
         patterns = ['|',';',':','(',')','-->','// -->','⇄','точно'
                    ,'все формы','точные совпадения','Сообщить об ошибке'
-                   ,'только в заданном порядке 1'
-                   ,'только заданная форма слов 1'
                    ]
         if self._langs:
             patterns += list(self._langs)

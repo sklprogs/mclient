@@ -1,17 +1,23 @@
 
-- EN-RU, средство: "adjunct (Киселев)" relates to "дополнительное средство"
+- EN-RU, torture -> Автомобильный термин: cannot process terms with
+  quotes
+- EN-RU, средство: "adjunct (Киселев)" relates to
+  "дополнительное средство"
 - EN-RU, AppVerifier: separate comment
 - EN-RU, особых условиях: "особых+условиях:"
 - EN-RU, подобрать: Do not separate comment parts
 - ! does not get what is expected
-- Process stays alive if main GUI is quitted, then - the message window about connection failure
+- Process stays alive if main GUI is quitted, then - the message window
+  about connection failure
 - EN-RU, be cut out: comment has SAME=0
 - EN-RU, decaffeinated: transcription not in place
-- EN-RU, проблемный -> Программирование: wrong block separation: "Refactoring is the process of..."
+- EN-RU, проблемный -> Программирование: wrong block separation:
+  "Refactoring is the process of..."
 - EN-RU, get wind of (Разговорное выражение): wrong WFORMA
 - EN-RU, можно: wrong WFORMA
 - embodiments of the invention: Патенты, not Патология
-- EN-RU: DOA: (Dead on Arrival), "направление движения" (автомобиля) have SAME=0
+- EN-RU: DOA: (Dead on Arrival), "направление движения" (автомобиля)
+  have SAME=0
 - EN-RU: скрепа: 'got along extremely well' is missing
 - EN-RU: knickers: "woman's knickers": WFORMA not in place
 - EN-RU: судебный пристав: wrong parsing owing to URL in comments
@@ -54,7 +60,8 @@
 - Do not open a Multitran-based URL for local dictionaries (F7)
 - An incorrect selection at the end while searching "document is
   original without a signature"
-- Do not move at the beginning of the article after cancelling the search
+- Do not move at the beginning of the article after cancelling
+  the search
 - Mclient mode: transcription must be set after parts of speechs, but
   actually it is set before
 - Blocks from '<tr>̈ɪkʌt</tr><em>гл.</em>'
