@@ -50,7 +50,6 @@ class Elems:
         f = '[MClient] plugins.multitranbin.elems.Elems.__init__'
         self._dic_urls = {}
         self._defins   = []
-        self._blocks   = blocks
         self.abbr      = iabbr
         self.Debug     = Debug
         self.Shorten   = Shorten
@@ -58,11 +57,13 @@ class Elems:
         self.MaxRows   = MaxRows
         self._search   = search.strip()
         self._langs    = langs
-        if self._blocks:
+        if blocks:
             self.Success = True
+            self._blocks = blocks
         else:
             self.Success = False
             sh.com.empty(f)
+            self._blocks = []
     
     def strip(self):
         for block in self._blocks:
@@ -75,9 +76,9 @@ class Elems:
             self.strip()
             self.selectables()
             self.debug()
-            return self._blocks
         else:
             sh.com.cancel(f)
+        return self._blocks
     
     def debug(self):
         f = 'plugins.multitranbin.elems.Elems.debug'

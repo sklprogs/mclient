@@ -229,6 +229,7 @@ class Tests:
         # Failed patterns
         # No combos:      ['he has not a sou'
                           ,'World Union of Catholic Teachers'
+                          ,'Kapteyn transformation'
                           ]
         # Stack overflow: ['Bachelor of Vocational Education'
                           ,'ashlar line'
