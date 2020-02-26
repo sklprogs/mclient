@@ -25,22 +25,6 @@ class Binary:
         self.Success = sh.File(self.file).Success
         self.open()
     
-    def unpack(self,chno):
-        f = '[MClient] plugins.multitranbin.get.Binary.check_lengths'
-        if self.Success:
-            if chno:
-                chno += b'\x00'
-                try:
-                    return struct.unpack('<L',chno)[0]
-                except Exception as e:
-                    mes = _('Third-party module has failed!\n\nDetails: {}')
-                    mes = mes.format(e)
-                    sh.objs.mes(f,mes,True).warning()
-            else:
-                sh.com.empty(f)
-        else:
-            sh.com.cancel(f)
-    
     def check_lengths(self,pattern,lengths):
         f = '[MClient] plugins.multitranbin.get.Binary.check_lengths'
         if self.Success:
@@ -224,31 +208,50 @@ class Tests:
             ,offset = -251
             ).dexor()
     
-    def translate(self):
+    def translate_many(self):
+        # 'absolute measurements' = 'абсолютный способ измерения'
+        '''
+        # Successfully processed patterns
+        patterns = ['abasin'
+                   ,'absolute measurements'
+                   ,'baby fish'
+                   ,'sack duty'
+                   ,'habitable room'
+                   ,'a posteriori'
+                   ,'abatement of tax'
+                   ,'abatement of purchase price'
+                   ,'habitable room'
+                   ,'absolute distribution'
+                   ,'abolishment of a scheme'
+                   ,'calcium gallium germanium garnet'
+                   ,'daily reports notice'
+                   ]
+        # Failed patterns
+        # No combos:      ['he has not a sou'
+                          ,'World Union of Catholic Teachers'
+                          ]
+        # Stack overflow: ['Bachelor of Vocational Education'
+                          ,'ashlar line'
+                          ,'acceleration measured in G'
+                          ,'acceleration spectral density'
+                          ,'A & E'
+                          ,'Abelian equation'
+                          ]
+        '''
+        patterns = ['he has not a sou'
+                   ,'Bachelor of Vocational Education'
+                   ,'ashlar line'
+                   ,'acceleration measured in G'
+                   ]
+        for pattern in patterns:
+            self.translate(pattern)
+            input(_('Press any key'))
+    
+    def translate(self,pattern):
         f = '[MClient] plugins.multitranbin.get.Tests.translate'
         timer = sh.Timer(f)
         timer.start()
-        # 'abasin'
-        # 'absolute measurements' = 'абсолютный способ измерения'
-        # 'Bachelor of Vocational Education'
-        # baby fish
-        # sack duty
-        # he has not a sou
-        # habitable room
-        # a posteriori
-        # ashlar line
-        # abatement of tax
-        # 'habitable room'
-        ''' absolute distribution
-            [188481, 2604] 5 [41, 6400]
-            baby fish
-            3 ['bab'] 22 [10950, 33, 67, 65869, 35, 32, 65870, 43, 32]
-            4 ['fish'] 36 [9969, 2, 67, 48823, 10, 129, 48824, 35, 32, 57060, 20, 32, 220871, 2, 66]
-            
-        '''
-        #cur
-        #'absolute measurements'
-        iget = Get('ashlar line')
+        iget = Get(pattern)
         sh.objs.mes(f,iget.run(),True).debug()
         timer.end()
 
@@ -523,7 +526,7 @@ class Glue(Binary):
                     nos   = []
                     chnos = com.get_chunks(chunk,3)
                     for chno in chnos:
-                        nos.append(self.unpack(chno))
+                        nos.append(com.unpack(chno))
                     sh.objs.mes(f,chnos,True).debug()
                     sh.objs.mes(f,nos,True).debug()
                     return chnos
@@ -539,6 +542,19 @@ class Glue(Binary):
 
 
 class Commands:
+    
+    def unpack(self,chno):
+        f = '[MClient] plugins.multitranbin.get.Commands.unpack'
+        if chno:
+            chno += b'\x00'
+            try:
+                return struct.unpack('<L',chno)[0]
+            except Exception as e:
+                mes = _('Third-party module has failed!\n\nDetails: {}')
+                mes = mes.format(e)
+                sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.empty(f)
     
     def accessible(self):
         return len(objs.all_dics()._dics)
@@ -643,7 +659,7 @@ class Stems(Binary):
                     for i in range(len(chunks)):
                         chnos.append(chunks[i][0:3])
                     for chno in chnos:
-                        nos.append(self.unpack(chno))
+                        nos.append(com.unpack(chno))
                     sh.objs.mes(f,chnos,True).debug()
                     sh.objs.mes(f,nos,True).debug()
                     return chnos
@@ -679,6 +695,7 @@ class Get:
     def combos(self):
         f = '[MClient] plugins.multitranbin.get.Get.combos'
         if self.Success:
+            sh.objs.mes(f,self.stemnos,True).debug()
             self.stemnos = list(itertools.product(*self.stemnos))
             sh.objs.mes(f,self.stemnos,True).debug()
             self.stemnos = [b''.join(item) for item in self.stemnos]
@@ -709,8 +726,9 @@ class Get:
         if self.Success:
             words = self.pattern.split(' ')
             for word in words:
+                all_stems = []
                 i = len(word)
-                while i >= 0:
+                while i > 0:
                     stem = word[0:i]
                     mes = _('Try for "{}"').format(stem)
                     sh.objs.mes(f,mes,True).debug()
@@ -719,9 +737,13 @@ class Get:
                     if stem_nos:
                         mes = _('Found stem: "{}"').format(stem)
                         sh.objs.mes(f,mes,True).debug()
-                        self.stemnos.append(stem_nos)
-                        break
+                        all_stems += stem_nos
+                        ''' Stems forms can be both 'absolute' and
+                            'absolut', so we do not break here.
+                        '''
                     i -= 1
+                self.stemnos.append(all_stems)
+            self.stemnos = [item for item in self.stemnos if item]
             sh.objs.mes(f,self.stemnos,True).debug()
         else:
             sh.com.cancel(f)
@@ -783,4 +805,5 @@ if __name__ == '__main__':
         \x01abasin\x02\xe0\xe1\xe0\xe7\xe8\xed\x0f37
         [b'\x01', 'abasin', b'\x02', 'абазин', b'\x0f', '37']
     '''
-    Tests().translate()
+    #Tests().translate_many()
+    Tests().translate('above all')

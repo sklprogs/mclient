@@ -1,4 +1,6 @@
 
+- plugins.multitranbin.get: (?) Find duplicates of the same stem
+  (may have different stem numbers)
 - downtime: make columns narrower
 - EN-RU, лекарственное средство: synonyms are marked with ⇒
 - Expand all dics: урез воды -> гидробиол.
