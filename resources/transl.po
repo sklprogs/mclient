@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-26 00:39+0300\n"
-"PO-Revision-Date: 2020-02-26 00:50+0300\n"
+"POT-Creation-Date: 2020-02-26 21:57+0300\n"
+"PO-Revision-Date: 2020-02-26 21:58+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Poedit-SearchPath-1: skl_shared/src\n"
 
 #: mclient/src/cells.py:141 mclient/src/cells.py:284 mclient/src/cells.py:548
-#: mclient/src/mclient.py:554 mclient/src/plugins/multitranbin/elems.py:84
+#: mclient/src/mclient.py:554 mclient/src/plugins/multitranbin/elems.py:86
 #: mclient/src/plugins/multitranbin/tags.py:88
 #: mclient/src/plugins/multitrancom/elems.py:192
 #: mclient/src/plugins/multitrancom/elems.py:566
@@ -838,8 +838,8 @@ msgstr "Список приоритетных словарей пуст!"
 msgid "Set the column limit to {} ({} in total)"
 msgstr "Задать максимальное число столбцов: {} (всего: {})"
 
-#: mclient/src/mclient.py:2285 mclient/src/plugins/multitranbin/get.py:101
-#: mclient/src/plugins/multitranbin/get.py:121
+#: mclient/src/mclient.py:2285 mclient/src/plugins/multitranbin/get.py:87
+#: mclient/src/plugins/multitranbin/get.py:107
 #: mclient/src/plugins/multitrancom/utils.py:165
 #: mclient/src/plugins/multitrancom/utils.py:263
 #: mclient/src/plugins/multitrancom/utils.py:344
@@ -876,8 +876,8 @@ msgstr "Выбран словарь: \"{}\". Следующего словаря
 msgid "At least one column must be set!"
 msgstr "Необходимо задать хотя бы 1 столбец!"
 
-#: mclient/src/mclient.py:2546 mclient/src/plugins/multitranbin/get.py:522
-#: mclient/src/plugins/multitranbin/get.py:643
+#: mclient/src/mclient.py:2546 mclient/src/plugins/multitranbin/get.py:535
+#: mclient/src/plugins/multitranbin/get.py:669
 #: mclient/src/plugins/multitranbin/tags.py:178
 #: mclient/src/plugins/multitrancom/pairs.py:2698
 #: mclient/src/plugins/multitrancom/pairs.py:2718
@@ -1163,8 +1163,25 @@ msgstr "Русский"
 msgid "English"
 msgstr "Английский"
 
-#: mclient/src/plugins/multitranbin/get.py:36
-#: mclient/src/plugins/multitranbin/get.py:153 skl_shared/src/shared.py:2284
+#: mclient/src/plugins/multitranbin/get.py:35
+msgid "The check has failed!"
+msgstr "Проверка завершилась неуспешно!"
+
+#: mclient/src/plugins/multitranbin/get.py:48
+msgid "Pattern: \"{}\": no matches starting from {}!"
+msgstr "Образец: \"{}\": нет совпадений с позиции {}!"
+
+#: mclient/src/plugins/multitranbin/get.py:78
+#: mclient/src/plugins/multitranbin/get.py:80
+msgid "Part #{} length: {}"
+msgstr "Длина части №{}: {}"
+
+#: mclient/src/plugins/multitranbin/get.py:129
+msgid "Open \"{}\""
+msgstr "Открытие \"{}\""
+
+#: mclient/src/plugins/multitranbin/get.py:139
+#: mclient/src/plugins/multitranbin/get.py:554 skl_shared/src/shared.py:2284
 msgid ""
 "Third-party module has failed!\n"
 "\n"
@@ -1174,55 +1191,42 @@ msgstr ""
 "\n"
 "Детали: {}"
 
-#: mclient/src/plugins/multitranbin/get.py:51
-msgid "The check has failed!"
-msgstr "Проверка завершилась неуспешно!"
-
-#: mclient/src/plugins/multitranbin/get.py:64
-msgid "Pattern: \"{}\": no matches starting from {}!"
-msgstr "Образец: \"{}\": нет совпадений с позиции {}!"
-
-#: mclient/src/plugins/multitranbin/get.py:92
-#: mclient/src/plugins/multitranbin/get.py:94
-msgid "Part #{} length: {}"
-msgstr "Длина части №{}: {}"
-
-#: mclient/src/plugins/multitranbin/get.py:143
-msgid "Open \"{}\""
-msgstr "Открытие \"{}\""
-
-#: mclient/src/plugins/multitranbin/get.py:162
+#: mclient/src/plugins/multitranbin/get.py:148
 msgid "Close \"{}\""
 msgstr "Закрытие \"{}\""
 
-#: mclient/src/plugins/multitranbin/get.py:329
+#: mclient/src/plugins/multitranbin/get.py:249
+msgid "Press any key"
+msgstr "Нажмите любую клавишу"
+
+#: mclient/src/plugins/multitranbin/get.py:342
 #: mclient/src/plugins/stardict/get.py:509
 msgid "{} offline dictionaries are available"
 msgstr "Доступно {} локальных словарей"
 
-#: mclient/src/plugins/multitranbin/get.py:391
-#: mclient/src/plugins/multitranbin/get.py:440
+#: mclient/src/plugins/multitranbin/get.py:404
+#: mclient/src/plugins/multitranbin/get.py:453
 msgid "Invalid value \"{}\" at position {}!"
 msgstr "Неверное значение \"{}\" в позиции {}!"
 
-#: mclient/src/plugins/multitranbin/get.py:706
+#: mclient/src/plugins/multitranbin/get.py:734
 msgid "Try for \"{}\""
 msgstr "Тест \"{}\""
 
-#: mclient/src/plugins/multitranbin/get.py:711
+#: mclient/src/plugins/multitranbin/get.py:739
 msgid "Found stem: \"{}\""
 msgstr "Найдена основа: \"{}\""
 
-#: mclient/src/plugins/multitranbin/get.py:736
+#: mclient/src/plugins/multitranbin/get.py:768
 msgid "Found combinations: {}"
 msgstr "Найденные комбинации: {}"
 
-#: mclient/src/plugins/multitranbin/get.py:738
+#: mclient/src/plugins/multitranbin/get.py:770
 msgid "No stem combinations have been found!"
 msgstr "Комбинаций основ не найдено!"
 
-#: mclient/src/plugins/multitranbin/run.py:67
-#: mclient/src/plugins/multitranbin/run.py:71
+#: mclient/src/plugins/multitranbin/run.py:84
+#: mclient/src/plugins/multitranbin/run.py:88
 #: mclient/src/plugins/stardict/run.py:38
 #: mclient/src/plugins/stardict/run.py:42
 #: mclient/src/plugins/stardict/run.py:70
