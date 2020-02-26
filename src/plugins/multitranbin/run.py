@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import io
 import skl_shared.shared            as sh
 import plugins.multitranbin.get     as gt
 import plugins.multitranbin.tags    as tg
@@ -31,6 +32,22 @@ class Plugin:
         self._blocks = []
         self._text   = ''
         self._html   = ''
+    
+    def get_text(self):
+        if not self._text:
+            iwrite = io.StringIO()
+            for block in self._blocks:
+                if block._text \
+                and block._type in ('dic','wform','term','comment'):
+                    iwrite.write(block._text)
+            self._text = iwrite.getvalue()
+            iwrite.close()
+        return self._text
+    
+    def get_html(self):
+        #TODO: elaborate
+        self._html = self.get_text()
+        return self._html
     
     def lang1(self):
         return gt.LANG1
@@ -83,13 +100,12 @@ class Plugin:
         return gt.Suggest(search).run()
     
     def request(self,search='',url=''):
-        iget       = gt.Get(search)
-        chunks     = iget.run()
-        self._html = iget._html
-        #TODO: implement
-        self._text  = ''
+        iget   = gt.Get(search)
+        chunks = iget.run()
         if not chunks:
             chunks = []
+        if not self._blocks:
+            self._blocks = []
         for chunk in chunks:
             blocks = tg.Tags (chunk   = chunk
                              ,Debug   = self.Debug
@@ -98,9 +114,6 @@ class Plugin:
                              ,MaxRows = self.MaxRows
                              ).run()
             if blocks:
-                #FIX: Where self._blocks is assigned to None?
-                if not self._blocks:
-                    self._blocks = []
                 self._blocks += blocks
         self._blocks = el.Elems (blocks  = self._blocks
                                 ,iabbr   = self.iabbr
@@ -111,4 +124,6 @@ class Plugin:
                                 ,MaxRow  = self.MaxRow
                                 ,MaxRows = self.MaxRows
                                 ).run()
+        self.get_text()
+        self.get_html()
         return self._blocks

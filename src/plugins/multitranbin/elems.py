@@ -73,6 +73,7 @@ class Elems:
         if self.Success:
             # Do some cleanup
             self.strip()
+            self.selectables()
             self.debug()
             return self._blocks
         else:
