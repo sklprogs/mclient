@@ -305,6 +305,7 @@ class Elems:
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_set_form'
         patterns = ['только в заданном порядке \d+'
                    ,'только заданная форма слов \d+'
+                   ,'только в заданной форме \d+'
                    ,'exact matches only \d+'
                    ,'in specified order only \d+'
                    ]

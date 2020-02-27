@@ -240,7 +240,7 @@ class SaveArticle:
                                 )
                     ,action   = self.select
                     )
-        self.gui.parent.btn_cls.action = self.select
+        self.gui.parent.btn_sav.action = self.select
     
     #fix an extension for Windows
     def fix_ext(self,ext='.htm'):
@@ -248,8 +248,9 @@ class SaveArticle:
             self.file += ext
 
     def select(self,event=None):
+        f = '[MClient] mclient.SaveArticle.select'
+        self.gui.parent.save()
         opt = self.gui.parent.get()
-        self.gui.close()
         if opt:
             if opt == _('Save the current view as a web-page (*.htm)'):
                 self.view_as_html()
@@ -261,6 +262,9 @@ class SaveArticle:
                 self.copy_raw()
             elif opt == _('Copy the text of the article to clipboard'):
                 self.copy_txt()
+        else:
+            mes = _('Operation has been canceled by the user.')
+            sh.objs.mes(f,mes,True).info()
 
     def view_as_html(self):
         f = '[MClient] mclient.SaveArticle.view_as_html'
