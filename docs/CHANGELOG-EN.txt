@@ -1,5 +1,9 @@
 
 
+6.2.2
+* Fix an article saving bug
+* Make consistent with the latest changes at multitran.com
+
 6.2.1
 * Fix URLs for "only individual words found" section
 * Delete "phantom" parts of a word form
