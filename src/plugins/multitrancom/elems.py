@@ -306,6 +306,7 @@ class Elems:
         patterns = ['только в заданном порядке \d+'
                    ,'только заданная форма слов \d+'
                    ,'только в заданной форме \d+'
+                   ,'только в указанном порядке \d+'
                    ,'exact matches only \d+'
                    ,'in specified order only \d+'
                    ]

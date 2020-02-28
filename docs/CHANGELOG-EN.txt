@@ -1,5 +1,8 @@
 
 
+6.2.3
+* Delete "in specified order only" block
+
 6.2.2
 * Fix an article saving bug
 * Make consistent with the latest changes at multitran.com
