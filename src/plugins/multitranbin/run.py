@@ -67,13 +67,11 @@ class Plugin:
     def get_url(self,search=''):
         return ''
     
-    # This is needed only for compliance with a general method
     def set_lang1(self,lang1=''):
-        pass
+        gt.LANG1 = lang1
     
-    # This is needed only for compliance with a general method
     def set_lang2(self,lang2=''):
-        pass
+        gt.LANG2 = lang2
     
     # This is needed only for compliance with a general method
     def set_timeout(self,timeout=0):
@@ -104,8 +102,7 @@ class Plugin:
         chunks = iget.run()
         if not chunks:
             chunks = []
-        if not self._blocks:
-            self._blocks = []
+        self._blocks = []
         for chunk in chunks:
             blocks = tg.Tags (chunk   = chunk
                              ,Debug   = self.Debug
