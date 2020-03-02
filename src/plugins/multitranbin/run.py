@@ -28,10 +28,30 @@ class Plugin:
         self.MaxRow  = MaxRow
         self.MaxRows = MaxRows
     
+    def _adapt_lang(self,lang):
+        f = '[MClient] plugins.multitranbin.run.Plugin._adapt_lang'
+        if lang:
+            if lang in self.langloc:
+                ind = self.langloc.index(lang)
+                return self.langint[ind]
+            elif lang in self.langint:
+                ind = self.langint.index(lang)
+                return self.langloc[ind]
+            else:
+                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+                modes = self.langloc + self.langint
+                mes = mes.format(lang,';'.join(modes))
+                sh.objs.mes(f,mes).error()
+        else:
+            sh.com.empty(f)
+        return 'English'
+    
     def values(self):
         self._blocks = []
         self._text   = ''
         self._html   = ''
+        self.langloc = (_('English'),_('Russian'))
+        self.langint = ('English','Russian')
     
     def get_text(self):
         if not self._text:
@@ -53,10 +73,10 @@ class Plugin:
         return self._html
     
     def lang1(self):
-        return gt.LANG1
+        return self._adapt_lang(gt.LANG1)
     
     def lang2(self):
-        return gt.LANG2
+        return self._adapt_lang(gt.LANG2)
     
     # This is needed only for compliance with a general method
     def server(self):
@@ -71,22 +91,24 @@ class Plugin:
         return ''
     
     def set_lang1(self,lang1=''):
-        gt.LANG1 = lang1
+        gt.LANG1 = self._adapt_lang(lang1)
+        gt.objs.files().reset()
     
     def set_lang2(self,lang2=''):
-        gt.LANG2 = lang2
+        gt.LANG2 = self._adapt_lang(lang2)
+        gt.objs.files().reset()
     
     # This is needed only for compliance with a general method
     def set_timeout(self,timeout=0):
         pass
     
     def langs1(self,lang2=''):
-        #TODO: implement
-        return(_('Any'),'English','Russian')
+        #TODO: elaborate
+        return(_('Any'),_('English'),_('Russian'))
     
     def langs2(self,lang1=''):
-        #TODO: implement
-        return(_('Any'),'English','Russian')
+        #TODO: elaborate
+        return(_('Any'),_('English'),_('Russian'))
     
     def combined(self):
         ''' Whether or not the plugin is actually a wrapper over other
