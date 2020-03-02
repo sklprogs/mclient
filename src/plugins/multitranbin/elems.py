@@ -65,6 +65,25 @@ class Elems:
             sh.com.empty(f)
             self._blocks = []
     
+    def expand_dica(self):
+        f = '[MClient] plugins.multitranbin.elems.Elems.expand_dica'
+        if self.abbr:
+            if self.abbr.Success:
+                for block in self._blocks:
+                    lst = block._dica.split(',')
+                    for i in range(len(lst)):
+                        lst[i] = lst[i].strip()
+                        try:
+                            ind = self.abbr.orig.index(lst[i])
+                            lst[i] = self.abbr.transl[ind]
+                        except ValueError:
+                            pass
+                    block._dicaf = ', '.join(lst)
+            else:
+                sh.com.cancel(f)
+        else:
+            sh.com.empty(f)
+    
     def strip(self):
         for block in self._blocks:
             block._text = block._text.strip()
@@ -74,6 +93,25 @@ class Elems:
         if self.Success:
             # Do some cleanup
             self.strip()
+            '''
+            # Reassign types
+            self.transc()
+            self.users()
+            self.phrases()
+            self.corrections()
+            self.definitions()
+            '''
+            # Prepare contents
+            self.add_brackets()
+            self.user_brackets()
+            # Prepare for cells
+            self.fill()
+            self.remove_fixed()
+            self.insert_fixed()
+            self.expand_dica()
+            # Extra spaces in the beginning may cause sorting problems
+            self.add_space()
+            #TODO: expand parts of speech (n -> noun, etc.)
             self.selectables()
             self.debug()
         else:
@@ -251,3 +289,32 @@ class Elems:
                 block._select = 1
             else:
                 block._select = 0
+
+
+if __name__ == '__main__':
+    f = '[MClient] plugins.multitranbin.elems.__main__'
+    search = 'abasin'
+    import get  as gt
+    import tags as tg
+    iget   = gt.Get(search)
+    chunks = iget.run()
+    if not chunks:
+        chunks = []
+    blocks = []
+    for chunk in chunks:
+        add = tg.Tags (chunk = chunk
+                      ,Debug = True
+                      ).run()
+        if add:
+            blocks += add
+    blocks = Elems (blocks = blocks
+                   ,iabbr  = None
+                   ,langs  = gt.objs.all_dics().langs()
+                   ,search = search
+                   ,Debug  = True
+                   ).run()
+    for i in range(len(blocks)):
+        mes = '{}: {}: "{}"'.format (i,blocks[i]._type
+                                    ,blocks[i]._text
+                                    )
+        print(mes)

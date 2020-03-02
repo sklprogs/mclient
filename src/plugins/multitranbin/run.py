@@ -38,7 +38,10 @@ class Plugin:
             iwrite = io.StringIO()
             for block in self._blocks:
                 if block._text \
-                and block._type in ('dic','wform','term','comment'):
+                and block._type in ('dic','wform','term'
+                                   ,'comment','correction'
+                                   ,'user'
+                                   ):
                     iwrite.write(block._text)
             self._text = iwrite.getvalue()
             iwrite.close()
