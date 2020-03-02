@@ -82,11 +82,11 @@ class Plugin:
     
     def langs1(self,lang2=''):
         #TODO: implement
-        return(_('Any'),)
+        return(_('Any'),'English','Russian')
     
     def langs2(self,lang1=''):
         #TODO: implement
-        return(_('Any'),)
+        return(_('Any'),'English','Russian')
     
     def combined(self):
         ''' Whether or not the plugin is actually a wrapper over other

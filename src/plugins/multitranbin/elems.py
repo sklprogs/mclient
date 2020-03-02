@@ -293,7 +293,7 @@ class Elems:
 
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.elems.__main__'
-    search = 'abasin'
+    search = 'phrenosin'
     import get  as gt
     import tags as tg
     iget   = gt.Get(search)

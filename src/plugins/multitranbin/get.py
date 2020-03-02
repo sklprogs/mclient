@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import os
 import mmap
 import struct
 import codecs
@@ -8,14 +9,219 @@ import itertools
 import skl_shared.shared as sh
 from skl_shared.localize import _
 
+# Do not localize language names here
 ENCODING = 'windows-1251'
-LANG1    = _('Russian')
-LANG2    = _('English')
+LANG1    = 'English'
+LANG2    = 'Russian'
 PATH     = ''
-#TODO: elaborate
-STEM1    = '/home/pete/.wine/drive_c/mt_demo/mt/network/english/stem.eng'
-DICTD1   = '/home/pete/.wine/drive_c/mt_demo/mt/network/eng_rus/dict.erd'
-DICTT    = '/home/pete/.wine/drive_c/mt_demo/mt/network/eng_rus/dict.ert'
+
+
+
+class Walker:
+    def __init__(self):
+        self.values()
+        if PATH:
+            self.reset()
+    
+    def get_typein1(self):
+        f = '[MClient] plugins.multitranbin.get.Walker.get_typein1'
+        if self.Success:
+            if not self.typein1:
+                fname = 'typein.' + self.lang11 + self.lang21
+                file  = self.get_file(fname)
+                if file:
+                    self.typein1 = file
+                    sh.objs.mes(f,self.typein1,True).debug()
+                else:
+                    self.Success = False
+                    mes = _('File "{}" does not exist!').format(fname)
+                    sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+        return self.typein1
+
+    def get_typein2(self):
+        f = '[MClient] plugins.multitranbin.get.Walker.get_typein2'
+        if self.Success:
+            if not self.typein2:
+                fname = 'typein.' + self.lang21 + self.lang11
+                file  = self.get_file(fname)
+                if file:
+                    self.typein2 = file
+                    sh.objs.mes(f,self.typein2,True).debug()
+                else:
+                    self.Success = False
+                    mes = _('File "{}" does not exist!').format(fname)
+                    sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+        return self.typein2
+    
+    def get_files(self):
+        f = '[MClient] plugins.multitranbin.get.Walker.get_files'
+        if self.Success:
+            return [self.get_typein1(),self.get_typein2()
+                   ,self.get_stems1(),self.get_stems2()
+                   ,self.get_glue1(),self.get_glue2()
+                   ,self.get_article()
+                   ]
+        else:
+            sh.com.cancel(f)
+            return []
+    
+    def get_article(self):
+        f = '[MClient] plugins.multitranbin.get.Walker.get_article'
+        if self.Success:
+            if not self.article:
+                fname = 'dict.' + self.lang11 + self.lang21 + 't'
+                if not fname in self.fnames:
+                    fname = 'dict.' + self.lang21 + self.lang11 + 't'
+                file = self.get_file(fname)
+                if file:
+                    self.article = file
+                    sh.objs.mes(f,self.article,True).debug()
+                else:
+                    self.Success = False
+                    mes = _('File "{}" does not exist!').format(fname)
+                    sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+        return self.article
+    
+    def get_glue1(self):
+        f = '[MClient] plugins.multitranbin.get.Walker.get_glue1'
+        if self.Success:
+            if not self.glue1:
+                fname = 'dict.' + self.lang11 + self.lang21 + 'd'
+                file  = self.get_file(fname)
+                if file:
+                    self.glue1 = file
+                    sh.objs.mes(f,self.glue1,True).debug()
+                else:
+                    self.Success = False
+                    mes = _('File "{}" does not exist!').format(fname)
+                    sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+        return self.glue1
+    
+    def get_glue2(self):
+        f = '[MClient] plugins.multitranbin.get.Walker.get_glue2'
+        if self.Success:
+            if not self.glue2:
+                fname = 'dict.' + self.lang21 + self.lang11 + 'd'
+                file  = self.get_file(fname)
+                if file:
+                    self.glue2 = file
+                    sh.objs.mes(f,self.glue2,True).debug()
+                else:
+                    self.Success = False
+                    mes = _('File "{}" does not exist!').format(fname)
+                    sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+        return self.glue2
+    
+    def reset(self):
+        self.values()
+        self.check()
+        self.set_langs()
+        self.walk()
+    
+    def set_langs(self):
+        f = '[MClient] plugins.multitranbin.get.Walker.set_langs'
+        if self.Success:
+            lang1       = LANG1.lower()
+            lang2       = LANG2.lower()
+            self.lang11 = lang1[0:1]
+            self.lang21 = lang2[0:1]
+            self.lang13 = lang1[0:3]
+            self.lang23 = lang2[0:3]
+        else:
+            sh.com.cancel(f)
+    
+    def check(self):
+        f = '[MClient] plugins.multitranbin.get.Walker.check'
+        if PATH and LANG1 and LANG2:
+            self.idir = sh.Directory(PATH)
+            self.Success = self.idir.Success
+        else:
+            self.Success = False
+            sh.com.empty(f)
+    
+    def get_stems1(self):
+        f = '[MClient] plugins.multitranbin.get.Walker.get_stems1'
+        if self.Success:
+            if not self.stems1:
+                fname = 'stem.' + self.lang13
+                file  = self.get_file(fname)
+                if file:
+                    self.stems1 = file
+                else:
+                    self.Success = False
+                    mes = _('File "{}" does not exist!').format(fname)
+                    sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+        return self.stems1
+    
+    def get_stems2(self):
+        f = '[MClient] plugins.multitranbin.get.Walker.get_stems2'
+        if self.Success:
+            if not self.stems2:
+                fname = 'stem.' + self.lang23
+                file  = self.get_file(fname)
+                if file:
+                    self.stems2 = file
+                else:
+                    self.Success = False
+                    mes = _('File "{}" does not exist!').format(fname)
+                    sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+        return self.stems2
+    
+    def get_file(self,fname):
+        f = '[MClient] plugins.multitranbin.get.Walker.get_file'
+        if self.Success:
+            try:
+                ind = self.fnames.index(fname)
+                return self.files[ind]
+            except (ValueError,IndexError):
+                mes = _('Wrong input data!')
+                sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+    
+    def values(self):
+        self.Success = False
+        self.idir    = None
+        self.files   = []
+        self.fnames  = []
+        self.lang11  = ''
+        self.lang21  = ''
+        self.lang13  = ''
+        self.lang23  = ''
+        self.typein1 = ''
+        self.typein2 = ''
+        self.stems1  = ''
+        self.stems2  = ''
+        self.glue1   = ''
+        self.glue2   = ''
+        self.article = ''
+    
+    def walk(self):
+        f = '[MClient] plugins.multitranbin.get.Walker.walk'
+        if self.Success:
+            for dirpath, dirnames, filenames in os.walk(self.idir.dir):
+                for filename in filenames:
+                    self.fnames.append(filename.lower())
+                    file = os.path.join(dirpath,filename)
+                    self.files.append(file)
+        else:
+            sh.com.cancel(f)
+        return self.files
+
 
 
 class Binary:
@@ -154,6 +360,35 @@ class Binary:
 
 
 
+class TypeIn(Binary):
+    # Parse files like 'typein.er'
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def parse(self,chunk):
+        f = '[MClient] plugins.multitranbin.get.TypeIn.parse'
+        if self.Success:
+            if chunk:
+                pass
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def search(self,coded):
+        # Do not fail the whole class on a failed search
+        f = '[MClient] plugins.multitranbin.get.TypeIn.search'
+        if self.Success:
+            if coded:
+                chunk = self.get_part2(coded)
+                return self.parse(chunk)
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+
+
+
 class Tests:
     
     def translate_stem(self):
@@ -237,6 +472,8 @@ class Tests:
                           ,'acceleration spectral density'
                           ,'A & E'
                           ,'Abelian equation'
+                          ,'deaf as an adder'
+                          ,'курс занятий для студентов последнего курса'
                           ]
         '''
         patterns = ['he has not a sou'
@@ -253,7 +490,7 @@ class Tests:
         timer = sh.Timer(f)
         timer.start()
         iget = Get(pattern)
-        sh.objs.mes(f,iget.run(),True).debug()
+        sh.objs.mes(f,iget.run()).debug()
         timer.end()
 
 
@@ -605,32 +842,108 @@ class Commands:
                ]
 
 
+class Files:
+    
+    def __init__(self):
+        self.reset()
+    
+    def get_typein1(self):
+        if self.typein1 is None:
+            self.typein1 = TypeIn(self.iwalker.get_typein1())
+        return self.typein1
+    
+    def get_typein2(self):
+        if self.typein2 is None:
+            self.typein2 = TypeIn(self.iwalker.get_typein2())
+        return self.typein2
+    
+    def get_stems1(self):
+        if self.stems1 is None:
+            self.stems1 = Stems(self.iwalker.get_stems1())
+        return self.stems1
+    
+    def get_stems2(self):
+        if self.stems2 is None:
+            self.stems2 = Stems(self.iwalker.get_stems2())
+        return self.stems2
+    
+    def get_glue1(self):
+        if self.glue1 is None:
+            self.glue1 = Glue(self.iwalker.get_glue1())
+        return self.glue1
+    
+    def get_glue2(self):
+        if self.glue2 is None:
+            self.glue2 = Glue(self.iwalker.get_glue2())
+        return self.glue2
+    
+    def get_article(self):
+        if self.article is None:
+            self.article = Articles(self.iwalker.get_article())
+        return self.article
+    
+    def open(self):
+        f = '[MClient] plugins.multitranbin.get.Files.open'
+        if self.Success:
+            self.get_typein1()
+            self.get_typein2()
+            self.get_stems1()
+            self.get_stems2()
+            self.get_glue1()
+            self.get_glue2()
+            self.get_article()
+        else:
+            sh.com.cancel(f)
+    
+    def close(self):
+        f = '[MClient] plugins.multitranbin.get.Files.close'
+        if self.Success:
+            self.get_typein1().close()
+            self.get_typein2().close()
+            self.get_stems1().close()
+            self.get_stems2().close()
+            self.get_glue1().close()
+            self.get_glue2().close()
+            self.get_article().close()
+        else:
+            sh.com.cancel(f)
+    
+    def reset(self):
+        self.values()
+        self.iwalker = Walker()
+        self.Success = self.iwalker.Success
+    
+    def values(self):
+        self.iwalker = None
+        self.Success = False
+        self.typein1 = None
+        self.typein2 = None
+        self.stems1  = None
+        self.stems2  = None
+        self.glue1   = None
+        self.glue2   = None
+        self.article = None
+
+
 
 class Objects:
     
     def __init__(self):
-        self._stems = self._glue = self._articles = self._all_dics \
-                    = None
+        self.reset()
+    
+    def reset(self):
+        self._all_dics = self._files = None
+    
+    def files(self):
+        if self._files is None:
+            self._files = Files()
+            self._files.open()
+        return self._files
     
     def all_dics(self):
         if self._all_dics is None:
             self._all_dics = AllDics()
         return self._all_dics
-    
-    def articles(self):
-        if self._articles is None:
-            self._articles = Articles(DICTT)
-        return self._articles
-    
-    def glue(self):
-        if self._glue is None:
-            self._glue = Glue(DICTD1)
-        return self._glue
-    
-    def stems(self):
-        if self._stems is None:
-            self._stems = Stems(STEM1)
-        return self._stems
 
 
 
@@ -734,7 +1047,7 @@ class Get:
                     mes = _('Try for "{}"').format(stem)
                     sh.objs.mes(f,mes,True).debug()
                     coded = bytes(stem,ENCODING,'ignore')
-                    stem_nos = objs.stems().search(coded)
+                    stem_nos = objs.files().get_stems1().search(coded)
                     if stem_nos:
                         mes = _('Found stem: "{}"').format(stem)
                         sh.objs.mes(f,mes,True).debug()
@@ -761,7 +1074,7 @@ class Get:
         if self.Success:
             art_nos = []
             for combo in self.stemnos:
-                art_no = objs.glue().search(combo)
+                art_no = objs.files().get_glue1().search(combo)
                 if art_no:
                     art_nos += art_no
             if art_nos:
@@ -771,8 +1084,9 @@ class Get:
             sh.objs.mes(f,mes,True).info()
             articles = []
             for art_no in art_nos:
-                articles.append(objs.articles().search(art_no))
-            articles = [article for article in articles if article]
+                article = objs.files().get_article().search(art_no)
+                if article:
+                    articles.append(article)
             return articles
         else:
             sh.com.cancel(f)
@@ -780,6 +1094,7 @@ class Get:
     def run(self):
         self.check()
         self.strip()
+        objs.files().reset()
         self.get_stems()
         self.combos()
         return self.search()
@@ -807,4 +1122,12 @@ if __name__ == '__main__':
         [b'\x01', 'abasin', b'\x02', 'абазин', b'\x0f', '37']
     '''
     #Tests().translate_many()
-    Tests().translate('above all')
+    #'phrenosin'
+    #Tests().translate('work')
+    PATH = '/home/pete/.config/mclient/dics'
+    Tests().translate('abasin')
+    LANG1 = 'Russian'
+    LANG2 = 'English'
+    objs.files().reset()
+    Tests().translate('курица для варки')
+    objs.files().close()
