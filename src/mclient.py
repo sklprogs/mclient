@@ -552,6 +552,20 @@ class WebFrame:
         self.bindings()
         self.reset_opt()
     
+    def auto_swap(self):
+        f = '[MClient] mclient.WebFrame.auto_swap'
+        lang1 = self.gui.opt_lg1.choice
+        lang2 = self.gui.opt_lg2.choice
+        if sh.Text(lg.objs.request()._search).has_cyrillic():
+            if lang2 in (_('Russian'),'Russian'):
+                mes = '{}-{} -> {}-{}'.format(lang1,lang2,lang2,lang1)
+                sh.objs.mes(f,mes,True).info()
+                self.swap_langs()
+        elif lang1 in (_('Russian'),'Russian'):
+            mes = '{}-{} -> {}-{}'.format(lang1,lang2,lang2,lang1)
+            sh.objs.mes(f,mes,True).info()
+            self.swap_langs()
+    
     def final_debug(self,event=None):
         f = '[MClient] mclient.WebFrame.final_debug'
         if lg.objs.plugins().Debug:
@@ -1738,6 +1752,7 @@ class WebFrame:
         if self.control_length():
             self.update_lang1()
             self.update_lang2()
+            self.auto_swap()
             self.get_url()
             mes = '"{}"'.format(lg.objs._request._search)
             sh.objs.mes(f,mes,True).debug()

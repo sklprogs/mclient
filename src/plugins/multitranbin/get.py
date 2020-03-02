@@ -473,6 +473,7 @@ class Tests:
                           ,'A & E'
                           ,'Abelian equation'
                           ,'deaf as an adder'
+                          ,'eristic'
                           ,'курс занятий для студентов последнего курса'
                           ]
         '''
@@ -1129,5 +1130,6 @@ if __name__ == '__main__':
     LANG1 = 'Russian'
     LANG2 = 'English'
     objs.files().reset()
-    Tests().translate('курица для варки')
+    # 'factorage', 'sack' # 2 terms
+    Tests().translate('уборка') # has a comment
     objs.files().close()
