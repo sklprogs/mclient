@@ -16,6 +16,208 @@ LANG2    = 'Russian'
 PATH     = ''
 
 
+class Binary:
+    
+    def __init__(self,file):
+        self.bsize   = 0
+        self.file    = file
+        self.Success = sh.File(self.file).Success
+        self.open()
+    
+    def get_block_size(self):
+        f = '[MClient] plugins.multitranbin.get.Binary.get_block_size'
+        if self.Success:
+            if not self.bsize:
+                read = self.read(28,30)
+                if read:
+                    try:
+                        self.bsize = struct.unpack('<h',read)[0]
+                    except Exception as e:
+                        mes = _('Third-party module has failed!\n\nDetails: {}')
+                        mes = mes.format(e)
+                        sh.objs.mes(f,mes,True).warning()
+                    mes = sh.com.figure_commas(self.bsize)
+                    sh.objs.mes(f,mes,True).debug()
+                else:
+                    self.Success = False
+                    sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+        return self.bsize
+    
+    def check_lengths(self,pattern,lengths):
+        f = '[MClient] plugins.multitranbin.get.Binary.check_lengths'
+        if self.Success:
+            if lengths:
+                if lengths[0] == len(pattern) and lengths[1] > 0:
+                    return True
+                else:
+                    mes = _('The check has failed!')
+                    sh.objs.mes(f,mes,True).debug()
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def get_part2(self,pattern,start=0):
+        f = '[MClient] plugins.multitranbin.get.Binary.get_part2'
+        if self.Success:
+            pos11 = self.find(pattern,start)
+            if pos11 is None:
+                sub = com.get_string(pattern)
+                mes = _('Pattern: "{}": no matches starting from {}!')
+                mes = mes.format(sub,sh.com.figure_commas(start))
+                sh.objs.mes(f,mes,True).info()
+            else:
+                lengths = self.get_lengths(pos11)
+                if self.check_lengths(pattern,lengths):
+                    pos21 = pos11 + lengths[0]
+                    pos22 = pos21 + lengths[1]
+                    return self.read(pos21,pos22)
+                else:
+                    return self.get_part2(pattern,pos11+1)
+        else:
+            sh.com.cancel(f)
+    
+    def get_lengths(self,index_):
+        f = '[MClient] plugins.multitranbin.get.Binary.get_lengths'
+        if self.Success:
+            ''' There are 'M' pages at the beginning, so an index of
+                the 1st part will always be positive.
+            '''
+            if index_ is None:
+                sh.com.empty(f)
+            elif index_ > 2:
+                pos1 = index_ - 2
+                pos2 = index_ - 1
+                len1 = self.read(pos1,pos1+1)
+                len2 = self.read(pos2,pos2+1)
+                if len1 and len2:
+                    len1 = struct.unpack('<b',len1)[0]
+                    len2 = struct.unpack('<b',len2)[0]
+                    mes = _('Part #{} length: {}').format(1,len1)
+                    sh.objs.mes(f,mes,True).debug()
+                    mes = _('Part #{} length: {}').format(2,len2)
+                    sh.objs.mes(f,mes,True).debug()
+                    return(len1,len2)
+                else:
+                    sh.com.empty(f)
+            else:
+                sub = '{} > 2'.format(index_)
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+    
+    def read(self,start,end):
+        f = '[MClient] plugins.multitranbin.get.Binary.read'
+        if self.Success:
+            if start is None or end is None:
+                sh.com.empty(f)
+            elif 0 <= start < end:
+                self.imap.seek(start)
+                chunk = self.imap.read(end-start)
+                mes = '"{}"'.format(com.get_string(chunk))
+                sh.objs.mes(f,mes,True).debug()
+                return chunk
+            else:
+                self.Success = False
+                sub = '0 <= {} < {}'.format(start,end)
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.mes(f,mes).warning()
+        else:
+            sh.com.cancel(f)
+    
+    def find(self,pattern,start=0):
+        f = '[MClient] plugins.multitranbin.get.Binary.find'
+        if self.Success:
+            if pattern:
+                self.imap.seek(start)
+                result = self.imap.find(pattern)
+                if result >= 0:
+                    return result
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def open(self):
+        f = '[MClient] plugins.multitranbin.get.Binary.open'
+        if self.Success:
+            mes = _('Open "{}"').format(self.file)
+            sh.objs.mes(f,mes,True).info()
+            self.bin = open(self.file,'rb')
+            # 'mmap' fails upon opening an empty file!
+            try:
+                self.imap = mmap.mmap (self.bin.fileno(),0
+                                      ,prot=mmap.PROT_READ
+                                      )
+            except Exception as e:
+                self.Success = False
+                mes = _('Third-party module has failed!\n\nDetails: {}')
+                mes = mes.format(e)
+                sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+    
+    def close(self):
+        f = '[MClient] plugins.multitranbin.get.Binary.close'
+        if self.Success:
+            mes = _('Close "{}"').format(self.file)
+            sh.objs.mes(f,mes,True).info()
+            self.imap.flush()
+            self.bin.close()
+        else:
+            sh.com.cancel(f)
+
+
+
+class UPage(Binary):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def get_pos(self):
+        #TODO: Get positions of all U pages
+        f = '[MClient] plugins.multitranbin.get.UPage.get_pos'
+        if self.Success:
+            start = self.get_block_size()
+            if start:
+                read = self.read(start+1,start+3)
+                if read:
+                    start += 3
+                    page_size = 0
+                    try:
+                        page_size = struct.unpack('<h',read)[0]
+                    except Exception as e:
+                        mes = _('Third-party module has failed!\n\nDetails: {}')
+                        mes = mes.format(e)
+                        sh.objs.mes(f,mes,True).warning()
+                    if page_size:
+                        end = start + page_size
+                        mes = '[{} : {}]'
+                        mes = mes.format (sh.com.figure_commas(start)
+                                         ,sh.com.figure_commas(end)
+                                         )
+                        sh.objs.mes(f,mes,True).debug()
+                        return (start,end)
+                    else:
+                        sh.com.empty(f)
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def parse(self,chunk):
+        f = '[MClient] plugins.multitranbin.get.UPage.parse'
+        if self.Success:
+            pass
+        else:
+            sh.com.cancel(f)
+
+
 
 class Walker:
     def __init__(self):
@@ -221,164 +423,6 @@ class Walker:
         else:
             sh.com.cancel(f)
         return self.files
-
-
-
-class Binary:
-    
-    def __init__(self,file):
-        self.bsize   = 0
-        self.file    = file
-        self.Success = sh.File(self.file).Success
-        self.open()
-    
-    def get_block_size(self):
-        f = '[MClient] plugins.multitranbin.get.Binary.get_block_size'
-        if self.Success:
-            if not self.bsize:
-                read = self.read(28,30)
-                if read:
-                    try:
-                        self.bsize = struct.unpack('<h',read)[0]
-                    except Exception as e:
-                        mes = _('Third-party module has failed!\n\nDetails: {}')
-                        mes = mes.format(e)
-                        sh.objs.mes(f,mes,True).warning()
-                    mes = sh.com.figure_commas(self.bsize)
-                    sh.objs.mes(f,mes,True).debug()
-                else:
-                    self.Success = False
-                    sh.com.empty(f)
-        else:
-            sh.com.cancel(f)
-        return self.bsize
-    
-    def check_lengths(self,pattern,lengths):
-        f = '[MClient] plugins.multitranbin.get.Binary.check_lengths'
-        if self.Success:
-            if lengths:
-                if lengths[0] == len(pattern) and lengths[1] > 0:
-                    return True
-                else:
-                    mes = _('The check has failed!')
-                    sh.objs.mes(f,mes,True).debug()
-            else:
-                sh.com.empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def get_part2(self,pattern,start=0):
-        f = '[MClient] plugins.multitranbin.get.Binary.get_part2'
-        if self.Success:
-            pos11 = self.find(pattern,start)
-            if pos11 is None:
-                sub = com.get_string(pattern)
-                mes = _('Pattern: "{}": no matches starting from {}!')
-                mes = mes.format(sub,sh.com.figure_commas(start))
-                sh.objs.mes(f,mes,True).info()
-            else:
-                lengths = self.get_lengths(pos11)
-                if self.check_lengths(pattern,lengths):
-                    pos21 = pos11 + lengths[0]
-                    pos22 = pos21 + lengths[1]
-                    return self.read(pos21,pos22)
-                else:
-                    return self.get_part2(pattern,pos11+1)
-        else:
-            sh.com.cancel(f)
-    
-    def get_lengths(self,index_):
-        f = '[MClient] plugins.multitranbin.get.Binary.get_lengths'
-        if self.Success:
-            ''' There are 'M' pages at the beginning, so an index of
-                the 1st part will always be positive.
-            '''
-            if index_ is None:
-                sh.com.empty(f)
-            elif index_ > 2:
-                pos1 = index_ - 2
-                pos2 = index_ - 1
-                len1 = self.read(pos1,pos1+1)
-                len2 = self.read(pos2,pos2+1)
-                if len1 and len2:
-                    len1 = struct.unpack('<b',len1)[0]
-                    len2 = struct.unpack('<b',len2)[0]
-                    mes = _('Part #{} length: {}').format(1,len1)
-                    sh.objs.mes(f,mes,True).debug()
-                    mes = _('Part #{} length: {}').format(2,len2)
-                    sh.objs.mes(f,mes,True).debug()
-                    return(len1,len2)
-                else:
-                    sh.com.empty(f)
-            else:
-                sub = '{} > 2'.format(index_)
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                sh.objs.mes(f,mes,True).warning()
-        else:
-            sh.com.cancel(f)
-    
-    def read(self,start,end):
-        f = '[MClient] plugins.multitranbin.get.Binary.read'
-        if self.Success:
-            if start is None or end is None:
-                sh.com.empty(f)
-            elif 0 <= start < end:
-                self.imap.seek(start)
-                chunk = self.imap.read(end-start)
-                mes = '"{}"'.format(com.get_string(chunk))
-                sh.objs.mes(f,mes,True).debug()
-                return chunk
-            else:
-                self.Success = False
-                sub = '0 <= {} < {}'.format(start,end)
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                sh.objs.mes(f,mes).warning()
-        else:
-            sh.com.cancel(f)
-    
-    def find(self,pattern,start=0):
-        f = '[MClient] plugins.multitranbin.get.Binary.find'
-        if self.Success:
-            if pattern:
-                self.imap.seek(start)
-                result = self.imap.find(pattern)
-                if result >= 0:
-                    return result
-            else:
-                sh.com.empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def open(self):
-        f = '[MClient] plugins.multitranbin.get.Binary.open'
-        if self.Success:
-            mes = _('Open "{}"').format(self.file)
-            sh.objs.mes(f,mes,True).info()
-            self.bin = open(self.file,'rb')
-            # 'mmap' fails upon opening an empty file!
-            try:
-                self.imap = mmap.mmap (self.bin.fileno(),0
-                                      ,prot=mmap.PROT_READ
-                                      )
-            except Exception as e:
-                self.Success = False
-                mes = _('Third-party module has failed!\n\nDetails: {}')
-                mes = mes.format(e)
-                sh.objs.mes(f,mes,True).warning()
-        else:
-            sh.com.cancel(f)
-    
-    def close(self):
-        f = '[MClient] plugins.multitranbin.get.Binary.close'
-        if self.Success:
-            mes = _('Close "{}"').format(self.file)
-            sh.objs.mes(f,mes,True).info()
-            self.imap.flush()
-            self.bin.close()
-        else:
-            sh.com.cancel(f)
 
 
 
@@ -1142,5 +1186,11 @@ if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.get.__main__'
     #Tests().translate('removal')
     PATH = '/home/pete/.config/mclient/dics'
-    objs.files().get_stems1().get_block_size()
+    iupage = UPage(objs.files().iwalker.get_stems1())
+    poses = iupage.get_pos()
+    if poses:
+        chunk = iupage.read(poses[0],poses[1])
+        sh.com.fast_debug(com.get_string(chunk))
+    else:
+        sh.com.empty(f)
     objs.files().close()
