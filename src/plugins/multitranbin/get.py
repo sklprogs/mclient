@@ -227,9 +227,31 @@ class Walker:
 class Binary:
     
     def __init__(self,file):
+        self.bsize   = 0
         self.file    = file
         self.Success = sh.File(self.file).Success
         self.open()
+    
+    def get_block_size(self):
+        f = '[MClient] plugins.multitranbin.get.Binary.get_block_size'
+        if self.Success:
+            if not self.bsize:
+                read = self.read(28,30)
+                if read:
+                    try:
+                        self.bsize = struct.unpack('<h',read)[0]
+                    except Exception as e:
+                        mes = _('Third-party module has failed!\n\nDetails: {}')
+                        mes = mes.format(e)
+                        sh.objs.mes(f,mes,True).warning()
+                    mes = sh.com.figure_commas(self.bsize)
+                    sh.objs.mes(f,mes,True).debug()
+                else:
+                    self.Success = False
+                    sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+        return self.bsize
     
     def check_lengths(self,pattern,lengths):
         f = '[MClient] plugins.multitranbin.get.Binary.check_lengths'
@@ -252,7 +274,7 @@ class Binary:
             if pos11 is None:
                 sub = com.get_string(pattern)
                 mes = _('Pattern: "{}": no matches starting from {}!')
-                mes = mes.format(sub,start)
+                mes = mes.format(sub,sh.com.figure_commas(start))
                 sh.objs.mes(f,mes,True).info()
             else:
                 lengths = self.get_lengths(pos11)
@@ -390,6 +412,17 @@ class TypeIn(Binary):
 
 
 class Tests:
+    
+    def translate_pair(self):
+        global PATH, LANG1, LANG2
+        PATH = '/home/pete/.config/mclient/dics'
+        self.translate('abasin')
+        LANG1 = 'Russian'
+        LANG2 = 'English'
+        objs.files().reset()
+        # 'factorage', 'sack' # 2 terms
+        self.translate('уборка') # has a comment
+        objs.files().close()
     
     def translate_stem(self):
         f = '[MClient] plugins.multitranbin.get.Tests.translate_stem'
@@ -1107,29 +1140,7 @@ com  = Commands()
 
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.get.__main__'
-    ''' stem.eng, position 8,455:
-        b'\x06\x0fabasin\x01\x9am\x04\x03\x80C\x00\x9bm\x04\x14\x80 \x00'
-        b'\x06\x0f' -> (6;15)
-        6 -> b'abasin'
-        15 -> b'\x01\x9am\x04\x03\x80C\x00\x9bm\x04\x14\x80 \x00':
-            b'\x9am\x04' -> 290,202
-        dict.erd, find b'\x9am\x04 (290,202):
-            b'\x9am\x04%\x00( \x00' ->
-            3 [290,202] 5 [37; 8,232]
-        290,203: not found
-        dict.ert, find b'( \x00\' (8,232):
-        181,793 3 b'( \x00' [8232] 17 b"\xfcbin\x86\x82\x8d'\x0b\x12\x17$+6^\x88\x92"
-        \x01abasin\x02\xe0\xe1\xe0\xe7\xe8\xed\x0f37
-        [b'\x01', 'abasin', b'\x02', 'абазин', b'\x0f', '37']
-    '''
-    #Tests().translate_many()
-    #'phrenosin'
-    #Tests().translate('work')
+    #Tests().translate('removal')
     PATH = '/home/pete/.config/mclient/dics'
-    Tests().translate('abasin')
-    LANG1 = 'Russian'
-    LANG2 = 'English'
-    objs.files().reset()
-    # 'factorage', 'sack' # 2 terms
-    Tests().translate('уборка') # has a comment
+    objs.files().get_stems1().get_block_size()
     objs.files().close()
