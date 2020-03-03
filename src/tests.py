@@ -192,8 +192,10 @@ class Plugin:
         import plugins.multitrancom.run as mc
         #url    = 'https://www.multitran.com/m.exe?s=memory%20pressure&l1=2&l2=1&SHL=2'
         #search = 'memory pressure'
-        url     = 'https://www.multitran.com/m.exe?s=nucleoside%20reverse%20transcriptase%20inhibitors&l1=2&l2=1&SHL=2'
-        search  = 'nucleoside reverse transcriptase inhibitors'
+        #url    = 'https://www.multitran.com/m.exe?s=nucleoside%20reverse%20transcriptase%20inhibitors&l1=2&l2=1&SHL=2'
+        #search = 'nucleoside reverse transcriptase inhibitors'
+        url     = 'https://www.multitran.com/m.exe?s=%D0%BD%D1%83%D0%BA%D0%BB%D0%B5%D0%B8%D0%BD%D0%BE%D0%B2%D1%8B%D0%B9&l1=2&l2=1&SHL=2'
+        search  = 'нуклеиновый'
         
         iplug = mc.Plugin (Debug   = DEBUG
                           ,Shorten = True
@@ -550,6 +552,6 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sh.com.start()
-    Plugin().multitranbin()
-    #NOTE: nltk: according -> accord -> No matches!
+    #Plugin().multitranbin()
+    Plugin().multitrancom()
     sh.com.end()

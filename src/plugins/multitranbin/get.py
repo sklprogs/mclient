@@ -1121,6 +1121,7 @@ class Get:
                 all_stems = []
                 i = len(word)
                 while i > 0:
+                    #NOTE: nltk: according -> accord -> No matches!
                     stem = word[0:i]
                     mes = _('Try for "{}"').format(stem)
                     sh.objs.mes(f,mes,True).debug()
