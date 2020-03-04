@@ -304,15 +304,14 @@ class Elems:
     def fix_thesaurus(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.fix_thesaurus'
         for i in range(len(self._blocks)):
-            if '=10000&' in self._blocks[i]._url:
-                if 'русский тезаурус' in self._blocks[i]._text \
-                or 'Russian thesaurus' in self._blocks[i]._text:
-                    self._blocks[i]._type = 'definition'
-                    self._blocks[i]._same = 1
-                    if i + 1 < len(self._blocks):
-                        if self._blocks[i+1]._type == 'dic':
-                            self._blocks[i], self._blocks[i+1] = \
-                            self._blocks[i+1], self._blocks[i]
+            if 'русский тезаурус' in self._blocks[i]._text \
+            or 'Russian thesaurus' in self._blocks[i]._text:
+                self._blocks[i]._type = 'definition'
+                self._blocks[i]._same = 1
+                if i + 1 < len(self._blocks):
+                    if self._blocks[i+1]._type == 'dic':
+                        self._blocks[i], self._blocks[i+1] = \
+                        self._blocks[i+1], self._blocks[i]
     
     def delete_set_form(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_set_form'
