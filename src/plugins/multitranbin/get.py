@@ -184,8 +184,10 @@ class UPage(Binary):
         self.psize = 0
         self.part1 = []
         self.part2 = []
-        self.expl1 = []
-        self.expl2 = []
+    
+    def run(self):
+        self.get_parts()
+        self.conform_parts()
     
     def report_status(self,pos):
         f = '[MClient] erd.Reader.report_status'
@@ -305,13 +307,15 @@ class UPage(Binary):
     def debug(self):
         f = '[MClient] plugins.multitranbin.get.UPage.debug'
         if self.Success:
-            if self.expl2:
-                part1 = [com.get_string(item,50) for item in self.part1]
-                part2 = [com.get_string(item,50) for item in self.part2]
-                headers = ('PART1','EXPLAIN1','PART2','EXPLAIN2')
-                iterable = (part1,self.expl1,part2,self.expl2)
-                mes = sh.FastTable (headers  = headers
-                                   ,iterable = iterable
+            if self.part2:
+                part1 = [chunk.decode(ENCODING,'ignore') \
+                         for chunk in self.part1
+                        ]
+                part2 = [struct.unpack('<h',chunk)[0] \
+                         for chunk in self.part2
+                        ]
+                mes = sh.FastTable (headers  = ('STEM','PAGEREF')
+                                   ,iterable = (part1,part2)
                                    ,sep      = 3 * ' '
                                    ).run()
                 if mes:
@@ -323,8 +327,8 @@ class UPage(Binary):
         else:
             sh.com.cancel(f)
     
-    def conform_parts(self):
-        f = '[MClient] plugins.multitranbin.get.UPage.conform_parts'
+    def delete_invalid(self):
+        f = '[MClient] plugins.multitranbin.get.UPage.delete_invalid'
         if self.Success:
             if self.part1:
                 count = 0
@@ -348,20 +352,21 @@ class UPage(Binary):
         else:
             sh.com.cancel(f)
     
-    def parse(self):
-        f = '[MClient] plugins.multitranbin.get.UPage.parse'
+    def conform_parts(self):
+        f = '[MClient] plugins.multitranbin.get.UPage.conform_parts'
         if self.Success:
-            self.get_parts()
             if self.part1:
                 if len(self.part1) == len(self.part2):
-                    self.conform_parts()
-                    self.expl1 = [chunk.decode(ENCODING,'ignore') \
-                                  for chunk in self.part1
-                                 ]
-                    self.expl2 = [struct.unpack('<h',chunk)[0] \
-                                  for chunk in self.part2
-                                 ]
+                    self.delete_invalid()
+                    self.part1.insert(0,b'')
+                    max_ = struct.unpack('<h',max(self.part2))[0]
+                    try:
+                        add_bytes = struct.pack('<h',max_+1)
+                    except:
+                        add_bytes = max(self.part2)
+                    self.part2.append(add_bytes)
                 else:
+                    self.Success = False
                     sub = '{} == {}'.format (len(self.part1)
                                             ,len(self.part2)
                                             )
@@ -1361,9 +1366,9 @@ if __name__ == '__main__':
     #Tests().translate('removal')
     PATH = '/home/pete/.config/mclient/dics'
     upage = UPage(objs.files().iwalker.get_stems1())
-    timer = sh.Timer('[MClient] plugins.multitranbin.get.UPage.parse')
+    timer = sh.Timer('[MClient] plugins.multitranbin.get.UPage.run')
     timer.start()
-    upage.parse()
+    upage.run()
     timer.end()
     upage.debug()
     objs.files().close()
