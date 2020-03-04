@@ -178,42 +178,198 @@ class UPage(Binary):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
+        self.page  = b''
+        self.pos1  = 0
+        self.pos2  = 0
+        self.psize = 0
+        self.part1 = []
+        self.part2 = []
+        self.expl1 = []
+        self.expl2 = []
     
-    def get_pos(self):
-        #TODO: Get positions of all U pages
-        f = '[MClient] plugins.multitranbin.get.UPage.get_pos'
+    def report_status(self,pos):
+        f = '[MClient] erd.Reader.report_status'
         if self.Success:
-            start = self.get_block_size()
-            if start:
-                read = self.read(start+1,start+3)
-                if read:
-                    start += 3
-                    page_size = 0
-                    try:
-                        page_size = struct.unpack('<h',read)[0]
-                    except Exception as e:
-                        mes = _('Third-party module has failed!\n\nDetails: {}')
-                        mes = mes.format(e)
-                        sh.objs.mes(f,mes,True).warning()
-                    if page_size:
-                        end = start + page_size
-                        mes = '[{} : {}]'
-                        mes = mes.format (sh.com.figure_commas(start)
-                                         ,sh.com.figure_commas(end)
-                                         )
-                        sh.objs.mes(f,mes,True).debug()
-                        return (start,end)
+            mes = _('{}/{} bytes have been processed')
+            mes = mes.format(pos,len(self.page))
+            sh.objs.mes(f,mes,True).info()
+            remains = self.page[pos:len(self.page)]
+            remains = com.get_string(remains)
+            mes = _('Unprocessed fragment: "{}"').format(remains)
+            sh.objs.mes(f,mes,True).debug()
+        else:
+            sh.com.cancel(f)
+    
+    def get_parts(self):
+        f = '[MClient] plugins.multitranbin.get.UPage.get_parts'
+        if self.Success:
+            if self.get_page():
+                pos = 0
+                while pos + 2 < len(self.page):
+                    ''' #NOTE: indexing returns integers, slicing
+                        returns bytes.
+                    '''
+                    read = self.page[pos:pos+2]
+                    pos += 2
+                    len1, len2 = struct.unpack('<2b',read)
+                    len1 = com.overflow(len1)
+                    len2 = com.overflow(len2)
+                    if pos + len1 + len2 < len(self.page):
+                        ''' Do this only after checking the condition, 
+                            otherwise, resulting lists will have
+                            a different length.
+                        '''
+                        chunk1 = self.page[pos:pos+len1]
+                        pos += len1
+                        chunk2 = self.page[pos:pos+len2]
+                        pos += len2
+                        ''' #NOTE: Instructions for zero-length chunks
+                            should be allowed - I encountered such and
+                            they were necessary to parse the page
+                            correctly to the end. However, at least one
+                            of the chunks should be non-empty,
+                            otherwise, checking output will fail.
+                        '''
+                        if chunk1 or chunk2:
+                            self.part1.append(chunk1)
+                            self.part2.append(chunk2)
                     else:
-                        sh.com.empty(f)
+                        self.report_status(pos)
+                        if len(self.page) - pos > 1:
+                            mes = _('Processing the pattern has not been completed, but the end of the file has already been reached!')
+                            sh.objs.mes(f,mes,True).warning()
+                        break
             else:
                 sh.com.empty(f)
         else:
             sh.com.cancel(f)
     
-    def parse(self,chunk):
+    def get_page(self):
+        f = '[MClient] plugins.multitranbin.get.UPage.get_page'
+        if self.Success:
+            if self.get_size():
+                page = self.read(self.pos1,self.pos2)
+                # Keep 'self.page' iterable
+                if page is None:
+                    sh.com.empty(f)
+                else:
+                    self.page = page
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+        return self.page
+    
+    def get_size(self):
+        f = '[MClient] plugins.multitranbin.get.UPage.get_size'
+        if self.Success:
+            if self.get_block_size():
+                ''' The 1st page is an area with M identifier.
+                    The 2nd page is an intermediate page with
+                    U identifier.
+                '''
+                read = self.read(self.bsize+1,self.bsize+3)
+                if read:
+                    if len(read) == 2:
+                        size = struct.unpack('<h',read)[0]
+                        if size > 0:
+                            self.psize = size
+                            self.pos1  = self.bsize + 3
+                            self.pos2  = self.pos1 + self.psize
+                            sub1 = sh.com.figure_commas(self.pos1)
+                            sub2 = sh.com.figure_commas(self.pos2)
+                            mes = _('Page limits: {}-{}')
+                            mes = mes.format(sub1,sub2)
+                            sh.objs.mes(f,mes,True).debug()
+                            sub = sh.com.figure_commas(self.psize)
+                            mes = _('Page size: {}').format(sub)
+                            sh.objs.mes(f,mes,True).debug()
+                        else:
+                            sub = '{} > 0'.format(size)
+                            mes = _('The condition "{}" is not observed!')
+                            mes = mes.format(sub)
+                            sh.objs.mes(f,mes,True).warning()
+                    else:
+                        sub = '{} == 2'.format(len(read))
+                        mes = _('The condition "{}" is not observed!')
+                        mes = mes.format(sub)
+                        sh.objs.mes(f,mes,True).warning()
+                else:
+                    sh.com.empty(f)
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+        return self.psize
+    
+    def debug(self):
+        f = '[MClient] plugins.multitranbin.get.UPage.debug'
+        if self.Success:
+            if self.expl2:
+                part1 = [com.get_string(item,50) for item in self.part1]
+                part2 = [com.get_string(item,50) for item in self.part2]
+                headers = ('PART1','EXPLAIN1','PART2','EXPLAIN2')
+                iterable = (part1,self.expl1,part2,self.expl2)
+                mes = sh.FastTable (headers  = headers
+                                   ,iterable = iterable
+                                   ,sep      = 3 * ' '
+                                   ).run()
+                if mes:
+                    sh.com.fast_debug(mes)
+                else:
+                    sh.com.empty(f)
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def conform_parts(self):
+        f = '[MClient] plugins.multitranbin.get.UPage.conform_parts'
+        if self.Success:
+            if self.part1:
+                count = 0
+                i = 0
+                while i < len(self.part1):
+                    if len(self.part2[i]) != 2:
+                        sub = com.get_string(self.part2[i])
+                        mes = _('Wrong input data: "{}"!').format(sub)
+                        sh.objs.mes(f,mes,True).warning()
+                        count += 1
+                        del self.part1[i]
+                        del self.part2[i]
+                        i -= 1
+                    i += 1
+                if count:
+                    mes = _('{} elements have been deleted')
+                    mes = mes.format(count)
+                    sh.objs.mes(f,mes,True).warning()
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def parse(self):
         f = '[MClient] plugins.multitranbin.get.UPage.parse'
         if self.Success:
-            pass
+            self.get_parts()
+            if self.part1:
+                if len(self.part1) == len(self.part2):
+                    self.conform_parts()
+                    self.expl1 = [chunk.decode(ENCODING,'ignore') \
+                                  for chunk in self.part1
+                                 ]
+                    self.expl2 = [struct.unpack('<h',chunk)[0] \
+                                  for chunk in self.part2
+                                 ]
+                else:
+                    sub = '{} == {}'.format (len(self.part1)
+                                            ,len(self.part2)
+                                            )
+                    mes = _('The condition "{}" is not observed!')
+                    mes = mes.format(sub)
+                    sh.objs.mes(f,mes).error()
+            else:
+                sh.com.empty(f)
         else:
             sh.com.cancel(f)
 
@@ -859,6 +1015,21 @@ class Glue(Binary):
 
 class Commands:
     
+    def overflow(self,no):
+        f = '[MClient] plugins.multitranbin.get.Commands.overflow'
+        if no < 0:
+            ''' Byte format requires -128 <= no <= 127, so it looks
+                like, when a page size value is negative, it has just
+                overflown the minimum negative -128, e.g., -106 actually
+                means 150: 128 - 106 = 22 => 127 + 22 + 1 = 150.
+            '''
+            new = 256 - abs(no)
+            mes = '{} -> {}'.format(no,new)
+            sh.objs.mes(f,mes,True).debug()
+            return new
+        else:
+            return no
+    
     def unpack(self,chno):
         f = '[MClient] plugins.multitranbin.get.Commands.unpack'
         if chno:
@@ -875,7 +1046,7 @@ class Commands:
     def accessible(self):
         return len(objs.all_dics()._dics)
     
-    def get_string(self,chunk):
+    def get_string(self,chunk,limit=200):
         ''' Only raw strings should be used in GUI (otherwise,
             for example, '\x00' will be treated like b'\x00').
         '''
@@ -888,6 +1059,8 @@ class Commands:
                 result = str(result)
                 result = result.replace('\\\\','\\')
                 result = result[2:-1]
+                if limit:
+                    result = sh.Text(result).shorten(limit)
             except Exception as e:
                 sh.objs.mes(f,str(e)).warning()
                 result = str(chunk)
@@ -1187,11 +1360,10 @@ if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.get.__main__'
     #Tests().translate('removal')
     PATH = '/home/pete/.config/mclient/dics'
-    iupage = UPage(objs.files().iwalker.get_stems1())
-    poses = iupage.get_pos()
-    if poses:
-        chunk = iupage.read(poses[0],poses[1])
-        sh.com.fast_debug(com.get_string(chunk))
-    else:
-        sh.com.empty(f)
+    upage = UPage(objs.files().iwalker.get_stems1())
+    timer = sh.Timer('[MClient] plugins.multitranbin.get.UPage.parse')
+    timer.start()
+    upage.parse()
+    timer.end()
+    upage.debug()
     objs.files().close()
