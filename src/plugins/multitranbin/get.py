@@ -24,6 +24,55 @@ class Binary:
         self.Success = sh.File(self.file).Success
         self.open()
     
+    def get_limits(self,page_no):
+        f = '[MClient] plugins.multitranbin.get.Binary.get_limits'
+        if self.Success:
+            if page_no is None or not self.get_block_size():
+                sh.com.empty(f)
+            elif page_no == 0:
+                sub = sh.com.human_size(self.bsize)
+                mes = _('Page size: {}').format(sub)
+                sh.objs.mes(f,mes,True).debug()
+                pos1 = 0
+                pos2 = self.bsize
+                sub  = sh.com.figure_commas(pos2)
+                mes  = _('Page limits: {}-{}')
+                mes  = mes.format(pos1,sub)
+                sh.objs.mes(f,mes,True).debug()
+                return(0,self.bsize)
+            else:
+                pos = page_no * self.bsize
+                read = self.read(pos+1,pos+3)
+                if read:
+                    if len(read) == 2:
+                        size = struct.unpack('<h',read)[0]
+                        if size > 0:
+                            sub = sh.com.human_size(size)
+                            mes = _('Page size: {}').format(sub)
+                            sh.objs.mes(f,mes,True).debug()
+                            pos1 = pos + 3
+                            pos2 = pos1 + size
+                            sub1 = sh.com.figure_commas(pos1)
+                            sub2 = sh.com.figure_commas(pos2)
+                            mes  = _('Page limits: {}-{}')
+                            mes  = mes.format(sub1,sub2)
+                            sh.objs.mes(f,mes,True).debug()
+                            return(pos1,pos2)
+                        else:
+                            sub = '{} > 0'.format(size)
+                            mes = _('The condition "{}" is not observed!')
+                            mes = mes.format(sub)
+                            sh.objs.mes(f,mes,True).warning()
+                    else:
+                        sub = '{} == 2'.format(len(read))
+                        mes = _('The condition "{}" is not observed!')
+                        mes = mes.format(sub)
+                        sh.objs.mes(f,mes,True).warning()
+                else:
+                    sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+    
     def get_block_size(self):
         f = '[MClient] plugins.multitranbin.get.Binary.get_block_size'
         if self.Success:
@@ -196,18 +245,17 @@ class UPage(Binary):
     
     def _get_ref(self,i):
         f = '[MClient] plugins.multitranbin.get.UPage._get_ref'
-        page_ref = -1
         if i is None:
             sh.com.empty(f)
         else:
             try:
                 page_ref = struct.unpack('<h',self.part2[i])[0]
+                mes = _('#{}: {}').format(i,page_ref)
+                sh.objs.mes(f,mes,True).debug()
+                return page_ref
             except IndexError:
                 mes = _('Wrong input data!')
                 sh.objs.mes(f,mes).error()
-            mes = _('#{}: {}').format(i,page_ref)
-            sh.objs.mes(f,mes,True).debug()
-        return page_ref
     
     def search(self,pattern):
         f = '[MClient] plugins.multitranbin.get.UPage.search'
@@ -1457,7 +1505,8 @@ com  = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.get.__main__'
     PATH = '/home/pete/.config/mclient/dics'
-    Tests().searchu()
+    #Tests().searchu()
     #Tests().translate('removal')
     #Tests().translate_pair()
-    objs.files().close()
+    objs.files().get_stems1().get_limits(20)
+    #objs.files().close()
