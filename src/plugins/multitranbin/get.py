@@ -185,12 +185,34 @@ class UPage(Binary):
         self.part1 = []
         self.part2 = []
     
-    def run(self):
-        self.get_parts()
-        self.conform_parts()
+    def search(self,pattern):
+        f = '[MClient] plugins.multitranbin.get.UPage.search'
+        if self.Success:
+            self.get_parts()
+            if pattern and self.part1:
+                i = 1
+                while i < len(self.part1):
+                    if self.part1[i-1] <= pattern < self.part1[i]:
+                        break
+                    i += 1
+                if i > 0:
+                    stem1 = self.part1[i-1]
+                else:
+                    stem1 = b'start'
+                if i < len(self.part1):
+                    stem2 = self.part1[i]
+                else:
+                    stem2 = b'end'
+                mes = '{} <= {} < {}'.format(stem1,pattern,stem2)
+                sh.objs.mes(f,mes,True).debug()
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+        
     
     def report_status(self,pos):
-        f = '[MClient] erd.Reader.report_status'
+        f = '[MClient] plugins.multitranbin.get.UPage.report_status'
         if self.Success:
             mes = _('{}/{} bytes have been processed')
             mes = mes.format(pos,len(self.page))
@@ -205,59 +227,63 @@ class UPage(Binary):
     def get_parts(self):
         f = '[MClient] plugins.multitranbin.get.UPage.get_parts'
         if self.Success:
-            if self.get_page():
-                pos = 0
-                while pos + 2 < len(self.page):
-                    ''' #NOTE: indexing returns integers, slicing
-                        returns bytes.
-                    '''
-                    read = self.page[pos:pos+2]
-                    pos += 2
-                    len1, len2 = struct.unpack('<2b',read)
-                    len1 = com.overflow(len1)
-                    len2 = com.overflow(len2)
-                    if pos + len1 + len2 < len(self.page):
-                        ''' Do this only after checking the condition, 
-                            otherwise, resulting lists will have
-                            a different length.
+            if not self.part2:
+                if self.get_page():
+                    pos = 0
+                    while pos + 2 < len(self.page):
+                        ''' #NOTE: indexing returns integers, slicing
+                            returns bytes.
                         '''
-                        chunk1 = self.page[pos:pos+len1]
-                        pos += len1
-                        chunk2 = self.page[pos:pos+len2]
-                        pos += len2
-                        ''' #NOTE: Instructions for zero-length chunks
-                            should be allowed - I encountered such and
-                            they were necessary to parse the page
-                            correctly to the end. However, at least one
-                            of the chunks should be non-empty,
-                            otherwise, checking output will fail.
-                        '''
-                        if chunk1 or chunk2:
-                            self.part1.append(chunk1)
-                            self.part2.append(chunk2)
-                    else:
-                        self.report_status(pos)
-                        if len(self.page) - pos > 1:
-                            mes = _('Processing the pattern has not been completed, but the end of the file has already been reached!')
-                            sh.objs.mes(f,mes,True).warning()
-                        break
-            else:
-                sh.com.empty(f)
+                        read = self.page[pos:pos+2]
+                        pos += 2
+                        len1, len2 = struct.unpack('<2b',read)
+                        len1 = com.overflow(len1)
+                        len2 = com.overflow(len2)
+                        if pos + len1 + len2 < len(self.page):
+                            ''' Do this only after checking
+                                the condition, otherwise, resulting
+                                lists will have a different length.
+                            '''
+                            chunk1 = self.page[pos:pos+len1]
+                            pos += len1
+                            chunk2 = self.page[pos:pos+len2]
+                            pos += len2
+                            ''' #NOTE: Instructions for zero-length
+                                chunks should be allowed - I encountered
+                                such and they were necessary to parse
+                                the page correctly to the end. However,
+                                at least one of the chunks should be
+                                non-empty, otherwise, checking output
+                                will fail.
+                            '''
+                            if chunk1 or chunk2:
+                                self.part1.append(chunk1)
+                                self.part2.append(chunk2)
+                        else:
+                            self.report_status(pos)
+                            if len(self.page) - pos > 1:
+                                mes = _('Processing the pattern has not been completed, but the end of the file has already been reached!')
+                                sh.objs.mes(f,mes,True).warning()
+                            break
+                    self.conform_parts()
+                else:
+                    sh.com.empty(f)
         else:
             sh.com.cancel(f)
     
     def get_page(self):
         f = '[MClient] plugins.multitranbin.get.UPage.get_page'
         if self.Success:
-            if self.get_size():
-                page = self.read(self.pos1,self.pos2)
-                # Keep 'self.page' iterable
-                if page is None:
-                    sh.com.empty(f)
+            if not self.page:
+                if self.get_size():
+                    page = self.read(self.pos1,self.pos2)
+                    # Keep 'self.page' iterable
+                    if page is None:
+                        sh.com.empty(f)
+                    else:
+                        self.page = page
                 else:
-                    self.page = page
-            else:
-                sh.com.empty(f)
+                    sh.com.empty(f)
         else:
             sh.com.cancel(f)
         return self.page
@@ -265,41 +291,42 @@ class UPage(Binary):
     def get_size(self):
         f = '[MClient] plugins.multitranbin.get.UPage.get_size'
         if self.Success:
-            if self.get_block_size():
-                ''' The 1st page is an area with M identifier.
-                    The 2nd page is an intermediate page with
-                    U identifier.
-                '''
-                read = self.read(self.bsize+1,self.bsize+3)
-                if read:
-                    if len(read) == 2:
-                        size = struct.unpack('<h',read)[0]
-                        if size > 0:
-                            self.psize = size
-                            self.pos1  = self.bsize + 3
-                            self.pos2  = self.pos1 + self.psize
-                            sub1 = sh.com.figure_commas(self.pos1)
-                            sub2 = sh.com.figure_commas(self.pos2)
-                            mes = _('Page limits: {}-{}')
-                            mes = mes.format(sub1,sub2)
-                            sh.objs.mes(f,mes,True).debug()
-                            sub = sh.com.figure_commas(self.psize)
-                            mes = _('Page size: {}').format(sub)
-                            sh.objs.mes(f,mes,True).debug()
+            if not self.psize:
+                if self.get_block_size():
+                    ''' The 1st page is an area with M identifier.
+                        The 2nd page is an intermediate page with
+                        U identifier.
+                    '''
+                    read = self.read(self.bsize+1,self.bsize+3)
+                    if read:
+                        if len(read) == 2:
+                            size = struct.unpack('<h',read)[0]
+                            if size > 0:
+                                self.psize = size
+                                self.pos1  = self.bsize + 3
+                                self.pos2  = self.pos1 + self.psize
+                                sub1 = sh.com.figure_commas(self.pos1)
+                                sub2 = sh.com.figure_commas(self.pos2)
+                                mes = _('Page limits: {}-{}')
+                                mes = mes.format(sub1,sub2)
+                                sh.objs.mes(f,mes,True).debug()
+                                sub = sh.com.figure_commas(self.psize)
+                                mes = _('Page size: {}').format(sub)
+                                sh.objs.mes(f,mes,True).debug()
+                            else:
+                                sub = '{} > 0'.format(size)
+                                mes = _('The condition "{}" is not observed!')
+                                mes = mes.format(sub)
+                                sh.objs.mes(f,mes,True).warning()
                         else:
-                            sub = '{} > 0'.format(size)
+                            sub = '{} == 2'.format(len(read))
                             mes = _('The condition "{}" is not observed!')
                             mes = mes.format(sub)
                             sh.objs.mes(f,mes,True).warning()
                     else:
-                        sub = '{} == 2'.format(len(read))
-                        mes = _('The condition "{}" is not observed!')
-                        mes = mes.format(sub)
-                        sh.objs.mes(f,mes,True).warning()
+                        sh.com.empty(f)
                 else:
                     sh.com.empty(f)
-            else:
-                sh.com.empty(f)
         else:
             sh.com.cancel(f)
         return self.psize
@@ -1368,7 +1395,10 @@ if __name__ == '__main__':
     upage = UPage(objs.files().iwalker.get_stems1())
     timer = sh.Timer('[MClient] plugins.multitranbin.get.UPage.run')
     timer.start()
-    upage.run()
+    #pattern = b'zero'
+    #pattern = b'wifi'
+    pattern  = b'ace'
+    upage.search(pattern)
     timer.end()
     upage.debug()
     objs.files().close()
