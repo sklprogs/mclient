@@ -196,12 +196,18 @@ class UPage(Binary):
     
     def _get_ref(self,i):
         f = '[MClient] plugins.multitranbin.get.UPage._get_ref'
-        try:
-            return struct.unpack('<h',self.part2[i])[0]
-        except IndexError:
-            mes = _('Wrong input data!')
-            sh.objs.mes(f,mes).error()
-            return -1
+        page_ref = -1
+        if i is None:
+            sh.com.empty(f)
+        else:
+            try:
+                page_ref = struct.unpack('<h',self.part2[i])[0]
+            except IndexError:
+                mes = _('Wrong input data!')
+                sh.objs.mes(f,mes).error()
+            mes = _('#{}: {}').format(i,page_ref)
+            sh.objs.mes(f,mes,True).debug()
+        return page_ref
     
     def search(self,pattern):
         f = '[MClient] plugins.multitranbin.get.UPage.search'
@@ -212,6 +218,7 @@ class UPage(Binary):
                 oper2 = '<'
                 stem1 = _('Start')
                 stem2 = _('End')
+                match = None
                 i = 1
                 while i < len(self.part1):
                     if self.part1[i-1] <= pattern < self.part1[i]:
@@ -222,6 +229,7 @@ class UPage(Binary):
                             stem1 = stem1.format (com.get_string(self.part1[i-1])
                                                  ,self._get_no(self.part1[i-1])
                                                  )
+                        match = i - 1
                         break
                     i += 1
                 if i < len(self.part1):
@@ -230,11 +238,12 @@ class UPage(Binary):
                                          ,self._get_no(self.part1[i])
                                          )
                 if i == len(self.part1):
+                    match = i - 1
                     stem1 = _('{} (#{})')
-                    stem1 = stem1.format (com.get_string(self.part1[i-1])
-                                         ,self._get_no(self.part1[i-1])
+                    stem1 = stem1.format (com.get_string(self.part1[match])
+                                         ,self._get_no(self.part1[match])
                                          )
-                    if self.part1[i-1] == pattern:
+                    if self.part1[match] == pattern:
                         oper1 = '<='
                 mes = '{} {} {} {} {}'.format (stem1
                                               ,oper1
@@ -243,6 +252,7 @@ class UPage(Binary):
                                               ,stem2
                                               )
                 sh.objs.mes(f,mes,True).debug()
+                return self._get_ref(match)
             else:
                 sh.com.empty(f)
         else:
@@ -687,14 +697,18 @@ class Tests:
         upage = UPage(objs.files().iwalker.get_stems1())
         timer = sh.Timer('[MClient] plugins.multitranbin.get.UPage.run')
         timer.start()
-        #pattern = b'zero'
+        #pattern = b'wol'
+        pattern  = b'zero'
         #pattern = b'wi'
         #pattern = b'wifi'
+        #pattern = b'willing'
+        #pattern = b'vh'
         #pattern = b'ace'
         #pattern = b'a'
+        #pattern = b'algorithm'
         #pattern = b'wol'
         #pattern = b'acf'
-        pattern  = b'volume'
+        #pattern = b'volume'
         upage.search(pattern)
         timer.end()
         #upage.debug()
