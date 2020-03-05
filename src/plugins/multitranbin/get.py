@@ -21,6 +21,7 @@ class Binary:
     def __init__(self,file):
         self.bsize   = 0
         self.file    = file
+        self.bname   = sh.Path(file).basename()
         self.Success = sh.File(self.file).Success
         self.open()
     
@@ -36,7 +37,7 @@ class Binary:
                 pos1 = 0
                 pos2 = self.bsize
                 sub  = sh.com.figure_commas(pos2)
-                mes  = _('Page limits: {}-{}')
+                mes  = _('Page limits: [{}:{}]')
                 mes  = mes.format(pos1,sub)
                 sh.objs.mes(f,mes,True).debug()
                 return(0,self.bsize)
@@ -54,7 +55,7 @@ class Binary:
                             pos2 = pos1 + size
                             sub1 = sh.com.figure_commas(pos1)
                             sub2 = sh.com.figure_commas(pos2)
-                            mes  = _('Page limits: {}-{}')
+                            mes  = _('Page limits: [{}:{}]')
                             mes  = mes.format(sub1,sub2)
                             sh.objs.mes(f,mes,True).debug()
                             return(pos1,pos2)
@@ -102,29 +103,24 @@ class Binary:
                     return True
                 else:
                     mes = _('The check has failed!')
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.mes(f,mes,True).warning()
             else:
                 sh.com.empty(f)
         else:
             sh.com.cancel(f)
     
-    def get_part2(self,pattern,start=0):
+    def get_part2(self,pattern,start=0,end=0):
         f = '[MClient] plugins.multitranbin.get.Binary.get_part2'
         if self.Success:
-            pos11 = self.find(pattern,start)
+            pos11 = self.find(pattern,start,end)
             if pos11 is None:
-                sub = com.get_string(pattern)
-                mes = _('Pattern: "{}": no matches starting from {}!')
-                mes = mes.format(sub,sh.com.figure_commas(start))
-                sh.objs.mes(f,mes,True).info()
+                sh.com.empty(f)
             else:
                 lengths = self.get_lengths(pos11)
                 if self.check_lengths(pattern,lengths):
                     pos21 = pos11 + lengths[0]
                     pos22 = pos21 + lengths[1]
                     return self.read(pos21,pos22)
-                else:
-                    return self.get_part2(pattern,pos11+1)
         else:
             sh.com.cancel(f)
     
@@ -187,11 +183,20 @@ class Binary:
                     # Search to the end
                     end = -1
                 result = self.imap.find(pattern,start,end)
-                mes = '"{}" => {} ({})'
-                mes = mes.format (com.get_string(pattern)
-                                 ,sh.com.figure_commas(result)
-                                 ,self.file
-                                 )
+                if end == -1:
+                    mes = '{}, "{}" => {}'
+                    mes = mes.format (self.bname
+                                     ,com.get_string(pattern)
+                                     ,sh.com.figure_commas(result)
+                                     )
+                else:
+                    mes = '{}, [{}:{}], "{}" => {}'
+                    mes = mes.format (self.bname
+                                     ,sh.com.figure_commas(start)
+                                     ,sh.com.figure_commas(end)
+                                     ,com.get_string(pattern)
+                                     ,sh.com.figure_commas(result)
+                                     )
                 sh.objs.mes(f,mes,True).debug()
                 if result >= 0:
                     return result
@@ -265,8 +270,8 @@ class UPage(Binary):
                 mes = _('Wrong input data!')
                 sh.objs.mes(f,mes).error()
     
-    def search(self,pattern):
-        f = '[MClient] plugins.multitranbin.get.UPage.search'
+    def searchu(self,pattern):
+        f = '[MClient] plugins.multitranbin.get.UPage.searchu'
         if self.Success:
             self.get_parts()
             if pattern and self.part1:
@@ -308,7 +313,7 @@ class UPage(Binary):
                                               ,stem2
                                               )
                 sh.objs.mes(f,mes,True).debug()
-                return self._get_ref(match)
+                return self.get_limits(self._get_ref(match))
             else:
                 sh.com.empty(f)
         else:
@@ -730,7 +735,7 @@ class Tests:
         timer = sh.Timer('[MClient] plugins.multitranbin.get.UPage.run')
         timer.start()
         #pattern = b'wol'
-        pattern  = b'zero'
+        #pattern = b'zero'
         #pattern = b'wi'
         #pattern = b'wifi'
         #pattern = b'willing'
@@ -741,7 +746,10 @@ class Tests:
         #pattern = b'wol'
         #pattern = b'acf'
         #pattern = b'volume'
-        upage.search(pattern)
+        pattern  = b'abatement'
+        upage.searchu(pattern)
+        pattern  = b'tax'
+        upage.searchu(pattern)
         timer.end()
         #upage.debug()
     
@@ -854,7 +862,7 @@ class Tests:
         timer = sh.Timer(f)
         timer.start()
         iget = Get(pattern)
-        sh.objs.mes(f,iget.run()).debug()
+        sh.objs.mes(f,iget.run(),True).debug()
         timer.end()
 
 
@@ -1328,7 +1336,7 @@ class Objects:
 
 
 
-class Stems(Binary):
+class Stems(UPage):
     # Parse files like 'stem.eng'
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -1372,8 +1380,15 @@ class Stems(Binary):
         f = '[MClient] plugins.multitranbin.get.Stems.search'
         if self.Success:
             if coded:
-                chunk = self.get_part2(coded)
-                return self.parse(chunk)
+                poses = self.searchu(coded)
+                if poses:
+                    chunk = self.get_part2 (pattern = coded
+                                           ,start   = poses[0]
+                                           ,end     = poses[1]
+                                           )
+                    return self.parse(chunk)
+                else:
+                    sh.com.empty(f)
             else:
                 sh.com.empty(f)
         else:
@@ -1489,9 +1504,26 @@ com  = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.get.__main__'
     PATH = '/home/pete/.config/mclient/dics'
-    Tests().searchu()
+    #Tests().searchu()
     #Tests().translate('removal')
+    #Tests().translate_many()
+    #Tests().translate('Bachelor of Vocational Education')
+    #Tests().translate('Kafir')
+    #Tests().translate('edentulous')
+    #Tests().translate('abatement of purchase price')
     #Tests().translate_pair()
     #objs.files().get_stems1().get_limits(20)
-    #objs.files().get_stems1().find(b'abasin')
+    #objs.files().get_stems1().find(b'abasin',1000,9000)
+    '''
+    #FIX
+    LANG1 = 'Russian'
+    LANG2 = 'English'
+    objs.files().reset()
+    upage = UPage(objs.files().iwalker.get_stems2())
+    upage.searchu(bytes('уборка',ENCODING))
+    '''
+    upage = UPage(objs.files().iwalker.get_stems2())
+    #pattern = b'boiler'
+    pattern = b'haemotonograph'
+    upage.searchu(pattern)
     #objs.files().close()
