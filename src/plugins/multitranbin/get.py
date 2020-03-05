@@ -185,25 +185,63 @@ class UPage(Binary):
         self.part1 = []
         self.part2 = []
     
+    def _get_no(self,stem):
+        f = '[MClient] plugins.multitranbin.get.UPage._get_no'
+        try:
+            return self.part1.index(stem)
+        except ValueError:
+            mes = _('Wrong input data!')
+            sh.objs.mes(f,mes).error()
+            return -1
+    
+    def _get_ref(self,i):
+        f = '[MClient] plugins.multitranbin.get.UPage._get_ref'
+        try:
+            return struct.unpack('<h',self.part2[i])[0]
+        except IndexError:
+            mes = _('Wrong input data!')
+            sh.objs.mes(f,mes).error()
+            return -1
+    
     def search(self,pattern):
         f = '[MClient] plugins.multitranbin.get.UPage.search'
         if self.Success:
             self.get_parts()
             if pattern and self.part1:
+                oper1 = '<'
+                oper2 = '<'
+                stem1 = _('Start')
+                stem2 = _('End')
                 i = 1
                 while i < len(self.part1):
                     if self.part1[i-1] <= pattern < self.part1[i]:
+                        if self.part1[i-1] == pattern:
+                            oper1 = '<='
+                        if self.part1[i-1] != b'':
+                            stem1 = _('{} (#{})')
+                            stem1 = stem1.format (com.get_string(self.part1[i-1])
+                                                 ,self._get_no(self.part1[i-1])
+                                                 )
                         break
                     i += 1
-                if i > 0:
-                    stem1 = self.part1[i-1]
-                else:
-                    stem1 = b'start'
                 if i < len(self.part1):
-                    stem2 = self.part1[i]
-                else:
-                    stem2 = b'end'
-                mes = '{} <= {} < {}'.format(stem1,pattern,stem2)
+                    stem2 = _('{} (#{})')
+                    stem2 = stem2.format (com.get_string(self.part1[i])
+                                         ,self._get_no(self.part1[i])
+                                         )
+                if i == len(self.part1):
+                    stem1 = _('{} (#{})')
+                    stem1 = stem1.format (com.get_string(self.part1[i-1])
+                                         ,self._get_no(self.part1[i-1])
+                                         )
+                    if self.part1[i-1] == pattern:
+                        oper1 = '<='
+                mes = '{} {} {} {} {}'.format (stem1
+                                              ,oper1
+                                              ,com.get_string(pattern)
+                                              ,oper2
+                                              ,stem2
+                                              )
                 sh.objs.mes(f,mes,True).debug()
             else:
                 sh.com.empty(f)
@@ -645,16 +683,30 @@ class TypeIn(Binary):
 
 class Tests:
     
+    def searchu(self):
+        upage = UPage(objs.files().iwalker.get_stems1())
+        timer = sh.Timer('[MClient] plugins.multitranbin.get.UPage.run')
+        timer.start()
+        #pattern = b'zero'
+        #pattern = b'wi'
+        #pattern = b'wifi'
+        #pattern = b'ace'
+        #pattern = b'a'
+        #pattern = b'wol'
+        #pattern = b'acf'
+        pattern  = b'volume'
+        upage.search(pattern)
+        timer.end()
+        #upage.debug()
+    
     def translate_pair(self):
-        global PATH, LANG1, LANG2
-        PATH = '/home/pete/.config/mclient/dics'
+        global LANG1, LANG2
         self.translate('abasin')
         LANG1 = 'Russian'
         LANG2 = 'English'
         objs.files().reset()
         # 'factorage', 'sack' # 2 terms
         self.translate('уборка') # has a comment
-        objs.files().close()
     
     def translate_stem(self):
         f = '[MClient] plugins.multitranbin.get.Tests.translate_stem'
@@ -1390,15 +1442,8 @@ com  = Commands()
 
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.get.__main__'
-    #Tests().translate('removal')
     PATH = '/home/pete/.config/mclient/dics'
-    upage = UPage(objs.files().iwalker.get_stems1())
-    timer = sh.Timer('[MClient] plugins.multitranbin.get.UPage.run')
-    timer.start()
-    #pattern = b'zero'
-    #pattern = b'wifi'
-    pattern  = b'ace'
-    upage.search(pattern)
-    timer.end()
-    upage.debug()
+    Tests().searchu()
+    #Tests().translate('removal')
+    #Tests().translate_pair()
     objs.files().close()
