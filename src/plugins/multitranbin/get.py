@@ -179,12 +179,20 @@ class Binary:
         else:
             sh.com.cancel(f)
     
-    def find(self,pattern,start=0):
+    def find(self,pattern,start=0,end=0):
         f = '[MClient] plugins.multitranbin.get.Binary.find'
         if self.Success:
             if pattern:
-                self.imap.seek(start)
-                result = self.imap.find(pattern)
+                if not end:
+                    # Search to the end
+                    end = -1
+                result = self.imap.find(pattern,start,end)
+                mes = '"{}" => {} ({})'
+                mes = mes.format (com.get_string(pattern)
+                                 ,sh.com.figure_commas(result)
+                                 ,self.file
+                                 )
+                sh.objs.mes(f,mes,True).debug()
                 if result >= 0:
                     return result
             else:
@@ -388,39 +396,15 @@ class UPage(Binary):
         f = '[MClient] plugins.multitranbin.get.UPage.get_size'
         if self.Success:
             if not self.psize:
-                if self.get_block_size():
-                    ''' The 1st page is an area with M identifier.
-                        The 2nd page is an intermediate page with
-                        U identifier.
-                    '''
-                    read = self.read(self.bsize+1,self.bsize+3)
-                    if read:
-                        if len(read) == 2:
-                            size = struct.unpack('<h',read)[0]
-                            if size > 0:
-                                self.psize = size
-                                self.pos1  = self.bsize + 3
-                                self.pos2  = self.pos1 + self.psize
-                                sub1 = sh.com.figure_commas(self.pos1)
-                                sub2 = sh.com.figure_commas(self.pos2)
-                                mes = _('Page limits: {}-{}')
-                                mes = mes.format(sub1,sub2)
-                                sh.objs.mes(f,mes,True).debug()
-                                sub = sh.com.figure_commas(self.psize)
-                                mes = _('Page size: {}').format(sub)
-                                sh.objs.mes(f,mes,True).debug()
-                            else:
-                                sub = '{} > 0'.format(size)
-                                mes = _('The condition "{}" is not observed!')
-                                mes = mes.format(sub)
-                                sh.objs.mes(f,mes,True).warning()
-                        else:
-                            sub = '{} == 2'.format(len(read))
-                            mes = _('The condition "{}" is not observed!')
-                            mes = mes.format(sub)
-                            sh.objs.mes(f,mes,True).warning()
-                    else:
-                        sh.com.empty(f)
+                ''' The 1st page is an area with M identifier.
+                    The 2nd page is an intermediate page with
+                    U identifier.
+                '''
+                poses = self.get_limits(1)
+                if poses:
+                    self.pos1  = poses[0]
+                    self.pos2  = poses[1]
+                    self.psize = self.pos2 - self.pos1
                 else:
                     sh.com.empty(f)
         else:
@@ -1505,8 +1489,9 @@ com  = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.get.__main__'
     PATH = '/home/pete/.config/mclient/dics'
-    #Tests().searchu()
+    Tests().searchu()
     #Tests().translate('removal')
     #Tests().translate_pair()
-    objs.files().get_stems1().get_limits(20)
+    #objs.files().get_stems1().get_limits(20)
+    #objs.files().get_stems1().find(b'abasin')
     #objs.files().close()
