@@ -114,7 +114,10 @@ class Binary:
         if self.Success:
             pos11 = self.find(pattern,start,end)
             if pos11 is None:
-                sh.com.empty(f)
+                ''' We look for combinations of stems, so a mismatch is
+                    a common case.
+                '''
+                sh.com.lazy(f)
             else:
                 lengths = self.get_lengths(pos11)
                 if self.check_lengths(pattern,lengths):
@@ -1453,15 +1456,20 @@ class Get:
                     #NOTE: nltk: according -> accord -> No matches!
                     stem = word[0:i]
                     mes = _('Try for "{}"').format(stem)
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.mes(f,mes,True).info()
                     coded = bytes(stem,ENCODING,'ignore')
+                    ''' Since we swap languages, the needed stems will
+                        always be stored in stem file #1.
+                    '''
                     stem_nos = objs.files().get_stems1().search(coded)
                     if stem_nos:
                         mes = _('Found stem: "{}"').format(stem)
-                        sh.objs.mes(f,mes,True).debug()
+                        sh.objs.mes(f,mes,True).info()
                         all_stems += stem_nos
-                        ''' Stems forms can be both 'absolute' and
-                            'absolut', so we do not break here.
+                        ''' #NOTE: A stem form of 'absolute' can be
+                            either 'absolute' or 'absolut' (both forms
+                            are stored in 'stems.eng'), so we
+                            should NOT break here.
                         '''
                     i -= 1
                 self.stemnos.append(all_stems)
@@ -1520,8 +1528,8 @@ if __name__ == '__main__':
     #Tests().translate_many()
     #Tests().translate('Bachelor of Vocational Education')
     #Tests().translate('Kafir')
-    Tests().translate('edentulous')
-    #Tests().translate('abatement of purchase price')
+    #Tests().translate('absolute measurements')
+    Tests().translate('abatement of purchase price')
     #Tests().translate_pair()
     #objs.files().get_stems1().get_limits(20)
     #objs.files().get_stems1().find(b'abasin',1000,9000)
