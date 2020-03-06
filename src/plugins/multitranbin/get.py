@@ -287,28 +287,28 @@ class UPage(Binary):
                             oper1 = '<='
                         if self.part1[i-1] != b'':
                             stem1 = _('{} (#{})')
-                            stem1 = stem1.format (com.get_string(self.part1[i-1])
+                            stem1 = stem1.format (self.part1[i-1].decode(ENCODING,'replace')
                                                  ,self._get_no(self.part1[i-1])
                                                  )
                         match = i - 1
                         break
                     i += 1
-                if i < len(self.part1):
-                    stem2 = _('{} (#{})')
-                    stem2 = stem2.format (com.get_string(self.part1[i])
-                                         ,self._get_no(self.part1[i])
-                                         )
                 if i == len(self.part1):
                     match = i - 1
                     stem1 = _('{} (#{})')
-                    stem1 = stem1.format (com.get_string(self.part1[match])
+                    stem1 = stem1.format (self.part1[match].decode(ENCODING,'replace')
                                          ,self._get_no(self.part1[match])
                                          )
                     if self.part1[match] == pattern:
                         oper1 = '<='
+                elif i < len(self.part1):
+                    stem2 = _('{} (#{})')
+                    stem2 = stem2.format (self.part1[i].decode(ENCODING,'replace')
+                                         ,self._get_no(self.part1[i])
+                                         )
                 mes = '{} {} {} {} {}'.format (stem1
                                               ,oper1
-                                              ,com.get_string(pattern)
+                                              ,pattern.decode(ENCODING,'replace')
                                               ,oper2
                                               ,stem2
                                               )
@@ -731,8 +731,8 @@ class TypeIn(Binary):
 class Tests:
     
     def searchu(self):
-        upage = UPage(objs.files().iwalker.get_stems1())
-        timer = sh.Timer('[MClient] plugins.multitranbin.get.UPage.run')
+        f = '[MClient] plugins.multitranbin.get.Tests.searchu'
+        timer = sh.Timer(f)
         timer.start()
         #pattern = b'wol'
         #pattern = b'zero'
@@ -746,10 +746,21 @@ class Tests:
         #pattern = b'wol'
         #pattern = b'acf'
         #pattern = b'volume'
-        pattern  = b'abatement'
-        upage.searchu(pattern)
-        pattern  = b'tax'
-        upage.searchu(pattern)
+        #pattern = b'abatement'
+        
+        global LANG1, LANG2
+        LANG1 = 'English'
+        LANG2 = 'Russian'
+        objs.files().reset()
+        upage = UPage(objs.files().iwalker.get_stems1())
+        upage.searchu(b'abatement')
+        print('---------------------------------------------------')
+        LANG1 = 'Russian'
+        LANG2 = 'English'
+        objs.files().reset()
+        # Since we swap languages, the needed stems will always be #1
+        upage = UPage(objs.files().iwalker.get_stems1())
+        upage.searchu(bytes('уборка',ENCODING))
         timer.end()
         #upage.debug()
     
@@ -1509,21 +1520,9 @@ if __name__ == '__main__':
     #Tests().translate_many()
     #Tests().translate('Bachelor of Vocational Education')
     #Tests().translate('Kafir')
-    #Tests().translate('edentulous')
+    Tests().translate('edentulous')
     #Tests().translate('abatement of purchase price')
     #Tests().translate_pair()
     #objs.files().get_stems1().get_limits(20)
     #objs.files().get_stems1().find(b'abasin',1000,9000)
-    '''
-    #FIX
-    LANG1 = 'Russian'
-    LANG2 = 'English'
-    objs.files().reset()
-    upage = UPage(objs.files().iwalker.get_stems2())
-    upage.searchu(bytes('уборка',ENCODING))
-    '''
-    upage = UPage(objs.files().iwalker.get_stems2())
-    #pattern = b'boiler'
-    pattern = b'haemotonograph'
-    upage.searchu(pattern)
     #objs.files().close()
