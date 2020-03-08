@@ -733,6 +733,62 @@ class TypeIn(Binary):
 
 class Tests:
     
+    def stems_upage(self):
+        upage = UPage(objs.files().iwalker.get_stems1())
+        upage.get_parts()
+        part1  = list(upage.part1)
+        part2  = list(upage.part2)
+        part1d = [item.decode(ENCODING,'replace') for item in part1]
+        part2l = []
+        for i in range(len(part2)):
+            if part2[i]:
+                unpacked = struct.unpack('<h',part2[i])[0]
+                unpacked = '"{}"'.format(unpacked)
+                part2l.append(unpacked)
+            else:
+                part2l.append('""')
+        header = ('CHUNK1','CP1251','CHUNK2','<h')
+        data   = [part1,part1d,part2,part2l]
+        mes = sh.FastTable (headers  = header
+                           ,iterable = data
+                           ,sep      = 3 * ' '
+                           ).run()
+        sh.com.fast_debug(mes)
+    
+    def glue_upage(self):
+        upage = UPage(objs.files().iwalker.get_glue1())
+        upage.get_parts()
+        part1  = list(upage.part1)
+        part2  = list(upage.part2)
+        part1l = []
+        for i in range(len(part1)):
+            if part1[i]:
+                unpacked = struct.unpack('<b',part1[i])[0]
+                unpacked = '"{}"'.format(unpacked)
+                part1l.append(unpacked)
+            else:
+                part1l.append('""')
+        part2l = []
+        for i in range(len(part2)):
+            if part2[i]:
+                unpacked = struct.unpack('<h',part2[i])[0]
+                unpacked = '"{}"'.format(unpacked)
+                part2l.append(unpacked)
+            else:
+                part2l.append('""')
+        header = ('CHUNK1','<b','CHUNK2','<h')
+        data   = [part1,part1l,part2,part2l]
+        mes = sh.FastTable (headers  = header
+                           ,iterable = data
+                           ,sep      = 3 * ' '
+                           ).run()
+        sh.com.fast_debug(mes)
+        '''
+        tmp = list(set(part2l))
+        tmp.sort()
+        sh.com.fast_debug(tmp)
+        '''
+    
     def searchu(self):
         f = '[MClient] plugins.multitranbin.get.Tests.searchu'
         timer = sh.Timer(f)
@@ -1378,7 +1434,8 @@ class Stems(UPage):
                     for chno in chnos:
                         nos.append(com.unpack(chno))
                     sh.objs.mes(f,chnos,True).debug()
-                    sh.objs.mes(f,nos,True).debug()
+                    tmp = [sh.com.figure_commas(no) for no in nos]
+                    sh.objs.mes(f,tmp,True).debug()
                     return chnos
                 else:
                     sub = com.get_string(chunk)
@@ -1419,7 +1476,6 @@ class Get:
     def combos(self):
         f = '[MClient] plugins.multitranbin.get.Get.combos'
         if self.Success:
-            sh.objs.mes(f,self.stemnos,True).debug()
             self.stemnos = list(itertools.product(*self.stemnos))
             sh.objs.mes(f,self.stemnos,True).debug()
             self.stemnos = [b''.join(item) for item in self.stemnos]
@@ -1529,8 +1585,21 @@ if __name__ == '__main__':
     #Tests().translate('Bachelor of Vocational Education')
     #Tests().translate('Kafir')
     #Tests().translate('absolute measurements')
-    Tests().translate('abatement of purchase price')
+    #Tests().translate('abatement of purchase price')
+    #Tests().translate('answer print')
+    #LANG1, LANG2 = LANG2, LANG1
+    #objs.files().reset()
+    '''
+    'с большой точностью'
+    'уборка'
+    'стычка'
+    OK: 'садовод'
+    '''
+    #Tests().translate('boiler')
+    #Tests().translate('boiler')
     #Tests().translate_pair()
     #objs.files().get_stems1().get_limits(20)
     #objs.files().get_stems1().find(b'abasin',1000,9000)
+    #Tests().glue_upage()
+    Tests().stems_upage()
     #objs.files().close()
