@@ -9,11 +9,28 @@ from skl_shared.localize import _
 
 class Tests:
     
+    def _parse_upage(self,file):
+        upage = UPage(file)
+        upage.get_parts()
+        upage.debug()
+    
+    def parse_upage(self):
+        file = gt.objs.files().iwalker.get_stems1()
+        self._parse_upage(file)
+        file = gt.objs.files().iwalker.get_stems2()
+        self._parse_upage(file)
+        file = gt.objs.files().iwalker.get_glue1()
+        self._parse_upage(file)
+        file = gt.objs.files().iwalker.get_glue2()
+        self._parse_upage(file)
+    
     def searchu_glue(self):
+        #pattern = b'\x1b-\x00'
+        pattern  = b'\x00'
         upage = UPage(gt.objs.files().iwalker.get_glue1())
         upage.get_parts()
-        upage.searchu(b'\x1b-\x00')
-        upage.debug()
+        upage.searchu(pattern)
+        #upage.debug()
     
     def get_upage_stems(self):
         upage = UPage(gt.objs.files().iwalker.get_stems1())
@@ -219,6 +236,7 @@ class UPage(gt.UPage):
                                    ,sep      = 3 * ' '
                                    ).run()
                 if mes:
+                    mes = _('File: {}').format(self.file) + '\n\n' + mes
                     sh.com.fast_debug(mes)
                 else:
                     sh.com.empty(f)
@@ -242,6 +260,7 @@ class UPage(gt.UPage):
                                    ,sep      = 3 * ' '
                                    ).run()
                 if mes:
+                    mes = _('File: {}').format(self.file) + '\n\n' + mes
                     sh.com.fast_debug(mes)
                 else:
                     sh.com.empty(f)
@@ -280,3 +299,4 @@ if __name__ == '__main__':
     #objs.files().close()
     Tests().searchu_stems()
     #Tests().searchu_glue()
+    #Tests().parse_upage()

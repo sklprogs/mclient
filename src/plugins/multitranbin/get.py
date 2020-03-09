@@ -273,42 +273,42 @@ class UPage(Binary):
                 mes = _('Wrong input data!')
                 sh.objs.mes(f,mes).error()
     
-    def log_searchu(self,pattern,i):
-        f = '[MClient] plugins.multitranbin.get.UPage.log_searchu'
-        if self.Success:
-            if self.part1[i] == pattern:
-                oper = '<='
-            else:
-                oper = '<'
-            if self.part1[i] == b'':
-                stem1 = _('Start')
-            else:
-                stem1 = _('{} (#{})')
-                stem1 = stem1.format (self.part1[i].decode (ENCODING
-                                                           ,'replace'
-                                                           )
-                                     ,self._get_no(self.part1[i])
-                                     )
-            if i + 1 < len(self.part1):
-                stem2 = _('{} (#{})')
-                stem2 = stem2.format (self.part1[i+1].decode (ENCODING
-                                                             ,'replace'
-                                                             )
-                                     ,self._get_no(self.part1[i+1])
-                                     )
-            else:
-                stem2 = _('End')
-            mes = '{} {} {} {} {}'.format (stem1
-                                          ,oper
-                                          ,pattern.decode (ENCODING
-                                                          ,'replace'
-                                                          )
-                                          ,'<'
-                                          ,stem2
-                                          )
-            sh.objs.mes(f,mes,True).debug()
+    def _decode(self,pattern):
+        if self.file in (objs.files().iwalker.get_stems1()
+                        ,objs._files.iwalker.get_stems2()
+                        ):
+            result = pattern.decode(ENCODING,'replace')
         else:
-            sh.com.cancel(f)
+            result = com.get_string(pattern,0)
+        return '"{}"'.format(result)
+    
+    def _log(self,pattern,i):
+        f = '[MClient] plugins.multitranbin.get.UPage._log'
+        if self.part1[i] == pattern:
+            oper = '<='
+        else:
+            oper = '<'
+        if self.part1[i] == b'':
+            stem1 = _('Start')
+        else:
+            stem1 = _('{} (#{})')
+            stem1 = stem1.format (self._decode(self.part1[i])
+                                 ,self._get_no(self.part1[i])
+                                 )
+        if i + 1 < len(self.part1):
+            stem2 = _('{} (#{})')
+            stem2 = stem2.format (self._decode(self.part1[i+1])
+                                 ,self._get_no(self.part1[i+1])
+                                 )
+        else:
+            stem2 = _('End')
+        mes = '{} {} {} {} {}'.format (stem1
+                                      ,oper
+                                      ,self._decode(pattern)
+                                      ,'<'
+                                      ,stem2
+                                      )
+        sh.objs.mes(f,mes,True).debug()
     
     def searchu(self,pattern):
         f = '[MClient] plugins.multitranbin.get.UPage.searchu'
@@ -321,7 +321,8 @@ class UPage(Binary):
                         break
                     i += 1
                 i -= 1
-                self.log_searchu(pattern,i)
+                #TODO: Comment this to speed up
+                self._log(pattern,i)
                 return self.get_limits(self._get_ref(i))
             else:
                 sh.com.empty(f)
