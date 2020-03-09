@@ -1,10 +1,173 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import io
 import struct
-import get as gt
+import get               as gt
 import skl_shared.shared as sh
 from skl_shared.localize import _
+
+
+class Binary(gt.Binary):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.fsize  = 0
+        self.pages  = []
+        self.upages = []
+        self.lpages = []
+        self.zpages = []
+    
+    def info(self):
+        f = '[MClient] plugins.multitranbin.tests.Binary.info'
+        self.get_block_size()
+        self.get_file_size()
+        self.get_pages()
+        if self.Success:
+            iwrite = io.StringIO()
+            mes = _('File: {}').format(self.file)
+            iwrite.write(mes)
+            iwrite.write('\n')
+            size = sh.com.human_size(self.fsize)
+            mes  = _('File size: {}').format(size)
+            iwrite.write(mes)
+            iwrite.write('\n')
+            size = sh.com.figure_commas(self.bsize)
+            mes  = _('Block size: {}').format(size)
+            iwrite.write(mes)
+            iwrite.write('\n\n')
+            mes = _('Pages:')
+            iwrite.write(mes)
+            iwrite.write('\n')
+            nos    = []
+            types  = []
+            poses1 = []
+            poses2 = []
+            sizes  = []
+            for i in range(len(self.pages)):
+                # The first page is actually an M area
+                nos.append(i+2)
+                if self.pages[i] in self.upages:
+                    types.append('U')
+                elif self.pages[i] in self.lpages:
+                    types.append('L')
+                elif self.pages[i] in self.zpages:
+                    types.append('Z')
+                else:
+                    types.append(_('N/A'))
+                    mes = _('Wrong input data!')
+                    sh.objs.mes(f,mes).error()
+                # The first page is actually an M area
+                poses = self.get_page_limits(i+1)
+                if poses:
+                    poses1.append(sh.com.figure_commas(poses[0]))
+                    poses2.append(sh.com.figure_commas(poses[1]))
+                    sizes.append(sh.com.figure_commas(poses[1]-poses[0]))
+                else:
+                    sh.com.empty(f)
+                    poses1.append(_('N/A'))
+                    poses2.append(_('N/A'))
+                    sizes.append(_('N/A'))
+            headers  = ('#','TYPE','POS1','POS2','SIZE')
+            iterable = [nos,types,poses1,poses2,sizes]
+            mes = sh.FastTable (headers  = headers
+                               ,iterable = iterable
+                               ).run()
+            iwrite.write(mes)
+            iwrite.write('\n')
+            mes = iwrite.getvalue()
+            iwrite.close()
+            sh.com.fast_debug(mes)
+        else:
+            sh.com.cancel(f)
+    
+    def get_pages(self):
+        f = '[MClient] plugins.multitranbin.tests.Binary.get_pages'
+        self.get_block_size()
+        if self.Success:
+            if not self.pages:
+                limits = self.get_page_limit()
+                if limits:
+                    ''' These limits are based on the binary size, so we
+                        can read it without fearing an empty input.
+                        'if limit' skips 'M' area (page 0).
+                    '''
+                    limits = [limit * self.bsize \
+                              for limit in range(limits) \
+                              if limit
+                             ]
+                    for limit in limits:
+                        node = self.read(limit,limit+1)
+                        if node == b'U':
+                            self.upages.append(limit)
+                        elif node == b'L':
+                            self.lpages.append(limit)
+                        elif node == b'Z':
+                            self.zpages.append(limit)
+                        else:
+                            sub = sh.com.figure_commas(limit)
+                            messages = []
+                            mes = _('Position: {}').format(sub)
+                            messages.append(mes)
+                            mes = _('Wrong input data: "{}"!')
+                            mes = mes.format(node)
+                            messages.append(mes)
+                            mes = '\n'.join(messages)
+                            sh.objs.mes(f,mes).warning()
+                            break
+                    upages = [sh.com.figure_commas(item) \
+                              for item in self.upages
+                             ]
+                    lpages = [sh.com.figure_commas(item) \
+                              for item in self.lpages
+                             ]
+                    zpages = [sh.com.figure_commas(item) \
+                              for item in self.zpages
+                             ]
+                    mes = _('U pages: {}').format(upages)
+                    sh.objs.mes(f,mes,True).debug()
+                    mes = _('L pages: {}').format(lpages)
+                    sh.objs.mes(f,mes,True).debug()
+                    mes = _('Z pages: {}').format(zpages)
+                    sh.objs.mes(f,mes,True).debug()
+                    self.pages = self.upages + self.lpages + self.zpages
+                    self.pages.sort()
+                else:
+                    sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+        return self.pages
+    
+    def get_page_limit(self):
+        f = '[MClient] plugins.multitranbin.tests.Binary.get_page_limit'
+        if self.Success:
+            val = self.get_file_size() // self.get_block_size()
+            mes = sh.com.figure_commas(val)
+            sh.objs.mes(f,mes,True).debug()
+            return val
+        else:
+            sh.com.cancel(f)
+    
+    def get_file_size(self):
+        ''' This should be equal to 'sh.File(self.vfile).size()'.
+            #NOTE: size = max_pos + 1
+        '''
+        f = '[MClient] plugins.multitranbin.tests.Binary.get_file_size'
+        if self.Success:
+            if not self.fsize:
+                self.fsize = sh.File(self.file).size()
+            mes  = _('File "{}" has the size of {}')
+            size = sh.com.human_size(self.fsize)
+            mes  = mes.format(self.file,size)
+            sh.objs.mes(f,mes,True).debug()
+            if not self.fsize:
+                self.Success = False
+                mes = _('Empty output is not allowed!')
+                sh.objs.mes(f,mes).warning()
+        else:
+            sh.com.cancel(f)
+        return self.fsize
+
 
 
 class Tests:
@@ -292,11 +455,14 @@ if __name__ == '__main__':
     #Tests().translate('boiler')
     #Tests().translate('boiler')
     #Tests().translate_pair()
-    #objs.files().get_stems1().get_limits(20)
+    #gt.objs.files().get_stems1().get_page_limits(20)
     #objs.files().get_stems1().find(b'abasin',1000,9000)
     #Tests().glue_upage()
     #Tests().stems_upage()
     #objs.files().close()
-    Tests().searchu_stems()
+    #Tests().searchu_stems()
     #Tests().searchu_glue()
     #Tests().parse_upage()
+    file = gt.objs.files().iwalker.get_article()
+    ibin = Binary(file)
+    ibin.info()

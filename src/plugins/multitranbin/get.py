@@ -25,8 +25,8 @@ class Binary:
         self.Success = sh.File(self.file).Success
         self.open()
     
-    def get_limits(self,page_no):
-        f = '[MClient] plugins.multitranbin.get.Binary.get_limits'
+    def get_page_limits(self,page_no):
+        f = '[MClient] plugins.multitranbin.get.Binary.get_page_limits'
         if self.Success:
             if page_no is None or not self.get_block_size():
                 sh.com.empty(f)
@@ -323,7 +323,7 @@ class UPage(Binary):
                 i -= 1
                 #TODO: Comment this to speed up
                 self._log(pattern,i)
-                return self.get_limits(self._get_ref(i))
+                return self.get_page_limits(self._get_ref(i))
             else:
                 sh.com.empty(f)
         else:
@@ -415,7 +415,7 @@ class UPage(Binary):
                     The 2nd page is an intermediate page with
                     U identifier.
                 '''
-                poses = self.get_limits(1)
+                poses = self.get_page_limits(1)
                 if poses:
                     self.pos1  = poses[0]
                     self.pos2  = poses[1]
