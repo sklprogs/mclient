@@ -273,50 +273,56 @@ class UPage(Binary):
                 mes = _('Wrong input data!')
                 sh.objs.mes(f,mes).error()
     
+    def log_searchu(self,pattern,i):
+        f = '[MClient] plugins.multitranbin.get.UPage.log_searchu'
+        if self.Success:
+            if self.part1[i] == pattern:
+                oper = '<='
+            else:
+                oper = '<'
+            if self.part1[i] == b'':
+                stem1 = _('Start')
+            else:
+                stem1 = _('{} (#{})')
+                stem1 = stem1.format (self.part1[i].decode (ENCODING
+                                                           ,'replace'
+                                                           )
+                                     ,self._get_no(self.part1[i])
+                                     )
+            if i + 1 < len(self.part1):
+                stem2 = _('{} (#{})')
+                stem2 = stem2.format (self.part1[i+1].decode (ENCODING
+                                                             ,'replace'
+                                                             )
+                                     ,self._get_no(self.part1[i+1])
+                                     )
+            else:
+                stem2 = _('End')
+            mes = '{} {} {} {} {}'.format (stem1
+                                          ,oper
+                                          ,pattern.decode (ENCODING
+                                                          ,'replace'
+                                                          )
+                                          ,'<'
+                                          ,stem2
+                                          )
+            sh.objs.mes(f,mes,True).debug()
+        else:
+            sh.com.cancel(f)
+    
     def searchu(self,pattern):
         f = '[MClient] plugins.multitranbin.get.UPage.searchu'
         if self.Success:
             self.get_parts()
             if pattern and self.part1:
-                oper1 = '<'
-                oper2 = '<'
-                stem1 = _('Start')
-                stem2 = _('End')
-                match = None
                 i = 1
                 while i < len(self.part1):
                     if self.part1[i-1] <= pattern < self.part1[i]:
-                        if self.part1[i-1] == pattern:
-                            oper1 = '<='
-                        if self.part1[i-1] != b'':
-                            stem1 = _('{} (#{})')
-                            stem1 = stem1.format (self.part1[i-1].decode(ENCODING,'replace')
-                                                 ,self._get_no(self.part1[i-1])
-                                                 )
-                        match = i - 1
                         break
                     i += 1
-                if i == len(self.part1):
-                    match = i - 1
-                    stem1 = _('{} (#{})')
-                    stem1 = stem1.format (self.part1[match].decode(ENCODING,'replace')
-                                         ,self._get_no(self.part1[match])
-                                         )
-                    if self.part1[match] == pattern:
-                        oper1 = '<='
-                elif i < len(self.part1):
-                    stem2 = _('{} (#{})')
-                    stem2 = stem2.format (self.part1[i].decode(ENCODING,'replace')
-                                         ,self._get_no(self.part1[i])
-                                         )
-                mes = '{} {} {} {} {}'.format (stem1
-                                              ,oper1
-                                              ,pattern.decode(ENCODING,'replace')
-                                              ,oper2
-                                              ,stem2
-                                              )
-                sh.objs.mes(f,mes,True).debug()
-                return self.get_limits(self._get_ref(match))
+                i -= 1
+                self.log_searchu(pattern,i)
+                return self.get_limits(self._get_ref(i))
             else:
                 sh.com.empty(f)
         else:
@@ -1322,9 +1328,3 @@ class Get:
 
 objs = Objects()
 com  = Commands()
-
-
-if __name__ == '__main__':
-    f = '[MClient] plugins.multitranbin.get.__main__'
-    PATH = '/home/pete/.config/mclient/dics'
-    #objs.files().close()

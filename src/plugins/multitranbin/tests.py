@@ -87,20 +87,37 @@ class Tests:
         #pattern = b'wol'
         #pattern = b'acf'
         #pattern = b'volume'
-        #pattern = b'abatement'
+        pattern = b'abatement'
         
         gt.LANG1 = 'English'
         gt.LANG2 = 'Russian'
         gt.objs.files().reset()
         upage = UPage(gt.objs.files().iwalker.get_stems1())
-        upage.searchu(b'abatement')
+        upage.searchu(pattern)
         print('---------------------------------------------------')
+        #pattern = 'уборка'
+        #pattern = 'эт'
+        #pattern = 'аж'
+        #pattern = 'ажиотаж'
+        #pattern = 'аккордеон'
+        #pattern = 'ан'
+        #pattern = 'анорексия'
+        #pattern = 'ас'
+        #pattern = 'асс'
+        #pattern = 'язык'
+        #pattern = 'этот'
+        #pattern = 'железобетонный принцип'
+        #pattern = 'з'
+        #pattern = 'задеть'
+        #pattern = 'зашуганный'
+        pattern  = 'звезда'
+        pattern  = bytes(pattern,gt.ENCODING)
         gt.LANG1 = 'Russian'
         gt.LANG2 = 'English'
         gt.objs.files().reset()
         # Since we swap languages, the needed stems will always be #1
         upage = UPage(gt.objs.files().iwalker.get_stems1())
-        upage.searchu(bytes('уборка',gt.ENCODING))
+        upage.searchu(pattern)
         timer.end()
         #upage.debug()
     
@@ -261,4 +278,5 @@ if __name__ == '__main__':
     #Tests().glue_upage()
     #Tests().stems_upage()
     #objs.files().close()
-    Tests().searchu_glue()
+    Tests().searchu_stems()
+    #Tests().searchu_glue()

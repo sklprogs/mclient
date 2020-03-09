@@ -1,4 +1,5 @@
 
+- implement "⇒": EN-RU: вспоминать ⇒ вспоминать прошлое
 - plugins.multitranbin.get: (?) Find duplicates of the same stem
   (may have different stem numbers)
 - downtime: make columns narrower
