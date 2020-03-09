@@ -419,67 +419,21 @@ class UPage(Binary):
             sh.com.cancel(f)
         return self.psize
     
-    def debug(self):
-        f = '[MClient] plugins.multitranbin.get.UPage.debug'
-        if self.Success:
-            if self.part2:
-                part1 = [chunk.decode(ENCODING,'ignore') \
-                         for chunk in self.part1
-                        ]
-                part2 = [struct.unpack('<h',chunk)[0] \
-                         for chunk in self.part2
-                        ]
-                mes = sh.FastTable (headers  = ('STEM','PAGEREF')
-                                   ,iterable = (part1,part2)
-                                   ,sep      = 3 * ' '
-                                   ).run()
-                if mes:
-                    sh.com.fast_debug(mes)
-                else:
-                    sh.com.empty(f)
-            else:
-                sh.com.empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def delete_invalid(self):
-        f = '[MClient] plugins.multitranbin.get.UPage.delete_invalid'
-        if self.Success:
-            if self.part1:
-                count = 0
-                i = 0
-                while i < len(self.part1):
-                    if len(self.part2[i]) != 2:
-                        sub = com.get_string(self.part2[i])
-                        mes = _('Wrong input data: "{}"!').format(sub)
-                        sh.objs.mes(f,mes,True).warning()
-                        count += 1
-                        del self.part1[i]
-                        del self.part2[i]
-                        i -= 1
-                    i += 1
-                if count:
-                    mes = _('{} elements have been deleted')
-                    mes = mes.format(count)
-                    sh.objs.mes(f,mes,True).warning()
-            else:
-                sh.com.empty(f)
-        else:
-            sh.com.cancel(f)
-    
     def conform_parts(self):
         f = '[MClient] plugins.multitranbin.get.UPage.conform_parts'
         if self.Success:
             if self.part1:
                 if len(self.part1) == len(self.part2):
-                    self.delete_invalid()
-                    self.part1.insert(0,b'')
-                    max_ = struct.unpack('<h',max(self.part2))[0]
-                    try:
-                        add_bytes = struct.pack('<h',max_+1)
-                    except:
-                        add_bytes = max(self.part2)
-                    self.part2.append(add_bytes)
+                    if self.file in (objs.files().iwalker.get_stems1()
+                                    ,objs._files.iwalker.get_stems2()
+                                    ):
+                        self.part1.insert(0,b'')
+                        max_ = struct.unpack('<h',max(self.part2))[0]
+                        try:
+                            add_bytes = struct.pack('<h',max_+1)
+                        except:
+                            add_bytes = max(self.part2)
+                        self.part2.append(add_bytes)
                 else:
                     self.Success = False
                     sub = '{} == {}'.format (len(self.part1)
@@ -728,212 +682,6 @@ class TypeIn(Binary):
                 sh.com.empty(f)
         else:
             sh.com.cancel(f)
-
-
-
-class Tests:
-    
-    def stems_upage(self):
-        upage = UPage(objs.files().iwalker.get_stems1())
-        upage.get_parts()
-        part1  = list(upage.part1)
-        part2  = list(upage.part2)
-        part1d = [item.decode(ENCODING,'replace') for item in part1]
-        part2l = []
-        for i in range(len(part2)):
-            if part2[i]:
-                unpacked = struct.unpack('<h',part2[i])[0]
-                unpacked = '"{}"'.format(unpacked)
-                part2l.append(unpacked)
-            else:
-                part2l.append('""')
-        header = ('CHUNK1','CP1251','CHUNK2','<h')
-        data   = [part1,part1d,part2,part2l]
-        mes = sh.FastTable (headers  = header
-                           ,iterable = data
-                           ,sep      = 3 * ' '
-                           ).run()
-        sh.com.fast_debug(mes)
-    
-    def glue_upage(self):
-        upage = UPage(objs.files().iwalker.get_glue1())
-        upage.get_parts()
-        part1  = list(upage.part1)
-        part2  = list(upage.part2)
-        part1l = []
-        for i in range(len(part1)):
-            if part1[i]:
-                unpacked = struct.unpack('<b',part1[i])[0]
-                unpacked = '"{}"'.format(unpacked)
-                part1l.append(unpacked)
-            else:
-                part1l.append('""')
-        part2l = []
-        for i in range(len(part2)):
-            if part2[i]:
-                unpacked = struct.unpack('<h',part2[i])[0]
-                unpacked = '"{}"'.format(unpacked)
-                part2l.append(unpacked)
-            else:
-                part2l.append('""')
-        header = ('CHUNK1','<b','CHUNK2','<h')
-        data   = [part1,part1l,part2,part2l]
-        mes = sh.FastTable (headers  = header
-                           ,iterable = data
-                           ,sep      = 3 * ' '
-                           ).run()
-        sh.com.fast_debug(mes)
-        '''
-        tmp = list(set(part2l))
-        tmp.sort()
-        sh.com.fast_debug(tmp)
-        '''
-    
-    def searchu(self):
-        f = '[MClient] plugins.multitranbin.get.Tests.searchu'
-        timer = sh.Timer(f)
-        timer.start()
-        #pattern = b'wol'
-        #pattern = b'zero'
-        #pattern = b'wi'
-        #pattern = b'wifi'
-        #pattern = b'willing'
-        #pattern = b'vh'
-        #pattern = b'ace'
-        #pattern = b'a'
-        #pattern = b'algorithm'
-        #pattern = b'wol'
-        #pattern = b'acf'
-        #pattern = b'volume'
-        #pattern = b'abatement'
-        
-        global LANG1, LANG2
-        LANG1 = 'English'
-        LANG2 = 'Russian'
-        objs.files().reset()
-        upage = UPage(objs.files().iwalker.get_stems1())
-        upage.searchu(b'abatement')
-        print('---------------------------------------------------')
-        LANG1 = 'Russian'
-        LANG2 = 'English'
-        objs.files().reset()
-        # Since we swap languages, the needed stems will always be #1
-        upage = UPage(objs.files().iwalker.get_stems1())
-        upage.searchu(bytes('уборка',ENCODING))
-        timer.end()
-        #upage.debug()
-    
-    def translate_pair(self):
-        global LANG1, LANG2
-        self.translate('abasin')
-        LANG1 = 'Russian'
-        LANG2 = 'English'
-        objs.files().reset()
-        # 'factorage', 'sack' # 2 terms
-        self.translate('уборка') # has a comment
-    
-    def translate_stem(self):
-        f = '[MClient] plugins.multitranbin.get.Tests.translate_stem'
-        chnos = objs.stems().search(b'abasin')
-        objs._stems.close()
-        #290202, 290203
-        glued = []
-        for chno in chnos:
-            chunk = objs.glue().search(chno)
-            if chunk:
-                glued += chunk
-        objs._glue.close()
-        sh.objs.mes(f,glued,True).debug()
-        articles = []
-        for chno in glued:
-            articles.append(objs.articles().search(chno))
-        objs._articles.close()
-        articles = [article for article in articles if article]
-        sh.objs.mes(f,articles,True).debug()
-    
-    def get_part2(self):
-        # stem.eng
-        file = STEM1
-        ''' 13 ['aberrationist']
-            8 b'\x01\x83\x8e\x02\x03\x00C\x00' -> [167,555; 3; 67]
-        '''
-        pattern = 'aberrationist'
-        pattern = bytes(pattern,ENCODING)
-        ibin = Binary(file)
-        ibin.get_part2(pattern)
-        ibin.close()
-        # dict.erd
-        file = DICTD1
-        ''' 3 b'\x83\x8e\x02' -> [167,555]
-            5 b'k\x00\\\x0b\x00' -> [107; 2,908]
-        '''
-        pattern = b'\x83\x8e\x02' # 167,555
-        ibin = Binary(file)
-        ibin.get_part2(pattern)
-        ibin.close()
-        # dict.ert
-        file = DICTT
-        ''' 3 b'\\\x0b\x00' [2908]
-            55 b'\xfcbir\x85\x8b\x80\x99\x94\xa0\xa5\xa6\xb6\xbdQL@LUOXc\x9fv\xab~|\x8c\x93\x8e\x93\xa6\xa5\xa1\xae\xc0\xb8\xc5\xda\xd1\x0b\xe0\xe5\xdf\xe8\xed\xf4\x02\x03\x06\x13<div'
-        '''
-        pattern = b'\\\x0b\x00'
-        ibin = Binary(file)
-        xorred = ibin.get_part2(pattern)
-        ibin.close()
-        Xor (data   = xorred
-            ,offset = -251
-            ).dexor()
-    
-    def translate_many(self):
-        # 'absolute measurements' = 'абсолютный способ измерения'
-        '''
-        # Successfully processed patterns
-        patterns = ['abasin'
-                   ,'absolute measurements'
-                   ,'baby fish'
-                   ,'sack duty'
-                   ,'habitable room'
-                   ,'a posteriori'
-                   ,'abatement of tax'
-                   ,'abatement of purchase price'
-                   ,'habitable room'
-                   ,'absolute distribution'
-                   ,'abolishment of a scheme'
-                   ,'calcium gallium germanium garnet'
-                   ,'daily reports notice'
-                   ]
-        # Failed patterns
-        # No combos:      ['he has not a sou'
-                          ,'World Union of Catholic Teachers'
-                          ,'Kapteyn transformation'
-                          ]
-        # Stack overflow: ['Bachelor of Vocational Education'
-                          ,'ashlar line'
-                          ,'acceleration measured in G'
-                          ,'acceleration spectral density'
-                          ,'A & E'
-                          ,'Abelian equation'
-                          ,'deaf as an adder'
-                          ,'eristic'
-                          ,'курс занятий для студентов последнего курса'
-                          ]
-        '''
-        patterns = ['he has not a sou'
-                   ,'Bachelor of Vocational Education'
-                   ,'ashlar line'
-                   ,'acceleration measured in G'
-                   ]
-        for pattern in patterns:
-            self.translate(pattern)
-            input(_('Press any key'))
-    
-    def translate(self,pattern):
-        f = '[MClient] plugins.multitranbin.get.Tests.translate'
-        timer = sh.Timer(f)
-        timer.start()
-        iget = Get(pattern)
-        sh.objs.mes(f,iget.run(),True).debug()
-        timer.end()
 
 
 
@@ -1579,27 +1327,4 @@ com  = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.get.__main__'
     PATH = '/home/pete/.config/mclient/dics'
-    #Tests().searchu()
-    #Tests().translate('removal')
-    #Tests().translate_many()
-    #Tests().translate('Bachelor of Vocational Education')
-    #Tests().translate('Kafir')
-    #Tests().translate('absolute measurements')
-    #Tests().translate('abatement of purchase price')
-    #Tests().translate('answer print')
-    #LANG1, LANG2 = LANG2, LANG1
-    #objs.files().reset()
-    '''
-    'с большой точностью'
-    'уборка'
-    'стычка'
-    OK: 'садовод'
-    '''
-    #Tests().translate('boiler')
-    #Tests().translate('boiler')
-    #Tests().translate_pair()
-    #objs.files().get_stems1().get_limits(20)
-    #objs.files().get_stems1().find(b'abasin',1000,9000)
-    #Tests().glue_upage()
-    Tests().stems_upage()
     #objs.files().close()
