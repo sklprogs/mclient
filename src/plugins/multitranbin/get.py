@@ -19,11 +19,32 @@ PATH     = ''
 class Binary:
     
     def __init__(self,file):
+        self.fsize   = 0
         self.bsize   = 0
         self.file    = file
         self.bname   = sh.Path(file).basename()
         self.Success = sh.File(self.file).Success
         self.open()
+    
+    def get_file_size(self):
+        ''' This should be equal to 'sh.File(self.vfile).size()'.
+            #NOTE: size = max_pos + 1
+        '''
+        f = '[MClient] plugins.multitranbin.get.Binary.get_file_size'
+        if self.Success:
+            if not self.fsize:
+                self.fsize = sh.File(self.file).size()
+                mes  = _('File "{}" has the size of {}')
+                size = sh.com.human_size(self.fsize)
+                mes  = mes.format(self.file,size)
+                sh.objs.mes(f,mes,True).debug()
+            if not self.fsize:
+                self.Success = False
+                mes = _('Empty output is not allowed!')
+                sh.objs.mes(f,mes).warning()
+        else:
+            sh.com.cancel(f)
+        return self.fsize
     
     def get_page_limits(self,page_no):
         f = '[MClient] plugins.multitranbin.get.Binary.get_page_limits'
@@ -163,7 +184,7 @@ class Binary:
         if self.Success:
             if start is None or end is None:
                 sh.com.empty(f)
-            elif 0 <= start < end:
+            elif 0 <= start < end <= self.get_file_size():
                 self.imap.seek(start)
                 chunk = self.imap.read(end-start)
                 mes = '"{}"'.format(com.get_string(chunk))
@@ -171,7 +192,10 @@ class Binary:
                 return chunk
             else:
                 self.Success = False
-                sub = '0 <= {} < {}'.format(start,end)
+                sub1 = sh.com.figure_commas(start)
+                sub2 = sh.com.figure_commas(end)
+                sub3 = sh.com.figure_commas(self.fsize)
+                sub = '0 <= {} < {} <= {}'.format(sub1,sub2,sub3)
                 mes = _('The condition "{}" is not observed!')
                 mes = mes.format(sub)
                 sh.objs.mes(f,mes).warning()
@@ -431,16 +455,13 @@ class UPage(Binary):
         if self.Success:
             if self.part1:
                 if len(self.part1) == len(self.part2):
-                    if self.file in (objs.files().iwalker.get_stems1()
-                                    ,objs._files.iwalker.get_stems2()
-                                    ):
-                        self.part1.insert(0,b'')
-                        max_ = struct.unpack('<h',max(self.part2))[0]
-                        try:
-                            add_bytes = struct.pack('<h',max_+1)
-                        except:
-                            add_bytes = max(self.part2)
-                        self.part2.append(add_bytes)
+                    self.part1.insert(0,b'')
+                    max_ = struct.unpack('<h',max(self.part2))[0]
+                    try:
+                        add_bytes = struct.pack('<h',max_+1)
+                    except:
+                        add_bytes = max(self.part2)
+                    self.part2.append(add_bytes)
                 else:
                     self.Success = False
                     sub = '{} == {}'.format (len(self.part1)
@@ -1246,9 +1267,11 @@ class Get:
         f = '[MClient] plugins.multitranbin.get.Get.combos'
         if self.Success:
             self.stemnos = list(itertools.product(*self.stemnos))
-            sh.objs.mes(f,self.stemnos,True).debug()
+            #FIX: MemoryError
+            #sh.objs.mes(f,self.stemnos,True).debug()
             self.stemnos = [b''.join(item) for item in self.stemnos]
-            sh.objs.mes(f,self.stemnos,True).debug()
+            #FIX: MemoryError
+            #sh.objs.mes(f,self.stemnos,True).debug()
         else:
             sh.com.cancel(f)
     

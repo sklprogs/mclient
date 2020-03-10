@@ -12,7 +12,6 @@ class Binary(gt.Binary):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.fsize  = 0
         self.pages  = []
         self.upages = []
         self.lpages = []
@@ -147,26 +146,6 @@ class Binary(gt.Binary):
             return val
         else:
             sh.com.cancel(f)
-    
-    def get_file_size(self):
-        ''' This should be equal to 'sh.File(self.vfile).size()'.
-            #NOTE: size = max_pos + 1
-        '''
-        f = '[MClient] plugins.multitranbin.tests.Binary.get_file_size'
-        if self.Success:
-            if not self.fsize:
-                self.fsize = sh.File(self.file).size()
-            mes  = _('File "{}" has the size of {}')
-            size = sh.com.human_size(self.fsize)
-            mes  = mes.format(self.file,size)
-            sh.objs.mes(f,mes,True).debug()
-            if not self.fsize:
-                self.Success = False
-                mes = _('Empty output is not allowed!')
-                sh.objs.mes(f,mes).warning()
-        else:
-            sh.com.cancel(f)
-        return self.fsize
 
 
 
@@ -329,32 +308,45 @@ class Tests:
         patterns = ['abasin'
                    ,'absolute measurements'
                    ,'baby fish'
-                   ,'sack duty'
                    ,'habitable room'
                    ,'a posteriori'
-                   ,'abatement of tax'
-                   ,'abatement of purchase price'
-                   ,'habitable room'
                    ,'absolute distribution'
                    ,'abolishment of a scheme'
                    ,'calcium gallium germanium garnet'
+                   ,'ashlar line'
+                   ,'Abelian equation'
+                   ,'eristic'
+                   ,'уборка'
+                   ,'абонентская линия'
+                   ,'ячейка решётки'
+                   ,'ящичный поддон'
+                   ]
+        # OK with excessive terms
+        patterns = ['palletbox'
+                   ,'ярлык'
+                   ]
+        # OK, but slow
+        patterns = ['acceleration spectral density'
+                   ,'deaf as an adder'
+                   ]
+        # OK with warnings
+        patterns = ['abatement of tax'
+                   ,'abatement of purchase price'
                    ,'daily reports notice'
                    ]
-        # Failed patterns
-        # No combos:      ['he has not a sou'
-                          ,'World Union of Catholic Teachers'
-                          ,'Kapteyn transformation'
-                          ]
-        # Stack overflow: ['Bachelor of Vocational Education'
-                          ,'ashlar line'
-                          ,'acceleration measured in G'
-                          ,'acceleration spectral density'
-                          ,'A & E'
-                          ,'Abelian equation'
-                          ,'deaf as an adder'
-                          ,'eristic'
-                          ,'курс занятий для студентов последнего курса'
-                          ]
+        # No combos
+        patterns = ['World Union of Catholic Teachers'
+                   ,'Kapteyn transformation'
+                   ,'Bachelor of Vocational Education'
+                   ,'sack duty'
+                   ,'acceleration measured in G'
+                   ,'A & E'
+                   ]
+        # Infinite loop (or MemoryError, get, 1270)
+        patterns = ['he has not a sou'
+                   ,'абонентское устройство для совместной передачи речи и данных'
+                   ,'курс занятий для студентов последнего курса'
+                   ]
         '''
         patterns = ['he has not a sou'
                    ,'Bachelor of Vocational Education'
@@ -460,7 +452,6 @@ if __name__ == '__main__':
     'стычка'
     OK: 'садовод'
     '''
-    #Tests().translate('boiler')
     #Tests().translate_pair()
     #gt.objs.files().get_stems1().get_page_limits(20)
     #objs.files().get_stems1().find(b'abasin',1000,9000)
@@ -470,5 +461,6 @@ if __name__ == '__main__':
     #Tests().searchu_stems()
     #Tests().searchu_glue()
     # Glue & Article UPage: 1b, 1h; stems UPage: Xb, 1h
-    Tests().parse_upage()
+    #Tests().parse_upage()
     #Tests().searchu_article()
+    Tests().translate('boiler')
