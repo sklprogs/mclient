@@ -26,6 +26,18 @@ class Binary:
         self.Success = sh.File(self.file).Success
         self.open()
     
+    def get_page_limit(self):
+        f = '[MClient] plugins.multitranbin.get.Binary.get_page_limit'
+        self.get_file_size()
+        self.get_block_size()
+        if self.Success:
+            val = self.fsize // self.bsize
+            mes = sh.com.figure_commas(val)
+            sh.objs.mes(f,mes,True).debug()
+            return val
+        else:
+            sh.com.cancel(f)
+    
     def get_file_size(self):
         ''' This should be equal to 'sh.File(self.vfile).size()'.
             #NOTE: size = max_pos + 1
@@ -104,6 +116,7 @@ class Binary:
                     try:
                         self.bsize = struct.unpack('<h',read)[0]
                     except Exception as e:
+                        self.Success = False
                         mes = _('Third-party module has failed!\n\nDetails: {}')
                         mes = mes.format(e)
                         sh.objs.mes(f,mes,True).warning()
@@ -345,14 +358,25 @@ class UPage(Binary):
                         break
                     i += 1
                 i -= 1
-                #TODO: Comment this to speed up
-                self._log(pattern,i)
-                return self.get_page_limits(self._get_ref(i))
+                page_no = self._get_ref(i)
+                page_limit = self.get_page_limit()
+                if page_limit:
+                    if page_no >= page_limit:
+                        old = page_no
+                        page_no = page_limit - 1
+                        mes = _('Overflow: {} => {}')
+                        mes = mes.format(old,page_no)
+                        sh.objs.mes(f,mes,True).warning()
+                        i -= 1
+                    #TODO: Comment this to speed up
+                    self._log(pattern,i)
+                    return self.get_page_limits(page_no)
+                else:
+                    sh.com.empty(f)
             else:
                 sh.com.empty(f)
         else:
             sh.com.cancel(f)
-        
     
     def report_status(self,pos):
         f = '[MClient] plugins.multitranbin.get.UPage.report_status'

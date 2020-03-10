@@ -136,16 +136,6 @@ class Binary(gt.Binary):
         else:
             sh.com.cancel(f)
         return self.pages
-    
-    def get_page_limit(self):
-        f = '[MClient] plugins.multitranbin.tests.Binary.get_page_limit'
-        if self.Success:
-            val = self.get_file_size() // self.get_block_size()
-            mes = sh.com.figure_commas(val)
-            sh.objs.mes(f,mes,True).debug()
-            return val
-        else:
-            sh.com.cancel(f)
 
 
 
@@ -463,4 +453,12 @@ if __name__ == '__main__':
     # Glue & Article UPage: 1b, 1h; stems UPage: Xb, 1h
     #Tests().parse_upage()
     #Tests().searchu_article()
-    Tests().translate('boiler')
+    #Tests().translate('boiler')
+    #file = gt.objs.files().iwalker.get_article()
+    '''
+    file = gt.objs.files().iwalker.get_glue1()
+    ibin = Binary(file)
+    ibin.info()
+    '''
+    # 'sack duty'
+    Tests().translate('abatement of tax')
