@@ -181,11 +181,13 @@ class Tests:
         #pattern = b'\x00'
         #pattern = b'\x01\x02\x03'
         #pattern = b'\x02\x01\x03'
-        pattern  = b'A'
+        #pattern = b'A'
         #pattern = b'\x02'
         #pattern = b'\x03'
         #pattern = b'\x04'
         #pattern = b':'
+        #pattern = b'\xfc'
+        pattern  = b'\xfd'
         upage = UPage(gt.objs.files().iwalker.get_article())
         upage.get_parts()
         upage.searchu(pattern)
