@@ -364,7 +364,7 @@ class UPage(Binary):
                     if page_no >= page_limit:
                         old = page_no
                         page_no = page_limit - 1
-                        mes = _('Overflow: {} => {}')
+                        mes = _('Overflow: {} -> {}')
                         mes = mes.format(old,page_no)
                         sh.objs.mes(f,mes,True).warning()
                         i -= 1
