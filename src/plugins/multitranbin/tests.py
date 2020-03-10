@@ -177,6 +177,20 @@ class Tests:
         upage.get_parts()
         upage.debug()
     
+    def searchu_article(self):
+        #pattern = b'\x00'
+        #pattern = b'\x01\x02\x03'
+        #pattern = b'\x02\x01\x03'
+        pattern  = b'A'
+        #pattern = b'\x02'
+        #pattern = b'\x03'
+        #pattern = b'\x04'
+        #pattern = b':'
+        upage = UPage(gt.objs.files().iwalker.get_article())
+        upage.get_parts()
+        upage.searchu(pattern)
+        #upage.debug()
+    
     def parse_upage(self):
         file = gt.objs.files().iwalker.get_stems1()
         self._parse_upage(file)
@@ -185,6 +199,8 @@ class Tests:
         file = gt.objs.files().iwalker.get_glue1()
         self._parse_upage(file)
         file = gt.objs.files().iwalker.get_glue2()
+        self._parse_upage(file)
+        file = gt.objs.files().iwalker.get_article()
         self._parse_upage(file)
     
     def searchu_glue(self):
@@ -245,11 +261,6 @@ class Tests:
                            ,sep      = 3 * ' '
                            ).run()
         sh.com.fast_debug(mes)
-        '''
-        tmp = list(set(part2l))
-        tmp.sort()
-        sh.com.fast_debug(tmp)
-        '''
     
     def searchu_stems(self):
         f = '[MClient] plugins.multitranbin.tests.Tests.searchu_stems'
@@ -374,13 +385,8 @@ class UPage(gt.UPage):
                             ,gt.objs._files.iwalker.get_stems2()
                             ):
                 self.debug_stems()
-            elif self.file in (gt.objs._files.iwalker.get_glue1()
-                              ,gt.objs._files.iwalker.get_glue2()
-                              ):
-                self.debug_glue()
             else:
-                mes = _('Not implemented yet!')
-                sh.objs.mes(f,mes).info()
+                self.debug_glue()
         else:
             sh.com.cancel(f)
     
@@ -462,7 +468,6 @@ if __name__ == '__main__':
     #objs.files().close()
     #Tests().searchu_stems()
     #Tests().searchu_glue()
+    # Glue & Article UPage: 1b, 1h; stems UPage: Xb, 1h
     #Tests().parse_upage()
-    file = gt.objs.files().iwalker.get_article()
-    ibin = Binary(file)
-    ibin.info()
+    Tests().searchu_article()
