@@ -461,7 +461,6 @@ if __name__ == '__main__':
     OK: 'садовод'
     '''
     #Tests().translate('boiler')
-    #Tests().translate('boiler')
     #Tests().translate_pair()
     #gt.objs.files().get_stems1().get_page_limits(20)
     #objs.files().get_stems1().find(b'abasin',1000,9000)
@@ -471,5 +470,5 @@ if __name__ == '__main__':
     #Tests().searchu_stems()
     #Tests().searchu_glue()
     # Glue & Article UPage: 1b, 1h; stems UPage: Xb, 1h
-    #Tests().parse_upage()
-    Tests().searchu_article()
+    Tests().parse_upage()
+    #Tests().searchu_article()

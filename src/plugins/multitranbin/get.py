@@ -679,7 +679,7 @@ class TypeIn(Binary):
             sh.com.cancel(f)
     
     def search(self,coded):
-        # Do not fail the whole class on a failed search
+        # Do not fail the whole class upon a failed search
         f = '[MClient] plugins.multitranbin.get.TypeIn.search'
         if self.Success:
             if coded:
@@ -897,7 +897,7 @@ class Xor:
 
 
 
-class Articles(Binary):
+class Articles(UPage):
     # Parse files like 'dict.ert'
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
@@ -915,12 +915,19 @@ class Articles(Binary):
             sh.com.cancel(f)
     
     def search(self,coded):
-        # Do not fail the whole class on a failed search
+        # Do not fail the whole class upon a failed search
         f = '[MClient] plugins.multitranbin.get.Articles.search'
         if self.Success:
             if coded:
-                chunk = self.get_part2(coded)
-                return self.parse(chunk)
+                poses = self.searchu(coded)
+                if poses:
+                    chunk = self.get_part2 (pattern = coded
+                                           ,start   = poses[0]
+                                           ,end     = poses[1]
+                                           )
+                    return self.parse(chunk)
+                else:
+                    sh.com.empty(f)
             else:
                 sh.com.empty(f)
         else:
@@ -928,25 +935,32 @@ class Articles(Binary):
 
 
 
-class Glue(Binary):
+class Glue(UPage):
     # Parse files like 'dict.erd'
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
     def search(self,coded):
-        # Do not fail the whole class on a failed search
+        # Do not fail the whole class upon a failed search
         f = '[MClient] plugins.multitranbin.get.Glue.search'
         if self.Success:
             if coded:
-                chunk = self.get_part2(coded)
-                if chunk:
-                    return self.parse(chunk)
+                poses = self.searchu(coded)
+                if poses:
+                    chunk = self.get_part2 (pattern = coded
+                                           ,start   = poses[0]
+                                           ,end     = poses[1]
+                                           )
+                    if chunk:
+                        return self.parse(chunk)
+                    else:
+                        ''' 'dict.erd' sometimes does not comprise
+                            stem numbers provided by 'stem.eng'
+                            (at least in the demo version).
+                        '''
+                        sh.com.lazy(f)
                 else:
-                    ''' 'dict.erd' sometimes does not comprise
-                        stem numbers provided by 'stem.eng' (at least
-                        in the demo version).
-                    '''
-                    sh.com.lazy(f)
+                    sh.com.empty(f)
             else:
                 sh.com.empty(f)
         else:
@@ -1202,7 +1216,7 @@ class Stems(UPage):
             sh.com.cancel(f)
     
     def search(self,coded):
-        # Do not fail the whole class on a failed search
+        # Do not fail the whole class upon a failed search
         f = '[MClient] plugins.multitranbin.get.Stems.search'
         if self.Success:
             if coded:
