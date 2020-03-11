@@ -455,10 +455,41 @@ if __name__ == '__main__':
     #Tests().searchu_article()
     #Tests().translate('boiler')
     #file = gt.objs.files().iwalker.get_article()
+
+    #Tests().translate('sack duty')
     '''
     file = gt.objs.files().iwalker.get_glue1()
     ibin = Binary(file)
-    ibin.info()
+    pattern = b'\xff;\x00\xa6\x01\x00'
+    start = 0
+    while True:
+        start = ibin.find(pattern,start)
+        if start:
+            start += 1
+        else:
+            break
+    # 98,039; 154,407
+    # Pages: #24 (extended), #38 (normal)
+    
+    24 L    94,211  96,770  2,559
+    25 L    98,307  100,613 2,306
+    38 L    151,555 154,695 3,140
+    
+    "\xf3" (#46) < "\xff;\x00\xa6\x01\x00" < "\xf9" (#47)
+    
+    \xf3   23     
+    \xf9   50
     '''
-    # 'sack duty'
-    Tests().translate('abatement of tax')
+    '''
+    file = gt.objs.files().iwalker.get_glue1()
+    ibin = Binary(file)
+    pattern = b'\xff;\x00\xa6\x01\x00'
+    ibin.find(pattern,94211,98307)
+    '''
+
+    file = gt.objs.files().iwalker.get_glue1()
+    #ibin = Binary(file)
+    #ibin.info()
+    upage = UPage(file)
+    upage.get_parts()
+    upage.debug_glue()

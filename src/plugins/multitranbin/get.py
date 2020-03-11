@@ -1366,9 +1366,9 @@ class Get:
                 if art_no:
                     art_nos += art_no
             if art_nos:
-                mes = _('Found combinations: {}').format(art_nos)
+                mes = _('Found articles: {}').format(art_nos)
             else:
-                mes = _('No stem combinations have been found!')
+                mes = _('No articles have been found!')
             sh.objs.mes(f,mes,True).info()
             articles = []
             for art_no in art_nos:

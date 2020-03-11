@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-11 02:05+0300\n"
-"PO-Revision-Date: 2020-03-11 02:05+0300\n"
+"POT-Creation-Date: 2020-03-11 14:56+0300\n"
+"PO-Revision-Date: 2020-03-11 14:56+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -1169,12 +1169,12 @@ msgid "Found stem: \"{}\""
 msgstr "Найдена основа: \"{}\""
 
 #: mclient/src/plugins/multitranbin/get.py:1369
-msgid "Found combinations: {}"
-msgstr "Найденные комбинации: {}"
+msgid "Found articles: {}"
+msgstr "Найдены статьи: {}"
 
 #: mclient/src/plugins/multitranbin/get.py:1371
-msgid "No stem combinations have been found!"
-msgstr "Комбинаций основ не найдено!"
+msgid "No articles have been found!"
+msgstr "Статьи не найдены!"
 
 #: mclient/src/plugins/multitranbin/run.py:53
 #: mclient/src/plugins/multitranbin/run.py:107
@@ -15307,6 +15307,12 @@ msgstr ""
 #: skl_shared/src/tests.py:933
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
+
+#~ msgid "Found combinations: {}"
+#~ msgstr "Найденные комбинации: {}"
+
+#~ msgid "No stem combinations have been found!"
+#~ msgstr "Комбинаций основ не найдено!"
 
 #~ msgid "Pattern: \"{}\": no matches starting from {}!"
 #~ msgstr "Образец: \"{}\": нет совпадений с позиции {}!"
