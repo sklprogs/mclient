@@ -17,6 +17,29 @@ class Binary(gt.Binary):
         self.lpages = []
         self.zpages = []
     
+    def get_max_limits(self,page_no):
+        ''' Return positions of a page based on a block size.
+            #NOTE: Seems that 'get.Binary.get_page_limits' which
+                   returns a narrower range works fine, so I use
+                   the present function for testing purposes only.
+        '''
+        f = '[MClient] plugins.multitranbin.tests.Binary.get_max_limits'
+        if self.Success:
+            if page_no is None or not self.get_block_size():
+                sh.com.empty(f)
+            else:
+                mes = _('Page #: {}').format(page_no)
+                sh.objs.mes(f,mes,True).debug()
+                pos1 = page_no * self.bsize
+                pos2 = pos1 + self.bsize
+                sub1 = sh.com.figure_commas(pos1)
+                sub2 = sh.com.figure_commas(pos2)
+                mes  = _('Page limits: [{}:{}]').format(sub1,sub2)
+                sh.objs.mes(f,mes,True).debug()
+                return(pos1,pos2)
+        else:
+            sh.com.cancel(f)
+    
     def info(self):
         f = '[MClient] plugins.multitranbin.tests.Binary.info'
         self.get_block_size()
@@ -44,8 +67,8 @@ class Binary(gt.Binary):
             poses2 = []
             sizes  = []
             for i in range(len(self.pages)):
-                # The first page is actually an M area
-                nos.append(i+2)
+                # Page #0 is actually an M area
+                nos.append(i+1)
                 if self.pages[i] in self.upages:
                     types.append('U')
                 elif self.pages[i] in self.lpages:
@@ -455,8 +478,6 @@ if __name__ == '__main__':
     #Tests().searchu_article()
     #Tests().translate('boiler')
     #file = gt.objs.files().iwalker.get_article()
-
-    #Tests().translate('sack duty')
     '''
     file = gt.objs.files().iwalker.get_glue1()
     ibin = Binary(file)
@@ -468,28 +489,37 @@ if __name__ == '__main__':
             start += 1
         else:
             break
-    # 98,039; 154,407
-    # Pages: #24 (extended), #38 (normal)
-    
-    24 L    94,211  96,770  2,559
-    25 L    98,307  100,613 2,306
-    38 L    151,555 154,695 3,140
-    
-    "\xf3" (#46) < "\xff;\x00\xa6\x01\x00" < "\xf9" (#47)
-    
-    \xf3   23     
-    \xf9   50
     '''
     '''
-    file = gt.objs.files().iwalker.get_glue1()
+    file = gt.objs.files().iwalker.get_stems1()
     ibin = Binary(file)
-    pattern = b'\xff;\x00\xa6\x01\x00'
-    ibin.find(pattern,94211,98307)
+    pattern = b'abasin'
+    ibin.find(pattern)
     '''
-
+    '''
+    part2 = [struct.unpack('<h',item)[0] for item in upage.part2]
+    part2 = sorted(list(set(part2)))
+    sh.objs.mes(f,part2).debug()
+    '''
+    '''
     file = gt.objs.files().iwalker.get_glue1()
-    #ibin = Binary(file)
-    #ibin.info()
     upage = UPage(file)
     upage.get_parts()
     upage.debug_glue()
+    '''
+    '''
+    file = gt.objs.files().iwalker.get_glue1()
+    upage = UPage(file)
+    upage.get_parts()
+    pattern = b"\xff;\x00"
+    upage.searchu(pattern)
+    '''
+    
+    #pattern = 'World Union of Catholic Teachers'
+    pattern  = 'sack duty'
+    #pattern = 'Bachelor of Vocational Education'
+    #pattern = 'abatement of tax'
+    #gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
+    #gt.objs.files().reset()
+    #pattern = 'с большой точностью'
+    Tests().translate(pattern)

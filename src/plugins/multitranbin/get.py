@@ -59,6 +59,7 @@ class Binary:
         return self.fsize
     
     def get_page_limits(self,page_no):
+        # Return positions of a page based on MT indicators
         f = '[MClient] plugins.multitranbin.get.Binary.get_page_limits'
         if self.Success:
             if page_no is None or not self.get_block_size():
@@ -358,21 +359,9 @@ class UPage(Binary):
                         break
                     i += 1
                 i -= 1
-                page_no = self._get_ref(i)
-                page_limit = self.get_page_limit()
-                if page_limit:
-                    if page_no >= page_limit:
-                        old = page_no
-                        page_no = page_limit - 1
-                        mes = _('Overflow: {} -> {}')
-                        mes = mes.format(old,page_no)
-                        sh.objs.mes(f,mes,True).warning()
-                        i -= 1
-                    #TODO: Comment this to speed up
-                    self._log(pattern,i)
-                    return self.get_page_limits(page_no)
-                else:
-                    sh.com.empty(f)
+                #TODO: Comment this to speed up
+                self._log(pattern,i)
+                return self.get_page_limits(self._get_ref(i))
             else:
                 sh.com.empty(f)
         else:
@@ -474,26 +463,57 @@ class UPage(Binary):
             sh.com.cancel(f)
         return self.psize
     
+    def check_parts(self):
+        f = '[MClient] plugins.multitranbin.get.UPage.check_parts'
+        if self.Success:
+            if len(self.part1) == len(self.part2):
+                Check = True
+                for item in self.part2:
+                    if len(item) != 2:
+                        Check = False
+                        break
+                return Check
+            else:
+                self.Success = False
+                sub = '{} == {}'.format (len(self.part1)
+                                        ,len(self.part2)
+                                        )
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.mes(f,mes).error()
+        else:
+            sh.com.cancel(f)
+    
+    def _get_missing(self):
+        ''' Get the 1st page number that is not described in U page or
+            create a new page number based on the max page number.
+        '''
+        f = '[MClient] plugins.multitranbin.get.UPage._get_missing'
+        unpacked = sorted(set(self.part2))
+        unpacked = [struct.unpack('<h',item)[0] for item in unpacked]
+        # We need +1 for a new item and +1 for 'range'
+        compare = [i for i in range(max(unpacked)+2)]
+        # Page #0 is an M page area, and page #1 is U page
+        compare = compare[2:]
+        for item in compare:
+            if item not in unpacked:
+                sh.objs.mes(f,item,True).debug()
+                return item
+    
     def conform_parts(self):
         f = '[MClient] plugins.multitranbin.get.UPage.conform_parts'
         if self.Success:
             if self.part1:
-                if len(self.part1) == len(self.part2):
+                if self.check_parts():
+                    old = self._get_missing()
+                    new = struct.pack('<h',old)
+                    mes = '{} -> "{}"'.format(old,new)
+                    sh.objs.mes(f,mes,True).debug()
                     self.part1.insert(0,b'')
-                    max_ = struct.unpack('<h',max(self.part2))[0]
-                    try:
-                        add_bytes = struct.pack('<h',max_+1)
-                    except:
-                        add_bytes = max(self.part2)
-                    self.part2.append(add_bytes)
+                    self.part2.append(new)
                 else:
-                    self.Success = False
-                    sub = '{} == {}'.format (len(self.part1)
-                                            ,len(self.part2)
-                                            )
-                    mes = _('The condition "{}" is not observed!')
-                    mes = mes.format(sub)
-                    sh.objs.mes(f,mes).error()
+                    mes = _('The check has failed!')
+                    sh.objs.mes(f,mes,True).warning()
             else:
                 sh.com.empty(f)
         else:
