@@ -315,7 +315,6 @@ class Tests:
         self.translate('уборка') # has a comment
     
     def translate_many(self):
-        # 'absolute measurements' = 'абсолютный способ измерения'
         '''
         # Successfully processed patterns
         patterns = ['abasin'
@@ -331,8 +330,14 @@ class Tests:
                    ,'eristic'
                    ,'Kapteyn transformation'
                    ,'sack duty'
+                   ,'acceleration measured in G'
+                   ,'abatement of tax'
+                   ,'abatement of purchase price'
+                   ,'daily reports notice'
+                   ,'A & E'
                    ,'уборка'
                    ,'абонентская линия'
+                   ,'абсолютный способ измерения'
                    ,'ячейка решётки'
                    ,'ящичный поддон'
                    ]
@@ -344,20 +349,17 @@ class Tests:
         patterns = ['acceleration spectral density'
                    ,'deaf as an adder'
                    ]
-        # OK with warnings
-        patterns = ['abatement of tax'
-                   ,'abatement of purchase price'
-                   ,'daily reports notice'
+        # OK, but VERY slow (~4-6 min)
+        patterns = ['с большой точностью'
+                   ,'World Union of Catholic Teachers'
+                   ,'Bachelor of Vocational Education'
+                   ,'he has not a sou'
                    ]
         # No combos
-        patterns = ['World Union of Catholic Teachers'
-                   ,'Bachelor of Vocational Education'
-                   ,'acceleration measured in G'
-                   ,'A & E'
+        patterns = ['Всемирный союз преподавателей-католиков'
                    ]
         # Infinite loop (or MemoryError, get, 1270)
-        patterns = ['he has not a sou'
-                   ,'абонентское устройство для совместной передачи речи и данных'
+        patterns = ['абонентское устройство для совместной передачи речи и данных'
                    ,'курс занятий для студентов последнего курса'
                    ]
         '''
@@ -460,7 +462,6 @@ if __name__ == '__main__':
     #LANG1, LANG2 = LANG2, LANG1
     #objs.files().reset()
     '''
-    'с большой точностью'
     'уборка'
     'стычка'
     OK: 'садовод'
@@ -526,10 +527,10 @@ if __name__ == '__main__':
     #pattern = 'уборка'
     #pattern = 'Kapteyn transformation'
     #pattern = 'A & E'
-    #Tests().translate(pattern)
+    Tests().translate(pattern)
     #pattern = b'educational'
+    '''
     pattern = b'education'
-    ibin = Binary(gt.objs.files().iwalker.get_stems1())
-    #ibin.find_all(pattern,50000,100000)
-    #138,847; 138,873; 138,899
-    ibin.get_parts2(pattern,start=138847,end=138900)
+    istems = gt.Stems(gt.objs.files().iwalker.get_stems1())
+    istems.search(pattern)
+    '''

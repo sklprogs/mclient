@@ -1339,11 +1339,16 @@ class Stems(UPage):
             if coded:
                 poses = self.searchu(coded)
                 if poses:
-                    chunk = self.get_part2 (pattern = coded
-                                           ,start   = poses[0]
-                                           ,end     = poses[1]
-                                           )
-                    return self.parse(chunk)
+                    chunks = self.get_parts2 (pattern = coded
+                                             ,start   = poses[0]
+                                             ,end     = poses[1]
+                                             )
+                    parsed = []
+                    for chunk in chunks:
+                        result = self.parse(chunk)
+                        if result:
+                            parsed += result
+                    return parsed
                 else:
                     sh.com.empty(f)
             else:
