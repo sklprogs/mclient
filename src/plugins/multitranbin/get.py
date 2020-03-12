@@ -178,6 +178,12 @@ class Binary:
                 if len1 and len2:
                     len1 = struct.unpack('<b',len1)[0]
                     len2 = struct.unpack('<b',len2)[0]
+                    ''' The 2nd value of the index part can be negative
+                        (at least in demo, e.g., dict.ert: 723,957 ->
+                        b'\x03\x8a' -> (3; -118) -> (3; 138)).
+                    '''
+                    len1 = com.overflow(len1)
+                    len2 = com.overflow(len2)
                     mes = _('Part #{} length: {}').format(1,len1)
                     sh.objs.mes(f,mes,True).debug()
                     mes = _('Part #{} length: {}').format(2,len2)

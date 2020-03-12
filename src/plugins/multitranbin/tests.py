@@ -516,10 +516,13 @@ if __name__ == '__main__':
     '''
     
     #pattern = 'World Union of Catholic Teachers'
-    pattern  = 'sack duty'
+    #pattern = 'sack duty'
     #pattern = 'Bachelor of Vocational Education'
     #pattern = 'abatement of tax'
     #gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
     #gt.objs.files().reset()
     #pattern = 'с большой точностью'
+    #pattern = 'дежурство по койке'
+    #patter  = 'уборка'
+    pattern  = 'Kapteyn transformation'
     Tests().translate(pattern)
