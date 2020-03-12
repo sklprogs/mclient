@@ -26,13 +26,41 @@ class Binary:
         self.Success = sh.File(self.file).Success
         self.open()
     
-    def find_all(self,pattern):
+    def get_parts2(self,pattern,start=0,end=0):
+        # Run 'get_part2' in loop (only useful for finding stems)
+        f = '[MClient] plugins.multitranbin.get.Binary.get_parts2'
+        chunks = []
+        if self.Success:
+            poses = self.find_all(pattern,start,end)
+            for pos11 in poses:
+                lengths = self.get_lengths(pos11)
+                if self.check_lengths(pattern,lengths):
+                    pos21 = pos11 + lengths[0]
+                    pos22 = pos21 + lengths[1]
+                    chunk = self.read(pos21,pos22)
+                    if chunk and not chunk in chunks:
+                        chunks.append(chunk)
+            mes = [com.get_string(chunk) for chunk in chunks]
+            for i in range(len(mes)):
+                mes[i] = '{}: "{}"'.format(i+1,mes[i])
+            if mes:
+                mes = '\n' + '\n'.join(mes)
+            else:
+                ''' The output of 'sh.objs.mes' is not shown for
+                    an empty input.
+                '''
+                mes = str(mes)
+            sh.objs.mes(f,mes,True).debug()
+        else:
+            sh.com.cancel(f)
+        return chunks
+    
+    def find_all(self,pattern,start=0,end=0):
         f = '[MClient] plugins.multitranbin.get.Binary.find_all'
         matches = []
         if self.Success:
-            start = 0
             while True:
-                start = self.find(pattern,start)
+                start = self.find(pattern,start,end)
                 if start:
                     matches.append(start)
                     start += 1

@@ -528,6 +528,8 @@ if __name__ == '__main__':
     #pattern = 'A & E'
     #Tests().translate(pattern)
     #pattern = b'educational'
-    pattern  = b'boiler'
+    pattern = b'education'
     ibin = Binary(gt.objs.files().iwalker.get_stems1())
-    ibin.find_all(pattern)
+    #ibin.find_all(pattern,50000,100000)
+    #138,847; 138,873; 138,899
+    ibin.get_parts2(pattern,start=138847,end=138900)
