@@ -3,7 +3,7 @@
 - EN-RU, средство: "adjunct (Киселев)" relates to
   "дополнительное средство"
 - EN-RU, AppVerifier: separate comment
-- EN-RU, особых условиях: "особых+условиях:"
+- EN-RU, "особых условиях", "нагретого тела": "особых+условиях:"
 - EN-RU, подобрать: Do not separate comment parts
 - ! does not get what is expected
 - Process stays alive if main GUI is quitted, then - the message window
