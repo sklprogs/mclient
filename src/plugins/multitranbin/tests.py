@@ -329,6 +329,8 @@ class Tests:
                    ,'ashlar line'
                    ,'Abelian equation'
                    ,'eristic'
+                   ,'Kapteyn transformation'
+                   ,'sack duty'
                    ,'уборка'
                    ,'абонентская линия'
                    ,'ячейка решётки'
@@ -349,9 +351,7 @@ class Tests:
                    ]
         # No combos
         patterns = ['World Union of Catholic Teachers'
-                   ,'Kapteyn transformation'
                    ,'Bachelor of Vocational Education'
-                   ,'sack duty'
                    ,'acceleration measured in G'
                    ,'A & E'
                    ]
@@ -517,12 +517,17 @@ if __name__ == '__main__':
     
     #pattern = 'World Union of Catholic Teachers'
     #pattern = 'sack duty'
-    #pattern = 'Bachelor of Vocational Education'
+    pattern  = 'Bachelor of Vocational Education'
     #pattern = 'abatement of tax'
     #gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
     #gt.objs.files().reset()
     #pattern = 'с большой точностью'
     #pattern = 'дежурство по койке'
-    #patter  = 'уборка'
-    pattern  = 'Kapteyn transformation'
-    Tests().translate(pattern)
+    #pattern = 'уборка'
+    #pattern = 'Kapteyn transformation'
+    #pattern = 'A & E'
+    #Tests().translate(pattern)
+    #pattern = b'educational'
+    pattern  = b'boiler'
+    ibin = Binary(gt.objs.files().iwalker.get_stems1())
+    ibin.find_all(pattern)

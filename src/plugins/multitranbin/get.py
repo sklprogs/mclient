@@ -26,6 +26,24 @@ class Binary:
         self.Success = sh.File(self.file).Success
         self.open()
     
+    def find_all(self,pattern):
+        f = '[MClient] plugins.multitranbin.get.Binary.find_all'
+        matches = []
+        if self.Success:
+            start = 0
+            while True:
+                start = self.find(pattern,start)
+                if start:
+                    matches.append(start)
+                    start += 1
+                else:
+                    break
+            mes = [sh.com.figure_commas(item) for item in matches]
+            sh.objs.mes(f,mes,True).debug()
+        else:
+            sh.com.cancel(f)
+        return matches
+    
     def get_page_limit(self):
         f = '[MClient] plugins.multitranbin.get.Binary.get_page_limit'
         self.get_file_size()
