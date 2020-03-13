@@ -479,4 +479,8 @@ class UPage(gt.UPage):
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
-    Tests().subject()
+    #Tests().subject()
+    subj = Subject(gt.objs.files().iwalker.get_subject())
+    code = 6
+    subj.get_abbr(code)
+    subj.get_full(code)

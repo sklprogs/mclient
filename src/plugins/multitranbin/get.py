@@ -5,6 +5,7 @@ import os
 import mmap
 import struct
 import codecs
+import locale
 import itertools
 import skl_shared.shared as sh
 from skl_shared.localize import _
@@ -21,8 +22,58 @@ class Subject:
     def __init__(self,file):
         self.set_values()
         self.file = file
+        self.get_locale()
         self.load()
         self.parse()
+    
+    def get_full(self,code):
+        f = '[MClient] plugins.multitranbin.get.Subject.get_full'
+        if self.Success:
+            if code in self.dic_nos:
+                ind = self.dic_nos.index(code)
+                if self.lang == 'ru':
+                    mes = '{} -> "{}"'.format(code,self.ru_dicf[ind])
+                    sh.objs.mes(f,mes,True).debug()
+                    return self.ru_dicf[ind]
+                else:
+                    mes = '{} -> "{}"'.format(code,self.en_dicf[ind])
+                    sh.objs.mes(f,mes,True).debug()
+                    return self.en_dicf[ind]
+            else:
+                mes = _('Wrong input data: "{}"!').format(code)
+                sh.objs.mes(f,mes).warning()
+        else:
+            sh.com.cancel(f)
+    
+    def get_abbr(self,code):
+        f = '[MClient] plugins.multitranbin.get.Subject.get_abbr'
+        if self.Success:
+            if code in self.dic_nos:
+                ind = self.dic_nos.index(code)
+                if self.lang == 'ru':
+                    mes = '{} -> "{}"'.format(code,self.ru_dic[ind])
+                    sh.objs.mes(f,mes,True).debug()
+                    return self.ru_dic[ind]
+                else:
+                    mes = '{} -> "{}"'.format(code,self.en_dic[ind])
+                    sh.objs.mes(f,mes,True).debug()
+                    return self.en_dic[ind]
+            else:
+                mes = _('Wrong input data: "{}"!').format(code)
+                sh.objs.mes(f,mes).warning()
+        else:
+            sh.com.cancel(f)
+    
+    def get_locale(self):
+        f = '[MClient] plugins.multitranbin.get.Subject.get_locale'
+        if self.Success:
+            info = locale.getdefaultlocale()
+            if info:
+                # 'en' is set in 'set_values' by default
+                if info[0] in ('ru_RU','ru_UA'):
+                    self.lang = 'ru'
+        else:
+            sh.com.cancel(f)
     
     def set_values(self):
         self.Success = True
@@ -33,6 +84,7 @@ class Subject:
         self.ru_dicf = []
         self.en_dic  = []
         self.ru_dic  = []
+        self.lang    = 'en'
     
     def parse(self):
         f = '[MClient] plugins.multitranbin.get.Subject.parse'
@@ -46,7 +98,10 @@ class Subject:
                 items = items[0:5]
                 # Fail if items < 5
                 if len(items) == 5:
-                    self.dic_nos.append(items[0])
+                    dic_no = sh.Input (title = f
+                                      ,value = items[0]
+                                      ).integer()
+                    self.dic_nos.append(dic_no)
                     self.en_dicf.append(items[1])
                     self.en_dic.append(items[2])
                     self.ru_dicf.append(items[3])
