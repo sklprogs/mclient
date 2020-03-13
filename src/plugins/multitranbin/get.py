@@ -26,41 +26,21 @@ class Subject:
         self.load()
         self.parse()
     
-    def get_full(self,code):
-        f = '[MClient] plugins.multitranbin.get.Subject.get_full'
+    def get_pair(self,code):
+        f = '[MClient] plugins.multitranbin.get.Subject.get_pair'
         if self.Success:
             if code in self.dic_nos:
                 ind = self.dic_nos.index(code)
                 if self.lang == 'ru':
-                    mes = '{} -> "{}"'.format(code,self.ru_dicf[ind])
-                    sh.objs.mes(f,mes,True).debug()
-                    return self.ru_dicf[ind]
+                    pair = (self.ru_dic[ind],self.ru_dicf[ind])
                 else:
-                    mes = '{} -> "{}"'.format(code,self.en_dicf[ind])
-                    sh.objs.mes(f,mes,True).debug()
-                    return self.en_dicf[ind]
+                    pair = (self.en_dic[ind],self.en_dicf[ind])
+                mes = '{} -> {}'.format(code,pair)
+                sh.objs.mes(f,mes,True).debug()
+                return pair
             else:
                 mes = _('Wrong input data: "{}"!').format(code)
-                sh.objs.mes(f,mes).warning()
-        else:
-            sh.com.cancel(f)
-    
-    def get_abbr(self,code):
-        f = '[MClient] plugins.multitranbin.get.Subject.get_abbr'
-        if self.Success:
-            if code in self.dic_nos:
-                ind = self.dic_nos.index(code)
-                if self.lang == 'ru':
-                    mes = '{} -> "{}"'.format(code,self.ru_dic[ind])
-                    sh.objs.mes(f,mes,True).debug()
-                    return self.ru_dic[ind]
-                else:
-                    mes = '{} -> "{}"'.format(code,self.en_dic[ind])
-                    sh.objs.mes(f,mes,True).debug()
-                    return self.en_dic[ind]
-            else:
-                mes = _('Wrong input data: "{}"!').format(code)
-                sh.objs.mes(f,mes).warning()
+                sh.objs.mes(f,mes,True).warning()
         else:
             sh.com.cancel(f)
     

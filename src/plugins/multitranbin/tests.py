@@ -482,5 +482,4 @@ if __name__ == '__main__':
     #Tests().subject()
     subj = Subject(gt.objs.files().iwalker.get_subject())
     code = 6
-    subj.get_abbr(code)
-    subj.get_full(code)
+    subj.get_pair(code)

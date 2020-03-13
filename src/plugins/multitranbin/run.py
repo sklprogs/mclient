@@ -22,7 +22,7 @@ class Plugin:
               earlier.
         '''
         self.values()
-        self.iabbr   = iabbr
+        self.iabbr   = gt.objs.files().get_subject()
         self.Debug   = Debug
         self.Shorten = Shorten
         self.MaxRow  = MaxRow

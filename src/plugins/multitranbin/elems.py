@@ -65,20 +65,22 @@ class Elems:
             sh.com.empty(f)
             self._blocks = []
     
-    def expand_dica(self):
-        f = '[MClient] plugins.multitranbin.elems.Elems.expand_dica'
+    def set_dic_titles(self):
+        f = '[MClient] plugins.multitranbin.elems.Elems.set_dic_titles'
         if self.abbr:
             if self.abbr.Success:
                 for block in self._blocks:
-                    lst = block._dica.split(',')
-                    for i in range(len(lst)):
-                        lst[i] = lst[i].strip()
-                        try:
-                            ind = self.abbr.orig.index(lst[i])
-                            lst[i] = self.abbr.transl[ind]
-                        except ValueError:
-                            pass
-                    block._dicaf = ', '.join(lst)
+                    if block._type == 'dic':
+                        code = sh.Input (title = f
+                                        ,value = block._text
+                                        ).integer()
+                        pair = self.abbr.get_pair(code)
+                        if pair:
+                            block._text  = pair[0]
+                            block._dica  = pair[0]
+                            block._dicaf = pair[1]
+                        else:
+                            sh.com.empty(f)
             else:
                 sh.com.cancel(f)
         else:
@@ -102,13 +104,13 @@ class Elems:
             self.definitions()
             '''
             # Prepare contents
+            self.set_dic_titles()
             self.add_brackets()
             self.user_brackets()
             # Prepare for cells
             self.fill()
             self.remove_fixed()
             self.insert_fixed()
-            self.expand_dica()
             # Extra spaces in the beginning may cause sorting problems
             self.add_space()
             #TODO: expand parts of speech (n -> noun, etc.)
@@ -173,12 +175,13 @@ class Elems:
                     self._blocks[i]._text = ' ' + self._blocks[i]._text
                 
     def fill(self):
-        dica = wforma = speecha = transca = terma = ''
+        dica = dicaf = wforma = speecha = transca = terma = ''
         
         # Find first non-empty values and set them as default
         for block in self._blocks:
             if block._type == 'dic':
-                dica = block._text
+                dica  = block._dica
+                dicaf = block._dicaf
                 break
         for block in self._blocks:
             if block._type == 'wform':
@@ -199,7 +202,8 @@ class Elems:
         
         for block in self._blocks:
             if block._type == 'dic':
-                dica = block._text
+                dica  = block._dica
+                dicaf = block._dicaf
             elif block._type == 'wform':
                 wforma = block._text
             elif block._type == 'speech':
@@ -212,6 +216,7 @@ class Elems:
             elif block._type in ('term','phrase'):
                 terma = block._text
             block._dica    = dica
+            block._dicaf   = dicaf
             block._wforma  = wforma
             block._speecha = speecha
             block._transca = transca
@@ -230,6 +235,7 @@ class Elems:
                 block._type    = 'speech'
                 block._text    = self._blocks[i]._speecha
                 block._dica    = self._blocks[i]._dica
+                block._dicaf   = self._blocks[i]._dicaf
                 block._wforma  = self._blocks[i]._wforma
                 block._speecha = self._blocks[i]._speecha
                 block._transca = self._blocks[i]._transca
@@ -241,6 +247,7 @@ class Elems:
                 block._type    = 'transc'
                 block._text    = self._blocks[i]._transca
                 block._dica    = self._blocks[i]._dica
+                block._dicaf   = self._blocks[i]._dicaf
                 block._wforma  = self._blocks[i]._wforma
                 block._speecha = self._blocks[i]._speecha
                 block._transca = self._blocks[i]._transca
@@ -252,6 +259,7 @@ class Elems:
                 block._type    = 'wform'
                 block._text    = self._blocks[i]._wforma
                 block._dica    = self._blocks[i]._dica
+                block._dicaf   = self._blocks[i]._dicaf
                 block._wforma  = self._blocks[i]._wforma
                 block._speecha = self._blocks[i]._speecha
                 block._transca = self._blocks[i]._transca
@@ -263,6 +271,7 @@ class Elems:
                 block._type    = 'dic'
                 block._text    = self._blocks[i]._dica
                 block._dica    = self._blocks[i]._dica
+                block._dicaf   = self._blocks[i]._dicaf
                 block._wforma  = self._blocks[i]._wforma
                 block._speecha = self._blocks[i]._speecha
                 block._transca = self._blocks[i]._transca
@@ -271,6 +280,7 @@ class Elems:
                 self._blocks.insert(i,block)
                 
                 dica    = self._blocks[i]._dica
+                dicaf   = self._blocks[i]._dicaf
                 wforma  = self._blocks[i]._wforma
                 speecha = self._blocks[i]._speecha
                 i += 4
