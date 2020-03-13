@@ -8,6 +8,30 @@ import skl_shared.shared as sh
 from skl_shared.localize import _
 
 
+class Subject(gt.Subject):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def debug(self):
+        f = '[MClient] plugins.multitranbin.tests.Subject.debug'
+        if self.Success:
+            headers  = ('#','FULL (1)','ABBR (1)','FULL (2)','ABBR (2)')
+            iterable = (self.dic_nos,self.en_dicf
+                       ,self.en_dic,self.ru_dicf
+                       ,self.ru_dic
+                       )
+            mes = sh.FastTable (headers  = headers
+                               ,iterable = iterable
+                               ).run()
+            sub = _('File: "{}"').format(self.file)
+            mes = sub + '\n\n' + mes
+            sh.com.fast_debug(mes)
+        else:
+            sh.com.cancel(f)
+
+
+
 class Binary(gt.Binary):
     
     def __init__(self,*args,**kwargs):
@@ -163,6 +187,10 @@ class Binary(gt.Binary):
 
 
 class Tests:
+    
+    def subject(self):
+        subj = Subject(gt.objs.files().iwalker.get_subject())
+        subj.debug()
     
     def _parse_upage(self,file):
         upage = UPage(file)
@@ -451,86 +479,4 @@ class UPage(gt.UPage):
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
-    #Tests().searchu()
-    #Tests().translate('removal')
-    #Tests().translate_many()
-    #Tests().translate('Bachelor of Vocational Education')
-    #Tests().translate('Kafir')
-    #Tests().translate('absolute measurements')
-    #Tests().translate('abatement of purchase price')
-    #Tests().translate('answer print')
-    #LANG1, LANG2 = LANG2, LANG1
-    #objs.files().reset()
-    '''
-    'уборка'
-    'стычка'
-    OK: 'садовод'
-    '''
-    #Tests().translate_pair()
-    #gt.objs.files().get_stems1().get_page_limits(20)
-    #objs.files().get_stems1().find(b'abasin',1000,9000)
-    #Tests().glue_upage()
-    #Tests().stems_upage()
-    #objs.files().close()
-    #Tests().searchu_stems()
-    #Tests().searchu_glue()
-    # Glue & Article UPage: 1b, 1h; stems UPage: Xb, 1h
-    #Tests().parse_upage()
-    #Tests().searchu_article()
-    #Tests().translate('boiler')
-    #file = gt.objs.files().iwalker.get_article()
-    '''
-    file = gt.objs.files().iwalker.get_glue1()
-    ibin = Binary(file)
-    pattern = b'\xff;\x00\xa6\x01\x00'
-    start = 0
-    while True:
-        start = ibin.find(pattern,start)
-        if start:
-            start += 1
-        else:
-            break
-    '''
-    '''
-    file = gt.objs.files().iwalker.get_stems1()
-    ibin = Binary(file)
-    pattern = b'abasin'
-    ibin.find(pattern)
-    '''
-    '''
-    part2 = [struct.unpack('<h',item)[0] for item in upage.part2]
-    part2 = sorted(list(set(part2)))
-    sh.objs.mes(f,part2).debug()
-    '''
-    '''
-    file = gt.objs.files().iwalker.get_glue1()
-    upage = UPage(file)
-    upage.get_parts()
-    upage.debug_glue()
-    '''
-    '''
-    file = gt.objs.files().iwalker.get_glue1()
-    upage = UPage(file)
-    upage.get_parts()
-    pattern = b"\xff;\x00"
-    upage.searchu(pattern)
-    '''
-    
-    #pattern = 'World Union of Catholic Teachers'
-    #pattern = 'sack duty'
-    pattern  = 'Bachelor of Vocational Education'
-    #pattern = 'abatement of tax'
-    #gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
-    #gt.objs.files().reset()
-    #pattern = 'с большой точностью'
-    #pattern = 'дежурство по койке'
-    #pattern = 'уборка'
-    #pattern = 'Kapteyn transformation'
-    #pattern = 'A & E'
-    Tests().translate(pattern)
-    #pattern = b'educational'
-    '''
-    pattern = b'education'
-    istems = gt.Stems(gt.objs.files().iwalker.get_stems1())
-    istems.search(pattern)
-    '''
+    Tests().subject()

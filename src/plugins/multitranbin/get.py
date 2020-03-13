@@ -16,6 +16,62 @@ LANG2    = 'Russian'
 PATH     = ''
 
 
+class Subject:
+    # Parse files like 'SUBJECTS.TXT'
+    def __init__(self,file):
+        self.set_values()
+        self.file = file
+        self.load()
+        self.parse()
+    
+    def set_values(self):
+        self.Success = True
+        self.file    = ''
+        self.text    = ''
+        self.dic_nos = []
+        self.en_dicf = []
+        self.ru_dicf = []
+        self.en_dic  = []
+        self.ru_dic  = []
+    
+    def parse(self):
+        f = '[MClient] plugins.multitranbin.get.Subject.parse'
+        if self.Success:
+            lst = self.text.splitlines()
+            # This should not be needed. We do that just to be safe.
+            lst = [item for item in lst if item]
+            for line in lst:
+                items = line.split(';')
+                # Delete comments (which also start with ';')
+                items = items[0:5]
+                # Fail if items < 5
+                if len(items) == 5:
+                    self.dic_nos.append(items[0])
+                    self.en_dicf.append(items[1])
+                    self.en_dic.append(items[2])
+                    self.ru_dicf.append(items[3])
+                    self.ru_dic.append(items[4])
+                else:
+                    self.Success = False
+                    mes = _('Wrong input data: "{}"!').format(line)
+                    sh.objs.mes(f,mes).warning()
+                    break
+        else:
+            sh.com.cancel(f)
+    
+    def load(self):
+        f = '[MClient] plugins.multitranbin.get.Subject.load'
+        if self.Success:
+            self.text = sh.ReadTextFile(self.file).get()
+            if not self.text:
+                self.Success = False
+                mes = _('Empty output is not allowed!')
+                sh.objs.mes(f,mes).warning()
+        else:
+            sh.com.cancel(f)
+
+
+
 class Binary:
     
     def __init__(self,file):
@@ -579,6 +635,22 @@ class Walker:
         if PATH:
             self.reset()
     
+    def get_subject(self):
+        f = '[MClient] plugins.multitranbin.get.Walker.get_subject'
+        if self.Success:
+            if not self.subject:
+                fname = 'subjects.txt'
+                file  = self.get_file(fname)
+                if file:
+                    self.subject = file
+                else:
+                    self.Success = False
+                    mes = _('File "{}" does not exist!').format(fname)
+                    sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+        return self.subject
+    
     def get_typein1(self):
         f = '[MClient] plugins.multitranbin.get.Walker.get_typein1'
         if self.Success:
@@ -765,6 +837,7 @@ class Walker:
         self.glue1   = ''
         self.glue2   = ''
         self.article = ''
+        self.subject = ''
     
     def walk(self):
         f = '[MClient] plugins.multitranbin.get.Walker.walk'
@@ -1192,6 +1265,11 @@ class Files:
     def __init__(self):
         self.reset()
     
+    def get_subject(self):
+        if self.subject is None:
+            self.subject = Subject(self.iwalker.get_subject())
+        return self.subject
+    
     def get_typein1(self):
         if self.typein1 is None:
             self.typein1 = TypeIn(self.iwalker.get_typein1())
@@ -1268,6 +1346,7 @@ class Files:
         self.glue1   = None
         self.glue2   = None
         self.article = None
+        self.subject = None
 
 
 
