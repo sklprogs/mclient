@@ -65,22 +65,51 @@ class Elems:
             sh.com.empty(f)
             self._blocks = []
     
+    def _get_pair(self,text):
+        f = '[MClient] plugins.multitranbin.elems.Elems._get_pair'
+        code = sh.Input (title = f
+                        ,value = text
+                        ).integer()
+        return self.abbr.get_pair(code)
+    
+    def _check_dic_codes(self,text):
+        # Emptyness check is performed before that
+        if text[0] == ' ' or text[-1] == ' ' or '  ' in text:
+            return
+        if set(text) == {' '}:
+            return
+        pattern = sh.lg.digits + ' '
+        for sym in text:
+            if not sym in pattern:
+                return
+        return True
+    
     def set_dic_titles(self):
         f = '[MClient] plugins.multitranbin.elems.Elems.set_dic_titles'
         if self.abbr:
             if self.abbr.Success:
                 for block in self._blocks:
-                    if block._type == 'dic':
-                        code = sh.Input (title = f
-                                        ,value = block._text
-                                        ).integer()
-                        pair = self.abbr.get_pair(code)
-                        if pair:
-                            block._text  = pair[0]
-                            block._dica  = pair[0]
-                            block._dicaf = pair[1]
+                    if block._type == 'dic' and block._text:
+                        if self._check_dic_codes(block._text):
+                            abbr = []
+                            full = []
+                            dics = block._text.split(' ')
+                            for dic in dics:
+                                pair = self._get_pair(dic)
+                                if pair:
+                                    abbr.append(pair[0])
+                                    full.append(pair[1])
+                                else:
+                                    sh.com.empty(f)
+                            abbr = '; '.join(abbr)
+                            full = '; '.join(full)
+                            block._text  = abbr
+                            block._dica  = abbr
+                            block._dicaf = full
                         else:
-                            sh.com.empty(f)
+                            mes = _('Wrong input data: "{}"!')
+                            mes = mes.format(block._text)
+                            sh.objs.mes(f,mes,True).warning()
             else:
                 sh.com.cancel(f)
         else:
