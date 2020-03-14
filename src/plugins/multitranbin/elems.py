@@ -151,19 +151,10 @@ class Elems:
         if self.Success:
             # Do some cleanup
             self.strip()
-            '''
-            # Reassign types
-            self.transc()
-            self.users()
-            self.phrases()
-            self.corrections()
-            self.definitions()
-            '''
             # Prepare contents
             self.reorder()
             self.set_dic_titles()
             self.add_brackets()
-            self.user_brackets()
             # Prepare for cells
             self.fill()
             self.remove_fixed()
@@ -205,17 +196,11 @@ class Elems:
     
     def add_brackets(self):
         for block in self._blocks:
-            if block._type in ('comment','correction') \
-            and '(' in block._text and not ')' in block._text:
-                block._text += ')'
-    
-    def user_brackets(self):
-        for block in self._blocks:
-            if block._type == 'user':
-                if not block._text.startswith('('):
-                    block._text = '(' + block._text
-                if not block._text.endswith(')'):
-                    block._text += ')'
+            if block._type in ('comment','user','correction'):
+                block._same = 1
+                if not block._text.startswith('(') \
+                and not block._text.endswith(')'):
+                    block._text = '(' + block._text + ')'
     
     def add_space(self):
         for i in range(len(self._blocks)):
