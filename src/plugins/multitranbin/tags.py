@@ -35,21 +35,6 @@ class Tags:
         self.lang1   = lang1
         self.lang2   = lang2
     
-    def set_dic_ahead(self):
-        f = '[MClient] plugins.multitranbin.tags.Tags.set_dic_ahead'
-        if self.Success:
-            try:
-                ind = self.types.index(self.sepdic)
-                self.types.remove(self.sepdic)
-                self.types.insert(0,self.sepdic)
-                dic = self.content[ind]
-                del self.content[ind]
-                self.content.insert(0,dic)
-            except ValueError:
-                sh.com.lazy(f)
-        else:
-            sh.com.cancel(f)
-    
     def get_types(self):
         f = '[MClient] plugins.multitranbin.tags.Tags.get_types'
         if self.Success:
@@ -69,8 +54,12 @@ class Tags:
             for i in range(len(self.content)):
                 self._blocks.append(Block())
                 self._blocks[-1]._text = self.content[i]
-                if self.types[i] in (self.seplg1,self.seplg2):
+                if self.types[i] == self.seplg1:
                     self._blocks[i]._type = 'term'
+                    self._blocks[i]._lang = self.lang1
+                elif self.types[i] == self.seplg2:
+                    self._blocks[i]._type = 'term'
+                    self._blocks[i]._lang = self.lang2
                 elif self.types[i] == self.sepcom:
                     self._blocks[i]._type = 'comment'
                 elif self.types[i] == self.sepdic:
@@ -119,7 +108,9 @@ class Tags:
             i = 1
             while i < len(self._tags):
                 if self._tags[i-1] in self.seps:
-                    self._tags[i] = self._tags[i].decode(ENCODING,'replace')
+                    self._tags[i] = self._tags[i].decode (ENCODING
+                                                         ,'replace'
+                                                         )
                 i += 1
         else:
             sh.com.cancel(f)
@@ -204,7 +195,6 @@ class Tags:
         self.split()
         self.decode()
         self.get_types()
-        self.set_dic_ahead()
         self.set_types()
         return self._blocks
 
@@ -241,6 +231,7 @@ class Block:
         self._transca  = ''
         self._terma    = ''
         self._priority = 0
+        self._lang     = 0
 
 
 if __name__ == '__main__':

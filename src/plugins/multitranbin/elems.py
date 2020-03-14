@@ -38,6 +38,7 @@ class Block:
         self._speecha = ''
         self._transca = ''
         self._terma   = ''
+        self._lang    = 0
 
 
 
@@ -64,6 +65,32 @@ class Elems:
             self.Success = False
             sh.com.empty(f)
             self._blocks = []
+    
+    def reorder(self):
+        if len(self._blocks) > 1:
+            pos = -1
+            for i in range(len(self._blocks)):
+                if self._blocks[i]._type == 'dic':
+                    pos = i
+                    break
+            if pos >= 0:
+                self._blocks.append(self._blocks[pos])
+                del self._blocks[pos]
+            pos = -1
+            for i in range(len(self._blocks)):
+                if self._blocks[i]._type == 'comment':
+                    pos = i
+                    break
+            if pos >= 0:
+                self._blocks.append(self._blocks[pos])
+                del self._blocks[pos]
+            if sh.Text(self._search).has_cyrillic():
+                for i in range(len(self._blocks)):
+                    if self._blocks[i-1]._type == 'term' \
+                    and self._blocks[i]._type == 'term' \
+                    and self._blocks[i-1]._lang != 2 \
+                    and self._blocks[i]._lang == 2:
+                        self._blocks[i-1], self._blocks[i] = self._blocks[i], self._blocks[i-1]
     
     def _get_pair(self,text):
         f = '[MClient] plugins.multitranbin.elems.Elems._get_pair'
@@ -133,6 +160,7 @@ class Elems:
             self.definitions()
             '''
             # Prepare contents
+            self.reorder()
             self.set_dic_titles()
             self.add_brackets()
             self.user_brackets()
