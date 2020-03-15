@@ -8,6 +8,29 @@ import skl_shared.shared as sh
 from skl_shared.localize import _
 
 
+class Ending(gt.Ending):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def debug(self):
+        f = '[MClient] plugins.multitranbin.tests.Ending.debug'
+        if self.Success:
+            ends     = list(self.ends)
+            ends     = [str(end) for end in ends]
+            headers  = ('#','ENDINGS')
+            iterable = (self.nos,ends)
+            mes = sh.FastTable (iterable = iterable
+                               ,headers  = headers
+                               ).run()
+            sub = _('File: "{}"').format(self.file)
+            mes = sub + '\n\n' + mes
+            sh.com.fast_debug(mes)
+        else:
+            sh.com.cancel(f)
+
+
+
 class Subject(gt.Subject):
     
     def __init__(self,*args,**kwargs):
@@ -187,6 +210,10 @@ class Binary(gt.Binary):
 
 
 class Tests:
+    
+    def ending(self):
+        subj = Ending(gt.objs.files().iwalker.get_ending())
+        subj.debug()
     
     def subject(self):
         subj = Subject(gt.objs.files().iwalker.get_subject())
@@ -479,7 +506,9 @@ class UPage(gt.UPage):
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
-    #Tests().subject()
-    subj = Subject(gt.objs.files().iwalker.get_subject())
-    code = 6
-    subj.get_pair(code)
+    #Tests().ending()
+    #gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
+    gt.objs.files().reset()
+    file = gt.objs._files.iwalker.get_ending()
+    iend = Ending(file)
+    iend.has_match(1398,'ses')

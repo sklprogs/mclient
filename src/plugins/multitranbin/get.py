@@ -17,6 +17,97 @@ LANG2    = 'Russian'
 PATH     = ''
 
 
+class Ending:
+    # Parse files like 'sik.eng'
+    def __init__(self,file):
+        self.set_values()
+        self.file = file
+        self.load()
+        self.parse()
+    
+    def has_match(self,no,pattern):
+        f = '[MClient] plugins.multitranbin.get.Ending.has_match'
+        if self.Success:
+            #TODO: implement 'X' (full pattern match)
+            if not pattern:
+                # An empty ending
+                pattern = '#'
+            try:
+                index_ = self.nos.index(no)
+                match  = pattern in self.ends[index_]
+                if match:
+                    sub = _('Yes')
+                else:
+                    sub = _('No')
+                mes = _('#: {}; Pattern: "{}"; Match: {}')
+                mes = mes.format(no,pattern,sub)
+                sh.objs.mes(f,mes,True).debug()
+                return match
+            except ValueError:
+                mes = _('Wrong input data: "{}"!').format(no)
+                sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+    
+    def load(self):
+        f = '[MClient] plugins.multitranbin.get.Ending.load'
+        if self.Success:
+            self.text = sh.ReadTextFile(self.file).get()
+            if not self.text:
+                self.Success = False
+                mes = _('Empty output is not allowed!')
+                sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+    
+    def parse(self):
+        f = '[MClient] plugins.multitranbin.get.Ending.parse'
+        if self.Success:
+            lines = self.text.splitlines()
+            lines = [line for line in lines if line]
+            if len(lines) > 1:
+                if lines[0] == 'SIK PORTION':
+                    lines = lines[1:]
+                for i in range(len(lines)):
+                    line = lines[i].strip()
+                    line = sh.Text(line).delete_duplicate_spaces()
+                    # Remove comments
+                    line = line.split(';')[0]
+                    # Empty input means the entire line is a comment
+                    if line:
+                        if len(line) < 2:
+                            mes = _('Wrong input data: "{}"!')
+                            mes = mes.format(line)
+                            sh.objs.mes(f,mes,True).warning()
+                        else:
+                            # Remove a gender separator
+                            line = line.replace('/',' ')
+                            line = line.replace(',',' ')
+                            line = line.split(' ')
+                            line = [item for item in line if item]
+                            no   = sh.Input (title = f
+                                            ,value = line[0]
+                                            ).integer()
+                            ends = line[1:]
+                            self.nos.append(no)
+                            self.ends.append(ends)
+            else:
+                sub = '{} > 1'.format(len(lines))
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+    
+    def set_values(self):
+        self.file    = ''
+        self.text    = ''
+        self.Success = True
+        self.nos     = []
+        self.ends    = []
+
+
+
 class Subject:
     # Parse files like 'SUBJECTS.TXT'
     def __init__(self,file):
@@ -666,9 +757,25 @@ class UPage(Binary):
 
 class Walker:
     def __init__(self):
-        self.values()
+        self.set_values()
         if PATH:
             self.reset()
+    
+    def get_ending(self):
+        f = '[MClient] plugins.multitranbin.get.Walker.get_ending'
+        if self.Success:
+            if not self.ending:
+                fname = 'sik.' + self.lang13
+                file  = self.get_file(fname)
+                if file:
+                    self.ending = file
+                else:
+                    self.Success = False
+                    mes = _('File "{}" does not exist!').format(fname)
+                    sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+        return self.ending
     
     def get_subject(self):
         f = '[MClient] plugins.multitranbin.get.Walker.get_subject'
@@ -786,7 +893,7 @@ class Walker:
         return self.glue2
     
     def reset(self):
-        self.values()
+        self.set_values()
         self.check()
         self.set_langs()
         self.walk()
@@ -856,7 +963,7 @@ class Walker:
         else:
             sh.com.cancel(f)
     
-    def values(self):
+    def set_values(self):
         self.Success = False
         self.idir    = None
         self.files   = []
@@ -873,6 +980,7 @@ class Walker:
         self.glue2   = ''
         self.article = ''
         self.subject = ''
+        self.ending  = ''
     
     def walk(self):
         f = '[MClient] plugins.multitranbin.get.Walker.walk'
@@ -1300,6 +1408,11 @@ class Files:
     def __init__(self):
         self.reset()
     
+    def get_ending(self):
+        if self.ending is None:
+            self.ending = Ending(self.iwalker.get_ending())
+        return self.ending
+    
     def get_subject(self):
         if self.subject is None:
             self.subject = Subject(self.iwalker.get_subject())
@@ -1367,11 +1480,11 @@ class Files:
             sh.com.cancel(f)
     
     def reset(self):
-        self.values()
+        self.set_values()
         self.iwalker = Walker()
         self.Success = self.iwalker.Success
     
-    def values(self):
+    def set_values(self):
         self.iwalker = None
         self.Success = False
         self.typein1 = None
@@ -1382,6 +1495,7 @@ class Files:
         self.glue2   = None
         self.article = None
         self.subject = None
+        self.ending  = None
 
 
 
