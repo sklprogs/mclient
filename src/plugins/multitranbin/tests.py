@@ -506,9 +506,29 @@ class UPage(gt.UPage):
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
-    #Tests().ending()
+    #gt.Get('absolute measurements').run()
+    #combos = [b'\xb0\x00\x00', b'\x94\x03\x00']
+    #combos = ('abcd','zdv','ywdf','efrd','rfgh')
+    #combos = gt.com.get_combos(combos)
+    #TODO: What to do with negative-only endings? See 'abasin'
+    # 'abiding'
+    #stemno = gt.objs.files().get_stems1().search('eristic','')
+    #print(gt.objs.files().get_glue1().search(stemno))
+    timer = sh.Timer()
+    timer.start()
+    # 'World Union of Catholic Teachers'
+    #gt.Get('ashlar line').run()
+    #gt.Get('abasin').run()
+    # 'abatement of purchase price'
     #gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
-    gt.objs.files().reset()
-    file = gt.objs._files.iwalker.get_ending()
-    iend = Ending(file)
-    iend.has_match(1398,'ses')
+    #gt.objs.files().reset()
+    # 'абсолютный способ измерения'
+    #pattern = 'abbrmate'
+    #pattern = 'Zebra time'
+    #pattern = 'acceleration measured in G'
+    #pattern = 'ashlar line'
+    #pattern = 'daily reports notice'
+    # Finds 'daily report' instead of 'daily reports notice'
+    pattern = 'baby fish'
+    gt.Get(pattern).run()
+    timer.end()

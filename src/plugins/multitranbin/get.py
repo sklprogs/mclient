@@ -1028,11 +1028,11 @@ class TypeIn(Binary):
 class Suggest:
     
     def __init__(self,search):
-        self.values()
+        self.set_values()
         if search:
             self.reset(search)
     
-    def values(self):
+    def set_values(self):
         self.Success = True
         self._search = ''
     
@@ -1058,7 +1058,7 @@ class Suggest:
 class AllDics:
     
     def __init__(self):
-        self.values()
+        self.set_values()
         self.reset()
     
     def langs(self):
@@ -1079,14 +1079,14 @@ class AllDics:
         else:
             sh.com.cancel(f)
     
-    def values(self):
+    def set_values(self):
         self._dics   = []
         self._path   = ''
         # Do not run anything if 'self.reset' was not run
         self.Success = False
     
     def reset(self):
-        self.values()
+        self.set_values()
         self._path   = PATH
         self.Success = sh.Directory(self._path).Success
     
@@ -1540,17 +1540,21 @@ class Stems(UPage):
             if chunk:
                 nos   = []
                 chnos = []
+                ends  = []
                 #NOTE: 0 % 7 == 0
                 if len(chunk) > 1 and (len(chunk) - 1) % 7 == 0:
                     chunks = com.get_chunks(chunk[1:],7)
                     for i in range(len(chunks)):
                         chnos.append(chunks[i][0:3])
+                        ends.append(chunks[i][3:5])
                     for chno in chnos:
                         nos.append(com.unpack(chno))
                     sh.objs.mes(f,chnos,True).debug()
                     tmp = [sh.com.figure_commas(no) for no in nos]
                     sh.objs.mes(f,tmp,True).debug()
-                    return chnos
+                    ends = [struct.unpack('<h',end)[0] for end in ends]
+                    sh.objs.mes(f,ends,True).debug()
+                    return(chnos,ends)
                 else:
                     sub = com.get_string(chunk)
                     mes = _('Wrong input data: "{}"!').format(sub)
@@ -1560,23 +1564,32 @@ class Stems(UPage):
         else:
             sh.com.cancel(f)
     
-    def search(self,coded):
+    def search(self,stem,end):
         # Do not fail the whole class upon a failed search
         f = '[MClient] plugins.multitranbin.get.Stems.search'
         if self.Success:
-            if coded:
+            if stem:
+                coded = bytes(stem,ENCODING,'ignore')
                 poses = self.searchu(coded)
                 if poses:
                     chunks = self.get_parts2 (pattern = coded
                                              ,start   = poses[0]
                                              ,end     = poses[1]
                                              )
-                    parsed = []
                     for chunk in chunks:
                         result = self.parse(chunk)
                         if result:
-                            parsed += result
-                    return parsed
+                            chnos, endnos = result[0], result[1]
+                            matches = []
+                            for i in range(len(endnos)):
+                                if objs.files().get_ending().has_match(endnos[i],end):
+                                    sub = com.get_string(chnos[i])
+                                    no  = com.unpack(chnos[i])
+                                    no  = sh.com.figure_commas(no)
+                                    mes = '{} ("{}")'.format(no,sub)
+                                    sh.objs.mes(f,mes,True).debug()
+                                    matches.append(chnos[i])
+                            return matches
                 else:
                     sh.com.empty(f)
             else:
@@ -1589,18 +1602,15 @@ class Stems(UPage):
 class Get:
     
     def __init__(self,pattern):
-        self.values()
+        self.set_values()
         self.pattern = pattern
     
-    def combos(self):
-        f = '[MClient] plugins.multitranbin.get.Get.combos'
+    def get_combos(self):
+        f = '[MClient] plugins.multitranbin.get.Get.get_combos'
         if self.Success:
             self.stemnos = list(itertools.product(*self.stemnos))
-            #FIX: MemoryError
-            #sh.objs.mes(f,self.stemnos,True).debug()
             self.stemnos = [b''.join(item) for item in self.stemnos]
-            #FIX: MemoryError
-            #sh.objs.mes(f,self.stemnos,True).debug()
+            sh.objs.mes(f,self.stemnos,True).debug()
         else:
             sh.com.cancel(f)
     
@@ -1627,35 +1637,28 @@ class Get:
         if self.Success:
             words = self.pattern.split(' ')
             for word in words:
-                all_stems = []
                 i = len(word)
                 while i > 0:
                     #NOTE: nltk: according -> accord -> No matches!
                     stem = word[0:i]
-                    mes = _('Try for "{}"').format(stem)
+                    end  = word[i:]
+                    mes = _('Try for "{}"-"{}"').format(stem,end)
                     sh.objs.mes(f,mes,True).info()
-                    coded = bytes(stem,ENCODING,'ignore')
                     ''' Since we swap languages, the needed stems will
                         always be stored in stem file #1.
                     '''
-                    stem_nos = objs.files().get_stems1().search(coded)
-                    if stem_nos:
+                    stemnos = objs.files().get_stems1().search(stem,end)
+                    if stemnos:
                         mes = _('Found stem: "{}"').format(stem)
                         sh.objs.mes(f,mes,True).info()
-                        all_stems += stem_nos
-                        ''' #NOTE: A stem form of 'absolute' can be
-                            either 'absolute' or 'absolut' (both forms
-                            are stored in 'stems.eng'), so we
-                            should NOT break here.
-                        '''
+                        self.stemnos.append(stemnos)
+                        break
                     i -= 1
-                self.stemnos.append(all_stems)
-            self.stemnos = [item for item in self.stemnos if item]
             sh.objs.mes(f,self.stemnos,True).debug()
         else:
             sh.com.cancel(f)
     
-    def values(self):
+    def set_values(self):
         self.Success = True
         self.pattern = ''
         self._html   = ''
@@ -1689,7 +1692,7 @@ class Get:
         self.strip()
         objs.files().reset()
         self.get_stems()
-        self.combos()
+        self.get_combos()
         return self.search()
 
 
