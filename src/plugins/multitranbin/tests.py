@@ -506,29 +506,45 @@ class UPage(gt.UPage):
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
-    #gt.Get('absolute measurements').run()
-    #combos = [b'\xb0\x00\x00', b'\x94\x03\x00']
-    #combos = ('abcd','zdv','ywdf','efrd','rfgh')
-    #combos = gt.com.get_combos(combos)
-    #TODO: What to do with negative-only endings? See 'abasin'
-    # 'abiding'
-    #stemno = gt.objs.files().get_stems1().search('eristic','')
-    #print(gt.objs.files().get_glue1().search(stemno))
     timer = sh.Timer()
     timer.start()
-    # 'World Union of Catholic Teachers'
-    #gt.Get('ashlar line').run()
-    #gt.Get('abasin').run()
-    # 'abatement of purchase price'
+    ''' OK:
+            'a posteriori'
+            'abasin'
+            'abatement of purchase price'
+            'abatement of tax'
+            'acceleration spectral density'
+            'ashlar line'
+            'baby fish'
+            'calcium gallium germanium garnet'
+            'daily reports notice'
+            'deaf as an adder'
+            'eristic'
+            'he has not a sou'
+            'Kapteyn transformation'
+            'palletbox'
+            'sack duty'
+            'Zebra time'
+            'абонентское устройство для совместной передачи речи и данных'
+            'с большой точностью'
+            'уборка'
+            'ящичный поддон'
+        FAILED:
+            'A & E'
+            'abbrmate'
+            'abiding'
+            'absolute measurements'
+            'acceleration measured in G'
+            'Bachelor of Vocational Education'
+            'loadable system'
+            'World Union of Catholic Teachers'
+            'абсолютный способ измерения'
+            'Всемирный союз преподавателей-католиков'
+            'курс занятий для студентов последнего курса'
+            'преобразование случайной величины X, имеющей асимметричное распределение, в нормально распределённую величину Z'
+    '''
     #gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
     #gt.objs.files().reset()
-    # 'абсолютный способ измерения'
-    #pattern = 'abbrmate'
-    #pattern = 'Zebra time'
-    #pattern = 'acceleration measured in G'
-    #pattern = 'ashlar line'
-    #pattern = 'daily reports notice'
-    # Finds 'daily report' instead of 'daily reports notice'
-    pattern = 'baby fish'
+    pattern = 'loadable system'
     gt.Get(pattern).run()
     timer.end()

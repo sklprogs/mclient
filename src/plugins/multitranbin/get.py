@@ -32,6 +32,10 @@ class Ending:
             if not pattern:
                 # An empty ending
                 pattern = '#'
+            # MT (at least demo) can have negatives for some reason
+            if no < 0:
+                # Redirection to an empty class
+                no = 0
             try:
                 index_ = self.nos.index(no)
                 match  = pattern in self.ends[index_]
@@ -1642,7 +1646,7 @@ class Get:
                     #NOTE: nltk: according -> accord -> No matches!
                     stem = word[0:i]
                     end  = word[i:]
-                    mes = _('Try for "{}"-"{}"').format(stem,end)
+                    mes  = _('Try for "{}|{}"').format(stem,end)
                     sh.objs.mes(f,mes,True).info()
                     ''' Since we swap languages, the needed stems will
                         always be stored in stem file #1.
