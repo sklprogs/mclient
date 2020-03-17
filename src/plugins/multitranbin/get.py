@@ -25,9 +25,29 @@ class Ending:
         self.load()
         self.parse()
     
+    def overflow(self,no):
+        f = '[MClient] plugins.multitranbin.get.Ending.overflow'
+        new = no
+        if self.Success:
+            new = com.overflowh(new)
+            if not new in self.ordered and len(self.ordered) > 1:
+                i = 1
+                while i < len(self.ordered):
+                    if self.ordered[i-1] <= no < self.ordered[i]:
+                        break
+                    i += 1
+                i -= 1
+                new = self.ordered[i]
+                mes = '{} -> {}'.format(no,new)
+                sh.objs.mes(f,mes,True).debug()
+        else:
+            sh.com.cancel(f)
+        return new
+    
     def has_match(self,no,pattern):
         f = '[MClient] plugins.multitranbin.get.Ending.has_match'
         if self.Success:
+            no = self.overflow(no)
             #TODO: implement 'X' (full pattern match)
             if not pattern:
                 # An empty ending
@@ -95,6 +115,7 @@ class Ending:
                             ends = line[1:]
                             self.nos.append(no)
                             self.ends.append(ends)
+                self.ordered = sorted(set(self.nos))
             else:
                 sub = '{} > 1'.format(len(lines))
                 mes = _('The condition "{}" is not observed!')
@@ -109,6 +130,7 @@ class Ending:
         self.Success = True
         self.nos     = []
         self.ends    = []
+        self.ordered = []
 
 
 
@@ -414,8 +436,8 @@ class Binary:
                         (at least in demo, e.g., dict.ert: 723,957 ->
                         b'\x03\x8a' -> (3; -118) -> (3; 138)).
                     '''
-                    len1 = com.overflow(len1)
-                    len2 = com.overflow(len2)
+                    len1 = com.overflowb(len1)
+                    len2 = com.overflowb(len2)
                     mes = _('Part #{} length: {}').format(1,len1)
                     sh.objs.mes(f,mes,True).debug()
                     mes = _('Part #{} length: {}').format(2,len2)
@@ -631,8 +653,8 @@ class UPage(Binary):
                         read = self.page[pos:pos+2]
                         pos += 2
                         len1, len2 = struct.unpack('<2b',read)
-                        len1 = com.overflow(len1)
-                        len2 = com.overflow(len2)
+                        len1 = com.overflowb(len1)
+                        len2 = com.overflowb(len2)
                         if pos + len1 + len2 < len(self.page):
                             ''' Do this only after checking
                                 the condition, otherwise, resulting
@@ -1329,15 +1351,26 @@ class Glue(UPage):
 
 class Commands:
     
-    def overflow(self,no):
-        f = '[MClient] plugins.multitranbin.get.Commands.overflow'
+    def overflowh(self,no):
+        # Limits: -32768 <= no <= 32767
+        f = '[MClient] plugins.multitranbin.get.Commands.overflowh'
+        if no < 0:
+            result = 32768 + no
+            mes = '{} -> {}'.format(no,result)
+            sh.objs.mes(f,mes,True).debug()
+            return result
+        else:
+            return no
+    
+    def overflowb(self,no):
+        f = '[MClient] plugins.multitranbin.get.Commands.overflowb'
         if no < 0:
             ''' Byte format requires -128 <= no <= 127, so it looks
                 like, when a page size value is negative, it has just
                 overflown the minimum negative -128, e.g., -106 actually
                 means 150: 128 - 106 = 22 => 127 + 22 + 1 = 150.
             '''
-            new = 256 - abs(no)
+            new = 256 + no
             mes = '{} -> {}'.format(no,new)
             sh.objs.mes(f,mes,True).debug()
             return new

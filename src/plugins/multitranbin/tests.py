@@ -522,6 +522,7 @@ if __name__ == '__main__':
             'eristic'
             'he has not a sou'
             'Kapteyn transformation'
+            'loadable system'
             'palletbox'
             'sack duty'
             'Zebra time'
@@ -536,7 +537,6 @@ if __name__ == '__main__':
             'absolute measurements'
             'acceleration measured in G'
             'Bachelor of Vocational Education'
-            'loadable system'
             'World Union of Catholic Teachers'
             'абсолютный способ измерения'
             'Всемирный союз преподавателей-католиков'
@@ -547,4 +547,7 @@ if __name__ == '__main__':
     #gt.objs.files().reset()
     pattern = 'loadable system'
     gt.Get(pattern).run()
+    #val = -32765
+    #res = gt.Ending(gt.objs.files().iwalker.get_ending()).overflow(val)
+    #print(res)
     timer.end()
