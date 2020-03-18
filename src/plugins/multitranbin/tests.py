@@ -545,9 +545,10 @@ if __name__ == '__main__':
     '''
     #gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
     #gt.objs.files().reset()
-    pattern = 'loadable system'
-    gt.Get(pattern).run()
+    #pattern = 'Bachelor of Vocational Education'
+    #gt.Get(pattern).run()
     #val = -32765
     #res = gt.Ending(gt.objs.files().iwalker.get_ending()).overflow(val)
     #print(res)
+    gt.objs.files().get_stems1().search('education')
     timer.end()

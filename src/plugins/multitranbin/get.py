@@ -1601,7 +1601,7 @@ class Stems(UPage):
         else:
             sh.com.cancel(f)
     
-    def search(self,stem,end):
+    def search(self,stem,end=''):
         # Do not fail the whole class upon a failed search
         f = '[MClient] plugins.multitranbin.get.Stems.search'
         if self.Success:
@@ -1617,15 +1617,25 @@ class Stems(UPage):
                         result = self.parse(chunk)
                         if result:
                             chnos, endnos = result[0], result[1]
-                            matches = []
+                            matches  = []
+                            unpacked = []
                             for i in range(len(endnos)):
                                 if objs.files().get_ending().has_match(endnos[i],end):
-                                    sub = com.get_string(chnos[i])
-                                    no  = com.unpack(chnos[i])
-                                    no  = sh.com.figure_commas(no)
-                                    mes = '{} ("{}")'.format(no,sub)
-                                    sh.objs.mes(f,mes,True).debug()
+                                    no = com.unpack(chnos[i])
+                                    no = sh.com.figure_commas(no)
+                                    unpacked.append(no)
                                     matches.append(chnos[i])
+                            tmp = [com.get_string(match) \
+                                   for match in matches
+                                  ]
+                            nos = [i + 1 for i in range(len(tmp))]
+                            headers  = ('NO','CHUNK','UNPACKED')
+                            iterable = (nos,tmp,unpacked)
+                            mes = sh.FastTable (headers  = headers
+                                               ,iterable = iterable
+                                               ).run()
+                            mes = '\n' + mes
+                            sh.objs.mes(f,mes,True).debug()
                             return matches
                 else:
                     sh.com.empty(f)
