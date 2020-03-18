@@ -241,7 +241,6 @@ class Binary:
         mchunks = []
         mpos1   = []
         mpos2   = []
-        mcheck  = []
         if self.Success:
             poses = self.find_all(pattern,start,end)
             for pos11 in poses:
@@ -254,7 +253,6 @@ class Binary:
                         chunks.append(chunk)
                         mpos1.append(sh.com.figure_commas(pos21))
                         mpos2.append(sh.com.figure_commas(pos22))
-                        mcheck.append(_('OK'))
                         mchunks.append(com.get_string(chunk))
             if mchunks:
                 mpattern = ['"{}"'.format(com.get_string(pattern)) \
@@ -1660,38 +1658,40 @@ class Stems(UPage):
                                              ,start   = poses[0]
                                              ,end     = poses[1]
                                              )
+                    matches  = []
+                    unpacked = []
                     for chunk in chunks:
                         result = self.parse(chunk)
                         if result:
                             chnos, endnos = result[0], result[1]
-                            matches  = []
-                            unpacked = []
                             for i in range(len(endnos)):
                                 if objs.files().get_ending().has_match(endnos[i],end):
                                     no = com.unpack(chnos[i])
                                     no = sh.com.figure_commas(no)
                                     unpacked.append(no)
                                     matches.append(chnos[i])
-                            tmp = ['"' + com.get_string(match) + '"' \
-                                   for match in matches
-                                  ]
-                            nos = [i + 1 for i in range(len(tmp))]
-                            headers  = ('NO','STEM','END'
-                                       ,'CHUNK','UNPACKED'
-                                       )
-                            mstems = ['"{}"'.format(stem) \
-                                      for i in range(len(nos))
-                                     ]
-                            mends  = ['"{}"'.format(end) \
-                                      for i in range(len(nos))
-                                     ]
-                            iterable = (nos,mstems,mends,tmp,unpacked)
-                            mes = sh.FastTable (headers  = headers
-                                               ,iterable = iterable
-                                               ).run()
-                            mes = '\n\n' + mes
-                            sh.objs.mes(f,mes,True).debug()
-                            return matches
+                    if matches:
+                        mmatches = ['"' + com.get_string(match) + '"' \
+                                    for match in matches
+                                   ]
+                        mnos = [i + 1 for i in range(len(mmatches))]
+                        headers = ('NO','STEM','END','CHUNK','UNPACKED')
+                        mstems = ['"{}"'.format(stem) \
+                                  for i in range(len(mnos))
+                                 ]
+                        mends  = ['"{}"'.format(end) \
+                                  for i in range(len(mnos))
+                                 ]
+                        iterable = (mnos,mstems,mends,mmatches,unpacked)
+                        mes = sh.FastTable (headers  = headers
+                                           ,iterable = iterable
+                                           ).run()
+                        mes = '\n\n' + mes
+                        sh.objs.mes(f,mes,True).debug()
+                    else:
+                        mes = _('No debug info')
+                        sh.objs.mes(f,mes,True).debug()
+                    return matches
                 else:
                     sh.com.empty(f)
             else:

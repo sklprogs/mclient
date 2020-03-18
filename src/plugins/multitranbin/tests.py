@@ -509,13 +509,17 @@ if __name__ == '__main__':
     timer = sh.Timer()
     timer.start()
     ''' OK:
+            'A & E'
             'a posteriori'
             'abasin'
             'abatement of purchase price'
             'abatement of tax'
+            'abbrmate'
+            'acceleration measured in G'
             'acceleration spectral density'
             'ashlar line'
             'baby fish'
+            'Bachelor of Vocational Education'
             'calcium gallium germanium garnet'
             'daily reports notice'
             'deaf as an adder'
@@ -525,30 +529,22 @@ if __name__ == '__main__':
             'loadable system'
             'palletbox'
             'sack duty'
+            'World Union of Catholic Teachers'
             'Zebra time'
             'абонентское устройство для совместной передачи речи и данных'
+            'абсолютный способ измерения'
+            'курс занятий для студентов последнего курса'
             'с большой точностью'
             'уборка'
             'ящичный поддон'
         FAILED:
-            'A & E'
-            'abbrmate'
             'abiding'
             'absolute measurements'
-            'acceleration measured in G'
-            'Bachelor of Vocational Education'
-            'World Union of Catholic Teachers'
-            'абсолютный способ измерения'
             'Всемирный союз преподавателей-католиков'
-            'курс занятий для студентов последнего курса'
             'преобразование случайной величины X, имеющей асимметричное распределение, в нормально распределённую величину Z'
     '''
-    #gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
-    #gt.objs.files().reset()
-    pattern = 'Bachelor of Vocational Education'
+    gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
+    gt.objs.files().reset()
+    pattern = 'с большой точностью'
     gt.Get(pattern).run()
-    #val = -32765
-    #res = gt.Ending(gt.objs.files().iwalker.get_ending()).overflow(val)
-    #print(res)
-    #gt.objs.files().get_stems1().search('education')
     timer.end()
