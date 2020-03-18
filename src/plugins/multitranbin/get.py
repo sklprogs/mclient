@@ -237,7 +237,11 @@ class Binary:
     def get_parts2(self,pattern,start=0,end=0):
         # Run 'get_part2' in loop (only useful for finding stems)
         f = '[MClient] plugins.multitranbin.get.Binary.get_parts2'
-        chunks = []
+        chunks  = []
+        mchunks = []
+        mpos1   = []
+        mpos2   = []
+        mcheck  = []
         if self.Success:
             poses = self.find_all(pattern,start,end)
             for pos11 in poses:
@@ -248,19 +252,39 @@ class Binary:
                     chunk = self.read(pos21,pos22)
                     if chunk and not chunk in chunks:
                         chunks.append(chunk)
-            mes = [com.get_string(chunk) for chunk in chunks]
-            for i in range(len(mes)):
-                mes[i] = '{}: "{}"'.format(i+1,mes[i])
-            if mes:
-                mes = '\n' + '\n'.join(mes)
+                        mpos1.append(sh.com.figure_commas(pos21))
+                        mpos2.append(sh.com.figure_commas(pos22))
+                        mcheck.append(_('OK'))
+                        mchunks.append(com.get_string(chunk))
+            if mchunks:
+                mpattern = ['"{}"'.format(com.get_string(pattern)) \
+                            for i in range(len(mchunks))
+                           ]
+                mstart = ['{}'.format(sh.com.figure_commas(start)) \
+                          for i in range(len(mchunks))
+                         ]
+                mend = ['{}'.format(sh.com.figure_commas(end)) \
+                          for i in range(len(mchunks))
+                       ]
+                nos      = [i + 1 for i in range(len(chunks))]
+                mchunks  = ['"{}"'.format(chunk) for chunk in mchunks]
+                headers  = ('NO','PATTERN','START'
+                           ,'END','POS1','POS2','CHUNK'
+                           )
+                iterable = (nos,mpattern,mstart
+                           ,mend,mpos1,mpos2,mchunks
+                           )
+                mes = sh.FastTable (headers  = headers
+                                   ,iterable = iterable
+                                   ,maxrow   = 47
+                                   ).run()
+                mes = '\n\n' + mes
+                sh.objs.mes(f,mes,True).debug()
             else:
-                ''' The output of 'sh.objs.mes' is not shown for
-                    an empty input.
-                '''
-                mes = str(mes)
-            sh.objs.mes(f,mes,True).debug()
+                mes = _('No debug info')
+                sh.objs.mes(f,mes,True).debug()
         else:
-            sh.com.cancel(f)
+            sh.com.lazy(f)
         return chunks
     
     def find_all(self,pattern,start=0,end=0):
@@ -1586,11 +1610,34 @@ class Stems(UPage):
                         ends.append(chunks[i][3:5])
                     for chno in chnos:
                         nos.append(com.unpack(chno))
-                    sh.objs.mes(f,chnos,True).debug()
-                    tmp = [sh.com.figure_commas(no) for no in nos]
-                    sh.objs.mes(f,tmp,True).debug()
-                    ends = [struct.unpack('<h',end)[0] for end in ends]
-                    sh.objs.mes(f,ends,True).debug()
+                    if chnos:
+                        ids = [i + 1 for i in range(len(nos))]
+                        tmp = [sh.com.figure_commas(no) for no in nos]
+                        ends = [struct.unpack('<h',end)[0] \
+                                for end in ends
+                               ]
+                        mends = [sh.com.figure_commas(end) \
+                                 for end in ends
+                                ]
+                        mchnos = ['"' + com.get_string(chno) + '"' \
+                                  for chno in chnos
+                                 ]
+                        initial = ['"{}"'.format(com.get_string(chunk))\
+                                   for i in range(len(mchnos))
+                                  ]
+                        headers  = ('NO','INITIAL','CHUNK'
+                                   ,'UNPACKED','END'
+                                   )
+                        iterable = (ids,initial,mchnos,tmp,mends)
+                        mes = sh.FastTable (headers  = headers
+                                           ,iterable = iterable
+                                           ,maxrow   = 50
+                                           ).run()
+                        mes = '\n\n' + mes
+                        sh.objs.mes(f,mes,True).debug()
+                    else:
+                        mes = _('No debug info')
+                        sh.objs.mes(f,mes,True).debug()
                     return(chnos,ends)
                 else:
                     sub = com.get_string(chunk)
@@ -1625,16 +1672,24 @@ class Stems(UPage):
                                     no = sh.com.figure_commas(no)
                                     unpacked.append(no)
                                     matches.append(chnos[i])
-                            tmp = [com.get_string(match) \
+                            tmp = ['"' + com.get_string(match) + '"' \
                                    for match in matches
                                   ]
                             nos = [i + 1 for i in range(len(tmp))]
-                            headers  = ('NO','CHUNK','UNPACKED')
-                            iterable = (nos,tmp,unpacked)
+                            headers  = ('NO','STEM','END'
+                                       ,'CHUNK','UNPACKED'
+                                       )
+                            mstems = ['"{}"'.format(stem) \
+                                      for i in range(len(nos))
+                                     ]
+                            mends  = ['"{}"'.format(end) \
+                                      for i in range(len(nos))
+                                     ]
+                            iterable = (nos,mstems,mends,tmp,unpacked)
                             mes = sh.FastTable (headers  = headers
                                                ,iterable = iterable
                                                ).run()
-                            mes = '\n' + mes
+                            mes = '\n\n' + mes
                             sh.objs.mes(f,mes,True).debug()
                             return matches
                 else:
