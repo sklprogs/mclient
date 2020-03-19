@@ -234,6 +234,18 @@ class Binary:
         self.Success = sh.File(self.file).Success
         self.open()
     
+    def get_zero(self,start,end):
+        f = '[MClient] plugins.multitranbin.get.Binary.get_zero'
+        result = []
+        if self.Success:
+            pos = self.find(b'\x00',start,end)
+            if pos:
+                #TODO (?): implement finding multiple zero chunks
+                result = [pos+2]
+        else:
+            sh.com.cancel(f)
+        return result
+    
     def get_parts2(self,pattern,start=0,end=0):
         # Run 'get_part2' in loop (only useful for finding stems)
         f = '[MClient] plugins.multitranbin.get.Binary.get_parts2'
@@ -242,7 +254,10 @@ class Binary:
         mpos1   = []
         mpos2   = []
         if self.Success:
-            poses = self.find_all(pattern,start,end)
+            if pattern == b'':
+                poses = self.get_zero(start,end)
+            else:
+                poses = self.find_all(pattern,start,end)
             for pos11 in poses:
                 lengths = self.get_lengths(pos11)
                 if self.check_lengths(pattern,lengths):
@@ -634,7 +649,7 @@ class UPage(Binary):
         f = '[MClient] plugins.multitranbin.get.UPage.searchu'
         if self.Success:
             self.get_parts()
-            if pattern and self.part1:
+            if self.part1:
                 i = 1
                 while i < len(self.part1):
                     if self.part1[i-1] <= pattern < self.part1[i]:
@@ -1650,50 +1665,48 @@ class Stems(UPage):
         # Do not fail the whole class upon a failed search
         f = '[MClient] plugins.multitranbin.get.Stems.search'
         if self.Success:
-            if stem:
-                coded = bytes(stem,ENCODING,'ignore')
-                poses = self.searchu(coded)
-                if poses:
-                    chunks = self.get_parts2 (pattern = coded
-                                             ,start   = poses[0]
-                                             ,end     = poses[1]
-                                             )
-                    matches  = []
-                    unpacked = []
-                    for chunk in chunks:
-                        result = self.parse(chunk)
-                        if result:
-                            chnos, endnos = result[0], result[1]
-                            for i in range(len(endnos)):
-                                if objs.files().get_ending().has_match(endnos[i],end):
-                                    no = com.unpack(chnos[i])
-                                    no = sh.com.figure_commas(no)
-                                    unpacked.append(no)
-                                    matches.append(chnos[i])
-                    if matches:
-                        mmatches = ['"' + com.get_string(match) + '"' \
-                                    for match in matches
-                                   ]
-                        mnos = [i + 1 for i in range(len(mmatches))]
-                        headers = ('NO','STEM','END','CHUNK','UNPACKED')
-                        mstems = ['"{}"'.format(stem) \
-                                  for i in range(len(mnos))
-                                 ]
-                        mends  = ['"{}"'.format(end) \
-                                  for i in range(len(mnos))
-                                 ]
-                        iterable = (mnos,mstems,mends,mmatches,unpacked)
-                        mes = sh.FastTable (headers  = headers
-                                           ,iterable = iterable
-                                           ).run()
-                        mes = '\n\n' + mes
-                        sh.objs.mes(f,mes,True).debug()
-                    else:
-                        mes = _('No debug info')
-                        sh.objs.mes(f,mes,True).debug()
-                    return matches
+            # Zero-length stems should be allowed
+            coded = bytes(stem,ENCODING,'ignore')
+            poses = self.searchu(coded)
+            if poses:
+                chunks = self.get_parts2 (pattern = coded
+                                         ,start   = poses[0]
+                                         ,end     = poses[1]
+                                         )
+                matches  = []
+                unpacked = []
+                for chunk in chunks:
+                    result = self.parse(chunk)
+                    if result:
+                        chnos, endnos = result[0], result[1]
+                        for i in range(len(endnos)):
+                            if objs.files().get_ending().has_match(endnos[i],end):
+                                no = com.unpack(chnos[i])
+                                no = sh.com.figure_commas(no)
+                                unpacked.append(no)
+                                matches.append(chnos[i])
+                if matches:
+                    mmatches = ['"' + com.get_string(match) + '"' \
+                                for match in matches
+                               ]
+                    mnos = [i + 1 for i in range(len(mmatches))]
+                    headers = ('NO','STEM','END','CHUNK','UNPACKED')
+                    mstems = ['"{}"'.format(stem) \
+                              for i in range(len(mnos))
+                             ]
+                    mends  = ['"{}"'.format(end) \
+                              for i in range(len(mnos))
+                             ]
+                    iterable = (mnos,mstems,mends,mmatches,unpacked)
+                    mes = sh.FastTable (headers  = headers
+                                       ,iterable = iterable
+                                       ).run()
+                    mes = '\n\n' + mes
+                    sh.objs.mes(f,mes,True).debug()
                 else:
-                    sh.com.empty(f)
+                    mes = _('No debug info')
+                    sh.objs.mes(f,mes,True).debug()
+                return matches
             else:
                 sh.com.empty(f)
         else:
@@ -1741,7 +1754,8 @@ class Get:
             for word in words:
                 word_stems = []
                 i = len(word)
-                while i > 0:
+                # Zero-length stems should be allowed
+                while i >= 0:
                     #NOTE: nltk: according -> accord -> No matches!
                     stem = word[0:i]
                     end  = word[i:]
@@ -1766,6 +1780,7 @@ class Get:
                             break
                     i -= 1
                 self.stemnos.append(word_stems)
+            self.stemnos = [item for item in self.stemnos if item]
             sh.objs.mes(f,self.stemnos,True).debug()
         else:
             sh.com.cancel(f)

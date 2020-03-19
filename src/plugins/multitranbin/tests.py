@@ -527,6 +527,7 @@ if __name__ == '__main__':
             'eristic'
             'he has not a sou'
             'Kapteyn transformation'
+            'law and equity'
             'loadable system'
             'palletbox'
             'sack duty'
@@ -537,14 +538,14 @@ if __name__ == '__main__':
             'курс занятий для студентов последнего курса'
             'с большой точностью'
             'уборка'
+            'у него нет ни гроша'
             'ящичный поддон'
         FAILED:
-            'abiding'
             'Всемирный союз преподавателей-католиков'
             'преобразование случайной величины X, имеющей асимметричное распределение, в нормально распределённую величину Z'
     '''
-    #gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
-    #gt.objs.files().reset()
-    pattern = 'World Union of Catholic Teachers'
+    gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
+    gt.objs.files().reset()
+    pattern = 'у него нет ни гроша'
     gt.Get(pattern).run()
     timer.end()
