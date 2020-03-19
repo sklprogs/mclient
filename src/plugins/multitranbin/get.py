@@ -1755,11 +1755,15 @@ class Get:
                         mes = _('Found stem: "{}"').format(stem)
                         sh.objs.mes(f,mes,True).info()
                         word_stems += stemnos
-                        ''' Do not break here since there can be several
-                            valid stems, e.g., 'absolute' and 'absolut'
-                            (test on 'absolute measurements').
+                        ''' There can be several valid stems, e.g.,
+                            'absolute' and 'absolut' (test on
+                            'absolute measurements'). Since finding
+                            valid stems significantly slows down
+                            performance, we allow only 2 valid stems
+                            of the same word.
                         '''
-                        #break
+                        if len(word_stems) == 2:
+                            break
                     i -= 1
                 self.stemnos.append(word_stems)
             sh.objs.mes(f,self.stemnos,True).debug()

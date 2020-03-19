@@ -515,6 +515,7 @@ if __name__ == '__main__':
             'abatement of purchase price'
             'abatement of tax'
             'abbrmate'
+            'absolute measurements'
             'acceleration measured in G'
             'acceleration spectral density'
             'ashlar line'
@@ -539,12 +540,11 @@ if __name__ == '__main__':
             'ящичный поддон'
         FAILED:
             'abiding'
-            'absolute measurements'
             'Всемирный союз преподавателей-католиков'
             'преобразование случайной величины X, имеющей асимметричное распределение, в нормально распределённую величину Z'
     '''
     #gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
     #gt.objs.files().reset()
-    pattern = 'absolute measurements'
+    pattern = 'World Union of Catholic Teachers'
     gt.Get(pattern).run()
     timer.end()
