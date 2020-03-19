@@ -543,8 +543,8 @@ if __name__ == '__main__':
             'Всемирный союз преподавателей-католиков'
             'преобразование случайной величины X, имеющей асимметричное распределение, в нормально распределённую величину Z'
     '''
-    gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
-    gt.objs.files().reset()
-    pattern = 'с большой точностью'
+    #gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
+    #gt.objs.files().reset()
+    pattern = 'absolute measurements'
     gt.Get(pattern).run()
     timer.end()

@@ -1739,6 +1739,7 @@ class Get:
         if self.Success:
             words = self.pattern.split(' ')
             for word in words:
+                word_stems = []
                 i = len(word)
                 while i > 0:
                     #NOTE: nltk: according -> accord -> No matches!
@@ -1753,9 +1754,14 @@ class Get:
                     if stemnos:
                         mes = _('Found stem: "{}"').format(stem)
                         sh.objs.mes(f,mes,True).info()
-                        self.stemnos.append(stemnos)
-                        break
+                        word_stems += stemnos
+                        ''' Do not break here since there can be several
+                            valid stems, e.g., 'absolute' and 'absolut'
+                            (test on 'absolute measurements').
+                        '''
+                        #break
                     i -= 1
+                self.stemnos.append(word_stems)
             sh.objs.mes(f,self.stemnos,True).debug()
         else:
             sh.com.cancel(f)
