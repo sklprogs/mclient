@@ -1,4 +1,7 @@
 
+- mtbin: implement an autosuggestion
+- mtbin: add a General subject if none is set
+- mtbin: implement phrases
 - mtbin: implement speech parts
 - EN-RU, publisher: fix SAME of comments
 - EN-RU: на фиг: wrong SAME of "(нужно, сдалось)"
