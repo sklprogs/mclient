@@ -1665,50 +1665,56 @@ class Stems(UPage):
         # Do not fail the whole class upon a failed search
         f = '[MClient] plugins.multitranbin.get.Stems.search'
         if self.Success:
-            # Zero-length stems should be allowed
-            coded = bytes(stem,ENCODING,'ignore')
-            poses = self.searchu(coded)
-            if poses:
-                chunks = self.get_parts2 (pattern = coded
-                                         ,start   = poses[0]
-                                         ,end     = poses[1]
-                                         )
-                matches  = []
-                unpacked = []
-                for chunk in chunks:
-                    result = self.parse(chunk)
-                    if result:
-                        chnos, endnos = result[0], result[1]
-                        for i in range(len(endnos)):
-                            if objs.files().get_ending().has_match(endnos[i],end):
-                                no = com.unpack(chnos[i])
-                                no = sh.com.figure_commas(no)
-                                unpacked.append(no)
-                                matches.append(chnos[i])
-                if matches:
-                    mmatches = ['"' + com.get_string(match) + '"' \
-                                for match in matches
-                               ]
-                    mnos = [i + 1 for i in range(len(mmatches))]
-                    headers = ('NO','STEM','END','CHUNK','UNPACKED')
-                    mstems = ['"{}"'.format(stem) \
-                              for i in range(len(mnos))
-                             ]
-                    mends  = ['"{}"'.format(end) \
-                              for i in range(len(mnos))
-                             ]
-                    iterable = (mnos,mstems,mends,mmatches,unpacked)
-                    mes = sh.FastTable (headers  = headers
-                                       ,iterable = iterable
-                                       ).run()
-                    mes = '\n\n' + mes
-                    sh.objs.mes(f,mes,True).debug()
-                else:
-                    mes = _('No debug info')
-                    sh.objs.mes(f,mes,True).debug()
-                return matches
+            ''' MT demo does not comprise stem #3 ('-') at all,
+                so we use this workaround.
+            '''
+            if stem == '-':
+                return [b'\x03\x00\x00']
             else:
-                sh.com.empty(f)
+                # Zero-length stems should be allowed
+                coded = bytes(stem,ENCODING,'ignore')
+                poses = self.searchu(coded)
+                if poses:
+                    chunks = self.get_parts2 (pattern = coded
+                                             ,start   = poses[0]
+                                             ,end     = poses[1]
+                                             )
+                    matches  = []
+                    unpacked = []
+                    for chunk in chunks:
+                        result = self.parse(chunk)
+                        if result:
+                            chnos, endnos = result[0], result[1]
+                            for i in range(len(endnos)):
+                                if objs.files().get_ending().has_match(endnos[i],end):
+                                    no = com.unpack(chnos[i])
+                                    no = sh.com.figure_commas(no)
+                                    unpacked.append(no)
+                                    matches.append(chnos[i])
+                    if matches:
+                        mmatches = ['"' + com.get_string(match) + '"' \
+                                    for match in matches
+                                   ]
+                        mnos = [i + 1 for i in range(len(mmatches))]
+                        headers = ('NO','STEM','END','CHUNK','UNPACKED')
+                        mstems = ['"{}"'.format(stem) \
+                                  for i in range(len(mnos))
+                                 ]
+                        mends  = ['"{}"'.format(end) \
+                                  for i in range(len(mnos))
+                                 ]
+                        iterable = (mnos,mstems,mends,mmatches,unpacked)
+                        mes = sh.FastTable (headers  = headers
+                                           ,iterable = iterable
+                                           ).run()
+                        mes = '\n\n' + mes
+                        sh.objs.mes(f,mes,True).debug()
+                    else:
+                        mes = _('No debug info')
+                        sh.objs.mes(f,mes,True).debug()
+                    return matches
+                else:
+                    sh.com.empty(f)
         else:
             sh.com.cancel(f)
 
@@ -1739,6 +1745,8 @@ class Get:
         f = '[MClient] plugins.multitranbin.get.Get.strip'
         if self.Success:
             self.pattern = self.pattern.strip()
+            # Split hyphened words as if they were separate words
+            self.pattern = self.pattern.replace('-',' - ')
             self.pattern = sh.Text(self.pattern).convert_line_breaks()
             self.pattern = sh.Text(self.pattern).delete_line_breaks()
             self.pattern = sh.Text(self.pattern).delete_punctuation()
