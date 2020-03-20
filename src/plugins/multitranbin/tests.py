@@ -370,70 +370,74 @@ class Tests:
         self.translate('уборка') # has a comment
     
     def translate_many(self):
+        f = '[MClient] plugins.multitranbin.tests.Tests.translate_many'
+        ''' MISSING IN MT DEMO:
+            'преобразование случайной величины X, имеющей асимметричное распределение, в нормально распределённую величину Z'
         '''
-        # Successfully processed patterns
-        patterns = ['abasin'
-                   ,'absolute measurements'
-                   ,'baby fish'
-                   ,'habitable room'
-                   ,'a posteriori'
-                   ,'absolute distribution'
-                   ,'abolishment of a scheme'
-                   ,'calcium gallium germanium garnet'
-                   ,'ashlar line'
-                   ,'Abelian equation'
-                   ,'eristic'
-                   ,'Kapteyn transformation'
-                   ,'sack duty'
-                   ,'acceleration measured in G'
-                   ,'abatement of tax'
-                   ,'abatement of purchase price'
-                   ,'daily reports notice'
-                   ,'A & E'
-                   ,'уборка'
-                   ,'абонентская линия'
-                   ,'абсолютный способ измерения'
-                   ,'ячейка решётки'
-                   ,'ящичный поддон'
-                   ]
-        # OK with excessive terms
-        patterns = ['palletbox'
-                   ,'ярлык'
-                   ]
-        # OK, but slow
-        patterns = ['acceleration spectral density'
-                   ,'deaf as an adder'
-                   ]
-        # OK, but VERY slow (~4-6 min)
-        patterns = ['с большой точностью'
-                   ,'World Union of Catholic Teachers'
-                   ,'Bachelor of Vocational Education'
-                   ,'he has not a sou'
-                   ]
-        # No combos
-        patterns = ['Всемирный союз преподавателей-католиков'
-                   ]
-        # Infinite loop (or MemoryError, get, 1270)
-        patterns = ['абонентское устройство для совместной передачи речи и данных'
-                   ,'курс занятий для студентов последнего курса'
-                   ]
-        '''
-        patterns = ['he has not a sou'
-                   ,'Bachelor of Vocational Education'
-                   ,'ashlar line'
-                   ,'acceleration measured in G'
-                   ]
-        for pattern in patterns:
-            self.translate(pattern)
-            input(_('Press any key'))
+        en_patterns = ['A & E'
+                      ,'a posteriori'
+                      ,'abasin'
+                      ,'abatement of purchase price'
+                      ,'abatement of tax'
+                      ,'abbrmate'
+                      ,'absolute measurements'
+                      ,'acceleration measured in G'
+                      ,'acceleration spectral density'
+                      ,'ashlar line'
+                      ,'baby fish'
+                      ,'Bachelor of Vocational Education'
+                      ,'calcium gallium germanium garnet'
+                      ,'daily reports notice'
+                      ,'deaf as an adder'
+                      ,'eristic'
+                      ,'habitable room'
+                      ,'he has not a sou'
+                      ,'Kapteyn transformation'
+                      ,'law and equity'
+                      ,'loadable system'
+                      ,'palletbox'
+                      ,'sack duty'
+                      ,'World Union of Catholic Teachers'
+                      ,'Zebra time'
+                      ]
+        ru_patterns = ['абонентское устройство для совместной передачи речи и данных'
+                      ,'абсолютный способ измерения'
+                      ,'Всемирный союз преподавателей-католиков'
+                      ,'курс занятий для студентов последнего курса'
+                      ,'с большой точностью'
+                      ,'уборка'
+                      ,'у него нет ни гроша'
+                      ,'ячейка решётки'
+                      ,'ящичный поддон'
+                      ]
+        failed = 0
+        total  = len(en_patterns) + len(ru_patterns)
+        for pattern in en_patterns:
+            if not self.translate(pattern):
+                failed += 1
+        gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
+        gt.objs.files().reset()
+        for pattern in ru_patterns:
+            if not self.translate(pattern):
+                failed += 1
+        messages = []
+        mes = _('Total: {}').format(total)
+        messages.append(mes)
+        mes = _('Successful: {}').format(total-failed)
+        messages.append(mes)
+        mes = _('Failed: {}').format(failed)
+        messages.append(mes)
+        mes = '\n' + '\n'.join(messages)
+        sh.objs.mes(f,mes,True).debug()
     
     def translate(self,pattern):
         f = '[MClient] plugins.multitranbin.tests.Tests.translate'
         timer = sh.Timer(f)
         timer.start()
-        iget = gt.Get(pattern)
-        sh.objs.mes(f,iget.run(),True).debug()
+        result = gt.Get(pattern).run()
+        sh.objs.mes(f,result,True).debug()
         timer.end()
+        return result
 
 
 
@@ -506,46 +510,4 @@ class UPage(gt.UPage):
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
-    timer = sh.Timer()
-    timer.start()
-    ''' OK:
-            'A & E'
-            'a posteriori'
-            'abasin'
-            'abatement of purchase price'
-            'abatement of tax'
-            'abbrmate'
-            'absolute measurements'
-            'acceleration measured in G'
-            'acceleration spectral density'
-            'ashlar line'
-            'baby fish'
-            'Bachelor of Vocational Education'
-            'calcium gallium germanium garnet'
-            'daily reports notice'
-            'deaf as an adder'
-            'eristic'
-            'he has not a sou'
-            'Kapteyn transformation'
-            'law and equity'
-            'loadable system'
-            'palletbox'
-            'sack duty'
-            'World Union of Catholic Teachers'
-            'Zebra time'
-            'абонентское устройство для совместной передачи речи и данных'
-            'абсолютный способ измерения'
-            'Всемирный союз преподавателей-католиков'
-            'курс занятий для студентов последнего курса'
-            'с большой точностью'
-            'уборка'
-            'у него нет ни гроша'
-            'ящичный поддон'
-        FAILED:
-            'преобразование случайной величины X, имеющей асимметричное распределение, в нормально распределённую величину Z'
-    '''
-    gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
-    gt.objs.files().reset()
-    pattern = 'Всемирный союз преподавателей-католиков'
-    gt.Get(pattern).run()
-    timer.end()
+    Tests().translate_many()
