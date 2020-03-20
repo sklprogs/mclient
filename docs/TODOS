@@ -1,4 +1,5 @@
 
+- mtbin: find separate words
 - mtbin: implement an autosuggestion
 - mtbin: add a General subject if none is set
 - mtbin: implement phrases
