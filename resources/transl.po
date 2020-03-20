@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-18 14:41+0300\n"
-"PO-Revision-Date: 2020-03-18 14:43+0300\n"
+"POT-Creation-Date: 2020-03-20 23:48+0300\n"
+"PO-Revision-Date: 2020-03-20 23:49+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -71,9 +71,9 @@ msgstr "Удаление записей статьи №{} из {}"
 #: mclient/src/mclient.py:1828 mclient/src/mclient.py:1866
 #: mclient/src/mclient.py:1878 mclient/src/mclient.py:1890
 #: mclient/src/mclient.py:1902 mclient/src/mclient.py:2393
-#: mclient/src/mclient.py:2401 mclient/src/plugins/multitranbin/get.py:580
-#: mclient/src/plugins/multitranbin/get.py:595
-#: mclient/src/plugins/multitranbin/get.py:1011
+#: mclient/src/mclient.py:2401 mclient/src/plugins/multitranbin/get.py:593
+#: mclient/src/plugins/multitranbin/get.py:608
+#: mclient/src/plugins/multitranbin/get.py:1024
 #: mclient/src/plugins/multitranbin/tags.py:153
 #: mclient/src/plugins/multitranbin/tests.py:127
 #: mclient/src/plugins/multitrancom/pairs.py:2756 skl_shared/src/logic.py:914
@@ -984,11 +984,11 @@ msgid "Set the column limit to {} ({} in total)"
 msgstr "Задать максимальное число столбцов: {} (всего: {})"
 
 #: mclient/src/mclient.py:2304 mclient/src/plugins/multitranbin/get.py:121
-#: mclient/src/plugins/multitranbin/get.py:376
-#: mclient/src/plugins/multitranbin/get.py:381
-#: mclient/src/plugins/multitranbin/get.py:474
-#: mclient/src/plugins/multitranbin/get.py:497
-#: mclient/src/plugins/multitranbin/get.py:765
+#: mclient/src/plugins/multitranbin/get.py:389
+#: mclient/src/plugins/multitranbin/get.py:394
+#: mclient/src/plugins/multitranbin/get.py:487
+#: mclient/src/plugins/multitranbin/get.py:510
+#: mclient/src/plugins/multitranbin/get.py:778
 #: mclient/src/plugins/multitrancom/utils.py:165
 #: mclient/src/plugins/multitrancom/utils.py:263
 #: mclient/src/plugins/multitrancom/utils.py:344
@@ -1030,8 +1030,8 @@ msgstr "Необходимо задать хотя бы 1 столбец!"
 #: mclient/src/plugins/multitranbin/get.py:103
 #: mclient/src/plugins/multitranbin/get.py:159
 #: mclient/src/plugins/multitranbin/get.py:208
-#: mclient/src/plugins/multitranbin/get.py:1366
-#: mclient/src/plugins/multitranbin/get.py:1644
+#: mclient/src/plugins/multitranbin/get.py:1379
+#: mclient/src/plugins/multitranbin/get.py:1657
 #: mclient/src/plugins/multitranbin/tags.py:169
 #: mclient/src/plugins/multitranbin/tests.py:181
 #: mclient/src/plugins/multitrancom/pairs.py:2698
@@ -1078,37 +1078,34 @@ msgstr "№: {}; Образец: \"{}\"; Совпадение: {}"
 
 #: mclient/src/plugins/multitranbin/get.py:82
 #: mclient/src/plugins/multitranbin/get.py:220
-#: mclient/src/plugins/multitranbin/get.py:333
+#: mclient/src/plugins/multitranbin/get.py:346
 msgid "Empty output is not allowed!"
 msgstr "Пустые выходные данные не допускаются!"
 
-#: mclient/src/plugins/multitranbin/get.py:257
-msgid "OK"
-msgstr "OK"
-
-#: mclient/src/plugins/multitranbin/get.py:284
-#: mclient/src/plugins/multitranbin/get.py:1639
+#: mclient/src/plugins/multitranbin/get.py:297
+#: mclient/src/plugins/multitranbin/get.py:1652
+#: mclient/src/plugins/multitranbin/get.py:1713
 msgid "No debug info"
 msgstr "Нет информации для отладки"
 
-#: mclient/src/plugins/multitranbin/get.py:327
+#: mclient/src/plugins/multitranbin/get.py:340
 msgid "File \"{}\" has the size of {}"
 msgstr "Файл \"{}\" имеет размер в {}"
 
-#: mclient/src/plugins/multitranbin/get.py:347
-#: mclient/src/plugins/multitranbin/get.py:364
+#: mclient/src/plugins/multitranbin/get.py:360
+#: mclient/src/plugins/multitranbin/get.py:377
 msgid "Page size: {}"
 msgstr "Размер страницы: {}"
 
-#: mclient/src/plugins/multitranbin/get.py:352
-#: mclient/src/plugins/multitranbin/get.py:370
+#: mclient/src/plugins/multitranbin/get.py:365
+#: mclient/src/plugins/multitranbin/get.py:383
 #: mclient/src/plugins/multitranbin/tests.py:84
 msgid "Page limits: [{}:{}]"
 msgstr "Пределы страницы: [{}:{}]"
 
-#: mclient/src/plugins/multitranbin/get.py:399
-#: mclient/src/plugins/multitranbin/get.py:546
-#: mclient/src/plugins/multitranbin/get.py:1411 skl_shared/src/shared.py:2284
+#: mclient/src/plugins/multitranbin/get.py:412
+#: mclient/src/plugins/multitranbin/get.py:559
+#: mclient/src/plugins/multitranbin/get.py:1424 skl_shared/src/shared.py:2284
 msgid ""
 "Third-party module has failed!\n"
 "\n"
@@ -1118,90 +1115,90 @@ msgstr ""
 "\n"
 "Детали: {}"
 
-#: mclient/src/plugins/multitranbin/get.py:418
-#: mclient/src/plugins/multitranbin/get.py:799
+#: mclient/src/plugins/multitranbin/get.py:431
+#: mclient/src/plugins/multitranbin/get.py:812
 msgid "The check has failed!"
 msgstr "Проверка завершилась неуспешно!"
 
-#: mclient/src/plugins/multitranbin/get.py:465
-#: mclient/src/plugins/multitranbin/get.py:467
+#: mclient/src/plugins/multitranbin/get.py:478
+#: mclient/src/plugins/multitranbin/get.py:480
 msgid "Part #{} length: {}"
 msgstr "Длина части №{}: {}"
 
-#: mclient/src/plugins/multitranbin/get.py:536
+#: mclient/src/plugins/multitranbin/get.py:549
 msgid "Open \"{}\""
 msgstr "Открытие \"{}\""
 
-#: mclient/src/plugins/multitranbin/get.py:555
+#: mclient/src/plugins/multitranbin/get.py:568
 msgid "Close \"{}\""
 msgstr "Закрытие \"{}\""
 
-#: mclient/src/plugins/multitranbin/get.py:591
+#: mclient/src/plugins/multitranbin/get.py:604
 msgid "#{}: {}"
 msgstr "№{}: {}"
 
-#: mclient/src/plugins/multitranbin/get.py:614
+#: mclient/src/plugins/multitranbin/get.py:627
 msgid "Start"
 msgstr "Начало"
 
-#: mclient/src/plugins/multitranbin/get.py:616
-#: mclient/src/plugins/multitranbin/get.py:621
+#: mclient/src/plugins/multitranbin/get.py:629
+#: mclient/src/plugins/multitranbin/get.py:634
 msgid "{} (#{})"
 msgstr "{} (№{})"
 
-#: mclient/src/plugins/multitranbin/get.py:626
+#: mclient/src/plugins/multitranbin/get.py:639
 msgid "End"
 msgstr "Конец"
 
-#: mclient/src/plugins/multitranbin/get.py:657
+#: mclient/src/plugins/multitranbin/get.py:670
 msgid "{}/{} bytes have been processed"
 msgstr "{}/{} байтов обработано"
 
-#: mclient/src/plugins/multitranbin/get.py:662
+#: mclient/src/plugins/multitranbin/get.py:675
 msgid "Unprocessed fragment: \"{}\""
 msgstr "Необработанный фрагмент: \"{}\""
 
-#: mclient/src/plugins/multitranbin/get.py:705
+#: mclient/src/plugins/multitranbin/get.py:718
 msgid ""
 "Processing the pattern has not been completed, but the end of the file has "
 "already been reached!"
 msgstr "Обработка образца не была завершена, однако был достигнут конец файла!"
 
-#: mclient/src/plugins/multitranbin/get.py:824
-#: mclient/src/plugins/multitranbin/get.py:840
-#: mclient/src/plugins/multitranbin/get.py:857
-#: mclient/src/plugins/multitranbin/get.py:874
-#: mclient/src/plugins/multitranbin/get.py:905
-#: mclient/src/plugins/multitranbin/get.py:922
-#: mclient/src/plugins/multitranbin/get.py:939
-#: mclient/src/plugins/multitranbin/get.py:982
-#: mclient/src/plugins/multitranbin/get.py:998
+#: mclient/src/plugins/multitranbin/get.py:837
+#: mclient/src/plugins/multitranbin/get.py:853
+#: mclient/src/plugins/multitranbin/get.py:870
+#: mclient/src/plugins/multitranbin/get.py:887
+#: mclient/src/plugins/multitranbin/get.py:918
+#: mclient/src/plugins/multitranbin/get.py:935
+#: mclient/src/plugins/multitranbin/get.py:952
+#: mclient/src/plugins/multitranbin/get.py:995
+#: mclient/src/plugins/multitranbin/get.py:1011
 msgid "File \"{}\" does not exist!"
 msgstr "Файл \"{}\" не существует!"
 
-#: mclient/src/plugins/multitranbin/get.py:1159
+#: mclient/src/plugins/multitranbin/get.py:1172
 #: mclient/src/plugins/stardict/get.py:509
 msgid "{} offline dictionaries are available"
 msgstr "Доступно {} локальных словарей"
 
-#: mclient/src/plugins/multitranbin/get.py:1221
-#: mclient/src/plugins/multitranbin/get.py:1270
+#: mclient/src/plugins/multitranbin/get.py:1234
+#: mclient/src/plugins/multitranbin/get.py:1283
 msgid "Invalid value \"{}\" at position {}!"
 msgstr "Неверное значение \"{}\" в позиции {}!"
 
-#: mclient/src/plugins/multitranbin/get.py:1747
+#: mclient/src/plugins/multitranbin/get.py:1770
 msgid "Try for \"{}|{}\""
 msgstr "Тест \"{}|{}\""
 
-#: mclient/src/plugins/multitranbin/get.py:1754
+#: mclient/src/plugins/multitranbin/get.py:1777
 msgid "Found stem: \"{}\""
 msgstr "Найдена основа: \"{}\""
 
-#: mclient/src/plugins/multitranbin/get.py:1779
+#: mclient/src/plugins/multitranbin/get.py:1812
 msgid "Found articles: {}"
 msgstr "Найдены статьи: {}"
 
-#: mclient/src/plugins/multitranbin/get.py:1781
+#: mclient/src/plugins/multitranbin/get.py:1814
 msgid "No articles have been found!"
 msgstr "Статьи не найдены!"
 
@@ -1356,8 +1353,8 @@ msgid "Page #: {}"
 msgstr "Номер страницы: {}"
 
 #: mclient/src/plugins/multitranbin/tests.py:97
-#: mclient/src/plugins/multitranbin/tests.py:472
-#: mclient/src/plugins/multitranbin/tests.py:496
+#: mclient/src/plugins/multitranbin/tests.py:476
+#: mclient/src/plugins/multitranbin/tests.py:500
 msgid "File: {}"
 msgstr "Файл: {}"
 
@@ -1396,9 +1393,17 @@ msgstr "Страницы L: {}"
 msgid "Z pages: {}"
 msgstr "Страницы Z: {}"
 
+#: mclient/src/plugins/multitranbin/tests.py:424
+msgid "Total: {}"
+msgstr "Всего: {}"
+
+#: mclient/src/plugins/multitranbin/tests.py:426
+msgid "Successful: {}"
+msgstr "Успешно: {}"
+
 #: mclient/src/plugins/multitranbin/tests.py:428
-msgid "Press any key"
-msgstr "Нажмите любую клавишу"
+msgid "Failed: {}"
+msgstr "Неуспешно: {}"
 
 #: mclient/src/plugins/multitrancom/cleanup.py:54
 msgid "Malformed HTML code!"
@@ -15337,6 +15342,12 @@ msgstr ""
 #: skl_shared/src/tests.py:933
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#~ msgid "Press any key"
+#~ msgstr "Нажмите любую клавишу"
 
 #~ msgid "Try for \"{}\""
 #~ msgstr "Тест \"{}\""
