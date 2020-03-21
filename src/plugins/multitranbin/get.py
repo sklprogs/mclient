@@ -1744,6 +1744,22 @@ class Get:
     def __init__(self,pattern):
         self.set_values()
         self.pattern = pattern
+        self.speech  = None
+    
+    def set_speech(self):
+        f = '[MClient] plugins.multitranbin.get.Get.set_speech'
+        if self.Success:
+            if self.stemnos:
+                chno = self.stemnos[0][0:3]
+                self.speech = objs.files().get_stems1().get_speech(chno)
+                mes = '{} -> {}'.format (com.get_string(chno)
+                                        ,self.speech
+                                        )
+                sh.objs.mes(f,mes,True).debug()
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
     
     def get_combos(self):
         f = '[MClient] plugins.multitranbin.get.Get.get_combos'
@@ -1816,7 +1832,6 @@ class Get:
         self.Success = True
         self.pattern = ''
         self._html   = ''
-        self.stems   = []
         self.stemnos = []
     
     def search(self):
@@ -1847,6 +1862,7 @@ class Get:
         objs.files().reset()
         self.get_stems()
         self.get_combos()
+        self.set_speech()
         return self.search()
 
 

@@ -522,4 +522,8 @@ if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
     #Tests().translate_many()
-    Tests().get_speech()
+    #Tests().get_speech()
+    #Tests().translate('abasin')
+    get = gt.Get('abasin')
+    get.run()
+    print('"' + str(get.speech) + '"')
