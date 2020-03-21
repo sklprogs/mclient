@@ -1744,18 +1744,92 @@ class Get:
     def __init__(self,pattern):
         self.set_values()
         self.pattern = pattern
-        self.speech  = None
+        self.speech  = ''
+        self.spabbr  = ''
     
     def set_speech(self):
         f = '[MClient] plugins.multitranbin.get.Get.set_speech'
         if self.Success:
             if self.stemnos:
                 chno = self.stemnos[0][0:3]
-                self.speech = objs.files().get_stems1().get_speech(chno)
+                speech = objs.files().get_stems1().get_speech(chno)
                 mes = '{} -> {}'.format (com.get_string(chno)
-                                        ,self.speech
+                                        ,speech
                                         )
                 sh.objs.mes(f,mes,True).debug()
+                if speech is None:
+                    sh.com.empty(f)
+                elif speech == 0:
+                    # MT: phrase;phrase
+                    self.speech = _('Phrase')
+                    self.spabbr = _('phrase')
+                elif speech == 1:
+                    # MT: Abbreviation;abbr;Сокращение;сокр.
+                    self.speech = _('Abbreviation')
+                    self.spabbr = _('abbr.')
+                elif speech == 2:
+                    # MT: Adverb;adv;Наречие;нареч.
+                    self.speech = _('Adverb')
+                    self.spabbr = _('adv.')
+                elif speech == 3:
+                    # MT: Interjection;interj.;
+                    # My translation: Междометие;межд.
+                    self.speech = _('Interjection')
+                    self.spabbr = _('interj.')
+                elif speech == 4:
+                    # MT: Conjunction;conj.
+                    # My translation: Союз;союз
+                    self.speech = _('Conjunction')
+                    self.spabbr = _('conj.')
+                elif speech == 5:
+                    # MT: Article;article
+                    # My translation: Артикль;арт.
+                    self.speech = _('Article')
+                    self.spabbr = _('art.')
+                elif speech == 6:
+                    # MT: Numeral;num;
+                    # My translation: Числительное;числ.
+                    self.speech = _('Numeral')
+                    self.spabbr = _('num.')
+                elif speech == 7:
+                    # MT: Ord Numeral;ord.num;
+                    # My translation: Порядковое числительное;поряд.числ.
+                    self.speech = _('Ordinal Numeral')
+                    self.spabbr = _('ord.num.')
+                elif speech == 8:
+                    # MT: Preposition;prepos.;Предлог;предл.
+                    self.speech = _('Preposition')
+                    self.spabbr = _('prepos.')
+                elif speech == 9:
+                    # MT: Form;form
+                    # My translation: Форма;форма (?)
+                    self.speech = _('Form')
+                    self.spabbr = _('form')
+                elif speech == 10:
+                    # MT: Particle;part.;
+                    self.speech = _('Particle')
+                    self.spabbr = _('part.')
+                elif 11 <= speech < 16:
+                    # MT: Predicative;predic.
+                    # My translation: Предикатив;пред.
+                    self.speech = _('Predicative')
+                    self.spabbr = _('predic.')
+                elif 16 <= speech < 32:
+                    # MT: Pronoun;pron;Местоимение;мест.
+                    self.speech = _('Pronoun')
+                    self.spabbr = _('pron')
+                elif 32 <= speech < 64:
+                    # MT: Adjective;adj;Прилагательное;прил.
+                    self.speech = _('Adjective')
+                    self.spabbr = _('adj')
+                elif 64 <= speech < 128:
+                    # MT: Noun;n;Существительное;сущ.
+                    self.speech = _('Noun')
+                    self.spabbr = _('n')
+                elif 128 <= speech:
+                    # MT: Verb;v;Глагол,гл.
+                    self.speech = _('Verb')
+                    self.spabbr = _('v')
             else:
                 sh.com.empty(f)
         else:

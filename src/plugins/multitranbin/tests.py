@@ -217,10 +217,11 @@ class Tests:
             'absolute' -> 188,481 -> 67
             'measurement': [916, 3, 67, 80760, 20, 32, 223439, 3, 66]
         '''
-        chnos = gt.objs.files().get_stems1().search('measurement','')
-        if chnos:
-            for chno in chnos:
-                gt.objs._files.stems1.get_speech(chno)
+        pattern = 'acetilize'
+        get = gt.Get(pattern)
+        get.run()
+        mes = '"{};{}"'.format(get.speech,get.spabbr)
+        sh.objs.mes(f,mes,True).debug()
     
     def ending(self):
         subj = Ending(gt.objs.files().iwalker.get_ending())
@@ -521,9 +522,5 @@ class UPage(gt.UPage):
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
-    #Tests().translate_many()
-    #Tests().get_speech()
     #Tests().translate('abasin')
-    get = gt.Get('abasin')
-    get.run()
-    print('"' + str(get.speech) + '"')
+    Tests().get_speech()
