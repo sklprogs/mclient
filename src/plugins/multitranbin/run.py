@@ -136,6 +136,15 @@ class Plugin:
                              ,MaxRows = self.MaxRows
                              ).run()
             if blocks:
+                # Set speech for words only, not for phrases
+                if iget.speech and not ' ' in search:
+                    block = tg.Block()
+                    block._select  = 0
+                    block._type    = 'wform'
+                    block._text    = iget.spabbr
+                    block._wforma  = iget.spabbr
+                    block._wformaf = iget.speech
+                    blocks.insert(0,block)
                 self._blocks += blocks
         self._blocks = el.Elems (blocks  = self._blocks
                                 ,iabbr   = self.iabbr

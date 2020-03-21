@@ -409,6 +409,7 @@ class Tests:
                       ,'loadable system'
                       ,'palletbox'
                       ,'sack duty'
+                      ,'work'
                       ,'World Union of Catholic Teachers'
                       ,'Zebra time'
                       ]
@@ -523,4 +524,5 @@ if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
     #Tests().translate('abasin')
+    # Currently failing translations: "work"
     Tests().get_speech()
