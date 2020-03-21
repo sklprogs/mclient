@@ -211,6 +211,17 @@ class Binary(gt.Binary):
 
 class Tests:
     
+    def get_speech(self):
+        ''' 'absolut'  -> 176     -> 32
+            'absolute' -> 31,123  -> 2 ('absolutely')
+            'absolute' -> 188,481 -> 67
+            'measurement': [916, 3, 67, 80760, 20, 32, 223439, 3, 66]
+        '''
+        chnos = gt.objs.files().get_stems1().search('measurement','')
+        if chnos:
+            for chno in chnos:
+                gt.objs._files.stems1.get_speech(chno)
+    
     def ending(self):
         subj = Ending(gt.objs.files().iwalker.get_ending())
         subj.debug()
@@ -510,4 +521,5 @@ class UPage(gt.UPage):
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
-    Tests().translate_many()
+    #Tests().translate_many()
+    Tests().get_speech()

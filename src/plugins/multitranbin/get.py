@@ -1389,6 +1389,9 @@ class Glue(UPage):
 
 class Commands:
     
+    def unpackh(self,chno):
+        return self.unpack(chno,'<h')
+    
     def overflowh(self,no):
         # Limits: -32768 <= no <= 32767
         f = '[MClient] plugins.multitranbin.get.Commands.overflowh'
@@ -1415,12 +1418,13 @@ class Commands:
         else:
             return no
     
-    def unpack(self,chno):
+    def unpack(self,chno,mode='<L'):
         f = '[MClient] plugins.multitranbin.get.Commands.unpack'
         if chno:
-            chno += b'\x00'
+            if mode == '<L':
+                chno += b'\x00'
             try:
-                return struct.unpack('<L',chno)[0]
+                return struct.unpack(mode,chno)[0]
             except Exception as e:
                 mes = _('Third-party module has failed!\n\nDetails: {}')
                 mes = mes.format(e)
@@ -1599,6 +1603,19 @@ class Stems(UPage):
     # Parse files like 'stem.eng'
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
+        self.speech = {}
+    
+    def get_speech(self,chno):
+        f = '[MClient] plugins.multitranbin.get.Stems.get_speech'
+        if self.Success:
+            if chno in self.speech:
+                result = self.speech[chno]
+                result = com.unpackh(result)
+                mes = '{} -> {}'.format(com.get_string(chno),result)
+                sh.objs.mes(f,mes,True).debug()
+                return result
+        else:
+            sh.com.cancel(f)
     
     def parse(self,chunk):
         ''' According to "libmtquery-0.0.1alpha3/doc/README.rus":
@@ -1622,6 +1639,7 @@ class Stems(UPage):
                     for i in range(len(chunks)):
                         chnos.append(chunks[i][0:3])
                         ends.append(chunks[i][3:5])
+                        self.speech[chunks[i][0:3]] = chunks[i][5:7]
                     for chno in chnos:
                         nos.append(com.unpack(chno))
                     if chnos:
