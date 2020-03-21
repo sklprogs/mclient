@@ -1807,11 +1807,12 @@ class Get:
                     self.spabbr = _('form')
                 elif speech == 10:
                     # MT: Particle;part.;
+                    # My translation: Частица;част.
                     self.speech = _('Particle')
                     self.spabbr = _('part.')
                 elif 11 <= speech < 16:
                     # MT: Predicative;predic.
-                    # My translation: Предикатив;пред.
+                    # My translation: Предикатив;предик.
                     self.speech = _('Predicative')
                     self.spabbr = _('predic.')
                 elif 16 <= speech < 32:
