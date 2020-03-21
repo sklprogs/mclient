@@ -211,15 +211,18 @@ class Binary(gt.Binary):
 
 class Tests:
     
-    def get_speech(self):
+    def get_speech(self,pattern):
         ''' 'absolut'  -> 176     -> 32
             'absolute' -> 31,123  -> 2 ('absolutely')
             'absolute' -> 188,481 -> 67
             'measurement': [916, 3, 67, 80760, 20, 32, 223439, 3, 66]
         '''
-        pattern = 'acetilize'
         get = gt.Get(pattern)
         get.run()
+        stemnos = get.stemnos
+        stemnos = [gt.com.unpack(no) for no in stemnos]
+        stemnos = [sh.com.figure_commas(no) for no in stemnos]
+        sh.objs.mes(f,stemnos,True).debug()
         mes = '"{};{}"'.format(get.speech,get.spabbr)
         sh.objs.mes(f,mes,True).debug()
     
@@ -525,4 +528,4 @@ if __name__ == '__main__':
     gt.PATH = '/home/pete/.config/mclient/dics'
     #Tests().translate('abasin')
     # Currently failing translations: "work"
-    Tests().get_speech()
+    Tests().get_speech('DARE')
