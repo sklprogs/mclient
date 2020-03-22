@@ -44,7 +44,7 @@ class Block:
 
 class Elems:
     # Process blocks before dumping to DB
-    def __init__ (self,blocks,iabbr,langs
+    def __init__ (self,blocks,iabbr,langs=[]
                  ,Debug=False,Shorten=True
                  ,MaxRow=20,MaxRows=20,search=''
                  ):
@@ -361,7 +361,6 @@ if __name__ == '__main__':
             blocks += add
     blocks = Elems (blocks = blocks
                    ,iabbr  = None
-                   ,langs  = gt.objs.all_dics().langs()
                    ,search = search
                    ,Debug  = True
                    ).run()

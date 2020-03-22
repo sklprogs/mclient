@@ -399,6 +399,9 @@ class Tests:
         ''' MISSING IN MT DEMO:
             'преобразование случайной величины X, имеющей асимметричное распределение, в нормально распределённую величину Z'
         '''
+        timer = sh.Timer()
+        timer.start()
+        sh.STOP_MES = True
         en_patterns = ['A & E'
                       ,'a posteriori'
                       ,'abasin'
@@ -445,6 +448,8 @@ class Tests:
         for pattern in ru_patterns:
             if not self.translate(pattern):
                 failed += 1
+        sh.STOP_MES = False
+        timer.end()
         messages = []
         mes = _('Total: {}').format(total)
         messages.append(mes)
@@ -539,15 +544,7 @@ if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
     #gt.DEBUG = True
-    timer = sh.Timer()
-    timer.start()
-    #sh.STOP_MES = True
     # Currently failing translations: "work"
     #Tests().get_speech('DARE')
-    com.swap_langs()
-    ''' ~3,9s with unpacking + logging; 0,26s with few logging;
-        0,2s with disabled logging
-    '''
-    Tests().translate('абонентское устройство для совместной передачи речи и данных')
-    #sh.STOP_MES = False
-    timer.end()
+    #Tests().translate('DARE')
+    print(gt.objs.all_dics().langs())

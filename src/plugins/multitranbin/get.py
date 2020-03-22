@@ -1245,11 +1245,17 @@ class AllDics:
     
     def langs(self):
         # Return all available languages
+        files = []
         f = '[MClient] plugins.multitranbin.get.AllDics.langs'
         if self.Success:
-            pass
+            #TODO: elaborate
+            # Relative paths are already lowercased
+            for fname in objs.files().iwalker.fnames:
+                if fname.startswith('dict.') and fname.endswith('t'):
+                    files.append(fname)
         else:
             sh.com.cancel(f)
+        return files
     
     def get(self,search):
         f = '[MClient] plugins.multitranbin.get.AllDics.get'

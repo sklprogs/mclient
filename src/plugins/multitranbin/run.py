@@ -2,10 +2,10 @@
 # -*- coding: UTF-8 -*-
 
 import io
-import skl_shared.shared            as sh
-import plugins.multitranbin.get     as gt
-import plugins.multitranbin.tags    as tg
-import plugins.multitranbin.elems   as el
+import skl_shared.shared          as sh
+import plugins.multitranbin.get   as gt
+import plugins.multitranbin.tags  as tg
+import plugins.multitranbin.elems as el
 from skl_shared.localize import _
 
 
