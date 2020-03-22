@@ -8,6 +8,14 @@ import skl_shared.shared as sh
 from skl_shared.localize import _
 
 
+class Commands:
+    
+    def swap_langs(self):
+        gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
+        gt.objs.files().reset()
+
+
+
 class Ending(gt.Ending):
     
     def __init__(self,*args,**kwargs):
@@ -214,8 +222,7 @@ class Tests:
     def suggest(self):
         #pattern = 'acid'
         pattern  = 'кислот'
-        gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
-        gt.objs.files().reset()
+        com.swap_langs()
         timer = sh.Timer()
         timer.start()
         gt.objs.files().get_typein1().search(pattern)
@@ -354,9 +361,6 @@ class Tests:
         #pattern = b'volume'
         pattern = b'abatement'
         
-        gt.LANG1 = 'English'
-        gt.LANG2 = 'Russian'
-        gt.objs.files().reset()
         upage = UPage(gt.objs.files().iwalker.get_stems1())
         upage.searchu(pattern)
         print('---------------------------------------------------')
@@ -377,9 +381,7 @@ class Tests:
         #pattern = 'зашуганный'
         pattern  = 'звезда'
         pattern  = bytes(pattern,gt.ENCODING)
-        gt.LANG1 = 'Russian'
-        gt.LANG2 = 'English'
-        gt.objs.files().reset()
+        com.swap_langs()
         # Since we swap languages, the needed stems will always be #1
         upage = UPage(gt.objs.files().iwalker.get_stems1())
         upage.searchu(pattern)
@@ -388,9 +390,7 @@ class Tests:
     
     def translate_pair(self):
         self.translate('abasin')
-        gt.LANG1 = 'Russian'
-        gt.LANG2 = 'English'
-        gt.objs.files().reset()
+        com.swap_langs()
         # 'factorage', 'sack' # 2 terms
         self.translate('уборка') # has a comment
     
@@ -441,8 +441,7 @@ class Tests:
         for pattern in en_patterns:
             if not self.translate(pattern):
                 failed += 1
-        gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
-        gt.objs.files().reset()
+        com.swap_langs()
         for pattern in ru_patterns:
             if not self.translate(pattern):
                 failed += 1
@@ -533,9 +532,14 @@ class UPage(gt.UPage):
             sh.com.cancel(f)
 
 
+com = Commands()
+
+
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
     # Currently failing translations: "work"
     #Tests().get_speech('DARE')
-    Tests().translate('a-acid')
+    com.swap_langs()
+    # ~3,9s
+    Tests().translate('абонентское устройство для совместной передачи речи и данных')
