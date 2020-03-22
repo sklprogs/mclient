@@ -301,6 +301,58 @@ class Binary:
             sh.com.lazy(f)
         return chunks
     
+    def get_parts1(self,pattern,start=0,end=0):
+        # Get suggestions
+        f = '[MClient] plugins.multitranbin.get.Binary.get_parts1'
+        chunks  = []
+        mchunks = []
+        mpos1   = []
+        mpos2   = []
+        if self.Success:
+            if pattern:
+                poses = self.find_all(pattern,start,end)
+                for pos1 in poses:
+                    lengths = self.get_lengths(pos1)
+                    pos2 = pos1 + lengths[0]
+                    chunk = self.read(pos1,pos2)
+                    if chunk and not chunk in chunks:
+                        chunks.append(chunk)
+                        mpos1.append(sh.com.figure_commas(pos1))
+                        mpos2.append(sh.com.figure_commas(pos2))
+                        mchunks.append(com.get_string(chunk))
+            else:
+                sh.com.empty(f)
+            if mchunks:
+                mpattern = ['"{}"'.format(com.get_string(pattern)) \
+                            for i in range(len(mchunks))
+                           ]
+                mstart = ['{}'.format(sh.com.figure_commas(start)) \
+                          for i in range(len(mchunks))
+                         ]
+                mend = ['{}'.format(sh.com.figure_commas(end)) \
+                          for i in range(len(mchunks))
+                       ]
+                nos      = [i + 1 for i in range(len(chunks))]
+                mchunks  = ['"{}"'.format(chunk) for chunk in mchunks]
+                headers  = ('NO','PATTERN','START'
+                           ,'END','POS1','POS2','CHUNK'
+                           )
+                iterable = (nos,mpattern,mstart
+                           ,mend,mpos1,mpos2,mchunks
+                           )
+                mes = sh.FastTable (headers  = headers
+                                   ,iterable = iterable
+                                   ,maxrow   = 47
+                                   ).run()
+                mes = '\n\n' + mes
+                sh.objs.mes(f,mes,True).debug()
+            else:
+                mes = _('No debug info')
+                sh.objs.mes(f,mes,True).debug()
+        else:
+            sh.com.lazy(f)
+        return chunks
+    
     def find_all(self,pattern,start=0,end=0):
         f = '[MClient] plugins.multitranbin.get.Binary.find_all'
         matches = []
@@ -1060,28 +1112,40 @@ class Walker:
 
 
 
-class TypeIn(Binary):
+class TypeIn(UPage):
     # Parse files like 'typein.er'
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
-    def parse(self,chunk):
+    def parse(self,chunks):
         f = '[MClient] plugins.multitranbin.get.TypeIn.parse'
         if self.Success:
-            if chunk:
-                pass
+            if chunks:
+                decoded = [chunk.decode(ENCODING,'replace') \
+                           for chunk in chunks if chunk
+                          ]
+                sh.objs.mes(f,decoded,True).debug()
+                return decoded
             else:
                 sh.com.empty(f)
         else:
             sh.com.cancel(f)
     
-    def search(self,coded):
+    def search(self,pattern):
         # Do not fail the whole class upon a failed search
         f = '[MClient] plugins.multitranbin.get.TypeIn.search'
         if self.Success:
-            if coded:
-                chunk = self.get_part2(coded)
-                return self.parse(chunk)
+            if pattern:
+                coded = bytes(pattern,ENCODING)
+                poses = self.searchu(coded)
+                if poses:
+                    chunks = self.get_parts1 (pattern = coded
+                                             ,start   = poses[0]
+                                             ,end     = poses[1]
+                                             )
+                    return self.parse(chunks)
+                else:
+                    sh.com.empty(f)
             else:
                 sh.com.empty(f)
         else:

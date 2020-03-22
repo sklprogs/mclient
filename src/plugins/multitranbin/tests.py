@@ -528,4 +528,5 @@ if __name__ == '__main__':
     gt.PATH = '/home/pete/.config/mclient/dics'
     #Tests().translate('abasin')
     # Currently failing translations: "work"
-    Tests().get_speech('DARE')
+    #Tests().get_speech('DARE')
+    gt.objs.files().get_typein1().search('acid')
