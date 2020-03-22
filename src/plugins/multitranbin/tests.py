@@ -544,7 +544,11 @@ if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
     #gt.DEBUG = True
-    # Currently failing translations: "work"
+    ''' Currently failing translations:
+        "work"
+        "совковая лопата с суживающимся полотном с прямолинейной кромкой"
+        "собирать и содержать в определённом месте потерявшихся домашних животных или автомобили"
+    '''
     #Tests().get_speech('DARE')
     #Tests().translate('DARE')
     print(gt.objs.all_dics().langs())

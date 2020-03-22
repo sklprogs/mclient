@@ -218,11 +218,17 @@ class Subject:
     def load(self):
         f = '[MClient] plugins.multitranbin.get.Subject.load'
         if self.Success:
-            self.text = sh.ReadTextFile(self.file).get()
-            if not self.text:
+            # We need silent logging here
+            if os.path.exists(self.file):
+                self.text = sh.ReadTextFile(self.file).get()
+                if not self.text:
+                    self.Success = False
+                    mes = _('Empty output is not allowed!')
+                    sh.objs.mes(f,mes).warning()
+            else:
                 self.Success = False
-                mes = _('Empty output is not allowed!')
-                sh.objs.mes(f,mes).warning()
+                mes = _('File "{}" does not exist!').format(self.file)
+                sh.objs.mes(f,mes,True).warning()
         else:
             sh.com.cancel(f)
 
@@ -235,7 +241,8 @@ class Binary:
         self.bsize   = 0
         self.file    = file
         self.bname   = sh.Path(file).basename()
-        self.Success = sh.File(self.file).Success
+        # We need silent logging here (not 'sh.File.Success')
+        self.Success = os.path.exists(self.file)
         self.open()
     
     def get_zero(self,start,end):
@@ -1592,7 +1599,7 @@ class Commands:
             sh.com.empty(f)
     
     def accessible(self):
-        return len(objs.all_dics()._dics)
+        return len(objs.all_dics().langs())
     
     def get_string(self,chunk,limit=200):
         ''' Only raw strings should be used in GUI (otherwise,

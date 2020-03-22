@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import skl_shared.shared as sh
+import skl_shared.shared        as sh
 import plugins.stardict.get
 import plugins.stardict.run     as sdrun
 import plugins.multitrancom.run as mcrun

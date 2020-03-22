@@ -137,12 +137,14 @@ class Welcome:
                             ).space_items()
 
     def set_values(self):
-        self.sources = []
-        self.sdstat  = 0
-        self.sdcolor = 'red'
-        self.product = ''
-        self.version = ''
-        self.desc    = ''
+        self.sources  = []
+        self.sdstat   = 0
+        self.mtbstat  = 0
+        self.sdcolor  = 'red'
+        self.mtbcolor = 'red'
+        self.product  = ''
+        self.version  = ''
+        self.desc     = ''
     
     def try_sources(self):
         f = '[MClient] logic.Welcome.try_sources'
@@ -151,7 +153,7 @@ class Welcome:
         if dics:
             for dic in dics:
                 objs._plugins.set(dic)
-                source        = Source()
+                source = Source()
                 source.title = dic
                 if objs._plugins.accessible():
                     source.status = _('running')
@@ -159,10 +161,16 @@ class Welcome:
                 self.sources.append(source)
         else:
             sh.com.empty(f)
+        # Try Stardict
         objs._plugins.set(_('Stardict'))
         self.sdstat = objs.plugins().accessible()
         if self.sdstat:
             self.sdcolor = 'green'
+        # Try local Multitran
+        objs._plugins.set(_('Local MT'))
+        self.mtbstat = objs.plugins().accessible()
+        if self.mtbstat:
+            self.mtbcolor = 'green'
         objs._plugins.set(old)
 
     def gen_source_code(self,title,status,color):
@@ -362,9 +370,13 @@ class Welcome:
         self.istr.write(self.sdcolor)
         self.istr.write('">')
         self.istr.write('{}'.format(self.sdstat))
-        self.istr.write('</font>.\n')
+        self.istr.write('</font>, ')
         self.istr.write('Multitran: ')
-        self.istr.write('    </font>\n')
+        self.istr.write('      <font color="')
+        self.istr.write(self.mtbcolor)
+        self.istr.write('">')
+        self.istr.write('{}'.format(self.mtbstat))
+        self.istr.write('</font>.')
         self.istr.write('<br><br><br><br>')
         self.istr.write('<h1>')
         self.istr.write(_('Main hotkeys'))
