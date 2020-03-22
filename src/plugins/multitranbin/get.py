@@ -1117,33 +1117,73 @@ class TypeIn(UPage):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
-    def parse(self,chunks):
-        f = '[MClient] plugins.multitranbin.get.TypeIn.parse'
+    def search(self,pattern):
+        f = '[MClient] plugins.multitranbin.get.TypeIn.search'
         if self.Success:
-            if chunks:
-                decoded = [chunk.decode(ENCODING,'replace') \
-                           for chunk in chunks if chunk
-                          ]
-                sh.objs.mes(f,decoded,True).debug()
-                return decoded
+            if pattern:
+                coded  = bytes(pattern,ENCODING)
+                poses  = self.searchu(coded)
+                chunks = self.reader(poses)
+                if chunks:
+                    matches = []
+                    for chunk in chunks:
+                        if chunk.startswith(coded):
+                            matches.append(chunk)
+                    decoded = [match.decode(ENCODING,'replace') \
+                               for match in matches if match
+                              ]
+                    for i in range(len(decoded)):
+                        ''' Sometimes MT provides for suggestions in
+                            different case, e.g., 'aafc', 'AAFC'
+                            separated by b'\x00'.
+                        '''
+                        decoded[i] = decoded[i].split('\x00')
+                        decoded[i] = [item for item in decoded[i] \
+                                      if item
+                                     ]
+                        if decoded[i][-1]:
+                            decoded[i] = decoded[i][-1]
+                        else:
+                            decoded[i] = decoded[i][0]
+                    sh.objs.mes(f,decoded,True).debug()
+                    return decoded
+                else:
+                    sh.com.empty(f)
             else:
                 sh.com.empty(f)
         else:
             sh.com.cancel(f)
     
-    def search(self,pattern):
-        # Do not fail the whole class upon a failed search
-        f = '[MClient] plugins.multitranbin.get.TypeIn.search'
+    def reader(self,poses):
+        f = '[MClient] plugins.multitranbin.get.TypeIn.reader'
         if self.Success:
-            if pattern:
-                coded = bytes(pattern,ENCODING)
-                poses = self.searchu(coded)
-                if poses:
-                    chunks = self.get_parts1 (pattern = coded
-                                             ,start   = poses[0]
-                                             ,end     = poses[1]
-                                             )
-                    return self.parse(chunks)
+            if poses:
+                stream = self.read(poses[0],poses[1])
+                if stream:
+                    chunks = []
+                    pos = 0
+                    while pos + 2 < len(stream):
+                        ''' #NOTE: indexing returns integers,
+                            slicing returns bytes.
+                        '''
+                        read = stream[pos:pos+2]
+                        pos += 2
+                        len1, len2 = struct.unpack('<2b',read)
+                        len1 = com.overflowb(len1)
+                        len2 = com.overflowb(len2)
+                        if pos + len1 + len2 < len(stream):
+                            ''' Do this only after checking
+                                the condition, otherwise, resulting
+                                lists will have a different length.
+                            '''
+                            chunk = stream[pos:pos+len1]
+                            pos += len1 + len2
+                            if chunk:
+                                chunks.append(chunk)
+                        else:
+                            com.report_status(pos,stream)
+                            break
+                    return chunks
                 else:
                     sh.com.empty(f)
             else:
@@ -1155,30 +1195,33 @@ class TypeIn(UPage):
 
 class Suggest:
     
-    def __init__(self,search):
+    def __init__(self,pattern):
         self.set_values()
-        if search:
-            self.reset(search)
+        if pattern:
+            self.reset(pattern)
     
     def set_values(self):
         self.Success = True
-        self._search = ''
+        self.pattern = ''
     
-    def reset(self,search):
+    def reset(self,pattern):
         f = '[MClient] plugins.multitranbin.get.Suggest.reset'
-        self._search = search
-        if not self._search:
+        self.pattern = pattern
+        if not self.pattern:
             self.Success = False
             sh.com.empty(f)
     
-    def get(self):
+    def get(self,limit=20):
         f = '[MClient] plugins.multitranbin.get.Suggest.get'
         if self.Success:
-            pass
+            suggestions = objs.files().get_typein1().search(self.pattern)
+            if suggestions:
+                return suggestions[0:20]
         else:
             sh.com.cancel(f)
     
     def run(self):
+        self.pattern = com.strip(self.pattern)
         return self.get()
 
 
@@ -1452,6 +1495,31 @@ class Glue(UPage):
 
 
 class Commands:
+    
+    def strip(self,pattern):
+        if pattern is None:
+            pattern = ''
+        pattern = pattern.strip()
+        pattern = sh.Text(pattern).convert_line_breaks()
+        pattern = sh.Text(pattern).delete_line_breaks()
+        pattern = sh.Text(pattern).delete_punctuation()
+        pattern = sh.Text(pattern).delete_duplicate_spaces()
+        pattern = pattern.lower()
+        return pattern
+    
+    #TODO: Combine with UPage.report_status
+    def report_status(self,pos,stream):
+        f = '[MClient] plugins.multitranbin.get.Commands.report_status'
+        if stream:
+            mes = _('{}/{} bytes have been processed')
+            mes = mes.format(pos,len(stream))
+            sh.objs.mes(f,mes,True).info()
+            remains = stream[pos:len(stream)]
+            remains = com.get_string(remains)
+            mes = _('Unprocessed fragment: "{}"').format(remains)
+            sh.objs.mes(f,mes,True).debug()
+        else:
+            sh.com.empty(f)
     
     def unpackh(self,chno):
         return self.unpack(chno,'<h')
@@ -1918,14 +1986,9 @@ class Get:
     def strip(self):
         f = '[MClient] plugins.multitranbin.get.Get.strip'
         if self.Success:
-            self.pattern = self.pattern.strip()
             # Split hyphened words as if they were separate words
             self.pattern = self.pattern.replace('-',' - ')
-            self.pattern = sh.Text(self.pattern).convert_line_breaks()
-            self.pattern = sh.Text(self.pattern).delete_line_breaks()
-            self.pattern = sh.Text(self.pattern).delete_punctuation()
-            self.pattern = sh.Text(self.pattern).delete_duplicate_spaces()
-            self.pattern = self.pattern.lower()
+            self.pattern = com.strip(self.pattern)
         else:
             sh.com.cancel(f)
     

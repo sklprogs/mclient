@@ -211,6 +211,16 @@ class Binary(gt.Binary):
 
 class Tests:
     
+    def suggest(self):
+        #pattern = 'acid'
+        pattern  = 'кислот'
+        gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
+        gt.objs.files().reset()
+        timer = sh.Timer()
+        timer.start()
+        gt.objs.files().get_typein1().search(pattern)
+        timer.end()
+    
     def get_speech(self,pattern):
         ''' 'absolut'  -> 176     -> 32
             'absolute' -> 31,123  -> 2 ('absolutely')
@@ -529,4 +539,4 @@ if __name__ == '__main__':
     #Tests().translate('abasin')
     # Currently failing translations: "work"
     #Tests().get_speech('DARE')
-    gt.objs.files().get_typein1().search('acid')
+    Tests().suggest()
