@@ -717,19 +717,6 @@ class UPage(Binary):
         else:
             sh.com.cancel(f)
     
-    def report_status(self,pos):
-        f = '[MClient] plugins.multitranbin.get.UPage.report_status'
-        if self.Success:
-            mes = _('{}/{} bytes have been processed')
-            mes = mes.format(pos,len(self.page))
-            sh.objs.mes(f,mes,True).info()
-            remains = self.page[pos:len(self.page)]
-            remains = com.get_string(remains)
-            mes = _('Unprocessed fragment: "{}"').format(remains)
-            sh.objs.mes(f,mes,True).debug()
-        else:
-            sh.com.cancel(f)
-    
     def get_parts(self):
         f = '[MClient] plugins.multitranbin.get.UPage.get_parts'
         if self.Success:
@@ -766,7 +753,7 @@ class UPage(Binary):
                                 self.part1.append(chunk1)
                                 self.part2.append(chunk2)
                         else:
-                            self.report_status(pos)
+                            com.report_status(pos,self.page)
                             if len(self.page) - pos > 1:
                                 mes = _('Processing the pattern has not been completed, but the end of the file has already been reached!')
                                 sh.objs.mes(f,mes,True).warning()
@@ -1507,7 +1494,6 @@ class Commands:
         pattern = pattern.lower()
         return pattern
     
-    #TODO: Combine with UPage.report_status
     def report_status(self,pos,stream):
         f = '[MClient] plugins.multitranbin.get.Commands.report_status'
         if stream:
