@@ -117,9 +117,9 @@ class PhraseTerma:
 class Source:
     
     def __init__(self):
-        self._title  = ''
-        self._status = _('not running')
-        self._color  = 'red'
+        self.title  = ''
+        self.status = _('not running')
+        self.color  = 'red'
 
 
 
@@ -128,44 +128,44 @@ class Welcome:
     def __init__ (self,product='MClient'
                  ,version='current'
                  ):
-        self.values()
-        self._product = product
-        self._version = version
-        self._desc    = sh.List (lst1 = [self._product
-                                        ,self._version
-                                        ]
-                                ).space_items()
+        self.set_values()
+        self.product = product
+        self.version = version
+        self.desc = sh.List (lst1 = [self.product
+                                    ,self.version
+                                    ]
+                            ).space_items()
 
-    def values(self):
-        self._sources   = []
-        self._sd_status = 0
-        self._sd_color  = 'red'
-        self._product   = ''
-        self._version   = ''
-        self._desc      = ''
+    def set_values(self):
+        self.sources = []
+        self.sdstat  = 0
+        self.sdcolor = 'red'
+        self.product = ''
+        self.version = ''
+        self.desc    = ''
     
-    def sources(self):
-        f = '[MClient] logic.Welcome.sources'
+    def try_sources(self):
+        f = '[MClient] logic.Welcome.try_sources'
         old  = objs.plugins()._source
         dics = objs._plugins.online_sources()
         if dics:
             for dic in dics:
                 objs._plugins.set(dic)
                 source        = Source()
-                source._title = dic
+                source.title = dic
                 if objs._plugins.accessible():
-                    source._status = _('running')
-                    source._color  = 'green'
-                self._sources.append(source)
+                    source.status = _('running')
+                    source.color  = 'green'
+                self.sources.append(source)
         else:
             sh.com.empty(f)
         objs._plugins.set(_('Stardict'))
-        self._sd_status = objs.plugins().accessible()
-        if self._sd_status:
-            self._sd_color = 'green'
+        self.sdstat = objs.plugins().accessible()
+        if self.sdstat:
+            self.sdcolor = 'green'
         objs._plugins.set(old)
 
-    def source_code(self,title,status,color):
+    def gen_source_code(self,title,status,color):
         self.istr.write('      <b>{}</b>\n'.format(title))
         self.istr.write('      <font face="Serif" color="')
         self.istr.write(color)
@@ -192,7 +192,7 @@ class Welcome:
         self.gen_hotkey(hotkey2)
         self.istr.write('</tr>')
     
-    def hotkeys(self):
+    def set_hotkeys(self):
         self.istr.write('<font face="Serif" size="5">')
         self.istr.write('<table>')
 
@@ -339,7 +339,7 @@ class Welcome:
         self.istr.write('<html>\n')
         self.istr.write('  <body>\n')
         self.istr.write('    <h1>')
-        self.istr.write(_('Welcome to {}!').format(self._desc))
+        self.istr.write(_('Welcome to {}!').format(self.desc))
         self.istr.write('</h1>\n')
         self.istr.write('    <font face="Serif" size="6">\n')
         self.istr.write('      <br>\n')
@@ -350,18 +350,20 @@ class Welcome:
         self.istr.write('\n')
         self.istr.write('\n')
         self.istr.write('      <br><br>\n')
-        for source in self._sources:
-            self.source_code (title  = source._title
-                             ,status = source._status
-                             ,color  = source._color
-                             )
-        self.istr.write('      {}'.format(_('Offline dictionaries loaded:')))
+        for source in self.sources:
+            self.gen_source_code (title  = source.title
+                                 ,status = source.status
+                                 ,color  = source.color
+                                 )
+        self.istr.write(_('Offline dictionaries loaded:'))
+        self.istr.write(' Stardict: ')
         self.istr.write('\n')
         self.istr.write('      <font color="')
-        self.istr.write(self._sd_color)
+        self.istr.write(self.sdcolor)
         self.istr.write('">')
-        self.istr.write('{}'.format(self._sd_status))
+        self.istr.write('{}'.format(self.sdstat))
         self.istr.write('</font>.\n')
+        self.istr.write('Multitran: ')
         self.istr.write('    </font>\n')
         self.istr.write('<br><br><br><br>')
         self.istr.write('<h1>')
@@ -370,7 +372,7 @@ class Welcome:
         self.istr.write('<h2>')
         self.istr.write(_('(see documentation for other hotkeys, mouse bindings and functions)'))
         self.istr.write('</h2>')
-        self.hotkeys()
+        self.set_hotkeys()
         self.istr.write('  </body>\n')
         self.istr.write('</html>')
         code = self.istr.getvalue()
@@ -378,7 +380,7 @@ class Welcome:
         return code
 
     def run(self):
-        self.sources()
+        self.try_sources()
         return self.generate()
 
 
