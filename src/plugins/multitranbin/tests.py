@@ -538,8 +538,16 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
+    #gt.DEBUG = True
+    timer = sh.Timer()
+    timer.start()
+    #sh.STOP_MES = True
     # Currently failing translations: "work"
     #Tests().get_speech('DARE')
     com.swap_langs()
-    # ~3,9s
+    ''' ~3,9s with unpacking + logging; 0,26s with few logging;
+        0,2s with disabled logging
+    '''
     Tests().translate('абонентское устройство для совместной передачи речи и данных')
+    #sh.STOP_MES = False
+    timer.end()

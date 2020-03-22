@@ -16,6 +16,7 @@ LANG1    = 'English'
 LANG2    = 'Russian'
 PATH     = ''
 MAXSTEMS = 2
+DEBUG    = False
 
 
 class Ending:
@@ -39,8 +40,9 @@ class Ending:
                     i += 1
                 i -= 1
                 new = self.ordered[i]
-                mes = '{} -> {}'.format(no,new)
-                sh.objs.mes(f,mes,True).debug()
+                if DEBUG:
+                    mes = '{} -> {}'.format(no,new)
+                    sh.objs.mes(f,mes,True).debug()
         else:
             sh.com.cancel(f)
         return new
@@ -64,9 +66,10 @@ class Ending:
                     sub = _('Yes')
                 else:
                     sub = _('No')
-                mes = _('#: {}; Pattern: "{}"; Match: {}')
-                mes = mes.format(no,pattern,sub)
-                sh.objs.mes(f,mes,True).debug()
+                if DEBUG:
+                    mes = _('#: {}; Pattern: "{}"; Match: {}')
+                    mes = mes.format(no,pattern,sub)
+                    sh.objs.mes(f,mes,True).debug()
                 return match
             except ValueError:
                 mes = _('Wrong input data: "{}"!').format(no)
@@ -250,10 +253,11 @@ class Binary:
     def get_parts2(self,pattern,start=0,end=0):
         # Run 'get_part2' in loop (only useful for finding stems)
         f = '[MClient] plugins.multitranbin.get.Binary.get_parts2'
-        chunks  = []
-        mchunks = []
-        mpos1   = []
-        mpos2   = []
+        chunks = []
+        if DEBUG:
+            mchunks = []
+            mpos1   = []
+            mpos2   = []
         if self.Success:
             if pattern == b'':
                 poses = self.get_zero(start,end)
@@ -267,36 +271,38 @@ class Binary:
                     chunk = self.read(pos21,pos22)
                     if chunk and not chunk in chunks:
                         chunks.append(chunk)
-                        mpos1.append(sh.com.figure_commas(pos21))
-                        mpos2.append(sh.com.figure_commas(pos22))
-                        mchunks.append(com.get_string(chunk))
-            if mchunks:
-                mpattern = ['"{}"'.format(com.get_string(pattern)) \
-                            for i in range(len(mchunks))
+                        if DEBUG:
+                            mpos1.append(sh.com.figure_commas(pos21))
+                            mpos2.append(sh.com.figure_commas(pos22))
+                            mchunks.append(com.get_string(chunk))
+            if DEBUG:
+                if mchunks:
+                    mpattern = ['"{}"'.format(com.get_string(pattern)) \
+                                for i in range(len(mchunks))
+                               ]
+                    mstart = ['{}'.format(sh.com.figure_commas(start)) \
+                              for i in range(len(mchunks))
+                             ]
+                    mend = ['{}'.format(sh.com.figure_commas(end)) \
+                              for i in range(len(mchunks))
                            ]
-                mstart = ['{}'.format(sh.com.figure_commas(start)) \
-                          for i in range(len(mchunks))
-                         ]
-                mend = ['{}'.format(sh.com.figure_commas(end)) \
-                          for i in range(len(mchunks))
-                       ]
-                nos      = [i + 1 for i in range(len(chunks))]
-                mchunks  = ['"{}"'.format(chunk) for chunk in mchunks]
-                headers  = ('NO','PATTERN','START'
-                           ,'END','POS1','POS2','CHUNK'
-                           )
-                iterable = (nos,mpattern,mstart
-                           ,mend,mpos1,mpos2,mchunks
-                           )
-                mes = sh.FastTable (headers  = headers
-                                   ,iterable = iterable
-                                   ,maxrow   = 47
-                                   ).run()
-                mes = '\n\n' + mes
-                sh.objs.mes(f,mes,True).debug()
-            else:
-                mes = _('No debug info')
-                sh.objs.mes(f,mes,True).debug()
+                    nos      = [i + 1 for i in range(len(chunks))]
+                    mchunks  = ['"{}"'.format(chunk) for chunk in mchunks]
+                    headers  = ('NO','PATTERN','START'
+                               ,'END','POS1','POS2','CHUNK'
+                               )
+                    iterable = (nos,mpattern,mstart
+                               ,mend,mpos1,mpos2,mchunks
+                               )
+                    mes = sh.FastTable (headers  = headers
+                                       ,iterable = iterable
+                                       ,maxrow   = 47
+                                       ).run()
+                    mes = '\n\n' + mes
+                    sh.objs.mes(f,mes,True).debug()
+                else:
+                    mes = _('No debug info')
+                    sh.objs.mes(f,mes,True).debug()
         else:
             sh.com.lazy(f)
         return chunks
@@ -304,10 +310,11 @@ class Binary:
     def get_parts1(self,pattern,start=0,end=0):
         # Get suggestions
         f = '[MClient] plugins.multitranbin.get.Binary.get_parts1'
-        chunks  = []
-        mchunks = []
-        mpos1   = []
-        mpos2   = []
+        chunks = []
+        if DEBUG:
+            mchunks = []
+            mpos1   = []
+            mpos2   = []
         if self.Success:
             if pattern:
                 poses = self.find_all(pattern,start,end)
@@ -317,38 +324,42 @@ class Binary:
                     chunk = self.read(pos1,pos2)
                     if chunk and not chunk in chunks:
                         chunks.append(chunk)
-                        mpos1.append(sh.com.figure_commas(pos1))
-                        mpos2.append(sh.com.figure_commas(pos2))
-                        mchunks.append(com.get_string(chunk))
+                        if DEBUG:
+                            mpos1.append(sh.com.figure_commas(pos1))
+                            mpos2.append(sh.com.figure_commas(pos2))
+                            mchunks.append(com.get_string(chunk))
             else:
                 sh.com.empty(f)
-            if mchunks:
-                mpattern = ['"{}"'.format(com.get_string(pattern)) \
-                            for i in range(len(mchunks))
+            if DEBUG:
+                if mchunks:
+                    mpattern = ['"{}"'.format(com.get_string(pattern)) \
+                                for i in range(len(mchunks))
+                               ]
+                    mstart = ['{}'.format(sh.com.figure_commas(start)) \
+                              for i in range(len(mchunks))
+                             ]
+                    mend = ['{}'.format(sh.com.figure_commas(end)) \
+                              for i in range(len(mchunks))
                            ]
-                mstart = ['{}'.format(sh.com.figure_commas(start)) \
-                          for i in range(len(mchunks))
-                         ]
-                mend = ['{}'.format(sh.com.figure_commas(end)) \
-                          for i in range(len(mchunks))
-                       ]
-                nos      = [i + 1 for i in range(len(chunks))]
-                mchunks  = ['"{}"'.format(chunk) for chunk in mchunks]
-                headers  = ('NO','PATTERN','START'
-                           ,'END','POS1','POS2','CHUNK'
-                           )
-                iterable = (nos,mpattern,mstart
-                           ,mend,mpos1,mpos2,mchunks
-                           )
-                mes = sh.FastTable (headers  = headers
-                                   ,iterable = iterable
-                                   ,maxrow   = 47
-                                   ).run()
-                mes = '\n\n' + mes
-                sh.objs.mes(f,mes,True).debug()
-            else:
-                mes = _('No debug info')
-                sh.objs.mes(f,mes,True).debug()
+                    nos      = [i + 1 for i in range(len(chunks))]
+                    mchunks  = ['"{}"'.format(chunk) \
+                                for chunk in mchunks
+                               ]
+                    headers  = ('NO','PATTERN','START'
+                               ,'END','POS1','POS2','CHUNK'
+                               )
+                    iterable = (nos,mpattern,mstart
+                               ,mend,mpos1,mpos2,mchunks
+                               )
+                    mes = sh.FastTable (headers  = headers
+                                       ,iterable = iterable
+                                       ,maxrow   = 47
+                                       ).run()
+                    mes = '\n\n' + mes
+                    sh.objs.mes(f,mes,True).debug()
+                else:
+                    mes = _('No debug info')
+                    sh.objs.mes(f,mes,True).debug()
         else:
             sh.com.lazy(f)
         return chunks
@@ -364,8 +375,9 @@ class Binary:
                     start += 1
                 else:
                     break
-            mes = [sh.com.figure_commas(item) for item in matches]
-            sh.objs.mes(f,mes,True).debug()
+            if DEBUG:
+                mes = [sh.com.figure_commas(item) for item in matches]
+                sh.objs.mes(f,mes,True).debug()
         else:
             sh.com.cancel(f)
         return matches
@@ -376,8 +388,9 @@ class Binary:
         self.get_block_size()
         if self.Success:
             val = self.fsize // self.bsize
-            mes = sh.com.figure_commas(val)
-            sh.objs.mes(f,mes,True).debug()
+            if DEBUG:
+                mes = sh.com.figure_commas(val)
+                sh.objs.mes(f,mes,True).debug()
             return val
         else:
             sh.com.cancel(f)
@@ -390,10 +403,11 @@ class Binary:
         if self.Success:
             if not self.fsize:
                 self.fsize = sh.File(self.file).size()
-                mes  = _('File "{}" has the size of {}')
-                size = sh.com.human_size(self.fsize)
-                mes  = mes.format(self.file,size)
-                sh.objs.mes(f,mes,True).debug()
+                if DEBUG:
+                    mes  = _('File "{}" has the size of {}')
+                    size = sh.com.human_size(self.fsize)
+                    mes  = mes.format(self.file,size)
+                    sh.objs.mes(f,mes,True).debug()
             if not self.fsize:
                 self.Success = False
                 mes = _('Empty output is not allowed!')
@@ -409,15 +423,16 @@ class Binary:
             if page_no is None or not self.get_block_size():
                 sh.com.empty(f)
             elif page_no == 0:
-                sub = sh.com.human_size(self.bsize)
-                mes = _('Page size: {}').format(sub)
-                sh.objs.mes(f,mes,True).debug()
-                pos1 = 0
-                pos2 = self.bsize
-                sub  = sh.com.figure_commas(pos2)
-                mes  = _('Page limits: [{}:{}]')
-                mes  = mes.format(pos1,sub)
-                sh.objs.mes(f,mes,True).debug()
+                if DEBUG:
+                    sub = sh.com.human_size(self.bsize)
+                    mes = _('Page size: {}').format(sub)
+                    sh.objs.mes(f,mes,True).debug()
+                    pos1 = 0
+                    pos2 = self.bsize
+                    sub  = sh.com.figure_commas(pos2)
+                    mes  = _('Page limits: [{}:{}]')
+                    mes  = mes.format(pos1,sub)
+                    sh.objs.mes(f,mes,True).debug()
                 return(0,self.bsize)
             else:
                 pos = page_no * self.bsize
@@ -426,16 +441,18 @@ class Binary:
                     if len(read) == 2:
                         size = struct.unpack('<h',read)[0]
                         if size > 0:
-                            sub = sh.com.human_size(size)
-                            mes = _('Page size: {}').format(sub)
-                            sh.objs.mes(f,mes,True).debug()
+                            if DEBUG:
+                                sub = sh.com.human_size(size)
+                                mes = _('Page size: {}').format(sub)
+                                sh.objs.mes(f,mes,True).debug()
                             pos1 = pos + 3
                             pos2 = pos1 + size
-                            sub1 = sh.com.figure_commas(pos1)
-                            sub2 = sh.com.figure_commas(pos2)
-                            mes  = _('Page limits: [{}:{}]')
-                            mes  = mes.format(sub1,sub2)
-                            sh.objs.mes(f,mes,True).debug()
+                            if DEBUG:
+                                sub1 = sh.com.figure_commas(pos1)
+                                sub2 = sh.com.figure_commas(pos2)
+                                mes  = _('Page limits: [{}:{}]')
+                                mes  = mes.format(sub1,sub2)
+                                sh.objs.mes(f,mes,True).debug()
                             return(pos1,pos2)
                         else:
                             sub = '{} > 0'.format(size)
@@ -465,8 +482,9 @@ class Binary:
                         mes = _('Third-party module has failed!\n\nDetails: {}')
                         mes = mes.format(e)
                         sh.objs.mes(f,mes,True).warning()
-                    mes = sh.com.figure_commas(self.bsize)
-                    sh.objs.mes(f,mes,True).debug()
+                    if DEBUG:
+                        mes = sh.com.figure_commas(self.bsize)
+                        sh.objs.mes(f,mes,True).debug()
                 else:
                     self.Success = False
                     sh.com.empty(f)
@@ -480,7 +498,7 @@ class Binary:
             if lengths:
                 if lengths[0] == len(pattern) and lengths[1] > 0:
                     return True
-                else:
+                elif DEBUG:
                     mes = _('The check has failed!')
                     sh.objs.mes(f,mes,True).warning()
             else:
@@ -496,7 +514,8 @@ class Binary:
                 ''' We look for combinations of stems, so a mismatch is
                     a common case.
                 '''
-                sh.com.lazy(f)
+                if DEBUG:
+                    sh.com.lazy(f)
             else:
                 lengths = self.get_lengths(pos11)
                 if self.check_lengths(pattern,lengths):
@@ -528,10 +547,11 @@ class Binary:
                     '''
                     len1 = com.overflowb(len1)
                     len2 = com.overflowb(len2)
-                    mes = _('Part #{} length: {}').format(1,len1)
-                    sh.objs.mes(f,mes,True).debug()
-                    mes = _('Part #{} length: {}').format(2,len2)
-                    sh.objs.mes(f,mes,True).debug()
+                    if DEBUG:
+                        mes = _('Part #{} length: {}').format(1,len1)
+                        sh.objs.mes(f,mes,True).debug()
+                        mes = _('Part #{} length: {}').format(2,len2)
+                        sh.objs.mes(f,mes,True).debug()
                     return(len1,len2)
                 else:
                     sh.com.empty(f)
@@ -551,8 +571,9 @@ class Binary:
             elif 0 <= start < end <= self.get_file_size():
                 self.imap.seek(start)
                 chunk = self.imap.read(end-start)
-                mes = '"{}"'.format(com.get_string(chunk))
-                sh.objs.mes(f,mes,True).debug()
+                if DEBUG:
+                    mes = '"{}"'.format(com.get_string(chunk))
+                    sh.objs.mes(f,mes,True).debug()
                 return chunk
             else:
                 self.Success = False
@@ -574,21 +595,22 @@ class Binary:
                     # Search to the end
                     end = -1
                 result = self.imap.find(pattern,start,end)
-                if end == -1:
-                    mes = '{}, "{}" => {}'
-                    mes = mes.format (self.bname
-                                     ,com.get_string(pattern)
-                                     ,sh.com.figure_commas(result)
-                                     )
-                else:
-                    mes = '{}, [{}:{}], "{}" => {}'
-                    mes = mes.format (self.bname
-                                     ,sh.com.figure_commas(start)
-                                     ,sh.com.figure_commas(end)
-                                     ,com.get_string(pattern)
-                                     ,sh.com.figure_commas(result)
-                                     )
-                sh.objs.mes(f,mes,True).debug()
+                if DEBUG:
+                    if end == -1:
+                        mes = '{}, "{}" => {}'
+                        mes = mes.format (self.bname
+                                         ,com.get_string(pattern)
+                                         ,sh.com.figure_commas(result)
+                                         )
+                    else:
+                        mes = '{}, [{}:{}], "{}" => {}'
+                        mes = mes.format (self.bname
+                                         ,sh.com.figure_commas(start)
+                                         ,sh.com.figure_commas(end)
+                                         ,com.get_string(pattern)
+                                         ,sh.com.figure_commas(result)
+                                         )
+                    sh.objs.mes(f,mes,True).debug()
                 if result >= 0:
                     return result
             else:
@@ -654,8 +676,9 @@ class UPage(Binary):
         else:
             try:
                 page_ref = struct.unpack('<h',self.part2[i])[0]
-                mes = _('#{}: {}').format(i,page_ref)
-                sh.objs.mes(f,mes,True).debug()
+                if DEBUG:
+                    mes = _('#{}: {}').format(i,page_ref)
+                    sh.objs.mes(f,mes,True).debug()
                 return page_ref
             except IndexError:
                 mes = _('Wrong input data!')
@@ -709,8 +732,8 @@ class UPage(Binary):
                         break
                     i += 1
                 i -= 1
-                #TODO: Comment this to speed up
-                self._log(pattern,i)
+                if DEBUG:
+                    self._log(pattern,i)
                 return self.get_page_limits(self._get_ref(i))
             else:
                 sh.com.empty(f)
@@ -1132,7 +1155,8 @@ class TypeIn(UPage):
                             decoded[i] = decoded[i][-1]
                         else:
                             decoded[i] = decoded[i][0]
-                    sh.objs.mes(f,decoded,True).debug()
+                    if DEBUG:
+                        sh.objs.mes(f,decoded,True).debug()
                     return decoded
                 else:
                     sh.com.empty(f)
@@ -1313,10 +1337,12 @@ class Xor:
                     elif delta == -261:
                         pos  -= 1
                         coef -= 1
-                    #mes = _('Overflow: {} -> {}').format(pos21,pos)
-                    #sh.objs.mes(f,mes,True).debug()
-                mes = '{} -> {}'.format(self.data[i],pos)
-                sh.objs.mes(f,mes,True).debug()
+                    if DEBUG:
+                        mes = _('Overflow: {} -> {}').format(pos21,pos)
+                        sh.objs.mes(f,mes,True).debug()
+                if DEBUG:
+                    mes = '{} -> {}'.format(self.data[i],pos)
+                    sh.objs.mes(f,mes,True).debug()
                 poses.append(pos)
                 pos11 = self.data[i]
                 pos12 = pos
@@ -1331,8 +1357,9 @@ class Xor:
                     sh.objs.mes(f,mes,True).error()
                     poses[i] = 0
             result = bytes(poses)
-            mes = com.get_string(result)
-            sh.objs.mes(f,mes,True).debug()
+            if DEBUG:
+                mes = com.get_string(result)
+                sh.objs.mes(f,mes,True).debug()
             return result
         else:
             sh.com.empty(f)
@@ -1362,10 +1389,12 @@ class Xor:
                     elif delta == 261:
                         pos  += 1
                         coef += 1
-                    #mes = _('Overflow: {} -> {}').format(pos21,pos)
-                    #sh.objs.mes(f,mes,True).debug()
-                mes = '{} -> {}'.format(data[i],pos)
-                sh.objs.mes(f,mes,True).debug()
+                    if DEBUG:
+                        mes = _('Overflow: {} -> {}').format(pos21,pos)
+                        sh.objs.mes(f,mes,True).debug()
+                if DEBUG:
+                    mes = '{} -> {}'.format(data[i],pos)
+                    sh.objs.mes(f,mes,True).debug()
                 poses.append(pos)
                 pos11 = data[i]
                 pos12 = pos
@@ -1380,8 +1409,9 @@ class Xor:
                     sh.objs.mes(f,mes,True).error()
                     poses[i] = 0
             result = bytes(poses)
-            mes = com.get_string(result)
-            sh.objs.mes(f,mes,True).debug()
+            if DEBUG:
+                mes = com.get_string(result)
+                sh.objs.mes(f,mes,True).debug()
             return result
         else:
             sh.com.empty(f)
@@ -1449,7 +1479,8 @@ class Glue(UPage):
                             stem numbers provided by 'stem.eng'
                             (at least in the demo version).
                         '''
-                        sh.com.lazy(f)
+                        if DEBUG:
+                            sh.com.lazy(f)
                 else:
                     sh.com.empty(f)
             else:
@@ -1467,8 +1498,9 @@ class Glue(UPage):
                     chnos = com.get_chunks(chunk,3)
                     for chno in chnos:
                         nos.append(com.unpack(chno))
-                    sh.objs.mes(f,chnos,True).debug()
-                    sh.objs.mes(f,nos,True).debug()
+                    if DEBUG:
+                        sh.objs.mes(f,chnos,True).debug()
+                        sh.objs.mes(f,nos,True).debug()
                     return chnos
                 else:
                     mes = _('Wrong input data: "{}"!')
@@ -1500,10 +1532,11 @@ class Commands:
             mes = _('{}/{} bytes have been processed')
             mes = mes.format(pos,len(stream))
             sh.objs.mes(f,mes,True).info()
-            remains = stream[pos:len(stream)]
-            remains = com.get_string(remains)
-            mes = _('Unprocessed fragment: "{}"').format(remains)
-            sh.objs.mes(f,mes,True).debug()
+            if DEBUG:
+                remains = stream[pos:len(stream)]
+                remains = com.get_string(remains)
+                mes = _('Unprocessed fragment: "{}"').format(remains)
+                sh.objs.mes(f,mes,True).debug()
         else:
             sh.com.empty(f)
     
@@ -1515,8 +1548,9 @@ class Commands:
         f = '[MClient] plugins.multitranbin.get.Commands.overflowh'
         if no < 0:
             result = 32768 + no
-            mes = '{} -> {}'.format(no,result)
-            sh.objs.mes(f,mes,True).debug()
+            if DEBUG:
+                mes = '{} -> {}'.format(no,result)
+                sh.objs.mes(f,mes,True).debug()
             return result
         else:
             return no
@@ -1530,8 +1564,9 @@ class Commands:
                 means 150: 128 - 106 = 22 => 127 + 22 + 1 = 150.
             '''
             new = 256 + no
-            mes = '{} -> {}'.format(no,new)
-            sh.objs.mes(f,mes,True).debug()
+            if DEBUG:
+                mes = '{} -> {}'.format(no,new)
+                sh.objs.mes(f,mes,True).debug()
             return new
         else:
             return no
@@ -1729,8 +1764,9 @@ class Stems(UPage):
             if chno in self.speech:
                 result = self.speech[chno]
                 result = com.unpackh(result)
-                mes = '{} -> {}'.format(com.get_string(chno),result)
-                sh.objs.mes(f,mes,True).debug()
+                if DEBUG:
+                    mes = '{} -> {}'.format(com.get_string(chno),result)
+                    sh.objs.mes(f,mes,True).debug()
                 return result
         else:
             sh.com.cancel(f)
@@ -1758,36 +1794,37 @@ class Stems(UPage):
                         chnos.append(chunks[i][0:3])
                         ends.append(chunks[i][3:5])
                         self.speech[chunks[i][0:3]] = chunks[i][5:7]
-                    for chno in chnos:
-                        nos.append(com.unpack(chno))
-                    if chnos:
-                        ids = [i + 1 for i in range(len(nos))]
-                        tmp = [sh.com.figure_commas(no) for no in nos]
-                        ends = [struct.unpack('<h',end)[0] \
-                                for end in ends
-                               ]
-                        mends = [sh.com.figure_commas(end) \
-                                 for end in ends
-                                ]
-                        mchnos = ['"' + com.get_string(chno) + '"' \
-                                  for chno in chnos
-                                 ]
-                        initial = ['"{}"'.format(com.get_string(chunk))\
-                                   for i in range(len(mchnos))
+                    ends = [struct.unpack('<h',end)[0] for end in ends]
+                    if DEBUG:
+                        for chno in chnos:
+                            nos.append(com.unpack(chno))
+                        if chnos:
+                            ids = [i + 1 for i in range(len(nos))]
+                            tmp = [sh.com.figure_commas(no) \
+                                   for no in nos
                                   ]
-                        headers  = ('NO','INITIAL','CHUNK'
-                                   ,'UNPACKED','END'
-                                   )
-                        iterable = (ids,initial,mchnos,tmp,mends)
-                        mes = sh.FastTable (headers  = headers
-                                           ,iterable = iterable
-                                           ,maxrow   = 50
-                                           ).run()
-                        mes = '\n\n' + mes
-                        sh.objs.mes(f,mes,True).debug()
-                    else:
-                        mes = _('No debug info')
-                        sh.objs.mes(f,mes,True).debug()
+                            mends = [sh.com.figure_commas(end) \
+                                     for end in ends
+                                    ]
+                            mchnos = ['"' + com.get_string(chno) + '"' \
+                                      for chno in chnos
+                                     ]
+                            initial = ['"{}"'.format(com.get_string(chunk))\
+                                       for i in range(len(mchnos))
+                                      ]
+                            headers  = ('NO','INITIAL','CHUNK'
+                                       ,'UNPACKED','END'
+                                       )
+                            iterable = (ids,initial,mchnos,tmp,mends)
+                            mes = sh.FastTable (headers  = headers
+                                               ,iterable = iterable
+                                               ,maxrow   = 50
+                                               ).run()
+                            mes = '\n\n' + mes
+                            sh.objs.mes(f,mes,True).debug()
+                        else:
+                            mes = _('No debug info')
+                            sh.objs.mes(f,mes,True).debug()
                     return(chnos,ends)
                 else:
                     sub = com.get_string(chunk)
@@ -1824,31 +1861,37 @@ class Stems(UPage):
                             chnos, endnos = result[0], result[1]
                             for i in range(len(endnos)):
                                 if objs.files().get_ending().has_match(endnos[i],end):
-                                    no = com.unpack(chnos[i])
-                                    no = sh.com.figure_commas(no)
-                                    unpacked.append(no)
+                                    if DEBUG:
+                                        no = com.unpack(chnos[i])
+                                        no = sh.com.figure_commas(no)
+                                        unpacked.append(no)
                                     matches.append(chnos[i])
-                    if matches:
-                        mmatches = ['"' + com.get_string(match) + '"' \
-                                    for match in matches
-                                   ]
-                        mnos = [i + 1 for i in range(len(mmatches))]
-                        headers = ('NO','STEM','END','CHUNK','UNPACKED')
-                        mstems = ['"{}"'.format(stem) \
-                                  for i in range(len(mnos))
-                                 ]
-                        mends  = ['"{}"'.format(end) \
-                                  for i in range(len(mnos))
-                                 ]
-                        iterable = (mnos,mstems,mends,mmatches,unpacked)
-                        mes = sh.FastTable (headers  = headers
-                                           ,iterable = iterable
-                                           ).run()
-                        mes = '\n\n' + mes
-                        sh.objs.mes(f,mes,True).debug()
-                    else:
-                        mes = _('No debug info')
-                        sh.objs.mes(f,mes,True).debug()
+                    if DEBUG:
+                        if matches:
+                            mmatches = ['"' + com.get_string(match) + '"'\
+                                        for match in matches
+                                       ]
+                            mnos = [i + 1 for i in range(len(mmatches))]
+                            headers = ('NO','STEM','END'
+                                      ,'CHUNK','UNPACKED'
+                                      )
+                            mstems = ['"{}"'.format(stem) \
+                                      for i in range(len(mnos))
+                                     ]
+                            mends  = ['"{}"'.format(end) \
+                                      for i in range(len(mnos))
+                                     ]
+                            iterable = (mnos,mstems,mends
+                                       ,mmatches,unpacked
+                                       )
+                            mes = sh.FastTable (headers  = headers
+                                               ,iterable = iterable
+                                               ).run()
+                            mes = '\n\n' + mes
+                            sh.objs.mes(f,mes,True).debug()
+                        else:
+                            mes = _('No debug info')
+                            sh.objs.mes(f,mes,True).debug()
                     return matches
                 else:
                     sh.com.empty(f)
@@ -1871,10 +1914,11 @@ class Get:
             if self.stemnos:
                 chno = self.stemnos[0][0:3]
                 speech = objs.files().get_stems1().get_speech(chno)
-                mes = '{} -> {}'.format (com.get_string(chno)
-                                        ,speech
-                                        )
-                sh.objs.mes(f,mes,True).debug()
+                if DEBUG:
+                    mes = '{} -> {}'.format (com.get_string(chno)
+                                            ,speech
+                                            )
+                    sh.objs.mes(f,mes,True).debug()
                 if speech is None:
                     sh.com.empty(f)
                 elif speech == 0:
@@ -1959,7 +2003,8 @@ class Get:
         if self.Success:
             self.stemnos = list(itertools.product(*self.stemnos))
             self.stemnos = [b''.join(item) for item in self.stemnos]
-            sh.objs.mes(f,self.stemnos,True).debug()
+            if DEBUG:
+                sh.objs.mes(f,self.stemnos,True).debug()
         else:
             sh.com.cancel(f)
     
@@ -2012,7 +2057,8 @@ class Get:
                     i -= 1
                 self.stemnos.append(word_stems)
             self.stemnos = [item for item in self.stemnos if item]
-            sh.objs.mes(f,self.stemnos,True).debug()
+            if DEBUG:
+                sh.objs.mes(f,self.stemnos,True).debug()
         else:
             sh.com.cancel(f)
     
