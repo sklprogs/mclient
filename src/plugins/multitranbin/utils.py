@@ -10,7 +10,7 @@ from skl_shared.localize import _
 import get as gt
 
 
-COLOR = 'magenta'
+COLOR = 'cyan'
 
 
 class Commands:
@@ -74,7 +74,7 @@ class CompareBinaries:
         f = '[MClient] plugins.multitranbin.utils.CompareBinaries.dump'
         if self.Success:
             mes = _('This will extract binary data from both files from set positions')
-            sh.objs.mes(f,mes,True).info()
+            print(mes)
             mes1 = _('Position {}: ').format(1)
             mes2 = _('Position {}: ').format(2)
             pos1 = com.input_int(mes1)
@@ -89,7 +89,7 @@ class CompareBinaries:
                     and sh.com.rewrite(filew2):
                         chunk1 = self.bin1.read(pos1,pos2)
                         chunk2 = self.bin2.read(pos1,pos2)
-                        if read1 and read2:
+                        if chunk1 and chunk2:
                             try:
                                 mes = _('Write "{}"').format(filew1)
                                 sh.objs.mes(f,mes,True).info()
@@ -97,7 +97,7 @@ class CompareBinaries:
                                     f1.write(chunk1)
                                 mes = _('Write "{}"').format(filew2)
                                 sh.objs.mes(f,mes,True).info()
-                                with open(file2,'wb') as f2:
+                                with open(filew2,'wb') as f2:
                                     f2.write(chunk2)
                             except Exception as e:
                                 mes = _('Operation has failed!\n\nDetails: {}')
@@ -254,6 +254,14 @@ class CompareBinaries:
         if self.Success:
             start = self.pos
             end   = start + self.buffer
+            if start > self.bin1.get_file_size() \
+            or start > self.bin2.get_file_size():
+                start = 0
+            if end > self.bin1.get_file_size() \
+            or end > self.bin2.get_file_size():
+                end = min (self.bin1.get_file_size()
+                          ,self.bin2.get_file_size()
+                          )
             self.compare(start,end)
             self.report()
             self.print()
@@ -432,8 +440,8 @@ com = Commands()
 
 
 if __name__ == '__main__':
-    #file1 = '/home/pete/tmp/mt_mod/dict_orig_f.ert'
-    #file2 = '/home/pete/tmp/mt_mod/dict_mod_f.ert'
-    file1 = '/home/pete/tmp/mt_mod/dict_orig_d.ert'
-    file2 = '/home/pete/tmp/mt_mod/dict_mod_d.ert'
+    file1 = '/home/pete/tmp/mt_mod/dict_orig_f.ert'
+    file2 = '/home/pete/tmp/mt_mod/dict_mod_f.ert'
+    #file1 = '/home/pete/tmp/mt_mod/dict_orig_d.ert'
+    #file2 = '/home/pete/tmp/mt_mod/dict_mod_d.ert'
     CompareBinaries(file1,file2).show_menu()
