@@ -2717,6 +2717,7 @@ if  __name__ == '__main__':
         objs._search.close()
         objs._history.close()
         objs._webframe.show()
+        lg.objs._plugins.quit()
         kl_mod.keylistener.cancel()
     else:
         mes = _('Unable to continue due to an invalid configuration.')

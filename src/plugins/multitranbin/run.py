@@ -28,6 +28,9 @@ class Plugin:
         self.MaxRow  = MaxRow
         self.MaxRows = MaxRows
     
+    def quit(self):
+        gt.objs.files().close()
+    
     def _adapt_lang(self,lang):
         f = '[MClient] plugins.multitranbin.run.Plugin._adapt_lang'
         if lang:

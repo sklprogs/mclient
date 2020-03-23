@@ -37,6 +37,11 @@ class Plugins:
         self.set(self._source)
         self.set_timeout(self._timeout)
     
+    def quit(self,event=None):
+        self.mbplugin.quit()
+        self.mcplugin.quit()
+        self.sdplugin.quit()
+    
     def lang1(self):
         f = '[MClient] manager.Plugins.lang1'
         if self.plugin:

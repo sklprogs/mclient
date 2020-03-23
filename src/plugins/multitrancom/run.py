@@ -29,6 +29,10 @@ class Plugin:
         self._text   = ''
         self._blocks = []
     
+    # This is needed only for compliance with a general method
+    def quit(self):
+        pass
+    
     def lang1(self):
         return pr.LANG1
     

@@ -33,6 +33,10 @@ class Plugin:
         self._text   = ''
         self._html   = ''
     
+    def quit(self):
+        for idic in gt.objs.all_dics()._dics:
+            idic.unload()
+    
     # This is needed only for compliance with a general method
     def lang1(self):
         return _('Any')
