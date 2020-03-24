@@ -10,7 +10,8 @@ from skl_shared.localize import _
 import get as gt
 
 
-COLOR = 'cyan'
+COLOR  = 'cyan'
+BUFFER = 200
 
 
 class Commands:
@@ -184,7 +185,7 @@ class CompareBinaries:
                        ]
         self.chunks1 = b''
         self.chunks2 = b''
-        self.buffer  = 400
+        self.buffer  = BUFFER
         self.pos     = 0
         self.Success = True
         self.bin1    = None
