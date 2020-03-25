@@ -543,7 +543,6 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.multitranbin.tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
-    #gt.DEBUG = True
     ''' Currently failing translations:
         "work"
         "совковая лопата с суживающимся полотном с прямолинейной кромкой"
@@ -552,3 +551,5 @@ if __name__ == '__main__':
     #Tests().get_speech('DARE')
     #Tests().translate('DARE')
     Binary(gt.objs.files().iwalker.get_article()).info()
+    #gt.DEBUG = True
+    #gt.com.overflowh(-16390)

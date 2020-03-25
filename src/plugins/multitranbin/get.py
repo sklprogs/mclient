@@ -447,6 +447,7 @@ class Binary:
                 if read:
                     if len(read) == 2:
                         size = struct.unpack('<h',read)[0]
+                        size = com.overflowh(size)
                         if size > 0:
                             if DEBUG:
                                 sub = sh.com.human_size(size)
