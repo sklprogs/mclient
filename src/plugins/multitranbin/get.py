@@ -889,6 +889,7 @@ class UPage(Binary):
 
 
 class Walker:
+    
     def __init__(self):
         self.set_values()
         if PATH:

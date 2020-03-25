@@ -551,4 +551,4 @@ if __name__ == '__main__':
     '''
     #Tests().get_speech('DARE')
     #Tests().translate('DARE')
-    print(gt.objs.all_dics().langs())
+    Binary(gt.objs.files().iwalker.get_article()).info()

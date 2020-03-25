@@ -14,6 +14,259 @@ COLOR  = 'cyan'
 BUFFER = 200
 
 
+class Navigate(gt.Binary):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.chunk = b''
+        self.coms = ['buffer','help','load','quit','pgup','pgdn'
+                    ,'pos','clear','exit','dump'
+                    ]
+        self.buffer = round(BUFFER * 2.5)
+        self.pos = 0
+        self.coms.sort()
+        
+    def dump(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate.dump'
+        if self.Success:
+            mes = _('This will extract data from the binary file from set positions')
+            print(mes)
+            mes1 = _('Position {}: ').format(1)
+            mes2 = _('Position {}: ').format(2)
+            pos1 = com.input_int(mes1)
+            pos2 = com.input_int(mes2)
+            if pos1 < pos2:
+                mes = _('An output file: ')
+                filew = com.input_str(mes)
+                if filew:
+                    if sh.com.rewrite(filew):
+                        chunk = self.read(pos1,pos2)
+                        if chunk:
+                            try:
+                                mes = _('Write "{}"').format(filew)
+                                sh.objs.mes(f,mes,True).info()
+                                with open(filew,'wb') as fw:
+                                    fw.write(chunk)
+                            except Exception as e:
+                                mes = _('Operation has failed!\n\nDetails: {}')
+                                mes = mes.format(e)
+                                sh.objs.mes(f,mes,True).warning()
+                        else:
+                            sh.com.empty(f)
+                    else:
+                        mes = _('Operation has been canceled by the user.')
+                        sh.objs.mes(f,mes,True).info()
+                else:
+                    sh.com.empty(f)
+            else:
+                sub = '{} < {}'.format(pos1,pos2)
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.cancel(f)
+    
+    def go_end(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate.go_end'
+        if self.Success:
+            self.pos = self.get_file_size() - self.buffer
+            if self.pos < 0:
+                self.pos = 0
+            self.load()
+        else:
+            sh.com.cancel(f)
+    
+    def go_start(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate.go_start'
+        if self.Success:
+            self.pos = 0
+            self.load()
+        else:
+            sh.com.cancel(f)
+    
+    def clear(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate.clear'
+        if self.Success:
+            try:
+                if sh.objs.os().win():
+                    os.system('cls')
+                else:
+                    os.system('clear')
+            except Exception as e:
+                mes = _('Operation has failed!\n\nDetails: {}')
+                mes = mes.format(e)
+                sh.objs.mes(f,mes,True).error()
+        else:
+            sh.com.cancel(f)
+    
+    def set_pos(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate.set_pos'
+        if self.Success:
+            mes = _('Enter a position to go or press Return to keep the current one ({}): ')
+            mes = mes.format(sh.com.figure_commas(self.pos))
+            val = input(mes)
+            val = val.strip()
+            if val:
+                val = sh.Input (title = f
+                               ,value = val
+                               ).integer()
+                if val >= 0:
+                    self.pos = val
+                else:
+                    mes = _('Wrong input data!')
+                    sh.objs.mes(f,mes,True).warning()
+            else:
+                sh.com.lazy(f)
+        else:
+            sh.com.cancel(f)
+    
+    def go_page_down(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate.go_page_down'
+        if self.Success:
+            self.pos += self.buffer
+            if self.pos >= self.get_file_size():
+                self.pos = self.get_file_size() - self.buffer
+                if self.pos < 0:
+                    self.pos = 0
+            self.load()
+        else:
+            sh.com.cancel(f)
+    
+    def go_page_up(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate.go_page_up'
+        if self.Success:
+            self.pos -= self.buffer
+            if self.pos < 0:
+                self.pos = 0
+            self.load()
+        else:
+            sh.com.cancel(f)
+    
+    def load(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate.load'
+        if self.Success:
+            start = self.pos
+            end = start + self.buffer
+            if start > self.get_file_size():
+                start = 0
+            if end > self.get_file_size():
+                end = self.get_file_size()
+            self.chunk = self.read(start,end)
+            self.report()
+            self.print()
+        else:
+            sh.com.cancel(f)
+    
+    def set_buffer(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate.set_buffer'
+        if self.Success:
+            mes = _('Enter a buffer size or press Return to keep the current one ({}): ')
+            mes = mes.format(sh.com.figure_commas(self.buffer))
+            val = input(mes)
+            val = val.strip()
+            if val:
+                val = sh.Input (title = f
+                               ,value = val
+                               ).integer()
+                if val:
+                    self.buffer = val
+                else:
+                    mes = _('Wrong input data!')
+                    sh.objs.mes(f,mes,True).warning()
+            else:
+                sh.com.lazy(f)
+        else:
+            sh.com.cancel(f)
+    
+    def show_help(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate.show_help'
+        if self.Success:
+            mes = _('Available commands: {}')
+            mes = mes.format('; '.join(self.coms))
+            print(mes)
+        else:
+            sh.com.cancel(f)
+    
+    def show_menu(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate.show_menu'
+        if self.Success:
+            try:
+                command = input(_('Enter a command: '))
+            except (EOFError,KeyboardInterrupt):
+                command = 'quit'
+            command = command.strip()
+            if command == '':
+                self.quit()
+            elif command == 'buffer':
+                self.set_buffer()
+                self.load()
+                self.show_menu()
+            elif command == 'clear':
+                self.clear()
+                self.show_menu()
+            elif command == 'dump':
+                self.dump()
+                self.show_menu()
+            elif command == 'end':
+                self.go_end()
+                self.show_menu()
+            elif command == 'help':
+                self.show_help()
+                self.show_menu()
+            elif command == 'load':
+                self.load()
+                self.show_menu()
+            elif command == 'pgdn':
+                self.go_page_down()
+                self.show_menu()
+            elif command == 'pgup':
+                self.go_page_up()
+                self.show_menu()
+            elif command == 'pos':
+                self.set_pos()
+                self.load()
+                self.show_menu()
+            elif command in ('exit','quit'):
+                self.quit()
+            elif command == 'start':
+                self.go_start()
+                self.show_menu()
+            else:
+                mes = _('An unknown command! Enter "help" to get help.')
+                print(mes)
+                self.show_menu()
+        else:
+            sh.com.cancel(f)
+    
+    def quit(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate.quit'
+        if self.Success:
+            self.close()
+            mes = _('Goodbye!')
+            sh.objs.mes(f,mes,True).debug()
+        else:
+            sh.com.cancel(f)
+    
+    def print(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate.print'
+        if self.Success:
+            mes = gt.com.get_string(self.chunk,0)
+            print(mes)
+        else:
+            sh.com.cancel(f)
+    
+    def report(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate.report'
+        if self.Success:
+            self.clear()
+            sub = sh.com.figure_commas(self.pos)
+            mes = _('Current position: {}').format(sub)
+            print(mes)
+        else:
+            sh.com.cancel(f)
+
+
+
 class Commands:
     
     def input_str(self,mes=''):
@@ -236,6 +489,13 @@ class CompareBinaries:
         f = '[MClient] plugins.multitranbin.utils.CompareBinaries.go_page_down'
         if self.Success:
             self.pos += self.buffer
+            min_ = min (self.bin1.get_file_size()
+                       ,self.bin2.get_file_size()
+                       )
+            if self.pos >= min_:
+                self.pos = min_ - self.buffer
+                if self.pos < 0:
+                    self.pos = 0
             self.load()
         else:
             sh.com.cancel(f)
@@ -445,4 +705,6 @@ if __name__ == '__main__':
     file2 = '/home/pete/tmp/mt_mod/dict_mod_f.ert'
     #file1 = '/home/pete/tmp/mt_mod/dict_orig_d.ert'
     #file2 = '/home/pete/tmp/mt_mod/dict_mod_d.ert'
-    CompareBinaries(file1,file2).show_menu()
+    #CompareBinaries(file1,file2).show_menu()
+    gt.PATH = '/home/pete/.config/mclient/dics'
+    Navigate(gt.objs.files().iwalker.get_article()).show_menu()
