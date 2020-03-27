@@ -3,6 +3,7 @@
 
 import os
 import sys
+import struct
 import termcolor
 
 import skl_shared.shared as sh
@@ -12,6 +13,219 @@ import get as gt
 
 COLOR  = 'cyan'
 BUFFER = 200
+
+
+class Tests:
+    
+    def parse_dump(self):
+        file1 = '/tmp/dump1'
+        file2 = '/tmp/dump2'
+        pos1 = 0
+        pos2 = 16380
+        ''' We do not use 'self._parse' here since 'Parser.parse'
+            automatically selects the mode based on a file name.
+        '''
+        iparse = Parser(file1)
+        iparse.reader(pos1,pos2)
+        iparse.parse_article()
+        iparse.debug()
+        iparse = Parser(file2)
+        iparse.reader(pos1,pos2)
+        iparse.parse_article()
+        iparse.debug()
+    
+    def _parse(self,file,pos1,pos2):
+        iparse = Parser(file)
+        iparse.reader(pos1,pos2)
+        iparse.parse()
+        iparse.debug()
+    
+    def parse_article(self):
+        file = gt.objs.files().iwalker.get_article()
+        pos1 = 655363
+        pos2 = 656808
+        self._parse(file,pos1,pos2)
+    
+    def parse_stems(self):
+        file = gt.objs.files().iwalker.get_stems1()
+        pos1 = 7479299
+        pos2 = 7486690
+        self._parse(file,pos1,pos2)
+    
+    def compare(self):
+        #file1 = '/home/pete/tmp/mt_mod/dict_orig_f.ert'
+        #file2 = '/home/pete/tmp/mt_mod/dict_mod_f.ert'
+        #file1 = '/home/pete/tmp/Multitran/network/eng_rus/dict.ert'
+        #file2 = '/home/pete/.wine/drive_c/Multitran/network/eng_rus/dict.ert'
+        file1  = '/tmp/dump1'
+        file2  = '/tmp/dump2'
+        CompareBinaries(file1,file2).show_menu()
+    
+    def navigate_article(self):
+        Navigate(gt.objs.files().iwalker.get_article()).show_menu()
+
+
+
+class Parser(gt.Binary):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.chunks1 = []
+        self.chunks2 = []
+        self.xplain1 = []
+        self.xplain2 = []
+    
+    def parse_article(self):
+        f = '[MClient] plugins.multitranbin.utils.Binary.parse_article'
+        if self.Success:
+            for chunk in self.chunks1:
+                chunk = gt.com.get_string(chunk,0)
+                self.xplain1.append(chunk)
+            for chunk in self.chunks2:
+                chunk = gt.com.get_string(chunk,0)
+                self.xplain2.append(chunk)
+        else:
+            sh.com.cancel(f)
+    
+    def debug(self):
+        f = '[MClient] plugins.multitranbin.utils.Binary.debug'
+        if self.Success:
+            if self.xplain1 and self.xplain2:
+                if len(self.xplain1) == len(self.xplain2):
+                    nos = [i + 1 for i in range(len(self.xplain1))]
+                    len1 = [len(chunk) for chunk in self.chunks1]
+                    len2 = [len(chunk) for chunk in self.chunks2]
+                    headers = ('NOS','LEN1','PART1','LEN2','PART2')
+                    iterable = (nos,len1,self.xplain1,len2,self.xplain2)
+                    mes = sh.FastTable (headers  = headers
+                                       ,iterable = iterable
+                                       ,maxrow   = 45
+                                       ).run()
+                    if mes:
+                        sub = _('File: "{}"').format(self.file)
+                        sub += '\n\n'
+                        mes = sub + mes
+                        sh.com.fast_debug(mes)
+                    else:
+                        sh.com.empty(f)
+                else:
+                    self.Success = False
+                    sub = '{} == {}'.format (len(self.xplain1)
+                                            ,len(self.xplain2)
+                                            )
+                    mes = _('The condition "{}" is not observed!')
+                    mes = mes.format(sub)
+                    sh.objs.mes(f,mes,True).warning()
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+        
+    def chunk7(self,chunk):
+        f = '[MClient] plugins.multitranbin.utils.Binary.chunk7'
+        ''' According to "libmtquery-0.0.1alpha3/doc/README.rus":
+            the 1st byte - a type designating the use of capital letters
+            (not used), further - a vector of 7-byte codes, each code
+            including:
+            3 bytes - a word number (4-byte long type compressed to
+            3 bytes)
+            2 bytes - sik (terminations)
+            2 bytes - lgk (speech part codes)
+        '''
+        if self.Success:
+            if chunk and (len(chunk) - 1) % 7 == 0:
+                tmp    = []
+                chunks = gt.com.get_chunks(chunk[1:],7)
+                for item in chunks:
+                    delta = 7 - len(item)
+                    item  = item + b'\x00' * delta
+                    word  = item[0:3] + b'\x00'
+                    sik   = item[3:5]
+                    lgk   = item[5:7]
+                    tmp.append(struct.unpack('<L',word)[0])
+                    tmp.append(struct.unpack('<h',sik)[0])
+                    tmp.append(struct.unpack('<h',lgk)[0])
+                return tmp
+        else:
+            sh.com.cancel(f)
+    
+    def parsel1(self):
+        f = '[MClient] plugins.multitranbin.utils.Binary.parsel1'
+        if self.Success:
+            for chunk in self.chunks1:
+                chunk = chunk.decode(gt.ENCODING,'replace')
+                self.xplain1.append(chunk)
+        else:
+            sh.com.cancel(f)
+    
+    def parse_stem(self):
+        f = '[MClient] plugins.multitranbin.utils.Binary.parse_stem'
+        if self.Success:
+            self.parsel1()
+            for chunk in self.chunks2:
+                tmp = self.chunk7(chunk)
+                if tmp:
+                    self.xplain2.append(tmp)
+                else:
+                    self.xplain2.append([_('UNKNOWN')])
+        else:
+            sh.com.cancel(f)
+    
+    def parse(self):
+        f = '[MClient] plugins.multitranbin.utils.Binary.parse'
+        if self.Success:
+            #FIX: Why base names are not lowercased?
+            bname = self.bname.lower()
+            if bname.startswith('stem'):
+                self.parse_stem()
+            elif bname.startswith('dict') and bname.endswith('t'):
+                self.parse_article()
+            else:
+                mes = '"{}"'.format(self.bname)
+                sh.objs.mes(f,mes,True).debug()
+                mes = _('Not implemented yet!')
+                sh.objs.mes(f,mes).info()
+        else:
+            sh.com.cancel(f)
+    
+    def reader(self,pos1,pos2):
+        f = '[MClient] plugins.multitranbin.utils.Binary.reader'
+        if self.Success:
+            stream = self.read(pos1,pos2)
+            if stream:
+                self.chunks1 = []
+                self.chunks2 = []
+                pos = 0
+                while pos + 2 < len(stream):
+                    ''' #NOTE: indexing returns integers, slicing
+                               returns bytes.
+                    '''
+                    read = stream[pos:pos+2]
+                    pos += 2
+                    len1, len2 = struct.unpack('<2b',read)
+                    len1 = gt.com.overflowb(len1)
+                    len2 = gt.com.overflowb(len2)
+                    if pos + len1 + len2 < len(stream):
+                        ''' Do this only after checking the condition,
+                            otherwise, resulting lists will have
+                            a different length.
+                        '''
+                        chunk1 = stream[pos:pos+len1]
+                        pos += len1
+                        chunk2 = stream[pos:pos+len2]
+                        pos += len2
+                        # Zero-length chunks should be allowed
+                        if chunk2:
+                            self.chunks1.append(chunk1)
+                            self.chunks2.append(chunk2)
+                    else:
+                        gt.com.report_status(pos,stream)
+                        break
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+
 
 
 class Navigate(gt.Binary):
@@ -701,10 +915,8 @@ com = Commands()
 
 
 if __name__ == '__main__':
-    file1 = '/home/pete/tmp/mt_mod/dict_orig_f.ert'
-    file2 = '/home/pete/tmp/mt_mod/dict_mod_f.ert'
-    #file1 = '/home/pete/tmp/mt_mod/dict_orig_d.ert'
-    #file2 = '/home/pete/tmp/mt_mod/dict_mod_d.ert'
-    #CompareBinaries(file1,file2).show_menu()
     gt.PATH = '/home/pete/.config/mclient/dics'
-    Navigate(gt.objs.files().iwalker.get_article()).show_menu()
+    #Tests().parse_stems()
+    #Tests().parse_article()
+    #Tests().compare()
+    Tests().parse_dump()
