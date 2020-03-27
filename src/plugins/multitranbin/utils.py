@@ -13,23 +13,85 @@ import get as gt
 
 COLOR  = 'cyan'
 BUFFER = 200
+DUMP1  = sh.Home().add('tmp','dump1')
+DUMP2  = sh.Home().add('tmp','dump2')
 
 
 class Tests:
     
-    def parse_dump(self):
-        file1 = '/tmp/dump1'
-        file2 = '/tmp/dump2'
+    def compare_bytes(self,maxlen=10):
+        f = '[MClient] plugins.multitranbin.utils.Tests.compare_bytes'
+        dump1  = gt.Binary(DUMP1)
+        dump2  = gt.Binary(DUMP2)
+        end1   = dump1.get_file_size()
+        end2   = dump2.get_file_size()
+        read1  = dump1.read(0,end1)
+        read2  = dump2.read(0,end2)
+        if read1 and read2:
+            if len(read1) > maxlen and len(read2) > maxlen:
+                sex = gt.com.get_subseq(read2,maxlen)
+                matches = [seq for seq in sex if seq in read1]
+                if matches:
+                    matches = [gt.com.get_string(match,0) \
+                               for match in matches
+                              ]
+                    for i in range(len(matches)):
+                        matches[i] = '{}: {}'.format(i,matches[i])
+                    mes = '\n'.join(matches)
+                    sh.com.fast_debug(mes)
+                else:
+                    mes = _('No matches!')
+                    sh.objs.mes(f,mes).info()
+            else:
+                sh.com.lazy(f)
+        else:
+            sh.com.empty(f)
+        dump1.close()
+        dump2.close()
+    
+    def show_dumps(self):
+        CompareBinaries(DUMP1,DUMP2).show_menu()
+    
+    def get_shared_dumps(self):
+        f = '[MClient] plugins.multitranbin.utils.Tests.get_shared_dumps'
         pos1 = 0
         pos2 = 16380
         ''' We do not use 'self._parse' here since 'Parser.parse'
             automatically selects the mode based on a file name.
         '''
-        iparse = Parser(file1)
+        iparse1 = Parser(DUMP1)
+        iparse1.reader(pos1,pos2)
+        iparse1.parse_article()
+        iparse2 = Parser(DUMP2)
+        iparse2.reader(pos1,pos2)
+        iparse2.parse_article()
+        if iparse1.chunks1 and iparse1.chunks2 and iparse2.chunks1 \
+        and iparse2.chunks2:
+            shared1 = [chunk for chunk in iparse1.chunks1 \
+                       if chunk in iparse2.chunks1
+                      ]
+            shared2 = [chunk for chunk in iparse1.chunks2 \
+                       if chunk in iparse2.chunks2
+                      ]
+            mes = _('List {}:').format(1)
+            mes += '\n' + str(shared1) + '\n'
+            mes += _('List {}:').format(2)
+            mes += '\n' + str(shared2)
+            sh.com.fast_debug(mes)
+        else:
+            sh.com.empty(f)
+    
+    def parse_dumps(self):
+        pos1 = 0
+        pos2 = 16380
+        ''' We do not use 'self._parse' here since 'Parser.parse'
+            automatically selects the mode based on a file name.
+        '''
+        iparse = Parser(DUMP1)
         iparse.reader(pos1,pos2)
         iparse.parse_article()
         iparse.debug()
-        iparse = Parser(file2)
+        iparse = Parser(DUMP2)
         iparse.reader(pos1,pos2)
         iparse.parse_article()
         iparse.debug()
@@ -53,12 +115,8 @@ class Tests:
         self._parse(file,pos1,pos2)
     
     def compare(self):
-        #file1 = '/home/pete/tmp/mt_mod/dict_orig_f.ert'
-        #file2 = '/home/pete/tmp/mt_mod/dict_mod_f.ert'
-        #file1 = '/home/pete/tmp/Multitran/network/eng_rus/dict.ert'
-        #file2 = '/home/pete/.wine/drive_c/Multitran/network/eng_rus/dict.ert'
-        file1  = '/tmp/dump1'
-        file2  = '/tmp/dump2'
+        file1 = '/home/pete/tmp/Multitran/network/eng_rus/dict.ert'
+        file2 = '/home/pete/.wine/drive_c/Multitran/network/eng_rus/dict.ert'
         CompareBinaries(file1,file2).show_menu()
     
     def navigate_article(self):
@@ -548,34 +606,22 @@ class CompareBinaries:
             pos1 = com.input_int(mes1)
             pos2 = com.input_int(mes2)
             if pos1 < pos2:
-                mes1 = _('File {}: ').format(1)
-                mes2 = _('File {}: ').format(2)
-                filew1 = com.input_str(mes1)
-                filew2 = com.input_str(mes2)
-                if filew1 and filew2:
-                    if sh.com.rewrite(filew1) \
-                    and sh.com.rewrite(filew2):
-                        chunk1 = self.bin1.read(pos1,pos2)
-                        chunk2 = self.bin2.read(pos1,pos2)
-                        if chunk1 and chunk2:
-                            try:
-                                mes = _('Write "{}"').format(filew1)
-                                sh.objs.mes(f,mes,True).info()
-                                with open(filew1,'wb') as f1:
-                                    f1.write(chunk1)
-                                mes = _('Write "{}"').format(filew2)
-                                sh.objs.mes(f,mes,True).info()
-                                with open(filew2,'wb') as f2:
-                                    f2.write(chunk2)
-                            except Exception as e:
-                                mes = _('Operation has failed!\n\nDetails: {}')
-                                mes = mes.format(e)
-                                sh.objs.mes(f,mes,True).warning()
-                        else:
-                            sh.com.empty(f)
-                    else:
-                        mes = _('Operation has been canceled by the user.')
+                chunk1 = self.bin1.read(pos1,pos2)
+                chunk2 = self.bin2.read(pos1,pos2)
+                if chunk1 and chunk2:
+                    try:
+                        mes = _('Write "{}"').format(DUMP1)
                         sh.objs.mes(f,mes,True).info()
+                        with open(DUMP1,'wb') as f1:
+                            f1.write(chunk1)
+                        mes = _('Write "{}"').format(DUMP2)
+                        sh.objs.mes(f,mes,True).info()
+                        with open(DUMP2,'wb') as f2:
+                            f2.write(chunk2)
+                    except Exception as e:
+                        mes = _('Operation has failed!\n\nDetails: {}')
+                        mes = mes.format(e)
+                        sh.objs.mes(f,mes,True).warning()
                 else:
                     sh.com.empty(f)
             else:
@@ -891,10 +937,12 @@ class CompareBinaries:
             self.chunks1 = self.bin1.read(start,end)
             self.chunks2 = self.bin2.read(start,end)
             if self.chunks1 and self.chunks2:
-                min_ = min(len(self.chunks1),len(self.chunks2))
-                for i in range(min_):
-                    if self.chunks1[i:i+1] != self.chunks2[i:i+1]:
-                        self.poses.append(i)
+                # Checking this condition speeds up processing
+                if self.chunks1 != self.chunks2:
+                    min_ = min(len(self.chunks1),len(self.chunks2))
+                    for i in range(min_):
+                        if self.chunks1[i:i+1] != self.chunks2[i:i+1]:
+                            self.poses.append(i)
             else:
                 self.chunks1 = b''
                 self.chunks2 = b''
@@ -916,7 +964,6 @@ com = Commands()
 
 if __name__ == '__main__':
     gt.PATH = '/home/pete/.config/mclient/dics'
-    #Tests().parse_stems()
-    #Tests().parse_article()
-    #Tests().compare()
-    Tests().parse_dump()
+    # max_len: 5 => \xbf\x11\x7f\x08u
+    #Tests().compare_bytes(5)
+    Tests().compare()
