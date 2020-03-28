@@ -19,14 +19,54 @@ DUMP2  = sh.Home().add('tmp','dump2')
 
 class Tests:
     
+    def analyze_dumps(self):
+        f = '[MClient] plugins.multitranbin.utils.Tests.analyze_dumps'
+        iparse1 = Parser(DUMP1)
+        iparse2 = Parser(DUMP2)
+        pos1 = 0
+        pos2 = min(iparse1.get_file_size(),iparse2.get_file_size())
+        iparse1.reader(pos1,pos2)
+        iparse2.reader(pos1,pos2)
+        iparse1.parse_article()
+        iparse2.parse_article()
+        if iparse1.Success and iparse2.Success:
+            lens11 = [len(chunk) for chunk in iparse1.chunks1]
+            lens12 = [len(chunk) for chunk in iparse1.chunks2]
+            lens21 = [len(chunk) for chunk in iparse2.chunks1]
+            lens22 = [len(chunk) for chunk in iparse2.chunks2]
+            len11  = len(iparse1.chunks1)
+            len12  = len(iparse1.chunks2)
+            len21  = len(iparse2.chunks1)
+            len22  = len(iparse2.chunks2)
+            mes = 'len(iparse1.chunks1): {}'.format(len11)
+            sh.objs.mes(f,mes,True).debug()
+            mes = 'len(iparse1.chunks2): {}'.format(len12)
+            sh.objs.mes(f,mes,True).debug()
+            mes = 'len(iparse2.chunks1): {}'.format(len21)
+            sh.objs.mes(f,mes,True).debug()
+            mes = 'len(iparse2.chunks2): {}'.format(len22)
+            sh.objs.mes(f,mes,True).debug()
+            max_ = max(len11,len12,len21,len22)
+            nos = [i + 1 for i in range(max_)]
+            headers = ('NO','D1P1','D1P2','D2P1','D2P2')
+            iterable = [nos,lens11,lens12,lens21,lens22]
+            mes = sh.FastTable (headers  = headers
+                               ,iterable = iterable
+                               ).run()
+            sh.com.fast_debug(mes)
+        else:
+            sh.com.empty(f)
+        iparse1.close()
+        iparse2.close()
+    
     def compare_bytes(self,maxlen=10):
         f = '[MClient] plugins.multitranbin.utils.Tests.compare_bytes'
-        dump1  = gt.Binary(DUMP1)
-        dump2  = gt.Binary(DUMP2)
-        end1   = dump1.get_file_size()
-        end2   = dump2.get_file_size()
-        read1  = dump1.read(0,end1)
-        read2  = dump2.read(0,end2)
+        dump1 = gt.Binary(DUMP1)
+        dump2 = gt.Binary(DUMP2)
+        end1  = dump1.get_file_size()
+        end2  = dump2.get_file_size()
+        read1 = dump1.read(0,end1)
+        read2 = dump2.read(0,end2)
         if read1 and read2:
             if len(read1) > maxlen and len(read2) > maxlen:
                 sex = gt.com.get_subseq(read2,maxlen)
@@ -966,4 +1006,5 @@ if __name__ == '__main__':
     gt.PATH = '/home/pete/.config/mclient/dics'
     # max_len: 5 => \xbf\x11\x7f\x08u
     #Tests().compare_bytes(5)
-    Tests().compare()
+    #Tests().compare()
+    Tests().analyze_dumps()
