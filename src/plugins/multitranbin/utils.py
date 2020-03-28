@@ -4,6 +4,7 @@
 import os
 import sys
 import struct
+import codecs
 import termcolor
 
 import skl_shared.shared as sh
@@ -53,6 +54,34 @@ class Tests:
             mes = sh.FastTable (headers  = headers
                                ,iterable = iterable
                                ).run()
+            sh.com.fast_debug(mes)
+            mes  = 'len11: {}'.format(len11) + '\n'
+            mes += 'len12: {}'.format(len12) + '\n'
+            mes += 'len21: {}'.format(len21) + '\n'
+            mes += 'len22: {}'.format(len22) + '\n'
+            sh.com.fast_debug(mes)
+            '''
+            lens11 = sorted(set(lens11))
+            lens12 = sorted(set(lens12))
+            lens21 = sorted(set(lens21))
+            lens22 = sorted(set(lens22))
+            '''
+            '''
+            mes  = 'D1P1:\n' + str(lens11) + '\n\n'
+            mes += 'D1P2:\n' + str(lens12) + '\n\n'
+            mes += 'D2P1:\n' + str(lens21) + '\n\n'
+            mes += 'D2P2:\n' + str(lens22) + '\n\n'
+            '''
+            '''
+            lens21 = [item for item in lens21 if item not in lens11]
+            lens22 = [item for item in lens22 if item not in lens12]
+            mes  = 'UNIQUE lens21:\n' + str(lens21) + '\n\n'
+            mes += 'UNIQUE lens22:\n' + str(lens22) + '\n\n'
+            '''
+            lens21 = [item for item in lens21 if item in lens11]
+            lens22 = [item for item in lens22 if item in lens12]
+            mes  = 'SHARED lens21:\n' + str(lens21) + '\n\n'
+            mes += 'SHARED lens22:\n' + str(lens22) + '\n\n'
             sh.com.fast_debug(mes)
         else:
             sh.com.empty(f)
@@ -332,11 +361,63 @@ class Navigate(gt.Binary):
         super().__init__(*args,**kwargs)
         self.chunk = b''
         self.coms = ['buffer','help','load','quit','pgup','pgdn'
-                    ,'pos','clear','exit','dump'
+                    ,'pos','clear','exit','dump','find'
                     ]
         self.buffer = round(BUFFER * 2.5)
+        self.border = 20
         self.pos = 0
         self.coms.sort()
+    
+    def find_nav(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate.find_nav'
+        if self.Success:
+            choice = input(_('Search for text instead of bytes? '))
+            if choice in ('y','Y'):
+                pattern = com.input_str(_('Enter text to search for: '))
+                coded = bytes(pattern,gt.ENCODING)
+            else:
+                pattern = com.input_str(_('Enter bytes to search for: '))
+                try:
+                    pattern = codecs.decode(pattern,'unicode_escape')
+                    coded = pattern.encode('latin1')
+                except Exception as e:
+                    coded = b''
+                    mes = _('Operation has failed!\n\nDetails: {}')
+                    mes = mes.format(e)
+                    sh.objs.mes(f,mes,True).warning()
+            if coded:
+                pos = self.find(coded)
+                if pos is None:
+                    mes = _('No matches!')
+                    sh.objs.mes(f,mes,True).info()
+                else:
+                    if pos >= self.border:
+                        pos1 = pos - self.border
+                        chunk1 = self.read(pos1,pos)
+                    else:
+                        chunk1 = b''
+                    delta = self.buffer - len(chunk1)
+                    if delta < 0:
+                        chunk2 = b''
+                    else:
+                        pos2 = pos + delta
+                        if pos2 >= self.get_file_size():
+                            pos2 = self.get_file_size()
+                        chunk2 = self.read(pos,pos2)
+                        if not chunk2:
+                            chunk2 = b''
+                    buffer1 = gt.com.get_string(chunk1,0)
+                    buffer2 = gt.com.get_string(coded,0)
+                    buffer2 = termcolor.colored(buffer2,COLOR)
+                    buffer3 = gt.com.get_string(chunk2,0)
+                    sys.stdout.write(buffer1)
+                    sys.stdout.write(buffer2)
+                    print(buffer3)
+            else:
+                mes = _('Operation has been canceled by the user.')
+                sh.objs.mes(f,mes,True).info()
+        else:
+            sh.com.cancel(f)
         
     def dump(self):
         f = '[MClient] plugins.multitranbin.utils.Navigate.dump'
@@ -521,6 +602,9 @@ class Navigate(gt.Binary):
                 self.show_menu()
             elif command == 'end':
                 self.go_end()
+                self.show_menu()
+            elif command == 'find':
+                self.find_nav()
                 self.show_menu()
             elif command == 'help':
                 self.show_help()
@@ -1007,4 +1091,6 @@ if __name__ == '__main__':
     # max_len: 5 => \xbf\x11\x7f\x08u
     #Tests().compare_bytes(5)
     #Tests().compare()
-    Tests().analyze_dumps()
+    #Tests().show_dumps()
+    #Tests().analyze_dumps()
+    Tests().navigate_article()
