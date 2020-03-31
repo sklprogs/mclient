@@ -433,13 +433,12 @@ class Navigate(gt.Binary):
                 chunk1 = self.read(0,self.spos)
             else:
                 chunk1 = b''
-            if self.buffer - len(chunk1) - len(self.coded) > 0:
+            min_ = min(self.buffer,self.get_file_size())
+            ch2_len = min_ - len(chunk1) - len(self.coded)
+            if ch2_len > 0:
                 pos1 = self.spos + len(self.coded)
-                pos2 = min(self.buffer,self.get_file_size())
-                if pos1 == pos2:
-                    chunk2 = b''
-                else:
-                    chunk2 = self.read(pos1,pos2)
+                pos2 = pos1 + ch2_len
+                chunk2 = self.read(pos1,pos2)
             else:
                 chunk2 = b''
             buffer1 = gt.com.get_string(chunk1,0)
@@ -1190,3 +1189,4 @@ if __name__ == '__main__':
     #Tests().show_dumps()
     #Tests().analyze_dumps()
     Tests().navigate_article()
+    #Tests().navigate()
