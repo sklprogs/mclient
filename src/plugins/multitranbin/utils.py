@@ -427,24 +427,31 @@ class Navigate(gt.Binary):
             sh.objs.mes(f,mes,True).info()
         else:
             if self.spos > self.border:
-                pos1 = self.spos - self.border
+                b1 = pos1 = self.spos - self.border
                 chunk1 = self.read(pos1,self.spos)
             elif self.spos:
                 chunk1 = self.read(0,self.spos)
+                b1 = 0
             else:
                 chunk1 = b''
+                b1 = self.spos
             min_ = min(self.buffer,self.get_file_size())
             ch2_len = min_ - len(chunk1) - len(self.coded)
             if ch2_len > 0:
                 pos1 = self.spos + len(self.coded)
-                pos2 = pos1 + ch2_len
+                b2 = pos2 = pos1 + ch2_len
                 chunk2 = self.read(pos1,pos2)
             else:
                 chunk2 = b''
+                b2 = self.spos + len(self.coded)
             buffer1 = gt.com.get_string(chunk1,0)
             buffer2 = gt.com.get_string(self.coded,0)
             buffer2 = termcolor.colored(buffer2,COLOR)
             buffer3 = gt.com.get_string(chunk2,0)
+            mes = '[{} : {}]'.format (sh.com.figure_commas(b1)
+                                     ,sh.com.figure_commas(b2)
+                                     )
+            sh.objs.mes(f,mes,True).debug()
             sys.stdout.write(buffer1)
             sys.stdout.write(buffer2)
             print(buffer3)
@@ -1182,7 +1189,7 @@ com = Commands()
 
 if __name__ == '__main__':
     gt.PATH = '/home/pete/.config/mclient/dics'
-    gt.DEBUG = True
+    #gt.DEBUG = True
     # max_len: 5 => \xbf\x11\x7f\x08u
     #Tests().compare_bytes(5)
     #Tests().compare()
