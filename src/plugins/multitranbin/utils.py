@@ -365,13 +365,14 @@ class Navigate(gt.Binary):
         self.chunk = b''
         self.coms = ['buffer','help','load','quit','pgup','pgdn'
                     ,'pos','clear','exit','dump','find','findprev'
-                    ,'findnext'
+                    ,'findnext','findtext','findbytes'
                     ]
         self.buffer = round(BUFFER * 2.5)
         self.border = 20
         self.pos = 0
         self.spos = None
         self.coded = b''
+        self.lastcom = ''
         self.coms.sort()
     
     def find_prev(self):
@@ -449,30 +450,49 @@ class Navigate(gt.Binary):
             sys.stdout.write(buffer2)
             print(buffer3)
     
+    def _find(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate._find'
+        spos = self.find(self.coded)
+        if spos is None:
+            mes = _('No matches!')
+            sh.objs.mes(f,mes,True).info()
+        else:
+            self.spos = spos
+            self._print_found()
+    
+    def find_text(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate.find_text'
+        if self.Success:
+            pattern = com.input_str(_('Enter text to search for: '))
+            self.coded = bytes(pattern,gt.ENCODING)
+            self._find()
+        else:
+            sh.com.cancel(f)
+    
+    def find_bytes(self):
+        f = '[MClient] plugins.multitranbin.utils.Navigate.find_bytes'
+        if self.Success:
+            pattern = com.input_str(_('Enter bytes to search for: '))
+            try:
+                pattern = codecs.decode(pattern,'unicode_escape')
+                self.coded = pattern.encode('latin1')
+            except Exception as e:
+                self.coded = b''
+                mes = _('Operation has failed!\n\nDetails: {}')
+                mes = mes.format(e)
+                sh.objs.mes(f,mes,True).warning()
+            self._find()
+        else:
+            sh.com.cancel(f)
+    
     def find_nav(self):
         f = '[MClient] plugins.multitranbin.utils.Navigate.find_nav'
         if self.Success:
             choice = input(_('Search for text instead of bytes? '))
             if choice in ('y','Y'):
-                pattern = com.input_str(_('Enter text to search for: '))
-                self.coded = bytes(pattern,gt.ENCODING)
+                self.find_text()
             else:
-                pattern = com.input_str(_('Enter bytes to search for: '))
-                try:
-                    pattern = codecs.decode(pattern,'unicode_escape')
-                    self.coded = pattern.encode('latin1')
-                except Exception as e:
-                    self.coded = b''
-                    mes = _('Operation has failed!\n\nDetails: {}')
-                    mes = mes.format(e)
-                    sh.objs.mes(f,mes,True).warning()
-            spos = self.find(self.coded)
-            if spos is None:
-                mes = _('No matches!')
-                sh.objs.mes(f,mes,True).info()
-            else:
-                self.spos = spos
-                self._print_found()
+                self.find_bytes()
         else:
             sh.com.cancel(f)
         
@@ -637,15 +657,18 @@ class Navigate(gt.Binary):
         else:
             sh.com.cancel(f)
     
-    def show_menu(self):
+    def show_menu(self,command=''):
         f = '[MClient] plugins.multitranbin.utils.Navigate.show_menu'
         if self.Success:
-            try:
-                command = input(_('Enter a command: '))
-            except (EOFError,KeyboardInterrupt):
-                command = 'quit'
-            command = command.strip()
-            if command == '':
+            if not command:
+                try:
+                    command = input(_('Enter a command: '))
+                except (EOFError,KeyboardInterrupt):
+                    command = 'quit'
+                command = command.strip()
+                if command != 'same':
+                    self.lastcom = command
+            if command in ('','exit','quit'):
                 self.quit()
             elif command == 'buffer':
                 self.set_buffer()
@@ -663,11 +686,17 @@ class Navigate(gt.Binary):
             elif command == 'find':
                 self.find_nav()
                 self.show_menu()
+            elif command == 'findbytes':
+                self.find_bytes()
+                self.show_menu()
             elif command == 'findnext':
                 self.find_next()
                 self.show_menu()
             elif command == 'findprev':
                 self.find_prev()
+                self.show_menu()
+            elif command == 'findtext':
+                self.find_text()
                 self.show_menu()
             elif command == 'help':
                 self.show_help()
@@ -685,8 +714,8 @@ class Navigate(gt.Binary):
                 self.set_pos()
                 self.load()
                 self.show_menu()
-            elif command in ('exit','quit'):
-                self.quit()
+            elif command == 'same':
+                self.show_menu(self.lastcom)
             elif command == 'start':
                 self.go_start()
                 self.show_menu()
@@ -1151,7 +1180,7 @@ com = Commands()
 
 if __name__ == '__main__':
     gt.PATH = '/home/pete/.config/mclient/dics'
-    gt.DEBUG = True
+    #gt.DEBUG = True
     # max_len: 5 => \xbf\x11\x7f\x08u
     #Tests().compare_bytes(5)
     #Tests().compare()
