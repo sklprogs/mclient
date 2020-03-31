@@ -365,7 +365,7 @@ class Navigate(gt.Binary):
         self.chunk = b''
         self.coms = ['buffer','help','load','quit','pgup','pgdn'
                     ,'pos','clear','exit','dump','find','findprev'
-                    ,'findnext','findtext','findbytes'
+                    ,'findnext','findtext','findbytes','same','q'
                     ]
         self.buffer = round(BUFFER * 2.5)
         self.border = 20
@@ -675,9 +675,9 @@ class Navigate(gt.Binary):
                 except (EOFError,KeyboardInterrupt):
                     command = 'quit'
                 command = command.strip()
-                if command != 'same':
+                if command and command != 'same':
                     self.lastcom = command
-            if command in ('','exit','quit'):
+            if command in ('exit','quit','q'):
                 self.quit()
             elif command == 'buffer':
                 self.set_buffer()
@@ -723,7 +723,7 @@ class Navigate(gt.Binary):
                 self.set_pos()
                 self.load()
                 self.show_menu()
-            elif command == 'same':
+            elif command in ('','same'):
                 self.show_menu(self.lastcom)
             elif command == 'start':
                 self.go_start()
