@@ -180,6 +180,12 @@ class Tests:
         pos2 = 656808
         self._parse(file,pos1,pos2)
     
+    def parse_glue(self):
+        file = gt.objs.files().iwalker.get_glue1()
+        pos1 = 16387
+        pos2 = 22119
+        self._parse(file,pos1,pos2)
+    
     def parse_stems(self):
         file = gt.objs.files().iwalker.get_stems1()
         pos1 = 7479299
@@ -205,8 +211,52 @@ class Parser(gt.Binary):
         self.xplain1 = []
         self.xplain2 = []
     
+    def parsel23(self,chunk):
+        f = '[MClient] plugins.multitranbin.utils.Parser.parsel23'
+        if self.Success:
+            # 2 bytes + multiple sequences of 3 bytes
+            if len(chunk) > 4 and (len(chunk) - 2) % 3 == 0:
+                add = [struct.unpack('<h',chunk[0:2])[0]]
+                for tmp in gt.com.get_chunks(chunk[2:],3):
+                    tmp += b'\x00'
+                    add.append(struct.unpack('<L',tmp)[0])
+                return add
+        else:
+            sh.com.cancel(f)
+    
+    def chunk3(self,chunk):
+        f = '[MClient] plugins.multitranbin.utils.Parser.chunk3'
+        if self.Success:
+            if len(chunk) % 3 == 0:
+                chunks = gt.com.get_chunks(chunk,3)
+                vals = []
+                for chunk in chunks:
+                    chunk += b'\x00'
+                    vals.append(struct.unpack('<L',chunk)[0])
+                return vals
+        else:
+            sh.com.cancel(f)
+    
+    def parse_glue(self):
+        f = '[MClient] plugins.multitranbin.utils.Parser.parse_glue'
+        if self.Success:
+            for chunk in self.chunks1:
+                tmp = self.chunk3(chunk)
+                if tmp:
+                    self.xplain1.append(tmp)
+                else:
+                    self.xplain1.append([_('UNKNOWN')])
+            for chunk in self.chunks2:
+                tmp = self.parsel23(chunk)
+                if tmp:
+                    self.xplain2.append(tmp)
+                else:
+                    self.xplain2.append([_('UNKNOWN')])
+        else:
+            sh.com.cancel(f)
+    
     def parse_article(self):
-        f = '[MClient] plugins.multitranbin.utils.Binary.parse_article'
+        f = '[MClient] plugins.multitranbin.utils.Parser.parse_article'
         if self.Success:
             for chunk in self.chunks1:
                 chunk = gt.com.get_string(chunk,0)
@@ -218,7 +268,7 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
     
     def debug(self):
-        f = '[MClient] plugins.multitranbin.utils.Binary.debug'
+        f = '[MClient] plugins.multitranbin.utils.Parser.debug'
         if self.Success:
             if self.xplain1 and self.xplain2:
                 if len(self.xplain1) == len(self.xplain2):
@@ -252,7 +302,7 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
         
     def chunk7(self,chunk):
-        f = '[MClient] plugins.multitranbin.utils.Binary.chunk7'
+        f = '[MClient] plugins.multitranbin.utils.Parser.chunk7'
         ''' According to "libmtquery-0.0.1alpha3/doc/README.rus":
             the 1st byte - a type designating the use of capital letters
             (not used), further - a vector of 7-byte codes, each code
@@ -280,7 +330,7 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
     
     def parsel1(self):
-        f = '[MClient] plugins.multitranbin.utils.Binary.parsel1'
+        f = '[MClient] plugins.multitranbin.utils.Parser.parsel1'
         if self.Success:
             for chunk in self.chunks1:
                 chunk = chunk.decode(gt.ENCODING,'replace')
@@ -289,7 +339,7 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
     
     def parse_stem(self):
-        f = '[MClient] plugins.multitranbin.utils.Binary.parse_stem'
+        f = '[MClient] plugins.multitranbin.utils.Parser.parse_stem'
         if self.Success:
             self.parsel1()
             for chunk in self.chunks2:
@@ -302,12 +352,14 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
     
     def parse(self):
-        f = '[MClient] plugins.multitranbin.utils.Binary.parse'
+        f = '[MClient] plugins.multitranbin.utils.Parser.parse'
         if self.Success:
             #FIX: Why base names are not lowercased?
             bname = self.bname.lower()
             if bname.startswith('stem'):
                 self.parse_stem()
+            elif bname.startswith('dict') and bname.endswith('d'):
+                self.parse_glue()
             elif bname.startswith('dict') and bname.endswith('t'):
                 self.parse_article()
             else:
@@ -319,7 +371,7 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
     
     def reader(self,pos1,pos2):
-        f = '[MClient] plugins.multitranbin.utils.Binary.reader'
+        f = '[MClient] plugins.multitranbin.utils.Parser.reader'
         if self.Success:
             stream = self.read(pos1,pos2)
             if stream:
@@ -1195,5 +1247,5 @@ if __name__ == '__main__':
     #Tests().compare()
     #Tests().show_dumps()
     #Tests().analyze_dumps()
-    Tests().navigate_article()
-    #Tests().navigate()
+    #Tests().navigate_article()
+    Tests().parse_glue()
