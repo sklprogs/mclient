@@ -382,11 +382,13 @@ class Navigate(gt.Binary):
                     mes = _('No matches!')
                     sh.objs.mes(f,mes,True).info()
                 else:
-                    self.spos -= 1
-                    self.spos = self.imap.rfind(self.coded,0,self.spos)
-                    if self.spos == -1:
-                        self.spos = None
-                    self._print_found()
+                    spos = self.imap.rfind(self.coded,0,self.spos-1)
+                    if spos == -1:
+                        mes = _('No matches!')
+                        sh.objs.mes(f,mes,True).info()
+                    else:
+                        self.spos = spos
+                        self._print_found()
             else:
                 self.find_nav()
         else:
@@ -396,13 +398,22 @@ class Navigate(gt.Binary):
         f = '[MClient] plugins.multitranbin.utils.Navigate.find_next'
         if self.Success:
             if self.coded:
-                if self.spos is None \
-                or self.spos >= self.get_file_size():
+                if self.spos is None:
                     mes = _('No matches!')
                     sh.objs.mes(f,mes,True).info()
                 else:
-                    self.spos = self.find(self.coded,self.spos+1)
-                    self._print_found()
+                    spos = self.spos
+                    if spos < self.get_file_size() - 1:
+                        spos += 1
+                    else:
+                        spos = self.fsize - len(self.coded)
+                    spos = self.find(self.coded,spos)
+                    if spos is None:
+                        mes = _('No matches!')
+                        sh.objs.mes(f,mes,True).info()
+                    else:
+                        self.spos = spos
+                        self._print_found()
             else:
                 self.find_nav()
         else:
@@ -421,17 +432,15 @@ class Navigate(gt.Binary):
                 chunk1 = self.read(0,self.spos)
             else:
                 chunk1 = b''
-            delta = self.buffer - len(chunk1) - len(self.coded)
-            sh.objs.mes(f,mes,True).debug()
-            if delta < 0:
-                chunk2 = b''
-            else:
-                pos1 = len(chunk1) + len(self.coded)
+            if self.buffer - len(chunk1) - len(self.coded) > 0:
+                pos1 = self.spos + len(self.coded)
                 pos2 = min(self.buffer,self.get_file_size())
-                if pos2 < 0:
+                if pos1 == pos2:
                     chunk2 = b''
                 else:
                     chunk2 = self.read(pos1,pos2)
+            else:
+                chunk2 = b''
             buffer1 = gt.com.get_string(chunk1,0)
             buffer2 = gt.com.get_string(self.coded,0)
             buffer2 = termcolor.colored(buffer2,COLOR)
@@ -457,8 +466,13 @@ class Navigate(gt.Binary):
                     mes = _('Operation has failed!\n\nDetails: {}')
                     mes = mes.format(e)
                     sh.objs.mes(f,mes,True).warning()
-            self.spos = self.find(self.coded)
-            self._print_found()
+            spos = self.find(self.coded)
+            if spos is None:
+                mes = _('No matches!')
+                sh.objs.mes(f,mes,True).info()
+            else:
+                self.spos = spos
+                self._print_found()
         else:
             sh.com.cancel(f)
         

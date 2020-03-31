@@ -600,8 +600,7 @@ class Binary:
         if self.Success:
             if pattern:
                 if not end:
-                    # Search to the end
-                    end = -1
+                    end = self.get_file_size()
                 result = self.imap.find(pattern,start,end)
                 if DEBUG:
                     if end == -1:
@@ -1621,8 +1620,6 @@ class Commands:
             except Exception as e:
                 sh.objs.mes(f,str(e)).warning()
                 result = str(chunk)
-        else:
-            sh.com.empty(f)
         return result
     
     def get_chunks(self,iterable,limit=3):
