@@ -488,11 +488,14 @@ class Navigate(gt.Binary):
     def find_nav(self):
         f = '[MClient] plugins.multitranbin.utils.Navigate.find_nav'
         if self.Success:
-            choice = input(_('Search for text instead of bytes? '))
-            if choice in ('y','Y'):
+            choice = input(_('Search for text instead of bytes? Y/n '))
+            choice = choice.strip()
+            if choice in ('','y','Y'):
                 self.find_text()
-            else:
+            elif choice in ('n','N'):
                 self.find_bytes()
+            else:
+                self.find_nav()
         else:
             sh.com.cancel(f)
         
@@ -1180,11 +1183,10 @@ com = Commands()
 
 if __name__ == '__main__':
     gt.PATH = '/home/pete/.config/mclient/dics'
-    #gt.DEBUG = True
+    gt.DEBUG = True
     # max_len: 5 => \xbf\x11\x7f\x08u
     #Tests().compare_bytes(5)
     #Tests().compare()
     #Tests().show_dumps()
     #Tests().analyze_dumps()
-    #Tests().navigate_article()
-    Tests().navigate()
+    Tests().navigate_article()
