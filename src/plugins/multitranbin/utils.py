@@ -383,7 +383,7 @@ class Navigate(gt.Binary):
                     mes = _('No matches!')
                     sh.objs.mes(f,mes,True).info()
                 else:
-                    spos = self.imap.rfind(self.coded,0,self.spos-1)
+                    spos = self.imap.rfind(self.coded,0,self.spos)
                     if spos == -1:
                         mes = _('No matches!')
                         sh.objs.mes(f,mes,True).info()
