@@ -199,6 +199,9 @@ class Tests:
     
     def navigate_article(self):
         Navigate(gt.objs.files().iwalker.get_article()).show_menu()
+    
+    def navigate_glue(self):
+        Navigate(gt.objs.files().iwalker.get_glue1()).show_menu()
 
 
 
@@ -1247,5 +1250,7 @@ if __name__ == '__main__':
     #Tests().compare()
     #Tests().show_dumps()
     #Tests().analyze_dumps()
-    #Tests().navigate_article()
-    Tests().parse_glue()
+    Tests().navigate_article()
+    #Tests().navigate_glue()
+    #Tests().parse_glue()
+    #Navigate('/home/pete/tmp/unknown').show_menu()
