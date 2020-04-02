@@ -194,7 +194,7 @@ class Tests:
     
     def compare(self):
         file1 = '/home/pete/tmp/Multitran/network/eng_rus/dict.ert'
-        file2 = '/home/pete/.wine/drive_c/Multitran/network/eng_rus/dict.ert'
+        file2 = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
         CompareBinaries(file1,file2).show_menu()
     
     def navigate_article(self):
@@ -974,7 +974,7 @@ class CompareBinaries:
         self.posmov  = []
         self.coms    = ['buffer','help','load','quit','pgup','pgdn'
                        ,'next','prev','pos','clear','exit','dump'
-                       ,'files'
+                       ,'files','q','same'
                        ]
         self.chunks1 = b''
         self.chunks2 = b''
@@ -983,6 +983,7 @@ class CompareBinaries:
         self.Success = True
         self.bin1    = None
         self.bin2    = None
+        self.lastcom = ''
         self.coms.sort()
     
     def go_prev(self):
@@ -1099,17 +1100,18 @@ class CompareBinaries:
         else:
             sh.com.cancel(f)
     
-    def show_menu(self):
+    def show_menu(self,command=''):
         f = '[MClient] plugins.multitranbin.utils.CompareBinaries.show_menu'
         if self.Success:
-            try:
-                command = input(_('Enter a command: '))
-            except (EOFError,KeyboardInterrupt):
-                command = 'quit'
-            command = command.strip()
-            if command == '':
-                self.quit()
-            elif command == 'buffer':
+            if not command:
+                try:
+                    command = input(_('Enter a command: '))
+                except (EOFError,KeyboardInterrupt):
+                    command = 'quit'
+                command = command.strip()
+                if command and command != 'same':
+                    self.lastcom = command
+            if command == 'buffer':
                 self.set_buffer()
                 self.load()
                 self.show_menu()
@@ -1147,8 +1149,10 @@ class CompareBinaries:
             elif command == 'prev':
                 self.go_prev()
                 self.show_menu()
-            elif command in ('exit','quit'):
+            elif command in ('q','exit','quit'):
                 self.quit()
+            elif command in ('','same'):
+                self.show_menu(self.lastcom)
             elif command == 'start':
                 self.go_start()
                 self.show_menu()
@@ -1247,10 +1251,10 @@ if __name__ == '__main__':
     #gt.DEBUG = True
     # max_len: 5 => \xbf\x11\x7f\x08u
     #Tests().compare_bytes(5)
-    #Tests().compare()
-    #Tests().show_dumps()
     #Tests().analyze_dumps()
-    Tests().navigate_article()
+    #Tests().navigate_article()
     #Tests().navigate_glue()
     #Tests().parse_glue()
     #Navigate('/home/pete/tmp/unknown').show_menu()
+    #Tests().compare()
+    Tests().show_dumps()
