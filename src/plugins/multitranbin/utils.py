@@ -28,14 +28,22 @@ class Tests:
     
     def get_patch(self):
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
-        pattern = 'petroleum'
+        patterns = ['0','1','2','3','4','5','6','7','8','9','10']
         # A comment added for "Zerah"
         pos = 132779143
-        mes = com.get_patch (file    = file
-                            ,pattern = pattern
-                            ,pos     = pos
-                            )
-        sh.com.fast_debug(mes)
+        messages = []
+        for pattern in patterns:
+            mes = _('Pattern: "{}"').format(pattern)
+            print(mes)
+            sh.Clipboard().copy(pattern)
+            input(_('Make changes to the dictionary and press any key'))
+            mes = com.get_patch (file    = file
+                                ,pattern = pattern
+                                ,pos     = pos
+                                )
+            messages.append(mes)
+        messages = [message for message in messages if message]
+        sh.com.fast_debug('\n'.join(messages))
     
     def corrupt(self):
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
@@ -857,10 +865,11 @@ class Commands:
                 string = gt.com.get_string(chunk)
                 lstring = gt.com.get_string(lchunk)
                 string = "b'''{}'''".format(string)
-                lstring = "(b'''{}''')".format(lstring)
+                lstring = "b'''{}'''".format(lstring)
                 ibin.close()
                 messages = []
-                mes = _('Pattern: "{}"').format(pattern)
+                #mes = _('Pattern: "{}"').format(pattern)
+                mes = '"{}"'.format(pattern)
                 messages.append(mes)
                 messages.append(string)
                 messages.append(lstring)
