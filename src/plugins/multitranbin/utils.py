@@ -20,7 +20,13 @@ DUMP2  = sh.Home().add('tmp','dump2')
 
 class Tests:
     
-    def get_patched_word(self):
+    def brute_dexor(self):
+        orig   = b'-fcivqx\x89<'
+        transl = b'Bullshit!'
+        mes = com.brute_dexor(orig,transl)
+        sh.com.fast_debug(mes)
+    
+    def get_patch(self):
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
         # A comment added for "Zerah"
         pos1 = 132779143
@@ -846,6 +852,47 @@ class Navigate(gt.Binary):
 
 class Commands:
     
+    def brute_dexor(self,orig,transl):
+        f = '[MClient] plugins.multitranbin.utils.Commands.brute_dexor'
+        if orig and transl:
+            if len(orig) == len(transl):
+                offsets = []
+                deltas  = []
+                transls = []
+                ints1   = []
+                ints2   = []
+                prev    = 0
+                for i in range(len(orig)):
+                    offset = transl[i] - orig[i]
+                    delta  = offset - prev
+                    prev   = offset
+                    offsets.append(offset)
+                    deltas.append(delta)
+                    decoded = transl[i:i+1].decode(gt.ENCODING,'replace')
+                    decoded = '"{}"'.format(decoded)
+                    transls.append(decoded)
+                    ints1.append(orig[i])
+                    ints2.append(transl[i])
+                nos = [i + 1 for i in range(len(transls))]
+                headers  = ('NO','TRANSL','INT1','INT2'
+                           ,'OFFSET','DELTA'
+                           )
+                iterable = (nos,transls,ints1
+                           ,ints2,offsets,deltas
+                           )
+                mes = sh.FastTable (headers  = headers
+                                   ,iterable = iterable
+                                   ,sep      = sh.lg.nbspace * 2
+                                   ).run()
+                return mes
+            else:
+                sub = '{} == {}'.format(len(orig),len(transl))
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.mes(f,mes,True).warning()
+        else:
+            sh.com.empty(f)
+    
     def corrupt(self,filew,pos,length):
         f = '[MClient] plugins.multitranbin.utils.Commands.corrupt'
         try:
@@ -1307,4 +1354,5 @@ if __name__ == '__main__':
     #Tests().corrupt()
     #Tests().compare()
     #Tests().show_dumps()
-    Tests().get_patched_word()
+    #Tests().get_patch()
+    Tests().brute_dexor()
