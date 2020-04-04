@@ -20,6 +20,31 @@ DUMP2  = sh.Home().add('tmp','dump2')
 
 class Tests:
     
+    def get_patched_word(self):
+        file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
+        # A comment added for "Zerah"
+        pos1 = 132779143
+        pos2 = 132779152
+        add_pos = 20
+        ibin = gt.Binary(file)
+        chunk = ibin.read(pos1,pos2)
+        lchunk = ibin.read(pos1,pos2+add_pos)
+        string = gt.com.get_string(chunk)
+        lstring = gt.com.get_string(lchunk)
+        string = "b'''{}'''".format(string)
+        lstring = "b'''{}'''".format(lstring)
+        ibin.close()
+        print(string)
+        print(lstring)
+        return chunk
+    
+    def corrupt(self):
+        file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
+        com.corrupt (filew  = file
+                    ,pos    = 132779151
+                    ,length = 10
+                    )
+    
     def navigate(self):
         Navigate(sh.Home().add('tmp','test.bin')).show_menu()
     
@@ -821,6 +846,26 @@ class Navigate(gt.Binary):
 
 class Commands:
     
+    def corrupt(self,filew,pos,length):
+        f = '[MClient] plugins.multitranbin.utils.Commands.corrupt'
+        try:
+            mes = _('Write {} bytes to file "{}" at position {}')
+            mes = mes.format (sh.com.figure_commas(length)
+                             ,filew
+                             ,sh.com.figure_commas(pos)
+                             )
+            sh.objs.mes(f,mes,True).info()
+            ''' For some reason, opening with 'wb' or 'w+b' causes
+                different results.
+            '''
+            with open(filew,'r+b') as fw:
+                fw.seek(pos)
+                chunk = b'\x00' * length
+                fw.write(chunk)
+        except Exception as e:
+            mes = _('Operation has failed!\n\nDetails: {}').format(e)
+            sh.objs.mes(f,mes,True).warning()
+    
     def input_str(self,mes=''):
         f = '[MClient] plugins.multitranbin.utils.Commands.input_str'
         if not mes:
@@ -1256,5 +1301,10 @@ if __name__ == '__main__':
     #Tests().navigate_glue()
     #Tests().parse_glue()
     #Navigate('/home/pete/tmp/unknown').show_menu()
+    #file = '/home/pete/tmp/dump_zerah'
+    #file = '/home/pete/.wine/drive_c/mt_demo_mln/Network/eng_rus/dict.ert'
+    #Navigate(file).show_menu()
+    #Tests().corrupt()
     #Tests().compare()
-    Tests().show_dumps()
+    #Tests().show_dumps()
+    Tests().get_patched_word()

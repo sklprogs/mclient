@@ -550,6 +550,6 @@ if __name__ == '__main__':
     '''
     #Tests().get_speech('DARE')
     #Tests().translate('DARE')
-    Binary(gt.objs.files().iwalker.get_glue1()).info()
-    #gt.DEBUG = True
-    #gt.com.overflowh(-16390)
+    #Binary(gt.objs.files().iwalker.get_glue1()).info()
+    gt.DEBUG = True
+    gt.com.overflowh(-1841)
