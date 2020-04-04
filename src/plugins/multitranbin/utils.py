@@ -28,21 +28,14 @@ class Tests:
     
     def get_patch(self):
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
+        pattern = 'petroleum'
         # A comment added for "Zerah"
-        pos1 = 132779143
-        pos2 = 132779152
-        add_pos = 20
-        ibin = gt.Binary(file)
-        chunk = ibin.read(pos1,pos2)
-        lchunk = ibin.read(pos1,pos2+add_pos)
-        string = gt.com.get_string(chunk)
-        lstring = gt.com.get_string(lchunk)
-        string = "b'''{}'''".format(string)
-        lstring = "b'''{}'''".format(lstring)
-        ibin.close()
-        print(string)
-        print(lstring)
-        return chunk
+        pos = 132779143
+        mes = com.get_patch (file    = file
+                            ,pattern = pattern
+                            ,pos     = pos
+                            )
+        sh.com.fast_debug(mes)
     
     def corrupt(self):
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
@@ -852,32 +845,62 @@ class Navigate(gt.Binary):
 
 class Commands:
     
-    def brute_dexor(self,orig,transl):
+    def get_patch(self,file,pattern,pos,add_pos=20):
+        f = '[MClient] plugins.multitranbin.utils.Commands.get_patch'
+        if file and pattern:
+            ibin = gt.Binary(file)
+            if ibin.Success:
+                coded = bytes(pattern,gt.ENCODING,'replace')
+                pos2 = pos + len(coded)
+                chunk = ibin.read(pos,pos2)
+                lchunk = ibin.read(pos,pos2+add_pos)
+                string = gt.com.get_string(chunk)
+                lstring = gt.com.get_string(lchunk)
+                string = "b'''{}'''".format(string)
+                lstring = "(b'''{}''')".format(lstring)
+                ibin.close()
+                messages = []
+                mes = _('Pattern: "{}"').format(pattern)
+                messages.append(mes)
+                messages.append(string)
+                messages.append(lstring)
+                messages.append('')
+                mes = self.brute_dexor(chunk,coded)
+                if not mes:
+                    mes = ''
+                messages.append(mes)
+                return '\n'.join(messages)
+            else:
+                sh.com.cancel(f)
+        else:
+            sh.com.empty(f)
+    
+    def brute_dexor(self,bytes1,bytes2):
         f = '[MClient] plugins.multitranbin.utils.Commands.brute_dexor'
-        if orig and transl:
-            if len(orig) == len(transl):
+        if bytes1 and bytes2:
+            if len(bytes1) == len(bytes2):
                 offsets = []
                 deltas  = []
-                transls = []
+                syms    = []
                 ints1   = []
                 ints2   = []
                 prev    = 0
-                for i in range(len(orig)):
-                    offset = transl[i] - orig[i]
+                for i in range(len(bytes1)):
+                    offset = bytes2[i] - bytes1[i]
                     delta  = offset - prev
                     prev   = offset
                     offsets.append(offset)
                     deltas.append(delta)
-                    decoded = transl[i:i+1].decode(gt.ENCODING,'replace')
+                    decoded = bytes2[i:i+1].decode(gt.ENCODING,'replace')
                     decoded = '"{}"'.format(decoded)
-                    transls.append(decoded)
-                    ints1.append(orig[i])
-                    ints2.append(transl[i])
-                nos = [i + 1 for i in range(len(transls))]
+                    syms.append(decoded)
+                    ints1.append(bytes1[i])
+                    ints2.append(bytes2[i])
+                nos = [i + 1 for i in range(len(syms))]
                 headers  = ('NO','TRANSL','INT1','INT2'
                            ,'OFFSET','DELTA'
                            )
-                iterable = (nos,transls,ints1
+                iterable = (nos,syms,ints1
                            ,ints2,offsets,deltas
                            )
                 mes = sh.FastTable (headers  = headers
@@ -886,7 +909,7 @@ class Commands:
                                    ).run()
                 return mes
             else:
-                sub = '{} == {}'.format(len(orig),len(transl))
+                sub = '{} == {}'.format(len(bytes1),len(bytes2))
                 mes = _('The condition "{}" is not observed!')
                 mes = mes.format(sub)
                 sh.objs.mes(f,mes,True).warning()
@@ -1354,5 +1377,5 @@ if __name__ == '__main__':
     #Tests().corrupt()
     #Tests().compare()
     #Tests().show_dumps()
-    #Tests().get_patch()
-    Tests().brute_dexor()
+    Tests().get_patch()
+    #Tests().brute_dexor()
