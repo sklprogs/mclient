@@ -21,31 +21,84 @@ DUMP2  = sh.Home().add('tmp','dump2')
 class Tests:
     
     def brute_dexor(self):
+        f = '[MClient] plugins.multitranbin.utils.Tests.brute_dexor'
         orig   = b'-fcivqx\x89<'
         transl = b'Bullshit!'
         mes = com.brute_dexor(orig,transl)
-        sh.com.fast_debug(mes)
+        if mes:
+            sh.com.fast_debug(mes[0])
+        else:
+            sh.com.empty(f)
     
     def get_patch(self):
+        f = '[MClient] plugins.multitranbin.utils.Tests.get_patch'
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
-        patterns = ['0','1','2','3','4','5','6','7','8','9','10']
+        patterns = ['!','"','#','$','%','&',"'",'(',')','*','+',','
+                   ,'-','.','/','0','1','2','3','4','5','6','7','8'
+                   ,'9',':',';','<','=','>','?','@','A','B','C','D'
+                   ,'E','F','G','H','I','J','K','L','M','N','O','P'
+                   ,'Q','R','S','T','U','V','W','X','Y','Z','[','\\'
+                   ,']','^','_','`','a','b','c','d','e','f','g','h'
+                   ,'i','j','k','l','m','n','o','p','q','r','s','t'
+                   ,'u','v','w','x','y','z','{','|','}','~',None,'Ђ'
+                   ,'Ѓ','‚','ѓ','„','…','†','‡','€','‰','Љ','‹','Њ'
+                   ,'Ќ','Ћ','Џ','ђ','‘','’','“','”','•','–','—'
+                   ,None,'™','љ','›','њ','ќ','ћ','џ',None,'Ў','ў'
+                   ,'Ћ','¤','Ґ','¦','§','Ё','©','Є','«','¬',None
+                   ,'®','Ї','°','±','І','і','ґ','µ','¶','·','ё'
+                   ,'№','є','»','ј','Ѕ','ѕ','ї','А','Б','В','Г'
+                   ,'Д','Е','Ж','З','И','Й','К','Л','М','Н','О'
+                   ,'П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ'
+                   ,'Ъ','Ы','Ь','Э','Ю','Я','а','б','в','г','д'
+                   ,'е','ж','з','и','й','к','л','м','н','о','п'
+                   ,'р','с','т','у','ф','х','ц','ч','ш','щ','ъ'
+                   ,'ы','ь','э','ю','я'
+                   ]
         # A comment added for "Zerah"
         pos = 132779143
         messages = []
+        deltas = []
         for pattern in patterns:
-            mes = _('Pattern: "{}"').format(pattern)
-            print(mes)
-            sh.Clipboard().copy(pattern)
-            input(_('Make changes to the dictionary and press any key'))
-            mes = com.get_patch (file    = file
-                                ,pattern = pattern
-                                ,pos     = pos
-                                )
-            messages.append(mes)
-        messages = [message for message in messages if message]
-        sh.com.fast_debug('\n'.join(messages))
+            delta = 0
+            if pattern is None:
+                mes = _('Warning: this step will be skipped!')
+                messages.append(mes)
+            else:
+                mes = _('Pattern: "{}"').format(pattern)
+                print(mes)
+                sh.Clipboard().copy(pattern)
+                input(_('Make changes to the dictionary and press any key'))
+                result = com.get_patch (file    = file
+                                       ,pattern = pattern
+                                       ,pos     = pos
+                                       )
+                if result:
+                    mes, delta = result[0], result[1]
+                    messages.append(mes)
+            deltas.append(delta)
+        messages.append('')
+        messages.append('')
+        mes = _('SHORT SUMMARY:')
+        messages.append(mes)
+        subs = []
+        for i in range(len(patterns)):
+            if i > 0:
+                offset = deltas[i] - deltas[i-1]
+            else:
+                offset = deltas[i]
+            if offset > 0:
+                offset = '+{}'.format(offset)
+            mes = '"{}": {}'.format(patterns[i],offset)
+            subs.append(mes)
+        messages.append('; '.join(subs))
+        mes = '\n'.join(messages)
+        #sh.com.fast_debug(mes)
+        filew = '/tmp/memory.txt'
+        sh.WriteTextFile(filew).write(mes)
+        sh.Launch(filew).default()
     
     def corrupt(self):
+        f = '[MClient] plugins.multitranbin.utils.Tests.corrupt'
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
         com.corrupt (filew  = file
                     ,pos    = 132779151
@@ -186,6 +239,7 @@ class Tests:
             sh.com.empty(f)
     
     def parse_dumps(self):
+        f = '[MClient] plugins.multitranbin.utils.Tests.parse_dumps'
         pos1 = 0
         pos2 = 16380
         ''' We do not use 'self._parse' here since 'Parser.parse'
@@ -874,11 +928,13 @@ class Commands:
                 messages.append(string)
                 messages.append(lstring)
                 messages.append('')
-                mes = self.brute_dexor(chunk,coded)
-                if not mes:
-                    mes = ''
+                result = self.brute_dexor(chunk,coded)
+                if result:
+                    mes, delta = result[0], result[1]
+                else:
+                    mes, delta = '', 0
                 messages.append(mes)
-                return '\n'.join(messages)
+                return('\n'.join(messages),delta)
             else:
                 sh.com.cancel(f)
         else:
@@ -894,6 +950,7 @@ class Commands:
                 ints1   = []
                 ints2   = []
                 prev    = 0
+                delta   = 0
                 for i in range(len(bytes1)):
                     offset = bytes2[i] - bytes1[i]
                     delta  = offset - prev
@@ -916,7 +973,7 @@ class Commands:
                                    ,iterable = iterable
                                    ,sep      = sh.lg.nbspace * 2
                                    ).run()
-                return mes
+                return(mes,delta)
             else:
                 sub = '{} == {}'.format(len(bytes1),len(bytes2))
                 mes = _('The condition "{}" is not observed!')
