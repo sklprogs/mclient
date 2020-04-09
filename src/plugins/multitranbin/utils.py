@@ -22,8 +22,13 @@ class Tests:
     
     def analyze_xor(self):
         f = '[MClient] plugins.multitranbin.utils.Tests.analyze_xor'
+        '''
         bytes1 = b'Bullshit!'
         bytes2 = b'-fcivqx\x89<'
+        '''
+        # ay... - az...
+        bytes1 = b'''\t&\xda\xd8oG\xae\x9c\xe5/\r\xc7\xe5\x08\r\xdf$\xf4\xd9\x96)\xaa'''
+        bytes2 = b'''\t\xd8\x97\x82\xee\xc2>\xd7\xfeg/v}\x98RB\xb5\xa8\xaa\xcc\x99n'''
         mes = com.analyze_xor(bytes1,bytes2)
         if mes:
             sh.com.fast_debug(mes[0])
@@ -57,7 +62,8 @@ class Tests:
                    ]
         """
         patterns = ['aa','ab','ac','ad','ae','af','ag','ah','ai','aj'
-                   ,'ak'
+                   ,'ak','al','am','an','ao','ap','aq','ar','as','at'
+                   ,'au','av','aw','ax','aw','ay','az'
                    ]
         # A comment added for "Zerah"
         pos = 132779143
@@ -105,10 +111,20 @@ class Tests:
     def corrupt(self):
         f = '[MClient] plugins.multitranbin.utils.Tests.corrupt'
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
-        com.corrupt (filew  = file
-                    ,pos    = 132779143
-                    ,length = 1
-                    )
+        pos = 132779147
+        old = com.corrupt (filew = file
+                          ,pos   = pos
+                          ,subst = b'\x00\x00'
+                          )
+        mes = _('Restore the damaged file?')
+        if sh.objs.mes(f,mes).question():
+            com.corrupt (filew = file
+                        ,pos   = pos
+                        ,subst = old
+                        )
+        else:
+            mes = _('Operation has been canceled by the user.')
+            sh.objs.mes(f,mes,True).info()
     
     def navigate(self):
         Navigate(sh.Home().add('tmp','test.bin')).show_menu()
@@ -987,25 +1003,33 @@ class Commands:
         else:
             sh.com.empty(f)
     
-    def corrupt(self,filew,pos,length):
+    def corrupt(self,filew,pos,subst=b'\x00'):
         f = '[MClient] plugins.multitranbin.utils.Commands.corrupt'
-        try:
-            mes = _('Write {} bytes to file "{}" at position {}')
-            mes = mes.format (sh.com.figure_commas(length)
-                             ,filew
-                             ,sh.com.figure_commas(pos)
-                             )
-            sh.objs.mes(f,mes,True).info()
-            ''' For some reason, opening with 'wb' or 'w+b' causes
-                different results.
-            '''
-            with open(filew,'r+b') as fw:
-                fw.seek(pos)
-                chunk = b'\x00' * length
-                fw.write(chunk)
-        except Exception as e:
-            mes = _('Operation has failed!\n\nDetails: {}').format(e)
-            sh.objs.mes(f,mes,True).warning()
+        if filew and subst:
+            ibin = gt.Binary(filew)
+            chunk = ibin.read(pos,pos+len(subst))
+            ibin.close()
+            try:
+                mes = _('Replace bytes "{}" with "{}" (file: {}, position: {})')
+                mes = mes.format (gt.com.get_string(chunk)
+                                 ,gt.com.get_string(subst)
+                                 ,filew
+                                 ,sh.com.figure_commas(pos)
+                                 )
+                sh.objs.mes(f,mes,True).info()
+                ''' For some reason, opening with 'wb' or 'w+b' causes
+                    different results.
+                '''
+                with open(filew,'r+b') as fw:
+                    fw.seek(pos)
+                    fw.write(subst)
+            except Exception as e:
+                mes = _('Operation has failed!\n\nDetails: {}')
+                mes = mes.format(e)
+                sh.objs.mes(f,mes,True).warning()
+            return chunk
+        else:
+            sh.com.empty(f)
     
     def input_str(self,mes=''):
         f = '[MClient] plugins.multitranbin.utils.Commands.input_str'
@@ -1445,10 +1469,10 @@ if __name__ == '__main__':
     #file = '/home/pete/tmp/dump_zerah'
     #file = '/home/pete/.wine/drive_c/mt_demo_mln/Network/eng_rus/dict.ert'
     #Navigate(file).show_menu()
-    #Tests().corrupt()
+    Tests().corrupt()
     #Tests().compare()
     #Tests().show_dumps()
-    Tests().get_patch()
+    #Tests().get_patch()
     #Tests().analyze_xor()
     '''
     file1 = '/tmp/dict.ert'
