@@ -19,89 +19,6 @@ MAXSTEMS = 2
 DEBUG    = False
 
 
-class Xor:
-    
-    def __init__(self):
-        self.vectors = []
-        self.set_vectors()
-    
-    def get_shift(self,pos1,pos2):
-        f = '[MClient] plugins.multitranbin.get.Xor.get_shift'
-        min_ = min(pos1,pos2) + 1
-        max_ = max(pos1,pos2)
-        shift = 0
-        while min_ <= max_:
-            vector = self.vectors[min_]
-            mes = _('Position: {}; vector: {}').format(min_,vector)
-            sh.objs.mes(f,mes,True).debug()
-            if pos2 > pos1:
-                shift -= vector
-            else:
-                shift += vector
-            min_ += 1
-        if DEBUG:
-            sh.objs.mes(f,shift,True).debug()
-        return shift
-    
-    def overflow(self,pos):
-        f = '[MClient] plugins.multitranbin.get.Xor.overflow'
-        if not 0 <= pos <= 255:
-            old = pos = abs(pos)
-            overhead = pos - (pos // 255) * 255 - 1
-            pos = 255 - overhead
-            if DEBUG:
-                mes = _('Overflow: {} -> {}').format(old,pos)
-                sh.objs.mes(f,mes,True).debug()
-        return pos
-    
-    def xor(self,byte,pos,start):
-        f = '[MClient] plugins.multitranbin.get.Xor.xor'
-        if byte:
-            if 0 <= byte[0] <= 255:
-                shift = self.get_shift(pos1,pos2)
-                #pos = 
-                vector = self.vectors[byte[0]]
-                pos = -vector + start + byte[0]
-                pos = self.overflow(pos)
-                byte2 = bytes([pos])
-                if DEBUG:
-                    mes = _('Original byte: "{}"; original position: {}; vector: {}; final byte: "{}"; final position: {}')
-                    mes = mes.format (com.get_string(byte)
-                                     ,byte[0],vector
-                                     ,com.get_string(byte2)
-                                     ,pos
-                                     )
-                    sh.objs.mes(f,mes,True).debug()
-                return byte2
-            else:
-                sub = '0 <= {} <= 255'.format(byte[0])
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                sh.objs.mes(f,mes,True).warning()
-        else:
-            sh.com.empty(f)
-    
-    def set_vectors(self):
-        ''' MT's XOR algorithm is basically shifting positions by
-            -2, -2, -2, +6, -2, -2, -2, +10... with a few exceptions.
-        '''
-        i = 0
-        while i < 256:
-            if (i + 1) % 4 == 0:
-                if (i + 1) % 8 == 0:
-                    self.vectors.append(-10)
-                else:
-                    self.vectors.append(6)
-            else:
-                self.vectors.append(-2)
-            i += 1
-        
-        self.vectors[163] = 48
-        self.vectors[164] = -44
-        self.vectors[255] = 246
-
-
-
 class Ending:
     # Parse files like 'sik.eng'
     def __init__(self,file):
@@ -111,7 +28,7 @@ class Ending:
         self.parse()
     
     def overflow(self,no):
-        f = '[MClient] plugins.multitranbin.get.Ending.overflow'
+        f = '[MClient] plugins.multitrandem.get.Ending.overflow'
         new = no
         if self.Success:
             new = com.overflowh(new)
@@ -131,7 +48,7 @@ class Ending:
         return new
     
     def has_match(self,no,pattern):
-        f = '[MClient] plugins.multitranbin.get.Ending.has_match'
+        f = '[MClient] plugins.multitrandem.get.Ending.has_match'
         if self.Success:
             no = self.overflow(no)
             #TODO: implement 'X' (full pattern match)
@@ -161,7 +78,7 @@ class Ending:
             sh.com.cancel(f)
     
     def load(self):
-        f = '[MClient] plugins.multitranbin.get.Ending.load'
+        f = '[MClient] plugins.multitrandem.get.Ending.load'
         if self.Success:
             self.text = sh.ReadTextFile(self.file).get()
             if not self.text:
@@ -172,7 +89,7 @@ class Ending:
             sh.com.cancel(f)
     
     def parse(self):
-        f = '[MClient] plugins.multitranbin.get.Ending.parse'
+        f = '[MClient] plugins.multitrandem.get.Ending.parse'
         if self.Success:
             lines = self.text.splitlines()
             lines = [line for line in lines if line]
@@ -231,7 +148,7 @@ class Subject:
         self.parse()
     
     def get_pair(self,code):
-        f = '[MClient] plugins.multitranbin.get.Subject.get_pair'
+        f = '[MClient] plugins.multitrandem.get.Subject.get_pair'
         if self.Success:
             if code in self.dic_nos:
                 ind = self.dic_nos.index(code)
@@ -249,7 +166,7 @@ class Subject:
             sh.com.cancel(f)
     
     def get_locale(self):
-        f = '[MClient] plugins.multitranbin.get.Subject.get_locale'
+        f = '[MClient] plugins.multitrandem.get.Subject.get_locale'
         if self.Success:
             info = locale.getdefaultlocale()
             if info:
@@ -271,7 +188,7 @@ class Subject:
         self.lang    = 'en'
     
     def parse(self):
-        f = '[MClient] plugins.multitranbin.get.Subject.parse'
+        f = '[MClient] plugins.multitrandem.get.Subject.parse'
         if self.Success:
             lst = self.text.splitlines()
             # This should not be needed. We do that just to be safe.
@@ -299,7 +216,7 @@ class Subject:
             sh.com.cancel(f)
     
     def load(self):
-        f = '[MClient] plugins.multitranbin.get.Subject.load'
+        f = '[MClient] plugins.multitrandem.get.Subject.load'
         if self.Success:
             # We need silent logging here
             if os.path.exists(self.file):
@@ -329,7 +246,7 @@ class Binary:
         self.open()
     
     def get_zero(self,start,end):
-        f = '[MClient] plugins.multitranbin.get.Binary.get_zero'
+        f = '[MClient] plugins.multitrandem.get.Binary.get_zero'
         result = []
         if self.Success:
             pos = self.find(b'\x00',start,end)
@@ -342,7 +259,7 @@ class Binary:
     
     def get_parts2(self,pattern,start=0,end=0):
         # Run 'get_part2' in loop (only useful for finding stems)
-        f = '[MClient] plugins.multitranbin.get.Binary.get_parts2'
+        f = '[MClient] plugins.multitrandem.get.Binary.get_parts2'
         chunks = []
         if DEBUG:
             mchunks = []
@@ -399,7 +316,7 @@ class Binary:
     
     def get_parts1(self,pattern,start=0,end=0):
         # Get suggestions
-        f = '[MClient] plugins.multitranbin.get.Binary.get_parts1'
+        f = '[MClient] plugins.multitrandem.get.Binary.get_parts1'
         chunks = []
         if DEBUG:
             mchunks = []
@@ -455,7 +372,7 @@ class Binary:
         return chunks
     
     def find_all(self,pattern,start=0,end=0):
-        f = '[MClient] plugins.multitranbin.get.Binary.find_all'
+        f = '[MClient] plugins.multitrandem.get.Binary.find_all'
         matches = []
         if self.Success:
             while True:
@@ -473,7 +390,7 @@ class Binary:
         return matches
     
     def get_page_limit(self):
-        f = '[MClient] plugins.multitranbin.get.Binary.get_page_limit'
+        f = '[MClient] plugins.multitrandem.get.Binary.get_page_limit'
         self.get_file_size()
         self.get_block_size()
         if self.Success:
@@ -489,7 +406,7 @@ class Binary:
         ''' This should be equal to 'sh.File(self.vfile).size()'.
             #NOTE: size = max_pos + 1
         '''
-        f = '[MClient] plugins.multitranbin.get.Binary.get_file_size'
+        f = '[MClient] plugins.multitrandem.get.Binary.get_file_size'
         if self.Success:
             if not self.fsize:
                 self.fsize = sh.File(self.file).size()
@@ -508,7 +425,7 @@ class Binary:
     
     def get_page_limits(self,page_no):
         # Return positions of a page based on MT indicators
-        f = '[MClient] plugins.multitranbin.get.Binary.get_page_limits'
+        f = '[MClient] plugins.multitrandem.get.Binary.get_page_limits'
         if self.Success:
             if page_no is None or not self.get_block_size():
                 sh.com.empty(f)
@@ -561,7 +478,7 @@ class Binary:
             sh.com.cancel(f)
     
     def get_block_size(self):
-        f = '[MClient] plugins.multitranbin.get.Binary.get_block_size'
+        f = '[MClient] plugins.multitrandem.get.Binary.get_block_size'
         if self.Success:
             if not self.bsize:
                 read = self.read(28,30)
@@ -584,7 +501,7 @@ class Binary:
         return self.bsize
     
     def check_lengths(self,pattern,lengths):
-        f = '[MClient] plugins.multitranbin.get.Binary.check_lengths'
+        f = '[MClient] plugins.multitrandem.get.Binary.check_lengths'
         if self.Success:
             if lengths:
                 if lengths[0] == len(pattern) and lengths[1] > 0:
@@ -598,7 +515,7 @@ class Binary:
             sh.com.cancel(f)
     
     def get_part2(self,pattern,start=0,end=0):
-        f = '[MClient] plugins.multitranbin.get.Binary.get_part2'
+        f = '[MClient] plugins.multitrandem.get.Binary.get_part2'
         if self.Success:
             pos11 = self.find(pattern,start,end)
             if pos11 is None:
@@ -617,7 +534,7 @@ class Binary:
             sh.com.cancel(f)
     
     def get_lengths(self,index_):
-        f = '[MClient] plugins.multitranbin.get.Binary.get_lengths'
+        f = '[MClient] plugins.multitrandem.get.Binary.get_lengths'
         if self.Success:
             ''' There are 'M' pages at the beginning, so an index of
                 the 1st part will always be positive.
@@ -655,7 +572,7 @@ class Binary:
             sh.com.cancel(f)
     
     def read(self,start,end):
-        f = '[MClient] plugins.multitranbin.get.Binary.read'
+        f = '[MClient] plugins.multitrandem.get.Binary.read'
         if self.Success:
             if start is None or end is None:
                 sh.com.empty(f)
@@ -679,7 +596,7 @@ class Binary:
             sh.com.cancel(f)
     
     def find(self,pattern,start=0,end=0):
-        f = '[MClient] plugins.multitranbin.get.Binary.find'
+        f = '[MClient] plugins.multitrandem.get.Binary.find'
         if self.Success:
             if pattern:
                 if not end:
@@ -709,7 +626,7 @@ class Binary:
             sh.com.cancel(f)
     
     def open(self):
-        f = '[MClient] plugins.multitranbin.get.Binary.open'
+        f = '[MClient] plugins.multitrandem.get.Binary.open'
         if self.Success:
             mes = _('Open "{}"').format(self.file)
             sh.objs.mes(f,mes,True).info()
@@ -728,7 +645,7 @@ class Binary:
             sh.com.cancel(f)
     
     def close(self):
-        f = '[MClient] plugins.multitranbin.get.Binary.close'
+        f = '[MClient] plugins.multitrandem.get.Binary.close'
         if self.Success:
             mes = _('Close "{}"').format(self.file)
             sh.objs.mes(f,mes,True).info()
@@ -751,7 +668,7 @@ class UPage(Binary):
         self.part2 = []
     
     def _get_no(self,stem):
-        f = '[MClient] plugins.multitranbin.get.UPage._get_no'
+        f = '[MClient] plugins.multitrandem.get.UPage._get_no'
         try:
             return self.part1.index(stem)
         except ValueError:
@@ -760,7 +677,7 @@ class UPage(Binary):
             return -1
     
     def _get_ref(self,i):
-        f = '[MClient] plugins.multitranbin.get.UPage._get_ref'
+        f = '[MClient] plugins.multitrandem.get.UPage._get_ref'
         if i is None:
             sh.com.empty(f)
         else:
@@ -784,7 +701,7 @@ class UPage(Binary):
         return '"{}"'.format(result)
     
     def _log(self,pattern,i):
-        f = '[MClient] plugins.multitranbin.get.UPage._log'
+        f = '[MClient] plugins.multitrandem.get.UPage._log'
         if self.part1[i] == pattern:
             oper = '<='
         else:
@@ -812,7 +729,7 @@ class UPage(Binary):
         sh.objs.mes(f,mes,True).debug()
     
     def searchu(self,pattern):
-        f = '[MClient] plugins.multitranbin.get.UPage.searchu'
+        f = '[MClient] plugins.multitrandem.get.UPage.searchu'
         if self.Success:
             self.get_parts()
             if self.part1:
@@ -831,7 +748,7 @@ class UPage(Binary):
             sh.com.cancel(f)
     
     def get_parts(self):
-        f = '[MClient] plugins.multitranbin.get.UPage.get_parts'
+        f = '[MClient] plugins.multitrandem.get.UPage.get_parts'
         if self.Success:
             if not self.part2:
                 if self.get_page():
@@ -878,7 +795,7 @@ class UPage(Binary):
             sh.com.cancel(f)
     
     def get_page(self):
-        f = '[MClient] plugins.multitranbin.get.UPage.get_page'
+        f = '[MClient] plugins.multitrandem.get.UPage.get_page'
         if self.Success:
             if not self.page:
                 if self.get_size():
@@ -895,7 +812,7 @@ class UPage(Binary):
         return self.page
     
     def get_size(self):
-        f = '[MClient] plugins.multitranbin.get.UPage.get_size'
+        f = '[MClient] plugins.multitrandem.get.UPage.get_size'
         if self.Success:
             if not self.psize:
                 ''' The 1st page is an area with M identifier.
@@ -914,7 +831,7 @@ class UPage(Binary):
         return self.psize
     
     def check_parts(self):
-        f = '[MClient] plugins.multitranbin.get.UPage.check_parts'
+        f = '[MClient] plugins.multitrandem.get.UPage.check_parts'
         if self.Success:
             if len(self.part1) == len(self.part2):
                 Check = True
@@ -938,7 +855,7 @@ class UPage(Binary):
         ''' Get the 1st page number that is not described in U page or
             create a new page number based on the max page number.
         '''
-        f = '[MClient] plugins.multitranbin.get.UPage._get_missing'
+        f = '[MClient] plugins.multitrandem.get.UPage._get_missing'
         unpacked = sorted(set(self.part2))
         unpacked = [struct.unpack('<h',item)[0] for item in unpacked]
         # We need +1 for a new item and +1 for 'range'
@@ -951,7 +868,7 @@ class UPage(Binary):
                 return item
     
     def conform_parts(self):
-        f = '[MClient] plugins.multitranbin.get.UPage.conform_parts'
+        f = '[MClient] plugins.multitrandem.get.UPage.conform_parts'
         if self.Success:
             if self.part1:
                 if self.check_parts():
@@ -979,7 +896,7 @@ class Walker:
             self.reset()
     
     def get_ending(self):
-        f = '[MClient] plugins.multitranbin.get.Walker.get_ending'
+        f = '[MClient] plugins.multitrandem.get.Walker.get_ending'
         if self.Success:
             if not self.ending:
                 fname = 'sik.' + self.lang13
@@ -995,7 +912,7 @@ class Walker:
         return self.ending
     
     def get_subject(self):
-        f = '[MClient] plugins.multitranbin.get.Walker.get_subject'
+        f = '[MClient] plugins.multitrandem.get.Walker.get_subject'
         if self.Success:
             if not self.subject:
                 fname = 'subjects.txt'
@@ -1011,7 +928,7 @@ class Walker:
         return self.subject
     
     def get_typein1(self):
-        f = '[MClient] plugins.multitranbin.get.Walker.get_typein1'
+        f = '[MClient] plugins.multitrandem.get.Walker.get_typein1'
         if self.Success:
             if not self.typein1:
                 fname = 'typein.' + self.lang11 + self.lang21
@@ -1028,7 +945,7 @@ class Walker:
         return self.typein1
 
     def get_typein2(self):
-        f = '[MClient] plugins.multitranbin.get.Walker.get_typein2'
+        f = '[MClient] plugins.multitrandem.get.Walker.get_typein2'
         if self.Success:
             if not self.typein2:
                 fname = 'typein.' + self.lang21 + self.lang11
@@ -1045,7 +962,7 @@ class Walker:
         return self.typein2
     
     def get_files(self):
-        f = '[MClient] plugins.multitranbin.get.Walker.get_files'
+        f = '[MClient] plugins.multitrandem.get.Walker.get_files'
         if self.Success:
             return [self.get_typein1(),self.get_typein2()
                    ,self.get_stems1(),self.get_stems2()
@@ -1057,7 +974,7 @@ class Walker:
             return []
     
     def get_article(self):
-        f = '[MClient] plugins.multitranbin.get.Walker.get_article'
+        f = '[MClient] plugins.multitrandem.get.Walker.get_article'
         if self.Success:
             if not self.article:
                 fname = 'dict.' + self.lang11 + self.lang21 + 't'
@@ -1076,7 +993,7 @@ class Walker:
         return self.article
     
     def get_glue1(self):
-        f = '[MClient] plugins.multitranbin.get.Walker.get_glue1'
+        f = '[MClient] plugins.multitrandem.get.Walker.get_glue1'
         if self.Success:
             if not self.glue1:
                 fname = 'dict.' + self.lang11 + self.lang21 + 'd'
@@ -1093,7 +1010,7 @@ class Walker:
         return self.glue1
     
     def get_glue2(self):
-        f = '[MClient] plugins.multitranbin.get.Walker.get_glue2'
+        f = '[MClient] plugins.multitrandem.get.Walker.get_glue2'
         if self.Success:
             if not self.glue2:
                 fname = 'dict.' + self.lang21 + self.lang11 + 'd'
@@ -1116,7 +1033,7 @@ class Walker:
         self.walk()
     
     def set_langs(self):
-        f = '[MClient] plugins.multitranbin.get.Walker.set_langs'
+        f = '[MClient] plugins.multitrandem.get.Walker.set_langs'
         if self.Success:
             lang1       = LANG1.lower()
             lang2       = LANG2.lower()
@@ -1128,7 +1045,7 @@ class Walker:
             sh.com.cancel(f)
     
     def check(self):
-        f = '[MClient] plugins.multitranbin.get.Walker.check'
+        f = '[MClient] plugins.multitrandem.get.Walker.check'
         if PATH and LANG1 and LANG2:
             self.idir = sh.Directory(PATH)
             self.Success = self.idir.Success
@@ -1137,7 +1054,7 @@ class Walker:
             sh.com.empty(f)
     
     def get_stems1(self):
-        f = '[MClient] plugins.multitranbin.get.Walker.get_stems1'
+        f = '[MClient] plugins.multitrandem.get.Walker.get_stems1'
         if self.Success:
             if not self.stems1:
                 fname = 'stem.' + self.lang13
@@ -1153,7 +1070,7 @@ class Walker:
         return self.stems1
     
     def get_stems2(self):
-        f = '[MClient] plugins.multitranbin.get.Walker.get_stems2'
+        f = '[MClient] plugins.multitrandem.get.Walker.get_stems2'
         if self.Success:
             if not self.stems2:
                 fname = 'stem.' + self.lang23
@@ -1169,7 +1086,7 @@ class Walker:
         return self.stems2
     
     def get_file(self,fname):
-        f = '[MClient] plugins.multitranbin.get.Walker.get_file'
+        f = '[MClient] plugins.multitrandem.get.Walker.get_file'
         if self.Success:
             try:
                 ind = self.fnames.index(fname)
@@ -1200,7 +1117,7 @@ class Walker:
         self.ending  = ''
     
     def walk(self):
-        f = '[MClient] plugins.multitranbin.get.Walker.walk'
+        f = '[MClient] plugins.multitrandem.get.Walker.walk'
         if self.Success:
             for dirpath, dirnames, filenames in os.walk(self.idir.dir):
                 for filename in filenames:
@@ -1219,7 +1136,7 @@ class TypeIn(UPage):
         super().__init__(*args,**kwargs)
     
     def search(self,pattern):
-        f = '[MClient] plugins.multitranbin.get.TypeIn.search'
+        f = '[MClient] plugins.multitrandem.get.TypeIn.search'
         if self.Success:
             if pattern:
                 coded  = bytes(pattern,ENCODING)
@@ -1257,7 +1174,7 @@ class TypeIn(UPage):
             sh.com.cancel(f)
     
     def reader(self,poses):
-        f = '[MClient] plugins.multitranbin.get.TypeIn.reader'
+        f = '[MClient] plugins.multitrandem.get.TypeIn.reader'
         if self.Success:
             if poses:
                 stream = self.read(poses[0],poses[1])
@@ -1307,14 +1224,14 @@ class Suggest:
         self.pattern = ''
     
     def reset(self,pattern):
-        f = '[MClient] plugins.multitranbin.get.Suggest.reset'
+        f = '[MClient] plugins.multitrandem.get.Suggest.reset'
         self.pattern = pattern
         if not self.pattern:
             self.Success = False
             sh.com.empty(f)
     
     def get(self,limit=20):
-        f = '[MClient] plugins.multitranbin.get.Suggest.get'
+        f = '[MClient] plugins.multitrandem.get.Suggest.get'
         if self.Success:
             suggestions = objs.files().get_typein1().search(self.pattern)
             if suggestions:
@@ -1337,7 +1254,7 @@ class AllDics:
     def langs(self):
         # Return all available languages
         files = []
-        f = '[MClient] plugins.multitranbin.get.AllDics.langs'
+        f = '[MClient] plugins.multitrandem.get.AllDics.langs'
         if self.Success:
             #TODO: elaborate
             # Relative paths are already lowercased
@@ -1349,7 +1266,7 @@ class AllDics:
         return files
     
     def get(self,search):
-        f = '[MClient] plugins.multitranbin.get.AllDics.get'
+        f = '[MClient] plugins.multitrandem.get.AllDics.get'
         if self.Success:
             if search:
                 pass
@@ -1370,14 +1287,14 @@ class AllDics:
         self.Success = sh.Directory(self._path).Success
     
     def walk(self):
-        f = '[MClient] plugins.multitranbin.get.AllDics.walk'
+        f = '[MClient] plugins.multitrandem.get.AllDics.walk'
         if self.Success:
             pass
         else:
             sh.com.cancel(f)
     
     def locate(self):
-        f = '[MClient] plugins.multitranbin.get.AllDics.locate'
+        f = '[MClient] plugins.multitrandem.get.AllDics.locate'
         if self.Success:
             if not self._dics:
                 if self.walk():
@@ -1393,11 +1310,125 @@ class AllDics:
             sh.com.cancel(f)
     
     def load(self):
-        f = '[MClient] plugins.multitranbin.get.AllDics.load'
+        f = '[MClient] plugins.multitrandem.get.AllDics.load'
         if self.Success:
             pass
         else:
             sh.com.cancel(f)
+
+
+
+class Xor:
+    
+    def __init__(self,data,offset=0,step=6):
+        self.data   = data
+        self.offset = offset
+        self.step   = step
+    
+    def dexor(self):
+        f = '[MClient] plugins.multitrandem.get.Xor.dexor'
+        if self.data:
+            poses = []
+            pos11 = 0
+            pos12 = 0
+            pos21 = 0
+            coef  = 0
+            for i in range(len(self.data)):
+                pos21 = self.data[i]
+                pos   = self.data[i] + self.offset - i * self.step \
+                                      + coef
+                if not 0 <= pos <= 255:
+                    pos = abs(pos)
+                    overhead = pos - (pos // 255) * 255 - 1
+                    pos = 255 - overhead
+                    delta = pos11 - pos12 - pos21 + pos
+                    ''' This is a hack to comply with Multitran's
+                        internal logic.
+                    '''
+                    if delta == 249:
+                        pos  += 1
+                        coef += 1
+                    elif delta == -261:
+                        pos  -= 1
+                        coef -= 1
+                    if DEBUG:
+                        mes = _('Overflow: {} -> {}').format(pos21,pos)
+                        sh.objs.mes(f,mes,True).debug()
+                if DEBUG:
+                    mes = '{} -> {}'.format(self.data[i],pos)
+                    sh.objs.mes(f,mes,True).debug()
+                poses.append(pos)
+                pos11 = self.data[i]
+                pos12 = pos
+            ''' If the algorithm is correct, this should not be needed.
+                I keep this code, however, because a ValueError will
+                be raised otherwise.
+            '''
+            for i in range(len(poses)):
+                if not 0 <= poses[i] <= 255:
+                    mes = _('Invalid value "{}" at position {}!')
+                    mes = mes.format(poses[i],i)
+                    sh.objs.mes(f,mes,True).error()
+                    poses[i] = 0
+            result = bytes(poses)
+            if DEBUG:
+                mes = com.get_string(result)
+                sh.objs.mes(f,mes,True).debug()
+            return result
+        else:
+            sh.com.empty(f)
+    
+    def xor(self):
+        f = '[MClient] plugins.multitrandem.get.Xor.xor'
+        if data:
+            poses = []
+            pos11 = 0
+            pos12 = 0
+            pos21 = 0
+            coef  = 0
+            for i in range(len(self.data)):
+                pos21 = self.data[i]
+                pos   = self.data[i] + self.offset + i * self.step \
+                                      + coef
+                if not 0 <= pos <= 255:
+                    pos = abs(pos)
+                    pos = pos - (pos // 255) * 255 - 1
+                    delta = pos11 - pos12 - pos21 + pos
+                    ''' This is a hack to comply with Multitran's
+                        internal logic.
+                    '''
+                    if delta == -249:
+                        pos  -= 1
+                        coef -= 1
+                    elif delta == 261:
+                        pos  += 1
+                        coef += 1
+                    if DEBUG:
+                        mes = _('Overflow: {} -> {}').format(pos21,pos)
+                        sh.objs.mes(f,mes,True).debug()
+                if DEBUG:
+                    mes = '{} -> {}'.format(data[i],pos)
+                    sh.objs.mes(f,mes,True).debug()
+                poses.append(pos)
+                pos11 = data[i]
+                pos12 = pos
+            ''' If the algorithm is correct, this should not be needed.
+                I keep this code, however, because a ValueError will
+                be raised otherwise.
+            '''
+            for i in range(len(poses)):
+                if not 0 <= poses[i] <= 255:
+                    mes = _('Invalid value "{}" at position {}!')
+                    mes = mes.format(poses[i],i)
+                    sh.objs.mes(f,mes,True).error()
+                    poses[i] = 0
+            result = bytes(poses)
+            if DEBUG:
+                mes = com.get_string(result)
+                sh.objs.mes(f,mes,True).debug()
+            return result
+        else:
+            sh.com.empty(f)
 
 
 
@@ -1407,7 +1438,7 @@ class Articles(UPage):
         super().__init__(*args,**kwargs)
     
     def parse(self,chunk):
-        f = '[MClient] plugins.multitranbin.get.Articles.parse'
+        f = '[MClient] plugins.multitrandem.get.Articles.parse'
         if self.Success:
             if chunk:
                 return Xor (data   = chunk
@@ -1420,7 +1451,7 @@ class Articles(UPage):
     
     def search(self,coded):
         # Do not fail the whole class upon a failed search
-        f = '[MClient] plugins.multitranbin.get.Articles.search'
+        f = '[MClient] plugins.multitrandem.get.Articles.search'
         if self.Success:
             if coded:
                 poses = self.searchu(coded)
@@ -1446,7 +1477,7 @@ class Glue(UPage):
     
     def search(self,coded):
         # Do not fail the whole class upon a failed search
-        f = '[MClient] plugins.multitranbin.get.Glue.search'
+        f = '[MClient] plugins.multitrandem.get.Glue.search'
         if self.Success:
             if coded:
                 poses = self.searchu(coded)
@@ -1472,7 +1503,7 @@ class Glue(UPage):
             sh.com.cancel(f)
     
     def parse(self,chunk):
-        f = '[MClient] plugins.multitranbin.get.Glue.parse'
+        f = '[MClient] plugins.multitrandem.get.Glue.parse'
         if self.Success:
             if chunk:
                 if (len(chunk) - 2) % 3 == 0 and len(chunk) != 2:
@@ -1510,7 +1541,7 @@ class Commands:
         return pattern
     
     def report_status(self,pos,stream):
-        f = '[MClient] plugins.multitranbin.get.Commands.report_status'
+        f = '[MClient] plugins.multitrandem.get.Commands.report_status'
         if stream:
             mes = _('{}/{} bytes have been processed')
             mes = mes.format(pos,len(stream))
@@ -1528,7 +1559,7 @@ class Commands:
     
     def overflowh(self,no):
         # Limits: -32768 <= no <= 32767
-        f = '[MClient] plugins.multitranbin.get.Commands.overflowh'
+        f = '[MClient] plugins.multitrandem.get.Commands.overflowh'
         if no < 0:
             result = 32768 + no
             if DEBUG:
@@ -1539,7 +1570,7 @@ class Commands:
             return no
     
     def overflowb(self,no):
-        f = '[MClient] plugins.multitranbin.get.Commands.overflowb'
+        f = '[MClient] plugins.multitrandem.get.Commands.overflowb'
         if no < 0:
             ''' Byte format requires -128 <= no <= 127, so it looks
                 like, when a page size value is negative, it has just
@@ -1555,7 +1586,7 @@ class Commands:
             return no
     
     def unpack(self,chno,mode='<L'):
-        f = '[MClient] plugins.multitranbin.get.Commands.unpack'
+        f = '[MClient] plugins.multitrandem.get.Commands.unpack'
         if chno:
             if mode == '<L':
                 chno += b'\x00'
@@ -1575,7 +1606,7 @@ class Commands:
         ''' Only raw strings should be used in GUI (otherwise,
             for example, '\x00' will be treated like b'\x00').
         '''
-        f = '[MClient] plugins.multitranbin.get.Commands.get_string'
+        f = '[MClient] plugins.multitrandem.get.Commands.get_string'
         result = ''
         if chunk:
             try:
@@ -1595,7 +1626,7 @@ class Commands:
         ''' - Divide an iterable in a consecutive order.
             - Output chunks may have different lengths.
         '''
-        f = '[MClient] plugins.multitranbin.get.Commands.get_chunks'
+        f = '[MClient] plugins.multitrandem.get.Commands.get_chunks'
         if iterable:
             return [iterable[i:i+limit] \
                     for i in range(0,len(iterable),limit)
@@ -1667,7 +1698,7 @@ class Files:
         return self.article
     
     def open(self):
-        f = '[MClient] plugins.multitranbin.get.Files.open'
+        f = '[MClient] plugins.multitrandem.get.Files.open'
         if self.Success:
             self.get_typein1()
             self.get_typein2()
@@ -1680,7 +1711,7 @@ class Files:
             sh.com.cancel(f)
     
     def close(self):
-        f = '[MClient] plugins.multitranbin.get.Files.close'
+        f = '[MClient] plugins.multitrandem.get.Files.close'
         if self.Success:
             self.get_typein1().close()
             self.get_typein2().close()
@@ -1740,7 +1771,7 @@ class Stems(UPage):
         self.speech = {}
     
     def get_speech(self,chno):
-        f = '[MClient] plugins.multitranbin.get.Stems.get_speech'
+        f = '[MClient] plugins.multitrandem.get.Stems.get_speech'
         if self.Success:
             if chno in self.speech:
                 result = self.speech[chno]
@@ -1762,7 +1793,7 @@ class Stems(UPage):
             2 bytes - sik (terminations)
             2 bytes - lgk (speech part codes)
         '''
-        f = '[MClient] plugins.multitranbin.get.Stems.parse'
+        f = '[MClient] plugins.multitrandem.get.Stems.parse'
         if self.Success:
             if chunk:
                 nos   = []
@@ -1818,7 +1849,7 @@ class Stems(UPage):
     
     def search(self,stem,end=''):
         # Do not fail the whole class upon a failed search
-        f = '[MClient] plugins.multitranbin.get.Stems.search'
+        f = '[MClient] plugins.multitrandem.get.Stems.search'
         if self.Success:
             ''' MT demo does not comprise stem #3 ('-') at all,
                 so we use this workaround.
@@ -1890,7 +1921,7 @@ class Get:
         self.spabbr  = ''
     
     def set_speech(self):
-        f = '[MClient] plugins.multitranbin.get.Get.set_speech'
+        f = '[MClient] plugins.multitrandem.get.Get.set_speech'
         if self.Success:
             if self.stemnos:
                 chno = self.stemnos[0][0:3]
@@ -1980,7 +2011,7 @@ class Get:
             sh.com.cancel(f)
     
     def get_combos(self):
-        f = '[MClient] plugins.multitranbin.get.Get.get_combos'
+        f = '[MClient] plugins.multitrandem.get.Get.get_combos'
         if self.Success:
             self.stemnos = list(itertools.product(*self.stemnos))
             self.stemnos = [b''.join(item) for item in self.stemnos]
@@ -1990,13 +2021,13 @@ class Get:
             sh.com.cancel(f)
     
     def check(self):
-        f = '[MClient] plugins.multitranbin.get.Get.check'
+        f = '[MClient] plugins.multitrandem.get.Get.check'
         if not self.pattern:
             self.Success = False
             sh.com.empty(f)
     
     def strip(self):
-        f = '[MClient] plugins.multitranbin.get.Get.strip'
+        f = '[MClient] plugins.multitrandem.get.Get.strip'
         if self.Success:
             # Split hyphened words as if they were separate words
             self.pattern = self.pattern.replace('-',' - ')
@@ -2005,7 +2036,7 @@ class Get:
             sh.com.cancel(f)
     
     def get_stems(self):
-        f = '[MClient] plugins.multitranbin.get.Get.get_stems'
+        f = '[MClient] plugins.multitrandem.get.Get.get_stems'
         if self.Success:
             words = self.pattern.split(' ')
             for word in words:
@@ -2050,7 +2081,7 @@ class Get:
         self.stemnos = []
     
     def search(self):
-        f = '[MClient] plugins.multitranbin.get.Get.search'
+        f = '[MClient] plugins.multitrandem.get.Get.search'
         if self.Success:
             art_nos = []
             for combo in self.stemnos:

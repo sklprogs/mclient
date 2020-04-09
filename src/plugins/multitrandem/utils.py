@@ -20,20 +20,19 @@ DUMP2  = sh.Home().add('tmp','dump2')
 
 class Tests:
     
-    def analyze_xor(self):
-        f = '[MClient] plugins.multitranbin.utils.Tests.analyze_xor'
-        bytes1 = b'Bullshit!'
-        bytes2 = b'-fcivqx\x89<'
-        mes = com.analyze_xor(bytes1,bytes2)
+    def brute_dexor(self):
+        f = '[MClient] plugins.multitrandem.utils.Tests.brute_dexor'
+        orig   = b'-fcivqx\x89<'
+        transl = b'Bullshit!'
+        mes = com.brute_dexor(orig,transl)
         if mes:
             sh.com.fast_debug(mes[0])
         else:
             sh.com.empty(f)
     
     def get_patch(self):
-        f = '[MClient] plugins.multitranbin.utils.Tests.get_patch'
+        f = '[MClient] plugins.multitrandem.utils.Tests.get_patch'
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
-        """
         patterns = ['!','"','#','$','%','&',"'",'(',')','*','+',','
                    ,'-','.','/','0','1','2','3','4','5','6','7','8'
                    ,'9',':',';','<','=','>','?','@','A','B','C','D'
@@ -54,10 +53,6 @@ class Tests:
                    ,'е','ж','з','и','й','к','л','м','н','о','п'
                    ,'р','с','т','у','ф','х','ц','ч','ш','щ','ъ'
                    ,'ы','ь','э','ю','я'
-                   ]
-        """
-        patterns = ['aa','ab','ac','ad','ae','af','ag','ah','ai','aj'
-                   ,'ak'
                    ]
         # A comment added for "Zerah"
         pos = 132779143
@@ -103,18 +98,18 @@ class Tests:
         sh.Launch(filew).default()
     
     def corrupt(self):
-        f = '[MClient] plugins.multitranbin.utils.Tests.corrupt'
+        f = '[MClient] plugins.multitrandem.utils.Tests.corrupt'
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
         com.corrupt (filew  = file
-                    ,pos    = 132779143
-                    ,length = 1
+                    ,pos    = 132779151
+                    ,length = 10
                     )
     
     def navigate(self):
         Navigate(sh.Home().add('tmp','test.bin')).show_menu()
     
     def analyze_dumps(self):
-        f = '[MClient] plugins.multitranbin.utils.Tests.analyze_dumps'
+        f = '[MClient] plugins.multitrandem.utils.Tests.analyze_dumps'
         iparse1 = Parser(DUMP1)
         iparse2 = Parser(DUMP2)
         pos1 = 0
@@ -182,7 +177,7 @@ class Tests:
         iparse2.close()
     
     def compare_bytes(self,maxlen=10):
-        f = '[MClient] plugins.multitranbin.utils.Tests.compare_bytes'
+        f = '[MClient] plugins.multitrandem.utils.Tests.compare_bytes'
         dump1 = gt.Binary(DUMP1)
         dump2 = gt.Binary(DUMP2)
         end1  = dump1.get_file_size()
@@ -215,7 +210,7 @@ class Tests:
         CompareBinaries(DUMP1,DUMP2).show_menu()
     
     def get_shared_dumps(self):
-        f = '[MClient] plugins.multitranbin.utils.Tests.get_shared_dumps'
+        f = '[MClient] plugins.multitrandem.utils.Tests.get_shared_dumps'
         pos1 = 0
         pos2 = 16380
         ''' We do not use 'self._parse' here since 'Parser.parse'
@@ -244,7 +239,7 @@ class Tests:
             sh.com.empty(f)
     
     def parse_dumps(self):
-        f = '[MClient] plugins.multitranbin.utils.Tests.parse_dumps'
+        f = '[MClient] plugins.multitrandem.utils.Tests.parse_dumps'
         pos1 = 0
         pos2 = 16380
         ''' We do not use 'self._parse' here since 'Parser.parse'
@@ -306,7 +301,7 @@ class Parser(gt.Binary):
         self.xplain2 = []
     
     def parsel23(self,chunk):
-        f = '[MClient] plugins.multitranbin.utils.Parser.parsel23'
+        f = '[MClient] plugins.multitrandem.utils.Parser.parsel23'
         if self.Success:
             # 2 bytes + multiple sequences of 3 bytes
             if len(chunk) > 4 and (len(chunk) - 2) % 3 == 0:
@@ -319,7 +314,7 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
     
     def chunk3(self,chunk):
-        f = '[MClient] plugins.multitranbin.utils.Parser.chunk3'
+        f = '[MClient] plugins.multitrandem.utils.Parser.chunk3'
         if self.Success:
             if len(chunk) % 3 == 0:
                 chunks = gt.com.get_chunks(chunk,3)
@@ -332,7 +327,7 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
     
     def parse_glue(self):
-        f = '[MClient] plugins.multitranbin.utils.Parser.parse_glue'
+        f = '[MClient] plugins.multitrandem.utils.Parser.parse_glue'
         if self.Success:
             for chunk in self.chunks1:
                 tmp = self.chunk3(chunk)
@@ -350,7 +345,7 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
     
     def parse_article(self):
-        f = '[MClient] plugins.multitranbin.utils.Parser.parse_article'
+        f = '[MClient] plugins.multitrandem.utils.Parser.parse_article'
         if self.Success:
             for chunk in self.chunks1:
                 chunk = gt.com.get_string(chunk,0)
@@ -362,7 +357,7 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
     
     def debug(self):
-        f = '[MClient] plugins.multitranbin.utils.Parser.debug'
+        f = '[MClient] plugins.multitrandem.utils.Parser.debug'
         if self.Success:
             if self.xplain1 and self.xplain2:
                 if len(self.xplain1) == len(self.xplain2):
@@ -396,7 +391,7 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
         
     def chunk7(self,chunk):
-        f = '[MClient] plugins.multitranbin.utils.Parser.chunk7'
+        f = '[MClient] plugins.multitrandem.utils.Parser.chunk7'
         ''' According to "libmtquery-0.0.1alpha3/doc/README.rus":
             the 1st byte - a type designating the use of capital letters
             (not used), further - a vector of 7-byte codes, each code
@@ -424,7 +419,7 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
     
     def parsel1(self):
-        f = '[MClient] plugins.multitranbin.utils.Parser.parsel1'
+        f = '[MClient] plugins.multitrandem.utils.Parser.parsel1'
         if self.Success:
             for chunk in self.chunks1:
                 chunk = chunk.decode(gt.ENCODING,'replace')
@@ -433,7 +428,7 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
     
     def parse_stem(self):
-        f = '[MClient] plugins.multitranbin.utils.Parser.parse_stem'
+        f = '[MClient] plugins.multitrandem.utils.Parser.parse_stem'
         if self.Success:
             self.parsel1()
             for chunk in self.chunks2:
@@ -446,7 +441,7 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
     
     def parse(self):
-        f = '[MClient] plugins.multitranbin.utils.Parser.parse'
+        f = '[MClient] plugins.multitrandem.utils.Parser.parse'
         if self.Success:
             #FIX: Why base names are not lowercased?
             bname = self.bname.lower()
@@ -465,7 +460,7 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
     
     def reader(self,pos1,pos2):
-        f = '[MClient] plugins.multitranbin.utils.Parser.reader'
+        f = '[MClient] plugins.multitrandem.utils.Parser.reader'
         if self.Success:
             stream = self.read(pos1,pos2)
             if stream:
@@ -522,7 +517,7 @@ class Navigate(gt.Binary):
         self.coms.sort()
     
     def find_prev(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.find_prev'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.find_prev'
         if self.Success:
             if self.coded:
                 if self.spos is None or self.spos == 0:
@@ -542,7 +537,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def find_next(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.find_next'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.find_next'
         if self.Success:
             if self.coded:
                 if self.spos is None:
@@ -567,7 +562,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def _print_found(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate._print_found'
+        f = '[MClient] plugins.multitrandem.utils.Navigate._print_found'
         if self.spos is None:
             mes = _('No matches!')
             sh.objs.mes(f,mes,True).info()
@@ -603,7 +598,7 @@ class Navigate(gt.Binary):
             print(buffer3)
     
     def _find(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate._find'
+        f = '[MClient] plugins.multitrandem.utils.Navigate._find'
         spos = self.find(self.coded)
         if spos is None:
             mes = _('No matches!')
@@ -613,7 +608,7 @@ class Navigate(gt.Binary):
             self._print_found()
     
     def find_text(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.find_text'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.find_text'
         if self.Success:
             pattern = com.input_str(_('Enter text to search for: '))
             self.coded = bytes(pattern,gt.ENCODING)
@@ -622,7 +617,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def find_bytes(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.find_bytes'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.find_bytes'
         if self.Success:
             pattern = com.input_str(_('Enter bytes to search for: '))
             try:
@@ -638,7 +633,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def find_nav(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.find_nav'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.find_nav'
         if self.Success:
             choice = input(_('Search for text instead of bytes? Y/n '))
             choice = choice.strip()
@@ -652,7 +647,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
         
     def dump(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.dump'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.dump'
         if self.Success:
             mes = _('This will extract data from the binary file from set positions')
             print(mes)
@@ -692,7 +687,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def go_end(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.go_end'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.go_end'
         if self.Success:
             self.pos = self.get_file_size() - self.buffer
             if self.pos < 0:
@@ -702,7 +697,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def go_start(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.go_start'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.go_start'
         if self.Success:
             self.pos = 0
             self.load()
@@ -710,7 +705,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def clear(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.clear'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.clear'
         if self.Success:
             try:
                 if sh.objs.os().win():
@@ -725,7 +720,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def set_pos(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.set_pos'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.set_pos'
         if self.Success:
             mes = _('Enter a position to go or press Return to keep the current one ({}): ')
             mes = mes.format(sh.com.figure_commas(self.pos))
@@ -746,7 +741,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def go_page_down(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.go_page_down'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.go_page_down'
         if self.Success:
             self.pos += self.buffer
             if self.pos >= self.get_file_size():
@@ -758,7 +753,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def go_page_up(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.go_page_up'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.go_page_up'
         if self.Success:
             self.pos -= self.buffer
             if self.pos < 0:
@@ -768,7 +763,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def load(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.load'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.load'
         if self.Success:
             start = self.pos
             end = start + self.buffer
@@ -783,7 +778,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def set_buffer(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.set_buffer'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.set_buffer'
         if self.Success:
             mes = _('Enter a buffer size or press Return to keep the current one ({}): ')
             mes = mes.format(sh.com.figure_commas(self.buffer))
@@ -804,7 +799,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def show_help(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.show_help'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.show_help'
         if self.Success:
             mes = _('Available commands: {}')
             mes = mes.format('; '.join(self.coms))
@@ -813,7 +808,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def show_menu(self,command=''):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.show_menu'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.show_menu'
         if self.Success:
             if not command:
                 try:
@@ -882,7 +877,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def quit(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.quit'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.quit'
         if self.Success:
             self.close()
             mes = _('Goodbye!')
@@ -891,7 +886,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def print(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.print'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.print'
         if self.Success:
             mes = gt.com.get_string(self.chunk,0)
             print(mes)
@@ -899,7 +894,7 @@ class Navigate(gt.Binary):
             sh.com.cancel(f)
     
     def report(self):
-        f = '[MClient] plugins.multitranbin.utils.Navigate.report'
+        f = '[MClient] plugins.multitrandem.utils.Navigate.report'
         if self.Success:
             self.clear()
             sub = sh.com.figure_commas(self.pos)
@@ -913,7 +908,7 @@ class Navigate(gt.Binary):
 class Commands:
     
     def get_patch(self,file,pattern,pos,add_pos=20):
-        f = '[MClient] plugins.multitranbin.utils.Commands.get_patch'
+        f = '[MClient] plugins.multitrandem.utils.Commands.get_patch'
         if file and pattern:
             ibin = gt.Binary(file)
             if ibin.Success:
@@ -933,7 +928,7 @@ class Commands:
                 messages.append(string)
                 messages.append(lstring)
                 messages.append('')
-                result = self.analyze_xor(coded,chunk)
+                result = self.brute_dexor(chunk,coded)
                 if result:
                     mes, delta = result[0], result[1]
                 else:
@@ -945,8 +940,8 @@ class Commands:
         else:
             sh.com.empty(f)
     
-    def analyze_xor(self,bytes1,bytes2):
-        f = '[MClient] plugins.multitranbin.utils.Commands.analyze_xor'
+    def brute_dexor(self,bytes1,bytes2):
+        f = '[MClient] plugins.multitrandem.utils.Commands.brute_dexor'
         if bytes1 and bytes2:
             if len(bytes1) == len(bytes2):
                 offsets = []
@@ -962,13 +957,13 @@ class Commands:
                     prev   = offset
                     offsets.append(offset)
                     deltas.append(delta)
-                    decoded = bytes1[i:i+1].decode(gt.ENCODING,'replace')
+                    decoded = bytes2[i:i+1].decode(gt.ENCODING,'replace')
                     decoded = '"{}"'.format(decoded)
                     syms.append(decoded)
                     ints1.append(bytes1[i])
                     ints2.append(bytes2[i])
                 nos = [i + 1 for i in range(len(syms))]
-                headers  = ('NO','ORIG','INT1','INT2'
+                headers  = ('NO','TRANSL','INT1','INT2'
                            ,'OFFSET','DELTA'
                            )
                 iterable = (nos,syms,ints1
@@ -988,7 +983,7 @@ class Commands:
             sh.com.empty(f)
     
     def corrupt(self,filew,pos,length):
-        f = '[MClient] plugins.multitranbin.utils.Commands.corrupt'
+        f = '[MClient] plugins.multitrandem.utils.Commands.corrupt'
         try:
             mes = _('Write {} bytes to file "{}" at position {}')
             mes = mes.format (sh.com.figure_commas(length)
@@ -1008,7 +1003,7 @@ class Commands:
             sh.objs.mes(f,mes,True).warning()
     
     def input_str(self,mes=''):
-        f = '[MClient] plugins.multitranbin.utils.Commands.input_str'
+        f = '[MClient] plugins.multitrandem.utils.Commands.input_str'
         if not mes:
             mes = _('Input a string: ')
         try:
@@ -1017,7 +1012,7 @@ class Commands:
             return ''
     
     def input_int(self,mes=''):
-        f = '[MClient] plugins.multitranbin.utils.Commands.input_int'
+        f = '[MClient] plugins.multitrandem.utils.Commands.input_int'
         if not mes:
             mes = _('Input an integer: ')
         try:
@@ -1037,7 +1032,7 @@ class CompareBinaries:
         self.reset(file1,file2)
     
     def set_files(self):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.set_files'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.set_files'
         if self.Success:
             mes1  = _('File {}: ').format(1)
             mes2  = _('File {}: ').format(2)
@@ -1063,7 +1058,7 @@ class CompareBinaries:
             self.files()
         
     def dump(self):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.dump'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.dump'
         if self.Success:
             mes = _('This will extract binary data from both files from set positions')
             print(mes)
@@ -1099,7 +1094,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def go_end(self):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.go_end'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.go_end'
         if self.Success:
             min_ = min (self.bin1.get_file_size()
                        ,self.bin2.get_file_size()
@@ -1112,7 +1107,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def go_start(self):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.go_start'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.go_start'
         if self.Success:
             self.pos = 0
             self.load()
@@ -1120,7 +1115,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def clear(self):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.clear'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.clear'
         if self.Success:
             try:
                 if sh.objs.os().win():
@@ -1135,7 +1130,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def set_pos(self):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.set_pos'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.set_pos'
         if self.Success:
             mes = _('Enter a position to go or press Return to keep the current one ({}): ')
             mes = mes.format(sh.com.figure_commas(self.pos))
@@ -1173,7 +1168,7 @@ class CompareBinaries:
         self.coms.sort()
     
     def go_prev(self):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.go_prev'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.go_prev'
         if self.Success:
             while True:
                 start = self.pos - self.buffer
@@ -1195,7 +1190,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def go_next(self):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.go_next'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.go_next'
         if self.Success:
             while True:
                 start = self.pos + self.buffer
@@ -1213,7 +1208,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def go_page_down(self):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.go_page_down'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.go_page_down'
         if self.Success:
             self.pos += self.buffer
             min_ = min (self.bin1.get_file_size()
@@ -1228,7 +1223,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def go_page_up(self):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.go_page_up'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.go_page_up'
         if self.Success:
             self.pos -= self.buffer
             if self.pos < 0:
@@ -1238,7 +1233,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def load(self):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.load'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.load'
         if self.Success:
             start = self.pos
             end   = start + self.buffer
@@ -1257,7 +1252,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def set_buffer(self):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.set_buffer'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.set_buffer'
         if self.Success:
             mes = _('Enter a buffer size or press Return to keep the current one ({}): ')
             mes = mes.format(sh.com.figure_commas(self.buffer))
@@ -1278,7 +1273,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def show_help(self):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.show_help'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.show_help'
         if self.Success:
             mes = _('Available commands: {}')
             mes = mes.format('; '.join(self.coms))
@@ -1287,7 +1282,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def show_menu(self,command=''):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.show_menu'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.show_menu'
         if self.Success:
             if not command:
                 try:
@@ -1350,7 +1345,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def quit(self):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.quit'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.quit'
         if self.Success:
             self.close()
             mes = _('Goodbye!')
@@ -1359,7 +1354,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def is_changed(self,i):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.is_changed'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.is_changed'
         if self.Success:
             if i in self.poses:
                 return True
@@ -1367,7 +1362,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def print(self):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.print'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.print'
         if self.Success:
             mes = _('Chunk 1:')
             sh.objs.mes(f,mes,True).debug()
@@ -1391,7 +1386,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def report(self):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.report'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.report'
         if self.Success:
             self.clear()
             sub = sh.com.figure_commas(self.pos)
@@ -1401,7 +1396,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def compare(self,start=0,end=400):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.compare'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.compare'
         if self.Success:
             self.poses   = []
             self.chunks1 = self.bin1.read(start,end)
@@ -1421,7 +1416,7 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def close(self):
-        f = '[MClient] plugins.multitranbin.utils.CompareBinaries.close'
+        f = '[MClient] plugins.multitrandem.utils.CompareBinaries.close'
         if self.Success:
             self.bin1.close()
             self.bin2.close()
@@ -1449,9 +1444,4 @@ if __name__ == '__main__':
     #Tests().compare()
     #Tests().show_dumps()
     Tests().get_patch()
-    #Tests().analyze_xor()
-    '''
-    file1 = '/tmp/dict.ert'
-    file2 = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
-    CompareBinaries(file1,file2).show_menu()
-    '''
+    #Tests().brute_dexor()

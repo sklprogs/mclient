@@ -16,56 +16,13 @@ class Commands:
 
 
 
-class Xor(gt.Xor):
-    
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-    
-    def debug(self):
-        nos = [i for i in range(256)]
-
-        ''' This is basically a listing of 'cp1251' encoding with
-            control characters replaced with 'None'.
-        '''
-        syms = [None for i in range(33)]
-        syms += ['!','"','#','$','%','&',"'",'(',')','*','+',','
-                ,'-','.','/','0','1','2','3','4','5','6','7','8'
-                ,'9',':',';','<','=','>','?','@','A','B','C','D'
-                ,'E','F','G','H','I','J','K','L','M','N','O','P'
-                ,'Q','R','S','T','U','V','W','X','Y','Z','[','\\'
-                ,']','^','_','`','a','b','c','d','e','f','g','h'
-                ,'i','j','k','l','m','n','o','p','q','r','s','t'
-                ,'u','v','w','x','y','z','{','|','}','~',None,'Ђ'
-                ,'Ѓ','‚','ѓ','„','…','†','‡','€','‰','Љ','‹','Њ'
-                ,'Ќ','Ћ','Џ','ђ','‘','’','“','”','•','–','—'
-                ,None,'™','љ','›','њ','ќ','ћ','џ',None,'Ў','ў'
-                ,'Ћ','¤','Ґ','¦','§','Ё','©','Є','«','¬',None
-                ,'®','Ї','°','±','І','і','ґ','µ','¶','·','ё'
-                ,'№','є','»','ј','Ѕ','ѕ','ї','А','Б','В','Г'
-                ,'Д','Е','Ж','З','И','Й','К','Л','М','Н','О'
-                ,'П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ'
-                ,'Ъ','Ы','Ь','Э','Ю','Я','а','б','в','г','д'
-                ,'е','ж','з','и','й','к','л','м','н','о','п'
-                ,'р','с','т','у','ф','х','ц','ч','ш','щ','ъ'
-                ,'ы','ь','э','ю','я'
-                ]
-
-        headers = ('NO','TRANSL','OFFSET')
-        iterable = [nos,syms,self.vectors]
-        mes = sh.FastTable (headers  = headers
-                           ,iterable = iterable
-                           ).run()
-        sh.com.fast_debug(mes)
-
-
-
 class Ending(gt.Ending):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
     
     def debug(self):
-        f = '[MClient] plugins.multitranbin.tests.Ending.debug'
+        f = '[MClient] plugins.multitrandem.tests.Ending.debug'
         if self.Success:
             ends     = list(self.ends)
             ends     = [str(end) for end in ends]
@@ -88,7 +45,7 @@ class Subject(gt.Subject):
         super().__init__(*args,**kwargs)
     
     def debug(self):
-        f = '[MClient] plugins.multitranbin.tests.Subject.debug'
+        f = '[MClient] plugins.multitrandem.tests.Subject.debug'
         if self.Success:
             headers  = ('#','FULL (1)','ABBR (1)','FULL (2)','ABBR (2)')
             iterable = (self.dic_nos,self.en_dicf
@@ -121,7 +78,7 @@ class Binary(gt.Binary):
                    returns a narrower range works fine, so I use
                    the present function for testing purposes only.
         '''
-        f = '[MClient] plugins.multitranbin.tests.Binary.get_max_limits'
+        f = '[MClient] plugins.multitrandem.tests.Binary.get_max_limits'
         if self.Success:
             if page_no is None or not self.get_block_size():
                 sh.com.empty(f)
@@ -139,7 +96,7 @@ class Binary(gt.Binary):
             sh.com.cancel(f)
     
     def info(self):
-        f = '[MClient] plugins.multitranbin.tests.Binary.info'
+        f = '[MClient] plugins.multitrandem.tests.Binary.info'
         self.get_block_size()
         self.get_file_size()
         self.get_pages()
@@ -202,7 +159,7 @@ class Binary(gt.Binary):
             sh.com.cancel(f)
     
     def get_pages(self):
-        f = '[MClient] plugins.multitranbin.tests.Binary.get_pages'
+        f = '[MClient] plugins.multitrandem.tests.Binary.get_pages'
         self.get_block_size()
         if self.Success:
             if not self.pages:
@@ -261,27 +218,6 @@ class Binary(gt.Binary):
 
 
 class Tests:
-    
-    def get_shift(self):
-        # o -> q, 111 -> 113: -4
-        # n -> q, 110 -> 113: -14
-        # ъ -> я, 250 -> 255: 246
-        pos1 = 112
-        pos2 = 114
-        gt.Xor().get_shift(pos1,pos2)
-    
-    def xor(self):
-        # Expected: b'p', pos: 112, +26 => b'\x8a', 138 (-2)
-        # Expected: b'p' ->, pos: 112, offset: -67 -> b'-', pos: 45
-        pattern = 'p'
-        coded = bytes(pattern,gt.ENCODING)
-        gt.Xor().xor(coded)
-    
-    def dexor(self):
-        # 'petroleum'
-        chunk = b'-\x88\xfb\x89j\xc5\xd1\x82x'
-        dex = gt.Dexor()
-        dex.dexor(byte,start=-186)
     
     def suggest(self):
         #pattern = 'acid'
@@ -408,7 +344,7 @@ class Tests:
         sh.com.fast_debug(mes)
     
     def searchu_stems(self):
-        f = '[MClient] plugins.multitranbin.tests.Tests.searchu_stems'
+        f = '[MClient] plugins.multitrandem.tests.Tests.searchu_stems'
         timer = sh.Timer(f)
         timer.start()
         #pattern = b'wol'
@@ -459,7 +395,7 @@ class Tests:
         self.translate('уборка') # has a comment
     
     def translate_many(self):
-        f = '[MClient] plugins.multitranbin.tests.Tests.translate_many'
+        f = '[MClient] plugins.multitrandem.tests.Tests.translate_many'
         ''' MISSING IN MT DEMO:
             'преобразование случайной величины X, имеющей асимметричное распределение, в нормально распределённую величину Z'
         '''
@@ -525,7 +461,7 @@ class Tests:
         sh.objs.mes(f,mes,True).debug()
     
     def translate(self,pattern):
-        f = '[MClient] plugins.multitranbin.tests.Tests.translate'
+        f = '[MClient] plugins.multitrandem.tests.Tests.translate'
         timer = sh.Timer(f)
         timer.start()
         result = gt.Get(pattern).run()
@@ -541,7 +477,7 @@ class UPage(gt.UPage):
         super().__init__(*args,**kwargs)
 
     def debug(self):
-        f = '[MClient] plugins.multitranbin.tests.UPage.debug'
+        f = '[MClient] plugins.multitrandem.tests.UPage.debug'
         if self.Success:
             if self.file in (gt.objs.files().iwalker.get_stems1()
                             ,gt.objs._files.iwalker.get_stems2()
@@ -553,7 +489,7 @@ class UPage(gt.UPage):
             sh.com.cancel(f)
     
     def debug_glue(self):
-        f = '[MClient] plugins.multitranbin.tests.UPage.debug_glue'
+        f = '[MClient] plugins.multitrandem.tests.UPage.debug_glue'
         if self.Success:
             if self.part2:
                 part1 = [gt.com.get_string(chunk) \
@@ -577,7 +513,7 @@ class UPage(gt.UPage):
             sh.com.cancel(f)
     
     def debug_stems(self):
-        f = '[MClient] plugins.multitranbin.tests.UPage.debug_stems'
+        f = '[MClient] plugins.multitrandem.tests.UPage.debug_stems'
         if self.Success:
             if self.part2:
                 part1 = [chunk.decode(gt.ENCODING,'ignore') \
@@ -605,7 +541,7 @@ com = Commands()
 
 
 if __name__ == '__main__':
-    f = '[MClient] plugins.multitranbin.tests.__main__'
+    f = '[MClient] plugins.multitrandem.tests.__main__'
     gt.PATH = '/home/pete/.config/mclient/dics'
     ''' Currently failing translations:
         "work"
@@ -616,7 +552,4 @@ if __name__ == '__main__':
     #Tests().translate('DARE')
     #Binary(gt.objs.files().iwalker.get_glue1()).info()
     gt.DEBUG = True
-    #gt.com.overflowh(-1841)
-    #Tests().xor()
-    #Tests().get_shift()
-    Xor().debug()
+    gt.com.overflowh(-1841)
