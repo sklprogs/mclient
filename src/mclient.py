@@ -2483,7 +2483,7 @@ class Settings:
                                     ) \
                if choice != _('Do not set')
               ]
-        ''' #note: The following assignment does not change the list:
+        ''' #NOTE: The following assignment does not change the list:
             for item in lst:
                 if item == something:
                     item = something_else

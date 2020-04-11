@@ -61,10 +61,13 @@ class Tests:
                    ,'ы','ь','э','ю','я'
                    ]
         """
+        """
         patterns = ['aa','ab','ac','ad','ae','af','ag','ah','ai','aj'
                    ,'ak','al','am','an','ao','ap','aq','ar','as','at'
                    ,'au','av','aw','ax','aw','ay','az'
                    ]
+        """
+        patterns = ['pneumonoultramicroscopicsilicovolcanoconiosis']
         # A comment added for "Zerah"
         pos = 132779143
         messages = []
@@ -111,13 +114,16 @@ class Tests:
     def corrupt(self):
         f = '[MClient] plugins.multitranbin.utils.Tests.corrupt'
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
-        pos = 132779147
+        #pos = 132779147
+        #subst = b'\x00'
+        pos = 132775939
+        subst = b'\xd0\xf3\x96'
         old = com.corrupt (filew = file
                           ,pos   = pos
-                          ,subst = b'\x00\x00'
+                          ,subst = subst
                           )
         mes = _('Restore the damaged file?')
-        if sh.objs.mes(f,mes).question():
+        if sh.objs.mes(f,mes,True).question():
             com.corrupt (filew = file
                         ,pos   = pos
                         ,subst = old
@@ -1469,13 +1475,13 @@ if __name__ == '__main__':
     #file = '/home/pete/tmp/dump_zerah'
     #file = '/home/pete/.wine/drive_c/mt_demo_mln/Network/eng_rus/dict.ert'
     #Navigate(file).show_menu()
-    Tests().corrupt()
+    #Tests().corrupt()
     #Tests().compare()
     #Tests().show_dumps()
-    #Tests().get_patch()
+    Tests().get_patch()
     #Tests().analyze_xor()
-    '''
-    file1 = '/tmp/dict.ert'
-    file2 = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
-    CompareBinaries(file1,file2).show_menu()
-    '''
+    #file1 = '/tmp/dict.ert'
+    #file2 = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
+    #file1 = '/home/pete/tmp/Multitran/network/eng_rus/typein.er'
+    #file2 = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/typein.er'
+    #CompareBinaries(file1,file2).show_menu()
