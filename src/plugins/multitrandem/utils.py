@@ -20,11 +20,11 @@ DUMP2  = sh.Home().add('tmp','dump2')
 
 class Tests:
     
-    def brute_dexor(self):
-        f = '[MClient] plugins.multitrandem.utils.Tests.brute_dexor'
+    def run_brute_dexor(self):
+        f = '[MClient] plugins.multitrandem.utils.Tests.run_brute_dexor'
         orig   = b'-fcivqx\x89<'
         transl = b'Bullshit!'
-        mes = com.brute_dexor(orig,transl)
+        mes = com.run_brute_dexor(orig,transl)
         if mes:
             sh.com.run_fast_debug(mes[0])
         else:
@@ -926,7 +926,7 @@ class Commands:
                 messages.append(string)
                 messages.append(lstring)
                 messages.append('')
-                result = self.brute_dexor(chunk,coded)
+                result = self.run_brute_dexor(chunk,coded)
                 if result:
                     mes, delta = result[0], result[1]
                 else:
@@ -938,8 +938,8 @@ class Commands:
         else:
             sh.com.rep_empty(f)
     
-    def brute_dexor(self,bytes1,bytes2):
-        f = '[MClient] plugins.multitrandem.utils.Commands.brute_dexor'
+    def run_brute_dexor(self,bytes1,bytes2):
+        f = '[MClient] plugins.multitrandem.utils.Commands.run_brute_dexor'
         if bytes1 and bytes2:
             if len(bytes1) == len(bytes2):
                 offsets = []
@@ -1438,4 +1438,4 @@ if __name__ == '__main__':
     #Tests().compare()
     #Tests().show_dumps()
     Tests().get_patch()
-    #Tests().brute_dexor()
+    #Tests().run_brute_dexor()

@@ -244,11 +244,11 @@ class Tests:
         mes = '"{};{}"'.format(get.speech,get.spabbr)
         sh.objs.get_mes(f,mes,True).show_debug()
     
-    def ending(self):
+    def run_ending(self):
         subj = Ending(gt.objs.get_files().iwalker.get_ending())
         subj.debug()
     
-    def subject(self):
+    def run_subject(self):
         subj = Subject(gt.objs.get_files().iwalker.get_subject())
         subj.debug()
     

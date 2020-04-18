@@ -1749,13 +1749,13 @@ class Objects:
     def reset(self):
         self.alldics = self.files = None
     
-    def files(self):
+    def get_files(self):
         if self.files is None:
             self.files = Files()
             self.files.open()
         return self.files
     
-    def all_dics(self):
+    def get_all_dics(self):
         if self.alldics is None:
             self.alldics = AllDics()
         return self.alldics

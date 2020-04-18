@@ -141,10 +141,10 @@ class Tags:
 
 class Plugin:
     
-    def run_multitranbin(self):
-        f = '[MClient] tests.Plugin.run_multitranbin'
-        import plugins.multitranbin.get
-        import plugins.multitranbin.run as mb
+    def run_multitrandem(self):
+        f = '[MClient] tests.Plugin.run_multitrandem'
+        import plugins.multitrandem.get
+        import plugins.multitrandem.run as mb
         #search = 'Kafir'
         #search = 'abasin'
         #search = 'a posteriori'
@@ -160,7 +160,7 @@ class Plugin:
         #отравление хинной коркой и её алкалоидами = quininism
         url    = ''
         
-        plugins.multitranbin.get.PATH = '/home/pete/.config/mclient/dics/eng_rus'
+        plugins.multitrandem.get.PATH = '/home/pete/.config/mclient/dics/eng_rus'
         iplug = mb.Plugin (Debug   = DEBUG
                           ,Shorten = True
                           ,MaxRow  = 20
@@ -528,6 +528,6 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sh.com.start()
-    #Plugin().multitranbin()
+    #Plugin().multitrandem()
     Plugin().multitrancom()
     sh.com.end()

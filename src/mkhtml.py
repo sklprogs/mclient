@@ -55,7 +55,7 @@ class HTM:
         self.blocks  = []
         self.skipped = 0
         self.block   = None
-        self.htm    = ''
+        self.htm     = ''
         self.phdic   = ''
         self.script  = '''
         <head>

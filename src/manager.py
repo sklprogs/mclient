@@ -5,7 +5,7 @@ import skl_shared2.shared        as sh
 import plugins.stardict.get
 import plugins.stardict.run     as sdrun
 import plugins.multitrancom.run as mcrun
-import plugins.multitranbin.run as mbrun
+import plugins.multitrandem.run as mbrun
 from skl_shared2.localize import _
 
 
@@ -151,8 +151,8 @@ class Plugins:
     def load(self):
         plugins.stardict.get.PATH = self.sdpath
         plugins.stardict.get.objs.get_all_dics()
-        plugins.multitranbin.get.PATH = self.mbpath
-        plugins.multitranbin.get.objs.get_all_dics()
+        plugins.multitrandem.get.PATH = self.mbpath
+        plugins.multitrandem.get.objs.get_all_dics()
         self.sdplugin = sdrun.Plugin (Debug   = self.Debug
                                      ,iabbr   = self.iabbr
                                      ,Shorten = self.Shorten
