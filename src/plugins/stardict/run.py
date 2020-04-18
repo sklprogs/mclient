@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import skl_shared.shared        as sh
+import skl_shared2.shared        as sh
 import plugins.stardict.get     as gt
 import plugins.stardict.cleanup as cu
 import plugins.stardict.tags    as tg
 import plugins.stardict.elems   as el
-from skl_shared.localize import _
+from skl_shared2.localize import _
 
 
 
@@ -18,39 +18,39 @@ class Plugin:
                  ):
         ''' - Extra unused input variables are preserved so it would be
               easy to use an abstract class for all dictionary sources.
-            - #note: Do not forget to set plugins.stardict.get.PATH
+            - #NOTE: Do not forget to set plugins.stardict.get.PATH
               earlier.
         '''
-        self.values()
+        self.set_values()
         self.iabbr   = iabbr
         self.Debug   = Debug
         self.Shorten = Shorten
         self.MaxRow  = MaxRow
         self.MaxRows = MaxRows
     
-    def values(self):
-        self._blocks = []
-        self._text   = ''
-        self._html   = ''
+    def set_values(self):
+        self.blocks = []
+        self.text   = ''
+        self.htm    = ''
     
     def quit(self):
-        for idic in gt.objs.all_dics()._dics:
+        for idic in gt.objs.get_all_dics().dics:
             idic.unload()
     
     # This is needed only for compliance with a general method
-    def lang1(self):
+    def get_lang1(self):
         return _('Any')
     
     # This is needed only for compliance with a general method
-    def lang2(self):
+    def get_lang2(self):
         return _('Any')
     
     # This is needed only for compliance with a general method
-    def server(self):
+    def get_server(self):
         return ''
     
     # This is needed only for compliance with a general method
-    def fix_raw_html(self):
+    def fix_raw_htm(self):
         return ''
     
     # This is needed only for compliance with a general method
@@ -70,39 +70,39 @@ class Plugin:
         pass
     
     # This is needed only for compliance with a general method
-    def langs1(self,lang2=''):
+    def get_langs1(self,lang2=''):
         return(_('Any'),)
     
     # This is needed only for compliance with a general method
-    def langs2(self,lang1=''):
+    def get_langs2(self,lang1=''):
         return(_('Any'),)
     
-    def combined(self):
+    def is_combined(self):
         ''' Whether or not the plugin is actually a wrapper over other
             plugins.
         '''
         return False
     
-    def accessible(self):
-        return gt.com.accessible()
+    def is_accessible(self):
+        return gt.com.is_accessible()
     
     def suggest(self,search):
         return gt.Suggest(search).run()
     
     def request(self,search='',url=''):
-        iget       = gt.Get(search)
-        self._text = iget.run()
-        self._html = iget._html
-        self._text = cu.CleanUp(self._text).run()
-        if self._text is None:
-            self._text = ''
-        self._blocks = tg.Tags (text    = self._text
-                               ,Debug   = self.Debug
-                               ,Shorten = self.Shorten
-                               ,MaxRow  = self.MaxRow
-                               ,MaxRows = self.MaxRows
+        iget      = gt.Get(search)
+        self.text = iget.run()
+        self.htm  = iget.htm
+        self.text = cu.CleanUp(self.text).run()
+        if self.text is None:
+            self.text = ''
+        self.blocks = tg.Tags (text    = self.text
+                              ,Debug   = self.Debug
+                              ,Shorten = self.Shorten
+                              ,MaxRow  = self.MaxRow
+                              ,MaxRows = self.MaxRows
+                              ).run()
+        self.blocks = el.Elems (blocks = self.blocks
+                               ,iabbr  = self.iabbr
                                ).run()
-        self._blocks = el.Elems (blocks = self._blocks
-                                ,iabbr  = self.iabbr
-                                ).run()
-        return self._blocks
+        return self.blocks

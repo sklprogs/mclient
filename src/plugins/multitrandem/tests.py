@@ -4,15 +4,15 @@
 import io
 import struct
 import get               as gt
-import skl_shared.shared as sh
-from skl_shared.localize import _
+import skl_shared2.shared as sh
+from skl_shared2.localize import _
 
 
 class Commands:
     
     def swap_langs(self):
         gt.LANG1, gt.LANG2 = gt.LANG2, gt.LANG1
-        gt.objs.files().reset()
+        gt.objs.get_files().reset()
 
 
 
@@ -33,7 +33,7 @@ class Ending(gt.Ending):
                                ).run()
             sub = _('File: "{}"').format(self.file)
             mes = sub + '\n\n' + mes
-            sh.com.fast_debug(mes)
+            sh.com.run_fast_debug(mes)
         else:
             sh.com.cancel(f)
 
@@ -57,7 +57,7 @@ class Subject(gt.Subject):
                                ).run()
             sub = _('File: "{}"').format(self.file)
             mes = sub + '\n\n' + mes
-            sh.com.fast_debug(mes)
+            sh.com.run_fast_debug(mes)
         else:
             sh.com.cancel(f)
 
@@ -81,22 +81,22 @@ class Binary(gt.Binary):
         f = '[MClient] plugins.multitrandem.tests.Binary.get_max_limits'
         if self.Success:
             if page_no is None or not self.get_block_size():
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
             else:
                 mes = _('Page #: {}').format(page_no)
-                sh.objs.mes(f,mes,True).debug()
+                sh.objs.get_mes(f,mes,True).show_debug()
                 pos1 = page_no * self.bsize
                 pos2 = pos1 + self.bsize
-                sub1 = sh.com.figure_commas(pos1)
-                sub2 = sh.com.figure_commas(pos2)
+                sub1 = sh.com.set_figure_commas(pos1)
+                sub2 = sh.com.set_figure_commas(pos2)
                 mes  = _('Page limits: [{}:{}]').format(sub1,sub2)
-                sh.objs.mes(f,mes,True).debug()
+                sh.objs.get_mes(f,mes,True).show_debug()
                 return(pos1,pos2)
         else:
             sh.com.cancel(f)
     
-    def info(self):
-        f = '[MClient] plugins.multitrandem.tests.Binary.info'
+    def show_info(self):
+        f = '[MClient] plugins.multitrandem.tests.Binary.show_info'
         self.get_block_size()
         self.get_file_size()
         self.get_pages()
@@ -105,11 +105,11 @@ class Binary(gt.Binary):
             mes = _('File: {}').format(self.file)
             iwrite.write(mes)
             iwrite.write('\n')
-            size = sh.com.human_size(self.fsize)
+            size = sh.com.get_human_size(self.fsize)
             mes  = _('File size: {}').format(size)
             iwrite.write(mes)
             iwrite.write('\n')
-            size = sh.com.figure_commas(self.bsize)
+            size = sh.com.set_figure_commas(self.bsize)
             mes  = _('Block size: {}').format(size)
             iwrite.write(mes)
             iwrite.write('\n\n')
@@ -133,15 +133,16 @@ class Binary(gt.Binary):
                 else:
                     types.append(_('N/A'))
                     mes = _('Wrong input data!')
-                    sh.objs.mes(f,mes).error()
+                    sh.objs.get_mes(f,mes).show_error()
                 # The first page is actually an M area
                 poses = self.get_page_limits(i+1)
                 if poses:
-                    poses1.append(sh.com.figure_commas(poses[0]))
-                    poses2.append(sh.com.figure_commas(poses[1]))
-                    sizes.append(sh.com.figure_commas(poses[1]-poses[0]))
+                    poses1.append(sh.com.set_figure_commas(poses[0]))
+                    poses2.append(sh.com.set_figure_commas(poses[1]))
+                    delta = poses[1] - poses[0]
+                    sizes.append(sh.com.set_figure_commas(delta))
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
                     poses1.append(_('N/A'))
                     poses2.append(_('N/A'))
                     sizes.append(_('N/A'))
@@ -154,7 +155,7 @@ class Binary(gt.Binary):
             iwrite.write('\n')
             mes = iwrite.getvalue()
             iwrite.close()
-            sh.com.fast_debug(mes)
+            sh.com.run_fast_debug(mes)
         else:
             sh.com.cancel(f)
     
@@ -165,8 +166,8 @@ class Binary(gt.Binary):
             if not self.pages:
                 limits = self.get_page_limit()
                 if limits:
-                    ''' These limits are based on the binary size, so we
-                        can read it without fearing an empty input.
+                    ''' These limits are based on the binary size, so
+                        we can read it without fearing an empty input.
                         'if limit' skips 'M' area (page 0).
                     '''
                     limits = [limit * self.bsize \
@@ -182,7 +183,7 @@ class Binary(gt.Binary):
                         elif node == b'Z':
                             self.zpages.append(limit)
                         else:
-                            sub = sh.com.figure_commas(limit)
+                            sub = sh.com.set_figure_commas(limit)
                             messages = []
                             mes = _('Position: {}').format(sub)
                             messages.append(mes)
@@ -190,27 +191,27 @@ class Binary(gt.Binary):
                             mes = mes.format(node)
                             messages.append(mes)
                             mes = '\n'.join(messages)
-                            sh.objs.mes(f,mes).warning()
+                            sh.objs.get_mes(f,mes).show_warning()
                             break
-                    upages = [sh.com.figure_commas(item) \
+                    upages = [sh.com.set_figure_commas(item) \
                               for item in self.upages
                              ]
-                    lpages = [sh.com.figure_commas(item) \
+                    lpages = [sh.com.set_figure_commas(item) \
                               for item in self.lpages
                              ]
-                    zpages = [sh.com.figure_commas(item) \
+                    zpages = [sh.com.set_figure_commas(item) \
                               for item in self.zpages
                              ]
                     mes = _('U pages: {}').format(upages)
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
                     mes = _('L pages: {}').format(lpages)
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
                     mes = _('Z pages: {}').format(zpages)
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
                     self.pages = self.upages + self.lpages + self.zpages
                     self.pages.sort()
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
         return self.pages
@@ -225,7 +226,7 @@ class Tests:
         com.swap_langs()
         timer = sh.Timer()
         timer.start()
-        gt.objs.files().get_typein1().search(pattern)
+        gt.objs.get_files().get_typein1().search(pattern)
         timer.end()
     
     def get_speech(self,pattern):
@@ -238,17 +239,17 @@ class Tests:
         get.run()
         stemnos = get.stemnos
         stemnos = [gt.com.unpack(no) for no in stemnos]
-        stemnos = [sh.com.figure_commas(no) for no in stemnos]
-        sh.objs.mes(f,stemnos,True).debug()
+        stemnos = [sh.com.set_figure_commas(no) for no in stemnos]
+        sh.objs.get_mes(f,stemnos,True).show_debug()
         mes = '"{};{}"'.format(get.speech,get.spabbr)
-        sh.objs.mes(f,mes,True).debug()
+        sh.objs.get_mes(f,mes,True).show_debug()
     
     def ending(self):
-        subj = Ending(gt.objs.files().iwalker.get_ending())
+        subj = Ending(gt.objs.get_files().iwalker.get_ending())
         subj.debug()
     
     def subject(self):
-        subj = Subject(gt.objs.files().iwalker.get_subject())
+        subj = Subject(gt.objs.get_files().iwalker.get_subject())
         subj.debug()
     
     def _parse_upage(self,file):
@@ -267,37 +268,37 @@ class Tests:
         #pattern = b':'
         #pattern = b'\xfc'
         pattern  = b'\xfd'
-        upage = UPage(gt.objs.files().iwalker.get_article())
+        upage = UPage(gt.objs.get_files().iwalker.get_article())
         upage.get_parts()
         upage.searchu(pattern)
         #upage.debug()
     
     def parse_upage(self):
-        file = gt.objs.files().iwalker.get_stems1()
+        file = gt.objs.get_files().iwalker.get_stems1()
         self._parse_upage(file)
-        file = gt.objs.files().iwalker.get_stems2()
+        file = gt.objs.get_files().iwalker.get_stems2()
         self._parse_upage(file)
-        file = gt.objs.files().iwalker.get_glue1()
+        file = gt.objs.get_files().iwalker.get_glue1()
         self._parse_upage(file)
-        file = gt.objs.files().iwalker.get_glue2()
+        file = gt.objs.get_files().iwalker.get_glue2()
         self._parse_upage(file)
-        file = gt.objs.files().iwalker.get_article()
+        file = gt.objs.get_files().iwalker.get_article()
         self._parse_upage(file)
     
     def searchu_glue(self):
         #pattern = b'\x1b-\x00'
         pattern  = b'\x00'
-        upage = UPage(gt.objs.files().iwalker.get_glue1())
+        upage = UPage(gt.objs.get_files().iwalker.get_glue1())
         upage.get_parts()
         upage.searchu(pattern)
         #upage.debug()
     
     def get_upage_stems(self):
-        upage = UPage(gt.objs.files().iwalker.get_stems1())
+        upage = UPage(gt.objs.get_files().iwalker.get_stems1())
         upage.get_parts()
         part1  = list(upage.part1)
         part2  = list(upage.part2)
-        part1d = [item.decode(gt.ENCODING,'replace') for item in part1]
+        part1d = [item.decode(gt.CODING,'replace') for item in part1]
         part2l = []
         for i in range(len(part2)):
             if part2[i]:
@@ -312,10 +313,10 @@ class Tests:
                            ,iterable = data
                            ,sep      = 3 * ' '
                            ).run()
-        sh.com.fast_debug(mes)
+        sh.com.run_fast_debug(mes)
     
     def get_upage_glue(self):
-        upage = UPage(gt.objs.files().iwalker.get_glue1())
+        upage = UPage(gt.objs.get_files().iwalker.get_glue1())
         upage.get_parts()
         part1  = list(upage.part1)
         part2  = list(upage.part2)
@@ -341,7 +342,7 @@ class Tests:
                            ,iterable = data
                            ,sep      = 3 * ' '
                            ).run()
-        sh.com.fast_debug(mes)
+        sh.com.run_fast_debug(mes)
     
     def searchu_stems(self):
         f = '[MClient] plugins.multitrandem.tests.Tests.searchu_stems'
@@ -361,7 +362,7 @@ class Tests:
         #pattern = b'volume'
         pattern = b'abatement'
         
-        upage = UPage(gt.objs.files().iwalker.get_stems1())
+        upage = UPage(gt.objs.get_files().iwalker.get_stems1())
         upage.searchu(pattern)
         print('---------------------------------------------------')
         #pattern = 'уборка'
@@ -380,10 +381,10 @@ class Tests:
         #pattern = 'задеть'
         #pattern = 'зашуганный'
         pattern  = 'звезда'
-        pattern  = bytes(pattern,gt.ENCODING)
+        pattern  = bytes(pattern,gt.CODING)
         com.swap_langs()
         # Since we swap languages, the needed stems will always be #1
-        upage = UPage(gt.objs.files().iwalker.get_stems1())
+        upage = UPage(gt.objs.get_files().iwalker.get_stems1())
         upage.searchu(pattern)
         timer.end()
         #upage.debug()
@@ -458,14 +459,14 @@ class Tests:
         mes = _('Failed: {}').format(failed)
         messages.append(mes)
         mes = '\n' + '\n'.join(messages)
-        sh.objs.mes(f,mes,True).debug()
+        sh.objs.get_mes(f,mes,True).show_debug()
     
     def translate(self,pattern):
         f = '[MClient] plugins.multitrandem.tests.Tests.translate'
         timer = sh.Timer(f)
         timer.start()
         result = gt.Get(pattern).run()
-        sh.objs.mes(f,result,True).debug()
+        sh.objs.get_mes(f,result,True).show_debug()
         timer.end()
         return result
 
@@ -479,8 +480,8 @@ class UPage(gt.UPage):
     def debug(self):
         f = '[MClient] plugins.multitrandem.tests.UPage.debug'
         if self.Success:
-            if self.file in (gt.objs.files().iwalker.get_stems1()
-                            ,gt.objs._files.iwalker.get_stems2()
+            if self.file in (gt.objs.get_files().iwalker.get_stems1()
+                            ,gt.objs.files.iwalker.get_stems2()
                             ):
                 self.debug_stems()
             else:
@@ -504,11 +505,11 @@ class UPage(gt.UPage):
                                    ).run()
                 if mes:
                     mes = _('File: {}').format(self.file) + '\n\n' + mes
-                    sh.com.fast_debug(mes)
+                    sh.com.run_fast_debug(mes)
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
@@ -516,7 +517,7 @@ class UPage(gt.UPage):
         f = '[MClient] plugins.multitrandem.tests.UPage.debug_stems'
         if self.Success:
             if self.part2:
-                part1 = [chunk.decode(gt.ENCODING,'ignore') \
+                part1 = [chunk.decode(gt.CODING,'ignore') \
                          for chunk in self.part1
                         ]
                 part2 = [struct.unpack('<h',chunk)[0] \
@@ -528,11 +529,11 @@ class UPage(gt.UPage):
                                    ).run()
                 if mes:
                     mes = _('File: {}').format(self.file) + '\n\n' + mes
-                    sh.com.fast_debug(mes)
+                    sh.com.run_fast_debug(mes)
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
 
@@ -550,6 +551,6 @@ if __name__ == '__main__':
     '''
     #Tests().get_speech('DARE')
     #Tests().translate('DARE')
-    #Binary(gt.objs.files().iwalker.get_glue1()).info()
+    #Binary(gt.objs.get_files().iwalker.get_glue1()).show_info()
     gt.DEBUG = True
     gt.com.overflowh(-1841)

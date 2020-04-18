@@ -6,67 +6,67 @@
 '''
 
 import sqlite3
-import skl_shared.shared as sh
-from skl_shared.localize import _
+import skl_shared2.shared as sh
+from skl_shared2.localize import _
 
 
 class DB:
-    ''' #note: don't forget to change 'self.Selectable', 'self._cols',
+    ''' #NOTE: don't forget to change 'self.Selectable', 'self.cols',
         'self.SortTerms' externally.
     '''
     def __init__(self):
-        self.values()
+        self.set_values()
         self.reset()
         self.db  = sqlite3.connect(':memory:')
         self.dbc = self.db.cursor()
         self.create_blocks()
         self.create_articles()
         
-    def wforma(self,pos):
-        f = '[MClient] db.DB.wforma'
-        if self._articleid:
+    def get_wforma(self,pos):
+        f = '[MClient] db.DB.get_wforma'
+        if self.artid:
             self.dbc.execute ('select WFORMA from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
                                and IGNORE = 0 and POS1 <= ? \
-                               and POS2 > ?',(self._articleid,pos,pos,)
+                               and POS2 > ?',(self.artid,pos,pos,)
                              )
             result = self.dbc.fetchone()
             if result:
                 return result[0]
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
-    def next_dica(self,pos,dica):
-        f = '[MClient] db.DB.next_dica'
-        if self._articleid:
+    def get_next_dica(self,pos,dica):
+        f = '[MClient] db.DB.get_next_dica'
+        if self.artid:
             self.dbc.execute ('select DICA,DICAF,NO,CELLNO from BLOCKS \
                                where ARTICLEID = ? and POS1 > ? \
                                and not DICA = ? and not DICAF = ? \
                                and BLOCK = 0 and IGNORE = 0 \
                                order by CELLNO,NO'
-                             ,(self._articleid,pos,dica,dica,)
+                             ,(self.artid,pos,dica,dica,)
                              )
             return self.dbc.fetchone()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
-    def prev_dica(self,pos,dica):
+    def get_prev_dica(self,pos,dica):
         f = '[MClient] db.DB.prev_dica'
-        if self._articleid:
+        if self.artid:
             self.dbc.execute ('select DICA,DICAF,NO,CELLNO from BLOCKS \
                                where ARTICLEID = ? and POS1 < ? \
                                and not DICA = ? and not DICAF = ? \
                                and BLOCK = 0 and IGNORE = 0 \
                                order by CELLNO desc,NO desc'
-                             ,(self._articleid,pos,dica,dica,)
+                             ,(self.artid,pos,dica,dica,)
                              )
             return self.dbc.fetchone()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
-    def values(self):
+    def set_values(self):
         self.Selectable = True
-        self._articleid = 0
+        self.artid = 0
         
     def create_blocks(self):
         ''' We use integers instead of booleans; -1 means not set.
@@ -133,23 +133,23 @@ class DB:
         self.SortTerms = SortTerms
         self.SortRows  = SortRows
         self.ExpandDic = ExpandDic
-        self._cols     = cols
+        self.cols      = cols
         # Prevents None + tuple
-        if not self._cols:
-            self._cols = ('dic','wform','transc','speech')
-            sh.com.empty(f)
+        if not self.cols:
+            self.cols = ('dic','wform','transc','speech')
+            sh.com.rep_empty(f)
         #NOTE: do not forget to add new block types here
-        self._types = self._cols + ('term','phrase','comment'
-                                   ,'correction','user','definition'
-                                   )
+        self.types = self.cols + ('term','phrase','comment'
+                                 ,'correction','user','definition'
+                                 )
 
     def fill_blocks(self,data):
         self.dbc.executemany ('insert into BLOCKS values \
-                               (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?\
-                               ,?,?,?,?,?,?,?,?,?,?,?\
-                               )'
-                               ,data
-                              )
+                              (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?\
+                              ,?,?,?,?,?,?,?,?,?,?,?\
+                              )'
+                              ,data
+                             )
         
     def fill_articles(self,data):
         self.dbc.execute ('insert into ARTICLES values (?,?,?,?,?,?,?)'
@@ -160,16 +160,16 @@ class DB:
         self.dbc.execute ('select TYPE,TEXT,ROWNO,COLNO from BLOCKS \
                            where ARTICLEID = ? and BLOCK = 0 \
                            and IGNORE = 0 order by CELLNO,NO'
-                         ,(self._articleid,)
+                         ,(self.artid,)
                          )
         return self.dbc.fetchall()
 
-    def present(self,source,title,url):
+    def is_present(self,source,title,url):
         ''' We also need to pass URL in case History has two phrase
             dictionary titles of the same name.
             URL will be empty for local dictionaries so we need to pass
             TITLE as well.
-            #note: add LANG1 and LANG2 when pairs are enabled for local
+            #NOTE: add LANG1 and LANG2 when pairs are enabled for local
             dictionaries.
         '''
         self.dbc.execute ('select ARTICLEID from ARTICLES \
@@ -180,42 +180,42 @@ class DB:
         if result:
             return result[0]
 
-    def searches(self):
+    def get_searches(self):
         self.dbc.execute ('select distinct ARTICLEID,TITLE \
                            from ARTICLES order by ARTICLEID desc'
                          )
         return self.dbc.fetchall()
 
-    def prev_id(self,Loop=True):
-        f = '[MClient] db.DB.prev_id'
-        if self._articleid:
+    def get_prev_id(self,Loop=True):
+        f = '[MClient] db.DB.get_prev_id'
+        if self.artid:
             self.dbc.execute ('select ARTICLEID from ARTICLES \
                                where ARTICLEID < ? \
                                order by ARTICLEID desc'
-                             ,(self._articleid,)
+                             ,(self.artid,)
                              )
             result = self.dbc.fetchone()
             if result:
                 return result[0]
             elif Loop:
-                return self.max_articleid()
+                return self.get_max_artid()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def next_id(self,Loop=True):
-        f = '[MClient] db.DB.next_id'
-        if self._articleid:
+    def get_next_id(self,Loop=True):
+        f = '[MClient] db.DB.get_next_id'
+        if self.artid:
             self.dbc.execute ('select ARTICLEID from ARTICLES \
                                where ARTICLEID > ? order by ARTICLEID'
-                             ,(self._articleid,)
+                             ,(self.artid,)
                              )
             result = self.dbc.fetchone()
             if result:
                 return result[0]
             elif Loop:
-                return self.min_articleid()
+                return self.get_min_artid()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
     def print (self,Selected=False,Shorten=False
               ,MaxRow=20,MaxRows=20,mode='BLOCKS'
@@ -236,7 +236,7 @@ class DB:
             else:
                 mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
                 mes = mes.format(mode,'ARTICLES, BLOCKS')
-                sh.objs.mes(f,mes).error()
+                sh.objs.get_mes(f,mes).show_error()
         headers = [cn[0] for cn in self.dbc.description]
         rows    = self.dbc.fetchall()
         sh.Table (headers = headers
@@ -253,24 +253,24 @@ class DB:
         except sqlite3.OperationalError:
             sub = str(query).replace(';',';\n')
             mes = _('Unable to execute:\n"{}"').format(sub)
-            sh.objs.mes(f,mes).error()
+            sh.objs.get_mes(f,mes).show_error()
 
     # Assign input data for BlockPrioritize
     def assign_bp(self):
         f = '[MClient] db.DB.assign_bp'
-        if self._articleid:
+        if self.artid:
             self.dbc.execute ('select NO,TYPE,TEXT,DICA from BLOCKS \
                                where ARTICLEID = ? order by NO'
-                             ,(self._articleid,)
+                             ,(self.artid,)
                              )
             return self.dbc.fetchall()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
     def order_query(self):
         f = '[MClient] db.DB.order_query'
         query = []
-        for item in self._cols:
+        for item in self.cols:
             if item == 'dic':
                 query.append('PRIORITY desc')
                 ''' Full dictionary titles and abbreviations can be
@@ -292,7 +292,7 @@ class DB:
             else:
                 mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
                 mes = mes.format(item,'dic, wform, speech, transc')
-                sh.objs.mes(f,mes).error()
+                sh.objs.get_mes(f,mes).show_error()
         if self.SortTerms:
             query.append('TERMA')
         return ','.join(query)
@@ -300,7 +300,7 @@ class DB:
     # Assign input data for Cells
     def assign_cells(self):
         f = '[MClient] db.DB.assign_cells'
-        if self._articleid:
+        if self.artid:
             query = 'select NO,TYPE,TEXT,SAMECELL,'
             if self.ExpandDic:
                 query += 'DICAF,'
@@ -317,84 +317,84 @@ class DB:
                 query += order + ',NO'
             else:
                 query += 'NO'
-            #fix: this will not work for Cyrillic
+            #FIX: this will not work for Cyrillic
             query += ' collate nocase'
-            self.dbc.execute(query,(self._articleid,))
+            self.dbc.execute(query,(self.artid,))
             return self.dbc.fetchall()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
     # Assign input data for Pos
     def assign_pos(self):
         f = '[MClient] db.DB.assign_pos'
-        if self._articleid:
+        if self.artid:
             self.dbc.execute ('select NO,TYPE,TEXT,SAMECELL,ROWNO \
                                from BLOCKS where ARTICLEID = ? \
                                and BLOCK = 0 and IGNORE = 0 \
-                               order by CELLNO,NO',(self._articleid,)
+                               order by CELLNO,NO',(self.artid,)
                              )
             return self.dbc.fetchall()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def phrase_dic_primary(self):
+    def get_phdic_primary(self):
         ''' Get 'PhraseDic' before 'Cells' are built when 'PhraseDic' is
             still of a 'phrase' type.
         '''
-        f = '[MClient] db.DB.phrase_dic_primary'
-        if self._articleid:
+        f = '[MClient] db.DB.get_phdic_primary'
+        if self.artid:
             self.dbc.execute ('select DICA from BLOCKS \
                                where ARTICLEID = ? and TYPE = ? \
-                               order by NO',(self._articleid,'phrase',)
+                               order by NO',(self.artid,'phrase',)
                              )
             result = self.dbc.fetchone()
             if result:
                 return result[0]
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
                           
-    def phrase_dic(self):
-        f = '[MClient] db.DB.phrase_dic'
-        if self._articleid:
-            result = self.phrase_dic_primary()
+    def get_phdic(self):
+        f = '[MClient] db.DB.get_phdic'
+        if self.artid:
+            result = self.get_phdic_primary()
             if result:
                 self.dbc.execute ('select POS1,URL,TEXT from BLOCKS \
                                    where ARTICLEID = ? and DICA = ? \
                                    order by NO'
-                                 ,(self._articleid,result,)
+                                 ,(self.artid,result,)
                                  )
                 return self.dbc.fetchone()
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
     def clear(self):
         f = '[MClient] db.DB.clear'
         mes = _('Delete all records from {}').format('ARTICLES, BLOCKS')
-        sh.objs.mes(f,mes,True).warning()
+        sh.objs.get_mes(f,mes,True).show_warning()
         # VACUUM command is a no-op for in-memory databases
         self.dbc.execute('delete from BLOCKS')
         self.dbc.execute('delete from ARTICLES')
 
     def clear_cur(self):
         f = '[MClient] db.DB.clear_cur'
-        if self._articleid:
+        if self.artid:
             mes = _('Delete records of article No. {} from {}')
-            mes = mes.format(self._articleid,'BLOCKS, ARTICLES')
-            sh.objs.mes(f,mes,True).warning()
+            mes = mes.format(self.artid,'BLOCKS, ARTICLES')
+            sh.objs.get_mes(f,mes,True).show_warning()
             self.dbc.execute ('delete from BLOCKS where ARTICLEID = ?'
-                             ,(self._articleid,)
+                             ,(self.artid,)
                              )
             self.dbc.execute ('delete from ARTICLES where ARTICLEID = ?'
-                             ,(self._articleid,)
+                             ,(self.artid,)
                              )
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def block_pos(self,pos):
-        f = '[MClient] db.DB.block_pos'
-        if self._articleid:
+    def get_block_pos(self,pos):
+        f = '[MClient] db.DB.get_block_pos'
+        if self.artid:
             if self.Selectable:
                 ''' 'POS2 > pos' instead of 'POS2 >= pos' allows to
                     correctly navigate through blocks where separate
@@ -406,7 +406,7 @@ class DB:
                                    and IGNORE = 0 and POS1 <= ? \
                                    and POS2 > ? and POS1 < POS2 \
                                    and SELECTABLE = 1'
-                                 ,(self._articleid,pos,pos,)
+                                 ,(self.artid,pos,pos,)
                                  )
             else:
                 self.dbc.execute ('select POS1,POS2,CELLNO,ROWNO,COLNO\
@@ -414,57 +414,57 @@ class DB:
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and POS1 <= ? \
                                    and POS2 > ? and POS1 < POS2'
-                                 ,(self._articleid,pos,pos,)
+                                 ,(self.artid,pos,pos,)
                                  )
             return self.dbc.fetchone()
         # Too frequent, especially on the Welcome screen
         #else:
-        #    sh.com.empty(f)
+        #    sh.com.rep_empty(f)
 
-    def article(self):
-        f = '[MClient] db.DB.article'
-        if self._articleid:
+    def get_article(self):
+        f = '[MClient] db.DB.get_article'
+        if self.artid:
             self.dbc.execute ('select SOURCE,TITLE,URL,BOOKMARK,LANG1\
                                      ,LANG2 \
                                from ARTICLES where ARTICLEID = ?'
-                             ,(self._articleid,)
+                             ,(self.artid,)
                              )
             return self.dbc.fetchone()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def url(self,pos):
-        f = '[MClient] db.DB.url'
-        if self._articleid:
+    def get_url(self,pos):
+        f = '[MClient] db.DB.get_url'
+        if self.artid:
             self.dbc.execute ('select URL from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
                                and IGNORE = 0 and POS1 <= ? \
-                               and POS2 > ?',(self._articleid,pos,pos,)
+                               and POS2 > ?',(self.artid,pos,pos,)
                              )
             result = self.dbc.fetchone()
             if result:
                 return result[0]
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def text(self,pos):
-        f = '[MClient] db.DB.text'
-        if self._articleid:
+    def get_text(self,pos):
+        f = '[MClient] db.DB.get_text'
+        if self.artid:
             self.dbc.execute ('select TEXT from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
                                and IGNORE = 0 and POS1 <= ? \
                                and POS2 > ?'
-                             ,(self._articleid,pos,pos,)
+                             ,(self.artid,pos,pos,)
                              )
             result = self.dbc.fetchone()
             if result:
                 return result[0]
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def min_cell(self):
-        f = '[MClient] db.DB.min_cell'
-        if self._articleid:
+    def get_min_cell(self):
+        f = '[MClient] db.DB.get_min_cell'
+        if self.artid:
             if self.Selectable:
                 ''' This function is made for calculating moves; if we
                     don't take into account types, the first selectable
@@ -475,22 +475,22 @@ class DB:
                                    and IGNORE = 0 and TYPE in \
                                    ("term","phrase") and SELECTABLE = 1\
                                    and POS1 < POS2 order by CELLNO,NO'
-                                 ,(self._articleid,)
+                                 ,(self.artid,)
                                  )
             else:
                 self.dbc.execute ('select CELLNO,NO,POS1 from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and POS1 < POS2 \
                                    order by CELLNO,NO'
-                                 ,(self._articleid,)
+                                 ,(self.artid,)
                                  )
             return self.dbc.fetchone()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def max_cell(self):
-        f = '[MClient] db.DB.max_cell'
-        if self._articleid:
+    def get_max_cell(self):
+        f = '[MClient] db.DB.get_max_cell'
+        if self.artid:
             if self.Selectable:
                 self.dbc.execute ('select CELLNO,NO,POS1,BBOX1,BBOX2 \
                                    from BLOCKS where ARTICLEID = ? \
@@ -498,74 +498,74 @@ class DB:
                                    and TYPE in ("term","phrase") \
                                    and SELECTABLE = 1 and POS1 < POS2 \
                                    order by CELLNO desc,NO desc'
-                                 ,(self._articleid,)
+                                 ,(self.artid,)
                                  )
             else:
                 self.dbc.execute ('select CELLNO,NO,POS1,BBOX1,BBOX2 \
                                    from BLOCKS where ARTICLEID = ? \
                                    and BLOCK = 0 and IGNORE = 0 \
                                    and POS1 < POS2 order by CELLNO desc\
-                                   ,NO desc',(self._articleid,)
+                                   ,NO desc',(self.artid,)
                                  )
             return self.dbc.fetchone()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def max_row(self):
+    def get_max_row(self):
         ''' Find the maximum available row number for the whole table;
             this might not be the same as ROWNO of 'self.max_cell'
         '''
-        f = '[MClient] db.DB.max_row'
-        if self._articleid:
+        f = '[MClient] db.DB.get_max_row'
+        if self.artid:
             if self.Selectable:
                 self.dbc.execute ('select ROWNO,NO from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and TYPE in \
                                    ("term","phrase") and SELECTABLE = 1\
                                    and POS1 < POS2 order by ROWNO desc'
-                                 ,(self._articleid,)
+                                 ,(self.artid,)
                                  )
             else:
                 self.dbc.execute ('select ROWNO,NO from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and POS1 < POS2 \
                                    order by ROWNO desc'
-                                 ,(self._articleid,)
+                                 ,(self.artid,)
                                  )
             return self.dbc.fetchone()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def max_col(self):
+    def get_max_col(self):
         ''' Find the maximum available column number for the whole
             table; this might not be the same as COLNO of
-            'self.max_cell'
+            'self.get_max_cell'
         '''
-        f = '[MClient] db.DB.max_col'
-        if self._articleid:
+        f = '[MClient] db.DB.get_max_col'
+        if self.artid:
             if self.Selectable:
                 self.dbc.execute ('select COLNO,NO,BBOX2 from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and TYPE in \
                                    ("term","phrase") and SELECTABLE = 1\
                                    and POS1 < POS2 order by COLNO desc\
-                                  ,NO desc',(self._articleid,)
+                                  ,NO desc',(self.artid,)
                                  )
             else:
                 self.dbc.execute ('select COLNO,NO,BBOX2 from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and POS1 < POS2 \
                                    order by COLNO desc,NO desc'
-                                 ,(self._articleid,)
+                                 ,(self.artid,)
                                  )
             return self.dbc.fetchone()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
     # Find the maximum available row number for the set column
-    def max_row_sp(self,col_no):
-        f = '[MClient] db.DB.max_row_sp'
-        if self._articleid:
+    def get_max_row_sp(self,col_no):
+        f = '[MClient] db.DB.get_max_row_sp'
+        if self.artid:
             if self.Selectable:
                 self.dbc.execute ('select ROWNO,NO from BLOCKS \
                                    where COLNO = ? and ARTICLEID = ? \
@@ -573,50 +573,50 @@ class DB:
                                    and TYPE in ("term","phrase") \
                                    and SELECTABLE = 1 and POS1 < POS2 \
                                    order by ROWNO desc,NO desc'
-                                 ,(col_no,self._articleid,)
+                                 ,(col_no,self.artid,)
                                  )
             else:
                 self.dbc.execute ('select ROWNO,NO from BLOCKS \
                                    where COLNO = ? and ARTICLEID = ? \
                                    and BLOCK = 0 and IGNORE = 0 \
                                    and POS1 < POS2 order by ROWNO desc\
-                                  ,NO desc',(col_no,self._articleid,)
+                                  ,NO desc',(col_no,self.artid,)
                                  )
             return self.dbc.fetchone()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def min_col(self):
+    def get_min_col(self):
         ''' Find the minimum available column number for the whole
             table; this should be the same as COLNO of 'self.min_cell'
             but we leave it for non-standard tables.
         '''
-        f = '[MClient] db.DB.min_col'
-        if self._articleid:
+        f = '[MClient] db.DB.get_min_col'
+        if self.artid:
             if self.Selectable:
                 self.dbc.execute ('select COLNO,NO,BBOX1 from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and TYPE in \
                                    ("term","phrase") and SELECTABLE = 1\
                                    and POS1 < POS2 order by COLNO,NO'
-                                 ,(self._articleid,)
+                                 ,(self.artid,)
                                  )
             else:
                 self.dbc.execute ('select COLNO,NO,BBOX1 from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and POS1 < POS2 \
-                                   order by COLNO,NO',(self._articleid,)
+                                   order by COLNO,NO',(self.artid,)
                                  )
             return self.dbc.fetchone()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def min_row_sp(self,col_no):
+    def get_min_row_sp(self,col_no):
         ''' Find the minimum available row number for the set column;
             this might not be the same as ROWNO of 'self.min_cell'
         '''
-        f = '[MClient] db.DB.min_row_sp'
-        if self._articleid:
+        f = '[MClient] db.DB.get_min_row_sp'
+        if self.artid:
             if self.Selectable:
                 self.dbc.execute ('select ROWNO,NO from BLOCKS \
                                    where COLNO = ? and ARTICLEID = ? \
@@ -624,22 +624,22 @@ class DB:
                                    and TYPE in ("term","phrase") \
                                    and SELECTABLE = 1 and POS1 < POS2 \
                                    order by ROWNO,NO'
-                                 ,(col_no,self._articleid,)
+                                 ,(col_no,self.artid,)
                                  )
             else:
                 self.dbc.execute ('select ROWNO,NO from BLOCKS \
                                    where COLNO = ? and ARTICLEID = ? \
                                    and BLOCK = 0 and IGNORE = 0 \
                                    and POS1 < POS2 order by ROWNO,NO'
-                                 ,(col_no,self._articleid,)
+                                 ,(col_no,self.artid,)
                                  )
             return self.dbc.fetchone()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def selection(self,pos):
-        f = '[MClient] db.DB.selection'
-        if self._articleid:
+    def get_sel(self,pos):
+        f = '[MClient] db.DB.get_sel'
+        if self.artid:
             if self.Selectable:
                 self.dbc.execute ('select NODE1,NODE2,OFFPOS1,OFFPOS2\
                                   ,BBOX1,BBOX2,BBOY1,BBOY2,ROWNO \
@@ -648,7 +648,7 @@ class DB:
                                    and SELECTABLE = 1 and POS1 < POS2 \
                                    and POS1 <= ? and POS2 >= ? \
                                    order by COLNO,NO'
-                                 ,(self._articleid,pos,pos,)
+                                 ,(self.artid,pos,pos,)
                                  )
             else:
                 self.dbc.execute ('select NODE1,NODE2,OFFPOS1,OFFPOS2\
@@ -657,78 +657,78 @@ class DB:
                                    and BLOCK = 0 and IGNORE = 0 \
                                    and POS1 < POS2 and POS1 <= ? \
                                    and POS2 >= ? order by COLNO,NO'
-                                 ,(self._articleid,pos,pos,)
+                                 ,(self.artid,pos,pos,)
                                  )
             return self.dbc.fetchone()
         else:
             pass
             '''
             # Too frequent
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
             '''
 
-    def skipped_dicas(self):
-        f = '[MClient] db.DB.skipped_dicas'
-        if self._articleid:
+    def get_skipped_dicas(self):
+        f = '[MClient] db.DB.get_skipped_dicas'
+        if self.artid:
             self.dbc.execute ('select distinct DICA from BLOCKS \
                                where ARTICLEID = ? \
                                and (BLOCK = 1 or IGNORE = 1)'
-                             ,(self._articleid,)
+                             ,(self.artid,)
                              )
             result = self.dbc.fetchall()
             if result:
                 return [item[0] for item in result]
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
-    def blocked(self):
-        f = '[MClient] db.DB.blocked'
-        if self._articleid:
+    def get_blocked(self):
+        f = '[MClient] db.DB.get_blocked'
+        if self.artid:
             self.dbc.execute ('select NO from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 1'
-                             ,(self._articleid,)
+                             ,(self.artid,)
                              )
             return self.dbc.fetchall()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def prioritized(self):
-        f = '[MClient] db.DB.prioritized'
-        if self._articleid:
-            ''' #note: We assume that 'Phrases' section has -1000
+    def get_prioritized(self):
+        f = '[MClient] db.DB.get_prioritized'
+        if self.artid:
+            ''' #NOTE: We assume that 'Phrases' section has -1000
                 priority and this is always used despite user settings.
             '''
             self.dbc.execute ('select NO from BLOCKS \
                                where ARTICLEID = ? and PRIORITY != 0 \
                                and PRIORITY != -1000'
-                             ,(self._articleid,)
+                             ,(self.artid,)
                              )
             return self.dbc.fetchall()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def dics(self,Block=False):
-        f = '[MClient] db.DB.dics'
-        if self._articleid:
+    def get_dics(self,Block=False):
+        f = '[MClient] db.DB.get_dics'
+        if self.artid:
             # Do not use 'POS1 < POS2', it might be not set yet
             if Block:
                 self.dbc.execute ('select TEXT from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and TYPE = "dic" \
-                                   and TEXT != ""',(self._articleid,)
+                                   and TEXT != ""',(self.artid,)
                                  )
             else:
                 self.dbc.execute ('select TEXT from BLOCKS \
                                    where ARTICLEID = ? and TYPE = "dic"\
-                                   and TEXT != ""',(self._articleid,)
+                                   and TEXT != ""',(self.artid,)
                                  )
             return self.dbc.fetchall()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def search_forward(self,pos,search):
-        f = '[MClient] db.DB.search_forward'
-        if self._articleid:
+    def search_next(self,pos,search):
+        f = '[MClient] db.DB.search_next'
+        if self.artid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
@@ -736,7 +736,7 @@ class DB:
                                    ("term","phrase") and SELECTABLE = 1\
                                    and TEXTLOW like ? and POS1 > ? \
                                    order by CELLNO,NO'
-                                 ,(self._articleid
+                                 ,(self.artid
                                   ,'%' + search + '%',pos,
                                   )
                                  )
@@ -745,7 +745,7 @@ class DB:
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and TEXTLOW like ? \
                                    and POS1 > ? order by CELLNO,NO'
-                                 ,(self._articleid
+                                 ,(self.artid
                                   ,'%' + search + '%',pos,
                                   )
                                  )
@@ -753,11 +753,11 @@ class DB:
             if result:
                 return result[0]
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def search_backward(self,pos,search):
-        f = '[MClient] db.DB.search_backward'
-        if self._articleid:
+    def search_prev(self,pos,search):
+        f = '[MClient] db.DB.search_prev'
+        if self.artid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
@@ -765,7 +765,7 @@ class DB:
                                    ("term","phrase") and SELECTABLE = 1\
                                    and TEXTLOW like ? and POS2 < ? \
                                    order by CELLNO desc,NO desc'
-                                 ,(self._articleid
+                                 ,(self.artid
                                   ,'%' + search + '%',pos,
                                   )
                                  )
@@ -775,7 +775,7 @@ class DB:
                                    and IGNORE = 0 and TEXTLOW like ? \
                                    and POS2 < ? order by CELLNO desc\
                                   ,NO desc'
-                                 ,(self._articleid
+                                 ,(self.artid
                                   ,'%' + search + '%',pos,
                                   )
                                  )
@@ -783,122 +783,122 @@ class DB:
             if result:
                 return result[0]
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
     def unignore(self):
         self.dbc.execute ('update BLOCKS set IGNORE = 0 \
-                           where ARTICLEID = ?',(self._articleid,)
+                           where ARTICLEID = ?',(self.artid,)
                          )
 
     def ignore(self):
         self.dbc.execute ('update BLOCKS set IGNORE = 1 \
                            where ARTICLEID = ? and TYPE not in %s' \
-                           % (self._types,),(self._articleid,)
+                           % (self.types,),(self.artid,)
                          )
-        if 'dic' not in self._types:
+        if 'dic' not in self.types:
             self.dbc.execute ('update BLOCKS set IGNORE = 1 \
                                where ARTICLEID = ? and TYPE = "phrase"'
-                             ,(self._articleid,)
+                             ,(self.artid,)
                              )
             
     # Get any block with the maximal BBOY2
-    def max_bboy(self,limit=0):
-        f = '[MClient] db.DB.max_bboy'
-        if self._articleid:
+    def get_max_bboy(self,limit=0):
+        f = '[MClient] db.DB.get_max_bboy'
+        if self.artid:
             if limit:
                 self.dbc.execute ('select BBOY2,NODE1,TEXT from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and POS1 < POS2 \
                                    and BBOY2 < ? order by BBOY2 desc'
-                                 ,(self._articleid,limit,)
+                                 ,(self.artid,limit,)
                                  )
             else:
                 self.dbc.execute ('select BBOY2,NODE1,TEXT from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and POS1 < POS2 \
                                    order by BBOY2 desc'
-                                 ,(self._articleid,)
+                                 ,(self.artid,)
                                  )
             return self.dbc.fetchone()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     # Get any block with the maximal BBOX2
-    def max_bbox(self,limit=0):
-        f = '[MClient] db.DB.max_bbox'
-        if self._articleid:
+    def get_max_bbox(self,limit=0):
+        f = '[MClient] db.DB.get_max_bbox'
+        if self.artid:
             if limit:
                 self.dbc.execute ('select BBOX2,NODE1,TEXT from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and POS1 < POS2 \
                                    and BBOX2 < ? order by BBOX2 desc'
-                                 ,(self._articleid,limit,)
+                                 ,(self.artid,limit,)
                                  )
             else:
                 self.dbc.execute ('select BBOX2,NODE1,TEXT from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and POS1 < POS2 \
                                    order by BBOX2 desc'
-                                 ,(self._articleid,)
+                                 ,(self.artid,)
                                  )
             return self.dbc.fetchone()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     # Get the minimum BBOY1 and the maximum BBOY2 for the set row number
-    def bboy_limits(self,row_no=0):
-        f = '[MClient] db.DB.bboy_limits'
-        if self._articleid:
+    def get_bboy_limits(self,row_no=0):
+        f = '[MClient] db.DB.get_bboy_limits'
+        if self.artid:
             self.dbc.execute ('select BBOY1 from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
                                and IGNORE = 0 and POS1 < POS2 \
                                and ROWNO = ? order by BBOY1'
-                             ,(self._articleid,row_no,)
+                             ,(self.artid,row_no,)
                              )
             min_result = self.dbc.fetchone()
             self.dbc.execute ('select BBOY2 from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
                                and IGNORE = 0 and POS1 < POS2 \
                                and ROWNO = ? order by BBOY2 desc'
-                             ,(self._articleid,row_no,)
+                             ,(self.artid,row_no,)
                              )
             max_result = self.dbc.fetchone()
             if min_result and max_result:
                 return(min_result[0],max_result[0])
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
                           
     ''' Get the minimum BBOX1 and the maximum BBOX2 for the set column
         number
     '''
-    def bbox_limits(self,col_no=0):
-        f = '[MClient] db.DB.bbox_limits'
-        if self._articleid:
+    def get_bbox_limits(self,col_no=0):
+        f = '[MClient] db.DB.get_bbox_limits'
+        if self.artid:
             self.dbc.execute ('select BBOX1 from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
                                and IGNORE = 0 and POS1 < POS2 \
                                and COLNO = ? order by BBOX1'
-                             ,(self._articleid,col_no,)
+                             ,(self.artid,col_no,)
                              )
             min_result = self.dbc.fetchone()
             self.dbc.execute ('select BBOX2 from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
                                and IGNORE = 0 and POS1 < POS2 \
                                and COLNO = ? order by BBOX2 desc'
-                             ,(self._articleid,col_no,)
+                             ,(self.artid,col_no,)
                              )
             max_result = self.dbc.fetchone()
             if min_result and max_result:
                 return(min_result[0],max_result[0])
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
-    def min_articleid(self):
-        f = '[MClient] db.DB.min_articleid'
+    def get_min_artid(self):
+        f = '[MClient] db.DB.get_min_artid'
         self.dbc.execute ('select ARTICLEID from ARTICLES \
                            order by ARTICLEID'
                          )
@@ -906,12 +906,12 @@ class DB:
         if result:
             return result[0]
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
             # Default minimal autoincrement in SQlite
             return 1
             
-    def max_articleid(self):
-        f = '[MClient] db.DB.max_articleid'
+    def get_max_artid(self):
+        f = '[MClient] db.DB.get_max_artid'
         self.dbc.execute ('select ARTICLEID from ARTICLES \
                            order by ARTICLEID desc'
                          )
@@ -919,13 +919,13 @@ class DB:
         if result:
             return result[0]
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
             # Default minimal autoincrement in SQlite
             return 1
     
-    def block_pos_next(self,pos):
-        f = '[MClient] db.DB.block_pos_next'
-        if self._articleid:
+    def get_next_block_pos(self,pos):
+        f = '[MClient] db.DB.get_next_block_pos'
+        if self.artid:
             if self.Selectable:
                 ''' 'POS2 > pos' instead of 'POS2 >= pos' allows to
                     correctly navigate through blocks where separate
@@ -938,7 +938,7 @@ class DB:
                                    ("term","phrase") and POS1 >= ? \
                                    and POS1 < POS2 and SELECTABLE = 1 \
                                    order by CELLNO,NO'
-                                 ,(self._articleid,pos,)
+                                 ,(self.artid,pos,)
                                  )
             else:
                 self.dbc.execute ('select POS1,POS2,CELLNO,ROWNO,COLNO\
@@ -946,35 +946,35 @@ class DB:
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and POS1 >= ? \
                                    and POS1 < POS2 order by CELLNO,NO'
-                                 ,(self._articleid,pos,)
+                                 ,(self.artid,pos,)
                                  )
             return self.dbc.fetchone()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def set_bookmark(self,pos=0):
         f = '[MClient] db.DB.set_bookmark'
         if str(pos).isdigit():
-            if self._articleid:
+            if self.artid:
                 ''' # Too frequent
                     mes = _('Set bookmark {} for article #{}')
-                    mes = mes.format(pos,self._articleid)
-                    sh.objs.mes(f,mes,True).debug()
+                    mes = mes.format(pos,self.artid)
+                    sh.objs.get_mes(f,mes,True).show_debug()
                 '''
                 self.dbc.execute ('update ARTICLES set BOOKMARK = ? \
                                    where ARTICLEID = ?'
-                                 ,(pos,self._articleid,)
+                                 ,(pos,self.artid,)
                                  )
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             mes = _('Wrong input data!')
-            sh.objs.mes(f,mes,True).warning()
+            sh.objs.get_mes(f,mes,True).show_warning()
                           
     def delete_bookmarks(self):
         f = '[MClient] db.DB.delete_bookmarks'
         mes = _('Delete bookmarks for all articles')
-        sh.objs.mes(f,mes,True).debug()
+        sh.objs.get_mes(f,mes,True).show_debug()
         self.dbc.execute('update ARTICLES set BOOKMARK = -1')
         
     def unprioritize_speech(self):
@@ -988,33 +988,33 @@ class Moves(DB):
     def __init__(self):
         super().__init__()
 
-    def start(self):
-        f = '[MClient] db.Moves.start'
-        if self._articleid:
+    def get_start(self):
+        f = '[MClient] db.Moves.get_start'
+        if self.artid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and TYPE in \
                                    ("term","phrase") and SELECTABLE = 1\
                                    and POS1 < POS2 order by CELLNO,NO'
-                                 ,(self._articleid,)
+                                 ,(self.artid,)
                                  )
             else:
                 self.dbc.execute ('select POS1 from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and POS1 < POS2 \
                                    order by CELLNO,NO'
-                                 ,(self._articleid,)
+                                 ,(self.artid,)
                                  )
             result = self.dbc.fetchone()
             if result:
                 return result[0]
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def end(self):
-        f = '[MClient] db.Moves.end'
-        if self._articleid:
+    def get_end(self):
+        f = '[MClient] db.Moves.get_end'
+        if self.artid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
@@ -1022,25 +1022,25 @@ class Moves(DB):
                                    ("term","phrase") and SELECTABLE = 1\
                                    and POS1 < POS2 order by CELLNO desc\
                                   ,NO desc'
-                                 ,(self._articleid,)
+                                 ,(self.artid,)
                                  )
             else:
                 self.dbc.execute ('select POS1 from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and POS1 < POS2 \
                                    order by CELLNO desc,NO desc'
-                                 ,(self._articleid,)
+                                 ,(self.artid,)
                                  )
             result = self.dbc.fetchone()
             if result:
                 return result[0]
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def line_start(self,pos):
-        f = '[MClient] db.Moves.line_start'
-        if self._articleid:
-            poses = self.block_pos(pos=pos)
+    def get_line_start(self,pos):
+        f = '[MClient] db.Moves.get_line_start'
+        if self.artid:
+            poses = self.get_block_pos(pos=pos)
             if poses:
                 row_no, col_no = poses[3], poses[4]
                 if self.Selectable:
@@ -1051,7 +1051,7 @@ class Moves(DB):
                                        and SELECTABLE = 1 and ROWNO = ?\
                                        and COLNO <= ? and POS1 < POS2 \
                                        order by COLNO,NO'
-                                     ,(self._articleid,row_no,col_no,)
+                                     ,(self.artid,row_no,col_no,)
                                      )
                 else:
                     self.dbc.execute ('select POS1 from BLOCKS \
@@ -1060,20 +1060,20 @@ class Moves(DB):
                                        and ROWNO = ? and COLNO <= ? \
                                        and POS1 < POS2 \
                                        order by COLNO,NO'
-                                     ,(self._articleid,row_no,col_no,)
+                                     ,(self.artid,row_no,col_no,)
                                      )
                 result = self.dbc.fetchone()
                 if result:
                     return result[0]
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def line_end(self,pos):
-        f = '[MClient] db.Moves.line_end'
-        if self._articleid:
-            poses = self.block_pos(pos=pos)
+    def get_line_end(self,pos):
+        f = '[MClient] db.Moves.get_line_end'
+        if self.artid:
+            poses = self.get_block_pos(pos=pos)
             if poses:
                 row_no, col_no = poses[3], poses[4]
                 if self.Selectable:
@@ -1084,7 +1084,7 @@ class Moves(DB):
                                        and SELECTABLE = 1 and ROWNO = ?\
                                        and COLNO >= ? and POS1 < POS2\
                                        order by COLNO desc,NO desc'
-                                     ,(self._articleid,row_no,col_no,)
+                                     ,(self.artid,row_no,col_no,)
                                      )
                 else:
                     self.dbc.execute ('select POS1 from BLOCKS \
@@ -1093,24 +1093,24 @@ class Moves(DB):
                                        and ROWNO = ? and COLNO >= ? \
                                        and POS1 < POS2 \
                                        order by COLNO desc,NO desc'
-                                     ,(self._articleid,row_no,col_no,)
+                                     ,(self.artid,row_no,col_no,)
                                      )
                 result = self.dbc.fetchone()
                 if result:
                     return result[0]
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def left(self,pos):
-        f = '[MClient] db.Moves.left'
-        if self._articleid:
-            poses = self.block_pos(pos=pos)
+    def get_left(self,pos):
+        f = '[MClient] db.Moves.get_left'
+        if self.artid:
+            poses = self.get_block_pos(pos=pos)
             if poses:
-                cell_no, no = poses[2], poses[5]
-                min_cell = self.min_cell()
-                max_cell = self.max_cell()
+                cellno, no = poses[2], poses[5]
+                min_cell = self.get_min_cell()
+                max_cell = self.get_max_cell()
                 if min_cell and max_cell:
                     if no == min_cell[1]:
                         return max_cell[2]
@@ -1125,7 +1125,7 @@ class Moves(DB):
                                            and POS1 < ? \
                                            and POS1 < POS2 \
                                            order by CELLNO desc,NO desc'
-                                         ,(self._articleid,cell_no,pos,)
+                                         ,(self.artid,cellno,pos,)
                                          )
                     else:
                         self.dbc.execute ('select POS1 from BLOCKS \
@@ -1134,26 +1134,26 @@ class Moves(DB):
                                            and CELLNO <= ? and POS1 < ?\
                                            and POS1 < POS2 \
                                            order by CELLNO desc,NO desc'
-                                         ,(self._articleid,cell_no,pos,)
+                                         ,(self.artid,cellno,pos,)
                                          )
                     result = self.dbc.fetchone()
                     if result:
                         return result[0]
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def right(self,pos):
-        f = '[MClient] db.Moves.right'
-        if self._articleid:
-            poses = self.block_pos(pos=pos)
+    def get_right(self,pos):
+        f = '[MClient] db.Moves.get_right'
+        if self.artid:
+            poses = self.get_block_pos(pos=pos)
             if poses:
-                cell_no, no = poses[2], poses[5]
-                max_cell = self.max_cell()
-                min_cell = self.min_cell()
+                cellno, no = poses[2], poses[5]
+                max_cell = self.get_max_cell()
+                min_cell = self.get_min_cell()
                 if min_cell and max_cell:
                     if no == max_cell[1]:
                         # Loop moves
@@ -1168,7 +1168,7 @@ class Moves(DB):
                                            and CELLNO >= ? \
                                            and POS1 > ? and POS1 < POS2\
                                            order by CELLNO,NO'
-                                         ,(self._articleid,cell_no,pos,)
+                                         ,(self.artid,cellno,pos,)
                                          )
                     else:
                         self.dbc.execute ('select POS1 from BLOCKS \
@@ -1177,30 +1177,30 @@ class Moves(DB):
                                            and CELLNO >= ? and POS1 > ?\
                                            and POS1 < POS2 \
                                            order by CELLNO,NO'
-                                         ,(self._articleid,cell_no,pos,)
+                                         ,(self.artid,cellno,pos,)
                                          )
                     result = self.dbc.fetchone()
                     if result:
                         return result[0]
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def up(self,pos):
-        f = '[MClient] db.Moves.up'
-        if self._articleid:
-            poses = self.block_pos(pos=pos)
+    def get_up(self,pos):
+        f = '[MClient] db.Moves.get_up'
+        if self.artid:
+            poses = self.get_block_pos(pos=pos)
             if poses:
-                cell_no = poses[2]
-                row_no  = poses[3]
-                col_no  = poses[4]
-                no      = poses[5]
-                min_cell   = self.min_cell()
-                min_row_sp = self.min_row_sp(col_no=col_no)
-                max_col    = self.max_col()
+                cellno     = poses[2]
+                row_no     = poses[3]
+                col_no     = poses[4]
+                no         = poses[5]
+                min_cell   = self.get_min_cell()
+                min_row_sp = self.get_min_row_sp(col_no=col_no)
+                max_col    = self.get_max_col()
                 if min_cell and max_col and min_row_sp:
                     if no == min_cell[1]:
                         if self.Selectable:
@@ -1215,7 +1215,7 @@ class Moves(DB):
                                                and POS1 < POS2 \
                                                order by ROWNO desc\
                                               ,NO desc'
-                                             ,(self._articleid
+                                             ,(self.artid
                                               ,max_col[0],
                                               )
                                              )
@@ -1228,7 +1228,7 @@ class Moves(DB):
                                                and POS1 < POS2 \
                                                order by ROWNO desc\
                                               ,NO desc'
-                                             ,(self._articleid
+                                             ,(self.artid
                                               ,max_col[0],
                                               )
                                              )
@@ -1248,7 +1248,7 @@ class Moves(DB):
                                                and POS1 < POS2 \
                                                order by COLNO desc\
                                               ,ROWNO desc,NO desc'
-                                             ,(self._articleid,col_no,)
+                                             ,(self.artid,col_no,)
                                              )
                         else:
                             self.dbc.execute ('select POS1 from BLOCKS \
@@ -1259,7 +1259,7 @@ class Moves(DB):
                                                and POS1 < POS2 \
                                                order by COLNO desc\
                                               ,ROWNO desc,NO desc'
-                                             ,(self._articleid,col_no,)
+                                             ,(self.artid,col_no,)
                                              )
                         result = self.dbc.fetchone()
                         if result:
@@ -1279,7 +1279,7 @@ class Moves(DB):
                                                and POS1 < POS2 \
                                                order by ROWNO desc\
                                               ,NO desc'
-                                             ,(self._articleid,col_no
+                                             ,(self.artid,col_no
                                               ,row_no,pos,
                                               )
                                              )
@@ -1294,7 +1294,7 @@ class Moves(DB):
                                                and POS1 < POS2 \
                                                order by ROWNO desc\
                                               ,NO desc'
-                                             ,(self._articleid,col_no
+                                             ,(self.artid,col_no
                                               ,row_no,pos,
                                               )
                                              )
@@ -1302,24 +1302,24 @@ class Moves(DB):
                         if result:
                             return result[0]
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def down(self,pos):
-        f = '[MClient] db.Moves.down'
-        if self._articleid:
-            poses = self.block_pos(pos=pos)
+    def get_down(self,pos):
+        f = '[MClient] db.Moves.get_down'
+        if self.artid:
+            poses = self.get_block_pos(pos=pos)
             if poses:
-                cell_no    = poses[2]
+                cellno     = poses[2]
                 row_no     = poses[3]
                 col_no     = poses[4]
                 no         = poses[5]
-                min_col    = self.min_col()
-                max_row_sp = self.max_row_sp(col_no=col_no)
-                max_col    = self.max_col()
+                min_col    = self.get_min_col()
+                max_row_sp = self.get_max_row_sp(col_no=col_no)
+                max_col    = self.get_max_col()
 
                 if min_col and max_row_sp and max_col:
                     if row_no == max_row_sp[0] and col_no == max_col[0]:
@@ -1334,7 +1334,7 @@ class Moves(DB):
                                                and COLNO = ? \
                                                and POS1 < POS2 \
                                                order by ROWNO,NO'
-                                             ,(self._articleid
+                                             ,(self.artid
                                               ,min_col[0],
                                               )
                                              )
@@ -1346,7 +1346,7 @@ class Moves(DB):
                                                and COLNO = ? \
                                                and POS1 < POS2 \
                                                order by ROWNO,NO'
-                                             ,(self._articleid
+                                             ,(self.artid
                                               ,min_col[0]
                                               ,
                                               )
@@ -1366,7 +1366,7 @@ class Moves(DB):
                                                and COLNO > ? \
                                                and POS1 < POS2 \
                                                order by COLNO,ROWNO,NO'
-                                             ,(self._articleid,col_no,)
+                                             ,(self.artid,col_no,)
                                              )
                         else:
                             self.dbc.execute ('select POS1 from BLOCKS \
@@ -1376,7 +1376,7 @@ class Moves(DB):
                                                and COLNO > ? \
                                                and POS1 < POS2 \
                                                order by COLNO,ROWNO,NO'
-                                             ,(self._articleid,col_no,)
+                                             ,(self.artid,col_no,)
                                              )
                         result = self.dbc.fetchone()
                         if result:
@@ -1395,7 +1395,7 @@ class Moves(DB):
                                                and POS1 > ? \
                                                and POS1 < POS2 \
                                                order by ROWNO,NO'
-                                             ,(self._articleid,col_no
+                                             ,(self.artid,col_no
                                               ,row_no,pos
                                               ,
                                               )
@@ -1410,7 +1410,7 @@ class Moves(DB):
                                                and POS1 > ? \
                                                and POS1 < POS2 \
                                                order by ROWNO,NO'
-                                             ,(self._articleid,col_no
+                                             ,(self.artid,col_no
                                               ,row_no,pos
                                               ,
                                               )
@@ -1419,15 +1419,15 @@ class Moves(DB):
                         if result:
                             return result[0]
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def page_down(self,bboy,height):
-        f = '[MClient] db.Moves.page_down'
-        if self._articleid:
+    def get_page_down(self,bboy,height):
+        f = '[MClient] db.Moves.get_page_down'
+        if self.artid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
@@ -1435,7 +1435,7 @@ class Moves(DB):
                                    ("term","phrase") and SELECTABLE = 1\
                                    and POS1 < POS2 and BBOY1 >= ? \
                                    order by CELLNO,NO'
-                                 ,(self._articleid
+                                 ,(self.artid
                                   ,int(bboy / height) * height + height
                                   ,
                                   )
@@ -1445,7 +1445,7 @@ class Moves(DB):
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and POS1 < POS2 \
                                    and BBOY1 >= ? order by CELLNO,NO'
-                                 ,(self._articleid
+                                 ,(self.artid
                                   ,int(bboy / height) * height + height
                                   ,
                                   )
@@ -1454,11 +1454,11 @@ class Moves(DB):
             if result:
                 return result[0]
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def page_up(self,bboy,height):
-        f = '[MClient] db.Moves.page_up'
-        if self._articleid:
+    def get_page_up(self,bboy,height):
+        f = '[MClient] db.Moves.get_page_up'
+        if self.artid:
             if self.Selectable:
                 self.dbc.execute ('select POS1 from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
@@ -1466,7 +1466,7 @@ class Moves(DB):
                                    ("term","phrase") and SELECTABLE = 1\
                                    and POS1 < POS2 and BBOY1 >= ? \
                                    order by CELLNO,NO'
-                                 ,(self._articleid
+                                 ,(self.artid
                                   ,int(bboy / height) * height - height
                                   ,
                                   )
@@ -1476,7 +1476,7 @@ class Moves(DB):
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and POS1 < POS2 \
                                    and BBOY1 >= ? order by CELLNO,NO'
-                                 ,(self._articleid
+                                 ,(self.artid
                                   ,int(bboy / height) * height - height
                                   ,
                                   )
@@ -1485,88 +1485,88 @@ class Moves(DB):
             if result:
                 return result[0]
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
                           
-    def first_section(self,col_no=0):
-        f = '[MClient] db.Moves.first_section'
-        if self._articleid:
+    def get_first_section(self,col_no=0):
+        f = '[MClient] db.Moves.get_first_section'
+        if self.artid:
             self.dbc.execute ('select POS1,ROWNO,TEXT from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
                                and IGNORE = 0 and COLNO = ? \
                                and POS1 < POS2 order by ROWNO,NO'
-                             ,(self._articleid,col_no,)
+                             ,(self.artid,col_no,)
                              )
             return self.dbc.fetchone()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
                           
-    def last_section(self,col_no=0):
-        f = '[MClient] db.Moves.last_section'
-        if self._articleid:
+    def get_last_section(self,col_no=0):
+        f = '[MClient] db.Moves.get_last_section'
+        if self.artid:
             self.dbc.execute ('select POS1,ROWNO,TEXT from BLOCKS \
                                where ARTICLEID = ? and BLOCK = 0 \
                                and IGNORE = 0 and COLNO = ? \
                                and POS1 < POS2 order by ROWNO desc,NO'
-                             ,(self._articleid,col_no,)
+                             ,(self.artid,col_no,)
                              )
             return self.dbc.fetchone()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
-    def next_section(self,pos,col_no=0,Loop=True):
-        f = '[MClient] db.Moves.next_section'
-        if self._articleid:
-            poses = self.block_pos(pos=pos)
+    def get_next_section(self,pos,col_no=0,Loop=True):
+        f = '[MClient] db.Moves.get_next_section'
+        if self.artid:
+            poses = self.get_block_pos(pos=pos)
             if poses:
                 self.dbc.execute ('select POS1,ROWNO,TEXT from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and ROWNO > ? \
                                    and COLNO = ? and POS1 < POS2 \
                                    order by CELLNO,NO'
-                                 ,(self._articleid,poses[3],col_no,)
+                                 ,(self.artid,poses[3],col_no,)
                                  )
                 result = self.dbc.fetchone()
                 if result:
                     return result
                 elif Loop:
-                    return self.first_section(col_no=col_no)
+                    return self.get_first_section(col_no=col_no)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
                           
-    def prev_section(self,pos,col_no=0,Loop=True):
-        f = '[MClient] db.Moves.prev_section'
-        if self._articleid:
-            poses = self.block_pos(pos=pos)
+    def get_prev_section(self,pos,col_no=0,Loop=True):
+        f = '[MClient] db.Moves.get_prev_section'
+        if self.artid:
+            poses = self.get_block_pos(pos=pos)
             if poses:
                 self.dbc.execute ('select POS1,ROWNO,TEXT from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0 and ROWNO < ? \
                                    and COLNO = ? and POS1 < POS2 \
                                    order by CELLNO desc,NO'
-                                 ,(self._articleid,poses[3],col_no,)
+                                 ,(self.artid,poses[3],col_no,)
                                  )
                 result = self.dbc.fetchone()
                 if result:
                     return result
                 elif Loop:
-                    return self.last_section(col_no=col_no)
+                    return self.get_last_section(col_no=col_no)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
-    def next_col(self,row_no=0,col_no=0):
-        f = '[MClient] db.Moves.next_col'
-        if self._articleid:
+    def get_next_col(self,row_no=0,col_no=0):
+        f = '[MClient] db.Moves.get_next_col'
+        if self.artid:
             self.dbc.execute ('select POS1,ROWNO,COLNO,TEXT \
                                from BLOCKS where ARTICLEID = ? \
                                and BLOCK = 0 and IGNORE = 0 \
                                and ROWNO = ? and COLNO >= ? \
                                and POS1 < POS2 order by CELLNO,NO'
-                             ,(self._articleid,row_no,col_no,)
+                             ,(self.artid,row_no,col_no,)
                              )
             return self.dbc.fetchone()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)

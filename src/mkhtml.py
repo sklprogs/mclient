@@ -2,26 +2,26 @@
 # -*- coding: UTF-8 -*-
 
 import io
-import skl_shared.shared as sh
-from skl_shared.localize import _
+import skl_shared2.shared as sh
+from skl_shared2.localize import _
 
 
 # Shortened
 class Block:
 
     def __init__(self):
-        self._type = ''
-        self._text = ''
+        self.type_ = ''
+        self.text  = ''
         self.i     = 0
         self.j     = 0
 
 
-class HTML:
+class HTM:
 
     def __init__(self):
-        self.values()
-        self.priority_colors()
-        self.blocked_colors()
+        self.set_values()
+        self.set_priority_colors()
+        self.set_blocked_colors()
 
     # 'collimit' includes fixed blocks
     def reset (self,data,cols,order
@@ -30,34 +30,34 @@ class HTML:
               ,phdic='',skipped=0
               ,max_syms=30
               ):
-        self.values()
-        self.order     = order
-        self._data     = data
-        self._cols     = cols
-        self._collimit = collimit
-        self._width    = width
-        self.Printer   = Printer
-        self.Reverse   = Reverse
-        self._phdic    = phdic
-        self._skipped  = skipped
+        self.set_values()
+        self.order    = order
+        self.data     = data
+        self.cols     = cols
+        self.collimit = collimit
+        self.width    = width
+        self.Printer  = Printer
+        self.Reverse  = Reverse
+        self.phdic    = phdic
+        self.skipped  = skipped
         ''' Maximum number of symbols in a column. If the column exceeds
-            this number and 'self._width' is set - wrap the column.
-            #todo: calculate font width to be more precise
+            this number and 'self.width' is set - wrap the column.
+            #TODO: calculate font width to be more precise
         '''
-        self._max_syms = max_syms
+        self.maxsyms = max_syms
         
     def run(self):
         self.assign()
-        self.html()
-        return self._html
+        self.gen_htm()
+        return self.htm
     
-    def values(self):
-        self._blocks  = []
-        self._skipped = 0
-        self._block   = None
-        self._html    = ''
-        self._phdic   = ''
-        self._script  = '''
+    def set_values(self):
+        self.blocks  = []
+        self.skipped = 0
+        self.block   = None
+        self.htm    = ''
+        self.phdic   = ''
+        self.script  = '''
         <head>
 
           <div align="center">
@@ -67,11 +67,11 @@ class HTML:
 
           <script type="text/javascript">
             function printDiv(divName) {
-              var printContents = document.getElementById(divName).innerHTML;
-              var originalContents = document.body.innerHTML;
-              document.body.innerHTML = printContents;
+              var printContents = document.getElementById(divName).innerHTM;
+              var originalContents = document.body.innerHTM;
+              document.body.innerHTM = printContents;
               window.print();
-              document.body.innerHTML = originalContents;
+              document.body.innerHTM = originalContents;
             }
           </script>
 
@@ -97,188 +97,188 @@ class HTML:
         ''' Either don't use 'format' here or double all curly braces
             in the script.
         '''
-        self._script = self._script % _('Print')
+        self.script = self.script % _('Print')
     
-    def priority_colors(self):
+    def set_priority_colors(self):
         default_color = 'red'
         delta         = -76
         # Column 1 color
-        result = sh.com.mod_color (color = sh.lg.globs['var']['color_col1']
-                                  ,delta = delta
-                                  )
+        result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col1']
+                                      ,delta = delta
+                                      )
         if result:
-            self._priority_color1 = result
+            self.priority_color1 = result
         else:
-            self._priority_color1 = default_color
+            self.priority_color1 = default_color
         # Column 2 color
-        result = sh.com.mod_color (color = sh.lg.globs['var']['color_col2']
-                                  ,delta = delta
-                                  )
+        result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col2']
+                                      ,delta = delta
+                                      )
         if result:
-            self._priority_color2 = result
+            self.priority_color2 = result
         else:
-            self._priority_color2 = default_color
+            self.priority_color2 = default_color
         # Column 3 color
-        result = sh.com.mod_color (color = sh.lg.globs['var']['color_col3']
-                                  ,delta = delta
-                                  )
+        result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col3']
+                                      ,delta = delta
+                                      )
         if result:
-            self._priority_color3 = result
+            self.priority_color3 = result
         else:
-            self._priority_color3 = default_color
+            self.priority_color3 = default_color
         # Column 4 color
-        result = sh.com.mod_color (color = sh.lg.globs['var']['color_col4']
-                                  ,delta = delta
-                                  )
+        result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col4']
+                                      ,delta = delta
+                                      )
         if result:
-            self._priority_color4 = result
+            self.priority_color4 = result
         else:
-            self._priority_color4 = default_color
+            self.priority_color4 = default_color
             
-    def blocked_colors(self):
+    def set_blocked_colors(self):
         default_color = 'dim gray'
         delta         = 76
         # Column 1 color
-        result = sh.com.mod_color (color = sh.lg.globs['var']['color_col1']
-                                  ,delta = delta
-                                  )
+        result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col1']
+                                      ,delta = delta
+                                      )
         if result:
-            self._blocked_color1 = result
+            self.blocked_color1 = result
         else:
-            self._blocked_color1 = default_color
+            self.blocked_color1 = default_color
         # Column 2 color
-        result = sh.com.mod_color (color = sh.lg.globs['var']['color_col2']
-                                  ,delta = delta
-                                  )
+        result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col2']
+                                      ,delta = delta
+                                      )
         if result:
-            self._blocked_color2 = result
+            self.blocked_color2 = result
         else:
-            self._blocked_color2 = default_color
+            self.blocked_color2 = default_color
         # Column 3 color
-        result = sh.com.mod_color (color = sh.lg.globs['var']['color_col3']
-                                  ,delta = delta
-                                  )
+        result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col3']
+                                      ,delta = delta
+                                      )
         if result:
-            self._blocked_color3 = result
+            self.blocked_color3 = result
         else:
-            self._blocked_color3 = default_color
+            self.blocked_color3 = default_color
         # Column 4 color
-        result = sh.com.mod_color (color = sh.lg.globs['var']['color_col4']
-                                  ,delta = delta
-                                  )
+        result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col4']
+                                      ,delta = delta
+                                      )
         if result:
-            self._blocked_color4 = result
+            self.blocked_color4 = result
         else:
-            self._blocked_color4 = default_color
+            self.blocked_color4 = default_color
     
     def assign(self):
-        for item in self._data:
+        for item in self.data:
             block       = Block()
-            block._type = item[0]
-            block._text = item[1]
+            block.type_ = item[0]
+            block.text  = item[1]
             block.i     = item[2]
             block.j     = item[3]
-            self._blocks.append(block)
+            self.blocks.append(block)
 
-    def _dic(self):
-        if self._block._type == 'dic' and self._block._text:
+    def _run_dic(self):
+        if self.block.type_ == 'dic' and self.block.text:
             self.output.write('<font face="')
-            self.output.write(self._family())
+            self.output.write(self._get_family())
             self.output.write('" color="')
             # Suppress useless error output
-            if self._block._text != self._phdic:
-                lst         = self.order.get_list(search=self._block._text)
+            if self.block.text != self.phdic:
+                lst         = self.order.get_list(search=self.block.text)
                 Blocked     = self.order.is_blocked(lst)
                 Prioritized = self.order.is_prioritized(lst)
             else:
                 Blocked     = False
                 Prioritized = False
             if Blocked:
-                self.output.write(self._color_b())
+                self.output.write(self._get_color_b())
             elif Prioritized:
-                self.output.write(self._color_p())
+                self.output.write(self._get_color_p())
             else:
-                self.output.write(self._color())
+                self.output.write(self._get_color())
             self.output.write('" size="')
-            self.output.write(str(self._size()))
+            self.output.write(str(self._get_size()))
             self.output.write('"><b>')
-            self.output.write(self._block._text)
+            self.output.write(self.block.text)
             self.output.write('</b></font>')
 
-    def _family(self):
-        if self._block.xj == 0:
+    def _get_family(self):
+        if self.block.xj == 0:
             return sh.lg.globs['var']['font_col1_family']
-        elif self._block.xj == 1:
+        elif self.block.xj == 1:
             return sh.lg.globs['var']['font_col2_family']
-        elif self._block.xj == 2:
+        elif self.block.xj == 2:
             return sh.lg.globs['var']['font_col3_family']
-        elif self._block.xj == 3:
+        elif self.block.xj == 3:
             return sh.lg.globs['var']['font_col4_family']
         else:
             return sh.lg.globs['var']['font_terms_family']
             
-    def _size(self):
-        if self._block.xj == 0:
+    def _get_size(self):
+        if self.block.xj == 0:
             return sh.lg.globs['int']['font_col1_size']
-        elif self._block.xj == 1:
+        elif self.block.xj == 1:
             return sh.lg.globs['int']['font_col2_size']
-        elif self._block.xj == 2:
+        elif self.block.xj == 2:
             return sh.lg.globs['int']['font_col3_size']
-        elif self._block.xj == 3:
+        elif self.block.xj == 3:
             return sh.lg.globs['int']['font_col4_size']
         else:
             return sh.lg.globs['int']['font_terms_size']
             
-    def _color_p(self):
-        if self._block.xj == 0:
-            return self._priority_color1
-        elif self._block.xj == 1:
-            return self._priority_color2
-        elif self._block.xj == 2:
-            return self._priority_color3
-        elif self._block.xj == 3:
-            return self._priority_color4
+    def _get_color_p(self):
+        if self.block.xj == 0:
+            return self.priority_color1
+        elif self.block.xj == 1:
+            return self.priority_color2
+        elif self.block.xj == 2:
+            return self.priority_color3
+        elif self.block.xj == 3:
+            return self.priority_color4
         else:
             return 'red'
             
-    def _color_b(self):
-        if self._block.xj == 0:
-            return self._blocked_color1
-        elif self._block.xj == 1:
-            return self._blocked_color2
-        elif self._block.xj == 2:
-            return self._blocked_color3
-        elif self._block.xj == 3:
-            return self._blocked_color4
+    def _get_color_b(self):
+        if self.block.xj == 0:
+            return self.blocked_color1
+        elif self.block.xj == 1:
+            return self.blocked_color2
+        elif self.block.xj == 2:
+            return self.blocked_color3
+        elif self.block.xj == 3:
+            return self.blocked_color4
         else:
             return 'dim gray'
     
-    def _color(self):
-        if self._block.xj == 0:
+    def _get_color(self):
+        if self.block.xj == 0:
             return sh.lg.globs['var']['color_col1']
-        elif self._block.xj == 1:
+        elif self.block.xj == 1:
             return sh.lg.globs['var']['color_col2']
-        elif self._block.xj == 2:
+        elif self.block.xj == 2:
             return sh.lg.globs['var']['color_col3']
-        elif self._block.xj == 3:
+        elif self.block.xj == 3:
             return sh.lg.globs['var']['color_col4']
         else:
             return sh.lg.globs['var']['color_terms']
     
-    def _wform(self):
-        if self._block._type == 'wform':
+    def _run_wform(self):
+        if self.block.type_ == 'wform':
             self.output.write('<font face="')
-            self.output.write(self._family())
+            self.output.write(self._get_family())
             self.output.write('" color="')
-            self.output.write(self._color())
+            self.output.write(self._get_color())
             self.output.write('" size="')
-            self.output.write(str(self._size()))
+            self.output.write(str(self._get_size()))
             self.output.write('"><b>')
-            self.output.write(self._block._text)
+            self.output.write(self.block.text)
             self.output.write('</b></font>')
 
-    def _term(self):
-        if self._block._type in ('term','phrase'):
+    def _run_term(self):
+        if self.block.type_ in ('term','phrase'):
             self.output.write('<font face="')
             self.output.write(sh.lg.globs['var']['font_terms_family'])
             self.output.write('" color="')
@@ -286,30 +286,30 @@ class HTML:
             self.output.write('" size="')
             self.output.write(str(sh.lg.globs['int']['font_terms_size']))
             self.output.write('">')
-            self.output.write(self._block._text)
+            self.output.write(self.block.text)
             self.output.write('</font>')
 
-    def _speech(self):
-        if self._block._type == 'speech':
+    def _run_speech(self):
+        if self.block.type_ == 'speech':
             self.output.write('<font face="')
-            self.output.write(self._family())
+            self.output.write(self._get_family())
             self.output.write('" color="')
-            self.output.write(self._color())
+            self.output.write(self._get_color())
             self.output.write('" size="')
-            self.output.write(str(self._size()))
+            self.output.write(str(self._get_size()))
             self.output.write('">')
             self.output.write('<i>')
-            if self._block.xj == 0:
+            if self.block.xj == 0:
                 self.output.write('<b>')
-                self.output.write(self._block._text)
+                self.output.write(self.block.text)
                 self.output.write('</b>')
             else:
-                self.output.write(self._block._text)
+                self.output.write(self.block.text)
             self.output.write('</i>')
             self.output.write('</font>')
     
-    def _comment(self):
-        if self._block._type in ('comment','transc','user','definition'):
+    def _run_comment(self):
+        if self.block.type_ in ('comment','transc','user','definition'):
             self.output.write('<i><font face="')
             self.output.write(sh.lg.globs['var']['font_comments_family'])
             self.output.write('" size="')
@@ -317,23 +317,23 @@ class HTML:
             self.output.write('" color="')
             self.output.write(sh.lg.globs['var']['color_comments'])
             self.output.write('">')
-            self.output.write(self._block._text)
+            self.output.write(self.block.text)
             self.output.write('</i></font>')
 
-    def _correction(self):
-        if self._block._type == 'correction':
+    def _run_correction(self):
+        if self.block.type_ == 'correction':
             self.output.write('<i><font face="')
             self.output.write(sh.lg.globs['var']['font_comments_family'])
             self.output.write('" size="')
             self.output.write(str(sh.lg.globs['int']['font_comments_size']))
             self.output.write('" color="')
-            #todo (?): add to config
+            #TODO (?): add to config
             self.output.write('green')
             self.output.write('">')
-            self.output.write(self._block._text)
+            self.output.write(self.block.text)
             self.output.write('</i></font>')
 
-    def html(self):
+    def gen_htm(self):
         ''' Default Python string concatenation is too slow, so we use
             this module instead.
         '''
@@ -341,66 +341,66 @@ class HTML:
         self.output.write('<html>\n')
         self.output.write('\t<body>\n\t\t<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">')
         if self.Printer:
-            self.output.write(self._script)
-        #fix: this CSS does not work
+            self.output.write(self.script)
+        #FIX: this CSS does not work
         #self.output.write('\n\t\t<style type="text/css">\n\t\t\t.line-separator{border-top: 2px dashed #4f94cd;}\n\t\t\t.indent{padding-bottom: 5px;}\n\t\t</style>')
         if self.Printer:
             self.output.write('\n\t\t<div id="printableArea">')
-        if self._blocks:
+        if self.blocks:
             self.output.write('\n\t\t\t<table>\n\t\t<tr>')
-            if self._width and self.Reverse:
+            if self.width and self.Reverse:
                 self.output.write('<td valign="top" col width="')
-                self.output.write(str(self._width))
+                self.output.write(str(self.width))
                 self.output.write('">')
             else:
                 self.output.write('<td align="center" valign="top">')
             i = j = 0
-            for self._block in self._blocks:
-                while self._block.i > i:
+            for self.block in self.blocks:
+                while self.block.i > i:
                     self.output.write('</td></tr>\n\t\t<tr>')
-                    cond1 = self._width and self.Reverse
-                    cond2 = self._width \
-                            and len(self._block._text) > self._max_syms
+                    cond1 = self.width and self.Reverse
+                    cond2 = self.width \
+                            and len(self.block.text) > self.maxsyms
                     if cond1 or cond2:
                         self.output.write('<td align="center" valign="top" col width="')
-                        self.output.write(str(self._width))
+                        self.output.write(str(self.width))
                         self.output.write('">')
                     else:
                         self.output.write('<td align="center" valign="top">')
-                    i = self._block.i
+                    i = self.block.i
                     j = 0
-                while self._block.j > j:
+                while self.block.j > j:
                     self.output.write('</td>\n\t\t\t')
                     # -1 because we define 'td' for the next column here
-                    cond1 = self._width and self._block._text
-                    cond2 = self._block.j > len(self._cols) - 1 \
+                    cond1 = self.width and self.block.text
+                    cond2 = self.block.j > len(self.cols) - 1 \
                             or self.Reverse
-                    cond3 = self._width \
-                            and len(self._block._text) > self._max_syms
+                    cond3 = self.width \
+                            and len(self.block.text) > self.maxsyms
                     if cond1 and cond2 or cond3:
                         self.output.write('<td valign="top" col width="')
-                        self.output.write(str(self._width))
+                        self.output.write(str(self.width))
                         self.output.write('">')
                     else:
                         self.output.write('<td valign="top">')
                     j += 1
                 if self.Reverse:
-                    self._block.xi = self._block.j
-                    self._block.xj = self._block.i
+                    self.block.xi = self.block.j
+                    self.block.xj = self.block.i
                 else:
-                    self._block.xi = self._block.i
-                    self._block.xj = self._block.j
-                self._dic()
-                self._wform()
-                self._speech()
-                self._term()
-                self._comment()
-                self._correction()
+                    self.block.xi = self.block.i
+                    self.block.xj = self.block.j
+                self._run_dic()
+                self._run_wform()
+                self._run_speech()
+                self._run_term()
+                self._run_comment()
+                self._run_correction()
             self.output.write('</td></tr>\n\t\t\t</table>\t')
-        elif self._skipped:
+        elif self.skipped:
             self.output.write('<h1>')
             mes = _('Nothing has been found (skipped dictionaries: {}).')
-            mes = mes.format(self._skipped)
+            mes = mes.format(self.skipped)
             self.output.write(mes)
             self.output.write('</h1>')
         else:
@@ -410,28 +410,28 @@ class HTML:
         if self.Printer:
             self.output.write('\n\t</div>')
         self.output.write('\n</body>\n</html>')
-        self._html = self.output.getvalue()
-        ''' #todo: enhance algorithm, drop this; I tried to monitor j,
-            block._text, block.j, but they are all changing.
+        self.htm = self.output.getvalue()
+        ''' #TODO: enhance algorithm, drop this; I tried to monitor j,
+            block.text, block.j, but they are all changing.
         '''
-        self._html = self._html.replace ('<td valign="top" col width="%d"></td>' \
-                                        % self._width
-                                        ,'<td valign="top"></td>'
-                                        )
+        self.htm = self.htm.replace ('<td valign="top" col width="%d"></td>' \
+                                    % self.width
+                                    ,'<td valign="top"></td>'
+                                    )
         self.output.close()
-        return self._html
+        return self.htm
 
 
 
 class Objects:
     
     def __init__(self):
-        self._html = None
+        self.htm = None
         
-    def html(self):
-        if self._html is None:
-            self._html = HTML()
-        return self._html
+    def get_htm(self):
+        if self.htm is None:
+            self.htm = HTM()
+        return self.htm
 
 
 objs = Objects()

@@ -14,8 +14,8 @@
     calculate SELECTABLE fully in Cells.
 '''
 
-import skl_shared.shared as sh
-from skl_shared.localize import _
+import skl_shared2.shared as sh
+from skl_shared2.localize import _
 
 
 
@@ -23,33 +23,33 @@ from skl_shared.localize import _
 class Block:
     
     def __init__(self):
-        self._block    = -1
-        self.i         = -1
-        self.j         = -1
-        self._first    = -1
-        self._last     = -1
-        self._no       = -1
+        self.block = -1
+        self.i     = -1
+        self.j     = -1
+        self.first = -1
+        self.last  = -1
+        self.no    = -1
         # Applies to non-blocked cells only
-        self._cell_no  = -1
-        self._same     = -1
-        ''' '_select' is an attribute of a *cell* which is valid
+        self.cellno = -1
+        self.same   = -1
+        ''' 'select' is an attribute of a *cell* which is valid
             if the cell has a non-blocked block of types 'term',
             'phrase' or 'transc'
         '''
-        self._select   = -1
-        self._priority = 0
+        self.select   = -1
+        self.priority = 0
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'correction', 'transc', 'invalid'
         '''
-        self._type     = 'comment'
-        self._text     = ''
-        self._url      = ''
-        self._dica     = ''
-        self._dicaf    = ''
-        self._wforma   = ''
-        self._speecha  = ''
-        self._transca  = ''
-        self._terma    = ''
+        self.type_   = 'comment'
+        self.text    = ''
+        self.url     = ''
+        self.dica    = ''
+        self.dicaf   = ''
+        self.wforma  = ''
+        self.speecha = ''
+        self.transca = ''
+        self.terma   = ''
 
 
 
@@ -79,22 +79,22 @@ class Elems:
     '''
     def __init__(self,blocks,iabbr):
         f = '[MClient] plugins.stardict.elems.Elems.__init__'
-        self._dic_urls = {}
-        self._blocks   = blocks
-        self.abbr      = iabbr
-        if self._blocks:
+        self.dicurls = {}
+        self.blocks  = blocks
+        self.abbr    = iabbr
+        if self.blocks:
             self.Success = True
         else:
             self.Success = False
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
         
     # Takes ~0,26s for 'set' on AMD E-300.
     def expand_dica(self):
         f = '[MClient] plugins.stardict.elems.Elems.expand_dica'
         if self.abbr:
             if self.abbr.Success:
-                for block in self._blocks:
-                    lst = block._dica.split(',')
+                for block in self.blocks:
+                    lst = block.dica.split(',')
                     for i in range(len(lst)):
                         lst[i] = lst[i].strip()
                         try:
@@ -102,23 +102,23 @@ class Elems:
                             lst[i] = self.abbr.transl[ind]
                         except ValueError:
                             pass
-                    block._dicaf = ', '.join(lst)
+                    block.dicaf = ', '.join(lst)
             else:
                 sh.com.cancel(f)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
     def run(self):
         f = '[MClient] plugins.stardict.elems.Elems.run'
         if self.Success:
-            self.phrases()
-            self.straight_line()
-            self.comments()
+            self.set_phrases()
+            self.delete_straight_line()
+            self.run_comments()
             ''' These 2 procedures should not be combined (otherwise,
                 corrections will have the same color as comments)
             '''
             self.unite_comments()
-            self.comment_same()
+            self.set_com_same()
             self.add_space()
             self.fill()
             self.fill_terma()
@@ -126,8 +126,8 @@ class Elems:
             self.insert_fixed()
             self.fixed_terma()
             self.expand_dica()
-            self.selectables()
-            return self._blocks
+            self.set_selectables()
+            return self.blocks
         else:
             sh.com.cancel(f)
     
@@ -137,10 +137,10 @@ class Elems:
                   ,'SAMECELL','SELECTABLE'
                   ]
         rows = []
-        for block in self._blocks:
-            rows.append ([block._dica,block._wforma,block._speecha
-                         ,block._transca,block._type,block._text
-                         ,block._same,block._select
+        for block in self.blocks:
+            rows.append ([block.dica,block.wforma,block.speecha
+                         ,block.transca,block.type_,block.text
+                         ,block.same,block.select
                          ]
                         )
         sh.Table (headers = headers
@@ -152,29 +152,29 @@ class Elems:
         
     def unite_comments(self):
         i = 0
-        while i < len(self._blocks):
-            if self._blocks[i]._type == 'comment' \
-            and self._blocks[i]._same > 0:
-                if i > 0 and self._blocks[i-1]._type == 'comment':
-                    self._blocks[i-1]._text \
-                    = sh.List (lst1 = [self._blocks[i-1]._text
-                                      ,self._blocks[i]._text
+        while i < len(self.blocks):
+            if self.blocks[i].type_ == 'comment' \
+            and self.blocks[i].same > 0:
+                if i > 0 and self.blocks[i-1].type_ == 'comment':
+                    self.blocks[i-1].text \
+                    = sh.List (lst1 = [self.blocks[i-1].text
+                                      ,self.blocks[i].text
                                       ]
                               ).space_items()
-                    del self._blocks[i]
+                    del self.blocks[i]
                     i -= 1
             i += 1
             
-    def straight_line(self):
-        self._blocks = [block for block in self._blocks \
-                        if block._text.strip() != '|'
-                       ]
+    def delete_straight_line(self):
+        self.blocks = [block for block in self.blocks \
+                       if block.text.strip() != '|'
+                      ]
     
-    def comments(self):
+    def run_comments(self):
         i = 0
-        while i < len(self._blocks):
-            if self._blocks[i]._type in ('comment','correction'):
-                text_str = self._blocks[i]._text.strip()
+        while i < len(self.blocks):
+            if self.blocks[i].type_ in ('comment','correction'):
+                text_str = self.blocks[i].text.strip()
                 ''' Delete comments that are just ';' or ',' (we don't
                     need them, we have a table view).
                     We delete instead of assigning Block attribute
@@ -182,27 +182,27 @@ class Elems:
                     later.
                 '''
                 if text_str == ';' or text_str == ',':
-                    del self._blocks[i]
+                    del self.blocks[i]
                     i -= 1
-                elif not self._blocks[i]._same > 0:
+                elif not self.blocks[i].same > 0:
                     # For the following cases: "23 фраз в 9 тематиках"
-                    if i > 0 and self._blocks[i-1]._type == 'phrase':
-                        self._blocks[i]._same = 1
+                    if i > 0 and self.blocks[i-1].type_ == 'phrase':
+                        self.blocks[i].same = 1
                     # Move the comment to the preceding cell
                     if text_str.startswith(',') \
                     or text_str.startswith(';') \
                     or text_str.startswith('(') \
                     or text_str.startswith(')') \
                     or text_str.startswith('|'):
-                        self._blocks[i]._same = 1
+                        self.blocks[i].same = 1
                         # Mark the next block as a start of a new cell
-                        if i < len(self._blocks) - 1 \
-                        and self._blocks[i+1]._type \
+                        if i < len(self.blocks) - 1 \
+                        and self.blocks[i+1].type_ \
                         not in ('comment','correction'):
-                            self._blocks[i+1]._same = 0
+                            self.blocks[i+1].same = 0
             i += 1
             
-    def comment_same(self):
+    def set_com_same(self):
         ''' Sometimes sources do not provide sufficient information on
         SAMECELL blocks, and the tag parser cannot handle sequences such
         as 'any type (not _same) -> comment (not _same) -> any type (not
@@ -242,112 +242,112 @@ class Elems:
             'any type (not same) -> comment (_same) -> any type
             (not _same)'
         '''
-        for i in range(len(self._blocks)):
-            cond1  = i > 0 and self._blocks[i]._type == 'correction'
-            cond2  = self._blocks[i]._same <= 0
-            cond3  = i > 0 and self._blocks[i-1]._type == 'comment' \
-            and self._blocks[i-1]._same <= 0
-            cond4  = i > 1 and self._blocks[i-2]._type == 'term' \
-            and self._blocks[i-2]._same <= 0
-            cond5  = i > 1 and self._blocks[i-2]._same <= 0
-            cond6  = self._blocks[i]._type == 'term'
-            cond7a = i > 1 and self._blocks[i-2]._type == 'dic'
-            cond7b = i > 1 and self._blocks[i-2]._type == 'wform'
-            cond7c = i > 1 and self._blocks[i-2]._type == 'speech'
-            cond7d = i > 1 and self._blocks[i-2]._type == 'transc'
+        for i in range(len(self.blocks)):
+            cond1  = i > 0 and self.blocks[i].type_ == 'correction'
+            cond2  = self.blocks[i].same <= 0
+            cond3  = i > 0 and self.blocks[i-1].type_ == 'comment' \
+            and self.blocks[i-1].same <= 0
+            cond4  = i > 1 and self.blocks[i-2].type_ == 'term' \
+            and self.blocks[i-2].same <= 0
+            cond5  = i > 1 and self.blocks[i-2].same <= 0
+            cond6  = self.blocks[i].type_ == 'term'
+            cond7a = i > 1 and self.blocks[i-2].type_ == 'dic'
+            cond7b = i > 1 and self.blocks[i-2].type_ == 'wform'
+            cond7c = i > 1 and self.blocks[i-2].type_ == 'speech'
+            cond7d = i > 1 and self.blocks[i-2].type_ == 'transc'
             cond7  = cond7a or cond7b or cond7c or cond7d
             # not equivalent to 'not cond5' because of 'i'
-            cond8  = i > 1 and self._blocks[i-2]._same == 1
+            cond8  = i > 1 and self.blocks[i-2].same == 1
             # Rule 1
             if cond1 and cond2:
-                self._blocks[i]._same = 1
+                self.blocks[i].same = 1
             # Rule 2
             elif cond4 and cond3 and cond2:
-                self._blocks[i-1]._same = 1
+                self.blocks[i-1].same = 1
             # Rule 3
             elif cond7 and cond3 and cond6 and cond2:
-                self._blocks[i]._same = 1
+                self.blocks[i].same = 1
             # Rule 4:
             elif cond8 and cond3 and cond2:
-                self._blocks[i-1]._same = 1
+                self.blocks[i-1].same = 1
             # Rule 6:
             elif cond5 and cond3 and cond2:
-                self._blocks[i-1]._same = 1
+                self.blocks[i-1].same = 1
         # Rule 5
-        if self._blocks:
+        if self.blocks:
             # After exiting the loop, the last block
-            cond1 = self._blocks[i]._type in ('comment','correction')
-            cond2 = self._blocks[i]._same <= 0
+            cond1 = self.blocks[i].type_ in ('comment','correction')
+            cond2 = self.blocks[i].same <= 0
             if cond1 and cond2:
-                self._blocks[i]._same = 1
+                self.blocks[i].same = 1
     
     def add_space(self):
-        for i in range(len(self._blocks)):
-            if self._blocks[i]._same > 0:
+        for i in range(len(self.blocks)):
+            if self.blocks[i].same > 0:
                 cond = False
                 if i > 0:
-                    if self._blocks[i-1]._text[-1] in ['(','[','{']:
+                    if self.blocks[i-1].text[-1] in ['(','[','{']:
                         cond = True
-                if self._blocks[i]._text \
-                  and not self._blocks[i]._text[0].isspace() \
-                  and not self._blocks[i]._text[0] in sh.lg.punc_array \
-                  and not self._blocks[i]._text[0] in [')',']','}'] \
+                if self.blocks[i].text \
+                  and not self.blocks[i].text[0].isspace() \
+                  and not self.blocks[i].text[0] in sh.lg.punc_array \
+                  and not self.blocks[i].text[0] in [')',']','}'] \
                   and not cond:
-                    self._blocks[i]._text = ' ' + self._blocks[i]._text
+                    self.blocks[i].text = ' ' + self.blocks[i].text
 
-    def phrases(self):
-        for block in self._blocks:
-            if block._type == 'phrase':
-                block._type   = 'dic'
-                block._select = 1
-                block._dica   = block._text.strip()
+    def set_phrases(self):
+        for block in self.blocks:
+            if block.type_ == 'phrase':
+                block.type_  = 'dic'
+                block.select = 1
+                block.dica   = block.text.strip()
                 break
                 
     def fill(self):
         dica = wforma = speecha = transca = terma = ''
         
         # Find first non-empty values and set them as default
-        for block in self._blocks:
-            if block._type == 'dic':
-                dica = block._text
+        for block in self.blocks:
+            if block.type_ == 'dic':
+                dica = block.text
                 break
-        for block in self._blocks:
-            if block._type == 'wform':
-                wforma = block._text
+        for block in self.blocks:
+            if block.type_ == 'wform':
+                wforma = block.text
                 break
-        for block in self._blocks:
-            if block._type == 'speech':
-                speecha = block._text
+        for block in self.blocks:
+            if block.type_ == 'speech':
+                speecha = block.text
                 break
-        for block in self._blocks:
-            if block._type == 'transc':
-                transca = block._text
+        for block in self.blocks:
+            if block.type_ == 'transc':
+                transca = block.text
                 break
-        for block in self._blocks:
-            if block._type == 'term' or block._type == 'phrase':
-                terma = block._text
+        for block in self.blocks:
+            if block.type_ == 'term' or block.type_ == 'phrase':
+                terma = block.text
                 break
         
-        for block in self._blocks:
-            if block._type == 'dic':
-                dica = block._text
-            elif block._type == 'wform':
-                wforma = block._text
-            elif block._type == 'speech':
-                speecha = block._text
-            elif block._type == 'transc':
-                transca = block._text
-                ''' #todo: Is there a difference if we use both
+        for block in self.blocks:
+            if block.type_ == 'dic':
+                dica = block.text
+            elif block.type_ == 'wform':
+                wforma = block.text
+            elif block.type_ == 'speech':
+                speecha = block.text
+            elif block.type_ == 'transc':
+                transca = block.text
+                ''' #TODO: Is there a difference if we use both
                     term/phrase here or the term only?
                 '''
-            elif block._type in ('term','phrase'):
-                terma = block._text
-            block._dica    = dica.strip()
-            block._wforma  = wforma
-            block._speecha = speecha
-            block._transca = transca
-            if block._same > 0:
-                block._terma = terma
+            elif block.type_ in ('term','phrase'):
+                terma = block.text
+            block.dica    = dica.strip()
+            block.wforma  = wforma
+            block.speecha = speecha
+            block.transca = transca
+            if block.same > 0:
+                block.terma = terma
     
     def fill_terma(self):
         terma = ''
@@ -355,93 +355,93 @@ class Elems:
             other types besides 'phrase' and 'term' follow them in the
             end.
         '''
-        i = len(self._blocks) - 1
+        i = len(self.blocks) - 1
         while i >= 0:
-            if self._blocks[i]._type in ('term','phrase'):
-                terma = self._blocks[i]._text
+            if self.blocks[i].type_ in ('term','phrase'):
+                terma = self.blocks[i].text
                 break
             i -= 1
-        i = len(self._blocks) - 1
+        i = len(self.blocks) - 1
         while i >= 0:
-            if self._blocks[i]._type in ('term','phrase'):
-                terma = self._blocks[i]._text
-            if not self._blocks[i]._same > 0:
-                self._blocks[i]._terma = terma
+            if self.blocks[i].type_ in ('term','phrase'):
+                terma = self.blocks[i].text
+            if not self.blocks[i].same > 0:
+                self.blocks[i].terma = terma
             i -= 1
             
     def fixed_terma(self):
-        for block in self._blocks:
-            if block._type in ('dic','wform','speech','transc'):
-                block._terma = ''
+        for block in self.blocks:
+            if block.type_ in ('dic','wform','speech','transc'):
+                block.terma = ''
                 
     def insert_fixed(self):
         dica = wforma = speecha = ''
         i = 0
-        while i < len(self._blocks):
-            if dica != self._blocks[i]._dica \
-            or wforma != self._blocks[i]._wforma \
-            or speecha != self._blocks[i]._speecha:
+        while i < len(self.blocks):
+            if dica != self.blocks[i].dica \
+            or wforma != self.blocks[i].wforma \
+            or speecha != self.blocks[i].speecha:
                 
                 block          = Block()
-                block._type    = 'speech'
-                block._text    = self._blocks[i]._speecha
-                block._dica    = self._blocks[i]._dica
-                block._wforma  = self._blocks[i]._wforma
-                block._speecha = self._blocks[i]._speecha
-                block._transca = self._blocks[i]._transca
-                block._terma   = self._blocks[i]._terma
-                block._same    = 0
-                self._blocks.insert(i,block)
+                block.type_    = 'speech'
+                block.text    = self.blocks[i].speecha
+                block.dica    = self.blocks[i].dica
+                block.wforma  = self.blocks[i].wforma
+                block.speecha = self.blocks[i].speecha
+                block.transca = self.blocks[i].transca
+                block.terma   = self.blocks[i].terma
+                block.same    = 0
+                self.blocks.insert(i,block)
                 
                 block          = Block()
-                block._type    = 'transc'
-                block._text    = self._blocks[i]._transca
-                block._dica    = self._blocks[i]._dica
-                block._wforma  = self._blocks[i]._wforma
-                block._speecha = self._blocks[i]._speecha
-                block._transca = self._blocks[i]._transca
-                block._terma   = self._blocks[i]._terma
-                block._same    = 0
-                self._blocks.insert(i,block)
+                block.type_    = 'transc'
+                block.text    = self.blocks[i].transca
+                block.dica    = self.blocks[i].dica
+                block.wforma  = self.blocks[i].wforma
+                block.speecha = self.blocks[i].speecha
+                block.transca = self.blocks[i].transca
+                block.terma   = self.blocks[i].terma
+                block.same    = 0
+                self.blocks.insert(i,block)
 
                 block          = Block()
-                block._type    = 'wform'
-                block._text    = self._blocks[i]._wforma
-                block._dica    = self._blocks[i]._dica
-                block._wforma  = self._blocks[i]._wforma
-                block._speecha = self._blocks[i]._speecha
-                block._transca = self._blocks[i]._transca
-                block._terma   = self._blocks[i]._terma
-                block._same    = 0
-                self._blocks.insert(i,block)
+                block.type_    = 'wform'
+                block.text    = self.blocks[i].wforma
+                block.dica    = self.blocks[i].dica
+                block.wforma  = self.blocks[i].wforma
+                block.speecha = self.blocks[i].speecha
+                block.transca = self.blocks[i].transca
+                block.terma   = self.blocks[i].terma
+                block.same    = 0
+                self.blocks.insert(i,block)
                 
                 block          = Block()
-                block._type    = 'dic'
-                block._text    = self._blocks[i]._dica
-                block._dica    = self._blocks[i]._dica
-                block._wforma  = self._blocks[i]._wforma
-                block._speecha = self._blocks[i]._speecha
-                block._transca = self._blocks[i]._transca
-                block._terma   = self._blocks[i]._terma
-                block._same    = 0
-                self._blocks.insert(i,block)
+                block.type_    = 'dic'
+                block.text    = self.blocks[i].dica
+                block.dica    = self.blocks[i].dica
+                block.wforma  = self.blocks[i].wforma
+                block.speecha = self.blocks[i].speecha
+                block.transca = self.blocks[i].transca
+                block.terma   = self.blocks[i].terma
+                block.same    = 0
+                self.blocks.insert(i,block)
                 
-                dica    = self._blocks[i]._dica
-                wforma  = self._blocks[i]._wforma
-                speecha = self._blocks[i]._speecha
+                dica    = self.blocks[i].dica
+                wforma  = self.blocks[i].wforma
+                speecha = self.blocks[i].speecha
                 i += 4
             i += 1
             
     def remove_fixed(self):
-        self._blocks = [block for block in self._blocks if block._type \
+        self.blocks = [block for block in self.blocks if block.type_ \
                         not in ('dic','wform','transc','speech')
                        ]
                        
-    def selectables(self):
-        # block._no is set only after creating DB
-        for block in self._blocks:
-            if block._type in ('phrase','term','transc') \
-            and block._text and block._select < 1:
-                block._select = 1
+    def set_selectables(self):
+        # block.no is set only after creating DB
+        for block in self.blocks:
+            if block.type_ in ('phrase','term','transc') \
+            and block.text and block.select < 1:
+                block.select = 1
             else:
-                block._select = 0
+                block.select = 0

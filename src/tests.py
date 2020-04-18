@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import skl_shared.shared as sh
-from skl_shared.localize import _
+import skl_shared2.shared as sh
+from skl_shared2.localize import _
 
 DEBUG = True
 
@@ -10,78 +10,78 @@ DEBUG = True
 class Block:
     
     def __init__(self):
-        self._id        = None # (00) Autoincrement
-        self._articleid = 0    # (01) ARTICLEID
-        self._dica      = ''   # (02) DICA (abbreviation)
-        self._wforma    = ''   # (03) WFORMA
-        self._speecha   = ''   # (04) SPEECHA
-        self._transca   = ''   # (05) TRANSCA
-        self._terma     = ''   # (06) TERMA
-        self._type      = ''   # (07) TYPE
-        self._text      = ''   # (08) TEXT
-        self._url       = ''   # (09) URL
-        self._block     = 0    # (10) BLOCK
-        self._priority  = 0    # (11) PRIORITY
-        self._select    = 0    # (12) SELECTABLE
-        self._same      = 0    # (13) SAMECELL
-        self._cell_no   = 0    # (14) CELLNO
-        self._rowno     = -1   # (15) ROWNO
-        self._colno     = -1   # (16) COLNO
-        self._pos1      = -1   # (17) POS1
-        self._pos2      = -1   # (18) POS2
-        self._node1     = ''   # (19) NODE1
-        self._node2     = ''   # (20) NODE2
-        self._offpos1   = -1   # (21) OFFPOS1
-        self._offpos2   = -1   # (22) OFFPOS2
-        self._bbox1     = -1   # (23) BBOX1
-        self._bbox2     = -1   # (24) BBOX2
-        self._bboy1     = -1   # (25) BBOY1
-        self._bboy2     = -1   # (26) BBOY2
-        self._textlow   = ''   # (27) TEXTLOW
-        self._ignore    = 0    # (28) IGNORE
-        self._speech    = 0    # (29) SPEECHPR
-        self._dicaf     = ''   # (30) DICA (full title)
+        self.id_      = None # (00) Autoincrement
+        self.artid    = 0    # (01) ARTICLEID
+        self.dica     = ''   # (02) DICA (abbreviation)
+        self.wforma   = ''   # (03) WFORMA
+        self.speecha  = ''   # (04) SPEECHA
+        self.transca  = ''   # (05) TRANSCA
+        self.terma    = ''   # (06) TERMA
+        self.type_    = ''   # (07) TYPE
+        self.text     = ''   # (08) TEXT
+        self.url      = ''   # (09) URL
+        self.block    = 0    # (10) BLOCK
+        self.priority = 0    # (11) PRIORITY
+        self.select   = 0    # (12) SELECTABLE
+        self.same     = 0    # (13) SAMECELL
+        self.cellno   = 0    # (14) CELLNO
+        self.rowno    = -1   # (15) ROWNO
+        self.colno    = -1   # (16) COLNO
+        self.pos1     = -1   # (17) POS1
+        self.pos2     = -1   # (18) POS2
+        self.node1    = ''   # (19) NODE1
+        self.node2    = ''   # (20) NODE2
+        self.offpos1  = -1   # (21) OFFPOS1
+        self.offpos2  = -1   # (22) OFFPOS2
+        self.bbox1    = -1   # (23) BBOX1
+        self.bbox2    = -1   # (24) BBOX2
+        self.bboy1    = -1   # (25) BBOY1
+        self.bboy2    = -1   # (26) BBOY2
+        self.textlow  = ''   # (27) TEXTLOW
+        self.ignore   = 0    # (28) IGNORE
+        self.speech   = 0    # (29) SPEECHPR
+        self.dicaf    = ''   # (30) DICA (full title)
     
     def dump(self):
-        return (self._id
-               ,self._articleid
-               ,self._dica
-               ,self._wforma
-               ,self._speecha
-               ,self._transca
-               ,self._terma
-               ,self._type
-               ,self._text
-               ,self._url
-               ,self._block
-               ,self._priority
-               ,self._select
-               ,self._same
-               ,self._cell_no
-               ,self._rowno
-               ,self._colno
-               ,self._pos1
-               ,self._pos2
-               ,self._node1
-               ,self._node2
-               ,self._offpos1
-               ,self._offpos2
-               ,self._bbox1
-               ,self._bbox2
-               ,self._bboy1
-               ,self._bboy2
-               ,self._textlow
-               ,self._ignore
-               ,self._speech
-               ,self._dicaf
+        return (self.id_
+               ,self.artid
+               ,self.dica
+               ,self.wforma
+               ,self.speecha
+               ,self.transca
+               ,self.terma
+               ,self.type_
+               ,self.text
+               ,self.url
+               ,self.block
+               ,self.priority
+               ,self.select
+               ,self.same
+               ,self.cellno
+               ,self.rowno
+               ,self.colno
+               ,self.pos1
+               ,self.pos2
+               ,self.node1
+               ,self.node2
+               ,self.offpos1
+               ,self.offpos2
+               ,self.bbox1
+               ,self.bbox2
+               ,self.bboy1
+               ,self.bboy2
+               ,self.textlow
+               ,self.ignore
+               ,self.speech
+               ,self.dicaf
                )
 
 
 
 class Get:
     
-    def multitrancom(self):
-        f = '[MClient] tests.Get.multitrancom'
+    def run_multitrancom(self):
+        f = '[MClient] tests.Get.run_multitrancom'
         import plugins.multitrancom.get as gt
         #search = 'компьютер'
         search  = 'computer'
@@ -94,10 +94,10 @@ class Get:
                         ,timeout = timeout
                         ).run()
         timer.end()
-        sh.com.fast_txt(result)
+        sh.com.run_fast_txt(result)
     
-    def stardict(self):
-        f = '[MClient] tests.Get.stardict'
+    def run_stardict(self):
+        f = '[MClient] tests.Get.run_stardict'
         import logic                as lg
         import plugins.stardict.get as sd
         #search = 'компьютер'
@@ -106,14 +106,14 @@ class Get:
         timer.start()
         result = sd.Get(search).run()
         timer.end()
-        sh.com.fast_txt(result)
+        sh.com.run_fast_txt(result)
 
 
 
 class Tags:
     
-    def stardict(self):
-        f = '[MClient] tests.Tags.stardict'
+    def run_stardict(self):
+        f = '[MClient] tests.Tags.run_stardict'
         import plugins.stardict.cleanup as sdcleanup
         import plugins.stardict.tags    as sdtags
         file = '/home/pete/.config/mclient/tests/(stardict) EnRu_full - cut.txt'
@@ -123,8 +123,8 @@ class Tags:
                     ,Debug = DEBUG
                     ).run()
     
-    def multitrancom(self):
-        f = '[MClient] tests.Tags.multitrancom'
+    def run_multitrancom(self):
+        f = '[MClient] tests.Tags.run_multitrancom'
         import plugins.multitrancom.cleanup as mccleanup
         import plugins.multitrancom.tags    as mctags
         file = '/home/pete/bin/mclient/tests/multitrancom/трос.txt'
@@ -141,15 +141,15 @@ class Tags:
 
 class Plugin:
     
-    def multitranbin(self):
-        f = '[MClient] tests.Plugin.multitranbin'
+    def run_multitranbin(self):
+        f = '[MClient] tests.Plugin.run_multitranbin'
         import plugins.multitranbin.get
         import plugins.multitranbin.run as mb
         #search = 'Kafir'
         #search = 'abasin'
         #search = 'a posteriori'
         #search = 'abed'
-        #search  = 'accommodation coefficient'
+        #search = 'accommodation coefficient'
         #search = 'according'
         #search = 'фабричный корпус'
         #search = 'build market'
@@ -173,13 +173,13 @@ class Plugin:
         if not blocks:
             blocks = []
         for i in range(len(blocks)):
-            mes = '{}: {}: "{}"'.format (i,blocks[i]._type
-                                        ,blocks[i]._text
+            mes = '{}: {}: "{}"'.format (i,blocks[i].type_
+                                        ,blocks[i].text
                                         )
             print(mes)
     
-    def stardict(self):
-        f = '[MClient] tests.Plugin.stardict'
+    def run_stardict(self):
+        f = '[MClient] tests.Plugin.run_stardict'
         import plugins.stardict.run as sr
         search = 'about'
         iplug = sr.Plugin (Debug   = DEBUG
@@ -187,8 +187,8 @@ class Plugin:
                           )
         iplug.request(search=search)
     
-    def multitrancom(self):
-        f = '[MClient] tests.Plugin.multitrancom'
+    def run_multitrancom(self):
+        f = '[MClient] tests.Plugin.run_multitrancom'
         import plugins.multitrancom.run as mc
         #url    = 'https://www.multitran.com/m.exe?s=memory%20pressure&l1=2&l2=1&SHL=2'
         #search = 'memory pressure'
@@ -210,16 +210,16 @@ class Plugin:
 
 class Commands:
     
-    def nonpairs(self):
+    def get_nonpairs(self):
         ''' Get languages that are not supported by multitran.com for
             both directions.
         '''
-        f = '[MClient] tests.Commands.nonpairs'
+        f = '[MClient] tests.Commands.get_nonpairs'
         import plugins.multitrancom.pairs as pairs
         lst = []
         for lang in pairs.LANGS:
-            pairs1 = pairs.objs.pairs().pairs1(lang)
-            pairs2 = pairs.objs.pairs().pairs2(lang)
+            pairs1 = pairs.objs.get_pairs().get_pairs1(lang)
+            pairs2 = pairs.objs.get_pairs().get_pairs2(lang)
             if not pairs1:
                 pairs1 = []
             if not pairs2:
@@ -235,7 +235,7 @@ class Commands:
         lst.sort()
         mes = _('The following pairs are not supported:\n{}')
         mes = mes.format(lst)
-        sh.objs.mes(f,mes,True).info()
+        sh.objs.get_mes(f,mes,True).show_info()
     
     def compare_elems(self):
         f = '[MClient] tests.Commands.compare_elems'
@@ -245,75 +245,51 @@ class Commands:
         # Create blocks
         #1 #1
         block = list(Block().dump())
-        # DICA
-        block[2]  = 'Общая лексика'
-        # DICAF
-        block[30] = 'общ.'
-        # TYPE
-        block[7]  = 'term'
-        # TEXT
-        block[8]  = 'hello'
+        block[2]  = 'Общая лексика' # DICA
+        block[30] = 'общ.'          # DICAF
+        block[7]  = 'term'          # TYPE
+        block[8]  = 'hello'         # TEXT
         data1.append(block)
         #1 #2
         block = list(Block().dump())
-        # DICA
-        block[2]  = 'Общая лексика'
-        # DICAF
-        block[30] = 'общ.'
-        # TYPE
-        block[7]  = 'comment'
-        # TEXT
-        block[8]  = 'yes'
+        block[2]  = 'Общая лексика' # DICA
+        block[30] = 'общ.'          # DICAF
+        block[7]  = 'comment'       # TYPE
+        block[8]  = 'yes'           # TEXT
         data1.append(block)
         #1 #3
         block = list(Block().dump())
-        # DICA
-        block[2]  = 'Общая лексика'
-        # DICAF
-        block[30] = 'общ.'
-        # TYPE
-        block[7]  = 'term'
-        # TEXT
-        block[8]  = 'goodbye'
+        block[2]  = 'Общая лексика' # DICA
+        block[30] = 'общ.'          # DICAF
+        block[7]  = 'term'          # TYPE
+        block[8]  = 'goodbye'       # TEXT
         data1.append(block)
         #2 #1
         block = list(Block().dump())
-        # DICA
-        block[2]  = 'Общая лексика'
-        # DICAF
-        block[30] = 'общ.'
-        # TYPE
-        block[7]  = 'term'
-        # TEXT
-        block[8]  = 'goodbye'
+        block[2]  = 'Общая лексика' # DICA
+        block[30] = 'общ.'          # DICAF
+        block[7]  = 'term'          # TYPE
+        block[8]  = 'goodbye'       # TEXT
         data2.append(block)
         #2 #2
         block = list(Block().dump())
-        # DICA
-        block[2]  = 'Физиология'
-        # DICAF
-        block[30] = 'физиол.'
-        # TYPE
-        block[7]  = 'comment'
-        # TEXT
-        block[8]  = 'yes'
+        block[2]  = 'Физиология'    # DICA
+        block[30] = 'физиол.'       # DICAF
+        block[7]  = 'comment'       # TYPE
+        block[8]  = 'yes'           # TEXT
         data2.append(block)
         #2 #3
         block = list(Block().dump())
-        # DICA
-        block[2]  = 'Общая лексика'
-        # DICAF
-        block[30] = 'общ.'
-        # TYPE
-        block[7]  = 'term'
-        # TEXT
-        block[8]  = 'hello'
+        block[2]  = 'Общая лексика' # DICA
+        block[30] = 'общ.'          # DICAF
+        block[7]  = 'term'          # TYPE
+        block[8]  = 'hello'         # TEXT
         data2.append(block)
         # Compare
         data = el.Elems(data1,data2).run()
         data = [str(item) for item in data]
         data = '\n'.join(data)
-        sh.com.fast_txt(data)
+        sh.com.run_fast_txt(data)
     
     def request(self):
         f = '[MClient] tests.Commands.request'
@@ -324,49 +300,49 @@ class Commands:
                                                               ,pair
                                                               ,search
                                                               )
-        lg.objs.plugins().set(source)
-        lg.objs._plugins.set_pair(pair)
-        sh.objs.mes(f,mes,True).info()
-        data = lg.objs._plugins.request (search = search
-                                        ,url    = ''
-                                        )
+        lg.objs.get_plugins().set(source)
+        lg.objs.plugins.set_pair(pair)
+        sh.objs.get_mes(f,mes,True).show_info()
+        data = lg.objs.plugins.request (search = search
+                                       ,url    = ''
+                                       )
         if data:
-            sh.com.fast_txt(data)
+            sh.com.run_fast_txt(data)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def get_url(self):
         f = '[MClient] tests.Commands.get_url'
-        source  = 'multitran.com'
-        pair    = 'RUS <=> XAL'
-        search  = 'До свидания!'
-        mes     = 'Source: "{}"; pair: "{}"; search: "{}"'
-        mes     = mes.format(source,pair,search)
-        lg.objs.plugins().set(source)
-        lg.objs._plugins.set_pair(pair)
-        sh.objs.mes(f,mes,True).info()
-        lg.objs._plugins.get_url(search)
+        source = 'multitran.com'
+        pair   = 'RUS <=> XAL'
+        search = 'До свидания!'
+        mes    = 'Source: "{}"; pair: "{}"; search: "{}"'
+        mes    = mes.format(source,pair,search)
+        lg.objs.get_plugins().set(source)
+        lg.objs.plugins.set_pair(pair)
+        sh.objs.get_mes(f,mes,True).show_info()
+        lg.objs.plugins.get_url(search)
     
     def suggest(self):
         f = '[MClient] tests.Commands.suggest'
-        source  = 'multitran.com'
-        pair    = 'DEU <=> RUS'
-        search  = 'Scheiße'
-        mes     = 'Source: "{}"; pair: "{}"; search: "{}"'
-        mes     = mes.format(source,pair,search)
-        lg.objs.plugins().set(source)
-        lg.objs._plugins.set_pair(pair)
-        sh.objs.mes(f,mes,True).info()
+        source = 'multitran.com'
+        pair   = 'DEU <=> RUS'
+        search = 'Scheiße'
+        mes    = 'Source: "{}"; pair: "{}"; search: "{}"'
+        mes    = mes.format(source,pair,search)
+        lg.objs.get_plugins().set(source)
+        lg.objs.plugins.set_pair(pair)
+        sh.objs.get_mes(f,mes,True).show_info()
         lg.com.suggest(search)
     
     def _set_timeout(self,module,source,timeout):
         f = '[MClient] tests.Commands._set_timeout'
-        lg.objs.plugins().set(source)
-        lg.objs._plugins.set_timeout(timeout)
+        lg.objs.get_plugins().set(source)
+        lg.objs.plugins.set_timeout(timeout)
         mes = 'Source: {}; Timeout: {}'.format (source
                                                ,module.TIMEOUT
                                                )
-        sh.objs.mes(f,mes,True).debug()
+        sh.objs.get_mes(f,mes,True).show_debug()
     
     def set_timeout(self):
         f = '[MClient] tests.Commands.set_timeout'
@@ -388,15 +364,15 @@ class Commands:
     def accessibility(self):
         f = '[MClient] tests.Commands.accessibility'
         source = _('Offline')
-        lg.objs.plugins().set(source)
-        result  = lg.objs._plugins.accessible()
+        lg.objs.get_plugins().set(source)
+        result  = lg.objs.plugins.is_accessible()
         mes     = 'Source: {}; Accessibility: {}'.format(source,result)
-        sh.objs.mes(f,mes,True).debug()
+        sh.objs.get_mes(f,mes,True).show_debug()
         source = 'multitran.com'
-        lg.objs._plugins.set(source)
-        result  = lg.objs._plugins.accessible()
+        lg.objs.plugins.set(source)
+        result  = lg.objs.plugins.is_accessible()
         mes     = 'Source: {}; Accessibility: {}'.format(source,result)
-        sh.objs.mes(f,mes,True).debug()
+        sh.objs.get_mes(f,mes,True).show_debug()
     
     def welcome(self):
         f = '[MClient] tests.Commands.welcome'
@@ -406,65 +382,65 @@ class Commands:
             sh.WriteTextFile(file_w).write(code)
             sh.Launch(file_w).default()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def set_pair(self):
         f = '[MClient] tests.Commands.set_pair'
         import plugins.multitrancom.get
         pair   = 'RUS <=> XAL'
         source = 'multitran.com'
-        lg.objs.plugins().set(source)
-        lg.objs._plugins.set_pair(pair)
+        lg.objs.get_plugins().set(source)
+        lg.objs.plugins.set_pair(pair)
         
         mes = '{}: {}'.format(source,plugins.multitrancom.get.PAIR)
-        sh.objs.mes(f,mes,True).debug()
+        sh.objs.get_mes(f,mes,True).show_debug()
         pair   = 'XAL <=> RUS'
         source = _('Multitran')
-        lg.objs._plugins.set(source)
-        lg.objs._plugins.set_pair(pair)
+        lg.objs.plugins.set(source)
+        lg.objs.plugins.set_pair(pair)
         mes = 'multitrancom: {}'.format(plugins.multitrancom.get.PAIR)
-        sh.objs.mes(f,mes,True).debug()
+        sh.objs.get_mes(f,mes,True).show_debug()
         
     def translate_gui (self,source,pair
                       ,search,url
                       ):
         f = '[MClient] tests.Commands.translate_gui'
         import mclient
-        lg.objs.plugins().set(source)
-        lg.objs._plugins.set_pair(pair)
-        lg.objs.request()._search = search
-        lg.objs._request._url     = url
+        lg.objs.get_plugins().set(source)
+        lg.objs.plugins.set_pair(pair)
+        lg.objs.get_request().search = search
+        lg.objs.request.url = url
         mclient.objs.webframe().load_article()
-        mclient.objs._webframe.gui.show()
+        mclient.objs.webframe.gui.show()
     
     def translate_cli (self,source,pair
                       ,search,url,MaxRows=100
                       ):
         f = '[MClient] tests.Commands.translate_cli'
         import cells as cl
-        lg.objs.plugins().set(source)
-        lg.objs._plugins.set_pair(pair)
-        lg.objs.request()._search = search
-        lg.objs._request._url     = url
-        data   = lg.objs._plugins.request (search = search
-                                          ,url    = url
-                                          )
+        lg.objs.get_plugins().set(source)
+        lg.objs.plugins.set_pair(pair)
+        lg.objs.get_request().search = search
+        lg.objs.request.url = url
+        data = lg.objs.plugins.request (search = search
+                                       ,url    = url
+                                       )
         cldata = []
         for i in range(len(data)):
             row = [i,data[i][7],data[i][8],data[i][13],data[i][2]
                   ,data[i][3],data[i][4],data[i][5]
                   ]
             cldata.append(row)
-        cells = cl.Cells (data         = cldata
-                         ,cols         = ('dic','wform','transc'
-                                         ,'speech'
-                                         )
-                         ,collimit     = 8
-                         ,phrase_dic   = ''
-                         ,Reverse      = False
-                         ,ExpandSpeech = False
-                         ,Debug        = DEBUG
-                         ,MaxRows      = MaxRows
+        cells = cl.Cells (data     = cldata
+                         ,cols     = ('dic','wform','transc'
+                                     ,'speech'
+                                     )
+                         ,collimit = 8
+                         ,phdic    = ''
+                         ,Reverse  = False
+                         ,ExpandSp = False
+                         ,Debug    = DEBUG
+                         ,MaxRows  = MaxRows
                          )
         cells.run()
     
@@ -487,7 +463,7 @@ class Commands:
                                )
             
     
-    def com_complex(self,GUI=False):
+    def run_com_complex(self,GUI=False):
         self.translate (source = 'multitran.com'
                        ,pair   = 'ENG <=> RUS'
                        ,search = 'complex'
@@ -495,7 +471,7 @@ class Commands:
                        ,GUI    = GUI
                        )
     
-    def com_abatis2(self,GUI=False):
+    def run_com_abatis2(self,GUI=False):
         self.translate (source = 'multitran.com'
                        ,pair   = 'ENG <=> RUS'
                        ,search = 'abatis'
@@ -503,7 +479,7 @@ class Commands:
                        ,GUI    = GUI
                        )
     
-    def com_abatis(self,GUI=False):
+    def run_com_abatis(self,GUI=False):
         self.translate (source = 'multitran.com'
                        ,pair   = 'ENG <=> RUS'
                        ,search = 'засека'
@@ -511,7 +487,7 @@ class Commands:
                        ,GUI    = GUI
                        )
     
-    def all_ernahrung(self,GUI=False):
+    def run_all_ernahrung(self,GUI=False):
         self.translate (source = _('Multitran')
                        ,pair   = 'DEU <=> RUS'
                        ,search = 'ernährung'
@@ -519,7 +495,7 @@ class Commands:
                        ,GUI    = GUI
                        )
     
-    def com_mud(self,GUI=False):
+    def run_com_mud(self,GUI=False):
         self.translate (source = 'multitran.com'
                        ,pair   = 'ENG <=> RUS'
                        ,search = 'mud'
@@ -527,7 +503,7 @@ class Commands:
                        ,GUI    = GUI
                        )
     
-    def com_systemwide(self,GUI=False):
+    def run_com_systemwide(self,GUI=False):
         self.translate (source = 'multitran.com'
                        ,pair   = 'ENG <=> RUS'
                        ,search = 'system-wide'
@@ -538,12 +514,12 @@ class Commands:
     def go_keyboard(self,event=None):
         f = '[MClient] tests.Commands.go_keyboard'
         mes = _('Triggered!')
-        sh.objs.mes(f,mes,True).debug()
+        sh.objs.get_mes(f,mes,True).show_debug()
     
     def copy_text(self,event=None):
         f = '[MClient] tests.Commands.copy_text'
         mes = _('Triggered!')
-        sh.objs.mes(f,mes,True).debug()
+        sh.objs.get_mes(f,mes,True).show_debug()
 
 
 com = Commands()

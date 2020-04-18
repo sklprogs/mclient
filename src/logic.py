@@ -6,9 +6,9 @@ import io
 import urllib.request
 import html
 import ssl
-import skl_shared.shared as sh
+import skl_shared2.shared as sh
 import manager
-from skl_shared.localize import _
+from skl_shared2.localize import _
 
 
 sample_block = '''Австралийский сленг
@@ -41,73 +41,73 @@ sample_prior = '''Общая лексика
 
 class PhraseTerma:
     
-    def __init__(self,dbc,articleid):
+    def __init__(self,dbc,artid):
         f = '[MClient] logic.PhraseTerma.__init__'
-        self.dbc        = dbc
-        self._articleid = articleid
-        self._no1       = -1
-        self._no2       = -1
-        if self.dbc and self._articleid:
+        self.dbc   = dbc
+        self.artid = artid
+        self.no1   = -1
+        self.no2   = -1
+        if self.dbc and self.artid:
             self.Success = True
         else:
             self.Success = False
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
             
-    def second_phrase(self):
-        f = '[MClient] logic.PhraseTerma.second_phrase'
-        if self._no2 < 0:
+    def get_second_phrase(self):
+        f = '[MClient] logic.PhraseTerma.get_second_phrase'
+        if self.no2 < 0:
             self.dbc.execute ('select NO from BLOCKS \
                                where ARTICLEID = ? and TYPE = ? \
-                               order by NO',(self._articleid,'phrase',)
+                               order by NO',(self.artid,'phrase',)
                              )
             result = self.dbc.fetchone()
             if result:
-                self._no2 = result[0]
-            mes = str(self._no2)
-            sh.objs.mes(f,mes,True).debug()
-        return self._no2
+                self.no2 = result[0]
+            mes = str(self.no2)
+            sh.objs.get_mes(f,mes,True).show_debug()
+        return self.no2
         
-    def phrase_dic(self):
-        f = '[MClient] logic.PhraseTerma.phrase_dic'
-        if self._no1 < 0:
-            if self._no2 >= 0:
+    def get_phdic(self):
+        f = '[MClient] logic.PhraseTerma.get_phdic'
+        if self.no1 < 0:
+            if self.no2 >= 0:
                 self.dbc.execute ('select NO from BLOCKS \
                                    where ARTICLEID = ? and TYPE = ? \
                                    and NO < ? order by NO desc'
-                                   ,(self._articleid,'dic',self._no2,)
+                                   ,(self.artid,'dic',self.no2,)
                                  )
                 result = self.dbc.fetchone()
                 if result:
-                    self._no1 = result[0]
+                    self.no1 = result[0]
                     self.dbc.execute ('update BLOCKS set SELECTABLE=1 \
-                                       where NO = ?',(self._no1,)
+                                       where  NO = ?',(self.no1,)
                                      )
             else:
                 mes = _('Wrong input data!')
-                sh.objs.mes(f,mes,True).warning()
-            mes = str(self._no1)
-            sh.objs.mes(f,mes,True).debug()
-        return self._no1
+                sh.objs.get_mes(f,mes,True).show_warning()
+            mes = str(self.no1)
+            sh.objs.get_mes(f,mes,True).show_debug()
+        return self.no1
         
     def dump(self):
         f = '[MClient] logic.PhraseTerma.dump'
         # Autoincrement starts with 1 in sqlite
-        if self._no1 > 0 and self._no2 > 0:
+        if self.no1 > 0 and self.no2 > 0:
             mes = _('Update DB, range {}-{}')
-            mes = mes.format(self._no1,self._no2)
-            sh.objs.mes(f,mes,True).info()
+            mes = mes.format(self.no1,self.no2)
+            sh.objs.get_mes(f,mes,True).show_info()
             self.dbc.execute ('update BLOCKS set TERMA=? where NO >= ? \
-                               and NO < ?',('',self._no1,self._no2,)
+                               and NO < ?',('',self.no1,self.no2,)
                              )
         else:
             mes = _('Wrong input data!')
-            sh.objs.mes(f,mes,True).warning()
+            sh.objs.get_mes(f,mes,True).show_warning()
         
     def run(self):
         f = '[MClient] logic.PhraseTerma.run'
         if self.Success:
-            self.second_phrase()
-            self.phrase_dic()
+            self.get_second_phrase()
+            self.get_phdic()
             self.dump()
         else:
             sh.com.cancel(f)
@@ -148,30 +148,30 @@ class Welcome:
     
     def try_sources(self):
         f = '[MClient] logic.Welcome.try_sources'
-        old  = objs.plugins()._source
-        dics = objs._plugins.online_sources()
+        old  = objs.get_plugins().source
+        dics = objs.plugins.get_online_sources()
         if dics:
             for dic in dics:
-                objs._plugins.set(dic)
+                objs.plugins.set(dic)
                 source = Source()
                 source.title = dic
-                if objs._plugins.accessible():
+                if objs.plugins.is_accessible():
                     source.status = _('running')
                     source.color  = 'green'
                 self.sources.append(source)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
         # Try Stardict
-        objs._plugins.set(_('Stardict'))
-        self.sdstat = objs.plugins().accessible()
+        objs.plugins.set(_('Stardict'))
+        self.sdstat = objs.get_plugins().is_accessible()
         if self.sdstat:
             self.sdcolor = 'green'
         # Try local Multitran
-        objs._plugins.set(_('Local MT'))
-        self.mtbstat = objs.plugins().accessible()
+        objs.plugins.set(_('Local MT'))
+        self.mtbstat = objs.plugins.is_accessible()
         if self.mtbstat:
             self.mtbcolor = 'green'
-        objs._plugins.set(old)
+        objs.plugins.set(old)
 
     def gen_source_code(self,title,status,color):
         self.istr.write('      <b>{}</b>\n'.format(title))
@@ -400,126 +400,126 @@ class Welcome:
 class DefaultConfig:
     
     def __init__(self,product='mclient'):
-        self.values()
+        self.set_values()
         self.ihome   = sh.Home(app_name=product.lower())
         self.Success = self.ihome.create_conf()
     
-    def values(self):
-        self._dics   = ''
-        self._fabbr  = ''
-        self._fblock = ''
-        self._fprior = ''
-        self._fdconf = ''
-        self._fconf  = ''
+    def set_values(self):
+        self.dics   = ''
+        self.fabbr  = ''
+        self.fblock = ''
+        self.fprior = ''
+        self.fdconf = ''
+        self.fconf  = ''
     
-    def dics(self):
-        f = '[MClient] logic.DefaultConfig.dics'
+    def get_dics(self):
+        f = '[MClient] logic.DefaultConfig.get_dics'
         if self.Success:
-            if not self._dics:
-                self._dics = self.ihome.add_config('dics')
-                if self._dics:
-                    if os.path.exists(self._dics):
-                        self.Success = sh.Directory(path=self._dics).Success
+            if not self.dics:
+                self.dics = self.ihome.add_config('dics')
+                if self.dics:
+                    if os.path.exists(self.dics):
+                        self.Success = sh.Directory(path=self.dics).Success
                     else:
-                        self.Success = sh.Path(path=self._dics).create()
+                        self.Success = sh.Path(path=self.dics).create()
                 else:
                     self.Success = False
-                    sh.com.empty(f)
-            return self._dics
+                    sh.com.rep_empty(f)
+            return self.dics
         else:
             sh.com.cancel(f)
     
-    def block(self):
-        f = '[MClient] logic.DefaultConfig.block'
+    def set_block(self):
+        f = '[MClient] logic.DefaultConfig.set_block'
         if self.Success:
-            self._fblock = self.ihome.add_config('block.txt')
-            if self._fblock:
-                if os.path.exists(self._fblock):
-                    self.Success = sh.File(file=self._fblock).Success
+            self.fblock = self.ihome.add_config('block.txt')
+            if self.fblock:
+                if os.path.exists(self.fblock):
+                    self.Success = sh.File(file=self.fblock).Success
                 else:
-                    iwrite = sh.WriteTextFile (file    = self._fblock
+                    iwrite = sh.WriteTextFile (file    = self.fblock
                                               ,Rewrite = True
                                               )
                     iwrite.write(sample_block)
                     self.Success = iwrite.Success
             else:
                 self.Success = False
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
     def prioritize(self):
         f = '[MClient] logic.DefaultConfig.prioritize'
         if self.Success:
-            if not self._fprior:
-                self._fprior = self.ihome.add_config('prioritize.txt')
-                if self._fprior:
-                    if os.path.exists(self._fprior):
-                        self.Success = sh.File(file=self._fprior).Success
+            if not self.fprior:
+                self.fprior = self.ihome.add_config('prioritize.txt')
+                if self.fprior:
+                    if os.path.exists(self.fprior):
+                        self.Success = sh.File(file=self.fprior).Success
                     else:
-                        iwrite = sh.WriteTextFile (file    = self._fprior
+                        iwrite = sh.WriteTextFile (file    = self.fprior
                                                   ,Rewrite = True
                                                   )
                         iwrite.write(sample_prior)
                         self.Success = iwrite.Success
                 else:
                     self.Success = False
-                    sh.com.empty(f)
-            return self._fprior
+                    sh.com.rep_empty(f)
+            return self.fprior
         else:
             sh.com.cancel(f)
     
-    def abbr(self):
-        f = '[MClient] logic.DefaultConfig.abbr'
+    def get_abbr(self):
+        f = '[MClient] logic.DefaultConfig.get_abbr'
         if self.Success:
-            if not self._fabbr:
-                self._fabbr = sh.objs.pdir().add ('..','resources'
-                                                 ,'abbr.txt'
-                                                 )
-                self.Success = sh.File(file=self._fabbr).Success
-            return self._fabbr
+            if not self.fabbr:
+                self.fabbr = sh.objs.get_pdir().add ('..','resources'
+                                                    ,'abbr.txt'
+                                                    )
+                self.Success = sh.File(file=self.fabbr).Success
+            return self.fabbr
         else:
             sh.com.cancel(f)
     
-    def default_config(self):
-        f = '[MClient] logic.DefaultConfig.default_config'
+    def get_default_config(self):
+        f = '[MClient] logic.DefaultConfig.get_default_config'
         if self.Success:
-            if not self._fdconf:
-                self._fdconf = sh.objs.pdir().add ('..','resources'
-                                                  ,'default.cfg'
-                                                  )
-                self.Success = sh.File(file=self._fdconf).Success
-            return self._fdconf
+            if not self.fdconf:
+                self.fdconf = sh.objs.get_pdir().add ('..','resources'
+                                                     ,'default.cfg'
+                                                     )
+                self.Success = sh.File(file=self.fdconf).Success
+            return self.fdconf
         else:
             sh.com.cancel(f)
     
-    def config(self):
-        f = '[MClient] logic.DefaultConfig.config'
+    def get_config(self):
+        f = '[MClient] logic.DefaultConfig.get_config'
         if self.Success:
-            if not self._fconf:
-                self._fconf = self.ihome.add_config('mclient.cfg')
-                if os.path.exists(self._fconf):
-                    self.Success = sh.File(file=self._fconf).Success
+            if not self.fconf:
+                self.fconf = self.ihome.add_config('mclient.cfg')
+                if os.path.exists(self.fconf):
+                    self.Success = sh.File(file=self.fconf).Success
                 else:
-                    self.default_config()
+                    self.get_default_config()
                     if self.Success:
-                        self.Success = sh.File (file = self._fdconf
-                                               ,dest = self._fconf
+                        self.Success = sh.File (file = self.fdconf
+                                               ,dest = self.fconf
                                                ).copy()
                     else:
                         sh.com.cancel(f)
-            return self._fconf
+            return self.fconf
         else:
             sh.com.cancel(f)
     
     def run(self):
         f = '[MClient] logic.DefaultConfig.run'
         if self.Success:
-            self.default_config()
-            self.config()
-            self.abbr()
-            self.dics()
-            self.block()
+            self.get_default_config()
+            self.get_config()
+            self.get_abbr()
+            self.get_dics()
+            self.set_block()
             self.prioritize()
         else:
             sh.com.cancel(f)
@@ -548,12 +548,12 @@ class ConfigMclient(sh.Config):
         self.missing_keys     = 0
         self.missing_sections = 0
         # Create these keys before reading the config
-        self.path    = objs.default().ihome.add_config('mclient.cfg')
+        self.path = objs.get_default().ihome.add_config('mclient.cfg')
         self.reset()
         iread        = sh.ReadTextFile(self.path)
         self.text    = iread.get()
         self.Success = iread.Success
-        self._default()
+        self.load_default()
         if os.path.exists(self.path):
             self.open()
         else:
@@ -562,12 +562,12 @@ class ConfigMclient(sh.Config):
         self.load()
 
     # Do not rename, this procedure is called by 'shared'
-    def _default(self):
-        self._default_bool()
-        self._default_int()
-        self._default_var()
+    def load_default(self):
+        self._load_default_bool()
+        self._load_default_int()
+        self._load_default_var()
         
-    def _default_bool(self):
+    def _load_default_bool(self):
         sh.lg.globs['bool'].update ({
             'AutoCloseSpecSymbol':False
            ,'Autocompletion'     :True
@@ -575,7 +575,7 @@ class ConfigMclient(sh.Config):
            ,'Iconify'            :True
                                    })
     
-    def _default_int(self):
+    def _load_default_int(self):
         sh.lg.globs['int'].update ({
             'col_width'         :250
            ,'font_comments_size':3
@@ -587,7 +587,7 @@ class ConfigMclient(sh.Config):
            ,'timeout'           :5
                                   })
     
-    def _default_var(self):
+    def _load_default_var(self):
         sh.lg.globs['var'].update ({
             'bind_clear_history'          :'<Control-Shift-Delete>'
            ,'bind_clear_search_field'     :'<ButtonRelease-3>'
@@ -673,24 +673,24 @@ class ConfigMclient(sh.Config):
 class CurRequest:
 
     def __init__(self):
-        self.values()
+        self.set_values()
         self.reset()
     
-    def values(self):
-        ''' #note: this should be synchronized with the 'default' value
+    def set_values(self):
+        ''' #NOTE: this should be synchronized with the 'default' value
             of objs.webframe().menu_columns
         '''
-        self._collimit = 8
+        self.collimit = 8
         # Default priorities of parts of speech
-        self._pr_n    = 7
-        self._pr_v    = 6
-        self._pr_adj  = 5
-        self._pr_abbr = 4
-        self._pr_adv  = 3
-        self._pr_prep = 2
-        self._pr_pron = 1
-        self._source  = objs.plugins()._source
-        self._cols    = ('dic','wform','transc','speech')
+        self.pr_n    = 7
+        self.pr_v    = 6
+        self.pr_adj  = 5
+        self.pr_abbr = 4
+        self.pr_adv  = 3
+        self.pr_prep = 2
+        self.pr_pron = 1
+        self.source  = objs.get_plugins().source
+        self.cols    = ('dic','wform','transc','speech')
         ''' Toggling blacklisting should not depend on a number of
             blocked dictionaries (otherwise, it is not clear how
             blacklisting should be toggled)
@@ -709,11 +709,11 @@ class CurRequest:
         self.SpecialPage = False
     
     def reset(self):
-        self._page     = ''
-        self._html     = ''
-        self._html_raw = ''
-        self._search   = ''
-        self._url      = ''
+        self.page   = ''
+        self.htm    = ''
+        self.htmraw = ''
+        self.search = ''
+        self.url    = ''
 
 
 
@@ -722,14 +722,14 @@ class Lists:
 
     def __init__(self):
         f = '[MClient] logic.Lists.__init__'
-        self._blacklist  = objs.default()._fblock
-        self._prioritize = objs._default._fprior
-        self._abbr       = objs._default._fabbr
-        self.Success     = objs._default.Success
+        self.blacklst = objs.get_default().fblock
+        self.priorlst = objs.default.fprior
+        self.abbr     = objs.default.fabbr
+        self.Success  = objs.default.Success
 
-    def abbr(self):
+    def get_abbr(self):
         if self.Success:
-            dic = sh.Dic (file     = self._abbr
+            dic = sh.Dic (file     = self.abbr
                          ,Sortable = True
                          )
             self.Success = dic.Success
@@ -737,10 +737,10 @@ class Lists:
         else:
             sh.com.cancel(f)
     
-    def blacklist(self):
-        f = '[MClient] logic.Lists.blacklist'
+    def get_blacklist(self):
+        f = '[MClient] logic.Lists.get_blacklist'
         if self.Success:
-            text = sh.ReadTextFile(file=self._blacklist).get()
+            text = sh.ReadTextFile(file=self.blacklst).get()
             text = sh.Text(text=text,Auto=1).text
             return text.splitlines()
         else:
@@ -749,7 +749,7 @@ class Lists:
     def prioritize(self):
         f = '[MClient] logic.Lists.prioritize'
         if self.Success:
-            text = sh.ReadTextFile(file=self._prioritize).get()
+            text = sh.ReadTextFile(file=self.priorlst).get()
             text = sh.Text(text=text,Auto=1).text
             return text.splitlines()
         else:
@@ -760,39 +760,39 @@ class Lists:
 class Objects:
     
     def __init__(self):
-        self._online = self._request = self._order = self._default \
-                     = self._plugins = None
+        self.online = self.request = self.order = self.default \
+                    = self.plugins = None
     
-    def plugins (self,Debug=False,Shorten=True
-                ,MaxRow=20,MaxRows=100
-                ):
-        if self._plugins is None:
-            self._plugins = manager.Plugins (sdpath  = self.default().dics()
-                                            ,mbpath  = self._default.dics()
-                                            ,timeout = sh.lg.globs['int']['timeout']
-                                            ,iabbr   = self.order().dic
-                                            ,Debug   = Debug
-                                            ,Shorten = Shorten
-                                            ,MaxRow  = MaxRow
-                                            ,MaxRows = MaxRows
-                                            )
-        return self._plugins
+    def get_plugins (self,Debug=False,Shorten=True
+                    ,MaxRow=20,MaxRows=100
+                    ):
+        if self.plugins is None:
+            self.plugins = manager.Plugins (sdpath  = self.get_default().get_dics()
+                                           ,mbpath  = self.default.get_dics()
+                                           ,timeout = sh.lg.globs['int']['timeout']
+                                           ,iabbr   = self.get_order().dic
+                                           ,Debug   = Debug
+                                           ,Shorten = Shorten
+                                           ,MaxRow  = MaxRow
+                                           ,MaxRows = MaxRows
+                                           )
+        return self.plugins
     
-    def default(self,product='mclient'):
-        if not self._default:
-            self._default = DefaultConfig(product=product)
-            self._default.run()
-        return self._default
+    def get_default(self,product='mclient'):
+        if not self.default:
+            self.default = DefaultConfig(product=product)
+            self.default.run()
+        return self.default
     
-    def request(self):
-        if self._request is None:
-            self._request = CurRequest()
-        return self._request
+    def get_request(self):
+        if self.request is None:
+            self.request = CurRequest()
+        return self.request
         
-    def order(self):
-        if self._order is None:
-            self._order = Order()
-        return self._order
+    def get_order(self):
+        if self.order is None:
+            self.order = Order()
+        return self.order
 
 
 
@@ -800,21 +800,21 @@ class Objects:
 class Order:
     
     def __init__(self):
-        self.values()
-        self._lists()
-        self._dic()
-        self._conform()
+        self.set_values()
+        self.get_lists()
+        self.get_dic()
+        self.conform()
         
-    def _fill_dic(self,lst,ind):
+    def fill_dic(self,lst,ind):
         lst = lst[1:]
         lst = lst[::-1]
         for item in lst:
-            self._prioritize.insert(ind,item)
+            self.priorlst.insert(ind,item)
     
     def prioritize_by(self,Down=False):
         f = '[MClient] logic.Order.prioritize_by'
         if self.Success:
-            if self._dic1 and self._dic2:
+            if self.dic1 and self.dic2:
                 ''' - Multiple dictionary titles share same blocks
                       for now, so we cannot distinguish them. Thus, all
                       titles of the same block must have the same
@@ -824,40 +824,40 @@ class Order:
                     - Since we (un)prioritize one dictionary against
                       another here instead of simply (un)prioritizing
                       one dictionary (this logic is set in
-                      'lm_auto'/'rm_auto'), both 'dic1' and 'dic2'
-                      should comprise prioritized dictionaries. Since we
-                      cannot distinguish multiple dictionary titles for
-                      now, both 'dic1' and 'dic2' should be fully
-                      introduced into 'self._prioritize'.
+                      'run_lm_auto'/'run_rm_auto'), both 'dic1' and
+                      'dic2' should comprise prioritized dictionaries.
+                      Since we cannot distinguish multiple dictionary
+                      titles for now, both 'dic1' and 'dic2' should be
+                      fully introduced into 'self.prioritize'.
                     - The only way to get a position of 'dic1' being
                       prioritized over 'dic2' is to get the position of
-                      'dic2' in 'self._prioritize' first. Since both
+                      'dic2' in 'self.priorlst' first. Since both
                       'dic1' and 'dic2' have prioritized items (this
-                      logic is set in 'lm_auto'/'rm_auto') and are
-                      previously sorted by priority, first items of
+                      logic is set in 'run_lm_auto'/'run_rm_auto') and
+                      are previously sorted by priority, first items of
                       'dic1' and 'dic2' should always exist (otherwise,
                       it is a logic error).
                 '''
-                if self._dic1[0] in self._prioritize \
-                and self._dic2[0] in self._prioritize:
+                if self.dic1[0] in self.priorlst \
+                and self.dic2[0] in self.priorlst:
                     if Down:
                         message = _('Mode: "{}"')
                         message = message.format(_('Decrease priority'))
                     else:
                         message = _('Mode: "{}"')
                         message = message.format(_('Increase priority'))
-                    sh.objs.mes(f,message,True).debug()
+                    sh.objs.get_mes(f,message,True).show_debug()
                     
                     # This allows not to delete duplicates later
-                    for i in range(len(self._dic1)):
+                    for i in range(len(self.dic1)):
                         if i > 0:
-                            self.unprioritize(self._dic1[i])
-                    for i in range(len(self._dic2)):
+                            self.unprioritize(self.dic1[i])
+                    for i in range(len(self.dic2)):
                         if i > 0:
-                            self.unprioritize(self._dic2[i])
+                            self.unprioritize(self.dic2[i])
                     
-                    ind1 = self._prioritize.index(self._dic1[0])
-                    ind2 = self._prioritize.index(self._dic2[0])
+                    ind1 = self.prioritize.index(self.dic1[0])
+                    ind2 = self.prioritize.index(self.dic2[0])
                     
                     if Down:
                         Swap = ind1 < ind2
@@ -866,60 +866,60 @@ class Order:
                     if Swap:
                         mes = _('Swap items: {} <-> {}; "{}" <-> "{}"')
                         mes = mes.format (ind1,ind2
-                                         ,self._prioritize[ind1]
-                                         ,self._prioritize[ind2]
+                                         ,self.prioritize[ind1]
+                                         ,self.prioritize[ind2]
                                          )
-                        sh.objs.mes(f,mes,True).debug()
-                        self._prioritize[ind1], self._prioritize[ind2] \
-                        = self._prioritize[ind2], self._prioritize[ind1]
+                        sh.objs.get_mes(f,mes,True).show_debug()
+                        self.priorlst[ind1], self.priorlst[ind2] \
+                        = self.priorlst[ind2], self.priorlst[ind1]
                     
                     ind1 += 1
                     ind2 += 1
                     
                     if Swap:
-                        dic1 = self._dic2
-                        dic2 = self._dic1
+                        dic1 = self.dic2
+                        dic2 = self.dic1
                     else:
-                        dic1 = self._dic1
-                        dic2 = self._dic2
+                        dic1 = self.dic1
+                        dic2 = self.dic2
                     
                     if ind2 > ind1:
-                        self._fill_dic(dic2,ind2)
-                        self._fill_dic(dic1,ind1)
+                        self.fill_dic(dic2,ind2)
+                        self.fill_dic(dic1,ind1)
                     else:
-                        self._fill_dic(dic1,ind1)
-                        self._fill_dic(dic2,ind2)
+                        self.fill_dic(dic1,ind1)
+                        self.fill_dic(dic2,ind2)
                         
-                    lst = sh.List(lst1=self._prioritize).duplicates()
+                    lst = sh.List(lst1=self.priorlst).delete_duplicates()
                     if lst:
-                        self._prioritize = list(lst)
+                        self.prioritize = list(lst)
                     else:
-                        sh.com.empty(f)
+                        sh.com.rep_empty(f)
                     
-                    mes = 'Dic1: {}'.format(self._dic1)
-                    sh.objs.mes(f,mes,True).debug()
-                    mes = 'Dic2: {}'.format(self._dic2)
-                    sh.objs.mes(f,mes,True).debug()
-                    mes = str(self._prioritize)
-                    sh.objs.mes(f,mes,True).debug()
+                    mes = 'Dic1: {}'.format(self.dic1)
+                    sh.objs.get_mes(f,mes,True).show_debug()
+                    mes = 'Dic2: {}'.format(self.dic2)
+                    sh.objs.get_mes(f,mes,True).show_debug()
+                    mes = str(self.priorlst)
+                    sh.objs.get_mes(f,mes,True).show_debug()
                 else:
                     mes = _('Logic error!')
-                    sh.objs.mes(f,mes).error()
+                    sh.objs.get_mes(f,mes).show_error()
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
             
-    def priority(self,search):
-        f = '[MClient] logic.Order.priority'
+    def get_priority(self,search):
+        f = '[MClient] logic.Order.get_priority'
         if self.Success:
             lst = self.get_list(search)
             if lst:
                 prior = []
                 for item in lst:
                     try:
-                        ind = self._prioritize.index(item)
-                        prior.append(len(self._prioritize)-ind)
+                        ind = self.priorlst.index(item)
+                        prior.append(len(self.priorlst)-ind)
                     except ValueError:
                         pass
                 if prior:
@@ -927,33 +927,33 @@ class Order:
                 else:
                     return 0
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
-    def lm_auto(self,dic1,dic2=''):
+    def run_lm_auto(self,dic1,dic2=''):
         ''' A LM click on:
             1) A blocked dictionary     - unblock
             2) A common dictionary      - prioritize
             3) A prioritized dictionary - increase priority
         '''
-        f = '[MClient] logic.Order.lm_auto'
+        f = '[MClient] logic.Order.run_lm_auto'
         if self.Success:
             self.set(dic1,dic2)
-            if self.is_blocked(self._dic1):
-                for item in self._dic1:
+            if self.is_blocked(self.dic1):
+                for item in self.dic1:
                     self.unblock(item)
-            elif self.is_prioritized(self._dic1) \
-            and self.is_prioritized(self._dic2) \
-            and not sh.List(self._dic1,self._dic2).shared():
+            elif self.is_prioritized(self.dic1) \
+            and self.is_prioritized(self.dic2) \
+            and not sh.List(self.dic1,self.dic2).get_shared():
                 self.prioritize_by()
             else:
-                for item in self._dic1:
+                for item in self.dic1:
                     self.prioritize(item)
         else:
             sh.com.cancel(f)
     
-    def rm_auto(self,dic1,dic2=''):
+    def run_rm_auto(self,dic1,dic2=''):
         ''' A RM click on:
             1) A prioritized dictionary - decrease priority or
                                           unprioritize
@@ -961,18 +961,18 @@ class Order:
             2) A blocked dictionary     - unblock
             3) A common dictionary      - block
         '''
-        f = '[MClient] logic.Order.rm_auto'
+        f = '[MClient] logic.Order.run_rm_auto'
         if self.Success:
             self.set(dic1,dic2)
-            if self.is_blocked(self._dic1):
-                for item in self._dic1:
+            if self.is_blocked(self.dic1):
+                for item in self.dic1:
                     self.unblock(item)
-            elif self.is_prioritized(self._dic1):
-                if self.is_prioritized(self._dic2) \
-                and not sh.List(self._dic1,self._dic2).shared():
+            elif self.is_prioritized(self.dic1):
+                if self.is_prioritized(self.dic2) \
+                and not sh.List(self.dic1,self.dic2).get_shared():
                     self.prioritize_by(Down=True)
                 else:
-                    for item in self._dic1:
+                    for item in self.dic1:
                         self.unprioritize(item)
             else:
                 ''' Multiple dictionary titles share same blocks
@@ -980,7 +980,7 @@ class Order:
                     if any item of 'dic1' is blocked, then all
                     other items should be blocked as well.
                 '''
-                for item in self._dic1:
+                for item in self.dic1:
                     self.block(item)
         else:
             sh.com.cancel(f)
@@ -990,10 +990,10 @@ class Order:
         if self.Success:
             if lst:
                 for item in lst:
-                    if item in self._prioritize:
+                    if item in self.priorlst:
                         return True
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
@@ -1002,15 +1002,15 @@ class Order:
         if self.Success:
             if lst:
                 for item in lst:
-                    if item in self._blacklist:
+                    if item in self.blacklst:
                         return True
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
-    def _conform(self):
-        f = '[MClient] logic.Order._conform'
+    def conform(self):
+        f = '[MClient] logic.Order.conform'
         ''' Create new block and priority lists based on those that were
             read from user files. Lists from user files may comprise
             either dictionary abbreviations or full dictionary titles.
@@ -1018,74 +1018,74 @@ class Order:
             both abbreviations and full titles.
         '''
         if self.Success:
-            self._abbrs  = [item.lower().strip() \
-                            for item in self.dic.orig
-                           ]
-            self._titles = [item.lower().strip() \
-                            for item in self.dic.transl
-                           ]
+            self.abbrs  = [item.lower().strip() \
+                           for item in self.dic.orig
+                          ]
+            self.titles = [item.lower().strip() \
+                           for item in self.dic.transl
+                          ]
             ''' We recreate lists in order to preserve 
                 the abbreviation + title order.
             '''
-            if self._blacklist:
-                blacklist = list(self._blacklist)
-                self._blacklist = []
-                for item in blacklist:
+            if self.blacklst:
+                blacklst = list(self.blacklst)
+                self.blacklst = []
+                for item in blacklst:
                     pair = self.get_pair(item)
                     if pair:
                         self.block(pair[0])
                         self.block(pair[1])
                     else:
-                        sh.com.empty(f)
+                        sh.com.rep_empty(f)
             else:
-                sh.com.empty(f)
-            if self._prioritize:
-                prioritize = list(self._prioritize)
-                self._prioritize = []
-                for item in prioritize:
+                sh.com.rep_empty(f)
+            if self.priorlst:
+                priorlst = list(self.priorlst)
+                self.priorlst = []
+                for item in priorlst:
                     pair = self.get_pair(item)
                     if pair:
                         self.prioritize(pair[0])
                         self.prioritize(pair[1])
                     else:
-                        sh.com.empty(f)
+                        sh.com.rep_empty(f)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
-    def _lists(self):
-        f = '[MClient] logic.Order._lists'
+    def get_lists(self):
+        f = '[MClient] logic.Order.get_lists'
         if self.Success:
             self.lists = Lists()
-            self._blacklist = sh.Input (title = f
-                                       ,value = self.lists.blacklist()
-                                       ).list()
-            self._prioritize = sh.Input (title = f
-                                        ,value = self.lists.prioritize()
-                                        ).list()
+            self.blacklst = sh.Input(title = f
+                                    ,value = self.lists.get_blacklist()
+                                    ).get_list()
+            self.priorlst = sh.Input (title = f
+                                     ,value = self.lists.prioritize()
+                                     ).get_list()
             self.Success = self.lists.Success
         else:
             sh.com.cancel(f)
         
-    def _dic(self):
-        f = '[MClient] logic.Order._dic'
+    def get_dic(self):
+        f = '[MClient] logic.Order.get_dic'
         if self.Success:
-            self.dic     = self.lists.abbr()
+            self.dic     = self.lists.get_abbr()
             self.Success = self.dic.Success
         else:
             sh.com.cancel(f)
     
-    def values(self):
-        self.Success     = True
-        self.lists       = None
-        self.dic         = None
-        self._abbrs      = []
-        self._titles     = []
-        self._blacklist  = []
-        self._prioritize = []
-        self._dic1       = ''
-        self._dic2       = ''
+    def set_values(self):
+        self.Success  = True
+        self.lists    = None
+        self.dic      = None
+        self.abbrs    = []
+        self.titles   = []
+        self.blacklst = []
+        self.priorlst = []
+        self.dic1     = ''
+        self.dic2     = ''
             
     def sort_dic(self,lst):
         f = '[MClient] logic.Order.sort_dic'
@@ -1094,7 +1094,7 @@ class Order:
                 indexes = []
                 for item in lst:
                     try:
-                        ind = self._prioritize.index(item)
+                        ind = self.priorlst.index(item)
                     except ValueError:
                         # Place an unpriotitized dictionary at the end
                         ind = 1000
@@ -1103,7 +1103,7 @@ class Order:
                 lst = [item[1] for item in lst]
                 return lst
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
@@ -1113,41 +1113,41 @@ class Order:
             ''' This allows to return an empty value instead of the last
                 memory in case there is no previous/next dictionary.
             '''
-            self._dic1 = self._dic2 = ''
+            self.dic1 = self.dic2 = ''
             if dic1:
                 dic1 = self.get_list(dic1)
                 dic1 = self.sort_dic(dic1)
-                self._dic1 = list(dic1)
+                self.dic1 = list(dic1)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
             if dic2:
                 dic2 = self.get_list(dic2)
                 dic2 = self.sort_dic(dic2)
-                self._dic2 = list(dic2)
+                self.dic2 = list(dic2)
         else:
             sh.com.cancel(f)
     
-    def title(self,abbr):
-        f = '[MClient] logic.Order.title'
+    def get_title(self,abbr):
+        f = '[MClient] logic.Order.get_title'
         if self.Success:
             try:
-                ind = self._abbrs.index(abbr)
-                return self._titles[ind]
+                ind = self.abbrs.index(abbr)
+                return self.titles[ind]
             except ValueError:
                 mes = _('Wrong input data!')
-                sh.objs.mes(f,mes,True).warning()
+                sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
         
-    def abbr(self,title):
-        f = '[MClient] logic.Order.abbr'
+    def get_abbr(self,title):
+        f = '[MClient] logic.Order.get_abbr'
         if self.Success:
             try:
-                ind = self._titles.index(title)
-                return self._abbrs[ind]
+                ind = self.titles.index(title)
+                return self.abbrs[ind]
             except ValueError:
                 mes = _('Wrong input data!')
-                sh.objs.mes(f,mes,True).warning()
+                sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
     
@@ -1157,19 +1157,19 @@ class Order:
             if item:
                 item = item.lower().strip()
                 abbr = title = ''
-                if item in self._titles:
+                if item in self.titles:
                     title = item
-                    abbr  = self.abbr(title)
-                elif item in self._abbrs:
+                    abbr  = self.get_abbr(title)
+                elif item in self.abbrs:
                     abbr  = item
-                    title = self.title(abbr)
+                    title = self.get_title(abbr)
                 else:
                     mes = _('Unknown dictionary "{}"!').format(item)
-                    sh.objs.mes(f,mes,True).warning()
+                    sh.objs.get_mes(f,mes,True).show_warning()
                     abbr = title = str(item)
                 return([abbr,title])
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
@@ -1186,20 +1186,20 @@ class Order:
                 return lst
             # Prevents from None
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
     def block(self,item):
         if self.Success:
-            if not item in self._blacklist:
-                self._blacklist.append(item)
+            if not item in self.blacklst:
+                self.blacklst.append(item)
                           
     def unblock(self,item):
         f = '[MClient] logic.Order.unblock'
         if self.Success:
             try:
-                self._blacklist.remove(item)
+                self.blacklst.remove(item)
             except ValueError:
                 pass
         else:
@@ -1208,8 +1208,8 @@ class Order:
     def prioritize(self,item):
         f = '[MClient] logic.Order.prioritize'
         if self.Success:
-            if not item in self._prioritize:
-                self._prioritize.append(item)
+            if not item in self.priorlst:
+                self.priorlst.append(item)
         else:
             sh.com.cancel(f)
     
@@ -1217,7 +1217,7 @@ class Order:
         f = '[MClient] logic.Order.unprioritize'
         if self.Success:
             try:
-                self._prioritize.remove(item)
+                self.priorlst.remove(item)
             except ValueError:
                 pass
         else:
@@ -1228,64 +1228,64 @@ class Order:
 class Commands:
     
     def __init__(self):
-        self.unverified()
+        self.use_unverified()
     
-    def dump_elems(self,blocks,articleid):
+    def dump_elems(self,blocks,artid):
         f = '[MClient] logic.Commands.dump_elems'
-        if blocks and articleid:
+        if blocks and artid:
             data = []
             for block in blocks:
                 data.append (
-                  (None                # (00) Skips the autoincrement
-                  ,articleid           # (01) ARTICLEID
-                  ,block._dica         # (02) DICA (abbreviation)
-                  ,block._wforma       # (03) WFORMA
-                  ,block._speecha      # (04) SPEECHA
-                  ,block._transca      # (05) TRANSCA
-                  ,block._terma        # (06) TERMA
-                  ,block._type         # (07) TYPE
-                  ,block._text         # (08) TEXT
-                  ,block._url          # (09) URL
-                  ,block._block        # (10) BLOCK
-                  ,block._priority     # (11) PRIORITY
-                  ,block._select       # (12) SELECTABLE
-                  ,block._same         # (13) SAMECELL
-                  ,block._cell_no      # (14) CELLNO
-                  ,-1                  # (15) ROWNO
-                  ,-1                  # (16) COLNO
-                  ,-1                  # (17) POS1
-                  ,-1                  # (18) POS2
-                  ,''                  # (19) NODE1
-                  ,''                  # (20) NODE2
-                  ,-1                  # (21) OFFPOS1
-                  ,-1                  # (22) OFFPOS2
-                  ,-1                  # (23) BBOX1
-                  ,-1                  # (24) BBOX2
-                  ,-1                  # (25) BBOY1
-                  ,-1                  # (26) BBOY2
-                  ,block._text.lower() # (27) TEXTLOW
-                  ,0                   # (28) IGNORE
-                  ,0                   # (29) SPEECHPR
-                  ,block._dicaf        # (30) DICA (full title)
+                  (None               # (00) Skips the autoincrement
+                  ,artid              # (01) ARTICLEID
+                  ,block.dica         # (02) DICA (abbreviation)
+                  ,block.wforma       # (03) WFORMA
+                  ,block.speecha      # (04) SPEECHA
+                  ,block.transca      # (05) TRANSCA
+                  ,block.terma        # (06) TERMA
+                  ,block.type_        # (07) TYPE
+                  ,block.text         # (08) TEXT
+                  ,block.url          # (09) URL
+                  ,block.block        # (10) BLOCK
+                  ,block.priority     # (11) PRIORITY
+                  ,block.select       # (12) SELECTABLE
+                  ,block.same         # (13) SAMECELL
+                  ,block.cellno       # (14) CELLNO
+                  ,-1                 # (15) ROWNO
+                  ,-1                 # (16) COLNO
+                  ,-1                 # (17) POS1
+                  ,-1                 # (18) POS2
+                  ,''                 # (19) NODE1
+                  ,''                 # (20) NODE2
+                  ,-1                 # (21) OFFPOS1
+                  ,-1                 # (22) OFFPOS2
+                  ,-1                 # (23) BBOX1
+                  ,-1                 # (24) BBOX2
+                  ,-1                 # (25) BBOY1
+                  ,-1                 # (26) BBOY2
+                  ,block.text.lower() # (27) TEXTLOW
+                  ,0                  # (28) IGNORE
+                  ,0                  # (29) SPEECHPR
+                  ,block.dicaf        # (30) DICA (full title)
                   )
                             )
             return data
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def suggest(self,search,limit=0):
         f = '[MClient] logic.Commands.suggest'
-        items = objs.plugins().suggest(search)
+        items = objs.get_plugins().suggest(search)
         if items:
             if limit:
                 items = items[0:limit]
         else:
             items = []
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
         return items
         
-    def unverified(self):
-        f = '[MClient] logic.Commands.unverified'
+    def use_unverified(self):
+        f = '[MClient] logic.Commands.use_unverified'
         ''' On *some* systems we can get urllib.error.URLError: 
             <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED].
             To get rid of this error, we use this small workaround.
@@ -1294,7 +1294,7 @@ class Commands:
             ssl._create_default_https_context = ssl._create_unverified_context
         else:
             mes = _('Unable to use unverified certificates!')
-            sh.objs.mes(f,mes,True).warning()
+            sh.objs.get_mes(f,mes,True).show_warning()
 
 
 

@@ -2,73 +2,75 @@
 # -*- coding: UTF-8 -*-
 
 import tkinterhtml       as th
-import skl_shared.shared as sh
-from skl_shared.localize import _
+import skl_shared2.shared as sh
+from skl_shared2.localize import _
 
 PRODUCT = 'MClient'
-VERSION = '6.2.3'
+VERSION = '6.2.4'
 CURYEAR = 2020
-ICON    = sh.objs.pdir().add('..','resources','icon_64x64_mclient.gif')
+ICON    = sh.objs.get_pdir().add ('..','resources'
+                                 ,'icon_64x64_mclient.gif'
+                                 )
 
 
 class Sources:
 
     def __init__(self,width=350,height=300):
-        self.values()
-        self._width  = width
-        self._height = height
-        self.parent  = sh.Top()
-        sh.Geometry(self.parent).set ('%dx%d' % (self._width
-                                                ,self._height
+        self.set_values()
+        self.width  = width
+        self.height = height
+        self.parent = sh.Top()
+        sh.Geometry(self.parent).set ('%dx%d' % (self.width
+                                                ,self.height
                                                 )
                                      )
-        self.gui()
+        self.set_gui()
         
-    def icon(self,path=None):
+    def set_icon(self,path=None):
         if path:
-            self.parent.icon(path)
+            self.parent.set_icon(path)
         else:
-            self.parent.icon(ICON)
+            self.parent.set_icon(ICON)
     
-    def bindings(self):
+    def set_bindings(self):
         sh.com.bind (obj      = self.parent
                     ,bindings = ('<Escape>','<Control-q>','<Control-w>')
                     ,action   = self.close
                     )
-        self.cvs_prm.top_bindings (top  = self.parent
-                                  ,Ctrl = False
-                                  )
+        self.cvs_prm.set_top_bindings (top  = self.parent
+                                      ,Ctrl = False
+                                      )
     
-    def selected(self,event=None):
+    def get_selected(self,event=None):
         active = []
-        for i in range(len(self._cboxes)):
-            if self._cboxes[i].get():
-                active.append(self._lbls[i]._text)
+        for i in range(len(self.cboxes)):
+            if self.cboxes[i].get():
+                active.append(self.lbls[i].text)
         return active
     
-    def title(self,text=None):
+    def set_title(self,text=None):
         if not text:
             text = _('Sources')
-        self.parent.title(text)
+        self.parent.set_title(text)
     
-    def region(self):
-        f = '[MClient] gui.Sources.region'
-        if self._frms:
-            self.cvs_prm.region (x        = self._width
-                                ,y        = 22 * len(self._frms)
-                                ,x_border = 10
-                                ,y_border = 20
-                                )
+    def set_region(self):
+        f = '[MClient] gui.Sources.set_region'
+        if self.frms:
+            self.cvs_prm.set_region (x       = self.width
+                                    ,y       = 22 * len(self.frms)
+                                    ,xborder = 10
+                                    ,yborder = 20
+                                    )
             self.cvs_prm.scroll()
         else:
-            sh.com.lazy()
+            sh.com.rep_lazy()
         
-    def values(self):
-        self._frms   = []
-        self._cboxes = []
-        self._lbls   = []
+    def set_values(self):
+        self.frms   = []
+        self.cboxes = []
+        self.lbls   = []
         
-    def buttons(self):
+    def set_buttons(self):
         self.btn_tgl = sh.Button (parent = self.frm_btl
                                  ,text   = _('Select all')
                                  ,hint   = _('Mark/unmark all checkboxes')
@@ -90,7 +92,7 @@ class Sources:
         self.cvs_prm = sh.Canvas(parent=self.frm_cnt)
         self.frm_emb = sh.Frame(parent=self.frm_cnt)
         self.cvs_prm.embed(self.frm_emb)
-        self.buttons()
+        self.set_buttons()
         
     def add_row(self,text):
         frm = sh.Frame (parent = self.frm_emb
@@ -107,41 +109,41 @@ class Sources:
                     ,bindings = '<ButtonRelease-1>'
                     ,action   = cbx.toggle
                     )
-        self._frms.append(frm)
-        self._cboxes.append(cbx)
-        self._lbls.append(lbl)
+        self.frms.append(frm)
+        self.cboxes.append(cbx)
+        self.lbls.append(lbl)
         
     def toggle(self,event=None):
         Marked = False
-        for cbox in self._cboxes:
+        for cbox in self.cboxes:
             if cbox.get():
                 Marked = True
                 break
         if Marked:
-            for cbox in self._cboxes:
+            for cbox in self.cboxes:
                 cbox.disable()
         else:
-            for cbox in self._cboxes:
+            for cbox in self.cboxes:
                 cbox.enable()
     
     def reset(self,lst=[]):
         lst = [str(item) for item in lst]
-        for frame in self._frms:
+        for frame in self.frms:
             frame.widget.destroy()
-        self.values()
+        self.set_values()
         for item in lst:
             self.add_row(item)
-        self.region()
+        self.set_region()
     
-    def gui(self):
-        self.frames()
-        self.widgets()
-        self.scrollbars()
-        self.bindings()
-        self.title()
-        self.btn_apl.focus()
+    def set_gui(self):
+        self.set_frames()
+        self.set_widgets()
+        self.set_scroll()
+        self.set_bindings()
+        self.set_title()
+        self.btn_apl.set_focus()
         
-    def frames(self):
+    def set_frames(self):
         self.frm_prm = sh.Frame (parent = self.parent)
         self.frm_top = sh.Frame (parent = self.frm_prm
                                 ,side   = 'top'
@@ -178,7 +180,7 @@ class Sources:
                                 ,side   = 'right'
                                 )
         
-    def scrollbars(self):
+    def set_scroll(self):
         self.scr_hor = sh.Scrollbar (parent = self.frm_hor
                                     ,scroll = self.cvs_prm
                                     ,Horiz  = True
@@ -200,31 +202,31 @@ class About:
     def __init__(self):
         self.Active = False
         self.type   = 'About'
-        self.gui()
+        self.set_gui()
         
-    def gui(self):
+    def set_gui(self):
         self.obj = self.parent = sh.Top()
         self.widget = self.obj.widget
-        self.frames()
-        self.labels()
-        self.buttons()
-        self.bindings()
-        self.icon()
-        self.title()
+        self.set_frames()
+        self.set_labels()
+        self.set_buttons()
+        self.set_bindings()
+        self.set_icon()
+        self.set_title()
         self.widget.focus_set()
         
-    def title(self,text=None):
+    def set_title(self,text=None):
         if not text:
             text = _('About')
-        self.obj.title(text)
+        self.obj.set_title(text)
     
-    def icon(self,path=None):
+    def set_icon(self,path=None):
         if path:
-            self.obj.icon(path)
+            self.obj.set_icon(path)
         else:
-            self.obj.icon(ICON)
+            self.obj.set_icon(ICON)
         
-    def labels(self):
+    def set_labels(self):
         text = _('Programming: Peter Sklyar, 2015-{}.\nVersion: {}\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n')
         text = text.format(CURYEAR,VERSION)
         self.lbl_abt = sh.Label (parent = self.frm_prm
@@ -232,7 +234,7 @@ class About:
                                 ,font   = 'Sans 14'
                                 )
         
-    def frames(self):
+    def set_frames(self):
         self.frm_prm = sh.Frame (parent = self
                                 ,expand = 1
                                 ,fill   = 'both'
@@ -248,7 +250,7 @@ class About:
                                 ,fill   = 'both'
                                 ,side   = 'right'
                                 )
-    def buttons(self):
+    def set_buttons(self):
         # Show the license
         self.btn_thd = sh.Button (parent = self.frm_sec
                                  ,text   = _('Third parties')
@@ -267,7 +269,7 @@ class About:
                                  ,side   = 'right'
                                  )
     
-    def bindings(self):
+    def set_bindings(self):
         sh.com.bind (obj      = self.obj
                     ,bindings = ('<Escape>','<Control-q>','<Control-w>')
                     ,action   = self.close
@@ -292,23 +294,23 @@ class About:
 class ThirdParties:
     
     def __init__(self):
-        self.gui()
+        self.set_gui()
         
-    def bindings(self):
+    def set_bindings(self):
         sh.com.bind (obj      = self.obj
                     ,bindings = ('<Escape>','<Control-q>','<Control-w>')
                     ,action   = self.close
                     )
     
-    def gui(self):
+    def set_gui(self):
         title = _('Third parties') + ':'
         self.obj = sh.TextBoxRO (title = title
                                 ,icon  = ICON
                                 )
         self.parent = self.obj.parent
         sh.Geometry(self.parent).set('800x600')
-        self.bindings()
-        self.obj.focus()
+        self.set_bindings()
+        self.obj.set_focus()
     
     def show(self,event=None):
         self.obj.show()
@@ -321,17 +323,17 @@ class ThirdParties:
 class SearchArticle:
     
     def __init__(self):
-        self.gui()
+        self.set_gui()
         
-    def gui(self):
+    def set_gui(self):
         self.parent = sh.EntryC (title = _('Enter a string to search:')
                                 ,icon  = ICON
                                 )
         self.widget = self.parent.widget
-        self.bindings()
-        self.parent.focus()
+        self.set_bindings()
+        self.parent.set_focus()
     
-    def bindings(self):
+    def set_bindings(self):
         sh.com.bind (obj      = self.parent
                     ,bindings = ('<Escape>','<Control-q>','<Control-w>')
                     ,action   = self.parent.close
@@ -351,27 +353,27 @@ class SaveArticle:
     def __init__(self):
         self.Active = False
         self.type   = 'SaveArticle'
-        self._items = [_('Save the current view as a web-page (*.htm)')
+        self.items  = [_('Save the current view as a web-page (*.htm)')
                       ,_('Save the original article as a web-page (*.htm)')
                       ,_('Save the article as plain text in UTF-8 (*.txt)')
                       ,_('Copy HTML code of the article to clipboard')
                       ,_('Copy the text of the article to clipboard')
                       ]
-        self.gui()
+        self.set_gui()
         
-    def bindings(self):
+    def set_bindings(self):
         sh.com.bind (obj      = self.parent
                     ,bindings = ('<Escape>','<Control-q>','<Control-w>')
                     ,action   = self.close
                     )
     
-    def gui(self):
-        self.parent = sh.ListBoxC (lst   = self._items
+    def set_gui(self):
+        self.parent = sh.ListBoxC (lst   = self.items
                                   ,title = _('Select an action:')
                                   ,icon  = ICON
                                   )
         self.widget = self.parent.widget
-        self.bindings()
+        self.set_bindings()
 
     def close(self,event=None):
         self.Active = False
@@ -393,18 +395,18 @@ class History:
 
     def __init__(self):
         self.Active = False
-        self.gui()
+        self.set_gui()
 
-    def gui(self):
+    def set_gui(self):
         self.parent = sh.Top (icon  = ICON
                              ,title = _('History')
                              )
         self.obj = sh.ListBox(self.parent)
         sh.Geometry(self.parent).set('250x350')
         self.widget = self.obj.widget
-        self.bindings()
+        self.set_bindings()
 
-    def bindings(self):
+    def set_bindings(self):
         sh.com.bind (obj      = self
                     ,bindings = '<ButtonRelease-3>'
                     ,action   = self.copy
@@ -416,7 +418,7 @@ class History:
 
     def show(self,event=None):
         self.Active = True
-        self.obj.focus()
+        self.obj.set_focus()
         self.parent.show()
 
     def close(self,event=None):
@@ -438,8 +440,8 @@ class History:
 class WebFrame:
 
     def __init__(self):
-        self.values()
-        self.gui()
+        self.set_values()
+        self.set_gui()
         
     def paste_search(self,event=None,text=None):
         ''' Clear the search field and insert set text or
@@ -452,110 +454,111 @@ class WebFrame:
             self.ent_src.insert(text=sh.Clipboard().paste())
         return 'break'
 
-    def values(self):
-        self._shift  = 1
-        self._border = 24
-        self.icn_al0 = sh.objs.pdir().add ('..','resources','buttons'
-                                          ,'icon_36x36_alphabet_off.gif'
-                                          )
-        self.icn_al1 = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_alphabet_on.gif'
-                                         )
-        self.icn_bl0 = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_block_off.gif'
-                                         )
-        self.icn_bl1 = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_block_on.gif'
-                                         )
-        self.icn_clr = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_clear_search_field.gif'
-                                         )
-        self.icn_def = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_define.gif'
-                                         )
-        self.icn_bk0 = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_go_back_off.gif'
-                                         )
-        self.icn_bk1 = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_go_back.gif'
-                                         )
-        self.icn_fw0 = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_go_forward_off.gif'
-                                         )
-        self.icn_fw1 = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_go_forward.gif'
-                                         )
-        self.icn_ret = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_go_search.gif'
-                                         )
-        self.icn_brw = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_open_in_browser.gif'
-                                         )
-        self.icn_ins = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_paste.gif'
-                                         )
-        self.icn_prn = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_print.gif'
-                                         )
-        self.icn_pr0 = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_priority_off.gif'
-                                         )
-        self.icn_pr1 = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_priority_on.gif'
-                                         )
-        self.icn_qit = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_quit_now.gif'
-                                         )
-        self.icn_rld = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_reload.gif'
-                                         )
-        self.icn_rp0 = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_repeat_sign_off.gif'
-                                         )
-        self.icn_rp1 = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_repeat_sign.gif'
-                                         )
-        self.icn_r20 = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_repeat_sign2_off.gif'
-                                         )
-        self.icn_r21 = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_repeat_sign2.gif'
-                                         )
-        self.icn_sav = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_save_article.gif'
-                                         )
-        self.icn_src = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_search_article.gif'
-                                         )
-        self.icn_set = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_settings.gif'
-                                         )
-        self.icn_abt = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_show_about.gif'
-                                         )
-        self.icn_sym = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_spec_symbol.gif'
-                                         )
-        self.icn_hst = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_toggle_history.gif'
-                                         )
-        self.icn_hor = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_toggle_view_hor.gif'
-                                         )
-        self.icn_ver = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_toggle_view_ver.gif'
-                                         )
-        self.icn_cp0 = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_watch_clipboard_off.gif'
-                                         )
-        self.icn_cp1 = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_watch_clipboard_on.gif'
-                                         )
-        self.icn_swp = sh.objs._pdir.add ('..','resources','buttons'
-                                         ,'icon_36x36_swap_langs.gif'
-                                         )
+    def set_values(self):
+        self.shift   = 1
+        self.border  = 24
+        self.icn_al0 = sh.objs.get_pdir().add ('..','resources'
+                                              ,'buttons'
+                                              ,'icon_36x36_alphabet_off.gif'
+                                              )
+        self.icn_al1 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_alphabet_on.gif'
+                                        )
+        self.icn_bl0 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_block_off.gif'
+                                        )
+        self.icn_bl1 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_block_on.gif'
+                                        )
+        self.icn_clr = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_clear_search_field.gif'
+                                        )
+        self.icn_def = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_define.gif'
+                                        )
+        self.icn_bk0 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_go_back_off.gif'
+                                        )
+        self.icn_bk1 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_go_back.gif'
+                                        )
+        self.icn_fw0 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_go_forward_off.gif'
+                                        )
+        self.icn_fw1 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_go_forward.gif'
+                                        )
+        self.icn_ret = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_go_search.gif'
+                                        )
+        self.icn_brw = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_open_in_browser.gif'
+                                        )
+        self.icn_ins = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_paste.gif'
+                                        )
+        self.icn_prn = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_print.gif'
+                                        )
+        self.icn_pr0 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_priority_off.gif'
+                                        )
+        self.icn_pr1 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_priority_on.gif'
+                                        )
+        self.icn_qit = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_quit_now.gif'
+                                        )
+        self.icn_rld = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_reload.gif'
+                                        )
+        self.icn_rp0 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_repeat_sign_off.gif'
+                                        )
+        self.icn_rp1 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_repeat_sign.gif'
+                                        )
+        self.icn_r20 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_repeat_sign2_off.gif'
+                                        )
+        self.icn_r21 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_repeat_sign2.gif'
+                                        )
+        self.icn_sav = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_save_article.gif'
+                                        )
+        self.icn_src = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_search_article.gif'
+                                        )
+        self.icn_set = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_settings.gif'
+                                        )
+        self.icn_abt = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_show_about.gif'
+                                        )
+        self.icn_sym = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_spec_symbol.gif'
+                                        )
+        self.icn_hst = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_toggle_history.gif'
+                                        )
+        self.icn_hor = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_toggle_view_hor.gif'
+                                        )
+        self.icn_ver = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_toggle_view_ver.gif'
+                                        )
+        self.icn_cp0 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_watch_clipboard_off.gif'
+                                        )
+        self.icn_cp1 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_watch_clipboard_on.gif'
+                                        )
+        self.icn_swp = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_swap_langs.gif'
+                                        )
 
-    def gui(self):
+    def set_gui(self):
         self.obj = sh.Top(Maximize=True)
         self.frm_prm = sh.Frame (parent = self.obj
                                 ,expand = 1
@@ -571,15 +574,15 @@ class WebFrame:
                                 )
         self.widget = th.TkinterHtml(self.frm_prm.widget)
         self.widget.pack(expand='1',fill='both')
-        self.scrollbars()
-        self.frame_panel()
-        self.icon()
-        self.title()
-        self.bindings()
-        self.ent_src.focus()
+        self.set_scroll()
+        self.set_frame_panel()
+        self.set_icon()
+        self.set_title()
+        self.set_bindings()
+        self.ent_src.set_focus()
         self.obj.widget.protocol("WM_DELETE_WINDOW",self.close)
 
-    def frame_panel(self):
+    def set_frame_panel(self):
         ''' Do not mix 'self.frm_pnl' and 'self.frm_btm', otherwise,
             they may overlap each other.
         '''
@@ -601,14 +604,14 @@ class WebFrame:
                                 )
         self.draw_buttons()
         self.cvs_prm.embed(obj=self.frm_btn)
-        ''' #todo: Updating idletasks will show the AllDic 'Please wait'
+        ''' #TODO: Updating idletasks will show the AllDic 'Please wait'
             message for too long, however, we need to update in order to
             set canvas dimensions correctly.
         '''
-        sh.objs.root().idle()
-        height = self.frm_btn.height()
-        width  = self.frm_btn.width()
-        self.cvs_prm.widget.config(width=self.obj.resolution()[0])
+        sh.objs.get_root().update_idle()
+        height = self.frm_btn.get_height()
+        width  = self.frm_btn.get_width()
+        self.cvs_prm.widget.config(width=self.obj.get_resolution()[0])
         self.cvs_prm.widget.config(height=height)
         x2 = (width / 2)
         x1 = -x2
@@ -830,23 +833,23 @@ class WebFrame:
                                  ,side     = 'right'
                                  )
 
-    def bindings(self):
+    def set_bindings(self):
         ''' We need to bind all buttons (inside 'self.frm_btn') and also
             gaps between them and between top-bottom borders
             ('self.cvs_prm').
         '''
         sh.com.bind (obj      = self.cvs_prm
                     ,bindings = '<Motion>'
-                    ,action   = self.motion
+                    ,action   = self.set_motion
                     )
         sh.com.bind (obj      = self.obj
                     ,bindings = '<Control-q>'
                     ,action   = self.close
                     )
         for child in self.frm_btn.widget.winfo_children():
-            child.bind('<Motion>',self.motion)
+            child.bind('<Motion>',self.set_motion)
 
-    def scrollbars(self):
+    def set_scroll(self):
         sh.Scrollbar (parent = self.frm_ver
                      ,scroll = self
                      )
@@ -855,24 +858,24 @@ class WebFrame:
                      ,Horiz  = True
                      )
         
-    def icon(self,path=None):
+    def set_icon(self,path=None):
         if path:
-            self.obj.icon(path)
+            self.obj.set_icon(path)
         else:
-            self.obj.icon(ICON)
+            self.obj.set_icon(ICON)
                           
-    def title(self,text=None):
+    def set_title(self,text=None):
         if not text:
             text = 'MClient'
-        self.obj.title(text)
+        self.obj.set_title(text)
 
-    def height(self):
-        sh.objs.root().idle()
+    def get_height(self):
+        sh.objs.get_root().update_idle()
         return self.widget.winfo_height()
 
-    def width(self):
-        f = '[MClient] gui.WebFrame.width'
-        sh.objs.root().idle()
+    def get_width(self):
+        f = '[MClient] gui.WebFrame.get_width'
+        sh.objs.get_root().update_idle()
         return self.widget.winfo_width()
 
     def scroll_x(self,bbox,max_bbox):
@@ -897,8 +900,8 @@ class WebFrame:
     def bbox(self,*args):
         return self.widget.tk.call(self.widget,"bbox",*args)
         
-    def motion(self,event=None):
-        scr_width = self.obj.resolution()[0]
+    def set_motion(self,event=None):
+        scr_width = self.obj.get_resolution()[0]
         # Do not move button frame if it is entirely visible
         if self.obj.widget.winfo_width() < self.frm_btn.widget.winfo_reqwidth():
             x = self.cvs_prm.widget.winfo_pointerx()
@@ -913,115 +916,115 @@ class WebFrame:
             rightx = min (rootx + self.cvs_prm.widget.winfo_width()
                          ,scr_width
                          )
-            if x <= leftx + self._border:
+            if x <= leftx + self.border:
                 self.scroll_left()
-            elif x >= rightx - self._border:
+            elif x >= rightx - self.border:
                 self.scroll_right()
             
     def scroll_left(self):
         f = '[MClient] gui.WebFrame.scroll_left'
         '''
-        mes = _('Scroll by {} units to the left').format(self._shift)
-        sh.objs.mes(f,mes,True).debug()
+        mes = _('Scroll by {} units to the left').format(self.shift)
+        sh.objs.get_mes(f,mes,True).show_debug()
         '''
-        self.cvs_prm.widget.xview_scroll(-self._shift,'units')
+        self.cvs_prm.widget.xview_scroll(-self.shift,'units')
         
     def scroll_right(self):
         f = '[MClient] gui.WebFrame.scroll_right'
         '''
-        mes = _('Scroll by {} units to the right').format(self._shift)
-        sh.objs.mes(f,mes,True).debug()
+        mes = _('Scroll by {} units to the right').format(self.shift)
+        sh.objs.get_mes(f,mes,True).show_debug()
         '''
-        self.cvs_prm.widget.xview_scroll(self._shift,'units')
+        self.cvs_prm.widget.xview_scroll(self.shift,'units')
 
 
 
 class Settings:
 
     def __init__(self):
-        self.values()
-        self.gui()
+        self.set_values()
+        self.set_gui()
 
-    def values(self):
-        self._items = (_('Dictionaries')
-                      ,_('Word forms')
-                      ,_('Transcription')
-                      ,_('Parts of speech')
-                      ,_('Do not set')
-                      )
-        self._sc_items = (PRODUCT
-                         ,_('Multitran')
-                         ,_('Cut to the chase')
-                         ,_('Clearness')
-                         ,_('Custom')
-                         )
-        self._sp_items = (_('Noun'),_('Verb'),_('Adjective')
-                         ,_('Abbreviation'),_('Adverb'),_('Preposition')
-                         ,_('Pronoun')
-                         )
-        self._allowed    = []
-        self._sp_allowed = []
-        self.Active      = False
+    def set_values(self):
+        self.items = (_('Dictionaries')
+                     ,_('Word forms')
+                     ,_('Transcription')
+                     ,_('Parts of speech')
+                     ,_('Do not set')
+                     )
+        self.scitems = (PRODUCT
+                       ,_('Multitran')
+                       ,_('Cut to the chase')
+                       ,_('Clearness')
+                       ,_('Custom')
+                       )
+        self.spitems = (_('Noun'),_('Verb'),_('Adjective')
+                       ,_('Abbreviation'),_('Adverb'),_('Preposition')
+                       ,_('Pronoun')
+                       )
+        self.allowed = []
+        self.spallow = []
+        self.Active  = False
 
     def update_col1(self):
         f = '[MClient] gui.Settings.update_col1'
         if self.opt_cl1.choice != _('Do not set'):
-            if self.opt_cl1.choice in self._allowed:
-                self._allowed.remove(self.opt_cl1.choice)
-            elif _('Dictionaries') in self._allowed:
+            if self.opt_cl1.choice in self.allowed:
+                self.allowed.remove(self.opt_cl1.choice)
+            elif _('Dictionaries') in self.allowed:
                 self.opt_cl1.set(_('Dictionaries'))
-                self._allowed.remove(_('Dictionaries'))
-            elif self._allowed:
-                self.opt_cl1.set(self._allowed[0])
-                self._allowed.remove(self._allowed[0])
+                self.allowed.remove(_('Dictionaries'))
+            elif self.allowed:
+                self.opt_cl1.set(self.allowed[0])
+                self.allowed.remove(self.allowed[0])
             else:
                 mes = _('Empty input is not allowed!')
-                sh.objs.mes(f,mes).error()
+                sh.objs.get_mes(f,mes).show_error()
 
     def update_col2(self):
         f = '[MClient] gui.Settings.update_col2'
         if self.opt_cl2.choice != _('Do not set'):
-            if self.opt_cl2.choice in self._allowed:
-                self._allowed.remove(self.opt_cl2.choice)
-            elif _('Word forms') in self._allowed:
+            if self.opt_cl2.choice in self.allowed:
+                self.allowed.remove(self.opt_cl2.choice)
+            elif _('Word forms') in self.allowed:
                 self.opt_cl2.set(_('Word forms'))
-                self._allowed.remove(_('Word forms'))
-            elif self._allowed:
-                self.opt_cl2.set(self._allowed[0])
-                self._allowed.remove(self._allowed[0])
+                self.allowed.remove(_('Word forms'))
+            elif self.allowed:
+                self.opt_cl2.set(self.allowed[0])
+                self.allowed.remove(self.allowed[0])
             else:
                 mes = _('Empty input is not allowed!')
-                sh.objs.mes(f,mes).error()
+                sh.objs.get_mes(f,mes).show_error()
 
     def update_col3(self):
         f = '[MClient] gui.Settings.update_col3'
         if self.opt_cl3.choice != _('Do not set'):
-            if self.opt_cl3.choice in self._allowed:
-                self._allowed.remove(self.opt_cl3.choice)
-            elif _('Parts of speech') in self._allowed:
+            if self.opt_cl3.choice in self.allowed:
+                self.allowed.remove(self.opt_cl3.choice)
+            elif _('Parts of speech') in self.allowed:
                 self.opt_cl3.set(_('Parts of speech'))
-                self._allowed.remove(_('Parts of speech'))
-            elif self._allowed:
-                self.opt_cl3.set(self._allowed[0])
-                self._allowed.remove(self._allowed[0])
+                self.allowed.remove(_('Parts of speech'))
+            elif self.allowed:
+                self.opt_cl3.set(self.allowed[0])
+                self.allowed.remove(self.allowed[0])
             else:
                 mes = _('Empty input is not allowed!')
-                sh.objs.mes(f,mes).error()
+                sh.objs.get_mes(f,mes).show_error()
 
     def update_col4(self):
         f = '[MClient] gui.Settings.update_col4'
         if self.opt_cl4.choice != _('Do not set'):
-            if self.opt_cl4.choice in self._allowed:
-                self._allowed.remove(self.opt_cl4.choice)
-            elif _('Transcription') in self._allowed:
+            if self.opt_cl4.choice in self.allowed:
+                self.allowed.remove(self.opt_cl4.choice)
+            elif _('Transcription') in self.allowed:
                 self.opt_cl4.set(_('Transcription'))
-                self._allowed.remove(_('Transcription'))
-            elif self._allowed:
-                self.opt_cl4.set(self._allowed[0])
-                self._allowed.remove(self._allowed[0])
+                self.allowed.remove(_('Transcription'))
+            elif self.allowed:
+                self.opt_cl4.set(self.allowed[0])
+                self.allowed.remove(self.allowed[0])
             else:
                 mes = _('Empty input is not allowed!')
-                sh.objs.mes(f,mes).error()
+                sh.objs.get_mes(f,mes).show_error()
 
     def update_sc(self,event=None):
         cond11 = self.opt_cl1.choice == _('Dictionaries')
@@ -1073,11 +1076,11 @@ class Settings:
             pass
         else:
             mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format(self.opt_scm.choice,self._sc_items)
-            sh.objs.mes(f,mes).error()
+            mes = mes.format(self.opt_scm.choice,self.scitems)
+            sh.objs.get_mes(f,mes).show_error()
 
     def update_by_col1(self,event=None):
-        self._allowed = list(self._items)
+        self.allowed = list(self.items)
         self.update_col1()
         self.update_col2()
         self.update_col3()
@@ -1085,7 +1088,7 @@ class Settings:
         self.update_sc()
 
     def update_by_col2(self,event=None):
-        self._allowed = list(self._items)
+        self.allowed = list(self.items)
         self.update_col2()
         self.update_col1()
         self.update_col3()
@@ -1093,7 +1096,7 @@ class Settings:
         self.update_sc()
 
     def update_by_col3(self,event=None):
-        self._allowed = list(self._items)
+        self.allowed = list(self.items)
         self.update_col3()
         self.update_col1()
         self.update_col2()
@@ -1101,7 +1104,7 @@ class Settings:
         self.update_sc()
 
     def update_by_col4(self,event=None):
-        self._allowed = list(self._items)
+        self.allowed = list(self.items)
         self.update_col4()
         self.update_col1()
         self.update_col2()
@@ -1109,7 +1112,7 @@ class Settings:
         self.update_sc()
         
     def update_by_sp1(self,event=None):
-        self._sp_allowed = list(self._sp_items)
+        self.spallow = list(self.spitems)
         self.update_sp1()
         self.update_sp2()
         self.update_sp3()
@@ -1119,7 +1122,7 @@ class Settings:
         self.update_sp7()
         
     def update_by_sp2(self,event=None):
-        self._sp_allowed = list(self._sp_items)
+        self.spallow = list(self.spitems)
         self.update_sp2()
         self.update_sp1()
         self.update_sp3()
@@ -1129,7 +1132,7 @@ class Settings:
         self.update_sp7()
         
     def update_by_sp3(self,event=None):
-        self._sp_allowed = list(self._sp_items)
+        self.spallow = list(self.spitems)
         self.update_sp3()
         self.update_sp1()
         self.update_sp2()
@@ -1139,7 +1142,7 @@ class Settings:
         self.update_sp7()
         
     def update_by_sp4(self,event=None):
-        self._sp_allowed = list(self._sp_items)
+        self.spallow = list(self.spitems)
         self.update_sp4()
         self.update_sp1()
         self.update_sp2()
@@ -1149,7 +1152,7 @@ class Settings:
         self.update_sp7()
         
     def update_by_sp5(self,event=None):
-        self._sp_allowed = list(self._sp_items)
+        self.spallow = list(self.spitems)
         self.update_sp5()
         self.update_sp1()
         self.update_sp2()
@@ -1159,7 +1162,7 @@ class Settings:
         self.update_sp7()
         
     def update_by_sp6(self,event=None):
-        self._sp_allowed = list(self._sp_items)
+        self.spallow = list(self.spitems)
         self.update_sp6()
         self.update_sp1()
         self.update_sp2()
@@ -1169,7 +1172,7 @@ class Settings:
         self.update_sp7()
         
     def update_by_sp7(self,event=None):
-        self._sp_allowed = list(self._sp_items)
+        self.spallow = list(self.spitems)
         self.update_sp7()
         self.update_sp1()
         self.update_sp2()
@@ -1178,28 +1181,28 @@ class Settings:
         self.update_sp5()
         self.update_sp6()
 
-    def gui(self):
+    def set_gui(self):
         self.obj = self.parent = sh.Top(AutoCr=True)
-        self.title()
-        self.frames()
-        self.checkboxes()
-        self.labels()
-        self.columns()
-        self.buttons()
-        self.bindings()
-        self.icon()
+        self.set_title()
+        self.set_frames()
+        self.set_cboxes()
+        self.set_labels()
+        self.set_columns()
+        self.set_buttons()
+        self.set_bindings()
+        self.set_icon()
 
     def block_settings(self,event=None):
         f = '[MClient] gui.Settings.block_settings'
         mes = _('Not implemented yet!')
-        sh.objs.mes(f,mes).info()
+        sh.objs.get_mes(f,mes).show_info()
 
-    def priority_settings(self,event=None):
-        f = '[MClient] gui.Settings.priority_settings'
+    def get_priority_settings(self,event=None):
+        f = '[MClient] gui.Settings.get_priority_settings'
         mes = _('Not implemented yet!')
-        sh.objs.mes(f,mes).info()
+        sh.objs.get_mes(f,mes).show_info()
 
-    def checkboxes(self):
+    def set_cboxes(self):
         self.cbx_no1 = sh.CheckBox (parent = self.frm_cb1
                                    ,Active = True
                                    ,side   = 'left'
@@ -1245,7 +1248,7 @@ class Settings:
         self.cbx_no5.disable()
         self.cbx_no6.disable()
 
-    def buttons(self):
+    def set_buttons(self):
         sh.Button (parent = self.frm_btn
                   ,action = self.reset
                   ,hint   = _('Reset settings')
@@ -1258,7 +1261,7 @@ class Settings:
                                  ,text   = _('Apply')
                                  ,side   = 'right'
                                  )
-        #todo: elaborate
+        #TODO: elaborate
         '''
         self.btn_blk = sh.Button (parent = self.frm_cb3
                                  ,hint   = _('Tune up blacklisting')
@@ -1272,7 +1275,7 @@ class Settings:
                                  )
         '''
 
-    def frames(self):
+    def set_frames(self):
         self.frm_col = sh.Frame (parent = self.obj
                                 ,expand = True
                                 ,fill   = 'both'
@@ -1371,7 +1374,7 @@ class Settings:
                                 ,side   = 'bottom'
                                 )
 
-    def labels(self):
+    def set_labels(self):
         ''' Other possible color schemes:
             font = 'Sans 9 italic', fg = 'khaki4'
         '''
@@ -1508,81 +1511,81 @@ class Settings:
                  ,bg     = 'RoyalBlue3'
                  )
                  
-    def columns(self):
+    def set_columns(self):
         self.opt_scm = sh.OptionMenu (parent  = self.frm_scm
-                                     ,items   = self._sc_items
+                                     ,items   = self.scitems
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_sc
                                      ,default = PRODUCT
                                      )
         self.opt_cl1 = sh.OptionMenu (parent  = self.frm_cl1
-                                     ,items   = self._items
+                                     ,items   = self.items
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_col1
                                      ,default = _('Dictionaries')
                                      )
         self.opt_cl2 = sh.OptionMenu (parent  = self.frm_cl2
-                                     ,items   = self._items
+                                     ,items   = self.items
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_col2
                                      ,default = _('Word forms')
                                      )
         self.opt_cl3 = sh.OptionMenu (parent  = self.frm_cl3
-                                     ,items   = self._items
+                                     ,items   = self.items
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_col3
                                      ,default = _('Transcription')
                                      )
         self.opt_cl4 = sh.OptionMenu (parent  = self.frm_cl4
-                                     ,items   = self._items
+                                     ,items   = self.items
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_col4
                                      ,default = _('Parts of speech')
                                      )
         self.opt_sp1 = sh.OptionMenu (parent  = self.frm_sp1
-                                     ,items   = self._sp_items
+                                     ,items   = self.spitems
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_sp1
-                                     ,default = self._sp_items[0]
+                                     ,default = self.spitems[0]
                                      )
         self.opt_sp2 = sh.OptionMenu (parent  = self.frm_sp2
-                                     ,items   = self._sp_items
+                                     ,items   = self.spitems
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_sp2
-                                     ,default = self._sp_items[1]
+                                     ,default = self.spitems[1]
                                      )
         self.opt_sp3 = sh.OptionMenu (parent  = self.frm_sp3
-                                     ,items   = self._sp_items
+                                     ,items   = self.spitems
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_sp3
-                                     ,default = self._sp_items[2]
+                                     ,default = self.spitems[2]
                                      )
         self.opt_sp4 = sh.OptionMenu (parent  = self.frm_sp4
-                                     ,items   = self._sp_items
+                                     ,items   = self.spitems
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_sp4
-                                     ,default = self._sp_items[3]
+                                     ,default = self.spitems[3]
                                      )
         self.opt_sp5 = sh.OptionMenu (parent  = self.frm_sp5
-                                     ,items   = self._sp_items
+                                     ,items   = self.spitems
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_sp5
-                                     ,default = self._sp_items[4]
+                                     ,default = self.spitems[4]
                                      )
         self.opt_sp6 = sh.OptionMenu (parent  = self.frm_sp6
-                                     ,items   = self._sp_items
+                                     ,items   = self.spitems
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_sp6
-                                     ,default = self._sp_items[5]
+                                     ,default = self.spitems[5]
                                      )
         self.opt_sp7 = sh.OptionMenu (parent  = self.frm_sp7
-                                     ,items   = self._sp_items
+                                     ,items   = self.spitems
                                      ,side    = 'bottom'
                                      ,action  = self.update_by_sp7
-                                     ,default = self._sp_items[6]
+                                     ,default = self.spitems[6]
                                      )
 
-    def bindings(self):
+    def set_bindings(self):
         sh.com.bind (obj      = self.obj
                     ,bindings = ('<Escape>','<Control-q>','<Control-w>')
                     ,action   = self.close
@@ -1612,8 +1615,8 @@ class Settings:
                     ,action   = self.cbx_no6.toggle
                     )
 
-    def title(self,text=_('View Settings')):
-        self.obj.title(text=text)
+    def set_title(self,text=_('View Settings')):
+        self.obj.set_title(text=text)
 
     def show(self,event=None):
         self.Active = True
@@ -1629,119 +1632,119 @@ class Settings:
         else:
             self.show()
 
-    def icon(self,path=None):
+    def set_icon(self,path=None):
         if path:
-            self.obj.icon(path)
+            self.obj.set_icon(path)
         else:
-            self.obj.icon(ICON)
+            self.obj.set_icon(ICON)
     
     def update_sp1(self):
         f = '[MClient] gui.Settings.update_sp1'
-        if self.opt_sp1.choice in self._sp_allowed:
-            self._sp_allowed.remove(self.opt_sp1.choice)
-        elif _('Noun') in self._sp_allowed:
+        if self.opt_sp1.choice in self.spallow:
+            self.spallow.remove(self.opt_sp1.choice)
+        elif _('Noun') in self.spallow:
             self.opt_sp1.set(_('Noun'))
-            self._sp_allowed.remove(_('Noun'))
-        elif self._sp_allowed:
-            self.opt_sp1.set(self._sp_allowed[0])
-            self._sp_allowed.remove(self._sp_allowed[0])
+            self.spallow.remove(_('Noun'))
+        elif self.spallow:
+            self.opt_sp1.set(self.spallow[0])
+            self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.mes(f,mes).error()
+            sh.objs.get_mes(f,mes).show_error()
     
     def update_sp2(self):
         f = '[MClient] gui.Settings.update_sp2'
-        if self.opt_sp2.choice in self._sp_allowed:
-            self._sp_allowed.remove(self.opt_sp2.choice)
-        elif _('Verb') in self._sp_allowed:
+        if self.opt_sp2.choice in self.spallow:
+            self.spallow.remove(self.opt_sp2.choice)
+        elif _('Verb') in self.spallow:
             self.opt_sp2.set(_('Verb'))
-            self._sp_allowed.remove(_('Verb'))
-        elif self._sp_allowed:
-            self.opt_sp2.set(self._sp_allowed[0])
-            self._sp_allowed.remove(self._sp_allowed[0])
+            self.spallow.remove(_('Verb'))
+        elif self.spallow:
+            self.opt_sp2.set(self.spallow[0])
+            self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.mes(f,mes).error()
+            sh.objs.get_mes(f,mes).show_error()
                        
     def update_sp3(self):
         f = '[MClient] gui.Settings.update_sp3'
-        if self.opt_sp3.choice in self._sp_allowed:
-            self._sp_allowed.remove(self.opt_sp3.choice)
-        elif _('Adjective') in self._sp_allowed:
+        if self.opt_sp3.choice in self.spallow:
+            self.spallow.remove(self.opt_sp3.choice)
+        elif _('Adjective') in self.spallow:
             self.opt_sp3.set(_('Adjective'))
-            self._sp_allowed.remove(_('Adjective'))
-        elif self._sp_allowed:
-            self.opt_sp3.set(self._sp_allowed[0])
-            self._sp_allowed.remove(self._sp_allowed[0])
+            self.spallow.remove(_('Adjective'))
+        elif self.spallow:
+            self.opt_sp3.set(self.spallow[0])
+            self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.mes(f,mes).error()
+            sh.objs.get_mes(f,mes).show_error()
                        
     def update_sp4(self):
         f = '[MClient] gui.Settings.update_sp4'
-        if self.opt_sp4.choice in self._sp_allowed:
-            self._sp_allowed.remove(self.opt_sp4.choice)
-        elif _('Abbreviation') in self._sp_allowed:
+        if self.opt_sp4.choice in self.spallow:
+            self.spallow.remove(self.opt_sp4.choice)
+        elif _('Abbreviation') in self.spallow:
             self.opt_sp4.set(_('Abbreviation'))
-            self._sp_allowed.remove(_('Abbreviation'))
-        elif self._sp_allowed:
-            self.opt_sp4.set(self._sp_allowed[0])
-            self._sp_allowed.remove(self._sp_allowed[0])
+            self.spallow.remove(_('Abbreviation'))
+        elif self.spallow:
+            self.opt_sp4.set(self.spallow[0])
+            self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.mes(f,mes).error()
+            sh.objs.get_mes(f,mes).show_error()
                        
     def update_sp5(self):
         f = '[MClient] gui.Settings.update_sp5'
-        if self.opt_sp5.choice in self._sp_allowed:
-            self._sp_allowed.remove(self.opt_sp5.choice)
-        elif _('Adverb') in self._sp_allowed:
+        if self.opt_sp5.choice in self.spallow:
+            self.spallow.remove(self.opt_sp5.choice)
+        elif _('Adverb') in self.spallow:
             self.opt_sp5.set(_('Adverb'))
-            self._sp_allowed.remove(_('Adverb'))
-        elif self._sp_allowed:
-            self.opt_sp5.set(self._sp_allowed[0])
-            self._sp_allowed.remove(self._sp_allowed[0])
+            self.spallow.remove(_('Adverb'))
+        elif self.spallow:
+            self.opt_sp5.set(self.spallow[0])
+            self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.mes(f,mes).error()
+            sh.objs.get_mes(f,mes).show_error()
                        
     def update_sp6(self):
         f = '[MClient] gui.Settings.update_sp6'
-        if self.opt_sp6.choice in self._sp_allowed:
-            self._sp_allowed.remove(self.opt_sp6.choice)
-        elif _('Preposition') in self._sp_allowed:
+        if self.opt_sp6.choice in self.spallow:
+            self.spallow.remove(self.opt_sp6.choice)
+        elif _('Preposition') in self.spallow:
             self.opt_sp6.set(_('Preposition'))
-            self._sp_allowed.remove(_('Preposition'))
-        elif self._sp_allowed:
-            self.opt_sp6.set(self._sp_allowed[0])
-            self._sp_allowed.remove(self._sp_allowed[0])
+            self.spallow.remove(_('Preposition'))
+        elif self.spallow:
+            self.opt_sp6.set(self.spallow[0])
+            self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.mes(f,mes).error()
+            sh.objs.get_mes(f,mes).show_error()
                        
     def update_sp7(self):
         f = '[MClient] gui.Settings.update_sp7'
-        if self.opt_sp7.choice in self._sp_allowed:
-            self._sp_allowed.remove(self.opt_sp7.choice)
-        elif _('Pronoun') in self._sp_allowed:
+        if self.opt_sp7.choice in self.spallow:
+            self.spallow.remove(self.opt_sp7.choice)
+        elif _('Pronoun') in self.spallow:
             self.opt_sp7.set(_('Pronoun'))
-            self._sp_allowed.remove(_('Pronoun'))
-        elif self._sp_allowed:
-            self.opt_sp7.set(self._sp_allowed[0])
-            self._sp_allowed.remove(self._sp_allowed[0])
+            self.spallow.remove(_('Pronoun'))
+        elif self.spallow:
+            self.opt_sp7.set(self.spallow[0])
+            self.spallow.remove(self.spallow[0])
         else:
             mes = _('Empty input is not allowed!')
-            sh.objs.mes(f,mes).error()
+            sh.objs.get_mes(f,mes).show_error()
 
 
 
-#todo: make this widget reusable
+#TODO: make this widget reusable
 class Suggest:
     
     def __init__(self):
         self.parent = None
         
-    def bindings(self):
+    def set_bindings(self):
         sh.com.bind (obj      = self.parent
                     ,bindings = '<Escape>'
                     ,action   = self.close
@@ -1755,7 +1758,7 @@ class Suggest:
                                    ,lst    = lst
                                    ,action = action
                                    )
-            self.bindings()
+            self.set_bindings()
                                
     def close(self):
         if self.parent:

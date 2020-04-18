@@ -7,11 +7,11 @@ import struct
 import codecs
 import locale
 import itertools
-import skl_shared.shared as sh
-from skl_shared.localize import _
+import skl_shared2.shared as sh
+from skl_shared2.localize import _
 
 # Do not localize language names here
-ENCODING = 'windows-1251'
+CODING   = 'windows-1251'
 LANG1    = 'English'
 LANG2    = 'Russian'
 PATH     = ''
@@ -33,14 +33,14 @@ class Xor:
         while min_ <= max_:
             vector = self.vectors[min_]
             mes = _('Position: {}; vector: {}').format(min_,vector)
-            sh.objs.mes(f,mes,True).debug()
+            sh.objs.get_mes(f,mes,True).show_debug()
             if pos2 > pos1:
                 shift -= vector
             else:
                 shift += vector
             min_ += 1
         if DEBUG:
-            sh.objs.mes(f,shift,True).debug()
+            sh.objs.get_mes(f,shift,True).show_debug()
         return shift
     
     def overflow(self,pos):
@@ -51,7 +51,7 @@ class Xor:
             pos = 255 - overhead
             if DEBUG:
                 mes = _('Overflow: {} -> {}').format(old,pos)
-                sh.objs.mes(f,mes,True).debug()
+                sh.objs.get_mes(f,mes,True).show_debug()
         return pos
     
     def xor(self,byte,pos,start):
@@ -71,15 +71,15 @@ class Xor:
                                      ,com.get_string(byte2)
                                      ,pos
                                      )
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
                 return byte2
             else:
                 sub = '0 <= {} <= 255'.format(byte[0])
                 mes = _('The condition "{}" is not observed!')
                 mes = mes.format(sub)
-                sh.objs.mes(f,mes,True).warning()
+                sh.objs.get_mes(f,mes,True).show_warning()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def set_vectors(self):
         ''' MT's XOR algorithm is basically shifting positions by
@@ -125,7 +125,7 @@ class Ending:
                 new = self.ordered[i]
                 if DEBUG:
                     mes = '{} -> {}'.format(no,new)
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
         else:
             sh.com.cancel(f)
         return new
@@ -152,11 +152,11 @@ class Ending:
                 if DEBUG:
                     mes = _('#: {}; Pattern: "{}"; Match: {}')
                     mes = mes.format(no,pattern,sub)
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
                 return match
             except ValueError:
                 mes = _('Wrong input data: "{}"!').format(no)
-                sh.objs.mes(f,mes,True).warning()
+                sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
     
@@ -167,7 +167,7 @@ class Ending:
             if not self.text:
                 self.Success = False
                 mes = _('Empty output is not allowed!')
-                sh.objs.mes(f,mes,True).warning()
+                sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
     
@@ -189,16 +189,14 @@ class Ending:
                         if len(line) < 2:
                             mes = _('Wrong input data: "{}"!')
                             mes = mes.format(line)
-                            sh.objs.mes(f,mes,True).warning()
+                            sh.objs.get_mes(f,mes,True).show_warning()
                         else:
                             # Remove a gender separator
                             line = line.replace('/',' ')
                             line = line.replace(',',' ')
                             line = line.split(' ')
                             line = [item for item in line if item]
-                            no   = sh.Input (title = f
-                                            ,value = line[0]
-                                            ).integer()
+                            no   = sh.Input(f,line[0]).get_integer()
                             ends = line[1:]
                             self.nos.append(no)
                             self.ends.append(ends)
@@ -207,7 +205,7 @@ class Ending:
                 sub = '{} > 1'.format(len(lines))
                 mes = _('The condition "{}" is not observed!')
                 mes = mes.format(sub)
-                sh.objs.mes(f,mes,True).warning()
+                sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
     
@@ -240,11 +238,11 @@ class Subject:
                 else:
                     pair = (self.en_dic[ind],self.en_dicf[ind])
                 mes = '{} -> {}'.format(code,pair)
-                sh.objs.mes(f,mes,True).debug()
+                sh.objs.get_mes(f,mes,True).show_debug()
                 return pair
             else:
                 mes = _('Wrong input data: "{}"!').format(code)
-                sh.objs.mes(f,mes,True).warning()
+                sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
     
@@ -282,9 +280,7 @@ class Subject:
                 items = items[0:5]
                 # Fail if items < 5
                 if len(items) == 5:
-                    dic_no = sh.Input (title = f
-                                      ,value = items[0]
-                                      ).integer()
+                    dic_no = sh.Input(f,items[0]).get_integer()
                     self.dic_nos.append(dic_no)
                     self.en_dicf.append(items[1])
                     self.en_dic.append(items[2])
@@ -293,7 +289,7 @@ class Subject:
                 else:
                     self.Success = False
                     mes = _('Wrong input data: "{}"!').format(line)
-                    sh.objs.mes(f,mes).warning()
+                    sh.objs.get_mes(f,mes).show_warning()
                     break
         else:
             sh.com.cancel(f)
@@ -307,11 +303,11 @@ class Subject:
                 if not self.text:
                     self.Success = False
                     mes = _('Empty output is not allowed!')
-                    sh.objs.mes(f,mes).warning()
+                    sh.objs.get_mes(f,mes).show_warning()
             else:
                 self.Success = False
                 mes = _('File "{}" does not exist!').format(self.file)
-                sh.objs.mes(f,mes,True).warning()
+                sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
 
@@ -323,7 +319,7 @@ class Binary:
         self.fsize   = 0
         self.bsize   = 0
         self.file    = file
-        self.bname   = sh.Path(file).basename()
+        self.bname   = sh.Path(file).get_basename()
         # We need silent logging here (not 'sh.File.Success')
         self.Success = os.path.exists(self.file)
         self.open()
@@ -362,22 +358,24 @@ class Binary:
                     if chunk and not chunk in chunks:
                         chunks.append(chunk)
                         if DEBUG:
-                            mpos1.append(sh.com.figure_commas(pos21))
-                            mpos2.append(sh.com.figure_commas(pos22))
+                            mpos1.append(sh.com.set_figure_commas(pos21))
+                            mpos2.append(sh.com.set_figure_commas(pos22))
                             mchunks.append(com.get_string(chunk))
             if DEBUG:
                 if mchunks:
                     mpattern = ['"{}"'.format(com.get_string(pattern)) \
                                 for i in range(len(mchunks))
                                ]
-                    mstart = ['{}'.format(sh.com.figure_commas(start)) \
+                    mstart = ['{}'.format(sh.com.set_figure_commas(start)) \
                               for i in range(len(mchunks))
                              ]
-                    mend = ['{}'.format(sh.com.figure_commas(end)) \
+                    mend = ['{}'.format(sh.com.set_figure_commas(end)) \
                               for i in range(len(mchunks))
                            ]
                     nos      = [i + 1 for i in range(len(chunks))]
-                    mchunks  = ['"{}"'.format(chunk) for chunk in mchunks]
+                    mchunks  = ['"{}"'.format(chunk) \
+                                for chunk in mchunks
+                               ]
                     headers  = ('NO','PATTERN','START'
                                ,'END','POS1','POS2','CHUNK'
                                )
@@ -389,12 +387,12 @@ class Binary:
                                        ,maxrow   = 47
                                        ).run()
                     mes = '\n\n' + mes
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
                 else:
                     mes = _('No debug info')
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
         else:
-            sh.com.lazy(f)
+            sh.com.rep_lazy(f)
         return chunks
     
     def get_parts1(self,pattern,start=0,end=0):
@@ -415,20 +413,20 @@ class Binary:
                     if chunk and not chunk in chunks:
                         chunks.append(chunk)
                         if DEBUG:
-                            mpos1.append(sh.com.figure_commas(pos1))
-                            mpos2.append(sh.com.figure_commas(pos2))
+                            mpos1.append(sh.com.set_figure_commas(pos1))
+                            mpos2.append(sh.com.set_figure_commas(pos2))
                             mchunks.append(com.get_string(chunk))
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
             if DEBUG:
                 if mchunks:
                     mpattern = ['"{}"'.format(com.get_string(pattern)) \
                                 for i in range(len(mchunks))
                                ]
-                    mstart = ['{}'.format(sh.com.figure_commas(start)) \
+                    mstart = ['{}'.format(sh.com.set_figure_commas(start)) \
                               for i in range(len(mchunks))
                              ]
-                    mend = ['{}'.format(sh.com.figure_commas(end)) \
+                    mend = ['{}'.format(sh.com.set_figure_commas(end)) \
                               for i in range(len(mchunks))
                            ]
                     nos      = [i + 1 for i in range(len(chunks))]
@@ -446,12 +444,12 @@ class Binary:
                                        ,maxrow   = 47
                                        ).run()
                     mes = '\n\n' + mes
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
                 else:
                     mes = _('No debug info')
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
         else:
-            sh.com.lazy(f)
+            sh.com.rep_lazy(f)
         return chunks
     
     def find_all(self,pattern,start=0,end=0):
@@ -466,8 +464,8 @@ class Binary:
                 else:
                     break
             if DEBUG:
-                mes = [sh.com.figure_commas(item) for item in matches]
-                sh.objs.mes(f,mes,True).debug()
+                mes = [sh.com.set_figure_commas(item) for item in matches]
+                sh.objs.get_mes(f,mes,True).show_debug()
         else:
             sh.com.cancel(f)
         return matches
@@ -479,29 +477,29 @@ class Binary:
         if self.Success:
             val = self.fsize // self.bsize
             if DEBUG:
-                mes = sh.com.figure_commas(val)
-                sh.objs.mes(f,mes,True).debug()
+                mes = sh.com.set_figure_commas(val)
+                sh.objs.get_mes(f,mes,True).show_debug()
             return val
         else:
             sh.com.cancel(f)
     
     def get_file_size(self):
-        ''' This should be equal to 'sh.File(self.vfile).size()'.
+        ''' This should be equal to 'sh.File(self.vfile).get_size()'.
             #NOTE: size = max_pos + 1
         '''
         f = '[MClient] plugins.multitranbin.get.Binary.get_file_size'
         if self.Success:
             if not self.fsize:
-                self.fsize = sh.File(self.file).size()
+                self.fsize = sh.File(self.file).get_size()
                 if DEBUG:
                     mes  = _('File "{}" has the size of {}')
-                    size = sh.com.human_size(self.fsize)
+                    size = sh.com.get_human_size(self.fsize)
                     mes  = mes.format(self.file,size)
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
             if not self.fsize:
                 self.Success = False
                 mes = _('Empty output is not allowed!')
-                sh.objs.mes(f,mes).warning()
+                sh.objs.get_mes(f,mes).show_warning()
         else:
             sh.com.cancel(f)
         return self.fsize
@@ -511,18 +509,18 @@ class Binary:
         f = '[MClient] plugins.multitranbin.get.Binary.get_page_limits'
         if self.Success:
             if page_no is None or not self.get_block_size():
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
             elif page_no == 0:
                 if DEBUG:
-                    sub = sh.com.human_size(self.bsize)
+                    sub = sh.com.get_human_size(self.bsize)
                     mes = _('Page size: {}').format(sub)
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
                     pos1 = 0
                     pos2 = self.bsize
-                    sub  = sh.com.figure_commas(pos2)
+                    sub  = sh.com.set_figure_commas(pos2)
                     mes  = _('Page limits: [{}:{}]')
                     mes  = mes.format(pos1,sub)
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
                 return(0,self.bsize)
             else:
                 pos = page_no * self.bsize
@@ -533,30 +531,30 @@ class Binary:
                         size = com.overflowh(size)
                         if size > 0:
                             if DEBUG:
-                                sub = sh.com.human_size(size)
+                                sub = sh.com.get_human_size(size)
                                 mes = _('Page size: {}').format(sub)
-                                sh.objs.mes(f,mes,True).debug()
+                                sh.objs.get_mes(f,mes,True).show_debug()
                             pos1 = pos + 3
                             pos2 = pos1 + size
                             if DEBUG:
-                                sub1 = sh.com.figure_commas(pos1)
-                                sub2 = sh.com.figure_commas(pos2)
+                                sub1 = sh.com.set_figure_commas(pos1)
+                                sub2 = sh.com.set_figure_commas(pos2)
                                 mes  = _('Page limits: [{}:{}]')
                                 mes  = mes.format(sub1,sub2)
-                                sh.objs.mes(f,mes,True).debug()
+                                sh.objs.get_mes(f,mes,True).show_debug()
                             return(pos1,pos2)
                         else:
                             sub = '{} > 0'.format(size)
                             mes = _('The condition "{}" is not observed!')
                             mes = mes.format(sub)
-                            sh.objs.mes(f,mes,True).warning()
+                            sh.objs.get_mes(f,mes,True).show_warning()
                     else:
                         sub = '{} == 2'.format(len(read))
                         mes = _('The condition "{}" is not observed!')
                         mes = mes.format(sub)
-                        sh.objs.mes(f,mes,True).warning()
+                        sh.objs.get_mes(f,mes,True).show_warning()
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
@@ -572,13 +570,13 @@ class Binary:
                         self.Success = False
                         mes = _('Third-party module has failed!\n\nDetails: {}')
                         mes = mes.format(e)
-                        sh.objs.mes(f,mes,True).warning()
+                        sh.objs.get_mes(f,mes,True).show_warning()
                     if DEBUG:
-                        mes = sh.com.figure_commas(self.bsize)
-                        sh.objs.mes(f,mes,True).debug()
+                        mes = sh.com.set_figure_commas(self.bsize)
+                        sh.objs.get_mes(f,mes,True).show_debug()
                 else:
                     self.Success = False
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
         return self.bsize
@@ -591,9 +589,9 @@ class Binary:
                     return True
                 elif DEBUG:
                     mes = _('The check has failed!')
-                    sh.objs.mes(f,mes,True).warning()
+                    sh.objs.get_mes(f,mes,True).show_warning()
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
@@ -606,7 +604,7 @@ class Binary:
                     a common case.
                 '''
                 if DEBUG:
-                    sh.com.lazy(f)
+                    sh.com.rep_lazy(f)
             else:
                 lengths = self.get_lengths(pos11)
                 if self.check_lengths(pattern,lengths):
@@ -623,7 +621,7 @@ class Binary:
                 the 1st part will always be positive.
             '''
             if index_ is None:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
             elif index_ > 2:
                 pos1 = index_ - 2
                 pos2 = index_ - 1
@@ -640,17 +638,17 @@ class Binary:
                     len2 = com.overflowb(len2)
                     if DEBUG:
                         mes = _('Part #{} length: {}').format(1,len1)
-                        sh.objs.mes(f,mes,True).debug()
+                        sh.objs.get_mes(f,mes,True).show_debug()
                         mes = _('Part #{} length: {}').format(2,len2)
-                        sh.objs.mes(f,mes,True).debug()
+                        sh.objs.get_mes(f,mes,True).show_debug()
                     return(len1,len2)
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
             else:
                 sub = '{} > 2'.format(index_)
                 mes = _('The condition "{}" is not observed!')
                 mes = mes.format(sub)
-                sh.objs.mes(f,mes,True).warning()
+                sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
     
@@ -658,23 +656,23 @@ class Binary:
         f = '[MClient] plugins.multitranbin.get.Binary.read'
         if self.Success:
             if start is None or end is None:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
             elif 0 <= start < end <= self.get_file_size():
                 self.imap.seek(start)
                 chunk = self.imap.read(end-start)
                 if DEBUG:
                     mes = '"{}"'.format(com.get_string(chunk))
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
                 return chunk
             else:
                 self.Success = False
-                sub1 = sh.com.figure_commas(start)
-                sub2 = sh.com.figure_commas(end)
-                sub3 = sh.com.figure_commas(self.fsize)
+                sub1 = sh.com.set_figure_commas(start)
+                sub2 = sh.com.set_figure_commas(end)
+                sub3 = sh.com.set_figure_commas(self.fsize)
                 sub = '0 <= {} < {} <= {}'.format(sub1,sub2,sub3)
                 mes = _('The condition "{}" is not observed!')
                 mes = mes.format(sub)
-                sh.objs.mes(f,mes).warning()
+                sh.objs.get_mes(f,mes).show_warning()
         else:
             sh.com.cancel(f)
     
@@ -690,21 +688,21 @@ class Binary:
                         mes = '{}, "{}" => {}'
                         mes = mes.format (self.bname
                                          ,com.get_string(pattern)
-                                         ,sh.com.figure_commas(result)
+                                         ,sh.com.set_figure_commas(result)
                                          )
                     else:
                         mes = '{}, [{}:{}], "{}" => {}'
                         mes = mes.format (self.bname
-                                         ,sh.com.figure_commas(start)
-                                         ,sh.com.figure_commas(end)
+                                         ,sh.com.set_figure_commas(start)
+                                         ,sh.com.set_figure_commas(end)
                                          ,com.get_string(pattern)
-                                         ,sh.com.figure_commas(result)
+                                         ,sh.com.set_figure_commas(result)
                                          )
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
                 if result >= 0:
                     return result
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
@@ -712,7 +710,7 @@ class Binary:
         f = '[MClient] plugins.multitranbin.get.Binary.open'
         if self.Success:
             mes = _('Open "{}"').format(self.file)
-            sh.objs.mes(f,mes,True).info()
+            sh.objs.get_mes(f,mes,True).show_info()
             self.bin = open(self.file,'rb')
             # 'mmap' fails upon opening an empty file!
             try:
@@ -723,7 +721,7 @@ class Binary:
                 self.Success = False
                 mes = _('Third-party module has failed!\n\nDetails: {}')
                 mes = mes.format(e)
-                sh.objs.mes(f,mes,True).warning()
+                sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
     
@@ -731,7 +729,7 @@ class Binary:
         f = '[MClient] plugins.multitranbin.get.Binary.close'
         if self.Success:
             mes = _('Close "{}"').format(self.file)
-            sh.objs.mes(f,mes,True).info()
+            sh.objs.get_mes(f,mes,True).show_info()
             self.imap.flush()
             self.bin.close()
         else:
@@ -756,29 +754,29 @@ class UPage(Binary):
             return self.part1.index(stem)
         except ValueError:
             mes = _('Wrong input data!')
-            sh.objs.mes(f,mes).error()
+            sh.objs.get_mes(f,mes).show_error()
             return -1
     
     def _get_ref(self,i):
         f = '[MClient] plugins.multitranbin.get.UPage._get_ref'
         if i is None:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
         else:
             try:
                 page_ref = struct.unpack('<h',self.part2[i])[0]
                 if DEBUG:
                     mes = _('#{}: {}').format(i,page_ref)
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
                 return page_ref
             except IndexError:
                 mes = _('Wrong input data!')
-                sh.objs.mes(f,mes).error()
+                sh.objs.get_mes(f,mes).show_error()
     
     def _decode(self,pattern):
-        if self.file in (objs.files().iwalker.get_stems1()
-                        ,objs._files.iwalker.get_stems2()
+        if self.file in (objs.get_files().iwalker.get_stems1()
+                        ,objs.files.iwalker.get_stems2()
                         ):
-            result = pattern.decode(ENCODING,'replace')
+            result = pattern.decode(CODING,'replace')
         else:
             result = com.get_string(pattern,0)
         return '"{}"'.format(result)
@@ -809,7 +807,7 @@ class UPage(Binary):
                                       ,'<'
                                       ,stem2
                                       )
-        sh.objs.mes(f,mes,True).debug()
+        sh.objs.get_mes(f,mes,True).show_debug()
     
     def searchu(self,pattern):
         f = '[MClient] plugins.multitranbin.get.UPage.searchu'
@@ -826,7 +824,7 @@ class UPage(Binary):
                     self._log(pattern,i)
                 return self.get_page_limits(self._get_ref(i))
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
@@ -869,11 +867,11 @@ class UPage(Binary):
                             com.report_status(pos,self.page)
                             if len(self.page) - pos > 1:
                                 mes = _('Processing the pattern has not been completed, but the end of the file has already been reached!')
-                                sh.objs.mes(f,mes,True).warning()
+                                sh.objs.get_mes(f,mes,True).show_warning()
                             break
                     self.conform_parts()
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
@@ -885,11 +883,11 @@ class UPage(Binary):
                     page = self.read(self.pos1,self.pos2)
                     # Keep 'self.page' iterable
                     if page is None:
-                        sh.com.empty(f)
+                        sh.com.rep_empty(f)
                     else:
                         self.page = page
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
         return self.page
@@ -908,7 +906,7 @@ class UPage(Binary):
                     self.pos2  = poses[1]
                     self.psize = self.pos2 - self.pos1
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
         return self.psize
@@ -930,7 +928,7 @@ class UPage(Binary):
                                         )
                 mes = _('The condition "{}" is not observed!')
                 mes = mes.format(sub)
-                sh.objs.mes(f,mes).error()
+                sh.objs.get_mes(f,mes).show_error()
         else:
             sh.com.cancel(f)
     
@@ -947,7 +945,7 @@ class UPage(Binary):
         compare = compare[2:]
         for item in compare:
             if item not in unpacked:
-                sh.objs.mes(f,item,True).debug()
+                sh.objs.get_mes(f,item,True).show_debug()
                 return item
     
     def conform_parts(self):
@@ -958,14 +956,14 @@ class UPage(Binary):
                     old = self._get_missing()
                     new = struct.pack('<h',old)
                     mes = '{} -> "{}"'.format(old,new)
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
                     self.part1.insert(0,b'')
                     self.part2.append(new)
                 else:
                     mes = _('The check has failed!')
-                    sh.objs.mes(f,mes,True).warning()
+                    sh.objs.get_mes(f,mes,True).show_warning()
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
 
@@ -989,7 +987,7 @@ class Walker:
                 else:
                     self.Success = False
                     mes = _('File "{}" does not exist!').format(fname)
-                    sh.objs.mes(f,mes,True).warning()
+                    sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
         return self.ending
@@ -1005,7 +1003,7 @@ class Walker:
                 else:
                     self.Success = False
                     mes = _('File "{}" does not exist!').format(fname)
-                    sh.objs.mes(f,mes,True).warning()
+                    sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
         return self.subject
@@ -1018,11 +1016,11 @@ class Walker:
                 file  = self.get_file(fname)
                 if file:
                     self.typein1 = file
-                    sh.objs.mes(f,self.typein1,True).debug()
+                    sh.objs.get_mes(f,self.typein1,True).show_debug()
                 else:
                     self.Success = False
                     mes = _('File "{}" does not exist!').format(fname)
-                    sh.objs.mes(f,mes,True).warning()
+                    sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
         return self.typein1
@@ -1035,11 +1033,11 @@ class Walker:
                 file  = self.get_file(fname)
                 if file:
                     self.typein2 = file
-                    sh.objs.mes(f,self.typein2,True).debug()
+                    sh.objs.get_mes(f,self.typein2,True).show_debug()
                 else:
                     self.Success = False
                     mes = _('File "{}" does not exist!').format(fname)
-                    sh.objs.mes(f,mes,True).warning()
+                    sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
         return self.typein2
@@ -1066,11 +1064,11 @@ class Walker:
                 file = self.get_file(fname)
                 if file:
                     self.article = file
-                    sh.objs.mes(f,self.article,True).debug()
+                    sh.objs.get_mes(f,self.article,True).show_debug()
                 else:
                     self.Success = False
                     mes = _('File "{}" does not exist!').format(fname)
-                    sh.objs.mes(f,mes,True).warning()
+                    sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
         return self.article
@@ -1083,11 +1081,11 @@ class Walker:
                 file  = self.get_file(fname)
                 if file:
                     self.glue1 = file
-                    sh.objs.mes(f,self.glue1,True).debug()
+                    sh.objs.get_mes(f,self.glue1,True).show_debug()
                 else:
                     self.Success = False
                     mes = _('File "{}" does not exist!').format(fname)
-                    sh.objs.mes(f,mes,True).warning()
+                    sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
         return self.glue1
@@ -1100,11 +1098,11 @@ class Walker:
                 file  = self.get_file(fname)
                 if file:
                     self.glue2 = file
-                    sh.objs.mes(f,self.glue2,True).debug()
+                    sh.objs.get_mes(f,self.glue2,True).show_debug()
                 else:
                     self.Success = False
                     mes = _('File "{}" does not exist!').format(fname)
-                    sh.objs.mes(f,mes,True).warning()
+                    sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
         return self.glue2
@@ -1134,7 +1132,7 @@ class Walker:
             self.Success = self.idir.Success
         else:
             self.Success = False
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def get_stems1(self):
         f = '[MClient] plugins.multitranbin.get.Walker.get_stems1'
@@ -1147,7 +1145,7 @@ class Walker:
                 else:
                     self.Success = False
                     mes = _('File "{}" does not exist!').format(fname)
-                    sh.objs.mes(f,mes,True).warning()
+                    sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
         return self.stems1
@@ -1163,7 +1161,7 @@ class Walker:
                 else:
                     self.Success = False
                     mes = _('File "{}" does not exist!').format(fname)
-                    sh.objs.mes(f,mes,True).warning()
+                    sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
         return self.stems2
@@ -1176,7 +1174,7 @@ class Walker:
                 return self.files[ind]
             except (ValueError,IndexError):
                 mes = _('Wrong input data!')
-                sh.objs.mes(f,mes,True).warning()
+                sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
     
@@ -1222,15 +1220,15 @@ class TypeIn(UPage):
         f = '[MClient] plugins.multitranbin.get.TypeIn.search'
         if self.Success:
             if pattern:
-                coded  = bytes(pattern,ENCODING)
+                coded  = bytes(pattern,CODING)
                 poses  = self.searchu(coded)
-                chunks = self.reader(poses)
+                chunks = self.run_reader(poses)
                 if chunks:
                     matches = []
                     for chunk in chunks:
                         if chunk.startswith(coded):
                             matches.append(chunk)
-                    decoded = [match.decode(ENCODING,'replace') \
+                    decoded = [match.decode(CODING,'replace') \
                                for match in matches if match
                               ]
                     for i in range(len(decoded)):
@@ -1247,16 +1245,16 @@ class TypeIn(UPage):
                         else:
                             decoded[i] = decoded[i][0]
                     if DEBUG:
-                        sh.objs.mes(f,decoded,True).debug()
+                        sh.objs.get_mes(f,decoded,True).show_debug()
                     return decoded
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
-    def reader(self,poses):
+    def run_reader(self,poses):
         f = '[MClient] plugins.multitranbin.get.TypeIn.reader'
         if self.Success:
             if poses:
@@ -1287,9 +1285,9 @@ class TypeIn(UPage):
                             break
                     return chunks
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
 
@@ -1311,12 +1309,12 @@ class Suggest:
         self.pattern = pattern
         if not self.pattern:
             self.Success = False
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def get(self,limit=20):
         f = '[MClient] plugins.multitranbin.get.Suggest.get'
         if self.Success:
-            suggestions = objs.files().get_typein1().search(self.pattern)
+            suggestions = objs.get_files().get_typein1().search(self.pattern)
             if suggestions:
                 return suggestions[0:20]
         else:
@@ -1334,14 +1332,14 @@ class AllDics:
         self.set_values()
         self.reset()
     
-    def langs(self):
+    def get_langs(self):
         # Return all available languages
         files = []
         f = '[MClient] plugins.multitranbin.get.AllDics.langs'
         if self.Success:
             #TODO: elaborate
             # Relative paths are already lowercased
-            for fname in objs.files().iwalker.fnames:
+            for fname in objs.get_files().iwalker.fnames:
                 if fname.startswith('dict.') and fname.endswith('t'):
                     files.append(fname)
         else:
@@ -1354,20 +1352,20 @@ class AllDics:
             if search:
                 pass
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
     def set_values(self):
-        self._dics   = []
-        self._path   = ''
+        self.dics   = []
+        self.path   = ''
         # Do not run anything if 'self.reset' was not run
         self.Success = False
     
     def reset(self):
         self.set_values()
-        self._path   = PATH
-        self.Success = sh.Directory(self._path).Success
+        self.path = PATH
+        self.Success = sh.Directory(self.path).Success
     
     def walk(self):
         f = '[MClient] plugins.multitranbin.get.AllDics.walk'
@@ -1379,16 +1377,16 @@ class AllDics:
     def locate(self):
         f = '[MClient] plugins.multitranbin.get.AllDics.locate'
         if self.Success:
-            if not self._dics:
+            if not self.dics:
                 if self.walk():
                     #TODO: implement
-                    self._dics = []
+                    self.dics = []
                 else:
-                    sh.com.lazy(f)
+                    sh.com.rep_lazy(f)
             mes = _('{} offline dictionaries are available')
-            mes = mes.format(len(self._dics))
-            sh.objs.mes(f,mes,True).info()
-            return self._dics
+            mes = mes.format(len(self.dics))
+            sh.objs.get_mes(f,mes,True).show_info()
+            return self.dics
         else:
             sh.com.cancel(f)
     
@@ -1414,7 +1412,7 @@ class Articles(UPage):
                            ,offset = -251
                            ).dexor()
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
@@ -1431,9 +1429,9 @@ class Articles(UPage):
                                            )
                     return self.parse(chunk)
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
 
@@ -1463,11 +1461,11 @@ class Glue(UPage):
                             (at least in the demo version).
                         '''
                         if DEBUG:
-                            sh.com.lazy(f)
+                            sh.com.rep_lazy(f)
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
@@ -1482,15 +1480,15 @@ class Glue(UPage):
                     for chno in chnos:
                         nos.append(com.unpack(chno))
                     if DEBUG:
-                        sh.objs.mes(f,chnos,True).debug()
-                        sh.objs.mes(f,nos,True).debug()
+                        sh.objs.get_mes(f,chnos,True).show_debug()
+                        sh.objs.get_mes(f,nos,True).show_debug()
                     return chnos
                 else:
                     mes = _('Wrong input data: "{}"!')
                     mes = mes.format(com.get_string(chunk))
-                    sh.objs.mes(f,mes).warning()
+                    sh.objs.get_mes(f,mes).show_warning()
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
 
@@ -1514,14 +1512,14 @@ class Commands:
         if stream:
             mes = _('{}/{} bytes have been processed')
             mes = mes.format(pos,len(stream))
-            sh.objs.mes(f,mes,True).info()
+            sh.objs.get_mes(f,mes,True).show_info()
             if DEBUG:
                 remains = stream[pos:len(stream)]
                 remains = com.get_string(remains)
                 mes = _('Unprocessed fragment: "{}"').format(remains)
-                sh.objs.mes(f,mes,True).debug()
+                sh.objs.get_mes(f,mes,True).show_debug()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def unpackh(self,chno):
         return self.unpack(chno,'<h')
@@ -1533,7 +1531,7 @@ class Commands:
             result = 32768 + no
             if DEBUG:
                 mes = '{} -> {}'.format(no,result)
-                sh.objs.mes(f,mes,True).debug()
+                sh.objs.get_mes(f,mes,True).show_debug()
             return result
         else:
             return no
@@ -1549,7 +1547,7 @@ class Commands:
             new = 256 + no
             if DEBUG:
                 mes = '{} -> {}'.format(no,new)
-                sh.objs.mes(f,mes,True).debug()
+                sh.objs.get_mes(f,mes,True).show_debug()
             return new
         else:
             return no
@@ -1564,12 +1562,12 @@ class Commands:
             except Exception as e:
                 mes = _('Third-party module has failed!\n\nDetails: {}')
                 mes = mes.format(e)
-                sh.objs.mes(f,mes,True).warning()
+                sh.objs.get_mes(f,mes,True).show_warning()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
-    def accessible(self):
-        return len(objs.all_dics().langs())
+    def is_accessible(self):
+        return len(objs.get_all_dics().get_langs())
     
     def get_string(self,chunk,limit=200):
         ''' Only raw strings should be used in GUI (otherwise,
@@ -1587,7 +1585,7 @@ class Commands:
                 if limit:
                     result = sh.Text(result).shorten(limit)
             except Exception as e:
-                sh.objs.mes(f,str(e)).warning()
+                sh.objs.get_mes(f,str(e)).show_warning()
                 result = str(chunk)
         return result
     
@@ -1601,7 +1599,7 @@ class Commands:
                     for i in range(0,len(iterable),limit)
                    ]
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
             return []
     
     # Orphan
@@ -1718,18 +1716,18 @@ class Objects:
         self.reset()
     
     def reset(self):
-        self._all_dics = self._files = None
+        self.alldics = self.files = None
     
-    def files(self):
-        if self._files is None:
-            self._files = Files()
-            self._files.open()
-        return self._files
+    def get_files(self):
+        if self.files is None:
+            self.files = Files()
+            self.files.open()
+        return self.files
     
-    def all_dics(self):
-        if self._all_dics is None:
-            self._all_dics = AllDics()
-        return self._all_dics
+    def get_all_dics(self):
+        if self.alldics is None:
+            self.alldics = AllDics()
+        return self.alldics
 
 
 
@@ -1747,7 +1745,7 @@ class Stems(UPage):
                 result = com.unpackh(result)
                 if DEBUG:
                     mes = '{} -> {}'.format(com.get_string(chno),result)
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
                 return result
         else:
             sh.com.cancel(f)
@@ -1781,10 +1779,10 @@ class Stems(UPage):
                             nos.append(com.unpack(chno))
                         if chnos:
                             ids = [i + 1 for i in range(len(nos))]
-                            tmp = [sh.com.figure_commas(no) \
+                            tmp = [sh.com.set_figure_commas(no) \
                                    for no in nos
                                   ]
-                            mends = [sh.com.figure_commas(end) \
+                            mends = [sh.com.set_figure_commas(end) \
                                      for end in ends
                                     ]
                             mchnos = ['"' + com.get_string(chno) + '"' \
@@ -1802,17 +1800,17 @@ class Stems(UPage):
                                                ,maxrow   = 50
                                                ).run()
                             mes = '\n\n' + mes
-                            sh.objs.mes(f,mes,True).debug()
+                            sh.objs.get_mes(f,mes,True).show_debug()
                         else:
                             mes = _('No debug info')
-                            sh.objs.mes(f,mes,True).debug()
+                            sh.objs.get_mes(f,mes,True).show_debug()
                     return(chnos,ends)
                 else:
                     sub = com.get_string(chunk)
                     mes = _('Wrong input data: "{}"!').format(sub)
-                    sh.objs.mes(f,mes,True).warning()
+                    sh.objs.get_mes(f,mes,True).show_warning()
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
@@ -1827,7 +1825,7 @@ class Stems(UPage):
                 return [b'\x03\x00\x00']
             else:
                 # Zero-length stems should be allowed
-                coded = bytes(stem,ENCODING,'ignore')
+                coded = bytes(stem,CODING,'ignore')
                 poses = self.searchu(coded)
                 if poses:
                     chunks = self.get_parts2 (pattern = coded
@@ -1841,10 +1839,10 @@ class Stems(UPage):
                         if result:
                             chnos, endnos = result[0], result[1]
                             for i in range(len(endnos)):
-                                if objs.files().get_ending().has_match(endnos[i],end):
+                                if objs.get_files().get_ending().has_match(endnos[i],end):
                                     if DEBUG:
                                         no = com.unpack(chnos[i])
-                                        no = sh.com.figure_commas(no)
+                                        no = sh.com.set_figure_commas(no)
                                         unpacked.append(no)
                                     matches.append(chnos[i])
                     if DEBUG:
@@ -1869,13 +1867,13 @@ class Stems(UPage):
                                                ,iterable = iterable
                                                ).run()
                             mes = '\n\n' + mes
-                            sh.objs.mes(f,mes,True).debug()
+                            sh.objs.get_mes(f,mes,True).show_debug()
                         else:
                             mes = _('No debug info')
-                            sh.objs.mes(f,mes,True).debug()
+                            sh.objs.get_mes(f,mes,True).show_debug()
                     return matches
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
 
@@ -1894,14 +1892,14 @@ class Get:
         if self.Success:
             if self.stemnos:
                 chno = self.stemnos[0][0:3]
-                speech = objs.files().get_stems1().get_speech(chno)
+                speech = objs.get_files().get_stems1().get_speech(chno)
                 if DEBUG:
                     mes = '{} -> {}'.format (com.get_string(chno)
                                             ,speech
                                             )
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
                 if speech is None:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
                 elif speech == 0:
                     # MT: phrase;phrase
                     self.speech = _('Phrase')
@@ -1975,7 +1973,7 @@ class Get:
                     self.speech = _('Verb')
                     self.spabbr = _('v')
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
@@ -1985,7 +1983,7 @@ class Get:
             self.stemnos = list(itertools.product(*self.stemnos))
             self.stemnos = [b''.join(item) for item in self.stemnos]
             if DEBUG:
-                sh.objs.mes(f,self.stemnos,True).debug()
+                sh.objs.get_mes(f,self.stemnos,True).show_debug()
         else:
             sh.com.cancel(f)
     
@@ -1993,7 +1991,7 @@ class Get:
         f = '[MClient] plugins.multitranbin.get.Get.check'
         if not self.pattern:
             self.Success = False
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def strip(self):
         f = '[MClient] plugins.multitranbin.get.Get.strip'
@@ -2017,14 +2015,14 @@ class Get:
                     stem = word[0:i]
                     end  = word[i:]
                     mes  = _('Try for "{}|{}"').format(stem,end)
-                    sh.objs.mes(f,mes,True).info()
+                    sh.objs.get_mes(f,mes,True).show_info()
                     ''' Since we swap languages, the needed stems will
                         always be stored in stem file #1.
                     '''
-                    stemnos = objs.files().get_stems1().search(stem,end)
+                    stemnos = objs.get_files().get_stems1().search(stem,end)
                     if stemnos:
                         mes = _('Found stem: "{}"').format(stem)
-                        sh.objs.mes(f,mes,True).info()
+                        sh.objs.get_mes(f,mes,True).show_info()
                         word_stems += stemnos
                         ''' There can be several valid stems, e.g.,
                             'absolute' and 'absolut' (test on
@@ -2039,14 +2037,14 @@ class Get:
                 self.stemnos.append(word_stems)
             self.stemnos = [item for item in self.stemnos if item]
             if DEBUG:
-                sh.objs.mes(f,self.stemnos,True).debug()
+                sh.objs.get_mes(f,self.stemnos,True).show_debug()
         else:
             sh.com.cancel(f)
     
     def set_values(self):
         self.Success = True
         self.pattern = ''
-        self._html   = ''
+        self.htm   = ''
         self.stemnos = []
     
     def search(self):
@@ -2054,17 +2052,17 @@ class Get:
         if self.Success:
             art_nos = []
             for combo in self.stemnos:
-                art_no = objs.files().get_glue1().search(combo)
+                art_no = objs.get_files().get_glue1().search(combo)
                 if art_no:
                     art_nos += art_no
             if art_nos:
                 mes = _('Found articles: {}').format(art_nos)
             else:
                 mes = _('No articles have been found!')
-            sh.objs.mes(f,mes,True).info()
+            sh.objs.get_mes(f,mes,True).show_info()
             articles = []
             for art_no in art_nos:
-                article = objs.files().get_article().search(art_no)
+                article = objs.get_files().get_article().search(art_no)
                 if article:
                     articles.append(article)
             return articles
@@ -2074,7 +2072,7 @@ class Get:
     def run(self):
         self.check()
         self.strip()
-        objs.files().reset()
+        objs.get_files().reset()
         self.get_stems()
         self.get_combos()
         self.set_speech()

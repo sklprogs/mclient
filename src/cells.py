@@ -2,10 +2,10 @@
 # -*- coding: UTF-8 -*-
 
 import io
-import skl_shared.shared as sh
-from skl_shared.localize import _
+import skl_shared2.shared as sh
+from skl_shared2.localize import _
 
-#todo: share
+#TODO: share
 abbr     = ['гл.','сущ.','прил.','нареч.','сокр.','предл.','мест.']
 expanded = ['Глагол','Существительное','Прилагательное','Наречие'
            ,'Сокращение','Предлог','Местоимение'
@@ -16,26 +16,26 @@ expanded = ['Глагол','Существительное','Прилагате�
 class Block:
     
     def __init__(self):
-        self._block    = -1
-        self.i         = -1
-        self.j         = -1
-        self._first    = -1
-        self._last     = -1
-        self._no       = -1
+        self.block = -1
+        self.i     = -1
+        self.j     = -1
+        self.first = -1
+        self.last  = -1
+        self.no    = -1
         # Applies to non-blocked cells only
-        self._cell_no  = -1
-        self._same     = -1
-        self._priority = 0
+        self.cellno = -1
+        self.same   = -1
+        self.priority = 0
         ''' Block types:
             'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'correction', 'user', 'definition', 'transc', 'invalid'
         '''
-        self._type     = 'comment'
-        self._text     = ''
-        self._dica     = ''
-        self._wforma   = ''
-        self._speecha  = ''
-        self._transca  = ''
+        self.type_   = 'comment'
+        self.text    = ''
+        self.dica    = ''
+        self.wforma  = ''
+        self.speecha = ''
+        self.transca = ''
 
 
 
@@ -48,27 +48,27 @@ class BlockPrioritize:
         Modifies attributes:        BLOCK, PRIORITY
     '''
     def __init__(self,data,order,Block=False
-                ,Prioritize=False,phrase_dic=None
+                ,Prioritize=False,phdic=None
                 ,Debug=False,Shorten=True
                 ,MaxRow=20,MaxRows=50
                 ):
         f = '[MClient] cells.BlockPrioritize.__init__'
-        self._blocks     = []
-        self._query      = ''
-        self.order       = order
-        self._phrase_dic = phrase_dic
-        self._data       = data
-        self.Block       = Block
-        self.Prioritize  = Prioritize
-        self.Debug       = Debug
-        self.Shorten     = Shorten
-        self.MaxRow      = MaxRow
-        self.MaxRows     = MaxRows
-        if self._data:
+        self.blocks     = []
+        self.query      = ''
+        self.order      = order
+        self.phdic      = phdic
+        self.data       = data
+        self.Block      = Block
+        self.Prioritize = Prioritize
+        self.Debug      = Debug
+        self.Shorten    = Shorten
+        self.MaxRow     = MaxRow
+        self.MaxRows    = MaxRows
+        if self.data:
             self.Success = True
         else:
             self.Success = False
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def run(self):
         f = '[MClient] cells.BlockPrioritize.run'
@@ -82,33 +82,33 @@ class BlockPrioritize:
             sh.com.cancel(f)
     
     def assign(self):
-        for item in self._data:
+        for item in self.data:
             block       = Block()
-            block._no   = item[0]
-            block._type = item[1]
-            block._text = item[2]
-            block._dica = item[3]
-            self._blocks.append(block)
+            block.no    = item[0]
+            block.type_ = item[1]
+            block.text  = item[2]
+            block.dica  = item[3]
+            self.blocks.append(block)
             
     def block(self):
-        for block in self._blocks:
+        for block in self.blocks:
             # Suppress useless error output
-            if block._dica and block._dica != self._phrase_dic:
-                lst     = self.order.get_list(search=block._dica)
+            if block.dica and block.dica != self.phdic:
+                lst     = self.order.get_list(search=block.dica)
                 Blocked = self.order.is_blocked(lst)
             else:
                 Blocked = False
             if self.Block and Blocked:
-                block._block = 1
+                block.block = 1
             else:
-                block._block = 0
+                block.block = 0
             
     def prioritize(self):
         f = '[MClient] cells.BlockPrioritize.prioritize'
         if self.order.Success:
-            for block in self._blocks:
-                if block._dica:
-                    if self._phrase_dic == block._dica:
+            for block in self.blocks:
+                if block.dica:
+                    if self.phdic == block.dica:
                         ''' - This value should be set irrespectively of
                               'self.Prioritize'.
                             - Set the (presumably) lowest priority for
@@ -116,30 +116,30 @@ class BlockPrioritize:
                               quite a small value as not to conflict
                               with other dictionaries.
                         '''
-                        block._priority = -1000
+                        block.priority = -1000
                     elif self.Prioritize:
-                        block._priority = self.order.priority(search=block._dica)
+                        block.priority = self.order.get_priority(search=block.dica)
         else:
             sh.com.cancel(f)
 
     def dump(self):
         tmp = io.StringIO()
         tmp.write('begin;')
-        for block in self._blocks:
+        for block in self.blocks:
             tmp.write ('update BLOCKS set BLOCK=%d,PRIORITY=%d \
-                        where NO=%d;' % (block._block,block._priority
-                                        ,block._no
+                        where NO=%d;' % (block.block,block.priority
+                                        ,block.no
                                         )
                       )
         tmp.write('commit;')
-        self._query = tmp.getvalue()
+        self.query = tmp.getvalue()
         tmp.close()
 
     def debug(self):
         f = '[MClient] cells.BlockPrioritize.debug'
         if self.Debug:
             mes = _('Debug table:')
-            sh.objs.mes(f,mes,True).info()
+            sh.objs.get_mes(f,mes,True).show_info()
             headers = ['NO'
                       ,'DICA'
                       ,'TYPE'
@@ -148,13 +148,13 @@ class BlockPrioritize:
                       ,'PRIORITY'          
                       ]
             rows = []
-            for block in self._blocks:
-                rows.append ([block._no
-                             ,block._dica
-                             ,block._type
-                             ,block._text
-                             ,block._block
-                             ,block._priority        
+            for block in self.blocks:
+                rows.append ([block.no
+                             ,block.dica
+                             ,block.type_
+                             ,block.text
+                             ,block.block
+                             ,block.priority        
                              ]
                             )
             sh.Table (headers = headers
@@ -173,80 +173,80 @@ class Cells:
         Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL, DICA,
                                     WFORMA, SPEECHA, TRANSCA
         Modifies attributes:        TEXT, ROWNO, COLNO, CELLNO
-        #note: collimit at input: fixed columns are included
+        #NOTE: collimit at input: fixed columns are included
     '''
     def __init__ (self,data,cols,collimit=10
-                 ,phrase_dic=None,Reverse=False
-                 ,ExpandSpeech=False,Debug=False
+                 ,phdic=None,Reverse=False
+                 ,ExpandSp=False,Debug=False
                  ,Shorten=True,MaxRow=20,MaxRows=50
                  ):
         f = '[MClient] cells.Cells.__init__'
         # Sqlite fetch
-        self._data        = data
-        self._cols        = cols
-        self._collimit    = collimit
-        self._phrase_dic  = phrase_dic
-        self.Reverse      = Reverse
-        self.ExpandSpeech = ExpandSpeech
-        self.Debug        = Debug
-        self.Shorten      = Shorten
-        self.MaxRow       = MaxRow
-        self.MaxRows      = MaxRows
-        self._blocks      = []
-        if self._data:
+        self.data     = data
+        self.cols     = cols
+        self.collimit = collimit
+        self.phdic    = phdic
+        self.Reverse  = Reverse
+        self.ExpandSp = ExpandSp
+        self.Debug    = Debug
+        self.Shorten  = Shorten
+        self.MaxRow   = MaxRow
+        self.MaxRows  = MaxRows
+        self.blocks   = []
+        if self.data:
             self.Success  = True
         else:
             self.Success  = False
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
         
     def clear_phrases(self):
         ''' The 'Phrases' section comes the latest in MT, therefore,
             it inherits fixed columns of the preceding dictionary which
             are irrelevant. Here we clear them.
         '''
-        if self._phrase_dic:
-            for block in self._blocks:
-                if block._dica == self._phrase_dic:
-                    if block._type in ('wform','speech','transc'):
-                        block._text = ''
+        if self.phdic:
+            for block in self.blocks:
+                if block.dica == self.phdic:
+                    if block.type_ in ('wform','speech','transc'):
+                        block.text = ''
 
     def clear_fixed(self):
         dica = wforma = speecha = transca = ''
-        for block in self._blocks:
-            if block._type == 'dic':
-                if dica == block._dica:
-                    block._text = ''
+        for block in self.blocks:
+            if block.type_ == 'dic':
+                if dica == block.dica:
+                    block.text = ''
                 else:
-                    dica = block._dica
-            if block._type == 'wform':
-                if wforma == block._wforma:
-                    block._text = ''
+                    dica = block.dica
+            if block.type_ == 'wform':
+                if wforma == block.wforma:
+                    block.text = ''
                 else:
-                    wforma = block._wforma
-            if block._type == 'speech':
-                if speecha == block._speecha:
-                    block._text = ''
+                    wforma = block.wforma
+            if block.type_ == 'speech':
+                if speecha == block.speecha:
+                    block.text = ''
                 else:
-                    speecha = block._speecha
-            if block._type == 'transc':
-                if transca == block._transca:
-                    block._text = ''
+                    speecha = block.speecha
+            if block.type_ == 'transc':
+                if transca == block.transca:
+                    block.text = ''
                 else:
-                    transca = block._transca
+                    transca = block.transca
 
-    def sep_words(self):
+    def run_sep_words(self):
         ''' Reassign COLNO to start with 0 if separate words have been
             found (all fixed columns are empty). This allows to avoid
             the effect when a column with the 1st term is stretched
             owing to empty fixed columns.
         '''
-        min_j = len(self._cols)
-        for block in self._blocks:
-            if block._text and block.j < min_j:
+        min_j = len(self.cols)
+        for block in self.blocks:
+            if block.text and block.j < min_j:
                 min_j = block.j
-        if min_j == len(self._cols):
-            for block in self._blocks:
-                block.j -= len(self._cols)
+        if min_j == len(self.cols):
+            for block in self.blocks:
+                block.j -= len(self.cols)
     
     def run(self):
         f = '[MClient] cells.Cells.run'
@@ -258,31 +258,31 @@ class Cells:
             self.expand_speech()
             self.phrases2end()
             self.wrap()
-            self.sep_words()
+            self.run_sep_words()
             self.sort_cells()
-            self.cell_no()
+            self.set_cellno()
             self.debug()
         else:
             sh.com.cancel(f)
         
     def assign(self):
-        for item in self._data:
-            block          = Block()
-            block._no      = item[0]
-            block._type    = item[1]
-            block._text    = item[2]
-            block._same    = item[3]
-            block._dica    = item[4]
-            block._wforma  = item[5]
-            block._speecha = item[6]
-            block._transca = item[7]
-            self._blocks.append(block)
+        for item in self.data:
+            block         = Block()
+            block.no      = item[0]
+            block.type_   = item[1]
+            block.text    = item[2]
+            block.same    = item[3]
+            block.dica    = item[4]
+            block.wforma  = item[5]
+            block.speecha = item[6]
+            block.transca = item[7]
+            self.blocks.append(block)
         
     def debug(self):
         f = '[MClient] cells.Cells.debug'
         if self.Debug:
             mes = _('Debug table:')
-            sh.objs.mes(f,mes,True).info()
+            sh.objs.get_mes(f,mes,True).show_info()
             headers = ['NO'
                       ,'TYPE'
                       ,'TEXT'
@@ -292,14 +292,14 @@ class Cells:
                       ,'SAME'
                       ]
             rows = []
-            for block in self._blocks:
-                rows.append ([block._no
-                             ,block._type
-                             ,block._text
+            for block in self.blocks:
+                rows.append ([block.no
+                             ,block.type_
+                             ,block.text
                              ,block.i
                              ,block.j
-                             ,block._cell_no
-                             ,block._same
+                             ,block.cellno
+                             ,block.same
                              ]
                             )
             sh.Table (headers = headers
@@ -318,75 +318,75 @@ class Cells:
     def wrap_x(self):
         i = j = -1
         PrevFixed = False
-        for x in range(len(self._blocks)):
-            if self._cols and self._blocks[x]._type == self._cols[0]:
+        for x in range(len(self.blocks)):
+            if self.cols and self.blocks[x].type_ == self.cols[0]:
                 if PrevFixed:
-                    self._blocks[x].i = i
+                    self.blocks[x].i = i
                 else:
                     PrevFixed = True
                     i += 1
-                    self._blocks[x].i = i
-                self._blocks[x].j = 0
-                j = len(self._cols) - 1
-            elif len(self._cols) > 1 \
-            and self._blocks[x]._type == self._cols[1]:
+                    self.blocks[x].i = i
+                self.blocks[x].j = 0
+                j = len(self.cols) - 1
+            elif len(self.cols) > 1 \
+            and self.blocks[x].type_ == self.cols[1]:
                 if not PrevFixed:
                     PrevFixed = True
                     i += 1
-                self._blocks[x].i = i
-                self._blocks[x].j = 1
-                j = len(self._cols) - 1
-            elif len(self._cols) > 2 \
-            and self._blocks[x]._type == self._cols[2]:
+                self.blocks[x].i = i
+                self.blocks[x].j = 1
+                j = len(self.cols) - 1
+            elif len(self.cols) > 2 \
+            and self.blocks[x].type_ == self.cols[2]:
                 if not PrevFixed:
                     PrevFixed = True
                     i += 1
-                self._blocks[x].i = i
-                self._blocks[x].j = 2
-                j = len(self._cols) - 1
-            elif len(self._cols) > 3 \
-            and self._blocks[x]._type == self._cols[3]:
+                self.blocks[x].i = i
+                self.blocks[x].j = 2
+                j = len(self.cols) - 1
+            elif len(self.cols) > 3 \
+            and self.blocks[x].type_ == self.cols[3]:
                 if not PrevFixed:
                     PrevFixed = True
                     i += 1
-                self._blocks[x].i = i
-                self._blocks[x].j = j = len(self._cols) - 1
-            elif self._blocks[x]._type == 'definition':
+                self.blocks[x].i = i
+                self.blocks[x].j = j = len(self.cols) - 1
+            elif self.blocks[x].type_ == 'definition':
                 try:
-                    j = self._cols.index('wform')
+                    j = self.cols.index('wform')
                 except ValueError:
-                    j = len(self._cols)
-                self._blocks[x].i = i
-                self._blocks[x].j = j
+                    j = len(self.cols)
+                self.blocks[x].i = i
+                self.blocks[x].j = j
             # Must be before checking '_collimit'
-            elif self._blocks[x]._same > 0:
+            elif self.blocks[x].same > 0:
                 PrevFixed = False
                 # This can happen if there are no fixed columns
                 if i < 0:
                     i = 0
-                if j < len(self._cols):
-                    j = len(self._cols)
-                self._blocks[x].i = i
-                self._blocks[x].j = j
-            elif j + 1 == self._collimit:
+                if j < len(self.cols):
+                    j = len(self.cols)
+                self.blocks[x].i = i
+                self.blocks[x].j = j
+            elif j + 1 == self.collimit:
                 PrevFixed = False
                 i += 1
-                self._blocks[x].i = i
+                self.blocks[x].i = i
                 # Instead of creating empty non-selectable cells
-                self._blocks[x].j = j = len(self._cols)
+                self.blocks[x].j = j = len(self.cols)
             else:
                 PrevFixed = False
                 # This can happen if there are no fixed columns
                 if i < 0:
                     i = 0
-                self._blocks[x].i = i
+                self.blocks[x].i = i
                 if x > 0:
                     j += 1
-                    if j < len(self._cols):
-                        j = len(self._cols) + 1
-                    self._blocks[x].j = j
+                    if j < len(self.cols):
+                        j = len(self.cols) + 1
+                    self.blocks[x].j = j
                 else:
-                    self._blocks[x].j = len(self._cols)
+                    self.blocks[x].j = len(self.cols)
                     j += 1
                     
     def wrap_y(self):
@@ -394,103 +394,103 @@ class Cells:
             from 'wrap' in that we do not use 'collimit'.
         '''
         i = j = 0
-        for x in range(len(self._blocks)):
-            if self._cols and self._blocks[x]._type == self._cols[0] \
-            and self._blocks[x]._text:
+        for x in range(len(self.blocks)):
+            if self.cols and self.blocks[x].type_ == self.cols[0] \
+            and self.blocks[x].text:
                 if x > 0:
                     j += 1
-                self._blocks[x].j = j
-                self._blocks[x].i = 0
+                self.blocks[x].j = j
+                self.blocks[x].i = 0
                 i = 1
-            elif self._blocks[x]._same > 0:
-                self._blocks[x].i = i
-                self._blocks[x].j = j
-            elif self._blocks[x]._text:
-                self._blocks[x].j = j
+            elif self.blocks[x].same > 0:
+                self.blocks[x].i = i
+                self.blocks[x].j = j
+            elif self.blocks[x].text:
+                self.blocks[x].j = j
                 i += 1
-                self._blocks[x].i = i
+                self.blocks[x].i = i
     
     # This is necessary because fixed columns are interchangeable now
     def sort_cells(self):
-        self._blocks = sorted (self._blocks
+        self.blocks = sorted (self.blocks
                               ,key=lambda block:(block.i
                                                 ,block.j
-                                                ,block._no
+                                                ,block.no
                                                 )
                               )
     
     def phrases2end(self):
         f = '[MClient] cells.Cells.phrases2end'
-        if self._phrase_dic:
-            phrases = [block for block in self._blocks \
-                       if block._dica == self._phrase_dic
+        if self.phdic:
+            phrases = [block for block in self.blocks \
+                       if block.dica == self.phdic
                       ]
-            self._blocks = [block for block in self._blocks \
-                            if block._dica != self._phrase_dic
+            self.blocks = [block for block in self.blocks \
+                            if block.dica != self.phdic
                            ]
-            self._blocks = self._blocks + phrases
+            self.blocks = self.blocks + phrases
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
-    def cell_no(self):
+    def set_cellno(self):
         no = 0
-        for i in range(len(self._blocks)):
-            if self._blocks[i]._same > 0:
-                self._blocks[i]._cell_no = no
+        for i in range(len(self.blocks)):
+            if self.blocks[i].same > 0:
+                self.blocks[i].cellno = no
             # i != no
             elif i > 0:
                 no += 1
-                self._blocks[i]._cell_no = no
+                self.blocks[i].cellno = no
             else:
-                self._blocks[i]._cell_no = no
+                self.blocks[i].cellno = no
         
-    def dump(self,blocks_db):
+    def dump(self,blocksdb):
         ''' Do not use 'executescript' to update TEXT field. SQLITE may
             recognize a keyword (e.g., 'block') and replace it with '0'.
             Takes ~0,08s for 'block', ~0,13s for 'set' on AMD E-300.
         '''
-        for block in self._blocks:
-            blocks_db.dbc.execute ('update BLOCKS \
-                                    set    TEXT=?,ROWNO=?,COLNO=?\
-                                          ,CELLNO=?\
-                                    where  NO=?',(block._text,block.i
-                                                 ,block.j,block._cell_no
-                                                 ,block._no
-                                                 )
-                                  )
+        for block in self.blocks:
+            blocksdb.dbc.execute ('update BLOCKS \
+                                   set    TEXT=?,ROWNO=?,COLNO=?\
+                                         ,CELLNO=?\
+                                   where  NO=?',(block.text,block.i
+                                                ,block.j,block.cellno
+                                                ,block.no
+                                                )
+                                 )
         
     # Takes ~0,0077s on 'set'
     def expand_speech(self):
-        if self.ExpandSpeech:
-            for i in range(len(self._blocks)):
-                if self._blocks[i]._type == 'speech':
-                    lst = self._blocks[i]._text.split(' ')
+        if self.ExpandSp:
+            for i in range(len(self.blocks)):
+                if self.blocks[i].type_ == 'speech':
+                    lst = self.blocks[i].text.split(' ')
                     for j in range(len(lst)):
                         if lst[j] in abbr:
                             ind    = abbr.index(lst[j])
                             lst[j] = expanded[ind]
-                    self._blocks[i]._text = ' '.join(lst)
+                    self.blocks[i].text = ' '.join(lst)
         # In case of switching back from the 'Cut to the chase' mode
         else:
-            for i in range(len(self._blocks)):
-                if self._blocks[i]._type == 'speech':
-                    lst = self._blocks[i]._text.split(' ')
+            for i in range(len(self.blocks)):
+                if self.blocks[i].type_ == 'speech':
+                    lst = self.blocks[i].text.split(' ')
                     for j in range(len(lst)):
                         if lst[j] in expanded:
                             ind    = expanded.index(lst[j])
                             lst[j] = abbr[ind]
-                    self._blocks[i]._text = ' '.join(lst)
+                    self.blocks[i].text = ' '.join(lst)
     
     def restore_fixed(self):
-        for block in self._blocks:
-            if block._type == 'dic':
-                block._text = block._dica
-            elif block._type == 'wform':
-                block._text = block._wforma
-            elif block._type == 'speech':
-                block._text = block._speecha
-            elif block._type == 'transc':
-                block._text = block._transca
+        for block in self.blocks:
+            if block.type_ == 'dic':
+                block.text = block.dica
+            elif block.type_ == 'wform':
+                block.text = block.wforma
+            elif block.type_ == 'speech':
+                block.text = block.speecha
+            elif block.type_ == 'transc':
+                block.text = block.transca
 
 
 
@@ -506,21 +506,21 @@ class Pos:
                  ,MaxRow=70,MaxRows=50
                  ):
         f = '[MClient] cells.Pos.__init__'
-        self._blocks   = []
-        self._query    = ''
+        self.blocks = []
+        self.query  = ''
         # Sqlite fetch
-        self._data     = data
-        # Retrieved from the TkinterHTML widget
-        self._raw_text = raw_text
-        self.Debug     = Debug
-        self.Shorten   = Shorten
-        self.MaxRow    = MaxRow
-        self.MaxRows   = MaxRows
-        if self._data and self._raw_text:
+        self.data = data
+        # Retrieved from the TkinterHTM widget
+        self.rawtext = raw_text
+        self.Debug   = Debug
+        self.Shorten = Shorten
+        self.MaxRow  = MaxRow
+        self.MaxRows = MaxRows
+        if self.data and self.rawtext:
             self.Success = True
         else:
             self.Success = False
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
         
     def run(self):
         f = '[MClient] cells.Pos.run'
@@ -533,20 +533,20 @@ class Pos:
             sh.com.cancel(f)
         
     def assign(self):
-        for item in self._data:
+        for item in self.data:
             block       = Block()
-            block._no   = item[0]
-            block._type = item[1]
-            block._text = item[2]
-            block._same = item[3]
+            block.no    = item[0]
+            block.type_ = item[1]
+            block.text  = item[2]
+            block.same  = item[3]
             block.i     = item[4]
-            self._blocks.append(block)
+            self.blocks.append(block)
         
     def debug(self):
         f = '[MClient] cells.Pos.debug'
         if self.Debug:
             mes = _('Debug table:')
-            sh.objs.mes(f,mes,True).info()
+            sh.objs.get_mes(f,mes,True).show_info()
             headers = ['NO'
                       ,'TYPE'
                       ,'TEXT'
@@ -554,12 +554,12 @@ class Pos:
                       ,'POS2'
                       ]
             rows = []
-            for block in self._blocks:
-                rows.append ([block._no
-                             ,block._type
-                             ,block._text
-                             ,block._first
-                             ,block._last
+            for block in self.blocks:
+                rows.append ([block.no
+                             ,block.type_
+                             ,block.text
+                             ,block.first
+                             ,block.last
                              ]
                             )
             sh.Table (headers = headers
@@ -587,44 +587,42 @@ class Pos:
             - Duplicate spaces are removed
         '''
         f = '[MClient] cells.Pos.gen_poses'
-        last      = 0
+        last = 0
         not_found = []
-        for block in self._blocks:
-            text = sh.Text(text=block._text.strip()).delete_duplicate_spaces()
+        for block in self.blocks:
+            text = sh.Text(text=block.text.strip()).delete_duplicate_spaces()
             if text:
-                search = sh.Search (text   = self._raw_text
-                                   ,search = text
+                search = sh.Search (text    = self.rawtext
+                                   ,pattern = text
                                    )
                 search.i = last
-                result = sh.Input (title = f
-                                  ,value = search.next()
-                                  ).integer()
+                result = sh.Input(f,search.get_next()).get_integer()
                 if result >= last:
-                    block._first = result
+                    block.first = result
                 else:
-                    block._first = last
+                    block.first = last
                     not_found.append(text)
             else:
-                block._first = last
-            block._last = block._first + len(text)
-            last        = block._last
+                block.first = last
+            block.last = block.first + len(text)
+            last = block.last
         if not_found:
             not_found = ['"' + item + '"' for item in not_found]
             not_found = '\n' + '\n'.join(not_found)
             mes = _('Unable to find: {}').format(not_found)
-            sh.objs.mes(f,mes).error()
+            sh.objs.get_mes(f,mes).show_error()
             
     def dump(self):
         tmp = io.StringIO()
         tmp.write('begin;')
-        for block in self._blocks:
+        for block in self.blocks:
             tmp.write ('update BLOCKS set POS1=%d,POS2=%d where NO=%d;'\
-                      % (block._first,block._last,block._no)
+                      % (block.first,block.last,block.no)
                       )
         tmp.write('commit;')
-        self._query = tmp.getvalue()
+        self.query = tmp.getvalue()
         tmp.close()
-        return self._query
+        return self.query
 
 
 
@@ -645,27 +643,27 @@ class Pages:
                  ,Debug=False
                  ):
         f = '[MClient] cells.Pages.__init__'
-        self._query  = ''
-        self.obj     = obj
-        self._blocks = blocks
-        self.Debug   = Debug
-        if self._blocks and self.obj and hasattr(self.obj,'widget') \
+        self.query  = ''
+        self.obj    = obj
+        self.blocks = blocks
+        self.Debug  = Debug
+        if self.blocks and self.obj and hasattr(self.obj,'widget') \
         and hasattr(self.obj,'bbox'):
             self.Success = True
             self.widget = self.obj.widget
         else:
             self.Success = False
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
         
     def create_index(self):
         f = '[MClient] cells.Pages.create_index'
         tmp = io.StringIO()
         tmp.write('begin;')
-        for block in self._blocks:
-            _index = self.widget.text('index',block._first,block._last)
-            if _index:
-                _bbox  = self.obj.bbox(_index[0])
-                if _bbox:
+        for block in self.blocks:
+            index_ = self.widget.text('index',block.first,block.last)
+            if index_:
+                bbox = self.obj.bbox(index_[0])
+                if bbox:
                     ''' BBOX: man says: The first two integers are the x
                         and y coordinates of the top-left corner of
                         the bounding-box, the later two are the x and y
@@ -677,25 +675,25 @@ class Pages:
                                 set NODE1="%s",NODE2="%s",OFFPOS1=%d\
                                    ,OFFPOS2=%d,BBOX1=%d,BBOX2=%d\
                                    ,BBOY1=%d,BBOY2=%d where NO=%d;' \
-                               % (_index[0],_index[2],_index[1]
-                                 ,_index[3],_bbox[0],_bbox[2],_bbox[1]
-                                 ,_bbox[3],block._no
+                               % (index_[0],index_[2],index_[1]
+                                 ,index_[3],bbox[0],bbox[2],bbox[1]
+                                 ,bbox[3],block.no
                                  )
                               )
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         tmp.write('commit;')
-        self._query = tmp.getvalue()
+        self.query = tmp.getvalue()
         tmp.close()
-        return self._query
+        return self.query
             
     def debug(self):
         f = '[MClient] cells.Pages.debug'
         if self.Debug:
-            mes = self._query.replace(';',';\n')
-            sh.objs.mes(f,mes).debug()
+            mes = self.query.replace(';',';\n')
+            sh.objs.get_mes(f,mes).show_debug()
     
     def run(self):
         f = '[MClient] cells.Pages.run'

@@ -1,15 +1,15 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import skl_shared.shared as sh
-from skl_shared.localize import _
+import skl_shared2.shared as sh
+from skl_shared2.localize import _
 
 LANG1 = _('Russian')
 LANG2 = _('English')
 
 '''
 Bad Gateway:209 (Burmese), 262 (Gothic)
-#note: do not forget to put ',' at the end of a pair tuple (otherwise,
+#NOTE: do not forget to put ',' at the end of a pair tuple (otherwise,
 single symbols will be iterated).
 '''
 LANGS = {_('Abaza'):
@@ -2686,44 +2686,44 @@ FLAWED = [(209,71),(209,31),(209,47),(209,81),(209,10),(209,41)
 class Pairs:
     
     def __init__(self):
-        self._flawed = []
-        self._alive  = []
+        self.flawed = []
+        self.alive  = []
     
-    def code(self,lang):
-        f = '[MClient] plugins.multitrancom.utils.Pairs.code'
+    def get_code(self,lang):
+        f = '[MClient] plugins.multitrancom.utils.Pairs.get_code'
         if lang:
             try:
                 return LANGS[lang]['code']
             except KeyError:
                 mes = _('Wrong input data: "{}"!').format(lang)
-                sh.objs.mes(f,mes).error()
+                sh.objs.get_mes(f,mes).show_error()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
-    def alive(self):
-        if not self._alive:
+    def get_alive(self):
+        if not self.alive:
             for lang in LANGS.keys():
                 if LANGS[lang]['pair']:
-                    self._alive.append(lang)
-            self._alive.sort()
-        return self._alive
+                    self.alive.append(lang)
+            self.alive.sort()
+        return self.alive
     
-    def lang(self,code):
-        f = '[MClient] plugins.multitrancom.utils.Pairs.lang'
+    def get_lang(self,code):
+        f = '[MClient] plugins.multitrancom.utils.Pairs.get_lang'
         if isinstance(code,int):
             for lang in LANGS.keys():
                 if LANGS[lang]['code'] == code:
                     return lang
         else:
             mes = _('Wrong input data: "{}"!').format(code)
-            sh.objs.mes(f,mes).error()
+            sh.objs.get_mes(f,mes).show_error()
     
     def delete_flawed(self):
         # Takes ~0,18s on Intel Atom
         f = '[MClient] plugins.multitrancom.utils.Pairs.delete_flawed'
         global LANGS
         count = 0
-        for pair in self.flawed():
+        for pair in self.get_flawed():
             if pair[1] in LANGS[pair[0]]['pair']:
                 LANGS[pair[0]]['pair'] = list(LANGS[pair[0]]['pair'])
                 LANGS[pair[0]]['pair'].remove(pair[1])
@@ -2736,51 +2736,51 @@ class Pairs:
                 count += 1
         # This message may be not shown, but the procedure runs anyway
         mes = _('{} items have been deleted').format(count)
-        sh.objs.mes(f,mes,True).info()
+        sh.objs.get_mes(f,mes,True).show_info()
     
-    def flawed(self):
-        if not self._flawed:
+    def get_flawed(self):
+        if not self.flawed:
             for pair in FLAWED:
-                self._flawed.append ((self.lang(pair[0])
-                                     ,self.lang(pair[1])
-                                     )
+                self.flawed.append ((self.get_lang(pair[0])
+                                    ,self.get_lang(pair[1])
                                     )
-        return self._flawed
+                                   )
+        return self.flawed
     
-    def pairs2(self,lang1):
-        f = '[MClient] plugins.multitrancom.Pairs.pairs'
+    def get_pairs2(self,lang1):
+        f = '[MClient] plugins.multitrancom.Pairs.get_pairs2'
         if lang1:
             try:
                 return sorted(LANGS[lang1]['pair'])
             except KeyError:
                 mes = _('Wrong input data!')
-                sh.objs.mes(f,mes).error()
+                sh.objs.get_mes(f,mes).show_error()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
-    def pairs1(self,lang2):
-        f = '[MClient] plugins.multitrancom.Pairs.pairs1'
+    def get_pairs1(self,lang2):
+        f = '[MClient] plugins.multitrancom.Pairs.get_pairs1'
         if lang2:
             langs = [xlang for xlang in LANGS \
                      if lang2 in LANGS[xlang]['pair']
                     ]
             return sorted(langs)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
 
 
 class Objects:
     
     def __init__(self):
-        self._pairs = None
+        self.pairs = None
     
-    def pairs(self):
-        if self._pairs is None:
-            self._pairs = Pairs()
-            self._pairs.delete_flawed()
-        return self._pairs
+    def get_pairs(self):
+        if self.pairs is None:
+            self.pairs = Pairs()
+            self.pairs.delete_flawed()
+        return self.pairs
 
 
 objs = Objects()
-objs.pairs()
+objs.get_pairs()

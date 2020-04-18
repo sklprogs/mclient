@@ -5,17 +5,17 @@ import os
 import sys
 import io
 import tkinter           as tk
-import skl_shared.shared as sh
+import skl_shared2.shared as sh
 import logic             as lg
 import gui               as gi
 import cells             as cl
 import db
 import mkhtml            as mh
-from skl_shared.localize import _
+from skl_shared2.localize import _
 
 
 if __name__ == '__main__':
-    if sh.objs.os().win():
+    if sh.objs.get_os().is_win():
         import kl_mod_win as kl_mod
         import pythoncom
     else:
@@ -26,49 +26,51 @@ class Sources:
     
     def __init__(self):
         f = '[MClient] mclient.Sources.__init__'
-        self.values()
+        self.set_values()
         self.gui = gi.Sources()
-        self.bindings()
-        sources = lg.objs.plugins().sources()
+        self.set_bindings()
+        sources = lg.objs.get_plugins().get_sources()
         if sources:
-            self._sources = sources
+            self.sources = sources
         else:
             self.Success = False
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def reset(self):
-        self.values()
-        self.gui.reset(self._sources)
+        self.set_values()
+        self.gui.reset(self.sources)
     
-    def values(self):
+    def set_values(self):
         self.Success  = True
-        self._select  = []
-        self._sources = []
+        self.select   = []
+        self.sources  = []
     
-    def selection(self):
-        f = '[MClient] mclient.Sources.selection'
+    def get_sel(self):
+        f = '[MClient] mclient.Sources.get_sel'
         if self.Success:
-            for i in range(len(self.gui._cboxes)):
-                if self.gui._cboxes[i].get():
+            for i in range(len(self.gui.cboxes)):
+                if self.gui.cboxes[i].get():
                     try:
-                        self._select.append(self._sources)
+                        self.select.append(self.sources)
                     except IndexError:
                         self.Success = False
                         mes = _('Wrong input data!')
-                        sh.objs.mes(f,mes).error()
-            return self._select
+                        sh.objs.get_mes(f,mes).show_error()
+            return self.select
         else:
             sh.com.cancel(f)
     
-    def bindings(self):
+    def set_bindings(self):
         self.gui.btn_apl.action = self.apply
     
     def show(self,event=None):
         self.gui.show()
     
     def apply(self,event=None):
-        selection = self.selection()
-        print(selection)
+        #TODO: What is a purpose of this?
+        f = '[MClient] mclient.Sources.apply'
+        mes = self.get_sel()
+        sh.objs.get_mes(f,mes,True).show_debug()
     
     def close(self,event=None):
         self.gui.close()
@@ -83,100 +85,100 @@ class Objects:
             and, in case of integration, such changes will not be
             reflected in 'logic.Objects'.
         '''
-        self._webframe = self._blocks_db = self._about = self._settings\
-                       = self._search = self._symbols = self._save \
-                       = self._history = self._suggest = self._parties \
+        self.webframe = self.blocksdb = self.about = self.settings \
+                       = self.search = self.symbols = self.save \
+                       = self.history = self.suggest = self.parties \
                        = None
 
-    def parties(self):
-        if self._parties is None:
-            self._parties = ThirdParties()
-        return self._parties
+    def get_parties(self):
+        if self.parties is None:
+            self.parties = ThirdParties()
+        return self.parties
     
-    def suggest(self):
-        if self._suggest is None:
-            self._suggest = Suggest(entry=objs.webframe().gui.ent_src)
-        return self._suggest
+    def get_suggest(self):
+        if self.suggest is None:
+            self.suggest = Suggest(entry=self.get_webframe().gui.ent_src)
+        return self.suggest
     
-    def history(self):
-        if self._history is None:
-            self._history = History()
-        return self._history
+    def get_history(self):
+        if self.history is None:
+            self.history = History()
+        return self.history
     
-    def save(self):
-        if self._save is None:
-            self._save = SaveArticle()
-        return self._save
+    def get_save(self):
+        if self.save is None:
+            self.save = SaveArticle()
+        return self.save
     
-    def symbols(self):
-        if self._symbols is None:
-            self._symbols = sh.SymbolMap (items = sh.lg.globs['var']['spec_syms']
-                                         ,icon  = gi.ICON
-                                         )
-        return self._symbols
+    def get_symbols(self):
+        if self.symbols is None:
+            self.symbols = sh.SymbolMap (items = sh.lg.globs['var']['spec_syms']
+                                        ,icon  = gi.ICON
+                                        )
+        return self.symbols
     
-    def search(self):
-        if self._search is None:
-            self._search = SearchArticle()
-        return self._search
+    def get_search(self):
+        if self.search is None:
+            self.search = SearchArticle()
+        return self.search
     
-    def settings(self):
-        if self._settings is None:
-            self._settings = Settings()
-        return self._settings
+    def get_settings(self):
+        if self.settings is None:
+            self.settings = Settings()
+        return self.settings
     
-    def about(self):
-        if self._about is None:
-            self._about = About()
-        return self._about
+    def get_about(self):
+        if self.about is None:
+            self.about = About()
+        return self.about
     
-    def blocks_db(self):
+    def get_blocksdb(self):
         ''' #NOTE: Do not move this function to 'logic.Objects', since
             we modify attributes of the present object in
             the controller, and, in case of moving, such changes
             will not be reflected in 'logic.Objects'.
         '''
-        if self._blocks_db is None:
-            self._blocks_db = db.Moves()
-            self._blocks_db.Selectable = sh.lg.globs['bool']['SelectTermsOnly']
-        return self._blocks_db
+        if self.blocksdb is None:
+            self.blocksdb = db.Moves()
+            self.blocksdb.Selectable = sh.lg.globs['bool']['SelectTermsOnly']
+        return self.blocksdb
 
-    def webframe(self):
-        if self._webframe is None:
-            self._webframe = WebFrame()
-        return self._webframe
+    def get_webframe(self):
+        if self.webframe is None:
+            self.webframe = WebFrame()
+        return self.webframe
 
 
 
 def call_app():
     # Use the same key binding to call the window
-    sh.Geometry(parent=objs.webframe().gui.obj).activate(MouseClicked=lg.objs.request().MouseClicked)
-    ''' #todo: check if this is still the problem
+    sh.Geometry(parent=objs.get_webframe().gui.obj).activate(MouseClicked=lg.objs.get_request().MouseClicked)
+    ''' #TODO: check if this is still the problem
         In case of .focus_set() *first* Control-c-c can call an inactive
         widget.
     '''
-    objs.webframe().gui.ent_src.widget.focus_force()
+    objs.get_webframe().gui.ent_src.widget.focus_force()
 
 # Capture Control-c-c
-def timed_update():
-    lg.objs.request().MouseClicked = False
+def run_timed_update():
+    lg.objs.get_request().MouseClicked = False
     check = kl_mod.keylistener.check()
     if check:
-        if check == 1 and lg.objs._request.CaptureHotkey:
+        if check == 1 and lg.objs.request.CaptureHotkey:
             ''' Allows to prevent thread freezing in Windows newer
                 than XP.
             '''
-            if sh.objs.os().win():
+            if sh.objs.get_os().is_win():
                 kl_mod.keylistener.cancel()
                 kl_mod.keylistener.restart()
-            lg.objs._request.MouseClicked = True
+            lg.objs.request.MouseClicked = True
             new_clipboard = sh.Clipboard().paste()
             if new_clipboard:
-                lg.objs._request._search = new_clipboard
-                objs.webframe().go_search()
-        if check == 2 or lg.objs._request.CaptureHotkey:
+                lg.objs.request.search = new_clipboard
+                objs.get_webframe().go_search()
+        if check == 2 or lg.objs.request.CaptureHotkey:
             call_app()
-    sh.objs.root().widget.after(300,timed_update)
+    sh.objs.get_root().widget.after(300,run_timed_update)
 
 
 
@@ -184,50 +186,50 @@ class About:
 
     def __init__(self):
         self.gui = gi.About()
-        self.bindings()
-        self.gui.lbl_abt.font(sh.lg.globs['var']['font_style'])
+        self.set_bindings()
+        self.gui.lbl_abt.set_font(sh.lg.globs['var']['font_style'])
         
-    def bindings(self):
+    def set_bindings(self):
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = sh.lg.globs['var']['bind_show_about']
                     ,action   = self.gui.toggle
                     )
         self.gui.btn_thd.action = self.show_third_parties
         self.gui.btn_lic.action = self.open_license_url
-        self.gui.btn_eml.action = self.response_back
+        self.gui.btn_eml.action = self.send_feedback
 
     # Compose an email to the author
-    def response_back(self,event=None):
+    def send_feedback(self,event=None):
         sh.Email (email   = sh.lg.email
-                 ,subject = _('Concerning {}').format(gi.PRODUCT)
+                 ,subject = _('On {}').format(gi.PRODUCT)
                  ).create()
 
     # Open a license web-page
     def open_license_url(self,event=None):
-        ionline      = sh.Online()
-        ionline._url = sh.lg.globs['license_url']
+        ionline     = sh.Online()
+        ionline.url = sh.lg.globs['license_url']
         ionline.browse()
 
     # Show info about third-party licenses
     def show_third_parties(self,event=None):
-        objs.parties().show()
+        objs.get_parties().show()
 
 
 
 class SaveArticle:
 
     def __init__(self):
-        self._html_types = ((_('Web-page'),'.htm')
-                           ,(_('Web-page'),'.html')
-                           ,(_('All files'),'*')
-                           )
-        self._txt_types  = ((_('Plain text (UTF-8)'),'.txt')
-                           ,(_('All files'),'*')
-                           )
+        self.webtypes = ((_('Web-page'),'.htm')
+                         ,(_('Web-page'),'.html')
+                         ,(_('All files'),'*')
+                        )
+        self.txttypes = ((_('Plain text (UTF-8)'),'.txt')
+                         ,(_('All files'),'*')
+                        )
         self.gui = gi.SaveArticle()
-        self.bindings()
+        self.set_bindings()
     
-    def bindings(self):
+    def set_bindings(self):
         sh.com.bind (obj      = self.gui
                     ,bindings = [sh.lg.globs['var']['bind_save_article']
                                 ,sh.lg.globs['var']['bind_save_article_alt']
@@ -242,7 +244,7 @@ class SaveArticle:
                     )
         self.gui.parent.btn_sav.action = self.select
     
-    #fix an extension for Windows
+    #FIX: an extension for Windows
     def fix_ext(self,ext='.htm'):
         if not self.file.endswith(ext):
             self.file += ext
@@ -253,9 +255,9 @@ class SaveArticle:
         opt = self.gui.parent.get()
         if opt:
             if opt == _('Save the current view as a web-page (*.htm)'):
-                self.view_as_html()
+                self.view_as_htm()
             elif opt == _('Save the original article as a web-page (*.htm)'):
-                self.raw_as_html()
+                self.save_raw_as_htm()
             elif opt == _('Save the article as plain text in UTF-8 (*.txt)'):
                 self.view_as_txt()
             elif opt == _('Copy HTML code of the article to clipboard'):
@@ -264,62 +266,62 @@ class SaveArticle:
                 self.copy_txt()
         else:
             mes = _('Operation has been canceled by the user.')
-            sh.objs.mes(f,mes,True).info()
+            sh.objs.get_mes(f,mes,True).show_info()
 
-    def view_as_html(self):
-        f = '[MClient] mclient.SaveArticle.view_as_html'
-        self.file = sh.com.dialog_save_file(self._html_types)
-        if self.file and lg.objs.request()._html:
+    def view_as_htm(self):
+        f = '[MClient] mclient.SaveArticle.view_as_htm'
+        self.file = sh.com.show_save_dialog(self.webtypes)
+        if self.file and lg.objs.get_request().htm:
             self.fix_ext(ext='.htm')
             ''' We enable 'Rewrite' because the confirmation is already
                 built in the internal dialog.
             '''
             sh.WriteTextFile (file    = self.file
                              ,Rewrite = True
-                             ).write(lg.objs._request._html)
+                             ).write(lg.objs.request.htm)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
-    def raw_as_html(self):
-        f = '[MClient] mclient.SaveArticle.raw_as_html'
+    def save_raw_as_htm(self):
+        f = '[MClient] mclient.SaveArticle.save_raw_as_htm'
         ''' Key 'html' may be needed to write a file in the UTF-8
             encoding, therefore, in order to ensure that the web-page
             is read correctly, we change the encoding manually. We also
             replace abbreviated hyperlinks with full ones in order to
             ensure that they are also valid in the local file.
         '''
-        self.file = sh.com.dialog_save_file(self._html_types)
-        if self.file and lg.objs.request()._html_raw:
+        self.file = sh.com.show_save_dialog(self.webtypes)
+        if self.file and lg.objs.get_request().htmraw:
             self.fix_ext(ext='.htm')
-            lg.objs._request._html_raw = lg.objs.plugins().fix_raw_html()
+            lg.objs.request.htmraw = lg.objs.get_plugins().fix_raw_htm()
             sh.WriteTextFile (file    = self.file
                              ,Rewrite = True
-                             ).write(lg.objs._request._html_raw)
+                             ).write(lg.objs.request.htmraw)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
     def view_as_txt(self):
-        f = '[MClient] mclient.SaveArticle.raw_as_html'
-        self.file = sh.com.dialog_save_file(self._txt_types)
-        text = objs.webframe().text()
+        f = '[MClient] mclient.SaveArticle.view_as_txt'
+        self.file = sh.com.show_save_dialog(self.txttypes)
+        text = objs.get_webframe().get_text()
         if self.file and text:
             self.fix_ext(ext='.txt')
             sh.WriteTextFile (file    = self.file
                              ,Rewrite = True
                              ).write(text.strip())
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
     def copy_raw(self):
-        sh.Clipboard().copy(lg.objs.request()._html_raw)
+        sh.Clipboard().copy(lg.objs.get_request().htmraw)
 
     def copy_txt(self):
         f = '[MClient] mclient.SaveArticle.copy_txt'
-        text = objs.webframe().text()
+        text = objs.get_webframe().get_text()
         if text:
             sh.Clipboard().copy(text.strip())
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
 
 
@@ -328,22 +330,22 @@ class SearchArticle:
 
     def __init__(self):
         self.gui = gi.SearchArticle()
-        self.bindings()
+        self.set_bindings()
         self.reset()
 
-    def bindings(self):
+    def set_bindings(self):
         sh.com.bind (obj      = self.gui
                     ,bindings = sh.lg.globs['var']['bind_search_article_forward']
                     ,action   = self.gui.close
                     )
     
     def reset(self,event=None):
-        self._pos    = -1
-        self._first  = -1
-        self._last   = -1
-        self._search = ''
+        self.pos     = -1
+        self.first   = -1
+        self.last    = -1
+        self.pattern = ''
         ''' Plus: keeping old input
-            Minus: searching old input after cancelling the search and
+            Minus: searching old input after canceling the search and
             searching again
             #self.clear()
         '''
@@ -358,74 +360,75 @@ class SearchArticle:
         self.gui.show()
 
     def search(self):
-        if not self._search:
+        if not self.pattern:
             self.show()
-            self._search = self.gui.parent.get().strip(' ').strip('\n').lower()
-        return self._search
+            self.pattern = self.gui.parent.get().strip(' ').strip('\n')
+            self.pattern = self.pattern.lower()
+        return self.pattern
 
-    def forward(self,event=None):
-        f = '[MClient] mclient.SearchArticle.forward'
-        pos = objs.blocks_db().search_forward (pos    = self._pos
-                                              ,search = self.search()
-                                              )
+    def get_next(self,event=None):
+        f = '[MClient] mclient.SearchArticle.get_next'
+        pos = objs.get_blocksdb().search_next (pos    = self.pos
+                                          ,search = self.search()
+                                          )
         if pos or pos == 0:
-            objs.webframe()._pos = self._pos = pos
-            objs._webframe.select()
-            objs._webframe.shift_screen()
-        elif self._pos < 0:
+            objs.get_webframe().pos = self.pos = pos
+            objs.webframe.select()
+            objs.webframe.shift_screen()
+        elif self.pos < 0:
             mes = _('No matches!')
-            sh.objs.mes(f,mes).info()
+            sh.objs.get_mes(f,mes).show_info()
         else:
             mes = _('The start has been reached. Searching from the end.')
-            sh.objs.mes(f,mes).info()
-            self._pos = 0
-            self.forward()
+            sh.objs.get_mes(f,mes).show_info()
+            self.pos = 0
+            self.get_next()
 
-    def first(self):
-        if self._first == -1:
-            self._first = \
-            objs.blocks_db().search_forward (pos    = -1
+    def get_first(self):
+        if self.first == -1:
+            self.first = \
+            objs.get_blocksdb().search_next (pos    = -1
+                                        ,search = self.search()
+                                        )
+        return self.first
+
+    def get_last(self):
+        f = '[MClient] mclient.SearchArticle.get_last'
+        if self.last == -1:
+            max_cell = objs.blocksdb.get_max_cell()
+            if max_cell:
+                self.last = \
+                objs.get_blocksdb().search_prev (pos    = max_cell[2] + 1
                                             ,search = self.search()
                                             )
-        return self._first
-
-    def last(self):
-        f = '[MClient] mclient.SearchArticle.last'
-        if self._last == -1:
-            max_cell = objs._blocks_db.max_cell()
-            if max_cell:
-                self._last = \
-                objs.blocks_db().search_backward (pos    = max_cell[2]+1
-                                                 ,search = self.search()
-                                                 )
             else:
-                sh.com.empty(f)
-        return self._last
+                sh.com.rep_empty(f)
+        return self.last
 
-    def backward(self,event=None):
-        f = '[MClient] mclient.SearchArticle.backward'
-        if self.first():
-            if self._pos == self._first:
+    def get_prev(self,event=None):
+        f = '[MClient] mclient.SearchArticle.get_prev'
+        if self.get_first():
+            if self.pos == self.first:
                 mes = _('The end has been reached. Searching from the start.')
-                sh.objs.mes(f,mes).info()
-                result = self.last()
+                sh.objs.get_mes(f,mes).show_info()
+                result = self.get_last()
                 if str(result).isdigit():
-                    objs.webframe()._pos = self._pos = result
-                    objs._webframe.select()
-                    objs._webframe.shift_screen()
+                    objs.get_webframe().pos = self.pos = result
+                    objs.webframe.select()
+                    objs.webframe.shift_screen()
             else:
                 pos = \
-                objs.blocks_db().search_backward (pos    = self._pos
-                                                 ,search = self.search()
-                                                 )
+                objs.get_blocksdb().search_prev (pos    = self.pos
+                                            ,search = self.search()
+                                            )
                 if str(pos).isdigit():
-                    self._pos = pos
-                    objs.webframe()._pos = pos
-                    objs._webframe.select()
-                    objs._webframe.shift_screen()
+                    self.pos = pos
+                    objs.get_webframe().pos = pos
+                    objs.webframe.select()
+                    objs.webframe.shift_screen()
         else:
             mes = _('No matches!')
-            sh.objs.mes(f,mes).info()
+            sh.objs.get_mes(f,mes).show_info()
 
 
 
@@ -434,9 +437,9 @@ class History:
     def __init__(self):
         self.gui = gi.History()
         self.gui.obj.action = self.go
-        self.bindings()
+        self.set_bindings()
 
-    def bindings(self):
+    def set_bindings(self):
         sh.com.bind (obj      = self.gui
                     ,bindings = [sh.lg.globs['var']['bind_toggle_history']
                                 ,sh.lg.globs['var']['bind_toggle_history_alt']
@@ -447,7 +450,7 @@ class History:
                     ,bindings = sh.lg.globs['var']['bind_clear_history']
                     ,action   = self.clear
                     )
-        ''' #note: the list is reversed, but I think it is still more
+        ''' #NOTE: the list is reversed, but I think it is still more
             intuitive when Home goes top and End goes bottom.
         '''
         sh.com.bind (obj      = self.gui
@@ -461,9 +464,9 @@ class History:
         self.gui.action = self.go
 
     def autoselect(self):
-        self.gui.obj.clear_selection()
-        item = str(objs.blocks_db()._articleid) \
-               + ' ► ' + lg.objs.request()._search
+        self.gui.obj.clear_sel()
+        item = str(objs.get_blocksdb().artid) \
+               + ' ► ' + lg.objs.get_request().search
         self.gui.obj.set(item=item)
 
     def show(self,event=None):
@@ -475,7 +478,7 @@ class History:
         self.gui.close()
 
     def fill(self):
-        searches = objs.blocks_db().searches()
+        searches = objs.get_blocksdb().get_searches()
         lst = []
         if searches:
             for item in searches:
@@ -487,117 +490,117 @@ class History:
         self.autoselect()
 
     def clear(self,event=None):
-        objs.blocks_db().clear()
+        objs.get_blocksdb().clear()
         self.gui.obj.clear()
-        objs.webframe().reset()
-        objs.search().gui.parent.clear()
-        lg.objs.request().reset()
+        objs.get_webframe().reset()
+        objs.get_search().gui.parent.clear()
+        lg.objs.get_request().reset()
 
     def go_first(self,event=None):
         f = '[MClient] mclient.History.go_first'
         if self.gui.obj.lst:
-            self.gui.obj.clear_selection()
+            self.gui.obj.clear_sel()
             self.gui.obj.set(item=self.gui.obj.lst[0])
             self.go()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
         
     def go_last(self,event=None):
         f = '[MClient] mclient.History.go_last'
         if self.gui.obj.lst:
-            self.gui.obj.clear_selection()
+            self.gui.obj.clear_sel()
             self.gui.obj.set(item=self.gui.obj.lst[-1])
             self.go()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def go(self,event=None):
         f = '[MClient] mclient.History.go'
         result = self.gui.obj.get()
         result = result.split(' ► ')
         if len(result) == 2:
-            objs.blocks_db()._articleid = int(result[0])
-            result = objs._blocks_db.article()
+            objs.get_blocksdb().artid = int(result[0])
+            result = objs.blocksdb.get_article()
             if result:
-                lg.objs._request._source = result[0] # SOURCE
-                lg.objs._request._search = result[1] # TITLE
-                lg.objs._request._url    = result[2] # URL
+                lg.objs.request.source = result[0] # SOURCE
+                lg.objs.request.search = result[1] # TITLE
+                lg.objs.request.url    = result[2] # URL
                 mes = _('Set source to "{}"')
-                mes = mes.format(lg.objs._request._source)
-                sh.objs.mes(f,mes,True).info()
-                lg.objs.plugins().set(lg.objs._request._source)
-                lg.objs._plugins.set_lang1(result[4])
-                lg.objs._plugins.set_lang2(result[5])
-                objs._webframe.reset_opt(lg.objs._request._source)
-                ''' #note: Do not use wrapper procedures such as
-                    'objs._webframe.go_url' (modifies
-                    'lg.objs._request._search') and
-                    'objs._webframe.go_search' (modifies
-                    'lg.objs._request._url').
+                mes = mes.format(lg.objs.request.source)
+                sh.objs.get_mes(f,mes,True).show_info()
+                lg.objs.get_plugins().set(lg.objs.request.source)
+                lg.objs.plugins.set_lang1(result[4])
+                lg.objs.plugins.set_lang2(result[5])
+                objs.webframe.reset_opt(lg.objs.request.source)
+                ''' #NOTE: Do not use wrapper procedures such as
+                    'objs.webframe.go_url' (modifies
+                    'lg.objs.request.search') and
+                    'objs.webframe.go_search' (modifies
+                    'lg.objs.request.url').
                 '''
-                objs._webframe.load_article()
+                objs.webframe.load_article()
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
             mes = _('Wrong input data!')
-            sh.objs.mes(f,mes).error()
+            sh.objs.get_mes(f,mes).show_error()
 
 
 
 class WebFrame:
 
     def __init__(self):
-        self.values()
+        self.set_values()
         self.gui = gi.WebFrame()
-        self.bindings()
+        self.set_bindings()
         self.reset_opt()
     
     def auto_swap(self):
         f = '[MClient] mclient.WebFrame.auto_swap'
         lang1 = self.gui.opt_lg1.choice
         lang2 = self.gui.opt_lg2.choice
-        if sh.Text(lg.objs.request()._search).has_cyrillic():
+        if sh.Text(lg.objs.get_request().search).has_cyrillic():
             if lang2 in (_('Russian'),'Russian'):
                 mes = '{}-{} -> {}-{}'.format(lang1,lang2,lang2,lang1)
-                sh.objs.mes(f,mes,True).info()
+                sh.objs.get_mes(f,mes,True).show_info()
                 self.swap_langs()
         elif lang1 in (_('Russian'),'Russian'):
             mes = '{}-{} -> {}-{}'.format(lang1,lang2,lang2,lang1)
-            sh.objs.mes(f,mes,True).info()
+            sh.objs.get_mes(f,mes,True).show_info()
             self.swap_langs()
     
-    def final_debug(self,event=None):
-        f = '[MClient] mclient.WebFrame.final_debug'
-        if lg.objs.plugins().Debug:
+    def run_final_debug(self,event=None):
+        f = '[MClient] mclient.WebFrame.run_final_debug'
+        if lg.objs.get_plugins().Debug:
             mes = _('Debug table:')
-            sh.objs.mes(f,mes,True).info()
+            sh.objs.get_mes(f,mes,True).show_info()
             ''' #NOTE: If all of a sudden you get IGNORE=1, then you
                 have probably forgot to add new block types in
                 'db.DB.reset'.
             '''
-            objs._blocks_db.dbc.execute ('select   ROWNO,CELLNO,NO \
-                                                  ,PRIORITY,TYPE,DICA \
-                                                  ,WFORMA,SPEECHA,TERMA\
-                                                  ,SAMECELL,TEXT,BLOCK\
-                                                  ,IGNORE \
-                                          from     BLOCKS \
-                                          where ARTICLEID = ? \
-                                          order by CELLNO,NO'
-                                        ,(objs.blocks_db()._articleid,)
-                                        )
-            objs._blocks_db.print (Selected=1,Shorten=1,MaxRows=1000
-                                  ,mode='BLOCKS'
-                                  )
+            objs.blocksdb.dbc.execute ('select   ROWNO,CELLNO,NO \
+                                                ,PRIORITY,TYPE,DICA \
+                                                ,WFORMA,SPEECHA,TERMA\
+                                                ,SAMECELL,TEXT,BLOCK\
+                                                ,IGNORE \
+                                        from     BLOCKS \
+                                        where ARTICLEID = ? \
+                                        order by CELLNO,NO'
+                                      ,(objs.get_blocksdb().artid,)
+                                      )
+            objs.blocksdb.print (Selected=1,Shorten=1,MaxRows=1000
+                                ,mode='BLOCKS'
+                                )
     
     def copy_wform(self,event=None):
         f = '[MClient] mclient.WebFrame.copy_wform'
-        wforma = objs.blocks_db().wforma(pos=self._pos)
+        wforma = objs.get_blocksdb().wforma(pos=self.pos)
         if wforma:
             sh.Clipboard().copy(wforma)
             if sh.lg.globs['bool']['Iconify']:
                 self.minimize()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def show(self,event=None):
         self.gui.show()
@@ -606,67 +609,67 @@ class WebFrame:
         self.gui.close()
     
     def suggest_bottom(self,event=None):
-        objs.suggest().move_bottom()
+        objs.get_suggest().move_bottom()
     
     def suggest_top(self,event=None):
-        objs.suggest().move_top()
+        objs.get_suggest().move_top()
     
     def suggest_down(self,event=None):
-        objs.suggest().move_down()
+        objs.get_suggest().move_down()
     
     def suggest_up(self,event=None):
-        objs.suggest().move_up()
+        objs.get_suggest().move_up()
     
     def suggest_show(self,event=None):
-        objs.suggest().suggest(event=event)
+        objs.get_suggest().suggest(event=event)
     
     def clear_history(self,event=None):
-        objs.history().clear()
+        objs.get_history().clear()
     
     def toggle_history(self,event=None):
-        objs.history().gui.toggle()
+        objs.get_history().gui.toggle()
     
     def toggle_save(self,event=None):
-        objs.save().gui.toggle()
+        objs.get_save().gui.toggle()
     
     def search_prev(self,event=None):
-        objs.search().backward()
+        objs.get_search().get_prev()
     
     def search_next(self,event=None):
-        objs.search().forward()
+        objs.get_search().get_next()
     
     def toggle_settings(self,event=None):
-        objs.settings().gui.toggle()
+        objs.get_settings().gui.toggle()
     
     def toggle_about(self,event=None):
-        objs.about().gui.toggle()
+        objs.get_about().gui.toggle()
     
     def insert_sym(self,event=None):
-        objs.symbols().show()
+        objs.get_symbols().show()
         self.gui.ent_src.insert (pos  = 'end'
-                                ,text = objs._symbols.get()
+                                ,text = objs.symbols.get()
                                 )
     
     def update_lang1(self,event=None):
         f = '[MClient] mclient.WebFrame.update_lang1'
         self.set_lang1()
         self.set_lang2()
-        lang1  = lg.objs.plugins().lang1()
-        lang2  = lg.objs._plugins.lang2()
-        langs1 = lg.objs._plugins.langs1()
+        lang1  = lg.objs.get_plugins().get_lang1()
+        lang2  = lg.objs.plugins.get_lang2()
+        langs1 = lg.objs.plugins.get_langs1()
         if langs1:
             self.gui.opt_lg1.set(lang1)
             self.set_lang1()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def update_lang2(self,event=None):
         f = '[MClient] mclient.WebFrame.update_lang2'
         self.set_lang1()
         self.set_lang2()
-        lang1  = lg.objs.plugins().lang1()
-        lang2  = lg.objs._plugins.lang2()
-        langs2 = lg.objs._plugins.langs2(lang1)
+        lang1  = lg.objs.get_plugins().get_lang1()
+        lang2  = lg.objs.plugins.get_lang2()
+        langs2 = lg.objs.plugins.get_langs2(lang1)
         if langs2:
             if not lang2 in langs2:
                 lang2 = langs2[0]
@@ -676,7 +679,7 @@ class WebFrame:
                                    )
             self.set_lang2()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def swap_langs(self,event=None):
         f = '[MClient] mclient.WebFrame.swap_langs'
@@ -685,8 +688,8 @@ class WebFrame:
         lang1 = self.gui.opt_lg1.choice
         lang2 = self.gui.opt_lg2.choice
         lang1, lang2 = lang2, lang1
-        langs1 = lg.objs.plugins().langs1()
-        langs2 = lg.objs._plugins.langs2(lang1)
+        langs1 = lg.objs.get_plugins().get_langs1()
+        langs2 = lg.objs.plugins.get_langs2(lang1)
         if langs1:
             if langs2 and lang1 in langs1 and lang2 in langs2:
                 self.gui.opt_lg1.reset (items   = langs1
@@ -702,18 +705,18 @@ class WebFrame:
             else:
                 mes = _('Pair {}-{} is not supported!')
                 mes = mes.format(lang1,lang2)
-                sh.objs.mes(f,mes).warning()
+                sh.objs.get_mes(f,mes).show_warning()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
-    def next_lang1(self,event=None):
+    def set_next_lang1(self,event=None):
         ''' We want to navigate through the full list of supported
             languages rather than through the list of 'lang2' pairs
             so we reset the widget first.
         '''
         self.gui.opt_lg1._get()
         old = self.gui.opt_lg1.choice
-        self.gui.opt_lg1.reset (items   = lg.objs.plugins().langs1()
+        self.gui.opt_lg1.reset (items   = lg.objs.get_plugins().get_langs1()
                                ,default = old
                                ,action  = self.go_search_focus
                                )
@@ -721,21 +724,21 @@ class WebFrame:
         self.update_lang1()
         self.update_lang2()
     
-    def next_lang2(self,event=None):
+    def set_next_lang2(self,event=None):
         # We want to navigate through the limited list here
         self.update_lang1()
         self.update_lang2()
         self.gui.opt_lg2.set_next()
         self.update_lang2()
     
-    def prev_lang1(self,event=None):
+    def set_prev_lang1(self,event=None):
         ''' We want to navigate through the full list of supported
             languages rather than through the list of 'lang2' pairs
             so we reset the widget first.
         '''
         self.gui.opt_lg1._get()
         old = self.gui.opt_lg1.choice
-        self.gui.opt_lg1.reset (items   = lg.objs.plugins().langs1()
+        self.gui.opt_lg1.reset (items   = lg.objs.get_plugins().get_langs1()
                                ,default = old
                                ,action  = self.go_search_focus
                                )
@@ -743,7 +746,7 @@ class WebFrame:
         self.update_lang1()
         self.update_lang2()
     
-    def prev_lang2(self,event=None):
+    def set_prev_lang2(self,event=None):
         # We want to navigate through the limited list here
         self.update_lang1()
         self.update_lang2()
@@ -751,36 +754,36 @@ class WebFrame:
         self.update_lang2()
     
     def paste_search_field(self,event=None):
-        objs.suggest().gui.close()
+        objs.get_suggest().gui.close()
         self.gui.paste_search()
     
     def clear_search_field(self,event=None):
-        objs.suggest().gui.close()
+        objs.get_suggest().gui.close()
         self.gui.ent_src.clear_text()
         
     def escape(self,event=None):
-        if objs.suggest().gui.parent:
-            objs._suggest.gui.close()
+        if objs.get_suggest().gui.parent:
+            objs.suggest.gui.close()
         else:
             sh.Geometry(self.gui.obj).minimize()
     
     def minimize(self,event=None):
-        objs.suggest().gui.close()
+        objs.get_suggest().gui.close()
         sh.Geometry(self.gui.obj).minimize()
     
-    def go_phrase_dic(self,event=None):
-        f = '[MClient] mclient.WebFrame.go_phrase_dic'
-        phrase_dic = objs.blocks_db().phrase_dic()
-        if phrase_dic:
-            self._posn = phrase_dic[0]
-            if objs._blocks_db.Selectable:
-                lg.objs.request()._url   = phrase_dic[1]
-                lg.objs._request._search = phrase_dic[2]
+    def go_phdic(self,event=None):
+        f = '[MClient] mclient.WebFrame.go_phdic'
+        phdic = objs.get_blocksdb().get_phdic()
+        if phdic:
+            self.posn = phdic[0]
+            if objs.blocksdb.Selectable:
+                lg.objs.get_request().url = phdic[1]
+                lg.objs.request.search    = phdic[2]
                 self.load_article()
             else:
                 self.go_url()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def prioritize_speech(self):
         # This function takes ~0,07s on 'do'
@@ -788,50 +791,50 @@ class WebFrame:
         query = ['begin']
         # Parts of speech here must be non-localized
         query.append (query_root
-                     % (lg.objs._request._pr_n,'Существительное','сущ.')
+                     % (lg.objs.request.pr_n,'Существительное','сущ.')
                      )
         query.append (query_root
-                     % (lg.objs._request._pr_v,'Глагол','гл.')
+                     % (lg.objs.request.pr_v,'Глагол','гл.')
                      )
         query.append (query_root
-                     % (lg.objs._request._pr_adj,'Прилагательное','прил.')
+                     % (lg.objs.request.pr_adj,'Прилагательное','прил.')
                      )
         query.append (query_root
-                     % (lg.objs._request._pr_abbr,'Сокращение','сокр.')
+                     % (lg.objs.request.pr_abbr,'Сокращение','сокр.')
                      )
         query.append (query_root
-                     % (lg.objs._request._pr_adv,'Наречие','нареч.')
+                     % (lg.objs.request.pr_adv,'Наречие','нареч.')
                      )
         query.append (query_root
-                     % (lg.objs._request._pr_prep,'Предлог','предл.')
+                     % (lg.objs.request.pr_prep,'Предлог','предл.')
                      )
         query.append (query_root
-                     % (lg.objs._request._pr_pron,'Местоимение','мест.')
+                     % (lg.objs.request.pr_pron,'Местоимение','мест.')
                      )
         query.append('commit;')
         query = ';'.join(query)
-        objs.blocks_db().update(query=query)
+        objs.get_blocksdb().update(query=query)
     
-    # Insert the previous search
+    # Insert the previous search string
     def insert_repeat_sign2(self,event=None):
         f = '[MClient] mclient.WebFrame.insert_repeat_sign2'
-        result = objs.blocks_db().prev_id()
+        result = objs.get_blocksdb().get_prev_id()
         if result:
-            old = objs._blocks_db._articleid
-            objs._blocks_db._articleid = result
-            result = objs._blocks_db.article()
+            old = objs.blocksdb.artid
+            objs.blocksdb.artid = result
+            result = objs.blocksdb.get_article()
             if result:
                 sh.Clipboard().copy(result[1])
                 self.gui.paste_search()
             else:
-                sh.com.empty(f)
-            objs._blocks_db._articleid = old
+                sh.com.rep_empty(f)
+            objs.blocksdb.artid = old
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
-    # Вставить текущий запрос
+    # Insert the current search string
     def insert_repeat_sign(self,event=None):
-        sh.Clipboard().copy(lg.objs.request()._search)
+        sh.Clipboard().copy(lg.objs.get_request().search)
         self.gui.paste_search()
         
     def reset(self):
@@ -841,7 +844,7 @@ class WebFrame:
                              )
         self.fill(welcome.run())
         self.update_buttons()
-        self.title()
+        self.set_title()
         ''' We should ensure that a number of columns is based on
             a GUI value instead of relying on a default 'lg.CurRequest'
             value. This is especially needed when the column limit
@@ -849,10 +852,10 @@ class WebFrame:
         '''
         self.reset_columns()
 
-    def values(self):
-        self._pos   = -1
-        self._posn  = -1
-        self._phdic = ''
+    def set_values(self):
+        self.pos   = -1
+        self.posn  = -1
+        self.phdic = ''
 
     def go_search_focus(self,event=None):
         ''' Setting the focus explicitly can be useful in case of
@@ -861,16 +864,16 @@ class WebFrame:
             triggered by History which should remain active.
         '''
         self.go_search()
-        self.gui.ent_src.focus()
+        self.gui.ent_src.set_focus()
     
     def reset_opt(self,default=_('Multitran')):
         f = '[MClient] mclient.WebFrame.reset_opt'
         # Reset OptionMenus
-        lang1   = lg.objs.plugins().lang1()
-        lang2   = lg.objs._plugins.lang2()
-        langs1  = lg.objs._plugins.langs1()
-        langs2  = lg.objs._plugins.langs2(lang1)
-        sources = lg.objs._plugins.sources()
+        lang1   = lg.objs.get_plugins().get_lang1()
+        lang2   = lg.objs.plugins.get_lang2()
+        langs1  = lg.objs.plugins.get_langs1()
+        langs2  = lg.objs.plugins.get_langs2(lang1)
+        sources = lg.objs.plugins.get_sources()
         if langs1 and langs2 and lang1 and lang2 and sources:
             self.gui.opt_lg1.reset (items   = langs1
                                    ,default = lang1
@@ -880,15 +883,15 @@ class WebFrame:
                                    ,default = lang2
                                    ,action  = self.go_search_focus
                                    )
-            #note: change this upon the change of the default source
+            #NOTE: change this upon the change of the default source
             self.gui.opt_src.reset (items   = sources
                                    ,action  = self.set_source
                                    ,default = default
                                    )
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
-    def bindings(self):
+    def set_bindings(self):
         # 'gui.obj.widget' is 'Toplevel'; 'gui.widget' is 'TkinterHtml'
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = sh.lg.globs['var']['bind_copy_nominative']
@@ -942,7 +945,7 @@ class WebFrame:
                                 )
                     ,action   = self.go_keyboard
                     )
-        #todo: do not iconify at <ButtonRelease-3>
+        #TODO: do not iconify at <ButtonRelease-3>
         sh.com.bind (obj      = self.gui.ent_src
                     ,bindings = sh.lg.globs['var']['bind_clear_search_field']
                     ,action   = self.gui.ent_src.clear_text
@@ -986,7 +989,7 @@ class WebFrame:
                     )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = sh.lg.globs['var']['bind_go_phrases']
-                    ,action   = self.go_phrase_dic
+                    ,action   = self.go_phdic
                     )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = sh.lg.globs['var']['bind_search_article_forward']
@@ -1054,25 +1057,25 @@ class WebFrame:
                     ,bindings = (sh.lg.globs['var']['bind_prev_lang1']
                                 ,sh.lg.globs['var']['bind_prev_lang1_alt']
                                 )
-                    ,action   = self.prev_lang1
+                    ,action   = self.set_prev_lang1
                     )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = (sh.lg.globs['var']['bind_next_lang1']
                                 ,sh.lg.globs['var']['bind_next_lang1_alt']
                                 )
-                    ,action   = self.next_lang1
+                    ,action   = self.set_next_lang1
                     )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = (sh.lg.globs['var']['bind_prev_lang2']
                                 ,sh.lg.globs['var']['bind_prev_lang2_alt']
                                 )
-                    ,action   = self.prev_lang2
+                    ,action   = self.set_prev_lang2
                     )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = (sh.lg.globs['var']['bind_next_lang2']
                                 ,sh.lg.globs['var']['bind_next_lang2_alt']
                                 )
-                    ,action   = self.next_lang2
+                    ,action   = self.set_next_lang2
                     )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = (sh.lg.globs['var']['bind_settings']
@@ -1122,7 +1125,7 @@ class WebFrame:
                     )
         sh.com.bind (obj      = self.gui
                     ,bindings = '<Motion>'
-                    ,action   = self.mouse_sel
+                    ,action   = self.set_mouse_sel
                     )
         ''' Key and mouse bindings must have different parents,
             otherwise, key bindings will not work, and mouse bindings
@@ -1139,17 +1142,17 @@ class WebFrame:
                     ,bindings = '<Button-3>'
                     ,action   = lambda x:self.go_alt(Mouse=True)
                     )
-        if sh.objs.os().win() or sh.objs._os.mac():
+        if sh.objs.get_os().is_win() or sh.objs.os.is_mac():
             sh.com.bind (obj      = self.gui.obj
                         ,bindings = '<MouseWheel>'
-                        ,action   = self.mouse_wheel
+                        ,action   = self.set_mouse_wheel
                         )
         else:
             sh.com.bind (obj      = self.gui.obj
                         ,bindings = ('<Button 4>'
                                     ,'<Button 5>'
                                     )
-                        ,action   = self.mouse_wheel
+                        ,action   = self.set_mouse_wheel
                         )
         sh.com.bind (obj      = self.gui.obj
                     ,bindings = '<Left>'
@@ -1269,7 +1272,7 @@ class WebFrame:
         self.gui.btn_viw._bindings = (sh.lg.globs['var']['bind_toggle_view']
                                      ,sh.lg.globs['var']['bind_toggle_view_alt']
                                      )
-        '''#note: Reset 'hint' for those buttons which bindings have
+        '''#NOTE: Reset 'hint' for those buttons which bindings have
            changed (in order to show these bindings in tooltip)
         '''
         self.gui.btn_abt.set_hint()
@@ -1321,17 +1324,17 @@ class WebFrame:
         self.gui.btn_viw.action = self.toggle_view
         self.gui.opt_col.action = self.set_columns
         
-    def title(self,arg=None):
+    def set_title(self,arg=None):
         if not arg:
             arg = sh.List(lst1=[gi.PRODUCT,gi.VERSION]).space_items()
-        self.gui.title(arg)
+        self.gui.set_title(arg)
 
-    def text(self,event=None):
+    def get_text(self,event=None):
         # We will have a Segmentation Fault on empty input
-        if lg.objs.request()._html:
+        if lg.objs.get_request().htm:
             return self.gui.widget.text('text')
 
-    def mouse_sel(self,event=None):
+    def set_mouse_sel(self,event=None):
         self.get_pos(event=event)
         self.select()
 
@@ -1348,22 +1351,22 @@ class WebFrame:
                 '''
                 # Too frequent
                 mes = _('Unable to get the position!')
-                sh.objs.mes(f,mes,True).warning()
+                sh.objs.get_mes(f,mes,True).show_warning()
                 '''
             if str(pos).isdigit():
-                Selectable = objs.blocks_db().Selectable
-                objs._blocks_db.Selectable = False
-                result = objs._blocks_db.block_pos(pos=pos)
+                Selectable = objs.get_blocksdb().Selectable
+                objs.blocksdb.Selectable = False
+                result = objs.blocksdb.get_block_pos(pos=pos)
                 if result:
-                    self._posn = pos
+                    self.posn = pos
                 if Selectable:
-                    objs._blocks_db.Selectable = True
-                    result = objs._blocks_db.block_pos(pos=pos)
+                    objs.blocksdb.Selectable = True
+                    result = objs.blocksdb.get_block_pos(pos=pos)
                     if result:
-                        self._pos = pos
+                        self.pos = pos
                 else:
-                    self._pos = self._posn
-                objs._blocks_db.Selectable = Selectable
+                    self.pos = self.posn
+                objs.blocksdb.Selectable = Selectable
 
     def _select(self,result):
         f = '[MClient] mclient.WebFrame._select'
@@ -1379,75 +1382,75 @@ class WebFrame:
                                 ,sh.lg.globs['var']['color_terms_sel_fg']
                                 )
         except Exception as e:
-            sh.com.failed(f,e)
+            sh.com.rep_failed(f,e)
     
     def select(self):
         f = '[MClient] mclient.WebFrame.select'
-        result = objs.blocks_db().selection(pos=self._pos)
+        result = objs.get_blocksdb().get_sel(pos=self.pos)
         if result:
-            objs.blocks_db().set_bookmark(pos=self._pos)
+            objs.get_blocksdb().set_bookmark(pos=self.pos)
             self._select(result)
         else:
             pass
             # Too frequent
-            #sh.com.empty(f)
+            #sh.com.rep_empty(f)
 
     def shift_x(self,bbox1,bbox2):
         f = '[MClient] mclient.WebFrame.shift_x'
-        _width = self.gui.width()
-        result = objs.blocks_db().max_bbox()
-        if _width and result:
+        width = self.gui.get_width()
+        result = objs.get_blocksdb().get_max_bbox()
+        if width and result:
             max_bbox = result[0]
-            page1_no = int(bbox1 / _width)
-            page2_no = int(bbox2 / _width)
+            page1_no = int(bbox1 / width)
+            page2_no = int(bbox2 / width)
 
             if page1_no == page2_no:
-                page_bbox = page1_no * _width
+                page_bbox = page1_no * width
                 self.gui.scroll_x (bbox     = page_bbox
                                   ,max_bbox = max_bbox
                                   )
             else:
-                page1_bbox = page1_no * _width
-                page2_bbox = page2_no * _width
-                if page2_bbox - page1_bbox > _width:
+                page1_bbox = page1_no * width
+                page2_bbox = page2_no * width
+                if page2_bbox - page1_bbox > width:
                     delta = 0
                     mes = _('The column is too wide to be fully shown')
-                    sh.objs.mes(f,mes,True).warning()
+                    sh.objs.get_mes(f,mes,True).show_warning()
                 else:
                     delta = bbox2 - page2_bbox
                 self.gui.scroll_x (bbox     = page1_bbox + delta
                                   ,max_bbox = max_bbox
                                   )
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def shift_y(self,bboy1,bboy2):
         f = '[MClient] mclient.WebFrame.shift_y'
-        _height = self.gui.height()
-        result  = objs.blocks_db().max_bboy()
-        if _height and result:
+        height = self.gui.get_height()
+        result  = objs.get_blocksdb().get_max_bboy()
+        if height and result:
             max_bboy = result[0]
-            page1_no = int(bboy1 / _height)
-            page2_no = int(bboy2 / _height)
+            page1_no = int(bboy1 / height)
+            page2_no = int(bboy2 / height)
             if page1_no == page2_no:
-                page_bboy = page1_no * _height
+                page_bboy = page1_no * height
                 self.gui.scroll_y (bboy     = page_bboy
                                   ,max_bboy = max_bboy
                                   )
             else:
-                page1_bboy = page1_no * _height
-                page2_bboy = page2_no * _height
-                if page2_bboy - page1_bboy > _height:
+                page1_bboy = page1_no * height
+                page2_bboy = page2_no * height
+                if page2_bboy - page1_bboy > height:
                     delta = 0
                     mes = _('The row is too wide to be fully shown')
-                    sh.objs.mes(f,mes,True).warning()
+                    sh.objs.get_mes(f,mes,True).show_warning()
                 else:
                     delta = bboy2 - page2_bboy
                 self.gui.scroll_y (bboy     = page1_bboy + delta
                                   ,max_bboy = max_bboy
                                   )
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
     def shift_screen(self):
         ''' In order to shift the screen correctly, we need to:
@@ -1461,10 +1464,10 @@ class WebFrame:
               scroll to BBOX1 only
         '''
         f = '[MClient] mclient.WebFrame.shift_screen'
-        result1 = objs.blocks_db().block_pos(pos=self._pos)
+        result1 = objs.get_blocksdb().get_block_pos(pos=self.pos)
         if result1:
-            result2 = objs._blocks_db.bbox_limits(col_no=result1[4])
-            result3 = objs._blocks_db.bboy_limits(row_no=result1[3])
+            result2 = objs.blocksdb.get_bbox_limits(col_no=result1[4])
+            result3 = objs.blocksdb.get_bboy_limits(row_no=result1[3])
             if result2 and result3:
                 self.shift_x (bbox1 = result2[0]
                              ,bbox2 = result2[1]
@@ -1473,229 +1476,230 @@ class WebFrame:
                              ,bboy2 = result3[1]
                              )
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
     def fill(self,code=None):
         f = '[MClient] mclient.WebFrame.fill'
         self.gui.widget.reset()
         if not code:
-            code = '<html><body><h1>' + _('Nothing has been loaded yet.') + '</h1></body></html>'
+            code = '<html><body><h1>' + _('Nothing has been loaded yet.')\
+                                      + '</h1></body></html>'
         try:
             self.gui.widget.parse(code)
             ''' This should not happen now as we strip out non-supported
                 characters.
             '''
         except Exception as e:
-            sh.com.failed(f,e)
+            sh.com.rep_failed(f,e)
             # Othewise, we will have a segmentation fault here
             self.reset()
-            lg.objs.request().reset()
+            lg.objs.get_request().reset()
 
     def load_article(self):
         f = '[MClient] mclient.WebFrame.load_article'
-        ''' #note: each time the contents of the current page is changed
+        ''' #NOTE: each time the contents of the current page is changed
             (e.g., due to prioritizing), bookmarks must be deleted.
         '''
         timer = sh.Timer(f)
         timer.start()
         # Do not allow selection positions from previous articles
-        self._pos = -1
-        articleid = objs.blocks_db().present (source = lg.objs.request()._source
-                                             ,title  = lg.objs._request._search
-                                             ,url    = lg.objs._request._url
-                                             )
-        if articleid:
-            mes = _('Load article No. {} from memory').format(articleid)
-            sh.objs.mes(f,mes,True).info()
-            objs._blocks_db._articleid = articleid
+        self.pos = -1
+        artid = objs.get_blocksdb().is_present (source = lg.objs.get_request().source
+                                               ,title  = lg.objs.request.search
+                                               ,url    = lg.objs.request.url
+                                               )
+        if artid:
+            mes = _('Load article No. {} from memory').format(artid)
+            sh.objs.get_mes(f,mes,True).show_info()
+            objs.blocksdb.artid = artid
             self.get_bookmark()
         else:
             # 'None' skips the autoincrement
-            data = (None                      # (00) ARTICLEID
-                   ,lg.objs._request._source  # (01) SOURCE
-                   ,lg.objs._request._search  # (02) TITLE
-                   ,lg.objs._request._url     # (03) URL
-                   ,lg.objs.plugins().lang1() # (04) LANG1
-                   ,lg.objs._plugins.lang2()  # (05) LANG2
-                   ,self._pos                 # (06) BOOKMARK
+            data = (None                              # (00) ARTICLEID
+                   ,lg.objs.request.source            # (01) SOURCE
+                   ,lg.objs.request.search            # (02) TITLE
+                   ,lg.objs.request.url               # (03) URL
+                   ,lg.objs.get_plugins().get_lang1() # (04) LANG1
+                   ,lg.objs.plugins.get_lang2()       # (05) LANG2
+                   ,self.pos                          # (06) BOOKMARK
                    )
-            objs._blocks_db.fill_articles(data=data)
+            objs.blocksdb.fill_articles(data=data)
             
-            objs._blocks_db._articleid = objs._blocks_db.max_articleid()
+            objs.blocksdb.artid = objs.blocksdb.get_max_artid()
             
-            blocks = lg.objs.plugins().request (search = lg.objs._request._search
-                                               ,url    = lg.objs._request._url
-                                               )
+            blocks = lg.objs.get_plugins().request (search = lg.objs.request.search
+                                                   ,url    = lg.objs.request.url
+                                                   )
             data = lg.com.dump_elems (blocks    = blocks
-                                     ,articleid = objs._blocks_db._articleid
+                                     ,artid = objs.blocksdb.artid
                                      )
-            #todo: #fix: assign this for already loaded articles too
-            text = lg.objs._plugins.get_text()
+            #TODO: #FIX: assign this for already loaded articles too
+            text = lg.objs.plugins.get_text()
             if text is not None:
-                lg.objs._request._page = text
-            code = lg.objs._plugins.get_html()
+                lg.objs.request.page = text
+            code = lg.objs.plugins.get_htm()
             if code is not None:
-                lg.objs._request._html_raw = code
+                lg.objs.request.htmraw = code
             if data:
-                objs._blocks_db.fill_blocks(data)
+                objs.blocksdb.fill_blocks(data)
             
-            lg.PhraseTerma (dbc       = objs._blocks_db.dbc
-                           ,articleid = objs._blocks_db._articleid
+            lg.PhraseTerma (dbc   = objs.blocksdb.dbc
+                           ,artid = objs.blocksdb.artid
                            ).run()
             
             ''' The order of parts of speech must be changed only for
                 new articles and after changing settings (Settings.apply)
             '''
-            # todo (?) insert SPEECHPR in Elems instead of updating
+            #TODO (?): insert SPEECHPR in Elems instead of updating
             self.prioritize_speech()
             
-        self._phdic = objs._blocks_db.phrase_dic_primary()
-        if self._phdic is None:
-            self._phdic = ''
+        self.phdic = objs.blocksdb.get_phdic_primary()
+        if self.phdic is None:
+            self.phdic = ''
 
-        data = objs._blocks_db.assign_bp()
+        data = objs.blocksdb.assign_bp()
         bp = cl.BlockPrioritize (data       = data
-                                ,order      = lg.objs.order()
-                                ,Block      = lg.objs._request.Block
-                                ,Prioritize = lg.objs._request.Prioritize
-                                ,phrase_dic = self._phdic
-                                ,Debug      = lg.objs.plugins().Debug
+                                ,order      = lg.objs.get_order()
+                                ,Block      = lg.objs.request.Block
+                                ,Prioritize = lg.objs.request.Prioritize
+                                ,phdic = self.phdic
+                                ,Debug      = lg.objs.get_plugins().Debug
                                 )
         bp.run()
-        objs._blocks_db.update(query=bp._query)
+        objs.blocksdb.update(query=bp.query)
         
-        dics = objs._blocks_db.dics(Block=0)
-        ''' #note: if an article comprises only 1 dic/wform, this is
+        dics = objs.blocksdb.get_dics(Block=0)
+        ''' #NOTE: if an article comprises only 1 dic/wform, this is
             usually a dictionary + terms from the 'Phrases' section
             Do not rely on the number of wforms; large articles like
             'centre' may have only 1 wform (and a plurality of dics)
         '''
-        if not dics or dics and len(dics) == 1 or not self._phdic:
-            # or check 'lg.objs._request._search' by pattern '\d+ фраз'
-            lg.objs._request.SpecialPage = True
+        if not dics or dics and len(dics) == 1 or not self.phdic:
+            # or check 'lg.objs.request.search' by pattern '\d+ фраз'
+            lg.objs.request.SpecialPage = True
         else:
             # Otherwise, 'SpecialPage' will be inherited
-            lg.objs._request.SpecialPage = False
+            lg.objs.request.SpecialPage = False
 
         self.update_columns()
         
-        SortTerms = lg.objs._request.SortTerms \
-                    and not lg.objs._request.SpecialPage
-        objs._blocks_db.reset (cols      = lg.objs._request._cols
-                              ,SortRows  = lg.objs._request.SortRows
-                              ,SortTerms = SortTerms
-                              ,ExpandDic = not objs.settings().gui.cbx_no6.get()
-                              )
-        objs._blocks_db.unignore()
-        objs._blocks_db.ignore()
+        SortTerms = lg.objs.request.SortTerms \
+                    and not lg.objs.request.SpecialPage
+        objs.blocksdb.reset (cols      = lg.objs.request.cols
+                            ,SortRows  = lg.objs.request.SortRows
+                            ,SortTerms = SortTerms
+                            ,ExpandDic = not objs.get_settings().gui.cbx_no6.get()
+                            )
+        objs.blocksdb.unignore()
+        objs.blocksdb.ignore()
         
-        data = objs._blocks_db.assign_cells()
+        data = objs.blocksdb.assign_cells()
 
-        if lg.objs._request._cols \
-        and lg.objs._request._cols[0] == 'speech':
-            ExpandSpeech = True
+        if lg.objs.request.cols \
+        and lg.objs.request.cols[0] == 'speech':
+            ExpandSp = True
         else:
-            ExpandSpeech = False
+            ExpandSp = False
         
-        cells = cl.Cells (data         = data
-                         ,cols         = lg.objs._request._cols
-                         ,collimit     = lg.objs._request._collimit
-                         ,phrase_dic   = self._phdic
-                         ,Reverse      = lg.objs._request.Reverse
-                         ,ExpandSpeech = ExpandSpeech
-                         ,Debug        = lg.objs._plugins.Debug
+        cells = cl.Cells (data     = data
+                         ,cols     = lg.objs.request.cols
+                         ,collimit = lg.objs.request.collimit
+                         ,phdic    = self.phdic
+                         ,Reverse  = lg.objs.request.Reverse
+                         ,ExpandSp = ExpandSp
+                         ,Debug    = lg.objs.plugins.Debug
                          )
         cells.run()
-        cells.dump(blocks_db=objs._blocks_db)
+        cells.dump(blocksdb=objs.blocksdb)
         
-        skipped = objs._blocks_db.skipped_dicas()
+        skipped = objs.blocksdb.get_skipped_dicas()
         if skipped:
             skipped = ', '.join(skipped)
             skipped = skipped.split(', ')
             skipped = len(set(skipped))
         else:
             skipped = 0
-        mh.objs.html().reset (data     = objs._blocks_db.fetch()
-                             ,cols     = lg.objs._request._cols
-                             ,collimit = lg.objs._request._collimit
-                             ,order    = lg.objs.order()
-                             ,width    = sh.lg.globs['int']['col_width']
-                             ,Reverse  = lg.objs._request.Reverse
-                             ,phdic    = self._phdic
-                             ,skipped  = skipped
-                             )
-        mh.objs._html.run()
+        mh.objs.get_htm().reset (data     = objs.blocksdb.fetch()
+                                ,cols     = lg.objs.request.cols
+                                ,collimit = lg.objs.request.collimit
+                                ,order    = lg.objs.get_order()
+                                ,width    = sh.lg.globs['int']['col_width']
+                                ,Reverse  = lg.objs.request.Reverse
+                                ,phdic    = self.phdic
+                                ,skipped  = skipped
+                                )
+        mh.objs.htm.run()
         
-        lg.objs._request._html = mh.objs._html._html
-        self.fill(code=lg.objs._request._html)
+        lg.objs.request.htm = mh.objs.htm.htm
+        self.fill(code=lg.objs.request.htm)
 
-        data = objs._blocks_db.assign_pos()
+        data = objs.blocksdb.assign_pos()
         pos  = cl.Pos (data     = data
-                      ,raw_text = self.text()
-                      ,Debug    = lg.objs._plugins.Debug
+                      ,raw_text = self.get_text()
+                      ,Debug    = lg.objs.plugins.Debug
                       )
         pos.run()
-        objs._blocks_db.update(query=pos._query)
+        objs.blocksdb.update(query=pos.query)
 
-        pages = cl.Pages (obj    = objs.webframe().gui
-                         ,blocks = pos._blocks
+        pages = cl.Pages (obj    = objs.get_webframe().gui
+                         ,blocks = pos.blocks
                          )
         pages.run()
-        objs._blocks_db.update(query=pages._query)
+        objs.blocksdb.update(query=pages.query)
         
-        self.title(arg=lg.objs._request._search)
-        if self._pos >= 0:
+        self.set_title(arg=lg.objs.request.search)
+        if self.pos >= 0:
             self.select()
             self.shift_screen()
         else:
-            result = objs._blocks_db.start()
+            result = objs.blocksdb.get_start()
             if str(result).isdigit():
-                self._pos = result
+                self.pos = result
                 self.select()
             else:
                 mes = _('Wrong input data!')
-                sh.objs.mes(f,mes,True).warning()
+                sh.objs.get_mes(f,mes,True).show_warning()
         ''' Empty article is not added either to DB or history, so we
             just do not clear the search field to be able to correct
             the typo.
         '''
-        if pages._blocks or skipped:
+        if pages.blocks or skipped:
             self.gui.ent_src.clear_text()
-        objs.history().update()
-        objs.search().reset()
-        objs.suggest().gui.close()
+        objs.get_history().update()
+        objs.get_search().reset()
+        objs.get_suggest().gui.close()
         self.update_buttons()
         timer.end()
-        self.final_debug()
+        self.run_final_debug()
     
     def go_mouse(self,event=None):
         f = '[MClient] mclient.WebFrame.go_mouse'
-        if objs.blocks_db().Selectable:
-            objs._blocks_db.Selectable = False
-            result = objs._blocks_db.block_pos(pos=self._posn)
-            objs._blocks_db.Selectable = True
+        if objs.get_blocksdb().Selectable:
+            objs.blocksdb.Selectable = False
+            result = objs.blocksdb.get_block_pos(pos=self.posn)
+            objs.blocksdb.Selectable = True
             if result and result[8] == 'dic' \
-            and result[6] != self._phdic:
-                dica = objs._blocks_db.prev_dica (pos  = result[0]
-                                                 ,dica = result[6]
-                                                 )
+            and result[6] != self.phdic:
+                dica = objs.blocksdb.get_prev_dica (pos  = result[0]
+                                                   ,dica = result[6]
+                                                   )
                 if dica:
                     mes = _('Selected dictionary: "{}". Previous dictionary: "{}" (abbreviation), "{}" (full).')
                     mes = mes.format (result[6]
                                      ,dica[0]
                                      ,dica[1]
                                      )
-                    sh.objs.mes(f,mes,True).debug()
+                    sh.objs.get_mes(f,mes,True).show_debug()
                     dica = dica[1]
                 else:
                     mes = _('No previous dictionary.')
-                    sh.objs.mes(f,mes,True).debug()
-                lg.objs.order().lm_auto (dic1 = result[6]
-                                        ,dic2 = dica
-                                        )
-                objs._blocks_db.delete_bookmarks()
+                    sh.objs.get_mes(f,mes,True).show_debug()
+                lg.objs.get_order().run_lm_auto (dic1 = result[6]
+                                                ,dic2 = dica
+                                                )
+                objs.blocksdb.delete_bookmarks()
                 self.load_article()
             else:
                 self.go_url()
@@ -1712,7 +1716,7 @@ class WebFrame:
         elif search == sh.lg.globs['var']['repeat_sign2']:
             self.insert_repeat_sign2()
         else:
-            lg.objs.request()._search = search
+            lg.objs.get_request().search = search
             self.go_search()
     
     # Process either the search string or the URL
@@ -1726,36 +1730,36 @@ class WebFrame:
     # Follow the URL of the current block
     def go_url(self,event=None):
         f = '[MClient] mclient.WebFrame.go_url'
-        if not lg.objs.request().MouseClicked:
-            url = objs.blocks_db().url(pos=self._pos)
+        if not lg.objs.get_request().MouseClicked:
+            url = objs.get_blocksdb().get_url(pos=self.pos)
             if url:
-                lg.objs._request._search = objs._blocks_db.text(pos=self._pos)
-                lg.objs._request._url    = url
-                mes = _('Open link: {}').format(lg.objs._request._url)
-                sh.objs.mes(f,mes,True).info()
+                lg.objs.request.search = objs.blocksdb.get_text(pos=self.pos)
+                lg.objs.request.url    = url
+                mes = _('Open link: {}').format(lg.objs.request.url)
+                sh.objs.get_mes(f,mes,True).show_info()
                 self.load_article()
             # Do not warn when there are no articles yet
-            elif objs._blocks_db._articleid == 0:
-                sh.com.lazy(f)
+            elif objs.blocksdb.artid == 0:
+                sh.com.rep_lazy(f)
             else:
-                lg.objs._request._search = objs._blocks_db.text(pos=self._pos)
+                lg.objs.request.search = objs.blocksdb.get_text(pos=self.pos)
                 self.go_search()
 
     def go_search(self):
         f = '[MClient] mclient.WebFrame.go_search'
-        ''' Text returned by 'objs.blocks_db().text' may have a space
+        ''' Text returned by 'objs.get_blocksdb().text' may have a space
             as the first symbol for some reason.
         '''
-        if lg.objs.request()._search is None:
-            lg.objs._request._search = ''
-        lg.objs._request._search = lg.objs._request._search.strip()
+        if lg.objs.get_request().search is None:
+            lg.objs.request.search = ''
+        lg.objs.request.search = lg.objs.request.search.strip()
         if self.control_length():
             self.update_lang1()
             self.update_lang2()
             self.auto_swap()
             self.get_url()
-            mes = '"{}"'.format(lg.objs._request._search)
-            sh.objs.mes(f,mes,True).debug()
+            mes = '"{}"'.format(lg.objs.request.search)
+            sh.objs.get_mes(f,mes,True).show_debug()
             self.load_article()
 
     def set_source(self,event=None):
@@ -1764,152 +1768,152 @@ class WebFrame:
             get an actual value first.
         '''
         self.gui.opt_src._get()
-        lg.objs.request()._source = self.gui.opt_src.choice
-        mes = _('Set source to "{}"').format(lg.objs._request._source)
-        sh.objs.mes(f,mes,True).info()
-        lg.objs.plugins().set(lg.objs._request._source)
-        self.reset_opt(lg.objs._request._source)
+        lg.objs.get_request().source = self.gui.opt_src.choice
+        mes = _('Set source to "{}"').format(lg.objs.request.source)
+        sh.objs.get_mes(f,mes,True).show_info()
+        lg.objs.get_plugins().set(lg.objs.request.source)
+        self.reset_opt(lg.objs.request.source)
         self.go_search()
-        self.gui.ent_src.focus()
+        self.gui.ent_src.set_focus()
 
     def get_url(self):
         f = '[MClient] mclient.WebFrame.get_url'
-        #note: update source and target languages first
-        lg.objs.request()._url = lg.objs.plugins().get_url(lg.objs._request._search)
-        mes = lg.objs._request._url
-        sh.objs.mes(f,mes,True).debug()
+        #NOTE: update source and target languages first
+        lg.objs.get_request().url = lg.objs.get_plugins().get_url(lg.objs.request.search)
+        mes = lg.objs.request.url
+        sh.objs.get_mes(f,mes,True).show_debug()
 
-    #todo: move 'move_*' procedures to Moves class
+    #TODO: move 'move_*' procedures to Moves class
     # Go to the 1st term of the current row
     def move_line_start(self,event=None):
         f = '[MClient] mclient.WebFrame.move_line_start'
-        result = objs.blocks_db().line_start(pos=self._pos)
+        result = objs.get_blocksdb().get_line_start(pos=self.pos)
         if str(result).isdigit():
-            self._pos = result
+            self.pos = result
             self.select()
             self.shift_screen()
         else:
             mes = _('Wrong input data!')
-            sh.objs.mes(f,mes,True).warning()
+            sh.objs.get_mes(f,mes,True).show_warning()
 
     # Go to the last term of the current row
     def move_line_end(self,event=None):
         f = '[MClient] mclient.WebFrame.move_line_end'
-        result = objs.blocks_db().line_end(pos=self._pos)
+        result = objs.get_blocksdb().get_line_end(pos=self.pos)
         if str(result).isdigit():
-            self._pos = result
+            self.pos = result
             self.select()
             self.shift_screen()
         else:
             mes = _('Wrong input data!')
-            sh.objs.mes(f,mes,True).warning()
+            sh.objs.get_mes(f,mes,True).show_warning()
 
     # Go to the 1st (non-)selectable block
     def move_text_start(self,event=None):
         f = '[MClient] mclient.WebFrame.move_text_start'
-        result = objs.blocks_db().start()
+        result = objs.get_blocksdb().get_start()
         if str(result).isdigit():
-            self._pos = result
+            self.pos = result
             self.select()
             self.shift_screen()
         else:
             mes = _('Wrong input data!')
-            sh.objs.mes(f,mes,True).warning()
+            sh.objs.get_mes(f,mes,True).show_warning()
 
     # Go to the last term in the article
     def move_text_end(self,event=None):
         f = '[MClient] mclient.WebFrame.move_text_end'
-        result = objs.blocks_db().end()
+        result = objs.get_blocksdb().get_end()
         if str(result).isdigit():
-            self._pos = result
+            self.pos = result
             self.select()
             self.shift_screen()
         else:
             mes = _('Wrong input data!')
-            sh.objs.mes(f,mes,True).warning()
+            sh.objs.get_mes(f,mes,True).show_warning()
 
     # Go to the previous page
     def move_page_up(self,event=None):
-        result = objs.blocks_db().selection(pos=self._pos)
-        height = self.gui.height()
+        result = objs.get_blocksdb().get_sel(pos=self.pos)
+        height = self.gui.get_height()
         if result and height:
-            result = objs.blocks_db().page_up (bboy   = result[6]
-                                              ,height = height
-                                              )
+            result = objs.get_blocksdb().get_page_up (bboy   = result[6]
+                                                     ,height = height
+                                                     )
             if str(result).isdigit():
-                self._pos = result
+                self.pos = result
                 self.select()
                 self.shift_screen()
 
     # Go to the next page
     def move_page_down(self,event=None):
-        result = objs.blocks_db().selection(pos=self._pos)
-        height = self.gui.height()
+        result = objs.get_blocksdb().get_sel(pos=self.pos)
+        height = self.gui.get_height()
         if result and height:
-            result = objs.blocks_db().page_down (bboy   = result[6]
-                                                ,height = height
-                                                )
+            result = objs.get_blocksdb().get_page_down (bboy   = result[6]
+                                                       ,height = height
+                                                       )
             if str(result).isdigit():
-                self._pos = result
+                self.pos = result
                 self.select()
                 self.shift_screen()
 
     # Go to the previous term
     def move_left(self,event=None):
         f = '[MClient] mclient.WebFrame.move_left'
-        result = objs.blocks_db().left(pos=self._pos)
+        result = objs.get_blocksdb().get_left(pos=self.pos)
         if str(result).isdigit():
-            self._pos = result
+            self.pos = result
             self.select()
             self.shift_screen()
         else:
             mes = _('Wrong input data!')
-            sh.objs.mes(f,mes,True).warning()
+            sh.objs.get_mes(f,mes,True).show_warning()
 
     # Go to the next term
     def move_right(self,event=None):
         f = '[MClient] mclient.WebFrame.move_right'
-        result = objs.blocks_db().right(pos=self._pos)
+        result = objs.get_blocksdb().get_right(pos=self.pos)
         if str(result).isdigit():
-            self._pos = result
+            self.pos = result
             self.select()
             self.shift_screen()
         else:
             mes = _('Wrong input data!')
-            sh.objs.mes(f,mes,True).warning()
+            sh.objs.get_mes(f,mes,True).show_warning()
 
     # Go to the next row
     def move_down(self,event=None):
         f = '[MClient] mclient.WebFrame.move_down'
-        result = objs.blocks_db().down(pos=self._pos)
+        result = objs.get_blocksdb().get_down(pos=self.pos)
         if str(result).isdigit():
-            self._pos = result
+            self.pos = result
             self.select()
             self.shift_screen()
         else:
             mes = _('Wrong input data!')
-            sh.objs.mes(f,mes,True).warning()
+            sh.objs.get_mes(f,mes,True).show_warning()
 
     # Go to the previous row
     def move_up(self,event=None):
         f = '[MClient] mclient.WebFrame.move_up'
-        result = objs.blocks_db().up(pos=self._pos)
+        result = objs.get_blocksdb().get_up(pos=self.pos)
         if str(result).isdigit():
-            self._pos = result
+            self.pos = result
             self.select()
             self.shift_screen()
         else:
             mes = _('Wrong input data!')
-            sh.objs.mes(f,mes,True).warning()
+            sh.objs.get_mes(f,mes,True).show_warning()
 
     # Use mouse wheel to scroll screen
-    def mouse_wheel(self,event):
-        ''' #todo: fix: too small delta in Windows
+    def set_mouse_wheel(self,event):
+        ''' #TODO: #FIX: too small delta in Windows
             delta is -120 in Windows XP, however, it is different in
             other versions.
         '''
         if event.num == 5 or event.delta < 0:
-            if sh.objs.os().lin():
+            if sh.objs.get_os().is_lin():
                 self.move_page_down()
             else:
                 self.move_down()
@@ -1917,7 +1921,7 @@ class WebFrame:
                 other versions.
             '''
         if event.num == 4 or event.delta > 0:
-            if sh.objs.os().lin():
+            if sh.objs.get_os().is_lin():
                 self.move_page_up()
             else:
                 self.move_up()
@@ -1925,184 +1929,184 @@ class WebFrame:
 
     # Watch clipboard
     def watch_clipboard(self,event=None):
-        if lg.objs.request().CaptureHotkey:
-            lg.objs._request.CaptureHotkey = False
+        if lg.objs.get_request().CaptureHotkey:
+            lg.objs.request.CaptureHotkey = False
         else:
-            lg.objs._request.CaptureHotkey = True
+            lg.objs.request.CaptureHotkey = True
         self.update_buttons()
 
     # Open URL of the current article in a browser
     def open_in_browser(self,event=None):
-        ionline      = sh.Online()
-        ionline._url = lg.objs.request()._url
+        ionline     = sh.Online()
+        ionline.url = lg.objs.get_request().url
         ionline.browse()
 
     # Copy text of the current block
     def copy_text(self,event=None):
         f = '[MClient] mclient.WebFrame.copy_text'
-        text = objs.blocks_db().text(pos=self._pos)
+        text = objs.get_blocksdb().get_text(pos=self.pos)
         if text:
             sh.Clipboard().copy(text)
             if sh.lg.globs['bool']['Iconify']:
                 self.minimize()
         # Do not warn when there are no articles yet
-        elif objs._blocks_db._articleid == 0:
-            sh.com.lazy(f)
+        elif objs.blocksdb.artid == 0:
+            sh.com.rep_lazy(f)
         else:
             mes = _('This block does not contain any text!')
-            sh.objs.mes(f,mes).warning()
+            sh.objs.get_mes(f,mes).show_warning()
 
     # Copy URL of the current article
     def copy_url(self,event=None):
-        sh.Clipboard().copy(lg.objs.request()._url)
+        sh.Clipboard().copy(lg.objs.get_request().url)
         if sh.lg.globs['bool']['Iconify']:
             self.minimize()
 
     # Copy URL of the selected block
     def copy_block_url(self,event=None):
         f = '[MClient] mclient.WebFrame.copy_block_url'
-        url = objs.blocks_db().url(pos=self._pos)
+        url = objs.get_blocksdb().get_url(pos=self.pos)
         if url:
             sh.Clipboard().copy(url)
             if sh.lg.globs['bool']['Iconify']:
                 self.minimize()
         else:
             mes = _('This block does not contain a URL!')
-            sh.objs.mes(f,mes).warning()
+            sh.objs.get_mes(f,mes).show_warning()
 
     # Open a web-page with a definition of the current term
     # Selected: True: Selected term; False: Article title
     def define(self,Selected=True):
         f = '[MClient] mclient.WebFrame.define'
         if Selected:
-            result = objs.blocks_db().block_pos(pos=self._pos)
-            search_str = result[6]
+            result  = objs.get_blocksdb().get_block_pos(pos=self.pos)
+            pattern = result[6]
         else:
-            search_str = lg.objs.request()._search
-        if search_str:
-            search_str = _('what is "{}"?').format(search_str)
-            sh.Online (base_str   = sh.lg.globs['var']['web_search_url']
-                      ,search_str = search_str
+            pattern = lg.objs.get_request().search
+        if pattern:
+            pattern = _('what is "{}"?').format(pattern)
+            sh.Online (base    = sh.lg.globs['var']['web_search_url']
+                      ,pattern = pattern
                       ).browse()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
     # Update button icons and checkboxes in the 'Settings' widget
     def update_buttons(self):
-        searches = objs.blocks_db().searches()
+        searches = objs.get_blocksdb().get_searches()
         if searches:
-            self.gui.btn_rp1.active()
+            self.gui.btn_rp1.activate()
         else:
-            self.gui.btn_rp1.inactive()
+            self.gui.btn_rp1.inactivate()
 
         if searches and len(searches) > 1:
-            self.gui.btn_rp2.active()
+            self.gui.btn_rp2.activate()
         else:
-            self.gui.btn_rp2.inactive()
+            self.gui.btn_rp2.inactivate()
 
-        if objs.blocks_db().prev_id(Loop=False):
-            self.gui.btn_prv.active()
+        if objs.get_blocksdb().get_prev_id(Loop=False):
+            self.gui.btn_prv.activate()
         else:
-            self.gui.btn_prv.inactive()
+            self.gui.btn_prv.inactivate()
 
-        if objs.blocks_db().next_id(Loop=False):
-            self.gui.btn_nxt.active()
+        if objs.get_blocksdb().get_next_id(Loop=False):
+            self.gui.btn_nxt.activate()
         else:
-            self.gui.btn_nxt.inactive()
+            self.gui.btn_nxt.inactivate()
 
-        if lg.objs.request().CaptureHotkey:
-            self.gui.btn_cap.active()
+        if lg.objs.get_request().CaptureHotkey:
+            self.gui.btn_cap.activate()
         else:
-            self.gui.btn_cap.inactive()
+            self.gui.btn_cap.inactivate()
 
-        if lg.objs._request.Reverse:
-            self.gui.btn_viw.inactive()
-            objs.settings().gui.cbx_no5.enable()
+        if lg.objs.request.Reverse:
+            self.gui.btn_viw.inactivate()
+            objs.get_settings().gui.cbx_no5.enable()
         else:
-            self.gui.btn_viw.active()
-            objs.settings().gui.cbx_no5.disable()
+            self.gui.btn_viw.activate()
+            objs.get_settings().gui.cbx_no5.disable()
 
-        if not lg.objs._request.SpecialPage \
-        and lg.objs._request.SortTerms:
-            self.gui.btn_alp.active()
-            objs.settings().gui.cbx_no2.enable()
+        if not lg.objs.request.SpecialPage \
+        and lg.objs.request.SortTerms:
+            self.gui.btn_alp.activate()
+            objs.get_settings().gui.cbx_no2.enable()
         else:
-            self.gui.btn_alp.inactive()
-            objs.settings().gui.cbx_no2.disable()
+            self.gui.btn_alp.inactivate()
+            objs.get_settings().gui.cbx_no2.disable()
 
-        if lg.objs._request.Block and objs._blocks_db.blocked():
-            self.gui.btn_blk.active()
-            objs.settings().gui.cbx_no3.enable()
+        if lg.objs.request.Block and objs.blocksdb.get_blocked():
+            self.gui.btn_blk.activate()
+            objs.get_settings().gui.cbx_no3.enable()
         else:
-            self.gui.btn_blk.inactive()
-            objs.settings().gui.cbx_no3.disable()
+            self.gui.btn_blk.inactivate()
+            objs.get_settings().gui.cbx_no3.disable()
 
-        if not lg.objs._request.SpecialPage \
-        and lg.objs._request.Prioritize \
-        and objs._blocks_db.prioritized():
-            self.gui.btn_pri.active()
-            objs.settings().gui.cbx_no4.enable()
+        if not lg.objs.request.SpecialPage \
+        and lg.objs.request.Prioritize \
+        and objs.blocksdb.get_prioritized():
+            self.gui.btn_pri.activate()
+            objs.get_settings().gui.cbx_no4.enable()
         else:
-            self.gui.btn_pri.inactive()
-            objs.settings().gui.cbx_no4.disable()
+            self.gui.btn_pri.inactivate()
+            objs.get_settings().gui.cbx_no4.disable()
 
     # Go to the previous search
     def go_back(self,event=None):
         f = '[MClient] mclient.WebFrame.go_back'
-        result = objs.blocks_db().prev_id()
+        result = objs.get_blocksdb().get_prev_id()
         if result:
-            objs._blocks_db._articleid = result
-            result = objs._blocks_db.article()
+            objs.blocksdb.artid = result
+            result = objs.blocksdb.get_article()
             if result:
-                lg.objs.request()._source = result[0]
-                lg.objs._request._search  = result[1]
-                lg.objs._request._url     = result[2]
-                lg.objs.plugins().set(lg.objs._request._source)
-                lg.objs._plugins.set_lang1(result[4])
-                lg.objs._plugins.set_lang2(result[5])
-                self.reset_opt(lg.objs._request._source)
+                lg.objs.get_request().source = result[0]
+                lg.objs.request.search = result[1]
+                lg.objs.request.url    = result[2]
+                lg.objs.get_plugins().set(lg.objs.request.source)
+                lg.objs.plugins.set_lang1(result[4])
+                lg.objs.plugins.set_lang2(result[5])
+                self.reset_opt(lg.objs.request.source)
                 self.load_article()
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
     # Go to the next search
     def go_forward(self,event=None):
         f = '[MClient] mclient.WebFrame.go_forward'
-        result = objs.blocks_db().next_id()
+        result = objs.get_blocksdb().get_next_id()
         if result:
-            objs._blocks_db._articleid = result
-            result = objs._blocks_db.article()
+            objs.blocksdb.artid = result
+            result = objs.blocksdb.get_article()
             if result:
-                lg.objs.request()._source = result[0]
-                lg.objs._request._search  = result[1]
-                lg.objs._request._url     = result[2]
-                lg.objs.plugins().set(lg.objs._request._source)
-                lg.objs._plugins.set_lang1(result[4])
-                lg.objs._plugins.set_lang2(result[5])
-                self.reset_opt(lg.objs._request._source)
+                lg.objs.get_request().source = result[0]
+                lg.objs.request.search = result[1]
+                lg.objs.request.url    = result[2]
+                lg.objs.get_plugins().set(lg.objs.request.source)
+                lg.objs.plugins.set_lang1(result[4])
+                lg.objs.plugins.set_lang2(result[5])
+                self.reset_opt(lg.objs.request.source)
                 self.load_article()
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
     # Confirm too long requests
     def control_length(self):
         f = '[MClient] mclient.WebFrame.control_length'
         Confirmed = True
-        if len(lg.objs.request()._search) >= 150:
+        if len(lg.objs.get_request().search) >= 150:
             mes = _('The request is long ({} symbols). Do you really want to send it?')
-            mes = mes.format(len(lg.objs._request._search))
-            if not sh.objs.mes(f,mes).question():
+            mes = mes.format(len(lg.objs.request.search))
+            if not sh.objs.get_mes(f,mes).show_question():
                 Confirmed = False
         return Confirmed
 
     # SearchArticle
     def search_reset(self,event=None):
-        objs.search().reset()
-        objs._search.forward()
+        objs.get_search().reset()
+        objs.search.get_next()
 
     def set_lang1(self,event=None):
         f = '[MClient] mclient.WebFrame.set_lang1'
@@ -2110,10 +2114,10 @@ class WebFrame:
             get an actual value first.
         '''
         self.gui.opt_lg1._get()
-        if lg.objs.plugins().lang1() != self.gui.opt_lg1.choice:
+        if lg.objs.get_plugins().get_lang1() != self.gui.opt_lg1.choice:
             mes = _('Set language: {}').format(self.gui.opt_lg1.choice)
-            sh.objs.mes(f,mes,True).info()
-            lg.objs.plugins().set_lang1(self.gui.opt_lg1.choice)
+            sh.objs.get_mes(f,mes,True).show_info()
+            lg.objs.get_plugins().set_lang1(self.gui.opt_lg1.choice)
     
     def set_lang2(self,event=None):
         f = '[MClient] mclient.WebFrame.set_lang2'
@@ -2121,10 +2125,10 @@ class WebFrame:
             get an actual value first.
         '''
         self.gui.opt_lg2._get()
-        if lg.objs.plugins().lang2() != self.gui.opt_lg2.choice:
+        if lg.objs.get_plugins().get_lang2() != self.gui.opt_lg2.choice:
             mes = _('Set language: {}').format(self.gui.opt_lg2.choice)
-            sh.objs.mes(f,mes,True).info()
-            lg.objs.plugins().set_lang2(self.gui.opt_lg2.choice)
+            sh.objs.get_mes(f,mes,True).show_info()
+            lg.objs.get_plugins().set_lang2(self.gui.opt_lg2.choice)
 
     def reset_columns(self,event=None):
         f = '[MClient] mclient.WebFrame.reset_columns'
@@ -2132,67 +2136,67 @@ class WebFrame:
             get an actual value first.
         '''
         self.gui.opt_col._get()
-        fixed = [col for col in lg.objs.request()._cols \
+        fixed = [col for col in lg.objs.get_request().cols \
                  if col != _('Do not set')
                 ]
-        lg.objs._request._collimit = sh.Input (title = f
-                                              ,value = self.gui.opt_col.choice
-                                              ).integer() + len(fixed)
+        lg.objs.request.collimit = sh.Input (title = f
+                                            ,value = self.gui.opt_col.choice
+                                            ).get_integer() + len(fixed)
         mes = _('Set the number of columns to {}')
-        mes = mes.format(lg.objs._request._collimit)
-        sh.objs.mes(f,mes,True).info()
+        mes = mes.format(lg.objs.request.collimit)
+        sh.objs.get_mes(f,mes,True).show_info()
     
     def set_columns(self,event=None):
         self.reset_columns()
-        objs.blocks_db().delete_bookmarks()
+        objs.get_blocksdb().delete_bookmarks()
         self.load_article()
-        self.gui.ent_src.focus()
+        self.gui.ent_src.set_focus()
 
     def reload(self,event=None):
-        objs.blocks_db().clear_cur()
+        objs.get_blocksdb().clear_cur()
         self.load_article()
 
     def toggle_view(self,event=None):
-        if lg.objs.request().Reverse:
-            lg.objs._request.Reverse = False
+        if lg.objs.get_request().Reverse:
+            lg.objs.request.Reverse = False
         else:
-            lg.objs._request.Reverse = True
-        objs.blocks_db().delete_bookmarks()
+            lg.objs.request.Reverse = True
+        objs.get_blocksdb().delete_bookmarks()
         self.load_article()
 
     def toggle_alphabet(self,event=None):
-        if lg.objs.request().SortTerms:
-            lg.objs._request.SortTerms = False
+        if lg.objs.get_request().SortTerms:
+            lg.objs.request.SortTerms = False
         else:
-            lg.objs._request.SortTerms = True
-        objs.blocks_db().delete_bookmarks()
+            lg.objs.request.SortTerms = True
+        objs.get_blocksdb().delete_bookmarks()
         self.load_article()
 
     def toggle_block(self,event=None):
         f = '[MClient] mclient.WebFrame.toggle_block'
-        if lg.objs.request().Block:
-            lg.objs._request.Block = False
+        if lg.objs.get_request().Block:
+            lg.objs.request.Block = False
             '''
             mes = _('Blacklisting is now OFF.')
-            sh.objs.mes(f,mes).info()
+            sh.objs.get_mes(f,mes).show_info()
             '''
             self.unblock()
         else:
-            lg.objs._request.Block = True
-            if lg.objs.order()._blacklist:
+            lg.objs.request.Block = True
+            if lg.objs.get_order().blacklst:
                 '''
                 mes = _('Blacklisting is now ON.')
-                sh.objs.mes(f,mes).info()
+                sh.objs.get_mes(f,mes).show_info()
                 '''
                 pass
             else:
                 mes = _('No dictionaries have been provided for blacklisting!')
-                sh.objs.mes(f,mes).warning()
-        objs.blocks_db().delete_bookmarks()
+                sh.objs.get_mes(f,mes).show_warning()
+        objs.get_blocksdb().delete_bookmarks()
         self.load_article()
 
     def unblock(self):
-        result = objs.blocks_db().blocked()
+        result = objs.get_blocksdb().get_blocked()
         if result:
             tmp = io.StringIO()
             query = ''
@@ -2202,10 +2206,10 @@ class WebFrame:
             tmp.write('commit;')
             query = tmp.getvalue()
             tmp.close()
-            objs._blocks_db.update(query=query)
+            objs.blocksdb.update(query=query)
 
     def unprioritize(self):
-        result = objs.blocks_db().prioritized()
+        result = objs.get_blocksdb().get_prioritized()
         if result:
             tmp = io.StringIO()
             query = ''
@@ -2217,102 +2221,102 @@ class WebFrame:
             tmp.write('commit;')
             query = tmp.getvalue()
             tmp.close()
-            objs._blocks_db.update(query=query)
+            objs.blocksdb.update(query=query)
 
     def toggle_priority(self,event=None):
         f = '[MClient] mclient.WebFrame.toggle_priority'
-        if lg.objs.request().Prioritize:
-            lg.objs._request.Prioritize = False
+        if lg.objs.get_request().Prioritize:
+            lg.objs.request.Prioritize = False
             '''
             mes = _('Prioritizing is now OFF.')
-            sh.objs.mes(f,mes).info()
+            sh.objs.get_mes(f,mes).show_info()
             '''
             self.unprioritize()
         else:
-            lg.objs._request.Prioritize = True
-            if lg.objs.order()._prioritize:
+            lg.objs.request.Prioritize = True
+            if lg.objs.get_order().prioritize:
                 '''
                 mes = _('Prioritizing is now ON.')
-                sh.objs.mes(f,mes).info()
+                sh.objs.get_mes(f,mes).show_info()
                 '''
                 pass
             else:
                 mes = _('No dictionaries have been provided for prioritizing!')
-                sh.objs.mes(f,mes).warning()
-        objs.blocks_db().delete_bookmarks()
+                sh.objs.get_mes(f,mes).show_warning()
+        objs.get_blocksdb().delete_bookmarks()
         self.load_article()
 
     def print(self,event=None):
         f = '[MClient] mclient.WebFrame.print'
-        skipped = objs._blocks_db.skipped_dicas()
+        skipped = objs.blocksdb.get_skipped_dicas()
         if skipped:
             skipped = ', '.join(skipped)
             skipped = skipped.split(', ')
             skipped = len(set(skipped))
         else:
             skipped = 0
-        mh.objs.html().reset (data     = objs._blocks_db.fetch()
-                             ,cols     = lg.objs._request._cols
-                             ,collimit = lg.objs._request._collimit
-                             ,order    = lg.objs.order()
-                             ,width    = sh.lg.globs['int']['col_width']
-                             ,Printer  = True
-                             ,Reverse  = lg.objs._request.Reverse
-                             ,skipped  = skipped
-                             )
-        code = mh.objs._html.run()
+        mh.objs.get_htm().reset (data     = objs.blocksdb.fetch()
+                                ,cols     = lg.objs.request.cols
+                                ,collimit = lg.objs.request.collimit
+                                ,order    = lg.objs.get_order()
+                                ,width    = sh.lg.globs['int']['col_width']
+                                ,Printer  = True
+                                ,Reverse  = lg.objs.request.Reverse
+                                ,skipped  = skipped
+                                )
+        code = mh.objs.htm.run()
         if code:
-            tmp_file = sh.objs.tmpfile (suffix = '.htm'
-                                       ,Delete = 0
-                                       )
+            tmp_file = sh.objs.get_tmpfile (suffix = '.htm'
+                                           ,Delete = 0
+                                           )
             sh.WriteTextFile (file    = tmp_file
                              ,Rewrite = True
                              ).write(code)
-            sh.Launch(target=sh.objs._tmpfile).auto()
+            sh.Launch(target=sh.objs.get_tmpfile()).launch_default()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
 
     def update_columns(self):
         ''' Update a column number in GUI; adjust the column number
             (both logic and GUI) in special cases.
         '''
         f = '[MClient] mclient.WebFrame.update_columns'
-        fixed = [col for col in lg.objs.request()._cols \
+        fixed = [col for col in lg.objs.get_request().cols \
                  if col != _('Do not set')
                 ]
-        if lg.objs._request._collimit > len(fixed):
+        if lg.objs.request.collimit > len(fixed):
             ''' A dictionary from the 'Phrases' section usually has
                 an 'original + translation' structure, so we need to
                 switch off sorting terms and ensure that the number of
                 columns is divisible by 2
             '''
-            if lg.objs._request.SpecialPage \
-            and lg.objs._request._collimit % 2 != 0:
-                if lg.objs._request._collimit == len(fixed) + 1:
-                    lg.objs._request._collimit += 1
+            if lg.objs.request.SpecialPage \
+            and lg.objs.request.collimit % 2 != 0:
+                if lg.objs.request.collimit == len(fixed) + 1:
+                    lg.objs.request.collimit += 1
                 else:
-                    lg.objs._request._collimit -= 1
-            non_fixed_len = lg.objs._request._collimit - len(fixed)
+                    lg.objs.request.collimit -= 1
+            non_fixed_len = lg.objs.request.collimit - len(fixed)
             self.gui.opt_col.set(non_fixed_len)
             mes = _('Set the column limit to {} ({} in total)')
-            mes = mes.format(non_fixed_len,lg.objs._request._collimit)
-            sh.objs.mes(f,mes,True).info()
+            mes = mes.format(non_fixed_len,lg.objs.request.collimit)
+            sh.objs.get_mes(f,mes,True).show_info()
         else:
-            sub = '{} > {}'.format (lg.objs._request._collimit
+            sub = '{} > {}'.format (lg.objs.request.collimit
                                    ,len(fixed)
                                    )
             mes = _('The condition "{}" is not observed!').format(sub)
-            sh.objs.mes(f,mes).error()
+            sh.objs.get_mes(f,mes).show_error()
 
     def ignore_column(self,col_no):
         f = '[MClient] mclient.WebFrame.ignore_column'
-        if len(lg.objs.request()._cols) > col_no + 1:
-            if lg.objs._request._cols[col_no] == 'transc':
+        if len(lg.objs.get_request().cols) > col_no + 1:
+            if lg.objs.request.cols[col_no] == 'transc':
                 mes = _('Select column "{}" instead of "{}"')
-                mes = mes.format (lg.objs._request._cols[col_no]
-                                 ,lg.objs._request._cols[col_no+1]
+                mes = mes.format (lg.objs.request.cols[col_no]
+                                 ,lg.objs.request.cols[col_no+1]
                                  )
-                sh.objs.mes(f,mes,True).debug()
+                sh.objs.get_mes(f,mes,True).show_debug()
                 col_no += 1
         return col_no
     
@@ -2320,115 +2324,115 @@ class WebFrame:
     def move_next_section(self,event=None,col_no=0):
         f = '[MClient] mclient.WebFrame.move_next_section'
         col_no  = self.ignore_column(col_no=col_no)
-        result1 = objs.blocks_db().block_pos(pos=self._pos)
-        result2 = objs._blocks_db.next_section (pos    = self._pos
-                                               ,col_no = col_no
-                                               )
+        result1 = objs.get_blocksdb().get_block_pos(pos=self.pos)
+        result2 = objs.blocksdb.get_next_section (pos    = self.pos
+                                                 ,col_no = col_no
+                                                 )
         if result1 and result2:
-            result3 = objs._blocks_db.next_col (row_no = result2[1]
-                                               ,col_no = result1[4]
-                                               )
-            result4 = objs._blocks_db.next_col (row_no = result2[1]
-                                               ,col_no = 0
-                                               )
+            result3 = objs.blocksdb.get_next_col (row_no = result2[1]
+                                                 ,col_no = result1[4]
+                                                 )
+            result4 = objs.blocksdb.get_next_col (row_no = result2[1]
+                                                 ,col_no = 0
+                                                 )
             if result3 or result4:
                 if result4 and not result3:
                     pos = result4[0]
                 else:
                     pos = result3[0]
-                result = objs.blocks_db().block_pos_next(pos=pos)
+                result = objs.get_blocksdb().get_next_block_pos(pos=pos)
                 if result:
-                    self._pos = result[0]
+                    self.pos = result[0]
                     self.select()
                     self.shift_screen()
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
         
     # Go to the previous section of column #col_no
     def move_prev_section(self,event=None,col_no=0):
         f = '[MClient] mclient.WebFrame.move_prev_section'
         col_no  = self.ignore_column(col_no=col_no)
-        result1 = objs.blocks_db().block_pos(pos=self._pos)
-        result2 = objs._blocks_db.prev_section (pos    = self._pos
-                                               ,col_no = col_no
-                                               )
+        result1 = objs.get_blocksdb().get_block_pos(pos=self.pos)
+        result2 = objs.blocksdb.get_prev_section (pos    = self.pos
+                                                 ,col_no = col_no
+                                                 )
         if result1 and result2:
-            result3 = objs._blocks_db.next_col (row_no = result2[1]
-                                               ,col_no = result1[4]
-                                               )
-            result4 = objs._blocks_db.next_col (row_no = result2[1]
-                                               ,col_no = 0
-                                               )
+            result3 = objs.blocksdb.get_next_col (row_no = result2[1]
+                                                 ,col_no = result1[4]
+                                                 )
+            result4 = objs.blocksdb.get_next_col (row_no = result2[1]
+                                                 ,col_no = 0
+                                                 )
             if result3 or result4:
                 if result4 and not result3:
                     pos = result4[0]
                 else:
                     pos = result3[0]
-                result = objs.blocks_db().block_pos_next(pos=pos)
+                result = objs.get_blocksdb().get_next_block_pos(pos=pos)
                 if result:
-                    self._pos = result[0]
+                    self.pos = result[0]
                     self.select()
                     self.shift_screen()
                 else:
-                    sh.com.empty(f)
+                    sh.com.rep_empty(f)
             else:
-                sh.com.empty(f)
+                sh.com.rep_empty(f)
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def get_bookmark(self):
         f = '[MClient] mclient.WebFrame.get_bookmark'
-        result = objs.blocks_db().article()
+        result = objs.get_blocksdb().get_article()
         if result:
             if str(result[3]).isdigit():
-                self._pos = result[3]
+                self.pos = result[3]
                 mes = _('Load bookmark {} for article #{}')
-                mes = mes.format(self._pos,objs._blocks_db._articleid)
-                sh.objs.mes(f,mes,True).debug()
+                mes = mes.format(self.pos,objs.blocksdb.artid)
+                sh.objs.get_mes(f,mes,True).show_debug()
             else:
                 mes = _('Wrong input data!')
-                sh.objs.mes(f,mes,True).warning()
+                sh.objs.get_mes(f,mes,True).show_warning()
         else:
-            sh.com.empty(f)
-            result = objs._blocks_db.start()
+            sh.com.rep_empty(f)
+            result = objs.blocksdb.get_start()
             if str(result).isdigit():
-                self._pos = result()
+                self.pos = result()
             else:
                 mes = _('Wrong input data!')
-                sh.objs.mes(f,mes,True).warning()
+                sh.objs.get_mes(f,mes,True).show_warning()
     
     def go_alt(self,event=None,Mouse=False):
         f = '[MClient] mclient.WebFrame.go_alt'
         if Mouse:
-            if objs.blocks_db().Selectable:
-                objs._blocks_db.Selectable = False
-                result = objs._blocks_db.block_pos(pos=self._posn)
-                objs._blocks_db.Selectable = True
+            if objs.get_blocksdb().Selectable:
+                objs.blocksdb.Selectable = False
+                result = objs.blocksdb.get_block_pos(pos=self.posn)
+                objs.blocksdb.Selectable = True
                 if result and result[8] == 'dic' \
-                and result[6] != self._phdic:
-                    dica = objs._blocks_db.next_dica (pos  = result[0]
-                                                     ,dica = result[6]
-                                                     )
+                and result[6] != self.phdic:
+                    dica = objs.blocksdb.get_next_dica (pos  = result[0]
+                                                       ,dica = result[6]
+                                                       )
                     if dica:
                         mes = _('Selected dictionary: "{}". Next dictionary: "{}" (abbreviation), "{}" (full).')
                         mes = mes.format (result[6]
                                          ,dica[0]
                                          ,dica[1]
                                          )
-                        sh.objs.mes(f,mes,True).debug()
+                        sh.objs.get_mes(f,mes,True).show_debug()
                         dica = dica[1]
                     else:
                         mes = _('Selected dictionary: "{}". No next dictionary.')
                         mes = mes.format(result[6])
-                        sh.objs.mes(f,mes,True).debug()
-                    lg.objs.order().rm_auto (dic1 = result[6]
-                                            ,dic2 = dica
-                                            )
-                    objs._blocks_db.delete_bookmarks()
+                        sh.objs.get_mes(f,mes,True).show_debug()
+                    lg.objs.get_order().run_rm_auto (dic1 = result[6]
+                                                    ,dic2 = dica
+                                                    )
+                    objs.blocksdb.delete_bookmarks()
                     self.load_article()
                 else:
                     self.copy_text()
@@ -2438,13 +2442,13 @@ class WebFrame:
             self.copy_text()
     
     def toggle_sel(self,event=None):
-        if objs.blocks_db().Selectable:
-            objs.blocks_db().Selectable = False
-            objs._blocks_db.delete_bookmarks()
+        if objs.get_blocksdb().Selectable:
+            objs.get_blocksdb().Selectable = False
+            objs.blocksdb.delete_bookmarks()
             self.load_article()
         else:
-            objs.blocks_db().Selectable = True
-            objs._blocks_db.delete_bookmarks()
+            objs.get_blocksdb().Selectable = True
+            objs.blocksdb.delete_bookmarks()
             self.load_article()
 
 
@@ -2453,7 +2457,7 @@ class Settings:
 
     def __init__(self):
         self.gui = gi.Settings()
-        self.bindings()
+        self.set_bindings()
 
     def show(self,event=None):
         self.gui.show()
@@ -2461,15 +2465,15 @@ class Settings:
     def close(self,event=None):
         self.gui.close()
     
-    def block_settings(self,event=None):
-        f = '[MClient] mclient.Settings.block_settings'
+    def get_block_settings(self,event=None):
+        f = '[MClient] mclient.Settings.get_block_settings'
         mes = _('Not implemented yet!')
-        sh.objs.mes(f,mes).info()
+        sh.objs.get_mes(f,mes).show_info()
 
-    def priority_settings(self,event=None):
-        f = '[MClient] mclient.Settings.priority_settings'
+    def get_priority_settings(self,event=None):
+        f = '[MClient] mclient.Settings.get_priority_settings'
         mes = _('Not implemented yet!')
-        sh.objs.mes(f,mes).info()
+        sh.objs.get_mes(f,mes).show_info()
 
     def apply(self,event=None):
         f = '[MClient] mclient.Settings.apply'
@@ -2499,36 +2503,36 @@ class Settings:
                 lst[i] = 'transc'
             else:
                 mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-                mes = mes.format (self._cols[i]
+                mes = mes.format (self.cols[i]
                                  ,(_('Dictionaries')
                                   ,_('Word forms')
                                   ,_('Transcription')
                                   ,_('Parts of speech')
                                   )
                                  )
-                sh.objs.mes(f,mes).error()
+                sh.objs.get_mes(f,mes).show_error()
         if set(lst):
             self.gui.close()
-            lg.objs.request()._cols     = tuple(lst)
-            lg.objs._request.SortRows   = self.gui.cbx_no1.get()
-            lg.objs._request.SortTerms  = self.gui.cbx_no2.get()
-            lg.objs._request.Block      = self.gui.cbx_no3.get()
-            lg.objs._request.Prioritize = self.gui.cbx_no4.get()
-            lg.objs._request.Reverse    = self.gui.cbx_no5.get()
-            if lg.objs._request.SortRows:
+            lg.objs.get_request().cols = tuple(lst)
+            lg.objs.request.SortRows   = self.gui.cbx_no1.get()
+            lg.objs.request.SortTerms  = self.gui.cbx_no2.get()
+            lg.objs.request.Block      = self.gui.cbx_no3.get()
+            lg.objs.request.Prioritize = self.gui.cbx_no4.get()
+            lg.objs.request.Reverse    = self.gui.cbx_no5.get()
+            if lg.objs.request.SortRows:
                 self.prioritize_speech()
-                objs.webframe().prioritize_speech()
+                objs.get_webframe().prioritize_speech()
             else:
-                objs.blocks_db().unprioritize_speech()
-            objs.webframe().set_columns()
+                objs.get_blocksdb().unprioritize_speech()
+            objs.get_webframe().set_columns()
         else:
-            #todo: do we really need this?
+            #TODO: do we really need this?
             mes = _('At least one column must be set!')
-            sh.objs.mes(f,mes).warning()
+            sh.objs.get_mes(f,mes).show_warning()
     
-    def bindings(self):
+    def set_bindings(self):
         self.gui.btn_apl.action = self.apply
-        #todo: implement
+        #TODO: implement
         #self.btn_blk.action = self.block_settings
         #self.btn_pri.action = self.priority_settings
         sh.com.bind (obj      = self.gui.obj
@@ -2540,7 +2544,7 @@ class Settings:
 
     def prioritize_speech(self):
         f = '[MClient] mclient.Settings.prioritize_speech'
-        lg.objs.request()
+        lg.objs.get_request()
         choices = (self.gui.opt_sp1.choice,self.gui.opt_sp2.choice
                   ,self.gui.opt_sp3.choice,self.gui.opt_sp4.choice
                   ,self.gui.opt_sp5.choice,self.gui.opt_sp6.choice
@@ -2548,22 +2552,22 @@ class Settings:
                   )
         for i in range(len(choices)):
             if choices[i] == _('Noun'):
-                lg.objs._request._pr_n = len(choices) - i
+                lg.objs.request.pr_n = len(choices) - i
             elif choices[i] == _('Verb'):
-                lg.objs._request._pr_v = len(choices) - i
+                lg.objs.request.pr_v = len(choices) - i
             elif choices[i] == _('Adjective'):
-                lg.objs._request._pr_adj = len(choices) - i
+                lg.objs.request.pr_adj = len(choices) - i
             elif choices[i] == _('Abbreviation'):
-                lg.objs._request._pr_abbr = len(choices) - i
+                lg.objs.request.pr_abbr = len(choices) - i
             elif choices[i] == _('Adverb'):
-                lg.objs._request._pr_adv = len(choices) - i
+                lg.objs.request.pr_adv = len(choices) - i
             elif choices[i] == _('Preposition'):
-                lg.objs._request._pr_prep = len(choices) - i
+                lg.objs.request.pr_prep = len(choices) - i
             elif choices[i] == _('Pronoun'):
-                lg.objs._request._pr_pron = len(choices) - i
+                lg.objs.request.pr_pron = len(choices) - i
             else:
                 mes = _('Wrong input data: "{}"!').format(choices[i])
-                sh.objs.mes(f,mes).error()
+                sh.objs.get_mes(f,mes).show_error()
 
 
 
@@ -2571,9 +2575,11 @@ class ThirdParties:
     
     def __init__(self):
         self.gui = gi.ThirdParties()
-        file = sh.objs.pdir().add('..','resources','third parties.txt')
-        self._text = sh.ReadTextFile(file).get()
-        self.gui.obj.insert(text=self._text)
+        file = sh.objs.get_pdir().add ('..','resources'
+                                      ,'third parties.txt'
+                                      )
+        self.text = sh.ReadTextFile(file).get()
+        self.gui.obj.insert(text=self.text)
         self.gui.obj.disable()
     
     def show(self,event=None):
@@ -2592,10 +2598,10 @@ class Suggest:
     
     def select(self,event=None):
         self._select()
-        objs.webframe().go()
+        objs.get_webframe().go()
         
     def _select(self,event=None):
-        ''' #note: this works differently in Windows and Linux.
+        ''' #NOTE: this works differently in Windows and Linux.
             In Windows selecting an item will hide suggestions,
             in Linux they will be kept open.
         '''
@@ -2604,57 +2610,57 @@ class Suggest:
             self.entry.clear_text()
             self.entry.insert(text=self.gui.lbox.get())
             self.entry.select_all()
-            self.entry.focus()
+            self.entry.set_focus()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
         
     def move_down(self,event=None):
         f = '[MClient] mclient.Suggest.move_down'
         if self.gui.parent:
             # Necessary to use arrows on ListBox
-            self.gui.lbox.focus()
+            self.gui.lbox.set_focus()
             self.gui.lbox.index_add()
             self.gui.lbox.select()
             self._select()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
         
     def move_up(self,event=None):
         f = '[MClient] mclient.Suggest.move_up'
         if self.gui.parent:
             # Necessary to use arrows on ListBox
-            self.gui.lbox.focus()
+            self.gui.lbox.set_focus()
             self.gui.lbox.index_subtract()
             self.gui.lbox.select()
             self._select()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
         
     def move_top(self,event=None):
         f = '[MClient] mclient.Suggest.move_top'
         if self.gui.parent:
             # Necessary to use arrows on ListBox
-            self.gui.lbox.focus()
+            self.gui.lbox.set_focus()
             self.gui.lbox.move_top()
             self._select()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
                           
     def move_bottom(self,event=None):
         f = '[MClient] mclient.Suggest.move_bottom'
         if self.gui.parent:
             # Necessary to use arrows on ListBox
-            self.gui.lbox.focus()
+            self.gui.lbox.set_focus()
             self.gui.lbox.move_bottom()
             self._select()
         else:
-            sh.com.empty(f)
+            sh.com.rep_empty(f)
     
     def suggest(self,event=None):
         f = '[MClient] mclient.Suggest.suggest'
         if sh.lg.globs['bool']['Autocompletion'] and event:
             text = self.entry.get()
-            #todo: avoid modifiers
+            #TODO: avoid modifiers
             if text:
                 ''' - Retrieving suggestions online is very slow, so we
                       just do this after a space. We may bind this
@@ -2674,18 +2680,18 @@ class Suggest:
                         self.gui.show (lst    = list(text)
                                       ,action = self._select
                                       )
-                        self.bindings()
-                        sh.objs.root().idle()
+                        self.set_bindings()
+                        sh.objs.get_root().update_idle()
                         sh.AttachWidget (obj1   = self.entry
                                         ,obj2   = self.gui.parent
                                         ,anchor = 'NE'
                                         ).run()
                     else:
-                        sh.com.empty(f)
+                        sh.com.rep_empty(f)
             else:
                 self.gui.close()
     
-    def bindings(self):
+    def set_bindings(self):
         if self.gui.parent:
             sh.com.bind (obj      = self.gui.parent
                         ,bindings = '<ButtonRelease-1>'
@@ -2699,29 +2705,29 @@ objs = Objects()
 if  __name__ == '__main__':
     f = '[MClient] mclient.__main__'
     sh.com.start()
-    lg.objs.plugins(Debug=False)
-    lg.objs.default(product=gi.PRODUCT)
-    if lg.objs._default.Success:
-        timed_update()
-        objs.webframe().reset()
-        ''' #todo: clean this up
+    lg.objs.get_plugins(Debug=False)
+    lg.objs.get_default(product=gi.PRODUCT)
+    if lg.objs.default.Success:
+        run_timed_update()
+        objs.get_webframe().reset()
+        ''' #TODO: clean this up
             'Settings' is called in 'WebFrame.update_buttons'.
             Since both 'Settings' and 'WebFrame' are 'Top', we need
             to close 'Settings' and call 'center' manually
             (AutoCr=1 and 'center' or 'center' twice) before 'close').
         '''
-        objs.settings().gui.parent.center()
-        objs.search().gui.parent.parent.center()
-        objs.history().gui.parent.center()
-        objs._settings.close()
-        objs._search.close()
-        objs._history.close()
-        objs._webframe.show()
-        lg.objs._plugins.quit()
+        objs.get_settings().gui.parent.center()
+        objs.get_search().gui.parent.parent.center()
+        objs.get_history().gui.parent.center()
+        objs.settings.close()
+        objs.search.close()
+        objs.history.close()
+        objs.webframe.show()
+        lg.objs.plugins.quit()
         kl_mod.keylistener.cancel()
     else:
         mes = _('Unable to continue due to an invalid configuration.')
-        sh.objs.mes(f,mes).warning()
+        sh.objs.get_mes(f,mes).show_warning()
     mes = _('Goodbye!')
-    sh.objs.mes(f,mes,True).debug()
+    sh.objs.get_mes(f,mes,True).show_debug()
     sh.com.end()
