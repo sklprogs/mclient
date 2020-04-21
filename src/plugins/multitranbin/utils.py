@@ -38,6 +38,9 @@ class Tests:
     def get_patch(self):
         f = '[MClient] plugins.multitranbin.utils.Tests.get_patch'
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
+        # A comment added for "Zerah"
+        pos = 132779143
+        patterns = ['!!', '"!', '#!', '$!', '%!', '&!', "'!", '(!', ')!', '*!', '+!', ',!', '-!', '.!', '/!', '0!', '1!', '2!', '3!', '4!', '5!', '6!', '7!', '8!', '9!', ':!', ';!', '<!', '=!', '>!', '?!', '@!', 'A!', 'B!', 'C!', 'D!', 'E!', 'F!', 'G!', 'H!', 'I!', 'J!', 'K!', 'L!', 'M!', 'N!', 'O!', 'P!', 'Q!', 'R!', 'S!', 'T!', 'U!', 'V!', 'W!', 'X!', 'Y!', 'Z!', '[!', '\\!', ']!', '^!', '_!', '`!', 'a!', 'b!', 'c!', 'd!', 'e!', 'f!', 'g!', 'h!', 'i!', 'j!', 'k!', 'l!', 'm!', 'n!', 'o!', 'p!', 'q!', 'r!', 's!', 't!', 'u!', 'v!', 'w!', 'x!', 'y!', 'z!', '{!', '|!', '}!', '~!', 'Ђ!', 'Ѓ!', '‚!', 'ѓ!', '„!', '…!', '†!', '‡!', '€!', '‰!', 'Љ!', '‹!', 'Њ!', 'Ќ!', 'Ћ!', 'Џ!', 'ђ!', '‘!', '’!', '“!', '”!', '•!', '–!', '—!', '™!', 'љ!', '›!', 'њ!', 'ќ!', 'ћ!', 'џ!', 'Ў!', 'ў!', 'Ћ!', '¤!', 'Ґ!', '¦!', '§!', 'Ё!', '©!', 'Є!', '«!', '¬!', '®!', 'Ї!', '°!', '±!', 'І!', 'і!', 'ґ!', 'µ!', '¶!', '·!', 'ё!', '№!', 'є!', '»!', 'ј!', 'Ѕ!', 'ѕ!', 'ї!', 'А!', 'Б!', 'В!', 'Г!', 'Д!', 'Е!', 'Ж!', 'З!', 'И!', 'Й!', 'К!', 'Л!', 'М!', 'Н!', 'О!', 'П!', 'Р!', 'С!', 'Т!', 'У!', 'Ф!', 'Х!', 'Ц!', 'Ч!', 'Ш!', 'Щ!', 'Ъ!', 'Ы!', 'Ь!', 'Э!', 'Ю!', 'Я!', 'а!', 'б!', 'в!', 'г!', 'д!', 'е!', 'ж!', 'з!', 'и!', 'й!', 'к!', 'л!', 'м!', 'н!', 'о!', 'п!', 'р!', 'с!', 'т!', 'у!', 'ф!', 'х!', 'ц!', 'ч!', 'ш!', 'щ!', 'ъ!', 'ы!', 'ь!', 'э!', 'ю!', 'я!']
         """
         patterns = ['!','"','#','$','%','&',"'",'(',')','*','+',','
                    ,'-','.','/','0','1','2','3','4','5','6','7','8'
@@ -61,15 +64,6 @@ class Tests:
                    ,'ы','ь','э','ю','я'
                    ]
         """
-        """
-        patterns = ['aa','ab','ac','ad','ae','af','ag','ah','ai','aj'
-                   ,'ak','al','am','an','ao','ap','aq','ar','as','at'
-                   ,'au','av','aw','ax','aw','ay','az'
-                   ]
-        """
-        patterns = ['pneumonoultramicroscopicsilicovolcanoconiosis']
-        # A comment added for "Zerah"
-        pos = 132779143
         messages = []
         deltas = []
         for pattern in patterns:
@@ -109,7 +103,7 @@ class Tests:
         #sh.com.run_fast_debug(mes)
         filew = '/tmp/memory.txt'
         sh.WriteTextFile(filew).write(mes)
-        sh.Launch(filew).default()
+        sh.Launch(filew).launch_default()
     
     def corrupt(self):
         f = '[MClient] plugins.multitranbin.utils.Tests.corrupt'
@@ -1476,4 +1470,7 @@ if __name__ == '__main__':
     #file2 = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
     #file1 = '/home/pete/tmp/Multitran/network/eng_rus/typein.er'
     #file2 = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/typein.er'
+    #file1 = '/home/pete/tmp/Multitran/network/eng_rus/dict.ert'
+    #file1 = '/tmp/dict.ert (paramount)'
+    #file2 = '/tmp/dict.ert (paramounu)'
     #CompareBinaries(file1,file2).show_menu()
