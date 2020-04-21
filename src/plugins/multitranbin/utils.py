@@ -18,28 +18,84 @@ DUMP1  = sh.Home().add('tmp','dump1')
 DUMP2  = sh.Home().add('tmp','dump2')
 
 
+class Xor:
+    
+    def __init__(self,bytes1,bytes2):
+        self.set_values()
+        self.bytes1 = bytes1
+        self.bytes2 = bytes2
+        self.check()
+    
+    def set_values(self):
+        self.Success = True
+        self.bytes1 = b''
+        self.bytes2 = b''
+        self.ints1 = []
+        self.ints2 = []
+        self.syms = []
+    
+    def check(self):
+        f = '[MClient] plugins.multitranbin.utils.Xor.check'
+        if self.bytes1 and self.bytes2:
+            if len(self.bytes1) == len(self.bytes2):
+                return True
+            else:
+                self.Success = False
+                sub = '{} == {}'.format (len(self.bytes1)
+                                        ,len(self.bytes2)
+                                        )
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.get_mes(f,mes,True).show_warning()
+        else:
+            self.Success = False
+            sh.com.rep_empty(f)
+        
+    def report(self):
+        f = '[MClient] plugins.multitranbin.utils.Xor.report'
+        if self.Success:
+            headers  = ('NO','ORIG','INT1','INT2')
+            nos = [i + 1 for i in range(len(self.syms))]
+            iterable = (nos,self.syms,self.ints1,self.ints2)
+            mes = sh.FastTable (headers  = headers
+                               ,iterable = iterable
+                               ,sep      = sh.lg.nbspace * 2
+                               ).run()
+            return mes
+        else:
+            sh.com.cancel(f)
+    
+    def analyze(self):
+        f = '[MClient] plugins.multitranbin.utils.Xor.analyze'
+        if self.Success:
+            for i in range(len(self.bytes1)):
+                decoded = self.bytes1[i:i+1].decode(gt.CODING,'replace')
+                decoded = '"{}"'.format(decoded)
+                self.syms.append(decoded)
+                self.ints1.append(self.bytes1[i])
+                self.ints2.append(self.bytes2[i])
+        else:
+            sh.com.cancel(f)
+
+
+
 class Tests:
     
     def analyze_xor(self):
         f = '[MClient] plugins.multitranbin.utils.Tests.analyze_xor'
-        '''
         bytes1 = b'Bullshit!'
         bytes2 = b'-fcivqx\x89<'
-        '''
-        # ay... - az...
-        bytes1 = b'''\t&\xda\xd8oG\xae\x9c\xe5/\r\xc7\xe5\x08\r\xdf$\xf4\xd9\x96)\xaa'''
-        bytes2 = b'''\t\xd8\x97\x82\xee\xc2>\xd7\xfeg/v}\x98RB\xb5\xa8\xaa\xcc\x99n'''
-        mes = com.analyze_xor(bytes1,bytes2)
-        if mes:
-            sh.com.run_fast_debug(mes[0])
-        else:
-            sh.com.rep_empty(f)
+        ixor = Xor(bytes1,bytes2)
+        ixor.analyze()
+        mes = ixor.report()
+        sh.com.run_fast_debug(mes)
     
     def get_patch(self):
         f = '[MClient] plugins.multitranbin.utils.Tests.get_patch'
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
         # A comment added for "Zerah"
         pos = 132779143
+        sympos = 0
         patterns = ['!!', '"!', '#!', '$!', '%!', '&!', "'!", '(!', ')!', '*!', '+!', ',!', '-!', '.!', '/!', '0!', '1!', '2!', '3!', '4!', '5!', '6!', '7!', '8!', '9!', ':!', ';!', '<!', '=!', '>!', '?!', '@!', 'A!', 'B!', 'C!', 'D!', 'E!', 'F!', 'G!', 'H!', 'I!', 'J!', 'K!', 'L!', 'M!', 'N!', 'O!', 'P!', 'Q!', 'R!', 'S!', 'T!', 'U!', 'V!', 'W!', 'X!', 'Y!', 'Z!', '[!', '\\!', ']!', '^!', '_!', '`!', 'a!', 'b!', 'c!', 'd!', 'e!', 'f!', 'g!', 'h!', 'i!', 'j!', 'k!', 'l!', 'm!', 'n!', 'o!', 'p!', 'q!', 'r!', 's!', 't!', 'u!', 'v!', 'w!', 'x!', 'y!', 'z!', '{!', '|!', '}!', '~!', 'Ђ!', 'Ѓ!', '‚!', 'ѓ!', '„!', '…!', '†!', '‡!', '€!', '‰!', 'Љ!', '‹!', 'Њ!', 'Ќ!', 'Ћ!', 'Џ!', 'ђ!', '‘!', '’!', '“!', '”!', '•!', '–!', '—!', '™!', 'љ!', '›!', 'њ!', 'ќ!', 'ћ!', 'џ!', 'Ў!', 'ў!', 'Ћ!', '¤!', 'Ґ!', '¦!', '§!', 'Ё!', '©!', 'Є!', '«!', '¬!', '®!', 'Ї!', '°!', '±!', 'І!', 'і!', 'ґ!', 'µ!', '¶!', '·!', 'ё!', '№!', 'є!', '»!', 'ј!', 'Ѕ!', 'ѕ!', 'ї!', 'А!', 'Б!', 'В!', 'Г!', 'Д!', 'Е!', 'Ж!', 'З!', 'И!', 'Й!', 'К!', 'Л!', 'М!', 'Н!', 'О!', 'П!', 'Р!', 'С!', 'Т!', 'У!', 'Ф!', 'Х!', 'Ц!', 'Ч!', 'Ш!', 'Щ!', 'Ъ!', 'Ы!', 'Ь!', 'Э!', 'Ю!', 'Я!', 'а!', 'б!', 'в!', 'г!', 'д!', 'е!', 'ж!', 'з!', 'и!', 'й!', 'к!', 'л!', 'м!', 'н!', 'о!', 'п!', 'р!', 'с!', 'т!', 'у!', 'ф!', 'х!', 'ц!', 'ч!', 'ш!', 'щ!', 'ъ!', 'ы!', 'ь!', 'э!', 'ю!', 'я!']
         """
         patterns = ['!','"','#','$','%','&',"'",'(',')','*','+',','
@@ -65,12 +121,13 @@ class Tests:
                    ]
         """
         messages = []
-        deltas = []
+        ints1 = []
+        ints2 = []
         for pattern in patterns:
-            delta = 0
             if pattern is None:
                 mes = _('Warning: this step will be skipped!')
                 messages.append(mes)
+                messages.append('')
             else:
                 mes = _('Pattern: "{}"').format(pattern)
                 print(mes)
@@ -79,30 +136,25 @@ class Tests:
                 result = com.get_patch (file    = file
                                        ,pattern = pattern
                                        ,pos     = pos
+                                       ,sympos  = sympos
                                        )
                 if result:
-                    mes, delta = result[0], result[1]
-                    messages.append(mes)
-            deltas.append(delta)
+                    messages.append(result[0])
+                    ints1.append(result[1])
+                    ints2.append(result[2])
         messages.append('')
         messages.append('')
-        mes = _('SHORT SUMMARY:')
+        mes = _('Original positions:')
         messages.append(mes)
-        subs = []
-        for i in range(len(patterns)):
-            if i > 0:
-                offset = deltas[i] - deltas[i-1]
-            else:
-                offset = deltas[i]
-            if offset > 0:
-                offset = '+{}'.format(offset)
-            mes = '"{}": {}'.format(patterns[i],offset)
-            subs.append(mes)
-        messages.append('; '.join(subs))
+        messages.append(str(ints1))
+        mes = _('Final positions:')
+        messages.append(mes)
+        messages.append(str(ints2))
         mes = '\n'.join(messages)
+        sh.Clipboard().copy(str(ints2))
         #sh.com.run_fast_debug(mes)
-        filew = '/tmp/memory.txt'
-        sh.WriteTextFile(filew).write(mes)
+        filew = '/tmp/result.txt'
+        sh.WriteTextFile(filew,True).write(mes)
         sh.Launch(filew).launch_default()
     
     def corrupt(self):
@@ -924,7 +976,7 @@ class Navigate(gt.Binary):
 
 class Commands:
     
-    def get_patch(self,file,pattern,pos,add_pos=20):
+    def get_patch(self,file,pattern,pos,add_pos=20,sympos=0):
         f = '[MClient] plugins.multitranbin.utils.Commands.get_patch'
         if file and pattern:
             ibin = gt.Binary(file)
@@ -939,63 +991,25 @@ class Commands:
                 lstring = "b'''{}'''".format(lstring)
                 ibin.close()
                 messages = []
-                #mes = _('Pattern: "{}"').format(pattern)
                 mes = '"{}"'.format(pattern)
                 messages.append(mes)
                 messages.append(string)
                 messages.append(lstring)
-                messages.append('')
-                result = self.analyze_xor(coded,chunk)
-                if result:
-                    mes, delta = result[0], result[1]
-                else:
-                    mes, delta = '', 0
-                messages.append(mes)
-                return('\n'.join(messages),delta)
+                ixor = Xor(coded,chunk)
+                ixor.analyze()
+                mes = ixor.report()
+                if mes:
+                    messages.append(mes)
+                try:
+                    int1 = ixor.bytes1[sympos]
+                    int2 = ixor.bytes2[sympos]
+                except IndexError:
+                    int1 = int2 = -1
+                    mes = _('Wrong input data!')
+                    sh.objs.get_mes(f,mes).show_warning()
+                return('\n'.join(messages),int1,int2)
             else:
                 sh.com.cancel(f)
-        else:
-            sh.com.rep_empty(f)
-    
-    def analyze_xor(self,bytes1,bytes2):
-        f = '[MClient] plugins.multitranbin.utils.Commands.analyze_xor'
-        if bytes1 and bytes2:
-            if len(bytes1) == len(bytes2):
-                offsets = []
-                deltas  = []
-                syms    = []
-                ints1   = []
-                ints2   = []
-                prev    = 0
-                delta   = 0
-                for i in range(len(bytes1)):
-                    offset = bytes2[i] - bytes1[i]
-                    delta  = offset - prev
-                    prev   = offset
-                    offsets.append(offset)
-                    deltas.append(delta)
-                    decoded = bytes1[i:i+1].decode(gt.CODING,'replace')
-                    decoded = '"{}"'.format(decoded)
-                    syms.append(decoded)
-                    ints1.append(bytes1[i])
-                    ints2.append(bytes2[i])
-                nos = [i + 1 for i in range(len(syms))]
-                headers  = ('NO','ORIG','INT1','INT2'
-                           ,'OFFSET','DELTA'
-                           )
-                iterable = (nos,syms,ints1
-                           ,ints2,offsets,deltas
-                           )
-                mes = sh.FastTable (headers  = headers
-                                   ,iterable = iterable
-                                   ,sep      = sh.lg.nbspace * 2
-                                   ).run()
-                return(mes,delta)
-            else:
-                sub = '{} == {}'.format(len(bytes1),len(bytes2))
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.rep_empty(f)
     
