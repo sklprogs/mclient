@@ -3,8 +3,8 @@
 
 import re
 import urllib.parse
-import skl_shared2.shared as sh
-from skl_shared2.localize import _
+import skl_shared.shared as sh
+from skl_shared.localize import _
 
 sep_words_found = 'найдены отдельные слова'
 

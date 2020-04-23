@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import skl_shared2.shared        as sh
+import skl_shared.shared        as sh
 import plugins.stardict.get     as gt
 import plugins.stardict.cleanup as cu
 import plugins.stardict.tags    as tg
 import plugins.stardict.elems   as el
-from skl_shared2.localize import _
+from skl_shared.localize import _
 
 
 

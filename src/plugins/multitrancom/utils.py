@@ -6,8 +6,8 @@ import os
 import html
 import operator
 import urllib.request
-import skl_shared2.shared as sh
-from skl_shared2.localize import _
+import skl_shared.shared as sh
+from skl_shared.localize import _
 
 ''' It seems to be highly difficult to extract abbreviation - full-title
     pairs since, unlike multitran.ru, there are no '<a title' tags, such

@@ -2,8 +2,8 @@
 # -*- coding: UTF-8 -*-
 
 import struct
-import skl_shared2.shared as sh
-from skl_shared2.localize import _
+import skl_shared.shared as sh
+from skl_shared.localize import _
 
 CODING = 'windows-1251'
 

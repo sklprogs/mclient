@@ -6,9 +6,9 @@ import io
 import urllib.request
 import html
 import ssl
-import skl_shared2.shared as sh
+import skl_shared.shared as sh
 import manager
-from skl_shared2.localize import _
+from skl_shared.localize import _
 
 
 sample_block = '''Австралийский сленг

@@ -2,8 +2,8 @@
 # -*- coding: UTF-8 -*-
 
 import tkinterhtml       as th
-import skl_shared2.shared as sh
-from skl_shared2.localize import _
+import skl_shared.shared as sh
+from skl_shared.localize import _
 
 PRODUCT = 'MClient'
 VERSION = '6.2.4'

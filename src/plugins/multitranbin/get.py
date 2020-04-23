@@ -7,8 +7,8 @@ import struct
 import codecs
 import locale
 import itertools
-import skl_shared2.shared as sh
-from skl_shared2.localize import _
+import skl_shared.shared as sh
+from skl_shared.localize import _
 
 # Do not localize language names here
 CODING   = 'windows-1251'
