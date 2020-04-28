@@ -141,7 +141,7 @@ class Sources:
         self.set_scroll()
         self.set_bindings()
         self.set_title()
-        self.btn_apl.set_focus()
+        self.btn_apl.focus()
         
     def set_frames(self):
         self.frm_prm = sh.Frame (parent = self.parent)
@@ -310,7 +310,7 @@ class ThirdParties:
         self.parent = self.obj.parent
         sh.Geometry(self.parent).set('800x600')
         self.set_bindings()
-        self.obj.set_focus()
+        self.obj.focus()
     
     def show(self,event=None):
         self.obj.show()
@@ -331,7 +331,7 @@ class SearchArticle:
                                 )
         self.widget = self.parent.widget
         self.set_bindings()
-        self.parent.set_focus()
+        self.parent.focus()
     
     def set_bindings(self):
         sh.com.bind (obj      = self.parent
@@ -418,7 +418,7 @@ class History:
 
     def show(self,event=None):
         self.Active = True
-        self.obj.set_focus()
+        self.obj.focus()
         self.parent.show()
 
     def close(self,event=None):
@@ -579,7 +579,7 @@ class WebFrame:
         self.set_icon()
         self.set_title()
         self.set_bindings()
-        self.ent_src.set_focus()
+        self.ent_src.focus()
         self.obj.widget.protocol("WM_DELETE_WINDOW",self.close)
 
     def set_frame_panel(self):

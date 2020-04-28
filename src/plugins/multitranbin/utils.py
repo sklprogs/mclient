@@ -81,6 +81,17 @@ class Xor:
 
 class Tests:
     
+    def gen_patterns(self):
+        f = '[MClient] plugins.multitranbin.utils.Tests.gen_patterns'
+        table = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя'
+        i = 3
+        len_ = 5
+        result = com.gen_patterns (i      = i
+                                  ,length = len_
+                                  ,table  = table
+                                  )
+        sh.com.run_fast_debug(str(result))
+    
     def analyze_xor(self):
         f = '[MClient] plugins.multitranbin.utils.Tests.analyze_xor'
         bytes1 = b'Bullshit!'
@@ -95,10 +106,10 @@ class Tests:
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
         # A comment added for "Zerah"
         pos = 132779143
-        sympos = 4
+        sympos = 1
+        #table = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя'
         patterns = com.gen_patterns (i      = sympos
-                                    ,max_   = sympos + 1
-                                    ,repeat = '!'
+                                    ,length = 2
                                     )
         messages = []
         ints1 = []
@@ -961,7 +972,7 @@ class Commands:
     
     def set_values(self):
         # 'windows-1251' in ascending order
-        self.table = ['!','"','#','$','%','&',"'",'(',')','*','+',','
+        self.table = ('!','"','#','$','%','&',"'",'(',')','*','+',','
                      ,'-','.','/','0','1','2','3','4','5','6','7','8'
                      ,'9',':',';','<','=','>','?','@','A','B','C','D'
                      ,'E','F','G','H','I','J','K','L','M','N','O','P'
@@ -981,16 +992,20 @@ class Commands:
                      ,'е','ж','з','и','й','к','л','м','н','о','п'
                      ,'р','с','т','у','ф','х','ц','ч','ш','щ','ъ'
                      ,'ы','ь','э','ю','я'
-                     ]
+                     )
     
-    def gen_patterns(self,i=4,max_=5,repeat='!'):
+    def gen_patterns (self,i=4,length=5,repeat='!'
+                     ,table=[]
+                     ):
+        if not table:
+            table = self.table
         patterns = []
-        while i < max_:
-            prefix = repeat * i
-            for sym in self.table:
-                if sym is not None:
-                    patterns.append(prefix+sym)
-            i += 1
+        add = repeat * length
+        for sym in table:
+            if sym is not None:
+                item = list(add)
+                item[i] = sym
+                patterns.append(''.join(item))
         return patterns
     
     def get_patch(self,file,pattern,pos,add_pos=20,sympos=0):
@@ -1496,6 +1511,7 @@ if __name__ == '__main__':
     #Tests().compare()
     #Tests().show_dumps()
     Tests().get_patch()
+    #Tests().gen_patterns()
     #Tests().analyze_xor()
     #file1 = '/tmp/dict.ert'
     #file2 = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'

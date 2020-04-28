@@ -864,7 +864,7 @@ class WebFrame:
             triggered by History which should remain active.
         '''
         self.go_search()
-        self.gui.ent_src.set_focus()
+        self.gui.ent_src.focus()
     
     def reset_opt(self,default=_('Multitran')):
         f = '[MClient] mclient.WebFrame.reset_opt'
@@ -1774,7 +1774,7 @@ class WebFrame:
         lg.objs.get_plugins().set(lg.objs.request.source)
         self.reset_opt(lg.objs.request.source)
         self.go_search()
-        self.gui.ent_src.set_focus()
+        self.gui.ent_src.focus()
 
     def get_url(self):
         f = '[MClient] mclient.WebFrame.get_url'
@@ -2150,7 +2150,7 @@ class WebFrame:
         self.reset_columns()
         objs.get_blocksdb().delete_bookmarks()
         self.load_article()
-        self.gui.ent_src.set_focus()
+        self.gui.ent_src.focus()
 
     def reload(self,event=None):
         objs.get_blocksdb().clear_cur()
@@ -2610,7 +2610,7 @@ class Suggest:
             self.entry.clear_text()
             self.entry.insert(text=self.gui.lbox.get())
             self.entry.select_all()
-            self.entry.set_focus()
+            self.entry.focus()
         else:
             sh.com.rep_empty(f)
         
@@ -2618,7 +2618,7 @@ class Suggest:
         f = '[MClient] mclient.Suggest.move_down'
         if self.gui.parent:
             # Necessary to use arrows on ListBox
-            self.gui.lbox.set_focus()
+            self.gui.lbox.focus()
             self.gui.lbox.index_add()
             self.gui.lbox.select()
             self._select()
@@ -2629,7 +2629,7 @@ class Suggest:
         f = '[MClient] mclient.Suggest.move_up'
         if self.gui.parent:
             # Necessary to use arrows on ListBox
-            self.gui.lbox.set_focus()
+            self.gui.lbox.focus()
             self.gui.lbox.index_subtract()
             self.gui.lbox.select()
             self._select()
@@ -2640,7 +2640,7 @@ class Suggest:
         f = '[MClient] mclient.Suggest.move_top'
         if self.gui.parent:
             # Necessary to use arrows on ListBox
-            self.gui.lbox.set_focus()
+            self.gui.lbox.focus()
             self.gui.lbox.move_top()
             self._select()
         else:
@@ -2650,7 +2650,7 @@ class Suggest:
         f = '[MClient] mclient.Suggest.move_bottom'
         if self.gui.parent:
             # Necessary to use arrows on ListBox
-            self.gui.lbox.set_focus()
+            self.gui.lbox.focus()
             self.gui.lbox.move_bottom()
             self._select()
         else:
