@@ -51,7 +51,7 @@ class CleanUp:
                     self.text = self.text[0:pos] + fragm \
                                      + self.text[pos1:]
                 else:
-                    mes = _('Malformed HTM code!')
+                    mes = _('Malformed HTML code!')
                     sh.objs.get_mes(f,mes).show_warning()
         else:
             sh.com.rep_empty(f)
