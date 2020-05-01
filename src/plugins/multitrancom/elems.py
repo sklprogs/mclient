@@ -315,31 +315,6 @@ class Elems:
                         self.blocks[i], self.blocks[i+1] = \
                         self.blocks[i+1], self.blocks[i]
     
-    def delete_set_form(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.delete_set_form'
-        patterns = ['только в заданном порядке \d+'
-                   ,'только заданная форма слов \d+'
-                   ,'только в заданной форме \d+'
-                   ,'только в указанном порядке \d+'
-                   ,'exact matches only \d+'
-                   ,'in specified order only \d+'
-                   ]
-        i = 0
-        count = 0
-        while i < len(self.blocks):
-            for pattern in patterns:
-                if re.match(pattern,self.blocks[i].text):
-                    del self.blocks[i]
-                    i -= 1
-                    count += 1
-                    break
-            i += 1
-        if count:
-            mes = _('{} blocks have been deleted').format(count)
-            sh.objs.get_mes(f,mes,True).show_info()
-        else:
-            sh.com.rep_lazy(f)
-    
     def delete_phantom(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_phantom'
         ''' Delete a block that looks like a WFORM but has pluses
@@ -560,7 +535,6 @@ class Elems:
             self.delete_subjects()
             self.delete_search()
             self.delete_phantom()
-            self.delete_set_form()
             self.delete_numeration()
             # Reassign types
             self.fix_thesaurus()
@@ -648,14 +622,17 @@ class Elems:
         f = '[MClient] plugins.multitrancom.elems.Elems.trash'
         patterns = ['|',';',':','(',')','-->','// -->','⇄','точно'
                    ,'все формы','точные совпадения','Сообщить об ошибке'
+                   ,'только в указанном порядке'
+                   ,'только в заданной форме','all forms'
+                   ,'exact matches only','in specified order only'
                    ]
         if self.langs:
             patterns += list(self.langs)
         else:
             sh.com.rep_empty(f)
         self.blocks = [block for block in self.blocks \
-                        if not block.text in patterns
-                       ]
+                       if not block.text in patterns
+                      ]
     
     def add_space(self):
         for i in range(len(self.blocks)):
