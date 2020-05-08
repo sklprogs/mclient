@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import skl_shared.shared        as sh
+import skl_shared.shared as sh
+from skl_shared.localize import _
 import plugins.stardict.get
 import plugins.stardict.run     as sdrun
 import plugins.multitrancom.run as mcrun
 import plugins.multitrandem.run as mbrun
-from skl_shared.localize import _
 
 
 class Plugins:
