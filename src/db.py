@@ -217,8 +217,9 @@ class DB:
         else:
             sh.com.rep_empty(f)
 
-    def print (self,Selected=False,Shorten=False
-              ,MaxRow=20,MaxRows=20,mode='BLOCKS'
+    def print (self,Selected=False
+              ,mode='BLOCKS',maxrow=20
+              ,maxrows=20
               ):
         ''' 'self.dbc.description' is 'None' without performing
             'select' first
@@ -239,12 +240,13 @@ class DB:
                 sh.objs.get_mes(f,mes).show_error()
         headers = [cn[0] for cn in self.dbc.description]
         rows    = self.dbc.fetchall()
-        sh.Table (headers = headers
-                 ,rows    = rows
-                 ,Shorten = Shorten
-                 ,MaxRow  = MaxRow
-                 ,MaxRows = MaxRows
-                 ).print()
+        mes = sh.FastTable (headers   = headers
+                           ,iterable  = rows
+                           ,maxrow    = maxrow
+                           ,maxrows   = maxrows
+                           ,Transpose = True
+                           ).run()
+        sh.com.run_fast_debug(mes)
 
     def update(self,query):
         f = '[MClient] db.DB.update'

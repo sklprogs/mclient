@@ -145,7 +145,7 @@ class Tags:
         text = mccleanup.CleanUp(text).run()
         mctags.Tags (text   = text
                     ,Debug  = DEBUG
-                    ,MaxRow = 30
+                    ,maxrow = 30
                     ).run()
 
 
@@ -173,9 +173,8 @@ class Plugin:
         
         plugins.multitrandem.get.PATH = '/home/pete/.config/mclient/dics/eng_rus'
         iplug = mb.Plugin (Debug   = DEBUG
-                          ,Shorten = True
-                          ,MaxRow  = 20
-                          ,MaxRows = 150
+                          ,maxrow  = 20
+                          ,maxrows = 150
                           )
         
         blocks = iplug.request (url    = url
@@ -193,9 +192,7 @@ class Plugin:
         f = '[MClient] tests.Plugin.run_stardict'
         import plugins.stardict.run as sr
         search = 'about'
-        iplug = sr.Plugin (Debug   = DEBUG
-                          ,Shorten = False
-                          )
+        iplug = sr.Plugin(Debug=DEBUG)
         iplug.request(search=search)
     
     def run_multitrancom(self):
@@ -209,9 +206,8 @@ class Plugin:
         search  = 'нуклеиновый'
         
         iplug = mc.Plugin (Debug   = DEBUG
-                          ,Shorten = True
-                          ,MaxRow  = 20
-                          ,MaxRows = 150
+                          ,maxrow  = 20
+                          ,maxrows = 150
                           )
         iplug.request (url    = url
                       ,search = search
@@ -425,7 +421,7 @@ class Commands:
         mclient.objs.webframe.gui.show()
     
     def translate_cli (self,source,pair
-                      ,search,url,MaxRows=100
+                      ,search,url,maxrows=100
                       ):
         f = '[MClient] tests.Commands.translate_cli'
         import cells as cl
@@ -451,12 +447,12 @@ class Commands:
                          ,Reverse  = False
                          ,ExpandSp = False
                          ,Debug    = DEBUG
-                         ,MaxRows  = MaxRows
+                         ,maxrows  = maxrows
                          )
         cells.run()
     
     def translate (self,source,pair
-                  ,search,url,MaxRows=100
+                  ,search,url,maxrows=100
                   ,GUI=False
                   ):
         if GUI:
@@ -470,7 +466,7 @@ class Commands:
                                ,pair    = pair
                                ,search  = search
                                ,url     = url
-                               ,MaxRows = MaxRows
+                               ,maxrows = maxrows
                                )
             
     

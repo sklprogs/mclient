@@ -14,15 +14,13 @@ from skl_shared.localize import _
 class Plugin:
     
     def __init__ (self,iabbr=None,Debug=False
-                 ,Shorten=True,MaxRow=20
-                 ,MaxRows=1000
+                 ,maxrow=20,maxrows=1000
                  ):
         self.set_values()
         self.iabbr   = iabbr
         self.Debug   = Debug
-        self.Shorten = Shorten
-        self.MaxRow  = MaxRow
-        self.MaxRows = MaxRows
+        self.maxrow  = maxrow
+        self.maxrows = maxrows
     
     def set_values(self):
         self.htm    = ''
@@ -117,9 +115,8 @@ class Plugin:
             self.text = ''
         self.blocks = tg.Tags (text    = self.text
                               ,Debug   = self.Debug
-                              ,Shorten = self.Shorten
-                              ,MaxRow  = self.MaxRow
-                              ,MaxRows = self.MaxRows
+                              ,maxrow  = self.maxrow
+                              ,maxrows = self.maxrows
                               ).run()
         if self.blocks:
             for block in self.blocks:
@@ -131,8 +128,7 @@ class Plugin:
                                ,langs   = pr.objs.get_pairs().get_alive()
                                ,search  = search
                                ,Debug   = self.Debug
-                               ,Shorten = self.Shorten
-                               ,MaxRow  = self.MaxRow
-                               ,MaxRows = self.MaxRows
+                               ,maxrow  = self.maxrow
+                               ,maxrows = self.maxrows
                                ).run()
         return self.blocks

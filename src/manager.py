@@ -13,8 +13,8 @@ class Plugins:
     
     def __init__ (self,sdpath,mbpath
                  ,timeout=6,iabbr=None
-                 ,Debug=False,Shorten=True
-                 ,MaxRow=20,MaxRows=20
+                 ,Debug=False,maxrow=20
+                 ,maxrows=1000
                  ):
         self.sdplugin = None
         self.mcplugin = None
@@ -27,9 +27,8 @@ class Plugins:
         self.timeout = timeout
         self.iabbr   = iabbr
         self.Debug   = Debug
-        self.Shorten = Shorten
-        self.MaxRow  = MaxRow
-        self.MaxRows = MaxRows
+        self.maxrow  = maxrow
+        self.maxrows = maxrows
         self.load()
         ''' #NOTE: either put this on top of 'self.sources' or
             synchronize with GUI.
@@ -155,21 +154,18 @@ class Plugins:
         plugins.multitrandem.get.objs.get_all_dics()
         self.sdplugin = sdrun.Plugin (Debug   = self.Debug
                                      ,iabbr   = self.iabbr
-                                     ,Shorten = self.Shorten
-                                     ,MaxRow  = self.MaxRow
-                                     ,MaxRows = self.MaxRows
+                                     ,maxrow  = self.maxrow
+                                     ,maxrows = self.maxrows
                                      )
         self.mcplugin = mcrun.Plugin (Debug   = self.Debug
                                      ,iabbr   = self.iabbr
-                                     ,Shorten = self.Shorten
-                                     ,MaxRow  = self.MaxRow
-                                     ,MaxRows = self.MaxRows
+                                     ,maxrow  = self.maxrow
+                                     ,maxrows = self.maxrows
                                      )
         self.mbplugin = mbrun.Plugin (Debug   = self.Debug
                                      ,iabbr   = self.iabbr
-                                     ,Shorten = self.Shorten
-                                     ,MaxRow  = self.MaxRow
-                                     ,MaxRows = self.MaxRows
+                                     ,maxrow  = self.maxrow
+                                     ,maxrows = self.maxrows
                                      )
     
     def set(self,source):

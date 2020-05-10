@@ -45,17 +45,16 @@ class Block:
 class Elems:
     # Process blocks before dumping to DB
     def __init__ (self,blocks,iabbr,langs=[]
-                 ,Debug=False,Shorten=True
-                 ,MaxRow=20,MaxRows=20,search=''
+                 ,Debug=False,maxrow=20
+                 ,maxrows=20,search=''
                  ):
         f = '[MClient] plugins.multitrandem.elems.Elems.__init__'
         self.dicurls = {}
         self.defins  = []
         self.abbr    = iabbr
         self.Debug   = Debug
-        self.Shorten = Shorten
-        self.MaxRow  = MaxRow
-        self.MaxRows = MaxRows
+        self.maxrow  = maxrow
+        self.maxrows = maxrows
         self.pattern = search.strip()
         self.langs   = langs
         if blocks:
@@ -171,22 +170,29 @@ class Elems:
         if self.Debug:
             mes = _('Debug table:')
             sh.objs.get_mes(f,mes,True).show_debug()
-            headers = ['TYPE','TEXT','SAMECELL','CELLNO','ROWNO','COLNO'
-                      ,'POS1','POS2'
-                      ]
+            headers = ('NO','TYPE','TEXT','SAME','CELLNO','ROWNO'
+                      ,'COLNO','POS1','POS2'
+                      )
             rows = []
-            for block in self.blocks:
-                rows.append ([block.type_,block.text,block.same
-                             ,block.cellno,block.i,block.j
-                             ,block.first,block.last
+            for i in range(len(self.blocks)):
+                rows.append ([i + 1
+                             ,self.blocks[i].type_
+                             ,self.blocks[i].text
+                             ,self.blocks[i].same
+                             ,self.blocks[i].cellno
+                             ,self.blocks[i].i
+                             ,self.blocks[i].j
+                             ,self.blocks[i].first
+                             ,self.blocks[i].last
                              ]
                             )
-            sh.Table (headers = headers
-                     ,rows    = rows
-                     ,Shorten = self.Shorten
-                     ,MaxRow  = self.MaxRow
-                     ,MaxRows = self.MaxRows
-                     ).print()
+            mes = sh.FastTable (headers   = headers
+                               ,iterable  = rows
+                               ,maxrow    = self.maxrow
+                               ,maxrows   = self.maxrows
+                               ,Transpose = True
+                               ).run()
+            sh.com.run_fast_debug()
         
     def set_transc(self):
         pass

@@ -194,8 +194,7 @@ class AnalyzeTag:
 class Tags:
 
     def __init__ (self,text,Debug=False
-                 ,Shorten=1,MaxRow=20
-                 ,MaxRows=20
+                 ,maxrow=20,maxrows=1000
                  ):
         self.tags   = []
         self.blocks = []
@@ -204,9 +203,8 @@ class Tags:
         else:
             self.text = ''
         self.Debug   = Debug
-        self.Shorten = Shorten
-        self.MaxRow  = MaxRow
-        self.MaxRows = MaxRows
+        self.maxrow  = maxrow
+        self.maxrows = maxrows
 
     def get_tags(self):
         ''' Split the text by closing tags. To speed up, we remove
@@ -253,26 +251,25 @@ class Tags:
         sh.objs.txt.show()
 
     def debug_blocks (self):
-        print('\nTags.debug_blocks (Non-DB blocks):')
-        headers = ['TYPE'
-                  ,'TEXT'
-                  ,'URL'
-                  ,'SAMECELL'
-                  ]
+        f = '[MClient] plugins.stardict.tags.Tags.debug_blocks'
+        headers = ('NO','TYPE','TEXT','URL','SAMECELL')
         rows = []
-        for block in self.blocks:
-            rows.append ([block.type_
-                         ,block.text
-                         ,block.url
-                         ,block.same
+        for i in range(len(self.blocks)):
+            rows.append ([i + 1
+                         ,self.blocks[i].type_
+                         ,self.blocks[i].text
+                         ,self.blocks[i].url
+                         ,self.blocks[i].same
                          ]
                         )
-        sh.Table (headers = headers
-                 ,rows    = rows
-                 ,Shorten = self.Shorten
-                 ,MaxRow  = self.MaxRow
-                 ,MaxRows = self.MaxRows
-                 ).print()
+        mes = sh.FastTable (headers   = headers
+                           ,iterable  = rows
+                           ,maxrow    = self.maxrow
+                           ,maxrows   = self.maxrows
+                           ,Transpose = True
+                           ).run()
+        mes = f + ' (Non-DB blocks)\n\n' + mes
+        sh.com.run_fast_debug(mes)
 
     def debug(self):
         if self.Debug:

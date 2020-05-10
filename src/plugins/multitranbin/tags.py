@@ -23,14 +23,13 @@ ptm2 = b'\x02'
 class Tags:
     #TODO: elaborate setting languages
     def __init__ (self,chunk,Debug=False
-                 ,Shorten=True,MaxRow=20
-                 ,MaxRows=50,lang1=1,lang2=2
+                 ,maxrow=20,maxrows=50
+                 ,lang1=1,lang2=2
                  ):
         self.set_values()
         self.Debug   = Debug
-        self.Shorten = Shorten
-        self.MaxRow  = MaxRow
-        self.MaxRows = MaxRows
+        self.maxrow  = maxrow
+        self.maxrows = maxrows
         self.entry   = chunk
         self.lang1   = lang1
         self.lang2   = lang2
@@ -76,19 +75,22 @@ class Tags:
         f = '[MClient] plugins.multitranbin.tags.Tags.debug_blocks'
         mes = _('Debug table:')
         sh.objs.get_mes(f,mes,True).show_info()
-        headers = ['TYPE','TEXT']
+        headers = ('NO','TYPE','TEXT')
         rows = []
-        for block in self.blocks:
-            rows.append ([block.type_
-                         ,block.text
+        for i in range(len(self.blocks)):
+            rows.append ([i + 1
+                         ,self.blocks[i].type_
+                         ,self.blocks[i].text
                          ]
                         )
-        sh.Table (headers = headers
-                 ,rows    = rows
-                 ,Shorten = self.Shorten
-                 ,MaxRow  = self.MaxRow
-                 ,MaxRows = self.MaxRows
-                 ).print()
+        mes = sh.FastTable (headers   = headers
+                           ,iterable  = rows
+                           ,maxrow    = self.maxrow
+                           ,maxrows   = self.maxrows
+                           ,Transpose = True
+                           ).run()
+        mes = f + '\n\n' + mes
+        sh.com.run_fast_debug(mes)
     
     def debug(self):
         if self.Debug:

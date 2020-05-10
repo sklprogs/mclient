@@ -13,8 +13,7 @@ import plugins.multitrandem.elems as el
 class Plugin:
     
     def __init__ (self,iabbr=None,Debug=False
-                 ,Shorten=True,MaxRow=20
-                 ,MaxRows=50
+                 ,maxrow=20,maxrows=1000
                  ):
         ''' - Extra unused input variables are preserved so it would be
               easy to use an abstract class for all dictionary sources.
@@ -24,9 +23,8 @@ class Plugin:
         self.set_values()
         self.iabbr   = gt.objs.get_files().get_subject()
         self.Debug   = Debug
-        self.Shorten = Shorten
-        self.MaxRow  = MaxRow
-        self.MaxRows = MaxRows
+        self.maxrow  = maxrow
+        self.maxrows = maxrows
     
     def quit(self):
         gt.objs.get_files().close()
@@ -134,30 +132,28 @@ class Plugin:
         for chunk in chunks:
             blocks = tg.Tags (chunk   = chunk
                              ,Debug   = self.Debug
-                             ,Shorten = self.Shorten
-                             ,MaxRow  = self.MaxRow
-                             ,MaxRows = self.MaxRows
+                             ,maxrow  = self.maxrow
+                             ,maxrows = self.maxrows
                              ).run()
             if blocks:
                 # Set speech for words only, not for phrases
                 if iget.speech and not ' ' in search:
                     block = tg.Block()
                     block.select  = 0
-                    block.type_    = 'wform'
+                    block.type_   = 'wform'
                     block.text    = iget.spabbr
                     block.wforma  = iget.spabbr
                     block.wformaf = iget.speech
                     blocks.insert(0,block)
                 self.blocks += blocks
         self.blocks = el.Elems (blocks  = self.blocks
-                                ,iabbr   = self.iabbr
-                                ,langs   = gt.objs.get_all_dics().get_langs()
-                                ,search  = search
-                                ,Debug   = self.Debug
-                                ,Shorten = self.Shorten
-                                ,MaxRow  = self.MaxRow
-                                ,MaxRows = self.MaxRows
-                                ).run()
+                               ,iabbr   = self.iabbr
+                               ,langs   = gt.objs.get_all_dics().get_langs()
+                               ,search  = search
+                               ,Debug   = self.Debug
+                               ,maxrow  = self.maxrow
+                               ,maxrows = self.maxrows
+                               ).run()
         self.get_text()
         self.get_htm()
         return self.blocks

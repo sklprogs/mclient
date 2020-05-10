@@ -323,7 +323,6 @@ class Topics:
             tags.run()
             self.Success = tags.Success
             if self.Success:
-                #cur
                 tags.urls = [tags.urls[0]]
                 for i in range(len(tags.urls)):
                     abbr = Abbr (url   = tags.urls[i]

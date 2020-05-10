@@ -165,11 +165,13 @@ class AnalyzeTag:
         mes = sh.FastTable(iterable,headers).run()
         types = []
         texts = []
+        nos   = []
         for i in range(len(self.blocks)):
+            nos.append(i+1)
             types.append(self.blocks[i].type_)
             texts.append(self.blocks[i].text)
-        iterable = [types,texts]
-        headers = ('TYPE','TEXT')
+        iterable = [nos,types,texts]
+        headers = ('NO','TYPE','TEXT')
         mes += '\n\n' + sh.FastTable(iterable,headers).run()
         mes += '\n' + 'DICAF: "{}"'.format(self.dicaf)
         sh.objs.txt = None
@@ -308,16 +310,14 @@ class AnalyzeTag:
 class Tags:
 
     def __init__ (self,text,Debug=False
-                 ,Shorten=True,MaxRow=50
-                 ,MaxRows=50
+                 ,maxrow=50,maxrows=1000
                  ):
         self.set_values()
         if text:
             self.text = list(text)
         self.Debug   = Debug
-        self.Shorten = Shorten
-        self.MaxRow  = MaxRow
-        self.MaxRows = MaxRows
+        self.maxrow  = maxrow
+        self.maxrows = maxrows
 
     def set_values(self):
         self.tags   = []
@@ -372,8 +372,6 @@ class Tags:
 
     def debug_blocks(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.debug_blocks'
-        mes = _('Debug table:')
-        sh.objs.get_mes(f,mes,True).show_info()
         headers = ('NO','TYPE','TEXT','URL','SAME')
         rows = []
         for i in range(len(self.blocks)):
@@ -386,10 +384,11 @@ class Tags:
                         )
         mes = sh.FastTable (headers   = headers
                            ,iterable  = rows
-                           ,maxrow    = self.MaxRow
-                           ,maxrows   = self.MaxRows
+                           ,maxrow    = self.maxrow
+                           ,maxrows   = self.maxrows
                            ,Transpose = True
                            ).run()
+        mes = f + '\n\n' + mes
         sh.objs.txt = None
         sh.com.run_fast_debug(mes)
 

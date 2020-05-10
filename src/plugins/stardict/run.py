@@ -13,8 +13,7 @@ import plugins.stardict.elems   as el
 class Plugin:
     
     def __init__ (self,iabbr=None,Debug=False
-                 ,Shorten=True,MaxRow=20
-                 ,MaxRows=50
+                 ,maxrow=20,maxrows=1000
                  ):
         ''' - Extra unused input variables are preserved so it would be
               easy to use an abstract class for all dictionary sources.
@@ -24,9 +23,8 @@ class Plugin:
         self.set_values()
         self.iabbr   = iabbr
         self.Debug   = Debug
-        self.Shorten = Shorten
-        self.MaxRow  = MaxRow
-        self.MaxRows = MaxRows
+        self.maxrow  = maxrow
+        self.maxrows = maxrows
     
     def set_values(self):
         self.blocks = []
@@ -98,9 +96,8 @@ class Plugin:
             self.text = ''
         self.blocks = tg.Tags (text    = self.text
                               ,Debug   = self.Debug
-                              ,Shorten = self.Shorten
-                              ,MaxRow  = self.MaxRow
-                              ,MaxRows = self.MaxRows
+                              ,maxrow  = self.maxrow
+                              ,maxrows = self.maxrows
                               ).run()
         self.blocks = el.Elems (blocks = self.blocks
                                ,iabbr  = self.iabbr

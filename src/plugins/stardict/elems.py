@@ -131,24 +131,32 @@ class Elems:
         else:
             sh.com.cancel(f)
     
-    def debug(self,Shorten=1,MaxRow=20,MaxRows=20):
-        print('\nElems.debug (Non-DB blocks):')
-        headers = ['DICA','WFORMA','SPEECHA','TRANSCA','TYPE','TEXT'
-                  ,'SAMECELL','SELECTABLE'
-                  ]
+    def debug(self,maxrow=20,maxrows=1000):
+        f = '[MClient] plugins.stardict.elems.Elems.debug'
+        headers = ('NO','DICA','WFORMA','SPEECHA','TRANSCA','TYPE'
+                  ,'TEXT','SAME','SELECT'
+                  )
         rows = []
-        for block in self.blocks:
-            rows.append ([block.dica,block.wforma,block.speecha
-                         ,block.transca,block.type_,block.text
-                         ,block.same,block.select
+        for i in range(len(self.blocks)):
+            rows.append ([i + 1
+                         ,self.blocks[i].dica
+                         ,self.blocks[i].wforma
+                         ,self.blocks[i].speecha
+                         ,self.blocks[i].transca
+                         ,self.blocks[i].type_
+                         ,self.blocks[i].text
+                         ,self.blocks[i].same
+                         ,self.blocks[i].select
                          ]
                         )
-        sh.Table (headers = headers
-                 ,rows    = rows
-                 ,Shorten = Shorten
-                 ,MaxRow  = MaxRow
-                 ,MaxRows = MaxRows
-                 ).print()
+        mes = sh.FastTable (headers   = headers
+                           ,iterable  = rows
+                           ,maxrow    = maxrow
+                           ,maxrows   = maxrows
+                           ,Transpose = True
+                           ).run()
+        mes = f + ' (Non-DB blocks)\n\n' + mes
+        sh.com.run_fast_debug(mes)
         
     def unite_comments(self):
         i = 0

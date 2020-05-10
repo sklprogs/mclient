@@ -49,8 +49,8 @@ class BlockPrioritize:
     '''
     def __init__(self,data,order,Block=False
                 ,Prioritize=False,phdic=None
-                ,Debug=False,Shorten=True
-                ,MaxRow=20,MaxRows=50
+                ,Debug=False,maxrow=20
+                ,maxrows=50
                 ):
         f = '[MClient] cells.BlockPrioritize.__init__'
         self.blocks     = []
@@ -61,9 +61,8 @@ class BlockPrioritize:
         self.Block      = Block
         self.Prioritize = Prioritize
         self.Debug      = Debug
-        self.Shorten    = Shorten
-        self.MaxRow     = MaxRow
-        self.MaxRows    = MaxRows
+        self.maxrow     = maxrow
+        self.maxrows    = maxrows
         if self.data:
             self.Success = True
         else:
@@ -138,15 +137,7 @@ class BlockPrioritize:
     def debug(self):
         f = '[MClient] cells.BlockPrioritize.debug'
         if self.Debug:
-            mes = _('Debug table:')
-            sh.objs.get_mes(f,mes,True).show_info()
-            headers = ['NO'
-                      ,'DICA'
-                      ,'TYPE'
-                      ,'TEXT'
-                      ,'BLOCK'
-                      ,'PRIORITY'          
-                      ]
+            headers = ('NO','DICA','TYPE','TEXT','BLOCK','PRIORITY')
             rows = []
             for block in self.blocks:
                 rows.append ([block.no
@@ -157,12 +148,14 @@ class BlockPrioritize:
                              ,block.priority        
                              ]
                             )
-            sh.Table (headers = headers
-                     ,rows    = rows
-                     ,Shorten = self.Shorten
-                     ,MaxRow  = self.MaxRow
-                     ,MaxRows = self.MaxRows
-                     ).print()
+            mes = sh.FastTable (headers   = headers
+                               ,iterable  = rows
+                               ,maxrow    = self.maxrow
+                               ,maxrows   = self.maxrows
+                               ,Transpose = True
+                               ).run()
+            mes = f + '\n\n' + mes
+            sh.com.run_fast_debug(mes)
 
 
 
@@ -178,7 +171,7 @@ class Cells:
     def __init__ (self,data,cols,collimit=10
                  ,phdic=None,Reverse=False
                  ,ExpandSp=False,Debug=False
-                 ,Shorten=True,MaxRow=20,MaxRows=50
+                 ,maxrow=20,maxrows=50
                  ):
         f = '[MClient] cells.Cells.__init__'
         # Sqlite fetch
@@ -189,9 +182,8 @@ class Cells:
         self.Reverse  = Reverse
         self.ExpandSp = ExpandSp
         self.Debug    = Debug
-        self.Shorten  = Shorten
-        self.MaxRow   = MaxRow
-        self.MaxRows  = MaxRows
+        self.maxrow   = maxrow
+        self.maxrows  = maxrows
         self.blocks   = []
         if self.data:
             self.Success  = True
@@ -281,16 +273,9 @@ class Cells:
     def debug(self):
         f = '[MClient] cells.Cells.debug'
         if self.Debug:
-            mes = _('Debug table:')
-            sh.objs.get_mes(f,mes,True).show_info()
-            headers = ['NO'
-                      ,'TYPE'
-                      ,'TEXT'
-                      ,'ROWNO'
-                      ,'COLNO'
-                      ,'CELLNO'
+            headers = ('NO','TYPE','TEXT','ROWNO','COLNO','CELLNO'
                       ,'SAME'
-                      ]
+                      )
             rows = []
             for block in self.blocks:
                 rows.append ([block.no
@@ -302,12 +287,14 @@ class Cells:
                              ,block.same
                              ]
                             )
-            sh.Table (headers = headers
-                     ,rows    = rows
-                     ,Shorten = self.Shorten
-                     ,MaxRow  = self.MaxRow
-                     ,MaxRows = self.MaxRows
-                     ).print()
+            mes = sh.FastTable (headers   = headers
+                               ,iterable  = rows
+                               ,maxrow    = self.maxrow
+                               ,maxrows   = self.maxrows
+                               ,Transpose = True
+                               ).run()
+            mes = f + '\n\n' + mes
+            sh.com.run_fast_debug(mes)
     
     def wrap(self):
         if self.Reverse:
@@ -502,8 +489,8 @@ class Pos:
         Modifies attributes:        POS1, POS2
     '''
     def __init__ (self,data,raw_text
-                 ,Debug=False,Shorten=True
-                 ,MaxRow=70,MaxRows=50
+                 ,Debug=False,maxrow=70
+                 ,maxrows=50
                  ):
         f = '[MClient] cells.Pos.__init__'
         self.blocks = []
@@ -513,9 +500,8 @@ class Pos:
         # Retrieved from the TkinterHTM widget
         self.rawtext = raw_text
         self.Debug   = Debug
-        self.Shorten = Shorten
-        self.MaxRow  = MaxRow
-        self.MaxRows = MaxRows
+        self.maxrow  = maxrow
+        self.maxrows = maxrows
         if self.data and self.rawtext:
             self.Success = True
         else:
@@ -545,14 +531,7 @@ class Pos:
     def debug(self):
         f = '[MClient] cells.Pos.debug'
         if self.Debug:
-            mes = _('Debug table:')
-            sh.objs.get_mes(f,mes,True).show_info()
-            headers = ['NO'
-                      ,'TYPE'
-                      ,'TEXT'
-                      ,'POS1'
-                      ,'POS2'
-                      ]
+            headers = ('NO','TYPE','TEXT','POS1','POS2')
             rows = []
             for block in self.blocks:
                 rows.append ([block.no
@@ -562,12 +541,14 @@ class Pos:
                              ,block.last
                              ]
                             )
-            sh.Table (headers = headers
-                     ,rows    = rows
-                     ,Shorten = self.Shorten
-                     ,MaxRow  = self.MaxRow
-                     ,MaxRows = self.MaxRows
-                     ).print()
+            mes = sh.FastTable (headers   = headers
+                               ,iterable  = rows
+                               ,maxrow    = self.maxrow
+                               ,maxrows   = self.maxrows
+                               ,Transpose = True
+                               ).run()
+            mes = f + '\n\n' + mes
+            sh.com.run_fast_debug(mes)
     
     def gen_poses(self):
         ''' We generate positions here according to the text produced by 

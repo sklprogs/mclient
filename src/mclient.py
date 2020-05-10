@@ -588,9 +588,7 @@ class WebFrame:
                                         order by CELLNO,NO'
                                       ,(objs.get_blocksdb().artid,)
                                       )
-            objs.blocksdb.print (Selected=1,Shorten=1,MaxRows=1000
-                                ,mode='BLOCKS'
-                                )
+            objs.blocksdb.print(Selected=1,maxrows=1000,mode='BLOCKS')
     
     def copy_wform(self,event=None):
         f = '[MClient] mclient.WebFrame.copy_wform'
@@ -1532,8 +1530,8 @@ class WebFrame:
             blocks = lg.objs.get_plugins().request (search = lg.objs.request.search
                                                    ,url    = lg.objs.request.url
                                                    )
-            data = lg.com.dump_elems (blocks    = blocks
-                                     ,artid = objs.blocksdb.artid
+            data = lg.com.dump_elems (blocks = blocks
+                                     ,artid  = objs.blocksdb.artid
                                      )
             #TODO: #FIX: assign this for already loaded articles too
             text = lg.objs.plugins.get_text()
@@ -1564,7 +1562,7 @@ class WebFrame:
                                 ,order      = lg.objs.get_order()
                                 ,Block      = lg.objs.request.Block
                                 ,Prioritize = lg.objs.request.Prioritize
-                                ,phdic = self.phdic
+                                ,phdic      = self.phdic
                                 ,Debug      = lg.objs.get_plugins().Debug
                                 )
         bp.run()

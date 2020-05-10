@@ -763,8 +763,8 @@ class Objects:
         self.online = self.request = self.order = self.default \
                     = self.plugins = None
     
-    def get_plugins (self,Debug=False,Shorten=True
-                    ,MaxRow=20,MaxRows=100
+    def get_plugins (self,Debug=False
+                    ,maxrow=20,maxrows=100
                     ):
         if self.plugins is None:
             self.plugins = manager.Plugins (sdpath  = self.get_default().get_dics()
@@ -772,9 +772,8 @@ class Objects:
                                            ,timeout = sh.lg.globs['int']['timeout']
                                            ,iabbr   = self.get_order().dic
                                            ,Debug   = Debug
-                                           ,Shorten = Shorten
-                                           ,MaxRow  = MaxRow
-                                           ,MaxRows = MaxRows
+                                           ,maxrow  = maxrow
+                                           ,maxrows = maxrows
                                            )
         return self.plugins
     
