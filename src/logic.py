@@ -7,8 +7,8 @@ import urllib.request
 import html
 import ssl
 import skl_shared.shared as sh
-import manager
 from skl_shared.localize import _
+import manager
 
 
 sample_block = '''Австралийский сленг

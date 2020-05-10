@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import skl_shared.shared          as sh
-import plugins.multitrancom.utils as utcom
+import skl_shared.shared as sh
 from skl_shared.localize import _
+import plugins.multitrancom.utils as utcom
 
 
 if __name__ == '__main__':

@@ -3,9 +3,9 @@
 
 import io
 import struct
-import get               as gt
 import skl_shared.shared as sh
 from skl_shared.localize import _
+import get as gt
 
 
 class Commands:

@@ -2,11 +2,11 @@
 # -*- coding: UTF-8 -*-
 
 import io
-import skl_shared.shared          as sh
+import skl_shared.shared as sh
+from skl_shared.localize import _
 import plugins.multitrandem.get   as gt
 import plugins.multitrandem.tags  as tg
 import plugins.multitrandem.elems as el
-from skl_shared.localize import _
 
 
 
