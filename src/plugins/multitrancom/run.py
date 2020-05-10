@@ -15,7 +15,7 @@ class Plugin:
     
     def __init__ (self,iabbr=None,Debug=False
                  ,Shorten=True,MaxRow=20
-                 ,MaxRows=20
+                 ,MaxRows=1000
                  ):
         self.set_values()
         self.iabbr   = iabbr
@@ -116,11 +116,11 @@ class Plugin:
         if self.text is None:
             self.text = ''
         self.blocks = tg.Tags (text    = self.text
-                               ,Debug   = self.Debug
-                               ,Shorten = self.Shorten
-                               ,MaxRow  = self.MaxRow
-                               ,MaxRows = self.MaxRows
-                               ).run()
+                              ,Debug   = self.Debug
+                              ,Shorten = self.Shorten
+                              ,MaxRow  = self.MaxRow
+                              ,MaxRows = self.MaxRows
+                              ).run()
         if self.blocks:
             for block in self.blocks:
                 # Prevent useless error output

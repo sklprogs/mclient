@@ -4,14 +4,14 @@
 import os
 import sys
 import io
-import tkinter           as tk
+import tkinter as tk
 import skl_shared.shared as sh
-import logic             as lg
-import gui               as gi
-import cells             as cl
-import db
-import mkhtml            as mh
 from skl_shared.localize import _
+import logic  as lg
+import gui    as gi
+import cells  as cl
+import mkhtml as mh
+import db
 
 
 if __name__ == '__main__':

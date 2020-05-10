@@ -112,6 +112,15 @@ class Get:
 
 class Tags:
     
+    def analyze_tag(self):
+        import plugins.multitrancom.tags as tg
+        #tag = '<tr><td class="subj" width="1"><a href="https://www.multitran.com/m.exe?a=110&amp;l1=2&amp;l2=1&amp;s=%D1%82%D1%80%D0%BE%D1%81&amp;sc=371" title="Автоматика">автомат.'
+        #tag = '''<tr><td class="subj" width="1"><a href="https://www.multitran.com/m.exe?a=110&amp;l1=2&amp;l2=1&amp;s=%D1%82%D1%80%D0%BE%D1%81&amp;sc=0" title="Общая лексика">общ.'''
+        tag = '<tr><td class="subj" width="1"><a href="https://www.multitran.com/m.exe?a=110&amp;l1=2&amp;l2=1&amp;s=%D1%82%D1%80%D0%BE%D1%81&amp;sc=134" title="Электроника">эл.'
+        itag = tg.AnalyzeTag(tag)
+        itag.run()
+        itag.debug()
+    
     def run_stardict(self):
         f = '[MClient] tests.Tags.run_stardict'
         import plugins.stardict.cleanup as sdcleanup
@@ -127,14 +136,16 @@ class Tags:
         f = '[MClient] tests.Tags.run_multitrancom'
         import plugins.multitrancom.cleanup as mccleanup
         import plugins.multitrancom.tags    as mctags
+        ''' #NOTE: The file should be generated with
+            'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
+            to set 'dic' and some other types.
+        '''
         file = '/home/pete/bin/mclient/tests/multitrancom/трос.txt'
         text = sh.ReadTextFile(file).get()
         text = mccleanup.CleanUp(text).run()
-        mctags.Tags (text    = text
-                    ,Debug   = DEBUG
-                    ,Shorten = True
-                    ,MaxRow  = 20
-                    ,MaxRows = 150
+        mctags.Tags (text   = text
+                    ,Debug  = DEBUG
+                    ,MaxRow = 30
                     ).run()
 
 
@@ -528,6 +539,15 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sh.com.start()
-    #Plugin().multitrandem()
-    Plugin().multitrancom()
+    #Plugin().run_multitrandem()
+    #Plugin().run_multitrancom()
+    #Tags().run_multitrancom()
+    #Tags().analyze_tag()
+    import plugins.multitrancom.get as mg
+    text = mg.Get (search = 'трос'
+                  ,url    = 'https://www.multitran.com/m.exe?s=%D1%82%D1%80%D0%BE%D1%81&l1=2&l2=1&SHL=2'
+                  ).run()
+    file = '/home/pete/bin/mclient/tests/multitrancom/трос.txt'
+    sh.WriteTextFile(file,True).write(text)
+    sh.Launch(file).launch_default()
     sh.com.end()

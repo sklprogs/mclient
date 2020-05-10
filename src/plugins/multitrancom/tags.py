@@ -35,9 +35,11 @@ from skl_shared.localize import _
     •  Transcription:
          <td colspan="2" class="gray">&nbsp;computer <span style="color:gray">kəm'pju:tə</span> <em>n</em> <span style="color:gray">|</span>
          (same as word forms) ', ə and other marks
+    •  Full dic titles:
+         ' title="Религия, Латынь">рел., лат.</a></td>'
     •  Phrase dics (25 is the number of entries in the dic)
-        <td class="phras"><a href="/m.exe?a=3&amp;sc=448&amp;s=computer&amp;l1=1&amp;l2=2">Chemical weapons</a></td><td class="phras_cnt">25</td>
-        td class="phras"
+         <td class="phras"><a href="/m.exe?a=3&amp;sc=448&amp;s=computer&amp;l1=1&amp;l2=2">Chemical weapons</a></td><td class="phras_cnt">25</td>
+         td class="phras"
     '''
 
 
@@ -143,7 +145,36 @@ class AnalyzeTag:
     def set_values(self):
         self.fragms = []
         self.blocks = []
+        self.dicaf  = ''
 
+    def set_dicaf(self):
+        pattern = ' title="'
+        if pattern in self.tag and not 'UserName' in self.tag:
+            pos1 = self.tag.index(pattern) + len(pattern)
+            pos2 = self.tag.rfind('">')
+            self.dicaf = self.tag[pos1:pos2]
+    
+    def debug(self):
+        f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.debug'
+        mes = _('Tag: "{}"').format(self.tag)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        nos = [i + 1 for i in range(len(self.fragms))]
+        headers = ['NO','FRAGM']
+        fragms = ['"{}"'.format(fragm) for fragm in self.fragms]
+        iterable = [nos,fragms]
+        mes = sh.FastTable(iterable,headers).run()
+        types = []
+        texts = []
+        for i in range(len(self.blocks)):
+            types.append(self.blocks[i].type_)
+            texts.append(self.blocks[i].text)
+        iterable = [types,texts]
+        headers = ('TYPE','TEXT')
+        mes += '\n\n' + sh.FastTable(iterable,headers).run()
+        mes += '\n' + 'DICAF: "{}"'.format(self.dicaf)
+        sh.objs.txt = None
+        sh.com.run_fast_debug(mes)
+    
     def set_correction(self):
         if pcor1 in self.block.text or pcor2 in self.block.text:
             self.block.type_ = 'correction'
@@ -176,11 +207,12 @@ class AnalyzeTag:
                 else:
                     self.block.type_ = 'invalid'
         self.set_types()
+        self.set_dicaf()
         return self.blocks
 
     def set_types(self):
         self.blocks = [self.strip() for self.block in self.blocks]
-        prev_url  = ''
+        prev_url = ''
         prev_type = 'comment'
         for block in self.blocks:
             if block.url:
@@ -237,7 +269,6 @@ class AnalyzeTag:
             self.block.type_ = 'comment'
     
     def set_dic(self):
-        f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.set_dic'
         if pdic in self.block.text:
             self.block.type_ = 'dic'
 
@@ -277,7 +308,7 @@ class AnalyzeTag:
 class Tags:
 
     def __init__ (self,text,Debug=False
-                 ,Shorten=True,MaxRow=20
+                 ,Shorten=True,MaxRow=50
                  ,MaxRows=50
                  ):
         self.set_values()
@@ -324,50 +355,51 @@ class Tags:
 
     def debug_tags(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.debug_tags'
-        message = ''
+        messages = []
         for i in range(len(self.tags)):
-            message += '{}:{}\n'.format(i,self.tags[i])
+            mes = "{}:'{}'".format(i,self.tags[i])
+            messages.append(mes)
+        mes = '\n'.join(messages)
         #sh.objs.get_mes(f,message,True).show_debug()
-        words = sh.Words (text = message
+        words = sh.Words (text = mes
                          ,Auto = 1
                          )
-        words.sent_nos()
+        words.set_sent_nos()
         sh.objs.get_txt().reset(words=words)
         sh.objs.txt.set_title(f)
-        sh.objs.txt.insert(text=message)
+        sh.objs.txt.insert(text=mes)
         sh.objs.txt.show()
 
     def debug_blocks(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.debug_blocks'
         mes = _('Debug table:')
         sh.objs.get_mes(f,mes,True).show_info()
-        headers = ['TYPE'
-                  ,'TEXT'
-                  ,'URL'
-                  ,'SAMECELL'
-                  ]
+        headers = ('NO','TYPE','TEXT','URL','SAME')
         rows = []
-        for block in self.blocks:
-            rows.append ([block.type_
-                         ,block.text
-                         ,block.url
-                         ,block.same
+        for i in range(len(self.blocks)):
+            rows.append ([i + 1
+                         ,self.blocks[i].type_
+                         ,self.blocks[i].text
+                         ,self.blocks[i].url
+                         ,self.blocks[i].same
                          ]
                         )
-        sh.Table (headers = headers
-                 ,rows    = rows
-                 ,Shorten = self.Shorten
-                 ,MaxRow  = self.MaxRow
-                 ,MaxRows = self.MaxRows
-                 ).print()
+        mes = sh.FastTable (headers   = headers
+                           ,iterable  = rows
+                           ,maxrow    = self.MaxRow
+                           ,maxrows   = self.MaxRows
+                           ,Transpose = True
+                           ).run()
+        sh.objs.txt = None
+        sh.com.run_fast_debug(mes)
 
     def debug(self):
         if self.Debug:
-            #self.debug_tags()
+            self.debug_tags()
             self.debug_blocks()
 
     def decode_entities(self):
-        ''' - Needed both for MT and Stardict. Convert HTM entities
+        ''' - Needed both for MT and Stardict. Convert HTML entities
               to a human readable format, e.g., '&copy;' -> '©'.
             - We should decode entities only after extracting tags since
               user terms/comments in Multitran often contain such

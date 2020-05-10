@@ -28,7 +28,7 @@ class Same:
                  ,Shorten=True,MaxRow=70
                  ,MaxRows=200
                  ):
-        self.blocks = blocks
+        self.blocks  = blocks
         self.Debug   = Debug
         self.Shorten = Shorten
         self.MaxRow  = MaxRow
@@ -625,6 +625,7 @@ class Elems:
                    ,'только в указанном порядке'
                    ,'только в заданной форме','all forms'
                    ,'exact matches only','in specified order only'
+                   ,'Forvo','Google'
                    ]
         if self.langs:
             patterns += list(self.langs)
