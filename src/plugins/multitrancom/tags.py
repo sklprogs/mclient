@@ -322,7 +322,25 @@ class Tags:
     def set_values(self):
         self.tags   = []
         self.blocks = []
+        self.abbr   = {}
         self.text   = ''
+    
+    def debug_abbr(self):
+        f = '[MClient] plugins.multitrancom.tags.Tags.debug_abbr'
+        if self.abbr:
+            keys = []
+            values = []
+            for key in self.abbr.keys():
+                keys.append(key)
+                values.append(self.abbr[key])
+            nos = [i + 1 for i in range(len(keys))]
+            headers = ('NO','ABBR','FULL')
+            iterable = [nos,keys,values]
+            mes = sh.FastTable(iterable,headers).run()
+            mes = f + '\n\n' + mes
+            sh.com.run_fast_debug(mes)
+        else:
+            sh.com.rep_empty(f)
     
     def get_tags(self):
         ''' Split the text by closing tags. To speed up, we remove
@@ -396,6 +414,7 @@ class Tags:
         if self.Debug:
             self.debug_tags()
             self.debug_blocks()
+            self.debug_abbr()
 
     def decode_entities(self):
         ''' - Needed both for MT and Stardict. Convert HTML entities
@@ -421,7 +440,14 @@ class Tags:
     def get_blocks(self):
         if not self.blocks:
             for tag in self.tags:
-                self.blocks += AnalyzeTag(tag).run()
+                itag = AnalyzeTag(tag)
+                self.blocks += itag.run()
+                if itag.dicaf:
+                    dics = [block.text for block in itag.blocks \
+                            if block.type_ == 'dic'
+                           ]
+                    if dics:
+                        self.abbr[dics[0]] = itag.dicaf
         return self.blocks
 
     def run(self):

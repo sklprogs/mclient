@@ -537,13 +537,6 @@ if __name__ == '__main__':
     sh.com.start()
     #Plugin().run_multitrandem()
     #Plugin().run_multitrancom()
-    #Tags().run_multitrancom()
+    Tags().run_multitrancom()
     #Tags().analyze_tag()
-    import plugins.multitrancom.get as mg
-    text = mg.Get (search = 'трос'
-                  ,url    = 'https://www.multitran.com/m.exe?s=%D1%82%D1%80%D0%BE%D1%81&l1=2&l2=1&SHL=2'
-                  ).run()
-    file = '/home/pete/bin/mclient/tests/multitrancom/трос.txt'
-    sh.WriteTextFile(file,True).write(text)
-    sh.Launch(file).launch_default()
     sh.com.end()
