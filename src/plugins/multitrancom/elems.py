@@ -513,6 +513,11 @@ class Elems:
             for block in self.blocks:
                 if block.dica in self.abbr:
                     block.dicaf = self.abbr[block.dica]
+                else:
+                    ''' Each dictionary must have full and short titles.
+                        This is especially needed for a phrase dic.
+                    '''
+                    block.dicaf = block.dica
         else:
             sh.com.rep_empty(f)
     
@@ -654,7 +659,7 @@ class Elems:
         for block in self.blocks:
             if re.match('\d+ phrase',block.text) \
             or re.match('\d+ фраз',block.text):
-                block.type_   = 'dic'
+                block.type_  = 'dic'
                 block.select = 1
                 block.dica   = block.text
                 break
