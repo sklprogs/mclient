@@ -143,17 +143,12 @@ class Plugin:
         if not chunks:
             chunks = []
         self.blocks = []
-        abbr = {}
         for chunk in chunks:
-            itags = tg.Tags (chunk   = chunk
-                            ,Debug   = self.Debug
-                            ,maxrow  = self.maxrow
-                            ,maxrows = self.maxrows
-                            )
-            blocks = itags.run()
-            if itags.abbr:
-                for key in itags.abbr.keys():
-                    abbr[key] = itags.abbr[key]
+            blocks = tg.Tags (chunk   = chunk
+                             ,Debug   = self.Debug
+                             ,maxrow  = self.maxrow
+                             ,maxrows = self.maxrows
+                             ).run()
             if blocks:
                 # Set speech for words only, not for phrases
                 if iget.speech and not ' ' in search:
@@ -166,7 +161,7 @@ class Plugin:
                     blocks.insert(0,block)
                 self.blocks += blocks
         self.blocks = el.Elems (blocks  = self.blocks
-                               ,abbr    = abbr
+                               ,abbr    = None
                                ,langs   = gt.objs.get_all_dics().get_langs()
                                ,search  = search
                                ,Debug   = self.Debug
