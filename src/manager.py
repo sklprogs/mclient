@@ -12,9 +12,8 @@ import plugins.multitrandem.run as mbrun
 class Plugins:
     
     def __init__ (self,sdpath,mbpath
-                 ,timeout=6,iabbr=None
-                 ,Debug=False,maxrow=20
-                 ,maxrows=1000
+                 ,timeout=6,Debug=False
+                 ,maxrow=20,maxrows=1000
                  ):
         self.sdplugin = None
         self.mcplugin = None
@@ -25,7 +24,6 @@ class Plugins:
         self.sdpath  = sdpath
         self.mbpath  = sdpath
         self.timeout = timeout
-        self.iabbr   = iabbr
         self.Debug   = Debug
         self.maxrow  = maxrow
         self.maxrows = maxrows
@@ -35,6 +33,27 @@ class Plugins:
         '''
         self.set(self.source)
         self.set_timeout(self.timeout)
+    
+    def get_title(self,abbr):
+        f = '[MClient] manager.Plugins.get_title'
+        if self.plugin:
+            return self.plugin.get_title(abbr)
+        else:
+            sh.com.rep_empty(f)
+    
+    def get_abbr(self,title):
+        f = '[MClient] manager.Plugins.get_abbr'
+        if self.plugin:
+            return self.plugin.get_abbr(title)
+        else:
+            sh.com.rep_empty(f)
+    
+    def is_abbr(self,item):
+        f = '[MClient] manager.Plugins.is_abbr'
+        if self.plugin:
+            return self.plugin.is_abbr(item)
+        else:
+            sh.com.rep_empty(f)
     
     def quit(self,event=None):
         self.mbplugin.quit()
@@ -153,17 +172,14 @@ class Plugins:
         plugins.multitrandem.get.PATH = self.mbpath
         plugins.multitrandem.get.objs.get_all_dics()
         self.sdplugin = sdrun.Plugin (Debug   = self.Debug
-                                     ,iabbr   = self.iabbr
                                      ,maxrow  = self.maxrow
                                      ,maxrows = self.maxrows
                                      )
         self.mcplugin = mcrun.Plugin (Debug   = self.Debug
-                                     ,iabbr   = self.iabbr
                                      ,maxrow  = self.maxrow
                                      ,maxrows = self.maxrows
                                      )
         self.mbplugin = mbrun.Plugin (Debug   = self.Debug
-                                     ,iabbr   = self.iabbr
                                      ,maxrow  = self.maxrow
                                      ,maxrows = self.maxrows
                                      )

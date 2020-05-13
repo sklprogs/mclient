@@ -44,14 +44,14 @@ class Block:
 
 class Elems:
     # Process blocks before dumping to DB
-    def __init__ (self,blocks,iabbr,langs=[]
+    def __init__ (self,blocks,abbr,langs=[]
                  ,Debug=False,maxrow=20
                  ,maxrows=1000,search=''
                  ):
         f = '[MClient] plugins.multitranbin.elems.Elems.__init__'
         self.dicurls = {}
         self.defins  = []
-        self.abbr    = iabbr
+        self.abbr    = abbr
         self.Debug   = Debug
         self.maxrow  = maxrow
         self.maxrows = maxrows
@@ -359,7 +359,7 @@ if __name__ == '__main__':
         if add:
             blocks += add
     blocks = Elems (blocks = blocks
-                   ,iabbr  = None
+                   ,abbr   = None
                    ,search = search
                    ,Debug  = True
                    ).run()

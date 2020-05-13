@@ -12,7 +12,7 @@ import plugins.stardict.elems   as el
 
 class Plugin:
     
-    def __init__ (self,iabbr=None,Debug=False
+    def __init__ (self,Debug=False
                  ,maxrow=20,maxrows=1000
                  ):
         ''' - Extra unused input variables are preserved so it would be
@@ -21,7 +21,6 @@ class Plugin:
               earlier.
         '''
         self.set_values()
-        self.iabbr   = iabbr
         self.Debug   = Debug
         self.maxrow  = maxrow
         self.maxrows = maxrows
@@ -30,6 +29,19 @@ class Plugin:
         self.blocks = []
         self.text   = ''
         self.htm    = ''
+        self.abbr   = {}
+    
+    def is_abbr(self,abbr):
+        #TODO: implement
+        pass
+    
+    def get_title(self,abbr):
+        #TODO: implement
+        return abbr
+    
+    def get_abbr(self,title):
+        #TODO: implement
+        return title
     
     def quit(self):
         for idic in gt.objs.get_all_dics().dics:
@@ -94,12 +106,13 @@ class Plugin:
         self.text = cu.CleanUp(self.text).run()
         if self.text is None:
             self.text = ''
-        self.blocks = tg.Tags (text    = self.text
-                              ,Debug   = self.Debug
-                              ,maxrow  = self.maxrow
-                              ,maxrows = self.maxrows
-                              ).run()
+        itags = tg.Tags (text    = self.text
+                        ,Debug   = self.Debug
+                        ,maxrow  = self.maxrow
+                        ,maxrows = self.maxrows
+                        )
+        self.blocks = itags.run()
         self.blocks = el.Elems (blocks = self.blocks
-                               ,iabbr  = self.iabbr
+                               ,abbr   = itags.abbr
                                ).run()
         return self.blocks

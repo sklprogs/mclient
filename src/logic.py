@@ -406,7 +406,6 @@ class DefaultConfig:
     
     def set_values(self):
         self.dics   = ''
-        self.fabbr  = ''
         self.fblock = ''
         self.fprior = ''
         self.fdconf = ''
@@ -469,18 +468,6 @@ class DefaultConfig:
         else:
             sh.com.cancel(f)
     
-    def get_abbr(self):
-        f = '[MClient] logic.DefaultConfig.get_abbr'
-        if self.Success:
-            if not self.fabbr:
-                self.fabbr = sh.objs.get_pdir().add ('..','resources'
-                                                    ,'abbr.txt'
-                                                    )
-                self.Success = sh.File(file=self.fabbr).Success
-            return self.fabbr
-        else:
-            sh.com.cancel(f)
-    
     def get_default_config(self):
         f = '[MClient] logic.DefaultConfig.get_default_config'
         if self.Success:
@@ -517,7 +504,6 @@ class DefaultConfig:
         if self.Success:
             self.get_default_config()
             self.get_config()
-            self.get_abbr()
             self.get_dics()
             self.set_block()
             self.prioritize()
@@ -724,18 +710,7 @@ class Lists:
         f = '[MClient] logic.Lists.__init__'
         self.blacklst = objs.get_default().fblock
         self.priorlst = objs.default.fprior
-        self.abbr     = objs.default.fabbr
         self.Success  = objs.default.Success
-
-    def get_abbr(self):
-        if self.Success:
-            dic = sh.Dic (file     = self.abbr
-                         ,Sortable = True
-                         )
-            self.Success = dic.Success
-            return dic
-        else:
-            sh.com.cancel(f)
     
     def get_blacklist(self):
         f = '[MClient] logic.Lists.get_blacklist'
@@ -770,7 +745,6 @@ class Objects:
             self.plugins = manager.Plugins (sdpath  = self.get_default().get_dics()
                                            ,mbpath  = self.default.get_dics()
                                            ,timeout = sh.lg.globs['int']['timeout']
-                                           ,iabbr   = self.get_order().dic
                                            ,Debug   = Debug
                                            ,maxrow  = maxrow
                                            ,maxrows = maxrows
@@ -800,8 +774,7 @@ class Order:
     
     def __init__(self):
         self.set_values()
-        self.get_lists()
-        self.get_dic()
+        self.set_lists()
         self.conform()
         
     def fill_dic(self,lst,ind):
@@ -855,8 +828,8 @@ class Order:
                         if i > 0:
                             self.unprioritize(self.dic2[i])
                     
-                    ind1 = self.prioritize.index(self.dic1[0])
-                    ind2 = self.prioritize.index(self.dic2[0])
+                    ind1 = self.priorlst.index(self.dic1[0])
+                    ind2 = self.priorlst.index(self.dic2[0])
                     
                     if Down:
                         Swap = ind1 < ind2
@@ -865,8 +838,8 @@ class Order:
                     if Swap:
                         mes = _('Swap items: {} <-> {}; "{}" <-> "{}"')
                         mes = mes.format (ind1,ind2
-                                         ,self.prioritize[ind1]
-                                         ,self.prioritize[ind2]
+                                         ,self.priorlst[ind1]
+                                         ,self.priorlst[ind2]
                                          )
                         sh.objs.get_mes(f,mes,True).show_debug()
                         self.priorlst[ind1], self.priorlst[ind2] \
@@ -891,7 +864,7 @@ class Order:
                         
                     lst = sh.List(lst1=self.priorlst).delete_duplicates()
                     if lst:
-                        self.prioritize = list(lst)
+                        self.priorlst = list(lst)
                     else:
                         sh.com.rep_empty(f)
                     
@@ -1017,12 +990,6 @@ class Order:
             both abbreviations and full titles.
         '''
         if self.Success:
-            self.abbrs  = [item.lower().strip() \
-                           for item in self.dic.orig
-                          ]
-            self.titles = [item.lower().strip() \
-                           for item in self.dic.transl
-                          ]
             ''' We recreate lists in order to preserve 
                 the abbreviation + title order.
             '''
@@ -1037,7 +1004,7 @@ class Order:
                     else:
                         sh.com.rep_empty(f)
             else:
-                sh.com.rep_empty(f)
+                sh.com.rep_lazy(f)
             if self.priorlst:
                 priorlst = list(self.priorlst)
                 self.priorlst = []
@@ -1049,38 +1016,27 @@ class Order:
                     else:
                         sh.com.rep_empty(f)
             else:
-                sh.com.rep_empty(f)
+                sh.com.rep_lazy(f)
         else:
             sh.com.cancel(f)
     
-    def get_lists(self):
-        f = '[MClient] logic.Order.get_lists'
+    def set_lists(self):
+        f = '[MClient] logic.Order.set_lists'
         if self.Success:
             self.lists = Lists()
-            self.blacklst = sh.Input(title = f
-                                    ,value = self.lists.get_blacklist()
-                                    ).get_list()
+            self.blacklst = sh.Input (title = f
+                                     ,value = self.lists.get_blacklist()
+                                     ).get_list()
             self.priorlst = sh.Input (title = f
                                      ,value = self.lists.prioritize()
                                      ).get_list()
             self.Success = self.lists.Success
         else:
             sh.com.cancel(f)
-        
-    def get_dic(self):
-        f = '[MClient] logic.Order.get_dic'
-        if self.Success:
-            self.dic     = self.lists.get_abbr()
-            self.Success = self.dic.Success
-        else:
-            sh.com.cancel(f)
     
     def set_values(self):
         self.Success  = True
         self.lists    = None
-        self.dic      = None
-        self.abbrs    = []
-        self.titles   = []
         self.blacklst = []
         self.priorlst = []
         self.dic1     = ''
@@ -1126,46 +1082,16 @@ class Order:
         else:
             sh.com.cancel(f)
     
-    def get_title(self,abbr):
-        f = '[MClient] logic.Order.get_title'
-        if self.Success:
-            try:
-                ind = self.abbrs.index(abbr)
-                return self.titles[ind]
-            except ValueError:
-                mes = _('Wrong input data!')
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
-            sh.com.cancel(f)
-        
-    def get_abbr(self,title):
-        f = '[MClient] logic.Order.get_abbr'
-        if self.Success:
-            try:
-                ind = self.titles.index(title)
-                return self.abbrs[ind]
-            except ValueError:
-                mes = _('Wrong input data!')
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
-            sh.com.cancel(f)
-    
     def get_pair(self,item):
         f = '[MClient] logic.Order.get_pair'
         if self.Success:
             if item:
-                item = item.lower().strip()
-                abbr = title = ''
-                if item in self.titles:
-                    title = item
-                    abbr  = self.get_abbr(title)
-                elif item in self.abbrs:
-                    abbr  = item
-                    title = self.get_title(abbr)
+                if objs.get_plugins().is_abbr(item):
+                    abbr = item
+                    title = objs.plugins.get_title(item)
                 else:
-                    mes = _('Unknown dictionary "{}"!').format(item)
-                    sh.objs.get_mes(f,mes,True).show_warning()
-                    abbr = title = str(item)
+                    abbr = objs.plugins.get_abbr(item)
+                    title = item
                 return([abbr,title])
             else:
                 sh.com.rep_empty(f)
@@ -1177,7 +1103,7 @@ class Order:
         if self.Success:
             if search:
                 search = search.split(',')
-                lst    = []
+                lst = []
                 for item in search:
                     pair = self.get_pair(item)
                     if pair:

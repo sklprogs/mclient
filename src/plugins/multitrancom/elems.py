@@ -282,7 +282,7 @@ class Elems:
           vary depending on the view. Incorrect sorting by TERMA may
           result in putting a TERM item before fixed columns.
     '''
-    def __init__ (self,blocks,iabbr,langs
+    def __init__ (self,blocks,abbr,langs
                  ,Debug=False,maxrow=20
                  ,maxrows=1000,search=''
                  ):
@@ -290,7 +290,7 @@ class Elems:
         self.dicurls = {}
         self.defins  = []
         self.blocks  = blocks
-        self.abbr    = iabbr
+        self.abbr    = abbr
         self.Debug   = Debug
         self.maxrow  = maxrow
         self.maxrows = maxrows
@@ -507,23 +507,12 @@ class Elems:
                     block.same = 1
                 HasWform = True
     
-    # Takes ~0,26s for 'set' on AMD E-300.
     def expand_dica(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.expand_dica'
         if self.abbr:
-            if self.abbr.Success:
-                for block in self.blocks:
-                    lst = block.dica.split(',')
-                    for i in range(len(lst)):
-                        lst[i] = lst[i].strip()
-                        try:
-                            ind = self.abbr.orig.index(lst[i])
-                            lst[i] = self.abbr.transl[ind]
-                        except ValueError:
-                            pass
-                    block.dicaf = ', '.join(lst)
-            else:
-                sh.com.cancel(f)
+            for block in self.blocks:
+                if block.dica in self.abbr:
+                    block.dicaf = self.abbr[block.dica]
         else:
             sh.com.rep_empty(f)
     

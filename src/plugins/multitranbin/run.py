@@ -12,7 +12,7 @@ import plugins.multitranbin.elems as el
 
 class Plugin:
     
-    def __init__ (self,iabbr=None,Debug=False
+    def __init__ (self,Debug=False
                  ,maxrow=20,maxrows=1000
                  ):
         ''' - Extra unused input variables are preserved so it would be
@@ -21,10 +21,24 @@ class Plugin:
               earlier.
         '''
         self.set_values()
-        self.iabbr   = gt.objs.get_files().get_subject()
+        #cur
+        #TODO: elaborate
+        self.abbr    = gt.objs.get_files().get_subject()
         self.Debug   = Debug
         self.maxrow  = maxrow
         self.maxrows = maxrows
+    
+    def is_abbr(self,abbr):
+        #TODO: implement
+        pass
+    
+    def get_title(self,abbr):
+        #TODO: implement
+        return abbr
+    
+    def get_abbr(self,title):
+        #TODO: implement
+        return title
     
     def quit(self):
         gt.objs.get_files().close()
@@ -147,7 +161,7 @@ class Plugin:
                     blocks.insert(0,block)
                 self.blocks += blocks
         self.blocks = el.Elems (blocks  = self.blocks
-                               ,iabbr   = self.iabbr
+                               ,abbr    = self.abbr
                                ,langs   = gt.objs.get_all_dics().get_langs()
                                ,search  = search
                                ,Debug   = self.Debug

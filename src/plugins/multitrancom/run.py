@@ -13,11 +13,11 @@ from skl_shared.localize import _
 
 class Plugin:
     
-    def __init__ (self,iabbr=None,Debug=False
+    def __init__ (self,abbr={},Debug=False
                  ,maxrow=20,maxrows=1000
                  ):
         self.set_values()
-        self.iabbr   = iabbr
+        self.abbr    = abbr
         self.Debug   = Debug
         self.maxrow  = maxrow
         self.maxrows = maxrows
@@ -26,6 +26,37 @@ class Plugin:
         self.htm    = ''
         self.text   = ''
         self.blocks = []
+        self.abbr   = {}
+    
+    def is_abbr(self,abbr):
+        f = '[MClient] plugins.multitrancom.run.Plugin.is_abbr'
+        if self.abbr and abbr:
+            if abbr in self.abbr:
+                return True
+        else:
+            sh.com.rep_empty(f)
+    
+    def get_title(self,abbr):
+        f = '[MClient] plugins.multitrancom.run.Plugin.get_title'
+        if self.abbr and abbr:
+            if abbr in self.abbr:
+                return self.abbr[abbr]
+            else:
+                mes = _('Unknown dictionary "{}"!').format(abbr)
+                sh.objs.get_mes(f,mes,True).show_warning()
+        else:
+            sh.com.rep_empty(f)
+        return title
+    
+    def get_abbr(self,title):
+        f = '[MClient] plugins.multitrancom.run.Plugin.get_abbr'
+        if self.abbr and title:
+            for key in self.abbr.keys():
+                if title == self.abbr[key]:
+                    return key
+        else:
+            sh.com.rep_empty(f)
+        return title
     
     # This is needed only for compliance with a general method
     def quit(self):
@@ -113,18 +144,24 @@ class Plugin:
         self.text = self.htm = cu.CleanUp(self.text).run()
         if self.text is None:
             self.text = ''
-        self.blocks = tg.Tags (text    = self.text
-                              ,Debug   = self.Debug
-                              ,maxrow  = self.maxrow
-                              ,maxrows = self.maxrows
-                              ).run()
+        #TODO: Should we take dics only from the current article?
+        self.abbr = {}
+        itags = tg.Tags (text    = self.text
+                        ,Debug   = self.Debug
+                        ,maxrow  = self.maxrow
+                        ,maxrows = self.maxrows
+                        )
+        self.blocks = itags.run()
+        if itags.abbr:
+            for key in itags.abbr.keys():
+                self.abbr[key] = itags.abbr[key]
         if self.blocks:
             for block in self.blocks:
                 # Prevent useless error output
                 if block.url:
                     block.url = gt.com.fix_url(block.url)
         self.blocks = el.Elems (blocks  = self.blocks
-                               ,iabbr   = self.iabbr
+                               ,abbr    = self.abbr
                                ,langs   = pr.objs.get_pairs().get_alive()
                                ,search  = search
                                ,Debug   = self.Debug

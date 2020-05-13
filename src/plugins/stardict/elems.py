@@ -77,37 +77,21 @@ class Elems:
           vary depending on the view. Incorrect sorting by TERMA may
           result in putting a TERM item before fixed columns.
     '''
-    def __init__(self,blocks,iabbr):
+    def __init__(self,blocks,abbr):
         f = '[MClient] plugins.stardict.elems.Elems.__init__'
         self.dicurls = {}
         self.blocks  = blocks
-        self.abbr    = iabbr
+        self.abbr    = abbr
         if self.blocks:
             self.Success = True
         else:
             self.Success = False
             sh.com.rep_empty(f)
-        
-    # Takes ~0,26s for 'set' on AMD E-300.
-    def expand_dica(self):
-        f = '[MClient] plugins.stardict.elems.Elems.expand_dica'
-        if self.abbr:
-            if self.abbr.Success:
-                for block in self.blocks:
-                    lst = block.dica.split(',')
-                    for i in range(len(lst)):
-                        lst[i] = lst[i].strip()
-                        try:
-                            ind = self.abbr.orig.index(lst[i])
-                            lst[i] = self.abbr.transl[ind]
-                        except ValueError:
-                            pass
-                    block.dicaf = ', '.join(lst)
-            else:
-                sh.com.cancel(f)
-        else:
-            sh.com.rep_empty(f)
 
+    def expand_dica(self):
+        #TODO (?): implement
+        pass
+    
     def run(self):
         f = '[MClient] plugins.stardict.elems.Elems.run'
         if self.Success:
