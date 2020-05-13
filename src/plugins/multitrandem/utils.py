@@ -18,51 +18,107 @@ DUMP1  = sh.Home().add('tmp','dump1')
 DUMP2  = sh.Home().add('tmp','dump2')
 
 
+class Xor:
+    
+    def __init__(self,bytes1,bytes2):
+        self.set_values()
+        self.bytes1 = bytes1
+        self.bytes2 = bytes2
+        self.check()
+    
+    def set_values(self):
+        self.Success = True
+        self.bytes1 = b''
+        self.bytes2 = b''
+        self.ints1 = []
+        self.ints2 = []
+        self.syms = []
+    
+    def check(self):
+        f = '[MClient] plugins.multitrandem.utils.Xor.check'
+        if self.bytes1 and self.bytes2:
+            if len(self.bytes1) == len(self.bytes2):
+                return True
+            else:
+                self.Success = False
+                sub = '{} == {}'.format (len(self.bytes1)
+                                        ,len(self.bytes2)
+                                        )
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.get_mes(f,mes,True).show_warning()
+        else:
+            self.Success = False
+            sh.com.rep_empty(f)
+        
+    def report(self):
+        f = '[MClient] plugins.multitrandem.utils.Xor.report'
+        if self.Success:
+            headers  = ('NO','ORIG','INT1','INT2')
+            nos = [i + 1 for i in range(len(self.syms))]
+            iterable = (nos,self.syms,self.ints1,self.ints2)
+            mes = sh.FastTable (headers  = headers
+                               ,iterable = iterable
+                               ,sep      = sh.lg.nbspace * 2
+                               ).run()
+            return mes
+        else:
+            sh.com.cancel(f)
+    
+    def analyze(self):
+        f = '[MClient] plugins.multitrandem.utils.Xor.analyze'
+        if self.Success:
+            for i in range(len(self.bytes1)):
+                decoded = self.bytes1[i:i+1].decode(gt.CODING,'replace')
+                decoded = '"{}"'.format(decoded)
+                self.syms.append(decoded)
+                self.ints1.append(self.bytes1[i])
+                self.ints2.append(self.bytes2[i])
+        else:
+            sh.com.cancel(f)
+
+
+
 class Tests:
     
-    def run_brute_dexor(self):
-        f = '[MClient] plugins.multitrandem.utils.Tests.run_brute_dexor'
-        orig   = b'-fcivqx\x89<'
-        transl = b'Bullshit!'
-        mes = com.run_brute_dexor(orig,transl)
-        if mes:
-            sh.com.run_fast_debug(mes[0])
-        else:
-            sh.com.rep_empty(f)
+    def gen_patterns(self):
+        f = '[MClient] plugins.multitrandem.utils.Tests.gen_patterns'
+        table = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя'
+        i = 3
+        len_ = 5
+        result = com.gen_patterns (i      = i
+                                  ,length = len_
+                                  ,table  = table
+                                  )
+        sh.com.run_fast_debug(str(result))
+    
+    def analyze_xor(self):
+        f = '[MClient] plugins.multitrandem.utils.Tests.analyze_xor'
+        bytes1 = b'Bullshit!'
+        bytes2 = b'-fcivqx\x89<'
+        ixor = Xor(bytes1,bytes2)
+        ixor.analyze()
+        mes = ixor.report()
+        sh.com.run_fast_debug(mes)
     
     def get_patch(self):
         f = '[MClient] plugins.multitrandem.utils.Tests.get_patch'
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
-        patterns = ['!','"','#','$','%','&',"'",'(',')','*','+',','
-                   ,'-','.','/','0','1','2','3','4','5','6','7','8'
-                   ,'9',':',';','<','=','>','?','@','A','B','C','D'
-                   ,'E','F','G','H','I','J','K','L','M','N','O','P'
-                   ,'Q','R','S','T','U','V','W','X','Y','Z','[','\\'
-                   ,']','^','_','`','a','b','c','d','e','f','g','h'
-                   ,'i','j','k','l','m','n','o','p','q','r','s','t'
-                   ,'u','v','w','x','y','z','{','|','}','~',None,'Ђ'
-                   ,'Ѓ','‚','ѓ','„','…','†','‡','€','‰','Љ','‹','Њ'
-                   ,'Ќ','Ћ','Џ','ђ','‘','’','“','”','•','–','—'
-                   ,None,'™','љ','›','њ','ќ','ћ','џ',None,'Ў','ў'
-                   ,'Ћ','¤','Ґ','¦','§','Ё','©','Є','«','¬',None
-                   ,'®','Ї','°','±','І','і','ґ','µ','¶','·','ё'
-                   ,'№','є','»','ј','Ѕ','ѕ','ї','А','Б','В','Г'
-                   ,'Д','Е','Ж','З','И','Й','К','Л','М','Н','О'
-                   ,'П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ'
-                   ,'Ъ','Ы','Ь','Э','Ю','Я','а','б','в','г','д'
-                   ,'е','ж','з','и','й','к','л','м','н','о','п'
-                   ,'р','с','т','у','ф','х','ц','ч','ш','щ','ъ'
-                   ,'ы','ь','э','ю','я'
-                   ]
         # A comment added for "Zerah"
         pos = 132779143
+        sympos = 1
+        #table = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя'
+        patterns = com.gen_patterns (i      = sympos
+                                    ,length = 2
+                                    )
         messages = []
-        deltas = []
+        ints1 = []
+        ints2 = []
         for pattern in patterns:
-            delta = 0
             if pattern is None:
                 mes = _('Warning: this step will be skipped!')
                 messages.append(mes)
+                messages.append('')
             else:
                 mes = _('Pattern: "{}"').format(pattern)
                 print(mes)
@@ -71,39 +127,47 @@ class Tests:
                 result = com.get_patch (file    = file
                                        ,pattern = pattern
                                        ,pos     = pos
+                                       ,sympos  = sympos
                                        )
                 if result:
-                    mes, delta = result[0], result[1]
-                    messages.append(mes)
-            deltas.append(delta)
+                    messages.append(result[0])
+                    ints1.append(result[1])
+                    ints2.append(result[2])
         messages.append('')
         messages.append('')
-        mes = _('SHORT SUMMARY:')
+        mes = _('Original positions:')
         messages.append(mes)
-        subs = []
-        for i in range(len(patterns)):
-            if i > 0:
-                offset = deltas[i] - deltas[i-1]
-            else:
-                offset = deltas[i]
-            if offset > 0:
-                offset = '+{}'.format(offset)
-            mes = '"{}": {}'.format(patterns[i],offset)
-            subs.append(mes)
-        messages.append('; '.join(subs))
+        messages.append(str(ints1))
+        mes = _('Final positions:')
+        messages.append(mes)
+        messages.append(str(ints2))
         mes = '\n'.join(messages)
+        sh.Clipboard().copy(str(ints2))
         #sh.com.run_fast_debug(mes)
-        filew = '/tmp/memory.txt'
-        sh.WriteTextFile(filew).write(mes)
-        sh.Launch(filew).default()
+        filew = '/tmp/result.txt'
+        sh.WriteTextFile(filew,True).write(mes)
+        sh.Launch(filew).launch_default()
     
     def corrupt(self):
         f = '[MClient] plugins.multitrandem.utils.Tests.corrupt'
         file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
-        com.corrupt (filew  = file
-                    ,pos    = 132779151
-                    ,length = 10
-                    )
+        #pos = 132779147
+        #subst = b'\x00'
+        pos = 132775939
+        subst = b'\xd0\xf3\x96'
+        old = com.corrupt (filew = file
+                          ,pos   = pos
+                          ,subst = subst
+                          )
+        mes = _('Restore the damaged file?')
+        if sh.objs.get_mes(f,mes,True).show_question():
+            com.corrupt (filew = file
+                        ,pos   = pos
+                        ,subst = old
+                        )
+        else:
+            mes = _('Operation has been canceled by the user.')
+            sh.objs.get_mes(f,mes,True).show_info()
     
     def navigate(self):
         Navigate(sh.Home().add('tmp','test.bin')).show_menu()
@@ -391,7 +455,7 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
         
     def get_chunk7(self,chunk):
-        f = '[MClient] plugins.multitrandem.utils.Parser.get_chunk7'
+        f = '[MClient] plugins.multitrandem.utils.Parser.chunk7'
         ''' According to "libmtquery-0.0.1alpha3/doc/README.rus":
             the 1st byte - a type designating the use of capital letters
             (not used), further - a vector of 7-byte codes, each code
@@ -460,7 +524,7 @@ class Parser(gt.Binary):
             sh.com.cancel(f)
     
     def run_reader(self,pos1,pos2):
-        f = '[MClient] plugins.multitrandem.utils.Parser.run_reader'
+        f = '[MClient] plugins.multitrandem.utils.Parser.reader'
         if self.Success:
             stream = self.read(pos1,pos2)
             if stream:
@@ -727,9 +791,7 @@ class Navigate(gt.Binary):
             val = input(mes)
             val = val.strip()
             if val:
-                val = sh.Input (title = f
-                               ,value = val
-                               ).get_integer()
+                val = sh.Input(f,val).get_integer()
                 if val >= 0:
                     self.pos = val
                 else:
@@ -905,7 +967,48 @@ class Navigate(gt.Binary):
 
 class Commands:
     
-    def get_patch(self,file,pattern,pos,add_pos=20):
+    def __init__(self):
+        self.set_values()
+    
+    def set_values(self):
+        # 'windows-1251' in ascending order
+        self.table = ('!','"','#','$','%','&',"'",'(',')','*','+',','
+                     ,'-','.','/','0','1','2','3','4','5','6','7','8'
+                     ,'9',':',';','<','=','>','?','@','A','B','C','D'
+                     ,'E','F','G','H','I','J','K','L','M','N','O','P'
+                     ,'Q','R','S','T','U','V','W','X','Y','Z','[','\\'
+                     ,']','^','_','`','a','b','c','d','e','f','g','h'
+                     ,'i','j','k','l','m','n','o','p','q','r','s','t'
+                     ,'u','v','w','x','y','z','{','|','}','~',None,'Ђ'
+                     ,'Ѓ','‚','ѓ','„','…','†','‡','€','‰','Љ','‹','Њ'
+                     ,'Ќ','Ћ','Џ','ђ','‘','’','“','”','•','–','—'
+                     ,None,'™','љ','›','њ','ќ','ћ','џ',None,'Ў','ў'
+                     ,'Ћ','¤','Ґ','¦','§','Ё','©','Є','«','¬',None
+                     ,'®','Ї','°','±','І','і','ґ','µ','¶','·','ё'
+                     ,'№','є','»','ј','Ѕ','ѕ','ї','А','Б','В','Г'
+                     ,'Д','Е','Ж','З','И','Й','К','Л','М','Н','О'
+                     ,'П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ'
+                     ,'Ъ','Ы','Ь','Э','Ю','Я','а','б','в','г','д'
+                     ,'е','ж','з','и','й','к','л','м','н','о','п'
+                     ,'р','с','т','у','ф','х','ц','ч','ш','щ','ъ'
+                     ,'ы','ь','э','ю','я'
+                     )
+    
+    def gen_patterns (self,i=4,length=5,repeat='!'
+                     ,table=[]
+                     ):
+        if not table:
+            table = self.table
+        patterns = []
+        add = repeat * length
+        for sym in table:
+            if sym is not None:
+                item = list(add)
+                item[i] = sym
+                patterns.append(''.join(item))
+        return patterns
+    
+    def get_patch(self,file,pattern,pos,add_pos=20,sympos=0):
         f = '[MClient] plugins.multitrandem.utils.Commands.get_patch'
         if file and pattern:
             ibin = gt.Binary(file)
@@ -920,85 +1023,55 @@ class Commands:
                 lstring = "b'''{}'''".format(lstring)
                 ibin.close()
                 messages = []
-                #mes = _('Pattern: "{}"').format(pattern)
                 mes = '"{}"'.format(pattern)
                 messages.append(mes)
                 messages.append(string)
                 messages.append(lstring)
-                messages.append('')
-                result = self.run_brute_dexor(chunk,coded)
-                if result:
-                    mes, delta = result[0], result[1]
-                else:
-                    mes, delta = '', 0
-                messages.append(mes)
-                return('\n'.join(messages),delta)
+                ixor = Xor(coded,chunk)
+                ixor.analyze()
+                mes = ixor.report()
+                if mes:
+                    messages.append(mes)
+                try:
+                    int1 = ixor.bytes1[sympos]
+                    int2 = ixor.bytes2[sympos]
+                except IndexError:
+                    int1 = int2 = -1
+                    mes = _('Wrong input data!')
+                    sh.objs.get_mes(f,mes).show_warning()
+                return('\n'.join(messages),int1,int2)
             else:
                 sh.com.cancel(f)
         else:
             sh.com.rep_empty(f)
     
-    def run_brute_dexor(self,bytes1,bytes2):
-        f = '[MClient] plugins.multitrandem.utils.Commands.run_brute_dexor'
-        if bytes1 and bytes2:
-            if len(bytes1) == len(bytes2):
-                offsets = []
-                deltas  = []
-                syms    = []
-                ints1   = []
-                ints2   = []
-                prev    = 0
-                delta   = 0
-                for i in range(len(bytes1)):
-                    offset = bytes2[i] - bytes1[i]
-                    delta  = offset - prev
-                    prev   = offset
-                    offsets.append(offset)
-                    deltas.append(delta)
-                    decoded = bytes2[i:i+1].decode(gt.CODING,'replace')
-                    decoded = '"{}"'.format(decoded)
-                    syms.append(decoded)
-                    ints1.append(bytes1[i])
-                    ints2.append(bytes2[i])
-                nos = [i + 1 for i in range(len(syms))]
-                headers  = ('NO','TRANSL','INT1','INT2'
-                           ,'OFFSET','DELTA'
-                           )
-                iterable = (nos,syms,ints1
-                           ,ints2,offsets,deltas
-                           )
-                mes = sh.FastTable (headers  = headers
-                                   ,iterable = iterable
-                                   ,sep      = sh.lg.nbspace * 2
-                                   ).run()
-                return(mes,delta)
-            else:
-                sub = '{} == {}'.format(len(bytes1),len(bytes2))
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
+    def corrupt(self,filew,pos,subst=b'\x00'):
+        f = '[MClient] plugins.multitrandem.utils.Commands.corrupt'
+        if filew and subst:
+            ibin = gt.Binary(filew)
+            chunk = ibin.read(pos,pos+len(subst))
+            ibin.close()
+            try:
+                mes = _('Replace bytes "{}" with "{}" (file: {}, position: {})')
+                mes = mes.format (gt.com.get_string(chunk)
+                                 ,gt.com.get_string(subst)
+                                 ,filew
+                                 ,sh.com.set_figure_commas(pos)
+                                 )
+                sh.objs.get_mes(f,mes,True).show_info()
+                ''' For some reason, opening with 'wb' or 'w+b' causes
+                    different results.
+                '''
+                with open(filew,'r+b') as fw:
+                    fw.seek(pos)
+                    fw.write(subst)
+            except Exception as e:
+                mes = _('Operation has failed!\n\nDetails: {}')
+                mes = mes.format(e)
                 sh.objs.get_mes(f,mes,True).show_warning()
+            return chunk
         else:
             sh.com.rep_empty(f)
-    
-    def corrupt(self,filew,pos,length):
-        f = '[MClient] plugins.multitrandem.utils.Commands.corrupt'
-        try:
-            mes = _('Write {} bytes to file "{}" at position {}')
-            mes = mes.format (sh.com.set_figure_commas(length)
-                             ,filew
-                             ,sh.com.set_figure_commas(pos)
-                             )
-            sh.objs.get_mes(f,mes,True).show_info()
-            ''' For some reason, opening with 'wb' or 'w+b' causes
-                different results.
-            '''
-            with open(filew,'r+b') as fw:
-                fw.seek(pos)
-                chunk = b'\x00' * length
-                fw.write(chunk)
-        except Exception as e:
-            mes = _('Operation has failed!\n\nDetails: {}').format(e)
-            sh.objs.get_mes(f,mes,True).show_warning()
     
     def input_str(self,mes=''):
         f = '[MClient] plugins.multitrandem.utils.Commands.input_str'
@@ -1017,9 +1090,7 @@ class Commands:
             val = input(mes)
         except (EOFError,KeyboardInterrupt):
             val = 0
-        return sh.Input (title = f
-                        ,value = val
-                        ).get_integer()
+        return sh.Input(f,val).get_integer()
 
 
 
@@ -1255,7 +1326,9 @@ class CompareBinaries:
             val = input(mes)
             val = val.strip()
             if val:
-                val = sh.Input(f,val).get_integer()
+                val = sh.Input (title = f
+                               ,value = val
+                               ).get_integer()
                 if val:
                     self.buffer = val
                 else:
@@ -1438,4 +1511,13 @@ if __name__ == '__main__':
     #Tests().compare()
     #Tests().show_dumps()
     Tests().get_patch()
-    #Tests().run_brute_dexor()
+    #Tests().gen_patterns()
+    #Tests().analyze_xor()
+    #file1 = '/tmp/dict.ert'
+    #file2 = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
+    #file1 = '/home/pete/tmp/Multitran/network/eng_rus/typein.er'
+    #file2 = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/typein.er'
+    #file1 = '/home/pete/tmp/Multitran/network/eng_rus/dict.ert'
+    #file1 = '/tmp/dict.ert (paramount)'
+    #file2 = '/tmp/dict.ert (paramounu)'
+    #CompareBinaries(file1,file2).show_menu()
