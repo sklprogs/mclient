@@ -109,8 +109,8 @@ class Tags:
             while i < len(self.tags):
                 if self.tags[i-1] in self.seps:
                     self.tags[i] = self.tags[i].decode (CODING
-                                                         ,'replace'
-                                                         )
+                                                       ,'replace'
+                                                       )
                 i += 1
         else:
             sh.com.cancel(f)
@@ -119,8 +119,8 @@ class Tags:
         f = '[MClient] plugins.multitrandem.tags.Tags.set_seps'
         if self.Success:
             self.seps = [self.seplg1,self.seplg2
-                         ,self.sepdic,self.sepcom
-                         ]
+                        ,self.sepdic,self.sepcom
+                        ]
         else:
             sh.com.cancel(f)
     

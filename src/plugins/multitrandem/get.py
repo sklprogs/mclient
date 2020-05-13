@@ -634,7 +634,7 @@ class Binary:
             # 'mmap' fails upon opening an empty file!
             try:
                 self.imap = mmap.mmap (self.bin.fileno(),0
-                                      ,prot=mmap.PROT_READ
+                                      ,access=mmap.ACCESS_READ
                                       )
             except Exception as e:
                 self.Success = False
@@ -2062,7 +2062,7 @@ class Get:
                             performance, we allow only 2 valid stems
                             of the same word.
                         '''
-                        if len(word_stems) == MAXSTEMS:
+                        if len(word_stems) >= MAXSTEMS:
                             break
                     i -= 1
                 self.stemnos.append(word_stems)
