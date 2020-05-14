@@ -29,7 +29,11 @@ class Plugin:
     
     def is_abbr(self,abbr):
         f = '[MClient] plugins.multitrancom.run.Plugin.is_abbr'
-        if self.abbr and abbr:
+        ''' We do not check for 'self.abbr' since it will be empty
+            upon an empty request (e.g., when changing a number of
+            columns).
+        '''
+        if abbr:
             if abbr in self.abbr:
                 return True
         else:
@@ -37,7 +41,7 @@ class Plugin:
     
     def get_title(self,abbr):
         f = '[MClient] plugins.multitrancom.run.Plugin.get_title'
-        if self.abbr and abbr:
+        if abbr:
             if abbr in self.abbr:
                 return self.abbr[abbr]
             else:
@@ -49,7 +53,7 @@ class Plugin:
     
     def get_abbr(self,title):
         f = '[MClient] plugins.multitrancom.run.Plugin.get_abbr'
-        if self.abbr and title:
+        if title:
             for key in self.abbr.keys():
                 if title == self.abbr[key]:
                     return key
