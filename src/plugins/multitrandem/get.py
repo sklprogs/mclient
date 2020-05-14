@@ -141,11 +141,16 @@ class Ending:
 class Subject:
     # Parse files like 'SUBJECTS.TXT'
     def __init__(self,file):
+        f = '[MClient] plugins.multitrandem.get.Subject.__init__'
         self.set_values()
         self.file = file
         self.get_locale()
-        self.load()
-        self.parse()
+        # Suppress useless error output
+        if objs.get_files().iwalker.fnames:
+            self.load()
+            self.parse()
+        else:
+            sh.com.rep_lazy(f)
     
     def get_pair(self,code):
         f = '[MClient] plugins.multitrandem.get.Subject.get_pair'
@@ -912,15 +917,19 @@ class Walker:
     def get_subject(self):
         f = '[MClient] plugins.multitrandem.get.Walker.get_subject'
         if self.Success:
-            if not self.subject:
-                fname = 'subjects.txt'
-                file  = self.get_file(fname)
-                if file:
-                    self.subject = file
-                else:
-                    self.Success = False
-                    mes = _('File "{}" does not exist!').format(fname)
-                    sh.objs.get_mes(f,mes,True).show_warning()
+            # Suppress useless error output
+            if self.fnames:
+                if not self.subject:
+                    fname = 'subjects.txt'
+                    file  = self.get_file(fname)
+                    if file:
+                        self.subject = file
+                    else:
+                        self.Success = False
+                        mes = _('File "{}" does not exist!').format(fname)
+                        sh.objs.get_mes(f,mes,True).show_warning()
+            else:
+                sh.com.rep_lazy(f)
         else:
             sh.com.cancel(f)
         return self.subject
@@ -1698,26 +1707,34 @@ class Files:
     def open(self):
         f = '[MClient] plugins.multitrandem.get.Files.open'
         if self.Success:
-            self.get_typein1()
-            self.get_typein2()
-            self.get_stems1()
-            self.get_stems2()
-            self.get_glue1()
-            self.get_glue2()
-            self.get_article()
+            # Suppress useless error output
+            if self.iwalker.fnames:
+                self.get_typein1()
+                self.get_typein2()
+                self.get_stems1()
+                self.get_stems2()
+                self.get_glue1()
+                self.get_glue2()
+                self.get_article()
+            else:
+                sh.com.rep_lazy(f)
         else:
             sh.com.cancel(f)
     
     def close(self):
         f = '[MClient] plugins.multitrandem.get.Files.close'
         if self.Success:
-            self.get_typein1().close()
-            self.get_typein2().close()
-            self.get_stems1().close()
-            self.get_stems2().close()
-            self.get_glue1().close()
-            self.get_glue2().close()
-            self.get_article().close()
+            # Suppress useless error output
+            if self.iwalker.fnames:
+                self.get_typein1().close()
+                self.get_typein2().close()
+                self.get_stems1().close()
+                self.get_stems2().close()
+                self.get_glue1().close()
+                self.get_glue2().close()
+                self.get_article().close()
+            else:
+                sh.com.rep_lazy(f)
         else:
             sh.com.cancel(f)
     

@@ -138,11 +138,11 @@ class Plugin:
         return gt.Suggest(search).run()
     
     def request(self,search='',url=''):
-        iget   = gt.Get(search)
+        self.blocks = []
+        iget = gt.Get(search)
         chunks = iget.run()
         if not chunks:
             chunks = []
-        self.blocks = []
         for chunk in chunks:
             blocks = tg.Tags (chunk   = chunk
                              ,Debug   = self.Debug
