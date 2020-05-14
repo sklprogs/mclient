@@ -13,11 +13,10 @@ from skl_shared.localize import _
 
 class Plugin:
     
-    def __init__ (self,abbr={},Debug=False
+    def __init__ (self,Debug=False
                  ,maxrow=20,maxrows=1000
                  ):
         self.set_values()
-        self.abbr    = abbr
         self.Debug   = Debug
         self.maxrow  = maxrow
         self.maxrows = maxrows
