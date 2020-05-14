@@ -1991,6 +1991,7 @@ class WebFrame:
 
     # Update button icons and checkboxes in the 'Settings' widget
     def update_buttons(self):
+        f = '[MClient] mclient.WebFrame.update_buttons'
         searches = objs.get_blocksdb().get_searches()
         if searches:
             self.gui.btn_rp1.activate()
@@ -2002,15 +2003,35 @@ class WebFrame:
         else:
             self.gui.btn_rp2.inactivate()
 
-        if objs.get_blocksdb().get_prev_id(Loop=False):
-            self.gui.btn_prv.activate()
-        else:
-            self.gui.btn_prv.inactivate()
+        # Suppress useless error output
+        if lg.objs.get_request().search:
+            if objs.get_blocksdb().get_prev_id(Loop=False):
+                self.gui.btn_prv.activate()
+            else:
+                self.gui.btn_prv.inactivate()
 
-        if objs.get_blocksdb().get_next_id(Loop=False):
-            self.gui.btn_nxt.activate()
+            if objs.blocksdb.get_next_id(Loop=False):
+                self.gui.btn_nxt.activate()
+            else:
+                self.gui.btn_nxt.inactivate()
+            
+            if lg.objs.request.Block and objs.blocksdb.get_blocked():
+                self.gui.btn_blk.activate()
+                objs.get_settings().gui.cbx_no3.enable()
+            else:
+                self.gui.btn_blk.inactivate()
+                objs.get_settings().gui.cbx_no3.disable()
+
+            if not lg.objs.request.SpecialPage \
+            and lg.objs.request.Prioritize \
+            and objs.blocksdb.get_prioritized():
+                self.gui.btn_pri.activate()
+                objs.get_settings().gui.cbx_no4.enable()
+            else:
+                self.gui.btn_pri.inactivate()
+                objs.get_settings().gui.cbx_no4.disable()
         else:
-            self.gui.btn_nxt.inactivate()
+            sh.com.rep_lazy(f)
 
         if lg.objs.get_request().CaptureHotkey:
             self.gui.btn_cap.activate()
@@ -2031,22 +2052,6 @@ class WebFrame:
         else:
             self.gui.btn_alp.inactivate()
             objs.get_settings().gui.cbx_no2.disable()
-
-        if lg.objs.request.Block and objs.blocksdb.get_blocked():
-            self.gui.btn_blk.activate()
-            objs.get_settings().gui.cbx_no3.enable()
-        else:
-            self.gui.btn_blk.inactivate()
-            objs.get_settings().gui.cbx_no3.disable()
-
-        if not lg.objs.request.SpecialPage \
-        and lg.objs.request.Prioritize \
-        and objs.blocksdb.get_prioritized():
-            self.gui.btn_pri.activate()
-            objs.get_settings().gui.cbx_no4.enable()
-        else:
-            self.gui.btn_pri.inactivate()
-            objs.get_settings().gui.cbx_no4.disable()
 
     # Go to the previous search
     def go_back(self,event=None):

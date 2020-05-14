@@ -926,7 +926,8 @@ class Walker:
                         self.subject = file
                     else:
                         self.Success = False
-                        mes = _('File "{}" does not exist!').format(fname)
+                        mes = _('File "{}" does not exist!')
+                        mes = mes.format(fname)
                         sh.objs.get_mes(f,mes,True).show_warning()
             else:
                 sh.com.rep_lazy(f)
