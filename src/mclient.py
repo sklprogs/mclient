@@ -1500,11 +1500,14 @@ class WebFrame:
         ''' #NOTE: each time the contents of the current page is changed
             (e.g., due to prioritizing), bookmarks must be deleted.
         '''
+        # Suppress useless error output
+        if not lg.objs.get_request().search:
+            return
         timer = sh.Timer(f)
         timer.start()
         # Do not allow selection positions from previous articles
         self.pos = -1
-        artid = objs.get_blocksdb().is_present (source = lg.objs.get_request().source
+        artid = objs.get_blocksdb().is_present (source = lg.objs.request.source
                                                ,title  = lg.objs.request.search
                                                ,url    = lg.objs.request.url
                                                )
