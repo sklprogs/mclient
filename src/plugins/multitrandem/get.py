@@ -2056,6 +2056,7 @@ class Get:
         if self.Success:
             words = self.pattern.split(' ')
             for word in words:
+                count = 0
                 word_stems = []
                 i = len(word)
                 # Zero-length stems should be allowed
@@ -2080,7 +2081,7 @@ class Get:
                             performance, we allow only 2 valid stems
                             of the same word.
                         '''
-                        if len(word_stems) >= MAXSTEMS:
+                        if count == MAXSTEMS:
                             break
                     i -= 1
                 self.stemnos.append(word_stems)
