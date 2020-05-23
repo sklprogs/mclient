@@ -426,8 +426,8 @@ class Elems:
             
     def remove_fixed(self):
         self.blocks = [block for block in self.blocks if block.type_ \
-                        not in ('dic','wform','transc','speech')
-                       ]
+                       not in ('dic','wform','transc','speech')
+                      ]
                        
     def set_selectables(self):
         # block.no is set only after creating DB

@@ -248,7 +248,7 @@ class Cells:
             self.clear_fixed()
             self.clear_phrases()
             self.expand_speech()
-            self.phrases2end()
+            self.move_phrases_end()
             self.wrap()
             self.run_sep_words()
             self.sort_cells()
@@ -400,21 +400,21 @@ class Cells:
     # This is necessary because fixed columns are interchangeable now
     def sort_cells(self):
         self.blocks = sorted (self.blocks
-                              ,key=lambda block:(block.i
-                                                ,block.j
-                                                ,block.no
-                                                )
-                              )
+                             ,key=lambda block:(block.i
+                                               ,block.j
+                                               ,block.no
+                                               )
+                             )
     
-    def phrases2end(self):
-        f = '[MClient] cells.Cells.phrases2end'
+    def move_phrases_end(self):
+        f = '[MClient] cells.Cells.move_phrases_end'
         if self.phdic:
             phrases = [block for block in self.blocks \
                        if block.dica == self.phdic
                       ]
             self.blocks = [block for block in self.blocks \
-                            if block.dica != self.phdic
-                           ]
+                           if block.dica != self.phdic
+                          ]
             self.blocks = self.blocks + phrases
         else:
             sh.com.rep_empty(f)

@@ -31,15 +31,15 @@ class HTM:
               ,max_syms=30
               ):
         self.set_values()
-        self.order    = order
-        self.data     = data
-        self.cols     = cols
+        self.order = order
+        self.data = data
+        self.cols = cols
         self.collimit = collimit
-        self.width    = width
-        self.Printer  = Printer
-        self.Reverse  = Reverse
-        self.phdic    = phdic
-        self.skipped  = skipped
+        self.width = width
+        self.Printer = Printer
+        self.Reverse = Reverse
+        self.phdic = phdic
+        self.skipped = skipped
         ''' Maximum number of symbols in a column. If the column exceeds
             this number and 'self.width' is set - wrap the column.
             #TODO: calculate font width to be more precise
@@ -52,12 +52,12 @@ class HTM:
         return self.htm
     
     def set_values(self):
-        self.blocks  = []
+        self.blocks = []
         self.skipped = 0
-        self.block   = None
-        self.htm     = ''
-        self.phdic   = ''
-        self.script  = '''
+        self.block = None
+        self.htm = ''
+        self.phdic = ''
+        self.script = '''
         <head>
 
           <div align="center">
@@ -137,7 +137,7 @@ class HTM:
             
     def set_blocked_colors(self):
         default_color = 'dim gray'
-        delta         = 76
+        delta = 76
         # Column 1 color
         result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col1']
                                       ,delta = delta
@@ -352,8 +352,13 @@ class HTM:
                 self.output.write('<td valign="top" col width="')
                 self.output.write(str(self.width))
                 self.output.write('">')
-            else:
+            elif self.blocks and self.blocks[0].text \
+            and self.blocks[0].type_ in ('dic','wform','transc'
+                                        ,'speech'
+                                        ):
                 self.output.write('<td align="center" valign="top">')
+            else:
+                self.output.write('<td valign="top">')
             i = j = 0
             for self.block in self.blocks:
                 while self.block.i > i:
@@ -361,12 +366,17 @@ class HTM:
                     cond1 = self.width and self.Reverse
                     cond2 = self.width \
                             and len(self.block.text) > self.maxsyms
+                    if self.block.text and self.block.type_ in \
+                    ('dic','wform','transc','speech'):
+                        base = '<td align="center" valign="top"'
+                    else:
+                        base = '<td valign="top"'
                     if cond1 or cond2:
-                        self.output.write('<td align="center" valign="top" col width="')
+                        self.output.write(base+' col width="')
                         self.output.write(str(self.width))
                         self.output.write('">')
                     else:
-                        self.output.write('<td align="center" valign="top">')
+                        self.output.write(base+'>')
                     i = self.block.i
                     j = 0
                 while self.block.j > j:
