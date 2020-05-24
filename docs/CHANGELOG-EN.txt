@@ -1,5 +1,8 @@
 
 
+6.4 (in development)
+* Center fixed columns only
+
 6.3
 * Expand dictionary titles on the basis of multitran.com
 * Add support for local Multitran files (short demo only)
