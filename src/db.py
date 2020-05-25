@@ -261,10 +261,14 @@ class DB:
     def assign_bp(self):
         f = '[MClient] db.DB.assign_bp'
         if self.artid:
-            self.dbc.execute ('select NO,TYPE,TEXT,DICA from BLOCKS \
-                               where ARTICLEID = ? order by NO'
-                             ,(self.artid,)
-                             )
+            query = 'select NO,TYPE,TEXT'
+            if self.ExpandDic:
+                query += ',DICAF'
+            else:
+                query += ',DICA'
+            query += ' from BLOCKS where ARTICLEID = ? order by NO'
+            
+            self.dbc.execute(query,(self.artid,))
             return self.dbc.fetchall()
         else:
             sh.com.rep_empty(f)

@@ -301,6 +301,13 @@ class Elems:
             self.Success = False
             sh.com.rep_empty(f)
     
+    def expand_dica_file(self):
+        f = '[MClient] plugins.multitrancom.elems.Elems.expand_dica_file'
+        for block in self.blocks:
+            if block.dica and not block.dicaf:
+                #TODO: Read from abbr.txt
+                block.dicaf = block.dica
+    
     def fix_thesaurus(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.fix_thesaurus'
         for i in range(len(self.blocks)):
@@ -559,6 +566,7 @@ class Elems:
             self.insert_definitions()
             self.fixed_terma()
             self.expand_dica()
+            self.expand_dica_file()
             self.set_terma_same()
             # Extra spaces in the beginning may cause sorting problems
             self.add_space()
