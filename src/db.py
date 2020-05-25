@@ -17,7 +17,7 @@ class DB:
     def __init__(self):
         self.set_values()
         self.reset()
-        self.db  = sqlite3.connect(':memory:')
+        self.db = sqlite3.connect(':memory:')
         self.dbc = self.db.cursor()
         self.create_blocks()
         self.create_articles()
@@ -218,7 +218,7 @@ class DB:
             sh.com.rep_empty(f)
 
     def print (self,Selected=False
-              ,mode='BLOCKS',maxrow=20
+              ,mode='BLOCKS',maxrow=10
               ,maxrows=20
               ):
         ''' 'self.dbc.description' is 'None' without performing
@@ -239,14 +239,14 @@ class DB:
                 mes = mes.format(mode,'ARTICLES, BLOCKS')
                 sh.objs.get_mes(f,mes).show_error()
         headers = [cn[0] for cn in self.dbc.description]
-        rows    = self.dbc.fetchall()
+        rows = self.dbc.fetchall()
         mes = sh.FastTable (headers   = headers
                            ,iterable  = rows
                            ,maxrow    = maxrow
                            ,maxrows   = maxrows
                            ,Transpose = True
                            ).run()
-        sh.com.run_fast_debug(mes)
+        sh.com.run_fast_debug(f,mes)
 
     def update(self,query):
         f = '[MClient] db.DB.update'

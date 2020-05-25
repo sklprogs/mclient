@@ -24,16 +24,16 @@ class Ending(gt.Ending):
     def debug(self):
         f = '[MClient] plugins.multitrandem.tests.Ending.debug'
         if self.Success:
-            ends     = list(self.ends)
-            ends     = [str(end) for end in ends]
-            headers  = ('#','ENDINGS')
+            ends = list(self.ends)
+            ends = [str(end) for end in ends]
+            headers = ('#','ENDINGS')
             iterable = (self.nos,ends)
             mes = sh.FastTable (iterable = iterable
                                ,headers  = headers
                                ).run()
             sub = _('File: "{}"').format(self.file)
             mes = sub + '\n\n' + mes
-            sh.com.run_fast_debug(mes)
+            sh.com.run_fast_debug(f,mes)
         else:
             sh.com.cancel(f)
 
@@ -57,7 +57,7 @@ class Subject(gt.Subject):
                                ).run()
             sub = _('File: "{}"').format(self.file)
             mes = sub + '\n\n' + mes
-            sh.com.run_fast_debug(mes)
+            sh.com.run_fast_debug(f,mes)
         else:
             sh.com.cancel(f)
 
@@ -155,7 +155,7 @@ class Binary(gt.Binary):
             iwrite.write('\n')
             mes = iwrite.getvalue()
             iwrite.close()
-            sh.com.run_fast_debug(mes)
+            sh.com.run_fast_debug(f,mes)
         else:
             sh.com.cancel(f)
     
@@ -294,6 +294,7 @@ class Tests:
         #upage.debug()
     
     def get_upage_stems(self):
+        f = '[MClient] plugins.multitrandem.tests.Tests.get_upage_stems'
         upage = UPage(gt.objs.get_files().iwalker.get_stems1())
         upage.get_parts()
         part1  = list(upage.part1)
@@ -313,9 +314,10 @@ class Tests:
                            ,iterable = data
                            ,sep      = 3 * ' '
                            ).run()
-        sh.com.run_fast_debug(mes)
+        sh.com.run_fast_debug(f,mes)
     
     def get_upage_glue(self):
+        f = '[MClient] plugins.multitrandem.tests.Tests.get_upage_glue'
         upage = UPage(gt.objs.get_files().iwalker.get_glue1())
         upage.get_parts()
         part1  = list(upage.part1)
@@ -342,7 +344,7 @@ class Tests:
                            ,iterable = data
                            ,sep      = 3 * ' '
                            ).run()
-        sh.com.run_fast_debug(mes)
+        sh.com.run_fast_debug(f,mes)
     
     def searchu_stems(self):
         f = '[MClient] plugins.multitrandem.tests.Tests.searchu_stems'
@@ -505,7 +507,7 @@ class UPage(gt.UPage):
                                    ).run()
                 if mes:
                     mes = _('File: {}').format(self.file) + '\n\n' + mes
-                    sh.com.run_fast_debug(mes)
+                    sh.com.run_fast_debug(f,mes)
                 else:
                     sh.com.rep_empty(f)
             else:
@@ -529,7 +531,7 @@ class UPage(gt.UPage):
                                    ).run()
                 if mes:
                     mes = _('File: {}').format(self.file) + '\n\n' + mes
-                    sh.com.run_fast_debug(mes)
+                    sh.com.run_fast_debug(f,mes)
                 else:
                     sh.com.rep_empty(f)
             else:

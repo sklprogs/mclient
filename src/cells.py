@@ -154,8 +154,7 @@ class BlockPrioritize:
                                ,maxrows   = self.maxrows
                                ,Transpose = True
                                ).run()
-            mes = f + '\n\n' + mes
-            sh.com.run_fast_debug(mes)
+            sh.com.run_fast_debug(f,mes)
 
 
 
@@ -171,7 +170,7 @@ class Cells:
     def __init__ (self,data,cols,collimit=10
                  ,phdic=None,Reverse=False
                  ,ExpandSp=False,Debug=False
-                 ,maxrow=20,maxrows=50
+                 ,maxrow=10,maxrows=50
                  ):
         f = '[MClient] cells.Cells.__init__'
         # Sqlite fetch
@@ -293,8 +292,7 @@ class Cells:
                                ,maxrows   = self.maxrows
                                ,Transpose = True
                                ).run()
-            mes = f + '\n\n' + mes
-            sh.com.run_fast_debug(mes)
+            sh.com.run_fast_debug(f,mes)
     
     def wrap(self):
         if self.Reverse:
@@ -547,8 +545,7 @@ class Pos:
                                ,maxrows   = self.maxrows
                                ,Transpose = True
                                ).run()
-            mes = f + '\n\n' + mes
-            sh.com.run_fast_debug(mes)
+            sh.com.run_fast_debug(f,mes)
     
     def gen_poses(self):
         ''' We generate positions here according to the text produced by 

@@ -165,7 +165,7 @@ class AnalyzeTag:
         mes = sh.FastTable(iterable,headers).run()
         types = []
         texts = []
-        nos   = []
+        nos = []
         for i in range(len(self.blocks)):
             nos.append(i+1)
             types.append(self.blocks[i].type_)
@@ -175,7 +175,7 @@ class AnalyzeTag:
         mes += '\n\n' + sh.FastTable(iterable,headers).run()
         mes += '\n' + 'DICAF: "{}"'.format(self.dicaf)
         sh.objs.txt = None
-        sh.com.run_fast_debug(mes)
+        sh.com.run_fast_debug(f,mes)
     
     def set_correction(self):
         if pcor1 in self.block.text or pcor2 in self.block.text:
@@ -337,8 +337,7 @@ class Tags:
             headers = ('NO','ABBR','FULL')
             iterable = [nos,keys,values]
             mes = sh.FastTable(iterable,headers).run()
-            mes = f + '\n\n' + mes
-            sh.com.run_fast_debug(mes)
+            sh.com.run_fast_debug(f,mes)
         else:
             sh.com.rep_empty(f)
     
@@ -406,9 +405,8 @@ class Tags:
                            ,maxrows   = self.maxrows
                            ,Transpose = True
                            ).run()
-        mes = f + '\n\n' + mes
         sh.objs.txt = None
-        sh.com.run_fast_debug(mes)
+        sh.com.run_fast_debug(f,mes)
 
     def debug(self):
         if self.Debug:

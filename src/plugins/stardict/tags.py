@@ -268,8 +268,8 @@ class Tags:
                            ,maxrows   = self.maxrows
                            ,Transpose = True
                            ).run()
-        mes = f + ' (Non-DB blocks)\n\n' + mes
-        sh.com.run_fast_debug(mes)
+        mes = _('Non-DB blocks:') + '\n\n' + mes
+        sh.com.run_fast_debug(f,mes)
 
     def debug(self):
         if self.Debug:

@@ -201,8 +201,7 @@ class Same:
                                ,maxrows   = self.maxrows
                                ,Transpose = True
                                ).run()
-            mes = f + '\n\n' + mes
-            sh.com.run_fast_debug(mes)
+            sh.com.run_fast_debug(f,mes)
     
     def run(self):
         f = 'plugins.multitrancom.elems.Same.run'
@@ -596,8 +595,7 @@ class Elems:
                                ,maxrows   = self.maxrows
                                ,Transpose = True
                                ).run()
-            mes = f + '\n\n' + mes
-            sh.com.run_fast_debug(mes)
+            sh.com.run_fast_debug(f,mes)
         
     def set_transc(self):
         for block in self.blocks:

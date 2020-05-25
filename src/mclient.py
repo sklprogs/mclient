@@ -1735,7 +1735,7 @@ class WebFrame:
             url = objs.get_blocksdb().get_url(pos=self.pos)
             if url:
                 lg.objs.request.search = objs.blocksdb.get_text(pos=self.pos)
-                lg.objs.request.url    = url
+                lg.objs.request.url = url
                 mes = _('Open link: {}').format(lg.objs.request.url)
                 sh.objs.get_mes(f,mes,True).show_info()
                 self.load_article()

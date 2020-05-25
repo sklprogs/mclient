@@ -87,8 +87,7 @@ class Tags:
                            ,maxrows   = self.maxrows
                            ,Transpose = True
                            ).run()
-        mes = f + '\n\n' + mes
-        sh.com.run_fast_debug(mes)
+        sh.com.run_fast_debug(f,mes)
     
     def debug(self):
         if self.Debug:
@@ -100,7 +99,7 @@ class Tags:
         message = ''
         for i in range(len(self.tags)):
             message += '{}:{}\n'.format(i,self.tags[i])
-        sh.com.run_fast_debug(message)
+        sh.com.run_fast_debug(f,message)
     
     def decode(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.decode'

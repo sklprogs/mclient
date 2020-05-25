@@ -192,7 +192,7 @@ class Elems:
                                ,maxrows   = self.maxrows
                                ,Transpose = True
                                ).run()
-            sh.com.run_fast_debug()
+            sh.com.run_fast_debug(f,mes)
         
     def set_transc(self):
         pass
