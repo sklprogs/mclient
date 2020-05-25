@@ -468,9 +468,10 @@ class DB:
         f = '[MClient] db.DB.get_min_cell'
         if self.artid:
             if self.Selectable:
-                ''' This function is made for calculating moves; if we
-                    don't take into account types, the first selectable
-                    cell may not be reached (e.g., it has 'transc' type)
+                ''' This function is made for calculating moves;
+                    if we don't take into account types, the first
+                    selectable cell may not be reached
+                    (e.g., it has 'transc' type).
                 '''
                 self.dbc.execute ('select CELLNO,NO,POS1 from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
@@ -872,10 +873,10 @@ class DB:
         else:
             sh.com.rep_empty(f)
                           
-    ''' Get the minimum BBOX1 and the maximum BBOX2 for the set column
-        number
-    '''
     def get_bbox_limits(self,col_no=0):
+        ''' Get the minimum BBOX1 and the maximum BBOX2 for
+            the set column number.
+        '''
         f = '[MClient] db.DB.get_bbox_limits'
         if self.artid:
             self.dbc.execute ('select BBOX1 from BLOCKS \
