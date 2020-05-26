@@ -352,7 +352,11 @@ class Elems:
         f = '[MClient] plugins.multitrancom.elems.Elems.expand_dica_file'
         for block in self.blocks:
             if block.dica and not block.dicaf:
-                block.dicaf = objs.get_abbr().get_full(block.dica)
+                dicas = block.dica.split(', ')
+                dicafs = []
+                for dica in dicas:
+                    dicafs.append(objs.get_abbr().get_full(dica))
+                block.dicaf = ', '.join(dicafs)
     
     def fix_thesaurus(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.fix_thesaurus'
