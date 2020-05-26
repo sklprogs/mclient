@@ -2,6 +2,7 @@
 
 6.4 (in development)
 * Center fixed columns only
+* Set dictionary titles for a phrase-only article
 
 6.3
 * Expand dictionary titles on the basis of multitran.com
