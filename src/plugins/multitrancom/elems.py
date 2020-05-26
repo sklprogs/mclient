@@ -19,6 +19,53 @@ import skl_shared.shared as sh
 from skl_shared.localize import _
 
 
+class Abbr:
+    
+    def __init__(self):
+        self.set_values()
+        self.set_file()
+        self.load()
+    
+    def set_values(self):
+        self.Success = True
+        self.fabbr = ''
+    
+    def get_full(self,abbr):
+        f = '[MClient] plugins.multitrancom.Abbr.get_full'
+        if self.Success:
+            if abbr:
+                try:
+                    index_ = self.dic.orig.index(abbr)
+                    return self.dic.transl[index_]
+                except ValueError:
+                    pass
+            else:
+                sh.com.empty(f)
+        else:
+            sh.com.cancel(f)
+        return abbr
+    
+    def load(self):
+        f = '[MClient] plugins.multitrancom.Abbr.load'
+        if self.Success:
+            self.dic = sh.Dic (file     = self.fabbr
+                              ,Sortable = True
+                              )
+            self.Success = self.dic.Success
+        else:
+            sh.com.cancel(f)
+    
+    def set_file(self):
+        f = '[MClient] plugins.multitrancom.Abbr.set_file'
+        if self.Success:
+            self.fabbr = sh.objs.get_pdir().add ('..','resources'
+                                                ,'abbr.txt'
+                                                )
+            self.Success = sh.File(file=self.fabbr).Success
+        else:
+            sh.com.cancel(f)
+
+
 
 class Same:
     ''' Finely adjust SAME fields here. Default SAME values are already
@@ -305,8 +352,7 @@ class Elems:
         f = '[MClient] plugins.multitrancom.elems.Elems.expand_dica_file'
         for block in self.blocks:
             if block.dica and not block.dicaf:
-                #TODO: Read from abbr.txt
-                block.dicaf = block.dica
+                block.dicaf = objs.get_abbr().get_full(block.dica)
     
     def fix_thesaurus(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.fix_thesaurus'
@@ -824,3 +870,18 @@ class Elems:
             if self.blocks[i].type_ == 'dic' \
             and self.blocks[i].text in self.dicurls:
                 self.blocks[i].url = self.dicurls[self.blocks[i].text]
+
+
+
+class Objects:
+    
+    def __init__(self):
+        self.abbr = None
+    
+    def get_abbr(self):
+        if self.abbr is None:
+            self.abbr = Abbr()
+        return self.abbr
+
+
+objs = Objects()
