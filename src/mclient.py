@@ -152,7 +152,7 @@ class Objects:
 
 def call_app():
     # Use the same key binding to call the window
-    sh.Geometry(parent=objs.get_webframe().gui.obj).activate(MouseClicked=lg.objs.get_request().MouseClicked)
+    sh.Geometry(objs.get_webframe().gui.obj).activate(MouseClicked=lg.objs.get_request().MouseClicked)
     ''' #TODO: check if this is still the problem
         In case of .focus_set() *first* Control-c-c can call an inactive
         widget.
@@ -165,9 +165,7 @@ def run_timed_update():
     check = kl_mod.keylistener.check()
     if check:
         if check == 1 and lg.objs.request.CaptureHotkey:
-            ''' Allows to prevent thread freezing in Windows newer
-                than XP.
-            '''
+            # Prevent thread freezing in Windows newer than XP
             if sh.objs.get_os().is_win():
                 kl_mod.keylistener.cancel()
                 kl_mod.keylistener.restart()
@@ -1938,7 +1936,7 @@ class WebFrame:
 
     # Open URL of the current article in a browser
     def open_in_browser(self,event=None):
-        ionline     = sh.Online()
+        ionline = sh.Online()
         ionline.url = lg.objs.get_request().url
         ionline.browse()
 
