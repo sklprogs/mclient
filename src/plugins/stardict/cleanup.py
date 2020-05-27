@@ -272,7 +272,7 @@ class Type2:
                     when "smb.", "smb.'s", "smth.", "т.п." are met).
                 '''
                 block += self.text[i]
-                if self.dic(block):
+                if self.is_dic(block):
                     self.blocks.append(block)
                     block = ''
             else:
@@ -333,7 +333,7 @@ class Type2:
                 ''' #TODO: create 'dic_abbr' for Type2 in order to
                     expand dictionary abbreviations later.
                 '''
-            elif self.dic(block):
+            elif self.is_dic(block):
                 block = block.replace('_','',1)
                 self.tags.append('<dic>' + block + '</dic>')
             elif block.startswith('_Ex:'):
@@ -361,7 +361,7 @@ class Type2:
     
     def swap_dics(self):
         for i in range(len(self.blocks)):
-            if self.dic(self.blocks[i]):
+            if self.is_dic(self.blocks[i]):
                 Condition = False
                 if i > 0:
                     if sh.Text(text=self.blocks[i]).has_cyrillic() \

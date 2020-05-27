@@ -1,17 +1,7 @@
-
+multitrancom:
 - en-ru, лошадиных сил: wrong comment SAME
 - Save article: only the last article is saved, not the current one
-- SPE: parsing differences between Linux and Windows versions!
-- multitranbin: AS: an abbreviation, not a conjunction
-- multitranbin: DARE: an abbreviation, not a noun
-- multitranbin: kick: a noun, not a verb
-- multitranbin: mad: "бешеный (о животном)" is missing
-- multitranbin: go, work: not found
-- multitranbin: easternize: "ориентальный характер" is present, but
-  "подвергать влиянию восточных штатов" is missing
-- multitranbin: lack: verb, not a noun
-- multitranbin: backwash: verb, not a noun
-- multitranbin: academic: adjective, not a noun
+- SPE: wrong SAME
 - EN-RU, поднять: do not separate blocks from the long comment
 - EN-RU, средство: "adjunct (Киселев)" relates to
   "дополнительное средство"
@@ -96,3 +86,15 @@
 - Fix links in a saved raw html
 - Vertical view (maybe, with Styles): 1st column can be a single entry
   of 'dic' type
+
+multitrandem:
+- AS: an abbreviation, not a conjunction
+- DARE: an abbreviation, not a noun
+- kick: a noun, not a verb
+- mad: "бешеный (о животном)" is missing
+- go, work: not found
+- easternize: "ориентальный характер" is present, but
+  "подвергать влиянию восточных штатов" is missing
+- lack: verb, not a noun
+- backwash: verb, not a noun
+- academic: adjective, not a noun

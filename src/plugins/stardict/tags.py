@@ -77,6 +77,7 @@ class Block:
         self.url      = ''
         self.urla     = ''
         self.dica     = ''
+        self.dicaf    = ''
         self.wforma   = ''
         self.speecha  = ''
         self.transca  = ''
@@ -196,7 +197,8 @@ class Tags:
     def __init__ (self,text,Debug=False
                  ,maxrow=20,maxrows=1000
                  ):
-        self.tags   = []
+        self.abbr = {}
+        self.tags = []
         self.blocks = []
         if text:
             self.text = list(text)
