@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-''' There is a bug in 'pyhook' which crashes the program if a focus is
-    set on a program having Cyrillic symbols in its title, therefore we
-    need to comment out assigning 'win_name' in pyHook's C code and
-    recompile the library.
+''' There was a bug in 'pyhook' which crashed the program if a focus 
+    was set on a program having Cyrillic symbols in its title. We
+    needed to comment out assigning 'win_name' in pyHook's C code and
+    recompile the library. 'pyWinhook' does not have such bug.
 '''
 
-from pyHook import HookManager
+from pyWinhook import HookManager
 # If we need to output to console
 import pythoncom
 import threading

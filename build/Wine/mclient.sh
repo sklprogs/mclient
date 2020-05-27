@@ -1,15 +1,15 @@
 #!/bin/bash
 
 product="mclient"
-python="$HOME/.wine/drive_c/Python34"
+python="$HOME/.wine/drive_c/Python"
 pyinstaller="$python/Scripts/pyinstaller.exe"
 binariesdir="$HOME/binaries"
 srcdir="$HOME/bin/$product/src"
 resdir="$HOME/bin/$product/resources"
 cmd="$HOME/bin/$product/build/Wine/$product.cmd"
 tkhtmldir="$python/Lib/site-packages/tkinterhtml/tkhtml/Windows"
-tmpdir="$HOME/.wine/drive_c/users/pete/$product" # Will be deleted!
-builddir="$tmpdir/$product"                      # Will be deleted!
+tmpdir="$HOME/.wine/drive_c/$product" # Will be deleted!
+builddir="$tmpdir/$product"           # Will be deleted!
 
 if [ ! -e "$pyinstaller" ]; then
     echo "pyinstaller is not installed!"; exit

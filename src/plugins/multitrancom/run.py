@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import skl_shared.shared            as sh
+import skl_shared.shared as sh
+from skl_shared.localize import _
 import plugins.multitrancom.get     as gt
 import plugins.multitrancom.cleanup as cu
 import plugins.multitrancom.tags    as tg
 import plugins.multitrancom.elems   as el
 import plugins.multitrancom.pairs   as pr
-from skl_shared.localize import _
 
 
 
