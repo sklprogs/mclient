@@ -1,6 +1,9 @@
 (in development)
 * 
 
+6.4.1
+* Fix loading Stardict format
+
 6.4
 * Center fixed columns only
 * Set dictionary titles for a phrase-only article
