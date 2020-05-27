@@ -1,8 +1,10 @@
+(in development)
+* 
 
-
-6.4 (in development)
+6.4
 * Center fixed columns only
 * Set dictionary titles for a phrase-only article
+* Update the building system which corrected errors
 
 6.3
 * Expand dictionary titles on the basis of multitran.com
