@@ -26,9 +26,12 @@ from skl_shared.localize import _
          (116 is for everyone)
          <a href="/m.exe?a=116&UserName=Буткова">Буткова</a>
          a href="/m.exe?a=116&UserName=
-    •  Genders:
+    •  Parts of speech
          <em>n</em>
          em
+    •  Genders:
+         <span STYLE="color:gray">n</span>
+         span STYLE="color:gray"
     •  Word forms + thesaurus:
          <td colspan="2" class="gray">&nbsp;(quantity) computer <em>n</em></td>
          td colspan="2" class="gray"
@@ -56,6 +59,8 @@ purl4 = '">'
 # Comments
 pcom1 = '<i>'
 pcom2 = 'span style="color:gray"'
+# Gender
+pcom3 = 'span STYLE="color:gray"'
 
 # Corrective comments
 pcor1 = '<span STYLE="color:rgb(60,179,113)">'
@@ -93,7 +98,7 @@ tag_pattern_del = ['m.exe?a=40&'          # Log in, Вход
 useful_tags = [pdic ,purl1,purl2,pcom1
               ,pcom2,pwf1 ,pwf2 ,psp
               ,ptm1 ,ptm2 ,pph  ,pcor1
-              ,pcor2
+              ,pcor2,pcom3
               ]
 
 
@@ -267,7 +272,8 @@ class AnalyzeTag:
             self.fragms.append(tmp)
 
     def set_comment(self):
-        if pcom1 in self.block.text or pcom2 in self.block.text:
+        if pcom1 in self.block.text or pcom2 in self.block.text \
+        or pcom3 in self.block.text:
             self.block.type_ = 'comment'
     
     def set_dic(self):
