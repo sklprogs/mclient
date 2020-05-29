@@ -97,8 +97,7 @@ class Same:
             i += 1
     
     def _has_extra_bracket(self,block):
-        if block.text.count('(') > block.text.count(')'):
-            return True
+        return block.text.count('(') > block.text.count(')')
     
     def embrace_user(self):
         i = 2
@@ -112,19 +111,18 @@ class Same:
             i += 1
     
     def run_com_term_com(self):
-        if len(self.blocks) > 2:
-            i = 2
-            while i < len(self.blocks):
-                if self.blocks[i-2].type_ == 'comment' \
-                and self.blocks[i-1].type_ == 'term' \
-                and self.blocks[i].type_ in ('comment','correction'):
-                    if self.blocks[i-2].text.startswith('(') \
-                    and not ')' in self.blocks[i-2].text \
-                    and self.blocks[i].text.startswith(')'):
-                        # 'self.blocks[i-2]' can actually have any SAME
-                        self.blocks[i-1].same = 1
-                        self.blocks[i].same = 1
-                i += 1
+        i = 2
+        while i < len(self.blocks):
+            if self.blocks[i-2].type_ == 'comment' \
+            and self.blocks[i-1].type_ == 'term' \
+            and self.blocks[i].type_ in ('comment','correction'):
+                if self.blocks[i-2].text.startswith('(') \
+                and not ')' in self.blocks[i-2].text \
+                and self.blocks[i].text.startswith(')'):
+                    # 'self.blocks[i-2]' can actually have any SAME
+                    self.blocks[i-1].same = 1
+                    self.blocks[i].same = 1
+            i += 1
     
     def run_wform_com_fixed(self):
         ''' Set a specific 'definition' type for blocks that are tagged
@@ -138,40 +136,38 @@ class Same:
             by multitran.com and those fields remain unchanged, see,
             for example, 'memory pressure').
         '''
-        if len(self.blocks) > 2:
-            i = 2
-            while i < len(self.blocks):
-                ''' Do not check the '_same' value of a definition block
-                    since it can (and should) already be set to 1.
+        i = 2
+        while i < len(self.blocks):
+            ''' Do not check the '_same' value of a definition block
+                since it can (and should) already be set to 1.
+            '''
+            if self.blocks[i-2].type_ == 'wform' \
+            and self.blocks[i-1].type_ == 'comment' \
+            and self.blocks[i].type_ in ('dic','wform','transc'
+                                        ,'speech'
+                                        ):
+                self.blocks[i-1].type_ = 'definition'
+                ''' 'same' value of the definition block should
+                    already be set to 1, but we assign it just to be
+                    on a safe side.
                 '''
-                if self.blocks[i-2].type_ == 'wform' \
-                and self.blocks[i-1].type_ == 'comment' \
-                and self.blocks[i].type_ in ('dic','wform','transc'
-                                            ,'speech'
-                                            ):
-                   self.blocks[i-1].type_ = 'definition'
-                   ''' '_same' value of the definition block should
-                       already be set to 1, but we assign it just to be
-                       on a safe side.
-                   '''
-                   self.blocks[i-1].same = 1
-                i += 1
+                self.blocks[i-1].same = 1
+            i += 1
     
     def run_wform_com_term(self):
         # Source-specific
-        if len(self.blocks) > 2:
-            i = 2
-            while i < len(self.blocks):
-                if self.blocks[i-2].type_ == 'wform' \
-                and self.blocks[i-2].same == 0 \
-                and self.blocks[i-2].url \
-                and self.blocks[i-1].type_ == 'comment' \
-                and self.blocks[i-1].same == 0 \
-                and self.blocks[i].type_ == 'term' \
-                and self.blocks[i].same == 1:
-                   self.blocks[i-2].type_ = 'term'
-                   self.blocks[i-1].same = 1
-                i += 1
+        i = 2
+        while i < len(self.blocks):
+            if self.blocks[i-2].type_ == 'wform' \
+            and self.blocks[i-2].same == 0 \
+            and self.blocks[i-2].url \
+            and self.blocks[i-1].type_ == 'comment' \
+            and self.blocks[i-1].same == 0 \
+            and self.blocks[i].type_ == 'term' \
+            and self.blocks[i].same == 1:
+                self.blocks[i-2].type_ = 'term'
+                self.blocks[i-1].same = 1
+            i += 1
     
     def run_com_com(self):
         ''' Fix the 'comment (SAME=0) - comment (SAME=0)' structure
@@ -179,21 +175,20 @@ class Same:
             indistinguishable from comments. The latter happens only in
             the present source, so this code is plugin-specific.
         '''
-        if len(self.blocks) > 2:
-            i = 2
-            while i < len(self.blocks):
-                if self.blocks[i-1].type_ == 'comment' \
-                and self.blocks[i-1].same == 0 \
-                and self.blocks[i].type_ == 'comment' \
-                and self.blocks[i].same == 0:
-                    if self.blocks[i-2].type_ in ('dic','wform'
-                                                 ,'speech','transc'
-                                                 ):
-                        self.blocks[i-1].type_ = 'wform'
-                        self.blocks[i].same = 1
-                    else:
-                        self.blocks[i-1].same = 1
-                i += 1
+        i = 2
+        while i < len(self.blocks):
+            if self.blocks[i-1].type_ == 'comment' \
+            and self.blocks[i-1].same == 0 \
+            and self.blocks[i].type_ == 'comment' \
+            and self.blocks[i].same == 0:
+                if self.blocks[i-2].type_ in ('dic','wform'
+                                             ,'speech','transc'
+                                             ):
+                    self.blocks[i-1].type_ = 'wform'
+                    self.blocks[i].same = 1
+                else:
+                    self.blocks[i-1].same = 1
+            i += 1
     
     def run_com_term(self):
         ''' If a comment has SAME=0, then the next non-fixed type block
@@ -203,31 +198,29 @@ class Same:
             here since they come only after other blocks and always have
             SAME=1.
         '''
-        if len(self.blocks) > 1:
-            i = 1
-            while i < len(self.blocks):
-                if self.blocks[i-1].type_ == 'comment' \
-                and self.blocks[i-1].same == 0:
-                    if self.blocks[i].type_ == 'term':
-                        self.blocks[i].same = 1
-                    else:
-                        self.blocks[i-1].same = 1
-                i += 1
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].type_ == 'comment' \
+            and self.blocks[i-1].same == 0:
+                if self.blocks[i].type_ == 'term':
+                    self.blocks[i].same = 1
+                else:
+                    self.blocks[i-1].same = 1
+            i += 1
     
     def run_term_com_fixed(self):
         ''' Set SAME value of a comment prior to a fixed type to 1
             even if it does not comprise brackets.
         '''
-        if len(self.blocks) > 2:
-            i = 2
-            while i < len(self.blocks):
-                if self.blocks[i-2].type_ == 'term' \
-                and self.blocks[i-1].type_ == 'comment' \
-                and self.blocks[i].type_ in ('dic','wform','speech'
-                                            ,'transc'
-                                            ):
-                    self.blocks[i-1].same = 1
-                i += 1
+        i = 2
+        while i < len(self.blocks):
+            if self.blocks[i-2].type_ == 'term' \
+            and self.blocks[i-1].type_ == 'comment' \
+            and self.blocks[i].type_ in ('dic','wform','speech'
+                                        ,'transc'
+                                        ):
+                self.blocks[i-1].same = 1
+            i += 1
     
     def run_all_coms(self):
         i = 1
@@ -245,28 +238,27 @@ class Same:
             i += 1
     
     def run_term_com_term(self):
-        if len(self.blocks) > 2:
-            i = 2
-            while i < len(self.blocks):
-                if self.blocks[i-2].type_ == 'term' \
-                and self.blocks[i-1].type_ == 'comment' \
-                and self.blocks[i].type_ == 'term':
-                    ''' There can be a 'comment-term; comment-term' case
-                        (with the comments having SAME=1) which
-                        shouldn't be matched. See multitran.com:
-                        eng-rus: 'tree limb'.
-                    '''
-                    if not self.blocks[i-1].text.startswith('('):
-                        cond1 = sh.Text(self.blocks[i-2].text).has_cyrillic()\
-                                and sh.Text(self.blocks[i-1].text).has_cyrillic()\
-                                and sh.Text(self.blocks[i].text).has_cyrillic()
-                        cond2 = sh.Text(self.blocks[i-2].text).has_latin()\
-                                and sh.Text(self.blocks[i-1].text).has_latin()\
-                                and sh.Text(self.blocks[i].text).has_latin()
-                        if cond1 or cond2:
-                            self.blocks[i-1].same = 1
-                            self.blocks[i].same = 1
-                i += 1
+        i = 2
+        while i < len(self.blocks):
+            if self.blocks[i-2].type_ == 'term' \
+            and self.blocks[i-1].type_ == 'comment' \
+            and self.blocks[i].type_ == 'term':
+                ''' There can be a 'comment-term; comment-term' case
+                    (with the comments having SAME=1) which
+                    shouldn't be matched. See multitran.com:
+                    eng-rus: 'tree limb'.
+                '''
+                if not self.blocks[i-1].text.startswith('('):
+                    cond1 = sh.Text(self.blocks[i-2].text).has_cyrillic()\
+                            and sh.Text(self.blocks[i-1].text).has_cyrillic()\
+                            and sh.Text(self.blocks[i].text).has_cyrillic()
+                    cond2 = sh.Text(self.blocks[i-2].text).has_latin()\
+                            and sh.Text(self.blocks[i-1].text).has_latin()\
+                            and sh.Text(self.blocks[i].text).has_latin()
+                    if cond1 or cond2:
+                        self.blocks[i-1].same = 1
+                        self.blocks[i].same = 1
+            i += 1
     
     def run_speech(self):
         ''' 'speech' blocks have 'same = 1' when analyzing MT because
