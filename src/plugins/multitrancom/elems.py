@@ -100,8 +100,8 @@ class Same:
                 if self.blocks[i-2].type_ == 'wform' \
                 and self.blocks[i-1].type_ == 'comment' \
                 and self.blocks[i].type_ in ('dic','wform','transc'
-                                             ,'speech'
-                                             ):
+                                            ,'speech'
+                                            ):
                    self.blocks[i-1].type_ = 'definition'
                    ''' '_same' value of the definition block should
                        already be set to 1, but we assign it just to be
