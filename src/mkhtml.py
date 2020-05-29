@@ -22,14 +22,6 @@ class HTM:
         self.set_values()
         self.set_priority_colors()
         self.set_blocked_colors()
-
-    def fix(self):
-        ''' It is a common case when an opening bracket, a phrase and 
-            a closing bracket are 3 separate blocks. Tkinter (unlike
-            popular web browsers) wraps these blocks after ')'.
-            We just fix this behavior.
-        '''
-        self.htm = self.htm.replace('<i><font face="Mono" size="3" color="gray"> (</i></font><i><font face="Mono" size="3" color="gray">','<i><font face="Mono" size="3" color="gray"> (')
     
     # 'collimit' includes fixed blocks
     def reset (self,data,cols,order
@@ -57,7 +49,6 @@ class HTM:
     def run(self):
         self.assign()
         self.gen_htm()
-        self.fix()
         return self.htm
     
     def set_values(self):

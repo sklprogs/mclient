@@ -408,6 +408,20 @@ class Elems:
             self.Success = False
             sh.com.rep_empty(f)
     
+    def reassign_brackets(self):
+        ''' It is a common case when an opening bracket, a phrase and 
+            a closing bracket are 3 separate blocks. Tkinter (unlike
+            popular web browsers) wraps these blocks after ')'.
+            We just fix this behavior.
+        '''
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].text == '(':
+                del self.blocks[i-1]
+                i -= 1
+                self.blocks[i].text = '(' + self.blocks[i].text
+            i += 1
+    
     def expand_dica_file(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.expand_dica_file'
         for block in self.blocks:
@@ -665,6 +679,7 @@ class Elems:
             self.blocks = Same (blocks = self.blocks
                                ,Debug  = self.Debug
                                ).run()
+            self.reassign_brackets()
             # Prepare for cells
             self.fill()
             self.fill_terma()
