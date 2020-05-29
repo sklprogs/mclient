@@ -79,6 +79,53 @@ class Same:
         self.maxrow  = maxrow
         self.maxrows = maxrows
     
+    def run_user_cor_user(self):
+        # (GeorgeK; это "тендерная документация" playa4life)
+        i = 4
+        while i < len(self.blocks):
+            if self.blocks[i-4].type_ in ('comment','correction') \
+            and self.blocks[i-3].type_ == 'user' \
+            and self.blocks[i-2].type_ == 'correction' \
+            and self.blocks[i-1].type_ == 'user' \
+            and self.blocks[i].type_ in ('comment','correction') \
+            and self.blocks[i-4].text.endswith('(') \
+            and self.blocks[i].text.startswith(')'):
+                self.blocks[i-3].same = 1
+                self.blocks[i-2].same = 1
+                self.blocks[i-1].same = 1
+                self.blocks[i].same = 1
+            i += 1
+    
+    def _has_extra_bracket(self,block):
+        if block.text.count('(') > block.text.count(')'):
+            return True
+    
+    def embrace_user(self):
+        i = 2
+        while i < len(self.blocks):
+            if self.blocks[i-2].type_ in ('comment','correction') \
+            and self._has_extra_bracket(self.blocks[i-2]) \
+            and self.blocks[i-1].type_ == 'user' \
+            and self.blocks[i].text.startswith(')'):
+                self.blocks[i-1].same = 1
+                self.blocks[i].same = 1
+            i += 1
+    
+    def run_com_term_com(self):
+        if len(self.blocks) > 2:
+            i = 2
+            while i < len(self.blocks):
+                if self.blocks[i-2].type_ == 'comment' \
+                and self.blocks[i-1].type_ == 'term' \
+                and self.blocks[i].type_ in ('comment','correction'):
+                    if self.blocks[i-2].text.startswith('(') \
+                    and not ')' in self.blocks[i-2].text \
+                    and self.blocks[i].text.startswith(')'):
+                        # 'self.blocks[i-2]' can actually have any SAME
+                        self.blocks[i-1].same = 1
+                        self.blocks[i].same = 1
+                i += 1
+    
     def run_wform_com_fixed(self):
         ''' Set a specific 'definition' type for blocks that are tagged
             by multitran.com as comments (or word forms, see
@@ -218,19 +265,20 @@ class Same:
                                 and sh.Text(self.blocks[i].text).has_latin()
                         if cond1 or cond2:
                             self.blocks[i-1].same = 1
-                            self.blocks[i  ].same = 1
+                            self.blocks[i].same = 1
                 i += 1
     
     def run_speech(self):
-        ''' 'speech' blocks have '_same = 1' when analyzing MT because
+        ''' 'speech' blocks have 'same = 1' when analyzing MT because
             they are within a single tag. We fix it here, not in Tags,
             because Tags are assumed to output the result 'as is'.
         '''
-        for i in range(len(self.blocks)):
-            if self.blocks[i].type_ == 'speech':
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].type_ == 'speech':
+                self.blocks[i-1].same = 0
                 self.blocks[i].same = 0
-                if i < len(self.blocks) - 1:
-                    self.blocks[i+1].same = 0
+            i += 1
     
     def run_punc(self):
         for block in self.blocks:
@@ -264,12 +312,15 @@ class Same:
         if self.blocks:
             self.run_speech()
             self.run_all_coms()
+            self.run_user_cor_user()
+            self.embrace_user()
             self.run_term_com_term()
             self.run_term_com_fixed()
             self.run_com_com()
             self.run_wform_com_term()
             self.run_com_term()
             self.run_wform_com_fixed()
+            self.run_com_term_com()
             self.run_punc()
             self.debug()
             return self.blocks
@@ -606,8 +657,6 @@ class Elems:
             self.set_definitions()
             # Prepare contents
             self.set_dic_urls()
-            self.add_brackets()
-            self.set_user_brackets()
             # Set '_same' attribute and further change some types
             ''' We do not pass debug options here since Same debug has
                 few columns and it is reasonable to make them wider than
@@ -670,25 +719,11 @@ class Elems:
             and block.text.startswith('[') \
             and block.text.endswith(']'):
                 block.type_ = 'transc'
-    
-    def add_brackets(self):
-        for block in self.blocks:
-            if block.type_ in ('comment','correction') \
-            and '(' in block.text and not ')' in block.text:
-                block.text += ')'
-    
-    def set_user_brackets(self):
-        for block in self.blocks:
-            if block.type_ == 'user':
-                if not block.text.startswith('('):
-                    block.text = '(' + block.text
-                if not block.text.endswith(')'):
-                    block.text += ')'
             
     def delete_trash(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.trash'
-        patterns = ['|',';',':','(',')','-->','// -->','⇄','точно'
-                   ,'все формы','точные совпадения','Сообщить об ошибке'
+        patterns = ['|',';',':','-->','// -->','⇄','точно' ,'все формы'
+                   ,'точные совпадения','Сообщить об ошибке'
                    ,'только в указанном порядке'
                    ,'только в заданной форме','all forms'
                    ,'exact matches only','in specified order only'
