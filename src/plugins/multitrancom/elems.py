@@ -140,8 +140,8 @@ class Same:
                 and self.blocks[i].type_ == 'comment' \
                 and self.blocks[i].same == 0:
                     if self.blocks[i-2].type_ in ('dic','wform'
-                                                  ,'speech','transc'
-                                                  ):
+                                                 ,'speech','transc'
+                                                 ):
                         self.blocks[i-1].type_ = 'wform'
                         self.blocks[i].same = 1
                     else:
@@ -177,8 +177,8 @@ class Same:
                 if self.blocks[i-2].type_ == 'term' \
                 and self.blocks[i-1].type_ == 'comment' \
                 and self.blocks[i].type_ in ('dic','wform','speech'
-                                             ,'transc'
-                                             ):
+                                            ,'transc'
+                                            ):
                     self.blocks[i-1].same = 1
                 i += 1
     
@@ -445,11 +445,11 @@ class Elems:
     def delete_definitions(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_definitions'
         self.defins = [block for block in self.blocks
-                        if block.type_ == 'definition'
-                       ]
+                       if block.type_ == 'definition'
+                      ]
         self.blocks = [block for block in self.blocks
-                        if block.type_ != 'definition'
-                       ]
+                       if block.type_ != 'definition'
+                      ]
         if self.defins:
             mes = _('{} blocks have been deleted')
             mes = mes.format(len(self.defins))

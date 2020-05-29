@@ -1,10 +1,5 @@
-
+multitrancom:
 - EN-RU: get to grips: Fix wrong SAME
-- mtbin: find separate words
-- mtbin: implement an autosuggestion
-- mtbin: add a General subject if none is set
-- mtbin: implement phrases
-- mtbin: implement speech parts
 - EN-RU, publisher: fix SAME of comments
 - EN-RU: на фиг: wrong SAME of "(нужно, сдалось)"
 - implement "⇒": EN-RU: вспоминать ⇒ вспоминать прошлое
@@ -248,3 +243,10 @@
 ? предлагать искать ненайденное в других словарях и/или в интернете
 ! проверка комментариев: рабочая документация, http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=volatile%20variable
 ! Alt-F4 и F4 в Linux не конфликтуют, а в Windows - конфликтуют
+
+multitrandem:
+- find separate words
+- implement an autosuggestion
+- add a General subject if none is set
+- implement phrases
+- implement speech parts
