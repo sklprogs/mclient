@@ -282,7 +282,7 @@ class Same:
     
     def run_punc(self):
         for block in self.blocks:
-            for sym in sh.lg.punc_array:
+            for sym in sh.lg.punc_array + [')']:
                 if block.text.startswith(sym):
                     block.same = 1
                     break
