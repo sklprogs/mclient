@@ -1,6 +1,5 @@
 multitrancom:
-- EN-RU: get to grips: Fix wrong SAME
-- EN-RU, publisher: fix SAME of comments
+- EN-RU, come to grips: fix "pf of, impf of"
 - EN-RU: на фиг: wrong SAME of "(нужно, сдалось)"
 - implement "⇒": EN-RU: вспоминать ⇒ вспоминать прошлое
 - downtime: make columns narrower

@@ -1,5 +1,5 @@
 (in development)
-* 
+* Fix standalone comments
 
 6.4.1
 * Fix loading Stardict format

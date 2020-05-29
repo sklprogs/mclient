@@ -183,10 +183,19 @@ class Same:
                 i += 1
     
     def run_all_coms(self):
-        for block in self.blocks:
-            if (block.type_ == 'comment' and block.text.startswith('(')\
-               ) or block.type_ in ('user','correction'):
-                block.same = 1
+        i = 1
+        while i < len(self.blocks):
+            ''' First comments in constructs like 'com-term-com' can be
+                of SAME=0, so we should be careful here.
+            '''
+            if self.blocks[i].type_ == 'comment' \
+            and self.blocks[i].text.startswith('(') \
+            or self.blocks[i].type_ in ('user','correction'):
+                if self.blocks[i-1].type_ not in ('dic','wform','transc'
+                                                 ,'speech'
+                                                 ):
+                    self.blocks[i].same = 1
+            i += 1
     
     def run_term_com_term(self):
         if len(self.blocks) > 2:
