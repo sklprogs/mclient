@@ -1,38 +1,22 @@
+mclient:
+- At startup: if only local dictionaries are available, then set
+  the mode to Offline.
+
 multitrancom:
+- double tumbler: показывать оба ненайденных слова
 - EN-RU: на фиг: wrong SAME of "(нужно, сдалось)"
 - implement "⇒": EN-RU: вспоминать ⇒ вспоминать прошлое
 - downtime: make columns narrower
 - EN-RU, лекарственное средство: synonyms are marked with ⇒
-- Expand all dics: урез воды -> гидробиол.
-- business-to-business, Interim, decimal, KPI:
-  Make a column with wform + definition narrower
-- Do not center the 1st column when there are no fixed columns
-- At startup: if only local dictionaries are available, then set
-  the mode to Offline.
 - Improve parsing of EN-RU, memory pressure (wform + comment + term and
   the user URL)
 - EN-RU: entity: too long columns
-- When corrections are supported: test "working documentation";
-  eng-rus: живой: shorten the column with corrections
 - Restore true user collimit choice when not a SpecialPage
-- EN-RU, rule: Шахматы: do not center words in the first column if there
-  are no fixed columns
-- EN-RU, vow: of silence; abuse of a dominant position:
-  analyze 'dic-comment-term' patterns
 - Store settings in the config file
-- plugins.multitrancom: eng-rus, phylogenetically, structured notation,
-  кольцевой выступ
-  -> phrases: set dic titles
-- plugins.multitrancom: eng-rus, метильное: do not delete the phrase
+- eng-rus, метильное: do not delete the phrase
   section when only separate words have been found: Найдено во фразах -
   найдены отдельные слова
-- plugins.stardict: accelerate suggestions (especially for 2+ passes)
-- plugins.stardict: alphabetize suggestions from several dictionaries
-- plugins.stardict: support idx.gz files
-- plugins.multitrancom: use URLs of both sources when going by URL
-- multitran.com: fix: "Вы попались на удочку" (ComputersRE,
-  EngineeringRE) - found by autosuggestion, but not found by
-  'plugins.stardict.get.AllDics.get'
+- use URLs of both sources when going by URL
 - multitran.com.Elems.trash: treat 'точно' and 'все формы' as elements
   with a URL
 - multitran.com: complement 'abbr' with dictionary titles in both
@@ -43,11 +27,7 @@ multitrancom:
 - угол: error with local RuEn dics
 - Case-insensitive sorting
 - Strip values in DICA
-- Make selecting faster
-- Fix the color for correctional comments
-  (https://www.multitran.ru/c/M.exe?&s=Vanity&l1=1&l2=2)
 - Return URLs for dics
-- Add WelcomeScreen bool (DB.block_pos slows down)
 - Distinguish between SpecialPage and a PhraseDic page
 - Expand dictionary abbreviations for PhraseDic articles
 - (after previous is done) Remove todos in Elems.convert_dic_abbr
@@ -78,13 +58,8 @@ multitrancom:
   'символ' -> 'pilcrow')
 
 (Разобрать)
-! Убрать "содержащее" и т.п. из статей из раздела "Фразы"
-! Убрать "Требуется авторизация" и исправить выделение (double tumbler)
-  для ненайденных слов
 ! SPEECHA для Phrases присваивается SPEECHA стоящего до этого словаря,
   поэтому необходимо обнулить SPEECHA для Phrases
-! Понять, что мы имеем дело с секцией Фразы можно, если в текущей статье
-  только 1 словарь (отключить alphabetize в этом случае)
 ! Для offline при ненахождении слова предлагать похожие слова (частичное
   совпадение) на основании dic.keys
 ! Не часть речи: http://www.multitran.ru/c/M.exe?t=1909570_1_2&s1=%E1%EB%EE%EA%E8%F0%F3%FE%F9%E0%FF%20%E7%E0%EA%F3%EF%EA%E0
@@ -227,19 +202,9 @@ multitrancom:
 ! Убрать "Спросить в форуме"
 ? После неудачного поиска менять выделение на красное до первого его
   перемещения
-! Не отображается название словаря, идущего сразу после первого.
-  Например: go: "амер., сл." (Американизм) или "разг., редк.'
-  (Разговорное выражение)
 ! Настраивать iconify после копирования
-! Отделять разные части речи. Возможно, их можно определить через тэг
-  bgcolor="#DBDBDB" (максимально допустимый фрагмент)
-! Проверять, не слишком ли длинным является запрос (str)
-! Возможность скрыть табу (проверить на 'tootsie-wootsie')
-! FRA=>RUS, prêt-à-porter, 5 фраз выдает нет коннекта
 ? обеспечить поиск в нетерминах тоже
-! указать точные head_interval.
-? предлагать искать ненайденное в других словарях и/или в интернете
-! проверка комментариев: рабочая документация, http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=volatile%20variable
+? предлагать искать ненайденное в интернете и/или в других словарях
 ! Alt-F4 и F4 в Linux не конфликтуют, а в Windows - конфликтуют
 
 multitrandem:
@@ -248,3 +213,10 @@ multitrandem:
 - add a General subject if none is set
 - implement phrases
 - implement speech parts
+
+stardict:
+- accelerate suggestions (especially for 2+ passes)
+- alphabetize suggestions from several dictionaries
+- support idx.gz files
+- fix: "Вы попались на удочку" (ComputersRE, EngineeringRE) - found by
+  autosuggestion, but not found by 'plugins.stardict.get.AllDics.get'
