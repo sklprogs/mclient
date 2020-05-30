@@ -23,6 +23,24 @@ class HTM:
         self.set_priority_colors()
         self.set_blocked_colors()
     
+    def _run_user(self):
+        if self.block.type_ == 'user':
+            color = sh.lg.globs['var']['color_comments']
+            result = sh.com.get_mod_color (color = color
+                                          ,delta = 75
+                                          )
+            if result:
+                color = result
+            self.output.write('<i><font face="')
+            self.output.write(sh.lg.globs['var']['font_comments_family'])
+            self.output.write('" size="')
+            self.output.write(str(sh.lg.globs['int']['font_comments_size']))
+            self.output.write('" color="')
+            self.output.write(color)
+            self.output.write('">')
+            self.output.write(self.block.text)
+            self.output.write('</i></font>')
+    
     # 'collimit' includes fixed blocks
     def reset (self,data,cols,order
               ,collimit=9,Printer=False
@@ -101,7 +119,7 @@ class HTM:
     
     def set_priority_colors(self):
         default_color = 'red'
-        delta         = -76
+        delta = -76
         # Column 1 color
         result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col1']
                                       ,delta = delta
@@ -309,7 +327,7 @@ class HTM:
             self.output.write('</font>')
     
     def _run_comment(self):
-        if self.block.type_ in ('comment','transc','user','definition'):
+        if self.block.type_ in ('comment','transc','definition'):
             self.output.write('<i><font face="')
             self.output.write(sh.lg.globs['var']['font_comments_family'])
             self.output.write('" size="')
@@ -405,6 +423,7 @@ class HTM:
                 self._run_speech()
                 self._run_term()
                 self._run_comment()
+                self._run_user()
                 self._run_correction()
             self.output.write('</td></tr>\n\t\t\t</table>\t')
         elif self.skipped:
