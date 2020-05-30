@@ -739,7 +739,7 @@ class Objects:
                     = self.plugins = None
     
     def get_plugins (self,Debug=False
-                    ,maxrow=20,maxrows=100
+                    ,maxrow=20,maxrows=1000
                     ):
         if self.plugins is None:
             self.plugins = manager.Plugins (sdpath  = self.get_default().get_dics()

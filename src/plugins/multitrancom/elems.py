@@ -310,9 +310,10 @@ class Same:
             self.run_term_com_fixed()
             self.run_com_com()
             self.run_wform_com_term()
-            self.run_com_term()
             self.run_wform_com_fixed()
             self.run_com_term_com()
+            # Can cause wrong SAME=1 if used beforehand
+            self.run_com_term()
             self.run_punc()
             self.debug()
             return self.blocks
@@ -663,7 +664,7 @@ class Elems:
             self.set_definitions()
             # Prepare contents
             self.set_dic_urls()
-            # Set '_same' attribute and further change some types
+            # Set 'same' attribute and further change some types
             ''' We do not pass debug options here since Same debug has
                 few columns and it is reasonable to make them wider than
                 for Elems.
