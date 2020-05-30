@@ -409,10 +409,18 @@ class Elems:
         '''
         i = 1
         while i < len(self.blocks):
-            if self.blocks[i-1].text == '(':
+            if self.blocks[i-1].text == '(' \
+            and self.blocks[i].type_ in ('comment','user','correction'):
                 del self.blocks[i-1]
                 i -= 1
                 self.blocks[i].text = '(' + self.blocks[i].text
+            if self.blocks[i].text == ')' \
+            and self.blocks[i-1].type_ in ('comment','user'
+                                          ,'correction'
+                                          ):
+                self.blocks[i-1].text += ')'
+                del self.blocks[i]
+                i -= 1
             i += 1
     
     def expand_dica_file(self):
