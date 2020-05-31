@@ -1557,7 +1557,7 @@ class WebFrame:
         self.phdic = objs.blocksdb.get_phdic_primary()
         if self.phdic is None:
             self.phdic = ''
-
+        
         data = objs.blocksdb.assign_bp()
         bp = cl.BlockPrioritize (data       = data
                                 ,order      = lg.objs.get_order()
@@ -1590,6 +1590,7 @@ class WebFrame:
                             ,SortRows  = lg.objs.request.SortRows
                             ,SortTerms = SortTerms
                             ,ExpandDic = not objs.get_settings().gui.cbx_no6.get()
+                            ,ShowUsers = objs.settings.gui.cbx_no7.get()
                             )
         objs.blocksdb.unignore()
         objs.blocksdb.ignore()

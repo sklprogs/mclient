@@ -93,10 +93,13 @@ class BlockPrioritize:
         for block in self.blocks:
             # Suppress useless error output
             if block.dica and block.dica != self.phdic:
-                lst     = self.order.get_list(search=block.dica)
+                lst = self.order.get_list(search=block.dica)
                 Blocked = self.order.is_blocked(lst)
             else:
                 Blocked = False
+            ''' Do not put checking 'self.Block' ahead of the loop
+                since we need to assign 'block' to 0 anyway.
+            '''
             if self.Block and Blocked:
                 block.block = 1
             else:
@@ -170,7 +173,7 @@ class Cells:
     def __init__ (self,data,cols,collimit=10
                  ,phdic=None,Reverse=False
                  ,ExpandSp=False,Debug=False
-                 ,maxrow=10,maxrows=50
+                 ,maxrow=10,maxrows=1000
                  ):
         f = '[MClient] cells.Cells.__init__'
         # Sqlite fetch

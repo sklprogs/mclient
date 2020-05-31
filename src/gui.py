@@ -1227,6 +1227,10 @@ class Settings:
                                    ,Active = False
                                    ,side   = 'left'
                                    )
+        self.cbx_no7 = sh.CheckBox (parent = self.frm_cb7
+                                   ,Active = True
+                                   ,side   = 'left'
+                                   )
 
     def reset(self,event=None):
         self.opt_scm.set(PRODUCT)
@@ -1247,6 +1251,7 @@ class Settings:
         self.cbx_no4.enable()
         self.cbx_no5.disable()
         self.cbx_no6.disable()
+        self.cbx_no7.enable()
 
     def set_buttons(self):
         sh.Button (parent = self.frm_btn
@@ -1368,6 +1373,10 @@ class Settings:
                                 ,expand = False
                                 ,fill   = 'x'
                                 )
+        self.frm_cb7 = sh.Frame (parent = self.obj
+                                ,expand = False
+                                ,fill   = 'x'
+                                )
         self.frm_btn = sh.Frame (parent = self.obj
                                 ,expand = False
                                 ,fill   = 'x'
@@ -1445,6 +1454,10 @@ class Settings:
                                 )
         self.lbl_no6 = sh.Label (parent = self.frm_cb6
                                 ,text   = _('Use abbreviations for dictionaries')
+                                ,side   = 'left'
+                                )
+        self.lbl_no7 = sh.Label (parent = self.frm_cb7
+                                ,text   = _('Show user names')
                                 ,side   = 'left'
                                 )
         sh.Label (parent = self.frm_sp1
@@ -1613,6 +1626,10 @@ class Settings:
         sh.com.bind (obj      = self.lbl_no6
                     ,bindings = '<Button-1>'
                     ,action   = self.cbx_no6.toggle
+                    )
+        sh.com.bind (obj      = self.lbl_no7
+                    ,bindings = '<Button-1>'
+                    ,action   = self.cbx_no7.toggle
                     )
 
     def set_title(self,text=_('View Settings')):

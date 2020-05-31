@@ -21,7 +21,7 @@ class DB:
         self.dbc = self.db.cursor()
         self.create_blocks()
         self.create_articles()
-        
+    
     def get_wforma(self,pos):
         f = '[MClient] db.DB.get_wforma'
         if self.artid:
@@ -128,11 +128,13 @@ class DB:
 
     def reset (self,cols=('dic','wform','transc','speech')
               ,SortRows=False,SortTerms=False,ExpandDic=False
+              ,ShowUsers=False
               ):
         f = '[MClient] db.DB.reset'
         self.SortTerms = SortTerms
         self.SortRows  = SortRows
         self.ExpandDic = ExpandDic
+        self.ShowUsers = ShowUsers
         self.cols      = cols
         # Prevents None + tuple
         if not self.cols:
@@ -140,8 +142,10 @@ class DB:
             sh.com.rep_empty(f)
         #NOTE: do not forget to add new block types here
         self.types = self.cols + ('term','phrase','comment'
-                                 ,'correction','user','definition'
+                                 ,'correction','definition'
                                  )
+        if self.ShowUsers:
+            self.types += ('user',)
 
     def fill_blocks(self,data):
         self.dbc.executemany ('insert into BLOCKS values \
