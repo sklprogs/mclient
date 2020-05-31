@@ -1,5 +1,7 @@
 (in development)
 * Fix standalone comments
+* Add "Show user names" option
+* Use a brighter color for user names
 
 6.4.1
 * Fix loading Stardict format
