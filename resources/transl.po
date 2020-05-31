@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-31 18:50+0300\n"
-"PO-Revision-Date: 2020-05-31 18:51+0300\n"
+"POT-Creation-Date: 2020-05-31 18:55+0300\n"
+"PO-Revision-Date: 2020-05-31 18:56+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -520,7 +520,7 @@ msgstr "Сокращать заголовки словарей"
 
 #: mclient/src/gui.py:1460
 msgid "Show user names"
-msgstr "Отображать имена пользователей"
+msgstr "Показывать имена пользователей"
 
 #: mclient/src/gui.py:1464 mclient/src/gui.py:1473 mclient/src/gui.py:1482
 #: mclient/src/gui.py:1491 mclient/src/gui.py:1500 mclient/src/gui.py:1509
