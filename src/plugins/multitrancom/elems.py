@@ -99,7 +99,7 @@ class Same:
     def _has_extra_bracket(self,block):
         return block.text.count('(') > block.text.count(')')
     
-    def embrace_user(self):
+    def run_user_brackets(self):
         i = 2
         while i < len(self.blocks):
             if self.blocks[i-2].type_ in ('comment','correction') \
@@ -305,7 +305,7 @@ class Same:
             self.run_speech()
             self.run_all_coms()
             self.run_user_cor_user()
-            self.embrace_user()
+            self.run_user_brackets()
             self.run_term_com_term()
             self.run_term_com_fixed()
             self.run_com_com()
@@ -405,20 +405,18 @@ class Elems:
         ''' It is a common case when an opening bracket, a phrase and 
             a closing bracket are 3 separate blocks. Tkinter (unlike
             popular web browsers) wraps these blocks after ')'.
-            We just fix this behavior.
+            We just fix this behavior. This also allows to skip user
+            names without showing extra brackets.
         '''
-        i = 1
+        i = 2
         while i < len(self.blocks):
-            if self.blocks[i-1].text == '(' \
-            and self.blocks[i].type_ in ('comment','user','correction'):
-                del self.blocks[i-1]
-                i -= 1
-                self.blocks[i].text = '(' + self.blocks[i].text
-            if self.blocks[i].text == ')' \
-            and self.blocks[i-1].type_ in ('comment','user'
-                                          ,'correction'
+            if self.blocks[i-2].text == '(' \
+            and self.blocks[i].text == ')' \
+            and self.blocks[i-1].type_ in ('comment','user','correction'
                                           ):
-                self.blocks[i-1].text += ')'
+                self.blocks[i-1].text = '(' + self.blocks[i-1].text + ')'
+                del self.blocks[i-2]
+                i -= 1
                 del self.blocks[i]
                 i -= 1
             i += 1
