@@ -225,26 +225,6 @@ class Tags:
         if not self.text:
             self.Success = False
             sh.com.rep_empty(f)
-
-    def set_dic_title(self):
-        # Do this before deleting comments ('self.strip')
-        f = '[MClient] plugins.dsl.tags.Tags.set_dic_title'
-        if self.Success:
-            ''' Since 'self.text' is not empty, 'self.lst' will always
-                have a first item.
-            '''
-            dic_title = _('Untitled dictionary')
-            match = re.match('#NAME	"(.*)"',self.lst[0])
-            if match:
-                if match.group(0):
-                    dic_title = match.group(0)
-            block = Block()
-            block.type_ = 'dic'
-            block.text = dic_title
-            mes = '"{}"'.format(dic_title)
-            sh.objs.get_mes(f,mes,True).show_debug()
-        else:
-            sh.com.cancel(f)
     
     def split(self):
         f = '[MClient] plugins.dsl.tags.Tags.split'

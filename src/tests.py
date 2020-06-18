@@ -195,6 +195,16 @@ class Plugin:
         iplug = sr.Plugin(Debug=DEBUG)
         iplug.request(search=search)
     
+    def run_dsl(self):
+        f = '[MClient] tests.Plugin.run_dsl'
+        import plugins.dsl.get
+        plugins.dsl.get.PATH = sh.Home('mclient').add_config('dics')
+        #file = '/home/pete/.config/mclient/dics/test.dsl'
+        #plugins.dsl.get.DSL(file)
+        #index_ = plugins.dsl.get.DSL(file).index_[:1000]
+        #sh.com.run_fast_txt('\n'.join(index_))
+        plugins.dsl.get.objs.get_all_dics().locate()
+    
     def run_multitrancom(self):
         f = '[MClient] tests.Plugin.run_multitrancom'
         import plugins.multitrancom.run as mc
@@ -537,8 +547,7 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sh.com.start()
-    #Plugin().run_multitrandem()
-    Plugin().run_multitrancom()
+    #Plugin().run_multitrancom()
+    Plugin().run_dsl()
     #Tags().run_multitrancom()
-    #Tags().analyze_tag()
     sh.com.end()

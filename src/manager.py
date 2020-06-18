@@ -4,9 +4,11 @@
 import skl_shared.shared as sh
 from skl_shared.localize import _
 import plugins.stardict.get
+import plugins.dsl.get
 import plugins.stardict.run     as sdrun
 import plugins.multitrancom.run as mcrun
 import plugins.multitrandem.run as mbrun
+import plugins.dsl.run          as lgrun
 
 
 class Plugins:
@@ -18,11 +20,13 @@ class Plugins:
         self.sdplugin = None
         self.mcplugin = None
         self.mbplugin = None
+        self.lgplugin = None
         self.plugin   = self.mcplugin
         #NOTE: change this upon the change of the default source
         self.source  = _('Multitran')
         self.sdpath  = sdpath
         self.mbpath  = sdpath
+        self.lgpath  = sdpath
         self.timeout = timeout
         self.Debug   = Debug
         self.maxrow  = maxrow
@@ -59,6 +63,7 @@ class Plugins:
         self.mbplugin.quit()
         self.mcplugin.quit()
         self.sdplugin.quit()
+        self.lgplugin.quit()
     
     def get_lang1(self):
         f = '[MClient] manager.Plugins.get_lang1'
@@ -111,6 +116,7 @@ class Plugins:
         return (self.sdplugin
                ,self.mcplugin
                ,self.mbplugin
+               ,self.lgplugin
                )
     
     def set_lang1(self,lang1):
@@ -143,6 +149,7 @@ class Plugins:
     def get_sources(self):
         return (_('Multitran')
                ,_('Stardict')
+               ,'Lingvo (DSL)'
                ,_('Local MT')
                )
     
@@ -168,8 +175,10 @@ class Plugins:
     
     def load(self):
         plugins.stardict.get.PATH = self.sdpath
-        plugins.stardict.get.objs.get_all_dics()
+        plugins.dsl.get.PATH = self.lgpath
         plugins.multitrandem.get.PATH = self.mbpath
+        plugins.stardict.get.objs.get_all_dics()
+        plugins.dsl.get.objs.get_all_dics()
         plugins.multitrandem.get.objs.get_all_dics()
         self.sdplugin = sdrun.Plugin (Debug   = self.Debug
                                      ,maxrow  = self.maxrow
@@ -183,6 +192,10 @@ class Plugins:
                                      ,maxrow  = self.maxrow
                                      ,maxrows = self.maxrows
                                      )
+        self.lgplugin = lgrun.Plugin (Debug   = self.Debug
+                                     ,maxrow  = self.maxrow
+                                     ,maxrows = self.maxrows
+                                     )
     
     def set(self,source):
         f = '[MClient] manager.Plugins.set'
@@ -192,11 +205,13 @@ class Plugins:
                 self.plugin = self.sdplugin
             elif source in (_('Multitran'),'multitran.com'):
                 self.plugin = self.mcplugin
+            elif source == 'Lingvo (DSL)':
+                self.plugin = self.lgplugin
             elif source == _('Local MT'):
                 self.plugin = self.mbplugin
             else:
                 mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-                mes = mes.format(self.source,self.sources())
+                mes = mes.format(self.source,self.get_sources())
                 sh.objs.get_mes(f,mes).show_error()
         else:
             sh.com.rep_empty(f)
