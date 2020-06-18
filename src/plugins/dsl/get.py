@@ -12,6 +12,8 @@ from skl_shared.localize import _
     calling anything from this module.
 '''
 PATH = ''
+LANG1 = 'English'
+LANG2 = 'Russian'
 
 
 class Get:
@@ -142,10 +144,58 @@ class DSL:
         else:
             sh.com.cancel(f)
     
-    def search(self):
+    def get_entry(self,pos):
+        f = '[MClient] plugins.dsl.get.DSL.get_entry'
+        if self.Success:
+            pos = sh.Input(f,pos).get_integer()
+            # We expect a translation which occupies the following line
+            if 0 <= pos < len(self.lst) - 1:
+                article = []
+                i = pos + 1
+                while i < len(self.lst):
+                    if self.lst[i].startswith('\t'):
+                        article.append(self.lst[i])
+                    else:
+                        break
+                    i += 1
+                article.insert(0,self.lst[pos])
+                mes = '\n'.join(article)
+                sh.objs.get_mes(f,mes,True).show_debug()
+                return article
+            else:
+                sub = '0 <= {} < {}'.format(pos+1,len(self.lst))
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.get_mes(f,mes).show_error()
+        else:
+            sh.com.cancel(f)
+    
+    def search(self,pattern):
         f = '[MClient] plugins.dsl.get.DSL.search'
         if self.Success:
-            pass
+            if not pattern:
+                pattern = ''
+            pattern = pattern.strip()
+            if pattern:
+                pattern = pattern.lower()
+                pos = -1
+                try:
+                    pos = self.get_index().index(pattern)
+                except ValueError:
+                    pass
+                if pos > -1:
+                    tag_lst = self.get_entry(self.poses[pos])
+                    if tag_lst:
+                        #TODO: implement
+                        pass
+                    else:
+                        sh.com.rep_empty(f)
+                else:
+                    mes = _('No search results for "{}" in "{}"')
+                    mes = mes.format(pattern,self.dicname)
+                    sh.objs.get_mes(f,mes,True).show_info()
+            else:
+                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
@@ -159,11 +209,12 @@ class DSL:
         f = '[MClient] plugins.dsl.get.DSL.get_index'
         if self.Success:
             if not self.index_:
-                for line in self.lst:
-                    if not line.startswith('\t'):
-                        line = self._delete_curly_brackets(line)
+                for i in range(len(self.lst)):
+                    if not self.lst[i].startswith('\t'):
+                        line = self._delete_curly_brackets(self.lst[i])
                         if line:
                             self.index_.append(line)
+                            self.poses.append(i)
                 mes = _('Dictionary "{}" ({}) has {} records')
                 linesnum = sh.com.set_figure_commas(len(self.index_))
                 mes = mes.format(self.bname,self.dicname,linesnum)
@@ -213,6 +264,7 @@ class DSL:
         self.lst = []
         self.lang1 = _('Any')
         self.lang2 = _('Any')
+        self.poses = []
         self.index_ = []
         self.blocks = []
         self.Success = True
@@ -270,6 +322,23 @@ class AllDics:
         self.set_values()
         self.reset()
     
+    def search(self,pattern):
+        f = '[MClient] plugins.dsl.get.AllDics.search'
+        if self.Success:
+            dics = [idic for idic in self.dics if idic.lang1 == LANG1 \
+                    and idic.lang2 == LANG2
+                   ]
+            dicnames = [idic.name for idic in dics]
+            mes = _('Dictionaries to search in ({}): {}')
+            mes = mes.format(len(dicnames),'; '.join(dicnames))
+            self.blocks = []
+            for idic in dics:
+                blocks = idic.search(pattern)
+                if blocks:
+                    self.blocks += blocks
+        else:
+            sh.com.cancel(f)
+    
     def get_index(self):
         f = '[MClient] plugins.dsl.get.AllDics.get_index'
         if self.Success:
@@ -312,9 +381,9 @@ class AllDics:
     def set_values(self):
         self.dsls = []
         self.dics = []
-        self.index_ = []
         self.path = ''
         self.index_ = []
+        self.blocks = []
         # Do not run anything if 'self.reset' was not run
         self.Success = False
     
