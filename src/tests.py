@@ -200,11 +200,12 @@ class Plugin:
         import plugins.dsl.get
         plugins.dsl.get.PATH = sh.Home('mclient').add_config('dics')
         #plugins.dsl.get.objs.get_all_dics().locate()
-        file = '/home/pete/.config/mclient/dics/test.dsl'
+        #file = '/home/pete/.config/mclient/dics/test.dsl'
         pattern = 'computer'
-        idsl = plugins.dsl.get.DSL(file)
-        idsl.run()
-        idsl.search(pattern)
+        #idsl = plugins.dsl.get.DSL(file)
+        #idsl.run()
+        #idsl.search(pattern)
+        plugins.dsl.get.objs.get_all_dics().search(pattern)
     
     def run_multitrancom(self):
         f = '[MClient] tests.Plugin.run_multitrancom'

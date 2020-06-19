@@ -5,6 +5,7 @@ import os
 import re
 import skl_shared.shared as sh
 from skl_shared.localize import _
+from . import tags as tg
 
 
 ''' A directory storing all DSL files.
@@ -14,6 +15,7 @@ from skl_shared.localize import _
 PATH = ''
 LANG1 = 'English'
 LANG2 = 'Russian'
+DEBUG = True
 
 
 class Get:
@@ -185,11 +187,8 @@ class DSL:
                     pass
                 if pos > -1:
                     tag_lst = self.get_entry(self.poses[pos])
-                    if tag_lst:
-                        #TODO: implement
-                        pass
-                    else:
-                        sh.com.rep_empty(f)
+                    itags = tg.Tags(tag_lst,Debug=DEBUG)
+                    return itags.run()
                 else:
                     mes = _('No search results for "{}" in "{}"')
                     mes = mes.format(pattern,self.dicname)
@@ -200,7 +199,7 @@ class DSL:
             sh.com.cancel(f)
     
     def _delete_curly_brackets(self,line):
-        line = re.sub('{.*}','',line)
+        line = re.sub('\{.*\}','',line)
         line = line.strip()
         line = line.lower()
         return line
@@ -328,7 +327,7 @@ class AllDics:
             dics = [idic for idic in self.dics if idic.lang1 == LANG1 \
                     and idic.lang2 == LANG2
                    ]
-            dicnames = [idic.name for idic in dics]
+            dicnames = [idic.dicname for idic in dics]
             mes = _('Dictionaries to search in ({}): {}')
             mes = mes.format(len(dicnames),'; '.join(dicnames))
             self.blocks = []
@@ -344,37 +343,11 @@ class AllDics:
         if self.Success:
             if not self.index_:
                 for idic in self.dics:
-                    self.index_ += [block.text for block in idic.blocks\
-                                    if block.type_ == 'term'
-                                   ]
+                    self.index_ += idic.get_index()
                 self.index_ = sorted(set(self.index_))
                 mes = _('Index has {} entries').format(len(self.index_))
                 sh.objs.get_mes(f,mes,True).show_info()
             return self.index_
-        else:
-            sh.com.cancel(f)
-    
-    def get(self,search):
-        f = '[MClient] plugins.dsl.get.AllDics.get'
-        if self.Success:
-            if search:
-                lst = []
-                for dic in self.dics:
-                    ind = dic.search(search)
-                    # Returns True if ind >= 0
-                    if str(ind).isdigit():
-                        result = dic.get_dict_data(ind)
-                        if result:
-                            mes = _('"{}" has matches for "{}"')
-                            mes = mes.format(dic.title,search)
-                            sh.objs.get_mes(f,mes,True).show_debug()
-                    else:
-                        mes = _('No matches for "{}"!')
-                        mes = mes.format(dic.title)
-                        sh.objs.get_mes(f,mes,True).show_info()
-                return '\n'.join(lst)
-            else:
-                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     

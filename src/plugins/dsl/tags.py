@@ -202,11 +202,11 @@ class AnalyzeTag:
 
 class Tags:
 
-    def __init__ (self,text,Debug=False
+    def __init__ (self,lst,Debug=False
                  ,maxrow=50,maxrows=1000
                  ):
         self.set_values()
-        self.text = text
+        self.lst = lst
         self.Debug = Debug
         self.maxrow = maxrow
         self.maxrows = maxrows
@@ -214,7 +214,6 @@ class Tags:
     def set_values(self):
         self.lst = []
         self.blocks = []
-        self.text = ''
         self.Debug = False
         self.Success = True
         self.maxrow = 50
@@ -222,29 +221,9 @@ class Tags:
     
     def check(self):
         f = '[MClient] plugins.dsl.tags.Tags.check'
-        if not self.text:
+        if not self.lst:
             self.Success = False
             sh.com.rep_empty(f)
-    
-    def split(self):
-        f = '[MClient] plugins.dsl.tags.Tags.split'
-        if self.Success:
-            self.lst = self.text.splitlines()
-        else:
-            sh.com.cancel(f)
-    
-    def strip(self):
-        f = '[MClient] plugins.dsl.tags.Tags.strip'
-        if self.Success:
-            ''' #NOTE: a line can consist of spaces (actually happened).
-                Be careful: 'strip' also deletes tabulation.
-            '''
-            self.lst = [line.strip(' ') for line in self.lst]
-            self.lst = [line for line in self.lst if line \
-                        and not line.startswith('#')
-                       ]
-        else:
-            sh.com.cancel(f)
 
     def debug(self):
         f = '[MClient] plugins.dsl.tags.Tags.debug'
@@ -301,9 +280,6 @@ class Tags:
 
     def run(self):
         self.check()
-        self.split()
-        self.set_dic_title()
-        self.strip()
         self.set_blocks()
         self.debug()
         return self.blocks
