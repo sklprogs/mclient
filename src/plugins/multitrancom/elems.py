@@ -138,7 +138,7 @@ class Same:
         '''
         i = 2
         while i < len(self.blocks):
-            ''' Do not check the '_same' value of a definition block
+            ''' Do not check the 'same' value of a definition block
                 since it can (and should) already be set to 1.
             '''
             if self.blocks[i-2].type_ == 'wform' \
@@ -361,12 +361,12 @@ class Elems:
     ''' Process blocks before dumping to DB.
         About filling 'terma':
         - We fill 'terma' from the start in order to ensure the correct
-          'terma' value for blocks having '_same == 1'
+          'terma' value for blocks having 'same == 1'
         - We fill 'terma' from the end in order to ensure that 'terma'
           of blocks of non-selectable types will have the value of
           the 'term' AFTER those blocks
         - We fill 'terma' from the end in order to ensure that 'terma'
-          is also filled for blocks having '_same == 0'
+          is also filled for blocks having 'same == 0'
         - When filling 'terma' from the start to the end, in order
           to set a default 'terma' value, we also search for blocks of
           the 'phrase' type (just to be safe in such cases when
@@ -686,7 +686,7 @@ class Elems:
             self.remove_fixed()
             self.insert_fixed()
             self.insert_definitions()
-            self.fixed_terma()
+            self.set_fixed_terma()
             self.expand_dica()
             self.expand_dica_file()
             self.set_terma_same()
@@ -844,7 +844,7 @@ class Elems:
                 self.blocks[i].terma = terma
             i -= 1
             
-    def fixed_terma(self):
+    def set_fixed_terma(self):
         for block in self.blocks:
             if block.type_ in ('dic','wform','speech','transc'):
                 block.terma = ''

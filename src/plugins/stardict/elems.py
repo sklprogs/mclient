@@ -57,12 +57,12 @@ class Elems:
     ''' Process blocks before dumping to DB.
         About filling 'terma':
         - We fill 'terma' from the start in order to ensure the correct
-          'terma' value for blocks having '_same == 1'
+          'terma' value for blocks having 'same == 1'
         - We fill 'terma' from the end in order to ensure that 'terma'
           of blocks of non-selectable types will have the value of
           the 'term' AFTER those blocks
         - We fill 'terma' from the end in order to ensure that 'terma'
-          is also filled for blocks having '_same == 0'
+          is also filled for blocks having 'same == 0'
         - When filling 'terma' from the start to the end, in order
           to set a default 'terma' value, we also search for blocks of
           the 'phrase' type (just to be safe in such cases when
@@ -108,7 +108,7 @@ class Elems:
             self.fill_terma()
             self.remove_fixed()
             self.insert_fixed()
-            self.fixed_terma()
+            self.set_fixed_terma()
             self.expand_dica()
             self.set_selectables()
             return self.blocks
@@ -197,42 +197,42 @@ class Elems:
     def set_com_same(self):
         ''' Sometimes sources do not provide sufficient information on
         SAMECELL blocks, and the tag parser cannot handle sequences such
-        as 'any type (not _same) -> comment (not _same) -> any type (not
-        _same)'.
+        as 'any type (not same) -> comment (not same) -> any type (not
+        same)'.
         Rules:
         1) (Should be always correct)
-            'i >= 0 -> correction (not _same)
+            'i >= 0 -> correction (not same)
                 =>
-            'i >= 0 -> correction (_same)
+            'i >= 0 -> correction (same)
         2) (Preferable)
-            'term (not _same) -> comment (not _same) -> any type
-            (not _same)'
+            'term (not same) -> comment (not same) -> any type
+            (not same)'
                 =>
-            'term (not _same) -> comment (_same) -> any type
-            (not _same)'
+            'term (not same) -> comment (same) -> any type
+            (not same)'
         3) (Generally correct before removing fixed columns)
-            'dic/wform/speech/transc -> comment (not _same) -> term
-            (not _same)'
+            'dic/wform/speech/transc -> comment (not same) -> term
+            (not same)'
                 =>
-            'dic/wform/speech/transc -> comment (not _same) -> term
-            (_same)'
+            'dic/wform/speech/transc -> comment (not same) -> term
+            (same)'
         4) (By guess, check only after ##2&3)
-            'any type (_same) -> comment (not _same) -> any type
-            (not _same)'
+            'any type (same) -> comment (not same) -> any type
+            (not same)'
                 =>
-            'any type (_same) -> comment (_same) -> any type
-            (not _same)'
+            'any type (same) -> comment (same) -> any type
+            (not same)'
         5) (Always correct)
-            'any type -> comment/correction (not _same) -> END'
+            'any type -> comment/correction (not same) -> END'
                 =>
-            'any type -> comment/correction (_same) -> END'
+            'any type -> comment/correction (same) -> END'
         6) (Do this in the end of the loop; + Readability improvement
            ("в 42 тематиках"))
             'any type (not same) -> comment (not same) -> any type
-            (not _same)'
+            (not same)'
                 =>
-            'any type (not same) -> comment (_same) -> any type
-            (not _same)'
+            'any type (not same) -> comment (same) -> any type
+            (not same)'
         '''
         for i in range(len(self.blocks)):
             cond1  = i > 0 and self.blocks[i].type_ == 'correction'
@@ -361,7 +361,7 @@ class Elems:
                 self.blocks[i].terma = terma
             i -= 1
             
-    def fixed_terma(self):
+    def set_fixed_terma(self):
         for block in self.blocks:
             if block.type_ in ('dic','wform','speech','transc'):
                 block.terma = ''
