@@ -57,12 +57,12 @@ class Elems:
     ''' Process blocks before dumping to DB.
         About filling 'terma':
         - We fill 'terma' from the start in order to ensure the correct
-          'terma' value for blocks having '_same == 1'
+          'terma' value for blocks having 'same == 1'
         - We fill 'terma' from the end in order to ensure that 'terma'
           of blocks of non-selectable types will have the value of
           the 'term' AFTER those blocks
         - We fill 'terma' from the end in order to ensure that 'terma'
-          is also filled for blocks having '_same == 0'
+          is also filled for blocks having 'same == 0'
         - When filling 'terma' from the start to the end, in order
           to set a default 'terma' value, we also search for blocks of
           the 'phrase' type (just to be safe in such cases when
@@ -77,40 +77,42 @@ class Elems:
           vary depending on the view. Incorrect sorting by TERMA may
           result in putting a TERM item before fixed columns.
     '''
-    def __init__(self,blocks,abbr):
+    def __init__(self,blocks):
         f = '[MClient] plugins.dsl.elems.Elems.__init__'
         self.dicurls = {}
-        self.blocks  = blocks
-        self.abbr    = abbr
+        self.blocks = blocks
         if self.blocks:
             self.Success = True
         else:
             self.Success = False
             sh.com.rep_empty(f)
-
-    def expand_dica(self):
-        #TODO (?): implement
-        pass
+    
+    def set_same(self):
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i].same == -1:
+                if self.blocks[i-1].type_ in ('dic','wform','transc'
+                                             ,'speech'
+                                             ):
+                    self.blocks[i].same = 0
+                elif self.blocks[i].type_ == 'comment':
+                    self.blocks[i].same = 1
+                else:
+                    self.blocks[i].same = 0
+            i += 1
     
     def run(self):
         f = '[MClient] plugins.dsl.elems.Elems.run'
         if self.Success:
             self.set_phrases()
-            self.delete_straight_line()
-            self.run_comments()
-            ''' These 2 procedures should not be combined (otherwise,
-                corrections will have the same color as comments)
-            '''
-            self.unite_comments()
-            self.set_com_same()
             self.add_space()
             self.fill()
             self.fill_terma()
             self.remove_fixed()
             self.insert_fixed()
-            self.fixed_terma()
-            self.expand_dica()
+            self.set_fixed_terma()
             self.set_selectables()
+            self.set_same()
             return self.blocks
         else:
             sh.com.cancel(f)
@@ -141,137 +143,6 @@ class Elems:
                            ).run()
         mes = _('Non-DB blocks:') + '\n\n' + mes
         sh.com.run_fast_debug(f,mes)
-        
-    def unite_comments(self):
-        i = 0
-        while i < len(self.blocks):
-            if self.blocks[i].type_ == 'comment' \
-            and self.blocks[i].same > 0:
-                if i > 0 and self.blocks[i-1].type_ == 'comment':
-                    self.blocks[i-1].text \
-                    = sh.List (lst1 = [self.blocks[i-1].text
-                                      ,self.blocks[i].text
-                                      ]
-                              ).space_items()
-                    del self.blocks[i]
-                    i -= 1
-            i += 1
-            
-    def delete_straight_line(self):
-        self.blocks = [block for block in self.blocks \
-                       if block.text.strip() != '|'
-                      ]
-    
-    def run_comments(self):
-        i = 0
-        while i < len(self.blocks):
-            if self.blocks[i].type_ in ('comment','correction'):
-                text_str = self.blocks[i].text.strip()
-                ''' Delete comments that are just ';' or ',' (we don't
-                    need them, we have a table view).
-                    We delete instead of assigning Block attribute
-                    because we may need to unblock blocked dictionaries
-                    later.
-                '''
-                if text_str == ';' or text_str == ',':
-                    del self.blocks[i]
-                    i -= 1
-                elif not self.blocks[i].same > 0:
-                    # For the following cases: "23 фраз в 9 тематиках"
-                    if i > 0 and self.blocks[i-1].type_ == 'phrase':
-                        self.blocks[i].same = 1
-                    # Move the comment to the preceding cell
-                    if text_str.startswith(',') \
-                    or text_str.startswith(';') \
-                    or text_str.startswith('(') \
-                    or text_str.startswith(')') \
-                    or text_str.startswith('|'):
-                        self.blocks[i].same = 1
-                        # Mark the next block as a start of a new cell
-                        if i < len(self.blocks) - 1 \
-                        and self.blocks[i+1].type_ \
-                        not in ('comment','correction'):
-                            self.blocks[i+1].same = 0
-            i += 1
-            
-    def set_com_same(self):
-        ''' Sometimes sources do not provide sufficient information on
-        SAMECELL blocks, and the tag parser cannot handle sequences such
-        as 'any type (not _same) -> comment (not _same) -> any type (not
-        _same)'.
-        Rules:
-        1) (Should be always correct)
-            'i >= 0 -> correction (not _same)
-                =>
-            'i >= 0 -> correction (_same)
-        2) (Preferable)
-            'term (not _same) -> comment (not _same) -> any type
-            (not _same)'
-                =>
-            'term (not _same) -> comment (_same) -> any type
-            (not _same)'
-        3) (Generally correct before removing fixed columns)
-            'dic/wform/speech/transc -> comment (not _same) -> term
-            (not _same)'
-                =>
-            'dic/wform/speech/transc -> comment (not _same) -> term
-            (_same)'
-        4) (By guess, check only after ##2&3)
-            'any type (_same) -> comment (not _same) -> any type
-            (not _same)'
-                =>
-            'any type (_same) -> comment (_same) -> any type
-            (not _same)'
-        5) (Always correct)
-            'any type -> comment/correction (not _same) -> END'
-                =>
-            'any type -> comment/correction (_same) -> END'
-        6) (Do this in the end of the loop; + Readability improvement
-           ("в 42 тематиках"))
-            'any type (not same) -> comment (not same) -> any type
-            (not _same)'
-                =>
-            'any type (not same) -> comment (_same) -> any type
-            (not _same)'
-        '''
-        for i in range(len(self.blocks)):
-            cond1  = i > 0 and self.blocks[i].type_ == 'correction'
-            cond2  = self.blocks[i].same <= 0
-            cond3  = i > 0 and self.blocks[i-1].type_ == 'comment' \
-            and self.blocks[i-1].same <= 0
-            cond4  = i > 1 and self.blocks[i-2].type_ == 'term' \
-            and self.blocks[i-2].same <= 0
-            cond5  = i > 1 and self.blocks[i-2].same <= 0
-            cond6  = self.blocks[i].type_ == 'term'
-            cond7a = i > 1 and self.blocks[i-2].type_ == 'dic'
-            cond7b = i > 1 and self.blocks[i-2].type_ == 'wform'
-            cond7c = i > 1 and self.blocks[i-2].type_ == 'speech'
-            cond7d = i > 1 and self.blocks[i-2].type_ == 'transc'
-            cond7  = cond7a or cond7b or cond7c or cond7d
-            # not equivalent to 'not cond5' because of 'i'
-            cond8  = i > 1 and self.blocks[i-2].same == 1
-            # Rule 1
-            if cond1 and cond2:
-                self.blocks[i].same = 1
-            # Rule 2
-            elif cond4 and cond3 and cond2:
-                self.blocks[i-1].same = 1
-            # Rule 3
-            elif cond7 and cond3 and cond6 and cond2:
-                self.blocks[i].same = 1
-            # Rule 4:
-            elif cond8 and cond3 and cond2:
-                self.blocks[i-1].same = 1
-            # Rule 6:
-            elif cond5 and cond3 and cond2:
-                self.blocks[i-1].same = 1
-        # Rule 5
-        if self.blocks:
-            # After exiting the loop, the last block
-            cond1 = self.blocks[i].type_ in ('comment','correction')
-            cond2 = self.blocks[i].same <= 0
-            if cond1 and cond2:
-                self.blocks[i].same = 1
     
     def add_space(self):
         for i in range(len(self.blocks)):
@@ -361,7 +232,7 @@ class Elems:
                 self.blocks[i].terma = terma
             i -= 1
             
-    def fixed_terma(self):
+    def set_fixed_terma(self):
         for block in self.blocks:
             if block.type_ in ('dic','wform','speech','transc'):
                 block.terma = ''

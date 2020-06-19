@@ -98,7 +98,7 @@ class Get:
     
     def run_stardict(self):
         f = '[MClient] tests.Get.run_stardict'
-        import logic                as lg
+        import logic as lg
         import plugins.stardict.get as sd
         #search = 'компьютер'
         search  = 'computer'
@@ -198,14 +198,18 @@ class Plugin:
     def run_dsl(self):
         f = '[MClient] tests.Plugin.run_dsl'
         import plugins.dsl.get
+        import plugins.dsl.run as dr
         plugins.dsl.get.PATH = sh.Home('mclient').add_config('dics')
-        #plugins.dsl.get.objs.get_all_dics().locate()
-        #file = '/home/pete/.config/mclient/dics/test.dsl'
-        pattern = 'computer'
-        #idsl = plugins.dsl.get.DSL(file)
-        #idsl.run()
-        #idsl.search(pattern)
-        plugins.dsl.get.objs.get_all_dics().search(pattern)
+        #search = 'компьютер'
+        search  = 'computer'
+        iplug = dr.Plugin(Debug=DEBUG)
+        iplug.request(search=search)
+        mes = _('Number of blocks: {}').format(len(iplug.blocks))
+        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = _('Web-page:') + '\n' + iplug.htm
+        sh.com.run_fast_debug(f,mes)
+        mes = _('Text:') + '\n' + iplug.text
+        sh.com.run_fast_debug(f,mes)
     
     def run_multitrancom(self):
         f = '[MClient] tests.Plugin.run_multitrancom'
@@ -551,5 +555,4 @@ if __name__ == '__main__':
     sh.com.start()
     #Plugin().run_multitrancom()
     Plugin().run_dsl()
-    #Tags().run_multitrancom()
     sh.com.end()

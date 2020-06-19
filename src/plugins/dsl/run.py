@@ -98,17 +98,20 @@ class Plugin:
         return gt.Suggest(search).run()
     
     def request(self,search='',url=''):
-        iget = gt.Get(search)
-        self.text = iget.run()
-        self.htm = iget.htm
-        #self.text = cu.CleanUp(self.text).run()
-        if self.text is None:
-            self.text = ''
-        itags = tg.Tags (text    = self.text
+        tag_lst = gt.Get(search).run()
+        itags = tg.Tags (lst     = tag_lst
                         ,Debug   = self.Debug
                         ,maxrow  = self.maxrow
                         ,maxrows = self.maxrows
                         )
-        self.blocks = itags.run()
-        self.blocks = el.Elems(self.blocks).run()
+        blocks = itags.run()
+        if blocks:
+            self.blocks = blocks
+            self.htm = '\n'.join(tag_lst)
+            texts = [block.text for block in self.blocks if block.text]
+            self.text = sh.List(texts).space_items()
+            self.blocks = el.Elems(self.blocks).run()
+        else:
+            self.blocks = []
+            self.html = self.text = ''
         return self.blocks

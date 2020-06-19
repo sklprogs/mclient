@@ -5,7 +5,6 @@ import os
 import re
 import skl_shared.shared as sh
 from skl_shared.localize import _
-from . import tags as tg
 
 
 ''' A directory storing all DSL files.
@@ -26,7 +25,7 @@ class Get:
     
     def run(self):
         self.check()
-        self.search()
+        return self.search()
     
     def check(self):
         f = '[MClient] plugins.dsl.get.Get.check'
@@ -41,10 +40,19 @@ class Get:
     def search(self):
         f = '[MClient] plugins.dsl.get.Get.search'
         if self.Success:
-            for idic in objs.get_all_dics().dics:
-                blocks = idic.search(self.pattern)
-                if blocks:
-                    self.blocks += blocks
+            dics = [idic for idic in objs.get_all_dics().dics \
+                    if idic.lang1 == LANG1 and idic.lang2 == LANG2
+                   ]
+            dicnames = [idic.dicname for idic in dics]
+            mes = _('Dictionaries to search in ({}): {}')
+            mes = mes.format(len(dicnames),'; '.join(dicnames))
+            articles = []
+            for idic in dics:
+                article = idic.search(self.pattern)
+                if article:
+                    article.insert(0,idic.dicname)
+                    articles += article
+            return articles
         else:
             sh.com.cancel(f)
     
@@ -186,9 +194,7 @@ class DSL:
                 except ValueError:
                     pass
                 if pos > -1:
-                    tag_lst = self.get_entry(self.poses[pos])
-                    itags = tg.Tags(tag_lst,Debug=DEBUG)
-                    return itags.run()
+                    return self.get_entry(self.poses[pos])
                 else:
                     mes = _('No search results for "{}" in "{}"')
                     mes = mes.format(pattern,self.dicname)
@@ -321,23 +327,6 @@ class AllDics:
         self.set_values()
         self.reset()
     
-    def search(self,pattern):
-        f = '[MClient] plugins.dsl.get.AllDics.search'
-        if self.Success:
-            dics = [idic for idic in self.dics if idic.lang1 == LANG1 \
-                    and idic.lang2 == LANG2
-                   ]
-            dicnames = [idic.dicname for idic in dics]
-            mes = _('Dictionaries to search in ({}): {}')
-            mes = mes.format(len(dicnames),'; '.join(dicnames))
-            self.blocks = []
-            for idic in dics:
-                blocks = idic.search(pattern)
-                if blocks:
-                    self.blocks += blocks
-        else:
-            sh.com.cancel(f)
-    
     def get_index(self):
         f = '[MClient] plugins.dsl.get.AllDics.get_index'
         if self.Success:
@@ -356,7 +345,6 @@ class AllDics:
         self.dics = []
         self.path = ''
         self.index_ = []
-        self.blocks = []
         # Do not run anything if 'self.reset' was not run
         self.Success = False
     

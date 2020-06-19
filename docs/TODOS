@@ -5,6 +5,9 @@ mclient:
   dictionaries), do this check only before showing the final article.
 
 multitrancom:
+- When 'same' are determined on the basis of semicolon, check this in
+  'basic support': 32 фразы: "Object-Oriented Analysis and Design with Applications"
+  (should have same=1)
 - double tumbler: показывать оба ненайденных слова
 - EN-RU: на фиг: wrong SAME of "(нужно, сдалось)"
 - implement "⇒": EN-RU: вспоминать ⇒ вспоминать прошлое

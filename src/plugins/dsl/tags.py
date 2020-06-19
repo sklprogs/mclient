@@ -211,6 +211,19 @@ class Tags:
         self.maxrow = maxrow
         self.maxrows = maxrows
     
+    def set_dic_name(self):
+        f = '[MClient] plugins.dsl.tags.Tags.debug'
+        if self.Success:
+            # 'self.lst' has at least one item since it's not empty
+            block = Block()
+            block.same = 0
+            block.type_ = 'dic'
+            block.text = self.lst[0]
+            self.blocks.append(block)
+            del self.lst[0]
+        else:
+            sh.com.cancel(f)
+    
     def set_values(self):
         self.lst = []
         self.blocks = []
@@ -221,7 +234,17 @@ class Tags:
     
     def check(self):
         f = '[MClient] plugins.dsl.tags.Tags.check'
-        if not self.lst:
+        if self.lst:
+            ''' We expect at least 3 lines: a dictionary title, a term, 
+                a translation.
+            '''
+            if len(self.lst) < 3:
+                self.Success = False
+                sub = '{} > 2'.format(len(self.lst))
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                objs.get_mes(f,mes).show_warning()
+        else:
             self.Success = False
             sh.com.rep_empty(f)
 
@@ -280,6 +303,7 @@ class Tags:
 
     def run(self):
         self.check()
+        self.set_dic_name()
         self.set_blocks()
         self.debug()
         return self.blocks
