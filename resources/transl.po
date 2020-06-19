@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-19 02:17+0300\n"
-"PO-Revision-Date: 2020-06-19 02:19+0300\n"
+"POT-Creation-Date: 2020-06-20 00:13+0300\n"
+"PO-Revision-Date: 2020-06-20 00:14+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -400,8 +400,8 @@ msgstr "Не задано"
 #: mclient/src/gui.py:956 mclient/src/gui.py:1045 mclient/src/gui.py:1060
 #: mclient/src/manager.py:26 mclient/src/manager.py:150
 #: mclient/src/manager.py:206 mclient/src/mclient.py:865
-#: mclient/src/tests.py:316 mclient/src/tests.py:376 mclient/src/tests.py:418
-#: mclient/src/tests.py:511
+#: mclient/src/tests.py:321 mclient/src/tests.py:381 mclient/src/tests.py:423
+#: mclient/src/tests.py:516
 msgid "Multitran"
 msgstr "Мультитран "
 
@@ -999,7 +999,8 @@ msgstr "Список приоритетных словарей пуст!"
 msgid "Set the column limit to {} ({} in total)"
 msgstr "Задать максимальное число столбцов: {} (всего: {})"
 
-#: mclient/src/mclient.py:2313 mclient/src/plugins/dsl/get.py:167
+#: mclient/src/mclient.py:2313 mclient/src/plugins/dsl/get.py:177
+#: mclient/src/plugins/dsl/tags.py:244
 #: mclient/src/plugins/multitrancom/utils.py:165
 #: mclient/src/plugins/multitrancom/utils.py:263
 #: mclient/src/plugins/multitrancom/utils.py:343
@@ -1086,29 +1087,33 @@ msgstr "Ничего не найдено (игнорировано словар�
 msgid "Nothing has been found."
 msgstr "Ничего не найдено."
 
-#: mclient/src/plugins/dsl/elems.py:142
+#: mclient/src/plugins/dsl/elems.py:144
 #: mclient/src/plugins/stardict/elems.py:142
 #: mclient/src/plugins/stardict/tags.py:273
 msgid "Non-DB blocks:"
 msgstr "Блоки не из БД:"
 
-#: mclient/src/plugins/dsl/get.py:102 mclient/src/plugins/dsl/get.py:122
+#: mclient/src/plugins/dsl/get.py:47
+msgid "Dictionaries to search in ({}): {}"
+msgstr "Словари для поиска ({}): {}"
+
+#: mclient/src/plugins/dsl/get.py:112 mclient/src/plugins/dsl/get.py:132
 msgid "The file \"{}\" is too short ({} lines)!"
 msgstr "Файл \"{}\" слишком короткий ({} строк)!"
 
-#: mclient/src/plugins/dsl/get.py:194
+#: mclient/src/plugins/dsl/get.py:199
 msgid "No search results for \"{}\" in \"{}\""
 msgstr "Нет совпадений для \"{}\" в \"{}\""
 
-#: mclient/src/plugins/dsl/get.py:218
+#: mclient/src/plugins/dsl/get.py:223
 msgid "Dictionary \"{}\" ({}) has {} records"
 msgstr "В словаре \"{}\" ({}) {} записей"
 
-#: mclient/src/plugins/dsl/get.py:238
+#: mclient/src/plugins/dsl/get.py:243
 msgid "Load \"{}\""
 msgstr "Загрузка \"{}\""
 
-#: mclient/src/plugins/dsl/get.py:246
+#: mclient/src/plugins/dsl/get.py:251
 #: mclient/src/plugins/multitrandem/utils.py:692
 #: mclient/src/plugins/multitrandem/utils.py:735
 #: mclient/src/plugins/multitrandem/utils.py:780
@@ -1124,7 +1129,7 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: mclient/src/plugins/dsl/get.py:265 mclient/src/plugins/dsl/get.py:266
+#: mclient/src/plugins/dsl/get.py:270 mclient/src/plugins/dsl/get.py:271
 #: mclient/src/plugins/dsl/run.py:50 mclient/src/plugins/dsl/run.py:54
 #: mclient/src/plugins/dsl/run.py:82 mclient/src/plugins/dsl/run.py:86
 #: mclient/src/plugins/multitrandem/run.py:122
@@ -1136,45 +1141,33 @@ msgstr ""
 msgid "Any"
 msgstr "Любой"
 
-#: mclient/src/plugins/dsl/get.py:271
+#: mclient/src/plugins/dsl/get.py:276
 msgid "Untitled dictionary"
 msgstr "Безымянный словарь"
 
-#: mclient/src/plugins/dsl/get.py:332
-msgid "Dictionaries to search in ({}): {}"
-msgstr "Словари для поиска ({}): {}"
-
-#: mclient/src/plugins/dsl/get.py:351
+#: mclient/src/plugins/dsl/get.py:337
 msgid "Index has {} entries"
 msgstr "{} вхождений в индексе"
 
-#: mclient/src/plugins/dsl/get.py:368 mclient/src/plugins/stardict/get.py:449
-msgid "\"{}\" has matches for \"{}\""
-msgstr "В \"{}\" найдены совпадения для \"{}\""
-
-#: mclient/src/plugins/dsl/get.py:372 mclient/src/plugins/stardict/get.py:453
-msgid "No matches for \"{}\"!"
-msgstr "Нет совпадений для \"{}\"!"
-
-#: mclient/src/plugins/dsl/get.py:419
+#: mclient/src/plugins/dsl/get.py:380
 #: mclient/src/plugins/multitrandem/get.py:1313
 #: mclient/src/plugins/stardict/get.py:509
 msgid "{} offline dictionaries are available"
 msgstr "Доступно {} локальных словарей"
 
-#: mclient/src/plugins/dsl/get.py:431 mclient/src/plugins/stardict/get.py:521
+#: mclient/src/plugins/dsl/get.py:392 mclient/src/plugins/stardict/get.py:521
 msgid "Load local dictionaries"
 msgstr "Загрузка локальных словарей"
 
-#: mclient/src/plugins/dsl/get.py:434
+#: mclient/src/plugins/dsl/get.py:395
 msgid "Load offline dictionaries (DSL)"
 msgstr "Загрузка локальных словарей (DSL)"
 
-#: mclient/src/plugins/dsl/get.py:443 mclient/src/plugins/stardict/get.py:533
+#: mclient/src/plugins/dsl/get.py:404 mclient/src/plugins/stardict/get.py:533
 msgid "Dictionaries loaded: {}/{}"
 msgstr "Загружено словарей: {}/{}"
 
-#: mclient/src/plugins/dsl/tags.py:109 mclient/src/plugins/dsl/tags.py:256
+#: mclient/src/plugins/dsl/tags.py:109 mclient/src/plugins/dsl/tags.py:258
 msgid "TYPE"
 msgstr "ТИП"
 
@@ -1186,7 +1179,7 @@ msgstr "НАЧАЛО"
 msgid "END"
 msgstr "КОНЕЦ"
 
-#: mclient/src/plugins/dsl/tags.py:109 mclient/src/plugins/dsl/tags.py:256
+#: mclient/src/plugins/dsl/tags.py:109 mclient/src/plugins/dsl/tags.py:258
 msgid "TEXT"
 msgstr "ТЕКСТ"
 
@@ -14896,11 +14889,31 @@ msgstr "Требуется сигнатура RA!"
 msgid "File \"{}\" is incorrect!"
 msgstr "Файл \"{}\" некорректен!"
 
+#: mclient/src/plugins/stardict/get.py:449
+msgid "\"{}\" has matches for \"{}\""
+msgstr "В \"{}\" найдены совпадения для \"{}\""
+
+#: mclient/src/plugins/stardict/get.py:453
+msgid "No matches for \"{}\"!"
+msgstr "Нет совпадений для \"{}\"!"
+
 #: mclient/src/plugins/stardict/get.py:524
 msgid "Load offline dictionaries"
 msgstr "Загрузка локальных словарей"
 
-#: mclient/src/tests.py:256
+#: mclient/src/tests.py:207
+msgid "Number of blocks: {}"
+msgstr "Число блоков: {}"
+
+#: mclient/src/tests.py:209
+msgid "Web-page:"
+msgstr "Веб-страница:"
+
+#: mclient/src/tests.py:211
+msgid "Text:"
+msgstr "Текст:"
+
+#: mclient/src/tests.py:261
 msgid ""
 "The following pairs are not supported:\n"
 "{}"
@@ -14908,11 +14921,11 @@ msgstr ""
 "Следующие пары не поддерживаются:\n"
 "{}"
 
-#: mclient/src/tests.py:372 mclient/src/tests.py:386
+#: mclient/src/tests.py:377 mclient/src/tests.py:391
 msgid "Offline"
 msgstr "Оффлайн"
 
-#: mclient/src/tests.py:536 mclient/src/tests.py:541
+#: mclient/src/tests.py:541 mclient/src/tests.py:546
 msgid "Triggered!"
 msgstr "Сработало!"
 
@@ -15878,9 +15891,6 @@ msgstr "Привязка: {}"
 
 #~ msgid "A logic error: unknown object type: \"%s\"!"
 #~ msgstr "Логическая ошибка: неизвестный тип объекта: \"%s\"!"
-
-#~ msgid "Text:"
-#~ msgstr "Текст:"
 
 #~ msgid "Title:"
 #~ msgstr "Заголовок:"
