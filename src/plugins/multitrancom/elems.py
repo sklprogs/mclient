@@ -771,7 +771,7 @@ class Elems:
             be found is of the 'term' (not 'phrase') type here.
         '''
         for block in self.blocks:
-            if re.match('\d+ phrase',block.text) \
+            if re.match('\d+ phrase[s]{0,1}',block.text) \
             or re.match('\d+ фраз',block.text):
                 block.type_  = 'dic'
                 block.select = 1

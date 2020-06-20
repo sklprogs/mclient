@@ -774,7 +774,7 @@ class WebFrame:
             self.posn = phdic[0]
             if objs.blocksdb.Selectable:
                 lg.objs.get_request().url = phdic[1]
-                lg.objs.request.search    = phdic[2]
+                lg.objs.request.search = phdic[2]
                 self.load_article()
             else:
                 self.go_url()

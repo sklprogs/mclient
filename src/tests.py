@@ -209,6 +209,7 @@ class Plugin:
         f = '[MClient] tests.Plugin.run_dsl'
         import plugins.dsl.get
         import plugins.dsl.run as dr
+        plugins.dsl.get.DEBUG = DEBUG
         plugins.dsl.get.PATH = sh.Home('mclient').add_config('dics')
         #search = 'компьютер'
         search  = 'computer'

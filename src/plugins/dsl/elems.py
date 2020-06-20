@@ -163,14 +163,18 @@ class Elems:
                     self.blocks[i].text = ' ' + self.blocks[i].text
 
     def set_phrase_dic(self):
+        count = 0
+        for block in self.blocks:
+            if block.type_ == 'phrase':
+                count += 1
         for i in range(len(self.blocks)):
             if self.blocks[i].type_ == 'phrase':
                 block = Block()
                 block.type_ = 'dic'
                 block.same = 0
                 block.select = 1
-                block.dica = block.dicaf = self.blocks[i].text.strip()
-                block.text = _('Phrases')
+                mes = _('{} phrases').format(count)
+                block.text = block.dica = block.dicaf = mes
                 self.blocks.insert(i,block)
                 break
                 
