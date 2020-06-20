@@ -111,7 +111,9 @@ class Plugin:
             self.htm = '\n'.join(flat_lst)
             texts = [block.text for block in self.blocks if block.text]
             self.text = sh.List(texts).space_items()
-            self.blocks = el.Elems(self.blocks).run()
+            self.blocks = el.Elems (blocks = self.blocks
+                                   ,Debug  = gt.DEBUG
+                                   ).run()
         else:
             self.blocks = []
             self.html = self.text = ''

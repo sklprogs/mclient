@@ -564,6 +564,6 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sh.com.start()
     #Plugin().run_multitrancom()
-    #Plugin().run_dsl()
-    Tags().run_dsl()
+    Plugin().run_dsl()
+    #Tags().run_dsl()
     sh.com.end()

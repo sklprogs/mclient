@@ -77,10 +77,10 @@ class Elems:
           vary depending on the view. Incorrect sorting by TERMA may
           result in putting a TERM item before fixed columns.
     '''
-    def __init__(self,blocks):
+    def __init__(self,blocks,Debug=False):
         f = '[MClient] plugins.dsl.elems.Elems.__init__'
-        self.dicurls = {}
         self.blocks = blocks
+        self.Debug = Debug
         if self.blocks:
             self.Success = True
         else:
@@ -104,7 +104,7 @@ class Elems:
     def run(self):
         f = '[MClient] plugins.dsl.elems.Elems.run'
         if self.Success:
-            self.set_phrases()
+            self.set_phrase_dic()
             self.add_space()
             self.fill()
             self.fill_terma()
@@ -113,36 +113,40 @@ class Elems:
             self.set_fixed_terma()
             self.set_selectables()
             self.set_same()
+            self.debug()
             return self.blocks
         else:
             sh.com.cancel(f)
     
     def debug(self,maxrow=20,maxrows=1000):
         f = '[MClient] plugins.dsl.elems.Elems.debug'
-        headers = ('NO','DICA','WFORMA','SPEECHA','TRANSCA','TYPE'
-                  ,'TEXT','SAME','SELECT'
-                  )
-        rows = []
-        for i in range(len(self.blocks)):
-            rows.append ([i + 1
-                         ,self.blocks[i].dica
-                         ,self.blocks[i].wforma
-                         ,self.blocks[i].speecha
-                         ,self.blocks[i].transca
-                         ,self.blocks[i].type_
-                         ,self.blocks[i].text
-                         ,self.blocks[i].same
-                         ,self.blocks[i].select
-                         ]
-                        )
-        mes = sh.FastTable (headers   = headers
-                           ,iterable  = rows
-                           ,maxrow    = maxrow
-                           ,maxrows   = maxrows
-                           ,Transpose = True
-                           ).run()
-        mes = _('Non-DB blocks:') + '\n\n' + mes
-        sh.com.run_fast_debug(f,mes)
+        if self.Debug and self.blocks:
+            headers = ('NO','DICA','WFORMA','SPEECHA','TRANSCA','TYPE'
+                      ,'TEXT','SAME','SELECT'
+                      )
+            rows = []
+            for i in range(len(self.blocks)):
+                rows.append ([i + 1
+                             ,self.blocks[i].dica
+                             ,self.blocks[i].wforma
+                             ,self.blocks[i].speecha
+                             ,self.blocks[i].transca
+                             ,self.blocks[i].type_
+                             ,self.blocks[i].text
+                             ,self.blocks[i].same
+                             ,self.blocks[i].select
+                             ]
+                            )
+            mes = sh.FastTable (headers   = headers
+                               ,iterable  = rows
+                               ,maxrow    = maxrow
+                               ,maxrows   = maxrows
+                               ,Transpose = True
+                               ).run()
+            mes = _('Non-DB blocks:') + '\n\n' + mes
+            sh.com.run_fast_debug(f,mes)
+        else:
+            sh.com.rep_lazy(f)
     
     def add_space(self):
         for i in range(len(self.blocks)):
@@ -158,12 +162,16 @@ class Elems:
                   and not cond:
                     self.blocks[i].text = ' ' + self.blocks[i].text
 
-    def set_phrases(self):
-        for block in self.blocks:
-            if block.type_ == 'phrase':
-                block.type_  = 'dic'
+    def set_phrase_dic(self):
+        for i in range(len(self.blocks)):
+            if self.blocks[i].type_ == 'phrase':
+                block = Block()
+                block.type_ = 'dic'
+                block.same = 0
                 block.select = 1
-                block.dica   = block.text.strip()
+                block.dica = block.dicaf = self.blocks[i].text.strip()
+                block.text = _('Phrases')
+                self.blocks.insert(i,block)
                 break
                 
     def fill(self):
