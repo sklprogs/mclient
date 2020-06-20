@@ -112,6 +112,16 @@ class Get:
 
 class Tags:
     
+    def run_dsl(self):
+        f = '[MClient] tests.Tags.run_dsl'
+        import plugins.dsl.get
+        import plugins.dsl.tags
+        plugins.dsl.get.PATH = sh.Home('mclient').add_config('dics')
+        tag_lst = plugins.dsl.get.Get('computer').run()
+        plugins.dsl.tags.Tags (lst   = tag_lst
+                              ,Debug = DEBUG
+                              ).run()
+    
     def analyze_tag(self):
         import plugins.multitrancom.tags as tg
         #tag = '<tr><td class="subj" width="1"><a href="https://www.multitran.com/m.exe?a=110&amp;l1=2&amp;l2=1&amp;s=%D1%82%D1%80%D0%BE%D1%81&amp;sc=371" title="Автоматика">автомат.'
@@ -554,5 +564,6 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sh.com.start()
     #Plugin().run_multitrancom()
-    Plugin().run_dsl()
+    #Plugin().run_dsl()
+    Tags().run_dsl()
     sh.com.end()

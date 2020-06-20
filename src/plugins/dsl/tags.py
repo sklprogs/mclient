@@ -283,7 +283,11 @@ class Tags:
                     tag = tag.strip()
                     if tag:
                         block = Block()
-                        block.type_ = 'term'
+                        ''' 'comment' type is set by default. We should
+                            not reassign existing types such as 'dic'.
+                        '''
+                        if block.type_ == 'comment':
+                            block.type_ = 'term'
                         block.text = tag
                         block.same = 0
                         self.blocks.append(block)
