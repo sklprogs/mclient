@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-20 00:13+0300\n"
-"PO-Revision-Date: 2020-06-20 00:14+0300\n"
+"POT-Creation-Date: 2020-06-20 03:05+0300\n"
+"PO-Revision-Date: 2020-06-20 03:06+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -999,8 +999,8 @@ msgstr "Список приоритетных словарей пуст!"
 msgid "Set the column limit to {} ({} in total)"
 msgstr "Задать максимальное число столбцов: {} (всего: {})"
 
-#: mclient/src/mclient.py:2313 mclient/src/plugins/dsl/get.py:177
-#: mclient/src/plugins/dsl/tags.py:244
+#: mclient/src/mclient.py:2313 mclient/src/plugins/dsl/get.py:181
+#: mclient/src/plugins/dsl/tags.py:243
 #: mclient/src/plugins/multitrancom/utils.py:165
 #: mclient/src/plugins/multitrancom/utils.py:263
 #: mclient/src/plugins/multitrancom/utils.py:343
@@ -1094,26 +1094,26 @@ msgid "Non-DB blocks:"
 msgstr "Блоки не из БД:"
 
 #: mclient/src/plugins/dsl/get.py:47
-msgid "Dictionaries to search in ({}): {}"
-msgstr "Словари для поиска ({}): {}"
+msgid "Dictionaries to search in ({}/{}): {}"
+msgstr "Словари для поиска ({}/{}): {}"
 
-#: mclient/src/plugins/dsl/get.py:112 mclient/src/plugins/dsl/get.py:132
+#: mclient/src/plugins/dsl/get.py:116 mclient/src/plugins/dsl/get.py:136
 msgid "The file \"{}\" is too short ({} lines)!"
 msgstr "Файл \"{}\" слишком короткий ({} строк)!"
 
-#: mclient/src/plugins/dsl/get.py:199
+#: mclient/src/plugins/dsl/get.py:203
 msgid "No search results for \"{}\" in \"{}\""
 msgstr "Нет совпадений для \"{}\" в \"{}\""
 
-#: mclient/src/plugins/dsl/get.py:223
+#: mclient/src/plugins/dsl/get.py:227
 msgid "Dictionary \"{}\" ({}) has {} records"
 msgstr "В словаре \"{}\" ({}) {} записей"
 
-#: mclient/src/plugins/dsl/get.py:243
+#: mclient/src/plugins/dsl/get.py:247
 msgid "Load \"{}\""
 msgstr "Загрузка \"{}\""
 
-#: mclient/src/plugins/dsl/get.py:251
+#: mclient/src/plugins/dsl/get.py:255
 #: mclient/src/plugins/multitrandem/utils.py:692
 #: mclient/src/plugins/multitrandem/utils.py:735
 #: mclient/src/plugins/multitrandem/utils.py:780
@@ -1129,7 +1129,7 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: mclient/src/plugins/dsl/get.py:270 mclient/src/plugins/dsl/get.py:271
+#: mclient/src/plugins/dsl/get.py:274 mclient/src/plugins/dsl/get.py:275
 #: mclient/src/plugins/dsl/run.py:50 mclient/src/plugins/dsl/run.py:54
 #: mclient/src/plugins/dsl/run.py:82 mclient/src/plugins/dsl/run.py:86
 #: mclient/src/plugins/multitrandem/run.py:122
@@ -1141,33 +1141,33 @@ msgstr ""
 msgid "Any"
 msgstr "Любой"
 
-#: mclient/src/plugins/dsl/get.py:276
+#: mclient/src/plugins/dsl/get.py:280
 msgid "Untitled dictionary"
 msgstr "Безымянный словарь"
 
-#: mclient/src/plugins/dsl/get.py:337
+#: mclient/src/plugins/dsl/get.py:341
 msgid "Index has {} entries"
 msgstr "{} вхождений в индексе"
 
-#: mclient/src/plugins/dsl/get.py:380
+#: mclient/src/plugins/dsl/get.py:384
 #: mclient/src/plugins/multitrandem/get.py:1313
 #: mclient/src/plugins/stardict/get.py:509
 msgid "{} offline dictionaries are available"
 msgstr "Доступно {} локальных словарей"
 
-#: mclient/src/plugins/dsl/get.py:392 mclient/src/plugins/stardict/get.py:521
+#: mclient/src/plugins/dsl/get.py:396 mclient/src/plugins/stardict/get.py:521
 msgid "Load local dictionaries"
 msgstr "Загрузка локальных словарей"
 
-#: mclient/src/plugins/dsl/get.py:395
+#: mclient/src/plugins/dsl/get.py:399
 msgid "Load offline dictionaries (DSL)"
 msgstr "Загрузка локальных словарей (DSL)"
 
-#: mclient/src/plugins/dsl/get.py:404 mclient/src/plugins/stardict/get.py:533
+#: mclient/src/plugins/dsl/get.py:408 mclient/src/plugins/stardict/get.py:533
 msgid "Dictionaries loaded: {}/{}"
 msgstr "Загружено словарей: {}/{}"
 
-#: mclient/src/plugins/dsl/tags.py:109 mclient/src/plugins/dsl/tags.py:258
+#: mclient/src/plugins/dsl/tags.py:109 mclient/src/plugins/dsl/tags.py:257
 msgid "TYPE"
 msgstr "ТИП"
 
@@ -1179,7 +1179,7 @@ msgstr "НАЧАЛО"
 msgid "END"
 msgstr "КОНЕЦ"
 
-#: mclient/src/plugins/dsl/tags.py:109 mclient/src/plugins/dsl/tags.py:258
+#: mclient/src/plugins/dsl/tags.py:109 mclient/src/plugins/dsl/tags.py:257
 msgid "TEXT"
 msgstr "ТЕКСТ"
 
@@ -15771,302 +15771,3 @@ msgstr ""
 #: skl_shared/src/tests.py:1127
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
-
-#~ msgid "Position: {}; vector: {}"
-#~ msgstr "Позиция: {}; вектор: {}"
-
-#~ msgid ""
-#~ "Original byte: \"{}\"; original position: {}; vector: {}; final byte: "
-#~ "\"{}\"; final position: {}"
-#~ msgstr ""
-#~ "Первоначальный байт: \"{}\"; первоначальная позиция: {}; вектор: {}; "
-#~ "конечный байт: \"{}\"; конечная позиция: {}"
-
-#~ msgid "SHORT SUMMARY:"
-#~ msgstr "КОРОТКАЯ СВОДКА:"
-
-#~ msgid "Write {} bytes to file \"{}\" at position {}"
-#~ msgstr "Запись {} байтов в файл \"{}\" в позиции {}"
-
-#~ msgid "Malformed HTM code!"
-#~ msgstr "Некорректный код HTML!"
-
-#~ msgid "Concerning {}"
-#~ msgstr "По поводу {}"
-
-#~ msgid "OK"
-#~ msgstr "OK"
-
-#~ msgid "Press any key"
-#~ msgstr "Нажмите любую клавишу"
-
-#~ msgid "Try for \"{}\""
-#~ msgstr "Тест \"{}\""
-
-#~ msgid "Found combinations: {}"
-#~ msgstr "Найденные комбинации: {}"
-
-#~ msgid "No stem combinations have been found!"
-#~ msgstr "Комбинаций основ не найдено!"
-
-#~ msgid "Pattern: \"{}\": no matches starting from {}!"
-#~ msgstr "Образец: \"{}\": нет совпадений с позиции {}!"
-
-#~ msgid "Failed to select a file!"
-#~ msgstr "Не удалось выбрать файл!"
-
-#~ msgid "The check has failed"
-#~ msgstr "Проверка завершилась неуспешно"
-
-#~ msgid "Search for article #{} ({})"
-#~ msgstr "Поиск статьи №{} ({})"
-
-#~ msgid "Search for stem #{} ({})"
-#~ msgstr "Поиск основы №{} ({})"
-
-#~ msgid "Cannot print the message!"
-#~ msgstr "Не удаётся показать сообщение!"
-
-#~ msgid ""
-#~ "Programming: Peter Sklyar, 2015-2019.\n"
-#~ "Version: {}\n"
-#~ "\n"
-#~ "This program is free and opensource. You can use and modify it freely\n"
-#~ "within the scope of the provisions set forth in GPL v.3 and the active "
-#~ "legislation.\n"
-#~ "\n"
-#~ "If you have any questions, requests, etc., please do not hesitate to "
-#~ "contact me.\n"
-#~ msgstr ""
-#~ "Программирование: Петр Скляр, 2015-2019.\n"
-#~ "Версия: {}\n"
-#~ "\n"
-#~ "Эта программа является открытой и бесплатной. Вы можете свободно "
-#~ "использовать\n"
-#~ "и видоизменять ее в рамках лицензии GPL v.3 и текущего законодательства.\n"
-#~ "\n"
-#~ "Любые вопросы, пожелания и пр. излагайте по электронной почте.\n"
-
-#~ msgid "Nothing has been found (skipped dictionaries: %d)."
-#~ msgstr "Ничего не найдено (игнорировано словарей: %d)."
-
-#~ msgid "Note: it will be Monday!"
-#~ msgstr "Обратите внимание: указанная дата - понедельник!"
-
-#~ msgid "Mexico"
-#~ msgstr "Мексика"
-
-#~ msgid "Canada"
-#~ msgstr "Канада"
-
-#~ msgid "Russia"
-#~ msgstr "Россия"
-
-#~ msgid "Nothing has been found!"
-#~ msgstr "Ничего не найдено."
-
-#~ msgid "Unable to set selection!"
-#~ msgstr "Не удалось задать выделение!"
-
-#~ msgid ""
-#~ "Cannot parse HTML code!\n"
-#~ "\n"
-#~ "Probably, some symbols are not supported by Tcl."
-#~ msgstr ""
-#~ "Не удается обработать код HTML!\n"
-#~ "\n"
-#~ "Возможно, некоторые символы не поддерживаются Tcl."
-
-#~ msgid "Unable to convert HTML entities to UTF-8!"
-#~ msgstr "Не удалось конвертировать код HTML в UTF-8!"
-
-#~ msgid "Empty strings are not supported!"
-#~ msgstr "Поддерживаются только непустые строки!"
-
-#~ msgid "Nothing to do."
-#~ msgstr "Действие не требуется."
-
-#~ msgid "Failed to insert the text!"
-#~ msgstr "Не удалось вставить текст!"
-
-#~ msgid "A logic error: unknown object type: \"%s\"!"
-#~ msgstr "Логическая ошибка: неизвестный тип объекта: \"%s\"!"
-
-#~ msgid "Title:"
-#~ msgstr "Заголовок:"
-
-#~ msgid "Failed to remove the tag %s in the widget %s in positions %s-%s!"
-#~ msgstr "Не удалось удалить тэг %s в виджете %s для позиций %s-%s!"
-
-#~ msgid "DEBUG-ERROR"
-#~ msgstr "ОШИБКА ПРИ ОТЛАДКЕ"
-
-#~ msgid "Element \"%s\" has not been found in fragment \"%s\"!"
-#~ msgstr "Элемент \"%s\" не был найден во фрагменте \"%s\"!"
-
-#~ msgid "Failed to add tag \"%s\" for positions %s-%s!"
-#~ msgstr "Не удалось добавить тэг \"%s\" для позиций %s-%s!"
-
-#~ msgid ""
-#~ "Failed to configure tag \"%s\" to have the background of color \"%s\"!"
-#~ msgstr "Не удалось назначить тэгу \"%s\" фон \"%s\"!"
-
-#~ msgid ""
-#~ "Failed to configure tag \"%s\" to have the foreground of color \"%s\"!"
-#~ msgstr "Не удалось назначить тэгу \"%s\" цвет \"%s\"!"
-
-#~ msgid "Failed to configure tag \"%s\" to have the font \"%s\"!"
-#~ msgstr "Не удалось назначить тэгу \"%s\" шрифт \"%s\"!"
-
-#~ msgid "Failed to insert mark \"%s\" in position \"%s\"!"
-#~ msgstr "Не удается вставить метку \"%s\" для позиции \"%s\"!"
-
-#~ msgid "Failed to remove mark \"%s\"!"
-#~ msgstr "Не удалось удалить метку \"%s\"!"
-
-#~ msgid "Failed to shift screen to label \"%s\"!"
-#~ msgstr "Не удалось сдвинуть экран до метки \"%s\"!"
-
-#~ msgid "Got position: \"%s\""
-#~ msgstr "Получена позиция: \"%s\""
-
-#~ msgid "Cannot return a cursor position!"
-#~ msgstr "Не удалось вернуть позицию курсора!"
-
-#~ msgid "Failed to return selection in the Tkinter widget!"
-#~ msgstr "Не удается вернуть диапазон выделения в виджете Tkinter!"
-
-#~ msgid "Message"
-#~ msgstr "Сообщение"
-
-#~ msgid "CRITICAL"
-#~ msgstr "КРИТИЧЕСКАЯ ОШИБКА"
-
-#~ msgid "Picture \"%s\" was not found!"
-#~ msgstr "Изображение \"%s\" не найдено!"
-
-#~ msgid "A clipboard error has occurred!"
-#~ msgstr "Ошибка буфера обмена!"
-
-#~ msgid "An unknown error has occurred."
-#~ msgstr "Произошла неизвестная ошибка."
-
-#~ msgid "Failed to paste the clipboard contents!"
-#~ msgstr "Ошибка вставки из буфера обмена."
-
-#~ msgid "Add %s"
-#~ msgstr "Добавить %s"
-
-#~ msgid "Close %d objs"
-#~ msgstr "Закрыть %d объектов"
-
-#~ msgid "Widget \"%s\" does not have a \"close\" action!"
-#~ msgstr "У виджета \"%s\" нет действия \"close\"!"
-
-#~ msgid "Wrong tag \"%s\"!"
-#~ msgstr "Неправильный тэг \"%s\"!"
-
-#~ msgid "Swap languages"
-#~ msgstr "Поменять языки местами"
-
-#~ msgid "Scroll by %d units to left"
-#~ msgstr "Прокрутка на %d единиц налево"
-
-#~ msgid "Scroll by %d units to right"
-#~ msgstr "Прокрутка на %d единиц направо"
-
-#~ msgid "Select the previous language pair"
-#~ msgstr "Предыдущая языковая пара"
-
-#~ msgid "Set pair: %s"
-#~ msgstr "Выбор пары: %s"
-
-#~ msgid "Blocks removed: %d"
-#~ msgstr "Удалено блоков: %d"
-
-#~ msgid "Phrase dic 1: \"%s\""
-#~ msgstr "Словарь 1 фраз: \"%s\""
-
-#~ msgid "Phrase dic 2: \"%s\""
-#~ msgstr "Словарь 2 фраз: \"%s\""
-
-#~ msgid "%d phrases"
-#~ msgstr "%d фраз"
-
-#~ msgid "Common phrase dic: \"%s\""
-#~ msgstr "Общий словарь фраз: \"%s\""
-
-#~ msgid "Table %d:"
-#~ msgstr "Таблица %d:"
-
-#~ msgid "The resulting table:"
-#~ msgstr "Итоговая таблица:"
-
-#~ msgid ""
-#~ "Click the left mouse button on the selection to return its translation. "
-#~ "Click the right mouse button on the selection to copy it to clipboard."
-#~ msgstr ""
-#~ "Щелкните левой кнопкой мыши на выделении для получения перевода. Щелкните "
-#~ "правой кнопкой мыши для копирования выделения в буфер обмена."
-
-#~ msgid ""
-#~ "Unable to get the webpage. Check website accessibility.\n"
-#~ "\n"
-#~ "Press OK to try again."
-#~ msgstr ""
-#~ "Не удается загрузить страницу. Проверьте доступность веб-сайта.\n"
-#~ "\n"
-#~ "Нажмите OK, чтобы попытаться снова."
-
-#~ msgid "An invalid plugin!"
-#~ msgstr "Некорректное расширение!"
-
-#~ msgid "All"
-#~ msgstr "Все"
-
-#~ msgid "Online"
-#~ msgstr "Онлайн"
-
-#~ msgid "Welcome to %s!"
-#~ msgstr "%s приветствует Вас!"
-
-#~ msgid "Multitran is "
-#~ msgstr "Мультитран "
-
-#~ msgid ""
-#~ "Programming: Peter Sklyar, 2015-2018.\n"
-#~ "Version: %s\n"
-#~ "\n"
-#~ "This program is free and opensource. You can use and modify it freely\n"
-#~ "within the scope of the provisions set forth in GPL v.3 and the active "
-#~ "legislation.\n"
-#~ "\n"
-#~ "If you have any questions, requests, etc., please do not hesitate to "
-#~ "contact me.\n"
-#~ msgstr ""
-#~ "Программирование: Петр Скляр, 2015-2018.\n"
-#~ "Версия: %s\n"
-#~ "\n"
-#~ "Эта программа является открытой и бесплатной. Вы можете свободно "
-#~ "использовать\n"
-#~ "и видоизменять ее в рамках лицензии GPL v.3 и текущего законодательства.\n"
-#~ "\n"
-#~ "Любые вопросы, пожелания и пр. излагайте по электронной почте.\n"
-
-#~ msgid "Unable to change the web-page encoding!"
-#~ msgstr "Не удается изменить кодировку веб-страницы!"
-
-#~ msgid "Failed to open URL \"%s\" in a default browser!"
-#~ msgstr "Не удалось открыть адрес \"%s\" в браузере по умолчанию!"
-
-#~ msgid "Load \"%s\""
-#~ msgstr "Загрузка \"%s\""
-
-#~ msgid "Failed to load \"%s\"!"
-#~ msgstr "Не удалось загрузить \"%s\"!"
-
-#~ msgid "Failed to parse \"%s\"!"
-#~ msgstr "Не удалось проанализировать \"%s\"!"
-
-#~ msgid "***** Start of log. *****"
-#~ msgstr "***** Начало записи лога. *****"
