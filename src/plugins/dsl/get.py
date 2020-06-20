@@ -44,8 +44,12 @@ class Get:
                     if idic.lang1 == LANG1 and idic.lang2 == LANG2
                    ]
             dicnames = [idic.dicname for idic in dics]
-            mes = _('Dictionaries to search in ({}): {}')
-            mes = mes.format(len(dicnames),'; '.join(dicnames))
+            mes = _('Dictionaries to search in ({}/{}): {}')
+            mes = mes.format (len(dicnames)
+                             ,len(objs.all_dics.dics)
+                             ,'; '.join(dicnames)
+                             )
+            sh.objs.get_mes(f,mes,True).show_debug()
             articles = []
             for idic in dics:
                 article = idic.search(self.pattern)
@@ -415,13 +419,13 @@ class AllDics:
 class Objects:
     
     def __init__(self):
-        self.alldics = None
+        self.all_dics = None
         
     def get_all_dics(self):
-        if self.alldics is None:
-            self.alldics = AllDics()
-            self.alldics.load()
-        return self.alldics
+        if self.all_dics is None:
+            self.all_dics = AllDics()
+            self.all_dics.load()
+        return self.all_dics
 
 
 

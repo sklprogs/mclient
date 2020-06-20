@@ -220,7 +220,6 @@ class Tags:
             block.type_ = 'dic'
             block.text = self.lst[0]
             self.blocks.append(block)
-            del self.lst[0]
         else:
             sh.com.cancel(f)
     
@@ -272,14 +271,15 @@ class Tags:
     def set_blocks(self):
         f = '[MClient] plugins.dsl.tags.Tags.set_blocks'
         if self.Success:
-            for tag in self.lst:
-                if tag.startswith('\t'):
-                    ianalyze = AnalyzeTag(tag)
+            i = 1
+            while i < len(self.lst):
+                if self.lst[i].startswith('\t'):
+                    ianalyze = AnalyzeTag(self.lst[i])
                     ianalyze.run()
                     if ianalyze.blocks:
                         self.blocks += ianalyze.blocks
                 else:
-                    tag = re.sub('\{.*\}','',tag)
+                    tag = re.sub('\{.*\}','',self.lst[i])
                     tag = tag.strip()
                     if tag:
                         block = Block()
@@ -293,6 +293,7 @@ class Tags:
                             'self.strip').
                         '''
                         sh.com.rep_empty(f)
+                i += 1
             ''' Tag contents can be empty because of cases
                 like '[trn][ref]item[/ref][/trn]'. Such tags
                 as '[trn][/trn]' are useless, and we discard them.
