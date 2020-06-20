@@ -14,7 +14,7 @@ from skl_shared.localize import _
 PATH = ''
 LANG1 = 'English'
 LANG2 = 'Russian'
-DEBUG = True
+DEBUG = False
 
 
 class Get:

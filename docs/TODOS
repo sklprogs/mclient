@@ -1,3 +1,6 @@
+dsl:
+- Separate blocks at ';', '||'
+
 mclient:
 - At startup: if only local dictionaries are available, then set
   the mode to Offline.
