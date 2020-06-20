@@ -54,8 +54,9 @@ class Get:
             for idic in dics:
                 article = idic.search(self.pattern)
                 if article:
-                    article.insert(0,idic.dicname)
-                    articles += article
+                    dicname = idic.dicname
+                    article.insert(0,dicname)
+                    articles += [article]
             return articles
         else:
             sh.com.cancel(f)

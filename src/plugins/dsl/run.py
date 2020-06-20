@@ -107,7 +107,8 @@ class Plugin:
         blocks = itags.run()
         if blocks:
             self.blocks = blocks
-            self.htm = '\n'.join(tag_lst)
+            flat_lst = [item for sub in tag_lst for item in sub]
+            self.htm = '\n'.join(flat_lst)
             texts = [block.text for block in self.blocks if block.text]
             self.text = sh.List(texts).space_items()
             self.blocks = el.Elems(self.blocks).run()

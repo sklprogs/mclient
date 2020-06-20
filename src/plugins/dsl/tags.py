@@ -211,14 +211,13 @@ class Tags:
         self.maxrow = maxrow
         self.maxrows = maxrows
     
-    def set_dic_name(self):
+    def set_dic_block(self,name):
         f = '[MClient] plugins.dsl.tags.Tags.debug'
         if self.Success:
-            # 'self.lst' has at least one item since it's not empty
             block = Block()
             block.same = 0
             block.type_ = 'dic'
-            block.text = self.lst[0]
+            block.text = block.dica = block.dicaf = name
             self.blocks.append(block)
         else:
             sh.com.cancel(f)
@@ -237,12 +236,14 @@ class Tags:
             ''' We expect at least 3 lines: a dictionary title, a term, 
                 a translation.
             '''
-            if len(self.lst) < 3:
-                self.Success = False
-                sub = '{} > 2'.format(len(self.lst))
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                objs.get_mes(f,mes).show_warning()
+            for sublst in self.lst:
+                if len(sublst) < 3:
+                    self.Success = False
+                    sub = '{} > 2'.format(len(sublst))
+                    mes = _('The condition "{}" is not observed!')
+                    mes = mes.format(sub)
+                    objs.get_mes(f,mes).show_warning()
+                    break
         else:
             self.Success = False
             sh.com.rep_empty(f)
@@ -271,33 +272,31 @@ class Tags:
     def set_blocks(self):
         f = '[MClient] plugins.dsl.tags.Tags.set_blocks'
         if self.Success:
-            i = 1
-            while i < len(self.lst):
-                if self.lst[i].startswith('\t'):
-                    ianalyze = AnalyzeTag(self.lst[i])
-                    ianalyze.run()
-                    if ianalyze.blocks:
-                        self.blocks += ianalyze.blocks
-                else:
-                    tag = re.sub('\{.*\}','',self.lst[i])
-                    tag = tag.strip()
-                    if tag:
-                        block = Block()
-                        ''' 'comment' type is set by default. We should
-                            not reassign existing types such as 'dic'.
-                        '''
-                        if block.type_ == 'comment':
-                            block.type_ = 'term'
-                        block.text = tag
-                        block.same = 0
-                        self.blocks.append(block)
+            for sublst in self.lst:
+                self.set_dic_block(sublst[0])
+                i = 1
+                while i < len(sublst):
+                    if sublst[i].startswith('\t'):
+                        ianalyze = AnalyzeTag(sublst[i])
+                        ianalyze.run()
+                        if ianalyze.blocks:
+                            self.blocks += ianalyze.blocks
                     else:
-                        ''' The dictionary probably has a wrong format
-                            (or we forgot to delete empty lines with
-                            'self.strip').
-                        '''
-                        sh.com.rep_empty(f)
-                i += 1
+                        tag = re.sub('\{.*\}','',sublst[i])
+                        tag = tag.strip()
+                        if tag:
+                            block = Block()
+                            block.type_ = 'term'
+                            block.text = tag
+                            block.same = 0
+                            self.blocks.append(block)
+                        else:
+                            ''' The dictionary probably has a wrong format
+                                (or we forgot to delete empty lines with
+                                'self.strip').
+                            '''
+                            sh.com.rep_empty(f)
+                    i += 1
             ''' Tag contents can be empty because of cases
                 like '[trn][ref]item[/ref][/trn]'. Such tags
                 as '[trn][/trn]' are useless, and we discard them.
@@ -308,7 +307,6 @@ class Tags:
 
     def run(self):
         self.check()
-        self.set_dic_name()
         self.set_blocks()
         self.debug()
         return self.blocks

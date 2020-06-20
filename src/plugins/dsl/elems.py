@@ -245,8 +245,8 @@ class Elems:
             or wforma != self.blocks[i].wforma \
             or speecha != self.blocks[i].speecha:
                 
-                block          = Block()
-                block.type_    = 'speech'
+                block         = Block()
+                block.type_   = 'speech'
                 block.text    = self.blocks[i].speecha
                 block.dica    = self.blocks[i].dica
                 block.wforma  = self.blocks[i].wforma
@@ -256,8 +256,8 @@ class Elems:
                 block.same    = 0
                 self.blocks.insert(i,block)
                 
-                block          = Block()
-                block.type_    = 'transc'
+                block         = Block()
+                block.type_   = 'transc'
                 block.text    = self.blocks[i].transca
                 block.dica    = self.blocks[i].dica
                 block.wforma  = self.blocks[i].wforma
@@ -267,8 +267,8 @@ class Elems:
                 block.same    = 0
                 self.blocks.insert(i,block)
 
-                block          = Block()
-                block.type_    = 'wform'
+                block         = Block()
+                block.type_   = 'wform'
                 block.text    = self.blocks[i].wforma
                 block.dica    = self.blocks[i].dica
                 block.wforma  = self.blocks[i].wforma
@@ -278,8 +278,8 @@ class Elems:
                 block.same    = 0
                 self.blocks.insert(i,block)
                 
-                block          = Block()
-                block.type_    = 'dic'
+                block         = Block()
+                block.type_   = 'dic'
                 block.text    = self.blocks[i].dica
                 block.dica    = self.blocks[i].dica
                 block.wforma  = self.blocks[i].wforma
