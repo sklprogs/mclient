@@ -112,7 +112,7 @@ class Plugin:
             texts = [block.text for block in self.blocks if block.text]
             self.text = sh.List(texts).space_items()
             self.blocks = el.Elems (blocks = self.blocks
-                                   ,Debug  = gt.DEBUG
+                                   ,Debug  = self.Debug
                                    ).run()
         else:
             self.blocks = []

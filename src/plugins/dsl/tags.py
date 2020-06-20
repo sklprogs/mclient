@@ -216,6 +216,7 @@ class Tags:
         if self.Success:
             block = Block()
             block.same = 0
+            block.select = 0
             block.type_ = 'dic'
             block.text = block.dica = block.dicaf = name
             self.blocks.append(block)

@@ -176,7 +176,7 @@ class Elems:
                 mes = _('{} phrases').format(count)
                 block.text = block.dica = block.dicaf = mes
                 self.blocks.insert(i,block)
-                break
+                return True
                 
     def fill(self):
         dica = wforma = speecha = transca = terma = ''
