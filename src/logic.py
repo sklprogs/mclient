@@ -140,8 +140,10 @@ class Welcome:
         self.sources  = []
         self.sdstat   = 0
         self.mtbstat  = 0
+        self.lgstat   = 0
         self.sdcolor  = 'red'
         self.mtbcolor = 'red'
+        self.lgcolor  = 'red'
         self.product  = ''
         self.version  = ''
         self.desc     = ''
@@ -171,6 +173,11 @@ class Welcome:
         self.mtbstat = objs.plugins.is_accessible()
         if self.mtbstat:
             self.mtbcolor = 'green'
+        # Try DSL
+        objs.plugins.set('Lingvo (DSL)')
+        self.lgstat = objs.plugins.is_accessible()
+        if self.lgstat:
+            self.lgcolor = 'green'
         objs.plugins.set(old)
 
     def gen_source_code(self,title,status,color):
@@ -371,7 +378,13 @@ class Welcome:
         self.istr.write('">')
         self.istr.write('{}'.format(self.sdstat))
         self.istr.write('</font>, ')
-        self.istr.write('Multitran: ')
+        self.istr.write('Lingvo (DSL): ')
+        self.istr.write('      <font color="')
+        self.istr.write(self.lgcolor)
+        self.istr.write('">')
+        self.istr.write('{}'.format(self.lgstat))
+        self.istr.write('</font>, ')
+        self.istr.write('Multitran (Demo): ')
         self.istr.write('      <font color="')
         self.istr.write(self.mtbcolor)
         self.istr.write('">')

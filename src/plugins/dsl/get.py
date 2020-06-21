@@ -88,6 +88,8 @@ class DSL:
         timer.end()
     
     def _delete_trash(self,text):
+        #TODO: Do we need this?
+        text = text.replace('[i]','').replace('[/i]','')
         text = re.sub('\[lang id=\d+\]','',text)
         return text.replace('[/lang]','')
     
