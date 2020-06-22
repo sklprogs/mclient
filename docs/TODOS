@@ -1,4 +1,7 @@
+
+
 dsl:
+- Expand dictionary abbreviations (use *_abrv.dsl) 
 - Separate blocks at ';', '||'
 
 mclient:
