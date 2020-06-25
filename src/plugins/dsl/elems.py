@@ -121,13 +121,15 @@ class Elems:
     def debug(self,maxrow=20,maxrows=1000):
         f = '[MClient] plugins.dsl.elems.Elems.debug'
         if self.Debug and self.blocks:
-            headers = ('NO','DICA','WFORMA','SPEECHA','TRANSCA','TYPE'
+            headers = ('NO','DICA','DICAF','WFORMA'
+                      ,'SPEECHA','TRANSCA','TYPE'
                       ,'TEXT','SAME','SELECT'
                       )
             rows = []
             for i in range(len(self.blocks)):
                 rows.append ([i + 1
                              ,self.blocks[i].dica
+                             ,self.blocks[i].dicaf
                              ,self.blocks[i].wforma
                              ,self.blocks[i].speecha
                              ,self.blocks[i].transca
@@ -179,12 +181,12 @@ class Elems:
                 return True
                 
     def fill(self):
-        dica = wforma = speecha = transca = terma = ''
+        dica = dicaf = wforma = speecha = transca = terma = ''
         
         # Find first non-empty values and set them as default
         for block in self.blocks:
             if block.type_ == 'dic':
-                dica = block.text
+                dica = dicaf = block.text
                 break
         for block in self.blocks:
             if block.type_ == 'wform':
@@ -205,7 +207,7 @@ class Elems:
         
         for block in self.blocks:
             if block.type_ == 'dic':
-                dica = block.text
+                dica = dicaf = block.text
             elif block.type_ == 'wform':
                 wforma = block.text
             elif block.type_ == 'speech':
@@ -217,8 +219,8 @@ class Elems:
                 '''
             elif block.type_ in ('term','phrase'):
                 terma = block.text
-            block.dica    = dica.strip()
-            block.wforma  = wforma
+            block.dica = block.dicaf = dica.strip()
+            block.wforma = wforma
             block.speecha = speecha
             block.transca = transca
             if block.same > 0:
@@ -250,10 +252,11 @@ class Elems:
                 block.terma = ''
                 
     def insert_fixed(self):
-        dica = wforma = speecha = ''
+        dica = dicaf = wforma = speecha = ''
         i = 0
         while i < len(self.blocks):
             if dica != self.blocks[i].dica \
+            or dicaf != self.blocks[i].dicaf \
             or wforma != self.blocks[i].wforma \
             or speecha != self.blocks[i].speecha:
                 
@@ -261,6 +264,7 @@ class Elems:
                 block.type_   = 'speech'
                 block.text    = self.blocks[i].speecha
                 block.dica    = self.blocks[i].dica
+                block.dicaf   = self.blocks[i].dicaf
                 block.wforma  = self.blocks[i].wforma
                 block.speecha = self.blocks[i].speecha
                 block.transca = self.blocks[i].transca
@@ -272,6 +276,7 @@ class Elems:
                 block.type_   = 'transc'
                 block.text    = self.blocks[i].transca
                 block.dica    = self.blocks[i].dica
+                block.dicaf   = self.blocks[i].dicaf
                 block.wforma  = self.blocks[i].wforma
                 block.speecha = self.blocks[i].speecha
                 block.transca = self.blocks[i].transca
@@ -283,6 +288,7 @@ class Elems:
                 block.type_   = 'wform'
                 block.text    = self.blocks[i].wforma
                 block.dica    = self.blocks[i].dica
+                block.dicaf   = self.blocks[i].dicaf
                 block.wforma  = self.blocks[i].wforma
                 block.speecha = self.blocks[i].speecha
                 block.transca = self.blocks[i].transca
@@ -294,6 +300,7 @@ class Elems:
                 block.type_   = 'dic'
                 block.text    = self.blocks[i].dica
                 block.dica    = self.blocks[i].dica
+                block.dicaf   = self.blocks[i].dicaf
                 block.wforma  = self.blocks[i].wforma
                 block.speecha = self.blocks[i].speecha
                 block.transca = self.blocks[i].transca
@@ -302,6 +309,7 @@ class Elems:
                 self.blocks.insert(i,block)
                 
                 dica    = self.blocks[i].dica
+                dicaf   = self.blocks[i].dicaf
                 wforma  = self.blocks[i].wforma
                 speecha = self.blocks[i].speecha
                 i += 4

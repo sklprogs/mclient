@@ -223,7 +223,7 @@ class DB:
 
     def print (self,Selected=False
               ,mode='BLOCKS',maxrow=10
-              ,maxrows=20
+              ,maxrows=1000
               ):
         ''' 'self.dbc.description' is 'None' without performing
             'select' first

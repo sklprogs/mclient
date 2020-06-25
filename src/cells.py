@@ -140,7 +140,9 @@ class BlockPrioritize:
     def debug(self):
         f = '[MClient] cells.BlockPrioritize.debug'
         if self.Debug:
-            headers = ('NO','DICA','TYPE','TEXT','BLOCK','PRIORITY')
+            headers = ('NO','DICA','TYPE'
+                      ,'TEXT','BLOCK','PRIORITY'
+                      )
             rows = []
             for block in self.blocks:
                 rows.append ([block.no
@@ -173,7 +175,7 @@ class Cells:
     def __init__ (self,data,cols,collimit=10
                  ,phdic=None,Reverse=False
                  ,ExpandSp=False,Debug=False
-                 ,maxrow=10,maxrows=1000
+                 ,maxrow=30,maxrows=1000
                  ):
         f = '[MClient] cells.Cells.__init__'
         # Sqlite fetch
@@ -188,9 +190,9 @@ class Cells:
         self.maxrows  = maxrows
         self.blocks   = []
         if self.data:
-            self.Success  = True
+            self.Success = True
         else:
-            self.Success  = False
+            self.Success = False
             sh.com.rep_empty(f)
         
     def clear_phrases(self):
@@ -275,14 +277,17 @@ class Cells:
     def debug(self):
         f = '[MClient] cells.Cells.debug'
         if self.Debug:
-            headers = ('NO','TYPE','TEXT','ROWNO','COLNO','CELLNO'
-                      ,'SAME'
+            headers = ('NO','TYPE','TEXT','DICA','WFORMA'
+                      ,'SPEECHA','ROWNO','COLNO','CELLNO','SAME'
                       )
             rows = []
             for block in self.blocks:
                 rows.append ([block.no
                              ,block.type_
                              ,block.text
+                             ,block.dica
+                             ,block.wforma
+                             ,block.speecha
                              ,block.i
                              ,block.j
                              ,block.cellno
