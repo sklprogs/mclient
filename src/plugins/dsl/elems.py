@@ -14,6 +14,7 @@
     calculate SELECTABLE fully in Cells.
 '''
 
+import copy
 import skl_shared.shared as sh
 from skl_shared.localize import _
 
@@ -87,6 +88,21 @@ class Elems:
             self.Success = False
             sh.com.rep_empty(f)
     
+    def divide_block(self):
+        sep = ' || '
+        i = 0
+        while i < len(self.blocks):
+            if sep in self.blocks[i].text:
+                split = self.blocks[i].text.split(sep)
+                block = copy.copy(self.blocks[i])
+                del self.blocks[i]
+                for item in split[::-1]:
+                    block_copy = copy.copy(block)
+                    block_copy.text = item
+                    self.blocks.insert(i,block_copy)
+                i = i - 1 + len(split)
+            i += 1
+    
     def set_same(self):
         i = 1
         while i < len(self.blocks):
@@ -104,6 +120,7 @@ class Elems:
     def run(self):
         f = '[MClient] plugins.dsl.elems.Elems.run'
         if self.Success:
+            self.divide_block()
             self.set_phrase_dic()
             self.add_space()
             self.fill()
