@@ -212,8 +212,8 @@ class Plugin:
         plugins.dsl.get.DEBUG = DEBUG
         plugins.dsl.get.PATH = sh.Home('mclient').add_config('dics')
         #search = 'компьютер'
-        #search  = 'computer'
-        search = 'bunker'
+        search  = 'computer'
+        #search = 'bunker'
         iplug = dr.Plugin(Debug=DEBUG)
         iplug.request(search=search)
         mes = _('Number of blocks: {}').format(len(iplug.blocks))

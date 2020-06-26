@@ -195,7 +195,8 @@ class Elems:
                 block = Block()
                 block.type_ = 'dic'
                 block.same = 0
-                block.select = 1
+                # There is no separate section for phrases
+                block.select = 0
                 mes = _('{} phrases').format(count)
                 block.text = block.dica = block.dicaf = mes
                 self.blocks.insert(i,block)

@@ -5,6 +5,7 @@ import os
 import re
 import skl_shared.shared as sh
 from skl_shared.localize import _
+from . import gui as gi
 
 
 ''' A directory storing all DSL files.
@@ -15,6 +16,34 @@ PATH = ''
 LANG1 = 'English'
 LANG2 = 'Russian'
 DEBUG = False
+
+
+class ProgressBar:
+    
+    def __init__(self):
+        self.gui = gi.ProgressBar (title   = _('Please wait...')
+                                  ,icon    = gi.ICON
+                                  ,height  = 120
+                                  ,YScroll = False
+                                  )
+    
+    def set_text(self,text=''):
+        self.gui.set_text(text)
+    
+    def show(self,event=None):
+        self.gui.show()
+    
+    def close(self,event=None):
+        self.gui.close()
+    
+    def update(self,count,limit):
+        # Prevent ZeroDivisionError
+        if limit:
+            percent = round((100*count)/limit)
+        else:
+            percent = 0
+        self.gui.update(percent)
+
 
 
 class Get:
@@ -395,23 +424,23 @@ class AllDics:
         f = '[MClient] plugins.dsl.get.AllDics.load'
         if self.Success:
             if self.locate():
-                sh.objs.get_waitbox().reset (func    = f
-                                            ,message = _('Load local dictionaries')
-                                            )
-                sh.objs.waitbox.show()
-                mes = _('Load offline dictionaries (DSL)')
-                sh.objs.get_mes(f,mes,True).show_info()
+                objs.get_progress().set_text()
+                objs.progress.show()
                 timer = sh.Timer(f)
                 timer.start()
-                for idic in self.dics:
-                    idic.run()
+                for i in range(len(self.dics)):
+                    text = _('Load DSL dictionaries ({}/{})')
+                    text = text.format(i+1,len(self.dics))
+                    objs.progress.set_text(text)
+                    objs.progress.update(i,len(self.dics))
+                    self.dics[i].run()
                 timer.end()
+                objs.progress.close()
                 total_no = len(self.dics)
                 self.dics = [dic for dic in self.dics if dic.Success]
                 mes = _('Dictionaries loaded: {}/{}')
                 mes = mes.format(len(self.dics),total_no)
                 sh.objs.get_mes(f,mes,True).show_info()
-                sh.objs.waitbox.close()
             else:
                 sh.com.rep_lazy(f)
         else:
@@ -422,8 +451,13 @@ class AllDics:
 class Objects:
     
     def __init__(self):
-        self.all_dics = None
+        self.all_dics = self.progress = None
         
+    def get_progress(self):
+        if self.progress is None:
+            self.progress = ProgressBar()
+        return self.progress
+    
     def get_all_dics(self):
         if self.all_dics is None:
             self.all_dics = AllDics()
