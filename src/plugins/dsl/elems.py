@@ -89,11 +89,15 @@ class Elems:
             sh.com.rep_empty(f)
     
     def divide_block(self):
-        sep = ' || '
+        sep1 = ' || '
+        sep2 = '; '
         i = 0
         while i < len(self.blocks):
-            if sep in self.blocks[i].text:
-                split = self.blocks[i].text.split(sep)
+            if sep1 in self.blocks[i].text \
+            or sep2 in self.blocks[i].text:
+                text = self.blocks[i].text
+                text = text.replace(sep2,sep1)
+                split = text.split(sep1)
                 block = copy.copy(self.blocks[i])
                 del self.blocks[i]
                 for item in split[::-1]:
