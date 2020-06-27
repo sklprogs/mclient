@@ -473,7 +473,7 @@ class Commands:
 
 
 objs = Objects()
-com  = Commands()
+com = Commands()
 
 
 if __name__ == '__main__':
