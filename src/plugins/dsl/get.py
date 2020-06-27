@@ -5,7 +5,6 @@ import os
 import re
 import skl_shared.shared as sh
 from skl_shared.localize import _
-from . import gui as gi
 
 
 ''' A directory storing all DSL files.
@@ -13,36 +12,10 @@ from . import gui as gi
     calling anything from this module.
 '''
 PATH = ''
+ICON = sh.objs.get_pdir().add('..','resources','icon_64x64_mclient.gif')
 LANG1 = 'English'
 LANG2 = 'Russian'
 DEBUG = False
-
-
-class ProgressBar:
-    
-    def __init__(self):
-        self.gui = gi.ProgressBar (title   = _('Please wait...')
-                                  ,icon    = gi.ICON
-                                  ,height  = 120
-                                  ,YScroll = False
-                                  )
-    
-    def set_text(self,text=''):
-        self.gui.set_text(text)
-    
-    def show(self,event=None):
-        self.gui.show()
-    
-    def close(self,event=None):
-        self.gui.close()
-    
-    def update(self,count,limit):
-        # Prevent ZeroDivisionError
-        if limit:
-            percent = round((100*count)/limit)
-        else:
-            percent = 0
-        self.gui.update(percent)
 
 
 
@@ -424,8 +397,7 @@ class AllDics:
         f = '[MClient] plugins.dsl.get.AllDics.load'
         if self.Success:
             if self.locate():
-                objs.get_progress().set_text()
-                objs.progress.show()
+                objs.get_progress().show()
                 timer = sh.Timer(f)
                 timer.start()
                 for i in range(len(self.dics)):
@@ -455,7 +427,8 @@ class Objects:
         
     def get_progress(self):
         if self.progress is None:
-            self.progress = ProgressBar()
+            self.progress = sh.ProgressBar(icon=ICON)
+            self.progress.add()
         return self.progress
     
     def get_all_dics(self):

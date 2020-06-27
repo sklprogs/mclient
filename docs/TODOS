@@ -2,7 +2,6 @@
 
 dsl:
 - Expand dictionary abbreviations (use *_abrv.dsl) 
-- Separate blocks at ';', '||'
 
 mclient:
 - At startup: if only local dictionaries are available, then set

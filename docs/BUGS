@@ -1,3 +1,6 @@
+mclient:
+- show all words when separate words are found
+
 multitrancom:
 - en-ru, set: застывать: wrong SAME=1
 - en-ru, лошадиных сил: wrong comment SAME
