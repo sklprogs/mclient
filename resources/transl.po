@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-27 02:53+0300\n"
-"PO-Revision-Date: 2020-06-27 02:54+0300\n"
+"POT-Creation-Date: 2020-06-27 03:15+0300\n"
+"PO-Revision-Date: 2020-06-27 03:16+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -1015,7 +1015,7 @@ msgstr "Задать максимальное число столбцов: {} (�
 #: mclient/src/plugins/multitrandem/utils.py:449
 #: mclient/src/plugins/multitrandem/utils.py:747
 #: mclient/src/plugins/multitrandem/utils.py:1159
-#: mclient/src/plugins/stardict/get.py:305 skl_shared/src/logic.py:169
+#: mclient/src/plugins/stardict/get.py:334 skl_shared/src/logic.py:169
 #: skl_shared/src/logic.py:968 skl_shared/src/logic.py:987
 #: skl_shared/src/logic.py:2393 skl_shared/src/logic.py:2413
 #: skl_shared/src/logic.py:4547 skl_shared/src/logic.py:4565
@@ -1097,8 +1097,9 @@ msgstr "Блоки не из БД:"
 msgid "{} phrases"
 msgstr "{} фраз"
 
-#: mclient/src/plugins/dsl/get.py:24 skl_shared/src/shared.py:3341
-#: skl_shared/src/shared.py:3384 skl_shared/src/shared.py:3386
+#: mclient/src/plugins/dsl/get.py:24 mclient/src/plugins/stardict/get.py:23
+#: skl_shared/src/shared.py:3341 skl_shared/src/shared.py:3384
+#: skl_shared/src/shared.py:3386
 msgid "Please wait..."
 msgstr "Подождите..."
 
@@ -1160,7 +1161,7 @@ msgstr "{} вхождений в индексе"
 
 #: mclient/src/plugins/dsl/get.py:416
 #: mclient/src/plugins/multitrandem/get.py:1313
-#: mclient/src/plugins/stardict/get.py:509
+#: mclient/src/plugins/stardict/get.py:538
 msgid "{} offline dictionaries are available"
 msgstr "Доступно {} локальных словарей"
 
@@ -1168,7 +1169,7 @@ msgstr "Доступно {} локальных словарей"
 msgid "Load DSL dictionaries ({}/{})"
 msgstr "Загрузка словарей DSL ({}/{})"
 
-#: mclient/src/plugins/dsl/get.py:441 mclient/src/plugins/stardict/get.py:533
+#: mclient/src/plugins/dsl/get.py:441 mclient/src/plugins/stardict/get.py:562
 msgid "Dictionaries loaded: {}/{}"
 msgstr "Загружено словарей: {}/{}"
 
@@ -14867,8 +14868,8 @@ msgstr "Тип 2"
 msgid "Type 1"
 msgstr "Тип 1"
 
-#: mclient/src/plugins/stardict/get.py:114
-#: mclient/src/plugins/stardict/get.py:250
+#: mclient/src/plugins/stardict/get.py:143
+#: mclient/src/plugins/stardict/get.py:279
 msgid ""
 "Failed to load \"{}\"!\n"
 "\n"
@@ -14878,41 +14879,41 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: mclient/src/plugins/stardict/get.py:127
+#: mclient/src/plugins/stardict/get.py:156
 msgid "GZIP signature is expected, but found \"{}\"!"
 msgstr "Требуется сигнатура GZIP, но найдено \"{}\"!"
 
-#: mclient/src/plugins/stardict/get.py:131
+#: mclient/src/plugins/stardict/get.py:160
 msgid "Only DEFLATE archives are supported!"
 msgstr "Поддерживаются только архивы DEFLATE!"
 
-#: mclient/src/plugins/stardict/get.py:134
+#: mclient/src/plugins/stardict/get.py:163
 msgid "An extra dictzip field is expected!"
 msgstr "Требуется дополнительное поле dictzip!"
 
-#: mclient/src/plugins/stardict/get.py:138
+#: mclient/src/plugins/stardict/get.py:167
 msgid "An RA signature is expected!"
 msgstr "Требуется сигнатура RA!"
 
-#: mclient/src/plugins/stardict/get.py:240
+#: mclient/src/plugins/stardict/get.py:269
 msgid "File \"{}\" is incorrect!"
 msgstr "Файл \"{}\" некорректен!"
 
-#: mclient/src/plugins/stardict/get.py:449
+#: mclient/src/plugins/stardict/get.py:478
 msgid "\"{}\" has matches for \"{}\""
 msgstr "В \"{}\" найдены совпадения для \"{}\""
 
-#: mclient/src/plugins/stardict/get.py:453
+#: mclient/src/plugins/stardict/get.py:482
 msgid "No matches for \"{}\"!"
 msgstr "Нет совпадений для \"{}\"!"
 
-#: mclient/src/plugins/stardict/get.py:521
-msgid "Load local dictionaries"
-msgstr "Загрузка локальных словарей"
+#: mclient/src/plugins/stardict/get.py:554
+msgid "Load Stardict dictionaries ({}/{})"
+msgstr "Загрузка словарей Stardict ({}/{})"
 
-#: mclient/src/plugins/stardict/get.py:524
-msgid "Load offline dictionaries"
-msgstr "Загрузка локальных словарей"
+#: mclient/src/plugins/stardict/gui.py:19
+msgid "Load Stardict dictionaries"
+msgstr "Загрузка словарей Stardict"
 
 #: mclient/src/tests.py:219
 msgid "Number of blocks: {}"
@@ -15779,6 +15780,12 @@ msgstr ""
 #: skl_shared/src/tests.py:1127
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
+
+#~ msgid "Load local dictionaries"
+#~ msgstr "Загрузка локальных словарей"
+
+#~ msgid "Load offline dictionaries"
+#~ msgstr "Загрузка локальных словарей"
 
 #~ msgid "Load offline dictionaries (DSL)"
 #~ msgstr "Загрузка локальных словарей (DSL)"
