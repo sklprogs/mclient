@@ -20,6 +20,62 @@ class SpeechPrior:
         self.check()
         self.prioritize()
     
+    def get_abbr(self,priority):
+        f = '[MClient] speech.SpeechPrior.get_abbr'
+        if self.Success:
+            try:
+                index_ = self.prior.index(priority)
+                return self.abbr[index_]
+            except ValueError:
+                mes = _('Wrong input data: "{}"!').format(priority)
+                sh.objs.get_mes(f,mes,True).show_warning()
+        else:
+            sh.com.cancel(f)
+    
+    def get_name(self,priority):
+        f = '[MClient] speech.SpeechPrior.get_name'
+        if self.Success:
+            try:
+                index_ = self.prior.index(priority)
+                return self.full[index_]
+            except ValueError:
+                mes = _('Wrong input data: "{}"!').format(priority)
+                sh.objs.get_mes(f,mes,True).show_warning()
+        else:
+            sh.com.cancel(f)
+    
+    def get_sequence_abbr(self):
+        # Get all speech parts sorted by priority in ascending order
+        f = '[MClient] speech.SpeechPrior.get_sequence_abbr'
+        seq = []
+        if self.Success:
+            max_ = max(self.prior)
+            i = 1
+            while i <= max_:
+                item = self.get_abbr(i)
+                if item:
+                    seq.append(item)
+                i += 1
+        else:
+            sh.com.cancel(f)
+        return seq
+    
+    def get_sequence_full(self):
+        # Get all speech parts sorted by priority in ascending order
+        f = '[MClient] speech.SpeechPrior.get_sequence_full'
+        seq = []
+        if self.Success:
+            max_ = max(self.prior)
+            i = 1
+            while i <= max_:
+                item = self.get_name(i)
+                if item:
+                    seq.append(item)
+                i += 1
+        else:
+            sh.com.cancel(f)
+        return seq
+    
     def debug(self):
         f = '[MClient] speech.SpeechPrior.debug'
         if self.Success:
@@ -133,4 +189,5 @@ class SpeechPrior:
 
 if __name__ == '__main__':
     ispeech = SpeechPrior()
-    ispeech.debug()
+    print(ispeech.get_sequence_abbr())
+    #ispeech.debug()
