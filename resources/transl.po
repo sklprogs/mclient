@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-27 20:54+0300\n"
-"PO-Revision-Date: 2020-06-27 20:54+0300\n"
+"POT-Creation-Date: 2020-06-30 02:19+0300\n"
+"PO-Revision-Date: 2020-06-30 02:20+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -419,43 +419,50 @@ msgstr "Особый"
 
 #: mclient/src/gui.py:961 mclient/src/gui.py:1241 mclient/src/gui.py:1662
 #: mclient/src/gui.py:1663 mclient/src/gui.py:1664 mclient/src/mclient.py:2559
-#: mclient/src/plugins/multitrandem/get.py:2018
+#: mclient/src/plugins/multitrandem/get.py:2018 mclient/src/speech.py:7
+#: mclient/src/speech.py:119
 msgid "Noun"
 msgstr "Существительное"
 
 #: mclient/src/gui.py:961 mclient/src/gui.py:1242 mclient/src/gui.py:1676
 #: mclient/src/gui.py:1677 mclient/src/gui.py:1678 mclient/src/mclient.py:2561
-#: mclient/src/plugins/multitrandem/get.py:2022
+#: mclient/src/plugins/multitrandem/get.py:2022 mclient/src/speech.py:7
+#: mclient/src/speech.py:128
 msgid "Verb"
 msgstr "Глагол"
 
 #: mclient/src/gui.py:961 mclient/src/gui.py:1243 mclient/src/gui.py:1690
 #: mclient/src/gui.py:1691 mclient/src/gui.py:1692 mclient/src/mclient.py:2563
-#: mclient/src/plugins/multitrandem/get.py:2014
+#: mclient/src/plugins/multitrandem/get.py:2014 mclient/src/speech.py:7
+#: mclient/src/speech.py:113
 msgid "Adjective"
 msgstr "Прилагательное"
 
 #: mclient/src/gui.py:962 mclient/src/gui.py:1244 mclient/src/gui.py:1704
 #: mclient/src/gui.py:1705 mclient/src/gui.py:1706 mclient/src/mclient.py:2565
-#: mclient/src/plugins/multitrandem/get.py:1958
+#: mclient/src/plugins/multitrandem/get.py:1958 mclient/src/speech.py:7
+#: mclient/src/speech.py:112
 msgid "Abbreviation"
 msgstr "Сокращение"
 
 #: mclient/src/gui.py:962 mclient/src/gui.py:1245 mclient/src/gui.py:1718
 #: mclient/src/gui.py:1719 mclient/src/gui.py:1720 mclient/src/mclient.py:2567
-#: mclient/src/plugins/multitrandem/get.py:1962
+#: mclient/src/plugins/multitrandem/get.py:1962 mclient/src/speech.py:8
+#: mclient/src/speech.py:114
 msgid "Adverb"
 msgstr "Наречие"
 
 #: mclient/src/gui.py:962 mclient/src/gui.py:1246 mclient/src/gui.py:1732
 #: mclient/src/gui.py:1733 mclient/src/gui.py:1734 mclient/src/mclient.py:2569
-#: mclient/src/plugins/multitrandem/get.py:1991
+#: mclient/src/plugins/multitrandem/get.py:1991 mclient/src/speech.py:8
+#: mclient/src/speech.py:125
 msgid "Preposition"
 msgstr "Предлог"
 
 #: mclient/src/gui.py:963 mclient/src/gui.py:1247 mclient/src/gui.py:1746
 #: mclient/src/gui.py:1747 mclient/src/gui.py:1748 mclient/src/mclient.py:2571
-#: mclient/src/plugins/multitrandem/get.py:2010
+#: mclient/src/plugins/multitrandem/get.py:2010 mclient/src/speech.py:8
+#: mclient/src/speech.py:126
 msgid "Pronoun"
 msgstr "Местоимение"
 
@@ -1015,7 +1022,8 @@ msgstr "Задать максимальное число столбцов: {} (�
 #: mclient/src/plugins/multitrandem/utils.py:449
 #: mclient/src/plugins/multitrandem/utils.py:747
 #: mclient/src/plugins/multitrandem/utils.py:1159
-#: mclient/src/plugins/stardict/get.py:306 skl_shared/src/logic.py:169
+#: mclient/src/plugins/stardict/get.py:306 mclient/src/speech.py:80
+#: mclient/src/speech.py:86 skl_shared/src/logic.py:169
 #: skl_shared/src/logic.py:968 skl_shared/src/logic.py:987
 #: skl_shared/src/logic.py:2393 skl_shared/src/logic.py:2413
 #: skl_shared/src/logic.py:4547 skl_shared/src/logic.py:4565
@@ -1061,12 +1069,13 @@ msgstr "Необходимо задать хотя бы 1 столбец!"
 #: mclient/src/plugins/multitrandem/get.py:1528
 #: mclient/src/plugins/multitrandem/get.py:1859
 #: mclient/src/plugins/multitrandem/tags.py:168
-#: mclient/src/plugins/multitrandem/tests.py:190 skl_shared/src/logic.py:414
-#: skl_shared/src/logic.py:442 skl_shared/src/logic.py:2098
-#: skl_shared/src/logic.py:2568 skl_shared/src/logic.py:3832
-#: skl_shared/src/logic.py:4819 skl_shared/src/logic.py:4979
-#: skl_shared/src/logic.py:5013 skl_shared/src/logic.py:5098
-#: skl_shared/src/shared.py:2755 skl_shared/src/shared.py:2791
+#: mclient/src/plugins/multitrandem/tests.py:190 mclient/src/speech.py:53
+#: skl_shared/src/logic.py:414 skl_shared/src/logic.py:442
+#: skl_shared/src/logic.py:2098 skl_shared/src/logic.py:2568
+#: skl_shared/src/logic.py:3832 skl_shared/src/logic.py:4819
+#: skl_shared/src/logic.py:4979 skl_shared/src/logic.py:5013
+#: skl_shared/src/logic.py:5098 skl_shared/src/shared.py:2755
+#: skl_shared/src/shared.py:2791
 msgid "Wrong input data: \"{}\"!"
 msgstr "Недопустимые входные данные: \"{}\"!"
 
@@ -14527,103 +14536,104 @@ msgstr "{}/{} байтов обработано"
 msgid "Unprocessed fragment: \"{}\""
 msgstr "Необработанный фрагмент: \"{}\""
 
-#: mclient/src/plugins/multitrandem/get.py:1954
+#: mclient/src/plugins/multitrandem/get.py:1954 mclient/src/speech.py:58
+#: mclient/src/speech.py:123
 msgid "Phrase"
 msgstr "Фраза"
 
-#: mclient/src/plugins/multitrandem/get.py:1955
+#: mclient/src/plugins/multitrandem/get.py:1955 mclient/src/speech.py:105
 msgid "phrase"
 msgstr "фраза"
 
-#: mclient/src/plugins/multitrandem/get.py:1959
+#: mclient/src/plugins/multitrandem/get.py:1959 mclient/src/speech.py:94
 msgid "abbr."
 msgstr "сокр."
 
-#: mclient/src/plugins/multitrandem/get.py:1963
+#: mclient/src/plugins/multitrandem/get.py:1963 mclient/src/speech.py:96
 msgid "adv."
 msgstr "нареч."
 
-#: mclient/src/plugins/multitrandem/get.py:1967
+#: mclient/src/plugins/multitrandem/get.py:1967 mclient/src/speech.py:118
 msgid "Interjection"
 msgstr "Междометие"
 
-#: mclient/src/plugins/multitrandem/get.py:1968
+#: mclient/src/plugins/multitrandem/get.py:1968 mclient/src/speech.py:100
 msgid "interj."
 msgstr "межд."
 
-#: mclient/src/plugins/multitrandem/get.py:1972
+#: mclient/src/plugins/multitrandem/get.py:1972 mclient/src/speech.py:116
 msgid "Conjunction"
 msgstr "Союз"
 
-#: mclient/src/plugins/multitrandem/get.py:1973
+#: mclient/src/plugins/multitrandem/get.py:1973 mclient/src/speech.py:98
 msgid "conj."
 msgstr "союз"
 
-#: mclient/src/plugins/multitrandem/get.py:1977
+#: mclient/src/plugins/multitrandem/get.py:1977 mclient/src/speech.py:115
 msgid "Article"
 msgstr "Артикль"
 
-#: mclient/src/plugins/multitrandem/get.py:1978
+#: mclient/src/plugins/multitrandem/get.py:1978 mclient/src/speech.py:97
 msgid "art."
 msgstr "арт."
 
-#: mclient/src/plugins/multitrandem/get.py:1982
+#: mclient/src/plugins/multitrandem/get.py:1982 mclient/src/speech.py:120
 msgid "Numeral"
 msgstr "Числительное"
 
-#: mclient/src/plugins/multitrandem/get.py:1983
+#: mclient/src/plugins/multitrandem/get.py:1983 mclient/src/speech.py:102
 msgid "num."
 msgstr "числ."
 
-#: mclient/src/plugins/multitrandem/get.py:1987
+#: mclient/src/plugins/multitrandem/get.py:1987 mclient/src/speech.py:121
 msgid "Ordinal Numeral"
 msgstr "Порядковое числительное"
 
-#: mclient/src/plugins/multitrandem/get.py:1988
+#: mclient/src/plugins/multitrandem/get.py:1988 mclient/src/speech.py:103
 msgid "ord.num."
 msgstr "поряд.числ."
 
-#: mclient/src/plugins/multitrandem/get.py:1992
+#: mclient/src/plugins/multitrandem/get.py:1992 mclient/src/speech.py:107
 msgid "prepos."
 msgstr "предл."
 
-#: mclient/src/plugins/multitrandem/get.py:1996
+#: mclient/src/plugins/multitrandem/get.py:1996 mclient/src/speech.py:117
 msgid "Form"
 msgstr "Форма"
 
-#: mclient/src/plugins/multitrandem/get.py:1997
+#: mclient/src/plugins/multitrandem/get.py:1997 mclient/src/speech.py:99
 msgid "form"
 msgstr "форма"
 
-#: mclient/src/plugins/multitrandem/get.py:2001
+#: mclient/src/plugins/multitrandem/get.py:2001 mclient/src/speech.py:122
 msgid "Particle"
 msgstr "Частица"
 
-#: mclient/src/plugins/multitrandem/get.py:2002
+#: mclient/src/plugins/multitrandem/get.py:2002 mclient/src/speech.py:104
 msgid "part."
 msgstr "част."
 
-#: mclient/src/plugins/multitrandem/get.py:2006
+#: mclient/src/plugins/multitrandem/get.py:2006 mclient/src/speech.py:124
 msgid "Predicative"
 msgstr "Предикатив"
 
-#: mclient/src/plugins/multitrandem/get.py:2007
+#: mclient/src/plugins/multitrandem/get.py:2007 mclient/src/speech.py:106
 msgid "predic."
 msgstr "предик."
 
-#: mclient/src/plugins/multitrandem/get.py:2011
+#: mclient/src/plugins/multitrandem/get.py:2011 mclient/src/speech.py:108
 msgid "pron"
 msgstr "мест."
 
-#: mclient/src/plugins/multitrandem/get.py:2015
+#: mclient/src/plugins/multitrandem/get.py:2015 mclient/src/speech.py:95
 msgid "adj"
 msgstr "прил."
 
-#: mclient/src/plugins/multitrandem/get.py:2019
+#: mclient/src/plugins/multitrandem/get.py:2019 mclient/src/speech.py:101
 msgid "n"
 msgstr "сущ."
 
-#: mclient/src/plugins/multitrandem/get.py:2023
+#: mclient/src/plugins/multitrandem/get.py:2023 mclient/src/speech.py:110
 msgid "v"
 msgstr "гл."
 
@@ -14900,6 +14910,26 @@ msgstr "Нет совпадений для \"{}\"!"
 #: mclient/src/plugins/stardict/get.py:525
 msgid "Load Stardict dictionaries ({}/{})"
 msgstr "Загрузка словарей Stardict ({}/{})"
+
+#: mclient/src/speech.py:36
+msgid "ABBREVIATION"
+msgstr "АББРЕВИАТУРА"
+
+#: mclient/src/speech.py:36
+msgid "NAME"
+msgstr "НАЗВАНИЕ"
+
+#: mclient/src/speech.py:36
+msgid "PRIORITY"
+msgstr "ПРИОРИТЕТ"
+
+#: mclient/src/speech.py:109
+msgid "suf"
+msgstr "суф."
+
+#: mclient/src/speech.py:127
+msgid "Suffix"
+msgstr "Суффикс"
 
 #: mclient/src/tests.py:219
 msgid "Number of blocks: {}"
