@@ -174,7 +174,7 @@ class Cells:
     '''
     def __init__ (self,data,cols,collimit=10
                  ,phdic=None,Reverse=False
-                 ,ExpandSp=False,Debug=False
+                 ,spdic={},Debug=False
                  ,maxrow=30,maxrows=1000
                  ):
         f = '[MClient] cells.Cells.__init__'
@@ -184,7 +184,7 @@ class Cells:
         self.collimit = collimit
         self.phdic    = phdic
         self.Reverse  = Reverse
-        self.ExpandSp = ExpandSp
+        self.spdic    = spdic
         self.Debug    = Debug
         self.maxrow   = maxrow
         self.maxrows  = maxrows
@@ -452,27 +452,21 @@ class Cells:
                                                 )
                                  )
         
+    #cur
     # Takes ~0,0077s on 'set'
     def expand_speech(self):
-        if self.ExpandSp:
-            for i in range(len(self.blocks)):
-                if self.blocks[i].type_ == 'speech':
-                    lst = self.blocks[i].text.split(' ')
-                    for j in range(len(lst)):
-                        if lst[j] in abbr:
-                            ind    = abbr.index(lst[j])
-                            lst[j] = expanded[ind]
-                    self.blocks[i].text = ' '.join(lst)
-        # In case of switching back from the 'Cut to the chase' mode
+        f = '[MClient] cells.Cells.expand_speech'
+        if self.spdic:
+            for block in self.blocks:
+                if block.type_ == 'speech':
+                    lst = block.text.split(' ')
+                    for i in range(len(lst)):
+                        result = self.spdic.get(lst[i])
+                        if result:
+                            lst[i] = result
+                    block.text = ' '.join(lst)
         else:
-            for i in range(len(self.blocks)):
-                if self.blocks[i].type_ == 'speech':
-                    lst = self.blocks[i].text.split(' ')
-                    for j in range(len(lst)):
-                        if lst[j] in expanded:
-                            ind    = expanded.index(lst[j])
-                            lst[j] = abbr[ind]
-                    self.blocks[i].text = ' '.join(lst)
+            sh.com.rep_lazy(f)
     
     def restore_fixed(self):
         for block in self.blocks:

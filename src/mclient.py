@@ -782,6 +782,7 @@ class WebFrame:
             sh.com.rep_empty(f)
     
     def prioritize_speech(self):
+        #cur
         # This function takes ~0,07s on 'do'
         query_root = 'update BLOCKS set SPEECHPR = %d where SPEECHA = "%s" or SPEECHA = "%s"'
         query = ['begin']
@@ -790,7 +791,7 @@ class WebFrame:
                      % (lg.objs.request.pr_n,'Существительное','сущ.')
                      )
         query.append (query_root
-                     % (lg.objs.request.pr_v,'Глагол','гл.')
+                     % (lg.objs.request.pr_v,'Глагол','глаг.')
                      )
         query.append (query_root
                      % (lg.objs.request.pr_adj,'Прилагательное','прил.')
@@ -1599,16 +1600,16 @@ class WebFrame:
 
         if lg.objs.request.cols \
         and lg.objs.request.cols[0] == 'speech':
-            ExpandSp = True
+            spdic = lg.objs.get_speech_prior().get_pairs_abbr2full()
         else:
-            ExpandSp = False
+            spdic = {}
         
         cells = cl.Cells (data     = data
                          ,cols     = lg.objs.request.cols
                          ,collimit = lg.objs.request.collimit
                          ,phdic    = self.phdic
+                         ,spdic    = spdic
                          ,Reverse  = lg.objs.request.Reverse
-                         ,ExpandSp = ExpandSp
                          ,Debug    = lg.objs.plugins.Debug
                          )
         cells.run()

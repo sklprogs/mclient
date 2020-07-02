@@ -11,6 +11,10 @@ from skl_shared.localize import _
 import manager
 
 
+SPORDER = (_('Noun'),_('Verb'),_('Adjective'),_('Abbreviation')
+          ,_('Adverb'),_('Preposition'),_('Pronoun')
+          )
+
 sample_block = '''Австралийский сленг
 Архаизм
 Бранное выражение
@@ -39,14 +43,214 @@ sample_prior = '''Общая лексика
 '''
 
 
+class SpeechPrior:
+    
+    def __init__(self,order=SPORDER):
+        self.reset(order)
+    
+    def reset(self,order=SPORDER):
+        self.set_values()
+        self.order = order
+        self.check()
+        self.prioritize()
+    
+    def get_pairs_abbr2full(self):
+        f = '[MClient] logic.SpeechPrior.get_pairs_abbr2full'
+        if self.Success:
+            if not self.abbr2full:
+                for i in range(len(self.abbr)):
+                    self.abbr2full[self.abbr[i]] = self.full[i]
+        else:
+            sh.com.cancel(f)
+        return self.abbr2full
+    
+    def get_pairs_full2abbr(self):
+        f = '[MClient] logic.SpeechPrior.get_pairs_full2abbr'
+        if self.Success:
+            if not self.full2abbr:
+                for i in range(len(self.full)):
+                    self.full2abbr[self.full[i]] = self.abbr[i]
+        else:
+            sh.com.cancel(f)
+        return self.full2abbr
+    
+    def get_sequence_abbr(self):
+        f = '[MClient] logic.SpeechPrior.get_sequence_abbr'
+        seq = {}
+        if self.Success:
+            for i in range(len(self.prior)):
+                seq[self.prior[i]] = self.abbr[i]
+        else:
+            sh.com.cancel(f)
+        return seq
+    
+    def get_sequence_full(self):
+        f = '[MClient] logic.SpeechPrior.get_sequence_full'
+        seq = {}
+        if self.Success:
+            for i in range(len(self.prior)):
+                seq[self.prior[i]] = self.full[i]
+        else:
+            sh.com.cancel(f)
+        return seq
+    
+    def debug(self):
+        f = '[MClient] logic.SpeechPrior.debug'
+        if self.Success:
+            seq_abbr = self.get_sequence_abbr()
+            seq_full = self.get_sequence_full()
+            if seq_abbr and seq_full:
+                full = []
+                abbr = []
+                prior = []
+                for priority in sorted(seq_abbr.keys()):
+                    prior.append(priority)
+                    abbr.append(seq_abbr.get(priority))
+                    full.append(seq_full.get(priority))
+                headers = (_('ABBREVIATION'),_('NAME'),_('PRIORITY'))
+                iterable = [abbr,full,prior]
+                mes = sh.FastTable(iterable,headers).run()
+                sh.com.run_fast_debug(f,mes)
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def _debug_full2abbr(self):
+        f = '[MClient] logic.SpeechPrior._debug_full2abbr'
+        full2abbr = self.get_pairs_full2abbr()
+        if full2abbr:
+            full = sorted(full2abbr.keys())
+            abbr = [full2abbr.get(item) for item in full]
+            headers = (_('NAME'),_('ABBREVIATION'))
+            iterable = [full,abbr]
+            mes = sh.FastTable(iterable,headers).run()
+            sh.com.run_fast_debug(f,mes)
+        else:
+            sh.com.rep_empty(f)
+    
+    def _debug_abbr2full(self):
+        f = '[MClient] logic.SpeechPrior._debug_abbr2full'
+        abbr2full = self.get_pairs_abbr2full()
+        if abbr2full:
+            abbr = sorted(abbr2full.keys())
+            full = [abbr2full.get(item) for item in abbr]
+            headers = (_('ABBREVIATION'),_('NAME'))
+            iterable = [abbr,full]
+            mes = sh.FastTable(iterable,headers).run()
+            sh.com.run_fast_debug(f,mes)
+        else:
+            sh.com.rep_empty(f)
+    
+    def debug_pairs(self):
+        f = '[MClient] logic.SpeechPrior.debug_pairs'
+        if self.Success:
+            self._debug_full2abbr()
+            self._debug_abbr2full()
+        else:
+            sh.com.cancel(f)
+    
+    def prioritize(self):
+        f = '[MClient] logic.SpeechPrior.prioritize'
+        if self.Success:
+            lst = [i + 1 for i in range(len(self.abbr))]
+            for i in range(len(self.order)):
+                try:
+                    ind = self.full.index(self.order[i])
+                    self.prior[ind] = lst[i]
+                except ValueError:
+                    mes = _('Wrong input data: "{}"!')
+                    mes = mes.format(self.order[i])
+                    sh.objs.get_mes(f,mes,True).show_warning()
+            lst = lst[len(self.order):]
+            try:
+                ind = self.full.index(_('Phrase'))
+                self.prior[ind] = 1000
+                lst = lst[:-1]
+            except ValueError:
+                pass
+            j = 0
+            for i in range(len(self.prior)):
+                if self.prior[i] == -1:
+                    self.prior[i] = lst[j]
+                    j += 1
+        else:
+            sh.com.cancel(f)
+    
+    def check(self):
+        f = '[MClient] logic.SpeechPrior.check'
+        if len(self.abbr):
+            if len(self.abbr) == len(self.full):
+                if len(self.order) > len(self.abbr):
+                    self.Success = False
+                    sub = '{} <= {}'.format (len(self.order)
+                                            ,len(self.abbr)
+                                            )
+                    mes = _('The condition "{}" is not observed!')
+                    mes = mes.format(sub)
+                    sh.objs.get_mes(f,mes).show_error()
+            else:
+                self.Success = False
+                sub = '{} == {}'.format(len(self.abbr),len(self.full))
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.get_mes(f,mes).show_error()
+        else:
+            self.Success = False
+            sh.com.rep_empty(f)
+    
+    def set_values(self):
+        self.abbr = [_('abbr.')
+                    ,_('adj')
+                    ,_('adv.')
+                    ,_('art.')
+                    ,_('conj.')
+                    ,_('form')
+                    ,_('interj.')
+                    ,_('n')
+                    ,_('num.')
+                    ,_('ord.num.')
+                    ,_('part.')
+                    ,_('phrase')
+                    ,_('predic.')
+                    ,_('prepos.')
+                    ,_('pron')
+                    ,_('suf')
+                    ,_('v')
+                    ]
+        self.full = [_('Abbreviation')
+                    ,_('Adjective')
+                    ,_('Adverb')
+                    ,_('Article')
+                    ,_('Conjunction')
+                    ,_('Form')
+                    ,_('Interjection')
+                    ,_('Noun')
+                    ,_('Numeral')
+                    ,_('Ordinal Numeral')
+                    ,_('Particle')
+                    ,_('Phrase')
+                    ,_('Predicative')
+                    ,_('Preposition')
+                    ,_('Pronoun')
+                    ,_('Suffix')
+                    ,_('Verb')
+                    ]
+        self.prior = [-1 for i in range(len(self.abbr))]
+        self.Success = True
+        self.abbr2full = {}
+        self.full2abbr = {}
+
+
+
 class PhraseTerma:
     
     def __init__(self,dbc,artid):
         f = '[MClient] logic.PhraseTerma.__init__'
-        self.dbc   = dbc
+        self.no1 = -1
+        self.no2 = -1
+        self.dbc = dbc
         self.artid = artid
-        self.no1   = -1
-        self.no2   = -1
         if self.dbc and self.artid:
             self.Success = True
         else:
@@ -749,7 +953,12 @@ class Objects:
     
     def __init__(self):
         self.online = self.request = self.order = self.default \
-                    = self.plugins = None
+                    = self.plugins = self.speech_prior = None
+    
+    def get_speech_prior(self,order=[]):
+        if self.speech_prior is None:
+            self.speech_prior = SpeechPrior(order)
+        return self.speech_prior
     
     def get_plugins (self,Debug=False
                     ,maxrow=20,maxrows=1000
