@@ -447,8 +447,7 @@ class Cells:
                                                 )
                                  )
         
-    #cur
-    # Takes ~0,0077s on 'set'
+    # Takes ~0.002s on 'set'
     def expand_speech(self):
         f = '[MClient] cells.Cells.expand_speech'
         if self.spdic:
