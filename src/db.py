@@ -294,8 +294,7 @@ class DB:
             elif item == 'wform':
                 query.append('WFORMA')
             elif item == 'speech':
-                query.append('SPEECHPR desc')
-                query.append('SPEECHA')
+                query.append('SPEECHPR')
             elif item == 'transc':
                 # There is no sense to sort by transcription
                 pass

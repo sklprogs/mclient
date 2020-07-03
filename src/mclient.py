@@ -781,37 +781,6 @@ class WebFrame:
         else:
             sh.com.rep_empty(f)
     
-    def prioritize_speech(self):
-        #cur
-        # This function takes ~0,07s on 'do'
-        query_root = 'update BLOCKS set SPEECHPR = %d where SPEECHA = "%s" or SPEECHA = "%s"'
-        query = ['begin']
-        # Parts of speech here must be non-localized
-        query.append (query_root
-                     % (lg.objs.request.pr_n,'Существительное','сущ.')
-                     )
-        query.append (query_root
-                     % (lg.objs.request.pr_v,'Глагол','глаг.')
-                     )
-        query.append (query_root
-                     % (lg.objs.request.pr_adj,'Прилагательное','прил.')
-                     )
-        query.append (query_root
-                     % (lg.objs.request.pr_abbr,'Сокращение','сокр.')
-                     )
-        query.append (query_root
-                     % (lg.objs.request.pr_adv,'Наречие','нареч.')
-                     )
-        query.append (query_root
-                     % (lg.objs.request.pr_prep,'Предлог','предл.')
-                     )
-        query.append (query_root
-                     % (lg.objs.request.pr_pron,'Местоимение','мест.')
-                     )
-        query.append('commit;')
-        query = ';'.join(query)
-        objs.get_blocksdb().update(query=query)
-    
     # Insert the previous search string
     def insert_repeat_sign2(self,event=None):
         f = '[MClient] mclient.WebFrame.insert_repeat_sign2'
@@ -1506,6 +1475,9 @@ class WebFrame:
         timer.start()
         # Do not allow selection positions from previous articles
         self.pos = -1
+        #TODO: use another method (this method must change values)
+        order = objs.get_settings().prioritize_speech()
+        lg.objs.get_speech_prior().reset(order)
         artid = objs.get_blocksdb().is_present (source = lg.objs.request.source
                                                ,title  = lg.objs.request.search
                                                ,url    = lg.objs.request.url
@@ -1532,6 +1504,13 @@ class WebFrame:
             blocks = lg.objs.get_plugins().request (search = lg.objs.request.search
                                                    ,url    = lg.objs.request.url
                                                    )
+            #TODO: set a setting for "Cut to the chase" mode
+            if lg.objs.request.cols \
+            and lg.objs.request.cols[0] == 'speech':
+                ExpandSpeech = True
+            else:
+                ExpandSpeech = False
+            blocks = lg.com.prioritize_speech(blocks,ExpandSpeech)
             data = lg.com.dump_elems (blocks = blocks
                                      ,artid  = objs.blocksdb.artid
                                      )
@@ -1548,12 +1527,6 @@ class WebFrame:
             lg.PhraseTerma (dbc   = objs.blocksdb.dbc
                            ,artid = objs.blocksdb.artid
                            ).run()
-            
-            ''' The order of parts of speech must be changed only for
-                new articles and after changing settings (Settings.apply)
-            '''
-            #TODO (?): insert SPEECHPR in Elems instead of updating
-            self.prioritize_speech()
             
         self.phdic = objs.blocksdb.get_phdic_primary()
         if self.phdic is None:
@@ -1598,6 +1571,7 @@ class WebFrame:
         
         data = objs.blocksdb.assign_cells()
 
+        #TODO: set a setting for "Cut to the chase" mode
         if lg.objs.request.cols \
         and lg.objs.request.cols[0] == 'speech':
             spdic = lg.objs.get_speech_prior().get_pairs_abbr2full()
@@ -2527,7 +2501,8 @@ class Settings:
             lg.objs.request.Reverse    = self.gui.cbx_no5.get()
             if lg.objs.request.SortRows:
                 self.prioritize_speech()
-                objs.get_webframe().prioritize_speech()
+                #cur
+                #objs.get_webframe().prioritize_speech()
             else:
                 objs.get_blocksdb().unprioritize_speech()
             objs.get_webframe().set_columns()
@@ -2550,30 +2525,12 @@ class Settings:
 
     def prioritize_speech(self):
         f = '[MClient] mclient.Settings.prioritize_speech'
-        lg.objs.get_request()
-        choices = (self.gui.opt_sp1.choice,self.gui.opt_sp2.choice
-                  ,self.gui.opt_sp3.choice,self.gui.opt_sp4.choice
-                  ,self.gui.opt_sp5.choice,self.gui.opt_sp6.choice
-                  ,self.gui.opt_sp7.choice
-                  )
-        for i in range(len(choices)):
-            if choices[i] == _('Noun'):
-                lg.objs.request.pr_n = len(choices) - i
-            elif choices[i] == _('Verb'):
-                lg.objs.request.pr_v = len(choices) - i
-            elif choices[i] == _('Adjective'):
-                lg.objs.request.pr_adj = len(choices) - i
-            elif choices[i] == _('Abbreviation'):
-                lg.objs.request.pr_abbr = len(choices) - i
-            elif choices[i] == _('Adverb'):
-                lg.objs.request.pr_adv = len(choices) - i
-            elif choices[i] == _('Preposition'):
-                lg.objs.request.pr_prep = len(choices) - i
-            elif choices[i] == _('Pronoun'):
-                lg.objs.request.pr_pron = len(choices) - i
-            else:
-                mes = _('Wrong input data: "{}"!').format(choices[i])
-                sh.objs.get_mes(f,mes).show_error()
+        #TODO: save settings in memory
+        return (self.gui.opt_sp1.choice,self.gui.opt_sp2.choice
+               ,self.gui.opt_sp3.choice,self.gui.opt_sp4.choice
+               ,self.gui.opt_sp5.choice,self.gui.opt_sp6.choice
+               ,self.gui.opt_sp7.choice
+               )
 
 
 

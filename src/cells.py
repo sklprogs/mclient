@@ -5,12 +5,6 @@ import io
 import skl_shared.shared as sh
 from skl_shared.localize import _
 
-#TODO: share
-abbr     = ['гл.','сущ.','прил.','нареч.','сокр.','предл.','мест.']
-expanded = ['Глагол','Существительное','Прилагательное','Наречие'
-           ,'Сокращение','Предлог','Местоимение'
-           ]
-
 
 # Extended from tags.Block
 class Block:
@@ -189,6 +183,7 @@ class Cells:
         self.maxrow   = maxrow
         self.maxrows  = maxrows
         self.blocks   = []
+        self.unsupsp  = []
         if self.data:
             self.Success = True
         else:
@@ -458,13 +453,15 @@ class Cells:
         f = '[MClient] cells.Cells.expand_speech'
         if self.spdic:
             for block in self.blocks:
-                if block.type_ == 'speech':
-                    lst = block.text.split(' ')
-                    for i in range(len(lst)):
-                        result = self.spdic.get(lst[i])
-                        if result:
-                            lst[i] = result
-                    block.text = ' '.join(lst)
+                if block.type_ == 'speech' and block.text:
+                    result = self.spdic.get(block.text)
+                    if result:
+                        block.text = result
+                    elif not block.text in self.unsupsp:
+                        self.unsupsp.append(block.text)
+                        mes = _('An unsupported part of speech: "{}"!')
+                        mes = mes.format(block.text)
+                        sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.rep_lazy(f)
     

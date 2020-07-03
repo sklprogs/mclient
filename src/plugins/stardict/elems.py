@@ -37,6 +37,7 @@ class Block:
             'phrase' or 'transc'
         '''
         self.select   = -1
+        self.sprior   = -1
         self.priority = 0
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'correction', 'transc', 'invalid'

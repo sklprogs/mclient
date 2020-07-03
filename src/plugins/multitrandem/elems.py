@@ -25,7 +25,9 @@ class Block:
             'phrase' or 'transc'
         '''
         self.select   = -1
+        self.sprior   = -1
         self.priority = 0
+        self.lang     = 0
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'correction', 'transc', 'user', 'invalid'
         '''
@@ -38,7 +40,6 @@ class Block:
         self.speecha = ''
         self.transca = ''
         self.terma   = ''
-        self.lang    = 0
 
 
 

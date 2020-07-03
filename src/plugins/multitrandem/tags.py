@@ -215,7 +215,10 @@ class Block:
             if the cell has a non-blocked block of types 'term',
             'phrase' or 'transc'.
         '''
-        self.select = -1
+        self.select   = -1
+        self.sprior   = -1
+        self.priority = 0
+        self.lang     = 0
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'transc', 'invalid'
         '''
@@ -229,8 +232,6 @@ class Block:
         self.speecha  = ''
         self.transca  = ''
         self.terma    = ''
-        self.priority = 0
-        self.lang     = 0
 
 
 if __name__ == '__main__':

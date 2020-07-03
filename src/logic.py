@@ -79,7 +79,7 @@ class SpeechPrior:
         seq = {}
         if self.Success:
             for i in range(len(self.prior)):
-                seq[self.prior[i]] = self.abbr[i]
+                seq[self.abbr[i]] = self.prior[i]
         else:
             sh.com.cancel(f)
         return seq
@@ -89,7 +89,7 @@ class SpeechPrior:
         seq = {}
         if self.Success:
             for i in range(len(self.prior)):
-                seq[self.prior[i]] = self.full[i]
+                seq[self.full[i]] = self.prior[i]
         else:
             sh.com.cancel(f)
         return seq
@@ -100,13 +100,25 @@ class SpeechPrior:
             seq_abbr = self.get_sequence_abbr()
             seq_full = self.get_sequence_full()
             if seq_abbr and seq_full:
+                prior = [seq_abbr.get(key) for key in seq_abbr.keys()]
+                prior.sort()
                 full = []
                 abbr = []
-                prior = []
-                for priority in sorted(seq_abbr.keys()):
-                    prior.append(priority)
-                    abbr.append(seq_abbr.get(priority))
-                    full.append(seq_full.get(priority))
+                for priority in prior:
+                    abbr_key = None
+                    for key in seq_abbr.keys():
+                        if seq_abbr[key] == priority:
+                            abbr_key = key
+                            break
+                    if abbr_key:
+                        abbr.append(abbr_key)
+                    full_key = None
+                    for key in seq_full.keys():
+                        if seq_full[key] == priority:
+                            full_key = key
+                            break
+                    if full_key:
+                        full.append(full_key)
                 headers = (_('ABBREVIATION'),_('NAME'),_('PRIORITY'))
                 iterable = [abbr,full,prior]
                 mes = sh.FastTable(iterable,headers).run()
@@ -884,14 +896,6 @@ class CurRequest:
             of objs.webframe().menu_columns
         '''
         self.collimit = 8
-        # Default priorities of parts of speech
-        self.pr_n    = 7
-        self.pr_v    = 6
-        self.pr_adj  = 5
-        self.pr_abbr = 4
-        self.pr_adv  = 3
-        self.pr_prep = 2
-        self.pr_pron = 1
         self.source  = objs.get_plugins().source
         self.cols    = ('dic','wform','transc','speech')
         ''' Toggling blacklisting should not depend on a number of
@@ -1376,6 +1380,31 @@ class Commands:
     
     def __init__(self):
         self.use_unverified()
+        
+    def prioritize_speech(self,blocks,ExpandSpeech=False):
+        f = '[MClient] logic.Commands.prioritize_speech'
+        if blocks:
+            speech = [block.text for block in blocks \
+                      if block.type_ == 'speech'
+                     ]
+            speech = sorted(set(speech))
+            mes = _('Parts of speech used in the article: {}')
+            mes = mes.format(', '.join(speech))
+            sh.objs.get_mes(f,mes,True).show_debug()
+            if ExpandSpeech:
+                spdic = objs.get_speech_prior().get_sequence_full()
+            else:
+                spdic = objs.get_speech_prior().get_sequence_abbr()
+            if spdic:
+                for block in blocks:
+                    sprior = spdic.get(block.speecha)
+                    if sprior:
+                        block.sprior = sprior
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.rep_empty(f)
+        return blocks
     
     def dump_elems(self,blocks,artid):
         f = '[MClient] logic.Commands.dump_elems'
@@ -1412,7 +1441,7 @@ class Commands:
                   ,-1                 # (26) BBOY2
                   ,block.text.lower() # (27) TEXTLOW
                   ,0                  # (28) IGNORE
-                  ,0                  # (29) SPEECHPR
+                  ,block.sprior       # (29) SPEECHPR
                   ,block.dicaf        # (30) DICA (full title)
                   )
                             )

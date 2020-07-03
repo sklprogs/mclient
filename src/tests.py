@@ -39,7 +39,7 @@ class Block:
         self.bboy2    = -1   # (26) BBOY2
         self.textlow  = ''   # (27) TEXTLOW
         self.ignore   = 0    # (28) IGNORE
-        self.speech   = 0    # (29) SPEECHPR
+        self.sprior   = 0    # (29) SPEECHPR
         self.dicaf    = ''   # (30) DICA (full title)
     
     def dump(self):
@@ -566,6 +566,11 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sh.com.start()
     #Plugin().run_multitrancom()
-    Plugin().run_dsl()
+    #Plugin().run_dsl()
     #Tags().run_dsl()
+    import logic as lg
+    order = (_('Suffix'),_('Noun'),_('Verb'),_('Adjective'))
+    lg.objs.get_speech_prior().reset(order)
+    lg.objs.speech_prior.debug()
+    lg.objs.speech_prior.debug_pairs()
     sh.com.end()
