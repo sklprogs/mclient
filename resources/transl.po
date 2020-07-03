@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-03 23:40+0300\n"
-"PO-Revision-Date: 2020-07-03 23:41+0300\n"
+"PO-Revision-Date: 2020-07-04 01:09+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -670,7 +670,7 @@ msgstr "суф."
 
 #: mclient/src/logic.py:231 mclient/src/plugins/multitrandem/get.py:2023
 msgid "v"
-msgstr "гл."
+msgstr "глаг."
 
 #: mclient/src/logic.py:236 mclient/src/plugins/multitrandem/get.py:1977
 msgid "Article"
