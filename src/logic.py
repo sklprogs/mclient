@@ -1385,7 +1385,7 @@ class Commands:
         f = '[MClient] logic.Commands.prioritize_speech'
         if blocks:
             speech = [block.text for block in blocks \
-                      if block.type_ == 'speech'
+                      if block.type_ == 'speech' and block.text
                      ]
             speech = sorted(set(speech))
             mes = _('Parts of speech used in the article: {}')
