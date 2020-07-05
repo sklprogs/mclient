@@ -722,28 +722,29 @@ class ConfigMclient(sh.Config):
 
     def __init__(self):
         super().__init__()
-        self.sections         = [sh.lg.SectionBooleans
-                                ,sh.lg.SectionIntegers
-                                ,sh.lg.SectionVariables
-                                ]
-        self.sections_abbr    = [sh.lg.SectionBooleans_abbr
-                                ,sh.lg.SectionIntegers_abbr
-                                ,sh.lg.SectionVariables_abbr
-                                ]
-        self.sections_func    = [sh.lg.config_parser.getboolean
-                                ,sh.lg.config_parser.getint
-                                ,sh.lg.config_parser.get
-                                ]
-        self.message          = _('The following sections and/or keys are missing:') + '\n'
-        self.total_keys       = 0
-        self.changed_keys     = 0
-        self.missing_keys     = 0
+        self.sections = [sh.lg.SectionBooleans
+                        ,sh.lg.SectionIntegers
+                        ,sh.lg.SectionVariables
+                        ]
+        self.sections_abbr = [sh.lg.SectionBooleans_abbr
+                             ,sh.lg.SectionIntegers_abbr
+                             ,sh.lg.SectionVariables_abbr
+                             ]
+        self.sections_func = [sh.lg.config_parser.getboolean
+                             ,sh.lg.config_parser.getint
+                             ,sh.lg.config_parser.get
+                             ]
+        self.message = _('The following sections and/or keys are missing:')
+        self.message += '\n'
+        self.total_keys = 0
+        self.changed_keys = 0
+        self.missing_keys = 0
         self.missing_sections = 0
         # Create these keys before reading the config
         self.path = objs.get_default().ihome.add_config('mclient.cfg')
         self.reset()
-        iread        = sh.ReadTextFile(self.path)
-        self.text    = iread.get()
+        iread = sh.ReadTextFile(self.path)
+        self.text = iread.get()
         self.Success = iread.Success
         self.load_default()
         if os.path.exists(self.path):
