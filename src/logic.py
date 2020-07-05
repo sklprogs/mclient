@@ -1403,7 +1403,7 @@ class Commands:
                   ,block.text         # (08) TEXT
                   ,block.url          # (09) URL
                   ,block.block        # (10) BLOCK
-                  ,block.priority     # (11) PRIORITY
+                  ,block.dprior       # (11) DICPR
                   ,block.select       # (12) SELECTABLE
                   ,block.same         # (13) SAMECELL
                   ,block.cellno       # (14) CELLNO

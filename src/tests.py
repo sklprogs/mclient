@@ -10,37 +10,37 @@ DEBUG = True
 class Block:
     
     def __init__(self):
-        self.id_      = None # (00) Autoincrement
-        self.artid    = 0    # (01) ARTICLEID
-        self.dica     = ''   # (02) DICA (abbreviation)
-        self.wforma   = ''   # (03) WFORMA
-        self.speecha  = ''   # (04) SPEECHA
-        self.transca  = ''   # (05) TRANSCA
-        self.terma    = ''   # (06) TERMA
-        self.type_    = ''   # (07) TYPE
-        self.text     = ''   # (08) TEXT
-        self.url      = ''   # (09) URL
-        self.block    = 0    # (10) BLOCK
-        self.priority = 0    # (11) PRIORITY
-        self.select   = 0    # (12) SELECTABLE
-        self.same     = 0    # (13) SAMECELL
-        self.cellno   = 0    # (14) CELLNO
-        self.rowno    = -1   # (15) ROWNO
-        self.colno    = -1   # (16) COLNO
-        self.pos1     = -1   # (17) POS1
-        self.pos2     = -1   # (18) POS2
-        self.node1    = ''   # (19) NODE1
-        self.node2    = ''   # (20) NODE2
-        self.offpos1  = -1   # (21) OFFPOS1
-        self.offpos2  = -1   # (22) OFFPOS2
-        self.bbox1    = -1   # (23) BBOX1
-        self.bbox2    = -1   # (24) BBOX2
-        self.bboy1    = -1   # (25) BBOY1
-        self.bboy2    = -1   # (26) BBOY2
-        self.textlow  = ''   # (27) TEXTLOW
-        self.ignore   = 0    # (28) IGNORE
-        self.sprior   = 0    # (29) SPEECHPR
-        self.dicaf    = ''   # (30) DICA (full title)
+        self.id_     = None # (00) Autoincrement
+        self.artid   = 0    # (01) ARTICLEID
+        self.dica    = ''   # (02) DICA (abbreviation)
+        self.wforma  = ''   # (03) WFORMA
+        self.speecha = ''   # (04) SPEECHA
+        self.transca = ''   # (05) TRANSCA
+        self.terma   = ''   # (06) TERMA
+        self.type_   = ''   # (07) TYPE
+        self.text    = ''   # (08) TEXT
+        self.url     = ''   # (09) URL
+        self.block   = 0    # (10) BLOCK
+        self.dprior  = 0    # (11) DICPR
+        self.select  = 0    # (12) SELECTABLE
+        self.same    = 0    # (13) SAMECELL
+        self.cellno  = 0    # (14) CELLNO
+        self.rowno   = -1   # (15) ROWNO
+        self.colno   = -1   # (16) COLNO
+        self.pos1    = -1   # (17) POS1
+        self.pos2    = -1   # (18) POS2
+        self.node1   = ''   # (19) NODE1
+        self.node2   = ''   # (20) NODE2
+        self.offpos1 = -1   # (21) OFFPOS1
+        self.offpos2 = -1   # (22) OFFPOS2
+        self.bbox1   = -1   # (23) BBOX1
+        self.bbox2   = -1   # (24) BBOX2
+        self.bboy1   = -1   # (25) BBOY1
+        self.bboy2   = -1   # (26) BBOY2
+        self.textlow = ''   # (27) TEXTLOW
+        self.ignore  = 0    # (28) IGNORE
+        self.sprior  = 0    # (29) SPEECHPR
+        self.dicaf   = ''   # (30) DICA (full title)
     
     def dump(self):
         return (self.id_
@@ -54,7 +54,7 @@ class Block:
                ,self.text
                ,self.url
                ,self.block
-               ,self.priority
+               ,self.dprior
                ,self.select
                ,self.same
                ,self.cellno

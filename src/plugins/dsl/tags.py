@@ -67,7 +67,7 @@ class Block:
         self.speecha  = ''
         self.transca  = ''
         self.terma    = ''
-        self.priority = 0
+        self.dprior   = 0
 
 
 

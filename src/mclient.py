@@ -577,7 +577,7 @@ class WebFrame:
                 'db.DB.reset'.
             '''
             objs.blocksdb.dbc.execute ('select   ROWNO,CELLNO,NO \
-                                                ,PRIORITY,TYPE,DICA \
+                                                ,DICPR,TYPE,DICA \
                                                 ,WFORMA,SPEECHA,TERMA\
                                                 ,SAMECELL,TEXT,BLOCK\
                                                 ,IGNORE \
@@ -2189,9 +2189,7 @@ class WebFrame:
             query = ''
             tmp.write('begin;')
             for no in result:
-                tmp.write ('update BLOCKS set PRIORITY=0 where NO=%d;' \
-                          % no
-                          )
+                tmp.write('update BLOCKS set DICPR=0 where NO=%d;' % no)
             tmp.write('commit;')
             query = tmp.getvalue()
             tmp.close()

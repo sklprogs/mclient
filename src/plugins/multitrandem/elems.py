@@ -26,7 +26,7 @@ class Block:
         '''
         self.select   = -1
         self.sprior   = -1
-        self.priority = 0
+        self.dprior   = 0
         self.lang     = 0
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'correction', 'transc', 'user', 'invalid'

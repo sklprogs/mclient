@@ -20,7 +20,7 @@ class Block:
         self.cellno = -1
         self.same   = -1
         self.sprior = -1
-        self.priority = 0
+        self.dprior = 0
         ''' Block types:
             'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'correction', 'user', 'definition', 'transc', 'invalid'
@@ -40,7 +40,7 @@ class BlockPrioritize:
         before sorting it.
         Needs attributes in blocks: NO, DICA, TYPE, TEXT (test purposes
         only).
-        Modifies attributes:        BLOCK, PRIORITY
+        Modifies attributes:        BLOCK, DICPR
     '''
     def __init__(self,data,order,Block=False
                 ,Prioritize=False,phdic=None
@@ -113,9 +113,9 @@ class BlockPrioritize:
                               quite a small value as not to conflict
                               with other dictionaries.
                         '''
-                        block.priority = -1000
+                        block.dprior = -1000
                     elif self.Prioritize:
-                        block.priority = self.order.get_priority(search=block.dica)
+                        block.dprior = self.order.get_priority(search=block.dica)
         else:
             sh.com.cancel(f)
 
@@ -123,8 +123,8 @@ class BlockPrioritize:
         tmp = io.StringIO()
         tmp.write('begin;')
         for block in self.blocks:
-            tmp.write ('update BLOCKS set BLOCK=%d,PRIORITY=%d \
-                        where NO=%d;' % (block.block,block.priority
+            tmp.write ('update BLOCKS set BLOCK=%d,DICPR=%d \
+                        where NO=%d;' % (block.block,block.dprior
                                         ,block.no
                                         )
                       )
@@ -136,7 +136,7 @@ class BlockPrioritize:
         f = '[MClient] cells.BlockPrioritize.debug'
         if self.Debug:
             headers = ('NO','DICA','TYPE'
-                      ,'TEXT','BLOCK','PRIORITY'
+                      ,'TEXT','BLOCK','DICPR'
                       )
             rows = []
             for block in self.blocks:
@@ -145,7 +145,7 @@ class BlockPrioritize:
                              ,block.type_
                              ,block.text
                              ,block.block
-                             ,block.priority        
+                             ,block.dprior        
                              ]
                             )
             mes = sh.FastTable (headers   = headers

@@ -106,7 +106,7 @@ class DB:
            ,TEXT       text              \
            ,URL        text              \
            ,BLOCK      integer           \
-           ,PRIORITY   integer           \
+           ,DICPR      integer           \
            ,SELECTABLE integer           \
            ,SAMECELL   integer           \
            ,CELLNO     integer           \
@@ -300,7 +300,7 @@ class DB:
         query = []
         for item in self.cols:
             if item == 'dic':
-                query.append('PRIORITY desc')
+                query.append('DICPR desc')
                 ''' Full dictionary titles and abbreviations can be
                     sorted differently, for example, in case of
                     'файл.расшир.' -> 'Расширение файла'
@@ -314,7 +314,7 @@ class DB:
             elif item == 'speech':
                 query.append('SPEECHPR')
             elif item == 'transc':
-                # There is no sense to sort by transcription
+                # Sorting by transcription is useless
                 pass
             else:
                 mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
@@ -727,8 +727,8 @@ class DB:
                 priority and this is always used despite user settings.
             '''
             self.dbc.execute ('select NO from BLOCKS \
-                               where ARTICLEID = ? and PRIORITY != 0 \
-                               and PRIORITY != -1000'
+                               where ARTICLEID = ? and DICPR != 0 \
+                               and DICPR != -1000'
                              ,(self.artid,)
                              )
             return self.dbc.fetchall()
