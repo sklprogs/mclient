@@ -25,12 +25,12 @@ class Block:
             'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'correction', 'user', 'definition', 'transc', 'invalid'
         '''
-        self.type_   = 'comment'
-        self.text    = ''
-        self.dica    = ''
-        self.wforma  = ''
-        self.speecha = ''
-        self.transca = ''
+        self.type_  = 'comment'
+        self.text   = ''
+        self.dic    = ''
+        self.wform  = ''
+        self.speech = ''
+        self.transc = ''
 
 
 
@@ -38,7 +38,7 @@ class BlockPrioritize:
     ''' Update Block and Priority in DB before sorting cells.
         This complements DB with values that must be dumped into DB
         before sorting it.
-        Needs attributes in blocks: NO, DICA, TYPE, TEXT (test purposes
+        Needs attributes in blocks: NO, DIC, TYPE, TEXT (test purposes
         only).
         Modifies attributes:        BLOCK, DICPR
     '''
@@ -81,14 +81,14 @@ class BlockPrioritize:
             block.no    = item[0]
             block.type_ = item[1]
             block.text  = item[2]
-            block.dica  = item[3]
+            block.dic   = item[3]
             self.blocks.append(block)
             
     def block(self):
         for block in self.blocks:
             # Suppress useless error output
-            if block.dica and block.dica != self.phdic:
-                lst = self.order.get_list(search=block.dica)
+            if block.dic and block.dic != self.phdic:
+                lst = self.order.get_list(search=block.dic)
                 Blocked = self.order.is_blocked(lst)
             else:
                 Blocked = False
@@ -104,8 +104,8 @@ class BlockPrioritize:
         f = '[MClient] cells.BlockPrioritize.prioritize'
         if self.order.Success:
             for block in self.blocks:
-                if block.dica:
-                    if self.phdic == block.dica:
+                if block.dic:
+                    if self.phdic == block.dic:
                         ''' - This value should be set irrespectively of
                               'self.Prioritize'.
                             - Set the (presumably) lowest priority for
@@ -115,7 +115,7 @@ class BlockPrioritize:
                         '''
                         block.dprior = -1000
                     elif self.Prioritize:
-                        block.dprior = self.order.get_priority(search=block.dica)
+                        block.dprior = self.order.get_priority(search=block.dic)
         else:
             sh.com.cancel(f)
 
@@ -135,13 +135,13 @@ class BlockPrioritize:
     def debug(self):
         f = '[MClient] cells.BlockPrioritize.debug'
         if self.Debug:
-            headers = ('NO','DICA','TYPE'
+            headers = ('NO','DIC','TYPE'
                       ,'TEXT','BLOCK','DICPR'
                       )
             rows = []
             for block in self.blocks:
                 rows.append ([block.no
-                             ,block.dica
+                             ,block.dic
                              ,block.type_
                              ,block.text
                              ,block.block
@@ -162,8 +162,8 @@ class Cells:
     ''' This re-assigns DIC, WFORM, SPEECH, TRANSC types.
         We assume that sqlite has already sorted DB with
         'BLOCK IS NOT 1'.
-        Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL, DICA,
-                                    WFORMA, SPEECHA, SPEECHPR, TRANSCA
+        Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL, DIC,
+                                    WFORM, SPEECH, SPEECHPR, TRANSC
         Modifies attributes:        TEXT, ROWNO, COLNO, CELLNO
         #NOTE: collimit at input: fixed columns are included
     '''
@@ -198,33 +198,33 @@ class Cells:
         '''
         if self.phdic:
             for block in self.blocks:
-                if block.dica == self.phdic:
+                if block.dic == self.phdic:
                     if block.type_ in ('wform','speech','transc'):
                         block.text = ''
 
     def clear_fixed(self):
-        dica = wforma = speecha = transca = ''
+        dic = wform = speech = transc = ''
         for block in self.blocks:
             if block.type_ == 'dic':
-                if dica == block.dica:
+                if dic == block.dic:
                     block.text = ''
                 else:
-                    dica = block.dica
+                    dic = block.dic
             if block.type_ == 'wform':
-                if wforma == block.wforma:
+                if wform == block.wform:
                     block.text = ''
                 else:
-                    wforma = block.wforma
+                    wform = block.wform
             if block.type_ == 'speech':
-                if speecha == block.speecha:
+                if speech == block.speech:
                     block.text = ''
                 else:
-                    speecha = block.speecha
+                    speech = block.speech
             if block.type_ == 'transc':
-                if transca == block.transca:
+                if transc == block.transc:
                     block.text = ''
                 else:
-                    transca = block.transca
+                    transc = block.transc
 
     def run_sep_words(self):
         ''' Reassign COLNO to start with 0 if separate words have been
@@ -259,32 +259,32 @@ class Cells:
         
     def assign(self):
         for item in self.data:
-            block         = Block()
-            block.no      = item[0]
-            block.type_   = item[1]
-            block.text    = item[2]
-            block.same    = item[3]
-            block.dica    = item[4]
-            block.wforma  = item[5]
-            block.speecha = item[6]
-            block.sprior  = item[7]
-            block.transca = item[8]
+            block        = Block()
+            block.no     = item[0]
+            block.type_  = item[1]
+            block.text   = item[2]
+            block.same   = item[3]
+            block.dic    = item[4]
+            block.wform  = item[5]
+            block.speech = item[6]
+            block.sprior = item[7]
+            block.transc = item[8]
             self.blocks.append(block)
         
     def debug(self):
         f = '[MClient] cells.Cells.debug'
         if self.Debug:
-            headers = ('NO','TYPE','TEXT','DICA','WFORMA'
-                      ,'SPEECHA','ROWNO','COLNO','CELLNO','SAME'
+            headers = ('NO','TYPE','TEXT','DIC','WFORM'
+                      ,'SPEECH','ROWNO','COLNO','CELLNO','SAME'
                       )
             rows = []
             for block in self.blocks:
                 rows.append ([block.no
                              ,block.type_
                              ,block.text
-                             ,block.dica
-                             ,block.wforma
-                             ,block.speecha
+                             ,block.dic
+                             ,block.wform
+                             ,block.speech
                              ,block.i
                              ,block.j
                              ,block.cellno
@@ -413,10 +413,10 @@ class Cells:
         f = '[MClient] cells.Cells.move_phrases_end'
         if self.phdic:
             phrases = [block for block in self.blocks \
-                       if block.dica == self.phdic
+                       if block.dic == self.phdic
                       ]
             self.blocks = [block for block in self.blocks \
-                           if block.dica != self.phdic
+                           if block.dic != self.phdic
                           ]
             self.blocks = self.blocks + phrases
         else:
@@ -469,13 +469,13 @@ class Cells:
     def restore_fixed(self):
         for block in self.blocks:
             if block.type_ == 'dic':
-                block.text = block.dica
+                block.text = block.dic
             elif block.type_ == 'wform':
-                block.text = block.wforma
+                block.text = block.wform
             elif block.type_ == 'speech':
-                block.text = block.speecha
+                block.text = block.speech
             elif block.type_ == 'transc':
-                block.text = block.transca
+                block.text = block.transc
 
 
 

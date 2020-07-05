@@ -153,11 +153,11 @@ class Plugin:
                 # Set speech for words only, not for phrases
                 if iget.speech and not ' ' in search:
                     block = tg.Block()
-                    block.select  = 0
-                    block.type_   = 'wform'
-                    block.text    = iget.spabbr
-                    block.wforma  = iget.spabbr
-                    block.wformaf = iget.speech
+                    block.select = 0
+                    block.type_  = 'wform'
+                    block.text   = iget.spabbr
+                    block.wform  = iget.spabbr
+                    block.wformf = iget.speech
                     blocks.insert(0,block)
                 self.blocks += blocks
         self.blocks = el.Elems (blocks  = self.blocks

@@ -72,17 +72,17 @@ class Block:
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'correction', 'transc', 'invalid'
         '''
-        self.type_    = 'comment'
-        self.text     = ''
-        self.url      = ''
-        self.urla     = ''
-        self.dica     = ''
-        self.dicaf    = ''
-        self.wforma   = ''
-        self.speecha  = ''
-        self.transca  = ''
-        self.terma    = ''
-        self.dprior   = 0
+        self.type_   = 'comment'
+        self.text    = ''
+        self.url     = ''
+        self.urla    = ''
+        self.dic     = ''
+        self.dicf    = ''
+        self.wform   = ''
+        self.speech  = ''
+        self.transc  = ''
+        self.term    = ''
+        self.dprior  = 0
 
 
 

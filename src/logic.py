@@ -289,7 +289,7 @@ class PhraseTerma:
             mes = _('Update DB, range {}-{}')
             mes = mes.format(self.no1,self.no2)
             sh.objs.get_mes(f,mes,True).show_info()
-            self.dbc.execute ('update BLOCKS set TERMA=? where NO >= ? \
+            self.dbc.execute ('update BLOCKS set TERM=? where NO >= ? \
                                and NO < ?',('',self.no1,self.no2,)
                              )
         else:
@@ -1372,14 +1372,14 @@ class Commands:
             if spdic:
                 unknown_prior = []
                 for block in blocks:
-                    sprior = spdic.get(block.speecha)
+                    sprior = spdic.get(block.speech)
                     if sprior:
                         block.sprior = sprior
-                    elif not block.speecha in unknown_prior:
+                    elif not block.speech in unknown_prior:
                         mes = _('A priority of the part of speech "{}" is not defined!')
-                        mes = mes.format(block.speecha)
+                        mes = mes.format(block.speech)
                         sh.objs.get_mes(f,mes,True).show_warning()
-                        unknown_prior.append(block.speecha)
+                        unknown_prior.append(block.speech)
             else:
                 sh.com.rep_empty(f)
         else:
@@ -1394,11 +1394,11 @@ class Commands:
                 data.append (
                   (None               # (00) Skips the autoincrement
                   ,artid              # (01) ARTICLEID
-                  ,block.dica         # (02) DICA (abbreviation)
-                  ,block.wforma       # (03) WFORMA
-                  ,block.speecha      # (04) SPEECHA
-                  ,block.transca      # (05) TRANSCA
-                  ,block.terma        # (06) TERMA
+                  ,block.dic          # (02) DIC (abbreviation)
+                  ,block.wform        # (03) WFORM
+                  ,block.speech       # (04) SPEECH
+                  ,block.transc       # (05) TRANSC
+                  ,block.term         # (06) TERM
                   ,block.type_        # (07) TYPE
                   ,block.text         # (08) TEXT
                   ,block.url          # (09) URL
@@ -1422,7 +1422,7 @@ class Commands:
                   ,block.text.lower() # (27) TEXTLOW
                   ,0                  # (28) IGNORE
                   ,block.sprior       # (29) SPEECHPR
-                  ,block.dicaf        # (30) DICA (full title)
+                  ,block.dicf         # (30) DIC (full title)
                   )
                             )
             return data

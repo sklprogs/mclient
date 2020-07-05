@@ -222,16 +222,16 @@ class Block:
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'transc', 'invalid'
         '''
-        self.type_    = ''
-        self.text     = ''
-        self.url      = ''
-        self.urla     = ''
-        self.dica     = ''
-        self.dicaf    = ''
-        self.wforma   = ''
-        self.speecha  = ''
-        self.transca  = ''
-        self.terma    = ''
+        self.type_  = ''
+        self.text   = ''
+        self.url    = ''
+        self.urla   = ''
+        self.dic    = ''
+        self.dicf   = ''
+        self.wform  = ''
+        self.speech = ''
+        self.transc = ''
+        self.term   = ''
 
 
 if __name__ == '__main__':

@@ -123,22 +123,22 @@ class Block:
             if the cell has a non-blocked block of types 'term',
             'phrase' or 'transc'.
         '''
-        self.select   = -1
-        self.sprior   = -1
-        self.dprior   = 0
+        self.select = -1
+        self.sprior = -1
+        self.dprior = 0
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'transc', 'invalid'
         '''
-        self.type_    = ''
-        self.text     = ''
-        self.url      = ''
-        self.urla     = ''
-        self.dica     = ''
-        self.dicaf    = ''
-        self.wforma   = ''
-        self.speecha  = ''
-        self.transca  = ''
-        self.terma    = ''
+        self.type_  = ''
+        self.text   = ''
+        self.url    = ''
+        self.urla   = ''
+        self.dic    = ''
+        self.dicf   = ''
+        self.wform  = ''
+        self.speech = ''
+        self.transc = ''
+        self.term   = ''
 
 
 
@@ -151,14 +151,14 @@ class AnalyzeTag:
     def set_values(self):
         self.fragms = []
         self.blocks = []
-        self.dicaf  = ''
+        self.dicf   = ''
 
-    def set_dicaf(self):
+    def set_dicf(self):
         pattern = ' title="'
         if pattern in self.tag and not 'UserName' in self.tag:
             pos1 = self.tag.index(pattern) + len(pattern)
             pos2 = self.tag.rfind('">')
-            self.dicaf = self.tag[pos1:pos2]
+            self.dicf = self.tag[pos1:pos2]
     
     def debug(self):
         f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.debug'
@@ -179,7 +179,7 @@ class AnalyzeTag:
         iterable = [nos,types,texts]
         headers = ('NO','TYPE','TEXT')
         mes += '\n\n' + sh.FastTable(iterable,headers).run()
-        mes += '\n' + 'DICAF: "{}"'.format(self.dicaf)
+        mes += '\n' + 'DICF: "{}"'.format(self.dicf)
         sh.objs.txt = None
         sh.com.run_fast_debug(f,mes)
     
@@ -215,7 +215,7 @@ class AnalyzeTag:
                 else:
                     self.block.type_ = 'invalid'
         self.set_types()
-        self.set_dicaf()
+        self.set_dicf()
         return self.blocks
 
     def set_types(self):
@@ -447,12 +447,12 @@ class Tags:
             for tag in self.tags:
                 itag = AnalyzeTag(tag)
                 self.blocks += itag.run()
-                if itag.dicaf:
+                if itag.dicf:
                     dics = [block.text for block in itag.blocks \
                             if block.type_ == 'dic'
                            ]
                     if dics:
-                        self.abbr[dics[0]] = itag.dicaf
+                        self.abbr[dics[0]] = itag.dicf
         return self.blocks
 
     def run(self):

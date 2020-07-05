@@ -31,15 +31,15 @@ class Block:
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'correction', 'transc', 'user', 'invalid'
         '''
-        self.type_   = 'invalid'
-        self.text    = ''
-        self.url     = ''
-        self.dica    = ''
-        self.dicaf   = ''
-        self.wforma  = ''
-        self.speecha = ''
-        self.transca = ''
-        self.terma   = ''
+        self.type_  = 'invalid'
+        self.text   = ''
+        self.url    = ''
+        self.dic    = ''
+        self.dicf   = ''
+        self.wform  = ''
+        self.speech = ''
+        self.transc = ''
+        self.term   = ''
 
 
 
@@ -128,9 +128,9 @@ class Elems:
                                     sh.com.rep_empty(f)
                             abbr = '; '.join(abbr)
                             full = '; '.join(full)
-                            block.text  = abbr
-                            block.dica  = abbr
-                            block.dicaf = full
+                            block.text = abbr
+                            block.dic  = abbr
+                            block.dicf = full
                         else:
                             mes = _('Wrong input data: "{}"!')
                             mes = mes.format(block.text)
@@ -222,114 +222,114 @@ class Elems:
                     self.blocks[i].text = ' ' + self.blocks[i].text
                 
     def fill(self):
-        dica = dicaf = wforma = speecha = transca = terma = ''
+        dic = dicf = wform = speech = transc = term = ''
         
         # Find first non-empty values and set them as default
         for block in self.blocks:
             if block.type_ == 'dic':
-                dica  = block.dica
-                dicaf = block.dicaf
+                dic  = block.dic
+                dicf = block.dicf
                 break
         for block in self.blocks:
             if block.type_ == 'wform':
-                wforma = block.text
+                wform = block.text
                 break
         for block in self.blocks:
             if block.type_ == 'speech':
-                speecha = block.text
+                speech = block.text
                 break
         for block in self.blocks:
             if block.type_ == 'transc':
-                transca = block.text
+                transc = block.text
                 break
         for block in self.blocks:
             if block.type_ == 'term' or block.type_ == 'phrase':
-                terma = block.text
+                term = block.text
                 break
         
         for block in self.blocks:
             if block.type_ == 'dic':
-                dica  = block.dica
-                dicaf = block.dicaf
+                dic  = block.dic
+                dicf = block.dicf
             elif block.type_ == 'wform':
-                wforma = block.text
+                wform = block.text
             elif block.type_ == 'speech':
-                speecha = block.text
+                speech = block.text
             elif block.type_ == 'transc':
-                transca = block.text
+                transc = block.text
                 ''' #TODO: Is there a difference if we use both
                     term/phrase here or the term only?
                 '''
             elif block.type_ in ('term','phrase'):
-                terma = block.text
-            block.dica    = dica
-            block.dicaf   = dicaf
-            block.wforma  = wforma
-            block.speecha = speecha
-            block.transca = transca
+                term = block.text
+            block.dic    = dic
+            block.dicf   = dicf
+            block.wform  = wform
+            block.speech = speech
+            block.transc = transc
             if block.same > 0:
-                block.terma = terma
+                block.term = term
                 
     def insert_fixed(self):
-        dica = wforma = speecha = ''
+        dic = wform = speech = ''
         i = 0
         while i < len(self.blocks):
-            if dica != self.blocks[i].dica \
-            or wforma != self.blocks[i].wforma \
-            or speecha != self.blocks[i].speecha:
+            if dic != self.blocks[i].dic \
+            or wform != self.blocks[i].wform \
+            or speech != self.blocks[i].speech:
                 
-                block         = Block()
-                block.type_   = 'speech'
-                block.text    = self.blocks[i].speecha
-                block.dica    = self.blocks[i].dica
-                block.dicaf   = self.blocks[i].dicaf
-                block.wforma  = self.blocks[i].wforma
-                block.speecha = self.blocks[i].speecha
-                block.transca = self.blocks[i].transca
-                block.terma   = self.blocks[i].terma
-                block.same    = 0
+                block        = Block()
+                block.type_  = 'speech'
+                block.text   = self.blocks[i].speech
+                block.dic    = self.blocks[i].dic
+                block.dicf   = self.blocks[i].dicf
+                block.wform  = self.blocks[i].wform
+                block.speech = self.blocks[i].speech
+                block.transc = self.blocks[i].transc
+                block.term   = self.blocks[i].term
+                block.same   = 0
                 self.blocks.insert(i,block)
                 
-                block         = Block()
-                block.type_   = 'transc'
-                block.text    = self.blocks[i].transca
-                block.dica    = self.blocks[i].dica
-                block.dicaf   = self.blocks[i].dicaf
-                block.wforma  = self.blocks[i].wforma
-                block.speecha = self.blocks[i].speecha
-                block.transca = self.blocks[i].transca
-                block.terma   = self.blocks[i].terma
-                block.same    = 0
+                block        = Block()
+                block.type_  = 'transc'
+                block.text   = self.blocks[i].transc
+                block.dic    = self.blocks[i].dic
+                block.dicf   = self.blocks[i].dicf
+                block.wform  = self.blocks[i].wform
+                block.speech = self.blocks[i].speech
+                block.transc = self.blocks[i].transc
+                block.term   = self.blocks[i].term
+                block.same   = 0
                 self.blocks.insert(i,block)
 
-                block         = Block()
-                block.type_   = 'wform'
-                block.text    = self.blocks[i].wforma
-                block.dica    = self.blocks[i].dica
-                block.dicaf   = self.blocks[i].dicaf
-                block.wforma  = self.blocks[i].wforma
-                block.speecha = self.blocks[i].speecha
-                block.transca = self.blocks[i].transca
-                block.terma   = self.blocks[i].terma
-                block.same    = 0
+                block        = Block()
+                block.type_  = 'wform'
+                block.text   = self.blocks[i].wform
+                block.dic    = self.blocks[i].dic
+                block.dicf   = self.blocks[i].dicf
+                block.wform  = self.blocks[i].wform
+                block.speech = self.blocks[i].speech
+                block.transc = self.blocks[i].transc
+                block.term   = self.blocks[i].term
+                block.same   = 0
                 self.blocks.insert(i,block)
                 
-                block         = Block()
-                block.type_   = 'dic'
-                block.text    = self.blocks[i].dica
-                block.dica    = self.blocks[i].dica
-                block.dicaf   = self.blocks[i].dicaf
-                block.wforma  = self.blocks[i].wforma
-                block.speecha = self.blocks[i].speecha
-                block.transca = self.blocks[i].transca
-                block.terma   = self.blocks[i].terma
-                block.same    = 0
+                block        = Block()
+                block.type_  = 'dic'
+                block.text   = self.blocks[i].dic
+                block.dic    = self.blocks[i].dic
+                block.dicf   = self.blocks[i].dicf
+                block.wform  = self.blocks[i].wform
+                block.speech = self.blocks[i].speech
+                block.transc = self.blocks[i].transc
+                block.term   = self.blocks[i].term
+                block.same   = 0
                 self.blocks.insert(i,block)
                 
-                dica    = self.blocks[i].dica
-                dicaf   = self.blocks[i].dicaf
-                wforma  = self.blocks[i].wforma
-                speecha = self.blocks[i].speecha
+                dic    = self.blocks[i].dic
+                dicf   = self.blocks[i].dicf
+                wform  = self.blocks[i].wform
+                speech = self.blocks[i].speech
                 i += 4
             i += 1
             

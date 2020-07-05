@@ -577,8 +577,8 @@ class WebFrame:
                 'db.DB.reset'.
             '''
             objs.blocksdb.dbc.execute ('select   ROWNO,CELLNO,NO \
-                                                ,DICPR,TYPE,DICA \
-                                                ,WFORMA,SPEECHA,TERMA\
+                                                ,DICPR,TYPE,DIC \
+                                                ,WFORM,SPEECH,TERM\
                                                 ,SAMECELL,TEXT,BLOCK\
                                                 ,IGNORE \
                                         from     BLOCKS \
@@ -590,9 +590,9 @@ class WebFrame:
     
     def copy_wform(self,event=None):
         f = '[MClient] mclient.WebFrame.copy_wform'
-        wforma = objs.get_blocksdb().wforma(pos=self.pos)
-        if wforma:
-            sh.Clipboard().copy(wforma)
+        wform = objs.get_blocksdb().get_wform(pos=self.pos)
+        if wform:
+            sh.Clipboard().copy(wform)
             if sh.lg.globs['bool']['Iconify']:
                 self.minimize()
         else:
@@ -1310,7 +1310,7 @@ class WebFrame:
             pos = -1
             try:
                 node1,node2 = self.gui.widget.node(True,event.x,event.y)
-                pos         = self.gui.widget.text('offset',node1,node2)
+                pos = self.gui.widget.text('offset',node1,node2)
             # Need more than 0 values to unpack
             except ValueError:
                 pass
@@ -1583,7 +1583,7 @@ class WebFrame:
         cells.run()
         cells.dump(blocksdb=objs.blocksdb)
         
-        skipped = objs.blocksdb.get_skipped_dicas()
+        skipped = objs.blocksdb.get_skipped_dics()
         if skipped:
             skipped = ', '.join(skipped)
             skipped = skipped.split(', ')
@@ -1651,22 +1651,19 @@ class WebFrame:
             objs.blocksdb.Selectable = True
             if result and result[8] == 'dic' \
             and result[6] != self.phdic:
-                dica = objs.blocksdb.get_prev_dica (pos  = result[0]
-                                                   ,dica = result[6]
-                                                   )
-                if dica:
+                dic = objs.blocksdb.get_prev_dic (pos = result[0]
+                                                 ,dic = result[6]
+                                                 )
+                if dic:
                     mes = _('Selected dictionary: "{}". Previous dictionary: "{}" (abbreviation), "{}" (full).')
-                    mes = mes.format (result[6]
-                                     ,dica[0]
-                                     ,dica[1]
-                                     )
+                    mes = mes.format(result[6],dic[0],dic[1])
                     sh.objs.get_mes(f,mes,True).show_debug()
-                    dica = dica[1]
+                    dic = dic[1]
                 else:
                     mes = _('No previous dictionary.')
                     sh.objs.get_mes(f,mes,True).show_debug()
                 lg.objs.get_order().run_lm_auto (dic1 = result[6]
-                                                ,dic2 = dica
+                                                ,dic2 = dic
                                                 )
                 objs.blocksdb.delete_bookmarks()
                 self.load_article()
@@ -1836,7 +1833,7 @@ class WebFrame:
             self.select()
             self.shift_screen()
         else:
-            mes = _('Wrong input data!')
+            mes = _('Wrong input data: "{}"!').format(result)
             sh.objs.get_mes(f,mes,True).show_warning()
 
     # Go to the next term
@@ -1848,7 +1845,7 @@ class WebFrame:
             self.select()
             self.shift_screen()
         else:
-            mes = _('Wrong input data!')
+            mes = _('Wrong input data: "{}"!').format(result)
             sh.objs.get_mes(f,mes,True).show_warning()
 
     # Go to the next row
@@ -1860,7 +1857,7 @@ class WebFrame:
             self.select()
             self.shift_screen()
         else:
-            mes = _('Wrong input data!')
+            mes = _('Wrong input data: "{}"!').format(result)
             sh.objs.get_mes(f,mes,True).show_warning()
 
     # Go to the previous row
@@ -1872,7 +1869,7 @@ class WebFrame:
             self.select()
             self.shift_screen()
         else:
-            mes = _('Wrong input data!')
+            mes = _('Wrong input data: "{}"!').format(result)
             sh.objs.get_mes(f,mes,True).show_warning()
 
     # Use mouse wheel to scroll screen
@@ -2220,7 +2217,7 @@ class WebFrame:
 
     def print(self,event=None):
         f = '[MClient] mclient.WebFrame.print'
-        skipped = objs.blocksdb.get_skipped_dicas()
+        skipped = objs.blocksdb.get_skipped_dics()
         if skipped:
             skipped = ', '.join(skipped)
             skipped = skipped.split(', ')
@@ -2386,23 +2383,20 @@ class WebFrame:
                 objs.blocksdb.Selectable = True
                 if result and result[8] == 'dic' \
                 and result[6] != self.phdic:
-                    dica = objs.blocksdb.get_next_dica (pos  = result[0]
-                                                       ,dica = result[6]
-                                                       )
-                    if dica:
+                    dic = objs.blocksdb.get_next_dic (pos = result[0]
+                                                     ,dic = result[6]
+                                                     )
+                    if dic:
                         mes = _('Selected dictionary: "{}". Next dictionary: "{}" (abbreviation), "{}" (full).')
-                        mes = mes.format (result[6]
-                                         ,dica[0]
-                                         ,dica[1]
-                                         )
+                        mes = mes.format(result[6],dic[0],dic[1])
                         sh.objs.get_mes(f,mes,True).show_debug()
-                        dica = dica[1]
+                        dic = dic[1]
                     else:
                         mes = _('Selected dictionary: "{}". No next dictionary.')
                         mes = mes.format(result[6])
                         sh.objs.get_mes(f,mes,True).show_debug()
                     lg.objs.get_order().run_rm_auto (dic1 = result[6]
-                                                    ,dic2 = dica
+                                                    ,dic2 = dic
                                                     )
                     objs.blocksdb.delete_bookmarks()
                     self.load_article()

@@ -12,11 +12,11 @@ class Block:
     def __init__(self):
         self.id_     = None # (00) Autoincrement
         self.artid   = 0    # (01) ARTICLEID
-        self.dica    = ''   # (02) DICA (abbreviation)
-        self.wforma  = ''   # (03) WFORMA
-        self.speecha = ''   # (04) SPEECHA
-        self.transca = ''   # (05) TRANSCA
-        self.terma   = ''   # (06) TERMA
+        self.dic     = ''   # (02) DIC (abbreviation)
+        self.wform   = ''   # (03) WFORM
+        self.speech  = ''   # (04) SPEECH
+        self.transc  = ''   # (05) TRANSC
+        self.term    = ''   # (06) TERM
         self.type_   = ''   # (07) TYPE
         self.text    = ''   # (08) TEXT
         self.url     = ''   # (09) URL
@@ -40,16 +40,16 @@ class Block:
         self.textlow = ''   # (27) TEXTLOW
         self.ignore  = 0    # (28) IGNORE
         self.sprior  = 0    # (29) SPEECHPR
-        self.dicaf   = ''   # (30) DICA (full title)
+        self.dicf    = ''   # (30) DIC (full title)
     
     def dump(self):
         return (self.id_
                ,self.artid
-               ,self.dica
-               ,self.wforma
-               ,self.speecha
-               ,self.transca
-               ,self.terma
+               ,self.dic
+               ,self.wform
+               ,self.speech
+               ,self.transc
+               ,self.term
                ,self.type_
                ,self.text
                ,self.url
@@ -73,7 +73,7 @@ class Block:
                ,self.textlow
                ,self.ignore
                ,self.speech
-               ,self.dicaf
+               ,self.dicf
                )
 
 
@@ -282,43 +282,43 @@ class Commands:
         # Create blocks
         #1 #1
         block = list(Block().dump())
-        block[2]  = 'Общая лексика' # DICA
-        block[30] = 'общ.'          # DICAF
+        block[2]  = 'Общая лексика' # DIC
+        block[30] = 'общ.'          # DICF
         block[7]  = 'term'          # TYPE
         block[8]  = 'hello'         # TEXT
         data1.append(block)
         #1 #2
         block = list(Block().dump())
-        block[2]  = 'Общая лексика' # DICA
-        block[30] = 'общ.'          # DICAF
+        block[2]  = 'Общая лексика' # DIC
+        block[30] = 'общ.'          # DICF
         block[7]  = 'comment'       # TYPE
         block[8]  = 'yes'           # TEXT
         data1.append(block)
         #1 #3
         block = list(Block().dump())
-        block[2]  = 'Общая лексика' # DICA
-        block[30] = 'общ.'          # DICAF
+        block[2]  = 'Общая лексика' # DIC
+        block[30] = 'общ.'          # DICF
         block[7]  = 'term'          # TYPE
         block[8]  = 'goodbye'       # TEXT
         data1.append(block)
         #2 #1
         block = list(Block().dump())
-        block[2]  = 'Общая лексика' # DICA
-        block[30] = 'общ.'          # DICAF
+        block[2]  = 'Общая лексика' # DIC
+        block[30] = 'общ.'          # DICF
         block[7]  = 'term'          # TYPE
         block[8]  = 'goodbye'       # TEXT
         data2.append(block)
         #2 #2
         block = list(Block().dump())
-        block[2]  = 'Физиология'    # DICA
-        block[30] = 'физиол.'       # DICAF
+        block[2]  = 'Физиология'    # DIC
+        block[30] = 'физиол.'       # DICF
         block[7]  = 'comment'       # TYPE
         block[8]  = 'yes'           # TEXT
         data2.append(block)
         #2 #3
         block = list(Block().dump())
-        block[2]  = 'Общая лексика' # DICA
-        block[30] = 'общ.'          # DICAF
+        block[2]  = 'Общая лексика' # DIC
+        block[30] = 'общ.'          # DICF
         block[7]  = 'term'          # TYPE
         block[8]  = 'hello'         # TEXT
         data2.append(block)

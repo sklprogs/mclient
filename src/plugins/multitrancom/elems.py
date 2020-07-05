@@ -3,10 +3,10 @@
 
 ''' This module prepares blocks after extracting tags for permanently
     storing in DB.
-    Needs attributes in blocks: TYPE, DICA, WFORMA, SPEECHA, TRANSCA,
-    TERMA, SAMECELL
-    Modifies attributes:        TYPE, TEXT, DICA, WFORMA, SPEECHA,
-    TRANSCA, TERMA, SAMECELL
+    Needs attributes in blocks: TYPE, DIC, WFORM, SPEECH, TRANSC,
+    TERM, SAMECELL
+    Modifies attributes:        TYPE, TEXT, DIC, WFORM, SPEECH,
+    TRANSC, TERM, SAMECELL
     Since TYPE is modified here, SAMECELL is filled here.
     SELECTABLE cannot be filled because it depends on CELLNO which is
     created in Cells; Cells modifies TEXT of DIC, WFORM, SPEECH, TRANSC
@@ -131,7 +131,7 @@ class Same:
             We create the new type since after removing fixed types
             there could be no other way to reinsert them without
             associating definitions with wrong cells (fixed types are
-            reinserted when DICA, WFORMA or SPEECHA change, but there
+            reinserted when DIC, WFORM or SPEECH change, but there
             are cases when a definition block is duplicated
             by multitran.com and those fields remain unchanged, see,
             for example, 'memory pressure').
@@ -346,41 +346,41 @@ class Block:
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'correction', 'transc', 'user', 'invalid'
         '''
-        self.type_   = 'invalid'
-        self.text    = ''
-        self.url     = ''
-        self.dica    = ''
-        self.dicaf   = ''
-        self.wforma  = ''
-        self.speecha = ''
-        self.transca = ''
-        self.terma   = ''
+        self.type_  = 'invalid'
+        self.text   = ''
+        self.url    = ''
+        self.dic    = ''
+        self.dicf   = ''
+        self.wform  = ''
+        self.speech = ''
+        self.transc = ''
+        self.term   = ''
 
 
 
 class Elems:
     ''' Process blocks before dumping to DB.
-        About filling 'terma':
-        - We fill 'terma' from the start in order to ensure the correct
-          'terma' value for blocks having 'same == 1'
-        - We fill 'terma' from the end in order to ensure that 'terma'
+        About filling 'term':
+        - We fill 'term' from the start in order to ensure the correct
+          'term' value for blocks having 'same == 1'
+        - We fill 'term' from the end in order to ensure that 'term'
           of blocks of non-selectable types will have the value of
           the 'term' AFTER those blocks
-        - We fill 'terma' from the end in order to ensure that 'terma'
+        - We fill 'term' from the end in order to ensure that 'term'
           is also filled for blocks having 'same == 0'
-        - When filling 'terma' from the start to the end, in order
-          to set a default 'terma' value, we also search for blocks of
+        - When filling 'term' from the start to the end, in order
+          to set a default 'term' value, we also search for blocks of
           the 'phrase' type (just to be safe in such cases when
           'phrase' blocks anticipate 'term' blocks). However, we fill
-          'terma' for 'phrase' blocks from the end to the start because
-          we want the 'phrase' dictionary to have the 'terma' value of
+          'term' for 'phrase' blocks from the end to the start because
+          we want the 'phrase' dictionary to have the 'term' value of
           the first 'phrase' block AFTER it
-        - Finally, we clear TERMA values for fixed columns. Sqlite
+        - Finally, we clear TERM values for fixed columns. Sqlite
           sorts '' before a non-empty string, so we ensure thereby that
-          sorting by TERMA will be correct. Otherwise, we would have to
-          correctly calculate TERMA values for fixed columns that will
-          vary depending on the view. Incorrect sorting by TERMA may
-          result in putting a TERM item before fixed columns.
+          sorting by TERM will be correct. Otherwise, we would have to
+          correctly calculate TERM values for fixed columns that will
+          vary depending on the view. Incorrect sorting by TERM may
+          result in putting a 'term' item before fixed columns.
     '''
     def __init__ (self,blocks,abbr,langs
                  ,Debug=False,maxrow=20
@@ -422,15 +422,15 @@ class Elems:
                 i -= 1
             i += 1
     
-    def expand_dica_file(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.expand_dica_file'
+    def expand_dic_file(self):
+        f = '[MClient] plugins.multitrancom.elems.Elems.expand_dic_file'
         for block in self.blocks:
-            if block.dica and not block.dicaf:
-                dicas = block.dica.split(', ')
-                dicafs = []
-                for dica in dicas:
-                    dicafs.append(objs.get_abbr().get_full(dica))
-                block.dicaf = ', '.join(dicafs)
+            if block.dic and not block.dicf:
+                dics = block.dic.split(', ')
+                dicfs = []
+                for dic in dics:
+                    dicfs.append(objs.get_abbr().get_full(dic))
+                block.dicf = ', '.join(dicfs)
     
     def fix_thesaurus(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.fix_thesaurus'
@@ -454,12 +454,12 @@ class Elems:
             'data vector' -> 'data+vector:'. If the block ends with '!',
             then '!' will be omitted. Case is preserved.
         '''
-        wformas = [block.text for block in self.blocks \
-                   if block.text and block.type_ == 'wform'
-                  ]
-        wformas = sorted(set(wformas))
+        wforms = [block.text for block in self.blocks \
+                  if block.text and block.type_ == 'wform'
+                 ]
+        wforms = sorted(set(wforms))
         compare = []
-        for item in wformas:
+        for item in wforms:
             item = item.replace(' ','+')
             # We have already deleted empty items
             if item[-1] in sh.lg.punc_array:
@@ -489,9 +489,9 @@ class Elems:
         f = '[MClient] plugins.multitrancom.elems.Elems.search_definition'
         if block:
             for definition in self.defins:
-                if block.dica == definition.dica \
-                and block.wforma == definition.wforma \
-                and block.speecha == definition.speecha:
+                if block.dic == definition.dic \
+                and block.wform == definition.wform \
+                and block.speech == definition.speech:
                     mes = '"{}"'.format(definition.text)
                     sh.objs.get_mes(f,mes,True).show_debug()
                     self.defins.remove(definition)
@@ -543,17 +543,17 @@ class Elems:
         '''
         self.blocks = [block for block in self.blocks if block.text]
     
-    def set_terma_same(self):
-        ''' #NOTE: all blocks of the same cell must have the same TERMA,
+    def set_term_same(self):
+        ''' #NOTE: all blocks of the same cell must have the same TERM,
             otherwise, alphabetizing may put blocks with SAME=1 outside
             of their cells.
         '''
-        terma = ''
+        term = ''
         for block in self.blocks:
             if block.same == 0:
-                terma = block.terma
+                term = block.term
             elif block.same == 1:
-                block.terma = terma
+                block.term = term
     
     def delete_subjects(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.subjects'
@@ -637,17 +637,17 @@ class Elems:
                     block.same = 1
                 HasWform = True
     
-    def expand_dica(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.expand_dica'
+    def expand_dic(self):
+        f = '[MClient] plugins.multitrancom.elems.Elems.expand_dic'
         if self.abbr:
             for block in self.blocks:
-                if block.dica in self.abbr:
-                    block.dicaf = self.abbr[block.dica]
+                if block.dic in self.abbr:
+                    block.dicf = self.abbr[block.dic]
                 else:
                     ''' Each dictionary must have full and short titles.
                         This is especially needed for a phrase dic.
                     '''
-                    block.dicaf = block.dica
+                    block.dicf = block.dic
         else:
             sh.com.rep_empty(f)
     
@@ -682,15 +682,15 @@ class Elems:
             self.reassign_brackets()
             # Prepare for cells
             self.fill()
-            self.fill_terma()
+            self.fill_term()
             self.delete_definitions()
             self.remove_fixed()
             self.insert_fixed()
             self.insert_definitions()
-            self.set_fixed_terma()
-            self.expand_dica()
-            self.expand_dica_file()
-            self.set_terma_same()
+            self.set_fixed_term()
+            self.expand_dic()
+            self.expand_dic_file()
+            self.set_term_same()
             # Extra spaces in the beginning may cause sorting problems
             self.add_space()
             #TODO: expand parts of speech (n -> noun, etc.)
@@ -774,137 +774,137 @@ class Elems:
         for block in self.blocks:
             if re.match('\d+ phrase[s]{0,1}',block.text) \
             or re.match('\d+ фраз',block.text):
-                block.type_  = 'dic'
+                block.type_ = 'dic'
                 block.select = 1
-                block.dica   = block.text
+                block.dic = block.text
                 break
                 
     def fill(self):
-        dica = wforma = speecha = transca = terma = ''
+        dic = wform = speech = transc = term = ''
         
         # Find first non-empty values and set them as default
         for block in self.blocks:
             if block.type_ == 'dic':
-                dica = block.text
+                dic = block.text
                 break
         for block in self.blocks:
             if block.type_ == 'wform':
-                wforma = block.text
+                wform = block.text
                 break
         for block in self.blocks:
             if block.type_ == 'speech':
-                speecha = block.text
+                speech = block.text
                 break
         for block in self.blocks:
             if block.type_ == 'transc':
-                transca = block.text
+                transc = block.text
                 break
         for block in self.blocks:
             if block.type_ == 'term' or block.type_ == 'phrase':
-                terma = block.text
+                term = block.text
                 break
         
         for block in self.blocks:
             if block.type_ == 'dic':
-                dica = block.text
+                dic = block.text
             elif block.type_ == 'wform':
-                wforma = block.text
+                wform = block.text
             elif block.type_ == 'speech':
-                speecha = block.text
+                speech = block.text
             elif block.type_ == 'transc':
-                transca = block.text
+                transc = block.text
                 ''' #TODO: Is there a difference if we use both
                     term/phrase here or the term only?
                 '''
             elif block.type_ in ('term','phrase'):
-                terma = block.text
-            block.dica    = dica
-            block.wforma  = wforma
-            block.speecha = speecha
-            block.transca = transca
+                term = block.text
+            block.dic    = dic
+            block.wform  = wform
+            block.speech = speech
+            block.transc = transc
             if block.same > 0:
-                block.terma = terma
+                block.term = term
     
-    def fill_terma(self):
-        terma = ''
-        ''' This is just to get a non-empty value of 'terma' if some
+    def fill_term(self):
+        term = ''
+        ''' This is just to get a non-empty value of 'term' if some
             other types besides 'phrase' and 'term' follow them in the
             end.
         '''
         i = len(self.blocks) - 1
         while i >= 0:
             if self.blocks[i].type_ in ('term','phrase'):
-                terma = self.blocks[i].text
+                term = self.blocks[i].text
                 break
             i -= 1
         i = len(self.blocks) - 1
         while i >= 0:
             if self.blocks[i].type_ in ('term','phrase'):
-                terma = self.blocks[i].text
+                term = self.blocks[i].text
             if not self.blocks[i].same > 0:
-                self.blocks[i].terma = terma
+                self.blocks[i].term = term
             i -= 1
             
-    def set_fixed_terma(self):
+    def set_fixed_term(self):
         for block in self.blocks:
             if block.type_ in ('dic','wform','speech','transc'):
-                block.terma = ''
+                block.term = ''
                 
     def insert_fixed(self):
-        dica = wforma = speecha = ''
+        dic = wform = speech = ''
         i = 0
         while i < len(self.blocks):
-            if dica != self.blocks[i].dica \
-            or wforma != self.blocks[i].wforma \
-            or speecha != self.blocks[i].speecha:
+            if dic != self.blocks[i].dic \
+            or wform != self.blocks[i].wform \
+            or speech != self.blocks[i].speech:
                 
-                block         = Block()
-                block.type_   = 'speech'
-                block.text    = self.blocks[i].speecha
-                block.dica    = self.blocks[i].dica
-                block.wforma  = self.blocks[i].wforma
-                block.speecha = self.blocks[i].speecha
-                block.transca = self.blocks[i].transca
-                block.terma   = self.blocks[i].terma
-                block.same    = 0
+                block        = Block()
+                block.type_  = 'speech'
+                block.text   = self.blocks[i].speech
+                block.dic    = self.blocks[i].dic
+                block.wform  = self.blocks[i].wform
+                block.speech = self.blocks[i].speech
+                block.transc = self.blocks[i].transc
+                block.term   = self.blocks[i].term
+                block.same   = 0
                 self.blocks.insert(i,block)
                 
-                block         = Block()
-                block.type_   = 'transc'
-                block.text    = self.blocks[i].transca
-                block.dica    = self.blocks[i].dica
-                block.wforma  = self.blocks[i].wforma
-                block.speecha = self.blocks[i].speecha
-                block.transca = self.blocks[i].transca
-                block.terma   = self.blocks[i].terma
-                block.same    = 0
+                block        = Block()
+                block.type_  = 'transc'
+                block.text   = self.blocks[i].transc
+                block.dic    = self.blocks[i].dic
+                block.wform  = self.blocks[i].wform
+                block.speech = self.blocks[i].speech
+                block.transc = self.blocks[i].transc
+                block.term   = self.blocks[i].term
+                block.same   = 0
                 self.blocks.insert(i,block)
 
-                block         = Block()
-                block.type_   = 'wform'
-                block.text    = self.blocks[i].wforma
-                block.dica    = self.blocks[i].dica
-                block.wforma  = self.blocks[i].wforma
-                block.speecha = self.blocks[i].speecha
-                block.transca = self.blocks[i].transca
-                block.terma   = self.blocks[i].terma
-                block.same    = 0
+                block        = Block()
+                block.type_  = 'wform'
+                block.text   = self.blocks[i].wform
+                block.dic    = self.blocks[i].dic
+                block.wform  = self.blocks[i].wform
+                block.speech = self.blocks[i].speech
+                block.transc = self.blocks[i].transc
+                block.term   = self.blocks[i].term
+                block.same   = 0
                 self.blocks.insert(i,block)
                 
-                block         = Block()
-                block.type_   = 'dic'
-                block.text    = self.blocks[i].dica
-                block.dica    = self.blocks[i].dica
-                block.wforma  = self.blocks[i].wforma
-                block.speecha = self.blocks[i].speecha
-                block.transca = self.blocks[i].transca
-                block.terma   = self.blocks[i].terma
-                block.same    = 0
+                block        = Block()
+                block.type_  = 'dic'
+                block.text   = self.blocks[i].dic
+                block.dic    = self.blocks[i].dic
+                block.wform  = self.blocks[i].wform
+                block.speech = self.blocks[i].speech
+                block.transc = self.blocks[i].transc
+                block.term   = self.blocks[i].term
+                block.same   = 0
                 self.blocks.insert(i,block)
                 
-                dica    = self.blocks[i].dica
-                wforma  = self.blocks[i].wforma
-                speecha = self.blocks[i].speecha
+                dic    = self.blocks[i].dic
+                wform  = self.blocks[i].wform
+                speech = self.blocks[i].speech
                 i += 4
             i += 1
             
