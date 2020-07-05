@@ -1504,13 +1504,7 @@ class WebFrame:
             blocks = lg.objs.get_plugins().request (search = lg.objs.request.search
                                                    ,url    = lg.objs.request.url
                                                    )
-            #TODO: set a setting for "Cut to the chase" mode
-            if lg.objs.request.cols \
-            and lg.objs.request.cols[0] == 'speech':
-                ExpandSpeech = True
-            else:
-                ExpandSpeech = False
-            blocks = lg.com.prioritize_speech(blocks,ExpandSpeech)
+            blocks = lg.com.prioritize_speech(blocks)
             data = lg.com.dump_elems (blocks = blocks
                                      ,artid  = objs.blocksdb.artid
                                      )
@@ -1574,7 +1568,7 @@ class WebFrame:
         #TODO: set a setting for "Cut to the chase" mode
         if lg.objs.request.cols \
         and lg.objs.request.cols[0] == 'speech':
-            spdic = lg.objs.get_speech_prior().get_pairs_abbr2full()
+            spdic = lg.objs.get_speech_prior().get_abbr2full()
         else:
             spdic = {}
         
@@ -2502,7 +2496,9 @@ class Settings:
             if lg.objs.request.SortRows:
                 self.prioritize_speech()
                 #cur
-                #objs.get_webframe().prioritize_speech()
+                ''' #TODO: read the speech parts order from memory, get
+                    changes in comparison with GUI, update DB.
+                '''
             else:
                 objs.get_blocksdb().unprioritize_speech()
             objs.get_webframe().set_columns()

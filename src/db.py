@@ -22,6 +22,24 @@ class DB:
         self.create_blocks()
         self.create_articles()
     
+    def print_custom(self,maxrow=40,maxrows=1000):
+        ''' This allows to quickly debug only needed fields.
+            The procedure is orphaned so any fields can be selected.
+        '''
+        f = '[MClient] db.DB.print_custom'
+        self.dbc.execute ('select NO,TYPE,TEXT,DICA,SPEECHA,SPEECHPR \
+                           from BLOCKS order by CELLNO,NO'
+                         )
+        rows = self.dbc.fetchall()
+        headers = ('NO','TYPE','TEXT','DICA','SPEECHA','SPEECHPR')
+        mes = sh.FastTable (headers   = headers
+                           ,iterable  = rows
+                           ,maxrow    = maxrow
+                           ,maxrows   = maxrows
+                           ,Transpose = True
+                           ).run()
+        sh.com.run_fast_debug(f,mes)
+    
     def get_wforma(self,pos):
         f = '[MClient] db.DB.get_wforma'
         if self.artid:
@@ -315,7 +333,7 @@ class DB:
                 query += 'DICAF,'
             else:
                 query += 'DICA,'
-            query += 'WFORMA,SPEECHA,TRANSCA from BLOCKS \
+            query += 'WFORMA,SPEECHA,SPEECHPR,TRANSCA from BLOCKS \
                       where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 \
                       order by '
             if self.SortRows:

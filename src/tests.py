@@ -569,8 +569,7 @@ if __name__ == '__main__':
     #Plugin().run_dsl()
     #Tags().run_dsl()
     import logic as lg
-    order = (_('Suffix'),_('Noun'),_('Verb'),_('Adjective'))
+    order = (_('Noun'),_('Verb'),_('Adjective'))
     lg.objs.get_speech_prior().reset(order)
     lg.objs.speech_prior.debug()
-    lg.objs.speech_prior.debug_pairs()
     sh.com.end()

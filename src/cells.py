@@ -19,6 +19,7 @@ class Block:
         # Applies to non-blocked cells only
         self.cellno = -1
         self.same   = -1
+        self.sprior = -1
         self.priority = 0
         ''' Block types:
             'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
@@ -162,7 +163,7 @@ class Cells:
         We assume that sqlite has already sorted DB with
         'BLOCK IS NOT 1'.
         Needs attributes in blocks: NO, TYPE, TEXT, SAMECELL, DICA,
-                                    WFORMA, SPEECHA, TRANSCA
+                                    WFORMA, SPEECHA, SPEECHPR, TRANSCA
         Modifies attributes:        TEXT, ROWNO, COLNO, CELLNO
         #NOTE: collimit at input: fixed columns are included
     '''
@@ -266,7 +267,8 @@ class Cells:
             block.dica    = item[4]
             block.wforma  = item[5]
             block.speecha = item[6]
-            block.transca = item[7]
+            block.sprior  = item[7]
+            block.transca = item[8]
             self.blocks.append(block)
         
     def debug(self):

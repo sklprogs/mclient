@@ -54,8 +54,8 @@ class SpeechPrior:
         self.check()
         self.prioritize()
     
-    def get_pairs_abbr2full(self):
-        f = '[MClient] logic.SpeechPrior.get_pairs_abbr2full'
+    def get_abbr2full(self):
+        f = '[MClient] logic.SpeechPrior.get_abbr2full'
         if self.Success:
             if not self.abbr2full:
                 for i in range(len(self.abbr)):
@@ -64,8 +64,8 @@ class SpeechPrior:
             sh.com.cancel(f)
         return self.abbr2full
     
-    def get_pairs_full2abbr(self):
-        f = '[MClient] logic.SpeechPrior.get_pairs_full2abbr'
+    def get_full2abbr(self):
+        f = '[MClient] logic.SpeechPrior.get_full2abbr'
         if self.Success:
             if not self.full2abbr:
                 for i in range(len(self.full)):
@@ -74,53 +74,30 @@ class SpeechPrior:
             sh.com.cancel(f)
         return self.full2abbr
     
-    def get_sequence_abbr(self):
-        f = '[MClient] logic.SpeechPrior.get_sequence_abbr'
+    def get_all2prior(self):
+        f = '[MClient] logic.SpeechPrior.get_all2prior'
         seq = {}
         if self.Success:
             for i in range(len(self.prior)):
                 seq[self.abbr[i]] = self.prior[i]
-        else:
-            sh.com.cancel(f)
-        return seq
-    
-    def get_sequence_full(self):
-        f = '[MClient] logic.SpeechPrior.get_sequence_full'
-        seq = {}
-        if self.Success:
-            for i in range(len(self.prior)):
                 seq[self.full[i]] = self.prior[i]
         else:
             sh.com.cancel(f)
         return seq
     
     def debug(self):
-        f = '[MClient] logic.SpeechPrior.debug'
+        self.debug_all2prior()
+        self.debug_pairs()
+    
+    def debug_all2prior(self):
+        f = '[MClient] logic.SpeechPrior.debug_all2prior'
         if self.Success:
-            seq_abbr = self.get_sequence_abbr()
-            seq_full = self.get_sequence_full()
-            if seq_abbr and seq_full:
-                prior = [seq_abbr.get(key) for key in seq_abbr.keys()]
-                prior.sort()
-                full = []
-                abbr = []
-                for priority in prior:
-                    abbr_key = None
-                    for key in seq_abbr.keys():
-                        if seq_abbr[key] == priority:
-                            abbr_key = key
-                            break
-                    if abbr_key:
-                        abbr.append(abbr_key)
-                    full_key = None
-                    for key in seq_full.keys():
-                        if seq_full[key] == priority:
-                            full_key = key
-                            break
-                    if full_key:
-                        full.append(full_key)
-                headers = (_('ABBREVIATION'),_('NAME'),_('PRIORITY'))
-                iterable = [abbr,full,prior]
+            all2prior = self.get_all2prior()
+            if all2prior:
+                all_ = all2prior.keys()
+                prior = [all2prior.get(key) for key in all2prior.keys()]
+                headers = (_('NAME'),_('PRIORITY'))
+                iterable = [all_,prior]
                 mes = sh.FastTable(iterable,headers).run()
                 sh.com.run_fast_debug(f,mes)
             else:
@@ -130,7 +107,7 @@ class SpeechPrior:
     
     def _debug_full2abbr(self):
         f = '[MClient] logic.SpeechPrior._debug_full2abbr'
-        full2abbr = self.get_pairs_full2abbr()
+        full2abbr = self.get_full2abbr()
         if full2abbr:
             full = sorted(full2abbr.keys())
             abbr = [full2abbr.get(item) for item in full]
@@ -143,7 +120,7 @@ class SpeechPrior:
     
     def _debug_abbr2full(self):
         f = '[MClient] logic.SpeechPrior._debug_abbr2full'
-        abbr2full = self.get_pairs_abbr2full()
+        abbr2full = self.get_abbr2full()
         if abbr2full:
             abbr = sorted(abbr2full.keys())
             full = [abbr2full.get(item) for item in abbr]
@@ -1381,7 +1358,7 @@ class Commands:
     def __init__(self):
         self.use_unverified()
         
-    def prioritize_speech(self,blocks,ExpandSpeech=False):
+    def prioritize_speech(self,blocks):
         f = '[MClient] logic.Commands.prioritize_speech'
         if blocks:
             speech = [block.text for block in blocks \
@@ -1391,15 +1368,18 @@ class Commands:
             mes = _('Parts of speech used in the article: {}')
             mes = mes.format(', '.join(speech))
             sh.objs.get_mes(f,mes,True).show_debug()
-            if ExpandSpeech:
-                spdic = objs.get_speech_prior().get_sequence_full()
-            else:
-                spdic = objs.get_speech_prior().get_sequence_abbr()
+            spdic = objs.get_speech_prior().get_all2prior()
             if spdic:
+                unknown_prior = []
                 for block in blocks:
                     sprior = spdic.get(block.speecha)
                     if sprior:
                         block.sprior = sprior
+                    elif not block.speecha in unknown_prior:
+                        mes = _('A priority of the part of speech "{}" is not defined!')
+                        mes = mes.format(block.speecha)
+                        sh.objs.get_mes(f,mes,True).show_warning()
+                        unknown_prior.append(block.speecha)
             else:
                 sh.com.rep_empty(f)
         else:
