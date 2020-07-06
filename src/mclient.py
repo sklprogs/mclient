@@ -164,7 +164,7 @@ def run_timed_update():
     lg.objs.get_request().MouseClicked = False
     check = kl_mod.keylistener.check()
     if check:
-        if check == 1 and lg.objs.request.CaptureHotkey:
+        if check == 1 and sh.lg.globs['bool']['_CaptureHotkey']:
             # Prevent thread freezing in Windows newer than XP
             if sh.objs.get_os().is_win():
                 kl_mod.keylistener.cancel()
@@ -174,7 +174,7 @@ def run_timed_update():
             if new_clipboard:
                 lg.objs.request.search = new_clipboard
                 objs.get_webframe().go_search()
-        if check == 2 or lg.objs.request.CaptureHotkey:
+        if check == 2 or sh.lg.globs['bool']['_CaptureHotkey']:
             call_app()
     sh.objs.get_root().widget.after(300,run_timed_update)
 
@@ -1529,8 +1529,8 @@ class WebFrame:
         data = objs.blocksdb.assign_bp()
         bp = cl.BlockPrioritize (data       = data
                                 ,order      = lg.objs.get_order()
-                                ,Block      = lg.objs.request.Block
-                                ,Prioritize = lg.objs.request.Prioritize
+                                ,Block      = sh.lg.globs['bool']['_BlockDics']
+                                ,Prioritize = sh.lg.globs['bool']['_PrioritizeDics']
                                 ,phdic      = self.phdic
                                 ,Debug      = lg.objs.get_plugins().Debug
                                 )
@@ -1552,10 +1552,10 @@ class WebFrame:
 
         self.update_columns()
         
-        SortTerms = lg.objs.request.SortTerms \
+        SortTerms = sh.lg.globs['bool']['_AlphabetizeTerms'] \
                     and not lg.objs.request.SpecialPage
         objs.blocksdb.reset (cols      = lg.objs.request.cols
-                            ,SortRows  = lg.objs.request.SortRows
+                            ,SortRows  = sh.lg.globs['bool']['_SortByColumns']
                             ,SortTerms = SortTerms
                             ,ExpandDic = not objs.get_settings().gui.cbx_no6.get()
                             ,ShowUsers = objs.settings.gui.cbx_no7.get()
@@ -1577,7 +1577,7 @@ class WebFrame:
                          ,collimit = lg.objs.request.collimit
                          ,phdic    = self.phdic
                          ,spdic    = spdic
-                         ,Reverse  = lg.objs.request.Reverse
+                         ,Reverse  = sh.lg.globs['bool']['_VerticalView']
                          ,Debug    = lg.objs.plugins.Debug
                          )
         cells.run()
@@ -1595,7 +1595,7 @@ class WebFrame:
                                 ,collimit = lg.objs.request.collimit
                                 ,order    = lg.objs.get_order()
                                 ,width    = sh.lg.globs['int']['col_width']
-                                ,Reverse  = lg.objs.request.Reverse
+                                ,Reverse  = sh.lg.globs['bool']['_VerticalView']
                                 ,phdic    = self.phdic
                                 ,skipped  = skipped
                                 )
@@ -1895,10 +1895,10 @@ class WebFrame:
 
     # Watch clipboard
     def watch_clipboard(self,event=None):
-        if lg.objs.get_request().CaptureHotkey:
-            lg.objs.request.CaptureHotkey = False
+        if sh.lg.globs['bool']['_CaptureHotkey']:
+            sh.lg.globs['bool']['_CaptureHotkey'] = False
         else:
-            lg.objs.request.CaptureHotkey = True
+            sh.lg.globs['bool']['_CaptureHotkey'] = True
         self.update_buttons()
 
     # Open URL of the current article in a browser
@@ -1983,7 +1983,7 @@ class WebFrame:
             else:
                 self.gui.btn_nxt.inactivate()
             
-            if lg.objs.request.Block and objs.blocksdb.get_blocked():
+            if sh.lg.globs['bool']['_BlockDics'] and objs.blocksdb.get_blocked():
                 self.gui.btn_blk.activate()
                 objs.get_settings().gui.cbx_no3.enable()
             else:
@@ -1991,7 +1991,7 @@ class WebFrame:
                 objs.get_settings().gui.cbx_no3.disable()
 
             if not lg.objs.request.SpecialPage \
-            and lg.objs.request.Prioritize \
+            and sh.lg.globs['bool']['_PrioritizeDics'] \
             and objs.blocksdb.get_prioritized():
                 self.gui.btn_pri.activate()
                 objs.get_settings().gui.cbx_no4.enable()
@@ -2001,12 +2001,12 @@ class WebFrame:
         else:
             sh.com.rep_lazy(f)
 
-        if lg.objs.get_request().CaptureHotkey:
+        if sh.lg.globs['bool']['_CaptureHotkey']:
             self.gui.btn_cap.activate()
         else:
             self.gui.btn_cap.inactivate()
 
-        if lg.objs.request.Reverse:
+        if sh.lg.globs['bool']['_VerticalView']:
             self.gui.btn_viw.inactivate()
             objs.get_settings().gui.cbx_no5.enable()
         else:
@@ -2014,7 +2014,7 @@ class WebFrame:
             objs.get_settings().gui.cbx_no5.disable()
 
         if not lg.objs.request.SpecialPage \
-        and lg.objs.request.SortTerms:
+        and sh.lg.globs['bool']['_AlphabetizeTerms']:
             self.gui.btn_alp.activate()
             objs.get_settings().gui.cbx_no2.enable()
         else:
@@ -2128,32 +2128,32 @@ class WebFrame:
         self.load_article()
 
     def toggle_view(self,event=None):
-        if lg.objs.get_request().Reverse:
-            lg.objs.request.Reverse = False
+        if sh.lg.globs['bool']['_VerticalView']:
+            sh.lg.globs['bool']['_VerticalView'] = False
         else:
-            lg.objs.request.Reverse = True
+            sh.lg.globs['bool']['_VerticalView'] = True
         objs.get_blocksdb().delete_bookmarks()
         self.load_article()
 
     def toggle_alphabet(self,event=None):
-        if lg.objs.get_request().SortTerms:
-            lg.objs.request.SortTerms = False
+        if sh.lg.globs['bool']['_AlphabetizeTerms']:
+            sh.lg.globs['bool']['_AlphabetizeTerms'] = False
         else:
-            lg.objs.request.SortTerms = True
+            sh.lg.globs['bool']['_AlphabetizeTerms'] = True
         objs.get_blocksdb().delete_bookmarks()
         self.load_article()
 
     def toggle_block(self,event=None):
         f = '[MClient] mclient.WebFrame.toggle_block'
-        if lg.objs.get_request().Block:
-            lg.objs.request.Block = False
+        if sh.lg.globs['bool']['_BlockDics']:
+            sh.lg.globs['bool']['_BlockDics'] = False
             '''
             mes = _('Blacklisting is now OFF.')
             sh.objs.get_mes(f,mes).show_info()
             '''
             self.unblock()
         else:
-            lg.objs.request.Block = True
+            sh.lg.globs['bool']['_BlockDics'] = True
             if lg.objs.get_order().blacklst:
                 '''
                 mes = _('Blacklisting is now ON.')
@@ -2194,15 +2194,15 @@ class WebFrame:
 
     def toggle_priority(self,event=None):
         f = '[MClient] mclient.WebFrame.toggle_priority'
-        if lg.objs.get_request().Prioritize:
-            lg.objs.request.Prioritize = False
+        if sh.lg.globs['bool']['_PrioritizeDics']:
+            sh.lg.globs['bool']['_PrioritizeDics'] = False
             '''
             mes = _('Prioritizing is now OFF.')
             sh.objs.get_mes(f,mes).show_info()
             '''
             self.unprioritize()
         else:
-            lg.objs.request.Prioritize = True
+            sh.lg.globs['bool']['_PrioritizeDics'] = True
             if lg.objs.get_order().prioritize:
                 '''
                 mes = _('Prioritizing is now ON.')
@@ -2230,7 +2230,7 @@ class WebFrame:
                                 ,order    = lg.objs.get_order()
                                 ,width    = sh.lg.globs['int']['col_width']
                                 ,Printer  = True
-                                ,Reverse  = lg.objs.request.Reverse
+                                ,Reverse  = sh.lg.globs['bool']['_VerticalView']
                                 ,skipped  = skipped
                                 )
         code = mh.objs.htm.run()
@@ -2480,12 +2480,12 @@ class Settings:
         if set(lst):
             self.gui.close()
             lg.objs.get_request().cols = tuple(lst)
-            lg.objs.request.SortRows   = self.gui.cbx_no1.get()
-            lg.objs.request.SortTerms  = self.gui.cbx_no2.get()
-            lg.objs.request.Block      = self.gui.cbx_no3.get()
-            lg.objs.request.Prioritize = self.gui.cbx_no4.get()
-            lg.objs.request.Reverse    = self.gui.cbx_no5.get()
-            if lg.objs.request.SortRows:
+            sh.lg.globs['bool']['_SortByColumns'] = self.gui.cbx_no1.get()
+            sh.lg.globs['bool']['_AlphabetizeTerms'] = self.gui.cbx_no2.get()
+            sh.lg.globs['bool']['_BlockDics'] = self.gui.cbx_no3.get()
+            sh.lg.globs['bool']['_PrioritizeDics'] = self.gui.cbx_no4.get()
+            sh.lg.globs['bool']['_VerticalView'] = self.gui.cbx_no5.get()
+            if sh.lg.globs['bool']['_SortByColumns']:
                 self.prioritize_speech()
                 #cur
                 ''' #TODO: read the speech parts order from memory, get

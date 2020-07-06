@@ -766,7 +766,7 @@ class ConfigMclient(sh.Config):
            ,'_BlockDics'          :True
            ,'_CaptureHotkey'      :True
            ,'_PrioritizeDics'     :True
-           ,'_ShortenDics'        :False
+           ,'_FullDicTitles'      :False
            ,'_ShowUserNames'      :True
            ,'_SortByColumns'      :True
            ,'_VerticalView'       :False
@@ -897,20 +897,14 @@ class CurRequest:
         ''' #NOTE: this should be synchronized with the 'default' value
             of objs.webframe().menu_columns
         '''
-        self.collimit = 8
-        self.source  = objs.get_plugins().source
-        self.cols    = ('dic','wform','transc','speech')
+        self.source = objs.get_plugins().source
+        self.cols = ('dic','wform','transc','speech')
+        self.collimit = sh.lg.globs['int']['_colnum'] + 4
         ''' Toggling blacklisting should not depend on a number of
             blocked dictionaries (otherwise, it is not clear how
             blacklisting should be toggled)
         '''
-        self.Block         = True
-        self.CaptureHotkey = True
-        self.MouseClicked  = False
-        self.Prioritize    = True
-        self.Reverse       = False
-        self.SortRows      = True
-        self.SortTerms     = True
+        self.MouseClicked = False
         ''' *Temporary* turn off prioritizing and terms sorting for
             articles with 'sep_words_found' and in phrases; use previous
             settings for new articles
