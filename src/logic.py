@@ -108,27 +108,22 @@ class CreateConfig:
     
     def fill(self):
         section = sh.lg.SectionBooleans
-        # Возможные значения в данном разделе: 0 (False) или 1 (True)
         comment = _('The following values are allowed in this section: 0 (False) or 1 (True)')
         self.add_section(section,comment)
         section_abbr = self.sections[-1].abbr
         
-        # 'Скрывать окно специальных символов после вставки 1-го символа'
         comment = _('Hide the window with special characters after the 1st symbol is inserted')
         key = 'AutoCloseSpecSymbol'
         self.add_key(section,section_abbr,key,comment)
         
-        # Показывать подсказки для вводимых слов
         comment = _('Complete words on input')
         key = 'Autocompletion'
         self.add_key(section,section_abbr,key,comment)
         
-        # Выделять блоки всех типов (False) или только термины (True)
         comment = _('Select blocks of all types (False) or terms only (True)')
         key = 'SelectTermsOnly'
         self.add_key(section,section_abbr,key,comment)
         
-        # Минимизировать окно программы после некоторых действий, например, копирования
         comment = _('Minimize the application window after some actions, e.g., copying')
         key = 'Iconify'
         self.add_key(section,section_abbr,key,comment)
@@ -137,436 +132,360 @@ class CreateConfig:
         self.add_section(section)
         section_abbr = self.sections[-1].abbr
         
-        # Ширина столбцов. Введите 0 для автоподбора.
         comment = _('A column width. Set to 0 to pick the value automatically.')
         key = 'col_width'
         self.add_key(section,section_abbr,key,comment)
         
-        # Кегль комментариев
         comment = _('A font size of comments')
         key = 'font_comments_size'
         self.add_key(section,section_abbr,key,comment)
         
-        # Кегль столбца №1
-        comment = _('A font size of column #1')
+        comment = _('A font size of column #{}')
+        comment = comment.format(1)
         key = 'font_col1_size'
         self.add_key(section,section_abbr,key,comment)
         
-        # Кегль столбца №2
-        comment = _('A font size of column #2')
+        comment = _('A font size of column #{}')
+        comment = comment.format(2)
         key = 'font_col2_size'
         self.add_key(section,section_abbr,key,comment)
         
-        # Кегль столбца №3
-        comment = _('A font size of column #3')
+        comment = _('A font size of column #{}')
+        comment = comment.format(3)
         key = 'font_col3_size'
         self.add_key(section,section_abbr,key,comment)
         
-        # Кегль столбца №4
-        comment = _('A font size of column #4')
+        comment = _('A font size of column #{}')
+        comment = comment.format(4)
         key = 'font_col4_size'
         self.add_key(section,section_abbr,key,comment)
         
-        # Кегль терминов
         comment = _('A font size of terms')
         key = 'font_terms_size'
         self.add_key(section,section_abbr,key,comment)
         
-        # Время ожидания сайта (в секундах)
         comment = _('A connection timeout (in seconds)')
         key = 'timeout'
         self.add_key(section,section_abbr,key,comment)
         
         section = sh.lg.SectionVariables
-        # Внимание: некоторые комбинации, например, <Button-1> и <Double-Button-1> могут конфликтовать. Переназначайте их с осторожностью.
         comment = _('Attention: some hotkeys, e.g., <Button-1> and <Double-Button-1> may conflict with each other. Reassign them with caution.')
         self.add_section(section,comment)
         section_abbr = self.sections[-1].abbr
         
-        # Очистить историю
         comment = _('Clear History')
         key = 'bind_clear_history'
         self.add_key(section,section_abbr,key,comment)
         
-        # Очистить строку поиска
         comment = _('Clear the search field')
         key = 'bind_clear_search_field'
         self.add_key(section,section_abbr,key,comment)
         
-        # Перейти к следующему разделу 1-го столбца
         comment = _('Go to the next section of column #{}').format(1)
         key = 'bind_col1_down'
         self.add_key(section,section_abbr,key,comment)
         
-        # Перейти к предыдущему разделу 1-го столбца
         comment = _('Go to the previous section of column #{}')
         comment = comment.format(1)
         key = 'bind_col1_up'
         self.add_key(section,section_abbr,key,comment)
         
-        # Перейти к следующему разделу 2-го столбца
         comment = _('Go to the next section of column #{}').format(2)
         key = 'bind_col2_down'
         self.add_key(section,section_abbr,key,comment)
         
-        # Перейти к предыдущему разделу 2-го столбца
         comment = _('Go to the previous section of column #{}')
         comment = comment.format(2)
         key = 'bind_col2_up'
         self.add_key(section,section_abbr,key,comment)
         
-        # Перейти к следующему разделу 3-го столбца
         comment = _('Go to the next section of column #{}').format(3)
         key = 'bind_col3_down'
         self.add_key(section,section_abbr,key,comment)
         
-        # Перейти к предыдущему разделу 3-го столбца
         comment = _('Go to the previous section of column #{}')
         comment = comment.format(3)
         key = 'bind_col3_up'
         self.add_key(section,section_abbr,key,comment)
         
-        # Скопировать URL текущей статьи
         comment = _('Copy URL of the current article')
         key = 'bind_copy_article_url'
         self.add_key(section,section_abbr,key,comment)
         
-        # Скопировать слово/фразу для перевода в именительном падеже
         comment = _('Copy an original word/phrase in a nominative case')
         key = 'bind_copy_nominative'
         self.add_key(section,section_abbr,key,comment)
         
-        # Скопировать текущее выделение из статьи (комбинация 1)
         comment = _('Copy a current selection from the article (combination #{})')
         comment = comment.format(1)
         key = 'bind_copy_sel'
         self.add_key(section,section_abbr,key,comment)
         
-        # Скопировать текущее выделение из статьи (комбинация 2)
         comment = _('Copy a current selection from the article (combination #{})')
         comment = comment.format(2)
         key = 'bind_copy_sel_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        # Скопировать URL текущего термина
         comment = _('Copy URL of the current term')
         key = 'bind_copy_url'
         self.add_key(section,section_abbr,key,comment)
         
-        # Открыть веб-страницу с определением текущего термина
         comment = _('Open a web-page defining the current term')
         key = 'bind_define'
         self.add_key(section,section_abbr,key,comment)
         
-        # Перейти на предыдущую статью
         comment = _('Go to the previous article')
         key = 'bind_go_back'
         self.add_key(section,section_abbr,key,comment)
         
-        # Перейти на последующую статью
         comment = _('Go to the next article')
         key = 'bind_go_forward'
         self.add_key(section,section_abbr,key,comment)
         
-        # Перейти к разделу фраз
         comment = _('Go to the phrases section')
         key = 'bind_go_phrases'
         self.add_key(section,section_abbr,key,comment)
         
-        # Установить следующий по списку язык 1 (комбинация 1)
         comment = _('Set next language {} (combination {})')
         comment = comment.format(1,1)
         key = 'bind_next_lang1'
         self.add_key(section,section_abbr,key,comment)
         
-        # Установить следующий по списку язык 1 (комбинация 2)
         comment = _('Set next language {} (combination {})')
         comment = comment.format(1,2)
         key = 'bind_next_lang1_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        # Установить следующий по списку язык 2 (комбинация 1)
         comment = _('Set next language {} (combination {})')
         comment = comment.format(2,1)
         key = 'bind_next_lang2'
         self.add_key(section,section_abbr,key,comment)
         
-        # Установить следующий по списку язык 2 (комбинация 2)
         comment = _('Set next language {} (combination {})')
         comment = comment.format(2,2)
         key = 'bind_next_lang2_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        # Вставить содержимое буфера обмена в строку поиска (встроенное сочетание: Ctrl-V)
         comment = _('Paste clipboard contents into the search field (system combination: Ctrl-V)')
         key = 'bind_paste_search_field'
         self.add_key(section,section_abbr,key,comment)
         
-        # Установить предыдущий по списку язык 1 (комбинация 1)
         comment = _('Set previous language #{} (combination #{})')
         comment = comment.format(1,1)
         key = 'bind_prev_lang1'
         self.add_key(section,section_abbr,key,comment)
         
-        # Установить предыдущий по списку язык 1 (комбинация 2)
         comment = _('Set previous language #{} (combination #{})')
         comment = comment.format(1,2)
         key = 'bind_prev_lang1_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        # Установить предыдущий по списку язык 2 (комбинация 1)
         comment = _('Set previous language #{} (combination #{})')
         comment = comment.format(2,1)
         key = 'bind_prev_lang2'
         self.add_key(section,section_abbr,key,comment)
         
-        # Установить предыдущий по списку язык 2 (комбинация 2)
         comment = _('Set previous language #{} (combination #{})')
         comment = comment.format(2,2)
         key = 'bind_prev_lang2_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        # Создать подготовленную для печати страницу
         comment = _('Create a printer-friendly page')
         key = 'bind_print'
         self.add_key(section,section_abbr,key,comment)
         
-        # Выйти из программы
         comment = _('Quit the program')
         key = 'bind_quit'
         self.add_key(section,section_abbr,key,comment)
         
-        # Открыть текущую статью в браузере (комбинация 1)
         comment = _('Open the current article in a browser (combination #{})')
         comment = comment.format(1)
         key = 'bind_open_in_browser'
         self.add_key(section,section_abbr,key,comment)
         
-        # Открыть текущую статью в браузере (комбинация 2)
         comment = _('Open the current article in a browser (combination #{})')
         comment = comment.format(2)
         key = 'bind_open_in_browser_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        # Перезагрузить текущую статью (комбинация 1)
         comment = _('Reload the current article (combination #{})')
         comment = comment.format(1)
         key = 'bind_reload_article'
         self.add_key(section,section_abbr,key,comment)
         
-        # Перезагрузить текущую статью (комбинация 2)
         comment = _('Reload the current article (combination #{})')
         comment = comment.format(2)
         key = 'bind_reload_article_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        # Начать новый поиск по терминам текущей статьи
         comment = _('Start a new term search in the current article')
         key = 'bind_re_search_article'
         self.add_key(section,section_abbr,key,comment)
         
-        # Сохранить текущую статью или скопировать ее в буфер обмена (комбинация 1)
         comment = _('Save or copy the current article (combination #{})')
         comment = comment.format(1)
         key = 'bind_save_article'
         self.add_key(section,section_abbr,key,comment)
         
-        # Сохранить текущую статью или скопировать ее в буфер обмена (комбинация 2)
         comment = _('Save or copy the current article (combination #{})')
         comment = comment.format(2)
         key = 'bind_save_article_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        # Обратный поиск по статье
         comment = _('Search the article backward')
         key = 'bind_search_article_backward'
         self.add_key(section,section_abbr,key,comment)
         
-        # Найти далее по статье
         comment = _('Search the article forward')
         key = 'bind_search_article_forward'
         self.add_key(section,section_abbr,key,comment)
         
-        # Показать настройки (комбинация 1)
         comment = _('Show settings (combination #{})')
         comment = comment.format(1)
         key = 'bind_settings'
         self.add_key(section,section_abbr,key,comment)
         
-        # Показать настройки (комбинация 2)
         comment = _('Show settings (combination #{})')
         comment = comment.format(2)
         key = 'bind_settings_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        # О программе
         comment = _('About the program')
         key = 'bind_show_about'
         self.add_key(section,section_abbr,key,comment)
         
-        # Вставить специальный символ
         comment = _('Paste a special symbol')
         key = 'bind_spec_symbol'
         self.add_key(section,section_abbr,key,comment)
         
-        # Поменять местами языки оригинала и перевода
         comment = _('Swap source and target languages')
         key = 'bind_swap_langs'
         self.add_key(section,section_abbr,key,comment)
         
-        # Включить/отключить сортировку по алфавиту
         comment = _('Toggle alphabetizing')
         key = 'bind_toggle_alphabet'
         self.add_key(section,section_abbr,key,comment)
         
-        # Включить/отключить черный список
         comment = _('Toggle blacklisting')
         key = 'bind_toggle_block'
         self.add_key(section,section_abbr,key,comment)
         
-        # Показать/скрыть историю (комбинация 1)
         comment = _('Toggle History (combination #{})')
         comment = comment.format(1)
         key = 'bind_toggle_history'
         self.add_key(section,section_abbr,key,comment)
         
-        # Показать/скрыть историю (комбинация 2)
         comment = _('Toggle History (combination #{})')
         comment = comment.format(2)
         key = 'bind_toggle_history_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        # Включить/отключить список приоритетных словарей
         comment = _('Toggle prioritizing')
         key = 'bind_toggle_priority'
         self.add_key(section,section_abbr,key,comment)
         
-        # Включить/отключить режим выбора только терминов
         comment = _('Toggle selecting terms only')
         key = 'bind_toggle_sel'
         self.add_key(section,section_abbr,key,comment)
         
-        # Переключить вид отображения статьи (комбинация 1)
         comment = _('Toggle the current article view (combination #{})')
         comment = comment.format(1)
         key = 'bind_toggle_view'
         self.add_key(section,section_abbr,key,comment)
         
-        # Переключить вид отображения статьи (комбинация 2)
         comment = _('Toggle the current article view (combination #{})')
         comment = comment.format(2)
         key = 'bind_toggle_view_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        # Цвет шрифта комментариев и имен пользователей
         comment = _('A font color for comments and user names')
         key = 'color_comments'
         self.add_key(section,section_abbr,key,comment)
         
-        # Цвет шрифта столбца №1
         comment = _('A font color for column #{}')
         comment = comment.format(1)
         key = 'color_col1'
         self.add_key(section,section_abbr,key,comment)
         
-        # Цвет шрифта столбца №2
         comment = _('A font color for column #{}')
         comment = comment.format(2)
         key = 'color_col2'
         self.add_key(section,section_abbr,key,comment)
         
-        # Цвет шрифта столбца №3
         comment = _('A font color for column #{}')
         comment = comment.format(3)
         key = 'color_col3'
         self.add_key(section,section_abbr,key,comment)
         
-        # Цвет шрифта столбца №4
         comment = _('A font color for column #{}')
         comment = comment.format(4)
         key = 'color_col4'
         self.add_key(section,section_abbr,key,comment)
         
-        # Цвет шрифта терминов
         comment = _('A font color for terms')
         key = 'color_terms'
         self.add_key(section,section_abbr,key,comment)
         
-        # Цвет фона текущего (выделенного) термина
         comment = _('A font background color for the current (selected) term')
         key = 'color_terms_sel_bg'
         self.add_key(section,section_abbr,key,comment)
         
-        # Цвет шрифта текущего (выделенного) термина
         comment = _('A font foreground color for the current (selected) term')
         key = 'color_terms_sel_fg'
         self.add_key(section,section_abbr,key,comment)
         
-        # Шрифт комментариев и имен пользователей
         comment = _('A font of comments and user names')
         key = 'font_comments_family'
         self.add_key(section,section_abbr,key,comment)
         
-        # Шрифт столбца №1
         comment = _('A font of column #{}')
         comment = comment.format(1)
         key = 'font_col1_family'
         self.add_key(section,section_abbr,key,comment)
         
-        # Шрифт столбца №2
         comment = _('A font of column #{}')
         comment = comment.format(2)
         key = 'font_col2_family'
         self.add_key(section,section_abbr,key,comment)
         
-        # Шрифт столбца №3
         comment = _('A font of column #{}')
         comment = comment.format(3)
         key = 'font_col3_family'
         self.add_key(section,section_abbr,key,comment)
         
-        # Шрифт столбца №4
         comment = _('A font of column #{}')
         comment = comment.format(4)
         key = 'font_col4_family'
         self.add_key(section,section_abbr,key,comment)
         
-        # Шрифт текста в области истории запросов
         comment = _('A font color for History')
         key = 'font_history'
         self.add_key(section,section_abbr,key,comment)
         
-        # Шрифт интерфейса программы
         comment = _('A program GUI font')
         key = 'font_style'
         self.add_key(section,section_abbr,key,comment)
         
-        # Шрифт терминов
         comment = _('A font of terms')
         key = 'font_terms_family'
         self.add_key(section,section_abbr,key,comment)
         
-        # Шрифт текущего (выделенного) термина
         comment = _('A font of the current (selected) term')
         key = 'font_terms_sel'
         self.add_key(section,section_abbr,key,comment)
         
-        # Вставить последний элемент истории в строку поиска
         comment = _('Insert the last search request into the search field')
         key = 'repeat_sign'
         self.add_key(section,section_abbr,key,comment)
         
-        # Вставить предпоследний элемент истории в строку поиска
         comment = _('Insert the next-to-last search request into the search field')
         key = 'repeat_sign2'
         self.add_key(section,section_abbr,key,comment)
         
-        # Символы, которые можно вставить в строку поиска
         comment = _('Characters that can be inserted into the search field')
         key = 'spec_syms'
         self.add_key(section,section_abbr,key,comment)
         
-        # Адрес для поиска в Интернете
         comment = _('URL for online search')
         key = 'web_search_url'
         self.add_key(section,section_abbr,key,comment)
