@@ -7,6 +7,20 @@ from skl_shared.localize import _
 DEBUG = True
 
 
+class Tests:
+    
+    def run_speech(self):
+        import logic as lg
+        order = (_('Noun'),_('Verb'),_('Adjective'))
+        lg.objs.get_speech_prior().reset(order)
+        lg.objs.speech_prior.debug()
+    
+    def generate_config(self):
+        import logic as lg
+        lg.CreateConfig().run()
+
+
+
 class Block:
     
     def __init__(self):
@@ -568,8 +582,6 @@ if __name__ == '__main__':
     #Plugin().run_multitrancom()
     #Plugin().run_dsl()
     #Tags().run_dsl()
-    import logic as lg
-    order = (_('Noun'),_('Verb'),_('Adjective'))
-    lg.objs.get_speech_prior().reset(order)
-    lg.objs.speech_prior.debug()
+    #Tests().run_speech()
+    Tests().generate_config()
     sh.com.end()
