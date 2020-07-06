@@ -762,27 +762,51 @@ class ConfigMclient(sh.Config):
         
     def _load_default_bool(self):
         sh.lg.globs['bool'].update ({
-            'AutoCloseSpecSymbol':False
-           ,'Autocompletion'     :True
-           ,'SelectTermsOnly'    :True
-           ,'Iconify'            :True
+            '_AlphabetizeTerms'   :True
+           ,'_BlockDics'          :True
+           ,'_CaptureHotkey'      :True
+           ,'_PrioritizeDics'     :True
+           ,'_ShortenDics'        :False
+           ,'_ShowUserNames'      :True
+           ,'_SortByColumns'      :True
+           ,'_VerticalView'       :False
+           ,'AutoCloseSpecSymbol' :False
+           ,'Autocompletion'      :True
+           ,'SelectTermsOnly'     :True
+           ,'Iconify'             :True
                                    })
     
     def _load_default_int(self):
         sh.lg.globs['int'].update ({
-            'col_width'         :250
-           ,'font_comments_size':3
+            '_colnum'           :4
+           ,'col_width'         :250
            ,'font_col1_size'    :4
            ,'font_col2_size'    :4
            ,'font_col3_size'    :3
            ,'font_col4_size'    :3
+           ,'font_comments_size':3
            ,'font_terms_size'   :4
            ,'timeout'           :5
                                   })
     
     def _load_default_var(self):
         sh.lg.globs['var'].update ({
-            'bind_clear_history'          :'<Control-Shift-Delete>'
+            '_col1_type'                  :_('Dictionaries')
+           ,'_col2_type'                  :_('Word forms')
+           ,'_col3_type'                  :_('Parts of speech')
+           ,'_col4_type'                  :_('Transcription')
+           ,'_lang1'                      :_('Russian')
+           ,'_lang2'                      :_('English')
+           ,'_source'                     :_('Multitran')
+           ,'_speech1'                    :_('Noun')
+           ,'_speech2'                    :_('Verb')
+           ,'_speech3'                    :_('Adjective')
+           ,'_speech4'                    :_('Abbreviation')
+           ,'_speech5'                    :_('Adverb')
+           ,'_speech6'                    :_('Preposition')
+           ,'_speech7'                    :_('Pronoun')
+           ,'_style'                      :'MClient'
+           ,'bind_clear_history'          :'<Control-Shift-Delete>'
            ,'bind_clear_search_field'     :'<ButtonRelease-3>'
            ,'bind_col1_down'              :'<Control-Down>'
            ,'bind_col1_up'                :'<Control-Up>'
@@ -792,8 +816,8 @@ class ConfigMclient(sh.Config):
            ,'bind_col3_up'                :'<Shift-Up>'
            ,'bind_copy_article_url'       :'<Control-F7>'
            ,'bind_copy_nominative'        :'<Control-w>'
-           ,'bind_copy_sel_alt'           :'<Control-KP_Enter>'
            ,'bind_copy_sel'               :'<Control-Return>'
+           ,'bind_copy_sel_alt'           :'<Control-KP_Enter>'
            ,'bind_copy_url'               :'<Shift-F7>'
            ,'bind_define'                 :'<Control-d>'
            ,'bind_go_back'                :'<Alt-Left>'
@@ -807,8 +831,8 @@ class ConfigMclient(sh.Config):
            ,'bind_prev_lang1_alt'         :'<Control-K>'
            ,'bind_prev_lang2'             :'<Shift-F9>'
            ,'bind_prev_lang2_alt'         :'<Control-L>'
-           ,'bind_open_in_browser_alt'    :'<Control-b>'
            ,'bind_open_in_browser'        :'<F7>'
+           ,'bind_open_in_browser_alt'    :'<Control-b>'
            ,'bind_paste_search_field'     :'<ButtonRelease-2>'
            ,'bind_print'                  :'<Control-p>'
            ,'bind_quit'                   :'<F10>'
@@ -826,29 +850,29 @@ class ConfigMclient(sh.Config):
            ,'bind_swap_langs'             :'<Control-space>'
            ,'bind_toggle_alphabet'        :'<Alt-a>'
            ,'bind_toggle_block'           :'<Alt-b>'
-           ,'bind_toggle_history_alt'     :'<Control-h>'
            ,'bind_toggle_history'         :'<F4>'
+           ,'bind_toggle_history_alt'     :'<Control-h>'
            ,'bind_toggle_priority'        :'<Alt-p>'
            ,'bind_toggle_sel'             :'<Control-t>'
            ,'bind_toggle_view'            :'<F6>'
            ,'bind_toggle_view_alt'        :'<Alt-v>'
-           ,'color_comments'              :'gray'
            ,'color_col1'                  :'coral'
            ,'color_col2'                  :'cadet blue'
            ,'color_col3'                  :'slate gray'
            ,'color_col4'                  :'slate gray'
+           ,'color_comments'              :'gray'
+           ,'color_terms'                 :'black'
            ,'color_terms_sel_bg'          :'cyan'
            ,'color_terms_sel_fg'          :'black'
-           ,'color_terms'                 :'black'
-           ,'font_comments_family'        :'Mono'
            ,'font_col1_family'            :'Arial'
            ,'font_col2_family'            :'Arial'
            ,'font_col3_family'            :'Mono'
            ,'font_col4_family'            :'Mono'
+           ,'font_comments_family'        :'Mono'
            ,'font_history'                :'Sans 12'
            ,'font_style'                  :'Sans 14'
-           ,'font_terms_sel'              :'Sans 14 bold italic'
            ,'font_terms_family'           :'Serif'
+           ,'font_terms_sel'              :'Sans 14 bold italic'
            ,'repeat_sign'                 :'!'
            ,'repeat_sign2'                :'!!'
            ,'spec_syms'                   :'àáâäāæßćĉçèéêēёëəғĝģĥìíîïīĵķļñņòóôõöōœøšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒЁËƏҒĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒØŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ'
