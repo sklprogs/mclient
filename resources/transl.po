@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-07 04:47+0300\n"
-"PO-Revision-Date: 2020-07-07 04:55+0300\n"
+"PO-Revision-Date: 2020-07-07 04:57+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -545,7 +545,7 @@ msgstr "Настройки вида"
 
 #: mclient/src/logic.py:111
 msgid "The following values are allowed in this section: 0 (False) or 1 (True)"
-msgstr "Возможные значения в данном разделе: 0 (False) или 1 (True)"
+msgstr "Допустимые значения в данном разделе: 0 (False) или 1 (True)"
 
 #: mclient/src/logic.py:116
 msgid "[Autosave] Sort terms by alphabet"
