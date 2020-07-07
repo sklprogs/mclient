@@ -23,6 +23,37 @@ if __name__ == '__main__':
 
 
 
+class Commands:
+    
+    def get_skipped_dics(self):
+        f = '[MClient] mclient.Commands.get_skipped_dics'
+        skipped = objs.get_blocksdb().get_skipped_dics()
+        if skipped:
+            skipped = ', '.join(skipped)
+            skipped = skipped.split(', ')
+            skipped = sorted(set(skipped))
+            mes = '; '.join(skipped)
+            sh.objs.get_mes(f,mes,True).show_debug()
+            return skipped
+        else:
+            return []
+    
+    def get_skipped_terms(self):
+        f = '[MClient] mclient.Commands.get_skipped_terms'
+        skipped = objs.get_blocksdb().get_skipped_terms()
+        if skipped:
+            # TERM can be empty for some reason
+            skipped = [item for item in skipped if item]
+            # We already use 'distinct' in DB, no need to use 'set'
+            skipped.sort()
+            mes = '; '.join(skipped)
+            sh.objs.get_mes(f,mes,True).show_debug()
+            return skipped
+        else:
+            return []
+
+
+
 class UpdateWebFrameUI:
     
     def __init__(self):
@@ -96,9 +127,11 @@ class UpdateWebFrameUI:
         self.gui.btn_pri.set_hint()
     
     def _update_block(self):
+        f = '[MClient] UpdateWebFrameUI._update_block'
         mes = [_('Subject blocking')]
-        blocked = objs.blocksdb.get_blocked()
-        if sh.lg.globs['bool']['BlockDics'] and blocked:
+        skipped_terms = len(com.get_skipped_terms())
+        skipped_dics = len(com.get_skipped_dics())
+        if sh.lg.globs['bool']['BlockDics'] and skipped_terms:
             self.gui.btn_blk.activate()
         else:
             self.gui.btn_blk.inactivate()
@@ -106,9 +139,9 @@ class UpdateWebFrameUI:
             mes.append(_('Status: ON'))
         else:
             mes.append(_('Status: OFF'))
-        if blocked:
-            sub = _('{} subjects were blocked')
-            sub = sub.format(len(blocked))
+        if skipped_terms:
+            sub = _('Skipped {} terms in {} subjects')
+            sub = sub.format(skipped_terms,skipped_dics)
         else:
             sub = _('Nothing was blocked')
         mes.append(sub)
@@ -1734,13 +1767,6 @@ class WebFrame:
         cells.run()
         cells.dump(blocksdb=objs.blocksdb)
         
-        skipped = objs.blocksdb.get_skipped_dics()
-        if skipped:
-            skipped = ', '.join(skipped)
-            skipped = skipped.split(', ')
-            skipped = len(set(skipped))
-        else:
-            skipped = 0
         mh.objs.get_htm().reset (data     = objs.blocksdb.fetch()
                                 ,cols     = lg.objs.request.cols
                                 ,collimit = lg.objs.request.collimit
@@ -1748,7 +1774,7 @@ class WebFrame:
                                 ,width    = sh.lg.globs['int']['col_width']
                                 ,Reverse  = sh.lg.globs['bool']['VerticalView']
                                 ,phdic    = self.phdic
-                                ,skipped  = skipped
+                                ,skipped  = len(com.get_skipped_dics())
                                 )
         mh.objs.htm.run()
         
@@ -2305,13 +2331,6 @@ class WebFrame:
 
     def print(self,event=None):
         f = '[MClient] mclient.WebFrame.print'
-        skipped = objs.blocksdb.get_skipped_dics()
-        if skipped:
-            skipped = ', '.join(skipped)
-            skipped = skipped.split(', ')
-            skipped = len(set(skipped))
-        else:
-            skipped = 0
         mh.objs.get_htm().reset (data     = objs.blocksdb.fetch()
                                 ,cols     = lg.objs.request.cols
                                 ,collimit = lg.objs.request.collimit
@@ -2319,7 +2338,7 @@ class WebFrame:
                                 ,width    = sh.lg.globs['int']['col_width']
                                 ,Printer  = True
                                 ,Reverse  = sh.lg.globs['bool']['VerticalView']
-                                ,skipped  = skipped
+                                ,skipped  = len(com.get_skipped_dics())
                                 )
         code = mh.objs.htm.run()
         if code:
@@ -2740,6 +2759,7 @@ class Suggest:
 
 
 objs = Objects()
+com = Commands()
 
 
 if  __name__ == '__main__':

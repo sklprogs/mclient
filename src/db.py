@@ -22,6 +22,21 @@ class DB:
         self.create_blocks()
         self.create_articles()
     
+    def get_skipped_terms(self):
+        f = '[MClient] db.DB.get_skipped_terms'
+        if self.artid:
+            self.dbc.execute ('select distinct TERM from BLOCKS \
+                               where ARTICLEID = ? \
+                               and (BLOCK = 1 or IGNORE = 1) \
+                               order by TERM'
+                             ,(self.artid,)
+                             )
+            result = self.dbc.fetchall()
+            if result:
+                return [item[0] for item in result]
+        else:
+            sh.com.rep_empty(f)
+    
     def print_custom(self,maxrow=40,maxrows=1000):
         ''' This allows to quickly debug only needed fields.
             The procedure is orphaned so any fields can be selected.
@@ -699,6 +714,9 @@ class DB:
 
     def get_skipped_dics(self):
         f = '[MClient] db.DB.get_skipped_dics'
+        ''' #NOTE: Both DIC and TEXT can comprise several dic titles.
+            Use 'mclient.Commands.get_skipped_dics' to split them.
+        '''
         if self.artid:
             self.dbc.execute ('select distinct DIC from BLOCKS \
                                where ARTICLEID = ? \

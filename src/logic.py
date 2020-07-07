@@ -1951,7 +1951,7 @@ class Commands:
     
     def __init__(self):
         self.use_unverified()
-        
+    
     def prioritize_speech(self,blocks):
         f = '[MClient] logic.Commands.prioritize_speech'
         if blocks:
