@@ -151,11 +151,23 @@ class CreateConfig:
         key = 'ShowUserNames'
         comment = _('[Autosave] Show user names')
         self.add_key(section,section_abbr,key,comment)
+        
+        key = 'SortByColumns'
+        comment = _('[Autosave] Sort by each column')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'VerticalView'
+        comment = _('[Autosave] Vertical view')
+        self.add_key(section,section_abbr,key,comment)
     
     def fill_int(self):
         section = sh.lg.SectionIntegers
         self.add_section(section)
         section_abbr = self.sections[-1].abbr
+        
+        key = 'colnum'
+        comment = _('[Autosave] Number of non-fixed columns')
+        self.add_key(section,section_abbr,key,comment)
         
         key = 'col_width'
         comment = _('A column width. Set to 0 to pick the value automatically.')
@@ -429,6 +441,26 @@ class CreateConfig:
         comment = comment.format(2)
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'col1_type'
+        comment = _('[Autosave] Type of column #{} in settings')
+        comment = comment.format(1)
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'col2_type'
+        comment = _('[Autosave] Type of column #{} in settings')
+        comment = comment.format(2)
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'col3_type'
+        comment = _('[Autosave] Type of column #{} in settings')
+        comment = comment.format(3)
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'col4_type'
+        comment = _('[Autosave] Type of column #{} in settings')
+        comment = comment.format(4)
+        self.add_key(section,section_abbr,key,comment)
+        
         key = 'color_comments'
         comment = _('A font color for comments and user names')
         self.add_key(section,section_abbr,key,comment)
@@ -505,6 +537,14 @@ class CreateConfig:
         comment = _('A font of the current (selected) term')
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'lang1'
+        comment = _('[Autosave] Source language')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'lang2'
+        comment = _('[Autosave] Target language')
+        self.add_key(section,section_abbr,key,comment)
+        
         key = 'repeat_sign'
         comment = _('Insert the last search request into the search field')
         self.add_key(section,section_abbr,key,comment)
@@ -514,11 +554,50 @@ class CreateConfig:
         self.add_key(section,section_abbr,key,comment)
         
         key = 'source'
-        comment = _('[Autosave] Main dictionary source to use')
+        comment = _('[Autosave] The main dictionary source to use')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'spec_syms'
         comment = _('Characters that can be inserted into the search field')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'speech1'
+        comment = _('[Autosave] A part of speech of column #{} in settings')
+        comment = comment.format(1)
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'speech2'
+        comment = _('[Autosave] A part of speech of column #{} in settings')
+        comment = comment.format(2)
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'speech3'
+        comment = _('[Autosave] A part of speech of column #{} in settings')
+        comment = comment.format(3)
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'speech4'
+        comment = _('[Autosave] A part of speech of column #{} in settings')
+        comment = comment.format(4)
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'speech5'
+        comment = _('[Autosave] A part of speech of column #{} in settings')
+        comment = comment.format(5)
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'speech6'
+        comment = _('[Autosave] A part of speech of column #{} in settings')
+        comment = comment.format(6)
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'speech7'
+        comment = _('[Autosave] A part of speech of column #{} in settings')
+        comment = comment.format(7)
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'style'
+        comment = _('[Autosave] A sorting style')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'web_search_url'
@@ -1263,22 +1342,22 @@ class ConfigMclient(sh.Config):
     def _load_default_bool(self):
         sh.lg.globs['bool'].update ({
             'AlphabetizeTerms'    :True
-           ,'BlockDics'           :True
-           ,'CaptureHotkey'       :True
-           ,'PrioritizeDics'      :True
-           ,'FullDicTitles'       :False
-           ,'ShowUserNames'       :True
-           ,'_SortByColumns'      :True
-           ,'_VerticalView'       :False
            ,'AutoCloseSpecSymbol' :False
            ,'Autocompletion'      :True
-           ,'SelectTermsOnly'     :True
+           ,'BlockDics'           :True
+           ,'CaptureHotkey'       :True
+           ,'FullDicTitles'       :False
            ,'Iconify'             :True
+           ,'PrioritizeDics'      :True
+           ,'SelectTermsOnly'     :True
+           ,'ShowUserNames'       :True
+           ,'SortByColumns'       :True
+           ,'VerticalView'        :False
                                    })
     
     def _load_default_int(self):
         sh.lg.globs['int'].update ({
-            '_colnum'           :4
+            'colnum'            :4
            ,'col_width'         :250
            ,'font_col1_size'    :4
            ,'font_col2_size'    :4
@@ -1291,21 +1370,7 @@ class ConfigMclient(sh.Config):
     
     def _load_default_var(self):
         sh.lg.globs['var'].update ({
-            '_col1_type'                  :_('Dictionaries')
-           ,'_col2_type'                  :_('Word forms')
-           ,'_col3_type'                  :_('Parts of speech')
-           ,'_col4_type'                  :_('Transcription')
-           ,'_lang1'                      :_('Russian')
-           ,'_lang2'                      :_('English')
-           ,'_speech1'                    :_('Noun')
-           ,'_speech2'                    :_('Verb')
-           ,'_speech3'                    :_('Adjective')
-           ,'_speech4'                    :_('Abbreviation')
-           ,'_speech5'                    :_('Adverb')
-           ,'_speech6'                    :_('Preposition')
-           ,'_speech7'                    :_('Pronoun')
-           ,'_style'                      :'MClient'
-           ,'bind_clear_history'          :'<Control-Shift-Delete>'
+            'bind_clear_history'          :'<Control-Shift-Delete>'
            ,'bind_clear_search_field'     :'<ButtonRelease-3>'
            ,'bind_col1_down'              :'<Control-Down>'
            ,'bind_col1_up'                :'<Control-Up>'
@@ -1355,6 +1420,10 @@ class ConfigMclient(sh.Config):
            ,'bind_toggle_sel'             :'<Control-t>'
            ,'bind_toggle_view'            :'<F6>'
            ,'bind_toggle_view_alt'        :'<Alt-v>'
+           ,'col1_type'                   :_('Dictionaries')
+           ,'col2_type'                   :_('Word forms')
+           ,'col3_type'                   :_('Parts of speech')
+           ,'col4_type'                   :_('Transcription')
            ,'color_col1'                  :'coral'
            ,'color_col2'                  :'cadet blue'
            ,'color_col3'                  :'slate gray'
@@ -1372,10 +1441,20 @@ class ConfigMclient(sh.Config):
            ,'font_style'                  :'Sans 14'
            ,'font_terms_family'           :'Serif'
            ,'font_terms_sel'              :'Sans 14 bold italic'
+           ,'lang1'                       :_('Russian')
+           ,'lang2'                       :_('English')
            ,'repeat_sign'                 :'!'
            ,'repeat_sign2'                :'!!'
            ,'source'                      :_('Multitran')
            ,'spec_syms'                   :'àáâäāæßćĉçèéêēёëəғĝģĥìíîïīĵķļñņòóôõöōœøšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒЁËƏҒĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒØŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ'
+           ,'speech1'                     :_('Noun')
+           ,'speech2'                     :_('Verb')
+           ,'speech3'                     :_('Adjective')
+           ,'speech4'                     :_('Abbreviation')
+           ,'speech5'                     :_('Adverb')
+           ,'speech6'                     :_('Preposition')
+           ,'speech7'                     :_('Pronoun')
+           ,'style'                       :'MClient'
            ,'web_search_url'              :'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s'
                                   })
 
@@ -1395,7 +1474,7 @@ class CurRequest:
     
     def set_values(self):
         self.cols = ('dic','wform','transc','speech')
-        self.collimit = sh.lg.globs['int']['_colnum'] + 4
+        self.collimit = sh.lg.globs['int']['colnum'] + 4
         ''' Toggling blacklisting should not depend on a number of
             blocked dictionaries (otherwise, it is not clear how
             blacklisting should be toggled)

@@ -1555,7 +1555,7 @@ class WebFrame:
         SortTerms = sh.lg.globs['bool']['AlphabetizeTerms'] \
                     and not lg.objs.request.SpecialPage
         objs.blocksdb.reset (cols      = lg.objs.request.cols
-                            ,SortRows  = sh.lg.globs['bool']['_SortByColumns']
+                            ,SortRows  = sh.lg.globs['bool']['SortByColumns']
                             ,SortTerms = SortTerms
                             ,ExpandDic = not objs.get_settings().gui.cbx_no6.get()
                             ,ShowUsers = objs.settings.gui.cbx_no7.get()
@@ -1577,7 +1577,7 @@ class WebFrame:
                          ,collimit = lg.objs.request.collimit
                          ,phdic    = self.phdic
                          ,spdic    = spdic
-                         ,Reverse  = sh.lg.globs['bool']['_VerticalView']
+                         ,Reverse  = sh.lg.globs['bool']['VerticalView']
                          ,Debug    = lg.objs.plugins.Debug
                          )
         cells.run()
@@ -1595,7 +1595,7 @@ class WebFrame:
                                 ,collimit = lg.objs.request.collimit
                                 ,order    = lg.objs.get_order()
                                 ,width    = sh.lg.globs['int']['col_width']
-                                ,Reverse  = sh.lg.globs['bool']['_VerticalView']
+                                ,Reverse  = sh.lg.globs['bool']['VerticalView']
                                 ,phdic    = self.phdic
                                 ,skipped  = skipped
                                 )
@@ -2007,7 +2007,7 @@ class WebFrame:
         else:
             self.gui.btn_cap.inactivate()
 
-        if sh.lg.globs['bool']['_VerticalView']:
+        if sh.lg.globs['bool']['VerticalView']:
             self.gui.btn_viw.inactivate()
             objs.get_settings().gui.cbx_no5.enable()
         else:
@@ -2129,10 +2129,10 @@ class WebFrame:
         self.load_article()
 
     def toggle_view(self,event=None):
-        if sh.lg.globs['bool']['_VerticalView']:
-            sh.lg.globs['bool']['_VerticalView'] = False
+        if sh.lg.globs['bool']['VerticalView']:
+            sh.lg.globs['bool']['VerticalView'] = False
         else:
-            sh.lg.globs['bool']['_VerticalView'] = True
+            sh.lg.globs['bool']['VerticalView'] = True
         objs.get_blocksdb().delete_bookmarks()
         self.load_article()
 
@@ -2231,7 +2231,7 @@ class WebFrame:
                                 ,order    = lg.objs.get_order()
                                 ,width    = sh.lg.globs['int']['col_width']
                                 ,Printer  = True
-                                ,Reverse  = sh.lg.globs['bool']['_VerticalView']
+                                ,Reverse  = sh.lg.globs['bool']['VerticalView']
                                 ,skipped  = skipped
                                 )
         code = mh.objs.htm.run()
@@ -2481,12 +2481,12 @@ class Settings:
         if set(lst):
             self.gui.close()
             lg.objs.get_request().cols = tuple(lst)
-            sh.lg.globs['bool']['_SortByColumns'] = self.gui.cbx_no1.get()
+            sh.lg.globs['bool']['SortByColumns'] = self.gui.cbx_no1.get()
             sh.lg.globs['bool']['AlphabetizeTerms'] = self.gui.cbx_no2.get()
             sh.lg.globs['bool']['BlockDics'] = self.gui.cbx_no3.get()
             sh.lg.globs['bool']['PrioritizeDics'] = self.gui.cbx_no4.get()
-            sh.lg.globs['bool']['_VerticalView'] = self.gui.cbx_no5.get()
-            if sh.lg.globs['bool']['_SortByColumns']:
+            sh.lg.globs['bool']['VerticalView'] = self.gui.cbx_no5.get()
+            if sh.lg.globs['bool']['SortByColumns']:
                 self.prioritize_speech()
                 #cur
                 ''' #TODO: read the speech parts order from memory, get
