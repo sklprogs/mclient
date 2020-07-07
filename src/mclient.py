@@ -22,6 +22,148 @@ if __name__ == '__main__':
         import kl_mod_lin as kl_mod
 
 
+
+class UpdateWebFrameUI:
+    
+    def __init__(self):
+        self.gui = objs.get_webframe_ui()
+    
+    def _update_alphabet_image(self):
+        if sh.lg.globs['bool']['AlphabetizeTerms'] \
+        and not lg.objs.request.SpecialPage:
+            self.gui.btn_alp.activate()
+        else:
+            self.gui.btn_alp.inactivate()
+    
+    def _update_alphabet_hint(self):
+        mes = [_('Sort terms by alphabet')]
+        if sh.lg.globs['bool']['AlphabetizeTerms']:
+            mes.append(_('Status: ON'))
+        else:
+            mes.append(_('Status: OFF'))
+        if lg.objs.request.SpecialPage:
+            mes.append(_('This page is not supported'))
+        self.gui.btn_alp.hint = '\n'.join(mes)
+        self.gui.btn_alp.set_hint()
+    
+    def _update_alphabetization(self):
+        self._update_alphabet_image()
+        self._update_alphabet_hint()
+    
+    def _update_vertical_view(self):
+        mes = [_('Vertical mode')]
+        if sh.lg.globs['bool']['VerticalView']:
+            self.gui.btn_viw.inactivate()
+            mes.append(_('Status: ON'))
+        else:
+            self.gui.btn_viw.activate()
+            mes.append(_('Status: OFF'))
+        self.gui.btn_viw.hint = '\n'.join(mes)
+        self.gui.btn_viw.set_hint()
+    
+    def _update_global_hotkey(self):
+        mes = [_('Capture Ctrl-c-c and Ctrl-Ins-Ins')]
+        if sh.lg.globs['bool']['CaptureHotkey']:
+            self.gui.btn_cap.activate()
+            mes.append(_('Status: ON'))
+        else:
+            self.gui.btn_cap.inactivate()
+            mes.append(_('Status: OFF'))
+        self.gui.btn_cap.hint = '\n'.join(mes)
+        self.gui.btn_cap.set_hint()
+    
+    def _update_prioritization(self):
+        mes = [_('Subject prioritization')]
+        prioritized = objs.blocksdb.get_prioritized()
+        if sh.lg.globs['bool']['PrioritizeDics'] and prioritized \
+        and not lg.objs.request.SpecialPage:
+            self.gui.btn_pri.activate()
+        else:
+            self.gui.btn_pri.inactivate()
+        if sh.lg.globs['bool']['PrioritizeDics']:
+            mes.append(_('Status: ON'))
+        else:
+            mes.append(_('Status: OFF'))
+        if lg.objs.request.SpecialPage:
+            sub = _('This page is not supported')
+        elif prioritized:
+            sub = _('{} subjects were prioritized')
+            sub = sub.format(len(prioritized))
+        else:
+            sub = _('Nothing to prioritize')
+        mes.append(sub)
+        self.gui.btn_pri.hint = '\n'.join(mes)
+        self.gui.btn_pri.set_hint()
+    
+    def _update_block(self):
+        mes = [_('Subject blocking')]
+        blocked = objs.blocksdb.get_blocked()
+        if sh.lg.globs['bool']['BlockDics'] and blocked:
+            self.gui.btn_blk.activate()
+        else:
+            self.gui.btn_blk.inactivate()
+        if sh.lg.globs['bool']['BlockDics']:
+            mes.append(_('Status: ON'))
+        else:
+            mes.append(_('Status: OFF'))
+        if blocked:
+            sub = _('{} subjects were blocked')
+            sub = sub.format(len(blocked))
+        else:
+            sub = _('Nothing was blocked')
+        mes.append(sub)
+        self.gui.btn_blk.hint = '\n'.join(mes)
+        self.gui.btn_blk.set_hint()
+    
+    def _update_go_next(self):
+        if objs.blocksdb.get_next_id(Loop=False):
+            self.gui.btn_nxt.activate()
+        else:
+            self.gui.btn_nxt.inactivate()
+    
+    def _update_go_prev(self):
+        # Update the button to move to the previous article
+        if objs.get_blocksdb().get_prev_id(Loop=False):
+            self.gui.btn_prv.activate()
+        else:
+            self.gui.btn_prv.inactivate()
+    
+    def _update_last_search(self,searches):
+        # Update the button to insert a current search string
+        if searches:
+            self.gui.btn_rp1.activate()
+        else:
+            self.gui.btn_rp1.inactivate()
+    
+    def _update_prev_search(self,searches):
+        # Update the button to insert a previous search string
+        if searches and len(searches) > 1:
+            self.gui.btn_rp2.activate()
+        else:
+            self.gui.btn_rp2.inactivate()
+    
+    def update_buttons(self):
+        f = '[MClient] mclient.UpdateWebFrame.update_buttons'
+        searches = objs.get_blocksdb().get_searches()
+        self._update_last_search(searches)
+        self._update_prev_search(searches)
+        # Suppress useless error output
+        if lg.objs.get_request().search:
+            self._update_go_prev()
+            self._update_go_next()
+            self._update_block()
+            self._update_prioritization()
+        else:
+            sh.com.rep_lazy(f)
+        self._update_global_hotkey()
+        self._update_vertical_view()
+        self._update_alphabetization()
+    
+    def run(self):
+        self.update_buttons()
+
+
+
 class Sources:
     
     def __init__(self):
@@ -88,7 +230,7 @@ class Objects:
         self.webframe = self.blocksdb = self.about = self.settings \
                        = self.search = self.symbols = self.save \
                        = self.history = self.suggest = self.parties \
-                       = None
+                       = self.webframe_ui = None
 
     def get_parties(self):
         if self.parties is None:
@@ -147,6 +289,12 @@ class Objects:
         if self.webframe is None:
             self.webframe = WebFrame()
         return self.webframe
+    
+    def get_webframe_ui(self):
+        if self.webframe_ui is None:
+            #TODO: elaborate this
+            self.webframe_ui = self.get_webframe().gui
+        return self.webframe_ui
 
 
 
@@ -552,6 +700,9 @@ class WebFrame:
         self.gui = gi.WebFrame()
         self.set_bindings()
         self.reset_opt()
+    
+    def update_buttons(self):
+        UpdateWebFrameUI().run()
     
     def auto_swap(self):
         f = '[MClient] mclient.WebFrame.auto_swap'
@@ -1204,40 +1355,40 @@ class WebFrame:
         self.gui.btn_hst.hint = _('Show history') + '\n' + hotkeys1 \
                                 + '\n\n' + _('Clear history') + '\n' \
                                 + hotkeys2
-        self.gui.btn_abt._bindings = sh.lg.globs['var']['bind_show_about']
-        self.gui.btn_alp._bindings = sh.lg.globs['var']['bind_toggle_alphabet']
-        self.gui.btn_blk._bindings = sh.lg.globs['var']['bind_toggle_block']
-        self.gui.btn_brw._bindings = (sh.lg.globs['var']['bind_open_in_browser']
-                                     ,sh.lg.globs['var']['bind_open_in_browser_alt']
-                                     )
-        self.gui.btn_clr._bindings = sh.lg.globs['var']['bind_clear_search_field']
-        self.gui.btn_def._bindings = sh.lg.globs['var']['bind_define']
-        self.gui.btn_nxt._bindings = sh.lg.globs['var']['bind_go_forward']
-        self.gui.btn_ins._bindings = '<Control-v>'
-        self.gui.btn_prv._bindings = sh.lg.globs['var']['bind_go_back']
-        self.gui.btn_prn._bindings = sh.lg.globs['var']['bind_print']
-        self.gui.btn_qit._bindings = sh.lg.globs['var']['bind_quit']
-        self.gui.btn_pri._bindings = sh.lg.globs['var']['bind_toggle_priority']
-        self.gui.btn_rld._bindings = (sh.lg.globs['var']['bind_reload_article']
-                                     ,sh.lg.globs['var']['bind_reload_article_alt']
-                                     )
-        self.gui.btn_rp1._bindings = sh.lg.globs['var']['repeat_sign']
-        self.gui.btn_rp2._bindings = sh.lg.globs['var']['repeat_sign2']
-        self.gui.btn_sav._bindings = (sh.lg.globs['var']['bind_save_article']
-                                     ,sh.lg.globs['var']['bind_save_article_alt']
-                                     )
-        self.gui.btn_set._bindings = (sh.lg.globs['var']['bind_settings']
-                                     ,sh.lg.globs['var']['bind_settings_alt']
-                                     )
-        self.gui.btn_swp._bindings = sh.lg.globs['var']['bind_swap_langs']
-        self.gui.btn_sym._bindings = sh.lg.globs['var']['bind_spec_symbol']
-        self.gui.btn_ser._bindings = sh.lg.globs['var']['bind_re_search_article']
-        self.gui.btn_trn._bindings = ('<Return>'
-                                     ,'<KP_Enter>'
-                                     )
-        self.gui.btn_viw._bindings = (sh.lg.globs['var']['bind_toggle_view']
-                                     ,sh.lg.globs['var']['bind_toggle_view_alt']
-                                     )
+        self.gui.btn_abt.bindings = sh.lg.globs['var']['bind_show_about']
+        self.gui.btn_alp.bindings = sh.lg.globs['var']['bind_toggle_alphabet']
+        self.gui.btn_blk.bindings = sh.lg.globs['var']['bind_toggle_block']
+        self.gui.btn_brw.bindings = (sh.lg.globs['var']['bind_open_in_browser']
+                                    ,sh.lg.globs['var']['bind_open_in_browser_alt']
+                                    )
+        self.gui.btn_clr.bindings = sh.lg.globs['var']['bind_clear_search_field']
+        self.gui.btn_def.bindings = sh.lg.globs['var']['bind_define']
+        self.gui.btn_nxt.bindings = sh.lg.globs['var']['bind_go_forward']
+        self.gui.btn_ins.bindings = '<Control-v>'
+        self.gui.btn_prv.bindings = sh.lg.globs['var']['bind_go_back']
+        self.gui.btn_prn.bindings = sh.lg.globs['var']['bind_print']
+        self.gui.btn_qit.bindings = sh.lg.globs['var']['bind_quit']
+        self.gui.btn_pri.bindings = sh.lg.globs['var']['bind_toggle_priority']
+        self.gui.btn_rld.bindings = (sh.lg.globs['var']['bind_reload_article']
+                                    ,sh.lg.globs['var']['bind_reload_article_alt']
+                                    )
+        self.gui.btn_rp1.bindings = sh.lg.globs['var']['repeat_sign']
+        self.gui.btn_rp2.bindings = sh.lg.globs['var']['repeat_sign2']
+        self.gui.btn_sav.bindings = (sh.lg.globs['var']['bind_save_article']
+                                    ,sh.lg.globs['var']['bind_save_article_alt']
+                                    )
+        self.gui.btn_set.bindings = (sh.lg.globs['var']['bind_settings']
+                                    ,sh.lg.globs['var']['bind_settings_alt']
+                                    )
+        self.gui.btn_swp.bindings = sh.lg.globs['var']['bind_swap_langs']
+        self.gui.btn_sym.bindings = sh.lg.globs['var']['bind_spec_symbol']
+        self.gui.btn_ser.bindings = sh.lg.globs['var']['bind_re_search_article']
+        self.gui.btn_trn.bindings = ('<Return>'
+                                    ,'<KP_Enter>'
+                                    )
+        self.gui.btn_viw.bindings = (sh.lg.globs['var']['bind_toggle_view']
+                                    ,sh.lg.globs['var']['bind_toggle_view_alt']
+                                    )
         '''#NOTE: Reset 'hint' for those buttons which bindings have
            changed (in order to show these bindings in tooltip)
         '''
@@ -1958,70 +2109,6 @@ class WebFrame:
         else:
             sh.com.rep_empty(f)
 
-    # Update button icons and checkboxes in the 'Settings' widget
-    def update_buttons(self):
-        f = '[MClient] mclient.WebFrame.update_buttons'
-        searches = objs.get_blocksdb().get_searches()
-        if searches:
-            self.gui.btn_rp1.activate()
-        else:
-            self.gui.btn_rp1.inactivate()
-
-        if searches and len(searches) > 1:
-            self.gui.btn_rp2.activate()
-        else:
-            self.gui.btn_rp2.inactivate()
-
-        # Suppress useless error output
-        if lg.objs.get_request().search:
-            if objs.get_blocksdb().get_prev_id(Loop=False):
-                self.gui.btn_prv.activate()
-            else:
-                self.gui.btn_prv.inactivate()
-
-            if objs.blocksdb.get_next_id(Loop=False):
-                self.gui.btn_nxt.activate()
-            else:
-                self.gui.btn_nxt.inactivate()
-            
-            if sh.lg.globs['bool']['BlockDics'] and objs.blocksdb.get_blocked():
-                self.gui.btn_blk.activate()
-                objs.get_settings().gui.cbx_no3.enable()
-            else:
-                self.gui.btn_blk.inactivate()
-                objs.get_settings().gui.cbx_no3.disable()
-
-            if not lg.objs.request.SpecialPage \
-            and sh.lg.globs['bool']['PrioritizeDics'] \
-            and objs.blocksdb.get_prioritized():
-                self.gui.btn_pri.activate()
-                objs.get_settings().gui.cbx_no4.enable()
-            else:
-                self.gui.btn_pri.inactivate()
-                objs.get_settings().gui.cbx_no4.disable()
-        else:
-            sh.com.rep_lazy(f)
-
-        if sh.lg.globs['bool']['CaptureHotkey']:
-            self.gui.btn_cap.activate()
-        else:
-            self.gui.btn_cap.inactivate()
-
-        if sh.lg.globs['bool']['VerticalView']:
-            self.gui.btn_viw.inactivate()
-            objs.get_settings().gui.cbx_no5.enable()
-        else:
-            self.gui.btn_viw.activate()
-            objs.get_settings().gui.cbx_no5.disable()
-
-        if not lg.objs.request.SpecialPage \
-        and sh.lg.globs['bool']['AlphabetizeTerms']:
-            self.gui.btn_alp.activate()
-            objs.get_settings().gui.cbx_no2.enable()
-        else:
-            self.gui.btn_alp.inactivate()
-            objs.get_settings().gui.cbx_no2.disable()
-
     # Go to the previous search
     def go_back(self,event=None):
         f = '[MClient] mclient.WebFrame.go_back'
@@ -2649,6 +2736,7 @@ class Suggest:
                         ,bindings = '<ButtonRelease-1>'
                         ,action   = self.select
                         )
+
 
 
 objs = Objects()

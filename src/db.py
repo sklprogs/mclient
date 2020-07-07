@@ -1012,7 +1012,7 @@ class DB:
 
 
 
-# Separating this class will slow down the program at ~0,027s.
+# Separating this class will slow down the program for ~0,027s.
 class Moves(DB):
 
     def __init__(self):
