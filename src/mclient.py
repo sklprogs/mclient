@@ -650,8 +650,8 @@ class WebFrame:
         f = '[MClient] mclient.WebFrame.update_lang1'
         self.set_lang1()
         self.set_lang2()
-        lang1  = lg.objs.get_plugins().get_lang1()
-        lang2  = lg.objs.plugins.get_lang2()
+        lang1 = lg.objs.get_plugins().get_lang1()
+        lang2 = lg.objs.plugins.get_lang2()
         langs1 = lg.objs.plugins.get_langs1()
         if langs1:
             self.gui.opt_lg1.set(lang1)
@@ -663,8 +663,8 @@ class WebFrame:
         f = '[MClient] mclient.WebFrame.update_lang2'
         self.set_lang1()
         self.set_lang2()
-        lang1  = lg.objs.get_plugins().get_lang1()
-        lang2  = lg.objs.plugins.get_lang2()
+        lang1 = lg.objs.get_plugins().get_lang1()
+        lang2 = lg.objs.plugins.get_lang2()
         langs2 = lg.objs.plugins.get_langs2(lang1)
         if langs2:
             if not lang2 in langs2:
@@ -2032,7 +2032,7 @@ class WebFrame:
             if result:
                 sh.lg.globs['var']['source'] = result[0]
                 lg.objs.get_request().search = result[1]
-                lg.objs.request.url          = result[2]
+                lg.objs.request.url = result[2]
                 lg.objs.get_plugins().set(sh.lg.globs['var']['source'])
                 lg.objs.plugins.set_lang1(result[4])
                 lg.objs.plugins.set_lang2(result[5])
@@ -2053,7 +2053,7 @@ class WebFrame:
             if result:
                 sh.lg.globs['var']['source'] = result[0]
                 lg.objs.get_request().search = result[1]
-                lg.objs.request.url          = result[2]
+                lg.objs.request.url = result[2]
                 lg.objs.get_plugins().set(sh.lg.globs['var']['source'])
                 lg.objs.plugins.set_lang1(result[4])
                 lg.objs.plugins.set_lang2(result[5])
