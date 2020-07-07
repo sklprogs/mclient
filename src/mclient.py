@@ -164,7 +164,7 @@ def run_timed_update():
     lg.objs.get_request().MouseClicked = False
     check = kl_mod.keylistener.check()
     if check:
-        if check == 1 and sh.lg.globs['bool']['_CaptureHotkey']:
+        if check == 1 and sh.lg.globs['bool']['CaptureHotkey']:
             # Prevent thread freezing in Windows newer than XP
             if sh.objs.get_os().is_win():
                 kl_mod.keylistener.cancel()
@@ -174,7 +174,7 @@ def run_timed_update():
             if new_clipboard:
                 lg.objs.request.search = new_clipboard
                 objs.get_webframe().go_search()
-        if check == 2 or sh.lg.globs['bool']['_CaptureHotkey']:
+        if check == 2 or sh.lg.globs['bool']['CaptureHotkey']:
             call_app()
     sh.objs.get_root().widget.after(300,run_timed_update)
 
@@ -520,16 +520,16 @@ class History:
             objs.get_blocksdb().artid = int(result[0])
             result = objs.blocksdb.get_article()
             if result:
-                lg.objs.request.source = result[0] # SOURCE
-                lg.objs.request.search = result[1] # TITLE
-                lg.objs.request.url    = result[2] # URL
+                sh.lg.globs['var']['source'] = result[0] # SOURCE
+                lg.objs.request.search       = result[1] # TITLE
+                lg.objs.request.url          = result[2] # URL
                 mes = _('Set source to "{}"')
-                mes = mes.format(lg.objs.request.source)
+                mes = mes.format(sh.lg.globs['var']['source'])
                 sh.objs.get_mes(f,mes,True).show_info()
-                lg.objs.get_plugins().set(lg.objs.request.source)
+                lg.objs.get_plugins().set(sh.lg.globs['var']['source'])
                 lg.objs.plugins.set_lang1(result[4])
                 lg.objs.plugins.set_lang2(result[5])
-                objs.webframe.reset_opt(lg.objs.request.source)
+                objs.webframe.reset_opt(sh.lg.globs['var']['source'])
                 ''' #NOTE: Do not use wrapper procedures such as
                     'objs.webframe.go_url' (modifies
                     'lg.objs.request.search') and
@@ -1478,7 +1478,7 @@ class WebFrame:
         #TODO: use another method (this method must change values)
         order = objs.get_settings().prioritize_speech()
         lg.objs.get_speech_prior().reset(order)
-        artid = objs.get_blocksdb().is_present (source = lg.objs.request.source
+        artid = objs.get_blocksdb().is_present (source = sh.lg.globs['var']['source']
                                                ,title  = lg.objs.request.search
                                                ,url    = lg.objs.request.url
                                                )
@@ -1490,7 +1490,7 @@ class WebFrame:
         else:
             # 'None' skips the autoincrement
             data = (None                              # (00) ARTICLEID
-                   ,lg.objs.request.source            # (01) SOURCE
+                   ,sh.lg.globs['var']['source']      # (01) SOURCE
                    ,lg.objs.request.search            # (02) TITLE
                    ,lg.objs.request.url               # (03) URL
                    ,lg.objs.get_plugins().get_lang1() # (04) LANG1
@@ -1529,8 +1529,8 @@ class WebFrame:
         data = objs.blocksdb.assign_bp()
         bp = cl.BlockPrioritize (data       = data
                                 ,order      = lg.objs.get_order()
-                                ,Block      = sh.lg.globs['bool']['_BlockDics']
-                                ,Prioritize = sh.lg.globs['bool']['_PrioritizeDics']
+                                ,Block      = sh.lg.globs['bool']['BlockDics']
+                                ,Prioritize = sh.lg.globs['bool']['PrioritizeDics']
                                 ,phdic      = self.phdic
                                 ,Debug      = lg.objs.get_plugins().Debug
                                 )
@@ -1552,7 +1552,7 @@ class WebFrame:
 
         self.update_columns()
         
-        SortTerms = sh.lg.globs['bool']['_AlphabetizeTerms'] \
+        SortTerms = sh.lg.globs['bool']['AlphabetizeTerms'] \
                     and not lg.objs.request.SpecialPage
         objs.blocksdb.reset (cols      = lg.objs.request.cols
                             ,SortRows  = sh.lg.globs['bool']['_SortByColumns']
@@ -1734,11 +1734,12 @@ class WebFrame:
             get an actual value first.
         '''
         self.gui.opt_src._get()
-        lg.objs.get_request().source = self.gui.opt_src.choice
-        mes = _('Set source to "{}"').format(lg.objs.request.source)
+        sh.lg.globs['var']['source'] = self.gui.opt_src.choice
+        mes = _('Set source to "{}"')
+        mes = mes.format(sh.lg.globs['var']['source'])
         sh.objs.get_mes(f,mes,True).show_info()
-        lg.objs.get_plugins().set(lg.objs.request.source)
-        self.reset_opt(lg.objs.request.source)
+        lg.objs.get_plugins().set(sh.lg.globs['var']['source'])
+        self.reset_opt(sh.lg.globs['var']['source'])
         self.go_search()
         self.gui.ent_src.focus()
 
@@ -1895,10 +1896,10 @@ class WebFrame:
 
     # Watch clipboard
     def watch_clipboard(self,event=None):
-        if sh.lg.globs['bool']['_CaptureHotkey']:
-            sh.lg.globs['bool']['_CaptureHotkey'] = False
+        if sh.lg.globs['bool']['CaptureHotkey']:
+            sh.lg.globs['bool']['CaptureHotkey'] = False
         else:
-            sh.lg.globs['bool']['_CaptureHotkey'] = True
+            sh.lg.globs['bool']['CaptureHotkey'] = True
         self.update_buttons()
 
     # Open URL of the current article in a browser
@@ -1983,7 +1984,7 @@ class WebFrame:
             else:
                 self.gui.btn_nxt.inactivate()
             
-            if sh.lg.globs['bool']['_BlockDics'] and objs.blocksdb.get_blocked():
+            if sh.lg.globs['bool']['BlockDics'] and objs.blocksdb.get_blocked():
                 self.gui.btn_blk.activate()
                 objs.get_settings().gui.cbx_no3.enable()
             else:
@@ -1991,7 +1992,7 @@ class WebFrame:
                 objs.get_settings().gui.cbx_no3.disable()
 
             if not lg.objs.request.SpecialPage \
-            and sh.lg.globs['bool']['_PrioritizeDics'] \
+            and sh.lg.globs['bool']['PrioritizeDics'] \
             and objs.blocksdb.get_prioritized():
                 self.gui.btn_pri.activate()
                 objs.get_settings().gui.cbx_no4.enable()
@@ -2001,7 +2002,7 @@ class WebFrame:
         else:
             sh.com.rep_lazy(f)
 
-        if sh.lg.globs['bool']['_CaptureHotkey']:
+        if sh.lg.globs['bool']['CaptureHotkey']:
             self.gui.btn_cap.activate()
         else:
             self.gui.btn_cap.inactivate()
@@ -2014,7 +2015,7 @@ class WebFrame:
             objs.get_settings().gui.cbx_no5.disable()
 
         if not lg.objs.request.SpecialPage \
-        and sh.lg.globs['bool']['_AlphabetizeTerms']:
+        and sh.lg.globs['bool']['AlphabetizeTerms']:
             self.gui.btn_alp.activate()
             objs.get_settings().gui.cbx_no2.enable()
         else:
@@ -2029,13 +2030,13 @@ class WebFrame:
             objs.blocksdb.artid = result
             result = objs.blocksdb.get_article()
             if result:
-                lg.objs.get_request().source = result[0]
-                lg.objs.request.search = result[1]
-                lg.objs.request.url    = result[2]
-                lg.objs.get_plugins().set(lg.objs.request.source)
+                sh.lg.globs['var']['source'] = result[0]
+                lg.objs.get_request().search = result[1]
+                lg.objs.request.url          = result[2]
+                lg.objs.get_plugins().set(sh.lg.globs['var']['source'])
                 lg.objs.plugins.set_lang1(result[4])
                 lg.objs.plugins.set_lang2(result[5])
-                self.reset_opt(lg.objs.request.source)
+                self.reset_opt(sh.lg.globs['var']['source'])
                 self.load_article()
             else:
                 sh.com.rep_empty(f)
@@ -2050,13 +2051,13 @@ class WebFrame:
             objs.blocksdb.artid = result
             result = objs.blocksdb.get_article()
             if result:
-                lg.objs.get_request().source = result[0]
-                lg.objs.request.search = result[1]
-                lg.objs.request.url    = result[2]
-                lg.objs.get_plugins().set(lg.objs.request.source)
+                sh.lg.globs['var']['source'] = result[0]
+                lg.objs.get_request().search = result[1]
+                lg.objs.request.url          = result[2]
+                lg.objs.get_plugins().set(sh.lg.globs['var']['source'])
                 lg.objs.plugins.set_lang1(result[4])
                 lg.objs.plugins.set_lang2(result[5])
-                self.reset_opt(lg.objs.request.source)
+                self.reset_opt(sh.lg.globs['var']['source'])
                 self.load_article()
             else:
                 sh.com.rep_empty(f)
@@ -2136,24 +2137,24 @@ class WebFrame:
         self.load_article()
 
     def toggle_alphabet(self,event=None):
-        if sh.lg.globs['bool']['_AlphabetizeTerms']:
-            sh.lg.globs['bool']['_AlphabetizeTerms'] = False
+        if sh.lg.globs['bool']['AlphabetizeTerms']:
+            sh.lg.globs['bool']['AlphabetizeTerms'] = False
         else:
-            sh.lg.globs['bool']['_AlphabetizeTerms'] = True
+            sh.lg.globs['bool']['AlphabetizeTerms'] = True
         objs.get_blocksdb().delete_bookmarks()
         self.load_article()
 
     def toggle_block(self,event=None):
         f = '[MClient] mclient.WebFrame.toggle_block'
-        if sh.lg.globs['bool']['_BlockDics']:
-            sh.lg.globs['bool']['_BlockDics'] = False
+        if sh.lg.globs['bool']['BlockDics']:
+            sh.lg.globs['bool']['BlockDics'] = False
             '''
             mes = _('Blacklisting is now OFF.')
             sh.objs.get_mes(f,mes).show_info()
             '''
             self.unblock()
         else:
-            sh.lg.globs['bool']['_BlockDics'] = True
+            sh.lg.globs['bool']['BlockDics'] = True
             if lg.objs.get_order().blacklst:
                 '''
                 mes = _('Blacklisting is now ON.')
@@ -2194,15 +2195,15 @@ class WebFrame:
 
     def toggle_priority(self,event=None):
         f = '[MClient] mclient.WebFrame.toggle_priority'
-        if sh.lg.globs['bool']['_PrioritizeDics']:
-            sh.lg.globs['bool']['_PrioritizeDics'] = False
+        if sh.lg.globs['bool']['PrioritizeDics']:
+            sh.lg.globs['bool']['PrioritizeDics'] = False
             '''
             mes = _('Prioritizing is now OFF.')
             sh.objs.get_mes(f,mes).show_info()
             '''
             self.unprioritize()
         else:
-            sh.lg.globs['bool']['_PrioritizeDics'] = True
+            sh.lg.globs['bool']['PrioritizeDics'] = True
             if lg.objs.get_order().prioritize:
                 '''
                 mes = _('Prioritizing is now ON.')
@@ -2481,9 +2482,9 @@ class Settings:
             self.gui.close()
             lg.objs.get_request().cols = tuple(lst)
             sh.lg.globs['bool']['_SortByColumns'] = self.gui.cbx_no1.get()
-            sh.lg.globs['bool']['_AlphabetizeTerms'] = self.gui.cbx_no2.get()
-            sh.lg.globs['bool']['_BlockDics'] = self.gui.cbx_no3.get()
-            sh.lg.globs['bool']['_PrioritizeDics'] = self.gui.cbx_no4.get()
+            sh.lg.globs['bool']['AlphabetizeTerms'] = self.gui.cbx_no2.get()
+            sh.lg.globs['bool']['BlockDics'] = self.gui.cbx_no3.get()
+            sh.lg.globs['bool']['PrioritizeDics'] = self.gui.cbx_no4.get()
             sh.lg.globs['bool']['_VerticalView'] = self.gui.cbx_no5.get()
             if sh.lg.globs['bool']['_SortByColumns']:
                 self.prioritize_speech()

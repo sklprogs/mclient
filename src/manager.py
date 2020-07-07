@@ -22,15 +22,14 @@ class Plugins:
         self.mbplugin = None
         self.lgplugin = None
         self.plugin   = self.mcplugin
-        #NOTE: change this upon the change of the default source
-        self.source  = _('Multitran')
-        self.sdpath  = sdpath
-        self.mbpath  = sdpath
-        self.lgpath  = sdpath
-        self.timeout = timeout
-        self.Debug   = Debug
-        self.maxrow  = maxrow
-        self.maxrows = maxrows
+        self.source   = sh.lg.globs['var']['source']
+        self.sdpath   = sdpath
+        self.mbpath   = sdpath
+        self.lgpath   = sdpath
+        self.timeout  = timeout
+        self.Debug    = Debug
+        self.maxrow   = maxrow
+        self.maxrows  = maxrows
         self.load()
         ''' #NOTE: either put this on top of 'self.sources' or
             synchronize with GUI.

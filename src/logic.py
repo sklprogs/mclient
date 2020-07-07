@@ -106,388 +106,423 @@ class CreateConfig:
         self.fill()
         sh.com.run_fast_txt(self.generate())
     
-    def fill(self):
+    def fill_bool(self):
         section = sh.lg.SectionBooleans
         comment = _('The following values are allowed in this section: 0 (False) or 1 (True)')
         self.add_section(section,comment)
         section_abbr = self.sections[-1].abbr
         
-        comment = _('Hide the window with special characters after the 1st symbol is inserted')
+        key = 'AlphabetizeTerms'
+        comment = _('[Autosave] Sort terms by alphabet')
+        self.add_key(section,section_abbr,key,comment)
+        
         key = 'AutoCloseSpecSymbol'
+        comment = _('Hide the window with special characters after the 1st symbol is inserted')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Complete words on input')
         key = 'Autocompletion'
+        comment = _('Complete words on input')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Select blocks of all types (False) or terms only (True)')
-        key = 'SelectTermsOnly'
+        key = 'BlockDics'
+        comment = _('[Autosave] Block dictionaries from the blacklist')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Minimize the application window after some actions, e.g., copying')
+        key = 'CaptureHotkey'
+        comment = _('[Autosave] Capture Ctrl-c-c and Ctrl-Ins-Ins system-wide')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'FullDicTitles'
+        comment = _('[Autosave] Show full dictionary titles instead of abbreviations')
+        self.add_key(section,section_abbr,key,comment)
+        
         key = 'Iconify'
+        comment = _('Minimize the application window after some actions, e.g., copying')
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'PrioritizeDics'
+        comment = _('[Autosave] Prioritize dictionaries from the prioritization file')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'SelectTermsOnly'
+        comment = _('Select blocks of all types (False) or terms only (True)')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'ShowUserNames'
+        comment = _('[Autosave] Show user names')
+        self.add_key(section,section_abbr,key,comment)
+    
+    def fill_int(self):
         section = sh.lg.SectionIntegers
         self.add_section(section)
         section_abbr = self.sections[-1].abbr
         
-        comment = _('A column width. Set to 0 to pick the value automatically.')
         key = 'col_width'
+        comment = _('A column width. Set to 0 to pick the value automatically.')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('A font size of comments')
         key = 'font_comments_size'
+        comment = _('A font size of comments')
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'font_col1_size'
         comment = _('A font size of column #{}')
         comment = comment.format(1)
-        key = 'font_col1_size'
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'font_col2_size'
         comment = _('A font size of column #{}')
         comment = comment.format(2)
-        key = 'font_col2_size'
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'font_col3_size'
         comment = _('A font size of column #{}')
         comment = comment.format(3)
-        key = 'font_col3_size'
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'font_col4_size'
         comment = _('A font size of column #{}')
         comment = comment.format(4)
-        key = 'font_col4_size'
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('A font size of terms')
         key = 'font_terms_size'
+        comment = _('A font size of terms')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('A connection timeout (in seconds)')
         key = 'timeout'
+        comment = _('A connection timeout (in seconds)')
         self.add_key(section,section_abbr,key,comment)
+    
+    def fill(self):
+        self.fill_bool()
+        self.fill_int()
+        self.fill_var()
         
+    def fill_var(self):
         section = sh.lg.SectionVariables
         comment = _('Attention: some hotkeys, e.g., <Button-1> and <Double-Button-1> may conflict with each other. Reassign them with caution.')
         self.add_section(section,comment)
         section_abbr = self.sections[-1].abbr
         
-        comment = _('Clear History')
         key = 'bind_clear_history'
+        comment = _('Clear History')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Clear the search field')
         key = 'bind_clear_search_field'
+        comment = _('Clear the search field')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Go to the next section of column #{}').format(1)
         key = 'bind_col1_down'
+        comment = _('Go to the next section of column #{}').format(1)
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Go to the previous section of column #{}')
-        comment = comment.format(1)
         key = 'bind_col1_up'
+        comment = _('Go to the previous section of column #{}')
+        comment = comment.format(1)
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Go to the next section of column #{}').format(2)
         key = 'bind_col2_down'
+        comment = _('Go to the next section of column #{}').format(2)
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Go to the previous section of column #{}')
-        comment = comment.format(2)
         key = 'bind_col2_up'
+        comment = _('Go to the previous section of column #{}')
+        comment = comment.format(2)
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Go to the next section of column #{}').format(3)
         key = 'bind_col3_down'
+        comment = _('Go to the next section of column #{}').format(3)
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'bind_col3_up'
         comment = _('Go to the previous section of column #{}')
         comment = comment.format(3)
-        key = 'bind_col3_up'
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Copy URL of the current article')
         key = 'bind_copy_article_url'
+        comment = _('Copy URL of the current article')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Copy an original word/phrase in a nominative case')
         key = 'bind_copy_nominative'
+        comment = _('Copy an original word/phrase in a nominative case')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Copy a current selection from the article (combination #{})')
-        comment = comment.format(1)
         key = 'bind_copy_sel'
+        comment = _('Copy a current selection from the article (combination #{})')
+        comment = comment.format(1)
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'bind_copy_sel_alt'
         comment = _('Copy a current selection from the article (combination #{})')
         comment = comment.format(2)
-        key = 'bind_copy_sel_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Copy URL of the current term')
         key = 'bind_copy_url'
+        comment = _('Copy URL of the current term')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Open a web-page defining the current term')
         key = 'bind_define'
+        comment = _('Open a web-page defining the current term')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Go to the previous article')
         key = 'bind_go_back'
+        comment = _('Go to the previous article')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Go to the next article')
         key = 'bind_go_forward'
+        comment = _('Go to the next article')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Go to the phrases section')
         key = 'bind_go_phrases'
+        comment = _('Go to the phrases section')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Set next language {} (combination {})')
-        comment = comment.format(1,1)
         key = 'bind_next_lang1'
+        comment = _('Set next language {} (combination {})')
+        comment = comment.format(1,1)
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'bind_next_lang1_alt'
         comment = _('Set next language {} (combination {})')
         comment = comment.format(1,2)
-        key = 'bind_next_lang1_alt'
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'bind_next_lang2'
         comment = _('Set next language {} (combination {})')
         comment = comment.format(2,1)
-        key = 'bind_next_lang2'
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'bind_next_lang2_alt'
         comment = _('Set next language {} (combination {})')
         comment = comment.format(2,2)
-        key = 'bind_next_lang2_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Paste clipboard contents into the search field (system combination: Ctrl-V)')
         key = 'bind_paste_search_field'
+        comment = _('Paste clipboard contents into the search field (system combination: Ctrl-V)')
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'bind_prev_lang1'
         comment = _('Set previous language #{} (combination #{})')
         comment = comment.format(1,1)
-        key = 'bind_prev_lang1'
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'bind_prev_lang1_alt'
         comment = _('Set previous language #{} (combination #{})')
         comment = comment.format(1,2)
-        key = 'bind_prev_lang1_alt'
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'bind_prev_lang2'
         comment = _('Set previous language #{} (combination #{})')
         comment = comment.format(2,1)
-        key = 'bind_prev_lang2'
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'bind_prev_lang2_alt'
         comment = _('Set previous language #{} (combination #{})')
         comment = comment.format(2,2)
-        key = 'bind_prev_lang2_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Create a printer-friendly page')
         key = 'bind_print'
+        comment = _('Create a printer-friendly page')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Quit the program')
         key = 'bind_quit'
+        comment = _('Quit the program')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Open the current article in a browser (combination #{})')
-        comment = comment.format(1)
         key = 'bind_open_in_browser'
+        comment = _('Open the current article in a browser (combination #{})')
+        comment = comment.format(1)
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'bind_open_in_browser_alt'
         comment = _('Open the current article in a browser (combination #{})')
         comment = comment.format(2)
-        key = 'bind_open_in_browser_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Reload the current article (combination #{})')
-        comment = comment.format(1)
         key = 'bind_reload_article'
+        comment = _('Reload the current article (combination #{})')
+        comment = comment.format(1)
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'bind_reload_article_alt'
         comment = _('Reload the current article (combination #{})')
         comment = comment.format(2)
-        key = 'bind_reload_article_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Start a new term search in the current article')
         key = 'bind_re_search_article'
+        comment = _('Start a new term search in the current article')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Save or copy the current article (combination #{})')
-        comment = comment.format(1)
         key = 'bind_save_article'
+        comment = _('Save or copy the current article (combination #{})')
+        comment = comment.format(1)
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'bind_save_article_alt'
         comment = _('Save or copy the current article (combination #{})')
         comment = comment.format(2)
-        key = 'bind_save_article_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Search the article backward')
         key = 'bind_search_article_backward'
+        comment = _('Search the article backward')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Search the article forward')
         key = 'bind_search_article_forward'
+        comment = _('Search the article forward')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Show settings (combination #{})')
-        comment = comment.format(1)
         key = 'bind_settings'
+        comment = _('Show settings (combination #{})')
+        comment = comment.format(1)
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'bind_settings_alt'
         comment = _('Show settings (combination #{})')
         comment = comment.format(2)
-        key = 'bind_settings_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('About the program')
         key = 'bind_show_about'
+        comment = _('About the program')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Paste a special symbol')
         key = 'bind_spec_symbol'
+        comment = _('Paste a special symbol')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Swap source and target languages')
         key = 'bind_swap_langs'
+        comment = _('Swap source and target languages')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Toggle alphabetizing')
         key = 'bind_toggle_alphabet'
+        comment = _('Toggle alphabetizing')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Toggle blacklisting')
         key = 'bind_toggle_block'
+        comment = _('Toggle blacklisting')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Toggle History (combination #{})')
-        comment = comment.format(1)
         key = 'bind_toggle_history'
+        comment = _('Toggle History (combination #{})')
+        comment = comment.format(1)
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'bind_toggle_history_alt'
         comment = _('Toggle History (combination #{})')
         comment = comment.format(2)
-        key = 'bind_toggle_history_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Toggle prioritizing')
         key = 'bind_toggle_priority'
+        comment = _('Toggle prioritizing')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Toggle selecting terms only')
         key = 'bind_toggle_sel'
+        comment = _('Toggle selecting terms only')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Toggle the current article view (combination #{})')
-        comment = comment.format(1)
         key = 'bind_toggle_view'
+        comment = _('Toggle the current article view (combination #{})')
+        comment = comment.format(1)
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'bind_toggle_view_alt'
         comment = _('Toggle the current article view (combination #{})')
         comment = comment.format(2)
-        key = 'bind_toggle_view_alt'
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('A font color for comments and user names')
         key = 'color_comments'
+        comment = _('A font color for comments and user names')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('A font color for column #{}')
-        comment = comment.format(1)
         key = 'color_col1'
+        comment = _('A font color for column #{}')
+        comment = comment.format(1)
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'color_col2'
         comment = _('A font color for column #{}')
         comment = comment.format(2)
-        key = 'color_col2'
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'color_col3'
         comment = _('A font color for column #{}')
         comment = comment.format(3)
-        key = 'color_col3'
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'color_col4'
         comment = _('A font color for column #{}')
         comment = comment.format(4)
-        key = 'color_col4'
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('A font color for terms')
         key = 'color_terms'
+        comment = _('A font color for terms')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('A font background color for the current (selected) term')
         key = 'color_terms_sel_bg'
+        comment = _('A font background color for the current (selected) term')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('A font foreground color for the current (selected) term')
         key = 'color_terms_sel_fg'
+        comment = _('A font foreground color for the current (selected) term')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('A font of comments and user names')
         key = 'font_comments_family'
+        comment = _('A font of comments and user names')
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'font_col1_family'
         comment = _('A font of column #{}')
         comment = comment.format(1)
-        key = 'font_col1_family'
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'font_col2_family'
         comment = _('A font of column #{}')
         comment = comment.format(2)
-        key = 'font_col2_family'
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'font_col3_family'
         comment = _('A font of column #{}')
         comment = comment.format(3)
-        key = 'font_col3_family'
         self.add_key(section,section_abbr,key,comment)
         
+        key = 'font_col4_family'
         comment = _('A font of column #{}')
         comment = comment.format(4)
-        key = 'font_col4_family'
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('A font color for History')
         key = 'font_history'
+        comment = _('A font color for History')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('A program GUI font')
         key = 'font_style'
+        comment = _('A program GUI font')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('A font of terms')
         key = 'font_terms_family'
+        comment = _('A font of terms')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('A font of the current (selected) term')
         key = 'font_terms_sel'
+        comment = _('A font of the current (selected) term')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Insert the last search request into the search field')
         key = 'repeat_sign'
+        comment = _('Insert the last search request into the search field')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Insert the next-to-last search request into the search field')
         key = 'repeat_sign2'
+        comment = _('Insert the next-to-last search request into the search field')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('Characters that can be inserted into the search field')
+        key = 'source'
+        comment = _('[Autosave] Main dictionary source to use')
+        self.add_key(section,section_abbr,key,comment)
+        
         key = 'spec_syms'
+        comment = _('Characters that can be inserted into the search field')
         self.add_key(section,section_abbr,key,comment)
         
-        comment = _('URL for online search')
         key = 'web_search_url'
+        comment = _('URL for online search')
         self.add_key(section,section_abbr,key,comment)
     
     def generate(self):
@@ -1227,12 +1262,12 @@ class ConfigMclient(sh.Config):
         
     def _load_default_bool(self):
         sh.lg.globs['bool'].update ({
-            '_AlphabetizeTerms'   :True
-           ,'_BlockDics'          :True
-           ,'_CaptureHotkey'      :True
-           ,'_PrioritizeDics'     :True
-           ,'_FullDicTitles'      :False
-           ,'_ShowUserNames'      :True
+            'AlphabetizeTerms'    :True
+           ,'BlockDics'           :True
+           ,'CaptureHotkey'       :True
+           ,'PrioritizeDics'      :True
+           ,'FullDicTitles'       :False
+           ,'ShowUserNames'       :True
            ,'_SortByColumns'      :True
            ,'_VerticalView'       :False
            ,'AutoCloseSpecSymbol' :False
@@ -1262,7 +1297,6 @@ class ConfigMclient(sh.Config):
            ,'_col4_type'                  :_('Transcription')
            ,'_lang1'                      :_('Russian')
            ,'_lang2'                      :_('English')
-           ,'_source'                     :_('Multitran')
            ,'_speech1'                    :_('Noun')
            ,'_speech2'                    :_('Verb')
            ,'_speech3'                    :_('Adjective')
@@ -1340,6 +1374,7 @@ class ConfigMclient(sh.Config):
            ,'font_terms_sel'              :'Sans 14 bold italic'
            ,'repeat_sign'                 :'!'
            ,'repeat_sign2'                :'!!'
+           ,'source'                      :_('Multitran')
            ,'spec_syms'                   :'àáâäāæßćĉçèéêēёëəғĝģĥìíîïīĵķļñņòóôõöōœøšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒЁËƏҒĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒØŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ'
            ,'web_search_url'              :'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s'
                                   })
@@ -1359,10 +1394,6 @@ class CurRequest:
         self.reset()
     
     def set_values(self):
-        ''' #NOTE: this should be synchronized with the 'default' value
-            of objs.webframe().menu_columns
-        '''
-        self.source = objs.get_plugins().source
         self.cols = ('dic','wform','transc','speech')
         self.collimit = sh.lg.globs['int']['_colnum'] + 4
         ''' Toggling blacklisting should not depend on a number of
