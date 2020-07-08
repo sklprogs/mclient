@@ -25,6 +25,19 @@ if __name__ == '__main__':
 
 class Commands:
     
+    def get_prioritized(self):
+        f = '[MClient] mclient.Commands.get_prioritized'
+        prioritized = objs.get_blocksdb().get_prioritized()
+        if prioritized:
+            prioritized = ', '.join(prioritized)
+            prioritized = prioritized.split(', ')
+            prioritized = set(prioritized)
+            mes = '; '.join(prioritized)
+            sh.objs.get_mes(f,mes,True).show_debug()
+            return prioritized
+        else:
+            return []
+    
     def get_skipped_dics(self):
         f = '[MClient] mclient.Commands.get_skipped_dics'
         skipped = objs.get_blocksdb().get_skipped_dics()
@@ -105,7 +118,7 @@ class UpdateWebFrameUI:
     
     def _update_prioritization(self):
         mes = [_('Subject prioritization')]
-        prioritized = objs.blocksdb.get_prioritized()
+        prioritized = com.get_prioritized()
         if sh.lg.globs['bool']['PrioritizeDics'] and prioritized \
         and not lg.objs.request.SpecialPage:
             self.gui.btn_pri.activate()
@@ -2261,69 +2274,23 @@ class WebFrame:
         f = '[MClient] mclient.WebFrame.toggle_block'
         if sh.lg.globs['bool']['BlockDics']:
             sh.lg.globs['bool']['BlockDics'] = False
-            '''
-            mes = _('Blacklisting is now OFF.')
-            sh.objs.get_mes(f,mes).show_info()
-            '''
-            self.unblock()
+            objs.get_blocksdb().unblock()
         else:
             sh.lg.globs['bool']['BlockDics'] = True
-            if lg.objs.get_order().blacklst:
-                '''
-                mes = _('Blacklisting is now ON.')
-                sh.objs.get_mes(f,mes).show_info()
-                '''
-                pass
-            else:
+            if not lg.objs.get_order().blacklst:
                 mes = _('No dictionaries have been provided for blacklisting!')
                 sh.objs.get_mes(f,mes).show_warning()
         objs.get_blocksdb().delete_bookmarks()
         self.load_article()
 
-    def unblock(self):
-        result = objs.get_blocksdb().get_blocked()
-        if result:
-            tmp = io.StringIO()
-            query = ''
-            tmp.write('begin;')
-            for no in result:
-                tmp.write('update BLOCKS set BLOCK=0 where NO=%d;' % no)
-            tmp.write('commit;')
-            query = tmp.getvalue()
-            tmp.close()
-            objs.blocksdb.update(query=query)
-
-    def unprioritize(self):
-        result = objs.get_blocksdb().get_prioritized()
-        if result:
-            tmp = io.StringIO()
-            query = ''
-            tmp.write('begin;')
-            for no in result:
-                tmp.write('update BLOCKS set DICPR=0 where NO=%d;' % no)
-            tmp.write('commit;')
-            query = tmp.getvalue()
-            tmp.close()
-            objs.blocksdb.update(query=query)
-
     def toggle_priority(self,event=None):
         f = '[MClient] mclient.WebFrame.toggle_priority'
         if sh.lg.globs['bool']['PrioritizeDics']:
             sh.lg.globs['bool']['PrioritizeDics'] = False
-            '''
-            mes = _('Prioritizing is now OFF.')
-            sh.objs.get_mes(f,mes).show_info()
-            '''
-            self.unprioritize()
+            objs.get_blocksdb().unprioritize()
         else:
             sh.lg.globs['bool']['PrioritizeDics'] = True
-            if lg.objs.get_order().prioritize:
-                '''
-                mes = _('Prioritizing is now ON.')
-                sh.objs.get_mes(f,mes).show_info()
-                '''
-                pass
-            else:
+            if not lg.objs.get_order().prioritize:
                 mes = _('No dictionaries have been provided for prioritizing!')
                 sh.objs.get_mes(f,mes).show_warning()
         objs.get_blocksdb().delete_bookmarks()

@@ -22,6 +22,12 @@ class DB:
         self.create_blocks()
         self.create_articles()
     
+    def unblock(self):
+        self.dbc.execute('update BLOCKS set BLOCK = 0')
+    
+    def unprioritize(self):
+        self.dbc.execute('update BLOCKS set DICPR = 0')
+    
     def get_skipped_terms(self):
         f = '[MClient] db.DB.get_skipped_terms'
         if self.artid:
@@ -718,7 +724,7 @@ class DB:
             Use 'mclient.Commands.get_skipped_dics' to split them.
         '''
         if self.artid:
-            self.dbc.execute ('select distinct DIC from BLOCKS \
+            self.dbc.execute ('select distinct DICF from BLOCKS \
                                where ARTICLEID = ? \
                                and (BLOCK = 1 or IGNORE = 1)'
                              ,(self.artid,)
@@ -743,15 +749,17 @@ class DB:
     def get_prioritized(self):
         f = '[MClient] db.DB.get_prioritized'
         if self.artid:
-            ''' #NOTE: We assume that 'Phrases' section has -1000
-                priority and this is always used despite user settings.
+            ''' #NOTE: We assume that 'Phrases' section has the priority
+                of 999-1000 and it is always used despite user settings.
             '''
-            self.dbc.execute ('select NO from BLOCKS \
-                               where ARTICLEID = ? and DICPR != 0 \
-                               and DICPR != -1000'
+            self.dbc.execute ('select distinct DICF from BLOCKS \
+                               where ARTICLEID = ? and DICPR > 0 \
+                               and DICPR < 999 order by DICPR'
                              ,(self.artid,)
                              )
-            return self.dbc.fetchall()
+            result = self.dbc.fetchall()
+            if result:
+                return [item[0] for item in result]
         else:
             sh.com.rep_empty(f)
 
@@ -760,12 +768,12 @@ class DB:
         if self.artid:
             # Do not use 'POS1 < POS2', it might be not set yet
             if Block:
-                self.dbc.execute ('select distinct DIC from BLOCKS \
+                self.dbc.execute ('select distinct DICF from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
                                    and IGNORE = 0',(self.artid,)
                                  )
             else:
-                self.dbc.execute ('select distinct DIC from BLOCKS \
+                self.dbc.execute ('select distinct DICF from BLOCKS \
                                    where ARTICLEID = ?',(self.artid,)
                                  )
             return self.dbc.fetchall()
