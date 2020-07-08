@@ -67,6 +67,43 @@ class Commands:
 
 
 
+class UpdateSettingsUI:
+    
+    def __init__(self):
+        self.gui = objs.get_settings_ui()
+    
+    def update_style_area(self):
+        self.gui.opt_scm.set(sh.lg.globs['var']['style'])
+        self.gui.opt_cl1.set(sh.lg.globs['var']['col1_type'])
+        self.gui.opt_cl2.set(sh.lg.globs['var']['col2_type'])
+        self.gui.opt_cl3.set(sh.lg.globs['var']['col3_type'])
+        self.gui.opt_cl4.set(sh.lg.globs['var']['col4_type'])
+    
+    def update_speech_area(self):
+        self.gui.opt_sp1.set(sh.lg.globs['var']['speech1'])
+        self.gui.opt_sp2.set(sh.lg.globs['var']['speech2'])
+        self.gui.opt_sp3.set(sh.lg.globs['var']['speech3'])
+        self.gui.opt_sp4.set(sh.lg.globs['var']['speech4'])
+        self.gui.opt_sp5.set(sh.lg.globs['var']['speech5'])
+        self.gui.opt_sp6.set(sh.lg.globs['var']['speech6'])
+        self.gui.opt_sp7.set(sh.lg.globs['var']['speech7'])
+    
+    def update_checkboxes(self):
+        self.gui.cbx_no1.set(sh.lg.globs['bool']['SortByColumns'])
+        self.gui.cbx_no2.set(sh.lg.globs['bool']['AlphabetizeTerms'])
+        self.gui.cbx_no3.set(sh.lg.globs['bool']['BlockDics'])
+        self.gui.cbx_no4.set(sh.lg.globs['bool']['PrioritizeDics'])
+        self.gui.cbx_no5.set(sh.lg.globs['bool']['VerticalView'])
+        self.gui.cbx_no6.set(sh.lg.globs['bool']['FullDicTitles'])
+        self.gui.cbx_no7.set(sh.lg.globs['bool']['ShowUserNames'])
+    
+    def run(self):
+        self.update_style_area()
+        self.update_speech_area()
+        self.update_checkboxes()
+
+
+
 class UpdateWebFrameUI:
     
     def __init__(self):
@@ -276,7 +313,7 @@ class Objects:
         self.webframe = self.blocksdb = self.about = self.settings \
                        = self.search = self.symbols = self.save \
                        = self.history = self.suggest = self.parties \
-                       = self.webframe_ui = None
+                       = self.webframe_ui = self.settings_ui = None
 
     def get_parties(self):
         if self.parties is None:
@@ -335,6 +372,12 @@ class Objects:
         if self.webframe is None:
             self.webframe = WebFrame()
         return self.webframe
+    
+    def get_settings_ui(self):
+        if self.settings_ui is None:
+            #TODO: elaborate this
+            self.settings_ui = Settings().gui
+        return self.settings_ui
     
     def get_webframe_ui(self):
         if self.webframe_ui is None:
@@ -749,6 +792,7 @@ class WebFrame:
     
     def update_buttons(self):
         UpdateWebFrameUI().run()
+        UpdateSettingsUI().run()
     
     def auto_swap(self):
         f = '[MClient] mclient.WebFrame.auto_swap'
