@@ -760,15 +760,13 @@ class DB:
         if self.artid:
             # Do not use 'POS1 < POS2', it might be not set yet
             if Block:
-                self.dbc.execute ('select TEXT from BLOCKS \
+                self.dbc.execute ('select distinct DIC from BLOCKS \
                                    where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and TYPE = "dic" \
-                                   and TEXT != ""',(self.artid,)
+                                   and IGNORE = 0',(self.artid,)
                                  )
             else:
-                self.dbc.execute ('select TEXT from BLOCKS \
-                                   where ARTICLEID = ? and TYPE = "dic"\
-                                   and TEXT != ""',(self.artid,)
+                self.dbc.execute ('select distinct DIC from BLOCKS \
+                                   where ARTICLEID = ?',(self.artid,)
                                  )
             return self.dbc.fetchall()
         else:
