@@ -3,6 +3,7 @@
 * Add "Show user names" option
 * Use a brighter color for user names
 * Add a basic support for DSL files
+* Load widgets only when necessary
 
 6.4.1
 * Fix loading Stardict format
