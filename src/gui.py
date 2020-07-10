@@ -324,7 +324,16 @@ class SearchArticle:
     
     def __init__(self):
         self.set_gui()
+    
+    def insert(self,pattern=''):
+        self.parent.insert(pattern)
+    
+    def focus(self):
+        self.parent.focus()
         
+    def center(self):
+        self.parent.parent.center()
+    
     def set_gui(self):
         self.parent = sh.EntryC (title = _('Enter a string to search:')
                                 ,icon  = ICON

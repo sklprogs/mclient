@@ -592,13 +592,13 @@ class SaveArticle:
 class SearchArticle:
 
     def __init__(self):
-        self.reset()
         self.gui = None
+        self.reset()
     
     def get_gui(self):
         if self.gui is None:
             self.set_gui()
-            self.gui.parent.center()
+            self.gui.center()
         return self.gui
     
     def set_gui(self):
@@ -616,11 +616,6 @@ class SearchArticle:
         self.last = -1
         self.first = -1
         self.pattern = ''
-        ''' Plus: keeping old input
-            Minus: searching old input after canceling the search and
-            searching again
-            #self.clear()
-        '''
 
     def clear(self,event=None):
         self.get_gui().parent.clear_text()
@@ -628,14 +623,18 @@ class SearchArticle:
     def close(self,event=None):
         self.get_gui().close()
 
+    def insert(self,event=None):
+        self.gui.insert(self.pattern)
+    
     def show(self,event=None):
-        self.get_gui().show()
+        self.get_gui().focus()
+        self.gui.show()
 
     def search(self):
         if not self.pattern:
             self.show()
-            self.pattern = self.get_gui().parent.get().strip(' ').strip('\n')
-            self.pattern = self.pattern.lower()
+            self.pattern = self.get_gui().parent.get()
+            self.pattern = self.pattern.strip(' ').strip('\n').lower()
         return self.pattern
 
     def get_next(self,event=None):
@@ -651,7 +650,7 @@ class SearchArticle:
             mes = _('No matches!')
             sh.objs.get_mes(f,mes).show_info()
         else:
-            mes = _('The start has been reached. Searching from the end.')
+            mes = _('The end has been reached. Searching from the start.')
             sh.objs.get_mes(f,mes).show_info()
             self.pos = 0
             self.get_next()
@@ -681,7 +680,7 @@ class SearchArticle:
         f = '[MClient] mclient.SearchArticle.get_prev'
         if self.get_first():
             if self.pos == self.first:
-                mes = _('The end has been reached. Searching from the start.')
+                mes = _('The start has been reached. Searching from the end.')
                 sh.objs.get_mes(f,mes).show_info()
                 result = self.get_last()
                 if str(result).isdigit():
@@ -691,8 +690,8 @@ class SearchArticle:
             else:
                 pos = \
                 objs.get_blocksdb().search_prev (pos    = self.pos
-                                            ,search = self.search()
-                                            )
+                                                ,search = self.search()
+                                                )
                 if str(pos).isdigit():
                     self.pos = pos
                     objs.get_webframe().pos = pos
@@ -775,7 +774,7 @@ class History:
         objs.get_blocksdb().clear()
         self.get_gui().obj.clear()
         objs.get_webframe().reset()
-        objs.get_search().get_gui().parent.clear()
+        objs.get_search().pattern = ''
         lg.objs.get_request().reset()
 
     def go_first(self,event=None):
@@ -1917,7 +1916,7 @@ class WebFrame:
             just do not clear the search field to be able to correct
             the typo.
         '''
-        if pages.blocks or skipped:
+        if pages.blocks or com.get_skipped_terms():
             self.gui.ent_src.clear_text()
         objs.get_search().reset()
         objs.get_suggest().close()
