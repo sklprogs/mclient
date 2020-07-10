@@ -752,8 +752,8 @@ class History:
 
     def show(self,event=None):
         self.Active = True
-        self.get_gui().update()
-        self.gui.show()
+        self.update()
+        self.get_gui().show()
 
     def close(self,event=None):
         self.Active = False
@@ -910,7 +910,11 @@ class WebFrame:
         objs.get_history().clear()
     
     def toggle_history(self,event=None):
-        objs.get_history().get_gui().toggle()
+        # We need to update History first, so we explicitly call 'show'
+        if objs.get_history().get_gui().Active:
+            objs.history.close()
+        else:
+            objs.history.show()
     
     def toggle_save(self,event=None):
         objs.get_save().get_gui().toggle()
