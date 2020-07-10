@@ -792,7 +792,6 @@ class WebFrame:
     
     def update_buttons(self):
         UpdateWebFrameUI().run()
-        UpdateSettingsUI().run()
     
     def auto_swap(self):
         f = '[MClient] mclient.WebFrame.auto_swap'

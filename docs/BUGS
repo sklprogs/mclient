@@ -2,6 +2,7 @@ mclient:
 - show all words when separate words are found
 
 multitrancom:
+- moneyman: block hint does not report blocking
 - en-ru, set: застывать: wrong SAME=1
 - en-ru, лошадиных сил: wrong comment SAME
 - Save article: only the last article is saved, not the current one
