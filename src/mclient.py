@@ -252,28 +252,36 @@ class Sources:
     def __init__(self):
         f = '[MClient] mclient.Sources.__init__'
         self.set_values()
-        self.gui = gi.Sources()
-        self.set_bindings()
         sources = lg.objs.get_plugins().get_sources()
         if sources:
             self.sources = sources
         else:
             self.Success = False
             sh.com.rep_empty(f)
+        self.gui = None
+    
+    def set_gui(self):
+        self.gui = gi.Sources()
+        self.set_bindings()
+    
+    def get_gui(self):
+        if self.gui is None:
+            self.set_gui()
+        return self.gui
     
     def reset(self):
         self.set_values()
-        self.gui.reset(self.sources)
+        self.get_gui().reset(self.sources)
     
     def set_values(self):
-        self.Success  = True
-        self.select   = []
-        self.sources  = []
+        self.select = []
+        self.sources = []
+        self.Success = True
     
     def get_sel(self):
         f = '[MClient] mclient.Sources.get_sel'
         if self.Success:
-            for i in range(len(self.gui.cboxes)):
+            for i in range(len(self.get_gui().cboxes)):
                 if self.gui.cboxes[i].get():
                     try:
                         self.select.append(self.sources)
@@ -286,10 +294,10 @@ class Sources:
             sh.com.cancel(f)
     
     def set_bindings(self):
-        self.gui.btn_apl.action = self.apply
+        self.get_gui().btn_apl.action = self.apply
     
     def show(self,event=None):
-        self.gui.show()
+        self.get_gui().show()
     
     def apply(self,event=None):
         #TODO: What is a purpose of this?
@@ -298,7 +306,7 @@ class Sources:
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def close(self,event=None):
-        self.gui.close()
+        self.get_gui().close()
 
 
 
@@ -375,13 +383,11 @@ class Objects:
     
     def get_settings_ui(self):
         if self.settings_ui is None:
-            #TODO: elaborate this
-            self.settings_ui = Settings().gui
+            self.settings_ui = self.get_settings().get_gui()
         return self.settings_ui
     
     def get_webframe_ui(self):
         if self.webframe_ui is None:
-            #TODO: elaborate this
             self.webframe_ui = self.get_webframe().gui
         return self.webframe_ui
 
@@ -420,12 +426,26 @@ def run_timed_update():
 class About:
 
     def __init__(self):
+        self.gui = None
+    
+    def get_gui(self):
+        if self.gui is None:
+            self.set_gui()
+        return self.gui
+    
+    def close(self):
+        self.get_gui().close()
+    
+    def show(self):
+        self.get_gui().show()
+    
+    def set_gui(self):
         self.gui = gi.About()
         self.set_bindings()
         self.gui.lbl_abt.set_font(sh.lg.globs['var']['font_style'])
         
     def set_bindings(self):
-        sh.com.bind (obj      = self.gui.obj
+        sh.com.bind (obj      = self.get_gui().obj
                     ,bindings = sh.lg.globs['var']['bind_show_about']
                     ,action   = self.gui.toggle
                     )
@@ -441,7 +461,7 @@ class About:
 
     # Open a license web-page
     def open_license_url(self,event=None):
-        ionline     = sh.Online()
+        ionline = sh.Online()
         ionline.url = sh.lg.globs['license_url']
         ionline.browse()
 
@@ -461,11 +481,19 @@ class SaveArticle:
         self.txttypes = ((_('Plain text (UTF-8)'),'.txt')
                          ,(_('All files'),'*')
                         )
+        self.gui = None
+    
+    def get_gui(self):
+        if self.gui is None:
+            self.set_gui()
+        return self.gui
+    
+    def set_gui(self):
         self.gui = gi.SaveArticle()
         self.set_bindings()
     
     def set_bindings(self):
-        sh.com.bind (obj      = self.gui
+        sh.com.bind (obj      = self.get_gui()
                     ,bindings = [sh.lg.globs['var']['bind_save_article']
                                 ,sh.lg.globs['var']['bind_save_article_alt']
                                 ]
@@ -486,7 +514,7 @@ class SaveArticle:
 
     def select(self,event=None):
         f = '[MClient] mclient.SaveArticle.select'
-        self.gui.parent.save()
+        self.get_gui().parent.save()
         opt = self.gui.parent.get()
         if opt:
             if opt == _('Save the current view as a web-page (*.htm)'):
@@ -564,20 +592,29 @@ class SaveArticle:
 class SearchArticle:
 
     def __init__(self):
+        self.reset()
+        self.gui = None
+    
+    def get_gui(self):
+        if self.gui is None:
+            self.set_gui()
+            self.gui.parent.center()
+        return self.gui
+    
+    def set_gui(self):
         self.gui = gi.SearchArticle()
         self.set_bindings()
-        self.reset()
 
     def set_bindings(self):
-        sh.com.bind (obj      = self.gui
+        sh.com.bind (obj      = self.get_gui()
                     ,bindings = sh.lg.globs['var']['bind_search_article_forward']
                     ,action   = self.gui.close
                     )
     
     def reset(self,event=None):
-        self.pos     = -1
-        self.first   = -1
-        self.last    = -1
+        self.pos = -1
+        self.last = -1
+        self.first = -1
         self.pattern = ''
         ''' Plus: keeping old input
             Minus: searching old input after canceling the search and
@@ -586,26 +623,26 @@ class SearchArticle:
         '''
 
     def clear(self,event=None):
-        self.gui.parent.clear_text()
+        self.get_gui().parent.clear_text()
 
     def close(self,event=None):
-        self.gui.close()
+        self.get_gui().close()
 
     def show(self,event=None):
-        self.gui.show()
+        self.get_gui().show()
 
     def search(self):
         if not self.pattern:
             self.show()
-            self.pattern = self.gui.parent.get().strip(' ').strip('\n')
+            self.pattern = self.get_gui().parent.get().strip(' ').strip('\n')
             self.pattern = self.pattern.lower()
         return self.pattern
 
     def get_next(self,event=None):
         f = '[MClient] mclient.SearchArticle.get_next'
         pos = objs.get_blocksdb().search_next (pos    = self.pos
-                                          ,search = self.search()
-                                          )
+                                              ,search = self.search()
+                                              )
         if pos or pos == 0:
             objs.get_webframe().pos = self.pos = pos
             objs.webframe.select()
@@ -623,8 +660,8 @@ class SearchArticle:
         if self.first == -1:
             self.first = \
             objs.get_blocksdb().search_next (pos    = -1
-                                        ,search = self.search()
-                                        )
+                                            ,search = self.search()
+                                            )
         return self.first
 
     def get_last(self):
@@ -633,9 +670,9 @@ class SearchArticle:
             max_cell = objs.blocksdb.get_max_cell()
             if max_cell:
                 self.last = \
-                objs.get_blocksdb().search_prev (pos    = max_cell[2] + 1
-                                            ,search = self.search()
-                                            )
+                objs.get_blocksdb().search_prev (pos    = max_cell[2]+1
+                                                ,search = self.search()
+                                                )
             else:
                 sh.com.rep_empty(f)
         return self.last
@@ -670,12 +707,21 @@ class SearchArticle:
 class History:
 
     def __init__(self):
+        self.gui = None
+    
+    def get_gui(self):
+        if self.gui is None:
+            self.set_gui()
+            self.gui.parent.center()
+        return self.gui
+    
+    def set_gui(self):
         self.gui = gi.History()
         self.gui.obj.action = self.go
         self.set_bindings()
 
     def set_bindings(self):
-        sh.com.bind (obj      = self.gui
+        sh.com.bind (obj      = self.get_gui()
                     ,bindings = [sh.lg.globs['var']['bind_toggle_history']
                                 ,sh.lg.globs['var']['bind_toggle_history_alt']
                                 ]
@@ -699,18 +745,19 @@ class History:
         self.gui.action = self.go
 
     def autoselect(self):
-        self.gui.obj.clear_sel()
+        self.get_gui().obj.clear_sel()
         item = str(objs.get_blocksdb().artid) \
                + ' ► ' + lg.objs.get_request().search
         self.gui.obj.set(item=item)
 
     def show(self,event=None):
         self.Active = True
+        self.get_gui().update()
         self.gui.show()
 
     def close(self,event=None):
         self.Active = False
-        self.gui.close()
+        self.get_gui().close()
 
     def fill(self):
         searches = objs.get_blocksdb().get_searches()
@@ -718,7 +765,7 @@ class History:
         if searches:
             for item in searches:
                 lst.append(str(item[0]) + ' ► ' + str(item[1]))
-            self.gui.obj.reset(lst=lst)
+            self.get_gui().obj.reset(lst=lst)
 
     def update(self):
         self.fill()
@@ -726,14 +773,14 @@ class History:
 
     def clear(self,event=None):
         objs.get_blocksdb().clear()
-        self.gui.obj.clear()
+        self.get_gui().obj.clear()
         objs.get_webframe().reset()
-        objs.get_search().gui.parent.clear()
+        objs.get_search().get_gui().parent.clear()
         lg.objs.get_request().reset()
 
     def go_first(self,event=None):
         f = '[MClient] mclient.History.go_first'
-        if self.gui.obj.lst:
+        if self.get_gui().obj.lst:
             self.gui.obj.clear_sel()
             self.gui.obj.set(item=self.gui.obj.lst[0])
             self.go()
@@ -742,7 +789,7 @@ class History:
         
     def go_last(self,event=None):
         f = '[MClient] mclient.History.go_last'
-        if self.gui.obj.lst:
+        if self.get_gui().obj.lst:
             self.gui.obj.clear_sel()
             self.gui.obj.set(item=self.gui.obj.lst[-1])
             self.go()
@@ -751,7 +798,7 @@ class History:
     
     def go(self,event=None):
         f = '[MClient] mclient.History.go'
-        result = self.gui.obj.get()
+        result = self.get_gui().obj.get()
         result = result.split(' ► ')
         if len(result) == 2:
             objs.get_blocksdb().artid = int(result[0])
@@ -863,10 +910,10 @@ class WebFrame:
         objs.get_history().clear()
     
     def toggle_history(self,event=None):
-        objs.get_history().gui.toggle()
+        objs.get_history().get_gui().toggle()
     
     def toggle_save(self,event=None):
-        objs.get_save().gui.toggle()
+        objs.get_save().get_gui().toggle()
     
     def search_prev(self,event=None):
         objs.get_search().get_prev()
@@ -875,10 +922,10 @@ class WebFrame:
         objs.get_search().get_next()
     
     def toggle_settings(self,event=None):
-        objs.get_settings().gui.toggle()
+        objs.get_settings().get_gui().toggle()
     
     def toggle_about(self,event=None):
-        objs.get_about().gui.toggle()
+        objs.get_about().get_gui().toggle()
     
     def insert_sym(self,event=None):
         objs.get_symbols().show()
@@ -998,13 +1045,13 @@ class WebFrame:
         self.gui.ent_src.clear_text()
         
     def escape(self,event=None):
-        if objs.get_suggest().gui.parent:
+        if objs.get_suggest().get_gui().parent:
             objs.suggest.gui.close()
         else:
             sh.Geometry(self.gui.obj).minimize()
     
     def minimize(self,event=None):
-        objs.get_suggest().gui.close()
+        objs.get_suggest().get_gui().close()
         sh.Geometry(self.gui.obj).minimize()
     
     def go_phdic(self,event=None):
@@ -1715,8 +1762,7 @@ class WebFrame:
         timer.start()
         # Do not allow selection positions from previous articles
         self.pos = -1
-        #TODO: use another method (this method must change values)
-        order = objs.get_settings().prioritize_speech()
+        order = objs.get_settings().get_speech_prior()
         lg.objs.get_speech_prior().reset(order)
         artid = objs.get_blocksdb().is_present (source = sh.lg.globs['var']['source']
                                                ,title  = lg.objs.request.search
@@ -1797,8 +1843,8 @@ class WebFrame:
         objs.blocksdb.reset (cols      = lg.objs.request.cols
                             ,SortRows  = sh.lg.globs['bool']['SortByColumns']
                             ,SortTerms = SortTerms
-                            ,ExpandDic = not objs.get_settings().gui.cbx_no6.get()
-                            ,ShowUsers = objs.settings.gui.cbx_no7.get()
+                            ,ExpandDic = sh.lg.globs['bool']['FullDicTitles']
+                            ,ShowUsers = sh.lg.globs['bool']['ShowUserNames']
                             )
         objs.blocksdb.unignore()
         objs.blocksdb.ignore()
@@ -1869,9 +1915,8 @@ class WebFrame:
         '''
         if pages.blocks or skipped:
             self.gui.ent_src.clear_text()
-        objs.get_history().update()
         objs.get_search().reset()
-        objs.get_suggest().gui.close()
+        objs.get_suggest().close()
         self.update_buttons()
         timer.end()
         self.run_final_debug()
@@ -2539,14 +2584,25 @@ class WebFrame:
 class Settings:
 
     def __init__(self):
+        self.gui = None
+    
+    def get_gui(self):
+        if self.gui is None:
+            self.set_gui()
+            self.gui.parent.center()
+        return self.gui
+    
+    def set_gui(self):
         self.gui = gi.Settings()
         self.set_bindings()
 
     def show(self,event=None):
+        self.get_gui()
+        UpdateSettingsUI().run()
         self.gui.show()
     
     def close(self,event=None):
-        self.gui.close()
+        self.get_gui().close()
     
     def get_block_settings(self,event=None):
         f = '[MClient] mclient.Settings.get_block_settings'
@@ -2563,7 +2619,7 @@ class Settings:
         ''' Do not use 'gettext' to name internal types - this will make
             the program ~0,6s slower
         '''
-        lst = [choice for choice in (self.gui.opt_cl1.choice
+        lst = [choice for choice in (self.get_gui().opt_cl1.choice
                                     ,self.gui.opt_cl2.choice
                                     ,self.gui.opt_cl3.choice
                                     ,self.gui.opt_cl4.choice
@@ -2617,7 +2673,7 @@ class Settings:
             sh.objs.get_mes(f,mes).show_warning()
     
     def set_bindings(self):
-        self.gui.btn_apl.action = self.apply
+        self.get_gui().btn_apl.action = self.apply
         #TODO: implement
         #self.btn_blk.action = self.block_settings
         #self.btn_pri.action = self.priority_settings
@@ -2628,10 +2684,20 @@ class Settings:
                     ,action   = self.gui.toggle
                     )
 
+    def get_speech_prior(self):
+        return (sh.lg.globs['var']['speech1']
+               ,sh.lg.globs['var']['speech2']
+               ,sh.lg.globs['var']['speech3']
+               ,sh.lg.globs['var']['speech4']
+               ,sh.lg.globs['var']['speech5']
+               ,sh.lg.globs['var']['speech6']
+               ,sh.lg.globs['var']['speech7']
+               )
+    
     def prioritize_speech(self):
         f = '[MClient] mclient.Settings.prioritize_speech'
         #TODO: save settings in memory
-        return (self.gui.opt_sp1.choice,self.gui.opt_sp2.choice
+        return (self.get_gui().opt_sp1.choice,self.gui.opt_sp2.choice
                ,self.gui.opt_sp3.choice,self.gui.opt_sp4.choice
                ,self.gui.opt_sp5.choice,self.gui.opt_sp6.choice
                ,self.gui.opt_sp7.choice
@@ -2642,19 +2708,27 @@ class Settings:
 class ThirdParties:
     
     def __init__(self):
-        self.gui = gi.ThirdParties()
         file = sh.objs.get_pdir().add ('..','resources'
                                       ,'third parties.txt'
                                       )
         self.text = sh.ReadTextFile(file).get()
+        self.gui = None
+    
+    def get_gui(self):
+        if self.gui is None:
+            self.set_gui()
+        return self.gui
+    
+    def set_gui(self):
+        self.gui = gi.ThirdParties()
         self.gui.obj.insert(text=self.text)
         self.gui.obj.disable()
     
     def show(self,event=None):
-        self.gui.show()
+        self.get_gui().show()
 
     def close(self,event=None):
-        self.gui.close()
+        self.get_gui().close()
 
 
 
@@ -2662,7 +2736,18 @@ class Suggest:
     
     def __init__(self,entry):
         self.entry = entry
-        self.gui   = gi.Suggest()
+        self.gui = None
+    
+    def close(self,event=None):
+        self.get_gui().close()
+    
+    def get_gui(self):
+        if self.gui is None:
+            self.set_gui()
+        return self.gui
+    
+    def set_gui(self):
+        self.gui = gi.Suggest()
     
     def select(self,event=None):
         self._select()
@@ -2684,7 +2769,7 @@ class Suggest:
         
     def move_down(self,event=None):
         f = '[MClient] mclient.Suggest.move_down'
-        if self.gui.parent:
+        if self.get_gui().parent:
             # Necessary to use arrows on ListBox
             self.gui.lbox.focus()
             self.gui.lbox.index_add()
@@ -2695,7 +2780,7 @@ class Suggest:
         
     def move_up(self,event=None):
         f = '[MClient] mclient.Suggest.move_up'
-        if self.gui.parent:
+        if self.get_gui().parent:
             # Necessary to use arrows on ListBox
             self.gui.lbox.focus()
             self.gui.lbox.index_subtract()
@@ -2706,7 +2791,7 @@ class Suggest:
         
     def move_top(self,event=None):
         f = '[MClient] mclient.Suggest.move_top'
-        if self.gui.parent:
+        if self.get_gui().parent:
             # Necessary to use arrows on ListBox
             self.gui.lbox.focus()
             self.gui.lbox.move_top()
@@ -2716,7 +2801,7 @@ class Suggest:
                           
     def move_bottom(self,event=None):
         f = '[MClient] mclient.Suggest.move_bottom'
-        if self.gui.parent:
+        if self.get_gui().parent:
             # Necessary to use arrows on ListBox
             self.gui.lbox.focus()
             self.gui.lbox.move_bottom()
@@ -2726,6 +2811,7 @@ class Suggest:
     
     def suggest(self,event=None):
         f = '[MClient] mclient.Suggest.suggest'
+        self.get_gui()
         if sh.lg.globs['bool']['Autocompletion'] and event:
             text = self.entry.get()
             #TODO: avoid modifiers
@@ -2760,7 +2846,7 @@ class Suggest:
                 self.gui.close()
     
     def set_bindings(self):
-        if self.gui.parent:
+        if self.get_gui().parent:
             sh.com.bind (obj      = self.gui.parent
                         ,bindings = '<ButtonRelease-1>'
                         ,action   = self.select
@@ -2780,18 +2866,6 @@ if  __name__ == '__main__':
     if lg.objs.default.Success:
         run_timed_update()
         objs.get_webframe().reset()
-        ''' #TODO: clean this up
-            'Settings' is called in 'WebFrame.update_buttons'.
-            Since both 'Settings' and 'WebFrame' are 'Top', we need
-            to close 'Settings' and call 'center' manually
-            (AutoCr=1 and 'center' or 'center' twice) before 'close').
-        '''
-        objs.get_settings().gui.parent.center()
-        objs.get_search().gui.parent.parent.center()
-        objs.get_history().gui.parent.center()
-        objs.settings.close()
-        objs.search.close()
-        objs.history.close()
         objs.webframe.show()
         lg.objs.plugins.quit()
         kl_mod.keylistener.cancel()

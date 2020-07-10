@@ -17,7 +17,7 @@ class Sources:
 
     def __init__(self,width=350,height=300):
         self.set_values()
-        self.width  = width
+        self.width = width
         self.height = height
         self.parent = sh.Top()
         sh.Geometry(self.parent).set ('%dx%d' % (self.width
@@ -201,7 +201,7 @@ class About:
 
     def __init__(self):
         self.Active = False
-        self.type   = 'About'
+        self.type = 'About'
         self.set_gui()
         
     def set_gui(self):
