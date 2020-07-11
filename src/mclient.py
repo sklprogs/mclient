@@ -772,9 +772,7 @@ class History:
 
     def clear(self,event=None):
         objs.get_blocksdb().clear()
-        self.get_gui().obj.clear()
         objs.get_webframe().reset()
-        objs.get_search().pattern = ''
         lg.objs.get_request().reset()
 
     def go_first(self,event=None):
