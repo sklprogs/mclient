@@ -1077,11 +1077,11 @@ class WebFrame:
         self.update_lang2()
     
     def paste_search_field(self,event=None):
-        objs.get_suggest().gui.close()
+        objs.get_suggest().get_gui().close()
         self.gui.paste_search()
     
     def clear_search_field(self,event=None):
-        objs.get_suggest().gui.close()
+        objs.get_suggest().get_gui().close()
         self.gui.ent_src.clear_text()
         
     def escape(self,event=None):
