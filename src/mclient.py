@@ -52,7 +52,7 @@ class ExportSettingsUI:
     
     def run(self):
         f = '[MClient] mclient.ExportSettingsUI.run'
-        # 'objs.get_settings_ui()' may not be used as often
+        # 'objs.get_settings_ui' may not be used as often
         if objs.settings is None or objs.settings.gui is None:
             sh.com.rep_lazy(f)
         else:
@@ -133,7 +133,7 @@ class UpdateSettingsUI:
         self.gui.cbx_no3.set(sh.lg.globs['bool']['BlockDics'])
         self.gui.cbx_no4.set(sh.lg.globs['bool']['PrioritizeDics'])
         self.gui.cbx_no5.set(sh.lg.globs['bool']['VerticalView'])
-        self.gui.cbx_no6.set(sh.lg.globs['bool']['FullDicTitles'])
+        self.gui.cbx_no6.set(not sh.lg.globs['bool']['FullDicTitles'])
         self.gui.cbx_no7.set(sh.lg.globs['bool']['ShowUserNames'])
     
     def run(self):
@@ -465,7 +465,14 @@ def run_timed_update():
 class About:
 
     def __init__(self):
+        self.Active = False
         self.gui = None
+    
+    def toggle(self,event=None):
+        if self.Active:
+            self.close()
+        else:
+            self.show()
     
     def get_gui(self):
         if self.gui is None:
@@ -473,9 +480,11 @@ class About:
         return self.gui
     
     def close(self):
+        self.Active = False
         self.get_gui().close()
     
     def show(self):
+        self.Active = True
         self.get_gui().show()
     
     def set_gui(self):
@@ -486,7 +495,7 @@ class About:
     def set_bindings(self):
         sh.com.bind (obj      = self.get_gui().obj
                     ,bindings = sh.lg.globs['var']['bind_show_about']
-                    ,action   = self.gui.toggle
+                    ,action   = self.toggle
                     )
         self.gui.btn_thd.action = self.show_third_parties
         self.gui.btn_lic.action = self.open_license_url
@@ -521,6 +530,21 @@ class SaveArticle:
                          ,(_('All files'),'*')
                         )
         self.gui = None
+        self.Active = False
+    
+    def show(self,event=None):
+        self.Active = True
+        self.get_gui().show()
+    
+    def close(self,event=None):
+        self.Active = False
+        self.get_gui().close()
+    
+    def toggle(self,event=None):
+        if self.Active:
+            self.close()
+        else:
+            self.show()
     
     def get_gui(self):
         if self.gui is None:
@@ -536,7 +560,7 @@ class SaveArticle:
                     ,bindings = [sh.lg.globs['var']['bind_save_article']
                                 ,sh.lg.globs['var']['bind_save_article_alt']
                                 ]
-                    ,action   = self.gui.toggle
+                    ,action   = self.toggle
                     )
         sh.com.bind (obj      = self.gui
                     ,bindings = ('<<ListboxSelect>>','<Return>'
@@ -745,7 +769,14 @@ class SearchArticle:
 class History:
 
     def __init__(self):
+        self.Active = False
         self.gui = None
+    
+    def toggle(self,event=None):
+        if self.Active:
+            self.close()
+        else:
+            self.show()
     
     def get_gui(self):
         if self.gui is None:
@@ -763,7 +794,7 @@ class History:
                     ,bindings = [sh.lg.globs['var']['bind_toggle_history']
                                 ,sh.lg.globs['var']['bind_toggle_history_alt']
                                 ]
-                    ,action   = self.gui.toggle
+                    ,action   = self.toggle
                     )
         sh.com.bind (obj      = self.gui
                     ,bindings = sh.lg.globs['var']['bind_clear_history']
@@ -953,7 +984,7 @@ class WebFrame:
             objs.history.show()
     
     def toggle_save(self,event=None):
-        objs.get_save().get_gui().toggle()
+        objs.get_save().toggle()
     
     def search_prev(self,event=None):
         objs.get_search().get_prev()
@@ -962,10 +993,10 @@ class WebFrame:
         objs.get_search().get_next()
     
     def toggle_settings(self,event=None):
-        objs.get_settings_ui().toggle()
+        objs.get_settings().toggle()
     
     def toggle_about(self,event=None):
-        objs.get_about().get_gui().toggle()
+        objs.get_about().toggle()
     
     def insert_sym(self,event=None):
         objs.get_symbols().show()
@@ -2625,6 +2656,13 @@ class Settings:
 
     def __init__(self):
         self.gui = None
+        self.Active = False
+    
+    def toggle(self,event=None):
+        if self.Active:
+            self.close()
+        else:
+            self.show()
     
     def get_gui(self):
         if self.gui is None:
@@ -2637,11 +2675,13 @@ class Settings:
         self.set_bindings()
 
     def show(self,event=None):
+        self.Active = True
         self.get_gui()
         UpdateSettingsUI().run()
         self.gui.show()
     
     def close(self,event=None):
+        self.Active = False
         self.get_gui().close()
     
     def get_block_settings(self,event=None):
@@ -2668,7 +2708,7 @@ class Settings:
                     ,bindings = [sh.lg.globs['var']['bind_settings']
                                 ,sh.lg.globs['var']['bind_settings_alt']
                                 ]
-                    ,action   = self.gui.toggle
+                    ,action   = self.toggle
                     )
 
     def get_speech_prior(self):

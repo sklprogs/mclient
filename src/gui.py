@@ -200,7 +200,6 @@ class Sources:
 class About:
 
     def __init__(self):
-        self.Active = False
         self.type = 'About'
         self.set_gui()
         
@@ -276,18 +275,10 @@ class About:
                     )
 
     def close(self,event=None):
-        self.Active = False
         self.obj.close()
 
     def show(self,event=None):
-        self.Active = True
         self.obj.show()
-
-    def toggle(self,event=None):
-        if self.Active:
-            self.close()
-        else:
-            self.show()
 
 
 
@@ -360,7 +351,6 @@ class SearchArticle:
 class SaveArticle:
 
     def __init__(self):
-        self.Active = False
         self.type   = 'SaveArticle'
         self.items  = [_('Save the current view as a web-page (*.htm)')
                       ,_('Save the original article as a web-page (*.htm)')
@@ -385,25 +375,16 @@ class SaveArticle:
         self.set_bindings()
 
     def close(self,event=None):
-        self.Active = False
         self.parent.close()
 
     def show(self,event=None):
-        self.Active = True
         self.parent.show()
-        
-    def toggle(self,event=None):
-        if self.Active:
-            self.close()
-        else:
-            self.show()
 
 
 
 class History:
 
     def __init__(self):
-        self.Active = False
         self.set_gui()
 
     def set_gui(self):
@@ -426,19 +407,11 @@ class History:
                     )
 
     def show(self,event=None):
-        self.Active = True
         self.obj.focus()
         self.parent.show()
 
     def close(self,event=None):
-        self.Active = False
         self.parent.close()
-
-    def toggle(self,event=None):
-        if self.Active:
-            self.close()
-        else:
-            self.show()
 
     # Скопировать элемент истории
     def copy(self,event=None):
@@ -973,7 +946,6 @@ class Settings:
                        )
         self.allowed = []
         self.spallow = []
-        self.Active  = False
 
     def update_col1(self):
         f = '[MClient] gui.Settings.update_col1'
@@ -1645,18 +1617,10 @@ class Settings:
         self.obj.set_title(text=text)
 
     def show(self,event=None):
-        self.Active = True
         self.obj.show()
 
     def close(self,event=None):
-        self.Active = False
         self.obj.close()
-
-    def toggle(self,event=None):
-        if self.Active:
-            self.close()
-        else:
-            self.show()
 
     def set_icon(self,path=None):
         if path:
