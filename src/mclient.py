@@ -23,6 +23,45 @@ if __name__ == '__main__':
 
 
 
+class ExportSettingsUI:
+    
+    def export_speech_area(self):
+        sh.lg.globs['var']['speech1'] = objs.get_settings_ui().opt_sp1.choice
+        sh.lg.globs['var']['speech2'] = objs.settings_ui.opt_sp2.choice
+        sh.lg.globs['var']['speech3'] = objs.settings_ui.opt_sp3.choice
+        sh.lg.globs['var']['speech4'] = objs.settings_ui.opt_sp4.choice
+        sh.lg.globs['var']['speech5'] = objs.settings_ui.opt_sp5.choice
+        sh.lg.globs['var']['speech6'] = objs.settings_ui.opt_sp6.choice
+        sh.lg.globs['var']['speech7'] = objs.settings_ui.opt_sp7.choice
+    
+    def export_style_area(self):
+        sh.lg.globs['var']['style'] = objs.get_settings_ui().opt_scm.choice
+        sh.lg.globs['var']['col1_type'] = objs.settings_ui.opt_cl1.choice
+        sh.lg.globs['var']['col2_type'] = objs.settings_ui.opt_cl2.choice
+        sh.lg.globs['var']['col3_type'] = objs.settings_ui.opt_cl3.choice
+        sh.lg.globs['var']['col4_type'] = objs.settings_ui.opt_cl4.choice
+    
+    def export_checkboxes(self):
+        sh.lg.globs['bool']['SortByColumns'] = objs.get_settings_ui().cbx_no1.get()
+        sh.lg.globs['bool']['AlphabetizeTerms'] = objs.settings_ui.cbx_no2.get()
+        sh.lg.globs['bool']['BlockDics'] = objs.settings_ui.cbx_no3.get()
+        sh.lg.globs['bool']['PrioritizeDics'] = objs.settings_ui.cbx_no4.get()
+        sh.lg.globs['bool']['VerticalView'] = objs.settings_ui.cbx_no5.get()
+        sh.lg.globs['bool']['FullDicTitles'] = not objs.settings_ui.cbx_no6.get()
+        sh.lg.globs['bool']['ShowUserNames'] = objs.settings_ui.cbx_no7.get()
+    
+    def run(self):
+        f = '[MClient] mclient.ExportSettingsUI.run'
+        # 'objs.get_settings_ui()' may not be used as often
+        if objs.settings is None or objs.settings.gui is None:
+            sh.com.rep_lazy(f)
+        else:
+            self.export_style_area()
+            self.export_speech_area()
+            self.export_checkboxes()
+
+
+
 class Commands:
     
     def get_prioritized(self):
@@ -923,7 +962,7 @@ class WebFrame:
         objs.get_search().get_next()
     
     def toggle_settings(self,event=None):
-        objs.get_settings().get_gui().toggle()
+        objs.get_settings_ui().toggle()
     
     def toggle_about(self,event=None):
         objs.get_about().get_gui().toggle()
@@ -2616,62 +2655,9 @@ class Settings:
         sh.objs.get_mes(f,mes).show_info()
 
     def apply(self,event=None):
-        f = '[MClient] mclient.Settings.apply'
-        ''' Do not use 'gettext' to name internal types - this will make
-            the program ~0,6s slower
-        '''
-        lst = [choice for choice in (self.get_gui().opt_cl1.choice
-                                    ,self.gui.opt_cl2.choice
-                                    ,self.gui.opt_cl3.choice
-                                    ,self.gui.opt_cl4.choice
-                                    ) \
-               if choice != _('Do not set')
-              ]
-        ''' #NOTE: The following assignment does not change the list:
-            for item in lst:
-                if item == something:
-                    item = something_else
-        '''
-        for i in range(len(lst)):
-            if lst[i] == _('Dictionaries'):
-                lst[i] = 'dic'
-            elif lst[i] == _('Word forms'):
-                lst[i] = 'wform'
-            elif lst[i] == _('Parts of speech'):
-                lst[i] = 'speech'
-            elif lst[i] == _('Transcription'):
-                lst[i] = 'transc'
-            else:
-                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-                mes = mes.format (self.cols[i]
-                                 ,(_('Dictionaries')
-                                  ,_('Word forms')
-                                  ,_('Transcription')
-                                  ,_('Parts of speech')
-                                  )
-                                 )
-                sh.objs.get_mes(f,mes).show_error()
-        if set(lst):
-            self.gui.close()
-            lg.objs.get_request().cols = tuple(lst)
-            sh.lg.globs['bool']['SortByColumns'] = self.gui.cbx_no1.get()
-            sh.lg.globs['bool']['AlphabetizeTerms'] = self.gui.cbx_no2.get()
-            sh.lg.globs['bool']['BlockDics'] = self.gui.cbx_no3.get()
-            sh.lg.globs['bool']['PrioritizeDics'] = self.gui.cbx_no4.get()
-            sh.lg.globs['bool']['VerticalView'] = self.gui.cbx_no5.get()
-            if sh.lg.globs['bool']['SortByColumns']:
-                self.prioritize_speech()
-                #cur
-                ''' #TODO: read the speech parts order from memory, get
-                    changes in comparison with GUI, update DB.
-                '''
-            else:
-                objs.get_blocksdb().unprioritize_speech()
-            objs.get_webframe().set_columns()
-        else:
-            #TODO: do we really need this?
-            mes = _('At least one column must be set!')
-            sh.objs.get_mes(f,mes).show_warning()
+        self.close()
+        ExportSettingsUI().run()
+        objs.get_webframe().set_columns()
     
     def set_bindings(self):
         self.get_gui().btn_apl.action = self.apply
@@ -2693,15 +2679,6 @@ class Settings:
                ,sh.lg.globs['var']['speech5']
                ,sh.lg.globs['var']['speech6']
                ,sh.lg.globs['var']['speech7']
-               )
-    
-    def prioritize_speech(self):
-        f = '[MClient] mclient.Settings.prioritize_speech'
-        #TODO: save settings in memory
-        return (self.get_gui().opt_sp1.choice,self.gui.opt_sp2.choice
-               ,self.gui.opt_sp3.choice,self.gui.opt_sp4.choice
-               ,self.gui.opt_sp5.choice,self.gui.opt_sp6.choice
-               ,self.gui.opt_sp7.choice
                )
 
 
