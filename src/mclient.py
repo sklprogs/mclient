@@ -1922,9 +1922,7 @@ class WebFrame:
         
         data = objs.blocksdb.assign_cells()
 
-        #TODO: set a setting for "Cut to the chase" mode
-        if lg.objs.request.cols \
-        and lg.objs.request.cols[0] == 'speech':
+        if sh.lg.globs['var']['style'] == _('Cut to the chase'):
             spdic = lg.objs.get_speech_prior().get_abbr2full()
         else:
             spdic = {}
