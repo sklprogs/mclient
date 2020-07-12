@@ -105,6 +105,7 @@ class Commands:
     
     def get_prioritized(self):
         f = '[MClient] mclient.Commands.get_prioritized'
+        # DB is in controller (not in logic), so this is here too
         prioritized = objs.get_blocksdb().get_prioritized()
         if prioritized:
             prioritized = ', '.join(prioritized)
@@ -118,6 +119,7 @@ class Commands:
     
     def get_skipped_dics(self):
         f = '[MClient] mclient.Commands.get_skipped_dics'
+        # DB is in controller (not in logic), so this is here too
         skipped = objs.get_blocksdb().get_skipped_dics()
         if skipped:
             skipped = ', '.join(skipped)
@@ -131,6 +133,7 @@ class Commands:
     
     def get_skipped_terms(self):
         f = '[MClient] mclient.Commands.get_skipped_terms'
+        # DB is in controller (not in logic), so this is here too
         skipped = objs.get_blocksdb().get_skipped_terms()
         if skipped:
             # TERM can be empty for some reason

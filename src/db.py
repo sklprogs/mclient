@@ -11,8 +11,8 @@ from skl_shared.localize import _
 
 
 class DB:
-    ''' #NOTE: don't forget to change 'self.Selectable', 'self.cols',
-        'self.SortTerms' externally.
+    ''' #NOTE: don't forget to change 'self.Selectable' and 'self.cols'
+        externally.
     '''
     def __init__(self):
         self.set_values()
