@@ -35,11 +35,50 @@ class ExportSettingsUI:
         sh.lg.globs['var']['speech7'] = objs.settings_ui.opt_sp7.choice
     
     def export_style_area(self):
+        f = '[MClient] mclient.ExportSettingsUI.export_style_area'
         sh.lg.globs['var']['style'] = objs.get_settings_ui().opt_scm.choice
         sh.lg.globs['var']['col1_type'] = objs.settings_ui.opt_cl1.choice
         sh.lg.globs['var']['col2_type'] = objs.settings_ui.opt_cl2.choice
         sh.lg.globs['var']['col3_type'] = objs.settings_ui.opt_cl3.choice
         sh.lg.globs['var']['col4_type'] = objs.settings_ui.opt_cl4.choice
+        ''' Do not use 'gettext' to name internal types - this will make
+            the program ~0,6s slower.
+        '''
+        lst = [choice for choice in (sh.lg.globs['var']['col1_type']
+                                    ,sh.lg.globs['var']['col2_type']
+                                    ,sh.lg.globs['var']['col3_type']
+                                    ,sh.lg.globs['var']['col4_type']
+                                    ) \
+               if choice != _('Do not set')
+              ]
+        ''' #NOTE: The following assignment does not change the list:
+            for item in lst:
+                if item == something:
+                    item = something_else
+        '''
+        for i in range(len(lst)):
+            if lst[i] == _('Dictionaries'):
+                lst[i] = 'dic'
+            elif lst[i] == _('Word forms'):
+                lst[i] = 'wform'
+            elif lst[i] == _('Parts of speech'):
+                lst[i] = 'speech'
+            elif lst[i] == _('Transcription'):
+                lst[i] = 'transc'
+            else:
+                mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
+                mes = mes.format (self.cols[i]
+                                 ,(_('Dictionaries')
+                                  ,_('Word forms')
+                                  ,_('Transcription')
+                                  ,_('Parts of speech')
+                                  )
+                                 )
+                sh.objs.get_mes(f,mes).show_error()
+        if lst:
+            lg.objs.get_request().cols = tuple(lst)
+        else:
+            sh.com.rep_lazy(f)
     
     def export_checkboxes(self):
         sh.lg.globs['bool']['SortByColumns'] = objs.get_settings_ui().cbx_no1.get()
