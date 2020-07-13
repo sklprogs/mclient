@@ -45,7 +45,7 @@ class BlockPrioritize:
     def __init__(self,data,order,Block=False
                 ,Prioritize=False,phdic=None
                 ,Debug=False,maxrow=20
-                ,maxrows=50
+                ,maxrows=50,spdic={}
                 ):
         f = '[MClient] cells.BlockPrioritize.__init__'
         self.blocks     = []
@@ -58,18 +58,44 @@ class BlockPrioritize:
         self.Debug      = Debug
         self.maxrow     = maxrow
         self.maxrows    = maxrows
+        self.spdic      = spdic
         if self.data:
             self.Success = True
         else:
             self.Success = False
             sh.com.rep_empty(f)
     
+    def prioritize_speech(self):
+        f = '[MClient] cells.BlockPrioritize.prioritize_speech'
+        # Takes ~0.0038s for 'set' on AMD E-300
+        if self.Success:
+            ''' It is assumed that we have already reset
+                'logic.SpeechPrior' with the required speech order
+                before.
+            '''
+            unknown_prior = []
+            if self.spdic:
+                for block in self.blocks:
+                    sprior = self.spdic.get(block.speech)
+                    if sprior:
+                        block.sprior = sprior
+                    elif not block.speech in unknown_prior:
+                        mes = _('A priority of the part of speech "{}" is not defined!')
+                        mes = mes.format(block.speech)
+                        sh.objs.get_mes(f,mes,True).show_warning()
+                        unknown_prior.append(block.speech)
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+    
     def run(self):
         f = '[MClient] cells.BlockPrioritize.run'
         if self.Success:
             self.assign()
             self.block()
-            self.prioritize()
+            self.prioritize_dics()
+            self.prioritize_speech()
             self.dump()
             self.debug()
         else:
@@ -100,8 +126,8 @@ class BlockPrioritize:
             else:
                 block.block = 0
             
-    def prioritize(self):
-        f = '[MClient] cells.BlockPrioritize.prioritize'
+    def prioritize_dics(self):
+        f = '[MClient] cells.BlockPrioritize.prioritize_dics'
         if self.order.Success:
             for block in self.blocks:
                 if block.dic:
@@ -113,6 +139,7 @@ class BlockPrioritize:
                               quite a small value as not to conflict
                               with other dictionaries.
                         '''
+                        #cur
                         block.dprior = -1000
                     elif self.Prioritize:
                         block.dprior = self.order.get_priority(search=block.dic)

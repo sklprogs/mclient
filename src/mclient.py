@@ -102,10 +102,11 @@ class ExportSettingsUI:
 
 
 class Commands:
-    
+    ''' #NOTE: DB is in controller (not in logic), so DB-related code
+        is here too.
+    '''
     def get_prioritized(self):
         f = '[MClient] mclient.Commands.get_prioritized'
-        # DB is in controller (not in logic), so this is here too
         prioritized = objs.get_blocksdb().get_prioritized()
         if prioritized:
             prioritized = ', '.join(prioritized)
@@ -119,7 +120,6 @@ class Commands:
     
     def get_skipped_dics(self):
         f = '[MClient] mclient.Commands.get_skipped_dics'
-        # DB is in controller (not in logic), so this is here too
         skipped = objs.get_blocksdb().get_skipped_dics()
         if skipped:
             skipped = ', '.join(skipped)
@@ -133,7 +133,6 @@ class Commands:
     
     def get_skipped_terms(self):
         f = '[MClient] mclient.Commands.get_skipped_terms'
-        # DB is in controller (not in logic), so this is here too
         skipped = objs.get_blocksdb().get_skipped_terms()
         if skipped:
             # TERM can be empty for some reason
@@ -1903,7 +1902,6 @@ class WebFrame:
             blocks = lg.objs.get_plugins().request (search = lg.objs.request.search
                                                    ,url    = lg.objs.request.url
                                                    )
-            blocks = lg.com.prioritize_speech(blocks)
             data = lg.com.dump_elems (blocks = blocks
                                      ,artid  = objs.blocksdb.artid
                                      )
@@ -1926,12 +1924,14 @@ class WebFrame:
             self.phdic = ''
         
         data = objs.blocksdb.assign_bp()
+        spdic = lg.objs.speech_prior.get_all2prior()
         bp = cl.BlockPrioritize (data       = data
                                 ,order      = lg.objs.get_order()
                                 ,Block      = sh.lg.globs['bool']['BlockDics']
                                 ,Prioritize = sh.lg.globs['bool']['PrioritizeDics']
                                 ,phdic      = self.phdic
                                 ,Debug      = lg.objs.get_plugins().Debug
+                                ,spdic      = spdic
                                 )
         bp.run()
         objs.blocksdb.update(query=bp.query)
@@ -1965,7 +1965,7 @@ class WebFrame:
         data = objs.blocksdb.assign_cells()
 
         if sh.lg.globs['var']['style'] == _('Cut to the chase'):
-            spdic = lg.objs.get_speech_prior().get_abbr2full()
+            spdic = lg.objs.speech_prior.get_abbr2full()
         else:
             spdic = {}
         

@@ -170,11 +170,12 @@ class DB:
               ,ShowUsers=False
               ):
         f = '[MClient] db.DB.reset'
+        self.cols = cols
         self.SortTerms = SortTerms
         self.SortRows  = SortRows
         self.ExpandDic = ExpandDic
         self.ShowUsers = ShowUsers
-        self.cols      = cols
+        
         # Prevents None + tuple
         if not self.cols:
             self.cols = ('dic','wform','transc','speech')
@@ -322,6 +323,7 @@ class DB:
         for item in self.cols:
             if item == 'dic':
                 query.append('DICPR desc')
+                #TODO: Is sorting by DICPR is enough here?
                 ''' Full dictionary titles and abbreviations can be
                     sorted differently, for example, in case of
                     'файл.расшир.' -> 'Расширение файла'

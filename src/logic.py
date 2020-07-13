@@ -1952,34 +1952,6 @@ class Commands:
     def __init__(self):
         self.use_unverified()
     
-    def prioritize_speech(self,blocks):
-        f = '[MClient] logic.Commands.prioritize_speech'
-        if blocks:
-            speech = [block.text for block in blocks \
-                      if block.type_ == 'speech' and block.text
-                     ]
-            speech = sorted(set(speech))
-            mes = _('Parts of speech used in the article: {}')
-            mes = mes.format(', '.join(speech))
-            sh.objs.get_mes(f,mes,True).show_debug()
-            spdic = objs.get_speech_prior().get_all2prior()
-            if spdic:
-                unknown_prior = []
-                for block in blocks:
-                    sprior = spdic.get(block.speech)
-                    if sprior:
-                        block.sprior = sprior
-                    elif not block.speech in unknown_prior:
-                        mes = _('A priority of the part of speech "{}" is not defined!')
-                        mes = mes.format(block.speech)
-                        sh.objs.get_mes(f,mes,True).show_warning()
-                        unknown_prior.append(block.speech)
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.rep_empty(f)
-        return blocks
-    
     def dump_elems(self,blocks,artid):
         f = '[MClient] logic.Commands.dump_elems'
         if blocks and artid:
