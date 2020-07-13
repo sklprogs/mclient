@@ -1018,11 +1018,7 @@ class WebFrame:
         objs.get_history().clear()
     
     def toggle_history(self,event=None):
-        # We need to update History first, so we explicitly call 'show'
-        if objs.get_history().get_gui().Active:
-            objs.history.close()
-        else:
-            objs.history.show()
+        objs.get_history().toggle()
     
     def toggle_save(self,event=None):
         objs.get_save().toggle()
