@@ -310,7 +310,7 @@ class DB:
                 query += ',DICF'
             else:
                 query += ',DIC'
-            query += ' from BLOCKS where ARTICLEID = ? order by NO'
+            query += ',SPEECH from BLOCKS where ARTICLEID = ? order by NO'
             
             self.dbc.execute(query,(self.artid,))
             return self.dbc.fetchall()

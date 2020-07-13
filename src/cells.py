@@ -38,9 +38,9 @@ class BlockPrioritize:
     ''' Update Block and Priority in DB before sorting cells.
         This complements DB with values that must be dumped into DB
         before sorting it.
-        Needs attributes in blocks: NO, DIC, TYPE, TEXT (test purposes
-        only).
-        Modifies attributes:        BLOCK, DICPR
+        Needs attributes in blocks: NO, DIC, SPEECH*, TYPE, TEXT*
+        * (test purposes only).
+        Modifies attributes:        BLOCK, DICPR, SPEECHPR
     '''
     def __init__(self,data,order,Block=False
                 ,Prioritize=False,phdic=None
@@ -103,11 +103,12 @@ class BlockPrioritize:
     
     def assign(self):
         for item in self.data:
-            block       = Block()
-            block.no    = item[0]
-            block.type_ = item[1]
-            block.text  = item[2]
-            block.dic   = item[3]
+            block        = Block()
+            block.no     = item[0]
+            block.type_  = item[1]
+            block.text   = item[2]
+            block.dic    = item[3]
+            block.speech = item[4]
             self.blocks.append(block)
             
     def block(self):
@@ -150,9 +151,9 @@ class BlockPrioritize:
         tmp = io.StringIO()
         tmp.write('begin;')
         for block in self.blocks:
-            tmp.write ('update BLOCKS set BLOCK=%d,DICPR=%d \
+            tmp.write ('update BLOCKS set BLOCK=%d,DICPR=%d,SPEECHPR=%d\
                         where NO=%d;' % (block.block,block.dprior
-                                        ,block.no
+                                        ,block.sprior,block.no
                                         )
                       )
         tmp.write('commit;')
@@ -162,17 +163,19 @@ class BlockPrioritize:
     def debug(self):
         f = '[MClient] cells.BlockPrioritize.debug'
         if self.Debug:
-            headers = ('NO','DIC','TYPE'
-                      ,'TEXT','BLOCK','DICPR'
+            headers = ('NO','TYPE','TEXT','BLOCK'
+                      ,'DIC','DICPR','SPEECH','SPEECHPR'
                       )
             rows = []
             for block in self.blocks:
                 rows.append ([block.no
-                             ,block.dic
                              ,block.type_
                              ,block.text
                              ,block.block
-                             ,block.dprior        
+                             ,block.dic
+                             ,block.dprior
+                             ,block.speech
+                             ,block.sprior
                              ]
                             )
             mes = sh.FastTable (headers   = headers
@@ -302,7 +305,8 @@ class Cells:
         f = '[MClient] cells.Cells.debug'
         if self.Debug:
             headers = ('NO','TYPE','TEXT','DIC','WFORM'
-                      ,'SPEECH','ROWNO','COLNO','CELLNO','SAME'
+                      ,'SPEECH','SPEECHPR','ROWNO','COLNO'
+                      ,'CELLNO','SAME'
                       )
             rows = []
             for block in self.blocks:
@@ -312,6 +316,7 @@ class Cells:
                              ,block.dic
                              ,block.wform
                              ,block.speech
+                             ,block.sprior
                              ,block.i
                              ,block.j
                              ,block.cellno
