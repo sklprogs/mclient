@@ -26,28 +26,28 @@ if __name__ == '__main__':
 class ExportSettingsUI:
     
     def export_speech_area(self):
-        sh.lg.globs['var']['speech1'] = objs.get_settings_ui().opt_sp1.choice
-        sh.lg.globs['var']['speech2'] = objs.settings_ui.opt_sp2.choice
-        sh.lg.globs['var']['speech3'] = objs.settings_ui.opt_sp3.choice
-        sh.lg.globs['var']['speech4'] = objs.settings_ui.opt_sp4.choice
-        sh.lg.globs['var']['speech5'] = objs.settings_ui.opt_sp5.choice
-        sh.lg.globs['var']['speech6'] = objs.settings_ui.opt_sp6.choice
-        sh.lg.globs['var']['speech7'] = objs.settings_ui.opt_sp7.choice
+        sh.lg.globs['str']['speech1'] = objs.get_settings_ui().opt_sp1.choice
+        sh.lg.globs['str']['speech2'] = objs.settings_ui.opt_sp2.choice
+        sh.lg.globs['str']['speech3'] = objs.settings_ui.opt_sp3.choice
+        sh.lg.globs['str']['speech4'] = objs.settings_ui.opt_sp4.choice
+        sh.lg.globs['str']['speech5'] = objs.settings_ui.opt_sp5.choice
+        sh.lg.globs['str']['speech6'] = objs.settings_ui.opt_sp6.choice
+        sh.lg.globs['str']['speech7'] = objs.settings_ui.opt_sp7.choice
     
     def export_style_area(self):
         f = '[MClient] mclient.ExportSettingsUI.export_style_area'
-        sh.lg.globs['var']['style'] = objs.get_settings_ui().opt_scm.choice
-        sh.lg.globs['var']['col1_type'] = objs.settings_ui.opt_cl1.choice
-        sh.lg.globs['var']['col2_type'] = objs.settings_ui.opt_cl2.choice
-        sh.lg.globs['var']['col3_type'] = objs.settings_ui.opt_cl3.choice
-        sh.lg.globs['var']['col4_type'] = objs.settings_ui.opt_cl4.choice
+        sh.lg.globs['str']['style'] = objs.get_settings_ui().opt_scm.choice
+        sh.lg.globs['str']['col1_type'] = objs.settings_ui.opt_cl1.choice
+        sh.lg.globs['str']['col2_type'] = objs.settings_ui.opt_cl2.choice
+        sh.lg.globs['str']['col3_type'] = objs.settings_ui.opt_cl3.choice
+        sh.lg.globs['str']['col4_type'] = objs.settings_ui.opt_cl4.choice
         ''' Do not use 'gettext' to name internal types - this will make
             the program ~0,6s slower.
         '''
-        lst = [choice for choice in (sh.lg.globs['var']['col1_type']
-                                    ,sh.lg.globs['var']['col2_type']
-                                    ,sh.lg.globs['var']['col3_type']
-                                    ,sh.lg.globs['var']['col4_type']
+        lst = [choice for choice in (sh.lg.globs['str']['col1_type']
+                                    ,sh.lg.globs['str']['col2_type']
+                                    ,sh.lg.globs['str']['col3_type']
+                                    ,sh.lg.globs['str']['col4_type']
                                     ) \
                if choice != _('Do not set')
               ]
@@ -153,20 +153,20 @@ class UpdateSettingsUI:
         self.gui = objs.get_settings_ui()
     
     def update_style_area(self):
-        self.gui.opt_scm.set(sh.lg.globs['var']['style'])
-        self.gui.opt_cl1.set(sh.lg.globs['var']['col1_type'])
-        self.gui.opt_cl2.set(sh.lg.globs['var']['col2_type'])
-        self.gui.opt_cl3.set(sh.lg.globs['var']['col3_type'])
-        self.gui.opt_cl4.set(sh.lg.globs['var']['col4_type'])
+        self.gui.opt_scm.set(sh.lg.globs['str']['style'])
+        self.gui.opt_cl1.set(sh.lg.globs['str']['col1_type'])
+        self.gui.opt_cl2.set(sh.lg.globs['str']['col2_type'])
+        self.gui.opt_cl3.set(sh.lg.globs['str']['col3_type'])
+        self.gui.opt_cl4.set(sh.lg.globs['str']['col4_type'])
     
     def update_speech_area(self):
-        self.gui.opt_sp1.set(sh.lg.globs['var']['speech1'])
-        self.gui.opt_sp2.set(sh.lg.globs['var']['speech2'])
-        self.gui.opt_sp3.set(sh.lg.globs['var']['speech3'])
-        self.gui.opt_sp4.set(sh.lg.globs['var']['speech4'])
-        self.gui.opt_sp5.set(sh.lg.globs['var']['speech5'])
-        self.gui.opt_sp6.set(sh.lg.globs['var']['speech6'])
-        self.gui.opt_sp7.set(sh.lg.globs['var']['speech7'])
+        self.gui.opt_sp1.set(sh.lg.globs['str']['speech1'])
+        self.gui.opt_sp2.set(sh.lg.globs['str']['speech2'])
+        self.gui.opt_sp3.set(sh.lg.globs['str']['speech3'])
+        self.gui.opt_sp4.set(sh.lg.globs['str']['speech4'])
+        self.gui.opt_sp5.set(sh.lg.globs['str']['speech5'])
+        self.gui.opt_sp6.set(sh.lg.globs['str']['speech6'])
+        self.gui.opt_sp7.set(sh.lg.globs['str']['speech7'])
     
     def update_checkboxes(self):
         self.gui.cbx_no1.set(sh.lg.globs['bool']['SortByColumns'])
@@ -425,7 +425,7 @@ class Objects:
     
     def get_symbols(self):
         if self.symbols is None:
-            self.symbols = sh.SymbolMap (items = sh.lg.globs['var']['spec_syms']
+            self.symbols = sh.SymbolMap (items = sh.lg.globs['str']['spec_syms']
                                         ,icon  = gi.ICON
                                         )
         return self.symbols
@@ -531,11 +531,11 @@ class About:
     def set_gui(self):
         self.gui = gi.About()
         self.set_bindings()
-        self.gui.lbl_abt.set_font(sh.lg.globs['var']['font_style'])
+        self.gui.lbl_abt.set_font(sh.lg.globs['str']['font_style'])
         
     def set_bindings(self):
         sh.com.bind (obj      = self.get_gui().obj
-                    ,bindings = sh.lg.globs['var']['bind_show_about']
+                    ,bindings = sh.lg.globs['str']['bind_show_about']
                     ,action   = self.toggle
                     )
         self.gui.btn_thd.action = self.show_third_parties
@@ -598,8 +598,8 @@ class SaveArticle:
     
     def set_bindings(self):
         sh.com.bind (obj      = self.get_gui()
-                    ,bindings = [sh.lg.globs['var']['bind_save_article']
-                                ,sh.lg.globs['var']['bind_save_article_alt']
+                    ,bindings = [sh.lg.globs['str']['bind_save_article']
+                                ,sh.lg.globs['str']['bind_save_article_alt']
                                 ]
                     ,action   = self.toggle
                     )
@@ -711,7 +711,7 @@ class SearchArticle:
 
     def set_bindings(self):
         sh.com.bind (obj      = self.get_gui()
-                    ,bindings = sh.lg.globs['var']['bind_search_article_forward']
+                    ,bindings = sh.lg.globs['str']['bind_search_article_forward']
                     ,action   = self.gui.close
                     )
     
@@ -832,13 +832,13 @@ class History:
 
     def set_bindings(self):
         sh.com.bind (obj      = self.get_gui()
-                    ,bindings = [sh.lg.globs['var']['bind_toggle_history']
-                                ,sh.lg.globs['var']['bind_toggle_history_alt']
+                    ,bindings = [sh.lg.globs['str']['bind_toggle_history']
+                                ,sh.lg.globs['str']['bind_toggle_history_alt']
                                 ]
                     ,action   = self.toggle
                     )
         sh.com.bind (obj      = self.gui
-                    ,bindings = sh.lg.globs['var']['bind_clear_history']
+                    ,bindings = sh.lg.globs['str']['bind_clear_history']
                     ,action   = self.clear
                     )
         ''' #NOTE: the list is reversed, but I think it is still more
@@ -912,16 +912,16 @@ class History:
             objs.get_blocksdb().artid = int(result[0])
             result = objs.blocksdb.get_article()
             if result:
-                sh.lg.globs['var']['source'] = result[0] # SOURCE
+                sh.lg.globs['str']['source'] = result[0] # SOURCE
                 lg.objs.request.search       = result[1] # TITLE
                 lg.objs.request.url          = result[2] # URL
                 mes = _('Set source to "{}"')
-                mes = mes.format(sh.lg.globs['var']['source'])
+                mes = mes.format(sh.lg.globs['str']['source'])
                 sh.objs.get_mes(f,mes,True).show_info()
-                lg.objs.get_plugins().set(sh.lg.globs['var']['source'])
+                lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
                 lg.objs.plugins.set_lang1(result[4])
                 lg.objs.plugins.set_lang2(result[5])
-                objs.webframe.reset_opt(sh.lg.globs['var']['source'])
+                objs.webframe.reset_opt(sh.lg.globs['str']['source'])
                 ''' #NOTE: Do not use wrapper procedures such as
                     'objs.webframe.go_url' (modifies
                     'lg.objs.request.search') and
@@ -1255,11 +1255,11 @@ class WebFrame:
     def set_bindings(self):
         # 'gui.obj.widget' is 'Toplevel'; 'gui.widget' is 'TkinterHtml'
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_copy_nominative']
+                    ,bindings = sh.lg.globs['str']['bind_copy_nominative']
                     ,action   = self.copy_wform
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_swap_langs']
+                    ,bindings = sh.lg.globs['str']['bind_swap_langs']
                     ,action   = self.swap_langs
                     )
         sh.com.bind (obj      = self.gui.opt_lg1
@@ -1287,12 +1287,12 @@ class WebFrame:
                     ,action   = self.set_columns
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_quit']
+                    ,bindings = sh.lg.globs['str']['bind_quit']
                     ,action   = self.gui.close
                     )
         sh.com.bind (obj      = self.gui.ent_src
-                    ,bindings = (sh.lg.globs['var']['bind_copy_sel']
-                                ,sh.lg.globs['var']['bind_copy_sel_alt']
+                    ,bindings = (sh.lg.globs['str']['bind_copy_sel']
+                                ,sh.lg.globs['str']['bind_copy_sel_alt']
                                 )
                     ,action   = self.copy_text
                     )
@@ -1308,168 +1308,168 @@ class WebFrame:
                     )
         #TODO: do not iconify at <ButtonRelease-3>
         sh.com.bind (obj      = self.gui.ent_src
-                    ,bindings = sh.lg.globs['var']['bind_clear_search_field']
+                    ,bindings = sh.lg.globs['str']['bind_clear_search_field']
                     ,action   = self.gui.ent_src.clear_text
                     )
         sh.com.bind (obj      = self.gui.ent_src
-                    ,bindings = sh.lg.globs['var']['bind_paste_search_field']
+                    ,bindings = sh.lg.globs['str']['bind_paste_search_field']
                     ,action   = lambda e:self.gui.paste_search()
                     )
         # Go to the previous/next article
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_go_back']
+                    ,bindings = sh.lg.globs['str']['bind_go_back']
                     ,action   = self.go_back
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_go_forward']
+                    ,bindings = sh.lg.globs['str']['bind_go_forward']
                     ,action   = self.go_forward
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_col1_down']
+                    ,bindings = sh.lg.globs['str']['bind_col1_down']
                     ,action   = lambda e:self.move_next_section(col_no=0)
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_col1_up']
+                    ,bindings = sh.lg.globs['str']['bind_col1_up']
                     ,action   = lambda e:self.move_prev_section(col_no=0)
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_col2_down']
+                    ,bindings = sh.lg.globs['str']['bind_col2_down']
                     ,action   = lambda e:self.move_next_section(col_no=1)
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_col2_up']
+                    ,bindings = sh.lg.globs['str']['bind_col2_up']
                     ,action   = lambda e:self.move_prev_section(col_no=1)
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_col3_down']
+                    ,bindings = sh.lg.globs['str']['bind_col3_down']
                     ,action   = lambda e:self.move_next_section(col_no=2)
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_col3_up']
+                    ,bindings = sh.lg.globs['str']['bind_col3_up']
                     ,action   = lambda e:self.move_prev_section(col_no=2)
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_go_phrases']
+                    ,bindings = sh.lg.globs['str']['bind_go_phrases']
                     ,action   = self.go_phdic
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_search_article_forward']
+                    ,bindings = sh.lg.globs['str']['bind_search_article_forward']
                     ,action   = self.search_next
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_search_article_backward']
+                    ,bindings = sh.lg.globs['str']['bind_search_article_backward']
                     ,action   = self.search_prev
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_re_search_article']
+                    ,bindings = sh.lg.globs['str']['bind_re_search_article']
                     ,action   = self.search_reset
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = (sh.lg.globs['var']['bind_reload_article']
-                                ,sh.lg.globs['var']['bind_reload_article_alt']
+                    ,bindings = (sh.lg.globs['str']['bind_reload_article']
+                                ,sh.lg.globs['str']['bind_reload_article_alt']
                                 )
                     ,action   = self.reload
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = (sh.lg.globs['var']['bind_save_article']
-                                ,sh.lg.globs['var']['bind_save_article_alt']
+                    ,bindings = (sh.lg.globs['str']['bind_save_article']
+                                ,sh.lg.globs['str']['bind_save_article_alt']
                                 )
                     ,action   = self.toggle_save
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_show_about']
+                    ,bindings = sh.lg.globs['str']['bind_show_about']
                     ,action   = self.toggle_about
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = (sh.lg.globs['var']['bind_toggle_history']
-                                ,sh.lg.globs['var']['bind_toggle_history']
+                    ,bindings = (sh.lg.globs['str']['bind_toggle_history']
+                                ,sh.lg.globs['str']['bind_toggle_history']
                                 )
                     ,action   = self.toggle_history
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = (sh.lg.globs['var']['bind_toggle_history']
-                                ,sh.lg.globs['var']['bind_toggle_history_alt']
+                    ,bindings = (sh.lg.globs['str']['bind_toggle_history']
+                                ,sh.lg.globs['str']['bind_toggle_history_alt']
                                 )
                     ,action   = self.toggle_history
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = (sh.lg.globs['var']['bind_open_in_browser']
-                                ,sh.lg.globs['var']['bind_open_in_browser_alt']
+                    ,bindings = (sh.lg.globs['str']['bind_open_in_browser']
+                                ,sh.lg.globs['str']['bind_open_in_browser_alt']
                                 )
                     ,action   = self.open_in_browser
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_copy_url']
+                    ,bindings = sh.lg.globs['str']['bind_copy_url']
                     ,action   = self.copy_block_url
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_copy_article_url']
+                    ,bindings = sh.lg.globs['str']['bind_copy_article_url']
                     ,action   = self.copy_url
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_spec_symbol']
+                    ,bindings = sh.lg.globs['str']['bind_spec_symbol']
                     ,action   = self.insert_sym
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_define']
+                    ,bindings = sh.lg.globs['str']['bind_define']
                     ,action   = lambda e:self.define(Selected=True)
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = (sh.lg.globs['var']['bind_prev_lang1']
-                                ,sh.lg.globs['var']['bind_prev_lang1_alt']
+                    ,bindings = (sh.lg.globs['str']['bind_prev_lang1']
+                                ,sh.lg.globs['str']['bind_prev_lang1_alt']
                                 )
                     ,action   = self.set_prev_lang1
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = (sh.lg.globs['var']['bind_next_lang1']
-                                ,sh.lg.globs['var']['bind_next_lang1_alt']
+                    ,bindings = (sh.lg.globs['str']['bind_next_lang1']
+                                ,sh.lg.globs['str']['bind_next_lang1_alt']
                                 )
                     ,action   = self.set_next_lang1
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = (sh.lg.globs['var']['bind_prev_lang2']
-                                ,sh.lg.globs['var']['bind_prev_lang2_alt']
+                    ,bindings = (sh.lg.globs['str']['bind_prev_lang2']
+                                ,sh.lg.globs['str']['bind_prev_lang2_alt']
                                 )
                     ,action   = self.set_prev_lang2
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = (sh.lg.globs['var']['bind_next_lang2']
-                                ,sh.lg.globs['var']['bind_next_lang2_alt']
+                    ,bindings = (sh.lg.globs['str']['bind_next_lang2']
+                                ,sh.lg.globs['str']['bind_next_lang2_alt']
                                 )
                     ,action   = self.set_next_lang2
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = (sh.lg.globs['var']['bind_settings']
-                                ,sh.lg.globs['var']['bind_settings_alt']
+                    ,bindings = (sh.lg.globs['str']['bind_settings']
+                                ,sh.lg.globs['str']['bind_settings_alt']
                                 )
                     ,action   = self.toggle_settings
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = (sh.lg.globs['var']['bind_toggle_view']
-                                ,sh.lg.globs['var']['bind_toggle_view_alt']
+                    ,bindings = (sh.lg.globs['str']['bind_toggle_view']
+                                ,sh.lg.globs['str']['bind_toggle_view_alt']
                                 )
                     ,action   = self.toggle_view
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = (sh.lg.globs['var']['bind_toggle_history']
-                                ,sh.lg.globs['var']['bind_toggle_history_alt']
+                    ,bindings = (sh.lg.globs['str']['bind_toggle_history']
+                                ,sh.lg.globs['str']['bind_toggle_history_alt']
                                 )
                     ,action   = self.toggle_history
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_clear_history']
+                    ,bindings = sh.lg.globs['str']['bind_clear_history']
                     ,action   = self.clear_history
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_toggle_alphabet']
+                    ,bindings = sh.lg.globs['str']['bind_toggle_alphabet']
                     ,action   = self.toggle_alphabet
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_toggle_block']
+                    ,bindings = sh.lg.globs['str']['bind_toggle_block']
                     ,action   = self.toggle_block
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_toggle_priority']
+                    ,bindings = sh.lg.globs['str']['bind_toggle_priority']
                     ,action   = self.toggle_priority
                     )
         sh.com.bind (obj      = self.gui.btn_hst
@@ -1477,11 +1477,11 @@ class WebFrame:
                     ,action   = self.clear_history
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_print']
+                    ,bindings = sh.lg.globs['str']['bind_print']
                     ,action   = self.print
                     )
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = sh.lg.globs['var']['bind_toggle_sel']
+                    ,bindings = sh.lg.globs['str']['bind_toggle_sel']
                     ,action   = self.toggle_sel
                     )
         sh.com.bind (obj      = self.gui
@@ -1588,50 +1588,50 @@ class WebFrame:
                     ,action   = self.suggest_bottom
                     )
         # Set config bindings
-        hotkeys1 = (sh.lg.globs['var']['bind_toggle_history']
-                   ,sh.lg.globs['var']['bind_toggle_history_alt']
+        hotkeys1 = (sh.lg.globs['str']['bind_toggle_history']
+                   ,sh.lg.globs['str']['bind_toggle_history_alt']
                    )
         hotkeys1 = sh.Hotkeys(hotkeys1).run()
-        hotkeys2 = (sh.lg.globs['var']['bind_clear_history']
+        hotkeys2 = (sh.lg.globs['str']['bind_clear_history']
                    ,'<ButtonRelease-3>'
                    )
         hotkeys2 = sh.Hotkeys(hotkeys2).run()
         self.gui.btn_hst.hint = _('Show history') + '\n' + hotkeys1 \
                                 + '\n\n' + _('Clear history') + '\n' \
                                 + hotkeys2
-        self.gui.btn_abt.bindings = sh.lg.globs['var']['bind_show_about']
-        self.gui.btn_alp.bindings = sh.lg.globs['var']['bind_toggle_alphabet']
-        self.gui.btn_blk.bindings = sh.lg.globs['var']['bind_toggle_block']
-        self.gui.btn_brw.bindings = (sh.lg.globs['var']['bind_open_in_browser']
-                                    ,sh.lg.globs['var']['bind_open_in_browser_alt']
+        self.gui.btn_abt.bindings = sh.lg.globs['str']['bind_show_about']
+        self.gui.btn_alp.bindings = sh.lg.globs['str']['bind_toggle_alphabet']
+        self.gui.btn_blk.bindings = sh.lg.globs['str']['bind_toggle_block']
+        self.gui.btn_brw.bindings = (sh.lg.globs['str']['bind_open_in_browser']
+                                    ,sh.lg.globs['str']['bind_open_in_browser_alt']
                                     )
-        self.gui.btn_clr.bindings = sh.lg.globs['var']['bind_clear_search_field']
-        self.gui.btn_def.bindings = sh.lg.globs['var']['bind_define']
-        self.gui.btn_nxt.bindings = sh.lg.globs['var']['bind_go_forward']
+        self.gui.btn_clr.bindings = sh.lg.globs['str']['bind_clear_search_field']
+        self.gui.btn_def.bindings = sh.lg.globs['str']['bind_define']
+        self.gui.btn_nxt.bindings = sh.lg.globs['str']['bind_go_forward']
         self.gui.btn_ins.bindings = '<Control-v>'
-        self.gui.btn_prv.bindings = sh.lg.globs['var']['bind_go_back']
-        self.gui.btn_prn.bindings = sh.lg.globs['var']['bind_print']
-        self.gui.btn_qit.bindings = sh.lg.globs['var']['bind_quit']
-        self.gui.btn_pri.bindings = sh.lg.globs['var']['bind_toggle_priority']
-        self.gui.btn_rld.bindings = (sh.lg.globs['var']['bind_reload_article']
-                                    ,sh.lg.globs['var']['bind_reload_article_alt']
+        self.gui.btn_prv.bindings = sh.lg.globs['str']['bind_go_back']
+        self.gui.btn_prn.bindings = sh.lg.globs['str']['bind_print']
+        self.gui.btn_qit.bindings = sh.lg.globs['str']['bind_quit']
+        self.gui.btn_pri.bindings = sh.lg.globs['str']['bind_toggle_priority']
+        self.gui.btn_rld.bindings = (sh.lg.globs['str']['bind_reload_article']
+                                    ,sh.lg.globs['str']['bind_reload_article_alt']
                                     )
-        self.gui.btn_rp1.bindings = sh.lg.globs['var']['repeat_sign']
-        self.gui.btn_rp2.bindings = sh.lg.globs['var']['repeat_sign2']
-        self.gui.btn_sav.bindings = (sh.lg.globs['var']['bind_save_article']
-                                    ,sh.lg.globs['var']['bind_save_article_alt']
+        self.gui.btn_rp1.bindings = sh.lg.globs['str']['repeat_sign']
+        self.gui.btn_rp2.bindings = sh.lg.globs['str']['repeat_sign2']
+        self.gui.btn_sav.bindings = (sh.lg.globs['str']['bind_save_article']
+                                    ,sh.lg.globs['str']['bind_save_article_alt']
                                     )
-        self.gui.btn_set.bindings = (sh.lg.globs['var']['bind_settings']
-                                    ,sh.lg.globs['var']['bind_settings_alt']
+        self.gui.btn_set.bindings = (sh.lg.globs['str']['bind_settings']
+                                    ,sh.lg.globs['str']['bind_settings_alt']
                                     )
-        self.gui.btn_swp.bindings = sh.lg.globs['var']['bind_swap_langs']
-        self.gui.btn_sym.bindings = sh.lg.globs['var']['bind_spec_symbol']
-        self.gui.btn_ser.bindings = sh.lg.globs['var']['bind_re_search_article']
+        self.gui.btn_swp.bindings = sh.lg.globs['str']['bind_swap_langs']
+        self.gui.btn_sym.bindings = sh.lg.globs['str']['bind_spec_symbol']
+        self.gui.btn_ser.bindings = sh.lg.globs['str']['bind_re_search_article']
         self.gui.btn_trn.bindings = ('<Return>'
                                     ,'<KP_Enter>'
                                     )
-        self.gui.btn_viw.bindings = (sh.lg.globs['var']['bind_toggle_view']
-                                    ,sh.lg.globs['var']['bind_toggle_view_alt']
+        self.gui.btn_viw.bindings = (sh.lg.globs['str']['bind_toggle_view']
+                                    ,sh.lg.globs['str']['bind_toggle_view_alt']
                                     )
         '''#NOTE: Reset 'hint' for those buttons which bindings have
            changed (in order to show these bindings in tooltip)
@@ -1737,10 +1737,10 @@ class WebFrame:
                                 ,result[2],result[1],result[3]
                                 )
             self.gui.widget.tag ('configure','selection','-background'
-                                ,sh.lg.globs['var']['color_terms_sel_bg']
+                                ,sh.lg.globs['str']['color_terms_sel_bg']
                                 )
             self.gui.widget.tag ('configure','selection','-foreground'
-                                ,sh.lg.globs['var']['color_terms_sel_fg']
+                                ,sh.lg.globs['str']['color_terms_sel_fg']
                                 )
         except Exception as e:
             sh.com.rep_failed(f,e)
@@ -1872,7 +1872,7 @@ class WebFrame:
         self.pos = -1
         order = objs.get_settings().get_speech_prior()
         lg.objs.get_speech_prior().reset(order)
-        artid = objs.get_blocksdb().is_present (source = sh.lg.globs['var']['source']
+        artid = objs.get_blocksdb().is_present (source = sh.lg.globs['str']['source']
                                                ,title  = lg.objs.request.search
                                                ,url    = lg.objs.request.url
                                                )
@@ -1884,7 +1884,7 @@ class WebFrame:
         else:
             # 'None' skips the autoincrement
             data = (None                              # (00) ARTICLEID
-                   ,sh.lg.globs['var']['source']      # (01) SOURCE
+                   ,sh.lg.globs['str']['source']      # (01) SOURCE
                    ,lg.objs.request.search            # (02) TITLE
                    ,lg.objs.request.url               # (03) URL
                    ,lg.objs.get_plugins().get_lang1() # (04) LANG1
@@ -1960,7 +1960,7 @@ class WebFrame:
         
         data = objs.blocksdb.assign_cells()
 
-        if sh.lg.globs['var']['style'] == _('Cut to the chase'):
+        if sh.lg.globs['str']['style'] == _('Cut to the chase'):
             spdic = lg.objs.speech_prior.get_abbr2full()
         else:
             spdic = {}
@@ -2062,9 +2062,9 @@ class WebFrame:
         search = self.gui.ent_src.widget.get().strip('\n').strip(' ')
         if search == '':
             self.go_url()
-        elif search == sh.lg.globs['var']['repeat_sign']:
+        elif search == sh.lg.globs['str']['repeat_sign']:
             self.insert_repeat_sign()
-        elif search == sh.lg.globs['var']['repeat_sign2']:
+        elif search == sh.lg.globs['str']['repeat_sign2']:
             self.insert_repeat_sign2()
         else:
             lg.objs.get_request().search = search
@@ -2119,12 +2119,12 @@ class WebFrame:
             get an actual value first.
         '''
         self.gui.opt_src._get()
-        sh.lg.globs['var']['source'] = self.gui.opt_src.choice
+        sh.lg.globs['str']['source'] = self.gui.opt_src.choice
         mes = _('Set source to "{}"')
-        mes = mes.format(sh.lg.globs['var']['source'])
+        mes = mes.format(sh.lg.globs['str']['source'])
         sh.objs.get_mes(f,mes,True).show_info()
-        lg.objs.get_plugins().set(sh.lg.globs['var']['source'])
-        self.reset_opt(sh.lg.globs['var']['source'])
+        lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
+        self.reset_opt(sh.lg.globs['str']['source'])
         self.go_search()
         self.gui.ent_src.focus()
 
@@ -2337,7 +2337,7 @@ class WebFrame:
             pattern = lg.objs.get_request().search
         if pattern:
             pattern = _('what is "{}"?').format(pattern)
-            sh.Online (base    = sh.lg.globs['var']['web_search_url']
+            sh.Online (base    = sh.lg.globs['str']['web_search_url']
                       ,pattern = pattern
                       ).browse()
         else:
@@ -2351,13 +2351,13 @@ class WebFrame:
             objs.blocksdb.artid = result
             result = objs.blocksdb.get_article()
             if result:
-                sh.lg.globs['var']['source'] = result[0]
+                sh.lg.globs['str']['source'] = result[0]
                 lg.objs.get_request().search = result[1]
                 lg.objs.request.url = result[2]
-                lg.objs.get_plugins().set(sh.lg.globs['var']['source'])
+                lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
                 lg.objs.plugins.set_lang1(result[4])
                 lg.objs.plugins.set_lang2(result[5])
-                self.reset_opt(sh.lg.globs['var']['source'])
+                self.reset_opt(sh.lg.globs['str']['source'])
                 self.load_article()
             else:
                 sh.com.rep_empty(f)
@@ -2372,13 +2372,13 @@ class WebFrame:
             objs.blocksdb.artid = result
             result = objs.blocksdb.get_article()
             if result:
-                sh.lg.globs['var']['source'] = result[0]
+                sh.lg.globs['str']['source'] = result[0]
                 lg.objs.get_request().search = result[1]
                 lg.objs.request.url = result[2]
-                lg.objs.get_plugins().set(sh.lg.globs['var']['source'])
+                lg.objs.get_plugins().set(sh.lg.globs['str']['source'])
                 lg.objs.plugins.set_lang1(result[4])
                 lg.objs.plugins.set_lang2(result[5])
-                self.reset_opt(sh.lg.globs['var']['source'])
+                self.reset_opt(sh.lg.globs['str']['source'])
                 self.load_article()
             else:
                 sh.com.rep_empty(f)
@@ -2741,20 +2741,20 @@ class Settings:
         #self.btn_blk.action = self.block_settings
         #self.btn_pri.action = self.priority_settings
         sh.com.bind (obj      = self.gui.obj
-                    ,bindings = [sh.lg.globs['var']['bind_settings']
-                                ,sh.lg.globs['var']['bind_settings_alt']
+                    ,bindings = [sh.lg.globs['str']['bind_settings']
+                                ,sh.lg.globs['str']['bind_settings_alt']
                                 ]
                     ,action   = self.toggle
                     )
 
     def get_speech_prior(self):
-        return (sh.lg.globs['var']['speech1']
-               ,sh.lg.globs['var']['speech2']
-               ,sh.lg.globs['var']['speech3']
-               ,sh.lg.globs['var']['speech4']
-               ,sh.lg.globs['var']['speech5']
-               ,sh.lg.globs['var']['speech6']
-               ,sh.lg.globs['var']['speech7']
+        return (sh.lg.globs['str']['speech1']
+               ,sh.lg.globs['str']['speech2']
+               ,sh.lg.globs['str']['speech3']
+               ,sh.lg.globs['str']['speech4']
+               ,sh.lg.globs['str']['speech5']
+               ,sh.lg.globs['str']['speech6']
+               ,sh.lg.globs['str']['speech7']
                )
 
 

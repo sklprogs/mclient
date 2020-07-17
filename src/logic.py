@@ -80,7 +80,7 @@ class DefaultKeys:
                                   })
     
     def _load_var(self):
-        sh.lg.globs['var'].update ({
+        sh.lg.globs['str'].update ({
             'bind_clear_history'          :'<Control-Shift-Delete>'
            ,'bind_clear_search_field'     :'<ButtonRelease-3>'
            ,'bind_col1_down'              :'<Control-Down>'
@@ -173,7 +173,7 @@ class DefaultKeys:
         sh.lg.globs['bool']  = {}
         sh.lg.globs['float'] = {}
         sh.lg.globs['int']   = {}
-        sh.lg.globs['var']   = {}
+        sh.lg.globs['str']   = {}
 
 
 
@@ -1131,8 +1131,8 @@ class Welcome:
         hotkey1  = ('<Button-1>','<Return>')
         hint2    = _('Copy the current selection')
         hotkey2  = ('<Button-3>'
-                   ,sh.lg.globs['var']['bind_copy_sel']
-                   ,sh.lg.globs['var']['bind_copy_sel_alt']
+                   ,sh.lg.globs['str']['bind_copy_sel']
+                   ,sh.lg.globs['str']['bind_copy_sel_alt']
                    )
         hint34   = _('Show the program window (system-wide)')
         hotkey34 = '<Alt_L-grave>'
@@ -1144,101 +1144,101 @@ class Welcome:
         hotkey36 = '<Escape>'
         hint37   = _('Quit the program')
         hotkey37 = ('<Control-q>'
-                   ,sh.lg.globs['var']['bind_quit']
+                   ,sh.lg.globs['str']['bind_quit']
                    )
         hint3    = _('Copy the URL of the selected term')
-        hotkey3  = sh.lg.globs['var']['bind_copy_url']
+        hotkey3  = sh.lg.globs['str']['bind_copy_url']
         hint4    = _('Copy the URL of the current article')
-        hotkey4  = sh.lg.globs['var']['bind_copy_article_url']
+        hotkey4  = sh.lg.globs['str']['bind_copy_article_url']
         hint5    = _('Go to the previous section of column #%d') % 1
-        hotkey5  = sh.lg.globs['var']['bind_col1_up']
+        hotkey5  = sh.lg.globs['str']['bind_col1_up']
         hint6    = _('Go to the next section of column #%d') % 1
-        hotkey6  = sh.lg.globs['var']['bind_col1_down']
+        hotkey6  = sh.lg.globs['str']['bind_col1_down']
         hint7    = _('Go to the previous section of column #%d') % 2
-        hotkey7  = sh.lg.globs['var']['bind_col2_up']
+        hotkey7  = sh.lg.globs['str']['bind_col2_up']
         hint8    = _('Go to the next section of column #%d') % 2
-        hotkey8  = sh.lg.globs['var']['bind_col2_down']
+        hotkey8  = sh.lg.globs['str']['bind_col2_down']
         hint9    = _('Go to the previous section of column #%d') % 3
-        hotkey9  = sh.lg.globs['var']['bind_col3_up']
+        hotkey9  = sh.lg.globs['str']['bind_col3_up']
         hint10   = _('Go to the next section of column #%d') % 3
-        hotkey10 = sh.lg.globs['var']['bind_col3_down']
+        hotkey10 = sh.lg.globs['str']['bind_col3_down']
         hint11   = _('Open a webpage with a definition of the current term')
-        hotkey11 = sh.lg.globs['var']['bind_define']
+        hotkey11 = sh.lg.globs['str']['bind_define']
         hint12   = _('Look up phrases')
-        hotkey12 = sh.lg.globs['var']['bind_go_phrases']
+        hotkey12 = sh.lg.globs['str']['bind_go_phrases']
         hint13   = _('Go to the preceding article')
-        hotkey13 = sh.lg.globs['var']['bind_go_back']
+        hotkey13 = sh.lg.globs['str']['bind_go_back']
         hint14   = _('Go to the following article')
-        hotkey14 = sh.lg.globs['var']['bind_go_forward']
+        hotkey14 = sh.lg.globs['str']['bind_go_forward']
         hint15   = _('Next source language')
-        hotkey15 = (sh.lg.globs['var']['bind_next_lang1']
-                   ,sh.lg.globs['var']['bind_next_lang1_alt']
+        hotkey15 = (sh.lg.globs['str']['bind_next_lang1']
+                   ,sh.lg.globs['str']['bind_next_lang1_alt']
                    )
         hint16   = _('Previous source language')
-        hotkey16 = (sh.lg.globs['var']['bind_prev_lang1']
-                   ,sh.lg.globs['var']['bind_prev_lang1_alt']
+        hotkey16 = (sh.lg.globs['str']['bind_prev_lang1']
+                   ,sh.lg.globs['str']['bind_prev_lang1_alt']
                    )
         hint17   = _('Create a printer-friendly page')
-        hotkey17 = sh.lg.globs['var']['bind_print']
+        hotkey17 = sh.lg.globs['str']['bind_print']
         hint18   = _('Open the current article in a default browser')
-        hotkey18 = (sh.lg.globs['var']['bind_open_in_browser']
-                   ,sh.lg.globs['var']['bind_open_in_browser_alt']
+        hotkey18 = (sh.lg.globs['str']['bind_open_in_browser']
+                   ,sh.lg.globs['str']['bind_open_in_browser_alt']
                    )
         hint19   = _('Reload the current article')
-        hotkey19 = (sh.lg.globs['var']['bind_reload_article']
-                   ,sh.lg.globs['var']['bind_reload_article_alt']
+        hotkey19 = (sh.lg.globs['str']['bind_reload_article']
+                   ,sh.lg.globs['str']['bind_reload_article_alt']
                    )
         hint20   = _('Save or copy the current article')
-        hotkey20 = (sh.lg.globs['var']['bind_save_article']
-                   ,sh.lg.globs['var']['bind_save_article_alt']
+        hotkey20 = (sh.lg.globs['str']['bind_save_article']
+                   ,sh.lg.globs['str']['bind_save_article_alt']
                    )
         hint21   = _('Start a new search in the current article')
-        hotkey21 = sh.lg.globs['var']['bind_re_search_article']
+        hotkey21 = sh.lg.globs['str']['bind_re_search_article']
         hint22   = _('Search the article forward')
-        hotkey22 = sh.lg.globs['var']['bind_search_article_forward']
+        hotkey22 = sh.lg.globs['str']['bind_search_article_forward']
         hint23   = _('Search the article backward')
-        hotkey23 = sh.lg.globs['var']['bind_search_article_backward']
+        hotkey23 = sh.lg.globs['str']['bind_search_article_backward']
         hint24   = _('Show settings')
-        hotkey24 = (sh.lg.globs['var']['bind_settings']
-                   ,sh.lg.globs['var']['bind_settings_alt']
+        hotkey24 = (sh.lg.globs['str']['bind_settings']
+                   ,sh.lg.globs['str']['bind_settings_alt']
                    )
         hint25   = _('About the program')
-        hotkey25 = sh.lg.globs['var']['bind_show_about']
+        hotkey25 = sh.lg.globs['str']['bind_show_about']
         hint26   = _('Paste a special symbol')
-        hotkey26 = sh.lg.globs['var']['bind_spec_symbol']
+        hotkey26 = sh.lg.globs['str']['bind_spec_symbol']
         hint27   = _('Toggle alphabetizing')
-        hotkey27 = sh.lg.globs['var']['bind_toggle_alphabet']
+        hotkey27 = sh.lg.globs['str']['bind_toggle_alphabet']
         hint28   = _('Toggle blacklisting')
-        hotkey28 = sh.lg.globs['var']['bind_toggle_block']
+        hotkey28 = sh.lg.globs['str']['bind_toggle_block']
         hint29   = _('Toggle History')
-        hotkey29 = (sh.lg.globs['var']['bind_toggle_history']
-                   ,sh.lg.globs['var']['bind_toggle_history_alt']
+        hotkey29 = (sh.lg.globs['str']['bind_toggle_history']
+                   ,sh.lg.globs['str']['bind_toggle_history_alt']
                    )
         hint30   = _('Toggle prioritizing')
-        hotkey30 = sh.lg.globs['var']['bind_toggle_priority']
+        hotkey30 = sh.lg.globs['str']['bind_toggle_priority']
         '''
         hint31   = _('Toggle terms-only selection')
-        hotkey31 = sh.lg.globs['var']['bind_toggle_sel']
+        hotkey31 = sh.lg.globs['str']['bind_toggle_sel']
         '''
         hint32   = _('Toggle the current article view')
-        hotkey32 = (sh.lg.globs['var']['bind_toggle_view']
-                   ,sh.lg.globs['var']['bind_toggle_view_alt']
+        hotkey32 = (sh.lg.globs['str']['bind_toggle_view']
+                   ,sh.lg.globs['str']['bind_toggle_view_alt']
                    )
         hint33   = _('Clear History')
-        hotkey33 = sh.lg.globs['var']['bind_clear_history']
+        hotkey33 = sh.lg.globs['str']['bind_clear_history']
         hint38   = _('Next target language')
-        hotkey38 = (sh.lg.globs['var']['bind_next_lang2']
-                   ,sh.lg.globs['var']['bind_next_lang2_alt']
+        hotkey38 = (sh.lg.globs['str']['bind_next_lang2']
+                   ,sh.lg.globs['str']['bind_next_lang2_alt']
                    )
         hint39   = _('Previous target language')
-        hotkey39 = (sh.lg.globs['var']['bind_prev_lang2']
-                   ,sh.lg.globs['var']['bind_prev_lang2_alt']
+        hotkey39 = (sh.lg.globs['str']['bind_prev_lang2']
+                   ,sh.lg.globs['str']['bind_prev_lang2_alt']
                    )
         hint40   = _('Swap source and target languages')
-        hotkey40 = sh.lg.globs['var']['bind_swap_langs']
+        hotkey40 = sh.lg.globs['str']['bind_swap_langs']
         
         hint41   = _('Copy the nominative case')
-        hotkey41 = sh.lg.globs['var']['bind_copy_nominative']
+        hotkey41 = sh.lg.globs['str']['bind_copy_nominative']
         
         self.gen_row(hint1,hotkey1,hint2,hotkey2)
         self.gen_row(hint34,hotkey34,hint35,hotkey35)

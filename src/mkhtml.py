@@ -25,14 +25,14 @@ class HTM:
     
     def _run_user(self):
         if self.block.type_ == 'user':
-            color = sh.lg.globs['var']['color_comments']
+            color = sh.lg.globs['str']['color_comments']
             result = sh.com.get_mod_color (color = color
                                           ,delta = 75
                                           )
             if result:
                 color = result
             self.output.write('<i><font face="')
-            self.output.write(sh.lg.globs['var']['font_comments_family'])
+            self.output.write(sh.lg.globs['str']['font_comments_family'])
             self.output.write('" size="')
             self.output.write(str(sh.lg.globs['int']['font_comments_size']))
             self.output.write('" color="')
@@ -121,7 +121,7 @@ class HTM:
         default_color = 'red'
         delta = -76
         # Column 1 color
-        result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col1']
+        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col1']
                                       ,delta = delta
                                       )
         if result:
@@ -129,7 +129,7 @@ class HTM:
         else:
             self.priority_color1 = default_color
         # Column 2 color
-        result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col2']
+        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col2']
                                       ,delta = delta
                                       )
         if result:
@@ -137,7 +137,7 @@ class HTM:
         else:
             self.priority_color2 = default_color
         # Column 3 color
-        result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col3']
+        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col3']
                                       ,delta = delta
                                       )
         if result:
@@ -145,7 +145,7 @@ class HTM:
         else:
             self.priority_color3 = default_color
         # Column 4 color
-        result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col4']
+        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col4']
                                       ,delta = delta
                                       )
         if result:
@@ -157,7 +157,7 @@ class HTM:
         default_color = 'dim gray'
         delta = 76
         # Column 1 color
-        result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col1']
+        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col1']
                                       ,delta = delta
                                       )
         if result:
@@ -165,7 +165,7 @@ class HTM:
         else:
             self.blocked_color1 = default_color
         # Column 2 color
-        result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col2']
+        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col2']
                                       ,delta = delta
                                       )
         if result:
@@ -173,7 +173,7 @@ class HTM:
         else:
             self.blocked_color2 = default_color
         # Column 3 color
-        result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col3']
+        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col3']
                                       ,delta = delta
                                       )
         if result:
@@ -181,7 +181,7 @@ class HTM:
         else:
             self.blocked_color3 = default_color
         # Column 4 color
-        result = sh.com.get_mod_color (color = sh.lg.globs['var']['color_col4']
+        result = sh.com.get_mod_color (color = sh.lg.globs['str']['color_col4']
                                       ,delta = delta
                                       )
         if result:
@@ -225,15 +225,15 @@ class HTM:
 
     def _get_family(self):
         if self.block.xj == 0:
-            return sh.lg.globs['var']['font_col1_family']
+            return sh.lg.globs['str']['font_col1_family']
         elif self.block.xj == 1:
-            return sh.lg.globs['var']['font_col2_family']
+            return sh.lg.globs['str']['font_col2_family']
         elif self.block.xj == 2:
-            return sh.lg.globs['var']['font_col3_family']
+            return sh.lg.globs['str']['font_col3_family']
         elif self.block.xj == 3:
-            return sh.lg.globs['var']['font_col4_family']
+            return sh.lg.globs['str']['font_col4_family']
         else:
-            return sh.lg.globs['var']['font_terms_family']
+            return sh.lg.globs['str']['font_terms_family']
             
     def _get_size(self):
         if self.block.xj == 0:
@@ -273,15 +273,15 @@ class HTM:
     
     def _get_color(self):
         if self.block.xj == 0:
-            return sh.lg.globs['var']['color_col1']
+            return sh.lg.globs['str']['color_col1']
         elif self.block.xj == 1:
-            return sh.lg.globs['var']['color_col2']
+            return sh.lg.globs['str']['color_col2']
         elif self.block.xj == 2:
-            return sh.lg.globs['var']['color_col3']
+            return sh.lg.globs['str']['color_col3']
         elif self.block.xj == 3:
-            return sh.lg.globs['var']['color_col4']
+            return sh.lg.globs['str']['color_col4']
         else:
-            return sh.lg.globs['var']['color_terms']
+            return sh.lg.globs['str']['color_terms']
     
     def _run_wform(self):
         if self.block.type_ == 'wform':
@@ -298,9 +298,9 @@ class HTM:
     def _run_term(self):
         if self.block.type_ in ('term','phrase'):
             self.output.write('<font face="')
-            self.output.write(sh.lg.globs['var']['font_terms_family'])
+            self.output.write(sh.lg.globs['str']['font_terms_family'])
             self.output.write('" color="')
-            self.output.write(sh.lg.globs['var']['color_terms'])
+            self.output.write(sh.lg.globs['str']['color_terms'])
             self.output.write('" size="')
             self.output.write(str(sh.lg.globs['int']['font_terms_size']))
             self.output.write('">')
@@ -329,11 +329,11 @@ class HTM:
     def _run_comment(self):
         if self.block.type_ in ('comment','transc','definition'):
             self.output.write('<i><font face="')
-            self.output.write(sh.lg.globs['var']['font_comments_family'])
+            self.output.write(sh.lg.globs['str']['font_comments_family'])
             self.output.write('" size="')
             self.output.write(str(sh.lg.globs['int']['font_comments_size']))
             self.output.write('" color="')
-            self.output.write(sh.lg.globs['var']['color_comments'])
+            self.output.write(sh.lg.globs['str']['color_comments'])
             self.output.write('">')
             self.output.write(self.block.text)
             self.output.write('</i></font>')
@@ -341,7 +341,7 @@ class HTM:
     def _run_correction(self):
         if self.block.type_ == 'correction':
             self.output.write('<i><font face="')
-            self.output.write(sh.lg.globs['var']['font_comments_family'])
+            self.output.write(sh.lg.globs['str']['font_comments_family'])
             self.output.write('" size="')
             self.output.write(str(sh.lg.globs['int']['font_comments_size']))
             self.output.write('" color="')

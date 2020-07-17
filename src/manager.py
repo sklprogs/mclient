@@ -22,7 +22,7 @@ class Plugins:
         self.mbplugin = None
         self.lgplugin = None
         self.plugin   = self.mcplugin
-        self.source   = sh.lg.globs['var']['source']
+        self.source   = sh.lg.globs['str']['source']
         self.sdpath   = sdpath
         self.mbpath   = sdpath
         self.lgpath   = sdpath
