@@ -42,6 +42,140 @@ sample_prior = '''Общая лексика
 Юридический (Н.П.)
 '''
 
+class DefaultKeys:
+
+    def __init__(self):
+        self.reset()
+        self._load_bool()
+        self._load_int()
+        self._load_var()
+        
+    def _load_bool(self):
+        sh.lg.globs['bool'].update ({
+            'AlphabetizeTerms'    :True
+           ,'AutoCloseSpecSymbol' :False
+           ,'Autocompletion'      :True
+           ,'BlockDics'           :True
+           ,'CaptureHotkey'       :True
+           ,'FullDicTitles'       :False
+           ,'Iconify'             :True
+           ,'PrioritizeDics'      :True
+           ,'SelectTermsOnly'     :True
+           ,'ShowUserNames'       :True
+           ,'SortByColumns'       :True
+           ,'VerticalView'        :False
+                                   })
+    
+    def _load_int(self):
+        sh.lg.globs['int'].update ({
+            'colnum'            :4
+           ,'col_width'         :250
+           ,'font_col1_size'    :4
+           ,'font_col2_size'    :4
+           ,'font_col3_size'    :3
+           ,'font_col4_size'    :3
+           ,'font_comments_size':3
+           ,'font_terms_size'   :4
+           ,'timeout'           :5
+                                  })
+    
+    def _load_var(self):
+        sh.lg.globs['var'].update ({
+            'bind_clear_history'          :'<Control-Shift-Delete>'
+           ,'bind_clear_search_field'     :'<ButtonRelease-3>'
+           ,'bind_col1_down'              :'<Control-Down>'
+           ,'bind_col1_up'                :'<Control-Up>'
+           ,'bind_col2_down'              :'<Alt-Down>'
+           ,'bind_col2_up'                :'<Alt-Up>'
+           ,'bind_col3_down'              :'<Shift-Down>'
+           ,'bind_col3_up'                :'<Shift-Up>'
+           ,'bind_copy_article_url'       :'<Control-F7>'
+           ,'bind_copy_nominative'        :'<Control-w>'
+           ,'bind_copy_sel'               :'<Control-Return>'
+           ,'bind_copy_sel_alt'           :'<Control-KP_Enter>'
+           ,'bind_copy_url'               :'<Shift-F7>'
+           ,'bind_define'                 :'<Control-d>'
+           ,'bind_go_back'                :'<Alt-Left>'
+           ,'bind_go_forward'             :'<Alt-Right>'
+           ,'bind_go_phrases'             :'<Alt-f>'
+           ,'bind_next_lang1'             :'<F8>'
+           ,'bind_next_lang1_alt'         :'<Control-k>'
+           ,'bind_next_lang2'             :'<F9>'
+           ,'bind_next_lang2_alt'         :'<Control-l>'
+           ,'bind_prev_lang1'             :'<Shift-F8>'
+           ,'bind_prev_lang1_alt'         :'<Control-K>'
+           ,'bind_prev_lang2'             :'<Shift-F9>'
+           ,'bind_prev_lang2_alt'         :'<Control-L>'
+           ,'bind_open_in_browser'        :'<F7>'
+           ,'bind_open_in_browser_alt'    :'<Control-b>'
+           ,'bind_paste_search_field'     :'<ButtonRelease-2>'
+           ,'bind_print'                  :'<Control-p>'
+           ,'bind_quit'                   :'<F10>'
+           ,'bind_re_search_article'      :'<Control-F3>'
+           ,'bind_reload_article_alt'     :'<Control-r>'
+           ,'bind_reload_article'         :'<F5>'
+           ,'bind_save_article_alt'       :'<Control-s>'
+           ,'bind_save_article'           :'<F2>'
+           ,'bind_search_article_backward':'<Shift-F3>'
+           ,'bind_search_article_forward' :'<F3>'
+           ,'bind_settings'               :'<Alt-s>'
+           ,'bind_settings_alt'           :'<F12>'
+           ,'bind_show_about'             :'<F1>'
+           ,'bind_spec_symbol'            :'<Control-e>'
+           ,'bind_swap_langs'             :'<Control-space>'
+           ,'bind_toggle_alphabet'        :'<Alt-a>'
+           ,'bind_toggle_block'           :'<Alt-b>'
+           ,'bind_toggle_history'         :'<F4>'
+           ,'bind_toggle_history_alt'     :'<Control-h>'
+           ,'bind_toggle_priority'        :'<Alt-p>'
+           ,'bind_toggle_sel'             :'<Control-t>'
+           ,'bind_toggle_view'            :'<F6>'
+           ,'bind_toggle_view_alt'        :'<Alt-v>'
+           ,'col1_type'                   :_('Dictionaries')
+           ,'col2_type'                   :_('Word forms')
+           ,'col3_type'                   :_('Parts of speech')
+           ,'col4_type'                   :_('Transcription')
+           ,'color_col1'                  :'coral'
+           ,'color_col2'                  :'cadet blue'
+           ,'color_col3'                  :'slate gray'
+           ,'color_col4'                  :'slate gray'
+           ,'color_comments'              :'gray'
+           ,'color_terms'                 :'black'
+           ,'color_terms_sel_bg'          :'cyan'
+           ,'color_terms_sel_fg'          :'black'
+           ,'font_col1_family'            :'Arial'
+           ,'font_col2_family'            :'Arial'
+           ,'font_col3_family'            :'Mono'
+           ,'font_col4_family'            :'Mono'
+           ,'font_comments_family'        :'Mono'
+           ,'font_history'                :'Sans 12'
+           ,'font_style'                  :'Sans 14'
+           ,'font_terms_family'           :'Serif'
+           ,'font_terms_sel'              :'Sans 14 bold italic'
+           ,'lang1'                       :_('Russian')
+           ,'lang2'                       :_('English')
+           ,'repeat_sign'                 :'!'
+           ,'repeat_sign2'                :'!!'
+           ,'source'                      :_('Multitran')
+           ,'spec_syms'                   :'àáâäāæßćĉçèéêēёëəғĝģĥìíîïīĵķļñņòóôõöōœøšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒЁËƏҒĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒØŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ'
+           ,'speech1'                     :_('Noun')
+           ,'speech2'                     :_('Verb')
+           ,'speech3'                     :_('Adjective')
+           ,'speech4'                     :_('Abbreviation')
+           ,'speech5'                     :_('Adverb')
+           ,'speech6'                     :_('Preposition')
+           ,'speech7'                     :_('Pronoun')
+           ,'style'                       :'MClient'
+           ,'web_search_url'              :'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s'
+                                  })
+
+    def reset(self):
+        sh.lg.globs['bool']  = {}
+        sh.lg.globs['float'] = {}
+        sh.lg.globs['int']   = {}
+        sh.lg.globs['var']   = {}
+
+
 
 class Section:
     
@@ -1186,7 +1320,7 @@ class DefaultConfig:
     
     def __init__(self,product='mclient'):
         self.set_values()
-        self.ihome   = sh.Home(app_name=product.lower())
+        self.ihome = sh.Home(app_name=product.lower())
         self.Success = self.ihome.create_conf()
     
     def set_values(self):
@@ -1253,18 +1387,6 @@ class DefaultConfig:
         else:
             sh.com.cancel(f)
     
-    def get_default_config(self):
-        f = '[MClient] logic.DefaultConfig.get_default_config'
-        if self.Success:
-            if not self.fdconf:
-                self.fdconf = sh.objs.get_pdir().add ('..','resources'
-                                                     ,'default.cfg'
-                                                     )
-                self.Success = sh.File(file=self.fdconf).Success
-            return self.fdconf
-        else:
-            sh.com.cancel(f)
-    
     def get_config(self):
         f = '[MClient] logic.DefaultConfig.get_config'
         if self.Success:
@@ -1272,14 +1394,6 @@ class DefaultConfig:
                 self.fconf = self.ihome.add_config('mclient.cfg')
                 if os.path.exists(self.fconf):
                     self.Success = sh.File(file=self.fconf).Success
-                else:
-                    self.get_default_config()
-                    if self.Success:
-                        self.Success = sh.File (file = self.fdconf
-                                               ,dest = self.fconf
-                                               ).copy()
-                    else:
-                        sh.com.cancel(f)
             return self.fconf
         else:
             sh.com.cancel(f)
@@ -1287,7 +1401,6 @@ class DefaultConfig:
     def run(self):
         f = '[MClient] logic.DefaultConfig.run'
         if self.Success:
-            self.get_default_config()
             self.get_config()
             self.get_dics()
             self.set_block()
@@ -1320,8 +1433,8 @@ class ConfigMclient(sh.Config):
         self.missing_keys = 0
         self.missing_sections = 0
         # Create these keys before reading the config
-        self.path = objs.get_default().ihome.add_config('mclient.cfg')
         self.reset()
+        self.path = objs.get_default().ihome.add_config('mclient.cfg')
         iread = sh.ReadTextFile(self.path)
         self.text = iread.get()
         self.Success = iread.Success
@@ -1332,137 +1445,14 @@ class ConfigMclient(sh.Config):
             self.Success = False
         self.check()
         self.load()
-
-    # Do not rename, this procedure is called by 'shared'
+    
+    #TODO: Delete when not needed
     def load_default(self):
-        self._load_default_bool()
-        self._load_default_int()
-        self._load_default_var()
-        
-    def _load_default_bool(self):
-        sh.lg.globs['bool'].update ({
-            'AlphabetizeTerms'    :True
-           ,'AutoCloseSpecSymbol' :False
-           ,'Autocompletion'      :True
-           ,'BlockDics'           :True
-           ,'CaptureHotkey'       :True
-           ,'FullDicTitles'       :False
-           ,'Iconify'             :True
-           ,'PrioritizeDics'      :True
-           ,'SelectTermsOnly'     :True
-           ,'ShowUserNames'       :True
-           ,'SortByColumns'       :True
-           ,'VerticalView'        :False
-                                   })
+        pass
     
-    def _load_default_int(self):
-        sh.lg.globs['int'].update ({
-            'colnum'            :4
-           ,'col_width'         :250
-           ,'font_col1_size'    :4
-           ,'font_col2_size'    :4
-           ,'font_col3_size'    :3
-           ,'font_col4_size'    :3
-           ,'font_comments_size':3
-           ,'font_terms_size'   :4
-           ,'timeout'           :5
-                                  })
-    
-    def _load_default_var(self):
-        sh.lg.globs['var'].update ({
-            'bind_clear_history'          :'<Control-Shift-Delete>'
-           ,'bind_clear_search_field'     :'<ButtonRelease-3>'
-           ,'bind_col1_down'              :'<Control-Down>'
-           ,'bind_col1_up'                :'<Control-Up>'
-           ,'bind_col2_down'              :'<Alt-Down>'
-           ,'bind_col2_up'                :'<Alt-Up>'
-           ,'bind_col3_down'              :'<Shift-Down>'
-           ,'bind_col3_up'                :'<Shift-Up>'
-           ,'bind_copy_article_url'       :'<Control-F7>'
-           ,'bind_copy_nominative'        :'<Control-w>'
-           ,'bind_copy_sel'               :'<Control-Return>'
-           ,'bind_copy_sel_alt'           :'<Control-KP_Enter>'
-           ,'bind_copy_url'               :'<Shift-F7>'
-           ,'bind_define'                 :'<Control-d>'
-           ,'bind_go_back'                :'<Alt-Left>'
-           ,'bind_go_forward'             :'<Alt-Right>'
-           ,'bind_go_phrases'             :'<Alt-f>'
-           ,'bind_next_lang1'             :'<F8>'
-           ,'bind_next_lang1_alt'         :'<Control-k>'
-           ,'bind_next_lang2'             :'<F9>'
-           ,'bind_next_lang2_alt'         :'<Control-l>'
-           ,'bind_prev_lang1'             :'<Shift-F8>'
-           ,'bind_prev_lang1_alt'         :'<Control-K>'
-           ,'bind_prev_lang2'             :'<Shift-F9>'
-           ,'bind_prev_lang2_alt'         :'<Control-L>'
-           ,'bind_open_in_browser'        :'<F7>'
-           ,'bind_open_in_browser_alt'    :'<Control-b>'
-           ,'bind_paste_search_field'     :'<ButtonRelease-2>'
-           ,'bind_print'                  :'<Control-p>'
-           ,'bind_quit'                   :'<F10>'
-           ,'bind_re_search_article'      :'<Control-F3>'
-           ,'bind_reload_article_alt'     :'<Control-r>'
-           ,'bind_reload_article'         :'<F5>'
-           ,'bind_save_article_alt'       :'<Control-s>'
-           ,'bind_save_article'           :'<F2>'
-           ,'bind_search_article_backward':'<Shift-F3>'
-           ,'bind_search_article_forward' :'<F3>'
-           ,'bind_settings'               :'<Alt-s>'
-           ,'bind_settings_alt'           :'<F12>'
-           ,'bind_show_about'             :'<F1>'
-           ,'bind_spec_symbol'            :'<Control-e>'
-           ,'bind_swap_langs'             :'<Control-space>'
-           ,'bind_toggle_alphabet'        :'<Alt-a>'
-           ,'bind_toggle_block'           :'<Alt-b>'
-           ,'bind_toggle_history'         :'<F4>'
-           ,'bind_toggle_history_alt'     :'<Control-h>'
-           ,'bind_toggle_priority'        :'<Alt-p>'
-           ,'bind_toggle_sel'             :'<Control-t>'
-           ,'bind_toggle_view'            :'<F6>'
-           ,'bind_toggle_view_alt'        :'<Alt-v>'
-           ,'col1_type'                   :_('Dictionaries')
-           ,'col2_type'                   :_('Word forms')
-           ,'col3_type'                   :_('Parts of speech')
-           ,'col4_type'                   :_('Transcription')
-           ,'color_col1'                  :'coral'
-           ,'color_col2'                  :'cadet blue'
-           ,'color_col3'                  :'slate gray'
-           ,'color_col4'                  :'slate gray'
-           ,'color_comments'              :'gray'
-           ,'color_terms'                 :'black'
-           ,'color_terms_sel_bg'          :'cyan'
-           ,'color_terms_sel_fg'          :'black'
-           ,'font_col1_family'            :'Arial'
-           ,'font_col2_family'            :'Arial'
-           ,'font_col3_family'            :'Mono'
-           ,'font_col4_family'            :'Mono'
-           ,'font_comments_family'        :'Mono'
-           ,'font_history'                :'Sans 12'
-           ,'font_style'                  :'Sans 14'
-           ,'font_terms_family'           :'Serif'
-           ,'font_terms_sel'              :'Sans 14 bold italic'
-           ,'lang1'                       :_('Russian')
-           ,'lang2'                       :_('English')
-           ,'repeat_sign'                 :'!'
-           ,'repeat_sign2'                :'!!'
-           ,'source'                      :_('Multitran')
-           ,'spec_syms'                   :'àáâäāæßćĉçèéêēёëəғĝģĥìíîïīĵķļñņòóôõöōœøšùúûūŭũüýÿžжҗқңөүұÀÁÂÄĀÆSSĆĈÇÈÉÊĒЁËƏҒĜĢĤÌÍÎÏĪĴĶĻÑŅÒÓÔÕÖŌŒØŠÙÚÛŪŬŨÜÝŸŽЖҖҚҢӨҮҰ'
-           ,'speech1'                     :_('Noun')
-           ,'speech2'                     :_('Verb')
-           ,'speech3'                     :_('Adjective')
-           ,'speech4'                     :_('Abbreviation')
-           ,'speech5'                     :_('Adverb')
-           ,'speech6'                     :_('Preposition')
-           ,'speech7'                     :_('Pronoun')
-           ,'style'                       :'MClient'
-           ,'web_search_url'              :'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s'
-                                  })
-
+    #TODO: Delete when not needed
     def reset(self):
-        sh.lg.globs['bool']  = {}
-        sh.lg.globs['float'] = {}
-        sh.lg.globs['int']   = {}
-        sh.lg.globs['var']   = {}
+        pass
 
 
 
@@ -2022,4 +2012,5 @@ class Commands:
 
 objs = Objects()
 com  = Commands()
+DefaultKeys()
 ConfigMclient()
