@@ -220,11 +220,21 @@ class Key:
 
 class CreateConfig:
     
-    def __init__(self):
+    def __init__(self,file):
         self.set_values()
+        self.file = file
+    
+    def save(self):
+        f = '[MClient] logic.CreateConfig.save'
+        text = self.generate()
+        if self.file and text:
+            sh.WriteTextFile(self.file,True).write(text)
+        else:
+            sh.com.rep_empty(f)
     
     def set_values(self):
         self.Success = True
+        self.file = ''
         self.body = []
         self.keys = []
         self.sections = []
@@ -238,7 +248,7 @@ class CreateConfig:
     
     def run(self):
         self.fill()
-        sh.com.run_fast_txt(self.generate())
+        self.save()
     
     def fill_bool(self):
         section = sh.lg.SectionBooleans
@@ -1392,8 +1402,6 @@ class DefaultConfig:
         if self.Success:
             if not self.fconf:
                 self.fconf = self.ihome.add_config('mclient.cfg')
-                if os.path.exists(self.fconf):
-                    self.Success = sh.File(file=self.fconf).Success
             return self.fconf
         else:
             sh.com.cancel(f)
@@ -1407,52 +1415,6 @@ class DefaultConfig:
             self.prioritize()
         else:
             sh.com.cancel(f)
-
-
-
-class ConfigMclient(sh.Config):
-
-    def __init__(self):
-        super().__init__()
-        self.sections = [sh.lg.SectionBooleans
-                        ,sh.lg.SectionIntegers
-                        ,sh.lg.SectionVariables
-                        ]
-        self.sections_abbr = [sh.lg.SectionBooleans_abbr
-                             ,sh.lg.SectionIntegers_abbr
-                             ,sh.lg.SectionVariables_abbr
-                             ]
-        self.sections_func = [sh.lg.config_parser.getboolean
-                             ,sh.lg.config_parser.getint
-                             ,sh.lg.config_parser.get
-                             ]
-        self.message = _('The following sections and/or keys are missing:')
-        self.message += '\n'
-        self.total_keys = 0
-        self.changed_keys = 0
-        self.missing_keys = 0
-        self.missing_sections = 0
-        # Create these keys before reading the config
-        self.reset()
-        self.path = objs.get_default().ihome.add_config('mclient.cfg')
-        iread = sh.ReadTextFile(self.path)
-        self.text = iread.get()
-        self.Success = iread.Success
-        self.load_default()
-        if os.path.exists(self.path):
-            self.open()
-        else:
-            self.Success = False
-        self.check()
-        self.load()
-    
-    #TODO: Delete when not needed
-    def load_default(self):
-        pass
-    
-    #TODO: Delete when not needed
-    def reset(self):
-        pass
 
 
 
@@ -1942,6 +1904,12 @@ class Commands:
     def __init__(self):
         self.use_unverified()
     
+    def load_config(self):
+        sh.Config(objs.get_default().get_config()).run()
+    
+    def save_config(self):
+        CreateConfig(objs.get_default().get_config()).run()
+    
     def dump_elems(self,blocks,artid):
         f = '[MClient] logic.Commands.dump_elems'
         if blocks and artid:
@@ -2009,8 +1977,7 @@ class Commands:
             sh.objs.get_mes(f,mes,True).show_warning()
 
 
-
 objs = Objects()
-com  = Commands()
+com = Commands()
 DefaultKeys()
-ConfigMclient()
+com.load_config()
