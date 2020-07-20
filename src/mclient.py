@@ -2926,7 +2926,7 @@ if  __name__ == '__main__':
     else:
         mes = _('Unable to continue due to an invalid configuration.')
         sh.objs.get_mes(f,mes).show_warning()
-    #lg.com.save_config()
+    lg.com.save_config()
     mes = _('Goodbye!')
     sh.objs.get_mes(f,mes,True).show_debug()
     sh.com.end()

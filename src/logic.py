@@ -185,26 +185,8 @@ class Section:
         self.set_abbr()
     
     def set_abbr(self):
-        f = '[MClient] logic.Section.set_abbr'
-        if self.section == sh.lg.SectionBooleans:
-            self.abbr = sh.lg.SectionBooleans_abbr
-        elif self.section == sh.lg.SectionFloatings:
-            self.abbr = sh.lg.SectionFloatings_abbr
-        elif self.section == sh.lg.SectionIntegers:
-            self.abbr = sh.lg.SectionIntegers_abbr
-        elif self.section == sh.lg.SectionVariables:
-            self.abbr = sh.lg.SectionVariables_abbr
-        else:
-            self.abbr = sh.lg.SectionVariables_abbr
-            mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-            mes = mes.format (self.section
-                             ,(sh.lg.SectionBooleans
-                              ,sh.lg.SectionFloatings
-                              ,sh.lg.SectionIntegers
-                              ,sh.lg.SectionVariables
-                              )
-                             )
-            sh.objs.get_mes(f,mes).show_error()
+        self.abbr = objs.get_config().get_abbr(self.section)
+        self.abbr = sh.Input(value=self.abbr).get_not_none()
 
 
 
@@ -251,7 +233,7 @@ class CreateConfig:
         self.save()
     
     def fill_bool(self):
-        section = sh.lg.SectionBooleans
+        section = _('Booleans')
         comment = _('The following values are allowed in this section: 0 (False) or 1 (True)')
         self.add_section(section,comment)
         section_abbr = self.sections[-1].abbr
@@ -305,7 +287,7 @@ class CreateConfig:
         self.add_key(section,section_abbr,key,comment)
     
     def fill_int(self):
-        section = sh.lg.SectionIntegers
+        section = _('Integers')
         self.add_section(section)
         section_abbr = self.sections[-1].abbr
         
@@ -352,10 +334,10 @@ class CreateConfig:
     def fill(self):
         self.fill_bool()
         self.fill_int()
-        self.fill_var()
+        self.fill_str()
         
-    def fill_var(self):
-        section = sh.lg.SectionVariables
+    def fill_str(self):
+        section = _('Strings')
         comment = _('Attention: some hotkeys, e.g., <Button-1> and <Double-Button-1> may conflict with each other. Reassign them with caution.')
         self.add_section(section,comment)
         section_abbr = self.sections[-1].abbr
@@ -1480,7 +1462,14 @@ class Objects:
     
     def __init__(self):
         self.online = self.request = self.order = self.default \
-                    = self.plugins = self.speech_prior = None
+                    = self.plugins = self.speech_prior = self.config \
+                    = None
+    
+    def get_config(self):
+        if self.config is None:
+            self.config = sh.Config(objs.get_default().get_config())
+            self.config.run()
+        return self.config
     
     def get_speech_prior(self,order=[]):
         if self.speech_prior is None:
@@ -1905,7 +1894,7 @@ class Commands:
         self.use_unverified()
     
     def load_config(self):
-        sh.Config(objs.get_default().get_config()).run()
+        objs.get_config()
     
     def save_config(self):
         CreateConfig(objs.get_default().get_config()).run()
