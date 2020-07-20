@@ -188,6 +188,15 @@ class UpdateWebFrameUI:
     def __init__(self):
         self.gui = objs.get_webframe_ui()
     
+    def restore(self):
+        ''' Set widget values to those autosave values that were not
+            previously restored by other procedures.
+        '''
+        self.gui.opt_lg1.set(sh.lg.globs['str']['lang1'])
+        self.gui.opt_lg1.set(sh.lg.globs['str']['lang2'])
+        self.gui.opt_src.set(sh.lg.globs['str']['source'])
+        self.gui.opt_col.set(sh.lg.globs['int']['colnum'])
+    
     def _update_alphabet_image(self):
         if sh.lg.globs['bool']['AlphabetizeTerms'] \
         and not lg.objs.request.SpecialPage:
@@ -1204,6 +1213,7 @@ class WebFrame:
                              )
         self.fill(welcome.run())
         self.update_buttons()
+        UpdateWebFrameUI().restore()
         self.set_title()
         ''' We should ensure that a number of columns is based on
             a GUI value instead of relying on a default 'lg.CurRequest'
