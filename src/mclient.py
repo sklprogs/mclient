@@ -22,7 +22,6 @@ if __name__ == '__main__':
         import kl_mod_lin as kl_mod
 
 
-
 class ExportSettingsUI:
     
     def export_speech_area(self):
@@ -2410,6 +2409,7 @@ class WebFrame:
         if lg.objs.get_plugins().get_lang1() != self.gui.opt_lg1.choice:
             mes = _('Set language: {}').format(self.gui.opt_lg1.choice)
             sh.objs.get_mes(f,mes,True).show_info()
+            sh.lg.globs['str']['lang1'] = self.gui.opt_lg1.choice
             lg.objs.get_plugins().set_lang1(self.gui.opt_lg1.choice)
     
     def set_lang2(self,event=None):
@@ -2421,6 +2421,7 @@ class WebFrame:
         if lg.objs.get_plugins().get_lang2() != self.gui.opt_lg2.choice:
             mes = _('Set language: {}').format(self.gui.opt_lg2.choice)
             sh.objs.get_mes(f,mes,True).show_info()
+            sh.lg.globs['str']['lang2'] = self.gui.opt_lg2.choice
             lg.objs.get_plugins().set_lang2(self.gui.opt_lg2.choice)
 
     def reset_columns(self,event=None):
@@ -2432,12 +2433,14 @@ class WebFrame:
         fixed = [col for col in lg.objs.get_request().cols \
                  if col != _('Do not set')
                 ]
-        lg.objs.request.collimit = sh.Input (title = f
-                                            ,value = self.gui.opt_col.choice
-                                            ).get_integer() + len(fixed)
+        sh.lg.globs['int']['colnum'] = sh.Input (title = f
+                                                ,value = self.gui.opt_col.choice
+                                                ).get_integer()
+        lg.objs.request.collimit = sh.lg.globs['int']['colnum'] + len(fixed)
         mes = _('Set the number of columns to {}')
         mes = mes.format(lg.objs.request.collimit)
         sh.objs.get_mes(f,mes,True).show_info()
+
     
     def set_columns(self,event=None):
         self.reset_columns()
