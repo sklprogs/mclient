@@ -228,8 +228,15 @@ class CreateConfig:
     def add_section(self,section,comment=''):
         self.sections.append(Section(section,comment))
     
+    def escape(self):
+        for option in sh.lg.globs['str'].keys():
+            if '%s' in sh.lg.globs['str'][option] \
+            and not '%%s' in sh.lg.globs['str'][option]:
+                sh.lg.globs['str'][option] = sh.lg.globs['str'][option].replace('%s','%%s')
+    
     def run(self):
         self.fill()
+        self.escape()
         self.save()
     
     def fill_bool(self):
