@@ -4,6 +4,7 @@
 * Use a brighter color for user names
 * Add a basic support for DSL files
 * Load widgets only when necessary
+* Save and restore settings
 
 6.4.1
 * Fix loading Stardict format
