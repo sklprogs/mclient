@@ -6,6 +6,7 @@
 * Load widgets only when necessary
 * Save and restore settings
 * Delete "Terms of Use" block
+* Add detailed hints to some buttons
 
 6.4.1
 * Fix loading Stardict format
