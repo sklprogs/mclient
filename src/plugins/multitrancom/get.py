@@ -9,8 +9,8 @@ from skl_shared.localize import _
 
 CODING = 'UTF-8'
 # 'https' is received faster than 'http' (~0.2s)
-URL      = 'https://www.multitran.com'
-TIMEOUT  = 6
+URL = 'https://www.multitran.com'
+TIMEOUT = 6
 PAIRROOT = URL + '/m.exe?'
 
 
@@ -24,8 +24,8 @@ class Suggest:
     def set_values(self):
         self.Success = True
         self.pattern = ''
-        self.url     = ''
-        self.pair    = URL + '/ms.exe?s=%s'
+        self.url = ''
+        self.pair = URL + '/ms.exe?s=%s'
     
     def reset(self,search):
         f = '[MClient] plugins.multitrancom.get.Suggest.reset'
@@ -90,8 +90,8 @@ class Get:
     
     def set_values(self):
         self.Success = True
-        self.htm   = ''
-        self.text   = ''
+        self.htm = ''
+        self.text = ''
     
     def run(self):
         self.get()
@@ -109,7 +109,7 @@ class Get:
                     self.htm = self.text = self.text.decode(CODING)
                 except Exception as e:
                     self.Success = False
-                    self.htm  = ''
+                    self.htm = ''
                     self.text = ''
                     mes = _('Unable to change the web-page encoding!\n\nDetails: {}')
                     mes = mes.format(e)

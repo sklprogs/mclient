@@ -742,7 +742,7 @@ class Elems:
                    ,'только в указанном порядке'
                    ,'только в заданной форме','all forms'
                    ,'exact matches only','in specified order only'
-                   ,'Forvo','Google'
+                   ,'Forvo','Google','Правила сайта','Terms of Use'
                    ]
         if self.langs:
             patterns += list(self.langs)

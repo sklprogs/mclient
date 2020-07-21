@@ -129,8 +129,8 @@ class CleanUp:
             the error: Multitran, EN-RU: 'top', 'et al.'
         '''
         self.text = [char for char in self.text if ord(char) \
-                      in range(65536)
-                     ]
+                     in range(65536)
+                    ]
         self.text = ''.join(self.text)
     
     def run(self):
