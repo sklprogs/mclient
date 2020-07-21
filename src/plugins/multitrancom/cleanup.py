@@ -100,18 +100,18 @@ class CleanUp:
             titles.
         '''
         self.text = self.text.replace (' class="phraselist0"><i>'
-                                        ,'><td class="subj">'
-                                        )
+                                      ,'><td class="subj">'
+                                      )
         self.text = self.text.replace (' class="phraselist1"><i>'
-                                        ,'><td class="subj">'
-                                        )
+                                      ,'><td class="subj">'
+                                      )
         self.text = self.text.replace (' class="phraselist1">'
-                                        ,'><td class="trans">'
-                                        )
+                                      ,'><td class="trans">'
+                                      )
                                         
         self.text = self.text.replace (' class="phraselist2">'
-                                        ,'><td class="trans">'
-                                        )
+                                      ,'><td class="trans">'
+                                      )
     
     def run_common(self):
         # Delete unicode control codes
