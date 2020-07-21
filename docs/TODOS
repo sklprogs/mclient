@@ -10,6 +10,7 @@ mclient:
   dictionaries), do this check only before showing the final article.
 
 multitrancom:
+- Use 'block.url' instead of 'block.text' to delete trash in 'elems'
 - When 'same' are determined on the basis of semicolon, check this in
   'basic support': 32 фразы: "Object-Oriented Analysis and Design with Applications"
   (should have same=1)

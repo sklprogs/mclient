@@ -5,6 +5,7 @@
 * Add a basic support for DSL files
 * Load widgets only when necessary
 * Save and restore settings
+* Delete "Terms of Use" block
 
 6.4.1
 * Fix loading Stardict format
