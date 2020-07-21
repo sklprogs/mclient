@@ -72,6 +72,13 @@ class CleanUp:
                                       )
         self.text = self.text.replace('<u>','')
         self.text = self.text.replace('</u>','')
+        ''' This allows to avoid further problems with tag parsing
+            (unable to find terms in constructs like
+            '<br><a href="/m.exe?SOME_URL" title="SOME_TITLE">BUGGY_TERM'
+            which results in the first term being skipped when only 
+            separate words were found).
+        '''
+        self.text = self.text.replace('<br>','')
     
     def delete_no_matches(self):
         if 'Не найдено<p>' in self.text:

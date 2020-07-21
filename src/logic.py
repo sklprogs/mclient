@@ -1429,7 +1429,7 @@ class CurRequest:
         self.MouseClicked = False
         ''' *Temporary* turn off prioritizing and terms sorting for
             articles with 'sep_words_found' and in phrases; use previous
-            settings for new articles
+            settings for new articles.
         '''
         self.SpecialPage = False
     

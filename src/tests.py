@@ -412,17 +412,17 @@ class Commands:
                           ,timeout = 3
                           )
     
-    def accessibility(self):
-        f = '[MClient] tests.Commands.accessibility'
+    def is_accessible(self):
+        f = '[MClient] tests.Commands.is_accessible'
         source = _('Offline')
         lg.objs.get_plugins().set(source)
-        result  = lg.objs.plugins.is_accessible()
-        mes     = 'Source: {}; Accessibility: {}'.format(source,result)
+        result = lg.objs.plugins.is_accessible()
+        mes = 'Source: {}; Accessibility: {}'.format(source,result)
         sh.objs.get_mes(f,mes,True).show_debug()
         source = 'multitran.com'
         lg.objs.plugins.set(source)
-        result  = lg.objs.plugins.is_accessible()
-        mes     = 'Source: {}; Accessibility: {}'.format(source,result)
+        result = lg.objs.plugins.is_accessible()
+        mes = 'Source: {}; Accessibility: {}'.format(source,result)
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def welcome(self):
@@ -583,5 +583,7 @@ if __name__ == '__main__':
     #Plugin().run_dsl()
     #Tags().run_dsl()
     #Tests().run_speech()
-    Tests().generate_config()
+    #Tests().generate_config()
+    #Tags().run_multitrancom()
+    Tags().analyze_tag()
     sh.com.end()
