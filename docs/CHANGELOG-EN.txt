@@ -1,4 +1,7 @@
 (in development)
+* 
+
+6.5
 * Fix standalone comments
 * Add "Show user names" option
 * Use a brighter color for user names
