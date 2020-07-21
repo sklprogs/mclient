@@ -277,7 +277,8 @@ class UpdateWebFrameUI:
             mes.append(_('Status: ON'))
         else:
             mes.append(_('Status: OFF'))
-        if skipped_terms:
+        #TODO: Why there are skipped terms when blocking is off?
+        if sh.lg.globs['bool']['BlockDics'] and skipped_terms:
             sub = _('Skipped {} terms in {} subjects')
             sub = sub.format(skipped_terms,skipped_dics)
         else:
