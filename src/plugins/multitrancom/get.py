@@ -146,7 +146,7 @@ class Get:
                     mes = _('[FAILED]: "{}"').format(self.pattern)
                     sh.objs.get_mes(f,mes,True).show_error()
                     # For some reason, 'break' does not work here
-                    mes = _('Unable to get the webpage. Press OK to try again.\n\nDetails: {}')
+                    mes = _('Unable to get the webpage. Do you want to try again?\n\nDetails: {}')
                     mes = mes.format(e)
                     if not sh.objs.get_mes(f,mes).show_question():
                         return
