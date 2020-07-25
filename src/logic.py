@@ -42,13 +42,16 @@ sample_prior = '''Общая лексика
 Юридический (Н.П.)
 '''
 
-class DefaultKeys:
+class DefaultKeys(sh.DefaultKeys):
 
-    def __init__(self):
-        self.reset()
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.load()
+    
+    def load(self):
         self._load_bool()
         self._load_int()
-        self._load_var()
+        self._load_str()
         
     def _load_bool(self):
         sh.lg.globs['bool'].update ({
@@ -79,7 +82,7 @@ class DefaultKeys:
            ,'timeout'           :5
                                   })
     
-    def _load_var(self):
+    def _load_str(self):
         sh.lg.globs['str'].update ({
             'bind_clear_history'          :'<Control-Shift-Delete>'
            ,'bind_clear_search_field'     :'<ButtonRelease-3>'
@@ -168,12 +171,6 @@ class DefaultKeys:
            ,'style'                       :'MClient'
            ,'web_search_url'              :'http://www.google.ru/search?ie=UTF-8&oe=UTF-8&sourceid=navclient=1&q=%s'
                                   })
-
-    def reset(self):
-        sh.lg.globs['bool'] = {}
-        sh.lg.globs['float'] = {}
-        sh.lg.globs['int'] = {}
-        sh.lg.globs['str'] = {}
 
 
 
