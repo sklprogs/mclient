@@ -1,4 +1,5 @@
 mclient:
+- another style is loaded at startup but only in GUI (is not applied)
 
 multitrancom:
 - moneyman: block hint does not report blocking
