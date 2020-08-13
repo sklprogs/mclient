@@ -735,6 +735,7 @@ class Elems:
             and block.text.endswith(']'):
                 block.type_ = 'transc'
             
+    #FIX: use URLs
     def delete_trash(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.trash'
         patterns = ['|',';',':','-->','// -->','⇄','точно' ,'все формы'
@@ -742,7 +743,7 @@ class Elems:
                    ,'только в указанном порядке'
                    ,'только в заданной форме','all forms'
                    ,'exact matches only','in specified order only'
-                   ,'Forvo','Google','Правила сайта','Terms of Use'
+                   ,'Forvo','Google','Соглашение пользователя'
                    ]
         if self.langs:
             patterns += list(self.langs)

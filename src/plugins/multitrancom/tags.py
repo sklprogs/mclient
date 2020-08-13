@@ -93,6 +93,7 @@ tag_pattern_del = ['m.exe?a=40&'          # Log in, Вход
                   ,'a href="#phrases'     # phrases, фразы
                   ,'?fscreen=1'           # Full screen, Полный экран
                   ,'td class="phras_cnt"' # Phrase entries count number
+                  ,'m.exe?a=365&'         # Terms of Use, Соглашение пользователя
                   ]
 
 useful_tags = [pdic ,purl1,purl2,pcom1
