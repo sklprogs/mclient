@@ -193,7 +193,7 @@ class UpdateWebFrameUI:
             previously restored by other procedures.
         '''
         self.gui.opt_lg1.set(sh.lg.globs['str']['lang1'])
-        self.gui.opt_lg1.set(sh.lg.globs['str']['lang2'])
+        self.gui.opt_lg2.set(sh.lg.globs['str']['lang2'])
         self.gui.opt_src.set(sh.lg.globs['str']['source'])
         self.gui.opt_col.set(sh.lg.globs['int']['colnum'])
     
