@@ -1209,6 +1209,10 @@ class Settings:
                                    ,side   = 'left'
                                    )
         self.cbx_no7 = sh.CheckBox (parent = self.frm_cb7
+                                   ,Active = False
+                                   ,side   = 'left'
+                                   )
+        self.cbx_no8 = sh.CheckBox (parent = self.frm_cb8
                                    ,Active = True
                                    ,side   = 'left'
                                    )
@@ -1232,7 +1236,8 @@ class Settings:
         self.cbx_no4.enable()
         self.cbx_no5.disable()
         self.cbx_no6.disable()
-        self.cbx_no7.enable()
+        self.cbx_no7.disable()
+        self.cbx_no8.enable()
 
     def set_buttons(self):
         sh.Button (parent = self.frm_btn
@@ -1358,6 +1363,10 @@ class Settings:
                                 ,expand = False
                                 ,fill   = 'x'
                                 )
+        self.frm_cb8 = sh.Frame (parent = self.obj
+                                ,expand = False
+                                ,fill   = 'x'
+                                )
         self.frm_btn = sh.Frame (parent = self.obj
                                 ,expand = False
                                 ,fill   = 'x'
@@ -1434,10 +1443,14 @@ class Settings:
                                 ,side   = 'left'
                                 )
         self.lbl_no6 = sh.Label (parent = self.frm_cb6
-                                ,text   = _('Use abbreviations for dictionaries')
+                                ,text   = _('Shorten dictionary titles')
                                 ,side   = 'left'
                                 )
         self.lbl_no7 = sh.Label (parent = self.frm_cb7
+                                ,text   = _('Shorten parts of speech')
+                                ,side   = 'left'
+                                )
+        self.lbl_no8 = sh.Label (parent = self.frm_cb8
                                 ,text   = _('Show user names')
                                 ,side   = 'left'
                                 )
@@ -1612,6 +1625,10 @@ class Settings:
                     ,bindings = '<Button-1>'
                     ,action   = self.cbx_no7.toggle
                     )
+        sh.com.bind (obj      = self.lbl_no8
+                    ,bindings = '<Button-1>'
+                    ,action   = self.cbx_no8.toggle
+                    )
 
     def set_title(self,text=_('View Settings')):
         self.obj.set_title(text=text)
@@ -1759,5 +1776,6 @@ class Suggest:
 
 if __name__ == '__main__':
     sh.com.start()
-    WebFrame().show()
+    #WebFrame().show()
+    Settings().show()
     sh.com.end()
