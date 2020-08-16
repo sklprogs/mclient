@@ -2,6 +2,7 @@ mclient:
 - another style is loaded at startup but only in GUI (is not applied)
 
 multitrancom:
+- EN-RU: накрутка: nothing to block but a blocking hint is on
 - EN-RU: blemish: wrong parsing of parts of speech
 - EN-AZ: sənədin araşdırılması: wrong SAME
 - aluminothermic welding: "Соглашение пользователя" is still visible
