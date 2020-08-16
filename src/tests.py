@@ -585,5 +585,5 @@ if __name__ == '__main__':
     #Tests().run_speech()
     #Tests().generate_config()
     #Tags().run_multitrancom()
-    Tags().analyze_tag()
+    #Tags().analyze_tag()
     sh.com.end()

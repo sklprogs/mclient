@@ -192,8 +192,16 @@ class UpdateWebFrameUI:
         ''' Set widget values to those autosave values that were not
             previously restored by other procedures.
         '''
-        self.gui.opt_lg1.set(sh.lg.globs['str']['lang1'])
-        self.gui.opt_lg2.set(sh.lg.globs['str']['lang2'])
+        f = '[MClient] mclient.UpdateWebFrameUI.restore'
+        mes = _('Restore source language: {}')
+        mes = mes.format(sh.lg.globs['str']['lang1'])
+        sh.objs.get_mes(f,mes,True).show_info()
+        lg.objs.get_plugins().set_lang1(sh.lg.globs['str']['lang1'])
+        mes = _('Restore target language: {}')
+        mes = mes.format(sh.lg.globs['str']['lang2'])
+        sh.objs.get_mes(f,mes,True).show_info()
+        lg.objs.plugins.set_lang2(sh.lg.globs['str']['lang2'])
+        objs.get_webframe().reset_opt()
         self.gui.opt_src.set(sh.lg.globs['str']['source'])
         self.gui.opt_col.set(sh.lg.globs['int']['colnum'])
     
@@ -952,7 +960,6 @@ class WebFrame:
         self.set_values()
         self.gui = gi.WebFrame()
         self.set_bindings()
-        self.reset_opt()
     
     def update_buttons(self):
         UpdateWebFrameUI().run()
@@ -1240,10 +1247,10 @@ class WebFrame:
     def reset_opt(self,default=_('Multitran')):
         f = '[MClient] mclient.WebFrame.reset_opt'
         # Reset OptionMenus
-        lang1   = lg.objs.get_plugins().get_lang1()
-        lang2   = lg.objs.plugins.get_lang2()
-        langs1  = lg.objs.plugins.get_langs1()
-        langs2  = lg.objs.plugins.get_langs2(lang1)
+        lang1 = lg.objs.get_plugins().get_lang1()
+        lang2 = lg.objs.plugins.get_lang2()
+        langs1 = lg.objs.plugins.get_langs1()
+        langs2 = lg.objs.plugins.get_langs2(lang1)
         sources = lg.objs.plugins.get_sources()
         if langs1 and langs2 and lang1 and lang2 and sources:
             self.gui.opt_lg1.reset (items   = langs1
