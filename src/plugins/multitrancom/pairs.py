@@ -2811,24 +2811,37 @@ class Pairs:
             sh.objs.get_mes(f,mes).show_error()
     
     def delete_flawed(self):
-        # Takes ~0,18s on Intel Atom
+        # Takes ~0.06s on AMD E-300
         f = '[MClient] plugins.multitrancom.utils.Pairs.delete_flawed'
         global LANGS
         count = 0
+        nonpair1 = []
+        nonpair2 = []
         for pair in self.get_flawed():
             if pair[1] in LANGS[pair[0]]['pair']:
                 LANGS[pair[0]]['pair'] = list(LANGS[pair[0]]['pair'])
+                nonpair1.append(pair[0])
+                nonpair2.append(pair[1])
                 LANGS[pair[0]]['pair'].remove(pair[1])
                 LANGS[pair[0]]['pair'] = tuple(LANGS[pair[0]]['pair'])
                 count += 1
             if pair[0] in LANGS[pair[1]]['pair']:
                 LANGS[pair[1]]['pair'] = list(LANGS[pair[1]]['pair'])
+                nonpair1.append(pair[0])
+                nonpair2.append(pair[1])
                 LANGS[pair[1]]['pair'].remove(pair[0])
                 LANGS[pair[1]]['pair'] = tuple(LANGS[pair[1]]['pair'])
                 count += 1
         # This message may be not shown, but the procedure runs anyway
         mes = _('{} items have been deleted').format(count)
         sh.objs.get_mes(f,mes,True).show_info()
+        mes = []
+        for i in range(len(nonpair1)):
+            sub = '{}-{}'.format(nonpair1[i],nonpair2[i])
+            mes.append(sub)
+        mes.sort()
+        mes = _('Unsupported pairs:') + '; '.join(mes)
+        sh.objs.get_mes(f,mes,True).show_debug()
     
     def get_flawed(self):
         if not self.flawed:
