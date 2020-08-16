@@ -85,8 +85,9 @@ class ExportSettingsUI:
         sh.lg.globs['bool']['BlockDics'] = objs.settings_ui.cbx_no3.get()
         sh.lg.globs['bool']['PrioritizeDics'] = objs.settings_ui.cbx_no4.get()
         sh.lg.globs['bool']['VerticalView'] = objs.settings_ui.cbx_no5.get()
-        sh.lg.globs['bool']['FullDicTitles'] = not objs.settings_ui.cbx_no6.get()
-        sh.lg.globs['bool']['ShowUserNames'] = objs.settings_ui.cbx_no7.get()
+        sh.lg.globs['bool']['ShortDicTitles'] = objs.settings_ui.cbx_no6.get()
+        sh.lg.globs['bool']['ShortSpeech'] = objs.settings_ui.cbx_no7.get()
+        sh.lg.globs['bool']['ShowUserNames'] = objs.settings_ui.cbx_no8.get()
     
     def run(self):
         f = '[MClient] mclient.ExportSettingsUI.run'
@@ -173,8 +174,9 @@ class UpdateSettingsUI:
         self.gui.cbx_no3.set(sh.lg.globs['bool']['BlockDics'])
         self.gui.cbx_no4.set(sh.lg.globs['bool']['PrioritizeDics'])
         self.gui.cbx_no5.set(sh.lg.globs['bool']['VerticalView'])
-        self.gui.cbx_no6.set(not sh.lg.globs['bool']['FullDicTitles'])
-        self.gui.cbx_no7.set(sh.lg.globs['bool']['ShowUserNames'])
+        self.gui.cbx_no6.set(sh.lg.globs['bool']['ShortDicTitles'])
+        self.gui.cbx_no7.set(sh.lg.globs['bool']['ShortSpeech'])
+        self.gui.cbx_no8.set(sh.lg.globs['bool']['ShowUserNames'])
     
     def run(self):
         self.update_style_area()
@@ -1969,7 +1971,7 @@ class WebFrame:
         objs.blocksdb.reset (cols      = lg.objs.request.cols
                             ,SortRows  = sh.lg.globs['bool']['SortByColumns']
                             ,SortTerms = SortTerms
-                            ,ExpandDic = sh.lg.globs['bool']['FullDicTitles']
+                            ,ExpandDic = not sh.lg.globs['bool']['ShortDicTitles']
                             ,ShowUsers = sh.lg.globs['bool']['ShowUserNames']
                             )
         objs.blocksdb.unignore()
@@ -1977,10 +1979,10 @@ class WebFrame:
         
         data = objs.blocksdb.assign_cells()
 
-        if sh.lg.globs['str']['style'] == _('Cut to the chase'):
-            spdic = lg.objs.speech_prior.get_abbr2full()
-        else:
+        if sh.lg.globs['bool']['ShortSpeech']:
             spdic = {}
+        else:
+            spdic = lg.objs.speech_prior.get_abbr2full()
         
         cells = cl.Cells (data     = data
                          ,cols     = lg.objs.request.cols

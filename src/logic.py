@@ -60,10 +60,11 @@ class DefaultKeys(sh.DefaultKeys):
            ,'Autocompletion'      :True
            ,'BlockDics'           :True
            ,'CaptureHotkey'       :True
-           ,'FullDicTitles'       :False
            ,'Iconify'             :True
            ,'PrioritizeDics'      :True
            ,'SelectTermsOnly'     :True
+           ,'ShortDicTitles'      :False
+           ,'ShortSpeech'         :False
            ,'ShowUserNames'       :True
            ,'SortByColumns'       :True
            ,'VerticalView'        :False
@@ -205,10 +206,6 @@ class CreateConfig(sh.CreateConfig):
         comment = _('[Autosave] Capture Ctrl-c-c and Ctrl-Ins-Ins system-wide')
         self.add_key(section,section_abbr,key,comment)
         
-        key = 'FullDicTitles'
-        comment = _('[Autosave] Show full dictionary titles instead of abbreviations')
-        self.add_key(section,section_abbr,key,comment)
-        
         key = 'Iconify'
         comment = _('Minimize the application window after some actions, e.g., copying')
         self.add_key(section,section_abbr,key,comment)
@@ -219,6 +216,14 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'SelectTermsOnly'
         comment = _('Select blocks of all types (False) or terms only (True)')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'ShortDicTitles'
+        comment = _('[Autosave] Shorten dictionary titles')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'ShortSpeech'
+        comment = _('[Autosave] Shorten parts of speech')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'ShowUserNames'
