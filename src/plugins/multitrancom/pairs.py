@@ -2840,7 +2840,7 @@ class Pairs:
             sub = '{}-{}'.format(nonpair1[i],nonpair2[i])
             mes.append(sub)
         mes.sort()
-        mes = _('Unsupported pairs:') + '; '.join(mes)
+        mes = _('Unsupported pairs:') + ' ' + '; '.join(mes)
         sh.objs.get_mes(f,mes,True).show_debug()
     
     def get_flawed(self):
