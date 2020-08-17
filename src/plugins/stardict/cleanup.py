@@ -267,7 +267,7 @@ class Type2:
                         self.blocks.append(block)
                         block = self.text[i]
             elif self.text[i] == '.':
-                ''' Split text only when a dictionary abbreviation is
+                ''' Split text only when a short dictionary title is
                     met, ignore the dot otherwise (especially useful
                     when "smb.", "smb.'s", "smth.", "т.п." are met).
                 '''
@@ -331,7 +331,7 @@ class Type2:
             if '<' in block or '>' in block:
                 self.tags.append(block)
                 ''' #TODO: create 'dic_abbr' for Type2 in order to
-                    expand dictionary abbreviations later.
+                    expand short dictionary titles later.
                 '''
             elif self.is_dic(block):
                 block = block.replace('_','',1)

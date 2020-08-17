@@ -1654,13 +1654,13 @@ class Order:
         f = '[MClient] logic.Order.conform'
         ''' Create new block and priority lists based on those that were
             read from user files. Lists from user files may comprise
-            either dictionary abbreviations or full dictionary titles.
-            New lists will be lowercased and stripped and will comprise
-            both abbreviations and full titles.
+            either full or short dictionary titles. New lists will be
+            lowercased and stripped and will comprise both full and
+            short titles.
         '''
         if self.Success:
             ''' We recreate lists in order to preserve 
-                the abbreviation + title order.
+                the short + full title order.
             '''
             if self.blacklst:
                 blacklst = list(self.blacklst)
@@ -1838,7 +1838,7 @@ class Commands:
                 data.append (
                   (None               # (00) Skips the autoincrement
                   ,artid              # (01) ARTICLEID
-                  ,block.dic          # (02) DIC (abbreviation)
+                  ,block.dic          # (02) DIC (short title)
                   ,block.wform        # (03) WFORM
                   ,block.speech       # (04) SPEECH
                   ,block.transc       # (05) TRANSC

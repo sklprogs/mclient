@@ -10,7 +10,7 @@ from skl_shared.localize import _
 ''' Tag patterns:
     •  Dictionary titles:
          define them by the .ifo file, set the tag manually
-    •  Abbreviations of dictionaries:
+    •  Short dictionary titles:
          define them manually by the file name
     •  Terms:
          <dtrn></dtrn>

@@ -26,7 +26,7 @@ class Block:
     def __init__(self):
         self.id_     = None # (00) Autoincrement
         self.artid   = 0    # (01) ARTICLEID
-        self.dic     = ''   # (02) DIC (abbreviation)
+        self.dic     = ''   # (02) DIC (short title)
         self.wform   = ''   # (03) WFORM
         self.speech  = ''   # (04) SPEECH
         self.transc  = ''   # (05) TRANSC

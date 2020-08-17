@@ -324,7 +324,7 @@ class DB:
             if item == 'dic':
                 query.append('DICPR desc')
                 #TODO: Is sorting by DICPR is enough here?
-                ''' Full dictionary titles and abbreviations can be
+                ''' Full and short dictionary titles can be
                     sorted differently, for example, in case of
                     'файл.расшир.' -> 'Расширение файла'
                 '''

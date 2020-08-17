@@ -2058,7 +2058,7 @@ class WebFrame:
                                                  ,dic = result[6]
                                                  )
                 if dic:
-                    mes = _('Selected dictionary: "{}". Previous dictionary: "{}" (abbreviation), "{}" (full).')
+                    mes = _('Selected dictionary: "{}". Previous dictionary: "{}" (short title), "{}" (full title).')
                     mes = mes.format(result[6],dic[0],dic[1])
                     sh.objs.get_mes(f,mes,True).show_debug()
                     dic = dic[1]
@@ -2678,7 +2678,7 @@ class WebFrame:
                                                      ,dic = result[6]
                                                      )
                     if dic:
-                        mes = _('Selected dictionary: "{}". Next dictionary: "{}" (abbreviation), "{}" (full).')
+                        mes = _('Selected dictionary: "{}". Next dictionary: "{}" (short title), "{}" (full title).')
                         mes = mes.format(result[6],dic[0],dic[1])
                         sh.objs.get_mes(f,mes,True).show_debug()
                         dic = dic[1]

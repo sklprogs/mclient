@@ -36,7 +36,7 @@ multitrancom:
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"
 - throw a book at: phrases are not shown
-- French: зонд: parts of speech (abbreviations) are lost;
+- French: зонд: parts of speech (short) are lost;
   German: работа: genders are lost (previously were in a wrong place)
 - plugins.multitrancom: eng-rus: вручать: fix dic prioritization
 - plugins.multitran: eng-rus: layout: cannot decrease a priority of
