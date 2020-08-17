@@ -34,12 +34,41 @@ class ExportSettingsUI:
         sh.lg.globs['str']['speech7'] = objs.settings_ui.opt_sp7.choice
     
     def export_style_area(self):
-        f = '[MClient] mclient.ExportSettingsUI.export_style_area'
         sh.lg.globs['str']['style'] = objs.get_settings_ui().opt_scm.choice
         sh.lg.globs['str']['col1_type'] = objs.settings_ui.opt_cl1.choice
         sh.lg.globs['str']['col2_type'] = objs.settings_ui.opt_cl2.choice
         sh.lg.globs['str']['col3_type'] = objs.settings_ui.opt_cl3.choice
         sh.lg.globs['str']['col4_type'] = objs.settings_ui.opt_cl4.choice
+        com.export_style()
+    
+    def export_checkboxes(self):
+        sh.lg.globs['bool']['SortByColumns'] = objs.get_settings_ui().cbx_no1.get()
+        sh.lg.globs['bool']['AlphabetizeTerms'] = objs.settings_ui.cbx_no2.get()
+        sh.lg.globs['bool']['BlockDics'] = objs.settings_ui.cbx_no3.get()
+        sh.lg.globs['bool']['PrioritizeDics'] = objs.settings_ui.cbx_no4.get()
+        sh.lg.globs['bool']['VerticalView'] = objs.settings_ui.cbx_no5.get()
+        sh.lg.globs['bool']['ShortDicTitles'] = objs.settings_ui.cbx_no6.get()
+        sh.lg.globs['bool']['ShortSpeech'] = objs.settings_ui.cbx_no7.get()
+        sh.lg.globs['bool']['ShowUserNames'] = objs.settings_ui.cbx_no8.get()
+    
+    def run(self):
+        f = '[MClient] mclient.ExportSettingsUI.run'
+        # 'objs.get_settings_ui' may not be used as often
+        if objs.settings is None or objs.settings.gui is None:
+            sh.com.rep_lazy(f)
+        else:
+            self.export_style_area()
+            self.export_speech_area()
+            self.export_checkboxes()
+
+
+
+class Commands:
+    ''' #NOTE: DB is in controller (not in logic), so DB-related code
+        is here too.
+    '''
+    def export_style(self):
+        f = '[MClient] mclient.Commands.export_style'
         ''' Do not use 'gettext' to name internal types - this will make
             the program ~0,6s slower.
         '''
@@ -79,32 +108,6 @@ class ExportSettingsUI:
         else:
             sh.com.rep_lazy(f)
     
-    def export_checkboxes(self):
-        sh.lg.globs['bool']['SortByColumns'] = objs.get_settings_ui().cbx_no1.get()
-        sh.lg.globs['bool']['AlphabetizeTerms'] = objs.settings_ui.cbx_no2.get()
-        sh.lg.globs['bool']['BlockDics'] = objs.settings_ui.cbx_no3.get()
-        sh.lg.globs['bool']['PrioritizeDics'] = objs.settings_ui.cbx_no4.get()
-        sh.lg.globs['bool']['VerticalView'] = objs.settings_ui.cbx_no5.get()
-        sh.lg.globs['bool']['ShortDicTitles'] = objs.settings_ui.cbx_no6.get()
-        sh.lg.globs['bool']['ShortSpeech'] = objs.settings_ui.cbx_no7.get()
-        sh.lg.globs['bool']['ShowUserNames'] = objs.settings_ui.cbx_no8.get()
-    
-    def run(self):
-        f = '[MClient] mclient.ExportSettingsUI.run'
-        # 'objs.get_settings_ui' may not be used as often
-        if objs.settings is None or objs.settings.gui is None:
-            sh.com.rep_lazy(f)
-        else:
-            self.export_style_area()
-            self.export_speech_area()
-            self.export_checkboxes()
-
-
-
-class Commands:
-    ''' #NOTE: DB is in controller (not in logic), so DB-related code
-        is here too.
-    '''
     def get_prioritized(self):
         f = '[MClient] mclient.Commands.get_prioritized'
         prioritized = objs.get_blocksdb().get_prioritized()
@@ -1223,6 +1226,7 @@ class WebFrame:
         self.fill(welcome.run())
         self.update_buttons()
         UpdateWebFrameUI().restore()
+        com.export_style()
         self.set_title()
         ''' We should ensure that a number of columns is based on
             a GUI value instead of relying on a default 'lg.CurRequest'
