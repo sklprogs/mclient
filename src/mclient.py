@@ -841,7 +841,6 @@ class History:
     def get_gui(self):
         if self.gui is None:
             self.set_gui()
-            self.gui.parent.center()
         return self.gui
     
     def set_gui(self):
@@ -2726,7 +2725,6 @@ class Settings:
     def get_gui(self):
         if self.gui is None:
             self.set_gui()
-            self.gui.parent.center()
         return self.gui
     
     def set_gui(self):
