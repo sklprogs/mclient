@@ -1,6 +1,11 @@
 (in development)
 * 
 
+6.6
+* Delete "Terms of Use" block
+* Add "Shorten parts of speech" setting
+* Fix restoring settings
+
 6.5
 * Fix standalone comments
 * Add "Show user names" option
