@@ -5,13 +5,16 @@ productlow="mclient"
 arch="x86_64"
 os="Linux" # Linux or Wine
 oslow="linux"
-# debian 9 has glibc 2.24
-glibc="2.24"
+# We need to use Debian 10 or newer since Debian 9 has Python 3.5
+# by default which is buggy (some blocks are skipped in EN-RU, "hello"
+# article)
+glibc="2.28"
 binariesdir="$HOME/binaries"
 appimagedir="$binariesdir/appimage"
 srcdir="$HOME/bin/$product/src"
 resdir="$HOME/bin/$product/resources"
-tkhtmldir="/usr/local/lib/python3.5/dist-packages/tkinterhtml/tkhtml/Linux"
+# /usr/local/lib/python3.7/dist-packages in case of using sudo pip3
+tkhtmldir="$HOME/.local/lib/python3.7/site-packages/tkinterhtml/tkhtml/Linux"
 tmpdir="/tmp/$product"   # Will be deleted!
 builddir="$tmpdir/build" # Will be deleted!
 
