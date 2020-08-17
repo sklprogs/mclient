@@ -5,13 +5,13 @@ productlow='mclient'
 arch="i686"
 os="Linux" # Linux or Wine
 oslow="linux"
-# oldstable debian has glibc 2.19, whereas current stable debian has glibc 2.24
-glibc="2.19"
+# debian 9 has glibc 2.24
+glibc="2.24"
 binariesdir="$HOME/binaries"
 appimagedir="$binariesdir/appimage"
 srcdir="$HOME/bin/$product/src"
 resdir="$HOME/bin/$product/resources"
-tkhtmldir="/usr/local/lib/python3.4/dist-packages/tkinterhtml/tkhtml/Linux"
+tkhtmldir="/usr/local/lib/python3.5/dist-packages/tkinterhtml/tkhtml/Linux"
 tmpdir="/tmp/$product"   # Will be deleted!
 builddir="$tmpdir/build" # Will be deleted!
 
