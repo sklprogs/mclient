@@ -1,1 +1,3 @@
 - Multitran does not escape '<' and '>' in user terms/comments properly
+- BLOCK field is used to skip server contents; IGNORE field is used for
+  internal purposes to skip unknown/invalid block types

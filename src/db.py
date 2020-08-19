@@ -32,8 +32,7 @@ class DB:
         f = '[MClient] db.DB.get_skipped_terms'
         if self.artid:
             self.dbc.execute ('select distinct TERM from BLOCKS \
-                               where ARTICLEID = ? \
-                               and (BLOCK = 1 or IGNORE = 1) \
+                               where ARTICLEID = ? and BLOCK = 1 \
                                order by TERM'
                              ,(self.artid,)
                              )
@@ -727,8 +726,7 @@ class DB:
         '''
         if self.artid:
             self.dbc.execute ('select distinct DICF from BLOCKS \
-                               where ARTICLEID = ? \
-                               and (BLOCK = 1 or IGNORE = 1)'
+                               where ARTICLEID = ? and BLOCK = 1'
                              ,(self.artid,)
                              )
             result = self.dbc.fetchall()
