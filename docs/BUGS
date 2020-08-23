@@ -2,6 +2,8 @@ mclient:
 - 
 
 multitrancom:
+- EN-RU: dark ages -> Phrases: enabling blocking shows that something
+  is blocked
 - EN-RU: blemish: wrong parsing of parts of speech
 - EN-AZ: sənədin araşdırılması: wrong SAME
 - aluminothermic welding: "Соглашение пользователя" is still visible

@@ -96,9 +96,9 @@ tag_pattern_del = ['m.exe?a=40&'          # Log in, Вход
                   ,'m.exe?a=365&'         # Terms of Use, Соглашение пользователя
                   ]
 
-useful_tags = [pdic ,purl1,purl2,pcom1
-              ,pcom2,pwf1 ,pwf2 ,psp
-              ,ptm1 ,ptm2 ,pph  ,pcor1
+useful_tags = [pdic,purl1,purl2,pcom1
+              ,pcom2,pwf1,pwf2,psp
+              ,ptm1,ptm2,pph,pcor1
               ,pcor2,pcom3
               ]
 
@@ -107,11 +107,11 @@ class Block:
 
     def __init__(self):
         self.block = -1
-        self.i     = -1
-        self.j     = -1
+        self.i = -1
+        self.j = -1
         self.first = -1
-        self.last  = -1
-        self.no    = -1
+        self.last = -1
+        self.no = -1
         # Applies to non-blocked cells only
         self.cellno = -1
         ''' Tag extraction algorithm is different in comparison with
@@ -130,16 +130,16 @@ class Block:
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'transc', 'invalid'
         '''
-        self.type_  = ''
-        self.text   = ''
-        self.url    = ''
-        self.urla   = ''
-        self.dic    = ''
-        self.dicf   = ''
-        self.wform  = ''
+        self.type_ = ''
+        self.text = ''
+        self.url = ''
+        self.urla = ''
+        self.dic = ''
+        self.dicf = ''
+        self.wform = ''
         self.speech = ''
         self.transc = ''
-        self.term   = ''
+        self.term = ''
 
 
 
@@ -152,7 +152,7 @@ class AnalyzeTag:
     def set_values(self):
         self.fragms = []
         self.blocks = []
-        self.dicf   = ''
+        self.dicf = ''
 
     def set_dicf(self):
         pattern = ' title="'
@@ -323,15 +323,15 @@ class Tags:
         self.set_values()
         if text:
             self.text = list(text)
-        self.Debug   = Debug
-        self.maxrow  = maxrow
+        self.Debug = Debug
+        self.maxrow = maxrow
         self.maxrows = maxrows
 
     def set_values(self):
-        self.tags   = []
+        self.abbr = {}
         self.blocks = []
-        self.abbr   = {}
-        self.text   = ''
+        self.tags = []
+        self.text = ''
     
     def debug_abbr(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.debug_abbr'

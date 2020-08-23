@@ -387,15 +387,15 @@ class Elems:
                  ,maxrows=1000,search=''
                  ):
         f = '[MClient] plugins.multitrancom.elems.Elems.__init__'
+        self.abbr = abbr
+        self.blocks = blocks
+        self.Debug = Debug
+        self.defins = []
         self.dicurls = {}
-        self.defins  = []
-        self.blocks  = blocks
-        self.abbr    = abbr
-        self.Debug   = Debug
-        self.maxrow  = maxrow
+        self.langs = langs
+        self.maxrow = maxrow
         self.maxrows = maxrows
         self.pattern = search.strip()
-        self.langs   = langs
         if self.blocks:
             self.Success = True
         else:

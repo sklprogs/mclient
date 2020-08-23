@@ -159,7 +159,7 @@ class Tags:
     def run_multitrancom(self):
         f = '[MClient] tests.Tags.run_multitrancom'
         import plugins.multitrancom.cleanup as mccleanup
-        import plugins.multitrancom.tags    as mctags
+        import plugins.multitrancom.tags as mctags
         ''' #NOTE: The file should be generated with
             'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
             to set 'dic' and some other types.
@@ -584,6 +584,6 @@ if __name__ == '__main__':
     #Tags().run_dsl()
     #Tests().run_speech()
     #Tests().generate_config()
-    #Tags().run_multitrancom()
+    Tags().run_multitrancom()
     #Tags().analyze_tag()
     sh.com.end()
