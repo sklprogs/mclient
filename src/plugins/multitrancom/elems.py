@@ -27,8 +27,8 @@ class Abbr:
         self.load()
     
     def set_values(self):
-        self.Success = True
         self.fabbr = ''
+        self.Success = True
     
     def get_full(self,abbr):
         f = '[MClient] plugins.multitrancom.Abbr.get_full'
@@ -328,33 +328,33 @@ class Block:
     
     def __init__(self):
         self.block = -1
-        self.i     = -1
-        self.j     = -1
-        self.first = -1
-        self.last  = -1
-        self.no    = -1
         # Applies to non-blocked cells only
         self.cellno = -1
-        self.same   = -1
+        self.dic = ''
+        self.dicf = ''
+        self.dprior = 0
+        self.first = -1
+        self.i = -1
+        self.j = -1
+        self.last = -1
+        self.no = -1
+        self.same = -1
         ''' 'select' is an attribute of a *cell* which is valid
             if the cell has a non-blocked block of types 'term',
             'phrase' or 'transc'
         '''
-        self.select   = -1
-        self.sprior   = -1
-        self.dprior   = 0
+        self.select = -1
+        self.speech = ''
+        self.sprior = -1
+        self.term = ''
+        self.text = ''
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'correction', 'transc', 'user', 'invalid'
         '''
-        self.type_  = 'invalid'
-        self.text   = ''
-        self.url    = ''
-        self.dic    = ''
-        self.dicf   = ''
-        self.wform  = ''
-        self.speech = ''
         self.transc = ''
-        self.term   = ''
+        self.type_ = 'invalid'
+        self.url = ''
+        self.wform = ''
 
 
 
