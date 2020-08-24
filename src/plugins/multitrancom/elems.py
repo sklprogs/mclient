@@ -74,9 +74,9 @@ class Same:
     def __init__ (self,blocks,Debug=False
                  ,maxrow=70,maxrows=1000
                  ):
-        self.blocks  = blocks
-        self.Debug   = Debug
-        self.maxrow  = maxrow
+        self.blocks = blocks
+        self.Debug = Debug
+        self.maxrow = maxrow
         self.maxrows = maxrows
     
     def run_user_cor_user(self):
@@ -348,10 +348,10 @@ class Block:
         self.sprior = -1
         self.term = ''
         self.text = ''
+        self.transc = ''
         ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
             'correction', 'transc', 'user', 'invalid'
         '''
-        self.transc = ''
         self.type_ = 'invalid'
         self.url = ''
         self.wform = ''
@@ -386,7 +386,6 @@ class Elems:
                  ,Debug=False,maxrow=20
                  ,maxrows=1000,search=''
                  ):
-        f = '[MClient] plugins.multitrancom.elems.Elems.__init__'
         self.abbr = abbr
         self.blocks = blocks
         self.Debug = Debug
@@ -396,10 +395,12 @@ class Elems:
         self.maxrow = maxrow
         self.maxrows = maxrows
         self.pattern = search.strip()
+        
+    def check(self):
+        f = '[MClient] plugins.multitrancom.elems.Elems.check'
         if self.blocks:
-            self.Success = True
+            return True
         else:
-            self.Success = False
             sh.com.rep_empty(f)
     
     def reassign_brackets(self):
@@ -653,7 +654,7 @@ class Elems:
     
     def run(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.run'
-        if self.Success:
+        if self.check():
             # Do some cleanup
             self.strip()
             self.delete_empty()
@@ -738,7 +739,7 @@ class Elems:
     #FIX: use URLs
     def delete_trash(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.trash'
-        patterns = ['|',';',':','-->','// -->','⇄','точно' ,'все формы'
+        patterns = ['|',':','-->','// -->','⇄','точно' ,'все формы'
                    ,'точные совпадения','Сообщить об ошибке'
                    ,'только в указанном порядке'
                    ,'только в заданной форме','all forms'

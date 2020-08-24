@@ -240,14 +240,18 @@ class Plugin:
     def run_multitrancom(self):
         f = '[MClient] tests.Plugin.run_multitrancom'
         import plugins.multitrancom.run as mc
-        #url    = 'https://www.multitran.com/m.exe?s=memory%20pressure&l1=2&l2=1&SHL=2'
+        #url = 'https://www.multitran.com/m.exe?s=memory%20pressure&l1=2&l2=1&SHL=2'
         #search = 'memory pressure'
-        #url    = 'https://www.multitran.com/m.exe?s=nucleoside%20reverse%20transcriptase%20inhibitors&l1=2&l2=1&SHL=2'
+        #url = 'https://www.multitran.com/m.exe?s=nucleoside%20reverse%20transcriptase%20inhibitors&l1=2&l2=1&SHL=2'
         #search = 'nucleoside reverse transcriptase inhibitors'
-        #url    = 'https://www.multitran.com/m.exe?s=%D0%BD%D1%83%D0%BA%D0%BB%D0%B5%D0%B8%D0%BD%D0%BE%D0%B2%D1%8B%D0%B9&l1=2&l2=1&SHL=2'
+        #url = 'https://www.multitran.com/m.exe?s=%D0%BD%D1%83%D0%BA%D0%BB%D0%B5%D0%B8%D0%BD%D0%BE%D0%B2%D1%8B%D0%B9&l1=2&l2=1&SHL=2'
         #search = 'нуклеиновый'
-        url     = 'https://www.multitran.com/m.exe?a=3&l1=2&l2=1&s=%D0%B2%2B%D1%8F%D0%B1%D0%BB%D0%BE%D1%87%D0%BA%D0%BE&SHL=2'
-        search  = '47 фраз'
+        #url = 'https://www.multitran.com/m.exe?a=3&l1=2&l2=1&s=%D0%B2%2B%D1%8F%D0%B1%D0%BB%D0%BE%D1%87%D0%BA%D0%BE&SHL=2'
+        #search = '47 фраз'
+        #url = 'https://www.multitran.com/m.exe?s=Antiquity&l1=1&l2=2&SHL=2'
+        #search = 'Antiquity'
+        url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
+        search = 'hello'
         
         iplug = mc.Plugin (Debug   = DEBUG
                           ,maxrow  = 20
@@ -579,11 +583,11 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sh.com.start()
-    #Plugin().run_multitrancom()
+    Plugin().run_multitrancom()
     #Plugin().run_dsl()
     #Tags().run_dsl()
     #Tests().run_speech()
     #Tests().generate_config()
-    Tags().run_multitrancom()
+    #Tags().run_multitrancom()
     #Tags().analyze_tag()
     sh.com.end()
