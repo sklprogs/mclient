@@ -79,21 +79,40 @@ class Same:
         self.maxrow = maxrow
         self.maxrows = maxrows
     
+    def set_inner(self):
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].icell > -1:
+                if self.blocks[i-1].icell == self.blocks[i].icell:
+                    self.blocks[i].same = 1
+                else:
+                    self.blocks[i].same = 0
+            i += 1
+    
+    def has_inner_cells(self,blocks):
+        for block in blocks:
+            if block.icell > -1:
+                return True
+    
     def run_user_cor_user(self):
         # (GeorgeK; это "тендерная документация" playa4life)
         i = 4
         while i < len(self.blocks):
-            if self.blocks[i-4].type_ in ('comment','correction') \
-            and self.blocks[i-3].type_ == 'user' \
-            and self.blocks[i-2].type_ == 'correction' \
-            and self.blocks[i-1].type_ == 'user' \
-            and self.blocks[i].type_ in ('comment','correction') \
-            and self.blocks[i-4].text.endswith('(') \
-            and self.blocks[i].text.startswith(')'):
-                self.blocks[i-3].same = 1
-                self.blocks[i-2].same = 1
-                self.blocks[i-1].same = 1
-                self.blocks[i].same = 1
+            blocks = [self.blocks[i-4],self.blocks[i-3],self.blocks[i-2]
+                     ,self.blocks[i-1],self.blocks[i]
+                     ]
+            if not self.has_inner_cells(blocks):
+                if self.blocks[i-4].type_ in ('comment','correction') \
+                and self.blocks[i-3].type_ == 'user' \
+                and self.blocks[i-2].type_ == 'correction' \
+                and self.blocks[i-1].type_ == 'user' \
+                and self.blocks[i].type_ in ('comment','correction') \
+                and self.blocks[i-4].text.endswith('(') \
+                and self.blocks[i].text.startswith(')'):
+                    self.blocks[i-3].same = 1
+                    self.blocks[i-2].same = 1
+                    self.blocks[i-1].same = 1
+                    self.blocks[i].same = 1
             i += 1
     
     def _has_extra_bracket(self,block):
@@ -102,26 +121,30 @@ class Same:
     def run_user_brackets(self):
         i = 2
         while i < len(self.blocks):
-            if self.blocks[i-2].type_ in ('comment','correction') \
-            and self._has_extra_bracket(self.blocks[i-2]) \
-            and self.blocks[i-1].type_ == 'user' \
-            and self.blocks[i].text.startswith(')'):
-                self.blocks[i-1].same = 1
-                self.blocks[i].same = 1
+            blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
+            if not self.has_inner_cells(blocks):
+                if self.blocks[i-2].type_ in ('comment','correction') \
+                and self._has_extra_bracket(self.blocks[i-2]) \
+                and self.blocks[i-1].type_ == 'user' \
+                and self.blocks[i].text.startswith(')'):
+                    self.blocks[i-1].same = 1
+                    self.blocks[i].same = 1
             i += 1
     
     def run_com_term_com(self):
         i = 2
         while i < len(self.blocks):
-            if self.blocks[i-2].type_ == 'comment' \
-            and self.blocks[i-1].type_ == 'term' \
-            and self.blocks[i].type_ in ('comment','correction'):
-                if self.blocks[i-2].text.startswith('(') \
-                and not ')' in self.blocks[i-2].text \
-                and self.blocks[i].text.startswith(')'):
-                    # 'self.blocks[i-2]' can actually have any SAME
-                    self.blocks[i-1].same = 1
-                    self.blocks[i].same = 1
+            blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
+            if not self.has_inner_cells(blocks):
+                if self.blocks[i-2].type_ == 'comment' \
+                and self.blocks[i-1].type_ == 'term' \
+                and self.blocks[i].type_ in ('comment','correction'):
+                    if self.blocks[i-2].text.startswith('(') \
+                    and not ')' in self.blocks[i-2].text \
+                    and self.blocks[i].text.startswith(')'):
+                        # 'self.blocks[i-2]' can actually have any SAME
+                        self.blocks[i-1].same = 1
+                        self.blocks[i].same = 1
             i += 1
     
     def run_wform_com_fixed(self):
@@ -138,35 +161,39 @@ class Same:
         '''
         i = 2
         while i < len(self.blocks):
-            ''' Do not check the 'same' value of a definition block
-                since it can (and should) already be set to 1.
-            '''
-            if self.blocks[i-2].type_ == 'wform' \
-            and self.blocks[i-1].type_ == 'comment' \
-            and self.blocks[i].type_ in ('dic','wform','transc'
-                                        ,'speech'
-                                        ):
-                self.blocks[i-1].type_ = 'definition'
-                ''' 'same' value of the definition block should
-                    already be set to 1, but we assign it just to be
-                    on a safe side.
+            blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
+            if not self.has_inner_cells(blocks):
+                ''' Do not check the 'same' value of a definition block
+                    since it can (and should) already be set to 1.
                 '''
-                self.blocks[i-1].same = 1
+                if self.blocks[i-2].type_ == 'wform' \
+                and self.blocks[i-1].type_ == 'comment' \
+                and self.blocks[i].type_ in ('dic','wform','transc'
+                                            ,'speech'
+                                            ):
+                    self.blocks[i-1].type_ = 'definition'
+                    ''' 'same' value of the definition block should
+                        already be set to 1, but we assign it just to be
+                        on a safe side.
+                    '''
+                    self.blocks[i-1].same = 1
             i += 1
     
     def run_wform_com_term(self):
         # Source-specific
         i = 2
         while i < len(self.blocks):
-            if self.blocks[i-2].type_ == 'wform' \
-            and self.blocks[i-2].same == 0 \
-            and self.blocks[i-2].url \
-            and self.blocks[i-1].type_ == 'comment' \
-            and self.blocks[i-1].same == 0 \
-            and self.blocks[i].type_ == 'term' \
-            and self.blocks[i].same == 1:
-                self.blocks[i-2].type_ = 'term'
-                self.blocks[i-1].same = 1
+            blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
+            if not self.has_inner_cells(blocks):
+                if self.blocks[i-2].type_ == 'wform' \
+                and self.blocks[i-2].same == 0 \
+                and self.blocks[i-2].url \
+                and self.blocks[i-1].type_ == 'comment' \
+                and self.blocks[i-1].same == 0 \
+                and self.blocks[i].type_ == 'term' \
+                and self.blocks[i].same == 1:
+                    self.blocks[i-2].type_ = 'term'
+                    self.blocks[i-1].same = 1
             i += 1
     
     def run_com_com(self):
@@ -177,17 +204,19 @@ class Same:
         '''
         i = 2
         while i < len(self.blocks):
-            if self.blocks[i-1].type_ == 'comment' \
-            and self.blocks[i-1].same == 0 \
-            and self.blocks[i].type_ == 'comment' \
-            and self.blocks[i].same == 0:
-                if self.blocks[i-2].type_ in ('dic','wform'
-                                             ,'speech','transc'
-                                             ):
-                    self.blocks[i-1].type_ = 'wform'
-                    self.blocks[i].same = 1
-                else:
-                    self.blocks[i-1].same = 1
+            blocks = [self.blocks[i-1],self.blocks[i]]
+            if not self.has_inner_cells(blocks):
+                if self.blocks[i-1].type_ == 'comment' \
+                and self.blocks[i-1].same == 0 \
+                and self.blocks[i].type_ == 'comment' \
+                and self.blocks[i].same == 0:
+                    if self.blocks[i-2].type_ in ('dic','wform'
+                                                 ,'speech','transc'
+                                                 ):
+                        self.blocks[i-1].type_ = 'wform'
+                        self.blocks[i].same = 1
+                    else:
+                        self.blocks[i-1].same = 1
             i += 1
     
     def run_com_term(self):
@@ -200,12 +229,14 @@ class Same:
         '''
         i = 1
         while i < len(self.blocks):
-            if self.blocks[i-1].type_ == 'comment' \
-            and self.blocks[i-1].same == 0:
-                if self.blocks[i].type_ == 'term':
-                    self.blocks[i].same = 1
-                else:
-                    self.blocks[i-1].same = 1
+            blocks = [self.blocks[i-1],self.blocks[i]]
+            if not self.has_inner_cells(blocks):
+                if self.blocks[i-1].type_ == 'comment' \
+                and self.blocks[i-1].same == 0:
+                    if self.blocks[i].type_ == 'term':
+                        self.blocks[i].same = 1
+                    else:
+                        self.blocks[i-1].same = 1
             i += 1
     
     def run_term_com_fixed(self):
@@ -214,50 +245,56 @@ class Same:
         '''
         i = 2
         while i < len(self.blocks):
-            if self.blocks[i-2].type_ == 'term' \
-            and self.blocks[i-1].type_ == 'comment' \
-            and self.blocks[i].type_ in ('dic','wform','speech'
-                                        ,'transc'
-                                        ):
-                self.blocks[i-1].same = 1
+            blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
+            if not self.has_inner_cells(blocks):
+                if self.blocks[i-2].type_ == 'term' \
+                and self.blocks[i-1].type_ == 'comment' \
+                and self.blocks[i].type_ in ('dic','wform','speech'
+                                            ,'transc'
+                                            ):
+                    self.blocks[i-1].same = 1
             i += 1
     
     def run_all_coms(self):
         i = 1
         while i < len(self.blocks):
-            ''' First comments in constructs like 'com-term-com' can be
-                of SAME=0, so we should be careful here.
-            '''
-            if self.blocks[i].type_ == 'comment' \
-            and self.blocks[i].text.startswith('(') \
-            or self.blocks[i].type_ in ('user','correction'):
-                if self.blocks[i-1].type_ not in ('dic','wform','transc'
-                                                 ,'speech'
-                                                 ):
-                    self.blocks[i].same = 1
+            blocks = [self.blocks[i-1],self.blocks[i]]
+            if not self.has_inner_cells(blocks):
+                ''' First comments in constructs like 'com-term-com' can be
+                    of SAME=0, so we should be careful here.
+                '''
+                if self.blocks[i].type_ == 'comment' \
+                and self.blocks[i].text.startswith('(') \
+                or self.blocks[i].type_ in ('user','correction'):
+                    if self.blocks[i-1].type_ not in ('dic','wform','transc'
+                                                     ,'speech'
+                                                     ):
+                        self.blocks[i].same = 1
             i += 1
     
     def run_term_com_term(self):
         i = 2
         while i < len(self.blocks):
-            if self.blocks[i-2].type_ == 'term' \
-            and self.blocks[i-1].type_ == 'comment' \
-            and self.blocks[i].type_ == 'term':
-                ''' There can be a 'comment-term; comment-term' case
-                    (with the comments having SAME=1) which
-                    shouldn't be matched. See multitran.com:
-                    eng-rus: 'tree limb'.
-                '''
-                if not self.blocks[i-1].text.startswith('('):
-                    cond1 = sh.Text(self.blocks[i-2].text).has_cyrillic()\
-                            and sh.Text(self.blocks[i-1].text).has_cyrillic()\
-                            and sh.Text(self.blocks[i].text).has_cyrillic()
-                    cond2 = sh.Text(self.blocks[i-2].text).has_latin()\
-                            and sh.Text(self.blocks[i-1].text).has_latin()\
-                            and sh.Text(self.blocks[i].text).has_latin()
-                    if cond1 or cond2:
-                        self.blocks[i-1].same = 1
-                        self.blocks[i].same = 1
+            blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
+            if not self.has_inner_cells(blocks):
+                if self.blocks[i-2].type_ == 'term' \
+                and self.blocks[i-1].type_ == 'comment' \
+                and self.blocks[i].type_ == 'term':
+                    ''' There can be a 'comment-term; comment-term' case
+                        (with the comments having SAME=1) which
+                        shouldn't be matched. See multitran.com:
+                        eng-rus: 'tree limb'.
+                    '''
+                    if not self.blocks[i-1].text.startswith('('):
+                        cond1 = sh.Text(self.blocks[i-2].text).has_cyrillic()\
+                                and sh.Text(self.blocks[i-1].text).has_cyrillic()\
+                                and sh.Text(self.blocks[i].text).has_cyrillic()
+                        cond2 = sh.Text(self.blocks[i-2].text).has_latin()\
+                                and sh.Text(self.blocks[i-1].text).has_latin()\
+                                and sh.Text(self.blocks[i].text).has_latin()
+                        if cond1 or cond2:
+                            self.blocks[i-1].same = 1
+                            self.blocks[i].same = 1
             i += 1
     
     def run_speech(self):
@@ -267,9 +304,11 @@ class Same:
         '''
         i = 1
         while i < len(self.blocks):
-            if self.blocks[i-1].type_ == 'speech':
-                self.blocks[i-1].same = 0
-                self.blocks[i].same = 0
+            blocks = [self.blocks[i-1],self.blocks[i]]
+            if not self.has_inner_cells(blocks):
+                if self.blocks[i-1].type_ == 'speech':
+                    self.blocks[i-1].same = 0
+                    self.blocks[i].same = 0
             i += 1
     
     def run_punc(self):
@@ -302,6 +341,7 @@ class Same:
     def run(self):
         f = 'plugins.multitrancom.elems.Same.run'
         if self.blocks:
+            self.set_inner()
             self.run_speech()
             self.run_all_coms()
             self.run_user_cor_user()
@@ -335,6 +375,7 @@ class Block:
         self.dprior = 0
         self.first = -1
         self.i = -1
+        self.icell = -1
         self.j = -1
         self.last = -1
         self.no = -1
@@ -396,6 +437,19 @@ class Elems:
         self.maxrows = maxrows
         self.pattern = search.strip()
         
+    def set_inner_cells(self):
+        icell = -1
+        for block in self.blocks:
+            if block.type_ == 'comment' and block.text == ';':
+                icell += 1
+            elif icell > -1 and block.type_ in ('term','comment','user'
+                                               ,'correction'
+                                               ):
+                block.icell = icell
+            else:
+                #TODO: do this in 'Block' classes
+                block.icell = -1
+    
     def check(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.check'
         if self.blocks:
@@ -658,6 +712,8 @@ class Elems:
             # Do some cleanup
             self.strip()
             self.delete_empty()
+            # Do this before deleting ';'
+            self.set_inner_cells()
             self.delete_trash()
             self.delete_subjects()
             self.delete_search()
@@ -705,14 +761,15 @@ class Elems:
     def debug(self):
         f = 'plugins.multitrancom.elems.Elems.debug'
         if self.Debug:
-            headers = ('NO','TYPE','TEXT','SAMECELL','CELLNO','ROWNO'
-                      ,'COLNO','POS1','POS2'
+            headers = ('NO','TYPE','TEXT','INNER','SAME'
+                      ,'CELLNO','ROWNO','COLNO','POS1','POS2'
                       )
             rows = []
             for i in range(len(self.blocks)):
                 rows.append ([i + 1
                              ,self.blocks[i].type_
                              ,self.blocks[i].text
+                             ,self.blocks[i].icell
                              ,self.blocks[i].same
                              ,self.blocks[i].cellno
                              ,self.blocks[i].i
@@ -739,7 +796,7 @@ class Elems:
     #FIX: use URLs
     def delete_trash(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.trash'
-        patterns = ['|',':','-->','// -->','⇄','точно' ,'все формы'
+        patterns = ['|',';',':','-->','// -->','⇄','точно' ,'все формы'
                    ,'точные совпадения','Сообщить об ошибке'
                    ,'только в указанном порядке'
                    ,'только в заданной форме','all forms'

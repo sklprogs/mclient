@@ -6,19 +6,12 @@ multitrancom:
   is blocked
 - EN-RU: blemish: wrong parsing of parts of speech
 - EN-AZ: sənədin araşdırılması: wrong SAME
-- aluminothermic welding: "Соглашение пользователя" is still visible
 - moneyman: block hint does not report blocking
-- en-ru, set: застывать: wrong SAME=1
-- en-ru, лошадиных сил: wrong comment SAME
 - Save article: only the last article is saved, not the current one
-- SPE: wrong SAME
-- EN-RU, поднять: do not separate blocks from the long comment
 - EN-RU, средство: "adjunct (Киселев)" relates to
   "дополнительное средство"
-- EN-RU, AppVerifier: separate comment
 - EN-RU, "особых условиях", "нагретого тела": "особых+условиях:"
 - EN-RU, подобрать: Do not separate comment parts
-- ! does not get what is expected
 - Process stays alive if main GUI is quitted, then - the message window
   about connection failure
 - EN-RU, be cut out: comment has SAME=0
@@ -36,16 +29,12 @@ multitrancom:
   <span style="color:gray">(<a target="_blank"  href="http://www.berkeleycountycomm.org/job_court_bailiff_2005.htm;" rel="nofollow">http://www.berkeleycountycomm.org/job_court_bailiff_2005.htm;</a>
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"
-- throw a book at: phrases are not shown
-- French: зонд: parts of speech (short) are lost;
-  German: работа: genders are lost (previously were in a wrong place)
+- French: зонд: wrong SAME for 'm'
+  German: работа: wrong SAME for 'f'
 - plugins.multitrancom: eng-rus: вручать: fix dic prioritization
 - plugins.multitran: eng-rus: layout: cannot decrease a priority of
   a dictionary which priority is higher than the priority of the unknown
   dictionary (Gruzovik) following it
-- plugins.multitrancom: eng-rus: tree limb: wrong SAME
-- plugins.multitrancom: eng-rus: in dire need: no fragment
-  "найдены отдельные слова"
 - plugins.multitran: eng-rus: knob: Биология: ручка: the following URL
   is not a part of the preceding comment
 - plugins.multitrancom: eng-rus: tick off: "tick someone off": wrong
@@ -56,7 +45,6 @@ multitrancom:
 - plugins.stardict: eng-rus, full: search gate: found by 'Suggest' and
   logged as found by 'AllDics.get', but could not be shown
 - Test and fix getting non-terms (when everything is selectable)
-- 'about': 'они передвигали мебель' in a wrong dic (must be general)
 - logic, 817: logic.Order.prioritize_by: .index: ValueError
 - Widget is not shown immediately when using F2 -> Esc -> F2 (probably
   due to Tkinter/WM focusing/minimization behavior)

@@ -1,3 +1,5 @@
 - Multitran does not escape '<' and '>' in user terms/comments properly
 - BLOCK field is used to skip server contents; IGNORE field is used for
   internal purposes to skip unknown/invalid block types
+- Inserting the last search string sometimes does not work; looks like
+  a Linux-specific bug
