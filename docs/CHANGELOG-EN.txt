@@ -1,4 +1,5 @@
 (in development)
+* Improve separating cells at multitran.com on the basis of semicolons
 * 
 
 6.6
