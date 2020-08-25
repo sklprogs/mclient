@@ -22,14 +22,11 @@ multitrancom:
 - When 'same' are determined on the basis of semicolon, check this in
   'basic support': 32 фразы: "Object-Oriented Analysis and Design with Applications"
   (should have same=1)
-- double tumbler: показывать оба ненайденных слова
-- EN-RU: на фиг: wrong SAME of "(нужно, сдалось)"
 - implement "⇒": EN-RU: вспоминать ⇒ вспоминать прошлое
-- downtime: make columns narrower
 - EN-RU, лекарственное средство: synonyms are marked with ⇒
 - Improve parsing of EN-RU, memory pressure (wform + comment + term and
   the user URL)
-- EN-RU: entity: too long columns
+- EN-RU: entity, downtime: too long columns
 - Restore true user collimit choice when not a SpecialPage
 - Store settings in the config file
 - eng-rus, метильное: do not delete the phrase
