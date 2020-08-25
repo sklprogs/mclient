@@ -1,9 +1,10 @@
 
 
-dsl:
-- Expand dictionary abbreviations (use *_abrv.dsl) 
-
 mclient:
+- Add an autosave key for iconify-after-copying behavior
+- Improve toggling widgets using F1-F12
+- Autosave SelectTermsOnly
+- Switch on/off SelectTermsOnly in Settings dialog
 - At startup: if only local dictionaries are available, then set
   the mode to Offline.
 - Checking for symbols unsupported in Tk takes too long (when loading
@@ -68,16 +69,16 @@ multitrancom:
 - Delete symbols that prevent URL from opening (e.g.,
   'символ' -> 'pilcrow')
 
+dsl:
+- Expand dictionary abbreviations (use *_abrv.dsl) 
+
 (Разобрать)
 ! SPEECHA для Phrases присваивается SPEECHA стоящего до этого словаря,
   поэтому необходимо обнулить SPEECHA для Phrases
 ! Для offline при ненахождении слова предлагать похожие слова (частичное
   совпадение) на основании dic.keys
-! Не часть речи: http://www.multitran.ru/c/M.exe?t=1909570_1_2&s1=%E1%EB%EE%EA%E8%F0%F3%FE%F9%E0%FF%20%E7%E0%EA%F3%EF%EA%E0
 ! При сохранении вида в html изменить заголовок на articles.current().search()
 ! http://www.multitran.ru/c/M.exe?a=3&&s=boze&l1=1&l2=2
-! 1) Откуда берутся URL для: http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=glitch 2) Улучшить распределение терминов и комментариев на основе этой статьи
-! Открытие/закрытие виджетов по F1-F12 на основании self.Active
 ! (http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=stringing): нет красного
   на глаголе
 ! http://www.multitran.ru/c/M.exe?t=7010165_2_1&s1=for%20the%20sake%20of%20argument
@@ -94,24 +95,6 @@ multitrancom:
   кварка) http://www.multitran.ru/c/M.exe?l1=3&l2=2&s=%F6%E2%E5%F2,
   нем 'есть' -> 'с наслаждением есть'
   http://www.multitran.ru/c/M.exe?l1=3&l2=2&s=%E5%F1%F2%FC
-! Проверить Ctrl-F7 и Shift-F7 для 'pretty much' (есть ли замены для
-  %20 в http://www.multitran.ru/c/M.exe?l1=1&l2=2&s=pretty%20much%20)
-! Неправильный переход: follow => Бурение => Alt + <-
-! "отбор" (RU-EN): неинтуитивная сортировка словарей в конце
-! Исправить красные в горизонтальном режиме (на примере "матрица")
-! Улучшить группировку по типам (на основе БД) (на примере venerable)
-! Неверный анализ тэгов для "Welcome home",  out" parameters (вместе с
-  кавычками)
-! В режиме предпочтительных словарей ставить их в начало и выделять
-  другим цветом
-! Очищать Entry при поиске в новой статье
-! Опционально сделать Control-c-c с вызовом окна, но без перевода буфера
-! annulus: не видно названия статьи
-? Исправить hint для "Третьи стороны"
-! Не определяются красные: http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=%D0%B2%D0%B7%D0%AA%D0%B5%D1%80%D0%BE%D1%88%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%B2%D0%BE%D0%BB%D0%BE%D1%81%D1%8B, http://www.multitran.ru/c/m.exe?l1=3&l2=2&s=merkt
-? Ограничить максимальное число строк на словарь, при превышении
-  создавать новую колонку
-! субъективный -> субьективный -> беск. цикл
 ! Win-only: focus_set на entry в SearchArticle
 ! Третьи стороны
 ! test: "brønnøy"
@@ -193,27 +176,15 @@ multitrancom:
 ! Застревание на groovy: с бороздкой: не работает move_up
 ! в самом начале выделения нет, потому что ячейка слова становится
   выделяемой (пруф: Control-F7 скопирует ссылку на разбор слова)
-! пример неучтенных комментариев: "imminently" (http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=imminently)
 ? Показывать границы текста, если есть только 1 строка, где присутствуют
   выделяемые ячейки
-! stigma (http://www.multitran.ru/c/m.exe?l1=1&l2=2&s=stigma):
-  не указаны части речи
-! Строка ячеек со 'speech' в каком-то месте содержит selectable, потому
-  что осуществляется переход на него
-! Неправильный разбор тэгов на "welcome screen"
 ! Должна быть возможность соединить все одинаковые словари, несмотря на
   разные части речи, в пределах одной статьи
 ! словари переставлены местами: "с получением", EN-RU: "http://www.multitran.ru/c/m.exe?t=6874059_2_1&ifp=1&s1=%F1%20%EF%EE%EB%F3%F7%E5%ED%E8%E5%EC"
   ввиду наличия ячейки "\d+ фраз"
-! 3688: index out of range
-! Удалить URL: Сообщить об ошибке в словаре, Удалить слово, В заданном
-  порядке
 ? Не переводить одну пунктуацию
-? Добавить "Скопировать ссылку на mclient"
-! Убрать "Спросить в форуме"
 ? После неудачного поиска менять выделение на красное до первого его
   перемещения
-! Настраивать iconify после копирования
 ? обеспечить поиск в нетерминах тоже
 ? предлагать искать ненайденное в интернете и/или в других словарях
 ! Alt-F4 и F4 в Linux не конфликтуют, а в Windows - конфликтуют

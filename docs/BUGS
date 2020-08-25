@@ -2,18 +2,22 @@ mclient:
 - 
 
 multitrancom:
-- EN-RU: dark ages -> Phrases: enabling blocking shows that something
-  is blocked
+- EN-RU: welcome screen: 1) user names and corrections should be of
+  a different color; 2) user names should be hidden if required
+- EN-RU: welcome screen: wrong SAME in "экран -приветствие"
+  (SAME should be set on the basis of ; only if it is followed by
+  a term)
+- EN-RU: glitch: 'заминка (' should be accompanied with correction
+- EN-RU: glitch: 'компьютерный глюк': no URL in brackets
+- EN-RU: glitch -> defect -> (This computer program has a glitch):
+  No word 'glitch' in in this comment
+- EN-RU: отбор: wrong parsing of comments near phrases
 - EN-RU: blemish: wrong parsing of parts of speech
 - EN-AZ: sənədin araşdırılması: wrong SAME
-- moneyman: block hint does not report blocking
 - Save article: only the last article is saved, not the current one
 - EN-RU, средство: "adjunct (Киселев)" relates to
   "дополнительное средство"
-- EN-RU, "особых условиях", "нагретого тела": "особых+условиях:"
 - EN-RU, подобрать: Do not separate comment parts
-- Process stays alive if main GUI is quitted, then - the message window
-  about connection failure
 - EN-RU, be cut out: comment has SAME=0
 - EN-RU, decaffeinated: transcription not in place
 - EN-RU, проблемный -> Программирование: wrong block separation:
@@ -35,15 +39,10 @@ multitrancom:
 - plugins.multitran: eng-rus: layout: cannot decrease a priority of
   a dictionary which priority is higher than the priority of the unknown
   dictionary (Gruzovik) following it
-- plugins.multitran: eng-rus: knob: Биология: ручка: the following URL
-  is not a part of the preceding comment
+- plugins.multitran: eng-rus: knob: Биология: ручка: missing URLs as
+  parts of preceding comments
 - plugins.multitrancom: eng-rus: tick off: "tick someone off": wrong
   parsing
-- Wrong URL substitution: "слинять" (https://www.multitran.ru/c/m.exe?t=7547319_2_1&s1=go%20between%20the%20moon%20and%20the%20milkman)
-  is replaced with (https://www.multitran.com/m.exe?t=7547319_2_1&s1=go%20between%20the%20moon%20and%20the%20milkman)
-  which is "питание"
-- plugins.stardict: eng-rus, full: search gate: found by 'Suggest' and
-  logged as found by 'AllDics.get', but could not be shown
 - Test and fix getting non-terms (when everything is selectable)
 - logic, 817: logic.Order.prioritize_by: .index: ValueError
 - Widget is not shown immediately when using F2 -> Esc -> F2 (probably
@@ -69,21 +68,23 @@ multitrancom:
 - vertical view, EN-RU: "поцелуй": fix Moves.up for the 1st element
 - for vertical view: concerning coloring, rely on row numbers instead of
   column numbers
-- dressing: "противопригарная" is a word form.
-- Search dialog appears again after changing the view and pressing F3
 - (DB) Fix Moves on 'рабочая документация' (SelectTermsOnly=0), selects
   ')' twice, but does not select corrections
 - NODE1 < NODE2 in some rare cases
 - shift_y does not work properly when changing sizes on-the-fly
 - Changing node still sometimes fails
-- When adding a space between blocks, add it to the end of the preceding
-  block; otherwise, sorting terms may not work correctly
-  (башмак -> sabaton)
 - When deleting/inserting fixed columns, preserve URL
 - Clear CurRequest data after clearing history
 - Fix links in a saved raw html
 - Vertical view (maybe, with Styles): 1st column can be a single entry
   of 'dic' type
+
+stardict:
+- EN-RU, full: search gate: found by 'Suggest' and logged as found by
+  'AllDics.get', but could not be shown
+
+dsl:
+- 
 
 multitrandem:
 - AS: an abbreviation, not a conjunction
