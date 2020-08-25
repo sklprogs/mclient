@@ -45,7 +45,7 @@ class BlockPrioritize:
     def __init__(self,data,order,Block=False
                 ,Prioritize=False,phdic=None
                 ,Debug=False,maxrow=20
-                ,maxrows=50,spdic={}
+                ,maxrows=1000,spdic={}
                 ):
         f = '[MClient] cells.BlockPrioritize.__init__'
         self.blocks     = []
@@ -200,7 +200,7 @@ class Cells:
     def __init__ (self,data,cols,collimit=10
                  ,phdic=None,Reverse=False
                  ,spdic={},Debug=False
-                 ,maxrow=30,maxrows=1000
+                 ,maxrow=15,maxrows=1000
                  ):
         f = '[MClient] cells.Cells.__init__'
         # Sqlite fetch
