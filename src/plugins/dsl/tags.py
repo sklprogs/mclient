@@ -33,7 +33,8 @@ from skl_shared.localize import _
           suf: suffix
           v:   verb
     •  Phrases:
-        [ref]case[/ref]
+        [ref]phrase[/ref]
+        [ref dict="Dic title"]phrase[/ref]
     '''
 
 
@@ -41,33 +42,33 @@ class Block:
 
     def __init__(self):
         self.block = -1
-        self.i     = -1
-        self.j     = -1
-        self.first = -1
-        self.last  = -1
-        self.no    = -1
         # Applies to non-blocked cells only
         self.cellno = -1
-        self.same   = -1
+        self.dic = ''
+        self.dicf = ''
+        self.dprior = 0
+        self.first = -1
+        self.i = -1
+        self.j = -1
+        self.last = -1
+        self.no = -1
+        self.same = -1
         ''' 'select' is an attribute of a *cell* which is valid
             if the cell has a non-blocked block of types 'term',
             'phrase' or 'transc'.
         '''
         self.select = -1
-        ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
-            'correction', 'transc', 'invalid'
-        '''
-        self.type_  = 'comment'
-        self.text   = ''
-        self.url    = ''
-        self.urla   = ''
-        self.dic    = ''
-        self.dicf   = ''
-        self.wform  = ''
         self.speech = ''
         self.transc = ''
-        self.term   = ''
-        self.dprior = 0
+        self.term = ''
+        self.text = ''
+        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase',
+            'speech', 'term', 'transc', 'wform'
+        '''
+        self.type_ = 'comment'
+        self.url = ''
+        self.urla = ''
+        self.wform = ''
 
 
 
@@ -92,14 +93,14 @@ class AnalyzeTag:
             sh.com.cancel(f)
     
     def set_values(self):
+        self.blocks = []
+        self.content = []
+        self.poses1 = []
+        self.poses2 = []
+        self.Success = True
         self.tag = ''
         self.types = []
         self.useful = ['com','ex','p','ref','t','trn']
-        self.blocks = []
-        self.poses1 = []
-        self.poses2 = []
-        self.content = []
-        self.Success = True
     
     def debug(self):
         # This debug will be too frequent, so call it externally
@@ -206,8 +207,8 @@ class Tags:
                  ,maxrow=50,maxrows=1000
                  ):
         self.set_values()
-        self.lst = lst
         self.Debug = Debug
+        self.lst = lst
         self.maxrow = maxrow
         self.maxrows = maxrows
     
@@ -224,12 +225,12 @@ class Tags:
             sh.com.cancel(f)
     
     def set_values(self):
-        self.lst = []
         self.blocks = []
         self.Debug = False
-        self.Success = True
+        self.lst = []
         self.maxrow = 50
         self.maxrows = 1000
+        self.Success = True
     
     def check(self):
         f = '[MClient] plugins.dsl.tags.Tags.check'

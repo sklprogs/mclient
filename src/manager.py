@@ -17,25 +17,28 @@ class Plugins:
                  ,timeout=6,Debug=False
                  ,maxrow=20,maxrows=1000
                  ):
-        self.sdplugin = None
-        self.mcplugin = None
-        self.mbplugin = None
-        self.lgplugin = None
-        self.plugin   = self.mcplugin
-        self.source   = sh.lg.globs['str']['source']
-        self.sdpath   = sdpath
-        self.mbpath   = sdpath
-        self.lgpath   = sdpath
-        self.timeout  = timeout
-        self.Debug    = Debug
-        self.maxrow   = maxrow
-        self.maxrows  = maxrows
+        self.set_values()
+        self.Debug = Debug
+        self.lgpath = sdpath
+        self.maxrow = maxrow
+        self.maxrows = maxrows
+        self.mbpath = sdpath
+        self.plugin = self.mcplugin
+        self.sdpath = sdpath
+        self.timeout = timeout
         self.load()
         ''' #NOTE: either put this on top of 'self.sources' or
             synchronize with GUI.
         '''
         self.set(self.source)
         self.set_timeout(self.timeout)
+    
+    def set_values(self):
+        self.lgplugin = None
+        self.mbplugin = None
+        self.mcplugin = None
+        self.sdplugin = None
+        self.source = sh.lg.globs['str']['source']
     
     def get_title(self,abbr):
         f = '[MClient] manager.Plugins.get_title'

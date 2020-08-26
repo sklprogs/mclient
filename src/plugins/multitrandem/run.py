@@ -23,9 +23,9 @@ class Plugin:
         self.set_values()
         #cur
         #TODO: elaborate
-        self.abbr    = gt.objs.get_files().get_subject()
-        self.Debug   = Debug
-        self.maxrow  = maxrow
+        self.abbr = gt.objs.get_files().get_subject()
+        self.Debug = Debug
+        self.maxrow = maxrow
         self.maxrows = maxrows
     
     def is_abbr(self,abbr):
@@ -62,11 +62,11 @@ class Plugin:
         return 'English'
     
     def set_values(self):
-        self.blocks  = []
-        self.text    = ''
-        self.htm     = ''
-        self.langloc = (_('English'),_('Russian'))
+        self.blocks = []
+        self.htm = ''
         self.langint = ('English','Russian')
+        self.langloc = (_('English'),_('Russian'))
+        self.text = ''
     
     def get_text(self):
         if not self.text:

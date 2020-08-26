@@ -1247,11 +1247,11 @@ class DefaultConfig:
         self.Success = self.ihome.create_conf()
     
     def set_values(self):
-        self.dics   = ''
+        self.dics = ''
         self.fblock = ''
-        self.fprior = ''
+        self.fconf = ''
         self.fdconf = ''
-        self.fconf  = ''
+        self.fprior = ''
     
     def get_dics(self):
         f = '[MClient] logic.DefaultConfig.get_dics'

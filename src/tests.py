@@ -131,7 +131,7 @@ class Tags:
         import plugins.dsl.get
         import plugins.dsl.tags
         plugins.dsl.get.PATH = sh.Home('mclient').add_config('dics')
-        tag_lst = plugins.dsl.get.Get('computer').run()
+        tag_lst = plugins.dsl.get.Get('accounting').run()
         plugins.dsl.tags.Tags (lst   = tag_lst
                               ,Debug = DEBUG
                               ).run()
@@ -149,7 +149,7 @@ class Tags:
         f = '[MClient] tests.Tags.run_stardict'
         import plugins.stardict.cleanup as sdcleanup
         import plugins.stardict.tags    as sdtags
-        file = '/home/pete/.config/mclient/tests/(stardict) EnRu_full - cut.txt'
+        file = '/home/pete/bin/mclient/tests/stardict/EnRu full cut.txt'
         text = sh.ReadTextFile(file).get()
         text = sdcleanup.CleanUp(text).run()
         sdtags.Tags (text  = text
@@ -181,7 +181,7 @@ class Plugin:
         import plugins.multitrandem.get
         import plugins.multitrandem.run as mb
         #search = 'Kafir'
-        #search = 'abasin'
+        search = 'abasin'
         #search = 'a posteriori'
         #search = 'abed'
         #search = 'accommodation coefficient'
@@ -191,11 +191,14 @@ class Plugin:
         #search = 'bunching device'
         #search = 'valve rocker shank'
         # пласт, характеризуемый определённой скоростью
-        search  = 'velocity bed'
+        #search = 'velocity bed'
         #отравление хинной коркой и её алкалоидами = quininism
-        url    = ''
+        url = ''
         
-        plugins.multitrandem.get.PATH = '/home/pete/.config/mclient/dics/eng_rus'
+        ''' #NOTE: This is a standard 'dics' folder, do not include
+            subfolders here.
+        '''
+        plugins.multitrandem.get.PATH = '/home/pete/.config/mclient/dics'
         iplug = mb.Plugin (Debug   = DEBUG
                           ,maxrow  = 20
                           ,maxrows = 150
@@ -226,8 +229,9 @@ class Plugin:
         plugins.dsl.get.DEBUG = DEBUG
         plugins.dsl.get.PATH = sh.Home('mclient').add_config('dics')
         #search = 'компьютер'
-        search  = 'computer'
+        #search = 'computer'
         #search = 'bunker'
+        search = 'accounting'
         iplug = dr.Plugin(Debug=DEBUG)
         iplug.request(search=search)
         mes = _('Number of blocks: {}').format(len(iplug.blocks))
@@ -583,11 +587,13 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sh.com.start()
-    Plugin().run_multitrancom()
     #Plugin().run_dsl()
-    #Tags().run_dsl()
+    #Plugin().run_multitrancom()
+    Plugin().run_multitrandem()
     #Tests().run_speech()
     #Tests().generate_config()
+    #Tags().run_dsl()
     #Tags().run_multitrancom()
+    #Tags().run_stardict()
     #Tags().analyze_tag()
     sh.com.end()

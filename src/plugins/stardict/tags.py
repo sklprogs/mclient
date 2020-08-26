@@ -56,44 +56,44 @@ class Block:
 
     def __init__(self):
         self.block = -1
-        self.i     = -1
-        self.j     = -1
-        self.first = -1
-        self.last  = -1
-        self.no    = -1
         # Applies to non-blocked cells only
         self.cellno = -1
-        self.same   = -1
+        self.dic = ''
+        self.dicf = ''
+        self.dprior = 0
+        self.first = -1
+        self.i = -1
+        self.j = -1
+        self.last = -1
+        self.no = -1
+        self.same = -1
         ''' 'select' is an attribute of a *cell* which is valid
             if the cell has a non-blocked block of types 'term',
             'phrase' or 'transc'.
         '''
         self.select = -1
-        ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
-            'correction', 'transc', 'invalid'
+        self.speech = ''
+        self.term = ''
+        self.text = ''
+        self.transc = ''
+        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase',
+            'speech', 'term', 'transc', 'wform'
         '''
-        self.type_   = 'comment'
-        self.text    = ''
-        self.url     = ''
-        self.urla    = ''
-        self.dic     = ''
-        self.dicf    = ''
-        self.wform   = ''
-        self.speech  = ''
-        self.transc  = ''
-        self.term    = ''
-        self.dprior  = 0
+        self.type_ = 'comment'
+        self.url = ''
+        self.urla = ''
+        self.wform = ''
 
 
 
 class AnalyzeTag:
 
     def __init__(self,tag):
-        self.tag    = tag
-        self.cur    = Block()
+        self.block = ''
         self.blocks = []
-        self.elems  = []
-        self.block  = ''
+        self.cur = Block()
+        self.elems = []
+        self.tag = tag
 
     def set_dic(self):
         f = '[MClient] plugins.stardict.tags.AnalyzeTag.set_dic'
@@ -197,16 +197,16 @@ class Tags:
     def __init__ (self,text,Debug=False
                  ,maxrow=20,maxrows=1000
                  ):
-        self.abbr = {}
-        self.tags = []
-        self.blocks = []
         if text:
             self.text = list(text)
         else:
             self.text = ''
-        self.Debug   = Debug
-        self.maxrow  = maxrow
+        self.abbr = {}
+        self.blocks = []
+        self.Debug = Debug
+        self.maxrow = maxrow
         self.maxrows = maxrows
+        self.tags = []
 
     def get_tags(self):
         ''' Split the text by closing tags. To speed up, we remove
@@ -242,15 +242,7 @@ class Tags:
         message = ''
         for i in range(len(self.tags)):
             message += '%d:%s\n' % (i,self.tags[i])
-        #sh.objs.get_mes(f,message,True).show_info()
-        words = sh.Words (text = message
-                         ,Auto = True
-                         )
-        words.sent_nos()
-        sh.objs.get_txt().reset(words)
-        sh.objs.txt.set_title(f)
-        sh.objs.txt.insert(message)
-        sh.objs.txt.show()
+        sh.com.run_fast_debug(f,message)
 
     def debug_blocks (self):
         f = '[MClient] plugins.stardict.tags.Tags.debug_blocks'

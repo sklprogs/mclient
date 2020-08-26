@@ -107,13 +107,16 @@ class Block:
 
     def __init__(self):
         self.block = -1
-        self.i = -1
-        self.j = -1
-        self.first = -1
-        self.last = -1
-        self.no = -1
         # Applies to non-blocked cells only
         self.cellno = -1
+        self.dic = ''
+        self.dicf = ''
+        self.dprior = 0
+        self.first = -1
+        self.i = -1
+        self.j = -1
+        self.last = -1
+        self.no = -1
         ''' Tag extraction algorithm is different in comparison with
             the one of 'plugins.multitranru' (in particular, see
             'Tags.blocks'). We need either to fill default SAME values
@@ -125,21 +128,18 @@ class Block:
             'phrase' or 'transc'.
         '''
         self.select = -1
+        self.speech = ''
         self.sprior = -1
-        self.dprior = 0
-        ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
-            'transc', 'invalid'
-        '''
-        self.type_ = ''
+        self.term = ''
         self.text = ''
+        ''' 'comment', 'dic', 'invalid', 'phrase', 'speech', 'term', 
+            'transc', 'wform'
+        '''
+        self.transc = ''
+        self.type_ = ''
         self.url = ''
         self.urla = ''
-        self.dic = ''
-        self.dicf = ''
         self.wform = ''
-        self.speech = ''
-        self.transc = ''
-        self.term = ''
 
 
 
@@ -150,9 +150,9 @@ class AnalyzeTag:
         self.tag = tag
     
     def set_values(self):
-        self.fragms = []
         self.blocks = []
         self.dicf = ''
+        self.fragms = []
 
     def set_dicf(self):
         pattern = ' title="'

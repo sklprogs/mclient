@@ -266,8 +266,8 @@ class Binary:
         chunks = []
         if DEBUG:
             mchunks = []
-            mpos1   = []
-            mpos2   = []
+            mpos1 = []
+            mpos2 = []
         if self.Success:
             if pattern == b'':
                 poses = self.get_zero(start,end)
@@ -296,11 +296,13 @@ class Binary:
                     mend = ['{}'.format(sh.com.set_figure_commas(end)) \
                               for i in range(len(mchunks))
                            ]
-                    nos      = [i + 1 for i in range(len(chunks))]
-                    mchunks  = ['"{}"'.format(chunk) for chunk in mchunks]
-                    headers  = ('NO','PATTERN','START'
-                               ,'END','POS1','POS2','CHUNK'
-                               )
+                    nos = [i + 1 for i in range(len(chunks))]
+                    mchunks = ['"{}"'.format(chunk) \
+                               for chunk in mchunks
+                              ]
+                    headers = ('NO','PATTERN','START'
+                              ,'END','POS1','POS2','CHUNK'
+                              )
                     iterable = (nos,mpattern,mstart
                                ,mend,mpos1,mpos2,mchunks
                                )
@@ -323,8 +325,8 @@ class Binary:
         chunks = []
         if DEBUG:
             mchunks = []
-            mpos1   = []
-            mpos2   = []
+            mpos1 = []
+            mpos2 = []
         if self.Success:
             if pattern:
                 poses = self.find_all(pattern,start,end)
@@ -345,19 +347,19 @@ class Binary:
                     mpattern = ['"{}"'.format(com.get_string(pattern)) \
                                 for i in range(len(mchunks))
                                ]
-                    mstart = ['{}'.format(sh.com.set_figure_commas(start)) \
+                    mstart = ['{}'.format(sh.com.set_figure_commas(start))\
                               for i in range(len(mchunks))
                              ]
                     mend = ['{}'.format(sh.com.set_figure_commas(end)) \
-                              for i in range(len(mchunks))
+                            for i in range(len(mchunks))
                            ]
-                    nos      = [i + 1 for i in range(len(chunks))]
-                    mchunks  = ['"{}"'.format(chunk) \
-                                for chunk in mchunks
-                               ]
-                    headers  = ('NO','PATTERN','START'
-                               ,'END','POS1','POS2','CHUNK'
-                               )
+                    nos = [i + 1 for i in range(len(chunks))]
+                    mchunks = ['"{}"'.format(chunk) \
+                               for chunk in mchunks
+                              ]
+                    headers = ('NO','PATTERN','START'
+                              ,'END','POS1','POS2','CHUNK'
+                              )
                     iterable = (nos,mpattern,mstart
                                ,mend,mpos1,mpos2,mchunks
                                )
@@ -441,9 +443,9 @@ class Binary:
                     sh.objs.get_mes(f,mes,True).show_debug()
                     pos1 = 0
                     pos2 = self.bsize
-                    sub  = sh.com.set_figure_commas(pos2)
-                    mes  = _('Page limits: [{}:{}]')
-                    mes  = mes.format(pos1,sub)
+                    sub = sh.com.set_figure_commas(pos2)
+                    mes = _('Page limits: [{}:{}]')
+                    mes = mes.format(pos1,sub)
                     sh.objs.get_mes(f,mes,True).show_debug()
                 return(0,self.bsize)
             else:
@@ -463,8 +465,8 @@ class Binary:
                             if DEBUG:
                                 sub1 = sh.com.set_figure_commas(pos1)
                                 sub2 = sh.com.set_figure_commas(pos2)
-                                mes  = _('Page limits: [{}:{}]')
-                                mes  = mes.format(sub1,sub2)
+                                mes = _('Page limits: [{}:{}]')
+                                mes = mes.format(sub1,sub2)
                                 sh.objs.get_mes(f,mes,True).show_debug()
                             return(pos1,pos2)
                         else:
@@ -1043,8 +1045,8 @@ class Walker:
     def set_langs(self):
         f = '[MClient] plugins.multitrandem.get.Walker.set_langs'
         if self.Success:
-            lang1       = LANG1.lower()
-            lang2       = LANG2.lower()
+            lang1 = LANG1.lower()
+            lang2 = LANG2.lower()
             self.lang11 = lang1[0:1]
             self.lang21 = lang2[0:1]
             self.lang13 = lang1[0:3]
@@ -1066,7 +1068,7 @@ class Walker:
         if self.Success:
             if not self.stems1:
                 fname = 'stem.' + self.lang13
-                file  = self.get_file(fname)
+                file = self.get_file(fname)
                 if file:
                     self.stems1 = file
                 else:
@@ -1106,23 +1108,23 @@ class Walker:
             sh.com.cancel(f)
     
     def set_values(self):
-        self.Success = False
-        self.idir    = None
-        self.files   = []
-        self.fnames  = []
-        self.lang11  = ''
-        self.lang21  = ''
-        self.lang13  = ''
-        self.lang23  = ''
+        self.article = ''
+        self.ending = ''
+        self.files = []
+        self.fnames = []
+        self.glue1 = ''
+        self.glue2 = ''
+        self.idir = None
+        self.lang11 = ''
+        self.lang21 = ''
+        self.lang13 = ''
+        self.lang23 = ''
         self.typein1 = ''
         self.typein2 = ''
-        self.stems1  = ''
-        self.stems2  = ''
-        self.glue1   = ''
-        self.glue2   = ''
-        self.article = ''
+        self.stems1 = ''
+        self.stems2 = ''
         self.subject = ''
-        self.ending  = ''
+        self.Success = False
     
     def walk(self):
         f = '[MClient] plugins.multitrandem.get.Walker.walk'
@@ -1147,8 +1149,8 @@ class TypeIn(UPage):
         f = '[MClient] plugins.multitrandem.get.TypeIn.search'
         if self.Success:
             if pattern:
-                coded  = bytes(pattern,CODING)
-                poses  = self.searchu(coded)
+                coded = bytes(pattern,CODING)
+                poses = self.searchu(coded)
                 chunks = self.run_reader(poses)
                 if chunks:
                     matches = []

@@ -27,12 +27,12 @@ class Tags:
                  ,lang1=1,lang2=2
                  ):
         self.set_values()
-        self.Debug   = Debug
-        self.maxrow  = maxrow
+        self.Debug = Debug
+        self.entry = chunk
+        self.lang1 = lang1
+        self.lang2 = lang2
+        self.maxrow = maxrow
         self.maxrows = maxrows
-        self.entry   = chunk
-        self.lang1   = lang1
-        self.lang2   = lang2
     
     def get_types(self):
         f = '[MClient] plugins.multitrandem.tags.Tags.get_types'
@@ -172,20 +172,20 @@ class Tags:
             sh.com.rep_empty(f)
     
     def set_values(self):
-        self.Success = True
-        self.entry   = ''
-        # The result of 'struct.pack('<b',15)'
-        self.sepdic  = b'\x0f'
-        self.sepcom  = b'\x06'
-        self.lang1   = 0
-        self.lang2   = 0
-        self.seplg1  = b''
-        self.seplg2  = b''
-        self.blocks  = []
-        self.tags    = []
-        self.seps    = []
-        self.types   = []
+        self.blocks = []
         self.content = []
+        self.entry = ''
+        self.lang1 = 0
+        self.lang2 = 0
+        self.seplg1 = b''
+        self.seplg2 = b''
+        # The result of 'struct.pack('<b',15)'
+        self.sepdic = b'\x0f'
+        self.sepcom = b'\x06'
+        self.seps = []
+        self.Success = True
+        self.tags = []
+        self.types = []
     
     def run(self):
         self.set_langs()
@@ -203,35 +203,35 @@ class Block:
 
     def __init__(self):
         self.block = -1
-        self.i     = -1
-        self.j     = -1
-        self.first = -1
-        self.last  = -1
-        self.no    = -1
         # Applies to non-blocked cells only
         self.cellno = -1
-        self.same   = 0
+        self.dic = ''
+        self.dicf = ''
+        self.dprior = 0
+        self.i = -1
+        self.j = -1
+        self.first = -1
+        self.lang = 0
+        self.last = -1
+        self.no = -1
+        self.same = 0
         ''' 'select' is an attribute of a *cell* which is valid
             if the cell has a non-blocked block of types 'term',
             'phrase' or 'transc'.
         '''
-        self.select   = -1
-        self.sprior   = -1
-        self.dprior   = 0
-        self.lang     = 0
-        ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
-            'transc', 'invalid'
-        '''
-        self.type_  = ''
-        self.text   = ''
-        self.url    = ''
-        self.urla   = ''
-        self.dic    = ''
-        self.dicf   = ''
-        self.wform  = ''
+        self.select = -1
         self.speech = ''
+        self.sprior = -1
+        self.term = ''
         self.transc = ''
-        self.term   = ''
+        ''' 'comment', 'dic', 'invalid', 'phrase', 'speech', 'term', 
+            'transc', 'wform'
+        '''
+        self.type_ = ''
+        self.text = ''
+        self.url = ''
+        self.urla = ''
+        self.wform = ''
 
 
 if __name__ == '__main__':
