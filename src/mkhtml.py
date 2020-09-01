@@ -10,10 +10,10 @@ from skl_shared.localize import _
 class Block:
 
     def __init__(self):
+        self.i = 0
+        self.j = 0
+        self.text = ''
         self.type_ = ''
-        self.text  = ''
-        self.i     = 0
-        self.j     = 0
 
 
 class HTM:
@@ -49,20 +49,20 @@ class HTM:
               ,max_syms=30
               ):
         self.set_values()
-        self.order = order
-        self.data = data
-        self.cols = cols
         self.collimit = collimit
-        self.width = width
-        self.Printer = Printer
-        self.Reverse = Reverse
-        self.phdic = phdic
-        self.skipped = skipped
+        self.cols = cols
+        self.data = data
         ''' Maximum number of symbols in a column. If the column exceeds
             this number and 'self.width' is set - wrap the column.
             #TODO: calculate font width to be more precise
         '''
         self.maxsyms = max_syms
+        self.order = order
+        self.phdic = phdic
+        self.Printer = Printer
+        self.Reverse = Reverse
+        self.skipped = skipped
+        self.width = width
         
     def run(self):
         self.assign()
@@ -70,9 +70,8 @@ class HTM:
         return self.htm
     
     def set_values(self):
-        self.blocks = []
-        self.skipped = 0
         self.block = None
+        self.blocks = []
         self.htm = ''
         self.phdic = ''
         self.script = '''
@@ -116,6 +115,7 @@ class HTM:
             in the script.
         '''
         self.script = self.script % _('Print')
+        self.skipped = 0
     
     def set_priority_colors(self):
         default_color = 'red'
@@ -205,11 +205,11 @@ class HTM:
             self.output.write('" color="')
             # Suppress useless error output
             if self.block.text != self.phdic:
-                lst         = self.order.get_list(search=self.block.text)
-                Blocked     = self.order.is_blocked(lst)
+                lst = self.order.get_list(search=self.block.text)
+                Blocked = self.order.is_blocked(lst)
                 Prioritized = self.order.is_prioritized(lst)
             else:
-                Blocked     = False
+                Blocked = False
                 Prioritized = False
             if Blocked:
                 self.output.write(self._get_color_b())
