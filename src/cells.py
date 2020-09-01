@@ -11,26 +11,25 @@ class Block:
     
     def __init__(self):
         self.block = -1
-        self.i     = -1
-        self.j     = -1
-        self.first = -1
-        self.last  = -1
-        self.no    = -1
         # Applies to non-blocked cells only
         self.cellno = -1
-        self.same   = -1
-        self.sprior = -1
+        self.dic = ''
         self.dprior = 0
-        ''' Block types:
-            'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
-            'correction', 'user', 'definition', 'transc', 'invalid'
-        '''
-        self.type_  = 'comment'
-        self.text   = ''
-        self.dic    = ''
-        self.wform  = ''
+        self.first = -1
+        self.i = -1
+        self.j = -1
+        self.last = -1
+        self.no = -1
+        self.same = -1
         self.speech = ''
+        self.sprior = -1
+        self.text = ''
         self.transc = ''
+        ''' 'comment', 'correction', 'definition', 'dic', 'invalid',
+            'phrase', 'speech', 'term', 'transc', 'user', 'wform'
+        '''
+        self.type_ = 'comment'
+        self.wform = ''
 
 
 
@@ -48,17 +47,17 @@ class BlockPrioritize:
                 ,maxrows=1000,spdic={}
                 ):
         f = '[MClient] cells.BlockPrioritize.__init__'
-        self.blocks     = []
-        self.query      = ''
-        self.order      = order
-        self.phdic      = phdic
-        self.data       = data
-        self.Block      = Block
+        self.Block = Block
+        self.blocks = []
+        self.data = data
+        self.Debug = Debug
+        self.maxrow = maxrow
+        self.maxrows = maxrows
+        self.order = order
+        self.phdic = phdic
         self.Prioritize = Prioritize
-        self.Debug      = Debug
-        self.maxrow     = maxrow
-        self.maxrows    = maxrows
-        self.spdic      = spdic
+        self.query = ''
+        self.spdic = spdic
         if self.data:
             self.Success = True
         else:
@@ -204,17 +203,17 @@ class Cells:
                  ):
         f = '[MClient] cells.Cells.__init__'
         # Sqlite fetch
-        self.data     = data
-        self.cols     = cols
+        self.blocks = []
+        self.cols = cols
         self.collimit = collimit
-        self.phdic    = phdic
-        self.Reverse  = Reverse
-        self.spdic    = spdic
-        self.Debug    = Debug
-        self.maxrow   = maxrow
-        self.maxrows  = maxrows
-        self.blocks   = []
-        self.unsupsp  = []
+        self.data = data
+        self.Debug = Debug
+        self.maxrow = maxrow
+        self.maxrows = maxrows
+        self.phdic = phdic
+        self.Reverse = Reverse
+        self.spdic = spdic
+        self.unsupsp = []
         if self.data:
             self.Success = True
         else:
@@ -524,14 +523,14 @@ class Pos:
                  ):
         f = '[MClient] cells.Pos.__init__'
         self.blocks = []
-        self.query  = ''
+        self.query = ''
         # Sqlite fetch
         self.data = data
+        self.Debug = Debug
+        self.maxrow = maxrow
+        self.maxrows = maxrows
         # Retrieved from the TkinterHTM widget
         self.rawtext = raw_text
-        self.Debug   = Debug
-        self.maxrow  = maxrow
-        self.maxrows = maxrows
         if self.data and self.rawtext:
             self.Success = True
         else:
@@ -653,10 +652,10 @@ class Pages:
                  ,Debug=False
                  ):
         f = '[MClient] cells.Pages.__init__'
-        self.query  = ''
-        self.obj    = obj
         self.blocks = blocks
-        self.Debug  = Debug
+        self.Debug = Debug
+        self.obj = obj
+        self.query = ''
         if self.blocks and self.obj and hasattr(self.obj,'widget') \
         and hasattr(self.obj,'bbox'):
             self.Success = True

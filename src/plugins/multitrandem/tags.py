@@ -223,12 +223,12 @@ class Block:
         self.speech = ''
         self.sprior = -1
         self.term = ''
+        self.text = ''
         self.transc = ''
         ''' 'comment', 'dic', 'invalid', 'phrase', 'speech', 'term', 
             'transc', 'wform'
         '''
         self.type_ = ''
-        self.text = ''
         self.url = ''
         self.urla = ''
         self.wform = ''

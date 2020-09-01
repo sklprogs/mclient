@@ -24,33 +24,33 @@ class Block:
     
     def __init__(self):
         self.block = -1
-        self.i     = -1
-        self.j     = -1
-        self.first = -1
-        self.last  = -1
-        self.no    = -1
         # Applies to non-blocked cells only
         self.cellno = -1
-        self.same   = -1
+        self.dic = ''
+        self.dicf = ''
+        self.dprior = 0
+        self.first = -1
+        self.i = -1
+        self.j = -1
+        self.last = -1
+        self.no = -1
+        self.same = -1
         ''' 'select' is an attribute of a *cell* which is valid
             if the cell has a non-blocked block of types 'term',
             'phrase' or 'transc'
         '''
-        self.select   = -1
-        self.sprior   = -1
-        self.dprior   = 0
-        ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
-            'correction', 'transc', 'invalid'
-        '''
-        self.type_  = 'comment'
-        self.text   = ''
-        self.url    = ''
-        self.dic    = ''
-        self.dicf   = ''
-        self.wform  = ''
+        self.select = -1
         self.speech = ''
+        self.sprior = -1
+        self.term = ''
+        self.text = ''
         self.transc = ''
-        self.term   = ''
+        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase',
+            'speech', 'term', 'transc', 'wform'
+        '''
+        self.type_ = 'comment'
+        self.url = ''
+        self.wform = ''
 
 
 
@@ -80,9 +80,9 @@ class Elems:
     '''
     def __init__(self,blocks,abbr):
         f = '[MClient] plugins.stardict.elems.Elems.__init__'
+        self.abbr = abbr
+        self.blocks = blocks
         self.dicurls = {}
-        self.blocks  = blocks
-        self.abbr    = abbr
         if self.blocks:
             self.Success = True
         else:

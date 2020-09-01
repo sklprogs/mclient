@@ -78,6 +78,18 @@ class AnalyzeTag:
         self.set_values()
         self.tag = tag
     
+    def get_ref_dict(self):
+        ''' Due to the algorithm of 'self.get_poses', matches returned
+            by this code will be added to the end of the list of blocks,
+            but this is OK, since those tags are treated like phrases. 
+        '''
+        pattern = r'\[ref dict=".*?"\](.*?)\[\/ref\]'
+        matches = re.findall(pattern,self.tag)
+        if matches:
+            self.content += matches
+            for i in range(len(matches)):
+                self.types.append('ref')
+    
     def set_same(self):
         f = '[MClient] plugins.dsl.tags.AnalyzeTag.set_same'
         if self.Success:
@@ -195,6 +207,7 @@ class AnalyzeTag:
         self.check()
         self.get_poses()
         self.cut()
+        self.get_ref_dict()
         self.set_blocks()
         self.rename_types()
         self.set_same()
@@ -244,7 +257,7 @@ class Tags:
                     sub = '{} > 2'.format(len(sublst))
                     mes = _('The condition "{}" is not observed!')
                     mes = mes.format(sub)
-                    objs.get_mes(f,mes).show_warning()
+                    sh.objs.get_mes(f,mes).show_warning()
                     break
         else:
             self.Success = False
@@ -315,6 +328,10 @@ class Tags:
 
 
 if __name__ == '__main__':
-    code = '{This is} some term\n\t[m1][c][trn][com]this is a comment[/com][/c] this is a term[/trn][/m]'
-    AnalyzeTag(code).run()
-    Tags(code,Debug=True).run()
+    f = '[MClient] plugins.dsl.tags.__main__'
+    #code = '{This is} some term\n\t[m1][c][trn][com]this is a comment[/com][/c] this is a term[/trn][/m]'
+    code = '{This is} some term\n\t[ref dict="Dic Title"]phrase[/ref]'    
+    itag = AnalyzeTag(code)
+    itag.run()
+    itag.debug()
+    #Tags(code,Debug=True).run()

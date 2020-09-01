@@ -390,8 +390,8 @@ class Block:
         self.term = ''
         self.text = ''
         self.transc = ''
-        ''' 'wform', 'speech', 'dic', 'phrase', 'term', 'comment',
-            'correction', 'transc', 'user', 'invalid'
+        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase',
+            'speech', 'term', 'transc', 'user', 'wform'
         '''
         self.type_ = 'invalid'
         self.url = ''

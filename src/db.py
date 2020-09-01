@@ -103,8 +103,8 @@ class DB:
             sh.com.rep_empty(f)
     
     def set_values(self):
-        self.Selectable = True
         self.artid = 0
+        self.Selectable = True
         
     def create_blocks(self):
         ''' We use integers instead of booleans; -1 means not set.
@@ -170,9 +170,9 @@ class DB:
               ):
         f = '[MClient] db.DB.reset'
         self.cols = cols
-        self.SortTerms = SortTerms
-        self.SortRows  = SortRows
         self.ExpandDic = ExpandDic
+        self.SortRows = SortRows
+        self.SortTerms = SortTerms
         self.ShowUsers = ShowUsers
         
         # Prevents None + tuple

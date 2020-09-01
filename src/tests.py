@@ -24,37 +24,37 @@ class Tests:
 class Block:
     
     def __init__(self):
-        self.id_     = None # (00) Autoincrement
-        self.artid   = 0    # (01) ARTICLEID
-        self.dic     = ''   # (02) DIC (short title)
-        self.wform   = ''   # (03) WFORM
-        self.speech  = ''   # (04) SPEECH
-        self.transc  = ''   # (05) TRANSC
-        self.term    = ''   # (06) TERM
-        self.type_   = ''   # (07) TYPE
-        self.text    = ''   # (08) TEXT
-        self.url     = ''   # (09) URL
-        self.block   = 0    # (10) BLOCK
-        self.dprior  = 0    # (11) DICPR
-        self.select  = 0    # (12) SELECTABLE
-        self.same    = 0    # (13) SAMECELL
-        self.cellno  = 0    # (14) CELLNO
-        self.rowno   = -1   # (15) ROWNO
-        self.colno   = -1   # (16) COLNO
-        self.pos1    = -1   # (17) POS1
-        self.pos2    = -1   # (18) POS2
-        self.node1   = ''   # (19) NODE1
-        self.node2   = ''   # (20) NODE2
-        self.offpos1 = -1   # (21) OFFPOS1
-        self.offpos2 = -1   # (22) OFFPOS2
-        self.bbox1   = -1   # (23) BBOX1
-        self.bbox2   = -1   # (24) BBOX2
-        self.bboy1   = -1   # (25) BBOY1
-        self.bboy2   = -1   # (26) BBOY2
-        self.textlow = ''   # (27) TEXTLOW
-        self.ignore  = 0    # (28) IGNORE
-        self.sprior  = 0    # (29) SPEECHPR
-        self.dicf    = ''   # (30) DIC (full title)
+        self.id_ = None   # (00) Autoincrement
+        self.artid = 0    # (01) ARTICLEID
+        self.dic = ''     # (02) DIC (short title)
+        self.wform = ''   # (03) WFORM
+        self.speech = ''  # (04) SPEECH
+        self.transc = ''  # (05) TRANSC
+        self.term = ''    # (06) TERM
+        self.type_ = ''   # (07) TYPE
+        self.text = ''    # (08) TEXT
+        self.url = ''     # (09) URL
+        self.block = 0    # (10) BLOCK
+        self.dprior = 0   # (11) DICPR
+        self.select = 0   # (12) SELECTABLE
+        self.same = 0     # (13) SAMECELL
+        self.cellno = 0   # (14) CELLNO
+        self.rowno = -1   # (15) ROWNO
+        self.colno = -1   # (16) COLNO
+        self.pos1 = -1    # (17) POS1
+        self.pos2 = -1    # (18) POS2
+        self.node1 = ''   # (19) NODE1
+        self.node2 = ''   # (20) NODE2
+        self.offpos1 = -1 # (21) OFFPOS1
+        self.offpos2 = -1 # (22) OFFPOS2
+        self.bbox1 = -1   # (23) BBOX1
+        self.bbox2 = -1   # (24) BBOX2
+        self.bboy1 = -1   # (25) BBOY1
+        self.bboy2 = -1   # (26) BBOY2
+        self.textlow = '' # (27) TEXTLOW
+        self.ignore = 0   # (28) IGNORE
+        self.sprior = 0   # (29) SPEECHPR
+        self.dicf = ''    # (30) DIC (full title)
     
     def dump(self):
         return (self.id_
@@ -98,10 +98,10 @@ class Get:
         f = '[MClient] tests.Get.run_multitrancom'
         import plugins.multitrancom.get as gt
         #search = 'компьютер'
-        search  = 'computer'
-        url     = 'https://multitran.com/m.exe?s=computer&l1=1&l2=2'
+        search = 'computer'
+        url = 'https://multitran.com/m.exe?s=computer&l1=1&l2=2'
         timeout = 6
-        timer   = sh.Timer(f)
+        timer = sh.Timer(f)
         timer.start()
         result = gt.Get (search  = search
                         ,url     = url
