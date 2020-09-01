@@ -73,6 +73,7 @@ class Block:
         '''
         self.select = -1
         self.speech = ''
+        self.sprior = -1
         self.term = ''
         self.text = ''
         self.transc = ''
