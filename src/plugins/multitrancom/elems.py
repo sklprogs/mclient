@@ -442,28 +442,31 @@ class Elems:
         self.maxrow = maxrow
         self.maxrows = maxrows
         self.pattern = search.strip()
-        
+    
+    def delete_useless_semi(self):
+        ''' Delete useless semicolons as to ignore a user+;+correction
+            structure. It is difficult to properly ignore this structure
+            later since 'user' blocks can originally be of the 'term' or
+            'correction' type.
+        '''
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].type_ == 'comment' \
+            and self.blocks[i-1].text == ';' \
+            and self.blocks[i].type_ == 'correction':
+                del self.blocks[i-1]
+                i -= 1
+            i += 1
+    
     def set_inner_cells(self):
         icell = -1
-        i = 1
-        ''' There can be a user + semicolon + correction structure
-            which causes the program to think that a new cell should
-            be created. We must ignore such structure while setting
-            'icell'. Note that the 'user' type blocks might be of the
-            'correction' type at this step.
-        '''
-        while i < len(self.blocks):
-            if self.blocks[i].type_ == 'comment' \
-            and self.blocks[i].text == ';' \
-            and self.blocks[i-1].type_ not in ('correction','user'):
+        for block in self.blocks:
+            if block.type_ == 'comment' and block.text == ';':
                 icell += 1
-            elif icell > -1 and self.blocks[i].type_ in ('term'
-                                                        ,'comment'
-                                                        ,'user'
-                                                        ,'correction'
-                                                        ):
-                self.blocks[i].icell = icell
-            i += 1
+            elif icell > -1 and block.type_ in ('term','comment','user'
+                                               ,'correction'
+                                               ):
+                block.icell = icell
     
     def check(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.check'
@@ -727,6 +730,7 @@ class Elems:
             # Do some cleanup
             self.strip()
             self.delete_empty()
+            self.delete_useless_semi()
             # Do this before deleting ';'
             self.set_inner_cells()
             self.delete_trash()
