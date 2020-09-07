@@ -660,11 +660,12 @@ class Elems:
         for block in self.blocks:
             ''' Not 'UserName', otherwise, phrases will be defined as
                 user names in the 'username' article.
-                Entries of the user 'Gruzovik' are separated into
-                individual subject sections.
+                Entries of users 'Gruzovik' and 'Игорь Миг' are
+                separated into individual subject sections.
             '''
             if '&UserName=' in block.url \
-            and not 'Gruzovik' in block.text:
+            and not 'Gruzovik' in block.text \
+            and not 'Игорь Миг' in block.text:
                 block.type_ = 'user'
     
     def strip(self):
