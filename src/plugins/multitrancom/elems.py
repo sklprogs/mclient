@@ -452,9 +452,6 @@ class Elems:
                                                ,'correction'
                                                ):
                 block.icell = icell
-            else:
-                #TODO: do this in 'Block' classes
-                block.icell = -1
     
     def check(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.check'

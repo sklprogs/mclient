@@ -114,6 +114,7 @@ class Block:
         self.dprior = 0
         self.first = -1
         self.i = -1
+        self.icell = -1
         self.j = -1
         self.last = -1
         self.no = -1
