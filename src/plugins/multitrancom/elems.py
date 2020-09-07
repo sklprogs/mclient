@@ -442,6 +442,15 @@ class Elems:
         self.maxrow = maxrow
         self.maxrows = maxrows
         self.pattern = search.strip()
+        ''' Entries of these users are separated into individual
+            subject sections.
+        '''
+        self.vip = ['Gruzovik','Игорь Миг']
+    
+    def is_vip(self,block):
+        for vip in self.vip:
+            if vip in block.text:
+                return True
     
     def delete_useless_semi(self):
         ''' Delete useless semicolons as to ignore a user+;+correction
@@ -660,12 +669,8 @@ class Elems:
         for block in self.blocks:
             ''' Not 'UserName', otherwise, phrases will be defined as
                 user names in the 'username' article.
-                Entries of users 'Gruzovik' and 'Игорь Миг' are
-                separated into individual subject sections.
             '''
-            if '&UserName=' in block.url \
-            and not 'Gruzovik' in block.text \
-            and not 'Игорь Миг' in block.text:
+            if '&UserName=' in block.url and not self.is_vip(block):
                 block.type_ = 'user'
     
     def strip(self):
