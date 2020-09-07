@@ -657,11 +657,14 @@ class Elems:
                 i += 1
     
     def set_users(self):
-        ''' User names are initially comments at 'multitran.ru', and
-            terms at 'multitran.com'.
-        '''
         for block in self.blocks:
-            if '&UserName=' in block.url:
+            ''' Not 'UserName', otherwise, phrases will be defined as
+                user names in the 'username' article.
+                Entries of the user 'Gruzovik' are separated into
+                individual subject sections.
+            '''
+            if '&UserName=' in block.url \
+            and not 'Gruzovik' in block.text:
                 block.type_ = 'user'
     
     def strip(self):
