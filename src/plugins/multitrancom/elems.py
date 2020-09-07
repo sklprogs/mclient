@@ -295,6 +295,12 @@ class Same:
                         if cond1 or cond2:
                             self.blocks[i-1].same = 1
                             self.blocks[i].same = 1
+                    ''' Fix cases like RU-EN: 'external shell' ->
+                        'Математика'. We take a guess here that '...'
+                        relates to a previous block.
+                    '''
+                    if self.blocks[i-1].text == '...':
+                        self.blocks[i-1].same = 1
             i += 1
     
     def run_speech(self):
