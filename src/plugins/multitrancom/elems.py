@@ -445,13 +445,25 @@ class Elems:
         
     def set_inner_cells(self):
         icell = -1
-        for block in self.blocks:
-            if block.type_ == 'comment' and block.text == ';':
+        i = 1
+        ''' There can be a user + semicolon + correction structure
+            which causes the program to think that a new cell should
+            be created. We must ignore such structure while setting
+            'icell'. Note that the 'user' type blocks might be of the
+            'correction' type at this step.
+        '''
+        while i < len(self.blocks):
+            if self.blocks[i].type_ == 'comment' \
+            and self.blocks[i].text == ';' \
+            and self.blocks[i-1].type_ not in ('correction','user'):
                 icell += 1
-            elif icell > -1 and block.type_ in ('term','comment','user'
-                                               ,'correction'
-                                               ):
-                block.icell = icell
+            elif icell > -1 and self.blocks[i].type_ in ('term'
+                                                        ,'comment'
+                                                        ,'user'
+                                                        ,'correction'
+                                                        ):
+                self.blocks[i].icell = icell
+            i += 1
     
     def check(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.check'
