@@ -626,7 +626,7 @@ class Elems:
                 block.term = term
     
     def delete_subjects(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.subjects'
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_subjects'
         pattern = '(в|in) \d+ (тематиках|тематике|subjects)'
         count = 0
         i = 0
@@ -658,7 +658,7 @@ class Elems:
             terms at 'multitran.com'.
         '''
         for block in self.blocks:
-            if block.type_ == 'term' and 'UserName' in block.url:
+            if '&UserName=' in block.url:
                 block.type_ = 'user'
     
     def strip(self):
@@ -810,7 +810,7 @@ class Elems:
             
     #FIX: use URLs
     def delete_trash(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.trash'
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_trash'
         patterns = ['|',';',':','-->','// -->','⇄','точно' ,'все формы'
                    ,'точные совпадения','Сообщить об ошибке'
                    ,'только в указанном порядке'
