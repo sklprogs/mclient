@@ -2,20 +2,13 @@ mclient:
 - 
 
 multitrancom:
-- RU-EN: endpoint, rat out: wrong SAME
-- RU-EN: условие: wrong SAME: expectation (What is required for joining this group? This is the question of expectation. -- Что нужно, чтобы стать участником этой группы? Это вопрос условий. visitor; скорее не условий, а ожиданий. "Что нужно, чтобы стать участником группы? - Смотря на что Вы рассчитываете." Pashkovsky)
+- RU-EN, endpoint -> when denoting a ray, its endpoint: wrong SAME
+- RU-EN, endpoint -> phrases: "порт (см.": wrong SAME
 - RU-EN: на фиг: wrong SAME for "; (нужно, сдалось) what for?"
-- EN-RU: tapist: 2nd dic title is not expanded
 - RU-DE: цвет -> цвет кварка: wform should have an embedded comment
 - EN-RU: симптом -> Медицина -> симптом Спасокукоцкого - wrong SAME
 - EN-DE: есть -> should parse as follows: "essen n (я ем мариуча; Статья к удалению как дублирующая и не соответствующая тематике. platon)"
 - EN-DE: есть: "с наслаждением есть" (comment + wform)
-- EN-RU: welcome screen: 1) user names and corrections should be of
-  a different color; 2) user names should be hidden if required
-- EN-RU: welcome screen: wrong SAME in "экран -приветствие"
-  (SAME should be set on the basis of ; only if it is followed by
-  a term)
-- EN-RU: glitch: 'заминка (' should be accompanied with correction
 - EN-RU: glitch: 'компьютерный глюк': no URL in brackets
 - EN-RU: glitch -> defect -> (This computer program has a glitch):
   No word 'glitch' in in this comment

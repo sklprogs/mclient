@@ -79,6 +79,15 @@ class Same:
         self.maxrow = maxrow
         self.maxrows = maxrows
     
+    def run_phrase_com(self):
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].type_ == 'phrase' \
+            and self.blocks[i].type_ == 'comment' \
+            and self.blocks[i].same == 0:
+                self.blocks[i].same = 1
+            i += 1
+    
     def set_inner(self):
         i = 1
         while i < len(self.blocks):
@@ -360,6 +369,7 @@ class Same:
             self.run_com_term_com()
             # Can cause wrong SAME=1 if used beforehand
             self.run_com_term()
+            self.run_phrase_com()
             self.run_punc()
             self.debug()
             return self.blocks
