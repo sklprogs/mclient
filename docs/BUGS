@@ -12,22 +12,16 @@ multitrancom:
 - EN-RU: glitch: 'компьютерный глюк': no URL in brackets
 - EN-RU: glitch -> defect -> (This computer program has a glitch):
   No word 'glitch' in in this comment
-- EN-RU: отбор: wrong parsing of comments near phrases
 - EN-RU: blemish: wrong parsing of parts of speech
 - EN-AZ: sənədin araşdırılması: wrong SAME
 - Save article: only the last article is saved, not the current one
 - EN-RU, средство: "adjunct (Киселев)" relates to
   "дополнительное средство"
 - EN-RU, подобрать: Do not separate comment parts
-- EN-RU, be cut out: comment has SAME=0
-- EN-RU, decaffeinated: transcription not in place
 - EN-RU, проблемный -> Программирование: wrong block separation:
   "Refactoring is the process of..."
 - EN-RU, get wind of (Разговорное выражение): wrong WFORMA
 - EN-RU, можно: wrong WFORMA
-- embodiments of the invention: Патенты, not Патология
-- EN-RU: DOA: (Dead on Arrival), "направление движения" (автомобиля)
-  have SAME=0
 - EN-RU: скрепа: 'got along extremely well' is missing
 - EN-RU: knickers: "woman's knickers": WFORMA not in place
 - EN-RU: судебный пристав: wrong parsing owing to URL in comments
