@@ -452,6 +452,11 @@ class Elems:
             if vip in block.text:
                 return True
     
+    def is_vip_strict(self,block):
+        for vip in self.vip:
+            if vip == block.text:
+                return True
+    
     def delete_useless_semi(self):
         ''' Delete useless semicolons as to ignore a user+;+correction
             structure. It is difficult to properly ignore this structure
@@ -673,6 +678,12 @@ class Elems:
             if '&UserName=' in block.url and not self.is_vip(block):
                 block.type_ = 'user'
     
+    def set_vip(self):
+        for block in self.blocks:
+            if block.type_ == 'correction' \
+            and self.is_vip_strict(block):
+                block.type_ = 'user'
+    
     def strip(self):
         for block in self.blocks:
             block.text = block.text.strip()
@@ -754,6 +765,7 @@ class Elems:
             self.set_phrases()
             self.set_corrections()
             self.set_definitions()
+            self.set_vip()
             # Prepare contents
             self.set_dic_urls()
             # Set 'same' attribute and further change some types
