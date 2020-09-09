@@ -97,15 +97,12 @@ class Get:
     def run_multitrancom(self):
         f = '[MClient] tests.Get.run_multitrancom'
         import plugins.multitrancom.get as gt
-        #search = 'компьютер'
-        search = 'computer'
-        url = 'https://multitran.com/m.exe?s=computer&l1=1&l2=2'
-        timeout = 6
+        url = 'https://www.multitran.com/m.exe?a=3&sc=8&s=%D1%81%D0%B8%D0%BC%D0%BF%D1%82%D0%BE%D0%BC&l1=2&l2=1&SHL=2'
+        search = 'Медицина'
         timer = sh.Timer(f)
         timer.start()
-        result = gt.Get (search  = search
-                        ,url     = url
-                        ,timeout = timeout
+        result = gt.Get (search = search
+                        ,url    = url
                         ).run()
         timer.end()
         sh.com.run_fast_txt(result)
@@ -164,12 +161,13 @@ class Tags:
             'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
             to set 'dic' and some other types.
         '''
-        file = '/home/pete/bin/mclient/tests/multitrancom/трос.txt'
+        file = '/home/pete/bin/mclient/tests/multitrancom/Медицина.txt'
         text = sh.ReadTextFile(file).get()
         text = mccleanup.CleanUp(text).run()
-        mctags.Tags (text   = text
-                    ,Debug  = DEBUG
-                    ,maxrow = 30
+        mctags.Tags (text    = text
+                    ,Debug   = DEBUG
+                    ,maxrow  = 30
+                    ,maxrows = 0
                     ).run()
 
 
@@ -587,13 +585,12 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sh.com.start()
+    #Get().run_multitrancom()
+    #Tags().run_dsl()
+    Tags().run_multitrancom()
+    #Tags().run_stardict()
+    #Tags().analyze_tag()
     #Plugin().run_dsl()
     #Plugin().run_multitrancom()
     #Plugin().run_multitrandem()
-    #Tests().run_speech()
-    #Tests().generate_config()
-    Tags().run_dsl()
-    #Tags().run_multitrancom()
-    #Tags().run_stardict()
-    #Tags().analyze_tag()
     sh.com.end()

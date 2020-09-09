@@ -1001,7 +1001,10 @@ class WebFrame:
                                         order by CELLNO,NO'
                                       ,(objs.get_blocksdb().artid,)
                                       )
-            objs.blocksdb.print(Selected=1,maxrows=1000,mode='BLOCKS')
+            objs.blocksdb.print (mode     = 'BLOCKS'
+                                ,Selected = 1
+                                ,maxrows  = lg.objs.plugins.maxrows
+                                )
     
     def copy_wform(self,event=None):
         f = '[MClient] mclient.WebFrame.copy_wform'
@@ -1948,8 +1951,10 @@ class WebFrame:
                                 ,Block      = sh.lg.globs['bool']['BlockDics']
                                 ,Prioritize = sh.lg.globs['bool']['PrioritizeDics']
                                 ,phdic      = self.phdic
-                                ,Debug      = lg.objs.get_plugins().Debug
                                 ,spdic      = spdic
+                                ,Debug      = lg.objs.get_plugins().Debug
+                                ,maxrow     = lg.objs.plugins.maxrow
+                                ,maxrows    = lg.objs.plugins.maxrows
                                 )
         bp.run()
         objs.blocksdb.update(query=bp.query)
@@ -1987,6 +1992,7 @@ class WebFrame:
         else:
             spdic = lg.objs.speech_prior.get_abbr2full()
         
+        # Too many columns here, 'maxrow' should be custom
         cells = cl.Cells (data     = data
                          ,cols     = lg.objs.request.cols
                          ,collimit = lg.objs.request.collimit
@@ -1994,6 +2000,7 @@ class WebFrame:
                          ,spdic    = spdic
                          ,Reverse  = sh.lg.globs['bool']['VerticalView']
                          ,Debug    = lg.objs.plugins.Debug
+                         ,maxrows  = lg.objs.plugins.maxrows
                          )
         cells.run()
         cells.dump(blocksdb=objs.blocksdb)
@@ -2016,10 +2023,16 @@ class WebFrame:
         pos  = cl.Pos (data     = data
                       ,raw_text = self.get_text()
                       ,Debug    = lg.objs.plugins.Debug
+                      ,maxrow   = lg.objs.plugins.maxrow
+                      ,maxrows  = lg.objs.plugins.maxrows
                       )
         pos.run()
         objs.blocksdb.update(query=pos.query)
 
+        ''' We do no use Debug here since this causes too much errors
+            when the entire program runs (debugging is GUI-based and
+            conflicts with setting nodes).
+        '''
         pages = cl.Pages (obj    = objs.get_webframe().gui
                          ,blocks = pos.blocks
                          )
@@ -2940,7 +2953,7 @@ com = Commands()
 if  __name__ == '__main__':
     f = '[MClient] mclient.__main__'
     sh.com.start()
-    lg.objs.get_plugins(Debug=False)
+    lg.objs.get_plugins(Debug=False,maxrows=1000)
     lg.objs.get_default(product=gi.PRODUCT)
     if lg.objs.default.Success:
         run_timed_update()

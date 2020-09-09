@@ -783,8 +783,10 @@ class Elems:
                 few columns and it is reasonable to make them wider than
                 for Elems.
             '''
-            self.blocks = Same (blocks = self.blocks
-                               ,Debug  = self.Debug
+            self.blocks = Same (blocks  = self.blocks
+                               ,Debug   = self.Debug
+                               ,maxrow  = self.maxrow
+                               ,maxrows = self.maxrows
                                ).run()
             self.reassign_brackets()
             # Prepare for cells
