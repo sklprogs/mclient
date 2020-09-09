@@ -80,13 +80,19 @@ class Same:
         self.maxrows = maxrows
     
     def run_phrase_com(self):
+        f = '[MClient] plugins.multitrancom.elems.Same.run_phrase_com'
+        count = 0
         i = 1
         while i < len(self.blocks):
             if self.blocks[i-1].type_ == 'phrase' \
             and self.blocks[i].type_ == 'comment' \
             and self.blocks[i].same == 0:
+                count += 1
                 self.blocks[i].same = 1
             i += 1
+        if count:
+            mes = _('Matches: {}').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def set_inner(self):
         i = 1
@@ -105,6 +111,8 @@ class Same:
     
     def run_user_cor_user(self):
         # (GeorgeK; это "тендерная документация" playa4life)
+        f = '[MClient] plugins.multitrancom.elems.Same.run_user_cor_user'
+        count = 0
         i = 4
         while i < len(self.blocks):
             blocks = [self.blocks[i-4],self.blocks[i-3],self.blocks[i-2]
@@ -118,16 +126,22 @@ class Same:
                 and self.blocks[i].type_ in ('comment','correction') \
                 and self.blocks[i-4].text.endswith('(') \
                 and self.blocks[i].text.startswith(')'):
+                    count += 1
                     self.blocks[i-3].same = 1
                     self.blocks[i-2].same = 1
                     self.blocks[i-1].same = 1
                     self.blocks[i].same = 1
             i += 1
+        if count:
+            mes = _('Matches: {}').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def _has_extra_bracket(self,block):
         return block.text.count('(') > block.text.count(')')
     
     def run_user_brackets(self):
+        f = '[MClient] plugins.multitrancom.elems.Same.run_user_brackets'
+        count = 0
         i = 2
         while i < len(self.blocks):
             blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
@@ -136,9 +150,13 @@ class Same:
                 and self._has_extra_bracket(self.blocks[i-2]) \
                 and self.blocks[i-1].type_ == 'user' \
                 and self.blocks[i].text.startswith(')'):
+                    count += 1
                     self.blocks[i-1].same = 1
                     self.blocks[i].same = 1
             i += 1
+        if count:
+            mes = _('Matches: {}').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_com_term_com(self):
         i = 2
@@ -168,6 +186,8 @@ class Same:
             by multitran.com and those fields remain unchanged, see,
             for example, 'memory pressure').
         '''
+        f = '[MClient] plugins.multitrancom.elems.Same.run_wform_com_fixed'
+        count = 0
         i = 2
         while i < len(self.blocks):
             blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
@@ -180,6 +200,7 @@ class Same:
                 and self.blocks[i].type_ in ('dic','wform','transc'
                                             ,'speech'
                                             ):
+                    count += 1
                     self.blocks[i-1].type_ = 'definition'
                     ''' 'same' value of the definition block should
                         already be set to 1, but we assign it just to be
@@ -187,9 +208,14 @@ class Same:
                     '''
                     self.blocks[i-1].same = 1
             i += 1
+        if count:
+            mes = _('Matches: {}').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_wform_com_term(self):
         # Source-specific
+        f = '[MClient] plugins.multitrancom.elems.Same.run_wform_com_term'
+        count = 0
         i = 2
         while i < len(self.blocks):
             blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
@@ -201,9 +227,13 @@ class Same:
                 and self.blocks[i-1].same == 0 \
                 and self.blocks[i].type_ == 'term' \
                 and self.blocks[i].same == 1:
+                    count += 1
                     self.blocks[i-2].type_ = 'term'
                     self.blocks[i-1].same = 1
             i += 1
+        if count:
+            mes = _('Matches: {}').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_com_com(self):
         ''' Fix the 'comment (SAME=0) - comment (SAME=0)' structure
@@ -211,6 +241,8 @@ class Same:
             indistinguishable from comments. The latter happens only in
             the present source, so this code is plugin-specific.
         '''
+        f = '[MClient] plugins.multitrancom.elems.Same.run_com_com'
+        count = 0
         i = 2
         while i < len(self.blocks):
             blocks = [self.blocks[i-1],self.blocks[i]]
@@ -219,6 +251,7 @@ class Same:
                 and self.blocks[i-1].same == 0 \
                 and self.blocks[i].type_ == 'comment' \
                 and self.blocks[i].same == 0:
+                    count += 1
                     if self.blocks[i-2].type_ in ('dic','wform'
                                                  ,'speech','transc'
                                                  ):
@@ -227,6 +260,9 @@ class Same:
                     else:
                         self.blocks[i-1].same = 1
             i += 1
+        if count:
+            mes = _('Matches: {}').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_com_term(self):
         ''' If a comment has SAME=0, then the next non-fixed type block
@@ -236,22 +272,30 @@ class Same:
             here since they come only after other blocks and always have
             SAME=1.
         '''
+        f = '[MClient] plugins.multitrancom.elems.Same.run_com_term'
+        count = 0
         i = 1
         while i < len(self.blocks):
             blocks = [self.blocks[i-1],self.blocks[i]]
             if not self.has_inner_cells(blocks):
                 if self.blocks[i-1].type_ == 'comment' \
                 and self.blocks[i-1].same == 0:
+                    count += 1
                     if self.blocks[i].type_ == 'term':
                         self.blocks[i].same = 1
                     else:
                         self.blocks[i-1].same = 1
             i += 1
+        if count:
+            mes = _('Matches: {}').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_term_com_fixed(self):
         ''' Set SAME value of a comment prior to a fixed type to 1
             even if it does not comprise brackets.
         '''
+        f = '[MClient] plugins.multitrancom.elems.Same.run_term_com_fixed'
+        count = 0
         i = 2
         while i < len(self.blocks):
             blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
@@ -261,10 +305,16 @@ class Same:
                 and self.blocks[i].type_ in ('dic','wform','speech'
                                             ,'transc'
                                             ):
+                    count += 1
                     self.blocks[i-1].same = 1
             i += 1
+        if count:
+            mes = _('Matches: {}').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_all_coms(self):
+        f = '[MClient] plugins.multitrancom.elems.Same.run_all_coms'
+        count = 0
         i = 1
         while i < len(self.blocks):
             blocks = [self.blocks[i-1],self.blocks[i]]
@@ -278,10 +328,16 @@ class Same:
                     if self.blocks[i-1].type_ not in ('dic','wform','transc'
                                                      ,'speech'
                                                      ):
+                        count += 1
                         self.blocks[i].same = 1
             i += 1
+        if count:
+            mes = _('Matches: {}').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_term_com_term(self):
+        f = '[MClient] plugins.multitrancom.elems.Same.run_term_com_term'
+        count = 0
         i = 2
         while i < len(self.blocks):
             blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
@@ -302,6 +358,7 @@ class Same:
                                 and sh.Text(self.blocks[i-1].text).has_latin()\
                                 and sh.Text(self.blocks[i].text).has_latin()
                         if cond1 or cond2:
+                            count += 1
                             self.blocks[i-1].same = 1
                             self.blocks[i].same = 1
                     ''' Fix cases like RU-EN: 'external shell' ->
@@ -309,29 +366,45 @@ class Same:
                         relates to a previous block.
                     '''
                     if self.blocks[i-1].text == '...':
+                        count += 1
                         self.blocks[i-1].same = 1
             i += 1
+        if count:
+            mes = _('Matches: {}').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_speech(self):
         ''' 'speech' blocks have 'same = 1' when analyzing MT because
             they are within a single tag. We fix it here, not in Tags,
             because Tags are assumed to output the result 'as is'.
         '''
+        f = '[MClient] plugins.multitrancom.elems.Same.run_speech'
+        count = 0
         i = 1
         while i < len(self.blocks):
             blocks = [self.blocks[i-1],self.blocks[i]]
             if not self.has_inner_cells(blocks):
                 if self.blocks[i-1].type_ == 'speech':
+                    count += 1
                     self.blocks[i-1].same = 0
                     self.blocks[i].same = 0
             i += 1
+        if count:
+            mes = _('Matches: {}').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_punc(self):
+        f = '[MClient] plugins.multitrancom.elems.Same.run_punc'
+        count = 0
         for block in self.blocks:
             for sym in sh.lg.punc_array + [')']:
                 if block.text.startswith(sym):
+                    count += 1
                     block.same = 1
                     break
+        if count:
+            mes = _('Matches: {}').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def debug(self):
         f = 'plugins.multitrancom.elems.Same.debug'
