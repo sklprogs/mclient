@@ -6,7 +6,6 @@ multitrancom:
 - RU-EN, endpoint -> phrases: "порт (см.": wrong SAME
 - RU-EN: на фиг: wrong SAME for "; (нужно, сдалось) what for?"
 - RU-DE: цвет -> цвет кварка: wform should have an embedded comment
-- EN-RU: симптом -> Медицина -> симптом Спасокукоцкого - wrong SAME
 - EN-DE: есть -> should parse as follows: "essen n (я ем мариуча; Статья к удалению как дублирующая и не соответствующая тематике. platon)"
 - EN-DE: есть: "с наслаждением есть" (comment + wform)
 - EN-RU: glitch: 'компьютерный глюк': no URL in brackets

@@ -440,10 +440,10 @@ class Same:
             self.run_wform_com_term()
             self.run_wform_com_fixed()
             self.run_com_term_com()
-            # Can cause wrong SAME=1 if used beforehand
-            self.run_com_term()
             self.run_phrase_com()
             self.run_punc()
+            # Can cause wrong SAME=1 if used beforehand
+            self.run_com_term()
             self.debug()
             return self.blocks
         else:
