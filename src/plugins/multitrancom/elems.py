@@ -79,6 +79,22 @@ class Same:
         self.maxrow = maxrow
         self.maxrows = maxrows
     
+    def reassign_end(self):
+        f = '[MClient] plugins.multitrancom.elems.Same.reassign_end'
+        count = 0
+        if self.blocks:
+            if self.blocks[-1].same < 1 \
+            and self.blocks[-1].type_ in ('comment','correction'
+                                         ,'definition','user'
+                                         ):
+                count += 1
+                self.blocks[-1].same = 1
+            if count:
+                mes = _('Matches: {}').format(count)
+                sh.objs.get_mes(f,mes,True).show_debug()
+        else:
+            sh.com.rep_empty(f)
+    
     def run_phrase_com(self):
         f = '[MClient] plugins.multitrancom.elems.Same.run_phrase_com'
         count = 0
@@ -442,6 +458,7 @@ class Same:
             self.run_com_term_com()
             self.run_phrase_com()
             self.run_punc()
+            self.reassign_end()
             # Can cause wrong SAME=1 if used beforehand
             self.run_com_term()
             self.debug()
