@@ -558,8 +558,10 @@ class Elems:
             if self.blocks[i-1].type_ in self.fixed \
             and self.blocks[i].same == 1:
                 count += 1
-                self.blocks[i-1].text = self.blocks[i-1].text + ' ' \
-                                      + self.blocks[i].text
+                self.blocks[i-1].text = sh.List ([self.blocks[i-1].text
+                                                 ,self.blocks[i].text
+                                                 ]
+                                                ).space_items()
                 del self.blocks[i]
                 i =- 1
             i += 1
