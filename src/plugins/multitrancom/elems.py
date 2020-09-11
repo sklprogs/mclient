@@ -144,6 +144,7 @@ class Same:
             i += 1
     
     def has_inner_cells(self,blocks):
+        #NOTE: Do not rely on this method for fixed types
         for block in blocks:
             if block.icell > -1:
                 return True
@@ -604,6 +605,11 @@ class Elems:
             elif icell > -1 and block.type_ in ('term','comment','user'
                                                ,'correction'
                                                ):
+                ''' #NOTE: Including fixed types there will cause
+                    problems with setting SAME, since fixed types are
+                    treated as a natural cell separator. If we need to
+                    set SAME for fixed types, do not rely on ICELL.
+                '''
                 block.icell = icell
     
     def check(self):
@@ -1082,7 +1088,12 @@ class Elems:
             if dic != self.blocks[i].dic \
             or wform != self.blocks[i].wform \
             or speech != self.blocks[i].speech:
-                
+                ''' #NOTE: If the algorithm for setting inner cells is
+                    changed to include fixed types, then we should
+                    inherit ICELL here (do not do that with the current
+                    implementation since setting ICELL for fixed types
+                    will cause problems with SAME).
+                '''
                 block        = Block()
                 block.type_  = 'speech'
                 block.text   = self.blocks[i].speech
