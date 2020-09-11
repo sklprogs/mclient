@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-09 18:40+0300\n"
-"PO-Revision-Date: 2020-09-09 18:40+0300\n"
+"POT-Creation-Date: 2020-09-12 00:44+0300\n"
+"PO-Revision-Date: 2020-09-12 00:44+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -23,11 +23,11 @@ msgstr ""
 msgid "A priority of the part of speech \"{}\" is not defined!"
 msgstr "Приоритет части речи \"{}\" не определен!"
 
-#: mclient/src/cells.py:494
+#: mclient/src/cells.py:493
 msgid "An unsupported part of speech: \"{}\"!"
 msgstr "Неподдерживая часть речи: \"{}\"!"
 
-#: mclient/src/cells.py:621
+#: mclient/src/cells.py:620
 msgid "Unable to find: {}"
 msgstr "Не удалось найти: {}"
 
@@ -1800,25 +1800,28 @@ msgstr "Нет такого тэга: \"{}\"!"
 msgid "Malformed HTML code!"
 msgstr "Некорректный код HTML!"
 
-#: mclient/src/plugins/multitrancom/elems.py:94
-#: mclient/src/plugins/multitrancom/elems.py:136
-#: mclient/src/plugins/multitrancom/elems.py:158
-#: mclient/src/plugins/multitrancom/elems.py:212
-#: mclient/src/plugins/multitrancom/elems.py:235
-#: mclient/src/plugins/multitrancom/elems.py:264
-#: mclient/src/plugins/multitrancom/elems.py:290
-#: mclient/src/plugins/multitrancom/elems.py:312
-#: mclient/src/plugins/multitrancom/elems.py:335
-#: mclient/src/plugins/multitrancom/elems.py:373
-#: mclient/src/plugins/multitrancom/elems.py:393
-#: mclient/src/plugins/multitrancom/elems.py:406
-msgid "Matches: {}"
-msgstr "Совпадений: {}"
+#: mclient/src/plugins/multitrancom/elems.py:99
+#: mclient/src/plugins/multitrancom/elems.py:111
+#: mclient/src/plugins/multitrancom/elems.py:130
+#: mclient/src/plugins/multitrancom/elems.py:173
+#: mclient/src/plugins/multitrancom/elems.py:195
+#: mclient/src/plugins/multitrancom/elems.py:247
+#: mclient/src/plugins/multitrancom/elems.py:270
+#: mclient/src/plugins/multitrancom/elems.py:300
+#: mclient/src/plugins/multitrancom/elems.py:326
+#: mclient/src/plugins/multitrancom/elems.py:346
+#: mclient/src/plugins/multitrancom/elems.py:367
+#: mclient/src/plugins/multitrancom/elems.py:405
+#: mclient/src/plugins/multitrancom/elems.py:425
+#: mclient/src/plugins/multitrancom/elems.py:438
+msgid "{} matches"
+msgstr "{} совпадений"
 
-#: mclient/src/plugins/multitrancom/elems.py:648
-#: mclient/src/plugins/multitrancom/elems.py:698
-#: mclient/src/plugins/multitrancom/elems.py:739
-#: mclient/src/plugins/multitrancom/elems.py:793
+#: mclient/src/plugins/multitrancom/elems.py:588
+#: mclient/src/plugins/multitrancom/elems.py:703
+#: mclient/src/plugins/multitrancom/elems.py:753
+#: mclient/src/plugins/multitrancom/elems.py:794
+#: mclient/src/plugins/multitrancom/elems.py:848
 msgid "{} blocks have been deleted"
 msgstr "{} блоков удалено"
 
@@ -16184,6 +16187,9 @@ msgstr ""
 #: skl_shared/src/tests.py:1127
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
+
+#~ msgid "Matches: {}"
+#~ msgstr "Совпадений: {}"
 
 #~ msgid "[Autosave] Show full dictionary titles instead of abbreviations"
 #~ msgstr ""
