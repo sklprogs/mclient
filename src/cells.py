@@ -139,7 +139,6 @@ class BlockPrioritize:
                               quite a small value as not to conflict
                               with other dictionaries.
                         '''
-                        #cur
                         block.dprior = -1000
                     elif self.Prioritize:
                         block.dprior = self.order.get_priority(search=block.dic)

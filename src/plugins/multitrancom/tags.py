@@ -114,7 +114,6 @@ class Block:
         self.dprior = 0
         self.first = -1
         self.i = -1
-        self.icell = -1
         self.j = -1
         self.last = -1
         self.no = -1
@@ -129,6 +128,7 @@ class Block:
             'phrase' or 'transc'.
         '''
         self.select = -1
+        self.semino = -1
         self.speech = ''
         self.sprior = -1
         self.term = ''

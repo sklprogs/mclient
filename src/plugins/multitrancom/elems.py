@@ -76,40 +76,17 @@ class Same:
                  ):
         self.blocks = blocks
         self.Debug = Debug
+        self.fixed = ('dic','wform','transc','speech')
+        self.flying = ('comment','correction','definition','user')
         self.maxrow = maxrow
         self.maxrows = maxrows
-    
-    def run_wform_com_com_fixed(self):
-        f = '[MClient] plugins.multitrancom.elems.Same.run_wform_com_com_fixed'
-        count = 0
-        fixed = ('dic','wform','transc','speech')
-        non_fixed = ('comment','correction','definition','user')
-        i = 3
-        while i < len(self.blocks):
-            blocks = [self.blocks[i-3],self.blocks[i-2],self.blocks[i-1]
-                     ,self.blocks[i]
-                     ]
-            if not self.has_inner_cells(blocks):
-                if self.blocks[i-3].type_ == 'wform' \
-                and self.blocks[i-2].type_ in non_fixed \
-                and self.blocks[i-1].type_ in non_fixed \
-                and self.blocks[i].type_ in fixed:
-                    count += 2
-                    self.blocks[i-2].same = 1
-                    self.blocks[i-1].same = 1
-            i += 1
-        if count:
-            mes = _('Matches: {}').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
     
     def reassign_end(self):
         f = '[MClient] plugins.multitrancom.elems.Same.reassign_end'
         count = 0
         if self.blocks:
             if self.blocks[-1].same < 1 \
-            and self.blocks[-1].type_ in ('comment','correction'
-                                         ,'definition','user'
-                                         ):
+            and self.blocks[-1].type_ in self.flying:
                 count += 1
                 self.blocks[-1].same = 1
             if count:
@@ -123,31 +100,33 @@ class Same:
         count = 0
         i = 1
         while i < len(self.blocks):
-            if self.blocks[i-1].type_ == 'phrase' \
-            and self.blocks[i].type_ == 'comment' \
-            and self.blocks[i].same == 0:
-                count += 1
-                self.blocks[i].same = 1
+            blocks = [self.blocks[i-1],self.blocks[i]]
+            if self.is_same_semino(blocks):
+                if self.blocks[i-1].type_ == 'phrase' \
+                and self.blocks[i].type_ == 'comment' \
+                and self.blocks[i].same == 0:
+                    count += 1
+                    self.blocks[i].same = 1
             i += 1
         if count:
             mes = _('Matches: {}').format(count)
             sh.objs.get_mes(f,mes,True).show_debug()
     
-    def set_inner(self):
+    def set_by_semino(self):
         i = 1
         while i < len(self.blocks):
-            if self.blocks[i-1].icell > -1:
-                if self.blocks[i-1].icell == self.blocks[i].icell:
-                    self.blocks[i].same = 1
-                else:
+            if self.blocks[i-1].semino > -1 \
+            and self.blocks[i].same == -1:
+                if self.blocks[i-1].semino == self.blocks[i].semino:
                     self.blocks[i].same = 0
+                else:
+                    self.blocks[i].same = 1
             i += 1
     
-    def has_inner_cells(self,blocks):
-        #NOTE: Do not rely on this method for fixed types
-        for block in blocks:
-            if block.icell > -1:
-                return True
+    def is_same_semino(self,blocks):
+        nos = [block.semino for block in blocks]
+        if len(set(nos)) == 1:
+            return True
     
     def run_user_cor_user(self):
         # (GeorgeK; это "тендерная документация" playa4life)
@@ -158,7 +137,7 @@ class Same:
             blocks = [self.blocks[i-4],self.blocks[i-3],self.blocks[i-2]
                      ,self.blocks[i-1],self.blocks[i]
                      ]
-            if not self.has_inner_cells(blocks):
+            if self.is_same_semino(blocks):
                 if self.blocks[i-4].type_ in ('comment','correction') \
                 and self.blocks[i-3].type_ == 'user' \
                 and self.blocks[i-2].type_ == 'correction' \
@@ -185,7 +164,7 @@ class Same:
         i = 2
         while i < len(self.blocks):
             blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
-            if not self.has_inner_cells(blocks):
+            if self.is_same_semino(blocks):
                 if self.blocks[i-2].type_ in ('comment','correction') \
                 and self._has_extra_bracket(self.blocks[i-2]) \
                 and self.blocks[i-1].type_ == 'user' \
@@ -202,7 +181,7 @@ class Same:
         i = 2
         while i < len(self.blocks):
             blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
-            if not self.has_inner_cells(blocks):
+            if self.is_same_semino(blocks):
                 if self.blocks[i-2].type_ == 'comment' \
                 and self.blocks[i-1].type_ == 'term' \
                 and self.blocks[i].type_ in ('comment','correction'):
@@ -231,15 +210,13 @@ class Same:
         i = 2
         while i < len(self.blocks):
             blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
-            if not self.has_inner_cells(blocks):
+            if not self.is_same_semino(blocks):
                 ''' Do not check the 'same' value of a definition block
                     since it can (and should) already be set to 1.
                 '''
                 if self.blocks[i-2].type_ == 'wform' \
                 and self.blocks[i-1].type_ == 'comment' \
-                and self.blocks[i].type_ in ('dic','wform','transc'
-                                            ,'speech'
-                                            ):
+                and self.blocks[i].type_ in self.fixed:
                     count += 1
                     self.blocks[i-1].type_ = 'definition'
                     ''' 'same' value of the definition block should
@@ -259,7 +236,7 @@ class Same:
         i = 2
         while i < len(self.blocks):
             blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
-            if not self.has_inner_cells(blocks):
+            if self.is_same_semino(blocks):
                 if self.blocks[i-2].type_ == 'wform' \
                 and self.blocks[i-2].same == 0 \
                 and self.blocks[i-2].url \
@@ -285,16 +262,14 @@ class Same:
         count = 0
         i = 2
         while i < len(self.blocks):
-            blocks = [self.blocks[i-1],self.blocks[i]]
-            if not self.has_inner_cells(blocks):
+            blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
+            if self.is_same_semino(blocks):
                 if self.blocks[i-1].type_ == 'comment' \
                 and self.blocks[i-1].same == 0 \
                 and self.blocks[i].type_ == 'comment' \
                 and self.blocks[i].same == 0:
                     count += 1
-                    if self.blocks[i-2].type_ in ('dic','wform'
-                                                 ,'speech','transc'
-                                                 ):
+                    if self.blocks[i-2].type_ in self.fixed:
                         self.blocks[i-1].type_ = 'wform'
                         self.blocks[i].same = 1
                     else:
@@ -317,7 +292,7 @@ class Same:
         i = 1
         while i < len(self.blocks):
             blocks = [self.blocks[i-1],self.blocks[i]]
-            if not self.has_inner_cells(blocks):
+            if self.is_same_semino(blocks):
                 if self.blocks[i-1].type_ == 'comment' \
                 and self.blocks[i-1].same == 0:
                     count += 1
@@ -339,12 +314,10 @@ class Same:
         i = 2
         while i < len(self.blocks):
             blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
-            if not self.has_inner_cells(blocks):
+            if self.is_same_semino(blocks):
                 if self.blocks[i-2].type_ == 'term' \
                 and self.blocks[i-1].type_ == 'comment' \
-                and self.blocks[i].type_ in ('dic','wform','speech'
-                                            ,'transc'
-                                            ):
+                and self.blocks[i].type_ in self.fixed:
                     count += 1
                     self.blocks[i-1].same = 1
             i += 1
@@ -358,16 +331,14 @@ class Same:
         i = 1
         while i < len(self.blocks):
             blocks = [self.blocks[i-1],self.blocks[i]]
-            if not self.has_inner_cells(blocks):
-                ''' First comments in constructs like 'com-term-com' can be
-                    of SAME=0, so we should be careful here.
+            if self.is_same_semino(blocks):
+                ''' First comments in structures like 'com-term-com'
+                    can be of SAME=0, so we should be careful here.
                 '''
                 if self.blocks[i].type_ == 'comment' \
                 and self.blocks[i].text.startswith('(') \
                 or self.blocks[i].type_ in ('user','correction'):
-                    if self.blocks[i-1].type_ not in ('dic','wform','transc'
-                                                     ,'speech'
-                                                     ):
+                    if self.blocks[i-1].type_ not in self.fixed:
                         count += 1
                         self.blocks[i].same = 1
             i += 1
@@ -381,7 +352,7 @@ class Same:
         i = 2
         while i < len(self.blocks):
             blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
-            if not self.has_inner_cells(blocks):
+            if self.is_same_semino(blocks):
                 if self.blocks[i-2].type_ == 'term' \
                 and self.blocks[i-1].type_ == 'comment' \
                 and self.blocks[i].type_ == 'term':
@@ -423,7 +394,7 @@ class Same:
         i = 1
         while i < len(self.blocks):
             blocks = [self.blocks[i-1],self.blocks[i]]
-            if not self.has_inner_cells(blocks):
+            if self.is_same_semino(blocks):
                 if self.blocks[i-1].type_ == 'speech':
                     count += 1
                     self.blocks[i-1].same = 0
@@ -438,7 +409,7 @@ class Same:
         count = 0
         for block in self.blocks:
             for sym in sh.lg.punc_array + [')']:
-                if block.text.startswith(sym):
+                if block.text.startswith(sym) and block.same < 1:
                     count += 1
                     block.same = 1
                     break
@@ -469,7 +440,7 @@ class Same:
     def run(self):
         f = 'plugins.multitrancom.elems.Same.run'
         if self.blocks:
-            self.set_inner()
+            self.set_by_semino()
             self.run_speech()
             self.run_all_coms()
             self.run_user_cor_user()
@@ -479,7 +450,6 @@ class Same:
             self.run_com_com()
             self.run_wform_com_term()
             self.run_wform_com_fixed()
-            self.run_wform_com_com_fixed()
             self.run_com_term_com()
             self.run_phrase_com()
             self.run_punc()
@@ -506,7 +476,7 @@ class Block:
         self.dprior = 0
         self.first = -1
         self.i = -1
-        self.icell = -1
+        self.semino = -1
         self.j = -1
         self.last = -1
         self.no = -1
@@ -597,20 +567,12 @@ class Elems:
                 i -= 1
             i += 1
     
-    def set_inner_cells(self):
-        icell = -1
+    def set_semino(self):
+        semino = 0
         for block in self.blocks:
             if block.type_ == 'comment' and block.text == ';':
-                icell += 1
-            elif icell > -1 and block.type_ in ('term','comment','user'
-                                               ,'correction'
-                                               ):
-                ''' #NOTE: Including fixed types there will cause
-                    problems with setting SAME, since fixed types are
-                    treated as a natural cell separator. If we need to
-                    set SAME for fixed types, do not rely on ICELL.
-                '''
-                block.icell = icell
+                semino += 1
+            block.semino = semino
     
     def check(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.check'
@@ -882,7 +844,7 @@ class Elems:
             self.delete_empty()
             self.delete_useless_semi()
             # Do this before deleting ';'
-            self.set_inner_cells()
+            self.set_semino()
             self.delete_trash()
             self.delete_subjects()
             self.delete_search()
@@ -933,7 +895,7 @@ class Elems:
     def debug(self):
         f = 'plugins.multitrancom.elems.Elems.debug'
         if self.Debug:
-            headers = ('NO','TYPE','TEXT','INNER','SAME'
+            headers = ('NO','TYPE','TEXT','SEMINO','SAME'
                       ,'CELLNO','ROWNO','COLNO','POS1','POS2'
                       )
             rows = []
@@ -941,7 +903,7 @@ class Elems:
                 rows.append ([i + 1
                              ,self.blocks[i].type_
                              ,self.blocks[i].text
-                             ,self.blocks[i].icell
+                             ,self.blocks[i].semino
                              ,self.blocks[i].same
                              ,self.blocks[i].cellno
                              ,self.blocks[i].i
@@ -1088,11 +1050,8 @@ class Elems:
             if dic != self.blocks[i].dic \
             or wform != self.blocks[i].wform \
             or speech != self.blocks[i].speech:
-                ''' #NOTE: If the algorithm for setting inner cells is
-                    changed to include fixed types, then we should
-                    inherit ICELL here (do not do that with the current
-                    implementation since setting ICELL for fixed types
-                    will cause problems with SAME).
+                ''' #NOTE: We do not inherit SEMINO here since it's not
+                    needed anymore.
                 '''
                 block        = Block()
                 block.type_  = 'speech'
