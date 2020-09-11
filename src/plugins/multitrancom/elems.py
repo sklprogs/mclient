@@ -81,6 +81,24 @@ class Same:
         self.maxrow = maxrow
         self.maxrows = maxrows
     
+    def set_rest_flying(self):
+        ''' Set SAME=0 to SAME=1 for flying blocks that were not
+            processed before because of different SEMINO.
+        '''
+        f = '[MClient] plugins.multitrancom.elems.Same.set_rest_flying'
+        count = 0
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].semino != self.blocks[i].semino \
+            and self.blocks[i-1].same < 1 \
+            and self.blocks[i-1].type_ in self.flying:
+                count += 1
+                self.blocks[i-1].same = 1
+            i += 1
+        if count:
+            mes = _('{} matches').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
+    
     def reassign_end(self):
         f = '[MClient] plugins.multitrancom.elems.Same.reassign_end'
         count = 0
@@ -90,7 +108,7 @@ class Same:
                 count += 1
                 self.blocks[-1].same = 1
             if count:
-                mes = _('Matches: {}').format(count)
+                mes = _('{} matches').format(count)
                 sh.objs.get_mes(f,mes,True).show_debug()
         else:
             sh.com.rep_empty(f)
@@ -109,7 +127,7 @@ class Same:
                     self.blocks[i].same = 1
             i += 1
         if count:
-            mes = _('Matches: {}').format(count)
+            mes = _('{} matches').format(count)
             sh.objs.get_mes(f,mes,True).show_debug()
     
     def set_by_semino(self):
@@ -152,7 +170,7 @@ class Same:
                     self.blocks[i].same = 1
             i += 1
         if count:
-            mes = _('Matches: {}').format(count)
+            mes = _('{} matches').format(count)
             sh.objs.get_mes(f,mes,True).show_debug()
     
     def _has_extra_bracket(self,block):
@@ -174,7 +192,7 @@ class Same:
                     self.blocks[i].same = 1
             i += 1
         if count:
-            mes = _('Matches: {}').format(count)
+            mes = _('{} matches').format(count)
             sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_com_term_com(self):
@@ -226,7 +244,7 @@ class Same:
                     self.blocks[i-1].same = 1
             i += 1
         if count:
-            mes = _('Matches: {}').format(count)
+            mes = _('{} matches').format(count)
             sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_wform_com_term(self):
@@ -249,7 +267,7 @@ class Same:
                     self.blocks[i-1].same = 1
             i += 1
         if count:
-            mes = _('Matches: {}').format(count)
+            mes = _('{} matches').format(count)
             sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_com_com(self):
@@ -279,7 +297,7 @@ class Same:
                         self.blocks[i-1].same = 1
             i += 1
         if count:
-            mes = _('Matches: {}').format(count)
+            mes = _('{} matches').format(count)
             sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_com_term(self):
@@ -305,7 +323,7 @@ class Same:
                         self.blocks[i-1].same = 1
             i += 1
         if count:
-            mes = _('Matches: {}').format(count)
+            mes = _('{} matches').format(count)
             sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_term_com_fixed(self):
@@ -325,7 +343,7 @@ class Same:
                     self.blocks[i-1].same = 1
             i += 1
         if count:
-            mes = _('Matches: {}').format(count)
+            mes = _('{} matches').format(count)
             sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_all_coms(self):
@@ -346,7 +364,7 @@ class Same:
                         self.blocks[i].same = 1
             i += 1
         if count:
-            mes = _('Matches: {}').format(count)
+            mes = _('{} matches').format(count)
             sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_term_com_term(self):
@@ -384,7 +402,7 @@ class Same:
                         self.blocks[i-1].same = 1
             i += 1
         if count:
-            mes = _('Matches: {}').format(count)
+            mes = _('{} matches').format(count)
             sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_speech(self):
@@ -404,7 +422,7 @@ class Same:
                     self.blocks[i].same = 0
             i += 1
         if count:
-            mes = _('Matches: {}').format(count)
+            mes = _('{} matches').format(count)
             sh.objs.get_mes(f,mes,True).show_debug()
     
     def run_punc(self):
@@ -417,7 +435,7 @@ class Same:
                     block.same = 1
                     break
         if count:
-            mes = _('Matches: {}').format(count)
+            mes = _('{} matches').format(count)
             sh.objs.get_mes(f,mes,True).show_debug()
     
     def debug(self):
@@ -459,6 +477,7 @@ class Same:
             self.reassign_end()
             # Can cause wrong SAME=1 if used beforehand
             self.run_com_term()
+            self.set_rest_flying()
             self.debug()
             return self.blocks
         else:
