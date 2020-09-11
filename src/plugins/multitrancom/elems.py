@@ -255,8 +255,8 @@ class Same:
     def run_com_com(self):
         ''' Fix the 'comment (SAME=0) - comment (SAME=0)' structure
             which may be encountered due to that word forms can be
-            indistinguishable from comments. The latter happens only in
-            the present source, so this code is plugin-specific.
+            indistinguishable from comments. The latter happens only
+            in the present source, so this code is plugin-specific.
         '''
         f = '[MClient] plugins.multitrancom.elems.Same.run_com_com'
         count = 0
@@ -269,7 +269,10 @@ class Same:
                 and self.blocks[i].type_ == 'comment' \
                 and self.blocks[i].same == 0:
                     count += 1
-                    if self.blocks[i-2].type_ in self.fixed:
+                    # Do not allow 'wform+wform' structures
+                    if self.blocks[i-2].type_ in ('dic','speech'
+                                                 ,'transc'
+                                                 ):
                         self.blocks[i-1].type_ = 'wform'
                         self.blocks[i].same = 1
                     else:
@@ -533,6 +536,7 @@ class Elems:
         self.Debug = Debug
         self.defins = []
         self.dicurls = {}
+        self.fixed = ('dic','wform','transc','speech')
         self.langs = langs
         self.maxrow = maxrow
         self.maxrows = maxrows
@@ -541,6 +545,27 @@ class Elems:
             subject sections.
         '''
         self.vip = ['Gruzovik','Игорь Миг']
+    
+    def unite_fixed_same(self):
+        ''' We should unite items in 'fixed+comment (SAME=1)' structures
+            directly since fixed columns having supplementary SAME=1
+            blocks cannot be properly sorted.
+        '''
+        f = '[MClient] plugins.multitrancom.elems.Elems.unite_fixed_same'
+        count = 0
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].type_ in self.fixed \
+            and self.blocks[i].same == 1:
+                count += 1
+                self.blocks[i-1].text = self.blocks[i-1].text + ' ' \
+                                      + self.blocks[i].text
+                del self.blocks[i]
+                i =- 1
+            i += 1
+        if count:
+            mes = _('{} blocks have been deleted').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def is_vip(self,block):
         for vip in self.vip:
@@ -870,6 +895,7 @@ class Elems:
                                ,maxrow  = self.maxrow
                                ,maxrows = self.maxrows
                                ).run()
+            self.unite_fixed_same()
             self.reassign_brackets()
             # Prepare for cells
             self.fill()
@@ -1040,7 +1066,7 @@ class Elems:
             
     def set_fixed_term(self):
         for block in self.blocks:
-            if block.type_ in ('dic','wform','speech','transc'):
+            if block.type_ in self.fixed:
                 block.term = ''
                 
     def insert_fixed(self):
@@ -1105,7 +1131,7 @@ class Elems:
             
     def remove_fixed(self):
         self.blocks = [block for block in self.blocks if block.type_ \
-                       not in ('dic','wform','transc','speech')
+                       not in self.fixed
                       ]
                        
     def set_selectables(self):
