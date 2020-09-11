@@ -79,6 +79,29 @@ class Same:
         self.maxrow = maxrow
         self.maxrows = maxrows
     
+    def run_wform_com_com_fixed(self):
+        f = '[MClient] plugins.multitrancom.elems.Same.run_wform_com_com_fixed'
+        count = 0
+        fixed = ('dic','wform','transc','speech')
+        non_fixed = ('comment','correction','definition','user')
+        i = 3
+        while i < len(self.blocks):
+            blocks = [self.blocks[i-3],self.blocks[i-2],self.blocks[i-1]
+                     ,self.blocks[i]
+                     ]
+            if not self.has_inner_cells(blocks):
+                if self.blocks[i-3].type_ == 'wform' \
+                and self.blocks[i-2].type_ in non_fixed \
+                and self.blocks[i-1].type_ in non_fixed \
+                and self.blocks[i].type_ in fixed:
+                    count += 2
+                    self.blocks[i-2].same = 1
+                    self.blocks[i-1].same = 1
+            i += 1
+        if count:
+            mes = _('Matches: {}').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
+    
     def reassign_end(self):
         f = '[MClient] plugins.multitrancom.elems.Same.reassign_end'
         count = 0
@@ -455,6 +478,7 @@ class Same:
             self.run_com_com()
             self.run_wform_com_term()
             self.run_wform_com_fixed()
+            self.run_wform_com_com_fixed()
             self.run_com_term_com()
             self.run_phrase_com()
             self.run_punc()
