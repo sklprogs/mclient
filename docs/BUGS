@@ -2,12 +2,10 @@ mclient:
 - 
 
 multitrancom:
-- RU-EN, endpoint -> when denoting a ray, its endpoint: wrong SAME
-- RU-EN, endpoint -> phrases: "порт (см.": wrong SAME
+- RU-EN, set -> phrases: Move "Показаны первые 500 фраз" to the end
 - RU-EN: на фиг: wrong SAME for "; (нужно, сдалось) what for?"
-- RU-DE: цвет -> цвет кварка: wform should have an embedded comment
-- EN-DE: есть -> should parse as follows: "essen n (я ем мариуча; Статья к удалению как дублирующая и не соответствующая тематике. platon)"
-- EN-DE: есть: "с наслаждением есть" (comment + wform)
+- RU-DE: есть -> 4. Региональное выражение: use a new line for the 1st
+  term
 - EN-RU: glitch: 'компьютерный глюк': no URL in brackets
 - EN-RU: glitch -> defect -> (This computer program has a glitch):
   No word 'glitch' in in this comment
@@ -26,9 +24,9 @@ multitrancom:
   <span style="color:gray">(<a target="_blank"  href="http://www.berkeleycountycomm.org/job_court_bailiff_2005.htm;" rel="nofollow">http://www.berkeleycountycomm.org/job_court_bailiff_2005.htm;</a>
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"
-- French: зонд: wrong SAME for 'm'
-  German: работа: wrong SAME for 'f'
+- RU-FR: зонд: wrong SAME for items of Great Encyclopedic Dictionary
 - plugins.multitrancom: eng-rus: вручать: fix dic prioritization
+  (Gruzovik)
 - plugins.multitran: eng-rus: layout: cannot decrease a priority of
   a dictionary which priority is higher than the priority of the unknown
   dictionary (Gruzovik) following it
