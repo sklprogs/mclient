@@ -1,6 +1,10 @@
 (in development)
-* Improve separating cells at multitran.com on the basis of semicolons
 * 
+
+6.7
+* Improve separating cells at multitran.com (separate cells on the basis
+  of semicolons, fix user names, etc.)
+* Support the tag [ref dict="Dic title"] for DSL
 
 6.6
 * Delete "Terms of Use" block
