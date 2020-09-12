@@ -80,6 +80,35 @@ class Same:
         self.flying = ('comment','correction','definition','user')
         self.maxrow = maxrow
         self.maxrows = maxrows
+        self.see_end = ['(см.',' см.','см. также','см.также'
+                       ,'смотри также','смотрите также',' see'
+                       ,'see also'
+                       ]
+        self.see_start = ['см.']
+    
+    def is_ends_see(self,string):
+        for item in self.see_end:
+            if string.endswith(item):
+                return True
+    
+    def is_starts_see(self,string):
+        for item in self.see_start:
+            if string.startswith(item):
+                return True
+    
+    def run_see_also(self):
+        f = '[MClient] plugins.multitrancom.elems.Same.run_see_also'
+        count = 0
+        i = 1
+        while i < len(self.blocks):
+            if self.is_ends_see(self.blocks[i-1].text) \
+            or self.is_starts_see(self.blocks[i].text):
+                count += 1
+                self.blocks[i].same = 1
+            i += 1
+        if count:
+            mes = _('{} matches').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def set_rest_flying(self):
         ''' Set SAME=0 to SAME=1 for flying blocks that were not
@@ -463,6 +492,7 @@ class Same:
         if self.blocks:
             self.set_by_semino()
             self.run_speech()
+            self.run_see_also()
             self.run_all_coms()
             self.run_user_cor_user()
             self.run_user_brackets()
