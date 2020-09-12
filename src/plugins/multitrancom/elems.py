@@ -86,6 +86,30 @@ class Same:
                        ]
         self.see_start = ['см.']
     
+    def run_com_term_speech(self):
+        # See RU-EN: endpoint => when denoting a ray, its endpoint
+        f = '[MClient] plugins.multitrancom.elems.Same.run_com_term_speech'
+        count = 0
+        i = 2
+        while i < len(self.blocks):
+            blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
+            if self.is_same_semino(blocks):
+                if self.blocks[i-2].type_ == 'comment' \
+                and self.blocks[i-2].same == 0 \
+                and self.blocks[i-1].type_ == 'term' \
+                and self.blocks[i-1].same == 1 \
+                and self.blocks[i].type_ == 'speech':
+                    count += 1
+                    ''' We change the type such as to be further
+                        processed by 'Elems.unite_fixed_same'.
+                    '''
+                    self.blocks[i-2].type_ = 'wform'
+                    self.blocks[i-1].type_ = 'comment'
+            i += 1
+        if count:
+            mes = _('{} matches').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
+    
     def is_ends_see(self,string):
         for item in self.see_end:
             if string.endswith(item):
@@ -507,6 +531,8 @@ class Same:
             self.reassign_end()
             # Can cause wrong SAME=1 if used beforehand
             self.run_com_term()
+            # Do this after 'self.run_com_term'
+            self.run_com_term_speech()
             self.set_rest_flying()
             self.debug()
             return self.blocks
@@ -755,9 +781,7 @@ class Elems:
             sh.com.rep_empty(f)
     
     def insert_definitions(self):
-        ''' Reisert definitions after word forms
-            #NOTE: Do this after reinserting fixed types.
-        '''
+        # Reisert definitions after word forms
         f = '[MClient] plugins.multitrancom.elems.Elems.insert_definitions'
         if self.defins:
             i = 0
@@ -954,6 +978,7 @@ class Elems:
             self.delete_definitions()
             self.remove_fixed()
             self.insert_fixed()
+            # Do this after reinserting fixed types
             self.insert_definitions()
             self.set_fixed_term()
             self.expand_dic()
