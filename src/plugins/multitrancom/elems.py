@@ -86,8 +86,35 @@ class Same:
                        ]
         self.see_start = ['см.']
     
+    def run_wform_com_term_fixed(self):
+        # RU-EN: tick off => tick someone off
+        f = '[MClient] plugins.multitrancom.elems.Same.run_wform_com_term_fixed'
+        count = 0
+        i = 3
+        while i < len(self.blocks):
+            blocks = [self.blocks[i-3],self.blocks[i-2],self.blocks[i-1]
+                     ,self.blocks[i]
+                     ]
+            if self.is_same_semino(blocks):
+                if self.blocks[i-3].type_ == 'wform' \
+                and self.blocks[i-2].type_ == 'comment' \
+                and self.blocks[i-2].same == 0 \
+                and self.blocks[i-1].type_ == 'term' \
+                and self.blocks[i-1].same == 1 \
+                and self.blocks[i].type_ in self.fixed:
+                    count += 1
+                    ''' We change the type and SAME in order to further
+                        cover these blocks by 'Elems.unite_fixed_same'.
+                    '''
+                    self.blocks[i-2].same = 1
+                    self.blocks[i-1].type_ = 'comment'
+            i += 1
+        if count:
+            mes = _('{} matches').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
+    
     def run_com_term_speech(self):
-        # See RU-EN: endpoint => when denoting a ray, its endpoint
+        # RU-EN: endpoint => when denoting a ray, its endpoint
         f = '[MClient] plugins.multitrancom.elems.Same.run_com_term_speech'
         count = 0
         i = 2
@@ -533,6 +560,8 @@ class Same:
             self.run_com_term()
             # Do this after 'self.run_com_term'
             self.run_com_term_speech()
+            # Do this after 'self.run_com_term'
+            self.run_wform_com_term_fixed()
             self.set_rest_flying()
             self.debug()
             return self.blocks
