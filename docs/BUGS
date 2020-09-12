@@ -32,8 +32,6 @@ multitrancom:
   dictionary (Gruzovik) following it
 - plugins.multitran: eng-rus: knob: Биология: ручка: missing URLs as
   parts of preceding comments
-- plugins.multitrancom: eng-rus: tick off: "tick someone off": wrong
-  parsing
 - Test and fix getting non-terms (when everything is selectable)
 - logic, 817: logic.Order.prioritize_by: .index: ValueError
 - Widget is not shown immediately when using F2 -> Esc -> F2 (probably
