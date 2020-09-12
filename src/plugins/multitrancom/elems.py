@@ -660,14 +660,20 @@ class Elems:
             later since 'user' blocks can originally be of the 'term' or
             'correction' type.
         '''
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_useless_semi'
+        count = 0
         i = 1
         while i < len(self.blocks):
             if self.blocks[i-1].type_ == 'comment' \
             and self.blocks[i-1].text == ';' \
             and self.blocks[i].type_ == 'correction':
+                count += 1
                 del self.blocks[i-1]
                 i -= 1
             i += 1
+        if count:
+            mes = _('{} blocks have been deleted').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def set_semino(self):
         semino = 0
@@ -690,18 +696,24 @@ class Elems:
             We just fix this behavior. This also allows to skip user
             names without showing extra brackets.
         '''
+        f = '[MClient] plugins.multitrancom.elems.Elems.reassign_brackets'
+        count = 0
         i = 2
         while i < len(self.blocks):
             if self.blocks[i-2].text == '(' \
             and self.blocks[i].text == ')' \
             and self.blocks[i-1].type_ in ('comment','user','correction'
                                           ):
+                count += 2
                 self.blocks[i-1].text = '(' + self.blocks[i-1].text + ')'
                 del self.blocks[i-2]
                 i -= 1
                 del self.blocks[i]
                 i -= 1
             i += 1
+        if count:
+            mes = _('{} blocks have been deleted').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def expand_dic_file(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.expand_dic_file'
@@ -715,6 +727,7 @@ class Elems:
     
     def fix_thesaurus(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.fix_thesaurus'
+        count = 0
         for i in range(len(self.blocks)):
             if self.blocks[i].text in ('русский тезаурус'
                                       ,'английский тезаурус'
@@ -725,8 +738,12 @@ class Elems:
                 self.blocks[i].same = 1
                 if i + 1 < len(self.blocks):
                     if self.blocks[i+1].type_ == 'dic':
+                        count += 1
                         self.blocks[i], self.blocks[i+1] = \
                         self.blocks[i+1], self.blocks[i]
+        if count:
+            mes = _('{} matches').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def delete_phantom(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_phantom'
@@ -758,13 +775,11 @@ class Elems:
         if count:
             mes = _('{} blocks have been deleted').format(count)
             sh.objs.get_mes(f,mes,True).show_info()
-        else:
-            sh.com.rep_lazy(f)
     
     def delete_numeration(self):
         self.blocks = [block for block in self.blocks \
-                        if not re.match('^\d+\.$',block.text)
-                       ]
+                       if not re.match('^\d+\.$',block.text)
+                      ]
     
     def search_definition(self,block):
         f = '[MClient] plugins.multitrancom.elems.Elems.search_definition'
@@ -807,8 +822,6 @@ class Elems:
             mes = _('{} blocks have been deleted')
             mes = mes.format(len(self.defins))
             sh.objs.get_mes(f,mes,True).show_info()
-        else:
-            sh.com.rep_lazy(f)
     
     def delete_empty(self):
         ''' - Empty blocks are useless since we recreate fixed columns
@@ -841,17 +854,20 @@ class Elems:
         i = 0
         while i < len(self.blocks):
             if re.match(pattern,self.blocks[i].text):
-                del self.blocks[i]
                 count += 1
+                del self.blocks[i]
                 i -= 1
             i += 1
-        mes = _('{} blocks have been deleted').format(count)
-        sh.objs.get_mes(f,mes,True).show_info()
+        if count:
+            mes = _('{} blocks have been deleted').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def set_corrections(self):
         ''' Replace 'comment' with 'correction' in
             the 'correction-user-comment-user' structure.
         '''
+        f = '[MClient] plugins.multitrancom.elems.Elems.set_corrections'
+        count = 0
         if len(self.blocks) > 3:
             i = 3
             while i < len(self.blocks):
@@ -859,8 +875,12 @@ class Elems:
                 and self.blocks[i-2].type_ == 'user' \
                 and self.blocks[i-1].type_ == 'comment' \
                 and self.blocks[i].type_ == 'user':
+                    count += 1
                     self.blocks[i-1].type_ = 'correction'
                 i += 1
+        if count:
+            mes = _('{} matches').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def set_users(self):
         for block in self.blocks:
@@ -894,13 +914,13 @@ class Elems:
             while i < len(self.blocks):
                 if self.blocks[i].type_ == 'comment' \
                 and self.blocks[i].text == self.pattern + ':':
-                    del self.blocks[i]
                     count += 1
+                    del self.blocks[i]
                     i -= 1
                 i += 1
             if count:
                 mes = _('{} blocks have been deleted').format(count)
-                sh.objs.get_mes(f,mes,True).show_info()
+                sh.objs.get_mes(f,mes,True).show_debug()
         else:
             sh.com.rep_empty(f)
     
@@ -913,14 +933,20 @@ class Elems:
             'закрытая нуклеиновая кислота',
             'nucleoside reverse transcriptase inhibitors'.
         '''
+        f = '[MClient] plugins.multitrancom.elems.Elems.set_definitions'
+        count = 0
         HasWform = False
         for block in self.blocks:
             # The 'definition' type cannot precede word forms
             if block.type_ == 'wform':
                 if len(block.text) > 30 and HasWform:
+                    count += 1
                     block.type_ = 'definition'
                     block.same = 1
                 HasWform = True
+        if count:
+            mes = _('{} matches').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
     
     def expand_dic(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.expand_dic'

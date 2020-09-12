@@ -892,7 +892,7 @@ class PhraseTerma:
             result = self.dbc.fetchone()
             if result:
                 self.no2 = result[0]
-            mes = str(self.no2)
+            mes = 'NO: {}'.format(self.no2)
             sh.objs.get_mes(f,mes,True).show_debug()
         return self.no2
         
@@ -914,7 +914,7 @@ class PhraseTerma:
             else:
                 mes = _('Wrong input data!')
                 sh.objs.get_mes(f,mes,True).show_warning()
-            mes = str(self.no1)
+            mes = 'NO: {}'.format(self.no1)
             sh.objs.get_mes(f,mes,True).show_debug()
         return self.no1
         
@@ -924,7 +924,7 @@ class PhraseTerma:
         if self.no1 > 0 and self.no2 > 0:
             mes = _('Update DB, range {}-{}')
             mes = mes.format(self.no1,self.no2)
-            sh.objs.get_mes(f,mes,True).show_info()
+            sh.objs.get_mes(f,mes,True).show_debug()
             self.dbc.execute ('update BLOCKS set TERM=? where NO >= ? \
                                and NO < ?',('',self.no1,self.no2,)
                              )
