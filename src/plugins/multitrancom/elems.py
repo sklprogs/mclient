@@ -82,7 +82,7 @@ class Same:
         self.maxrows = maxrows
         self.see_end = ['(см.',' см.','см. также','см.также'
                        ,'смотри также','смотрите также',' see'
-                       ,'see also'
+                       ,'(see','see also'
                        ]
         self.see_start = ['см.']
     
