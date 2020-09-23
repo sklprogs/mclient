@@ -2,6 +2,8 @@ mclient:
 - 
 
 multitrancom:
+- RU-SP, партнер: wrong wform position
+- RU-SP, fumigar -> phrases: wrong SAME
 - RU-EN, set -> phrases: Move "Показаны первые 500 фраз" to the end
 - RU-EN: на фиг: wrong SAME for "; (нужно, сдалось) what for?"
 - RU-DE: есть -> 4. Региональное выражение: use a new line for the 1st
