@@ -38,6 +38,154 @@ from skl_shared.localize import _
     '''
 
 
+class Duplicates:
+    
+    def __init__(self,code,Debug=False):
+        self.code = code
+        self.Debug = Debug
+        self.end = []
+        self.poses = []
+        self.start = []
+        self.Success = True
+    
+    def run(self):
+        self.check()
+        self.find_poses()
+        self.delete_closing()
+        self.debug_poses()
+        self.get_borders()
+        self.debug_borders()
+        self.delete_borders()
+        return self.code
+    
+    def delete_borders(self):
+        f = '[MClient] plugins.dsl.tags.Duplicates.delete_borders'
+        if self.Success:
+            i = len(self.start) - 1
+            self.code = list(self.code)
+            while i >= 0:
+                self.code[self.start[i]:self.end[i]] = ''
+                i -= 1
+            self.code = ''.join(self.code)
+            mes = '"{}"'.format(self.code)
+            sh.objs.get_mes(f,mes,True).show_debug()
+        else:
+            sh.com.cancel(f)
+    
+    def debug_borders(self):
+        f = '[MClient] plugins.dsl.tags.Duplicates.debug_borders'
+        if self.Debug:
+            if self.Success:
+                fragms = []
+                nos = [i+1 for i in range(len(self.start))]
+                headers = ('NO','START','END','TEXT')
+                for i in range(len(self.start)):
+                    fragms.append(self.code[self.start[i]:self.end[i]])
+                fragms = ['"{}"'.format(fragm) for fragm in fragms]
+                iterable = [nos,self.start,self.end,fragms]
+                mes = sh.FastTable(iterable,headers).run()
+                sh.com.run_fast_debug(f,mes)
+            else:
+                sh.com.cancel(f)
+        else:
+            sh.com.rep_lazy(f)
+    
+    def get_borders(self):
+        f = '[MClient] plugins.dsl.tags.Duplicates.get_borders'
+        if self.Success:
+            for pos in self.poses:
+                pos1 = self._get_left(pos)
+                if str(pos1).isdigit():
+                    self.start.append(pos1)
+                    self.end.append(pos+1)
+        else:
+            sh.com.cancel(f)
+    
+    def _get_left(self,pos):
+        i = pos
+        while i >= 0:
+            if self.code[i] == '[':
+                return i
+            i -= 1
+    
+    def _get_right(self,pos):
+        i = pos + 2
+        while i < len(self.code):
+            if self.code[i] == ']':
+                return i
+            i += 1
+    
+    def debug_poses(self):
+        f = '[MClient] plugins.dsl.tags.Duplicates.debug_poses'
+        if self.Debug:
+            if self.Success:
+                left = []
+                right = []
+                fragms = []
+                for pos in self.poses:
+                    pos1 = self._get_left(pos)
+                    pos2 = self._get_right(pos)
+                    if str(pos1).isdigit() and str(pos2).isdigit():
+                        fragms.append(self.code[pos1:pos2+1])
+                mes = '; '.join(fragms)
+                sh.objs.get_mes(f,mes,True).show_debug()
+            else:
+                sh.com.cancel(f)
+        else:
+            sh.com.rep_lazy(f)
+    
+    def find_poses(self):
+        f = '[MClient] plugins.dsl.tags.Duplicates.find_poses'
+        if self.Success:
+            pos = 0
+            while True:
+                pos = self.code.find('][',pos)
+                if pos == -1:
+                    break
+                else:
+                    self.poses.append(pos)
+                    pos += 1
+        else:
+            sh.com.cancel(f)
+    
+    def check(self):
+        f = '[MClient] plugins.dsl.tags.Duplicates.check'
+        if not self.code:
+            self.Success = False
+            sh.com.rep_empty(f)
+        
+    def delete_closing(self):
+        f = '[MClient] plugins.dsl.tags.Duplicates.delete_closing'
+        if self.Success:
+            i = 0
+            deleted = []
+            while i < len(self.poses):
+                if self._is_closing_left(self.poses[i]) \
+                or self._is_closing_right(self.poses[i]):
+                    deleted.append(self.poses[i])
+                    del self.poses[i]
+                    i -= 1
+                i += 1
+            sh.objs.get_mes(f,deleted,True).show_debug()
+        else:
+            sh.com.cancel(f)
+    
+    def _is_closing_right(self,pos):
+        if pos + 2 < len(self.code):
+            if self.code[pos+2] == '/':
+                return True
+    
+    def _is_closing_left(self,pos):
+        if pos > 0:
+            code = self.code[:pos]
+            code = code[::-1]
+            pos1 = code.find('/')
+            pos2 = code.find('[')
+            if pos1 > -1 and pos1 < pos2:
+                return True
+
+
+
 class Block:
 
     def __init__(self):
@@ -330,9 +478,13 @@ class Tags:
 
 if __name__ == '__main__':
     f = '[MClient] plugins.dsl.tags.__main__'
-    #code = '{This is} some term\n\t[m1][c][trn][com]this is a comment[/com][/c] this is a term[/trn][/m]'
-    code = '{This is} some term\n\t[ref dict="Dic Title"]phrase[/ref]'    
+    code = '{This is} some term\n\t[m1][c][trn][com]this is a comment[/com][/c] this is a term[/trn][/m]'
+    '''
     itag = AnalyzeTag(code)
     itag.run()
     itag.debug()
+    '''
     #Tags(code,Debug=True).run()
+    mes = _('Original:\n"{}"\n\n').format(code)
+    mes += _('Final:\n"{}"').format(Duplicates(code,False).run())
+    sh.com.run_fast_debug(f,mes)
