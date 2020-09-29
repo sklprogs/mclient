@@ -6,6 +6,8 @@ import re
 import skl_shared.shared as sh
 from skl_shared.localize import _
 
+import plugins.dsl.cleanup as cu
+
 
 ''' A directory storing all DSL files.
     #NOTE: Do not forget to change this variable externally before
@@ -89,12 +91,6 @@ class DSL:
         self.get_index()
         timer.end()
     
-    def _delete_trash(self,text):
-        #TODO: Do we need this?
-        text = text.replace('[i]','').replace('[/i]','')
-        text = re.sub('\[lang id=\d+\]','',text)
-        return text.replace('[/lang]','')
-    
     def cleanup(self):
         f = '[MClient] plugins.dsl.get.DSL.cleanup'
         if self.Success:
@@ -173,7 +169,7 @@ class DSL:
                 i = pos + 1
                 while i < len(self.lst):
                     if self.lst[i].startswith('\t'):
-                        article.append(self.lst[i])
+                        article.append(cu.CleanUp(self.lst[i]).run())
                     else:
                         break
                     i += 1
@@ -264,7 +260,6 @@ class DSL:
                 if we do not store 'self.text'.
             '''
             if text:
-                text = self._delete_trash(text)
                 self.lst = text.splitlines()
             else:
                 self.Success = False

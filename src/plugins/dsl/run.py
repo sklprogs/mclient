@@ -3,8 +3,8 @@
 
 import skl_shared.shared as sh
 from skl_shared.localize import _
-import plugins.dsl.get   as gt
-import plugins.dsl.tags  as tg
+import plugins.dsl.get as gt
+import plugins.dsl.tags as tg
 import plugins.dsl.elems as el
 
 
