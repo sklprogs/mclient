@@ -27,6 +27,22 @@ class Tags:
         self.Success = True
         self.tagged = []
     
+    def _close_tag(self,tag):
+        f = '[MClient] plugins.dsl.tags.Tags._close_tag'
+        if tag in self.open:
+            self.open.remove(tag)
+        elif tag == 'm':
+            for item in self.open:
+                if re.match('m\d+',item):
+                    self.open.remove(item)
+        elif tag == 'ref':
+            for item in self.open:
+                if 'ref dict' in item:
+                    self.open.remove(item)
+        else:
+            mes = _('Tag "{}" has not been opened yet!').format(tag)
+            sh.objs.get_mes(f,mes,True).show_warning()
+    
     def _get_tag_name(self,tag):
         tag = tag[:-1]
         tag = tag.replace('[','',1)
@@ -43,12 +59,7 @@ class Tags:
                 if fragm.startswith('['):
                     tag = self._get_tag_name(fragm)
                     if fragm.startswith('[/'):
-                        if tag in self.open:
-                            self.open.remove(tag)
-                        else:
-                            mes = _('Tag "{}" has not been opened yet!')
-                            mes = mes.format(tag)
-                            sh.objs.get_mes(f,mes,True).show_warning()
+                        self._close_tag(tag)
                     elif not tag in self.open:
                         self.open.append(tag)
                 else:
