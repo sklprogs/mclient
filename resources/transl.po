@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-01 19:22+0300\n"
-"PO-Revision-Date: 2020-10-01 19:25+0300\n"
+"POT-Creation-Date: 2020-10-02 01:54+0300\n"
+"PO-Revision-Date: 2020-10-02 01:56+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -1140,7 +1140,8 @@ msgstr "АББРЕВИАТУРА"
 
 #: mclient/src/logic.py:787 mclient/src/mclient.py:2257
 #: mclient/src/mclient.py:2269 mclient/src/mclient.py:2281
-#: mclient/src/mclient.py:2293 mclient/src/plugins/multitrancom/pairs.py:2790
+#: mclient/src/mclient.py:2293 mclient/src/plugins/dsl/tags2.py:124
+#: mclient/src/plugins/multitrancom/pairs.py:2790
 #: mclient/src/plugins/multitrancom/pairs.py:2810
 #: mclient/src/plugins/multitrancom/run.py:105
 #: mclient/src/plugins/multitrancom/run.py:116
@@ -1821,12 +1822,13 @@ msgid "END"
 msgstr "КОНЕЦ"
 
 #: mclient/src/plugins/dsl/tags.py:271 mclient/src/plugins/dsl/tags.py:422
+#: mclient/src/plugins/dsl/tags2.py:107 mclient/src/plugins/dsl/tags2.py:270
 msgid "TEXT"
 msgstr "ТЕКСТ"
 
 #: mclient/src/plugins/dsl/tags.py:334
 msgid "No such tag: \"{}\"!"
-msgstr "Нет такого тэга: \"{}\"!"
+msgstr "Нет такого тега: \"{}\"!"
 
 #: mclient/src/plugins/dsl/tags.py:488
 msgid ""
@@ -1839,7 +1841,6 @@ msgstr ""
 "\n"
 
 #: mclient/src/plugins/dsl/tags.py:489
-#| msgid "File: \"{}\""
 msgid ""
 "Final:\n"
 "\"{}\""
@@ -1847,20 +1848,40 @@ msgstr ""
 "Итог:\n"
 "\"{}\""
 
-#: mclient/src/plugins/dsl/tags2.py:49
-#| msgid "File \"{}\" has not been found!"
+#: mclient/src/plugins/dsl/tags2.py:107 mclient/src/plugins/dsl/tags2.py:270
+msgid "NO"
+msgstr "№"
+
+#: mclient/src/plugins/dsl/tags2.py:107
+msgid "TYPES"
+msgstr "ТИПЫ"
+
+#: mclient/src/plugins/dsl/tags2.py:113
+msgid "Blocks:"
+msgstr "Блоки:"
+
+#: mclient/src/plugins/dsl/tags2.py:164
+#| msgid "Number of blocks: {}"
+msgid "Ignore blocks: {}"
+msgstr "Игнорируемые блоки: {}"
+
+#: mclient/src/plugins/dsl/tags2.py:211
 msgid "Tag \"{}\" has not been opened yet!"
 msgstr "Тег \"{}\" еще не был открыт!"
 
-#: mclient/src/plugins/dsl/tags2.py:77
+#: mclient/src/plugins/dsl/tags2.py:256
 msgid "Code:"
 msgstr "Код:"
 
-#: mclient/src/plugins/dsl/tags2.py:84
+#: mclient/src/plugins/dsl/tags2.py:263
 msgid "Fragments:"
 msgstr "Фрагменты:"
 
-#: mclient/src/plugins/dsl/tags2.py:97
+#: mclient/src/plugins/dsl/tags2.py:270
+msgid "TAGS"
+msgstr "ТЕГИ"
+
+#: mclient/src/plugins/dsl/tags2.py:276
 msgid "Tags:"
 msgstr "Теги:"
 
@@ -14900,7 +14921,7 @@ msgstr "Неизвестный словарь \"{}\"!"
 
 #: mclient/src/plugins/multitrancom/tags.py:167
 msgid "Tag: \"{}\""
-msgstr "Тэг: \"{}\""
+msgstr "Тег: \"{}\""
 
 #: mclient/src/plugins/multitrancom/utils.py:137
 msgid "Dead languages: {}"
@@ -14936,7 +14957,7 @@ msgstr "URL, вызвавшие ошибки:"
 
 #: mclient/src/plugins/multitrancom/utils.py:552
 msgid "{} tags have been extracted"
-msgstr "{} тэгов извлечено"
+msgstr "{} тегов извлечено"
 
 #: mclient/src/plugins/multitrancom/utils.py:614
 msgid "{} URLs have been extracted"
@@ -15949,7 +15970,7 @@ msgstr "Выделение отсутствует!"
 
 #: skl_shared/src/shared.py:1036
 msgid "{} tags to assign"
-msgstr "Создание {} тэгов"
+msgstr "Создание {} тегов"
 
 #: skl_shared/src/shared.py:1042
 msgid "Spelling seems to be correct."
