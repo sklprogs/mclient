@@ -100,9 +100,9 @@ class Plugin:
         return gt.Suggest(search).run()
     
     def request(self,search='',url=''):
-        iget      = gt.Get(search)
+        iget = gt.Get(search)
         self.text = iget.run()
-        self.htm  = iget.htm
+        self.htm = iget.htm
         self.text = cu.CleanUp(self.text).run()
         if self.text is None:
             self.text = ''
