@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-12 00:44+0300\n"
-"PO-Revision-Date: 2020-09-12 00:44+0300\n"
+"POT-Creation-Date: 2020-10-01 19:22+0300\n"
+"PO-Revision-Date: 2020-10-01 19:25+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -37,8 +37,8 @@ msgstr "Не удалось найти: {}"
 #: skl_shared/src/logic.py:121 skl_shared/src/logic.py:907
 #: skl_shared/src/logic.py:2389 skl_shared/src/shared.py:1429
 #: skl_shared/src/shared.py:2762 skl_shared/src/shared.py:2775
-#: skl_shared/src/shared.py:3304 skl_shared/src/shared.py:3690
-#: skl_shared/src/shared.py:3769
+#: skl_shared/src/shared.py:3304 skl_shared/src/shared.py:3691
+#: skl_shared/src/shared.py:3771
 msgid ""
 "An unknown mode \"{}\"!\n"
 "\n"
@@ -85,8 +85,8 @@ msgstr "Удаление записей статьи №{} из {}"
 #: skl_shared/src/logic.py:3195 skl_shared/src/logic.py:3262
 #: skl_shared/src/logic.py:4105 skl_shared/src/logic.py:4879
 #: skl_shared/src/shared.py:687 skl_shared/src/shared.py:2538
-#: skl_shared/src/shared.py:3236 skl_shared/src/shared.py:3683
-#: skl_shared/src/shared.py:4554
+#: skl_shared/src/shared.py:3236 skl_shared/src/shared.py:3684
+#: skl_shared/src/shared.py:4586
 msgid "Wrong input data!"
 msgstr "Недопустимые входные данные!"
 
@@ -1169,8 +1169,8 @@ msgid "Phrase"
 msgstr "Фраза"
 
 #: mclient/src/logic.py:814 mclient/src/logic.py:820
-#: mclient/src/mclient.py:2585 mclient/src/plugins/dsl/get.py:186
-#: mclient/src/plugins/dsl/tags.py:259
+#: mclient/src/mclient.py:2585 mclient/src/plugins/dsl/cleanup.py:109
+#: mclient/src/plugins/dsl/get.py:182 mclient/src/plugins/dsl/tags.py:407
 #: mclient/src/plugins/multitrancom/utils.py:165
 #: mclient/src/plugins/multitrancom/utils.py:263
 #: mclient/src/plugins/multitrancom/utils.py:343
@@ -1189,7 +1189,7 @@ msgstr "Фраза"
 #: skl_shared/src/logic.py:1107 skl_shared/src/logic.py:1126
 #: skl_shared/src/logic.py:2532 skl_shared/src/logic.py:2552
 #: skl_shared/src/logic.py:4757 skl_shared/src/logic.py:4775
-#: skl_shared/src/logic.py:4819 skl_shared/src/shared.py:4506
+#: skl_shared/src/logic.py:4819 skl_shared/src/shared.py:4538
 msgid "The condition \"{}\" is not observed!"
 msgstr "Условие \"{}\" не выполнено!"
 
@@ -1696,6 +1696,38 @@ msgstr "Ничего не найдено (игнорировано словар�
 msgid "Nothing has been found."
 msgstr "Ничего не найдено."
 
+#: mclient/src/plugins/dsl/cleanup.py:51
+msgid "Number of invalid tag-like structures: {}"
+msgstr "Число некорректных тегоподобных структур: {}"
+
+#: mclient/src/plugins/dsl/cleanup.py:56
+msgid "Tag-like structures are invalid!"
+msgstr "Некорректные тегоподобные структуры!"
+
+#: mclient/src/plugins/dsl/cleanup.py:115
+#: mclient/src/plugins/multitrancom/elems.py:113
+#: mclient/src/plugins/multitrancom/elems.py:137
+#: mclient/src/plugins/multitrancom/elems.py:161
+#: mclient/src/plugins/multitrancom/elems.py:179
+#: mclient/src/plugins/multitrancom/elems.py:191
+#: mclient/src/plugins/multitrancom/elems.py:210
+#: mclient/src/plugins/multitrancom/elems.py:253
+#: mclient/src/plugins/multitrancom/elems.py:275
+#: mclient/src/plugins/multitrancom/elems.py:327
+#: mclient/src/plugins/multitrancom/elems.py:350
+#: mclient/src/plugins/multitrancom/elems.py:380
+#: mclient/src/plugins/multitrancom/elems.py:406
+#: mclient/src/plugins/multitrancom/elems.py:426
+#: mclient/src/plugins/multitrancom/elems.py:447
+#: mclient/src/plugins/multitrancom/elems.py:485
+#: mclient/src/plugins/multitrancom/elems.py:505
+#: mclient/src/plugins/multitrancom/elems.py:518
+#: mclient/src/plugins/multitrancom/elems.py:774
+#: mclient/src/plugins/multitrancom/elems.py:911
+#: mclient/src/plugins/multitrancom/elems.py:977
+msgid "{} matches"
+msgstr "{} совпадений"
+
 #: mclient/src/plugins/dsl/elems.py:170
 #: mclient/src/plugins/stardict/elems.py:143
 #: mclient/src/plugins/stardict/tags.py:266
@@ -1706,27 +1738,27 @@ msgstr "Блоки не из БД:"
 msgid "{} phrases"
 msgstr "{} фраз"
 
-#: mclient/src/plugins/dsl/get.py:49
+#: mclient/src/plugins/dsl/get.py:51
 msgid "Dictionaries to search in ({}/{}): {}"
 msgstr "Словари для поиска ({}/{}): {}"
 
-#: mclient/src/plugins/dsl/get.py:121 mclient/src/plugins/dsl/get.py:141
+#: mclient/src/plugins/dsl/get.py:117 mclient/src/plugins/dsl/get.py:137
 msgid "The file \"{}\" is too short ({} lines)!"
 msgstr "Файл \"{}\" слишком короткий ({} строк)!"
 
-#: mclient/src/plugins/dsl/get.py:208
+#: mclient/src/plugins/dsl/get.py:204
 msgid "No search results for \"{}\" in \"{}\""
 msgstr "Нет совпадений для \"{}\" в \"{}\""
 
-#: mclient/src/plugins/dsl/get.py:232
+#: mclient/src/plugins/dsl/get.py:228
 msgid "Dictionary \"{}\" ({}) has {} records"
 msgstr "В словаре \"{}\" ({}) {} записей"
 
-#: mclient/src/plugins/dsl/get.py:252
+#: mclient/src/plugins/dsl/get.py:248
 msgid "Load \"{}\""
 msgstr "Загрузка \"{}\""
 
-#: mclient/src/plugins/dsl/get.py:260
+#: mclient/src/plugins/dsl/get.py:256
 #: mclient/src/plugins/multitrandem/utils.py:692
 #: mclient/src/plugins/multitrandem/utils.py:735
 #: mclient/src/plugins/multitrandem/utils.py:780
@@ -1742,7 +1774,7 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: mclient/src/plugins/dsl/get.py:279 mclient/src/plugins/dsl/get.py:280
+#: mclient/src/plugins/dsl/get.py:274 mclient/src/plugins/dsl/get.py:275
 #: mclient/src/plugins/dsl/run.py:50 mclient/src/plugins/dsl/run.py:54
 #: mclient/src/plugins/dsl/run.py:82 mclient/src/plugins/dsl/run.py:86
 #: mclient/src/plugins/multitrandem/run.py:122
@@ -1754,74 +1786,95 @@ msgstr ""
 msgid "Any"
 msgstr "Любой"
 
-#: mclient/src/plugins/dsl/get.py:285
+#: mclient/src/plugins/dsl/get.py:280
 msgid "Untitled dictionary"
 msgstr "Безымянный словарь"
 
-#: mclient/src/plugins/dsl/get.py:346
+#: mclient/src/plugins/dsl/get.py:341
 msgid "Index has {} entries"
 msgstr "{} вхождений в индексе"
 
-#: mclient/src/plugins/dsl/get.py:389
+#: mclient/src/plugins/dsl/get.py:384
 #: mclient/src/plugins/multitrandem/get.py:1315
 #: mclient/src/plugins/stardict/get.py:510
 msgid "{} offline dictionaries are available"
 msgstr "Доступно {} локальных словарей"
 
-#: mclient/src/plugins/dsl/get.py:404
+#: mclient/src/plugins/dsl/get.py:399
 msgid "Load DSL dictionaries ({}/{})"
 msgstr "Загрузка словарей DSL ({}/{})"
 
-#: mclient/src/plugins/dsl/get.py:413 mclient/src/plugins/stardict/get.py:533
+#: mclient/src/plugins/dsl/get.py:408 mclient/src/plugins/stardict/get.py:533
 msgid "Dictionaries loaded: {}/{}"
 msgstr "Загружено словарей: {}/{}"
 
-#: mclient/src/plugins/dsl/tags.py:123 mclient/src/plugins/dsl/tags.py:274
+#: mclient/src/plugins/dsl/tags.py:271 mclient/src/plugins/dsl/tags.py:422
 msgid "TYPE"
 msgstr "ТИП"
 
-#: mclient/src/plugins/dsl/tags.py:123
+#: mclient/src/plugins/dsl/tags.py:271
 msgid "START"
 msgstr "НАЧАЛО"
 
-#: mclient/src/plugins/dsl/tags.py:123
+#: mclient/src/plugins/dsl/tags.py:271
 msgid "END"
 msgstr "КОНЕЦ"
 
-#: mclient/src/plugins/dsl/tags.py:123 mclient/src/plugins/dsl/tags.py:274
+#: mclient/src/plugins/dsl/tags.py:271 mclient/src/plugins/dsl/tags.py:422
 msgid "TEXT"
 msgstr "ТЕКСТ"
 
-#: mclient/src/plugins/dsl/tags.py:186
+#: mclient/src/plugins/dsl/tags.py:334
 msgid "No such tag: \"{}\"!"
 msgstr "Нет такого тэга: \"{}\"!"
+
+#: mclient/src/plugins/dsl/tags.py:488
+msgid ""
+"Original:\n"
+"\"{}\"\n"
+"\n"
+msgstr ""
+"Оригинал:\n"
+"\"{}\"\n"
+"\n"
+
+#: mclient/src/plugins/dsl/tags.py:489
+#| msgid "File: \"{}\""
+msgid ""
+"Final:\n"
+"\"{}\""
+msgstr ""
+"Итог:\n"
+"\"{}\""
+
+#: mclient/src/plugins/dsl/tags2.py:49
+#| msgid "File \"{}\" has not been found!"
+msgid "Tag \"{}\" has not been opened yet!"
+msgstr "Тег \"{}\" еще не был открыт!"
+
+#: mclient/src/plugins/dsl/tags2.py:77
+msgid "Code:"
+msgstr "Код:"
+
+#: mclient/src/plugins/dsl/tags2.py:84
+msgid "Fragments:"
+msgstr "Фрагменты:"
+
+#: mclient/src/plugins/dsl/tags2.py:97
+msgid "Tags:"
+msgstr "Теги:"
 
 #: mclient/src/plugins/multitrancom/cleanup.py:54
 msgid "Malformed HTML code!"
 msgstr "Некорректный код HTML!"
 
-#: mclient/src/plugins/multitrancom/elems.py:99
-#: mclient/src/plugins/multitrancom/elems.py:111
-#: mclient/src/plugins/multitrancom/elems.py:130
-#: mclient/src/plugins/multitrancom/elems.py:173
-#: mclient/src/plugins/multitrancom/elems.py:195
-#: mclient/src/plugins/multitrancom/elems.py:247
-#: mclient/src/plugins/multitrancom/elems.py:270
-#: mclient/src/plugins/multitrancom/elems.py:300
-#: mclient/src/plugins/multitrancom/elems.py:326
-#: mclient/src/plugins/multitrancom/elems.py:346
-#: mclient/src/plugins/multitrancom/elems.py:367
-#: mclient/src/plugins/multitrancom/elems.py:405
-#: mclient/src/plugins/multitrancom/elems.py:425
-#: mclient/src/plugins/multitrancom/elems.py:438
-msgid "{} matches"
-msgstr "{} совпадений"
-
-#: mclient/src/plugins/multitrancom/elems.py:588
-#: mclient/src/plugins/multitrancom/elems.py:703
-#: mclient/src/plugins/multitrancom/elems.py:753
-#: mclient/src/plugins/multitrancom/elems.py:794
-#: mclient/src/plugins/multitrancom/elems.py:848
+#: mclient/src/plugins/multitrancom/elems.py:673
+#: mclient/src/plugins/multitrancom/elems.py:704
+#: mclient/src/plugins/multitrancom/elems.py:744
+#: mclient/src/plugins/multitrancom/elems.py:805
+#: mclient/src/plugins/multitrancom/elems.py:851
+#: mclient/src/plugins/multitrancom/elems.py:891
+#: mclient/src/plugins/multitrancom/elems.py:951
 msgid "{} blocks have been deleted"
 msgstr "{} блоков удалено"
 
@@ -14910,11 +14963,11 @@ msgstr "Удалено {} дубликатов"
 msgid "The following dictionaries do not have short titles:"
 msgstr "У следующих словарей нет сокращенных названий:"
 
-#: mclient/src/plugins/multitrandem/get.py:66 skl_shared/src/shared.py:4298
+#: mclient/src/plugins/multitrandem/get.py:66 skl_shared/src/shared.py:4330
 msgid "Yes"
 msgstr "Да"
 
-#: mclient/src/plugins/multitrandem/get.py:68 skl_shared/src/shared.py:4299
+#: mclient/src/plugins/multitrandem/get.py:68 skl_shared/src/shared.py:4331
 msgid "No"
 msgstr "Нет"
 
@@ -15051,7 +15104,7 @@ msgstr "Найдены статьи: {}"
 msgid "No articles have been found!"
 msgstr "Статьи не найдены!"
 
-#: mclient/src/plugins/multitrandem/tags.py:47 skl_shared/src/shared.py:4551
+#: mclient/src/plugins/multitrandem/tags.py:47 skl_shared/src/shared.py:4583
 msgid "Wrong input data: \"{}\""
 msgstr "Недопустимые входные данные: \"{}\"!"
 
@@ -15090,7 +15143,7 @@ msgstr "Страницы:"
 #: mclient/src/plugins/multitrandem/tests.py:134
 #: mclient/src/plugins/multitrandem/tests.py:146
 #: mclient/src/plugins/multitrandem/tests.py:147
-#: mclient/src/plugins/multitrandem/tests.py:148 skl_shared/src/shared.py:4470
+#: mclient/src/plugins/multitrandem/tests.py:148 skl_shared/src/shared.py:4502
 msgid "N/A"
 msgstr "Н/Д"
 
@@ -15339,26 +15392,26 @@ msgstr "Сработало!"
 
 #: skl_shared/src/gui.py:1260 skl_shared/src/logic.py:404
 #: skl_shared/src/logic.py:449 skl_shared/src/logic.py:972
-#: skl_shared/src/logic.py:5097 skl_shared/src/shared.py:4207
+#: skl_shared/src/logic.py:5097 skl_shared/src/shared.py:4239
 msgid "WARNING"
 msgstr "ПРЕДУПРЕЖДЕНИЕ"
 
 #: skl_shared/src/gui.py:1267 skl_shared/src/logic.py:443
-#: skl_shared/src/logic.py:972 skl_shared/src/shared.py:4199
+#: skl_shared/src/logic.py:972 skl_shared/src/shared.py:4231
 msgid "ERROR"
 msgstr "ОШИБКА"
 
 #: skl_shared/src/gui.py:1274 skl_shared/src/logic.py:406
-#: skl_shared/src/logic.py:467 skl_shared/src/shared.py:4232
-#: skl_shared/src/shared.py:4436
+#: skl_shared/src/logic.py:467 skl_shared/src/shared.py:4264
+#: skl_shared/src/shared.py:4468
 msgid "QUESTION"
 msgstr "ВОПРОС"
 
 #: skl_shared/src/gui.py:1281 skl_shared/src/logic.py:402
 #: skl_shared/src/logic.py:427 skl_shared/src/logic.py:455
 #: skl_shared/src/logic.py:950 skl_shared/src/logic.py:994
-#: skl_shared/src/logic.py:5105 skl_shared/src/shared.py:4216
-#: skl_shared/src/shared.py:4224
+#: skl_shared/src/logic.py:5105 skl_shared/src/shared.py:4248
+#: skl_shared/src/shared.py:4256
 msgid "INFO"
 msgstr "ИНФОРМАЦИЯ"
 
@@ -15461,7 +15514,7 @@ msgid "Dictionary \"{}\": Incorrect line #{}: \"{}\"!"
 msgstr "Словарь \"{}\": Неправильная строка №{}: \"{}\"!"
 
 #: skl_shared/src/logic.py:1225 skl_shared/src/logic.py:2064
-#: skl_shared/src/shared.py:3402 skl_shared/src/shared.py:4114
+#: skl_shared/src/shared.py:3402 skl_shared/src/shared.py:4146
 msgid "File \"{}\" has not been found!"
 msgstr "Файл \"{}\" не найден!"
 
@@ -15913,7 +15966,7 @@ msgid "Close this window"
 msgstr "Закрыть это окно"
 
 #: skl_shared/src/shared.py:1178 skl_shared/src/shared.py:1674
-#: skl_shared/src/shared.py:3101 skl_shared/src/shared.py:4314
+#: skl_shared/src/shared.py:3101 skl_shared/src/shared.py:4346
 msgid "Reject and close"
 msgstr "Отказаться и закрыть"
 
@@ -15922,8 +15975,8 @@ msgid "Restore the text"
 msgstr "Восстановить текст"
 
 #: skl_shared/src/shared.py:1194 skl_shared/src/shared.py:1688
-#: skl_shared/src/shared.py:3109 skl_shared/src/shared.py:4306
-#: skl_shared/src/shared.py:4320
+#: skl_shared/src/shared.py:3109 skl_shared/src/shared.py:4338
+#: skl_shared/src/shared.py:4352
 msgid "Accept and close"
 msgstr "Принять и закрыть"
 
@@ -15974,63 +16027,67 @@ msgstr "Элемент \"{}\" не в списке!"
 msgid "Set the geometry to \"{}x{}+{}+{}\""
 msgstr "Изменение геометрии виджета на \"{}x{}+{}+{}\""
 
-#: skl_shared/src/shared.py:3793
+#: skl_shared/src/shared.py:3788
+msgid "Widget width ({}) should not exceed screen width ({})!"
+msgstr "Ширина виджета ({}) не должна превышать ширины экрана ({})!"
+
+#: skl_shared/src/shared.py:3799
+msgid "Widget height ({}) should not exceed screen height ({})!"
+msgstr "Длина виджета ({}) не должна превышать длины экрана ({})!"
+
+#: skl_shared/src/shared.py:3828
 msgid "Widget 1 geometry: {}x{}+{}+{}"
 msgstr "Геометрия виджета 1: {}x{}+{}+{}"
 
-#: skl_shared/src/shared.py:3799
+#: skl_shared/src/shared.py:3834
 msgid "Widget 2 geometry: {}x{}+{}+{}"
 msgstr "Геометрия виджета 2: {}x{}+{}+{}"
 
-#: skl_shared/src/shared.py:3896
+#: skl_shared/src/shared.py:3931
 msgid "Wrong font: \"{}\"!"
 msgstr "Неправильный шрифт: \"{}\"!"
 
-#: skl_shared/src/shared.py:3946
+#: skl_shared/src/shared.py:3981
 msgid "Save geometry: {}"
 msgstr "Сохранение геометрии: {}"
 
-#: skl_shared/src/shared.py:3955
+#: skl_shared/src/shared.py:3990
 msgid "Restore geometry: {}"
 msgstr "Восстановление геометрии: {}"
 
-#: skl_shared/src/shared.py:3959
-msgid "Failed to restore geometry!"
-msgstr "Не удалось восстановить геометрию!"
-
-#: skl_shared/src/shared.py:3977
+#: skl_shared/src/shared.py:4009
 msgid "Failed to change window properties!"
 msgstr "Не удалось изменить свойства окна!"
 
-#: skl_shared/src/shared.py:4062
+#: skl_shared/src/shared.py:4094
 msgid "Failed to get the window handle!"
 msgstr "Не удалось получить дескриптор окна!"
 
-#: skl_shared/src/shared.py:4173 skl_shared/src/shared.py:4515
+#: skl_shared/src/shared.py:4205 skl_shared/src/shared.py:4547
 msgid "Test:"
 msgstr "Тест:"
 
-#: skl_shared/src/shared.py:4302
+#: skl_shared/src/shared.py:4334
 msgid "Cancel"
 msgstr "Отмена"
 
-#: skl_shared/src/shared.py:4482
+#: skl_shared/src/shared.py:4514
 msgid "SECTION"
 msgstr "СЕКЦИЯ"
 
-#: skl_shared/src/shared.py:4482
+#: skl_shared/src/shared.py:4514
 msgid "KEY"
 msgstr "КЛЮЧ"
 
-#: skl_shared/src/shared.py:4482
+#: skl_shared/src/shared.py:4514
 msgid "VALUE"
 msgstr "ЗНАЧЕНИЕ"
 
-#: skl_shared/src/shared.py:4502
+#: skl_shared/src/shared.py:4534
 msgid "An unknown color \"{}\"!"
 msgstr "Неизвестный цвет \"{}\"!"
 
-#: skl_shared/src/shared.py:4530
+#: skl_shared/src/shared.py:4562
 msgid ""
 "The operation has failed!\n"
 "\n"
@@ -16040,7 +16097,7 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: skl_shared/src/shared.py:4547
+#: skl_shared/src/shared.py:4579
 msgid "Failed to enable key combination \"{}\"!"
 msgstr "Не удалось задействовать сочетание клавиш \"{}\"!"
 
@@ -16187,6 +16244,9 @@ msgstr ""
 #: skl_shared/src/tests.py:1127
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
+
+#~ msgid "Failed to restore geometry!"
+#~ msgstr "Не удалось восстановить геометрию!"
 
 #~ msgid "Matches: {}"
 #~ msgstr "Совпадений: {}"
