@@ -109,8 +109,8 @@ class Plugin:
             self.blocks += tg.Tags (code    = code
                                    ,Debug   = self.Debug
                                    ,maxrows = self.maxrows
+                                   ,dicname = iarticle.dic
                                    ).run()
-            #TODO: Add a dictionary block and make it the first one
         self.htm = '\n'.join(htm)
         texts = [block.text for block in self.blocks if block.text]
         self.text = sh.List(texts).space_items()

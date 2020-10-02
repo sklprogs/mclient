@@ -145,6 +145,7 @@ class Tags:
             blocks += tg.Tags (code    = code
                               ,Debug   = DEBUG
                               ,maxrows = 0
+                              ,dicname = iarticle.dic
                               ).run()
     
     def analyze_tag(self):

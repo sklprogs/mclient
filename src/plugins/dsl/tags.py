@@ -86,12 +86,26 @@ class Tag:
 
 class Tags:
     
-    def __init__(self,code,Debug=False,maxrows=0):
+    def __init__(self,code,dicname='',Debug=False,maxrows=0):
         self.set_values()
         self.all_prior = [i for i in range(len(self.all_types))]
         self.code = code
         self.Debug = Debug
+        self.dicname = dicname
         self.maxrows = maxrows
+    
+    def set_dic_block(self):
+        f = '[MClient] plugins.dsl.tags.Tags.set_dic_block'
+        if self.Success:
+            if self.blocks:
+                block = Block()
+                block.text = block.dicf = block.dic = self.dicname
+                block.type_ = 'dic'
+                self.blocks.insert(0,block)
+            else:
+                sh.com.rep_lazy(f)
+        else:
+            sh.com.cancel(f)
     
     def set_values(self):
         self.all_types = ['term','dic','wform','transc','comment'
@@ -336,6 +350,7 @@ class Tags:
         self.delete_empty()
         self.rename_types()
         self.set_blocks()
+        self.set_dic_block()
         self.debug()
         return self.blocks
 
