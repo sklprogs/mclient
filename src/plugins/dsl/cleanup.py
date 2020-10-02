@@ -145,10 +145,6 @@ class CleanUp:
         if self.Success:
             while '  ' in self.text:
                 self.text = self.text.replace('  ',' ')
-            self.text = self.text.replace('[i]','')
-            self.text = self.text.replace('[/i]','')
-            self.text = re.sub('\[lang id=\d+\]','',self.text)
-            self.text = self.text.replace('[/lang]','')
         else:
             sh.com.cancel(f)
     

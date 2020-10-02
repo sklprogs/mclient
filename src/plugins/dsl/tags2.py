@@ -169,7 +169,7 @@ class Tags:
     def keep_useful(self):
         f = '[MClient] plugins.dsl.tags.Tags.keep_useful'
         if self.Success:
-            useful = ('trn','term','com','ex','p','wform','ref','t')
+            useful = ('com','ex','i','p','ref','t','term','trn','wform')
             for item in self.tagged:
                 item.tags = [tag for tag in item.tags \
                              if tag in useful or 'ref dict' in tag
@@ -184,7 +184,7 @@ class Tags:
                 for i in range(len(item.tags)):
                     if item.tags[i] == 'trn':
                         item.tags[i] = 'term'
-                    elif item.tags[i] in ('com','ex'):
+                    elif item.tags[i] in ('com','ex','i'):
                         item.tags[i] = 'comment'
                     elif item.tags[i] == 'p':
                         item.tags[i] = 'wform'
@@ -206,6 +206,10 @@ class Tags:
         elif tag == 'ref':
             for item in self.open:
                 if 'ref dict' in item:
+                    self.open.remove(item)
+        elif tag == 'lang':
+            for item in self.open:
+                if 'lang id' in item:
                     self.open.remove(item)
         else:
             mes = _('Tag "{}" has not been opened yet!').format(tag)
