@@ -89,6 +89,11 @@ class Elems:
             self.Success = False
             sh.com.rep_empty(f)
     
+    def delete_trash(self):
+        self.blocks = [block for block in self.blocks \
+                       if block.text != ','
+                      ]
+    
     def divide_block(self):
         sep1 = ' || '
         sep2 = '; '
@@ -127,6 +132,7 @@ class Elems:
         if self.Success:
             self.divide_block()
             self.set_phrase_dic()
+            self.delete_trash()
             self.add_space()
             self.fill()
             self.fill_term()
