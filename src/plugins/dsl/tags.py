@@ -94,8 +94,8 @@ class Tags:
         self.maxrows = maxrows
     
     def set_values(self):
-        self.all_types = ['term','dic','wform','transc','phrase'
-                         ,'comment'
+        self.all_types = ['term','dic','wform','transc','comment'
+                         ,'phrase'
                          ]
         self.blocks = []
         self.fragms = []
@@ -163,6 +163,7 @@ class Tags:
                     i -= 1
                 i += 1
             if deleted:
+                deleted = sorted(set(deleted))
                 deleted = ['"{}"'.format(item) for item in deleted]
                 deleted = ', '.join(deleted)
                 mes = _('Ignore blocks: {}').format(deleted)
@@ -194,7 +195,8 @@ class Tags:
                         item.tags[i] = 'wform'
                     elif item.tags[i] == 't':
                         item.tags[i] = 'transc'
-                    elif 'ref dict' in item.tags[i]:
+                    elif item.tags[i] == 'ref' \
+                    or 'ref dict' in item.tags[i]:
                         item.tags[i] = 'phrase'
         else:
             sh.com.cancel(f)
