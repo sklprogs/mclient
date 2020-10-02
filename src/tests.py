@@ -94,6 +94,14 @@ class Block:
 
 class Get:
     
+    def run_dsl(self):
+        f = '[MClient] tests.Get.run_dsl'
+        import plugins.dsl.get as gt
+        gt.PATH = sh.Home('mclient').add_config('dics')
+        gt.Get (pattern = 'computer'
+               ,Debug   = DEBUG
+               ).run()
+    
     def run_multitrancom(self):
         f = '[MClient] tests.Get.run_multitrancom'
         import plugins.multitrancom.get as gt
@@ -112,8 +120,8 @@ class Get:
         import logic as lg
         import plugins.stardict.get as sd
         #search = 'компьютер'
-        search  = 'computer'
-        timer   = sh.Timer(f)
+        search = 'computer'
+        timer = sh.Timer(f)
         timer.start()
         result = sd.Get(search).run()
         timer.end()
@@ -125,12 +133,18 @@ class Tags:
     
     def run_dsl(self):
         f = '[MClient] tests.Tags.run_dsl'
-        import plugins.dsl.get
-        import plugins.dsl.tags
-        plugins.dsl.get.PATH = sh.Home('mclient').add_config('dics')
-        tag_lst = plugins.dsl.get.Get('accounting').run()
-        plugins.dsl.tags.Tags (lst   = tag_lst
-                              ,Debug = DEBUG
+        import plugins.dsl.get as gt
+        import plugins.dsl.cleanup as cu
+        import plugins.dsl.tags as tg
+        gt.PATH = sh.Home('mclient').add_config('dics')
+        articles = gt.Get('computer').run()
+        blocks = []
+        for iarticle in articles:
+            code = cu.CleanUp(iarticle.code).run()
+            code = cu.TagLike(code).run()
+            blocks += tg.Tags (code    = code
+                              ,Debug   = DEBUG
+                              ,maxrows = 0
                               ).run()
     
     def analyze_tag(self):
@@ -586,8 +600,9 @@ if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sh.com.start()
     #Get().run_multitrancom()
-    #Tags().run_dsl()
-    Tags().run_multitrancom()
+    #Get().run_dsl()
+    Tags().run_dsl()
+    #Tags().run_multitrancom()
     #Tags().run_stardict()
     #Tags().analyze_tag()
     #Plugin().run_dsl()

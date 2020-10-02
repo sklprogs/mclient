@@ -6,8 +6,6 @@ import re
 import skl_shared.shared as sh
 from skl_shared.localize import _
 
-import plugins.dsl.cleanup as cu
-
 
 ''' A directory storing all DSL files.
     #NOTE: Do not forget to change this variable externally before
@@ -20,16 +18,58 @@ LANG2 = 'Russian'
 DEBUG = False
 
 
+class Article:
+    
+    def __init__(self):
+        self.dic = ''
+        self.code = ''
+        self.search = ''
+
+
 
 class Get:
     
-    def __init__(self,pattern):
+    def __init__(self,pattern,Debug=False,maxrows=0):
         self.set_values()
+        self.Debug = Debug
+        self.maxrows = maxrows
         self.pattern = pattern
+    
+    def _debug_articles(self):
+        nos = []
+        searches = []
+        dics = []
+        codes = []
+        for i in range(len(self.articles)):
+            nos.append(i+1)
+            searches.append(self.articles[i].search)
+            dics.append(self.articles[i].dic)
+            codes.append(self.articles[i].code)
+        iterable = [nos,searches,dics,codes]
+        headers = (_('#'),_('SEARCH'),_('DICTIONARY'),_('CODE'))
+        mes = sh.FastTable (iterable = iterable
+                           ,headers  = headers
+                           ,maxrow   = 70
+                           ,maxrows  = self.maxrows
+                           ).run()
+        return _('Articles:') + '\n' + mes
+    
+    def debug(self):
+        f = '[MClient] plugins.dsl.get.Get.debug'
+        if self.Debug:
+            if self.Success:
+                mes = self._debug_articles()
+                sh.com.run_fast_debug(f,mes)
+            else:
+                sh.com.cancel(f)
+        else:
+            sh.com.rep_lazy(f)
     
     def run(self):
         self.check()
-        return self.search()
+        self.search()
+        self.debug()
+        return self.articles
     
     def check(self):
         f = '[MClient] plugins.dsl.get.Get.check'
@@ -54,18 +94,16 @@ class Get:
                              ,'; '.join(dicnames)
                              )
             sh.objs.get_mes(f,mes,True).show_debug()
-            articles = []
             for idic in dics:
-                article = idic.search(self.pattern)
-                if article:
-                    dicname = idic.dicname
-                    article.insert(0,dicname)
-                    articles += [article]
-            return articles
+                iarticle = idic.search(self.pattern)
+                if iarticle:
+                    iarticle.dic = idic.dicname
+                    self.articles.append(iarticle)
         else:
             sh.com.cancel(f)
     
     def set_values(self):
+        self.articles = []
         self.blocks = []
         self.pattern = ''
         self.Success = True
@@ -169,14 +207,16 @@ class DSL:
                 i = pos + 1
                 while i < len(self.lst):
                     if self.lst[i].startswith('\t'):
-                        article.append(cu.CleanUp(self.lst[i]).run())
+                        article.append(self.lst[i])
                     else:
                         break
                     i += 1
-                article.insert(0,self.lst[pos])
-                mes = '\n'.join(article)
+                iarticle = Article()
+                iarticle.search = self.lst[pos]
+                iarticle.code = '\n'.join(article)
+                mes = '"{}"'.format(iarticle.code)
                 sh.objs.get_mes(f,mes,True).show_debug()
-                return article
+                return iarticle
             else:
                 sub = '0 <= {} < {}'.format(pos+1,len(self.lst))
                 mes = _('The condition "{}" is not observed!')

@@ -6,7 +6,7 @@ from skl_shared.localize import _
 import plugins.dsl.get as gt
 import plugins.dsl.tags as tg
 import plugins.dsl.elems as el
-
+import plugins.dsl.cleanup as cu
 
 
 class Plugin:
@@ -98,23 +98,23 @@ class Plugin:
         return gt.Suggest(search).run()
     
     def request(self,search='',url=''):
-        tag_lst = gt.Get(search).run()
-        itags = tg.Tags (lst     = tag_lst
-                        ,Debug   = self.Debug
-                        ,maxrow  = self.maxrow
-                        ,maxrows = self.maxrows
-                        )
-        blocks = itags.run()
-        if blocks:
-            self.blocks = blocks
-            flat_lst = [item for sub in tag_lst for item in sub]
-            self.htm = '\n'.join(flat_lst)
-            texts = [block.text for block in self.blocks if block.text]
-            self.text = sh.List(texts).space_items()
-            self.blocks = el.Elems (blocks = self.blocks
-                                   ,Debug  = self.Debug
+        f = '[MClient] plugins.dsl.run.Plugin.request'
+        articles = gt.Get(search).run()
+        self.blocks = []
+        htm = []
+        for iarticle in articles:
+            htm.append(iarticle.code)
+            code = cu.CleanUp(iarticle.code).run()
+            code = cu.TagLike(code).run()
+            self.blocks += tg.Tags (code    = code
+                                   ,Debug   = self.Debug
+                                   ,maxrows = self.maxrows
                                    ).run()
-        else:
-            self.blocks = []
-            self.html = self.text = ''
+            #TODO: Add a dictionary block and make it the first one
+        self.htm = '\n'.join(htm)
+        texts = [block.text for block in self.blocks if block.text]
+        self.text = sh.List(texts).space_items()
+        self.blocks = el.Elems (blocks = self.blocks
+                               ,Debug  = self.Debug
+                               ).run()
         return self.blocks
