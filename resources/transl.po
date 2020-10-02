@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-02 01:54+0300\n"
-"PO-Revision-Date: 2020-10-02 01:56+0300\n"
+"POT-Creation-Date: 2020-10-02 16:22+0300\n"
+"PO-Revision-Date: 2020-10-02 16:23+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -409,8 +409,8 @@ msgstr "Не задано"
 #: mclient/src/gui.py:938 mclient/src/gui.py:1026 mclient/src/gui.py:1041
 #: mclient/src/logic.py:163 mclient/src/manager.py:152
 #: mclient/src/manager.py:208 mclient/src/mclient.py:1255
-#: mclient/src/tests.py:353 mclient/src/tests.py:413 mclient/src/tests.py:455
-#: mclient/src/tests.py:548
+#: mclient/src/tests.py:367 mclient/src/tests.py:427 mclient/src/tests.py:469
+#: mclient/src/tests.py:562
 msgid "Multitran"
 msgstr "Мультитран"
 
@@ -1140,7 +1140,7 @@ msgstr "АББРЕВИАТУРА"
 
 #: mclient/src/logic.py:787 mclient/src/mclient.py:2257
 #: mclient/src/mclient.py:2269 mclient/src/mclient.py:2281
-#: mclient/src/mclient.py:2293 mclient/src/plugins/dsl/tags2.py:124
+#: mclient/src/mclient.py:2293 mclient/src/plugins/dsl/tags.py:128
 #: mclient/src/plugins/multitrancom/pairs.py:2790
 #: mclient/src/plugins/multitrancom/pairs.py:2810
 #: mclient/src/plugins/multitrancom/run.py:105
@@ -1171,7 +1171,7 @@ msgstr "Фраза"
 
 #: mclient/src/logic.py:814 mclient/src/logic.py:820
 #: mclient/src/mclient.py:2585 mclient/src/plugins/dsl/cleanup.py:109
-#: mclient/src/plugins/dsl/get.py:182 mclient/src/plugins/dsl/tags.py:407
+#: mclient/src/plugins/dsl/get.py:222
 #: mclient/src/plugins/multitrancom/utils.py:165
 #: mclient/src/plugins/multitrancom/utils.py:263
 #: mclient/src/plugins/multitrancom/utils.py:343
@@ -1739,27 +1739,48 @@ msgstr "Блоки не из БД:"
 msgid "{} phrases"
 msgstr "{} фраз"
 
-#: mclient/src/plugins/dsl/get.py:51
+#: mclient/src/plugins/dsl/get.py:49 mclient/src/plugins/dsl/tags.py:111
+#: mclient/src/plugins/dsl/tags.py:278
+msgid "#"
+msgstr "№"
+
+#: mclient/src/plugins/dsl/get.py:49
+msgid "SEARCH"
+msgstr "ЗАПРОС"
+
+#: mclient/src/plugins/dsl/get.py:49
+msgid "DICTIONARY"
+msgstr "СЛОВАРЬ"
+
+#: mclient/src/plugins/dsl/get.py:49
+msgid "CODE"
+msgstr "КОД"
+
+#: mclient/src/plugins/dsl/get.py:55
+msgid "Articles:"
+msgstr "Статьи:"
+
+#: mclient/src/plugins/dsl/get.py:91
 msgid "Dictionaries to search in ({}/{}): {}"
 msgstr "Словари для поиска ({}/{}): {}"
 
-#: mclient/src/plugins/dsl/get.py:117 mclient/src/plugins/dsl/get.py:137
+#: mclient/src/plugins/dsl/get.py:155 mclient/src/plugins/dsl/get.py:175
 msgid "The file \"{}\" is too short ({} lines)!"
 msgstr "Файл \"{}\" слишком короткий ({} строк)!"
 
-#: mclient/src/plugins/dsl/get.py:204
+#: mclient/src/plugins/dsl/get.py:244
 msgid "No search results for \"{}\" in \"{}\""
 msgstr "Нет совпадений для \"{}\" в \"{}\""
 
-#: mclient/src/plugins/dsl/get.py:228
+#: mclient/src/plugins/dsl/get.py:268
 msgid "Dictionary \"{}\" ({}) has {} records"
 msgstr "В словаре \"{}\" ({}) {} записей"
 
-#: mclient/src/plugins/dsl/get.py:248
+#: mclient/src/plugins/dsl/get.py:288
 msgid "Load \"{}\""
 msgstr "Загрузка \"{}\""
 
-#: mclient/src/plugins/dsl/get.py:256
+#: mclient/src/plugins/dsl/get.py:296
 #: mclient/src/plugins/multitrandem/utils.py:692
 #: mclient/src/plugins/multitrandem/utils.py:735
 #: mclient/src/plugins/multitrandem/utils.py:780
@@ -1775,7 +1796,7 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: mclient/src/plugins/dsl/get.py:274 mclient/src/plugins/dsl/get.py:275
+#: mclient/src/plugins/dsl/get.py:314 mclient/src/plugins/dsl/get.py:315
 #: mclient/src/plugins/dsl/run.py:50 mclient/src/plugins/dsl/run.py:54
 #: mclient/src/plugins/dsl/run.py:82 mclient/src/plugins/dsl/run.py:86
 #: mclient/src/plugins/multitrandem/run.py:122
@@ -1787,101 +1808,61 @@ msgstr ""
 msgid "Any"
 msgstr "Любой"
 
-#: mclient/src/plugins/dsl/get.py:280
+#: mclient/src/plugins/dsl/get.py:320
 msgid "Untitled dictionary"
 msgstr "Безымянный словарь"
 
-#: mclient/src/plugins/dsl/get.py:341
+#: mclient/src/plugins/dsl/get.py:381
 msgid "Index has {} entries"
 msgstr "{} вхождений в индексе"
 
-#: mclient/src/plugins/dsl/get.py:384
+#: mclient/src/plugins/dsl/get.py:424
 #: mclient/src/plugins/multitrandem/get.py:1315
 #: mclient/src/plugins/stardict/get.py:510
 msgid "{} offline dictionaries are available"
 msgstr "Доступно {} локальных словарей"
 
-#: mclient/src/plugins/dsl/get.py:399
+#: mclient/src/plugins/dsl/get.py:439
 msgid "Load DSL dictionaries ({}/{})"
 msgstr "Загрузка словарей DSL ({}/{})"
 
-#: mclient/src/plugins/dsl/get.py:408 mclient/src/plugins/stardict/get.py:533
+#: mclient/src/plugins/dsl/get.py:448 mclient/src/plugins/stardict/get.py:533
 msgid "Dictionaries loaded: {}/{}"
 msgstr "Загружено словарей: {}/{}"
 
-#: mclient/src/plugins/dsl/tags.py:271 mclient/src/plugins/dsl/tags.py:422
-msgid "TYPE"
-msgstr "ТИП"
-
-#: mclient/src/plugins/dsl/tags.py:271
-msgid "START"
-msgstr "НАЧАЛО"
-
-#: mclient/src/plugins/dsl/tags.py:271
-msgid "END"
-msgstr "КОНЕЦ"
-
-#: mclient/src/plugins/dsl/tags.py:271 mclient/src/plugins/dsl/tags.py:422
-#: mclient/src/plugins/dsl/tags2.py:107 mclient/src/plugins/dsl/tags2.py:270
-msgid "TEXT"
-msgstr "ТЕКСТ"
-
-#: mclient/src/plugins/dsl/tags.py:334
-msgid "No such tag: \"{}\"!"
-msgstr "Нет такого тега: \"{}\"!"
-
-#: mclient/src/plugins/dsl/tags.py:488
-msgid ""
-"Original:\n"
-"\"{}\"\n"
-"\n"
-msgstr ""
-"Оригинал:\n"
-"\"{}\"\n"
-"\n"
-
-#: mclient/src/plugins/dsl/tags.py:489
-msgid ""
-"Final:\n"
-"\"{}\""
-msgstr ""
-"Итог:\n"
-"\"{}\""
-
-#: mclient/src/plugins/dsl/tags2.py:107 mclient/src/plugins/dsl/tags2.py:270
-msgid "NO"
-msgstr "№"
-
-#: mclient/src/plugins/dsl/tags2.py:107
+#: mclient/src/plugins/dsl/tags.py:111
 msgid "TYPES"
 msgstr "ТИПЫ"
 
-#: mclient/src/plugins/dsl/tags2.py:113
+#: mclient/src/plugins/dsl/tags.py:111 mclient/src/plugins/dsl/tags.py:278
+msgid "TEXT"
+msgstr "ТЕКСТ"
+
+#: mclient/src/plugins/dsl/tags.py:117
 msgid "Blocks:"
 msgstr "Блоки:"
 
-#: mclient/src/plugins/dsl/tags2.py:164
-#| msgid "Number of blocks: {}"
+#: mclient/src/plugins/dsl/tags.py:168
 msgid "Ignore blocks: {}"
 msgstr "Игнорируемые блоки: {}"
 
-#: mclient/src/plugins/dsl/tags2.py:211
+#: mclient/src/plugins/dsl/tags.py:219
 msgid "Tag \"{}\" has not been opened yet!"
 msgstr "Тег \"{}\" еще не был открыт!"
 
-#: mclient/src/plugins/dsl/tags2.py:256
+#: mclient/src/plugins/dsl/tags.py:264
 msgid "Code:"
 msgstr "Код:"
 
-#: mclient/src/plugins/dsl/tags2.py:263
+#: mclient/src/plugins/dsl/tags.py:271
 msgid "Fragments:"
 msgstr "Фрагменты:"
 
-#: mclient/src/plugins/dsl/tags2.py:270
+#: mclient/src/plugins/dsl/tags.py:278
 msgid "TAGS"
 msgstr "ТЕГИ"
 
-#: mclient/src/plugins/dsl/tags2.py:276
+#: mclient/src/plugins/dsl/tags.py:284
 msgid "Tags:"
 msgstr "Теги:"
 
@@ -15383,19 +15364,19 @@ msgstr "Нет совпадений для \"{}\"!"
 msgid "Load Stardict dictionaries ({}/{})"
 msgstr "Загрузка словарей Stardict ({}/{})"
 
-#: mclient/src/tests.py:235
+#: mclient/src/tests.py:249
 msgid "Number of blocks: {}"
 msgstr "Число блоков: {}"
 
-#: mclient/src/tests.py:237
+#: mclient/src/tests.py:251
 msgid "Web-page:"
 msgstr "Веб-страница:"
 
-#: mclient/src/tests.py:239
+#: mclient/src/tests.py:253
 msgid "Text:"
 msgstr "Текст:"
 
-#: mclient/src/tests.py:293
+#: mclient/src/tests.py:307
 msgid ""
 "The following pairs are not supported:\n"
 "{}"
@@ -15403,11 +15384,11 @@ msgstr ""
 "Следующие пары не поддерживаются:\n"
 "{}"
 
-#: mclient/src/tests.py:409 mclient/src/tests.py:423
+#: mclient/src/tests.py:423 mclient/src/tests.py:437
 msgid "Offline"
 msgstr "Оффлайн"
 
-#: mclient/src/tests.py:573 mclient/src/tests.py:578
+#: mclient/src/tests.py:587 mclient/src/tests.py:592
 msgid "Triggered!"
 msgstr "Сработало!"
 
@@ -16265,94 +16246,3 @@ msgstr ""
 #: skl_shared/src/tests.py:1127
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
-
-#~ msgid "Failed to restore geometry!"
-#~ msgstr "Не удалось восстановить геометрию!"
-
-#~ msgid "Matches: {}"
-#~ msgstr "Совпадений: {}"
-
-#~ msgid "[Autosave] Show full dictionary titles instead of abbreviations"
-#~ msgstr ""
-#~ "[Автосохранение] Показывать полные заголовки словарей вместо аббревиатур"
-
-#~ msgid "Use abbreviations for dictionaries"
-#~ msgstr "Сокращать заголовки словарей"
-
-#~ msgid ""
-#~ "Unable to get the webpage. Press OK to try again.\n"
-#~ "\n"
-#~ "Details: {}"
-#~ msgstr ""
-#~ "Не удается загрузить страницу. Нажмите OK, чтобы попытаться снова.\n"
-#~ "\n"
-#~ "Подробности: {}"
-
-#~ msgid "Section \"{}\" does not have key \"{}\"!"
-#~ msgstr "В секции \"{}\" нет ключа \"{}\"!"
-
-#~ msgid "The following sections and/or keys are missing:"
-#~ msgstr "Отсутствуют следующие разделы и/или ключи:"
-
-#~ msgid "Parts of speech used in the article: {}"
-#~ msgstr "Части речи из статьи: {}"
-
-#~ msgid "At least one column must be set!"
-#~ msgstr "Необходимо задать хотя бы 1 столбец!"
-
-#~ msgid "New value of the key \"{}\" has been loaded."
-#~ msgstr "Загружено новое значение ключа \"{}\"."
-
-#~ msgid "Keys loaded in total: {}, whereas {} are modified."
-#~ msgstr "Всего загружено ключей: {}, из них измененных: {}"
-
-#~ msgid "The default configuration has been loaded."
-#~ msgstr "Загружена конфигурация по умолчанию."
-
-#~ msgid ""
-#~ "Failed to read the configuration file \"{}\". This file must share the "
-#~ "same directory with the program and have UTF-8 encoding (no BOM) and UNIX "
-#~ "line break type."
-#~ msgstr ""
-#~ "Не удается прочитать конфигурационный файл \"{}\". Этот файл должен "
-#~ "находиться в одном каталоге с программой и иметь кодировку UTF-8 (без "
-#~ "BOM), тип разрыва строки - UNIX."
-
-#~ msgid "{} subjects were blocked"
-#~ msgstr "{} тематик заблокировано"
-
-#, fuzzy
-#~| msgid "Go to the next section of column #%d"
-#~ msgid "A font size of column #2"
-#~ msgstr "Перейти в следующий раздел столбца №%d"
-
-#, fuzzy
-#~| msgid "Go to the next section of column #%d"
-#~ msgid "A font size of column #3"
-#~ msgstr "Перейти в следующий раздел столбца №%d"
-
-#, fuzzy
-#~| msgid "Go to the next section of column #%d"
-#~ msgid "A font size of column #4"
-#~ msgstr "Перейти в следующий раздел столбца №%d"
-
-#~ msgid "Load DSL dictionaries"
-#~ msgstr "Загрузка словарей DSL"
-
-#~ msgid "Load Stardict dictionaries"
-#~ msgstr "Загрузка словарей Stardict"
-
-#~ msgid "Download progress"
-#~ msgstr "Ход загрузок"
-
-#~ msgid "File: \"{}\"; {}/{} MB; Rate: {} kbps; ETA: {}s"
-#~ msgstr "Файл: \"{}\"; {}/{} Мб; Скорость: {} Кб/с; Осталось: {}с"
-
-#~ msgid "Load local dictionaries"
-#~ msgstr "Загрузка локальных словарей"
-
-#~ msgid "Load offline dictionaries"
-#~ msgstr "Загрузка локальных словарей"
-
-#~ msgid "Load offline dictionaries (DSL)"
-#~ msgstr "Загрузка локальных словарей (DSL)"
