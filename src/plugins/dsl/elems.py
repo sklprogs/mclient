@@ -173,18 +173,22 @@ class Elems:
             sh.com.rep_lazy(f)
     
     def add_space(self):
-        for i in range(len(self.blocks)):
+        f = '[MClient] plugins.dsl.elems.Elems.add_space'
+        count = 0
+        i = 1
+        while i < len(self.blocks):
             if self.blocks[i].same > 0:
-                cond = False
-                if i > 0:
-                    if self.blocks[i-1].text[-1] in ['(','[','{']:
-                        cond = True
                 if self.blocks[i].text \
                   and not self.blocks[i].text[0].isspace() \
                   and not self.blocks[i].text[0] in sh.lg.punc_array \
                   and not self.blocks[i].text[0] in [')',']','}'] \
-                  and not cond:
-                    self.blocks[i].text = ' ' + self.blocks[i].text
+                  and not self.blocks[i-1].text[-1] in ['(','[','{']:
+                      count += 1
+                      self.blocks[i].text = ' ' + self.blocks[i].text
+            i += 1
+        if count:
+            mes = _('{} matches').format(count)
+            sh.objs.get_mes(f,mes,True).show_debug()
 
     def set_phrase_dic(self):
         count = 0

@@ -137,7 +137,7 @@ class Tags:
         import plugins.dsl.cleanup as cu
         import plugins.dsl.tags as tg
         gt.PATH = sh.Home('mclient').add_config('dics')
-        articles = gt.Get('computer').run()
+        articles = gt.Get('account balance').run()
         blocks = []
         for iarticle in articles:
             code = cu.CleanUp(iarticle.code).run()
