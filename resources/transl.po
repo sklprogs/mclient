@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-02 16:22+0300\n"
-"PO-Revision-Date: 2020-10-02 16:23+0300\n"
+"POT-Creation-Date: 2020-10-06 02:46+0300\n"
+"PO-Revision-Date: 2020-10-06 02:48+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -409,8 +409,8 @@ msgstr "Не задано"
 #: mclient/src/gui.py:938 mclient/src/gui.py:1026 mclient/src/gui.py:1041
 #: mclient/src/logic.py:163 mclient/src/manager.py:152
 #: mclient/src/manager.py:208 mclient/src/mclient.py:1255
-#: mclient/src/tests.py:367 mclient/src/tests.py:427 mclient/src/tests.py:469
-#: mclient/src/tests.py:562
+#: mclient/src/tests.py:368 mclient/src/tests.py:428 mclient/src/tests.py:470
+#: mclient/src/tests.py:563
 msgid "Multitran"
 msgstr "Мультитран"
 
@@ -1140,7 +1140,7 @@ msgstr "АББРЕВИАТУРА"
 
 #: mclient/src/logic.py:787 mclient/src/mclient.py:2257
 #: mclient/src/mclient.py:2269 mclient/src/mclient.py:2281
-#: mclient/src/mclient.py:2293 mclient/src/plugins/dsl/tags.py:128
+#: mclient/src/mclient.py:2293 mclient/src/plugins/dsl/tags.py:142
 #: mclient/src/plugins/multitrancom/pairs.py:2790
 #: mclient/src/plugins/multitrancom/pairs.py:2810
 #: mclient/src/plugins/multitrancom/run.py:105
@@ -1705,7 +1705,7 @@ msgstr "Число некорректных тегоподобных струк�
 msgid "Tag-like structures are invalid!"
 msgstr "Некорректные тегоподобные структуры!"
 
-#: mclient/src/plugins/dsl/cleanup.py:115
+#: mclient/src/plugins/dsl/cleanup.py:115 mclient/src/plugins/dsl/elems.py:196
 #: mclient/src/plugins/multitrancom/elems.py:113
 #: mclient/src/plugins/multitrancom/elems.py:137
 #: mclient/src/plugins/multitrancom/elems.py:161
@@ -1726,21 +1726,22 @@ msgstr "Некорректные тегоподобные структуры!"
 #: mclient/src/plugins/multitrancom/elems.py:774
 #: mclient/src/plugins/multitrancom/elems.py:911
 #: mclient/src/plugins/multitrancom/elems.py:977
+#: mclient/src/plugins/multitrancom/elems.py:1120
 msgid "{} matches"
 msgstr "{} совпадений"
 
-#: mclient/src/plugins/dsl/elems.py:170
+#: mclient/src/plugins/dsl/elems.py:176
 #: mclient/src/plugins/stardict/elems.py:143
 #: mclient/src/plugins/stardict/tags.py:266
 msgid "Non-DB blocks:"
 msgstr "Блоки не из БД:"
 
-#: mclient/src/plugins/dsl/elems.py:201
+#: mclient/src/plugins/dsl/elems.py:211
 msgid "{} phrases"
 msgstr "{} фраз"
 
-#: mclient/src/plugins/dsl/get.py:49 mclient/src/plugins/dsl/tags.py:111
-#: mclient/src/plugins/dsl/tags.py:278
+#: mclient/src/plugins/dsl/get.py:49 mclient/src/plugins/dsl/tags.py:125
+#: mclient/src/plugins/dsl/tags.py:294
 msgid "#"
 msgstr "№"
 
@@ -1830,39 +1831,39 @@ msgstr "Загрузка словарей DSL ({}/{})"
 msgid "Dictionaries loaded: {}/{}"
 msgstr "Загружено словарей: {}/{}"
 
-#: mclient/src/plugins/dsl/tags.py:111
+#: mclient/src/plugins/dsl/tags.py:125
 msgid "TYPES"
 msgstr "ТИПЫ"
 
-#: mclient/src/plugins/dsl/tags.py:111 mclient/src/plugins/dsl/tags.py:278
+#: mclient/src/plugins/dsl/tags.py:125 mclient/src/plugins/dsl/tags.py:294
 msgid "TEXT"
 msgstr "ТЕКСТ"
 
-#: mclient/src/plugins/dsl/tags.py:117
+#: mclient/src/plugins/dsl/tags.py:131
 msgid "Blocks:"
 msgstr "Блоки:"
 
-#: mclient/src/plugins/dsl/tags.py:168
+#: mclient/src/plugins/dsl/tags.py:183
 msgid "Ignore blocks: {}"
 msgstr "Игнорируемые блоки: {}"
 
-#: mclient/src/plugins/dsl/tags.py:219
+#: mclient/src/plugins/dsl/tags.py:235
 msgid "Tag \"{}\" has not been opened yet!"
 msgstr "Тег \"{}\" еще не был открыт!"
 
-#: mclient/src/plugins/dsl/tags.py:264
+#: mclient/src/plugins/dsl/tags.py:280
 msgid "Code:"
 msgstr "Код:"
 
-#: mclient/src/plugins/dsl/tags.py:271
+#: mclient/src/plugins/dsl/tags.py:287
 msgid "Fragments:"
 msgstr "Фрагменты:"
 
-#: mclient/src/plugins/dsl/tags.py:278
+#: mclient/src/plugins/dsl/tags.py:294
 msgid "TAGS"
 msgstr "ТЕГИ"
 
-#: mclient/src/plugins/dsl/tags.py:284
+#: mclient/src/plugins/dsl/tags.py:300
 msgid "Tags:"
 msgstr "Теги:"
 
@@ -15364,19 +15365,19 @@ msgstr "Нет совпадений для \"{}\"!"
 msgid "Load Stardict dictionaries ({}/{})"
 msgstr "Загрузка словарей Stardict ({}/{})"
 
-#: mclient/src/tests.py:249
+#: mclient/src/tests.py:250
 msgid "Number of blocks: {}"
 msgstr "Число блоков: {}"
 
-#: mclient/src/tests.py:251
+#: mclient/src/tests.py:252
 msgid "Web-page:"
 msgstr "Веб-страница:"
 
-#: mclient/src/tests.py:253
+#: mclient/src/tests.py:254
 msgid "Text:"
 msgstr "Текст:"
 
-#: mclient/src/tests.py:307
+#: mclient/src/tests.py:308
 msgid ""
 "The following pairs are not supported:\n"
 "{}"
@@ -15384,11 +15385,11 @@ msgstr ""
 "Следующие пары не поддерживаются:\n"
 "{}"
 
-#: mclient/src/tests.py:423 mclient/src/tests.py:437
+#: mclient/src/tests.py:424 mclient/src/tests.py:438
 msgid "Offline"
 msgstr "Оффлайн"
 
-#: mclient/src/tests.py:587 mclient/src/tests.py:592
+#: mclient/src/tests.py:588 mclient/src/tests.py:593
 msgid "Triggered!"
 msgstr "Сработало!"
 
@@ -16035,7 +16036,7 @@ msgstr "Ширина виджета ({}) не должна превышать ш
 
 #: skl_shared/src/shared.py:3799
 msgid "Widget height ({}) should not exceed screen height ({})!"
-msgstr "Длина виджета ({}) не должна превышать длины экрана ({})!"
+msgstr "Высота виджета ({}) не должна превышать высоту экрана ({})!"
 
 #: skl_shared/src/shared.py:3828
 msgid "Widget 1 geometry: {}x{}+{}+{}"
