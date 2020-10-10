@@ -146,7 +146,7 @@ class Subject:
         self.file = file
         self.get_locale()
         # Suppress useless error output
-        if objs.get_files().iwalker.fnames:
+        if objs.get_files().iwalker.Success:
             self.load()
             self.parse()
         else:
@@ -904,13 +904,13 @@ class Walker:
         f = '[MClient] plugins.multitrandem.get.Walker.get_ending'
         if self.Success:
             if not self.ending:
-                fname = 'sik.' + self.lang13
-                file  = self.get_file(fname)
+                bname = 'sik.' + self.lang13
+                file  = self.get_file(bname)
                 if file:
                     self.ending = file
                 else:
                     self.Success = False
-                    mes = _('File "{}" does not exist!').format(fname)
+                    mes = _('File "{}" does not exist!').format(bname)
                     sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
@@ -920,16 +920,16 @@ class Walker:
         f = '[MClient] plugins.multitrandem.get.Walker.get_subject'
         if self.Success:
             # Suppress useless error output
-            if self.fnames:
+            if self.bnames:
                 if not self.subject:
-                    fname = 'subjects.txt'
-                    file  = self.get_file(fname)
+                    bname = 'subjects.txt'
+                    file = self.get_file(bname)
                     if file:
                         self.subject = file
                     else:
                         self.Success = False
                         mes = _('File "{}" does not exist!')
-                        mes = mes.format(fname)
+                        mes = mes.format(bname)
                         sh.objs.get_mes(f,mes,True).show_warning()
             else:
                 sh.com.rep_lazy(f)
@@ -941,14 +941,14 @@ class Walker:
         f = '[MClient] plugins.multitrandem.get.Walker.get_typein1'
         if self.Success:
             if not self.typein1:
-                fname = 'typein.' + self.lang11 + self.lang21
-                file  = self.get_file(fname)
+                bname = 'typein.' + self.lang11 + self.lang21
+                file  = self.get_file(bname)
                 if file:
                     self.typein1 = file
                     sh.objs.get_mes(f,self.typein1,True).show_debug()
                 else:
                     self.Success = False
-                    mes = _('File "{}" does not exist!').format(fname)
+                    mes = _('File "{}" does not exist!').format(bname)
                     sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
@@ -958,14 +958,14 @@ class Walker:
         f = '[MClient] plugins.multitrandem.get.Walker.get_typein2'
         if self.Success:
             if not self.typein2:
-                fname = 'typein.' + self.lang21 + self.lang11
-                file  = self.get_file(fname)
+                bname = 'typein.' + self.lang21 + self.lang11
+                file = self.get_file(bname)
                 if file:
                     self.typein2 = file
                     sh.objs.get_mes(f,self.typein2,True).show_debug()
                 else:
                     self.Success = False
-                    mes = _('File "{}" does not exist!').format(fname)
+                    mes = _('File "{}" does not exist!').format(bname)
                     sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
@@ -987,16 +987,16 @@ class Walker:
         f = '[MClient] plugins.multitrandem.get.Walker.get_article'
         if self.Success:
             if not self.article:
-                fname = 'dict.' + self.lang11 + self.lang21 + 't'
-                if not fname in self.fnames:
-                    fname = 'dict.' + self.lang21 + self.lang11 + 't'
-                file = self.get_file(fname)
+                bname = 'dict.' + self.lang11 + self.lang21 + 't'
+                if not bname in self.bnames:
+                    bname = 'dict.' + self.lang21 + self.lang11 + 't'
+                file = self.get_file(bname)
                 if file:
                     self.article = file
                     sh.objs.get_mes(f,self.article,True).show_debug()
                 else:
                     self.Success = False
-                    mes = _('File "{}" does not exist!').format(fname)
+                    mes = _('File "{}" does not exist!').format(bname)
                     sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
@@ -1006,14 +1006,14 @@ class Walker:
         f = '[MClient] plugins.multitrandem.get.Walker.get_glue1'
         if self.Success:
             if not self.glue1:
-                fname = 'dict.' + self.lang11 + self.lang21 + 'd'
-                file  = self.get_file(fname)
+                bname = 'dict.' + self.lang11 + self.lang21 + 'd'
+                file = self.get_file(bname)
                 if file:
                     self.glue1 = file
                     sh.objs.get_mes(f,self.glue1,True).show_debug()
                 else:
                     self.Success = False
-                    mes = _('File "{}" does not exist!').format(fname)
+                    mes = _('File "{}" does not exist!').format(bname)
                     sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
@@ -1023,14 +1023,14 @@ class Walker:
         f = '[MClient] plugins.multitrandem.get.Walker.get_glue2'
         if self.Success:
             if not self.glue2:
-                fname = 'dict.' + self.lang21 + self.lang11 + 'd'
-                file  = self.get_file(fname)
+                bname = 'dict.' + self.lang21 + self.lang11 + 'd'
+                file = self.get_file(bname)
                 if file:
                     self.glue2 = file
                     sh.objs.get_mes(f,self.glue2,True).show_debug()
                 else:
                     self.Success = False
-                    mes = _('File "{}" does not exist!').format(fname)
+                    mes = _('File "{}" does not exist!').format(bname)
                     sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
@@ -1067,13 +1067,13 @@ class Walker:
         f = '[MClient] plugins.multitrandem.get.Walker.get_stems1'
         if self.Success:
             if not self.stems1:
-                fname = 'stem.' + self.lang13
-                file = self.get_file(fname)
+                bname = 'stem.' + self.lang13
+                file = self.get_file(bname)
                 if file:
                     self.stems1 = file
                 else:
                     self.Success = False
-                    mes = _('File "{}" does not exist!').format(fname)
+                    mes = _('File "{}" does not exist!').format(bname)
                     sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
@@ -1083,23 +1083,23 @@ class Walker:
         f = '[MClient] plugins.multitrandem.get.Walker.get_stems2'
         if self.Success:
             if not self.stems2:
-                fname = 'stem.' + self.lang23
-                file  = self.get_file(fname)
+                bname = 'stem.' + self.lang23
+                file = self.get_file(bname)
                 if file:
                     self.stems2 = file
                 else:
                     self.Success = False
-                    mes = _('File "{}" does not exist!').format(fname)
+                    mes = _('File "{}" does not exist!').format(bname)
                     sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
         return self.stems2
     
-    def get_file(self,fname):
+    def get_file(self,bname):
         f = '[MClient] plugins.multitrandem.get.Walker.get_file'
         if self.Success:
             try:
-                ind = self.fnames.index(fname)
+                ind = self.bnames.index(bname)
                 return self.files[ind]
             except (ValueError,IndexError):
                 mes = _('Wrong input data!')
@@ -1109,9 +1109,9 @@ class Walker:
     
     def set_values(self):
         self.article = ''
+        self.bnames = []
         self.ending = ''
         self.files = []
-        self.fnames = []
         self.glue1 = ''
         self.glue2 = ''
         self.idir = None
@@ -1129,11 +1129,14 @@ class Walker:
     def walk(self):
         f = '[MClient] plugins.multitrandem.get.Walker.walk'
         if self.Success:
-            for dirpath, dirnames, filenames in os.walk(self.idir.dir):
-                for filename in filenames:
-                    self.fnames.append(filename.lower())
-                    file = os.path.join(dirpath,filename)
-                    self.files.append(file)
+            self.files = self.idir.get_subfiles()
+            for file in self.files:
+                self.bnames.append(sh.Path(file).get_basename_low())
+            self.Success = False
+            for bname in self.bnames:
+                if bname.startswith('dict.') and bname.endswith('t'):
+                    self.Success = True
+                    break
         else:
             sh.com.cancel(f)
         return self.files
@@ -1263,30 +1266,23 @@ class AllDics:
     
     def get_langs(self):
         # Return all available languages
-        files = []
         f = '[MClient] plugins.multitrandem.get.AllDics.langs'
         if self.Success:
             #TODO: elaborate
-            # Relative paths are already lowercased
-            for fname in objs.get_files().iwalker.fnames:
-                if fname.startswith('dict.') and fname.endswith('t'):
-                    files.append(fname)
+            if not self.langs:
+                if objs.get_files().iwalker.Success:
+                    for bname in objs.files.iwalker.bnames:
+                        # Relative paths are already lowercased
+                        if bname.startswith('dict.') \
+                        and bname.endswith('t'):
+                            self.langs.append(bname)
         else:
             sh.com.cancel(f)
-        return files
-    
-    def get(self,search):
-        f = '[MClient] plugins.multitrandem.get.AllDics.get'
-        if self.Success:
-            if search:
-                pass
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
+        return self.langs
     
     def set_values(self):
         self.dics = []
+        self.langs = []
         self.path = ''
         # Do not run anything if 'self.reset' was not run
         self.Success = False
@@ -1295,45 +1291,15 @@ class AllDics:
         self.set_values()
         self.path = PATH
         self.Success = sh.Directory(self.path).Success
-    
-    def walk(self):
-        f = '[MClient] plugins.multitrandem.get.AllDics.walk'
-        if self.Success:
-            pass
-        else:
-            sh.com.cancel(f)
-    
-    def locate(self):
-        f = '[MClient] plugins.multitrandem.get.AllDics.locate'
-        if self.Success:
-            if not self.dics:
-                if self.walk():
-                    #TODO: implement
-                    self.dics = []
-                else:
-                    sh.com.rep_lazy(f)
-            mes = _('{} offline dictionaries are available')
-            mes = mes.format(len(self.dics))
-            sh.objs.get_mes(f,mes,True).show_info()
-            return self.dics
-        else:
-            sh.com.cancel(f)
-    
-    def load(self):
-        f = '[MClient] plugins.multitrandem.get.AllDics.load'
-        if self.Success:
-            pass
-        else:
-            sh.com.cancel(f)
 
 
 
 class Xor:
     
     def __init__(self,data,offset=0,step=6):
-        self.data   = data
+        self.data = data
         self.offset = offset
-        self.step   = step
+        self.step = step
     
     def dexor(self):
         f = '[MClient] plugins.multitrandem.get.Xor.dexor'
@@ -1663,83 +1629,84 @@ class Files:
         self.reset()
     
     def get_ending(self):
-        if self.ending is None:
-            self.ending = Ending(self.iwalker.get_ending())
+        if self.Success:
+            if self.ending is None:
+                self.ending = Ending(self.iwalker.get_ending())
         return self.ending
     
     def get_subject(self):
-        if self.subject is None:
-            self.subject = Subject(self.iwalker.get_subject())
+        if self.Success:
+            if self.subject is None:
+                self.subject = Subject(self.iwalker.get_subject())
         return self.subject
     
     def get_typein1(self):
-        if self.typein1 is None:
-            self.typein1 = TypeIn(self.iwalker.get_typein1())
+        if self.Success:
+            if self.typein1 is None:
+                self.typein1 = TypeIn(self.iwalker.get_typein1())
         return self.typein1
     
     def get_typein2(self):
-        if self.typein2 is None:
-            self.typein2 = TypeIn(self.iwalker.get_typein2())
+        if self.Success:
+            if self.typein2 is None:
+                self.typein2 = TypeIn(self.iwalker.get_typein2())
         return self.typein2
     
     def get_stems1(self):
-        if self.stems1 is None:
-            self.stems1 = Stems(self.iwalker.get_stems1())
+        if self.Success:
+            if self.stems1 is None:
+                self.stems1 = Stems(self.iwalker.get_stems1())
         return self.stems1
     
     def get_stems2(self):
-        if self.stems2 is None:
-            self.stems2 = Stems(self.iwalker.get_stems2())
+        if self.Success:
+            if self.stems2 is None:
+                self.stems2 = Stems(self.iwalker.get_stems2())
         return self.stems2
     
     def get_glue1(self):
-        if self.glue1 is None:
-            self.glue1 = Glue(self.iwalker.get_glue1())
+        if self.Success:
+            if self.glue1 is None:
+                self.glue1 = Glue(self.iwalker.get_glue1())
         return self.glue1
     
     def get_glue2(self):
-        if self.glue2 is None:
-            self.glue2 = Glue(self.iwalker.get_glue2())
+        if self.Success:
+            if self.glue2 is None:
+                self.glue2 = Glue(self.iwalker.get_glue2())
         return self.glue2
     
     def get_article(self):
-        if self.article is None:
-            self.article = Articles(self.iwalker.get_article())
+        if self.Success:
+            if self.article is None:
+                self.article = Articles(self.iwalker.get_article())
         return self.article
     
     def open(self):
         f = '[MClient] plugins.multitrandem.get.Files.open'
         if self.Success:
-            # Suppress useless error output
-            if self.iwalker.fnames:
-                self.get_typein1()
-                self.get_typein2()
-                self.get_stems1()
-                self.get_stems2()
-                self.get_glue1()
-                self.get_glue2()
-                self.get_article()
-            else:
-                sh.com.rep_lazy(f)
+            self.get_typein1()
+            self.get_typein2()
+            self.get_stems1()
+            self.get_stems2()
+            self.get_glue1()
+            self.get_glue2()
+            self.get_article()
         else:
-            sh.com.cancel(f)
+            sh.com.rep_lazy(f)
     
     def close(self):
         f = '[MClient] plugins.multitrandem.get.Files.close'
         if self.Success:
-            # Suppress useless error output
-            if self.iwalker.fnames:
-                self.get_typein1().close()
-                self.get_typein2().close()
-                self.get_stems1().close()
-                self.get_stems2().close()
-                self.get_glue1().close()
-                self.get_glue2().close()
-                self.get_article().close()
-            else:
-                sh.com.rep_lazy(f)
+            self.get_typein1().close()
+            self.get_typein2().close()
+            self.get_stems1().close()
+            self.get_stems2().close()
+            self.get_glue1().close()
+            self.get_glue2().close()
+            self.get_article().close()
         else:
-            sh.com.cancel(f)
+            sh.com.rep_lazy(f)
     
     def reset(self):
         self.set_values()
@@ -1751,13 +1718,13 @@ class Files:
         self.Success = False
         self.typein1 = None
         self.typein2 = None
-        self.stems1  = None
-        self.stems2  = None
-        self.glue1   = None
-        self.glue2   = None
+        self.stems1 = None
+        self.stems2 = None
+        self.glue1 = None
+        self.glue2 = None
         self.article = None
         self.subject = None
-        self.ending  = None
+        self.ending = None
 
 
 
