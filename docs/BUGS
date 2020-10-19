@@ -2,6 +2,7 @@ mclient:
 - 
 
 multitrancom:
+- RU-EN: оптическое излучение -> Оптика: Delete "раздел физики, содержащие"
 - RU-SP, партнер: wrong wform position
 - RU-SP, fumigar -> phrases: wrong SAME
 - RU-EN, set -> phrases: Move "Показаны первые 500 фраз" to the end

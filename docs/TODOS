@@ -12,6 +12,9 @@ mclient:
   dictionaries), do this check only before showing the final article.
 
 multitrancom:
+- RU-EN, месса; RU-SP: тигр: when a new splitter is ready, check on
+  these articles
+- SP-RU, carnitas: Create a Synonyms subject on the basis of ⇒
 ? Group subjects (Программирование, Вычислительная техника)
   (Табуированная лексика, Переносный смысл, Просторечие, Ругательство,
   Разговорное выражение, Сленг, Австралийский сленг, Американизм).
