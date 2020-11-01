@@ -387,13 +387,9 @@ class Tags:
             messages.append(mes)
         mes = '\n'.join(messages)
         #sh.objs.get_mes(f,message,True).show_debug()
-        words = sh.Words (text = mes
-                         ,Auto = 1
-                         )
-        words.set_sent_nos()
-        sh.objs.get_txt().reset(words=words)
-        sh.objs.txt.set_title(f)
-        sh.objs.txt.insert(text=mes)
+        sh.objs.get_txt().reset (title = f
+                                ,text = mes
+                                )
         sh.objs.txt.show()
 
     def debug_blocks(self):

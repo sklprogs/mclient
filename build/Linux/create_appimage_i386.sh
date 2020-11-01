@@ -1,4 +1,6 @@
 #!/bin/bash
+# Do 'pip3 uninstall enum34' in case of receiving
+# AttributeError: module 'enum' has no attribute 'IntFlag'
 
 product="mclient"
 productlow='mclient'
