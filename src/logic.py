@@ -1512,7 +1512,7 @@ class Order:
                                          )
                         sh.objs.get_mes(f,mes,True).show_debug()
                         self.priorlst[ind1], self.priorlst[ind2] \
- = self.priorlst[ind2], self.priorlst[ind1]
+                        = self.priorlst[ind2], self.priorlst[ind1]
                     
                     ind1 += 1
                     ind2 += 1

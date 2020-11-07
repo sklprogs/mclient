@@ -150,10 +150,10 @@ class Elems:
             and self.blocks[i].same > 0:
                 if i > 0 and self.blocks[i-1].type_ == 'comment':
                     self.blocks[i-1].text \
- = sh.List (lst1 = [self.blocks[i-1].text
+                            = sh.List (lst1 = [self.blocks[i-1].text
                                       ,self.blocks[i].text
                                       ]
-                              ).space_items()
+                                      ).space_items()
                     del self.blocks[i]
                     i -= 1
             i += 1
