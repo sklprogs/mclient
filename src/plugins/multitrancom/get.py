@@ -40,9 +40,9 @@ class Suggest:
             ''' #NOTE: the encoding here MUST be 'utf-8' irrespective
                 of the plugin!
             '''
-            self.url = sh.Online (base    = self.pair
+            self.url = sh.Online (base = self.pair
                                  ,pattern = self.pattern
-                                 ,coding  = 'utf-8'
+                                 ,coding = 'utf-8'
                                  ).get_url()
             if not self.url:
                 sh.com.rep_empty(f)
@@ -56,7 +56,7 @@ class Suggest:
             ''' #NOTE: the encoding here (unlike 'self.url')
                 is plugin-dependent.
             '''
-            self.items = sh.Get (url    = self.url
+            self.items = sh.Get (url = self.url
                                 ,coding = CODING
                                 ).run()
             if self.items:
@@ -177,9 +177,9 @@ class Commands:
             #NOTE: The encoding here should always be 'utf-8'!
             base = 'https://www.multitran.com/m.exe?s=%s&l1={}&l2={}&SHL=2'
             base = base.format(code1,code2)
-            return sh.Online (base    = base
+            return sh.Online (base = base
                              ,pattern = search
-                             ,coding  = 'utf-8'
+                             ,coding = 'utf-8'
                              ).get_url()
         else:
             sh.com.rep_empty(f)
@@ -214,7 +214,7 @@ class Commands:
 
     def is_accessible(self):
         try:
-            code = urllib.request.urlopen (url     = URL
+            code = urllib.request.urlopen (url = URL
                                           ,timeout = TIMEOUT
                                           ).code
             if (code / 100 < 4):

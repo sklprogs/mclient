@@ -9,9 +9,9 @@ from skl_shared.localize import _
 
 #TODO (?): use shared
 speech_abbr = ('гл.','нареч.','прил.','сокр.','сущ.')
-dic_abbr    = ('вчт.','карт.','мор.','разг.','уст.','хир.','эл.')
+dic_abbr = ('вчт.','карт.','мор.','разг.','уст.','хир.','эл.')
 #TODO: read from file
-dic_titles  = ('(австралийское)'
+dic_titles = ('(австралийское)'
               ,'(американизм)'
               ,'(военное)'
               ,'(горное)'
@@ -79,8 +79,8 @@ class Type1:
     '''
     def __init__(self,text):
         self.blocks = []
-        self.tags   = []
-        self.text   = text
+        self.tags = []
+        self.text = text
         
     #TODO: do this before anything else
     def decode(self):
@@ -129,7 +129,7 @@ class Type1:
         self.blocks = [block.strip() for block in self.blocks]
 
     def split(self):
-        block   = ''
+        block = ''
         CurLang = 'LAT'
         for sym in self.text:
             if sym == '(':
@@ -228,11 +228,11 @@ class Type2:
     '''
     def __init__(self,text):
         self.blocks = []
-        self.tags   = []
-        self.text   = text
+        self.tags = []
+        self.text = text
         
     def split(self):
-        block   = ''
+        block = ''
         CurLang = 'LAT'
         for i in range(len(self.text)):
             if self.text[i] == '_':

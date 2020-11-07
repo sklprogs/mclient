@@ -191,11 +191,11 @@ class HTM:
     
     def assign(self):
         for item in self.data:
-            block       = Block()
+            block = Block()
             block.type_ = item[0]
-            block.text  = item[1]
-            block.i     = item[2]
-            block.j     = item[3]
+            block.text = item[1]
+            block.i = item[2]
+            block.j = item[3]
             self.blocks.append(block)
 
     def _run_dic(self):

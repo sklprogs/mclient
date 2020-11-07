@@ -167,7 +167,7 @@ class AnalyzeTag:
 
     def set_wform(self):
         if pwf in self.block:
-            self.cur.type_  = 'wform'
+            self.cur.type_ = 'wform'
 
     def set_phrases(self):
         if pph in self.block:
@@ -257,10 +257,10 @@ class Tags:
                          ,self.blocks[i].same
                          ]
                         )
-        mes = sh.FastTable (headers   = headers
-                           ,iterable  = rows
-                           ,maxrow    = self.maxrow
-                           ,maxrows   = self.maxrows
+        mes = sh.FastTable (headers = headers
+                           ,iterable = rows
+                           ,maxrow = self.maxrow
+                           ,maxrows = self.maxrows
                            ,Transpose = True
                            ).run()
         mes = _('Non-DB blocks:') + '\n\n' + mes

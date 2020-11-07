@@ -3,10 +3,10 @@
 
 import skl_shared.shared as sh
 from skl_shared.localize import _
-import plugins.stardict.get     as gt
+import plugins.stardict.get as gt
 import plugins.stardict.cleanup as cu
-import plugins.stardict.tags    as tg
-import plugins.stardict.elems   as el
+import plugins.stardict.tags as tg
+import plugins.stardict.elems as el
 
 
 
@@ -21,15 +21,15 @@ class Plugin:
               earlier.
         '''
         self.set_values()
-        self.Debug   = Debug
-        self.maxrow  = maxrow
+        self.Debug = Debug
+        self.maxrow = maxrow
         self.maxrows = maxrows
     
     def set_values(self):
         self.blocks = []
-        self.text   = ''
-        self.htm    = ''
-        self.abbr   = {}
+        self.text = ''
+        self.htm = ''
+        self.abbr = {}
     
     def is_abbr(self,abbr):
         #TODO: implement
@@ -106,13 +106,13 @@ class Plugin:
         self.text = cu.CleanUp(self.text).run()
         if self.text is None:
             self.text = ''
-        itags = tg.Tags (text    = self.text
-                        ,Debug   = self.Debug
-                        ,maxrow  = self.maxrow
+        itags = tg.Tags (text = self.text
+                        ,Debug = self.Debug
+                        ,maxrow = self.maxrow
                         ,maxrows = self.maxrows
                         )
         self.blocks = itags.run()
         self.blocks = el.Elems (blocks = self.blocks
-                               ,abbr   = itags.abbr
+                               ,abbr = itags.abbr
                                ).run()
         return self.blocks

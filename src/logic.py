@@ -946,9 +946,9 @@ class PhraseTerma:
 class Source:
     
     def __init__(self):
-        self.title  = ''
+        self.title = ''
         self.status = _('not running')
-        self.color  = 'red'
+        self.color = 'red'
 
 
 
@@ -966,20 +966,20 @@ class Welcome:
                             ).space_items()
 
     def set_values(self):
-        self.sources  = []
-        self.sdstat   = 0
-        self.mtbstat  = 0
-        self.lgstat   = 0
-        self.sdcolor  = 'red'
+        self.sources = []
+        self.sdstat = 0
+        self.mtbstat = 0
+        self.lgstat = 0
+        self.sdcolor = 'red'
         self.mtbcolor = 'red'
-        self.lgcolor  = 'red'
-        self.product  = ''
-        self.version  = ''
-        self.desc     = ''
+        self.lgcolor = 'red'
+        self.product = ''
+        self.version = ''
+        self.desc = ''
     
     def try_sources(self):
         f = '[MClient] logic.Welcome.try_sources'
-        old  = objs.get_plugins().source
+        old = objs.get_plugins().source
         dics = objs.plugins.get_online_sources()
         if dics:
             for dic in dics:
@@ -988,7 +988,7 @@ class Welcome:
                 source.title = dic
                 if objs.plugins.is_accessible():
                     source.status = _('running')
-                    source.color  = 'green'
+                    source.color = 'green'
                 self.sources.append(source)
         else:
             sh.com.rep_empty(f)
@@ -1040,117 +1040,117 @@ class Welcome:
         self.istr.write('<font face="Serif" size="5">')
         self.istr.write('<table>')
 
-        hint1    = _('Translate the current input or selection')
-        hotkey1  = ('<Button-1>','<Return>')
-        hint2    = _('Copy the current selection')
-        hotkey2  = ('<Button-3>'
+        hint1 = _('Translate the current input or selection')
+        hotkey1 = ('<Button-1>','<Return>')
+        hint2 = _('Copy the current selection')
+        hotkey2 = ('<Button-3>'
                    ,sh.lg.globs['str']['bind_copy_sel']
                    ,sh.lg.globs['str']['bind_copy_sel_alt']
                    )
-        hint34   = _('Show the program window (system-wide)')
+        hint34 = _('Show the program window (system-wide)')
         hotkey34 = '<Alt_L-grave>'
-        hint35   = _('Translate selection from an external program')
+        hint35 = _('Translate selection from an external program')
         hotkey35 = ('<Control_L-Insert-Insert>'
                    ,'<Control_L-c-c>'
                    )
-        hint36   = _('Minimize the program window')
+        hint36 = _('Minimize the program window')
         hotkey36 = '<Escape>'
-        hint37   = _('Quit the program')
+        hint37 = _('Quit the program')
         hotkey37 = ('<Control-q>'
                    ,sh.lg.globs['str']['bind_quit']
                    )
-        hint3    = _('Copy the URL of the selected term')
-        hotkey3  = sh.lg.globs['str']['bind_copy_url']
-        hint4    = _('Copy the URL of the current article')
-        hotkey4  = sh.lg.globs['str']['bind_copy_article_url']
-        hint5    = _('Go to the previous section of column #%d') % 1
-        hotkey5  = sh.lg.globs['str']['bind_col1_up']
-        hint6    = _('Go to the next section of column #%d') % 1
-        hotkey6  = sh.lg.globs['str']['bind_col1_down']
-        hint7    = _('Go to the previous section of column #%d') % 2
-        hotkey7  = sh.lg.globs['str']['bind_col2_up']
-        hint8    = _('Go to the next section of column #%d') % 2
-        hotkey8  = sh.lg.globs['str']['bind_col2_down']
-        hint9    = _('Go to the previous section of column #%d') % 3
-        hotkey9  = sh.lg.globs['str']['bind_col3_up']
-        hint10   = _('Go to the next section of column #%d') % 3
+        hint3 = _('Copy the URL of the selected term')
+        hotkey3 = sh.lg.globs['str']['bind_copy_url']
+        hint4 = _('Copy the URL of the current article')
+        hotkey4 = sh.lg.globs['str']['bind_copy_article_url']
+        hint5 = _('Go to the previous section of column #%d') % 1
+        hotkey5 = sh.lg.globs['str']['bind_col1_up']
+        hint6 = _('Go to the next section of column #%d') % 1
+        hotkey6 = sh.lg.globs['str']['bind_col1_down']
+        hint7 = _('Go to the previous section of column #%d') % 2
+        hotkey7 = sh.lg.globs['str']['bind_col2_up']
+        hint8 = _('Go to the next section of column #%d') % 2
+        hotkey8 = sh.lg.globs['str']['bind_col2_down']
+        hint9 = _('Go to the previous section of column #%d') % 3
+        hotkey9 = sh.lg.globs['str']['bind_col3_up']
+        hint10 = _('Go to the next section of column #%d') % 3
         hotkey10 = sh.lg.globs['str']['bind_col3_down']
-        hint11   = _('Open a webpage with a definition of the current term')
+        hint11 = _('Open a webpage with a definition of the current term')
         hotkey11 = sh.lg.globs['str']['bind_define']
-        hint12   = _('Look up phrases')
+        hint12 = _('Look up phrases')
         hotkey12 = sh.lg.globs['str']['bind_go_phrases']
-        hint13   = _('Go to the preceding article')
+        hint13 = _('Go to the preceding article')
         hotkey13 = sh.lg.globs['str']['bind_go_back']
-        hint14   = _('Go to the following article')
+        hint14 = _('Go to the following article')
         hotkey14 = sh.lg.globs['str']['bind_go_forward']
-        hint15   = _('Next source language')
+        hint15 = _('Next source language')
         hotkey15 = (sh.lg.globs['str']['bind_next_lang1']
                    ,sh.lg.globs['str']['bind_next_lang1_alt']
                    )
-        hint16   = _('Previous source language')
+        hint16 = _('Previous source language')
         hotkey16 = (sh.lg.globs['str']['bind_prev_lang1']
                    ,sh.lg.globs['str']['bind_prev_lang1_alt']
                    )
-        hint17   = _('Create a printer-friendly page')
+        hint17 = _('Create a printer-friendly page')
         hotkey17 = sh.lg.globs['str']['bind_print']
-        hint18   = _('Open the current article in a default browser')
+        hint18 = _('Open the current article in a default browser')
         hotkey18 = (sh.lg.globs['str']['bind_open_in_browser']
                    ,sh.lg.globs['str']['bind_open_in_browser_alt']
                    )
-        hint19   = _('Reload the current article')
+        hint19 = _('Reload the current article')
         hotkey19 = (sh.lg.globs['str']['bind_reload_article']
                    ,sh.lg.globs['str']['bind_reload_article_alt']
                    )
-        hint20   = _('Save or copy the current article')
+        hint20 = _('Save or copy the current article')
         hotkey20 = (sh.lg.globs['str']['bind_save_article']
                    ,sh.lg.globs['str']['bind_save_article_alt']
                    )
-        hint21   = _('Start a new search in the current article')
+        hint21 = _('Start a new search in the current article')
         hotkey21 = sh.lg.globs['str']['bind_re_search_article']
-        hint22   = _('Search the article forward')
+        hint22 = _('Search the article forward')
         hotkey22 = sh.lg.globs['str']['bind_search_article_forward']
-        hint23   = _('Search the article backward')
+        hint23 = _('Search the article backward')
         hotkey23 = sh.lg.globs['str']['bind_search_article_backward']
-        hint24   = _('Show settings')
+        hint24 = _('Show settings')
         hotkey24 = (sh.lg.globs['str']['bind_settings']
                    ,sh.lg.globs['str']['bind_settings_alt']
                    )
-        hint25   = _('About the program')
+        hint25 = _('About the program')
         hotkey25 = sh.lg.globs['str']['bind_show_about']
-        hint26   = _('Paste a special symbol')
+        hint26 = _('Paste a special symbol')
         hotkey26 = sh.lg.globs['str']['bind_spec_symbol']
-        hint27   = _('Toggle alphabetizing')
+        hint27 = _('Toggle alphabetizing')
         hotkey27 = sh.lg.globs['str']['bind_toggle_alphabet']
-        hint28   = _('Toggle blacklisting')
+        hint28 = _('Toggle blacklisting')
         hotkey28 = sh.lg.globs['str']['bind_toggle_block']
-        hint29   = _('Toggle History')
+        hint29 = _('Toggle History')
         hotkey29 = (sh.lg.globs['str']['bind_toggle_history']
                    ,sh.lg.globs['str']['bind_toggle_history_alt']
                    )
-        hint30   = _('Toggle prioritizing')
+        hint30 = _('Toggle prioritizing')
         hotkey30 = sh.lg.globs['str']['bind_toggle_priority']
         '''
-        hint31   = _('Toggle terms-only selection')
+        hint31 = _('Toggle terms-only selection')
         hotkey31 = sh.lg.globs['str']['bind_toggle_sel']
         '''
-        hint32   = _('Toggle the current article view')
+        hint32 = _('Toggle the current article view')
         hotkey32 = (sh.lg.globs['str']['bind_toggle_view']
                    ,sh.lg.globs['str']['bind_toggle_view_alt']
                    )
-        hint33   = _('Clear History')
+        hint33 = _('Clear History')
         hotkey33 = sh.lg.globs['str']['bind_clear_history']
-        hint38   = _('Next target language')
+        hint38 = _('Next target language')
         hotkey38 = (sh.lg.globs['str']['bind_next_lang2']
                    ,sh.lg.globs['str']['bind_next_lang2_alt']
                    )
-        hint39   = _('Previous target language')
+        hint39 = _('Previous target language')
         hotkey39 = (sh.lg.globs['str']['bind_prev_lang2']
                    ,sh.lg.globs['str']['bind_prev_lang2_alt']
                    )
-        hint40   = _('Swap source and target languages')
+        hint40 = _('Swap source and target languages')
         hotkey40 = sh.lg.globs['str']['bind_swap_langs']
         
-        hint41   = _('Copy the nominative case')
+        hint41 = _('Copy the nominative case')
         hotkey41 = sh.lg.globs['str']['bind_copy_nominative']
         
         self.gen_row(hint1,hotkey1,hint2,hotkey2)
@@ -1195,9 +1195,9 @@ class Welcome:
         self.istr.write('\n')
         self.istr.write('      <br><br>\n')
         for source in self.sources:
-            self.gen_source_code (title  = source.title
+            self.gen_source_code (title = source.title
                                  ,status = source.status
-                                 ,color  = source.color
+                                 ,color = source.color
                                  )
         self.istr.write(_('Offline dictionaries loaded:'))
         self.istr.write(' Stardict: ')
@@ -1278,7 +1278,7 @@ class DefaultConfig:
                 if os.path.exists(self.fblock):
                     self.Success = sh.File(file=self.fblock).Success
                 else:
-                    iwrite = sh.WriteTextFile (file    = self.fblock
+                    iwrite = sh.WriteTextFile (file = self.fblock
                                               ,Rewrite = True
                                               )
                     iwrite.write(sample_block)
@@ -1298,7 +1298,7 @@ class DefaultConfig:
                     if os.path.exists(self.fprior):
                         self.Success = sh.File(file=self.fprior).Success
                     else:
-                        iwrite = sh.WriteTextFile (file    = self.fprior
+                        iwrite = sh.WriteTextFile (file = self.fprior
                                                   ,Rewrite = True
                                                   )
                         iwrite.write(sample_prior)
@@ -1352,11 +1352,11 @@ class CurRequest:
         self.SpecialPage = False
     
     def reset(self):
-        self.page   = ''
-        self.htm    = ''
+        self.page = ''
+        self.htm = ''
         self.htmraw = ''
         self.search = ''
-        self.url    = ''
+        self.url = ''
 
 
 
@@ -1367,7 +1367,7 @@ class Lists:
         f = '[MClient] logic.Lists.__init__'
         self.blacklst = objs.get_default().fblock
         self.priorlst = objs.default.fprior
-        self.Success  = objs.default.Success
+        self.Success = objs.default.Success
     
     def get_blacklist(self):
         f = '[MClient] logic.Lists.get_blacklist'
@@ -1411,11 +1411,11 @@ class Objects:
                     ,maxrow=20,maxrows=1000
                     ):
         if self.plugins is None:
-            self.plugins = manager.Plugins (sdpath  = self.get_default().get_dics()
-                                           ,mbpath  = self.default.get_dics()
+            self.plugins = manager.Plugins (sdpath = self.get_default().get_dics()
+                                           ,mbpath = self.default.get_dics()
                                            ,timeout = sh.lg.globs['int']['timeout']
-                                           ,Debug   = Debug
-                                           ,maxrow  = maxrow
+                                           ,Debug = Debug
+                                           ,maxrow = maxrow
                                            ,maxrows = maxrows
                                            )
         return self.plugins
@@ -1512,7 +1512,7 @@ class Order:
                                          )
                         sh.objs.get_mes(f,mes,True).show_debug()
                         self.priorlst[ind1], self.priorlst[ind2] \
-                        = self.priorlst[ind2], self.priorlst[ind1]
+ = self.priorlst[ind2], self.priorlst[ind1]
                     
                     ind1 += 1
                     ind2 += 1
@@ -1704,12 +1704,12 @@ class Order:
             sh.com.cancel(f)
     
     def set_values(self):
-        self.Success  = True
-        self.lists    = None
+        self.Success = True
+        self.lists = None
         self.blacklst = []
         self.priorlst = []
-        self.dic1     = ''
-        self.dic2     = ''
+        self.dic1 = ''
+        self.dic2 = ''
             
     def sort_dic(self,lst):
         f = '[MClient] logic.Order.sort_dic'

@@ -102,11 +102,11 @@ class BlockPrioritize:
     
     def assign(self):
         for item in self.data:
-            block        = Block()
-            block.no     = item[0]
-            block.type_  = item[1]
-            block.text   = item[2]
-            block.dic    = item[3]
+            block = Block()
+            block.no = item[0]
+            block.type_ = item[1]
+            block.text = item[2]
+            block.dic = item[3]
             block.speech = item[4]
             self.blocks.append(block)
             
@@ -176,10 +176,10 @@ class BlockPrioritize:
                              ,block.sprior
                              ]
                             )
-            mes = sh.FastTable (headers   = headers
-                               ,iterable  = rows
-                               ,maxrow    = self.maxrow
-                               ,maxrows   = self.maxrows
+            mes = sh.FastTable (headers = headers
+                               ,iterable = rows
+                               ,maxrow = self.maxrow
+                               ,maxrows = self.maxrows
                                ,Transpose = True
                                ).run()
             sh.com.run_fast_debug(f,mes)
@@ -287,13 +287,13 @@ class Cells:
         
     def assign(self):
         for item in self.data:
-            block        = Block()
-            block.no     = item[0]
-            block.type_  = item[1]
-            block.text   = item[2]
-            block.same   = item[3]
-            block.dic    = item[4]
-            block.wform  = item[5]
+            block = Block()
+            block.no = item[0]
+            block.type_ = item[1]
+            block.text = item[2]
+            block.same = item[3]
+            block.dic = item[4]
+            block.wform = item[5]
             block.speech = item[6]
             block.sprior = item[7]
             block.transc = item[8]
@@ -321,10 +321,10 @@ class Cells:
                              ,block.same
                              ]
                             )
-            mes = sh.FastTable (headers   = headers
-                               ,iterable  = rows
-                               ,maxrow    = self.maxrow
-                               ,maxrows   = self.maxrows
+            mes = sh.FastTable (headers = headers
+                               ,iterable = rows
+                               ,maxrow = self.maxrow
+                               ,maxrows = self.maxrows
                                ,Transpose = True
                                ).run()
             sh.com.run_fast_debug(f,mes)
@@ -548,12 +548,12 @@ class Pos:
         
     def assign(self):
         for item in self.data:
-            block       = Block()
-            block.no    = item[0]
+            block = Block()
+            block.no = item[0]
             block.type_ = item[1]
-            block.text  = item[2]
-            block.same  = item[3]
-            block.i     = item[4]
+            block.text = item[2]
+            block.same = item[3]
+            block.i = item[4]
             self.blocks.append(block)
         
     def debug(self):
@@ -569,10 +569,10 @@ class Pos:
                              ,block.last
                              ]
                             )
-            mes = sh.FastTable (headers   = headers
-                               ,iterable  = rows
-                               ,maxrow    = self.maxrow
-                               ,maxrows   = self.maxrows
+            mes = sh.FastTable (headers = headers
+                               ,iterable = rows
+                               ,maxrow = self.maxrow
+                               ,maxrows = self.maxrows
                                ,Transpose = True
                                ).run()
             sh.com.run_fast_debug(f,mes)
@@ -600,7 +600,7 @@ class Pos:
         for block in self.blocks:
             text = sh.Text(text=block.text.strip()).delete_duplicate_spaces()
             if text:
-                search = sh.Search (text    = self.rawtext
+                search = sh.Search (text = self.rawtext
                                    ,pattern = text
                                    )
                 search.i = last

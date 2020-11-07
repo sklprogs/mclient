@@ -5,10 +5,10 @@ import skl_shared.shared as sh
 from skl_shared.localize import _
 import plugins.stardict.get
 import plugins.dsl.get
-import plugins.stardict.run     as sdrun
+import plugins.stardict.run as sdrun
 import plugins.multitrancom.run as mcrun
 import plugins.multitrandem.run as mbrun
-import plugins.dsl.run          as lgrun
+import plugins.dsl.run as lgrun
 
 
 class Plugins:
@@ -182,20 +182,20 @@ class Plugins:
         plugins.stardict.get.objs.get_all_dics()
         plugins.dsl.get.objs.get_all_dics()
         plugins.multitrandem.get.objs.get_all_dics()
-        self.sdplugin = sdrun.Plugin (Debug   = self.Debug
-                                     ,maxrow  = self.maxrow
+        self.sdplugin = sdrun.Plugin (Debug = self.Debug
+                                     ,maxrow = self.maxrow
                                      ,maxrows = self.maxrows
                                      )
-        self.mcplugin = mcrun.Plugin (Debug   = self.Debug
-                                     ,maxrow  = self.maxrow
+        self.mcplugin = mcrun.Plugin (Debug = self.Debug
+                                     ,maxrow = self.maxrow
                                      ,maxrows = self.maxrows
                                      )
-        self.mbplugin = mbrun.Plugin (Debug   = self.Debug
-                                     ,maxrow  = self.maxrow
+        self.mbplugin = mbrun.Plugin (Debug = self.Debug
+                                     ,maxrow = self.maxrow
                                      ,maxrows = self.maxrows
                                      )
-        self.lgplugin = lgrun.Plugin (Debug   = self.Debug
-                                     ,maxrow  = self.maxrow
+        self.lgplugin = lgrun.Plugin (Debug = self.Debug
+                                     ,maxrow = self.maxrow
                                      ,maxrows = self.maxrows
                                      )
     
@@ -236,7 +236,7 @@ class Plugins:
         f = '[MClient] manager.Plugins.request'
         if self.plugin:
             return self.plugin.request (search = search
-                                       ,url    = url
+                                       ,url = url
                                        )
         else:
             sh.com.rep_empty(f)

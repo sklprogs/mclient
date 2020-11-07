@@ -3,11 +3,11 @@
 
 import skl_shared.shared as sh
 from skl_shared.localize import _
-import plugins.multitrancom.get     as gt
+import plugins.multitrancom.get as gt
 import plugins.multitrancom.cleanup as cu
-import plugins.multitrancom.tags    as tg
-import plugins.multitrancom.elems   as el
-import plugins.multitrancom.pairs   as pr
+import plugins.multitrancom.tags as tg
+import plugins.multitrancom.elems as el
+import plugins.multitrancom.pairs as pr
 
 
 
@@ -17,15 +17,15 @@ class Plugin:
                  ,maxrow=20,maxrows=1000
                  ):
         self.set_values()
-        self.Debug   = Debug
-        self.maxrow  = maxrow
+        self.Debug = Debug
+        self.maxrow = maxrow
         self.maxrows = maxrows
     
     def set_values(self):
-        self.htm    = ''
-        self.text   = ''
+        self.htm = ''
+        self.text = ''
         self.blocks = []
-        self.abbr   = {}
+        self.abbr = {}
     
     def is_abbr(self,abbr):
         f = '[MClient] plugins.multitrancom.run.Plugin.is_abbr'
@@ -88,8 +88,8 @@ class Plugin:
         code1 = pr.objs.get_pairs().get_code(pr.LANG1)
         code2 = pr.objs.pairs.get_code(pr.LANG2)
         if code1 and code2 and search:
-            return gt.com.get_url (code1  = code1
-                                  ,code2  = code2
+            return gt.com.get_url (code1 = code1
+                                  ,code2 = code2
                                   ,search = search
                                   )
         else:
@@ -141,7 +141,7 @@ class Plugin:
     
     def request(self,search='',url=''):
         iget = gt.Get (search = search
-                      ,url    = url
+                      ,url = url
                       )
         self.text = iget.run()
         self.text = self.htm = cu.CleanUp(self.text).run()
@@ -149,9 +149,9 @@ class Plugin:
             self.text = ''
         #TODO: Should we take dics only from the current article?
         self.abbr = {}
-        itags = tg.Tags (text    = self.text
-                        ,Debug   = self.Debug
-                        ,maxrow  = self.maxrow
+        itags = tg.Tags (text = self.text
+                        ,Debug = self.Debug
+                        ,maxrow = self.maxrow
                         ,maxrows = self.maxrows
                         )
         self.blocks = itags.run()
@@ -163,12 +163,12 @@ class Plugin:
                 # Prevent useless error output
                 if block.url:
                     block.url = gt.com.fix_url(block.url)
-        self.blocks = el.Elems (blocks  = self.blocks
-                               ,abbr    = self.abbr
-                               ,langs   = pr.objs.get_pairs().get_alive()
-                               ,search  = search
-                               ,Debug   = self.Debug
-                               ,maxrow  = self.maxrow
+        self.blocks = el.Elems (blocks = self.blocks
+                               ,abbr = self.abbr
+                               ,langs = pr.objs.get_pairs().get_alive()
+                               ,search = search
+                               ,Debug = self.Debug
+                               ,maxrow = self.maxrow
                                ,maxrows = self.maxrows
                                ).run()
         return self.blocks

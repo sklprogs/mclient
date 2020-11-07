@@ -8,9 +8,7 @@ from skl_shared.localize import _
 PRODUCT = 'MClient'
 VERSION = '6.7'
 CURYEAR = 2020
-ICON    = sh.objs.get_pdir().add ('..','resources'
-                                 ,'icon_64x64_mclient.gif'
-                                 )
+ICON = sh.objs.get_pdir().add('..','resources','icon_64x64_mclient.gif')
 
 
 class Sources:
@@ -33,11 +31,11 @@ class Sources:
             self.parent.set_icon(ICON)
     
     def set_bindings(self):
-        sh.com.bind (obj      = self.parent
+        sh.com.bind (obj = self.parent
                     ,bindings = ('<Escape>','<Control-q>','<Control-w>')
-                    ,action   = self.close
+                    ,action = self.close
                     )
-        self.cvs_prm.set_top_bindings (top  = self.parent
+        self.cvs_prm.set_top_bindings (top = self.parent
                                       ,Ctrl = False
                                       )
     
@@ -56,8 +54,8 @@ class Sources:
     def set_region(self):
         f = '[MClient] gui.Sources.set_region'
         if self.frms:
-            self.cvs_prm.set_region (x       = self.width
-                                    ,y       = 22 * len(self.frms)
+            self.cvs_prm.set_region (x = self.width
+                                    ,y = 22 * len(self.frms)
                                     ,xborder = 10
                                     ,yborder = 20
                                     )
@@ -66,26 +64,26 @@ class Sources:
             sh.com.rep_lazy()
         
     def set_values(self):
-        self.frms   = []
+        self.frms = []
         self.cboxes = []
-        self.lbls   = []
+        self.lbls = []
         
     def set_buttons(self):
         self.btn_tgl = sh.Button (parent = self.frm_btl
-                                 ,text   = _('Select all')
-                                 ,hint   = _('Mark/unmark all checkboxes')
-                                 ,side   = 'left'
+                                 ,text = _('Select all')
+                                 ,hint = _('Mark/unmark all checkboxes')
+                                 ,side = 'left'
                                  ,action = self.toggle
                                  )
         self.btn_rst = sh.Button (parent = self.frm_btl
-                                 ,text   = _('Reset')
-                                 ,hint   = _('Reset to default')
-                                 ,side   = 'right'
+                                 ,text = _('Reset')
+                                 ,hint = _('Reset to default')
+                                 ,side = 'right'
                                  )
         self.btn_apl = sh.Button (parent = self.frm_btr
-                                 ,text   = _('Apply')
-                                 ,hint   = _('Close & Apply')
-                                 ,side   = 'right'
+                                 ,text = _('Apply')
+                                 ,hint = _('Close & Apply')
+                                 ,side = 'right'
                                  )
     
     def widgets(self):
@@ -99,15 +97,15 @@ class Sources:
                        ,expand = False
                        )
         cbx = sh.CheckBox (parent = frm
-                          ,side   = 'left'
+                          ,side = 'left'
                           )
         lbl = sh.Label (parent = frm
-                       ,text   = text
-                       ,side   = 'left'
+                       ,text = text
+                       ,side = 'left'
                        )
-        sh.com.bind (obj      = lbl
+        sh.com.bind (obj = lbl
                     ,bindings = '<ButtonRelease-1>'
-                    ,action   = cbx.toggle
+                    ,action = cbx.toggle
                     )
         self.frms.append(frm)
         self.cboxes.append(cbx)
@@ -146,44 +144,44 @@ class Sources:
     def set_frames(self):
         self.frm_prm = sh.Frame (parent = self.parent)
         self.frm_top = sh.Frame (parent = self.frm_prm
-                                ,side   = 'top'
+                                ,side = 'top'
                                 )
         self.frm_btm = sh.Frame (parent = self.frm_prm
-                                ,side   = 'bottom'
+                                ,side = 'bottom'
                                 ,expand = False
-                                ,fill   = 'x'
+                                ,fill = 'x'
                                 )
         self.frm_cnt = sh.Frame (parent = self.frm_top
-                                ,side   = 'left'
+                                ,side = 'left'
                                 )
         self.frm_ver = sh.Frame (parent = self.frm_top
                                 ,expand = False
-                                ,fill   = 'y'
-                                ,side   = 'right'
+                                ,fill = 'y'
+                                ,side = 'right'
                                 )
         self.frm_hor = sh.Frame (parent = self.frm_btm
                                 ,expand = False
-                                ,fill   = 'x'
-                                ,side   = 'top'
+                                ,fill = 'x'
+                                ,side = 'top'
                                 )
         self.frm_btn = sh.Frame (parent = self.frm_btm
                                 ,expand = False
-                                ,fill   = 'both'
-                                ,side   = 'bottom'
+                                ,fill = 'both'
+                                ,side = 'bottom'
                                 )
         self.frm_btl = sh.Frame (parent = self.frm_btn
-                                ,fill   = 'both'
-                                ,side   = 'left'
+                                ,fill = 'both'
+                                ,side = 'left'
                                 )
         self.frm_btr = sh.Frame (parent = self.frm_btn
-                                ,fill   = 'both'
-                                ,side   = 'right'
+                                ,fill = 'both'
+                                ,side = 'right'
                                 )
         
     def set_scroll(self):
         self.scr_hor = sh.Scrollbar (parent = self.frm_hor
                                     ,scroll = self.cvs_prm
-                                    ,Horiz  = True
+                                    ,Horiz = True
                                     )
         self.scr_ver = sh.Scrollbar (parent = self.frm_ver
                                     ,scroll = self.cvs_prm
@@ -229,49 +227,49 @@ class About:
         text = _('Programming: Peter Sklyar, 2015-{}.\nVersion: {}\n\nThis program is free and opensource. You can use and modify it freely\nwithin the scope of the provisions set forth in GPL v.3 and the active legislation.\n\nIf you have any questions, requests, etc., please do not hesitate to contact me.\n')
         text = text.format(CURYEAR,VERSION)
         self.lbl_abt = sh.Label (parent = self.frm_prm
-                                ,text   = text
-                                ,font   = 'Sans 14'
+                                ,text = text
+                                ,font = 'Sans 14'
                                 )
         
     def set_frames(self):
         self.frm_prm = sh.Frame (parent = self
                                 ,expand = 1
-                                ,fill   = 'both'
-                                ,side   = 'top'
+                                ,fill = 'both'
+                                ,side = 'top'
                                 )
         self.frm_sec = sh.Frame (parent = self
                                 ,expand = 1
-                                ,fill   = 'both'
-                                ,side   = 'left'
+                                ,fill = 'both'
+                                ,side = 'left'
                                 )
         self.frm_ter = sh.Frame (parent = self
                                 ,expand = 1
-                                ,fill   = 'both'
-                                ,side   = 'right'
+                                ,fill = 'both'
+                                ,side = 'right'
                                 )
     def set_buttons(self):
         # Show the license
         self.btn_thd = sh.Button (parent = self.frm_sec
-                                 ,text   = _('Third parties')
-                                 ,hint   = _('Third-party licenses')
-                                 ,side   = 'left'
+                                 ,text = _('Third parties')
+                                 ,hint = _('Third-party licenses')
+                                 ,side = 'left'
                                  )
         self.btn_lic = sh.Button (parent = self.frm_ter
-                                 ,text   = _('License')
-                                 ,hint   = _('View the license')
-                                 ,side   = 'left'
+                                 ,text = _('License')
+                                 ,hint = _('View the license')
+                                 ,side = 'left'
                                  )
         # Send mail to the author
         self.btn_eml = sh.Button (parent = self.frm_ter
-                                 ,text   = _('Contact the author')
-                                 ,hint   = _('Draft an email to the author')
-                                 ,side   = 'right'
+                                 ,text = _('Contact the author')
+                                 ,hint = _('Draft an email to the author')
+                                 ,side = 'right'
                                  )
     
     def set_bindings(self):
-        sh.com.bind (obj      = self.obj
+        sh.com.bind (obj = self.obj
                     ,bindings = ('<Escape>','<Control-q>','<Control-w>')
-                    ,action   = self.close
+                    ,action = self.close
                     )
 
     def close(self,event=None):
@@ -288,15 +286,15 @@ class ThirdParties:
         self.set_gui()
         
     def set_bindings(self):
-        sh.com.bind (obj      = self.obj
+        sh.com.bind (obj = self.obj
                     ,bindings = ('<Escape>','<Control-q>','<Control-w>')
-                    ,action   = self.close
+                    ,action = self.close
                     )
     
     def set_gui(self):
         title = _('Third parties') + ':'
         self.obj = sh.TextBoxRO (title = title
-                                ,icon  = ICON
+                                ,icon = ICON
                                 )
         self.parent = self.obj.parent
         sh.Geometry(self.parent).set('800x600')
@@ -327,16 +325,16 @@ class SearchArticle:
     
     def set_gui(self):
         self.parent = sh.EntryC (title = _('Enter a string to search:')
-                                ,icon  = ICON
+                                ,icon = ICON
                                 )
         self.widget = self.parent.widget
         self.set_bindings()
         self.parent.focus()
     
     def set_bindings(self):
-        sh.com.bind (obj      = self.parent
+        sh.com.bind (obj = self.parent
                     ,bindings = ('<Escape>','<Control-q>','<Control-w>')
-                    ,action   = self.parent.close
+                    ,action = self.parent.close
                     )
                              
     def show(self,event=None):
@@ -351,8 +349,8 @@ class SearchArticle:
 class SaveArticle:
 
     def __init__(self):
-        self.type   = 'SaveArticle'
-        self.items  = [_('Save the current view as a web-page (*.htm)')
+        self.type = 'SaveArticle'
+        self.items = [_('Save the current view as a web-page (*.htm)')
                       ,_('Save the original article as a web-page (*.htm)')
                       ,_('Save the article as plain text in UTF-8 (*.txt)')
                       ,_('Copy HTML code of the article to clipboard')
@@ -361,15 +359,15 @@ class SaveArticle:
         self.set_gui()
         
     def set_bindings(self):
-        sh.com.bind (obj      = self.parent
+        sh.com.bind (obj = self.parent
                     ,bindings = ('<Escape>','<Control-q>','<Control-w>')
-                    ,action   = self.close
+                    ,action = self.close
                     )
     
     def set_gui(self):
-        self.parent = sh.ListBoxC (lst   = self.items
+        self.parent = sh.ListBoxC (lst = self.items
                                   ,title = _('Select an action:')
-                                  ,icon  = ICON
+                                  ,icon = ICON
                                   )
         self.widget = self.parent.widget
         self.set_bindings()
@@ -388,7 +386,7 @@ class History:
         self.set_gui()
 
     def set_gui(self):
-        self.parent = sh.Top (icon  = ICON
+        self.parent = sh.Top (icon = ICON
                              ,title = _('History')
                              )
         self.obj = sh.ListBox(self.parent)
@@ -397,13 +395,13 @@ class History:
         self.set_bindings()
 
     def set_bindings(self):
-        sh.com.bind (obj      = self
+        sh.com.bind (obj = self
                     ,bindings = '<ButtonRelease-3>'
-                    ,action   = self.copy
+                    ,action = self.copy
                     )
-        sh.com.bind (obj      = self.parent
+        sh.com.bind (obj = self.parent
                     ,bindings = ('<Escape>','<Control-q>','<Control-w>')
-                    ,action   = self.close
+                    ,action = self.close
                     )
 
     def show(self,event=None):
@@ -437,8 +435,8 @@ class WebFrame:
         return 'break'
 
     def set_values(self):
-        self.shift   = 1
-        self.border  = 24
+        self.shift = 1
+        self.border = 24
         self.icn_al0 = sh.objs.get_pdir().add ('..','resources'
                                               ,'buttons'
                                               ,'icon_36x36_alphabet_off.gif'
@@ -547,12 +545,12 @@ class WebFrame:
                                 )
         self.frm_btm = sh.Frame (parent = self.frm_prm
                                 ,expand = 0
-                                ,side   = 'bottom'
+                                ,side = 'bottom'
                                 )
         self.frm_ver = sh.Frame (parent = self.frm_prm
                                 ,expand = 0
-                                ,fill   = 'y'
-                                ,side   = 'right'
+                                ,fill = 'y'
+                                ,side = 'right'
                                 )
         self.widget = th.TkinterHtml(self.frm_prm.widget)
         self.widget.pack(expand='1',fill='both')
@@ -570,7 +568,7 @@ class WebFrame:
         '''
         self.frm_pnl = sh.Frame (parent = self.frm_btm
                                 ,expand = 0
-                                ,fill   = 'x'
+                                ,fill = 'x'
                                 )
         # Canvas should be created within a frame
         self.cvs_prm = sh.Canvas (parent = self.frm_pnl
@@ -581,8 +579,8 @@ class WebFrame:
                                 )
         # A search entry field
         self.ent_src = sh.Entry (parent = self.frm_btn
-                                ,side   = 'left'
-                                ,ipady  = 5
+                                ,side = 'left'
+                                ,ipady = 5
                                 )
         self.draw_buttons()
         self.cvs_prm.embed(obj=self.frm_btn)
@@ -592,7 +590,7 @@ class WebFrame:
         '''
         sh.objs.get_root().update_idle()
         height = self.frm_btn.get_height()
-        width  = self.frm_btn.get_width()
+        width = self.frm_btn.get_width()
         self.cvs_prm.widget.config(width=self.obj.get_resolution()[0])
         self.cvs_prm.widget.config(height=height)
         x2 = (width / 2)
@@ -609,210 +607,210 @@ class WebFrame:
             set bindings, use 'self.bindings'.
         '''
         # A button for newbies, substitutes Enter in search_field
-        self.btn_trn = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('Translate')
-                                 ,hint     = _('Translate')
+        self.btn_trn = sh.Button (parent = self.frm_btn
+                                 ,text = _('Translate')
+                                 ,hint = _('Translate')
                                  ,inactive = self.icn_ret
-                                 ,active   = self.icn_ret
+                                 ,active = self.icn_ret
                                  )
 
         # A button to clear the search field
-        self.btn_clr = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('Clear')
-                                 ,hint     = _('Clear search field')
+        self.btn_clr = sh.Button (parent = self.frm_btn
+                                 ,text = _('Clear')
+                                 ,hint = _('Clear search field')
                                  ,inactive = self.icn_clr
-                                 ,active   = self.icn_clr
+                                 ,active = self.icn_clr
                                  )
 
         # A button to insert text into the search field
-        self.btn_ins = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('Paste')
-                                 ,hint     = _('Paste text from clipboard')
+        self.btn_ins = sh.Button (parent = self.frm_btn
+                                 ,text = _('Paste')
+                                 ,hint = _('Paste text from clipboard')
                                  ,inactive = self.icn_ins
-                                 ,active   = self.icn_ins
+                                 ,active = self.icn_ins
                                  )
         # A button to insert a current search
-        self.btn_rp1 = sh.Button (parent   = self.frm_btn
-                                 ,text     = '!'
-                                 ,hint     = _('Paste current request')
+        self.btn_rp1 = sh.Button (parent = self.frm_btn
+                                 ,text = '!'
+                                 ,hint = _('Paste current request')
                                  ,inactive = self.icn_rp0
-                                 ,active   = self.icn_rp1
+                                 ,active = self.icn_rp1
                                  )
         # A button to insert a previous search
-        self.btn_rp2 = sh.Button (parent   = self.frm_btn
-                                 ,text     = '!!'
-                                 ,hint     = _('Paste previous request')
+        self.btn_rp2 = sh.Button (parent = self.frm_btn
+                                 ,text = '!!'
+                                 ,hint = _('Paste previous request')
                                  ,inactive = self.icn_r20
-                                 ,active   = self.icn_r21
+                                 ,active = self.icn_r21
                                  )
         # A button to insert special symbols
-        self.btn_sym = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('Symbols')
-                                 ,hint     = _('Paste a special symbol')
+        self.btn_sym = sh.Button (parent = self.frm_btn
+                                 ,text = _('Symbols')
+                                 ,hint = _('Paste a special symbol')
                                  ,inactive = self.icn_sym
-                                 ,active   = self.icn_sym
+                                 ,active = self.icn_sym
                                  )
         self.opt_src = sh.OptionMenu (parent = self.frm_btn
-                                     ,Combo  = True
-                                     ,font   = 'Sans 11'
+                                     ,Combo = True
+                                     ,font = 'Sans 11'
                                      )
         ''' Configure the option menu at the GUI creation time to avoid
             glitches with the search field.
         '''
         self.opt_src.widget.configure (width = 14
-                                      ,font  = 'Sans 11'
+                                      ,font = 'Sans 11'
                                       )
         # Drop-down lists with languages
         self.opt_lg1 = sh.OptionMenu (parent = self.frm_btn
-                                     ,Combo  = True
-                                     ,font   = 'Sans 11'
+                                     ,Combo = True
+                                     ,font = 'Sans 11'
                                      )
-        self.btn_swp = sh.Button (parent   = self.frm_btn
-                                 ,hint     = _('Swap source and target languages')
+        self.btn_swp = sh.Button (parent = self.frm_btn
+                                 ,hint = _('Swap source and target languages')
                                  ,inactive = self.icn_swp
-                                 ,active   = self.icn_swp
-                                 ,text     = _('Swap')
+                                 ,active = self.icn_swp
+                                 ,text = _('Swap')
                                  )
         self.opt_lg2 = sh.OptionMenu (parent = self.frm_btn
-                                     ,Combo  = True
-                                     ,font   = 'Sans 11'
+                                     ,Combo = True
+                                     ,font = 'Sans 11'
                                      )
-        self.opt_col = sh.OptionMenu (parent  = self.frm_btn
-                                     ,items   = (1,2,3,4,5,6,7,8,9,10)
+        self.opt_col = sh.OptionMenu (parent = self.frm_btn
+                                     ,items = (1,2,3,4,5,6,7,8,9,10)
                                      ,default = 4
-                                     ,Combo   = True
-                                     ,font    = 'Sans 11'
+                                     ,Combo = True
+                                     ,font = 'Sans 11'
                                      )
         ''' The 'height' argument changes a height of the drop-down
             list and not the main widget.
         '''
-        self.opt_lg1.widget.config (width  = 11
+        self.opt_lg1.widget.config (width = 11
                                    ,height = 15
                                    )
-        self.opt_lg2.widget.config (width  = 11
+        self.opt_lg2.widget.config (width = 11
                                    ,height = 15
                                    )
         self.opt_col.widget.config(width=2)
         # A settings button
-        self.btn_set = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('Settings')
-                                 ,hint     = _('Tune up view settings')
+        self.btn_set = sh.Button (parent = self.frm_btn
+                                 ,text = _('Settings')
+                                 ,hint = _('Tune up view settings')
                                  ,inactive = self.icn_set
-                                 ,active   = self.icn_set
+                                 ,active = self.icn_set
                                  )
         # A button to change the article view
-        self.btn_viw = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('Toggle view')
-                                 ,hint     = _('Toggle the article view mode')
+        self.btn_viw = sh.Button (parent = self.frm_btn
+                                 ,text = _('Toggle view')
+                                 ,hint = _('Toggle the article view mode')
                                  ,inactive = self.icn_ver
-                                 ,active   = self.icn_hor
+                                 ,active = self.icn_hor
                                  )
         # A button to toggle dictionary blocking
-        self.btn_blk = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('Blacklist')
-                                 ,hint     = _('Toggle the blacklist')
+        self.btn_blk = sh.Button (parent = self.frm_btn
+                                 ,text = _('Blacklist')
+                                 ,hint = _('Toggle the blacklist')
                                  ,inactive = self.icn_bl0
-                                 ,active   = self.icn_bl1
+                                 ,active = self.icn_bl1
                                  )
         # A button to toggle dictionary prioritization
-        self.btn_pri = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('Prioritize')
-                                 ,hint     = _('Toggle prioritizing')
+        self.btn_pri = sh.Button (parent = self.frm_btn
+                                 ,text = _('Prioritize')
+                                 ,hint = _('Toggle prioritizing')
                                  ,inactive = self.icn_pr0
-                                 ,active   = self.icn_pr1
+                                 ,active = self.icn_pr1
                                  )
         # A button to toggle dictionary alphabetization
-        self.btn_alp = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('Alphabetize')
-                                 ,hint     = _('Toggle alphabetizing')
+        self.btn_alp = sh.Button (parent = self.frm_btn
+                                 ,text = _('Alphabetize')
+                                 ,hint = _('Toggle alphabetizing')
                                  ,inactive = self.icn_al0
-                                 ,active   = self.icn_al1
+                                 ,active = self.icn_al1
                                  )
         # A button to move to the previous article
-        self.btn_prv = sh.Button (parent   = self.frm_btn
-                                 ,text     = '←'
-                                 ,hint     = _('Go to the preceding article')
+        self.btn_prv = sh.Button (parent = self.frm_btn
+                                 ,text = '←'
+                                 ,hint = _('Go to the preceding article')
                                  ,inactive = self.icn_bk0
-                                 ,active   = self.icn_bk1
+                                 ,active = self.icn_bk1
                                  )
         # A button to move to the next article
-        self.btn_nxt = sh.Button (parent   = self.frm_btn
-                                 ,text     = '→'
-                                 ,hint     = _('Go to the following article')
+        self.btn_nxt = sh.Button (parent = self.frm_btn
+                                 ,text = '→'
+                                 ,hint = _('Go to the following article')
                                  ,inactive = self.icn_fw0
-                                 ,active   = self.icn_fw1
+                                 ,active = self.icn_fw1
                                  )
         # A button to toggle and clear history
-        self.btn_hst = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('History')
+        self.btn_hst = sh.Button (parent = self.frm_btn
+                                 ,text = _('History')
                                  ,inactive = self.icn_hst
-                                 ,active   = self.icn_hst
+                                 ,active = self.icn_hst
                                  )
         # A button to reload the article
-        self.btn_rld = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('Reload')
-                                 ,hint     = _('Reload the article')
+        self.btn_rld = sh.Button (parent = self.frm_btn
+                                 ,text = _('Reload')
+                                 ,hint = _('Reload the article')
                                  ,inactive = self.icn_rld
-                                 ,active   = self.icn_rld
+                                 ,active = self.icn_rld
                                  )
         # A button to search within the article
-        self.btn_ser = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('Search')
-                                 ,hint     = _('Find in the current article')
+        self.btn_ser = sh.Button (parent = self.frm_btn
+                                 ,text = _('Search')
+                                 ,hint = _('Find in the current article')
                                  ,inactive = self.icn_src
-                                 ,active   = self.icn_src
+                                 ,active = self.icn_src
                                  )
         # A button to save the article
-        self.btn_sav = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('Save')
-                                 ,hint     = _('Save the current article')
+        self.btn_sav = sh.Button (parent = self.frm_btn
+                                 ,text = _('Save')
+                                 ,hint = _('Save the current article')
                                  ,inactive = self.icn_sav
-                                 ,active   = self.icn_sav
+                                 ,active = self.icn_sav
                                  )
         # A button to open the current article in a browser
-        self.btn_brw = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('Browse')
-                                 ,hint     = _('Open the current article in a browser')
+        self.btn_brw = sh.Button (parent = self.frm_btn
+                                 ,text = _('Browse')
+                                 ,hint = _('Open the current article in a browser')
                                  ,inactive = self.icn_brw
-                                 ,active   = self.icn_brw
+                                 ,active = self.icn_brw
                                  )
         # A button to print the article
-        self.btn_prn = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('Print')
-                                 ,hint     = _('Create a print-ready preview')
+        self.btn_prn = sh.Button (parent = self.frm_btn
+                                 ,text = _('Print')
+                                 ,hint = _('Create a print-ready preview')
                                  ,inactive = self.icn_prn
-                                 ,active   = self.icn_prn
+                                 ,active = self.icn_prn
                                  )
         # A button to define a term
-        self.btn_def = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('Define')
-                                 ,hint     = _('Define the current term')
+        self.btn_def = sh.Button (parent = self.frm_btn
+                                 ,text = _('Define')
+                                 ,hint = _('Define the current term')
                                  ,inactive = self.icn_def
-                                 ,active   = self.icn_def
+                                 ,active = self.icn_def
                                  )
         # A button to toggle capturing Ctrl-c-c and Ctrl-Ins-Ins
-        self.btn_cap = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('Clipboard')
-                                 ,hint     = _('Capture Ctrl-c-c and Ctrl-Ins-Ins')
+        self.btn_cap = sh.Button (parent = self.frm_btn
+                                 ,text = _('Clipboard')
+                                 ,hint = _('Capture Ctrl-c-c and Ctrl-Ins-Ins')
                                  ,inactive = self.icn_cp0
-                                 ,active   = self.icn_cp1
-                                 ,fg       = 'red'
+                                 ,active = self.icn_cp1
+                                 ,fg = 'red'
                                  )
         # A button to show info about the program
-        self.btn_abt = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('About')
-                                 ,hint     = _('View About')
+        self.btn_abt = sh.Button (parent = self.frm_btn
+                                 ,text = _('About')
+                                 ,hint = _('View About')
                                  ,inactive = self.icn_abt
-                                 ,active   = self.icn_abt
+                                 ,active = self.icn_abt
                                  )
         # A button to quit the program
-        self.btn_qit = sh.Button (parent   = self.frm_btn
-                                 ,text     = _('Quit')
-                                 ,hint     = _('Quit the program')
-                                 ,action   = self.close
+        self.btn_qit = sh.Button (parent = self.frm_btn
+                                 ,text = _('Quit')
+                                 ,hint = _('Quit the program')
+                                 ,action = self.close
                                  ,inactive = self.icn_qit
-                                 ,active   = self.icn_qit
-                                 ,side     = 'right'
+                                 ,active = self.icn_qit
+                                 ,side = 'right'
                                  )
 
     def set_bindings(self):
@@ -820,13 +818,13 @@ class WebFrame:
             gaps between them and between top-bottom borders
             ('self.cvs_prm').
         '''
-        sh.com.bind (obj      = self.cvs_prm
+        sh.com.bind (obj = self.cvs_prm
                     ,bindings = '<Motion>'
-                    ,action   = self.set_motion
+                    ,action = self.set_motion
                     )
-        sh.com.bind (obj      = self.obj
+        sh.com.bind (obj = self.obj
                     ,bindings = '<Control-q>'
-                    ,action   = self.close
+                    ,action = self.close
                     )
         for child in self.frm_btn.widget.winfo_children():
             child.bind('<Motion>',self.set_motion)
@@ -837,7 +835,7 @@ class WebFrame:
                      )
         sh.Scrollbar (parent = self.frm_btm
                      ,scroll = self
-                     ,Horiz  = True
+                     ,Horiz = True
                      )
         
     def set_icon(self,path=None):
@@ -893,8 +891,8 @@ class WebFrame:
                 is partially moved by a user out of screen (but we may
                 need this case too).
             '''
-            rootx  = self.cvs_prm.widget.winfo_rootx()
-            leftx  = max (0,rootx)
+            rootx = self.cvs_prm.widget.winfo_rootx()
+            leftx = max (0,rootx)
             rightx = min (rootx + self.cvs_prm.widget.winfo_width()
                          ,scr_width
                          )
@@ -1186,35 +1184,35 @@ class Settings:
     def set_cboxes(self):
         self.cbx_no1 = sh.CheckBox (parent = self.frm_cb1
                                    ,Active = True
-                                   ,side   = 'left'
+                                   ,side = 'left'
                                    )
         self.cbx_no2 = sh.CheckBox (parent = self.frm_cb2
                                    ,Active = True
-                                   ,side   = 'left'
+                                   ,side = 'left'
                                    )
         self.cbx_no3 = sh.CheckBox (parent = self.frm_cb3
                                    ,Active = True
-                                   ,side   = 'left'
+                                   ,side = 'left'
                                    )
         self.cbx_no4 = sh.CheckBox (parent = self.frm_cb4
                                    ,Active = True
-                                   ,side   = 'left'
+                                   ,side = 'left'
                                    )
         self.cbx_no5 = sh.CheckBox (parent = self.frm_cb5
                                    ,Active = False
-                                   ,side   = 'left'
+                                   ,side = 'left'
                                    )
         self.cbx_no6 = sh.CheckBox (parent = self.frm_cb6
                                    ,Active = False
-                                   ,side   = 'left'
+                                   ,side = 'left'
                                    )
         self.cbx_no7 = sh.CheckBox (parent = self.frm_cb7
                                    ,Active = False
-                                   ,side   = 'left'
+                                   ,side = 'left'
                                    )
         self.cbx_no8 = sh.CheckBox (parent = self.frm_cb8
                                    ,Active = True
-                                   ,side   = 'left'
+                                   ,side = 'left'
                                    )
 
     def reset(self,event=None):
@@ -1242,135 +1240,135 @@ class Settings:
     def set_buttons(self):
         sh.Button (parent = self.frm_btn
                   ,action = self.reset
-                  ,hint   = _('Reset settings')
-                  ,text   = _('Reset')
-                  ,side   = 'left'
+                  ,hint = _('Reset settings')
+                  ,text = _('Reset')
+                  ,side = 'left'
                   )
 
         self.btn_apl = sh.Button (parent = self.frm_btn
-                                 ,hint   = _('Apply settings')
-                                 ,text   = _('Apply')
-                                 ,side   = 'right'
+                                 ,hint = _('Apply settings')
+                                 ,text = _('Apply')
+                                 ,side = 'right'
                                  )
         #TODO: elaborate
         '''
         self.btn_blk = sh.Button (parent = self.frm_cb3
-                                 ,hint   = _('Tune up blacklisting')
-                                 ,text   = _('Add/Remove')
-                                 ,side   = 'right'
+                                 ,hint = _('Tune up blacklisting')
+                                 ,text = _('Add/Remove')
+                                 ,side = 'right'
                                  )
         self.btn_pri = sh.Button (parent = self.frm_cb4
-                                 ,hint   = _('Tune up prioritizing')
-                                 ,text   = _('Add/Remove')
-                                 ,side   = 'right'
+                                 ,hint = _('Tune up prioritizing')
+                                 ,text = _('Add/Remove')
+                                 ,side = 'right'
                                  )
         '''
 
     def set_frames(self):
         self.frm_col = sh.Frame (parent = self.obj
                                 ,expand = True
-                                ,fill   = 'both'
+                                ,fill = 'both'
                                 )
         self.frm_spc = sh.Frame (parent = self.obj
                                 ,expand = True
-                                ,fill   = 'both'
+                                ,fill = 'both'
                                 )
         self.frm_scm = sh.Frame (parent = self.frm_col
-                                ,side   = 'left'
+                                ,side = 'left'
                                 ,expand = False
-                                ,fill   = 'both'
+                                ,fill = 'both'
                                 )
         self.frm_cl1 = sh.Frame (parent = self.frm_col
-                                ,side   = 'left'
+                                ,side = 'left'
                                 ,expand = False
-                                ,fill   = 'both'
+                                ,fill = 'both'
                                 )
         self.frm_cl2 = sh.Frame (parent = self.frm_col
-                                ,side   = 'left'
+                                ,side = 'left'
                                 ,expand = False
-                                ,fill   = 'both'
+                                ,fill = 'both'
                                 )
         self.frm_cl3 = sh.Frame (parent = self.frm_col
                                 ,expand = False
-                                ,side   = 'left'
-                                ,fill   = 'both'
+                                ,side = 'left'
+                                ,fill = 'both'
                                 )
         self.frm_cl4 = sh.Frame (parent = self.frm_col
-                                ,side   = 'left'
+                                ,side = 'left'
                                 ,expand = False
-                                ,fill   = 'both'
+                                ,fill = 'both'
                                 )
         self.frm_sp1 = sh.Frame (parent = self.frm_spc
-                                ,side   = 'left'
+                                ,side = 'left'
                                 ,expand = False
-                                ,fill   = 'both'
+                                ,fill = 'both'
                                 )
         self.frm_sp2 = sh.Frame (parent = self.frm_spc
-                                ,side   = 'left'
+                                ,side = 'left'
                                 ,expand = False
-                                ,fill   = 'both'
+                                ,fill = 'both'
                                 )
         self.frm_sp3 = sh.Frame (parent = self.frm_spc
-                                ,side   = 'left'
+                                ,side = 'left'
                                 ,expand = False
-                                ,fill   = 'both'
+                                ,fill = 'both'
                                 )
         self.frm_sp4 = sh.Frame (parent = self.frm_spc
-                                ,side   = 'left'
+                                ,side = 'left'
                                 ,expand = False
-                                ,fill   = 'both'
+                                ,fill = 'both'
                                 )
         self.frm_sp5 = sh.Frame (parent = self.frm_spc
-                                ,side   = 'left'
+                                ,side = 'left'
                                 ,expand = False
-                                ,fill   = 'both'
+                                ,fill = 'both'
                                 )
         self.frm_sp6 = sh.Frame (parent = self.frm_spc
-                                ,side   = 'left'
+                                ,side = 'left'
                                 ,expand = False
-                                ,fill   = 'both'
+                                ,fill = 'both'
                                 )
         self.frm_sp7 = sh.Frame (parent = self.frm_spc
-                                ,side   = 'left'
+                                ,side = 'left'
                                 ,expand = False
-                                ,fill   = 'both'
+                                ,fill = 'both'
                                 )
         self.frm_cb1 = sh.Frame (parent = self.obj
                                 ,expand = False
-                                ,fill   = 'x'
+                                ,fill = 'x'
                                 )
         self.frm_cb2 = sh.Frame (parent = self.obj
                                 ,expand = False
-                                ,fill   = 'x'
+                                ,fill = 'x'
                                 )
         self.frm_cb3 = sh.Frame (parent = self.obj
                                 ,expand = False
-                                ,fill   = 'x'
+                                ,fill = 'x'
                                 )
         self.frm_cb4 = sh.Frame (parent = self.obj
                                 ,expand = False
-                                ,fill   = 'x'
+                                ,fill = 'x'
                                 )
         self.frm_cb5 = sh.Frame (parent = self.obj
                                 ,expand = False
-                                ,fill   = 'x'
+                                ,fill = 'x'
                                 )
         self.frm_cb6 = sh.Frame (parent = self.obj
                                 ,expand = False
-                                ,fill   = 'x'
+                                ,fill = 'x'
                                 )
         self.frm_cb7 = sh.Frame (parent = self.obj
                                 ,expand = False
-                                ,fill   = 'x'
+                                ,fill = 'x'
                                 )
         self.frm_cb8 = sh.Frame (parent = self.obj
                                 ,expand = False
-                                ,fill   = 'x'
+                                ,fill = 'x'
                                 )
         self.frm_btn = sh.Frame (parent = self.obj
                                 ,expand = False
-                                ,fill   = 'x'
-                                ,side   = 'bottom'
+                                ,fill = 'x'
+                                ,side = 'bottom'
                                 )
 
     def set_labels(self):
@@ -1378,256 +1376,256 @@ class Settings:
             font = 'Sans 9 italic', fg = 'khaki4'
         '''
         sh.Label (parent = self.frm_scm
-                 ,text   = _('Style:')
-                 ,font   = 'Sans 9'
-                 ,side   = 'top'
-                 ,fill   = 'both'
+                 ,text = _('Style:')
+                 ,font = 'Sans 9'
+                 ,side = 'top'
+                 ,fill = 'both'
                  ,expand = True
-                 ,fg     = 'PaleTurquoise1'
-                 ,bg     = 'RoyalBlue3'
+                 ,fg = 'PaleTurquoise1'
+                 ,bg = 'RoyalBlue3'
                  )
         sh.Label (parent = self.frm_cl1
-                 ,text   = _('Column') + ' 1:'
-                 ,font   = 'Sans 9'
-                 ,side   = 'top'
-                 ,fill   = 'both'
+                 ,text = _('Column') + ' 1:'
+                 ,font = 'Sans 9'
+                 ,side = 'top'
+                 ,fill = 'both'
                  ,expand = True
-                 ,fg     = 'PaleTurquoise1'
-                 ,bg     = 'RoyalBlue3'
+                 ,fg = 'PaleTurquoise1'
+                 ,bg = 'RoyalBlue3'
                  )
         sh.Label (parent = self.frm_cl2
-                 ,text   = _('Column') + ' 2:'
-                 ,font   = 'Sans 9'
-                 ,side   = 'top'
-                 ,fill   = 'both'
+                 ,text = _('Column') + ' 2:'
+                 ,font = 'Sans 9'
+                 ,side = 'top'
+                 ,fill = 'both'
                  ,expand = True
-                 ,fg     = 'PaleTurquoise1'
-                 ,bg     = 'RoyalBlue3'
+                 ,fg = 'PaleTurquoise1'
+                 ,bg = 'RoyalBlue3'
                  )
         sh.Label (parent = self.frm_cl3
-                 ,text   = _('Column') + ' 3:'
-                 ,font   = 'Sans 9'
-                 ,side   = 'top'
-                 ,fill   = 'both'
+                 ,text = _('Column') + ' 3:'
+                 ,font = 'Sans 9'
+                 ,side = 'top'
+                 ,fill = 'both'
                  ,expand = True
-                 ,fg     = 'PaleTurquoise1'
-                 ,bg     = 'RoyalBlue3'
+                 ,fg = 'PaleTurquoise1'
+                 ,bg = 'RoyalBlue3'
                  )
         sh.Label (parent = self.frm_cl4
-                 ,text   = _('Column') + ' 4:'
-                 ,font   = 'Sans 9'
-                 ,side   = 'top'
-                 ,fill   = 'both'
+                 ,text = _('Column') + ' 4:'
+                 ,font = 'Sans 9'
+                 ,side = 'top'
+                 ,fill = 'both'
                  ,expand = True
-                 ,fg     = 'PaleTurquoise1'
-                 ,bg     = 'RoyalBlue3'
+                 ,fg = 'PaleTurquoise1'
+                 ,bg = 'RoyalBlue3'
                  )
         self.lbl_no1 = sh.Label (parent = self.frm_cb1
-                                ,text   = _('Sort by each column (if it is set, except for transcription) and order parts of speech')
-                                ,side   = 'left'
+                                ,text = _('Sort by each column (if it is set, except for transcription) and order parts of speech')
+                                ,side = 'left'
                                 )
         self.lbl_no2 = sh.Label (parent = self.frm_cb2
-                                ,text   = _('Alphabetize terms')
-                                ,side   = 'left'
+                                ,text = _('Alphabetize terms')
+                                ,side = 'left'
                                 )
         self.lbl_no3 = sh.Label (parent = self.frm_cb3
-                                ,text   = _('Block dictionaries from blacklist')
-                                ,side   = 'left'
+                                ,text = _('Block dictionaries from blacklist')
+                                ,side = 'left'
                                 )
         self.lbl_no4 = sh.Label (parent = self.frm_cb4
-                                ,text   = _('Prioritize dictionaries')
-                                ,side   = 'left'
+                                ,text = _('Prioritize dictionaries')
+                                ,side = 'left'
                                 )
         self.lbl_no5 = sh.Label (parent = self.frm_cb5
-                                ,text   = _('Vertical view')
-                                ,side   = 'left'
+                                ,text = _('Vertical view')
+                                ,side = 'left'
                                 )
         self.lbl_no6 = sh.Label (parent = self.frm_cb6
-                                ,text   = _('Shorten dictionary titles')
-                                ,side   = 'left'
+                                ,text = _('Shorten dictionary titles')
+                                ,side = 'left'
                                 )
         self.lbl_no7 = sh.Label (parent = self.frm_cb7
-                                ,text   = _('Shorten parts of speech')
-                                ,side   = 'left'
+                                ,text = _('Shorten parts of speech')
+                                ,side = 'left'
                                 )
         self.lbl_no8 = sh.Label (parent = self.frm_cb8
-                                ,text   = _('Show user names')
-                                ,side   = 'left'
+                                ,text = _('Show user names')
+                                ,side = 'left'
                                 )
         sh.Label (parent = self.frm_sp1
-                 ,text   = _('Part of speech') + ' 1:'
-                 ,font   = 'Sans 8'
-                 ,side   = 'top'
-                 ,fill   = 'both'
+                 ,text = _('Part of speech') + ' 1:'
+                 ,font = 'Sans 8'
+                 ,side = 'top'
+                 ,fill = 'both'
                  ,expand = True
-                 ,fg     = 'PaleTurquoise1'
-                 ,bg     = 'RoyalBlue3'
+                 ,fg = 'PaleTurquoise1'
+                 ,bg = 'RoyalBlue3'
                  )
         sh.Label (parent = self.frm_sp2
-                 ,text   = _('Part of speech') + ' 2:'
-                 ,font   = 'Sans 8'
-                 ,side   = 'top'
-                 ,fill   = 'both'
+                 ,text = _('Part of speech') + ' 2:'
+                 ,font = 'Sans 8'
+                 ,side = 'top'
+                 ,fill = 'both'
                  ,expand = True
-                 ,fg     = 'PaleTurquoise1'
-                 ,bg     = 'RoyalBlue3'
+                 ,fg = 'PaleTurquoise1'
+                 ,bg = 'RoyalBlue3'
                  )
         sh.Label (parent = self.frm_sp3
-                 ,text   = _('Part of speech') + ' 3:'
-                 ,font   = 'Sans 8'
-                 ,side   = 'top'
-                 ,fill   = 'both'
+                 ,text = _('Part of speech') + ' 3:'
+                 ,font = 'Sans 8'
+                 ,side = 'top'
+                 ,fill = 'both'
                  ,expand = True
-                 ,fg     = 'PaleTurquoise1'
-                 ,bg     = 'RoyalBlue3'
+                 ,fg = 'PaleTurquoise1'
+                 ,bg = 'RoyalBlue3'
                  )
         sh.Label (parent = self.frm_sp4
-                 ,text   = _('Part of speech') + ' 4:'
-                 ,font   = 'Sans 8'
-                 ,side   = 'top'
-                 ,fill   = 'both'
+                 ,text = _('Part of speech') + ' 4:'
+                 ,font = 'Sans 8'
+                 ,side = 'top'
+                 ,fill = 'both'
                  ,expand = True
-                 ,fg     = 'PaleTurquoise1'
-                 ,bg     = 'RoyalBlue3'
+                 ,fg = 'PaleTurquoise1'
+                 ,bg = 'RoyalBlue3'
                  )
         sh.Label (parent = self.frm_sp5
-                 ,text   = _('Part of speech') + ' 5:'
-                 ,font   = 'Sans 8'
-                 ,side   = 'top'
-                 ,fill   = 'both'
+                 ,text = _('Part of speech') + ' 5:'
+                 ,font = 'Sans 8'
+                 ,side = 'top'
+                 ,fill = 'both'
                  ,expand = True
-                 ,fg     = 'PaleTurquoise1'
-                 ,bg     = 'RoyalBlue3'
+                 ,fg = 'PaleTurquoise1'
+                 ,bg = 'RoyalBlue3'
                  )
         sh.Label (parent = self.frm_sp6
-                 ,text   = _('Part of speech') + ' 6:'
-                 ,font   = 'Sans 8'
-                 ,side   = 'top'
-                 ,fill   = 'both'
+                 ,text = _('Part of speech') + ' 6:'
+                 ,font = 'Sans 8'
+                 ,side = 'top'
+                 ,fill = 'both'
                  ,expand = True
-                 ,fg     = 'PaleTurquoise1'
-                 ,bg     = 'RoyalBlue3'
+                 ,fg = 'PaleTurquoise1'
+                 ,bg = 'RoyalBlue3'
                  )
         sh.Label (parent = self.frm_sp7
-                 ,text   = _('Part of speech') + ' 7:'
-                 ,font   = 'Sans 8'
-                 ,side   = 'top'
-                 ,fill   = 'both'
+                 ,text = _('Part of speech') + ' 7:'
+                 ,font = 'Sans 8'
+                 ,side = 'top'
+                 ,fill = 'both'
                  ,expand = True
-                 ,fg     = 'PaleTurquoise1'
-                 ,bg     = 'RoyalBlue3'
+                 ,fg = 'PaleTurquoise1'
+                 ,bg = 'RoyalBlue3'
                  )
                  
     def set_columns(self):
-        self.opt_scm = sh.OptionMenu (parent  = self.frm_scm
-                                     ,items   = self.scitems
-                                     ,side    = 'bottom'
-                                     ,action  = self.update_by_sc
+        self.opt_scm = sh.OptionMenu (parent = self.frm_scm
+                                     ,items = self.scitems
+                                     ,side = 'bottom'
+                                     ,action = self.update_by_sc
                                      ,default = PRODUCT
                                      )
-        self.opt_cl1 = sh.OptionMenu (parent  = self.frm_cl1
-                                     ,items   = self.items
-                                     ,side    = 'bottom'
-                                     ,action  = self.update_by_col1
+        self.opt_cl1 = sh.OptionMenu (parent = self.frm_cl1
+                                     ,items = self.items
+                                     ,side = 'bottom'
+                                     ,action = self.update_by_col1
                                      ,default = _('Dictionaries')
                                      )
-        self.opt_cl2 = sh.OptionMenu (parent  = self.frm_cl2
-                                     ,items   = self.items
-                                     ,side    = 'bottom'
-                                     ,action  = self.update_by_col2
+        self.opt_cl2 = sh.OptionMenu (parent = self.frm_cl2
+                                     ,items = self.items
+                                     ,side = 'bottom'
+                                     ,action = self.update_by_col2
                                      ,default = _('Word forms')
                                      )
-        self.opt_cl3 = sh.OptionMenu (parent  = self.frm_cl3
-                                     ,items   = self.items
-                                     ,side    = 'bottom'
-                                     ,action  = self.update_by_col3
+        self.opt_cl3 = sh.OptionMenu (parent = self.frm_cl3
+                                     ,items = self.items
+                                     ,side = 'bottom'
+                                     ,action = self.update_by_col3
                                      ,default = _('Transcription')
                                      )
-        self.opt_cl4 = sh.OptionMenu (parent  = self.frm_cl4
-                                     ,items   = self.items
-                                     ,side    = 'bottom'
-                                     ,action  = self.update_by_col4
+        self.opt_cl4 = sh.OptionMenu (parent = self.frm_cl4
+                                     ,items = self.items
+                                     ,side = 'bottom'
+                                     ,action = self.update_by_col4
                                      ,default = _('Parts of speech')
                                      )
-        self.opt_sp1 = sh.OptionMenu (parent  = self.frm_sp1
-                                     ,items   = self.spitems
-                                     ,side    = 'bottom'
-                                     ,action  = self.update_by_sp1
+        self.opt_sp1 = sh.OptionMenu (parent = self.frm_sp1
+                                     ,items = self.spitems
+                                     ,side = 'bottom'
+                                     ,action = self.update_by_sp1
                                      ,default = self.spitems[0]
                                      )
-        self.opt_sp2 = sh.OptionMenu (parent  = self.frm_sp2
-                                     ,items   = self.spitems
-                                     ,side    = 'bottom'
-                                     ,action  = self.update_by_sp2
+        self.opt_sp2 = sh.OptionMenu (parent = self.frm_sp2
+                                     ,items = self.spitems
+                                     ,side = 'bottom'
+                                     ,action = self.update_by_sp2
                                      ,default = self.spitems[1]
                                      )
-        self.opt_sp3 = sh.OptionMenu (parent  = self.frm_sp3
-                                     ,items   = self.spitems
-                                     ,side    = 'bottom'
-                                     ,action  = self.update_by_sp3
+        self.opt_sp3 = sh.OptionMenu (parent = self.frm_sp3
+                                     ,items = self.spitems
+                                     ,side = 'bottom'
+                                     ,action = self.update_by_sp3
                                      ,default = self.spitems[2]
                                      )
-        self.opt_sp4 = sh.OptionMenu (parent  = self.frm_sp4
-                                     ,items   = self.spitems
-                                     ,side    = 'bottom'
-                                     ,action  = self.update_by_sp4
+        self.opt_sp4 = sh.OptionMenu (parent = self.frm_sp4
+                                     ,items = self.spitems
+                                     ,side = 'bottom'
+                                     ,action = self.update_by_sp4
                                      ,default = self.spitems[3]
                                      )
-        self.opt_sp5 = sh.OptionMenu (parent  = self.frm_sp5
-                                     ,items   = self.spitems
-                                     ,side    = 'bottom'
-                                     ,action  = self.update_by_sp5
+        self.opt_sp5 = sh.OptionMenu (parent = self.frm_sp5
+                                     ,items = self.spitems
+                                     ,side = 'bottom'
+                                     ,action = self.update_by_sp5
                                      ,default = self.spitems[4]
                                      )
-        self.opt_sp6 = sh.OptionMenu (parent  = self.frm_sp6
-                                     ,items   = self.spitems
-                                     ,side    = 'bottom'
-                                     ,action  = self.update_by_sp6
+        self.opt_sp6 = sh.OptionMenu (parent = self.frm_sp6
+                                     ,items = self.spitems
+                                     ,side = 'bottom'
+                                     ,action = self.update_by_sp6
                                      ,default = self.spitems[5]
                                      )
-        self.opt_sp7 = sh.OptionMenu (parent  = self.frm_sp7
-                                     ,items   = self.spitems
-                                     ,side    = 'bottom'
-                                     ,action  = self.update_by_sp7
+        self.opt_sp7 = sh.OptionMenu (parent = self.frm_sp7
+                                     ,items = self.spitems
+                                     ,side = 'bottom'
+                                     ,action = self.update_by_sp7
                                      ,default = self.spitems[6]
                                      )
 
     def set_bindings(self):
-        sh.com.bind (obj      = self.obj
+        sh.com.bind (obj = self.obj
                     ,bindings = ('<Escape>','<Control-q>','<Control-w>')
-                    ,action   = self.close
+                    ,action = self.close
                     )
-        sh.com.bind (obj      = self.lbl_no1
+        sh.com.bind (obj = self.lbl_no1
                     ,bindings = '<Button-1>'
-                    ,action   = self.cbx_no1.toggle
+                    ,action = self.cbx_no1.toggle
                     )
-        sh.com.bind (obj      = self.lbl_no2
+        sh.com.bind (obj = self.lbl_no2
                     ,bindings = '<Button-1>'
-                    ,action   = self.cbx_no2.toggle
+                    ,action = self.cbx_no2.toggle
                     )
-        sh.com.bind (obj      = self.lbl_no3
+        sh.com.bind (obj = self.lbl_no3
                     ,bindings = '<Button-1>'
-                    ,action   = self.cbx_no3.toggle
+                    ,action = self.cbx_no3.toggle
                     )
-        sh.com.bind (obj      = self.lbl_no4
+        sh.com.bind (obj = self.lbl_no4
                     ,bindings = '<Button-1>'
-                    ,action   = self.cbx_no4.toggle
+                    ,action = self.cbx_no4.toggle
                     )
-        sh.com.bind (obj      = self.lbl_no5
+        sh.com.bind (obj = self.lbl_no5
                     ,bindings = '<Button-1>'
-                    ,action   = self.cbx_no5.toggle
+                    ,action = self.cbx_no5.toggle
                     )
-        sh.com.bind (obj      = self.lbl_no6
+        sh.com.bind (obj = self.lbl_no6
                     ,bindings = '<Button-1>'
-                    ,action   = self.cbx_no6.toggle
+                    ,action = self.cbx_no6.toggle
                     )
-        sh.com.bind (obj      = self.lbl_no7
+        sh.com.bind (obj = self.lbl_no7
                     ,bindings = '<Button-1>'
-                    ,action   = self.cbx_no7.toggle
+                    ,action = self.cbx_no7.toggle
                     )
-        sh.com.bind (obj      = self.lbl_no8
+        sh.com.bind (obj = self.lbl_no8
                     ,bindings = '<Button-1>'
-                    ,action   = self.cbx_no8.toggle
+                    ,action = self.cbx_no8.toggle
                     )
 
     def set_title(self,text=_('View Settings')):
@@ -1752,9 +1750,9 @@ class Suggest:
         self.parent = None
         
     def set_bindings(self):
-        sh.com.bind (obj      = self.parent
+        sh.com.bind (obj = self.parent
                     ,bindings = '<Escape>'
-                    ,action   = self.close
+                    ,action = self.close
                     )
         
     def show(self,lst=['a','b','c'],action=None):
@@ -1762,7 +1760,7 @@ class Suggest:
             self.parent = sh.Top(Lock=False)
             self.parent.widget.wm_overrideredirect(1)
             self.lbox = sh.ListBox (parent = self.parent
-                                   ,lst    = lst
+                                   ,lst = lst
                                    ,action = action
                                    )
             self.set_bindings()

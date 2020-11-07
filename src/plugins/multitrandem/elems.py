@@ -129,7 +129,7 @@ class Elems:
                             abbr = '; '.join(abbr)
                             full = '; '.join(full)
                             block.text = abbr
-                            block.dic  = abbr
+                            block.dic = abbr
                             block.dicf = full
                         else:
                             mes = _('Wrong input data: "{}"!')
@@ -187,10 +187,10 @@ class Elems:
                              ,self.blocks[i].last
                              ]
                             )
-            mes = sh.FastTable (headers   = headers
-                               ,iterable  = rows
-                               ,maxrow    = self.maxrow
-                               ,maxrows   = self.maxrows
+            mes = sh.FastTable (headers = headers
+                               ,iterable = rows
+                               ,maxrow = self.maxrow
+                               ,maxrows = self.maxrows
                                ,Transpose = True
                                ).run()
             sh.com.run_fast_debug(f,mes)
@@ -227,7 +227,7 @@ class Elems:
         # Find first non-empty values and set them as default
         for block in self.blocks:
             if block.type_ == 'dic':
-                dic  = block.dic
+                dic = block.dic
                 dicf = block.dicf
                 break
         for block in self.blocks:
@@ -249,7 +249,7 @@ class Elems:
         
         for block in self.blocks:
             if block.type_ == 'dic':
-                dic  = block.dic
+                dic = block.dic
                 dicf = block.dicf
             elif block.type_ == 'wform':
                 wform = block.text
@@ -262,9 +262,9 @@ class Elems:
                 '''
             elif block.type_ in ('term','phrase'):
                 term = block.text
-            block.dic    = dic
-            block.dicf   = dicf
-            block.wform  = wform
+            block.dic = dic
+            block.dicf = dicf
+            block.wform = wform
             block.speech = speech
             block.transc = transc
             if block.same > 0:
@@ -278,57 +278,57 @@ class Elems:
             or wform != self.blocks[i].wform \
             or speech != self.blocks[i].speech:
                 
-                block        = Block()
-                block.type_  = 'speech'
-                block.text   = self.blocks[i].speech
-                block.dic    = self.blocks[i].dic
-                block.dicf   = self.blocks[i].dicf
-                block.wform  = self.blocks[i].wform
+                block = Block()
+                block.type_ = 'speech'
+                block.text = self.blocks[i].speech
+                block.dic = self.blocks[i].dic
+                block.dicf = self.blocks[i].dicf
+                block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term   = self.blocks[i].term
-                block.same   = 0
+                block.term = self.blocks[i].term
+                block.same = 0
                 self.blocks.insert(i,block)
                 
-                block        = Block()
-                block.type_  = 'transc'
-                block.text   = self.blocks[i].transc
-                block.dic    = self.blocks[i].dic
-                block.dicf   = self.blocks[i].dicf
-                block.wform  = self.blocks[i].wform
+                block = Block()
+                block.type_ = 'transc'
+                block.text = self.blocks[i].transc
+                block.dic = self.blocks[i].dic
+                block.dicf = self.blocks[i].dicf
+                block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term   = self.blocks[i].term
-                block.same   = 0
+                block.term = self.blocks[i].term
+                block.same = 0
                 self.blocks.insert(i,block)
 
-                block        = Block()
-                block.type_  = 'wform'
-                block.text   = self.blocks[i].wform
-                block.dic    = self.blocks[i].dic
-                block.dicf   = self.blocks[i].dicf
-                block.wform  = self.blocks[i].wform
+                block = Block()
+                block.type_ = 'wform'
+                block.text = self.blocks[i].wform
+                block.dic = self.blocks[i].dic
+                block.dicf = self.blocks[i].dicf
+                block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term   = self.blocks[i].term
-                block.same   = 0
+                block.term = self.blocks[i].term
+                block.same = 0
                 self.blocks.insert(i,block)
                 
-                block        = Block()
-                block.type_  = 'dic'
-                block.text   = self.blocks[i].dic
-                block.dic    = self.blocks[i].dic
-                block.dicf   = self.blocks[i].dicf
-                block.wform  = self.blocks[i].wform
+                block = Block()
+                block.type_ = 'dic'
+                block.text = self.blocks[i].dic
+                block.dic = self.blocks[i].dic
+                block.dicf = self.blocks[i].dicf
+                block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term   = self.blocks[i].term
-                block.same   = 0
+                block.term = self.blocks[i].term
+                block.same = 0
                 self.blocks.insert(i,block)
                 
-                dic    = self.blocks[i].dic
-                dicf   = self.blocks[i].dicf
-                wform  = self.blocks[i].wform
+                dic = self.blocks[i].dic
+                dicf = self.blocks[i].dicf
+                wform = self.blocks[i].wform
                 speech = self.blocks[i].speech
                 i += 4
             i += 1
@@ -351,9 +351,9 @@ class Elems:
 if __name__ == '__main__':
     f = '[MClient] plugins.multitrandem.elems.__main__'
     search = 'phrenosin'
-    import get  as gt
+    import get as gt
     import tags as tg
-    iget   = gt.Get(search)
+    iget = gt.Get(search)
     chunks = iget.run()
     if not chunks:
         chunks = []
@@ -365,9 +365,9 @@ if __name__ == '__main__':
         if add:
             blocks += add
     blocks = Elems (blocks = blocks
-                   ,abbr   = None
+                   ,abbr = None
                    ,search = search
-                   ,Debug  = True
+                   ,Debug = True
                    ).run()
     for i in range(len(blocks)):
         mes = '{}: {}: "{}"'.format (i,blocks[i].type_

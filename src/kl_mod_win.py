@@ -20,9 +20,9 @@ class KeyListener(threading.Thread):
         threading.Thread.__init__(self)
         self.finished = threading.Event()
         # Variables must be initialized before calling 'HookManager'
-        self.pressed   = []
+        self.pressed = []
         self.listeners = {}
-        self.status    = 0
+        self.status = 0
         ''' Sometimes symbols are uppercased by an unknown reason,
             however, we lowercase them, therefore it is sufficient
             to have 'c' here.

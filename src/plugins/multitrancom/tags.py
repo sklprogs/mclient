@@ -404,10 +404,10 @@ class Tags:
                          ,self.blocks[i].same
                          ]
                         )
-        mes = sh.FastTable (headers   = headers
-                           ,iterable  = rows
-                           ,maxrow    = self.maxrow
-                           ,maxrows   = self.maxrows
+        mes = sh.FastTable (headers = headers
+                           ,iterable = rows
+                           ,maxrow = self.maxrow
+                           ,maxrows = self.maxrows
                            ,Transpose = True
                            ).run()
         sh.objs.txt = None

@@ -48,7 +48,7 @@ class Abbr:
     def load(self):
         f = '[MClient] plugins.multitrancom.Abbr.load'
         if self.Success:
-            self.dic = sh.Dic (file     = self.fabbr
+            self.dic = sh.Dic (file = self.fabbr
                               ,Sortable = True
                               )
             self.Success = self.dic.Success
@@ -530,10 +530,10 @@ class Same:
                              ,self.blocks[i].same
                              ]
                             )
-            mes = sh.FastTable (headers   = headers
-                               ,iterable  = rows
-                               ,maxrow    = self.maxrow
-                               ,maxrows   = self.maxrows
+            mes = sh.FastTable (headers = headers
+                               ,iterable = rows
+                               ,maxrow = self.maxrow
+                               ,maxrows = self.maxrows
                                ,Transpose = True
                                ).run()
             sh.com.run_fast_debug(f,mes)
@@ -1020,9 +1020,9 @@ class Elems:
                 few columns and it is reasonable to make them wider than
                 for Elems.
             '''
-            self.blocks = Same (blocks  = self.blocks
-                               ,Debug   = self.Debug
-                               ,maxrow  = self.maxrow
+            self.blocks = Same (blocks = self.blocks
+                               ,Debug = self.Debug
+                               ,maxrow = self.maxrow
                                ,maxrows = self.maxrows
                                ).run()
             self.unite_fixed_same()
@@ -1069,10 +1069,10 @@ class Elems:
                              ,self.blocks[i].last
                              ]
                             )
-            mes = sh.FastTable (headers   = headers
-                               ,iterable  = rows
-                               ,maxrow    = self.maxrow
-                               ,maxrows   = self.maxrows
+            mes = sh.FastTable (headers = headers
+                               ,iterable = rows
+                               ,maxrow = self.maxrow
+                               ,maxrows = self.maxrows
                                ,Transpose = True
                                ).run()
             sh.com.run_fast_debug(f,mes)
@@ -1172,8 +1172,8 @@ class Elems:
                 '''
             elif block.type_ in ('term','phrase'):
                 term = block.text
-            block.dic    = dic
-            block.wform  = wform
+            block.dic = dic
+            block.wform = wform
             block.speech = speech
             block.transc = transc
             if block.same > 0:
@@ -1214,52 +1214,52 @@ class Elems:
                 ''' #NOTE: We do not inherit SEMINO here since it's not
                     needed anymore.
                 '''
-                block        = Block()
-                block.type_  = 'speech'
-                block.text   = self.blocks[i].speech
-                block.dic    = self.blocks[i].dic
-                block.wform  = self.blocks[i].wform
+                block = Block()
+                block.type_ = 'speech'
+                block.text = self.blocks[i].speech
+                block.dic = self.blocks[i].dic
+                block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term   = self.blocks[i].term
-                block.same   = 0
+                block.term = self.blocks[i].term
+                block.same = 0
                 self.blocks.insert(i,block)
                 
-                block        = Block()
-                block.type_  = 'transc'
-                block.text   = self.blocks[i].transc
-                block.dic    = self.blocks[i].dic
-                block.wform  = self.blocks[i].wform
+                block = Block()
+                block.type_ = 'transc'
+                block.text = self.blocks[i].transc
+                block.dic = self.blocks[i].dic
+                block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term   = self.blocks[i].term
-                block.same   = 0
+                block.term = self.blocks[i].term
+                block.same = 0
                 self.blocks.insert(i,block)
 
-                block        = Block()
-                block.type_  = 'wform'
-                block.text   = self.blocks[i].wform
-                block.dic    = self.blocks[i].dic
-                block.wform  = self.blocks[i].wform
+                block = Block()
+                block.type_ = 'wform'
+                block.text = self.blocks[i].wform
+                block.dic = self.blocks[i].dic
+                block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term   = self.blocks[i].term
-                block.same   = 0
+                block.term = self.blocks[i].term
+                block.same = 0
                 self.blocks.insert(i,block)
                 
-                block        = Block()
-                block.type_  = 'dic'
-                block.text   = self.blocks[i].dic
-                block.dic    = self.blocks[i].dic
-                block.wform  = self.blocks[i].wform
+                block = Block()
+                block.type_ = 'dic'
+                block.text = self.blocks[i].dic
+                block.dic = self.blocks[i].dic
+                block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term   = self.blocks[i].term
-                block.same   = 0
+                block.term = self.blocks[i].term
+                block.same = 0
                 self.blocks.insert(i,block)
                 
-                dic    = self.blocks[i].dic
-                wform  = self.blocks[i].wform
+                dic = self.blocks[i].dic
+                wform = self.blocks[i].wform
                 speech = self.blocks[i].speech
                 i += 4
             i += 1

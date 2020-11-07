@@ -2779,7 +2779,7 @@ class Pairs:
     
     def __init__(self):
         self.flawed = []
-        self.alive  = []
+        self.alive = []
     
     def get_code(self,lang):
         f = '[MClient] plugins.multitrancom.utils.Pairs.get_code'

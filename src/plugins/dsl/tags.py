@@ -124,9 +124,9 @@ class Tags:
         iterable = [nos,types,texts]
         headers = (_('#'),_('TYPES'),_('TEXT'))
         mes = sh.FastTable (iterable = iterable
-                           ,headers  = headers
-                           ,maxrow   = 50
-                           ,maxrows  = self.maxrows
+                           ,headers = headers
+                           ,maxrow = 50
+                           ,maxrows = self.maxrows
                            ).run()
         return _('Blocks:') + '\n' + mes
     
@@ -293,9 +293,9 @@ class Tags:
         iterable = [nos,tags,texts]
         headers = (_('#'),_('TAGS'),_('TEXT'))
         mes = sh.FastTable (iterable = iterable
-                           ,headers  = headers
-                           ,maxrow   = 50
-                           ,maxrows  = self.maxrows
+                           ,headers = headers
+                           ,maxrow = 50
+                           ,maxrows = self.maxrows
                            ).run()
         return _('Tags:') + '\n' + mes
     

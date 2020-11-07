@@ -48,9 +48,9 @@ class Get:
         iterable = [nos,searches,dics,codes]
         headers = (_('#'),_('SEARCH'),_('DICTIONARY'),_('CODE'))
         mes = sh.FastTable (iterable = iterable
-                           ,headers  = headers
-                           ,maxrow   = 70
-                           ,maxrows  = self.maxrows
+                           ,headers = headers
+                           ,maxrow = 70
+                           ,maxrows = self.maxrows
                            ).run()
         return _('Articles:') + '\n' + mes
     

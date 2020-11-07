@@ -12,10 +12,10 @@ from skl_shared.localize import _
 import get as gt
 
 
-COLOR  = 'cyan'
+COLOR = 'cyan'
 BUFFER = 200
-DUMP1  = sh.Home().add('tmp','dump1')
-DUMP2  = sh.Home().add('tmp','dump2')
+DUMP1 = sh.Home().add('tmp','dump1')
+DUMP2 = sh.Home().add('tmp','dump2')
 
 
 class Xor:
@@ -54,12 +54,12 @@ class Xor:
     def report(self):
         f = '[MClient] plugins.multitrandem.utils.Xor.report'
         if self.Success:
-            headers  = ('NO','ORIG','INT1','INT2')
+            headers = ('NO','ORIG','INT1','INT2')
             nos = [i + 1 for i in range(len(self.syms))]
             iterable = (nos,self.syms,self.ints1,self.ints2)
-            mes = sh.FastTable (headers  = headers
+            mes = sh.FastTable (headers = headers
                                ,iterable = iterable
-                               ,sep      = sh.lg.nbspace * 2
+                               ,sep = sh.lg.nbspace * 2
                                ).run()
             return mes
         else:
@@ -86,9 +86,9 @@ class Tests:
         table = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя'
         i = 3
         len_ = 5
-        result = com.gen_patterns (i      = i
+        result = com.gen_patterns (i = i
                                   ,length = len_
-                                  ,table  = table
+                                  ,table = table
                                   )
         sh.com.run_fast_debug(f,str(result))
     
@@ -108,7 +108,7 @@ class Tests:
         pos = 132779143
         sympos = 1
         #table = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя'
-        patterns = com.gen_patterns (i      = sympos
+        patterns = com.gen_patterns (i = sympos
                                     ,length = 2
                                     )
         messages = []
@@ -124,10 +124,10 @@ class Tests:
                 print(mes)
                 sh.Clipboard().copy(pattern)
                 input(_('Make changes to the dictionary and press any key'))
-                result = com.get_patch (file    = file
+                result = com.get_patch (file = file
                                        ,pattern = pattern
-                                       ,pos     = pos
-                                       ,sympos  = sympos
+                                       ,pos = pos
+                                       ,sympos = sympos
                                        )
                 if result:
                     messages.append(result[0])
@@ -156,13 +156,13 @@ class Tests:
         pos = 132775939
         subst = b'\xd0\xf3\x96'
         old = com.corrupt (filew = file
-                          ,pos   = pos
+                          ,pos = pos
                           ,subst = subst
                           )
         mes = _('Restore the damaged file?')
         if sh.objs.get_mes(f,mes,True).show_question():
             com.corrupt (filew = file
-                        ,pos   = pos
+                        ,pos = pos
                         ,subst = old
                         )
         else:
@@ -187,10 +187,10 @@ class Tests:
             lens12 = [len(chunk) for chunk in iparse1.chunks2]
             lens21 = [len(chunk) for chunk in iparse2.chunks1]
             lens22 = [len(chunk) for chunk in iparse2.chunks2]
-            len11  = len(iparse1.chunks1)
-            len12  = len(iparse1.chunks2)
-            len21  = len(iparse2.chunks1)
-            len22  = len(iparse2.chunks2)
+            len11 = len(iparse1.chunks1)
+            len12 = len(iparse1.chunks2)
+            len21 = len(iparse2.chunks1)
+            len22 = len(iparse2.chunks2)
             mes = 'len(iparse1.chunks1): {}'.format(len11)
             sh.objs.get_mes(f,mes,True).show_debug()
             mes = 'len(iparse1.chunks2): {}'.format(len12)
@@ -203,11 +203,11 @@ class Tests:
             nos = [i + 1 for i in range(max_)]
             headers = ('NO','D1P1','D1P2','D2P1','D2P2')
             iterable = [nos,lens11,lens12,lens21,lens22]
-            mes = sh.FastTable (headers  = headers
+            mes = sh.FastTable (headers = headers
                                ,iterable = iterable
                                ).run()
             sh.com.run_fast_debug(f,mes)
-            mes  = 'len11: {}'.format(len11) + '\n'
+            mes = 'len11: {}'.format(len11) + '\n'
             mes += 'len12: {}'.format(len12) + '\n'
             mes += 'len21: {}'.format(len21) + '\n'
             mes += 'len22: {}'.format(len22) + '\n'
@@ -219,7 +219,7 @@ class Tests:
             lens22 = sorted(set(lens22))
             '''
             '''
-            mes  = 'D1P1:\n' + str(lens11) + '\n\n'
+            mes = 'D1P1:\n' + str(lens11) + '\n\n'
             mes += 'D1P2:\n' + str(lens12) + '\n\n'
             mes += 'D2P1:\n' + str(lens21) + '\n\n'
             mes += 'D2P2:\n' + str(lens22) + '\n\n'
@@ -227,12 +227,12 @@ class Tests:
             '''
             lens21 = [item for item in lens21 if item not in lens11]
             lens22 = [item for item in lens22 if item not in lens12]
-            mes  = 'UNIQUE lens21:\n' + str(lens21) + '\n\n'
+            mes = 'UNIQUE lens21:\n' + str(lens21) + '\n\n'
             mes += 'UNIQUE lens22:\n' + str(lens22) + '\n\n'
             '''
             lens21 = [item for item in lens21 if item in lens11]
             lens22 = [item for item in lens22 if item in lens12]
-            mes  = 'SHARED lens21:\n' + str(lens21) + '\n\n'
+            mes = 'SHARED lens21:\n' + str(lens21) + '\n\n'
             mes += 'SHARED lens22:\n' + str(lens22) + '\n\n'
             sh.com.run_fast_debug(f,mes)
         else:
@@ -244,8 +244,8 @@ class Tests:
         f = '[MClient] plugins.multitrandem.utils.Tests.compare_bytes'
         dump1 = gt.Binary(DUMP1)
         dump2 = gt.Binary(DUMP2)
-        end1  = dump1.get_file_size()
-        end2  = dump2.get_file_size()
+        end1 = dump1.get_file_size()
+        end2 = dump2.get_file_size()
         read1 = dump1.read(0,end1)
         read2 = dump2.read(0,end2)
         if read1 and read2:
@@ -430,9 +430,9 @@ class Parser(gt.Binary):
                     len2 = [len(chunk) for chunk in self.chunks2]
                     headers = ('NOS','LEN1','PART1','LEN2','PART2')
                     iterable = (nos,len1,self.xplain1,len2,self.xplain2)
-                    mes = sh.FastTable (headers  = headers
+                    mes = sh.FastTable (headers = headers
                                        ,iterable = iterable
-                                       ,maxrow   = 45
+                                       ,maxrow = 45
                                        ).run()
                     if mes:
                         sub = _('File: "{}"').format(self.file)
@@ -467,14 +467,14 @@ class Parser(gt.Binary):
         '''
         if self.Success:
             if chunk and (len(chunk) - 1) % 7 == 0:
-                tmp    = []
+                tmp = []
                 chunks = gt.com.get_chunks(chunk[1:],7)
                 for item in chunks:
                     delta = 7 - len(item)
-                    item  = item + b'\x00' * delta
-                    word  = item[0:3] + b'\x00'
-                    sik   = item[3:5]
-                    lgk   = item[5:7]
+                    item = item + b'\x00' * delta
+                    word = item[0:3] + b'\x00'
+                    sik = item[3:5]
+                    lgk = item[5:7]
                     tmp.append(struct.unpack('<L',word)[0])
                     tmp.append(struct.unpack('<h',sik)[0])
                     tmp.append(struct.unpack('<h',lgk)[0])
@@ -1103,8 +1103,8 @@ class CompareBinaries:
     def set_files(self):
         f = '[MClient] plugins.multitrandem.utils.CompareBinaries.set_files'
         if self.Success:
-            mes1  = _('File {}: ').format(1)
-            mes2  = _('File {}: ').format(2)
+            mes1 = _('File {}: ').format(1)
+            mes2 = _('File {}: ').format(2)
             file1 = com.input_str(mes1)
             file2 = com.input_str(mes2)
             if file1 and file2:
@@ -1120,8 +1120,8 @@ class CompareBinaries:
             self.close()
         if file1 and file2:
             self.set_values()
-            self.bin1    = gt.Binary(file1)
-            self.bin2    = gt.Binary(file2)
+            self.bin1 = gt.Binary(file1)
+            self.bin2 = gt.Binary(file2)
             self.Success = self.bin1.Success and self.bin2.Success
         else:
             self.files()
@@ -1218,19 +1218,19 @@ class CompareBinaries:
             sh.com.cancel(f)
     
     def set_values(self):
-        self.poses   = []
-        self.posmov  = []
-        self.coms    = ['buffer','help','load','quit','pgup','pgdn'
+        self.poses = []
+        self.posmov = []
+        self.coms = ['buffer','help','load','quit','pgup','pgdn'
                        ,'next','prev','pos','clear','exit','dump'
                        ,'files','q','same'
                        ]
         self.chunks1 = b''
         self.chunks2 = b''
-        self.buffer  = BUFFER
-        self.pos     = 0
+        self.buffer = BUFFER
+        self.pos = 0
         self.Success = True
-        self.bin1    = None
-        self.bin2    = None
+        self.bin1 = None
+        self.bin2 = None
         self.lastcom = ''
         self.coms.sort()
     
@@ -1261,7 +1261,7 @@ class CompareBinaries:
         if self.Success:
             while True:
                 start = self.pos + self.buffer
-                end   = start + self.buffer
+                end = start + self.buffer
                 self.compare(start,end)
                 if self.chunks1 and self.chunks2:
                     self.pos += self.buffer
@@ -1303,7 +1303,7 @@ class CompareBinaries:
         f = '[MClient] plugins.multitrandem.utils.CompareBinaries.load'
         if self.Success:
             start = self.pos
-            end   = start + self.buffer
+            end = start + self.buffer
             if start > self.bin1.get_file_size() \
             or start > self.bin2.get_file_size():
                 start = 0
@@ -1465,7 +1465,7 @@ class CompareBinaries:
     def compare(self,start=0,end=400):
         f = '[MClient] plugins.multitrandem.utils.CompareBinaries.compare'
         if self.Success:
-            self.poses   = []
+            self.poses = []
             self.chunks1 = self.bin1.read(start,end)
             self.chunks2 = self.bin2.read(start,end)
             if self.chunks1 and self.chunks2:

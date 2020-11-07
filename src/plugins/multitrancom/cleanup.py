@@ -30,14 +30,14 @@ class CleanUp:
         '''
         f = '[MClient] plugins.multitrancom.cleanup.CleanUp.fix_href'
         if self.text:
-            isearch = sh.Search (text    = self.text
+            isearch = sh.Search (text = self.text
                                 ,pattern = 'href="'
                                 )
             poses = isearch.get_next_loop()
             poses = poses[::-1]
             for pos in poses:
                 pos += len('href="')
-                isearch.reset (text    = self.text
+                isearch.reset (text = self.text
                               ,pattern = '"'
                               )
                 isearch.i = pos
@@ -89,7 +89,7 @@ class CleanUp:
             those words only.
         '''
         if sep_words_found in self.text:
-            pos = sh.Search (text    = self.text
+            pos = sh.Search (text = self.text
                             ,pattern = sep_words_found
                             ).get_next()
             # -1 gives False

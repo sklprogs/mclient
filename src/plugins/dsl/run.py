@@ -106,8 +106,8 @@ class Plugin:
             htm.append(iarticle.code)
             code = cu.CleanUp(iarticle.code).run()
             code = cu.TagLike(code).run()
-            self.blocks += tg.Tags (code    = code
-                                   ,Debug   = self.Debug
+            self.blocks += tg.Tags (code = code
+                                   ,Debug = self.Debug
                                    ,maxrows = self.maxrows
                                    ,dicname = iarticle.dic
                                    ).run()
@@ -115,6 +115,6 @@ class Plugin:
         texts = [block.text for block in self.blocks if block.text]
         self.text = sh.List(texts).space_items()
         self.blocks = el.Elems (blocks = self.blocks
-                               ,Debug  = self.Debug
+                               ,Debug = self.Debug
                                ).run()
         return self.blocks

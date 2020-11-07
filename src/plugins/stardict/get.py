@@ -84,15 +84,15 @@ class DictZip:
             self.reset(path)
     
     def set_values(self):
-        self.obj      = None
-        self.Success  = True
-        self.deflate  = zlib.decompressobj(-15)
-        self.path     = ''
-        self.len_     = 0
-        self.size     = 0
-        self.offset   = 0
-        self.offsets  = 0
-        self.count    = 0
+        self.obj = None
+        self.Success = True
+        self.deflate = zlib.decompressobj(-15)
+        self.path = ''
+        self.len_ = 0
+        self.size = 0
+        self.offset = 0
+        self.offsets = 0
+        self.count = 0
     
     def reset(self,path):
         self.set_values()
@@ -104,12 +104,12 @@ class DictZip:
         f = '[MClient] plugins.stardict.get.DictZip.load'
         if self.Success:
             try:
-                self.obj     = open(self.path,'rb')
-                info         = self._read_header()
-                self.len_    = info[0]
-                self.size    = info[1]
+                self.obj = open(self.path,'rb')
+                info = self._read_header()
+                self.len_ = info[0]
+                self.size = info[1]
                 self.offsets = info[2]
-                self.count   = len(self.size)
+                self.count = len(self.size)
             except Exception as e:
                 self.Success = False
                 mes = _('Failed to load "{}"!\n\nDetails: {}')
@@ -168,7 +168,7 @@ class DictZip:
                 chunk = self.offset // self.len_
                 self.obj.seek(self.offsets[chunk])
                 compr = self.obj.read(self.size[chunk])
-                data  = self.deflate.decompress(compr)
+                data = self.deflate.decompress(compr)
                 # Offset in the chunk
                 chofs = self.offset % self.len_
                 if chofs + size > self.len_:
@@ -219,22 +219,22 @@ class StarDict:
 
     def set_values(self):
         self.Success = True
-        self.Block   = False
-        self.dictf   = None
-        self.idx    = []
-        self.ifo     = {}
-        self.wcount  = 0
-        self.path    = ''
-        self.fname   = ''
-        self.title   = ''
-        self.transl  = ''
+        self.Block = False
+        self.dictf = None
+        self.idx = []
+        self.ifo = {}
+        self.wcount = 0
+        self.path = ''
+        self.fname = ''
+        self.title = ''
+        self.transl = ''
     
     def set_meta(self):
         f = '[MClient] plugins.stardict.get.Stardict.set_meta'
         if self.Success:
             if self.ifo:
                 if 'bookname' in self.ifo and 'wordcount' in self.ifo:
-                    self.title  = str(self.ifo['bookname'])
+                    self.title = str(self.ifo['bookname'])
                     self.wcount = sh.Input(f,self.ifo['wordcount']).get_integer()
                 else:
                     self.Success = False
@@ -259,7 +259,7 @@ class StarDict:
         f = '[MClient] plugins.stardict.get.Stardict.check'
         if self.Success:
             try:
-                for line in open (file     = self.fname + '.ifo'
+                for line in open (file = self.fname + '.ifo'
                                  ,encoding = 'UTF-8'
                                  ).readlines()[1:]:
                     pair = line.split('=')
@@ -282,9 +282,9 @@ class StarDict:
         '''
         f = '[MClient] plugins.stardict.get.Stardict.load'
         if self.Success:
-            idx   = self.fname + '.idx'
+            idx = self.fname + '.idx'
             iopen = open(idx,'rb')
-            data  = iopen.read(os.path.getsize(idx))
+            data = iopen.read(os.path.getsize(idx))
             iopen.close()
             a = 0
             b = data.find(b'\0',a)
@@ -435,7 +435,7 @@ class AllDics:
         if self.Success:
             if search:
                 dics = [dic for dic in self.dics if not dic.Block]
-                lst  = []
+                lst = []
                 for dic in dics:
                     ind = dic.search(search,True)
                     # Returns True if ind >= 0
@@ -461,10 +461,10 @@ class AllDics:
             sh.com.cancel(f)
     
     def set_values(self):
-        self.ifos   = []
-        self.dics   = []
+        self.ifos = []
+        self.dics = []
         self.index_ = []
-        self.path   = ''
+        self.path = ''
         # Do not run anything if 'self.reset' was not run
         self.Success = False
     
@@ -528,7 +528,7 @@ class AllDics:
                     objs.progress.update(i,len(self.dics))
                     self.dics[i].load()
                 timer.end()
-                total_no  = len(self.dics)
+                total_no = len(self.dics)
                 self.dics = [dic for dic in self.dics if dic.Success]
                 mes = _('Dictionaries loaded: {}/{}')
                 mes = mes.format(len(self.dics),total_no)

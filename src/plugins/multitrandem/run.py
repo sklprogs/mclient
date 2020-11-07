@@ -4,8 +4,8 @@
 import io
 import skl_shared.shared as sh
 from skl_shared.localize import _
-import plugins.multitrandem.get   as gt
-import plugins.multitrandem.tags  as tg
+import plugins.multitrandem.get as gt
+import plugins.multitrandem.tags as tg
 import plugins.multitrandem.elems as el
 
 
@@ -144,9 +144,9 @@ class Plugin:
         if not chunks:
             chunks = []
         for chunk in chunks:
-            blocks = tg.Tags (chunk   = chunk
-                             ,Debug   = self.Debug
-                             ,maxrow  = self.maxrow
+            blocks = tg.Tags (chunk = chunk
+                             ,Debug = self.Debug
+                             ,maxrow = self.maxrow
                              ,maxrows = self.maxrows
                              ).run()
             if blocks:
@@ -154,18 +154,18 @@ class Plugin:
                 if iget.speech and not ' ' in search:
                     block = tg.Block()
                     block.select = 0
-                    block.type_  = 'wform'
-                    block.text   = iget.spabbr
-                    block.wform  = iget.spabbr
+                    block.type_ = 'wform'
+                    block.text = iget.spabbr
+                    block.wform = iget.spabbr
                     block.wformf = iget.speech
                     blocks.insert(0,block)
                 self.blocks += blocks
-        self.blocks = el.Elems (blocks  = self.blocks
-                               ,abbr    = None
-                               ,langs   = gt.objs.get_all_dics().get_langs()
-                               ,search  = search
-                               ,Debug   = self.Debug
-                               ,maxrow  = self.maxrow
+        self.blocks = el.Elems (blocks = self.blocks
+                               ,abbr = None
+                               ,langs = gt.objs.get_all_dics().get_langs()
+                               ,search = search
+                               ,Debug = self.Debug
+                               ,maxrow = self.maxrow
                                ,maxrows = self.maxrows
                                ).run()
         self.get_text()

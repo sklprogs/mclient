@@ -52,10 +52,10 @@ class DB:
                          )
         rows = self.dbc.fetchall()
         headers = ('NO','TYPE','TEXT','DIC','SPEECH','SPEECHPR')
-        mes = sh.FastTable (headers   = headers
-                           ,iterable  = rows
-                           ,maxrow    = maxrow
-                           ,maxrows   = maxrows
+        mes = sh.FastTable (headers = headers
+                           ,iterable = rows
+                           ,maxrow = maxrow
+                           ,maxrows = maxrows
                            ,Transpose = True
                            ).run()
         sh.com.run_fast_debug(f,mes)
@@ -283,10 +283,10 @@ class DB:
                 sh.objs.get_mes(f,mes).show_error()
         headers = [cn[0] for cn in self.dbc.description]
         rows = self.dbc.fetchall()
-        mes = sh.FastTable (headers   = headers
-                           ,iterable  = rows
-                           ,maxrow    = maxrow
-                           ,maxrows   = maxrows
+        mes = sh.FastTable (headers = headers
+                           ,iterable = rows
+                           ,maxrow = maxrow
+                           ,maxrows = maxrows
                            ,Transpose = True
                            ).run()
         sh.com.run_fast_debug(f,mes)
@@ -1254,13 +1254,13 @@ class Moves(DB):
         if self.artid:
             poses = self.get_block_pos(pos=pos)
             if poses:
-                cellno     = poses[2]
-                row_no     = poses[3]
-                col_no     = poses[4]
-                no         = poses[5]
-                min_cell   = self.get_min_cell()
+                cellno = poses[2]
+                row_no = poses[3]
+                col_no = poses[4]
+                no = poses[5]
+                min_cell = self.get_min_cell()
                 min_row_sp = self.get_min_row_sp(col_no=col_no)
-                max_col    = self.get_max_col()
+                max_col = self.get_max_col()
                 if min_cell and max_col and min_row_sp:
                     if no == min_cell[1]:
                         if self.Selectable:
@@ -1373,13 +1373,13 @@ class Moves(DB):
         if self.artid:
             poses = self.get_block_pos(pos=pos)
             if poses:
-                cellno     = poses[2]
-                row_no     = poses[3]
-                col_no     = poses[4]
-                no         = poses[5]
-                min_col    = self.get_min_col()
+                cellno = poses[2]
+                row_no = poses[3]
+                col_no = poses[4]
+                no = poses[5]
+                min_col = self.get_min_col()
                 max_row_sp = self.get_max_row_sp(col_no=col_no)
-                max_col    = self.get_max_col()
+                max_col = self.get_max_col()
 
                 if min_col and max_row_sp and max_col:
                     if row_no == max_row_sp[0] and col_no == max_col[0]:

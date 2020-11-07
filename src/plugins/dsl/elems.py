@@ -48,7 +48,7 @@ class Block:
         ''' 'comment', 'correction', 'dic', 'invalid', 'phrase',
             'speech', 'term', 'transc', 'wform'
         '''
-        self.type_  = 'comment'
+        self.type_ = 'comment'
         self.transc = ''
         self.url = ''
         self.wform = ''
@@ -167,10 +167,10 @@ class Elems:
                              ,self.blocks[i].select
                              ]
                             )
-            mes = sh.FastTable (headers   = headers
-                               ,iterable  = rows
-                               ,maxrow    = maxrow
-                               ,maxrows   = maxrows
+            mes = sh.FastTable (headers = headers
+                               ,iterable = rows
+                               ,maxrow = maxrow
+                               ,maxrows = maxrows
                                ,Transpose = True
                                ).run()
             mes = _('Non-DB blocks:') + '\n\n' + mes
@@ -293,57 +293,57 @@ class Elems:
             or wform != self.blocks[i].wform \
             or speech != self.blocks[i].speech:
                 
-                block        = Block()
-                block.type_  = 'speech'
-                block.text   = self.blocks[i].speech
-                block.dic    = self.blocks[i].dic
-                block.dicf   = self.blocks[i].dicf
-                block.wform  = self.blocks[i].wform
+                block = Block()
+                block.type_ = 'speech'
+                block.text = self.blocks[i].speech
+                block.dic = self.blocks[i].dic
+                block.dicf = self.blocks[i].dicf
+                block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term   = self.blocks[i].term
-                block.same   = 0
+                block.term = self.blocks[i].term
+                block.same = 0
                 self.blocks.insert(i,block)
                 
-                block        = Block()
-                block.type_  = 'transc'
-                block.text   = self.blocks[i].transc
-                block.dic    = self.blocks[i].dic
-                block.dicf   = self.blocks[i].dicf
-                block.wform  = self.blocks[i].wform
+                block = Block()
+                block.type_ = 'transc'
+                block.text = self.blocks[i].transc
+                block.dic = self.blocks[i].dic
+                block.dicf = self.blocks[i].dicf
+                block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term   = self.blocks[i].term
-                block.same    = 0
+                block.term = self.blocks[i].term
+                block.same = 0
                 self.blocks.insert(i,block)
 
-                block        = Block()
-                block.type_  = 'wform'
-                block.text   = self.blocks[i].wform
-                block.dic    = self.blocks[i].dic
-                block.dicf   = self.blocks[i].dicf
-                block.wform  = self.blocks[i].wform
+                block = Block()
+                block.type_ = 'wform'
+                block.text = self.blocks[i].wform
+                block.dic = self.blocks[i].dic
+                block.dicf = self.blocks[i].dicf
+                block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term   = self.blocks[i].term
-                block.same   = 0
+                block.term = self.blocks[i].term
+                block.same = 0
                 self.blocks.insert(i,block)
                 
-                block        = Block()
-                block.type_  = 'dic'
-                block.text   = self.blocks[i].dic
-                block.dic    = self.blocks[i].dic
-                block.dicf   = self.blocks[i].dicf
-                block.wform  = self.blocks[i].wform
+                block = Block()
+                block.type_ = 'dic'
+                block.text = self.blocks[i].dic
+                block.dic = self.blocks[i].dic
+                block.dicf = self.blocks[i].dicf
+                block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
-                block.term   = self.blocks[i].term
-                block.same   = 0
+                block.term = self.blocks[i].term
+                block.same = 0
                 self.blocks.insert(i,block)
                 
-                dic    = self.blocks[i].dic
-                dicf   = self.blocks[i].dicf
-                wform  = self.blocks[i].wform
+                dic = self.blocks[i].dic
+                dicf = self.blocks[i].dicf
+                wform = self.blocks[i].wform
                 speech = self.blocks[i].speech
                 i += 4
             i += 1

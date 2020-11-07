@@ -81,10 +81,10 @@ class Tags:
                          ,self.blocks[i].text
                          ]
                         )
-        mes = sh.FastTable (headers   = headers
-                           ,iterable  = rows
-                           ,maxrow    = self.maxrow
-                           ,maxrows   = self.maxrows
+        mes = sh.FastTable (headers = headers
+                           ,iterable = rows
+                           ,maxrow = self.maxrow
+                           ,maxrows = self.maxrows
                            ,Transpose = True
                            ).run()
         sh.com.run_fast_debug(f,mes)

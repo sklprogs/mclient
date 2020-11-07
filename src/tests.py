@@ -99,7 +99,7 @@ class Get:
         import plugins.dsl.get as gt
         gt.PATH = sh.Home('mclient').add_config('dics')
         gt.Get (pattern = 'computer'
-               ,Debug   = DEBUG
+               ,Debug = DEBUG
                ).run()
     
     def run_multitrancom(self):
@@ -110,7 +110,7 @@ class Get:
         timer = sh.Timer(f)
         timer.start()
         result = gt.Get (search = search
-                        ,url    = url
+                        ,url = url
                         ).run()
         timer.end()
         sh.com.run_fast_txt(result)
@@ -142,8 +142,8 @@ class Tags:
         for iarticle in articles:
             code = cu.CleanUp(iarticle.code).run()
             code = cu.TagLike(code).run()
-            blocks += tg.Tags (code    = code
-                              ,Debug   = DEBUG
+            blocks += tg.Tags (code = code
+                              ,Debug = DEBUG
                               ,maxrows = 0
                               ,dicname = iarticle.dic
                               ).run()
@@ -160,11 +160,11 @@ class Tags:
     def run_stardict(self):
         f = '[MClient] tests.Tags.run_stardict'
         import plugins.stardict.cleanup as sdcleanup
-        import plugins.stardict.tags    as sdtags
+        import plugins.stardict.tags as sdtags
         file = '/home/pete/bin/mclient/tests/stardict/EnRu full cut.txt'
         text = sh.ReadTextFile(file).get()
         text = sdcleanup.CleanUp(text).run()
-        sdtags.Tags (text  = text
+        sdtags.Tags (text = text
                     ,Debug = DEBUG
                     ).run()
     
@@ -179,9 +179,9 @@ class Tags:
         file = '/home/pete/bin/mclient/tests/multitrancom/Медицина.txt'
         text = sh.ReadTextFile(file).get()
         text = mccleanup.CleanUp(text).run()
-        mctags.Tags (text    = text
-                    ,Debug   = DEBUG
-                    ,maxrow  = 30
+        mctags.Tags (text = text
+                    ,Debug = DEBUG
+                    ,maxrow = 30
                     ,maxrows = 0
                     ).run()
 
@@ -212,12 +212,12 @@ class Plugin:
             subfolders here.
         '''
         plugins.multitrandem.get.PATH = '/home/pete/.config/mclient/dics'
-        iplug = mb.Plugin (Debug   = DEBUG
-                          ,maxrow  = 20
+        iplug = mb.Plugin (Debug = DEBUG
+                          ,maxrow = 20
                           ,maxrows = 150
                           )
         
-        blocks = iplug.request (url    = url
+        blocks = iplug.request (url = url
                                ,search = search
                                )
         if not blocks:
@@ -270,11 +270,11 @@ class Plugin:
         url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
         search = 'hello'
         
-        iplug = mc.Plugin (Debug   = DEBUG
-                          ,maxrow  = 20
+        iplug = mc.Plugin (Debug = DEBUG
+                          ,maxrow = 20
                           ,maxrows = 150
                           )
-        iplug.request (url    = url
+        iplug.request (url = url
                       ,search = search
                       )
 
@@ -317,45 +317,45 @@ class Commands:
         # Create blocks
         #1 #1
         block = list(Block().dump())
-        block[2]  = 'Общая лексика' # DIC
-        block[30] = 'общ.'          # DICF
-        block[7]  = 'term'          # TYPE
-        block[8]  = 'hello'         # TEXT
+        block[2] = 'Общая лексика' # DIC
+        block[30] = 'общ.'         # DICF
+        block[7] = 'term'          # TYPE
+        block[8] = 'hello'         # TEXT
         data1.append(block)
         #1 #2
         block = list(Block().dump())
-        block[2]  = 'Общая лексика' # DIC
-        block[30] = 'общ.'          # DICF
-        block[7]  = 'comment'       # TYPE
-        block[8]  = 'yes'           # TEXT
+        block[2] = 'Общая лексика' # DIC
+        block[30] = 'общ.'         # DICF
+        block[7] = 'comment'       # TYPE
+        block[8] = 'yes'           # TEXT
         data1.append(block)
         #1 #3
         block = list(Block().dump())
-        block[2]  = 'Общая лексика' # DIC
-        block[30] = 'общ.'          # DICF
-        block[7]  = 'term'          # TYPE
-        block[8]  = 'goodbye'       # TEXT
+        block[2] = 'Общая лексика' # DIC
+        block[30] = 'общ.'         # DICF
+        block[7] = 'term'          # TYPE
+        block[8] = 'goodbye'       # TEXT
         data1.append(block)
         #2 #1
         block = list(Block().dump())
-        block[2]  = 'Общая лексика' # DIC
-        block[30] = 'общ.'          # DICF
-        block[7]  = 'term'          # TYPE
-        block[8]  = 'goodbye'       # TEXT
+        block[2] = 'Общая лексика' # DIC
+        block[30] = 'общ.'         # DICF
+        block[7] = 'term'          # TYPE
+        block[8] = 'goodbye'       # TEXT
         data2.append(block)
         #2 #2
         block = list(Block().dump())
-        block[2]  = 'Физиология'    # DIC
-        block[30] = 'физиол.'       # DICF
-        block[7]  = 'comment'       # TYPE
-        block[8]  = 'yes'           # TEXT
+        block[2] = 'Физиология'    # DIC
+        block[30] = 'физиол.'      # DICF
+        block[7] = 'comment'       # TYPE
+        block[8] = 'yes'           # TEXT
         data2.append(block)
         #2 #3
         block = list(Block().dump())
-        block[2]  = 'Общая лексика' # DIC
-        block[30] = 'общ.'          # DICF
-        block[7]  = 'term'          # TYPE
-        block[8]  = 'hello'         # TEXT
+        block[2] = 'Общая лексика' # DIC
+        block[30] = 'общ.'         # DICF
+        block[7] = 'term'          # TYPE
+        block[8] = 'hello'         # TEXT
         data2.append(block)
         # Compare
         data = el.Elems(data1,data2).run()
@@ -366,7 +366,7 @@ class Commands:
     def request(self):
         f = '[MClient] tests.Commands.request'
         source = _('Multitran')
-        pair   = 'DEU <=> RUS'
+        pair = 'DEU <=> RUS'
         search = 'ernährung'
         mes = 'Source: "{}"; pair: "{}"; search: "{}"'.format (source
                                                               ,pair
@@ -376,7 +376,7 @@ class Commands:
         lg.objs.plugins.set_pair(pair)
         sh.objs.get_mes(f,mes,True).show_info()
         data = lg.objs.plugins.request (search = search
-                                       ,url    = ''
+                                       ,url = ''
                                        )
         if data:
             sh.com.run_fast_txt(data)
@@ -386,10 +386,10 @@ class Commands:
     def get_url(self):
         f = '[MClient] tests.Commands.get_url'
         source = 'multitran.com'
-        pair   = 'RUS <=> XAL'
+        pair = 'RUS <=> XAL'
         search = 'До свидания!'
-        mes    = 'Source: "{}"; pair: "{}"; search: "{}"'
-        mes    = mes.format(source,pair,search)
+        mes = 'Source: "{}"; pair: "{}"; search: "{}"'
+        mes = mes.format(source,pair,search)
         lg.objs.get_plugins().set(source)
         lg.objs.plugins.set_pair(pair)
         sh.objs.get_mes(f,mes,True).show_info()
@@ -398,10 +398,10 @@ class Commands:
     def suggest(self):
         f = '[MClient] tests.Commands.suggest'
         source = 'multitran.com'
-        pair   = 'DEU <=> RUS'
+        pair = 'DEU <=> RUS'
         search = 'Scheiße'
-        mes    = 'Source: "{}"; pair: "{}"; search: "{}"'
-        mes    = mes.format(source,pair,search)
+        mes = 'Source: "{}"; pair: "{}"; search: "{}"'
+        mes = mes.format(source,pair,search)
         lg.objs.get_plugins().set(source)
         lg.objs.plugins.set_pair(pair)
         sh.objs.get_mes(f,mes,True).show_info()
@@ -419,17 +419,17 @@ class Commands:
     def set_timeout(self):
         f = '[MClient] tests.Commands.set_timeout'
         import plugins.multitrancom.get as mc
-        import plugins.stardict.get     as sd
-        self._set_timeout (module  = sd
-                          ,source  = _('Offline')
+        import plugins.stardict.get as sd
+        self._set_timeout (module = sd
+                          ,source = _('Offline')
                           ,timeout = 1
                           )
-        self._set_timeout (module  = mc
-                          ,source  = _('Multitran')
+        self._set_timeout (module = mc
+                          ,source = _('Multitran')
                           ,timeout = 2
                           )
-        self._set_timeout (module  = mc
-                          ,source  = 'multitran.com'
+        self._set_timeout (module = mc
+                          ,source = 'multitran.com'
                           ,timeout = 3
                           )
     
@@ -449,7 +449,7 @@ class Commands:
     def welcome(self):
         f = '[MClient] tests.Commands.welcome'
         file_w = '/tmp/test.html'
-        code   = lg.Welcome().run()
+        code = lg.Welcome().run()
         if code:
             sh.WriteTextFile(file_w).write(code)
             sh.Launch(file_w).default()
@@ -459,14 +459,14 @@ class Commands:
     def set_pair(self):
         f = '[MClient] tests.Commands.set_pair'
         import plugins.multitrancom.get
-        pair   = 'RUS <=> XAL'
+        pair = 'RUS <=> XAL'
         source = 'multitran.com'
         lg.objs.get_plugins().set(source)
         lg.objs.plugins.set_pair(pair)
         
         mes = '{}: {}'.format(source,plugins.multitrancom.get.PAIR)
         sh.objs.get_mes(f,mes,True).show_debug()
-        pair   = 'XAL <=> RUS'
+        pair = 'XAL <=> RUS'
         source = _('Multitran')
         lg.objs.plugins.set(source)
         lg.objs.plugins.set_pair(pair)
@@ -495,7 +495,7 @@ class Commands:
         lg.objs.get_request().search = search
         lg.objs.request.url = url
         data = lg.objs.plugins.request (search = search
-                                       ,url    = url
+                                       ,url = url
                                        )
         cldata = []
         for i in range(len(data)):
@@ -503,16 +503,16 @@ class Commands:
                   ,data[i][3],data[i][4],data[i][5]
                   ]
             cldata.append(row)
-        cells = cl.Cells (data     = cldata
-                         ,cols     = ('dic','wform','transc'
+        cells = cl.Cells (data = cldata
+                         ,cols = ('dic','wform','transc'
                                      ,'speech'
                                      )
                          ,collimit = 8
-                         ,phdic    = ''
-                         ,Reverse  = False
+                         ,phdic = ''
+                         ,Reverse = False
                          ,ExpandSp = False
-                         ,Debug    = DEBUG
-                         ,maxrows  = maxrows
+                         ,Debug = DEBUG
+                         ,maxrows = maxrows
                          )
         cells.run()
     
@@ -521,66 +521,66 @@ class Commands:
                   ,GUI=False
                   ):
         if GUI:
-            self.translate_gui (source  = source
-                               ,pair    = pair
-                               ,search  = search
-                               ,url     = url
+            self.translate_gui (source = source
+                               ,pair = pair
+                               ,search = search
+                               ,url = url
                                )
         else:
-            self.translate_cli (source  = source
-                               ,pair    = pair
-                               ,search  = search
-                               ,url     = url
+            self.translate_cli (source = source
+                               ,pair = pair
+                               ,search = search
+                               ,url = url
                                ,maxrows = maxrows
                                )
             
     
     def run_com_complex(self,GUI=False):
         self.translate (source = 'multitran.com'
-                       ,pair   = 'ENG <=> RUS'
+                       ,pair = 'ENG <=> RUS'
                        ,search = 'complex'
-                       ,url    = 'https://www.multitran.com/m.exe?s=complex&l1=2&l2=1&SHL=2'
-                       ,GUI    = GUI
+                       ,url = 'https://www.multitran.com/m.exe?s=complex&l1=2&l2=1&SHL=2'
+                       ,GUI = GUI
                        )
     
     def run_com_abatis2(self,GUI=False):
         self.translate (source = 'multitran.com'
-                       ,pair   = 'ENG <=> RUS'
+                       ,pair = 'ENG <=> RUS'
                        ,search = 'abatis'
-                       ,url    = 'https://www.multitran.com/m.exe?s=abatis&l1=2&l2=1&SHL=2'
-                       ,GUI    = GUI
+                       ,url = 'https://www.multitran.com/m.exe?s=abatis&l1=2&l2=1&SHL=2'
+                       ,GUI = GUI
                        )
     
     def run_com_abatis(self,GUI=False):
         self.translate (source = 'multitran.com'
-                       ,pair   = 'ENG <=> RUS'
+                       ,pair = 'ENG <=> RUS'
                        ,search = 'засека'
-                       ,url    = 'https://www.multitran.com/m.exe?s=%D0%B7%D0%B0%D1%81%D0%B5%D0%BA%D0%B0&l1=2&l2=1&SHL=2'
-                       ,GUI    = GUI
+                       ,url = 'https://www.multitran.com/m.exe?s=%D0%B7%D0%B0%D1%81%D0%B5%D0%BA%D0%B0&l1=2&l2=1&SHL=2'
+                       ,GUI = GUI
                        )
     
     def run_all_ernahrung(self,GUI=False):
         self.translate (source = _('Multitran')
-                       ,pair   = 'DEU <=> RUS'
+                       ,pair = 'DEU <=> RUS'
                        ,search = 'ernährung'
-                       ,url    = 'https://www.multitran.com/m.exe?s=ern%C3%A4hrung&l1=3&l2=2&SHL=2'
-                       ,GUI    = GUI
+                       ,url = 'https://www.multitran.com/m.exe?s=ern%C3%A4hrung&l1=3&l2=2&SHL=2'
+                       ,GUI = GUI
                        )
     
     def run_com_mud(self,GUI=False):
         self.translate (source = 'multitran.com'
-                       ,pair   = 'ENG <=> RUS'
+                       ,pair = 'ENG <=> RUS'
                        ,search = 'mud'
-                       ,url    = 'https://multitran.com/m.exe?s=mud&l1=1&l2=2&SHL=2'
-                       ,GUI    = GUI
+                       ,url = 'https://multitran.com/m.exe?s=mud&l1=1&l2=2&SHL=2'
+                       ,GUI = GUI
                        )
     
     def run_com_systemwide(self,GUI=False):
         self.translate (source = 'multitran.com'
-                       ,pair   = 'ENG <=> RUS'
+                       ,pair = 'ENG <=> RUS'
                        ,search = 'system-wide'
-                       ,url    = 'https://www.multitran.com/m.exe?s=system-wide&l1=2&l2=1&SHL=2'
-                       ,GUI    = GUI
+                       ,url = 'https://www.multitran.com/m.exe?s=system-wide&l1=2&l2=1&SHL=2'
+                       ,GUI = GUI
                        )
     
     def go_keyboard(self,event=None):

@@ -11,12 +11,12 @@ import skl_shared.shared as sh
 from skl_shared.localize import _
 
 # Do not localize language names here
-CODING   = 'windows-1251'
-LANG1    = 'English'
-LANG2    = 'Russian'
-PATH     = ''
+CODING = 'windows-1251'
+LANG1 = 'English'
+LANG2 = 'Russian'
+PATH = ''
 MAXSTEMS = 2
-DEBUG    = False
+DEBUG = False
 
 
 class Ending:
@@ -61,7 +61,7 @@ class Ending:
                 no = 0
             try:
                 index_ = self.nos.index(no)
-                match  = pattern in self.ends[index_]
+                match = pattern in self.ends[index_]
                 if match:
                     sub = _('Yes')
                 else:
@@ -113,7 +113,7 @@ class Ending:
                             line = line.replace(',',' ')
                             line = line.split(' ')
                             line = [item for item in line if item]
-                            no   = sh.Input (title = f
+                            no = sh.Input (title = f
                                             ,value = line[0]
                                             ).get_integer()
                             ends = line[1:]
@@ -129,11 +129,11 @@ class Ending:
             sh.com.cancel(f)
     
     def set_values(self):
-        self.file    = ''
-        self.text    = ''
+        self.file = ''
+        self.text = ''
         self.Success = True
-        self.nos     = []
-        self.ends    = []
+        self.nos = []
+        self.ends = []
         self.ordered = []
 
 
@@ -183,14 +183,14 @@ class Subject:
     
     def set_values(self):
         self.Success = True
-        self.file    = ''
-        self.text    = ''
+        self.file = ''
+        self.text = ''
         self.dic_nos = []
         self.en_dicf = []
         self.ru_dicf = []
-        self.en_dic  = []
-        self.ru_dic  = []
-        self.lang    = 'en'
+        self.en_dic = []
+        self.ru_dic = []
+        self.lang = 'en'
     
     def parse(self):
         f = '[MClient] plugins.multitrandem.get.Subject.parse'
@@ -242,7 +242,7 @@ class Binary:
     def __init__(self,file):
         self.fsize = 0
         self.bsize = 0
-        self.file  = file
+        self.file = file
         self.bname = sh.Path(file).get_basename()
         # We need silent logging here (not 'sh.File.Success')
         self.Success = os.path.exists(self.file)
@@ -306,9 +306,9 @@ class Binary:
                     iterable = (nos,mpattern,mstart
                                ,mend,mpos1,mpos2,mchunks
                                )
-                    mes = sh.FastTable (headers  = headers
+                    mes = sh.FastTable (headers = headers
                                        ,iterable = iterable
-                                       ,maxrow   = 47
+                                       ,maxrow = 47
                                        ).run()
                     mes = '\n\n' + mes
                     sh.objs.get_mes(f,mes,True).show_debug()
@@ -363,9 +363,9 @@ class Binary:
                     iterable = (nos,mpattern,mstart
                                ,mend,mpos1,mpos2,mchunks
                                )
-                    mes = sh.FastTable (headers  = headers
+                    mes = sh.FastTable (headers = headers
                                        ,iterable = iterable
-                                       ,maxrow   = 47
+                                       ,maxrow = 47
                                        ).run()
                     mes = '\n\n' + mes
                     sh.objs.get_mes(f,mes,True).show_debug()
@@ -418,9 +418,9 @@ class Binary:
             if not self.fsize:
                 self.fsize = sh.File(self.file).get_size()
                 if DEBUG:
-                    mes  = _('File "{}" has the size of {}')
+                    mes = _('File "{}" has the size of {}')
                     size = sh.com.get_human_size(self.fsize)
-                    mes  = mes.format(self.file,size)
+                    mes = mes.format(self.file,size)
                     sh.objs.get_mes(f,mes,True).show_debug()
             if not self.fsize:
                 self.Success = False
@@ -667,9 +667,9 @@ class UPage(Binary):
     
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.page  = b''
-        self.pos1  = 0
-        self.pos2  = 0
+        self.page = b''
+        self.pos1 = 0
+        self.pos2 = 0
         self.psize = 0
         self.part1 = []
         self.part2 = []
@@ -826,8 +826,8 @@ class UPage(Binary):
                 '''
                 poses = self.get_page_limits(1)
                 if poses:
-                    self.pos1  = poses[0]
-                    self.pos2  = poses[1]
+                    self.pos1 = poses[0]
+                    self.pos2 = poses[1]
                     self.psize = self.pos2 - self.pos1
                 else:
                     sh.com.rep_empty(f)
@@ -905,7 +905,7 @@ class Walker:
         if self.Success:
             if not self.ending:
                 bname = 'sik.' + self.lang13
-                file  = self.get_file(bname)
+                file = self.get_file(bname)
                 if file:
                     self.ending = file
                 else:
@@ -942,7 +942,7 @@ class Walker:
         if self.Success:
             if not self.typein1:
                 bname = 'typein.' + self.lang11 + self.lang21
-                file  = self.get_file(bname)
+                file = self.get_file(bname)
                 if file:
                     self.typein1 = file
                     sh.objs.get_mes(f,self.typein1,True).show_debug()
@@ -1308,10 +1308,10 @@ class Xor:
             pos11 = 0
             pos12 = 0
             pos21 = 0
-            coef  = 0
+            coef = 0
             for i in range(len(self.data)):
                 pos21 = self.data[i]
-                pos   = self.data[i] + self.offset - i * self.step \
+                pos = self.data[i] + self.offset - i * self.step \
                                       + coef
                 if not 0 <= pos <= 255:
                     pos = abs(pos)
@@ -1361,10 +1361,10 @@ class Xor:
             pos11 = 0
             pos12 = 0
             pos21 = 0
-            coef  = 0
+            coef = 0
             for i in range(len(self.data)):
                 pos21 = self.data[i]
-                pos   = self.data[i] + self.offset + i * self.step \
+                pos = self.data[i] + self.offset + i * self.step \
                                       + coef
                 if not 0 <= pos <= 255:
                     pos = abs(pos)
@@ -1417,7 +1417,7 @@ class Articles(UPage):
         f = '[MClient] plugins.multitrandem.get.Articles.parse'
         if self.Success:
             if chunk:
-                return Xor (data   = chunk
+                return Xor (data = chunk
                            ,offset = -251
                            ).dexor()
             else:
@@ -1433,8 +1433,8 @@ class Articles(UPage):
                 poses = self.searchu(coded)
                 if poses:
                     chunk = self.get_part2 (pattern = coded
-                                           ,start   = poses[0]
-                                           ,end     = poses[1]
+                                           ,start = poses[0]
+                                           ,end = poses[1]
                                            )
                     return self.parse(chunk)
                 else:
@@ -1459,8 +1459,8 @@ class Glue(UPage):
                 poses = self.searchu(coded)
                 if poses:
                     chunk = self.get_part2 (pattern = coded
-                                           ,start   = poses[0]
-                                           ,end     = poses[1]
+                                           ,start = poses[0]
+                                           ,end = poses[1]
                                            )
                     if chunk:
                         return self.parse(chunk)
@@ -1484,7 +1484,7 @@ class Glue(UPage):
             if chunk:
                 if (len(chunk) - 2) % 3 == 0 and len(chunk) != 2:
                     chunk = chunk[2:]
-                    nos   = []
+                    nos = []
                     chnos = com.get_chunks(chunk,3)
                     for chno in chnos:
                         nos.append(com.unpack(chno))
@@ -1586,7 +1586,7 @@ class Commands:
         result = ''
         if chunk:
             try:
-                chunk  = chunk.decode('latin1')
+                chunk = chunk.decode('latin1')
                 result = codecs.encode(chunk,'unicode_escape')
                 result = str(result)
                 result = result.replace('\\\\','\\')
@@ -1781,9 +1781,9 @@ class Stems(UPage):
         f = '[MClient] plugins.multitrandem.get.Stems.parse'
         if self.Success:
             if chunk:
-                nos   = []
+                nos = []
                 chnos = []
-                ends  = []
+                ends = []
                 #NOTE: 0 % 7 == 0
                 if len(chunk) > 1 and (len(chunk) - 1) % 7 == 0:
                     chunks = com.get_chunks(chunk[1:],7)
@@ -1809,13 +1809,13 @@ class Stems(UPage):
                             initial = ['"{}"'.format(com.get_string(chunk))\
                                        for i in range(len(mchnos))
                                       ]
-                            headers  = ('NO','INITIAL','CHUNK'
+                            headers = ('NO','INITIAL','CHUNK'
                                        ,'UNPACKED','END'
                                        )
                             iterable = (ids,initial,mchnos,tmp,mends)
-                            mes = sh.FastTable (headers  = headers
+                            mes = sh.FastTable (headers = headers
                                                ,iterable = iterable
-                                               ,maxrow   = 50
+                                               ,maxrow = 50
                                                ).run()
                             mes = '\n\n' + mes
                             sh.objs.get_mes(f,mes,True).show_debug()
@@ -1847,10 +1847,10 @@ class Stems(UPage):
                 poses = self.searchu(coded)
                 if poses:
                     chunks = self.get_parts2 (pattern = coded
-                                             ,start   = poses[0]
-                                             ,end     = poses[1]
+                                             ,start = poses[0]
+                                             ,end = poses[1]
                                              )
-                    matches  = []
+                    matches = []
                     unpacked = []
                     for chunk in chunks:
                         result = self.parse(chunk)
@@ -1875,13 +1875,13 @@ class Stems(UPage):
                             mstems = ['"{}"'.format(stem) \
                                       for i in range(len(mnos))
                                      ]
-                            mends  = ['"{}"'.format(end) \
+                            mends = ['"{}"'.format(end) \
                                       for i in range(len(mnos))
                                      ]
                             iterable = (mnos,mstems,mends
                                        ,mmatches,unpacked
                                        )
-                            mes = sh.FastTable (headers  = headers
+                            mes = sh.FastTable (headers = headers
                                                ,iterable = iterable
                                                ).run()
                             mes = '\n\n' + mes
@@ -1902,8 +1902,8 @@ class Get:
     def __init__(self,pattern):
         self.set_values()
         self.pattern = pattern
-        self.speech  = ''
-        self.spabbr  = ''
+        self.speech = ''
+        self.spabbr = ''
     
     def set_speech(self):
         f = '[MClient] plugins.multitrandem.get.Get.set_speech'
@@ -2032,8 +2032,8 @@ class Get:
                 while i >= 0:
                     #NOTE: nltk: according -> accord -> No matches!
                     stem = word[0:i]
-                    end  = word[i:]
-                    mes  = _('Try for "{}|{}"').format(stem,end)
+                    end = word[i:]
+                    mes = _('Try for "{}|{}"').format(stem,end)
                     sh.objs.get_mes(f,mes,True).show_info()
                     ''' Since we swap languages, the needed stems will
                         always be stored in stem file #1.
@@ -2063,7 +2063,7 @@ class Get:
     def set_values(self):
         self.Success = True
         self.pattern = ''
-        self.htm     = ''
+        self.htm = ''
         self.stemnos = []
     
     def search(self):
@@ -2099,4 +2099,4 @@ class Get:
 
 
 objs = Objects()
-com  = Commands()
+com = Commands()
