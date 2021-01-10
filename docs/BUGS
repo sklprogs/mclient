@@ -1,5 +1,17 @@
 mclient:
-- 
+- 3418:[MClient] mclient.WebFrame.go_mouse:ОТЛАДКА:Выбран словарь: "Европейский банк реконструкции и развития". Предыдущий словарь: "дип." (сокращенное название), "Дипломатия" (полное название).
+3419:[MClient] logic.Order.prioritize_by:ОТЛАДКА:Режим: "Увеличить приоритет"
+Exception in Tkinter callback
+Traceback (most recent call last):
+  File "/usr/lib/python3.7/tkinter/__init__.py", line 1705, in __call__
+    return self.func(*args)
+  File "/home/pete/bin/mclient/src/mclient.py", line 2086, in go_mouse
+    ,dic2 = dic
+  File "/home/pete/base/bin/mclient/src/logic.py", line 1590, in run_lm_auto
+    self.prioritize_by()
+  File "/home/pete/base/bin/mclient/src/logic.py", line 1500, in prioritize_by
+    ind1 = self.priorlst.index(self.dic1[0])
+ValueError: 'Европейский банк реконструкции и развития' is not in list
 
 multitrancom:
 - RU-EN: оптическое излучение -> Оптика: Delete "раздел физики, содержащие"
