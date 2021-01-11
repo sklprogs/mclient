@@ -31,11 +31,9 @@ class DB:
     def get_skipped_terms(self):
         f = '[MClient] db.DB.get_skipped_terms'
         if self.artid:
-            self.dbc.execute ('select distinct TERM from BLOCKS \
-                               where ARTICLEID = ? and BLOCK = 1 \
-                               order by TERM'
-                             ,(self.artid,)
-                             )
+            query = 'select distinct TERM from BLOCKS \
+                     where ARTICLEID = ? and BLOCK = 1 order by TERM'
+            self.dbc.execute(query,(self.artid,))
             result = self.dbc.fetchall()
             if result:
                 return [item[0] for item in result]
@@ -47,9 +45,9 @@ class DB:
             The procedure is orphaned so any fields can be selected.
         '''
         f = '[MClient] db.DB.print_custom'
-        self.dbc.execute ('select NO,TYPE,TEXT,DIC,SPEECH,SPEECHPR \
-                           from BLOCKS order by CELLNO,NO'
-                         )
+        query = 'select NO,TYPE,TEXT,DIC,SPEECH,SPEECHPR from BLOCKS \
+                 order by CELLNO,NO'
+        self.dbc.execute(query)
         rows = self.dbc.fetchall()
         headers = ('NO','TYPE','TEXT','DIC','SPEECH','SPEECHPR')
         mes = sh.FastTable (headers = headers
@@ -63,11 +61,10 @@ class DB:
     def get_wform(self,pos):
         f = '[MClient] db.DB.get_wform'
         if self.artid:
-            self.dbc.execute ('select WFORM from BLOCKS \
-                               where ARTICLEID = ? and BLOCK = 0 \
-                               and IGNORE = 0 and POS1 <= ? \
-                               and POS2 > ?',(self.artid,pos,pos,)
-                             )
+            query = 'select WFORM from BLOCKS where ARTICLEID = ? \
+                     and BLOCK = 0 and IGNORE = 0 and POS1 <= ? \
+                     and POS2 > ?'
+            self.dbc.execute(query,(self.artid,pos,pos,))
             result = self.dbc.fetchone()
             if result:
                 return result[0]
@@ -77,13 +74,11 @@ class DB:
     def get_next_dic(self,pos,dic):
         f = '[MClient] db.DB.get_next_dic'
         if self.artid:
-            self.dbc.execute ('select DIC,DICF,NO,CELLNO from BLOCKS \
-                               where ARTICLEID = ? and POS1 > ? \
-                               and not DIC = ? and not DICF = ? \
-                               and BLOCK = 0 and IGNORE = 0 \
-                               order by CELLNO,NO'
-                             ,(self.artid,pos,dic,dic,)
-                             )
+            query = 'select DIC,DICF,NO,CELLNO from BLOCKS \
+                     where ARTICLEID = ? and POS1 > ? and not DIC = ? \
+                     and not DICF = ? and BLOCK = 0 and IGNORE = 0 \
+                     order by CELLNO,NO'
+            self.dbc.execute(query,(self.artid,pos,dic,dic,))
             return self.dbc.fetchone()
         else:
             sh.com.rep_empty(f)
@@ -91,13 +86,11 @@ class DB:
     def get_prev_dic(self,pos,dic):
         f = '[MClient] db.DB.prev_dic'
         if self.artid:
-            self.dbc.execute ('select DIC,DICF,NO,CELLNO from BLOCKS \
-                               where ARTICLEID = ? and POS1 < ? \
-                               and not DIC = ? and not DICF = ? \
-                               and BLOCK = 0 and IGNORE = 0 \
-                               order by CELLNO desc,NO desc'
-                             ,(self.artid,pos,dic,dic,)
-                             )
+            query = 'select DIC,DICF,NO,CELLNO from BLOCKS \
+                     where ARTICLEID = ? and POS1 < ? and not DIC = ? \
+                     and not DICF = ? and BLOCK = 0 and IGNORE = 0 \
+                    order by CELLNO desc,NO desc'
+            self.dbc.execute(query,(self.artid,pos,dic,dic,))
             return self.dbc.fetchone()
         else:
             sh.com.rep_empty(f)
@@ -112,57 +105,53 @@ class DB:
             autoincrement'.
             31 columns for now.
         '''
-        self.dbc.execute (
-           'create table if not exists BLOCKS (\
-            NO         integer primary   \
-                       key autoincrement \
-           ,ARTICLEID  integer           \
-           ,DIC        text              \
-           ,WFORM      text              \
-           ,SPEECH     text              \
-           ,TRANSC     text              \
-           ,TERM       text              \
-           ,TYPE       text              \
-           ,TEXT       text              \
-           ,URL        text              \
-           ,BLOCK      integer           \
-           ,DICPR      integer           \
-           ,SELECTABLE integer           \
-           ,SAMECELL   integer           \
-           ,CELLNO     integer           \
-           ,ROWNO      integer           \
-           ,COLNO      integer           \
-           ,POS1       integer           \
-           ,POS2       integer           \
-           ,NODE1      text              \
-           ,NODE2      text              \
-           ,OFFPOS1    integer           \
-           ,OFFPOS2    integer           \
-           ,BBOX1      integer           \
-           ,BBOX2      integer           \
-           ,BBOY1      integer           \
-           ,BBOY2      integer           \
-           ,TEXTLOW    text              \
-           ,IGNORE     integer           \
-           ,SPEECHPR   integer           \
-           ,DICF       text              \
-                                              )'
-                         )
+        query = 'create table if not exists BLOCKS (\
+                 NO         integer primary key autoincrement \
+                ,ARTICLEID  integer \
+                ,DIC        text    \
+                ,WFORM      text    \
+                ,SPEECH     text    \
+                ,TRANSC     text    \
+                ,TERM       text    \
+                ,TYPE       text    \
+                ,TEXT       text    \
+                ,URL        text    \
+                ,BLOCK      integer \
+                ,DICPR      integer \
+                ,SELECTABLE integer \
+                ,SAMECELL   integer \
+                ,CELLNO     integer \
+                ,ROWNO      integer \
+                ,COLNO      integer \
+                ,POS1       integer \
+                ,POS2       integer \
+                ,NODE1      text    \
+                ,NODE2      text    \
+                ,OFFPOS1    integer \
+                ,OFFPOS2    integer \
+                ,BBOX1      integer \
+                ,BBOX2      integer \
+                ,BBOY1      integer \
+                ,BBOY2      integer \
+                ,TEXTLOW    text    \
+                ,IGNORE     integer \
+                ,SPEECHPR   integer \
+                ,DICF       text    \
+                                                   )'
+        self.dbc.execute(query)
                          
     def create_articles(self):
         # 7 columns for now
-        self.dbc.execute (
-            'create table if not exists ARTICLES (\
-             ARTICLEID  integer primary   \
-                        key autoincrement \
-            ,SOURCE     text              \
-            ,TITLE      text              \
-            ,URL        text              \
-            ,LANG1      text              \
-            ,LANG2      text              \
-            ,BOOKMARK   integer           \
-                                                 )'
-                         )
+        query = 'create table if not exists ARTICLES (\
+                 ARTICLEID integer primary key autoincrement \
+                ,SOURCE    text    \
+                ,TITLE     text    \
+                ,URL       text    \
+                ,LANG1     text    \
+                ,LANG2     text    \
+                ,BOOKMARK  integer \
+                                                     )'
+        self.dbc.execute(query)
 
     def reset (self,cols=('dic','wform','transc','speech')
               ,SortRows=False,SortTerms=False,ExpandDic=False
@@ -187,24 +176,20 @@ class DB:
             self.types += ('user',)
 
     def fill_blocks(self,data):
-        self.dbc.executemany ('insert into BLOCKS values \
-                              (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?\
-                              ,?,?,?,?,?,?,?,?,?,?,?\
-                              )'
-                              ,data
-                             )
+        query = 'insert into BLOCKS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?\
+                                           ,?,?,?,?,?,?,?,?,?,?,?,?,?,?\
+                                           ,?,?,?)'
+        self.dbc.executemany(query,data)
         
     def fill_articles(self,data):
-        self.dbc.execute ('insert into ARTICLES values (?,?,?,?,?,?,?)'
-                         ,data
-                         )
+        query = 'insert into ARTICLES values (?,?,?,?,?,?,?)'
+        self.dbc.execute(query,data)
 
     def fetch(self):
-        self.dbc.execute ('select TYPE,TEXT,ROWNO,COLNO from BLOCKS \
-                           where ARTICLEID = ? and BLOCK = 0 \
-                           and IGNORE = 0 order by CELLNO,NO'
-                         ,(self.artid,)
-                         )
+        query = 'select TYPE,TEXT,ROWNO,COLNO from BLOCKS \
+                 where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 \
+                 order by CELLNO,NO'
+        self.dbc.execute(query,(self.artid,))
         return self.dbc.fetchall()
 
     def is_present(self,source,title,url):
@@ -215,28 +200,25 @@ class DB:
             #NOTE: add LANG1 and LANG2 when pairs are enabled for local
             dictionaries.
         '''
-        self.dbc.execute ('select ARTICLEID from ARTICLES \
-                           where URL = ? and SOURCE = ? and TITLE = ?'
-                         ,(url,source,title,)
-                         )
+        query = 'select ARTICLEID from ARTICLES where URL = ? \
+                 and SOURCE = ? and TITLE = ?'
+        self.dbc.execute(query,(url,source,title,))
         result = self.dbc.fetchone()
         if result:
             return result[0]
 
     def get_searches(self):
-        self.dbc.execute ('select distinct ARTICLEID,TITLE \
-                           from ARTICLES order by ARTICLEID desc'
-                         )
+        query = 'select distinct ARTICLEID,TITLE from ARTICLES \
+                 order by ARTICLEID desc'
+        self.dbc.execute(query)
         return self.dbc.fetchall()
 
     def get_prev_id(self,Loop=True):
         f = '[MClient] db.DB.get_prev_id'
         if self.artid:
-            self.dbc.execute ('select ARTICLEID from ARTICLES \
-                               where ARTICLEID < ? \
-                               order by ARTICLEID desc'
-                             ,(self.artid,)
-                             )
+            query = 'select ARTICLEID from ARTICLES where ARTICLEID < ?\
+                     order by ARTICLEID desc'
+            self.dbc.execute(query,(self.artid,))
             result = self.dbc.fetchone()
             if result:
                 return result[0]
@@ -248,10 +230,9 @@ class DB:
     def get_next_id(self,Loop=True):
         f = '[MClient] db.DB.get_next_id'
         if self.artid:
-            self.dbc.execute ('select ARTICLEID from ARTICLES \
-                               where ARTICLEID > ? order by ARTICLEID'
-                             ,(self.artid,)
-                             )
+            query = 'select ARTICLEID from ARTICLES where ARTICLEID > ?\
+                     order by ARTICLEID'
+            self.dbc.execute(query,(self.artid,))
             result = self.dbc.fetchone()
             if result:
                 return result[0]
@@ -270,13 +251,11 @@ class DB:
         f = '[MClient] db.DB.print'
         if not Selected:
             if mode == 'BLOCKS':
-                self.dbc.execute ('select * from BLOCKS \
-                                   order by CELLNO,NO'
-                                 )
+                query = 'select * from BLOCKS order by CELLNO,NO'
+                self.dbc.execute(query)
             elif mode == 'ARTICLES':
-                self.dbc.execute ('select * from ARTICLES \
-                                   order by ARTICLEID'
-                                 )
+                query = 'select * from ARTICLES order by ARTICLEID'
+                self.dbc.execute(query)
             else:
                 mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
                 mes = mes.format(mode,'ARTICLES, BLOCKS')
@@ -309,7 +288,8 @@ class DB:
                 query += ',DICF'
             else:
                 query += ',DIC'
-            query += ',SPEECH from BLOCKS where ARTICLEID = ? order by NO'
+            query += ',SPEECH from BLOCKS where ARTICLEID = ? \
+                       order by NO'
             
             self.dbc.execute(query,(self.artid,))
             return self.dbc.fetchall()
@@ -377,11 +357,10 @@ class DB:
     def assign_pos(self):
         f = '[MClient] db.DB.assign_pos'
         if self.artid:
-            self.dbc.execute ('select NO,TYPE,TEXT,SAMECELL,ROWNO \
-                               from BLOCKS where ARTICLEID = ? \
-                               and BLOCK = 0 and IGNORE = 0 \
-                               order by CELLNO,NO',(self.artid,)
-                             )
+            query = 'select NO,TYPE,TEXT,SAMECELL,ROWNO from BLOCKS \
+                     where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 \
+                     order by CELLNO,NO'
+            self.dbc.execute(query,(self.artid,))
             return self.dbc.fetchall()
         else:
             sh.com.rep_empty(f)
@@ -392,10 +371,9 @@ class DB:
         '''
         f = '[MClient] db.DB.get_phdic_primary'
         if self.artid:
-            self.dbc.execute ('select DIC from BLOCKS \
-                               where ARTICLEID = ? and TYPE = ? \
-                               order by NO',(self.artid,'phrase',)
-                             )
+            query = 'select DIC from BLOCKS where ARTICLEID = ? \
+                     and TYPE = ? order by NO'
+            self.dbc.execute(query,(self.artid,'phrase',))
             result = self.dbc.fetchone()
             if result:
                 return result[0]
@@ -407,11 +385,9 @@ class DB:
         if self.artid:
             result = self.get_phdic_primary()
             if result:
-                self.dbc.execute ('select POS1,URL,TEXT from BLOCKS \
-                                   where ARTICLEID = ? and DIC = ? \
-                                   order by NO'
-                                 ,(self.artid,result,)
-                                 )
+                query = 'select POS1,URL,TEXT from BLOCKS \
+                         where ARTICLEID = ? and DIC = ? order by NO'
+                self.dbc.execute(query,(self.artid,result,))
                 return self.dbc.fetchone()
             else:
                 sh.com.rep_empty(f)
@@ -432,12 +408,10 @@ class DB:
             mes = _('Delete records of article No. {} from {}')
             mes = mes.format(self.artid,'BLOCKS, ARTICLES')
             sh.objs.get_mes(f,mes,True).show_warning()
-            self.dbc.execute ('delete from BLOCKS where ARTICLEID = ?'
-                             ,(self.artid,)
-                             )
-            self.dbc.execute ('delete from ARTICLES where ARTICLEID = ?'
-                             ,(self.artid,)
-                             )
+            query = 'delete from BLOCKS where ARTICLEID = ?'
+            self.dbc.execute(query,(self.artid,))
+            query = 'delete from ARTICLES where ARTICLEID = ?'
+            self.dbc.execute(query,(self.artid,))
         else:
             sh.com.rep_empty(f)
 
@@ -449,22 +423,19 @@ class DB:
                     correctly navigate through blocks where separate
                     words have been found
                 '''
-                self.dbc.execute ('select POS1,POS2,CELLNO,ROWNO,COLNO\
-                                  ,NO,TEXT,SELECTABLE,TYPE from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and POS1 <= ? \
-                                   and POS2 > ? and POS1 < POS2 \
-                                   and SELECTABLE = 1'
-                                 ,(self.artid,pos,pos,)
-                                 )
+                query = 'select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT \
+                        ,SELECTABLE,TYPE from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and POS1 <= ? and POS2 > ? \
+                         and POS1 < POS2 and SELECTABLE = 1'
+                self.dbc.execute(query,(self.artid,pos,pos,))
             else:
-                self.dbc.execute ('select POS1,POS2,CELLNO,ROWNO,COLNO\
-                                  ,NO,TEXT,SELECTABLE,TYPE from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and POS1 <= ? \
-                                   and POS2 > ? and POS1 < POS2'
-                                 ,(self.artid,pos,pos,)
-                                 )
+                query = 'select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT \
+                        ,SELECTABLE,TYPE from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and POS1 <= ? and POS2 > ? \
+                         and POS1 < POS2'
+                self.dbc.execute(query,(self.artid,pos,pos,))
             return self.dbc.fetchone()
         # Too frequent, especially on the Welcome screen
         #else:
@@ -473,11 +444,9 @@ class DB:
     def get_article(self):
         f = '[MClient] db.DB.get_article'
         if self.artid:
-            self.dbc.execute ('select SOURCE,TITLE,URL,BOOKMARK,LANG1\
-                                     ,LANG2 \
-                               from ARTICLES where ARTICLEID = ?'
-                             ,(self.artid,)
-                             )
+            query = 'select SOURCE,TITLE,URL,BOOKMARK,LANG1,LANG2 \
+                     from ARTICLES where ARTICLEID = ?'
+            self.dbc.execute(query,(self.artid,))
             return self.dbc.fetchone()
         else:
             sh.com.rep_empty(f)
@@ -485,11 +454,10 @@ class DB:
     def get_url(self,pos):
         f = '[MClient] db.DB.get_url'
         if self.artid:
-            self.dbc.execute ('select URL from BLOCKS \
-                               where ARTICLEID = ? and BLOCK = 0 \
-                               and IGNORE = 0 and POS1 <= ? \
-                               and POS2 > ?',(self.artid,pos,pos,)
-                             )
+            query = 'select URL from BLOCKS where ARTICLEID = ? \
+                     and BLOCK = 0 and IGNORE = 0 and POS1 <= ? \
+                     and POS2 > ?'
+            self.dbc.execute(query,(self.artid,pos,pos,))
             result = self.dbc.fetchone()
             if result:
                 return result[0]
@@ -499,12 +467,10 @@ class DB:
     def get_text(self,pos):
         f = '[MClient] db.DB.get_text'
         if self.artid:
-            self.dbc.execute ('select TEXT from BLOCKS \
-                               where ARTICLEID = ? and BLOCK = 0 \
-                               and IGNORE = 0 and POS1 <= ? \
-                               and POS2 > ?'
-                             ,(self.artid,pos,pos,)
-                             )
+            query = 'select TEXT from BLOCKS where ARTICLEID = ? \
+                     and BLOCK = 0 and IGNORE = 0 and POS1 <= ? \
+                     and POS2 > ?'
+            self.dbc.execute(query,(self.artid,pos,pos,))
             result = self.dbc.fetchone()
             if result:
                 return result[0]
@@ -521,20 +487,18 @@ class DB:
                     (e.g., it has 'transc' type).
                     #NOTE: 'TYPE in ("term","phrase")' causes bugs.
                 '''
-                self.dbc.execute ('select CELLNO,NO,POS1 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and TYPE in (?,?) \
-                                   and SELECTABLE = 1 \
-                                   and POS1 < POS2 order by CELLNO,NO'
-                                 ,(self.artid,'term','phrase',)
-                                 )
+                query = 'select CELLNO,NO,POS1 from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and TYPE in (?,?) \
+                         and SELECTABLE = 1 and POS1 < POS2 \
+                         order by CELLNO,NO'
+                self.dbc.execute(query,(self.artid,'term','phrase',))
             else:
-                self.dbc.execute ('select CELLNO,NO,POS1 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and POS1 < POS2 \
-                                   order by CELLNO,NO'
-                                 ,(self.artid,)
-                                 )
+                query = 'select CELLNO,NO,POS1 from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and POS1 < POS2 \
+                         order by CELLNO,NO'
+                self.dbc.execute(query,(self.artid,))
             return self.dbc.fetchone()
         else:
             sh.com.rep_empty(f)
@@ -543,21 +507,18 @@ class DB:
         f = '[MClient] db.DB.get_max_cell'
         if self.artid:
             if self.Selectable:
-                self.dbc.execute ('select CELLNO,NO,POS1,BBOX1,BBOX2 \
-                                   from BLOCKS where ARTICLEID = ? \
-                                   and BLOCK = 0 and IGNORE = 0 \
-                                   and TYPE in (?,?) \
-                                   and SELECTABLE = 1 and POS1 < POS2 \
-                                   order by CELLNO desc,NO desc'
-                                 ,(self.artid,'term','phrase',)
-                                 )
+                query = 'select CELLNO,NO,POS1,BBOX1,BBOX2 from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and TYPE in (?,?) \
+                         and SELECTABLE = 1 and POS1 < POS2 \
+                         order by CELLNO desc,NO desc'
+                self.dbc.execute(query,(self.artid,'term','phrase',))
             else:
-                self.dbc.execute ('select CELLNO,NO,POS1,BBOX1,BBOX2 \
-                                   from BLOCKS where ARTICLEID = ? \
-                                   and BLOCK = 0 and IGNORE = 0 \
-                                   and POS1 < POS2 order by CELLNO desc\
-                                   ,NO desc',(self.artid,)
-                                 )
+                query = 'select CELLNO,NO,POS1,BBOX1,BBOX2 from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and POS1 < POS2 \
+                         order by CELLNO desc,NO desc'
+                self.dbc.execute(query,(self.artid,))
             return self.dbc.fetchone()
         else:
             sh.com.rep_empty(f)
@@ -569,20 +530,18 @@ class DB:
         f = '[MClient] db.DB.get_max_row'
         if self.artid:
             if self.Selectable:
-                self.dbc.execute ('select ROWNO,NO from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and TYPE in (?,?) \
-                                   and SELECTABLE = 1 \
-                                   and POS1 < POS2 order by ROWNO desc'
-                                 ,(self.artid,'term','phrase',)
-                                 )
+                query = 'select ROWNO,NO from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and TYPE in (?,?) \
+                         and SELECTABLE = 1 and POS1 < POS2 \
+                         order by ROWNO desc'
+                self.dbc.execute(query,(self.artid,'term','phrase',))
             else:
-                self.dbc.execute ('select ROWNO,NO from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and POS1 < POS2 \
-                                   order by ROWNO desc'
-                                 ,(self.artid,)
-                                 )
+                query = 'select ROWNO,NO from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and POS1 < POS2 \
+                         order by ROWNO desc'
+                self.dbc.execute(query,(self.artid,))
             return self.dbc.fetchone()
         else:
             sh.com.rep_empty(f)
@@ -595,21 +554,18 @@ class DB:
         f = '[MClient] db.DB.get_max_col'
         if self.artid:
             if self.Selectable:
-                self.dbc.execute ('select COLNO,NO,BBOX2 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and TYPE in (?,?) \
-                                   and SELECTABLE = 1 \
-                                   and POS1 < POS2 order by COLNO desc\
-                                  ,NO desc'
-                                 ,(self.artid,'term','phrase',)
-                                 )
+                query = 'select COLNO,NO,BBOX2 from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and TYPE in (?,?) \
+                         and SELECTABLE = 1 and POS1 < POS2 \
+                         order by COLNO desc,NO desc'
+                self.dbc.execute(query,(self.artid,'term','phrase',))
             else:
-                self.dbc.execute ('select COLNO,NO,BBOX2 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and POS1 < POS2 \
-                                   order by COLNO desc,NO desc'
-                                 ,(self.artid,)
-                                 )
+                query = 'select COLNO,NO,BBOX2 from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and POS1 < POS2 \
+                         order by COLNO desc,NO desc'
+                self.dbc.execute(query,(self.artid,))
             return self.dbc.fetchone()
         else:
             sh.com.rep_empty(f)
@@ -619,21 +575,19 @@ class DB:
         f = '[MClient] db.DB.get_max_row_sp'
         if self.artid:
             if self.Selectable:
-                self.dbc.execute ('select ROWNO,NO from BLOCKS \
-                                   where COLNO = ? and ARTICLEID = ? \
-                                   and BLOCK = 0 and IGNORE = 0 \
-                                   and TYPE in (?,?) \
-                                   and SELECTABLE = 1 and POS1 < POS2 \
-                                   order by ROWNO desc,NO desc'
-                                 ,(col_no,self.artid,'term','phrase',)
+                query = 'select ROWNO,NO from BLOCKS where COLNO = ? \
+                         and ARTICLEID = ? and BLOCK = 0 and IGNORE = 0\
+                         and TYPE in (?,?) and SELECTABLE = 1 \
+                         and POS1 < POS2 order by ROWNO desc,NO desc'
+                self.dbc.execute (query,(col_no,self.artid,'term'
+                                        ,'phrase',
+                                        )
                                  )
             else:
-                self.dbc.execute ('select ROWNO,NO from BLOCKS \
-                                   where COLNO = ? and ARTICLEID = ? \
-                                   and BLOCK = 0 and IGNORE = 0 \
-                                   and POS1 < POS2 order by ROWNO desc\
-                                  ,NO desc',(col_no,self.artid,)
-                                 )
+                query = 'select ROWNO,NO from BLOCKS where COLNO = ? \
+                         and ARTICLEID = ? and BLOCK = 0 and IGNORE = 0\
+                         and POS1 < POS2 order by ROWNO desc,NO desc'
+                self.dbc.execute(query,(col_no,self.artid,))
             return self.dbc.fetchone()
         else:
             sh.com.rep_empty(f)
@@ -646,19 +600,18 @@ class DB:
         f = '[MClient] db.DB.get_min_col'
         if self.artid:
             if self.Selectable:
-                self.dbc.execute ('select COLNO,NO,BBOX1 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and TYPE in (?,?) \
-                                   and SELECTABLE = 1 \
-                                   and POS1 < POS2 order by COLNO,NO'
-                                 ,(self.artid,'term','phrase',)
-                                 )
+                query = 'select COLNO,NO,BBOX1 from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and TYPE in (?,?) \
+                         and SELECTABLE = 1 and POS1 < POS2 \
+                         order by COLNO,NO'
+                self.dbc.execute(query,(self.artid,'term','phrase',))
             else:
-                self.dbc.execute ('select COLNO,NO,BBOX1 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and POS1 < POS2 \
-                                   order by COLNO,NO',(self.artid,)
-                                 )
+                query = 'select COLNO,NO,BBOX1 from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and POS1 < POS2 \
+                         order by COLNO,NO'
+                self.dbc.execute(query,(self.artid,))
             return self.dbc.fetchone()
         else:
             sh.com.rep_empty(f)
@@ -670,21 +623,19 @@ class DB:
         f = '[MClient] db.DB.get_min_row_sp'
         if self.artid:
             if self.Selectable:
-                self.dbc.execute ('select ROWNO,NO from BLOCKS \
-                                   where COLNO = ? and ARTICLEID = ? \
-                                   and BLOCK = 0 and IGNORE = 0 \
-                                   and TYPE in (?,?) \
-                                   and SELECTABLE = 1 and POS1 < POS2 \
-                                   order by ROWNO,NO'
-                                 ,(col_no,self.artid,'term','phrase',)
+                query = 'select ROWNO,NO from BLOCKS where COLNO = ? \
+                         and ARTICLEID = ? and BLOCK = 0 and IGNORE = 0\
+                         and TYPE in (?,?) and SELECTABLE = 1 \
+                         and POS1 < POS2 order by ROWNO,NO'
+                self.dbc.execute (query,(col_no,self.artid,'term'
+                                        ,'phrase',
+                                        )
                                  )
             else:
-                self.dbc.execute ('select ROWNO,NO from BLOCKS \
-                                   where COLNO = ? and ARTICLEID = ? \
-                                   and BLOCK = 0 and IGNORE = 0 \
-                                   and POS1 < POS2 order by ROWNO,NO'
-                                 ,(col_no,self.artid,)
-                                 )
+                query = 'select ROWNO,NO from BLOCKS where COLNO = ? \
+                         and ARTICLEID = ? and BLOCK = 0 and IGNORE = 0\
+                         and POS1 < POS2 order by ROWNO,NO'
+                self.dbc.execute(query,(col_no,self.artid,))
             return self.dbc.fetchone()
         else:
             sh.com.rep_empty(f)
@@ -693,24 +644,20 @@ class DB:
         f = '[MClient] db.DB.get_sel'
         if self.artid:
             if self.Selectable:
-                self.dbc.execute ('select NODE1,NODE2,OFFPOS1,OFFPOS2\
-                                  ,BBOX1,BBOX2,BBOY1,BBOY2,ROWNO \
-                                   from BLOCKS where ARTICLEID = ? \
-                                   and BLOCK = 0 and IGNORE = 0 \
-                                   and SELECTABLE = 1 and POS1 < POS2 \
-                                   and POS1 <= ? and POS2 >= ? \
-                                   order by COLNO,NO'
-                                 ,(self.artid,pos,pos,)
-                                 )
+                query = 'select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOX2\
+                        ,BBOY1,BBOY2,ROWNO from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and SELECTABLE = 1 \
+                         and POS1 < POS2 and POS1 <= ? and POS2 >= ? \
+                         order by COLNO,NO'
+                self.dbc.execute(query,(self.artid,pos,pos,))
             else:
-                self.dbc.execute ('select NODE1,NODE2,OFFPOS1,OFFPOS2\
-                                  ,BBOX1,BBOY1,BBOX2,BBOY2,ROWNO \
-                                   from BLOCKS where ARTICLEID = ? \
-                                   and BLOCK = 0 and IGNORE = 0 \
-                                   and POS1 < POS2 and POS1 <= ? \
-                                   and POS2 >= ? order by COLNO,NO'
-                                 ,(self.artid,pos,pos,)
-                                 )
+                query = 'select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOY1\
+                        ,BBOX2,BBOY2,ROWNO from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and POS1 < POS2 and POS1 <= ? \
+                         and POS2 >= ? order by COLNO,NO'
+                self.dbc.execute(query,(self.artid,pos,pos,))
             return self.dbc.fetchone()
         else:
             pass
@@ -725,10 +672,9 @@ class DB:
             Use 'mclient.Commands.get_skipped_dics' to split them.
         '''
         if self.artid:
-            self.dbc.execute ('select distinct DICF from BLOCKS \
-                               where ARTICLEID = ? and BLOCK = 1'
-                             ,(self.artid,)
-                             )
+            query = 'select distinct DICF from BLOCKS \
+                     where ARTICLEID = ? and BLOCK = 1'
+            self.dbc.execute(query,(self.artid,))
             result = self.dbc.fetchall()
             if result:
                 return [item[0] for item in result]
@@ -738,10 +684,9 @@ class DB:
     def get_blocked(self):
         f = '[MClient] db.DB.get_blocked'
         if self.artid:
-            self.dbc.execute ('select NO from BLOCKS \
-                               where ARTICLEID = ? and BLOCK = 1'
-                             ,(self.artid,)
-                             )
+            query = 'select NO from BLOCKS where ARTICLEID = ? \
+                     and BLOCK = 1'
+            self.dbc.execute(query,(self.artid,))
             return self.dbc.fetchall()
         else:
             sh.com.rep_empty(f)
@@ -752,11 +697,10 @@ class DB:
             ''' #NOTE: We assume that 'Phrases' section has the priority
                 of 999-1000 and it is always used despite user settings.
             '''
-            self.dbc.execute ('select distinct DICF from BLOCKS \
-                               where ARTICLEID = ? and DICPR > 0 \
-                               and DICPR < 999 order by DICPR'
-                             ,(self.artid,)
-                             )
+            query = 'select distinct DICF from BLOCKS \
+                     where ARTICLEID = ? and DICPR > 0 and DICPR < 999 \
+                     order by DICPR'
+            self.dbc.execute(query,(self.artid,))
             result = self.dbc.fetchall()
             if result:
                 return [item[0] for item in result]
@@ -768,14 +712,14 @@ class DB:
         if self.artid:
             # Do not use 'POS1 < POS2', it might be not set yet
             if Block:
-                self.dbc.execute ('select distinct DICF from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0',(self.artid,)
-                                 )
+                query = 'select distinct DICF from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0'
+                self.dbc.execute(query,(self.artid,))
             else:
-                self.dbc.execute ('select distinct DICF from BLOCKS \
-                                   where ARTICLEID = ?',(self.artid,)
-                                 )
+                query = 'select distinct DICF from BLOCKS \
+                         where ARTICLEID = ?'
+                self.dbc.execute(query,(self.artid,))
             return self.dbc.fetchall()
         else:
             sh.com.rep_empty(f)
@@ -784,24 +728,22 @@ class DB:
         f = '[MClient] db.DB.search_next'
         if self.artid:
             if self.Selectable:
-                self.dbc.execute ('select POS1 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and TYPE in (?,?) \
-                                   and SELECTABLE = 1 \
-                                   and TEXTLOW like ? and POS1 > ? \
-                                   order by CELLNO,NO'
-                                 ,(self.artid,'term','phrase'
-                                  ,'%' + search + '%',pos,
-                                  )
+                query = 'select POS1 from BLOCKS where ARTICLEID = ? \
+                         and BLOCK = 0 and IGNORE = 0 and TYPE in (?,?)\
+                         and SELECTABLE = 1 and TEXTLOW like ? \
+                         and POS1 > ? order by CELLNO,NO'
+                self.dbc.execute (query,(self.artid,'term','phrase'
+                                        ,'%' + search + '%',pos,
+                                        )
                                  )
             else:
-                self.dbc.execute ('select POS1 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and TEXTLOW like ? \
-                                   and POS1 > ? order by CELLNO,NO'
-                                 ,(self.artid
-                                  ,'%' + search + '%',pos,
-                                  )
+                query = 'select POS1 from BLOCKS where ARTICLEID = ? \
+                         and BLOCK = 0 and IGNORE = 0 \
+                         and TEXTLOW like ? and POS1 > ? \
+                         order by CELLNO,NO'
+                self.dbc.execute (query,(self.artid
+                                        ,'%' + search + '%',pos,
+                                        )
                                  )
             result = self.dbc.fetchone()
             if result:
@@ -813,25 +755,22 @@ class DB:
         f = '[MClient] db.DB.search_prev'
         if self.artid:
             if self.Selectable:
-                self.dbc.execute ('select POS1 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and TYPE in (?,?) \
-                                   and SELECTABLE = 1 \
-                                   and TEXTLOW like ? and POS2 < ? \
-                                   order by CELLNO desc,NO desc'
-                                 ,(self.artid,'term','phrase'
-                                  ,'%' + search + '%',pos,
-                                  )
+                query = 'select POS1 from BLOCKS where ARTICLEID = ? \
+                         and BLOCK = 0 and IGNORE = 0 and TYPE in (?,?)\
+                         and SELECTABLE = 1 and TEXTLOW like ? \
+                         and POS2 < ? order by CELLNO desc,NO desc'
+                self.dbc.execute (query,(self.artid,'term','phrase'
+                                        ,'%' + search + '%',pos,
+                                        )
                                  )
             else:
-                self.dbc.execute ('select POS1 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and TEXTLOW like ? \
-                                   and POS2 < ? order by CELLNO desc\
-                                  ,NO desc'
-                                 ,(self.artid
-                                  ,'%' + search + '%',pos,
-                                  )
+                query = 'select POS1 from BLOCKS where ARTICLEID = ? \
+                         and BLOCK = 0 and IGNORE = 0 and TEXTLOW \
+                         like ? and POS2 < ? order by CELLNO desc \
+                        ,NO desc'
+                self.dbc.execute (query,(self.artid,'%' + search + '%'
+                                        ,pos,
+                                        )
                                  )
             result = self.dbc.fetchone()
             if result:
@@ -840,39 +779,34 @@ class DB:
             sh.com.rep_empty(f)
 
     def unignore(self):
-        self.dbc.execute ('update BLOCKS set IGNORE = 0 \
-                           where ARTICLEID = ?',(self.artid,)
-                         )
+        query = 'update BLOCKS set IGNORE = 0 where ARTICLEID = ?'
+        self.dbc.execute(query,(self.artid,))
 
     def ignore(self):
-        self.dbc.execute ('update BLOCKS set IGNORE = 1 \
-                           where ARTICLEID = ? and TYPE not in %s' \
-                           % (self.types,),(self.artid,)
-                         )
+        query = 'update BLOCKS set IGNORE = 1 where ARTICLEID = ? \
+                 and TYPE not in %s'
+        self.dbc.execute(query % (self.types,),(self.artid,))
         if 'dic' not in self.types:
-            self.dbc.execute ('update BLOCKS set IGNORE = 1 \
-                               where ARTICLEID = ? and TYPE = ?'
-                             ,(self.artid,'phrase',)
-                             )
+            query = 'update BLOCKS set IGNORE = 1 where ARTICLEID = ? \
+                     and TYPE = ?'
+            self.dbc.execute(query,(self.artid,'phrase',))
             
     # Get any block with the maximal BBOY2
     def get_max_bboy(self,limit=0):
         f = '[MClient] db.DB.get_max_bboy'
         if self.artid:
             if limit:
-                self.dbc.execute ('select BBOY2,NODE1,TEXT from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and POS1 < POS2 \
-                                   and BBOY2 < ? order by BBOY2 desc'
-                                 ,(self.artid,limit,)
-                                 )
+                query = 'select BBOY2,NODE1,TEXT from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and POS1 < POS2 and BBOY2 < ? \
+                         order by BBOY2 desc'
+                self.dbc.execute(query,(self.artid,limit,))
             else:
-                self.dbc.execute ('select BBOY2,NODE1,TEXT from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and POS1 < POS2 \
-                                   order by BBOY2 desc'
-                                 ,(self.artid,)
-                                 )
+                query = 'select BBOY2,NODE1,TEXT from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and POS1 < POS2 \
+                         order by BBOY2 desc'
+                self.dbc.execute(query,(self.artid,))
             return self.dbc.fetchone()
         else:
             sh.com.rep_empty(f)
@@ -882,19 +816,17 @@ class DB:
         f = '[MClient] db.DB.get_max_bbox'
         if self.artid:
             if limit:
-                self.dbc.execute ('select BBOX2,NODE1,TEXT from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and POS1 < POS2 \
-                                   and BBOX2 < ? order by BBOX2 desc'
-                                 ,(self.artid,limit,)
-                                 )
+                query = 'select BBOX2,NODE1,TEXT from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and POS1 < POS2 and BBOX2 < ? \
+                         order by BBOX2 desc'
+                self.dbc.execute(query,(self.artid,limit,))
             else:
-                self.dbc.execute ('select BBOX2,NODE1,TEXT from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and POS1 < POS2 \
-                                   order by BBOX2 desc'
-                                 ,(self.artid,)
-                                 )
+                query = 'select BBOX2,NODE1,TEXT from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and POS1 < POS2 \
+                         order by BBOX2 desc'
+                self.dbc.execute(query,(self.artid,))
             return self.dbc.fetchone()
         else:
             sh.com.rep_empty(f)
@@ -903,19 +835,15 @@ class DB:
     def get_bboy_limits(self,row_no=0):
         f = '[MClient] db.DB.get_bboy_limits'
         if self.artid:
-            self.dbc.execute ('select BBOY1 from BLOCKS \
-                               where ARTICLEID = ? and BLOCK = 0 \
-                               and IGNORE = 0 and POS1 < POS2 \
-                               and ROWNO = ? order by BBOY1'
-                             ,(self.artid,row_no,)
-                             )
+            query = 'select BBOY1 from BLOCKS where ARTICLEID = ? \
+                     and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 \
+                     and ROWNO = ? order by BBOY1'
+            self.dbc.execute(query,(self.artid,row_no,))
             min_result = self.dbc.fetchone()
-            self.dbc.execute ('select BBOY2 from BLOCKS \
-                               where ARTICLEID = ? and BLOCK = 0 \
-                               and IGNORE = 0 and POS1 < POS2 \
-                               and ROWNO = ? order by BBOY2 desc'
-                             ,(self.artid,row_no,)
-                             )
+            query = 'select BBOY2 from BLOCKS where ARTICLEID = ? \
+                     and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 \
+                     and ROWNO = ? order by BBOY2 desc'
+            self.dbc.execute(query,(self.artid,row_no,))
             max_result = self.dbc.fetchone()
             if min_result and max_result:
                 return(min_result[0],max_result[0])
@@ -930,19 +858,15 @@ class DB:
         '''
         f = '[MClient] db.DB.get_bbox_limits'
         if self.artid:
-            self.dbc.execute ('select BBOX1 from BLOCKS \
-                               where ARTICLEID = ? and BLOCK = 0 \
-                               and IGNORE = 0 and POS1 < POS2 \
-                               and COLNO = ? order by BBOX1'
-                             ,(self.artid,col_no,)
-                             )
+            query = 'select BBOX1 from BLOCKS where ARTICLEID = ? \
+                     and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 \
+                     and COLNO = ? order by BBOX1'
+            self.dbc.execute(query,(self.artid,col_no,))
             min_result = self.dbc.fetchone()
-            self.dbc.execute ('select BBOX2 from BLOCKS \
-                               where ARTICLEID = ? and BLOCK = 0 \
-                               and IGNORE = 0 and POS1 < POS2 \
-                               and COLNO = ? order by BBOX2 desc'
-                             ,(self.artid,col_no,)
-                             )
+            query = 'select BBOX2 from BLOCKS where ARTICLEID = ? \
+                     and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 \
+                     and COLNO = ? order by BBOX2 desc'
+            self.dbc.execute(query,(self.artid,col_no,))
             max_result = self.dbc.fetchone()
             if min_result and max_result:
                 return(min_result[0],max_result[0])
@@ -953,9 +877,8 @@ class DB:
     
     def get_min_artid(self):
         f = '[MClient] db.DB.get_min_artid'
-        self.dbc.execute ('select ARTICLEID from ARTICLES \
-                           order by ARTICLEID'
-                         )
+        query = 'select ARTICLEID from ARTICLES order by ARTICLEID'
+        self.dbc.execute(query)
         result = self.dbc.fetchone()
         if result:
             return result[0]
@@ -966,9 +889,8 @@ class DB:
             
     def get_max_artid(self):
         f = '[MClient] db.DB.get_max_artid'
-        self.dbc.execute ('select ARTICLEID from ARTICLES \
-                           order by ARTICLEID desc'
-                         )
+        query = 'select ARTICLEID from ARTICLES order by ARTICLEID desc'
+        self.dbc.execute(query)
         result = self.dbc.fetchone()
         if result:
             return result[0]
@@ -985,23 +907,21 @@ class DB:
                     correctly navigate through blocks where separate
                     words have been found
                 '''
-                self.dbc.execute ('select POS1,POS2,CELLNO,ROWNO,COLNO\
-                                  ,NO,TEXT,SELECTABLE from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and TYPE in (?,?) \
-                                   and POS1 >= ? \
-                                   and POS1 < POS2 and SELECTABLE = 1 \
-                                   order by CELLNO,NO'
-                                 ,(self.artid,'term','phrase',pos,)
+                query = 'select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT \
+                        ,SELECTABLE from BLOCKS where ARTICLEID = ? \
+                         and BLOCK = 0 and IGNORE = 0 and TYPE in (?,?)\
+                         and POS1 >= ? and POS1 < POS2 \
+                         and SELECTABLE = 1 order by CELLNO,NO'
+                self.dbc.execute (query,(self.artid,'term','phrase',pos
+                                        ,
+                                        )
                                  )
             else:
-                self.dbc.execute ('select POS1,POS2,CELLNO,ROWNO,COLNO\
-                                  ,NO,TEXT,SELECTABLE from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and POS1 >= ? \
-                                   and POS1 < POS2 order by CELLNO,NO'
-                                 ,(self.artid,pos,)
-                                 )
+                query = 'select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT \
+                        ,SELECTABLE from BLOCKS where ARTICLEID = ? \
+                         and BLOCK = 0 and IGNORE = 0 and POS1 >= ? \
+                         and POS1 < POS2 order by CELLNO,NO'
+                self.dbc.execute(query,(self.artid,pos,))
             return self.dbc.fetchone()
         else:
             sh.com.rep_empty(f)
@@ -1015,10 +935,9 @@ class DB:
                     mes = mes.format(pos,self.artid)
                     sh.objs.get_mes(f,mes,True).show_debug()
                 '''
-                self.dbc.execute ('update ARTICLES set BOOKMARK = ? \
-                                   where ARTICLEID = ?'
-                                 ,(pos,self.artid,)
-                                 )
+                query = 'update ARTICLES set BOOKMARK = ? \
+                         where ARTICLEID = ?'
+                self.dbc.execute(query,(pos,self.artid,))
             else:
                 sh.com.rep_empty(f)
         else:
@@ -1046,20 +965,16 @@ class Moves(DB):
         f = '[MClient] db.Moves.get_start'
         if self.artid:
             if self.Selectable:
-                self.dbc.execute ('select POS1 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and TYPE in (?,?) \
-                                   and SELECTABLE = 1 \
-                                   and POS1 < POS2 order by CELLNO,NO'
-                                 ,(self.artid,'term','phrase',)
-                                 )
+                query = 'select POS1 from BLOCKS where ARTICLEID = ? \
+                         and BLOCK = 0 and IGNORE = 0 and TYPE in (?,?)\
+                         and SELECTABLE = 1 and POS1 < POS2 \
+                         order by CELLNO,NO'
+                self.dbc.execute(query,(self.artid,'term','phrase',))
             else:
-                self.dbc.execute ('select POS1 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and POS1 < POS2 \
-                                   order by CELLNO,NO'
-                                 ,(self.artid,)
-                                 )
+                query = 'select POS1 from BLOCKS where ARTICLEID = ? \
+                         and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 \
+                         order by CELLNO,NO'
+                self.dbc.execute(query,(self.artid,))
             result = self.dbc.fetchone()
             if result:
                 return result[0]
@@ -1070,21 +985,16 @@ class Moves(DB):
         f = '[MClient] db.Moves.get_end'
         if self.artid:
             if self.Selectable:
-                self.dbc.execute ('select POS1 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and TYPE in (?,?) \
-                                   and SELECTABLE = 1 \
-                                   and POS1 < POS2 order by CELLNO desc\
-                                  ,NO desc'
-                                 ,(self.artid,'term','phrase',)
-                                 )
+                query = 'select POS1 from BLOCKS where ARTICLEID = ? \
+                         and BLOCK = 0 and IGNORE = 0 and TYPE in (?,?)\
+                         and SELECTABLE = 1 and POS1 < POS2 \
+                         order by CELLNO desc,NO desc'
+                self.dbc.execute(query,(self.artid,'term','phrase',))
             else:
-                self.dbc.execute ('select POS1 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and POS1 < POS2 \
-                                   order by CELLNO desc,NO desc'
-                                 ,(self.artid,)
-                                 )
+                query = 'select POS1 from BLOCKS where ARTICLEID = ? \
+                         and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 \
+                         order by CELLNO desc,NO desc'
+                self.dbc.execute(query,(self.artid,))
             result = self.dbc.fetchone()
             if result:
                 return result[0]
@@ -1094,30 +1004,27 @@ class Moves(DB):
     def get_line_start(self,pos):
         f = '[MClient] db.Moves.get_line_start'
         if self.artid:
-            poses = self.get_block_pos(pos=pos)
+            poses = self.get_block_pos(pos)
             if poses:
                 row_no, col_no = poses[3], poses[4]
                 if self.Selectable:
-                    self.dbc.execute ('select POS1 from BLOCKS \
-                                       where ARTICLEID = ? \
-                                       and BLOCK = 0 and IGNORE = 0 \
-                                       and TYPE in (?,?) \
-                                       and SELECTABLE = 1 and ROWNO = ?\
-                                       and COLNO <= ? and POS1 < POS2 \
-                                       order by COLNO,NO'
-                                     ,(self.artid,'term','phrase'
-                                      ,row_no,col_no,
-                                      )
+                    query = 'select POS1 from BLOCKS \
+                             where ARTICLEID = ? and BLOCK = 0 \
+                             and IGNORE = 0 and TYPE in (?,?) \
+                             and SELECTABLE = 1 and ROWNO = ? \
+                             and COLNO <= ? and POS1 < POS2 \
+                             order by COLNO,NO'
+                    self.dbc.execute (query,(self.artid,'term','phrase'
+                                            ,row_no,col_no,
+                                            )
                                      )
                 else:
-                    self.dbc.execute ('select POS1 from BLOCKS \
-                                       where ARTICLEID = ? \
-                                       and BLOCK = 0 and IGNORE = 0 \
-                                       and ROWNO = ? and COLNO <= ? \
-                                       and POS1 < POS2 \
-                                       order by COLNO,NO'
-                                     ,(self.artid,row_no,col_no,)
-                                     )
+                    query = 'select POS1 from BLOCKS \
+                             where ARTICLEID = ? and BLOCK = 0 \
+                             and IGNORE = 0 and ROWNO = ? \
+                             and COLNO <= ? and POS1 < POS2 \
+                             order by COLNO,NO'
+                    self.dbc.execute(query,(self.artid,row_no,col_no,))
                 result = self.dbc.fetchone()
                 if result:
                     return result[0]
@@ -1133,26 +1040,23 @@ class Moves(DB):
             if poses:
                 row_no, col_no = poses[3], poses[4]
                 if self.Selectable:
-                    self.dbc.execute ('select POS1 from BLOCKS \
-                                       where ARTICLEID = ? \
-                                       and BLOCK = 0 and IGNORE = 0 \
-                                       and TYPE in (?,?) \
-                                       and SELECTABLE = 1 and ROWNO = ?\
-                                       and COLNO >= ? and POS1 < POS2\
-                                       order by COLNO desc,NO desc'
-                                     ,(self.artid,'term','phrase'
-                                      ,row_no,col_no,
-                                      )
+                    query = 'select POS1 from BLOCKS \
+                             where ARTICLEID = ? and BLOCK = 0 \
+                             and IGNORE = 0 and TYPE in (?,?) \
+                             and SELECTABLE = 1 and ROWNO = ? \
+                             and COLNO >= ? and POS1 < POS2 \
+                             order by COLNO desc,NO desc'
+                    self.dbc.execute (query,(self.artid,'term','phrase'
+                                            ,row_no,col_no,
+                                            )
                                      )
                 else:
-                    self.dbc.execute ('select POS1 from BLOCKS \
-                                       where ARTICLEID = ? \
-                                       and BLOCK = 0 and IGNORE = 0 \
-                                       and ROWNO = ? and COLNO >= ? \
-                                       and POS1 < POS2 \
-                                       order by COLNO desc,NO desc'
-                                     ,(self.artid,row_no,col_no,)
-                                     )
+                    query = 'select POS1 from BLOCKS \
+                             where ARTICLEID = ? and BLOCK = 0 \
+                             and IGNORE = 0 and ROWNO = ? \
+                             and COLNO >= ? and POS1 < POS2 \
+                             order by COLNO desc,NO desc'
+                    self.dbc.execute(query,(self.artid,row_no,col_no,))
                 result = self.dbc.fetchone()
                 if result:
                     return result[0]
@@ -1173,28 +1077,23 @@ class Moves(DB):
                     if no == min_cell[1]:
                         return max_cell[2]
                     elif self.Selectable:
-                        self.dbc.execute ('select POS1 from BLOCKS \
-                                           where ARTICLEID = ? \
-                                           and BLOCK = 0 and IGNORE = 0\
-                                           and TYPE in (?,?) \
-                                           and SELECTABLE = 1 \
-                                           and CELLNO <= ? \
-                                           and POS1 < ? \
-                                           and POS1 < POS2 \
-                                           order by CELLNO desc,NO desc'
-                                         ,(self.artid,'term','phrase'
-                                          ,cellno,pos,
-                                          )
+                        query = 'select POS1 from BLOCKS \
+                                 where ARTICLEID = ? and BLOCK = 0 \
+                                 and IGNORE = 0 and TYPE in (?,?) \
+                                 and SELECTABLE = 1 and CELLNO <= ? \
+                                 and POS1 < ? and POS1 < POS2 \
+                                 order by CELLNO desc,NO desc'
+                        self.dbc.execute (query,(self.artid,'term'
+                                                ,'phrase',cellno,pos,
+                                                )
                                          )
                     else:
-                        self.dbc.execute ('select POS1 from BLOCKS \
-                                           where ARTICLEID = ? \
-                                           and BLOCK = 0 and IGNORE = 0\
-                                           and CELLNO <= ? and POS1 < ?\
-                                           and POS1 < POS2 \
-                                           order by CELLNO desc,NO desc'
-                                         ,(self.artid,cellno,pos,)
-                                         )
+                        query = 'select POS1 from BLOCKS \
+                                 where ARTICLEID = ? and BLOCK = 0 \
+                                 and IGNORE = 0 and CELLNO <= ? \
+                                 and POS1 < ? and POS1 < POS2 \
+                                 order by CELLNO desc,NO desc'
+                        self.dbc.execute(query,(self.artid,cellno,pos,))
                     result = self.dbc.fetchone()
                     if result:
                         return result[0]
@@ -1218,27 +1117,23 @@ class Moves(DB):
                         # Loop moves
                         return min_cell[2]
                     elif self.Selectable:
-                        self.dbc.execute ('select POS1 from BLOCKS \
-                                           where ARTICLEID = ? \
-                                           and BLOCK = 0 and IGNORE = 0\
-                                           and TYPE in (?,?) \
-                                           and SELECTABLE = 1 \
-                                           and CELLNO >= ? \
-                                           and POS1 > ? and POS1 < POS2\
-                                           order by CELLNO,NO'
-                                         ,(self.artid,'term','phrase'
-                                          ,cellno,pos,
-                                          )
+                        query = 'select POS1 from BLOCKS \
+                                 where ARTICLEID = ? and BLOCK = 0 \
+                                 and IGNORE = 0 and TYPE in (?,?) \
+                                 and SELECTABLE = 1 and CELLNO >= ? \
+                                 and POS1 > ? and POS1 < POS2 \
+                                 order by CELLNO,NO'
+                        self.dbc.execute (query,(self.artid,'term'
+                                                ,'phrase',cellno,pos,
+                                                )
                                          )
                     else:
-                        self.dbc.execute ('select POS1 from BLOCKS \
-                                           where ARTICLEID = ? \
-                                           and BLOCK = 0 and IGNORE = 0\
-                                           and CELLNO >= ? and POS1 > ?\
-                                           and POS1 < POS2 \
-                                           order by CELLNO,NO'
-                                         ,(self.artid,cellno,pos,)
-                                         )
+                        query = 'select POS1 from BLOCKS \
+                                 where ARTICLEID = ? and BLOCK = 0 \
+                                 and IGNORE = 0 and CELLNO >= ? \
+                                 and POS1 > ? and POS1 < POS2 \
+                                 order by CELLNO,NO'
+                        self.dbc.execute(query,(self.artid,cellno,pos,))
                     result = self.dbc.fetchone()
                     if result:
                         return result[0]
@@ -1252,7 +1147,7 @@ class Moves(DB):
     def get_up(self,pos):
         f = '[MClient] db.Moves.get_up'
         if self.artid:
-            poses = self.get_block_pos(pos=pos)
+            poses = self.get_block_pos(pos)
             if poses:
                 cellno = poses[2]
                 row_no = poses[3]
@@ -1264,99 +1159,80 @@ class Moves(DB):
                 if min_cell and max_col and min_row_sp:
                     if no == min_cell[1]:
                         if self.Selectable:
-                            self.dbc.execute ('select POS1 from BLOCKS \
-                                               where ARTICLEID = ? \
-                                               and BLOCK = 0 \
-                                               and IGNORE = 0 \
-                                               and TYPE in (?,?) \
-                                               and SELECTABLE = 1 \
-                                               and COLNO = ? \
-                                               and POS1 < POS2 \
-                                               order by ROWNO desc\
-                                              ,NO desc'
-                                             ,(self.artid,'term'
-                                              ,'phrase',max_col[0],
-                                              )
+                            query = 'select POS1 from BLOCKS \
+                                     where ARTICLEID = ? and BLOCK = 0 \
+                                     and IGNORE = 0 and TYPE in (?,?) \
+                                     and SELECTABLE = 1 and COLNO = ? \
+                                     and POS1 < POS2 \
+                                     order by ROWNO desc,NO desc'
+                            self.dbc.execute (query,(self.artid,'term'
+                                                    ,'phrase',max_col[0]
+                                                    ,
+                                                    )
                                              )
                         else:
-                            self.dbc.execute ('select POS1 from BLOCKS\
-                                               where ARTICLEID = ? \
-                                               and BLOCK = 0 \
-                                               and IGNORE = 0 \
-                                               and COLNO = ? \
-                                               and POS1 < POS2 \
-                                               order by ROWNO desc\
-                                              ,NO desc'
-                                             ,(self.artid
-                                              ,max_col[0],
-                                              )
+                            query = 'select POS1 from BLOCKS \
+                                     where ARTICLEID = ? and BLOCK = 0 \
+                                     and IGNORE = 0 and COLNO = ? \
+                                     and POS1 < POS2 \
+                                     order by ROWNO desc,NO desc'
+                            self.dbc.execute (query,(self.artid
+                                                    ,max_col[0]
+                                                    ,
+                                                    )
                                              )
                         result = self.dbc.fetchone()
                         if result:
                             return result[0]
                     elif no == min_row_sp[1]:
                         if self.Selectable:
-                            self.dbc.execute ('select POS1 from BLOCKS \
-                                               where ARTICLEID = ? \
-                                               and BLOCK = 0 \
-                                               and IGNORE = 0 \
-                                               and TYPE in (?,?) \
-                                               and SELECTABLE = 1 \
-                                               and COLNO < ? \
-                                               and POS1 < POS2 \
-                                               order by COLNO desc\
-                                              ,ROWNO desc,NO desc'
-                                             ,(self.artid,'term'
-                                              ,'phrase',col_no,
-                                              )
+                            query = 'select POS1 from BLOCKS \
+                                     where ARTICLEID = ? and BLOCK = 0 \
+                                     and IGNORE = 0 and TYPE in (?,?) \
+                                     and SELECTABLE = 1 and COLNO < ? \
+                                     and POS1 < POS2 \
+                                     order by COLNO desc,ROWNO desc \
+                                    ,NO desc'
+                            self.dbc.execute (query,(self.artid,'term'
+                                                    ,'phrase',col_no
+                                                    ,
+                                                    )
                                              )
                         else:
-                            self.dbc.execute ('select POS1 from BLOCKS \
-                                               where ARTICLEID = ? \
-                                               and BLOCK = 0 \
-                                               and IGNORE = 0 \
-                                               and COLNO < ? \
-                                               and POS1 < POS2 \
-                                               order by COLNO desc\
-                                              ,ROWNO desc,NO desc'
-                                             ,(self.artid,col_no,)
-                                             )
+                            query = 'select POS1 from BLOCKS \
+                                     where ARTICLEID = ? and BLOCK = 0 \
+                                     and IGNORE = 0 and COLNO < ? \
+                                     and POS1 < POS2 \
+                                     order by COLNO desc,ROWNO desc \
+                                    ,NO desc'
+                            self.dbc.execute(query,(self.artid,col_no,))
                         result = self.dbc.fetchone()
                         if result:
                             return result[0]
                     else:
                         if self.Selectable:
-                            self.dbc.execute ('select POS1 from BLOCKS \
-                                               where ARTICLEID = ? \
-                                               and BLOCK = 0 \
-                                               and IGNORE = 0 \
-                                               and TYPE in (?,?) \
-                                               and SELECTABLE = 1 \
-                                               and COLNO = ? \
-                                               and ROWNO <= ? \
-                                               and POS1 < ? \
-                                               and POS1 < POS2 \
-                                               order by ROWNO desc\
-                                              ,NO desc'
-                                             ,(self.artid,'term'
-                                              ,'phrase',col_no
-                                              ,row_no,pos,
-                                              )
+                            query = 'select POS1 from BLOCKS \
+                                     where ARTICLEID = ? and BLOCK = 0 \
+                                     and IGNORE = 0 and TYPE in (?,?) \
+                                     and SELECTABLE = 1 and COLNO = ? \
+                                     and ROWNO <= ? and POS1 < ? \
+                                     and POS1 < POS2 \
+                                     order by ROWNO desc,NO desc'
+                            self.dbc.execute (query,(self.artid,'term'
+                                                    ,'phrase',col_no
+                                                    ,row_no,pos,
+                                                    )
                                              )
                         else:
-                            self.dbc.execute ('select POS1 from BLOCKS\
-                                               where ARTICLEID = ? \
-                                               and BLOCK = 0 \
-                                               and IGNORE = 0 \
-                                               and COLNO = ? \
-                                               and ROWNO <= ? \
-                                               and POS1 < ? \
-                                               and POS1 < POS2 \
-                                               order by ROWNO desc\
-                                              ,NO desc'
-                                             ,(self.artid,col_no
-                                              ,row_no,pos,
-                                              )
+                            query = 'select POS1 from BLOCKS \
+                                     where ARTICLEID = ? and BLOCK = 0 \
+                                     and IGNORE = 0 and COLNO = ? \
+                                     and ROWNO <= ? and POS1 < ? \
+                                     and POS1 < POS2 \
+                                     order by ROWNO desc,NO desc'
+                            self.dbc.execute (query,(self.artid,col_no
+                                                    ,row_no,pos,
+                                                    )
                                              )
                         result = self.dbc.fetchone()
                         if result:
@@ -1371,109 +1247,89 @@ class Moves(DB):
     def get_down(self,pos):
         f = '[MClient] db.Moves.get_down'
         if self.artid:
-            poses = self.get_block_pos(pos=pos)
+            poses = self.get_block_pos(pos)
             if poses:
                 cellno = poses[2]
                 row_no = poses[3]
                 col_no = poses[4]
                 no = poses[5]
                 min_col = self.get_min_col()
-                max_row_sp = self.get_max_row_sp(col_no=col_no)
+                max_row_sp = self.get_max_row_sp(col_no)
                 max_col = self.get_max_col()
 
                 if min_col and max_row_sp and max_col:
                     if row_no == max_row_sp[0] and col_no == max_col[0]:
                         if self.Selectable:
-                            self.dbc.execute ('select POS1 from BLOCKS\
-                                               where ARTICLEID = ? \
-                                               and BLOCK = 0 \
-                                               and IGNORE = 0 \
-                                               and TYPE in (?,?) \
-                                               and SELECTABLE = 1 \
-                                               and COLNO = ? \
-                                               and POS1 < POS2 \
-                                               order by ROWNO,NO'
-                                             ,(self.artid,'term'
-                                              ,'phrase',min_col[0],
-                                              )
+                            query = 'select POS1 from BLOCKS \
+                                     where ARTICLEID = ? and BLOCK = 0 \
+                                     and IGNORE = 0 and TYPE in (?,?) \
+                                     and SELECTABLE = 1 and COLNO = ? \
+                                     and POS1 < POS2 order by ROWNO,NO'
+                            self.dbc.execute (query,(self.artid,'term'
+                                                    ,'phrase',min_col[0]
+                                                    ,
+                                                    )
                                              )
                         else:
-                            self.dbc.execute ('select POS1 from BLOCKS\
-                                               where ARTICLEID = ? \
-                                               and BLOCK = 0 \
-                                               and IGNORE = 0 \
-                                               and COLNO = ? \
-                                               and POS1 < POS2 \
-                                               order by ROWNO,NO'
-                                             ,(self.artid
-                                              ,min_col[0]
-                                              ,
-                                              )
+                            query = 'select POS1 from BLOCKS \
+                                     where ARTICLEID = ? and BLOCK = 0 \
+                                     and IGNORE = 0 and COLNO = ? \
+                                     and POS1 < POS2 order by ROWNO,NO'
+                            self.dbc.execute (query,(self.artid
+                                                    ,min_col[0]
+                                                    ,
+                                                    )
                                              )
                         result = self.dbc.fetchone()
                         if result:
                             return result[0]
                     elif no == max_row_sp[1]:
                         if self.Selectable:
-                            self.dbc.execute ('select POS1 from BLOCKS\
-                                               where ARTICLEID = ? \
-                                               and BLOCK = 0 \
-                                               and IGNORE = 0 \
-                                               and TYPE in (?,?) \
-                                               and SELECTABLE = 1 \
-                                               and COLNO > ? \
-                                               and POS1 < POS2 \
-                                               order by COLNO,ROWNO,NO'
-                                             ,(self.artid,'term'
-                                              ,'phrase',col_no,
-                                              )
+                            query = 'select POS1 from BLOCKS \
+                                     where ARTICLEID = ? and BLOCK = 0 \
+                                     and IGNORE = 0 and TYPE in (?,?) \
+                                     and SELECTABLE = 1 and COLNO > ? \
+                                     and POS1 < POS2 \
+                                     order by COLNO,ROWNO,NO'
+                            self.dbc.execute (query,(self.artid,'term'
+                                                    ,'phrase',col_no
+                                                    ,
+                                                    )
                                              )
                         else:
-                            self.dbc.execute ('select POS1 from BLOCKS \
-                                               where ARTICLEID = ? \
-                                               and BLOCK = 0 \
-                                               and IGNORE = 0 \
-                                               and COLNO > ? \
-                                               and POS1 < POS2 \
-                                               order by COLNO,ROWNO,NO'
-                                             ,(self.artid,col_no,)
-                                             )
+                            query = 'select POS1 from BLOCKS \
+                                     where ARTICLEID = ? and BLOCK = 0 \
+                                     and IGNORE = 0 and COLNO > ? \
+                                     and POS1 < POS2 \
+                                     order by COLNO,ROWNO,NO'
+                            self.dbc.execute(query,(self.artid,col_no,))
                         result = self.dbc.fetchone()
                         if result:
                             return result[0]
                     else:
                         if self.Selectable:
-                            self.dbc.execute ('select POS1 from BLOCKS \
-                                               where ARTICLEID = ? \
-                                               and BLOCK = 0 \
-                                               and IGNORE = 0 \
-                                               and TYPE in (?,?) \
-                                               and SELECTABLE = 1 \
-                                               and COLNO = ? \
-                                               and ROWNO >= ? \
-                                               and POS1 > ? \
-                                               and POS1 < POS2 \
-                                               order by ROWNO,NO'
-                                             ,(self.artid,'term'
-                                              ,'phrase',col_no
-                                              ,row_no,pos
-                                              ,
-                                              )
+                            query = 'select POS1 from BLOCKS \
+                                     where ARTICLEID = ? and BLOCK = 0 \
+                                     and IGNORE = 0 and TYPE in (?,?) \
+                                     and SELECTABLE = 1 and COLNO = ? \
+                                     and ROWNO >= ? and POS1 > ? \
+                                     and POS1 < POS2 order by ROWNO,NO'
+                            self.dbc.execute (query,(self.artid,'term'
+                                                    ,'phrase',col_no
+                                                    ,row_no,pos
+                                                    ,
+                                                    )
                                              )
                         else:
-                            self.dbc.execute ('select POS1 from BLOCKS \
-                                               where ARTICLEID = ? \
-                                               and BLOCK = 0 \
-                                               and IGNORE = 0 \
-                                               and COLNO = ? \
-                                               and ROWNO >= ? \
-                                               and POS1 > ? \
-                                               and POS1 < POS2 \
-                                               order by ROWNO,NO'
-                                             ,(self.artid,col_no
-                                              ,row_no,pos
-                                              ,
-                                              )
+                            query = 'select POS1 from BLOCKS \
+                                     where ARTICLEID = ? and BLOCK = 0 \
+                                     and IGNORE = 0 and COLNO = ? \
+                                     and ROWNO >= ? and POS1 > ? \
+                                     and POS1 < POS2 order by ROWNO,NO'
+                            self.dbc.execute (query,(self.artid,col_no
+                                                    ,row_no,pos
+                                                    ,
+                                                    )
                                              )
                         result = self.dbc.fetchone()
                         if result:
@@ -1489,27 +1345,22 @@ class Moves(DB):
         f = '[MClient] db.Moves.get_page_down'
         if self.artid:
             if self.Selectable:
-                self.dbc.execute ('select POS1 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and TYPE in (?,?) \
-                                   and SELECTABLE = 1 \
-                                   and POS1 < POS2 and BBOY1 >= ? \
-                                   order by CELLNO,NO'
-                                 ,(self.artid,'term','phrase'
-                                  ,int(bboy / height) * height + height
-                                  ,
-                                  )
+                query = 'select POS1 from BLOCKS where ARTICLEID = ? \
+                         and BLOCK = 0 and IGNORE = 0 and TYPE in (?,?)\
+                         and SELECTABLE = 1 and POS1 < POS2 \
+                         and BBOY1 >= ? order by CELLNO,NO'
+                value = int(bboy / height) * height + height
+                self.dbc.execute (query,(self.artid,'term','phrase'
+                                        ,value
+                                        ,
+                                 )
                                  )
             else:
-                self.dbc.execute ('select POS1 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and POS1 < POS2 \
-                                   and BBOY1 >= ? order by CELLNO,NO'
-                                 ,(self.artid
-                                  ,int(bboy / height) * height + height
-                                  ,
-                                  )
-                                 )
+                query = 'select POS1 from BLOCKS where ARTICLEID = ? \
+                         and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 \
+                         and BBOY1 >= ? order by CELLNO,NO'
+                value = int(bboy / height) * height + height
+                self.dbc.execute(query,(self.artid,value,))
             result = self.dbc.fetchone()
             if result:
                 return result[0]
@@ -1520,27 +1371,22 @@ class Moves(DB):
         f = '[MClient] db.Moves.get_page_up'
         if self.artid:
             if self.Selectable:
-                self.dbc.execute ('select POS1 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and TYPE in (?,?) \
-                                   and SELECTABLE = 1\
-                                   and POS1 < POS2 and BBOY1 >= ? \
-                                   order by CELLNO,NO'
-                                 ,(self.artid,'term','phrase'
-                                  ,int(bboy / height) * height - height
-                                  ,
-                                  )
+                query = 'select POS1 from BLOCKS where ARTICLEID = ? \
+                         and BLOCK = 0 and IGNORE = 0 and TYPE in (?,?)\
+                         and SELECTABLE = 1 and POS1 < POS2 \
+                         and BBOY1 >= ? order by CELLNO,NO'
+                value = int(bboy / height) * height - height
+                self.dbc.execute (query,(self.artid,'term','phrase'
+                                        ,value
+                                        ,
+                                        )
                                  )
             else:
-                self.dbc.execute ('select POS1 from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and POS1 < POS2 \
-                                   and BBOY1 >= ? order by CELLNO,NO'
-                                 ,(self.artid
-                                  ,int(bboy / height) * height - height
-                                  ,
-                                  )
-                                 )
+                query = 'select POS1 from BLOCKS where ARTICLEID = ? \
+                         and BLOCK = 0 and IGNORE = 0 and POS1 < POS2 \
+                         and BBOY1 >= ? order by CELLNO,NO'
+                value = int(bboy / height) * height - height
+                self.dbc.execute(query,(self.artid,value,))
             result = self.dbc.fetchone()
             if result:
                 return result[0]
@@ -1550,12 +1396,10 @@ class Moves(DB):
     def get_first_section(self,col_no=0):
         f = '[MClient] db.Moves.get_first_section'
         if self.artid:
-            self.dbc.execute ('select POS1,ROWNO,TEXT from BLOCKS \
-                               where ARTICLEID = ? and BLOCK = 0 \
-                               and IGNORE = 0 and COLNO = ? \
-                               and POS1 < POS2 order by ROWNO,NO'
-                             ,(self.artid,col_no,)
-                             )
+            query = 'select POS1,ROWNO,TEXT from BLOCKS \
+                     where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 \
+                     and COLNO = ? and POS1 < POS2 order by ROWNO,NO'
+            self.dbc.execute(query,(self.artid,col_no,))
             return self.dbc.fetchone()
         else:
             sh.com.rep_empty(f)
@@ -1563,12 +1407,11 @@ class Moves(DB):
     def get_last_section(self,col_no=0):
         f = '[MClient] db.Moves.get_last_section'
         if self.artid:
-            self.dbc.execute ('select POS1,ROWNO,TEXT from BLOCKS \
-                               where ARTICLEID = ? and BLOCK = 0 \
-                               and IGNORE = 0 and COLNO = ? \
-                               and POS1 < POS2 order by ROWNO desc,NO'
-                             ,(self.artid,col_no,)
-                             )
+            query = 'select POS1,ROWNO,TEXT from BLOCKS \
+                     where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 \
+                     and COLNO = ? and POS1 < POS2 \
+                     order by ROWNO desc,NO'
+            self.dbc.execute(query,(self.artid,col_no,))
             return self.dbc.fetchone()
         else:
             sh.com.rep_empty(f)
@@ -1578,13 +1421,11 @@ class Moves(DB):
         if self.artid:
             poses = self.get_block_pos(pos=pos)
             if poses:
-                self.dbc.execute ('select POS1,ROWNO,TEXT from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and ROWNO > ? \
-                                   and COLNO = ? and POS1 < POS2 \
-                                   order by CELLNO,NO'
-                                 ,(self.artid,poses[3],col_no,)
-                                 )
+                query = 'select POS1,ROWNO,TEXT from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and ROWNO > ? and COLNO = ? \
+                         and POS1 < POS2 order by CELLNO,NO'
+                self.dbc.execute(query,(self.artid,poses[3],col_no,))
                 result = self.dbc.fetchone()
                 if result:
                     return result
@@ -1598,20 +1439,18 @@ class Moves(DB):
     def get_prev_section(self,pos,col_no=0,Loop=True):
         f = '[MClient] db.Moves.get_prev_section'
         if self.artid:
-            poses = self.get_block_pos(pos=pos)
+            poses = self.get_block_pos(pos)
             if poses:
-                self.dbc.execute ('select POS1,ROWNO,TEXT from BLOCKS \
-                                   where ARTICLEID = ? and BLOCK = 0 \
-                                   and IGNORE = 0 and ROWNO < ? \
-                                   and COLNO = ? and POS1 < POS2 \
-                                   order by CELLNO desc,NO'
-                                 ,(self.artid,poses[3],col_no,)
-                                 )
+                query = 'select POS1,ROWNO,TEXT from BLOCKS \
+                         where ARTICLEID = ? and BLOCK = 0 \
+                         and IGNORE = 0 and ROWNO < ? and COLNO = ? \
+                         and POS1 < POS2 order by CELLNO desc,NO'
+                self.dbc.execute(query,(self.artid,poses[3],col_no,))
                 result = self.dbc.fetchone()
                 if result:
                     return result
                 elif Loop:
-                    return self.get_last_section(col_no=col_no)
+                    return self.get_last_section(col_no)
             else:
                 sh.com.rep_empty(f)
         else:
@@ -1620,13 +1459,11 @@ class Moves(DB):
     def get_next_col(self,row_no=0,col_no=0):
         f = '[MClient] db.Moves.get_next_col'
         if self.artid:
-            self.dbc.execute ('select POS1,ROWNO,COLNO,TEXT \
-                               from BLOCKS where ARTICLEID = ? \
-                               and BLOCK = 0 and IGNORE = 0 \
-                               and ROWNO = ? and COLNO >= ? \
-                               and POS1 < POS2 order by CELLNO,NO'
-                             ,(self.artid,row_no,col_no,)
-                             )
+            query = 'select POS1,ROWNO,COLNO,TEXT from BLOCKS \
+                     where ARTICLEID = ? and BLOCK = 0 and IGNORE = 0 \
+                     and ROWNO = ? and COLNO >= ? and POS1 < POS2 \
+                     order by CELLNO,NO'
+            self.dbc.execute(query,(self.artid,row_no,col_no,))
             return self.dbc.fetchone()
         else:
             sh.com.rep_empty(f)
