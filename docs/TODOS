@@ -3,8 +3,6 @@
 mclient:
 - Add an autosave key for iconify-after-copying behavior
 - Improve toggling widgets using F1-F12
-- Autosave SelectTermsOnly
-- Switch on/off SelectTermsOnly in Settings dialog
 - Checking for symbols unsupported in Tk takes too long (when loading
   dictionaries), do this check only before showing the final article.
 
