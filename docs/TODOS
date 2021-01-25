@@ -1,13 +1,10 @@
 
 
 mclient:
-- Fix hints for buttons near screen edges
 - Add an autosave key for iconify-after-copying behavior
 - Improve toggling widgets using F1-F12
 - Autosave SelectTermsOnly
 - Switch on/off SelectTermsOnly in Settings dialog
-- At startup: if only local dictionaries are available, then set
-  the mode to Offline.
 - Checking for symbols unsupported in Tk takes too long (when loading
   dictionaries), do this check only before showing the final article.
 
