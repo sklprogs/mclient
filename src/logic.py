@@ -215,7 +215,7 @@ class CreateConfig(sh.CreateConfig):
         self.add_key(section,section_abbr,key,comment)
         
         key = 'SelectTermsOnly'
-        comment = _('Select blocks of all types (False) or terms only (True)')
+        comment = _('[Autosave] Select blocks of all types (False) or terms only (True)')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'ShortDicTitles'
@@ -1032,8 +1032,10 @@ class Welcome:
         self.istr.write('<tr>')
         self.gen_hint(hint1)
         self.gen_hotkey(hotkey1)
-        self.gen_hint(hint2)
-        self.gen_hotkey(hotkey2)
+        # Suppress useless warnings since the 2nd column may be empty
+        if hotkey2:
+            self.gen_hint(hint2)
+            self.gen_hotkey(hotkey2)
         self.istr.write('</tr>')
     
     def set_hotkeys(self):
@@ -1129,10 +1131,8 @@ class Welcome:
                    )
         hint30 = _('Toggle prioritizing')
         hotkey30 = sh.lg.globs['str']['bind_toggle_priority']
-        '''
         hint31 = _('Toggle terms-only selection')
         hotkey31 = sh.lg.globs['str']['bind_toggle_sel']
-        '''
         hint32 = _('Toggle the current article view')
         hotkey32 = (sh.lg.globs['str']['bind_toggle_view']
                    ,sh.lg.globs['str']['bind_toggle_view_alt']
@@ -1171,8 +1171,9 @@ class Welcome:
         self.gen_row(hint24,hotkey24,hint25,hotkey25)
         self.gen_row(hint26,hotkey26,hint27,hotkey27)
         self.gen_row(hint28,hotkey28,hint29,hotkey29)
-        self.gen_row(hint30,hotkey30,hint32,hotkey32)
-        self.gen_row(hint33,hotkey33,hint41,hotkey41)
+        self.gen_row(hint30,hotkey30,hint31,hotkey31)
+        self.gen_row(hint32,hotkey32,hint33,hotkey33)
+        self.gen_row(hint41,hotkey41,'','')
         
         self.istr.write('</font>')
         self.istr.write('</table>')
@@ -1276,7 +1277,7 @@ class DefaultConfig:
             self.fblock = self.ihome.add_config('block.txt')
             if self.fblock:
                 if os.path.exists(self.fblock):
-                    self.Success = sh.File(file=self.fblock).Success
+                    self.Success = sh.File(self.fblock).Success
                 else:
                     iwrite = sh.WriteTextFile (file = self.fblock
                                               ,Rewrite = True

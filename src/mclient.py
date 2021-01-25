@@ -50,6 +50,8 @@ class ExportSettingsUI:
         sh.lg.globs['bool']['ShortDicTitles'] = objs.settings_ui.cbx_no6.get()
         sh.lg.globs['bool']['ShortSpeech'] = objs.settings_ui.cbx_no7.get()
         sh.lg.globs['bool']['ShowUserNames'] = objs.settings_ui.cbx_no8.get()
+        objs.get_blocksdb().Selectable = sh.lg.globs['bool']['SelectTermsOnly']\
+                                       = objs.settings_ui.cbx_no9.get()
     
     def run(self):
         f = '[MClient] mclient.ExportSettingsUI.run'
@@ -180,6 +182,7 @@ class UpdateSettingsUI:
         self.gui.cbx_no6.set(sh.lg.globs['bool']['ShortDicTitles'])
         self.gui.cbx_no7.set(sh.lg.globs['bool']['ShortSpeech'])
         self.gui.cbx_no8.set(sh.lg.globs['bool']['ShowUserNames'])
+        self.gui.cbx_no9.set(sh.lg.globs['bool']['SelectTermsOnly'])
     
     def run(self):
         self.update_style_area()
@@ -2717,11 +2720,13 @@ class WebFrame:
     
     def toggle_sel(self,event=None):
         if objs.get_blocksdb().Selectable:
-            objs.get_blocksdb().Selectable = False
+            objs.get_blocksdb().Selectable = sh.lg.globs['bool']['SelectTermsOnly']\
+                                           = False
             objs.blocksdb.delete_bookmarks()
             self.load_article()
         else:
-            objs.get_blocksdb().Selectable = True
+            objs.get_blocksdb().Selectable = sh.lg.globs['bool']['SelectTermsOnly']\
+                                           = True
             objs.blocksdb.delete_bookmarks()
             self.load_article()
 

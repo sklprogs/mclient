@@ -1214,6 +1214,10 @@ class Settings:
                                    ,Active = True
                                    ,side = 'left'
                                    )
+        self.cbx_no9 = sh.CheckBox (parent = self.frm_cb9
+                                   ,Active = False
+                                   ,side = 'left'
+                                   )
 
     def reset(self,event=None):
         self.opt_scm.set(PRODUCT)
@@ -1236,6 +1240,7 @@ class Settings:
         self.cbx_no6.disable()
         self.cbx_no7.disable()
         self.cbx_no8.enable()
+        self.cbx_no9.enable()
 
     def set_buttons(self):
         sh.Button (parent = self.frm_btn
@@ -1365,6 +1370,10 @@ class Settings:
                                 ,expand = False
                                 ,fill = 'x'
                                 )
+        self.frm_cb9 = sh.Frame (parent = self.obj
+                                ,expand = False
+                                ,fill = 'x'
+                                )
         self.frm_btn = sh.Frame (parent = self.obj
                                 ,expand = False
                                 ,fill = 'x'
@@ -1450,6 +1459,10 @@ class Settings:
                                 )
         self.lbl_no8 = sh.Label (parent = self.frm_cb8
                                 ,text = _('Show user names')
+                                ,side = 'left'
+                                )
+        self.lbl_no9 = sh.Label (parent = self.frm_cb9
+                                ,text = _('Select terms only')
                                 ,side = 'left'
                                 )
         sh.Label (parent = self.frm_sp1
@@ -1626,6 +1639,10 @@ class Settings:
         sh.com.bind (obj = self.lbl_no8
                     ,bindings = '<Button-1>'
                     ,action = self.cbx_no8.toggle
+                    )
+        sh.com.bind (obj = self.lbl_no9
+                    ,bindings = '<Button-1>'
+                    ,action = self.cbx_no9.toggle
                     )
 
     def set_title(self,text=_('View Settings')):
