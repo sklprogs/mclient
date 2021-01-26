@@ -207,7 +207,7 @@ class CreateConfig(sh.CreateConfig):
         self.add_key(section,section_abbr,key,comment)
         
         key = 'Iconify'
-        comment = _('Minimize the application window after some actions, e.g., copying')
+        comment = _('[Autosave] Minimize the application window after specific actions, e.g., copying')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'PrioritizeDics'

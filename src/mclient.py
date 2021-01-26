@@ -52,6 +52,7 @@ class ExportSettingsUI:
         sh.lg.globs['bool']['ShowUserNames'] = objs.settings_ui.cbx_no8.get()
         objs.get_blocksdb().Selectable = sh.lg.globs['bool']['SelectTermsOnly']\
                                        = objs.settings_ui.cbx_no9.get()
+        sh.lg.globs['bool']['Iconify'] = objs.settings_ui.cbx_no10.get()
     
     def run(self):
         f = '[MClient] mclient.ExportSettingsUI.run'
@@ -183,6 +184,7 @@ class UpdateSettingsUI:
         self.gui.cbx_no7.set(sh.lg.globs['bool']['ShortSpeech'])
         self.gui.cbx_no8.set(sh.lg.globs['bool']['ShowUserNames'])
         self.gui.cbx_no9.set(sh.lg.globs['bool']['SelectTermsOnly'])
+        self.gui.cbx_no10.set(sh.lg.globs['bool']['Iconify'])
     
     def run(self):
         self.update_style_area()

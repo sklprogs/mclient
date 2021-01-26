@@ -1183,41 +1183,35 @@ class Settings:
 
     def set_cboxes(self):
         self.cbx_no1 = sh.CheckBox (parent = self.frm_cb1
-                                   ,Active = True
                                    ,side = 'left'
                                    )
         self.cbx_no2 = sh.CheckBox (parent = self.frm_cb2
-                                   ,Active = True
                                    ,side = 'left'
                                    )
         self.cbx_no3 = sh.CheckBox (parent = self.frm_cb3
-                                   ,Active = True
                                    ,side = 'left'
                                    )
         self.cbx_no4 = sh.CheckBox (parent = self.frm_cb4
-                                   ,Active = True
                                    ,side = 'left'
                                    )
         self.cbx_no5 = sh.CheckBox (parent = self.frm_cb5
-                                   ,Active = False
                                    ,side = 'left'
                                    )
         self.cbx_no6 = sh.CheckBox (parent = self.frm_cb6
-                                   ,Active = False
                                    ,side = 'left'
                                    )
         self.cbx_no7 = sh.CheckBox (parent = self.frm_cb7
-                                   ,Active = False
                                    ,side = 'left'
                                    )
         self.cbx_no8 = sh.CheckBox (parent = self.frm_cb8
-                                   ,Active = True
                                    ,side = 'left'
                                    )
         self.cbx_no9 = sh.CheckBox (parent = self.frm_cb9
-                                   ,Active = False
                                    ,side = 'left'
                                    )
+        self.cbx_no10 = sh.CheckBox (parent = self.frm_cb10
+                                    ,side = 'left'
+                                    )
 
     def reset(self,event=None):
         self.opt_scm.set(PRODUCT)
@@ -1374,6 +1368,10 @@ class Settings:
                                 ,expand = False
                                 ,fill = 'x'
                                 )
+        self.frm_cb10 = sh.Frame (parent = self.obj
+                                 ,expand = False
+                                 ,fill = 'x'
+                                 )
         self.frm_btn = sh.Frame (parent = self.obj
                                 ,expand = False
                                 ,fill = 'x'
@@ -1465,6 +1463,10 @@ class Settings:
                                 ,text = _('Select terms only')
                                 ,side = 'left'
                                 )
+        self.lbl_no10 = sh.Label (parent = self.frm_cb10
+                                 ,text = _('Iconify the program window after copying')
+                                 ,side = 'left'
+                                 )
         sh.Label (parent = self.frm_sp1
                  ,text = _('Part of speech') + ' 1:'
                  ,font = 'Sans 8'
@@ -1643,6 +1645,10 @@ class Settings:
         sh.com.bind (obj = self.lbl_no9
                     ,bindings = '<Button-1>'
                     ,action = self.cbx_no9.toggle
+                    )
+        sh.com.bind (obj = self.lbl_no10
+                    ,bindings = '<Button-1>'
+                    ,action = self.cbx_no10.toggle
                     )
 
     def set_title(self,text=_('View Settings')):
