@@ -124,40 +124,18 @@ class TagLike:
 class CleanUp:
     
     def __init__(self,text):
-        self.Success = True
         self.text = text
     
-    def delete_unsupported(self):
-        ''' Remove characters from a range not supported by Tcl
-            (and causing a Tkinter error).
-        '''
-        f = '[MClient] plugins.dsl.cleanup.CleanUp.delete_unsupported'
-        if self.Success:
-            self.text = [char for char in self.text if ord(char) \
-                         in range(65536)
-                        ]
-            self.text = ''.join(self.text)
-        else:
-            sh.com.cancel(f)
-    
     def delete_trash(self):
-        f = '[MClient] plugins.dsl.cleanup.CleanUp.delete_trash'
-        if self.Success:
-            while '  ' in self.text:
-                self.text = self.text.replace('  ',' ')
-        else:
-            sh.com.cancel(f)
-    
-    def check(self):
-        f = '[MClient] plugins.dsl.cleanup.CleanUp.check'
-        if not self.text:
-            # Avoid None on output
-            self.text = ''
-            sh.com.rep_empty(f)
-            self.Success = False
+        while '  ' in self.text:
+            self.text = self.text.replace('  ',' ')
 
     def run(self):
-        self.check()
-        self.delete_trash()
-        self.delete_unsupported()
-        return self.text
+        f = '[MClient] plugins.dsl.cleanup.CleanUp.run'
+        if self.text:
+            self.delete_trash()
+            self.text = sh.Text(self.text).delete_unsupported()
+            return self.text
+        else:
+            sh.com.rep_empty(f)
+            return ''

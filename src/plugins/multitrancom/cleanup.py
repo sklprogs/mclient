@@ -130,16 +130,6 @@ class CleanUp:
             self.text = self.text.replace('  ',' ')
         self.text = re.sub(r'\>[\s]{0,1}\<','><',self.text)
     
-    def delete_unsupported(self):
-        ''' Remove characters from a range not supported by Tcl 
-            (and causing a Tkinter error). Sample requests causing
-            the error: Multitran, EN-RU: 'top', 'et al.'
-        '''
-        self.text = [char for char in self.text if ord(char) \
-                     in range(65536)
-                    ]
-        self.text = ''.join(self.text)
-    
     def run(self):
         f = '[MClient] plugins.multitrancom.cleanup.CleanUp.run'
         if self.text:
@@ -149,8 +139,9 @@ class CleanUp:
             self.run_sep_words()
             self.delete_no_matches()
             self.distinguish()
-            self.delete_unsupported()
+            self.text = sh.Text(self.text).delete_unsupported()
             self.fix_href()
+            return self.text
         else:
             sh.com.rep_empty(f)
-        return self.text
+            return ''

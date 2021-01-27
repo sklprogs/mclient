@@ -37,16 +37,6 @@ class Common:
     def __init__(self,text):
         self.text = text
     
-    def delete_unsupported(self):
-        ''' Remove characters from a range not supported by Tcl 
-            (and causing a Tkinter error). Sample requests causing
-            the error: Multitran, EN-RU: 'top', 'et al.'
-        '''
-        self.text = [char for char in self.text if ord(char) \
-                     in range(65536)
-                    ]
-        self.text = ''.join(self.text)
-    
     def decode_entities(self):
         ''' Needed both for MT and Stardict. Convert HTM entities
             to a human readable format, e.g., '&copy;' -> '©'.
@@ -66,10 +56,15 @@ class Common:
         self.text = re.sub(r'\>[\s]{0,1}\<','\><',self.text)
     
     def run(self):
-        self.decode_entities()
-        self.delete_trash()
-        self.delete_unsupported()
-        return self.text
+        f = '[MClient] plugins.stardict.cleanup.Common.run'
+        if self.text:
+            self.decode_entities()
+            self.delete_trash()
+            self.text = sh.Text(self.text).delete_unsupported()
+            return self.text
+        else:
+            sh.com.rep_empty(f)
+            return ''
 
 
 
