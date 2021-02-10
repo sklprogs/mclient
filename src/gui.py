@@ -1212,6 +1212,9 @@ class Settings:
         self.cbx_no10 = sh.CheckBox (parent = self.frm_cb10
                                     ,side = 'left'
                                     )
+        self.cbx_no11 = sh.CheckBox (parent = self.frm_cb11
+                                    ,side = 'left'
+                                    )
 
     def reset(self,event=None):
         self.opt_scm.set(PRODUCT)
@@ -1372,6 +1375,10 @@ class Settings:
                                  ,expand = False
                                  ,fill = 'x'
                                  )
+        self.frm_cb11 = sh.Frame (parent = self.obj
+                                 ,expand = False
+                                 ,fill = 'x'
+                                 )
         self.frm_btn = sh.Frame (parent = self.obj
                                 ,expand = False
                                 ,fill = 'x'
@@ -1465,6 +1472,10 @@ class Settings:
                                 )
         self.lbl_no10 = sh.Label (parent = self.frm_cb10
                                  ,text = _('Iconify the program window after copying')
+                                 ,side = 'left'
+                                 )
+        self.lbl_no11 = sh.Label (parent = self.frm_cb11
+                                 ,text = _('Show suggestions on input')
                                  ,side = 'left'
                                  )
         sh.Label (parent = self.frm_sp1
@@ -1649,6 +1660,10 @@ class Settings:
         sh.com.bind (obj = self.lbl_no10
                     ,bindings = '<Button-1>'
                     ,action = self.cbx_no10.toggle
+                    )
+        sh.com.bind (obj = self.lbl_no11
+                    ,bindings = '<Button-1>'
+                    ,action = self.cbx_no11.toggle
                     )
 
     def set_title(self,text=_('View Settings')):

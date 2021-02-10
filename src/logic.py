@@ -195,7 +195,7 @@ class CreateConfig(sh.CreateConfig):
         self.add_key(section,section_abbr,key,comment)
         
         key = 'Autocompletion'
-        comment = _('Complete words on input')
+        comment = _('[Autosave] Show suggestions on input')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'BlockDics'
