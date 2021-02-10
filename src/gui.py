@@ -1238,6 +1238,8 @@ class Settings:
         self.cbx_no7.disable()
         self.cbx_no8.enable()
         self.cbx_no9.enable()
+        self.cbx_no10.enable()
+        self.cbx_no11.enable()
 
     def set_buttons(self):
         sh.Button (parent = self.frm_btn

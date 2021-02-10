@@ -55,19 +55,19 @@ class DefaultKeys(sh.DefaultKeys):
         
     def _load_bool(self):
         sh.lg.globs['bool'].update ({
-            'AlphabetizeTerms'    :True
-           ,'AutoCloseSpecSymbol' :False
-           ,'Autocompletion'      :True
-           ,'BlockDics'           :True
-           ,'CaptureHotkey'       :True
-           ,'Iconify'             :True
-           ,'PrioritizeDics'      :True
-           ,'SelectTermsOnly'     :True
-           ,'ShortDicTitles'      :False
-           ,'ShortSpeech'         :False
-           ,'ShowUserNames'       :True
-           ,'SortByColumns'       :True
-           ,'VerticalView'        :False
+            'AlphabetizeTerms'   :True
+           ,'AutoCloseSpecSymbol':False
+           ,'Autocompletion'     :True
+           ,'BlockDics'          :True
+           ,'CaptureHotkey'      :True
+           ,'Iconify'            :True
+           ,'PrioritizeDics'     :True
+           ,'SelectTermsOnly'    :True
+           ,'ShortDicTitles'     :False
+           ,'ShortSpeech'        :False
+           ,'ShowUserNames'      :True
+           ,'SortByColumns'      :True
+           ,'VerticalView'       :False
                                    })
     
     def _load_int(self):
