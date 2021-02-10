@@ -150,11 +150,13 @@ class Tests:
     
     def corrupt(self):
         f = '[MClient] plugins.multitrandem.utils.Tests.corrupt'
-        file = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
+        file = '/home/pete/wine/mt/drive_c/setup/mt/network/eng_rus/dict.ert'
         #pos = 132779147
         #subst = b'\x00'
-        pos = 132775939
-        subst = b'\xd0\xf3\x96'
+        #pos = 319047096
+        #319047082
+        pos = 319047086
+        subst = b'A'
         old = com.corrupt (filew = file
                           ,pos = pos
                           ,subst = subst
@@ -170,7 +172,7 @@ class Tests:
             sh.objs.get_mes(f,mes,True).show_info()
     
     def navigate(self):
-        Navigate(sh.Home().add('tmp','test.bin')).show_menu()
+        Navigate('/home/pete/tmp/dump2').show_menu()
     
     def analyze_dumps(self):
         f = '[MClient] plugins.multitrandem.utils.Tests.analyze_dumps'
@@ -343,8 +345,10 @@ class Tests:
         self._parse(file,pos1,pos2)
     
     def compare(self):
-        file1 = '/home/pete/tmp/Multitran/network/eng_rus/dict.ert'
-        file2 = '/home/pete/.wine/drive_c/setup/Multitran/network/eng_rus/dict.ert'
+        #file1 = '/home/pete/wine/backup/mt/drive_c/setup/mt/network/eng_rus/dict.ert'
+        #file2 = '/home/pete/wine/mt/drive_c/setup/mt/network/eng_rus/dict.ert'
+        file1 = '/home/pete/tmp/prev.ert'
+        file2 = '/home/pete/wine/mt/drive_c/setup/mt/network/eng_rus/dict.ert'
         CompareBinaries(file1,file2).show_menu()
     
     def navigate_article(self):
@@ -1508,9 +1512,10 @@ if __name__ == '__main__':
     #file = '/home/pete/.wine/drive_c/mt_demo_mln/Network/eng_rus/dict.ert'
     #Navigate(file).show_menu()
     #Tests().corrupt()
-    #Tests().compare()
+    Tests().compare()
+    #Tests().navigate()
     #Tests().show_dumps()
-    Tests().get_patch()
+    #Tests().get_patch()
     #Tests().gen_patterns()
     #Tests().analyze_xor()
     #file1 = '/tmp/dict.ert'
