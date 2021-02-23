@@ -368,8 +368,83 @@ class Suggest:
 class AllDics:
     
     def __init__(self):
-        self.set_values()
         self.reset()
+    
+    def get_langs(self):
+        f = '[MClient] plugins.dsl.get.AllDics.get_langs'
+        if self.Success:
+            langs = []
+            for lang in self.langs.keys():
+                try:
+                    if self.langs[lang]['pairs']:
+                        langs.append(self.langs[lang]['localized'])
+                except KeyError:
+                    mes = _('Wrong input data: "{}"!').format(lang)
+                    sh.objs.get_mes(f,mes).show_warning()
+            return tuple(sorted(set(langs)))
+        else:
+            sh.com.cancel(f)
+    
+    def get_code(self,lang):
+        # Both language code and localization name are accepted at input
+        f = '[MClient] plugins.dsl.get.AllDics.get_code'
+        if self.Success:
+            if lang in self.langs:
+                return self.langs[lang]['code']
+            else:
+                mes = _('Wrong input data: "{}"!').format(lang)
+                sh.objs.get_mes(f,mes).show_warning()
+        else:
+            sh.com.cancel(f)
+        return lang
+    
+    def get_pairs(self,lang):
+        # Both language code and localization name are accepted at input
+        f = '[MClient] plugins.dsl.get.AllDics.get_pairs'
+        if self.Success:
+            if lang in self.langs:
+                pairs = []
+                langs = self.langs[lang]['pairs']
+                for code in langs:
+                    if code in self.langs:
+                        pairs.append(self.langs[code]['localized'])
+                    else:
+                        mes = _('Wrong input data: "{}"!').format(code)
+                        sh.objs.get_mes(f,mes).show_warning()
+                return tuple(sorted(set(pairs)))
+            elif not lang:
+                sh.com.rep_empty(f)
+            else:
+                mes = _('Wrong input data: "{}"!').format(lang)
+                sh.objs.get_mes(f,mes).show_warning()
+        else:
+            sh.com.cancel(f)
+    
+    def _create_lang(self,lang):
+        localized = _(lang)
+        if not lang in self.langs:
+            self.langs[lang] = {}
+            self.langs[lang]['code'] = lang
+            self.langs[lang]['localized'] = localized
+            self.langs[lang]['pairs'] = []
+            self.langs[localized] = {}
+            self.langs[localized]['code'] = lang
+            self.langs[localized]['localized'] = localized
+            self.langs[localized]['pairs'] = []
+    
+    def set_langs(self):
+        ''' DSL dictionaries are one-way only because of the index
+            structure.
+        '''
+        f = '[MClient] plugins.dsl.get.AllDics.set_langs'
+        if self.Success:
+            for idic in self.dics:
+                self._create_lang(idic.lang1)
+                self._create_lang(idic.lang2)
+                self.langs[idic.lang1]['pairs'].append(idic.lang2)
+                self.langs[_(idic.lang1)]['pairs'].append(idic.lang2)
+        else:
+            sh.com.cancel(f)
     
     def get_index(self):
         f = '[MClient] plugins.dsl.get.AllDics.get_index'
@@ -385,10 +460,11 @@ class AllDics:
             sh.com.cancel(f)
     
     def set_values(self):
+        self.path = ''
         self.dsls = []
         self.dics = []
-        self.path = ''
         self.index_ = []
+        self.langs = {}
         # Do not run anything if 'self.reset' was not run
         self.Success = False
     
@@ -470,6 +546,7 @@ class Objects:
         if self.all_dics is None:
             self.all_dics = AllDics()
             self.all_dics.load()
+            self.all_dics.set_langs()
         return self.all_dics
 
 

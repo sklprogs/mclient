@@ -46,12 +46,10 @@ class Plugin:
         #TODO (?): Unload dictionaries
     
     def get_lang1(self):
-        #TODO: implement
-        return _('Any')
+        return _(gt.LANG1)
     
     def get_lang2(self):
-        #TODO: implement
-        return _('Any')
+        return _(gt.LANG2)
     
     # This is needed only for compliance with a general method
     def get_server(self):
@@ -66,24 +64,37 @@ class Plugin:
         return ''
     
     def set_lang1(self,lang1=''):
-        #TODO: implement
-        pass
+        f = '[MClient] plugins.dsl.run.Plugin.set_lang1'
+        if lang1 == _('Any'):
+            sh.com.rep_lazy(f)
+        else:
+            lang1 = gt.objs.get_all_dics().get_code(lang1)
+            gt.LANG1 = lang1
     
     def set_lang2(self,lang2=''):
-        #TODO: implement
-        pass
+        lang2 = gt.objs.get_all_dics().get_code(lang2)
+        gt.LANG2 = lang2
     
     # This is needed only for compliance with a general method
     def set_timeout(self,timeout=0):
         pass
     
     def get_langs1(self,lang2=''):
-        #TODO: implement
-        return(_('Any'),)
+        if lang2:
+            pairs = gt.objs.get_all_dics().get_pairs(lang2)
+        else:
+            pairs = gt.objs.get_all_dics().get_langs()
+        if pairs:
+            return pairs
+        else:
+            return (_('Any'),)
     
     def get_langs2(self,lang1=''):
-        #TODO: implement
-        return(_('Any'),)
+        pairs = gt.objs.get_all_dics().get_pairs(lang1)
+        if pairs:
+            return pairs
+        else:
+            return (_('Any'),)
     
     def is_combined(self):
         ''' Whether or not the plugin is actually a wrapper over other
