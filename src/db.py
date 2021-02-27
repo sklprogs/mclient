@@ -89,7 +89,7 @@ class DB:
             query = 'select DIC,DICF,NO,CELLNO from BLOCKS \
                      where ARTICLEID = ? and POS1 < ? and not DIC = ? \
                      and not DICF = ? and BLOCK = 0 and IGNORE = 0 \
-                    order by CELLNO desc,NO desc'
+                     order by CELLNO desc,NO desc'
             self.dbc.execute(query,(self.artid,pos,dic,dic,))
             return self.dbc.fetchone()
         else:
@@ -431,7 +431,7 @@ class DB:
                 self.dbc.execute(query,(self.artid,pos,pos,))
             else:
                 query = 'select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT \
-                        ,SELECTABLE,TYPE from BLOCKS \
+                               ,SELECTABLE,TYPE from BLOCKS \
                          where ARTICLEID = ? and BLOCK = 0 \
                          and IGNORE = 0 and POS1 <= ? and POS2 > ? \
                          and POS1 < POS2'
@@ -645,7 +645,7 @@ class DB:
         if self.artid:
             if self.Selectable:
                 query = 'select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOX2\
-                        ,BBOY1,BBOY2,ROWNO from BLOCKS \
+                               ,BBOY1,BBOY2,ROWNO from BLOCKS \
                          where ARTICLEID = ? and BLOCK = 0 \
                          and IGNORE = 0 and SELECTABLE = 1 \
                          and POS1 < POS2 and POS1 <= ? and POS2 >= ? \
@@ -653,7 +653,7 @@ class DB:
                 self.dbc.execute(query,(self.artid,pos,pos,))
             else:
                 query = 'select NODE1,NODE2,OFFPOS1,OFFPOS2,BBOX1,BBOY1\
-                        ,BBOX2,BBOY2,ROWNO from BLOCKS \
+                               ,BBOX2,BBOY2,ROWNO from BLOCKS \
                          where ARTICLEID = ? and BLOCK = 0 \
                          and IGNORE = 0 and POS1 < POS2 and POS1 <= ? \
                          and POS2 >= ? order by COLNO,NO'
