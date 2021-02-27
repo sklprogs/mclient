@@ -372,8 +372,8 @@ class AllDics:
     
     def get_langs(self):
         f = '[MClient] plugins.dsl.get.AllDics.get_langs'
+        langs = []
         if self.Success:
-            langs = []
             for lang in self.langs.keys():
                 try:
                     if self.langs[lang]['pairs']:
@@ -381,9 +381,12 @@ class AllDics:
                 except KeyError:
                     mes = _('Wrong input data: "{}"!').format(lang)
                     sh.objs.get_mes(f,mes).show_warning()
-            return tuple(sorted(set(langs)))
+            langs = tuple(sorted(set(langs)))
+            mes = '; '.join(langs)
+            sh.objs.get_mes(f,mes,True).show_debug()
         else:
             sh.com.cancel(f)
+        return langs
     
     def get_code(self,lang):
         # Both language code and localization name are accepted at input
@@ -401,9 +404,9 @@ class AllDics:
     def get_pairs(self,lang):
         # Both language code and localization name are accepted at input
         f = '[MClient] plugins.dsl.get.AllDics.get_pairs'
+        pairs = []
         if self.Success:
             if lang in self.langs:
-                pairs = []
                 langs = self.langs[lang]['pairs']
                 for code in langs:
                     if code in self.langs:
@@ -411,7 +414,9 @@ class AllDics:
                     else:
                         mes = _('Wrong input data: "{}"!').format(code)
                         sh.objs.get_mes(f,mes).show_warning()
-                return tuple(sorted(set(pairs)))
+                pairs = tuple(sorted(set(pairs)))
+                mes = '; '.join(pairs)
+                sh.objs.get_mes(f,mes,True).show_debug()
             elif not lang:
                 sh.com.rep_empty(f)
             else:
@@ -419,6 +424,7 @@ class AllDics:
                 sh.objs.get_mes(f,mes).show_warning()
         else:
             sh.com.cancel(f)
+        return pairs
     
     def _create_lang(self,lang):
         localized = _(lang)
