@@ -982,6 +982,7 @@ class WebFrame:
         lang1 = self.gui.opt_lg1.choice
         lang2 = self.gui.opt_lg2.choice
         if sh.lg.globs['bool']['Autoswap'] \
+        and lg.objs.get_plugins().is_bidirectional() \
         and lg.objs.get_request().search:
             if sh.Text(lg.objs.request.search).has_cyrillic():
                 if lang2 in (_('Russian'),'Russian'):
@@ -1104,31 +1105,35 @@ class WebFrame:
     
     def swap_langs(self,event=None):
         f = '[MClient] mclient.WebFrame.swap_langs'
-        self.update_lang1()
-        self.update_lang2()
-        lang1 = self.gui.opt_lg1.choice
-        lang2 = self.gui.opt_lg2.choice
-        lang1, lang2 = lang2, lang1
-        langs1 = lg.objs.get_plugins().get_langs1()
-        langs2 = lg.objs.plugins.get_langs2(lang1)
-        if langs1:
-            if langs2 and lang1 in langs1 and lang2 in langs2:
-                self.gui.opt_lg1.reset (items = langs1
-                                       ,default = lang1
-                                       ,action = self.go_search_focus
-                                       )
-                self.gui.opt_lg2.reset (items = langs2
-                                       ,default = lang2
-                                       ,action = self.go_search_focus
-                                       )
-                self.update_lang1()
-                self.update_lang2()
+        if lg.objs.get_plugins().is_bidirectional():
+            self.update_lang1()
+            self.update_lang2()
+            lang1 = self.gui.opt_lg1.choice
+            lang2 = self.gui.opt_lg2.choice
+            lang1, lang2 = lang2, lang1
+            langs1 = lg.objs.get_plugins().get_langs1()
+            langs2 = lg.objs.plugins.get_langs2(lang1)
+            if langs1:
+                if langs2 and lang1 in langs1 and lang2 in langs2:
+                    self.gui.opt_lg1.reset (items = langs1
+                                           ,default = lang1
+                                           ,action = self.go_search_focus
+                                           )
+                    self.gui.opt_lg2.reset (items = langs2
+                                           ,default = lang2
+                                           ,action = self.go_search_focus
+                                           )
+                    self.update_lang1()
+                    self.update_lang2()
+                else:
+                    mes = _('Pair {}-{} is not supported!')
+                    mes = mes.format(lang1,lang2)
+                    sh.objs.get_mes(f,mes).show_warning()
             else:
-                mes = _('Pair {}-{} is not supported!')
-                mes = mes.format(lang1,lang2)
-                sh.objs.get_mes(f,mes).show_warning()
+                sh.com.rep_empty(f)
         else:
-            sh.com.rep_empty(f)
+            mes = _('Cannot swap languages, the dictionary is unidirectional!')
+            sh.objs.get_mes(f,mes).show_info()
     
     def set_next_lang1(self,event=None):
         ''' We want to navigate through the full list of supported

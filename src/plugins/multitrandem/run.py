@@ -21,12 +21,14 @@ class Plugin:
               earlier.
         '''
         self.set_values()
-        #cur
         #TODO: elaborate
         self.abbr = gt.objs.get_files().get_subject()
         self.Debug = Debug
         self.maxrow = maxrow
         self.maxrows = maxrows
+    
+    def is_bidirectional(self):
+        return True
     
     def is_abbr(self,abbr):
         #TODO: implement

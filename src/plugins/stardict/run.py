@@ -31,6 +31,9 @@ class Plugin:
         self.htm = ''
         self.abbr = {}
     
+    def is_bidirectional(self):
+        return True
+    
     def is_abbr(self,abbr):
         #TODO: implement
         pass

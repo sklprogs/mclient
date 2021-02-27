@@ -27,6 +27,9 @@ class Plugin:
         self.blocks = []
         self.abbr = {}
     
+    def is_bidirectional(self):
+        return True
+    
     def is_abbr(self,abbr):
         f = '[MClient] plugins.multitrancom.run.Plugin.is_abbr'
         ''' We do not check for 'self.abbr' since it will be empty
