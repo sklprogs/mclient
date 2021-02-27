@@ -979,15 +979,18 @@ class WebFrame:
         f = '[MClient] mclient.WebFrame.auto_swap'
         lang1 = self.gui.opt_lg1.choice
         lang2 = self.gui.opt_lg2.choice
-        if sh.Text(lg.objs.get_request().search).has_cyrillic():
-            if lang2 in (_('Russian'),'Russian'):
+        if lg.objs.get_request().search:
+            if sh.Text(lg.objs.request.search).has_cyrillic():
+                if lang2 in (_('Russian'),'Russian'):
+                    mes = '{}-{} -> {}-{}'.format(lang1,lang2,lang2,lang1)
+                    sh.objs.get_mes(f,mes,True).show_info()
+                    self.swap_langs()
+            elif lang1 in (_('Russian'),'Russian'):
                 mes = '{}-{} -> {}-{}'.format(lang1,lang2,lang2,lang1)
                 sh.objs.get_mes(f,mes,True).show_info()
                 self.swap_langs()
-        elif lang1 in (_('Russian'),'Russian'):
-            mes = '{}-{} -> {}-{}'.format(lang1,lang2,lang2,lang1)
-            sh.objs.get_mes(f,mes,True).show_info()
-            self.swap_langs()
+        else:
+            sh.com.rep_lazy(f)
     
     def run_final_debug(self,event=None):
         f = '[MClient] mclient.WebFrame.run_final_debug'
