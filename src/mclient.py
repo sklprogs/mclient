@@ -54,6 +54,7 @@ class ExportSettingsUI:
                                        = objs.settings_ui.cbx_no9.get()
         sh.lg.globs['bool']['Iconify'] = objs.settings_ui.cbx_no10.get()
         sh.lg.globs['bool']['Autocompletion'] = objs.settings_ui.cbx_no11.get()
+        sh.lg.globs['bool']['Autoswap'] = objs.settings_ui.cbx_no12.get()
     
     def run(self):
         f = '[MClient] mclient.ExportSettingsUI.run'
@@ -187,6 +188,7 @@ class UpdateSettingsUI:
         self.gui.cbx_no9.set(sh.lg.globs['bool']['SelectTermsOnly'])
         self.gui.cbx_no10.set(sh.lg.globs['bool']['Iconify'])
         self.gui.cbx_no11.set(sh.lg.globs['bool']['Autocompletion'])
+        self.gui.cbx_no12.set(sh.lg.globs['bool']['Autoswap'])
     
     def run(self):
         self.update_style_area()
@@ -979,7 +981,8 @@ class WebFrame:
         f = '[MClient] mclient.WebFrame.auto_swap'
         lang1 = self.gui.opt_lg1.choice
         lang2 = self.gui.opt_lg2.choice
-        if lg.objs.get_request().search:
+        if sh.lg.globs['bool']['Autoswap'] \
+        and lg.objs.get_request().search:
             if sh.Text(lg.objs.request.search).has_cyrillic():
                 if lang2 in (_('Russian'),'Russian'):
                     mes = '{}-{} -> {}-{}'.format(lang1,lang2,lang2,lang1)

@@ -58,6 +58,7 @@ class DefaultKeys(sh.DefaultKeys):
             'AlphabetizeTerms'   :True
            ,'AutoCloseSpecSymbol':False
            ,'Autocompletion'     :True
+           ,'Autoswap'           :False
            ,'BlockDics'          :True
            ,'CaptureHotkey'      :True
            ,'Iconify'            :True
@@ -196,6 +197,10 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'Autocompletion'
         comment = _('[Autosave] Show suggestions on input')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'Autoswap'
+        comment = _('[Autosave] Autoswap Russian and another language if appropriate')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'BlockDics'
