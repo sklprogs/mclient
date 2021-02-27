@@ -9,6 +9,7 @@
 * Autoswap Russian and the other language in GUI if appropriate
   (configurable in settings). This option is automatically saved/loaded
   from the configuration file.
+* Support various language pairs for DSL dictionaries
 
 6.7
 * Improve separating cells at multitran.com (separate cells on the basis
