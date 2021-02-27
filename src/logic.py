@@ -200,7 +200,7 @@ class CreateConfig(sh.CreateConfig):
         self.add_key(section,section_abbr,key,comment)
         
         key = 'Autoswap'
-        comment = _('[Autosave] Autoswap Russian and another language if appropriate')
+        comment = _('[Autosave] Autoswap Russian and the other language if appropriate')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'BlockDics'

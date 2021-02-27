@@ -1489,7 +1489,7 @@ class Settings:
                                  ,side = 'left'
                                  )
         self.lbl_no12 = sh.Label (parent = self.frm_cb12
-                                 ,text = _('Autoswap Russian and another language if appropriate')
+                                 ,text = _('Autoswap Russian and the other language if appropriate')
                                  ,side = 'left'
                                  )
         sh.Label (parent = self.frm_sp1
