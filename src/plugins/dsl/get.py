@@ -370,23 +370,41 @@ class AllDics:
     def __init__(self):
         self.reset()
     
-    def get_langs(self):
-        f = '[MClient] plugins.dsl.get.AllDics.get_langs'
-        langs = []
+    def get_langs2(self):
+        f = '[MClient] plugins.dsl.get.AllDics.get_langs2'
         if self.Success:
-            for lang in self.langs.keys():
-                try:
-                    if self.langs[lang]['pairs']:
-                        langs.append(self.langs[lang]['localized'])
-                except KeyError:
-                    mes = _('Wrong input data: "{}"!').format(lang)
-                    sh.objs.get_mes(f,mes).show_warning()
-            langs = tuple(sorted(set(langs)))
-            mes = '; '.join(langs)
-            sh.objs.get_mes(f,mes,True).show_debug()
+            if not self.langs2:
+                for lang in self.langs:
+                    self.langs2 += self.langs[lang]['pairs']
+                self.langs2 = list(set(lang for lang in self.langs2 if lang))
+                for i in range(len(self.langs2)):
+                    self.langs2[i] = self.langs[self.langs2[i]]['localized']
+                self.langs2 = tuple(sorted(self.langs2))
+                mes = '; '.join(self.langs2)
+                mes = '"{}"'.format(mes)
+                sh.objs.get_mes(f,mes,True).show_debug()
         else:
             sh.com.cancel(f)
-        return langs
+        return self.langs2
+    
+    def get_langs1(self):
+        f = '[MClient] plugins.dsl.get.AllDics.get_langs1'
+        if self.Success:
+            if not self.langs1:
+                for lang in self.langs.keys():
+                    try:
+                        if self.langs[lang]['pairs']:
+                            self.langs1.append(self.langs[lang]['localized'])
+                    except KeyError:
+                        mes = _('Wrong input data: "{}"!').format(lang)
+                        sh.objs.get_mes(f,mes).show_warning()
+                self.langs1 = tuple(sorted(set(self.langs1)))
+                mes = '; '.join(self.langs1)
+                mes = '"{}"'.format(mes)
+                sh.objs.get_mes(f,mes,True).show_debug()
+        else:
+            sh.com.cancel(f)
+        return self.langs1
     
     def get_code(self,lang):
         # Both language code and localization name are accepted at input
@@ -471,6 +489,8 @@ class AllDics:
         self.dics = []
         self.index_ = []
         self.langs = {}
+        self.langs1 = []
+        self.langs2 = []
         # Do not run anything if 'self.reset' was not run
         self.Success = False
     

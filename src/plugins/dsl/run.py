@@ -49,10 +49,32 @@ class Plugin:
         #TODO (?): Unload dictionaries
     
     def get_lang1(self):
-        return _(gt.LANG1)
+        f = '[MClient] plugins.dsl.run.Plugin.get_lang1'
+        lang = _(gt.LANG1)
+        langs = self.get_langs1()
+        if langs:
+            # Ignore a default language if it is not available
+            if not lang in langs:
+                lang = langs[0]
+        else:
+            lang = (_('Any'),)
+        mes = '"{}"'.format(lang)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return lang
     
     def get_lang2(self):
-        return _(gt.LANG2)
+        f = '[MClient] plugins.dsl.run.Plugin.get_lang2'
+        lang = _(gt.LANG2)
+        langs = self.get_langs2()
+        if langs:
+            # Ignore a default language if it is not available
+            if not lang in langs:
+                lang = langs[0]
+        else:
+            lang = (_('Any'),)
+        mes = '"{}"'.format(lang)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        return lang
     
     # This is needed only for compliance with a general method
     def get_server(self):
@@ -70,13 +92,21 @@ class Plugin:
         f = '[MClient] plugins.dsl.run.Plugin.set_lang1'
         if lang1 == _('Any'):
             sh.com.rep_lazy(f)
+        elif not lang1:
+            sh.com.rep_empty(f)
         else:
             lang1 = gt.objs.get_all_dics().get_code(lang1)
             gt.LANG1 = lang1
     
     def set_lang2(self,lang2=''):
-        lang2 = gt.objs.get_all_dics().get_code(lang2)
-        gt.LANG2 = lang2
+        f = '[MClient] plugins.dsl.run.Plugin.set_lang2'
+        if lang2 == _('Any'):
+            sh.com.rep_lazy(f)
+        elif not lang2:
+            sh.com.rep_empty(f)
+        else:
+            lang2 = gt.objs.get_all_dics().get_code(lang2)
+            gt.LANG2 = lang2
     
     # This is needed only for compliance with a general method
     def set_timeout(self,timeout=0):
@@ -84,20 +114,15 @@ class Plugin:
     
     def get_langs1(self,lang2=''):
         if lang2:
-            pairs = gt.objs.get_all_dics().get_pairs(lang2)
+            return gt.objs.get_all_dics().get_pairs(lang2)
         else:
-            pairs = gt.objs.get_all_dics().get_langs()
-        if pairs:
-            return pairs
-        else:
-            return (_('Any'),)
+            return gt.objs.get_all_dics().get_langs1()
     
     def get_langs2(self,lang1=''):
-        pairs = gt.objs.get_all_dics().get_pairs(lang1)
-        if pairs:
-            return pairs
+        if lang1:
+            return gt.objs.get_all_dics().get_pairs(lang1)
         else:
-            return (_('Any'),)
+            return gt.objs.get_all_dics().get_langs2()
     
     def is_combined(self):
         ''' Whether or not the plugin is actually a wrapper over other
