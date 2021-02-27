@@ -27,8 +27,8 @@ class Plugin:
         self.maxrow = maxrow
         self.maxrows = maxrows
     
-    def is_bidirectional(self):
-        return True
+    def is_oneway(self):
+        return False
     
     def is_abbr(self,abbr):
         #TODO: implement

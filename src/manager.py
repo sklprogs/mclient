@@ -40,10 +40,10 @@ class Plugins:
         self.sdplugin = None
         self.source = sh.lg.globs['str']['source']
     
-    def is_bidirectional(self):
-        f = '[MClient] manager.Plugins.is_bidirectional'
+    def is_oneway(self):
+        f = '[MClient] manager.Plugins.is_oneway'
         if self.plugin:
-            return self.plugin.is_bidirectional()
+            return self.plugin.is_oneway()
         else:
             sh.com.rep_empty(f)
     

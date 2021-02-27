@@ -29,8 +29,8 @@ class Plugin:
         self.text = ''
         self.htm = ''
     
-    def is_bidirectional(self):
-        return False
+    def is_oneway(self):
+        return True
     
     # This is needed only for compliance with a general method
     def is_abbr(self,abbr):

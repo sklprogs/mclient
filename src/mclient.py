@@ -982,7 +982,7 @@ class WebFrame:
         lang1 = self.gui.opt_lg1.choice
         lang2 = self.gui.opt_lg2.choice
         if sh.lg.globs['bool']['Autoswap'] \
-        and lg.objs.get_plugins().is_bidirectional() \
+        and not lg.objs.get_plugins().is_oneway() \
         and lg.objs.get_request().search:
             if sh.Text(lg.objs.request.search).has_cyrillic():
                 if lang2 in (_('Russian'),'Russian'):
@@ -1105,7 +1105,10 @@ class WebFrame:
     
     def swap_langs(self,event=None):
         f = '[MClient] mclient.WebFrame.swap_langs'
-        if lg.objs.get_plugins().is_bidirectional():
+        if lg.objs.get_plugins().is_oneway():
+            mes = _('Cannot swap languages, this is a one-way dictionary!')
+            sh.objs.get_mes(f,mes).show_info()
+        else:
             self.update_lang1()
             self.update_lang2()
             lang1 = self.gui.opt_lg1.choice
@@ -1131,9 +1134,6 @@ class WebFrame:
                     sh.objs.get_mes(f,mes).show_warning()
             else:
                 sh.com.rep_empty(f)
-        else:
-            mes = _('Cannot swap languages, the dictionary is unidirectional!')
-            sh.objs.get_mes(f,mes).show_info()
     
     def set_next_lang1(self,event=None):
         ''' We want to navigate through the full list of supported
