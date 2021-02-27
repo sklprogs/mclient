@@ -71,6 +71,7 @@ multitrancom:
   'символ' -> 'pilcrow')
 
 dsl:
+- Delete tags like ['], [/']; do not split continuous words
 - Expand dictionary abbreviations (use *_abrv.dsl) 
 
 (Разобрать)
