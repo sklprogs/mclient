@@ -59,8 +59,6 @@ multitrancom:
   PRIORITY, CELLNO, SELECTABLE, ROWNO, COLNO, POS1, POS2
 - (elems) Check that _same of the 1st cell is always 1 (or fix such
   behavior)
-- (elems) unite cells if (?) the url is the same or similar. Example:
-  'sampling' -> Робототехника -> проведение выборочных замеров
 - Create an option to toggle SELECTABLE (no need to update DB) (see
   WebFrame.select)
 - Loop WebFrame.move_page_up & WebFrame.move_page_down
