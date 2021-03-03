@@ -79,7 +79,8 @@ cp "$appimagedir/appimagetool-$arch.AppImage" "$tmpdir"
 cp "$HOME/bin/$product/build/$os/$product.desktop" "$tmpdir/app"
 cp "$HOME/bin/$product/build/$os/$product.png" "$tmpdir/app"
 cd "$tmpdir"
-./appimagetool-$arch.AppImage app
+# This argument allows to avoid a permission error
+./appimagetool-$arch.AppImage --appimage-extract-and-run app
 read -p "Update the AppImage? (Y/n) " choice
 if [ "$choice" = "N" ] || [ "$choice" = "n" ]; then
     exit;

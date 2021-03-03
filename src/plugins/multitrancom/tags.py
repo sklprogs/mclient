@@ -84,7 +84,8 @@ pph = 'td class="phras"'
 tag_pattern_del = ['m.exe?a=40&'          # Log in, Вход
                   ,'m.exe?a=44'           # Купить
                   ,'m.exe?a=45'           # Отзывы
-                  ,'m.exe?a=5&'           # Contacts, Контакты, Скачать
+                  ,'m.exe?a=381'          # Скачать
+                  ,'m.exe?a=382'          # Contacts, Контакты
                   ,'m.exe?a=256'          # English, Русский
                   ,'m.exe?a=1&'           # Dictionary, Словари
                   ,'m.exe?a=2&'           # Forum, Форум
