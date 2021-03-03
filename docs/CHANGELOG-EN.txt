@@ -1,4 +1,7 @@
 (in development)
+* 
+
+6.8
 * Show tooltips within the screen (a change in the shared module)
 * Select all or terms-only blocks (configurable in settings). This
   option is automatically saved/loaded from the configuration file.
@@ -10,6 +13,7 @@
   (configurable in settings). This option is automatically saved/loaded
   from the configuration file.
 * Support various language pairs for DSL dictionaries
+* Delete blocks "Download", "Contacts"
 
 6.7
 * Improve separating cells at multitran.com (separate cells on the basis
