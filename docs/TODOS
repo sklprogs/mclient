@@ -70,6 +70,7 @@ multitrancom:
   'символ' -> 'pilcrow')
 
 dsl:
+- Test "frame" article (a lot of entries; brackets should be in place)
 - Delete tags like ['], [/']; do not split continuous words
 - Expand dictionary abbreviations (use *_abrv.dsl) 
 
