@@ -1,15 +1,19 @@
 #!/bin/bash
 
+export WINEPREFIX="$HOME/base/software/wine/python38_vista"
 product="mclient"
-python="$HOME/.wine/drive_c/Python"
+python="$WINEPREFIX/drive_c/Python"
 pyinstaller="$python/Scripts/pyinstaller.exe"
 binariesdir="$HOME/binaries"
 srcdir="$HOME/bin/$product/src"
 resdir="$HOME/bin/$product/resources"
 cmd="$HOME/bin/$product/build/Wine/$product.cmd"
 tkhtmldir="$python/Lib/site-packages/tkinterhtml/tkhtml/Windows"
-tmpdir="$HOME/.wine/drive_c/$product" # Will be deleted!
-builddir="$tmpdir/$product"           # Will be deleted!
+shareddir="$HOME/bin/skl_shared"
+tmpdir="$WINEPREFIX/drive_c/$product" # Will be deleted!
+# Will be deleted! Should not be empty, root may be damaged otherwise
+sharedtmp="$WINEPREFIX/drive_c/skl_shared"
+builddir="$tmpdir/$product" # Will be deleted!
 
 if [ ! -e "$pyinstaller" ]; then
     echo "pyinstaller is not installed!"; exit
@@ -35,9 +39,21 @@ if [ ! -d "$resdir" ]; then
     echo "Folder $resdir does not exist!"; exit
 fi
 
+if [ ! -d "$shareddir/src" ]; then
+    echo "Folder $shareddir/src does not exist!"; exit
+fi
+
+if [ ! -d "$shareddir/resources" ]; then
+    echo "Folder $shareddir/resources does not exist!"; exit
+fi
+
 # Build with pyinstaller
 rm -rf "$tmpdir"
+rm -rf "$sharedtmp"/*
+mkdir -p "$sharedtmp"/{src,resources}
 mkdir -p "$builddir/app/tkinterhtml/tkhtml"
+cp -r "$shareddir"/src/* "$sharedtmp"/src/
+cp -r "$shareddir"/resources/* "$sharedtmp"/resources/
 cp -r "$srcdir"/* "$tmpdir"
 cp -r "$resdir" "$builddir"
 cp "$cmd" "$builddir"
@@ -50,7 +66,7 @@ cp -r "$tkhtmldir" "$builddir/app/tkinterhtml/tkhtml/"
 cd "$builddir/app"
 wine ./$product.exe&
 # Update the archive
-read -p "Update the AppImage? (Y/n) " choice
+read -p "Update the archive? Y/n" choice
 if [ "$choice" = "N" ] || [ "$choice" = "n" ]; then
     exit;
 fi
