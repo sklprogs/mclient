@@ -6,6 +6,7 @@ mclient:
   dictionaries), do this check only before showing the final article.
 
 multitrancom:
+- RU-EN, сохранить: "прич." has no full form
 - RU-EN, squimish: Implement "Варианты замены", delete "Способы выбора языков"
 - RU-EN, месса; RU-SP: тигр: when a new splitter is ready, check on
   these articles
