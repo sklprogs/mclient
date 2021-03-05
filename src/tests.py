@@ -105,8 +105,10 @@ class Get:
     def run_multitrancom(self):
         f = '[MClient] tests.Get.run_multitrancom'
         import plugins.multitrancom.get as gt
-        url = 'https://www.multitran.com/m.exe?a=3&sc=8&s=%D1%81%D0%B8%D0%BC%D0%BF%D1%82%D0%BE%D0%BC&l1=2&l2=1&SHL=2'
-        search = 'Медицина'
+        #url = 'https://www.multitran.com/m.exe?a=3&sc=8&s=%D1%81%D0%B8%D0%BC%D0%BF%D1%82%D0%BE%D0%BC&l1=2&l2=1&SHL=2'
+        #search = 'Медицина'
+        url = 'https://www.multitran.com/m.exe?s=working%20documentation&l1=1&l2=2&SHL=2'
+        search = 'working documentation'
         timer = sh.Timer(f)
         timer.start()
         result = gt.Get (search = search
@@ -600,9 +602,9 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sh.com.start()
-    #Get().run_multitrancom()
+    Get().run_multitrancom()
     #Get().run_dsl()
-    Tags().run_dsl()
+    #Tags().run_dsl()
     #Tags().run_multitrancom()
     #Tags().run_stardict()
     #Tags().analyze_tag()
