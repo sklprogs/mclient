@@ -2014,7 +2014,7 @@ class WebFrame:
                          ,maxrows = lg.objs.plugins.maxrows
                          )
         cells.run()
-        cells.dump(blocksdb=objs.blocksdb)
+        cells.dump(objs.blocksdb)
         
         mh.objs.get_htm().reset (data = objs.blocksdb.fetch()
                                 ,cols = lg.objs.request.cols
@@ -2050,7 +2050,7 @@ class WebFrame:
         pages.run()
         objs.blocksdb.update(pages.query)
         
-        self.set_title(arg=lg.objs.request.search)
+        self.set_title(lg.objs.request.search)
         if self.pos >= 0:
             self.select()
             self.shift_screen()
