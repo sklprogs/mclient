@@ -290,10 +290,9 @@ class Elems:
         sh.com.rep_deleted(f,count)
     
     def set_semino(self):
-        # Takes ~0.0034s for 'set' (EN-RU) on AMD E-300
         semino = 0
         for block in self.blocks:
-            if block.type_ == 'comment' and block.text == '; ':
+            if block.text == '; ':
                 semino += 1
             block.semino = semino
     

@@ -172,20 +172,19 @@ class Tags:
     
     def run_multitrancom(self):
         f = '[MClient] tests.Tags.run_multitrancom'
-        import plugins.multitrancom.cleanup as mccleanup
-        import plugins.multitrancom.tags as mctags
+        import plugins.multitrancom.cleanup as cu
+        import plugins.multitrancom.tags as tg
         ''' #NOTE: The file should be generated with
             'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
             to set 'dic' and some other types.
         '''
-        file = '/home/pete/bin/mclient/tests/multitrancom/Медицина.txt'
+        file = '/home/pete/bin/mclient/tests/multitrancom/симптом (browser) (2021-03-07).html'
         text = sh.ReadTextFile(file).get()
-        text = mccleanup.CleanUp(text).run()
-        mctags.Tags (text = text
-                    ,Debug = DEBUG
-                    ,maxrow = 30
-                    ,maxrows = 0
-                    ).run()
+        text = cu.CleanUp(text).run()
+        tg.Tags (text = text
+                ,Debug = DEBUG
+                ,maxrows = 0
+                ).run()
 
 
 
@@ -215,7 +214,6 @@ class Plugin:
         '''
         plugins.multitrandem.get.PATH = '/home/pete/.config/mclient/dics'
         iplug = mb.Plugin (Debug = DEBUG
-                          ,maxrow = 20
                           ,maxrows = 150
                           )
         
@@ -273,8 +271,7 @@ class Plugin:
         search = 'hello'
         
         iplug = mc.Plugin (Debug = DEBUG
-                          ,maxrow = 20
-                          ,maxrows = 150
+                          ,maxrows = 0
                           )
         iplug.request (url = url
                       ,search = search
@@ -600,13 +597,13 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.stardict.tags.__main__'
     sh.com.start()
-    Get().run_multitrancom()
+    #Get().run_multitrancom()
     #Get().run_dsl()
     #Tags().run_dsl()
     #Tags().run_multitrancom()
     #Tags().run_stardict()
     #Tags().analyze_tag()
     #Plugin().run_dsl()
-    #Plugin().run_multitrancom()
+    Plugin().run_multitrancom()
     #Plugin().run_multitrandem()
     sh.com.end()
