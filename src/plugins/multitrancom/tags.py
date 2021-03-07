@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import re
 import html
+
 import skl_shared.shared as sh
 from skl_shared.localize import _
-
 
 
 ''' Tag patterns:
@@ -46,62 +45,178 @@ from skl_shared.localize import _
     '''
 
 
-# Abbreviated dictionary titles
-pdic = 'td class="subj"'
+class Tag:
+    
+    def __init__(self):
+        self.type_ = ''
+        self.text = ''
+        self.name = ''
+        self.url = ''
+        self.rowno = -1
+        self.cellno = -1
+        self.Close = False
+        self.inherent = []
 
-# URLs
-purl1 = 'href="/m.exe?'
-# Failsafe
-purl2 = 'href="/M.exe?'
-purl3 = 'href="'
-purl4 = '">'
 
-# Comments
-pcom1 = '<i>'
-pcom2 = 'span style="color:gray"'
-# Gender
-pcom3 = 'span STYLE="color:gray"'
 
-# Corrective comments
-pcor1 = '<span STYLE="color:rgb(60,179,113)">'
-pcor2 = '<font color=DarkGoldenrod>'
+class AnalyzeTag:
 
-# Word Forms
-pwf1 = 'td colspan="'
-pwf2 = '" class="gray"'
+    def __init__(self,fragm):
+        self.set_values()
+        self.fragm = fragm
+    
+    def set_values(self):
+        self.Success = True
+        self.tag = Tag()
+        self.cur_row = 0
+        self.cur_cell = 0
+    
+    def check(self):
+        f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.check'
+        if not self.fragm:
+            self.Success = False
+            sh.com.rep_empty(f)
+    
+    def _set_name(self):
+        # Do this before setting a URL
+        f = '[MClient] plugins.multitrancom.tags.Tags._set_name'
+        self.tag.name = self.tag.text
+        if self.tag.name.startswith('<'):
+            self.tag.name = self.tag.name[1:]
+        pos = self.tag.name.find(' ')
+        if pos > -1:
+            self.tag.name = self.tag.name[:pos]
+        self.tag.name = self.tag.name.lower()
+    
+    def _set_text(self):
+        f = '[MClient] plugins.multitrancom.tags.Tags._set_text'
+        self.tag.text = self.fragm
+        if self.tag.text.startswith('</'):
+            self.tag.text = self.tag.text[2:]
+        elif self.tag.text.startswith('<'):
+            self.tag.text = self.tag.text[1:]
+        else:
+            mes = _('Pattern "{}" is not a tag!').format(self.tag.text)
+            sh.objs.get_mes(f,mes,True).show_warning()
+        if self.tag.text.endswith('>'):
+            self.tag.text = self.tag.text[:-1]
+        else:
+            mes = _('Pattern "{}" is not a tag!').format(self.tag.text)
+            sh.objs.get_mes(f,mes,True).show_warning()
 
-# Parts of speech
-psp = '<em>'
+    def _is_tag(self):
+        if self.fragm.startswith('<') and self.fragm.endswith('>'):
+            return True
+    
+    def _is_phrase(self):
+        # Terms in the 'Phrases' section
+        return 'class="phras"' in self.tag.text
+    
+    def _is_term(self):
+        return 'class="trans"' in self.tag.text \
+        or 'class="termsforsubject"' in self.tag.text \
+        or 'class="phraselist1"' in self.tag.text \
+        or 'class="phraselist2"' in self.tag.text
+    
+    def _is_dic(self):
+        # An abbreviated dictionary title
+        return 'class="subj"' in self.tag.text \
+        or 'class="phraselist0"' in self.tag.text
+    
+    def _is_comment(self):
+        # Comment/gender
+        # Can comprise both 'style' and 'STYLE'
+        return 'span style="color:gray"' in self.tag.text.lower()
+    
+    def _is_correction(self):
+        return self.tag.text in ('span STYLE="color:rgb(60,179,113)"'
+                                ,'font color=DarkGoldenrod'
+                                )
+    
+    def _is_user(self):
+        return 'UserName=' in self.tag.text
+    
+    def _is_url(self):
+        return 'href="' in self.tag.text
+    
+    def _is_wform(self):
+        # Wform/transcription
+        return 'td colspan="' in self.tag.text \
+        or '" class="gray"' in self.tag.text
+    
+    def _is_speech(self):
+        return self.tag.text == 'em'
+    
+    def _is_phrase_dic(self):
+        return 'name="phrases"' in self.tag.text
+    
+    def _is_script(self):
+        return self.tag.name == 'script'
+    
+    def _set_type(self):
+        if self._is_term():
+            self.tag.type_ = 'term'
+        elif self._is_comment():
+            self.tag.type_ = 'comment'
+        elif self._is_dic():
+            self.tag.type_ = 'dic'
+        elif self._is_wform():
+            self.tag.type_ = 'wform'
+        elif self._is_correction():
+            self.tag.type_ = 'correction'
+        elif self._is_phrase():
+            self.tag.type_ = 'phrase'
+        elif self._is_user():
+            # 'user' type should have a priority over 'url'
+            self.tag.type_ = 'user'
+        elif self._is_url():
+            self.tag.type_ = 'url'
+        elif self._is_speech():
+            self.tag.type_ = 'speech'
+        elif self._is_phrase_dic():
+            self.tag.type_ = 'phdic'
+        elif self._is_script():
+            self.tag.type_ = 'script'
+    
+    def _set_close(self):
+        if self.fragm.startswith('</'):
+            self.tag.Close = True
+    
+    def set_attr(self):
+        f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.set_attr'
+        if self.Success:
+            if self._is_tag():
+                self._set_close()
+                self._set_text()
+                self._set_name()
+                self._set_type()
+                self._set_url()
+            else:
+                self.tag.type_ = 'text'
+                self.tag.text = self.fragm
+        else:
+            sh.com.cancel(f)
+    
+    def run(self):
+        self.check()
+        self.set_attr()
+        return self.tag
+    
+    def _set_url(self):
+        if self.tag.type_ == 'url':
+            pattern = 'href="/m.exe?'
+            # Can be 'm.exe' or 'M.exe'
+            ind = self.tag.text.lower().find(pattern)
+            if ind > 0:
+                ind += len(pattern)
+                self.tag.text = self.tag.text[ind:]
+            else:
+                self.tag.text = ''
+            if self.tag.text.endswith('"'):
+                self.tag.text = self.tag.text[:-1]
+            else:
+                self.tag.text = ''
 
-# Terms
-ptm1 = 'td class="trans"'
-ptm2 = 'td class="termsforsubject"'
-
-# Terms in the 'Phrases' section
-pph = 'td class="phras"'
-
-# Tag patterns
-tag_pattern_del = ['m.exe?a=40&'          # Log in, Вход
-                  ,'m.exe?a=44'           # Купить
-                  ,'m.exe?a=45'           # Отзывы
-                  ,'m.exe?a=381'          # Скачать
-                  ,'m.exe?a=382'          # Contacts, Контакты
-                  ,'m.exe?a=256'          # English, Русский
-                  ,'m.exe?a=1&'           # Dictionary, Словари
-                  ,'m.exe?a=2&'           # Forum, Форум
-                  ,'m.exe?a=28&'          # +
-                  ,'&fl=1'                # ⇄
-                  ,'a href="#phrases'     # phrases, фразы
-                  ,'?fscreen=1'           # Full screen, Полный экран
-                  ,'td class="phras_cnt"' # Phrase entries count number
-                  ,'m.exe?a=365&'         # Terms of Use, Соглашение пользователя
-                  ]
-
-useful_tags = [pdic,purl1,purl2,pcom1
-              ,pcom2,pwf1,pwf2,psp
-              ,ptm1,ptm2,pph,pcor1
-              ,pcor2,pcom3
-              ]
 
 
 class Block:
@@ -118,225 +233,46 @@ class Block:
         self.j = -1
         self.last = -1
         self.no = -1
-        ''' Tag extraction algorithm is different in comparison with
-            the one of 'plugins.multitranru' (in particular, see
-            'Tags.blocks'). We need either to fill default SAME values
-            after tag extraction or to set the initial SAME value to 0.
-        '''
-        self.same = 0
+        self.same = -1
         ''' 'select' is an attribute of a *cell* which is valid
             if the cell has a non-blocked block of types 'term',
             'phrase' or 'transc'.
         '''
         self.select = -1
-        self.semino = -1
         self.speech = ''
         self.sprior = -1
+        self.transc = ''
         self.term = ''
         self.text = ''
-        ''' 'comment', 'dic', 'invalid', 'phrase', 'speech', 'term', 
-            'transc', 'wform'
+        ''' 'comment', 'correction', 'dic', 'invalid', 'phrase',
+            'speech', 'term', 'transc', 'wform'
         '''
-        self.transc = ''
-        self.type_ = ''
+        self.type_ = 'comment'
         self.url = ''
         self.urla = ''
         self.wform = ''
 
 
 
-class AnalyzeTag:
-
-    def __init__(self,tag):
-        self.set_values()
-        self.tag = tag
-    
-    def set_values(self):
-        self.blocks = []
-        self.dicf = ''
-        self.fragms = []
-
-    def set_dicf(self):
-        pattern = ' title="'
-        if pattern in self.tag and not 'UserName' in self.tag:
-            pos1 = self.tag.index(pattern) + len(pattern)
-            pos2 = self.tag.rfind('">')
-            self.dicf = self.tag[pos1:pos2]
-    
-    def debug(self):
-        f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.debug'
-        mes = _('Tag: "{}"').format(self.tag)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        nos = [i + 1 for i in range(len(self.fragms))]
-        headers = ['NO','FRAGM']
-        fragms = ['"{}"'.format(fragm) for fragm in self.fragms]
-        iterable = [nos,fragms]
-        mes = sh.FastTable(iterable,headers).run()
-        types = []
-        texts = []
-        nos = []
-        for i in range(len(self.blocks)):
-            nos.append(i+1)
-            types.append(self.blocks[i].type_)
-            texts.append(self.blocks[i].text)
-        iterable = [nos,types,texts]
-        headers = ('NO','TYPE','TEXT')
-        mes += '\n\n' + sh.FastTable(iterable,headers).run()
-        mes += '\n' + 'DICF: "{}"'.format(self.dicf)
-        sh.objs.txt = None
-        sh.com.run_fast_debug(f,mes)
-    
-    def set_correction(self):
-        if pcor1 in self.block.text or pcor2 in self.block.text:
-            self.block.type_ = 'correction'
-    
-    def run(self):
-        self.split()
-        self.fragms = [fragm.strip() for fragm in self.fragms \
-                       if fragm.strip()
-                      ]
-        for fragm in self.fragms:
-            self.blocks.append(Block())
-            self.blocks[-1].text = fragm
-        for self.block in self.blocks:
-            if self.block.text.startswith('<'):
-                if self.is_useful() and not self.is_useless():
-                    self.set_phrases()
-                    if not self.block.type_:
-                        self.set_wform()
-                    if not self.block.type_:
-                        self.set_dic()
-                    if not self.block.type_:
-                        self.set_term()
-                    if not self.block.type_:
-                        self.set_speech()
-                    if not self.block.type_:
-                        self.set_comment()
-                    if not self.block.type_:
-                        self.set_correction()
-                    self.set_url()
-                else:
-                    self.block.type_ = 'invalid'
-        self.set_types()
-        self.set_dicf()
-        return self.blocks
-
-    def set_types(self):
-        self.blocks = [self.strip() for self.block in self.blocks]
-        prev_url = ''
-        prev_type = 'comment'
-        for block in self.blocks:
-            if block.url:
-                prev_url = block.url
-            else:
-                block.url = prev_url
-            if block.type_:
-                prev_type = block.type_
-            else:
-                block.type_ = prev_type
-        self.blocks = [block for block in self.blocks 
-                       if block.text and block.type_ != 'invalid'
-                      ]
-        for block in self.blocks:
-            if block.type_ == 'comment' and block.url:
-                block.type_ = 'term'
-    
-    def is_useless(self):
-        for tag in tag_pattern_del:
-            if tag in self.block.text:
-                return True
-
-    def is_useful(self):
-        for tag in useful_tags:
-            if tag in self.block.text:
-                return True
-
-    def strip(self):
-        self.block.text = re.sub('<.*>','',self.block.text)
-        self.block.text = self.block.text.strip()
-        return self.block
-    
-    def split(self):
-        ''' Use custom split because we need to preserve delimeters
-            (cannot distinguish tags and contents otherwise).
-        '''
-        tmp = ''
-        for sym in self.tag:
-            if sym == '>':
-                tmp += sym
-                self.fragms.append(tmp)
-                tmp = ''
-            elif sym == '<':
-                if tmp:
-                    self.fragms.append(tmp)
-                tmp = sym
-            else:
-                tmp += sym
-        if tmp:
-            self.fragms.append(tmp)
-
-    def set_comment(self):
-        if pcom1 in self.block.text or pcom2 in self.block.text \
-        or pcom3 in self.block.text:
-            self.block.type_ = 'comment'
-    
-    def set_dic(self):
-        if pdic in self.block.text:
-            self.block.type_ = 'dic'
-
-    def set_wform(self):
-        if pwf1 in self.block.text and pwf2 in self.block.text:
-            self.block.type_ = 'wform'
-
-    def set_phrases(self):
-        if pph in self.block.text:
-            self.block.type_ = 'phrase'
-
-    def set_term(self):
-        f = '[MClient] plugins.multitrancom.tags.AnalyzeTag.term'
-        if ptm1 in self.block.text or ptm2 in self.block.text:
-            self.block.type_ = 'term'
-
-    def set_url(self):
-        ''' Otherwise, 'self.block' will be returned when there is
-            no match.
-        '''
-        if purl1 in self.block.text or purl2 in self.block.text:
-            ind = self.block.text.find(purl3)
-            if ind > 0:
-                ind += len(purl1)
-                self.block.url = self.block.text[ind:]
-            if self.block.url.endswith(purl4):
-                self.block.url = self.block.url.replace(purl4,'')
-            else:
-                self.block.url = ''
-
-    def set_speech(self):
-        if psp in self.block.text:
-            self.block.type_ = 'speech'
-
-
-
 class Tags:
-
-    def __init__ (self,text,Debug=False
-                 ,maxrow=50,maxrows=1000
-                 ):
+    
+    def __init__(self,text,Debug=False,maxrows=0):
         self.set_values()
-        if text:
-            self.text = list(text)
+        self.code = text
         self.Debug = Debug
-        self.maxrow = maxrow
         self.maxrows = maxrows
-
+    
     def set_values(self):
+        self.Success = True
         self.abbr = {}
         self.blocks = []
+        self.fragms = []
         self.tags = []
-        self.text = ''
+        self.open = []
     
-    def debug_abbr(self):
-        f = '[MClient] plugins.multitrancom.tags.Tags.debug_abbr'
+    def _debug_abbr(self):
+        f = '[MClient] plugins.multitrancom.tags.Tags._debug_abbr'
+        mes = ''
         if self.abbr:
             keys = []
             values = []
@@ -347,116 +283,203 @@ class Tags:
             headers = ('NO','ABBR','FULL')
             iterable = [nos,keys,values]
             mes = sh.FastTable(iterable,headers).run()
-            sh.com.run_fast_debug(f,mes)
         else:
             sh.com.rep_empty(f)
+        return _('Abbreviations:') + '\n' + mes
     
-    def get_tags(self):
-        ''' Split the text by closing tags. To speed up, we remove
-            closing tags right away.
-        '''
-        if not self.tags:
-            Ignore = False
-            tmp = ''
-            for i in range(len(self.text)):
-                if self.text[i] == '<':
-                    if i < len(self.text) - 1 \
-                    and self.text[i+1] == '/':
-                        Ignore = True
-                        if tmp:
-                            self.tags.append(tmp)
-                            tmp = ''
-                    else:
-                        tmp += self.text[i]
-                elif self.text[i] == '>':
-                    if Ignore:
-                        Ignore = False
-                    else:
-                        tmp += self.text[i]
-                elif not Ignore:
-                    tmp += self.text[i]
-            # Should be needed only for broken tags
-            if tmp:
-                self.tags.append(tmp)
-        return self.tags
-
-    def debug_tags(self):
-        f = '[MClient] plugins.multitrancom.tags.Tags.debug_tags'
-        messages = []
-        for i in range(len(self.tags)):
-            mes = "{}:'{}'".format(i,self.tags[i])
-            messages.append(mes)
-        mes = '\n'.join(messages)
-        #sh.objs.get_mes(f,message,True).show_debug()
-        sh.objs.get_txt().reset (title = f
-                                ,text = mes
-                                )
-        sh.objs.txt.show()
-
-    def debug_blocks(self):
-        f = '[MClient] plugins.multitrancom.tags.Tags.debug_blocks'
-        headers = ('NO','TYPE','TEXT','URL','SAME')
-        rows = []
-        for i in range(len(self.blocks)):
-            rows.append ([i + 1
-                         ,self.blocks[i].type_
-                         ,self.blocks[i].text
-                         ,self.blocks[i].url
-                         ,self.blocks[i].same
-                         ]
-                        )
-        mes = sh.FastTable (headers = headers
-                           ,iterable = rows
-                           ,maxrow = self.maxrow
-                           ,maxrows = self.maxrows
-                           ,Transpose = True
-                           ).run()
-        sh.objs.txt = None
-        sh.com.run_fast_debug(f,mes)
-
-    def debug(self):
-        if self.Debug:
-            self.debug_tags()
-            self.debug_blocks()
-            self.debug_abbr()
-
-    def decode_entities(self):
-        ''' - Needed both for MT and Stardict. Convert HTML entities
-              to a human readable format, e.g., '&copy;' -> '©'.
-            - We should decode entities only after extracting tags since
-              user terms/comments in Multitran often contain such
-              symbols as '<' or '>'.
-              #NOTE: currently this does not help since Multitran
-              does not escape '<' and '>' in user terms/comments
-              properly!
-        '''
-        f = '[MClient] plugins.multitrancom.tags.Tags.decode_entities'
-        try:
+    def set_abbr(self):
+        f = '[MClient] plugins.multitrancom.tags.Tags.set_abbr'
+        if self.Success:
             for block in self.blocks:
-                block.text = html.unescape(block.text)
-                ''' This is done since we do not unescape
-                    the entire text any more.
-                '''
-                block.url = block.url.replace('&amp;','&')
-        except Exception as e:
-            sh.com.rep_failed(f,e)
+                if block.type_ == 'dic':
+                    self.abbr[block.dic] = block.dicf
+        else:
+            sh.com.cancel(f)
     
-    def get_blocks(self):
-        if not self.blocks:
+    def _is_script(self,tag):
+        for subtag in tag.inherent:
+            if subtag.name == 'script':
+                return True
+    
+    def _close(self,name):
+        i = len(self.open) - 1
+        while i >= 0:
+            if self.open[i].name == name:
+                del self.open[i]
+                return True
+            i -= 1
+    
+    def set_inherent(self):
+        f = '[MClient] plugins.multitrancom.tags.Tags.set_inherent'
+        if self.Success:
             for tag in self.tags:
-                itag = AnalyzeTag(tag)
-                self.blocks += itag.run()
-                if itag.dicf:
-                    dics = [block.text for block in itag.blocks \
-                            if block.type_ == 'dic'
-                           ]
-                    if dics:
-                        self.abbr[dics[0]] = itag.dicf
-        return self.blocks
-
+                if tag.Close:
+                    self._close(tag.name)
+                elif tag.type_ == 'text':
+                    tag.inherent = list(self.open)
+                elif tag.type_:
+                    self.open.append(tag)
+        else:
+            sh.com.cancel(f)
+    
+    def set_nos(self):
+        f = '[MClient] plugins.multitrancom.tags.Tags.set_nos'
+        if self.Success:
+            currow = -1
+            curcell = -1
+            for tag in self.tags:
+                if not tag.Close:
+                    if tag.name == 'tr':
+                        currow += 1
+                    elif tag.name == 'td':
+                        curcell += 1
+                tag.rowno = currow
+                tag.cellno = curcell
+            """
+            ''' tag.cellno == -1 is actually OK since rows come before
+                any cells.
+            '''
+            for tag in self.tags:
+                if tag.rowno > -1:
+                    tag.cellno += 1
+                break
+            """
+    
+    def _debug_blocks(self):
+        nos = [i + 1 for i in range(len(self.blocks))]
+        types = [block.type_ for block in self.blocks]
+        texts = ['"{}"'.format(block.text) for block in self.blocks]
+        urls = ['"{}"'.format(block.url) for block in self.blocks]
+        rownos = [block.rowno for block in self.blocks]
+        cellnos = [block.cellno for block in self.blocks]
+        iterable = [nos,types,texts,urls,rownos,cellnos]
+        headers = (_('#'),_('TYPE'),_('TEXT'),'URL',_('ROW #')
+                  ,_('CELL #')
+                  )
+        mes = sh.FastTable (iterable = iterable
+                           ,headers = headers
+                           ,maxrow = 50
+                           ,maxrows = self.maxrows
+                           ).run()
+        return _('Blocks:') + '\n' + mes
+    
+    def set_blocks(self):
+        f = '[MClient] plugins.multitrancom.tags.Tags.set_blocks'
+        if self.Success:
+            tags = [tag for tag in self.tags \
+                    if tag.type_ == 'text' and not self._is_script(tag)
+                   ]
+            for tag in tags:
+                block = Block()
+                for subtag in tag.inherent:
+                    if subtag.type_ == 'url':
+                        block.url = subtag.text
+                    else:
+                        block.type_ = subtag.type_
+                block.text = tag.text
+                block.rowno = tag.rowno
+                block.cellno = tag.cellno
+                # This is because MT generates invalid links
+                block.url = html.unescape(block.url)
+                block.text = html.unescape(block.text)
+                self.blocks.append(block)
+        else:
+            sh.com.cancel(f)
+    
+    def assign(self):
+        f = '[MClient] plugins.multitrancom.tags.Tags.assign'
+        if self.Success:
+            for fragm in self.fragms:
+                self.tags.append(AnalyzeTag(fragm).run())
+        else:
+            sh.com.cancel(f)
+    
+    def _debug_code(self):
+        return _('Code:') + '\n' + '"{}"'.format(self.code)
+    
+    def _debug_fragms(self):
+        mes = []
+        for i in range(len(self.fragms)):
+            sub = '{}: "{}"'.format(i+1,self.fragms[i])
+            mes.append(sub)
+        return _('Fragments:') + '\n' + '\n'.join(mes)
+    
+    def _debug_tags(self):
+        nos = [i + 1 for i in range(len(self.tags))]
+        closes = ['{}'.format(tag.Close) for tag in self.tags]
+        names = ['"{}"'.format(tag.name) for tag in self.tags]
+        texts = ['"{}"'.format(tag.text) for tag in self.tags]
+        types = ['"{}"'.format(tag.type_) for tag in self.tags]
+        rownos = ['{}'.format(tag.rowno) for tag in self.tags]
+        cellnos = ['{}'.format(tag.cellno) for tag in self.tags]
+        inherent = []
+        for tag in self.tags:
+            subtags = []
+            for subtag in tag.inherent:
+                subtags.append(subtag.name)
+            subtags = ', '.join(subtags)
+            inherent.append(subtags)
+        iterable = [nos,closes,names,texts,types,inherent,rownos,cellnos]
+        headers = (_('#'),_('CLOSING'),_('NAME'),_('TEXT'),_('TYPE')
+                  ,_('OPEN'),_('ROW'),_('CELL')
+                  )
+        mes = sh.FastTable (iterable = iterable
+                           ,headers = headers
+                           ,maxrow = 50
+                           ,maxrows = self.maxrows
+                           ).run()
+        return _('Tags:') + '\n' + mes
+    
+    def debug(self):
+        f = '[MClient] plugins.multitrancom.tags.Tags.debug'
+        if self.Debug:
+            if self.Success:
+                #self._debug_abbr()
+                mes = [self._debug_code(),self._debug_fragms()
+                      ,self._debug_tags(),self._debug_blocks()
+                      ]
+                mes = '\n\n'.join(mes)
+                sh.com.run_fast_debug(f,mes)
+            else:
+                sh.com.cancel(f)
+        else:
+            sh.com.rep_lazy(f)
+    
+    def check(self):
+        f = '[MClient] plugins.multitrancom.tags.Tags.check'
+        if not self.code:
+            # Avoid None on output
+            self.code = ''
+            self.Success = False
+            sh.com.rep_empty(f)
+    
+    def split(self):
+        f = '[MClient] plugins.multitrancom.tags.Tags.split'
+        if self.Success:
+            fragm = ''
+            for sym in list(self.code):
+                if sym == '<':
+                    if fragm:
+                        self.fragms.append(fragm)
+                    fragm = sym
+                elif sym == '>':
+                    fragm += sym
+                    self.fragms.append(fragm)
+                    fragm = ''
+                else:
+                    fragm += sym
+            if fragm:
+                self.fragms.append(fragm)
+        else:
+            sh.com.cancel(f)
+    
     def run(self):
-        self.get_tags()
-        self.get_blocks()
-        self.decode_entities()
+        self.check()
+        self.split()
+        self.assign()
+        self.set_nos()
+        self.set_inherent()
+        self.set_blocks()
+        self.set_abbr()
         self.debug()
         return self.blocks

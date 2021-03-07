@@ -4,9 +4,9 @@
 ''' This module prepares blocks after extracting tags for permanently
     storing in DB.
     Needs attributes in blocks: TYPE, DIC, WFORM, SPEECH, TRANSC,
-    TERM, SAMECELL
-    Modifies attributes:        TYPE, TEXT, DIC, WFORM, SPEECH,
-    TRANSC, TERM, SAMECELL
+                                TERM, SAMECELL
+    Modifies attributes: TYPE, TEXT, DIC, WFORM, SPEECH, TRANSC, TERM,
+                         SAMECELL
     Since TYPE is modified here, SAMECELL is filled here.
     SELECTABLE cannot be filled because it depends on CELLNO which is
     created in Cells; Cells modifies TEXT of DIC, WFORM, SPEECH, TRANSC
@@ -67,510 +67,6 @@ class Abbr:
 
 
 
-class Same:
-    ''' Finely adjust SAME fields here. Default SAME values are already
-        set (as early as in 'Tags'), so rewrite them carefully.
-    '''
-    def __init__ (self,blocks,Debug=False
-                 ,maxrow=70,maxrows=1000
-                 ):
-        self.blocks = blocks
-        self.Debug = Debug
-        self.fixed = ('dic','wform','transc','speech')
-        self.flying = ('comment','correction','definition','user')
-        self.maxrow = maxrow
-        self.maxrows = maxrows
-        self.see_end = ['(см.',' см.','см. также','см.также'
-                       ,'смотри также','смотрите также',' see'
-                       ,'(see','see also'
-                       ]
-        self.see_start = ['см.']
-    
-    def run_wform_com_term_fixed(self):
-        # RU-EN: tick off => tick someone off
-        f = '[MClient] plugins.multitrancom.elems.Same.run_wform_com_term_fixed'
-        count = 0
-        i = 3
-        while i < len(self.blocks):
-            blocks = [self.blocks[i-3],self.blocks[i-2],self.blocks[i-1]
-                     ,self.blocks[i]
-                     ]
-            if self.is_same_semino(blocks):
-                if self.blocks[i-3].type_ == 'wform' \
-                and self.blocks[i-2].type_ == 'comment' \
-                and self.blocks[i-2].same == 0 \
-                and self.blocks[i-1].type_ == 'term' \
-                and self.blocks[i-1].same == 1 \
-                and self.blocks[i].type_ in self.fixed:
-                    count += 1
-                    ''' We change the type and SAME in order to further
-                        cover these blocks by 'Elems.unite_fixed_same'.
-                    '''
-                    self.blocks[i-2].same = 1
-                    self.blocks[i-1].type_ = 'comment'
-            i += 1
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def run_com_term_speech(self):
-        # RU-EN: endpoint => when denoting a ray, its endpoint
-        f = '[MClient] plugins.multitrancom.elems.Same.run_com_term_speech'
-        count = 0
-        i = 2
-        while i < len(self.blocks):
-            blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
-            if self.is_same_semino(blocks):
-                if self.blocks[i-2].type_ == 'comment' \
-                and self.blocks[i-2].same == 0 \
-                and self.blocks[i-1].type_ == 'term' \
-                and self.blocks[i-1].same == 1 \
-                and self.blocks[i].type_ == 'speech':
-                    count += 1
-                    ''' We change the type such as to be further
-                        processed by 'Elems.unite_fixed_same'.
-                    '''
-                    self.blocks[i-2].type_ = 'wform'
-                    self.blocks[i-1].type_ = 'comment'
-            i += 1
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def is_ends_see(self,string):
-        for item in self.see_end:
-            if string.endswith(item):
-                return True
-    
-    def is_starts_see(self,string):
-        for item in self.see_start:
-            if string.startswith(item):
-                return True
-    
-    def run_see_also(self):
-        f = '[MClient] plugins.multitrancom.elems.Same.run_see_also'
-        count = 0
-        i = 1
-        while i < len(self.blocks):
-            if self.is_ends_see(self.blocks[i-1].text) \
-            or self.is_starts_see(self.blocks[i].text):
-                count += 1
-                self.blocks[i].same = 1
-            i += 1
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def set_rest_flying(self):
-        ''' Set SAME=0 to SAME=1 for flying blocks that were not
-            processed before because of different SEMINO.
-        '''
-        f = '[MClient] plugins.multitrancom.elems.Same.set_rest_flying'
-        count = 0
-        i = 1
-        while i < len(self.blocks):
-            if self.blocks[i-1].semino != self.blocks[i].semino \
-            and self.blocks[i-1].same < 1 \
-            and self.blocks[i-1].type_ in self.flying:
-                count += 1
-                self.blocks[i-1].same = 1
-            i += 1
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def reassign_end(self):
-        f = '[MClient] plugins.multitrancom.elems.Same.reassign_end'
-        count = 0
-        if self.blocks:
-            if self.blocks[-1].same < 1 \
-            and self.blocks[-1].type_ in self.flying:
-                count += 1
-                self.blocks[-1].same = 1
-            if count:
-                mes = _('{} matches').format(count)
-                sh.objs.get_mes(f,mes,True).show_debug()
-        else:
-            sh.com.rep_empty(f)
-    
-    def run_phrase_com(self):
-        f = '[MClient] plugins.multitrancom.elems.Same.run_phrase_com'
-        count = 0
-        i = 1
-        while i < len(self.blocks):
-            blocks = [self.blocks[i-1],self.blocks[i]]
-            if self.is_same_semino(blocks):
-                if self.blocks[i-1].type_ == 'phrase' \
-                and self.blocks[i].type_ == 'comment' \
-                and self.blocks[i].same == 0:
-                    count += 1
-                    self.blocks[i].same = 1
-            i += 1
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def set_by_semino(self):
-        i = 1
-        while i < len(self.blocks):
-            if self.blocks[i-1].semino > -1 \
-            and self.blocks[i].same == -1:
-                if self.blocks[i-1].semino == self.blocks[i].semino:
-                    self.blocks[i].same = 0
-                else:
-                    self.blocks[i].same = 1
-            i += 1
-    
-    def is_same_semino(self,blocks):
-        nos = [block.semino for block in blocks]
-        if len(set(nos)) == 1:
-            return True
-    
-    def run_user_cor_user(self):
-        # (GeorgeK; это "тендерная документация" playa4life)
-        f = '[MClient] plugins.multitrancom.elems.Same.run_user_cor_user'
-        count = 0
-        i = 4
-        while i < len(self.blocks):
-            blocks = [self.blocks[i-4],self.blocks[i-3],self.blocks[i-2]
-                     ,self.blocks[i-1],self.blocks[i]
-                     ]
-            if self.is_same_semino(blocks):
-                if self.blocks[i-4].type_ in ('comment','correction') \
-                and self.blocks[i-3].type_ == 'user' \
-                and self.blocks[i-2].type_ == 'correction' \
-                and self.blocks[i-1].type_ == 'user' \
-                and self.blocks[i].type_ in ('comment','correction') \
-                and self.blocks[i-4].text.endswith('(') \
-                and self.blocks[i].text.startswith(')'):
-                    count += 1
-                    self.blocks[i-3].same = 1
-                    self.blocks[i-2].same = 1
-                    self.blocks[i-1].same = 1
-                    self.blocks[i].same = 1
-            i += 1
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def _has_extra_bracket(self,block):
-        return block.text.count('(') > block.text.count(')')
-    
-    def run_user_brackets(self):
-        f = '[MClient] plugins.multitrancom.elems.Same.run_user_brackets'
-        count = 0
-        i = 2
-        while i < len(self.blocks):
-            blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
-            if self.is_same_semino(blocks):
-                if self.blocks[i-2].type_ in ('comment','correction') \
-                and self._has_extra_bracket(self.blocks[i-2]) \
-                and self.blocks[i-1].type_ == 'user' \
-                and self.blocks[i].text.startswith(')'):
-                    count += 1
-                    self.blocks[i-1].same = 1
-                    self.blocks[i].same = 1
-            i += 1
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def run_com_term_com(self):
-        i = 2
-        while i < len(self.blocks):
-            blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
-            if self.is_same_semino(blocks):
-                if self.blocks[i-2].type_ == 'comment' \
-                and self.blocks[i-1].type_ == 'term' \
-                and self.blocks[i].type_ in ('comment','correction'):
-                    if self.blocks[i-2].text.startswith('(') \
-                    and not ')' in self.blocks[i-2].text \
-                    and self.blocks[i].text.startswith(')'):
-                        # 'self.blocks[i-2]' can actually have any SAME
-                        self.blocks[i-1].same = 1
-                        self.blocks[i].same = 1
-            i += 1
-    
-    def run_wform_com_fixed(self):
-        ''' Set a specific 'definition' type for blocks that are tagged
-            by multitran.com as comments (or word forms, see
-            'Elems.definitions') but are placed next to word forms.
-            We create the new type since after removing fixed types
-            there could be no other way to reinsert them without
-            associating definitions with wrong cells (fixed types are
-            reinserted when DIC, WFORM or SPEECH change, but there
-            are cases when a definition block is duplicated
-            by multitran.com and those fields remain unchanged, see,
-            for example, 'memory pressure').
-        '''
-        f = '[MClient] plugins.multitrancom.elems.Same.run_wform_com_fixed'
-        count = 0
-        i = 2
-        while i < len(self.blocks):
-            blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
-            if not self.is_same_semino(blocks):
-                ''' Do not check the 'same' value of a definition block
-                    since it can (and should) already be set to 1.
-                '''
-                if self.blocks[i-2].type_ == 'wform' \
-                and self.blocks[i-1].type_ == 'comment' \
-                and self.blocks[i].type_ in self.fixed:
-                    count += 1
-                    self.blocks[i-1].type_ = 'definition'
-                    ''' 'same' value of the definition block should
-                        already be set to 1, but we assign it just to be
-                        on a safe side.
-                    '''
-                    self.blocks[i-1].same = 1
-            i += 1
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def run_wform_com_term(self):
-        # Source-specific
-        f = '[MClient] plugins.multitrancom.elems.Same.run_wform_com_term'
-        count = 0
-        i = 2
-        while i < len(self.blocks):
-            blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
-            if self.is_same_semino(blocks):
-                if self.blocks[i-2].type_ == 'wform' \
-                and self.blocks[i-2].same == 0 \
-                and self.blocks[i-2].url \
-                and self.blocks[i-1].type_ == 'comment' \
-                and self.blocks[i-1].same == 0 \
-                and self.blocks[i].type_ == 'term' \
-                and self.blocks[i].same == 1:
-                    count += 1
-                    self.blocks[i-2].type_ = 'term'
-                    self.blocks[i-1].same = 1
-            i += 1
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def run_com_com(self):
-        ''' Fix the 'comment (SAME=0) - comment (SAME=0)' structure
-            which may be encountered due to that word forms can be
-            indistinguishable from comments. The latter happens only
-            in the present source, so this code is plugin-specific.
-        '''
-        f = '[MClient] plugins.multitrancom.elems.Same.run_com_com'
-        count = 0
-        i = 2
-        while i < len(self.blocks):
-            blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
-            if self.is_same_semino(blocks):
-                if self.blocks[i-1].type_ == 'comment' \
-                and self.blocks[i-1].same == 0 \
-                and self.blocks[i].type_ == 'comment' \
-                and self.blocks[i].same == 0:
-                    count += 1
-                    # Do not allow 'wform+wform' structures
-                    if self.blocks[i-2].type_ in ('dic','speech'
-                                                 ,'transc'
-                                                 ):
-                        self.blocks[i-1].type_ = 'wform'
-                        self.blocks[i].same = 1
-                    else:
-                        self.blocks[i-1].same = 1
-            i += 1
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def run_com_term(self):
-        ''' If a comment has SAME=0, then the next non-fixed type block
-            must have SAME=1 because the comment cannot occupy
-            an entire cell (otherwise, this is actually, for example,
-            a word form). I do not use 'correction' and 'user' types
-            here since they come only after other blocks and always have
-            SAME=1.
-        '''
-        f = '[MClient] plugins.multitrancom.elems.Same.run_com_term'
-        count = 0
-        i = 1
-        while i < len(self.blocks):
-            blocks = [self.blocks[i-1],self.blocks[i]]
-            if self.is_same_semino(blocks):
-                if self.blocks[i-1].type_ == 'comment' \
-                and self.blocks[i-1].same == 0:
-                    count += 1
-                    if self.blocks[i].type_ == 'term':
-                        self.blocks[i].same = 1
-                    else:
-                        self.blocks[i-1].same = 1
-            i += 1
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def run_term_com_fixed(self):
-        ''' Set SAME value of a comment prior to a fixed type to 1
-            even if it does not comprise brackets.
-        '''
-        f = '[MClient] plugins.multitrancom.elems.Same.run_term_com_fixed'
-        count = 0
-        i = 2
-        while i < len(self.blocks):
-            blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
-            if self.is_same_semino(blocks):
-                if self.blocks[i-2].type_ == 'term' \
-                and self.blocks[i-1].type_ == 'comment' \
-                and self.blocks[i].type_ in self.fixed:
-                    count += 1
-                    self.blocks[i-1].same = 1
-            i += 1
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def run_all_coms(self):
-        f = '[MClient] plugins.multitrancom.elems.Same.run_all_coms'
-        count = 0
-        i = 1
-        while i < len(self.blocks):
-            blocks = [self.blocks[i-1],self.blocks[i]]
-            if self.is_same_semino(blocks):
-                ''' First comments in structures like 'com-term-com'
-                    can be of SAME=0, so we should be careful here.
-                '''
-                if self.blocks[i].type_ == 'comment' \
-                and self.blocks[i].text.startswith('(') \
-                or self.blocks[i].type_ in ('user','correction'):
-                    if self.blocks[i-1].type_ not in self.fixed:
-                        count += 1
-                        self.blocks[i].same = 1
-            i += 1
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def run_term_com_term(self):
-        f = '[MClient] plugins.multitrancom.elems.Same.run_term_com_term'
-        count = 0
-        i = 2
-        while i < len(self.blocks):
-            blocks = [self.blocks[i-2],self.blocks[i-1],self.blocks[i]]
-            if self.is_same_semino(blocks):
-                if self.blocks[i-2].type_ == 'term' \
-                and self.blocks[i-1].type_ == 'comment' \
-                and self.blocks[i].type_ == 'term':
-                    ''' There can be a 'comment-term; comment-term' case
-                        (with the comments having SAME=1) which
-                        shouldn't be matched. See multitran.com:
-                        eng-rus: 'tree limb'.
-                    '''
-                    if not self.blocks[i-1].text.startswith('('):
-                        cond1 = sh.Text(self.blocks[i-2].text).has_cyrillic()\
-                                and sh.Text(self.blocks[i-1].text).has_cyrillic()\
-                                and sh.Text(self.blocks[i].text).has_cyrillic()
-                        cond2 = sh.Text(self.blocks[i-2].text).has_latin()\
-                                and sh.Text(self.blocks[i-1].text).has_latin()\
-                                and sh.Text(self.blocks[i].text).has_latin()
-                        if cond1 or cond2:
-                            count += 1
-                            self.blocks[i-1].same = 1
-                            self.blocks[i].same = 1
-                    ''' Fix cases like RU-EN: 'external shell' ->
-                        'Математика'. We take a guess here that '...'
-                        relates to a previous block.
-                    '''
-                    if self.blocks[i-1].text == '...':
-                        count += 1
-                        self.blocks[i-1].same = 1
-            i += 1
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def run_speech(self):
-        ''' 'speech' blocks have 'same = 1' when analyzing MT because
-            they are within a single tag. We fix it here, not in Tags,
-            because Tags are assumed to output the result 'as is'.
-        '''
-        f = '[MClient] plugins.multitrancom.elems.Same.run_speech'
-        count = 0
-        i = 1
-        while i < len(self.blocks):
-            blocks = [self.blocks[i-1],self.blocks[i]]
-            if self.is_same_semino(blocks):
-                if self.blocks[i-1].type_ == 'speech':
-                    count += 1
-                    self.blocks[i-1].same = 0
-                    self.blocks[i].same = 0
-            i += 1
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def run_punc(self):
-        f = '[MClient] plugins.multitrancom.elems.Same.run_punc'
-        count = 0
-        for block in self.blocks:
-            for sym in sh.lg.punc_array + [')']:
-                if block.text.startswith(sym) and block.same < 1:
-                    count += 1
-                    block.same = 1
-                    break
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def debug(self):
-        f = 'plugins.multitrancom.elems.Same.debug'
-        if self.Debug:
-            headers = ('NO','TYPE','TEXT','SAMECELL')
-            rows = []
-            for i in range(len(self.blocks)):
-                rows.append ([i + 1
-                             ,self.blocks[i].type_
-                             ,self.blocks[i].text
-                             ,self.blocks[i].same
-                             ]
-                            )
-            mes = sh.FastTable (headers = headers
-                               ,iterable = rows
-                               ,maxrow = self.maxrow
-                               ,maxrows = self.maxrows
-                               ,Transpose = True
-                               ).run()
-            sh.com.run_fast_debug(f,mes)
-    
-    def run(self):
-        f = 'plugins.multitrancom.elems.Same.run'
-        if self.blocks:
-            self.set_by_semino()
-            self.run_speech()
-            self.run_see_also()
-            self.run_all_coms()
-            self.run_user_cor_user()
-            self.run_user_brackets()
-            self.run_term_com_term()
-            self.run_term_com_fixed()
-            self.run_com_com()
-            self.run_wform_com_term()
-            self.run_wform_com_fixed()
-            self.run_com_term_com()
-            self.run_phrase_com()
-            self.run_punc()
-            self.reassign_end()
-            # Can cause wrong SAME=1 if used beforehand
-            self.run_com_term()
-            # Do this after 'self.run_com_term'
-            self.run_com_term_speech()
-            # Do this after 'self.run_com_term'
-            self.run_wform_com_term_fixed()
-            self.set_rest_flying()
-            self.debug()
-            return self.blocks
-        else:
-            sh.com.rep_empty(f)
-            return []
-
-
-
 # A copy of Tags.Block
 class Block:
     
@@ -578,6 +74,7 @@ class Block:
         self.block = -1
         # Applies to non-blocked cells only
         self.cellno = -1
+        self.rowno = -1
         self.dic = ''
         self.dicf = ''
         self.dprior = 0
@@ -631,7 +128,7 @@ class Elems:
           vary depending on the view. Incorrect sorting by TERM may
           result in putting a 'term' item before fixed columns.
     '''
-    def __init__ (self,blocks,abbr,langs
+    def __init__ (self,blocks,abbr,langs=[]
                  ,Debug=False,maxrow=20
                  ,maxrows=1000,search=''
                  ):
@@ -641,14 +138,117 @@ class Elems:
         self.defins = []
         self.dicurls = {}
         self.fixed = ('dic','wform','transc','speech')
-        self.langs = langs
         self.maxrow = maxrow
         self.maxrows = maxrows
+        #TODO (?): delete 'langs', 'pattern' from self and input
         self.pattern = search.strip()
-        ''' Entries of these users are separated into individual
-            subject sections.
+    
+    def set_phrase_com(self):
+        # Emptiness check should already be done in 'self.check'
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].type_ == 'phrase' \
+            and self.blocks[i].type_ == 'comment' \
+            and self.blocks[i-1].same == 0 and self.blocks[i].same == 0:
+                self.blocks[i].text = ' [{}]'.format(self.blocks[i].text)
+                self.blocks[i].same = 1
+            i += 1
+    
+    def set_same(self):
+        # Emptiness check should already be done in 'self.check'
+        self.blocks[0].same = 0
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].semino != self.blocks[i].semino \
+            or self.blocks[i-1].rowno != self.blocks[i].rowno \
+            or self.blocks[i-1].cellno != self.blocks[i].cellno:
+                self.blocks[i].same = 0
+            else:
+                self.blocks[i].same = 1
+            i += 1
+    
+    def delete_trash(self):
+        ''' Sometimes it's not enough to delete comment-only tail since
+            there might be no 'phdic' type which serves as an indicator.
         '''
-        self.vip = ['Gruzovik','Игорь Миг']
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_trash'
+        count = 0
+        i = 0
+        while i < len(self.blocks):
+            if self.blocks[i].text in ('<!--','-->'):
+                del self.blocks[i]
+                i -= 1
+                count += 1
+            i += 1
+        sh.com.rep_deleted(f,count)
+    
+    def set_phdic(self):
+        # Takes ~0.001s for 'set' (EN-RU) on AMD E-300
+        f = '[MClient] plugins.multitrancom.elems.Elems.set_phdic'
+        index_ = self.get_phdic()
+        if index_ is None:
+            sh.com.rep_lazy(f)
+        else:
+            text = self.blocks[index_+1].text + self.blocks[index_+2].text
+            url = self.blocks[index_+1].url
+            del self.blocks[index_]
+            del self.blocks[index_]
+            self.blocks[index_].type_ = 'phdic'
+            self.blocks[index_].text = text
+            self.blocks[index_].url = url
+            self.blocks[index_].select = 1
+            self.blocks[index_].dic = self.blocks[index_].text
+    
+    def get_phdic(self):
+        ''' Sample blocks:
+            comment, comment, comment, phrase
+            " process: ", "17416 фраз", " в 327 тематиках", "3D-печать"
+        '''
+        f = '[MClient] plugins.multitrancom.elems.Elems.get_phdic'
+        i = len(self.blocks) - 1
+        while i > 3:
+            if self.blocks[i-3].type_ == 'comment' \
+            and self.blocks[i-2].type_ == 'comment' \
+            and self.blocks[i-1].type_ == 'comment' \
+            and self.blocks[i].type_ == 'phrase':
+                return i - 3
+            i -= 1
+    
+    def delete_head(self):
+        # Takes ~0.003s for 'set' (EN-RU) on AMD E-300
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_head'
+        count = 0
+        i = 0
+        while i < len(self.blocks):
+            if self.blocks[i].type_ == 'comment':
+                del self.blocks[i]
+                count += 1
+                i -= 1
+            else:
+                break
+            i += 1
+        sh.com.rep_deleted(f,count)
+    
+    def get_last_valid_comment(self):
+        i = len(self.blocks) - 1
+        while i > 0:
+            if self.blocks[i-1].type_ == 'phrase' \
+            and self.blocks[i].type_ == 'comment':
+                return i
+            i -= 1
+    
+    def delete_tail(self):
+        # Takes ~0.0004s for 'set' (EN-RU) on AMD E-300
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_tail'
+        count = 0
+        last = self.get_last_valid_comment()
+        if last is None or last + 1 == len(self.blocks):
+            sh.com.rep_lazy(f)
+        else:
+            last += 1
+            count = len(self.blocks) - last
+            self.blocks = self.blocks[:last]
+            sh.com.rep_deleted(f,count)
     
     def unite_fixed_same(self):
         ''' We should unite items in 'fixed+comment (SAME=1)' structures
@@ -661,53 +261,39 @@ class Elems:
         while i < len(self.blocks):
             if self.blocks[i-1].type_ in self.fixed \
             and self.blocks[i].same == 1:
-                count += 1
                 self.blocks[i-1].text = sh.List ([self.blocks[i-1].text
                                                  ,self.blocks[i].text
                                                  ]
                                                 ).space_items()
                 del self.blocks[i]
                 i =- 1
+                count += 1
             i += 1
-        if count:
-            mes = _('{} blocks have been deleted').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
+        sh.com.rep_deleted(f,count)
     
-    def is_vip(self,block):
-        for vip in self.vip:
-            if vip in block.text:
-                return True
-    
-    def is_vip_strict(self,block):
-        for vip in self.vip:
-            if vip == block.text:
-                return True
-    
-    def delete_useless_semi(self):
-        ''' Delete useless semicolons as to ignore a user+;+correction
-            structure. It is difficult to properly ignore this structure
-            later since 'user' blocks can originally be of the 'term' or
-            'correction' type.
-        '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.delete_useless_semi'
+    def delete_semi(self):
+        # Takes ~0.017s for 'set' (EN-RU) on AMD E-300
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_semi'
         count = 0
         i = 1
         while i < len(self.blocks):
-            if self.blocks[i-1].type_ == 'comment' \
-            and self.blocks[i-1].text == ';' \
-            and self.blocks[i].type_ == 'correction':
+            Match = False
+            if self.blocks[i].text == '; ':
+                if self.blocks[i-1].type_ == 'user' \
+                or self.blocks[i].type_ == 'term':
+                    Match = True
+            if Match:
                 count += 1
-                del self.blocks[i-1]
+                del self.blocks[i]
                 i -= 1
             i += 1
-        if count:
-            mes = _('{} blocks have been deleted').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
+        sh.com.rep_deleted(f,count)
     
     def set_semino(self):
+        # Takes ~0.0034s for 'set' (EN-RU) on AMD E-300
         semino = 0
         for block in self.blocks:
-            if block.type_ == 'comment' and block.text == ';':
+            if block.type_ == 'comment' and block.text == '; ':
                 semino += 1
             block.semino = semino
     
@@ -755,57 +341,21 @@ class Elems:
                 block.dicf = ', '.join(dicfs)
     
     def fix_thesaurus(self):
+        # Takes ~0.004s for 'set' (EN-RU) on AMD E-300
         f = '[MClient] plugins.multitrancom.elems.Elems.fix_thesaurus'
         count = 0
         for i in range(len(self.blocks)):
-            if self.blocks[i].text in ('русский тезаурус'
-                                      ,'английский тезаурус'
+            if self.blocks[i].text in ('Русский тезаурус'
+                                      ,'Английский тезаурус'
                                       ,'Russian thesaurus'
                                       ,'English thesaurus'
                                       ):
                 self.blocks[i].type_ = 'definition'
-                self.blocks[i].same = 1
-                if i + 1 < len(self.blocks):
-                    if self.blocks[i+1].type_ == 'dic':
-                        count += 1
-                        self.blocks[i], self.blocks[i+1] = \
-                        self.blocks[i+1], self.blocks[i]
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def delete_phantom(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.delete_phantom'
-        ''' Delete a block that looks like a WFORM but has pluses
-            instead of spaces and a colon on its end, e.g.,
-            'data vector' -> 'data+vector:'. If the block ends with '!',
-            then '!' will be omitted. Case is preserved.
-        '''
-        wforms = [block.text for block in self.blocks \
-                  if block.text and block.type_ == 'wform'
-                 ]
-        wforms = sorted(set(wforms))
-        compare = []
-        for item in wforms:
-            item = item.replace(' ','+')
-            # We have already deleted empty items
-            if item[-1] in sh.lg.punc_array:
-                item = item[:-1]
-            item += ':'
-            compare.append(item)
-        i = 0
-        count = 0
-        while i in range(len(self.blocks)):
-            if self.blocks[i].text in compare:
                 count += 1
-                del self.blocks[i]
-                i -= 1
-            i += 1
-        if count:
-            mes = _('{} blocks have been deleted').format(count)
-            sh.objs.get_mes(f,mes,True).show_info()
+        sh.com.rep_matches(f,count)
     
     def delete_numeration(self):
+        # Takes ~0.027s for 'set' (EN-RU) on AMD E-300
         self.blocks = [block for block in self.blocks \
                        if not re.match('^\d+\.$',block.text)
                       ]
@@ -855,14 +405,17 @@ class Elems:
     def delete_empty(self):
         ''' - Empty blocks are useless since we recreate fixed columns
               anyways.
-            - This is required since we decode HTM entities after
-              extracting tags now. Empty blocks may lead to a wrong
-              analysis of blocks, e.g.,
-              'comment (SAME=0) - comment (SAME=1)' structure, where
-              the second block is empty, will be mistakenly converted
-              to 'wform - comment'.
+            - The most common example of an empty block is a wform-type
+              block with ' ' text.
+            - Takes ~0.0041s for 'set' (EN-RU) on AMD E-300
         '''
-        self.blocks = [block for block in self.blocks if block.text]
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_empty'
+        len_ = len(self.blocks)
+        self.blocks = [block for block in self.blocks \
+                       if block.text.strip()
+                      ]
+        count = len_ - len(self.blocks)
+        sh.com.rep_deleted(f,count)
     
     def set_term_same(self):
         ''' #NOTE: all blocks of the same cell must have the same TERM,
@@ -875,107 +428,6 @@ class Elems:
                 term = block.term
             elif block.same == 1:
                 block.term = term
-    
-    def delete_subjects(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.delete_subjects'
-        pattern = '(в|in) \d+ (тематиках|тематике|subjects)'
-        count = 0
-        i = 0
-        while i < len(self.blocks):
-            if re.match(pattern,self.blocks[i].text):
-                count += 1
-                del self.blocks[i]
-                i -= 1
-            i += 1
-        if count:
-            mes = _('{} blocks have been deleted').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def set_corrections(self):
-        ''' Replace 'comment' with 'correction' in
-            the 'correction-user-comment-user' structure.
-        '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.set_corrections'
-        count = 0
-        if len(self.blocks) > 3:
-            i = 3
-            while i < len(self.blocks):
-                if self.blocks[i-3].type_ == 'correction' \
-                and self.blocks[i-2].type_ == 'user' \
-                and self.blocks[i-1].type_ == 'comment' \
-                and self.blocks[i].type_ == 'user':
-                    count += 1
-                    self.blocks[i-1].type_ = 'correction'
-                i += 1
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
-    
-    def set_users(self):
-        for block in self.blocks:
-            ''' Not 'UserName', otherwise, phrases will be defined as
-                user names in the 'username' article.
-            '''
-            if '&UserName=' in block.url and not self.is_vip(block):
-                block.type_ = 'user'
-    
-    def set_vip(self):
-        for block in self.blocks:
-            if block.type_ == 'correction' \
-            and self.is_vip_strict(block):
-                block.type_ = 'user'
-    
-    def strip(self):
-        for block in self.blocks:
-            block.text = block.text.strip()
-    
-    def delete_search(self):
-        ''' Remove a block that looks like "SEARCH:" and comes before
-            the phrase "NUMBER phrases in NUMBER subjects".
-            Interestingly enough, the server preserves the case of
-            mY sEaRch, so there is no need to make the search
-            lower-case.
-        '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.delete_search'
-        if self.pattern:
-            count = 0
-            i = 0
-            while i < len(self.blocks):
-                if self.blocks[i].type_ == 'comment' \
-                and self.blocks[i].text == self.pattern + ':':
-                    count += 1
-                    del self.blocks[i]
-                    i -= 1
-                i += 1
-            if count:
-                mes = _('{} blocks have been deleted').format(count)
-                sh.objs.get_mes(f,mes,True).show_debug()
-        else:
-            sh.com.rep_empty(f)
-    
-    def set_definitions(self):
-        ''' Definitions are tagged just like word forms, and we can
-            judge upon the type only by the length of the block.
-            The value of 30 is picked up on the basis of
-            a trial-and-error method.
-            Examples of long word forms (28+ symbols):
-            'закрытая нуклеиновая кислота',
-            'nucleoside reverse transcriptase inhibitors'.
-        '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.set_definitions'
-        count = 0
-        HasWform = False
-        for block in self.blocks:
-            # The 'definition' type cannot precede word forms
-            if block.type_ == 'wform':
-                if len(block.text) > 30 and HasWform:
-                    count += 1
-                    block.type_ = 'definition'
-                    block.same = 1
-                HasWform = True
-        if count:
-            mes = _('{} matches').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
     
     def expand_dic(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.expand_dic'
@@ -994,37 +446,23 @@ class Elems:
     def run(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.run'
         if self.check():
-            # Do some cleanup
-            self.strip()
-            self.delete_empty()
-            self.delete_useless_semi()
             # Do this before deleting ';'
             self.set_semino()
-            self.delete_trash()
-            self.delete_subjects()
-            self.delete_search()
-            self.delete_phantom()
+            # Do some cleanup
+            self.delete_head()
+            self.delete_tail()
+            self.delete_empty()
+            self.delete_semi()
             self.delete_numeration()
+            self.delete_trash()
             # Reassign types
+            self.set_phdic()
             self.fix_thesaurus()
             self.set_transc()
-            self.set_users()
-            self.set_phrases()
-            self.set_corrections()
-            self.set_definitions()
-            self.set_vip()
             # Prepare contents
+            self.set_same()
+            self.set_phrase_com()
             self.set_dic_urls()
-            # Set 'same' attribute and further change some types
-            ''' We do not pass debug options here since Same debug has
-                few columns and it is reasonable to make them wider than
-                for Elems.
-            '''
-            self.blocks = Same (blocks = self.blocks
-                               ,Debug = self.Debug
-                               ,maxrow = self.maxrow
-                               ,maxrows = self.maxrows
-                               ).run()
             self.unite_fixed_same()
             self.reassign_brackets()
             # Prepare for cells
@@ -1052,21 +490,19 @@ class Elems:
     def debug(self):
         f = 'plugins.multitrancom.elems.Elems.debug'
         if self.Debug:
-            headers = ('NO','TYPE','TEXT','SEMINO','SAME'
-                      ,'CELLNO','ROWNO','COLNO','POS1','POS2'
+            headers = ('NO','TYPE','TEXT','URL','SAME','SEMINO','ROWNO'
+                      ,'CELLNO'
                       )
             rows = []
             for i in range(len(self.blocks)):
                 rows.append ([i + 1
                              ,self.blocks[i].type_
-                             ,self.blocks[i].text
-                             ,self.blocks[i].semino
+                             ,'"{}"'.format(self.blocks[i].text)
+                             ,'"{}"'.format(self.blocks[i].url)
                              ,self.blocks[i].same
+                             ,self.blocks[i].semino
+                             ,self.blocks[i].rowno
                              ,self.blocks[i].cellno
-                             ,self.blocks[i].i
-                             ,self.blocks[i].j
-                             ,self.blocks[i].first
-                             ,self.blocks[i].last
                              ]
                             )
             mes = sh.FastTable (headers = headers
@@ -1078,29 +514,15 @@ class Elems:
             sh.com.run_fast_debug(f,mes)
         
     def set_transc(self):
+        # Takes ~0.003s for 'set' (EN-RU) on AMD E-300
+        f = '[MClient] plugins.multitrancom.elems.Elems.set_transc'
+        count = 0
         for block in self.blocks:
-            if block.type_ == 'comment' \
-            and block.text.startswith('[') \
+            if block.type_ == 'comment' and block.text.startswith('[') \
             and block.text.endswith(']'):
                 block.type_ = 'transc'
-            
-    #FIX: use URLs
-    def delete_trash(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.delete_trash'
-        patterns = ['|',';',':','-->','// -->','⇄','точно' ,'все формы'
-                   ,'точные совпадения','Сообщить об ошибке'
-                   ,'только в указанном порядке'
-                   ,'только в заданной форме','all forms'
-                   ,'exact matches only','in specified order only'
-                   ,'Forvo','Google','Соглашение пользователя'
-                   ]
-        if self.langs:
-            patterns += list(self.langs)
-        else:
-            sh.com.rep_empty(f)
-        self.blocks = [block for block in self.blocks \
-                       if not block.text in patterns
-                      ]
+                count += 1
+        sh.com.rep_matches(f,count)
     
     def add_space(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.add_space'
@@ -1120,19 +542,6 @@ class Elems:
             mes = _('{} matches').format(count)
             sh.objs.get_mes(f,mes,True).show_debug()
 
-    def set_phrases(self):
-        ''' #NOTE: this must differ from
-            'plugins.multitranru.elems.Elems.phrases' since the block to
-            be found is of the 'term' (not 'phrase') type here.
-        '''
-        for block in self.blocks:
-            if re.match('\d+ phrase[s]{0,1}',block.text) \
-            or re.match('\d+ фраз',block.text):
-                block.type_ = 'dic'
-                block.select = 1
-                block.dic = block.text
-                break
-                
     def fill(self):
         dic = wform = speech = transc = term = ''
         

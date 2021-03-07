@@ -154,7 +154,6 @@ class Plugin:
         self.abbr = {}
         itags = tg.Tags (text = self.text
                         ,Debug = self.Debug
-                        ,maxrow = self.maxrow
                         ,maxrows = self.maxrows
                         )
         self.blocks = itags.run()
@@ -171,7 +170,6 @@ class Plugin:
                                ,langs = pr.objs.get_pairs().get_alive()
                                ,search = search
                                ,Debug = self.Debug
-                               ,maxrow = self.maxrow
                                ,maxrows = self.maxrows
                                ).run()
         return self.blocks
