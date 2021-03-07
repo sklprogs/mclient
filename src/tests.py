@@ -506,9 +506,7 @@ class Commands:
                   ]
             cldata.append(row)
         cells = cl.Cells (data = cldata
-                         ,cols = ('dic','wform','transc'
-                                     ,'speech'
-                                     )
+                         ,cols = ('dic','wform','transc','speech')
                          ,collimit = 8
                          ,phdic = ''
                          ,Reverse = False

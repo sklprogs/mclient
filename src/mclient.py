@@ -1968,7 +1968,7 @@ class WebFrame:
                                 ,maxrows = lg.objs.plugins.maxrows
                                 )
         bp.run()
-        objs.blocksdb.update(query=bp.query)
+        objs.blocksdb.update(bp.query)
         
         dics = objs.blocksdb.get_dics(Block=0)
         ''' #NOTE: if an article comprises only 1 dic/wform, this is
