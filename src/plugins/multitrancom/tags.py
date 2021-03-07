@@ -150,6 +150,9 @@ class AnalyzeTag:
     def _is_phrase_dic(self):
         return 'name="phrases"' in self.tag.text
     
+    def _is_phcount(self):
+        return 'class="phras_cnt"' in self.tag.text
+    
     def _is_script(self):
         return self.tag.name == 'script'
     
@@ -177,6 +180,8 @@ class AnalyzeTag:
             self.tag.type_ = 'phdic'
         elif self._is_script():
             self.tag.type_ = 'script'
+        elif self._is_phcount():
+            self.tag.type_ = 'phcount'
     
     def _set_close(self):
         if self.fragm.startswith('</'):

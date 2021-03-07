@@ -31,7 +31,7 @@ class Abbr:
         self.Success = True
     
     def get_full(self,abbr):
-        f = '[MClient] plugins.multitrancom.Abbr.get_full'
+        f = '[MClient] plugins.multitrancom.elems.Abbr.get_full'
         if self.Success:
             if abbr:
                 try:
@@ -46,7 +46,7 @@ class Abbr:
         return abbr
     
     def load(self):
-        f = '[MClient] plugins.multitrancom.Abbr.load'
+        f = '[MClient] plugins.multitrancom.elems.Abbr.load'
         if self.Success:
             self.dic = sh.Dic (file = self.fabbr
                               ,Sortable = True
@@ -56,7 +56,7 @@ class Abbr:
             sh.com.cancel(f)
     
     def set_file(self):
-        f = '[MClient] plugins.multitrancom.Abbr.set_file'
+        f = '[MClient] plugins.multitrancom.elems.Abbr.set_file'
         if self.Success:
             self.fabbr = sh.objs.get_pdir().add ('..','resources'
                                                 ,'abbr.txt'
@@ -143,19 +143,14 @@ class Elems:
         #TODO (?): delete 'langs', 'pattern' from self and input
         self.pattern = search.strip()
     
-    def set_phrase_com(self):
-        # Emptiness check should already be done in 'self.check'
-        i = 1
-        while i < len(self.blocks):
-            if self.blocks[i-1].type_ == 'phrase' \
-            and self.blocks[i].type_ == 'comment' \
-            and self.blocks[i-1].same == 0 and self.blocks[i].same == 0:
-                self.blocks[i].text = ' [{}]'.format(self.blocks[i].text)
-                self.blocks[i].same = 1
-            i += 1
+    def set_phcount(self):
+        for block in self.blocks:
+            #and not block.text.startswith(' '):
+            if block.type_ == 'phcount':
+                block.text = ' [{}]'.format(block.text)
+                block.same = 1
     
     def set_same(self):
-        # Emptiness check should already be done in 'self.check'
         self.blocks[0].same = 0
         i = 1
         while i < len(self.blocks):
@@ -163,7 +158,8 @@ class Elems:
             or self.blocks[i-1].rowno != self.blocks[i].rowno \
             or self.blocks[i-1].cellno != self.blocks[i].cellno:
                 self.blocks[i].same = 0
-            else:
+            elif self.blocks[i].same == -1:
+                # Do not overwrite SAME of fixed types
                 self.blocks[i].same = 1
             i += 1
     
@@ -458,10 +454,10 @@ class Elems:
             self.set_phdic()
             self.fix_thesaurus()
             self.set_transc()
-            # Prepare contents
             self.set_same()
-            self.set_phrase_com()
+            # Prepare contents
             self.set_dic_urls()
+            self.set_phcount()
             self.unite_fixed_same()
             self.reassign_brackets()
             # Prepare for cells
