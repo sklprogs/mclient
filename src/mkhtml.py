@@ -199,7 +199,7 @@ class HTM:
             self.blocks.append(block)
 
     def _run_dic(self):
-        if self.block.type_ == 'dic' and self.block.text:
+        if self.block.type_ in ('dic','phdic') and self.block.text:
             self.output.write('<font face="')
             self.output.write(self._get_family())
             self.output.write('" color="')
@@ -327,7 +327,7 @@ class HTM:
             self.output.write('</font>')
     
     def _run_comment(self):
-        if self.block.type_ in ('comment','transc','definition'):
+        if self.block.type_ in ('comment','transc','definition','phcount'):
             self.output.write('<i><font face="')
             self.output.write(sh.lg.globs['str']['font_comments_family'])
             self.output.write('" size="')
@@ -372,7 +372,7 @@ class HTM:
                 self.output.write('">')
             elif self.blocks and self.blocks[0].text \
             and self.blocks[0].type_ in ('dic','wform','transc'
-                                        ,'speech'
+                                        ,'speech','phdic'
                                         ):
                 self.output.write('<td align="center" valign="top">')
             else:
@@ -385,7 +385,7 @@ class HTM:
                     cond2 = self.width \
                             and len(self.block.text) > self.maxsyms
                     if self.block.text and self.block.type_ in \
-                    ('dic','wform','transc','speech'):
+                    ('dic','wform','transc','speech','phdic'):
                         base = '<td align="center" valign="top"'
                     else:
                         base = '<td valign="top"'

@@ -22,6 +22,14 @@ class DB:
         self.create_blocks()
         self.create_articles()
     
+    def update_phterm(self):
+        f = '[MClient] db.DB.update_phterm'
+        if self.artid:
+            query = 'update BLOCKS set TERM = ? where ARTICLEID = ?'
+            self.dbc.execute(query,('',self.artid,))
+        else:
+            sh.com.rep_empty(f)
+    
     def unblock(self):
         self.dbc.execute('update BLOCKS set BLOCK = 0')
     
@@ -364,33 +372,14 @@ class DB:
             return self.dbc.fetchall()
         else:
             sh.com.rep_empty(f)
-
-    def get_phdic_primary(self):
-        ''' Get 'PhraseDic' before 'Cells' are built when 'PhraseDic' is
-            still of a 'phrase' type.
-        '''
-        f = '[MClient] db.DB.get_phdic_primary'
-        if self.artid:
-            query = 'select DIC from BLOCKS where ARTICLEID = ? \
-                     and TYPE = ? order by NO'
-            self.dbc.execute(query,(self.artid,'phrase',))
-            result = self.dbc.fetchone()
-            if result:
-                return result[0]
-        else:
-            sh.com.rep_empty(f)
                           
     def get_phdic(self):
         f = '[MClient] db.DB.get_phdic'
         if self.artid:
-            result = self.get_phdic_primary()
-            if result:
-                query = 'select POS1,URL,TEXT from BLOCKS \
-                         where ARTICLEID = ? and DIC = ? order by NO'
-                self.dbc.execute(query,(self.artid,result,))
-                return self.dbc.fetchone()
-            else:
-                sh.com.rep_empty(f)
+            query = 'select TEXT,POS1,URL from BLOCKS \
+                     where ARTICLEID = ? and TYPE = ?'
+            self.dbc.execute(query,(self.artid,'phdic',))
+            return self.dbc.fetchone()
         else:
             sh.com.rep_empty(f)
 

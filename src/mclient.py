@@ -1201,10 +1201,10 @@ class WebFrame:
         f = '[MClient] mclient.WebFrame.go_phdic'
         phdic = objs.get_blocksdb().get_phdic()
         if phdic:
-            self.posn = phdic[0]
+            self.posn = phdic[1]
             if objs.blocksdb.Selectable:
-                lg.objs.get_request().url = phdic[1]
-                lg.objs.request.search = phdic[2]
+                lg.objs.get_request().search = phdic[0]
+                lg.objs.request.url = phdic[2]
                 self.load_article()
             else:
                 self.go_url()
@@ -1947,12 +1947,12 @@ class WebFrame:
             if data:
                 objs.blocksdb.fill_blocks(data)
             
-            lg.PhraseTerma (dbc = objs.blocksdb.dbc
-                           ,artid = objs.blocksdb.artid
-                           ).run()
+            objs.blocksdb.update_phterm()
             
-        self.phdic = objs.blocksdb.get_phdic_primary()
-        if self.phdic is None:
+        self.phdic = objs.blocksdb.get_phdic()
+        if self.phdic:
+            self.phdic = self.phdic[0]
+        else:
             self.phdic = ''
         
         data = objs.blocksdb.assign_bp()
