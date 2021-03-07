@@ -2028,17 +2028,17 @@ class WebFrame:
         mh.objs.htm.run()
         
         lg.objs.request.htm = mh.objs.htm.htm
-        self.fill(code=lg.objs.request.htm)
+        self.fill(lg.objs.request.htm)
 
         data = objs.blocksdb.assign_pos()
         pos = cl.Pos (data = data
-                      ,raw_text = self.get_text()
-                      ,Debug = lg.objs.plugins.Debug
-                      ,maxrow = lg.objs.plugins.maxrow
-                      ,maxrows = lg.objs.plugins.maxrows
-                      )
+                     ,raw_text = self.get_text()
+                     ,Debug = lg.objs.plugins.Debug
+                     ,maxrow = lg.objs.plugins.maxrow
+                     ,maxrows = lg.objs.plugins.maxrows
+                     )
         pos.run()
-        objs.blocksdb.update(query=pos.query)
+        objs.blocksdb.update(pos.query)
 
         ''' We do no use Debug here since this causes too much errors
             when the entire program runs (debugging is GUI-based and
@@ -2048,7 +2048,7 @@ class WebFrame:
                          ,blocks = pos.blocks
                          )
         pages.run()
-        objs.blocksdb.update(query=pages.query)
+        objs.blocksdb.update(pages.query)
         
         self.set_title(arg=lg.objs.request.search)
         if self.pos >= 0:
@@ -2078,7 +2078,7 @@ class WebFrame:
         f = '[MClient] mclient.WebFrame.go_mouse'
         if objs.get_blocksdb().Selectable:
             objs.blocksdb.Selectable = False
-            result = objs.blocksdb.get_block_pos(pos=self.posn)
+            result = objs.blocksdb.get_block_pos(self.posn)
             objs.blocksdb.Selectable = True
             if result and result[8] == 'dic' \
             and result[6] != self.phdic:
@@ -2128,9 +2128,9 @@ class WebFrame:
     def go_url(self,event=None):
         f = '[MClient] mclient.WebFrame.go_url'
         if not lg.objs.get_request().MouseClicked:
-            url = objs.get_blocksdb().get_url(pos=self.pos)
+            url = objs.get_blocksdb().get_url(self.pos)
             if url:
-                lg.objs.request.search = objs.blocksdb.get_text(pos=self.pos)
+                lg.objs.request.search = objs.blocksdb.get_text(self.pos)
                 lg.objs.request.url = url
                 mes = _('Open link: {}').format(lg.objs.request.url)
                 sh.objs.get_mes(f,mes,True).show_info()
@@ -2139,7 +2139,7 @@ class WebFrame:
             elif objs.blocksdb.artid == 0:
                 sh.com.rep_lazy(f)
             else:
-                lg.objs.request.search = objs.blocksdb.get_text(pos=self.pos)
+                lg.objs.request.search = objs.blocksdb.get_text(self.pos)
                 self.go_search()
 
     def go_search(self):
@@ -2185,7 +2185,7 @@ class WebFrame:
     # Go to the 1st term of the current row
     def move_line_start(self,event=None):
         f = '[MClient] mclient.WebFrame.move_line_start'
-        result = objs.get_blocksdb().get_line_start(pos=self.pos)
+        result = objs.get_blocksdb().get_line_start(self.pos)
         if str(result).isdigit():
             self.pos = result
             self.select()
@@ -2197,7 +2197,7 @@ class WebFrame:
     # Go to the last term of the current row
     def move_line_end(self,event=None):
         f = '[MClient] mclient.WebFrame.move_line_end'
-        result = objs.get_blocksdb().get_line_end(pos=self.pos)
+        result = objs.get_blocksdb().get_line_end(self.pos)
         if str(result).isdigit():
             self.pos = result
             self.select()
@@ -2232,7 +2232,7 @@ class WebFrame:
 
     # Go to the previous page
     def move_page_up(self,event=None):
-        result = objs.get_blocksdb().get_sel(pos=self.pos)
+        result = objs.get_blocksdb().get_sel(self.pos)
         height = self.gui.get_height()
         if result and height:
             result = objs.get_blocksdb().get_page_up (bboy = result[6]
@@ -2259,7 +2259,7 @@ class WebFrame:
     # Go to the previous term
     def move_left(self,event=None):
         f = '[MClient] mclient.WebFrame.move_left'
-        result = objs.get_blocksdb().get_left(pos=self.pos)
+        result = objs.get_blocksdb().get_left(self.pos)
         if str(result).isdigit():
             self.pos = result
             self.select()
@@ -2271,7 +2271,7 @@ class WebFrame:
     # Go to the next term
     def move_right(self,event=None):
         f = '[MClient] mclient.WebFrame.move_right'
-        result = objs.get_blocksdb().get_right(pos=self.pos)
+        result = objs.get_blocksdb().get_right(self.pos)
         if str(result).isdigit():
             self.pos = result
             self.select()
@@ -2283,7 +2283,7 @@ class WebFrame:
     # Go to the next row
     def move_down(self,event=None):
         f = '[MClient] mclient.WebFrame.move_down'
-        result = objs.get_blocksdb().get_down(pos=self.pos)
+        result = objs.get_blocksdb().get_down(self.pos)
         if str(result).isdigit():
             self.pos = result
             self.select()
@@ -2295,7 +2295,7 @@ class WebFrame:
     # Go to the previous row
     def move_up(self,event=None):
         f = '[MClient] mclient.WebFrame.move_up'
-        result = objs.get_blocksdb().get_up(pos=self.pos)
+        result = objs.get_blocksdb().get_up(self.pos)
         if str(result).isdigit():
             self.pos = result
             self.select()
@@ -2342,7 +2342,7 @@ class WebFrame:
     # Copy text of the current block
     def copy_text(self,event=None):
         f = '[MClient] mclient.WebFrame.copy_text'
-        text = objs.get_blocksdb().get_text(pos=self.pos)
+        text = objs.get_blocksdb().get_text(self.pos)
         if text:
             sh.Clipboard().copy(text)
             if sh.lg.globs['bool']['Iconify']:
@@ -2363,7 +2363,7 @@ class WebFrame:
     # Copy URL of the selected block
     def copy_block_url(self,event=None):
         f = '[MClient] mclient.WebFrame.copy_block_url'
-        url = objs.get_blocksdb().get_url(pos=self.pos)
+        url = objs.get_blocksdb().get_url(self.pos)
         if url:
             sh.Clipboard().copy(url)
             if sh.lg.globs['bool']['Iconify']:
@@ -2377,7 +2377,7 @@ class WebFrame:
     def define(self,Selected=True):
         f = '[MClient] mclient.WebFrame.define'
         if Selected:
-            result = objs.get_blocksdb().get_block_pos(pos=self.pos)
+            result = objs.get_blocksdb().get_block_pos(self.pos)
             pattern = result[6]
         else:
             pattern = lg.objs.get_request().search
@@ -2611,8 +2611,8 @@ class WebFrame:
     # Go to the next section of column #col_no
     def move_next_section(self,event=None,col_no=0):
         f = '[MClient] mclient.WebFrame.move_next_section'
-        col_no = self.ignore_column(col_no=col_no)
-        result1 = objs.get_blocksdb().get_block_pos(pos=self.pos)
+        col_no = self.ignore_column(col_no)
+        result1 = objs.get_blocksdb().get_block_pos(self.pos)
         result2 = objs.blocksdb.get_next_section (pos = self.pos
                                                  ,col_no = col_no
                                                  )
@@ -2628,7 +2628,7 @@ class WebFrame:
                     pos = result4[0]
                 else:
                     pos = result3[0]
-                result = objs.get_blocksdb().get_next_block_pos(pos=pos)
+                result = objs.get_blocksdb().get_next_block_pos(pos)
                 if result:
                     self.pos = result[0]
                     self.select()
@@ -2643,8 +2643,8 @@ class WebFrame:
     # Go to the previous section of column #col_no
     def move_prev_section(self,event=None,col_no=0):
         f = '[MClient] mclient.WebFrame.move_prev_section'
-        col_no = self.ignore_column(col_no=col_no)
-        result1 = objs.get_blocksdb().get_block_pos(pos=self.pos)
+        col_no = self.ignore_column(col_no)
+        result1 = objs.get_blocksdb().get_block_pos(self.pos)
         result2 = objs.blocksdb.get_prev_section (pos = self.pos
                                                  ,col_no = col_no
                                                  )
@@ -2660,7 +2660,7 @@ class WebFrame:
                     pos = result4[0]
                 else:
                     pos = result3[0]
-                result = objs.get_blocksdb().get_next_block_pos(pos=pos)
+                result = objs.get_blocksdb().get_next_block_pos(pos)
                 if result:
                     self.pos = result[0]
                     self.select()
@@ -2698,7 +2698,7 @@ class WebFrame:
         if Mouse:
             if objs.get_blocksdb().Selectable:
                 objs.blocksdb.Selectable = False
-                result = objs.blocksdb.get_block_pos(pos=self.posn)
+                result = objs.blocksdb.get_block_pos(self.posn)
                 objs.blocksdb.Selectable = True
                 if result and result[8] == 'dic' \
                 and result[6] != self.phdic:
