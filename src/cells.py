@@ -339,7 +339,9 @@ class Cells:
         i = j = -1
         PrevFixed = False
         for x in range(len(self.blocks)):
-            if self.cols and self.blocks[x].type_ == self.cols[0]:
+            if self.cols and self.blocks[x].type_ in (self.cols[0]
+                                                     ,'phdic'
+                                                     ):
                 if PrevFixed:
                     self.blocks[x].i = i
                 else:
@@ -469,14 +471,12 @@ class Cells:
             recognize a keyword (e.g., 'block') and replace it with '0'.
             Takes ~0,08s for 'block', ~0,13s for 'set' on AMD E-300.
         '''
+        query = 'update BLOCKS set TEXT = ?,ROWNO = ?,COLNO = ? \
+                       ,CELLNO = ? where NO = ?'
         for block in self.blocks:
-            blocksdb.dbc.execute ('update BLOCKS \
-                                   set    TEXT=?,ROWNO=?,COLNO=?\
-                                         ,CELLNO=?\
-                                   where  NO=?',(block.text,block.i
-                                                ,block.j,block.cellno
-                                                ,block.no
-                                                )
+            blocksdb.dbc.execute (query,(block.text,block.i,block.j
+                                        ,block.cellno,block.no
+                                        )
                                  )
         
     # Takes ~0.002s on 'set'
