@@ -3,15 +3,11 @@
 
 ''' This module prepares blocks after extracting tags for permanently
     storing in DB.
-    Needs attributes in blocks: TYPE, DIC, WFORM, SPEECH, TRANSC,
-                                TERM, SAMECELL
-    Modifies attributes: TYPE, TEXT, DIC, WFORM, SPEECH, TRANSC, TERM,
-                         SAMECELL
+    Needs attributes in blocks: DIC,SAMECELL,SPEECH,TERM,TRANSC,TYPE
+                               ,WFORM
+    Modifies attributes: DIC,SPEECH,TERM,TEXT,TRANSC,TYPE,SAMECELL
+                        ,SELECTABLE,WFORM
     Since TYPE is modified here, SAMECELL is filled here.
-    SELECTABLE cannot be filled because it depends on CELLNO which is
-    created in Cells; Cells modifies TEXT of DIC, WFORM, SPEECH, TRANSC
-    types, and we do not need to make empty cells SELECTABLE, so we
-    calculate SELECTABLE fully in Cells.
 '''
 
 import re
