@@ -435,10 +435,10 @@ class Cells:
     # This is necessary because fixed columns are interchangeable now
     def sort_cells(self):
         self.blocks = sorted (self.blocks
-                             ,key=lambda block:(block.i
-                                               ,block.j
-                                               ,block.no
-                                               )
+                             ,key = lambda block:(block.i
+                                                 ,block.j
+                                                 ,block.no
+                                                 )
                              )
     
     def move_phrases_end(self):

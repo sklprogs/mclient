@@ -413,7 +413,7 @@ class DB:
                     words have been found
                 '''
                 query = 'select POS1,POS2,CELLNO,ROWNO,COLNO,NO,TEXT \
-                        ,SELECTABLE,TYPE from BLOCKS \
+                               ,SELECTABLE,TYPE from BLOCKS \
                          where ARTICLEID = ? and BLOCK = 0 \
                          and IGNORE = 0 and POS1 <= ? and POS2 > ? \
                          and POS1 < POS2 and SELECTABLE = 1'
