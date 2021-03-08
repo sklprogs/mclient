@@ -486,7 +486,7 @@ class Elems:
         f = 'plugins.multitrancom.elems.Elems.debug'
         if self.Debug:
             headers = ('NO','TYPE','TEXT','URL','SAME','SEMINO','ROWNO'
-                      ,'CELLNO'
+                      ,'CELLNO','SELECT'
                       )
             rows = []
             for i in range(len(self.blocks)):
@@ -498,6 +498,7 @@ class Elems:
                              ,self.blocks[i].semino
                              ,self.blocks[i].rowno
                              ,self.blocks[i].cellno
+                             ,self.blocks[i].select
                              ]
                             )
             mes = sh.FastTable (headers = headers
