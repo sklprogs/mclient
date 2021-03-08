@@ -1927,7 +1927,7 @@ class WebFrame:
                    ,lg.objs.plugins.get_lang2()       # (05) LANG2
                    ,self.pos                          # (06) BOOKMARK
                    )
-            objs.blocksdb.fill_articles(data=data)
+            objs.blocksdb.fill_articles(data)
             
             objs.blocksdb.artid = objs.blocksdb.get_max_artid()
             
