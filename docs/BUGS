@@ -14,6 +14,7 @@ Traceback (most recent call last):
 ValueError: 'Европейский банк реконструкции и развития' is not in list
 
 multitrancom:
+- EN-RU, отверждаемого порошка: implement separate words
 - Trash items: "Тематика, Английский, Русский"
 - EN-RU, hello: phrases are not at bottom
 - unable to switch short dictionary titles to full ones

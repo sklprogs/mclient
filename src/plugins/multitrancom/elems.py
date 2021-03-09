@@ -147,17 +147,24 @@ class Elems:
                 block.same = 1
     
     def set_same(self):
-        self.blocks[0].same = 0
-        i = 1
-        while i < len(self.blocks):
-            if self.blocks[i-1].semino != self.blocks[i].semino \
-            or self.blocks[i-1].rowno != self.blocks[i].rowno \
-            or self.blocks[i-1].cellno != self.blocks[i].cellno:
-                self.blocks[i].same = 0
-            elif self.blocks[i].same == -1:
-                # Do not overwrite SAME of fixed types
-                self.blocks[i].same = 1
-            i += 1
+        f = '[MClient] plugins.multitrancom.elems.Elems.set_same'
+        # I have witnessed this error despite 'self.check' was passed
+        if self.blocks:
+            self.blocks[0].same = 0
+            i = 1
+            while i < len(self.blocks):
+                # multitran.com originally sets some types with SAME = 1
+                if self.blocks[i-1].semino != self.blocks[i].semino \
+                or self.blocks[i-1].rowno != self.blocks[i].rowno \
+                or self.blocks[i-1].cellno != self.blocks[i].cellno \
+                or self.blocks[i].type_ in ('speech','transc'):
+                    self.blocks[i].same = 0
+                elif self.blocks[i].same == -1:
+                    # Do not overwrite SAME of fixed types
+                    self.blocks[i].same = 1
+                i += 1
+        else:
+            sh.com.rep_empty(f)
     
     def delete_trash(self):
         ''' Sometimes it's not enough to delete comment-only tail since
@@ -249,15 +256,21 @@ class Elems:
         '''
         f = '[MClient] plugins.multitrancom.elems.Elems.unite_fixed_same'
         count = 0
-        i = 1
+        i = 2
         while i < len(self.blocks):
-            if self.blocks[i-1].type_ in self.fixed \
-            and self.blocks[i].same == 1:
-                self.blocks[i-1].text = sh.List ([self.blocks[i-1].text
-                                                 ,self.blocks[i].text
+            if self.blocks[i-2].type_ in self.fixed \
+            and self.blocks[i-1].same == 1 and self.blocks[i].same == 0:
+                mes = '"{}" -> "{}" -> "{}"'
+                mes = mes.format (self.blocks[i-2].text
+                                 ,self.blocks[i-1].text
+                                 ,self.blocks[i].text
+                                 )
+                sh.objs.get_mes(f,mes,True).show_warning()
+                self.blocks[i-2].text = sh.List ([self.blocks[i-2].text
+                                                 ,self.blocks[i-1].text
                                                  ]
                                                 ).space_items()
-                del self.blocks[i]
+                del self.blocks[i-1]
                 i =- 1
                 count += 1
             i += 1
