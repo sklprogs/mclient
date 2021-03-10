@@ -7,6 +7,7 @@ mclient:
   dictionaries), do this check only before showing the final article.
 
 multitrancom:
+- RU-EN, послойный: Gruzovik is not a dic
 - RU-EN, hello: "Английский тезаурус" and "Русский тезаурус" should
   either be deleted or united with the following block of a fixed type
 - RU-EN, в том числе: force original line breaks (in order to separate
