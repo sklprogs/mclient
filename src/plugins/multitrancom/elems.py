@@ -324,9 +324,7 @@ class Elems:
                 del self.blocks[i]
                 i -= 1
             i += 1
-        if count:
-            mes = _('{} blocks have been deleted').format(count)
-            sh.objs.get_mes(f,mes,True).show_debug()
+        sh.com.rep_deleted(f,count)
     
     def expand_dic_file(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.expand_dic_file'
@@ -395,10 +393,7 @@ class Elems:
         self.blocks = [block for block in self.blocks
                        if block.type_ != 'definition'
                       ]
-        if self.defins:
-            mes = _('{} blocks have been deleted')
-            mes = mes.format(len(self.defins))
-            sh.objs.get_mes(f,mes,True).show_info()
+        sh.com.rep_deleted(f,len(self.defins))
     
     def delete_empty(self):
         ''' - Empty blocks are useless since we recreate fixed columns
