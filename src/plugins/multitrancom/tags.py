@@ -52,6 +52,7 @@ class Tag:
         self.text = ''
         self.name = ''
         self.url = ''
+        self.dicf = ''
         self.rowno = -1
         self.cellno = -1
         self.Close = False
@@ -76,6 +77,14 @@ class AnalyzeTag:
         if not self.fragm:
             self.Success = False
             sh.com.rep_empty(f)
+    
+    def _set_dicf(self):
+        pattern = ' title="'
+        if self.tag.url and pattern in self.tag.text \
+        and not 'UserName' in self.tag.text:
+            pos1 = self.tag.text.index(pattern) + len(pattern)
+            pos2 = self.tag.text.rfind('">')
+            self.tag.dicf = self.tag.text[pos1:pos2]
     
     def _set_name(self):
         # Do this before setting a URL
@@ -196,6 +205,7 @@ class AnalyzeTag:
                 self._set_name()
                 self._set_type()
                 self._set_url()
+                self._set_dicf()
             else:
                 self.tag.type_ = 'text'
                 self.tag.text = self.fragm
@@ -209,18 +219,19 @@ class AnalyzeTag:
     
     def _set_url(self):
         if self.tag.type_ == 'url':
+            self.tag.url = self.tag.text
             pattern = 'href="/m.exe?'
             # Can be 'm.exe' or 'M.exe'
-            ind = self.tag.text.lower().find(pattern)
+            ind = self.tag.url.lower().find(pattern)
             if ind > 0:
                 ind += len(pattern)
-                self.tag.text = self.tag.text[ind:]
+                self.tag.url = self.tag.url[ind:]
             else:
-                self.tag.text = ''
-            if self.tag.text.endswith('"'):
-                self.tag.text = self.tag.text[:-1]
+                self.tag.url = ''
+            if self.tag.url.endswith('"'):
+                self.tag.url = self.tag.url[:-1]
             else:
-                self.tag.text = ''
+                self.tag.url = ''
 
 
 
@@ -275,6 +286,15 @@ class Tags:
         self.tags = []
         self.open = []
     
+    def set_abbr(self):
+        f = '[MClient] plugins.multitrancom.tags.Tags.set_abbr'
+        if self.Success:
+            for block in self.blocks:
+                if block.type_ == 'dic':
+                    self.abbr[block.text] = block.dicf
+        else:
+            sh.com.cancel(f)
+    
     def _debug_abbr(self):
         f = '[MClient] plugins.multitrancom.tags.Tags._debug_abbr'
         mes = ''
@@ -284,6 +304,8 @@ class Tags:
             for key in self.abbr.keys():
                 keys.append(key)
                 values.append(self.abbr[key])
+            keys = ['"{}"'.format(key) for key in keys]
+            values = ['"{}"'.format(value) for value in values]
             nos = [i + 1 for i in range(len(keys))]
             headers = ('NO','ABBR','FULL')
             iterable = [nos,keys,values]
@@ -291,15 +313,6 @@ class Tags:
         else:
             sh.com.rep_empty(f)
         return _('Abbreviations:') + '\n' + mes
-    
-    def set_abbr(self):
-        f = '[MClient] plugins.multitrancom.tags.Tags.set_abbr'
-        if self.Success:
-            for block in self.blocks:
-                if block.type_ == 'dic':
-                    self.abbr[block.dic] = block.dicf
-        else:
-            sh.com.cancel(f)
     
     def _is_script(self,tag):
         for subtag in tag.inherent:
@@ -355,12 +368,14 @@ class Tags:
         types = [block.type_ for block in self.blocks]
         texts = ['"{}"'.format(block.text) for block in self.blocks]
         urls = ['"{}"'.format(block.url) for block in self.blocks]
+        dicfs = ['"{}"'.format(block.dicf) for block in self.blocks]
         rownos = [block.rowno for block in self.blocks]
         cellnos = [block.cellno for block in self.blocks]
-        iterable = [nos,types,texts,urls,rownos,cellnos]
-        headers = (_('#'),_('TYPE'),_('TEXT'),'URL',_('ROW #')
+        iterable = [nos,types,texts,urls,dicfs,rownos,cellnos]
+        headers = (_('#'),_('TYPE'),_('TEXT'),'URL','DICF',_('ROW #')
                   ,_('CELL #')
                   )
+        # 23'' monitor: 50 symbols per a column
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
                            ,maxrow = 50
@@ -378,7 +393,8 @@ class Tags:
                 block = Block()
                 for subtag in tag.inherent:
                     if subtag.type_ == 'url':
-                        block.url = subtag.text
+                        block.url = subtag.url
+                        block.dicf = subtag.dicf
                     else:
                         block.type_ = subtag.type_
                 block.text = tag.text
@@ -413,8 +429,10 @@ class Tags:
         nos = [i + 1 for i in range(len(self.tags))]
         closes = ['{}'.format(tag.Close) for tag in self.tags]
         names = ['"{}"'.format(tag.name) for tag in self.tags]
-        texts = ['"{}"'.format(tag.text) for tag in self.tags]
         types = ['"{}"'.format(tag.type_) for tag in self.tags]
+        texts = ['"{}"'.format(tag.text) for tag in self.tags]
+        urls = ['"{}"'.format(tag.url) for tag in self.tags]
+        dicfs = ['"{}"'.format(tag.dicf) for tag in self.tags]
         rownos = ['{}'.format(tag.rowno) for tag in self.tags]
         cellnos = ['{}'.format(tag.cellno) for tag in self.tags]
         inherent = []
@@ -424,13 +442,16 @@ class Tags:
                 subtags.append(subtag.name)
             subtags = ', '.join(subtags)
             inherent.append(subtags)
-        iterable = [nos,closes,names,texts,types,inherent,rownos,cellnos]
-        headers = (_('#'),_('CLOSING'),_('NAME'),_('TEXT'),_('TYPE')
-                  ,_('OPEN'),_('ROW'),_('CELL')
+        iterable = [nos,closes,names,types,texts,urls,dicfs,inherent
+                   ,rownos,cellnos
+                   ]
+        headers = (_('#'),_('CLOSING'),_('NAME'),_('TYPE'),_('TEXT')
+                  ,'URL','DICF',_('OPEN'),_('ROW'),_('CELL')
                   )
+        # 23'' monitor: 35 symbols per a column
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
-                           ,maxrow = 50
+                           ,maxrow = 35
                            ,maxrows = self.maxrows
                            ).run()
         return _('Tags:') + '\n' + mes
@@ -439,9 +460,9 @@ class Tags:
         f = '[MClient] plugins.multitrancom.tags.Tags.debug'
         if self.Debug:
             if self.Success:
-                #self._debug_abbr()
                 mes = [self._debug_code(),self._debug_fragms()
                       ,self._debug_tags(),self._debug_blocks()
+                      ,self._debug_abbr()
                       ]
                 mes = '\n\n'.join(mes)
                 sh.com.run_fast_debug(f,mes)

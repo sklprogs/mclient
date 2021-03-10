@@ -150,16 +150,12 @@ class Plugin:
         self.text = self.htm = cu.CleanUp(self.text).run()
         if self.text is None:
             self.text = ''
-        #TODO: Should we take dics only from the current article?
-        self.abbr = {}
         itags = tg.Tags (text = self.text
                         ,Debug = self.Debug
                         ,maxrows = self.maxrows
                         )
         self.blocks = itags.run()
-        if itags.abbr:
-            for key in itags.abbr.keys():
-                self.abbr[key] = itags.abbr[key]
+        self.abbr = itags.abbr
         if self.blocks:
             for block in self.blocks:
                 # Prevent useless error output
