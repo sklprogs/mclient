@@ -43,15 +43,14 @@ class BlockPrioritize:
     '''
     def __init__(self,data,order,Block=False
                 ,Prioritize=False,phdic=None
-                ,Debug=False,maxrow=20
-                ,maxrows=1000,spdic={}
+                ,Debug=False,maxrows=1000
+                ,spdic={}
                 ):
         f = '[MClient] cells.BlockPrioritize.__init__'
         self.Block = Block
         self.blocks = []
         self.data = data
         self.Debug = Debug
-        self.maxrow = maxrow
         self.maxrows = maxrows
         self.order = order
         self.phdic = phdic
@@ -178,7 +177,7 @@ class BlockPrioritize:
                             )
             mes = sh.FastTable (headers = headers
                                ,iterable = rows
-                               ,maxrow = self.maxrow
+                               ,maxrow = 20
                                ,maxrows = self.maxrows
                                ,Transpose = True
                                ).run()
@@ -198,7 +197,7 @@ class Cells:
     def __init__ (self,data,cols,collimit=10
                  ,phdic=None,Reverse=False
                  ,spdic={},Debug=False
-                 ,maxrow=15,maxrows=1000
+                 ,maxrows=1000
                  ):
         f = '[MClient] cells.Cells.__init__'
         # Sqlite fetch
@@ -207,7 +206,6 @@ class Cells:
         self.collimit = collimit
         self.data = data
         self.Debug = Debug
-        self.maxrow = maxrow
         self.maxrows = maxrows
         self.phdic = phdic
         self.Reverse = Reverse
@@ -323,7 +321,7 @@ class Cells:
                             )
             mes = sh.FastTable (headers = headers
                                ,iterable = rows
-                               ,maxrow = self.maxrow
+                               ,maxrow = 15
                                ,maxrows = self.maxrows
                                ,Transpose = True
                                ).run()
@@ -517,8 +515,7 @@ class Pos:
         Modifies attributes:        POS1, POS2
     '''
     def __init__ (self,data,raw_text
-                 ,Debug=False,maxrow=70
-                 ,maxrows=50
+                 ,Debug=False,maxrows=50
                  ):
         f = '[MClient] cells.Pos.__init__'
         self.blocks = []
@@ -526,7 +523,6 @@ class Pos:
         # Sqlite fetch
         self.data = data
         self.Debug = Debug
-        self.maxrow = maxrow
         self.maxrows = maxrows
         # Retrieved from the TkinterHTM widget
         self.rawtext = raw_text
@@ -571,7 +567,7 @@ class Pos:
                             )
             mes = sh.FastTable (headers = headers
                                ,iterable = rows
-                               ,maxrow = self.maxrow
+                               ,maxrow = 70
                                ,maxrows = self.maxrows
                                ,Transpose = True
                                ).run()

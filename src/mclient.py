@@ -1964,7 +1964,6 @@ class WebFrame:
                                 ,phdic = self.phdic
                                 ,spdic = spdic
                                 ,Debug = lg.objs.get_plugins().Debug
-                                ,maxrow = lg.objs.plugins.maxrow
                                 ,maxrows = lg.objs.plugins.maxrows
                                 )
         bp.run()
@@ -2003,7 +2002,6 @@ class WebFrame:
         else:
             spdic = lg.objs.speech_prior.get_abbr2full()
         
-        # Too many columns here, 'maxrow' should be custom
         cells = cl.Cells (data = data
                          ,cols = lg.objs.request.cols
                          ,collimit = lg.objs.request.collimit
@@ -2034,7 +2032,6 @@ class WebFrame:
         pos = cl.Pos (data = data
                      ,raw_text = self.get_text()
                      ,Debug = lg.objs.plugins.Debug
-                     ,maxrow = lg.objs.plugins.maxrow
                      ,maxrows = lg.objs.plugins.maxrows
                      )
         pos.run()

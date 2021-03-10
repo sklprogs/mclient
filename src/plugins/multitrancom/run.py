@@ -13,12 +13,10 @@ import plugins.multitrancom.pairs as pr
 
 class Plugin:
     
-    def __init__ (self,Debug=False
-                 ,maxrow=20,maxrows=1000
-                 ):
+    def __init__(self,abbr={},Debug=False,maxrows=1000):
         self.set_values()
+        self.abbr = abbr
         self.Debug = Debug
-        self.maxrow = maxrow
         self.maxrows = maxrows
     
     def set_values(self):
@@ -163,8 +161,6 @@ class Plugin:
                     block.url = gt.com.fix_url(block.url)
         self.blocks = el.Elems (blocks = self.blocks
                                ,abbr = self.abbr
-                               ,langs = pr.objs.get_pairs().get_alive()
-                               ,search = search
                                ,Debug = self.Debug
                                ,maxrows = self.maxrows
                                ).run()

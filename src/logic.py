@@ -1338,15 +1338,12 @@ class Objects:
             self.speech_prior = SpeechPrior(order)
         return self.speech_prior
     
-    def get_plugins (self,Debug=False
-                    ,maxrow=20,maxrows=1000
-                    ):
+    def get_plugins(self,Debug=False,maxrows=1000):
         if self.plugins is None:
             self.plugins = manager.Plugins (sdpath = self.get_default().get_dics()
                                            ,mbpath = self.default.get_dics()
                                            ,timeout = sh.lg.globs['int']['timeout']
                                            ,Debug = Debug
-                                           ,maxrow = maxrow
                                            ,maxrows = maxrows
                                            )
         return self.plugins

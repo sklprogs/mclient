@@ -3,10 +3,10 @@
 
 ''' This module prepares blocks after extracting tags for permanently
     storing in DB.
-    Needs attributes in blocks: DIC,SAMECELL,SPEECH,TERM,TRANSC,TYPE
-                               ,WFORM
-    Modifies attributes: DIC,SPEECH,TERM,TEXT,TRANSC,TYPE,SAMECELL
-                        ,SELECTABLE,WFORM
+    Needs attributes in blocks: DIC,DICF,SAMECELL,SPEECH,TERM,TRANSC
+                               ,TYPE,WFORM
+    Modifies attributes: DIC,DICF,SAMECELL,SELECTABLE,SPEECH,TERM,TEXT
+                        ,TRANSC,TYPE,WFORM
     Since TYPE is modified here, SAMECELL is filled here.
 '''
 
@@ -57,7 +57,7 @@ class Abbr:
             self.fabbr = sh.objs.get_pdir().add ('..','resources'
                                                 ,'abbr.txt'
                                                 )
-            self.Success = sh.File(file=self.fabbr).Success
+            self.Success = sh.File(self.fabbr).Success
         else:
             sh.com.cancel(f)
 
@@ -124,20 +124,14 @@ class Elems:
           vary depending on the view. Incorrect sorting by TERM may
           result in putting a 'term' item before fixed columns.
     '''
-    def __init__ (self,blocks,abbr,langs=[]
-                 ,Debug=False,maxrow=20
-                 ,maxrows=1000,search=''
-                 ):
+    def __init__(self,blocks,Debug=False,maxrows=1000,abbr={}):
         self.abbr = abbr
         self.blocks = blocks
         self.Debug = Debug
         self.defins = []
         self.dicurls = {}
         self.fixed = ('dic','wform','transc','speech')
-        self.maxrow = maxrow
         self.maxrows = maxrows
-        #TODO (?): delete 'langs', 'pattern' from self and input
-        self.pattern = search.strip()
     
     def set_phcount(self):
         for block in self.blocks:
@@ -433,20 +427,6 @@ class Elems:
             elif block.same == 1:
                 block.term = term
     
-    def expand_dic(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.expand_dic'
-        if self.abbr:
-            for block in self.blocks:
-                if block.dic in self.abbr:
-                    block.dicf = self.abbr[block.dic]
-                else:
-                    ''' Each dictionary must have full and short titles.
-                        This is especially needed for a phrase dic.
-                    '''
-                    block.dicf = block.dic
-        else:
-            sh.com.rep_empty(f)
-    
     def run(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.run'
         if self.check():
@@ -478,7 +458,6 @@ class Elems:
             # Do this after reinserting fixed types
             self.insert_definitions()
             self.set_fixed_term()
-            self.expand_dic()
             self.expand_dic_file()
             self.set_term_same()
             # Extra spaces in the beginning may cause sorting problems
@@ -513,9 +492,10 @@ class Elems:
                              ,self.blocks[i].term
                              ]
                             )
+            # 23'' monitor: 20 symbols per a column
             mes = sh.FastTable (headers = headers
                                ,iterable = rows
-                               ,maxrow = self.maxrow
+                               ,maxrow = 20
                                ,maxrows = self.maxrows
                                ,Transpose = True
                                ).run()

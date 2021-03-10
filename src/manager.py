@@ -15,12 +15,11 @@ class Plugins:
     
     def __init__ (self,sdpath,mbpath
                  ,timeout=6,Debug=False
-                 ,maxrow=20,maxrows=1000
+                 ,maxrows=1000
                  ):
         self.set_values()
         self.Debug = Debug
         self.lgpath = sdpath
-        self.maxrow = maxrow
         self.maxrows = maxrows
         self.mbpath = sdpath
         self.plugin = self.mcplugin
@@ -190,19 +189,15 @@ class Plugins:
         plugins.dsl.get.objs.get_all_dics()
         plugins.multitrandem.get.objs.get_all_dics()
         self.sdplugin = sdrun.Plugin (Debug = self.Debug
-                                     ,maxrow = self.maxrow
                                      ,maxrows = self.maxrows
                                      )
         self.mcplugin = mcrun.Plugin (Debug = self.Debug
-                                     ,maxrow = self.maxrow
                                      ,maxrows = self.maxrows
                                      )
         self.mbplugin = mbrun.Plugin (Debug = self.Debug
-                                     ,maxrow = self.maxrow
                                      ,maxrows = self.maxrows
                                      )
         self.lgplugin = lgrun.Plugin (Debug = self.Debug
-                                     ,maxrow = self.maxrow
                                      ,maxrows = self.maxrows
                                      )
     
