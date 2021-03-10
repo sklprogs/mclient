@@ -448,10 +448,10 @@ class Tags:
         headers = (_('#'),_('CLOSING'),_('NAME'),_('TYPE'),_('TEXT')
                   ,'URL','DICF',_('OPEN'),_('ROW'),_('CELL')
                   )
-        # 23'' monitor: 35 symbols per a column
+        # 23'' monitor: 30 symbols per a column
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
-                           ,maxrow = 35
+                           ,maxrow = 30
                            ,maxrows = self.maxrows
                            ).run()
         return _('Tags:') + '\n' + mes
