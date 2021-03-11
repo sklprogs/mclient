@@ -204,13 +204,13 @@ class HTM:
             self.output.write(self._get_family())
             self.output.write('" color="')
             # Suppress useless error output
-            if self.block.text != self.phdic:
-                lst = self.order.get_list(search=self.block.text)
-                Blocked = self.order.is_blocked(lst)
-                Prioritized = self.order.is_prioritized(lst)
-            else:
+            if self.block.text == self.phdic:
                 Blocked = False
                 Prioritized = False
+            else:
+                lst = self.order.get_list(self.block.text)
+                Blocked = self.order.is_blocked(lst)
+                Prioritized = self.order.is_prioritized(lst)
             if Blocked:
                 self.output.write(self._get_color_b())
             elif Prioritized:
@@ -384,8 +384,10 @@ class HTM:
                     cond1 = self.width and self.Reverse
                     cond2 = self.width \
                             and len(self.block.text) > self.maxsyms
-                    if self.block.text and self.block.type_ in \
-                    ('dic','wform','transc','speech','phdic'):
+                    if self.block.text \
+                    and self.block.type_ in ('dic','wform','transc'
+                                            ,'speech','phdic'
+                                            ):
                         base = '<td align="center" valign="top"'
                     else:
                         base = '<td valign="top"'
