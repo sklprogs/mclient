@@ -60,8 +60,7 @@ class Suggest:
                                 ,coding = CODING
                                 ).run()
             if self.items:
-                #cur
-                #self.items = html.unescape(self.items)
+                self.items = html.unescape(self.items)
                 self.items = [item for item \
                               in self.items.splitlines() if item
                              ]

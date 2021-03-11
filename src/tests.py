@@ -271,8 +271,10 @@ class Plugin:
         #search = 'hello'
         #url = 'https://www.multitran.com/m.exe?s=set&l1=1&l2=2&SHL=2'
         #search = 'set'
-        url = 'https://www.multitran.com/m.exe?a=3&l1=1&l2=2&s=hello&SHL=2'
-        search = '97 фраз в 16 тематиках'
+        #url = 'https://www.multitran.com/m.exe?a=3&l1=1&l2=2&s=hello&SHL=2'
+        #search = '97 фраз в 16 тематиках'
+        url = 'https://www.multitran.com/m.exe?a=3&l1=1&l2=2&s=icon&SHL=2'
+        search = 'icon'
         
         iplug = mc.Plugin (Debug = DEBUG
                           ,maxrows = 0

@@ -223,11 +223,11 @@ class Elems:
             i += 1
         sh.com.rep_deleted(f,count)
     
-    def get_last_valid_comment(self):
+    def get_tail(self):
         i = len(self.blocks) - 1
         while i > 0:
             if self.blocks[i-1].type_ == 'phrase' \
-            and self.blocks[i].type_ == 'comment':
+            and self.blocks[i].type_ == 'phcount':
                 return i
             i -= 1
     
@@ -235,7 +235,7 @@ class Elems:
         # Takes ~0.0004s for 'set' (EN-RU) on AMD E-300
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_tail'
         count = 0
-        last = self.get_last_valid_comment()
+        last = self.get_tail()
         if last is None or last + 1 == len(self.blocks):
             sh.com.rep_lazy(f)
         else:

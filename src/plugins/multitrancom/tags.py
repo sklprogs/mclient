@@ -221,7 +221,7 @@ class AnalyzeTag:
         if self.tag.type_ == 'url':
             self.tag.url = self.tag.text
             pattern = 'href="/m.exe?'
-            # Can be 'm.exe' or 'M.exe'
+            # Can be either 'm.exe' or 'M.exe'
             ind = self.tag.url.lower().find(pattern)
             if ind > 0:
                 ind += len(pattern)
