@@ -1043,7 +1043,7 @@ class WebFrame:
         objs.get_suggest().move_up()
     
     def suggest_show(self,event=None):
-        objs.get_suggest().suggest(event=event)
+        objs.get_suggest().suggest(event)
     
     def clear_history(self,event=None):
         objs.get_history().clear()
@@ -1732,7 +1732,7 @@ class WebFrame:
             return self.gui.widget.text('text')
 
     def set_mouse_sel(self,event=None):
-        self.get_pos(event=event)
+        self.get_pos(event)
         self.select()
 
     def get_pos(self,event=None):
