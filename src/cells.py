@@ -236,17 +236,17 @@ class Cells:
                     block.text = ''
                 else:
                     dic = block.dic
-            if block.type_ == 'wform':
+            elif block.type_ == 'wform':
                 if wform == block.wform:
                     block.text = ''
                 else:
                     wform = block.wform
-            if block.type_ == 'speech':
+            elif block.type_ == 'speech':
                 if speech == block.speech:
                     block.text = ''
                 else:
                     speech = block.speech
-            if block.type_ == 'transc':
+            elif block.type_ == 'transc':
                 if transc == block.transc:
                     block.text = ''
                 else:
