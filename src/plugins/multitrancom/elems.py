@@ -131,6 +131,7 @@ class Elems:
         self.defins = []
         self.dicurls = {}
         self.fixed = ('dic','wform','transc','speech')
+        self.phdic = ''
         self.maxrows = maxrows
     
     def set_phcount(self):
@@ -187,7 +188,7 @@ class Elems:
             del self.blocks[index_]
             del self.blocks[index_]
             self.blocks[index_].type_ = 'phdic'
-            self.blocks[index_].text = text
+            self.phdic = self.blocks[index_].text = text
             self.blocks[index_].url = url
             self.blocks[index_].select = 1
             self.blocks[index_].dic = self.blocks[index_].text
@@ -635,16 +636,17 @@ class Elems:
                 block.same = 0
                 self.blocks.insert(i,block)
                 
-                block = Block()
-                block.type_ = 'dic'
-                block.text = self.blocks[i].dic
-                block.dic = self.blocks[i].dic
-                block.wform = self.blocks[i].wform
-                block.speech = self.blocks[i].speech
-                block.transc = self.blocks[i].transc
-                block.term = self.blocks[i].term
-                block.same = 0
-                self.blocks.insert(i,block)
+                if self.blocks[i].dic != self.phdic:
+                    block = Block()
+                    block.type_ = 'dic'
+                    block.text = self.blocks[i].dic
+                    block.dic = self.blocks[i].dic
+                    block.wform = self.blocks[i].wform
+                    block.speech = self.blocks[i].speech
+                    block.transc = self.blocks[i].transc
+                    block.term = self.blocks[i].term
+                    block.same = 0
+                    self.blocks.insert(i,block)
                 
                 dic = self.blocks[i].dic
                 wform = self.blocks[i].wform
@@ -668,13 +670,13 @@ class Elems:
     
     def set_dic_urls(self):
         for block in self.blocks:
-            if block.type_ == 'dic' \
+            if block.type_ in ('dic','phdic') \
             and not block.text in self.dicurls:
                 self.dicurls[block.text] = block.url
     
     def restore_dic_urls(self):
         for i in range(len(self.blocks)):
-            if self.blocks[i].type_ == 'dic' \
+            if self.blocks[i].type_ in ('dic','phdic') \
             and self.blocks[i].text in self.dicurls:
                 self.blocks[i].url = self.dicurls[self.blocks[i].text]
 
