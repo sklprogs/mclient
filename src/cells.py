@@ -39,7 +39,7 @@ class BlockPrioritize:
         before sorting it.
         Needs attributes in blocks: NO, DIC, SPEECH*, TYPE, TEXT*
         * (test purposes only).
-        Modifies attributes:        BLOCK, DICPR, SPEECHPR
+        Modifies attributes: BLOCK, DICPR, SPEECHPR
     '''
     def __init__(self,data,order,Block=False
                 ,Prioritize=False,phdic=None

@@ -14,6 +14,13 @@ class CleanUp:
     def __init__(self,text):
         self.text = text
     
+    def delete_trash_tags(self):
+        # Do not separate a single block into parts
+        self.text = self.text.replace('<i>','')
+        self.text = self.text.replace('</i>','')
+        self.text = self.text.replace('<u>','')
+        self.text = self.text.replace('</u>','')
+    
     def fix_href(self):
         ''' Fix a malformed URL, e.g., 'href="/m.exe?a=110&l1=1&l2=2&s=process (<редк.>)&sc=671"'
             multitran.com provides for URLs that are not entirely
@@ -96,6 +103,7 @@ class CleanUp:
     def run(self):
         f = '[MClient] plugins.multitrancom.cleanup.CleanUp.run'
         if self.text:
+            self.delete_trash_tags()
             self.fix_href()
             self.fix_tags()
             self.run_common()
