@@ -526,7 +526,7 @@ class Elems:
         
         # Find first non-empty values and set them as default
         for block in self.blocks:
-            if block.type_ == 'dic':
+            if block.type_ in ('dic','phdic'):
                 dic = block.text
                 break
         for block in self.blocks:
@@ -542,12 +542,12 @@ class Elems:
                 transc = block.text
                 break
         for block in self.blocks:
-            if block.type_ == 'term' or block.type_ == 'phrase':
+            if block.type_ in ('term','phrase'):
                 term = block.text
                 break
         
         for block in self.blocks:
-            if block.type_ == 'dic':
+            if block.type_ in ('dic','phdic'):
                 dic = block.text
             elif block.type_ == 'wform':
                 wform = block.text
