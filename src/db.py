@@ -1025,7 +1025,7 @@ class Moves(DB):
     def get_line_end(self,pos):
         f = '[MClient] db.Moves.get_line_end'
         if self.artid:
-            poses = self.get_block_pos(pos=pos)
+            poses = self.get_block_pos(pos)
             if poses:
                 row_no, col_no = poses[3], poses[4]
                 if self.Selectable:
@@ -1057,7 +1057,7 @@ class Moves(DB):
     def get_left(self,pos):
         f = '[MClient] db.Moves.get_left'
         if self.artid:
-            poses = self.get_block_pos(pos=pos)
+            poses = self.get_block_pos(pos)
             if poses:
                 cellno, no = poses[2], poses[5]
                 min_cell = self.get_min_cell()
@@ -1096,7 +1096,7 @@ class Moves(DB):
     def get_right(self,pos):
         f = '[MClient] db.Moves.get_right'
         if self.artid:
-            poses = self.get_block_pos(pos=pos)
+            poses = self.get_block_pos(pos)
             if poses:
                 cellno, no = poses[2], poses[5]
                 max_cell = self.get_max_cell()
@@ -1408,7 +1408,7 @@ class Moves(DB):
     def get_next_section(self,pos,col_no=0,Loop=True):
         f = '[MClient] db.Moves.get_next_section'
         if self.artid:
-            poses = self.get_block_pos(pos=pos)
+            poses = self.get_block_pos(pos)
             if poses:
                 query = 'select POS1,ROWNO,TEXT from BLOCKS \
                          where ARTICLEID = ? and BLOCK = 0 \

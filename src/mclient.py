@@ -1753,12 +1753,12 @@ class WebFrame:
             if str(pos).isdigit():
                 Selectable = objs.get_blocksdb().Selectable
                 objs.blocksdb.Selectable = False
-                result = objs.blocksdb.get_block_pos(pos=pos)
+                result = objs.blocksdb.get_block_pos(pos)
                 if result:
                     self.posn = pos
                 if Selectable:
                     objs.blocksdb.Selectable = True
-                    result = objs.blocksdb.get_block_pos(pos=pos)
+                    result = objs.blocksdb.get_block_pos(pos)
                     if result:
                         self.pos = pos
                 else:
