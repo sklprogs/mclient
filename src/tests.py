@@ -178,7 +178,7 @@ class Tags:
             'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
             to set 'dic' and some other types.
         '''
-        file = '/home/pete/bin/mclient/tests/multitrancom/симптом (browser) (2021-03-07).html'
+        file = '/home/pete/bin/mclient/tests/multitrancom/icon (browser) (2021-03-10).html'
         text = sh.ReadTextFile(file).get()
         text = cu.CleanUp(text).run()
         tg.Tags (text = text
@@ -267,8 +267,10 @@ class Plugin:
         #search = '47 фраз'
         #url = 'https://www.multitran.com/m.exe?s=Antiquity&l1=1&l2=2&SHL=2'
         #search = 'Antiquity'
-        url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
-        search = 'hello'
+        #url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
+        #search = 'hello'
+        url = 'https://www.multitran.com/m.exe?s=set&l1=1&l2=2&SHL=2'
+        search = 'set'
         
         iplug = mc.Plugin (Debug = DEBUG
                           ,maxrows = 0
@@ -600,10 +602,10 @@ if __name__ == '__main__':
     #Get().run_multitrancom()
     #Get().run_dsl()
     #Tags().run_dsl()
-    Tags().run_multitrancom()
+    #Tags().run_multitrancom()
     #Tags().run_stardict()
     #Tags().analyze_tag()
     #Plugin().run_dsl()
-    #Plugin().run_multitrancom()
+    Plugin().run_multitrancom()
     #Plugin().run_multitrandem()
     sh.com.end()

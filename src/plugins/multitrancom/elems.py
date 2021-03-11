@@ -271,27 +271,23 @@ class Elems:
         sh.com.rep_deleted(f,count)
     
     def delete_semi(self):
-        # Takes ~0.017s for 'set' (EN-RU) on AMD E-300
+        # Takes ~0.013s for 'set' (EN-RU) on AMD E-300
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_semi'
         count = 0
-        i = 1
+        i = 0
         while i < len(self.blocks):
-            Match = False
-            if self.blocks[i].text == '; ':
-                if self.blocks[i-1].type_ == 'user' \
-                or self.blocks[i].type_ == 'term':
-                    Match = True
-            if Match:
-                count += 1
+            if self.blocks[i].text == '; ' \
+            and self.blocks[i].type_ == 'term':
                 del self.blocks[i]
                 i -= 1
+                count += 1
             i += 1
         sh.com.rep_deleted(f,count)
     
     def set_semino(self):
         semino = 0
         for block in self.blocks:
-            if block.text == '; ':
+            if block.text == '; ' and block.type_ == 'term':
                 semino += 1
             block.semino = semino
     
