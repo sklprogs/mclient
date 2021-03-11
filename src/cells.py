@@ -231,7 +231,7 @@ class Cells:
     def clear_fixed(self):
         dic = wform = speech = transc = ''
         for block in self.blocks:
-            if block.type_ == 'dic':
+            if block.type_ in ('dic','phdic'):
                 if dic == block.dic:
                     block.text = ''
                 else:
@@ -496,7 +496,7 @@ class Cells:
     
     def restore_fixed(self):
         for block in self.blocks:
-            if block.type_ == 'dic':
+            if block.type_ in ('dic','phdic'):
                 block.text = block.dic
             elif block.type_ == 'wform':
                 block.text = block.wform
