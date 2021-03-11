@@ -653,8 +653,8 @@ class Elems:
             i += 1
             
     def remove_fixed(self):
-        self.blocks = [block for block in self.blocks if block.type_ \
-                       not in self.fixed
+        self.blocks = [block for block in self.blocks \
+                       if block.type_ not in self.fixed
                       ]
                        
     def set_selectables(self):
