@@ -642,7 +642,6 @@ class SaveArticle:
                     )
         self.gui.parent.btn_sav.action = self.select
     
-    #FIX: an extension for Windows
     def fix_ext(self,ext='.htm'):
         if not self.file.endswith(ext):
             self.file += ext
@@ -670,7 +669,7 @@ class SaveArticle:
         f = '[MClient] mclient.SaveArticle.view_as_htm'
         self.file = sh.com.show_save_dialog(self.webtypes)
         if self.file and lg.objs.get_request().htm:
-            self.fix_ext(ext='.htm')
+            self.fix_ext('.htm')
             ''' We enable 'Rewrite' because the confirmation is already
                 built in the internal dialog.
             '''
@@ -690,7 +689,7 @@ class SaveArticle:
         '''
         self.file = sh.com.show_save_dialog(self.webtypes)
         if self.file and lg.objs.get_request().htmraw:
-            self.fix_ext(ext='.htm')
+            self.fix_ext('.htm')
             lg.objs.request.htmraw = lg.objs.get_plugins().fix_raw_htm()
             sh.WriteTextFile (file = self.file
                              ,Rewrite = True
@@ -703,7 +702,7 @@ class SaveArticle:
         self.file = sh.com.show_save_dialog(self.txttypes)
         text = objs.get_webframe().get_text()
         if self.file and text:
-            self.fix_ext(ext='.txt')
+            self.fix_ext('.txt')
             sh.WriteTextFile (file = self.file
                              ,Rewrite = True
                              ).write(text.strip())
@@ -2557,7 +2556,7 @@ class WebFrame:
             sh.WriteTextFile (file = tmp_file
                              ,Rewrite = True
                              ).write(code)
-            sh.Launch(target=sh.objs.get_tmpfile()).launch_default()
+            sh.Launch(sh.objs.get_tmpfile()).launch_default()
         else:
             sh.com.rep_empty(f)
 
