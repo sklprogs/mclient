@@ -161,11 +161,32 @@ class Elems:
         else:
             sh.com.rep_empty(f)
     
-    def delete_trash(self):
+    def _delete_tail_links(self,poses):
+        f = '[MClient] plugins.multitrancom.elems.Elems._delete_tail_links'
+        if poses:
+            pos1, pos2 = poses[0], poses[1] + 1
+            self.blocks[pos1:pos2] = []
+            sh.com.rep_deleted(f,pos2-pos1)
+    
+    def delete_tail_links(self):
+        ''' - Sometimes it's not enough to delete comment-only tail
+              since there might be no 'phdic' type which serves as
+              an indicator.
+            - Takes ~0.005s for 'set' (EN-RU) on AMD E-300
+        '''
+        ru = ('Добавить','|','Сообщить об ошибке','|'
+             ,'Способы выбора языков'
+             )
+        en = ('Add','|','Report an error','|','Language Selection Tips')
+        texts = [block.text for block in self.blocks]
+        self._delete_tail_links(sh.List(texts,ru).find())
+        self._delete_tail_links(sh.List(texts,en).find())
+    
+    def delete_site_coms(self):
         ''' Sometimes it's not enough to delete comment-only tail since
             there might be no 'phdic' type which serves as an indicator.
         '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.delete_trash'
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_site_coms'
         count = 0
         i = 0
         while i < len(self.blocks):
@@ -430,7 +451,8 @@ class Elems:
             self.delete_empty()
             self.delete_semi()
             self.delete_numeration()
-            self.delete_trash()
+            self.delete_site_coms()
+            self.delete_tail_links()
             # Reassign types
             self.set_phdic()
             self.fix_thesaurus()
