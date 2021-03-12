@@ -154,11 +154,6 @@ class Plugin:
                         )
         self.blocks = itags.run()
         self.abbr = itags.abbr
-        if self.blocks:
-            for block in self.blocks:
-                # Prevent useless error output
-                if block.url:
-                    block.url = gt.com.fix_url(block.url)
         self.blocks = el.Elems (blocks = self.blocks
                                ,abbr = self.abbr
                                ,Debug = self.Debug

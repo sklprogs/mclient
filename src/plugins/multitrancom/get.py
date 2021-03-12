@@ -3,6 +3,7 @@
 
 import urllib.request
 import html
+import w3lib.url
 import skl_shared.shared as sh
 from skl_shared.localize import _
 
@@ -187,16 +188,12 @@ class Commands:
     def fix_url(self,url):
         f = '[MClient] plugins.multitrancom.get.Commands.fix_url'
         if url:
-            ''' We assume that 'multitran.com' does not provide for full
-                URLs so that we would not have to run quoting for
-                the entire URL which can increase a probability of
-                errors.
-            '''
             try:
                 ind = url.index('" title')
                 url = url[:ind]
             except ValueError:
                 pass
+            url = w3lib.url.safe_url_string(url)
             if not url.startswith('http'):
                 url = PAIRROOT + url
                 ''' #NOTE: this will change the UI language of
