@@ -14,6 +14,8 @@ Traceback (most recent call last):
 ValueError: 'Европейский банк реконструкции и развития' is not in list
 
 multitrancom:
+- name mangling: expand dics
+- EN-RU, monkey patching, speed for best rate of climb: delete trash
 - EN-RU, layering: enable copying embedded URL
 - EN-RU, отверждаемого порошка: implement separate words
 - Trash items: "Тематика, Английский, Русский"
