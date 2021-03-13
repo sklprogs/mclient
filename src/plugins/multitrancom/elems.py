@@ -134,6 +134,19 @@ class Elems:
         self.Debug = Debug
         self.maxrows = maxrows
     
+    def make_fixed(self):
+        # Takes ~0.0064s for 'set' (EN-RU) on AMD E-300
+        f = '[MClient] plugins.multitrancom.elems.Elems.make_fixed'
+        count = 0
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].rowno != self.blocks[i].rowno \
+            and self.blocks[i].type_ == 'user':
+                self.blocks[i].type_ = 'dic'
+                count += 1
+            i += 1
+        sh.com.rep_matches(f,count)
+    
     def set_phcount(self):
         for block in self.blocks:
             if block.type_ == 'phcount':
@@ -441,6 +454,7 @@ class Elems:
             # Reassign types
             self.set_phdic()
             self.set_transc()
+            self.make_fixed()
             self.set_same()
             # Prepare contents
             self.set_dic_urls()

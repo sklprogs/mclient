@@ -8,9 +8,6 @@ mclient:
 
 multitrancom:
 - Get full URL when copying it with Ctrl-F7 or Shift-F7
-- RU-EN, послойный, name of the game: Gruzovik is not a dic
-- RU-EN, hello: "Английский тезаурус" and "Русский тезаурус" should
-  either be deleted or united with the following block of a fixed type
 - RU-EN, в том числе: force original line breaks (in order to separate
   "например" and "including"
 - RU-EN, сохранить: "прич." has no full form

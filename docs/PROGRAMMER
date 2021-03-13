@@ -1,3 +1,7 @@
+
+- Blocks like "Английский тезаурус" and "Русский тезаурус" are skipped
+  since setting several blocks of the same fixed type in succession is
+  not supported for now
 - Multitran does not escape '<' and '>' in user terms/comments properly
 - BLOCK field is used to skip server contents; IGNORE field is used for
   internal purposes to skip unknown/invalid block types
