@@ -147,6 +147,26 @@ class Elems:
             i += 1
         sh.com.rep_matches(f,count)
     
+    def set_synonyms(self):
+        f = '[MClient] plugins.multitrancom.elems.Elems.set_synonyms'
+        count = 0
+        i = 2
+        while i < len(self.blocks):
+            if self.blocks[i-2].rowno != self.blocks[i-1].rowno \
+            and self.blocks[i-1].text == '⇒ ' \
+            and self.blocks[i-1].rowno == self.blocks[i].rowno \
+            and self.blocks[i-1].cellno == self.blocks[i].cellno:
+                self.blocks[i-1].type_ = 'dic'
+                ''' We do not assign DICF since it will be overwritten
+                    anyway.
+                '''
+                self.blocks[i-1].text = _('Synonyms')
+                self.blocks[i-1].same = 0
+                self.blocks[i].same = 0
+                count += 2
+            i += 1
+        sh.com.rep_matches(f,count)
+    
     def set_phcount(self):
         for block in self.blocks:
             if block.type_ == 'phcount':
@@ -288,12 +308,11 @@ class Elems:
         while i < len(self.blocks):
             if self.blocks[i-2].type_ in self.fixed \
             and self.blocks[i-1].same == 1 and self.blocks[i].same == 0:
-                mes = '"{}" -> "{}" -> "{}"'
+                mes = '"{}" <- "{}"'
                 mes = mes.format (self.blocks[i-2].text
                                  ,self.blocks[i-1].text
-                                 ,self.blocks[i].text
                                  )
-                sh.objs.get_mes(f,mes,True).show_warning()
+                sh.objs.get_mes(f,mes,True).show_debug()
                 self.blocks[i-2].text = sh.List ([self.blocks[i-2].text
                                                  ,self.blocks[i-1].text
                                                  ]
@@ -454,6 +473,7 @@ class Elems:
             # Reassign types
             self.set_phdic()
             self.set_transc()
+            self.set_synonyms()
             self.make_fixed()
             self.set_same()
             # Prepare contents

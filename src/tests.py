@@ -178,7 +178,8 @@ class Tags:
             'plugins.multitrancom.get.Get', otherwise, 'Tags' will fail
             to set 'dic' and some other types.
         '''
-        file = '/home/pete/bin/mclient/tests/multitrancom/icon (browser) (2021-03-10).html'
+        #file = '/home/pete/bin/mclient/tests/multitrancom/icon (browser) (2021-03-10).html'
+        file = '/home/pete/bin/mclient/tests/multitrancom/задача (browser) (2021-03-13).html'
         text = sh.ReadTextFile(file).get()
         text = cu.CleanUp(text).run()
         tg.Tags (text = text
@@ -269,14 +270,16 @@ class Plugin:
         #search = 'Antiquity'
         #url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
         #search = 'hello'
-        url = 'https://www.multitran.com/m.exe?s=set&l1=1&l2=2&SHL=2'
-        search = 'set'
+        #url = 'https://www.multitran.com/m.exe?s=set&l1=1&l2=2&SHL=2'
+        #search = 'set'
         #url = 'https://www.multitran.com/m.exe?a=3&l1=1&l2=2&s=hello&SHL=2'
         #search = '97 фраз в 16 тематиках'
         #url = 'https://www.multitran.com/m.exe?a=3&l1=1&l2=2&s=icon&SHL=2'
         #search = 'icon'
         #url = 'https://www.multitran.com/m.exe?a=3&l1=1&l2=2&s=heaven+and+hell+bond&SHL=2'
         #search = 'heaven and hell bond'
+        url = 'https://www.multitran.com/m.exe?s=%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B0&l1=1&l2=2&SHL=2'
+        search = 'задача'
         
         iplug = mc.Plugin (Debug = DEBUG
                           ,maxrows = 0
