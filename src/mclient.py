@@ -2963,7 +2963,7 @@ if  __name__ == '__main__':
     f = '[MClient] mclient.__main__'
     sh.com.start()
     lg.objs.get_plugins(Debug=False,maxrows=1000)
-    lg.objs.get_default(product=gi.PRODUCT)
+    lg.objs.get_default(gi.PRODUCT)
     if lg.objs.default.Success:
         run_timed_update()
         objs.get_webframe().reset()

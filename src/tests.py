@@ -269,14 +269,14 @@ class Plugin:
         #search = 'Antiquity'
         #url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
         #search = 'hello'
-        #url = 'https://www.multitran.com/m.exe?s=set&l1=1&l2=2&SHL=2'
-        #search = 'set'
+        url = 'https://www.multitran.com/m.exe?s=set&l1=1&l2=2&SHL=2'
+        search = 'set'
         #url = 'https://www.multitran.com/m.exe?a=3&l1=1&l2=2&s=hello&SHL=2'
         #search = '97 фраз в 16 тематиках'
         #url = 'https://www.multitran.com/m.exe?a=3&l1=1&l2=2&s=icon&SHL=2'
         #search = 'icon'
-        url = 'https://www.multitran.com/m.exe?a=3&l1=1&l2=2&s=heaven+and+hell+bond&SHL=2'
-        search = 'heaven and hell bond'
+        #url = 'https://www.multitran.com/m.exe?a=3&l1=1&l2=2&s=heaven+and+hell+bond&SHL=2'
+        #search = 'heaven and hell bond'
         
         iplug = mc.Plugin (Debug = DEBUG
                           ,maxrows = 0

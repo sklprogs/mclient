@@ -125,18 +125,17 @@ class Elems:
           result in putting a 'term' item before fixed columns.
     '''
     def __init__(self,blocks,Debug=False,maxrows=1000,abbr={}):
+        self.defins = []
+        self.dicurls = {}
+        self.phdic = ''
+        self.fixed = ('dic','wform','transc','speech')
         self.abbr = abbr
         self.blocks = blocks
         self.Debug = Debug
-        self.defins = []
-        self.dicurls = {}
-        self.fixed = ('dic','wform','transc','speech')
-        self.phdic = ''
         self.maxrows = maxrows
     
     def set_phcount(self):
         for block in self.blocks:
-            #and not block.text.startswith(' '):
             if block.type_ == 'phcount':
                 block.text = ' [{}]'.format(block.text)
                 block.same = 1
@@ -354,20 +353,6 @@ class Elems:
                     dicfs.append(objs.get_abbr().get_full(dic))
                 block.dicf = ', '.join(dicfs)
     
-    def fix_thesaurus(self):
-        # Takes ~0.004s for 'set' (EN-RU) on AMD E-300
-        f = '[MClient] plugins.multitrancom.elems.Elems.fix_thesaurus'
-        count = 0
-        for i in range(len(self.blocks)):
-            if self.blocks[i].text in ('Русский тезаурус'
-                                      ,'Английский тезаурус'
-                                      ,'Russian thesaurus'
-                                      ,'English thesaurus'
-                                      ):
-                self.blocks[i].type_ = 'definition'
-                count += 1
-        sh.com.rep_matches(f,count)
-    
     def delete_numeration(self):
         # Takes ~0.027s for 'set' (EN-RU) on AMD E-300
         self.blocks = [block for block in self.blocks \
@@ -455,7 +440,6 @@ class Elems:
             self.delete_tail_links()
             # Reassign types
             self.set_phdic()
-            self.fix_thesaurus()
             self.set_transc()
             self.set_same()
             # Prepare contents
