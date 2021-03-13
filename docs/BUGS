@@ -14,6 +14,7 @@ Traceback (most recent call last):
 ValueError: 'Европейский банк реконструкции и развития' is not in list
 
 multitrancom:
+- EN-RU, aunt: block button hint does not reflect any blocking
 - name mangling: expand dics
 - EN-RU, monkey patching, speed for best rate of climb: delete trash
 - EN-RU, layering: enable copying embedded URL
