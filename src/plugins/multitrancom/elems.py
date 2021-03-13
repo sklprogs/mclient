@@ -532,7 +532,7 @@ class Elems:
         i = 1
         while i < len(self.blocks):
             if self.blocks[i].same > 0:
-                if self.blocks[i].text \
+                if self.blocks[i].text and self.blocks[i-1].text \
                   and not self.blocks[i].text[0].isspace() \
                   and not self.blocks[i].text[0] in sh.lg.punc_array \
                   and not self.blocks[i].text[0] in [')',']','}'] \
