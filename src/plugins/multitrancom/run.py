@@ -13,54 +13,39 @@ import plugins.multitrancom.pairs as pr
 
 class Plugin:
     
-    def __init__(self,abbr={},Debug=False,maxrows=1000):
+    def __init__(self,Debug=False,maxrows=1000):
         self.set_values()
-        self.abbr = abbr
         self.Debug = Debug
         self.maxrows = maxrows
     
     def set_values(self):
+        self.abbr = {}
+        self.blocks = []
         self.htm = ''
         self.text = ''
-        self.blocks = []
-        self.abbr = {}
     
     def is_oneway(self):
         return False
     
-    def is_abbr(self,abbr):
-        f = '[MClient] plugins.multitrancom.run.Plugin.is_abbr'
-        ''' We do not check for 'self.abbr' since it will be empty
-            upon an empty request (e.g., when changing a number of
-            columns).
-        '''
-        if abbr:
-            if abbr in self.abbr:
-                return True
-        else:
-            sh.com.rep_empty(f)
+    def get_title(self,item):
+        try:
+            return self.abbr[item]['full']
+        except KeyError as e:
+            ''' Since we run this code for dictionaries in the block and
+                prioritization lists (not just dictionaries from 
+                the current article), getting 'KeyError' is common.
+            '''
+            return item
     
-    def get_title(self,abbr):
-        f = '[MClient] plugins.multitrancom.run.Plugin.get_title'
-        if abbr:
-            if abbr in self.abbr:
-                return self.abbr[abbr]
-            else:
-                mes = _('Unknown dictionary "{}"!').format(abbr)
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
-            sh.com.rep_empty(f)
-        return title
-    
-    def get_abbr(self,title):
-        f = '[MClient] plugins.multitrancom.run.Plugin.get_abbr'
-        if title:
-            for key in self.abbr.keys():
-                if title == self.abbr[key]:
-                    return key
-        else:
-            sh.com.rep_empty(f)
-        return title
+    def get_abbr(self,item):
+        try:
+            return self.abbr[item]['abbr']
+        except KeyError as e:
+            ''' Since we run this code for dictionaries in the block and
+                prioritization lists (not just dictionaries from 
+                the current article), getting 'KeyError' is common.
+            '''
+            return item
     
     # This is needed only for compliance with a general method
     def quit(self):

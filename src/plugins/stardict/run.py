@@ -34,10 +34,6 @@ class Plugin:
     def is_oneway(self):
         return False
     
-    def is_abbr(self,abbr):
-        #TODO: implement
-        pass
-    
     def get_title(self,abbr):
         #TODO: implement
         return abbr

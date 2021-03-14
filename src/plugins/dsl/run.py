@@ -33,10 +33,6 @@ class Plugin:
         return True
     
     # This is needed only for compliance with a general method
-    def is_abbr(self,abbr):
-        return False
-    
-    # This is needed only for compliance with a general method
     def get_title(self,abbr):
         return abbr
     

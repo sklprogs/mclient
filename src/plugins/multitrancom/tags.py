@@ -289,9 +289,19 @@ class Tags:
     def set_abbr(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.set_abbr'
         if self.Success:
-            for block in self.blocks:
-                if block.type_ == 'dic':
-                    self.abbr[block.text] = block.dicf
+            # 'block.dic' is not set
+            blocks = [block for block in self.blocks \
+                      if block.dicf and block.text
+                     ]
+            for block in blocks:
+                if not block.text in self.abbr \
+                and not block.dicf in self.abbr:
+                    self.abbr[block.text] = {}
+                    self.abbr[block.dicf] = {}
+                    self.abbr[block.text]['abbr'] = block.text
+                    self.abbr[block.dicf]['abbr'] = block.text
+                    self.abbr[block.text]['full'] = block.dicf
+                    self.abbr[block.dicf]['full'] = block.dicf
         else:
             sh.com.cancel(f)
     
@@ -300,16 +310,25 @@ class Tags:
         mes = ''
         if self.abbr:
             keys = []
-            values = []
+            abbr = []
+            full = []
             for key in self.abbr.keys():
                 keys.append(key)
-                values.append(self.abbr[key])
+                abbr.append(self.abbr[key]['abbr'])
+                full.append(self.abbr[key]['full'])
             keys = ['"{}"'.format(key) for key in keys]
-            values = ['"{}"'.format(value) for value in values]
+            abbr = ['"{}"'.format(item) for item in abbr]
+            full = ['"{}"'.format(item) for item in full]
             nos = [i + 1 for i in range(len(keys))]
-            headers = (_('#'),_('KEY'),_('VALUE'))
-            iterable = [nos,keys,values]
-            mes = sh.FastTable(iterable,headers).run()
+            headers = (_('#'),_('KEY'),_('ABBREVIATION')
+                      ,_('FULL TITLE')
+                      )
+            iterable = [nos,keys,abbr,full]
+            # 10'' screen: 40 symbols per a column
+            mes = sh.FastTable (iterable = iterable
+                               ,headers = headers
+                               ,maxrow = 40
+                               ).run()
         else:
             sh.com.rep_empty(f)
         return _('Abbreviations:') + '\n' + mes

@@ -490,7 +490,7 @@ class Elems:
             # Do this after reinserting fixed types
             self.insert_definitions()
             self.set_fixed_term()
-            self.expand_dic_file()
+            #self.expand_dic_file()
             self.set_term_same()
             # Extra spaces in the beginning may cause sorting problems
             self.add_space()

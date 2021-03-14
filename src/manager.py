@@ -52,6 +52,7 @@ class Plugins:
             return self.plugin.get_title(abbr)
         else:
             sh.com.rep_empty(f)
+        return abbr
     
     def get_abbr(self,title):
         f = '[MClient] manager.Plugins.get_abbr'
@@ -59,13 +60,7 @@ class Plugins:
             return self.plugin.get_abbr(title)
         else:
             sh.com.rep_empty(f)
-    
-    def is_abbr(self,item):
-        f = '[MClient] manager.Plugins.is_abbr'
-        if self.plugin:
-            return self.plugin.is_abbr(item)
-        else:
-            sh.com.rep_empty(f)
+        return title
     
     def quit(self,event=None):
         self.mbplugin.quit()
