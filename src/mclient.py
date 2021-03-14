@@ -1004,9 +1004,9 @@ class WebFrame:
                 have probably forgot to add new block types in
                 'db.DB.reset'.
             '''
-            query = 'select ROWNO,CELLNO,NO,DICPR,TYPE,DIC,WFORM,SPEECH\
-                           ,TERM,SAMECELL,TEXT,BLOCK,IGNORE from BLOCKS\
-                     where ARTICLEID = ? order by CELLNO,NO'
+            query = 'select ROWNO,CELLNO,NO,DICPR,TYPE,DIC,DICF,WFORM \
+                           ,SPEECH,TERM,SAMECELL,TEXT,BLOCK,IGNORE \
+                     from BLOCKS where ARTICLEID = ? order by CELLNO,NO'
             objs.blocksdb.dbc.execute(query,(objs.get_blocksdb().artid,))
             objs.blocksdb.print (mode = 'BLOCKS'
                                 ,Selected = 1

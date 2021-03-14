@@ -160,8 +160,8 @@ class BlockPrioritize:
     def debug(self):
         f = '[MClient] cells.BlockPrioritize.debug'
         if self.Debug:
-            headers = ('NO','TYPE','TEXT','BLOCK'
-                      ,'DIC','DICPR','SPEECH','SPEECHPR'
+            headers = ('NO','TYPE','TEXT','BLOCK','DIC','DICPR','SPEECH'
+                      ,'SPEECHPR'
                       )
             rows = []
             for block in self.blocks:
@@ -300,9 +300,8 @@ class Cells:
     def debug(self):
         f = '[MClient] cells.Cells.debug'
         if self.Debug:
-            headers = ('NO','TYPE','TEXT','DIC','WFORM'
-                      ,'SPEECH','SPEECHPR','ROWNO','COLNO'
-                      ,'CELLNO','SAME'
+            headers = ('NO','TYPE','TEXT','DIC','WFORM','SPEECH'
+                      ,'SPEECHPR','ROWNO','COLNO','CELLNO','SAME'
                       )
             rows = []
             for block in self.blocks:
