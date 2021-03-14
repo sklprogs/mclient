@@ -289,18 +289,18 @@ class Tags:
     def set_abbr(self):
         f = '[MClient] plugins.multitrancom.tags.Tags.set_abbr'
         if self.Success:
-            # 'block.dic' is not set
+            #NOTE: set 'block.dic' before this (or use 'block.text')
             blocks = [block for block in self.blocks \
-                      if block.dicf and block.text
+                      if block.dic and block.dicf
                      ]
             for block in blocks:
-                if not block.text in self.abbr \
+                if not block.dic in self.abbr \
                 and not block.dicf in self.abbr:
-                    self.abbr[block.text] = {}
+                    self.abbr[block.dic] = {}
                     self.abbr[block.dicf] = {}
-                    self.abbr[block.text]['abbr'] = block.text
-                    self.abbr[block.dicf]['abbr'] = block.text
-                    self.abbr[block.text]['full'] = block.dicf
+                    self.abbr[block.dic]['abbr'] = block.dic
+                    self.abbr[block.dicf]['abbr'] = block.dic
+                    self.abbr[block.dic]['full'] = block.dicf
                     self.abbr[block.dicf]['full'] = block.dicf
         else:
             sh.com.cancel(f)
@@ -312,10 +312,14 @@ class Tags:
             keys = []
             abbr = []
             full = []
-            for key in self.abbr.keys():
-                keys.append(key)
-                abbr.append(self.abbr[key]['abbr'])
-                full.append(self.abbr[key]['full'])
+            try:
+                for key in self.abbr.keys():
+                    keys.append(key)
+                    abbr.append(self.abbr[key]['abbr'])
+                    full.append(self.abbr[key]['full'])
+            except KeyError:
+                mes = _('Wrong input data!')
+                sh.objs.get_mes(f,mes).show_warning()
             keys = ['"{}"'.format(key) for key in keys]
             abbr = ['"{}"'.format(item) for item in abbr]
             full = ['"{}"'.format(item) for item in full]
@@ -387,18 +391,19 @@ class Tags:
         types = [block.type_ for block in self.blocks]
         texts = ['"{}"'.format(block.text) for block in self.blocks]
         urls = ['"{}"'.format(block.url) for block in self.blocks]
+        dics = ['"{}"'.format(block.dic) for block in self.blocks]
         dicfs = ['"{}"'.format(block.dicf) for block in self.blocks]
         rownos = [block.rowno for block in self.blocks]
         cellnos = [block.cellno for block in self.blocks]
-        iterable = [nos,types,texts,urls,dicfs,rownos,cellnos]
-        headers = (_('#'),_('TYPE'),_('TEXT'),'URL','DICF',_('ROW #')
-                  ,_('CELL #')
+        iterable = [nos,types,texts,urls,dics,dicfs,rownos,cellnos]
+        headers = (_('#'),_('TYPE'),_('TEXT'),'URL','DIC','DICF'
+                  ,_('ROW #'),_('CELL #')
                   )
-        # 10'' monitor: 25 symbols per a column
+        # 10'' monitor: 20 symbols per a column
         # 23'' monitor: 50 symbols per a column
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
-                           ,maxrow = 25
+                           ,maxrow = 20
                            ,maxrows = self.maxrows
                            ).run()
         return _('Blocks:') + '\n' + mes
@@ -423,6 +428,8 @@ class Tags:
                 # This is because MT generates invalid links
                 block.url = html.unescape(block.url)
                 block.text = html.unescape(block.text)
+                if block.type_ in ('dic','phdic'):
+                    block.dic = block.text
                 self.blocks.append(block)
         else:
             sh.com.cancel(f)
