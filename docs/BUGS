@@ -18,8 +18,6 @@ multitrancom:
 - EN-RU, wind up: '()' in block.text
 - EN-RU, вспоминать: failed to find blocks
 - EN-RU, aunt: block button hint does not reflect any blocking
-- name mangling: expand dics
-- EN-RU, monkey patching, speed for best rate of climb: delete trash
 - EN-RU, layering: enable copying embedded URL
 - EN-RU, отверждаемого порошка: implement separate words
 - Trash items: "Тематика, Английский, Русский"

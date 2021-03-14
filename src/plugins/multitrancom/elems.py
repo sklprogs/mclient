@@ -143,6 +143,10 @@ class Elems:
             if self.blocks[i-1].rowno != self.blocks[i].rowno \
             and self.blocks[i].type_ == 'user':
                 self.blocks[i].type_ = 'dic'
+                ''' Since this block is originally not DIC, we should
+                    set DICF at the step of 'self.expand_dic_file'.
+                '''
+                self.blocks[i].dic = self.blocks[i].text
                 count += 1
             i += 1
         sh.com.rep_matches(f,count)
