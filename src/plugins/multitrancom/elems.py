@@ -376,6 +376,9 @@ class Elems:
         sh.com.rep_deleted(f,count)
     
     def expand_dic_file(self):
+        ''' Do not delete this, since 'multitran.com' does not provide
+            full dictionary titles in phrase articles!
+        '''
         f = '[MClient] plugins.multitrancom.elems.Elems.expand_dic_file'
         for block in self.blocks:
             if block.dic and not block.dicf:
@@ -490,7 +493,7 @@ class Elems:
             # Do this after reinserting fixed types
             self.insert_definitions()
             self.set_fixed_term()
-            #self.expand_dic_file()
+            self.expand_dic_file()
             self.set_term_same()
             # Extra spaces in the beginning may cause sorting problems
             self.add_space()
