@@ -307,7 +307,7 @@ class Tags:
             keys = ['"{}"'.format(key) for key in keys]
             values = ['"{}"'.format(value) for value in values]
             nos = [i + 1 for i in range(len(keys))]
-            headers = ('NO','ABBR','FULL')
+            headers = (_('#'),_('KEY'),_('VALUE'))
             iterable = [nos,keys,values]
             mes = sh.FastTable(iterable,headers).run()
         else:
@@ -375,10 +375,11 @@ class Tags:
         headers = (_('#'),_('TYPE'),_('TEXT'),'URL','DICF',_('ROW #')
                   ,_('CELL #')
                   )
+        # 10'' monitor: 25 symbols per a column
         # 23'' monitor: 50 symbols per a column
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
-                           ,maxrow = 50
+                           ,maxrow = 25
                            ,maxrows = self.maxrows
                            ).run()
         return _('Blocks:') + '\n' + mes
@@ -448,10 +449,11 @@ class Tags:
         headers = (_('#'),_('CLOSING'),_('NAME'),_('TYPE'),_('TEXT')
                   ,'URL','DICF',_('OPEN'),_('ROW'),_('CELL')
                   )
+        # 10'' monitor: 13 symbols per a column
         # 23'' monitor: 30 symbols per a column
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
-                           ,maxrow = 30
+                           ,maxrow = 13
                            ,maxrows = self.maxrows
                            ).run()
         return _('Tags:') + '\n' + mes
