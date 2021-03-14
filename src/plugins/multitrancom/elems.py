@@ -157,10 +157,9 @@ class Elems:
             and self.blocks[i-1].rowno == self.blocks[i].rowno \
             and self.blocks[i-1].cellno == self.blocks[i].cellno:
                 self.blocks[i-1].type_ = 'dic'
-                ''' We do not assign DICF since it will be overwritten
-                    anyway.
-                '''
-                self.blocks[i-1].text = _('Synonyms')
+                self.blocks[i-1].dic = _('syn.')
+                self.blocks[i-1].text = _('syn.')
+                self.blocks[i-1].dicf = _('Synonyms')
                 self.blocks[i-1].same = 0
                 self.blocks[i].same = 0
                 count += 2
@@ -244,7 +243,8 @@ class Elems:
             self.phdic = self.blocks[index_].text = text
             self.blocks[index_].url = url
             self.blocks[index_].select = 1
-            self.blocks[index_].dic = self.blocks[index_].text
+            self.blocks[index_].dic = self.blocks[index_].dicf \
+                                    = self.blocks[index_].text
     
     def get_phdic(self):
         ''' Sample blocks:
@@ -563,12 +563,13 @@ class Elems:
             sh.objs.get_mes(f,mes,True).show_debug()
 
     def fill(self):
-        dic = wform = speech = transc = term = ''
+        dic = dicf = wform = speech = transc = term = ''
         
         # Find first non-empty values and set them as default
         for block in self.blocks:
             if block.type_ in ('dic','phdic'):
-                dic = block.text
+                dic = block.dic
+                dicf = block.dicf
                 break
         for block in self.blocks:
             if block.type_ == 'wform':
@@ -589,7 +590,8 @@ class Elems:
         
         for block in self.blocks:
             if block.type_ in ('dic','phdic'):
-                dic = block.text
+                dic = block.dic
+                dicf = block.dicf
             elif block.type_ == 'wform':
                 wform = block.text
             elif block.type_ == 'speech':
@@ -602,6 +604,7 @@ class Elems:
             elif block.type_ in ('term','phrase'):
                 term = block.text
             block.dic = dic
+            block.dicf = dicf
             block.wform = wform
             block.speech = speech
             block.transc = transc
@@ -647,6 +650,7 @@ class Elems:
                 block.type_ = 'speech'
                 block.text = self.blocks[i].speech
                 block.dic = self.blocks[i].dic
+                block.dicf = self.blocks[i].dicf
                 block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
@@ -658,6 +662,7 @@ class Elems:
                 block.type_ = 'transc'
                 block.text = self.blocks[i].transc
                 block.dic = self.blocks[i].dic
+                block.dicf = self.blocks[i].dicf
                 block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
@@ -669,6 +674,7 @@ class Elems:
                 block.type_ = 'wform'
                 block.text = self.blocks[i].wform
                 block.dic = self.blocks[i].dic
+                block.dicf = self.blocks[i].dicf
                 block.wform = self.blocks[i].wform
                 block.speech = self.blocks[i].speech
                 block.transc = self.blocks[i].transc
@@ -681,6 +687,7 @@ class Elems:
                     block.type_ = 'dic'
                     block.text = self.blocks[i].dic
                     block.dic = self.blocks[i].dic
+                    block.dicf = self.blocks[i].dicf
                     block.wform = self.blocks[i].wform
                     block.speech = self.blocks[i].speech
                     block.transc = self.blocks[i].transc

@@ -270,8 +270,8 @@ class Plugin:
         #url = 'https://www.multitran.com/m.exe?s=Antiquity&l1=1&l2=2&SHL=2'
         #search = 'Antiquity'
         #url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
-        #search = 'hello'
-        #url = 'https://www.multitran.com/m.exe?s=set&l1=1&l2=2&SHL=2'
+        search = 'hello'
+        url = 'https://www.multitran.com/m.exe?s=set&l1=1&l2=2&SHL=2'
         #search = 'set'
         #url = 'https://www.multitran.com/m.exe?a=3&l1=1&l2=2&s=hello&SHL=2'
         #search = '97 фраз в 16 тематиках'
@@ -279,8 +279,8 @@ class Plugin:
         #search = 'icon'
         #url = 'https://www.multitran.com/m.exe?a=3&l1=1&l2=2&s=heaven+and+hell+bond&SHL=2'
         #search = 'heaven and hell bond'
-        url = 'https://www.multitran.com/m.exe?s=%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B0&l1=1&l2=2&SHL=2'
-        search = 'задача'
+        #url = 'https://www.multitran.com/m.exe?s=%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B0&l1=1&l2=2&SHL=2'
+        #search = 'задача'
         
         iplug = mc.Plugin (Debug = DEBUG
                           ,maxrows = 0
@@ -612,10 +612,10 @@ if __name__ == '__main__':
     #Get().run_multitrancom()
     #Get().run_dsl()
     #Tags().run_dsl()
-    Tags().run_multitrancom()
+    #Tags().run_multitrancom()
     #Tags().run_stardict()
     #Tags().analyze_tag()
     #Plugin().run_dsl()
-    #Plugin().run_multitrancom()
+    Plugin().run_multitrancom()
     #Plugin().run_multitrandem()
     sh.com.end()
