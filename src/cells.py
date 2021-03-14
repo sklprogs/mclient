@@ -113,7 +113,7 @@ class BlockPrioritize:
         for block in self.blocks:
             # Suppress useless error output
             if block.dic and block.dic != self.phdic:
-                lst = self.order.get_list(search=block.dic)
+                lst = self.order.get_list(block.dic)
                 Blocked = self.order.is_blocked(lst)
             else:
                 Blocked = False
@@ -140,7 +140,7 @@ class BlockPrioritize:
                         '''
                         block.dprior = -1000
                     elif self.Prioritize:
-                        block.dprior = self.order.get_priority(search=block.dic)
+                        block.dprior = self.order.get_priority(block.dic)
         else:
             sh.com.cancel(f)
 
