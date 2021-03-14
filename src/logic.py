@@ -1502,8 +1502,8 @@ class Order:
     
     def run_lm_auto(self,dic1,dic2=''):
         ''' A LM click on:
-            1) A blocked dictionary     - unblock
-            2) A common dictionary      - prioritize
+            1) A blocked dictionary - unblock
+            2) A common dictionary - prioritize
             3) A prioritized dictionary - increase priority
         '''
         f = '[MClient] logic.Order.run_lm_auto'
@@ -1525,10 +1525,9 @@ class Order:
     def run_rm_auto(self,dic1,dic2=''):
         ''' A RM click on:
             1) A prioritized dictionary - decrease priority or
-                                          unprioritize
-                                          (at minimal priority)
-            2) A blocked dictionary     - unblock
-            3) A common dictionary      - block
+               unprioritize (at minimal priority)
+            2) A blocked dictionary - unblock
+            3) A common dictionary - block
         '''
         f = '[MClient] logic.Order.run_rm_auto'
         if self.Success:

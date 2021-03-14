@@ -420,7 +420,6 @@ class HTM:
                 else:
                     self.block.xi = self.block.i
                     self.block.xj = self.block.j
-                #TODO: accelerate by checking 'condition' or 'condition'
                 self._run_dic()
                 self._run_wform()
                 self._run_speech()
