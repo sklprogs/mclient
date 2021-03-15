@@ -1,5 +1,5 @@
 (in development)
-* 
+* Rewrite multitran.com parser, make it faster and more accurate
 
 6.8
 * Show tooltips within the screen (a change in the shared module)
