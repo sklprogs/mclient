@@ -180,7 +180,8 @@ class Tags:
         '''
         #file = '/home/pete/bin/mclient/tests/multitrancom/icon (browser) (2021-03-10).html'
         #file = '/home/pete/bin/mclient/tests/multitrancom/задача (browser) (2021-03-13).html'
-        file = '/home/pete/bin/mclient/tests/multitrancom/hello (browser) (2021-03-14).html'
+        #file = '/home/pete/bin/mclient/tests/multitrancom/hello (browser) (2021-03-14).html'
+        file = '/home/pete/bin/mclient/tests/multitrancom/nothing found (browser) (2021-03-15).html'
         text = sh.ReadTextFile(file).get()
         text = cu.CleanUp(text).run()
         tg.Tags (text = text
@@ -612,10 +613,10 @@ if __name__ == '__main__':
     #Get().run_multitrancom()
     #Get().run_dsl()
     #Tags().run_dsl()
-    #Tags().run_multitrancom()
+    Tags().run_multitrancom()
     #Tags().run_stardict()
     #Tags().analyze_tag()
     #Plugin().run_dsl()
-    Plugin().run_multitrancom()
+    #Plugin().run_multitrancom()
     #Plugin().run_multitrandem()
     sh.com.end()

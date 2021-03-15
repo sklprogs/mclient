@@ -68,7 +68,8 @@ class CleanUp:
         self.text = re.sub(' >+',r' &gt',self.text)
     
     def delete_no_matches(self):
-        if 'Не найдено<p>' in self.text:
+        if '&nbsp;Не найдено' in self.text \
+        or '&nbsp;Not found' in self.text:
             self.text = ''
     
     def run_sep_words(self):
