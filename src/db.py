@@ -25,8 +25,9 @@ class DB:
     def update_phterm(self):
         f = '[MClient] db.DB.update_phterm'
         if self.artid:
-            query = 'update BLOCKS set TERM = ? where ARTICLEID = ?'
-            self.dbc.execute(query,('',self.artid,))
+            query = 'update BLOCKS set TERM = ? where ARTICLEID = ? \
+                     and TYPE = ?'
+            self.dbc.execute(query,('',self.artid,'phdic',))
         else:
             sh.com.rep_empty(f)
     
