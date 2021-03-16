@@ -181,7 +181,7 @@ class Tags:
         #file = '/home/pete/bin/mclient/tests/multitrancom/icon (browser) (2021-03-10).html'
         #file = '/home/pete/bin/mclient/tests/multitrancom/задача (browser) (2021-03-13).html'
         #file = '/home/pete/bin/mclient/tests/multitrancom/hello (browser) (2021-03-14).html'
-        file = '/home/pete/bin/mclient/tests/multitrancom/nothing found (browser) (2021-03-15).html'
+        file = '/home/pete/bin/mclient/tests/multitrancom/nothing found (with variants) (browser) (2021-03-15).html'
         text = sh.ReadTextFile(file).get()
         text = cu.CleanUp(text).run()
         tg.Tags (text = text

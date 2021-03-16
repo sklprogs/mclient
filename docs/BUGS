@@ -14,6 +14,12 @@ Traceback (most recent call last):
 ValueError: 'Европейский банк реконструкции и развития' is not in list
 
 multitrancom:
+- EN-RU, "см. тж.": "см. тж. smb grew fond of": "smb" and "grew fond of"
+  should have SAME=1
+- EN-RU, line: an incorrect phdic
+- EN-RU, ticker: radio ticker: radio should be a wform
+- EN-RU, federal security administration ("Cut to the chase" mode):
+  phdic not in sync with dics
 - EN-RU, "ты где пропадал?": "?" not in place
 - Fix 'Clarity' mode for 'phdic', 'phrase' and 'phcount' types
 - EN-RU, wind up: '()' in block.text

@@ -464,9 +464,20 @@ class Elems:
             elif block.same == 1:
                 block.term = term
     
+    def get_suggested(self):
+        for i in range(len(self.blocks)):
+            if self.blocks[i].text in ('Варианты замены: ','Suggest: '):
+                pass
+    
+    def set_suggested(self):
+        if set([block.type_ for block in self.blocks]) == {'comments'}:
+            pass
+    
     def run(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.run'
         if self.check():
+            # Process special pages before deleting anything
+            self.set_suggested()
             # Do this before deleting ';'
             self.set_semino()
             # Do some cleanup
