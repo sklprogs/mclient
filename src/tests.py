@@ -284,8 +284,8 @@ class Plugin:
         #search = 'задача'
         #url = 'https://www.multitran.com/m.exe?s=ntthing&l1=1&l2=2&SHL=2'
         #search = 'ntthing'
-        url = 'https://www.multitran.com/m.exe?s=hello+userl+process&l1=2&l2=1&SHL=2'
-        search = 'hello userl process'
+        url = 'https://www.multitran.com/m.exe?s=sfgsdfgsdfgdfg&l1=2&l2=1&SHL=2'
+        search = 'sfgsdfgsdfgdfg'
         
         iplug = mc.Plugin (Debug = DEBUG
                           ,maxrows = 0

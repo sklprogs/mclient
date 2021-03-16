@@ -134,6 +134,23 @@ class Elems:
         self.Debug = Debug
         self.maxrows = maxrows
     
+    def set_not_found(self):
+        ''' - This is actually not needed since 'self.delete_head' will
+              remove the entire article if it consists of comments only.
+              We keep this code just to be on a safe side (e.g., in case
+              the author of MT adds non-comment blocks).
+            - Takes ~0.007s for 'set' (EN-RU) on AMD E-300
+        '''
+        f = '[MClient] plugins.multitrancom.elems.Elems.set_not_found'
+        texts = [block.text for block in self.blocks]
+        ru = ('Forvo','|','+','\xa0Не найдено')
+        en = ('Forvo','|','+','\xa0Not found')
+        if sh.List(texts,ru).find() or sh.List(texts,en).find():
+            sh.com.rep_deleted(f,len(self.blocks))
+            self.blocks = []
+        else:
+            sh.com.rep_lazy(f)
+    
     def get_separate_head(self):
         blocks = ('Forvo','|','+')
         texts = [block.text for block in self.blocks]
@@ -152,14 +169,13 @@ class Elems:
             i += 1
     
     def set_separate(self):
-        # Takes ~0.0109s for 'set' (EN-RU) on AMD E-300
+        # Takes ~0.0126s for 'set' (EN-RU) on AMD E-300
         f = '[MClient] plugins.multitrancom.elems.Elems.set_separate'
         head = self.get_separate_head()
         if head:
-            head = head[0]
             tail = self.get_separate_tail()
             if tail:
-                self.blocks = self.blocks[head+3:tail+1]
+                self.blocks = self.blocks[head[1]:tail+1]
                 self.blocks = [block for block in self.blocks \
                                if not block.text in ('+','|')
                               ]
@@ -188,9 +204,6 @@ class Elems:
                 self.blocks = [block for block in self.blocks \
                                if block.text
                               ]
-                for i in range(len(self.blocks)):
-                    mes = '{}: "{}", {}'.format(i+1,self.blocks[i].text,self.blocks[i].type_)
-                    print(mes)
                 sh.com.rep_matches(f,len(self.blocks))
             else:
                 sh.com.rep_lazy(f)
@@ -329,6 +342,12 @@ class Elems:
             i -= 1
     
     def delete_head(self):
+        ''' #NOTE: This will actually delete the entire article if it
+            consists of comments only but this looks more like a feature
+            since only service articles (nothing was found, suggestions
+            in case nothing was found, only separate words were found)
+            consist of comments only.
+        '''
         # Takes ~0.003s for 'set' (EN-RU) on AMD E-300
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_head'
         count = 0
@@ -529,11 +548,8 @@ class Elems:
                                       ):
                 return i
     
-    def is_special_page(self):
-        if set([block.type_ for block in self.blocks]) == {'comment'}:
-            return True
-    
     def set_suggested(self):
+        # Takes ~0.005s for 'set' (EN-RU) on AMD E-300
         f = '[MClient] plugins.multitrancom.elems.Elems.set_suggested'
         count = 0
         i = self.get_suggested()
@@ -563,8 +579,8 @@ class Elems:
         f = '[MClient] plugins.multitrancom.elems.Elems.run'
         if self.check():
             # Process special pages before deleting anything
-            if self.is_special_page():
-                self.set_suggested()
+            self.set_not_found()
+            self.set_suggested()
             self.set_separate()
             # Do this before deleting ';'
             self.set_semino()

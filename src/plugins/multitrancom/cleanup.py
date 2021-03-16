@@ -67,18 +67,14 @@ class CleanUp:
         '''
         self.text = re.sub(' >+',r' &gt',self.text)
     
-    def delete_no_matches(self):
-        if '&nbsp;Не найдено' in self.text \
-        or '&nbsp;Not found' in self.text:
-            self.text = ''
-    
     def run_common(self):
         # Delete unicode control codes
         # Takes ~0.038s for 'set' (EN-RU) on AMD E-300
         self.text = re.sub(r'[\x00-\x1f\x7f-\x9f]','',self.text)
         self.text = self.text.replace('\r\n','')
         self.text = self.text.replace('\n','')
-        self.text = self.text.replace('\xa0',' ')
+        #TODO: Why this does not work?
+        self.text = self.text.replace(r'\xa0',' ')
         while '  ' in self.text:
             self.text = self.text.replace('  ',' ')
         self.text = re.sub(r'\>[\s]{0,1}\<','><',self.text)
@@ -90,7 +86,6 @@ class CleanUp:
             self.fix_href()
             self.fix_tags()
             self.run_common()
-            self.delete_no_matches()
             ''' #TODO: do we really need this heaviest operation (takes
                 ~0.53s for 'set' (EN-RU) on AMD E-300, whereas the
                 entire module takes ~0.58s, since we have already
