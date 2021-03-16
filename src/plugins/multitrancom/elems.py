@@ -134,6 +134,69 @@ class Elems:
         self.Debug = Debug
         self.maxrows = maxrows
     
+    def get_separate_head(self):
+        blocks = ('Forvo','|','+')
+        texts = [block.text for block in self.blocks]
+        return sh.List(texts,blocks).find()
+    
+    def get_separate_tail(self):
+        i = 0
+        while i < len(self.blocks):
+            ''' If the last word is correct, then 'block.text' will be
+                ' - найдены отдельные слова', otherwise, it will be
+                ' wrong_word - найдены отдельные слова'.
+            '''
+            if ' - найдены отдельные слова' in self.blocks[i].text \
+            or ' - only individual words found' in self.blocks[i].text:
+                return i
+            i += 1
+    
+    def set_separate(self):
+        # Takes ~0.0109s for 'set' (EN-RU) on AMD E-300
+        f = '[MClient] plugins.multitrancom.elems.Elems.set_separate'
+        head = self.get_separate_head()
+        if head:
+            head = head[0]
+            tail = self.get_separate_tail()
+            if tail:
+                self.blocks = self.blocks[head+3:tail+1]
+                self.blocks = [block for block in self.blocks \
+                               if not block.text in ('+','|')
+                              ]
+                for block in self.blocks:
+                    ''' Those words that were not found will not have
+                        a URL and should be kept as comments (as in
+                        a source). However, SAME should be 0 everywhere.
+                    '''
+                    if block.url:
+                        block.type_ = 'term'
+                    else:
+                        block.text = block.text.replace(' - найдены отдельные слова','')
+                        block.text = block.text.replace(' - only individual words found','')
+                    block.same = 0
+                block = Block()
+                block.type_ = 'dic'
+                block.text = block.dic = block.dicf = _('Separate words')
+                block.same = 0
+                self.blocks.insert(0,block)
+                ''' The last matching block may be a comment with no
+                    text since we have deleted ' - найдены отдельные
+                    слова'. Zero-length blocks are not visible in
+                    a one-row table, so this may be needed just to
+                    output a correct number of matches.
+                '''
+                self.blocks = [block for block in self.blocks \
+                               if block.text
+                              ]
+                for i in range(len(self.blocks)):
+                    mes = '{}: "{}", {}'.format(i+1,self.blocks[i].text,self.blocks[i].type_)
+                    print(mes)
+                sh.com.rep_matches(f,len(self.blocks))
+            else:
+                sh.com.rep_lazy(f)
+        else:
+            sh.com.rep_lazy(f)
+    
     def make_fixed(self):
         # Takes ~0.0064s for 'set' (EN-RU) on AMD E-300
         f = '[MClient] plugins.multitrancom.elems.Elems.make_fixed'
@@ -502,6 +565,7 @@ class Elems:
             # Process special pages before deleting anything
             if self.is_special_page():
                 self.set_suggested()
+            self.set_separate()
             # Do this before deleting ';'
             self.set_semino()
             # Do some cleanup

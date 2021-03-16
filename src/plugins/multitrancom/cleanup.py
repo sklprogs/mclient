@@ -72,24 +72,6 @@ class CleanUp:
         or '&nbsp;Not found' in self.text:
             self.text = ''
     
-    def run_sep_words(self):
-        ''' - If separate words are found instead of a phrase, prepare
-              those words only.
-            - Takes ~0.00036s for 'set' (EN-RU) on AMD E-300.
-        '''
-        if sep_words_found in self.text:
-            pos = sh.Search (text = self.text
-                            ,pattern = sep_words_found
-                            ).get_next()
-            # -1 gives False
-            if str(pos).isdigit():
-                pos += len(sep_words_found)
-                self.text = self.text[:pos]
-                self.text = self.text.replace (sep_words_found
-                                              ,'<span style="color:gray">%s</span>'\
-                                              % sep_words_found
-                                              )
-    
     def run_common(self):
         # Delete unicode control codes
         # Takes ~0.038s for 'set' (EN-RU) on AMD E-300
@@ -108,7 +90,6 @@ class CleanUp:
             self.fix_href()
             self.fix_tags()
             self.run_common()
-            self.run_sep_words()
             self.delete_no_matches()
             ''' #TODO: do we really need this heaviest operation (takes
                 ~0.53s for 'set' (EN-RU) on AMD E-300, whereas the
