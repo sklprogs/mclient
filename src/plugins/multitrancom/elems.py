@@ -226,15 +226,11 @@ class Elems:
             there might be no 'phdic' type which serves as an indicator.
         '''
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_site_coms'
-        count = 0
-        i = 0
-        while i < len(self.blocks):
-            if self.blocks[i].text in ('<!--','-->'):
-                del self.blocks[i]
-                i -= 1
-                count += 1
-            i += 1
-        sh.com.rep_deleted(f,count)
+        len_ = len(self.blocks)
+        self.blocks = [block for block in self.blocks \
+                       if block.text not in ('<!--','-->')
+                      ]
+        sh.com.rep_deleted(f,len_-len(self.blocks))
     
     def set_phdic(self):
         # Takes ~0.001s for 'set' (EN-RU) on AMD E-300
