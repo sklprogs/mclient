@@ -216,6 +216,10 @@ class Elems:
         texts = [block.text for block in self.blocks]
         self._delete_tail_links(sh.List(texts,ru).find())
         self._delete_tail_links(sh.List(texts,en).find())
+        ru = ('спросить в форуме','Добавить','|','Способы выбора языков')
+        en = ('ask in forum','Add','|','Language Selection Tips')
+        self._delete_tail_links(sh.List(texts,ru).find())
+        self._delete_tail_links(sh.List(texts,en).find())
     
     def delete_site_coms(self):
         ''' Sometimes it's not enough to delete comment-only tail since
