@@ -7,6 +7,8 @@ mclient:
   dictionaries), do this check only before showing the final article.
 
 multitrancom:
+- EN-RU, fall in behind, swoop in: Show phrases when only separate words
+  have been found
 - Rename "Synonyms" to "See also"
 - EN-RU: beg the question: 'which begs the question' is duplicated
 - Get full URL when copying it with Ctrl-F7 or Shift-F7
