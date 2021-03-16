@@ -488,8 +488,11 @@ class Elems:
         else:
             rowno = self.blocks[i].rowno
             self.blocks[i].type_ = 'dic'
-            self.blocks[i].dic = self.blocks[i].dicf = _('Suggestions')
+            self.blocks[i].text = _('Suggestions')
+            self.blocks[i].dic = _('Suggestions')
+            self.blocks[i].dicf = _('Suggestions')
             self.blocks[i].same = 0
+            count += 1
             i += 1
             while i < len(self.blocks):
                 if self.blocks[i].rowno == rowno:
