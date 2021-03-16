@@ -370,7 +370,7 @@ class Tags:
             curcell = -1
             for tag in self.tags:
                 if not tag.Close:
-                    if tag.name == 'tr':
+                    if tag.name in ('tr','br'):
                         currow += 1
                     elif tag.name == 'td':
                         curcell += 1

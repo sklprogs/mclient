@@ -466,18 +466,44 @@ class Elems:
     
     def get_suggested(self):
         for i in range(len(self.blocks)):
-            if self.blocks[i].text in ('Варианты замены: ','Suggest: '):
-                pass
+            if self.blocks[i].text in (' Варианты замены: '
+                                      ,' Suggest: '
+                                      ):
+                return i
+    
+    def is_special_page(self):
+        if set([block.type_ for block in self.blocks]) == {'comment'}:
+            return True
     
     def set_suggested(self):
-        if set([block.type_ for block in self.blocks]) == {'comments'}:
-            pass
+        f = '[MClient] plugins.multitrancom.elems.Elems.set_suggested'
+        count = 0
+        i = self.get_suggested()
+        if i is None:
+            sh.com.rep_lazy(f)
+        else:
+            rowno = self.blocks[i].rowno
+            self.blocks[i].type_ = 'dic'
+            self.blocks[i].dic = self.blocks[i].dicf = _('Suggestions')
+            self.blocks[i].same = 0
+            i += 1
+            while i < len(self.blocks):
+                if self.blocks[i].rowno == rowno:
+                    if self.blocks[i].text != '; ':
+                        self.blocks[i].type_ = 'term'
+                        self.blocks[i].same = 0
+                        count += 1
+                else:
+                    break
+                i += 1
+        sh.com.rep_matches(f,count)
     
     def run(self):
         f = '[MClient] plugins.multitrancom.elems.Elems.run'
         if self.check():
             # Process special pages before deleting anything
-            self.set_suggested()
+            if self.is_special_page():
+                self.set_suggested()
             # Do this before deleting ';'
             self.set_semino()
             # Do some cleanup
