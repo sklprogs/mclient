@@ -332,18 +332,13 @@ class Elems:
         sh.com.rep_deleted(f,count)
     
     def delete_semi(self):
-        # Takes ~0.013s for 'set' (EN-RU) on AMD E-300
+        # I don't like '; ' in special pages, so I delete it everywhere
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_semi'
-        count = 0
-        i = 0
-        while i < len(self.blocks):
-            if self.blocks[i].text == '; ' \
-            and self.blocks[i].type_ == 'term':
-                del self.blocks[i]
-                i -= 1
-                count += 1
-            i += 1
-        sh.com.rep_deleted(f,count)
+        len_ = len(self.blocks)
+        self.blocks = [block for block in self.blocks \
+                       if block.text != '; '
+                      ]
+        sh.com.rep_deleted(f,len_-len(self.blocks))
     
     def set_semino(self):
         semino = 0
