@@ -181,7 +181,7 @@ class Tags:
         #file = '/home/pete/bin/mclient/tests/multitrancom/icon (browser) (2021-03-10).html'
         #file = '/home/pete/bin/mclient/tests/multitrancom/задача (browser) (2021-03-13).html'
         #file = '/home/pete/bin/mclient/tests/multitrancom/hello (browser) (2021-03-14).html'
-        file = '/home/pete/bin/mclient/tests/multitrancom/hello user process (browser) (2021-03-15).html'
+        file = '/home/pete/bin/mclient/tests/multitrancom/hello (Компьютерные сети) (2021-03-17).html'
         text = sh.ReadTextFile(file).get()
         text = cu.CleanUp(text).run()
         tg.Tags (text = text
@@ -284,8 +284,8 @@ class Plugin:
         #search = 'задача'
         #url = 'https://www.multitran.com/m.exe?s=ntthing&l1=1&l2=2&SHL=2'
         #search = 'ntthing'
-        url = 'https://www.multitran.com/m.exe?s=sfgsdfgsdfgdfg&l1=2&l2=1&SHL=2'
-        search = 'sfgsdfgsdfgdfg'
+        url = 'https://www.multitran.com/m.exe?a=3&sc=339&s=hello&l1=1&l2=2'
+        search = 'Компьютерные сети'
         
         iplug = mc.Plugin (Debug = DEBUG
                           ,maxrows = 0
@@ -621,6 +621,6 @@ if __name__ == '__main__':
     #Tags().analyze_tag()
     #Plugin().run_dsl()
     #Plugin().run_multitrandem()
-    #Tags().run_multitrancom()
-    Plugin().run_multitrancom()
+    Tags().run_multitrancom()
+    #Plugin().run_multitrancom()
     sh.com.end()

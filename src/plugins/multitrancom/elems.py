@@ -134,6 +134,28 @@ class Elems:
         self.Debug = Debug
         self.maxrows = maxrows
     
+    def delete_langs(self):
+        # Takes ~0.0055s for 'set' (EN-RU) on AMD E-300
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_langs'
+        # Site-dependent, do not localize
+        langs = ('Английский','Русский','English','Russian')
+        count = 0
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i-1].text in langs \
+            and self.blocks[i-1].type_ == 'term' \
+            and not self.blocks[i-1].url \
+            and self.blocks[i].text in langs \
+            and self.blocks[i].type_ == 'term' \
+            and not self.blocks[i].url:
+                del self.blocks[i-1]
+                del self.blocks[i-1]
+                i -= 2
+                count += 2
+                break
+            i += 1
+        sh.com.rep_deleted(f,count)
+    
     def set_not_found(self):
         ''' - This is actually not needed since 'self.delete_head' will
               remove the entire article if it consists of comments only.
@@ -591,6 +613,7 @@ class Elems:
             self.delete_numeration()
             self.delete_site_coms()
             self.delete_tail_links()
+            self.delete_langs()
             # Reassign types
             self.set_phdic()
             self.set_transc()
