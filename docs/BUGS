@@ -14,9 +14,9 @@ Traceback (most recent call last):
 ValueError: 'Европейский банк реконструкции и развития' is not in list
 
 multitrancom:
+- EN-RU, "цепь: провод": "электрическая" is not in place
 - EN-RU, clusterfuck: clarity mode: do not show blocks having SAME=1
   (" узус", " обсценная") if blocks having SAME=0 are ignored
-- EN-RU, line, question, союз: an incorrect phdic
 - EN-RU, federal security administration ("Cut to the chase" mode):
   phdic not in sync with dics
 - EN-RU, "ты где пропадал?": "?" not in place

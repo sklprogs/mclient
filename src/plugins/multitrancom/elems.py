@@ -424,9 +424,11 @@ class Elems:
                                     = self.blocks[index_].text
     
     def get_phdic(self):
-        ''' Sample blocks:
-            comment, comment, comment, phrase
-            " process: ", "17416 фраз", " в 327 тематиках", "3D-печать"
+        ''' - Sample blocks: "comment"-"comment"-"comment"-"phrase"
+              " process: ", "17416 фраз", " в 327 тематиках", "3D-печать"
+            - Owing to a bug at 'multitran.com', 'phdic' can be followed
+              by 'phcount' and not by 'phrase', although even in this
+              case 'phcount' relates to a preceding 'phrase'.
         '''
         f = '[MClient] plugins.multitrancom.elems.Elems.get_phdic'
         i = len(self.blocks) - 1
@@ -434,7 +436,7 @@ class Elems:
             if self.blocks[i-3].type_ == 'comment' \
             and self.blocks[i-2].type_ == 'comment' \
             and self.blocks[i-1].type_ == 'comment' \
-            and self.blocks[i].type_ == 'phrase':
+            and self.blocks[i].type_ in ('phrase','phcount'):
                 return i - 3
             i -= 1
     
