@@ -187,7 +187,6 @@ class Elems:
           result in putting a 'term' item before fixed columns.
     '''
     def __init__(self,blocks,Debug=False,maxrows=1000,abbr={}):
-        self.defins = []
         self.dicurls = {}
         self.phdic = ''
         self.fixed = ('dic','wform','transc','speech')
@@ -547,45 +546,6 @@ class Elems:
                        if not re.match('^\d+\.$',block.text)
                       ]
     
-    def search_definition(self,block):
-        f = '[MClient] plugins.multitrancom.elems.Elems.search_definition'
-        if block:
-            for definition in self.defins:
-                if block.dic == definition.dic \
-                and block.wform == definition.wform \
-                and block.speech == definition.speech:
-                    mes = '"{}"'.format(definition.text)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                    self.defins.remove(definition)
-                    return definition
-        else:
-            sh.com.rep_empty(f)
-    
-    def insert_definitions(self):
-        # Reisert definitions after word forms
-        f = '[MClient] plugins.multitrancom.elems.Elems.insert_definitions'
-        if self.defins:
-            i = 0
-            while i < len(self.blocks):
-                if self.blocks[i].type_ == 'wform':
-                    block = self.search_definition(self.blocks[i])
-                    if block:
-                        self.blocks.insert(i+1,block)
-                        i += 1
-                i += 1
-        else:
-            sh.com.rep_lazy(f)
-    
-    def delete_definitions(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.delete_definitions'
-        self.defins = [block for block in self.blocks
-                       if block.type_ == 'definition'
-                      ]
-        self.blocks = [block for block in self.blocks
-                       if block.type_ != 'definition'
-                      ]
-        sh.com.rep_deleted(f,len(self.defins))
-    
     def delete_empty(self):
         ''' - Empty blocks are useless since we recreate fixed columns
               anyways.
@@ -679,11 +639,8 @@ class Elems:
             # Prepare for cells
             self.fill()
             self.fill_term()
-            self.delete_definitions()
             self.remove_fixed()
             self.insert_fixed()
-            # Do this after reinserting fixed types
-            self.insert_definitions()
             self.set_fixed_term()
             self.expand_dic_file()
             self.set_term_same()

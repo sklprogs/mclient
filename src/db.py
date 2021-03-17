@@ -180,7 +180,7 @@ class DB:
             sh.com.rep_empty(f)
         #NOTE: do not forget to add new block types here
         self.types = self.cols + ('term','phrase','comment','correction'
-                                 ,'definition','phdic'
+                                 ,'phdic'
                                  )
         if self.ShowUsers:
             self.types += ('user',)

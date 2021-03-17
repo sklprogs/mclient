@@ -25,8 +25,8 @@ class Block:
         self.sprior = -1
         self.text = ''
         self.transc = ''
-        ''' 'comment', 'correction', 'definition', 'dic', 'invalid',
-            'phrase', 'speech', 'term', 'transc', 'user', 'wform'
+        ''' 'comment','correction','dic','phcount','phdic','phrase'
+           ,'speech','term','transc','user','wform'
         '''
         self.type_ = 'comment'
         self.wform = ''
@@ -370,13 +370,6 @@ class Cells:
                     i += 1
                 self.blocks[x].i = i
                 self.blocks[x].j = j = len(self.cols) - 1
-            elif self.blocks[x].type_ == 'definition':
-                try:
-                    j = self.cols.index('wform')
-                except ValueError:
-                    j = len(self.cols)
-                self.blocks[x].i = i
-                self.blocks[x].j = j
             # Must be before checking '_collimit'
             elif self.blocks[x].same > 0:
                 PrevFixed = False
