@@ -15,6 +15,68 @@ import skl_shared.shared as sh
 from skl_shared.localize import _
 
 
+class UniteFixed:
+    
+    def __init__(self,blocks):
+        self.fixed = ('dic','wform','transc','speech')
+        self.cells = []
+        self.blocks = blocks
+    
+    def set_cells(self):
+        # Create a temporary structure to help merging blocks
+        cell = []
+        for block in self.blocks:
+            if block.same == 1:
+                cell.append(block)
+            else:
+                if cell:
+                    self.cells.append(cell)
+                cell = [block]
+        if cell:
+            self.cells.append(cell)
+    
+    def has_two_fixed(self,types):
+        HasFixed = False
+        for type_ in types:
+            if type_ in self.fixed:
+                if HasFixed:
+                    return True
+                else:
+                    HasFixed = True
+    
+    def get_first_fixed_type(self,cell):
+        for block in cell:
+            if block.type_ in self.fixed:
+                return block.type_
+    
+    def run(self):
+        ''' - We should unite items in 'fixed+comment (SAME=1)'
+              structures directly since fixed columns having
+              supplementary SAME=1 blocks cannot be properly sorted.
+            - Running the entire class takes ~0.0131s for 'set' (EN-RU)
+              on AMD E-300
+        '''
+        f = '[MClient] plugins.multitrancom.elems.UniteFixed.run'
+        count = 0
+        self.set_cells()
+        for i in range(len(self.cells)):
+            types = [block.type_ for block in self.cells[i]]
+            if self.has_two_fixed(types):
+                count += len(self.cells[i])
+                self.cells[i][0].type_ = self.get_first_fixed_type(self.cells[i])
+                texts = [block.text for block in self.cells[i] \
+                         if block.text
+                        ]
+                self.cells[i][0].text = sh.List(texts).space_items()
+                self.cells[i] = [self.cells[i][0]]
+        self.blocks = []
+        for cell in self.cells:
+            self.blocks += cell
+        sh.com.rep_matches(f,count)
+        return self.blocks
+
+
+
 class Abbr:
     
     def __init__(self):
@@ -419,32 +481,6 @@ class Elems:
             self.blocks = self.blocks[:last]
             sh.com.rep_deleted(f,count)
     
-    def unite_fixed_same(self):
-        ''' We should unite items in 'fixed+comment (SAME=1)' structures
-            directly since fixed columns having supplementary SAME=1
-            blocks cannot be properly sorted.
-        '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.unite_fixed_same'
-        count = 0
-        i = 2
-        while i < len(self.blocks):
-            if self.blocks[i-2].type_ in self.fixed \
-            and self.blocks[i-1].same == 1 and self.blocks[i].same == 0:
-                mes = '"{}" <- "{}"'
-                mes = mes.format (self.blocks[i-2].text
-                                 ,self.blocks[i-1].text
-                                 )
-                sh.objs.get_mes(f,mes,True).show_debug()
-                self.blocks[i-2].text = sh.List ([self.blocks[i-2].text
-                                                 ,self.blocks[i-1].text
-                                                 ]
-                                                ).space_items()
-                del self.blocks[i-1]
-                i =- 1
-                count += 1
-            i += 1
-        sh.com.rep_deleted(f,count)
-    
     def delete_semi(self):
         # I don't like '; ' in special pages, so I delete it everywhere
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_semi'
@@ -638,7 +674,7 @@ class Elems:
             # Prepare contents
             self.set_dic_urls()
             self.set_phcount()
-            self.unite_fixed_same()
+            self.blocks = UniteFixed(self.blocks).run()
             self.reassign_brackets()
             # Prepare for cells
             self.fill()
