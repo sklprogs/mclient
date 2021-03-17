@@ -134,6 +134,28 @@ class Elems:
         self.Debug = Debug
         self.maxrows = maxrows
     
+    def delete_dic_langs(self):
+        # Takes ~???s for 'set' (EN-RU) on AMD E-300
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_dic_langs'
+        # Site-dependent, do not localize
+        dics = ('Тематика','Subject area')
+        langs = ('Английский','Русский','English','Russian')
+        count = 0
+        i = 2
+        while i < len(self.blocks):
+            if self.blocks[i-2].type_ == 'dic' \
+            and self.blocks[i-2].text in dics \
+            and self.blocks[i-1].text in langs \
+            and self.blocks[i].text in langs:
+                del self.blocks[i-2]
+                del self.blocks[i-2]
+                del self.blocks[i-2]
+                i -= 3
+                count += 3
+                break
+            i += 1
+        sh.com.rep_deleted(f,count)
+    
     def delete_langs(self):
         # Takes ~0.0055s for 'set' (EN-RU) on AMD E-300
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_langs'
@@ -613,6 +635,8 @@ class Elems:
             self.delete_numeration()
             self.delete_site_coms()
             self.delete_tail_links()
+            # Must precede 'delete_langs'
+            self.delete_dic_langs()
             self.delete_langs()
             # Reassign types
             self.set_phdic()
