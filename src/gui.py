@@ -1218,6 +1218,9 @@ class Settings:
         self.cbx_no12 = sh.CheckBox (parent = self.frm_cb12
                                     ,side = 'left'
                                     )
+        self.cbx_no13 = sh.CheckBox (parent = self.frm_cb13
+                                    ,side = 'left'
+                                    )
 
     def reset(self,event=None):
         self.opt_scm.set(PRODUCT)
@@ -1244,6 +1247,7 @@ class Settings:
         self.cbx_no10.enable()
         self.cbx_no11.enable()
         self.cbx_no12.disable()
+        self.cbx_no13.enable()
 
     def set_buttons(self):
         sh.Button (parent = self.frm_btn
@@ -1389,6 +1393,10 @@ class Settings:
                                  ,expand = False
                                  ,fill = 'x'
                                  )
+        self.frm_cb13 = sh.Frame (parent = self.obj
+                                 ,expand = False
+                                 ,fill = 'x'
+                                 )
         self.frm_btn = sh.Frame (parent = self.obj
                                 ,expand = False
                                 ,fill = 'x'
@@ -1490,6 +1498,10 @@ class Settings:
                                  )
         self.lbl_no12 = sh.Label (parent = self.frm_cb12
                                  ,text = _('Autoswap Russian and the other language if appropriate')
+                                 ,side = 'left'
+                                 )
+        self.lbl_no13 = sh.Label (parent = self.frm_cb13
+                                 ,text = _('Show a phrase count')
                                  ,side = 'left'
                                  )
         sh.Label (parent = self.frm_sp1
@@ -1682,6 +1694,10 @@ class Settings:
         sh.com.bind (obj = self.lbl_no12
                     ,bindings = '<Button-1>'
                     ,action = self.cbx_no12.toggle
+                    )
+        sh.com.bind (obj = self.lbl_no13
+                    ,bindings = '<Button-1>'
+                    ,action = self.cbx_no13.toggle
                     )
 
     def set_title(self,text=_('View Settings')):

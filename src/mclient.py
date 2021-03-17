@@ -55,6 +55,7 @@ class ExportSettingsUI:
         sh.lg.globs['bool']['Iconify'] = objs.settings_ui.cbx_no10.get()
         sh.lg.globs['bool']['Autocompletion'] = objs.settings_ui.cbx_no11.get()
         sh.lg.globs['bool']['Autoswap'] = objs.settings_ui.cbx_no12.get()
+        sh.lg.globs['bool']['PhraseCount'] = objs.settings_ui.cbx_no13.get()
     
     def run(self):
         f = '[MClient] mclient.ExportSettingsUI.run'
@@ -189,6 +190,7 @@ class UpdateSettingsUI:
         self.gui.cbx_no10.set(sh.lg.globs['bool']['Iconify'])
         self.gui.cbx_no11.set(sh.lg.globs['bool']['Autocompletion'])
         self.gui.cbx_no12.set(sh.lg.globs['bool']['Autoswap'])
+        self.gui.cbx_no13.set(sh.lg.globs['bool']['PhraseCount'])
     
     def run(self):
         self.update_style_area()
@@ -1992,6 +1994,7 @@ class WebFrame:
                             ,SortTerms = SortTerms
                             ,ExpandDic = not sh.lg.globs['bool']['ShortDicTitles']
                             ,ShowUsers = sh.lg.globs['bool']['ShowUserNames']
+                            ,PhraseCount = sh.lg.globs['bool']['PhraseCount']
                             )
         objs.blocksdb.unignore()
         objs.blocksdb.ignore()

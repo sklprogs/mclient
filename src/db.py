@@ -164,7 +164,7 @@ class DB:
 
     def reset (self,cols=('dic','wform','transc','speech')
               ,SortRows=False,SortTerms=False,ExpandDic=False
-              ,ShowUsers=False
+              ,ShowUsers=False,PhraseCount=False
               ):
         f = '[MClient] db.DB.reset'
         self.cols = cols
@@ -172,6 +172,7 @@ class DB:
         self.SortRows = SortRows
         self.SortTerms = SortTerms
         self.ShowUsers = ShowUsers
+        self.PhraseCount = PhraseCount
         
         # Prevents None + tuple
         if not self.cols:
@@ -179,10 +180,12 @@ class DB:
             sh.com.rep_empty(f)
         #NOTE: do not forget to add new block types here
         self.types = self.cols + ('term','phrase','comment','correction'
-                                 ,'definition','phdic','phcount'
+                                 ,'definition','phdic'
                                  )
         if self.ShowUsers:
             self.types += ('user',)
+        if self.PhraseCount:
+            self.types += ('phcount',)
 
     def fill_blocks(self,data):
         query = 'insert into BLOCKS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?\

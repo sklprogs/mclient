@@ -3,6 +3,8 @@
 * Support multitran.com suggestions for spelling mistakes
 * Support "⇒" section
 * Skip "Russian thesaurus" and "English thesaurus" blocks
+* Show a phrase count (configurable in settings). This option is
+  automatically saved/loaded from the configuration file.
 
 6.8
 * Show tooltips within the screen (a change in the shared module)

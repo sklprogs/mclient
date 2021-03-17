@@ -62,6 +62,7 @@ class DefaultKeys(sh.DefaultKeys):
            ,'BlockDics'          :True
            ,'CaptureHotkey'      :True
            ,'Iconify'            :True
+           ,'PhraseCount'        :True
            ,'PrioritizeDics'     :True
            ,'SelectTermsOnly'    :True
            ,'ShortDicTitles'     :False
@@ -213,6 +214,10 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'Iconify'
         comment = _('[Autosave] Minimize the application window after specific actions, e.g., copying')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'PhraseCount'
+        comment = _('[Autosave] Show a phrase count')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'PrioritizeDics'
