@@ -134,49 +134,38 @@ class Elems:
         self.Debug = Debug
         self.maxrows = maxrows
     
-    def delete_dic_langs(self):
-        # Takes ~???s for 'set' (EN-RU) on AMD E-300
-        f = '[MClient] plugins.multitrancom.elems.Elems.delete_dic_langs'
-        # Site-dependent, do not localize
-        dics = ('Тематика','Subject area')
-        langs = ('Английский','Русский','English','Russian')
-        count = 0
-        i = 2
-        while i < len(self.blocks):
-            if self.blocks[i-2].type_ == 'dic' \
-            and self.blocks[i-2].text in dics \
-            and self.blocks[i-1].text in langs \
-            and self.blocks[i].text in langs:
-                del self.blocks[i-2]
-                del self.blocks[i-2]
-                del self.blocks[i-2]
-                i -= 3
-                count += 3
-                break
-            i += 1
-        sh.com.rep_deleted(f,count)
-    
     def delete_langs(self):
-        # Takes ~0.0055s for 'set' (EN-RU) on AMD E-300
+        ''' - This procedure deletes blocks describing languages in
+              an original or localized form. After a comment-only head
+              was deleted, we will have either a 'dic' + 'term' + 'term'
+              or 'term' + 'term' structure, wherein 'dic' is "Subject
+              area", and terms have an empty URL. We should delete only
+              the first two term occurrences since there could be other
+              terms with an empty URL that should not be deleted, e.g.,
+              those related to "БЭС".
+            - Since we don't have to search for anything, and have
+              predermined indexes, this procedure is very fast.
+        '''
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_langs'
-        # Site-dependent, do not localize
-        langs = ('Английский','Русский','English','Russian')
-        count = 0
-        i = 1
-        while i < len(self.blocks):
-            if self.blocks[i-1].text in langs \
-            and self.blocks[i-1].type_ == 'term' \
-            and not self.blocks[i-1].url \
-            and self.blocks[i].text in langs \
-            and self.blocks[i].type_ == 'term' \
-            and not self.blocks[i].url:
-                del self.blocks[i-1]
-                del self.blocks[i-1]
-                i -= 2
-                count += 2
-                break
-            i += 1
-        sh.com.rep_deleted(f,count)
+        if len(self.blocks) > 2:
+            if self.blocks[0].type_ == 'dic' \
+            and self.blocks[0].text in ('Тематика','Subject area') \
+            and self.blocks[1].type_ == 'term' \
+            and self.blocks[2].type_ == 'term' \
+            and not self.blocks[1].url and not self.blocks[2].url:
+                deleted = self.blocks[:3]
+                deleted = [item.text for item in deleted]
+                mes = '; '.join(deleted)
+                sh.objs.get_mes(f,mes,True).show_debug()
+                self.blocks = self.blocks[3:]
+            elif self.blocks[0].type_ == 'term' \
+            and self.blocks[1].type_ == 'term' \
+            and not self.blocks[0].url and not self.blocks[1].url:
+                deleted = self.blocks[:2]
+                deleted = [item.text for item in deleted]
+                mes = '; '.join(deleted)
+                sh.objs.get_mes(f,mes,True).show_debug()
+                self.blocks = self.blocks[2:]
     
     def set_not_found(self):
         ''' - This is actually not needed since 'self.delete_head' will
@@ -635,8 +624,6 @@ class Elems:
             self.delete_numeration()
             self.delete_site_coms()
             self.delete_tail_links()
-            # Must precede 'delete_langs'
-            self.delete_dic_langs()
             self.delete_langs()
             # Reassign types
             self.set_phdic()
