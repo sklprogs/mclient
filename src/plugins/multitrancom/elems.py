@@ -244,19 +244,23 @@ class Elems:
             sh.com.rep_lazy(f)
     
     def make_fixed(self):
-        # Takes ~0.0064s for 'set' (EN-RU) on AMD E-300
+        # Takes ~0.0065s for 'set' (EN-RU) on AMD E-300
         f = '[MClient] plugins.multitrancom.elems.Elems.make_fixed'
         count = 0
         i = 1
         while i < len(self.blocks):
-            if self.blocks[i-1].rowno != self.blocks[i].rowno \
-            and self.blocks[i].type_ == 'user':
-                self.blocks[i].type_ = 'dic'
-                ''' Since this block is originally not DIC, we should
-                    set DICF at the step of 'self.expand_dic_file'.
-                '''
-                self.blocks[i].dic = self.blocks[i].text
-                count += 1
+            if self.blocks[i-1].rowno != self.blocks[i].rowno:
+                if self.blocks[i].type_ == 'user':
+                    self.blocks[i].type_ = 'dic'
+                    ''' Since this block is originally not DIC, we
+                        should set DICF at the step of
+                        'self.expand_dic_file'.
+                    '''
+                    self.blocks[i].dic = self.blocks[i].text
+                    count += 1
+                elif self.blocks[i].type_ == 'comment':
+                    self.blocks[i].type_ = 'wform'
+                    count += 1
             i += 1
         sh.com.rep_matches(f,count)
     

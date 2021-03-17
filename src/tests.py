@@ -179,7 +179,8 @@ class Tags:
             to set 'dic' and some other types.
         '''
         #file = '/home/pete/bin/mclient/tests/multitrancom (saved in browser)/hello (Компьютерные сети) (2021-03-17).html'
-        file = '/home/pete/bin/mclient/tests/multitrancom (saved in browser)/generic drug (2021-03-17).html'
+        #file = '/home/pete/bin/mclient/tests/multitrancom (saved in browser)/generic drug (2021-03-17).html'
+        file = '/home/pete/bin/mclient/tests/multitrancom (saved in browser)/get out of (2021-03-17).html'
         text = sh.ReadTextFile(file).get()
         text = cu.CleanUp(text).run()
         tg.Tags (text = text
@@ -282,8 +283,8 @@ class Plugin:
         #search = 'задача'
         #url = 'https://www.multitran.com/m.exe?s=ntthing&l1=1&l2=2&SHL=2'
         #search = 'ntthing'
-        url = 'https://www.multitran.com/m.exe?a=3&sc=339&s=hello&l1=1&l2=2'
-        search = 'Компьютерные сети'
+        url = 'https://www.multitran.com/m.exe?s=get+out+of&l1=1&l2=2'
+        search = 'get out of'
         
         iplug = mc.Plugin (Debug = DEBUG
                           ,maxrows = 0
@@ -619,6 +620,6 @@ if __name__ == '__main__':
     #Tags().analyze_tag()
     #Plugin().run_dsl()
     #Plugin().run_multitrandem()
-    Tags().run_multitrancom()
-    #Plugin().run_multitrancom()
+    #Tags().run_multitrancom()
+    Plugin().run_multitrancom()
     sh.com.end()
