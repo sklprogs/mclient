@@ -1,5 +1,8 @@
 (in development)
 * Rewrite multitran.com parser, make it faster and more accurate
+* Support multitran.com suggestions for spelling mistakes
+* Support "⇒" section
+* Skip "Russian thesaurus" and "English thesaurus" blocks
 
 6.8
 * Show tooltips within the screen (a change in the shared module)

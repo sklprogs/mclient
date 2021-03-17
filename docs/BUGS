@@ -25,7 +25,7 @@ multitrancom:
   (" узус", " обсценная") if blocks having SAME=0 are ignored
 - EN-RU, "см. тж.": "см. тж. smb grew fond of": "smb" and "grew fond of"
   should have SAME=1
-- EN-RU, line: an incorrect phdic
+- EN-RU, line, question: an incorrect phdic
 - EN-RU, ticker: radio ticker: radio should be a wform
 - EN-RU, federal security administration ("Cut to the chase" mode):
   phdic not in sync with dics

@@ -227,8 +227,8 @@ class Elems:
             i += 1
         sh.com.rep_matches(f,count)
     
-    def set_synonyms(self):
-        f = '[MClient] plugins.multitrancom.elems.Elems.set_synonyms'
+    def set_see_also(self):
+        f = '[MClient] plugins.multitrancom.elems.Elems.set_see_also'
         count = 0
         i = 2
         while i < len(self.blocks):
@@ -237,9 +237,8 @@ class Elems:
             and self.blocks[i-1].rowno == self.blocks[i].rowno \
             and self.blocks[i-1].cellno == self.blocks[i].cellno:
                 self.blocks[i-1].type_ = 'dic'
-                self.blocks[i-1].dic = _('syn.')
-                self.blocks[i-1].text = _('syn.')
-                self.blocks[i-1].dicf = _('Synonyms')
+                self.blocks[i-1].text = self.blocks[i-1].dic \
+                                      = self.blocks[i-1].dicf = '⇒'
                 self.blocks[i-1].same = 0
                 self.blocks[i].same = 0
                 count += 2
@@ -595,7 +594,7 @@ class Elems:
             # Reassign types
             self.set_phdic()
             self.set_transc()
-            self.set_synonyms()
+            self.set_see_also()
             self.make_fixed()
             self.set_same()
             # Prepare contents
