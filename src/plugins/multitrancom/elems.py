@@ -195,6 +195,21 @@ class Elems:
         self.Debug = Debug
         self.maxrows = maxrows
     
+    def convert_speech(self):
+        ''' Blocks inherent to <em> tag are usually 'speech' but not
+            always, see, for example, EN-RU, 'blemish'.
+        '''
+        f = '[MClient] plugins.multitrancom.elems.Elems.convert_speech'
+        count = 0
+        i = 1
+        while i < len(self.blocks):
+            if self.blocks[i].type_ == 'speech' \
+            and not self.blocks[i-1].type_ in self.fixed:
+                self.blocks[i].type_ = 'comment'
+                count += 1
+            i += 1
+        sh.com.rep_matches(f,count)
+    
     def delete_langs(self):
         ''' - This procedure deletes blocks describing languages in
               an original or localized form. After a comment-only head
@@ -633,6 +648,7 @@ class Elems:
             self.set_phdic()
             self.set_transc()
             self.set_see_also()
+            self.convert_speech()
             self.make_fixed()
             self.set_same()
             # Prepare contents
