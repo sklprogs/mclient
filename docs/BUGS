@@ -20,19 +20,8 @@ multitrancom:
 - EN-RU, federal security administration ("Cut to the chase" mode):
   phdic not in sync with dics
 - Fix 'Clarity' mode for 'phdic', 'phrase' and 'phcount' types
-- EN-RU, wind up: '()' in block.text
 - EN-RU, вспоминать: failed to find blocks
 - EN-RU: double-jointed -> Phrases: wrong SAME
-- RU-EN: оптическое излучение -> Оптика: Delete "раздел физики, содержащие"
-- RU-SP, партнер: wrong wform position
-- RU-SP, fumigar -> phrases: wrong SAME
-- RU-EN, set -> phrases: Move "Показаны первые 500 фраз" to the end
-- RU-EN: на фиг: wrong SAME for "; (нужно, сдалось) what for?"
-- RU-DE: есть -> 4. Региональное выражение: use a new line for the 1st
-  term
-- EN-RU: glitch: 'компьютерный глюк': no URL in brackets
-- EN-RU: glitch -> defect -> (This computer program has a glitch):
-  No word 'glitch' in in this comment
 - EN-RU: blemish: wrong parsing of parts of speech
 - Save article: only the last article is saved, not the current one
 - EN-RU, средство: "adjunct (Киселев)" relates to
