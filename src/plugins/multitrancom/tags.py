@@ -527,9 +527,42 @@ class Tags:
         else:
             sh.com.cancel(f)
     
+    def fix_non_tags(self):
+        ''' - Work around '<' and '>' that can be unquoted at
+              'multitran.com' and do not represent tags, e.g., EN-RU,
+              'wind up' => '<переносн.>'.
+            - Takes ~0.024s for 'set' (EN-RU) on AMD E-300
+        '''
+        f = '[MClient] plugins.multitrancom.tags.Tags.fix_non_tags'
+        if self.Success:
+            count = 0
+            mes = []
+            # <!--, </
+            allowed = sh.lg.lat_alphabet_low + '!' + '/'
+            for i in range(len(self.fragms)):
+                ''' We should check only symbol #1 since 'multitran.com'
+                    uses URI instead of URL (https://stackoverflow.com/questions/1547899/which-characters-make-a-url-invalid),
+                    so URL tags can actually comprise Cyrillic, but not
+                    at the very beginning.
+                '''
+                if self.fragms[i].startswith('<') \
+                and len(self.fragms[i]) > 1 \
+                and not self.fragms[i][1] in allowed:
+                    mes.append(self.fragms[i])
+                    self.fragms[i] = self.fragms[i].replace('<','')
+                    self.fragms[i] = self.fragms[i].replace('>','')
+                    count += 1
+            #mes = sorted(set(mes))
+            mes = '; '.join(mes)
+            sh.objs.get_mes(f,mes,True).show_debug()
+            sh.com.rep_matches(f,count)
+        else:
+            sh.com.cancel(f)
+    
     def run(self):
         self.check()
         self.split()
+        self.fix_non_tags()
         self.assign()
         self.set_nos()
         self.set_inherent()

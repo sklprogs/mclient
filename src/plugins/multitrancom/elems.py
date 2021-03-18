@@ -520,12 +520,14 @@ class Elems:
             and self.blocks[i].text == ')' \
             and self.blocks[i-1].type_ in ('comment','user','correction'
                                           ):
-                count += 2
-                self.blocks[i-1].text = '(' + self.blocks[i-1].text + ')'
-                del self.blocks[i-2]
+                #NOTE: We must inherit i-2 SAME and i-1 TYPE
+                self.blocks[i-2].text = '(' + self.blocks[i-1].text + ')'
+                self.blocks[i-2].type_ = self.blocks[i-1].type_
+                del self.blocks[i-1]
                 i -= 1
                 del self.blocks[i]
                 i -= 1
+                count += 2
             i += 1
         sh.com.rep_deleted(f,count)
     
