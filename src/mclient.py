@@ -1786,9 +1786,9 @@ class WebFrame:
     
     def select(self):
         f = '[MClient] mclient.WebFrame.select'
-        result = objs.get_blocksdb().get_sel(pos=self.pos)
+        result = objs.get_blocksdb().get_sel(self.pos)
         if result:
-            objs.get_blocksdb().set_bookmark(pos=self.pos)
+            objs.get_blocksdb().set_bookmark(self.pos)
             self._select(result)
         else:
             pass
