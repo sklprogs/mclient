@@ -21,31 +21,13 @@ multitrancom:
   phdic not in sync with dics
 - Fix 'Clarity' mode for 'phdic', 'phrase' and 'phcount' types
 - EN-RU, вспоминать: failed to find blocks
-- EN-RU: double-jointed -> Phrases: wrong SAME
-- EN-RU: blemish: wrong parsing of parts of speech
 - Save article: only the last article is saved, not the current one
-- EN-RU, средство: "adjunct (Киселев)" relates to
-  "дополнительное средство"
-- EN-RU, подобрать: Do not separate comment parts
-- EN-RU, проблемный -> Программирование: wrong block separation:
-  "Refactoring is the process of..."
-- EN-RU, get wind of (Разговорное выражение): wrong WFORMA
-- EN-RU, можно: wrong WFORMA
-- EN-RU: скрепа: 'got along extremely well' is missing
-- EN-RU: knickers: "woman's knickers": WFORMA not in place
-- EN-RU: судебный пристав: wrong parsing owing to URL in comments
-  <span style="color:gray">(<a target="_blank"  href="http://www.berkeleycountycomm.org/job_court_bailiff_2005.htm;" rel="nofollow">http://www.berkeleycountycomm.org/job_court_bailiff_2005.htm;</a>
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"
-- RU-FR: зонд: wrong SAME for items of Great Encyclopedic Dictionary
-- plugins.multitrancom: eng-rus: вручать: fix dic prioritization
-  (Gruzovik)
-- plugins.multitran: eng-rus: layout: cannot decrease a priority of
-  a dictionary which priority is higher than the priority of the unknown
-  dictionary (Gruzovik) following it
-- plugins.multitran: eng-rus: knob: Биология: ручка: missing URLs as
-  parts of preceding comments
-- Test and fix getting non-terms (when everything is selectable)
+- EN-RU: вручать: fix dic prioritization (Gruzovik)
+- EN-RU: layout: cannot decrease a priority of a dictionary which
+  priority is higher than the priority of the unknown dictionary
+  (Gruzovik) following it
 - logic, 817: logic.Order.prioritize_by: .index: ValueError
 - Widget is not shown immediately when using F2 -> Esc -> F2 (probably
   due to Tkinter/WM focusing/minimization behavior)
@@ -55,35 +37,31 @@ multitrancom:
   block.txt and original view saved by the program - block.htm) are
   parsed differently (have a different look when loaded with 'file='
   option)
-- 'lottery', EN-RU: user submitted URL is absent
-- Unknown mode "" in Elems.order_speech when using local dictionaries
-  (Stardict 2)
-- Do not open a Multitran-based URL for local dictionaries (F7)
 - An incorrect selection at the end while searching "document is
   original without a signature"
 - Do not move at the beginning of the article after cancelling
   the search
 - Mclient mode: transcription must be set after parts of speechs, but
   actually it is set before
-- Blocks from '<tr>̈ɪkʌt</tr><em>гл.</em>'
-  (sdict_EnRu_full - cut (manual).txt) are not separated when sorting
 - vertical view, EN-RU: "поцелуй": fix Moves.up for the 1st element
 - for vertical view: concerning coloring, rely on row numbers instead of
   column numbers
 - (DB) Fix Moves on 'рабочая документация' (SelectTermsOnly=0), selects
   ')' twice, but does not select corrections
 - NODE1 < NODE2 in some rare cases
-- shift_y does not work properly when changing sizes on-the-fly
 - Changing node still sometimes fails
-- When deleting/inserting fixed columns, preserve URL
-- Clear CurRequest data after clearing history
-- Fix links in a saved raw html
+- shift_y does not work properly when changing sizes on-the-fly
 - Vertical view (maybe, with Styles): 1st column can be a single entry
   of 'dic' type
 
 stardict:
 - EN-RU, full: search gate: found by 'Suggest' and logged as found by
   'AllDics.get', but could not be shown
+- Unknown mode "" in Elems.order_speech when using local dictionaries
+  (Stardict 2)
+- Do not open a Multitran-based URL for local dictionaries (F7)
+- Blocks from '<tr>̈ɪkʌt</tr><em>гл.</em>'
+  (sdict_EnRu_full - cut (manual).txt) are not separated when sorting
 
 dsl:
 - 

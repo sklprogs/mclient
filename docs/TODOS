@@ -5,8 +5,10 @@ mclient:
 - Improve toggling widgets using F1-F12
 - Checking for symbols unsupported in Tk takes too long (when loading
   dictionaries), do this check only before showing the final article.
+- Clear CurRequest data after clearing history
 
 multitrancom:
+- Fix links in a saved raw html
 - Blacklist " Большой Энциклопедический словарь " and check out EN-RU,
   союз, тигр
 - EN-RU, fall in behind, swoop in: Show phrases when only separate words
@@ -19,7 +21,8 @@ multitrancom:
   Разговорное выражение, Сленг, Австралийский сленг, Американизм).
 - Make a switchable option for autotoggling language pairs
   (check for working KZ-RU: үлек)
-- EN-RU: entity, downtime, endpoint (phrases): too wide columns
+- EN-RU: entity, downtime, endpoint (phrases), double-jointed (phrases):
+  too wide columns
 - Restore true user collimit choice when not a SpecialPage
 - eng-rus, метильное: do not delete the phrase
   section when only separate words have been found: Найдено во фразах -
