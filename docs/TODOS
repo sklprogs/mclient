@@ -8,6 +8,8 @@ mclient:
 - Clear CurRequest data after clearing history
 
 multitrancom:
+- Check bad charachers: EN-RU, счет на оплату
+- EN-RU, gonger: delete "спросить в форуме"
 - Fix links in a saved raw html
 - Blacklist " Большой Энциклопедический словарь " and check out EN-RU,
   союз, тигр
