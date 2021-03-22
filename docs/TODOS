@@ -23,8 +23,8 @@ multitrancom:
   Разговорное выражение, Сленг, Австралийский сленг, Американизм).
 - Make a switchable option for autotoggling language pairs
   (check for working KZ-RU: үлек)
-- EN-RU: entity, downtime, endpoint (phrases), double-jointed (phrases):
-  too wide columns
+- EN-RU: entity, downtime, endpoint (phrases), double-jointed (phrases),
+  span: too wide columns
 - Restore true user collimit choice when not a SpecialPage
 - eng-rus, метильное: do not delete the phrase
   section when only separate words have been found: Найдено во фразах -

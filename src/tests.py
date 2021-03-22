@@ -285,8 +285,10 @@ class Plugin:
         #search = 'ntthing'
         #url = 'https://www.multitran.com/m.exe?s=question&l1=2&l2=1&SHL=2'
         #search = 'question'
-        url = 'https://www.multitran.com/m.exe?s=%D1%86%D0%B5%D0%BF%D1%8C:+%D0%BF%D1%80%D0%BE%D0%B2%D0%BE%D0%B4&l1=2&l2=1'
-        search = 'цепь: провод'
+        #url = 'https://www.multitran.com/m.exe?s=%D1%86%D0%B5%D0%BF%D1%8C:+%D0%BF%D1%80%D0%BE%D0%B2%D0%BE%D0%B4&l1=2&l2=1'
+        #search = 'цепь: провод'
+        url = 'https://www.multitran.com/m.exe?s=Ouest+Bureau&l1=2&l2=1&SHL=2'
+        search = 'Ouest Bureau'
         
         iplug = mc.Plugin (Debug = DEBUG
                           ,maxrows = 0
@@ -294,6 +296,33 @@ class Plugin:
         iplug.request (url = url
                       ,search = search
                       )
+    
+    def reinsert_same(self):
+        f = '[MClient] tests.Plugin.reinsert_same'
+        import plugins.multitrancom.run as mc
+        search = 'set'
+        url = 'https://www.multitran.com/m.exe?l1=1&l2=2&s=set'
+        timer = sh.Timer('Getting elems')
+        timer.start()
+        blocks = mc.Plugin().request (url = url
+                                     ,search = search
+                                     )
+        timer.end()
+        same = [block for block in blocks if block.same == 1]
+        separate = [block for block in blocks if block.same == 0]
+        # takes ~1s for 'set' (EN-RU) on AMD E-300
+        timer = sh.Timer(f)
+        timer.start()
+        cells = []
+        for block in separate:
+            cell = [block]
+            for item in same:
+                if item.cellno == block.cellno:
+                    cell.append(item)
+            cells.append(cell)
+        timer.end()
+        print('Number of blocks:',len(blocks))
+        print('Number of cells:',len(cells))
 
 
 
@@ -622,6 +651,7 @@ if __name__ == '__main__':
     #Tags().analyze_tag()
     #Plugin().run_dsl()
     #Plugin().run_multitrandem()
+    #Plugin().reinsert_same()
     #Tags().run_multitrancom()
     Plugin().run_multitrancom()
     sh.com.end()

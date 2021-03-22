@@ -303,6 +303,13 @@ class Elems:
                 block.type_ = 'dic'
                 block.text = block.dic = block.dicf = _('Separate words')
                 block.same = 0
+                if self.blocks:
+                    ''' This allows to avoid a bug when only separate
+                        words were found but the 1st word should remain
+                        a comment since it was not found (e.g., EN-RU,
+                        "Ouest Bureau").
+                    '''
+                    block.rowno = self.blocks[0].rowno
                 self.blocks.insert(0,block)
                 ''' The last matching block may be a comment with no
                     text since we have deleted ' - найдены отдельные
