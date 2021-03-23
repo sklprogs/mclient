@@ -195,6 +195,23 @@ class Elems:
         self.Debug = Debug
         self.maxrows = maxrows
     
+    def delete_trash_com(self):
+        ''' - Sometimes it's not enough to delete comment-only tail
+              since there might be no 'phdic' type which serves as
+              an indicator.
+            - Takes ~0.0023s for 'set' (EN-RU) on AMD E-300
+        '''
+        f = '[MClient] plugins.multitrancom.elems.Elems.delete_trash_com'
+        len_ = len(self.blocks)
+        self.blocks = [block for block in self.blocks \
+                       if not (block.type_ == 'comment' \
+                       and block.text in ('спросить в форуме'
+                                         ,'ask in forum','<!--','-->'
+                                         )
+                              )
+                      ]
+        sh.com.rep_deleted(f,len_-len(self.blocks))
+    
     def convert_speech(self):
         ''' Blocks inherent to <em> tag are usually 'speech' but not
             always, see, for example, EN-RU, 'blemish'.
@@ -402,7 +419,7 @@ class Elems:
         ''' - Sometimes it's not enough to delete comment-only tail
               since there might be no 'phdic' type which serves as
               an indicator.
-            - Takes ~0.005s for 'set' (EN-RU) on AMD E-300
+            - Takes ~0.009s for 'set' (EN-RU) on AMD E-300
         '''
         ru = ('Добавить','|','Сообщить об ошибке','|'
              ,'Способы выбора языков'
@@ -411,21 +428,10 @@ class Elems:
         texts = [block.text for block in self.blocks]
         self._delete_tail_links(sh.List(texts,ru).find())
         self._delete_tail_links(sh.List(texts,en).find())
-        ru = ('спросить в форуме','Добавить','|','Способы выбора языков')
-        en = ('ask in forum','Add','|','Language Selection Tips')
+        ru = ('Добавить','|','Способы выбора языков')
+        en = ('Add','|','Language Selection Tips')
         self._delete_tail_links(sh.List(texts,ru).find())
         self._delete_tail_links(sh.List(texts,en).find())
-    
-    def delete_site_coms(self):
-        ''' Sometimes it's not enough to delete comment-only tail since
-            there might be no 'phdic' type which serves as an indicator.
-        '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.delete_site_coms'
-        len_ = len(self.blocks)
-        self.blocks = [block for block in self.blocks \
-                       if block.text not in ('<!--','-->')
-                      ]
-        sh.com.rep_deleted(f,len_-len(self.blocks))
     
     def set_phdic(self):
         # Takes ~0.001s for 'set' (EN-RU) on AMD E-300
@@ -648,7 +654,7 @@ class Elems:
             self.delete_empty()
             self.delete_semi()
             self.delete_numeration()
-            self.delete_site_coms()
+            self.delete_trash_com()
             self.delete_tail_links()
             self.delete_langs()
             # Reassign types

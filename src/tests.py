@@ -287,8 +287,8 @@ class Plugin:
         #search = 'question'
         #url = 'https://www.multitran.com/m.exe?s=%D1%86%D0%B5%D0%BF%D1%8C:+%D0%BF%D1%80%D0%BE%D0%B2%D0%BE%D0%B4&l1=2&l2=1'
         #search = 'цепь: провод'
-        url = 'https://www.multitran.com/m.exe?s=Ouest+Bureau&l1=2&l2=1&SHL=2'
-        search = 'Ouest Bureau'
+        url = 'https://www.multitran.com/m.exe?s=ligon&l1=2&l2=1&SHL=2'
+        search = 'ligon'
         
         iplug = mc.Plugin (Debug = DEBUG
                           ,maxrows = 0
