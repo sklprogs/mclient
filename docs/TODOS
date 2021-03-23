@@ -8,6 +8,8 @@ mclient:
 - Clear CurRequest data after clearing history
 
 multitrancom:
+- Compare column width in EN-RU, "Ligon Street" and EN-RU, "ligon" ->
+  "Австралийское выражение"
 - Check bad charachers: EN-RU, счет на оплату
 - Fix links in a saved raw html
 - Blacklist " Большой Энциклопедический словарь " and check out EN-RU,
