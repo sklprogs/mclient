@@ -581,17 +581,18 @@ class Elems:
     def delete_empty(self):
         ''' - Empty blocks are useless since we recreate fixed columns
               anyways.
-            - The most common example of an empty block is a wform-type
-              block with ' ' text.
-            - Takes ~0.0041s for 'set' (EN-RU) on AMD E-300
+            - This is required since we decode HTM entities after
+              extracting tags now. Empty blocks may lead to a wrong
+              analysis of blocks, e.g.,
+              'comment (SAME=0) - comment (SAME=1)' structure, where
+              the second block is empty, will be mistakenly converted
+              to 'wform - comment'.
+            - Do not strip blocks to check for emptiness since 'comment'
+              from a 'wform+comment' structure where 'wform' is a space
+              cannot be further converted to 'wform', see RU-EN,
+              'цепь: провод'.
         '''
-        f = '[MClient] plugins.multitrancom.elems.Elems.delete_empty'
-        len_ = len(self.blocks)
-        self.blocks = [block for block in self.blocks \
-                       if block.text.strip()
-                      ]
-        count = len_ - len(self.blocks)
-        sh.com.rep_deleted(f,count)
+        self.blocks = [block for block in self.blocks if block.text]
     
     def set_term_same(self):
         ''' #NOTE: all blocks of the same cell must have the same TERM,
