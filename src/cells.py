@@ -231,7 +231,10 @@ class Cells:
     def clear_fixed(self):
         dic = wform = speech = transc = ''
         for block in self.blocks:
-            if block.type_ in ('dic','phdic'):
+            ''' 'phdic' is reassigned to 'dic' in this module (in order
+                to be independent from modes).
+            '''
+            if block.type_ == 'dic':
                 if dic == block.dic:
                     block.text = ''
                 else:
@@ -336,9 +339,7 @@ class Cells:
         i = j = -1
         PrevFixed = False
         for x in range(len(self.blocks)):
-            if self.cols and self.blocks[x].type_ in (self.cols[0]
-                                                     ,'phdic'
-                                                     ):
+            if self.cols and self.blocks[x].type_ == self.cols[0]:
                 if PrevFixed:
                     self.blocks[x].i = i
                 else:
@@ -490,6 +491,10 @@ class Cells:
         for block in self.blocks:
             if block.type_ in ('dic','phdic'):
                 block.text = block.dic
+                ''' Since this module is mode-independent, 'phdic' type
+                    is optional and cannot be treated as a fixed type.
+                '''
+                block.type_ = 'dic'
             elif block.type_ == 'wform':
                 block.text = block.wform
             elif block.type_ == 'speech':
