@@ -380,7 +380,7 @@ class DB:
     def get_phdic(self):
         f = '[MClient] db.DB.get_phdic'
         if self.artid:
-            query = 'select TEXT,POS1,URL from BLOCKS \
+            query = 'select DIC,DICF,POS1,URL from BLOCKS \
                      where ARTICLEID = ? and TYPE = ?'
             self.dbc.execute(query,(self.artid,'phdic',))
             return self.dbc.fetchone()

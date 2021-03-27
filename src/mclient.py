@@ -1204,10 +1204,10 @@ class WebFrame:
         f = '[MClient] mclient.WebFrame.go_phdic'
         phdic = objs.get_blocksdb().get_phdic()
         if phdic:
-            self.posn = phdic[1]
+            self.posn = phdic[2]
             if objs.blocksdb.Selectable:
-                lg.objs.get_request().search = phdic[0]
-                lg.objs.request.url = phdic[2]
+                lg.objs.get_request().search = phdic[1]
+                lg.objs.request.url = phdic[3]
                 self.load_article()
             else:
                 self.go_url()
@@ -1954,7 +1954,10 @@ class WebFrame:
             
         self.phdic = objs.blocksdb.get_phdic()
         if self.phdic:
-            self.phdic = self.phdic[0]
+            if sh.lg.globs['bool']['ShortDicTitles']:
+                self.phdic = self.phdic[0]
+            else:
+                self.phdic = self.phdic[1]
         else:
             self.phdic = ''
         

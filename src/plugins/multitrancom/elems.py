@@ -445,11 +445,10 @@ class Elems:
             del self.blocks[index_]
             del self.blocks[index_]
             self.blocks[index_].type_ = 'phdic'
-            self.phdic = self.blocks[index_].text = text
             self.blocks[index_].url = url
             self.blocks[index_].select = 1
-            self.blocks[index_].dic = self.blocks[index_].dicf \
-                                    = self.blocks[index_].text
+            self.blocks[index_].dic = self.phdic = _('phrases')
+            self.blocks[index_].dicf = self.blocks[index_].text = text
     
     def get_phdic(self):
         ''' - Sample blocks: "comment"-"comment"-"comment"-"phrase"
