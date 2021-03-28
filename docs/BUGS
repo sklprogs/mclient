@@ -18,8 +18,6 @@ multitrancom:
 - EN-RU, "цепь: провод": wform disappears when toggling dic titles
 - EN-RU, clusterfuck: clarity mode: do not show blocks having SAME=1
   (" узус", " обсценная") if blocks having SAME=0 are ignored
-- EN-RU, federal security administration ("Cut to the chase" mode):
-  phdic not in sync with dics
 - Fix 'Clarity' mode for 'phdic', 'phrase' and 'phcount' types
 - EN-RU, вспоминать: failed to find blocks
 - Save article: only the last article is saved, not the current one

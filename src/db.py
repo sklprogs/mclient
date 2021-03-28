@@ -179,13 +179,16 @@ class DB:
             self.cols = ('dic','wform','transc','speech')
             sh.com.rep_empty(f)
         #NOTE: do not forget to add new block types here
-        self.types = self.cols + ('term','phrase','comment','correction'
-                                 ,'phdic'
-                                 )
+        self.types = self.cols + ('term','comment','correction','phdic')
         if self.ShowUsers:
             self.types += ('user',)
-        if self.PhraseCount:
-            self.types += ('phcount',)
+        ''' "Clarity" mode does not allow dic and phrase types except
+            for 'phdic'.
+        '''
+        if 'dic' in self.types:
+            self.types += ('phrase',)
+            if self.PhraseCount:
+                self.types += ('phcount',)
 
     def fill_blocks(self,data):
         query = 'insert into BLOCKS values (?,?,?,?,?,?,?,?,?,?,?,?,?,?\
