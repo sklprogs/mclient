@@ -6,19 +6,11 @@ from skl_shared.localize import _
 import gui as gi
 
 
-class Settings(gi.Settings):
+class Debug:
     
-    def __init__(self):
-        super().__init__()
+    def init_debug(self):
         self.mes = []
         self.section = ''
-    
-    def debug(self):
-        f = '[MClient] debug_gui.Settings.debug'
-        self.add_widgets()
-        mes = '\n'.join(self.mes)
-        mes = mes.strip()
-        sh.com.run_fast_debug(f,mes)
     
     def get_section(self,name):
         if name.startswith('lbl'):
@@ -29,6 +21,8 @@ class Settings(gi.Settings):
             return _('Option menus')
         elif name.startswith('btn'):
             return _('Buttons')
+        elif name.startswith('ent'):
+            return _('Entries')
         else:
             return _('UNKNOWN')
     
@@ -42,6 +36,21 @@ class Settings(gi.Settings):
     def add_widget(self,name,value):
         self.add_section(name)
         self.mes.append('{}: {}'.format(name,value))
+
+
+
+class Settings(gi.Settings,Debug):
+    
+    def __init__(self):
+        super(Settings,self).__init__()
+        self.init_debug()
+    
+    def debug(self):
+        f = '[MClient] debug_gui.Settings.debug'
+        self.add_widgets()
+        mes = '\n'.join(self.mes)
+        mes = mes.strip()
+        sh.com.run_fast_debug(f,mes)
     
     def add_widgets(self):
         self.add_widget('lbl_no1',self.lbl_no1.text)
@@ -84,7 +93,36 @@ class Settings(gi.Settings):
         self.add_widget('opt_sp7',self.opt_sp7.choice)
 
 
+
+class WebFrame(gi.WebFrame,Debug):
+    
+    def __init__(self):
+        super(WebFrame,self).__init__()
+        self.init_debug()
+    
+    def debug(self):
+        f = '[MClient] debug_gui.WebFrame.debug'
+        self.add_widgets()
+        mes = '\n'.join(self.mes)
+        mes = mes.strip()
+        sh.com.run_fast_debug(f,mes)
+    
+    def add_widgets(self):
+        self.add_widget('ent_src',self.ent_src.get())
+        self.add_widget('opt_src',self.opt_src.choice)
+        self.add_widget('opt_lg1',self.opt_lg1.choice)
+        self.add_widget('opt_lg2',self.opt_lg2.choice)
+        self.add_widget('opt_col',self.opt_col.choice)
+        self.add_widget('btn_blk',self.btn_blk.Status)
+        self.add_widget('btn_pri',self.btn_pri.Status)
+        self.add_widget('btn_alp',self.btn_alp.Status)
+        self.add_widget('btn_cap',self.btn_cap.Status)
+
+
 if __name__ == '__main__':
     iset = Settings()
     iset.close()
     iset.debug()
+    iweb = WebFrame()
+    iweb.close()
+    iweb.debug()
