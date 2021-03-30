@@ -3,7 +3,61 @@
 
 import skl_shared.shared as sh
 from skl_shared.localize import _
-import gui as gi
+import gui as mg
+
+PRODUCT = mg.PRODUCT
+VERSION = mg.VERSION
+CURYEAR = mg.CURYEAR
+ICON = mg.ICON
+
+
+class About(mg.About):
+
+    def __init__(self):
+        super().__init__()
+
+
+
+class History(mg.History):
+
+    def __init__(self):
+        super().__init__()
+
+
+
+class SaveArticle(mg.SaveArticle):
+
+    def __init__(self):
+        super().__init__()
+
+
+
+class SearchArticle(mg.SearchArticle):
+
+    def __init__(self):
+        super().__init__()
+
+
+
+class Sources(mg.Sources):
+
+    def __init__(self):
+        super().__init__()
+
+
+
+class Suggest(mg.Suggest):
+
+    def __init__(self):
+        super().__init__()
+
+
+
+class ThirdParties(mg.ThirdParties):
+
+    def __init__(self):
+        super().__init__()
+
 
 
 class Debug:
@@ -39,7 +93,7 @@ class Debug:
 
 
 
-class Settings(gi.Settings,Debug):
+class Settings(mg.Settings,Debug):
     
     def __init__(self):
         super(Settings,self).__init__()
@@ -95,7 +149,7 @@ class Settings(gi.Settings,Debug):
 
 
 
-class WebFrame(gi.WebFrame,Debug):
+class WebFrame(mg.WebFrame,Debug):
     
     def __init__(self):
         super(WebFrame,self).__init__()

@@ -9,6 +9,7 @@ import skl_shared.shared as sh
 from skl_shared.localize import _
 import logic as lg
 import gui as gi
+#import debug_gui as gi
 import cells as cl
 import mkhtml as mh
 import db
@@ -978,12 +979,17 @@ class WebFrame:
         self.set_bindings()
     
     def debug_settings(self):
+        # Use 'import debug_gui as gi' instead of 'import gui as gi'
         f = '[MClient] mclient.WebFrame.debug_settings'
-        import debug_gui
-        debug_gui.WebFrame().debug()
-        debug_gui.Settings().debug()
-        mes = lg.objs.get_config().debug()
-        sh.com.run_fast_debug(f,mes)
+        try:
+            objs.get_webframe_ui().debug()
+            objs.get_settings_ui().debug()
+            mes = lg.objs.get_config().debug()
+            sh.com.run_fast_debug(f,mes)
+        except AttributeError:
+            mes = _('Please import "{}" instead of "{}"')
+            mes = mes.format('debug_gui','gui')
+            sh.objs.get_mes(f,mes).show_error()
     
     def update_buttons(self):
         UpdateWebFrameUI().run()
