@@ -50,6 +50,7 @@ class Settings(gi.Settings,Debug):
         self.add_widgets()
         mes = '\n'.join(self.mes)
         mes = mes.strip()
+        self.close()
         sh.com.run_fast_debug(f,mes)
     
     def add_widgets(self):
@@ -105,6 +106,7 @@ class WebFrame(gi.WebFrame,Debug):
         self.add_widgets()
         mes = '\n'.join(self.mes)
         mes = mes.strip()
+        self.close()
         sh.com.run_fast_debug(f,mes)
     
     def add_widgets(self):

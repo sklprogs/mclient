@@ -977,6 +977,14 @@ class WebFrame:
         self.gui = gi.WebFrame()
         self.set_bindings()
     
+    def debug_settings(self):
+        f = '[MClient] mclient.WebFrame.debug_settings'
+        import debug_gui
+        debug_gui.WebFrame().debug()
+        debug_gui.Settings().debug()
+        mes = lg.objs.get_config().debug()
+        sh.com.run_fast_debug(f,mes)
+    
     def update_buttons(self):
         UpdateWebFrameUI().run()
     
@@ -2077,6 +2085,7 @@ class WebFrame:
         self.update_buttons()
         timer.end()
         self.run_final_debug()
+        self.debug_settings()
     
     def go_mouse(self,event=None):
         f = '[MClient] mclient.WebFrame.go_mouse'
