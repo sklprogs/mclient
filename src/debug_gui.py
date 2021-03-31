@@ -103,9 +103,9 @@ class Settings(mg.Settings,Debug):
         f = '[MClient] debug_gui.Settings.debug'
         self.add_widgets()
         mes = '\n'.join(self.mes)
-        mes = mes.strip()
+        mes = '{}:\n'.format(f) + mes.strip()
         self.close()
-        sh.com.run_fast_debug(f,mes)
+        return mes
     
     def add_widgets(self):
         self.add_widget('lbl_no1',self.lbl_no1.text)
@@ -159,9 +159,9 @@ class WebFrame(mg.WebFrame,Debug):
         f = '[MClient] debug_gui.WebFrame.debug'
         self.add_widgets()
         mes = '\n'.join(self.mes)
-        mes = mes.strip()
+        mes = '{}:\n'.format(f) + mes.strip()
         self.close()
-        sh.com.run_fast_debug(f,mes)
+        return mes
     
     def add_widgets(self):
         self.add_widget('ent_src',self.ent_src.get())

@@ -982,9 +982,19 @@ class WebFrame:
         # Use 'import debug_gui as gi' instead of 'import gui as gi'
         f = '[MClient] mclient.WebFrame.debug_settings'
         try:
-            objs.get_webframe_ui().debug()
-            objs.get_settings_ui().debug()
-            mes = lg.objs.get_config().debug()
+            mes = []
+            # WebFrame
+            sub = objs.get_webframe_ui().debug()
+            mes.append(sub)
+            mes.append('')
+            # GUI Settings
+            sub = objs.get_settings_ui().debug()
+            mes.append(sub)
+            mes.append('')
+            # Keys
+            sub = sh.com.debug_globs()
+            mes.append(sub)
+            mes = '\n'.join(mes)
             sh.com.run_fast_debug(f,mes)
         except AttributeError:
             mes = _('Please import "{}" instead of "{}"')
@@ -2091,7 +2101,7 @@ class WebFrame:
         self.update_buttons()
         timer.end()
         self.run_final_debug()
-        self.debug_settings()
+        #self.debug_settings()
     
     def go_mouse(self,event=None):
         f = '[MClient] mclient.WebFrame.go_mouse'
