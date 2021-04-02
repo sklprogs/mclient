@@ -22,7 +22,6 @@ multitrancom:
 - EN-RU, clusterfuck: clarity mode: do not show blocks having SAME=1
   (" узус", " обсценная") if blocks having SAME=0 are ignored
 - Fix 'Clarity' mode for 'phdic', 'phrase' and 'phcount' types
-- EN-RU, вспоминать: failed to find blocks
 - Save article: only the last article is saved, not the current one
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"

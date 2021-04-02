@@ -214,6 +214,7 @@ class Elems:
             - It's not enough just to get CELLNO of the Great
               encyclopedic dictionary and change DIC and DICF since
               DIC and DICF will be reassigned at 'self.fill'.
+            - Takes ~0.0014s for 'set' (EN-RU) on AMD E-300
         '''
         f = '[MClient] plugins.multitrancom.elems.Elems.convert_ged'
         count = 0

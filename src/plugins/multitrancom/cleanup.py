@@ -69,7 +69,7 @@ class CleanUp:
     
     def run_common(self):
         # Delete unicode control codes
-        # Takes ~0.038s for 'set' (EN-RU) on AMD E-300
+        # Takes ~0.037s for 'set' (EN-RU) on AMD E-300
         self.text = re.sub(r'[\x00-\x1f\x7f-\x9f]','',self.text)
         self.text = self.text.replace('\r\n','')
         self.text = self.text.replace('\n','')
@@ -78,6 +78,10 @@ class CleanUp:
         while '  ' in self.text:
             self.text = self.text.replace('  ',' ')
         self.text = re.sub(r'\>[\s]{0,1}\<','><',self.text)
+        # RU-EN: "вспоминать"
+        self.text = self.text.replace ('<font color="darkgoldenrod" &gt'
+                                      ,'<font color="darkgoldenrod">'
+                                      )
     
     def run(self):
         f = '[MClient] plugins.multitrancom.cleanup.CleanUp.run'

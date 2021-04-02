@@ -138,9 +138,9 @@ class AnalyzeTag:
         return 'span style="color:gray"' in self.tag.text.lower()
     
     def _is_correction(self):
-        return self.tag.text in ('span STYLE="color:rgb(60,179,113)"'
-                                ,'font color=DarkGoldenrod'
-                                )
+        return 'span STYLE="color:rgb(60,179,113)"' in self.tag.text \
+               or 'font color=DarkGoldenrod' in self.tag.text \
+               or 'font color="darkgoldenrod"' in self.tag.text
     
     def _is_user(self):
         return 'UserName=' in self.tag.text
