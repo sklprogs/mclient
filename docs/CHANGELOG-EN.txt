@@ -2,9 +2,12 @@
 * Rewrite multitran.com parser, make it faster and more accurate
 * Support multitran.com suggestions for spelling mistakes
 * Support "⇒" section
+* Support URL inside user comments
 * Skip "Russian thesaurus" and "English thesaurus" blocks
 * Show a phrase count (configurable in settings). This option is
   automatically saved/loaded from the configuration file.
+* Move records from the Great encyclopedic dictionary to a separate
+  subject
 
 6.8
 * Show tooltips within the screen (a change in the shared module)
