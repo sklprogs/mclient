@@ -160,7 +160,6 @@ class WebFrame(mg.WebFrame,Debug):
         self.add_widgets()
         mes = '\n'.join(self.mes)
         mes = '{}:\n'.format(f) + mes.strip()
-        self.close()
         return mes
     
     def add_widgets(self):
