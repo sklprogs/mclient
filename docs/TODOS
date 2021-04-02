@@ -14,8 +14,7 @@ multitrancom:
   "Австралийское выражение"
 - Check bad charachers: RU-EN, счет на оплату
 - Fix links in a saved raw html
-- Blacklist " Большой Энциклопедический словарь " and check out RU-EN,
-  союз, тигр, Чехия, сварка, абзац
+- RU-EN, союз, тигр: find all instances of GED
 - RU-EN, fall in behind, swoop in: Show phrases when only separate words
   have been found
 - RU-EN: beg the question: 'which begs the question' is duplicated
