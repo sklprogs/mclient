@@ -194,6 +194,37 @@ class Elems:
         self.blocks = blocks
         self.Debug = Debug
         self.maxrows = maxrows
+        
+    def _get_ged(self):
+        for block in self.blocks:
+            if block.type_ == 'comment' \
+            and block.text == 'Большой Энциклопедический словарь ':
+                return block.rowno
+    
+    def _get_first_dic(self,rowno):
+        for block in self.blocks:
+            if block.rowno == rowno and block.type_ == 'dic':
+                return block
+    
+    def convert_ged(self):
+        ''' - Reassign a dictionary title for blocks from the Great
+              encyclopedic dictionary.
+            - It's not enough just to get CELLNO of the Great
+              encyclopedic dictionary and change DIC and DICF since
+              DIC and DICF will be reassigned at 'self.fill'.
+        '''
+        f = '[MClient] plugins.multitrancom.elems.Elems.convert_ged'
+        rowno = self._get_ged()
+        if rowno is None:
+            sh.com.rep_lazy(f)
+        else:
+            block = self._get_first_dic(rowno)
+            if block:
+                block.dic = block.text = _('GED')
+                block.dicf = _('Great Encyclopedic Dictionary')
+                sh.com.rep_matches(f,1)
+            else:
+                sh.com.rep_empty(f)
     
     def delete_trash_com(self):
         ''' - Sometimes it's not enough to delete comment-only tail
@@ -662,6 +693,7 @@ class Elems:
             self.set_transc()
             self.set_see_also()
             self.convert_speech()
+            self.convert_ged()
             self.make_fixed()
             self.set_same()
             # Prepare contents
