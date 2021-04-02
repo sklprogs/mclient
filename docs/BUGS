@@ -14,6 +14,7 @@ Traceback (most recent call last):
 ValueError: 'Европейский банк реконструкции и развития' is not in list
 
 multitrancom:
+- RU-EN, союз: fix prioritizing GED
 - RU-EN, слушаю: '(' has SAME=0
 - on the first run: EN-RU, "цепь: провод": wform disappears;
                     EN-RU, "абзац": GED is formatted as blocked but not

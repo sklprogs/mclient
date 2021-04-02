@@ -187,19 +187,21 @@ class Elems:
           result in putting a 'term' item before fixed columns.
     '''
     def __init__(self,blocks,Debug=False,maxrows=1000,abbr={}):
+        self.fixed = ('dic','wform','transc','speech')
         self.dicurls = {}
         self.phdic = ''
-        self.fixed = ('dic','wform','transc','speech')
         self.abbr = abbr
         self.blocks = blocks
         self.Debug = Debug
         self.maxrows = maxrows
         
     def _get_ged(self):
+        geds = []
         for block in self.blocks:
             if block.type_ == 'comment' \
             and block.text == 'Большой Энциклопедический словарь ':
-                return block.rowno
+                geds.append(block)
+        return geds
     
     def _get_first_dic(self,rowno):
         for block in self.blocks:
@@ -214,17 +216,22 @@ class Elems:
               DIC and DICF will be reassigned at 'self.fill'.
         '''
         f = '[MClient] plugins.multitrancom.elems.Elems.convert_ged'
-        rowno = self._get_ged()
-        if rowno is None:
-            sh.com.rep_lazy(f)
-        else:
-            block = self._get_first_dic(rowno)
+        count = 0
+        geds = self._get_ged()
+        for ged in geds:
+            block = self._get_first_dic(ged.rowno)
             if block:
                 block.dic = block.text = _('GED')
                 block.dicf = _('Great Encyclopedic Dictionary')
-                sh.com.rep_matches(f,1)
+                count += 1
             else:
                 sh.com.rep_empty(f)
+            ''' The dictionary will be renamed, we do not need
+                the comment duplicating it.
+            '''
+            self.blocks.remove(ged)
+        sh.com.rep_matches(f,count)
+        sh.com.rep_deleted(f,len(geds))
     
     def delete_trash_com(self):
         ''' - Sometimes it's not enough to delete comment-only tail
