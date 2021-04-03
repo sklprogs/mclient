@@ -39,6 +39,14 @@ class Plugins:
         self.sdplugin = None
         self.source = sh.lg.globs['str']['source']
     
+    def fix_url(self,url):
+        f = '[MClient] manager.Plugins.fix_url'
+        if self.plugin:
+            return self.plugin.fix_url(url)
+        else:
+            sh.com.rep_empty(f)
+            return url
+    
     def is_oneway(self):
         f = '[MClient] manager.Plugins.is_oneway'
         if self.plugin:

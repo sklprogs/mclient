@@ -31,6 +31,10 @@ class Plugin:
         self.htm = ''
         self.abbr = {}
     
+    # This is needed only for compliance with a general method
+    def fix_url(self,url):
+        return url
+    
     def is_oneway(self):
         return False
     

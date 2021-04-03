@@ -24,6 +24,9 @@ class Plugin:
         self.htm = ''
         self.text = ''
     
+    def fix_url(self,url):
+        return gt.com.fix_url(url)
+    
     def is_oneway(self):
         return False
     

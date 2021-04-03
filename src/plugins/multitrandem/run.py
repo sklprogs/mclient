@@ -27,6 +27,10 @@ class Plugin:
         self.maxrow = maxrow
         self.maxrows = maxrows
     
+    # This is needed only for compliance with a general method
+    def fix_url(self,url):
+        return url
+    
     def is_oneway(self):
         return False
     

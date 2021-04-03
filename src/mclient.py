@@ -2173,9 +2173,6 @@ class WebFrame:
 
     def go_search(self):
         f = '[MClient] mclient.WebFrame.go_search'
-        ''' Text returned by 'objs.get_blocksdb().text' may have a space
- as the first symbol for some reason.
-        '''
         if lg.objs.get_request().search is None:
             lg.objs.request.search = ''
         lg.objs.request.search = lg.objs.request.search.strip()
@@ -2365,7 +2362,8 @@ class WebFrame:
     # Open URL of the current article in a browser
     def open_in_browser(self,event=None):
         ionline = sh.Online()
-        ionline.url = lg.objs.get_request().url
+        url = lg.objs.get_request().url
+        ionline.url = lg.objs.get_plugins().fix_url(url)
         ionline.browse()
 
     # Copy text of the current block
@@ -2385,7 +2383,9 @@ class WebFrame:
 
     # Copy URL of the current article
     def copy_url(self,event=None):
-        sh.Clipboard().copy(lg.objs.get_request().url)
+        url = lg.objs.get_request().url
+        url = lg.objs.get_plugins().fix_url(url)
+        sh.Clipboard().copy(url)
         if sh.lg.globs['bool']['Iconify']:
             self.minimize()
 
@@ -2394,6 +2394,7 @@ class WebFrame:
         f = '[MClient] mclient.WebFrame.copy_block_url'
         url = objs.get_blocksdb().get_url(self.pos)
         if url:
+            url = lg.objs.get_plugins().fix_url(url)
             sh.Clipboard().copy(url)
             if sh.lg.globs['bool']['Iconify']:
                 self.minimize()
