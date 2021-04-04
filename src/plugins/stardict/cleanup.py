@@ -396,6 +396,8 @@ class CleanUp:
     # This class is basically needed for compliance with other code
     def __init__(self,text):
         self.text = text
+        if self.text is None:
+            self.text = ''
 
     def run(self):
         #TODO: combine shared operations for all Stardict classes

@@ -38,8 +38,6 @@ multitrancom:
   block.txt and original view saved by the program - block.htm) are
   parsed differently (have a different look when loaded with 'file='
   option)
-- An incorrect selection at the end while searching "document is
-  original without a signature"
 - Do not move at the beginning of the article after cancelling
   the search
 - Mclient mode: transcription must be set after parts of speechs, but

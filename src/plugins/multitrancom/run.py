@@ -129,13 +129,10 @@ class Plugin:
             return pr.objs.get_pairs().get_alive()
     
     def request(self,search='',url=''):
-        iget = gt.Get (search = search
-                      ,url = url
-                      )
-        self.text = iget.run()
-        self.text = self.htm = cu.CleanUp(self.text).run()
-        if self.text is None:
-            self.text = ''
+        self.htm = gt.Get (search = search
+                          ,url = url
+                          ).run()
+        self.text = cu.CleanUp(self.htm).run()
         itags = tg.Tags (text = self.text
                         ,Debug = self.Debug
                         ,maxrows = self.maxrows

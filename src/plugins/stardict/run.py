@@ -107,8 +107,6 @@ class Plugin:
         self.text = iget.run()
         self.htm = iget.htm
         self.text = cu.CleanUp(self.text).run()
-        if self.text is None:
-            self.text = ''
         itags = tg.Tags (text = self.text
                         ,Debug = self.Debug
                         ,maxrow = self.maxrow
