@@ -44,8 +44,6 @@ multitrancom:
   WebFrame.select)
 - Loop WebFrame.move_page_up & WebFrame.move_page_down
 - Restore selection upon changing a setting and loading the article again
-- Store '_html_raw' value for all articles, not just for the latest new
-  loaded one
 - Delete symbols that prevent URL from opening (e.g.,
   'символ' -> 'pilcrow')
 

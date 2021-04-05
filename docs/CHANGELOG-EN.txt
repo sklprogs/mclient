@@ -8,6 +8,7 @@
   automatically saved/loaded from the configuration file.
 * Move records from the Great encyclopedic dictionary to a separate
   subject
+* Fix saving the article
 
 6.8
 * Show tooltips within the screen (a change in the shared module)
