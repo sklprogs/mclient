@@ -1288,9 +1288,7 @@ class CurRequest:
         self.SpecialPage = False
     
     def reset(self):
-        self.page = ''
         self.htm = ''
-        self.htmraw = ''
         self.search = ''
         self.url = ''
 

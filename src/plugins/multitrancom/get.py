@@ -160,17 +160,11 @@ class Commands:
     
     #TODO: fix remaining links to localhost
     def fix_raw_htm(self,code):
-        f = '[MClient] plugins.multitrancom.get.Commands.fix_raw_htm'
-        if code:
-            code = code.replace ('charset={}"'.format(CODING)
-                                ,'charset=utf-8"'
-                                )
-            code = code.replace ('<a href="/m.exe?'
-                                ,'<a href="' + PAIRROOT
-                                )
-            return code
-        else:
-            sh.com.rep_empty(f)
+        code = code.replace ('charset={}"'.format(CODING)
+                            ,'charset=utf-8"'
+                            )
+        code = code.replace('<a href="/m.exe?','<a href="' + PAIRROOT)
+        return code
     
     def get_url(self,code1,code2,search):
         f = '[MClient] plugins.multitrancom.get.Commands.get_url'

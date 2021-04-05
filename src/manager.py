@@ -39,6 +39,13 @@ class Plugins:
         self.sdplugin = None
         self.source = sh.lg.globs['str']['source']
     
+    def set_htm(self,htm):
+        f = '[MClient] manager.Plugins.set_htm'
+        if self.plugin and htm:
+            self.plugin.set_htm(htm)
+        else:
+            sh.com.rep_empty(f)
+    
     def fix_url(self,url):
         f = '[MClient] manager.Plugins.fix_url'
         if self.plugin:
@@ -102,14 +109,11 @@ class Plugins:
     
     def fix_raw_htm(self):
         f = '[MClient] manager.Plugins.fix_raw_htm'
-        code = ''
         if self.plugin:
-            code = self.plugin.fix_raw_htm()
-            if not code:
-                code = ''
+            return self.plugin.fix_raw_htm()
         else:
             sh.com.rep_empty(f)
-        return code
+        return ''
     
     def get_url(self,search):
         f = '[MClient] manager.Plugins.get_url'

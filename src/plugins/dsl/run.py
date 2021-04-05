@@ -30,6 +30,10 @@ class Plugin:
         self.htm = ''
     
     # This is needed only for compliance with a general method
+    def set_htm(self,code):
+        self.htm = code
+    
+    # This is needed only for compliance with a general method
     def fix_url(self,url):
         return url
     

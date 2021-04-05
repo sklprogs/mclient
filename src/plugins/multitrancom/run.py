@@ -24,6 +24,9 @@ class Plugin:
         self.htm = ''
         self.text = ''
     
+    def set_htm(self,code):
+        self.htm = code
+    
     def fix_url(self,url):
         return gt.com.fix_url(url)
     

@@ -22,6 +22,17 @@ class DB:
         self.create_blocks()
         self.create_articles()
     
+    def get_code(self):
+        f = '[MClient] db.DB.get_code'
+        if self.artid:
+            query = 'select CODE from ARTICLES where ARTICLEID = ?'
+            self.dbc.execute(query,(self.artid,))
+            result = self.dbc.fetchone()
+            if result:
+                return result[0]
+        else:
+            sh.com.rep_empty(f)
+    
     def update_phterm(self):
         f = '[MClient] db.DB.update_phterm'
         if self.artid:
@@ -150,7 +161,7 @@ class DB:
         self.dbc.execute(query)
                          
     def create_articles(self):
-        # 7 columns for now
+        # 8 columns for now
         query = 'create table if not exists ARTICLES (\
                  ARTICLEID integer primary key autoincrement \
                 ,SOURCE    text    \
@@ -159,6 +170,7 @@ class DB:
                 ,LANG1     text    \
                 ,LANG2     text    \
                 ,BOOKMARK  integer \
+                ,CODE      text    \
                                                      )'
         self.dbc.execute(query)
 
@@ -197,7 +209,7 @@ class DB:
         self.dbc.executemany(query,data)
         
     def fill_articles(self,data):
-        query = 'insert into ARTICLES values (?,?,?,?,?,?,?)'
+        query = 'insert into ARTICLES values (?,?,?,?,?,?,?,?)'
         self.dbc.execute(query,data)
 
     def fetch(self):

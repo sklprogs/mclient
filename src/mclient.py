@@ -693,12 +693,14 @@ class SaveArticle:
             ensure that they are also valid in the local file.
         '''
         self.file = sh.com.show_save_dialog(self.webtypes)
-        if self.file and lg.objs.get_request().htmraw:
+        code = objs.get_blocksdb().get_code()
+        if self.file and code:
             self.fix_ext('.htm')
-            lg.objs.request.htmraw = lg.objs.get_plugins().fix_raw_htm()
+            lg.objs.get_plugins().set_htm(code)
+            code = lg.objs.plugins.fix_raw_htm()
             sh.WriteTextFile (file = self.file
                              ,Rewrite = True
-                             ).write(lg.objs.request.htmraw)
+                             ).write(code)
         else:
             sh.com.rep_empty(f)
 
@@ -715,7 +717,7 @@ class SaveArticle:
             sh.com.rep_empty(f)
 
     def copy_raw(self):
-        sh.Clipboard().copy(lg.objs.get_request().htmraw)
+        sh.Clipboard().copy(objs.get_blocksdb().get_code())
 
     def copy_txt(self):
         f = '[MClient] mclient.SaveArticle.copy_txt'
@@ -1945,6 +1947,9 @@ class WebFrame:
             objs.blocksdb.artid = artid
             self.get_bookmark()
         else:
+            blocks = lg.objs.get_plugins().request (search = lg.objs.request.search
+                                                   ,url = lg.objs.request.url
+                                                   )
             # 'None' skips the autoincrement
             data = (None                              # (00) ARTICLEID
                    ,sh.lg.globs['str']['source']      # (01) SOURCE
@@ -1953,24 +1958,13 @@ class WebFrame:
                    ,lg.objs.get_plugins().get_lang1() # (04) LANG1
                    ,lg.objs.plugins.get_lang2()       # (05) LANG2
                    ,self.pos                          # (06) BOOKMARK
+                   ,lg.objs.plugins.get_htm()         # (07) CODE
                    )
             objs.blocksdb.fill_articles(data)
-            
             objs.blocksdb.artid = objs.blocksdb.get_max_artid()
-            
-            blocks = lg.objs.get_plugins().request (search = lg.objs.request.search
-                                                   ,url = lg.objs.request.url
-                                                   )
             data = lg.com.dump_elems (blocks = blocks
                                      ,artid = objs.blocksdb.artid
                                      )
-            #TODO: #FIX: assign this for already loaded articles too
-            text = lg.objs.plugins.get_text()
-            if text is not None:
-                lg.objs.request.page = text
-            code = lg.objs.plugins.get_htm()
-            if code is not None:
-                lg.objs.request.htmraw = code
             if data:
                 objs.blocksdb.fill_blocks(data)
             
