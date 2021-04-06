@@ -1,1 +1,1 @@
-tkinterhtml termcolor pyperclip configparser pillow w3lib
+configparser easygui pillow pyperclip termcolor tkinterhtml w3lib
