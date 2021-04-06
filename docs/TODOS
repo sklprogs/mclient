@@ -6,6 +6,8 @@ mclient:
 - Checking for symbols unsupported in Tk takes too long (when loading
   dictionaries), do this check only before showing the final article.
 - Clear CurRequest data after clearing history
+- Improve saving the article as a webpage, replace '\n' with '<br>',
+  add titles everywhere
 
 multitrancom:
 - RU-EN, Federal Security Administration: Remove comments in a phrase

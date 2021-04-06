@@ -101,6 +101,7 @@ class Settings(mg.Settings,Debug):
     
     def debug(self):
         f = '[MClient] debug_gui.Settings.debug'
+        self.mes = []
         self.add_widgets()
         mes = '\n'.join(self.mes)
         mes = '{}:\n'.format(f) + mes.strip()
@@ -157,6 +158,7 @@ class WebFrame(mg.WebFrame,Debug):
     
     def debug(self):
         f = '[MClient] debug_gui.WebFrame.debug'
+        self.mes = []
         self.add_widgets()
         mes = '\n'.join(self.mes)
         mes = '{}:\n'.format(f) + mes.strip()

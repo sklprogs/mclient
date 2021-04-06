@@ -63,9 +63,11 @@ stardict:
   (sdict_EnRu_full - cut (manual).txt) are not separated when sorting
 
 dsl:
-- Fix search
+- 
 
 multitrandem:
+- EN-RU, 'цепь: провод': fails when no dics are available (option menus
+  have available pairs though)
 - AS: an abbreviation, not a conjunction
 - DARE: an abbreviation, not a noun
 - kick: a noun, not a verb
