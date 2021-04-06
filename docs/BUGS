@@ -63,7 +63,7 @@ stardict:
   (sdict_EnRu_full - cut (manual).txt) are not separated when sorting
 
 dsl:
-- 
+- Fix search
 
 multitrandem:
 - AS: an abbreviation, not a conjunction

@@ -28,6 +28,10 @@ class Plugin:
         self.blocks = []
         self.text = ''
         self.htm = ''
+        self.search = ''
+    
+    def get_search(self):
+        return self.search
     
     # This is needed only for compliance with a general method
     def set_htm(self,code):
@@ -86,7 +90,7 @@ class Plugin:
     
     # This is needed only for compliance with a general method
     def fix_raw_htm(self):
-        return ''
+        return self.htm
     
     # This is needed only for compliance with a general method
     def get_url(self,search=''):
@@ -142,9 +146,10 @@ class Plugin:
     
     def request(self,search='',url=''):
         f = '[MClient] plugins.dsl.run.Plugin.request'
-        articles = gt.Get(search).run()
         self.blocks = []
         htm = []
+        self.search = search
+        articles = gt.Get(search).run()
         for iarticle in articles:
             htm.append(iarticle.code)
             code = cu.CleanUp(iarticle.code).run()

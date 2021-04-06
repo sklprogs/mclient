@@ -662,7 +662,7 @@ class SaveArticle:
                 self.save_raw_as_htm()
             elif opt == _('Save the article as plain text in UTF-8 (*.txt)'):
                 self.view_as_txt()
-            elif opt == _('Copy HTML code of the article to clipboard'):
+            elif opt == _('Copy the code of the article to clipboard'):
                 self.copy_raw()
             elif opt == _('Copy the text of the article to clipboard'):
                 self.copy_txt()

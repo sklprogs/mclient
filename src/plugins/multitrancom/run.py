@@ -23,6 +23,10 @@ class Plugin:
         self.blocks = []
         self.htm = ''
         self.text = ''
+        self.search = ''
+    
+    def get_search(self):
+        return self.search
     
     def set_htm(self,code):
         self.htm = code
@@ -132,6 +136,7 @@ class Plugin:
             return pr.objs.get_pairs().get_alive()
     
     def request(self,search='',url=''):
+        self.search = search
         self.htm = gt.Get (search = search
                           ,url = url
                           ).run()

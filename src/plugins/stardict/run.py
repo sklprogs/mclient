@@ -26,10 +26,14 @@ class Plugin:
         self.maxrows = maxrows
     
     def set_values(self):
+        self.abbr = {}
         self.blocks = []
         self.text = ''
         self.htm = ''
-        self.abbr = {}
+        self.search = ''
+    
+    def get_search(self):
+        return self.search
     
     # This is needed only for compliance with a general method
     def set_htm(self,code):
@@ -68,7 +72,7 @@ class Plugin:
     
     # This is needed only for compliance with a general method
     def fix_raw_htm(self):
-        return ''
+        return self.htm
     
     # This is needed only for compliance with a general method
     def get_url(self,search=''):
@@ -107,9 +111,8 @@ class Plugin:
         return gt.Suggest(search).run()
     
     def request(self,search='',url=''):
-        iget = gt.Get(search)
-        self.text = iget.run()
-        self.htm = iget.htm
+        self.search = search
+        self.htm = self.text = gt.Get(search).run()
         self.text = cu.CleanUp(self.text).run()
         itags = tg.Tags (text = self.text
                         ,Debug = self.Debug

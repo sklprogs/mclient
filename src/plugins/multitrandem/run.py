@@ -27,6 +27,9 @@ class Plugin:
         self.maxrow = maxrow
         self.maxrows = maxrows
     
+    def get_search(self):
+        return self.search
+    
     # This is needed only for compliance with a general method
     def set_htm(self,code):
         self.htm = code
@@ -70,9 +73,10 @@ class Plugin:
     def set_values(self):
         self.blocks = []
         self.htm = ''
+        self.text = ''
+        self.search = ''
         self.langint = ('English','Russian')
         self.langloc = (_('English'),_('Russian'))
-        self.text = ''
     
     def get_text(self):
         if not self.text:
@@ -105,7 +109,7 @@ class Plugin:
     
     # This is needed only for compliance with a general method
     def fix_raw_htm(self):
-        return ''
+        return self.htm
     
     # This is needed only for compliance with a general method
     def get_url(self,search=''):
@@ -145,6 +149,7 @@ class Plugin:
     
     def request(self,search='',url=''):
         self.blocks = []
+        self.search = search
         iget = gt.Get(search)
         chunks = iget.run()
         if not chunks:

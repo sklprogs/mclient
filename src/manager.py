@@ -39,6 +39,14 @@ class Plugins:
         self.sdplugin = None
         self.source = sh.lg.globs['str']['source']
     
+    def get_search(self):
+        f = '[MClient] manager.Plugins.get_search'
+        if self.plugin:
+            return self.plugin.get_search()
+        else:
+            sh.com.rep_empty(f)
+        return ''
+    
     def set_htm(self,htm):
         f = '[MClient] manager.Plugins.set_htm'
         if self.plugin and htm:
@@ -52,7 +60,7 @@ class Plugins:
             return self.plugin.fix_url(url)
         else:
             sh.com.rep_empty(f)
-            return url
+        return url
     
     def is_oneway(self):
         f = '[MClient] manager.Plugins.is_oneway'
@@ -109,11 +117,22 @@ class Plugins:
     
     def fix_raw_htm(self):
         f = '[MClient] manager.Plugins.fix_raw_htm'
+        code = ''
         if self.plugin:
-            return self.plugin.fix_raw_htm()
+            code = self.plugin.fix_raw_htm()
         else:
             sh.com.rep_empty(f)
-        return ''
+        code = sh.Input(f,code).get_not_none()
+        if not '</html>' in code.lower():
+            search = self.get_search()
+            # '.format' does not work properly for 'multitrandem'
+            mes = '<!doctype html><title>'
+            mes += search
+            mes += '</title><body>'
+            mes += code
+            mes += '</body></html>'
+            code = mes
+        return code
     
     def get_url(self,search):
         f = '[MClient] manager.Plugins.get_url'
