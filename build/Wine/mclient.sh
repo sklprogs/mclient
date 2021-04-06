@@ -70,6 +70,6 @@ read -p "Update the archive? Y/n" choice
 if [ "$choice" = "N" ] || [ "$choice" = "n" ]; then
     exit;
 fi
-mv -f "$binariesdir/$product/windows.7z" "$binariesdir/$product/old.7z"
+rm "$binariesdir/$product/windows.7z"
 7z a "$binariesdir/$product/windows.7z" "$builddir"
 rm -rf "$tmpdir"
