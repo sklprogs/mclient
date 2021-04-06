@@ -16,9 +16,6 @@ ValueError: 'Европейский банк реконструкции и ра�
 multitrancom:
 - RU-EN, союз: fix prioritizing GED
 - RU-EN, слушаю: '(' has SAME=0
-- on the first run: EN-RU, "цепь: провод": wform disappears;
-                    EN-RU, "абзац": GED is formatted as blocked but not
-                    is actually blocked
 - EN-RU, clusterfuck: clarity mode: do not show blocks having SAME=1
   (" узус", " обсценная") if blocks having SAME=0 are ignored
 - Fix 'Clarity' mode for 'phdic', 'phrase' and 'phcount' types
