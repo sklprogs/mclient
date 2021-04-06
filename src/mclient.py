@@ -1979,6 +1979,28 @@ class WebFrame:
         else:
             self.phdic = ''
         
+        if self.phdic:
+            lg.objs.request.SpecialPage = False
+        else:
+            # Otherwise, 'SpecialPage' will be inherited
+            lg.objs.request.SpecialPage = True
+        self.update_columns()
+        
+        SortTerms = sh.lg.globs['bool']['AlphabetizeTerms'] \
+                    and not lg.objs.request.SpecialPage
+        ''' We must reset DB as early as possible after setting 'elems',
+            otherwise, real and loaded settings may not coincide, which,
+            in turn, may lead to a data loss, see, for example, RU-EN:
+            "цепь: провод".
+        '''
+        objs.blocksdb.reset (cols = lg.objs.request.cols
+                            ,SortRows = sh.lg.globs['bool']['SortByColumns']
+                            ,SortTerms = SortTerms
+                            ,ExpandDic = not sh.lg.globs['bool']['ShortDicTitles']
+                            ,ShowUsers = sh.lg.globs['bool']['ShowUserNames']
+                            ,PhraseCount = sh.lg.globs['bool']['PhraseCount']
+                            )
+        
         data = objs.blocksdb.assign_bp()
         spdic = lg.objs.speech_prior.get_all2prior()
         bp = cl.BlockPrioritize (data = data
@@ -1993,30 +2015,6 @@ class WebFrame:
         bp.run()
         objs.blocksdb.update(bp.query)
         
-        dics = objs.blocksdb.get_dics(Block=0)
-        ''' #NOTE: if an article comprises only 1 dic/wform, this is
-            usually a dictionary + terms from the 'Phrases' section
-            Do not rely on the number of wforms; large articles like
-            'centre' may have only 1 wform (and a plurality of dics)
-        '''
-        if not dics or dics and len(dics) == 1 or not self.phdic:
-            # or check 'lg.objs.request.search' by pattern '\d+ фраз'
-            lg.objs.request.SpecialPage = True
-        else:
-            # Otherwise, 'SpecialPage' will be inherited
-            lg.objs.request.SpecialPage = False
-
-        self.update_columns()
-        
-        SortTerms = sh.lg.globs['bool']['AlphabetizeTerms'] \
-                    and not lg.objs.request.SpecialPage
-        objs.blocksdb.reset (cols = lg.objs.request.cols
-                            ,SortRows = sh.lg.globs['bool']['SortByColumns']
-                            ,SortTerms = SortTerms
-                            ,ExpandDic = not sh.lg.globs['bool']['ShortDicTitles']
-                            ,ShowUsers = sh.lg.globs['bool']['ShowUserNames']
-                            ,PhraseCount = sh.lg.globs['bool']['PhraseCount']
-                            )
         objs.blocksdb.unignore()
         objs.blocksdb.ignore()
         
