@@ -707,8 +707,6 @@ class Elems:
             # Prepare contents
             self.set_dic_urls()
             self.set_phcount()
-            self.blocks = UniteFixed(self.blocks).run()
-            self.reassign_brackets()
             # Prepare for cells
             self.fill()
             self.fill_term()
@@ -717,6 +715,12 @@ class Elems:
             self.set_fixed_term()
             self.expand_dic_file()
             self.set_term_same()
+            ''' Running this too early (e.g., before 'expand_dic_file')
+                may cause data loss (see, for example, RU-EN,
+                'цепь: провод').
+            '''
+            self.blocks = UniteFixed(self.blocks).run()
+            self.reassign_brackets()
             # Extra spaces in the beginning may cause sorting problems
             self.add_space()
             #TODO: expand parts of speech (n -> noun, etc.)
