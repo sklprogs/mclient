@@ -1,4 +1,7 @@
 (in development)
+* 
+
+6.9
 * Rewrite multitran.com parser, make it faster and more accurate
 * Support multitran.com suggestions for spelling mistakes
 * Support "⇒" section
