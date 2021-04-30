@@ -1315,8 +1315,8 @@ class Lists:
     def prioritize(self):
         f = '[MClient] logic.Lists.prioritize'
         if self.Success:
-            text = sh.ReadTextFile(file=self.priorlst).get()
-            text = sh.Text(text=text,Auto=1).text
+            text = sh.ReadTextFile(self.priorlst).get()
+            text = sh.Text(text,True).text
             return text.splitlines()
         else:
             sh.com.cancel(f)
@@ -1462,12 +1462,6 @@ class Order:
                         self.fill_dic(dic1,ind1)
                         self.fill_dic(dic2,ind2)
                         
-                    lst = sh.List(lst1=self.priorlst).delete_duplicates()
-                    if lst:
-                        self.priorlst = list(lst)
-                    else:
-                        sh.com.rep_empty(f)
-                    
                     mes = 'Dic1: {}'.format(self.dic1)
                     sh.objs.get_mes(f,mes,True).show_debug()
                     mes = 'Dic2: {}'.format(self.dic2)
@@ -1731,8 +1725,7 @@ class Order:
     def prioritize(self,item):
         f = '[MClient] logic.Order.prioritize'
         if self.Success:
-            if not item in self.priorlst:
-                self.priorlst.append(item)
+            self.priorlst.append(item)
         else:
             sh.com.cancel(f)
     
