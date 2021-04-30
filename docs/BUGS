@@ -19,7 +19,6 @@ multitrancom:
 - EN-RU, clusterfuck: clarity mode: do not show blocks having SAME=1
   (" узус", " обсценная") if blocks having SAME=0 are ignored
 - Fix 'Clarity' mode for 'phdic', 'phrase' and 'phcount' types
-- Save article: only the last article is saved, not the current one
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"
 - EN-RU: вручать: fix dic prioritization (Gruzovik)
@@ -31,10 +30,6 @@ multitrancom:
   due to Tkinter/WM focusing/minimization behavior)
 - Do not fill history when search is empty (e.g., when changing
   the source to 'Offline')
-- Different views (source code of original page with UTF-8 encoding - 
-  block.txt and original view saved by the program - block.htm) are
-  parsed differently (have a different look when loaded with 'file='
-  option)
 - Do not move at the beginning of the article after cancelling
   the search
 - Mclient mode: transcription must be set after parts of speechs, but
