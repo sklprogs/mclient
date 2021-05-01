@@ -403,7 +403,7 @@ class Tags:
         # 23'' monitor: 50 symbols per a column
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
-                           ,maxrow = 50
+                           ,maxrow = 20
                            ,maxrows = self.maxrows
                            ).run()
         return _('Blocks:') + '\n' + mes
@@ -479,7 +479,7 @@ class Tags:
         # 23'' monitor: 30 symbols per a column
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
-                           ,maxrow = 30
+                           ,maxrow = 13
                            ,maxrows = self.maxrows
                            ).run()
         return _('Tags:') + '\n' + mes

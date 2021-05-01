@@ -749,10 +749,11 @@ class Elems:
                              ,self.blocks[i].term
                              ]
                             )
+            # 10'' monitor: 12 symbols per a column
             # 23'' monitor: 20 symbols per a column
             mes = sh.FastTable (headers = headers
                                ,iterable = rows
-                               ,maxrow = 20
+                               ,maxrow = 12
                                ,maxrows = self.maxrows
                                ,Transpose = True
                                ).run()
