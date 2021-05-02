@@ -194,6 +194,26 @@ class Elems:
         self.blocks = blocks
         self.Debug = Debug
         self.maxrows = maxrows
+    
+    def get_phdic_set(self):
+        for i in range(len(self.blocks)):
+            if self.blocks[i].type_ == 'phdic':
+                return i
+    
+    def set_phcom(self):
+        f = '[MClient] plugins.multitrancom.elems.Elems.set_phcom'
+        count = 0
+        i = self.get_phdic_set()
+        if i is None:
+            sh.com.rep_lazy(f)
+        else:
+            i += 1
+            while i < len(self.blocks):
+                if self.blocks[i].type_ == 'comment':
+                    self.blocks[i].type_ = 'phcom'
+                    count += 1
+                i += 1
+            sh.com.rep_matches(f,count)
         
     def _get_ged(self):
         geds = []
@@ -495,6 +515,7 @@ class Elems:
             - Owing to a bug at 'multitran.com', 'phdic' can be followed
               by 'phcount' and not by 'phrase', although even in this
               case 'phcount' relates to a preceding 'phrase'.
+            - This will not work when 'phdic' type is already set
         '''
         f = '[MClient] plugins.multitrancom.elems.Elems.get_phdic'
         i = len(self.blocks) - 1
@@ -704,6 +725,7 @@ class Elems:
             self.convert_ged()
             self.make_fixed()
             self.set_same()
+            self.set_phcom()
             # Prepare contents
             self.set_dic_urls()
             self.set_phcount()

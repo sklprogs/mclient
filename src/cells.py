@@ -25,8 +25,8 @@ class Block:
         self.sprior = -1
         self.text = ''
         self.transc = ''
-        ''' 'comment','correction','dic','phcount','phdic','phrase'
-           ,'speech','term','transc','user','wform'
+        ''' 'comment','correction','dic','phcount','phcom','phdic'
+           ,'phrase','speech','term','transc','user','wform'
         '''
         self.type_ = 'comment'
         self.wform = ''
@@ -591,7 +591,7 @@ class Pos:
         last = 0
         not_found = []
         for block in self.blocks:
-            text = sh.Text(text=block.text.strip()).delete_duplicate_spaces()
+            text = sh.Text(block.text.strip()).delete_duplicate_spaces()
             if text:
                 search = sh.Search (text = self.rawtext
                                    ,pattern = text

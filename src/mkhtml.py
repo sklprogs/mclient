@@ -327,7 +327,7 @@ class HTM:
             self.output.write('</font>')
     
     def _run_comment(self):
-        if self.block.type_ in ('comment','transc','phcount'):
+        if self.block.type_ in ('comment','transc','phcount','phcom'):
             self.output.write('<i><font face="')
             self.output.write(sh.lg.globs['str']['font_comments_family'])
             self.output.write('" size="')

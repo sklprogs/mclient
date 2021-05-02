@@ -198,7 +198,7 @@ class DB:
             for 'phdic'.
         '''
         if 'dic' in self.types:
-            self.types += ('phrase',)
+            self.types += ('phrase','phcom',)
             if self.PhraseCount:
                 self.types += ('phcount',)
 
