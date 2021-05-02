@@ -2,9 +2,6 @@ mclient:
 - 
 
 multitrancom:
-- EN-RU, clusterfuck: clarity mode: do not show blocks having SAME=1
-  (" узус", " обсценная") if blocks having SAME=0 are ignored
-- Fix 'Clarity' mode for 'phdic', 'phrase' and 'phcount' types
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"
 - Widget is not shown immediately when using F2 -> Esc -> F2 (probably
