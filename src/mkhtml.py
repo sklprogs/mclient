@@ -31,15 +31,13 @@ class HTM:
                                           )
             if result:
                 color = result
-            self.output.write('<i><font face="')
-            self.output.write(sh.lg.globs['str']['font_comments_family'])
-            self.output.write('" size="')
-            self.output.write(str(sh.lg.globs['int']['font_comments_size']))
-            self.output.write('" color="')
-            self.output.write(color)
-            self.output.write('">')
-            self.output.write(self.block.text)
-            self.output.write('</i></font>')
+            c = '<i><font face="{}" size="{}" color="{}">{}</i></font>'
+            c = c.format (sh.lg.globs['str']['font_comments_family']
+                         ,sh.lg.globs['int']['font_comments_size']
+                         ,color
+                         ,self.block.text
+                         )
+            self.output.write(c)
     
     # 'collimit' includes fixed blocks
     def reset (self,data,cols,order
@@ -200,9 +198,6 @@ class HTM:
 
     def _run_dic(self):
         if self.block.type_ in ('dic','phdic') and self.block.text:
-            self.output.write('<font face="')
-            self.output.write(self._get_family())
-            self.output.write('" color="')
             # Suppress useless error output
             if self.block.text == self.phdic:
                 Blocked = False
@@ -212,16 +207,18 @@ class HTM:
                 Blocked = self.order.is_blocked(lst)
                 Prioritized = self.order.is_prioritized(lst)
             if Blocked:
-                self.output.write(self._get_color_b())
+                sub = self._get_color_b()
             elif Prioritized:
-                self.output.write(self._get_color_p())
+                sub = self._get_color_p()
             else:
-                self.output.write(self._get_color())
-            self.output.write('" size="')
-            self.output.write(str(self._get_size()))
-            self.output.write('"><b>')
-            self.output.write(self.block.text)
-            self.output.write('</b></font>')
+                sub = self._get_color()
+            c = '<font face="{}" color="{}" size="{}"><b>{}</b></font>'
+            c = c.format (self._get_family()
+                         ,sub
+                         ,self._get_size()
+                         ,self.block.text
+                         )
+            self.output.write(c)
 
     def _get_family(self):
         if self.block.xj == 0:
@@ -285,71 +282,57 @@ class HTM:
     
     def _run_wform(self):
         if self.block.type_ == 'wform':
-            self.output.write('<font face="')
-            self.output.write(self._get_family())
-            self.output.write('" color="')
-            self.output.write(self._get_color())
-            self.output.write('" size="')
-            self.output.write(str(self._get_size()))
-            self.output.write('"><b>')
-            self.output.write(self.block.text)
-            self.output.write('</b></font>')
+            c = '<font face="{}" color="{}" size="{}"><b>{}</b></font>'
+            c = c.format (self._get_family()
+                         ,self._get_color()
+                         ,self._get_size()
+                         ,self.block.text
+                         )
+            self.output.write(c)
 
     def _run_term(self):
         if self.block.type_ in ('term','phrase'):
-            self.output.write('<font face="')
-            self.output.write(sh.lg.globs['str']['font_terms_family'])
-            self.output.write('" color="')
-            self.output.write(sh.lg.globs['str']['color_terms'])
-            self.output.write('" size="')
-            self.output.write(str(sh.lg.globs['int']['font_terms_size']))
-            self.output.write('">')
-            self.output.write(self.block.text)
-            self.output.write('</font>')
+            c = '<font face="{}" color="{}" size="{}">{}</font>'
+            c = c.format (sh.lg.globs['str']['font_terms_family']
+                         ,sh.lg.globs['str']['color_terms']
+                         ,sh.lg.globs['int']['font_terms_size']
+                         ,self.block.text
+                         )
+            self.output.write(c)
 
     def _run_speech(self):
         if self.block.type_ == 'speech':
-            self.output.write('<font face="')
-            self.output.write(self._get_family())
-            self.output.write('" color="')
-            self.output.write(self._get_color())
-            self.output.write('" size="')
-            self.output.write(str(self._get_size()))
-            self.output.write('">')
-            self.output.write('<i>')
             if self.block.xj == 0:
-                self.output.write('<b>')
-                self.output.write(self.block.text)
-                self.output.write('</b>')
+                sub = '<b>{}</b>'.format(self.block.text)
             else:
-                self.output.write(self.block.text)
-            self.output.write('</i>')
-            self.output.write('</font>')
+                sub = self.block.text
+            c = '<font face="{}" color="{}" size="{}"><i>{}</i></font>'
+            c = c.format (self._get_family()
+                         ,self._get_color()
+                         ,self._get_size()
+                         ,sub
+                         )
+            self.output.write(c)
     
     def _run_comment(self):
         if self.block.type_ in ('comment','transc','phcount','phcom'):
-            self.output.write('<i><font face="')
-            self.output.write(sh.lg.globs['str']['font_comments_family'])
-            self.output.write('" size="')
-            self.output.write(str(sh.lg.globs['int']['font_comments_size']))
-            self.output.write('" color="')
-            self.output.write(sh.lg.globs['str']['color_comments'])
-            self.output.write('">')
-            self.output.write(self.block.text)
-            self.output.write('</i></font>')
+            c = '<i><font face="{}" size="{}" color="{}">{}</i></font>'
+            c = c.format (sh.lg.globs['str']['font_comments_family']
+                         ,sh.lg.globs['int']['font_comments_size']
+                         ,sh.lg.globs['str']['color_comments']
+                         ,self.block.text
+                         )
+            self.output.write(c)
 
     def _run_correction(self):
         if self.block.type_ == 'correction':
-            self.output.write('<i><font face="')
-            self.output.write(sh.lg.globs['str']['font_comments_family'])
-            self.output.write('" size="')
-            self.output.write(str(sh.lg.globs['int']['font_comments_size']))
-            self.output.write('" color="')
-            #TODO (?): add to config
-            self.output.write('green')
-            self.output.write('">')
-            self.output.write(self.block.text)
-            self.output.write('</i></font>')
+            c = '<i><font face="{}" size="{}" color="{}">{}</i></font>'
+            c = c.format (sh.lg.globs['str']['font_comments_family']
+                         ,sh.lg.globs['int']['font_comments_size']
+                         ,'green'
+                         ,self.block.text
+                         )
+            self.output.write(c)
 
     def gen_htm(self):
         ''' Default Python string concatenation is too slow, so we use
