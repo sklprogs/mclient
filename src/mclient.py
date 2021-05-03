@@ -7,6 +7,7 @@ import io
 import tkinter as tk
 import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.web as wb
 import logic as lg
 import gui as gi
 #import debug_gui as gi
@@ -657,11 +658,11 @@ class SaveArticle:
         opt = self.gui.parent.get()
         if opt:
             if opt == _('Save the current view as a web-page (*.htm)'):
-                self.view_as_htm()
+                self.save_view_as_htm()
             elif opt == _('Save the original article as a web-page (*.htm)'):
                 self.save_raw_as_htm()
             elif opt == _('Save the article as plain text in UTF-8 (*.txt)'):
-                self.view_as_txt()
+                self.save_view_as_txt()
             elif opt == _('Copy the code of the article to clipboard'):
                 self.copy_raw()
             elif opt == _('Copy the text of the article to clipboard'):
@@ -670,17 +671,19 @@ class SaveArticle:
             mes = _('Operation has been canceled by the user.')
             sh.objs.get_mes(f,mes,True).show_info()
 
-    def view_as_htm(self):
-        f = '[MClient] mclient.SaveArticle.view_as_htm'
+    def save_view_as_htm(self):
+        f = '[MClient] mclient.SaveArticle.save_view_as_htm'
         self.file = sh.com.show_save_dialog(self.webtypes)
         if self.file and lg.objs.get_request().htm:
             self.fix_ext('.htm')
+            code = lg.objs.request.htm
+            code = wb.WebPage(code).make_pretty()
             ''' We enable 'Rewrite' because the confirmation is already
                 built in the internal dialog.
             '''
             sh.WriteTextFile (file = self.file
                              ,Rewrite = True
-                             ).write(lg.objs.request.htm)
+                             ).write(code)
         else:
             sh.com.rep_empty(f)
 
@@ -704,8 +707,8 @@ class SaveArticle:
         else:
             sh.com.rep_empty(f)
 
-    def view_as_txt(self):
-        f = '[MClient] mclient.SaveArticle.view_as_txt'
+    def save_view_as_txt(self):
+        f = '[MClient] mclient.SaveArticle.save_view_as_txt'
         self.file = sh.com.show_save_dialog(self.txttypes)
         text = objs.get_webframe().get_text()
         if self.file and text:

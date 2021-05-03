@@ -31,7 +31,7 @@ class HTM:
                                           )
             if result:
                 color = result
-            c = '<i><font face="{}" size="{}" color="{}">{}</i></font>'
+            c = '<i><font face="{}" size="{}" color="{}">{}</font></i>'
             c = c.format (sh.lg.globs['str']['font_comments_family']
                          ,sh.lg.globs['int']['font_comments_size']
                          ,color
@@ -316,7 +316,7 @@ class HTM:
     
     def _run_comment(self):
         if self.block.type_ in ('comment','transc','phcount','phcom'):
-            c = '<i><font face="{}" size="{}" color="{}">{}</i></font>'
+            c = '<i><font face="{}" size="{}" color="{}">{}</font></i>'
             c = c.format (sh.lg.globs['str']['font_comments_family']
                          ,sh.lg.globs['int']['font_comments_size']
                          ,sh.lg.globs['str']['color_comments']
@@ -326,7 +326,7 @@ class HTM:
 
     def _run_correction(self):
         if self.block.type_ == 'correction':
-            c = '<i><font face="{}" size="{}" color="{}">{}</i></font>'
+            c = '<i><font face="{}" size="{}" color="{}">{}</font></i>'
             c = c.format (sh.lg.globs['str']['font_comments_family']
                          ,sh.lg.globs['int']['font_comments_size']
                          ,'green'
@@ -339,63 +339,47 @@ class HTM:
             this module instead.
         '''
         self.output = io.StringIO()
-        self.output.write('<html>\n')
-        self.output.write('\t<body>\n\t\t<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">')
+        self.output.write('<html><body><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">')
         if self.Printer:
             self.output.write(self.script)
-        #FIX: this CSS does not work
-        #self.output.write('\n\t\t<style type="text/css">\n\t\t\t.line-separator{border-top: 2px dashed #4f94cd;}\n\t\t\t.indent{padding-bottom: 5px;}\n\t\t</style>')
-        if self.Printer:
-            self.output.write('\n\t\t<div id="printableArea">')
+            self.output.write('<div id="printableArea">')
         if self.blocks:
-            self.output.write('\n\t\t\t<table>\n\t\t<tr>')
+            self.output.write('<table>')
             if self.width and self.Reverse:
-                self.output.write('<td valign="top" col width="')
-                self.output.write(str(self.width))
-                self.output.write('">')
+                sub = '<col width="{}"/><tr><td valign="top">'
+                sub = sub.format(self.width)
+                self.output.write(sub)
             elif self.blocks and self.blocks[0].text \
             and self.blocks[0].type_ in ('dic','wform','transc'
                                         ,'speech','phdic'
                                         ):
-                self.output.write('<td align="center" valign="top">')
+                self.output.write('<tr><td align="center" valign="top">')
             else:
-                self.output.write('<td valign="top">')
+                self.output.write('<tr><td valign="top">')
             i = j = 0
             for self.block in self.blocks:
                 while self.block.i > i:
-                    self.output.write('</td></tr>\n\t\t<tr>')
                     cond1 = self.width and self.Reverse
                     cond2 = self.width \
                             and len(self.block.text) > self.maxsyms
+                    if cond1 or cond2:
+                        sub = '<col width="{}"/>'
+                    else:
+                        sub = ''
+                    self.output.write('</td></tr>{}<tr>'.format(sub))
                     if self.block.text \
                     and self.block.type_ in ('dic','wform','transc'
                                             ,'speech','phdic'
                                             ):
-                        base = '<td align="center" valign="top"'
+                        base = '<td align="center" valign="top">'
                     else:
-                        base = '<td valign="top"'
-                    if cond1 or cond2:
-                        self.output.write(base+' col width="')
-                        self.output.write(str(self.width))
-                        self.output.write('">')
-                    else:
-                        self.output.write(base+'>')
+                        base = '<td valign="top">'
+                    self.output.write(base)
                     i = self.block.i
                     j = 0
                 while self.block.j > j:
-                    self.output.write('</td>\n\t\t\t')
-                    # -1 because we define 'td' for the next column here
-                    cond1 = self.width and self.block.text
-                    cond2 = self.block.j > len(self.cols) - 1 \
-                            or self.Reverse
-                    cond3 = self.width \
-                            and len(self.block.text) > self.maxsyms
-                    if cond1 and cond2 or cond3:
-                        self.output.write('<td valign="top" col width="')
-                        self.output.write(str(self.width))
-                        self.output.write('">')
-                    else:
-                        self.output.write('<td valign="top">')
+                    self.output.write('</td>')
+                    self.output.write('<td valign="top">')
                     j += 1
                 if self.Reverse:
                     self.block.xi = self.block.j
@@ -410,7 +394,7 @@ class HTM:
                 self._run_comment()
                 self._run_user()
                 self._run_correction()
-            self.output.write('</td></tr>\n\t\t\t</table>\t')
+            self.output.write('</td></tr></table>')
         elif self.skipped:
             self.output.write('<h1>')
             mes = _('Nothing has been found (skipped dictionaries: {}).')
@@ -422,16 +406,9 @@ class HTM:
             self.output.write(_('Nothing has been found.'))
             self.output.write('</h1>')
         if self.Printer:
-            self.output.write('\n\t</div>')
-        self.output.write('\n</body>\n</html>')
+            self.output.write('</div>')
+        self.output.write('</meta></body></html>')
         self.htm = self.output.getvalue()
-        ''' #TODO: enhance algorithm, drop this; I tried to monitor j,
-            block.text, block.j, but they are all changing.
-        '''
-        self.htm = self.htm.replace ('<td valign="top" col width="%d"></td>' \
-                                    % self.width
-                                    ,'<td valign="top"></td>'
-                                    )
         self.output.close()
         return self.htm
 
