@@ -1,5 +1,5 @@
 (in development)
-* 
+* Fix a webpage generated in a current view
 
 6.9
 * Rewrite multitran.com parser, make it faster and more accurate
