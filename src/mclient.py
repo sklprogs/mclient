@@ -2266,7 +2266,7 @@ class WebFrame:
 
     # Go to the next page
     def move_page_down(self,event=None):
-        result = objs.get_blocksdb().get_sel(pos=self.pos)
+        result = objs.get_blocksdb().get_sel(self.pos)
         height = self.gui.get_height()
         if result and height:
             result = objs.get_blocksdb().get_page_down (bboy = result[6]
