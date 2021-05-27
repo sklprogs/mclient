@@ -4,6 +4,7 @@
 6.9.1
 * Fix a webpage generated in a current view
 * Delete the "Get short URL" block
+* Make the program smaller (enchant module is optional now)
 
 6.9
 * Rewrite multitran.com parser, make it faster and more accurate
