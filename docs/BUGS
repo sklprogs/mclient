@@ -2,11 +2,6 @@ mclient:
 - 
 
 multitrancom:
-- RU-EN, granular -> Фразы: unable to find "<"!
-- RU-EN, seasonal business -> Фразы: Delete "Ссылка на эту страницу"
-- RU-EN, minimum minimorum, ic engine, geotherm -> Фразы, голубь-вертун,
-  wildlife park, assertion -> Майкрософт, silo -> model/mesh, ML model:
-  trash in the end
 - RU-EN, icon: make_pretty fails
 - RU-CN: suggestions are provided for RU-EN
 - "Hello, handsome!": fix URL of "Hello, beautiful!"

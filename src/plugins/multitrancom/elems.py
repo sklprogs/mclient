@@ -255,10 +255,8 @@ class Elems:
         sh.com.rep_deleted(f,len(geds))
     
     def delete_trash_com(self):
-        ''' - Sometimes it's not enough to delete comment-only tail
-              since there might be no 'phdic' type which serves as
-              an indicator.
-            - Takes ~0.0023s for 'set' (EN-RU) on AMD E-300
+        ''' Sometimes it's not enough to delete comment-only tail since
+            there might be no 'phdic' type which serves as an indicator.
         '''
         f = '[MClient] plugins.multitrancom.elems.Elems.delete_trash_com'
         len_ = len(self.blocks)
@@ -266,6 +264,10 @@ class Elems:
                        if not (block.type_ == 'comment' \
                        and block.text in ('спросить в форуме'
                                          ,'ask in forum','<!--','-->'
+                                         ,'Ссылка на эту страницу'
+                                         ,'Get short URL'
+                                         ,' (у некоторых значений из тезауруса нет переводов в словаре)'
+                                         ,' (there may be no translations for some thesaurus entries in the bilingual dictionary)'
                                          )
                               )
                       ]
@@ -478,12 +480,15 @@ class Elems:
         ''' - Sometimes it's not enough to delete comment-only tail
               since there might be no 'phdic' type which serves as
               an indicator.
-            - Takes ~0.009s for 'set' (EN-RU) on AMD E-300
+            - Takes ~0.012s for 'set' (EN-RU) on AMD E-300
         '''
         ru = ('Добавить','|','Сообщить об ошибке','|'
+             ,'Ссылка на эту страницу','|'
              ,'Способы выбора языков'
              )
-        en = ('Add','|','Report an error','|','Language Selection Tips')
+        en = ('Add','|','Report an error','|','Get short URL','|'
+             ,'Language Selection Tips'
+             )
         texts = [block.text for block in self.blocks]
         self._delete_tail_links(sh.List(texts,ru).find())
         self._delete_tail_links(sh.List(texts,en).find())
@@ -714,8 +719,8 @@ class Elems:
             self.delete_empty()
             self.delete_semi()
             self.delete_numeration()
-            self.delete_trash_com()
             self.delete_tail_links()
+            self.delete_trash_com()
             self.delete_langs()
             # Reassign types
             self.set_phdic()
