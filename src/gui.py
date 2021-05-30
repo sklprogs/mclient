@@ -474,6 +474,12 @@ class WebFrame:
         self.icn_brw = sh.objs.pdir.add ('..','resources','buttons'
                                         ,'icon_36x36_open_in_browser.gif'
                                         )
+        self.icn_gr0 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_group_off.gif'
+                                        )
+        self.icn_gr1 = sh.objs.pdir.add ('..','resources','buttons'
+                                        ,'icon_36x36_group_on.gif'
+                                        )
         self.icn_ins = sh.objs.pdir.add ('..','resources','buttons'
                                         ,'icon_36x36_paste.gif'
                                         )
@@ -718,6 +724,13 @@ class WebFrame:
                                  ,hint = _('Toggle prioritizing')
                                  ,inactive = self.icn_pr0
                                  ,active = self.icn_pr1
+                                 )
+        # A button to group subjects
+        self.btn_grp = sh.Button (parent = self.frm_btn
+                                 ,text = _('Group')
+                                 ,hint = _('Group subjects')
+                                 ,inactive = self.icn_gr0
+                                 ,active = self.icn_gr1
                                  )
         # A button to toggle dictionary alphabetization
         self.btn_alp = sh.Button (parent = self.frm_btn
@@ -1846,6 +1859,6 @@ class Suggest:
 
 if __name__ == '__main__':
     sh.com.start()
-    #WebFrame().show()
-    Settings().show()
+    WebFrame().show()
+    #Settings().show()
     sh.com.end()
