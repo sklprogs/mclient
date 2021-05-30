@@ -61,6 +61,7 @@ class DefaultKeys(sh.DefaultKeys):
            ,'Autoswap'           :False
            ,'BlockDics'          :True
            ,'CaptureHotkey'      :True
+           ,'GroupDics'          :True
            ,'Iconify'            :True
            ,'PhraseCount'        :True
            ,'PrioritizeDics'     :True
@@ -131,6 +132,7 @@ class DefaultKeys(sh.DefaultKeys):
            ,'bind_swap_langs'             :'<Control-space>'
            ,'bind_toggle_alphabet'        :'<Alt-a>'
            ,'bind_toggle_block'           :'<Alt-b>'
+           ,'bind_toggle_grouping'        :'<Alt-g>'
            ,'bind_toggle_history'         :'<F4>'
            ,'bind_toggle_history_alt'     :'<Control-h>'
            ,'bind_toggle_priority'        :'<Alt-p>'
@@ -210,6 +212,10 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'CaptureHotkey'
         comment = _('[Autosave] Capture Ctrl-c-c and Ctrl-Ins-Ins system-wide')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'GroupDics'
+        comment = _('[Autosave] Group prioritized dictionaries')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'Iconify'
@@ -494,6 +500,10 @@ class CreateConfig(sh.CreateConfig):
         
         key = 'bind_toggle_block'
         comment = _('Toggle blacklisting')
+        self.add_key(section,section_abbr,key,comment)
+        
+        key = 'bind_toggle_grouping'
+        comment = _('Toggle grouping')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'bind_toggle_history'
@@ -1088,6 +1098,9 @@ class Welcome:
         hint41 = _('Copy the nominative case')
         hotkey41 = sh.lg.globs['str']['bind_copy_nominative']
         
+        hint42 = _('Toggle grouping')
+        hotkey42 = sh.lg.globs['str']['bind_toggle_grouping']
+        
         self.gen_row(hint1,hotkey1,hint2,hotkey2)
         self.gen_row(hint34,hotkey34,hint35,hotkey35)
         self.gen_row(hint36,hotkey36,hint37,hotkey37)
@@ -1108,7 +1121,7 @@ class Welcome:
         self.gen_row(hint28,hotkey28,hint29,hotkey29)
         self.gen_row(hint30,hotkey30,hint31,hotkey31)
         self.gen_row(hint32,hotkey32,hint33,hotkey33)
-        self.gen_row(hint41,hotkey41,'','')
+        self.gen_row(hint41,hotkey41,hint42,hotkey42)
         
         self.istr.write('</font>')
         self.istr.write('</table>')
