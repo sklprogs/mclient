@@ -2811,8 +2811,29 @@ SUBJECTS = [['Авиация'
 
 class Groups:
     
-    def get(self,subject):
-        f = '[MClient] plugins.multitrancom.groups.Groups.get'
+    def __init__(self):
+        self.lst = []
+        self.majors = []
+    
+    def get_majors(self):
+        if not self.majors:
+            for group in SUBJECTS:
+                try:
+                    self.majors.append(group[0])
+                except IndexError:
+                    mes = _('Wrong input data!')
+                    sh.objs.get_mes(f,mes).show_warning()
+        return self.majors
+    
+    def get_list(self):
+        if not self.lst:
+            for group in SUBJECTS:
+                for subject in group:
+                    self.lst.append(subject)
+        return self.lst
+    
+    def get_group(self,subject):
+        f = '[MClient] plugins.multitrancom.groups.Groups.get_group'
         if subject:
             for group in SUBJECTS:
                 if subject in group:
@@ -2826,6 +2847,6 @@ if __name__ == '__main__':
     sh.com.start()
     timer = sh.Timer(f)
     timer.start()
-    print(Groups().get('Wood processing'))
+    print(Groups().get_group('Wood processing'))
     timer.end()
     sh.com.end()
