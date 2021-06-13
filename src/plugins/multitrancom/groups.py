@@ -2822,7 +2822,7 @@ class Groups:
 
 
 if __name__ == '__main__':
-    f = '[MClient] plugins.multitrancom.groups.__main__'
+    f = '__main__'
     sh.com.start()
     timer = sh.Timer(f)
     timer.start()
