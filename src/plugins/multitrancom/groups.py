@@ -4,15 +4,18 @@
 from skl_shared.localize import _
 import skl_shared.shared as sh
 
-''' We need to log in to multitran.com, so the structure is hardcoded.
-    Select an article, click 'Add', open source code, copy the value of
-    'var MajorToMinor=' and use 'utils.Subjects' to get the final
-    structure. Searching such structure is very fast so we can combine
-    subjects both in English and Russian.
+''' - We need to log in to multitran.com, so the structure is hardcoded.
+      Select an article, click 'Add', open source code, copy the value
+      of 'var MajorToMinor=' and use 'utils.Subjects' to get the final
+      structure. Searching such structure is very fast so we can combine
+      subjects both in English and Russian.
+    - Misspelings at multitran.com:
+      'Аэропорты и управление водзушным движением'
 '''
 SUBJECTS = [['Авиация'
             ,'Авиационная медицина'
             ,'Аэропорты и управление водзушным движением'
+            ,'Аэропорты и управление воздушным движением'
             ,'Аэрофотосъемка и топография'
             ,'Вертолёты'
             ,'Военная авиация'
@@ -2840,6 +2843,21 @@ class Groups:
                     return group
         else:
             sh.com.rep_empty(f)
+
+
+
+class Objects:
+    
+    def __init__(self):
+        self.groups = None
+    
+    def get_groups(self):
+        if self.groups is None:
+            self.groups = Groups()
+        return self.groups
+
+
+objs = Objects()
 
 
 if __name__ == '__main__':

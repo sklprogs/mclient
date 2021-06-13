@@ -7,6 +7,7 @@ from skl_shared.localize import _
 import plugins.multitrandem.get as gt
 import plugins.multitrandem.tags as tg
 import plugins.multitrandem.elems as el
+import plugins.multitrandem.groups as gr
 
 
 
@@ -26,6 +27,15 @@ class Plugin:
         self.Debug = Debug
         self.maxrow = maxrow
         self.maxrows = maxrows
+    
+    def get_subjects(self):
+        return gr.objs.get_groups().get_list()
+    
+    def get_group(self,subject=''):
+        return gr.objs.get_groups().get_group(subject)
+    
+    def get_majors(self):
+        return gr.objs.get_groups().get_majors()
     
     def get_search(self):
         return self.search

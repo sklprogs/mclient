@@ -6,7 +6,7 @@ import skl_shared.shared as sh
 from skl_shared.localize import _
 
 PRODUCT = 'MClient'
-VERSION = '6.9.1'
+VERSION = '6.10'
 CURYEAR = 2021
 ICON = sh.objs.get_pdir().add('..','resources','icon_64x64_mclient.gif')
 
@@ -582,7 +582,7 @@ class WebFrame:
                                 ,side = 'left'
                                 ,ipady = 5
                                 )
-        self.draw_buttons()
+        self.set_buttons()
         self.cvs_prm.embed(obj=self.frm_btn)
         ''' #TODO: Updating idletasks will show the AllDic 'Please wait'
             message for too long, however, we need to update in order to
@@ -601,7 +601,7 @@ class WebFrame:
         # The scrollbar is set at the end for some reason
         self.cvs_prm.widget.xview_moveto(0)
 
-    def draw_buttons(self):
+    def set_buttons(self):
         ''' Create buttons
             Bindings are indicated here only to set hints. In order to
             set bindings, use 'self.bindings'.
@@ -708,14 +708,14 @@ class WebFrame:
         # A button to toggle dictionary blocking
         self.btn_blk = sh.Button (parent = self.frm_btn
                                  ,text = _('Blacklist')
-                                 ,hint = _('Toggle the blacklist')
+                                 ,hint = _('Configure blacklisting')
                                  ,inactive = self.icn_bl0
                                  ,active = self.icn_bl1
                                  )
         # A button to toggle dictionary prioritization
         self.btn_pri = sh.Button (parent = self.frm_btn
                                  ,text = _('Prioritize')
-                                 ,hint = _('Toggle prioritizing')
+                                 ,hint = _('Configure prioritization')
                                  ,inactive = self.icn_pr0
                                  ,active = self.icn_pr1
                                  )

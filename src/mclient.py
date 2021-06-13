@@ -14,6 +14,7 @@ import gui as gi
 import cells as cl
 import mkhtml as mh
 import db
+import priorities.controller as pr
 
 
 if __name__ == '__main__':
@@ -438,8 +439,14 @@ class Objects:
         self.webframe = self.blocksdb = self.about = self.settings \
                       = self.search = self.symbols = self.save \
                       = self.history = self.suggest = self.parties \
-                      = self.webframe_ui = self.settings_ui = None
+                      = self.webframe_ui = self.settings_ui \
+                      = self.priorities = None
 
+    def get_priorities(self):
+        if self.priorities is None:
+            self.priorities = pr.Priorities(func_group=lg.objs.get_plugins().get_group)
+        return self.priorities
+    
     def get_parties(self):
         if self.parties is None:
             self.parties = ThirdParties()
@@ -1738,7 +1745,7 @@ class WebFrame:
         self.gui.btn_hst.action = self.toggle_history
         self.gui.btn_ins.action = self.paste_search_field
         self.gui.btn_nxt.action = self.go_forward
-        self.gui.btn_pri.action = self.toggle_priority
+        self.gui.btn_pri.action = self.edit_priorities
         self.gui.btn_prn.action = self.print
         self.gui.btn_prv.action = self.go_back
         self.gui.btn_rld.action = self.reload
@@ -2553,6 +2560,26 @@ class WebFrame:
         objs.get_blocksdb().delete_bookmarks()
         self.load_article()
 
+    def edit_priorities(self,event=None):
+        f = '[MClient] mclient.WebFrame.edit_priorities'
+        old = lg.objs.get_order().priorlst
+        objs.get_priorities().reset (lst1 = old
+                                    ,lst2 = lg.objs.get_plugins().get_subjects()
+                                    ,lst3 = objs.get_blocksdb().get_dics()
+                                    ,majors = lg.objs.plugins.get_majors()
+                                    )
+        objs.priorities.set_checkbox(sh.lg.globs['bool']['PrioritizeDics'])
+        objs.priorities.show()
+        sh.lg.globs['bool']['PrioritizeDics'] = objs.priorities.get_checkbox()
+        new = objs.priorities.get1()
+        if old == new:
+            sh.com.rep_lazy(f)
+        else:
+            #TODO: write priorities
+            lg.objs.order.priorlst = new
+            objs.get_blocksdb().delete_bookmarks()
+            self.load_article()
+    
     def toggle_priority(self,event=None):
         f = '[MClient] mclient.WebFrame.toggle_priority'
         if sh.lg.globs['bool']['PrioritizeDics']:

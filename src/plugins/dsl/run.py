@@ -7,6 +7,7 @@ import plugins.dsl.get as gt
 import plugins.dsl.tags as tg
 import plugins.dsl.elems as el
 import plugins.dsl.cleanup as cu
+import plugins.dsl.groups as gr
 
 
 class Plugin:
@@ -29,6 +30,15 @@ class Plugin:
         self.text = ''
         self.htm = ''
         self.search = ''
+    
+    def get_subjects(self):
+        return gr.objs.get_groups().get_list()
+    
+    def get_group(self,subject=''):
+        return gr.objs.get_groups().get_group(subject)
+    
+    def get_majors(self):
+        return gr.objs.get_groups().get_majors()
     
     def get_search(self):
         return self.search

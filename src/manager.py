@@ -39,6 +39,30 @@ class Plugins:
         self.sdplugin = None
         self.source = sh.lg.globs['str']['source']
     
+    def get_subjects(self):
+        f = '[MClient] manager.Plugins.get_subjects'
+        if self.plugin:
+            return self.plugin.get_subjects()
+        else:
+            sh.com.rep_empty(f)
+        return []
+    
+    def get_group(self,subject=''):
+        f = '[MClient] manager.Plugins.get_group'
+        if self.plugin:
+            return self.plugin.get_group(subject)
+        else:
+            sh.com.rep_empty(f)
+        return []
+    
+    def get_majors(self):
+        f = '[MClient] manager.Plugins.get_majors'
+        if self.plugin:
+            return self.plugin.get_majors()
+        else:
+            sh.com.rep_empty(f)
+        return []
+    
     def get_search(self):
         f = '[MClient] manager.Plugins.get_search'
         if self.plugin:
