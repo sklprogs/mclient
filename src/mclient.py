@@ -58,7 +58,6 @@ class ExportSettingsUI:
         sh.lg.globs['bool']['Autocompletion'] = objs.settings_ui.cbx_no11.get()
         sh.lg.globs['bool']['Autoswap'] = objs.settings_ui.cbx_no12.get()
         sh.lg.globs['bool']['PhraseCount'] = objs.settings_ui.cbx_no13.get()
-        sh.lg.globs['bool']['GroupDics'] = objs.settings_ui.cbx_no14.get()
     
     def run(self):
         f = '[MClient] mclient.ExportSettingsUI.run'
@@ -76,20 +75,6 @@ class Commands:
     ''' #NOTE: DB is in controller (not in logic), so DB-related code
         is here too.
     '''
-    def get_grouped(self):
-        f = '[MClient] mclient.Commands.get_grouped'
-        prioritized = objs.get_blocksdb().get_prioritized()
-        if prioritized:
-            prioritized = ', '.join(prioritized)
-            prioritized = prioritized.split(', ')
-            prioritized = set(prioritized)
-            #cur
-            mes = '; '.join(prioritized)
-            sh.objs.get_mes(f,mes,True).show_debug()
-            return prioritized
-        else:
-            return []
-    
     def export_style(self):
         f = '[MClient] mclient.Commands.export_style'
         ''' Do not use 'gettext' to name internal types - this will make
@@ -208,7 +193,6 @@ class UpdateSettingsUI:
         self.gui.cbx_no11.set(sh.lg.globs['bool']['Autocompletion'])
         self.gui.cbx_no12.set(sh.lg.globs['bool']['Autoswap'])
         self.gui.cbx_no13.set(sh.lg.globs['bool']['PhraseCount'])
-        self.gui.cbx_no14.set(sh.lg.globs['bool']['GroupDics'])
     
     def run(self):
         self.update_style_area()
@@ -221,29 +205,6 @@ class UpdateWebFrameUI:
     
     def __init__(self):
         self.gui = objs.get_webframe_ui()
-    
-    def _update_grouped(self):
-        mes = [_('Subject grouping')]
-        grouped = com.get_grouped()
-        if sh.lg.globs['bool']['GroupDics'] and grouped \
-        and not lg.objs.request.SpecialPage:
-            self.gui.btn_grp.activate()
-        else:
-            self.gui.btn_grp.inactivate()
-        if sh.lg.globs['bool']['GroupDics']:
-            mes.append(_('Status: ON'))
-        else:
-            mes.append(_('Status: OFF'))
-        if lg.objs.request.SpecialPage:
-            sub = _('This page is not supported')
-        elif grouped:
-            sub = _('{} subjects were grouped')
-            sub = sub.format(len(grouped))
-        else:
-            sub = _('Nothing to group')
-        mes.append(sub)
-        self.gui.btn_grp.hint = '\n'.join(mes)
-        self.gui.btn_grp.set_hint()
     
     def restore(self):
         ''' Set widget values to those autosave values that were not
@@ -392,7 +353,6 @@ class UpdateWebFrameUI:
             self._update_go_next()
             self._update_block()
             self._update_prioritization()
-            self._update_grouped()
         else:
             sh.com.rep_lazy(f)
         self._update_global_hotkey()
@@ -1023,20 +983,6 @@ class WebFrame:
         self.gui = gi.WebFrame()
         self.set_bindings()
     
-    def toggle_grouping(self,event=None):
-        f = '[MClient] mclient.WebFrame.toggle_grouping'
-        if sh.lg.globs['bool']['GroupDics']:
-            sh.lg.globs['bool']['GroupDics'] = False
-            #cur
-            objs.get_blocksdb().unprioritize()
-        else:
-            sh.lg.globs['bool']['GroupDics'] = True
-            if not lg.objs.get_order().prioritize:
-                mes = _('No dictionaries have been provided for prioritizing!')
-                sh.objs.get_mes(f,mes).show_warning()
-        objs.get_blocksdb().delete_bookmarks()
-        self.load_article()
-    
     def debug_settings(self):
         # Use 'import debug_gui as gi' instead of 'import gui as gi'
         f = '[MClient] mclient.WebFrame.debug_settings'
@@ -1594,10 +1540,6 @@ class WebFrame:
                     ,bindings = sh.lg.globs['str']['bind_toggle_priority']
                     ,action = self.toggle_priority
                     )
-        sh.com.bind (obj = self.gui.obj
-                    ,bindings = sh.lg.globs['str']['bind_toggle_grouping']
-                    ,action = self.toggle_grouping
-                    )
         sh.com.bind (obj = self.gui.btn_hst
                     ,bindings = '<ButtonRelease-3>'
                     ,action = self.clear_history
@@ -1733,13 +1675,12 @@ class WebFrame:
                                     )
         self.gui.btn_clr.bindings = sh.lg.globs['str']['bind_clear_search_field']
         self.gui.btn_def.bindings = sh.lg.globs['str']['bind_define']
-        self.gui.btn_grp.bindings = sh.lg.globs['str']['bind_toggle_grouping']
         self.gui.btn_nxt.bindings = sh.lg.globs['str']['bind_go_forward']
         self.gui.btn_ins.bindings = '<Control-v>'
-        self.gui.btn_pri.bindings = sh.lg.globs['str']['bind_toggle_priority']
-        self.gui.btn_prn.bindings = sh.lg.globs['str']['bind_print']
         self.gui.btn_prv.bindings = sh.lg.globs['str']['bind_go_back']
+        self.gui.btn_prn.bindings = sh.lg.globs['str']['bind_print']
         self.gui.btn_qit.bindings = sh.lg.globs['str']['bind_quit']
+        self.gui.btn_pri.bindings = sh.lg.globs['str']['bind_toggle_priority']
         self.gui.btn_rld.bindings = (sh.lg.globs['str']['bind_reload_article']
                                     ,sh.lg.globs['str']['bind_reload_article_alt']
                                     )
@@ -1794,7 +1735,6 @@ class WebFrame:
         self.gui.btn_cap.action = self.watch_clipboard
         self.gui.btn_clr.action = self.clear_search_field
         self.gui.btn_def.action = lambda x:self.define(Selected=False)
-        self.gui.btn_grp.action = self.toggle_grouping
         self.gui.btn_hst.action = self.toggle_history
         self.gui.btn_ins.action = self.paste_search_field
         self.gui.btn_nxt.action = self.go_forward

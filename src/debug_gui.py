@@ -170,12 +170,10 @@ class WebFrame(mg.WebFrame,Debug):
         self.add_widget('opt_lg1',self.opt_lg1.choice)
         self.add_widget('opt_lg2',self.opt_lg2.choice)
         self.add_widget('opt_col',self.opt_col.choice)
-        self.add_widget('btn_alp',self.btn_alp.Status)
         self.add_widget('btn_blk',self.btn_blk.Status)
-        self.add_widget('btn_cap',self.btn_cap.Status)
-        self.add_widget('btn_grp',self.btn_grp.Status)
         self.add_widget('btn_pri',self.btn_pri.Status)
-
+        self.add_widget('btn_alp',self.btn_alp.Status)
+        self.add_widget('btn_cap',self.btn_cap.Status)
 
 
 if __name__ == '__main__':
