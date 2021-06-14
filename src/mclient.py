@@ -76,6 +76,33 @@ class Commands:
     ''' #NOTE: DB is in controller (not in logic), so DB-related code
         is here too.
     '''
+    def get_dics(self,Block=False,Phrases=False):
+        f = '[MClient] mclient.Commands.get_dics'
+        dics = objs.get_blocksdb().get_dics(Block)
+        if dics:
+            dics = [item[0] for item in dics]
+            new_dics = []
+            for dic in dics:
+                items = dic.split(', ')
+                new_dics += items
+            new_dics = [item.strip() for item in new_dics \
+                        if item.strip()
+                       ]
+            new_dics = sorted(set(new_dics))
+            if not Phrases:
+                phdic = objs.blocksdb.get_phdic()
+                if phdic:
+                    try:
+                        new_dics.remove(phdic[1])
+                    except ValueError:
+                        mes = _('Wrong input data: "{}"!')
+                        mes = mes.format(phdic[1])
+                        sh.objs.get_mes(f,mes,True).show_warning()
+            return new_dics
+        else:
+            sh.com.rep_empty(f)
+        return []
+        
     def export_style(self):
         f = '[MClient] mclient.Commands.export_style'
         ''' Do not use 'gettext' to name internal types - this will make
@@ -2565,7 +2592,7 @@ class WebFrame:
         old = lg.objs.get_order().priorlst
         objs.get_priorities().reset (lst1 = old
                                     ,lst2 = lg.objs.get_plugins().get_subjects()
-                                    ,lst3 = objs.get_blocksdb().get_dics()
+                                    ,lst3 = com.get_dics()
                                     ,majors = lg.objs.plugins.get_majors()
                                     )
         objs.priorities.set_checkbox(sh.lg.globs['bool']['PrioritizeDics'])
