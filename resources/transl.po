@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mclient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-14 01:49+0300\n"
-"PO-Revision-Date: 2021-06-14 01:55+0300\n"
+"POT-Creation-Date: 2021-06-14 10:59+0300\n"
+"PO-Revision-Date: 2021-06-14 11:01+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -1335,7 +1335,7 @@ msgstr "глаг."
 #: mclient/src/logic.py:859 mclient/src/plugins/multitrandem/get.py:1946
 #: mclient/src/priorities/gui.py:273
 msgid "Article"
-msgstr "Артикль"
+msgstr "Статья"
 
 #: mclient/src/logic.py:860 mclient/src/plugins/multitrandem/get.py:1941
 msgid "Conjunction"
