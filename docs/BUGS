@@ -1,5 +1,6 @@
 mclient:
-- 
+- Prioritization: moving up is too slow
+- Prioritization: moving a group in an Article view throws an error
 
 multitrancom:
 - RU-EN, mannits: trash in the end
