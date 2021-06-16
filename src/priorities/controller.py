@@ -53,7 +53,7 @@ class Priorities:
             sel2 = self.get_sel2()
             if sel2:
                 for item in sel2:
-                    group = self.func_group()
+                    group = self.func_group(item)
                     if group:
                         items += group
                     else:
