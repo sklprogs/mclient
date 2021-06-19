@@ -698,13 +698,6 @@ class WebFrame:
                                  ,inactive = self.icn_set
                                  ,active = self.icn_set
                                  )
-        # A button to change the article view
-        self.btn_viw = sh.Button (parent = self.frm_btn
-                                 ,text = _('Toggle view')
-                                 ,hint = _('Toggle the article view mode')
-                                 ,inactive = self.icn_ver
-                                 ,active = self.icn_hor
-                                 )
         # A button to toggle dictionary blocking
         self.btn_blk = sh.Button (parent = self.frm_btn
                                  ,text = _('Blacklist')
@@ -725,6 +718,13 @@ class WebFrame:
                                  ,hint = _('Toggle alphabetizing')
                                  ,inactive = self.icn_al0
                                  ,active = self.icn_al1
+                                 )
+        # A button to change the article view
+        self.btn_viw = sh.Button (parent = self.frm_btn
+                                 ,text = _('Toggle view')
+                                 ,hint = _('Toggle the article view mode')
+                                 ,inactive = self.icn_ver
+                                 ,active = self.icn_hor
                                  )
         # A button to move to the previous article
         self.btn_prv = sh.Button (parent = self.frm_btn

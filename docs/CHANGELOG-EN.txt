@@ -1,5 +1,6 @@
 (in development)
 * Set up subject priorities in a separate window
+* Set the vertical view button after the alphabetization button
 
 6.9.1
 * Fix a webpage generated in a current view
