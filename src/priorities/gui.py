@@ -174,20 +174,20 @@ class Priorities:
                                   )
     
     def set_buttons(self):
-        self.btn_rht = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Unprioritize selection on the left')
-                                 ,inactive = icn_rht
-                                 ,active = icn_rht
-                                 ,text = '→'
-                                 ,side = 'top'
-                                 ,expand = 0
-                                 ,hdir = 'bottom'
-                                 )
         self.btn_lft = sh.Button (parent = self.frm_cnt
                                  ,hint = _('Prioritize selection on the right')
                                  ,inactive = icn_lft
                                  ,active = icn_lft
                                  ,text = '←'
+                                 ,side = 'top'
+                                 ,expand = 0
+                                 ,hdir = 'bottom'
+                                 )
+        self.btn_rht = sh.Button (parent = self.frm_cnt
+                                 ,hint = _('Unprioritize selection on the left')
+                                 ,inactive = icn_rht
+                                 ,active = icn_rht
+                                 ,text = '→'
                                  ,side = 'top'
                                  ,expand = 0
                                  ,hdir = 'bottom'
