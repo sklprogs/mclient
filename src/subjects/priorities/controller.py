@@ -39,7 +39,7 @@ class Priorities:
         self.colorize2()
     
     def _get_index(self,items,item):
-        f = '[MClient] priorities.controller.Priorities._get_index'
+        f = '[MClient] subjects.priorities.controller.Priorities._get_index'
         try:
             return items.index(item)
         except ValueError:
@@ -47,7 +47,7 @@ class Priorities:
             sh.objs.get_mes(f,mes).show_error()
     
     def unprioritize_group(self,event=None):
-        f = '[MClient] priorities.controller.Priorities.unprioritize_group'
+        f = '[MClient] subjects.priorities.controller.Priorities.unprioritize_group'
         if self.func_group:
             items = []
             sel1 = self.get_sel1()
@@ -81,7 +81,7 @@ class Priorities:
             sh.objs.get_mes(f,mes,True).show_error()
     
     def prioritize_group(self,event=None):
-        f = '[MClient] priorities.controller.Priorities.prioritize_group'
+        f = '[MClient] subjects.priorities.controller.Priorities.prioritize_group'
         if self.func_group:
             items = []
             sel2 = self.get_sel2()
@@ -115,7 +115,7 @@ class Priorities:
             sh.objs.get_mes(f,mes,True).show_error()
     
     def _get_cuts1(self):
-        f = '[MClient] priorities.controller.Priorities._get_cuts1'
+        f = '[MClient] subjects.priorities.controller.Priorities._get_cuts1'
         indexes = self.get_gui().get_index_mult1()
         if indexes:
             cutsi = sh.List(indexes).split_by_gaps()
@@ -139,7 +139,7 @@ class Priorities:
             sh.com.rep_lazy(f)
     
     def move_top(self,event=None):
-        f = '[MClient] priorities.controller.Priorities.move_top'
+        f = '[MClient] subjects.priorities.controller.Priorities.move_top'
         result = self._get_cuts1()
         if result:
             cuts, cutsi = result[0], result[1]
@@ -157,7 +157,7 @@ class Priorities:
             sh.com.rep_empty(f)
     
     def select_mult1(self,indexes):
-        f = '[MClient] priorities.controller.Priorities.select_mult1'
+        f = '[MClient] subjects.priorities.controller.Priorities.select_mult1'
         if indexes:
             try:
                 self.get_gui().select_mult1(indexes)
@@ -168,7 +168,7 @@ class Priorities:
             sh.com.rep_empty(f)
     
     def select_mult2(self,indexes):
-        f = '[MClient] priorities.controller.Priorities.select_mult2'
+        f = '[MClient] subjects.priorities.controller.Priorities.select_mult2'
         if indexes:
             try:
                 self.get_gui().select_mult2(indexes)
@@ -211,7 +211,7 @@ class Priorities:
         return self.get_gui().get2()
     
     def reset(self,lst1=[],lst2=[],lst3=[],majors=[]):
-        f = '[MClient] priorities.controller.Priorities.reset'
+        f = '[MClient] subjects.priorities.controller.Priorities.reset'
         # Convert tuples to lists at input in order to modify them
         if lst1:
             self.lst1 = list(lst1)
@@ -251,7 +251,7 @@ class Priorities:
         self.fill()
     
     def move_bottom(self,event=None):
-        f = '[MClient] priorities.controller.Priorities.move_bottom'
+        f = '[MClient] subjects.priorities.controller.Priorities.move_bottom'
         result = self._get_cuts1()
         if result:
             cuts, cutsi = result[0], result[1]
@@ -269,7 +269,7 @@ class Priorities:
             sh.com.rep_empty(f)
     
     def increase(self,event=None):
-        f = '[MClient] priorities.controller.Priorities.increase'
+        f = '[MClient] subjects.priorities.controller.Priorities.increase'
         result = self._get_cuts1()
         if result:
             cuts, cutsi = result[0], result[1]
@@ -293,7 +293,7 @@ class Priorities:
             sh.com.rep_empty(f)
     
     def decrease(self,event=None):
-        f = '[MClient] priorities.controller.Priorities.decrease'
+        f = '[MClient] subjects.priorities.controller.Priorities.decrease'
         result = self._get_cuts1()
         if result:
             cuts, cutsi = result[0], result[1]
@@ -313,7 +313,7 @@ class Priorities:
             sh.com.rep_empty(f)
     
     def prioritize(self,event=None):
-        f = '[MClient] priorities.controller.Priorities.prioritize'
+        f = '[MClient] subjects.priorities.controller.Priorities.prioritize'
         sel2 = self.get_sel2()
         if sel2:
             sel2 = [item for item in sel2 if not item in self.lst1]
@@ -330,7 +330,7 @@ class Priorities:
             sh.com.rep_empty(f)
     
     def unprioritize(self,event=None):
-        f = '[MClient] priorities.controller.Priorities.unprioritize'
+        f = '[MClient] subjects.priorities.controller.Priorities.unprioritize'
         sel1 = self.get_sel1()
         if sel1:
             add = [item for item in sel1 if not item in self.lst2]
@@ -353,7 +353,7 @@ class Priorities:
         self.get_gui().close()
     
     def set_bindings(self):
-        f = '[MClient] priorities.controller.Priorities.set_bindings'
+        f = '[MClient] subjects.priorities.controller.Priorities.set_bindings'
         if self.gui is None:
             sh.com.rep_empty(f)
             return

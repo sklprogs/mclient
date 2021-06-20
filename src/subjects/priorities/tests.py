@@ -40,7 +40,7 @@ class External:
 
 
 if __name__ == '__main__':
-    f = '[MClient] priorities.tests.External.__main__'
+    f = '[MClient] subjects.priorities.tests.External.__main__'
     sh.com.start()
     iext = External()
     iprior = ct.Priorities (lst1 = iext.get_priorities()

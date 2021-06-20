@@ -14,7 +14,7 @@ import gui as gi
 import cells as cl
 import mkhtml as mh
 import db
-import priorities.controller as pr
+import subjects.priorities.controller as pr
 
 
 if __name__ == '__main__':
