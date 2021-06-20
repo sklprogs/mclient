@@ -46,8 +46,42 @@ class Priorities:
             mes = _('Wrong input data: "{}"!').format(item)
             sh.objs.get_mes(f,mes).show_error()
     
-    def move_group(self,event=None):
-        f = '[MClient] priorities.controller.Priorities.move_group'
+    def unprioritize_group(self,event=None):
+        f = '[MClient] priorities.controller.Priorities.unprioritize_group'
+        if self.func_group:
+            items = []
+            sel1 = self.get_sel1()
+            if sel1:
+                for item in sel1:
+                    group = self.func_group(item)
+                    if group:
+                        items += group
+                    else:
+                        sh.com.rep_empty(f)
+                Add = False
+                for item in items:
+                    if not item in self.lst1:
+                        Add = True
+                        self.lst1.append(item)
+                if Add:
+                    self.gui.reset1(self.lst1)
+                indexes = []
+                for item in items:
+                    index_ = self._get_index(self.lst1,item)
+                    if index_:
+                        indexes.append(index_)
+                    else:
+                        sh.com.rep_empty(f)
+                self.select_mult1(indexes)
+                self.unprioritize()
+            else:
+                sh.com.rep_lazy(f)
+        else:
+            mes = _('An external function is not set!')
+            sh.objs.get_mes(f,mes,True).show_error()
+    
+    def prioritize_group(self,event=None):
+        f = '[MClient] priorities.controller.Priorities.prioritize_group'
         if self.func_group:
             items = []
             sel2 = self.get_sel2()
@@ -333,7 +367,8 @@ class Priorities:
         self.gui.btn_clr.action = self.clear_sel
         self.gui.btn_cls.action = self.close
         self.gui.btn_dwn.action = self.decrease
-        self.gui.btn_grp.action = self.move_group
+        self.gui.btn_grp.action = self.prioritize_group
+        self.gui.btn_gru.action = self.unprioritize_group
         self.gui.btn_lft.action = self.prioritize
         self.gui.btn_rht.action = self.unprioritize
         self.gui.btn_rld.action = self.reload

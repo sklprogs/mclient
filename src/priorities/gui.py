@@ -17,6 +17,9 @@ icn_dwn = sh.objs.pdir.add ('..','resources','buttons'
 icn_grp = sh.objs.pdir.add ('..','resources','buttons'
                            ,'icon_36x36_double_back.gif'
                            )
+icn_gru = sh.objs.pdir.add ('..','resources','buttons'
+                           ,'icon_36x36_double_forward.gif'
+                           )
 icn_lft = sh.objs.pdir.add ('..','resources','buttons'
                            ,'icon_36x36_go_back.gif'
                            )
@@ -201,6 +204,15 @@ class Priorities:
                                  ,expand = 0
                                  ,hdir = 'bottom'
                                  )
+        self.btn_gru = sh.Button (parent = self.frm_cnt
+                                 ,hint = _('Unprioritize related subjects')
+                                 ,inactive = icn_gru
+                                 ,active = icn_gru
+                                 ,text = '⇒'
+                                 ,side = 'top'
+                                 ,expand = 0
+                                 ,hdir = 'bottom'
+                                 )
         self.btn_up1 = sh.Button (parent = self.frm_cnt
                                  ,hint = _('Increase priority')
                                  ,inactive = icn_up1
@@ -288,7 +300,7 @@ class Priorities:
                              ,title = _('Subject prioritization')
                              )
         self.widget = self.parent.widget
-        sh.Geometry(self.parent).set('800x400')
+        sh.Geometry(self.parent).set('800x450')
         self.set_widgets()
         self.set_scrolly()
         self.lbx_lft.focus()
