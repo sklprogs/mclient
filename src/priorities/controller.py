@@ -58,6 +58,13 @@ class Priorities:
                         items += group
                     else:
                         sh.com.rep_empty(f)
+                Add = False
+                for item in items:
+                    if not item in self.lst2:
+                        Add = True
+                        self.lst2.append(item)
+                if Add:
+                    self.gui.reset2(self.lst2)
                 indexes = []
                 for item in items:
                     index_ = self._get_index(self.lst2,item)
