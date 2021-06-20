@@ -151,7 +151,7 @@ class Priorities:
                     count += 1
                     self.lst1.insert(0,item)
             moved = [i for i in range(count)]
-            self.fill()
+            self.get_gui().reset1(self.lst1)
             self.select_mult1(moved)
         else:
             sh.com.rep_empty(f)
@@ -236,6 +236,10 @@ class Priorities:
         self.set_bindings()
     
     def fill(self):
+        ''' #NOTE: Since a list of all subjects can be very long,
+            use this code only where necessary. Only affected panes
+            should be reset.
+        '''
         self.get_gui().reset1(self.lst1)
         self.gui.reset2(self.lst2)
         self.colorize2()
@@ -259,7 +263,7 @@ class Priorities:
             index2 = index1 + len(selection)
             self.lst1 += selection
             moved = [i for i in range(index1,index2)]
-            self.fill()
+            self.get_gui().reset1(self.lst1)
             self.select_mult1(moved)
         else:
             sh.com.rep_empty(f)
@@ -276,7 +280,7 @@ class Priorities:
                 paste = cuts[i][::-1]
                 for j in range(len(paste)):
                     self.lst1.insert(index_,paste[j])
-            self.fill()
+            self.get_gui().reset1(self.lst1)
             for cuti in cutsi:
                 moved = []
                 for index_ in cuti:
@@ -299,7 +303,7 @@ class Priorities:
                 paste = cuts[i][::-1]
                 for j in range(len(paste)):
                     self.lst1.insert(index_,paste[j])
-            self.fill()
+            self.get_gui().reset1(self.lst1)
             for cuti in cutsi:
                 moved = []
                 for index_ in cuti:
