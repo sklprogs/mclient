@@ -15,6 +15,7 @@ import cells as cl
 import mkhtml as mh
 import db
 import subjects.priorities.controller as pr
+import subjects.blacklist.controller as bl
 
 
 if __name__ == '__main__':
@@ -467,8 +468,13 @@ class Objects:
                       = self.search = self.symbols = self.save \
                       = self.history = self.suggest = self.parties \
                       = self.webframe_ui = self.settings_ui \
-                      = self.priorities = None
+                      = self.priorities = self.blacklist = None
 
+    def get_blacklist(self):
+        if self.blacklist is None:
+            self.blacklist = bl.Blacklist(func_group=lg.objs.get_plugins().get_group)
+        return self.blacklist
+    
     def get_priorities(self):
         if self.priorities is None:
             self.priorities = pr.Priorities(func_group=lg.objs.get_plugins().get_group)
@@ -1703,7 +1709,6 @@ class WebFrame:
                                 + hotkeys2
         self.gui.btn_abt.bindings = sh.lg.globs['str']['bind_show_about']
         self.gui.btn_alp.bindings = sh.lg.globs['str']['bind_toggle_alphabet']
-        self.gui.btn_blk.bindings = sh.lg.globs['str']['bind_toggle_block']
         self.gui.btn_brw.bindings = (sh.lg.globs['str']['bind_open_in_browser']
                                     ,sh.lg.globs['str']['bind_open_in_browser_alt']
                                     )
@@ -1714,7 +1719,6 @@ class WebFrame:
         self.gui.btn_prv.bindings = sh.lg.globs['str']['bind_go_back']
         self.gui.btn_prn.bindings = sh.lg.globs['str']['bind_print']
         self.gui.btn_qit.bindings = sh.lg.globs['str']['bind_quit']
-        self.gui.btn_pri.bindings = sh.lg.globs['str']['bind_toggle_priority']
         self.gui.btn_rld.bindings = (sh.lg.globs['str']['bind_reload_article']
                                     ,sh.lg.globs['str']['bind_reload_article_alt']
                                     )
@@ -1764,7 +1768,7 @@ class WebFrame:
         # Set controller actions
         self.gui.btn_abt.action = self.toggle_about
         self.gui.btn_alp.action = self.toggle_alphabet
-        self.gui.btn_blk.action = self.toggle_block
+        self.gui.btn_blk.action = self.edit_blacklist
         self.gui.btn_brw.action = self.open_in_browser
         self.gui.btn_cap.action = self.watch_clipboard
         self.gui.btn_clr.action = self.clear_search_field
@@ -2587,6 +2591,26 @@ class WebFrame:
         objs.get_blocksdb().delete_bookmarks()
         self.load_article()
 
+    def edit_blacklist(self,event=None):
+        f = '[MClient] mclient.WebFrame.edit_blacklist'
+        old = lg.objs.get_order().blacklst
+        objs.get_blacklist().reset (lst1 = old
+                                   ,lst2 = lg.objs.get_plugins().get_subjects()
+                                   ,lst3 = com.get_dics()
+                                   ,majors = lg.objs.plugins.get_majors()
+                                   )
+        objs.blacklist.set_checkbox(sh.lg.globs['bool']['BlockDics'])
+        objs.blacklist.show()
+        sh.lg.globs['bool']['BlockDics'] = objs.blacklist.get_checkbox()
+        new = objs.blacklist.get1()
+        if old == new:
+            sh.com.rep_lazy(f)
+        else:
+            #TODO: write blocked subjects
+            lg.objs.order.blacklst = new
+            objs.get_blocksdb().delete_bookmarks()
+            self.load_article()
+    
     def edit_priorities(self,event=None):
         f = '[MClient] mclient.WebFrame.edit_priorities'
         old = lg.objs.get_order().priorlst

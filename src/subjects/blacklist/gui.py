@@ -5,16 +5,10 @@ from skl_shared.localize import _
 import skl_shared.shared as sh
 
 ICON = sh.objs.get_pdir().add('..','resources','icon_64x64_mclient.gif')
-icn_btm = sh.objs.pdir.add ('..','resources','buttons'
-                           ,'icon_36x36_bottom.gif'
-                           )
 icn_clr = sh.objs.pdir.add ('..','resources','buttons'
                            ,'icon_36x36_clear_selection.gif'
                            )
-icn_dwn = sh.objs.pdir.add ('..','resources','buttons'
-                           ,'icon_36x36_down.gif'
-                           )
-icn_grp = sh.objs.pdir.add ('..','resources','buttons'
+icn_grb = sh.objs.pdir.add ('..','resources','buttons'
                            ,'icon_36x36_double_back.gif'
                            )
 icn_gru = sh.objs.pdir.add ('..','resources','buttons'
@@ -29,31 +23,25 @@ icn_rht = sh.objs.pdir.add ('..','resources','buttons'
 icn_rld = sh.objs.pdir.add ('..','resources','buttons'
                            ,'icon_36x36_reload.gif'
                            )
-icn_top = sh.objs.pdir.add ('..','resources','buttons'
-                           ,'icon_36x36_top.gif'
-                           )
-icn_up1 = sh.objs.pdir.add ('..','resources','buttons'
-                           ,'icon_36x36_up.gif'
-                           )
 
 
-class Priorities:
+class Blacklist:
     
     def __init__(self):
         self.set_gui()
     
     def get_checkbox(self):
-        return self.cbx_pri.get()
+        return self.cbx_blk.get()
     
     def set_checkbox(self,Active=False):
-        self.cbx_pri.set(Active)
+        self.cbx_blk.set(Active)
     
-    def set_prioritize(self):
-        self.cbx_pri = sh.CheckBox (parent = self.frm_bm2
+    def set_block(self):
+        self.cbx_blk = sh.CheckBox (parent = self.frm_bm2
                                    ,side = 'left'
                                    )
-        self.lbl_pri = sh.Label (parent = self.frm_bm2
-                                ,text = _('Prioritize subjects')
+        self.lbl_blk = sh.Label (parent = self.frm_bm2
+                                ,text = _('Block subjects')
                                 ,side = 'left'
                                 )
     
@@ -178,7 +166,7 @@ class Priorities:
     
     def set_buttons(self):
         self.btn_lft = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Priorities selection on the right')
+                                 ,hint = _('Block selection on the right')
                                  ,inactive = icn_lft
                                  ,active = icn_lft
                                  ,text = '←'
@@ -187,7 +175,7 @@ class Priorities:
                                  ,hdir = 'bottom'
                                  )
         self.btn_rht = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Unprioritize selection on the left')
+                                 ,hint = _('Unblock selection on the left')
                                  ,inactive = icn_rht
                                  ,active = icn_rht
                                  ,text = '→'
@@ -195,56 +183,20 @@ class Priorities:
                                  ,expand = 0
                                  ,hdir = 'bottom'
                                  )
-        self.btn_grp = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Priorities related subjects')
-                                 ,inactive = icn_grp
-                                 ,active = icn_grp
+        self.btn_grb = sh.Button (parent = self.frm_cnt
+                                 ,hint = _('Block related subjects')
+                                 ,inactive = icn_grb
+                                 ,active = icn_grb
                                  ,text = '⟸'
                                  ,side = 'top'
                                  ,expand = 0
                                  ,hdir = 'bottom'
                                  )
         self.btn_gru = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Unprioritize related subjects')
+                                 ,hint = _('Unblock related subjects')
                                  ,inactive = icn_gru
                                  ,active = icn_gru
                                  ,text = '⇒'
-                                 ,side = 'top'
-                                 ,expand = 0
-                                 ,hdir = 'bottom'
-                                 )
-        self.btn_up1 = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Increase priority')
-                                 ,inactive = icn_up1
-                                 ,active = icn_up1
-                                 ,text = '↑'
-                                 ,side = 'top'
-                                 ,expand = 0
-                                 ,hdir = 'bottom'
-                                 )
-        self.btn_dwn = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Decrease priority')
-                                 ,inactive = icn_dwn
-                                 ,active = icn_dwn
-                                 ,text = '↓'
-                                 ,side = 'top'
-                                 ,expand = 0
-                                 ,hdir = 'bottom'
-                                 )
-        self.btn_top = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Move to the top')
-                                 ,inactive = icn_top
-                                 ,active = icn_top
-                                 ,text = '↑↑'
-                                 ,side = 'top'
-                                 ,expand = 0
-                                 ,hdir = 'bottom'
-                                 )
-        self.btn_btm = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Move to the bottom')
-                                 ,inactive = icn_btm
-                                 ,active = icn_btm
-                                 ,text = '↓↓'
                                  ,side = 'top'
                                  ,expand = 0
                                  ,hdir = 'bottom'
@@ -293,11 +245,11 @@ class Priorities:
         self.set_frames()
         self.set_listboxes()
         self.set_buttons()
-        self.set_prioritize()
+        self.set_block()
     
     def set_gui(self):
         self.parent = sh.Top (icon = ICON
-                             ,title = _('Subject prioritization')
+                             ,title = _('Subject blocking')
                              )
         self.widget = self.parent.widget
         sh.Geometry(self.parent).set('800x450')
@@ -307,7 +259,7 @@ class Priorities:
 
 
 if __name__ == '__main__':
-    f = '[MClient] subjects.priorities.gui.__main__'
+    f = '[MClient] subjects.blacklist.gui.__main__'
     sh.com.start()
-    Priorities().show()
+    Blacklist().show()
     sh.com.end()
