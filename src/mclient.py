@@ -20,10 +20,10 @@ import subjects.blacklist.controller as bl
 
 if __name__ == '__main__':
     if sh.objs.get_os().is_win():
-        import kl_mod_win as kl_mod
+        import keylistener.windows as kl
         import pythoncom
     else:
-        import kl_mod_lin as kl_mod
+        import keylistener.linux as kl
 
 
 class ExportSettingsUI:
@@ -562,13 +562,13 @@ def call_app():
 # Capture Control-c-c
 def run_timed_update():
     lg.objs.get_request().MouseClicked = False
-    check = kl_mod.keylistener.check()
+    check = kl.keylistener.check()
     if check:
         if check == 1 and sh.lg.globs['bool']['CaptureHotkey']:
             # Prevent thread freezing in Windows newer than XP
             if sh.objs.get_os().is_win():
-                kl_mod.keylistener.cancel()
-                kl_mod.keylistener.restart()
+                kl.keylistener.cancel()
+                kl.keylistener.restart()
             lg.objs.request.MouseClicked = True
             new_clipboard = sh.Clipboard().paste()
             if new_clipboard:
@@ -3076,7 +3076,7 @@ if  __name__ == '__main__':
         objs.get_webframe().reset()
         objs.webframe.show()
         lg.objs.plugins.quit()
-        kl_mod.keylistener.cancel()
+        kl.keylistener.cancel()
     else:
         mes = _('Unable to continue due to an invalid configuration.')
         sh.objs.get_mes(f,mes).show_warning()
