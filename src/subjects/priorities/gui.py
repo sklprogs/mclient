@@ -178,7 +178,7 @@ class Priorities:
     
     def set_buttons(self):
         self.btn_lft = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Priorities selection on the right')
+                                 ,hint = _('Prioritize selection on the right')
                                  ,inactive = icn_lft
                                  ,active = icn_lft
                                  ,text = '←'
@@ -196,7 +196,7 @@ class Priorities:
                                  ,hdir = 'bottom'
                                  )
         self.btn_grp = sh.Button (parent = self.frm_cnt
-                                 ,hint = _('Priorities related subjects')
+                                 ,hint = _('Prioritize related subjects')
                                  ,inactive = icn_grp
                                  ,active = icn_grp
                                  ,text = '⟸'
