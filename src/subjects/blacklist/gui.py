@@ -233,8 +233,15 @@ class Blacklist:
                                  ,side = 'left'
                                  ,hdir = 'top'
                                  )
+        self.btn_mjr = sh.Button (parent = self.frm_bm3
+                                 ,text = _('Main')
+                                 ,hint = _('Show main subjects')
+                                 ,expand = 0
+                                 ,side = 'left'
+                                 ,hdir = 'top'
+                                 )
         self.btn_art = sh.Button (parent = self.frm_bm3
-                                 ,text = _('Article')
+                                 ,text = _('From the article')
                                  ,hint = _('Show subjects from the current article')
                                  ,expand = 0
                                  ,side = 'right'

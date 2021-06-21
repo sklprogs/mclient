@@ -12,6 +12,7 @@ class Blacklist:
     def __init__(self,lst1=[],lst2=[],lst3=[],majors=[],func_group=None):
         self.func_group = func_group
         self.gui = None
+        self.Colorize2 = True
         self.lst1 = []
         self.lst2 = []
         self.lst3 = []
@@ -29,14 +30,21 @@ class Blacklist:
         self.gui.set_checkbox(Active)
     
     def set_all(self,event=None):
+        self.Colorize2 = True
         self.lst2 = list(self.copy2)
         self.get_gui().reset2(self.lst2)
         self.colorize2()
     
     def set_article(self,event=None):
+        self.Colorize2 = True
         self.lst2 = list(self.copy3)
         self.get_gui().reset2(self.lst2)
         self.colorize2()
+    
+    def set_major(self,event=None):
+        self.Colorize2 = False
+        self.lst2 = list(self.majors)
+        self.get_gui().reset2(self.lst2)
     
     def _get_index(self,items,item):
         f = '[MClient] subjects.blacklist.controller.Blacklist._get_index'
@@ -166,9 +174,13 @@ class Blacklist:
                 self.gui.colorize1(i)
     
     def colorize2(self):
-        for i in range(len(self.lst2)):
-            if self.lst2[i] in self.majors:
-                self.gui.colorize2(i)
+        f = '[MClient] subjects.blacklist.controller.Blacklist.colorize2'
+        if self.Colorize2:
+            for i in range(len(self.lst2)):
+                if self.lst2[i] in self.majors:
+                    self.gui.colorize2(i)
+        else:
+            sh.com.rep_lazy(f)
     
     def clear_sel(self,event=None):
         self.clear_sel1()
@@ -227,6 +239,7 @@ class Blacklist:
         self.colorize2()
     
     def reload(self,event=None):
+        self.Colorize2 = True
         self.lst1 = list(self.copy1)
         self.lst2 = list(self.copy2)
         self.lst3 = list(self.copy3)
@@ -292,6 +305,7 @@ class Blacklist:
         self.gui.btn_grb.action = self.block_group
         self.gui.btn_gru.action = self.unblock_group
         self.gui.btn_lft.action = self.block
+        self.gui.btn_mjr.action = self.set_major
         self.gui.btn_rht.action = self.unblock
         self.gui.btn_rld.action = self.reload
         self.gui.widget.protocol("WM_DELETE_WINDOW",self.close)
