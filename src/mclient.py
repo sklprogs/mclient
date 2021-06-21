@@ -2593,8 +2593,9 @@ class WebFrame:
 
     def edit_blacklist(self,event=None):
         f = '[MClient] mclient.WebFrame.edit_blacklist'
-        old = lg.objs.get_order().blacklst
-        objs.get_blacklist().reset (lst1 = old
+        old_list = lg.objs.get_order().blacklst
+        old_key = sh.lg.globs['bool']['BlockDics']
+        objs.get_blacklist().reset (lst1 = old_list
                                    ,lst2 = lg.objs.get_plugins().get_subjects()
                                    ,lst3 = com.get_dics()
                                    ,majors = lg.objs.plugins.get_majors()
@@ -2602,19 +2603,21 @@ class WebFrame:
         objs.blacklist.set_checkbox(sh.lg.globs['bool']['BlockDics'])
         objs.blacklist.show()
         sh.lg.globs['bool']['BlockDics'] = objs.blacklist.get_checkbox()
-        new = objs.blacklist.get1()
-        if old == new:
+        new_list = objs.blacklist.get1()
+        if (old_list == new_list) \
+        and (old_key == sh.lg.globs['bool']['BlockDics']):
             sh.com.rep_lazy(f)
         else:
             #TODO: write blocked subjects
-            lg.objs.order.blacklst = new
+            lg.objs.order.blacklst = new_list
             objs.get_blocksdb().delete_bookmarks()
             self.load_article()
     
     def edit_priorities(self,event=None):
         f = '[MClient] mclient.WebFrame.edit_priorities'
-        old = lg.objs.get_order().priorlst
-        objs.get_priorities().reset (lst1 = old
+        old_list = lg.objs.get_order().priorlst
+        old_key = sh.lg.globs['bool']['PrioritizeDics']
+        objs.get_priorities().reset (lst1 = old_list
                                     ,lst2 = lg.objs.get_plugins().get_subjects()
                                     ,lst3 = com.get_dics()
                                     ,majors = lg.objs.plugins.get_majors()
@@ -2622,12 +2625,13 @@ class WebFrame:
         objs.priorities.set_checkbox(sh.lg.globs['bool']['PrioritizeDics'])
         objs.priorities.show()
         sh.lg.globs['bool']['PrioritizeDics'] = objs.priorities.get_checkbox()
-        new = objs.priorities.get1()
-        if old == new:
+        new_list = objs.priorities.get1()
+        if (old_list == new_list) \
+        and (old_key == sh.lg.globs['bool']['PrioritizeDics']):
             sh.com.rep_lazy(f)
         else:
             #TODO: write priorities
-            lg.objs.order.priorlst = new
+            lg.objs.order.priorlst = new_list
             objs.get_blocksdb().delete_bookmarks()
             self.load_article()
     
