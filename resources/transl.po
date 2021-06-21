@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-20 14:59+0300\n"
-"PO-Revision-Date: 2021-06-20 15:39+0300\n"
+"POT-Creation-Date: 2021-06-21 18:45+0300\n"
+"PO-Revision-Date: 2021-06-21 18:45+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -1227,8 +1227,8 @@ msgstr "АББРЕВИАТУРА"
 #: mclient/src/plugins/multitrandem/get.py:1828
 #: mclient/src/plugins/multitrandem/tags.py:168
 #: mclient/src/plugins/multitrandem/tests.py:190
-#: mclient/src/subjects/blacklist/controller.py:46
-#: mclient/src/subjects/priorities/controller.py:46 skl_shared/src/logic.py:605
+#: mclient/src/subjects/blacklist/controller.py:54
+#: mclient/src/subjects/priorities/controller.py:54 skl_shared/src/logic.py:605
 #: skl_shared/src/logic.py:633 skl_shared/src/logic.py:2322
 #: skl_shared/src/logic.py:2794 skl_shared/src/logic.py:4530
 #: skl_shared/src/logic.py:4690 skl_shared/src/logic.py:4724
@@ -1336,8 +1336,6 @@ msgid "v"
 msgstr "глаг."
 
 #: mclient/src/logic.py:859 mclient/src/plugins/multitrandem/get.py:1946
-#: mclient/src/subjects/blacklist/gui.py:237
-#: mclient/src/subjects/priorities/gui.py:285
 msgid "Article"
 msgstr "Статья"
 
@@ -1579,7 +1577,7 @@ msgstr "Эта страница не поддерживается"
 msgid "Vertical mode"
 msgstr "Вертикальный режим"
 
-#: mclient/src/mclient.py:300 mclient/src/subjects/priorities/gui.py:300
+#: mclient/src/mclient.py:300 mclient/src/subjects/priorities/gui.py:307
 msgid "Subject prioritization"
 msgstr "Приоритизация тематик"
 
@@ -1591,7 +1589,7 @@ msgstr "{} тематик упорядочено по приоритету"
 msgid "Nothing to prioritize"
 msgstr "Приоритизация не требуется"
 
-#: mclient/src/mclient.py:324 mclient/src/subjects/blacklist/gui.py:252
+#: mclient/src/mclient.py:324 mclient/src/subjects/blacklist/gui.py:259
 msgid "Subject blocking"
 msgstr "Блокировка тематик"
 
@@ -15482,17 +15480,17 @@ msgstr "Нет совпадений для \"{}\"!"
 msgid "Load Stardict dictionaries ({}/{})"
 msgstr "Загрузка словарей Stardict ({}/{})"
 
-#: mclient/src/subjects/blacklist/controller.py:80
-#: mclient/src/subjects/blacklist/controller.py:114
-#: mclient/src/subjects/priorities/controller.py:80
-#: mclient/src/subjects/priorities/controller.py:114
+#: mclient/src/subjects/blacklist/controller.py:88
+#: mclient/src/subjects/blacklist/controller.py:122
+#: mclient/src/subjects/priorities/controller.py:88
+#: mclient/src/subjects/priorities/controller.py:122
 msgid "An external function is not set!"
 msgstr "Внешняя функция не задана!"
 
-#: mclient/src/subjects/blacklist/controller.py:147
-#: mclient/src/subjects/blacklist/controller.py:158
-#: mclient/src/subjects/priorities/controller.py:165
-#: mclient/src/subjects/priorities/controller.py:176
+#: mclient/src/subjects/blacklist/controller.py:155
+#: mclient/src/subjects/blacklist/controller.py:166
+#: mclient/src/subjects/priorities/controller.py:173
+#: mclient/src/subjects/priorities/controller.py:184
 #: skl_shared/src/logic.py:2172 skl_shared/src/logic.py:2318
 #: skl_shared/src/logic.py:2843 skl_shared/src/logic.py:2869
 #: skl_shared/src/logic.py:2953 skl_shared/src/logic.py:3572
@@ -15556,8 +15554,23 @@ msgstr "Все"
 msgid "Show all subjects"
 msgstr "Показать все тематики"
 
+#: mclient/src/subjects/blacklist/gui.py:237
+#: mclient/src/subjects/priorities/gui.py:285
+msgid "Main"
+msgstr "Основные"
+
 #: mclient/src/subjects/blacklist/gui.py:238
 #: mclient/src/subjects/priorities/gui.py:286
+msgid "Show main subjects"
+msgstr "Показать основные тематики"
+
+#: mclient/src/subjects/blacklist/gui.py:244
+#: mclient/src/subjects/priorities/gui.py:292
+msgid "From the article"
+msgstr "Из статьи"
+
+#: mclient/src/subjects/blacklist/gui.py:245
+#: mclient/src/subjects/priorities/gui.py:293
 msgid "Show subjects from the current article"
 msgstr "Показать тематики из текущей статьи"
 
