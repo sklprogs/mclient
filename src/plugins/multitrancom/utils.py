@@ -355,7 +355,7 @@ class Pairs:
 
 
 
-class Topics:
+class Subjects:
     
     def __init__(self,url='https://www.multitran.com/m.exe?a=112&l1=1&l2=2'):
         self.set_values()
@@ -372,7 +372,7 @@ class Topics:
         self.run_tags()
         
     def get_htm(self):
-        f = '[MClient] plugins.multitrancom.utils.Topics.get_htm'
+        f = '[MClient] plugins.multitrancom.utils.Subjects.get_htm'
         if self.Success:
             self.htm = sh.Get (url = self.url
                               ,coding = 'utf-8'
@@ -386,7 +386,7 @@ class Topics:
             sh.com.cancel(f)
                           
     def run_tags(self):
-        f = '[MClient] plugins.multitrancom.utils.Topics.run_tags'
+        f = '[MClient] plugins.multitrancom.utils.Subjects.run_tags'
         if self.Success:
             tags = Tags (text = self.htm
                         ,search = 'href="/m.exe?a='
@@ -394,26 +394,29 @@ class Topics:
             tags.run()
             self.Success = tags.Success
             if self.Success:
-                tags.urls = [tags.urls[0]]
-                for i in range(len(tags.urls)):
-                    abbr = Abbr (url = tags.urls[i]
-                                ,title = tags.titles[i]
-                                )
-                    abbr.run()
-                    if len(abbr.titles) == len(abbr.abbrs):
-                        for i in range(len(abbr.abbrs)):
-                            if not abbr.abbrs[i] in self.abbrs:
-                                self.abbrs.append(abbr.abbrs[i])
-                                self.titles.append(abbr.titles[i])
-                    else:
-                        #TODO: Should we toggle 'self.Success' here?
-                        #self.Success = False
-                        sub = '{} == {}'.format (len(abbr.titles)
-                                                ,len(abbr.abbrs)
-                                                )
-                        mes = _('The condition "{}" is not observed!')
-                        mes = mes.format(sub)
-                        sh.objs.get_mes(f,mes).show_warning()
+                if tags.urls:
+                    tags.urls = [tags.urls[0]]
+                    for i in range(len(tags.urls)):
+                        abbr = Abbr (url = tags.urls[i]
+                                    ,title = tags.titles[i]
+                                    )
+                        abbr.run()
+                        if len(abbr.titles) == len(abbr.abbrs):
+                            for i in range(len(abbr.abbrs)):
+                                if not abbr.abbrs[i] in self.abbrs:
+                                    self.abbrs.append(abbr.abbrs[i])
+                                    self.titles.append(abbr.titles[i])
+                        else:
+                            #TODO: Should we toggle 'self.Success' here?
+                            #self.Success = False
+                            sub = '{} == {}'.format (len(abbr.titles)
+                                                    ,len(abbr.abbrs)
+                                                    )
+                            mes = _('The condition "{}" is not observed!')
+                            mes = mes.format(sub)
+                            sh.objs.get_mes(f,mes).show_warning()
+                else:
+                    sh.com.rep_empty(f)
             else:
                 sh.com.cancel(f)
         else:
@@ -457,8 +460,8 @@ class Abbr:
         f = '[MClient] plugins.multitrancom.utils.Abbr.get'
         if self.Success:
             self.htm = sh.Get (url = self.url
-                                ,encoding = 'utf-8'
-                                ).run()
+                              ,coding = 'utf-8'
+                              ).run()
             if self.htm:
                 self.htm = self.htm.replace('&amp;','&')
             else:
@@ -471,8 +474,8 @@ class Abbr:
         f = '[MClient] plugins.multitrancom.utils.Abbr.get2'
         if self.Success:
             self.htm2 = sh.Get (url = self.url2
-                                 ,encoding = 'utf-8'
-                                 ).run()
+                               ,coding = 'utf-8'
+                               ).run()
             if self.htm2:
                 self.htm2 = self.htm2.replace('&amp;','&')
             else:
@@ -535,7 +538,7 @@ class Abbr:
                 if self.titles[i]:
                     self.titles[i] = self.titles[i].replace('<a title="','')
                     pos = sh.Search (text = self.titles[i]
-                                    ,search = '" href'
+                                    ,pattern = '" href'
                                     ).get_next()
                     pos = sh.Input(f,pos).get_integer()
                     self.titles[i] = self.titles[i][:pos]
@@ -603,10 +606,10 @@ class Tags:
         f = '[MClient] plugins.multitrancom.utils.Tags.split'
         if self.Success:
             self.start = sh.Search (text = self.text
-                                   ,search = self.search
+                                   ,pattern = self.search
                                    ).get_next_loop()
             self.end = sh.Search (text = self.text
-                                 ,search = '</a>'
+                                 ,pattern = '</a>'
                                  ).get_next_loop()
             self.equalize()
             if len(self.start) == len(self.end):
@@ -669,7 +672,7 @@ class Tags:
             if self.tags:
                 for tag in self.tags:
                     pos = sh.Search (text = tag
-                                    ,search = '>'
+                                    ,pattern = '>'
                                     ).get_next()
                     pos = sh.Input('Tags.links',pos).get_integer()
                     self.urls.append(tag[:pos])
@@ -768,11 +771,11 @@ class Commands:
         else:
             sh.com.cancel(f)
     
-    # Compare dictionary topics for different languages
-    def compare_topics(self):
-        f = '[MClient] plugins.multitrancom.utils.Commands.compare_topics'
-        file1 = '/tmp/topics'
-        file2 = '/tmp/topics2'
+    # Compare dictionary subjects for different languages
+    def compare_subjects(self):
+        f = '[MClient] plugins.multitrancom.utils.Commands.compare_subjects'
+        file1 = '/tmp/subjects'
+        file2 = '/tmp/subjects2'
         text1 = sh.ReadTextFile(file=file1).get()
         text2 = sh.ReadTextFile(file=file2).get()
         if text1 and text2:
@@ -817,12 +820,12 @@ class Commands:
         #url = 'https://www.multitran.com/m.exe?a=112&l1=34&l2=2'
         # Kalmyk
         #url = 'https://www.multitran.com/m.exe?a=112&l1=35&l2=2'
-        topics = Topics(url=url)
-        topics.run()
-        if topics.abbrs and topics.titles:
+        subjects = Subjects(url=url)
+        subjects.run()
+        if subjects.abbrs and subjects.titles:
             text = ''
-            for i in range(len(topics.abbrs)):
-                text += topics.abbrs[i] + '\t' + topics.titles[i] + '\n'
+            for i in range(len(subjects.abbrs)):
+                text += subjects.abbrs[i] + '\t' + subjects.titles[i] + '\n'
             sh.WriteTextFile (file = file_w
                              ,Rewrite = True
                              ).write(text)
@@ -838,17 +841,17 @@ class Commands:
         ''' This is a list of dictionaries from
             https://www.multitran.com/m.exe?a=112&l1=1&l2=2.
         '''
-        file1 = '/tmp/topics'
+        file1 = '/tmp/subjects'
         ''' This is basically data generated by 'Commands.get_abbrs'
             with some trash deleted. 'dic.orig' - short dictionary
             titles, 'dic.transl' - full titles.
         '''
         file2 = '/tmp/abbr.txt'
-        topics = sh.ReadTextFile(file=file1).get()
+        subjects = sh.ReadTextFile(file=file1).get()
         dic = sh.Dic (file = file2
                      ,Sortable = True
                      )
-        if topics and dic.orig and dic.transl:
+        if subjects and dic.orig and dic.transl:
             i = 0
             count = 0
             while i < len(dic.orig):
@@ -874,12 +877,12 @@ class Commands:
             for i in range(len(dic.orig)):
                 message += dic.orig[i] + '\t' + dic.transl[i] + '\n'
             sh.objs.get_mes(f,message).show_info()
-            topics = topics.splitlines()
+            subjects = subjects.splitlines()
             missing = []
-            for i in range(len(topics)):
-                topics[i] = topics[i].strip()
-                if not topics[i] in dic.transl:
-                    missing.append(topics[i])
+            for i in range(len(subjects)):
+                subjects[i] = subjects[i].strip()
+                if not subjects[i] in dic.transl:
+                    missing.append(subjects[i])
             if missing:
                 message = _('The following dictionaries do not have short titles:')
                 message += '\n'
@@ -893,6 +896,19 @@ com = Commands()
 
 
 if __name__ == '__main__':
+    f = '[MClient] plugins.multitrancom.utils.__main__'
     sh.com.start()
-    Groups().run()
+    # Туннелестроение и проходческие работы
+    url = 'https://www.multitran.com/m.exe?a=110&l1=1&l2=2&sc=723'
+    isubj = Subjects(url)
+    isubj.run()
+    if isubj.titles and isubj.abbrs:
+        titles = '; '.format(isubj.titles)
+        abbrs = '; '.format(isubj.abbrs)
+        mes = _('Titles: {}').format(titles)
+        sh.objs.get_mes(f,mes,True).show_debug()
+        mes = _('Abbreviations: {}').format(abbrs)
+        sh.objs.get_mes(f,mes,True).show_debug()
+    else:
+        sh.com.rep_empty(f)
     sh.com.end()
