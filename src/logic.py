@@ -6,9 +6,10 @@ import io
 import urllib.request
 import html
 import ssl
-import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.shared as sh
 import manager
+import subjects.order
 
 
 SPORDER = (_('Noun'),_('Verb'),_('Adjective'),_('Abbreviation')
@@ -1294,9 +1295,8 @@ class CurRequest:
 
 
 
-# Read the blocklist and the prioritize list
 class Lists:
-
+    # Read the blocklist and the prioritize list
     def __init__(self):
         f = '[MClient] logic.Lists.__init__'
         self.blacklst = objs.get_default().fblock
@@ -1312,8 +1312,8 @@ class Lists:
         else:
             sh.com.cancel(f)
 
-    def prioritize(self):
-        f = '[MClient] logic.Lists.prioritize'
+    def get_priorities(self):
+        f = '[MClient] logic.Lists.get_priorities'
         if self.Success:
             text = sh.ReadTextFile(self.priorlst).get()
             text = sh.Text(text,True).text
@@ -1328,7 +1328,7 @@ class Objects:
     def __init__(self):
         self.online = self.request = self.order = self.default \
                     = self.plugins = self.speech_prior = self.config \
-                    = None
+                    = self.order = None
     
     def get_config(self):
         if self.config is None:
@@ -1366,378 +1366,6 @@ class Objects:
         if self.order is None:
             self.order = Order()
         return self.order
-
-
-
-# Create block and priority lists and complement them
-class Order:
-    
-    def __init__(self):
-        self.set_values()
-        self.set_lists()
-        self.conform()
-        
-    def fill_dic(self,lst,ind):
-        lst = lst[1:]
-        lst = lst[::-1]
-        for item in lst:
-            self.priorlst.insert(ind,item)
-    
-    def prioritize_by(self,Down=False):
-        f = '[MClient] logic.Order.prioritize_by'
-        if self.Success:
-            if self.dic1 and self.dic2:
-                ''' - Multiple dictionary titles share same blocks
-                      for now, so we cannot distinguish them. Thus, all
-                      titles of the same block must have the same
-                      priority. Moreover, if any item of 'dic1' is
-                      (un)prioritized, then all other items should be
-                      (un)prioritized as well.
-                    - Since we (un)prioritize one dictionary against
-                      another here instead of simply (un)prioritizing
-                      one dictionary (this logic is set in
-                      'run_lm_auto'/'run_rm_auto'), both 'dic1' and
-                      'dic2' should comprise prioritized dictionaries.
-                      Since we cannot distinguish multiple dictionary
-                      titles for now, both 'dic1' and 'dic2' should be
-                      fully introduced into 'self.prioritize'.
-                    - The only way to get a position of 'dic1' being
-                      prioritized over 'dic2' is to get the position of
-                      'dic2' in 'self.priorlst' first. Since both
-                      'dic1' and 'dic2' have prioritized items (this
-                      logic is set in 'run_lm_auto'/'run_rm_auto') and
-                      are previously sorted by priority, first items of
-                      'dic1' and 'dic2' should always exist (otherwise,
-                      it is a logic error).
-                '''
-                if self.dic1[0] in self.priorlst \
-                and self.dic2[0] in self.priorlst:
-                    if Down:
-                        message = _('Mode: "{}"')
-                        message = message.format(_('Decrease priority'))
-                    else:
-                        message = _('Mode: "{}"')
-                        message = message.format(_('Increase priority'))
-                    sh.objs.get_mes(f,message,True).show_debug()
-                    
-                    # This allows not to delete duplicates later
-                    for i in range(len(self.dic1)):
-                        if i > 0:
-                            self.unprioritize(self.dic1[i])
-                    for i in range(len(self.dic2)):
-                        if i > 0:
-                            self.unprioritize(self.dic2[i])
-                    
-                    ind1 = self.priorlst.index(self.dic1[0])
-                    ind2 = self.priorlst.index(self.dic2[0])
-                    
-                    if Down:
-                        Swap = ind1 < ind2
-                    else:
-                        Swap = ind1 > ind2
-                    if Swap:
-                        mes = _('Swap items: {} <-> {}; "{}" <-> "{}"')
-                        mes = mes.format (ind1,ind2
-                                         ,self.priorlst[ind1]
-                                         ,self.priorlst[ind2]
-                                         )
-                        sh.objs.get_mes(f,mes,True).show_debug()
-                        self.priorlst[ind1], self.priorlst[ind2] \
-                        = self.priorlst[ind2], self.priorlst[ind1]
-                    
-                    ind1 += 1
-                    ind2 += 1
-                    
-                    if Swap:
-                        dic1 = self.dic2
-                        dic2 = self.dic1
-                    else:
-                        dic1 = self.dic1
-                        dic2 = self.dic2
-                    
-                    if ind2 > ind1:
-                        self.fill_dic(dic2,ind2)
-                        self.fill_dic(dic1,ind1)
-                    else:
-                        self.fill_dic(dic1,ind1)
-                        self.fill_dic(dic2,ind2)
-                        
-                    mes = 'Dic1: {}'.format(self.dic1)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                    mes = 'Dic2: {}'.format(self.dic2)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                    mes = str(self.priorlst)
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                else:
-                    mes = _('Logic error!')
-                    sh.objs.get_mes(f,mes).show_error()
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-            
-    def get_priority(self,search):
-        f = '[MClient] logic.Order.get_priority'
-        if self.Success:
-            lst = self.get_list(search)
-            if lst:
-                prior = []
-                for item in lst:
-                    try:
-                        ind = self.priorlst.index(item)
-                        prior.append(len(self.priorlst)-ind)
-                    except ValueError:
-                        pass
-                if prior:
-                    return max(prior)
-                else:
-                    return 0
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def run_lm_auto(self,dic1,dic2=''):
-        ''' A LM click on:
-            1) A blocked dictionary - unblock
-            2) A common dictionary - prioritize
-            3) A prioritized dictionary - increase priority
-        '''
-        f = '[MClient] logic.Order.run_lm_auto'
-        if self.Success:
-            self.set(dic1,dic2)
-            if self.is_blocked(self.dic1):
-                for item in self.dic1:
-                    self.unblock(item)
-            elif self.is_prioritized(self.dic1) \
-            and self.is_prioritized(self.dic2) \
-            and not sh.List(self.dic1,self.dic2).get_shared():
-                self.prioritize_by()
-            else:
-                for item in self.dic1:
-                    self.prioritize(item)
-        else:
-            sh.com.cancel(f)
-    
-    def run_rm_auto(self,dic1,dic2=''):
-        ''' A RM click on:
-            1) A prioritized dictionary - decrease priority or
-               unprioritize (at minimal priority)
-            2) A blocked dictionary - unblock
-            3) A common dictionary - block
-        '''
-        f = '[MClient] logic.Order.run_rm_auto'
-        if self.Success:
-            self.set(dic1,dic2)
-            if self.is_blocked(self.dic1):
-                for item in self.dic1:
-                    self.unblock(item)
-            elif self.is_prioritized(self.dic1):
-                if self.is_prioritized(self.dic2) \
-                and not sh.List(self.dic1,self.dic2).get_shared():
-                    self.prioritize_by(Down=True)
-                else:
-                    for item in self.dic1:
-                        self.unprioritize(item)
-            else:
-                ''' Multiple dictionary titles share same blocks
-                    for now, so we cannot distinguish them. Thus,
-                    if any item of 'dic1' is blocked, then all
-                    other items should be blocked as well.
-                '''
-                for item in self.dic1:
-                    self.block(item)
-        else:
-            sh.com.cancel(f)
-    
-    def is_prioritized(self,lst):
-        f = '[MClient] logic.Order.is_prioritized'
-        if self.Success:
-            if lst:
-                for item in lst:
-                    if item in self.priorlst:
-                        return True
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def is_blocked(self,lst):
-        f = '[MClient] logic.Order.is_blocked'
-        if self.Success:
-            if lst:
-                for item in lst:
-                    if item in self.blacklst:
-                        return True
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def conform(self):
-        f = '[MClient] logic.Order.conform'
-        ''' Create new block and priority lists based on those that were
-            read from user files. Lists from user files may comprise
-            either full or short dictionary titles. New lists will be
-            lowercased and stripped and will comprise both full and
-            short titles.
-        '''
-        if self.Success:
-            ''' We recreate lists in order to preserve 
-                the short + full title order.
-            '''
-            if self.blacklst:
-                blacklst = list(self.blacklst)
-                self.blacklst = []
-                for item in blacklst:
-                    pair = self.get_pair(item)
-                    if pair:
-                        self.block(pair[0])
-                        self.block(pair[1])
-                    else:
-                        sh.com.rep_empty(f)
-            else:
-                sh.com.rep_lazy(f)
-            if self.priorlst:
-                priorlst = list(self.priorlst)
-                self.priorlst = []
-                for item in priorlst:
-                    pair = self.get_pair(item)
-                    if pair:
-                        self.prioritize(pair[0])
-                        self.prioritize(pair[1])
-                    else:
-                        sh.com.rep_empty(f)
-            else:
-                sh.com.rep_lazy(f)
-        else:
-            sh.com.cancel(f)
-    
-    def set_lists(self):
-        f = '[MClient] logic.Order.set_lists'
-        if self.Success:
-            self.lists = Lists()
-            self.blacklst = sh.Input (title = f
-                                     ,value = self.lists.get_blacklist()
-                                     ).get_list()
-            self.priorlst = sh.Input (title = f
-                                     ,value = self.lists.prioritize()
-                                     ).get_list()
-            self.Success = self.lists.Success
-        else:
-            sh.com.cancel(f)
-    
-    def set_values(self):
-        self.Success = True
-        self.lists = None
-        self.blacklst = []
-        self.priorlst = []
-        self.dic1 = ''
-        self.dic2 = ''
-            
-    def sort_dic(self,lst):
-        f = '[MClient] logic.Order.sort_dic'
-        if self.Success:
-            if lst:
-                indexes = []
-                for item in lst:
-                    try:
-                        ind = self.priorlst.index(item)
-                    except ValueError:
-                        # Place an unpriotitized dictionary at the end
-                        ind = 1000
-                    indexes.append(ind)
-                lst = sorted(zip(indexes,lst))
-                lst = [item[1] for item in lst]
-                return lst
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def set(self,dic1,dic2=''):
-        f = '[MClient] logic.Order.set'
-        if self.Success:
-            ''' This allows to return an empty value instead of the last
-                memory in case there is no previous/next dictionary.
-            '''
-            self.dic1 = self.dic2 = ''
-            if dic1:
-                dic1 = self.get_list(dic1)
-                dic1 = self.sort_dic(dic1)
-                self.dic1 = list(dic1)
-            else:
-                sh.com.rep_empty(f)
-            if dic2:
-                dic2 = self.get_list(dic2)
-                dic2 = self.sort_dic(dic2)
-                self.dic2 = list(dic2)
-        else:
-            sh.com.cancel(f)
-    
-    def get_pair(self,item):
-        f = '[MClient] logic.Order.get_pair'
-        if self.Success:
-            if item:
-                abbr = objs.get_plugins().get_abbr(item)
-                title = objs.plugins.get_title(item)
-                if abbr and title:
-                    return [abbr,title]
-                else:
-                    sh.com.rep_out(f)
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def get_list(self,search):
-        f = '[MClient] logic.Order.get_list'
-        if self.Success:
-            if search:
-                search = search.split(',')
-                lst = []
-                for item in search:
-                    pair = self.get_pair(item)
-                    if pair:
-                        lst += pair
-                return lst
-            # Prevents from None
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def block(self,item):
-        if self.Success:
-            if not item in self.blacklst:
-                self.blacklst.append(item)
-                          
-    def unblock(self,item):
-        f = '[MClient] logic.Order.unblock'
-        if self.Success:
-            try:
-                self.blacklst.remove(item)
-            except ValueError:
-                pass
-        else:
-            sh.com.cancel(f)
-                          
-    def prioritize(self,item):
-        f = '[MClient] logic.Order.prioritize'
-        if self.Success:
-            self.priorlst.append(item)
-        else:
-            sh.com.cancel(f)
-    
-    def unprioritize(self,item):
-        f = '[MClient] logic.Order.unprioritize'
-        if self.Success:
-            try:
-                self.priorlst.remove(item)
-            except ValueError:
-                pass
-        else:
-            sh.com.cancel(f)
 
 
 
@@ -1817,6 +1445,40 @@ class Commands:
         else:
             mes = _('Unable to use unverified certificates!')
             sh.objs.get_mes(f,mes,True).show_warning()
+
+
+
+class Order(subjects.order.Order):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self._set_lists()
+    
+    def _set_lists(self):
+        f = '[MClient] logic.Order._set_lists'
+        lists = Lists()
+        self.blacklst = sh.Input (title = f
+                                 ,value = lists.get_blacklist()
+                                 ).get_list()
+        self.priorlst = sh.Input (title = f
+                                 ,value = lists.get_priorities()
+                                 ).get_list()
+        self.Success = lists.Success
+    
+    def get_pair(self,item):
+        f = '[MClient] logic.Order.get_pair'
+        if self.Success:
+            if item:
+                abbr = objs.get_plugins().get_abbr(item)
+                title = objs.plugins.get_title(item)
+                if abbr and title:
+                    return [abbr,title]
+                else:
+                    sh.com.rep_out(f)
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
 
 
 objs = Objects()
