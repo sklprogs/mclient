@@ -407,6 +407,19 @@ class Subjects:
                            ).run()
         sh.com.run_fast_debug(f,mes)
     
+    def dump(self):
+        f = '[MClient] plugins.multitrancom.utils.Subjects.dump'
+        if self.Success:
+            mes = []
+            for i in range(len(self.titles)):
+                abbrs = '; '.join(self.abbrs[i])
+                sub = '{}\t{}'.format(self.titles[i],abbrs)
+                mes.append(sub)
+            mes = '\n'.join(mes)
+            sh.com.run_fast_debug(f,mes)
+        else:
+            sh.com.cancel(f)
+    
     def debug(self):
         f = '[MClient] plugins.multitrancom.utils.Subjects.debug'
         if self.Success:
@@ -520,20 +533,21 @@ class Subjects:
                 # For testing purposes, decrease a number of blocks here
                 for block in self.blocks:
                     dicf = block.text
-                    block = self.get_next(block)
-                    abbrs = self.get_abbrs(block,dicf)
-                    if dicf and abbrs:
-                        sub = '; '.join(abbrs)
-                        mes = '"{}" -> "{}"'.format(dicf,sub)
-                        sh.objs.get_mes(f,mes,True).show_debug()
-                        self.titles.append(dicf)
-                        self.abbrs.append(abbrs)
-                    elif dicf:
-                        mes = _('No match has been found for "{}"!')
-                        mes = mes.format(dicf)
-                        sh.objs.get_mes(f,mes,True).show_warning()
-                    else:
-                        sh.com.rep_empty(f)
+                    if not dicf in self.titles:
+                        block = self.get_next(block)
+                        abbrs = self.get_abbrs(block,dicf)
+                        if dicf and abbrs:
+                            sub = '; '.join(abbrs)
+                            mes = '"{}" -> "{}"'.format(dicf,sub)
+                            sh.objs.get_mes(f,mes,True).show_debug()
+                            self.titles.append(dicf)
+                            self.abbrs.append(abbrs)
+                        elif dicf:
+                            mes = _('No match has been found for "{}"!')
+                            mes = mes.format(dicf)
+                            sh.objs.get_mes(f,mes,True).show_warning()
+                        else:
+                            sh.com.rep_empty(f)
             else:
                 self.Success = False
                 sh.com.rep_empty(f)
@@ -588,7 +602,8 @@ class Subjects:
         self.set_menu_url()
         self.get_menu()
         self.get_urls()
-        self.debug()
+        self.dump()
+        #self.debug()
 
 
 
