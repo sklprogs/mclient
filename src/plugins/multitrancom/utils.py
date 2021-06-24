@@ -8,6 +8,32 @@ import operator
 import urllib.request
 from skl_shared.localize import _
 import skl_shared.shared as sh
+# Will only work when being called from src/utils
+import plugins.multitrancom.get as gt
+import plugins.multitrancom.cleanup as cu
+import plugins.multitrancom.tags as tg
+import plugins.multitrancom.elems as el
+import plugins.multitrancom.run as rn
+
+
+class Elems(el.Elems):
+    
+    def run(self):
+        f = '[MClient] plugins.multitrancom.utils.Elems.run'
+        if self.check():
+            # Do this before deleting ';'
+            self.set_semino()
+            # Do some cleanup
+            self.delete_empty()
+            self.delete_semi()
+            self.delete_numeration()
+            self.delete_tail_links()
+            self.delete_trash_com()
+            self.delete_langs()
+            self.debug()
+            return self.blocks
+        else:
+            sh.com.cancel(f)
 
 
 ''' It seems to be highly difficult to extract short-full title pairs
@@ -17,7 +43,7 @@ import skl_shared.shared as sh
 '''
 
 
-class Groups:
+class ExtractGroups:
     
     def __init__(self):
         ''' Log in at multitran.com, select an article, click 'Add' and
@@ -34,7 +60,7 @@ class Groups:
         self.get_list()
     
     def get_list(self):
-        f = '[MClient] plugins.multitrancom.utils.Groups.get_list'
+        f = '[MClient] plugins.multitrancom.utils.ExtractGroups.get_list'
         if self.Success:
             lst = []
             majors = sorted(self.subjs.keys())
@@ -47,7 +73,7 @@ class Groups:
             sh.com.cancel(f)
     
     def get_dict(self):
-        f = '[MClient] plugins.multitrancom.utils.Groups.get_dict'
+        f = '[MClient] plugins.multitrancom.utils.ExtractGroups.get_dict'
         if self.Success:
             mes = []
             majors = sorted(self.subjs.keys())
@@ -61,7 +87,7 @@ class Groups:
             sh.com.cancel(f)
     
     def check(self):
-        f = '[MClient] plugins.multitrancom.utils.Groups.check'
+        f = '[MClient] plugins.multitrancom.utils.ExtractGroups.check'
         if self.lst:
             if len(self.lst) % 2 != 0:
                 self.Success = False
@@ -74,7 +100,7 @@ class Groups:
             sh.com.rep_empty(f)
     
     def parse(self):
-        f = '[MClient] plugins.multitrancom.utils.Groups.parse'
+        f = '[MClient] plugins.multitrancom.utils.ExtractGroups.parse'
         if self.Success:
             i = 0
             while i < len(self.lst):
@@ -357,360 +383,212 @@ class Pairs:
 
 class Subjects:
     
-    def __init__(self,url='https://www.multitran.com/m.exe?a=112&l1=1&l2=2'):
+    def __init__(self,lang1=1,lang2=2,ui_lang=2):
         self.set_values()
-        self.url = url
-        
-    def set_values(self):
-        self.Success = True
-        self.htm = ''
-        self.titles = []
-        self.abbrs = []
-        
-    def run(self):
-        self.get_htm()
-        self.run_tags()
-        
-    def get_htm(self):
-        f = '[MClient] plugins.multitrancom.utils.Subjects.get_htm'
-        if self.Success:
-            self.htm = sh.Get (url = self.url
-                              ,coding = 'utf-8'
-                              ).run()
-            if self.htm:
-                self.htm = self.htm.replace('&amp;','&')
-            else:
-                self.Success = False
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-                          
-    def run_tags(self):
-        f = '[MClient] plugins.multitrancom.utils.Subjects.run_tags'
-        if self.Success:
-            tags = Tags (text = self.htm
-                        ,search = 'href="/m.exe?a='
-                        )
-            tags.run()
-            self.Success = tags.Success
-            if self.Success:
-                if tags.urls:
-                    tags.urls = [tags.urls[0]]
-                    for i in range(len(tags.urls)):
-                        abbr = Abbr (url = tags.urls[i]
-                                    ,title = tags.titles[i]
-                                    )
-                        abbr.run()
-                        if len(abbr.titles) == len(abbr.abbrs):
-                            for i in range(len(abbr.abbrs)):
-                                if not abbr.abbrs[i] in self.abbrs:
-                                    self.abbrs.append(abbr.abbrs[i])
-                                    self.titles.append(abbr.titles[i])
-                        else:
-                            #TODO: Should we toggle 'self.Success' here?
-                            #self.Success = False
-                            sub = '{} == {}'.format (len(abbr.titles)
-                                                    ,len(abbr.abbrs)
-                                                    )
-                            mes = _('The condition "{}" is not observed!')
-                            mes = mes.format(sub)
-                            sh.objs.get_mes(f,mes).show_warning()
-                else:
-                    sh.com.rep_empty(f)
-            else:
-                sh.com.cancel(f)
-        else:
-            sh.com.cancel(f)
-
-
-
-class Abbr:
+        self.lang1 = lang1
+        self.lang2 = lang2
+        self.ui_lang = ui_lang
     
-    def __init__(self,url,title):
-        f = '[MClient] plugins.multitrancom.utils.Abbr.__init__'
-        self.set_values()
-        self.url = url
-        self.title = title
-        if self.url and self.title:
-            self.Success = True
-        else:
-            self.Success = False
-            sh.com.rep_empty(f)
-                          
+    def _debug_dics(self,blocks):
+        f = '[MClient] plugins.multitrancom.utils.Subjects._debug_dics'
+        nos = [i + 1 for i in range(len(blocks))]
+        types = ['dic' for i in range(len(blocks))]
+        texts = [block.text for block in blocks]
+        headers = (_('#'),_('TYPE'),_('TEXT'))
+        texts, nos = (list(x) for x \
+            in zip (*sorted (zip (texts, nos)
+                            ,key = lambda x:x[0].lower()
+                            )
+                   )
+                                   )
+        iterable = [nos,types,texts]
+        mes = sh.FastTable (iterable = iterable
+                           ,headers = headers
+                           ).run()
+        sh.com.run_fast_debug(f,mes)
+    
     def debug(self):
-        f = '[MClient] plugins.multitrancom.utils.Abbr.debug'
+        f = '[MClient] plugins.multitrancom.utils.Subjects.debug'
         if self.Success:
-            text = ''
-            for i in range(len(self.abbrs)):
-                text += '%d: "%s": "%s"\n' % (i,self.titles[i]
-                                             ,self.abbrs[i]
-                                             )
-            return text
-        else:
-            sh.com.cancel(f)
-    
-    def set_values(self):
-        self.htm = ''
-        self.htm2 = ''
-        self.url2 = ''
-        self.titles = []
-        self.abbrs = []
-                          
-    def get(self):
-        f = '[MClient] plugins.multitrancom.utils.Abbr.get'
-        if self.Success:
-            self.htm = sh.Get (url = self.url
-                              ,coding = 'utf-8'
-                              ).run()
-            if self.htm:
-                self.htm = self.htm.replace('&amp;','&')
-            else:
-                self.Success = False
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def get2(self):
-        f = '[MClient] plugins.multitrancom.utils.Abbr.get2'
-        if self.Success:
-            self.htm2 = sh.Get (url = self.url2
-                               ,coding = 'utf-8'
+            nos = [i + 1 for i in range(len(self.abbrs))]
+            headers = (_('#'),_('TITLE'),_('ABBREVIATION'))
+            iterable = [nos,self.titles,self.abbrs]
+            mes = sh.FastTable (headers = headers
+                               ,iterable = iterable
                                ).run()
-            if self.htm2:
-                self.htm2 = self.htm2.replace('&amp;','&')
+            sh.com.run_fast_debug(f,mes)
+        else:
+            sh.com.cancel(f)
+    
+    def _is_abbr(self,abbr,full):
+        for sym in abbr:
+            if not sym in full:
+                return False
+        return True
+    
+    def _set_single_dic(self,blocks):
+        f = '[MClient] plugins.multitrancom.utils.Subjects._set_single_dic'
+        new_blocks = []
+        deleted = 0
+        matches = 0
+        i = 0
+        while i < len(blocks):
+            if ', ' in blocks[i].text:
+                texts = blocks[i].text.split(', ')
+                texts = [text.strip() for text in texts if text.strip()]
+                for text in texts:
+                    matches += 1
+                    new_block = el.Block()
+                    new_block.type_ = blocks[i].type_
+                    new_block.text = text
+                    new_block.url = blocks[i].url
+                    new_blocks.append(new_block)
+                deleted += 1
+                del blocks[i]
+                i -= 1
+            i += 1
+        sh.com.rep_deleted(deleted)
+        sh.com.rep_matches(matches)
+        return blocks + new_blocks
+    
+    def _set_unique(self,blocks):
+        f = '[MClient] plugins.multitrancom.utils.Subjects._set_unique'
+        texts = []
+        deleted = 0
+        i = 0
+        while i < len(blocks):
+            if blocks[i].text in texts:
+                deleted += 1
+                del blocks[i]
+                i -= 1
+            else:
+                texts.append(blocks[i].text)
+            i += 1
+        sh.com.rep_deleted(deleted)
+        return blocks
+    
+    def get_abbrs(self,block,dicf):
+        f = '[MClient] plugins.multitrancom.utils.Subjects.get_abbrs'
+        abbrs = []
+        if self.Success:
+            if block:
+                blocks = rn.Plugin().request (search = block.text
+                                             ,url = block.url
+                                             )
+                blocks = [block for block in blocks \
+                          if block.type_ == 'dic' and block.text
+                         ]
+                blocks = self._set_single_dic(blocks)
+                blocks = self._set_unique(blocks)
+                #self._debug_dics(blocks)
+                full = sh.Text(dicf).delete_punctuation()
+                full = full.lower()
+                for block in blocks:
+                    abbr = sh.Text(block.text).delete_punctuation()
+                    abbr = abbr.lower()
+                    if self._is_abbr(abbr,full):
+                        abbrs.append(block.text)
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+        return abbrs
+    
+    def get_next(self,block):
+        f = '[MClient] plugins.multitrancom.utils.Subjects.get_next'
+        if self.Success:
+            if block:
+                blocks = rn.Plugin().request (search = block.text
+                                             ,url = block.url
+                                             )
+                blocks = [block for block in blocks \
+                          if block.type_ == 'term' and block.url
+                         ]
+                if blocks:
+                    return blocks[0]
+                else:
+                    sh.com.rep_empty(f)
+            else:
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+    
+    def get_urls(self):
+        f = '[MClient] plugins.multitrancom.utils.Subjects.get_urls'
+        if self.Success:
+            if self.blocks:
+                # For testing purposes, decrease a number of blocks here
+                for block in self.blocks:
+                    dicf = block.text
+                    block = self.get_next(block)
+                    abbrs = self.get_abbrs(block,dicf)
+                    if dicf and abbrs:
+                        sub = '; '.join(abbrs)
+                        mes = '"{}" -> "{}"'.format(dicf,sub)
+                        sh.objs.get_mes(f,mes,True).show_debug()
+                        self.titles.append(dicf)
+                        self.abbrs.append(abbrs)
+                    elif dicf:
+                        mes = _('No match has been found for "{}"!')
+                        mes = mes.format(dicf)
+                        sh.objs.get_mes(f,mes,True).show_warning()
+                    else:
+                        sh.com.rep_empty(f)
             else:
                 self.Success = False
                 sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
-    def run_tags(self):
-        f = '[MClient] plugins.multitrancom.utils.Abbr.run_tags'
+    def get_menu(self):
+        f = '[MClient] plugins.multitrancom.utils.Subjects.get_menu'
         if self.Success:
-            tags = Tags (text = self.htm
-                        ,search = 'href="/m.exe?a='
-                        )
-            tags.run()
-            self.Success = tags.Success
-            if self.Success:
-                if tags.urls and tags.urls[0]:
-                    ''' #TODO: try all URLs instead of the 1st one
-                        (a Multitran's bug: some links may lead to
-                        different dictionary titles).
-                    '''
-                    self.url2 = tags.urls[0]
-                    ''' Avoid a Multitran's bug: the site generates URLs
-                        with tabs, which cannot be downloaded. However,
-                        those URLs work fine if tabs are deleted.
-                    '''
-                    self.url2 = self.url2.replace('\t','')
-                else:
-                    sh.com.rep_empty(f)
-            else:
-                sh.com.cancel(f)
+            search = 'menu{}-{}'.format(self.lang1,self.lang2)
+            htm = gt.Get (search = search
+                         ,url = self.menu_url
+                         ).run()
+            text = cu.CleanUp(htm).run()
+            itags = tg.Tags(text)
+            self.blocks = itags.run()
+            self.blocks = Elems(self.blocks).run()
+            self.blocks = [block for block in self.blocks if block.url]
+            for block in self.blocks:
+                block.url = gt.com.fix_url(block.url)
+                #TODO: Skip when 'gt.com.fix_url' is reworked
+                replace_with = '&SHL={}'.format(self.ui_lang)
+                block.url = block.url.replace('&SHL=2',replace_with)
         else:
             sh.com.cancel(f)
     
-    def run_tags2(self):
-        f = '[MClient] plugins.multitrancom.utils.Abbr.run_tags2'
-        if self.Success:
-            ''' Replace this so that 'Tags' would not treat this as
-                a new tag.
-            '''
-            self.htm2 = self.htm2.replace('<i>','')
-            tags = Tags (text = self.htm2
-                        ,search = '<a title="'
-                        )
-            tags.run()
-            self.Success = tags.Success
-            if self.Success:
-                self.titles = tags.urls
-                self.abbrs = tags.titles
-            else:
-                sh.com.cancel(f)
-        else:
-            sh.com.cancel(f)
-    
-    def set_titles(self):
-        f = '[MClient] plugins.multitrancom.utils.Abbr.set_titles'
-        if self.Success:
-            for i in range(len(self.titles)):
-                if self.titles[i]:
-                    self.titles[i] = self.titles[i].replace('<a title="','')
-                    pos = sh.Search (text = self.titles[i]
-                                    ,pattern = '" href'
-                                    ).get_next()
-                    pos = sh.Input(f,pos).get_integer()
-                    self.titles[i] = self.titles[i][:pos]
-                    self.titles[i] = self.titles[i].strip()
-                else:
-                    sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def run_abbrs(self):
-        f = '[MClient] plugins.multitrancom.utils.Abbr.run_abbrs'
-        if self.Success:
-            for i in range(len(self.abbrs)):
-                self.abbrs[i] = self.abbrs[i].replace('<i>','')
-                self.abbrs[i] = self.abbrs[i].replace('</i>','')
-                self.abbrs[i] = self.abbrs[i].strip()
-        else:
-            sh.com.cancel(f)
-    
-    def run(self):
-        self.get()
-        self.run_tags()
-        self.get2()
-        self.run_tags2()
-        self.set_titles()
-        self.run_abbrs()
-
-
-
-class Tags:
-    
-    def __init__(self,text,search='href="/m.exe?a='):
-        f = '[MClient] plugins.multitrancom.utils.Tags.__init__'
-        self.set_values()
-        self.text = text
-        self.search = search
-        if not self.text:
-            self.Success = False
+    def check(self):
+        f = '[MClient] plugins.multitrancom.utils.Subjects.check'
+        self.Success = self.lang1 and self.lang2 and self.ui_lang
+        if not self.Success:
             sh.com.rep_empty(f)
         
+    def set_menu_url(self):
+        f = '[MClient] plugins.multitrancom.utils.Subjects.set_menu_url'
+        if self.Success:
+            self.menu_url = 'https://www.multitran.com/m.exe?a=112&l1={}&l2={}&SHL={}'
+            self.menu_url = self.menu_url.format (self.lang1
+                                                 ,self.lang2
+                                                 ,self.ui_lang
+                                                 )
+        else:
+            sh.com.cancel(f)
+    
     def set_values(self):
         self.Success = True
-        self.tags = []
+        self.abbrs = []
         self.titles = []
-        self.urls = []
-        self.start = []
-        self.end = []
+        self.menu_url = ''
         
-    def equalize(self):
-        f = '[MClient] plugins.multitrancom.utils.Tags.equalize'
-        if self.Success:
-            if len(self.end) > len(self.start):
-                tmp = []
-                for i in range(len(self.start)):
-                    while self.start[i] > self.end[i]:
-                        del self.end[i]
-                    tmp.append(self.end[i])
-                self.end = tmp
-            else:
-                sh.com.rep_lazy(f)
-        else:
-            sh.com.cancel(f)
-    
-    def split(self):
-        f = '[MClient] plugins.multitrancom.utils.Tags.split'
-        if self.Success:
-            self.start = sh.Search (text = self.text
-                                   ,pattern = self.search
-                                   ).get_next_loop()
-            self.end = sh.Search (text = self.text
-                                 ,pattern = '</a>'
-                                 ).get_next_loop()
-            self.equalize()
-            if len(self.start) == len(self.end):
-                for i in range(len(self.start)):
-                    self.tags.append(self.text[self.start[i]:self.end[i]])
-            else:
-                self.Success = False
-                sub = '{} == {}'.format (len(self.start)
-                                        ,len(self.end)
-                                        )
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                sh.objs.get_mes(f,mes).show_warning()
-            mes = _('{} tags have been extracted')
-            mes = mes.format(len(self.tags))
-            sh.objs.get_mes(f,mes,True).show_debug()
-        else:
-            sh.com.cancel(f)
-                          
-    def loop_trash(self,url):
-        trash = ('m.exe?a=40pl'
-                ,'m.exe?a=40&pl'
-                ,'m.exe?a=256'
-                )
-        for item in trash:
-            if item in url:
-                return True
-    
-    def trash_urls(self):
-        f = '[MClient] plugins.multitrancom.utils.Tags.trash_urls'
-        if self.Success:
-            self.urls = [url for url in self.urls \
-                         if not self.loop_trash(url)
-                        ]
-            for i in range(len(self.urls)):
-                if self.urls[i]:
-                    self.urls[i] = self.urls[i].replace('<a href="/m.exe?','https://www.multitran.com/m.exe?')
-                    if self.urls[i].endswith('"'):
-                        self.urls[i] = self.urls[i][:-1]
-                    else:
-                        mes = _('Wrong input data: "{}"!')
-                        mes = mes.format(self.urls[i])
-                        sh.objs.get_mes(f,mes,True).show_warning()
-                else:
-                    sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-
-    def trash_titles(self):
-        f = '[MClient] plugins.multitrancom.utils.Tags.trash_titles'
-        if self.Success:
-            for i in range(len(self.titles)):
-                self.titles[i] = html.unescape(self.titles[i])
-        else:
-            sh.com.cancel(f)
-    
-    def set_urls(self):
-        f = '[MClient] plugins.multitrancom.utils.Tags.set_urls'
-        if self.Success:
-            if self.tags:
-                for tag in self.tags:
-                    pos = sh.Search (text = tag
-                                    ,pattern = '>'
-                                    ).get_next()
-                    pos = sh.Input('Tags.links',pos).get_integer()
-                    self.urls.append(tag[:pos])
-                    self.titles.append(tag[pos+1:])
-            else:
-                sh.com.rep_empty(f)
-            self.urls = [url.replace(' ','%20') for url in self.urls]
-            self.urls = [url.replace ('href="/m.exe?'
-                                     ,'https://www.multitran.com/m.exe?'
-                                     ) \
-                         for url in self.urls
-                        ]
-            mes = _('{} URLs have been extracted')
-            mes = mes.format(len(self.urls))
-            sh.objs.get_mes(f,mes,True).show_debug()
-            mes = _('{} titles have been extracted')
-            mes = mes.format(len(self.titles))
-            sh.objs.get_mes(f,mes,True).show_debug()
-        else:
-            sh.com.cancel(f)
-        
-    def debug(self):
-        f = '[MClient] plugins.multitrancom.utils.Tags.debug'
-        if self.Success:
-            text = ''
-            for i in range(len(self.urls)):
-                text += '{}: "{}": "{}"\n'.format (i,self.urls[i]
-                                                  ,self.titles[i]
-                                                  )
-            return text
-        else:
-            sh.com.cancel(f)
-    
     def run(self):
-        self.split()
-        self.set_urls()
-        self.trash_urls()
-        self.trash_titles()
+        self.check()
+        self.set_menu_url()
+        self.get_menu()
+        self.get_urls()
+        self.debug()
 
 
 
@@ -898,17 +776,8 @@ com = Commands()
 if __name__ == '__main__':
     f = '[MClient] plugins.multitrancom.utils.__main__'
     sh.com.start()
-    # Туннелестроение и проходческие работы
-    url = 'https://www.multitran.com/m.exe?a=110&l1=1&l2=2&sc=723'
-    isubj = Subjects(url)
-    isubj.run()
-    if isubj.titles and isubj.abbrs:
-        titles = '; '.format(isubj.titles)
-        abbrs = '; '.format(isubj.abbrs)
-        mes = _('Titles: {}').format(titles)
-        sh.objs.get_mes(f,mes,True).show_debug()
-        mes = _('Abbreviations: {}').format(abbrs)
-        sh.objs.get_mes(f,mes,True).show_debug()
-    else:
-        sh.com.rep_empty(f)
+    Subjects (lang1 = 1
+             ,lang2 = 2
+             ,ui_lang = 2
+             ).run()
     sh.com.end()

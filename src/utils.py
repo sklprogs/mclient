@@ -9,6 +9,6 @@ import plugins.multitrancom.utils as utcom
 if __name__ == '__main__':
     f = '[MClient] utils.__main__'
     sh.com.start()
-    
+    utcom.Subjects().run()
     sh.com.end()
                 
