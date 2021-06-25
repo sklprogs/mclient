@@ -386,6 +386,35 @@ class Subjects:
     def __init__(self):
         self.set_values()
     
+    def _get_title(self,url):
+        match = re.match('.* title="(.*)',url)
+        if match:
+            return match.group(1)
+
+    def _find_abbr(self,abbr,url,subject):
+        f = '[MClient] plugins.multitrancom.utils.Subjects._find_abbr'
+        title = self._get_title(url)
+        if title:
+            # This actually happens
+            title = title.replace(sh.lg.nbspace,' ')
+            # Just to be on a safe side
+            abbr = abbr.replace(sh.lg.nbspace,' ')
+            title_split = title.split(', ')
+            abbr_split = abbr.split(', ')
+            if len(title_split) == len(abbr_split):
+                for i in range(len(title_split)):
+                    if title_split[i] == subject:
+                        return abbr_split[i]
+            else:
+                sub = '{} == {}'.format (len(title_split)
+                                        ,len(abbr_split)
+                                        )
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.get_mes(f,mes,True).show_warning()
+        else:
+            sh.com.rep_empty(f)
+    
     def _fix_url(self,url):
         url = gt.com.fix_url(url)
         #TODO: Skip when 'gt.com.fix_url' is reworked
@@ -417,8 +446,7 @@ class Subjects:
         if self.Success:
             mes = []
             for i in range(len(self.titles)):
-                abbrs = '; '.join(self.abbrs[i])
-                sub = '{}\t{}'.format(self.titles[i],abbrs)
+                sub = '{}\t{}'.format(self.titles[i],self.abbrs[i])
                 mes.append(sub)
             mes = '\n'.join(mes)
             sh.com.run_fast_debug(f,mes)
@@ -438,56 +466,8 @@ class Subjects:
         else:
             sh.com.cancel(f)
     
-    def _is_abbr(self,abbr,full):
-        for sym in abbr:
-            if not sym in full:
-                return False
-        return True
-    
-    def _set_single_dic(self,blocks):
-        f = '[MClient] plugins.multitrancom.utils.Subjects._set_single_dic'
-        new_blocks = []
-        deleted = 0
-        matches = 0
-        i = 0
-        while i < len(blocks):
-            if ', ' in blocks[i].text:
-                texts = blocks[i].text.split(', ')
-                texts = [text.strip() for text in texts if text.strip()]
-                for text in texts:
-                    matches += 1
-                    new_block = el.Block()
-                    new_block.type_ = blocks[i].type_
-                    new_block.text = text
-                    new_block.url = blocks[i].url
-                    new_blocks.append(new_block)
-                deleted += 1
-                del blocks[i]
-                i -= 1
-            i += 1
-        sh.com.rep_deleted(deleted)
-        sh.com.rep_matches(matches)
-        return blocks + new_blocks
-    
-    def _set_unique(self,blocks):
-        f = '[MClient] plugins.multitrancom.utils.Subjects._set_unique'
-        texts = []
-        deleted = 0
-        i = 0
-        while i < len(blocks):
-            if blocks[i].text in texts:
-                deleted += 1
-                del blocks[i]
-                i -= 1
-            else:
-                texts.append(blocks[i].text)
-            i += 1
-        sh.com.rep_deleted(deleted)
-        return blocks
-    
-    def get_abbrs(self,block,dicf):
-        f = '[MClient] plugins.multitrancom.utils.Subjects.get_abbrs'
-        abbrs = []
+    def get_abbr(self,block,dicf):
+        f = '[MClient] plugins.multitrancom.utils.Subjects.get_abbr'
         if self.Success:
             if block:
                 block.url = self._fix_url(block.url)
@@ -499,21 +479,18 @@ class Subjects:
                 blocks = [block for block in blocks \
                           if block.type_ == 'dic' and block.text
                          ]
-                blocks = self._set_single_dic(blocks)
-                blocks = self._set_unique(blocks)
                 #self._debug_dics(blocks)
-                full = sh.Text(dicf).delete_punctuation()
-                full = full.lower()
                 for block in blocks:
-                    abbr = sh.Text(block.text).delete_punctuation()
-                    abbr = abbr.lower()
-                    if self._is_abbr(abbr,full):
-                        abbrs.append(block.text)
+                    abbr = self._find_abbr (abbr = block.text
+                                           ,url = block.url
+                                           ,subject = dicf
+                                           )
+                    if abbr:
+                        return abbr
             else:
                 sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
-        return abbrs
     
     def get_next(self,block):
         f = '[MClient] plugins.multitrancom.utils.Subjects.get_next'
@@ -545,15 +522,16 @@ class Subjects:
                 self.blocks = [self.blocks[30]]
                 for block in self.blocks:
                     dicf = block.text
+                    # This actually happens
+                    dicf = dicf.replace(sh.lg.nbspace,' ')
                     if not dicf in self.titles:
                         block = self.get_next(block)
-                        abbrs = self.get_abbrs(block,dicf)
-                        if dicf and abbrs:
-                            sub = '; '.join(abbrs)
-                            mes = '"{}" -> "{}"'.format(dicf,sub)
+                        abbr = self.get_abbr(block,dicf)
+                        if dicf and abbr:
+                            mes = '"{}" -> "{}"'.format(abbr,dicf)
                             sh.objs.get_mes(f,mes,True).show_debug()
                             self.titles.append(dicf)
-                            self.abbrs.append(abbrs)
+                            self.abbrs.append(abbr)
                         elif dicf:
                             mes = _('No match has been found for "{}"!')
                             mes = mes.format(dicf)
@@ -651,8 +629,7 @@ class Subjects:
         #cur
         #self.loop()
         self.run_pass(1,1,1)
-        #cur
-        #self.dump()
+        self.dump()
         #self.debug()
 
 
