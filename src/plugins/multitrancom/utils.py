@@ -383,11 +383,8 @@ class Pairs:
 
 class Subjects:
     
-    def __init__(self,lang1=1,lang2=2,ui_lang=2):
+    def __init__(self):
         self.set_values()
-        self.lang1 = lang1
-        self.lang2 = lang2
-        self.ui_lang = ui_lang
     
     def _debug_dics(self,blocks):
         f = '[MClient] plugins.multitrancom.utils.Subjects._debug_dics'
@@ -596,12 +593,50 @@ class Subjects:
         self.abbrs = []
         self.titles = []
         self.menu_url = ''
+        self.lang1 = 1
+        self.lang2 = 2
+        self.ui_lang = 2
         
-    def run(self):
-        self.check()
+    def _run(self):
         self.set_menu_url()
         self.get_menu()
         self.get_urls()
+    
+    def run_pass(self,lang1,lang2,ui_lang):
+        f = '[MClient] plugins.multitrancom.utils.Subjects.run_pass'
+        if self.Success:
+            len_ = len(self.titles)
+            self.lang1 = lang1
+            self.lang2 = lang2
+            self.ui_lang = ui_lang
+            self._run()
+            delta = len(self.titles) - len_
+            mes = _('Pass {}-{}-{}: {} new titles')
+            mes = mes.format(self.lang1,self.lang2,self.ui_lang,delta)
+            sh.objs.get_mes(f,mes,True).show_info()
+            print('================================================')
+        else:
+            sh.com.cancel(f)
+    
+    def loop(self):
+        self.run_pass(1,1,2)
+        self.run_pass(1,2,2)
+        self.run_pass(2,2,2)
+        self.run_pass(2,3,2)
+        self.run_pass(3,3,2)
+        self.run_pass(2,4,2)
+        self.run_pass(4,4,2)
+        self.run_pass(1,1,1)
+        self.run_pass(1,2,1)
+        self.run_pass(2,2,1)
+        self.run_pass(2,3,1)
+        self.run_pass(3,3,1)
+        self.run_pass(2,4,1)
+        self.run_pass(4,4,1)
+    
+    def run(self):
+        self.check()
+        self.loop()
         self.dump()
         #self.debug()
 
