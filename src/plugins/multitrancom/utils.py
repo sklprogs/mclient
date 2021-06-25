@@ -466,7 +466,9 @@ class Subjects:
                 sub = '{}\t{}'.format(self.failed_titles[i],'?')
                 mes.append(sub)
             mes = '\n'.join(mes)
-            sh.com.run_fast_debug(f,mes)
+            #sh.com.run_fast_debug(f,mes)
+            sh.WriteTextFile(self.filew,True).write(mes)
+            sh.Launch(self.filew).launch_default()
         else:
             sh.com.cancel(f)
     
@@ -535,8 +537,6 @@ class Subjects:
         if self.Success:
             if self.blocks:
                 # For testing purposes, decrease a number of blocks here
-                #cur
-                self.blocks = self.blocks[20:30]
                 for block in self.blocks:
                     dicf = block.text
                     # This actually happens
@@ -602,6 +602,7 @@ class Subjects:
         self.titles = []
         self.failed_titles = []
         self.menu_url = ''
+        self.filew = '/tmp/subjects (abbr + full)'
         self.lang1 = 1
         self.lang2 = 2
         self.ui_lang = 2
@@ -628,6 +629,15 @@ class Subjects:
             sh.com.cancel(f)
     
     def loop(self):
+        ''' Currently available interface languages:
+            1  (English)
+            2  (Russian)
+            3  (German)
+            5  (Spanish)
+            33 (Ukranian)
+        '''
+        # Get subjects in Russian
+        self.insert_lang_code(2)
         self.run_pass(1,1,2)
         self.run_pass(1,2,2)
         self.run_pass(2,2,2)
@@ -635,6 +645,10 @@ class Subjects:
         self.run_pass(3,3,2)
         self.run_pass(2,4,2)
         self.run_pass(4,4,2)
+        self.run_pass(2,5,2)
+        self.run_pass(5,5,2)
+        # Get subjects in English
+        self.insert_lang_code(1)
         self.run_pass(1,1,1)
         self.run_pass(1,2,1)
         self.run_pass(2,2,1)
@@ -642,12 +656,20 @@ class Subjects:
         self.run_pass(3,3,1)
         self.run_pass(2,4,1)
         self.run_pass(4,4,1)
+        self.run_pass(2,5,1)
+        self.run_pass(5,5,1)
+    
+    def insert_lang_code(self,code):
+        f = '[MClient] plugins.multitrancom.utils.Subjects.insert_lang_code'
+        if self.Success:
+            self.titles.append(_('Interface language code:'))
+            self.abbrs.append(code)
+        else:
+            sh.com.cancel(f)
     
     def run(self):
         self.check()
-        #cur
-        #self.loop()
-        self.run_pass(1,1,1)
+        self.loop()
         self.dump()
         #self.debug()
 
