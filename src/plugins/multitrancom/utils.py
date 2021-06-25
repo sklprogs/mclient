@@ -386,19 +386,27 @@ class Subjects:
     def __init__(self):
         self.set_values()
     
+    def _fix_url(self,url):
+        url = gt.com.fix_url(url)
+        #TODO: Skip when 'gt.com.fix_url' is reworked
+        replace_with = '&SHL={}'.format(self.ui_lang)
+        url = url.replace('&SHL=2',replace_with)
+        return url
+    
     def _debug_dics(self,blocks):
         f = '[MClient] plugins.multitrancom.utils.Subjects._debug_dics'
         nos = [i + 1 for i in range(len(blocks))]
         types = ['dic' for i in range(len(blocks))]
         texts = [block.text for block in blocks]
-        headers = (_('#'),_('TYPE'),_('TEXT'))
-        texts, nos = (list(x) for x \
-            in zip (*sorted (zip (texts, nos)
+        urls = [block.url for block in blocks]
+        headers = (_('#'),_('TYPE'),_('TEXT'),_('URL'))
+        texts, nos, urls = (list(x) for x \
+            in zip (*sorted (zip (texts,nos,urls)
                             ,key = lambda x:x[0].lower()
                             )
                    )
                                    )
-        iterable = [nos,types,texts]
+        iterable = [nos,types,texts,urls]
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
                            ).run()
@@ -482,6 +490,9 @@ class Subjects:
         abbrs = []
         if self.Success:
             if block:
+                block.url = self._fix_url(block.url)
+                mes = _('Get "{}" at "{}"').format(block.text,block.url)
+                sh.objs.get_mes(f,mes,True).show_debug()
                 blocks = rn.Plugin().request (search = block.text
                                              ,url = block.url
                                              )
@@ -508,7 +519,8 @@ class Subjects:
         f = '[MClient] plugins.multitrancom.utils.Subjects.get_next'
         if self.Success:
             if block:
-                block.url += '&SHL={}'.format(self.ui_lang)
+                mes = _('Get "{}" at "{}"').format(block.text,block.url)
+                sh.objs.get_mes(f,mes,True).show_debug()
                 blocks = rn.Plugin().request (search = block.text
                                              ,url = block.url
                                              )
@@ -567,10 +579,7 @@ class Subjects:
             self.blocks = Elems(self.blocks).run()
             self.blocks = [block for block in self.blocks if block.url]
             for block in self.blocks:
-                block.url = gt.com.fix_url(block.url)
-                #TODO: Skip when 'gt.com.fix_url' is reworked
-                replace_with = '&SHL={}'.format(self.ui_lang)
-                block.url = block.url.replace('&SHL=2',replace_with)
+                block.url = self._fix_url(block.url)
         else:
             sh.com.cancel(f)
     
@@ -642,7 +651,8 @@ class Subjects:
         #cur
         #self.loop()
         self.run_pass(1,1,1)
-        self.dump()
+        #cur
+        #self.dump()
         #self.debug()
 
 
