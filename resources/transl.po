@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-25 01:03+0300\n"
-"PO-Revision-Date: 2021-06-25 01:03+0300\n"
+"POT-Creation-Date: 2021-06-25 03:05+0300\n"
+"PO-Revision-Date: 2021-06-25 03:06+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -1203,7 +1203,7 @@ msgstr "ПРИОРИТЕТ"
 
 #: mclient/src/logic.py:761 mclient/src/logic.py:774
 #: mclient/src/plugins/multitrancom/tags.py:327
-#: mclient/src/plugins/multitrancom/utils.py:414
+#: mclient/src/plugins/multitrancom/utils.py:424
 msgid "ABBREVIATION"
 msgstr "АББРЕВИАТУРА"
 
@@ -1781,8 +1781,8 @@ msgstr "{} фраз"
 #: mclient/src/plugins/multitrancom/tags.py:327
 #: mclient/src/plugins/multitrancom/tags.py:399
 #: mclient/src/plugins/multitrancom/tags.py:475
-#: mclient/src/plugins/multitrancom/utils.py:397
-#: mclient/src/plugins/multitrancom/utils.py:414
+#: mclient/src/plugins/multitrancom/utils.py:394
+#: mclient/src/plugins/multitrancom/utils.py:424
 msgid "#"
 msgstr "№"
 
@@ -1878,7 +1878,7 @@ msgstr "ТИПЫ"
 #: mclient/src/plugins/dsl/tags.py:125 mclient/src/plugins/dsl/tags.py:294
 #: mclient/src/plugins/multitrancom/tags.py:399
 #: mclient/src/plugins/multitrancom/tags.py:475
-#: mclient/src/plugins/multitrancom/utils.py:397
+#: mclient/src/plugins/multitrancom/utils.py:394
 msgid "TEXT"
 msgstr "ТЕКСТ"
 
@@ -14970,13 +14970,13 @@ msgid "FULL TITLE"
 msgstr "ПОЛНОЕ НАЗВАНИЕ"
 
 #: mclient/src/plugins/multitrancom/tags.py:338
-#: mclient/src/plugins/multitrancom/utils.py:711
+#: mclient/src/plugins/multitrancom/utils.py:761
 msgid "Abbreviations:"
 msgstr "Сокращения:"
 
 #: mclient/src/plugins/multitrancom/tags.py:399
 #: mclient/src/plugins/multitrancom/tags.py:475
-#: mclient/src/plugins/multitrancom/utils.py:397
+#: mclient/src/plugins/multitrancom/utils.py:394
 msgid "TYPE"
 msgstr "ТИП"
 
@@ -15036,24 +15036,28 @@ msgstr "Последний обработанный язык:"
 msgid "URLs that caused errors:"
 msgstr "URL, вызвавшие ошибки:"
 
-#: mclient/src/plugins/multitrancom/utils.py:414
+#: mclient/src/plugins/multitrancom/utils.py:424
 msgid "TITLE"
 msgstr "ЗАГОЛОВОК"
 
-#: mclient/src/plugins/multitrancom/utils.py:532
+#: mclient/src/plugins/multitrancom/utils.py:543
 msgid "No match has been found for \"{}\"!"
 msgstr "Для \"{}\" совпадений не найдено!"
 
-#: mclient/src/plugins/multitrancom/utils.py:610
-#: mclient/src/plugins/multitrancom/utils.py:626
+#: mclient/src/plugins/multitrancom/utils.py:614
+msgid "Pass {}-{}-{}: {} new titles"
+msgstr "Проход {}-{}-{}: {} новых заголовков"
+
+#: mclient/src/plugins/multitrancom/utils.py:660
+#: mclient/src/plugins/multitrancom/utils.py:676
 msgid "Press any key to continue."
 msgstr "Нажмите любую клавишу для продолжения."
 
-#: mclient/src/plugins/multitrancom/utils.py:746
+#: mclient/src/plugins/multitrancom/utils.py:796
 msgid "{} duplicates have been deleted"
 msgstr "Удалено {} дубликатов"
 
-#: mclient/src/plugins/multitrancom/utils.py:765
+#: mclient/src/plugins/multitrancom/utils.py:815
 msgid "The following dictionaries do not have short titles:"
 msgstr "У следующих словарей нет сокращенных названий:"
 
