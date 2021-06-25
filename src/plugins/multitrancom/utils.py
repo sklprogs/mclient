@@ -394,17 +394,31 @@ class Subjects:
     def _find_abbr(self,abbr,url,subject):
         f = '[MClient] plugins.multitrancom.utils.Subjects._find_abbr'
         title = self._get_title(url)
-        if title:
+        if title and abbr and url and subject:
             # This actually happens
             title = title.replace(sh.lg.nbspace,' ')
             # Just to be on a safe side
             abbr = abbr.replace(sh.lg.nbspace,' ')
             title_split = title.split(', ')
             abbr_split = abbr.split(', ')
+            ''' Sometimes not all abbreviations are given the full form,
+                e.g., 'юр., англос.' -> 'Общее право (англосаксонская
+                правовая система)'. Since this function returns only
+                one abbreviation, it is safe to make the lists to be
+                of the same length.
+            '''
+            filler = title_split[0]
+            Filled = False
+            while len(title_split) < len(abbr_split):
+                Filled = True
+                title_split.append(filler)
             if len(title_split) == len(abbr_split):
                 for i in range(len(title_split)):
                     if title_split[i] == subject:
-                        return abbr_split[i]
+                        if Filled:
+                            return abbr
+                        else:
+                            return abbr_split[i]
             else:
                 sub = '{} == {}'.format (len(title_split)
                                         ,len(abbr_split)
@@ -447,6 +461,9 @@ class Subjects:
             mes = []
             for i in range(len(self.titles)):
                 sub = '{}\t{}'.format(self.titles[i],self.abbrs[i])
+                mes.append(sub)
+            for i in range(len(self.failed_titles)):
+                sub = '{}\t{}'.format(self.failed_titles[i],'?')
                 mes.append(sub)
             mes = '\n'.join(mes)
             sh.com.run_fast_debug(f,mes)
@@ -519,7 +536,7 @@ class Subjects:
             if self.blocks:
                 # For testing purposes, decrease a number of blocks here
                 #cur
-                self.blocks = [self.blocks[30]]
+                self.blocks = self.blocks[20:30]
                 for block in self.blocks:
                     dicf = block.text
                     # This actually happens
@@ -529,13 +546,14 @@ class Subjects:
                         abbr = self.get_abbr(block,dicf)
                         if dicf and abbr:
                             mes = '"{}" -> "{}"'.format(abbr,dicf)
-                            sh.objs.get_mes(f,mes,True).show_debug()
+                            sh.objs.get_mes(f,mes,True).show_info()
                             self.titles.append(dicf)
                             self.abbrs.append(abbr)
                         elif dicf:
                             mes = _('No match has been found for "{}"!')
                             mes = mes.format(dicf)
                             sh.objs.get_mes(f,mes,True).show_warning()
+                            self.failed_titles.append(dicf)
                         else:
                             sh.com.rep_empty(f)
             else:
@@ -582,6 +600,7 @@ class Subjects:
         self.Success = True
         self.abbrs = []
         self.titles = []
+        self.failed_titles = []
         self.menu_url = ''
         self.lang1 = 1
         self.lang2 = 2
