@@ -170,7 +170,9 @@ class Commands:
         f = '[MClient] plugins.multitrancom.get.Commands.get_url'
         if search and code1 and code2:
             #NOTE: The encoding here should always be 'utf-8'!
-            base = 'https://www.multitran.com/m.exe?s=%s&l1={}&l2={}&SHL=2'
+            #cur
+            #&SHL=2
+            base = 'https://www.multitran.com/m.exe?s=%s&l1={}&l2={}'
             base = base.format(code1,code2)
             return sh.Online (base = base
                              ,pattern = search
@@ -195,9 +197,10 @@ class Commands:
                     equivalents of dictionary titles into the 'abbr'
                     file. Still, we should probably add those titles
                     if we want our program to serve international users.
-                '''
-                if not '&SHL=2' in url:
+                #cur
+                if not '&SHL=' in url:
                     url += '&SHL=2'
+                '''
             return url
         else:
             sh.com.rep_empty(f)

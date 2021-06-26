@@ -456,7 +456,7 @@ class Subjects2:
                                              ,url = url
                                              )
                 blocks = [block for block in blocks \
-                          if block.type_ == 'dic' and block.text
+                          if block.type_ == 'dic' and block.text.strip()
                          ]
                 for block in blocks:
                     block.text = block.text.replace(sh.lg.nbspace,' ')
@@ -482,18 +482,28 @@ class Subjects2:
     def add(self):
         f = '[MClient] plugins.multitrancom.utils.Subjects.add'
         if self.Success:
+            count = 0
             for list_ in self.mult:
                 row = []
                 for block in list_:
-                    title = self._get_title(block.url)
-                    abbr = block.text
+                    #title = self._get_title(block.url)
+                    #abbr = block.text
+                    title = block.dicf
+                    abbr = block.dic
                     if not title:
+                        count += 1
                         title = _('Logic error!')
                     if not abbr:
+                        count += 1
                         abbr = _('Logic error!')
                     row.append(title)
                     row.append(abbr)
                 self.rows.append('\t'.join(row))
+            if count:
+                mes = _('{} errors').format(count)
+                sh.objs.get_mes(f,mes,True).show_warning()
+        else:
+            sh.com.cancel(f)
     
     def reassign_mult(self):
         f = '[MClient] plugins.multitrancom.utils.Subjects.reassign_mult'
@@ -516,7 +526,7 @@ class Subjects2:
                 if len(set(lens)) != 1:
                     self.Success = False
                     mes = _('Wrong input data: "{}"!').format(lens)
-                    sh.objs.get_mes(f,mes,True).show_warning()
+                    sh.objs.get_mes(f,mes).show_warning()
             else:
                 self.Success = False
                 sh.com.rep_empty(f)
@@ -528,8 +538,8 @@ class Subjects2:
         if self.Success:
             for self.ui_lang in self.ui_langs:
                 search = 'search (lang: {})'.format(self.ui_lang)
-                url = self._fix_url(url)
                 self.mult.append(self.get_subjects(search,url))
+            self.mult = [item for item in self.mult if item]
         else:
             sh.com.cancel(f)
 
