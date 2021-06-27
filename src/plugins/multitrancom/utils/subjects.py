@@ -566,9 +566,40 @@ class EndPage:
         self.Success = True
         self.blocks = []
         self.rows = []
+        self.subjects = {}
         self.url = url
         self.ui_lang = ui_lang
         self.Debug = Debug
+    
+    def debug(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.debug'
+        if self.Success:
+            if self.Debug:
+                mes = [self._debug_rows(),self._debug_subjects()]
+                mes = '\n\n'.join(mes)
+                sh.com.run_fast_debug(f,mes)
+            else:
+                sh.com.rep_lazy(f)
+        else:
+            sh.com.cancel(f)
+    
+    def set_hashes(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.set_hashes'
+        if self.Success:
+            for row in self.rows:
+                if row:
+                    texts = [block.text for block in row]
+                    text = ' '.join(texts)
+                    hash_ = hash(text)
+                    block = row[0]
+                    self.subjects[hash_] = {'dic':block.dic
+                                           ,'dicf':block.dicf
+                                           ,'text':text
+                                           }
+                else:
+                    sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
     
     def fix_url(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.fix_url'
@@ -613,45 +644,75 @@ class EndPage:
         else:
             sh.com.cancel(f)
     
-    def debug_rows(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.debug_rows'
-        if self.Success:
-            if self.Debug:
-                nos = [i + 1 for i in range(len(self.blocks))]
-                rownos = []
-                types = []
-                texts = []
-                urls = []
-                for row in self.rows:
-                    for block in row:
-                        rownos.append(block.rowno)
-                        types.append(block.type_)
-                        texts.append(block.text)
-                        urls.append(block.url)
-                headers = (_('#'),_('ROW #'),_('TYPE'),_('TEXT'),'URL')
-                iterable = [nos,rownos,types,texts,urls]
-                # 10'' screen: 40 symbols
-                mes = sh.FastTable (headers = headers
-                                   ,iterable = iterable
-                                   ,maxrow = 40
-                                   ).run()
-                sh.com.run_fast_debug(f,mes)
-            else:
-                sh.com.rep_lazy(f)
-        else:
-            sh.com.cancel(f)
+    def _debug_rows(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage._debug_rows'
+        # 'self.rows' contains blocks of certain types
+        count = 0
+        for row in self.rows:
+            for block in row:
+                count += 1
+        nos = [i + 1 for i in range(count)]
+        rownos = []
+        types = []
+        texts = []
+        dic = []
+        dicf = []
+        for row in self.rows:
+            for block in row:
+                rownos.append(block.rowno)
+                types.append(block.type_)
+                texts.append(block.text)
+                dic.append(block.dic)
+                dicf.append(block.dicf)
+        headers = (_('#'),_('ROW #'),_('TYPE'),_('TEXT'),'DIC','DICF')
+        iterable = [nos,rownos,types,texts,dic,dicf]
+        # 10'' screen: 35 symbols
+        mes = sh.FastTable (headers = headers
+                           ,iterable = iterable
+                           ,maxrow = 35
+                           ).run()
+        return f + ':\n' + mes
+    
+    def _debug_subjects(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage._debug_subjects'
+        nos = [i + 1 for i in range(len(self.subjects.keys()))]
+        dic = []
+        dicf = []
+        texts = []
+        hashes = []
+        for key in self.subjects.keys():
+            hashes.append(key)
+            dic.append(self.subjects[key]['dic'])
+            dicf.append(self.subjects[key]['dicf'])
+            texts.append(self.subjects[key]['text'])
+        headers = (_('#'),_('DIC'),_('DICF'),_('TEXT'),_('HASH'))
+        iterable = [nos,dic,dicf,texts,hashes]
+        # 10'' screen: 35 symbols
+        mes = sh.FastTable (headers = headers
+                           ,iterable = iterable
+                           ,maxrow = 35
+                           ).run()
+        return f + ':\n' + mes
     
     def set_rows(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.set_rows'
         if self.Success:
-            rowno = -1
+            blocks = [block for block in self.blocks \
+                      if block.type_ in ('term','comment','user') \
+                      and block.text
+                     ]
+            dic = ''
             row = []
-            for block in self.blocks:
-                if block.rowno != rowno:
-                    if row:
-                        self.rows.append(row)
-                        row = []
-                row.append(block)
+            for block in blocks:
+                if block.dic == dic:
+                    row.append(block)
+                elif row:
+                    dic = block.dic
+                    self.rows.append(row)
+                    row = [block]
+                else:
+                    dic = block.dic
+                    row = [block]
             if row:
                 self.rows.append(row)
             if not self.rows:
@@ -667,5 +728,6 @@ class EndPage:
         #TODO: do we really need this?
         #self.process_blocks()
         self.set_rows()
-        #self.debug_rows()
+        self.set_hashes()
+        self.debug()
         

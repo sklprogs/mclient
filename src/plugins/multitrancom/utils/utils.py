@@ -391,16 +391,3 @@ class Commands:
 
 
 com = Commands()
-
-
-if __name__ == '__main__':
-    f = '[MClient] plugins.multitrancom.utils.utils.__main__'
-    sh.com.start()
-    '''
-    Subjects (lang1 = 1
-             ,lang2 = 2
-             ,ui_lang = 2
-             ).run()
-    '''
-    Subjects2().run()
-    sh.com.end()
