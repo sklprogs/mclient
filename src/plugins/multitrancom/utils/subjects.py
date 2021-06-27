@@ -613,8 +613,8 @@ class EndPage:
         else:
             sh.com.cancel(f)
     
-    def debug(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.debug'
+    def debug_rows(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.debug_rows'
         if self.Success:
             if self.Debug:
                 nos = [i + 1 for i in range(len(self.blocks))]
@@ -667,4 +667,5 @@ class EndPage:
         #TODO: do we really need this?
         #self.process_blocks()
         self.set_rows()
-        self.debug()
+        #self.debug_rows()
+        
