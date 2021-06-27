@@ -560,6 +560,111 @@ class Subjects2:
 
 
 
+class Compare:
+    
+    def __init__(self,url,Debug=False):
+        self.Success = True
+        self.ui_langs = [1,2,3,5,33]
+        self.ipages = []
+        self.matches = []
+        self.Debug = Debug
+        self.url = url
+    
+    def debug(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.Compare.debug'
+        if self.Success:
+            if self.Debug:
+                #cur
+                #max_ = len(self.ui_langs) * 2
+                max_ = 4
+                if len(self.matches) % max_ == 0:
+                    matches = sh.List(self.matches).split_by_len(max_)
+                    mes = []
+                    for match in matches:
+                        mes.append('\t'.join(match))
+                    mes = '\n'.join(mes)
+                    sh.com.run_fast_debug(f,mes)
+                else:
+                    sub = '{} % {} == 0'.format(len(self.matches),max_)
+                    mes = _('The condition "{}" is not observed!')
+                    mes = mes.format(sub)
+                    sh.objs.get_mes(f,mes).show_warning()
+            else:
+                sh.com.rep_lazy(f)
+        else:
+            sh.com.cancel(f)
+    
+    def run(self):
+        self.get_pages()
+        self.compare()
+        self.debug()
+    
+    def compare(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.Compare.compare'
+        if self.Success:
+            self.compare_pair()
+        else:
+            sh.com.cancel(f)
+    
+    def compare_pair(self,no1=0,no2=1):
+        f = '[MClient] plugins.multitrancom.utils.subjects.Compare.compare_pair'
+        if self.Success:
+            if no2 < len(self.ipages):
+                hashes1 = self.ipages[no1].get_hashes()
+                hashes2 = self.ipages[no2].get_hashes()
+                if hashes1 and hashes2:
+                    if len(hashes1) == len(hashes2):
+                        for hash_ in hashes1:
+                            if hash_ in hashes2:
+                                tuple1 = self.ipages[no1].get_by_hash(hash_)
+                                tuple2 = self.ipages[no2].get_by_hash(hash_)
+                                if tuple1 and tuple2:
+                                    self.matches.append(tuple1[0])
+                                    self.matches.append(tuple1[1])
+                                    self.matches.append(tuple2[0])
+                                    self.matches.append(tuple2[1])
+                                else:
+                                    sh.com.rep_empty(f)
+                            else:
+                                mes = _('Wrong input data "{}"!')
+                                mes = mes.format(hash_)
+                                sh.objs.get_mes(f,mes,True).show_warning()
+                    else:
+                        self.Success = False
+                        sub = '{} == {}'.format(len(hashes1),len(hashes2))
+                        mes = _('The condition "{}" is not observed!')
+                        mes = mes.format(sub)
+                        sh.objs.get_mes(f,mes).show_warning()
+                else:
+                    sh.com.rep_empty(f)
+            else:
+                self.Success = False
+                sub = '{} < {}'.format(no2,len(self.ipages))
+                mes = _('The condition "{}" is not observed!')
+                mes = mes.format(sub)
+                sh.objs.get_mes(f,mes).show_warning()
+        else:
+            sh.com.cancel(f)
+    
+    def get_pages(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.Compare.run_langs'
+        if self.Success:
+            for ui_lang in self.ui_langs:
+                ipage = EndPage (url = self.url
+                                ,ui_lang = ui_lang
+                                ,Debug = self.Debug
+                                )
+                ipage.run()
+                if ipage.Success:
+                    self.ipages.append(ipage)
+                else:
+                    self.Success = False
+                    return
+        else:
+            sh.com.cancel(f)
+
+
+
 class EndPage:
     
     def __init__(self,url,ui_lang,Debug=False):
@@ -570,6 +675,23 @@ class EndPage:
         self.url = url
         self.ui_lang = ui_lang
         self.Debug = Debug
+    
+    def get_hashes(self):
+        return list(self.subjects.keys())
+    
+    def get_by_hash(self,hash_):
+        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.get_by_hash'
+        if self.Success:
+            # Hash can actually be 0
+            try:
+                return (self.subjects[hash_]['dic']
+                       ,self.subjects[hash_]['dicf']
+                       )
+            except KeyError:
+                mes = _('Wrong input data: "{}"!').format(hash_)
+                sh.objs.get_mes(f,mes,True).show_warning()
+        else:
+            sh.com.cancel(f)
     
     def debug(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.debug'
@@ -608,9 +730,9 @@ class EndPage:
             #TODO: Skip when 'gt.com.fix_url' is reworked
             what = '&SHL=\d+'
             with_ = '&SHL={}'.format(self.ui_lang)
-            url = re.sub(what,with_,self.url)
+            self.url = re.sub(what,with_,self.url)
             if not '&SHL=' in self.url:
-                url += with_
+                self.url += with_
         else:
             sh.com.cancel(f)
     
@@ -664,8 +786,8 @@ class EndPage:
                 texts.append(block.text)
                 dic.append(block.dic)
                 dicf.append(block.dicf)
-        headers = (_('#'),_('ROW #'),_('TYPE'),_('TEXT'),'DIC','DICF')
-        iterable = [nos,rownos,types,texts,dic,dicf]
+        headers = (_('#'),_('ROW #'),'DIC','DICF',_('TYPE'),_('TEXT'))
+        iterable = [nos,rownos,dic,dicf,types,texts]
         # 10'' screen: 35 symbols
         mes = sh.FastTable (headers = headers
                            ,iterable = iterable
