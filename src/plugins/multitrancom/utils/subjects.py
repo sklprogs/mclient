@@ -670,12 +670,10 @@ class EndPage:
             for row in self.rows:
                 if row:
                     texts = [block.text for block in row]
-                    text = ' '.join(texts)
-                    hash_ = hash(text)
+                    hash_ = hash(' '.join(texts))
                     block = row[0]
                     self.subjects[hash_] = {'dic':block.dic
                                            ,'dicf':block.dicf
-                                           ,'text':text
                                            }
                 else:
                     sh.com.rep_empty(f)
@@ -716,15 +714,6 @@ class EndPage:
         else:
             sh.com.cancel(f)
     
-    def process_blocks(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.get_blocks'
-        if self.Success:
-            for block in self.blocks:
-                block.text = block.text.replace(sh.lg.nbspace,' ')
-                block.text = block.text.strip()
-        else:
-            sh.com.cancel(f)
-    
     def _debug_rows(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.EndPage._debug_rows'
         # 'self.rows' contains blocks of certain types
@@ -759,19 +748,17 @@ class EndPage:
         nos = [i + 1 for i in range(len(self.subjects.keys()))]
         dic = []
         dicf = []
-        texts = []
         hashes = []
         for key in self.subjects.keys():
             hashes.append(key)
             dic.append(self.subjects[key]['dic'])
             dicf.append(self.subjects[key]['dicf'])
-            texts.append(self.subjects[key]['text'])
-        headers = (_('#'),_('DIC'),_('DICF'),_('TEXT'),_('HASH'))
-        iterable = [nos,dic,dicf,texts,hashes]
-        # 10'' screen: 35 symbols
+        headers = (_('#'),_('DIC'),_('DICF'),_('HASH'))
+        iterable = [nos,dic,dicf,hashes]
+        # 10'' screen: 40 symbols
         mes = sh.FastTable (headers = headers
                            ,iterable = iterable
-                           ,maxrow = 35
+                           ,maxrow = 40
                            ).run()
         return f + ':\n' + mes
     
@@ -806,8 +793,6 @@ class EndPage:
         self.check()
         self.fix_url()
         self.set_blocks()
-        #TODO: do we really need this?
-        #self.process_blocks()
         self.set_rows()
         self.set_hashes()
         self.debug()
