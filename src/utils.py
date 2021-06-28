@@ -13,6 +13,7 @@ if __name__ == '__main__':
     ui_lang = 1
     #us.EndPage(url,ui_lang,True).run()
     #us.Compare(url,True).run()
-    us.StartPage(1,2,True).run()
+    #us.StartPage(1,2,True).run()
+    us.Extractor(False).run()
     sh.com.end()
                 

@@ -16,7 +16,6 @@ class MiddlePage:
     
     def __init__(self,url,search='search'):
         self.Success = True
-        self.block = el.Block()
         self.blocks = []
         self.url = url
         self.search = search
@@ -31,9 +30,9 @@ class MiddlePage:
         f = '[MClient] plugins.multitrancom.utils.subjects.MiddlePage.get_first'
         if self.Success:
             for block in self.blocks:
-                if block.type_ == 'term':
-                    self.block = block
-                    break
+                if block.type_ == 'term' and block.text.strip() \
+                and block.url:
+                    return(block.url,block.text)
         else:
             sh.com.cancel(f)
     
@@ -74,16 +73,20 @@ class MiddlePage:
 
 class Extractor:
     
-    def __init__(self):
+    def __init__(self,Debug=False):
         self.Success = True
         self.filew = '/tmp/subjects'
-        self.matches = []
+        self.match = ''
+        self.Debug = Debug
     
     def save(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.save'
         if self.Success:
-            text = '\n'.join(self.matches)
-            sh.WriteTextFile(self.filew,True).write(text)
+            match = self.match.splitlines()
+            match = [item for item in match if item]
+            match.sort()
+            self.match = '\n'.join(match)
+            sh.WriteTextFile(self.filew,True).write(self.match)
         else:
             sh.com.cancel(f)
     
@@ -94,11 +97,44 @@ class Extractor:
         else:
             sh.com.cancel(f)
     
+    def run_batch(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.run_pass'
+        if self.Success:
+            #cur
+            #TODO: delete range when ready
+            blocks = self.istart.blocks[20:25]
+            for block in blocks:
+                imiddle = MiddlePage(block.url,block.text)
+                imiddle.run()
+                tuple_ = imiddle.get_first()
+                if tuple_:
+                    icompare = Compare (url = tuple_[0]
+                                       ,search = tuple_[1]
+                                       ,Debug = self.Debug
+                                       )
+                    icompare.run()
+                    self.match += icompare.match
+                else:
+                    self.Success = False
+                    sh.com.rep_empty(f)
+            else:
+                self.Success = False
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
+    
     def run_pass(self,lang1,lang2):
-        istart = StartPage(lang1,lang2,True)
-        istart.run()
-        #TODO: delete when ready
-        blocks = istart.blocks[20:25]
+        f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.run_pass'
+        if self.Success:
+            self.istart = StartPage (lang1 = lang1
+                                    ,lang2 = lang2
+                                    ,Debug = self.Debug
+                                    )
+            self.istart.run()
+            self.Success = self.istart.Success
+            self.run_batch()
+        else:
+            sh.com.cancel(f)
     
     def loop(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.loop'
@@ -109,8 +145,8 @@ class Extractor:
     
     def run(self):
         self.loop()
-        #self.save()
-        #self.launch()
+        self.save()
+        self.launch()
 
 
 
@@ -187,9 +223,14 @@ class StartPage:
             itags = tg.Tags(text)
             self.blocks = itags.run()
             self.blocks = Elems(self.blocks).run()
-            self.blocks = [block for block in self.blocks if block.url]
             for block in self.blocks:
                 block.text = block.text.strip()
+            self.blocks = [block for block in self.blocks \
+                           if block.url and block.text
+                          ]
+            if not self.blocks:
+                self.Success = False
+                sh.com.rep_out(f)
         else:
             sh.com.cancel(f)
     
@@ -220,13 +261,14 @@ class StartPage:
 
 class Compare:
     
-    def __init__(self,url,Debug=False):
+    def __init__(self,url,search='search',Debug=False):
         self.Success = True
         self.ui_langs = [1,2,3,5,33]
         self.ipages = []
         self.match = ''
         self.Debug = Debug
         self.url = url
+        self.search = search
     
     def debug(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.Compare.debug'
@@ -269,6 +311,7 @@ class Compare:
             for ui_lang in self.ui_langs:
                 ipage = EndPage (url = self.url
                                 ,ui_lang = ui_lang
+                                ,search = self.search
                                 ,Debug = self.Debug
                                 )
                 ipage.run()
@@ -284,7 +327,7 @@ class Compare:
 
 class EndPage:
     
-    def __init__(self,url,ui_lang,Debug=False):
+    def __init__(self,url,ui_lang,search='search',Debug=False):
         self.Success = True
         self.blocks = []
         self.rows = []
@@ -292,6 +335,7 @@ class EndPage:
         self.url = url
         self.ui_lang = ui_lang
         self.Debug = Debug
+        self.search = search
     
     def get_hashes(self):
         return list(self.subjects.keys())
@@ -360,7 +404,7 @@ class EndPage:
     def set_blocks(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.set_blocks'
         if self.Success:
-            search = 'search (lang: {})'.format(self.ui_lang)
+            search = '{} (lang: {})'.format(self.search,self.ui_lang)
             mes = _('Get "{}" at "{}"').format(search,self.url)
             sh.objs.get_mes(f,mes,True).show_debug()
             self.blocks = rn.Plugin().request (search = search
@@ -394,10 +438,10 @@ class EndPage:
                 dicf.append(block.dicf)
         headers = (_('#'),_('ROW #'),'DIC','DICF',_('TYPE'),_('TEXT'))
         iterable = [nos,rownos,dic,dicf,types,texts]
-        # 10'' screen: 35 symbols
+        # 10'' screen: 30 symbols
         mes = sh.FastTable (headers = headers
                            ,iterable = iterable
-                           ,maxrow = 35
+                           ,maxrow = 30
                            ).run()
         return f + ':\n' + mes
     
