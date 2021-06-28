@@ -12,6 +12,7 @@ if __name__ == '__main__':
     url = 'https://www.multitran.com/m.exe?s=printer&l1=1&l2=2'
     ui_lang = 1
     #us.EndPage(url,ui_lang,True).run()
-    us.Compare(url,True).run()
+    #us.Compare(url,True).run()
+    us.StartPage(1,2,True).run()
     sh.com.end()
                 

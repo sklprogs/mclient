@@ -12,6 +12,108 @@ import plugins.multitrancom.elems as el
 import plugins.multitrancom.run as rn
 
 
+class MiddlePage:
+    
+    def __init__(self,url,search='search'):
+        self.Success = True
+        self.block = el.Block()
+        self.blocks = []
+        self.url = url
+        self.search = search
+    
+    def run(self):
+        self.check()
+        self.fix_url()
+        self.set_blocks()
+        self.get_first()
+    
+    def get_first(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.MiddlePage.get_first'
+        if self.Success:
+            for block in self.blocks:
+                if block.type_ == 'term':
+                    self.block = block
+                    break
+        else:
+            sh.com.cancel(f)
+    
+    def set_blocks(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.MiddlePage.set_blocks'
+        if self.Success:
+            mes = _('Get "{}" at "{}"').format(self.search,self.url)
+            sh.objs.get_mes(f,mes,True).show_debug()
+            self.blocks = rn.Plugin().request (search = self.search
+                                              ,url = self.url
+                                              )
+            if not self.blocks:
+                self.Success = False
+                sh.com.rep_out(f)
+        else:
+            sh.com.cancel(f)
+    
+    def fix_url(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.MiddlePage.fix_url'
+        if self.Success:
+            self.url = gt.com.fix_url(self.url)
+            what = '&SHL=\d+'
+            # Force a page to be in English
+            with_ = '&SHL=1'
+            self.url = re.sub(what,with_,self.url)
+            if not '&SHL=' in self.url:
+                self.url += with_
+        else:
+            sh.com.cancel(f)
+    
+    def check(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.MiddlePage.check'
+        if not self.url:
+            self.Success = False
+            sh.com.rep_empty(f)
+
+
+
+class Extractor:
+    
+    def __init__(self):
+        self.Success = True
+        self.filew = '/tmp/subjects'
+        self.matches = []
+    
+    def save(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.save'
+        if self.Success:
+            text = '\n'.join(self.matches)
+            sh.WriteTextFile(self.filew,True).write(text)
+        else:
+            sh.com.cancel(f)
+    
+    def launch(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.launch'
+        if self.Success:
+            sh.Launch(self.filew).launch_default()
+        else:
+            sh.com.cancel(f)
+    
+    def run_pass(self,lang1,lang2):
+        istart = StartPage(lang1,lang2,True)
+        istart.run()
+        #TODO: delete when ready
+        blocks = istart.blocks[20:25]
+    
+    def loop(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.loop'
+        if self.Success:
+            self.run_pass(1,1)
+        else:
+            sh.com.cancel(f)
+    
+    def run(self):
+        self.loop()
+        #self.save()
+        #self.launch()
+
+
+
 class Elems(el.Elems):
     
     def run(self):
@@ -33,261 +135,53 @@ class Elems(el.Elems):
 
 
 
-class Subjects:
+class StartPage:
     
-    def __init__(self):
-        self.set_values()
+    def __init__(self,lang1=1,lang2=2,Debug=False):
+        self.Success = True
+        self.filew = '/tmp/subjects (abbr + full)'
+        self.url = ''
+        self.blocks = []
+        self.lang1 = lang1
+        self.lang2 = lang2
+        self.Debug = Debug
     
-    def _get_title(self,url):
-        match = re.match('.* title="(.*)',url)
-        if match:
-            return match.group(1)
-
-    def _find_abbr(self,abbr,url,subject):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects._find_abbr'
-        title = self._get_title(url)
-        if title and abbr and url and subject:
-            # This actually happens
-            title = title.replace(sh.lg.nbspace,' ')
-            # Just to be on a safe side
-            abbr = abbr.replace(sh.lg.nbspace,' ')
-            title_split = title.split(', ')
-            abbr_split = abbr.split(', ')
-            title_split = [title.strip() for title in title_split]
-            abbr_split = [abbr.strip() for abbr in abbr_split]
-            ''' Sometimes not all abbreviations are given the full form,
-                e.g., 'юр., англос.' -> 'Общее право (англосаксонская
-                правовая система)'. Since this function returns only
-                one abbreviation, it is safe to make the lists to be
-                of the same length.
-            '''
-            filler = title_split[0]
-            Filled = False
-            while len(title_split) < len(abbr_split):
-                Filled = True
-                title_split.append(filler)
-            if len(title_split) == len(abbr_split):
-                for i in range(len(title_split)):
-                    if title_split[i] == subject:
-                        if Filled:
-                            return abbr
-                        else:
-                            return abbr_split[i]
-            else:
-                sub = '{} == {}'.format (len(title_split)
-                                        ,len(abbr_split)
-                                        )
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
-            sh.com.rep_empty(f)
-    
-    def _fix_url(self,url):
-        url = gt.com.fix_url(url)
-        #TODO: Skip when 'gt.com.fix_url' is reworked
-        what = '&SHL=\d+'
-        with_ = '&SHL={}'.format(self.ui_lang)
-        url = re.sub(what,with_,url)
-        if not '&SHL=' in url:
-            url += with_
-        return url
-    
-    def _debug_dics(self,blocks):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects._debug_dics'
-        nos = [i + 1 for i in range(len(blocks))]
-        types = ['dic' for i in range(len(blocks))]
-        texts = [block.text for block in blocks]
-        urls = [block.url for block in blocks]
-        headers = (_('#'),_('TYPE'),_('TEXT'),_('URL'))
-        texts, nos, urls = (list(x) for x \
-            in zip (*sorted (zip (texts,nos,urls)
-                            ,key = lambda x:x[0].lower()
-                            )
-                   )
-                                   )
+    def _debug_blocks(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.StartPage._debug_blocks'
+        nos = [i + 1 for i in range(len(self.blocks))]
+        types = []
+        texts = []
+        urls = []
+        for block in self.blocks:
+            types.append(block.type_)
+            texts.append(block.text)
+            urls.append(block.url)
+        headers = (_('#'),_('TYPE'),_('TEXT'),'URL')
         iterable = [nos,types,texts,urls]
-        mes = sh.FastTable (iterable = iterable
-                           ,headers = headers
+        # 10'' monitor: 40 symbols per row
+        mes = sh.FastTable (headers = headers
+                           ,iterable = iterable
+                           ,maxrow = 40
                            ).run()
-        sh.com.run_fast_debug(f,mes)
-    
-    def dump(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.dump'
-        if self.Success:
-            mes = []
-            for i in range(len(self.titles)):
-                sub = '{}\t{}'.format(self.titles[i],self.abbrs[i])
-                mes.append(sub)
-            for i in range(len(self.failed_titles)):
-                sub = '{}\t{}'.format(self.failed_titles[i],'?')
-                mes.append(sub)
-            mes = '\n'.join(mes)
-            #sh.com.run_fast_debug(f,mes)
-            sh.WriteTextFile(self.filew,True).write(mes)
-            sh.Launch(self.filew).launch_default()
-        else:
-            sh.com.cancel(f)
+        return f + '\n' + mes
     
     def debug(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.debug'
+        f = '[MClient] plugins.multitrancom.utils.subjects.StartPage.debug'
         if self.Success:
-            nos = [i + 1 for i in range(len(self.abbrs))]
-            headers = (_('#'),_('TITLE'),_('ABBREVIATION'))
-            iterable = [nos,self.titles,self.abbrs]
-            mes = sh.FastTable (headers = headers
-                               ,iterable = iterable
-                               ).run()
-            sh.com.run_fast_debug(f,mes)
-        else:
-            sh.com.cancel(f)
-    
-    def filter_subjects(self,blocks):
-        return [block for block in blocks \
-                if block.type_ == 'dic' and block.text
-               ]
-    
-    def get_blocks_final(self,block):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.get_blocks_final'
-        blocks = []
-        if self.Success:
-            if block:
-                block.url = self._fix_url(block.url)
-                mes = _('Get "{}" at "{}"').format(block.text,block.url)
-                sh.objs.get_mes(f,mes,True).show_debug()
-                return rn.Plugin().request (search = block.text
-                                           ,url = block.url
-                                           )
+            if self.Debug:
+                mes = self._debug_blocks()
+                sh.com.run_fast_debug(f,mes)
             else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-        return blocks
-    
-    def get_abbr(self,block,dicf):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.get_abbr'
-        if self.Success:
-            blocks = self.get_blocks_final(block)
-            #self._debug_dics(blocks)
-            for block in blocks:
-                abbr = self._find_abbr (abbr = block.text
-                                       ,url = block.url
-                                       ,subject = dicf
-                                       )
-                if abbr:
-                    return(abbr,block.no)
-            else:
-                sh.com.rep_empty(f)
+                sh.com.rep_lazy(f)
         else:
             sh.com.cancel(f)
     
-    def get_next(self,block):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.get_next'
-        if self.Success:
-            if block:
-                url = block.url
-                url = self._fix_url(url)
-                mes = _('Get "{}" at "{}"').format(block.text,url)
-                sh.objs.get_mes(f,mes,True).show_debug()
-                blocks = rn.Plugin().request (search = block.text
-                                             ,url = url
-                                             )
-                blocks = [block for block in blocks \
-                          if block.type_ == 'term' and block.url
-                         ]
-                if blocks:
-                    blocks[0].text = blocks[0].text.strip()
-                    return blocks[0]
-                else:
-                    sh.com.rep_empty(f)
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def get_english(self,block):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.get_english'
-        if self.Success:
-            self.ui_lang = 1
-            blocks = self.get_blocks_final(block)
-            blocks = self.filter_subjects(blocks)
-        else:
-            sh.com.cancel(f)
-    
-    def get_urls(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.get_urls'
-        if self.Success:
-            if self.blocks:
-                # For testing purposes, decrease a number of blocks here
-                #cur
-                #self.blocks[20:30]
-                self.blocks = [self.blocks[30]]
-                ui_langs = list(self.ui_langs)
-                ui_langs.remove(1)
-                for block in self.blocks:
-                    dicf = block.text
-                    # This actually happens
-                    dicf = dicf.replace(sh.lg.nbspace,' ')
-                    dicf = dicf.strip()
-                    if not dicf in self.titles:
-                        self.ui_lang = 1
-                        block = self.get_next(block)
-                        tuple_ = self.get_abbr(block,dicf)
-                        if dicf and tuple_:
-                            abbr = tuple_[0]
-                            block_no = tuple_[1] - 1
-                            mes = '"{}" -> "{}"'.format(abbr,dicf)
-                            sh.objs.get_mes(f,mes,True).show_info()
-                            self.titles.append(dicf)
-                            self.abbrs.append(abbr)
-                            for self.ui_lang in ui_langs:
-                                block = self.get_next(block)
-                                blocks = self.get_blocks_final(block)
-                                if block_no < len(blocks):
-                                    block = blocks[block_no]
-                                    subject = block.text
-                                    subject = subject.replace(sh.lg.nbspace,'')
-                                    subject = subject.strip()
-                                    tuple_ = self._find_abbr (abbr = block.text
-                                                             ,url = block.url
-                                                             ,subject = subject
-                                                             )
-                                    if tuple_:
-                                        abbr = tuple_[0]
-                                        mes = '"{}" -> "{}"'
-                                        mes = mes.format(abbr,dicf)
-                                        sh.objs.get_mes(f,mes,True).show_info()
-                                        self.titles.append(subject)
-                                        self.abbrs.append(abbr)
-                                    else:
-                                        sh.com.rep_empty(f)
-                                else:
-                                    sub = '{} < {}'.format (block_no
-                                                           ,len(blocks)
-                                                           )
-                                    mes = _('The condition "{}" is not observed!')
-                                    mes = mes.format(sub)
-                                    sh.objs.get_mes(f,mes,True).show_warning()
-                        elif dicf:
-                            mes = _('No match has been found for "{}"!')
-                            mes = mes.format(dicf)
-                            sh.objs.get_mes(f,mes,True).show_warning()
-                            if not dicf in self.failed_titles:
-                                self.failed_titles.append(dicf)
-                        else:
-                            sh.com.rep_empty(f)
-            else:
-                self.Success = False
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def get_menu(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.get_menu'
+    def set_blocks(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.StartPage.set_blocks'
         if self.Success:
             search = 'menu{}-{}'.format(self.lang1,self.lang2)
             htm = gt.Get (search = search
-                         ,url = self.menu_url
+                         ,url = self.url
                          ).run()
             text = cu.CleanUp(htm).run()
             itags = tg.Tags(text)
@@ -300,263 +194,27 @@ class Subjects:
             sh.com.cancel(f)
     
     def check(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.check'
+        f = '[MClient] plugins.multitrancom.utils.subjects.StartPage.check'
         self.Success = self.lang1 and self.lang2
         if not self.Success:
             sh.com.rep_empty(f)
         
-    def set_menu_url(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.set_menu_url'
+    def set_url(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.StartPage.set_url'
         if self.Success:
             ''' Since gettext entries are English-based, English is
                 selected as a primary language.
             '''
-            self.menu_url = 'https://www.multitran.com/m.exe?a=112&l1={}&l2={}&SHL=1'
-            self.menu_url = self.menu_url.format (self.lang1
-                                                 ,self.lang2
-                                                 )
+            self.url = 'https://www.multitran.com/m.exe?a=112&l1={}&l2={}&SHL=1'
+            self.url = self.url.format(self.lang1,self.lang2)
         else:
             sh.com.cancel(f)
-    
-    def set_values(self):
-        self.Success = True
-        self.ui_langs = [1,2,3,5,33]
-        self.abbrs = []
-        self.titles = []
-        self.failed_titles = []
-        self.menu_url = ''
-        self.filew = '/tmp/subjects (abbr + full)'
-        self.lang1 = 1
-        self.lang2 = 2
-        self.ui_lang = 1
-        
-    def _run(self):
-        self.set_menu_url()
-        self.get_menu()
-        self.get_urls()
-    
-    def run_pass(self,lang1,lang2):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.run_pass'
-        if self.Success:
-            len_ = len(self.titles)
-            self.lang1 = lang1
-            self.lang2 = lang2
-            self._run()
-            delta = len(self.titles) - len_
-            mes = _('Pass {}-{}: {} new titles')
-            mes = mes.format(self.lang1,self.lang2,delta)
-            sh.objs.get_mes(f,mes,True).show_info()
-            print('================================================')
-        else:
-            sh.com.cancel(f)
-    
-    def loop(self):
-        ''' Currently available interface languages:
-            1  (English)
-            2  (Russian)
-            3  (German)
-            5  (Spanish)
-            33 (Ukranian)
-        '''
-        self.run_pass(1,1)
-        self.run_pass(1,2)
-        self.run_pass(2,2)
-        self.run_pass(2,3)
-        self.run_pass(3,3)
-        self.run_pass(2,4)
-        self.run_pass(4,4)
-        self.run_pass(2,5)
-        self.run_pass(5,5)
     
     def run(self):
         self.check()
-        #cur
-        #self.loop()
-        self.run_pass(1,1)
-        self.dump()
-        #self.debug()
-
-
-
-class Subjects2:
-    
-    def __init__(self):
-        self.set_values()
-    
-    def reassign_rows(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.reassign_rows'
-        if self.Success:
-            len_ = len(self.rows)
-            self.rows = sorted(set(self.rows))
-            delta = len_ - len(self.rows)
-            sh.com.rep_deleted(f,delta)
-        else:
-            sh.com.cancel(f)
-    
-    def dump(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.dump'
-        if self.Success:
-            text = '\n'.join(self.rows)
-            sh.WriteTextFile(self.filew,True).write(text)
-            sh.Launch(self.filew).launch_default()
-        else:
-            sh.com.cancel(f)
-    
-    def debug(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.debug'
-        if self.Success:
-            nos = [i + 1 for i in range(len(self.mult))]
-            rownos = []
-            types = []
-            texts = []
-            urls = []
-            for i in range(len(self.mult)):
-                for block in self.mult[i]:
-                    rownos.append(i)
-                    types.append(block.type_)
-                    texts.append(block.text)
-                    urls.append(block.url)
-            headers = (_('#'),_('ROW #'),_('TYPE'),_('TEXT'),'URL')
-            iterable = [nos,rownos,types,texts,urls]
-            mes = sh.FastTable (headers = headers
-                               ,iterable = iterable
-                               ).run()
-            sh.com.run_fast_debug(f,mes)
-        else:
-            sh.com.cancel(f)
-    
-    def _get_title(self,url):
-        match = re.match('.* title="(.*)',url)
-        if match:
-            title = match.group(1)
-            title = title.replace(sh.lg.nbspace,' ')
-            return title.strip()
-        return ''
-    
-    def set_values(self):
-        self.Success = True
-        self.ui_langs = [1,2,3,5,33]
-        self.abbrs = []
-        self.titles = []
-        self.failed_titles = []
-        self.mult = []
-        self.rows = []
-        self.menu_url = ''
-        self.filew = '/tmp/subjects (abbr + full)'
-        self.lang1 = 1
-        self.lang2 = 2
-        self.ui_lang = 1
-    
-    def _fix_url(self,url):
-        url = gt.com.fix_url(url)
-        #TODO: Skip when 'gt.com.fix_url' is reworked
-        what = '&SHL=\d+'
-        with_ = '&SHL={}'.format(self.ui_lang)
-        url = re.sub(what,with_,url)
-        if not '&SHL=' in url:
-            url += with_
-        return url
-    
-    def get_subjects(self,search,url):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.get_subjects'
-        blocks = []
-        if self.Success:
-            if search and url:
-                url = self._fix_url(url)
-                mes = _('Get "{}" at "{}"').format(search,url)
-                sh.objs.get_mes(f,mes,True).show_debug()
-                blocks = rn.Plugin().request (search = search
-                                             ,url = url
-                                             )
-                blocks = [block for block in blocks \
-                          if block.type_ == 'dic' and block.text.strip()
-                         ]
-                for block in blocks:
-                    block.text = block.text.replace(sh.lg.nbspace,' ')
-                    block.text = block.text.strip()
-                return blocks
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-        return blocks
-    
-    def run(self):
-        #url = 'https://www.multitran.com/m.exe?s=3D+printer&l1=1&l2=2'
-        url = 'https://www.multitran.com/m.exe?s=printer&l1=1&l2=2'
-        self.get_all_subjects(url)
-        self.check_mult()
-        self.reassign_mult()
-        self.reassign_rows()
-        #self.debug_mult()
-        self.add()
+        self.set_url()
+        self.set_blocks()
         self.debug()
-        #self.dump()
-    
-    def add(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.add'
-        if self.Success:
-            count = 0
-            for list_ in self.mult:
-                row = []
-                for block in list_:
-                    #cur
-                    #title = self._get_title(block.url)
-                    #abbr = block.text
-                    title = block.dicf
-                    abbr = block.dic
-                    if not title:
-                        count += 1
-                        title = _('Logic error!')
-                    if not abbr:
-                        count += 1
-                        abbr = _('Logic error!')
-                    row.append(title)
-                    row.append(abbr)
-                self.rows.append('\t'.join(row))
-            if count:
-                mes = _('{} errors').format(count)
-                sh.objs.get_mes(f,mes,True).show_warning()
-        else:
-            sh.com.cancel(f)
-    
-    def reassign_mult(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.reassign_mult'
-        if self.Success:
-            mult = []
-            for i in range(len(self.mult[0])):
-                row = []
-                for list_ in self.mult:
-                    row.append(list_[i])
-                mult.append(row)
-            self.mult = mult
-        else:
-            sh.com.cancel(f)
-    
-    def check_mult(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.check_mult'
-        if self.Success:
-            if self.mult:
-                lens = [len(list_) for list_ in self.mult]
-                if len(set(lens)) != 1:
-                    self.Success = False
-                    mes = _('Wrong input data: "{}"!').format(lens)
-                    sh.objs.get_mes(f,mes).show_warning()
-            else:
-                self.Success = False
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def get_all_subjects(self,url):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Subjects.get_all_subjects'
-        if self.Success:
-            for self.ui_lang in self.ui_langs:
-                search = 'search (lang: {})'.format(self.ui_lang)
-                self.mult.append(self.get_subjects(search,url))
-            self.mult = [item for item in self.mult if item]
-        else:
-            sh.com.cancel(f)
 
 
 
