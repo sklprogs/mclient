@@ -566,7 +566,7 @@ class Compare:
         self.Success = True
         self.ui_langs = [1,2,3,5,33]
         self.ipages = []
-        self.matches = []
+        self.match = ''
         self.Debug = Debug
         self.url = url
     
@@ -574,21 +574,10 @@ class Compare:
         f = '[MClient] plugins.multitrancom.utils.subjects.Compare.debug'
         if self.Success:
             if self.Debug:
-                #cur
-                #max_ = len(self.ui_langs) * 2
-                max_ = 4
-                if len(self.matches) % max_ == 0:
-                    matches = sh.List(self.matches).split_by_len(max_)
-                    mes = []
-                    for match in matches:
-                        mes.append('\t'.join(match))
-                    mes = '\n'.join(mes)
-                    sh.com.run_fast_debug(f,mes)
+                if self.match:
+                    sh.com.run_fast_debug(f,self.match)
                 else:
-                    sub = '{} % {} == 0'.format(len(self.matches),max_)
-                    mes = _('The condition "{}" is not observed!')
-                    mes = mes.format(sub)
-                    sh.objs.get_mes(f,mes).show_warning()
+                    sh.com.rep_empty(f)
             else:
                 sh.com.rep_lazy(f)
         else:
@@ -602,52 +591,22 @@ class Compare:
     def compare(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.Compare.compare'
         if self.Success:
-            self.compare_pair()
-        else:
-            sh.com.cancel(f)
-    
-    def compare_pair(self,no1=0,no2=1):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Compare.compare_pair'
-        if self.Success:
-            if no2 < len(self.ipages):
-                hashes1 = self.ipages[no1].get_hashes()
-                hashes2 = self.ipages[no2].get_hashes()
-                if hashes1 and hashes2:
-                    if len(hashes1) == len(hashes2):
-                        for hash_ in hashes1:
-                            if hash_ in hashes2:
-                                tuple1 = self.ipages[no1].get_by_hash(hash_)
-                                tuple2 = self.ipages[no2].get_by_hash(hash_)
-                                if tuple1 and tuple2:
-                                    self.matches.append(tuple1[0])
-                                    self.matches.append(tuple1[1])
-                                    self.matches.append(tuple2[0])
-                                    self.matches.append(tuple2[1])
-                                else:
-                                    sh.com.rep_empty(f)
-                            else:
-                                mes = _('Wrong input data "{}"!')
-                                mes = mes.format(hash_)
-                                sh.objs.get_mes(f,mes,True).show_warning()
-                    else:
-                        self.Success = False
-                        sub = '{} == {}'.format(len(hashes1),len(hashes2))
-                        mes = _('The condition "{}" is not observed!')
-                        mes = mes.format(sub)
-                        sh.objs.get_mes(f,mes).show_warning()
-                else:
-                    sh.com.rep_empty(f)
-            else:
-                self.Success = False
-                sub = '{} < {}'.format(no2,len(self.ipages))
-                mes = _('The condition "{}" is not observed!')
-                mes = mes.format(sub)
-                sh.objs.get_mes(f,mes).show_warning()
+            matches = []
+            # Checks are done in 'self.get_pages'
+            for hash_ in self.ipages[0].get_hashes():
+                row = []
+                for ipage in self.ipages:
+                    tuple_ = ipage.get_by_hash(hash_)
+                    if tuple_:
+                        row.append(tuple_[0])
+                        row.append(tuple_[1])
+                matches.append('\t'.join(row))
+            self.match = '\n'.join(matches)
         else:
             sh.com.cancel(f)
     
     def get_pages(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Compare.run_langs'
+        f = '[MClient] plugins.multitrancom.utils.subjects.Compare.get_pages'
         if self.Success:
             for ui_lang in self.ui_langs:
                 ipage = EndPage (url = self.url
