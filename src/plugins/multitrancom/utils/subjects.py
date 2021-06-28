@@ -75,7 +75,7 @@ class Extractor:
     
     def __init__(self,Debug=False):
         self.Success = True
-        self.filew = '/tmp/subjects'
+        self.filew = '/home/pete/tmp/subjects'
         self.match = ''
         self.Debug = Debug
     
@@ -84,6 +84,7 @@ class Extractor:
         if self.Success:
             match = self.match.splitlines()
             match = [item for item in match if item]
+            match = list(set(match))
             match.sort()
             self.match = '\n'.join(match)
             sh.WriteTextFile(self.filew,True).write(self.match)
@@ -98,7 +99,7 @@ class Extractor:
             sh.com.cancel(f)
     
     def run_batch(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.run_pass'
+        f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.run_batch'
         if self.Success:
             #cur
             #TODO: delete range when ready
@@ -115,11 +116,7 @@ class Extractor:
                     icompare.run()
                     self.match += icompare.match
                 else:
-                    self.Success = False
                     sh.com.rep_empty(f)
-            else:
-                self.Success = False
-                sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     

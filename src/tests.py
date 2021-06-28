@@ -289,7 +289,7 @@ class Plugin:
         #search = 'цепь: провод'
         #url = 'https://www.multitran.com/m.exe?s=%D0%B2%D1%81%D0%BF%D0%BE%D0%BC%D0%B8%D0%BD%D0%B0%D1%82%D1%8C&l1=2&l2=1&SHL=2'
         #search = 'вспоминать'
-        url = 'https://www.multitran.com/m.exe?s=reticulated+siren&l1=1&l2=10000&SHL=5'
+        url = 'https://www.multitran.com/m.exe?s=reticulated+siren&l1=1&l2=10000&SHL=33'
         search = 'reticulated siren'
         
         mc.Plugin (Debug = DEBUG
