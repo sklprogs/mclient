@@ -287,15 +287,16 @@ class Plugin:
         #search = 'question'
         #url = 'https://www.multitran.com/m.exe?s=%D1%86%D0%B5%D0%BF%D1%8C:+%D0%BF%D1%80%D0%BE%D0%B2%D0%BE%D0%B4&l1=2&l2=1'
         #search = 'цепь: провод'
-        url = 'https://www.multitran.com/m.exe?s=%D0%B2%D1%81%D0%BF%D0%BE%D0%BC%D0%B8%D0%BD%D0%B0%D1%82%D1%8C&l1=2&l2=1&SHL=2'
-        search = 'вспоминать'
+        #url = 'https://www.multitran.com/m.exe?s=%D0%B2%D1%81%D0%BF%D0%BE%D0%BC%D0%B8%D0%BD%D0%B0%D1%82%D1%8C&l1=2&l2=1&SHL=2'
+        #search = 'вспоминать'
+        url = 'https://www.multitran.com/m.exe?s=reticulated+siren&l1=1&l2=10000&SHL=5'
+        search = 'reticulated siren'
         
-        iplug = mc.Plugin (Debug = DEBUG
-                          ,maxrows = 0
-                          )
-        iplug.request (url = url
-                      ,search = search
-                      )
+        mc.Plugin (Debug = DEBUG
+                  ,maxrows = 0
+                  ).request (url = url
+                            ,search = search
+                            )
     
     def reinsert_same(self):
         f = '[MClient] tests.Plugin.reinsert_same'

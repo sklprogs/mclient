@@ -480,7 +480,7 @@ class Elems:
         ''' - Sometimes it's not enough to delete comment-only tail
               since there might be no 'phdic' type which serves as
               an indicator.
-            - Takes ~0.012s for 'set' (EN-RU) on AMD E-300
+            - Takes ~0.02s for 'set' (EN-RU) on AMD E-300
         '''
         ru = ('Добавить','|','Сообщить об ошибке','|'
              ,'Ссылка на эту страницу','|'
@@ -489,9 +489,22 @@ class Elems:
         en = ('Add','|','Report an error','|','Get short URL','|'
              ,'Language Selection Tips'
              )
+        de = ('Hinzufügen','|','Fehlerhaften Eintrag melden','|'
+             ,'Get short URL','|','Hinweise'
+             )
+        sp = ('Añadir','|','Enviar un mensaje de error','|'
+             ,'Enlace corto a esta página','|'
+             ,'Modos de seleccionar idiomas'
+             )
+        uk = ('Додати','|','Повідомити про помилку','|'
+             ,'Посилання на цю сторінку','|','Способи вибору мов'
+             )
         texts = [block.text for block in self.blocks]
         self._delete_tail_links(sh.List(texts,ru).find())
         self._delete_tail_links(sh.List(texts,en).find())
+        self._delete_tail_links(sh.List(texts,de).find())
+        self._delete_tail_links(sh.List(texts,sp).find())
+        self._delete_tail_links(sh.List(texts,uk).find())
         ru = ('Добавить','|','Способы выбора языков')
         en = ('Add','|','Language Selection Tips')
         self._delete_tail_links(sh.List(texts,ru).find())

@@ -372,10 +372,14 @@ class EndPage:
             for row in self.rows:
                 if row:
                     texts = [block.text for block in row]
-                    hash_ = hash(' '.join(texts))
+                    text = ' '.join(texts)
+                    #cur
+                    #hash_ = hash(text)
+                    hash_ = text
                     block = row[0]
                     self.subjects[hash_] = {'dic':block.dic
                                            ,'dicf':block.dicf
+                                           ,'text':text
                                            }
                 else:
                     sh.com.rep_empty(f)
@@ -410,6 +414,9 @@ class EndPage:
             self.blocks = rn.Plugin().request (search = search
                                               ,url = self.url
                                               )
+            for block in self.blocks:
+                block.text = block.text.replace(sh.lg.nbspace,' ')
+                block.text = block.text.strip()
             if not self.blocks:
                 self.Success = False
                 sh.com.rep_out(f)
