@@ -101,10 +101,7 @@ class Extractor:
     def run_batch(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.run_batch'
         if self.Success:
-            #cur
-            #TODO: delete range when ready
-            blocks = self.istart.blocks[20:25]
-            for block in blocks:
+            for block in self.istart.blocks:
                 imiddle = MiddlePage(block.url,block.text)
                 imiddle.run()
                 tuple_ = imiddle.get_first()
@@ -137,6 +134,14 @@ class Extractor:
         f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.loop'
         if self.Success:
             self.run_pass(1,1)
+            self.run_pass(1,2)
+            self.run_pass(2,2)
+            self.run_pass(1,3)
+            self.run_pass(3,3)
+            self.run_pass(1,4)
+            self.run_pass(4,4)
+            self.run_pass(1,5)
+            self.run_pass(5,5)
         else:
             sh.com.cancel(f)
     
