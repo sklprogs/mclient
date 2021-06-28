@@ -293,10 +293,10 @@ class Compare:
         if self.Success:
             matches = []
             # Checks are done in 'self.get_pages'
-            for hash_ in self.ipages[0].get_hashes():
+            for key in self.ipages[0].get_keys():
                 row = []
                 for ipage in self.ipages:
-                    tuple_ = ipage.get_by_hash(hash_)
+                    tuple_ = ipage.get_by_key(key)
                     if tuple_:
                         row.append(tuple_[0])
                         row.append(tuple_[1])
@@ -337,19 +337,18 @@ class EndPage:
         self.Debug = Debug
         self.search = search
     
-    def get_hashes(self):
+    def get_keys(self):
         return list(self.subjects.keys())
     
-    def get_by_hash(self,hash_):
-        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.get_by_hash'
+    def get_by_key(self,key):
+        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.get_by_key'
         if self.Success:
-            # Hash can actually be 0
             try:
-                return (self.subjects[hash_]['dic']
-                       ,self.subjects[hash_]['dicf']
+                return (self.subjects[key]['dic']
+                       ,self.subjects[key]['dicf']
                        )
             except KeyError:
-                mes = _('Wrong input data: "{}"!').format(hash_)
+                mes = _('Wrong input data: "{}"!').format(key)
                 sh.objs.get_mes(f,mes,True).show_warning()
         else:
             sh.com.cancel(f)
@@ -366,21 +365,17 @@ class EndPage:
         else:
             sh.com.cancel(f)
     
-    def set_hashes(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.set_hashes'
+    def set_keys(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.set_keys'
         if self.Success:
             for row in self.rows:
                 if row:
                     texts = [block.text for block in row]
-                    text = ' '.join(texts)
-                    #cur
-                    #hash_ = hash(text)
-                    hash_ = text
+                    key = ' '.join(texts)
                     block = row[0]
-                    self.subjects[hash_] = {'dic':block.dic
-                                           ,'dicf':block.dicf
-                                           ,'text':text
-                                           }
+                    self.subjects[key] = {'dic':block.dic
+                                         ,'dicf':block.dicf
+                                         }
                 else:
                     sh.com.rep_empty(f)
         else:
@@ -414,6 +409,10 @@ class EndPage:
             self.blocks = rn.Plugin().request (search = search
                                               ,url = self.url
                                               )
+            ''' #NOTE: Sometimes there are space-only blocks (e.g.,
+                https://www.multitran.com/m.exe?s=reticulated+siren&l1=1&l2=10000&SHL=3),
+                which will hinder comparing contents.
+            '''
             for block in self.blocks:
                 block.text = block.text.replace(sh.lg.nbspace,' ')
                 block.text = block.text.strip()
@@ -457,17 +456,18 @@ class EndPage:
         nos = [i + 1 for i in range(len(self.subjects.keys()))]
         dic = []
         dicf = []
-        hashes = []
+        keys = []
         for key in self.subjects.keys():
-            hashes.append(key)
+            keys.append(key)
             dic.append(self.subjects[key]['dic'])
             dicf.append(self.subjects[key]['dicf'])
-        headers = (_('#'),_('DIC'),_('DICF'),_('HASH'))
-        iterable = [nos,dic,dicf,hashes]
+        headers = (_('#'),_('DIC'),_('DICF'),_('KEY'))
+        iterable = [nos,dic,dicf,keys]
         # 10'' screen: 40 symbols
         mes = sh.FastTable (headers = headers
                            ,iterable = iterable
                            ,maxrow = 40
+                           ,encloser = '"'
                            ).run()
         return f + ':\n' + mes
     
@@ -503,6 +503,6 @@ class EndPage:
         self.fix_url()
         self.set_blocks()
         self.set_rows()
-        self.set_hashes()
+        self.set_keys()
         self.debug()
         
