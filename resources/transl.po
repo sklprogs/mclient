@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-28 19:14+0300\n"
-"PO-Revision-Date: 2021-06-28 19:16+0300\n"
+"POT-Creation-Date: 2021-06-29 20:40+0300\n"
+"PO-Revision-Date: 2021-06-29 20:40+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -437,8 +437,8 @@ msgstr "Не задано"
 #: mclient/src/gui.py:936 mclient/src/gui.py:1024 mclient/src/gui.py:1039
 #: mclient/src/logic.py:166 mclient/src/manager.py:208
 #: mclient/src/manager.py:260 mclient/src/mclient.py:1339
-#: mclient/src/tests.py:414 mclient/src/tests.py:474 mclient/src/tests.py:516
-#: mclient/src/tests.py:607
+#: mclient/src/tests.py:415 mclient/src/tests.py:475 mclient/src/tests.py:517
+#: mclient/src/tests.py:608
 msgid "Multitran"
 msgstr "Мультитран"
 
@@ -1216,7 +1216,7 @@ msgstr "АББРЕВИАТУРА"
 #: mclient/src/plugins/multitrancom/pairs.py:2810
 #: mclient/src/plugins/multitrancom/run.py:111
 #: mclient/src/plugins/multitrancom/run.py:122
-#: mclient/src/plugins/multitrancom/utils/subjects.py:352
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:363
 #: mclient/src/plugins/multitrancom/utils/utils.py:164
 #: mclient/src/plugins/multitrandem/elems.py:135
 #: mclient/src/plugins/multitrandem/get.py:75
@@ -1762,7 +1762,7 @@ msgid "Tag-like structures are invalid!"
 msgstr "Некорректные тегоподобные структуры!"
 
 #: mclient/src/plugins/dsl/cleanup.py:115 mclient/src/plugins/dsl/elems.py:196
-#: mclient/src/plugins/multitrancom/elems.py:815 skl_shared/src/logic.py:4850
+#: mclient/src/plugins/multitrancom/elems.py:828 skl_shared/src/logic.py:4850
 msgid "{} matches"
 msgstr "{} совпадений"
 
@@ -1781,9 +1781,9 @@ msgstr "{} фраз"
 #: mclient/src/plugins/multitrancom/tags.py:329
 #: mclient/src/plugins/multitrancom/tags.py:401
 #: mclient/src/plugins/multitrancom/tags.py:477
-#: mclient/src/plugins/multitrancom/utils/subjects.py:195
-#: mclient/src/plugins/multitrancom/utils/subjects.py:439
-#: mclient/src/plugins/multitrancom/utils/subjects.py:458
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:203
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:477
 msgid "#"
 msgstr "№"
 
@@ -1879,8 +1879,8 @@ msgstr "ТИПЫ"
 #: mclient/src/plugins/dsl/tags.py:125 mclient/src/plugins/dsl/tags.py:294
 #: mclient/src/plugins/multitrancom/tags.py:401
 #: mclient/src/plugins/multitrancom/tags.py:477
-#: mclient/src/plugins/multitrancom/utils/subjects.py:195
-#: mclient/src/plugins/multitrancom/utils/subjects.py:439
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:203
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
 msgid "TEXT"
 msgstr "ТЕКСТ"
 
@@ -1932,13 +1932,13 @@ msgstr "Большой Энциклопедический словарь"
 msgid "Separate words"
 msgstr "Отдельные слова"
 
-#: mclient/src/plugins/multitrancom/elems.py:514
+#: mclient/src/plugins/multitrancom/elems.py:527
 msgid "phrases"
 msgstr "фразы"
 
-#: mclient/src/plugins/multitrancom/elems.py:690
-#: mclient/src/plugins/multitrancom/elems.py:691
-#: mclient/src/plugins/multitrancom/elems.py:692
+#: mclient/src/plugins/multitrancom/elems.py:703
+#: mclient/src/plugins/multitrancom/elems.py:704
+#: mclient/src/plugins/multitrancom/elems.py:705
 msgid "Suggestions"
 msgstr "Варианты замены"
 
@@ -14964,7 +14964,9 @@ msgstr "Неподдерживаемые пары:"
 msgid "Pattern \"{}\" is not a tag!"
 msgstr "Образец \"{}\" тегом не является!"
 
-#: mclient/src/plugins/multitrancom/tags.py:329 skl_shared/src/shared.py:4077
+#: mclient/src/plugins/multitrancom/tags.py:329
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:477
+#: skl_shared/src/shared.py:4077
 msgid "KEY"
 msgstr "КЛЮЧ"
 
@@ -14978,13 +14980,13 @@ msgstr "Сокращения:"
 
 #: mclient/src/plugins/multitrancom/tags.py:401
 #: mclient/src/plugins/multitrancom/tags.py:477
-#: mclient/src/plugins/multitrancom/utils/subjects.py:195
-#: mclient/src/plugins/multitrancom/utils/subjects.py:439
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:203
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
 msgid "TYPE"
 msgstr "ТИП"
 
 #: mclient/src/plugins/multitrancom/tags.py:402
-#: mclient/src/plugins/multitrancom/utils/subjects.py:439
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
 msgid "ROW #"
 msgstr "СТРОКА №"
 
@@ -15008,22 +15010,30 @@ msgstr "СТРОКА"
 msgid "CELL"
 msgstr "ЯЧЕЙКА"
 
-#: mclient/src/plugins/multitrancom/utils/subjects.py:42
-#: mclient/src/plugins/multitrancom/utils/subjects.py:408
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:42
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:420
 msgid "Get \"{}\" at \"{}\""
 msgstr "Получение \"{}\" по \"{}\""
 
-#: mclient/src/plugins/multitrancom/utils/subjects.py:458
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:418
+msgid "{} (pass: {}; language: {})"
+msgstr "{} (проход: {}; язык: {})"
+
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:477
 msgid "DIC"
 msgstr "DIC"
 
-#: mclient/src/plugins/multitrancom/utils/subjects.py:458
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:477
 msgid "DICF"
 msgstr "DICF"
 
-#: mclient/src/plugins/multitrancom/utils/subjects.py:458
-msgid "HASH"
-msgstr "ХЭШ"
+#: mclient/src/plugins/multitrancom/utils/subjects/fix.py:49
+msgid "Line #{}: a wrong number of tabulation characters: {}"
+msgstr "Строка №{}: неверное число символов табуляции: {}"
+
+#: mclient/src/plugins/multitrancom/utils/subjects/fix.py:54
+msgid "Errors in total: {}"
+msgstr "Всего ошибок: {}"
 
 #: mclient/src/plugins/multitrancom/utils/utils.py:207
 msgid "Dead languages: {}"
@@ -15599,7 +15609,7 @@ msgstr "Веб-страница:"
 msgid "Text:"
 msgstr "Текст:"
 
-#: mclient/src/tests.py:354
+#: mclient/src/tests.py:355
 msgid ""
 "The following pairs are not supported:\n"
 "{}"
@@ -15607,11 +15617,11 @@ msgstr ""
 "Следующие пары не поддерживаются:\n"
 "{}"
 
-#: mclient/src/tests.py:470 mclient/src/tests.py:484
+#: mclient/src/tests.py:471 mclient/src/tests.py:485
 msgid "Offline"
 msgstr "Оффлайн"
 
-#: mclient/src/tests.py:632 mclient/src/tests.py:637
+#: mclient/src/tests.py:633 mclient/src/tests.py:638
 msgid "Triggered!"
 msgstr "Сработало!"
 
@@ -16478,6 +16488,9 @@ msgstr ""
 #: skl_shared/src/tests.py:1142
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
+
+#~ msgid "HASH"
+#~ msgstr "ХЭШ"
 
 #~ msgid "TITLE"
 #~ msgstr "ЗАГОЛОВОК"
