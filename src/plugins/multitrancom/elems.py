@@ -480,7 +480,7 @@ class Elems:
         ''' - Sometimes it's not enough to delete comment-only tail
               since there might be no 'phdic' type which serves as
               an indicator.
-            - Takes ~0.02s for 'set' (EN-RU) on AMD E-300
+            - Takes ~0.02s for 'set' (EN-RU) on Intel Atom
         '''
         ru = ('Добавить','|','Сообщить об ошибке','|'
              ,'Ссылка на эту страницу','|'
