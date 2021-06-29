@@ -115,7 +115,7 @@ class Extractor:
                                            ,Debug = self.Debug
                                            )
                         icompare.run()
-                        self.match += icompare.match
+                        self.match += '\n' + icompare.match
                         self.subjects.append(block.text)
                     else:
                         sh.com.rep_empty(f)
