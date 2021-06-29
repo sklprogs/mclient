@@ -3,8 +3,8 @@
 
 import skl_shared.shared as sh
 from skl_shared.localize import _
-import plugins.multitrancom.utils.subjects.extract as us
-#import plugins.multitrancom.utils.subjects.fix as us
+#import plugins.multitrancom.utils.subjects.extract as us
+import plugins.multitrancom.utils.subjects.fix as us
 
 
 if __name__ == '__main__':
@@ -15,7 +15,7 @@ if __name__ == '__main__':
     #us.EndPage(url,1,Debug=True).run()
     #us.Compare(url,Debug=True).run()
     #us.StartPage(1,2,True).run()
-    us.Extractor().run()
-    #us.Fix().run()
+    #us.Extractor().run()
+    us.Fix().run()
     sh.com.end()
                 
