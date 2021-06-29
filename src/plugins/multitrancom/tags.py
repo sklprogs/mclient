@@ -145,7 +145,14 @@ class AnalyzeTag:
                or 'font color="darkgoldenrod"' in self.tag.text
     
     def _is_user(self):
-        return 'UserName=' in self.tag.text
+        ''' Some users have added so much articles that entries of such
+            users were converted into separate subjects. Specifying
+            'user' type more precisely with ' title=' allows to
+            correctly redefine such blocks as 'dic' instead of 'user',
+            which, in turn, will later allow to extract full titles.
+        '''
+        return 'UserName=' in self.tag.text \
+               and not ' title=' in self.tag.text
     
     def _is_url(self):
         return 'href="' in self.tag.text

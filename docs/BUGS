@@ -2,7 +2,6 @@ mclient:
 - 
 
 multitrancom:
-- RU-EN: against a backdrop of: "тагмем." is not expanded
 - RU-EN, mannits: trash in the end
 - RU-EN, icon: make_pretty fails
 - RU-CN: suggestions are provided for RU-EN
