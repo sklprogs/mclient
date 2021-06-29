@@ -57,9 +57,13 @@ class Fix:
                 #TODO: delete when ready
                 if len(tmp) == self.max_tabs + 1:
                     for j in range(len(tmp)):
-                        if (j + 1) % 2 == 0 and '.' in tmp[j]:
-                            sub = _('Line #{}, column #{}')
-                            sub = sub.format(i+1,j+1)
+                        ''' The presence of a dot is not enough, e.g.,
+                            'SAP.tech.' -> 'SAP tech.'
+                        '''
+                        if (j + 1) % 2 == 0 and tmp[j] == tmp[j-1] \
+                        and '.' in tmp[j]:
+                            sub = _('Line #{}, column #{}: "{}"')
+                            sub = sub.format(i+1,j+1,tmp[j])
                             mes.append(sub)
             if mes:
                 self.Success = False
