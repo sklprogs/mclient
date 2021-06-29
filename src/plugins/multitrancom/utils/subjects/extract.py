@@ -27,7 +27,7 @@ class MiddlePage:
         self.get_first()
     
     def get_first(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.MiddlePage.get_first'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.MiddlePage.get_first'
         if self.Success:
             for block in self.blocks:
                 if block.type_ == 'term' and block.text.strip() \
@@ -37,7 +37,7 @@ class MiddlePage:
             sh.com.cancel(f)
     
     def set_blocks(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.MiddlePage.set_blocks'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.MiddlePage.set_blocks'
         if self.Success:
             mes = _('Get "{}" at "{}"').format(self.search,self.url)
             sh.objs.get_mes(f,mes,True).show_debug()
@@ -51,7 +51,7 @@ class MiddlePage:
             sh.com.cancel(f)
     
     def fix_url(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.MiddlePage.fix_url'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.MiddlePage.fix_url'
         if self.Success:
             self.url = gt.com.fix_url(self.url)
             what = '&SHL=\d+'
@@ -64,7 +64,7 @@ class MiddlePage:
             sh.com.cancel(f)
     
     def check(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.MiddlePage.check'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.MiddlePage.check'
         if not self.url:
             self.Success = False
             sh.com.rep_empty(f)
@@ -82,7 +82,7 @@ class Extractor:
         self.Debug = Debug
     
     def save(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.save'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.Extractor.save'
         if self.Success:
             match = self.match.splitlines()
             match = [item for item in match if item]
@@ -94,14 +94,14 @@ class Extractor:
             sh.com.cancel(f)
     
     def launch(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.launch'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.Extractor.launch'
         if self.Success:
             sh.Launch(self.filew).launch_default()
         else:
             sh.com.cancel(f)
     
     def run_batch(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.run_batch'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.Extractor.run_batch'
         if self.Success:
             for block in self.istart.blocks:
                 if not block.text in self.subjects:
@@ -123,7 +123,7 @@ class Extractor:
             sh.com.cancel(f)
     
     def run_pass(self,lang1,lang2):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.run_pass'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.Extractor.run_pass'
         if self.Success:
             self.passno += 1
             self.istart = StartPage (lang1 = lang1
@@ -137,7 +137,7 @@ class Extractor:
             sh.com.cancel(f)
     
     def loop(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.loop'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.Extractor.loop'
         if self.Success:
             self.run_pass(1,1)
             self.run_pass(1,2)
@@ -161,7 +161,7 @@ class Extractor:
 class Elems(el.Elems):
     
     def run(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Elems.run'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.Elems.run'
         if self.check():
             # Do this before deleting ';'
             self.set_semino()
@@ -191,7 +191,7 @@ class StartPage:
         self.Debug = Debug
     
     def _debug_blocks(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.StartPage._debug_blocks'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.StartPage._debug_blocks'
         nos = [i + 1 for i in range(len(self.blocks))]
         types = []
         texts = []
@@ -210,7 +210,7 @@ class StartPage:
         return f + '\n' + mes
     
     def debug(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.StartPage.debug'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.StartPage.debug'
         if self.Success:
             if self.Debug:
                 mes = self._debug_blocks()
@@ -221,7 +221,7 @@ class StartPage:
             sh.com.cancel(f)
     
     def set_blocks(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.StartPage.set_blocks'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.StartPage.set_blocks'
         if self.Success:
             search = 'menu{}-{}'.format(self.lang1,self.lang2)
             htm = gt.Get (search = search
@@ -244,13 +244,13 @@ class StartPage:
             sh.com.cancel(f)
     
     def check(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.StartPage.check'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.StartPage.check'
         self.Success = self.lang1 and self.lang2
         if not self.Success:
             sh.com.rep_empty(f)
         
     def set_url(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.StartPage.set_url'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.StartPage.set_url'
         if self.Success:
             ''' Since gettext entries are English-based, English is
                 selected as a primary language.
@@ -281,7 +281,7 @@ class Compare:
         self.passno = passno
     
     def debug(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Compare.debug'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.Compare.debug'
         if self.Success:
             if self.Debug:
                 if self.match:
@@ -299,7 +299,7 @@ class Compare:
         self.debug()
     
     def compare(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Compare.compare'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.Compare.compare'
         if self.Success:
             matches = []
             # Checks are done in 'self.get_pages'
@@ -316,7 +316,7 @@ class Compare:
             sh.com.cancel(f)
     
     def get_pages(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.Compare.get_pages'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.Compare.get_pages'
         if self.Success:
             for ui_lang in self.ui_langs:
                 ipage = EndPage (url = self.url
@@ -353,7 +353,7 @@ class EndPage:
         return list(self.subjects.keys())
     
     def get_by_key(self,key):
-        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.get_by_key'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.EndPage.get_by_key'
         if self.Success:
             try:
                 return (self.subjects[key]['dic']
@@ -366,7 +366,7 @@ class EndPage:
             sh.com.cancel(f)
     
     def debug(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.debug'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.EndPage.debug'
         if self.Success:
             if self.Debug:
                 mes = [self._debug_rows(),self._debug_subjects()]
@@ -378,7 +378,7 @@ class EndPage:
             sh.com.cancel(f)
     
     def set_keys(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.set_keys'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.EndPage.set_keys'
         if self.Success:
             for row in self.rows:
                 if row:
@@ -394,7 +394,7 @@ class EndPage:
             sh.com.cancel(f)
     
     def fix_url(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.fix_url'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.EndPage.fix_url'
         if self.Success:
             self.url = gt.com.fix_url(self.url)
             #TODO: Skip when 'gt.com.fix_url' is reworked
@@ -407,13 +407,13 @@ class EndPage:
             sh.com.cancel(f)
     
     def check(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.check'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.EndPage.check'
         if not self.url or not self.ui_lang:
             self.Success = False
             sh.com.rep_empty(f)
     
     def set_blocks(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.set_blocks'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.EndPage.set_blocks'
         if self.Success:
             search = _('{} (pass: {}; language: {})')
             search = search.format(self.search,self.passno,self.ui_lang)
@@ -436,7 +436,7 @@ class EndPage:
             sh.com.cancel(f)
     
     def _debug_rows(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage._debug_rows'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.EndPage._debug_rows'
         # 'self.rows' contains blocks of certain types
         count = 0
         for row in self.rows:
@@ -465,7 +465,7 @@ class EndPage:
         return f + ':\n' + mes
     
     def _debug_subjects(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage._debug_subjects'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.EndPage._debug_subjects'
         nos = [i + 1 for i in range(len(self.subjects.keys()))]
         dic = []
         dicf = []
@@ -485,7 +485,7 @@ class EndPage:
         return f + ':\n' + mes
     
     def set_rows(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.set_rows'
+        f = '[MClient] plugins.multitrancom.utils.subjects.extract.EndPage.set_rows'
         if self.Success:
             blocks = [block for block in self.blocks \
                       if block.type_ in ('term','comment','user') \
@@ -518,4 +518,3 @@ class EndPage:
         self.set_rows()
         self.set_keys()
         self.debug()
-        
