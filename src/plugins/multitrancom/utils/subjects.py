@@ -77,6 +77,8 @@ class Extractor:
         self.Success = True
         self.filew = '/home/pete/tmp/subjects'
         self.match = ''
+        self.passno = 0
+        self.subjects = []
         self.Debug = Debug
     
     def save(self):
@@ -102,24 +104,28 @@ class Extractor:
         f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.run_batch'
         if self.Success:
             for block in self.istart.blocks:
-                imiddle = MiddlePage(block.url,block.text)
-                imiddle.run()
-                tuple_ = imiddle.get_first()
-                if tuple_:
-                    icompare = Compare (url = tuple_[0]
-                                       ,search = tuple_[1]
-                                       ,Debug = self.Debug
-                                       )
-                    icompare.run()
-                    self.match += icompare.match
-                else:
-                    sh.com.rep_empty(f)
+                if not block.text in self.subjects:
+                    imiddle = MiddlePage(block.url,block.text)
+                    imiddle.run()
+                    tuple_ = imiddle.get_first()
+                    if tuple_:
+                        icompare = Compare (url = tuple_[0]
+                                           ,search = tuple_[1]
+                                           ,passno = self.passno
+                                           ,Debug = self.Debug
+                                           )
+                        icompare.run()
+                        self.match += icompare.match
+                        self.subjects.append(block.text)
+                    else:
+                        sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
     
     def run_pass(self,lang1,lang2):
         f = '[MClient] plugins.multitrancom.utils.subjects.Extractor.run_pass'
         if self.Success:
+            self.passno += 1
             self.istart = StartPage (lang1 = lang1
                                     ,lang2 = lang2
                                     ,Debug = self.Debug
@@ -226,6 +232,7 @@ class StartPage:
             self.blocks = itags.run()
             self.blocks = Elems(self.blocks).run()
             for block in self.blocks:
+                block.text = block.text.replace(sh.lg.nbspace,' ')
                 block.text = block.text.strip()
             self.blocks = [block for block in self.blocks \
                            if block.url and block.text
@@ -263,7 +270,7 @@ class StartPage:
 
 class Compare:
     
-    def __init__(self,url,search='search',Debug=False):
+    def __init__(self,url,search='search',passno=1,Debug=False):
         self.Success = True
         self.ui_langs = [1,2,3,5,33]
         self.ipages = []
@@ -271,6 +278,7 @@ class Compare:
         self.Debug = Debug
         self.url = url
         self.search = search
+        self.passno = passno
     
     def debug(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.Compare.debug'
@@ -314,6 +322,7 @@ class Compare:
                 ipage = EndPage (url = self.url
                                 ,ui_lang = ui_lang
                                 ,search = self.search
+                                ,passno = self.passno
                                 ,Debug = self.Debug
                                 )
                 ipage.run()
@@ -329,7 +338,7 @@ class Compare:
 
 class EndPage:
     
-    def __init__(self,url,ui_lang,search='search',Debug=False):
+    def __init__(self,url,ui_lang,search='search',passno=1,Debug=False):
         self.Success = True
         self.blocks = []
         self.rows = []
@@ -338,6 +347,7 @@ class EndPage:
         self.ui_lang = ui_lang
         self.Debug = Debug
         self.search = search
+        self.passno = passno
     
     def get_keys(self):
         return list(self.subjects.keys())
@@ -405,7 +415,8 @@ class EndPage:
     def set_blocks(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.EndPage.set_blocks'
         if self.Success:
-            search = '{} (lang: {})'.format(self.search,self.ui_lang)
+            search = _('{} (pass: {}; language: {})')
+            search = search.format(self.search,self.passno,self.ui_lang)
             mes = _('Get "{}" at "{}"').format(search,self.url)
             sh.objs.get_mes(f,mes,True).show_debug()
             self.blocks = rn.Plugin().request (search = search
