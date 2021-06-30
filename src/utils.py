@@ -16,6 +16,6 @@ if __name__ == '__main__':
     #us.Compare(url,Debug=True).run()
     #us.StartPage(1,2,True).run()
     #us.Extractor().run()
-    us.Fix().run()
+    us.Fix(0).run()
     sh.com.end()
                 
