@@ -102,8 +102,8 @@ class Split:
 class Fix:
     
     def __init__(self,Debug=False):
-        self.file = '/home/pete/bin/mclient/tests/subjects.txt'
-        self.filew = '/home/pete/bin/mclient/tests/subjects (2).txt'
+        self.file = '/home/pete/bin/mclient/tests/subjects_orig.txt'
+        self.filew = '/home/pete/bin/mclient/tests/subjects_auto.txt'
         self.Success = True
         self.text = ''
         self.lst = []
