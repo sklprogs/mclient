@@ -197,43 +197,43 @@ class Elems:
             
     def set_com_same(self):
         ''' Sometimes sources do not provide sufficient information on
-        SAMECELL blocks, and the tag parser cannot handle sequences such
- as 'any type (not same) -> comment (not same) -> any type (not
-        same)'.
-        Rules:
-        1) (Should be always correct)
-            'i >= 0 -> correction (not same)
-                =>
-            'i >= 0 -> correction (same)
-        2) (Preferable)
-            'term (not same) -> comment (not same) -> any type
-            (not same)'
-                =>
-            'term (not same) -> comment (same) -> any type
-            (not same)'
-        3) (Generally correct before removing fixed columns)
-            'dic/wform/speech/transc -> comment (not same) -> term
-            (not same)'
-                =>
-            'dic/wform/speech/transc -> comment (not same) -> term
-            (same)'
-        4) (By guess, check only after ##2&3)
-            'any type (same) -> comment (not same) -> any type
-            (not same)'
-                =>
-            'any type (same) -> comment (same) -> any type
-            (not same)'
-        5) (Always correct)
-            'any type -> comment/correction (not same) -> END'
-                =>
-            'any type -> comment/correction (same) -> END'
-        6) (Do this in the end of the loop; + Readability improvement
-           ("в 42 тематиках"))
-            'any type (not same) -> comment (not same) -> any type
-            (not same)'
-                =>
-            'any type (not same) -> comment (same) -> any type
-            (not same)'
+            SAMECELL blocks, and the tag parser cannot handle sequences
+            such as 'any type (not same) -> comment (not same) ->
+            any type (not same)'.
+            Rules:
+            1) (Should be always correct)
+                'i >= 0 -> correction (not same)
+                    =>
+                'i >= 0 -> correction (same)
+            2) (Preferable)
+                'term (not same) -> comment (not same) -> any type
+                (not same)'
+                    =>
+                'term (not same) -> comment (same) -> any type
+                (not same)'
+            3) (Generally correct before removing fixed columns)
+                'dic/wform/speech/transc -> comment (not same) -> term
+                (not same)'
+                    =>
+                'dic/wform/speech/transc -> comment (not same) -> term
+                (same)'
+            4) (By guess, check only after ##2&3)
+                'any type (same) -> comment (not same) -> any type
+                (not same)'
+                    =>
+                'any type (same) -> comment (same) -> any type
+                (not same)'
+            5) (Always correct)
+                'any type -> comment/correction (not same) -> END'
+                    =>
+                'any type -> comment/correction (same) -> END'
+            6) (Do this in the end of the loop + Readability improvement
+               ("в 42 тематиках"))
+                'any type (not same) -> comment (not same) -> any type
+                (not same)'
+                    =>
+                'any type (not same) -> comment (same) -> any type
+                (not same)'
         '''
         for i in range(len(self.blocks)):
             cond1 = i > 0 and self.blocks[i].type_ == 'correction'
