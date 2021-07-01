@@ -5,8 +5,8 @@ import os
 import sys
 import io
 import tkinter as tk
-import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.shared as sh
 import skl_shared.web as wb
 import logic as lg
 import gui as gi
@@ -16,6 +16,8 @@ import mkhtml as mh
 import db
 import subjects.priorities.controller as pr
 import subjects.blacklist.controller as bl
+import about.controller as ab
+import third_parties.controller as tp
 
 
 if __name__ == '__main__':
@@ -24,6 +26,17 @@ if __name__ == '__main__':
         import pythoncom
     else:
         import keylistener.linux as kl
+
+
+
+class About(ab.About):
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+    
+    def show_third_parties(self,event=None):
+        objs.get_parties().show()
+
 
 
 class ExportSettingsUI:
@@ -482,7 +495,7 @@ class Objects:
     
     def get_parties(self):
         if self.parties is None:
-            self.parties = ThirdParties()
+            self.parties = tp.ThirdParties()
         return self.parties
     
     def get_suggest(self):
@@ -577,63 +590,6 @@ def run_timed_update():
         if check == 2 or sh.lg.globs['bool']['CaptureHotkey']:
             call_app()
     sh.objs.get_root().widget.after(300,run_timed_update)
-
-
-
-class About:
-
-    def __init__(self):
-        self.Active = False
-        self.gui = None
-    
-    def toggle(self,event=None):
-        if self.Active:
-            self.close()
-        else:
-            self.show()
-    
-    def get_gui(self):
-        if self.gui is None:
-            self.set_gui()
-        return self.gui
-    
-    def close(self):
-        self.Active = False
-        self.get_gui().close()
-    
-    def show(self):
-        self.Active = True
-        self.get_gui().show()
-    
-    def set_gui(self):
-        self.gui = gi.About()
-        self.set_bindings()
-        self.gui.lbl_abt.set_font(sh.lg.globs['str']['font_style'])
-        
-    def set_bindings(self):
-        sh.com.bind (obj = self.get_gui().obj
-                    ,bindings = sh.lg.globs['str']['bind_show_about']
-                    ,action = self.toggle
-                    )
-        self.gui.btn_thd.action = self.show_third_parties
-        self.gui.btn_lic.action = self.open_license_url
-        self.gui.btn_eml.action = self.send_feedback
-
-    # Compose an email to the author
-    def send_feedback(self,event=None):
-        sh.Email (email = sh.lg.email
-                 ,subject = _('On {}').format(gi.PRODUCT)
-                 ).create()
-
-    # Open a license web-page
-    def open_license_url(self,event=None):
-        ionline = sh.Online()
-        ionline.url = sh.lg.globs['license_url']
-        ionline.browse()
-
-    # Show info about third-party licenses
-    def show_third_parties(self,event=None):
-        objs.get_parties().show()
 
 
 
@@ -2914,33 +2870,6 @@ class Settings:
                ,sh.lg.globs['str']['speech6']
                ,sh.lg.globs['str']['speech7']
                )
-
-
-
-class ThirdParties:
-    
-    def __init__(self):
-        file = sh.objs.get_pdir().add ('..','resources'
-                                      ,'third parties.txt'
-                                      )
-        self.text = sh.ReadTextFile(file).get()
-        self.gui = None
-    
-    def get_gui(self):
-        if self.gui is None:
-            self.set_gui()
-        return self.gui
-    
-    def set_gui(self):
-        self.gui = gi.ThirdParties()
-        self.gui.obj.insert(text=self.text)
-        self.gui.obj.disable()
-    
-    def show(self,event=None):
-        self.get_gui().show()
-
-    def close(self,event=None):
-        self.get_gui().close()
 
 
 
