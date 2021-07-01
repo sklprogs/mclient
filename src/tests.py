@@ -329,6 +329,10 @@ class Plugin:
 
 class Commands:
     
+    def show_about(self):
+        from mclient import About
+        About().show()
+    
     def get_nonpairs(self):
         ''' Get languages that are not supported by multitran.com for
             both directions.
@@ -654,5 +658,6 @@ if __name__ == '__main__':
     #Plugin().run_multitrandem()
     #Plugin().reinsert_same()
     #Tags().run_multitrancom()
-    Plugin().run_multitrancom()
+    #Plugin().run_multitrancom()
+    com.show_about()
     sh.com.end()
