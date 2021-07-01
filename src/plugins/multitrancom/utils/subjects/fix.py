@@ -5,11 +5,105 @@ import skl_shared.shared as sh
 from skl_shared.localize import _
 
 
+class Split:
+    ''' #NOTE: comma + space are used by Multitran to separate subjects;
+        they are originally not always correct, e.g,
+        'хобби.' -> 'Хобби, увлечения, досуг'.
+    '''
+    def __init__(self,lst):
+        self.set_values()
+        self.lst = lst
+    
+    def set_values(self):
+        self.Success = True
+        self.appropriate = []
+        self.add = []
+        self.lst = []
+    
+    def check(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.fix.Split.check'
+        if self.lst:
+            for row in self.lst:
+                if not row:
+                    self.Success = False
+                    mes = _('Wrong input data!')
+                    sh.objs.get_mes(f,mes,True).show_warning()
+                    break
+        else:
+            self.Success = False
+            sh.com.rep_empty(f)
+    
+    def _verify_commas(self,lst):
+        commas = [item.count(', ') for item in lst]
+        set_ = set(commas)
+        return (len(set_) == 1) and (set_ != {0})
+    
+    def clean_up(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.fix.Split.clean_up'
+        if self.Success:
+            len_ = len(self.lst)
+            for row in self.appropriate:
+                self.lst.remove(row)
+            delta = len_ - len(self.lst)
+            sh.com.rep_deleted(f,delta)
+        else:
+            sh.com.cancel(f)
+    
+    def insert(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.fix.Split.insert'
+        if self.Success:
+            len_ = len(self.lst)
+            for lst in self.add:
+                self.lst.append(lst)
+            delta = len(self.lst) - len_
+            sh.com.rep_matches(f,delta)
+        else:
+            sh.com.cancel(f)
+    
+    def _split_row(self,lst):
+        sub = []
+        for item in lst:
+            sub.append(item.split(', '))
+        len_ = len(sub[0])
+        for i in range(len_):
+            row = []
+            for j in range(len(sub)):
+                row.append(sub[j][i])
+            self.add.append(row)
+    
+    def split(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.fix.Split.split'
+        if self.Success:
+            for row in self.appropriate:
+                self._split_row(row)
+        else:
+            sh.com.cancel(f)
+    
+    def set_appropriate(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.fix.Split.set_appropriate'
+        if self.Success:
+            for row in self.lst:
+                if self._verify_commas(row):
+                    self.appropriate.append(row)
+            sh.com.rep_matches(f,len(self.appropriate))
+        else:
+            sh.com.cancel(f)
+    
+    def run(self):
+        self.check()
+        self.set_appropriate()
+        self.split()
+        self.clean_up()
+        self.insert()
+        return self.lst
+
+
+
 class Fix:
     
     def __init__(self,Debug=False):
-        #NOTE: create a backup first
-        self.filew = '/home/pete/bin/mclient/tests/subjects'
+        self.file = '/home/pete/bin/mclient/tests/subjects.txt'
+        self.filew = '/home/pete/bin/mclient/tests/subjects (2).txt'
         self.Success = True
         self.text = ''
         self.lst = []
@@ -36,13 +130,6 @@ class Fix:
         else:
             sh.com.cancel(f)
     
-    def parse(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.fix.Fix.parse'
-        if self.Success:
-            pass
-        else:
-            sh.com.cancel(f)
-    
     def save(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.fix.Fix.save'
         if self.Success:
@@ -65,14 +152,14 @@ class Fix:
             len_ = len(lst)
             lst = sorted(set(lst))
             self.text = '\n'.join(lst)
-            self.split()
+            self.split_by_tabs()
             delta = len_ - len(self.lst)
             sh.com.rep_deleted(f,delta)
         else:
             sh.com.cancel(f)
     
-    def split(self):
-        f = '[MClient] plugins.multitrancom.utils.subjects.fix.Fix.load'
+    def split_by_tabs(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.fix.Fix.split_by_tabs'
         if self.Success:
             self.lst = self.text.splitlines()
             for i in range(len(self.lst)):
@@ -83,7 +170,7 @@ class Fix:
     def load(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.fix.Fix.load'
         if self.Success:
-            self.text = sh.ReadTextFile(self.filew).get()
+            self.text = sh.ReadTextFile(self.file).get()
             if not self.text:
                 self.Success = False
                 sh.com.rep_out(f)
@@ -134,12 +221,27 @@ class Fix:
         else:
             sh.com.cancel(f)
     
+    def split_by_subjects(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.fix.Fix.split_by_subjects'
+        if self.Success:
+            self.lst = Split(self.lst).run()
+            lst = ['\t'.join(row) for row in self.lst]
+            self.text = '\n'.join(lst)
+        else:
+            sh.com.cancel(f)
+    
     def run(self):
         self.load()
-        self.split()
+        self.split_by_tabs()
         self.delete_duplicates()
         self.check_tabs()
         self.check_titles()
+        self.split_by_subjects()
+        ''' We delete duplicates twice: first, to speed up processing,
+            second, to delete duplicates generated by splitting the list
+            by subjects.
+        '''
+        self.delete_duplicates()
         self.debug()
-        #self.save()
-        #self.launch()
+        self.save()
+        self.launch()
