@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-29 20:40+0300\n"
-"PO-Revision-Date: 2021-06-29 20:40+0300\n"
+"POT-Creation-Date: 2021-07-02 00:06+0300\n"
+"PO-Revision-Date: 2021-07-02 00:07+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -70,7 +70,8 @@ msgstr "Удаление записей статьи №{} из {}"
 #: mclient/src/mclient.py:2289 mclient/src/mclient.py:2792
 #: mclient/src/mclient.py:2800 mclient/src/plugins/multitrancom/groups.py:2827
 #: mclient/src/plugins/multitrancom/pairs.py:2861
-#: mclient/src/plugins/multitrancom/tags.py:323
+#: mclient/src/plugins/multitrancom/tags.py:330
+#: mclient/src/plugins/multitrancom/utils/subjects/fix.py:29
 #: mclient/src/plugins/multitrandem/get.py:682
 #: mclient/src/plugins/multitrandem/get.py:698
 #: mclient/src/plugins/multitrandem/get.py:1105
@@ -1193,7 +1194,7 @@ msgid "URL for online search"
 msgstr "Адрес для поиска в Интернете"
 
 #: mclient/src/logic.py:746 mclient/src/logic.py:761 mclient/src/logic.py:774
-#: mclient/src/plugins/multitrancom/tags.py:477
+#: mclient/src/plugins/multitrancom/tags.py:484
 msgid "NAME"
 msgstr "НАЗВАНИЕ"
 
@@ -1202,7 +1203,7 @@ msgid "PRIORITY"
 msgstr "ПРИОРИТЕТ"
 
 #: mclient/src/logic.py:761 mclient/src/logic.py:774
-#: mclient/src/plugins/multitrancom/tags.py:329
+#: mclient/src/plugins/multitrancom/tags.py:336
 msgid "ABBREVIATION"
 msgstr "АББРЕВИАТУРА"
 
@@ -1778,9 +1779,9 @@ msgstr "{} фраз"
 
 #: mclient/src/plugins/dsl/get.py:49 mclient/src/plugins/dsl/tags.py:125
 #: mclient/src/plugins/dsl/tags.py:294
-#: mclient/src/plugins/multitrancom/tags.py:329
-#: mclient/src/plugins/multitrancom/tags.py:401
-#: mclient/src/plugins/multitrancom/tags.py:477
+#: mclient/src/plugins/multitrancom/tags.py:336
+#: mclient/src/plugins/multitrancom/tags.py:408
+#: mclient/src/plugins/multitrancom/tags.py:484
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:203
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:477
@@ -1877,15 +1878,15 @@ msgid "TYPES"
 msgstr "ТИПЫ"
 
 #: mclient/src/plugins/dsl/tags.py:125 mclient/src/plugins/dsl/tags.py:294
-#: mclient/src/plugins/multitrancom/tags.py:401
-#: mclient/src/plugins/multitrancom/tags.py:477
+#: mclient/src/plugins/multitrancom/tags.py:408
+#: mclient/src/plugins/multitrancom/tags.py:484
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:203
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
 msgid "TEXT"
 msgstr "ТЕКСТ"
 
 #: mclient/src/plugins/dsl/tags.py:131
-#: mclient/src/plugins/multitrancom/tags.py:411
+#: mclient/src/plugins/multitrancom/tags.py:418
 msgid "Blocks:"
 msgstr "Блоки:"
 
@@ -1898,12 +1899,12 @@ msgid "Tag \"{}\" has not been opened yet!"
 msgstr "Тег \"{}\" еще не был открыт!"
 
 #: mclient/src/plugins/dsl/tags.py:280
-#: mclient/src/plugins/multitrancom/tags.py:448
+#: mclient/src/plugins/multitrancom/tags.py:455
 msgid "Code:"
 msgstr "Код:"
 
 #: mclient/src/plugins/dsl/tags.py:287
-#: mclient/src/plugins/multitrancom/tags.py:455
+#: mclient/src/plugins/multitrancom/tags.py:462
 msgid "Fragments:"
 msgstr "Фрагменты:"
 
@@ -1912,7 +1913,7 @@ msgid "TAGS"
 msgstr "ТЕГИ"
 
 #: mclient/src/plugins/dsl/tags.py:300
-#: mclient/src/plugins/multitrancom/tags.py:487
+#: mclient/src/plugins/multitrancom/tags.py:494
 msgid "Tags:"
 msgstr "Теги:"
 
@@ -14964,49 +14965,49 @@ msgstr "Неподдерживаемые пары:"
 msgid "Pattern \"{}\" is not a tag!"
 msgstr "Образец \"{}\" тегом не является!"
 
-#: mclient/src/plugins/multitrancom/tags.py:329
+#: mclient/src/plugins/multitrancom/tags.py:336
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:477
 #: skl_shared/src/shared.py:4077
 msgid "KEY"
 msgstr "КЛЮЧ"
 
-#: mclient/src/plugins/multitrancom/tags.py:330
+#: mclient/src/plugins/multitrancom/tags.py:337
 msgid "FULL TITLE"
 msgstr "ПОЛНОЕ НАЗВАНИЕ"
 
-#: mclient/src/plugins/multitrancom/tags.py:340
+#: mclient/src/plugins/multitrancom/tags.py:347
 msgid "Abbreviations:"
 msgstr "Сокращения:"
 
-#: mclient/src/plugins/multitrancom/tags.py:401
-#: mclient/src/plugins/multitrancom/tags.py:477
+#: mclient/src/plugins/multitrancom/tags.py:408
+#: mclient/src/plugins/multitrancom/tags.py:484
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:203
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
 msgid "TYPE"
 msgstr "ТИП"
 
-#: mclient/src/plugins/multitrancom/tags.py:402
+#: mclient/src/plugins/multitrancom/tags.py:409
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
 msgid "ROW #"
 msgstr "СТРОКА №"
 
-#: mclient/src/plugins/multitrancom/tags.py:402
+#: mclient/src/plugins/multitrancom/tags.py:409
 msgid "CELL #"
 msgstr "ЯЧЕЙКА №"
 
-#: mclient/src/plugins/multitrancom/tags.py:477
+#: mclient/src/plugins/multitrancom/tags.py:484
 msgid "CLOSING"
 msgstr "ЗАКРЫВАЮЩИЙ"
 
-#: mclient/src/plugins/multitrancom/tags.py:478
+#: mclient/src/plugins/multitrancom/tags.py:485
 msgid "OPEN"
 msgstr "ОТКРЫТЫЕ"
 
-#: mclient/src/plugins/multitrancom/tags.py:478
+#: mclient/src/plugins/multitrancom/tags.py:485
 msgid "ROW"
 msgstr "СТРОКА"
 
-#: mclient/src/plugins/multitrancom/tags.py:478
+#: mclient/src/plugins/multitrancom/tags.py:485
 msgid "CELL"
 msgstr "ЯЧЕЙКА"
 
@@ -15027,13 +15028,22 @@ msgstr "DIC"
 msgid "DICF"
 msgstr "DICF"
 
-#: mclient/src/plugins/multitrancom/utils/subjects/fix.py:49
-msgid "Line #{}: a wrong number of tabulation characters: {}"
-msgstr "Строка №{}: неверное число символов табуляции: {}"
+#: mclient/src/plugins/multitrancom/utils/subjects/fix.py:193
+msgid "Line #{}, column #{}: \"{}\""
+msgstr "Строка №{}, столбец №{}: \"{}\""
 
-#: mclient/src/plugins/multitrancom/utils/subjects/fix.py:54
+#: mclient/src/plugins/multitrancom/utils/subjects/fix.py:198
+#: mclient/src/plugins/multitrancom/utils/subjects/fix.py:217
 msgid "Errors in total: {}"
 msgstr "Всего ошибок: {}"
+
+#: mclient/src/plugins/multitrancom/utils/subjects/fix.py:200
+msgid "Abbreviations instead of titles:"
+msgstr "Аббревиатуры вместо заголовков:"
+
+#: mclient/src/plugins/multitrancom/utils/subjects/fix.py:212
+msgid "Line #{}: a wrong number of tabulation characters: {}"
+msgstr "Строка №{}: неверное число символов табуляции: {}"
 
 #: mclient/src/plugins/multitrancom/utils/utils.py:207
 msgid "Dead languages: {}"
