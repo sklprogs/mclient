@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import locale
+
 from skl_shared.localize import _
 import skl_shared.shared as sh
 
@@ -28749,39 +28751,56 @@ SUBJECTS = {'AI.':
 class Groups:
     
     def __init__(self):
-        pass
+        self.lang = 'en'
+        self.set_lang()
+    
+    def set_lang(self):
+        f = '[MClient] plugins.multitrancom.groups.Groups.set_lang'
+        result = locale.getdefaultlocale()
+        if result and result[0]:
+            result = result[0]
+            if 'ru' in result:
+                self.lang = 'ru'
+            elif 'de' in result:
+                self.lang = 'de'
+            elif 'sp' in result:
+                self.lang = 'sp'
+            elif 'uk' in result:
+                self.lang = 'uk'
+        mes = '{} -> {}'.format(result,self.lang)
+        sh.objs.get_mes(f,mes,True).show_debug()
 
-    def _get_major_en(self,major,lang):
+    def _get_major_en(self,major):
         for key in SUBJECTS.keys():
-            if major == SUBJECTS[key][lang]['title']:
+            if major == SUBJECTS[key][self.lang]['title']:
                 return SUBJECTS[key]['en']['title']
     
-    def get_majors(self,lang='en'):
+    def get_majors(self):
         # Takes ~0.0016s on Intel Atom
         majors = []
         for key in SUBJECTS.keys():
             if SUBJECTS[key]['major'] and SUBJECTS[key]['valid']:
-                majors.append(SUBJECTS[key][lang]['title'])
+                majors.append(SUBJECTS[key][self.lang]['title'])
         return sorted(majors)
     
-    def get_group(self,major,lang='en'):
+    def get_group(self,major):
         # Takes ~0.002s on Intel Atom
         group = []
-        major_en = self._get_major_en(major,lang)
+        major_en = self._get_major_en(major)
         if major_en:
             for key in SUBJECTS.keys():
                 if major_en == SUBJECTS[key]['group'] \
                 and not SUBJECTS[key]['major']:
-                    group.append(SUBJECTS[key][lang]['title'])
+                    group.append(SUBJECTS[key][self.lang]['title'])
         return sorted(group)
     
-    def get_list(self,lang='en'):
-        # Takes ~0.14s on Intel Atom
-        f = '[MClient] plugins.multitrancom.groups.Groups.list'
+    def get_list(self):
+        # Takes ~0.15s on Intel Atom
+        f = '[MClient] plugins.multitrancom.groups.Groups.get_list'
         lst = []
-        majors = self.get_majors(lang)
+        majors = self.get_majors()
         for major in majors:
-            group = self.get_group(major,lang)
+            group = self.get_group(major)
             if group:
                 # Embedded lists
                 #lst.append([major]+group)
@@ -28797,11 +28816,11 @@ class Groups:
 if __name__ == '__main__':
     f = '[MClient] plugins.multitrancom.groups.__main__'
     sh.com.start()
+    igroups = Groups()
     timer = sh.Timer(f)
     timer.start()
-    igroups = Groups()
     #print(igroups.get_majors('uk'))
     #print(igroups.get_group('Біологія','uk'))
-    print(igroups.get_list('uk'))
+    print(igroups.get_list())
     timer.end()
     sh.com.end()
