@@ -1411,7 +1411,7 @@ class Groups:
     def __init__(self):
         self.majors = []
     
-    def get_group(self,subject):
+    def get_major(self,subject):
         for row in SUBJECTS:
             if subject in row:
                 return row[0]

@@ -114,7 +114,7 @@ class Compile:
                         self.subjects[row[0]] = {}
                         self.subjects[row[0]]['valid'] = self._is_valid(row)
                         self.subjects[row[0]]['major'] = gp.objs.get_groups().is_major(row[1])
-                        self.subjects[row[0]]['group'] = gp.objs.groups.get_group(row[1])
+                        self.subjects[row[0]]['group'] = gp.objs.groups.get_major(row[1])
                         self.subjects[row[0]]['en'] = {}
                         self.subjects[row[0]]['ru'] = {}
                         self.subjects[row[0]]['de'] = {}
@@ -162,3 +162,4 @@ class Compile:
         self.split()
         self.compile()
         self.debug()
+        #print(self.subjects)
