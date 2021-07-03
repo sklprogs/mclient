@@ -65,8 +65,8 @@ class Compile:
             ru.append(self.subjects[key]['ru']['title'])
             de_short.append(self.subjects[key]['de']['short'])
             de.append(self.subjects[key]['de']['title'])
-            sp_short.append(self.subjects[key]['sp']['short'])
-            sp.append(self.subjects[key]['sp']['title'])
+            sp_short.append(self.subjects[key]['es']['short'])
+            sp.append(self.subjects[key]['es']['title'])
             uk_short.append(self.subjects[key]['uk']['short'])
             uk.append(self.subjects[key]['uk']['title'])
         headers = (_('#'),_('KEY'),_('VALID'),'ENS','EN','RUS','RU'
@@ -118,7 +118,7 @@ class Compile:
                         self.subjects[row[0]]['en'] = {}
                         self.subjects[row[0]]['ru'] = {}
                         self.subjects[row[0]]['de'] = {}
-                        self.subjects[row[0]]['sp'] = {}
+                        self.subjects[row[0]]['es'] = {}
                         self.subjects[row[0]]['uk'] = {}
                         self.subjects[row[0]]['en']['short'] = row[0]
                         self.subjects[row[0]]['en']['title'] = row[1]
@@ -126,8 +126,8 @@ class Compile:
                         self.subjects[row[0]]['ru']['title'] = row[3]
                         self.subjects[row[0]]['de']['short'] = row[4]
                         self.subjects[row[0]]['de']['title'] = row[5]
-                        self.subjects[row[0]]['sp']['short'] = row[6]
-                        self.subjects[row[0]]['sp']['title'] = row[7]
+                        self.subjects[row[0]]['es']['short'] = row[6]
+                        self.subjects[row[0]]['es']['title'] = row[7]
                         self.subjects[row[0]]['uk']['short'] = row[8]
                         self.subjects[row[0]]['uk']['title'] = row[9]
                 else:

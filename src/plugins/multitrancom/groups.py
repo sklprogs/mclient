@@ -22,7 +22,7 @@ SUBJECTS = {'AI.':
                    {'short': 'AI.'
                    ,'title': 'Artificial intelligence'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'AI.'
                    ,'title': 'Artificial intelligence'
                    }
@@ -47,7 +47,7 @@ SUBJECTS = {'AI.':
                    {'short': 'AIDS.'
                    ,'title': 'AIDS'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'AIDS.'
                    ,'title': 'AIDS'
                    }
@@ -72,7 +72,7 @@ SUBJECTS = {'AI.':
                    {'short': 'AMEX.'
                    ,'title': 'American stock exchange'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'AMEX.'
                    ,'title': 'American stock exchange'
                    }
@@ -97,7 +97,7 @@ SUBJECTS = {'AI.':
                    {'short': 'ASCII'
                    ,'title': 'ASCII'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ASCII.'
                    ,'title': 'ASCII'
                    }
@@ -122,7 +122,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Alg.'
                    ,'title': 'Algeria'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Alg.'
                    ,'title': 'Algeria'
                    }
@@ -147,7 +147,7 @@ SUBJECTS = {'AI.':
                    {'short': 'am.Engl.'
                    ,'title': 'amerikanisches Englisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'AmE'
                    ,'title': 'American English'
                    }
@@ -172,7 +172,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Ant.'
                    ,'title': 'Antilles'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Ant.'
                    ,'title': 'Antilles'
                    }
@@ -197,7 +197,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Apollo-Soyuz'
                    ,'title': 'Apollo-Soyuz'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Apollo-Soyuz'
                    ,'title': 'Apollo-Soyuz'
                    }
@@ -222,7 +222,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Arag.'
                    ,'title': 'Aragon'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Arag.'
                    ,'title': 'Aragon'
                    }
@@ -247,7 +247,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Arg.'
                    ,'title': 'Argentina'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Arg.'
                    ,'title': 'Argentina'
                    }
@@ -272,7 +272,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Austral.'
                    ,'title': 'Australien'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Australia'
                    ,'title': 'Australia'
                    }
@@ -297,7 +297,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Österr.'
                    ,'title': 'Österreich'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Austria'
                    ,'title': 'Austria'
                    }
@@ -322,7 +322,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Bel.'
                    ,'title': 'Belarus'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Belar.'
                    ,'title': 'Belarus'
                    }
@@ -347,7 +347,7 @@ SUBJECTS = {'AI.':
                    {'short': 'brit. engl.'
                    ,'title': 'Britisches Englisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ingl.brit.'
                    ,'title': 'Inglés británico'
                    }
@@ -372,7 +372,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Braz.'
                    ,'title': 'Brazil'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Braz.'
                    ,'title': 'Brazil'
                    }
@@ -397,7 +397,7 @@ SUBJECTS = {'AI.':
                    {'short': 'C.-R.'
                    ,'title': 'Costa Rica'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'C.-R.'
                    ,'title': 'Costa Rica'
                    }
@@ -422,7 +422,7 @@ SUBJECTS = {'AI.':
                    {'short': 'CNC'
                    ,'title': 'Computer numerical control'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'CNC'
                    ,'title': 'Computer numerical control'
                    }
@@ -447,7 +447,7 @@ SUBJECTS = {'AI.':
                    {'short': 'CRT'
                    ,'title': 'Kathodenstrahlröhre'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'CRT'
                    ,'title': 'Cathode-ray tubes'
                    }
@@ -472,7 +472,7 @@ SUBJECTS = {'AI.':
                    {'short': 'CT'
                    ,'title': 'Computer tomography'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'CT'
                    ,'title': 'Computer tomography'
                    }
@@ -494,7 +494,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kanada.'
                    ,'title': 'Kanada'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Canada'
                    ,'title': 'Canada'
                    }
@@ -519,7 +519,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Centr.Am.'
                    ,'title': 'Central America'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Centr.Am.'
                    ,'title': 'Central America'
                    }
@@ -544,7 +544,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Chil.'
                    ,'title': 'Chile'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Chil.'
                    ,'title': 'Chile'
                    }
@@ -569,7 +569,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Chin.'
                    ,'title': 'China'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'China'
                    ,'title': 'China'
                    }
@@ -594,7 +594,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Col.'
                    ,'title': 'Columbia'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Col.'
                    ,'title': 'Columbia'
                    }
@@ -619,7 +619,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Cuba'
                    ,'title': 'Cuba'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Cuba'
                    ,'title': 'Cuba'
                    }
@@ -644,7 +644,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Cypr.'
                    ,'title': 'Cyprus'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Cypr.'
                    ,'title': 'Cyprus'
                    }
@@ -669,7 +669,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Niederl.'
                    ,'title': 'Niederländisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'holand.'
                    ,'title': 'Holandés'
                    }
@@ -694,7 +694,7 @@ SUBJECTS = {'AI.':
                    {'short': 'EBWE'
                    ,'title': 'Europäische Bank für Wiederaufbau und Entwicklung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'EBRD'
                    ,'title': 'European Bank for Reconstruction and Development'
                    }
@@ -719,7 +719,7 @@ SUBJECTS = {'AI.':
                    {'short': 'EU.'
                    ,'title': 'European Union'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'EU.'
                    ,'title': 'European Union'
                    }
@@ -744,7 +744,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Ecuad.'
                    ,'title': 'Ecuador'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Ecuad.'
                    ,'title': 'Ecuador'
                    }
@@ -769,7 +769,7 @@ SUBJECTS = {'AI.':
                    {'short': 'FBI.'
                    ,'title': 'Federal Bureau of Investigation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'FBI.'
                    ,'title': 'Federal Bureau of Investigation'
                    }
@@ -794,7 +794,7 @@ SUBJECTS = {'AI.':
                    {'short': 'DDR.'
                    ,'title': 'Ostdeutschland (Geschichte)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'GDR'
                    ,'title': 'East Germany'
                    }
@@ -819,7 +819,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Deutschl.'
                    ,'title': 'Deutschland'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Germ.'
                    ,'title': 'Germany'
                    }
@@ -844,7 +844,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik'
                    ,'title': 'Allgemeine Lexik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik'
                    ,'title': 'General'
                    }
@@ -869,7 +869,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, GOST.'
                    ,'title': 'GOST'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, GOST.'
                    ,'title': 'GOST'
                    }
@@ -894,7 +894,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, IT'
                    ,'title': 'Informationstechnik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, IT'
                    ,'title': 'Tecnología de la información'
                    }
@@ -919,7 +919,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Abkürz.'
                    ,'title': 'Abkürzung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, abrev.'
                    ,'title': 'Abreviatura'
                    }
@@ -944,7 +944,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Abkürz., IT'
                    ,'title': 'Abkürzung, Informationstechnik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, abrev., IT'
                    ,'title': 'Abreviatura, Tecnología de la información'
                    }
@@ -969,7 +969,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Abkürz., Buchhalt.'
                    ,'title': 'Abkürzung, Buchhaltung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, abrev., cont.'
                    ,'title': 'Abreviatura, Contabilidad'
                    }
@@ -994,7 +994,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Abkürz., Bank.'
                    ,'title': 'Abkürzung, Bankwesen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, abrev., bank.'
                    ,'title': 'Abreviatura, Banking'
                    }
@@ -1019,7 +1019,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, adm.law.'
                    ,'title': 'Administrative law'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, adm.law.'
                    ,'title': 'Administrative law'
                    }
@@ -1044,7 +1044,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Werb.'
                    ,'title': 'Werbung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, adv.'
                    ,'title': 'Advertising'
                    }
@@ -1069,7 +1069,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, aer.phot.'
                    ,'title': 'Aerial photography and topography'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, aer.phot.'
                    ,'title': 'Aerial photography and topography'
                    }
@@ -1094,7 +1094,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, landwirt.'
                    ,'title': 'Landwirtschaft'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, agric.'
                    ,'title': 'Agricultura'
                    }
@@ -1119,7 +1119,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, ballist.'
                    ,'title': 'Ballistics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, ballist.'
                    ,'title': 'Ballistics'
                    }
@@ -1144,7 +1144,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, biogeogr.'
                    ,'title': 'Biogeography'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, biogeogr.'
                    ,'title': 'Biogeography'
                    }
@@ -1169,7 +1169,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Bot.'
                    ,'title': 'Botanik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, bot.'
                    ,'title': 'Botánica'
                    }
@@ -1194,7 +1194,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, cloth.'
                    ,'title': 'Clothing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, cloth.'
                    ,'title': 'Clothing'
                    }
@@ -1219,7 +1219,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Comp.'
                    ,'title': 'Computertechnik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, comp.'
                    ,'title': 'Computadores'
                    }
@@ -1241,7 +1241,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, cryptogr.'
                    ,'title': 'Cryptography'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, cryptogr.'
                    ,'title': 'Cryptography'
                    }
@@ -1266,7 +1266,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Dial.'
                    ,'title': 'Dialekt'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, dial.'
                    ,'title': 'Dialecto'
                    }
@@ -1291,7 +1291,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Wirtsch.'
                    ,'title': 'Wirtschaft'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, econ.'
                    ,'title': 'Economía'
                    }
@@ -1316,7 +1316,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, el.'
                    ,'title': 'Elektronik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, electr.'
                    ,'title': 'Electrónica'
                    }
@@ -1341,7 +1341,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, electric.'
                    ,'title': 'Electricity'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, electric.'
                    ,'title': 'Electricity'
                    }
@@ -1366,7 +1366,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, E-Mail'
                    ,'title': 'E-Mail'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, email'
                    ,'title': 'E-mail'
                    }
@@ -1391,7 +1391,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, expl.'
                    ,'title': 'Explosives'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, expl.'
                    ,'title': 'Explosives'
                    }
@@ -1416,7 +1416,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, übertr.'
                    ,'title': 'übertragen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, fig.'
                    ,'title': 'Figuradamente'
                    }
@@ -1441,7 +1441,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, footwear'
                    ,'title': 'Footwear'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, footwear'
                    ,'title': 'Footwear'
                    }
@@ -1466,7 +1466,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Franz. Sp.'
                    ,'title': 'Französisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, fr.'
                    ,'title': 'Francés'
                    }
@@ -1491,7 +1491,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Garten.'
                    ,'title': 'Gartenarbeit'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, garden.'
                    ,'title': 'Gardening'
                    }
@@ -1516,7 +1516,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, glac.'
                    ,'title': 'Glaciology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, glac.'
                    ,'title': 'Glaciology'
                    }
@@ -1541,7 +1541,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, horse.breed.'
                    ,'title': 'Horse breeding'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, horse.breed.'
                    ,'title': 'Horse breeding'
                    }
@@ -1566,7 +1566,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Jagd.'
                    ,'title': 'Jagd'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, caza'
                    ,'title': 'Caza y cinegética'
                    }
@@ -1591,7 +1591,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Umg.'
                    ,'title': 'Umgangssprache'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, inf.'
                    ,'title': 'Informal'
                    }
@@ -1616,7 +1616,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Recht.'
                    ,'title': 'Recht'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, jur.'
                    ,'title': 'Jurídico'
                    }
@@ -1641,7 +1641,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, mach.mech.'
                    ,'title': 'Machinery and mechanisms'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, mach.mech.'
                    ,'title': 'Machinery and mechanisms'
                    }
@@ -1666,7 +1666,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Magnet.'
                    ,'title': 'Magnetismus'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, magn.'
                    ,'title': 'Magnetics'
                    }
@@ -1691,7 +1691,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Math.'
                    ,'title': 'Mathematik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, mat.'
                    ,'title': 'Matemáticas'
                    }
@@ -1716,7 +1716,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Med.'
                    ,'title': 'Medizin'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, med.'
                    ,'title': 'Medicina'
                    }
@@ -1741,7 +1741,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Massenmed.'
                    ,'title': 'Massenmedien'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, media.'
                    ,'title': 'Mass media'
                    }
@@ -1766,7 +1766,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Metphsk.'
                    ,'title': 'Metallphysik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, met.phys.'
                    ,'title': 'Metal physics'
                    }
@@ -1791,7 +1791,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Mil.'
                    ,'title': 'Militär'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, mil.'
                    ,'title': 'Término militar'
                    }
@@ -1816,7 +1816,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, mil., air.def.'
                    ,'title': 'Air defense'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, mil., air.def.'
                    ,'title': 'Air defense'
                    }
@@ -1841,7 +1841,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, mil., arm.veh.'
                    ,'title': 'Armored vehicles'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, mil., arm.veh.'
                    ,'title': 'Armored vehicles'
                    }
@@ -1866,7 +1866,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Artil.'
                    ,'title': 'Artillerie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, mil.,artill.'
                    ,'title': 'Artillería'
                    }
@@ -1891,7 +1891,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, mil., avia.'
                    ,'title': 'Military aviation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, mil., avia.'
                    ,'title': 'Military aviation'
                    }
@@ -1916,7 +1916,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, mycol.'
                    ,'title': 'Mycology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, mycol.'
                    ,'title': 'Mycology'
                    }
@@ -1941,7 +1941,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Myth.'
                    ,'title': 'Mythologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, mitol.'
                    ,'title': 'Mitología'
                    }
@@ -1966,7 +1966,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Mar.'
                    ,'title': 'Marine'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, náut.'
                    ,'title': 'Náutico'
                    }
@@ -1991,7 +1991,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, veralt.'
                    ,'title': 'Veraltet'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, antic.'
                    ,'title': 'Anticuado'
                    }
@@ -2016,7 +2016,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Ozeanogr.'
                    ,'title': 'Ozeanographie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, ocean.'
                    ,'title': 'Oceanography (oceanology)'
                    }
@@ -2041,7 +2041,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, paraglid.'
                    ,'title': 'Paragliding'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, paraglid.'
                    ,'title': 'Paragliding'
                    }
@@ -2066,7 +2066,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Philol.'
                    ,'title': 'Philologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, philolog.'
                    ,'title': 'Philology'
                    }
@@ -2091,7 +2091,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Phonet.'
                    ,'title': 'Phonetik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, fonét.'
                    ,'title': 'Fonética'
                    }
@@ -2116,7 +2116,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Foto.'
                    ,'title': 'Foto'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, fotogr.'
                    ,'title': 'Fotografía'
                    }
@@ -2141,7 +2141,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Poet.'
                    ,'title': 'Poetisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, poét.'
                    ,'title': 'Poético'
                    }
@@ -2166,7 +2166,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Polit.'
                    ,'title': 'Politik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, polít.'
                    ,'title': 'Política'
                    }
@@ -2191,7 +2191,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Polygr.'
                    ,'title': 'Polygraphie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, poligr.'
                    ,'title': 'Poligrafía'
                    }
@@ -2216,7 +2216,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Fachj.'
                    ,'title': 'Fachjargon'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, profesion.'
                    ,'title': 'Jerga profesional'
                    }
@@ -2241,7 +2241,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, prop.&figur.'
                    ,'title': 'Proper and figurative'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, prop.&figur.'
                    ,'title': 'Proper and figurative'
                    }
@@ -2266,7 +2266,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Radio.'
                    ,'title': 'Radio'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, radio'
                    ,'title': 'Radio'
                    }
@@ -2291,7 +2291,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, rel., jud.'
                    ,'title': 'Judaism'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, rel., jud.'
                    ,'title': 'Judaism'
                    }
@@ -2316,7 +2316,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, row.'
                    ,'title': 'Rowing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, row.'
                    ,'title': 'Rowing'
                    }
@@ -2341,7 +2341,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, sail.'
                    ,'title': 'Sailing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, sail.'
                    ,'title': 'Sailing'
                    }
@@ -2366,7 +2366,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Wissensch.'
                    ,'title': 'Wissenschaftlicher Ausdruck'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, scient.'
                    ,'title': 'Scientific'
                    }
@@ -2391,7 +2391,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, sculp.'
                    ,'title': 'Sculpture'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, sculp.'
                    ,'title': 'Sculpture'
                    }
@@ -2416,7 +2416,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Slang.'
                    ,'title': 'Slang'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, jerg.'
                    ,'title': 'Jerga'
                    }
@@ -2441,7 +2441,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, slavon.'
                    ,'title': 'Slavonic'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, slavon.'
                    ,'title': 'Slavonic'
                    }
@@ -2466,7 +2466,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, social.sc.'
                    ,'title': 'Social science'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, social.sc.'
                    ,'title': 'Social science'
                    }
@@ -2491,7 +2491,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, spin.'
                    ,'title': 'Spinning'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, spin.'
                    ,'title': 'Spinning'
                    }
@@ -2516,7 +2516,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Sport.'
                    ,'title': 'Sport'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, dep.'
                    ,'title': 'Deporte'
                    }
@@ -2541,7 +2541,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, sport.goods'
                    ,'title': 'Sporting goods'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, sport.goods'
                    ,'title': 'Sporting goods'
                    }
@@ -2566,7 +2566,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, surv.'
                    ,'title': 'Survey'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, surv.'
                    ,'title': 'Survey'
                    }
@@ -2591,7 +2591,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Tech.'
                    ,'title': 'Technik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, tec.'
                    ,'title': 'Tecnología'
                    }
@@ -2616,7 +2616,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Telef.'
                    ,'title': 'Telefonie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, tel.'
                    ,'title': 'Telephony'
                    }
@@ -2641,7 +2641,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Teratol.'
                    ,'title': 'Teratologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, terat.'
                    ,'title': 'Teratología'
                    }
@@ -2666,7 +2666,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Topogr.'
                    ,'title': 'Topographie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, topogr.'
                    ,'title': 'Topografía'
                    }
@@ -2691,7 +2691,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, typewrit.'
                    ,'title': 'Typewriters and typewriting'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, typewrit.'
                    ,'title': 'Typewriters and typewriting'
                    }
@@ -2716,7 +2716,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, vent.'
                    ,'title': 'Ventilation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, vent.'
                    ,'title': 'Ventilation'
                    }
@@ -2741,7 +2741,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, weav.'
                    ,'title': 'Weaving'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, weav.'
                    ,'title': 'Weaving'
                    }
@@ -2766,7 +2766,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, written'
                    ,'title': 'Written'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, written'
                    ,'title': 'Written'
                    }
@@ -2791,7 +2791,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, Zool.'
                    ,'title': 'Zoologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, zool.'
                    ,'title': 'Zoología'
                    }
@@ -2816,7 +2816,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Guatem.'
                    ,'title': 'Guatemala'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Guatem.'
                    ,'title': 'Guatemala'
                    }
@@ -2841,7 +2841,7 @@ SUBJECTS = {'AI.':
                    {'short': 'HF.electr.'
                    ,'title': 'High frequency electronics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'HF.electr.'
                    ,'title': 'High frequency electronics'
                    }
@@ -2866,7 +2866,7 @@ SUBJECTS = {'AI.':
                    {'short': 'HR'
                    ,'title': 'Human resources'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'HR'
                    ,'title': 'Human resources'
                    }
@@ -2891,7 +2891,7 @@ SUBJECTS = {'AI.':
                    {'short': 'IMF.'
                    ,'title': 'International Monetary Fund'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'IMF.'
                    ,'title': 'International Monetary Fund'
                    }
@@ -2916,7 +2916,7 @@ SUBJECTS = {'AI.':
                    {'short': 'IT'
                    ,'title': 'Informationstechnik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'IT'
                    ,'title': 'Tecnología de la información'
                    }
@@ -2941,7 +2941,7 @@ SUBJECTS = {'AI.':
                    {'short': 'India'
                    ,'title': 'India'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'India'
                    ,'title': 'India'
                    }
@@ -2966,7 +2966,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Indones.'
                    ,'title': 'Indonesian'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Indones.'
                    ,'title': 'Indonesian'
                    }
@@ -2991,7 +2991,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Iran.'
                    ,'title': 'Iran'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Iran'
                    ,'title': 'Iran'
                    }
@@ -3016,7 +3016,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kazakh.'
                    ,'title': 'Kazakhstan'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Kazakh.'
                    ,'title': 'Kazakhstan'
                    }
@@ -3041,7 +3041,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kyrgyz.'
                    ,'title': 'Kyrgyzstan'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Kyrgyz.'
                    ,'title': 'Kyrgyzstan'
                    }
@@ -3066,7 +3066,7 @@ SUBJECTS = {'AI.':
                    {'short': 'LP.play.'
                    ,'title': 'LP players'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'LP.play.'
                    ,'title': 'LP players'
                    }
@@ -3091,7 +3091,7 @@ SUBJECTS = {'AI.':
                    {'short': 'MSDS'
                    ,'title': 'Material-Sicherheitsdatenblatt'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'MSDS'
                    ,'title': 'Material safety data sheet'
                    }
@@ -3116,7 +3116,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Makarow.'
                    ,'title': 'Makarow'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Makarov.'
                    ,'title': 'Makarov'
                    }
@@ -3141,7 +3141,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Makarow., Umg., Amerik.'
                    ,'title': 'Makarow, Umgangssprache, Amerikanisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Makarov., inf., amer.'
                    ,'title': 'Makarov, Informal, Americano (uso)'
                    }
@@ -3166,7 +3166,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Moroc.'
                    ,'title': 'Morocco'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Moroc.'
                    ,'title': 'Morocco'
                    }
@@ -3191,7 +3191,7 @@ SUBJECTS = {'AI.':
                    {'short': 'N.Ireland.'
                    ,'title': 'Northern Ireland'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'N.Ireland.'
                    ,'title': 'Northern Ireland'
                    }
@@ -3216,7 +3216,7 @@ SUBJECTS = {'AI.':
                    {'short': 'NASA.'
                    ,'title': 'NASA'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'NASA'
                    ,'title': 'NASA'
                    }
@@ -3241,7 +3241,7 @@ SUBJECTS = {'AI.':
                    {'short': 'NATO'
                    ,'title': 'NATO'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'NATO'
                    ,'title': 'NATO'
                    }
@@ -3266,7 +3266,7 @@ SUBJECTS = {'AI.':
                    {'short': 'NGO'
                    ,'title': 'Non-governmental organizations'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'NGO'
                    ,'title': 'Non-governmental organizations'
                    }
@@ -3291,7 +3291,7 @@ SUBJECTS = {'AI.':
                    {'short': 'NYSE.'
                    ,'title': 'New York Stock Exchange'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'NYSE.'
                    ,'title': 'New York Stock Exchange'
                    }
@@ -3316,7 +3316,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Nasdaq'
                    ,'title': 'NASDAQ'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Nasdaq'
                    ,'title': 'NASDAQ'
                    }
@@ -3341,7 +3341,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Netherl., law, court'
                    ,'title': 'Netherlands, Court (law)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Netherl., law, court'
                    ,'title': 'Netherlands, Court (law)'
                    }
@@ -3366,7 +3366,7 @@ SUBJECTS = {'AI.':
                    {'short': 'O&G'
                    ,'title': 'Oil and gas'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'O&G'
                    ,'title': 'Oil and gas'
                    }
@@ -3391,7 +3391,7 @@ SUBJECTS = {'AI.':
                    {'short': 'O&G, casp.'
                    ,'title': 'Caspian'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'O&G, casp.'
                    ,'title': 'Caspian'
                    }
@@ -3416,7 +3416,7 @@ SUBJECTS = {'AI.':
                    {'short': 'O&G, karach.'
                    ,'title': 'Karachaganak'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'O&G, karach.'
                    ,'title': 'Karachaganak'
                    }
@@ -3441,7 +3441,7 @@ SUBJECTS = {'AI.':
                    {'short': 'O&G, molikpaq.'
                    ,'title': 'Molikpaq'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'O&G, molikpaq.'
                    ,'title': 'Molikpaq'
                    }
@@ -3466,7 +3466,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Erdölind.'
                    ,'title': 'Erdölindustrie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'O&G, oilfield.'
                    ,'title': 'Oilfields'
                    }
@@ -3491,7 +3491,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Sachal.R'
                    ,'title': 'Sachalin R'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'O&G, sahk.r.'
                    ,'title': 'Sakhalin R'
                    }
@@ -3516,7 +3516,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Sachal.Yu'
                    ,'title': 'Sachalin Yu'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'O&G, sahk.s.'
                    ,'title': 'Sakhalin S'
                    }
@@ -3541,7 +3541,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Sachal.'
                    ,'title': 'Sachalin'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'O&G, sakh.'
                    ,'title': 'Sakhalin'
                    }
@@ -3566,7 +3566,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Sachal., Geol.'
                    ,'title': 'Sachalin, Geologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'O&G, sakh., geol.'
                    ,'title': 'Sakhalin, Geología'
                    }
@@ -3591,7 +3591,7 @@ SUBJECTS = {'AI.':
                    {'short': 'SachalA'
                    ,'title': 'Sachalin A'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'O&G, sakh.a.'
                    ,'title': 'Sakhalin A'
                    }
@@ -3616,7 +3616,7 @@ SUBJECTS = {'AI.':
                    {'short': 'O&G, tengiz.'
                    ,'title': 'Tengiz'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'O&G, tengiz.'
                    ,'title': 'Tengiz'
                    }
@@ -3641,7 +3641,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Öl- u. Gastechnik'
                    ,'title': 'Erdöl- und Erdgastechnik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'O&G. tech.'
                    ,'title': 'Oil and gas technology'
                    }
@@ -3666,7 +3666,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Arb.schutz'
                    ,'title': 'Arbeitsschutz'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'OHS'
                    ,'title': 'Occupational health & safety'
                    }
@@ -3691,7 +3691,7 @@ SUBJECTS = {'AI.':
                    {'short': 'PCB'
                    ,'title': 'Printed circuit boards'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'PCB'
                    ,'title': 'Printed circuit boards'
                    }
@@ -3716,7 +3716,7 @@ SUBJECTS = {'AI.':
                    {'short': 'PPE'
                    ,'title': 'Personal protective equipment'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'PPE'
                    ,'title': 'Personal protective equipment'
                    }
@@ -3741,7 +3741,7 @@ SUBJECTS = {'AI.':
                    {'short': 'PR'
                    ,'title': 'Public relations'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'PR'
                    ,'title': 'Public relations'
                    }
@@ -3766,7 +3766,7 @@ SUBJECTS = {'AI.':
                    {'short': 'PSP'
                    ,'title': 'Power system protection'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'PSP'
                    ,'title': 'Power system protection'
                    }
@@ -3791,7 +3791,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Panam.'
                    ,'title': 'Panama'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Panam.'
                    ,'title': 'Panama'
                    }
@@ -3816,7 +3816,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Peru.'
                    ,'title': 'Peru'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Peru.'
                    ,'title': 'Peru'
                    }
@@ -3841,7 +3841,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Philipp.'
                    ,'title': 'Philippines'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Philipp.'
                    ,'title': 'Philippines'
                    }
@@ -3866,7 +3866,7 @@ SUBJECTS = {'AI.':
                    {'short': 'R&D.'
                    ,'title': 'Research and development'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'R&D.'
                    ,'title': 'Research and development'
                    }
@@ -3891,7 +3891,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Russl.'
                    ,'title': 'Russland'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Russia'
                    ,'title': 'Russia'
                    }
@@ -3916,7 +3916,7 @@ SUBJECTS = {'AI.':
                    {'short': 'S.Amer.'
                    ,'title': 'South America'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'S.Amer.'
                    ,'title': 'South America'
                    }
@@ -3941,7 +3941,7 @@ SUBJECTS = {'AI.':
                    {'short': 'SAP.'
                    ,'title': 'SAP'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'SAP.'
                    ,'title': 'SAP'
                    }
@@ -3966,7 +3966,7 @@ SUBJECTS = {'AI.':
                    {'short': 'SAP.fin.'
                    ,'title': 'SAP finance'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'SAP.fin.'
                    ,'title': 'SAP finance'
                    }
@@ -3991,7 +3991,7 @@ SUBJECTS = {'AI.':
                    {'short': 'SAP.tech.'
                    ,'title': 'SAP tech.'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'SAP.tech.'
                    ,'title': 'SAP tech.'
                    }
@@ -4016,7 +4016,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Schottl.'
                    ,'title': 'Schottland'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Escoc.'
                    ,'title': 'Escocia'
                    }
@@ -4041,7 +4041,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Spa.'
                    ,'title': 'Spanien'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Spain'
                    ,'title': 'Spain'
                    }
@@ -4066,7 +4066,7 @@ SUBJECTS = {'AI.':
                    {'short': 'TV'
                    ,'title': 'Fernsehen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'TV'
                    ,'title': 'Televisión'
                    }
@@ -4091,7 +4091,7 @@ SUBJECTS = {'AI.':
                    {'short': 'UK'
                    ,'title': 'United Kingdom'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'UK'
                    ,'title': 'United Kingdom'
                    }
@@ -4116,7 +4116,7 @@ SUBJECTS = {'AI.':
                    {'short': 'UN'
                    ,'title': 'United Nations'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'UN'
                    ,'title': 'United Nations'
                    }
@@ -4138,7 +4138,7 @@ SUBJECTS = {'AI.':
                    {'short': 'USA'
                    ,'title': 'United States'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'USA'
                    ,'title': 'United States'
                    }
@@ -4163,7 +4163,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Ukraine'
                    ,'title': 'Ukraine'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Ukraine'
                    ,'title': 'Ukraine'
                    }
@@ -4188,7 +4188,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Venezuel.'
                    ,'title': 'Venezuela'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Venezuel.'
                    ,'title': 'Venezuela'
                    }
@@ -4213,7 +4213,7 @@ SUBJECTS = {'AI.':
                    {'short': 'WTO.'
                    ,'title': 'World trade organization'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'WTO.'
                    ,'title': 'World trade organization'
                    }
@@ -4238,7 +4238,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz.'
                    ,'title': 'Abkürzung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev.'
                    ,'title': 'Abreviatura'
                    }
@@ -4263,7 +4263,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., O&G, casp.'
                    ,'title': 'Abkürzung, Caspian'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., O&G, casp.'
                    ,'title': 'Abreviatura, Caspian'
                    }
@@ -4288,7 +4288,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., O&G, karach.'
                    ,'title': 'Abkürzung, Karachaganak'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., O&G, karach.'
                    ,'title': 'Abreviatura, Karachaganak'
                    }
@@ -4313,7 +4313,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., Sachal.R'
                    ,'title': 'Abkürzung, Sachalin R'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., O&G, sahk.r.'
                    ,'title': 'Abreviatura, Sakhalin R'
                    }
@@ -4338,7 +4338,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., Sachal.Yu'
                    ,'title': 'Abkürzung, Sachalin Yu'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., O&G, sahk.s.'
                    ,'title': 'Abreviatura, Sakhalin S'
                    }
@@ -4363,7 +4363,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., Sachal.'
                    ,'title': 'Abkürzung, Sachalin'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., O&G, sakh.'
                    ,'title': 'Abreviatura, Sakhalin'
                    }
@@ -4388,7 +4388,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., SachalA'
                    ,'title': 'Abkürzung, Sachalin A'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., O&G, sakh.a.'
                    ,'title': 'Abreviatura, Sakhalin A'
                    }
@@ -4413,7 +4413,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., Amerik.'
                    ,'title': 'Abkürzung, Amerikanisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., amer.'
                    ,'title': 'Abreviatura, Americano (uso)'
                    }
@@ -4438,7 +4438,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., Amerik., Slang.'
                    ,'title': 'Abkürzung, Amerikanisch, Slang'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., amer., jerg.'
                    ,'title': 'Abreviatura, Americano (uso), Jerga'
                    }
@@ -4463,7 +4463,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., Luftf., ICAO'
                    ,'title': 'Abkürzung, Luftfahrt, ICAO'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., avia., avia., ICAO'
                    ,'title': 'Abreviatura, Aviación, ICAO'
                    }
@@ -4488,7 +4488,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., Luft.med.'
                    ,'title': 'Abkürzung, Luftfahrtmedizin'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., avia., med.'
                    ,'title': 'Abreviatura, Aviation medicine'
                    }
@@ -4513,7 +4513,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., comp., MS'
                    ,'title': 'Abkürzung, Microsoft'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., comp., MS'
                    ,'title': 'Abreviatura, Microsoft'
                    }
@@ -4538,7 +4538,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., Comp., Netzw.'
                    ,'title': 'Abkürzung, Computernetzwerke'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., comp., net.'
                    ,'title': 'Abreviatura, Computer networks'
                    }
@@ -4560,7 +4560,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., Comp., Netzw., IT'
                    ,'title': 'Abkürzung, Computernetzwerke, Informationstechnik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., comp., net., IT'
                    ,'title': 'Abreviatura, Computer networks, Tecnología de la información'
                    }
@@ -4582,7 +4582,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., fant./sci-fi.'
                    ,'title': 'Abkürzung, Fantasy and science fiction'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., fant./sci-fi.'
                    ,'title': 'Abreviatura, Fantasy and science fiction'
                    }
@@ -4607,7 +4607,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., law, ADR'
                    ,'title': 'Abkürzung, Alternative dispute resolution'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., jur.,SAC'
                    ,'title': 'Abreviatura, Solución alternativa de controversias'
                    }
@@ -4632,7 +4632,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., Urheberrecht'
                    ,'title': 'Abkürzung, Urheberrecht'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., law, copyr.'
                    ,'title': 'Abreviatura, Copyright'
                    }
@@ -4657,7 +4657,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., mil., WMD'
                    ,'title': 'Abkürzung, Weapons of mass destruction'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., mil., WMD'
                    ,'title': 'Abreviatura, Weapons of mass destruction'
                    }
@@ -4682,7 +4682,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., Artil.'
                    ,'title': 'Abkürzung, Artillerie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., mil.,artill.'
                    ,'title': 'Abreviatura, Artillería'
                    }
@@ -4707,7 +4707,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., mil., navy'
                    ,'title': 'Abkürzung, Navy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., mil., navy'
                    ,'title': 'Abreviatura, Navy'
                    }
@@ -4732,7 +4732,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., Patent.'
                    ,'title': 'Abkürzung, Patente'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., patents.'
                    ,'title': 'Abreviatura, Patents'
                    }
@@ -4757,7 +4757,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Abkürz., sport, bask.'
                    ,'title': 'Abkürzung, Basketball'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'abrev., sport, bask.'
                    ,'title': 'Abreviatura, Basketball'
                    }
@@ -4782,7 +4782,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Buchhalt.'
                    ,'title': 'Buchhaltung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cont.'
                    ,'title': 'Contabilidad'
                    }
@@ -4807,7 +4807,7 @@ SUBJECTS = {'AI.':
                    {'short': 'accum.'
                    ,'title': 'Accumulators'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'accum.'
                    ,'title': 'Accumulators'
                    }
@@ -4832,7 +4832,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Akus.'
                    ,'title': 'Akustik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'acoust.'
                    ,'title': 'Acoustics'
                    }
@@ -4857,7 +4857,7 @@ SUBJECTS = {'AI.':
                    {'short': 'acrid.'
                    ,'title': 'Acridology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'acrid.'
                    ,'title': 'Acridology'
                    }
@@ -4882,7 +4882,7 @@ SUBJECTS = {'AI.':
                    {'short': 'acrob.'
                    ,'title': 'Acrobatics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'acrob.'
                    ,'title': 'Acrobatics'
                    }
@@ -4907,7 +4907,7 @@ SUBJECTS = {'AI.':
                    {'short': 'acup.'
                    ,'title': 'Acupuncture'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'acup.'
                    ,'title': 'Acupuncture'
                    }
@@ -4932,7 +4932,7 @@ SUBJECTS = {'AI.':
                    {'short': 'addit.'
                    ,'title': 'Additive manufacturing & 3D printing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'addit.'
                    ,'title': 'Additive manufacturing & 3D printing'
                    }
@@ -4957,7 +4957,7 @@ SUBJECTS = {'AI.':
                    {'short': 'adm.law.'
                    ,'title': 'Administrative law'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'adm.law.'
                    ,'title': 'Administrative law'
                    }
@@ -4982,7 +4982,7 @@ SUBJECTS = {'AI.':
                    {'short': 'admin.geo.'
                    ,'title': 'Administrative geography'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'admin.geo.'
                    ,'title': 'Administrative geography'
                    }
@@ -5007,7 +5007,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Werb.'
                    ,'title': 'Werbung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'adv.'
                    ,'title': 'Advertising'
                    }
@@ -5032,7 +5032,7 @@ SUBJECTS = {'AI.':
                    {'short': 'aer.phot.'
                    ,'title': 'Aerial photography and topography'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'aer.phot.'
                    ,'title': 'Aerial photography and topography'
                    }
@@ -5057,7 +5057,7 @@ SUBJECTS = {'AI.':
                    {'short': 'aerodyn.'
                    ,'title': 'Aerodynamics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'aerodyn.'
                    ,'title': 'Aerodynamics'
                    }
@@ -5082,7 +5082,7 @@ SUBJECTS = {'AI.':
                    {'short': 'aerohydr.'
                    ,'title': 'Aerohydrodynamics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'aerohydr.'
                    ,'title': 'Aerohydrodynamics'
                    }
@@ -5107,7 +5107,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Luftschiff.'
                    ,'title': 'Luftschifffahrt'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'aeron.'
                    ,'title': 'Aeronautics'
                    }
@@ -5132,7 +5132,7 @@ SUBJECTS = {'AI.':
                    {'short': 'affect.'
                    ,'title': 'Affectionate'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'affect.'
                    ,'title': 'Affectionate'
                    }
@@ -5157,7 +5157,7 @@ SUBJECTS = {'AI.':
                    {'short': 'afghan.'
                    ,'title': 'Afghanistan'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'afghan.'
                    ,'title': 'Afghanistan'
                    }
@@ -5182,7 +5182,7 @@ SUBJECTS = {'AI.':
                    {'short': 'afr.'
                    ,'title': 'Africa'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'afr.'
                    ,'title': 'Africa'
                    }
@@ -5207,7 +5207,7 @@ SUBJECTS = {'AI.':
                    {'short': 'african.'
                    ,'title': 'African'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'african.'
                    ,'title': 'African'
                    }
@@ -5232,7 +5232,7 @@ SUBJECTS = {'AI.':
                    {'short': 'agr.'
                    ,'title': 'Agronomy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'agr.'
                    ,'title': 'Agronomy'
                    }
@@ -5257,7 +5257,7 @@ SUBJECTS = {'AI.':
                    {'short': 'landwirt.'
                    ,'title': 'Landwirtschaft'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'agric.'
                    ,'title': 'Agricultura'
                    }
@@ -5282,7 +5282,7 @@ SUBJECTS = {'AI.':
                    {'short': 'agrochem.'
                    ,'title': 'Agrochemistry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'agrochem.'
                    ,'title': 'Agrochemistry'
                    }
@@ -5307,7 +5307,7 @@ SUBJECTS = {'AI.':
                    {'short': 'aikido.'
                    ,'title': 'Aikido'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'aikido.'
                    ,'title': 'Aikido'
                    }
@@ -5332,7 +5332,7 @@ SUBJECTS = {'AI.':
                    {'short': 'airccon.'
                    ,'title': 'Air conditioners'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'airccon.'
                    ,'title': 'Air conditioners'
                    }
@@ -5357,7 +5357,7 @@ SUBJECTS = {'AI.':
                    {'short': 'airports'
                    ,'title': 'Airports and air traffic control'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'airports'
                    ,'title': 'Airports and air traffic control'
                    }
@@ -5382,7 +5382,7 @@ SUBJECTS = {'AI.':
                    {'short': 'airsh.'
                    ,'title': 'Airships'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'airsh.'
                    ,'title': 'Airships'
                    }
@@ -5407,7 +5407,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Alg.'
                    ,'title': 'Algebra'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'alg.'
                    ,'title': 'Algebra'
                    }
@@ -5432,7 +5432,7 @@ SUBJECTS = {'AI.':
                    {'short': 'alk.'
                    ,'title': 'Alkaloids'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'alk.'
                    ,'title': 'Alkaloids'
                    }
@@ -5457,7 +5457,7 @@ SUBJECTS = {'AI.':
                    {'short': 'allerg.'
                    ,'title': 'Allergologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'alergol.'
                    ,'title': 'Alergología'
                    }
@@ -5482,7 +5482,7 @@ SUBJECTS = {'AI.':
                    {'short': 'alp.ski.'
                    ,'title': 'Alpine skiing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'alp.ski.'
                    ,'title': 'Alpine skiing'
                    }
@@ -5507,7 +5507,7 @@ SUBJECTS = {'AI.':
                    {'short': 'alum.'
                    ,'title': 'Aluminium industry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'alum.'
                    ,'title': 'Aluminium industry'
                    }
@@ -5532,7 +5532,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Amerik.'
                    ,'title': 'Amerikanisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'amer.'
                    ,'title': 'Americano (uso)'
                    }
@@ -5557,7 +5557,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Amerik., Makarow.'
                    ,'title': 'Amerikanisch, Makarow'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'amer., Makarov.'
                    ,'title': 'Americano (uso), Makarov'
                    }
@@ -5582,7 +5582,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Amerik., Buchhalt.'
                    ,'title': 'Amerikanisch, Buchhaltung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'amer., cont.'
                    ,'title': 'Americano (uso), Contabilidad'
                    }
@@ -5607,7 +5607,7 @@ SUBJECTS = {'AI.':
                    {'short': 'anäst.'
                    ,'title': 'Anästhesiologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'anestes.'
                    ,'title': 'Anestesiología'
                    }
@@ -5632,7 +5632,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Anat.'
                    ,'title': 'Anatomie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'anat.'
                    ,'title': 'Anatomía'
                    }
@@ -5657,7 +5657,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Altfranzös.'
                    ,'title': 'Altfranzösisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'anc.fr.'
                    ,'title': 'Ancient French'
                    }
@@ -5682,7 +5682,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Altgr.Sp.'
                    ,'title': 'Altgriechische Sprache'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'gr.ant.'
                    ,'title': 'Griego antiguo'
                    }
@@ -5707,7 +5707,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Althebr.'
                    ,'title': 'Althebräisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'anc.hebr.'
                    ,'title': 'Ancient Hebrew'
                    }
@@ -5732,7 +5732,7 @@ SUBJECTS = {'AI.':
                    {'short': 'angl.'
                    ,'title': 'Angling (hobby)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'angl.'
                    ,'title': 'Angling (hobby)'
                    }
@@ -5757,7 +5757,7 @@ SUBJECTS = {'AI.':
                    {'short': 'anim.husb.'
                    ,'title': 'Animal husbandry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'anim.husb.'
                    ,'title': 'Animal husbandry'
                    }
@@ -5782,7 +5782,7 @@ SUBJECTS = {'AI.':
                    {'short': 'animat.'
                    ,'title': 'Animation and animated films'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'animat.'
                    ,'title': 'Animation and animated films'
                    }
@@ -5807,7 +5807,7 @@ SUBJECTS = {'AI.':
                    {'short': 'antarct.'
                    ,'title': 'Antarctic'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'antarct.'
                    ,'title': 'Antarctic'
                    }
@@ -5832,7 +5832,7 @@ SUBJECTS = {'AI.':
                    {'short': 'antenn.'
                    ,'title': 'Antennas and waveguides'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'antenn.'
                    ,'title': 'Antennas and waveguides'
                    }
@@ -5857,7 +5857,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Anthropol.'
                    ,'title': 'Anthropologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'anthr.'
                    ,'title': 'Anthropology'
                    }
@@ -5882,7 +5882,7 @@ SUBJECTS = {'AI.':
                    {'short': 'antitrust.'
                    ,'title': 'Antitrust law'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'antitrust.'
                    ,'title': 'Antitrust law'
                    }
@@ -5907,7 +5907,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Wahrsch. Theor.'
                    ,'title': 'Wahrscheinlichkeitstheorie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'appl.math.'
                    ,'title': 'Applied mathematics'
                    }
@@ -5932,7 +5932,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Arab.'
                    ,'title': 'Arabisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'árab.'
                    ,'title': 'Árabe'
                    }
@@ -5957,7 +5957,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Arch.'
                    ,'title': 'Archaisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'arch.'
                    ,'title': 'Archaic'
                    }
@@ -5982,7 +5982,7 @@ SUBJECTS = {'AI.':
                    {'short': 'archer.'
                    ,'title': 'Archery'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'archer.'
                    ,'title': 'Archery'
                    }
@@ -6007,7 +6007,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Architek.'
                    ,'title': 'Architektur'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'arquit.'
                    ,'title': 'Arquitectura'
                    }
@@ -6032,7 +6032,7 @@ SUBJECTS = {'AI.':
                    {'short': 'archive.'
                    ,'title': 'Archiving'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'archive.'
                    ,'title': 'Archiving'
                    }
@@ -6057,7 +6057,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kunst.'
                    ,'title': 'Kunst'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'arte'
                    ,'title': 'Arte'
                    }
@@ -6082,7 +6082,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Astron.'
                    ,'title': 'Astronomie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'astr.'
                    ,'title': 'Astronomía'
                    }
@@ -6107,7 +6107,7 @@ SUBJECTS = {'AI.':
                    {'short': 'astrol.'
                    ,'title': 'Astrology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'astrol.'
                    ,'title': 'Astrology'
                    }
@@ -6132,7 +6132,7 @@ SUBJECTS = {'AI.':
                    {'short': 'astrometr.'
                    ,'title': 'Astrometry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'astrometr.'
                    ,'title': 'Astrometry'
                    }
@@ -6157,7 +6157,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Astro.'
                    ,'title': 'Astronautik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'astronaut.'
                    ,'title': 'Astronautics'
                    }
@@ -6182,7 +6182,7 @@ SUBJECTS = {'AI.':
                    {'short': 'astrophys.'
                    ,'title': 'Astrophysics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'astrophys.'
                    ,'title': 'Astrophysics'
                    }
@@ -6207,7 +6207,7 @@ SUBJECTS = {'AI.':
                    {'short': 'astrospectr.'
                    ,'title': 'Astrospectroscopy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'astrospectr.'
                    ,'title': 'Astrospectroscopy'
                    }
@@ -6232,7 +6232,7 @@ SUBJECTS = {'AI.':
                    {'short': 'athlet.'
                    ,'title': 'Athletics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'athlet.'
                    ,'title': 'Athletics'
                    }
@@ -6257,7 +6257,7 @@ SUBJECTS = {'AI.':
                    {'short': 'atring.'
                    ,'title': 'Astringents'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'atring.'
                    ,'title': 'Astringents'
                    }
@@ -6282,7 +6282,7 @@ SUBJECTS = {'AI.':
                    {'short': 'audio.el.'
                    ,'title': 'Audio electronics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'audio.el.'
                    ,'title': 'Audio electronics'
                    }
@@ -6307,7 +6307,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Austr. Slang'
                    ,'title': 'Australischer Slang'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'austral.'
                    ,'title': 'Australiano (sólo uso)'
                    }
@@ -6332,7 +6332,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Öster.'
                    ,'title': 'Österreichisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'austrian'
                    ,'title': 'Austrian (usage)'
                    }
@@ -6357,7 +6357,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Autoind.'
                    ,'title': 'Autoindustrie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'automóv.'
                    ,'title': 'Automóviles'
                    }
@@ -6382,7 +6382,7 @@ SUBJECTS = {'AI.':
                    {'short': 'auto.ctrl.'
                    ,'title': 'Automatic control'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'auto.ctrl.'
                    ,'title': 'Automatic control'
                    }
@@ -6407,7 +6407,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Autom.'
                    ,'title': 'Automatik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'automat.'
                    ,'title': 'Automated equipment'
                    }
@@ -6432,7 +6432,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Luftf.'
                    ,'title': 'Luftfahrt'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'avia.'
                    ,'title': 'Aviación'
                    }
@@ -6457,7 +6457,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Luftf., ICAO'
                    ,'title': 'Luftfahrt, ICAO'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'avia., avia., ICAO'
                    ,'title': 'Aviación, ICAO'
                    }
@@ -6482,7 +6482,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Luft.med.'
                    ,'title': 'Luftfahrtmedizin'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'avia., med.'
                    ,'title': 'Aviation medicine'
                    }
@@ -6507,7 +6507,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Salopp'
                    ,'title': 'Salopp'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'avunc.'
                    ,'title': 'Avuncular'
                    }
@@ -6532,7 +6532,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Bakter.'
                    ,'title': 'Bakteriologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'bact.'
                    ,'title': 'Bacteriología'
                    }
@@ -6557,7 +6557,7 @@ SUBJECTS = {'AI.':
                    {'short': 'baker.'
                    ,'title': 'Bakery'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'baker.'
                    ,'title': 'Bakery'
                    }
@@ -6582,7 +6582,7 @@ SUBJECTS = {'AI.':
                    {'short': 'ball.bear.'
                    ,'title': 'Ball bearings'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ball.bear.'
                    ,'title': 'Ball bearings'
                    }
@@ -6607,7 +6607,7 @@ SUBJECTS = {'AI.':
                    {'short': 'ballet.'
                    ,'title': 'Ballet'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ballet.'
                    ,'title': 'Ballet'
                    }
@@ -6632,7 +6632,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Bank.'
                    ,'title': 'Bankwesen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'bank.'
                    ,'title': 'Banking'
                    }
@@ -6657,7 +6657,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Baseball'
                    ,'title': 'Baseball'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'baseb.'
                    ,'title': 'Baseball'
                    }
@@ -6682,7 +6682,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Imker.'
                    ,'title': 'Imkerei'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'beekeep.'
                    ,'title': 'Beekeeping'
                    }
@@ -6707,7 +6707,7 @@ SUBJECTS = {'AI.':
                    {'short': 'belg.'
                    ,'title': 'Belgian (usage)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'belg.'
                    ,'title': 'Belgian (usage)'
                    }
@@ -6732,7 +6732,7 @@ SUBJECTS = {'AI.':
                    {'short': 'bev.'
                    ,'title': 'Beverages'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'bev.'
                    ,'title': 'Beverages'
                    }
@@ -6757,7 +6757,7 @@ SUBJECTS = {'AI.':
                    {'short': 'bibl.'
                    ,'title': 'Bibel'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'bibl.'
                    ,'title': 'Biblia'
                    }
@@ -6782,7 +6782,7 @@ SUBJECTS = {'AI.':
                    {'short': 'bibliogr.'
                    ,'title': 'Bibliography'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'bibliogr.'
                    ,'title': 'Bibliography'
                    }
@@ -6807,7 +6807,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Wechselrecht'
                    ,'title': 'Wechselrecht'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'bill.'
                    ,'title': 'Bills'
                    }
@@ -6832,7 +6832,7 @@ SUBJECTS = {'AI.':
                    {'short': 'billiar.'
                    ,'title': 'Billiards'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'billiar.'
                    ,'title': 'Billiards'
                    }
@@ -6857,7 +6857,7 @@ SUBJECTS = {'AI.':
                    {'short': 'bioacoust.'
                    ,'title': 'Bioacoustics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'bioacoust.'
                    ,'title': 'Bioacoustics'
                    }
@@ -6882,7 +6882,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Biochem.'
                    ,'title': 'Biochemie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'bioq.'
                    ,'title': 'Bioquímica'
                    }
@@ -6907,7 +6907,7 @@ SUBJECTS = {'AI.':
                    {'short': 'bioenerg.'
                    ,'title': 'Bioenergy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'bioenerg.'
                    ,'title': 'Bioenergy'
                    }
@@ -6932,7 +6932,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Biol.'
                    ,'title': 'Biologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'biol.'
                    ,'title': 'Biología'
                    }
@@ -6957,7 +6957,7 @@ SUBJECTS = {'AI.':
                    {'short': 'biom.'
                    ,'title': 'Biometry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'biom.'
                    ,'title': 'Biometry'
                    }
@@ -6982,7 +6982,7 @@ SUBJECTS = {'AI.':
                    {'short': 'bion.'
                    ,'title': 'Bionics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'bion.'
                    ,'title': 'Bionics'
                    }
@@ -7007,7 +7007,7 @@ SUBJECTS = {'AI.':
                    {'short': 'biophys.'
                    ,'title': 'Biophysik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'biofís.'
                    ,'title': 'Biofísica'
                    }
@@ -7032,7 +7032,7 @@ SUBJECTS = {'AI.':
                    {'short': 'biotaxy.'
                    ,'title': 'Biotaxy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'biotaxy.'
                    ,'title': 'Biotaxy'
                    }
@@ -7057,7 +7057,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Biotech.'
                    ,'title': 'Biotechnologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'biotechn.'
                    ,'title': 'Biotechnology'
                    }
@@ -7082,7 +7082,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Neg.Slang'
                    ,'title': 'Negerslang'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'black.sl.'
                    ,'title': 'Black slang'
                    }
@@ -7107,7 +7107,7 @@ SUBJECTS = {'AI.':
                    {'short': 'bodybuild.'
                    ,'title': 'Bodybuilding'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'bodybuild.'
                    ,'title': 'Bodybuilding'
                    }
@@ -7132,7 +7132,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Lit. Stil'
                    ,'title': 'Literarischer Stil'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'lib.'
                    ,'title': 'Libresco/literario'
                    }
@@ -7157,7 +7157,7 @@ SUBJECTS = {'AI.':
                    {'short': 'book.bind.'
                    ,'title': 'Book binding'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'book.bind.'
                    ,'title': 'Book binding'
                    }
@@ -7182,7 +7182,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Bot.'
                    ,'title': 'Botanik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'bot.'
                    ,'title': 'Botánica'
                    }
@@ -7207,7 +7207,7 @@ SUBJECTS = {'AI.':
                    {'short': 'box.'
                    ,'title': 'Boxing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'box.'
                    ,'title': 'Boxing'
                    }
@@ -7232,7 +7232,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Bierbrau'
                    ,'title': 'Bierbrauerei'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'brew.'
                    ,'title': 'Brewery'
                    }
@@ -7257,7 +7257,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Ziegel.'
                    ,'title': 'Ziegelproduktion'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'bricks'
                    ,'title': 'Bricks'
                    }
@@ -7282,7 +7282,7 @@ SUBJECTS = {'AI.':
                    {'short': 'bridg.constr.'
                    ,'title': 'Bridge construction'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'bridg.constr.'
                    ,'title': 'Bridge construction'
                    }
@@ -7307,7 +7307,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Brit.'
                    ,'title': 'Britische Redensart (Usus)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'brit.usg.'
                    ,'title': 'British (usage, not BrE)'
                    }
@@ -7332,7 +7332,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Brit., Austr. Slang'
                    ,'title': 'Britische Redensart (Usus), Australischer Slang'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'brit.usg., austral.'
                    ,'title': 'British (usage, not BrE), Australiano (sólo uso)'
                    }
@@ -7357,7 +7357,7 @@ SUBJECTS = {'AI.':
                    {'short': 'build.mat.'
                    ,'title': 'Building materials'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'build.mat.'
                    ,'title': 'Building materials'
                    }
@@ -7382,7 +7382,7 @@ SUBJECTS = {'AI.':
                    {'short': 'build.struct.'
                    ,'title': 'Building structures'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'build.struct.'
                    ,'title': 'Building structures'
                    }
@@ -7407,7 +7407,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Geschäftsspr.'
                    ,'title': 'Geschäftssprache'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'bus.styl.'
                    ,'title': 'Business style'
                    }
@@ -7432,7 +7432,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Geschäftsvokab.'
                    ,'title': 'Geschäftsvokabular'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'busin.'
                    ,'title': 'Business'
                    }
@@ -7457,7 +7457,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kabel'
                    ,'title': 'Kabelproduktion'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cables'
                    ,'title': 'Cables and cable production'
                    }
@@ -7482,7 +7482,7 @@ SUBJECTS = {'AI.':
                    {'short': 'calligr.'
                    ,'title': 'Calligraphy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'calligr.'
                    ,'title': 'Calligraphy'
                    }
@@ -7507,7 +7507,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Konserv.'
                    ,'title': 'Konservierung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'can.'
                    ,'title': 'Canning'
                    }
@@ -7532,7 +7532,7 @@ SUBJECTS = {'AI.':
                    {'short': 'kand.Ausdr.'
                    ,'title': 'kanadischer Ausdruck'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'canad.'
                    ,'title': 'Canadian'
                    }
@@ -7557,7 +7557,7 @@ SUBJECTS = {'AI.':
                    {'short': 'carcin.'
                    ,'title': 'Carcinology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'carcin.'
                    ,'title': 'Carcinology'
                    }
@@ -7582,7 +7582,7 @@ SUBJECTS = {'AI.':
                    {'short': 'kardiol.'
                    ,'title': 'Kardiologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cardiol.'
                    ,'title': 'Cardiología'
                    }
@@ -7607,7 +7607,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kart.'
                    ,'title': 'Kartenspiel'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cart.'
                    ,'title': 'Juego de cartas'
                    }
@@ -7632,7 +7632,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kartogr.'
                    ,'title': 'Kartografie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cartogr.'
                    ,'title': 'Cartography'
                    }
@@ -7657,7 +7657,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kartogr., Amerik.'
                    ,'title': 'Kartografie, Amerikanisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cartogr., amer.'
                    ,'title': 'Cartography, Americano (uso)'
                    }
@@ -7682,7 +7682,7 @@ SUBJECTS = {'AI.':
                    {'short': 'cel.mech.'
                    ,'title': 'Celestial mechanics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cel.mech.'
                    ,'title': 'Celestial mechanics'
                    }
@@ -7707,7 +7707,7 @@ SUBJECTS = {'AI.':
                    {'short': 'cem.'
                    ,'title': 'Cement'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cem.'
                    ,'title': 'Cement'
                    }
@@ -7732,7 +7732,7 @@ SUBJECTS = {'AI.':
                    {'short': 'ceram.'
                    ,'title': 'Ceramics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ceram.'
                    ,'title': 'Ceramics'
                    }
@@ -7757,7 +7757,7 @@ SUBJECTS = {'AI.':
                    {'short': 'ceram.tile.'
                    ,'title': 'Ceramic tiles'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ceram.tile.'
                    ,'title': 'Ceramic tiles'
                    }
@@ -7782,7 +7782,7 @@ SUBJECTS = {'AI.':
                    {'short': 'chalcid.'
                    ,'title': 'Chalcidology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'chalcid.'
                    ,'title': 'Chalcidology'
                    }
@@ -7807,7 +7807,7 @@ SUBJECTS = {'AI.':
                    {'short': 'charit.'
                    ,'title': 'Charities'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'charit.'
                    ,'title': 'Charities'
                    }
@@ -7832,7 +7832,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Chat.'
                    ,'title': 'Chat- und Internetslang'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'chat.'
                    ,'title': 'Chat and Internet slang'
                    }
@@ -7857,7 +7857,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Tschech.'
                    ,'title': 'Tschechisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'chech.'
                    ,'title': 'Czech'
                    }
@@ -7882,7 +7882,7 @@ SUBJECTS = {'AI.':
                    {'short': 'checkers.'
                    ,'title': 'Checkers'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'checkers.'
                    ,'title': 'Checkers'
                    }
@@ -7907,7 +7907,7 @@ SUBJECTS = {'AI.':
                    {'short': 'cheese'
                    ,'title': 'Cheesemaking (caseiculture)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cheese'
                    ,'title': 'Cheesemaking (caseiculture)'
                    }
@@ -7932,7 +7932,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Chem.'
                    ,'title': 'Chemie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'quím.'
                    ,'title': 'Química'
                    }
@@ -7957,7 +7957,7 @@ SUBJECTS = {'AI.':
                    {'short': 'chem.comp.'
                    ,'title': 'Chemical compounds'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'chem.comp.'
                    ,'title': 'Chemical compounds'
                    }
@@ -7982,7 +7982,7 @@ SUBJECTS = {'AI.':
                    {'short': 'chem.fib.'
                    ,'title': 'Chemical fibers'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'chem.fib.'
                    ,'title': 'Chemical fibers'
                    }
@@ -8007,7 +8007,7 @@ SUBJECTS = {'AI.':
                    {'short': 'chem.ind.'
                    ,'title': 'Chemical industry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'chem.ind.'
                    ,'title': 'Chemical industry'
                    }
@@ -8032,7 +8032,7 @@ SUBJECTS = {'AI.':
                    {'short': 'chem.nomencl.'
                    ,'title': 'Chemical nomenclature'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'chem.nomencl.'
                    ,'title': 'Chemical nomenclature'
                    }
@@ -8057,7 +8057,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Schach.'
                    ,'title': 'Schach'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ajedr.'
                    ,'title': 'Ajedrez'
                    }
@@ -8082,7 +8082,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kinderspr.'
                    ,'title': 'Kindersprache'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'infant.'
                    ,'title': 'Infantil'
                    }
@@ -8107,7 +8107,7 @@ SUBJECTS = {'AI.':
                    {'short': 'chin.'
                    ,'title': 'Chinesische Sprache'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'chin.'
                    ,'title': 'Chino'
                    }
@@ -8132,7 +8132,7 @@ SUBJECTS = {'AI.':
                    {'short': 'choreogr.'
                    ,'title': 'Choreography'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'choreogr.'
                    ,'title': 'Choreography'
                    }
@@ -8157,7 +8157,7 @@ SUBJECTS = {'AI.':
                    {'short': 'chromat.'
                    ,'title': 'Chromatography'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'chromat.'
                    ,'title': 'Chromatography'
                    }
@@ -8182,7 +8182,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Film'
                    ,'title': 'Film'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cine'
                    ,'title': 'Cinematógrafo'
                    }
@@ -8207,7 +8207,7 @@ SUBJECTS = {'AI.':
                    {'short': 'cinema.equip.'
                    ,'title': 'Cinema equipment'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cinema.equip.'
                    ,'title': 'Cinema equipment'
                    }
@@ -8232,7 +8232,7 @@ SUBJECTS = {'AI.':
                    {'short': 'circus'
                    ,'title': 'Circus'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'circus'
                    ,'title': 'Circus'
                    }
@@ -8257,7 +8257,7 @@ SUBJECTS = {'AI.':
                    {'short': 'civ.law.'
                    ,'title': 'Civil law'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'civ.law.'
                    ,'title': 'Civil law'
                    }
@@ -8282,7 +8282,7 @@ SUBJECTS = {'AI.':
                    {'short': 'civ.proc.'
                    ,'title': 'Civil procedure'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'civ.proc.'
                    ,'title': 'Civil procedure'
                    }
@@ -8307,7 +8307,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Altröm.'
                    ,'title': 'Altrömisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'antig.'
                    ,'title': 'Antigüedad (sin mitología)'
                    }
@@ -8332,7 +8332,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kirchw.'
                    ,'title': 'Kirchenwesen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ecles.'
                    ,'title': 'Eclesiástico'
                    }
@@ -8357,7 +8357,7 @@ SUBJECTS = {'AI.':
                    {'short': 'clich.'
                    ,'title': 'Cliche'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'clich.'
                    ,'title': 'Cliche'
                    }
@@ -8382,7 +8382,7 @@ SUBJECTS = {'AI.':
                    {'short': 'clim.'
                    ,'title': 'Climatology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'clim.'
                    ,'title': 'Climatology'
                    }
@@ -8407,7 +8407,7 @@ SUBJECTS = {'AI.':
                    {'short': 'clin.trial.'
                    ,'title': 'Clinical trial'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'clin.trial.'
                    ,'title': 'Clinical trial'
                    }
@@ -8432,7 +8432,7 @@ SUBJECTS = {'AI.':
                    {'short': 'cloth.'
                    ,'title': 'Clothing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cloth.'
                    ,'title': 'Clothing'
                    }
@@ -8457,7 +8457,7 @@ SUBJECTS = {'AI.':
                    {'short': 'coal.'
                    ,'title': 'Coal'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'coal.'
                    ,'title': 'Coal'
                    }
@@ -8482,7 +8482,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Cockney.'
                    ,'title': 'Cockney'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cockney'
                    ,'title': 'Cockney rhyming slang'
                    }
@@ -8507,7 +8507,7 @@ SUBJECTS = {'AI.':
                    {'short': 'coff.'
                    ,'title': 'Coffee'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'coff.'
                    ,'title': 'Coffee'
                    }
@@ -8532,7 +8532,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Verallgem.'
                    ,'title': 'Verallgemeinernd'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'colect.'
                    ,'title': 'Colectivo'
                    }
@@ -8557,7 +8557,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Samm.'
                    ,'title': 'Sammeln'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'collect.'
                    ,'title': 'Collecting'
                    }
@@ -8582,7 +8582,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Student.Sp.'
                    ,'title': 'Studentensprache'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'college.vern.'
                    ,'title': 'College vernacular'
                    }
@@ -8607,7 +8607,7 @@ SUBJECTS = {'AI.':
                    {'short': 'colloid.chem.'
                    ,'title': 'Colloid chemistry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'colloid.chem.'
                    ,'title': 'Colloid chemistry'
                    }
@@ -8632,7 +8632,7 @@ SUBJECTS = {'AI.':
                    {'short': 'combust.'
                    ,'title': 'Combustion gas turbines'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'combust.'
                    ,'title': 'Combustion gas turbines'
                    }
@@ -8657,7 +8657,7 @@ SUBJECTS = {'AI.':
                    {'short': 'comic.'
                    ,'title': 'Comics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'comic.'
                    ,'title': 'Comics'
                    }
@@ -8682,7 +8682,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Hand.'
                    ,'title': 'Handel'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'com.'
                    ,'title': 'Comercio'
                    }
@@ -8707,7 +8707,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kommunik.'
                    ,'title': 'Kommunikation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'commun.'
                    ,'title': 'Communications'
                    }
@@ -8732,7 +8732,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Comp.'
                    ,'title': 'Computertechnik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'comp.'
                    ,'title': 'Computadores'
                    }
@@ -8754,7 +8754,7 @@ SUBJECTS = {'AI.':
                    {'short': 'comp., MS'
                    ,'title': 'Microsoft'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'comp., MS'
                    ,'title': 'Microsoft'
                    }
@@ -8779,7 +8779,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Comp., Netzw.'
                    ,'title': 'Computernetzwerke'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'comp., net.'
                    ,'title': 'Computer networks'
                    }
@@ -8801,7 +8801,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Comp., Netzw., Abkürz.'
                    ,'title': 'Computernetzwerke, Abkürzung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'comp., net., abrev.'
                    ,'title': 'Computer networks, Abreviatura'
                    }
@@ -8823,7 +8823,7 @@ SUBJECTS = {'AI.':
                    {'short': 'comp.games.'
                    ,'title': 'Computer games'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'comp.games.'
                    ,'title': 'Computer games'
                    }
@@ -8848,7 +8848,7 @@ SUBJECTS = {'AI.':
                    {'short': 'comp.graph.'
                    ,'title': 'Computer graphics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'comp.graph.'
                    ,'title': 'Computer graphics'
                    }
@@ -8873,7 +8873,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Firm.name.'
                    ,'title': 'Firmenname'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'comp.name.'
                    ,'title': 'Company name'
                    }
@@ -8898,7 +8898,7 @@ SUBJECTS = {'AI.':
                    {'short': 'comp.sec.'
                    ,'title': 'Computer security'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'comp.sec.'
                    ,'title': 'Computer security'
                    }
@@ -8923,7 +8923,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Comp.sl., scherzh.'
                    ,'title': 'Computerslang, Scherzhafter Ausdruck'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'comp.sl., humor.'
                    ,'title': 'Computing slang, Humorístico'
                    }
@@ -8948,7 +8948,7 @@ SUBJECTS = {'AI.':
                    {'short': 'compr.'
                    ,'title': 'Compressors'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'compr.'
                    ,'title': 'Compressors'
                    }
@@ -8973,7 +8973,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Bet.'
                    ,'title': 'Beton'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'concr.'
                    ,'title': 'Concrete'
                    }
@@ -8998,7 +8998,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Feingeb.'
                    ,'title': 'Feingebäck'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'confect.'
                    ,'title': 'Confectionery'
                    }
@@ -9023,7 +9023,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Bauw.'
                    ,'title': 'Bauwesen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'constr.'
                    ,'title': 'Construcción'
                    }
@@ -9048,7 +9048,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Berat.'
                    ,'title': 'Beratung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'consult.'
                    ,'title': 'Consulting'
                    }
@@ -9073,7 +9073,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Verächt.'
                    ,'title': 'Verächtlich'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'despect.'
                    ,'title': 'Despectivamente'
                    }
@@ -9098,7 +9098,7 @@ SUBJECTS = {'AI.':
                    {'short': 'context.'
                    ,'title': 'Contextual meaning'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'context.'
                    ,'title': 'Contextual meaning'
                    }
@@ -9123,7 +9123,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Knvbtb.'
                    ,'title': 'Konverterbetrieb'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'conv.ind.'
                    ,'title': 'Converter industry'
                    }
@@ -9148,7 +9148,7 @@ SUBJECTS = {'AI.':
                    {'short': 'conv.notation.'
                    ,'title': 'Conventional notation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'conv.notation.'
                    ,'title': 'Conventional notation'
                    }
@@ -9173,7 +9173,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gastron.'
                    ,'title': 'Gastronomie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cocina'
                    ,'title': 'Cocina'
                    }
@@ -9198,7 +9198,7 @@ SUBJECTS = {'AI.':
                    {'short': 'coop.'
                    ,'title': 'Cooperage'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'coop.'
                    ,'title': 'Cooperage'
                    }
@@ -9223,7 +9223,7 @@ SUBJECTS = {'AI.':
                    {'short': 'corp.gov.'
                    ,'title': 'Corporate governance'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'corp.gov.'
                    ,'title': 'Corporate governance'
                    }
@@ -9248,7 +9248,7 @@ SUBJECTS = {'AI.':
                    {'short': 'corrupt.'
                    ,'title': 'Combating corruption'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'corrupt.'
                    ,'title': 'Combating corruption'
                    }
@@ -9273,7 +9273,7 @@ SUBJECTS = {'AI.':
                    {'short': 'cosmet.'
                    ,'title': 'Cosmetics and cosmetology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cosmet.'
                    ,'title': 'Cosmetics and cosmetology'
                    }
@@ -9298,7 +9298,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Krim.jarg.'
                    ,'title': 'Kriminaljargon'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'crim.jarg.'
                    ,'title': 'Criminal jargon'
                    }
@@ -9323,7 +9323,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Strafrecht'
                    ,'title': 'Strafrecht'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'crim.law.'
                    ,'title': 'Criminal law'
                    }
@@ -9348,7 +9348,7 @@ SUBJECTS = {'AI.':
                    {'short': 'cryptogr.'
                    ,'title': 'Cryptography'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cryptogr.'
                    ,'title': 'Cryptography'
                    }
@@ -9373,7 +9373,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kristallogr.'
                    ,'title': 'Kristallographie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'crystall.'
                    ,'title': 'Crystallography'
                    }
@@ -9398,7 +9398,7 @@ SUBJECTS = {'AI.':
                    {'short': 'cultur.'
                    ,'title': 'Cultural studies'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cultur.'
                    ,'title': 'Cultural studies'
                    }
@@ -9423,7 +9423,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Währ.'
                    ,'title': 'Währungen und monetäre Politik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'curr.'
                    ,'title': 'Currencies and monetary policy'
                    }
@@ -9448,7 +9448,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Zoll.'
                    ,'title': 'Zollwesen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cust.'
                    ,'title': 'Customs'
                    }
@@ -9473,7 +9473,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kybernet.'
                    ,'title': 'Kybernetik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cyber.'
                    ,'title': 'Cybernetics'
                    }
@@ -9498,7 +9498,7 @@ SUBJECTS = {'AI.':
                    {'short': 'cyc.sport'
                    ,'title': 'Cycle sport'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cyc.sport'
                    ,'title': 'Cycle sport'
                    }
@@ -9523,7 +9523,7 @@ SUBJECTS = {'AI.':
                    {'short': 'cycl.'
                    ,'title': 'Cycling (other than sport)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cycl.'
                    ,'title': 'Cycling (other than sport)'
                    }
@@ -9548,7 +9548,7 @@ SUBJECTS = {'AI.':
                    {'short': 'cytog.'
                    ,'title': 'Cytogenetics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cytog.'
                    ,'title': 'Cytogenetics'
                    }
@@ -9573,7 +9573,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Zellbiol.'
                    ,'title': 'Zellbiologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'citol.'
                    ,'title': 'Citología'
                    }
@@ -9598,7 +9598,7 @@ SUBJECTS = {'AI.':
                    {'short': 'd.b..'
                    ,'title': 'Databases'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'd.b..'
                    ,'title': 'Databases'
                    }
@@ -9623,7 +9623,7 @@ SUBJECTS = {'AI.':
                    {'short': 'dactyl.'
                    ,'title': 'Dactyloscopy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'dactyl.'
                    ,'title': 'Dactyloscopy'
                    }
@@ -9648,7 +9648,7 @@ SUBJECTS = {'AI.':
                    {'short': 'dam.'
                    ,'title': 'Dams'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'dam.'
                    ,'title': 'Dams'
                    }
@@ -9673,7 +9673,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Dän.'
                    ,'title': 'Dänisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'dan.'
                    ,'title': 'Danish'
                    }
@@ -9698,7 +9698,7 @@ SUBJECTS = {'AI.':
                    {'short': 'danc.'
                    ,'title': 'Dancing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'danc.'
                    ,'title': 'Dancing'
                    }
@@ -9723,7 +9723,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Datenverarb.'
                    ,'title': 'Datenverarbeitung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'dat.proc.'
                    ,'title': 'Data processing'
                    }
@@ -9748,7 +9748,7 @@ SUBJECTS = {'AI.':
                    {'short': 'deaf.'
                    ,'title': 'Deafblindness'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'deaf.'
                    ,'title': 'Deafblindness'
                    }
@@ -9773,7 +9773,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Demograf.'
                    ,'title': 'Demografie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'demogr.'
                    ,'title': 'Demography'
                    }
@@ -9798,7 +9798,7 @@ SUBJECTS = {'AI.':
                    {'short': 'dent.impl.'
                    ,'title': 'Dental implantology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'dent.impl.'
                    ,'title': 'Dental implantology'
                    }
@@ -9823,7 +9823,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Zahnmed.'
                    ,'title': 'Zahnmedizin'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'odont.'
                    ,'title': 'Odontología'
                    }
@@ -9848,7 +9848,7 @@ SUBJECTS = {'AI.':
                    {'short': 'derbet.'
                    ,'title': 'Derbet language'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'derbet.'
                    ,'title': 'Derbet language'
                    }
@@ -9873,7 +9873,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Dermatol.'
                    ,'title': 'Dermatologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'dermat.'
                    ,'title': 'Dermatología'
                    }
@@ -9898,7 +9898,7 @@ SUBJECTS = {'AI.':
                    {'short': 'derog.'
                    ,'title': 'Derogatory'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'derog.'
                    ,'title': 'Derogatory'
                    }
@@ -9923,7 +9923,7 @@ SUBJECTS = {'AI.':
                    {'short': 'desert.'
                    ,'title': 'Desert science'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'desert.'
                    ,'title': 'Desert science'
                    }
@@ -9948,7 +9948,7 @@ SUBJECTS = {'AI.':
                    {'short': 'design.'
                    ,'title': 'Design'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'design.'
                    ,'title': 'Design'
                    }
@@ -9973,7 +9973,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Dial.'
                    ,'title': 'Dialekt'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'dial.'
                    ,'title': 'Dialecto'
                    }
@@ -9998,7 +9998,7 @@ SUBJECTS = {'AI.':
                    {'short': 'dialys.'
                    ,'title': 'Dyalysis'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'dialys.'
                    ,'title': 'Dyalysis'
                    }
@@ -10023,7 +10023,7 @@ SUBJECTS = {'AI.':
                    {'short': 'diet.'
                    ,'title': 'Dietology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'diet.'
                    ,'title': 'Dietology'
                    }
@@ -10048,7 +10048,7 @@ SUBJECTS = {'AI.':
                    {'short': 'dig.curr.'
                    ,'title': 'Digital and cryptocurrencies'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'dig.curr.'
                    ,'title': 'Digital and cryptocurrencies'
                    }
@@ -10073,7 +10073,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Dimin.'
                    ,'title': 'Diminutiv'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'dimin.'
                    ,'title': 'Diminutive'
                    }
@@ -10098,7 +10098,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Dipl.'
                    ,'title': 'Diplomatie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'dipl.'
                    ,'title': 'Diplomacia'
                    }
@@ -10123,7 +10123,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Dipl., Amerik.'
                    ,'title': 'Diplomatie, Amerikanisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'dipl., amer.'
                    ,'title': 'Diplomacia, Americano (uso)'
                    }
@@ -10148,7 +10148,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mißbill.'
                    ,'title': 'Mißbilligend'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'desaprob.'
                    ,'title': 'Desaprobadoramente'
                    }
@@ -10173,7 +10173,7 @@ SUBJECTS = {'AI.':
                    {'short': 'disast.'
                    ,'title': 'Disaster recovery'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'disast.'
                    ,'title': 'Disaster recovery'
                    }
@@ -10198,7 +10198,7 @@ SUBJECTS = {'AI.':
                    {'short': 'distil.'
                    ,'title': 'Distillation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'distil.'
                    ,'title': 'Distillation'
                    }
@@ -10223,7 +10223,7 @@ SUBJECTS = {'AI.':
                    {'short': 'dog.'
                    ,'title': 'Dog breeding'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'dog.'
                    ,'title': 'Dog breeding'
                    }
@@ -10248,7 +10248,7 @@ SUBJECTS = {'AI.':
                    {'short': 'dominic.'
                    ,'title': 'Dominican Republic'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'dominic.'
                    ,'title': 'Dominican Republic'
                    }
@@ -10273,7 +10273,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Bohr.'
                    ,'title': 'Bohren'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'dril.'
                    ,'title': 'Drilling'
                    }
@@ -10298,7 +10298,7 @@ SUBJECTS = {'AI.':
                    {'short': 'drug.name'
                    ,'title': 'Drug name'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'drug.name'
                    ,'title': 'Drug name'
                    }
@@ -10323,7 +10323,7 @@ SUBJECTS = {'AI.':
                    {'short': 'drugs'
                    ,'title': 'Drugs and addiction medicine'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'drugs'
                    ,'title': 'Drugs and addiction medicine'
                    }
@@ -10348,7 +10348,7 @@ SUBJECTS = {'AI.':
                    {'short': 'drv.'
                    ,'title': 'Drives'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'drv.'
                    ,'title': 'Drives'
                    }
@@ -10373,7 +10373,7 @@ SUBJECTS = {'AI.':
                    {'short': 'drw.'
                    ,'title': 'Drawing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'drw.'
                    ,'title': 'Drawing'
                    }
@@ -10398,7 +10398,7 @@ SUBJECTS = {'AI.':
                    {'short': 'gipskart.'
                    ,'title': 'Gipskarton u. Trockenbausysteme'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'drywall'
                    ,'title': 'Drywall'
                    }
@@ -10423,7 +10423,7 @@ SUBJECTS = {'AI.':
                    {'short': 'dye.'
                    ,'title': 'Dyes'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'dye.'
                    ,'title': 'Dyes'
                    }
@@ -10448,7 +10448,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Ökol.'
                    ,'title': 'Ökologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ecol.'
                    ,'title': 'Ecology'
                    }
@@ -10473,7 +10473,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Wirtsch.'
                    ,'title': 'Wirtschaft'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'econ.'
                    ,'title': 'Economía'
                    }
@@ -10498,7 +10498,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Wirtsch., Amerik.'
                    ,'title': 'Wirtschaft, Amerikanisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'econ., amer.'
                    ,'title': 'Economía, Americano (uso)'
                    }
@@ -10523,7 +10523,7 @@ SUBJECTS = {'AI.':
                    {'short': 'econ.law.'
                    ,'title': 'Economic law'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'econ.law.'
                    ,'title': 'Economic law'
                    }
@@ -10548,7 +10548,7 @@ SUBJECTS = {'AI.':
                    {'short': 'econometr.'
                    ,'title': 'Econometrics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'econometr.'
                    ,'title': 'Econometrics'
                    }
@@ -10573,7 +10573,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Ausbild.'
                    ,'title': 'Ausbildung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ed.'
                    ,'title': 'Education'
                    }
@@ -10598,7 +10598,7 @@ SUBJECTS = {'AI.':
                    {'short': 'ed., subj.'
                    ,'title': 'School and university subjects'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ed., subj.'
                    ,'title': 'School and university subjects'
                    }
@@ -10623,7 +10623,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Ägyptol.'
                    ,'title': 'Ägyptologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'egypt.'
                    ,'title': 'Egyptology'
                    }
@@ -10648,7 +10648,7 @@ SUBJECTS = {'AI.':
                    {'short': 'el.'
                    ,'title': 'Elektronik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'electr.'
                    ,'title': 'Electrónica'
                    }
@@ -10673,7 +10673,7 @@ SUBJECTS = {'AI.':
                    {'short': 'el.chem.'
                    ,'title': 'Electrochemistry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'el.chem.'
                    ,'title': 'Electrochemistry'
                    }
@@ -10698,7 +10698,7 @@ SUBJECTS = {'AI.':
                    {'short': 'el.com.'
                    ,'title': 'Electronic commerce'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'el.com.'
                    ,'title': 'Electronic commerce'
                    }
@@ -10723,7 +10723,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Elektr.erz.'
                    ,'title': 'Elektrizitätserzeugung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'el.gen.'
                    ,'title': 'Electricity generation'
                    }
@@ -10748,7 +10748,7 @@ SUBJECTS = {'AI.':
                    {'short': 'el.mach.'
                    ,'title': 'Electric machinery'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'el.mach.'
                    ,'title': 'Electric machinery'
                    }
@@ -10773,7 +10773,7 @@ SUBJECTS = {'AI.':
                    {'short': 'el.med.'
                    ,'title': 'Electromedicine'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'el.med.'
                    ,'title': 'Electromedicine'
                    }
@@ -10798,7 +10798,7 @@ SUBJECTS = {'AI.':
                    {'short': 'el.met.'
                    ,'title': 'Electrometallurgy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'el.met.'
                    ,'title': 'Electrometallurgy'
                    }
@@ -10823,7 +10823,7 @@ SUBJECTS = {'AI.':
                    {'short': 'El.mot.'
                    ,'title': 'Elektromotoren'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'el.mot.'
                    ,'title': 'Electric motors'
                    }
@@ -10848,7 +10848,7 @@ SUBJECTS = {'AI.':
                    {'short': 'el.therm.'
                    ,'title': 'Electrothermy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'el.therm.'
                    ,'title': 'Electrothermy'
                    }
@@ -10873,7 +10873,7 @@ SUBJECTS = {'AI.':
                    {'short': 'el.tract.'
                    ,'title': 'Electric traction'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'el.tract.'
                    ,'title': 'Electric traction'
                    }
@@ -10898,7 +10898,7 @@ SUBJECTS = {'AI.':
                    {'short': 'elect.'
                    ,'title': 'Elections'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'elect.'
                    ,'title': 'Elections'
                    }
@@ -10923,7 +10923,7 @@ SUBJECTS = {'AI.':
                    {'short': 'electr.eng.'
                    ,'title': 'Electrical engineering'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'electr.eng.'
                    ,'title': 'Electrical engineering'
                    }
@@ -10948,7 +10948,7 @@ SUBJECTS = {'AI.':
                    {'short': 'electric.'
                    ,'title': 'Electricity'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'electric.'
                    ,'title': 'Electricity'
                    }
@@ -10973,7 +10973,7 @@ SUBJECTS = {'AI.':
                    {'short': 'electrophor.'
                    ,'title': 'Electrophoresis'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'electrophor.'
                    ,'title': 'Electrophoresis'
                    }
@@ -10998,7 +10998,7 @@ SUBJECTS = {'AI.':
                    {'short': 'elev.'
                    ,'title': 'Elevators'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'elev.'
                    ,'title': 'Elevators'
                    }
@@ -11023,7 +11023,7 @@ SUBJECTS = {'AI.':
                    {'short': 'els.'
                    ,'title': 'Electrolysis'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'els.'
                    ,'title': 'Electrolysis'
                    }
@@ -11048,7 +11048,7 @@ SUBJECTS = {'AI.':
                    {'short': 'embryol.'
                    ,'title': 'Embryologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'embriol.'
                    ,'title': 'Embriología'
                    }
@@ -11073,7 +11073,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Krank.dienst.'
                    ,'title': 'Krankenbereitschaftsdienst'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'emerg.care'
                    ,'title': 'Emergency medical care'
                    }
@@ -11098,7 +11098,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Emot.Ausdr.'
                    ,'title': 'Emotionsausdruck'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'emotive'
                    ,'title': 'Emotive'
                    }
@@ -11123,7 +11123,7 @@ SUBJECTS = {'AI.':
                    {'short': 'empl.'
                    ,'title': 'Employment'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'empl.'
                    ,'title': 'Employment'
                    }
@@ -11148,7 +11148,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Endokrin.'
                    ,'title': 'Endokrinologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'endocr.'
                    ,'title': 'Endocrinology'
                    }
@@ -11173,7 +11173,7 @@ SUBJECTS = {'AI.':
                    {'short': 'energ.distr.'
                    ,'title': 'Energy distribution'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'energ.distr.'
                    ,'title': 'Energy distribution'
                    }
@@ -11198,7 +11198,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Energiewirts.'
                    ,'title': 'Energiewirtschaft'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'energ.ind.'
                    ,'title': 'Energy industry'
                    }
@@ -11223,7 +11223,7 @@ SUBJECTS = {'AI.':
                    {'short': 'energ.syst.'
                    ,'title': 'Energy system'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'energ.syst.'
                    ,'title': 'Energy system'
                    }
@@ -11248,7 +11248,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Ing.'
                    ,'title': 'Ingenieurwesen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'eng.'
                    ,'title': 'Engineering'
                    }
@@ -11273,7 +11273,7 @@ SUBJECTS = {'AI.':
                    {'short': 'eng.geol.'
                    ,'title': 'Engineering geology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'eng.geol.'
                    ,'title': 'Engineering geology'
                    }
@@ -11298,7 +11298,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Verbr. Motor'
                    ,'title': 'Verbrennungsmotor'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'engin.'
                    ,'title': 'Engines'
                    }
@@ -11323,7 +11323,7 @@ SUBJECTS = {'AI.':
                    {'short': 'engl.'
                    ,'title': 'English'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'engl.'
                    ,'title': 'English'
                    }
@@ -11348,7 +11348,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Entomol.'
                    ,'title': 'Entomologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'entomol.'
                    ,'title': 'Entomologia'
                    }
@@ -11373,7 +11373,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Umwelt'
                    ,'title': 'Umwelt'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'environ.'
                    ,'title': 'Environment'
                    }
@@ -11398,7 +11398,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Brief.'
                    ,'title': 'Briefstil'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'epist.'
                    ,'title': 'Epistolary'
                    }
@@ -11423,7 +11423,7 @@ SUBJECTS = {'AI.':
                    {'short': 'equestr.'
                    ,'title': 'Equestrianism'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'equestr.'
                    ,'title': 'Equestrianism'
                    }
@@ -11448,7 +11448,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Eskim.'
                    ,'title': 'Eskimosprache'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'esquim.'
                    ,'title': 'Esquimal'
                    }
@@ -11473,7 +11473,7 @@ SUBJECTS = {'AI.':
                    {'short': 'esot.'
                    ,'title': 'Esoterics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'esot.'
                    ,'title': 'Esoterics'
                    }
@@ -11498,7 +11498,7 @@ SUBJECTS = {'AI.':
                    {'short': 'esper.'
                    ,'title': 'Esperanto'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'esper.'
                    ,'title': 'Esperanto'
                    }
@@ -11523,7 +11523,7 @@ SUBJECTS = {'AI.':
                    {'short': 'ethn.'
                    ,'title': 'Ethnographie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'etnogr.'
                    ,'title': 'Etnografía'
                    }
@@ -11548,7 +11548,7 @@ SUBJECTS = {'AI.':
                    {'short': 'ethnol.'
                    ,'title': 'Ethnology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ethnol.'
                    ,'title': 'Ethnology'
                    }
@@ -11573,7 +11573,7 @@ SUBJECTS = {'AI.':
                    {'short': 'ethnopsychol.'
                    ,'title': 'Ethnopsychology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ethnopsychol.'
                    ,'title': 'Ethnopsychology'
                    }
@@ -11598,7 +11598,7 @@ SUBJECTS = {'AI.':
                    {'short': 'ethol.'
                    ,'title': 'Ethology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ethol.'
                    ,'title': 'Ethology'
                    }
@@ -11623,7 +11623,7 @@ SUBJECTS = {'AI.':
                    {'short': 'euph.'
                    ,'title': 'Euphemismus'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'eufem.'
                    ,'title': 'Eufemismo'
                    }
@@ -11648,7 +11648,7 @@ SUBJECTS = {'AI.':
                    {'short': 'evol.'
                    ,'title': 'Evolution'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'evol.'
                    ,'title': 'Evolution'
                    }
@@ -11673,7 +11673,7 @@ SUBJECTS = {'AI.':
                    {'short': 'excl.'
                    ,'title': 'Exclamation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'excl.'
                    ,'title': 'Exclamation'
                    }
@@ -11698,7 +11698,7 @@ SUBJECTS = {'AI.':
                    {'short': 'exhib.'
                    ,'title': 'Exhibitions'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'exhib.'
                    ,'title': 'Exhibitions'
                    }
@@ -11723,7 +11723,7 @@ SUBJECTS = {'AI.':
                    {'short': 'explan.'
                    ,'title': 'Explanatory translation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'explan.'
                    ,'title': 'Explanatory translation'
                    }
@@ -11748,7 +11748,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Extr.'
                    ,'title': 'Extrusion'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'extr.'
                    ,'title': 'Extrusion'
                    }
@@ -11773,7 +11773,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Außenhand.'
                    ,'title': 'Außenhandel'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'f.trade.'
                    ,'title': 'Foreign trade'
                    }
@@ -11798,7 +11798,7 @@ SUBJECTS = {'AI.':
                    {'short': 'facil.'
                    ,'title': 'Facilities'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'facil.'
                    ,'title': 'Facilities'
                    }
@@ -11823,7 +11823,7 @@ SUBJECTS = {'AI.':
                    {'short': 'fant./sci-fi., Abkürz.'
                    ,'title': 'Fantasy and science fiction, Abkürzung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'fant./sci-fi., abrev.'
                    ,'title': 'Fantasy and science fiction, Abreviatura'
                    }
@@ -11848,7 +11848,7 @@ SUBJECTS = {'AI.':
                    {'short': 'fash.'
                    ,'title': 'Fashion'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'fash.'
                    ,'title': 'Fashion'
                    }
@@ -11873,7 +11873,7 @@ SUBJECTS = {'AI.':
                    {'short': 'faux ami'
                    ,'title': "Translator's false friend"
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'faux ami'
                    ,'title': "Translator's false friend"
                    }
@@ -11898,7 +11898,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Felin.'
                    ,'title': 'Felinologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'felin.'
                    ,'title': 'Felinology'
                    }
@@ -11923,7 +11923,7 @@ SUBJECTS = {'AI.':
                    {'short': 'fenc.'
                    ,'title': 'Fencing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'fenc.'
                    ,'title': 'Fencing'
                    }
@@ -11948,7 +11948,7 @@ SUBJECTS = {'AI.':
                    {'short': 'ferm.'
                    ,'title': 'Fermentation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ferm.'
                    ,'title': 'Fermentation'
                    }
@@ -11973,7 +11973,7 @@ SUBJECTS = {'AI.':
                    {'short': 'fert.'
                    ,'title': 'Fertilizers'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'fert.'
                    ,'title': 'Fertilizers'
                    }
@@ -11998,7 +11998,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Fas.opt.'
                    ,'title': 'Faseroptik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'fib.optic'
                    ,'title': 'Fiber optic'
                    }
@@ -12023,7 +12023,7 @@ SUBJECTS = {'AI.':
                    {'short': 'übertr.'
                    ,'title': 'übertragen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'fig.'
                    ,'title': 'Figuradamente'
                    }
@@ -12048,7 +12048,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Bild. Ausdr.'
                    ,'title': 'Bildlicher Ausdruck'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'fig.of.sp.'
                    ,'title': 'Figure of speech'
                    }
@@ -12073,7 +12073,7 @@ SUBJECTS = {'AI.':
                    {'short': 'fig.skat.'
                    ,'title': 'Figure skating'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'fig.skat.'
                    ,'title': 'Figure skating'
                    }
@@ -12098,7 +12098,7 @@ SUBJECTS = {'AI.':
                    {'short': 'file.ext.'
                    ,'title': 'File extension'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'file.ext.'
                    ,'title': 'File extension'
                    }
@@ -12123,7 +12123,7 @@ SUBJECTS = {'AI.':
                    {'short': 'film.equip.'
                    ,'title': 'Filming equipment'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'film.equip.'
                    ,'title': 'Filming equipment'
                    }
@@ -12148,7 +12148,7 @@ SUBJECTS = {'AI.':
                    {'short': 'film.light.'
                    ,'title': 'Film lighting equipment'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'film.light.'
                    ,'title': 'Film lighting equipment'
                    }
@@ -12173,7 +12173,7 @@ SUBJECTS = {'AI.':
                    {'short': 'film.proc.'
                    ,'title': 'Film processing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'film.proc.'
                    ,'title': 'Film processing'
                    }
@@ -12198,7 +12198,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Fin.'
                    ,'title': 'Finanzen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'fin.'
                    ,'title': 'Finanzas'
                    }
@@ -12223,7 +12223,7 @@ SUBJECTS = {'AI.':
                    {'short': 'finn.'
                    ,'title': 'Finnish language'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'finn.'
                    ,'title': 'Finnish language'
                    }
@@ -12248,7 +12248,7 @@ SUBJECTS = {'AI.':
                    {'short': 'fire.'
                    ,'title': 'Firefighting and fire-control systems'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'fire.'
                    ,'title': 'Firefighting and fire-control systems'
                    }
@@ -12273,7 +12273,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Fischz.'
                    ,'title': 'Fischzucht'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'fish.farm.'
                    ,'title': 'Fish farming (pisciculture)'
                    }
@@ -12298,7 +12298,7 @@ SUBJECTS = {'AI.':
                    {'short': 'fishery'
                    ,'title': 'Fishery (fishing industry)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'fishery'
                    ,'title': 'Fishery (fishing industry)'
                    }
@@ -12323,7 +12323,7 @@ SUBJECTS = {'AI.':
                    {'short': 'flor.'
                    ,'title': 'Floriculture'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'flor.'
                    ,'title': 'Floriculture'
                    }
@@ -12348,7 +12348,7 @@ SUBJECTS = {'AI.':
                    {'short': 'flour.prod.'
                    ,'title': 'Flour production'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'flour.prod.'
                    ,'title': 'Flour production'
                    }
@@ -12373,7 +12373,7 @@ SUBJECTS = {'AI.':
                    {'short': 'flow.'
                    ,'title': 'Flow measurement'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'flow.'
                    ,'title': 'Flow measurement'
                    }
@@ -12398,7 +12398,7 @@ SUBJECTS = {'AI.':
                    {'short': 'fodd.'
                    ,'title': 'Fodder'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'fodd.'
                    ,'title': 'Fodder'
                    }
@@ -12423,7 +12423,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Tragflügelsch.'
                    ,'title': 'Tragflügelschiff'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'foil.ships'
                    ,'title': 'Foil ships'
                    }
@@ -12448,7 +12448,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Folkl.'
                    ,'title': 'Folklore'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'folk.'
                    ,'title': 'Folklore'
                    }
@@ -12473,7 +12473,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Nahrungsind.'
                    ,'title': 'Nahrungsindustrie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'food.ind.'
                    ,'title': 'Food industry'
                    }
@@ -12498,7 +12498,7 @@ SUBJECTS = {'AI.':
                    {'short': 'food.serv.'
                    ,'title': 'Food service and catering'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'food.serv.'
                    ,'title': 'Food service and catering'
                    }
@@ -12523,7 +12523,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Fußb.'
                    ,'title': 'Fußball'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'footb.'
                    ,'title': 'Football'
                    }
@@ -12548,7 +12548,7 @@ SUBJECTS = {'AI.':
                    {'short': 'footwear'
                    ,'title': 'Footwear'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'footwear'
                    ,'title': 'Footwear'
                    }
@@ -12573,7 +12573,7 @@ SUBJECTS = {'AI.':
                    {'short': 'for.chem.'
                    ,'title': 'Forest chemistry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'for.chem.'
                    ,'title': 'Forest chemistry'
                    }
@@ -12598,7 +12598,7 @@ SUBJECTS = {'AI.':
                    {'short': 'for.pol.'
                    ,'title': 'Foreign policy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'for.pol.'
                    ,'title': 'Foreign policy'
                    }
@@ -12623,7 +12623,7 @@ SUBJECTS = {'AI.':
                    {'short': 'foreig.aff.'
                    ,'title': 'Foreign affairs'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'foreig.aff.'
                    ,'title': 'Foreign affairs'
                    }
@@ -12648,7 +12648,7 @@ SUBJECTS = {'AI.':
                    {'short': 'R.Med.'
                    ,'title': 'Rechtsmedizin'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'forens.med.'
                    ,'title': 'Forensic medicine'
                    }
@@ -12673,7 +12673,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Forst'
                    ,'title': 'Forstbau'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'silvicult.'
                    ,'title': 'Silvicultura'
                    }
@@ -12698,7 +12698,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Forst, Amerik.'
                    ,'title': 'Forstbau, Amerikanisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'silvicult., amer.'
                    ,'title': 'Silvicultura, Americano (uso)'
                    }
@@ -12723,7 +12723,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Devisengesch.'
                    ,'title': 'Devisengeschäfte'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'forex'
                    ,'title': 'Foreign exchange market'
                    }
@@ -12748,7 +12748,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Schm.'
                    ,'title': 'Schmieden'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'forg.'
                    ,'title': 'Forging'
                    }
@@ -12773,7 +12773,7 @@ SUBJECTS = {'AI.':
                    {'short': 'form.Sp.'
                    ,'title': 'Formale Sprache'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'formal'
                    ,'title': 'Formal'
                    }
@@ -12798,7 +12798,7 @@ SUBJECTS = {'AI.':
                    {'short': 'found.engin.'
                    ,'title': 'Foundation engineering'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'found.engin.'
                    ,'title': 'Foundation engineering'
                    }
@@ -12823,7 +12823,7 @@ SUBJECTS = {'AI.':
                    {'short': 'foundr.'
                    ,'title': 'Foundry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'foundr.'
                    ,'title': 'Foundry'
                    }
@@ -12848,7 +12848,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Franz. Sp.'
                    ,'title': 'Französisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'fr.'
                    ,'title': 'Francés'
                    }
@@ -12873,7 +12873,7 @@ SUBJECTS = {'AI.':
                    {'short': 'möb.'
                    ,'title': 'Möbel'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'furn.'
                    ,'title': 'Furniture'
                    }
@@ -12898,7 +12898,7 @@ SUBJECTS = {'AI.':
                    {'short': 'gaelic'
                    ,'title': 'Gaelic'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'gaelic'
                    ,'title': 'Gaelic'
                    }
@@ -12923,7 +12923,7 @@ SUBJECTS = {'AI.':
                    {'short': 'galv.'
                    ,'title': 'Galvanizing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'galv.'
                    ,'title': 'Galvanizing'
                    }
@@ -12948,7 +12948,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Galv.tech.'
                    ,'title': 'Galvanotechnik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'galv.plast.'
                    ,'title': 'Galvanoplasty'
                    }
@@ -12973,7 +12973,7 @@ SUBJECTS = {'AI.':
                    {'short': 'gambl.'
                    ,'title': 'Gambling'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'gambl.'
                    ,'title': 'Gambling'
                    }
@@ -12998,7 +12998,7 @@ SUBJECTS = {'AI.':
                    {'short': 'games'
                    ,'title': 'Games (other than sports)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'games'
                    ,'title': 'Games (other than sports)'
                    }
@@ -13023,7 +13023,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Garten.'
                    ,'title': 'Gartenarbeit'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'garden.'
                    ,'title': 'Gardening'
                    }
@@ -13048,7 +13048,7 @@ SUBJECTS = {'AI.':
                    {'short': 'gas.proc.'
                    ,'title': 'Gas processing plants'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'gas.proc.'
                    ,'title': 'Gas processing plants'
                    }
@@ -13073,7 +13073,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gastroent.'
                    ,'title': 'Gastroenterologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'gastroent.'
                    ,'title': 'Gastroenterología'
                    }
@@ -13098,7 +13098,7 @@ SUBJECTS = {'AI.':
                    {'short': 'gear.tr.'
                    ,'title': 'Gear train'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'gear.tr.'
                    ,'title': 'Gear train'
                    }
@@ -13123,7 +13123,7 @@ SUBJECTS = {'AI.':
                    {'short': 'gem.'
                    ,'title': 'Gemmology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'gem.'
                    ,'title': 'Gemmology'
                    }
@@ -13148,7 +13148,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Allg.'
                    ,'title': 'Allgemeine Lexik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'gen.'
                    ,'title': 'General'
                    }
@@ -13173,7 +13173,7 @@ SUBJECTS = {'AI.':
                    {'short': 'gen.eng.'
                    ,'title': 'Genetic engineering'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'gen.eng.'
                    ,'title': 'Genetic engineering'
                    }
@@ -13198,7 +13198,7 @@ SUBJECTS = {'AI.':
                    {'short': 'geneal.'
                    ,'title': 'Genealogy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'geneal.'
                    ,'title': 'Genealogy'
                    }
@@ -13223,7 +13223,7 @@ SUBJECTS = {'AI.':
                    {'short': 'gen.'
                    ,'title': 'Genetik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'genét.'
                    ,'title': 'Genética'
                    }
@@ -13248,7 +13248,7 @@ SUBJECTS = {'AI.':
                    {'short': 'geobot.'
                    ,'title': 'Geobotanics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'geobot.'
                    ,'title': 'Geobotanics'
                    }
@@ -13273,7 +13273,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Geochem.'
                    ,'title': 'Geochemie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'geochem.'
                    ,'title': 'Geochemistry'
                    }
@@ -13298,7 +13298,7 @@ SUBJECTS = {'AI.':
                    {'short': 'geochron.'
                    ,'title': 'Geochronology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'geochron.'
                    ,'title': 'Geochronology'
                    }
@@ -13323,7 +13323,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Geogr.'
                    ,'title': 'Geographie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'geogr.'
                    ,'title': 'Geografía'
                    }
@@ -13348,7 +13348,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Geol.'
                    ,'title': 'Geologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'geol.'
                    ,'title': 'Geología'
                    }
@@ -13373,7 +13373,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Geomet.'
                    ,'title': 'Geometrie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'geom.'
                    ,'title': 'Geometría'
                    }
@@ -13398,7 +13398,7 @@ SUBJECTS = {'AI.':
                    {'short': 'geomech.'
                    ,'title': 'Geomechanics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'geomech.'
                    ,'title': 'Geomechanics'
                    }
@@ -13423,7 +13423,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Geomorphol.'
                    ,'title': 'Geomorphologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'geomorph.'
                    ,'title': 'Geomorphology'
                    }
@@ -13448,7 +13448,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Geophys.'
                    ,'title': 'Geophysik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'geophys.'
                    ,'title': 'Geophysics'
                    }
@@ -13473,7 +13473,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Deu.'
                    ,'title': 'Deutsch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'alem.'
                    ,'title': 'Alemán'
                    }
@@ -13498,7 +13498,7 @@ SUBJECTS = {'AI.':
                    {'short': 'glass'
                    ,'title': 'Glass production'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'glass'
                    ,'title': 'Glass production'
                    }
@@ -13523,7 +13523,7 @@ SUBJECTS = {'AI.':
                    {'short': 'glass.'
                    ,'title': 'Glass container manufacture'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'glass.'
                    ,'title': 'Glass container manufacture'
                    }
@@ -13548,7 +13548,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Düster.'
                    ,'title': 'Düster'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sombr.'
                    ,'title': 'Sombrío'
                    }
@@ -13573,7 +13573,7 @@ SUBJECTS = {'AI.':
                    {'short': 'goldmin.'
                    ,'title': 'Gold mining'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'goldmin.'
                    ,'title': 'Gold mining'
                    }
@@ -13598,7 +13598,7 @@ SUBJECTS = {'AI.':
                    {'short': 'golf.'
                    ,'title': 'Golf'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'golf.'
                    ,'title': 'Golf'
                    }
@@ -13623,7 +13623,7 @@ SUBJECTS = {'AI.':
                    {'short': 'gov.'
                    ,'title': 'Government, administration and public services'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'gov.'
                    ,'title': 'Government, administration and public services'
                    }
@@ -13648,7 +13648,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gramm.'
                    ,'title': 'Grammatik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'gram.'
                    ,'title': 'Gramática'
                    }
@@ -13673,7 +13673,7 @@ SUBJECTS = {'AI.':
                    {'short': 'grav.'
                    ,'title': 'Gravimetry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'grav.'
                    ,'title': 'Gravimetry'
                    }
@@ -13698,7 +13698,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Griech.'
                    ,'title': 'Griechisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'gr.'
                    ,'title': 'Griego'
                    }
@@ -13723,7 +13723,7 @@ SUBJECTS = {'AI.':
                    {'short': 'green.tech.'
                    ,'title': 'Greenhouse technology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'green.tech.'
                    ,'title': 'Greenhouse technology'
                    }
@@ -13748,7 +13748,7 @@ SUBJECTS = {'AI.':
                    {'short': 'gymn.'
                    ,'title': 'Gymnastics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'gymn.'
                    ,'title': 'Gymnastics'
                    }
@@ -13773,7 +13773,7 @@ SUBJECTS = {'AI.':
                    {'short': 'gyrosc.'
                    ,'title': 'Gyroscopes'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'gyrosc.'
                    ,'title': 'Gyroscopes'
                    }
@@ -13798,7 +13798,7 @@ SUBJECTS = {'AI.':
                    {'short': 'MR.Akt.'
                    ,'title': 'Menschenrechtsaktivismus'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'h.rghts.act.'
                    ,'title': 'Human rights activism'
                    }
@@ -13823,7 +13823,7 @@ SUBJECTS = {'AI.':
                    {'short': 'hab.'
                    ,'title': 'Haberdashery'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hab.'
                    ,'title': 'Haberdashery'
                    }
@@ -13848,7 +13848,7 @@ SUBJECTS = {'AI.':
                    {'short': 'hack.'
                    ,'title': 'Hacking'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hack.'
                    ,'title': 'Hacking'
                    }
@@ -13873,7 +13873,7 @@ SUBJECTS = {'AI.':
                    {'short': 'handb.'
                    ,'title': 'Handball'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'handb.'
                    ,'title': 'Handball'
                    }
@@ -13898,7 +13898,7 @@ SUBJECTS = {'AI.':
                    {'short': 'handicraft.'
                    ,'title': 'Handicraft'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'handicraft.'
                    ,'title': 'Handicraft'
                    }
@@ -13923,7 +13923,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Hawaii'
                    ,'title': 'Hawaiisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hawai.'
                    ,'title': 'Hawaii'
                    }
@@ -13948,7 +13948,7 @@ SUBJECTS = {'AI.':
                    {'short': 'health.'
                    ,'title': 'Health care'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'health.'
                    ,'title': 'Health care'
                    }
@@ -13973,7 +13973,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Hörg.'
                    ,'title': 'Hörgeräte'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hear.'
                    ,'title': 'Hearing aid'
                    }
@@ -13998,7 +13998,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Hzg.'
                    ,'title': 'Heizung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'heat.'
                    ,'title': 'Heating'
                    }
@@ -14023,7 +14023,7 @@ SUBJECTS = {'AI.':
                    {'short': 'heat.exch.'
                    ,'title': 'Heat exchangers'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'heat.exch.'
                    ,'title': 'Heat exchangers'
                    }
@@ -14048,7 +14048,7 @@ SUBJECTS = {'AI.':
                    {'short': 'heat.transf.'
                    ,'title': 'Heat transfer'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'heat.transf.'
                    ,'title': 'Heat transfer'
                    }
@@ -14073,7 +14073,7 @@ SUBJECTS = {'AI.':
                    {'short': 'heavy.eq.'
                    ,'title': 'Heavy equipment vehicles'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'heavy.eq.'
                    ,'title': 'Heavy equipment vehicles'
                    }
@@ -14098,7 +14098,7 @@ SUBJECTS = {'AI.':
                    {'short': 'helic.'
                    ,'title': 'Helicopters'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'helic.'
                    ,'title': 'Helicopters'
                    }
@@ -14123,7 +14123,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Helminthol.'
                    ,'title': 'Helminthologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'helmint.'
                    ,'title': 'Helmintología'
                    }
@@ -14148,7 +14148,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Hämatol.'
                    ,'title': 'Hämatologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hemat.'
                    ,'title': 'Hematología'
                    }
@@ -14173,7 +14173,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Heral.'
                    ,'title': 'Heraldik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'heráld.'
                    ,'title': 'Heráldica'
                    }
@@ -14198,7 +14198,7 @@ SUBJECTS = {'AI.':
                    {'short': 'herpet.'
                    ,'title': 'Herpetology (incl. serpentology)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'herpet.'
                    ,'title': 'Herpetology (incl. serpentology)'
                    }
@@ -14223,7 +14223,7 @@ SUBJECTS = {'AI.':
                    {'short': 'hi-fi'
                    ,'title': 'Hi-Fi'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hi-fi'
                    ,'title': 'Hi-Fi'
                    }
@@ -14248,7 +14248,7 @@ SUBJECTS = {'AI.':
                    {'short': 'hi.jump.'
                    ,'title': 'High jump'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hi.jump.'
                    ,'title': 'High jump'
                    }
@@ -14273,7 +14273,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Ind.'
                    ,'title': 'Indisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hindi'
                    ,'title': 'Hindi'
                    }
@@ -14298,7 +14298,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gesch.'
                    ,'title': 'Geschichte'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hist.'
                    ,'title': 'Historia'
                    }
@@ -14323,7 +14323,7 @@ SUBJECTS = {'AI.':
                    {'short': 'hist.fig.'
                    ,'title': 'Historical figure'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hist.fig.'
                    ,'title': 'Historical figure'
                    }
@@ -14348,7 +14348,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Histol.'
                    ,'title': 'Histologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'histol.'
                    ,'title': 'Histología'
                    }
@@ -14373,7 +14373,7 @@ SUBJECTS = {'AI.':
                    {'short': 'H.u.Fr.z.'
                    ,'title': 'Hobby und Freizeit'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hobby'
                    ,'title': 'Hobbies and pastimes'
                    }
@@ -14398,7 +14398,7 @@ SUBJECTS = {'AI.':
                    {'short': 'hockey.'
                    ,'title': 'Hockey'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hockey.'
                    ,'title': 'Hockey'
                    }
@@ -14423,7 +14423,7 @@ SUBJECTS = {'AI.':
                    {'short': 'homeopath.'
                    ,'title': 'Homeopathy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'homeopath.'
                    ,'title': 'Homeopathy'
                    }
@@ -14448,7 +14448,7 @@ SUBJECTS = {'AI.':
                    {'short': 'horse.breed.'
                    ,'title': 'Horse breeding'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'horse.breed.'
                    ,'title': 'Horse breeding'
                    }
@@ -14473,7 +14473,7 @@ SUBJECTS = {'AI.':
                    {'short': 'horse.rac.'
                    ,'title': 'Horse racing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'horse.rac.'
                    ,'title': 'Horse racing'
                    }
@@ -14498,7 +14498,7 @@ SUBJECTS = {'AI.':
                    {'short': 'horticult.'
                    ,'title': 'Horticulture'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'horticult.'
                    ,'title': 'Horticulture'
                    }
@@ -14523,7 +14523,7 @@ SUBJECTS = {'AI.':
                    {'short': 'hotels'
                    ,'title': 'Hotel industry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hotels'
                    ,'title': 'Hotel industry'
                    }
@@ -14548,7 +14548,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Haush.ger.'
                    ,'title': 'Haushaltsgeräte'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'house.'
                    ,'title': 'Household appliances'
                    }
@@ -14573,7 +14573,7 @@ SUBJECTS = {'AI.':
                    {'short': 'hovercr.'
                    ,'title': 'Hovercraft'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hovercr.'
                    ,'title': 'Hovercraft'
                    }
@@ -14598,7 +14598,7 @@ SUBJECTS = {'AI.':
                    {'short': 'scherzh.'
                    ,'title': 'Scherzhafter Ausdruck'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'humor.'
                    ,'title': 'Humorístico'
                    }
@@ -14623,7 +14623,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Jagd.'
                    ,'title': 'Jagd'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'caza'
                    ,'title': 'Caza y cinegética'
                    }
@@ -14648,7 +14648,7 @@ SUBJECTS = {'AI.':
                    {'short': 'hydr.'
                    ,'title': 'Hydraulic engineering'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hydr.'
                    ,'title': 'Hydraulic engineering'
                    }
@@ -14673,7 +14673,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Hydr.'
                    ,'title': 'Hydraulik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hydraul.'
                    ,'title': 'Hydraulics'
                    }
@@ -14698,7 +14698,7 @@ SUBJECTS = {'AI.':
                    {'short': 'hydroac.'
                    ,'title': 'Hydroacoustics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hydroac.'
                    ,'title': 'Hydroacoustics'
                    }
@@ -14723,7 +14723,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Hydrobiol.'
                    ,'title': 'Hydrobiologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hydrobiol.'
                    ,'title': 'Hydrobiology'
                    }
@@ -14748,7 +14748,7 @@ SUBJECTS = {'AI.':
                    {'short': 'WKW.'
                    ,'title': 'Wasserkraftwerk'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hydroel.st.'
                    ,'title': 'Hydroelectric power stations'
                    }
@@ -14773,7 +14773,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Hydrogeol.'
                    ,'title': 'Hydrogeologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hydrogeol.'
                    ,'title': 'Hydrogeology'
                    }
@@ -14798,7 +14798,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Hydrogr.'
                    ,'title': 'Hydrographie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hidrogr.'
                    ,'title': 'Hidrografía'
                    }
@@ -14823,7 +14823,7 @@ SUBJECTS = {'AI.':
                    {'short': 'hydrol.'
                    ,'title': 'Hydrology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hydrol.'
                    ,'title': 'Hydrology'
                    }
@@ -14848,7 +14848,7 @@ SUBJECTS = {'AI.':
                    {'short': 'hydromech.'
                    ,'title': 'Hydromechanics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hydromech.'
                    ,'title': 'Hydromechanics'
                    }
@@ -14873,7 +14873,7 @@ SUBJECTS = {'AI.':
                    {'short': 'hydropl.'
                    ,'title': 'Hydroplanes'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hydropl.'
                    ,'title': 'Hydroplanes'
                    }
@@ -14898,7 +14898,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Hygiene.'
                    ,'title': 'Hygiene'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hygien.'
                    ,'title': 'Hygiene'
                    }
@@ -14923,7 +14923,7 @@ SUBJECTS = {'AI.':
                    {'short': 'ice.form.'
                    ,'title': 'Ice formation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ice.form.'
                    ,'title': 'Ice formation'
                    }
@@ -14948,7 +14948,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Isl.'
                    ,'title': 'Isländisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'icel.'
                    ,'title': 'Iceland'
                    }
@@ -14973,7 +14973,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Ichthyol.'
                    ,'title': 'Ichthyologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ichtyol.'
                    ,'title': 'Ichthyology'
                    }
@@ -14998,7 +14998,7 @@ SUBJECTS = {'AI.':
                    {'short': 'idiom'
                    ,'title': 'Idiomatic'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'idiom'
                    ,'title': 'Idiomatic'
                    }
@@ -15023,7 +15023,7 @@ SUBJECTS = {'AI.':
                    {'short': 'idiom, Amerik.'
                    ,'title': 'Idiomatic, Amerikanisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'idiom, amer.'
                    ,'title': 'Idiomatic, Americano (uso)'
                    }
@@ -15048,7 +15048,7 @@ SUBJECTS = {'AI.':
                    {'short': 'idiom, Brit.'
                    ,'title': 'Idiomatic, Britische Redensart (Usus)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'idiom, brit.usg.'
                    ,'title': 'Idiomatic, British (usage, not BrE)'
                    }
@@ -15073,7 +15073,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Onomatop.'
                    ,'title': 'Onomatopöie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'imitat.'
                    ,'title': 'Iimitative (onomatopoeic)'
                    }
@@ -15098,7 +15098,7 @@ SUBJECTS = {'AI.':
                    {'short': 'immigr.'
                    ,'title': 'Immigration and citizenship'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'immigr.'
                    ,'title': 'Immigration and citizenship'
                    }
@@ -15123,7 +15123,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Immun.'
                    ,'title': 'Immunologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'inmunol.'
                    ,'title': 'Inmunología'
                    }
@@ -15148,7 +15148,7 @@ SUBJECTS = {'AI.':
                    {'short': 'indust.hyg.'
                    ,'title': 'Industrial hygiene'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'indust.hyg.'
                    ,'title': 'Industrial hygiene'
                    }
@@ -15173,7 +15173,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Industr.'
                    ,'title': 'Industrie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'industr.'
                    ,'title': 'Industry'
                    }
@@ -15198,7 +15198,7 @@ SUBJECTS = {'AI.':
                    {'short': 'inet.'
                    ,'title': 'Internet'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'inet.'
                    ,'title': 'Internet'
                    }
@@ -15223,7 +15223,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Inf.Sich.'
                    ,'title': 'Informationssicherheit'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'inf.secur.'
                    ,'title': 'Information security'
                    }
@@ -15248,7 +15248,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Umg.'
                    ,'title': 'Umgangssprache'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'inf.'
                    ,'title': 'Informal'
                    }
@@ -15273,7 +15273,7 @@ SUBJECTS = {'AI.':
                    {'short': 'infr.techn.'
                    ,'title': 'Infrared technology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'infr.techn.'
                    ,'title': 'Infrared technology'
                    }
@@ -15298,7 +15298,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Erbr.'
                    ,'title': 'Erbrecht'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'inherit.law.'
                    ,'title': 'Inheritance law'
                    }
@@ -15323,7 +15323,7 @@ SUBJECTS = {'AI.':
                    {'short': 'inorg.chem.'
                    ,'title': 'Inorganic chemistry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'inorg.chem.'
                    ,'title': 'Inorganic chemistry'
                    }
@@ -15348,7 +15348,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Versich.'
                    ,'title': 'Versicherung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'segur.'
                    ,'title': 'Seguros'
                    }
@@ -15373,7 +15373,7 @@ SUBJECTS = {'AI.':
                    {'short': 'int. law.'
                    ,'title': 'International law'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'int. law.'
                    ,'title': 'International law'
                    }
@@ -15398,7 +15398,7 @@ SUBJECTS = {'AI.':
                    {'short': 'int.Schaltkr.'
                    ,'title': 'Integrierte Schaltkreise'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'int.circ.'
                    ,'title': 'Integrated circuits'
                    }
@@ -15423,7 +15423,7 @@ SUBJECTS = {'AI.':
                    {'short': 'int.rel.'
                    ,'title': 'International relations'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'int.rel.'
                    ,'title': 'International relations'
                    }
@@ -15448,7 +15448,7 @@ SUBJECTS = {'AI.':
                    {'short': 'int.transport.'
                    ,'title': 'International transportation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'int.transport.'
                    ,'title': 'International transportation'
                    }
@@ -15473,7 +15473,7 @@ SUBJECTS = {'AI.':
                    {'short': 'intell.'
                    ,'title': 'Intelligence and security services'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'intell.'
                    ,'title': 'Intelligence and security services'
                    }
@@ -15498,7 +15498,7 @@ SUBJECTS = {'AI.':
                    {'short': 'interntl.trade.'
                    ,'title': 'International trade'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'interntl.trade.'
                    ,'title': 'International trade'
                    }
@@ -15523,7 +15523,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Schimpf.'
                    ,'title': 'Schimpfwort'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'invect.'
                    ,'title': 'Invective'
                    }
@@ -15548,7 +15548,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Invest.'
                    ,'title': 'Investitionen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'invest.'
                    ,'title': 'Investment'
                    }
@@ -15573,7 +15573,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Irisch.'
                    ,'title': 'Irisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'irland.'
                    ,'title': 'Irlandés'
                    }
@@ -15598,7 +15598,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Iron.'
                    ,'title': 'Ironie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'iron.'
                    ,'title': 'Ironía'
                    }
@@ -15623,7 +15623,7 @@ SUBJECTS = {'AI.':
                    {'short': 'isol.'
                    ,'title': 'Isolation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'isol.'
                    ,'title': 'Isolation'
                    }
@@ -15648,7 +15648,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Ital.'
                    ,'title': 'Italienisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ital.'
                    ,'title': 'Italiano'
                    }
@@ -15673,7 +15673,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Jam.Engl.'
                    ,'title': 'Jamaika-Englisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'jamaic.eng.'
                    ,'title': 'Jamaican English'
                    }
@@ -15698,7 +15698,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Japan.'
                    ,'title': 'Japanisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'jap.'
                    ,'title': 'Japanese language'
                    }
@@ -15723,7 +15723,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Jar.'
                    ,'title': 'Jargon (Slang)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'argot'
                    ,'title': 'Argot'
                    }
@@ -15748,7 +15748,7 @@ SUBJECTS = {'AI.':
                    {'short': 'jet.'
                    ,'title': 'Jet engines'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'jet.'
                    ,'title': 'Jet engines'
                    }
@@ -15773,7 +15773,7 @@ SUBJECTS = {'AI.':
                    {'short': 'jewl.'
                    ,'title': 'Jewelry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'jewl.'
                    ,'title': 'Jewelry'
                    }
@@ -15798,7 +15798,7 @@ SUBJECTS = {'AI.':
                    {'short': 'journ.'
                    ,'title': 'Journalism (terminology)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'journ.'
                    ,'title': 'Journalism (terminology)'
                    }
@@ -15823,7 +15823,7 @@ SUBJECTS = {'AI.':
                    {'short': 'judo.'
                    ,'title': 'Judo'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'judo.'
                    ,'title': 'Judo'
                    }
@@ -15848,7 +15848,7 @@ SUBJECTS = {'AI.':
                    {'short': 'karate.'
                    ,'title': 'Karate'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'karate.'
                    ,'title': 'Karate'
                    }
@@ -15873,7 +15873,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Strickw.'
                    ,'title': 'Strickwaren'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'knit.goods'
                    ,'title': 'Knitted goods'
                    }
@@ -15898,7 +15898,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Korean.'
                    ,'title': 'Koreanisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'korea.'
                    ,'title': 'Korean'
                    }
@@ -15923,7 +15923,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Lab.Ausstatt.'
                    ,'title': 'Laborausstattung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'lab.eq.'
                    ,'title': 'Equipamiento de laboratorio'
                    }
@@ -15948,7 +15948,7 @@ SUBJECTS = {'AI.':
                    {'short': 'lab.law.'
                    ,'title': 'Labor law'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'lab.law.'
                    ,'title': 'Labor law'
                    }
@@ -15973,7 +15973,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Betriebswirt.'
                    ,'title': 'Betriebswirtschft'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'labor.org.'
                    ,'title': 'Labor organization'
                    }
@@ -15998,7 +15998,7 @@ SUBJECTS = {'AI.':
                    {'short': 'landsc.'
                    ,'title': 'Landscaping'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'landsc.'
                    ,'title': 'Landscaping'
                    }
@@ -16023,7 +16023,7 @@ SUBJECTS = {'AI.':
                    {'short': 'laser.'
                    ,'title': 'Lasers'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'laser.'
                    ,'title': 'Lasers'
                    }
@@ -16048,7 +16048,7 @@ SUBJECTS = {'AI.':
                    {'short': 'laser.med.'
                    ,'title': 'Laser medicine'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'laser.med.'
                    ,'title': 'Laser medicine'
                    }
@@ -16073,7 +16073,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Lat.'
                    ,'title': 'Latein'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'lat.'
                    ,'title': 'Latín'
                    }
@@ -16098,7 +16098,7 @@ SUBJECTS = {'AI.':
                    {'short': 'lat.amer.'
                    ,'title': 'Latin American'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'lat.amer.'
                    ,'title': 'Latin American'
                    }
@@ -16123,7 +16123,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Lat.am.sl.'
                    ,'title': 'Lateinamerikanischer Slang'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'lat.amer.sl.'
                    ,'title': 'Latin American slang'
                    }
@@ -16148,7 +16148,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Zustim.'
                    ,'title': 'Zustimmend'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'laud.'
                    ,'title': 'Laudatory'
                    }
@@ -16173,7 +16173,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Recht.'
                    ,'title': 'Recht'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'jur.'
                    ,'title': 'Jurídico'
                    }
@@ -16198,7 +16198,7 @@ SUBJECTS = {'AI.':
                    {'short': 'law, ADR'
                    ,'title': 'Alternative dispute resolution'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'jur.,SAC'
                    ,'title': 'Solución alternativa de controversias'
                    }
@@ -16223,7 +16223,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Recht., Amerik.'
                    ,'title': 'Recht, Amerikanisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'jur., amer.'
                    ,'title': 'Jurídico, Americano (uso)'
                    }
@@ -16248,7 +16248,7 @@ SUBJECTS = {'AI.':
                    {'short': 'angelsächs. Recht'
                    ,'title': 'Rechtskunde: angelsächsisches Rechtssystem'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'jur.:anglosaj.'
                    ,'title': 'Jurídico: sistema anglosajón'
                    }
@@ -16273,7 +16273,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Vertr., context.'
                    ,'title': 'Verträge, Contextual meaning'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'contr.jur., context.'
                    ,'title': 'Contratos jurídicos, Contextual meaning'
                    }
@@ -16298,7 +16298,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Urheberrecht'
                    ,'title': 'Urheberrecht'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'law, copyr.'
                    ,'title': 'Copyright'
                    }
@@ -16323,7 +16323,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Urheberrecht, Abkürz.'
                    ,'title': 'Urheberrecht, Abkürzung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'law, copyr., abrev.'
                    ,'title': 'Copyright, Abreviatura'
                    }
@@ -16348,7 +16348,7 @@ SUBJECTS = {'AI.':
                    {'short': 'law, court'
                    ,'title': 'Court (law)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'law, court'
                    ,'title': 'Court (law)'
                    }
@@ -16373,7 +16373,7 @@ SUBJECTS = {'AI.':
                    {'short': 'law.enf.'
                    ,'title': 'Law enforcement'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'law.enf.'
                    ,'title': 'Law enforcement'
                    }
@@ -16398,7 +16398,7 @@ SUBJECTS = {'AI.':
                    {'short': 'lean.prod.'
                    ,'title': 'Lean production'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'lean.prod.'
                    ,'title': 'Lean production'
                    }
@@ -16423,7 +16423,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Lederindust.'
                    ,'title': 'Lederindustrie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'leath.'
                    ,'title': 'Leather'
                    }
@@ -16448,7 +16448,7 @@ SUBJECTS = {'AI.':
                    {'short': 'leg.ent.typ.'
                    ,'title': 'Legal entity types (business legal structures)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'leg.ent.typ.'
                    ,'title': 'Legal entity types (business legal structures)'
                    }
@@ -16473,7 +16473,7 @@ SUBJECTS = {'AI.':
                    {'short': 'legal.theor.'
                    ,'title': 'Legal theory'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'legal.theor.'
                    ,'title': 'Legal theory'
                    }
@@ -16498,7 +16498,7 @@ SUBJECTS = {'AI.':
                    {'short': 'level.'
                    ,'title': 'Level measurement'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'level.'
                    ,'title': 'Level measurement'
                    }
@@ -16523,7 +16523,7 @@ SUBJECTS = {'AI.':
                    {'short': 'lgbt'
                    ,'title': 'LGBT'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'lgbt'
                    ,'title': 'LGBT'
                    }
@@ -16548,7 +16548,7 @@ SUBJECTS = {'AI.':
                    {'short': 'libr.'
                    ,'title': 'Librarianship'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'libr.'
                    ,'title': 'Librarianship'
                    }
@@ -16573,7 +16573,7 @@ SUBJECTS = {'AI.':
                    {'short': 'life.sc.'
                    ,'title': 'Life sciences'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'life.sc.'
                    ,'title': 'Life sciences'
                    }
@@ -16598,7 +16598,7 @@ SUBJECTS = {'AI.':
                    {'short': 'light.'
                    ,'title': 'Lighting (other than cinema)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'light.'
                    ,'title': 'Lighting (other than cinema)'
                    }
@@ -16623,7 +16623,7 @@ SUBJECTS = {'AI.':
                    {'short': 'limn.'
                    ,'title': 'Limnology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'limn.'
                    ,'title': 'Limnology'
                    }
@@ -16648,7 +16648,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Ling.'
                    ,'title': 'Linguistik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ling.'
                    ,'title': 'Lingüística'
                    }
@@ -16673,7 +16673,7 @@ SUBJECTS = {'AI.':
                    {'short': 'lit.'
                    ,'title': 'Literatur'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'lit.'
                    ,'title': 'Literatura'
                    }
@@ -16698,7 +16698,7 @@ SUBJECTS = {'AI.':
                    {'short': 'lit., f.tales'
                    ,'title': 'Fairy tales'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'lit., f.tales'
                    ,'title': 'Fairy tales'
                    }
@@ -16723,7 +16723,7 @@ SUBJECTS = {'AI.':
                    {'short': 'liter.'
                    ,'title': 'Literally'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'liter.'
                    ,'title': 'Literally'
                    }
@@ -16748,7 +16748,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Lithol.'
                    ,'title': 'Lithologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'lithol.'
                    ,'title': 'Lithology'
                    }
@@ -16773,7 +16773,7 @@ SUBJECTS = {'AI.':
                    {'short': 'load.equip.'
                    ,'title': 'Loading equipment'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'load.equip.'
                    ,'title': 'Loading equipment'
                    }
@@ -16798,7 +16798,7 @@ SUBJECTS = {'AI.':
                    {'short': 'loc.name.'
                    ,'title': 'Local name'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'loc.name.'
                    ,'title': 'Local name'
                    }
@@ -16823,7 +16823,7 @@ SUBJECTS = {'AI.':
                    {'short': 'logging'
                    ,'title': 'Logging'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'logging'
                    ,'title': 'Logging'
                    }
@@ -16848,7 +16848,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Logik.'
                    ,'title': 'Logik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'lóg.'
                    ,'title': 'Lógica'
                    }
@@ -16873,7 +16873,7 @@ SUBJECTS = {'AI.':
                    {'short': 'logist.'
                    ,'title': 'Logistics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'logist.'
                    ,'title': 'Logistics'
                    }
@@ -16898,7 +16898,7 @@ SUBJECTS = {'AI.':
                    {'short': 'logop.'
                    ,'title': 'Logopedics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'logop.'
                    ,'title': 'Logopedics'
                    }
@@ -16923,7 +16923,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Mind.Niveau'
                    ,'title': 'Minderniveau'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'low'
                    ,'title': 'Low register'
                    }
@@ -16948,7 +16948,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Nied.dt.'
                    ,'title': 'Niederdeutsch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'low.germ.'
                    ,'title': 'Lower German'
                    }
@@ -16973,7 +16973,7 @@ SUBJECTS = {'AI.':
                    {'short': 'luge.'
                    ,'title': 'Luge'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'luge.'
                    ,'title': 'Luge'
                    }
@@ -16998,7 +16998,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mach.'
                    ,'title': 'Machine tools'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mach.'
                    ,'title': 'Machine tools'
                    }
@@ -17023,7 +17023,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mach.comp.'
                    ,'title': 'Machine components'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mach.comp.'
                    ,'title': 'Machine components'
                    }
@@ -17048,7 +17048,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Magnet.'
                    ,'title': 'Magnetismus'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'magn.'
                    ,'title': 'Magnetics'
                    }
@@ -17073,7 +17073,7 @@ SUBJECTS = {'AI.':
                    {'short': 'magn.tomogr.'
                    ,'title': 'Magnetic tomography'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'magn.tomogr.'
                    ,'title': 'Magnetic tomography'
                    }
@@ -17098,7 +17098,7 @@ SUBJECTS = {'AI.':
                    {'short': 'magnet.image.rec.'
                    ,'title': 'Magnetic image recording'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'magnet.image.rec.'
                    ,'title': 'Magnetic image recording'
                    }
@@ -17123,7 +17123,7 @@ SUBJECTS = {'AI.':
                    {'short': 'malac.'
                    ,'title': 'Malacology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'malac.'
                    ,'title': 'Malacology'
                    }
@@ -17148,7 +17148,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Mala. Sp.'
                    ,'title': 'Malaiisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'malay.'
                    ,'title': 'Malay'
                    }
@@ -17173,7 +17173,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mamal.'
                    ,'title': 'Mammalogy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mamal.'
                    ,'title': 'Mammalogy'
                    }
@@ -17198,7 +17198,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mamm.'
                    ,'title': 'Mammals'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mamm.'
                    ,'title': 'Mammals'
                    }
@@ -17223,7 +17223,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Managem.'
                    ,'title': 'Management'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'manag.'
                    ,'title': 'Management'
                    }
@@ -17248,7 +17248,7 @@ SUBJECTS = {'AI.':
                    {'short': 'manga.'
                    ,'title': 'Manga'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'manga.'
                    ,'title': 'Manga'
                    }
@@ -17273,7 +17273,7 @@ SUBJECTS = {'AI.':
                    {'short': 'maor.'
                    ,'title': 'Maori'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'maor.'
                    ,'title': 'Maori'
                    }
@@ -17298,7 +17298,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mar.law'
                    ,'title': 'Maritime law & Law of the Sea'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mar.law'
                    ,'title': 'Maritime law & Law of the Sea'
                    }
@@ -17323,7 +17323,7 @@ SUBJECTS = {'AI.':
                    {'short': 'market.'
                    ,'title': 'Marketing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'market.'
                    ,'title': 'Marketing'
                    }
@@ -17348,7 +17348,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kampfsport'
                    ,'title': 'Zweikampf und Kampfkunst'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'artes.marc.'
                    ,'title': 'Artes marciales y deportes de combate'
                    }
@@ -17373,7 +17373,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Str.Holz.Prod.'
                    ,'title': 'Streichholzproduktion'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'match.prod.'
                    ,'title': 'Matches'
                    }
@@ -17398,7 +17398,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mater.sc.'
                    ,'title': 'Materials science'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mater.sc.'
                    ,'title': 'Materials science'
                    }
@@ -17423,7 +17423,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Math.'
                    ,'title': 'Mathematik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mat.'
                    ,'title': 'Matemáticas'
                    }
@@ -17448,7 +17448,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Math.Anal.'
                    ,'title': 'Mathematische Analyse'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'math.anal.'
                    ,'title': 'Mathematical analysis'
                    }
@@ -17473,7 +17473,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mean.2'
                    ,'title': 'Meaning 2'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mean.2'
                    ,'title': 'Meaning 2'
                    }
@@ -17498,7 +17498,7 @@ SUBJECTS = {'AI.':
                    {'short': 'meas.inst.'
                    ,'title': 'Measuring instruments'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'meas.inst.'
                    ,'title': 'Measuring instruments'
                    }
@@ -17523,7 +17523,7 @@ SUBJECTS = {'AI.':
                    {'short': 'meat.'
                    ,'title': 'Meat processing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'meat.'
                    ,'title': 'Meat processing'
                    }
@@ -17548,7 +17548,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Mech.'
                    ,'title': 'Mechanik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mech.'
                    ,'title': 'Mechanics'
                    }
@@ -17573,7 +17573,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Maschinenb.'
                    ,'title': 'Maschinenbau'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mech.eng.'
                    ,'title': 'Mechanic engineering'
                    }
@@ -17598,7 +17598,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Med.'
                    ,'title': 'Medizin'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'med.'
                    ,'title': 'Medicina'
                    }
@@ -17623,7 +17623,7 @@ SUBJECTS = {'AI.':
                    {'short': 'med., alt.'
                    ,'title': 'Medicine - Alternative medicine'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'med., alt.'
                    ,'title': 'Medicine - Alternative medicine'
                    }
@@ -17648,7 +17648,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Epidem.'
                    ,'title': 'Epidemiologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'med., epid.'
                    ,'title': 'Epidemiology'
                    }
@@ -17673,7 +17673,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Med.Tech.'
                    ,'title': 'Medizintechnik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'med.appl.'
                    ,'title': 'Medical appliances'
                    }
@@ -17698,7 +17698,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Massenmed.'
                    ,'title': 'Massenmedien'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'media.'
                    ,'title': 'Mass media'
                    }
@@ -17723,7 +17723,7 @@ SUBJECTS = {'AI.':
                    {'short': 'melior.'
                    ,'title': 'Melioration'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'melior.'
                    ,'title': 'Melioration'
                    }
@@ -17748,7 +17748,7 @@ SUBJECTS = {'AI.':
                    {'short': 'merch.nav.'
                    ,'title': 'Merchant navy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'merch.nav.'
                    ,'title': 'Merchant navy'
                    }
@@ -17773,7 +17773,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Metall.'
                    ,'title': 'Metallurgie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'metal.'
                    ,'title': 'Metalurgia'
                    }
@@ -17798,7 +17798,7 @@ SUBJECTS = {'AI.':
                    {'short': 'met.health.'
                    ,'title': 'Mental health'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'met.health.'
                    ,'title': 'Mental health'
                    }
@@ -17823,7 +17823,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Metkunde'
                    ,'title': 'Metallkunde'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'met.sci.'
                    ,'title': 'Metal science'
                    }
@@ -17848,7 +17848,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Met.ver.'
                    ,'title': 'Metallverarbeitung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'met.work.'
                    ,'title': 'Metalworking'
                    }
@@ -17873,7 +17873,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Massenmed.'
                    ,'title': 'Massenmedien'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'meteorol.'
                    ,'title': 'Meteorología'
                    }
@@ -17898,7 +17898,7 @@ SUBJECTS = {'AI.':
                    {'short': 'metro'
                    ,'title': 'Metro and rapid transit'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'metro'
                    ,'title': 'Metro and rapid transit'
                    }
@@ -17923,7 +17923,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Metrol.'
                    ,'title': 'Metrologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'metrol.'
                    ,'title': 'Metrology'
                    }
@@ -17948,7 +17948,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mexic.'
                    ,'title': 'Mexican'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mexic.'
                    ,'title': 'Mexican'
                    }
@@ -17973,7 +17973,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mikrobiol.'
                    ,'title': 'Mikrobiologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'microbiol.'
                    ,'title': 'Microbiología'
                    }
@@ -17998,7 +17998,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Mikroel.'
                    ,'title': 'Mikroelektronik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'microel.'
                    ,'title': 'Microelectronics'
                    }
@@ -18023,7 +18023,7 @@ SUBJECTS = {'AI.':
                    {'short': 'microsc.'
                    ,'title': 'Microscopy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'microsc.'
                    ,'title': 'Microscopy'
                    }
@@ -18048,7 +18048,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mid.chin.'
                    ,'title': 'Middle Chinese'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mid.chin.'
                    ,'title': 'Middle Chinese'
                    }
@@ -18073,7 +18073,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Mil.'
                    ,'title': 'Militär'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mil.'
                    ,'title': 'Término militar'
                    }
@@ -18098,7 +18098,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mil., AAA'
                    ,'title': 'Anti-air artillery'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mil., AAA'
                    ,'title': 'Anti-air artillery'
                    }
@@ -18123,7 +18123,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mil., WMD'
                    ,'title': 'Weapons of mass destruction'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mil., WMD'
                    ,'title': 'Weapons of mass destruction'
                    }
@@ -18148,7 +18148,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mil., ammo'
                    ,'title': 'Ammunition'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mil., ammo'
                    ,'title': 'Ammunition'
                    }
@@ -18173,7 +18173,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mil., arm.veh.'
                    ,'title': 'Armored vehicles'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mil., arm.veh.'
                    ,'title': 'Armored vehicles'
                    }
@@ -18198,7 +18198,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Artil.'
                    ,'title': 'Artillerie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mil.,artill.'
                    ,'title': 'Artillería'
                    }
@@ -18223,7 +18223,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mil., avia.'
                    ,'title': 'Military aviation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mil., avia.'
                    ,'title': 'Military aviation'
                    }
@@ -18248,7 +18248,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mil., grnd.forc.'
                    ,'title': 'Ground forces (Army)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mil., grnd.forc.'
                    ,'title': 'Ground forces (Army)'
                    }
@@ -18273,7 +18273,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Milit. Jargon'
                    ,'title': 'Militärjargon'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'jerg.mil.'
                    ,'title': 'Jerga militar'
                    }
@@ -18298,7 +18298,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Mil., mil., arm.veh.'
                    ,'title': 'Militär, Armored vehicles'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mil., mil., arm.veh.'
                    ,'title': 'Término militar, Armored vehicles'
                    }
@@ -18323,7 +18323,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mil., navy'
                    ,'title': 'Navy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mil., navy'
                    ,'title': 'Navy'
                    }
@@ -18348,7 +18348,7 @@ SUBJECTS = {'AI.':
                    {'short': 'milk.'
                    ,'title': 'Milk production'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'milk.'
                    ,'title': 'Milk production'
                    }
@@ -18373,7 +18373,7 @@ SUBJECTS = {'AI.':
                    {'short': 'min.class.'
                    ,'title': 'Mineral classification'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'min.class.'
                    ,'title': 'Mineral classification'
                    }
@@ -18398,7 +18398,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Aufber.Bdsch.'
                    ,'title': 'Aufbereitung der Bodenschätze'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'min.proc.'
                    ,'title': 'Mineral processing'
                    }
@@ -18423,7 +18423,7 @@ SUBJECTS = {'AI.':
                    {'short': 'min.prod.'
                    ,'title': 'Mineral products'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'min.prod.'
                    ,'title': 'Mineral products'
                    }
@@ -18448,7 +18448,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mine.surv.'
                    ,'title': 'Mine surveying'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mine.surv.'
                    ,'title': 'Mine surveying'
                    }
@@ -18473,7 +18473,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Mineral.'
                    ,'title': 'Mineralogie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mineral.'
                    ,'title': 'Mineralogía'
                    }
@@ -18498,7 +18498,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Bergb.'
                    ,'title': 'Bergbau'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'minería'
                    ,'title': 'Minería'
                    }
@@ -18523,7 +18523,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Rak.tech.'
                    ,'title': 'Raketentechnik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'missil.'
                    ,'title': 'Missiles'
                    }
@@ -18548,7 +18548,7 @@ SUBJECTS = {'AI.':
                    {'short': 'misused'
                    ,'title': 'Misused'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'misused'
                    ,'title': 'Misused'
                    }
@@ -18573,7 +18573,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mob.com.'
                    ,'title': 'Mobile and cellular communications'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mob.com.'
                    ,'title': 'Mobile and cellular communications'
                    }
@@ -18595,7 +18595,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Modern.'
                    ,'title': 'Moderner Ausdruck'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'modern'
                    ,'title': 'Modern use'
                    }
@@ -18620,7 +18620,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mol.biol.'
                    ,'title': 'Molecular biology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mol.biol.'
                    ,'title': 'Molecular biology'
                    }
@@ -18645,7 +18645,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Mold.'
                    ,'title': 'Moldauisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'moldav.'
                    ,'title': 'Moldavian'
                    }
@@ -18670,7 +18670,7 @@ SUBJECTS = {'AI.':
                    {'short': 'morph.'
                    ,'title': 'Morphology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'morph.'
                    ,'title': 'Morphology'
                    }
@@ -18695,7 +18695,7 @@ SUBJECTS = {'AI.':
                    {'short': 'moto.'
                    ,'title': 'Motorcycles'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'moto.'
                    ,'title': 'Motorcycles'
                    }
@@ -18720,7 +18720,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mount.'
                    ,'title': 'Mountaineering'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mount.'
                    ,'title': 'Mountaineering'
                    }
@@ -18745,7 +18745,7 @@ SUBJECTS = {'AI.':
                    {'short': 'multimed.'
                    ,'title': 'Multimedia'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'multimed.'
                    ,'title': 'Multimedia'
                    }
@@ -18770,7 +18770,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mun.plan.'
                    ,'title': 'Municipal planning'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mun.plan.'
                    ,'title': 'Municipal planning'
                    }
@@ -18795,7 +18795,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Mus.'
                    ,'title': 'Musik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mús.'
                    ,'title': 'Música'
                    }
@@ -18820,7 +18820,7 @@ SUBJECTS = {'AI.':
                    {'short': 'mus.instr.'
                    ,'title': 'Musical instruments'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mus.instr.'
                    ,'title': 'Musical instruments'
                    }
@@ -18845,7 +18845,7 @@ SUBJECTS = {'AI.':
                    {'short': 'museum.'
                    ,'title': 'Museums'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'museum.'
                    ,'title': 'Museums'
                    }
@@ -18870,7 +18870,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Myth.'
                    ,'title': 'Mythologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mitol.'
                    ,'title': 'Mitología'
                    }
@@ -18895,7 +18895,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Griech. Myth.'
                    ,'title': 'Griechische Mythologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'mitol.antig.'
                    ,'title': 'Mitología helénica y romana'
                    }
@@ -18920,7 +18920,7 @@ SUBJECTS = {'AI.':
                    {'short': 'myth., nors., Myth.'
                    ,'title': 'Norse mythology, Mythologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'myth., nors., mitol.'
                    ,'title': 'Norse mythology, Mitología'
                    }
@@ -18945,7 +18945,7 @@ SUBJECTS = {'AI.':
                    {'short': 'n.amer.'
                    ,'title': 'North American (USA and Canada)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'n.amer.'
                    ,'title': 'North American (USA and Canada)'
                    }
@@ -18970,7 +18970,7 @@ SUBJECTS = {'AI.':
                    {'short': 'names'
                    ,'title': 'Names and surnames'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'names'
                    ,'title': 'Names and surnames'
                    }
@@ -18995,7 +18995,7 @@ SUBJECTS = {'AI.':
                    {'short': 'nano'
                    ,'title': 'Nanotechnology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'nano'
                    ,'title': 'Nanotechnology'
                    }
@@ -19020,7 +19020,7 @@ SUBJECTS = {'AI.':
                    {'short': 'narrow.film.'
                    ,'title': 'Narrow film'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'narrow.film.'
                    ,'title': 'Narrow film'
                    }
@@ -19045,7 +19045,7 @@ SUBJECTS = {'AI.':
                    {'short': 'nat.res.'
                    ,'title': 'Natural resourses and wildlife conservation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'nat.res.'
                    ,'title': 'Natural resourses and wildlife conservation'
                    }
@@ -19070,7 +19070,7 @@ SUBJECTS = {'AI.':
                    {'short': 'nat.sc.'
                    ,'title': 'Natural sciences'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'nat.sc.'
                    ,'title': 'Natural sciences'
                    }
@@ -19095,7 +19095,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Mar.'
                    ,'title': 'Marine'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'náut.'
                    ,'title': 'Náutico'
                    }
@@ -19120,7 +19120,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Navig.'
                    ,'title': 'Navigation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'navig.'
                    ,'title': 'Navigation'
                    }
@@ -19145,7 +19145,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Neol.'
                    ,'title': 'Neologismus'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'neol.'
                    ,'title': 'Neologism'
                    }
@@ -19170,7 +19170,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Nephrol.'
                    ,'title': 'Nephrologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'nephr.'
                    ,'title': 'Nephrology'
                    }
@@ -19195,7 +19195,7 @@ SUBJECTS = {'AI.':
                    {'short': 'neugoling.'
                    ,'title': 'Neurolinguistics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'neugoling.'
                    ,'title': 'Neurolinguistics'
                    }
@@ -19220,7 +19220,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Neur.Netzw.'
                    ,'title': 'Neurale Netzwerke'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'neur.net.'
                    ,'title': 'Neural networks'
                    }
@@ -19245,7 +19245,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Neurol.'
                    ,'title': 'Neurologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'neurol.'
                    ,'title': 'Neurología'
                    }
@@ -19270,7 +19270,7 @@ SUBJECTS = {'AI.':
                    {'short': 'neuropsychol.'
                    ,'title': 'Neuropsychology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'neuropsychol.'
                    ,'title': 'Neuropsychology'
                    }
@@ -19295,7 +19295,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Neurochir.'
                    ,'title': 'Neurochirurgie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'neurosurg.'
                    ,'title': 'Neurosurgery'
                    }
@@ -19320,7 +19320,7 @@ SUBJECTS = {'AI.':
                    {'short': 'neus.Ausdr.'
                    ,'title': 'neuseeländischer Ausdruck'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'new.zeal.'
                    ,'title': 'New Zealand'
                    }
@@ -19345,7 +19345,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Presse'
                    ,'title': 'Pressestil'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'news'
                    ,'title': 'News style'
                    }
@@ -19370,7 +19370,7 @@ SUBJECTS = {'AI.':
                    {'short': 'N.eis.met.'
                    ,'title': 'Nichteisenmetallurgie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'nonferr.'
                    ,'title': 'Nonferrous industry'
                    }
@@ -19395,7 +19395,7 @@ SUBJECTS = {'AI.':
                    {'short': 'nonlin.opt.'
                    ,'title': 'Nonlinear optics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'nonlin.opt.'
                    ,'title': 'Nonlinear optics'
                    }
@@ -19420,7 +19420,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Volksm.'
                    ,'title': 'Volksmund'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'nonstand.'
                    ,'title': 'Nonstandard'
                    }
@@ -19445,7 +19445,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Norweg.'
                    ,'title': 'Norwegisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'norw.'
                    ,'title': 'Norway'
                    }
@@ -19470,7 +19470,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Notar.'
                    ,'title': 'Notarielle Praxis'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'notar.'
                    ,'title': 'Notarial practice'
                    }
@@ -19495,7 +19495,7 @@ SUBJECTS = {'AI.':
                    {'short': 'nucl.chem.'
                    ,'title': 'Nuclear chemistry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'nucl.chem.'
                    ,'title': 'Nuclear chemistry'
                    }
@@ -19520,7 +19520,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kernphys.'
                    ,'title': 'Kernphysik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'nucl.phys.'
                    ,'title': 'Nuclear physics'
                    }
@@ -19545,7 +19545,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kernenerg.'
                    ,'title': 'Kernenergie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'nucl.pow.'
                    ,'title': 'Nuclear and fusion power'
                    }
@@ -19570,7 +19570,7 @@ SUBJECTS = {'AI.':
                    {'short': 'numism.'
                    ,'title': 'Numismatics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'numism.'
                    ,'title': 'Numismatics'
                    }
@@ -19595,7 +19595,7 @@ SUBJECTS = {'AI.':
                    {'short': 'nurs.'
                    ,'title': 'Nursing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'nurs.'
                    ,'title': 'Nursing'
                    }
@@ -19620,7 +19620,7 @@ SUBJECTS = {'AI.':
                    {'short': 'veralt.'
                    ,'title': 'Veraltet'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, acl.'
                    ,'title': 'Alcohol distilling'
                    }
@@ -19645,7 +19645,7 @@ SUBJECTS = {'AI.':
                    {'short': 'veralt., Umg.'
                    ,'title': 'Veraltet, Umgangssprache'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, antic.'
                    ,'title': 'Anticuado'
                    }
@@ -19670,7 +19670,7 @@ SUBJECTS = {'AI.':
                    {'short': 'veralt., Iron.'
                    ,'title': 'Veraltet, Ironie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, retór.'
                    ,'title': 'Retórica'
                    }
@@ -19695,7 +19695,7 @@ SUBJECTS = {'AI.':
                    {'short': 'veralt., Mil.'
                    ,'title': 'Veraltet, Militär'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Gruzovik, mil.'
                    ,'title': 'Término militar'
                    }
@@ -19720,7 +19720,7 @@ SUBJECTS = {'AI.':
                    {'short': 'geburt.'
                    ,'title': 'Geburtshilfe'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'obstetr.'
                    ,'title': 'Obstetricia'
                    }
@@ -19745,7 +19745,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Ozeanogr.'
                    ,'title': 'Ozeanographie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ocean.'
                    ,'title': 'Oceanography (oceanology)'
                    }
@@ -19770,7 +19770,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Amt.Sp.'
                    ,'title': 'Amtssprache'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'offic.'
                    ,'title': 'Officialese'
                    }
@@ -19795,7 +19795,7 @@ SUBJECTS = {'AI.':
                    {'short': 'office.equip.'
                    ,'title': 'Office equipment'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'office.equip.'
                    ,'title': 'Office equipment'
                    }
@@ -19820,7 +19820,7 @@ SUBJECTS = {'AI.':
                    {'short': 'offsh.comp.'
                    ,'title': 'Offshore companies'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'offsh.comp.'
                    ,'title': 'Offshore companies'
                    }
@@ -19845,7 +19845,7 @@ SUBJECTS = {'AI.':
                    {'short': 'E.öl.'
                    ,'title': 'Erdöl'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'petról.'
                    ,'title': 'Petróleo'
                    }
@@ -19870,7 +19870,7 @@ SUBJECTS = {'AI.':
                    {'short': 'oil.lubr.'
                    ,'title': 'Oils and lubricants'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'oil.lubr.'
                    ,'title': 'Oils and lubricants'
                    }
@@ -19895,7 +19895,7 @@ SUBJECTS = {'AI.':
                    {'short': 'oil.proc.'
                    ,'title': 'Oil processing plants'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'oil.proc.'
                    ,'title': 'Oil processing plants'
                    }
@@ -19920,7 +19920,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Altmod.'
                    ,'title': 'Altmodisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'old.fash.'
                    ,'title': 'Old-fashioned'
                    }
@@ -19945,7 +19945,7 @@ SUBJECTS = {'AI.':
                    {'short': 'alt.R.schr.'
                    ,'title': 'Alte Rechtschreibung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'old.orth.'
                    ,'title': 'Old orthography'
                    }
@@ -19970,7 +19970,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Onkol.'
                    ,'title': 'Onkologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'oncol.'
                    ,'title': 'Oncology'
                    }
@@ -19995,7 +19995,7 @@ SUBJECTS = {'AI.':
                    {'short': 'S-M-Betr.'
                    ,'title': 'Siemens-Martin-Betrieb'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'op.hearth.'
                    ,'title': 'Open-hearth process'
                    }
@@ -20020,7 +20020,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Betr.Syst.'
                    ,'title': 'Betriebssysteme'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'op.syst.'
                    ,'title': 'Operation systems'
                    }
@@ -20045,7 +20045,7 @@ SUBJECTS = {'AI.':
                    {'short': 'augenh.'
                    ,'title': 'Augenheilkunde'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'oftalm.'
                    ,'title': 'Oftalmología'
                    }
@@ -20070,7 +20070,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Opt.'
                    ,'title': 'Optik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ópt.'
                    ,'title': 'Óptica (rama de la física)'
                    }
@@ -20095,7 +20095,7 @@ SUBJECTS = {'AI.':
                    {'short': 'optometr.'
                    ,'title': 'Optometry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'optometr.'
                    ,'title': 'Optometry'
                    }
@@ -20120,7 +20120,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Erzvorkom.'
                    ,'title': 'Erzvorkommen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ore.form.'
                    ,'title': 'Ore formation'
                    }
@@ -20145,7 +20145,7 @@ SUBJECTS = {'AI.':
                    {'short': 'org.chem.'
                    ,'title': 'Organic chemistry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'org.chem.'
                    ,'title': 'Organic chemistry'
                    }
@@ -20170,7 +20170,7 @@ SUBJECTS = {'AI.':
                    {'short': 'org.crime.'
                    ,'title': 'Organized crime'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'org.crime.'
                    ,'title': 'Organized crime'
                    }
@@ -20195,7 +20195,7 @@ SUBJECTS = {'AI.':
                    {'short': 'org.name.'
                    ,'title': 'Name of organization'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'org.name.'
                    ,'title': 'Name of organization'
                    }
@@ -20220,7 +20220,7 @@ SUBJECTS = {'AI.':
                    {'short': 'orient.'
                    ,'title': 'Oriental'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'orient.'
                    ,'title': 'Oriental'
                    }
@@ -20245,7 +20245,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Orthop.'
                    ,'title': 'Orthopädie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'orthop.'
                    ,'title': 'Orthopedics'
                    }
@@ -20270,7 +20270,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Verpack.'
                    ,'title': 'Verpackung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pack.'
                    ,'title': 'Packaging'
                    }
@@ -20295,7 +20295,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Mal.'
                    ,'title': 'Malerei'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pint.'
                    ,'title': 'Pintura'
                    }
@@ -20320,7 +20320,7 @@ SUBJECTS = {'AI.':
                    {'short': 'paint.varn.'
                    ,'title': 'Paint, varnish and lacquer'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'paint.varn.'
                    ,'title': 'Paint, varnish and lacquer'
                    }
@@ -20345,7 +20345,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Malerarb.'
                    ,'title': 'Malerarbeit'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'paint.w.'
                    ,'title': 'Paint work'
                    }
@@ -20370,7 +20370,7 @@ SUBJECTS = {'AI.':
                    {'short': 'pal.bot.'
                    ,'title': 'Paleobotany'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pal.bot.'
                    ,'title': 'Paleobotany'
                    }
@@ -20395,7 +20395,7 @@ SUBJECTS = {'AI.':
                    {'short': 'paleogr.'
                    ,'title': 'Palaeography'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'paleogr.'
                    ,'title': 'Palaeography'
                    }
@@ -20420,7 +20420,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Paläontol.'
                    ,'title': 'Paläontologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'paleont.'
                    ,'title': 'Paleontology'
                    }
@@ -20445,7 +20445,7 @@ SUBJECTS = {'AI.':
                    {'short': 'paleozool.'
                    ,'title': 'Paleozoology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'paleozool.'
                    ,'title': 'Paleozoology'
                    }
@@ -20470,7 +20470,7 @@ SUBJECTS = {'AI.':
                    {'short': 'palyn.'
                    ,'title': 'Palynology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'palyn.'
                    ,'title': 'Palynology'
                    }
@@ -20495,7 +20495,7 @@ SUBJECTS = {'AI.':
                    {'short': 'parapsych.'
                    ,'title': 'Parapsychology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'parapsych.'
                    ,'title': 'Parapsychology'
                    }
@@ -20520,7 +20520,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Parasitol.'
                    ,'title': 'Parasitologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'parasit.'
                    ,'title': 'Parasitología'
                    }
@@ -20545,7 +20545,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Patent.'
                    ,'title': 'Patente'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'patents.'
                    ,'title': 'Patents'
                    }
@@ -20570,7 +20570,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Pathol.'
                    ,'title': 'Pathologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'patol.'
                    ,'title': 'Patología'
                    }
@@ -20595,7 +20595,7 @@ SUBJECTS = {'AI.':
                    {'short': 'pedag.'
                    ,'title': 'Pedagogics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pedag.'
                    ,'title': 'Pedagogics'
                    }
@@ -20620,7 +20620,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Pädiatr.'
                    ,'title': 'Pädiatrie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pediatr.'
                    ,'title': 'Pediatrics'
                    }
@@ -20645,7 +20645,7 @@ SUBJECTS = {'AI.':
                    {'short': 'pejor.'
                    ,'title': 'Pejorative'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pejor.'
                    ,'title': 'Pejorative'
                    }
@@ -20670,7 +20670,7 @@ SUBJECTS = {'AI.':
                    {'short': 'penitent.'
                    ,'title': 'Penitentiary system'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'penitent.'
                    ,'title': 'Penitentiary system'
                    }
@@ -20695,7 +20695,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Parfüm.'
                    ,'title': 'Parfümerie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'perf.'
                    ,'title': 'Perfume'
                    }
@@ -20720,7 +20720,7 @@ SUBJECTS = {'AI.':
                    {'short': 'permits.'
                    ,'title': 'Permit to work system'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'permits.'
                    ,'title': 'Permit to work system'
                    }
@@ -20745,7 +20745,7 @@ SUBJECTS = {'AI.':
                    {'short': 'pers.'
                    ,'title': 'Persische Sprache'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pers.'
                    ,'title': 'Persa (farsi)'
                    }
@@ -20770,7 +20770,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Schädl.bek.'
                    ,'title': 'Schädlingsbekämpfung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pest.contr.'
                    ,'title': 'Pest control'
                    }
@@ -20795,7 +20795,7 @@ SUBJECTS = {'AI.':
                    {'short': 'pet.'
                    ,'title': 'Pets'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pet.'
                    ,'title': 'Pets'
                    }
@@ -20820,7 +20820,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Petrograph.'
                    ,'title': 'Petrographie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'petrogr.'
                    ,'title': 'Petrography'
                    }
@@ -20845,7 +20845,7 @@ SUBJECTS = {'AI.':
                    {'short': 'phaler.'
                    ,'title': 'Phaleristics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'phaler.'
                    ,'title': 'Phaleristics'
                    }
@@ -20870,7 +20870,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Pharm.'
                    ,'title': 'Pharmakologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'farm.'
                    ,'title': 'Farmacología'
                    }
@@ -20895,7 +20895,7 @@ SUBJECTS = {'AI.':
                    {'short': 'pharmac.'
                    ,'title': 'Pharmacy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pharmac.'
                    ,'title': 'Pharmacy'
                    }
@@ -20920,7 +20920,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Philat.'
                    ,'title': 'Philatelie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'philat.'
                    ,'title': 'Philately / stamp collecting'
                    }
@@ -20945,7 +20945,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Philos.'
                    ,'title': 'Philosophie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'filos.'
                    ,'title': 'Filosofía'
                    }
@@ -20970,7 +20970,7 @@ SUBJECTS = {'AI.':
                    {'short': 'phonol.'
                    ,'title': 'Phonology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'phonol.'
                    ,'title': 'Phonology'
                    }
@@ -20995,7 +20995,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Foto.'
                    ,'title': 'Foto'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'fotogr.'
                    ,'title': 'Fotografía'
                    }
@@ -21020,7 +21020,7 @@ SUBJECTS = {'AI.':
                    {'short': 'photo.sound.rec.'
                    ,'title': 'Photographical sound recording'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'photo.sound.rec.'
                    ,'title': 'Photographical sound recording'
                    }
@@ -21045,7 +21045,7 @@ SUBJECTS = {'AI.':
                    {'short': 'photometr.'
                    ,'title': 'Photometry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'photometr.'
                    ,'title': 'Photometry'
                    }
@@ -21070,7 +21070,7 @@ SUBJECTS = {'AI.':
                    {'short': 'phras.'
                    ,'title': 'Phraseological unit'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'phras.'
                    ,'title': 'Phraseological unit'
                    }
@@ -21095,7 +21095,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Phys.'
                    ,'title': 'Physik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'fís.'
                    ,'title': 'Física'
                    }
@@ -21120,7 +21120,7 @@ SUBJECTS = {'AI.':
                    {'short': 'phys.chem.'
                    ,'title': 'Physical chemistry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'phys.chem.'
                    ,'title': 'Physical chemistry'
                    }
@@ -21145,7 +21145,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Physiol.'
                    ,'title': 'Physiologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'fisiol.'
                    ,'title': 'Fisiología'
                    }
@@ -21170,7 +21170,7 @@ SUBJECTS = {'AI.':
                    {'short': 'physioth.'
                    ,'title': 'Physiotherapy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'physioth.'
                    ,'title': 'Physiotherapy'
                    }
@@ -21195,7 +21195,7 @@ SUBJECTS = {'AI.':
                    {'short': 'phytophathol.'
                    ,'title': 'Phytophathology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'phytophathol.'
                    ,'title': 'Phytophathology'
                    }
@@ -21220,7 +21220,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Piez.'
                    ,'title': 'Piezokristalle'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'piez.'
                    ,'title': 'Piezoelectric crystals'
                    }
@@ -21242,7 +21242,7 @@ SUBJECTS = {'AI.':
                    {'short': 'pipes.'
                    ,'title': 'Pipelines'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pipes.'
                    ,'title': 'Pipelines'
                    }
@@ -21267,7 +21267,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Plan.'
                    ,'title': 'Planung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'plann.'
                    ,'title': 'Planning'
                    }
@@ -21292,7 +21292,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kunstst.'
                    ,'title': 'Kunststoffe'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'plast.'
                    ,'title': 'Plastics'
                    }
@@ -21317,7 +21317,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Sanitär.'
                    ,'title': 'Sanitärtechnik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'plumb.'
                    ,'title': 'Plumbing'
                    }
@@ -21342,7 +21342,7 @@ SUBJECTS = {'AI.':
                    {'short': 'pmp.'
                    ,'title': 'Pumps'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pmp.'
                    ,'title': 'Pumps'
                    }
@@ -21367,7 +21367,7 @@ SUBJECTS = {'AI.':
                    {'short': 'pneum.'
                    ,'title': 'Pneumatics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pneum.'
                    ,'title': 'Pneumatics'
                    }
@@ -21392,7 +21392,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Poet.'
                    ,'title': 'Poetisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'poét.'
                    ,'title': 'Poético'
                    }
@@ -21417,7 +21417,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Poe.'
                    ,'title': 'Poesie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'poesía'
                    ,'title': 'Poesía (terminología)'
                    }
@@ -21442,7 +21442,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Poliz.'
                    ,'title': 'Polizei'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'police'
                    ,'title': 'Police'
                    }
@@ -21467,7 +21467,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Poliz.jarg.'
                    ,'title': 'Polizeijargon'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'police.jarg.'
                    ,'title': 'Police jargon'
                    }
@@ -21492,7 +21492,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Poln.'
                    ,'title': 'Polnisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'polish.'
                    ,'title': 'Polish'
                    }
@@ -21517,7 +21517,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Polit.'
                    ,'title': 'Politik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'polít.'
                    ,'title': 'Política'
                    }
@@ -21542,7 +21542,7 @@ SUBJECTS = {'AI.':
                    {'short': 'polit.econ.'
                    ,'title': 'Political economy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'polit.econ.'
                    ,'title': 'Political economy'
                    }
@@ -21567,7 +21567,7 @@ SUBJECTS = {'AI.':
                    {'short': 'polite'
                    ,'title': 'Polite'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'polite'
                    ,'title': 'Polite'
                    }
@@ -21592,7 +21592,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Polygr.'
                    ,'title': 'Polygraphie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'poligr.'
                    ,'title': 'Poligrafía'
                    }
@@ -21617,7 +21617,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Polym.'
                    ,'title': 'Polymere'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'polym.'
                    ,'title': 'Polymers'
                    }
@@ -21642,7 +21642,7 @@ SUBJECTS = {'AI.':
                    {'short': 'polynes.'
                    ,'title': 'Polynesian'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'polynes.'
                    ,'title': 'Polynesian'
                    }
@@ -21667,7 +21667,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Schwülst.'
                    ,'title': 'Schwülstig'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pomp.'
                    ,'title': 'Pompous'
                    }
@@ -21692,7 +21692,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Portug.'
                    ,'title': 'Portugiesisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'port.'
                    ,'title': 'Portuguese'
                    }
@@ -21717,7 +21717,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Post'
                    ,'title': 'Post'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'post'
                    ,'title': 'Postal service'
                    }
@@ -21742,7 +21742,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Leist.el.'
                    ,'title': 'Leistungselektronik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pow.el.'
                    ,'title': 'Power electronics'
                    }
@@ -21767,7 +21767,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Pul.met.'
                    ,'title': 'Pulvermetallurgie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'powd.met.'
                    ,'title': 'Powder metallurgy'
                    }
@@ -21792,7 +21792,7 @@ SUBJECTS = {'AI.':
                    {'short': 'pragm.'
                    ,'title': 'Pragmatics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pragm.'
                    ,'title': 'Pragmatics'
                    }
@@ -21817,7 +21817,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Press.'
                    ,'title': 'Pressanlagen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'press.'
                    ,'title': 'Press equipment'
                    }
@@ -21842,7 +21842,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Dieb.jarg.'
                    ,'title': 'Diebesjargon'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pris.sl.'
                    ,'title': 'Prison slang'
                    }
@@ -21867,7 +21867,7 @@ SUBJECTS = {'AI.':
                    {'short': 'priv.int.law.'
                    ,'title': 'Private international law'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'priv.int.law.'
                    ,'title': 'Private international law'
                    }
@@ -21892,7 +21892,7 @@ SUBJECTS = {'AI.':
                    {'short': 'procur.'
                    ,'title': 'Procurement'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'procur.'
                    ,'title': 'Procurement'
                    }
@@ -21917,7 +21917,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Produkt.'
                    ,'title': 'Produktion'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'product.'
                    ,'title': 'Production'
                    }
@@ -21942,7 +21942,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Fachj.'
                    ,'title': 'Fachjargon'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'profesion.'
                    ,'title': 'Jerga profesional'
                    }
@@ -21967,7 +21967,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Progr.'
                    ,'title': 'Programmierung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'progr.'
                    ,'title': 'Programming'
                    }
@@ -21992,7 +21992,7 @@ SUBJECTS = {'AI.':
                    {'short': 'proj.manag.'
                    ,'title': 'Project management'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'proj.manag.'
                    ,'title': 'Project management'
                    }
@@ -22017,7 +22017,7 @@ SUBJECTS = {'AI.':
                    {'short': 'project.'
                    ,'title': 'Projectors'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'project.'
                    ,'title': 'Projectors'
                    }
@@ -22042,7 +22042,7 @@ SUBJECTS = {'AI.':
                    {'short': 'prop.&figur.'
                    ,'title': 'Proper and figurative'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'prop.&figur.'
                    ,'title': 'Proper and figurative'
                    }
@@ -22067,7 +22067,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Eig.name.'
                    ,'title': 'Eigenname'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'prop.name'
                    ,'title': 'Proper name'
                    }
@@ -22092,7 +22092,7 @@ SUBJECTS = {'AI.':
                    {'short': 'protozool.'
                    ,'title': 'Protozoology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'protozool.'
                    ,'title': 'Protozoology'
                    }
@@ -22117,7 +22117,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Sprw.'
                    ,'title': 'Sprichwort'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'proverb'
                    ,'title': 'Proverb'
                    }
@@ -22142,7 +22142,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Psych.'
                    ,'title': 'Psychiatrie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'psiq.'
                    ,'title': 'Psiquiatría'
                    }
@@ -22167,7 +22167,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Psychol.'
                    ,'title': 'Psychologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'psic.'
                    ,'title': 'Psicología'
                    }
@@ -22192,7 +22192,7 @@ SUBJECTS = {'AI.':
                    {'short': 'psycholing.'
                    ,'title': 'Psycholinguistics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'psycholing.'
                    ,'title': 'Psycholinguistics'
                    }
@@ -22217,7 +22217,7 @@ SUBJECTS = {'AI.':
                    {'short': 'psychopathol.'
                    ,'title': 'Psychopathology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'psychopathol.'
                    ,'title': 'Psychopathology'
                    }
@@ -22242,7 +22242,7 @@ SUBJECTS = {'AI.':
                    {'short': 'psychophys.'
                    ,'title': 'Psychophysiology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'psychophys.'
                    ,'title': 'Psychophysiology'
                    }
@@ -22267,7 +22267,7 @@ SUBJECTS = {'AI.':
                    {'short': 'psychother.'
                    ,'title': 'Psychotherapy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'psychother.'
                    ,'title': 'Psychotherapy'
                    }
@@ -22292,7 +22292,7 @@ SUBJECTS = {'AI.':
                    {'short': 'publ.law.'
                    ,'title': 'Public law'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'publ.law.'
                    ,'title': 'Public law'
                    }
@@ -22317,7 +22317,7 @@ SUBJECTS = {'AI.':
                    {'short': 'publ.transp.'
                    ,'title': 'Public transportation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'publ.transp.'
                    ,'title': 'Public transportation'
                    }
@@ -22342,7 +22342,7 @@ SUBJECTS = {'AI.':
                    {'short': 'publ.util.'
                    ,'title': 'Public utilities'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'publ.util.'
                    ,'title': 'Public utilities'
                    }
@@ -22367,7 +22367,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Verlagswes.'
                    ,'title': 'Verlagswesen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'publish.'
                    ,'title': 'Publishing'
                    }
@@ -22392,7 +22392,7 @@ SUBJECTS = {'AI.':
                    {'short': 'puert.'
                    ,'title': 'Puerto Rican Spanish'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'puert.'
                    ,'title': 'Puerto Rican Spanish'
                    }
@@ -22417,7 +22417,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Pulm.'
                    ,'title': 'Pulmonologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pulm.'
                    ,'title': 'Pulmonology'
                    }
@@ -22442,7 +22442,7 @@ SUBJECTS = {'AI.':
                    {'short': 'papier.zellst.'
                    ,'title': 'Papier- und Zellstoffindustrie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pulp.n.paper'
                    ,'title': 'Pulp and paper industry'
                    }
@@ -22467,7 +22467,7 @@ SUBJECTS = {'AI.':
                    {'short': 'pwr.lines.'
                    ,'title': 'Power lines'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'pwr.lines.'
                    ,'title': 'Power lines'
                    }
@@ -22492,7 +22492,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Qual.Kontr.'
                    ,'title': 'Qualitätskontrolle und Normierung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'qual.cont.'
                    ,'title': 'Quality control and standards'
                    }
@@ -22517,7 +22517,7 @@ SUBJECTS = {'AI.':
                    {'short': 'quant.el.'
                    ,'title': 'Quantum electronics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'quant.el.'
                    ,'title': 'Quantum electronics'
                    }
@@ -22542,7 +22542,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Quant.mech.'
                    ,'title': 'Quantenmechanik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'quant.mech.'
                    ,'title': 'Quantum mechanics'
                    }
@@ -22567,7 +22567,7 @@ SUBJECTS = {'AI.':
                    {'short': 'quar.'
                    ,'title': 'Quarrying'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'quar.'
                    ,'title': 'Quarrying'
                    }
@@ -22592,7 +22592,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kor.'
                    ,'title': 'Koran'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'quran'
                    ,'title': 'Quran'
                    }
@@ -22617,7 +22617,7 @@ SUBJECTS = {'AI.':
                    {'short': 'racing'
                    ,'title': 'Racing and motorsport'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'racing'
                    ,'title': 'Racing and motorsport'
                    }
@@ -22642,7 +22642,7 @@ SUBJECTS = {'AI.':
                    {'short': 'rad.geod.'
                    ,'title': 'Radiogeodesy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'rad.geod.'
                    ,'title': 'Radiogeodesy'
                    }
@@ -22667,7 +22667,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Radio.'
                    ,'title': 'Radio'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'radio'
                    ,'title': 'Radio'
                    }
@@ -22692,7 +22692,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Radio., Amerik., Abkürz.'
                    ,'title': 'Radio, Amerikanisch, Abkürzung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'radio, amer., abrev.'
                    ,'title': 'Radio, Americano (uso), Abreviatura'
                    }
@@ -22717,7 +22717,7 @@ SUBJECTS = {'AI.':
                    {'short': 'radioastron.'
                    ,'title': 'Radioastronomy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'radioastron.'
                    ,'title': 'Radioastronomy'
                    }
@@ -22742,7 +22742,7 @@ SUBJECTS = {'AI.':
                    {'short': 'radiobiol.'
                    ,'title': 'Radiobiology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'radiobiol.'
                    ,'title': 'Radiobiology'
                    }
@@ -22767,7 +22767,7 @@ SUBJECTS = {'AI.':
                    {'short': 'radiogr.'
                    ,'title': 'Radiography'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'radiogr.'
                    ,'title': 'Radiography'
                    }
@@ -22792,7 +22792,7 @@ SUBJECTS = {'AI.':
                    {'short': 'radiol.'
                    ,'title': 'Radiologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'radiol.'
                    ,'title': 'Radiología'
                    }
@@ -22817,7 +22817,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Funkort.'
                    ,'title': 'Funkortung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'radioloc.'
                    ,'title': 'Radiolocation'
                    }
@@ -22842,7 +22842,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Eisnbnw.'
                    ,'title': 'Eisenbahnwesen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ferroc.'
                    ,'title': 'Ferrocarril'
                    }
@@ -22867,7 +22867,7 @@ SUBJECTS = {'AI.':
                    {'short': 'selt.'
                    ,'title': 'Seltener Ausdruck'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'rar.'
                    ,'title': 'Raramente'
                    }
@@ -22892,7 +22892,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Immobil.'
                    ,'title': 'Immobilien'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'real.est.'
                    ,'title': 'Real estate'
                    }
@@ -22917,7 +22917,7 @@ SUBJECTS = {'AI.':
                    {'short': 'rec.mngmt'
                    ,'title': 'Records management'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'rec.mngmt'
                    ,'title': 'Records management'
                    }
@@ -22942,7 +22942,7 @@ SUBJECTS = {'AI.':
                    {'short': 'refr.mat.'
                    ,'title': 'Refractory materials'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'refr.mat.'
                    ,'title': 'Refractory materials'
                    }
@@ -22967,7 +22967,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kühltech.'
                    ,'title': 'Kühltechnik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'refrig.'
                    ,'title': 'Refrigeration'
                    }
@@ -22992,7 +22992,7 @@ SUBJECTS = {'AI.':
                    {'short': 'landsch.'
                    ,'title': 'Landschaftlich'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'reg.usg.'
                    ,'title': 'Regional usage (other than language varieties)'
                    }
@@ -23017,7 +23017,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Budd.'
                    ,'title': 'Buddhismus'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'rel., budd.'
                    ,'title': 'Buddhism'
                    }
@@ -23042,7 +23042,7 @@ SUBJECTS = {'AI.':
                    {'short': 'rel., cath.'
                    ,'title': 'Catholic'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'rel., cath.'
                    ,'title': 'Catholic'
                    }
@@ -23067,7 +23067,7 @@ SUBJECTS = {'AI.':
                    {'short': 'rel., christ.'
                    ,'title': 'Christianity'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'rel., christ.'
                    ,'title': 'Christianity'
                    }
@@ -23092,7 +23092,7 @@ SUBJECTS = {'AI.':
                    {'short': 'rel., east.orth.'
                    ,'title': 'Eastern Orthodoxy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'rel., east.orth.'
                    ,'title': 'Eastern Orthodoxy'
                    }
@@ -23114,7 +23114,7 @@ SUBJECTS = {'AI.':
                    {'short': 'rel., hind.'
                    ,'title': 'Hinduism'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'rel., hind.'
                    ,'title': 'Hinduism'
                    }
@@ -23139,7 +23139,7 @@ SUBJECTS = {'AI.':
                    {'short': 'rel., islam'
                    ,'title': 'Islam'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'rel., islam'
                    ,'title': 'Islam'
                    }
@@ -23164,7 +23164,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Sicher.'
                    ,'title': 'Sicherheit'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'reliabil.'
                    ,'title': 'Reliability'
                    }
@@ -23189,7 +23189,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Rel.'
                    ,'title': 'Religion'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'rel.'
                    ,'title': 'Religión'
                    }
@@ -23214,7 +23214,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Fernmess.'
                    ,'title': 'Fernmessungen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'rem.sens.'
                    ,'title': 'Remote sensing'
                    }
@@ -23239,7 +23239,7 @@ SUBJECTS = {'AI.':
                    {'short': 'reptil.'
                    ,'title': 'Amphibians and reptiles'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'reptil.'
                    ,'title': 'Amphibians and reptiles'
                    }
@@ -23264,7 +23264,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Kautschukind.'
                    ,'title': 'Kautschukindustrie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'resin.'
                    ,'title': 'Resins'
                    }
@@ -23289,7 +23289,7 @@ SUBJECTS = {'AI.':
                    {'short': 'respect.'
                    ,'title': 'Respectful'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'respect.'
                    ,'title': 'Respectful'
                    }
@@ -23314,7 +23314,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Rhet.'
                    ,'title': 'Rhetorik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'retór.'
                    ,'title': 'Retórica'
                    }
@@ -23339,7 +23339,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Ris.man.'
                    ,'title': 'Risikomanagement'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'risk.man.'
                    ,'title': 'Risk Management'
                    }
@@ -23364,7 +23364,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Rit.'
                    ,'title': 'Ritual'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'rit.'
                    ,'title': 'Ritual'
                    }
@@ -23389,7 +23389,7 @@ SUBJECTS = {'AI.':
                    {'short': 'road.constr.'
                    ,'title': 'Road construction'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'road.constr.'
                    ,'title': 'Road construction'
                    }
@@ -23414,7 +23414,7 @@ SUBJECTS = {'AI.':
                    {'short': 'road.sign.'
                    ,'title': 'Road sign'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'road.sign.'
                    ,'title': 'Road sign'
                    }
@@ -23439,7 +23439,7 @@ SUBJECTS = {'AI.':
                    {'short': 'road.surf.'
                    ,'title': 'Road surface'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'road.surf.'
                    ,'title': 'Road surface'
                    }
@@ -23464,7 +23464,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Straßenb.'
                    ,'title': 'Straßenbau'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'carret.'
                    ,'title': 'Obras de carreteras'
                    }
@@ -23489,7 +23489,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Rob.'
                    ,'title': 'Robotik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'robot.'
                    ,'title': 'Robotics'
                    }
@@ -23514,7 +23514,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Walz.'
                    ,'title': 'Walzgut (Metal.)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'roll.'
                    ,'title': 'Roll stock'
                    }
@@ -23539,7 +23539,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Rumän.'
                    ,'title': 'Rumänisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'romanian.lang.'
                    ,'title': 'Romanian'
                    }
@@ -23564,7 +23564,7 @@ SUBJECTS = {'AI.':
                    {'short': 'grob.'
                    ,'title': 'Grob'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'rudo'
                    ,'title': 'Rudo'
                    }
@@ -23589,7 +23589,7 @@ SUBJECTS = {'AI.':
                    {'short': 'rugb.'
                    ,'title': 'Rugby football'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'rugb.'
                    ,'title': 'Rugby football'
                    }
@@ -23614,7 +23614,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Rus.'
                    ,'title': 'Russisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ruso'
                    ,'title': 'Idioma ruso'
                    }
@@ -23639,7 +23639,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Süddt.'
                    ,'title': 'Süddeutsches Dialekt'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 's.germ.'
                    ,'title': 'South German'
                    }
@@ -23664,7 +23664,7 @@ SUBJECTS = {'AI.':
                    {'short': 'sail.ships'
                    ,'title': 'Sailing ships'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sail.ships'
                    ,'title': 'Sailing ships'
                    }
@@ -23689,7 +23689,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Sanität.'
                    ,'title': 'Sanitätswesen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sanit.'
                    ,'title': 'Sanitation'
                    }
@@ -23714,7 +23714,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Sanskr.'
                    ,'title': 'Sanskrit'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sánscr.'
                    ,'title': 'Sánscrito'
                    }
@@ -23739,7 +23739,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Sark.'
                    ,'title': 'Sarkasmus'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sarcast.'
                    ,'title': 'Sarcastical'
                    }
@@ -23764,7 +23764,7 @@ SUBJECTS = {'AI.':
                    {'short': 'sat.comm.'
                    ,'title': 'Satellite communications'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sat.comm.'
                    ,'title': 'Satellite communications'
                    }
@@ -23789,7 +23789,7 @@ SUBJECTS = {'AI.':
                    {'short': 'saying.'
                    ,'title': 'Saying'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'saying.'
                    ,'title': 'Saying'
                    }
@@ -23814,7 +23814,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Schule.'
                    ,'title': 'Schule'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'esc.'
                    ,'title': 'Escolar'
                    }
@@ -23839,7 +23839,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Wissensch.'
                    ,'title': 'Wissenschaftlicher Ausdruck'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'scient.'
                    ,'title': 'Scientific'
                    }
@@ -23864,7 +23864,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Schott.'
                    ,'title': 'Schottisch (Slang)'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'scottish'
                    ,'title': 'Scottish (usage)'
                    }
@@ -23889,7 +23889,7 @@ SUBJECTS = {'AI.':
                    {'short': 'scr.'
                    ,'title': 'Screenwriting'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'scr.'
                    ,'title': 'Screenwriting'
                    }
@@ -23914,7 +23914,7 @@ SUBJECTS = {'AI.':
                    {'short': 'scub.'
                    ,'title': 'Scuba diving'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'scub.'
                    ,'title': 'Scuba diving'
                    }
@@ -23939,7 +23939,7 @@ SUBJECTS = {'AI.':
                    {'short': 'sec.sys.'
                    ,'title': 'Security systems'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sec.sys.'
                    ,'title': 'Security systems'
                    }
@@ -23964,7 +23964,7 @@ SUBJECTS = {'AI.':
                    {'short': 'securit.'
                    ,'title': 'Securities'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'securit.'
                    ,'title': 'Securities'
                    }
@@ -23989,7 +23989,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Seismol.'
                    ,'title': 'Seismologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'seism.'
                    ,'title': 'Seismology'
                    }
@@ -24014,7 +24014,7 @@ SUBJECTS = {'AI.':
                    {'short': 'seism.res.'
                    ,'title': 'Seismic resistance'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'seism.res.'
                    ,'title': 'Seismic resistance'
                    }
@@ -24039,7 +24039,7 @@ SUBJECTS = {'AI.':
                    {'short': 'sel.breed.'
                    ,'title': 'Selective breeding'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sel.breed.'
                    ,'title': 'Selective breeding'
                    }
@@ -24064,7 +24064,7 @@ SUBJECTS = {'AI.':
                    {'short': 'semant.'
                    ,'title': 'Semantics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'semant.'
                    ,'title': 'Semantics'
                    }
@@ -24089,7 +24089,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Halbleit.'
                    ,'title': 'Halbleiter'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'semicond.'
                    ,'title': 'Semiconductors'
                    }
@@ -24114,7 +24114,7 @@ SUBJECTS = {'AI.':
                    {'short': 'semiot.'
                    ,'title': 'Semiotics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'semiot.'
                    ,'title': 'Semiotics'
                    }
@@ -24139,7 +24139,7 @@ SUBJECTS = {'AI.':
                    {'short': 'sens.'
                    ,'title': 'Sensitometry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sens.'
                    ,'title': 'Sensitometry'
                    }
@@ -24164,7 +24164,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Näh.'
                    ,'title': 'Bekleidungs- und Näherzeugnis-Industrie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sew.'
                    ,'title': 'Sewing and clothing industry'
                    }
@@ -24189,7 +24189,7 @@ SUBJECTS = {'AI.':
                    {'short': 'sewage'
                    ,'title': 'Sewage and wastewater treatment'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sewage'
                    ,'title': 'Sewage and wastewater treatment'
                    }
@@ -24214,7 +24214,7 @@ SUBJECTS = {'AI.':
                    {'short': 'sex'
                    ,'title': 'Sexuell'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sex'
                    ,'title': 'Sex and sexual subcultures'
                    }
@@ -24239,7 +24239,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Sexualpathol.'
                    ,'title': 'Sexualpathologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sexol.'
                    ,'title': 'Sexology'
                    }
@@ -24264,7 +24264,7 @@ SUBJECTS = {'AI.':
                    {'short': 'shinto.'
                    ,'title': 'Shinto'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'shinto.'
                    ,'title': 'Shinto'
                    }
@@ -24289,7 +24289,7 @@ SUBJECTS = {'AI.':
                    {'short': 'ship.handl.'
                    ,'title': 'Ship handling'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ship.handl.'
                    ,'title': 'Ship handling'
                    }
@@ -24314,7 +24314,7 @@ SUBJECTS = {'AI.':
                    {'short': 'shipb.'
                    ,'title': 'Shipbuilding'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'shipb.'
                    ,'title': 'Shipbuilding'
                    }
@@ -24339,7 +24339,7 @@ SUBJECTS = {'AI.':
                    {'short': 'shoot.'
                    ,'title': 'Shooting sport'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'shoot.'
                    ,'title': 'Shooting sport'
                    }
@@ -24364,7 +24364,7 @@ SUBJECTS = {'AI.':
                    {'short': 'show.biz.'
                    ,'title': 'Show business'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'show.biz.'
                    ,'title': 'Show business'
                    }
@@ -24389,7 +24389,7 @@ SUBJECTS = {'AI.':
                    {'short': 'signall.'
                    ,'title': 'Signalling'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'signall.'
                    ,'title': 'Signalling'
                    }
@@ -24414,7 +24414,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Silikatprod.'
                    ,'title': 'Silikatproduktion'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'silic.'
                    ,'title': 'Silicate industry'
                    }
@@ -24439,7 +24439,7 @@ SUBJECTS = {'AI.':
                    {'short': 'ski.jump.'
                    ,'title': 'Ski jumping'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ski.jump.'
                    ,'title': 'Ski jumping'
                    }
@@ -24464,7 +24464,7 @@ SUBJECTS = {'AI.':
                    {'short': 'skiing'
                    ,'title': 'Skiing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'skiing'
                    ,'title': 'Skiing'
                    }
@@ -24489,7 +24489,7 @@ SUBJECTS = {'AI.':
                    {'short': 'skydive.'
                    ,'title': 'Skydiving'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'skydive.'
                    ,'title': 'Skydiving'
                    }
@@ -24514,7 +24514,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Drogen.sl.'
                    ,'title': 'Drogensüchtigenslang'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sl., drug.'
                    ,'title': 'Drug-related slang'
                    }
@@ -24539,7 +24539,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Jug.spr.'
                    ,'title': 'Jugendsprache'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sl., teen.'
                    ,'title': 'Teenager slang'
                    }
@@ -24564,7 +24564,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Slang.'
                    ,'title': 'Slang'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'jerg.'
                    ,'title': 'Jerga'
                    }
@@ -24589,7 +24589,7 @@ SUBJECTS = {'AI.':
                    {'short': 'sms'
                    ,'title': 'Short message service'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sms'
                    ,'title': 'Short message service'
                    }
@@ -24614,7 +24614,7 @@ SUBJECTS = {'AI.':
                    {'short': 'snd.proc.'
                    ,'title': 'Digital sound processing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'snd.proc.'
                    ,'title': 'Digital sound processing'
                    }
@@ -24639,7 +24639,7 @@ SUBJECTS = {'AI.':
                    {'short': 'snd.rec.'
                    ,'title': 'Sound recording'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'snd.rec.'
                    ,'title': 'Sound recording'
                    }
@@ -24664,7 +24664,7 @@ SUBJECTS = {'AI.':
                    {'short': 'snowb.'
                    ,'title': 'Snowboard'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'snowb.'
                    ,'title': 'Snowboard'
                    }
@@ -24689,7 +24689,7 @@ SUBJECTS = {'AI.':
                    {'short': 'soc.med.'
                    ,'title': 'Social media'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'soc.med.'
                    ,'title': 'Social media'
                    }
@@ -24714,7 +24714,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Soz.'
                    ,'title': 'Sozialismus'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'social.'
                    ,'title': 'Socialism'
                    }
@@ -24739,7 +24739,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Soziol.'
                    ,'title': 'Soziologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sociol.'
                    ,'title': 'Sociology'
                    }
@@ -24764,7 +24764,7 @@ SUBJECTS = {'AI.':
                    {'short': 'socioling.'
                    ,'title': 'Sociolinguistics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'socioling.'
                    ,'title': 'Sociolinguistics'
                    }
@@ -24789,7 +24789,7 @@ SUBJECTS = {'AI.':
                    {'short': 'softw.'
                    ,'title': 'Software'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'softw.'
                    ,'title': 'Software'
                    }
@@ -24814,7 +24814,7 @@ SUBJECTS = {'AI.':
                    {'short': 'soil.'
                    ,'title': 'Soil science'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'soil.'
                    ,'title': 'Soil science'
                    }
@@ -24839,7 +24839,7 @@ SUBJECTS = {'AI.':
                    {'short': 'soil.mech.'
                    ,'title': 'Soil mechanics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'soil.mech.'
                    ,'title': 'Soil mechanics'
                    }
@@ -24864,7 +24864,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Solarenerg.'
                    ,'title': 'Solarenergie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sol.pow.'
                    ,'title': 'Solar power'
                    }
@@ -24889,7 +24889,7 @@ SUBJECTS = {'AI.':
                    {'short': 'solid.st.phys.'
                    ,'title': 'Solid-state physics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'solid.st.phys.'
                    ,'title': 'Solid-state physics'
                    }
@@ -24914,7 +24914,7 @@ SUBJECTS = {'AI.':
                    {'short': 'som.'
                    ,'title': 'Somatics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'som.'
                    ,'title': 'Somatics'
                    }
@@ -24939,7 +24939,7 @@ SUBJECTS = {'AI.':
                    {'short': 'sound.eng.'
                    ,'title': 'Sound engineering'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sound.eng.'
                    ,'title': 'Sound engineering'
                    }
@@ -24964,7 +24964,7 @@ SUBJECTS = {'AI.':
                    {'short': 'south.Dutch.'
                    ,'title': 'Southern Dutch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'south.Dutch.'
                    ,'title': 'Southern Dutch'
                    }
@@ -24989,7 +24989,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Südafrik. Redewend.'
                    ,'title': 'Südafrikanische Redewendung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'south.afr.'
                    ,'title': 'South African'
                    }
@@ -25014,7 +25014,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Sowjet.'
                    ,'title': 'Sowjetischer Ausdruck'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'soviet.'
                    ,'title': 'Soviet'
                    }
@@ -25039,7 +25039,7 @@ SUBJECTS = {'AI.':
                    {'short': 'sp.dis.'
                    ,'title': 'Speech disorders'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sp.dis.'
                    ,'title': 'Speech disorders'
                    }
@@ -25064,7 +25064,7 @@ SUBJECTS = {'AI.':
                    {'short': 'weltraum'
                    ,'title': 'Weltraum'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'space'
                    ,'title': 'Space'
                    }
@@ -25089,7 +25089,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Span.'
                    ,'title': 'Spanisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'esp.'
                    ,'title': 'Español'
                    }
@@ -25114,7 +25114,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Span. Amer.'
                    ,'title': 'Spanisches Amerikanisch, Jargon'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'hisp.-am.'
                    ,'title': 'Hispanoamericano'
                    }
@@ -25139,7 +25139,7 @@ SUBJECTS = {'AI.':
                    {'short': 'spectr.'
                    ,'title': 'Spectroscopy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'spectr.'
                    ,'title': 'Spectroscopy'
                    }
@@ -25164,7 +25164,7 @@ SUBJECTS = {'AI.':
                    {'short': 'speed.skat.'
                    ,'title': 'Speed skating'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'speed.skat.'
                    ,'title': 'Speed skating'
                    }
@@ -25189,7 +25189,7 @@ SUBJECTS = {'AI.':
                    {'short': 'speleo.'
                    ,'title': 'Speleology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'speleo.'
                    ,'title': 'Speleology'
                    }
@@ -25214,7 +25214,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gew.'
                    ,'title': 'Gewürze'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'spice.'
                    ,'title': 'Spices'
                    }
@@ -25239,7 +25239,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gesproch.'
                    ,'title': 'Gesprochene Sprache'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'spoken'
                    ,'title': 'Spoken'
                    }
@@ -25264,7 +25264,7 @@ SUBJECTS = {'AI.':
                    {'short': 'sport, bask.'
                    ,'title': 'Basketball'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sport, bask.'
                    ,'title': 'Basketball'
                    }
@@ -25289,7 +25289,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Sport.'
                    ,'title': 'Sport'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'dep.'
                    ,'title': 'Deporte'
                    }
@@ -25314,7 +25314,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Börse.'
                    ,'title': 'Börse'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'burs.'
                    ,'title': 'Bursátil'
                    }
@@ -25339,7 +25339,7 @@ SUBJECTS = {'AI.':
                    {'short': 'starch.'
                    ,'title': 'Starch industry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'starch.'
                    ,'title': 'Starch industry'
                    }
@@ -25364,7 +25364,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Stat.'
                    ,'title': 'Statistik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'estad.'
                    ,'title': 'Estadísticas'
                    }
@@ -25389,7 +25389,7 @@ SUBJECTS = {'AI.':
                    {'short': 'station.'
                    ,'title': 'Stationery'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'station.'
                    ,'title': 'Stationery'
                    }
@@ -25414,7 +25414,7 @@ SUBJECTS = {'AI.':
                    {'short': 'stereo.'
                    ,'title': 'Stereo'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'stereo.'
                    ,'title': 'Stereo'
                    }
@@ -25439,7 +25439,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Stz.'
                    ,'title': 'Stanzen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'stmp.'
                    ,'title': 'Stamping'
                    }
@@ -25464,7 +25464,7 @@ SUBJECTS = {'AI.':
                    {'short': 'stn.mas.'
                    ,'title': 'Stonemasonry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'stn.mas.'
                    ,'title': 'Stonemasonry'
                    }
@@ -25489,7 +25489,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Werkstoffwiderst.'
                    ,'title': 'Werkstoffwiderstand'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'str.mater.'
                    ,'title': 'Strength of materials'
                    }
@@ -25514,7 +25514,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Schichtpress.'
                    ,'title': 'Schichtpressstoffe'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'strat.plast.'
                    ,'title': 'Stratified plastics'
                    }
@@ -25539,7 +25539,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Stratigr.'
                    ,'title': 'Stratigraphie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'stratigr.'
                    ,'title': 'Stratigraphy'
                    }
@@ -25564,7 +25564,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Stilist.'
                    ,'title': 'Stilistik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'estilíst.'
                    ,'title': 'Estilística'
                    }
@@ -25589,7 +25589,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gehob.'
                    ,'title': 'Gehoben'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'subl.'
                    ,'title': 'Sublime'
                    }
@@ -25614,7 +25614,7 @@ SUBJECTS = {'AI.':
                    {'short': 'subm.'
                    ,'title': 'Submarines'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'subm.'
                    ,'title': 'Submarines'
                    }
@@ -25639,7 +25639,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Zucker.'
                    ,'title': 'Zuckerproduktion'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'sugar.'
                    ,'title': 'Sugar production'
                    }
@@ -25664,7 +25664,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Supraleit.'
                    ,'title': 'Supraleitfähigkeit'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'supercond.'
                    ,'title': 'Superconductivity'
                    }
@@ -25689,7 +25689,7 @@ SUBJECTS = {'AI.':
                    {'short': 'superl.'
                    ,'title': 'Superlative'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'superl.'
                    ,'title': 'Superlative'
                    }
@@ -25714,7 +25714,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Chirurg.'
                    ,'title': 'Chirurgie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'cirug.'
                    ,'title': 'Cirugía'
                    }
@@ -25739,7 +25739,7 @@ SUBJECTS = {'AI.':
                    {'short': 'surn.'
                    ,'title': 'Surname'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'surn.'
                    ,'title': 'Surname'
                    }
@@ -25764,7 +25764,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Landvermes.'
                    ,'title': 'Landvermessung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'geod.'
                    ,'title': 'Geodesia'
                    }
@@ -25789,7 +25789,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Dienstind.'
                    ,'title': 'Dienstleistungsindustrie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'svc.ind.'
                    ,'title': 'Service industry'
                    }
@@ -25814,7 +25814,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Schwed.'
                    ,'title': 'Schwedisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'swed.'
                    ,'title': 'Swedish'
                    }
@@ -25839,7 +25839,7 @@ SUBJECTS = {'AI.':
                    {'short': 'swim.'
                    ,'title': 'Swimming'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'swim.'
                    ,'title': 'Swimming'
                    }
@@ -25864,7 +25864,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Schweiz'
                    ,'title': 'Schwizerdütsch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'swiss.'
                    ,'title': 'Swiss term'
                    }
@@ -25889,7 +25889,7 @@ SUBJECTS = {'AI.':
                    {'short': 'swtch.'
                    ,'title': 'Switches'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'swtch.'
                    ,'title': 'Switches'
                    }
@@ -25914,7 +25914,7 @@ SUBJECTS = {'AI.':
                    {'short': 'synt.'
                    ,'title': 'Syntax'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'synt.'
                    ,'title': 'Syntax'
                    }
@@ -25939,7 +25939,7 @@ SUBJECTS = {'AI.':
                    {'short': 'tab.tenn.'
                    ,'title': 'Table tennis'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'tab.tenn.'
                    ,'title': 'Table tennis'
                    }
@@ -25964,7 +25964,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Brtsp.'
                    ,'title': 'Brettspiele'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'tabl.game'
                    ,'title': 'Tabletop games'
                    }
@@ -25989,7 +25989,7 @@ SUBJECTS = {'AI.':
                    {'short': 'taboo'
                    ,'title': 'Taboo expressions and obscenities'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'taboo'
                    ,'title': 'Taboo expressions and obscenities'
                    }
@@ -26014,7 +26014,7 @@ SUBJECTS = {'AI.':
                    {'short': 'taboo, Amerik., Neg.Slang, Slang.'
                    ,'title': 'Taboo expressions and obscenities, Amerikanisch, Negerslang, Slang'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'taboo, amer., black.sl., jerg.'
                    ,'title': 'Taboo expressions and obscenities, Americano (uso), Black slang, Jerga'
                    }
@@ -26039,7 +26039,7 @@ SUBJECTS = {'AI.':
                    {'short': 'taiw.'
                    ,'title': 'Taiwan'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'taiw.'
                    ,'title': 'Taiwan'
                    }
@@ -26064,7 +26064,7 @@ SUBJECTS = {'AI.':
                    {'short': 'tao.'
                    ,'title': 'Taoism'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'tao.'
                    ,'title': 'Taoism'
                    }
@@ -26089,7 +26089,7 @@ SUBJECTS = {'AI.':
                    {'short': 'tat.'
                    ,'title': 'Tatar'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'tat.'
                    ,'title': 'Tatar'
                    }
@@ -26114,7 +26114,7 @@ SUBJECTS = {'AI.':
                    {'short': 'taur.'
                    ,'title': 'Tauromachy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'taur.'
                    ,'title': 'Tauromachy'
                    }
@@ -26139,7 +26139,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Steuer.'
                    ,'title': 'Steuern'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'tax.'
                    ,'title': 'Taxes'
                    }
@@ -26164,7 +26164,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Tech.'
                    ,'title': 'Technik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'tec.'
                    ,'title': 'Tecnología'
                    }
@@ -26189,7 +26189,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Tekton.'
                    ,'title': 'Tektonik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'tecton.'
                    ,'title': 'Tectonics'
                    }
@@ -26214,7 +26214,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Telef.'
                    ,'title': 'Telefonie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'tel.'
                    ,'title': 'Telephony'
                    }
@@ -26239,7 +26239,7 @@ SUBJECTS = {'AI.':
                    {'short': 'tel.mech.'
                    ,'title': 'Telemechanics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'tel.mech.'
                    ,'title': 'Telemechanics'
                    }
@@ -26264,7 +26264,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Telekomm.'
                    ,'title': 'Telekommunikation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'telecom.'
                    ,'title': 'Telecomunicación'
                    }
@@ -26289,7 +26289,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Telegr.'
                    ,'title': 'Telegrafie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'telegr.'
                    ,'title': 'Telegraphy'
                    }
@@ -26314,7 +26314,7 @@ SUBJECTS = {'AI.':
                    {'short': 'tenn.'
                    ,'title': 'Tennis'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'tenn.'
                    ,'title': 'Tennis'
                    }
@@ -26339,7 +26339,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Textil'
                    ,'title': 'Textil'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'textil'
                    ,'title': 'Industria textil'
                    }
@@ -26364,7 +26364,7 @@ SUBJECTS = {'AI.':
                    {'short': 'thai.'
                    ,'title': 'Thai'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'thai.'
                    ,'title': 'Thai'
                    }
@@ -26389,7 +26389,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Theater.'
                    ,'title': 'Theater'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'teatr.'
                    ,'title': 'Teatro'
                    }
@@ -26414,7 +26414,7 @@ SUBJECTS = {'AI.':
                    {'short': 'therm.'
                    ,'title': 'Thermodynamics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'therm.'
                    ,'title': 'Thermodynamics'
                    }
@@ -26439,7 +26439,7 @@ SUBJECTS = {'AI.':
                    {'short': 'therm.energ.'
                    ,'title': 'Thermal Energy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'therm.energ.'
                    ,'title': 'Thermal Energy'
                    }
@@ -26464,7 +26464,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Wärmetech.'
                    ,'title': 'Wärmetechnik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'therm.eng.'
                    ,'title': 'Thermal engineering'
                    }
@@ -26489,7 +26489,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Flöß.'
                    ,'title': 'Flößerei'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'timb.float.'
                    ,'title': 'Timber floating'
                    }
@@ -26514,7 +26514,7 @@ SUBJECTS = {'AI.':
                    {'short': 'tin.'
                    ,'title': 'Tinware'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'tin.'
                    ,'title': 'Tinware'
                    }
@@ -26539,7 +26539,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Turksp.'
                    ,'title': 'Turksprachen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'tirk.'
                    ,'title': 'Turk'
                    }
@@ -26564,7 +26564,7 @@ SUBJECTS = {'AI.':
                    {'short': 'titles'
                    ,'title': 'Titles of works of art'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'titles'
                    ,'title': 'Titles of works of art'
                    }
@@ -26589,7 +26589,7 @@ SUBJECTS = {'AI.':
                    {'short': 'tobac.'
                    ,'title': 'Tobacco industry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'tobac.'
                    ,'title': 'Tobacco industry'
                    }
@@ -26614,7 +26614,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Wzg.'
                    ,'title': 'Werkzeuge'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'tools'
                    ,'title': 'Tools'
                    }
@@ -26639,7 +26639,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Topogr.'
                    ,'title': 'Topographie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'topogr.'
                    ,'title': 'Topografía'
                    }
@@ -26664,7 +26664,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Topol.'
                    ,'title': 'Topologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'topol.'
                    ,'title': 'Topology'
                    }
@@ -26689,7 +26689,7 @@ SUBJECTS = {'AI.':
                    {'short': 'topon.'
                    ,'title': 'Toponym'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'topon.'
                    ,'title': 'Toponym'
                    }
@@ -26714,7 +26714,7 @@ SUBJECTS = {'AI.':
                    {'short': 'torped.'
                    ,'title': 'Torpedoes'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'torped.'
                    ,'title': 'Torpedoes'
                    }
@@ -26739,7 +26739,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Toxikol.'
                    ,'title': 'Toxikologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'toxicol.'
                    ,'title': 'Toxicology'
                    }
@@ -26764,7 +26764,7 @@ SUBJECTS = {'AI.':
                    {'short': 'toy.'
                    ,'title': 'Toys'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'toy.'
                    ,'title': 'Toys'
                    }
@@ -26789,7 +26789,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Marke.'
                    ,'title': 'Markenzeichen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'tradem.'
                    ,'title': 'Trademark'
                    }
@@ -26814,7 +26814,7 @@ SUBJECTS = {'AI.':
                    {'short': 'traf.'
                    ,'title': 'Road traffic'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'traf.'
                    ,'title': 'Road traffic'
                    }
@@ -26839,7 +26839,7 @@ SUBJECTS = {'AI.':
                    {'short': 'traf.contr.'
                    ,'title': 'Traffic control'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'traf.contr.'
                    ,'title': 'Traffic control'
                    }
@@ -26864,7 +26864,7 @@ SUBJECTS = {'AI.':
                    {'short': 'trampol.'
                    ,'title': 'Trampolining'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'trampol.'
                    ,'title': 'Trampolining'
                    }
@@ -26889,7 +26889,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Transf.'
                    ,'title': 'Transformatoren'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'transf.'
                    ,'title': 'Transformers'
                    }
@@ -26914,7 +26914,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Verk.'
                    ,'title': 'Verkehr'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'transp.'
                    ,'title': 'Transport'
                    }
@@ -26939,7 +26939,7 @@ SUBJECTS = {'AI.':
                    {'short': 'transpl.'
                    ,'title': 'Transplantology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'transpl.'
                    ,'title': 'Transplantology'
                    }
@@ -26964,7 +26964,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Traumat.'
                    ,'title': 'Traumatologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'traumat.'
                    ,'title': 'Traumatology'
                    }
@@ -26989,7 +26989,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Tourism.'
                    ,'title': 'Tourismus'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'trav.'
                    ,'title': 'Travel'
                    }
@@ -27014,7 +27014,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Gewerbeklass.'
                    ,'title': 'Gewerbeklassifizierung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'trd.class.'
                    ,'title': 'Trade classification'
                    }
@@ -27039,7 +27039,7 @@ SUBJECTS = {'AI.':
                    {'short': 'trib.'
                    ,'title': 'Tribology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'trib.'
                    ,'title': 'Tribology'
                    }
@@ -27064,7 +27064,7 @@ SUBJECTS = {'AI.':
                    {'short': 'trucks'
                    ,'title': 'Trucks/Lorries'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'trucks'
                    ,'title': 'Trucks/Lorries'
                    }
@@ -27089,7 +27089,7 @@ SUBJECTS = {'AI.':
                    {'short': 'tunn.'
                    ,'title': 'Tunneling'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'tunn.'
                    ,'title': 'Tunneling'
                    }
@@ -27114,7 +27114,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Turb.'
                    ,'title': 'Turbinen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'turb.'
                    ,'title': 'Turbines'
                    }
@@ -27139,7 +27139,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Türk.'
                    ,'title': 'Türkisch'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'turc.'
                    ,'title': 'Turco'
                    }
@@ -27164,7 +27164,7 @@ SUBJECTS = {'AI.':
                    {'short': 'typogr.'
                    ,'title': 'Typography'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'typogr.'
                    ,'title': 'Typography'
                    }
@@ -27189,7 +27189,7 @@ SUBJECTS = {'AI.':
                    {'short': 'typol.'
                    ,'title': 'Typology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'typol.'
                    ,'title': 'Typology'
                    }
@@ -27214,7 +27214,7 @@ SUBJECTS = {'AI.':
                    {'short': 'ufol.'
                    ,'title': 'Ufology'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ufol.'
                    ,'title': 'Ufology'
                    }
@@ -27239,7 +27239,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Ultrasch.'
                    ,'title': 'Ultraschall'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'ultrasnd.'
                    ,'title': 'Ultrasound'
                    }
@@ -27264,7 +27264,7 @@ SUBJECTS = {'AI.':
                    {'short': 'unions.'
                    ,'title': 'Trade unions'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'unions.'
                    ,'title': 'Trade unions'
                    }
@@ -27289,7 +27289,7 @@ SUBJECTS = {'AI.':
                    {'short': 'unit.meas.'
                    ,'title': 'Unit measures'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'unit.meas.'
                    ,'title': 'Unit measures'
                    }
@@ -27314,7 +27314,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Uni.'
                    ,'title': 'Universität'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'univ.'
                    ,'title': 'Universidad'
                    }
@@ -27339,7 +27339,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Urol.'
                    ,'title': 'Urologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'urol.'
                    ,'title': 'Urology'
                    }
@@ -27364,7 +27364,7 @@ SUBJECTS = {'AI.':
                    {'short': 'urug.sp.'
                    ,'title': 'Uruguayan Spanish'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'urug.sp.'
                    ,'title': 'Uruguayan Spanish'
                    }
@@ -27389,7 +27389,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Vak.rohr.'
                    ,'title': 'Vakuumröhren'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'vac.tub.'
                    ,'title': 'Vacuum tubes'
                    }
@@ -27414,7 +27414,7 @@ SUBJECTS = {'AI.':
                    {'short': 'valves'
                    ,'title': 'Valves'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'valves'
                    ,'title': 'Valves'
                    }
@@ -27439,7 +27439,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Venerol.'
                    ,'title': 'Venerologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'venereol.'
                    ,'title': 'Venereology'
                    }
@@ -27464,7 +27464,7 @@ SUBJECTS = {'AI.':
                    {'short': 'vent.'
                    ,'title': 'Ventilation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'vent.'
                    ,'title': 'Ventilation'
                    }
@@ -27489,7 +27489,7 @@ SUBJECTS = {'AI.':
                    {'short': 'verbat.'
                    ,'title': 'Verbatim'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'verbat.'
                    ,'title': 'Verbatim'
                    }
@@ -27514,7 +27514,7 @@ SUBJECTS = {'AI.':
                    {'short': 'verl.'
                    ,'title': 'Verlan'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'verl.'
                    ,'title': 'Verlan'
                    }
@@ -27539,7 +27539,7 @@ SUBJECTS = {'AI.':
                    {'short': 'vernac.'
                    ,'title': 'Vernacular language'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'vernac.'
                    ,'title': 'Vernacular language'
                    }
@@ -27564,7 +27564,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Vet.med.'
                    ,'title': 'Veterinärmedizin'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'vet.'
                    ,'title': 'Medicina veterinaria'
                    }
@@ -27589,7 +27589,7 @@ SUBJECTS = {'AI.':
                    {'short': 'vibr.monit.'
                    ,'title': 'Vibration monitoring'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'vibr.monit.'
                    ,'title': 'Vibration monitoring'
                    }
@@ -27614,7 +27614,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Video.'
                    ,'title': 'Videoaufzeichnung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'video.'
                    ,'title': 'Video recording'
                    }
@@ -27639,7 +27639,7 @@ SUBJECTS = {'AI.':
                    {'short': 'viet.'
                    ,'title': 'Vietnamese'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'viet.'
                    ,'title': 'Vietnamese'
                    }
@@ -27664,7 +27664,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Virol.'
                    ,'title': 'Virologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'virol.'
                    ,'title': 'Virología'
                    }
@@ -27689,7 +27689,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Vulkanol.'
                    ,'title': 'Vulkanologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'volcan.'
                    ,'title': 'Volcanology'
                    }
@@ -27714,7 +27714,7 @@ SUBJECTS = {'AI.':
                    {'short': 'voll.'
                    ,'title': 'Volleyball'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'voll.'
                    ,'title': 'Volleyball'
                    }
@@ -27739,7 +27739,7 @@ SUBJECTS = {'AI.':
                    {'short': 'vulg.'
                    ,'title': 'Vulgar'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'vulg.'
                    ,'title': 'Vulgar'
                    }
@@ -27764,7 +27764,7 @@ SUBJECTS = {'AI.':
                    {'short': 'wales'
                    ,'title': 'Wales'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'wales'
                    ,'title': 'Wales'
                    }
@@ -27789,7 +27789,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Lagerw.'
                    ,'title': 'Lagerwesen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'wareh.'
                    ,'title': 'Warehouse'
                    }
@@ -27814,7 +27814,7 @@ SUBJECTS = {'AI.':
                    {'short': 'waste.man.'
                    ,'title': 'Waste management'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'waste.man.'
                    ,'title': 'Waste management'
                    }
@@ -27839,7 +27839,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Uhr.'
                    ,'title': 'Uhrherstellung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'watchm.'
                    ,'title': 'Watchmaking'
                    }
@@ -27864,7 +27864,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Wass.vork.'
                    ,'title': 'Wasservorkommen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'water.res.'
                    ,'title': 'Water resources'
                    }
@@ -27889,7 +27889,7 @@ SUBJECTS = {'AI.':
                    {'short': 'water.suppl.'
                    ,'title': 'Water supply'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'water.suppl.'
                    ,'title': 'Water supply'
                    }
@@ -27914,7 +27914,7 @@ SUBJECTS = {'AI.':
                    {'short': 'waterski.'
                    ,'title': 'Waterskiing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'waterski.'
                    ,'title': 'Waterskiing'
                    }
@@ -27939,7 +27939,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Waffen'
                    ,'title': 'Waffen und Waffenindustrie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'weap.'
                    ,'title': 'Weapons and gunsmithing'
                    }
@@ -27964,7 +27964,7 @@ SUBJECTS = {'AI.':
                    {'short': 'weightlift.'
                    ,'title': 'Weightlifting'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'weightlift.'
                    ,'title': 'Weightlifting'
                    }
@@ -27989,7 +27989,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Schweiß.'
                    ,'title': 'Schweißen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'weld.'
                    ,'title': 'Welding'
                    }
@@ -28014,7 +28014,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Sozialleist.'
                    ,'title': 'Sozialleistungen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'welf.'
                    ,'title': 'Welfare & Social Security'
                    }
@@ -28039,7 +28039,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Bohrl.Kontr.'
                    ,'title': 'Bohrlochkontrolle'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'well.contr.'
                    ,'title': 'Well control'
                    }
@@ -28064,7 +28064,7 @@ SUBJECTS = {'AI.':
                    {'short': 'welln.'
                    ,'title': 'Wellness'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'welln.'
                    ,'title': 'Wellness'
                    }
@@ -28086,7 +28086,7 @@ SUBJECTS = {'AI.':
                    {'short': 'west.Ind.'
                    ,'title': 'West Indies'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'west.Ind.'
                    ,'title': 'West Indies'
                    }
@@ -28111,7 +28111,7 @@ SUBJECTS = {'AI.':
                    {'short': 'win.tast.'
                    ,'title': 'Wine tasting'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'win.tast.'
                    ,'title': 'Wine tasting'
                    }
@@ -28136,7 +28136,7 @@ SUBJECTS = {'AI.':
                    {'short': 'wind.'
                    ,'title': 'Wind Energy'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'wind.'
                    ,'title': 'Wind Energy'
                    }
@@ -28161,7 +28161,7 @@ SUBJECTS = {'AI.':
                    {'short': 'windows'
                    ,'title': 'Windows'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'windows'
                    ,'title': 'Windows'
                    }
@@ -28186,7 +28186,7 @@ SUBJECTS = {'AI.':
                    {'short': 'wine.gr.'
                    ,'title': 'Wine growing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'wine.gr.'
                    ,'title': 'Wine growing'
                    }
@@ -28211,7 +28211,7 @@ SUBJECTS = {'AI.':
                    {'short': 'winemak.'
                    ,'title': 'Winemaking'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'winemak.'
                    ,'title': 'Winemaking'
                    }
@@ -28236,7 +28236,7 @@ SUBJECTS = {'AI.':
                    {'short': 'wir.'
                    ,'title': 'Wiring'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'wir.'
                    ,'title': 'Wiring'
                    }
@@ -28261,7 +28261,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Ausz.'
                    ,'title': 'Ausziehen'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'wire.drw.'
                    ,'title': 'Wire drawing'
                    }
@@ -28286,7 +28286,7 @@ SUBJECTS = {'AI.':
                    {'short': 'wnd.'
                    ,'title': 'Winding'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'wnd.'
                    ,'title': 'Winding'
                    }
@@ -28311,7 +28311,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Holz.'
                    ,'title': 'Holzverarbeitung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'wood.'
                    ,'title': 'Wood processing'
                    }
@@ -28336,7 +28336,7 @@ SUBJECTS = {'AI.':
                    {'short': 'work.fl.'
                    ,'title': 'Work flow'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'work.fl.'
                    ,'title': 'Work flow'
                    }
@@ -28361,7 +28361,7 @@ SUBJECTS = {'AI.':
                    {'short': 'wrest.'
                    ,'title': 'Wrestling'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'wrest.'
                    ,'title': 'Wrestling'
                    }
@@ -28386,7 +28386,7 @@ SUBJECTS = {'AI.':
                    {'short': 'yacht.'
                    ,'title': 'Yachting'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'yacht.'
                    ,'title': 'Yachting'
                    }
@@ -28411,7 +28411,7 @@ SUBJECTS = {'AI.':
                    {'short': 'yiddish.'
                    ,'title': 'Yiddish'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'yiddish.'
                    ,'title': 'Yiddish'
                    }
@@ -28436,7 +28436,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Zool.'
                    ,'title': 'Zoologie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'zool.'
                    ,'title': 'Zoología'
                    }
@@ -28461,7 +28461,7 @@ SUBJECTS = {'AI.':
                    {'short': 'zoot.'
                    ,'title': 'Zootechnics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'zoot.'
                    ,'title': 'Zootechnics'
                    }
@@ -28486,7 +28486,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Игорь Миг'
                    ,'title': 'Allgemeine Lexik'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Игорь Миг'
                    ,'title': 'General'
                    }
@@ -28511,7 +28511,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Игорь Миг, Abkürz.'
                    ,'title': 'Abkürzung'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Игорь Миг, abrev.'
                    ,'title': 'Abreviatura'
                    }
@@ -28536,7 +28536,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Игорь Миг, calque.'
                    ,'title': 'Loan translation'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Игорь Миг, calque.'
                    ,'title': 'Loan translation'
                    }
@@ -28561,7 +28561,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Игорь Миг, cloth.'
                    ,'title': 'Clothing'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Игорь Миг, cloth.'
                    ,'title': 'Clothing'
                    }
@@ -28586,7 +28586,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Игорь Миг, earth.sc.'
                    ,'title': 'Earth sciences'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Игорь Миг, earth.sc.'
                    ,'title': 'Earth sciences'
                    }
@@ -28611,7 +28611,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Игорь Миг, hydrom.'
                    ,'title': 'Hydrometry'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Игорь Миг, hydrom.'
                    ,'title': 'Hydrometry'
                    }
@@ -28636,7 +28636,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Игорь Миг, Umg.'
                    ,'title': 'Umgangssprache'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Игорь Миг, inf.'
                    ,'title': 'Informal'
                    }
@@ -28661,7 +28661,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Игорь Миг, quot.aph.'
                    ,'title': 'Quotes and aphorisms'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Игорь Миг, quot.aph.'
                    ,'title': 'Quotes and aphorisms'
                    }
@@ -28686,7 +28686,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Игорь Миг, Sport.'
                    ,'title': 'Sport'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Игорь Миг, dep.'
                    ,'title': 'Deporte'
                    }
@@ -28711,7 +28711,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Игорь Миг, tagmem.'
                    ,'title': 'Tagmemics'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Игорь Миг, tagmem.'
                    ,'title': 'Tagmemics'
                    }
@@ -28736,7 +28736,7 @@ SUBJECTS = {'AI.':
                    {'short': 'Игорь Миг, Waffen'
                    ,'title': 'Waffen und Waffenindustrie'
                    }
-               ,'sp':
+               ,'es':
                    {'short': 'Игорь Миг, weap.'
                    ,'title': 'Weapons and gunsmithing'
                    }
@@ -28764,7 +28764,7 @@ class Groups:
             elif 'de' in result:
                 self.lang = 'de'
             elif 'es' in result:
-                self.lang = 'sp'
+                self.lang = 'es'
             elif 'uk' in result:
                 self.lang = 'uk'
         mes = '{} -> {}'.format(result,self.lang)
