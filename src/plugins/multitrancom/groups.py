@@ -31056,6 +31056,12 @@ class Groups:
         self.lang = 'en'
         self.set_lang()
     
+    def get_title(self,abbr):
+        for key in SUBJECTS.keys():
+            if SUBJECTS[key][self.lang]['short'] == abbr:
+                return SUBJECTS[key][self.lang]['title']
+        return abbr
+    
     def set_lang(self):
         f = '[MClient] plugins.multitrancom.groups.Groups.set_lang'
         result = locale.getdefaultlocale()
@@ -31138,6 +31144,8 @@ if __name__ == '__main__':
     timer.start()
     #print(igroups.get_majors('uk'))
     #print(igroups.get_group('Біологія','uk'))
-    print(igroups.get_list())
+    #print(igroups.get_list())
+    mes = '"{}"'.format(igroups.get_title('Игорь Миг, тагмем.'))
+    sh.objs.get_mes(f,mes,True).show_debug()
     timer.end()
     sh.com.end()
