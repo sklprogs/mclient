@@ -31056,10 +31056,25 @@ class Groups:
         self.lang = 'en'
         self.set_lang()
     
-    def get_title(self,abbr):
+    def _get_title_valid(self,abbr):
+        for key in SUBJECTS.keys():
+            if SUBJECTS[key][self.lang]['short'] == abbr \
+            and SUBJECTS[key]['valid']:
+                return SUBJECTS[key][self.lang]['title']
+    
+    def _get_title(self,abbr):
         for key in SUBJECTS.keys():
             if SUBJECTS[key][self.lang]['short'] == abbr:
                 return SUBJECTS[key][self.lang]['title']
+    
+    def get_title(self,abbr):
+        title = self._get_title_valid(abbr)
+        if title:
+            return title
+        else:
+            title = self._get_title(abbr)
+            if title:
+                return title
         return abbr
     
     def set_lang(self):
@@ -31145,7 +31160,8 @@ if __name__ == '__main__':
     #print(igroups.get_majors('uk'))
     #print(igroups.get_group('Біологія','uk'))
     #print(igroups.get_list())
-    mes = '"{}"'.format(igroups.get_title('Игорь Миг, тагмем.'))
+    abbr = 'оруж.'
+    mes = '"{}"'.format(igroups.get_title(abbr))
     sh.objs.get_mes(f,mes,True).show_debug()
     timer.end()
     sh.com.end()
