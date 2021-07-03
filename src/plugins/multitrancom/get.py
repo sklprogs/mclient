@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import locale
 import urllib.request
 import html
 import w3lib.url
@@ -13,6 +14,33 @@ CODING = 'UTF-8'
 URL = 'https://www.multitran.com'
 TIMEOUT = 6
 PAIRROOT = URL + '/m.exe?'
+
+
+class Extension:
+    
+    def __init__(self):
+        self.ext = '&SHL=1'
+    
+    def set_ext(self):
+        f = '[MClient] plugins.multitrancom.get.Extension.set_ext'
+        result = locale.getdefaultlocale()
+        if result and result[0]:
+            result = result[0]
+            if 'ru' in result:
+                self.ext = '&SHL=2'
+            elif 'de' in result:
+                self.ext = '&SHL=3'
+            elif 'es' in result:
+                self.ext = '&SHL=5'
+            elif 'uk' in result:
+                self.ext = '&SHL=33'
+        mes = '{} -> {}'.format(result,self.ext)
+        sh.objs.get_mes(f,mes,True).show_debug()
+    
+    def run(self):
+        self.set_ext()
+        return self.ext
+
 
 
 class Suggest:
@@ -45,7 +73,10 @@ class Suggest:
                                  ,pattern = self.pattern
                                  ,coding = 'utf-8'
                                  ).get_url()
-            if not self.url:
+            if self.url:
+                if not '&SHL=' in self.url:
+                    self.url += EXT
+            else:
                 sh.com.rep_empty(f)
                 self.Success = False
         else:
@@ -170,14 +201,15 @@ class Commands:
         f = '[MClient] plugins.multitrancom.get.Commands.get_url'
         if search and code1 and code2:
             #NOTE: The encoding here should always be 'utf-8'!
-            #cur
-            #&SHL=2
             base = 'https://www.multitran.com/m.exe?s=%s&l1={}&l2={}'
             base = base.format(code1,code2)
-            return sh.Online (base = base
-                             ,pattern = search
-                             ,coding = 'utf-8'
-                             ).get_url()
+            url = sh.Online (base = base
+                            ,pattern = search
+                            ,coding = 'utf-8'
+                            ).get_url()
+            if url and not '&SHL=' in url:
+                url += EXT
+            return url
         else:
             sh.com.rep_empty(f)
     
@@ -192,15 +224,8 @@ class Commands:
             url = w3lib.url.safe_url_string(url)
             if not url.startswith('http'):
                 url = PAIRROOT + url
-                ''' #NOTE: this will change the UI language of
-                    'multitran.com' so we would not have to add English
-                    equivalents of dictionary titles into the 'abbr'
-                    file. Still, we should probably add those titles
-                    if we want our program to serve international users.
-                #cur
-                if not '&SHL=' in url:
-                    url += '&SHL=2'
-                '''
+            if not '&SHL=' in url:
+                url += EXT
             return url
         else:
             sh.com.rep_empty(f)
@@ -218,3 +243,4 @@ class Commands:
 
 
 com = Commands()
+EXT = Extension().run()

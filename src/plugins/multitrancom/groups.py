@@ -28763,7 +28763,7 @@ class Groups:
                 self.lang = 'ru'
             elif 'de' in result:
                 self.lang = 'de'
-            elif 'sp' in result:
+            elif 'es' in result:
                 self.lang = 'sp'
             elif 'uk' in result:
                 self.lang = 'uk'
@@ -28811,6 +28811,21 @@ class Groups:
                 mes = _('Wrong input data: "{}"!').format(major)
                 sh.objs.get_mes(f,mes,True).show_debug()
         return lst
+
+
+
+class Objects:
+    
+    def __init__(self):
+        self.groups = None
+    
+    def get_groups(self):
+        if self.groups is None:
+            self.groups = Groups()
+        return self.groups
+
+
+objs = Objects()
 
 
 if __name__ == '__main__':
