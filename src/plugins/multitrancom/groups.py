@@ -31056,6 +31056,15 @@ class Groups:
         self.lang = 'en'
         self.set_lang()
     
+    def get_pair(self,item):
+        for key in SUBJECTS.keys():
+            if (SUBJECTS[key][self.lang]['title'] == item \
+            or SUBJECTS[key][self.lang]['short'] == item):
+                return (SUBJECTS[key][self.lang]['short']
+                       ,SUBJECTS[key][self.lang]['title']
+                       )
+        return(item,item)
+    
     def _get_abbr_valid(self,title):
         for key in SUBJECTS.keys():
             if SUBJECTS[key][self.lang]['title'] == title \

@@ -39,6 +39,14 @@ class Plugins:
         self.sdplugin = None
         self.source = sh.lg.globs['str']['source']
     
+    def get_pair(self,item):
+        f = '[MClient] manager.Plugins.get_pair'
+        if self.plugin:
+            return self.plugin.get_pair(item)
+        else:
+            sh.com.rep_empty(f)
+        return(item,item)
+    
     def get_subjects(self):
         f = '[MClient] manager.Plugins.get_subjects'
         if self.plugin:

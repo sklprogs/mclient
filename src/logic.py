@@ -1469,12 +1469,7 @@ class Order(subjects.order.Order):
         f = '[MClient] logic.Order.get_pair'
         if self.Success:
             if item:
-                abbr = objs.get_plugins().get_abbr(item)
-                title = objs.plugins.get_title(item)
-                if abbr and title:
-                    return [abbr,title]
-                else:
-                    sh.com.rep_out(f)
+                return objs.get_plugins().get_pair(item)
             else:
                 sh.com.rep_empty(f)
         else:

@@ -19,6 +19,9 @@ class Plugin:
         self.Debug = Debug
         self.maxrows = maxrows
     
+    def get_pair(self,item):
+        return gr.objs.get_groups().get_pair(item)
+    
     def set_values(self):
         self.abbr = {}
         self.blocks = []

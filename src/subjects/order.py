@@ -156,18 +156,22 @@ class Order:
         f = '[MClient] subjects.order.Order.get_list'
         if self.Success:
             if search:
-                search = search.split(',')
+                search = search.split(', ')
+                search = [item.strip() for item in search]
+                search = [item for item in search if item]
                 lst = []
                 for item in search:
                     pair = self.get_pair(item)
                     if pair:
                         lst += pair
                 return lst
-            # Prevents from None
             else:
                 sh.com.rep_empty(f)
         else:
             sh.com.cancel(f)
+        mes = '"{}"'.format(search)
+        sh.objs.get_mes(f,mes,True).show_warning()
+        return []
     
     def block(self,item):
         if self.Success:
