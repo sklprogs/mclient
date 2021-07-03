@@ -11,8 +11,9 @@
 '''
 
 import re
-import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.shared as sh
+import plugins.multitrancom.groups as gp
 
 
 class UniteFixed:
@@ -77,54 +78,6 @@ class UniteFixed:
 
 
 
-class Abbr:
-    
-    def __init__(self):
-        self.set_values()
-        self.set_file()
-        self.load()
-    
-    def set_values(self):
-        self.fabbr = ''
-        self.Success = True
-    
-    def get_full(self,abbr):
-        f = '[MClient] plugins.multitrancom.elems.Abbr.get_full'
-        if self.Success:
-            if abbr:
-                try:
-                    index_ = self.dic.orig.index(abbr)
-                    return self.dic.transl[index_]
-                except ValueError:
-                    pass
-            else:
-                sh.com.empty(f)
-        else:
-            sh.com.cancel(f)
-        return abbr
-    
-    def load(self):
-        f = '[MClient] plugins.multitrancom.elems.Abbr.load'
-        if self.Success:
-            self.dic = sh.Dic (file = self.fabbr
-                              ,Sortable = True
-                              )
-            self.Success = self.dic.Success
-        else:
-            sh.com.cancel(f)
-    
-    def set_file(self):
-        f = '[MClient] plugins.multitrancom.elems.Abbr.set_file'
-        if self.Success:
-            self.fabbr = sh.objs.get_pdir().add ('..','resources'
-                                                ,'abbr.txt'
-                                                )
-            self.Success = sh.File(self.fabbr).Success
-        else:
-            sh.com.cancel(f)
-
-
-
 # A copy of Tags.Block
 class Block:
     
@@ -186,11 +139,10 @@ class Elems:
           vary depending on the view. Incorrect sorting by TERM may
           result in putting a 'term' item before fixed columns.
     '''
-    def __init__(self,blocks,Debug=False,maxrows=1000,abbr={}):
+    def __init__(self,blocks,Debug=False,maxrows=1000):
         self.fixed = ('dic','wform','transc','speech')
         self.dicurls = {}
         self.phdic = ''
-        self.abbr = abbr
         self.blocks = blocks
         self.Debug = Debug
         self.maxrows = maxrows
@@ -643,11 +595,15 @@ class Elems:
         f = '[MClient] plugins.multitrancom.elems.Elems.expand_dic_file'
         for block in self.blocks:
             if block.dic and not block.dicf:
-                dics = block.dic.split(', ')
-                dicfs = []
-                for dic in dics:
-                    dicfs.append(objs.get_abbr().get_full(dic))
-                block.dicf = ', '.join(dicfs)
+                title = gp.objs.get_groups().get_title(block.dic)
+                if title == block.dic:                
+                    dics = block.dic.split(', ')
+                    dicfs = []
+                    for dic in dics:
+                        dicfs.append(gp.objs.groups.get_title(dic))
+                    block.dicf = ', '.join(dicfs)
+                else:
+                    block.dicf = title
     
     def delete_numeration(self):
         # Takes ~0.027s for 'set' (EN-RU) on AMD E-300
@@ -992,18 +948,3 @@ class Elems:
             if self.blocks[i].type_ in ('dic','phdic') \
             and self.blocks[i].text in self.dicurls:
                 self.blocks[i].url = self.dicurls[self.blocks[i].text]
-
-
-
-class Objects:
-    
-    def __init__(self):
-        self.abbr = None
-    
-    def get_abbr(self):
-        if self.abbr is None:
-            self.abbr = Abbr()
-        return self.abbr
-
-
-objs = Objects()

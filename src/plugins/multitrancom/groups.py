@@ -31056,6 +31056,17 @@ class Groups:
         self.lang = 'en'
         self.set_lang()
     
+    def _get_abbr_valid(self,title):
+        for key in SUBJECTS.keys():
+            if SUBJECTS[key][self.lang]['title'] == title \
+            and SUBJECTS[key]['valid']:
+                return SUBJECTS[key][self.lang]['short']
+    
+    def _get_abbr(self,title):
+        for key in SUBJECTS.keys():
+            if SUBJECTS[key][self.lang]['title'] == title:
+                return SUBJECTS[key][self.lang]['short']
+    
     def _get_title_valid(self,abbr):
         for key in SUBJECTS.keys():
             if SUBJECTS[key][self.lang]['short'] == abbr \
@@ -31076,6 +31087,16 @@ class Groups:
             if title:
                 return title
         return abbr
+    
+    def get_abbr(self,title):
+        abbr = self._get_abbr_valid(title)
+        if abbr:
+            return abbr
+        else:
+            abbr = self._get_abbr(title)
+            if abbr:
+                return abbr
+        return title
     
     def set_lang(self):
         f = '[MClient] plugins.multitrancom.groups.Groups.set_lang'

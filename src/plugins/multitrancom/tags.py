@@ -289,62 +289,10 @@ class Tags:
     
     def set_values(self):
         self.Success = True
-        self.abbr = {}
         self.blocks = []
         self.fragms = []
         self.tags = []
         self.open = []
-    
-    def set_abbr(self):
-        f = '[MClient] plugins.multitrancom.tags.Tags.set_abbr'
-        if self.Success:
-            #NOTE: set 'block.dic' before this (or use 'block.text')
-            blocks = [block for block in self.blocks \
-                      if block.dic and block.dicf
-                     ]
-            for block in blocks:
-                if not block.dic in self.abbr \
-                and not block.dicf in self.abbr:
-                    self.abbr[block.dic] = {}
-                    self.abbr[block.dicf] = {}
-                    self.abbr[block.dic]['abbr'] = block.dic
-                    self.abbr[block.dicf]['abbr'] = block.dic
-                    self.abbr[block.dic]['full'] = block.dicf
-                    self.abbr[block.dicf]['full'] = block.dicf
-        else:
-            sh.com.cancel(f)
-    
-    def _debug_abbr(self):
-        f = '[MClient] plugins.multitrancom.tags.Tags._debug_abbr'
-        mes = ''
-        if self.abbr:
-            keys = []
-            abbr = []
-            full = []
-            try:
-                for key in self.abbr.keys():
-                    keys.append(key)
-                    abbr.append(self.abbr[key]['abbr'])
-                    full.append(self.abbr[key]['full'])
-            except KeyError:
-                mes = _('Wrong input data!')
-                sh.objs.get_mes(f,mes).show_warning()
-            keys = ['"{}"'.format(key) for key in keys]
-            abbr = ['"{}"'.format(item) for item in abbr]
-            full = ['"{}"'.format(item) for item in full]
-            nos = [i + 1 for i in range(len(keys))]
-            headers = (_('#'),_('KEY'),_('ABBREVIATION')
-                      ,_('FULL TITLE')
-                      )
-            iterable = [nos,keys,abbr,full]
-            # 10'' screen: 40 symbols per a column
-            mes = sh.FastTable (iterable = iterable
-                               ,headers = headers
-                               ,maxrow = 40
-                               ).run()
-        else:
-            sh.com.rep_empty(f)
-        return _('Abbreviations:') + '\n' + mes
     
     def _is_script(self,tag):
         for subtag in tag.inherent:
@@ -576,6 +524,5 @@ class Tags:
         self.set_nos()
         self.set_inherent()
         self.set_blocks()
-        self.set_abbr()
         self.debug()
         return self.blocks

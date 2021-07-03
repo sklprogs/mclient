@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.shared as sh
 import plugins.multitrancom.get as gt
 import plugins.multitrancom.cleanup as cu
 import plugins.multitrancom.tags as tg
@@ -48,24 +48,10 @@ class Plugin:
         return False
     
     def get_title(self,item):
-        try:
-            return self.abbr[item]['full']
-        except KeyError as e:
-            ''' Since we run this code for dictionaries in the block and
-                prioritization lists (not just dictionaries from 
-                the current article), getting 'KeyError' is common.
-            '''
-            return item
+        return gr.objs.get_groups().get_title(item)
     
     def get_abbr(self,item):
-        try:
-            return self.abbr[item]['abbr']
-        except KeyError as e:
-            ''' Since we run this code for dictionaries in the block and
-                prioritization lists (not just dictionaries from 
-                the current article), getting 'KeyError' is common.
-            '''
-            return item
+        return gr.objs.get_groups().get_abbr(item)
     
     # This is needed only for compliance with a general method
     def quit(self):
@@ -156,9 +142,7 @@ class Plugin:
                         ,maxrows = self.maxrows
                         )
         self.blocks = itags.run()
-        self.abbr = itags.abbr
         self.blocks = el.Elems (blocks = self.blocks
-                               ,abbr = self.abbr
                                ,Debug = self.Debug
                                ,maxrows = self.maxrows
                                ).run()
