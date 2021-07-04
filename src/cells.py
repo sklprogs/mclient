@@ -185,6 +185,8 @@ class BlockPrioritize:
         for block in self.blocks:
             if block.dic and block.dic != self.phdic:
                 Blocked = self.dics[block.dic]['block']
+            else:
+                Blocked = False
             ''' Do not put checking 'self.Block' ahead of the loop
                 since we need to assign 'block' to 0 anyway.
             '''

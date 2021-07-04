@@ -1363,7 +1363,7 @@ class WebFrame:
                     )
         sh.com.bind (obj = self.gui
                     ,bindings = '<Button-1>'
-                    ,action = self.go_mouse
+                    ,action = self.go_url
                     )
         sh.com.bind (obj = self.gui.ent_src
                     ,bindings = ('<Return>'
@@ -1565,7 +1565,7 @@ class WebFrame:
         '''
         sh.com.bind (obj = self.gui
                     ,bindings = '<Button-3>'
-                    ,action = lambda x:self.go_alt(Mouse=True)
+                    ,action = self.copy_text
                     )
         if sh.objs.get_os().is_win() or sh.objs.os.is_mac():
             sh.com.bind (obj = self.gui.obj
@@ -2092,35 +2092,6 @@ class WebFrame:
         self.run_final_debug()
         #self.debug_settings()
     
-    def go_mouse(self,event=None):
-        f = '[MClient] mclient.WebFrame.go_mouse'
-        if objs.get_blocksdb().Selectable:
-            objs.blocksdb.Selectable = False
-            result = objs.blocksdb.get_block_pos(self.posn)
-            objs.blocksdb.Selectable = True
-            if result and result[8] == 'dic' \
-            and result[6] != self.phdic:
-                dic = objs.blocksdb.get_prev_dic (pos = result[0]
-                                                 ,dic = result[6]
-                                                 )
-                if dic:
-                    mes = _('Selected dictionary: "{}". Previous dictionary: "{}" (short title), "{}" (full title).')
-                    mes = mes.format(result[6],dic[0],dic[1])
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                    dic = dic[1]
-                else:
-                    mes = _('No previous dictionary.')
-                    sh.objs.get_mes(f,mes,True).show_debug()
-                lg.objs.get_order().run_lm_auto (dic1 = result[6]
-                                                ,dic2 = dic
-                                                )
-                objs.blocksdb.delete_bookmarks()
-                self.load_article()
-            else:
-                self.go_url()
-        else:
-            self.go_url()
-    
     def go_keyboard(self,event=None):
         f = '[MClient] mclient.WebFrame.go_keyboard'
         search = self.gui.ent_src.widget.get().strip('\n').strip(' ')
@@ -2138,7 +2109,7 @@ class WebFrame:
     def go(self,event=None,Mouse=False):
         f = '[MClient] mclient.WebFrame.go'
         if Mouse:
-            self.go_mouse()
+            self.go_url()
         else:
             self.go_keyboard()
 
@@ -2755,39 +2726,6 @@ class WebFrame:
             else:
                 mes = _('Wrong input data!')
                 sh.objs.get_mes(f,mes,True).show_warning()
-    
-    def go_alt(self,event=None,Mouse=False):
-        f = '[MClient] mclient.WebFrame.go_alt'
-        if Mouse:
-            if objs.get_blocksdb().Selectable:
-                objs.blocksdb.Selectable = False
-                result = objs.blocksdb.get_block_pos(self.posn)
-                objs.blocksdb.Selectable = True
-                if result and result[8] == 'dic' \
-                and result[6] != self.phdic:
-                    dic = objs.blocksdb.get_next_dic (pos = result[0]
-                                                     ,dic = result[6]
-                                                     )
-                    if dic:
-                        mes = _('Selected dictionary: "{}". Next dictionary: "{}" (short title), "{}" (full title).')
-                        mes = mes.format(result[6],dic[0],dic[1])
-                        sh.objs.get_mes(f,mes,True).show_debug()
-                        dic = dic[1]
-                    else:
-                        mes = _('Selected dictionary: "{}". No next dictionary.')
-                        mes = mes.format(result[6])
-                        sh.objs.get_mes(f,mes,True).show_debug()
-                    lg.objs.get_order().run_rm_auto (dic1 = result[6]
-                                                    ,dic2 = dic
-                                                    )
-                    objs.blocksdb.delete_bookmarks()
-                    self.load_article()
-                else:
-                    self.copy_text()
-            else:
-                self.copy_text()
-        else:
-            self.copy_text()
     
     def toggle_sel(self,event=None):
         if objs.get_blocksdb().Selectable:
