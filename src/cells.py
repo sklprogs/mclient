@@ -183,7 +183,6 @@ class BlockPrioritize:
             
     def block(self):
         for block in self.blocks:
-            # Suppress useless error output
             if block.dic and block.dic != self.phdic:
                 Blocked = self.dics[block.dic]['block']
             ''' Do not put checking 'self.Block' ahead of the loop

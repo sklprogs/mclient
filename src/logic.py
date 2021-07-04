@@ -1449,7 +1449,7 @@ class Commands:
 
 
 class Order(subjects.order.Order):
-    
+    # Do not fail this class - input files are optional
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self._set_lists()
@@ -1463,17 +1463,13 @@ class Order(subjects.order.Order):
         self.priorlst = sh.Input (title = f
                                  ,value = lists.get_priorities()
                                  ).get_list()
-        self.Success = lists.Success
     
     def get_pair(self,item):
         f = '[MClient] logic.Order.get_pair'
-        if self.Success:
-            if item:
-                return objs.get_plugins().get_pair(item)
-            else:
-                sh.com.rep_empty(f)
+        if item:
+            return objs.get_plugins().get_pair(item)
         else:
-            sh.com.cancel(f)
+            sh.com.rep_empty(f)
 
 
 objs = Objects()
