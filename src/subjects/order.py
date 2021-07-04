@@ -10,55 +10,30 @@ class Order:
     def __init__(self):
         self.set_values()
         self.conform()
-        
-    def fill_dic(self,lst,ind):
-        lst = lst[1:]
-        lst = lst[::-1]
-        for item in lst:
-            self.priorlst.insert(ind,item)
             
-    def get_priority(self,search):
+    def get_priority(self,item):
         f = '[MClient] subjects.order.Order.get_priority'
         if self.Success:
-            lst = self.get_list(search)
-            if lst:
-                prior = []
-                for item in lst:
-                    try:
-                        ind = self.priorlst.index(item)
-                        prior.append(len(self.priorlst)-ind)
-                    except ValueError:
-                        pass
-                if prior:
-                    return max(prior)
-                else:
-                    return 0
-            else:
-                sh.com.rep_empty(f)
+            try:
+                index_ = self.priorlst.index(item)
+                return len(self.priorlst) - index_
+            except ValueError:
+                pass
         else:
             sh.com.cancel(f)
+        return 0
     
-    def is_prioritized(self,lst):
+    def is_prioritized(self,item):
         f = '[MClient] subjects.order.Order.is_prioritized'
         if self.Success:
-            if lst:
-                for item in lst:
-                    if item in self.priorlst:
-                        return True
-            else:
-                sh.com.rep_empty(f)
+            return item in self.priorlst
         else:
             sh.com.cancel(f)
     
-    def is_blocked(self,lst):
+    def is_blocked(self,item):
         f = '[MClient] subjects.order.Order.is_blocked'
         if self.Success:
-            if lst:
-                for item in lst:
-                    if item in self.blacklst:
-                        return True
-            else:
-                sh.com.rep_empty(f)
+            return item in self.blacklst
         else:
             sh.com.cancel(f)
     
@@ -105,78 +80,18 @@ class Order:
         self.Success = True
         self.blacklst = []
         self.priorlst = []
-        self.dic1 = ''
-        self.dic2 = ''
-            
-    def sort_dic(self,lst):
-        f = '[MClient] subjects.order.Order.sort_dic'
-        if self.Success:
-            if lst:
-                indexes = []
-                for item in lst:
-                    try:
-                        ind = self.priorlst.index(item)
-                    except ValueError:
-                        # Place an unpriotitized dictionary at the end
-                        ind = 1000
-                    indexes.append(ind)
-                lst = sorted(zip(indexes,lst))
-                lst = [item[1] for item in lst]
-                return lst
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-    
-    def set(self,dic1,dic2=''):
-        f = '[MClient] subjects.order.Order.set'
-        if self.Success:
-            ''' This allows to return an empty value instead of the last
-                memory in case there is no previous/next dictionary.
-            '''
-            self.dic1 = self.dic2 = ''
-            if dic1:
-                dic1 = self.get_list(dic1)
-                dic1 = self.sort_dic(dic1)
-                self.dic1 = list(dic1)
-            else:
-                sh.com.rep_empty(f)
-            if dic2:
-                dic2 = self.get_list(dic2)
-                dic2 = self.sort_dic(dic2)
-                self.dic2 = list(dic2)
-        else:
-            sh.com.cancel(f)
     
     def get_pair(self,item):
         # A dummy class, reassign this in a parent class
         pass
     
-    def get_list(self,search):
-        f = '[MClient] subjects.order.Order.get_list'
-        if self.Success:
-            if search:
-                search = search.split(', ')
-                search = [item.strip() for item in search]
-                search = [item for item in search if item]
-                lst = []
-                for item in search:
-                    pair = self.get_pair(item)
-                    if pair:
-                        lst += pair
-                return lst
-            else:
-                sh.com.rep_empty(f)
-        else:
-            sh.com.cancel(f)
-        mes = '"{}"'.format(search)
-        sh.objs.get_mes(f,mes,True).show_warning()
-        return []
-    
     def block(self,item):
+        f = '[MClient] subjects.order.Order.block'
         if self.Success:
             if not item in self.blacklst:
                 self.blacklst.append(item)
+        else:
+            sh.com.cancel(f)
                           
     def unblock(self,item):
         f = '[MClient] subjects.order.Order.unblock'

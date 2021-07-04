@@ -49,6 +49,7 @@ class BlockPrioritize:
         f = '[MClient] cells.BlockPrioritize.__init__'
         self.Block = Block
         self.blocks = []
+        self.dics = {}
         self.data = data
         self.Debug = Debug
         self.maxrows = maxrows
@@ -62,6 +63,46 @@ class BlockPrioritize:
         else:
             self.Success = False
             sh.com.rep_empty(f)
+    
+    def _debug_blocks(self):
+        f = '[MClient] cells.BlockPrioritize._debug_blocks'
+        headers = ('NO','TYPE','TEXT','BLOCK','DIC','DICPR','SPEECH'
+                  ,'SPEECHPR'
+                  )
+        rows = []
+        for block in self.blocks:
+            rows.append ([block.no,block.type_,block.text,block.block
+                         ,block.dic,block.dprior,block.speech
+                         ,block.sprior
+                         ]
+                        )
+            mes = sh.FastTable (headers = headers
+                               ,iterable = rows
+                               ,maxrow = 20
+                               ,maxrows = self.maxrows
+                               ,Transpose = True
+                               ).run()
+        return f + ':\n' + mes
+    
+    def _debug_dics(self):
+        f = '[MClient] cells.BlockPrioritize._debug_dics'
+        nos = [i + 1 for i in range(len(self.dics.keys()))]
+        keys = []
+        block = []
+        priority = []
+        for key in self.dics.keys():
+            keys.append(key)
+            block.append(self.dics[key]['block'])
+            priority.append(self.dics[key]['priority'])
+        headers = (_('#'),_('KEY'),_('BLOCKED'),_('PRIORITY'))
+        iterable = [nos,keys,block,priority]
+        # 10'' monitor: 30 symbols per column
+        mes = sh.FastTable (headers = headers
+                           ,iterable = iterable
+                           ,maxrow = 30
+                           ,maxrows = self.maxrows
+                           ).run()
+        return f + ':\n' + mes
     
     def prioritize_speech(self):
         f = '[MClient] cells.BlockPrioritize.prioritize_speech'
@@ -91,6 +132,7 @@ class BlockPrioritize:
         f = '[MClient] cells.BlockPrioritize.run'
         if self.Success:
             self.assign()
+            self.set_dics()
             self.block()
             self.prioritize_dics()
             self.prioritize_speech()
@@ -108,15 +150,42 @@ class BlockPrioritize:
             block.dic = item[3]
             block.speech = item[4]
             self.blocks.append(block)
+    
+    def _is_blocked(self,lst):
+        for item in lst:
+            if self.order.is_blocked(item):
+                return True
+    
+    def _get_priority(self,lst):
+        priorities = []
+        for item in lst:
+            priorities.append(self.order.get_priority(item))
+        # An error will be thrown on an empty list
+        try:
+            return max(priorities)
+        except ValueError:
+            return 0
+    
+    def set_dics(self):
+        # Takes ~0.0095s for 'set' on Intel Atom
+        dics = []
+        for block in self.blocks:
+            if block.type_ == 'dic' and block.text \
+            and block.dic != self.phdic:
+                dics.append(block.dic)
+        dics = sorted(set(dics))
+        for dic in dics:
+            lst = dic.split(', ')
+            lst = [item.strip() for item in lst if item.strip()]
+            self.dics[dic] = {}
+            self.dics[dic]['block'] = self._is_blocked(lst)
+            self.dics[dic]['priority'] = self._get_priority(lst)
             
     def block(self):
         for block in self.blocks:
             # Suppress useless error output
             if block.dic and block.dic != self.phdic:
-                lst = self.order.get_list(block.dic)
-                Blocked = self.order.is_blocked(lst)
-            else:
-                Blocked = False
+                Blocked = self.dics[block.dic]['block']
             ''' Do not put checking 'self.Block' ahead of the loop
                 since we need to assign 'block' to 0 anyway.
             '''
@@ -126,23 +195,19 @@ class BlockPrioritize:
                 block.block = 0
             
     def prioritize_dics(self):
-        f = '[MClient] cells.BlockPrioritize.prioritize_dics'
-        if self.order.Success:
-            for block in self.blocks:
-                if block.dic:
-                    if self.phdic == block.dic:
-                        ''' - This value should be set irrespectively of
-                              'self.Prioritize'.
-                            - Set the (presumably) lowest priority for
-                              a 'Phrases' dictionary. This must be
-                              quite a small value as not to conflict
-                              with other dictionaries.
-                        '''
-                        block.dprior = -1000
-                    elif self.Prioritize:
-                        block.dprior = self.order.get_priority(block.dic)
-        else:
-            sh.com.cancel(f)
+        for block in self.blocks:
+            if block.dic:
+                if self.phdic == block.dic:
+                    ''' - This value should be set irrespectively of
+                          'self.Prioritize'.
+                        - Set the (presumably) lowest priority for
+                          a 'Phrases' dictionary. This must be
+                          quite a small value as not to conflict
+                          with other dictionaries.
+                    '''
+                    block.dprior = -1000
+                elif self.Prioritize:
+                    block.dprior = self.dics[block.dic]['priority']
 
     def dump(self):
         tmp = io.StringIO()
@@ -160,28 +225,11 @@ class BlockPrioritize:
     def debug(self):
         f = '[MClient] cells.BlockPrioritize.debug'
         if self.Debug:
-            headers = ('NO','TYPE','TEXT','BLOCK','DIC','DICPR','SPEECH'
-                      ,'SPEECHPR'
-                      )
-            rows = []
-            for block in self.blocks:
-                rows.append ([block.no
-                             ,block.type_
-                             ,block.text
-                             ,block.block
-                             ,block.dic
-                             ,block.dprior
-                             ,block.speech
-                             ,block.sprior
-                             ]
-                            )
-            mes = sh.FastTable (headers = headers
-                               ,iterable = rows
-                               ,maxrow = 20
-                               ,maxrows = self.maxrows
-                               ,Transpose = True
-                               ).run()
+            mes = [self._debug_dics(),self._debug_blocks()]
+            mes = '\n\n'.join(mes)
             sh.com.run_fast_debug(f,mes)
+        else:
+            sh.com.rep_lazy(f)
 
 
 

@@ -196,6 +196,16 @@ class HTM:
             block.j = item[3]
             self.blocks.append(block)
 
+    def _is_blocked(self,lst):
+        for item in lst:
+            if self.order.is_blocked(item):
+                return True
+    
+    def _is_prioritized(self,lst):
+        for item in lst:
+            if self.order.is_prioritized(item):
+                return True
+    
     def _run_dic(self):
         if self.block.type_ in ('dic','phdic') and self.block.text:
             # Suppress useless error output
@@ -203,9 +213,10 @@ class HTM:
                 Blocked = False
                 Prioritized = False
             else:
-                lst = self.order.get_list(self.block.text)
-                Blocked = self.order.is_blocked(lst)
-                Prioritized = self.order.is_prioritized(lst)
+                lst = self.block.text.split(', ')
+                lst = [item.strip() for item in lst if item.strip()]
+                Blocked = self._is_blocked(lst)
+                Prioritized = self._is_prioritized(lst)
             if Blocked:
                 sub = self._get_color_b()
             elif Prioritized:
