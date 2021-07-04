@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-02 02:51+0300\n"
-"PO-Revision-Date: 2021-07-02 02:51+0300\n"
+"POT-Creation-Date: 2021-07-04 23:40+0300\n"
+"PO-Revision-Date: 2021-07-04 23:41+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -72,20 +72,48 @@ msgstr "Связаться с автором"
 msgid "Draft an email to the author"
 msgstr "Написать письмо автору"
 
-#: mclient/src/cells.py:81
+#: mclient/src/cells.py:97 mclient/src/plugins/dsl/get.py:49
+#: mclient/src/plugins/dsl/tags.py:125 mclient/src/plugins/dsl/tags.py:294
+#: mclient/src/plugins/multitrancom/tags.py:356
+#: mclient/src/plugins/multitrancom/tags.py:432
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:34
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:72
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:203
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:477
+msgid "#"
+msgstr "№"
+
+#: mclient/src/cells.py:97
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:34
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:72
+#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:477
+#: skl_shared/src/shared.py:4077
+msgid "KEY"
+msgstr "КЛЮЧ"
+
+#: mclient/src/cells.py:97
+msgid "BLOCKED"
+msgstr "ЗАБЛОКИРОВАНО"
+
+#: mclient/src/cells.py:97 mclient/src/logic.py:746
+msgid "PRIORITY"
+msgstr "ПРИОРИТЕТ"
+
+#: mclient/src/cells.py:122
 msgid "A priority of the part of speech \"{}\" is not defined!"
 msgstr "Приоритет части речи \"{}\" не определен!"
 
-#: mclient/src/cells.py:484
+#: mclient/src/cells.py:531
 msgid "An unsupported part of speech: \"{}\"!"
 msgstr "Неподдерживая часть речи: \"{}\"!"
 
-#: mclient/src/cells.py:613
+#: mclient/src/cells.py:660
 msgid "Unable to find: {}"
 msgstr "Не удалось найти: {}"
 
 #: mclient/src/db.py:287 mclient/src/db.py:349 mclient/src/gui.py:942
-#: mclient/src/manager.py:267 mclient/src/mclient.py:147
+#: mclient/src/manager.py:275 mclient/src/mclient.py:147
 #: mclient/src/plugins/multitrandem/run.py:75 skl_shared/src/logic.py:134
 #: skl_shared/src/logic.py:148 skl_shared/src/logic.py:939
 #: skl_shared/src/logic.py:2484 skl_shared/src/shared.py:1020
@@ -121,9 +149,7 @@ msgstr "Удаление записей статьи №{} из {}"
 #: mclient/src/mclient.py:2080 mclient/src/mclient.py:2209
 #: mclient/src/mclient.py:2221 mclient/src/mclient.py:2233
 #: mclient/src/mclient.py:2245 mclient/src/mclient.py:2748
-#: mclient/src/mclient.py:2756 mclient/src/plugins/multitrancom/groups.py:2827
-#: mclient/src/plugins/multitrancom/pairs.py:2861
-#: mclient/src/plugins/multitrancom/tags.py:330
+#: mclient/src/mclient.py:2756 mclient/src/plugins/multitrancom/pairs.py:2861
 #: mclient/src/plugins/multitrancom/utils/subjects/fix.py:29
 #: mclient/src/plugins/multitrandem/get.py:682
 #: mclient/src/plugins/multitrandem/get.py:698
@@ -440,8 +466,8 @@ msgid "Do not set"
 msgstr "Не задано"
 
 #: mclient/src/gui.py:821 mclient/src/gui.py:909 mclient/src/gui.py:924
-#: mclient/src/logic.py:166 mclient/src/manager.py:208
-#: mclient/src/manager.py:260 mclient/src/mclient.py:1295
+#: mclient/src/logic.py:166 mclient/src/manager.py:216
+#: mclient/src/manager.py:268 mclient/src/mclient.py:1295
 #: mclient/src/tests.py:419 mclient/src/tests.py:479 mclient/src/tests.py:521
 #: mclient/src/tests.py:612
 msgid "Multitran"
@@ -1198,16 +1224,11 @@ msgid "URL for online search"
 msgstr "Адрес для поиска в Интернете"
 
 #: mclient/src/logic.py:746 mclient/src/logic.py:761 mclient/src/logic.py:774
-#: mclient/src/plugins/multitrancom/tags.py:484
+#: mclient/src/plugins/multitrancom/tags.py:432
 msgid "NAME"
 msgstr "НАЗВАНИЕ"
 
-#: mclient/src/logic.py:746
-msgid "PRIORITY"
-msgstr "ПРИОРИТЕТ"
-
 #: mclient/src/logic.py:761 mclient/src/logic.py:774
-#: mclient/src/plugins/multitrancom/tags.py:336
 msgid "ABBREVIATION"
 msgstr "АББРЕВИАТУРА"
 
@@ -1217,10 +1238,11 @@ msgstr "АББРЕВИАТУРА"
 #: mclient/src/plugins/dsl/get.py:399 mclient/src/plugins/dsl/get.py:416
 #: mclient/src/plugins/dsl/get.py:433 mclient/src/plugins/dsl/get.py:441
 #: mclient/src/plugins/dsl/tags.py:142
+#: mclient/src/plugins/multitrancom/groups.py:31164
 #: mclient/src/plugins/multitrancom/pairs.py:2790
 #: mclient/src/plugins/multitrancom/pairs.py:2810
+#: mclient/src/plugins/multitrancom/run.py:100
 #: mclient/src/plugins/multitrancom/run.py:111
-#: mclient/src/plugins/multitrancom/run.py:122
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:363
 #: mclient/src/plugins/multitrancom/utils/utils.py:164
 #: mclient/src/plugins/multitrandem/elems.py:135
@@ -1250,7 +1272,7 @@ msgstr "Фраза"
 #: mclient/src/logic.py:825 mclient/src/logic.py:831
 #: mclient/src/mclient.py:2659 mclient/src/plugins/dsl/cleanup.py:109
 #: mclient/src/plugins/dsl/get.py:222
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:103
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:136
 #: mclient/src/plugins/multitrancom/utils/utils.py:68
 #: mclient/src/plugins/multitrancom/utils/utils.py:235
 #: mclient/src/plugins/multitrancom/utils/utils.py:333
@@ -1383,13 +1405,13 @@ msgstr "не работает"
 msgid "running"
 msgstr "работает"
 
-#: mclient/src/logic.py:932 mclient/src/manager.py:209
-#: mclient/src/manager.py:258
+#: mclient/src/logic.py:932 mclient/src/manager.py:217
+#: mclient/src/manager.py:266
 msgid "Stardict"
 msgstr "Stardict"
 
-#: mclient/src/logic.py:937 mclient/src/manager.py:211
-#: mclient/src/manager.py:264
+#: mclient/src/logic.py:937 mclient/src/manager.py:219
+#: mclient/src/manager.py:272
 msgid "Local MT"
 msgstr "Локальный МТ"
 
@@ -1747,11 +1769,11 @@ msgstr "Невозможно продолжить ввиду некоррект�
 msgid "Goodbye!"
 msgstr "До свидания!"
 
-#: mclient/src/mkhtml.py:400
+#: mclient/src/mkhtml.py:411
 msgid "Nothing has been found (skipped dictionaries: {})."
 msgstr "Ничего не найдено (игнорировано словарей: {})."
 
-#: mclient/src/mkhtml.py:406
+#: mclient/src/mkhtml.py:417
 msgid "Nothing has been found."
 msgstr "Ничего не найдено."
 
@@ -1764,7 +1786,7 @@ msgid "Tag-like structures are invalid!"
 msgstr "Некорректные тегоподобные структуры!"
 
 #: mclient/src/plugins/dsl/cleanup.py:115 mclient/src/plugins/dsl/elems.py:196
-#: mclient/src/plugins/multitrancom/elems.py:828 skl_shared/src/logic.py:4853
+#: mclient/src/plugins/multitrancom/elems.py:784 skl_shared/src/logic.py:4853
 msgid "{} matches"
 msgstr "{} совпадений"
 
@@ -1777,18 +1799,6 @@ msgstr "Блоки не из БД:"
 #: mclient/src/plugins/dsl/elems.py:211
 msgid "{} phrases"
 msgstr "{} фраз"
-
-#: mclient/src/plugins/dsl/get.py:49 mclient/src/plugins/dsl/tags.py:125
-#: mclient/src/plugins/dsl/tags.py:294
-#: mclient/src/plugins/multitrancom/tags.py:336
-#: mclient/src/plugins/multitrancom/tags.py:408
-#: mclient/src/plugins/multitrancom/tags.py:484
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:49
-#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:203
-#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
-#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:477
-msgid "#"
-msgstr "№"
 
 #: mclient/src/plugins/dsl/get.py:49
 msgid "SEARCH"
@@ -1880,15 +1890,15 @@ msgid "TYPES"
 msgstr "ТИПЫ"
 
 #: mclient/src/plugins/dsl/tags.py:125 mclient/src/plugins/dsl/tags.py:294
-#: mclient/src/plugins/multitrancom/tags.py:408
-#: mclient/src/plugins/multitrancom/tags.py:484
+#: mclient/src/plugins/multitrancom/tags.py:356
+#: mclient/src/plugins/multitrancom/tags.py:432
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:203
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
 msgid "TEXT"
 msgstr "ТЕКСТ"
 
 #: mclient/src/plugins/dsl/tags.py:131
-#: mclient/src/plugins/multitrancom/tags.py:418
+#: mclient/src/plugins/multitrancom/tags.py:366
 msgid "Blocks:"
 msgstr "Блоки:"
 
@@ -1901,12 +1911,12 @@ msgid "Tag \"{}\" has not been opened yet!"
 msgstr "Тег \"{}\" еще не был открыт!"
 
 #: mclient/src/plugins/dsl/tags.py:280
-#: mclient/src/plugins/multitrancom/tags.py:455
+#: mclient/src/plugins/multitrancom/tags.py:403
 msgid "Code:"
 msgstr "Код:"
 
 #: mclient/src/plugins/dsl/tags.py:287
-#: mclient/src/plugins/multitrancom/tags.py:462
+#: mclient/src/plugins/multitrancom/tags.py:410
 msgid "Fragments:"
 msgstr "Фрагменты:"
 
@@ -1915,7 +1925,7 @@ msgid "TAGS"
 msgstr "ТЕГИ"
 
 #: mclient/src/plugins/dsl/tags.py:300
-#: mclient/src/plugins/multitrancom/tags.py:494
+#: mclient/src/plugins/multitrancom/tags.py:442
 msgid "Tags:"
 msgstr "Теги:"
 
@@ -1923,29 +1933,29 @@ msgstr "Теги:"
 msgid "Malformed HTML code!"
 msgstr "Некорректный код HTML!"
 
-#: mclient/src/plugins/multitrancom/elems.py:245
+#: mclient/src/plugins/multitrancom/elems.py:197
 msgid "GED"
 msgstr "БЭС"
 
-#: mclient/src/plugins/multitrancom/elems.py:246
+#: mclient/src/plugins/multitrancom/elems.py:198
 msgid "Great Encyclopedic Dictionary"
 msgstr "Большой Энциклопедический словарь"
 
-#: mclient/src/plugins/multitrancom/elems.py:382
+#: mclient/src/plugins/multitrancom/elems.py:334
 msgid "Separate words"
 msgstr "Отдельные слова"
 
-#: mclient/src/plugins/multitrancom/elems.py:527
+#: mclient/src/plugins/multitrancom/elems.py:479
 msgid "phrases"
 msgstr "фразы"
 
-#: mclient/src/plugins/multitrancom/elems.py:703
-#: mclient/src/plugins/multitrancom/elems.py:704
-#: mclient/src/plugins/multitrancom/elems.py:705
+#: mclient/src/plugins/multitrancom/elems.py:659
+#: mclient/src/plugins/multitrancom/elems.py:660
+#: mclient/src/plugins/multitrancom/elems.py:661
 msgid "Suggestions"
 msgstr "Варианты замены"
 
-#: mclient/src/plugins/multitrancom/get.py:115
+#: mclient/src/plugins/multitrancom/get.py:146
 msgid ""
 "Unable to change the web-page encoding!\n"
 "\n"
@@ -1955,21 +1965,21 @@ msgstr ""
 "\n"
 "Подробности: {}"
 
-#: mclient/src/plugins/multitrancom/get.py:128
+#: mclient/src/plugins/multitrancom/get.py:159
 msgid "Get online: \"{}\""
 msgstr "Поиск онлайн: \"{}\""
 
-#: mclient/src/plugins/multitrancom/get.py:143
+#: mclient/src/plugins/multitrancom/get.py:174
 #: mclient/src/plugins/multitrancom/utils/utils.py:141
 #: skl_shared/src/logic.py:4301
 msgid "[OK]: \"{}\""
 msgstr "[Успешно]: \"{}\""
 
-#: mclient/src/plugins/multitrancom/get.py:147
+#: mclient/src/plugins/multitrancom/get.py:178
 msgid "[FAILED]: \"{}\""
 msgstr "[ОШИБКА]: \"{}\""
 
-#: mclient/src/plugins/multitrancom/get.py:150
+#: mclient/src/plugins/multitrancom/get.py:181
 msgid ""
 "Unable to get the webpage. Do you want to try again?\n"
 "\n"
@@ -14967,58 +14977,52 @@ msgstr "Неподдерживаемые пары:"
 msgid "Pattern \"{}\" is not a tag!"
 msgstr "Образец \"{}\" тегом не является!"
 
-#: mclient/src/plugins/multitrancom/tags.py:336
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:49
-#: mclient/src/plugins/multitrancom/utils/subjects/extract.py:477
-#: skl_shared/src/shared.py:4077
-msgid "KEY"
-msgstr "КЛЮЧ"
-
-#: mclient/src/plugins/multitrancom/tags.py:337
-msgid "FULL TITLE"
-msgstr "ПОЛНОЕ НАЗВАНИЕ"
-
-#: mclient/src/plugins/multitrancom/tags.py:347
-msgid "Abbreviations:"
-msgstr "Сокращения:"
-
-#: mclient/src/plugins/multitrancom/tags.py:408
-#: mclient/src/plugins/multitrancom/tags.py:484
+#: mclient/src/plugins/multitrancom/tags.py:356
+#: mclient/src/plugins/multitrancom/tags.py:432
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:203
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
 msgid "TYPE"
 msgstr "ТИП"
 
-#: mclient/src/plugins/multitrancom/tags.py:409
+#: mclient/src/plugins/multitrancom/tags.py:357
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
 msgid "ROW #"
 msgstr "СТРОКА №"
 
-#: mclient/src/plugins/multitrancom/tags.py:409
+#: mclient/src/plugins/multitrancom/tags.py:357
 msgid "CELL #"
 msgstr "ЯЧЕЙКА №"
 
-#: mclient/src/plugins/multitrancom/tags.py:484
+#: mclient/src/plugins/multitrancom/tags.py:432
 msgid "CLOSING"
 msgstr "ЗАКРЫВАЮЩИЙ"
 
-#: mclient/src/plugins/multitrancom/tags.py:485
+#: mclient/src/plugins/multitrancom/tags.py:433
 msgid "OPEN"
 msgstr "ОТКРЫТЫЕ"
 
-#: mclient/src/plugins/multitrancom/tags.py:485
+#: mclient/src/plugins/multitrancom/tags.py:433
 msgid "ROW"
 msgstr "СТРОКА"
 
-#: mclient/src/plugins/multitrancom/tags.py:485
+#: mclient/src/plugins/multitrancom/tags.py:433
 msgid "CELL"
 msgstr "ЯЧЕЙКА"
 
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:49
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:34
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:72
 msgid "VALID"
 msgstr "ВЕРНО"
 
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:79
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:34
+msgid "MAJOR"
+msgstr "ОСНОВНАЯ"
+
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:34
+msgid "GROUP"
+msgstr "ГРУППА"
+
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:110
 msgid "Key \"{}\" already exists!"
 msgstr "Ключ \"{}\" уже существует!"
 
@@ -16509,6 +16513,12 @@ msgstr ""
 #: skl_shared/src/tests.py:1142
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
+
+#~ msgid "FULL TITLE"
+#~ msgstr "ПОЛНОЕ НАЗВАНИЕ"
+
+#~ msgid "Abbreviations:"
+#~ msgstr "Сокращения:"
 
 #~ msgid "HASH"
 #~ msgstr "ХЭШ"
