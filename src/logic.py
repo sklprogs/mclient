@@ -60,13 +60,13 @@ class DefaultKeys(sh.DefaultKeys):
            ,'AutoCloseSpecSymbol':False
            ,'Autocompletion'     :True
            ,'Autoswap'           :False
-           ,'BlockDics'          :True
+           ,'BlockSubjects'      :True
            ,'CaptureHotkey'      :True
            ,'Iconify'            :True
            ,'PhraseCount'        :True
-           ,'PrioritizeDics'     :True
+           ,'PrioritizeSubjects' :True
            ,'SelectTermsOnly'    :True
-           ,'ShortDicTitles'     :False
+           ,'ShortSubjects'      :False
            ,'ShortSpeech'        :False
            ,'ShowUserNames'      :True
            ,'SortByColumns'      :True
@@ -205,7 +205,7 @@ class CreateConfig(sh.CreateConfig):
         comment = _('[Autosave] Autoswap Russian and the other language if appropriate')
         self.add_key(section,section_abbr,key,comment)
         
-        key = 'BlockDics'
+        key = 'BlockSubjects'
         comment = _('[Autosave] Block subjects from the blacklist')
         self.add_key(section,section_abbr,key,comment)
         
@@ -221,7 +221,7 @@ class CreateConfig(sh.CreateConfig):
         comment = _('[Autosave] Show a phrase count')
         self.add_key(section,section_abbr,key,comment)
         
-        key = 'PrioritizeDics'
+        key = 'PrioritizeSubjects'
         comment = _('[Autosave] Prioritize subjects from the prioritization file')
         self.add_key(section,section_abbr,key,comment)
         
@@ -229,7 +229,7 @@ class CreateConfig(sh.CreateConfig):
         comment = _('[Autosave] Select blocks of all types (False) or terms only (True)')
         self.add_key(section,section_abbr,key,comment)
         
-        key = 'ShortDicTitles'
+        key = 'ShortSubjects'
         comment = _('[Autosave] Shorten subject titles')
         self.add_key(section,section_abbr,key,comment)
         

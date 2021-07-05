@@ -61,10 +61,10 @@ class ExportSettingsUI:
     def export_checkboxes(self):
         sh.lg.globs['bool']['SortByColumns'] = objs.get_settings_ui().cbx_no1.get()
         sh.lg.globs['bool']['AlphabetizeTerms'] = objs.settings_ui.cbx_no2.get()
-        sh.lg.globs['bool']['BlockDics'] = objs.settings_ui.cbx_no3.get()
-        sh.lg.globs['bool']['PrioritizeDics'] = objs.settings_ui.cbx_no4.get()
+        sh.lg.globs['bool']['BlockSubjects'] = objs.settings_ui.cbx_no3.get()
+        sh.lg.globs['bool']['PrioritizeSubjects'] = objs.settings_ui.cbx_no4.get()
         sh.lg.globs['bool']['VerticalView'] = objs.settings_ui.cbx_no5.get()
-        sh.lg.globs['bool']['ShortDicTitles'] = objs.settings_ui.cbx_no6.get()
+        sh.lg.globs['bool']['ShortSubjects'] = objs.settings_ui.cbx_no6.get()
         sh.lg.globs['bool']['ShortSpeech'] = objs.settings_ui.cbx_no7.get()
         sh.lg.globs['bool']['ShowUserNames'] = objs.settings_ui.cbx_no8.get()
         objs.get_blocksdb().Selectable = sh.lg.globs['bool']['SelectTermsOnly']\
@@ -225,10 +225,10 @@ class UpdateSettingsUI:
     def update_checkboxes(self):
         self.gui.cbx_no1.set(sh.lg.globs['bool']['SortByColumns'])
         self.gui.cbx_no2.set(sh.lg.globs['bool']['AlphabetizeTerms'])
-        self.gui.cbx_no3.set(sh.lg.globs['bool']['BlockDics'])
-        self.gui.cbx_no4.set(sh.lg.globs['bool']['PrioritizeDics'])
+        self.gui.cbx_no3.set(sh.lg.globs['bool']['BlockSubjects'])
+        self.gui.cbx_no4.set(sh.lg.globs['bool']['PrioritizeSubjects'])
         self.gui.cbx_no5.set(sh.lg.globs['bool']['VerticalView'])
-        self.gui.cbx_no6.set(sh.lg.globs['bool']['ShortDicTitles'])
+        self.gui.cbx_no6.set(sh.lg.globs['bool']['ShortSubjects'])
         self.gui.cbx_no7.set(sh.lg.globs['bool']['ShortSpeech'])
         self.gui.cbx_no8.set(sh.lg.globs['bool']['ShowUserNames'])
         self.gui.cbx_no9.set(sh.lg.globs['bool']['SelectTermsOnly'])
@@ -313,12 +313,12 @@ class UpdateWebFrameUI:
     def _update_prioritization(self):
         mes = [_('Subject prioritization')]
         prioritized = com.get_prioritized()
-        if sh.lg.globs['bool']['PrioritizeDics'] and prioritized \
+        if sh.lg.globs['bool']['PrioritizeSubjects'] and prioritized \
         and not lg.objs.request.SpecialPage:
             self.gui.btn_pri.activate()
         else:
             self.gui.btn_pri.inactivate()
-        if sh.lg.globs['bool']['PrioritizeDics']:
+        if sh.lg.globs['bool']['PrioritizeSubjects']:
             mes.append(_('Status: ON'))
         else:
             mes.append(_('Status: OFF'))
@@ -338,18 +338,18 @@ class UpdateWebFrameUI:
         mes = [_('Subject blocking')]
         skipped_terms = len(com.get_skipped_terms())
         skipped_dics = len(com.get_skipped_dics())
-        if sh.lg.globs['bool']['BlockDics'] and skipped_terms:
+        if sh.lg.globs['bool']['BlockSubjects'] and skipped_terms:
             self.gui.btn_blk.activate()
         else:
             self.gui.btn_blk.inactivate()
-        if sh.lg.globs['bool']['BlockDics']:
+        if sh.lg.globs['bool']['BlockSubjects']:
             mes.append(_('Status: ON'))
         else:
             mes.append(_('Status: OFF'))
         ''' If this does not work as expected, then TERM might not be
             filled properply.
         '''
-        if sh.lg.globs['bool']['BlockDics'] and skipped_terms:
+        if sh.lg.globs['bool']['BlockSubjects'] and skipped_terms:
             sub = _('Skipped {} terms in {} subjects')
             sub = sub.format(skipped_terms,skipped_dics)
         else:
@@ -1970,7 +1970,7 @@ class WebFrame:
             
         self.phdic = objs.blocksdb.get_phdic()
         if self.phdic:
-            if sh.lg.globs['bool']['ShortDicTitles']:
+            if sh.lg.globs['bool']['ShortSubjects']:
                 self.phdic = self.phdic[0]
             else:
                 self.phdic = self.phdic[1]
@@ -1994,7 +1994,7 @@ class WebFrame:
         objs.blocksdb.reset (cols = lg.objs.request.cols
                             ,SortRows = sh.lg.globs['bool']['SortByColumns']
                             ,SortTerms = SortTerms
-                            ,ExpandDic = not sh.lg.globs['bool']['ShortDicTitles']
+                            ,ExpandDic = not sh.lg.globs['bool']['ShortSubjects']
                             ,ShowUsers = sh.lg.globs['bool']['ShowUserNames']
                             ,PhraseCount = sh.lg.globs['bool']['PhraseCount']
                             )
@@ -2002,8 +2002,8 @@ class WebFrame:
         data = objs.blocksdb.assign_bp()
         spdic = lg.objs.speech_prior.get_all2prior()
         bp = cl.BlockPrioritize (data = data
-                                ,Block = sh.lg.globs['bool']['BlockDics']
-                                ,Prioritize = sh.lg.globs['bool']['PrioritizeDics']
+                                ,Block = sh.lg.globs['bool']['BlockSubjects']
+                                ,Prioritize = sh.lg.globs['bool']['PrioritizeSubjects']
                                 ,phdic = self.phdic
                                 ,spdic = spdic
                                 ,Debug = lg.objs.get_plugins().Debug
@@ -2506,11 +2506,11 @@ class WebFrame:
 
     def toggle_block(self,event=None):
         f = '[MClient] mclient.WebFrame.toggle_block'
-        if sh.lg.globs['bool']['BlockDics']:
-            sh.lg.globs['bool']['BlockDics'] = False
+        if sh.lg.globs['bool']['BlockSubjects']:
+            sh.lg.globs['bool']['BlockSubjects'] = False
             objs.get_blocksdb().unblock()
         else:
-            sh.lg.globs['bool']['BlockDics'] = True
+            sh.lg.globs['bool']['BlockSubjects'] = True
             if not lg.objs.get_order().blacklst:
                 mes = _('No subjects have been provided for blacklisting!')
                 sh.objs.get_mes(f,mes).show_warning()
@@ -2520,18 +2520,18 @@ class WebFrame:
     def edit_blacklist(self,event=None):
         f = '[MClient] mclient.WebFrame.edit_blacklist'
         old_list = lg.objs.get_order().blacklst
-        old_key = sh.lg.globs['bool']['BlockDics']
+        old_key = sh.lg.globs['bool']['BlockSubjects']
         objs.get_blacklist().reset (lst1 = old_list
                                    ,lst2 = lg.objs.get_plugins().get_subjects()
                                    ,art_subjects = com.get_dics()
                                    ,majors = lg.objs.plugins.get_majors()
                                    )
-        objs.blacklist.set_checkbox(sh.lg.globs['bool']['BlockDics'])
+        objs.blacklist.set_checkbox(sh.lg.globs['bool']['BlockSubjects'])
         objs.blacklist.show()
-        sh.lg.globs['bool']['BlockDics'] = objs.blacklist.get_checkbox()
+        sh.lg.globs['bool']['BlockSubjects'] = objs.blacklist.get_checkbox()
         new_list = objs.blacklist.get1()
         if (old_list == new_list) \
-        and (old_key == sh.lg.globs['bool']['BlockDics']):
+        and (old_key == sh.lg.globs['bool']['BlockSubjects']):
             sh.com.rep_lazy(f)
         else:
             #TODO: write blocked subjects
@@ -2542,18 +2542,18 @@ class WebFrame:
     def edit_priorities(self,event=None):
         f = '[MClient] mclient.WebFrame.edit_priorities'
         old_list = lg.objs.get_order().priorlst
-        old_key = sh.lg.globs['bool']['PrioritizeDics']
+        old_key = sh.lg.globs['bool']['PrioritizeSubjects']
         objs.get_priorities().reset (lst1 = old_list
                                     ,lst2 = lg.objs.get_plugins().get_subjects()
                                     ,art_subjects = com.get_dics()
                                     ,majors = lg.objs.plugins.get_majors()
                                     )
-        objs.priorities.set_checkbox(sh.lg.globs['bool']['PrioritizeDics'])
+        objs.priorities.set_checkbox(sh.lg.globs['bool']['PrioritizeSubjects'])
         objs.priorities.show()
-        sh.lg.globs['bool']['PrioritizeDics'] = objs.priorities.get_checkbox()
+        sh.lg.globs['bool']['PrioritizeSubjects'] = objs.priorities.get_checkbox()
         new_list = objs.priorities.get1()
         if (old_list == new_list) \
-        and (old_key == sh.lg.globs['bool']['PrioritizeDics']):
+        and (old_key == sh.lg.globs['bool']['PrioritizeSubjects']):
             sh.com.rep_lazy(f)
         else:
             #TODO: write priorities
@@ -2563,11 +2563,11 @@ class WebFrame:
     
     def toggle_priority(self,event=None):
         f = '[MClient] mclient.WebFrame.toggle_priority'
-        if sh.lg.globs['bool']['PrioritizeDics']:
-            sh.lg.globs['bool']['PrioritizeDics'] = False
+        if sh.lg.globs['bool']['PrioritizeSubjects']:
+            sh.lg.globs['bool']['PrioritizeSubjects'] = False
             objs.get_blocksdb().unprioritize()
         else:
-            sh.lg.globs['bool']['PrioritizeDics'] = True
+            sh.lg.globs['bool']['PrioritizeSubjects'] = True
             if not lg.objs.get_order().prioritize:
                 mes = _('No subjects have been provided for prioritizing!')
                 sh.objs.get_mes(f,mes).show_warning()
