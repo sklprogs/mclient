@@ -2,6 +2,8 @@
 * Set up subject priorities in a separate window
 * Configure subject blocking in a separate window
 * Set the vertical view button after the alphabetization button
+* Drop left/right mouse subject management support
+* Support subjects in multiple languages based on multitran.com
 
 6.9.1
 * Fix a webpage generated in a current view
