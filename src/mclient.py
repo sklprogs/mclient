@@ -2578,7 +2578,6 @@ class WebFrame:
         mh.objs.get_htm().reset (data = objs.blocksdb.fetch()
                                 ,cols = lg.objs.request.cols
                                 ,collimit = lg.objs.request.collimit
-                                ,order = lg.objs.get_order()
                                 ,width = sh.lg.globs['int']['col_width']
                                 ,Printer = True
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
