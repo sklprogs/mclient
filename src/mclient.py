@@ -135,7 +135,10 @@ class Commands:
                     item = something_else
         '''
         for i in range(len(lst)):
-            if lst[i] == _('Dictionaries'):
+            ''' #cur 'Dictionaries' are kept in order to comply with
+                the old config.
+            '''
+            if lst[i] in (_('Subjects'),_('Dictionaries')):
                 lst[i] = 'dic'
             elif lst[i] == _('Word forms'):
                 lst[i] = 'wform'
@@ -144,14 +147,12 @@ class Commands:
             elif lst[i] == _('Transcription'):
                 lst[i] = 'transc'
             else:
+                sub = (_('Subjects'),_('Word forms'),_('Transcription')
+                      ,_('Parts of speech')
+                      )
+                sub = '; '.join(sub)
                 mes = _('An unknown mode "{}"!\n\nThe following modes are supported: "{}".')
-                mes = mes.format (self.cols[i]
-                                 ,(_('Dictionaries')
-                                  ,_('Word forms')
-                                  ,_('Transcription')
-                                  ,_('Parts of speech')
-                                  )
-                                 )
+                mes = mes.format(lst[i],sub)
                 sh.objs.get_mes(f,mes).show_error()
         if lst:
             lg.objs.get_request().cols = tuple(lst)
@@ -2511,7 +2512,7 @@ class WebFrame:
         else:
             sh.lg.globs['bool']['BlockDics'] = True
             if not lg.objs.get_order().blacklst:
-                mes = _('No dictionaries have been provided for blacklisting!')
+                mes = _('No subjects have been provided for blacklisting!')
                 sh.objs.get_mes(f,mes).show_warning()
         objs.get_blocksdb().delete_bookmarks()
         self.load_article()
@@ -2568,7 +2569,7 @@ class WebFrame:
         else:
             sh.lg.globs['bool']['PrioritizeDics'] = True
             if not lg.objs.get_order().prioritize:
-                mes = _('No dictionaries have been provided for prioritizing!')
+                mes = _('No subjects have been provided for prioritizing!')
                 sh.objs.get_mes(f,mes).show_warning()
         objs.get_blocksdb().delete_bookmarks()
         self.load_article()
@@ -2604,7 +2605,7 @@ class WebFrame:
                  if col != _('Do not set')
                 ]
         if lg.objs.request.collimit > len(fixed):
-            ''' A dictionary from the 'Phrases' section usually has
+            ''' A subject from the 'Phrases' section usually has
                 an 'original + translation' structure, so we need to
                 switch off sorting terms and ensure that the number of
                 columns is divisible by 2

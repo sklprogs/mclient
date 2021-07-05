@@ -138,7 +138,7 @@ class DefaultKeys(sh.DefaultKeys):
            ,'bind_toggle_sel'             :'<Control-t>'
            ,'bind_toggle_view'            :'<F6>'
            ,'bind_toggle_view_alt'        :'<Alt-v>'
-           ,'col1_type'                   :_('Dictionaries')
+           ,'col1_type'                   :_('Subjects')
            ,'col2_type'                   :_('Word forms')
            ,'col3_type'                   :_('Parts of speech')
            ,'col4_type'                   :_('Transcription')
@@ -206,7 +206,7 @@ class CreateConfig(sh.CreateConfig):
         self.add_key(section,section_abbr,key,comment)
         
         key = 'BlockDics'
-        comment = _('[Autosave] Block dictionaries from the blacklist')
+        comment = _('[Autosave] Block subjects from the blacklist')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'CaptureHotkey'
@@ -222,7 +222,7 @@ class CreateConfig(sh.CreateConfig):
         self.add_key(section,section_abbr,key,comment)
         
         key = 'PrioritizeDics'
-        comment = _('[Autosave] Prioritize dictionaries from the prioritization file')
+        comment = _('[Autosave] Prioritize subjects from the prioritization file')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'SelectTermsOnly'
@@ -230,7 +230,7 @@ class CreateConfig(sh.CreateConfig):
         self.add_key(section,section_abbr,key,comment)
         
         key = 'ShortDicTitles'
-        comment = _('[Autosave] Shorten dictionary titles')
+        comment = _('[Autosave] Shorten subject titles')
         self.add_key(section,section_abbr,key,comment)
         
         key = 'ShortSpeech'
@@ -1278,7 +1278,7 @@ class CurRequest:
         self.cols = ('dic','wform','transc','speech')
         self.collimit = sh.lg.globs['int']['colnum'] + 4
         ''' Toggling blacklisting should not depend on a number of
-            blocked dictionaries (otherwise, it is not clear how
+            blocked subjects (otherwise, it is not clear how
             blacklisting should be toggled)
         '''
         self.MouseClicked = False

@@ -130,7 +130,7 @@ class Elems:
           the 'phrase' type (just to be safe in such cases when
           'phrase' blocks anticipate 'term' blocks). However, we fill
           'term' for 'phrase' blocks from the end to the start because
-          we want the 'phrase' dictionary to have the 'term' value of
+          we want the 'phrase' subject to have the 'term' value of
           the first 'phrase' block AFTER it
         - Finally, we clear TERM values for fixed columns. Sqlite
           sorts '' before a non-empty string, so we ensure thereby that
@@ -181,7 +181,7 @@ class Elems:
                 return block
     
     def convert_ged(self):
-        ''' - Reassign a dictionary title for blocks from the Great
+        ''' - Reassign a subject title for blocks from the Great
               encyclopedic dictionary.
             - It's not enough just to get CELLNO of the Great
               encyclopedic dictionary and change DIC and DICF since
@@ -590,7 +590,7 @@ class Elems:
     
     def expand_dic_file(self):
         ''' Do not delete this, since 'multitran.com' does not provide
-            full dictionary titles in phrase articles!
+            full subject titles in phrase articles!
         '''
         f = '[MClient] plugins.multitrancom.elems.Elems.expand_dic_file'
         for block in self.blocks:

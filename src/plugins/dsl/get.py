@@ -46,7 +46,7 @@ class Get:
             dics.append(self.articles[i].dic)
             codes.append(self.articles[i].code)
         iterable = [nos,searches,dics,codes]
-        headers = (_('#'),_('SEARCH'),_('DICTIONARY'),_('CODE'))
+        headers = (_('#'),_('SEARCH'),_('SUBJECT'),_('CODE'))
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
                            ,maxrow = 70

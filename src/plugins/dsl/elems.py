@@ -70,7 +70,7 @@ class Elems:
           the 'phrase' type (just to be safe in such cases when
           'phrase' blocks anticipate 'term' blocks). However, we fill
           'term' for 'phrase' blocks from the end to the start because
-          we want the 'phrase' dictionary to have the 'term' value of
+          we want the 'phrase' subject to have the 'term' value of
           the first 'phrase' block AFTER it
         - Finally, we clear TERM values for fixed columns. Sqlite
           sorts '' before a non-empty string, so we ensure thereby that

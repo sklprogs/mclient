@@ -583,21 +583,21 @@ class WebFrame:
                                  ,inactive = self.icn_set
                                  ,active = self.icn_set
                                  )
-        # A button to toggle dictionary blocking
+        # A button to toggle subject blocking
         self.btn_blk = sh.Button (parent = self.frm_btn
                                  ,text = _('Blacklist')
                                  ,hint = _('Configure blacklisting')
                                  ,inactive = self.icn_bl0
                                  ,active = self.icn_bl1
                                  )
-        # A button to toggle dictionary prioritization
+        # A button to toggle subject prioritization
         self.btn_pri = sh.Button (parent = self.frm_btn
                                  ,text = _('Prioritize')
                                  ,hint = _('Configure prioritization')
                                  ,inactive = self.icn_pr0
                                  ,active = self.icn_pr1
                                  )
-        # A button to toggle dictionary alphabetization
+        # A button to toggle subject alphabetization
         self.btn_alp = sh.Button (parent = self.frm_btn
                                  ,text = _('Alphabetize')
                                  ,hint = _('Toggle alphabetizing')
@@ -811,7 +811,7 @@ class Settings:
         self.set_gui()
 
     def set_values(self):
-        self.items = (_('Dictionaries')
+        self.items = (_('Subjects')
                      ,_('Word forms')
                      ,_('Transcription')
                      ,_('Parts of speech')
@@ -835,9 +835,9 @@ class Settings:
         if self.opt_cl1.choice != _('Do not set'):
             if self.opt_cl1.choice in self.allowed:
                 self.allowed.remove(self.opt_cl1.choice)
-            elif _('Dictionaries') in self.allowed:
-                self.opt_cl1.set(_('Dictionaries'))
-                self.allowed.remove(_('Dictionaries'))
+            elif _('Subjects') in self.allowed:
+                self.opt_cl1.set(_('Subjects'))
+                self.allowed.remove(_('Subjects'))
             elif self.allowed:
                 self.opt_cl1.set(self.allowed[0])
                 self.allowed.remove(self.allowed[0])
@@ -891,7 +891,7 @@ class Settings:
                 sh.objs.get_mes(f,mes).show_error()
 
     def update_sc(self,event=None):
-        cond11 = self.opt_cl1.choice == _('Dictionaries')
+        cond11 = self.opt_cl1.choice == _('Subjects')
         cond12 = self.opt_cl1.choice == _('Word forms')
         cond13 = self.opt_cl1.choice == _('Parts of speech')
         cond21 = self.opt_cl2.choice == _('Word forms')
@@ -900,7 +900,7 @@ class Settings:
         cond32 = self.opt_cl3.choice == _('Parts of speech')
         cond33 = self.opt_cl3.choice == _('Do not set')
         cond41 = self.opt_cl4.choice == _('Parts of speech')
-        cond42 = self.opt_cl4.choice == _('Dictionaries')
+        cond42 = self.opt_cl4.choice == _('Subjects')
         cond43 = self.opt_cl4.choice == _('Do not set')
 
         if cond11 and cond21 and cond31 and cond41:
@@ -917,7 +917,7 @@ class Settings:
     def update_by_sc(self,event=None):
         f = '[MClient] gui.Settings.update_by_sc'
         if self.opt_scm.choice == PRODUCT:
-            self.opt_cl1.set(_('Dictionaries'))
+            self.opt_cl1.set(_('Subjects'))
             self.opt_cl2.set(_('Word forms'))
             self.opt_cl3.set(_('Transcription'))
             self.opt_cl4.set(_('Parts of speech'))
@@ -925,12 +925,12 @@ class Settings:
             self.opt_cl1.set(_('Word forms'))
             self.opt_cl2.set(_('Transcription'))
             self.opt_cl3.set(_('Parts of speech'))
-            self.opt_cl4.set(_('Dictionaries'))
+            self.opt_cl4.set(_('Subjects'))
         elif self.opt_scm.choice == _('Cut to the chase'):
             self.opt_cl1.set(_('Parts of speech'))
             self.opt_cl2.set(_('Word forms'))
             self.opt_cl3.set(_('Transcription'))
-            self.opt_cl4.set(_('Dictionaries'))
+            self.opt_cl4.set(_('Subjects'))
         elif self.opt_scm.choice == _('Clearness'):
             self.opt_cl1.set(_('Parts of speech'))
             self.opt_cl2.set(_('Word forms'))
@@ -1109,7 +1109,7 @@ class Settings:
 
     def reset(self,event=None):
         self.opt_scm.set(PRODUCT)
-        self.opt_cl1.set(_('Dictionaries'))
+        self.opt_cl1.set(_('Subjects'))
         self.opt_cl2.set(_('Word forms'))
         self.opt_cl3.set(_('Parts of speech'))
         self.opt_cl4.set(_('Transcription'))
@@ -1346,11 +1346,11 @@ class Settings:
                                 ,side = 'left'
                                 )
         self.lbl_no3 = sh.Label (parent = self.frm_cb3
-                                ,text = _('Block dictionaries from blacklist')
+                                ,text = _('Block subjects from blacklist')
                                 ,side = 'left'
                                 )
         self.lbl_no4 = sh.Label (parent = self.frm_cb4
-                                ,text = _('Prioritize dictionaries')
+                                ,text = _('Prioritize subjects')
                                 ,side = 'left'
                                 )
         self.lbl_no5 = sh.Label (parent = self.frm_cb5
@@ -1358,7 +1358,7 @@ class Settings:
                                 ,side = 'left'
                                 )
         self.lbl_no6 = sh.Label (parent = self.frm_cb6
-                                ,text = _('Shorten dictionary titles')
+                                ,text = _('Shorten subject titles')
                                 ,side = 'left'
                                 )
         self.lbl_no7 = sh.Label (parent = self.frm_cb7
@@ -1464,7 +1464,7 @@ class Settings:
                                      ,items = self.items
                                      ,side = 'bottom'
                                      ,action = self.update_by_col1
-                                     ,default = _('Dictionaries')
+                                     ,default = _('Subjects')
                                      )
         self.opt_cl2 = sh.OptionMenu (parent = self.frm_cl2
                                      ,items = self.items

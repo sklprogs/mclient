@@ -8,7 +8,7 @@ import skl_shared.shared as sh
 
 
 ''' Tag patterns:
-    •  Short dictionary titles:
+    •  Short subject titles:
          <td class="subj" width="1"><a href="/m.exe?a=110&amp;l1=1&amp;l2=2&amp;s=computer&amp;sc=197">astronaut.</a>
          td class="subj"
          <td class="phraselist0"><i><a href="/m.exe?a=110&l1=2&l2=1&s=акушерская конъюгата">мед.</a></i></td>
@@ -130,7 +130,7 @@ class AnalyzeTag:
         or 'class="phraselist2"' in self.tag.text
     
     def _is_dic(self):
-        # An abbreviated dictionary title
+        # An abbreviated subject title
         return 'class="subj"' in self.tag.text \
         or 'class="phraselist0"' in self.tag.text
     

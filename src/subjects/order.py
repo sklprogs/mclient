@@ -29,7 +29,7 @@ class Order:
         f = '[MClient] subjects.order.Order.conform'
         ''' - Create new block and priority lists based on those that
               were read from user files. Lists from user files may
-              comprise either full or short dictionary titles.
+              comprise either full or short subject titles.
               New lists will be lowercased and stripped and will
               comprise both full and short titles.
             - We recreate lists in order to preserve the short + full

@@ -406,7 +406,7 @@ class HTM:
             self.output.write('</td></tr></table>')
         elif self.skipped:
             self.output.write('<h1>')
-            mes = _('Nothing has been found (skipped dictionaries: {}).')
+            mes = _('Nothing has been found (skipped subjects: {}).')
             mes = mes.format(self.skipped)
             self.output.write(mes)
             self.output.write('</h1>')

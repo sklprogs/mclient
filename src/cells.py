@@ -201,9 +201,9 @@ class BlockPrioritize:
                     ''' - This value should be set irrespectively of
                           'self.Prioritize'.
                         - Set the (presumably) lowest priority for
-                          a 'Phrases' dictionary. This must be
+                          a 'Phrases' subject. This must be
                           quite a small value as not to conflict
-                          with other dictionaries.
+                          with other subjects.
                     '''
                     block.dprior = -1000
                 elif self.Prioritize:
@@ -267,7 +267,7 @@ class Cells:
         
     def clear_phrases(self):
         ''' The 'Phrases' section comes the latest in MT, therefore,
-            it inherits fixed columns of the preceding dictionary which
+            it inherits fixed columns of the preceding subject which
             are irrelevant. Here we clear them.
         '''
         if self.phdic:

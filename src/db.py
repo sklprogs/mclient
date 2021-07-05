@@ -221,7 +221,7 @@ class DB:
 
     def is_present(self,source,title,url):
         ''' We also need to pass URL in case History has two phrase
-            dictionary titles of the same name.
+            subject titles of the same name.
             URL will be empty for local dictionaries so we need to pass
             TITLE as well.
             #NOTE: add LANG1 and LANG2 when pairs are enabled for local
@@ -330,8 +330,8 @@ class DB:
             if item == 'dic':
                 query.append('DICPR desc')
                 #TODO: Is sorting by DICPR is enough here?
-                ''' Full and short dictionary titles can be
-                    sorted differently, for example, in case of
+                ''' Full and short subject titles can be sorted
+                    differently, for example, in case of
                     'файл.расшир.' -> 'Расширение файла'
                 '''
                 if self.ExpandDic:

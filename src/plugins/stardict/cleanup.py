@@ -189,7 +189,7 @@ class Type1:
                 self.tags.append('<dic>' + block + '</dic>')
             elif block in dic_titles:
                 self.tags.append('<dic>' + block + '</dic>')
-                ''' #TODO: create a 'Synonyms' dictionary, split items
+                ''' #TODO: create a 'Synonyms' subject, split items
                     after it and set 'term' type to them
                 '''
             elif block.startswith('(') or '≈' in block or 'Syn :' \

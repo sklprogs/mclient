@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-04 23:40+0300\n"
-"PO-Revision-Date: 2021-07-04 23:41+0300\n"
+"POT-Creation-Date: 2021-07-05 19:13+0300\n"
+"PO-Revision-Date: 2021-07-05 19:14+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -72,7 +72,7 @@ msgstr "Связаться с автором"
 msgid "Draft an email to the author"
 msgstr "Написать письмо автору"
 
-#: mclient/src/cells.py:97 mclient/src/plugins/dsl/get.py:49
+#: mclient/src/cells.py:96 mclient/src/plugins/dsl/get.py:49
 #: mclient/src/plugins/dsl/tags.py:125 mclient/src/plugins/dsl/tags.py:294
 #: mclient/src/plugins/multitrancom/tags.py:356
 #: mclient/src/plugins/multitrancom/tags.py:432
@@ -84,7 +84,7 @@ msgstr "Написать письмо автору"
 msgid "#"
 msgstr "№"
 
-#: mclient/src/cells.py:97
+#: mclient/src/cells.py:96
 #: mclient/src/plugins/multitrancom/utils/subjects/compile.py:34
 #: mclient/src/plugins/multitrancom/utils/subjects/compile.py:72
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:477
@@ -92,23 +92,23 @@ msgstr "№"
 msgid "KEY"
 msgstr "КЛЮЧ"
 
-#: mclient/src/cells.py:97
+#: mclient/src/cells.py:96
 msgid "BLOCKED"
 msgstr "ЗАБЛОКИРОВАНО"
 
-#: mclient/src/cells.py:97 mclient/src/logic.py:746
+#: mclient/src/cells.py:96 mclient/src/logic.py:746
 msgid "PRIORITY"
 msgstr "ПРИОРИТЕТ"
 
-#: mclient/src/cells.py:122
+#: mclient/src/cells.py:121
 msgid "A priority of the part of speech \"{}\" is not defined!"
 msgstr "Приоритет части речи \"{}\" не определен!"
 
-#: mclient/src/cells.py:531
+#: mclient/src/cells.py:532
 msgid "An unsupported part of speech: \"{}\"!"
 msgstr "Неподдерживая часть речи: \"{}\"!"
 
-#: mclient/src/cells.py:660
+#: mclient/src/cells.py:661
 msgid "Unable to find: {}"
 msgstr "Не удалось найти: {}"
 
@@ -146,10 +146,10 @@ msgid "Delete records of article No. {} from {}"
 msgstr "Удаление записей статьи №{} из {}"
 
 #: mclient/src/db.py:952 mclient/src/mclient.py:449 mclient/src/mclient.py:970
-#: mclient/src/mclient.py:2080 mclient/src/mclient.py:2209
-#: mclient/src/mclient.py:2221 mclient/src/mclient.py:2233
-#: mclient/src/mclient.py:2245 mclient/src/mclient.py:2748
-#: mclient/src/mclient.py:2756 mclient/src/plugins/multitrancom/pairs.py:2861
+#: mclient/src/mclient.py:2078 mclient/src/mclient.py:2178
+#: mclient/src/mclient.py:2190 mclient/src/mclient.py:2202
+#: mclient/src/mclient.py:2214 mclient/src/mclient.py:2716
+#: mclient/src/mclient.py:2724 mclient/src/plugins/multitrancom/pairs.py:2861
 #: mclient/src/plugins/multitrancom/utils/subjects/fix.py:29
 #: mclient/src/plugins/multitrandem/get.py:682
 #: mclient/src/plugins/multitrandem/get.py:698
@@ -387,7 +387,7 @@ msgstr "В браузере"
 msgid "Open the current article in a browser"
 msgstr "Открыть текущую статью в браузере"
 
-#: mclient/src/gui.py:664 mclient/src/mkhtml.py:115
+#: mclient/src/gui.py:664 mclient/src/mkhtml.py:113
 msgid "Print"
 msgstr "Печать"
 
@@ -428,8 +428,8 @@ msgstr "Выйти из программы"
 #: mclient/src/gui.py:920 mclient/src/gui.py:928 mclient/src/gui.py:933
 #: mclient/src/gui.py:1112 mclient/src/gui.py:1467 mclient/src/logic.py:141
 #: mclient/src/mclient.py:138 mclient/src/mclient.py:149
-msgid "Dictionaries"
-msgstr "Словари"
+msgid "Subjects"
+msgstr "Тематики"
 
 #: mclient/src/gui.py:815 mclient/src/gui.py:853 mclient/src/gui.py:854
 #: mclient/src/gui.py:855 mclient/src/gui.py:895 mclient/src/gui.py:897
@@ -460,8 +460,8 @@ msgstr "Части речи"
 #: mclient/src/gui.py:818 mclient/src/gui.py:835 mclient/src/gui.py:850
 #: mclient/src/gui.py:865 mclient/src/gui.py:880 mclient/src/gui.py:901
 #: mclient/src/gui.py:904 mclient/src/gui.py:937 mclient/src/gui.py:938
-#: mclient/src/mclient.py:130 mclient/src/mclient.py:2500
-#: mclient/src/mclient.py:2636
+#: mclient/src/mclient.py:130 mclient/src/mclient.py:2469
+#: mclient/src/mclient.py:2604
 msgid "Do not set"
 msgstr "Не задано"
 
@@ -542,8 +542,8 @@ msgstr "Местоимение"
 msgid "Empty input is not allowed!"
 msgstr "Пустые входные данные не допускаются!"
 
-#: mclient/src/gui.py:1061 mclient/src/gui.py:1066 mclient/src/mclient.py:2839
-#: mclient/src/mclient.py:2844 mclient/src/plugins/multitrandem/utils.py:525
+#: mclient/src/gui.py:1061 mclient/src/gui.py:1066 mclient/src/mclient.py:2774
+#: mclient/src/mclient.py:2779 mclient/src/plugins/multitrandem/utils.py:525
 #: skl_shared/src/logic.py:4836
 msgid "Not implemented yet!"
 msgstr "Еще не реализовано!"
@@ -578,20 +578,20 @@ msgid "Alphabetize terms"
 msgstr "Сортировать термины по алфавиту"
 
 #: mclient/src/gui.py:1349
-msgid "Block dictionaries from blacklist"
-msgstr "Блокировать словари из черного списка"
+msgid "Block subjects from blacklist"
+msgstr "Блокировать тематики из черного списка"
 
-#: mclient/src/gui.py:1353
-msgid "Prioritize dictionaries"
-msgstr "Сортировать словари по приоритету"
+#: mclient/src/gui.py:1353 mclient/src/subjects/priorities/gui.py:56
+msgid "Prioritize subjects"
+msgstr "Приоритизировать тематики"
 
 #: mclient/src/gui.py:1357
 msgid "Vertical view"
 msgstr "Вертикальный вид"
 
 #: mclient/src/gui.py:1361
-msgid "Shorten dictionary titles"
-msgstr "Сокращать заголовки словарей"
+msgid "Shorten subject titles"
+msgstr "Сокращать заголовки тематик"
 
 #: mclient/src/gui.py:1365
 msgid "Shorten parts of speech"
@@ -919,8 +919,8 @@ msgstr ""
 "целесообразно"
 
 #: mclient/src/logic.py:209
-msgid "[Autosave] Block dictionaries from the blacklist"
-msgstr "[Автосохранение] Блокировать словари из черного списка"
+msgid "[Autosave] Block subjects from the blacklist"
+msgstr "[Автосохранение] Блокировать тематики из черного списка"
 
 #: mclient/src/logic.py:213
 msgid "[Autosave] Capture Ctrl-c-c and Ctrl-Ins-Ins system-wide"
@@ -940,9 +940,10 @@ msgid "[Autosave] Show a phrase count"
 msgstr "[Автосохранение] Показывать счетчик фраз"
 
 #: mclient/src/logic.py:225
-msgid "[Autosave] Prioritize dictionaries from the prioritization file"
+msgid "[Autosave] Prioritize subjects from the prioritization file"
 msgstr ""
-"[Автосохранение] Сортировать словари по приоритету согласно файлу приоритетов"
+"[Автосохранение] Сортировать тематики по приоритету согласно файлу "
+"приоритетов"
 
 #: mclient/src/logic.py:229
 msgid "[Autosave] Select blocks of all types (False) or terms only (True)"
@@ -950,8 +951,8 @@ msgstr ""
 "[Автосохранение] Выделять блоки всех типов (False) или только термины (True)"
 
 #: mclient/src/logic.py:233
-msgid "[Autosave] Shorten dictionary titles"
-msgstr "[Автосохранение] Сокращать заголовки словарей"
+msgid "[Autosave] Shorten subject titles"
+msgstr "[Автосохранение] Сокращать названия тематик"
 
 #: mclient/src/logic.py:237
 msgid "[Autosave] Shorten parts of speech"
@@ -1233,16 +1234,16 @@ msgid "ABBREVIATION"
 msgstr "АББРЕВИАТУРА"
 
 #: mclient/src/logic.py:798 mclient/src/mclient.py:112
-#: mclient/src/mclient.py:2283 mclient/src/mclient.py:2295
-#: mclient/src/mclient.py:2307 mclient/src/mclient.py:2319
+#: mclient/src/mclient.py:2252 mclient/src/mclient.py:2264
+#: mclient/src/mclient.py:2276 mclient/src/mclient.py:2288
 #: mclient/src/plugins/dsl/get.py:399 mclient/src/plugins/dsl/get.py:416
 #: mclient/src/plugins/dsl/get.py:433 mclient/src/plugins/dsl/get.py:441
 #: mclient/src/plugins/dsl/tags.py:142
-#: mclient/src/plugins/multitrancom/groups.py:31164
 #: mclient/src/plugins/multitrancom/pairs.py:2790
 #: mclient/src/plugins/multitrancom/pairs.py:2810
 #: mclient/src/plugins/multitrancom/run.py:100
 #: mclient/src/plugins/multitrancom/run.py:111
+#: mclient/src/plugins/multitrancom/subjects.py:31164
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:363
 #: mclient/src/plugins/multitrancom/utils/utils.py:164
 #: mclient/src/plugins/multitrandem/elems.py:135
@@ -1254,8 +1255,8 @@ msgstr "АББРЕВИАТУРА"
 #: mclient/src/plugins/multitrandem/get.py:1828
 #: mclient/src/plugins/multitrandem/tags.py:168
 #: mclient/src/plugins/multitrandem/tests.py:190
-#: mclient/src/subjects/blacklist/controller.py:54
-#: mclient/src/subjects/priorities/controller.py:54 skl_shared/src/logic.py:608
+#: mclient/src/subjects/blacklist/controller.py:56
+#: mclient/src/subjects/priorities/controller.py:56 skl_shared/src/logic.py:608
 #: skl_shared/src/logic.py:636 skl_shared/src/logic.py:2329
 #: skl_shared/src/logic.py:2801 skl_shared/src/logic.py:4537
 #: skl_shared/src/logic.py:4697 skl_shared/src/logic.py:4731
@@ -1270,7 +1271,7 @@ msgid "Phrase"
 msgstr "Фраза"
 
 #: mclient/src/logic.py:825 mclient/src/logic.py:831
-#: mclient/src/mclient.py:2659 mclient/src/plugins/dsl/cleanup.py:109
+#: mclient/src/mclient.py:2627 mclient/src/plugins/dsl/cleanup.py:109
 #: mclient/src/plugins/dsl/get.py:222
 #: mclient/src/plugins/multitrancom/utils/subjects/compile.py:136
 #: mclient/src/plugins/multitrancom/utils/utils.py:68
@@ -1644,7 +1645,7 @@ msgstr "Достигнут конец. Поиск производится с н
 msgid "The start has been reached. Searching from the end."
 msgstr "Достигнуто начало. Поиск производится с конца."
 
-#: mclient/src/mclient.py:953 mclient/src/mclient.py:2184
+#: mclient/src/mclient.py:953 mclient/src/mclient.py:2153
 msgid "Set source to \"{}\""
 msgstr "Выбран источник \"{}\""
 
@@ -1688,92 +1689,68 @@ msgstr "Ничего еще не загружено."
 msgid "Load article No. {} from memory"
 msgstr "Загрузка статьи №{} из памяти"
 
-#: mclient/src/mclient.py:2107
-msgid ""
-"Selected dictionary: \"{}\". Previous dictionary: \"{}\" (short title), "
-"\"{}\" (full title)."
-msgstr ""
-"Выбран словарь: \"{}\". Предыдущий словарь: \"{}\" (сокращенное название), "
-"\"{}\" (полное название)."
-
-#: mclient/src/mclient.py:2112
-msgid "No previous dictionary."
-msgstr "Предыдущего словаря нет."
-
-#: mclient/src/mclient.py:2153
+#: mclient/src/mclient.py:2122
 msgid "Open link: {}"
 msgstr "Открывается ссылка: {}"
 
-#: mclient/src/mclient.py:2370
+#: mclient/src/mclient.py:2339
 msgid "This block does not contain any text!"
 msgstr "Этот блок не содержит текста!"
 
-#: mclient/src/mclient.py:2391
+#: mclient/src/mclient.py:2360
 msgid "This block does not contain a URL!"
 msgstr "Этот блок не содержит URL!"
 
-#: mclient/src/mclient.py:2404
+#: mclient/src/mclient.py:2373
 msgid "what is \"{}\"?"
 msgstr "что такое \"{}\"?"
 
-#: mclient/src/mclient.py:2458
+#: mclient/src/mclient.py:2427
 msgid "The request is long ({} symbols). Do you really want to send it?"
 msgstr "Запрос длинный ({} символов). Отправить?"
 
-#: mclient/src/mclient.py:2476 mclient/src/mclient.py:2488
+#: mclient/src/mclient.py:2445 mclient/src/mclient.py:2457
 msgid "Set language: {}"
 msgstr "Установка языка: \"{}\""
 
-#: mclient/src/mclient.py:2506
+#: mclient/src/mclient.py:2475
 msgid "Set the number of columns to {}"
 msgstr "Задать число столбцов: {}"
 
-#: mclient/src/mclient.py:2545
-msgid "No dictionaries have been provided for blacklisting!"
-msgstr "Список блокируемых словарей пуст!"
+#: mclient/src/mclient.py:2514
+msgid "No subjects have been provided for blacklisting!"
+msgstr "Список блокируемых тематик пуст!"
 
-#: mclient/src/mclient.py:2602
-msgid "No dictionaries have been provided for prioritizing!"
-msgstr "Список приоритетных словарей пуст!"
+#: mclient/src/mclient.py:2571
+msgid "No subjects have been provided for prioritizing!"
+msgstr "Список приоритетных тематик пуст!"
 
-#: mclient/src/mclient.py:2652
+#: mclient/src/mclient.py:2620
 msgid "Set the column limit to {} ({} in total)"
 msgstr "Задать максимальное число столбцов: {} (всего: {})"
 
-#: mclient/src/mclient.py:2666
+#: mclient/src/mclient.py:2634
 msgid "Select column \"{}\" instead of \"{}\""
 msgstr "Выбор столбца \"{}\" вместо \"{}\""
 
-#: mclient/src/mclient.py:2744
+#: mclient/src/mclient.py:2712
 msgid "Load bookmark {} for article #{}"
 msgstr "Загрузка закладки {} для статьи №{}"
 
-#: mclient/src/mclient.py:2772
-msgid ""
-"Selected dictionary: \"{}\". Next dictionary: \"{}\" (short title), "
-"\"{}\" (full title)."
-msgstr ""
-"Выбран словарь: \"{}\". Следующий словарь: \"{}\" (сокращенное название), "
-"\"{}\" (полное название)."
-
-#: mclient/src/mclient.py:2777
-msgid "Selected dictionary: \"{}\". No next dictionary."
-msgstr "Выбран словарь: \"{}\". Следующего словаря нет."
-
-#: mclient/src/mclient.py:3014
+#: mclient/src/mclient.py:2949
 msgid "Unable to continue due to an invalid configuration."
 msgstr "Невозможно продолжить ввиду некорректной конфигурации."
 
-#: mclient/src/mclient.py:3017 mclient/src/plugins/multitrandem/utils.py:947
+#: mclient/src/mclient.py:2952 mclient/src/plugins/multitrandem/utils.py:947
 #: mclient/src/plugins/multitrandem/utils.py:1422
 msgid "Goodbye!"
 msgstr "До свидания!"
 
-#: mclient/src/mkhtml.py:411
-msgid "Nothing has been found (skipped dictionaries: {})."
-msgstr "Ничего не найдено (игнорировано словарей: {})."
+#: mclient/src/mkhtml.py:409
+msgid "Nothing has been found (skipped subjects: {})."
+msgstr "Ничего не найдено (игнорировано тематик: {})."
 
-#: mclient/src/mkhtml.py:417
+#: mclient/src/mkhtml.py:415
 msgid "Nothing has been found."
 msgstr "Ничего не найдено."
 
@@ -1791,7 +1768,7 @@ msgid "{} matches"
 msgstr "{} совпадений"
 
 #: mclient/src/plugins/dsl/elems.py:176
-#: mclient/src/plugins/stardict/elems.py:143
+#: mclient/src/plugins/stardict/elems.py:142
 #: mclient/src/plugins/stardict/tags.py:266
 msgid "Non-DB blocks:"
 msgstr "Блоки не из БД:"
@@ -1805,8 +1782,8 @@ msgid "SEARCH"
 msgstr "ЗАПРОС"
 
 #: mclient/src/plugins/dsl/get.py:49
-msgid "DICTIONARY"
-msgstr "СЛОВАРЬ"
+msgid "SUBJECT"
+msgstr "ТЕМАТИКА"
 
 #: mclient/src/plugins/dsl/get.py:49
 msgid "CODE"
@@ -15492,17 +15469,17 @@ msgstr "Нет совпадений для \"{}\"!"
 msgid "Load Stardict dictionaries ({}/{})"
 msgstr "Загрузка словарей Stardict ({}/{})"
 
-#: mclient/src/subjects/blacklist/controller.py:88
-#: mclient/src/subjects/blacklist/controller.py:122
-#: mclient/src/subjects/priorities/controller.py:88
-#: mclient/src/subjects/priorities/controller.py:122
+#: mclient/src/subjects/blacklist/controller.py:90
+#: mclient/src/subjects/blacklist/controller.py:124
+#: mclient/src/subjects/priorities/controller.py:90
+#: mclient/src/subjects/priorities/controller.py:124
 msgid "An external function is not set!"
 msgstr "Внешняя функция не задана!"
 
-#: mclient/src/subjects/blacklist/controller.py:155
-#: mclient/src/subjects/blacklist/controller.py:166
-#: mclient/src/subjects/priorities/controller.py:173
-#: mclient/src/subjects/priorities/controller.py:184
+#: mclient/src/subjects/blacklist/controller.py:157
+#: mclient/src/subjects/blacklist/controller.py:168
+#: mclient/src/subjects/priorities/controller.py:175
+#: mclient/src/subjects/priorities/controller.py:186
 #: skl_shared/src/logic.py:2179 skl_shared/src/logic.py:2325
 #: skl_shared/src/logic.py:2850 skl_shared/src/logic.py:2876
 #: skl_shared/src/logic.py:2960 skl_shared/src/logic.py:3579
@@ -15585,10 +15562,6 @@ msgstr "Из статьи"
 #: mclient/src/subjects/priorities/gui.py:293
 msgid "Show subjects from the current article"
 msgstr "Показать тематики из текущей статьи"
-
-#: mclient/src/subjects/priorities/gui.py:56
-msgid "Prioritize subjects"
-msgstr "Приоритизировать тематики"
 
 #: mclient/src/subjects/priorities/gui.py:181
 msgid "Prioritize selection on the right"
@@ -16513,6 +16486,61 @@ msgstr ""
 #: skl_shared/src/tests.py:1142
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
+
+#~ msgid "Dictionaries"
+#~ msgstr "Словари"
+
+#~ msgid "Block dictionaries from blacklist"
+#~ msgstr "Блокировать словари из черного списка"
+
+#~ msgid "Prioritize dictionaries"
+#~ msgstr "Сортировать словари по приоритету"
+
+#~ msgid "[Autosave] Block dictionaries from the blacklist"
+#~ msgstr "[Автосохранение] Блокировать словари из черного списка"
+
+#~ msgid "[Autosave] Prioritize dictionaries from the prioritization file"
+#~ msgstr ""
+#~ "[Автосохранение] Сортировать словари по приоритету согласно файлу "
+#~ "приоритетов"
+
+#~ msgid "[Autosave] Shorten dictionary titles"
+#~ msgstr "[Автосохранение] Сокращать заголовки словарей"
+
+#~ msgid "No dictionaries have been provided for blacklisting!"
+#~ msgstr "Список блокируемых словарей пуст!"
+
+#~ msgid "No dictionaries have been provided for prioritizing!"
+#~ msgstr "Список приоритетных словарей пуст!"
+
+#~ msgid "Nothing has been found (skipped dictionaries: {})."
+#~ msgstr "Ничего не найдено (игнорировано словарей: {})."
+
+#~ msgid "DICTIONARY"
+#~ msgstr "СЛОВАРЬ"
+
+#~ msgid "Shorten dictionary titles"
+#~ msgstr "Сокращать заголовки словарей"
+
+#~ msgid ""
+#~ "Selected dictionary: \"{}\". Previous dictionary: \"{}\" (short title), "
+#~ "\"{}\" (full title)."
+#~ msgstr ""
+#~ "Выбран словарь: \"{}\". Предыдущий словарь: \"{}\" (сокращенное "
+#~ "название), \"{}\" (полное название)."
+
+#~ msgid "No previous dictionary."
+#~ msgstr "Предыдущего словаря нет."
+
+#~ msgid ""
+#~ "Selected dictionary: \"{}\". Next dictionary: \"{}\" (short title), "
+#~ "\"{}\" (full title)."
+#~ msgstr ""
+#~ "Выбран словарь: \"{}\". Следующий словарь: \"{}\" (сокращенное название), "
+#~ "\"{}\" (полное название)."
+
+#~ msgid "Selected dictionary: \"{}\". No next dictionary."
+#~ msgstr "Выбран словарь: \"{}\". Следующего словаря нет."
 
 #~ msgid "FULL TITLE"
 #~ msgstr "ПОЛНОЕ НАЗВАНИЕ"
