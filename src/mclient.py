@@ -2001,7 +2001,6 @@ class WebFrame:
         data = objs.blocksdb.assign_bp()
         spdic = lg.objs.speech_prior.get_all2prior()
         bp = cl.BlockPrioritize (data = data
-                                ,order = lg.objs.get_order()
                                 ,Block = sh.lg.globs['bool']['BlockDics']
                                 ,Prioritize = sh.lg.globs['bool']['PrioritizeDics']
                                 ,phdic = self.phdic
@@ -2037,7 +2036,6 @@ class WebFrame:
         mh.objs.get_htm().reset (data = objs.blocksdb.fetch()
                                 ,cols = lg.objs.request.cols
                                 ,collimit = lg.objs.request.collimit
-                                ,order = lg.objs.get_order()
                                 ,width = sh.lg.globs['int']['col_width']
                                 ,Reverse = sh.lg.globs['bool']['VerticalView']
                                 ,phdic = self.phdic

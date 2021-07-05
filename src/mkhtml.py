@@ -4,6 +4,7 @@
 import io
 from skl_shared.localize import _
 import skl_shared.shared as sh
+import logic as lg
 
 
 # Shortened
@@ -40,10 +41,8 @@ class HTM:
             self.output.write(c)
     
     # 'collimit' includes fixed blocks
-    def reset (self,data,cols,order
-              ,collimit=9,Printer=False
-              ,Reverse=False,width=0
-              ,phdic='',skipped=0
+    def reset (self,data,cols,collimit=9,Printer=False
+              ,Reverse=False,width=0,phdic='',skipped=0
               ,max_syms=30
               ):
         self.set_values()
@@ -55,7 +54,6 @@ class HTM:
             #TODO: calculate font width to be more precise
         '''
         self.maxsyms = max_syms
-        self.order = order
         self.phdic = phdic
         self.Printer = Printer
         self.Reverse = Reverse
@@ -198,12 +196,12 @@ class HTM:
 
     def _is_blocked(self,lst):
         for item in lst:
-            if self.order.is_blocked(item):
+            if lg.objs.get_order().is_blocked(item):
                 return True
     
     def _is_prioritized(self,lst):
         for item in lst:
-            if self.order.is_prioritized(item):
+            if lg.objs.get_order().is_prioritized(item):
                 return True
     
     def _run_dic(self):

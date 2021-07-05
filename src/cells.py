@@ -2,8 +2,9 @@
 # -*- coding: UTF-8 -*-
 
 import io
-import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.shared as sh
+import logic as lg
 
 
 # Extended from tags.Block
@@ -41,9 +42,8 @@ class BlockPrioritize:
         * (test purposes only).
         Modifies attributes: BLOCK, DICPR, SPEECHPR
     '''
-    def __init__(self,data,order,Block=False
-                ,Prioritize=False,phdic=None
-                ,Debug=False,maxrows=1000
+    def __init__(self,data,Block=False,Prioritize=False
+                ,phdic=None,Debug=False,maxrows=1000
                 ,spdic={}
                 ):
         f = '[MClient] cells.BlockPrioritize.__init__'
@@ -53,7 +53,6 @@ class BlockPrioritize:
         self.data = data
         self.Debug = Debug
         self.maxrows = maxrows
-        self.order = order
         self.phdic = phdic
         self.Prioritize = Prioritize
         self.query = ''
@@ -153,13 +152,13 @@ class BlockPrioritize:
     
     def _is_blocked(self,lst):
         for item in lst:
-            if self.order.is_blocked(item):
+            if lg.objs.get_order().is_blocked(item):
                 return True
     
     def _get_priority(self,lst):
         priorities = []
         for item in lst:
-            priorities.append(self.order.get_priority(item))
+            priorities.append(lg.objs.get_order().get_priority(item))
         # An error will be thrown on an empty list
         try:
             return max(priorities)
