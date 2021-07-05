@@ -573,8 +573,8 @@ def call_app():
     '''
     objs.get_webframe().gui.ent_src.widget.focus_force()
 
-# Capture Control-c-c
 def run_timed_update():
+    # Capture Control-c-c
     lg.objs.get_request().MouseClicked = False
     check = kl.keylistener.check()
     if check:
@@ -729,9 +729,8 @@ class SaveArticle:
 
 
 
-# Search IN an article
 class SearchArticle:
-
+    # Search IN an article
     def __init__(self):
         self.gui = None
         self.reset()
@@ -1240,8 +1239,8 @@ class WebFrame:
         else:
             sh.com.rep_empty(f)
     
-    # Insert the previous search string
     def insert_repeat_sign2(self,event=None):
+        # Insert the previous search string
         f = '[MClient] mclient.WebFrame.insert_repeat_sign2'
         result = objs.get_blocksdb().get_prev_id()
         if result:
@@ -1257,8 +1256,8 @@ class WebFrame:
         else:
             sh.com.rep_empty(f)
     
-    # Insert the current search string
     def insert_repeat_sign(self,event=None):
+        # Insert the current search string
         sh.Clipboard().copy(lg.objs.get_request().search)
         self.gui.paste_search()
         
@@ -2104,16 +2103,16 @@ class WebFrame:
             lg.objs.get_request().search = search
             self.go_search()
     
-    # Process either the search string or the URL
     def go(self,event=None,Mouse=False):
+        # Process either the search string or the URL
         f = '[MClient] mclient.WebFrame.go'
         if Mouse:
             self.go_url()
         else:
             self.go_keyboard()
 
-    # Follow the URL of the current block
     def go_url(self,event=None):
+        # Follow the URL of the current block
         f = '[MClient] mclient.WebFrame.go_url'
         if not lg.objs.get_request().MouseClicked:
             url = objs.get_blocksdb().get_url(self.pos)
@@ -2166,9 +2165,9 @@ class WebFrame:
         mes = lg.objs.request.url
         sh.objs.get_mes(f,mes,True).show_debug()
 
-    #TODO: move 'move_*' procedures to Moves class
-    # Go to the 1st term of the current row
     def move_line_start(self,event=None):
+        # Go to the 1st term of the current row
+        #TODO: move 'move_*' procedures to Moves class
         f = '[MClient] mclient.WebFrame.move_line_start'
         result = objs.get_blocksdb().get_line_start(self.pos)
         if str(result).isdigit():
@@ -2179,8 +2178,8 @@ class WebFrame:
             mes = _('Wrong input data!')
             sh.objs.get_mes(f,mes,True).show_warning()
 
-    # Go to the last term of the current row
     def move_line_end(self,event=None):
+        # Go to the last term of the current row
         f = '[MClient] mclient.WebFrame.move_line_end'
         result = objs.get_blocksdb().get_line_end(self.pos)
         if str(result).isdigit():
@@ -2191,8 +2190,8 @@ class WebFrame:
             mes = _('Wrong input data!')
             sh.objs.get_mes(f,mes,True).show_warning()
 
-    # Go to the 1st (non-)selectable block
     def move_text_start(self,event=None):
+        # Go to the 1st (non-)selectable block
         f = '[MClient] mclient.WebFrame.move_text_start'
         result = objs.get_blocksdb().get_start()
         if str(result).isdigit():
@@ -2203,8 +2202,8 @@ class WebFrame:
             mes = _('Wrong input data!')
             sh.objs.get_mes(f,mes,True).show_warning()
 
-    # Go to the last term in the article
     def move_text_end(self,event=None):
+        # Go to the last term in the article
         f = '[MClient] mclient.WebFrame.move_text_end'
         result = objs.get_blocksdb().get_end()
         if str(result).isdigit():
@@ -2215,8 +2214,8 @@ class WebFrame:
             mes = _('Wrong input data!')
             sh.objs.get_mes(f,mes,True).show_warning()
 
-    # Go to the previous page
     def move_page_up(self,event=None):
+        # Go to the previous page
         result = objs.get_blocksdb().get_sel(self.pos)
         height = self.gui.get_height()
         if result and height:
@@ -2228,8 +2227,8 @@ class WebFrame:
                 self.select()
                 self.shift_screen()
 
-    # Go to the next page
     def move_page_down(self,event=None):
+        # Go to the next page
         result = objs.get_blocksdb().get_sel(self.pos)
         height = self.gui.get_height()
         if result and height:
@@ -2241,8 +2240,8 @@ class WebFrame:
                 self.select()
                 self.shift_screen()
 
-    # Go to the previous term
     def move_left(self,event=None):
+        # Go to the previous term
         f = '[MClient] mclient.WebFrame.move_left'
         result = objs.get_blocksdb().get_left(self.pos)
         if str(result).isdigit():
@@ -2253,8 +2252,8 @@ class WebFrame:
             mes = _('Wrong input data: "{}"!').format(result)
             sh.objs.get_mes(f,mes,True).show_warning()
 
-    # Go to the next term
     def move_right(self,event=None):
+        # Go to the next term
         f = '[MClient] mclient.WebFrame.move_right'
         result = objs.get_blocksdb().get_right(self.pos)
         if str(result).isdigit():
@@ -2265,8 +2264,8 @@ class WebFrame:
             mes = _('Wrong input data: "{}"!').format(result)
             sh.objs.get_mes(f,mes,True).show_warning()
 
-    # Go to the next row
     def move_down(self,event=None):
+        # Go to the next row
         f = '[MClient] mclient.WebFrame.move_down'
         result = objs.get_blocksdb().get_down(self.pos)
         if str(result).isdigit():
@@ -2277,8 +2276,8 @@ class WebFrame:
             mes = _('Wrong input data: "{}"!').format(result)
             sh.objs.get_mes(f,mes,True).show_warning()
 
-    # Go to the previous row
     def move_up(self,event=None):
+        # Go to the previous row
         f = '[MClient] mclient.WebFrame.move_up'
         result = objs.get_blocksdb().get_up(self.pos)
         if str(result).isdigit():
@@ -2289,8 +2288,8 @@ class WebFrame:
             mes = _('Wrong input data: "{}"!').format(result)
             sh.objs.get_mes(f,mes,True).show_warning()
 
-    # Use mouse wheel to scroll screen
     def set_mouse_wheel(self,event):
+        # Use mouse wheel to scroll screen
         ''' #TODO: #FIX: too small delta in Windows
             delta is -120 in Windows XP, however, it is different in
             other versions.
@@ -2310,23 +2309,23 @@ class WebFrame:
                 self.move_up()
         return 'break'
 
-    # Watch clipboard
     def watch_clipboard(self,event=None):
+        # Watch clipboard
         if sh.lg.globs['bool']['CaptureHotkey']:
             sh.lg.globs['bool']['CaptureHotkey'] = False
         else:
             sh.lg.globs['bool']['CaptureHotkey'] = True
         self.update_buttons()
 
-    # Open URL of the current article in a browser
     def open_in_browser(self,event=None):
+        # Open URL of the current article in a browser
         ionline = sh.Online()
         url = lg.objs.get_request().url
         ionline.url = lg.objs.get_plugins().fix_url(url)
         ionline.browse()
 
-    # Copy text of the current block
     def copy_text(self,event=None):
+        # Copy text of the current block
         f = '[MClient] mclient.WebFrame.copy_text'
         text = objs.get_blocksdb().get_text(self.pos)
         if text:
@@ -2340,16 +2339,16 @@ class WebFrame:
             mes = _('This block does not contain any text!')
             sh.objs.get_mes(f,mes).show_warning()
 
-    # Copy URL of the current article
     def copy_url(self,event=None):
+        # Copy URL of the current article
         url = lg.objs.get_request().url
         url = lg.objs.get_plugins().fix_url(url)
         sh.Clipboard().copy(url)
         if sh.lg.globs['bool']['Iconify']:
             self.minimize()
 
-    # Copy URL of the selected block
     def copy_block_url(self,event=None):
+        # Copy URL of the selected block
         f = '[MClient] mclient.WebFrame.copy_block_url'
         url = objs.get_blocksdb().get_url(self.pos)
         if url:
@@ -2361,9 +2360,9 @@ class WebFrame:
             mes = _('This block does not contain a URL!')
             sh.objs.get_mes(f,mes).show_warning()
 
-    # Open a web-page with a definition of the current term
-    # Selected: True: Selected term; False: Article title
     def define(self,Selected=True):
+        # Open a web-page with a definition of the current term
+        # Selected: True: Selected term; False: Article title
         f = '[MClient] mclient.WebFrame.define'
         if Selected:
             result = objs.get_blocksdb().get_block_pos(self.pos)
@@ -2378,8 +2377,8 @@ class WebFrame:
         else:
             sh.com.rep_empty(f)
 
-    # Go to the previous search
     def go_back(self,event=None):
+        # Go to the previous search
         f = '[MClient] mclient.WebFrame.go_back'
         result = objs.get_blocksdb().get_prev_id()
         if result:
@@ -2399,8 +2398,8 @@ class WebFrame:
         else:
             sh.com.rep_empty(f)
 
-    # Go to the next search
     def go_forward(self,event=None):
+        # Go to the next search
         f = '[MClient] mclient.WebFrame.go_forward'
         result = objs.get_blocksdb().get_next_id()
         if result:
@@ -2420,8 +2419,8 @@ class WebFrame:
         else:
             sh.com.rep_empty(f)
 
-    # Confirm too long requests
     def control_length(self):
+        # Confirm too long requests
         f = '[MClient] mclient.WebFrame.control_length'
         Confirmed = True
         if len(lg.objs.get_request().search) >= 150:
@@ -2431,8 +2430,8 @@ class WebFrame:
                 Confirmed = False
         return Confirmed
 
-    # SearchArticle
     def search_reset(self,event=None):
+        # SearchArticle
         objs.get_search().reset()
         objs.search.get_next()
 
@@ -2672,8 +2671,8 @@ class WebFrame:
         else:
             sh.com.rep_empty(f)
         
-    # Go to the previous section of column #col_no
     def move_prev_section(self,event=None,col_no=0):
+        # Go to the previous section of column #col_no
         f = '[MClient] mclient.WebFrame.move_prev_section'
         col_no = self.ignore_column(col_no)
         result1 = objs.get_blocksdb().get_block_pos(self.pos)
