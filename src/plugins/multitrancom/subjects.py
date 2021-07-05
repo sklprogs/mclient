@@ -31050,7 +31050,7 @@ SUBJECTS = {'AI.':
            }
 
 
-class Groups:
+class Subjects:
     
     def __init__(self):
         self.lang = 'en'
@@ -31108,7 +31108,7 @@ class Groups:
         return title
     
     def set_lang(self):
-        f = '[MClient] plugins.multitrancom.groups.Groups.set_lang'
+        f = '[MClient] plugins.multitrancom.subjects.Subjects.set_lang'
         result = locale.getdefaultlocale()
         if result and result[0]:
             result = result[0]
@@ -31149,7 +31149,7 @@ class Groups:
     
     def get_list(self):
         # Takes ~0.15s on Intel Atom
-        f = '[MClient] plugins.multitrancom.groups.Groups.get_list'
+        f = '[MClient] plugins.multitrancom.subjects.Subjects.get_list'
         lst = []
         majors = self.get_majors()
         for major in majors:
@@ -31170,28 +31170,28 @@ class Groups:
 class Objects:
     
     def __init__(self):
-        self.groups = None
+        self.subjects = None
     
-    def get_groups(self):
-        if self.groups is None:
-            self.groups = Groups()
-        return self.groups
+    def get_subjects(self):
+        if self.subjects is None:
+            self.subjects = Subjects()
+        return self.subjects
 
 
 objs = Objects()
 
 
 if __name__ == '__main__':
-    f = '[MClient] plugins.multitrancom.groups.__main__'
+    f = '[MClient] plugins.multitrancom.subjects.__main__'
     sh.com.start()
-    igroups = Groups()
+    isubj = Subjects()
     timer = sh.Timer(f)
     timer.start()
-    #print(igroups.get_majors('uk'))
-    #print(igroups.get_group('Біологія','uk'))
-    #print(igroups.get_list())
+    #print(isubj.get_majors('uk'))
+    #print(isubj.get_group('Біологія','uk'))
+    #print(isubj.get_list())
     abbr = 'оруж.'
-    mes = '"{}"'.format(igroups.get_title(abbr))
+    mes = '"{}"'.format(isubj.get_title(abbr))
     sh.objs.get_mes(f,mes,True).show_debug()
     timer.end()
     sh.com.end()

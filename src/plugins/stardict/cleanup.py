@@ -3,8 +3,8 @@
 
 import re
 import html
-import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.shared as sh
 
 
 #TODO (?): use shared

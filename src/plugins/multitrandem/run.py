@@ -2,12 +2,12 @@
 # -*- coding: UTF-8 -*-
 
 import io
-import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.shared as sh
 import plugins.multitrandem.get as gt
 import plugins.multitrandem.tags as tg
 import plugins.multitrandem.elems as el
-import plugins.multitrandem.groups as gr
+import plugins.multitrandem.subjects as sj
 
 
 
@@ -29,13 +29,13 @@ class Plugin:
         self.maxrows = maxrows
     
     def get_subjects(self):
-        return gr.objs.get_groups().get_list()
+        return sj.objs.get_subjects().get_list()
     
     def get_group(self,subject=''):
-        return gr.objs.get_groups().get_group(subject)
+        return sj.objs.get_subjects().get_group(subject)
     
     def get_majors(self):
-        return gr.objs.get_groups().get_majors()
+        return sj.objs.get_subjects().get_majors()
     
     def get_search(self):
         return self.search

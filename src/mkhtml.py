@@ -2,8 +2,8 @@
 # -*- coding: UTF-8 -*-
 
 import io
-import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.shared as sh
 
 
 # Shortened

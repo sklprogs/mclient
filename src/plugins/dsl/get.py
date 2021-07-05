@@ -3,8 +3,8 @@
 
 import os
 import re
-import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.shared as sh
 
 
 ''' A directory storing all DSL files.

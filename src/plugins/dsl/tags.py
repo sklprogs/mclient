@@ -3,8 +3,8 @@
 
 import re
 
-import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.shared as sh
 
 import plugins.dsl.cleanup as cu
 

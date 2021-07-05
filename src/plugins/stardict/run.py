@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.shared as sh
 import plugins.stardict.get as gt
 import plugins.stardict.cleanup as cu
 import plugins.stardict.tags as tg
 import plugins.stardict.elems as el
-import plugins.stardict.groups as gr
+import plugins.stardict.subjects as sj
 
 
 
@@ -34,13 +34,13 @@ class Plugin:
         self.search = ''
     
     def get_subjects(self):
-        return gr.objs.get_groups().get_list()
+        return sj.objs.get_subjects().get_list()
     
     def get_group(self,subject=''):
-        return gr.objs.get_groups().get_group(subject)
+        return sj.objs.get_subjects().get_group(subject)
     
     def get_majors(self):
-        return gr.objs.get_groups().get_majors()
+        return sj.objs.get_subjects().get_majors()
     
     def get_search(self):
         return self.search

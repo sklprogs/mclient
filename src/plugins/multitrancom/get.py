@@ -5,8 +5,8 @@ import locale
 import urllib.request
 import html
 import w3lib.url
-import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.shared as sh
 
 
 CODING = 'UTF-8'

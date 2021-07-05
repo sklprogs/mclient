@@ -8,7 +8,7 @@ import skl_shared.shared as sh
 SUBJECTS = []
 
 
-class Groups:
+class Subjects:
     
     def __init__(self):
         self.lst = []
@@ -28,23 +28,23 @@ class Groups:
 class Objects:
     
     def __init__(self):
-        self.groups = None
+        self.subjects = None
     
-    def get_groups(self):
-        if self.groups is None:
-            self.groups = Groups()
-        return self.groups
+    def get_subjects(self):
+        if self.subjects is None:
+            self.subjects = Subjects()
+        return self.subjects
 
 
 objs = Objects()
 
 
 if __name__ == '__main__':
-    f = '[MClient] plugins.dsl.__main__'
+    f = '[MClient] plugins.stardict.subjects.__main__'
     sh.com.start()
     timer = sh.Timer(f)
     timer.start()
-    mes = Groups().get_group('Wood processing')
+    mes = Subjects().get_group('Wood processing')
     sh.objs.get_mes(f,mes,True).show_debug()
     timer.end()
     sh.com.end()

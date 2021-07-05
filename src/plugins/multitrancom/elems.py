@@ -13,7 +13,7 @@
 import re
 from skl_shared.localize import _
 import skl_shared.shared as sh
-import plugins.multitrancom.groups as gp
+import plugins.multitrancom.subjects as sj
 
 
 class UniteFixed:
@@ -595,12 +595,12 @@ class Elems:
         f = '[MClient] plugins.multitrancom.elems.Elems.expand_dic_file'
         for block in self.blocks:
             if block.dic and not block.dicf:
-                title = gp.objs.get_groups().get_title(block.dic)
+                title = sj.objs.get_subjects().get_title(block.dic)
                 if title == block.dic:                
                     dics = block.dic.split(', ')
                     dicfs = []
                     for dic in dics:
-                        dicfs.append(gp.objs.groups.get_title(dic))
+                        dicfs.append(sj.objs.subjects.get_title(dic))
                     block.dicf = ', '.join(dicfs)
                 else:
                     block.dicf = title

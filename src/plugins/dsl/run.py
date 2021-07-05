@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.shared as sh
 import plugins.dsl.get as gt
 import plugins.dsl.tags as tg
 import plugins.dsl.elems as el
 import plugins.dsl.cleanup as cu
-import plugins.dsl.groups as gr
+import plugins.dsl.subjects as sj
 
 
 class Plugin:
@@ -32,13 +32,13 @@ class Plugin:
         self.search = ''
     
     def get_subjects(self):
-        return gr.objs.get_groups().get_list()
+        return sj.objs.get_subjects().get_list()
     
     def get_group(self,subject=''):
-        return gr.objs.get_groups().get_group(subject)
+        return sj.objs.get_subjects().get_group(subject)
     
     def get_majors(self):
-        return gr.objs.get_groups().get_majors()
+        return sj.objs.get_subjects().get_majors()
     
     def get_search(self):
         return self.search

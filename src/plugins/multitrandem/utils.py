@@ -7,8 +7,8 @@ import struct
 import codecs
 import termcolor
 
-import skl_shared.shared as sh
 from skl_shared.localize import _
+import skl_shared.shared as sh
 import get as gt
 
 

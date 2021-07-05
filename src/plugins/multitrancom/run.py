@@ -8,7 +8,7 @@ import plugins.multitrancom.cleanup as cu
 import plugins.multitrancom.tags as tg
 import plugins.multitrancom.elems as el
 import plugins.multitrancom.pairs as pr
-import plugins.multitrancom.groups as gr
+import plugins.multitrancom.subjects as sj
 
 
 
@@ -20,7 +20,7 @@ class Plugin:
         self.maxrows = maxrows
     
     def get_pair(self,item):
-        return gr.objs.get_groups().get_pair(item)
+        return sj.objs.get_subjects().get_pair(item)
     
     def set_values(self):
         self.abbr = {}
@@ -30,13 +30,13 @@ class Plugin:
         self.search = ''
     
     def get_subjects(self):
-        return gr.objs.get_groups().get_list()
+        return sj.objs.get_subjects().get_list()
     
     def get_group(self,subject=''):
-        return gr.objs.get_groups().get_group(subject)
+        return sj.objs.get_subjects().get_group(subject)
     
     def get_majors(self):
-        return gr.objs.get_groups().get_majors()
+        return sj.objs.get_subjects().get_majors()
     
     def get_search(self):
         return self.search
@@ -51,10 +51,10 @@ class Plugin:
         return False
     
     def get_title(self,item):
-        return gr.objs.get_groups().get_title(item)
+        return sj.objs.get_subjects().get_title(item)
     
     def get_abbr(self,item):
-        return gr.objs.get_groups().get_abbr(item)
+        return sj.objs.get_subjects().get_abbr(item)
     
     # This is needed only for compliance with a general method
     def quit(self):
