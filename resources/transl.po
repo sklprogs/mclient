@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-05 19:13+0300\n"
-"PO-Revision-Date: 2021-07-05 19:14+0300\n"
+"POT-Creation-Date: 2021-07-05 22:45+0300\n"
+"PO-Revision-Date: 2021-07-05 22:46+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -113,7 +113,7 @@ msgid "Unable to find: {}"
 msgstr "Не удалось найти: {}"
 
 #: mclient/src/db.py:287 mclient/src/db.py:349 mclient/src/gui.py:942
-#: mclient/src/manager.py:275 mclient/src/mclient.py:147
+#: mclient/src/manager.py:275 mclient/src/mclient.py:154
 #: mclient/src/plugins/multitrandem/run.py:75 skl_shared/src/logic.py:134
 #: skl_shared/src/logic.py:148 skl_shared/src/logic.py:939
 #: skl_shared/src/logic.py:2484 skl_shared/src/shared.py:1020
@@ -145,11 +145,11 @@ msgstr "Удаление всех записей из {}"
 msgid "Delete records of article No. {} from {}"
 msgstr "Удаление записей статьи №{} из {}"
 
-#: mclient/src/db.py:952 mclient/src/mclient.py:449 mclient/src/mclient.py:970
-#: mclient/src/mclient.py:2078 mclient/src/mclient.py:2178
-#: mclient/src/mclient.py:2190 mclient/src/mclient.py:2202
-#: mclient/src/mclient.py:2214 mclient/src/mclient.py:2716
-#: mclient/src/mclient.py:2724 mclient/src/plugins/multitrancom/pairs.py:2861
+#: mclient/src/db.py:952 mclient/src/mclient.py:450 mclient/src/mclient.py:971
+#: mclient/src/mclient.py:2079 mclient/src/mclient.py:2179
+#: mclient/src/mclient.py:2191 mclient/src/mclient.py:2203
+#: mclient/src/mclient.py:2215 mclient/src/mclient.py:2717
+#: mclient/src/mclient.py:2725 mclient/src/plugins/multitrancom/pairs.py:2861
 #: mclient/src/plugins/multitrancom/utils/subjects/fix.py:29
 #: mclient/src/plugins/multitrandem/get.py:682
 #: mclient/src/plugins/multitrandem/get.py:698
@@ -232,23 +232,23 @@ msgstr "Закрыть и применить"
 msgid "Enter a string to search:"
 msgstr "Строка для поиска:"
 
-#: mclient/src/gui.py:238 mclient/src/mclient.py:656
+#: mclient/src/gui.py:238 mclient/src/mclient.py:657
 msgid "Save the current view as a web-page (*.htm)"
 msgstr "Сохранить текущее представление как веб-страницу (*.htm)"
 
-#: mclient/src/gui.py:239 mclient/src/mclient.py:658
+#: mclient/src/gui.py:239 mclient/src/mclient.py:659
 msgid "Save the original article as a web-page (*.htm)"
 msgstr "Сохранить оригинальную статью как веб-страницу (*.htm)"
 
-#: mclient/src/gui.py:240 mclient/src/mclient.py:660
+#: mclient/src/gui.py:240 mclient/src/mclient.py:661
 msgid "Save the article as plain text in UTF-8 (*.txt)"
 msgstr "Сохранить статью как обычный текст в кодировке UTF-8 (*.txt)"
 
-#: mclient/src/gui.py:241 mclient/src/mclient.py:662
+#: mclient/src/gui.py:241 mclient/src/mclient.py:663
 msgid "Copy the code of the article to clipboard"
 msgstr "Скопировать код статьи в буфер обмена"
 
-#: mclient/src/gui.py:242 mclient/src/mclient.py:664
+#: mclient/src/gui.py:242 mclient/src/mclient.py:665
 msgid "Copy the text of the article to clipboard"
 msgstr "Скопировать текст статьи в буфер обмена"
 
@@ -407,7 +407,7 @@ msgstr "Дать определение термину"
 msgid "Clipboard"
 msgstr "Буфер обмена"
 
-#: mclient/src/gui.py:679 mclient/src/mclient.py:302
+#: mclient/src/gui.py:679 mclient/src/mclient.py:303
 msgid "Capture Ctrl-c-c and Ctrl-Ins-Ins"
 msgstr "Перехватывать Ctrl-c-c и Ctrl-Ins-Ins"
 
@@ -427,7 +427,7 @@ msgstr "Выйти из программы"
 #: mclient/src/gui.py:840 mclient/src/gui.py:894 mclient/src/gui.py:903
 #: mclient/src/gui.py:920 mclient/src/gui.py:928 mclient/src/gui.py:933
 #: mclient/src/gui.py:1112 mclient/src/gui.py:1467 mclient/src/logic.py:141
-#: mclient/src/mclient.py:138 mclient/src/mclient.py:149
+#: mclient/src/mclient.py:141 mclient/src/mclient.py:150
 msgid "Subjects"
 msgstr "Тематики"
 
@@ -435,7 +435,7 @@ msgstr "Тематики"
 #: mclient/src/gui.py:855 mclient/src/gui.py:895 mclient/src/gui.py:897
 #: mclient/src/gui.py:921 mclient/src/gui.py:925 mclient/src/gui.py:931
 #: mclient/src/gui.py:936 mclient/src/gui.py:1113 mclient/src/gui.py:1473
-#: mclient/src/logic.py:142 mclient/src/mclient.py:140
+#: mclient/src/logic.py:142 mclient/src/mclient.py:143
 #: mclient/src/mclient.py:150
 msgid "Word forms"
 msgstr "Словоформы"
@@ -444,7 +444,7 @@ msgstr "Словоформы"
 #: mclient/src/gui.py:885 mclient/src/gui.py:898 mclient/src/gui.py:899
 #: mclient/src/gui.py:922 mclient/src/gui.py:926 mclient/src/gui.py:932
 #: mclient/src/gui.py:1115 mclient/src/gui.py:1479 mclient/src/logic.py:144
-#: mclient/src/mclient.py:144 mclient/src/mclient.py:151
+#: mclient/src/mclient.py:147 mclient/src/mclient.py:150
 msgid "Transcription"
 msgstr "Транскрипция"
 
@@ -452,22 +452,22 @@ msgstr "Транскрипция"
 #: mclient/src/gui.py:870 mclient/src/gui.py:896 mclient/src/gui.py:900
 #: mclient/src/gui.py:902 mclient/src/gui.py:923 mclient/src/gui.py:927
 #: mclient/src/gui.py:930 mclient/src/gui.py:935 mclient/src/gui.py:1114
-#: mclient/src/gui.py:1485 mclient/src/logic.py:143 mclient/src/mclient.py:142
-#: mclient/src/mclient.py:152
+#: mclient/src/gui.py:1485 mclient/src/logic.py:143 mclient/src/mclient.py:145
+#: mclient/src/mclient.py:151
 msgid "Parts of speech"
 msgstr "Части речи"
 
 #: mclient/src/gui.py:818 mclient/src/gui.py:835 mclient/src/gui.py:850
 #: mclient/src/gui.py:865 mclient/src/gui.py:880 mclient/src/gui.py:901
 #: mclient/src/gui.py:904 mclient/src/gui.py:937 mclient/src/gui.py:938
-#: mclient/src/mclient.py:130 mclient/src/mclient.py:2469
-#: mclient/src/mclient.py:2604
+#: mclient/src/mclient.py:130 mclient/src/mclient.py:2470
+#: mclient/src/mclient.py:2605
 msgid "Do not set"
 msgstr "Не задано"
 
 #: mclient/src/gui.py:821 mclient/src/gui.py:909 mclient/src/gui.py:924
 #: mclient/src/logic.py:166 mclient/src/manager.py:216
-#: mclient/src/manager.py:268 mclient/src/mclient.py:1295
+#: mclient/src/manager.py:268 mclient/src/mclient.py:1296
 #: mclient/src/tests.py:419 mclient/src/tests.py:479 mclient/src/tests.py:521
 #: mclient/src/tests.py:612
 msgid "Multitran"
@@ -542,8 +542,8 @@ msgstr "Местоимение"
 msgid "Empty input is not allowed!"
 msgstr "Пустые входные данные не допускаются!"
 
-#: mclient/src/gui.py:1061 mclient/src/gui.py:1066 mclient/src/mclient.py:2774
-#: mclient/src/mclient.py:2779 mclient/src/plugins/multitrandem/utils.py:525
+#: mclient/src/gui.py:1061 mclient/src/gui.py:1066 mclient/src/mclient.py:2775
+#: mclient/src/mclient.py:2780 mclient/src/plugins/multitrandem/utils.py:525
 #: skl_shared/src/logic.py:4836
 msgid "Not implemented yet!"
 msgstr "Еще не реализовано!"
@@ -591,7 +591,7 @@ msgstr "Вертикальный вид"
 
 #: mclient/src/gui.py:1361
 msgid "Shorten subject titles"
-msgstr "Сокращать заголовки тематик"
+msgstr "Сокращать названия тематик"
 
 #: mclient/src/gui.py:1365
 msgid "Shorten parts of speech"
@@ -631,8 +631,8 @@ msgstr "Часть речи"
 msgid "View Settings"
 msgstr "Настройки вида"
 
-#: mclient/src/logic.py:162 mclient/src/mclient.py:1016
-#: mclient/src/mclient.py:1020 mclient/src/plugins/multitrancom/pairs.py:7
+#: mclient/src/logic.py:162 mclient/src/mclient.py:1017
+#: mclient/src/mclient.py:1021 mclient/src/plugins/multitrancom/pairs.py:7
 #: mclient/src/plugins/multitrancom/pairs.py:21
 #: mclient/src/plugins/multitrancom/pairs.py:60
 #: mclient/src/plugins/multitrancom/pairs.py:111
@@ -1234,8 +1234,8 @@ msgid "ABBREVIATION"
 msgstr "АББРЕВИАТУРА"
 
 #: mclient/src/logic.py:798 mclient/src/mclient.py:112
-#: mclient/src/mclient.py:2252 mclient/src/mclient.py:2264
-#: mclient/src/mclient.py:2276 mclient/src/mclient.py:2288
+#: mclient/src/mclient.py:2253 mclient/src/mclient.py:2265
+#: mclient/src/mclient.py:2277 mclient/src/mclient.py:2289
 #: mclient/src/plugins/dsl/get.py:399 mclient/src/plugins/dsl/get.py:416
 #: mclient/src/plugins/dsl/get.py:433 mclient/src/plugins/dsl/get.py:441
 #: mclient/src/plugins/dsl/tags.py:142
@@ -1271,7 +1271,7 @@ msgid "Phrase"
 msgstr "Фраза"
 
 #: mclient/src/logic.py:825 mclient/src/logic.py:831
-#: mclient/src/mclient.py:2627 mclient/src/plugins/dsl/cleanup.py:109
+#: mclient/src/mclient.py:2628 mclient/src/plugins/dsl/cleanup.py:109
 #: mclient/src/plugins/dsl/get.py:222
 #: mclient/src/plugins/multitrancom/utils/subjects/compile.py:136
 #: mclient/src/plugins/multitrancom/utils/utils.py:68
@@ -1546,84 +1546,88 @@ msgstr ""
 msgid "Unable to use unverified certificates!"
 msgstr "Не удается использовать неподтвержденные сертификаты!"
 
-#: mclient/src/mclient.py:256
+#: mclient/src/mclient.py:141
+msgid "Dictionaries"
+msgstr "Словари"
+
+#: mclient/src/mclient.py:257
 msgid "Restore source language: {}"
 msgstr "Восстановление языка оригинала: {}"
 
-#: mclient/src/mclient.py:260
+#: mclient/src/mclient.py:261
 msgid "Restore target language: {}"
 msgstr "Восстановление языка перевода: {}"
 
-#: mclient/src/mclient.py:276
+#: mclient/src/mclient.py:277
 msgid "Sort terms by alphabet"
 msgstr "Сортировка терминов по алфавиту"
 
-#: mclient/src/mclient.py:278 mclient/src/mclient.py:294
-#: mclient/src/mclient.py:305 mclient/src/mclient.py:321
-#: mclient/src/mclient.py:345
+#: mclient/src/mclient.py:279 mclient/src/mclient.py:295
+#: mclient/src/mclient.py:306 mclient/src/mclient.py:322
+#: mclient/src/mclient.py:346
 msgid "Status: ON"
 msgstr "Состояние: ВКЛ"
 
-#: mclient/src/mclient.py:280 mclient/src/mclient.py:297
-#: mclient/src/mclient.py:308 mclient/src/mclient.py:323
-#: mclient/src/mclient.py:347
+#: mclient/src/mclient.py:281 mclient/src/mclient.py:298
+#: mclient/src/mclient.py:309 mclient/src/mclient.py:324
+#: mclient/src/mclient.py:348
 msgid "Status: OFF"
 msgstr "Состояние: ВЫКЛ"
 
-#: mclient/src/mclient.py:282 mclient/src/mclient.py:325
+#: mclient/src/mclient.py:283 mclient/src/mclient.py:326
 msgid "This page is not supported"
 msgstr "Эта страница не поддерживается"
 
-#: mclient/src/mclient.py:291
+#: mclient/src/mclient.py:292
 msgid "Vertical mode"
 msgstr "Вертикальный режим"
 
-#: mclient/src/mclient.py:313 mclient/src/subjects/priorities/gui.py:307
+#: mclient/src/mclient.py:314 mclient/src/subjects/priorities/gui.py:307
 msgid "Subject prioritization"
 msgstr "Приоритизация тематик"
 
-#: mclient/src/mclient.py:327
+#: mclient/src/mclient.py:328
 msgid "{} subjects were prioritized"
 msgstr "{} тематик упорядочено по приоритету"
 
-#: mclient/src/mclient.py:330
+#: mclient/src/mclient.py:331
 msgid "Nothing to prioritize"
 msgstr "Приоритизация не требуется"
 
-#: mclient/src/mclient.py:337 mclient/src/subjects/blacklist/gui.py:259
+#: mclient/src/mclient.py:338 mclient/src/subjects/blacklist/gui.py:259
 msgid "Subject blocking"
 msgstr "Блокировка тематик"
 
-#: mclient/src/mclient.py:352
+#: mclient/src/mclient.py:353
 msgid "Skipped {} terms in {} subjects"
 msgstr "Опущено {} терминов в {} тематиках"
 
-#: mclient/src/mclient.py:355
+#: mclient/src/mclient.py:356
 msgid "Nothing was blocked"
 msgstr "Ничего не заблокировано"
 
-#: mclient/src/mclient.py:599 mclient/src/mclient.py:600
+#: mclient/src/mclient.py:600 mclient/src/mclient.py:601
 #: skl_shared/src/logic.py:4586 skl_shared/src/logic.py:4587
 msgid "Web-page"
 msgstr "Веб-страница"
 
-#: mclient/src/mclient.py:601 mclient/src/mclient.py:604
+#: mclient/src/mclient.py:602 mclient/src/mclient.py:605
 #: skl_shared/src/logic.py:4588
 msgid "All files"
 msgstr "Все файлы"
 
-#: mclient/src/mclient.py:603 skl_shared/src/logic.py:4585
+#: mclient/src/mclient.py:604 skl_shared/src/logic.py:4585
 msgid "Plain text (UTF-8)"
 msgstr "Обычный текст (UTF-8)"
 
-#: mclient/src/mclient.py:667 mclient/src/plugins/multitrandem/utils.py:171
+#: mclient/src/mclient.py:668 mclient/src/plugins/multitrandem/utils.py:171
 #: mclient/src/plugins/multitrandem/utils.py:745 skl_shared/src/image.py:49
 #: skl_shared/src/logic.py:2240 skl_shared/src/logic.py:2287
 #: skl_shared/src/logic.py:2507
 msgid "Operation has been canceled by the user."
 msgstr "Операция отменена пользователем."
 
-#: mclient/src/mclient.py:790 mclient/src/mclient.py:841
+#: mclient/src/mclient.py:791 mclient/src/mclient.py:842
 #: mclient/src/plugins/multitrancom/utils/utils.py:150
 #: mclient/src/plugins/multitrancom/utils/utils.py:193
 #: mclient/src/plugins/multitrandem/utils.py:266
@@ -1637,111 +1641,111 @@ msgstr "Операция отменена пользователем."
 msgid "No matches!"
 msgstr "Совпадений нет!"
 
-#: mclient/src/mclient.py:793
+#: mclient/src/mclient.py:794
 msgid "The end has been reached. Searching from the start."
 msgstr "Достигнут конец. Поиск производится с начала."
 
-#: mclient/src/mclient.py:823
+#: mclient/src/mclient.py:824
 msgid "The start has been reached. Searching from the end."
 msgstr "Достигнуто начало. Поиск производится с конца."
 
-#: mclient/src/mclient.py:953 mclient/src/mclient.py:2153
+#: mclient/src/mclient.py:954 mclient/src/mclient.py:2154
 msgid "Set source to \"{}\""
 msgstr "Выбран источник \"{}\""
 
-#: mclient/src/mclient.py:1001
+#: mclient/src/mclient.py:1002
 msgid "Please import \"{}\" instead of \"{}\""
 msgstr "Пожалуйста, импортируйте \"{}\" вместо \"{}\""
 
-#: mclient/src/mclient.py:1030 mclient/src/plugins/multitrandem/elems.py:172
+#: mclient/src/mclient.py:1031 mclient/src/plugins/multitrandem/elems.py:172
 msgid "Debug table:"
 msgstr "Таблица для отладки:"
 
-#: mclient/src/mclient.py:1137
+#: mclient/src/mclient.py:1138
 msgid "Cannot swap languages, this is a one-way dictionary!"
 msgstr "Нельзя поменять языки местами, это односторонний словарь!"
 
-#: mclient/src/mclient.py:1160
+#: mclient/src/mclient.py:1161
 msgid "Pair {}-{} is not supported!"
 msgstr "Пара {}-{} не поддерживается!"
 
-#: mclient/src/mclient.py:1663
+#: mclient/src/mclient.py:1664
 msgid "Show history"
 msgstr "Показать историю"
 
-#: mclient/src/mclient.py:1664
+#: mclient/src/mclient.py:1665
 msgid "Clear history"
 msgstr "Очистить историю"
 
-#: mclient/src/mclient.py:1840
+#: mclient/src/mclient.py:1841
 msgid "The column is too wide to be fully shown"
 msgstr "Столбец слишком широк для отображения"
 
-#: mclient/src/mclient.py:1868
+#: mclient/src/mclient.py:1869
 msgid "The row is too wide to be fully shown"
 msgstr "Строка слишком широка для отображения"
 
-#: mclient/src/mclient.py:1910
+#: mclient/src/mclient.py:1911
 msgid "Nothing has been loaded yet."
 msgstr "Ничего еще не загружено."
 
-#: mclient/src/mclient.py:1942
+#: mclient/src/mclient.py:1943
 msgid "Load article No. {} from memory"
 msgstr "Загрузка статьи №{} из памяти"
 
-#: mclient/src/mclient.py:2122
+#: mclient/src/mclient.py:2123
 msgid "Open link: {}"
 msgstr "Открывается ссылка: {}"
 
-#: mclient/src/mclient.py:2339
+#: mclient/src/mclient.py:2340
 msgid "This block does not contain any text!"
 msgstr "Этот блок не содержит текста!"
 
-#: mclient/src/mclient.py:2360
+#: mclient/src/mclient.py:2361
 msgid "This block does not contain a URL!"
 msgstr "Этот блок не содержит URL!"
 
-#: mclient/src/mclient.py:2373
+#: mclient/src/mclient.py:2374
 msgid "what is \"{}\"?"
 msgstr "что такое \"{}\"?"
 
-#: mclient/src/mclient.py:2427
+#: mclient/src/mclient.py:2428
 msgid "The request is long ({} symbols). Do you really want to send it?"
 msgstr "Запрос длинный ({} символов). Отправить?"
 
-#: mclient/src/mclient.py:2445 mclient/src/mclient.py:2457
+#: mclient/src/mclient.py:2446 mclient/src/mclient.py:2458
 msgid "Set language: {}"
 msgstr "Установка языка: \"{}\""
 
-#: mclient/src/mclient.py:2475
+#: mclient/src/mclient.py:2476
 msgid "Set the number of columns to {}"
 msgstr "Задать число столбцов: {}"
 
-#: mclient/src/mclient.py:2514
+#: mclient/src/mclient.py:2515
 msgid "No subjects have been provided for blacklisting!"
 msgstr "Список блокируемых тематик пуст!"
 
-#: mclient/src/mclient.py:2571
+#: mclient/src/mclient.py:2572
 msgid "No subjects have been provided for prioritizing!"
 msgstr "Список приоритетных тематик пуст!"
 
-#: mclient/src/mclient.py:2620
+#: mclient/src/mclient.py:2621
 msgid "Set the column limit to {} ({} in total)"
 msgstr "Задать максимальное число столбцов: {} (всего: {})"
 
-#: mclient/src/mclient.py:2634
+#: mclient/src/mclient.py:2635
 msgid "Select column \"{}\" instead of \"{}\""
 msgstr "Выбор столбца \"{}\" вместо \"{}\""
 
-#: mclient/src/mclient.py:2712
+#: mclient/src/mclient.py:2713
 msgid "Load bookmark {} for article #{}"
 msgstr "Загрузка закладки {} для статьи №{}"
 
-#: mclient/src/mclient.py:2949
+#: mclient/src/mclient.py:2950
 msgid "Unable to continue due to an invalid configuration."
 msgstr "Невозможно продолжить ввиду некорректной конфигурации."
 
-#: mclient/src/mclient.py:2952 mclient/src/plugins/multitrandem/utils.py:947
+#: mclient/src/mclient.py:2953 mclient/src/plugins/multitrandem/utils.py:947
 #: mclient/src/plugins/multitrandem/utils.py:1422
 msgid "Goodbye!"
 msgstr "До свидания!"
@@ -16486,9 +16490,6 @@ msgstr ""
 #: skl_shared/src/tests.py:1142
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
-
-#~ msgid "Dictionaries"
-#~ msgstr "Словари"
 
 #~ msgid "Block dictionaries from blacklist"
 #~ msgstr "Блокировать словари из черного списка"
