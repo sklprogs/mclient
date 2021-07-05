@@ -2522,7 +2522,7 @@ class WebFrame:
         old_key = sh.lg.globs['bool']['BlockDics']
         objs.get_blacklist().reset (lst1 = old_list
                                    ,lst2 = lg.objs.get_plugins().get_subjects()
-                                   ,lst3 = com.get_dics()
+                                   ,art_subjects = com.get_dics()
                                    ,majors = lg.objs.plugins.get_majors()
                                    )
         objs.blacklist.set_checkbox(sh.lg.globs['bool']['BlockDics'])
@@ -2544,7 +2544,7 @@ class WebFrame:
         old_key = sh.lg.globs['bool']['PrioritizeDics']
         objs.get_priorities().reset (lst1 = old_list
                                     ,lst2 = lg.objs.get_plugins().get_subjects()
-                                    ,lst3 = com.get_dics()
+                                    ,art_subjects = com.get_dics()
                                     ,majors = lg.objs.plugins.get_majors()
                                     )
         objs.priorities.set_checkbox(sh.lg.globs['bool']['PrioritizeDics'])

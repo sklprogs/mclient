@@ -9,19 +9,21 @@ from . import gui as gi
 
 class Blacklist:
     
-    def __init__(self,lst1=[],lst2=[],lst3=[],majors=[],func_group=None):
+    def __init__ (self,lst1=[],lst2=[],art_subjects=[]
+                 ,majors=[],func_group=None
+                 ):
         self.func_group = func_group
         self.gui = None
         self.Colorize2 = True
         self.lst1 = []
         self.lst2 = []
-        self.lst3 = []
+        self.art_subjects = []
         self.copy1 = []
         self.copy2 = []
-        self.copy3 = []
+        self.copy_art = []
         self.majors = []
         if lst1:
-            self.reset(lst1,lst2,lst3,majors)
+            self.reset(lst1,lst2,art_subjects,majors)
     
     def get_checkbox(self):
         return self.gui.get_checkbox()
@@ -37,7 +39,7 @@ class Blacklist:
     
     def set_article(self,event=None):
         self.Colorize2 = True
-        self.lst2 = list(self.copy3)
+        self.lst2 = list(self.copy_art)
         self.get_gui().reset2(self.lst2)
         self.colorize2()
     
@@ -204,7 +206,7 @@ class Blacklist:
     def get2(self,event=None):
         return self.get_gui().get2()
     
-    def reset(self,lst1=[],lst2=[],lst3=[],majors=[]):
+    def reset(self,lst1=[],lst2=[],art_subjects=[],majors=[]):
         f = '[MClient] subjects.blacklist.controller.Blacklist.reset'
         # Convert tuples to lists at input in order to modify them
         if lst1:
@@ -213,9 +215,9 @@ class Blacklist:
         if lst2:
             self.lst2 = list(lst2)
             self.copy2 = list(self.lst2)
-        if lst3:
-            self.lst3 = list(lst3)
-            self.copy3 = list(self.lst3)
+        if art_subjects:
+            self.art_subjects = list(art_subjects)
+            self.copy_art = list(self.art_subjects)
         if majors:
             self.majors = majors
         self.fill()
@@ -242,7 +244,7 @@ class Blacklist:
         self.Colorize2 = True
         self.lst1 = list(self.copy1)
         self.lst2 = list(self.copy2)
-        self.lst3 = list(self.copy3)
+        self.art_subjects = list(self.copy_art)
         self.fill()
     
     def block(self,event=None):

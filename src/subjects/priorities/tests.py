@@ -45,7 +45,7 @@ if __name__ == '__main__':
     iext = External()
     iprior = ct.Priorities (lst1 = iext.get_priorities()
                            ,lst2 = iext.get_all_subjects()
-                           ,lst3 = iext.get_article_subjects()
+                           ,art_subjects = iext.get_article_subjects()
                            ,majors = iext.get_majors()
                            ,func_group = iext.get_group
                            )
