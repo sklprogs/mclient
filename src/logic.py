@@ -1470,6 +1470,14 @@ class Order(subjects.order.Order):
             return objs.get_plugins().get_pair(item)
         else:
             sh.com.rep_empty(f)
+    
+    def save(self):
+        blackw = objs.get_default().fblock
+        priorw = objs.default.fprior
+        text = '\n'.join(self.blacklst)
+        sh.WriteTextFile(blackw,True).write(text)
+        text = '\n'.join(self.priorlst)
+        sh.WriteTextFile(priorw,True).write(text)
 
 
 objs = Objects()

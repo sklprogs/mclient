@@ -194,9 +194,15 @@ class BlockPrioritize:
                 self.dics[dic]['priority'] = Priority
             
     def block(self):
+        f = '[MClient] cells.BlockPrioritize.block'
         for block in self.blocks:
             if block.dic and block.dic != self.phdic:
-                Blocked = self.dics[block.dic]['block']
+                try:
+                    Blocked = self.dics[block.dic]['block']
+                except KeyError:
+                    Blocked = False
+                    mes = _('Wrong input data: "{}"!').format(block.dic)
+                    sh.objs.get_mes(f,mes,True).show_warning()
             else:
                 Blocked = False
             ''' Do not put checking 'self.Block' ahead of the loop
@@ -208,6 +214,7 @@ class BlockPrioritize:
                 block.block = 0
             
     def prioritize_dics(self):
+        f = '[MClient] cells.BlockPrioritize.prioritize_dics'
         for block in self.blocks:
             if block.dic:
                 if self.phdic == block.dic:
@@ -220,7 +227,13 @@ class BlockPrioritize:
                     '''
                     block.dprior = -1000
                 elif self.Prioritize:
-                    block.dprior = self.dics[block.dic]['priority']
+                    try:
+                        block.dprior = self.dics[block.dic]['priority']
+                    except KeyError:
+                        block.dprior = 0
+                        mes = _('Wrong input data: "{}"!')
+                        mes = mes.format(block.dic)
+                        sh.objs.get_mes(f,mes,True).show_warning()
 
     def dump(self):
         tmp = io.StringIO()
