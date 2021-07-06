@@ -4,6 +4,7 @@
 * Set the vertical view button after the alphabetization button
 * Drop left/right mouse subject management support
 * Support subjects in multiple languages based on multitran.com
+* Save lists of prioritized and blocked subjects on exit
 
 6.9.1
 * Fix a webpage generated in a current view
