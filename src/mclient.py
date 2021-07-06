@@ -99,20 +99,21 @@ class Commands:
             for dic in dics:
                 items = dic.split(', ')
                 new_dics += items
+            dics += new_dics
             new_dics = [item.strip() for item in new_dics \
                         if item.strip()
                        ]
-            new_dics = sorted(set(new_dics))
+            dics = sorted(set(dics))
             if not Phrases:
                 phdic = objs.blocksdb.get_phdic()
                 if phdic:
                     try:
-                        new_dics.remove(phdic[1])
+                        dics.remove(phdic[1])
                     except ValueError:
                         mes = _('Wrong input data: "{}"!')
                         mes = mes.format(phdic[1])
                         sh.objs.get_mes(f,mes,True).show_warning()
-            return new_dics
+            return dics
         else:
             sh.com.rep_empty(f)
         return []

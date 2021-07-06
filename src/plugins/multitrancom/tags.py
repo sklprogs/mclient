@@ -447,7 +447,6 @@ class Tags:
             if self.Success:
                 mes = [self._debug_code(),self._debug_fragms()
                       ,self._debug_tags(),self._debug_blocks()
-                      ,self._debug_abbr()
                       ]
                 mes = '\n\n'.join(mes)
                 sh.com.run_fast_debug(f,mes)

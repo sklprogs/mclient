@@ -6,59 +6,23 @@ import skl_shared.shared as sh
 
 
 class Order:
-    # Create block and priority lists and supplement them
+    # Create block and priority lists and manage them
     def __init__(self):
         self.set_values()
-        self.conform()
             
-    def get_priority(self,item):
+    def get_priority(self,title):
         try:
-            index_ = self.priorlst.index(item)
+            index_ = self.priorlst.index(title)
             return len(self.priorlst) - index_
         except ValueError:
             pass
         return 0
     
-    def is_prioritized(self,item):
-        return item in self.priorlst
+    def is_prioritized(self,title):
+        return title in self.priorlst
     
-    def is_blocked(self,item):
-        return item in self.blacklst
-    
-    def conform(self):
-        f = '[MClient] subjects.order.Order.conform'
-        ''' - Create new block and priority lists based on those that
-              were read from user files. Lists from user files may
-              comprise either full or short subject titles.
-              New lists will be lowercased and stripped and will
-              comprise both full and short titles.
-            - We recreate lists in order to preserve the short + full
-              title order.
-        '''
-        if self.blacklst:
-            blacklst = list(self.blacklst)
-            self.blacklst = []
-            for item in blacklst:
-                pair = self.get_pair(item)
-                if pair:
-                    self.block(pair[0])
-                    self.block(pair[1])
-                else:
-                    sh.com.rep_empty(f)
-        else:
-            sh.com.rep_lazy(f)
-        if self.priorlst:
-            priorlst = list(self.priorlst)
-            self.priorlst = []
-            for item in priorlst:
-                pair = self.get_pair(item)
-                if pair:
-                    self.prioritize(pair[0])
-                    self.prioritize(pair[1])
-                else:
-                    sh.com.rep_empty(f)
-        else:
-            sh.com.rep_lazy(f)
+    def is_blocked(self,title):
+        return title in self.blacklst
     
     def set_values(self):
         self.blacklst = []
@@ -68,21 +32,22 @@ class Order:
         # A dummy class, reassign this in a parent class
         pass
     
-    def block(self,item):
-        if not item in self.blacklst:
-            self.blacklst.append(item)
+    def block(self,title):
+        if not title in self.blacklst:
+            self.blacklst.append(title)
                           
-    def unblock(self,item):
+    def unblock(self,title):
         try:
-            self.blacklst.remove(item)
+            self.blacklst.remove(title)
         except ValueError:
             pass
                           
-    def prioritize(self,item):
-        self.priorlst.append(item)
+    def prioritize(self,title):
+        if not title in self.priorlst:
+            self.priorlst.append(title)
     
-    def unprioritize(self,item):
+    def unprioritize(self,title):
         try:
-            self.priorlst.remove(item)
+            self.priorlst.remove(title)
         except ValueError:
             pass

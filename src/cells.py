@@ -90,7 +90,7 @@ class BlockPrioritize:
         block = []
         priority = []
         for key in self.dics.keys():
-            keys.append(key)
+            keys.append('"{}"'.format(key))
             block.append(self.dics[key]['block'])
             priority.append(self.dics[key]['priority'])
         headers = (_('#'),_('KEY'),_('BLOCKED'),_('PRIORITY'))
@@ -166,7 +166,8 @@ class BlockPrioritize:
             return 0
     
     def set_dics(self):
-        # Takes ~0.0095s for 'set' on Intel Atom
+        #TODO: set DICF on input instead of using 'get_pair'
+        # Takes ~0.37s for 'set' on Intel Atom
         dics = []
         for block in self.blocks:
             if block.type_ == 'dic' and block.text \
@@ -176,9 +177,21 @@ class BlockPrioritize:
         for dic in dics:
             lst = dic.split(', ')
             lst = [item.strip() for item in lst if item.strip()]
-            self.dics[dic] = {}
-            self.dics[dic]['block'] = self._is_blocked(lst)
-            self.dics[dic]['priority'] = self._get_priority(lst)
+            all_ = [dic] + lst
+            all_ = sorted(set(all_))
+            shorts = []
+            fulls = []
+            for item in all_:
+                short, full = lg.objs.get_order().get_pair(item)
+                shorts.append(short)
+                fulls.append(full)
+            lst = shorts + fulls
+            Blocked = self._is_blocked(lst)
+            Priority = self._get_priority(lst)
+            for dic in lst:
+                self.dics[dic] = {}
+                self.dics[dic]['block'] = Blocked
+                self.dics[dic]['priority'] = Priority
             
     def block(self):
         for block in self.blocks:
