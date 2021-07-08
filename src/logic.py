@@ -1307,8 +1307,8 @@ class Lists:
     def get_blacklist(self):
         f = '[MClient] logic.Lists.get_blacklist'
         if self.Success:
-            text = sh.ReadTextFile(file=self.blacklst).get()
-            text = sh.Text(text=text,Auto=1).text
+            text = sh.ReadTextFile(self.blacklst,True).get()
+            text = sh.Text(text,True).text
             return text.splitlines()
         else:
             sh.com.cancel(f)
@@ -1316,7 +1316,7 @@ class Lists:
     def get_priorities(self):
         f = '[MClient] logic.Lists.get_priorities'
         if self.Success:
-            text = sh.ReadTextFile(self.priorlst).get()
+            text = sh.ReadTextFile(self.priorlst,True).get()
             text = sh.Text(text,True).text
             return text.splitlines()
         else:
