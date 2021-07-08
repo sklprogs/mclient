@@ -28781,10 +28781,11 @@ class Subjects:
         mes = '{} -> {}'.format(result,self.lang)
         sh.objs.get_mes(f,mes,True).show_debug()
 
-    def _get_major_en(self,major):
+    def _get_major_en(self,title):
+        f = '[MClient] plugins.multitrancom.subjects.Subjects._get_group_en'
         for key in SUBJECTS.keys():
-            if major == SUBJECTS[key][self.lang]['title']:
-                return SUBJECTS[key]['en']['title']
+            if title == SUBJECTS[key][self.lang]['title']:
+                return SUBJECTS[key]['group']
     
     def get_majors(self):
         # Takes ~0.0016s on Intel Atom
@@ -28794,16 +28795,20 @@ class Subjects:
                 majors.append(SUBJECTS[key][self.lang]['title'])
         return sorted(majors)
     
-    def get_group(self,major):
+    def get_group(self,title):
+        f = '[MClient] plugins.multitrancom.subjects.Subjects.get_group'
         # Takes ~0.002s on Intel Atom
         group = []
-        major_en = self._get_major_en(major)
+        major_en = self._get_major_en(title)
         if major_en:
             for key in SUBJECTS.keys():
                 if major_en == SUBJECTS[key]['group'] \
                 and not SUBJECTS[key]['major']:
                     group.append(SUBJECTS[key][self.lang]['title'])
-        return sorted(group)
+        else:
+            mes = _('Subject "{}" has no group!').format(title)
+            sh.objs.get_mes(f,mes,True).show_warning()
+        return sorted(set(group))
     
     def get_list(self):
         # Takes ~0.15s on Intel Atom
@@ -28820,7 +28825,7 @@ class Subjects:
                 lst += group
             else:
                 mes = _('Wrong input data: "{}"!').format(major)
-                sh.objs.get_mes(f,mes,True).show_debug()
+                sh.objs.get_mes(f,mes,True).show_warning()
         return lst
 
 

@@ -1469,9 +1469,9 @@ class Order(sj.Order):
         blackw = objs.get_default().fblock
         priorw = objs.default.fprior
         text = '\n'.join(self.blacklst)
-        sh.WriteTextFile(blackw,True).write(text)
+        sh.WriteTextFile(blackw,True,True).write(text)
         text = '\n'.join(self.priorlst)
-        sh.WriteTextFile(priorw,True).write(text)
+        sh.WriteTextFile(priorw,True,True).write(text)
 
 
 objs = Objects()
