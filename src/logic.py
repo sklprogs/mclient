@@ -16,32 +16,7 @@ SPORDER = (_('Noun'),_('Verb'),_('Adjective'),_('Abbreviation')
           ,_('Adverb'),_('Preposition'),_('Pronoun')
           )
 
-sample_block = '''Австралийский сленг
-Архаизм
-Бранное выражение
-Воровское выражение
-Грубое выражение
-Диалект
-Жаргон
-Презрительное выражение
-Просторечие
-Разговорное выражение
-Расширение файла
-Редкое выражение
-Ругательство
-Сленг
-Табуированная лексика
-Тюремный жаргон
-Устаревшее слово
-Фамильярное выражение
-Шутливое выражение
-Эвфемизм
-'''
-sample_prior = '''Общая лексика
-Техника
-Юридический термин
-Юридический (Н.П.)
-'''
+sample_prior = _('General')
 
 
 class DefaultKeys(sh.DefaultKeys):
@@ -1217,9 +1192,9 @@ class DefaultConfig:
                     self.Success = sh.File(self.fblock).Success
                 else:
                     iwrite = sh.WriteTextFile (file = self.fblock
-                                              ,Rewrite = True
+                                              ,Empty = True
                                               )
-                    iwrite.write(sample_block)
+                    iwrite.write('')
                     self.Success = iwrite.Success
             else:
                 self.Success = False
@@ -1234,11 +1209,9 @@ class DefaultConfig:
                 self.fprior = self.ihome.add_config('prioritize.txt')
                 if self.fprior:
                     if os.path.exists(self.fprior):
-                        self.Success = sh.File(file=self.fprior).Success
+                        self.Success = sh.File(self.fprior).Success
                     else:
-                        iwrite = sh.WriteTextFile (file = self.fprior
-                                                  ,Rewrite = True
-                                                  )
+                        iwrite = sh.WriteTextFile(self.fprior)
                         iwrite.write(sample_prior)
                         self.Success = iwrite.Success
                 else:
