@@ -371,6 +371,26 @@ class Plugin:
 
 class Commands:
     
+    def edit_priorities(self):
+        import mclient as mc
+        import logic as lg
+        mc.objs.get_priorities().reset (lst1 = lg.objs.get_order().priorlst
+                                       ,lst2 = lg.objs.get_plugins().get_subjects()
+                                       ,art_subjects = []
+                                       ,majors = lg.objs.plugins.get_majors()
+                                       )
+        mc.objs.priorities.show()
+    
+    def edit_blacklist(self):
+        import mclient as mc
+        import logic as lg
+        mc.objs.get_blacklist().reset (lst1 = lg.objs.get_order().blacklst
+                                      ,lst2 = lg.objs.get_plugins().get_subjects()
+                                      ,art_subjects = []
+                                      ,majors = lg.objs.plugins.get_majors()
+                                      )
+        mc.objs.blacklist.show()
+    
     def show_about(self):
         from mclient import About
         About().show()
@@ -702,5 +722,7 @@ if __name__ == '__main__':
     #Tags().run_multitrancom()
     #Plugin().run_multitrancom()
     #com.show_about()
-    ArticleSubjects().run()
+    #ArticleSubjects().run()
+    #com.edit_blacklist()
+    com.edit_priorities()
     sh.com.end()
