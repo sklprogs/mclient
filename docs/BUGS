@@ -1,5 +1,6 @@
 mclient:
-- 
+- blacklist/priorities: adding the very first group ("Aviation") does
+  not add the major subject (if not "Aviation" is selection)
 
 multitrancom:
 - RU-EN, mannits: trash in the end

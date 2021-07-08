@@ -28795,6 +28795,33 @@ class Subjects:
                 majors.append(SUBJECTS[key][self.lang]['title'])
         return sorted(majors)
     
+    def get_major(self,title):
+        f = '[MClient] plugins.multitrancom.subjects.Subjects.get_major'
+        major_en = self._get_major_en(title)
+        if major_en:
+            for key in SUBJECTS.keys():
+                if major_en == SUBJECTS[key]['group'] \
+                and SUBJECTS[key]['major']:
+                    return SUBJECTS[key][self.lang]['title']
+        else:
+            sh.com.rep_empty(f)
+    
+    def get_group_with_header(self,title):
+        ''' A possible way to speed up (if needed):
+            1) get keys by the title, including the major subject
+            2) iterate the resulting keys to find the major subject
+            3) put the major subject to the top
+            4) get titles by the resulting keys
+        '''
+        f = '[MClient] plugins.multitrancom.subjects.Subjects.get_group_with_header'
+        major = self.get_major(title)
+        group = self.get_group(title)
+        if major and group:
+            return [major] + group
+        else:
+            sh.com.rep_empty(f)
+        return []
+    
     def get_group(self,title):
         f = '[MClient] plugins.multitrancom.subjects.Subjects.get_group'
         # Takes ~0.002s on Intel Atom
@@ -28806,8 +28833,7 @@ class Subjects:
                 and not SUBJECTS[key]['major']:
                     group.append(SUBJECTS[key][self.lang]['title'])
         else:
-            mes = _('Subject "{}" has no group!').format(title)
-            sh.objs.get_mes(f,mes,True).show_warning()
+            sh.com.rep_empty(f)
         return sorted(set(group))
     
     def get_list(self):

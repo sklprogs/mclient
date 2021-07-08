@@ -34,8 +34,8 @@ class Plugin:
     def get_subjects(self):
         return sj.objs.get_subjects().get_list()
     
-    def get_group(self,subject=''):
-        return sj.objs.get_subjects().get_group(subject)
+    def get_group_with_header(self,subject=''):
+        return sj.objs.get_subjects().get_group_with_header(subject)
     
     def get_majors(self):
         return sj.objs.get_subjects().get_majors()

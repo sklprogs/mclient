@@ -486,12 +486,12 @@ class Objects:
 
     def get_blacklist(self):
         if self.blacklist is None:
-            self.blacklist = bl.Blacklist(func_group=lg.objs.get_plugins().get_group)
+            self.blacklist = bl.Blacklist(func_group=lg.objs.get_plugins().get_group_with_header)
         return self.blacklist
     
     def get_priorities(self):
         if self.priorities is None:
-            self.priorities = pr.Priorities(func_group=lg.objs.get_plugins().get_group)
+            self.priorities = pr.Priorities(func_group=lg.objs.get_plugins().get_group_with_header)
         return self.priorities
     
     def get_parties(self):

@@ -47,10 +47,13 @@ class Plugins:
             sh.com.rep_empty(f)
         return []
     
-    def get_group(self,subject=''):
-        f = '[MClient] manager.Plugins.get_group'
+    def get_group_with_header(self,subject=''):
+        f = '[MClient] manager.Plugins.get_group_with_header'
         if self.plugin:
-            return self.plugin.get_group(subject)
+            result = self.plugin.get_group_with_header(subject)
+            mes = '"{}" -> {}'.format(subject,'; '.join(result))
+            sh.objs.get_mes(f,mes,True).show_debug()
+            return result
         else:
             sh.com.rep_empty(f)
         return []

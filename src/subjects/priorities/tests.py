@@ -47,7 +47,7 @@ if __name__ == '__main__':
                            ,lst2 = iext.get_all_subjects()
                            ,art_subjects = iext.get_article_subjects()
                            ,majors = iext.get_majors()
-                           ,func_group = iext.get_group
+                           ,func_group = iext.get_group_with_header
                            )
     iprior.show()
     sh.com.end()
