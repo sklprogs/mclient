@@ -2539,7 +2539,6 @@ class WebFrame:
         and (old_key == sh.lg.globs['bool']['BlockSubjects']):
             sh.com.rep_lazy(f)
         else:
-            #TODO: write blocked subjects
             lg.objs.order.blacklst = new_list
             objs.get_blocksdb().delete_bookmarks()
             self.load_article()
@@ -2561,7 +2560,6 @@ class WebFrame:
         and (old_key == sh.lg.globs['bool']['PrioritizeSubjects']):
             sh.com.rep_lazy(f)
         else:
-            #TODO: write priorities
             lg.objs.order.priorlst = new_list
             objs.get_blocksdb().delete_bookmarks()
             self.load_article()
