@@ -170,10 +170,6 @@ class Order:
         self.blacklst = []
         self.priorlst = []
     
-    def get_pair(self,item):
-        # A dummy class, reassign this in a parent class
-        pass
-    
     def block(self,title):
         if not title in self.blacklst:
             self.blacklst.append(title)

@@ -55,12 +55,8 @@ class Plugin:
         return True
     
     # This is needed only for compliance with a general method
-    def get_title(self,abbr):
-        return abbr
-    
-    # This is needed only for compliance with a general method
-    def get_abbr(self,title):
-        return title
+    def get_title(self,short):
+        return short
     
     def quit(self):
         pass

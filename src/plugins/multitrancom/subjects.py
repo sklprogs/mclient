@@ -8,8 +8,6 @@ import skl_shared.shared as sh
 
 SUBJECTS = {'AI.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -35,8 +33,6 @@ SUBJECTS = {'AI.':
                }
            ,'AIDS.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -62,8 +58,6 @@ SUBJECTS = {'AI.':
                }
            ,'AMEX.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Finances'
                ,'en':
@@ -89,8 +83,6 @@ SUBJECTS = {'AI.':
                }
            ,'ASCII.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -116,8 +108,6 @@ SUBJECTS = {'AI.':
                }
            ,'Alg.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -143,8 +133,6 @@ SUBJECTS = {'AI.':
                }
            ,'AmE':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Auxilliary categories (editor use only)'
                ,'en':
@@ -170,8 +158,6 @@ SUBJECTS = {'AI.':
                }
            ,'Ant.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -197,8 +183,6 @@ SUBJECTS = {'AI.':
                }
            ,'Apollo-Soyuz':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Space'
                ,'en':
@@ -224,8 +208,6 @@ SUBJECTS = {'AI.':
                }
            ,'Arag.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -251,8 +233,6 @@ SUBJECTS = {'AI.':
                }
            ,'Arg.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -278,8 +258,6 @@ SUBJECTS = {'AI.':
                }
            ,'Australia':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -305,8 +283,6 @@ SUBJECTS = {'AI.':
                }
            ,'Austria':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -332,8 +308,6 @@ SUBJECTS = {'AI.':
                }
            ,'Belar.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -359,8 +333,6 @@ SUBJECTS = {'AI.':
                }
            ,'BrE':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Auxilliary categories (editor use only)'
                ,'en':
@@ -386,8 +358,6 @@ SUBJECTS = {'AI.':
                }
            ,'Braz.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -413,8 +383,6 @@ SUBJECTS = {'AI.':
                }
            ,'C.-R.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -440,8 +408,6 @@ SUBJECTS = {'AI.':
                }
            ,'CNC':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -467,8 +433,6 @@ SUBJECTS = {'AI.':
                }
            ,'CRT':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electronics'
                ,'en':
@@ -494,8 +458,6 @@ SUBJECTS = {'AI.':
                }
            ,'CT':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical appliances'
                ,'en':
@@ -518,8 +480,6 @@ SUBJECTS = {'AI.':
                    {'short': 'КТ'
                    ,'title': "Комп'ютерна томографія"}}, 'Canada':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -545,8 +505,6 @@ SUBJECTS = {'AI.':
                }
            ,'Centr.Am.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -572,8 +530,6 @@ SUBJECTS = {'AI.':
                }
            ,'Chil.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -599,8 +555,6 @@ SUBJECTS = {'AI.':
                }
            ,'China':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -626,8 +580,6 @@ SUBJECTS = {'AI.':
                }
            ,'Col.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -653,8 +605,6 @@ SUBJECTS = {'AI.':
                }
            ,'Cuba':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -680,8 +630,6 @@ SUBJECTS = {'AI.':
                }
            ,'Cypr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -707,8 +655,6 @@ SUBJECTS = {'AI.':
                }
            ,'Dutch':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -734,8 +680,6 @@ SUBJECTS = {'AI.':
                }
            ,'EBRD':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Finances'
                ,'en':
@@ -761,8 +705,6 @@ SUBJECTS = {'AI.':
                }
            ,'EU.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -788,8 +730,6 @@ SUBJECTS = {'AI.':
                }
            ,'Ecuad.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -815,8 +755,6 @@ SUBJECTS = {'AI.':
                }
            ,'FBI.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law enforcement'
                ,'en':
@@ -842,8 +780,6 @@ SUBJECTS = {'AI.':
                }
            ,'GDR':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -869,8 +805,6 @@ SUBJECTS = {'AI.':
                }
            ,'Germ.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -896,8 +830,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -923,8 +855,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, GOST.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Quality control and standards'
                ,'en':
@@ -950,8 +880,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, IT':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -977,8 +905,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, abbr.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Grammatical labels'
                ,'en':
@@ -1004,8 +930,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, abbr., IT':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -1031,8 +955,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, abbr., account.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -1058,8 +980,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, abbr., bank.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -1085,8 +1005,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, adm.law.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -1112,8 +1030,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, adv.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Business'
                ,'en':
@@ -1139,8 +1055,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, aer.phot.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Aviation'
                ,'en':
@@ -1166,8 +1080,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, agric.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Agriculture'
                ,'en':
@@ -1193,8 +1105,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, ballist.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -1220,8 +1130,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, biogeogr.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -1247,8 +1155,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, bot.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -1274,8 +1180,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, cloth.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Light industries'
                ,'en':
@@ -1301,8 +1205,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, comp.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Computing'
                ,'en':
@@ -1325,8 +1227,6 @@ SUBJECTS = {'AI.':
                    {'short': 'Gruzovik, комп.'
                    ,'title': "Комп'ютери"}}, 'Gruzovik, cryptogr.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Security systems'
                ,'en':
@@ -1352,8 +1252,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, dial.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Dialectal'
                ,'en':
@@ -1379,8 +1277,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, econ.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Economy'
                ,'en':
@@ -1406,8 +1302,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, el.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Electronics'
                ,'en':
@@ -1433,8 +1327,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, electric.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electrical engineering'
                ,'en':
@@ -1460,8 +1352,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, email':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Communications'
                ,'en':
@@ -1487,8 +1377,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, expl.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law enforcement'
                ,'en':
@@ -1514,8 +1402,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, fig.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -1541,8 +1427,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, footwear':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Light industries'
                ,'en':
@@ -1568,8 +1452,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, fr.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -1595,8 +1477,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, garden.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -1622,8 +1502,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, glac.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geology'
                ,'en':
@@ -1649,8 +1527,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, horse.breed.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -1676,8 +1552,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, hunt.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -1703,8 +1577,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, inform.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -1730,8 +1602,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, law':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Law'
                ,'en':
@@ -1757,8 +1627,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, mach.mech.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Machinery and mechanisms'
                ,'en':
@@ -1784,8 +1652,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, magn.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -1811,8 +1677,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, math.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Mathematics'
                ,'en':
@@ -1838,8 +1702,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, med.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Medical'
                ,'en':
@@ -1865,8 +1727,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, media.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Mass media'
                ,'en':
@@ -1892,8 +1752,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, met.phys.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -1919,8 +1777,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, mil.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Military'
                ,'en':
@@ -1946,8 +1802,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, mil., air.def.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Military'
                ,'en':
@@ -1973,8 +1827,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, mil., arm.veh.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Military'
                ,'en':
@@ -2000,8 +1852,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, mil., artil.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Military'
                ,'en':
@@ -2027,8 +1877,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, mil., avia.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Aviation'
                ,'en':
@@ -2054,8 +1902,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, mycol.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -2081,8 +1927,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, myth.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Mythology'
                ,'en':
@@ -2108,8 +1952,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, nautic.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Nautical'
                ,'en':
@@ -2135,8 +1977,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, obs.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -2162,8 +2002,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, ocean.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -2189,8 +2027,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, paraglid.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Outdoor activities and extreme sports'
                ,'en':
@@ -2216,8 +2052,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, philolog.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Philology'
                ,'en':
@@ -2243,8 +2077,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, phonet.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Linguistics'
                ,'en':
@@ -2270,8 +2102,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, photo.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Photography'
                ,'en':
@@ -2297,8 +2127,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, poetic':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -2324,8 +2152,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, polit.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Politics'
                ,'en':
@@ -2351,8 +2177,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, polygr.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Publishing'
                ,'en':
@@ -2378,8 +2202,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, prof.jarg.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Jargon and slang'
                ,'en':
@@ -2405,8 +2227,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, prop.&figur.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -2432,8 +2252,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, radio':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Communications'
                ,'en':
@@ -2459,8 +2277,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, rel., jud.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Religion'
                ,'en':
@@ -2486,8 +2302,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, row.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -2513,8 +2327,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, sail.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Outdoor activities and extreme sports'
                ,'en':
@@ -2540,8 +2352,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, scient.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -2567,8 +2377,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, sculp.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -2594,8 +2402,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, slang':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Jargon and slang'
                ,'en':
@@ -2621,8 +2427,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, slavon.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -2648,8 +2452,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, social.sc.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Education'
                ,'en':
@@ -2675,8 +2477,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, spin.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Crafts'
                ,'en':
@@ -2702,8 +2502,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, sport.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Sports'
                ,'en':
@@ -2729,8 +2527,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, sport.goods':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -2756,8 +2552,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, surv.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sociology'
                ,'en':
@@ -2783,8 +2577,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, tech.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Technology'
                ,'en':
@@ -2810,8 +2602,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, tel.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Communications'
                ,'en':
@@ -2837,8 +2627,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, terat.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -2864,8 +2652,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, topogr.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -2891,8 +2677,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, typewrit.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Records management'
                ,'en':
@@ -2918,8 +2702,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, vent.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -2945,8 +2727,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, weav.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Crafts'
                ,'en':
@@ -2972,8 +2752,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, written':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -2999,8 +2777,6 @@ SUBJECTS = {'AI.':
                }
            ,'Gruzovik, zool.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -3026,8 +2802,6 @@ SUBJECTS = {'AI.':
                }
            ,'Guatem.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -3053,8 +2827,6 @@ SUBJECTS = {'AI.':
                }
            ,'HF.electr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electronics'
                ,'en':
@@ -3080,8 +2852,6 @@ SUBJECTS = {'AI.':
                }
            ,'HR':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Business'
                ,'en':
@@ -3107,8 +2877,6 @@ SUBJECTS = {'AI.':
                }
            ,'IMF.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Finances'
                ,'en':
@@ -3134,8 +2902,6 @@ SUBJECTS = {'AI.':
                }
            ,'IT':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -3161,8 +2927,6 @@ SUBJECTS = {'AI.':
                }
            ,'India':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -3188,8 +2952,6 @@ SUBJECTS = {'AI.':
                }
            ,'Indones.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -3215,8 +2977,6 @@ SUBJECTS = {'AI.':
                }
            ,'Iran':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -3242,8 +3002,6 @@ SUBJECTS = {'AI.':
                }
            ,'Kazakh.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -3269,8 +3027,6 @@ SUBJECTS = {'AI.':
                }
            ,'Kyrgyz.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -3296,8 +3052,6 @@ SUBJECTS = {'AI.':
                }
            ,'LP.play.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Multimedia'
                ,'en':
@@ -3323,8 +3077,6 @@ SUBJECTS = {'AI.':
                }
            ,'MSDS':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemical industry'
                ,'en':
@@ -3350,8 +3102,6 @@ SUBJECTS = {'AI.':
                }
            ,'Makarov.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -3377,8 +3127,6 @@ SUBJECTS = {'AI.':
                }
            ,'Makarov., inform., amer.usg.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -3404,8 +3152,6 @@ SUBJECTS = {'AI.':
                }
            ,'Moroc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -3431,8 +3177,6 @@ SUBJECTS = {'AI.':
                }
            ,'N.Ireland.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -3458,8 +3202,6 @@ SUBJECTS = {'AI.':
                }
            ,'NASA':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Space'
                ,'en':
@@ -3485,8 +3227,6 @@ SUBJECTS = {'AI.':
                }
            ,'NATO':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Military'
                ,'en':
@@ -3512,8 +3252,6 @@ SUBJECTS = {'AI.':
                }
            ,'NGO':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -3539,8 +3277,6 @@ SUBJECTS = {'AI.':
                }
            ,'NYSE.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Finances'
                ,'en':
@@ -3566,8 +3302,6 @@ SUBJECTS = {'AI.':
                }
            ,'Nasdaq':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Finances'
                ,'en':
@@ -3593,8 +3327,6 @@ SUBJECTS = {'AI.':
                }
            ,'Netherl., law, court':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -3620,8 +3352,6 @@ SUBJECTS = {'AI.':
                }
            ,'O&G':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Oil and gas'
                ,'en':
@@ -3647,8 +3377,6 @@ SUBJECTS = {'AI.':
                }
            ,'O&G, casp.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Oil and gas'
                ,'en':
@@ -3674,8 +3402,6 @@ SUBJECTS = {'AI.':
                }
            ,'O&G, karach.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Oil and gas'
                ,'en':
@@ -3701,8 +3427,6 @@ SUBJECTS = {'AI.':
                }
            ,'O&G, molikpaq.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Oil and gas'
                ,'en':
@@ -3728,8 +3452,6 @@ SUBJECTS = {'AI.':
                }
            ,'O&G, oilfield.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Oil and gas'
                ,'en':
@@ -3755,8 +3477,6 @@ SUBJECTS = {'AI.':
                }
            ,'O&G, sahk.r.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Oil and gas'
                ,'en':
@@ -3782,8 +3502,6 @@ SUBJECTS = {'AI.':
                }
            ,'O&G, sahk.s.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Oil and gas'
                ,'en':
@@ -3809,8 +3527,6 @@ SUBJECTS = {'AI.':
                }
            ,'O&G, sakh.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Oil and gas'
                ,'en':
@@ -3836,8 +3552,6 @@ SUBJECTS = {'AI.':
                }
            ,'O&G, sakh., geol.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -3863,8 +3577,6 @@ SUBJECTS = {'AI.':
                }
            ,'O&G, sakh.a.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Oil and gas'
                ,'en':
@@ -3890,8 +3602,6 @@ SUBJECTS = {'AI.':
                }
            ,'O&G, tengiz.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Oil and gas'
                ,'en':
@@ -3917,8 +3627,6 @@ SUBJECTS = {'AI.':
                }
            ,'O&G. tech.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Oil and gas'
                ,'en':
@@ -3944,8 +3652,6 @@ SUBJECTS = {'AI.':
                }
            ,'OHS':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Occupational health & safety'
                ,'en':
@@ -3971,8 +3677,6 @@ SUBJECTS = {'AI.':
                }
            ,'PCB':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electronics'
                ,'en':
@@ -3998,8 +3702,6 @@ SUBJECTS = {'AI.':
                }
            ,'PPE':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Occupational health & safety'
                ,'en':
@@ -4025,8 +3727,6 @@ SUBJECTS = {'AI.':
                }
            ,'PR':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Business'
                ,'en':
@@ -4052,8 +3752,6 @@ SUBJECTS = {'AI.':
                }
            ,'PSP':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electrical engineering'
                ,'en':
@@ -4079,8 +3777,6 @@ SUBJECTS = {'AI.':
                }
            ,'Panam.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -4106,8 +3802,6 @@ SUBJECTS = {'AI.':
                }
            ,'Peru.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -4133,8 +3827,6 @@ SUBJECTS = {'AI.':
                }
            ,'Philipp.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -4160,8 +3852,6 @@ SUBJECTS = {'AI.':
                }
            ,'R&D.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -4187,8 +3877,6 @@ SUBJECTS = {'AI.':
                }
            ,'Russia':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -4214,8 +3902,6 @@ SUBJECTS = {'AI.':
                }
            ,'S.Amer.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -4241,8 +3927,6 @@ SUBJECTS = {'AI.':
                }
            ,'SAP.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -4268,8 +3952,6 @@ SUBJECTS = {'AI.':
                }
            ,'SAP.fin.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -4295,8 +3977,6 @@ SUBJECTS = {'AI.':
                }
            ,'SAP.tech.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -4322,8 +4002,6 @@ SUBJECTS = {'AI.':
                }
            ,'Scotl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -4349,8 +4027,6 @@ SUBJECTS = {'AI.':
                }
            ,'Spain':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -4376,8 +4052,6 @@ SUBJECTS = {'AI.':
                }
            ,'TV':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mass media'
                ,'en':
@@ -4403,8 +4077,6 @@ SUBJECTS = {'AI.':
                }
            ,'UK':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -4430,8 +4102,6 @@ SUBJECTS = {'AI.':
                }
            ,'UN':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'United Nations'
                ,'en':
@@ -4454,8 +4124,6 @@ SUBJECTS = {'AI.':
                    {'short': 'ООН'
                    ,'title': "Організація Об'єднаних Націй"}}, 'USA':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -4481,8 +4149,6 @@ SUBJECTS = {'AI.':
                }
            ,'Ukraine':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -4508,8 +4174,6 @@ SUBJECTS = {'AI.':
                }
            ,'Venezuel.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -4535,8 +4199,6 @@ SUBJECTS = {'AI.':
                }
            ,'WTO.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Economy'
                ,'en':
@@ -4562,8 +4224,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Grammatical labels'
                ,'en':
@@ -4589,8 +4249,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., O&G, casp.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -4616,8 +4274,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., O&G, karach.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -4643,8 +4299,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., O&G, sahk.r.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -4670,8 +4324,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., O&G, sahk.s.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -4697,8 +4349,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., O&G, sakh.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -4724,8 +4374,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., O&G, sakh.a.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -4751,8 +4399,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., amer.usg.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -4778,8 +4424,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., amer.usg., slang':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -4805,8 +4449,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., avia., avia., ICAO':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -4832,8 +4474,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., avia., med.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -4859,8 +4499,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., comp., MS':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -4886,8 +4524,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., comp., net.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -4910,8 +4546,6 @@ SUBJECTS = {'AI.':
                    {'short': 'абрев., комп., мереж.'
                    ,'title': "Абревіатура, Комп'ютерні мережі"}}, 'abbr., comp., net., IT':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -4934,8 +4568,6 @@ SUBJECTS = {'AI.':
                    {'short': 'абрев., комп., мереж., IT'
                    ,'title': "Абревіатура, Комп'ютерні мережі, Інформаційні технології"}}, 'abbr., fant./sci-fi.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -4961,8 +4593,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., law, ADR':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -4988,8 +4618,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., law, copyr.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -5015,8 +4643,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., mil., WMD':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -5042,8 +4668,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., mil., artil.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -5069,8 +4693,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., mil., navy':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -5096,8 +4718,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., patents.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -5123,8 +4743,6 @@ SUBJECTS = {'AI.':
                }
            ,'abbr., sport, bask.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -5150,8 +4768,6 @@ SUBJECTS = {'AI.':
                }
            ,'account.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Finances'
                ,'en':
@@ -5177,8 +4793,6 @@ SUBJECTS = {'AI.':
                }
            ,'accum.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -5204,8 +4818,6 @@ SUBJECTS = {'AI.':
                }
            ,'acoust.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -5231,8 +4843,6 @@ SUBJECTS = {'AI.':
                }
            ,'acrid.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -5258,8 +4868,6 @@ SUBJECTS = {'AI.':
                }
            ,'acrob.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -5285,8 +4893,6 @@ SUBJECTS = {'AI.':
                }
            ,'acup.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medicine - Alternative medicine'
                ,'en':
@@ -5312,8 +4918,6 @@ SUBJECTS = {'AI.':
                }
            ,'addit.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -5339,8 +4943,6 @@ SUBJECTS = {'AI.':
                }
            ,'adm.law.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -5366,8 +4968,6 @@ SUBJECTS = {'AI.':
                }
            ,'admin.geo.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -5393,8 +4993,6 @@ SUBJECTS = {'AI.':
                }
            ,'adv.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Business'
                ,'en':
@@ -5420,8 +5018,6 @@ SUBJECTS = {'AI.':
                }
            ,'aer.phot.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Aviation'
                ,'en':
@@ -5447,8 +5043,6 @@ SUBJECTS = {'AI.':
                }
            ,'aerodyn.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -5474,8 +5068,6 @@ SUBJECTS = {'AI.':
                }
            ,'aerohydr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -5501,8 +5093,6 @@ SUBJECTS = {'AI.':
                }
            ,'aeron.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Aviation'
                ,'en':
@@ -5528,8 +5118,6 @@ SUBJECTS = {'AI.':
                }
            ,'affect.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Emotional values'
                ,'en':
@@ -5555,8 +5143,6 @@ SUBJECTS = {'AI.':
                }
            ,'afghan.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -5582,8 +5168,6 @@ SUBJECTS = {'AI.':
                }
            ,'afr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -5609,8 +5193,6 @@ SUBJECTS = {'AI.':
                }
            ,'african.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -5636,8 +5218,6 @@ SUBJECTS = {'AI.':
                }
            ,'agr.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -5663,8 +5243,6 @@ SUBJECTS = {'AI.':
                }
            ,'agric.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Agriculture'
                ,'en':
@@ -5690,8 +5268,6 @@ SUBJECTS = {'AI.':
                }
            ,'agrochem.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -5717,8 +5293,6 @@ SUBJECTS = {'AI.':
                }
            ,'aikido.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Martial arts and combat sports'
                ,'en':
@@ -5744,8 +5318,6 @@ SUBJECTS = {'AI.':
                }
            ,'airccon.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -5771,8 +5343,6 @@ SUBJECTS = {'AI.':
                }
            ,'airports':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Aviation'
                ,'en':
@@ -5798,8 +5368,6 @@ SUBJECTS = {'AI.':
                }
            ,'airsh.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Aviation'
                ,'en':
@@ -5825,8 +5393,6 @@ SUBJECTS = {'AI.':
                }
            ,'alg.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mathematics'
                ,'en':
@@ -5852,8 +5418,6 @@ SUBJECTS = {'AI.':
                }
            ,'alk.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemistry'
                ,'en':
@@ -5879,8 +5443,6 @@ SUBJECTS = {'AI.':
                }
            ,'allergol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -5906,8 +5468,6 @@ SUBJECTS = {'AI.':
                }
            ,'alp.ski.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Outdoor activities and extreme sports'
                ,'en':
@@ -5933,8 +5493,6 @@ SUBJECTS = {'AI.':
                }
            ,'alum.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Metallurgy'
                ,'en':
@@ -5960,8 +5518,6 @@ SUBJECTS = {'AI.':
                }
            ,'amer.usg.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -5987,8 +5543,6 @@ SUBJECTS = {'AI.':
                }
            ,'amer.usg., Makarov.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -6014,8 +5568,6 @@ SUBJECTS = {'AI.':
                }
            ,'amer.usg., account.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -6041,8 +5593,6 @@ SUBJECTS = {'AI.':
                }
            ,'anaesthes.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -6068,8 +5618,6 @@ SUBJECTS = {'AI.':
                }
            ,'anat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -6095,8 +5643,6 @@ SUBJECTS = {'AI.':
                }
            ,'anc.fr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -6122,8 +5668,6 @@ SUBJECTS = {'AI.':
                }
            ,'anc.gr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -6149,8 +5693,6 @@ SUBJECTS = {'AI.':
                }
            ,'anc.hebr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -6176,8 +5718,6 @@ SUBJECTS = {'AI.':
                }
            ,'angl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Hobbies and pastimes'
                ,'en':
@@ -6203,8 +5743,6 @@ SUBJECTS = {'AI.':
                }
            ,'anim.husb.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -6230,8 +5768,6 @@ SUBJECTS = {'AI.':
                }
            ,'animat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Cinematography'
                ,'en':
@@ -6257,8 +5793,6 @@ SUBJECTS = {'AI.':
                }
            ,'antarct.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -6284,8 +5818,6 @@ SUBJECTS = {'AI.':
                }
            ,'antenn.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Communications'
                ,'en':
@@ -6311,8 +5843,6 @@ SUBJECTS = {'AI.':
                }
            ,'anthr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Historical'
                ,'en':
@@ -6338,8 +5868,6 @@ SUBJECTS = {'AI.':
                }
            ,'antitrust.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -6365,8 +5893,6 @@ SUBJECTS = {'AI.':
                }
            ,'appl.math.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mathematics'
                ,'en':
@@ -6392,8 +5918,6 @@ SUBJECTS = {'AI.':
                }
            ,'arabic':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -6419,8 +5943,6 @@ SUBJECTS = {'AI.':
                }
            ,'arch.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -6446,8 +5968,6 @@ SUBJECTS = {'AI.':
                }
            ,'archer.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -6473,8 +5993,6 @@ SUBJECTS = {'AI.':
                }
            ,'archit.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -6500,8 +6018,6 @@ SUBJECTS = {'AI.':
                }
            ,'archive.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Records management'
                ,'en':
@@ -6527,8 +6043,6 @@ SUBJECTS = {'AI.':
                }
            ,'arts.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -6554,8 +6068,6 @@ SUBJECTS = {'AI.':
                }
            ,'astr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Space'
                ,'en':
@@ -6581,8 +6093,6 @@ SUBJECTS = {'AI.':
                }
            ,'astrol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Parasciences'
                ,'en':
@@ -6608,8 +6118,6 @@ SUBJECTS = {'AI.':
                }
            ,'astrometr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Space'
                ,'en':
@@ -6635,8 +6143,6 @@ SUBJECTS = {'AI.':
                }
            ,'astronaut.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Space'
                ,'en':
@@ -6662,8 +6168,6 @@ SUBJECTS = {'AI.':
                }
            ,'astrophys.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -6689,8 +6193,6 @@ SUBJECTS = {'AI.':
                }
            ,'astrospectr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Space'
                ,'en':
@@ -6716,8 +6218,6 @@ SUBJECTS = {'AI.':
                }
            ,'athlet.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -6743,8 +6243,6 @@ SUBJECTS = {'AI.':
                }
            ,'atring.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Building materials'
                ,'en':
@@ -6770,8 +6268,6 @@ SUBJECTS = {'AI.':
                }
            ,'audio.el.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Multimedia'
                ,'en':
@@ -6797,8 +6293,6 @@ SUBJECTS = {'AI.':
                }
            ,'austral.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -6824,8 +6318,6 @@ SUBJECTS = {'AI.':
                }
            ,'austrian':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -6851,8 +6343,6 @@ SUBJECTS = {'AI.':
                }
            ,'auto.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Transport'
                ,'en':
@@ -6878,8 +6368,6 @@ SUBJECTS = {'AI.':
                }
            ,'auto.ctrl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -6905,8 +6393,6 @@ SUBJECTS = {'AI.':
                }
            ,'automat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Machinery and mechanisms'
                ,'en':
@@ -6932,8 +6418,6 @@ SUBJECTS = {'AI.':
                }
            ,'avia.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Aviation'
                ,'en':
@@ -6959,8 +6443,6 @@ SUBJECTS = {'AI.':
                }
            ,'avia., avia., ICAO':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -6986,8 +6468,6 @@ SUBJECTS = {'AI.':
                }
            ,'avia., med.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Aviation'
                ,'en':
@@ -7013,8 +6493,6 @@ SUBJECTS = {'AI.':
                }
            ,'avunc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Emotional values'
                ,'en':
@@ -7040,8 +6518,6 @@ SUBJECTS = {'AI.':
                }
            ,'bacteriol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -7067,8 +6543,6 @@ SUBJECTS = {'AI.':
                }
            ,'baker.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Food industry'
                ,'en':
@@ -7094,8 +6568,6 @@ SUBJECTS = {'AI.':
                }
            ,'ball.bear.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Machinery and mechanisms'
                ,'en':
@@ -7121,8 +6593,6 @@ SUBJECTS = {'AI.':
                }
            ,'ballet.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -7148,8 +6618,6 @@ SUBJECTS = {'AI.':
                }
            ,'bank.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Finances'
                ,'en':
@@ -7175,8 +6643,6 @@ SUBJECTS = {'AI.':
                }
            ,'baseb.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -7202,8 +6668,6 @@ SUBJECTS = {'AI.':
                }
            ,'beekeep.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -7229,8 +6693,6 @@ SUBJECTS = {'AI.':
                }
            ,'belg.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -7256,8 +6718,6 @@ SUBJECTS = {'AI.':
                }
            ,'bev.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Cooking'
                ,'en':
@@ -7283,8 +6743,6 @@ SUBJECTS = {'AI.':
                }
            ,'bible.term.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Religion'
                ,'en':
@@ -7310,8 +6768,6 @@ SUBJECTS = {'AI.':
                }
            ,'bibliogr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Records management'
                ,'en':
@@ -7337,8 +6793,6 @@ SUBJECTS = {'AI.':
                }
            ,'bill.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -7364,8 +6818,6 @@ SUBJECTS = {'AI.':
                }
            ,'billiar.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Games (other than sports)'
                ,'en':
@@ -7391,8 +6843,6 @@ SUBJECTS = {'AI.':
                }
            ,'bioacoust.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -7418,8 +6868,6 @@ SUBJECTS = {'AI.':
                }
            ,'biochem.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -7445,8 +6893,6 @@ SUBJECTS = {'AI.':
                }
            ,'bioenerg.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Energy industry'
                ,'en':
@@ -7472,8 +6918,6 @@ SUBJECTS = {'AI.':
                }
            ,'biol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Biology'
                ,'en':
@@ -7499,8 +6943,6 @@ SUBJECTS = {'AI.':
                }
            ,'biom.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Security systems'
                ,'en':
@@ -7526,8 +6968,6 @@ SUBJECTS = {'AI.':
                }
            ,'bion.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -7553,8 +6993,6 @@ SUBJECTS = {'AI.':
                }
            ,'biophys.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -7580,8 +7018,6 @@ SUBJECTS = {'AI.':
                }
            ,'biotaxy.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -7607,8 +7043,6 @@ SUBJECTS = {'AI.':
                }
            ,'biotechn.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -7634,8 +7068,6 @@ SUBJECTS = {'AI.':
                }
            ,'black.sl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Jargon and slang'
                ,'en':
@@ -7661,8 +7093,6 @@ SUBJECTS = {'AI.':
                }
            ,'bodybuild.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -7688,8 +7118,6 @@ SUBJECTS = {'AI.':
                }
            ,'book.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -7715,8 +7143,6 @@ SUBJECTS = {'AI.':
                }
            ,'book.bind.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Publishing'
                ,'en':
@@ -7742,8 +7168,6 @@ SUBJECTS = {'AI.':
                }
            ,'bot.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -7769,8 +7193,6 @@ SUBJECTS = {'AI.':
                }
            ,'box.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Martial arts and combat sports'
                ,'en':
@@ -7796,8 +7218,6 @@ SUBJECTS = {'AI.':
                }
            ,'brew.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Food industry'
                ,'en':
@@ -7823,8 +7243,6 @@ SUBJECTS = {'AI.':
                }
            ,'bricks':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Building materials'
                ,'en':
@@ -7850,8 +7268,6 @@ SUBJECTS = {'AI.':
                }
            ,'bridg.constr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -7877,8 +7293,6 @@ SUBJECTS = {'AI.':
                }
            ,'brit.usg.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -7904,8 +7318,6 @@ SUBJECTS = {'AI.':
                }
            ,'brit.usg., austral.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -7931,8 +7343,6 @@ SUBJECTS = {'AI.':
                }
            ,'build.mat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Building materials'
                ,'en':
@@ -7958,8 +7368,6 @@ SUBJECTS = {'AI.':
                }
            ,'build.struct.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -7985,8 +7393,6 @@ SUBJECTS = {'AI.':
                }
            ,'bus.styl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Business'
                ,'en':
@@ -8012,8 +7418,6 @@ SUBJECTS = {'AI.':
                }
            ,'busin.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Business'
                ,'en':
@@ -8039,8 +7443,6 @@ SUBJECTS = {'AI.':
                }
            ,'cables':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electrical engineering'
                ,'en':
@@ -8066,8 +7468,6 @@ SUBJECTS = {'AI.':
                }
            ,'calligr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -8093,8 +7493,6 @@ SUBJECTS = {'AI.':
                }
            ,'can.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Food industry'
                ,'en':
@@ -8120,8 +7518,6 @@ SUBJECTS = {'AI.':
                }
            ,'canad.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -8147,8 +7543,6 @@ SUBJECTS = {'AI.':
                }
            ,'carcin.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -8174,8 +7568,6 @@ SUBJECTS = {'AI.':
                }
            ,'cardiol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -8201,8 +7593,6 @@ SUBJECTS = {'AI.':
                }
            ,'cards':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Games (other than sports)'
                ,'en':
@@ -8228,8 +7618,6 @@ SUBJECTS = {'AI.':
                }
            ,'cartogr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -8255,8 +7643,6 @@ SUBJECTS = {'AI.':
                }
            ,'cartogr., amer.usg.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -8282,8 +7668,6 @@ SUBJECTS = {'AI.':
                }
            ,'cel.mech.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Space'
                ,'en':
@@ -8309,8 +7693,6 @@ SUBJECTS = {'AI.':
                }
            ,'cem.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Building materials'
                ,'en':
@@ -8336,8 +7718,6 @@ SUBJECTS = {'AI.':
                }
            ,'ceram.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Production'
                ,'en':
@@ -8363,8 +7743,6 @@ SUBJECTS = {'AI.':
                }
            ,'ceram.tile.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Building materials'
                ,'en':
@@ -8390,8 +7768,6 @@ SUBJECTS = {'AI.':
                }
            ,'chalcid.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -8417,8 +7793,6 @@ SUBJECTS = {'AI.':
                }
            ,'charit.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Finances'
                ,'en':
@@ -8444,8 +7818,6 @@ SUBJECTS = {'AI.':
                }
            ,'chat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -8471,8 +7843,6 @@ SUBJECTS = {'AI.':
                }
            ,'chech.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -8498,8 +7868,6 @@ SUBJECTS = {'AI.':
                }
            ,'checkers.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Games (other than sports)'
                ,'en':
@@ -8525,8 +7893,6 @@ SUBJECTS = {'AI.':
                }
            ,'cheese':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Food industry'
                ,'en':
@@ -8552,8 +7918,6 @@ SUBJECTS = {'AI.':
                }
            ,'chem.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Chemistry'
                ,'en':
@@ -8579,8 +7943,6 @@ SUBJECTS = {'AI.':
                }
            ,'chem.comp.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemistry'
                ,'en':
@@ -8606,8 +7968,6 @@ SUBJECTS = {'AI.':
                }
            ,'chem.fib.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemical industry'
                ,'en':
@@ -8633,8 +7993,6 @@ SUBJECTS = {'AI.':
                }
            ,'chem.ind.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Chemical industry'
                ,'en':
@@ -8660,8 +8018,6 @@ SUBJECTS = {'AI.':
                }
            ,'chem.nomencl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemistry'
                ,'en':
@@ -8687,8 +8043,6 @@ SUBJECTS = {'AI.':
                }
            ,'chess.term.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Games (other than sports)'
                ,'en':
@@ -8714,8 +8068,6 @@ SUBJECTS = {'AI.':
                }
            ,'child.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -8741,8 +8093,6 @@ SUBJECTS = {'AI.':
                }
            ,'chinese.lang.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -8768,8 +8118,6 @@ SUBJECTS = {'AI.':
                }
            ,'choreogr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -8795,8 +8143,6 @@ SUBJECTS = {'AI.':
                }
            ,'chromat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemistry'
                ,'en':
@@ -8822,8 +8168,6 @@ SUBJECTS = {'AI.':
                }
            ,'cinema':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Cinematography'
                ,'en':
@@ -8849,8 +8193,6 @@ SUBJECTS = {'AI.':
                }
            ,'cinema.equip.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Cinematography'
                ,'en':
@@ -8876,8 +8218,6 @@ SUBJECTS = {'AI.':
                }
            ,'circus':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -8903,8 +8243,6 @@ SUBJECTS = {'AI.':
                }
            ,'civ.law.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -8930,8 +8268,6 @@ SUBJECTS = {'AI.':
                }
            ,'civ.proc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -8957,8 +8293,6 @@ SUBJECTS = {'AI.':
                }
            ,'clas.ant.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Historical'
                ,'en':
@@ -8984,8 +8318,6 @@ SUBJECTS = {'AI.':
                }
            ,'cleric.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Religion'
                ,'en':
@@ -9011,8 +8343,6 @@ SUBJECTS = {'AI.':
                }
            ,'clich.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -9038,8 +8368,6 @@ SUBJECTS = {'AI.':
                }
            ,'clim.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -9065,8 +8393,6 @@ SUBJECTS = {'AI.':
                }
            ,'clin.trial.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -9092,8 +8418,6 @@ SUBJECTS = {'AI.':
                }
            ,'cloth.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Light industries'
                ,'en':
@@ -9119,8 +8443,6 @@ SUBJECTS = {'AI.':
                }
            ,'coal.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mining'
                ,'en':
@@ -9146,8 +8468,6 @@ SUBJECTS = {'AI.':
                }
            ,'cockney':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Jargon and slang'
                ,'en':
@@ -9173,8 +8493,6 @@ SUBJECTS = {'AI.':
                }
            ,'coff.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Food industry'
                ,'en':
@@ -9200,8 +8518,6 @@ SUBJECTS = {'AI.':
                }
            ,'coll.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Grammatical labels'
                ,'en':
@@ -9227,8 +8543,6 @@ SUBJECTS = {'AI.':
                }
            ,'collect.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Collecting'
                ,'en':
@@ -9254,8 +8568,6 @@ SUBJECTS = {'AI.':
                }
            ,'college.vern.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Jargon and slang'
                ,'en':
@@ -9281,8 +8593,6 @@ SUBJECTS = {'AI.':
                }
            ,'colloid.chem.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemistry'
                ,'en':
@@ -9308,8 +8618,6 @@ SUBJECTS = {'AI.':
                }
            ,'combust.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Machinery and mechanisms'
                ,'en':
@@ -9335,8 +8643,6 @@ SUBJECTS = {'AI.':
                }
            ,'comic.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -9362,8 +8668,6 @@ SUBJECTS = {'AI.':
                }
            ,'commer.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Business'
                ,'en':
@@ -9389,8 +8693,6 @@ SUBJECTS = {'AI.':
                }
            ,'commun.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Communications'
                ,'en':
@@ -9416,8 +8718,6 @@ SUBJECTS = {'AI.':
                }
            ,'comp.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Computing'
                ,'en':
@@ -9440,8 +8740,6 @@ SUBJECTS = {'AI.':
                    {'short': 'комп.'
                    ,'title': "Комп'ютери"}}, 'comp., MS':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -9467,8 +8765,6 @@ SUBJECTS = {'AI.':
                }
            ,'comp., net.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -9491,8 +8787,6 @@ SUBJECTS = {'AI.':
                    {'short': 'комп., мереж.'
                    ,'title': "Комп'ютерні мережі"}}, 'comp., net., abbr.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -9515,8 +8809,6 @@ SUBJECTS = {'AI.':
                    {'short': 'комп., мереж., абрев.'
                    ,'title': "Комп'ютерні мережі, Абревіатура"}}, 'comp.games.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -9542,8 +8834,6 @@ SUBJECTS = {'AI.':
                }
            ,'comp.graph.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -9569,8 +8859,6 @@ SUBJECTS = {'AI.':
                }
            ,'comp.name.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Proper name'
                ,'en':
@@ -9596,8 +8884,6 @@ SUBJECTS = {'AI.':
                }
            ,'comp.sec.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -9623,8 +8909,6 @@ SUBJECTS = {'AI.':
                }
            ,'comp.sl., humor.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -9650,8 +8934,6 @@ SUBJECTS = {'AI.':
                }
            ,'compr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -9677,8 +8959,6 @@ SUBJECTS = {'AI.':
                }
            ,'concr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Building materials'
                ,'en':
@@ -9704,8 +8984,6 @@ SUBJECTS = {'AI.':
                }
            ,'confect.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Cooking'
                ,'en':
@@ -9731,8 +9009,6 @@ SUBJECTS = {'AI.':
                }
            ,'construct.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Construction'
                ,'en':
@@ -9758,8 +9034,6 @@ SUBJECTS = {'AI.':
                }
            ,'consult.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Business'
                ,'en':
@@ -9785,8 +9059,6 @@ SUBJECTS = {'AI.':
                }
            ,'contempt.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Emotional values'
                ,'en':
@@ -9812,8 +9084,6 @@ SUBJECTS = {'AI.':
                }
            ,'context.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -9839,8 +9109,6 @@ SUBJECTS = {'AI.':
                }
            ,'conv.ind.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Production'
                ,'en':
@@ -9866,8 +9134,6 @@ SUBJECTS = {'AI.':
                }
            ,'conv.notation.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Subjects for Chinese dictionaries (container)'
                ,'en':
@@ -9893,8 +9159,6 @@ SUBJECTS = {'AI.':
                }
            ,'cook.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Cooking'
                ,'en':
@@ -9920,8 +9184,6 @@ SUBJECTS = {'AI.':
                }
            ,'coop.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Crafts'
                ,'en':
@@ -9947,8 +9209,6 @@ SUBJECTS = {'AI.':
                }
            ,'corp.gov.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Business'
                ,'en':
@@ -9974,8 +9234,6 @@ SUBJECTS = {'AI.':
                }
            ,'corrupt.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law enforcement'
                ,'en':
@@ -10001,8 +9259,6 @@ SUBJECTS = {'AI.':
                }
            ,'cosmet.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Wellness'
                ,'en':
@@ -10028,8 +9284,6 @@ SUBJECTS = {'AI.':
                }
            ,'crim.jarg.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Jargon and slang'
                ,'en':
@@ -10055,8 +9309,6 @@ SUBJECTS = {'AI.':
                }
            ,'crim.law.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -10082,8 +9334,6 @@ SUBJECTS = {'AI.':
                }
            ,'cryptogr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Security systems'
                ,'en':
@@ -10109,8 +9359,6 @@ SUBJECTS = {'AI.':
                }
            ,'crystall.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geology'
                ,'en':
@@ -10136,8 +9384,6 @@ SUBJECTS = {'AI.':
                }
            ,'cultur.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -10163,8 +9409,6 @@ SUBJECTS = {'AI.':
                }
            ,'curr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Finances'
                ,'en':
@@ -10190,8 +9434,6 @@ SUBJECTS = {'AI.':
                }
            ,'cust.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Government, administration and public services'
                ,'en':
@@ -10217,8 +9459,6 @@ SUBJECTS = {'AI.':
                }
            ,'cyber.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -10244,8 +9484,6 @@ SUBJECTS = {'AI.':
                }
            ,'cyc.sport':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -10271,8 +9509,6 @@ SUBJECTS = {'AI.':
                }
            ,'cycl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Outdoor activities and extreme sports'
                ,'en':
@@ -10298,8 +9534,6 @@ SUBJECTS = {'AI.':
                }
            ,'cytog.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -10325,8 +9559,6 @@ SUBJECTS = {'AI.':
                }
            ,'cytol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -10352,8 +9584,6 @@ SUBJECTS = {'AI.':
                }
            ,'d.b..':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -10379,8 +9609,6 @@ SUBJECTS = {'AI.':
                }
            ,'dactyl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law enforcement'
                ,'en':
@@ -10406,8 +9634,6 @@ SUBJECTS = {'AI.':
                }
            ,'dam.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -10433,8 +9659,6 @@ SUBJECTS = {'AI.':
                }
            ,'dan.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -10460,8 +9684,6 @@ SUBJECTS = {'AI.':
                }
            ,'danc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -10487,8 +9709,6 @@ SUBJECTS = {'AI.':
                }
            ,'dat.proc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -10514,8 +9734,6 @@ SUBJECTS = {'AI.':
                }
            ,'deaf.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -10541,8 +9759,6 @@ SUBJECTS = {'AI.':
                }
            ,'demogr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -10568,8 +9784,6 @@ SUBJECTS = {'AI.':
                }
            ,'dent.impl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical appliances'
                ,'en':
@@ -10595,8 +9809,6 @@ SUBJECTS = {'AI.':
                }
            ,'dentist.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -10622,8 +9834,6 @@ SUBJECTS = {'AI.':
                }
            ,'derbet.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Dialectal'
                ,'en':
@@ -10649,8 +9859,6 @@ SUBJECTS = {'AI.':
                }
            ,'dermat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -10676,8 +9884,6 @@ SUBJECTS = {'AI.':
                }
            ,'derog.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Emotional values'
                ,'en':
@@ -10703,8 +9909,6 @@ SUBJECTS = {'AI.':
                }
            ,'desert.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -10730,8 +9934,6 @@ SUBJECTS = {'AI.':
                }
            ,'design.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -10757,8 +9959,6 @@ SUBJECTS = {'AI.':
                }
            ,'dial.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Dialectal'
                ,'en':
@@ -10784,8 +9984,6 @@ SUBJECTS = {'AI.':
                }
            ,'dialys.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemistry'
                ,'en':
@@ -10811,8 +10009,6 @@ SUBJECTS = {'AI.':
                }
            ,'diet.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -10838,8 +10034,6 @@ SUBJECTS = {'AI.':
                }
            ,'dig.curr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Finances'
                ,'en':
@@ -10865,8 +10059,6 @@ SUBJECTS = {'AI.':
                }
            ,'dimin.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Grammatical labels'
                ,'en':
@@ -10892,8 +10084,6 @@ SUBJECTS = {'AI.':
                }
            ,'dipl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Foreign affairs'
                ,'en':
@@ -10919,8 +10109,6 @@ SUBJECTS = {'AI.':
                }
            ,'dipl., amer.usg.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -10946,8 +10134,6 @@ SUBJECTS = {'AI.':
                }
            ,'disappr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Emotional values'
                ,'en':
@@ -10973,8 +10159,6 @@ SUBJECTS = {'AI.':
                }
            ,'disast.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Politics'
                ,'en':
@@ -11000,8 +10184,6 @@ SUBJECTS = {'AI.':
                }
            ,'distil.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemistry'
                ,'en':
@@ -11027,8 +10209,6 @@ SUBJECTS = {'AI.':
                }
            ,'dog.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Companion animals'
                ,'en':
@@ -11054,8 +10234,6 @@ SUBJECTS = {'AI.':
                }
            ,'dominic.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -11081,8 +10259,6 @@ SUBJECTS = {'AI.':
                }
            ,'dril.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mining'
                ,'en':
@@ -11108,8 +10284,6 @@ SUBJECTS = {'AI.':
                }
            ,'drug.name':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -11135,8 +10309,6 @@ SUBJECTS = {'AI.':
                }
            ,'drugs':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -11162,8 +10334,6 @@ SUBJECTS = {'AI.':
                }
            ,'drv.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -11189,8 +10359,6 @@ SUBJECTS = {'AI.':
                }
            ,'drw.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -11216,8 +10384,6 @@ SUBJECTS = {'AI.':
                }
            ,'drywall':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Building materials'
                ,'en':
@@ -11243,8 +10409,6 @@ SUBJECTS = {'AI.':
                }
            ,'dye.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemical industry'
                ,'en':
@@ -11270,8 +10434,6 @@ SUBJECTS = {'AI.':
                }
            ,'ecol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Natural resourses and wildlife conservation'
                ,'en':
@@ -11297,8 +10459,6 @@ SUBJECTS = {'AI.':
                }
            ,'econ.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Economy'
                ,'en':
@@ -11324,8 +10484,6 @@ SUBJECTS = {'AI.':
                }
            ,'econ., amer.usg.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -11351,8 +10509,6 @@ SUBJECTS = {'AI.':
                }
            ,'econ.law.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -11378,8 +10534,6 @@ SUBJECTS = {'AI.':
                }
            ,'econometr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mathematics'
                ,'en':
@@ -11405,8 +10559,6 @@ SUBJECTS = {'AI.':
                }
            ,'ed.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Education'
                ,'en':
@@ -11432,8 +10584,6 @@ SUBJECTS = {'AI.':
                }
            ,'ed., subj.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Education'
                ,'en':
@@ -11459,8 +10609,6 @@ SUBJECTS = {'AI.':
                }
            ,'egypt.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Historical'
                ,'en':
@@ -11486,8 +10634,6 @@ SUBJECTS = {'AI.':
                }
            ,'el.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Electronics'
                ,'en':
@@ -11513,8 +10659,6 @@ SUBJECTS = {'AI.':
                }
            ,'el.chem.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemistry'
                ,'en':
@@ -11540,8 +10684,6 @@ SUBJECTS = {'AI.':
                }
            ,'el.com.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Business'
                ,'en':
@@ -11567,8 +10709,6 @@ SUBJECTS = {'AI.':
                }
            ,'el.gen.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Energy industry'
                ,'en':
@@ -11594,8 +10734,6 @@ SUBJECTS = {'AI.':
                }
            ,'el.mach.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electrical engineering'
                ,'en':
@@ -11621,8 +10759,6 @@ SUBJECTS = {'AI.':
                }
            ,'el.med.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -11648,8 +10784,6 @@ SUBJECTS = {'AI.':
                }
            ,'el.met.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Metallurgy'
                ,'en':
@@ -11675,8 +10809,6 @@ SUBJECTS = {'AI.':
                }
            ,'el.mot.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electrical engineering'
                ,'en':
@@ -11702,8 +10834,6 @@ SUBJECTS = {'AI.':
                }
            ,'el.therm.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Metallurgy'
                ,'en':
@@ -11729,8 +10859,6 @@ SUBJECTS = {'AI.':
                }
            ,'el.tract.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Machinery and mechanisms'
                ,'en':
@@ -11756,8 +10884,6 @@ SUBJECTS = {'AI.':
                }
            ,'elect.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Politics'
                ,'en':
@@ -11783,8 +10909,6 @@ SUBJECTS = {'AI.':
                }
            ,'electr.eng.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Electrical engineering'
                ,'en':
@@ -11810,8 +10934,6 @@ SUBJECTS = {'AI.':
                }
            ,'electric.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electrical engineering'
                ,'en':
@@ -11837,8 +10959,6 @@ SUBJECTS = {'AI.':
                }
            ,'electrophor.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical appliances'
                ,'en':
@@ -11864,8 +10984,6 @@ SUBJECTS = {'AI.':
                }
            ,'elev.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Machinery and mechanisms'
                ,'en':
@@ -11891,8 +11009,6 @@ SUBJECTS = {'AI.':
                }
            ,'els.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemistry'
                ,'en':
@@ -11918,8 +11034,6 @@ SUBJECTS = {'AI.':
                }
            ,'embryol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -11945,8 +11059,6 @@ SUBJECTS = {'AI.':
                }
            ,'emerg.care':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -11972,8 +11084,6 @@ SUBJECTS = {'AI.':
                }
            ,'emotive':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Emotional values'
                ,'en':
@@ -11999,8 +11109,6 @@ SUBJECTS = {'AI.':
                }
            ,'empl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Economy'
                ,'en':
@@ -12026,8 +11134,6 @@ SUBJECTS = {'AI.':
                }
            ,'endocr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -12053,8 +11159,6 @@ SUBJECTS = {'AI.':
                }
            ,'energ.distr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Energy industry'
                ,'en':
@@ -12080,8 +11184,6 @@ SUBJECTS = {'AI.':
                }
            ,'energ.ind.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Energy industry'
                ,'en':
@@ -12107,8 +11209,6 @@ SUBJECTS = {'AI.':
                }
            ,'energ.syst.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Energy industry'
                ,'en':
@@ -12134,8 +11234,6 @@ SUBJECTS = {'AI.':
                }
            ,'eng.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Engineering'
                ,'en':
@@ -12161,8 +11259,6 @@ SUBJECTS = {'AI.':
                }
            ,'eng.geol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geology'
                ,'en':
@@ -12188,8 +11284,6 @@ SUBJECTS = {'AI.':
                }
            ,'engin.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Machinery and mechanisms'
                ,'en':
@@ -12215,8 +11309,6 @@ SUBJECTS = {'AI.':
                }
            ,'engl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -12242,8 +11334,6 @@ SUBJECTS = {'AI.':
                }
            ,'entomol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -12269,8 +11359,6 @@ SUBJECTS = {'AI.':
                }
            ,'environ.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Natural resourses and wildlife conservation'
                ,'en':
@@ -12296,8 +11384,6 @@ SUBJECTS = {'AI.':
                }
            ,'epist.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -12323,8 +11409,6 @@ SUBJECTS = {'AI.':
                }
            ,'equestr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -12350,8 +11434,6 @@ SUBJECTS = {'AI.':
                }
            ,'eskim.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -12377,8 +11459,6 @@ SUBJECTS = {'AI.':
                }
            ,'esot.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Parasciences'
                ,'en':
@@ -12404,8 +11484,6 @@ SUBJECTS = {'AI.':
                }
            ,'esper.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -12431,8 +11509,6 @@ SUBJECTS = {'AI.':
                }
            ,'ethnogr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -12458,8 +11534,6 @@ SUBJECTS = {'AI.':
                }
            ,'ethnol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -12485,8 +11559,6 @@ SUBJECTS = {'AI.':
                }
            ,'ethnopsychol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Psychology'
                ,'en':
@@ -12512,8 +11584,6 @@ SUBJECTS = {'AI.':
                }
            ,'ethol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -12539,8 +11609,6 @@ SUBJECTS = {'AI.':
                }
            ,'euph.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -12566,8 +11634,6 @@ SUBJECTS = {'AI.':
                }
            ,'evol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -12593,8 +11659,6 @@ SUBJECTS = {'AI.':
                }
            ,'excl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Grammatical labels'
                ,'en':
@@ -12620,8 +11684,6 @@ SUBJECTS = {'AI.':
                }
            ,'exhib.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Business'
                ,'en':
@@ -12647,8 +11709,6 @@ SUBJECTS = {'AI.':
                }
            ,'explan.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -12674,8 +11734,6 @@ SUBJECTS = {'AI.':
                }
            ,'extr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -12701,8 +11759,6 @@ SUBJECTS = {'AI.':
                }
            ,'f.trade.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Economy'
                ,'en':
@@ -12728,8 +11784,6 @@ SUBJECTS = {'AI.':
                }
            ,'facil.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Production'
                ,'en':
@@ -12755,8 +11809,6 @@ SUBJECTS = {'AI.':
                }
            ,'fant./sci-fi., abbr.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -12782,8 +11834,6 @@ SUBJECTS = {'AI.':
                }
            ,'fash.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -12809,8 +11859,6 @@ SUBJECTS = {'AI.':
                }
            ,'faux ami':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Auxilliary categories (editor use only)'
                ,'en':
@@ -12836,8 +11884,6 @@ SUBJECTS = {'AI.':
                }
            ,'felin.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Companion animals'
                ,'en':
@@ -12863,8 +11909,6 @@ SUBJECTS = {'AI.':
                }
            ,'fenc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -12890,8 +11934,6 @@ SUBJECTS = {'AI.':
                }
            ,'ferm.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Food industry'
                ,'en':
@@ -12917,8 +11959,6 @@ SUBJECTS = {'AI.':
                }
            ,'fert.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -12944,8 +11984,6 @@ SUBJECTS = {'AI.':
                }
            ,'fib.optic':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -12971,8 +12009,6 @@ SUBJECTS = {'AI.':
                }
            ,'fig.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -12998,8 +12034,6 @@ SUBJECTS = {'AI.':
                }
            ,'fig.of.sp.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -13025,8 +12059,6 @@ SUBJECTS = {'AI.':
                }
            ,'fig.skat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -13052,8 +12084,6 @@ SUBJECTS = {'AI.':
                }
            ,'file.ext.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -13079,8 +12109,6 @@ SUBJECTS = {'AI.':
                }
            ,'film.equip.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Cinematography'
                ,'en':
@@ -13106,8 +12134,6 @@ SUBJECTS = {'AI.':
                }
            ,'film.light.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Cinematography'
                ,'en':
@@ -13133,8 +12159,6 @@ SUBJECTS = {'AI.':
                }
            ,'film.proc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Cinematography'
                ,'en':
@@ -13160,8 +12184,6 @@ SUBJECTS = {'AI.':
                }
            ,'fin.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Finances'
                ,'en':
@@ -13187,8 +12209,6 @@ SUBJECTS = {'AI.':
                }
            ,'finn.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -13214,8 +12234,6 @@ SUBJECTS = {'AI.':
                }
            ,'fire.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -13241,8 +12259,6 @@ SUBJECTS = {'AI.':
                }
            ,'fish.farm.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -13268,8 +12284,6 @@ SUBJECTS = {'AI.':
                }
            ,'fishery':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Nautical'
                ,'en':
@@ -13295,8 +12309,6 @@ SUBJECTS = {'AI.':
                }
            ,'flor.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -13322,8 +12334,6 @@ SUBJECTS = {'AI.':
                }
            ,'flour.prod.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Food industry'
                ,'en':
@@ -13349,8 +12359,6 @@ SUBJECTS = {'AI.':
                }
            ,'flow.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Oil and gas'
                ,'en':
@@ -13376,8 +12384,6 @@ SUBJECTS = {'AI.':
                }
            ,'fodd.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -13403,8 +12409,6 @@ SUBJECTS = {'AI.':
                }
            ,'foil.ships':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Nautical'
                ,'en':
@@ -13430,8 +12434,6 @@ SUBJECTS = {'AI.':
                }
            ,'folk.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Folklore'
                ,'en':
@@ -13457,8 +12459,6 @@ SUBJECTS = {'AI.':
                }
            ,'food.ind.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Food industry'
                ,'en':
@@ -13484,8 +12484,6 @@ SUBJECTS = {'AI.':
                }
            ,'food.serv.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Service industry'
                ,'en':
@@ -13511,8 +12509,6 @@ SUBJECTS = {'AI.':
                }
            ,'footb.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -13538,8 +12534,6 @@ SUBJECTS = {'AI.':
                }
            ,'footwear':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Light industries'
                ,'en':
@@ -13565,8 +12559,6 @@ SUBJECTS = {'AI.':
                }
            ,'for.chem.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemical industry'
                ,'en':
@@ -13592,8 +12584,6 @@ SUBJECTS = {'AI.':
                }
            ,'for.pol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Foreign affairs'
                ,'en':
@@ -13619,8 +12609,6 @@ SUBJECTS = {'AI.':
                }
            ,'foreig.aff.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Foreign affairs'
                ,'en':
@@ -13646,8 +12634,6 @@ SUBJECTS = {'AI.':
                }
            ,'forens.med.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law enforcement'
                ,'en':
@@ -13673,8 +12659,6 @@ SUBJECTS = {'AI.':
                }
            ,'forestr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Natural resourses and wildlife conservation'
                ,'en':
@@ -13700,8 +12684,6 @@ SUBJECTS = {'AI.':
                }
            ,'forestr., amer.usg.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -13727,8 +12709,6 @@ SUBJECTS = {'AI.':
                }
            ,'forex':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Finances'
                ,'en':
@@ -13754,8 +12734,6 @@ SUBJECTS = {'AI.':
                }
            ,'forg.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Metallurgy'
                ,'en':
@@ -13781,8 +12759,6 @@ SUBJECTS = {'AI.':
                }
            ,'formal':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -13808,8 +12784,6 @@ SUBJECTS = {'AI.':
                }
            ,'found.engin.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -13835,8 +12809,6 @@ SUBJECTS = {'AI.':
                }
            ,'foundr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Metallurgy'
                ,'en':
@@ -13862,8 +12834,6 @@ SUBJECTS = {'AI.':
                }
            ,'fr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -13889,8 +12859,6 @@ SUBJECTS = {'AI.':
                }
            ,'furn.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -13916,8 +12884,6 @@ SUBJECTS = {'AI.':
                }
            ,'gaelic':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -13943,8 +12909,6 @@ SUBJECTS = {'AI.':
                }
            ,'galv.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemical industry'
                ,'en':
@@ -13970,8 +12934,6 @@ SUBJECTS = {'AI.':
                }
            ,'galv.plast.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemical industry'
                ,'en':
@@ -13997,8 +12959,6 @@ SUBJECTS = {'AI.':
                }
            ,'gambl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Games (other than sports)'
                ,'en':
@@ -14024,8 +12984,6 @@ SUBJECTS = {'AI.':
                }
            ,'games':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Games (other than sports)'
                ,'en':
@@ -14051,8 +13009,6 @@ SUBJECTS = {'AI.':
                }
            ,'garden.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -14078,8 +13034,6 @@ SUBJECTS = {'AI.':
                }
            ,'gas.proc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Oil and gas'
                ,'en':
@@ -14105,8 +13059,6 @@ SUBJECTS = {'AI.':
                }
            ,'gastroent.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -14132,8 +13084,6 @@ SUBJECTS = {'AI.':
                }
            ,'gear.tr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Machinery and mechanisms'
                ,'en':
@@ -14159,8 +13109,6 @@ SUBJECTS = {'AI.':
                }
            ,'gem.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geology'
                ,'en':
@@ -14186,8 +13134,6 @@ SUBJECTS = {'AI.':
                }
            ,'gen.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -14213,8 +13159,6 @@ SUBJECTS = {'AI.':
                }
            ,'gen.eng.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -14240,8 +13184,6 @@ SUBJECTS = {'AI.':
                }
            ,'geneal.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Historical'
                ,'en':
@@ -14267,8 +13209,6 @@ SUBJECTS = {'AI.':
                }
            ,'genet.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -14294,8 +13234,6 @@ SUBJECTS = {'AI.':
                }
            ,'geobot.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -14321,8 +13259,6 @@ SUBJECTS = {'AI.':
                }
            ,'geochem.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemistry'
                ,'en':
@@ -14348,8 +13284,6 @@ SUBJECTS = {'AI.':
                }
            ,'geochron.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geology'
                ,'en':
@@ -14375,8 +13309,6 @@ SUBJECTS = {'AI.':
                }
            ,'geogr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Geography'
                ,'en':
@@ -14402,8 +13334,6 @@ SUBJECTS = {'AI.':
                }
            ,'geol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Geology'
                ,'en':
@@ -14429,8 +13359,6 @@ SUBJECTS = {'AI.':
                }
            ,'geom.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mathematics'
                ,'en':
@@ -14456,8 +13384,6 @@ SUBJECTS = {'AI.':
                }
            ,'geomech.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geology'
                ,'en':
@@ -14483,8 +13409,6 @@ SUBJECTS = {'AI.':
                }
            ,'geomorph.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -14510,8 +13434,6 @@ SUBJECTS = {'AI.':
                }
            ,'geophys.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geology'
                ,'en':
@@ -14537,8 +13459,6 @@ SUBJECTS = {'AI.':
                }
            ,'germ.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -14564,8 +13484,6 @@ SUBJECTS = {'AI.':
                }
            ,'glass':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Production'
                ,'en':
@@ -14591,8 +13509,6 @@ SUBJECTS = {'AI.':
                }
            ,'glass.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Food industry'
                ,'en':
@@ -14618,8 +13534,6 @@ SUBJECTS = {'AI.':
                }
            ,'gloom.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Emotional values'
                ,'en':
@@ -14645,8 +13559,6 @@ SUBJECTS = {'AI.':
                }
            ,'goldmin.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mining'
                ,'en':
@@ -14672,8 +13584,6 @@ SUBJECTS = {'AI.':
                }
            ,'golf.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Games (other than sports)'
                ,'en':
@@ -14699,8 +13609,6 @@ SUBJECTS = {'AI.':
                }
            ,'gov.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Government, administration and public services'
                ,'en':
@@ -14726,8 +13634,6 @@ SUBJECTS = {'AI.':
                }
            ,'gram.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Linguistics'
                ,'en':
@@ -14753,8 +13659,6 @@ SUBJECTS = {'AI.':
                }
            ,'grav.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mathematics'
                ,'en':
@@ -14780,8 +13684,6 @@ SUBJECTS = {'AI.':
                }
            ,'greek.lang.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -14807,8 +13709,6 @@ SUBJECTS = {'AI.':
                }
            ,'green.tech.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -14834,8 +13734,6 @@ SUBJECTS = {'AI.':
                }
            ,'gymn.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -14861,8 +13759,6 @@ SUBJECTS = {'AI.':
                }
            ,'gyrosc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -14888,8 +13784,6 @@ SUBJECTS = {'AI.':
                }
            ,'h.rghts.act.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Human rights activism'
                ,'en':
@@ -14915,8 +13809,6 @@ SUBJECTS = {'AI.':
                }
            ,'hab.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Light industries'
                ,'en':
@@ -14942,8 +13834,6 @@ SUBJECTS = {'AI.':
                }
            ,'hack.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -14969,8 +13859,6 @@ SUBJECTS = {'AI.':
                }
            ,'handb.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -14996,8 +13884,6 @@ SUBJECTS = {'AI.':
                }
            ,'handicraft.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Hobbies and pastimes'
                ,'en':
@@ -15023,8 +13909,6 @@ SUBJECTS = {'AI.':
                }
            ,'hawai.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -15050,8 +13934,6 @@ SUBJECTS = {'AI.':
                }
            ,'health.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Government, administration and public services'
                ,'en':
@@ -15077,8 +13959,6 @@ SUBJECTS = {'AI.':
                }
            ,'hear.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical appliances'
                ,'en':
@@ -15104,8 +13984,6 @@ SUBJECTS = {'AI.':
                }
            ,'heat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -15131,8 +14009,6 @@ SUBJECTS = {'AI.':
                }
            ,'heat.exch.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -15158,8 +14034,6 @@ SUBJECTS = {'AI.':
                }
            ,'heat.transf.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -15185,8 +14059,6 @@ SUBJECTS = {'AI.':
                }
            ,'heavy.eq.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -15212,8 +14084,6 @@ SUBJECTS = {'AI.':
                }
            ,'helic.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Aviation'
                ,'en':
@@ -15239,8 +14109,6 @@ SUBJECTS = {'AI.':
                }
            ,'helminth.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -15266,8 +14134,6 @@ SUBJECTS = {'AI.':
                }
            ,'hemat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -15293,8 +14159,6 @@ SUBJECTS = {'AI.':
                }
            ,'herald.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Historical'
                ,'en':
@@ -15320,8 +14184,6 @@ SUBJECTS = {'AI.':
                }
            ,'herpet.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -15347,8 +14209,6 @@ SUBJECTS = {'AI.':
                }
            ,'hi-fi':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Multimedia'
                ,'en':
@@ -15374,8 +14234,6 @@ SUBJECTS = {'AI.':
                }
            ,'hi.jump.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -15401,8 +14259,6 @@ SUBJECTS = {'AI.':
                }
            ,'hindi':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -15428,8 +14284,6 @@ SUBJECTS = {'AI.':
                }
            ,'hist.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Historical'
                ,'en':
@@ -15455,8 +14309,6 @@ SUBJECTS = {'AI.':
                }
            ,'hist.fig.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Historical'
                ,'en':
@@ -15482,8 +14334,6 @@ SUBJECTS = {'AI.':
                }
            ,'histol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -15509,8 +14359,6 @@ SUBJECTS = {'AI.':
                }
            ,'hobby':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Hobbies and pastimes'
                ,'en':
@@ -15536,8 +14384,6 @@ SUBJECTS = {'AI.':
                }
            ,'hockey.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -15563,8 +14409,6 @@ SUBJECTS = {'AI.':
                }
            ,'homeopath.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medicine - Alternative medicine'
                ,'en':
@@ -15590,8 +14434,6 @@ SUBJECTS = {'AI.':
                }
            ,'horse.breed.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -15617,8 +14459,6 @@ SUBJECTS = {'AI.':
                }
            ,'horse.rac.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -15644,8 +14484,6 @@ SUBJECTS = {'AI.':
                }
            ,'horticult.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -15671,8 +14509,6 @@ SUBJECTS = {'AI.':
                }
            ,'hotels':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Service industry'
                ,'en':
@@ -15698,8 +14534,6 @@ SUBJECTS = {'AI.':
                }
            ,'house.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -15725,8 +14559,6 @@ SUBJECTS = {'AI.':
                }
            ,'hovercr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Nautical'
                ,'en':
@@ -15752,8 +14584,6 @@ SUBJECTS = {'AI.':
                }
            ,'humor.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Emotional values'
                ,'en':
@@ -15779,8 +14609,6 @@ SUBJECTS = {'AI.':
                }
            ,'hunt.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -15806,8 +14634,6 @@ SUBJECTS = {'AI.':
                }
            ,'hydr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -15833,8 +14659,6 @@ SUBJECTS = {'AI.':
                }
            ,'hydraul.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -15860,8 +14684,6 @@ SUBJECTS = {'AI.':
                }
            ,'hydroac.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -15887,8 +14709,6 @@ SUBJECTS = {'AI.':
                }
            ,'hydrobiol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -15914,8 +14734,6 @@ SUBJECTS = {'AI.':
                }
            ,'hydroel.st.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Energy industry'
                ,'en':
@@ -15941,8 +14759,6 @@ SUBJECTS = {'AI.':
                }
            ,'hydrogeol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geology'
                ,'en':
@@ -15968,8 +14784,6 @@ SUBJECTS = {'AI.':
                }
            ,'hydrogr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -15995,8 +14809,6 @@ SUBJECTS = {'AI.':
                }
            ,'hydrol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -16022,8 +14834,6 @@ SUBJECTS = {'AI.':
                }
            ,'hydromech.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -16049,8 +14859,6 @@ SUBJECTS = {'AI.':
                }
            ,'hydropl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Aviation'
                ,'en':
@@ -16076,8 +14884,6 @@ SUBJECTS = {'AI.':
                }
            ,'hygien.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Wellness'
                ,'en':
@@ -16103,8 +14909,6 @@ SUBJECTS = {'AI.':
                }
            ,'ice.form.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -16130,8 +14934,6 @@ SUBJECTS = {'AI.':
                }
            ,'icel.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -16157,8 +14959,6 @@ SUBJECTS = {'AI.':
                }
            ,'ichtyol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -16184,8 +14984,6 @@ SUBJECTS = {'AI.':
                }
            ,'idiom':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -16211,8 +15009,6 @@ SUBJECTS = {'AI.':
                }
            ,'idiom, amer.usg.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -16238,8 +15034,6 @@ SUBJECTS = {'AI.':
                }
            ,'idiom, brit.usg.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -16265,8 +15059,6 @@ SUBJECTS = {'AI.':
                }
            ,'imitat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Grammatical labels'
                ,'en':
@@ -16292,8 +15084,6 @@ SUBJECTS = {'AI.':
                }
            ,'immigr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Foreign affairs'
                ,'en':
@@ -16319,8 +15109,6 @@ SUBJECTS = {'AI.':
                }
            ,'immunol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -16346,8 +15134,6 @@ SUBJECTS = {'AI.':
                }
            ,'indust.hyg.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Industry'
                ,'en':
@@ -16373,8 +15159,6 @@ SUBJECTS = {'AI.':
                }
            ,'industr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Industry'
                ,'en':
@@ -16400,8 +15184,6 @@ SUBJECTS = {'AI.':
                }
            ,'inet.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Communications'
                ,'en':
@@ -16427,8 +15209,6 @@ SUBJECTS = {'AI.':
                }
            ,'inf.secur.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -16454,8 +15234,6 @@ SUBJECTS = {'AI.':
                }
            ,'inform.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -16481,8 +15259,6 @@ SUBJECTS = {'AI.':
                }
            ,'infr.techn.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Security systems'
                ,'en':
@@ -16508,8 +15284,6 @@ SUBJECTS = {'AI.':
                }
            ,'inherit.law.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -16535,8 +15309,6 @@ SUBJECTS = {'AI.':
                }
            ,'inorg.chem.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemistry'
                ,'en':
@@ -16562,8 +15334,6 @@ SUBJECTS = {'AI.':
                }
            ,'insur.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Economy'
                ,'en':
@@ -16589,8 +15359,6 @@ SUBJECTS = {'AI.':
                }
            ,'int. law.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -16616,8 +15384,6 @@ SUBJECTS = {'AI.':
                }
            ,'int.circ.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electronics'
                ,'en':
@@ -16643,8 +15409,6 @@ SUBJECTS = {'AI.':
                }
            ,'int.rel.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Foreign affairs'
                ,'en':
@@ -16670,8 +15434,6 @@ SUBJECTS = {'AI.':
                }
            ,'int.transport.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Logistics'
                ,'en':
@@ -16697,8 +15459,6 @@ SUBJECTS = {'AI.':
                }
            ,'intell.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law enforcement'
                ,'en':
@@ -16724,8 +15484,6 @@ SUBJECTS = {'AI.':
                }
            ,'interntl.trade.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Economy'
                ,'en':
@@ -16751,8 +15509,6 @@ SUBJECTS = {'AI.':
                }
            ,'invect.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -16778,8 +15534,6 @@ SUBJECTS = {'AI.':
                }
            ,'invest.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Business'
                ,'en':
@@ -16805,8 +15559,6 @@ SUBJECTS = {'AI.':
                }
            ,'irish.lang.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -16832,8 +15584,6 @@ SUBJECTS = {'AI.':
                }
            ,'ironic.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Emotional values'
                ,'en':
@@ -16859,8 +15609,6 @@ SUBJECTS = {'AI.':
                }
            ,'isol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electrical engineering'
                ,'en':
@@ -16886,8 +15634,6 @@ SUBJECTS = {'AI.':
                }
            ,'ital.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -16913,8 +15659,6 @@ SUBJECTS = {'AI.':
                }
            ,'jamaic.eng.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Dialectal'
                ,'en':
@@ -16940,8 +15684,6 @@ SUBJECTS = {'AI.':
                }
            ,'jap.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -16967,8 +15709,6 @@ SUBJECTS = {'AI.':
                }
            ,'jarg.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Jargon and slang'
                ,'en':
@@ -16994,8 +15734,6 @@ SUBJECTS = {'AI.':
                }
            ,'jet.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Machinery and mechanisms'
                ,'en':
@@ -17021,8 +15759,6 @@ SUBJECTS = {'AI.':
                }
            ,'jewl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Production'
                ,'en':
@@ -17048,8 +15784,6 @@ SUBJECTS = {'AI.':
                }
            ,'journ.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mass media'
                ,'en':
@@ -17075,8 +15809,6 @@ SUBJECTS = {'AI.':
                }
            ,'judo.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Martial arts and combat sports'
                ,'en':
@@ -17102,8 +15834,6 @@ SUBJECTS = {'AI.':
                }
            ,'karate.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Martial arts and combat sports'
                ,'en':
@@ -17129,8 +15859,6 @@ SUBJECTS = {'AI.':
                }
            ,'knit.goods':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Light industries'
                ,'en':
@@ -17156,8 +15884,6 @@ SUBJECTS = {'AI.':
                }
            ,'korea.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -17183,8 +15909,6 @@ SUBJECTS = {'AI.':
                }
            ,'lab.eq.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemistry'
                ,'en':
@@ -17210,8 +15934,6 @@ SUBJECTS = {'AI.':
                }
            ,'lab.law.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -17237,8 +15959,6 @@ SUBJECTS = {'AI.':
                }
            ,'labor.org.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Management'
                ,'en':
@@ -17264,8 +15984,6 @@ SUBJECTS = {'AI.':
                }
            ,'landsc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -17291,8 +16009,6 @@ SUBJECTS = {'AI.':
                }
            ,'laser.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -17318,8 +16034,6 @@ SUBJECTS = {'AI.':
                }
            ,'laser.med.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -17345,8 +16059,6 @@ SUBJECTS = {'AI.':
                }
            ,'lat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -17372,8 +16084,6 @@ SUBJECTS = {'AI.':
                }
            ,'lat.amer.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -17399,8 +16109,6 @@ SUBJECTS = {'AI.':
                }
            ,'lat.amer.sl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Jargon and slang'
                ,'en':
@@ -17426,8 +16134,6 @@ SUBJECTS = {'AI.':
                }
            ,'laud.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Emotional values'
                ,'en':
@@ -17453,8 +16159,6 @@ SUBJECTS = {'AI.':
                }
            ,'law':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Law'
                ,'en':
@@ -17480,8 +16184,6 @@ SUBJECTS = {'AI.':
                }
            ,'law, ADR':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Business'
                ,'en':
@@ -17507,8 +16209,6 @@ SUBJECTS = {'AI.':
                }
            ,'law, amer.usg.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -17534,8 +16234,6 @@ SUBJECTS = {'AI.':
                }
            ,'law, com.law':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -17561,8 +16259,6 @@ SUBJECTS = {'AI.':
                }
            ,'law, contr., context.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -17588,8 +16284,6 @@ SUBJECTS = {'AI.':
                }
            ,'law, copyr.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -17615,8 +16309,6 @@ SUBJECTS = {'AI.':
                }
            ,'law, copyr., abbr.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -17642,8 +16334,6 @@ SUBJECTS = {'AI.':
                }
            ,'law, court':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -17669,8 +16359,6 @@ SUBJECTS = {'AI.':
                }
            ,'law.enf.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Law enforcement'
                ,'en':
@@ -17696,8 +16384,6 @@ SUBJECTS = {'AI.':
                }
            ,'lean.prod.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Natural resourses and wildlife conservation'
                ,'en':
@@ -17723,8 +16409,6 @@ SUBJECTS = {'AI.':
                }
            ,'leath.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Light industries'
                ,'en':
@@ -17750,8 +16434,6 @@ SUBJECTS = {'AI.':
                }
            ,'leg.ent.typ.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Business'
                ,'en':
@@ -17777,8 +16459,6 @@ SUBJECTS = {'AI.':
                }
            ,'legal.theor.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -17804,8 +16484,6 @@ SUBJECTS = {'AI.':
                }
            ,'level.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -17831,8 +16509,6 @@ SUBJECTS = {'AI.':
                }
            ,'lgbt':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Human rights activism'
                ,'en':
@@ -17858,8 +16534,6 @@ SUBJECTS = {'AI.':
                }
            ,'libr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -17885,8 +16559,6 @@ SUBJECTS = {'AI.':
                }
            ,'life.sc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Life sciences'
                ,'en':
@@ -17912,8 +16584,6 @@ SUBJECTS = {'AI.':
                }
            ,'light.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -17939,8 +16609,6 @@ SUBJECTS = {'AI.':
                }
            ,'limn.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -17966,8 +16634,6 @@ SUBJECTS = {'AI.':
                }
            ,'ling.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Linguistics'
                ,'en':
@@ -17993,8 +16659,6 @@ SUBJECTS = {'AI.':
                }
            ,'lit.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Literature'
                ,'en':
@@ -18020,8 +16684,6 @@ SUBJECTS = {'AI.':
                }
            ,'lit., f.tales':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Literature'
                ,'en':
@@ -18047,8 +16709,6 @@ SUBJECTS = {'AI.':
                }
            ,'liter.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -18074,8 +16734,6 @@ SUBJECTS = {'AI.':
                }
            ,'lithol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geology'
                ,'en':
@@ -18101,8 +16759,6 @@ SUBJECTS = {'AI.':
                }
            ,'load.equip.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Logistics'
                ,'en':
@@ -18128,8 +16784,6 @@ SUBJECTS = {'AI.':
                }
            ,'loc.name.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -18155,8 +16809,6 @@ SUBJECTS = {'AI.':
                }
            ,'logging':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Wood, pulp and paper industries'
                ,'en':
@@ -18182,8 +16834,6 @@ SUBJECTS = {'AI.':
                }
            ,'logic':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Philosophy'
                ,'en':
@@ -18209,8 +16859,6 @@ SUBJECTS = {'AI.':
                }
            ,'logist.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Logistics'
                ,'en':
@@ -18236,8 +16884,6 @@ SUBJECTS = {'AI.':
                }
            ,'logop.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -18263,8 +16909,6 @@ SUBJECTS = {'AI.':
                }
            ,'low':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -18290,8 +16934,6 @@ SUBJECTS = {'AI.':
                }
            ,'low.germ.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -18317,8 +16959,6 @@ SUBJECTS = {'AI.':
                }
            ,'luge.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -18344,8 +16984,6 @@ SUBJECTS = {'AI.':
                }
            ,'mach.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Industry'
                ,'en':
@@ -18371,8 +17009,6 @@ SUBJECTS = {'AI.':
                }
            ,'mach.comp.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Machinery and mechanisms'
                ,'en':
@@ -18398,8 +17034,6 @@ SUBJECTS = {'AI.':
                }
            ,'magn.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -18425,8 +17059,6 @@ SUBJECTS = {'AI.':
                }
            ,'magn.tomogr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical appliances'
                ,'en':
@@ -18452,8 +17084,6 @@ SUBJECTS = {'AI.':
                }
            ,'magnet.image.rec.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Cinematography'
                ,'en':
@@ -18479,8 +17109,6 @@ SUBJECTS = {'AI.':
                }
            ,'malac.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -18506,8 +17134,6 @@ SUBJECTS = {'AI.':
                }
            ,'malay.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -18533,8 +17159,6 @@ SUBJECTS = {'AI.':
                }
            ,'mamal.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -18560,8 +17184,6 @@ SUBJECTS = {'AI.':
                }
            ,'mamm.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -18587,8 +17209,6 @@ SUBJECTS = {'AI.':
                }
            ,'manag.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Management'
                ,'en':
@@ -18614,8 +17234,6 @@ SUBJECTS = {'AI.':
                }
            ,'manga.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -18641,8 +17259,6 @@ SUBJECTS = {'AI.':
                }
            ,'maor.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -18668,8 +17284,6 @@ SUBJECTS = {'AI.':
                }
            ,'mar.law':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -18695,8 +17309,6 @@ SUBJECTS = {'AI.':
                }
            ,'market.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Economy'
                ,'en':
@@ -18722,8 +17334,6 @@ SUBJECTS = {'AI.':
                }
            ,'mart.arts':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Martial arts and combat sports'
                ,'en':
@@ -18749,8 +17359,6 @@ SUBJECTS = {'AI.':
                }
            ,'match.prod.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Wood, pulp and paper industries'
                ,'en':
@@ -18776,8 +17384,6 @@ SUBJECTS = {'AI.':
                }
            ,'mater.sc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Industry'
                ,'en':
@@ -18803,8 +17409,6 @@ SUBJECTS = {'AI.':
                }
            ,'math.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Mathematics'
                ,'en':
@@ -18830,8 +17434,6 @@ SUBJECTS = {'AI.':
                }
            ,'math.anal.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mathematics'
                ,'en':
@@ -18857,8 +17459,6 @@ SUBJECTS = {'AI.':
                }
            ,'mean.2':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Auxilliary categories (editor use only)'
                ,'en':
@@ -18884,8 +17484,6 @@ SUBJECTS = {'AI.':
                }
            ,'meas.inst.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electrical engineering'
                ,'en':
@@ -18911,8 +17509,6 @@ SUBJECTS = {'AI.':
                }
            ,'meat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -18938,8 +17534,6 @@ SUBJECTS = {'AI.':
                }
            ,'mech.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -18965,8 +17559,6 @@ SUBJECTS = {'AI.':
                }
            ,'mech.eng.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Industry'
                ,'en':
@@ -18992,8 +17584,6 @@ SUBJECTS = {'AI.':
                }
            ,'med.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Medical'
                ,'en':
@@ -19019,8 +17609,6 @@ SUBJECTS = {'AI.':
                }
            ,'med., alt.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Medicine - Alternative medicine'
                ,'en':
@@ -19046,8 +17634,6 @@ SUBJECTS = {'AI.':
                }
            ,'med., epid.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -19073,8 +17659,6 @@ SUBJECTS = {'AI.':
                }
            ,'med.appl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Medical appliances'
                ,'en':
@@ -19100,8 +17684,6 @@ SUBJECTS = {'AI.':
                }
            ,'media.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Mass media'
                ,'en':
@@ -19127,8 +17709,6 @@ SUBJECTS = {'AI.':
                }
            ,'melior.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -19154,8 +17734,6 @@ SUBJECTS = {'AI.':
                }
            ,'merch.nav.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Nautical'
                ,'en':
@@ -19181,8 +17759,6 @@ SUBJECTS = {'AI.':
                }
            ,'met.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Metallurgy'
                ,'en':
@@ -19208,8 +17784,6 @@ SUBJECTS = {'AI.':
                }
            ,'met.health.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Psychology'
                ,'en':
@@ -19235,8 +17809,6 @@ SUBJECTS = {'AI.':
                }
            ,'met.sci.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Metallurgy'
                ,'en':
@@ -19262,8 +17834,6 @@ SUBJECTS = {'AI.':
                }
            ,'met.work.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Industry'
                ,'en':
@@ -19289,8 +17859,6 @@ SUBJECTS = {'AI.':
                }
            ,'meteorol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -19316,8 +17884,6 @@ SUBJECTS = {'AI.':
                }
            ,'metro':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Transport'
                ,'en':
@@ -19343,8 +17909,6 @@ SUBJECTS = {'AI.':
                }
            ,'metrol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -19370,8 +17934,6 @@ SUBJECTS = {'AI.':
                }
            ,'mexic.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -19397,8 +17959,6 @@ SUBJECTS = {'AI.':
                }
            ,'microbiol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -19424,8 +17984,6 @@ SUBJECTS = {'AI.':
                }
            ,'microel.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electronics'
                ,'en':
@@ -19451,8 +18009,6 @@ SUBJECTS = {'AI.':
                }
            ,'microsc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical appliances'
                ,'en':
@@ -19478,8 +18034,6 @@ SUBJECTS = {'AI.':
                }
            ,'mid.chin.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Dialectal'
                ,'en':
@@ -19505,8 +18059,6 @@ SUBJECTS = {'AI.':
                }
            ,'mil.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Military'
                ,'en':
@@ -19532,8 +18084,6 @@ SUBJECTS = {'AI.':
                }
            ,'mil., AAA':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Military'
                ,'en':
@@ -19559,8 +18109,6 @@ SUBJECTS = {'AI.':
                }
            ,'mil., WMD':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Military'
                ,'en':
@@ -19586,8 +18134,6 @@ SUBJECTS = {'AI.':
                }
            ,'mil., ammo':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Military'
                ,'en':
@@ -19613,8 +18159,6 @@ SUBJECTS = {'AI.':
                }
            ,'mil., arm.veh.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Military'
                ,'en':
@@ -19640,8 +18184,6 @@ SUBJECTS = {'AI.':
                }
            ,'mil., artil.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Military'
                ,'en':
@@ -19667,8 +18209,6 @@ SUBJECTS = {'AI.':
                }
            ,'mil., avia.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Aviation'
                ,'en':
@@ -19694,8 +18234,6 @@ SUBJECTS = {'AI.':
                }
            ,'mil., grnd.forc.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Military'
                ,'en':
@@ -19721,8 +18259,6 @@ SUBJECTS = {'AI.':
                }
            ,'mil., lingo':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Jargon and slang'
                ,'en':
@@ -19748,8 +18284,6 @@ SUBJECTS = {'AI.':
                }
            ,'mil., mil., arm.veh.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -19775,8 +18309,6 @@ SUBJECTS = {'AI.':
                }
            ,'mil., navy':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Military'
                ,'en':
@@ -19802,8 +18334,6 @@ SUBJECTS = {'AI.':
                }
            ,'milk.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -19829,8 +18359,6 @@ SUBJECTS = {'AI.':
                }
            ,'min.class.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geology'
                ,'en':
@@ -19856,8 +18384,6 @@ SUBJECTS = {'AI.':
                }
            ,'min.proc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mining'
                ,'en':
@@ -19883,8 +18409,6 @@ SUBJECTS = {'AI.':
                }
            ,'min.prod.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geology'
                ,'en':
@@ -19910,8 +18434,6 @@ SUBJECTS = {'AI.':
                }
            ,'mine.surv.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mining'
                ,'en':
@@ -19937,8 +18459,6 @@ SUBJECTS = {'AI.':
                }
            ,'mineral.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geology'
                ,'en':
@@ -19964,8 +18484,6 @@ SUBJECTS = {'AI.':
                }
            ,'mining.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Mining'
                ,'en':
@@ -19991,8 +18509,6 @@ SUBJECTS = {'AI.':
                }
            ,'missil.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Military'
                ,'en':
@@ -20018,8 +18534,6 @@ SUBJECTS = {'AI.':
                }
            ,'misused':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Auxilliary categories (editor use only)'
                ,'en':
@@ -20045,8 +18559,6 @@ SUBJECTS = {'AI.':
                }
            ,'mob.com.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Communications'
                ,'en':
@@ -20069,8 +18581,6 @@ SUBJECTS = {'AI.':
                    {'short': 'моб.зв.'
                    ,'title': "Мобільний та стільниковий зв'язок"}}, 'modern':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -20096,8 +18606,6 @@ SUBJECTS = {'AI.':
                }
            ,'mol.biol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -20123,8 +18631,6 @@ SUBJECTS = {'AI.':
                }
            ,'moldav.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -20150,8 +18656,6 @@ SUBJECTS = {'AI.':
                }
            ,'morph.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Linguistics'
                ,'en':
@@ -20177,8 +18681,6 @@ SUBJECTS = {'AI.':
                }
            ,'moto.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Transport'
                ,'en':
@@ -20204,8 +18706,6 @@ SUBJECTS = {'AI.':
                }
            ,'mount.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Outdoor activities and extreme sports'
                ,'en':
@@ -20231,8 +18731,6 @@ SUBJECTS = {'AI.':
                }
            ,'multimed.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Multimedia'
                ,'en':
@@ -20258,8 +18756,6 @@ SUBJECTS = {'AI.':
                }
            ,'mun.plan.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -20285,8 +18781,6 @@ SUBJECTS = {'AI.':
                }
            ,'mus.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -20312,8 +18806,6 @@ SUBJECTS = {'AI.':
                }
            ,'mus.instr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -20339,8 +18831,6 @@ SUBJECTS = {'AI.':
                }
            ,'museum.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -20366,8 +18856,6 @@ SUBJECTS = {'AI.':
                }
            ,'myth.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Mythology'
                ,'en':
@@ -20393,8 +18881,6 @@ SUBJECTS = {'AI.':
                }
            ,'myth., gr.-rom.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mythology'
                ,'en':
@@ -20420,8 +18906,6 @@ SUBJECTS = {'AI.':
                }
            ,'myth., nors., myth.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -20447,8 +18931,6 @@ SUBJECTS = {'AI.':
                }
            ,'n.amer.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -20474,8 +18956,6 @@ SUBJECTS = {'AI.':
                }
            ,'names':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Proper name'
                ,'en':
@@ -20501,8 +18981,6 @@ SUBJECTS = {'AI.':
                }
            ,'nano':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -20528,8 +19006,6 @@ SUBJECTS = {'AI.':
                }
            ,'narrow.film.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Cinematography'
                ,'en':
@@ -20555,8 +19031,6 @@ SUBJECTS = {'AI.':
                }
            ,'nat.res.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Natural resourses and wildlife conservation'
                ,'en':
@@ -20582,8 +19056,6 @@ SUBJECTS = {'AI.':
                }
            ,'nat.sc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -20609,8 +19081,6 @@ SUBJECTS = {'AI.':
                }
            ,'nautic.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Nautical'
                ,'en':
@@ -20636,8 +19106,6 @@ SUBJECTS = {'AI.':
                }
            ,'navig.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Aviation'
                ,'en':
@@ -20663,8 +19131,6 @@ SUBJECTS = {'AI.':
                }
            ,'neol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -20690,8 +19156,6 @@ SUBJECTS = {'AI.':
                }
            ,'nephr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -20717,8 +19181,6 @@ SUBJECTS = {'AI.':
                }
            ,'neugoling.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Linguistics'
                ,'en':
@@ -20744,8 +19206,6 @@ SUBJECTS = {'AI.':
                }
            ,'neur.net.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -20771,8 +19231,6 @@ SUBJECTS = {'AI.':
                }
            ,'neurol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -20798,8 +19256,6 @@ SUBJECTS = {'AI.':
                }
            ,'neuropsychol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Psychology'
                ,'en':
@@ -20825,8 +19281,6 @@ SUBJECTS = {'AI.':
                }
            ,'neurosurg.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -20852,8 +19306,6 @@ SUBJECTS = {'AI.':
                }
            ,'new.zeal.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -20879,8 +19331,6 @@ SUBJECTS = {'AI.':
                }
            ,'news':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -20906,8 +19356,6 @@ SUBJECTS = {'AI.':
                }
            ,'nonferr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Metallurgy'
                ,'en':
@@ -20933,8 +19381,6 @@ SUBJECTS = {'AI.':
                }
            ,'nonlin.opt.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -20960,8 +19406,6 @@ SUBJECTS = {'AI.':
                }
            ,'nonstand.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -20987,8 +19431,6 @@ SUBJECTS = {'AI.':
                }
            ,'norw.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -21014,8 +19456,6 @@ SUBJECTS = {'AI.':
                }
            ,'notar.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -21041,8 +19481,6 @@ SUBJECTS = {'AI.':
                }
            ,'nucl.chem.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemistry'
                ,'en':
@@ -21068,8 +19506,6 @@ SUBJECTS = {'AI.':
                }
            ,'nucl.phys.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -21095,8 +19531,6 @@ SUBJECTS = {'AI.':
                }
            ,'nucl.pow.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Energy industry'
                ,'en':
@@ -21122,8 +19556,6 @@ SUBJECTS = {'AI.':
                }
            ,'numism.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Collecting'
                ,'en':
@@ -21149,8 +19581,6 @@ SUBJECTS = {'AI.':
                }
            ,'nurs.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -21176,8 +19606,6 @@ SUBJECTS = {'AI.':
                }
            ,'obs.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -21203,8 +19631,6 @@ SUBJECTS = {'AI.':
                }
            ,'obs., inform.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -21230,8 +19656,6 @@ SUBJECTS = {'AI.':
                }
            ,'obs., ironic.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -21257,8 +19681,6 @@ SUBJECTS = {'AI.':
                }
            ,'obs., mil.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -21284,8 +19706,6 @@ SUBJECTS = {'AI.':
                }
            ,'obst.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -21311,8 +19731,6 @@ SUBJECTS = {'AI.':
                }
            ,'ocean.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -21338,8 +19756,6 @@ SUBJECTS = {'AI.':
                }
            ,'offic.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -21365,8 +19781,6 @@ SUBJECTS = {'AI.':
                }
            ,'office.equip.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -21392,8 +19806,6 @@ SUBJECTS = {'AI.':
                }
            ,'offsh.comp.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Business'
                ,'en':
@@ -21419,8 +19831,6 @@ SUBJECTS = {'AI.':
                }
            ,'oil':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Oil and gas'
                ,'en':
@@ -21446,8 +19856,6 @@ SUBJECTS = {'AI.':
                }
            ,'oil.lubr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Oil and gas'
                ,'en':
@@ -21473,8 +19881,6 @@ SUBJECTS = {'AI.':
                }
            ,'oil.proc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Oil and gas'
                ,'en':
@@ -21500,8 +19906,6 @@ SUBJECTS = {'AI.':
                }
            ,'old.fash.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -21527,8 +19931,6 @@ SUBJECTS = {'AI.':
                }
            ,'old.orth.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Auxilliary categories (editor use only)'
                ,'en':
@@ -21554,8 +19956,6 @@ SUBJECTS = {'AI.':
                }
            ,'oncol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -21581,8 +19981,6 @@ SUBJECTS = {'AI.':
                }
            ,'op.hearth.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Metallurgy'
                ,'en':
@@ -21608,8 +20006,6 @@ SUBJECTS = {'AI.':
                }
            ,'op.syst.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -21635,8 +20031,6 @@ SUBJECTS = {'AI.':
                }
            ,'ophtalm.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -21662,8 +20056,6 @@ SUBJECTS = {'AI.':
                }
            ,'opt.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -21689,8 +20081,6 @@ SUBJECTS = {'AI.':
                }
            ,'optometr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -21716,8 +20106,6 @@ SUBJECTS = {'AI.':
                }
            ,'ore.form.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mining'
                ,'en':
@@ -21743,8 +20131,6 @@ SUBJECTS = {'AI.':
                }
            ,'org.chem.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemistry'
                ,'en':
@@ -21770,8 +20156,6 @@ SUBJECTS = {'AI.':
                }
            ,'org.crime.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law enforcement'
                ,'en':
@@ -21797,8 +20181,6 @@ SUBJECTS = {'AI.':
                }
            ,'org.name.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Proper name'
                ,'en':
@@ -21824,8 +20206,6 @@ SUBJECTS = {'AI.':
                }
            ,'orient.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -21851,8 +20231,6 @@ SUBJECTS = {'AI.':
                }
            ,'orthop.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -21878,8 +20256,6 @@ SUBJECTS = {'AI.':
                }
            ,'pack.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Production'
                ,'en':
@@ -21905,8 +20281,6 @@ SUBJECTS = {'AI.':
                }
            ,'paint.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -21932,8 +20306,6 @@ SUBJECTS = {'AI.':
                }
            ,'paint.varn.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Building materials'
                ,'en':
@@ -21959,8 +20331,6 @@ SUBJECTS = {'AI.':
                }
            ,'paint.w.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -21986,8 +20356,6 @@ SUBJECTS = {'AI.':
                }
            ,'pal.bot.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -22013,8 +20381,6 @@ SUBJECTS = {'AI.':
                }
            ,'paleogr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Historical'
                ,'en':
@@ -22040,8 +20406,6 @@ SUBJECTS = {'AI.':
                }
            ,'paleont.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -22067,8 +20431,6 @@ SUBJECTS = {'AI.':
                }
            ,'paleozool.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -22094,8 +20456,6 @@ SUBJECTS = {'AI.':
                }
            ,'palyn.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -22121,8 +20481,6 @@ SUBJECTS = {'AI.':
                }
            ,'parapsych.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Parasciences'
                ,'en':
@@ -22148,8 +20506,6 @@ SUBJECTS = {'AI.':
                }
            ,'parasitol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -22175,8 +20531,6 @@ SUBJECTS = {'AI.':
                }
            ,'patents.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -22202,8 +20556,6 @@ SUBJECTS = {'AI.':
                }
            ,'pathol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -22229,8 +20581,6 @@ SUBJECTS = {'AI.':
                }
            ,'pedag.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Education'
                ,'en':
@@ -22256,8 +20606,6 @@ SUBJECTS = {'AI.':
                }
            ,'pediatr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -22283,8 +20631,6 @@ SUBJECTS = {'AI.':
                }
            ,'pejor.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Emotional values'
                ,'en':
@@ -22310,8 +20656,6 @@ SUBJECTS = {'AI.':
                }
            ,'penitent.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Government, administration and public services'
                ,'en':
@@ -22337,8 +20681,6 @@ SUBJECTS = {'AI.':
                }
            ,'perf.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Wellness'
                ,'en':
@@ -22364,8 +20706,6 @@ SUBJECTS = {'AI.':
                }
            ,'permits.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Occupational health & safety'
                ,'en':
@@ -22391,8 +20731,6 @@ SUBJECTS = {'AI.':
                }
            ,'pers.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -22418,8 +20756,6 @@ SUBJECTS = {'AI.':
                }
            ,'pest.contr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -22445,8 +20781,6 @@ SUBJECTS = {'AI.':
                }
            ,'pet.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Companion animals'
                ,'en':
@@ -22472,8 +20806,6 @@ SUBJECTS = {'AI.':
                }
            ,'petrogr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geology'
                ,'en':
@@ -22499,8 +20831,6 @@ SUBJECTS = {'AI.':
                }
            ,'phaler.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Collecting'
                ,'en':
@@ -22526,8 +20856,6 @@ SUBJECTS = {'AI.':
                }
            ,'pharm.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -22553,8 +20881,6 @@ SUBJECTS = {'AI.':
                }
            ,'pharmac.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -22580,8 +20906,6 @@ SUBJECTS = {'AI.':
                }
            ,'philat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Collecting'
                ,'en':
@@ -22607,8 +20931,6 @@ SUBJECTS = {'AI.':
                }
            ,'philos.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Philosophy'
                ,'en':
@@ -22634,8 +20956,6 @@ SUBJECTS = {'AI.':
                }
            ,'phonol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Linguistics'
                ,'en':
@@ -22661,8 +20981,6 @@ SUBJECTS = {'AI.':
                }
            ,'photo.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Photography'
                ,'en':
@@ -22688,8 +21006,6 @@ SUBJECTS = {'AI.':
                }
            ,'photo.sound.rec.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Cinematography'
                ,'en':
@@ -22715,8 +21031,6 @@ SUBJECTS = {'AI.':
                }
            ,'photometr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -22742,8 +21056,6 @@ SUBJECTS = {'AI.':
                }
            ,'phras.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -22769,8 +21081,6 @@ SUBJECTS = {'AI.':
                }
            ,'phys.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Physics'
                ,'en':
@@ -22796,8 +21106,6 @@ SUBJECTS = {'AI.':
                }
            ,'phys.chem.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemistry'
                ,'en':
@@ -22823,8 +21131,6 @@ SUBJECTS = {'AI.':
                }
            ,'physiol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -22850,8 +21156,6 @@ SUBJECTS = {'AI.':
                }
            ,'physioth.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -22877,8 +21181,6 @@ SUBJECTS = {'AI.':
                }
            ,'phytophathol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -22904,8 +21206,6 @@ SUBJECTS = {'AI.':
                }
            ,'piez.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -22928,8 +21228,6 @@ SUBJECTS = {'AI.':
                    {'short': "п'єз."
                    ,'title': "П'єзокристали"}}, 'pipes.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -22955,8 +21253,6 @@ SUBJECTS = {'AI.':
                }
            ,'plann.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Production'
                ,'en':
@@ -22982,8 +21278,6 @@ SUBJECTS = {'AI.':
                }
            ,'plast.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemical industry'
                ,'en':
@@ -23009,8 +21303,6 @@ SUBJECTS = {'AI.':
                }
            ,'plumb.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -23036,8 +21328,6 @@ SUBJECTS = {'AI.':
                }
            ,'pmp.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Machinery and mechanisms'
                ,'en':
@@ -23063,8 +21353,6 @@ SUBJECTS = {'AI.':
                }
            ,'pneum.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Machinery and mechanisms'
                ,'en':
@@ -23090,8 +21378,6 @@ SUBJECTS = {'AI.':
                }
            ,'poetic':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -23117,8 +21403,6 @@ SUBJECTS = {'AI.':
                }
            ,'poetry':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Literature'
                ,'en':
@@ -23144,8 +21428,6 @@ SUBJECTS = {'AI.':
                }
            ,'police':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Government, administration and public services'
                ,'en':
@@ -23171,8 +21453,6 @@ SUBJECTS = {'AI.':
                }
            ,'police.jarg.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Jargon and slang'
                ,'en':
@@ -23198,8 +21478,6 @@ SUBJECTS = {'AI.':
                }
            ,'polish.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -23225,8 +21503,6 @@ SUBJECTS = {'AI.':
                }
            ,'polit.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Politics'
                ,'en':
@@ -23252,8 +21528,6 @@ SUBJECTS = {'AI.':
                }
            ,'polit.econ.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Economy'
                ,'en':
@@ -23279,8 +21553,6 @@ SUBJECTS = {'AI.':
                }
            ,'polite':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Emotional values'
                ,'en':
@@ -23306,8 +21578,6 @@ SUBJECTS = {'AI.':
                }
            ,'polygr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Publishing'
                ,'en':
@@ -23333,8 +21603,6 @@ SUBJECTS = {'AI.':
                }
            ,'polym.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemical industry'
                ,'en':
@@ -23360,8 +21628,6 @@ SUBJECTS = {'AI.':
                }
            ,'polynes.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -23387,8 +21653,6 @@ SUBJECTS = {'AI.':
                }
            ,'pomp.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Emotional values'
                ,'en':
@@ -23414,8 +21678,6 @@ SUBJECTS = {'AI.':
                }
            ,'port.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -23441,8 +21703,6 @@ SUBJECTS = {'AI.':
                }
            ,'post':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Communications'
                ,'en':
@@ -23468,8 +21728,6 @@ SUBJECTS = {'AI.':
                }
            ,'pow.el.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electrical engineering'
                ,'en':
@@ -23495,8 +21753,6 @@ SUBJECTS = {'AI.':
                }
            ,'powd.met.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Metallurgy'
                ,'en':
@@ -23522,8 +21778,6 @@ SUBJECTS = {'AI.':
                }
            ,'pragm.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Linguistics'
                ,'en':
@@ -23549,8 +21803,6 @@ SUBJECTS = {'AI.':
                }
            ,'press.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Industry'
                ,'en':
@@ -23576,8 +21828,6 @@ SUBJECTS = {'AI.':
                }
            ,'pris.sl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Jargon and slang'
                ,'en':
@@ -23603,8 +21853,6 @@ SUBJECTS = {'AI.':
                }
            ,'priv.int.law.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -23630,8 +21878,6 @@ SUBJECTS = {'AI.':
                }
            ,'procur.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Logistics'
                ,'en':
@@ -23657,8 +21903,6 @@ SUBJECTS = {'AI.':
                }
            ,'product.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Production'
                ,'en':
@@ -23684,8 +21928,6 @@ SUBJECTS = {'AI.':
                }
            ,'prof.jarg.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Jargon and slang'
                ,'en':
@@ -23711,8 +21953,6 @@ SUBJECTS = {'AI.':
                }
            ,'progr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -23738,8 +21978,6 @@ SUBJECTS = {'AI.':
                }
            ,'proj.manag.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Management'
                ,'en':
@@ -23765,8 +22003,6 @@ SUBJECTS = {'AI.':
                }
            ,'project.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Cinematography'
                ,'en':
@@ -23792,8 +22028,6 @@ SUBJECTS = {'AI.':
                }
            ,'prop.&figur.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -23819,8 +22053,6 @@ SUBJECTS = {'AI.':
                }
            ,'prop.name':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Proper name'
                ,'en':
@@ -23846,8 +22078,6 @@ SUBJECTS = {'AI.':
                }
            ,'protozool.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -23873,8 +22103,6 @@ SUBJECTS = {'AI.':
                }
            ,'proverb':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Folklore'
                ,'en':
@@ -23900,8 +22128,6 @@ SUBJECTS = {'AI.':
                }
            ,'psychiat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -23927,8 +22153,6 @@ SUBJECTS = {'AI.':
                }
            ,'psychol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Psychology'
                ,'en':
@@ -23954,8 +22178,6 @@ SUBJECTS = {'AI.':
                }
            ,'psycholing.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Linguistics'
                ,'en':
@@ -23981,8 +22203,6 @@ SUBJECTS = {'AI.':
                }
            ,'psychopathol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Psychology'
                ,'en':
@@ -24008,8 +22228,6 @@ SUBJECTS = {'AI.':
                }
            ,'psychophys.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Psychology'
                ,'en':
@@ -24035,8 +22253,6 @@ SUBJECTS = {'AI.':
                }
            ,'psychother.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -24062,8 +22278,6 @@ SUBJECTS = {'AI.':
                }
            ,'publ.law.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Law'
                ,'en':
@@ -24089,8 +22303,6 @@ SUBJECTS = {'AI.':
                }
            ,'publ.transp.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Transport'
                ,'en':
@@ -24116,8 +22328,6 @@ SUBJECTS = {'AI.':
                }
            ,'publ.util.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Government, administration and public services'
                ,'en':
@@ -24143,8 +22353,6 @@ SUBJECTS = {'AI.':
                }
            ,'publish.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Publishing'
                ,'en':
@@ -24170,8 +22378,6 @@ SUBJECTS = {'AI.':
                }
            ,'puert.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -24197,8 +22403,6 @@ SUBJECTS = {'AI.':
                }
            ,'pulm.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -24224,8 +22428,6 @@ SUBJECTS = {'AI.':
                }
            ,'pulp.n.paper':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Wood, pulp and paper industries'
                ,'en':
@@ -24251,8 +22453,6 @@ SUBJECTS = {'AI.':
                }
            ,'pwr.lines.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Energy industry'
                ,'en':
@@ -24278,8 +22478,6 @@ SUBJECTS = {'AI.':
                }
            ,'qual.cont.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Quality control and standards'
                ,'en':
@@ -24305,8 +22503,6 @@ SUBJECTS = {'AI.':
                }
            ,'quant.el.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -24332,8 +22528,6 @@ SUBJECTS = {'AI.':
                }
            ,'quant.mech.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -24359,8 +22553,6 @@ SUBJECTS = {'AI.':
                }
            ,'quar.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mining'
                ,'en':
@@ -24386,8 +22578,6 @@ SUBJECTS = {'AI.':
                }
            ,'quran':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Religion'
                ,'en':
@@ -24413,8 +22603,6 @@ SUBJECTS = {'AI.':
                }
            ,'racing':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -24440,8 +22628,6 @@ SUBJECTS = {'AI.':
                }
            ,'rad.geod.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -24467,8 +22653,6 @@ SUBJECTS = {'AI.':
                }
            ,'radio':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Communications'
                ,'en':
@@ -24494,8 +22678,6 @@ SUBJECTS = {'AI.':
                }
            ,'radio, amer.usg., abbr.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -24521,8 +22703,6 @@ SUBJECTS = {'AI.':
                }
            ,'radioastron.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Space'
                ,'en':
@@ -24548,8 +22728,6 @@ SUBJECTS = {'AI.':
                }
            ,'radiobiol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -24575,8 +22753,6 @@ SUBJECTS = {'AI.':
                }
            ,'radiogr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical appliances'
                ,'en':
@@ -24602,8 +22778,6 @@ SUBJECTS = {'AI.':
                }
            ,'radiol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -24629,8 +22803,6 @@ SUBJECTS = {'AI.':
                }
            ,'radioloc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Military'
                ,'en':
@@ -24656,8 +22828,6 @@ SUBJECTS = {'AI.':
                }
            ,'railw.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Transport'
                ,'en':
@@ -24683,8 +22853,6 @@ SUBJECTS = {'AI.':
                }
            ,'rare':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -24710,8 +22878,6 @@ SUBJECTS = {'AI.':
                }
            ,'real.est.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -24737,8 +22903,6 @@ SUBJECTS = {'AI.':
                }
            ,'rec.mngmt':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Records management'
                ,'en':
@@ -24764,8 +22928,6 @@ SUBJECTS = {'AI.':
                }
            ,'refr.mat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Building materials'
                ,'en':
@@ -24791,8 +22953,6 @@ SUBJECTS = {'AI.':
                }
            ,'refrig.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -24818,8 +22978,6 @@ SUBJECTS = {'AI.':
                }
            ,'reg.usg.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -24845,8 +23003,6 @@ SUBJECTS = {'AI.':
                }
            ,'rel., budd.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Religion'
                ,'en':
@@ -24872,8 +23028,6 @@ SUBJECTS = {'AI.':
                }
            ,'rel., cath.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Religion'
                ,'en':
@@ -24899,8 +23053,6 @@ SUBJECTS = {'AI.':
                }
            ,'rel., christ.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Religion'
                ,'en':
@@ -24926,8 +23078,6 @@ SUBJECTS = {'AI.':
                }
            ,'rel., east.orth.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Religion'
                ,'en':
@@ -24950,8 +23100,6 @@ SUBJECTS = {'AI.':
                    {'short': 'рел., правосл.'
                    ,'title': "Православ'я"}}, 'rel., hind.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mythology'
                ,'en':
@@ -24977,8 +23125,6 @@ SUBJECTS = {'AI.':
                }
            ,'rel., islam':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Religion'
                ,'en':
@@ -25004,8 +23150,6 @@ SUBJECTS = {'AI.':
                }
            ,'reliabil.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Quality control and standards'
                ,'en':
@@ -25031,8 +23175,6 @@ SUBJECTS = {'AI.':
                }
            ,'relig.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Religion'
                ,'en':
@@ -25058,8 +23200,6 @@ SUBJECTS = {'AI.':
                }
            ,'rem.sens.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -25085,8 +23225,6 @@ SUBJECTS = {'AI.':
                }
            ,'reptil.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -25112,8 +23250,6 @@ SUBJECTS = {'AI.':
                }
            ,'resin.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemical industry'
                ,'en':
@@ -25139,8 +23275,6 @@ SUBJECTS = {'AI.':
                }
            ,'respect.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Emotional values'
                ,'en':
@@ -25166,8 +23300,6 @@ SUBJECTS = {'AI.':
                }
            ,'rhetor.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -25193,8 +23325,6 @@ SUBJECTS = {'AI.':
                }
            ,'risk.man.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Management'
                ,'en':
@@ -25220,8 +23350,6 @@ SUBJECTS = {'AI.':
                }
            ,'rit.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Dialectal'
                ,'en':
@@ -25247,8 +23375,6 @@ SUBJECTS = {'AI.':
                }
            ,'road.constr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -25274,8 +23400,6 @@ SUBJECTS = {'AI.':
                }
            ,'road.sign.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Transport'
                ,'en':
@@ -25301,8 +23425,6 @@ SUBJECTS = {'AI.':
                }
            ,'road.surf.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -25328,8 +23450,6 @@ SUBJECTS = {'AI.':
                }
            ,'road.wrk.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -25355,8 +23475,6 @@ SUBJECTS = {'AI.':
                }
            ,'robot.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -25382,8 +23500,6 @@ SUBJECTS = {'AI.':
                }
            ,'roll.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Metallurgy'
                ,'en':
@@ -25409,8 +23525,6 @@ SUBJECTS = {'AI.':
                }
            ,'romanian.lang.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -25436,8 +23550,6 @@ SUBJECTS = {'AI.':
                }
            ,'rude':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Emotional values'
                ,'en':
@@ -25463,8 +23575,6 @@ SUBJECTS = {'AI.':
                }
            ,'rugb.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -25490,8 +23600,6 @@ SUBJECTS = {'AI.':
                }
            ,'russ.lang.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -25517,8 +23625,6 @@ SUBJECTS = {'AI.':
                }
            ,'s.germ.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -25544,8 +23650,6 @@ SUBJECTS = {'AI.':
                }
            ,'sail.ships':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Nautical'
                ,'en':
@@ -25571,8 +23675,6 @@ SUBJECTS = {'AI.':
                }
            ,'sanit.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -25598,8 +23700,6 @@ SUBJECTS = {'AI.':
                }
            ,'sanscr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -25625,8 +23725,6 @@ SUBJECTS = {'AI.':
                }
            ,'sarcast.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Emotional values'
                ,'en':
@@ -25652,8 +23750,6 @@ SUBJECTS = {'AI.':
                }
            ,'sat.comm.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Communications'
                ,'en':
@@ -25679,8 +23775,6 @@ SUBJECTS = {'AI.':
                }
            ,'saying.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Folklore'
                ,'en':
@@ -25706,8 +23800,6 @@ SUBJECTS = {'AI.':
                }
            ,'school.sl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Jargon and slang'
                ,'en':
@@ -25733,8 +23825,6 @@ SUBJECTS = {'AI.':
                }
            ,'scient.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -25760,8 +23850,6 @@ SUBJECTS = {'AI.':
                }
            ,'scottish':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -25787,8 +23875,6 @@ SUBJECTS = {'AI.':
                }
            ,'scr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Literature'
                ,'en':
@@ -25814,8 +23900,6 @@ SUBJECTS = {'AI.':
                }
            ,'scub.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Outdoor activities and extreme sports'
                ,'en':
@@ -25841,8 +23925,6 @@ SUBJECTS = {'AI.':
                }
            ,'sec.sys.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Security systems'
                ,'en':
@@ -25868,8 +23950,6 @@ SUBJECTS = {'AI.':
                }
            ,'securit.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Finances'
                ,'en':
@@ -25895,8 +23975,6 @@ SUBJECTS = {'AI.':
                }
            ,'seism.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -25922,8 +24000,6 @@ SUBJECTS = {'AI.':
                }
            ,'seism.res.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -25949,8 +24025,6 @@ SUBJECTS = {'AI.':
                }
            ,'sel.breed.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -25976,8 +24050,6 @@ SUBJECTS = {'AI.':
                }
            ,'semant.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Linguistics'
                ,'en':
@@ -26003,8 +24075,6 @@ SUBJECTS = {'AI.':
                }
            ,'semicond.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electrical engineering'
                ,'en':
@@ -26030,8 +24100,6 @@ SUBJECTS = {'AI.':
                }
            ,'semiot.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Linguistics'
                ,'en':
@@ -26057,8 +24125,6 @@ SUBJECTS = {'AI.':
                }
            ,'sens.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -26084,8 +24150,6 @@ SUBJECTS = {'AI.':
                }
            ,'sew.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Light industries'
                ,'en':
@@ -26111,8 +24175,6 @@ SUBJECTS = {'AI.':
                }
            ,'sewage':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -26138,8 +24200,6 @@ SUBJECTS = {'AI.':
                }
            ,'sex':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -26165,8 +24225,6 @@ SUBJECTS = {'AI.':
                }
            ,'sexol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -26192,8 +24250,6 @@ SUBJECTS = {'AI.':
                }
            ,'shinto.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Religion'
                ,'en':
@@ -26219,8 +24275,6 @@ SUBJECTS = {'AI.':
                }
            ,'ship.handl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Nautical'
                ,'en':
@@ -26246,8 +24300,6 @@ SUBJECTS = {'AI.':
                }
            ,'shipb.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Nautical'
                ,'en':
@@ -26273,8 +24325,6 @@ SUBJECTS = {'AI.':
                }
            ,'shoot.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -26300,8 +24350,6 @@ SUBJECTS = {'AI.':
                }
            ,'show.biz.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -26327,8 +24375,6 @@ SUBJECTS = {'AI.':
                }
            ,'signall.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Security systems'
                ,'en':
@@ -26354,8 +24400,6 @@ SUBJECTS = {'AI.':
                }
            ,'silic.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemical industry'
                ,'en':
@@ -26381,8 +24425,6 @@ SUBJECTS = {'AI.':
                }
            ,'ski.jump.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -26408,8 +24450,6 @@ SUBJECTS = {'AI.':
                }
            ,'skiing':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -26435,8 +24475,6 @@ SUBJECTS = {'AI.':
                }
            ,'skydive.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Outdoor activities and extreme sports'
                ,'en':
@@ -26462,8 +24500,6 @@ SUBJECTS = {'AI.':
                }
            ,'sl., drug.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Jargon and slang'
                ,'en':
@@ -26489,8 +24525,6 @@ SUBJECTS = {'AI.':
                }
            ,'sl., teen.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -26516,8 +24550,6 @@ SUBJECTS = {'AI.':
                }
            ,'slang':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Jargon and slang'
                ,'en':
@@ -26543,8 +24575,6 @@ SUBJECTS = {'AI.':
                }
            ,'sms':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Communications'
                ,'en':
@@ -26570,8 +24600,6 @@ SUBJECTS = {'AI.':
                }
            ,'snd.proc.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Multimedia'
                ,'en':
@@ -26597,8 +24625,6 @@ SUBJECTS = {'AI.':
                }
            ,'snd.rec.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Cinematography'
                ,'en':
@@ -26624,8 +24650,6 @@ SUBJECTS = {'AI.':
                }
            ,'snowb.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Outdoor activities and extreme sports'
                ,'en':
@@ -26651,8 +24675,6 @@ SUBJECTS = {'AI.':
                }
            ,'soc.med.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -26678,8 +24700,6 @@ SUBJECTS = {'AI.':
                }
            ,'social.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Historical'
                ,'en':
@@ -26705,8 +24725,6 @@ SUBJECTS = {'AI.':
                }
            ,'sociol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Sociology'
                ,'en':
@@ -26732,8 +24750,6 @@ SUBJECTS = {'AI.':
                }
            ,'socioling.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Linguistics'
                ,'en':
@@ -26759,8 +24775,6 @@ SUBJECTS = {'AI.':
                }
            ,'softw.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Computing'
                ,'en':
@@ -26786,8 +24800,6 @@ SUBJECTS = {'AI.':
                }
            ,'soil.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -26813,8 +24825,6 @@ SUBJECTS = {'AI.':
                }
            ,'soil.mech.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -26840,8 +24850,6 @@ SUBJECTS = {'AI.':
                }
            ,'sol.pow.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Energy industry'
                ,'en':
@@ -26867,8 +24875,6 @@ SUBJECTS = {'AI.':
                }
            ,'solid.st.phys.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -26894,8 +24900,6 @@ SUBJECTS = {'AI.':
                }
            ,'som.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medicine - Alternative medicine'
                ,'en':
@@ -26921,8 +24925,6 @@ SUBJECTS = {'AI.':
                }
            ,'sound.eng.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Cinematography'
                ,'en':
@@ -26948,8 +24950,6 @@ SUBJECTS = {'AI.':
                }
            ,'south.Dutch.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -26975,8 +24975,6 @@ SUBJECTS = {'AI.':
                }
            ,'south.afr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -27002,8 +25000,6 @@ SUBJECTS = {'AI.':
                }
            ,'soviet.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Historical'
                ,'en':
@@ -27029,8 +25025,6 @@ SUBJECTS = {'AI.':
                }
            ,'sp.dis.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -27056,8 +25050,6 @@ SUBJECTS = {'AI.':
                }
            ,'space':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Space'
                ,'en':
@@ -27083,8 +25075,6 @@ SUBJECTS = {'AI.':
                }
            ,'span.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -27110,8 +25100,6 @@ SUBJECTS = {'AI.':
                }
            ,'span.-am.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Jargon and slang'
                ,'en':
@@ -27137,8 +25125,6 @@ SUBJECTS = {'AI.':
                }
            ,'spectr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemistry'
                ,'en':
@@ -27164,8 +25150,6 @@ SUBJECTS = {'AI.':
                }
            ,'speed.skat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Outdoor activities and extreme sports'
                ,'en':
@@ -27191,8 +25175,6 @@ SUBJECTS = {'AI.':
                }
            ,'speleo.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geology'
                ,'en':
@@ -27218,8 +25200,6 @@ SUBJECTS = {'AI.':
                }
            ,'spice.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Cooking'
                ,'en':
@@ -27245,8 +25225,6 @@ SUBJECTS = {'AI.':
                }
            ,'spoken':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -27272,8 +25250,6 @@ SUBJECTS = {'AI.':
                }
            ,'sport, bask.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -27299,8 +25275,6 @@ SUBJECTS = {'AI.':
                }
            ,'sport.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Sports'
                ,'en':
@@ -27326,8 +25300,6 @@ SUBJECTS = {'AI.':
                }
            ,'st.exch.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Finances'
                ,'en':
@@ -27353,8 +25325,6 @@ SUBJECTS = {'AI.':
                }
            ,'starch.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Food industry'
                ,'en':
@@ -27380,8 +25350,6 @@ SUBJECTS = {'AI.':
                }
            ,'stat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mathematics'
                ,'en':
@@ -27407,8 +25375,6 @@ SUBJECTS = {'AI.':
                }
            ,'station.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Records management'
                ,'en':
@@ -27434,8 +25400,6 @@ SUBJECTS = {'AI.':
                }
            ,'stereo.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Multimedia'
                ,'en':
@@ -27461,8 +25425,6 @@ SUBJECTS = {'AI.':
                }
            ,'stmp.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Industry'
                ,'en':
@@ -27488,8 +25450,6 @@ SUBJECTS = {'AI.':
                }
            ,'stn.mas.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -27515,8 +25475,6 @@ SUBJECTS = {'AI.':
                }
            ,'str.mater.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -27542,8 +25500,6 @@ SUBJECTS = {'AI.':
                }
            ,'strat.plast.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Chemical industry'
                ,'en':
@@ -27569,8 +25525,6 @@ SUBJECTS = {'AI.':
                }
            ,'stratigr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geology'
                ,'en':
@@ -27596,8 +25550,6 @@ SUBJECTS = {'AI.':
                }
            ,'stylist.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Linguistics'
                ,'en':
@@ -27623,8 +25575,6 @@ SUBJECTS = {'AI.':
                }
            ,'subl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -27650,8 +25600,6 @@ SUBJECTS = {'AI.':
                }
            ,'subm.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Nautical'
                ,'en':
@@ -27677,8 +25625,6 @@ SUBJECTS = {'AI.':
                }
            ,'sugar.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Food industry'
                ,'en':
@@ -27704,8 +25650,6 @@ SUBJECTS = {'AI.':
                }
            ,'supercond.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electrical engineering'
                ,'en':
@@ -27731,8 +25675,6 @@ SUBJECTS = {'AI.':
                }
            ,'superl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -27758,8 +25700,6 @@ SUBJECTS = {'AI.':
                }
            ,'surg.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -27785,8 +25725,6 @@ SUBJECTS = {'AI.':
                }
            ,'surn.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Proper name'
                ,'en':
@@ -27812,8 +25750,6 @@ SUBJECTS = {'AI.':
                }
            ,'survey.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -27839,8 +25775,6 @@ SUBJECTS = {'AI.':
                }
            ,'svc.ind.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Service industry'
                ,'en':
@@ -27866,8 +25800,6 @@ SUBJECTS = {'AI.':
                }
            ,'swed.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -27893,8 +25825,6 @@ SUBJECTS = {'AI.':
                }
            ,'swim.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -27920,8 +25850,6 @@ SUBJECTS = {'AI.':
                }
            ,'swiss.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Regional usage (other than language varieties)'
                ,'en':
@@ -27947,8 +25875,6 @@ SUBJECTS = {'AI.':
                }
            ,'swtch.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -27974,8 +25900,6 @@ SUBJECTS = {'AI.':
                }
            ,'synt.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Linguistics'
                ,'en':
@@ -28001,8 +25925,6 @@ SUBJECTS = {'AI.':
                }
            ,'tab.tenn.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -28028,8 +25950,6 @@ SUBJECTS = {'AI.':
                }
            ,'tabl.game':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Games (other than sports)'
                ,'en':
@@ -28055,8 +25975,6 @@ SUBJECTS = {'AI.':
                }
            ,'taboo':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -28082,8 +26000,6 @@ SUBJECTS = {'AI.':
                }
            ,'taboo, amer.usg., black.sl., slang':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -28109,8 +26025,6 @@ SUBJECTS = {'AI.':
                }
            ,'taiw.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -28136,8 +26050,6 @@ SUBJECTS = {'AI.':
                }
            ,'tao.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Religion'
                ,'en':
@@ -28163,8 +26075,6 @@ SUBJECTS = {'AI.':
                }
            ,'tat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -28190,8 +26100,6 @@ SUBJECTS = {'AI.':
                }
            ,'taur.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -28217,8 +26125,6 @@ SUBJECTS = {'AI.':
                }
            ,'tax.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Government, administration and public services'
                ,'en':
@@ -28244,8 +26150,6 @@ SUBJECTS = {'AI.':
                }
            ,'tech.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Technology'
                ,'en':
@@ -28271,8 +26175,6 @@ SUBJECTS = {'AI.':
                }
            ,'tecton.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geology'
                ,'en':
@@ -28298,8 +26200,6 @@ SUBJECTS = {'AI.':
                }
            ,'tel.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Communications'
                ,'en':
@@ -28325,8 +26225,6 @@ SUBJECTS = {'AI.':
                }
            ,'tel.mech.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Communications'
                ,'en':
@@ -28352,8 +26250,6 @@ SUBJECTS = {'AI.':
                }
            ,'telecom.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Communications'
                ,'en':
@@ -28379,8 +26275,6 @@ SUBJECTS = {'AI.':
                }
            ,'telegr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Communications'
                ,'en':
@@ -28406,8 +26300,6 @@ SUBJECTS = {'AI.':
                }
            ,'tenn.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -28433,8 +26325,6 @@ SUBJECTS = {'AI.':
                }
            ,'textile':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Light industries'
                ,'en':
@@ -28460,8 +26350,6 @@ SUBJECTS = {'AI.':
                }
            ,'thai.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -28487,8 +26375,6 @@ SUBJECTS = {'AI.':
                }
            ,'theatre.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -28514,8 +26400,6 @@ SUBJECTS = {'AI.':
                }
            ,'therm.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -28541,8 +26425,6 @@ SUBJECTS = {'AI.':
                }
            ,'therm.energ.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Energy industry'
                ,'en':
@@ -28568,8 +26450,6 @@ SUBJECTS = {'AI.':
                }
            ,'therm.eng.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -28595,8 +26475,6 @@ SUBJECTS = {'AI.':
                }
            ,'timb.float.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Wood, pulp and paper industries'
                ,'en':
@@ -28622,8 +26500,6 @@ SUBJECTS = {'AI.':
                }
            ,'tin.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Production'
                ,'en':
@@ -28649,8 +26525,6 @@ SUBJECTS = {'AI.':
                }
            ,'tirk.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -28676,8 +26550,6 @@ SUBJECTS = {'AI.':
                }
            ,'titles':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Art and culture (n.e.s.)'
                ,'en':
@@ -28703,8 +26575,6 @@ SUBJECTS = {'AI.':
                }
            ,'tobac.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Industry'
                ,'en':
@@ -28730,8 +26600,6 @@ SUBJECTS = {'AI.':
                }
            ,'tools':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -28757,8 +26625,6 @@ SUBJECTS = {'AI.':
                }
            ,'topogr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -28784,8 +26650,6 @@ SUBJECTS = {'AI.':
                }
            ,'topol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Mathematics'
                ,'en':
@@ -28811,8 +26675,6 @@ SUBJECTS = {'AI.':
                }
            ,'topon.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Proper name'
                ,'en':
@@ -28838,8 +26700,6 @@ SUBJECTS = {'AI.':
                }
            ,'torped.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Military'
                ,'en':
@@ -28865,8 +26725,6 @@ SUBJECTS = {'AI.':
                }
            ,'toxicol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -28892,8 +26750,6 @@ SUBJECTS = {'AI.':
                }
            ,'toy.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -28919,8 +26775,6 @@ SUBJECTS = {'AI.':
                }
            ,'tradem.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Business'
                ,'en':
@@ -28946,8 +26800,6 @@ SUBJECTS = {'AI.':
                }
            ,'traf.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Transport'
                ,'en':
@@ -28973,8 +26825,6 @@ SUBJECTS = {'AI.':
                }
            ,'traf.contr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Transport'
                ,'en':
@@ -29000,8 +26850,6 @@ SUBJECTS = {'AI.':
                }
            ,'trampol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -29027,8 +26875,6 @@ SUBJECTS = {'AI.':
                }
            ,'transf.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electrical engineering'
                ,'en':
@@ -29054,8 +26900,6 @@ SUBJECTS = {'AI.':
                }
            ,'transp.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Transport'
                ,'en':
@@ -29081,8 +26925,6 @@ SUBJECTS = {'AI.':
                }
            ,'transpl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -29108,8 +26950,6 @@ SUBJECTS = {'AI.':
                }
            ,'traumat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -29135,8 +26975,6 @@ SUBJECTS = {'AI.':
                }
            ,'trav.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Travel'
                ,'en':
@@ -29162,8 +27000,6 @@ SUBJECTS = {'AI.':
                }
            ,'trd.class.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Business'
                ,'en':
@@ -29189,8 +27025,6 @@ SUBJECTS = {'AI.':
                }
            ,'trib.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Physics'
                ,'en':
@@ -29216,8 +27050,6 @@ SUBJECTS = {'AI.':
                }
            ,'trucks':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Transport'
                ,'en':
@@ -29243,8 +27075,6 @@ SUBJECTS = {'AI.':
                }
            ,'tunn.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -29270,8 +27100,6 @@ SUBJECTS = {'AI.':
                }
            ,'turb.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Machinery and mechanisms'
                ,'en':
@@ -29297,8 +27125,6 @@ SUBJECTS = {'AI.':
                }
            ,'turkish':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -29324,8 +27150,6 @@ SUBJECTS = {'AI.':
                }
            ,'typogr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Publishing'
                ,'en':
@@ -29351,8 +27175,6 @@ SUBJECTS = {'AI.':
                }
            ,'typol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Linguistics'
                ,'en':
@@ -29378,8 +27200,6 @@ SUBJECTS = {'AI.':
                }
            ,'ufol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Parasciences'
                ,'en':
@@ -29405,8 +27225,6 @@ SUBJECTS = {'AI.':
                }
            ,'ultrasnd.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical appliances'
                ,'en':
@@ -29432,8 +27250,6 @@ SUBJECTS = {'AI.':
                }
            ,'unions.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Production'
                ,'en':
@@ -29459,8 +27275,6 @@ SUBJECTS = {'AI.':
                }
            ,'unit.meas.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -29486,8 +27300,6 @@ SUBJECTS = {'AI.':
                }
            ,'univer.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Education'
                ,'en':
@@ -29513,8 +27325,6 @@ SUBJECTS = {'AI.':
                }
            ,'urol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -29540,8 +27350,6 @@ SUBJECTS = {'AI.':
                }
            ,'urug.sp.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Dialectal'
                ,'en':
@@ -29567,8 +27375,6 @@ SUBJECTS = {'AI.':
                }
            ,'vac.tub.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Electronics'
                ,'en':
@@ -29594,8 +27400,6 @@ SUBJECTS = {'AI.':
                }
            ,'valves':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -29621,8 +27425,6 @@ SUBJECTS = {'AI.':
                }
            ,'venereol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -29648,8 +27450,6 @@ SUBJECTS = {'AI.':
                }
            ,'vent.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -29675,8 +27475,6 @@ SUBJECTS = {'AI.':
                }
            ,'verbat.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Subjects for Chinese dictionaries (container)'
                ,'en':
@@ -29702,8 +27500,6 @@ SUBJECTS = {'AI.':
                }
            ,'verl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Jargon and slang'
                ,'en':
@@ -29729,8 +27525,6 @@ SUBJECTS = {'AI.':
                }
            ,'vernac.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -29756,8 +27550,6 @@ SUBJECTS = {'AI.':
                }
            ,'vet.med.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Medical'
                ,'en':
@@ -29783,8 +27575,6 @@ SUBJECTS = {'AI.':
                }
            ,'vibr.monit.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -29810,8 +27600,6 @@ SUBJECTS = {'AI.':
                }
            ,'video.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Multimedia'
                ,'en':
@@ -29837,8 +27625,6 @@ SUBJECTS = {'AI.':
                }
            ,'viet.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -29864,8 +27650,6 @@ SUBJECTS = {'AI.':
                }
            ,'virol.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Life sciences'
                ,'en':
@@ -29891,8 +27675,6 @@ SUBJECTS = {'AI.':
                }
            ,'volcan.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geology'
                ,'en':
@@ -29918,8 +27700,6 @@ SUBJECTS = {'AI.':
                }
            ,'voll.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -29945,8 +27725,6 @@ SUBJECTS = {'AI.':
                }
            ,'vulg.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Stylistic values'
                ,'en':
@@ -29972,8 +27750,6 @@ SUBJECTS = {'AI.':
                }
            ,'wales':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -29999,8 +27775,6 @@ SUBJECTS = {'AI.':
                }
            ,'wareh.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Logistics'
                ,'en':
@@ -30026,8 +27800,6 @@ SUBJECTS = {'AI.':
                }
            ,'waste.man.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Industry'
                ,'en':
@@ -30053,8 +27825,6 @@ SUBJECTS = {'AI.':
                }
            ,'watchm.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Machinery and mechanisms'
                ,'en':
@@ -30080,8 +27850,6 @@ SUBJECTS = {'AI.':
                }
            ,'water.res.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Natural resourses and wildlife conservation'
                ,'en':
@@ -30107,8 +27875,6 @@ SUBJECTS = {'AI.':
                }
            ,'water.suppl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Engineering'
                ,'en':
@@ -30134,8 +27900,6 @@ SUBJECTS = {'AI.':
                }
            ,'waterski.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Outdoor activities and extreme sports'
                ,'en':
@@ -30161,8 +27925,6 @@ SUBJECTS = {'AI.':
                }
            ,'weap.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -30188,8 +27950,6 @@ SUBJECTS = {'AI.':
                }
            ,'weightlift.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Sports'
                ,'en':
@@ -30215,8 +27975,6 @@ SUBJECTS = {'AI.':
                }
            ,'weld.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -30242,8 +28000,6 @@ SUBJECTS = {'AI.':
                }
            ,'welf.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Government, administration and public services'
                ,'en':
@@ -30269,8 +28025,6 @@ SUBJECTS = {'AI.':
                }
            ,'well.contr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Oil and gas'
                ,'en':
@@ -30296,8 +28050,6 @@ SUBJECTS = {'AI.':
                }
            ,'welln.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Wellness'
                ,'en':
@@ -30320,8 +28072,6 @@ SUBJECTS = {'AI.':
                    {'short': 'крас.здор.'
                    ,'title': "Краса і здоров'я"}}, 'west.Ind.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Countries and regions'
                ,'en':
@@ -30347,8 +28097,6 @@ SUBJECTS = {'AI.':
                }
            ,'win.tast.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Food industry'
                ,'en':
@@ -30374,8 +28122,6 @@ SUBJECTS = {'AI.':
                }
            ,'wind.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Energy industry'
                ,'en':
@@ -30401,8 +28147,6 @@ SUBJECTS = {'AI.':
                }
            ,'windows':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -30428,8 +28172,6 @@ SUBJECTS = {'AI.':
                }
            ,'wine.gr.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -30455,8 +28197,6 @@ SUBJECTS = {'AI.':
                }
            ,'winemak.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Food industry'
                ,'en':
@@ -30482,8 +28222,6 @@ SUBJECTS = {'AI.':
                }
            ,'wir.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Construction'
                ,'en':
@@ -30509,8 +28247,6 @@ SUBJECTS = {'AI.':
                }
            ,'wire.drw.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Industry'
                ,'en':
@@ -30536,8 +28272,6 @@ SUBJECTS = {'AI.':
                }
            ,'wnd.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Technology'
                ,'en':
@@ -30563,8 +28297,6 @@ SUBJECTS = {'AI.':
                }
            ,'wood.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Wood, pulp and paper industries'
                ,'en':
@@ -30590,8 +28322,6 @@ SUBJECTS = {'AI.':
                }
            ,'work.fl.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Records management'
                ,'en':
@@ -30617,8 +28347,6 @@ SUBJECTS = {'AI.':
                }
            ,'wrest.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Martial arts and combat sports'
                ,'en':
@@ -30644,8 +28372,6 @@ SUBJECTS = {'AI.':
                }
            ,'yacht.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Nautical'
                ,'en':
@@ -30671,8 +28397,6 @@ SUBJECTS = {'AI.':
                }
            ,'yiddish.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Languages'
                ,'en':
@@ -30698,8 +28422,6 @@ SUBJECTS = {'AI.':
                }
            ,'zool.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Biology'
                ,'en':
@@ -30725,8 +28447,6 @@ SUBJECTS = {'AI.':
                }
            ,'zoot.':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Agriculture'
                ,'en':
@@ -30752,8 +28472,6 @@ SUBJECTS = {'AI.':
                }
            ,'Игорь Миг':
                {'valid': True
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -30779,8 +28497,6 @@ SUBJECTS = {'AI.':
                }
            ,'Игорь Миг, abbr.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Grammatical labels'
                ,'en':
@@ -30806,8 +28522,6 @@ SUBJECTS = {'AI.':
                }
            ,'Игорь Миг, calque.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Auxilliary categories (editor use only)'
                ,'en':
@@ -30833,8 +28547,6 @@ SUBJECTS = {'AI.':
                }
            ,'Игорь Миг, cloth.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Light industries'
                ,'en':
@@ -30860,8 +28572,6 @@ SUBJECTS = {'AI.':
                }
            ,'Игорь Миг, earth.sc.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -30887,8 +28597,6 @@ SUBJECTS = {'AI.':
                }
            ,'Игорь Миг, hydrom.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Geography'
                ,'en':
@@ -30914,8 +28622,6 @@ SUBJECTS = {'AI.':
                }
            ,'Игорь Миг, inform.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -30941,8 +28647,6 @@ SUBJECTS = {'AI.':
                }
            ,'Игорь Миг, quot.aph.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Literature'
                ,'en':
@@ -30968,8 +28672,6 @@ SUBJECTS = {'AI.':
                }
            ,'Игорь Миг, sport.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': True
                ,'group': 'Sports'
                ,'en':
@@ -30995,8 +28697,6 @@ SUBJECTS = {'AI.':
                }
            ,'Игорь Миг, tagmem.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': 'Linguistics'
                ,'en':
@@ -31022,8 +28722,6 @@ SUBJECTS = {'AI.':
                }
            ,'Игорь Миг, weap.':
                {'valid': False
-               ,'block': False
-               ,'priority': 0
                ,'major': False
                ,'group': ''
                ,'en':
@@ -31056,56 +28754,16 @@ class Subjects:
         self.lang = 'en'
         self.set_lang()
     
-    def get_pair(self,item):
+    def get_title(self,short):
+        ''' Short titles are more valid than full titles, e.g.,
+            'Gruzovik, obs.' -> 'Obsolete / dated' due to a bug
+            at multitran.com. Thus, it's not necessary to check for
+            'valid' key there.
+        '''
         for key in SUBJECTS.keys():
-            if (SUBJECTS[key][self.lang]['title'] == item \
-            or SUBJECTS[key][self.lang]['short'] == item):
-                return (SUBJECTS[key][self.lang]['short']
-                       ,SUBJECTS[key][self.lang]['title']
-                       )
-        return(item,item)
-    
-    def _get_abbr_valid(self,title):
-        for key in SUBJECTS.keys():
-            if SUBJECTS[key][self.lang]['title'] == title \
-            and SUBJECTS[key]['valid']:
-                return SUBJECTS[key][self.lang]['short']
-    
-    def _get_abbr(self,title):
-        for key in SUBJECTS.keys():
-            if SUBJECTS[key][self.lang]['title'] == title:
-                return SUBJECTS[key][self.lang]['short']
-    
-    def _get_title_valid(self,abbr):
-        for key in SUBJECTS.keys():
-            if SUBJECTS[key][self.lang]['short'] == abbr \
-            and SUBJECTS[key]['valid']:
+            if SUBJECTS[key][self.lang]['short'] == short:
                 return SUBJECTS[key][self.lang]['title']
-    
-    def _get_title(self,abbr):
-        for key in SUBJECTS.keys():
-            if SUBJECTS[key][self.lang]['short'] == abbr:
-                return SUBJECTS[key][self.lang]['title']
-    
-    def get_title(self,abbr):
-        title = self._get_title_valid(abbr)
-        if title:
-            return title
-        else:
-            title = self._get_title(abbr)
-            if title:
-                return title
-        return abbr
-    
-    def get_abbr(self,title):
-        abbr = self._get_abbr_valid(title)
-        if abbr:
-            return abbr
-        else:
-            abbr = self._get_abbr(title)
-            if abbr:
-                return abbr
-        return title
+        return short
     
     def set_lang(self):
         f = '[MClient] plugins.multitrancom.subjects.Subjects.set_lang'
@@ -31190,8 +28848,8 @@ if __name__ == '__main__':
     #print(isubj.get_majors('uk'))
     #print(isubj.get_group('Біологія','uk'))
     #print(isubj.get_list())
-    abbr = 'оруж.'
-    mes = '"{}"'.format(isubj.get_title(abbr))
+    short = 'оруж.'
+    mes = '"{}"'.format(isubj.get_title(short))
     sh.objs.get_mes(f,mes,True).show_debug()
     timer.end()
     sh.com.end()

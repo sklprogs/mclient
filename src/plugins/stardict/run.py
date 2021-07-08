@@ -56,13 +56,9 @@ class Plugin:
     def is_oneway(self):
         return False
     
-    def get_title(self,abbr):
+    def get_title(self,short):
         #TODO: implement
-        return abbr
-    
-    def get_abbr(self,title):
-        #TODO: implement
-        return title
+        return short
     
     def quit(self):
         for idic in gt.objs.get_all_dics().dics:

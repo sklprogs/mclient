@@ -39,14 +39,6 @@ class Plugins:
         self.sdplugin = None
         self.source = sh.lg.globs['str']['source']
     
-    def get_pair(self,item):
-        f = '[MClient] manager.Plugins.get_pair'
-        if self.plugin:
-            return self.plugin.get_pair(item)
-        else:
-            sh.com.rep_empty(f)
-        return(item,item)
-    
     def get_subjects(self):
         f = '[MClient] manager.Plugins.get_subjects'
         if self.plugin:
@@ -101,21 +93,13 @@ class Plugins:
         else:
             sh.com.rep_empty(f)
     
-    def get_title(self,abbr):
+    def get_title(self,short):
         f = '[MClient] manager.Plugins.get_title'
         if self.plugin:
-            return self.plugin.get_title(abbr)
+            return self.plugin.get_title(short)
         else:
             sh.com.rep_empty(f)
-        return abbr
-    
-    def get_abbr(self,title):
-        f = '[MClient] manager.Plugins.get_abbr'
-        if self.plugin:
-            return self.plugin.get_abbr(title)
-        else:
-            sh.com.rep_empty(f)
-        return title
+        return short
     
     def quit(self,event=None):
         self.mbplugin.quit()

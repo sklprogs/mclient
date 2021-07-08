@@ -19,15 +19,14 @@ class Plugin:
         self.Debug = Debug
         self.maxrows = maxrows
     
-    def get_pair(self,item):
-        return sj.objs.get_subjects().get_pair(item)
-    
     def set_values(self):
-        self.abbr = {}
         self.blocks = []
         self.htm = ''
         self.text = ''
         self.search = ''
+    
+    def get_title(self,short):
+        return sj.objs.get_subjects().get_title(short)
     
     def get_subjects(self):
         return sj.objs.get_subjects().get_list()
@@ -49,12 +48,6 @@ class Plugin:
     
     def is_oneway(self):
         return False
-    
-    def get_title(self,item):
-        return sj.objs.get_subjects().get_title(item)
-    
-    def get_abbr(self,item):
-        return sj.objs.get_subjects().get_abbr(item)
     
     # This is needed only for compliance with a general method
     def quit(self):

@@ -1465,13 +1465,6 @@ class Order(sj.Order):
                                  ,value = lists.get_priorities()
                                  ).get_list()
     
-    def get_pair(self,item):
-        f = '[MClient] logic.Order.get_pair'
-        if item:
-            return objs.get_plugins().get_pair(item)
-        else:
-            sh.com.rep_empty(f)
-    
     def save(self):
         blackw = objs.get_default().fblock
         priorw = objs.default.fprior
