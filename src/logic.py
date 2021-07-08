@@ -9,7 +9,7 @@ import ssl
 from skl_shared.localize import _
 import skl_shared.shared as sh
 import manager
-import subjects.order
+import subjects.subjects as sj
 
 
 SPORDER = (_('Noun'),_('Verb'),_('Adjective'),_('Abbreviation')
@@ -42,6 +42,7 @@ sample_prior = '''Общая лексика
 Юридический термин
 Юридический (Н.П.)
 '''
+
 
 class DefaultKeys(sh.DefaultKeys):
 
@@ -1330,6 +1331,11 @@ class Objects:
                     = self.plugins = self.speech_prior = self.config \
                     = self.order = None
     
+    def get_order(self):
+        if self.order is None:
+            self.order = sj.objs.order = Order()
+        return self.order
+    
     def get_config(self):
         if self.config is None:
             self.config = sh.Config(objs.get_default().get_config())
@@ -1353,7 +1359,7 @@ class Objects:
     
     def get_default(self,product='mclient'):
         if not self.default:
-            self.default = DefaultConfig(product=product)
+            self.default = DefaultConfig(product)
             self.default.run()
         return self.default
     
@@ -1361,11 +1367,6 @@ class Objects:
         if self.request is None:
             self.request = CurRequest()
         return self.request
-        
-    def get_order(self):
-        if self.order is None:
-            self.order = Order()
-        return self.order
 
 
 
@@ -1448,7 +1449,7 @@ class Commands:
 
 
 
-class Order(subjects.order.Order):
+class Order(sj.Order):
     # Do not fail this class - input files are optional
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)

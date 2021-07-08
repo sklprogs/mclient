@@ -7,6 +7,48 @@ import skl_shared.shared as sh
 DEBUG = True
 
 
+class ArticleSubjects:
+    
+    def __init__(self):
+        self.blocks = []
+    
+    def set_lists(self):
+        # Read lists from files
+        import logic as lg
+        lg.objs.get_order()
+    
+    def run(self):
+        self.set_lists()
+        self.set_blocks()
+        self.set_article()
+    
+    def set_article(self):
+        import subjects.subjects as sj
+        import mclient
+        pairs = mclient.objs.get_blocksdb().get_dic_pairs()
+        sj.objs.get_article().reset(pairs,DEBUG)
+        sj.objs.article.run()
+    
+    def set_blocks(self):
+        f = '[MClient] tests.Subjects.set_blocks'
+        import mclient
+        import logic as lg
+        search = 'hello'
+        url = 'https://www.multitran.com/m.exe?s=hello&l1=1&l2=2&SHL=2'
+        blocks = lg.objs.get_plugins().request (search = search
+                                               ,url = url
+                                               )
+        mclient.objs.get_blocksdb().artid = 1
+        data = lg.com.dump_elems (blocks = blocks
+                                 ,artid = mclient.objs.blocksdb.artid
+                                 )
+        if data:
+            mclient.objs.blocksdb.fill_blocks(data)
+        else:
+            sh.com.rep_empty(f)
+
+
+
 class Tests:
     
     def run_speech(self):
@@ -659,5 +701,6 @@ if __name__ == '__main__':
     #Plugin().reinsert_same()
     #Tags().run_multitrancom()
     #Plugin().run_multitrancom()
-    com.show_about()
+    #com.show_about()
+    ArticleSubjects().run()
     sh.com.end()

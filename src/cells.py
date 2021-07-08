@@ -4,7 +4,7 @@
 import io
 from skl_shared.localize import _
 import skl_shared.shared as sh
-import logic as lg
+import subjects.subjects as sj
 
 
 # Extended from tags.Block
@@ -49,7 +49,6 @@ class BlockPrioritize:
         f = '[MClient] cells.BlockPrioritize.__init__'
         self.Block = Block
         self.blocks = []
-        self.dics = {}
         self.data = data
         self.Debug = Debug
         self.maxrows = maxrows
@@ -131,7 +130,6 @@ class BlockPrioritize:
         f = '[MClient] cells.BlockPrioritize.run'
         if self.Success:
             self.assign()
-            self.set_dics()
             self.block()
             self.prioritize_dics()
             self.prioritize_speech()
@@ -149,62 +147,11 @@ class BlockPrioritize:
             block.dic = item[3]
             block.speech = item[4]
             self.blocks.append(block)
-    
-    def _is_blocked(self,lst):
-        for item in lst:
-            if lg.objs.get_order().is_blocked(item):
-                return True
-    
-    def _get_priority(self,lst):
-        priorities = []
-        for item in lst:
-            priorities.append(lg.objs.get_order().get_priority(item))
-        # An error will be thrown on an empty list
-        try:
-            return max(priorities)
-        except ValueError:
-            return 0
-    
-    def set_dics(self):
-        #TODO: set DICF on input instead of using 'get_pair'
-        # Takes ~0.37s for 'set' on Intel Atom
-        dics = []
-        for block in self.blocks:
-            if block.type_ == 'dic' and block.text \
-            and block.dic != self.phdic:
-                dics.append(block.dic)
-        dics = sorted(set(dics))
-        for dic in dics:
-            lst = dic.split(', ')
-            lst = [item.strip() for item in lst if item.strip()]
-            all_ = [dic] + lst
-            all_ = sorted(set(all_))
-            shorts = []
-            fulls = []
-            for item in all_:
-                short, full = lg.objs.get_order().get_pair(item)
-                shorts.append(short)
-                fulls.append(full)
-            lst = shorts + fulls
-            Blocked = self._is_blocked(lst)
-            Priority = self._get_priority(lst)
-            for dic in lst:
-                self.dics[dic] = {}
-                self.dics[dic]['block'] = Blocked
-                self.dics[dic]['priority'] = Priority
             
     def block(self):
         f = '[MClient] cells.BlockPrioritize.block'
         for block in self.blocks:
-            if block.dic and block.dic != self.phdic:
-                try:
-                    Blocked = self.dics[block.dic]['block']
-                except KeyError:
-                    Blocked = False
-                    mes = _('Wrong input data: "{}"!').format(block.dic)
-                    sh.objs.get_mes(f,mes,True).show_warning()
-            else:
-                Blocked = False
+            Blocked = sj.objs.get_article().is_blocked(block.dic)
             ''' Do not put checking 'self.Block' ahead of the loop
                 since we need to assign 'block' to 0 anyway.
             '''
@@ -227,13 +174,7 @@ class BlockPrioritize:
                     '''
                     block.dprior = -1000
                 elif self.Prioritize:
-                    try:
-                        block.dprior = self.dics[block.dic]['priority']
-                    except KeyError:
-                        block.dprior = 0
-                        mes = _('Wrong input data: "{}"!')
-                        mes = mes.format(block.dic)
-                        sh.objs.get_mes(f,mes,True).show_warning()
+                    block.dprior = sj.objs.get_article().get_priority(block.dic)
 
     def dump(self):
         tmp = io.StringIO()

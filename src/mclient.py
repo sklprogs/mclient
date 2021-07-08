@@ -18,6 +18,7 @@ import subjects.priorities.controller as pr
 import subjects.blacklist.controller as bl
 import about.controller as ab
 import third_parties.controller as tp
+import subjects.subjects as sj
 
 
 if __name__ == '__main__':
@@ -92,31 +93,29 @@ class Commands:
     '''
     def get_dics(self,Block=False,Phrases=False):
         f = '[MClient] mclient.Commands.get_dics'
+        new_dics = []
         dics = objs.get_blocksdb().get_dics(Block)
         if dics:
             dics = [item[0] for item in dics]
-            new_dics = []
             for dic in dics:
                 items = dic.split(', ')
                 new_dics += items
-            dics += new_dics
             new_dics = [item.strip() for item in new_dics \
                         if item.strip()
                        ]
-            dics = sorted(set(dics))
+            new_dics = sorted(set(new_dics))
             if not Phrases:
                 phdic = objs.blocksdb.get_phdic()
                 if phdic:
                     try:
-                        dics.remove(phdic[1])
+                        new_dics.remove(phdic[1])
                     except ValueError:
                         mes = _('Wrong input data: "{}"!')
                         mes = mes.format(phdic[1])
                         sh.objs.get_mes(f,mes,True).show_warning()
-            return dics
         else:
             sh.com.rep_empty(f)
-        return []
+        return new_dics
         
     def export_style(self):
         f = '[MClient] mclient.Commands.export_style'
@@ -1998,7 +1997,13 @@ class WebFrame:
                             ,ShowUsers = sh.lg.globs['bool']['ShowUserNames']
                             ,PhraseCount = sh.lg.globs['bool']['PhraseCount']
                             )
-        
+        # Read lists from files
+        #TODO: find the first occurrence
+        lg.objs.get_order()
+        sj.objs.get_article().reset (pairs = objs.blocksdb.get_dic_pairs()
+                                    ,Debug = lg.objs.get_plugins().Debug
+                                    )
+        sj.objs.article.run()
         data = objs.blocksdb.assign_bp()
         spdic = lg.objs.speech_prior.get_all2prior()
         bp = cl.BlockPrioritize (data = data
@@ -2006,7 +2011,7 @@ class WebFrame:
                                 ,Prioritize = sh.lg.globs['bool']['PrioritizeSubjects']
                                 ,phdic = self.phdic
                                 ,spdic = spdic
-                                ,Debug = lg.objs.get_plugins().Debug
+                                ,Debug = lg.objs.plugins.Debug
                                 ,maxrows = lg.objs.plugins.maxrows
                                 )
         bp.run()

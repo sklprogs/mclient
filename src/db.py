@@ -22,6 +22,16 @@ class DB:
         self.create_blocks()
         self.create_articles()
     
+    def get_dic_pairs(self):
+        f = '[MClient] db.DB.get_dic_pairs'
+        if self.artid:
+            query = 'select distinct DIC,DICF from BLOCKS \
+                     where ARTICLEID = ?'
+            self.dbc.execute(query,(self.artid,))
+            return self.dbc.fetchall()
+        else:
+            sh.com.rep_empty(f)
+    
     def get_code(self):
         f = '[MClient] db.DB.get_code'
         if self.artid:
