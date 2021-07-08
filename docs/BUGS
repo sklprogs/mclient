@@ -38,6 +38,8 @@ dsl:
 - 
 
 multitrandem:
+- Throws an error during a search when Stardict/DSL dics (but not MT)
+  are available
 - EN-RU, 'цепь: провод': fails when no dics are available (option menus
   have available pairs though)
 - AS: an abbreviation, not a conjunction
