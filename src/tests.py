@@ -58,8 +58,8 @@ class Tests:
         lg.objs.speech_prior.debug()
     
     def generate_config(self):
-        import logic as lg
-        lg.CreateConfig().run()
+        import config as cf
+        cf.CreateConfig().run()
 
 
 
