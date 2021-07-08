@@ -723,6 +723,6 @@ if __name__ == '__main__':
     #Plugin().run_multitrancom()
     #com.show_about()
     #ArticleSubjects().run()
-    #com.edit_blacklist()
-    com.edit_priorities()
+    com.edit_blacklist()
+    #com.edit_priorities()
     sh.com.end()

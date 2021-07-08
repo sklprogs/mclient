@@ -78,10 +78,10 @@ class Blacklist:
                 indexes = []
                 for item in items:
                     index_ = self._get_index(self.lst1,item)
-                    if index_:
-                        indexes.append(index_)
-                    else:
+                    if index_ is None:
                         sh.com.rep_empty(f)
+                    else:
+                        indexes.append(index_)
                 self.select_mult1(indexes)
                 self.unblock()
             else:
@@ -112,10 +112,10 @@ class Blacklist:
                 indexes = []
                 for item in items:
                     index_ = self._get_index(self.lst2,item)
-                    if index_:
-                        indexes.append(index_)
-                    else:
+                    if index_ is None:
                         sh.com.rep_empty(f)
+                    else:
+                        indexes.append(index_)
                 self.select_mult2(indexes)
                 self.block()
             else:
