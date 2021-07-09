@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-09 00:04+0300\n"
-"PO-Revision-Date: 2021-07-09 00:05+0300\n"
+"POT-Creation-Date: 2021-07-09 21:32+0300\n"
+"PO-Revision-Date: 2021-07-09 21:33+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -76,18 +76,18 @@ msgstr "Написать письмо автору"
 #: mclient/src/plugins/dsl/tags.py:125 mclient/src/plugins/dsl/tags.py:294
 #: mclient/src/plugins/multitrancom/tags.py:356
 #: mclient/src/plugins/multitrancom/tags.py:432
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:34
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:72
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:52
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:91
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:203
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:477
-#: mclient/src/subjects/subjects.py:76
+#: mclient/src/subjects/subjects.py:76 mclient/src/tests.py:372
 msgid "#"
 msgstr "№"
 
 #: mclient/src/cells.py:95
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:34
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:72
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:52
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:91
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:477
 #: mclient/src/subjects/subjects.py:76 skl_shared/src/shared.py:4077
 msgid "KEY"
@@ -97,7 +97,7 @@ msgstr "КЛЮЧ"
 msgid "BLOCKED"
 msgstr "ЗАБЛОКИРОВАНО"
 
-#: mclient/src/cells.py:95 mclient/src/logic.py:722
+#: mclient/src/cells.py:95 mclient/src/logic.py:75
 #: mclient/src/subjects/subjects.py:77
 msgid "PRIORITY"
 msgstr "ПРИОРИТЕТ"
@@ -113,6 +113,709 @@ msgstr "Неподдерживая часть речи: \"{}\"!"
 #: mclient/src/cells.py:628
 msgid "Unable to find: {}"
 msgstr "Не удалось найти: {}"
+
+#: mclient/src/config.py:104 mclient/src/gui.py:814 mclient/src/gui.py:838
+#: mclient/src/gui.py:839 mclient/src/gui.py:840 mclient/src/gui.py:894
+#: mclient/src/gui.py:903 mclient/src/gui.py:920 mclient/src/gui.py:928
+#: mclient/src/gui.py:933 mclient/src/gui.py:1112 mclient/src/gui.py:1467
+#: mclient/src/mclient.py:141 mclient/src/mclient.py:150
+msgid "Subjects"
+msgstr "Тематики"
+
+#: mclient/src/config.py:105 mclient/src/gui.py:815 mclient/src/gui.py:853
+#: mclient/src/gui.py:854 mclient/src/gui.py:855 mclient/src/gui.py:895
+#: mclient/src/gui.py:897 mclient/src/gui.py:921 mclient/src/gui.py:925
+#: mclient/src/gui.py:931 mclient/src/gui.py:936 mclient/src/gui.py:1113
+#: mclient/src/gui.py:1473 mclient/src/mclient.py:143
+#: mclient/src/mclient.py:150
+msgid "Word forms"
+msgstr "Словоформы"
+
+#: mclient/src/config.py:106 mclient/src/gui.py:817 mclient/src/gui.py:868
+#: mclient/src/gui.py:869 mclient/src/gui.py:870 mclient/src/gui.py:896
+#: mclient/src/gui.py:900 mclient/src/gui.py:902 mclient/src/gui.py:923
+#: mclient/src/gui.py:927 mclient/src/gui.py:930 mclient/src/gui.py:935
+#: mclient/src/gui.py:1114 mclient/src/gui.py:1485 mclient/src/mclient.py:145
+#: mclient/src/mclient.py:151
+msgid "Parts of speech"
+msgstr "Части речи"
+
+#: mclient/src/config.py:107 mclient/src/gui.py:816 mclient/src/gui.py:883
+#: mclient/src/gui.py:884 mclient/src/gui.py:885 mclient/src/gui.py:898
+#: mclient/src/gui.py:899 mclient/src/gui.py:922 mclient/src/gui.py:926
+#: mclient/src/gui.py:932 mclient/src/gui.py:1115 mclient/src/gui.py:1479
+#: mclient/src/mclient.py:147 mclient/src/mclient.py:150
+msgid "Transcription"
+msgstr "Транскрипция"
+
+#: mclient/src/config.py:125 mclient/src/mclient.py:1016
+#: mclient/src/mclient.py:1020 mclient/src/plugins/multitrancom/pairs.py:7
+#: mclient/src/plugins/multitrancom/pairs.py:21
+#: mclient/src/plugins/multitrancom/pairs.py:60
+#: mclient/src/plugins/multitrancom/pairs.py:111
+#: mclient/src/plugins/multitrancom/pairs.py:150
+#: mclient/src/plugins/multitrancom/pairs.py:192
+#: mclient/src/plugins/multitrancom/pairs.py:237
+#: mclient/src/plugins/multitrancom/pairs.py:270
+#: mclient/src/plugins/multitrancom/pairs.py:327
+#: mclient/src/plugins/multitrancom/pairs.py:359
+#: mclient/src/plugins/multitrancom/pairs.py:390
+#: mclient/src/plugins/multitrancom/pairs.py:420
+#: mclient/src/plugins/multitrancom/pairs.py:458
+#: mclient/src/plugins/multitrancom/pairs.py:511
+#: mclient/src/plugins/multitrancom/pairs.py:544
+#: mclient/src/plugins/multitrancom/pairs.py:572
+#: mclient/src/plugins/multitrancom/pairs.py:611
+#: mclient/src/plugins/multitrancom/pairs.py:675
+#: mclient/src/plugins/multitrancom/pairs.py:705
+#: mclient/src/plugins/multitrancom/pairs.py:743
+#: mclient/src/plugins/multitrancom/pairs.py:776
+#: mclient/src/plugins/multitrancom/pairs.py:809
+#: mclient/src/plugins/multitrancom/pairs.py:841
+#: mclient/src/plugins/multitrancom/pairs.py:869
+#: mclient/src/plugins/multitrancom/pairs.py:921
+#: mclient/src/plugins/multitrancom/pairs.py:962
+#: mclient/src/plugins/multitrancom/pairs.py:980
+#: mclient/src/plugins/multitrancom/pairs.py:1012
+#: mclient/src/plugins/multitrancom/pairs.py:1075
+#: mclient/src/plugins/multitrancom/pairs.py:1106
+#: mclient/src/plugins/multitrancom/pairs.py:1142
+#: mclient/src/plugins/multitrancom/pairs.py:1172
+#: mclient/src/plugins/multitrancom/pairs.py:1180
+#: mclient/src/plugins/multitrancom/pairs.py:1184
+#: mclient/src/plugins/multitrancom/pairs.py:1192
+#: mclient/src/plugins/multitrancom/pairs.py:1200
+#: mclient/src/plugins/multitrancom/pairs.py:1204
+#: mclient/src/plugins/multitrancom/pairs.py:1220
+#: mclient/src/plugins/multitrancom/pairs.py:1224
+#: mclient/src/plugins/multitrancom/pairs.py:1256
+#: mclient/src/plugins/multitrancom/pairs.py:1260
+#: mclient/src/plugins/multitrancom/pairs.py:1284
+#: mclient/src/plugins/multitrancom/pairs.py:1300
+#: mclient/src/plugins/multitrancom/pairs.py:1320
+#: mclient/src/plugins/multitrancom/pairs.py:1328
+#: mclient/src/plugins/multitrancom/pairs.py:1340
+#: mclient/src/plugins/multitrancom/pairs.py:1356
+#: mclient/src/plugins/multitrancom/pairs.py:1368
+#: mclient/src/plugins/multitrancom/pairs.py:1376
+#: mclient/src/plugins/multitrancom/pairs.py:1388
+#: mclient/src/plugins/multitrancom/pairs.py:1392
+#: mclient/src/plugins/multitrancom/pairs.py:1404
+#: mclient/src/plugins/multitrancom/pairs.py:1416
+#: mclient/src/plugins/multitrancom/pairs.py:1420
+#: mclient/src/plugins/multitrancom/pairs.py:1424
+#: mclient/src/plugins/multitrancom/pairs.py:1432
+#: mclient/src/plugins/multitrancom/pairs.py:1468
+#: mclient/src/plugins/multitrancom/pairs.py:1480
+#: mclient/src/plugins/multitrancom/pairs.py:1512
+#: mclient/src/plugins/multitrancom/pairs.py:1524
+#: mclient/src/plugins/multitrancom/pairs.py:1552
+#: mclient/src/plugins/multitrancom/pairs.py:1556
+#: mclient/src/plugins/multitrancom/pairs.py:1576
+#: mclient/src/plugins/multitrancom/pairs.py:1580
+#: mclient/src/plugins/multitrancom/pairs.py:1628
+#: mclient/src/plugins/multitrancom/pairs.py:1644
+#: mclient/src/plugins/multitrancom/pairs.py:1648
+#: mclient/src/plugins/multitrancom/pairs.py:1652
+#: mclient/src/plugins/multitrancom/pairs.py:1672
+#: mclient/src/plugins/multitrancom/pairs.py:1688
+#: mclient/src/plugins/multitrancom/pairs.py:1728
+#: mclient/src/plugins/multitrancom/pairs.py:1736
+#: mclient/src/plugins/multitrancom/pairs.py:1760
+#: mclient/src/plugins/multitrancom/pairs.py:1764
+#: mclient/src/plugins/multitrancom/pairs.py:1768
+#: mclient/src/plugins/multitrancom/pairs.py:1788
+#: mclient/src/plugins/multitrancom/pairs.py:1796
+#: mclient/src/plugins/multitrancom/pairs.py:1804
+#: mclient/src/plugins/multitrancom/pairs.py:1900
+#: mclient/src/plugins/multitrancom/pairs.py:1912
+#: mclient/src/plugins/multitrancom/pairs.py:1948
+#: mclient/src/plugins/multitrancom/pairs.py:1972
+#: mclient/src/plugins/multitrancom/pairs.py:1976
+#: mclient/src/plugins/multitrancom/pairs.py:2008
+#: mclient/src/plugins/multitrancom/pairs.py:2012
+#: mclient/src/plugins/multitrancom/pairs.py:2096
+#: mclient/src/plugins/multitrancom/pairs.py:2100
+#: mclient/src/plugins/multitrancom/pairs.py:2120
+#: mclient/src/plugins/multitrancom/pairs.py:2124
+#: mclient/src/plugins/multitrancom/pairs.py:2132
+#: mclient/src/plugins/multitrancom/pairs.py:2136
+#: mclient/src/plugins/multitrancom/pairs.py:2164
+#: mclient/src/plugins/multitrancom/pairs.py:2168
+#: mclient/src/plugins/multitrancom/pairs.py:2172
+#: mclient/src/plugins/multitrancom/pairs.py:2182
+#: mclient/src/plugins/multitrancom/pairs.py:2235
+#: mclient/src/plugins/multitrancom/pairs.py:2263
+#: mclient/src/plugins/multitrancom/pairs.py:2275
+#: mclient/src/plugins/multitrancom/pairs.py:2283
+#: mclient/src/plugins/multitrancom/pairs.py:2287
+#: mclient/src/plugins/multitrancom/pairs.py:2299
+#: mclient/src/plugins/multitrancom/pairs.py:2347
+#: mclient/src/plugins/multitrancom/pairs.py:2359
+#: mclient/src/plugins/multitrancom/pairs.py:2363
+#: mclient/src/plugins/multitrancom/pairs.py:2391
+#: mclient/src/plugins/multitrancom/pairs.py:2427
+#: mclient/src/plugins/multitrancom/pairs.py:2435
+#: mclient/src/plugins/multitrancom/pairs.py:2455
+#: mclient/src/plugins/multitrancom/pairs.py:2463
+#: mclient/src/plugins/multitrancom/pairs.py:2467
+#: mclient/src/plugins/multitrancom/pairs.py:2471
+#: mclient/src/plugins/multitrancom/pairs.py:2479
+#: mclient/src/plugins/multitrancom/pairs.py:2527
+#: mclient/src/plugins/multitrancom/pairs.py:2535
+#: mclient/src/plugins/multitrancom/pairs.py:2539
+#: mclient/src/plugins/multitrancom/pairs.py:2551
+#: mclient/src/plugins/multitrancom/pairs.py:2555
+#: mclient/src/plugins/multitrancom/pairs.py:2559
+#: mclient/src/plugins/multitrancom/pairs.py:2563
+#: mclient/src/plugins/multitrancom/pairs.py:2581
+#: mclient/src/plugins/multitrancom/pairs.py:2638
+#: mclient/src/plugins/multitrancom/pairs.py:2653
+#: mclient/src/plugins/multitrancom/pairs.py:2657
+#: mclient/src/plugins/multitrancom/pairs.py:2661
+#: mclient/src/plugins/multitrancom/pairs.py:2677
+#: mclient/src/plugins/multitrancom/pairs.py:2711
+#: mclient/src/plugins/multitrancom/utils/utils.py:345
+#: mclient/src/plugins/multitrancom/utils/utils.py:350
+#: mclient/src/plugins/multitrandem/run.py:85
+#: mclient/src/plugins/multitrandem/run.py:138
+#: mclient/src/plugins/multitrandem/run.py:142
+msgid "Russian"
+msgstr "Русский"
+
+#: mclient/src/config.py:126 mclient/src/plugins/multitrancom/pairs.py:8
+#: mclient/src/plugins/multitrancom/pairs.py:55
+#: mclient/src/plugins/multitrancom/pairs.py:91
+#: mclient/src/plugins/multitrancom/pairs.py:135
+#: mclient/src/plugins/multitrancom/pairs.py:176
+#: mclient/src/plugins/multitrancom/pairs.py:222
+#: mclient/src/plugins/multitrancom/pairs.py:255
+#: mclient/src/plugins/multitrancom/pairs.py:312
+#: mclient/src/plugins/multitrancom/pairs.py:370
+#: mclient/src/plugins/multitrancom/pairs.py:411
+#: mclient/src/plugins/multitrancom/pairs.py:443
+#: mclient/src/plugins/multitrancom/pairs.py:496
+#: mclient/src/plugins/multitrancom/pairs.py:529
+#: mclient/src/plugins/multitrancom/pairs.py:563
+#: mclient/src/plugins/multitrancom/pairs.py:591
+#: mclient/src/plugins/multitrancom/pairs.py:655
+#: mclient/src/plugins/multitrancom/pairs.py:727
+#: mclient/src/plugins/multitrancom/pairs.py:760
+#: mclient/src/plugins/multitrancom/pairs.py:793
+#: mclient/src/plugins/multitrancom/pairs.py:860
+#: mclient/src/plugins/multitrancom/pairs.py:901
+#: mclient/src/plugins/multitrancom/pairs.py:942
+#: mclient/src/plugins/multitrancom/pairs.py:980
+#: mclient/src/plugins/multitrancom/pairs.py:1012
+#: mclient/src/plugins/multitrancom/pairs.py:1046
+#: mclient/src/plugins/multitrancom/pairs.py:1097
+#: mclient/src/plugins/multitrancom/pairs.py:1122
+#: mclient/src/plugins/multitrancom/pairs.py:1172
+#: mclient/src/plugins/multitrancom/pairs.py:1180
+#: mclient/src/plugins/multitrancom/pairs.py:1184
+#: mclient/src/plugins/multitrancom/pairs.py:1192
+#: mclient/src/plugins/multitrancom/pairs.py:1200
+#: mclient/src/plugins/multitrancom/pairs.py:1204
+#: mclient/src/plugins/multitrancom/pairs.py:1220
+#: mclient/src/plugins/multitrancom/pairs.py:1224
+#: mclient/src/plugins/multitrancom/pairs.py:1256
+#: mclient/src/plugins/multitrancom/pairs.py:1260
+#: mclient/src/plugins/multitrancom/pairs.py:1284
+#: mclient/src/plugins/multitrancom/pairs.py:1300
+#: mclient/src/plugins/multitrancom/pairs.py:1320
+#: mclient/src/plugins/multitrancom/pairs.py:1328
+#: mclient/src/plugins/multitrancom/pairs.py:1340
+#: mclient/src/plugins/multitrancom/pairs.py:1356
+#: mclient/src/plugins/multitrancom/pairs.py:1368
+#: mclient/src/plugins/multitrancom/pairs.py:1376
+#: mclient/src/plugins/multitrancom/pairs.py:1388
+#: mclient/src/plugins/multitrancom/pairs.py:1404
+#: mclient/src/plugins/multitrancom/pairs.py:1416
+#: mclient/src/plugins/multitrancom/pairs.py:1420
+#: mclient/src/plugins/multitrancom/pairs.py:1424
+#: mclient/src/plugins/multitrancom/pairs.py:1432
+#: mclient/src/plugins/multitrancom/pairs.py:1480
+#: mclient/src/plugins/multitrancom/pairs.py:1512
+#: mclient/src/plugins/multitrancom/pairs.py:1524
+#: mclient/src/plugins/multitrancom/pairs.py:1552
+#: mclient/src/plugins/multitrancom/pairs.py:1556
+#: mclient/src/plugins/multitrancom/pairs.py:1576
+#: mclient/src/plugins/multitrancom/pairs.py:1580
+#: mclient/src/plugins/multitrancom/pairs.py:1628
+#: mclient/src/plugins/multitrancom/pairs.py:1644
+#: mclient/src/plugins/multitrancom/pairs.py:1648
+#: mclient/src/plugins/multitrancom/pairs.py:1652
+#: mclient/src/plugins/multitrancom/pairs.py:1672
+#: mclient/src/plugins/multitrancom/pairs.py:1688
+#: mclient/src/plugins/multitrancom/pairs.py:1728
+#: mclient/src/plugins/multitrancom/pairs.py:1736
+#: mclient/src/plugins/multitrancom/pairs.py:1760
+#: mclient/src/plugins/multitrancom/pairs.py:1764
+#: mclient/src/plugins/multitrancom/pairs.py:1768
+#: mclient/src/plugins/multitrancom/pairs.py:1788
+#: mclient/src/plugins/multitrancom/pairs.py:1796
+#: mclient/src/plugins/multitrancom/pairs.py:1804
+#: mclient/src/plugins/multitrancom/pairs.py:1948
+#: mclient/src/plugins/multitrancom/pairs.py:1972
+#: mclient/src/plugins/multitrancom/pairs.py:1976
+#: mclient/src/plugins/multitrancom/pairs.py:2008
+#: mclient/src/plugins/multitrancom/pairs.py:2012
+#: mclient/src/plugins/multitrancom/pairs.py:2096
+#: mclient/src/plugins/multitrancom/pairs.py:2100
+#: mclient/src/plugins/multitrancom/pairs.py:2120
+#: mclient/src/plugins/multitrancom/pairs.py:2124
+#: mclient/src/plugins/multitrancom/pairs.py:2132
+#: mclient/src/plugins/multitrancom/pairs.py:2136
+#: mclient/src/plugins/multitrancom/pairs.py:2164
+#: mclient/src/plugins/multitrancom/pairs.py:2168
+#: mclient/src/plugins/multitrancom/pairs.py:2172
+#: mclient/src/plugins/multitrancom/pairs.py:2193
+#: mclient/src/plugins/multitrancom/pairs.py:2235
+#: mclient/src/plugins/multitrancom/pairs.py:2263
+#: mclient/src/plugins/multitrancom/pairs.py:2275
+#: mclient/src/plugins/multitrancom/pairs.py:2283
+#: mclient/src/plugins/multitrancom/pairs.py:2287
+#: mclient/src/plugins/multitrancom/pairs.py:2299
+#: mclient/src/plugins/multitrancom/pairs.py:2347
+#: mclient/src/plugins/multitrancom/pairs.py:2359
+#: mclient/src/plugins/multitrancom/pairs.py:2363
+#: mclient/src/plugins/multitrancom/pairs.py:2391
+#: mclient/src/plugins/multitrancom/pairs.py:2427
+#: mclient/src/plugins/multitrancom/pairs.py:2435
+#: mclient/src/plugins/multitrancom/pairs.py:2463
+#: mclient/src/plugins/multitrancom/pairs.py:2467
+#: mclient/src/plugins/multitrancom/pairs.py:2471
+#: mclient/src/plugins/multitrancom/pairs.py:2479
+#: mclient/src/plugins/multitrancom/pairs.py:2527
+#: mclient/src/plugins/multitrancom/pairs.py:2535
+#: mclient/src/plugins/multitrancom/pairs.py:2539
+#: mclient/src/plugins/multitrancom/pairs.py:2551
+#: mclient/src/plugins/multitrancom/pairs.py:2555
+#: mclient/src/plugins/multitrancom/pairs.py:2559
+#: mclient/src/plugins/multitrancom/pairs.py:2563
+#: mclient/src/plugins/multitrancom/pairs.py:2581
+#: mclient/src/plugins/multitrancom/pairs.py:2623
+#: mclient/src/plugins/multitrancom/pairs.py:2653
+#: mclient/src/plugins/multitrancom/pairs.py:2657
+#: mclient/src/plugins/multitrancom/pairs.py:2677
+#: mclient/src/plugins/multitrancom/pairs.py:2695
+#: mclient/src/plugins/multitrancom/utils/utils.py:345
+#: mclient/src/plugins/multitrancom/utils/utils.py:350
+#: mclient/src/plugins/multitrandem/run.py:85
+#: mclient/src/plugins/multitrandem/run.py:138
+#: mclient/src/plugins/multitrandem/run.py:142
+msgid "English"
+msgstr "Английский"
+
+#: mclient/src/config.py:129 mclient/src/gui.py:821 mclient/src/gui.py:909
+#: mclient/src/gui.py:924 mclient/src/manager.py:203 mclient/src/manager.py:255
+#: mclient/src/mclient.py:1295 mclient/src/tests.py:501
+#: mclient/src/tests.py:561 mclient/src/tests.py:603 mclient/src/tests.py:694
+msgid "Multitran"
+msgstr "Мультитран"
+
+#: mclient/src/config.py:131 mclient/src/gui.py:826 mclient/src/gui.py:1116
+#: mclient/src/gui.py:1607 mclient/src/gui.py:1608 mclient/src/gui.py:1609
+#: mclient/src/logic.py:15 mclient/src/logic.py:193
+#: mclient/src/plugins/multitrandem/get.py:1987 mclient/src/tests.py:386
+msgid "Noun"
+msgstr "Существительное"
+
+#: mclient/src/config.py:132 mclient/src/gui.py:826 mclient/src/gui.py:1117
+#: mclient/src/gui.py:1621 mclient/src/gui.py:1622 mclient/src/gui.py:1623
+#: mclient/src/logic.py:15 mclient/src/logic.py:202
+#: mclient/src/plugins/multitrandem/get.py:1991 mclient/src/tests.py:386
+msgid "Verb"
+msgstr "Глагол"
+
+#: mclient/src/config.py:133 mclient/src/gui.py:826 mclient/src/gui.py:1118
+#: mclient/src/gui.py:1635 mclient/src/gui.py:1636 mclient/src/gui.py:1637
+#: mclient/src/logic.py:15 mclient/src/logic.py:187
+#: mclient/src/plugins/multitrandem/get.py:1983 mclient/src/tests.py:386
+msgid "Adjective"
+msgstr "Прилагательное"
+
+#: mclient/src/config.py:134 mclient/src/gui.py:827 mclient/src/gui.py:1119
+#: mclient/src/gui.py:1649 mclient/src/gui.py:1650 mclient/src/gui.py:1651
+#: mclient/src/logic.py:15 mclient/src/logic.py:186
+#: mclient/src/plugins/multitrandem/get.py:1927
+msgid "Abbreviation"
+msgstr "Сокращение"
+
+#: mclient/src/config.py:135 mclient/src/gui.py:827 mclient/src/gui.py:1120
+#: mclient/src/gui.py:1663 mclient/src/gui.py:1664 mclient/src/gui.py:1665
+#: mclient/src/logic.py:16 mclient/src/logic.py:188
+#: mclient/src/plugins/multitrandem/get.py:1931
+msgid "Adverb"
+msgstr "Наречие"
+
+#: mclient/src/config.py:136 mclient/src/gui.py:827 mclient/src/gui.py:1121
+#: mclient/src/gui.py:1677 mclient/src/gui.py:1678 mclient/src/gui.py:1679
+#: mclient/src/logic.py:16 mclient/src/logic.py:199
+#: mclient/src/plugins/multitrandem/get.py:1960
+msgid "Preposition"
+msgstr "Предлог"
+
+#: mclient/src/config.py:137 mclient/src/gui.py:828 mclient/src/gui.py:1122
+#: mclient/src/gui.py:1691 mclient/src/gui.py:1692 mclient/src/gui.py:1693
+#: mclient/src/logic.py:16 mclient/src/logic.py:200
+#: mclient/src/plugins/multitrandem/get.py:1979
+msgid "Pronoun"
+msgstr "Местоимение"
+
+#: mclient/src/config.py:150 skl_shared/src/logic.py:122
+#: skl_shared/src/logic.py:203
+msgid "Booleans"
+msgstr "Булевы переменные"
+
+#: mclient/src/config.py:151
+msgid "The following values are allowed in this section: 0 (False) or 1 (True)"
+msgstr "Допустимые значения в данном разделе: 0 (False) или 1 (True)"
+
+#: mclient/src/config.py:156
+msgid "[Autosave] Sort terms by alphabet"
+msgstr "[Автосохранение] Сортировать термины по алфавиту"
+
+#: mclient/src/config.py:160
+msgid ""
+"Hide the window with special characters after the 1st symbol is inserted"
+msgstr "Скрывать окно специальных символов после вставки 1-го символа"
+
+#: mclient/src/config.py:164
+msgid "[Autosave] Show suggestions on input"
+msgstr "[Автосохранение] Показывать подсказку для вводимых слов"
+
+#: mclient/src/config.py:168
+msgid "[Autosave] Autoswap Russian and the other language if appropriate"
+msgstr ""
+"[Автосохранение] Поменять местами русский и другой язык, если это "
+"целесообразно"
+
+#: mclient/src/config.py:172
+msgid "[Autosave] Block subjects from the blacklist"
+msgstr "[Автосохранение] Блокировать тематики из черного списка"
+
+#: mclient/src/config.py:176
+msgid "[Autosave] Capture Ctrl-c-c and Ctrl-Ins-Ins system-wide"
+msgstr ""
+"[Автосохранение] Перехватывать Ctrl-c-c и Ctrl-Ins-Ins во всех приложениях"
+
+#: mclient/src/config.py:180
+msgid ""
+"[Autosave] Minimize the application window after specific actions, e.g., "
+"copying"
+msgstr ""
+"[Автосохранение] Свернуть окно программы после некоторых действий, например, "
+"копирования"
+
+#: mclient/src/config.py:184
+msgid "[Autosave] Show a phrase count"
+msgstr "[Автосохранение] Показывать счетчик фраз"
+
+#: mclient/src/config.py:188
+msgid "[Autosave] Prioritize subjects from the prioritization file"
+msgstr ""
+"[Автосохранение] Сортировать тематики по приоритету согласно файлу "
+"приоритетов"
+
+#: mclient/src/config.py:192
+msgid "[Autosave] Select blocks of all types (False) or terms only (True)"
+msgstr ""
+"[Автосохранение] Выделять блоки всех типов (False) или только термины (True)"
+
+#: mclient/src/config.py:196
+msgid "[Autosave] Shorten subject titles"
+msgstr "[Автосохранение] Сокращать названия тематик"
+
+#: mclient/src/config.py:200
+msgid "[Autosave] Shorten parts of speech"
+msgstr "[Автосохранение] Сокращать части речи"
+
+#: mclient/src/config.py:204
+msgid "[Autosave] Show user names"
+msgstr "[Автосохранение] Показывать имена пользователей"
+
+#: mclient/src/config.py:208
+msgid "[Autosave] Sort by each column"
+msgstr "[Автосохранение] Сортировать по каждому столбцу"
+
+#: mclient/src/config.py:212
+msgid "[Autosave] Vertical view"
+msgstr "[Автосохранение] Вертикальный вид"
+
+#: mclient/src/config.py:216 skl_shared/src/logic.py:122
+#: skl_shared/src/logic.py:206
+msgid "Integers"
+msgstr "Целые числа"
+
+#: mclient/src/config.py:221
+msgid "[Autosave] Number of non-fixed columns"
+msgstr "[Автосохранение] Число нефиксированных столбцов"
+
+#: mclient/src/config.py:225
+msgid "A column width. Set to 0 to pick the value automatically."
+msgstr "Ширина столбцов. Введите 0 для автоподбора."
+
+#: mclient/src/config.py:229
+msgid "A font size of comments"
+msgstr "Кегль комментариев"
+
+#: mclient/src/config.py:233 mclient/src/config.py:238
+#: mclient/src/config.py:243 mclient/src/config.py:248
+msgid "A font size of column #{}"
+msgstr "Кегль столбца №{}"
+
+#: mclient/src/config.py:253
+msgid "A font size of terms"
+msgstr "Кегль терминов"
+
+#: mclient/src/config.py:257
+msgid "A connection timeout (in seconds)"
+msgstr "Время ожидания сайта (в секундах)"
+
+#: mclient/src/config.py:261 skl_shared/src/logic.py:123
+#: skl_shared/src/logic.py:187 skl_shared/src/logic.py:212
+msgid "Strings"
+msgstr "Строки"
+
+#: mclient/src/config.py:262
+msgid ""
+"Attention: some hotkeys, e.g., <Button-1> and <Double-Button-1> may conflict "
+"with each other. Reassign them with caution."
+msgstr ""
+"Внимание: некоторые комбинации, например, <Button-1> и <Double-Button-1> "
+"могут конфликтовать. Переназначайте их с осторожностью."
+
+#: mclient/src/config.py:267 mclient/src/logic.py:405
+msgid "Clear History"
+msgstr "Очистить историю"
+
+#: mclient/src/config.py:271
+msgid "Clear the search field"
+msgstr "Очистить строку поиска"
+
+#: mclient/src/config.py:275 mclient/src/config.py:284
+#: mclient/src/config.py:293
+msgid "Go to the next section of column #{}"
+msgstr "Перейти в следующий раздел столбца №{}"
+
+#: mclient/src/config.py:279 mclient/src/config.py:288
+#: mclient/src/config.py:297
+msgid "Go to the previous section of column #{}"
+msgstr "Перейти в предыдущий раздел столбца №{}"
+
+#: mclient/src/config.py:302
+msgid "Copy URL of the current article"
+msgstr "Копировать URL текущей статьи"
+
+#: mclient/src/config.py:306
+msgid "Copy an original word/phrase in a nominative case"
+msgstr "Копировать слово/фразу для перевода в именительном падеже"
+
+#: mclient/src/config.py:310 mclient/src/config.py:315
+msgid "Copy a current selection from the article (combination #{})"
+msgstr "Копировать текущее выделение из статьи (комбинация №{})"
+
+#: mclient/src/config.py:320
+msgid "Copy URL of the current term"
+msgstr "Копировать URL текущего термина"
+
+#: mclient/src/config.py:324
+msgid "Open a web-page defining the current term"
+msgstr "Открыть веб-страницу с определением текущего термина"
+
+#: mclient/src/config.py:328
+msgid "Go to the previous article"
+msgstr "Предыдущая статья"
+
+#: mclient/src/config.py:332
+msgid "Go to the next article"
+msgstr "Последующая статья"
+
+#: mclient/src/config.py:336
+msgid "Go to the phrases section"
+msgstr "Перейти в раздел фраз"
+
+#: mclient/src/config.py:340 mclient/src/config.py:345
+#: mclient/src/config.py:350 mclient/src/config.py:355
+msgid "Set next language {} (combination {})"
+msgstr "Установить следующий по списку язык №{} (комбинация №{})"
+
+#: mclient/src/config.py:360
+msgid ""
+"Paste clipboard contents into the search field (system combination: Ctrl-V)"
+msgstr ""
+"Вставить содержимое буфера обмена в строку поиска (встроенное сочетание: "
+"Ctrl-V)"
+
+#: mclient/src/config.py:364 mclient/src/config.py:369
+#: mclient/src/config.py:374 mclient/src/config.py:379
+msgid "Set previous language #{} (combination #{})"
+msgstr "Установить предыдущий по списку язык №{} (комбинация №{})"
+
+#: mclient/src/config.py:384 mclient/src/logic.py:361
+msgid "Create a printer-friendly page"
+msgstr "Печать (предварительный просмотр)"
+
+#: mclient/src/config.py:388 mclient/src/gui.py:694 mclient/src/logic.py:325
+msgid "Quit the program"
+msgstr "Выйти из программы"
+
+#: mclient/src/config.py:392 mclient/src/config.py:397
+msgid "Open the current article in a browser (combination #{})"
+msgstr "Открыть текущую статью в браузере (комбинация №{})"
+
+#: mclient/src/config.py:402 mclient/src/config.py:407
+msgid "Reload the current article (combination #{})"
+msgstr "Перезагрузить текущую статью (комбинация №{})"
+
+#: mclient/src/config.py:412
+msgid "Start a new term search in the current article"
+msgstr "Начать новый поиск по терминам текущей статьи"
+
+#: mclient/src/config.py:416 mclient/src/config.py:421
+msgid "Save or copy the current article (combination #{})"
+msgstr ""
+"Сохранить текущую статью или скопировать ее в буфер обмена (комбинация №{})"
+
+#: mclient/src/config.py:426 mclient/src/logic.py:379
+msgid "Search the article backward"
+msgstr "Искать назад"
+
+#: mclient/src/config.py:430 mclient/src/logic.py:377
+msgid "Search the article forward"
+msgstr "Искать вперед"
+
+#: mclient/src/config.py:434 mclient/src/config.py:439
+msgid "Show settings (combination #{})"
+msgstr "Показать настройки (комбинация №{})"
+
+#: mclient/src/config.py:444 mclient/src/logic.py:385
+msgid "About the program"
+msgstr "Информация о программе"
+
+#: mclient/src/config.py:448 mclient/src/gui.py:534 mclient/src/logic.py:387
+#: skl_shared/src/shared.py:2167
+msgid "Paste a special symbol"
+msgstr "Вставить специальный символ"
+
+#: mclient/src/config.py:452 mclient/src/gui.py:554 mclient/src/logic.py:415
+msgid "Swap source and target languages"
+msgstr "Поменять местами языки оригинала и перевода"
+
+#: mclient/src/config.py:456 mclient/src/gui.py:603 mclient/src/logic.py:389
+msgid "Toggle alphabetizing"
+msgstr "Включить/отключить сортировку по алфавиту"
+
+#: mclient/src/config.py:460 mclient/src/logic.py:391
+msgid "Toggle blacklisting"
+msgstr "Включить/отключить черный список"
+
+#: mclient/src/config.py:464 mclient/src/config.py:469
+msgid "Toggle History (combination #{})"
+msgstr "Показать/закрыть историю (комбинация №{})"
+
+#: mclient/src/config.py:474 mclient/src/logic.py:397
+msgid "Toggle prioritizing"
+msgstr "Включить/отключить список приоритетов"
+
+#: mclient/src/config.py:478
+msgid "Toggle selecting terms only"
+msgstr "Включить/отключить режим выбора только терминов"
+
+#: mclient/src/config.py:482 mclient/src/config.py:487
+msgid "Toggle the current article view (combination #{})"
+msgstr "Переключить вид отображения статьи (комбинация №{})"
+
+#: mclient/src/config.py:492 mclient/src/config.py:497
+#: mclient/src/config.py:502 mclient/src/config.py:507
+msgid "[Autosave] Type of column #{} in settings"
+msgstr "[Автосохранение] Тип столбца №{} в настройках"
+
+#: mclient/src/config.py:512
+msgid "A font color for comments and user names"
+msgstr "Цвет шрифта комментариев и имен пользователей"
+
+#: mclient/src/config.py:516 mclient/src/config.py:521
+#: mclient/src/config.py:526 mclient/src/config.py:531
+msgid "A font color for column #{}"
+msgstr "Цвет шрифта столбца №{}"
+
+#: mclient/src/config.py:536
+msgid "A font color for terms"
+msgstr "Цвет шрифта терминов"
+
+#: mclient/src/config.py:540
+msgid "A font background color for the current (selected) term"
+msgstr "Цвет фона текущего (выделенного) термина"
+
+#: mclient/src/config.py:544
+msgid "A font foreground color for the current (selected) term"
+msgstr "Цвет шрифта текущего (выделенного) термина"
+
+#: mclient/src/config.py:548
+msgid "A font of comments and user names"
+msgstr "Шрифт комментариев и имен пользователей"
+
+#: mclient/src/config.py:552 mclient/src/config.py:557
+#: mclient/src/config.py:562 mclient/src/config.py:567
+msgid "A font of column #{}"
+msgstr "Шрифт столбца №{}"
+
+#: mclient/src/config.py:572
+msgid "A font color for History"
+msgstr "Шрифт текста в области истории запросов"
+
+#: mclient/src/config.py:576
+msgid "A program GUI font"
+msgstr "Шрифт интерфейса программы"
+
+#: mclient/src/config.py:580
+msgid "A font of terms"
+msgstr "Шрифт терминов"
+
+#: mclient/src/config.py:584
+msgid "A font of the current (selected) term"
+msgstr "Шрифт текущего (выделенного) термина"
+
+#: mclient/src/config.py:588
+msgid "[Autosave] Source language"
+msgstr "[Автосохранение] Исходный язык"
+
+#: mclient/src/config.py:592
+msgid "[Autosave] Target language"
+msgstr "[Автосохранение] Конечный язык"
+
+#: mclient/src/config.py:596
+msgid "Insert the last search request into the search field"
+msgstr "Вставить последний элемент истории в строку поиска"
+
+#: mclient/src/config.py:600
+msgid "Insert the next-to-last search request into the search field"
+msgstr "Вставить предпоследний элемент истории в строку поиска"
+
+#: mclient/src/config.py:604
+msgid "[Autosave] The main dictionary source to use"
+msgstr "[Автосохранение] Основной словарный ресурс"
+
+#: mclient/src/config.py:608
+msgid "Characters that can be inserted into the search field"
+msgstr "Символы, которые можно вставить в строку поиска"
+
+#: mclient/src/config.py:612 mclient/src/config.py:617
+#: mclient/src/config.py:622 mclient/src/config.py:627
+#: mclient/src/config.py:632 mclient/src/config.py:637
+#: mclient/src/config.py:642
+msgid "[Autosave] A part of speech of column #{} in settings"
+msgstr "[Автосохранение] Часть речи столбца №{} в настройках"
+
+#: mclient/src/config.py:647
+msgid "[Autosave] A sorting style"
+msgstr "[Автосохранение] Стиль сортировки"
+
+#: mclient/src/config.py:651
+msgid "URL for online search"
+msgstr "Адрес для поиска в Интернете"
 
 #: mclient/src/db.py:297 mclient/src/db.py:359 mclient/src/gui.py:942
 #: mclient/src/manager.py:262 mclient/src/mclient.py:154
@@ -296,15 +999,6 @@ msgstr "Вставить предыдущий запрос"
 msgid "Symbols"
 msgstr "Символы"
 
-#: mclient/src/gui.py:534 mclient/src/logic.py:461 mclient/src/logic.py:1034
-#: skl_shared/src/shared.py:2167
-msgid "Paste a special symbol"
-msgstr "Вставить специальный символ"
-
-#: mclient/src/gui.py:554 mclient/src/logic.py:465 mclient/src/logic.py:1062
-msgid "Swap source and target languages"
-msgstr "Поменять местами языки оригинала и перевода"
-
 #: mclient/src/gui.py:557
 msgid "Swap"
 msgstr "Поменять местами"
@@ -337,10 +1031,6 @@ msgstr "Настроить приоритизацию"
 msgid "Alphabetize"
 msgstr "По алфавиту"
 
-#: mclient/src/gui.py:603 mclient/src/logic.py:469 mclient/src/logic.py:1036
-msgid "Toggle alphabetizing"
-msgstr "Включить/отключить сортировку по алфавиту"
-
 #: mclient/src/gui.py:609
 msgid "Toggle view"
 msgstr "Смена вида"
@@ -349,11 +1039,11 @@ msgstr "Смена вида"
 msgid "Toggle the article view mode"
 msgstr "Переключить вид отображения статьи"
 
-#: mclient/src/gui.py:617 mclient/src/logic.py:996
+#: mclient/src/gui.py:617 mclient/src/logic.py:349
 msgid "Go to the preceding article"
 msgstr "Предыдущая статья"
 
-#: mclient/src/gui.py:624 mclient/src/logic.py:998
+#: mclient/src/gui.py:624 mclient/src/logic.py:351
 msgid "Go to the following article"
 msgstr "Следующая статья"
 
@@ -422,44 +1112,6 @@ msgstr "Информация о программе"
 msgid "Quit"
 msgstr "Выйти"
 
-#: mclient/src/gui.py:694 mclient/src/logic.py:401 mclient/src/logic.py:972
-msgid "Quit the program"
-msgstr "Выйти из программы"
-
-#: mclient/src/gui.py:814 mclient/src/gui.py:838 mclient/src/gui.py:839
-#: mclient/src/gui.py:840 mclient/src/gui.py:894 mclient/src/gui.py:903
-#: mclient/src/gui.py:920 mclient/src/gui.py:928 mclient/src/gui.py:933
-#: mclient/src/gui.py:1112 mclient/src/gui.py:1467 mclient/src/logic.py:117
-#: mclient/src/mclient.py:141 mclient/src/mclient.py:150
-msgid "Subjects"
-msgstr "Тематики"
-
-#: mclient/src/gui.py:815 mclient/src/gui.py:853 mclient/src/gui.py:854
-#: mclient/src/gui.py:855 mclient/src/gui.py:895 mclient/src/gui.py:897
-#: mclient/src/gui.py:921 mclient/src/gui.py:925 mclient/src/gui.py:931
-#: mclient/src/gui.py:936 mclient/src/gui.py:1113 mclient/src/gui.py:1473
-#: mclient/src/logic.py:118 mclient/src/mclient.py:143
-#: mclient/src/mclient.py:150
-msgid "Word forms"
-msgstr "Словоформы"
-
-#: mclient/src/gui.py:816 mclient/src/gui.py:883 mclient/src/gui.py:884
-#: mclient/src/gui.py:885 mclient/src/gui.py:898 mclient/src/gui.py:899
-#: mclient/src/gui.py:922 mclient/src/gui.py:926 mclient/src/gui.py:932
-#: mclient/src/gui.py:1115 mclient/src/gui.py:1479 mclient/src/logic.py:120
-#: mclient/src/mclient.py:147 mclient/src/mclient.py:150
-msgid "Transcription"
-msgstr "Транскрипция"
-
-#: mclient/src/gui.py:817 mclient/src/gui.py:868 mclient/src/gui.py:869
-#: mclient/src/gui.py:870 mclient/src/gui.py:896 mclient/src/gui.py:900
-#: mclient/src/gui.py:902 mclient/src/gui.py:923 mclient/src/gui.py:927
-#: mclient/src/gui.py:930 mclient/src/gui.py:935 mclient/src/gui.py:1114
-#: mclient/src/gui.py:1485 mclient/src/logic.py:119 mclient/src/mclient.py:145
-#: mclient/src/mclient.py:151
-msgid "Parts of speech"
-msgstr "Части речи"
-
 #: mclient/src/gui.py:818 mclient/src/gui.py:835 mclient/src/gui.py:850
 #: mclient/src/gui.py:865 mclient/src/gui.py:880 mclient/src/gui.py:901
 #: mclient/src/gui.py:904 mclient/src/gui.py:937 mclient/src/gui.py:938
@@ -467,14 +1119,6 @@ msgstr "Части речи"
 #: mclient/src/mclient.py:2608
 msgid "Do not set"
 msgstr "Не задано"
-
-#: mclient/src/gui.py:821 mclient/src/gui.py:909 mclient/src/gui.py:924
-#: mclient/src/logic.py:142 mclient/src/manager.py:203
-#: mclient/src/manager.py:255 mclient/src/mclient.py:1295
-#: mclient/src/tests.py:461 mclient/src/tests.py:521 mclient/src/tests.py:563
-#: mclient/src/tests.py:654
-msgid "Multitran"
-msgstr "Мультитран"
 
 #: mclient/src/gui.py:822 mclient/src/gui.py:911 mclient/src/gui.py:929
 msgid "Cut to the chase"
@@ -487,55 +1131,6 @@ msgstr "Ясность"
 #: mclient/src/gui.py:824 mclient/src/gui.py:915 mclient/src/gui.py:939
 msgid "Custom"
 msgstr "Особый"
-
-#: mclient/src/gui.py:826 mclient/src/gui.py:1116 mclient/src/gui.py:1607
-#: mclient/src/gui.py:1608 mclient/src/gui.py:1609 mclient/src/logic.py:15
-#: mclient/src/logic.py:144 mclient/src/logic.py:840
-#: mclient/src/plugins/multitrandem/get.py:1987 mclient/src/tests.py:56
-msgid "Noun"
-msgstr "Существительное"
-
-#: mclient/src/gui.py:826 mclient/src/gui.py:1117 mclient/src/gui.py:1621
-#: mclient/src/gui.py:1622 mclient/src/gui.py:1623 mclient/src/logic.py:15
-#: mclient/src/logic.py:145 mclient/src/logic.py:849
-#: mclient/src/plugins/multitrandem/get.py:1991 mclient/src/tests.py:56
-msgid "Verb"
-msgstr "Глагол"
-
-#: mclient/src/gui.py:826 mclient/src/gui.py:1118 mclient/src/gui.py:1635
-#: mclient/src/gui.py:1636 mclient/src/gui.py:1637 mclient/src/logic.py:15
-#: mclient/src/logic.py:146 mclient/src/logic.py:834
-#: mclient/src/plugins/multitrandem/get.py:1983 mclient/src/tests.py:56
-msgid "Adjective"
-msgstr "Прилагательное"
-
-#: mclient/src/gui.py:827 mclient/src/gui.py:1119 mclient/src/gui.py:1649
-#: mclient/src/gui.py:1650 mclient/src/gui.py:1651 mclient/src/logic.py:15
-#: mclient/src/logic.py:147 mclient/src/logic.py:833
-#: mclient/src/plugins/multitrandem/get.py:1927
-msgid "Abbreviation"
-msgstr "Сокращение"
-
-#: mclient/src/gui.py:827 mclient/src/gui.py:1120 mclient/src/gui.py:1663
-#: mclient/src/gui.py:1664 mclient/src/gui.py:1665 mclient/src/logic.py:16
-#: mclient/src/logic.py:148 mclient/src/logic.py:835
-#: mclient/src/plugins/multitrandem/get.py:1931
-msgid "Adverb"
-msgstr "Наречие"
-
-#: mclient/src/gui.py:827 mclient/src/gui.py:1121 mclient/src/gui.py:1677
-#: mclient/src/gui.py:1678 mclient/src/gui.py:1679 mclient/src/logic.py:16
-#: mclient/src/logic.py:149 mclient/src/logic.py:846
-#: mclient/src/plugins/multitrandem/get.py:1960
-msgid "Preposition"
-msgstr "Предлог"
-
-#: mclient/src/gui.py:828 mclient/src/gui.py:1122 mclient/src/gui.py:1691
-#: mclient/src/gui.py:1692 mclient/src/gui.py:1693 mclient/src/logic.py:16
-#: mclient/src/logic.py:150 mclient/src/logic.py:847
-#: mclient/src/plugins/multitrandem/get.py:1979
-msgid "Pronoun"
-msgstr "Местоимение"
 
 #: mclient/src/gui.py:845 mclient/src/gui.py:860 mclient/src/gui.py:875
 #: mclient/src/gui.py:890 mclient/src/gui.py:1614 mclient/src/gui.py:1628
@@ -638,609 +1233,16 @@ msgstr "Настройки вида"
 msgid "General"
 msgstr "Общая лексика"
 
-#: mclient/src/logic.py:138 mclient/src/mclient.py:1016
-#: mclient/src/mclient.py:1020 mclient/src/plugins/multitrancom/pairs.py:7
-#: mclient/src/plugins/multitrancom/pairs.py:21
-#: mclient/src/plugins/multitrancom/pairs.py:60
-#: mclient/src/plugins/multitrancom/pairs.py:111
-#: mclient/src/plugins/multitrancom/pairs.py:150
-#: mclient/src/plugins/multitrancom/pairs.py:192
-#: mclient/src/plugins/multitrancom/pairs.py:237
-#: mclient/src/plugins/multitrancom/pairs.py:270
-#: mclient/src/plugins/multitrancom/pairs.py:327
-#: mclient/src/plugins/multitrancom/pairs.py:359
-#: mclient/src/plugins/multitrancom/pairs.py:390
-#: mclient/src/plugins/multitrancom/pairs.py:420
-#: mclient/src/plugins/multitrancom/pairs.py:458
-#: mclient/src/plugins/multitrancom/pairs.py:511
-#: mclient/src/plugins/multitrancom/pairs.py:544
-#: mclient/src/plugins/multitrancom/pairs.py:572
-#: mclient/src/plugins/multitrancom/pairs.py:611
-#: mclient/src/plugins/multitrancom/pairs.py:675
-#: mclient/src/plugins/multitrancom/pairs.py:705
-#: mclient/src/plugins/multitrancom/pairs.py:743
-#: mclient/src/plugins/multitrancom/pairs.py:776
-#: mclient/src/plugins/multitrancom/pairs.py:809
-#: mclient/src/plugins/multitrancom/pairs.py:841
-#: mclient/src/plugins/multitrancom/pairs.py:869
-#: mclient/src/plugins/multitrancom/pairs.py:921
-#: mclient/src/plugins/multitrancom/pairs.py:962
-#: mclient/src/plugins/multitrancom/pairs.py:980
-#: mclient/src/plugins/multitrancom/pairs.py:1012
-#: mclient/src/plugins/multitrancom/pairs.py:1075
-#: mclient/src/plugins/multitrancom/pairs.py:1106
-#: mclient/src/plugins/multitrancom/pairs.py:1142
-#: mclient/src/plugins/multitrancom/pairs.py:1172
-#: mclient/src/plugins/multitrancom/pairs.py:1180
-#: mclient/src/plugins/multitrancom/pairs.py:1184
-#: mclient/src/plugins/multitrancom/pairs.py:1192
-#: mclient/src/plugins/multitrancom/pairs.py:1200
-#: mclient/src/plugins/multitrancom/pairs.py:1204
-#: mclient/src/plugins/multitrancom/pairs.py:1220
-#: mclient/src/plugins/multitrancom/pairs.py:1224
-#: mclient/src/plugins/multitrancom/pairs.py:1256
-#: mclient/src/plugins/multitrancom/pairs.py:1260
-#: mclient/src/plugins/multitrancom/pairs.py:1284
-#: mclient/src/plugins/multitrancom/pairs.py:1300
-#: mclient/src/plugins/multitrancom/pairs.py:1320
-#: mclient/src/plugins/multitrancom/pairs.py:1328
-#: mclient/src/plugins/multitrancom/pairs.py:1340
-#: mclient/src/plugins/multitrancom/pairs.py:1356
-#: mclient/src/plugins/multitrancom/pairs.py:1368
-#: mclient/src/plugins/multitrancom/pairs.py:1376
-#: mclient/src/plugins/multitrancom/pairs.py:1388
-#: mclient/src/plugins/multitrancom/pairs.py:1392
-#: mclient/src/plugins/multitrancom/pairs.py:1404
-#: mclient/src/plugins/multitrancom/pairs.py:1416
-#: mclient/src/plugins/multitrancom/pairs.py:1420
-#: mclient/src/plugins/multitrancom/pairs.py:1424
-#: mclient/src/plugins/multitrancom/pairs.py:1432
-#: mclient/src/plugins/multitrancom/pairs.py:1468
-#: mclient/src/plugins/multitrancom/pairs.py:1480
-#: mclient/src/plugins/multitrancom/pairs.py:1512
-#: mclient/src/plugins/multitrancom/pairs.py:1524
-#: mclient/src/plugins/multitrancom/pairs.py:1552
-#: mclient/src/plugins/multitrancom/pairs.py:1556
-#: mclient/src/plugins/multitrancom/pairs.py:1576
-#: mclient/src/plugins/multitrancom/pairs.py:1580
-#: mclient/src/plugins/multitrancom/pairs.py:1628
-#: mclient/src/plugins/multitrancom/pairs.py:1644
-#: mclient/src/plugins/multitrancom/pairs.py:1648
-#: mclient/src/plugins/multitrancom/pairs.py:1652
-#: mclient/src/plugins/multitrancom/pairs.py:1672
-#: mclient/src/plugins/multitrancom/pairs.py:1688
-#: mclient/src/plugins/multitrancom/pairs.py:1728
-#: mclient/src/plugins/multitrancom/pairs.py:1736
-#: mclient/src/plugins/multitrancom/pairs.py:1760
-#: mclient/src/plugins/multitrancom/pairs.py:1764
-#: mclient/src/plugins/multitrancom/pairs.py:1768
-#: mclient/src/plugins/multitrancom/pairs.py:1788
-#: mclient/src/plugins/multitrancom/pairs.py:1796
-#: mclient/src/plugins/multitrancom/pairs.py:1804
-#: mclient/src/plugins/multitrancom/pairs.py:1900
-#: mclient/src/plugins/multitrancom/pairs.py:1912
-#: mclient/src/plugins/multitrancom/pairs.py:1948
-#: mclient/src/plugins/multitrancom/pairs.py:1972
-#: mclient/src/plugins/multitrancom/pairs.py:1976
-#: mclient/src/plugins/multitrancom/pairs.py:2008
-#: mclient/src/plugins/multitrancom/pairs.py:2012
-#: mclient/src/plugins/multitrancom/pairs.py:2096
-#: mclient/src/plugins/multitrancom/pairs.py:2100
-#: mclient/src/plugins/multitrancom/pairs.py:2120
-#: mclient/src/plugins/multitrancom/pairs.py:2124
-#: mclient/src/plugins/multitrancom/pairs.py:2132
-#: mclient/src/plugins/multitrancom/pairs.py:2136
-#: mclient/src/plugins/multitrancom/pairs.py:2164
-#: mclient/src/plugins/multitrancom/pairs.py:2168
-#: mclient/src/plugins/multitrancom/pairs.py:2172
-#: mclient/src/plugins/multitrancom/pairs.py:2182
-#: mclient/src/plugins/multitrancom/pairs.py:2235
-#: mclient/src/plugins/multitrancom/pairs.py:2263
-#: mclient/src/plugins/multitrancom/pairs.py:2275
-#: mclient/src/plugins/multitrancom/pairs.py:2283
-#: mclient/src/plugins/multitrancom/pairs.py:2287
-#: mclient/src/plugins/multitrancom/pairs.py:2299
-#: mclient/src/plugins/multitrancom/pairs.py:2347
-#: mclient/src/plugins/multitrancom/pairs.py:2359
-#: mclient/src/plugins/multitrancom/pairs.py:2363
-#: mclient/src/plugins/multitrancom/pairs.py:2391
-#: mclient/src/plugins/multitrancom/pairs.py:2427
-#: mclient/src/plugins/multitrancom/pairs.py:2435
-#: mclient/src/plugins/multitrancom/pairs.py:2455
-#: mclient/src/plugins/multitrancom/pairs.py:2463
-#: mclient/src/plugins/multitrancom/pairs.py:2467
-#: mclient/src/plugins/multitrancom/pairs.py:2471
-#: mclient/src/plugins/multitrancom/pairs.py:2479
-#: mclient/src/plugins/multitrancom/pairs.py:2527
-#: mclient/src/plugins/multitrancom/pairs.py:2535
-#: mclient/src/plugins/multitrancom/pairs.py:2539
-#: mclient/src/plugins/multitrancom/pairs.py:2551
-#: mclient/src/plugins/multitrancom/pairs.py:2555
-#: mclient/src/plugins/multitrancom/pairs.py:2559
-#: mclient/src/plugins/multitrancom/pairs.py:2563
-#: mclient/src/plugins/multitrancom/pairs.py:2581
-#: mclient/src/plugins/multitrancom/pairs.py:2638
-#: mclient/src/plugins/multitrancom/pairs.py:2653
-#: mclient/src/plugins/multitrancom/pairs.py:2657
-#: mclient/src/plugins/multitrancom/pairs.py:2661
-#: mclient/src/plugins/multitrancom/pairs.py:2677
-#: mclient/src/plugins/multitrancom/pairs.py:2711
-#: mclient/src/plugins/multitrancom/utils/utils.py:345
-#: mclient/src/plugins/multitrancom/utils/utils.py:350
-#: mclient/src/plugins/multitrandem/run.py:85
-#: mclient/src/plugins/multitrandem/run.py:138
-#: mclient/src/plugins/multitrandem/run.py:142
-msgid "Russian"
-msgstr "Русский"
-
-#: mclient/src/logic.py:139 mclient/src/plugins/multitrancom/pairs.py:8
-#: mclient/src/plugins/multitrancom/pairs.py:55
-#: mclient/src/plugins/multitrancom/pairs.py:91
-#: mclient/src/plugins/multitrancom/pairs.py:135
-#: mclient/src/plugins/multitrancom/pairs.py:176
-#: mclient/src/plugins/multitrancom/pairs.py:222
-#: mclient/src/plugins/multitrancom/pairs.py:255
-#: mclient/src/plugins/multitrancom/pairs.py:312
-#: mclient/src/plugins/multitrancom/pairs.py:370
-#: mclient/src/plugins/multitrancom/pairs.py:411
-#: mclient/src/plugins/multitrancom/pairs.py:443
-#: mclient/src/plugins/multitrancom/pairs.py:496
-#: mclient/src/plugins/multitrancom/pairs.py:529
-#: mclient/src/plugins/multitrancom/pairs.py:563
-#: mclient/src/plugins/multitrancom/pairs.py:591
-#: mclient/src/plugins/multitrancom/pairs.py:655
-#: mclient/src/plugins/multitrancom/pairs.py:727
-#: mclient/src/plugins/multitrancom/pairs.py:760
-#: mclient/src/plugins/multitrancom/pairs.py:793
-#: mclient/src/plugins/multitrancom/pairs.py:860
-#: mclient/src/plugins/multitrancom/pairs.py:901
-#: mclient/src/plugins/multitrancom/pairs.py:942
-#: mclient/src/plugins/multitrancom/pairs.py:980
-#: mclient/src/plugins/multitrancom/pairs.py:1012
-#: mclient/src/plugins/multitrancom/pairs.py:1046
-#: mclient/src/plugins/multitrancom/pairs.py:1097
-#: mclient/src/plugins/multitrancom/pairs.py:1122
-#: mclient/src/plugins/multitrancom/pairs.py:1172
-#: mclient/src/plugins/multitrancom/pairs.py:1180
-#: mclient/src/plugins/multitrancom/pairs.py:1184
-#: mclient/src/plugins/multitrancom/pairs.py:1192
-#: mclient/src/plugins/multitrancom/pairs.py:1200
-#: mclient/src/plugins/multitrancom/pairs.py:1204
-#: mclient/src/plugins/multitrancom/pairs.py:1220
-#: mclient/src/plugins/multitrancom/pairs.py:1224
-#: mclient/src/plugins/multitrancom/pairs.py:1256
-#: mclient/src/plugins/multitrancom/pairs.py:1260
-#: mclient/src/plugins/multitrancom/pairs.py:1284
-#: mclient/src/plugins/multitrancom/pairs.py:1300
-#: mclient/src/plugins/multitrancom/pairs.py:1320
-#: mclient/src/plugins/multitrancom/pairs.py:1328
-#: mclient/src/plugins/multitrancom/pairs.py:1340
-#: mclient/src/plugins/multitrancom/pairs.py:1356
-#: mclient/src/plugins/multitrancom/pairs.py:1368
-#: mclient/src/plugins/multitrancom/pairs.py:1376
-#: mclient/src/plugins/multitrancom/pairs.py:1388
-#: mclient/src/plugins/multitrancom/pairs.py:1404
-#: mclient/src/plugins/multitrancom/pairs.py:1416
-#: mclient/src/plugins/multitrancom/pairs.py:1420
-#: mclient/src/plugins/multitrancom/pairs.py:1424
-#: mclient/src/plugins/multitrancom/pairs.py:1432
-#: mclient/src/plugins/multitrancom/pairs.py:1480
-#: mclient/src/plugins/multitrancom/pairs.py:1512
-#: mclient/src/plugins/multitrancom/pairs.py:1524
-#: mclient/src/plugins/multitrancom/pairs.py:1552
-#: mclient/src/plugins/multitrancom/pairs.py:1556
-#: mclient/src/plugins/multitrancom/pairs.py:1576
-#: mclient/src/plugins/multitrancom/pairs.py:1580
-#: mclient/src/plugins/multitrancom/pairs.py:1628
-#: mclient/src/plugins/multitrancom/pairs.py:1644
-#: mclient/src/plugins/multitrancom/pairs.py:1648
-#: mclient/src/plugins/multitrancom/pairs.py:1652
-#: mclient/src/plugins/multitrancom/pairs.py:1672
-#: mclient/src/plugins/multitrancom/pairs.py:1688
-#: mclient/src/plugins/multitrancom/pairs.py:1728
-#: mclient/src/plugins/multitrancom/pairs.py:1736
-#: mclient/src/plugins/multitrancom/pairs.py:1760
-#: mclient/src/plugins/multitrancom/pairs.py:1764
-#: mclient/src/plugins/multitrancom/pairs.py:1768
-#: mclient/src/plugins/multitrancom/pairs.py:1788
-#: mclient/src/plugins/multitrancom/pairs.py:1796
-#: mclient/src/plugins/multitrancom/pairs.py:1804
-#: mclient/src/plugins/multitrancom/pairs.py:1948
-#: mclient/src/plugins/multitrancom/pairs.py:1972
-#: mclient/src/plugins/multitrancom/pairs.py:1976
-#: mclient/src/plugins/multitrancom/pairs.py:2008
-#: mclient/src/plugins/multitrancom/pairs.py:2012
-#: mclient/src/plugins/multitrancom/pairs.py:2096
-#: mclient/src/plugins/multitrancom/pairs.py:2100
-#: mclient/src/plugins/multitrancom/pairs.py:2120
-#: mclient/src/plugins/multitrancom/pairs.py:2124
-#: mclient/src/plugins/multitrancom/pairs.py:2132
-#: mclient/src/plugins/multitrancom/pairs.py:2136
-#: mclient/src/plugins/multitrancom/pairs.py:2164
-#: mclient/src/plugins/multitrancom/pairs.py:2168
-#: mclient/src/plugins/multitrancom/pairs.py:2172
-#: mclient/src/plugins/multitrancom/pairs.py:2193
-#: mclient/src/plugins/multitrancom/pairs.py:2235
-#: mclient/src/plugins/multitrancom/pairs.py:2263
-#: mclient/src/plugins/multitrancom/pairs.py:2275
-#: mclient/src/plugins/multitrancom/pairs.py:2283
-#: mclient/src/plugins/multitrancom/pairs.py:2287
-#: mclient/src/plugins/multitrancom/pairs.py:2299
-#: mclient/src/plugins/multitrancom/pairs.py:2347
-#: mclient/src/plugins/multitrancom/pairs.py:2359
-#: mclient/src/plugins/multitrancom/pairs.py:2363
-#: mclient/src/plugins/multitrancom/pairs.py:2391
-#: mclient/src/plugins/multitrancom/pairs.py:2427
-#: mclient/src/plugins/multitrancom/pairs.py:2435
-#: mclient/src/plugins/multitrancom/pairs.py:2463
-#: mclient/src/plugins/multitrancom/pairs.py:2467
-#: mclient/src/plugins/multitrancom/pairs.py:2471
-#: mclient/src/plugins/multitrancom/pairs.py:2479
-#: mclient/src/plugins/multitrancom/pairs.py:2527
-#: mclient/src/plugins/multitrancom/pairs.py:2535
-#: mclient/src/plugins/multitrancom/pairs.py:2539
-#: mclient/src/plugins/multitrancom/pairs.py:2551
-#: mclient/src/plugins/multitrancom/pairs.py:2555
-#: mclient/src/plugins/multitrancom/pairs.py:2559
-#: mclient/src/plugins/multitrancom/pairs.py:2563
-#: mclient/src/plugins/multitrancom/pairs.py:2581
-#: mclient/src/plugins/multitrancom/pairs.py:2623
-#: mclient/src/plugins/multitrancom/pairs.py:2653
-#: mclient/src/plugins/multitrancom/pairs.py:2657
-#: mclient/src/plugins/multitrancom/pairs.py:2677
-#: mclient/src/plugins/multitrancom/pairs.py:2695
-#: mclient/src/plugins/multitrancom/utils/utils.py:345
-#: mclient/src/plugins/multitrancom/utils/utils.py:350
-#: mclient/src/plugins/multitrandem/run.py:85
-#: mclient/src/plugins/multitrandem/run.py:138
-#: mclient/src/plugins/multitrandem/run.py:142
-msgid "English"
-msgstr "Английский"
-
-#: mclient/src/logic.py:163 skl_shared/src/logic.py:122
-#: skl_shared/src/logic.py:203
-msgid "Booleans"
-msgstr "Булевы переменные"
-
-#: mclient/src/logic.py:164
-msgid "The following values are allowed in this section: 0 (False) or 1 (True)"
-msgstr "Допустимые значения в данном разделе: 0 (False) или 1 (True)"
-
-#: mclient/src/logic.py:169
-msgid "[Autosave] Sort terms by alphabet"
-msgstr "[Автосохранение] Сортировать термины по алфавиту"
-
-#: mclient/src/logic.py:173
-msgid ""
-"Hide the window with special characters after the 1st symbol is inserted"
-msgstr "Скрывать окно специальных символов после вставки 1-го символа"
-
-#: mclient/src/logic.py:177
-msgid "[Autosave] Show suggestions on input"
-msgstr "[Автосохранение] Показывать подсказку для вводимых слов"
-
-#: mclient/src/logic.py:181
-msgid "[Autosave] Autoswap Russian and the other language if appropriate"
-msgstr ""
-"[Автосохранение] Поменять местами русский и другой язык, если это "
-"целесообразно"
-
-#: mclient/src/logic.py:185
-msgid "[Autosave] Block subjects from the blacklist"
-msgstr "[Автосохранение] Блокировать тематики из черного списка"
-
-#: mclient/src/logic.py:189
-msgid "[Autosave] Capture Ctrl-c-c and Ctrl-Ins-Ins system-wide"
-msgstr ""
-"[Автосохранение] Перехватывать Ctrl-c-c и Ctrl-Ins-Ins во всех приложениях"
-
-#: mclient/src/logic.py:193
-msgid ""
-"[Autosave] Minimize the application window after specific actions, e.g., "
-"copying"
-msgstr ""
-"[Автосохранение] Свернуть окно программы после некоторых действий, например, "
-"копирования"
-
-#: mclient/src/logic.py:197
-msgid "[Autosave] Show a phrase count"
-msgstr "[Автосохранение] Показывать счетчик фраз"
-
-#: mclient/src/logic.py:201
-msgid "[Autosave] Prioritize subjects from the prioritization file"
-msgstr ""
-"[Автосохранение] Сортировать тематики по приоритету согласно файлу "
-"приоритетов"
-
-#: mclient/src/logic.py:205
-msgid "[Autosave] Select blocks of all types (False) or terms only (True)"
-msgstr ""
-"[Автосохранение] Выделять блоки всех типов (False) или только термины (True)"
-
-#: mclient/src/logic.py:209
-msgid "[Autosave] Shorten subject titles"
-msgstr "[Автосохранение] Сокращать названия тематик"
-
-#: mclient/src/logic.py:213
-msgid "[Autosave] Shorten parts of speech"
-msgstr "[Автосохранение] Сокращать части речи"
-
-#: mclient/src/logic.py:217
-msgid "[Autosave] Show user names"
-msgstr "[Автосохранение] Показывать имена пользователей"
-
-#: mclient/src/logic.py:221
-msgid "[Autosave] Sort by each column"
-msgstr "[Автосохранение] Сортировать по каждому столбцу"
-
-#: mclient/src/logic.py:225
-msgid "[Autosave] Vertical view"
-msgstr "[Автосохранение] Вертикальный вид"
-
-#: mclient/src/logic.py:229 skl_shared/src/logic.py:122
-#: skl_shared/src/logic.py:206
-msgid "Integers"
-msgstr "Целые числа"
-
-#: mclient/src/logic.py:234
-msgid "[Autosave] Number of non-fixed columns"
-msgstr "[Автосохранение] Число нефиксированных столбцов"
-
-#: mclient/src/logic.py:238
-msgid "A column width. Set to 0 to pick the value automatically."
-msgstr "Ширина столбцов. Введите 0 для автоподбора."
-
-#: mclient/src/logic.py:242
-msgid "A font size of comments"
-msgstr "Кегль комментариев"
-
-#: mclient/src/logic.py:246 mclient/src/logic.py:251 mclient/src/logic.py:256
-#: mclient/src/logic.py:261
-msgid "A font size of column #{}"
-msgstr "Кегль столбца №{}"
-
-#: mclient/src/logic.py:266
-msgid "A font size of terms"
-msgstr "Кегль терминов"
-
-#: mclient/src/logic.py:270
-msgid "A connection timeout (in seconds)"
-msgstr "Время ожидания сайта (в секундах)"
-
-#: mclient/src/logic.py:274 skl_shared/src/logic.py:123
-#: skl_shared/src/logic.py:187 skl_shared/src/logic.py:212
-msgid "Strings"
-msgstr "Строки"
-
-#: mclient/src/logic.py:275
-msgid ""
-"Attention: some hotkeys, e.g., <Button-1> and <Double-Button-1> may conflict "
-"with each other. Reassign them with caution."
-msgstr ""
-"Внимание: некоторые комбинации, например, <Button-1> и <Double-Button-1> "
-"могут конфликтовать. Переназначайте их с осторожностью."
-
-#: mclient/src/logic.py:280 mclient/src/logic.py:1052
-msgid "Clear History"
-msgstr "Очистить историю"
-
-#: mclient/src/logic.py:284
-msgid "Clear the search field"
-msgstr "Очистить строку поиска"
-
-#: mclient/src/logic.py:288 mclient/src/logic.py:297 mclient/src/logic.py:306
-msgid "Go to the next section of column #{}"
-msgstr "Перейти в следующий раздел столбца №{}"
-
-#: mclient/src/logic.py:292 mclient/src/logic.py:301 mclient/src/logic.py:310
-msgid "Go to the previous section of column #{}"
-msgstr "Перейти в предыдущий раздел столбца №{}"
-
-#: mclient/src/logic.py:315
-msgid "Copy URL of the current article"
-msgstr "Копировать URL текущей статьи"
-
-#: mclient/src/logic.py:319
-msgid "Copy an original word/phrase in a nominative case"
-msgstr "Копировать слово/фразу для перевода в именительном падеже"
-
-#: mclient/src/logic.py:323 mclient/src/logic.py:328
-msgid "Copy a current selection from the article (combination #{})"
-msgstr "Копировать текущее выделение из статьи (комбинация №{})"
-
-#: mclient/src/logic.py:333
-msgid "Copy URL of the current term"
-msgstr "Копировать URL текущего термина"
-
-#: mclient/src/logic.py:337
-msgid "Open a web-page defining the current term"
-msgstr "Открыть веб-страницу с определением текущего термина"
-
-#: mclient/src/logic.py:341
-msgid "Go to the previous article"
-msgstr "Предыдущая статья"
-
-#: mclient/src/logic.py:345
-msgid "Go to the next article"
-msgstr "Последующая статья"
-
-#: mclient/src/logic.py:349
-msgid "Go to the phrases section"
-msgstr "Перейти в раздел фраз"
-
-#: mclient/src/logic.py:353 mclient/src/logic.py:358 mclient/src/logic.py:363
-#: mclient/src/logic.py:368
-msgid "Set next language {} (combination {})"
-msgstr "Установить следующий по списку язык №{} (комбинация №{})"
-
-#: mclient/src/logic.py:373
-msgid ""
-"Paste clipboard contents into the search field (system combination: Ctrl-V)"
-msgstr ""
-"Вставить содержимое буфера обмена в строку поиска (встроенное сочетание: "
-"Ctrl-V)"
-
-#: mclient/src/logic.py:377 mclient/src/logic.py:382 mclient/src/logic.py:387
-#: mclient/src/logic.py:392
-msgid "Set previous language #{} (combination #{})"
-msgstr "Установить предыдущий по списку язык №{} (комбинация №{})"
-
-#: mclient/src/logic.py:397 mclient/src/logic.py:1008
-msgid "Create a printer-friendly page"
-msgstr "Печать (предварительный просмотр)"
-
-#: mclient/src/logic.py:405 mclient/src/logic.py:410
-msgid "Open the current article in a browser (combination #{})"
-msgstr "Открыть текущую статью в браузере (комбинация №{})"
-
-#: mclient/src/logic.py:415 mclient/src/logic.py:420
-msgid "Reload the current article (combination #{})"
-msgstr "Перезагрузить текущую статью (комбинация №{})"
-
-#: mclient/src/logic.py:425
-msgid "Start a new term search in the current article"
-msgstr "Начать новый поиск по терминам текущей статьи"
-
-#: mclient/src/logic.py:429 mclient/src/logic.py:434
-msgid "Save or copy the current article (combination #{})"
-msgstr ""
-"Сохранить текущую статью или скопировать ее в буфер обмена (комбинация №{})"
-
-#: mclient/src/logic.py:439 mclient/src/logic.py:1026
-msgid "Search the article backward"
-msgstr "Искать назад"
-
-#: mclient/src/logic.py:443 mclient/src/logic.py:1024
-msgid "Search the article forward"
-msgstr "Искать вперед"
-
-#: mclient/src/logic.py:447 mclient/src/logic.py:452
-msgid "Show settings (combination #{})"
-msgstr "Показать настройки (комбинация №{})"
-
-#: mclient/src/logic.py:457 mclient/src/logic.py:1032
-msgid "About the program"
-msgstr "Информация о программе"
-
-#: mclient/src/logic.py:473 mclient/src/logic.py:1038
-msgid "Toggle blacklisting"
-msgstr "Включить/отключить черный список"
-
-#: mclient/src/logic.py:477 mclient/src/logic.py:482
-msgid "Toggle History (combination #{})"
-msgstr "Показать/закрыть историю (комбинация №{})"
-
-#: mclient/src/logic.py:487 mclient/src/logic.py:1044
-msgid "Toggle prioritizing"
-msgstr "Включить/отключить список приоритетов"
-
-#: mclient/src/logic.py:491
-msgid "Toggle selecting terms only"
-msgstr "Включить/отключить режим выбора только терминов"
-
-#: mclient/src/logic.py:495 mclient/src/logic.py:500
-msgid "Toggle the current article view (combination #{})"
-msgstr "Переключить вид отображения статьи (комбинация №{})"
-
-#: mclient/src/logic.py:505 mclient/src/logic.py:510 mclient/src/logic.py:515
-#: mclient/src/logic.py:520
-msgid "[Autosave] Type of column #{} in settings"
-msgstr "[Автосохранение] Тип столбца №{} в настройках"
-
-#: mclient/src/logic.py:525
-msgid "A font color for comments and user names"
-msgstr "Цвет шрифта комментариев и имен пользователей"
-
-#: mclient/src/logic.py:529 mclient/src/logic.py:534 mclient/src/logic.py:539
-#: mclient/src/logic.py:544
-msgid "A font color for column #{}"
-msgstr "Цвет шрифта столбца №{}"
-
-#: mclient/src/logic.py:549
-msgid "A font color for terms"
-msgstr "Цвет шрифта терминов"
-
-#: mclient/src/logic.py:553
-msgid "A font background color for the current (selected) term"
-msgstr "Цвет фона текущего (выделенного) термина"
-
-#: mclient/src/logic.py:557
-msgid "A font foreground color for the current (selected) term"
-msgstr "Цвет шрифта текущего (выделенного) термина"
-
-#: mclient/src/logic.py:561
-msgid "A font of comments and user names"
-msgstr "Шрифт комментариев и имен пользователей"
-
-#: mclient/src/logic.py:565 mclient/src/logic.py:570 mclient/src/logic.py:575
-#: mclient/src/logic.py:580
-msgid "A font of column #{}"
-msgstr "Шрифт столбца №{}"
-
-#: mclient/src/logic.py:585
-msgid "A font color for History"
-msgstr "Шрифт текста в области истории запросов"
-
-#: mclient/src/logic.py:589
-msgid "A program GUI font"
-msgstr "Шрифт интерфейса программы"
-
-#: mclient/src/logic.py:593
-msgid "A font of terms"
-msgstr "Шрифт терминов"
-
-#: mclient/src/logic.py:597
-msgid "A font of the current (selected) term"
-msgstr "Шрифт текущего (выделенного) термина"
-
-#: mclient/src/logic.py:601
-msgid "[Autosave] Source language"
-msgstr "[Автосохранение] Исходный язык"
-
-#: mclient/src/logic.py:605
-msgid "[Autosave] Target language"
-msgstr "[Автосохранение] Конечный язык"
-
-#: mclient/src/logic.py:609
-msgid "Insert the last search request into the search field"
-msgstr "Вставить последний элемент истории в строку поиска"
-
-#: mclient/src/logic.py:613
-msgid "Insert the next-to-last search request into the search field"
-msgstr "Вставить предпоследний элемент истории в строку поиска"
-
-#: mclient/src/logic.py:617
-msgid "[Autosave] The main dictionary source to use"
-msgstr "[Автосохранение] Основной словарный ресурс"
-
-#: mclient/src/logic.py:621
-msgid "Characters that can be inserted into the search field"
-msgstr "Символы, которые можно вставить в строку поиска"
-
-#: mclient/src/logic.py:625 mclient/src/logic.py:630 mclient/src/logic.py:635
-#: mclient/src/logic.py:640 mclient/src/logic.py:645 mclient/src/logic.py:650
-#: mclient/src/logic.py:655
-msgid "[Autosave] A part of speech of column #{} in settings"
-msgstr "[Автосохранение] Часть речи столбца №{} в настройках"
-
-#: mclient/src/logic.py:660
-msgid "[Autosave] A sorting style"
-msgstr "[Автосохранение] Стиль сортировки"
-
-#: mclient/src/logic.py:664
-msgid "URL for online search"
-msgstr "Адрес для поиска в Интернете"
-
-#: mclient/src/logic.py:722 mclient/src/logic.py:737 mclient/src/logic.py:750
+#: mclient/src/logic.py:75 mclient/src/logic.py:90 mclient/src/logic.py:103
 #: mclient/src/plugins/multitrancom/tags.py:432
 msgid "NAME"
 msgstr "НАЗВАНИЕ"
 
-#: mclient/src/logic.py:737 mclient/src/logic.py:750
+#: mclient/src/logic.py:90 mclient/src/logic.py:103
 msgid "ABBREVIATION"
 msgstr "АББРЕВИАТУРА"
 
-#: mclient/src/logic.py:774 mclient/src/mclient.py:113
+#: mclient/src/logic.py:127 mclient/src/mclient.py:113
 #: mclient/src/mclient.py:2258 mclient/src/mclient.py:2270
 #: mclient/src/mclient.py:2282 mclient/src/mclient.py:2294
 #: mclient/src/plugins/dsl/get.py:399 mclient/src/plugins/dsl/get.py:416
@@ -1250,7 +1252,7 @@ msgstr "АББРЕВИАТУРА"
 #: mclient/src/plugins/multitrancom/pairs.py:2810
 #: mclient/src/plugins/multitrancom/run.py:93
 #: mclient/src/plugins/multitrancom/run.py:104
-#: mclient/src/plugins/multitrancom/subjects.py:28853
+#: mclient/src/plugins/multitrancom/subjects.py:28840
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:363
 #: mclient/src/plugins/multitrancom/utils/utils.py:164
 #: mclient/src/plugins/multitrandem/elems.py:135
@@ -1273,15 +1275,15 @@ msgstr "АББРЕВИАТУРА"
 msgid "Wrong input data: \"{}\"!"
 msgstr "Недопустимые входные данные: \"{}\"!"
 
-#: mclient/src/logic.py:779 mclient/src/logic.py:844
+#: mclient/src/logic.py:132 mclient/src/logic.py:197
 #: mclient/src/plugins/multitrandem/get.py:1923
 msgid "Phrase"
 msgstr "Фраза"
 
-#: mclient/src/logic.py:801 mclient/src/logic.py:807
+#: mclient/src/logic.py:154 mclient/src/logic.py:160
 #: mclient/src/mclient.py:2631 mclient/src/plugins/dsl/cleanup.py:109
 #: mclient/src/plugins/dsl/get.py:222
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:136
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:163
 #: mclient/src/plugins/multitrancom/utils/utils.py:68
 #: mclient/src/plugins/multitrancom/utils/utils.py:235
 #: mclient/src/plugins/multitrancom/utils/utils.py:333
@@ -1302,253 +1304,253 @@ msgstr "Фраза"
 msgid "The condition \"{}\" is not observed!"
 msgstr "Условие \"{}\" не выполнено!"
 
-#: mclient/src/logic.py:815 mclient/src/plugins/multitrandem/get.py:1928
+#: mclient/src/logic.py:168 mclient/src/plugins/multitrandem/get.py:1928
 msgid "abbr."
 msgstr "сокр."
 
-#: mclient/src/logic.py:816 mclient/src/plugins/multitrandem/get.py:1984
+#: mclient/src/logic.py:169 mclient/src/plugins/multitrandem/get.py:1984
 msgid "adj"
 msgstr "прил."
 
-#: mclient/src/logic.py:817 mclient/src/plugins/multitrandem/get.py:1932
+#: mclient/src/logic.py:170 mclient/src/plugins/multitrandem/get.py:1932
 msgid "adv."
 msgstr "нареч."
 
-#: mclient/src/logic.py:818 mclient/src/plugins/multitrandem/get.py:1947
+#: mclient/src/logic.py:171 mclient/src/plugins/multitrandem/get.py:1947
 msgid "art."
 msgstr "арт."
 
-#: mclient/src/logic.py:819 mclient/src/plugins/multitrandem/get.py:1942
+#: mclient/src/logic.py:172 mclient/src/plugins/multitrandem/get.py:1942
 msgid "conj."
 msgstr "союз"
 
-#: mclient/src/logic.py:820 mclient/src/plugins/multitrandem/get.py:1966
+#: mclient/src/logic.py:173 mclient/src/plugins/multitrandem/get.py:1966
 msgid "form"
 msgstr "форма"
 
-#: mclient/src/logic.py:821 mclient/src/plugins/multitrandem/get.py:1937
+#: mclient/src/logic.py:174 mclient/src/plugins/multitrandem/get.py:1937
 msgid "interj."
 msgstr "межд."
 
-#: mclient/src/logic.py:822 mclient/src/plugins/multitrandem/get.py:1988
+#: mclient/src/logic.py:175 mclient/src/plugins/multitrandem/get.py:1988
 msgid "n"
 msgstr "сущ."
 
-#: mclient/src/logic.py:823 mclient/src/plugins/multitrandem/get.py:1952
+#: mclient/src/logic.py:176 mclient/src/plugins/multitrandem/get.py:1952
 msgid "num."
 msgstr "числ."
 
-#: mclient/src/logic.py:824 mclient/src/plugins/multitrandem/get.py:1957
+#: mclient/src/logic.py:177 mclient/src/plugins/multitrandem/get.py:1957
 msgid "ord.num."
 msgstr "поряд.числ."
 
-#: mclient/src/logic.py:825 mclient/src/plugins/multitrandem/get.py:1971
+#: mclient/src/logic.py:178 mclient/src/plugins/multitrandem/get.py:1971
 msgid "part."
 msgstr "част."
 
-#: mclient/src/logic.py:826 mclient/src/plugins/multitrandem/get.py:1924
+#: mclient/src/logic.py:179 mclient/src/plugins/multitrandem/get.py:1924
 msgid "phrase"
 msgstr "фраза"
 
-#: mclient/src/logic.py:827 mclient/src/plugins/multitrandem/get.py:1976
+#: mclient/src/logic.py:180 mclient/src/plugins/multitrandem/get.py:1976
 msgid "predic."
 msgstr "предик."
 
-#: mclient/src/logic.py:828 mclient/src/plugins/multitrandem/get.py:1961
+#: mclient/src/logic.py:181 mclient/src/plugins/multitrandem/get.py:1961
 msgid "prepos."
 msgstr "предл."
 
-#: mclient/src/logic.py:829 mclient/src/plugins/multitrandem/get.py:1980
+#: mclient/src/logic.py:182 mclient/src/plugins/multitrandem/get.py:1980
 msgid "pron"
 msgstr "мест."
 
-#: mclient/src/logic.py:830
+#: mclient/src/logic.py:183
 msgid "suf"
 msgstr "суф."
 
-#: mclient/src/logic.py:831 mclient/src/plugins/multitrandem/get.py:1992
+#: mclient/src/logic.py:184 mclient/src/plugins/multitrandem/get.py:1992
 msgid "v"
 msgstr "глаг."
 
-#: mclient/src/logic.py:836 mclient/src/plugins/multitrandem/get.py:1946
+#: mclient/src/logic.py:189 mclient/src/plugins/multitrandem/get.py:1946
 msgid "Article"
 msgstr "Статья"
 
-#: mclient/src/logic.py:837 mclient/src/plugins/multitrandem/get.py:1941
+#: mclient/src/logic.py:190 mclient/src/plugins/multitrandem/get.py:1941
 msgid "Conjunction"
 msgstr "Союз"
 
-#: mclient/src/logic.py:838 mclient/src/plugins/multitrandem/get.py:1965
+#: mclient/src/logic.py:191 mclient/src/plugins/multitrandem/get.py:1965
 msgid "Form"
 msgstr "Форма"
 
-#: mclient/src/logic.py:839 mclient/src/plugins/multitrandem/get.py:1936
+#: mclient/src/logic.py:192 mclient/src/plugins/multitrandem/get.py:1936
 msgid "Interjection"
 msgstr "Междометие"
 
-#: mclient/src/logic.py:841 mclient/src/plugins/multitrandem/get.py:1951
+#: mclient/src/logic.py:194 mclient/src/plugins/multitrandem/get.py:1951
 msgid "Numeral"
 msgstr "Числительное"
 
-#: mclient/src/logic.py:842 mclient/src/plugins/multitrandem/get.py:1956
+#: mclient/src/logic.py:195 mclient/src/plugins/multitrandem/get.py:1956
 msgid "Ordinal Numeral"
 msgstr "Порядковое числительное"
 
-#: mclient/src/logic.py:843 mclient/src/plugins/multitrandem/get.py:1970
+#: mclient/src/logic.py:196 mclient/src/plugins/multitrandem/get.py:1970
 msgid "Particle"
 msgstr "Частица"
 
-#: mclient/src/logic.py:845 mclient/src/plugins/multitrandem/get.py:1975
+#: mclient/src/logic.py:198 mclient/src/plugins/multitrandem/get.py:1975
 msgid "Predicative"
 msgstr "Предикатив"
 
-#: mclient/src/logic.py:848
+#: mclient/src/logic.py:201
 msgid "Suffix"
 msgstr "Суффикс"
 
-#: mclient/src/logic.py:862
+#: mclient/src/logic.py:215
 msgid "not running"
 msgstr "не работает"
 
-#: mclient/src/logic.py:902
+#: mclient/src/logic.py:255
 msgid "running"
 msgstr "работает"
 
-#: mclient/src/logic.py:908 mclient/src/manager.py:204
+#: mclient/src/logic.py:261 mclient/src/manager.py:204
 #: mclient/src/manager.py:253
 msgid "Stardict"
 msgstr "Stardict"
 
-#: mclient/src/logic.py:913 mclient/src/manager.py:206
+#: mclient/src/logic.py:266 mclient/src/manager.py:206
 #: mclient/src/manager.py:259
 msgid "Local MT"
 msgstr "Локальный МТ"
 
-#: mclient/src/logic.py:957
+#: mclient/src/logic.py:310
 msgid "Translate the current input or selection"
 msgstr "Перевести текущий ввод или выделение"
 
-#: mclient/src/logic.py:959
+#: mclient/src/logic.py:312
 msgid "Copy the current selection"
 msgstr "Копировать текущее выделение"
 
-#: mclient/src/logic.py:964
+#: mclient/src/logic.py:317
 msgid "Show the program window (system-wide)"
 msgstr "Показать окно программы (системное сочетание)"
 
-#: mclient/src/logic.py:966
+#: mclient/src/logic.py:319
 msgid "Translate selection from an external program"
 msgstr "Перевести выделение во внешней программе"
 
-#: mclient/src/logic.py:970
+#: mclient/src/logic.py:323
 msgid "Minimize the program window"
 msgstr "Свернуть окно программы"
 
-#: mclient/src/logic.py:976
+#: mclient/src/logic.py:329
 msgid "Copy the URL of the selected term"
 msgstr "Копировать URL выбранного термина"
 
-#: mclient/src/logic.py:978
+#: mclient/src/logic.py:331
 msgid "Copy the URL of the current article"
 msgstr "Копировать URL текущей статьи"
 
-#: mclient/src/logic.py:980 mclient/src/logic.py:984 mclient/src/logic.py:988
+#: mclient/src/logic.py:333 mclient/src/logic.py:337 mclient/src/logic.py:341
 #, python-format
 msgid "Go to the previous section of column #%d"
 msgstr "Перейти в предыдущий раздел столбца №%d"
 
-#: mclient/src/logic.py:982 mclient/src/logic.py:986 mclient/src/logic.py:990
+#: mclient/src/logic.py:335 mclient/src/logic.py:339 mclient/src/logic.py:343
 #, python-format
 msgid "Go to the next section of column #%d"
 msgstr "Перейти в следующий раздел столбца №%d"
 
-#: mclient/src/logic.py:992
+#: mclient/src/logic.py:345
 msgid "Open a webpage with a definition of the current term"
 msgstr "Открыть веб-страницу с определением текущего термина"
 
-#: mclient/src/logic.py:994
+#: mclient/src/logic.py:347
 msgid "Look up phrases"
 msgstr "Открыть раздел с фразами"
 
-#: mclient/src/logic.py:1000
+#: mclient/src/logic.py:353
 msgid "Next source language"
 msgstr "Следующий язык оригинала"
 
-#: mclient/src/logic.py:1004
+#: mclient/src/logic.py:357
 msgid "Previous source language"
 msgstr "Предыдущий язык оригинала"
 
-#: mclient/src/logic.py:1010
+#: mclient/src/logic.py:363
 msgid "Open the current article in a default browser"
 msgstr "Открыть текущую статью в браузере по умолчанию"
 
-#: mclient/src/logic.py:1014
+#: mclient/src/logic.py:367
 msgid "Reload the current article"
 msgstr "Перезагрузить текущую статью"
 
-#: mclient/src/logic.py:1018
+#: mclient/src/logic.py:371
 msgid "Save or copy the current article"
 msgstr "Сохранить или копировать текущую статью"
 
-#: mclient/src/logic.py:1022
+#: mclient/src/logic.py:375
 msgid "Start a new search in the current article"
 msgstr "Начать новый поиск в текущей статье"
 
-#: mclient/src/logic.py:1028
+#: mclient/src/logic.py:381
 msgid "Show settings"
 msgstr "Настройки"
 
-#: mclient/src/logic.py:1040
+#: mclient/src/logic.py:393
 msgid "Toggle History"
 msgstr "Показать/закрыть историю"
 
-#: mclient/src/logic.py:1046
+#: mclient/src/logic.py:399
 msgid "Toggle terms-only selection"
 msgstr "Включить/отключить режим выбора только терминов"
 
-#: mclient/src/logic.py:1048
+#: mclient/src/logic.py:401
 msgid "Toggle the current article view"
 msgstr "Переключить вид отображения статьи"
 
-#: mclient/src/logic.py:1054
+#: mclient/src/logic.py:407
 msgid "Next target language"
 msgstr "Следующий язык перевода"
 
-#: mclient/src/logic.py:1058
+#: mclient/src/logic.py:411
 msgid "Previous target language"
 msgstr "Предыдущий язык перевода"
 
-#: mclient/src/logic.py:1065
+#: mclient/src/logic.py:418
 msgid "Copy the nominative case"
 msgstr "Копировать в именительном падеже"
 
-#: mclient/src/logic.py:1099
+#: mclient/src/logic.py:452
 msgid "Welcome to {}!"
 msgstr "{} приветствует Вас!"
 
-#: mclient/src/logic.py:1103
+#: mclient/src/logic.py:456
 msgid "This program retrieves translation from online/offline sources."
 msgstr "Эта программа – оболочка для онлайн и локальных словарей."
 
-#: mclient/src/logic.py:1106
+#: mclient/src/logic.py:459
 msgid "Use an entry area below to enter a word/phrase to be translated."
 msgstr "Введите слово или фразу для перевода в область ввода ниже."
 
-#: mclient/src/logic.py:1115
+#: mclient/src/logic.py:468
 msgid "Offline dictionaries loaded:"
 msgstr "Загружено локальных словарей:"
 
-#: mclient/src/logic.py:1137
+#: mclient/src/logic.py:490
 msgid "Main hotkeys"
 msgstr "Основные сочетания клавиш"
 
-#: mclient/src/logic.py:1140
+#: mclient/src/logic.py:493
 msgid "(see documentation for other hotkeys, mouse bindings and functions)"
 msgstr ""
 "(см. документацию для получения информации о других сочетаниях клавиш, "
 "кнопок мыши и возможностях)"
 
-#: mclient/src/logic.py:1420 skl_shared/src/logic.py:4304
+#: mclient/src/logic.py:683 skl_shared/src/logic.py:4304
 msgid "Unable to use unverified certificates!"
 msgstr "Не удается использовать неподтвержденные сертификаты!"
 
@@ -14996,20 +14998,31 @@ msgstr "СТРОКА"
 msgid "CELL"
 msgstr "ЯЧЕЙКА"
 
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:34
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:72
+#: mclient/src/plugins/multitrancom/utils/subjects/check.py:32
+msgid "Those major subjects were not found:"
+msgstr "Не удалось найти следующие тематики:"
+
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:30
+msgid "Copied to clipboard. Paste it and press Return to exit."
+msgstr ""
+"Скопировано в буфер обмена. Вставьте его содержимое и нажмите Return для "
+"выхода."
+
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:52
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:91
 msgid "VALID"
 msgstr "ВЕРНО"
 
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:34
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:52
 msgid "MAJOR"
 msgstr "ОСНОВНАЯ"
 
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:34
-msgid "GROUP"
-msgstr "ГРУППА"
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:53
+#: mclient/src/tests.py:372
+msgid "MAJOR (EN)"
+msgstr "ОСНОВНАЯ (EN)"
 
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:110
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:134
 msgid "Key \"{}\" already exists!"
 msgstr "Ключ \"{}\" уже существует!"
 
@@ -15606,27 +15619,27 @@ msgstr "Переместить в начало"
 msgid "Move to the bottom"
 msgstr "Переместить в конец"
 
-#: mclient/src/subjects/subjects.py:76
+#: mclient/src/subjects/subjects.py:76 mclient/src/tests.py:372
 msgid "SHORT"
 msgstr "КОРОТКО"
 
-#: mclient/src/subjects/subjects.py:76
+#: mclient/src/subjects/subjects.py:76 mclient/src/tests.py:372
 msgid "TITLE"
 msgstr "ЗАГОЛОВОК"
 
-#: mclient/src/tests.py:294
+#: mclient/src/tests.py:280
 msgid "Number of blocks: {}"
 msgstr "Число блоков: {}"
 
-#: mclient/src/tests.py:296
+#: mclient/src/tests.py:282
 msgid "Web-page:"
 msgstr "Веб-страница:"
 
-#: mclient/src/tests.py:298 skl_shared/src/tests.py:1192
+#: mclient/src/tests.py:284 skl_shared/src/tests.py:1192
 msgid "Text:"
 msgstr "Текст:"
 
-#: mclient/src/tests.py:401
+#: mclient/src/tests.py:441
 msgid ""
 "The following pairs are not supported:\n"
 "{}"
@@ -15634,11 +15647,11 @@ msgstr ""
 "Следующие пары не поддерживаются:\n"
 "{}"
 
-#: mclient/src/tests.py:517 mclient/src/tests.py:531
+#: mclient/src/tests.py:557 mclient/src/tests.py:571
 msgid "Offline"
 msgstr "Оффлайн"
 
-#: mclient/src/tests.py:679 mclient/src/tests.py:684
+#: mclient/src/tests.py:719 mclient/src/tests.py:724
 msgid "Triggered!"
 msgstr "Сработало!"
 
@@ -16505,6 +16518,9 @@ msgstr ""
 #: skl_shared/src/tests.py:1142
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
+
+#~ msgid "GROUP"
+#~ msgstr "ГРУППА"
 
 #~ msgid "Block dictionaries from blacklist"
 #~ msgstr "Блокировать словари из черного списка"
