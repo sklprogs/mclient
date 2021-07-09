@@ -1,6 +1,5 @@
 mclient:
-- blacklist/priorities: adding the very first group ("Aviation") does
-  not add the major subject (if not "Aviation" is selection)
+- blacklist/priorities: cannot get a group from subjects in Article view
 
 multitrancom:
 - 28:[MClient] plugins.multitrancom.subjects.Subjects.get_list:ПРЕДУПРЕЖДЕНИЕ:Недопустимые входные данные: "ООН (Организация Объединенных Наций)"!
