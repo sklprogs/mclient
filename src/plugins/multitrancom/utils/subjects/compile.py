@@ -18,9 +18,16 @@ class Compile:
         self.file = '/home/pete/bin/mclient/tests/subjects_auto.txt'
         self.text = ''
         self.lst = []
+        self.duplicates = []
         self.vip = ['Gruzovik','Игорь Миг']
         self.subjects = {}
         self.colsno = 10
+    
+    def _debug_duplicates(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.compile.Compile._debug_duplicates'
+        mes = ['; '.join(row) for row in self.duplicates]
+        mes = '\n\n'.join(mes)
+        return f + ':\n' + mes
     
     def copy(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.compile.Compile.copy'
@@ -106,7 +113,9 @@ class Compile:
         f = '[MClient] plugins.multitrancom.utils.subjects.compile.Compile.debug'
         if self.Success:
             if self.Debug:
-                mes = [self._debug_langs(),self._debug_attrs()]
+                mes = [self._debug_langs(),self._debug_attrs()
+                      ,self._debug_duplicates()
+                      ]
                 mes = '\n\n'.join(mes)
                 sh.com.run_fast_debug(f,mes)
             else:
@@ -134,6 +143,7 @@ class Compile:
                         mes = _('Key "{}" already exists!')
                         mes = mes.format(row[0])
                         sh.objs.get_mes(f,mes,True).show_warning()
+                        self.duplicates.append(row)
                     else:
                         self.subjects[row[0]] = {}
                         self.subjects[row[0]]['is_valid'] = self._is_valid(row)

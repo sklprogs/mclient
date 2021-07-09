@@ -5754,8 +5754,8 @@ SUBJECTS = {'AI.':
                    ,'title': 'Животноводство'
                    }
                ,'de':
-                   {'short': 'anim.husb.'
-                   ,'title': 'Animal husbandry'
+                   {'short': 'landwirt.'
+                   ,'title': 'Landwirtschaft'
                    }
                ,'es':
                    {'short': 'anim.husb.'
@@ -17856,20 +17856,20 @@ SUBJECTS = {'AI.':
                    ,'title': 'Meteorology'
                    }
                ,'ru':
-                   {'short': 'СМИ.'
-                   ,'title': 'Средства массовой информации'
+                   {'short': 'метеор.'
+                   ,'title': 'Метеорология'
                    }
                ,'de':
-                   {'short': 'Massenmed.'
-                   ,'title': 'Massenmedien'
+                   {'short': 'Meteorol.'
+                   ,'title': 'Meteorologie'
                    }
                ,'es':
                    {'short': 'meteorol.'
                    ,'title': 'Meteorología'
                    }
                ,'uk':
-                   {'short': 'ЗМІ'
-                   ,'title': 'Засоби масової інформації'
+                   {'short': 'метео.'
+                   ,'title': 'Метеорологія'
                    }
                }
            ,'metro':
@@ -19603,20 +19603,20 @@ SUBJECTS = {'AI.':
                    ,'title': 'Obsolete / dated'
                    }
                ,'ru':
-                   {'short': 'Gruzovik, спирт.'
-                   ,'title': 'Производство спирта'
+                   {'short': 'уст.'
+                   ,'title': 'Устаревшее'
                    }
                ,'de':
                    {'short': 'veralt.'
                    ,'title': 'Veraltet'
                    }
                ,'es':
-                   {'short': 'Gruzovik, acl.'
-                   ,'title': 'Alcohol distilling'
+                   {'short': 'antic.'
+                   ,'title': 'Anticuado'
                    }
                ,'uk':
-                   {'short': 'Gruzovik, спирт'
-                   ,'title': 'Виробництво спирту'
+                   {'short': 'застар.'
+                   ,'title': 'Застаріле'
                    }
                }
            ,'obs., inform.':
