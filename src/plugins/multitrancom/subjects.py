@@ -7,9 +7,9 @@ from skl_shared.localize import _
 import skl_shared.shared as sh
 
 SUBJECTS = {'AI.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'AI.'
                    ,'title': 'Artificial intelligence'
@@ -32,9 +32,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'AIDS.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'AIDS.'
                    ,'title': 'AIDS'
@@ -57,9 +57,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'AMEX.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Finances'
+               {'is_valid': True
+               ,'major_en': 'Finances'
+               ,'is_major': False
                ,'en':
                    {'short': 'AMEX.'
                    ,'title': 'American stock exchange'
@@ -82,9 +82,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ASCII.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'ASCII.'
                    ,'title': 'ASCII'
@@ -107,9 +107,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Alg.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Alg.'
                    ,'title': 'Algeria'
@@ -132,9 +132,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'AmE':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Auxilliary categories (editor use only)'
+               {'is_valid': True
+               ,'major_en': 'Auxilliary categories (editor use only)'
+               ,'is_major': False
                ,'en':
                    {'short': 'AmE'
                    ,'title': 'American English'
@@ -157,9 +157,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Ant.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Ant.'
                    ,'title': 'Antilles'
@@ -182,9 +182,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Apollo-Soyuz':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Space'
+               {'is_valid': True
+               ,'major_en': 'Space'
+               ,'is_major': False
                ,'en':
                    {'short': 'Apollo-Soyuz'
                    ,'title': 'Apollo-Soyuz'
@@ -207,9 +207,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Arag.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Arag.'
                    ,'title': 'Aragon'
@@ -232,9 +232,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Arg.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Arg.'
                    ,'title': 'Argentina'
@@ -257,9 +257,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Australia':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Australia'
                    ,'title': 'Australia'
@@ -282,9 +282,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Austria':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Austria'
                    ,'title': 'Austria'
@@ -307,9 +307,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Belar.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Belar.'
                    ,'title': 'Belarus'
@@ -332,9 +332,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'BrE':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Auxilliary categories (editor use only)'
+               {'is_valid': True
+               ,'major_en': 'Auxilliary categories (editor use only)'
+               ,'is_major': False
                ,'en':
                    {'short': 'BrE'
                    ,'title': 'British English'
@@ -357,9 +357,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Braz.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Braz.'
                    ,'title': 'Brazil'
@@ -382,9 +382,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'C.-R.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'C.-R.'
                    ,'title': 'Costa Rica'
@@ -407,9 +407,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'CNC':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'CNC'
                    ,'title': 'Computer numerical control'
@@ -432,9 +432,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'CRT':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Electronics'
+               {'is_valid': True
+               ,'major_en': 'Electronics'
+               ,'is_major': False
                ,'en':
                    {'short': 'CRT'
                    ,'title': 'Cathode-ray tubes'
@@ -457,9 +457,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'CT':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical appliances'
+               {'is_valid': True
+               ,'major_en': 'Medical appliances'
+               ,'is_major': False
                ,'en':
                    {'short': 'CT'
                    ,'title': 'Computer tomography'
@@ -479,9 +479,9 @@ SUBJECTS = {'AI.':
                ,'uk':
                    {'short': 'КТ'
                    ,'title': "Комп'ютерна томографія"}}, 'Canada':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Canada'
                    ,'title': 'Canada'
@@ -504,9 +504,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Centr.Am.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Centr.Am.'
                    ,'title': 'Central America'
@@ -529,9 +529,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Chil.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Chil.'
                    ,'title': 'Chile'
@@ -554,9 +554,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'China':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'China'
                    ,'title': 'China'
@@ -579,9 +579,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Col.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Col.'
                    ,'title': 'Columbia'
@@ -604,9 +604,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Cuba':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Cuba'
                    ,'title': 'Cuba'
@@ -629,9 +629,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Cypr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Cypr.'
                    ,'title': 'Cyprus'
@@ -654,9 +654,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Dutch':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'Dutch'
                    ,'title': 'Dutch'
@@ -679,9 +679,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'EBRD':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Finances'
+               {'is_valid': True
+               ,'major_en': 'Finances'
+               ,'is_major': False
                ,'en':
                    {'short': 'EBRD'
                    ,'title': 'European Bank for Reconstruction and Development'
@@ -704,9 +704,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'EU.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'EU.'
                    ,'title': 'European Union'
@@ -729,9 +729,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Ecuad.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'Ecuad.'
                    ,'title': 'Ecuador'
@@ -754,9 +754,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'FBI.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law enforcement'
+               {'is_valid': True
+               ,'major_en': 'Law enforcement'
+               ,'is_major': False
                ,'en':
                    {'short': 'FBI.'
                    ,'title': 'Federal Bureau of Investigation'
@@ -779,9 +779,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'GDR':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'GDR'
                    ,'title': 'East Germany'
@@ -804,9 +804,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Germ.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Germ.'
                    ,'title': 'Germany'
@@ -829,9 +829,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik'
                    ,'title': 'General'
@@ -854,9 +854,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, GOST.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Quality control and standards'
+               {'is_valid': False
+               ,'major_en': 'Quality control and standards'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, GOST.'
                    ,'title': 'GOST'
@@ -879,9 +879,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, IT':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': False
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, IT'
                    ,'title': 'Information technology'
@@ -904,9 +904,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, abbr.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Grammatical labels'
+               {'is_valid': False
+               ,'major_en': 'Grammatical labels'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, abbr.'
                    ,'title': 'Abbreviation'
@@ -929,9 +929,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, abbr., IT':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, abbr., IT'
                    ,'title': 'Abbreviation, Information technology'
@@ -954,9 +954,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, abbr., account.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, abbr., account.'
                    ,'title': 'Abbreviation, Accounting'
@@ -979,9 +979,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, abbr., bank.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, abbr., bank.'
                    ,'title': 'Abbreviation, Banking'
@@ -1004,9 +1004,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, adm.law.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': False
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, adm.law.'
                    ,'title': 'Administrative law'
@@ -1029,9 +1029,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, adv.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Business'
+               {'is_valid': False
+               ,'major_en': 'Business'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, adv.'
                    ,'title': 'Advertising'
@@ -1054,9 +1054,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, aer.phot.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Aviation'
+               {'is_valid': False
+               ,'major_en': 'Aviation'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, aer.phot.'
                    ,'title': 'Aerial photography and topography'
@@ -1079,9 +1079,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, agric.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Agriculture'
+               {'is_valid': False
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, agric.'
                    ,'title': 'Agriculture'
@@ -1104,9 +1104,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, ballist.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': False
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, ballist.'
                    ,'title': 'Ballistics'
@@ -1129,9 +1129,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, biogeogr.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': False
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, biogeogr.'
                    ,'title': 'Biogeography'
@@ -1154,9 +1154,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, bot.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': False
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, bot.'
                    ,'title': 'Botany'
@@ -1179,9 +1179,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, cloth.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Light industries'
+               {'is_valid': False
+               ,'major_en': 'Light industries'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, cloth.'
                    ,'title': 'Clothing'
@@ -1204,9 +1204,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, comp.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Computing'
+               {'is_valid': False
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, comp.'
                    ,'title': 'Computing'
@@ -1226,9 +1226,9 @@ SUBJECTS = {'AI.':
                ,'uk':
                    {'short': 'Gruzovik, комп.'
                    ,'title': "Комп'ютери"}}, 'Gruzovik, cryptogr.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Security systems'
+               {'is_valid': False
+               ,'major_en': 'Security systems'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, cryptogr.'
                    ,'title': 'Cryptography'
@@ -1251,9 +1251,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, dial.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Dialectal'
+               {'is_valid': False
+               ,'major_en': 'Dialectal'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, dial.'
                    ,'title': 'Dialectal'
@@ -1276,9 +1276,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, econ.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Economy'
+               {'is_valid': False
+               ,'major_en': 'Economy'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, econ.'
                    ,'title': 'Economy'
@@ -1301,9 +1301,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, el.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Electronics'
+               {'is_valid': False
+               ,'major_en': 'Electronics'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, el.'
                    ,'title': 'Electronics'
@@ -1326,9 +1326,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, electric.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Electrical engineering'
+               {'is_valid': False
+               ,'major_en': 'Electrical engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, electric.'
                    ,'title': 'Electricity'
@@ -1351,9 +1351,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, email':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Communications'
+               {'is_valid': False
+               ,'major_en': 'Communications'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, email'
                    ,'title': 'E-mail'
@@ -1376,9 +1376,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, expl.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Law enforcement'
+               {'is_valid': False
+               ,'major_en': 'Law enforcement'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, expl.'
                    ,'title': 'Explosives'
@@ -1401,9 +1401,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, fig.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, fig.'
                    ,'title': 'Figurative'
@@ -1426,9 +1426,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, footwear':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Light industries'
+               {'is_valid': False
+               ,'major_en': 'Light industries'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, footwear'
                    ,'title': 'Footwear'
@@ -1451,9 +1451,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, fr.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': False
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, fr.'
                    ,'title': 'French'
@@ -1476,9 +1476,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, garden.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': False
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, garden.'
                    ,'title': 'Gardening'
@@ -1501,9 +1501,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, glac.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Geology'
+               {'is_valid': False
+               ,'major_en': 'Geology'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, glac.'
                    ,'title': 'Glaciology'
@@ -1526,9 +1526,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, horse.breed.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': False
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, horse.breed.'
                    ,'title': 'Horse breeding'
@@ -1551,9 +1551,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, hunt.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, hunt.'
                    ,'title': 'Hunting'
@@ -1576,9 +1576,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, inform.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, inform.'
                    ,'title': 'Informal'
@@ -1601,9 +1601,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, law':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Law'
+               {'is_valid': False
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, law'
                    ,'title': 'Law'
@@ -1626,9 +1626,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, mach.mech.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Machinery and mechanisms'
+               {'is_valid': False
+               ,'major_en': 'Machinery and mechanisms'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, mach.mech.'
                    ,'title': 'Machinery and mechanisms'
@@ -1651,9 +1651,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, magn.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': False
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, magn.'
                    ,'title': 'Magnetics'
@@ -1676,9 +1676,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, math.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Mathematics'
+               {'is_valid': False
+               ,'major_en': 'Mathematics'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, math.'
                    ,'title': 'Mathematics'
@@ -1701,9 +1701,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, med.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Medical'
+               {'is_valid': False
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, med.'
                    ,'title': 'Medical'
@@ -1726,9 +1726,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, media.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Mass media'
+               {'is_valid': False
+               ,'major_en': 'Mass media'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, media.'
                    ,'title': 'Mass media'
@@ -1751,9 +1751,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, met.phys.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': False
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, met.phys.'
                    ,'title': 'Metal physics'
@@ -1776,9 +1776,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, mil.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Military'
+               {'is_valid': False
+               ,'major_en': 'Military'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, mil.'
                    ,'title': 'Military'
@@ -1801,9 +1801,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, mil., air.def.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Military'
+               {'is_valid': False
+               ,'major_en': 'Military'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, mil., air.def.'
                    ,'title': 'Air defense'
@@ -1826,9 +1826,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, mil., arm.veh.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Military'
+               {'is_valid': False
+               ,'major_en': 'Military'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, mil., arm.veh.'
                    ,'title': 'Armored vehicles'
@@ -1851,9 +1851,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, mil., artil.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Military'
+               {'is_valid': False
+               ,'major_en': 'Military'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, mil., artil.'
                    ,'title': 'Artillery'
@@ -1876,9 +1876,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, mil., avia.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Aviation'
+               {'is_valid': False
+               ,'major_en': 'Aviation'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, mil., avia.'
                    ,'title': 'Military aviation'
@@ -1901,9 +1901,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, mycol.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': False
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, mycol.'
                    ,'title': 'Mycology'
@@ -1926,9 +1926,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, myth.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Mythology'
+               {'is_valid': False
+               ,'major_en': 'Mythology'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, myth.'
                    ,'title': 'Mythology'
@@ -1951,9 +1951,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, nautic.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Nautical'
+               {'is_valid': False
+               ,'major_en': 'Nautical'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, nautic.'
                    ,'title': 'Nautical'
@@ -1976,9 +1976,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, obs.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': False
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, obs.'
                    ,'title': 'Obsolete / dated'
@@ -2001,9 +2001,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, ocean.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': False
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, ocean.'
                    ,'title': 'Oceanography (oceanology)'
@@ -2026,9 +2026,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, paraglid.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Outdoor activities and extreme sports'
+               {'is_valid': False
+               ,'major_en': 'Outdoor activities and extreme sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, paraglid.'
                    ,'title': 'Paragliding'
@@ -2051,9 +2051,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, philolog.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Philology'
+               {'is_valid': False
+               ,'major_en': 'Philology'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, philolog.'
                    ,'title': 'Philology'
@@ -2076,9 +2076,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, phonet.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Linguistics'
+               {'is_valid': False
+               ,'major_en': 'Linguistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, phonet.'
                    ,'title': 'Phonetics'
@@ -2101,9 +2101,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, photo.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Photography'
+               {'is_valid': False
+               ,'major_en': 'Photography'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, photo.'
                    ,'title': 'Photography'
@@ -2126,9 +2126,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, poetic':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': False
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, poetic'
                    ,'title': 'Poetic'
@@ -2151,9 +2151,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, polit.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Politics'
+               {'is_valid': False
+               ,'major_en': 'Politics'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, polit.'
                    ,'title': 'Politics'
@@ -2176,9 +2176,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, polygr.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Publishing'
+               {'is_valid': False
+               ,'major_en': 'Publishing'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, polygr.'
                    ,'title': 'Polygraphy'
@@ -2201,9 +2201,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, prof.jarg.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Jargon and slang'
+               {'is_valid': False
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, prof.jarg.'
                    ,'title': 'Professional jargon'
@@ -2226,9 +2226,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, prop.&figur.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, prop.&figur.'
                    ,'title': 'Proper and figurative'
@@ -2251,9 +2251,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, radio':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Communications'
+               {'is_valid': False
+               ,'major_en': 'Communications'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, radio'
                    ,'title': 'Radio'
@@ -2276,9 +2276,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, rel., jud.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Religion'
+               {'is_valid': False
+               ,'major_en': 'Religion'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, rel., jud.'
                    ,'title': 'Judaism'
@@ -2301,9 +2301,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, row.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': False
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, row.'
                    ,'title': 'Rowing'
@@ -2326,9 +2326,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, sail.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Outdoor activities and extreme sports'
+               {'is_valid': False
+               ,'major_en': 'Outdoor activities and extreme sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, sail.'
                    ,'title': 'Sailing'
@@ -2351,9 +2351,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, scient.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': False
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, scient.'
                    ,'title': 'Scientific'
@@ -2376,9 +2376,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, sculp.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': False
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, sculp.'
                    ,'title': 'Sculpture'
@@ -2401,9 +2401,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, slang':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Jargon and slang'
+               {'is_valid': False
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, slang'
                    ,'title': 'Slang'
@@ -2426,9 +2426,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, slavon.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': False
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, slavon.'
                    ,'title': 'Slavonic'
@@ -2451,9 +2451,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, social.sc.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Education'
+               {'is_valid': False
+               ,'major_en': 'Education'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, social.sc.'
                    ,'title': 'Social science'
@@ -2476,9 +2476,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, spin.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Crafts'
+               {'is_valid': False
+               ,'major_en': 'Crafts'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, spin.'
                    ,'title': 'Spinning'
@@ -2501,9 +2501,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, sport.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Sports'
+               {'is_valid': False
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, sport.'
                    ,'title': 'Sports'
@@ -2526,9 +2526,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, sport.goods':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': False
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, sport.goods'
                    ,'title': 'Sporting goods'
@@ -2551,9 +2551,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, surv.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Sociology'
+               {'is_valid': False
+               ,'major_en': 'Sociology'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, surv.'
                    ,'title': 'Survey'
@@ -2576,9 +2576,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, tech.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Technology'
+               {'is_valid': False
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, tech.'
                    ,'title': 'Technology'
@@ -2601,9 +2601,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, tel.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Communications'
+               {'is_valid': False
+               ,'major_en': 'Communications'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, tel.'
                    ,'title': 'Telephony'
@@ -2626,9 +2626,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, terat.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': False
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, terat.'
                    ,'title': 'Teratology'
@@ -2651,9 +2651,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, topogr.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': False
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, topogr.'
                    ,'title': 'Topography'
@@ -2676,9 +2676,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, typewrit.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Records management'
+               {'is_valid': False
+               ,'major_en': 'Records management'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, typewrit.'
                    ,'title': 'Typewriters and typewriting'
@@ -2701,9 +2701,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, vent.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': False
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, vent.'
                    ,'title': 'Ventilation'
@@ -2726,9 +2726,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, weav.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Crafts'
+               {'is_valid': False
+               ,'major_en': 'Crafts'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, weav.'
                    ,'title': 'Weaving'
@@ -2751,9 +2751,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, written':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': False
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, written'
                    ,'title': 'Written'
@@ -2776,9 +2776,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Gruzovik, zool.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': False
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'Gruzovik, zool.'
                    ,'title': 'Zoology'
@@ -2801,9 +2801,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Guatem.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Guatem.'
                    ,'title': 'Guatemala'
@@ -2826,9 +2826,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'HF.electr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Electronics'
+               {'is_valid': True
+               ,'major_en': 'Electronics'
+               ,'is_major': False
                ,'en':
                    {'short': 'HF.electr.'
                    ,'title': 'High frequency electronics'
@@ -2851,9 +2851,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'HR':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Business'
+               {'is_valid': True
+               ,'major_en': 'Business'
+               ,'is_major': False
                ,'en':
                    {'short': 'HR'
                    ,'title': 'Human resources'
@@ -2876,9 +2876,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'IMF.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Finances'
+               {'is_valid': True
+               ,'major_en': 'Finances'
+               ,'is_major': False
                ,'en':
                    {'short': 'IMF.'
                    ,'title': 'International Monetary Fund'
@@ -2901,9 +2901,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'IT':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'IT'
                    ,'title': 'Information technology'
@@ -2926,9 +2926,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'India':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'India'
                    ,'title': 'India'
@@ -2951,9 +2951,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Indones.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'Indones.'
                    ,'title': 'Indonesian'
@@ -2976,9 +2976,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Iran':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Iran'
                    ,'title': 'Iran'
@@ -3001,9 +3001,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Kazakh.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Kazakh.'
                    ,'title': 'Kazakhstan'
@@ -3026,9 +3026,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Kyrgyz.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Kyrgyz.'
                    ,'title': 'Kyrgyzstan'
@@ -3051,9 +3051,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'LP.play.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Multimedia'
+               {'is_valid': True
+               ,'major_en': 'Multimedia'
+               ,'is_major': False
                ,'en':
                    {'short': 'LP.play.'
                    ,'title': 'LP players'
@@ -3076,9 +3076,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'MSDS':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemical industry'
+               {'is_valid': True
+               ,'major_en': 'Chemical industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'MSDS'
                    ,'title': 'Material safety data sheet'
@@ -3101,9 +3101,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Makarov.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'Makarov.'
                    ,'title': 'Makarov'
@@ -3126,9 +3126,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Makarov., inform., amer.usg.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'Makarov., inform., amer.usg.'
                    ,'title': 'Makarov, Informal, American (usage, not AmE)'
@@ -3151,9 +3151,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Moroc.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Moroc.'
                    ,'title': 'Morocco'
@@ -3176,9 +3176,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'N.Ireland.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'N.Ireland.'
                    ,'title': 'Northern Ireland'
@@ -3201,9 +3201,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'NASA':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Space'
+               {'is_valid': True
+               ,'major_en': 'Space'
+               ,'is_major': False
                ,'en':
                    {'short': 'NASA'
                    ,'title': 'NASA'
@@ -3226,9 +3226,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'NATO':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Military'
+               {'is_valid': True
+               ,'major_en': 'Military'
+               ,'is_major': False
                ,'en':
                    {'short': 'NATO'
                    ,'title': 'NATO'
@@ -3251,9 +3251,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'NGO':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'NGO'
                    ,'title': 'Non-governmental organizations'
@@ -3276,9 +3276,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'NYSE.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Finances'
+               {'is_valid': True
+               ,'major_en': 'Finances'
+               ,'is_major': False
                ,'en':
                    {'short': 'NYSE.'
                    ,'title': 'New York Stock Exchange'
@@ -3301,9 +3301,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Nasdaq':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Finances'
+               {'is_valid': True
+               ,'major_en': 'Finances'
+               ,'is_major': False
                ,'en':
                    {'short': 'Nasdaq'
                    ,'title': 'NASDAQ'
@@ -3326,9 +3326,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Netherl., law, court':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'Netherl., law, court'
                    ,'title': 'Netherlands, Court (law)'
@@ -3351,9 +3351,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'O&G':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Oil and gas'
+               {'is_valid': True
+               ,'major_en': 'Oil and gas'
+               ,'is_major': True
                ,'en':
                    {'short': 'O&G'
                    ,'title': 'Oil and gas'
@@ -3376,9 +3376,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'O&G, casp.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Oil and gas'
+               {'is_valid': False
+               ,'major_en': 'Oil and gas'
+               ,'is_major': False
                ,'en':
                    {'short': 'O&G, casp.'
                    ,'title': 'Caspian'
@@ -3401,9 +3401,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'O&G, karach.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Oil and gas'
+               {'is_valid': False
+               ,'major_en': 'Oil and gas'
+               ,'is_major': False
                ,'en':
                    {'short': 'O&G, karach.'
                    ,'title': 'Karachaganak'
@@ -3426,9 +3426,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'O&G, molikpaq.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Oil and gas'
+               {'is_valid': False
+               ,'major_en': 'Oil and gas'
+               ,'is_major': False
                ,'en':
                    {'short': 'O&G, molikpaq.'
                    ,'title': 'Molikpaq'
@@ -3451,9 +3451,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'O&G, oilfield.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Oil and gas'
+               {'is_valid': False
+               ,'major_en': 'Oil and gas'
+               ,'is_major': False
                ,'en':
                    {'short': 'O&G, oilfield.'
                    ,'title': 'Oilfields'
@@ -3476,9 +3476,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'O&G, sahk.r.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Oil and gas'
+               {'is_valid': False
+               ,'major_en': 'Oil and gas'
+               ,'is_major': False
                ,'en':
                    {'short': 'O&G, sahk.r.'
                    ,'title': 'Sakhalin R'
@@ -3501,9 +3501,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'O&G, sahk.s.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Oil and gas'
+               {'is_valid': False
+               ,'major_en': 'Oil and gas'
+               ,'is_major': False
                ,'en':
                    {'short': 'O&G, sahk.s.'
                    ,'title': 'Sakhalin S'
@@ -3526,9 +3526,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'O&G, sakh.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Oil and gas'
+               {'is_valid': False
+               ,'major_en': 'Oil and gas'
+               ,'is_major': False
                ,'en':
                    {'short': 'O&G, sakh.'
                    ,'title': 'Sakhalin'
@@ -3551,9 +3551,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'O&G, sakh., geol.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'O&G, sakh., geol.'
                    ,'title': 'Sakhalin, Geology'
@@ -3576,9 +3576,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'O&G, sakh.a.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Oil and gas'
+               {'is_valid': False
+               ,'major_en': 'Oil and gas'
+               ,'is_major': False
                ,'en':
                    {'short': 'O&G, sakh.a.'
                    ,'title': 'Sakhalin A'
@@ -3601,9 +3601,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'O&G, tengiz.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Oil and gas'
+               {'is_valid': False
+               ,'major_en': 'Oil and gas'
+               ,'is_major': False
                ,'en':
                    {'short': 'O&G, tengiz.'
                    ,'title': 'Tengiz'
@@ -3626,9 +3626,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'O&G. tech.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Oil and gas'
+               {'is_valid': True
+               ,'major_en': 'Oil and gas'
+               ,'is_major': False
                ,'en':
                    {'short': 'O&G. tech.'
                    ,'title': 'Oil and gas technology'
@@ -3651,9 +3651,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'OHS':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Occupational health & safety'
+               {'is_valid': True
+               ,'major_en': 'Occupational health & safety'
+               ,'is_major': True
                ,'en':
                    {'short': 'OHS'
                    ,'title': 'Occupational health & safety'
@@ -3676,9 +3676,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'PCB':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Electronics'
+               {'is_valid': True
+               ,'major_en': 'Electronics'
+               ,'is_major': False
                ,'en':
                    {'short': 'PCB'
                    ,'title': 'Printed circuit boards'
@@ -3701,9 +3701,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'PPE':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Occupational health & safety'
+               {'is_valid': True
+               ,'major_en': 'Occupational health & safety'
+               ,'is_major': False
                ,'en':
                    {'short': 'PPE'
                    ,'title': 'Personal protective equipment'
@@ -3726,9 +3726,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'PR':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Business'
+               {'is_valid': True
+               ,'major_en': 'Business'
+               ,'is_major': False
                ,'en':
                    {'short': 'PR'
                    ,'title': 'Public relations'
@@ -3751,9 +3751,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'PSP':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Electrical engineering'
+               {'is_valid': True
+               ,'major_en': 'Electrical engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'PSP'
                    ,'title': 'Power system protection'
@@ -3776,9 +3776,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Panam.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Panam.'
                    ,'title': 'Panama'
@@ -3801,9 +3801,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Peru.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Peru.'
                    ,'title': 'Peru'
@@ -3826,9 +3826,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Philipp.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Philipp.'
                    ,'title': 'Philippines'
@@ -3851,9 +3851,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'R&D.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'R&D.'
                    ,'title': 'Research and development'
@@ -3876,9 +3876,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Russia':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Russia'
                    ,'title': 'Russia'
@@ -3901,9 +3901,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'S.Amer.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'S.Amer.'
                    ,'title': 'South America'
@@ -3926,9 +3926,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'SAP.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'SAP.'
                    ,'title': 'SAP'
@@ -3951,9 +3951,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'SAP.fin.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'SAP.fin.'
                    ,'title': 'SAP finance'
@@ -3976,9 +3976,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'SAP.tech.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'SAP.tech.'
                    ,'title': 'SAP tech.'
@@ -4001,9 +4001,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Scotl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Scotl.'
                    ,'title': 'Scotland'
@@ -4026,9 +4026,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Spain':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Spain'
                    ,'title': 'Spain'
@@ -4051,9 +4051,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'TV':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Mass media'
+               {'is_valid': True
+               ,'major_en': 'Mass media'
+               ,'is_major': False
                ,'en':
                    {'short': 'TV'
                    ,'title': 'Television'
@@ -4076,9 +4076,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'UK':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'UK'
                    ,'title': 'United Kingdom'
@@ -4101,9 +4101,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'UN':
-               {'valid': True
-               ,'major': True
-               ,'group': 'United Nations'
+               {'is_valid': True
+               ,'major_en': 'United Nations'
+               ,'is_major': True
                ,'en':
                    {'short': 'UN'
                    ,'title': 'United Nations'
@@ -4123,9 +4123,9 @@ SUBJECTS = {'AI.':
                ,'uk':
                    {'short': 'ООН'
                    ,'title': "Організація Об'єднаних Націй"}}, 'USA':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'USA'
                    ,'title': 'United States'
@@ -4148,9 +4148,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Ukraine':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Ukraine'
                    ,'title': 'Ukraine'
@@ -4173,9 +4173,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Venezuel.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'Venezuel.'
                    ,'title': 'Venezuela'
@@ -4198,9 +4198,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'WTO.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Economy'
+               {'is_valid': True
+               ,'major_en': 'Economy'
+               ,'is_major': False
                ,'en':
                    {'short': 'WTO.'
                    ,'title': 'World trade organization'
@@ -4223,9 +4223,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Grammatical labels'
+               {'is_valid': True
+               ,'major_en': 'Grammatical labels'
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr.'
                    ,'title': 'Abbreviation'
@@ -4248,9 +4248,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., O&G, casp.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., O&G, casp.'
                    ,'title': 'Abbreviation, Caspian'
@@ -4273,9 +4273,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., O&G, karach.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., O&G, karach.'
                    ,'title': 'Abbreviation, Karachaganak'
@@ -4298,9 +4298,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., O&G, sahk.r.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., O&G, sahk.r.'
                    ,'title': 'Abbreviation, Sakhalin R'
@@ -4323,9 +4323,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., O&G, sahk.s.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., O&G, sahk.s.'
                    ,'title': 'Abbreviation, Sakhalin S'
@@ -4348,9 +4348,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., O&G, sakh.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., O&G, sakh.'
                    ,'title': 'Abbreviation, Sakhalin'
@@ -4373,9 +4373,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., O&G, sakh.a.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., O&G, sakh.a.'
                    ,'title': 'Abbreviation, Sakhalin A'
@@ -4398,9 +4398,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., amer.usg.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., amer.usg.'
                    ,'title': 'Abbreviation, American (usage, not AmE)'
@@ -4423,9 +4423,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., amer.usg., slang':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., amer.usg., slang'
                    ,'title': 'Abbreviation, American (usage, not AmE), Slang'
@@ -4448,9 +4448,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., avia., avia., ICAO':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., avia., avia., ICAO'
                    ,'title': 'Abbreviation, Aviation, ICAO'
@@ -4473,9 +4473,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., avia., med.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., avia., med.'
                    ,'title': 'Abbreviation, Aviation medicine'
@@ -4498,9 +4498,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., comp., MS':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., comp., MS'
                    ,'title': 'Abbreviation, Microsoft'
@@ -4523,9 +4523,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., comp., net.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., comp., net.'
                    ,'title': 'Abbreviation, Computer networks'
@@ -4545,9 +4545,9 @@ SUBJECTS = {'AI.':
                ,'uk':
                    {'short': 'абрев., комп., мереж.'
                    ,'title': "Абревіатура, Комп'ютерні мережі"}}, 'abbr., comp., net., IT':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., comp., net., IT'
                    ,'title': 'Abbreviation, Computer networks, Information technology'
@@ -4567,9 +4567,9 @@ SUBJECTS = {'AI.':
                ,'uk':
                    {'short': 'абрев., комп., мереж., IT'
                    ,'title': "Абревіатура, Комп'ютерні мережі, Інформаційні технології"}}, 'abbr., fant./sci-fi.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., fant./sci-fi.'
                    ,'title': 'Abbreviation, Fantasy and science fiction'
@@ -4592,9 +4592,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., law, ADR':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., law, ADR'
                    ,'title': 'Abbreviation, Alternative dispute resolution'
@@ -4617,9 +4617,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., law, copyr.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., law, copyr.'
                    ,'title': 'Abbreviation, Copyright'
@@ -4642,9 +4642,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., mil., WMD':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., mil., WMD'
                    ,'title': 'Abbreviation, Weapons of mass destruction'
@@ -4667,9 +4667,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., mil., artil.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., mil., artil.'
                    ,'title': 'Abbreviation, Artillery'
@@ -4692,9 +4692,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., mil., navy':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., mil., navy'
                    ,'title': 'Abbreviation, Navy'
@@ -4717,9 +4717,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., patents.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., patents.'
                    ,'title': 'Abbreviation, Patents'
@@ -4742,9 +4742,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'abbr., sport, bask.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'abbr., sport, bask.'
                    ,'title': 'Abbreviation, Basketball'
@@ -4767,9 +4767,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'account.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Finances'
+               {'is_valid': True
+               ,'major_en': 'Finances'
+               ,'is_major': False
                ,'en':
                    {'short': 'account.'
                    ,'title': 'Accounting'
@@ -4792,9 +4792,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'accum.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'accum.'
                    ,'title': 'Accumulators'
@@ -4817,9 +4817,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'acoust.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'acoust.'
                    ,'title': 'Acoustics'
@@ -4842,9 +4842,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'acrid.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'acrid.'
                    ,'title': 'Acridology'
@@ -4867,9 +4867,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'acrob.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'acrob.'
                    ,'title': 'Acrobatics'
@@ -4892,9 +4892,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'acup.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medicine - Alternative medicine'
+               {'is_valid': True
+               ,'major_en': 'Medicine - Alternative medicine'
+               ,'is_major': False
                ,'en':
                    {'short': 'acup.'
                    ,'title': 'Acupuncture'
@@ -4917,9 +4917,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'addit.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'addit.'
                    ,'title': 'Additive manufacturing & 3D printing'
@@ -4942,9 +4942,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'adm.law.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': True
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'adm.law.'
                    ,'title': 'Administrative law'
@@ -4967,9 +4967,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'admin.geo.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'admin.geo.'
                    ,'title': 'Administrative geography'
@@ -4992,9 +4992,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'adv.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Business'
+               {'is_valid': True
+               ,'major_en': 'Business'
+               ,'is_major': False
                ,'en':
                    {'short': 'adv.'
                    ,'title': 'Advertising'
@@ -5017,9 +5017,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'aer.phot.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Aviation'
+               {'is_valid': True
+               ,'major_en': 'Aviation'
+               ,'is_major': False
                ,'en':
                    {'short': 'aer.phot.'
                    ,'title': 'Aerial photography and topography'
@@ -5042,9 +5042,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'aerodyn.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'aerodyn.'
                    ,'title': 'Aerodynamics'
@@ -5067,9 +5067,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'aerohydr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'aerohydr.'
                    ,'title': 'Aerohydrodynamics'
@@ -5092,9 +5092,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'aeron.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Aviation'
+               {'is_valid': True
+               ,'major_en': 'Aviation'
+               ,'is_major': False
                ,'en':
                    {'short': 'aeron.'
                    ,'title': 'Aeronautics'
@@ -5117,9 +5117,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'affect.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Emotional values'
+               {'is_valid': True
+               ,'major_en': 'Emotional values'
+               ,'is_major': False
                ,'en':
                    {'short': 'affect.'
                    ,'title': 'Affectionate'
@@ -5142,9 +5142,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'afghan.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'afghan.'
                    ,'title': 'Afghanistan'
@@ -5167,9 +5167,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'afr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'afr.'
                    ,'title': 'Africa'
@@ -5192,9 +5192,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'african.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'african.'
                    ,'title': 'African'
@@ -5217,9 +5217,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'agr.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': False
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'agr.'
                    ,'title': 'Agronomy'
@@ -5242,9 +5242,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'agric.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': True
                ,'en':
                    {'short': 'agric.'
                    ,'title': 'Agriculture'
@@ -5267,9 +5267,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'agrochem.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'agrochem.'
                    ,'title': 'Agrochemistry'
@@ -5292,9 +5292,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'aikido.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Martial arts and combat sports'
+               {'is_valid': True
+               ,'major_en': 'Martial arts and combat sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'aikido.'
                    ,'title': 'Aikido'
@@ -5317,9 +5317,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'airccon.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'airccon.'
                    ,'title': 'Air conditioners'
@@ -5342,9 +5342,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'airports':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Aviation'
+               {'is_valid': True
+               ,'major_en': 'Aviation'
+               ,'is_major': False
                ,'en':
                    {'short': 'airports'
                    ,'title': 'Airports and air traffic control'
@@ -5367,9 +5367,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'airsh.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Aviation'
+               {'is_valid': True
+               ,'major_en': 'Aviation'
+               ,'is_major': False
                ,'en':
                    {'short': 'airsh.'
                    ,'title': 'Airships'
@@ -5392,9 +5392,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'alg.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Mathematics'
+               {'is_valid': True
+               ,'major_en': 'Mathematics'
+               ,'is_major': False
                ,'en':
                    {'short': 'alg.'
                    ,'title': 'Algebra'
@@ -5417,9 +5417,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'alk.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemistry'
+               {'is_valid': True
+               ,'major_en': 'Chemistry'
+               ,'is_major': False
                ,'en':
                    {'short': 'alk.'
                    ,'title': 'Alkaloids'
@@ -5442,9 +5442,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'allergol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'allergol.'
                    ,'title': 'Allergology'
@@ -5467,9 +5467,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'alp.ski.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Outdoor activities and extreme sports'
+               {'is_valid': True
+               ,'major_en': 'Outdoor activities and extreme sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'alp.ski.'
                    ,'title': 'Alpine skiing'
@@ -5492,9 +5492,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'alum.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Metallurgy'
+               {'is_valid': True
+               ,'major_en': 'Metallurgy'
+               ,'is_major': False
                ,'en':
                    {'short': 'alum.'
                    ,'title': 'Aluminium industry'
@@ -5517,9 +5517,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'amer.usg.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': False
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'amer.usg.'
                    ,'title': 'American (usage, not AmE)'
@@ -5542,9 +5542,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'amer.usg., Makarov.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'amer.usg., Makarov.'
                    ,'title': 'American (usage, not AmE), Makarov'
@@ -5567,9 +5567,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'amer.usg., account.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'amer.usg., account.'
                    ,'title': 'American (usage, not AmE), Accounting'
@@ -5592,9 +5592,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'anaesthes.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'anaesthes.'
                    ,'title': 'Anesthesiology'
@@ -5617,9 +5617,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'anat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'anat.'
                    ,'title': 'Anatomy'
@@ -5642,9 +5642,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'anc.fr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'anc.fr.'
                    ,'title': 'Ancient French'
@@ -5667,9 +5667,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'anc.gr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'anc.gr.'
                    ,'title': 'Ancient Greek'
@@ -5692,9 +5692,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'anc.hebr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'anc.hebr.'
                    ,'title': 'Ancient Hebrew'
@@ -5717,9 +5717,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'angl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Hobbies and pastimes'
+               {'is_valid': True
+               ,'major_en': 'Hobbies and pastimes'
+               ,'is_major': False
                ,'en':
                    {'short': 'angl.'
                    ,'title': 'Angling (hobby)'
@@ -5742,9 +5742,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'anim.husb.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': False
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'anim.husb.'
                    ,'title': 'Animal husbandry'
@@ -5767,9 +5767,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'animat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Cinematography'
+               {'is_valid': True
+               ,'major_en': 'Cinematography'
+               ,'is_major': False
                ,'en':
                    {'short': 'animat.'
                    ,'title': 'Animation and animated films'
@@ -5792,9 +5792,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'antarct.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'antarct.'
                    ,'title': 'Antarctic'
@@ -5817,9 +5817,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'antenn.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Communications'
+               {'is_valid': True
+               ,'major_en': 'Communications'
+               ,'is_major': False
                ,'en':
                    {'short': 'antenn.'
                    ,'title': 'Antennas and waveguides'
@@ -5842,9 +5842,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'anthr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Historical'
+               {'is_valid': True
+               ,'major_en': 'Historical'
+               ,'is_major': False
                ,'en':
                    {'short': 'anthr.'
                    ,'title': 'Anthropology'
@@ -5867,9 +5867,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'antitrust.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': True
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'antitrust.'
                    ,'title': 'Antitrust law'
@@ -5892,9 +5892,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'appl.math.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Mathematics'
+               {'is_valid': True
+               ,'major_en': 'Mathematics'
+               ,'is_major': False
                ,'en':
                    {'short': 'appl.math.'
                    ,'title': 'Applied mathematics'
@@ -5917,9 +5917,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'arabic':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'arabic'
                    ,'title': 'Arabic language'
@@ -5942,9 +5942,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'arch.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'arch.'
                    ,'title': 'Archaic'
@@ -5967,9 +5967,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'archer.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'archer.'
                    ,'title': 'Archery'
@@ -5992,9 +5992,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'archit.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'archit.'
                    ,'title': 'Architecture'
@@ -6017,9 +6017,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'archive.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Records management'
+               {'is_valid': True
+               ,'major_en': 'Records management'
+               ,'is_major': False
                ,'en':
                    {'short': 'archive.'
                    ,'title': 'Archiving'
@@ -6042,9 +6042,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'arts.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'arts.'
                    ,'title': 'Art'
@@ -6067,9 +6067,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'astr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Space'
+               {'is_valid': True
+               ,'major_en': 'Space'
+               ,'is_major': False
                ,'en':
                    {'short': 'astr.'
                    ,'title': 'Astronomy'
@@ -6092,9 +6092,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'astrol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Parasciences'
+               {'is_valid': True
+               ,'major_en': 'Parasciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'astrol.'
                    ,'title': 'Astrology'
@@ -6117,9 +6117,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'astrometr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Space'
+               {'is_valid': True
+               ,'major_en': 'Space'
+               ,'is_major': False
                ,'en':
                    {'short': 'astrometr.'
                    ,'title': 'Astrometry'
@@ -6142,9 +6142,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'astronaut.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Space'
+               {'is_valid': True
+               ,'major_en': 'Space'
+               ,'is_major': False
                ,'en':
                    {'short': 'astronaut.'
                    ,'title': 'Astronautics'
@@ -6167,9 +6167,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'astrophys.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'astrophys.'
                    ,'title': 'Astrophysics'
@@ -6192,9 +6192,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'astrospectr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Space'
+               {'is_valid': True
+               ,'major_en': 'Space'
+               ,'is_major': False
                ,'en':
                    {'short': 'astrospectr.'
                    ,'title': 'Astrospectroscopy'
@@ -6217,9 +6217,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'athlet.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'athlet.'
                    ,'title': 'Athletics'
@@ -6242,9 +6242,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'atring.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Building materials'
+               {'is_valid': True
+               ,'major_en': 'Building materials'
+               ,'is_major': False
                ,'en':
                    {'short': 'atring.'
                    ,'title': 'Astringents'
@@ -6267,9 +6267,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'audio.el.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Multimedia'
+               {'is_valid': True
+               ,'major_en': 'Multimedia'
+               ,'is_major': False
                ,'en':
                    {'short': 'audio.el.'
                    ,'title': 'Audio electronics'
@@ -6292,9 +6292,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'austral.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'austral.'
                    ,'title': 'Australian'
@@ -6317,9 +6317,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'austrian':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'austrian'
                    ,'title': 'Austrian (usage)'
@@ -6342,9 +6342,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'auto.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Transport'
+               {'is_valid': True
+               ,'major_en': 'Transport'
+               ,'is_major': False
                ,'en':
                    {'short': 'auto.'
                    ,'title': 'Automobiles'
@@ -6367,9 +6367,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'auto.ctrl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'auto.ctrl.'
                    ,'title': 'Automatic control'
@@ -6392,9 +6392,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'automat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Machinery and mechanisms'
+               {'is_valid': True
+               ,'major_en': 'Machinery and mechanisms'
+               ,'is_major': False
                ,'en':
                    {'short': 'automat.'
                    ,'title': 'Automated equipment'
@@ -6417,9 +6417,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'avia.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Aviation'
+               {'is_valid': True
+               ,'major_en': 'Aviation'
+               ,'is_major': True
                ,'en':
                    {'short': 'avia.'
                    ,'title': 'Aviation'
@@ -6442,9 +6442,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'avia., avia., ICAO':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'avia., avia., ICAO'
                    ,'title': 'Aviation, ICAO'
@@ -6467,9 +6467,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'avia., med.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Aviation'
+               {'is_valid': False
+               ,'major_en': 'Aviation'
+               ,'is_major': False
                ,'en':
                    {'short': 'avia., med.'
                    ,'title': 'Aviation medicine'
@@ -6492,9 +6492,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'avunc.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Emotional values'
+               {'is_valid': True
+               ,'major_en': 'Emotional values'
+               ,'is_major': False
                ,'en':
                    {'short': 'avunc.'
                    ,'title': 'Avuncular'
@@ -6517,9 +6517,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'bacteriol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'bacteriol.'
                    ,'title': 'Bacteriology'
@@ -6542,9 +6542,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'baker.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Food industry'
+               {'is_valid': True
+               ,'major_en': 'Food industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'baker.'
                    ,'title': 'Bakery'
@@ -6567,9 +6567,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ball.bear.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Machinery and mechanisms'
+               {'is_valid': True
+               ,'major_en': 'Machinery and mechanisms'
+               ,'is_major': False
                ,'en':
                    {'short': 'ball.bear.'
                    ,'title': 'Ball bearings'
@@ -6592,9 +6592,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ballet.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'ballet.'
                    ,'title': 'Ballet'
@@ -6617,9 +6617,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'bank.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Finances'
+               {'is_valid': True
+               ,'major_en': 'Finances'
+               ,'is_major': False
                ,'en':
                    {'short': 'bank.'
                    ,'title': 'Banking'
@@ -6642,9 +6642,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'baseb.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'baseb.'
                    ,'title': 'Baseball'
@@ -6667,9 +6667,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'beekeep.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'beekeep.'
                    ,'title': 'Beekeeping'
@@ -6692,9 +6692,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'belg.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'belg.'
                    ,'title': 'Belgian (usage)'
@@ -6717,9 +6717,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'bev.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Cooking'
+               {'is_valid': True
+               ,'major_en': 'Cooking'
+               ,'is_major': False
                ,'en':
                    {'short': 'bev.'
                    ,'title': 'Beverages'
@@ -6742,9 +6742,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'bible.term.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Religion'
+               {'is_valid': True
+               ,'major_en': 'Religion'
+               ,'is_major': False
                ,'en':
                    {'short': 'bible.term.'
                    ,'title': 'Bible'
@@ -6767,9 +6767,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'bibliogr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Records management'
+               {'is_valid': True
+               ,'major_en': 'Records management'
+               ,'is_major': False
                ,'en':
                    {'short': 'bibliogr.'
                    ,'title': 'Bibliography'
@@ -6792,9 +6792,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'bill.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': True
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'bill.'
                    ,'title': 'Bills'
@@ -6817,9 +6817,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'billiar.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Games (other than sports)'
+               {'is_valid': True
+               ,'major_en': 'Games (other than sports)'
+               ,'is_major': False
                ,'en':
                    {'short': 'billiar.'
                    ,'title': 'Billiards'
@@ -6842,9 +6842,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'bioacoust.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'bioacoust.'
                    ,'title': 'Bioacoustics'
@@ -6867,9 +6867,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'biochem.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'biochem.'
                    ,'title': 'Biochemistry'
@@ -6892,9 +6892,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'bioenerg.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Energy industry'
+               {'is_valid': True
+               ,'major_en': 'Energy industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'bioenerg.'
                    ,'title': 'Bioenergy'
@@ -6917,9 +6917,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'biol.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': True
                ,'en':
                    {'short': 'biol.'
                    ,'title': 'Biology'
@@ -6942,9 +6942,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'biom.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Security systems'
+               {'is_valid': True
+               ,'major_en': 'Security systems'
+               ,'is_major': False
                ,'en':
                    {'short': 'biom.'
                    ,'title': 'Biometry'
@@ -6967,9 +6967,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'bion.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'bion.'
                    ,'title': 'Bionics'
@@ -6992,9 +6992,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'biophys.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'biophys.'
                    ,'title': 'Biophysics'
@@ -7017,9 +7017,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'biotaxy.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'biotaxy.'
                    ,'title': 'Biotaxy'
@@ -7042,9 +7042,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'biotechn.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'biotechn.'
                    ,'title': 'Biotechnology'
@@ -7067,9 +7067,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'black.sl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Jargon and slang'
+               {'is_valid': True
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': False
                ,'en':
                    {'short': 'black.sl.'
                    ,'title': 'Black slang'
@@ -7092,9 +7092,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'bodybuild.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'bodybuild.'
                    ,'title': 'Bodybuilding'
@@ -7117,9 +7117,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'book.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'book.'
                    ,'title': 'Bookish / literary'
@@ -7142,9 +7142,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'book.bind.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Publishing'
+               {'is_valid': True
+               ,'major_en': 'Publishing'
+               ,'is_major': False
                ,'en':
                    {'short': 'book.bind.'
                    ,'title': 'Book binding'
@@ -7167,9 +7167,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'bot.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'bot.'
                    ,'title': 'Botany'
@@ -7192,9 +7192,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'box.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Martial arts and combat sports'
+               {'is_valid': True
+               ,'major_en': 'Martial arts and combat sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'box.'
                    ,'title': 'Boxing'
@@ -7217,9 +7217,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'brew.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Food industry'
+               {'is_valid': True
+               ,'major_en': 'Food industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'brew.'
                    ,'title': 'Brewery'
@@ -7242,9 +7242,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'bricks':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Building materials'
+               {'is_valid': True
+               ,'major_en': 'Building materials'
+               ,'is_major': False
                ,'en':
                    {'short': 'bricks'
                    ,'title': 'Bricks'
@@ -7267,9 +7267,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'bridg.constr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'bridg.constr.'
                    ,'title': 'Bridge construction'
@@ -7292,9 +7292,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'brit.usg.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': False
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'brit.usg.'
                    ,'title': 'British (usage, not BrE)'
@@ -7317,9 +7317,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'brit.usg., austral.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'brit.usg., austral.'
                    ,'title': 'British (usage, not BrE), Australian'
@@ -7342,9 +7342,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'build.mat.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Building materials'
+               {'is_valid': True
+               ,'major_en': 'Building materials'
+               ,'is_major': True
                ,'en':
                    {'short': 'build.mat.'
                    ,'title': 'Building materials'
@@ -7367,9 +7367,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'build.struct.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'build.struct.'
                    ,'title': 'Building structures'
@@ -7392,9 +7392,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'bus.styl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Business'
+               {'is_valid': True
+               ,'major_en': 'Business'
+               ,'is_major': False
                ,'en':
                    {'short': 'bus.styl.'
                    ,'title': 'Business style'
@@ -7417,9 +7417,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'busin.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Business'
+               {'is_valid': True
+               ,'major_en': 'Business'
+               ,'is_major': True
                ,'en':
                    {'short': 'busin.'
                    ,'title': 'Business'
@@ -7442,9 +7442,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cables':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Electrical engineering'
+               {'is_valid': True
+               ,'major_en': 'Electrical engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'cables'
                    ,'title': 'Cables and cable production'
@@ -7467,9 +7467,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'calligr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'calligr.'
                    ,'title': 'Calligraphy'
@@ -7492,9 +7492,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'can.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Food industry'
+               {'is_valid': True
+               ,'major_en': 'Food industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'can.'
                    ,'title': 'Canning'
@@ -7517,9 +7517,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'canad.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'canad.'
                    ,'title': 'Canadian'
@@ -7542,9 +7542,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'carcin.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'carcin.'
                    ,'title': 'Carcinology'
@@ -7567,9 +7567,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cardiol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'cardiol.'
                    ,'title': 'Cardiology'
@@ -7592,9 +7592,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cards':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Games (other than sports)'
+               {'is_valid': True
+               ,'major_en': 'Games (other than sports)'
+               ,'is_major': False
                ,'en':
                    {'short': 'cards'
                    ,'title': 'Card games'
@@ -7617,9 +7617,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cartogr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'cartogr.'
                    ,'title': 'Cartography'
@@ -7642,9 +7642,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cartogr., amer.usg.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'cartogr., amer.usg.'
                    ,'title': 'Cartography, American (usage, not AmE)'
@@ -7667,9 +7667,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cel.mech.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Space'
+               {'is_valid': True
+               ,'major_en': 'Space'
+               ,'is_major': False
                ,'en':
                    {'short': 'cel.mech.'
                    ,'title': 'Celestial mechanics'
@@ -7692,9 +7692,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cem.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Building materials'
+               {'is_valid': True
+               ,'major_en': 'Building materials'
+               ,'is_major': False
                ,'en':
                    {'short': 'cem.'
                    ,'title': 'Cement'
@@ -7717,9 +7717,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ceram.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Production'
+               {'is_valid': True
+               ,'major_en': 'Production'
+               ,'is_major': False
                ,'en':
                    {'short': 'ceram.'
                    ,'title': 'Ceramics'
@@ -7742,9 +7742,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ceram.tile.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Building materials'
+               {'is_valid': True
+               ,'major_en': 'Building materials'
+               ,'is_major': False
                ,'en':
                    {'short': 'ceram.tile.'
                    ,'title': 'Ceramic tiles'
@@ -7767,9 +7767,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'chalcid.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'chalcid.'
                    ,'title': 'Chalcidology'
@@ -7792,9 +7792,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'charit.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Finances'
+               {'is_valid': True
+               ,'major_en': 'Finances'
+               ,'is_major': False
                ,'en':
                    {'short': 'charit.'
                    ,'title': 'Charities'
@@ -7817,9 +7817,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'chat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'chat.'
                    ,'title': 'Chat and Internet slang'
@@ -7842,9 +7842,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'chech.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'chech.'
                    ,'title': 'Czech'
@@ -7867,9 +7867,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'checkers.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Games (other than sports)'
+               {'is_valid': True
+               ,'major_en': 'Games (other than sports)'
+               ,'is_major': False
                ,'en':
                    {'short': 'checkers.'
                    ,'title': 'Checkers'
@@ -7892,9 +7892,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cheese':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Food industry'
+               {'is_valid': True
+               ,'major_en': 'Food industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'cheese'
                    ,'title': 'Cheesemaking (caseiculture)'
@@ -7917,9 +7917,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'chem.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Chemistry'
+               {'is_valid': True
+               ,'major_en': 'Chemistry'
+               ,'is_major': True
                ,'en':
                    {'short': 'chem.'
                    ,'title': 'Chemistry'
@@ -7942,9 +7942,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'chem.comp.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemistry'
+               {'is_valid': True
+               ,'major_en': 'Chemistry'
+               ,'is_major': False
                ,'en':
                    {'short': 'chem.comp.'
                    ,'title': 'Chemical compounds'
@@ -7967,9 +7967,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'chem.fib.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemical industry'
+               {'is_valid': True
+               ,'major_en': 'Chemical industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'chem.fib.'
                    ,'title': 'Chemical fibers'
@@ -7992,9 +7992,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'chem.ind.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Chemical industry'
+               {'is_valid': True
+               ,'major_en': 'Chemical industry'
+               ,'is_major': True
                ,'en':
                    {'short': 'chem.ind.'
                    ,'title': 'Chemical industry'
@@ -8017,9 +8017,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'chem.nomencl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemistry'
+               {'is_valid': True
+               ,'major_en': 'Chemistry'
+               ,'is_major': False
                ,'en':
                    {'short': 'chem.nomencl.'
                    ,'title': 'Chemical nomenclature'
@@ -8042,9 +8042,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'chess.term.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Games (other than sports)'
+               {'is_valid': True
+               ,'major_en': 'Games (other than sports)'
+               ,'is_major': False
                ,'en':
                    {'short': 'chess.term.'
                    ,'title': 'Chess'
@@ -8067,9 +8067,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'child.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'child.'
                    ,'title': 'Childish'
@@ -8092,9 +8092,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'chinese.lang.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'chinese.lang.'
                    ,'title': 'Chinese'
@@ -8117,9 +8117,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'choreogr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'choreogr.'
                    ,'title': 'Choreography'
@@ -8142,9 +8142,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'chromat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemistry'
+               {'is_valid': True
+               ,'major_en': 'Chemistry'
+               ,'is_major': False
                ,'en':
                    {'short': 'chromat.'
                    ,'title': 'Chromatography'
@@ -8167,9 +8167,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cinema':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Cinematography'
+               {'is_valid': True
+               ,'major_en': 'Cinematography'
+               ,'is_major': True
                ,'en':
                    {'short': 'cinema'
                    ,'title': 'Cinematography'
@@ -8192,9 +8192,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cinema.equip.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Cinematography'
+               {'is_valid': True
+               ,'major_en': 'Cinematography'
+               ,'is_major': False
                ,'en':
                    {'short': 'cinema.equip.'
                    ,'title': 'Cinema equipment'
@@ -8217,9 +8217,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'circus':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'circus'
                    ,'title': 'Circus'
@@ -8242,9 +8242,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'civ.law.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': True
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'civ.law.'
                    ,'title': 'Civil law'
@@ -8267,9 +8267,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'civ.proc.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': True
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'civ.proc.'
                    ,'title': 'Civil procedure'
@@ -8292,9 +8292,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'clas.ant.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Historical'
+               {'is_valid': True
+               ,'major_en': 'Historical'
+               ,'is_major': False
                ,'en':
                    {'short': 'clas.ant.'
                    ,'title': 'Classical antiquity (excl. mythology)'
@@ -8317,9 +8317,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cleric.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Religion'
+               {'is_valid': True
+               ,'major_en': 'Religion'
+               ,'is_major': False
                ,'en':
                    {'short': 'cleric.'
                    ,'title': 'Clerical'
@@ -8342,9 +8342,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'clich.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'clich.'
                    ,'title': 'Cliche'
@@ -8367,9 +8367,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'clim.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'clim.'
                    ,'title': 'Climatology'
@@ -8392,9 +8392,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'clin.trial.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'clin.trial.'
                    ,'title': 'Clinical trial'
@@ -8417,9 +8417,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cloth.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Light industries'
+               {'is_valid': True
+               ,'major_en': 'Light industries'
+               ,'is_major': False
                ,'en':
                    {'short': 'cloth.'
                    ,'title': 'Clothing'
@@ -8442,9 +8442,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'coal.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Mining'
+               {'is_valid': True
+               ,'major_en': 'Mining'
+               ,'is_major': False
                ,'en':
                    {'short': 'coal.'
                    ,'title': 'Coal'
@@ -8467,9 +8467,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cockney':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Jargon and slang'
+               {'is_valid': True
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': False
                ,'en':
                    {'short': 'cockney'
                    ,'title': 'Cockney rhyming slang'
@@ -8492,9 +8492,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'coff.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Food industry'
+               {'is_valid': True
+               ,'major_en': 'Food industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'coff.'
                    ,'title': 'Coffee'
@@ -8517,9 +8517,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'coll.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Grammatical labels'
+               {'is_valid': True
+               ,'major_en': 'Grammatical labels'
+               ,'is_major': False
                ,'en':
                    {'short': 'coll.'
                    ,'title': 'Collective'
@@ -8542,9 +8542,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'collect.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Collecting'
+               {'is_valid': True
+               ,'major_en': 'Collecting'
+               ,'is_major': True
                ,'en':
                    {'short': 'collect.'
                    ,'title': 'Collecting'
@@ -8567,9 +8567,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'college.vern.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Jargon and slang'
+               {'is_valid': True
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': False
                ,'en':
                    {'short': 'college.vern.'
                    ,'title': 'College vernacular'
@@ -8592,9 +8592,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'colloid.chem.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemistry'
+               {'is_valid': True
+               ,'major_en': 'Chemistry'
+               ,'is_major': False
                ,'en':
                    {'short': 'colloid.chem.'
                    ,'title': 'Colloid chemistry'
@@ -8617,9 +8617,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'combust.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Machinery and mechanisms'
+               {'is_valid': True
+               ,'major_en': 'Machinery and mechanisms'
+               ,'is_major': False
                ,'en':
                    {'short': 'combust.'
                    ,'title': 'Combustion gas turbines'
@@ -8642,9 +8642,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'comic.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'comic.'
                    ,'title': 'Comics'
@@ -8667,9 +8667,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'commer.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Business'
+               {'is_valid': True
+               ,'major_en': 'Business'
+               ,'is_major': False
                ,'en':
                    {'short': 'commer.'
                    ,'title': 'Commerce'
@@ -8692,9 +8692,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'commun.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Communications'
+               {'is_valid': True
+               ,'major_en': 'Communications'
+               ,'is_major': True
                ,'en':
                    {'short': 'commun.'
                    ,'title': 'Communications'
@@ -8717,9 +8717,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'comp.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': True
                ,'en':
                    {'short': 'comp.'
                    ,'title': 'Computing'
@@ -8739,9 +8739,9 @@ SUBJECTS = {'AI.':
                ,'uk':
                    {'short': 'комп.'
                    ,'title': "Комп'ютери"}}, 'comp., MS':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': False
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'comp., MS'
                    ,'title': 'Microsoft'
@@ -8764,9 +8764,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'comp., net.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': False
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'comp., net.'
                    ,'title': 'Computer networks'
@@ -8786,9 +8786,9 @@ SUBJECTS = {'AI.':
                ,'uk':
                    {'short': 'комп., мереж.'
                    ,'title': "Комп'ютерні мережі"}}, 'comp., net., abbr.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'comp., net., abbr.'
                    ,'title': 'Computer networks, Abbreviation'
@@ -8808,9 +8808,9 @@ SUBJECTS = {'AI.':
                ,'uk':
                    {'short': 'комп., мереж., абрев.'
                    ,'title': "Комп'ютерні мережі, Абревіатура"}}, 'comp.games.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'comp.games.'
                    ,'title': 'Computer games'
@@ -8833,9 +8833,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'comp.graph.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'comp.graph.'
                    ,'title': 'Computer graphics'
@@ -8858,9 +8858,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'comp.name.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Proper name'
+               {'is_valid': True
+               ,'major_en': 'Proper name'
+               ,'is_major': False
                ,'en':
                    {'short': 'comp.name.'
                    ,'title': 'Company name'
@@ -8883,9 +8883,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'comp.sec.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'comp.sec.'
                    ,'title': 'Computer security'
@@ -8908,9 +8908,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'comp.sl., humor.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'comp.sl., humor.'
                    ,'title': 'Computing slang, Humorous / Jocular'
@@ -8933,9 +8933,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'compr.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'compr.'
                    ,'title': 'Compressors'
@@ -8958,9 +8958,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'concr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Building materials'
+               {'is_valid': True
+               ,'major_en': 'Building materials'
+               ,'is_major': False
                ,'en':
                    {'short': 'concr.'
                    ,'title': 'Concrete'
@@ -8983,9 +8983,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'confect.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Cooking'
+               {'is_valid': True
+               ,'major_en': 'Cooking'
+               ,'is_major': False
                ,'en':
                    {'short': 'confect.'
                    ,'title': 'Confectionery'
@@ -9008,9 +9008,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'construct.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': True
                ,'en':
                    {'short': 'construct.'
                    ,'title': 'Construction'
@@ -9033,9 +9033,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'consult.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Business'
+               {'is_valid': True
+               ,'major_en': 'Business'
+               ,'is_major': False
                ,'en':
                    {'short': 'consult.'
                    ,'title': 'Consulting'
@@ -9058,9 +9058,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'contempt.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Emotional values'
+               {'is_valid': True
+               ,'major_en': 'Emotional values'
+               ,'is_major': False
                ,'en':
                    {'short': 'contempt.'
                    ,'title': 'Contemptuous'
@@ -9083,9 +9083,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'context.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'context.'
                    ,'title': 'Contextual meaning'
@@ -9108,9 +9108,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'conv.ind.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Production'
+               {'is_valid': True
+               ,'major_en': 'Production'
+               ,'is_major': False
                ,'en':
                    {'short': 'conv.ind.'
                    ,'title': 'Converter industry'
@@ -9133,9 +9133,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'conv.notation.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Subjects for Chinese dictionaries (container)'
+               {'is_valid': True
+               ,'major_en': 'Subjects for Chinese dictionaries (container)'
+               ,'is_major': False
                ,'en':
                    {'short': 'conv.notation.'
                    ,'title': 'Conventional notation'
@@ -9158,9 +9158,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cook.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Cooking'
+               {'is_valid': True
+               ,'major_en': 'Cooking'
+               ,'is_major': True
                ,'en':
                    {'short': 'cook.'
                    ,'title': 'Cooking'
@@ -9183,9 +9183,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'coop.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Crafts'
+               {'is_valid': True
+               ,'major_en': 'Crafts'
+               ,'is_major': False
                ,'en':
                    {'short': 'coop.'
                    ,'title': 'Cooperage'
@@ -9208,9 +9208,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'corp.gov.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Business'
+               {'is_valid': True
+               ,'major_en': 'Business'
+               ,'is_major': False
                ,'en':
                    {'short': 'corp.gov.'
                    ,'title': 'Corporate governance'
@@ -9233,9 +9233,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'corrupt.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law enforcement'
+               {'is_valid': True
+               ,'major_en': 'Law enforcement'
+               ,'is_major': False
                ,'en':
                    {'short': 'corrupt.'
                    ,'title': 'Combating corruption'
@@ -9258,9 +9258,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cosmet.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Wellness'
+               {'is_valid': True
+               ,'major_en': 'Wellness'
+               ,'is_major': False
                ,'en':
                    {'short': 'cosmet.'
                    ,'title': 'Cosmetics and cosmetology'
@@ -9283,9 +9283,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'crim.jarg.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Jargon and slang'
+               {'is_valid': True
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': False
                ,'en':
                    {'short': 'crim.jarg.'
                    ,'title': 'Criminal jargon'
@@ -9308,9 +9308,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'crim.law.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': True
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'crim.law.'
                    ,'title': 'Criminal law'
@@ -9333,9 +9333,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cryptogr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Security systems'
+               {'is_valid': True
+               ,'major_en': 'Security systems'
+               ,'is_major': False
                ,'en':
                    {'short': 'cryptogr.'
                    ,'title': 'Cryptography'
@@ -9358,9 +9358,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'crystall.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geology'
+               {'is_valid': True
+               ,'major_en': 'Geology'
+               ,'is_major': False
                ,'en':
                    {'short': 'crystall.'
                    ,'title': 'Crystallography'
@@ -9383,9 +9383,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cultur.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'cultur.'
                    ,'title': 'Cultural studies'
@@ -9408,9 +9408,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'curr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Finances'
+               {'is_valid': True
+               ,'major_en': 'Finances'
+               ,'is_major': False
                ,'en':
                    {'short': 'curr.'
                    ,'title': 'Currencies and monetary policy'
@@ -9433,9 +9433,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cust.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Government, administration and public services'
+               {'is_valid': True
+               ,'major_en': 'Government, administration and public services'
+               ,'is_major': False
                ,'en':
                    {'short': 'cust.'
                    ,'title': 'Customs'
@@ -9458,9 +9458,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cyber.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'cyber.'
                    ,'title': 'Cybernetics'
@@ -9483,9 +9483,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cyc.sport':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'cyc.sport'
                    ,'title': 'Cycle sport'
@@ -9508,9 +9508,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cycl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Outdoor activities and extreme sports'
+               {'is_valid': True
+               ,'major_en': 'Outdoor activities and extreme sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'cycl.'
                    ,'title': 'Cycling (other than sport)'
@@ -9533,9 +9533,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cytog.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'cytog.'
                    ,'title': 'Cytogenetics'
@@ -9558,9 +9558,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'cytol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'cytol.'
                    ,'title': 'Cytology'
@@ -9583,9 +9583,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'d.b..':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'd.b..'
                    ,'title': 'Databases'
@@ -9608,9 +9608,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'dactyl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law enforcement'
+               {'is_valid': True
+               ,'major_en': 'Law enforcement'
+               ,'is_major': False
                ,'en':
                    {'short': 'dactyl.'
                    ,'title': 'Dactyloscopy'
@@ -9633,9 +9633,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'dam.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'dam.'
                    ,'title': 'Dams'
@@ -9658,9 +9658,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'dan.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'dan.'
                    ,'title': 'Danish'
@@ -9683,9 +9683,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'danc.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'danc.'
                    ,'title': 'Dancing'
@@ -9708,9 +9708,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'dat.proc.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'dat.proc.'
                    ,'title': 'Data processing'
@@ -9733,9 +9733,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'deaf.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'deaf.'
                    ,'title': 'Deafblindness'
@@ -9758,9 +9758,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'demogr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'demogr.'
                    ,'title': 'Demography'
@@ -9783,9 +9783,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'dent.impl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical appliances'
+               {'is_valid': True
+               ,'major_en': 'Medical appliances'
+               ,'is_major': False
                ,'en':
                    {'short': 'dent.impl.'
                    ,'title': 'Dental implantology'
@@ -9808,9 +9808,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'dentist.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'dentist.'
                    ,'title': 'Dentistry'
@@ -9833,9 +9833,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'derbet.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Dialectal'
+               {'is_valid': True
+               ,'major_en': 'Dialectal'
+               ,'is_major': False
                ,'en':
                    {'short': 'derbet.'
                    ,'title': 'Derbet language'
@@ -9858,9 +9858,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'dermat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'dermat.'
                    ,'title': 'Dermatology'
@@ -9883,9 +9883,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'derog.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Emotional values'
+               {'is_valid': True
+               ,'major_en': 'Emotional values'
+               ,'is_major': False
                ,'en':
                    {'short': 'derog.'
                    ,'title': 'Derogatory'
@@ -9908,9 +9908,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'desert.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'desert.'
                    ,'title': 'Desert science'
@@ -9933,9 +9933,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'design.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'design.'
                    ,'title': 'Design'
@@ -9958,9 +9958,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'dial.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Dialectal'
+               {'is_valid': True
+               ,'major_en': 'Dialectal'
+               ,'is_major': True
                ,'en':
                    {'short': 'dial.'
                    ,'title': 'Dialectal'
@@ -9983,9 +9983,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'dialys.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemistry'
+               {'is_valid': True
+               ,'major_en': 'Chemistry'
+               ,'is_major': False
                ,'en':
                    {'short': 'dialys.'
                    ,'title': 'Dyalysis'
@@ -10008,9 +10008,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'diet.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'diet.'
                    ,'title': 'Dietology'
@@ -10033,9 +10033,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'dig.curr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Finances'
+               {'is_valid': True
+               ,'major_en': 'Finances'
+               ,'is_major': False
                ,'en':
                    {'short': 'dig.curr.'
                    ,'title': 'Digital and cryptocurrencies'
@@ -10058,9 +10058,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'dimin.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Grammatical labels'
+               {'is_valid': True
+               ,'major_en': 'Grammatical labels'
+               ,'is_major': False
                ,'en':
                    {'short': 'dimin.'
                    ,'title': 'Diminutive'
@@ -10083,9 +10083,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'dipl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Foreign affairs'
+               {'is_valid': True
+               ,'major_en': 'Foreign affairs'
+               ,'is_major': False
                ,'en':
                    {'short': 'dipl.'
                    ,'title': 'Diplomacy'
@@ -10108,9 +10108,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'dipl., amer.usg.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'dipl., amer.usg.'
                    ,'title': 'Diplomacy, American (usage, not AmE)'
@@ -10133,9 +10133,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'disappr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Emotional values'
+               {'is_valid': True
+               ,'major_en': 'Emotional values'
+               ,'is_major': False
                ,'en':
                    {'short': 'disappr.'
                    ,'title': 'Disapproving'
@@ -10158,9 +10158,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'disast.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Politics'
+               {'is_valid': True
+               ,'major_en': 'Politics'
+               ,'is_major': False
                ,'en':
                    {'short': 'disast.'
                    ,'title': 'Disaster recovery'
@@ -10183,9 +10183,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'distil.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemistry'
+               {'is_valid': True
+               ,'major_en': 'Chemistry'
+               ,'is_major': False
                ,'en':
                    {'short': 'distil.'
                    ,'title': 'Distillation'
@@ -10208,9 +10208,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'dog.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Companion animals'
+               {'is_valid': True
+               ,'major_en': 'Companion animals'
+               ,'is_major': False
                ,'en':
                    {'short': 'dog.'
                    ,'title': 'Dog breeding'
@@ -10233,9 +10233,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'dominic.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'dominic.'
                    ,'title': 'Dominican Republic'
@@ -10258,9 +10258,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'dril.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Mining'
+               {'is_valid': True
+               ,'major_en': 'Mining'
+               ,'is_major': False
                ,'en':
                    {'short': 'dril.'
                    ,'title': 'Drilling'
@@ -10283,9 +10283,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'drug.name':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'drug.name'
                    ,'title': 'Drug name'
@@ -10308,9 +10308,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'drugs':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'drugs'
                    ,'title': 'Drugs and addiction medicine'
@@ -10333,9 +10333,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'drv.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'drv.'
                    ,'title': 'Drives'
@@ -10358,9 +10358,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'drw.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'drw.'
                    ,'title': 'Drawing'
@@ -10383,9 +10383,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'drywall':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Building materials'
+               {'is_valid': True
+               ,'major_en': 'Building materials'
+               ,'is_major': False
                ,'en':
                    {'short': 'drywall'
                    ,'title': 'Drywall'
@@ -10408,9 +10408,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'dye.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemical industry'
+               {'is_valid': True
+               ,'major_en': 'Chemical industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'dye.'
                    ,'title': 'Dyes'
@@ -10433,9 +10433,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ecol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Natural resourses and wildlife conservation'
+               {'is_valid': True
+               ,'major_en': 'Natural resourses and wildlife conservation'
+               ,'is_major': False
                ,'en':
                    {'short': 'ecol.'
                    ,'title': 'Ecology'
@@ -10458,9 +10458,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'econ.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Economy'
+               {'is_valid': True
+               ,'major_en': 'Economy'
+               ,'is_major': True
                ,'en':
                    {'short': 'econ.'
                    ,'title': 'Economy'
@@ -10483,9 +10483,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'econ., amer.usg.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'econ., amer.usg.'
                    ,'title': 'Economy, American (usage, not AmE)'
@@ -10508,9 +10508,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'econ.law.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': True
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'econ.law.'
                    ,'title': 'Economic law'
@@ -10533,9 +10533,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'econometr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Mathematics'
+               {'is_valid': True
+               ,'major_en': 'Mathematics'
+               ,'is_major': False
                ,'en':
                    {'short': 'econometr.'
                    ,'title': 'Econometrics'
@@ -10558,9 +10558,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ed.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Education'
+               {'is_valid': True
+               ,'major_en': 'Education'
+               ,'is_major': True
                ,'en':
                    {'short': 'ed.'
                    ,'title': 'Education'
@@ -10583,9 +10583,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ed., subj.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Education'
+               {'is_valid': False
+               ,'major_en': 'Education'
+               ,'is_major': False
                ,'en':
                    {'short': 'ed., subj.'
                    ,'title': 'School and university subjects'
@@ -10608,9 +10608,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'egypt.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Historical'
+               {'is_valid': True
+               ,'major_en': 'Historical'
+               ,'is_major': False
                ,'en':
                    {'short': 'egypt.'
                    ,'title': 'Egyptology'
@@ -10633,9 +10633,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'el.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Electronics'
+               {'is_valid': True
+               ,'major_en': 'Electronics'
+               ,'is_major': True
                ,'en':
                    {'short': 'el.'
                    ,'title': 'Electronics'
@@ -10658,9 +10658,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'el.chem.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemistry'
+               {'is_valid': True
+               ,'major_en': 'Chemistry'
+               ,'is_major': False
                ,'en':
                    {'short': 'el.chem.'
                    ,'title': 'Electrochemistry'
@@ -10683,9 +10683,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'el.com.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Business'
+               {'is_valid': True
+               ,'major_en': 'Business'
+               ,'is_major': False
                ,'en':
                    {'short': 'el.com.'
                    ,'title': 'Electronic commerce'
@@ -10708,9 +10708,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'el.gen.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Energy industry'
+               {'is_valid': True
+               ,'major_en': 'Energy industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'el.gen.'
                    ,'title': 'Electricity generation'
@@ -10733,9 +10733,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'el.mach.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Electrical engineering'
+               {'is_valid': True
+               ,'major_en': 'Electrical engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'el.mach.'
                    ,'title': 'Electric machinery'
@@ -10758,9 +10758,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'el.med.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'el.med.'
                    ,'title': 'Electromedicine'
@@ -10783,9 +10783,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'el.met.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Metallurgy'
+               {'is_valid': True
+               ,'major_en': 'Metallurgy'
+               ,'is_major': False
                ,'en':
                    {'short': 'el.met.'
                    ,'title': 'Electrometallurgy'
@@ -10808,9 +10808,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'el.mot.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Electrical engineering'
+               {'is_valid': True
+               ,'major_en': 'Electrical engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'el.mot.'
                    ,'title': 'Electric motors'
@@ -10833,9 +10833,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'el.therm.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Metallurgy'
+               {'is_valid': True
+               ,'major_en': 'Metallurgy'
+               ,'is_major': False
                ,'en':
                    {'short': 'el.therm.'
                    ,'title': 'Electrothermy'
@@ -10858,9 +10858,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'el.tract.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Machinery and mechanisms'
+               {'is_valid': True
+               ,'major_en': 'Machinery and mechanisms'
+               ,'is_major': False
                ,'en':
                    {'short': 'el.tract.'
                    ,'title': 'Electric traction'
@@ -10883,9 +10883,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'elect.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Politics'
+               {'is_valid': True
+               ,'major_en': 'Politics'
+               ,'is_major': False
                ,'en':
                    {'short': 'elect.'
                    ,'title': 'Elections'
@@ -10908,9 +10908,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'electr.eng.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Electrical engineering'
+               {'is_valid': True
+               ,'major_en': 'Electrical engineering'
+               ,'is_major': True
                ,'en':
                    {'short': 'electr.eng.'
                    ,'title': 'Electrical engineering'
@@ -10933,9 +10933,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'electric.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Electrical engineering'
+               {'is_valid': True
+               ,'major_en': 'Electrical engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'electric.'
                    ,'title': 'Electricity'
@@ -10958,9 +10958,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'electrophor.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical appliances'
+               {'is_valid': True
+               ,'major_en': 'Medical appliances'
+               ,'is_major': False
                ,'en':
                    {'short': 'electrophor.'
                    ,'title': 'Electrophoresis'
@@ -10983,9 +10983,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'elev.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Machinery and mechanisms'
+               {'is_valid': True
+               ,'major_en': 'Machinery and mechanisms'
+               ,'is_major': False
                ,'en':
                    {'short': 'elev.'
                    ,'title': 'Elevators'
@@ -11008,9 +11008,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'els.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemistry'
+               {'is_valid': True
+               ,'major_en': 'Chemistry'
+               ,'is_major': False
                ,'en':
                    {'short': 'els.'
                    ,'title': 'Electrolysis'
@@ -11033,9 +11033,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'embryol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'embryol.'
                    ,'title': 'Embryology'
@@ -11058,9 +11058,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'emerg.care':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'emerg.care'
                    ,'title': 'Emergency medical care'
@@ -11083,9 +11083,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'emotive':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Emotional values'
+               {'is_valid': True
+               ,'major_en': 'Emotional values'
+               ,'is_major': False
                ,'en':
                    {'short': 'emotive'
                    ,'title': 'Emotive'
@@ -11108,9 +11108,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'empl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Economy'
+               {'is_valid': True
+               ,'major_en': 'Economy'
+               ,'is_major': False
                ,'en':
                    {'short': 'empl.'
                    ,'title': 'Employment'
@@ -11133,9 +11133,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'endocr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'endocr.'
                    ,'title': 'Endocrinology'
@@ -11158,9 +11158,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'energ.distr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Energy industry'
+               {'is_valid': True
+               ,'major_en': 'Energy industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'energ.distr.'
                    ,'title': 'Energy distribution'
@@ -11183,9 +11183,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'energ.ind.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Energy industry'
+               {'is_valid': True
+               ,'major_en': 'Energy industry'
+               ,'is_major': True
                ,'en':
                    {'short': 'energ.ind.'
                    ,'title': 'Energy industry'
@@ -11208,9 +11208,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'energ.syst.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Energy industry'
+               {'is_valid': True
+               ,'major_en': 'Energy industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'energ.syst.'
                    ,'title': 'Energy system'
@@ -11233,9 +11233,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'eng.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': True
                ,'en':
                    {'short': 'eng.'
                    ,'title': 'Engineering'
@@ -11258,9 +11258,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'eng.geol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geology'
+               {'is_valid': True
+               ,'major_en': 'Geology'
+               ,'is_major': False
                ,'en':
                    {'short': 'eng.geol.'
                    ,'title': 'Engineering geology'
@@ -11283,9 +11283,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'engin.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Machinery and mechanisms'
+               {'is_valid': True
+               ,'major_en': 'Machinery and mechanisms'
+               ,'is_major': False
                ,'en':
                    {'short': 'engin.'
                    ,'title': 'Engines'
@@ -11308,9 +11308,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'engl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'engl.'
                    ,'title': 'English'
@@ -11333,9 +11333,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'entomol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'entomol.'
                    ,'title': 'Entomology'
@@ -11358,9 +11358,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'environ.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Natural resourses and wildlife conservation'
+               {'is_valid': True
+               ,'major_en': 'Natural resourses and wildlife conservation'
+               ,'is_major': False
                ,'en':
                    {'short': 'environ.'
                    ,'title': 'Environment'
@@ -11383,9 +11383,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'epist.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'epist.'
                    ,'title': 'Epistolary'
@@ -11408,9 +11408,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'equestr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'equestr.'
                    ,'title': 'Equestrianism'
@@ -11433,9 +11433,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'eskim.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'eskim.'
                    ,'title': 'Eskimo (usage)'
@@ -11458,9 +11458,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'esot.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Parasciences'
+               {'is_valid': True
+               ,'major_en': 'Parasciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'esot.'
                    ,'title': 'Esoterics'
@@ -11483,9 +11483,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'esper.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'esper.'
                    ,'title': 'Esperanto'
@@ -11508,9 +11508,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ethnogr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'ethnogr.'
                    ,'title': 'Ethnography'
@@ -11533,9 +11533,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ethnol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'ethnol.'
                    ,'title': 'Ethnology'
@@ -11558,9 +11558,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ethnopsychol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Psychology'
+               {'is_valid': True
+               ,'major_en': 'Psychology'
+               ,'is_major': False
                ,'en':
                    {'short': 'ethnopsychol.'
                    ,'title': 'Ethnopsychology'
@@ -11583,9 +11583,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ethol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'ethol.'
                    ,'title': 'Ethology'
@@ -11608,9 +11608,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'euph.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'euph.'
                    ,'title': 'Euphemistic'
@@ -11633,9 +11633,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'evol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'evol.'
                    ,'title': 'Evolution'
@@ -11658,9 +11658,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'excl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Grammatical labels'
+               {'is_valid': True
+               ,'major_en': 'Grammatical labels'
+               ,'is_major': False
                ,'en':
                    {'short': 'excl.'
                    ,'title': 'Exclamation'
@@ -11683,9 +11683,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'exhib.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Business'
+               {'is_valid': True
+               ,'major_en': 'Business'
+               ,'is_major': False
                ,'en':
                    {'short': 'exhib.'
                    ,'title': 'Exhibitions'
@@ -11708,9 +11708,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'explan.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'explan.'
                    ,'title': 'Explanatory translation'
@@ -11733,9 +11733,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'extr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'extr.'
                    ,'title': 'Extrusion'
@@ -11758,9 +11758,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'f.trade.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Economy'
+               {'is_valid': True
+               ,'major_en': 'Economy'
+               ,'is_major': False
                ,'en':
                    {'short': 'f.trade.'
                    ,'title': 'Foreign trade'
@@ -11783,9 +11783,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'facil.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Production'
+               {'is_valid': True
+               ,'major_en': 'Production'
+               ,'is_major': False
                ,'en':
                    {'short': 'facil.'
                    ,'title': 'Facilities'
@@ -11808,9 +11808,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'fant./sci-fi., abbr.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'fant./sci-fi., abbr.'
                    ,'title': 'Fantasy and science fiction, Abbreviation'
@@ -11833,9 +11833,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'fash.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'fash.'
                    ,'title': 'Fashion'
@@ -11858,34 +11858,25 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'faux ami':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Auxilliary categories (editor use only)'
+               {'is_valid': True
+               ,'major_en': 'Auxilliary categories (editor use only)'
+               ,'is_major': False
                ,'en':
                    {'short': 'faux ami'
-                   ,'title': "Translator's false friend"
-                   }
-               ,'ru':
-                   {'short': 'ложн.друг.'
+                   ,'title': "Translator's false friend"}, 'ru': {'short': 'ложн.друг.'
                    ,'title': 'Ложный друг переводчика'
                    }
                ,'de':
                    {'short': 'faux ami'
-                   ,'title': "Translator's false friend"
-                   }
-               ,'es':
-                   {'short': 'faux ami'
-                   ,'title': "Translator's false friend"
-                   }
-               ,'uk':
-                   {'short': 'хибн.друг'
+                   ,'title': "Translator's false friend"}, 'es': {'short': 'faux ami'
+                   ,'title': "Translator's false friend"}, 'uk': {'short': 'хибн.друг'
                    ,'title': 'Хибний друг перекладача'
                    }
                }
            ,'felin.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Companion animals'
+               {'is_valid': True
+               ,'major_en': 'Companion animals'
+               ,'is_major': False
                ,'en':
                    {'short': 'felin.'
                    ,'title': 'Felinology'
@@ -11908,9 +11899,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'fenc.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'fenc.'
                    ,'title': 'Fencing'
@@ -11933,9 +11924,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ferm.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Food industry'
+               {'is_valid': True
+               ,'major_en': 'Food industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'ferm.'
                    ,'title': 'Fermentation'
@@ -11958,9 +11949,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'fert.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'fert.'
                    ,'title': 'Fertilizers'
@@ -11983,9 +11974,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'fib.optic':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'fib.optic'
                    ,'title': 'Fiber optic'
@@ -12008,9 +11999,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'fig.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'fig.'
                    ,'title': 'Figurative'
@@ -12033,9 +12024,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'fig.of.sp.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'fig.of.sp.'
                    ,'title': 'Figure of speech'
@@ -12058,9 +12049,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'fig.skat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'fig.skat.'
                    ,'title': 'Figure skating'
@@ -12083,9 +12074,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'file.ext.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'file.ext.'
                    ,'title': 'File extension'
@@ -12108,9 +12099,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'film.equip.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Cinematography'
+               {'is_valid': True
+               ,'major_en': 'Cinematography'
+               ,'is_major': False
                ,'en':
                    {'short': 'film.equip.'
                    ,'title': 'Filming equipment'
@@ -12133,9 +12124,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'film.light.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Cinematography'
+               {'is_valid': True
+               ,'major_en': 'Cinematography'
+               ,'is_major': False
                ,'en':
                    {'short': 'film.light.'
                    ,'title': 'Film lighting equipment'
@@ -12158,9 +12149,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'film.proc.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Cinematography'
+               {'is_valid': True
+               ,'major_en': 'Cinematography'
+               ,'is_major': False
                ,'en':
                    {'short': 'film.proc.'
                    ,'title': 'Film processing'
@@ -12183,9 +12174,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'fin.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Finances'
+               {'is_valid': True
+               ,'major_en': 'Finances'
+               ,'is_major': True
                ,'en':
                    {'short': 'fin.'
                    ,'title': 'Finances'
@@ -12208,9 +12199,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'finn.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'finn.'
                    ,'title': 'Finnish language'
@@ -12233,9 +12224,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'fire.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'fire.'
                    ,'title': 'Firefighting and fire-control systems'
@@ -12258,9 +12249,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'fish.farm.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'fish.farm.'
                    ,'title': 'Fish farming (pisciculture)'
@@ -12283,9 +12274,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'fishery':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Nautical'
+               {'is_valid': True
+               ,'major_en': 'Nautical'
+               ,'is_major': False
                ,'en':
                    {'short': 'fishery'
                    ,'title': 'Fishery (fishing industry)'
@@ -12308,9 +12299,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'flor.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'flor.'
                    ,'title': 'Floriculture'
@@ -12333,9 +12324,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'flour.prod.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Food industry'
+               {'is_valid': True
+               ,'major_en': 'Food industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'flour.prod.'
                    ,'title': 'Flour production'
@@ -12358,9 +12349,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'flow.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Oil and gas'
+               {'is_valid': True
+               ,'major_en': 'Oil and gas'
+               ,'is_major': False
                ,'en':
                    {'short': 'flow.'
                    ,'title': 'Flow measurement'
@@ -12383,9 +12374,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'fodd.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'fodd.'
                    ,'title': 'Fodder'
@@ -12408,9 +12399,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'foil.ships':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Nautical'
+               {'is_valid': True
+               ,'major_en': 'Nautical'
+               ,'is_major': False
                ,'en':
                    {'short': 'foil.ships'
                    ,'title': 'Foil ships'
@@ -12433,9 +12424,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'folk.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Folklore'
+               {'is_valid': True
+               ,'major_en': 'Folklore'
+               ,'is_major': True
                ,'en':
                    {'short': 'folk.'
                    ,'title': 'Folklore'
@@ -12458,9 +12449,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'food.ind.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Food industry'
+               {'is_valid': True
+               ,'major_en': 'Food industry'
+               ,'is_major': True
                ,'en':
                    {'short': 'food.ind.'
                    ,'title': 'Food industry'
@@ -12483,9 +12474,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'food.serv.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Service industry'
+               {'is_valid': True
+               ,'major_en': 'Service industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'food.serv.'
                    ,'title': 'Food service and catering'
@@ -12508,9 +12499,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'footb.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'footb.'
                    ,'title': 'Football'
@@ -12533,9 +12524,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'footwear':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Light industries'
+               {'is_valid': True
+               ,'major_en': 'Light industries'
+               ,'is_major': False
                ,'en':
                    {'short': 'footwear'
                    ,'title': 'Footwear'
@@ -12558,9 +12549,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'for.chem.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemical industry'
+               {'is_valid': True
+               ,'major_en': 'Chemical industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'for.chem.'
                    ,'title': 'Forest chemistry'
@@ -12583,9 +12574,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'for.pol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Foreign affairs'
+               {'is_valid': True
+               ,'major_en': 'Foreign affairs'
+               ,'is_major': False
                ,'en':
                    {'short': 'for.pol.'
                    ,'title': 'Foreign policy'
@@ -12608,9 +12599,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'foreig.aff.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Foreign affairs'
+               {'is_valid': True
+               ,'major_en': 'Foreign affairs'
+               ,'is_major': True
                ,'en':
                    {'short': 'foreig.aff.'
                    ,'title': 'Foreign affairs'
@@ -12633,9 +12624,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'forens.med.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law enforcement'
+               {'is_valid': True
+               ,'major_en': 'Law enforcement'
+               ,'is_major': False
                ,'en':
                    {'short': 'forens.med.'
                    ,'title': 'Forensic medicine'
@@ -12658,9 +12649,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'forestr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Natural resourses and wildlife conservation'
+               {'is_valid': True
+               ,'major_en': 'Natural resourses and wildlife conservation'
+               ,'is_major': False
                ,'en':
                    {'short': 'forestr.'
                    ,'title': 'Forestry'
@@ -12683,9 +12674,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'forestr., amer.usg.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'forestr., amer.usg.'
                    ,'title': 'Forestry, American (usage, not AmE)'
@@ -12708,9 +12699,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'forex':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Finances'
+               {'is_valid': True
+               ,'major_en': 'Finances'
+               ,'is_major': False
                ,'en':
                    {'short': 'forex'
                    ,'title': 'Foreign exchange market'
@@ -12733,9 +12724,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'forg.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Metallurgy'
+               {'is_valid': True
+               ,'major_en': 'Metallurgy'
+               ,'is_major': False
                ,'en':
                    {'short': 'forg.'
                    ,'title': 'Forging'
@@ -12758,9 +12749,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'formal':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'formal'
                    ,'title': 'Formal'
@@ -12783,9 +12774,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'found.engin.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'found.engin.'
                    ,'title': 'Foundation engineering'
@@ -12808,9 +12799,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'foundr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Metallurgy'
+               {'is_valid': True
+               ,'major_en': 'Metallurgy'
+               ,'is_major': False
                ,'en':
                    {'short': 'foundr.'
                    ,'title': 'Foundry'
@@ -12833,9 +12824,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'fr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'fr.'
                    ,'title': 'French'
@@ -12858,9 +12849,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'furn.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'furn.'
                    ,'title': 'Furniture'
@@ -12883,9 +12874,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'gaelic':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'gaelic'
                    ,'title': 'Gaelic'
@@ -12908,9 +12899,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'galv.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemical industry'
+               {'is_valid': True
+               ,'major_en': 'Chemical industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'galv.'
                    ,'title': 'Galvanizing'
@@ -12933,9 +12924,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'galv.plast.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemical industry'
+               {'is_valid': True
+               ,'major_en': 'Chemical industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'galv.plast.'
                    ,'title': 'Galvanoplasty'
@@ -12958,9 +12949,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'gambl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Games (other than sports)'
+               {'is_valid': True
+               ,'major_en': 'Games (other than sports)'
+               ,'is_major': False
                ,'en':
                    {'short': 'gambl.'
                    ,'title': 'Gambling'
@@ -12983,9 +12974,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'games':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Games (other than sports)'
+               {'is_valid': True
+               ,'major_en': 'Games (other than sports)'
+               ,'is_major': True
                ,'en':
                    {'short': 'games'
                    ,'title': 'Games (other than sports)'
@@ -13008,9 +12999,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'garden.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'garden.'
                    ,'title': 'Gardening'
@@ -13033,9 +13024,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'gas.proc.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Oil and gas'
+               {'is_valid': True
+               ,'major_en': 'Oil and gas'
+               ,'is_major': False
                ,'en':
                    {'short': 'gas.proc.'
                    ,'title': 'Gas processing plants'
@@ -13058,9 +13049,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'gastroent.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'gastroent.'
                    ,'title': 'Gastroenterology'
@@ -13083,9 +13074,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'gear.tr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Machinery and mechanisms'
+               {'is_valid': True
+               ,'major_en': 'Machinery and mechanisms'
+               ,'is_major': False
                ,'en':
                    {'short': 'gear.tr.'
                    ,'title': 'Gear train'
@@ -13108,9 +13099,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'gem.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geology'
+               {'is_valid': True
+               ,'major_en': 'Geology'
+               ,'is_major': False
                ,'en':
                    {'short': 'gem.'
                    ,'title': 'Gemmology'
@@ -13133,9 +13124,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'gen.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'gen.'
                    ,'title': 'General'
@@ -13158,9 +13149,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'gen.eng.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'gen.eng.'
                    ,'title': 'Genetic engineering'
@@ -13183,9 +13174,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'geneal.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Historical'
+               {'is_valid': True
+               ,'major_en': 'Historical'
+               ,'is_major': False
                ,'en':
                    {'short': 'geneal.'
                    ,'title': 'Genealogy'
@@ -13208,9 +13199,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'genet.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'genet.'
                    ,'title': 'Genetics'
@@ -13233,9 +13224,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'geobot.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'geobot.'
                    ,'title': 'Geobotanics'
@@ -13258,9 +13249,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'geochem.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemistry'
+               {'is_valid': True
+               ,'major_en': 'Chemistry'
+               ,'is_major': False
                ,'en':
                    {'short': 'geochem.'
                    ,'title': 'Geochemistry'
@@ -13283,9 +13274,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'geochron.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geology'
+               {'is_valid': True
+               ,'major_en': 'Geology'
+               ,'is_major': False
                ,'en':
                    {'short': 'geochron.'
                    ,'title': 'Geochronology'
@@ -13308,9 +13299,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'geogr.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': True
                ,'en':
                    {'short': 'geogr.'
                    ,'title': 'Geography'
@@ -13333,9 +13324,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'geol.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Geology'
+               {'is_valid': True
+               ,'major_en': 'Geology'
+               ,'is_major': True
                ,'en':
                    {'short': 'geol.'
                    ,'title': 'Geology'
@@ -13358,9 +13349,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'geom.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Mathematics'
+               {'is_valid': True
+               ,'major_en': 'Mathematics'
+               ,'is_major': False
                ,'en':
                    {'short': 'geom.'
                    ,'title': 'Geometry'
@@ -13383,9 +13374,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'geomech.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geology'
+               {'is_valid': True
+               ,'major_en': 'Geology'
+               ,'is_major': False
                ,'en':
                    {'short': 'geomech.'
                    ,'title': 'Geomechanics'
@@ -13408,9 +13399,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'geomorph.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'geomorph.'
                    ,'title': 'Geomorphology'
@@ -13433,9 +13424,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'geophys.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geology'
+               {'is_valid': True
+               ,'major_en': 'Geology'
+               ,'is_major': False
                ,'en':
                    {'short': 'geophys.'
                    ,'title': 'Geophysics'
@@ -13458,9 +13449,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'germ.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'germ.'
                    ,'title': 'German'
@@ -13483,9 +13474,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'glass':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Production'
+               {'is_valid': True
+               ,'major_en': 'Production'
+               ,'is_major': False
                ,'en':
                    {'short': 'glass'
                    ,'title': 'Glass production'
@@ -13508,9 +13499,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'glass.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Food industry'
+               {'is_valid': True
+               ,'major_en': 'Food industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'glass.'
                    ,'title': 'Glass container manufacture'
@@ -13533,9 +13524,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'gloom.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Emotional values'
+               {'is_valid': True
+               ,'major_en': 'Emotional values'
+               ,'is_major': False
                ,'en':
                    {'short': 'gloom.'
                    ,'title': 'Gloomy'
@@ -13558,9 +13549,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'goldmin.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Mining'
+               {'is_valid': True
+               ,'major_en': 'Mining'
+               ,'is_major': False
                ,'en':
                    {'short': 'goldmin.'
                    ,'title': 'Gold mining'
@@ -13583,9 +13574,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'golf.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Games (other than sports)'
+               {'is_valid': True
+               ,'major_en': 'Games (other than sports)'
+               ,'is_major': False
                ,'en':
                    {'short': 'golf.'
                    ,'title': 'Golf'
@@ -13608,9 +13599,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'gov.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Government, administration and public services'
+               {'is_valid': False
+               ,'major_en': 'Government, administration and public services'
+               ,'is_major': True
                ,'en':
                    {'short': 'gov.'
                    ,'title': 'Government, administration and public services'
@@ -13633,9 +13624,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'gram.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Linguistics'
+               {'is_valid': True
+               ,'major_en': 'Linguistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'gram.'
                    ,'title': 'Grammar'
@@ -13658,9 +13649,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'grav.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Mathematics'
+               {'is_valid': True
+               ,'major_en': 'Mathematics'
+               ,'is_major': False
                ,'en':
                    {'short': 'grav.'
                    ,'title': 'Gravimetry'
@@ -13683,9 +13674,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'greek.lang.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'greek.lang.'
                    ,'title': 'Greek'
@@ -13708,9 +13699,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'green.tech.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'green.tech.'
                    ,'title': 'Greenhouse technology'
@@ -13733,9 +13724,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'gymn.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'gymn.'
                    ,'title': 'Gymnastics'
@@ -13758,9 +13749,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'gyrosc.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'gyrosc.'
                    ,'title': 'Gyroscopes'
@@ -13783,9 +13774,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'h.rghts.act.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Human rights activism'
+               {'is_valid': True
+               ,'major_en': 'Human rights activism'
+               ,'is_major': True
                ,'en':
                    {'short': 'h.rghts.act.'
                    ,'title': 'Human rights activism'
@@ -13808,9 +13799,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hab.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Light industries'
+               {'is_valid': True
+               ,'major_en': 'Light industries'
+               ,'is_major': False
                ,'en':
                    {'short': 'hab.'
                    ,'title': 'Haberdashery'
@@ -13833,9 +13824,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hack.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'hack.'
                    ,'title': 'Hacking'
@@ -13858,9 +13849,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'handb.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'handb.'
                    ,'title': 'Handball'
@@ -13883,9 +13874,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'handicraft.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Hobbies and pastimes'
+               {'is_valid': True
+               ,'major_en': 'Hobbies and pastimes'
+               ,'is_major': False
                ,'en':
                    {'short': 'handicraft.'
                    ,'title': 'Handicraft'
@@ -13908,9 +13899,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hawai.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'hawai.'
                    ,'title': 'Hawaii'
@@ -13933,9 +13924,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'health.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Government, administration and public services'
+               {'is_valid': True
+               ,'major_en': 'Government, administration and public services'
+               ,'is_major': False
                ,'en':
                    {'short': 'health.'
                    ,'title': 'Health care'
@@ -13958,9 +13949,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hear.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical appliances'
+               {'is_valid': True
+               ,'major_en': 'Medical appliances'
+               ,'is_major': False
                ,'en':
                    {'short': 'hear.'
                    ,'title': 'Hearing aid'
@@ -13983,9 +13974,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'heat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'heat.'
                    ,'title': 'Heating'
@@ -14008,9 +13999,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'heat.exch.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'heat.exch.'
                    ,'title': 'Heat exchangers'
@@ -14033,9 +14024,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'heat.transf.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'heat.transf.'
                    ,'title': 'Heat transfer'
@@ -14058,9 +14049,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'heavy.eq.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'heavy.eq.'
                    ,'title': 'Heavy equipment vehicles'
@@ -14083,9 +14074,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'helic.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Aviation'
+               {'is_valid': True
+               ,'major_en': 'Aviation'
+               ,'is_major': False
                ,'en':
                    {'short': 'helic.'
                    ,'title': 'Helicopters'
@@ -14108,9 +14099,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'helminth.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'helminth.'
                    ,'title': 'Helminthology'
@@ -14133,9 +14124,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hemat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'hemat.'
                    ,'title': 'Hematology'
@@ -14158,9 +14149,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'herald.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Historical'
+               {'is_valid': True
+               ,'major_en': 'Historical'
+               ,'is_major': False
                ,'en':
                    {'short': 'herald.'
                    ,'title': 'Heraldry'
@@ -14183,9 +14174,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'herpet.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'herpet.'
                    ,'title': 'Herpetology (incl. serpentology)'
@@ -14208,9 +14199,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hi-fi':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Multimedia'
+               {'is_valid': True
+               ,'major_en': 'Multimedia'
+               ,'is_major': False
                ,'en':
                    {'short': 'hi-fi'
                    ,'title': 'Hi-Fi'
@@ -14233,9 +14224,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hi.jump.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'hi.jump.'
                    ,'title': 'High jump'
@@ -14258,9 +14249,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hindi':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'hindi'
                    ,'title': 'Hindi'
@@ -14283,9 +14274,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hist.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Historical'
+               {'is_valid': True
+               ,'major_en': 'Historical'
+               ,'is_major': True
                ,'en':
                    {'short': 'hist.'
                    ,'title': 'Historical'
@@ -14308,9 +14299,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hist.fig.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Historical'
+               {'is_valid': True
+               ,'major_en': 'Historical'
+               ,'is_major': False
                ,'en':
                    {'short': 'hist.fig.'
                    ,'title': 'Historical figure'
@@ -14333,9 +14324,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'histol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'histol.'
                    ,'title': 'Histology'
@@ -14358,9 +14349,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hobby':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Hobbies and pastimes'
+               {'is_valid': False
+               ,'major_en': 'Hobbies and pastimes'
+               ,'is_major': True
                ,'en':
                    {'short': 'hobby'
                    ,'title': 'Hobbies and pastimes'
@@ -14383,9 +14374,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hockey.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'hockey.'
                    ,'title': 'Hockey'
@@ -14408,9 +14399,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'homeopath.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medicine - Alternative medicine'
+               {'is_valid': True
+               ,'major_en': 'Medicine - Alternative medicine'
+               ,'is_major': False
                ,'en':
                    {'short': 'homeopath.'
                    ,'title': 'Homeopathy'
@@ -14433,9 +14424,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'horse.breed.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'horse.breed.'
                    ,'title': 'Horse breeding'
@@ -14458,9 +14449,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'horse.rac.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'horse.rac.'
                    ,'title': 'Horse racing'
@@ -14483,9 +14474,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'horticult.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'horticult.'
                    ,'title': 'Horticulture'
@@ -14508,9 +14499,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hotels':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Service industry'
+               {'is_valid': True
+               ,'major_en': 'Service industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'hotels'
                    ,'title': 'Hotel industry'
@@ -14533,9 +14524,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'house.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'house.'
                    ,'title': 'Household appliances'
@@ -14558,9 +14549,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hovercr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Nautical'
+               {'is_valid': True
+               ,'major_en': 'Nautical'
+               ,'is_major': False
                ,'en':
                    {'short': 'hovercr.'
                    ,'title': 'Hovercraft'
@@ -14583,9 +14574,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'humor.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Emotional values'
+               {'is_valid': True
+               ,'major_en': 'Emotional values'
+               ,'is_major': False
                ,'en':
                    {'short': 'humor.'
                    ,'title': 'Humorous / Jocular'
@@ -14608,9 +14599,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hunt.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'hunt.'
                    ,'title': 'Hunting'
@@ -14633,9 +14624,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hydr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'hydr.'
                    ,'title': 'Hydraulic engineering'
@@ -14658,9 +14649,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hydraul.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'hydraul.'
                    ,'title': 'Hydraulics'
@@ -14683,9 +14674,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hydroac.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'hydroac.'
                    ,'title': 'Hydroacoustics'
@@ -14708,9 +14699,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hydrobiol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'hydrobiol.'
                    ,'title': 'Hydrobiology'
@@ -14733,9 +14724,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hydroel.st.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Energy industry'
+               {'is_valid': True
+               ,'major_en': 'Energy industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'hydroel.st.'
                    ,'title': 'Hydroelectric power stations'
@@ -14758,9 +14749,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hydrogeol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geology'
+               {'is_valid': True
+               ,'major_en': 'Geology'
+               ,'is_major': False
                ,'en':
                    {'short': 'hydrogeol.'
                    ,'title': 'Hydrogeology'
@@ -14783,9 +14774,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hydrogr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'hydrogr.'
                    ,'title': 'Hydrography'
@@ -14808,9 +14799,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hydrol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'hydrol.'
                    ,'title': 'Hydrology'
@@ -14833,9 +14824,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hydromech.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'hydromech.'
                    ,'title': 'Hydromechanics'
@@ -14858,9 +14849,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hydropl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Aviation'
+               {'is_valid': True
+               ,'major_en': 'Aviation'
+               ,'is_major': False
                ,'en':
                    {'short': 'hydropl.'
                    ,'title': 'Hydroplanes'
@@ -14883,9 +14874,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'hygien.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Wellness'
+               {'is_valid': True
+               ,'major_en': 'Wellness'
+               ,'is_major': False
                ,'en':
                    {'short': 'hygien.'
                    ,'title': 'Hygiene'
@@ -14908,9 +14899,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ice.form.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'ice.form.'
                    ,'title': 'Ice formation'
@@ -14933,9 +14924,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'icel.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'icel.'
                    ,'title': 'Iceland'
@@ -14958,9 +14949,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ichtyol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'ichtyol.'
                    ,'title': 'Ichthyology'
@@ -14983,9 +14974,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'idiom':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'idiom'
                    ,'title': 'Idiomatic'
@@ -15008,9 +14999,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'idiom, amer.usg.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'idiom, amer.usg.'
                    ,'title': 'Idiomatic, American (usage, not AmE)'
@@ -15033,9 +15024,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'idiom, brit.usg.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'idiom, brit.usg.'
                    ,'title': 'Idiomatic, British (usage, not BrE)'
@@ -15058,9 +15049,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'imitat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Grammatical labels'
+               {'is_valid': True
+               ,'major_en': 'Grammatical labels'
+               ,'is_major': False
                ,'en':
                    {'short': 'imitat.'
                    ,'title': 'Iimitative (onomatopoeic)'
@@ -15083,9 +15074,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'immigr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Foreign affairs'
+               {'is_valid': True
+               ,'major_en': 'Foreign affairs'
+               ,'is_major': False
                ,'en':
                    {'short': 'immigr.'
                    ,'title': 'Immigration and citizenship'
@@ -15108,9 +15099,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'immunol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'immunol.'
                    ,'title': 'Immunology'
@@ -15133,9 +15124,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'indust.hyg.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Industry'
+               {'is_valid': True
+               ,'major_en': 'Industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'indust.hyg.'
                    ,'title': 'Industrial hygiene'
@@ -15158,9 +15149,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'industr.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Industry'
+               {'is_valid': True
+               ,'major_en': 'Industry'
+               ,'is_major': True
                ,'en':
                    {'short': 'industr.'
                    ,'title': 'Industry'
@@ -15183,9 +15174,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'inet.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Communications'
+               {'is_valid': True
+               ,'major_en': 'Communications'
+               ,'is_major': False
                ,'en':
                    {'short': 'inet.'
                    ,'title': 'Internet'
@@ -15208,9 +15199,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'inf.secur.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'inf.secur.'
                    ,'title': 'Information security'
@@ -15233,9 +15224,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'inform.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'inform.'
                    ,'title': 'Informal'
@@ -15258,9 +15249,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'infr.techn.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Security systems'
+               {'is_valid': True
+               ,'major_en': 'Security systems'
+               ,'is_major': False
                ,'en':
                    {'short': 'infr.techn.'
                    ,'title': 'Infrared technology'
@@ -15283,9 +15274,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'inherit.law.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': True
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'inherit.law.'
                    ,'title': 'Inheritance law'
@@ -15308,9 +15299,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'inorg.chem.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemistry'
+               {'is_valid': True
+               ,'major_en': 'Chemistry'
+               ,'is_major': False
                ,'en':
                    {'short': 'inorg.chem.'
                    ,'title': 'Inorganic chemistry'
@@ -15333,9 +15324,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'insur.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Economy'
+               {'is_valid': True
+               ,'major_en': 'Economy'
+               ,'is_major': False
                ,'en':
                    {'short': 'insur.'
                    ,'title': 'Insurance'
@@ -15358,9 +15349,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'int. law.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': True
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'int. law.'
                    ,'title': 'International law'
@@ -15383,9 +15374,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'int.circ.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Electronics'
+               {'is_valid': True
+               ,'major_en': 'Electronics'
+               ,'is_major': False
                ,'en':
                    {'short': 'int.circ.'
                    ,'title': 'Integrated circuits'
@@ -15408,9 +15399,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'int.rel.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Foreign affairs'
+               {'is_valid': True
+               ,'major_en': 'Foreign affairs'
+               ,'is_major': False
                ,'en':
                    {'short': 'int.rel.'
                    ,'title': 'International relations'
@@ -15433,9 +15424,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'int.transport.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Logistics'
+               {'is_valid': True
+               ,'major_en': 'Logistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'int.transport.'
                    ,'title': 'International transportation'
@@ -15458,9 +15449,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'intell.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law enforcement'
+               {'is_valid': True
+               ,'major_en': 'Law enforcement'
+               ,'is_major': False
                ,'en':
                    {'short': 'intell.'
                    ,'title': 'Intelligence and security services'
@@ -15483,9 +15474,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'interntl.trade.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Economy'
+               {'is_valid': True
+               ,'major_en': 'Economy'
+               ,'is_major': False
                ,'en':
                    {'short': 'interntl.trade.'
                    ,'title': 'International trade'
@@ -15508,9 +15499,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'invect.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'invect.'
                    ,'title': 'Invective'
@@ -15533,9 +15524,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'invest.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Business'
+               {'is_valid': True
+               ,'major_en': 'Business'
+               ,'is_major': False
                ,'en':
                    {'short': 'invest.'
                    ,'title': 'Investment'
@@ -15558,9 +15549,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'irish.lang.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'irish.lang.'
                    ,'title': 'Irish'
@@ -15583,9 +15574,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ironic.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Emotional values'
+               {'is_valid': True
+               ,'major_en': 'Emotional values'
+               ,'is_major': False
                ,'en':
                    {'short': 'ironic.'
                    ,'title': 'Ironical'
@@ -15608,9 +15599,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'isol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Electrical engineering'
+               {'is_valid': True
+               ,'major_en': 'Electrical engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'isol.'
                    ,'title': 'Isolation'
@@ -15633,9 +15624,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ital.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'ital.'
                    ,'title': 'Italian'
@@ -15658,9 +15649,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'jamaic.eng.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Dialectal'
+               {'is_valid': True
+               ,'major_en': 'Dialectal'
+               ,'is_major': False
                ,'en':
                    {'short': 'jamaic.eng.'
                    ,'title': 'Jamaican English'
@@ -15683,9 +15674,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'jap.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'jap.'
                    ,'title': 'Japanese language'
@@ -15708,9 +15699,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'jarg.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Jargon and slang'
+               {'is_valid': True
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': False
                ,'en':
                    {'short': 'jarg.'
                    ,'title': 'Jargon'
@@ -15733,9 +15724,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'jet.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Machinery and mechanisms'
+               {'is_valid': True
+               ,'major_en': 'Machinery and mechanisms'
+               ,'is_major': False
                ,'en':
                    {'short': 'jet.'
                    ,'title': 'Jet engines'
@@ -15758,9 +15749,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'jewl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Production'
+               {'is_valid': True
+               ,'major_en': 'Production'
+               ,'is_major': False
                ,'en':
                    {'short': 'jewl.'
                    ,'title': 'Jewelry'
@@ -15783,9 +15774,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'journ.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Mass media'
+               {'is_valid': True
+               ,'major_en': 'Mass media'
+               ,'is_major': False
                ,'en':
                    {'short': 'journ.'
                    ,'title': 'Journalism (terminology)'
@@ -15808,9 +15799,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'judo.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Martial arts and combat sports'
+               {'is_valid': False
+               ,'major_en': 'Martial arts and combat sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'judo.'
                    ,'title': 'Judo'
@@ -15833,9 +15824,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'karate.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Martial arts and combat sports'
+               {'is_valid': True
+               ,'major_en': 'Martial arts and combat sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'karate.'
                    ,'title': 'Karate'
@@ -15858,9 +15849,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'knit.goods':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Light industries'
+               {'is_valid': True
+               ,'major_en': 'Light industries'
+               ,'is_major': False
                ,'en':
                    {'short': 'knit.goods'
                    ,'title': 'Knitted goods'
@@ -15883,9 +15874,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'korea.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'korea.'
                    ,'title': 'Korean'
@@ -15908,9 +15899,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'lab.eq.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemistry'
+               {'is_valid': True
+               ,'major_en': 'Chemistry'
+               ,'is_major': False
                ,'en':
                    {'short': 'lab.eq.'
                    ,'title': 'Laboratory equipment'
@@ -15933,9 +15924,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'lab.law.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': True
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'lab.law.'
                    ,'title': 'Labor law'
@@ -15958,9 +15949,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'labor.org.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Management'
+               {'is_valid': True
+               ,'major_en': 'Management'
+               ,'is_major': False
                ,'en':
                    {'short': 'labor.org.'
                    ,'title': 'Labor organization'
@@ -15983,9 +15974,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'landsc.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'landsc.'
                    ,'title': 'Landscaping'
@@ -16008,9 +15999,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'laser.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'laser.'
                    ,'title': 'Lasers'
@@ -16033,9 +16024,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'laser.med.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'laser.med.'
                    ,'title': 'Laser medicine'
@@ -16058,9 +16049,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'lat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'lat.'
                    ,'title': 'Latin'
@@ -16083,9 +16074,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'lat.amer.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'lat.amer.'
                    ,'title': 'Latin American'
@@ -16108,9 +16099,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'lat.amer.sl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Jargon and slang'
+               {'is_valid': True
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': False
                ,'en':
                    {'short': 'lat.amer.sl.'
                    ,'title': 'Latin American slang'
@@ -16133,9 +16124,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'laud.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Emotional values'
+               {'is_valid': True
+               ,'major_en': 'Emotional values'
+               ,'is_major': False
                ,'en':
                    {'short': 'laud.'
                    ,'title': 'Laudatory'
@@ -16158,9 +16149,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'law':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Law'
+               {'is_valid': True
+               ,'major_en': 'Law'
+               ,'is_major': True
                ,'en':
                    {'short': 'law'
                    ,'title': 'Law'
@@ -16183,9 +16174,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'law, ADR':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Business'
+               {'is_valid': False
+               ,'major_en': 'Business'
+               ,'is_major': False
                ,'en':
                    {'short': 'law, ADR'
                    ,'title': 'Alternative dispute resolution'
@@ -16208,9 +16199,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'law, amer.usg.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'law, amer.usg.'
                    ,'title': 'Law, American (usage, not AmE)'
@@ -16233,9 +16224,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'law, com.law':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': False
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'law, com.law'
                    ,'title': 'Common law (Anglo-Saxon legal system)'
@@ -16258,9 +16249,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'law, contr., context.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'law, contr., context.'
                    ,'title': 'Contracts, Contextual meaning'
@@ -16283,9 +16274,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'law, copyr.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': False
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'law, copyr.'
                    ,'title': 'Copyright'
@@ -16308,9 +16299,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'law, copyr., abbr.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'law, copyr., abbr.'
                    ,'title': 'Copyright, Abbreviation'
@@ -16333,9 +16324,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'law, court':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': False
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'law, court'
                    ,'title': 'Court (law)'
@@ -16358,9 +16349,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'law.enf.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Law enforcement'
+               {'is_valid': True
+               ,'major_en': 'Law enforcement'
+               ,'is_major': True
                ,'en':
                    {'short': 'law.enf.'
                    ,'title': 'Law enforcement'
@@ -16383,9 +16374,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'lean.prod.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Natural resourses and wildlife conservation'
+               {'is_valid': True
+               ,'major_en': 'Natural resourses and wildlife conservation'
+               ,'is_major': False
                ,'en':
                    {'short': 'lean.prod.'
                    ,'title': 'Lean production'
@@ -16408,9 +16399,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'leath.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Light industries'
+               {'is_valid': True
+               ,'major_en': 'Light industries'
+               ,'is_major': False
                ,'en':
                    {'short': 'leath.'
                    ,'title': 'Leather'
@@ -16433,9 +16424,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'leg.ent.typ.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Business'
+               {'is_valid': True
+               ,'major_en': 'Business'
+               ,'is_major': False
                ,'en':
                    {'short': 'leg.ent.typ.'
                    ,'title': 'Legal entity types (business legal structures)'
@@ -16458,9 +16449,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'legal.theor.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': True
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'legal.theor.'
                    ,'title': 'Legal theory'
@@ -16483,9 +16474,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'level.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'level.'
                    ,'title': 'Level measurement'
@@ -16508,9 +16499,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'lgbt':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Human rights activism'
+               {'is_valid': True
+               ,'major_en': 'Human rights activism'
+               ,'is_major': False
                ,'en':
                    {'short': 'lgbt'
                    ,'title': 'LGBT'
@@ -16533,9 +16524,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'libr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'libr.'
                    ,'title': 'Librarianship'
@@ -16558,9 +16549,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'life.sc.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': True
                ,'en':
                    {'short': 'life.sc.'
                    ,'title': 'Life sciences'
@@ -16583,9 +16574,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'light.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'light.'
                    ,'title': 'Lighting (other than cinema)'
@@ -16608,9 +16599,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'limn.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'limn.'
                    ,'title': 'Limnology'
@@ -16633,9 +16624,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ling.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Linguistics'
+               {'is_valid': True
+               ,'major_en': 'Linguistics'
+               ,'is_major': True
                ,'en':
                    {'short': 'ling.'
                    ,'title': 'Linguistics'
@@ -16658,9 +16649,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'lit.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Literature'
+               {'is_valid': True
+               ,'major_en': 'Literature'
+               ,'is_major': True
                ,'en':
                    {'short': 'lit.'
                    ,'title': 'Literature'
@@ -16683,9 +16674,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'lit., f.tales':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Literature'
+               {'is_valid': False
+               ,'major_en': 'Literature'
+               ,'is_major': False
                ,'en':
                    {'short': 'lit., f.tales'
                    ,'title': 'Fairy tales'
@@ -16708,9 +16699,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'liter.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'liter.'
                    ,'title': 'Literally'
@@ -16733,9 +16724,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'lithol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geology'
+               {'is_valid': True
+               ,'major_en': 'Geology'
+               ,'is_major': False
                ,'en':
                    {'short': 'lithol.'
                    ,'title': 'Lithology'
@@ -16758,9 +16749,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'load.equip.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Logistics'
+               {'is_valid': True
+               ,'major_en': 'Logistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'load.equip.'
                    ,'title': 'Loading equipment'
@@ -16783,9 +16774,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'loc.name.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'loc.name.'
                    ,'title': 'Local name'
@@ -16808,9 +16799,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'logging':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Wood, pulp and paper industries'
+               {'is_valid': True
+               ,'major_en': 'Wood, pulp and paper industries'
+               ,'is_major': False
                ,'en':
                    {'short': 'logging'
                    ,'title': 'Logging'
@@ -16833,9 +16824,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'logic':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Philosophy'
+               {'is_valid': True
+               ,'major_en': 'Philosophy'
+               ,'is_major': False
                ,'en':
                    {'short': 'logic'
                    ,'title': 'Logic'
@@ -16858,9 +16849,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'logist.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Logistics'
+               {'is_valid': True
+               ,'major_en': 'Logistics'
+               ,'is_major': True
                ,'en':
                    {'short': 'logist.'
                    ,'title': 'Logistics'
@@ -16883,9 +16874,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'logop.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'logop.'
                    ,'title': 'Logopedics'
@@ -16908,9 +16899,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'low':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'low'
                    ,'title': 'Low register'
@@ -16933,9 +16924,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'low.germ.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'low.germ.'
                    ,'title': 'Lower German'
@@ -16958,9 +16949,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'luge.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'luge.'
                    ,'title': 'Luge'
@@ -16983,9 +16974,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mach.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Industry'
+               {'is_valid': True
+               ,'major_en': 'Industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'mach.'
                    ,'title': 'Machine tools'
@@ -17008,9 +16999,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mach.comp.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Machinery and mechanisms'
+               {'is_valid': True
+               ,'major_en': 'Machinery and mechanisms'
+               ,'is_major': False
                ,'en':
                    {'short': 'mach.comp.'
                    ,'title': 'Machine components'
@@ -17033,9 +17024,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'magn.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'magn.'
                    ,'title': 'Magnetics'
@@ -17058,9 +17049,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'magn.tomogr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical appliances'
+               {'is_valid': True
+               ,'major_en': 'Medical appliances'
+               ,'is_major': False
                ,'en':
                    {'short': 'magn.tomogr.'
                    ,'title': 'Magnetic tomography'
@@ -17083,9 +17074,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'magnet.image.rec.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Cinematography'
+               {'is_valid': True
+               ,'major_en': 'Cinematography'
+               ,'is_major': False
                ,'en':
                    {'short': 'magnet.image.rec.'
                    ,'title': 'Magnetic image recording'
@@ -17108,9 +17099,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'malac.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'malac.'
                    ,'title': 'Malacology'
@@ -17133,9 +17124,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'malay.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'malay.'
                    ,'title': 'Malay'
@@ -17158,9 +17149,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mamal.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'mamal.'
                    ,'title': 'Mammalogy'
@@ -17183,9 +17174,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mamm.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'mamm.'
                    ,'title': 'Mammals'
@@ -17208,9 +17199,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'manag.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Management'
+               {'is_valid': True
+               ,'major_en': 'Management'
+               ,'is_major': True
                ,'en':
                    {'short': 'manag.'
                    ,'title': 'Management'
@@ -17233,9 +17224,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'manga.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'manga.'
                    ,'title': 'Manga'
@@ -17258,9 +17249,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'maor.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'maor.'
                    ,'title': 'Maori'
@@ -17283,9 +17274,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mar.law':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': True
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'mar.law'
                    ,'title': 'Maritime law & Law of the Sea'
@@ -17308,9 +17299,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'market.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Economy'
+               {'is_valid': True
+               ,'major_en': 'Economy'
+               ,'is_major': False
                ,'en':
                    {'short': 'market.'
                    ,'title': 'Marketing'
@@ -17333,9 +17324,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mart.arts':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Martial arts and combat sports'
+               {'is_valid': True
+               ,'major_en': 'Martial arts and combat sports'
+               ,'is_major': True
                ,'en':
                    {'short': 'mart.arts'
                    ,'title': 'Martial arts and combat sports'
@@ -17358,9 +17349,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'match.prod.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Wood, pulp and paper industries'
+               {'is_valid': True
+               ,'major_en': 'Wood, pulp and paper industries'
+               ,'is_major': False
                ,'en':
                    {'short': 'match.prod.'
                    ,'title': 'Matches'
@@ -17383,9 +17374,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mater.sc.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Industry'
+               {'is_valid': True
+               ,'major_en': 'Industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'mater.sc.'
                    ,'title': 'Materials science'
@@ -17408,9 +17399,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'math.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Mathematics'
+               {'is_valid': True
+               ,'major_en': 'Mathematics'
+               ,'is_major': True
                ,'en':
                    {'short': 'math.'
                    ,'title': 'Mathematics'
@@ -17433,9 +17424,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'math.anal.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Mathematics'
+               {'is_valid': True
+               ,'major_en': 'Mathematics'
+               ,'is_major': False
                ,'en':
                    {'short': 'math.anal.'
                    ,'title': 'Mathematical analysis'
@@ -17458,9 +17449,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mean.2':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Auxilliary categories (editor use only)'
+               {'is_valid': True
+               ,'major_en': 'Auxilliary categories (editor use only)'
+               ,'is_major': False
                ,'en':
                    {'short': 'mean.2'
                    ,'title': 'Meaning 2'
@@ -17483,9 +17474,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'meas.inst.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Electrical engineering'
+               {'is_valid': True
+               ,'major_en': 'Electrical engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'meas.inst.'
                    ,'title': 'Measuring instruments'
@@ -17508,9 +17499,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'meat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'meat.'
                    ,'title': 'Meat processing'
@@ -17528,14 +17519,13 @@ SUBJECTS = {'AI.':
                    ,'title': 'Meat processing'
                    }
                ,'uk':
-                   {'short': "м'яс.вир."
-                   ,'title': 'М’ясне виробництво'
+                   {'short': "м'яс.вир.", 'title': 'М’ясне виробництво'
                    }
                }
            ,'mech.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'mech.'
                    ,'title': 'Mechanics'
@@ -17558,9 +17548,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mech.eng.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Industry'
+               {'is_valid': True
+               ,'major_en': 'Industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'mech.eng.'
                    ,'title': 'Mechanic engineering'
@@ -17583,9 +17573,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'med.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': True
                ,'en':
                    {'short': 'med.'
                    ,'title': 'Medical'
@@ -17608,9 +17598,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'med., alt.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Medicine - Alternative medicine'
+               {'is_valid': False
+               ,'major_en': 'Medicine - Alternative medicine'
+               ,'is_major': True
                ,'en':
                    {'short': 'med., alt.'
                    ,'title': 'Medicine - Alternative medicine'
@@ -17633,9 +17623,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'med., epid.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': False
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'med., epid.'
                    ,'title': 'Epidemiology'
@@ -17658,9 +17648,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'med.appl.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Medical appliances'
+               {'is_valid': True
+               ,'major_en': 'Medical appliances'
+               ,'is_major': True
                ,'en':
                    {'short': 'med.appl.'
                    ,'title': 'Medical appliances'
@@ -17683,9 +17673,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'media.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Mass media'
+               {'is_valid': True
+               ,'major_en': 'Mass media'
+               ,'is_major': True
                ,'en':
                    {'short': 'media.'
                    ,'title': 'Mass media'
@@ -17708,9 +17698,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'melior.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'melior.'
                    ,'title': 'Melioration'
@@ -17733,9 +17723,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'merch.nav.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Nautical'
+               {'is_valid': True
+               ,'major_en': 'Nautical'
+               ,'is_major': False
                ,'en':
                    {'short': 'merch.nav.'
                    ,'title': 'Merchant navy'
@@ -17758,9 +17748,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'met.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Metallurgy'
+               {'is_valid': True
+               ,'major_en': 'Metallurgy'
+               ,'is_major': True
                ,'en':
                    {'short': 'met.'
                    ,'title': 'Metallurgy'
@@ -17783,9 +17773,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'met.health.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Psychology'
+               {'is_valid': True
+               ,'major_en': 'Psychology'
+               ,'is_major': False
                ,'en':
                    {'short': 'met.health.'
                    ,'title': 'Mental health'
@@ -17808,9 +17798,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'met.sci.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Metallurgy'
+               {'is_valid': True
+               ,'major_en': 'Metallurgy'
+               ,'is_major': False
                ,'en':
                    {'short': 'met.sci.'
                    ,'title': 'Metal science'
@@ -17833,9 +17823,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'met.work.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Industry'
+               {'is_valid': True
+               ,'major_en': 'Industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'met.work.'
                    ,'title': 'Metalworking'
@@ -17858,9 +17848,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'meteorol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'meteorol.'
                    ,'title': 'Meteorology'
@@ -17883,9 +17873,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'metro':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Transport'
+               {'is_valid': True
+               ,'major_en': 'Transport'
+               ,'is_major': False
                ,'en':
                    {'short': 'metro'
                    ,'title': 'Metro and rapid transit'
@@ -17908,9 +17898,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'metrol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'metrol.'
                    ,'title': 'Metrology'
@@ -17933,9 +17923,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mexic.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'mexic.'
                    ,'title': 'Mexican'
@@ -17958,9 +17948,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'microbiol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'microbiol.'
                    ,'title': 'Microbiology'
@@ -17983,9 +17973,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'microel.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Electronics'
+               {'is_valid': True
+               ,'major_en': 'Electronics'
+               ,'is_major': False
                ,'en':
                    {'short': 'microel.'
                    ,'title': 'Microelectronics'
@@ -18008,9 +17998,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'microsc.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical appliances'
+               {'is_valid': True
+               ,'major_en': 'Medical appliances'
+               ,'is_major': False
                ,'en':
                    {'short': 'microsc.'
                    ,'title': 'Microscopy'
@@ -18033,9 +18023,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mid.chin.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Dialectal'
+               {'is_valid': True
+               ,'major_en': 'Dialectal'
+               ,'is_major': False
                ,'en':
                    {'short': 'mid.chin.'
                    ,'title': 'Middle Chinese'
@@ -18058,9 +18048,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mil.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Military'
+               {'is_valid': True
+               ,'major_en': 'Military'
+               ,'is_major': True
                ,'en':
                    {'short': 'mil.'
                    ,'title': 'Military'
@@ -18083,9 +18073,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mil., AAA':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Military'
+               {'is_valid': False
+               ,'major_en': 'Military'
+               ,'is_major': False
                ,'en':
                    {'short': 'mil., AAA'
                    ,'title': 'Anti-air artillery'
@@ -18108,9 +18098,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mil., WMD':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Military'
+               {'is_valid': False
+               ,'major_en': 'Military'
+               ,'is_major': False
                ,'en':
                    {'short': 'mil., WMD'
                    ,'title': 'Weapons of mass destruction'
@@ -18133,9 +18123,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mil., ammo':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Military'
+               {'is_valid': False
+               ,'major_en': 'Military'
+               ,'is_major': False
                ,'en':
                    {'short': 'mil., ammo'
                    ,'title': 'Ammunition'
@@ -18158,9 +18148,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mil., arm.veh.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Military'
+               {'is_valid': False
+               ,'major_en': 'Military'
+               ,'is_major': False
                ,'en':
                    {'short': 'mil., arm.veh.'
                    ,'title': 'Armored vehicles'
@@ -18183,9 +18173,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mil., artil.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Military'
+               {'is_valid': False
+               ,'major_en': 'Military'
+               ,'is_major': False
                ,'en':
                    {'short': 'mil., artil.'
                    ,'title': 'Artillery'
@@ -18208,9 +18198,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mil., avia.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Aviation'
+               {'is_valid': False
+               ,'major_en': 'Aviation'
+               ,'is_major': False
                ,'en':
                    {'short': 'mil., avia.'
                    ,'title': 'Military aviation'
@@ -18233,9 +18223,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mil., grnd.forc.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Military'
+               {'is_valid': False
+               ,'major_en': 'Military'
+               ,'is_major': False
                ,'en':
                    {'short': 'mil., grnd.forc.'
                    ,'title': 'Ground forces (Army)'
@@ -18258,9 +18248,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mil., lingo':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Jargon and slang'
+               {'is_valid': False
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': False
                ,'en':
                    {'short': 'mil., lingo'
                    ,'title': 'Military lingo'
@@ -18283,9 +18273,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mil., mil., arm.veh.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'mil., mil., arm.veh.'
                    ,'title': 'Military, Armored vehicles'
@@ -18308,9 +18298,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mil., navy':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Military'
+               {'is_valid': False
+               ,'major_en': 'Military'
+               ,'is_major': False
                ,'en':
                    {'short': 'mil., navy'
                    ,'title': 'Navy'
@@ -18333,9 +18323,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'milk.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'milk.'
                    ,'title': 'Milk production'
@@ -18358,9 +18348,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'min.class.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geology'
+               {'is_valid': True
+               ,'major_en': 'Geology'
+               ,'is_major': False
                ,'en':
                    {'short': 'min.class.'
                    ,'title': 'Mineral classification'
@@ -18383,9 +18373,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'min.proc.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Mining'
+               {'is_valid': True
+               ,'major_en': 'Mining'
+               ,'is_major': False
                ,'en':
                    {'short': 'min.proc.'
                    ,'title': 'Mineral processing'
@@ -18408,9 +18398,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'min.prod.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geology'
+               {'is_valid': True
+               ,'major_en': 'Geology'
+               ,'is_major': False
                ,'en':
                    {'short': 'min.prod.'
                    ,'title': 'Mineral products'
@@ -18433,9 +18423,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mine.surv.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Mining'
+               {'is_valid': True
+               ,'major_en': 'Mining'
+               ,'is_major': False
                ,'en':
                    {'short': 'mine.surv.'
                    ,'title': 'Mine surveying'
@@ -18458,9 +18448,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mineral.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geology'
+               {'is_valid': True
+               ,'major_en': 'Geology'
+               ,'is_major': False
                ,'en':
                    {'short': 'mineral.'
                    ,'title': 'Mineralogy'
@@ -18483,9 +18473,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mining.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Mining'
+               {'is_valid': True
+               ,'major_en': 'Mining'
+               ,'is_major': True
                ,'en':
                    {'short': 'mining.'
                    ,'title': 'Mining'
@@ -18508,9 +18498,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'missil.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Military'
+               {'is_valid': True
+               ,'major_en': 'Military'
+               ,'is_major': False
                ,'en':
                    {'short': 'missil.'
                    ,'title': 'Missiles'
@@ -18533,9 +18523,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'misused':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Auxilliary categories (editor use only)'
+               {'is_valid': True
+               ,'major_en': 'Auxilliary categories (editor use only)'
+               ,'is_major': False
                ,'en':
                    {'short': 'misused'
                    ,'title': 'Misused'
@@ -18558,9 +18548,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mob.com.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Communications'
+               {'is_valid': True
+               ,'major_en': 'Communications'
+               ,'is_major': False
                ,'en':
                    {'short': 'mob.com.'
                    ,'title': 'Mobile and cellular communications'
@@ -18580,9 +18570,9 @@ SUBJECTS = {'AI.':
                ,'uk':
                    {'short': 'моб.зв.'
                    ,'title': "Мобільний та стільниковий зв'язок"}}, 'modern':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'modern'
                    ,'title': 'Modern use'
@@ -18605,9 +18595,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mol.biol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'mol.biol.'
                    ,'title': 'Molecular biology'
@@ -18630,9 +18620,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'moldav.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'moldav.'
                    ,'title': 'Moldavian'
@@ -18655,9 +18645,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'morph.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Linguistics'
+               {'is_valid': True
+               ,'major_en': 'Linguistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'morph.'
                    ,'title': 'Morphology'
@@ -18680,9 +18670,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'moto.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Transport'
+               {'is_valid': True
+               ,'major_en': 'Transport'
+               ,'is_major': False
                ,'en':
                    {'short': 'moto.'
                    ,'title': 'Motorcycles'
@@ -18705,9 +18695,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mount.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Outdoor activities and extreme sports'
+               {'is_valid': True
+               ,'major_en': 'Outdoor activities and extreme sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'mount.'
                    ,'title': 'Mountaineering'
@@ -18730,9 +18720,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'multimed.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Multimedia'
+               {'is_valid': True
+               ,'major_en': 'Multimedia'
+               ,'is_major': True
                ,'en':
                    {'short': 'multimed.'
                    ,'title': 'Multimedia'
@@ -18755,9 +18745,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mun.plan.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'mun.plan.'
                    ,'title': 'Municipal planning'
@@ -18780,9 +18770,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mus.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'mus.'
                    ,'title': 'Music'
@@ -18805,9 +18795,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'mus.instr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'mus.instr.'
                    ,'title': 'Musical instruments'
@@ -18830,9 +18820,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'museum.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'museum.'
                    ,'title': 'Museums'
@@ -18855,9 +18845,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'myth.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Mythology'
+               {'is_valid': True
+               ,'major_en': 'Mythology'
+               ,'is_major': True
                ,'en':
                    {'short': 'myth.'
                    ,'title': 'Mythology'
@@ -18880,9 +18870,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'myth., gr.-rom.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Mythology'
+               {'is_valid': False
+               ,'major_en': 'Mythology'
+               ,'is_major': False
                ,'en':
                    {'short': 'myth., gr.-rom.'
                    ,'title': 'Greek and Roman mythology'
@@ -18905,9 +18895,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'myth., nors., myth.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'myth., nors., myth.'
                    ,'title': 'Norse mythology, Mythology'
@@ -18930,9 +18920,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'n.amer.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': False
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'n.amer.'
                    ,'title': 'North American (USA and Canada)'
@@ -18955,9 +18945,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'names':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Proper name'
+               {'is_valid': True
+               ,'major_en': 'Proper name'
+               ,'is_major': False
                ,'en':
                    {'short': 'names'
                    ,'title': 'Names and surnames'
@@ -18980,9 +18970,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'nano':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'nano'
                    ,'title': 'Nanotechnology'
@@ -19005,9 +18995,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'narrow.film.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Cinematography'
+               {'is_valid': True
+               ,'major_en': 'Cinematography'
+               ,'is_major': False
                ,'en':
                    {'short': 'narrow.film.'
                    ,'title': 'Narrow film'
@@ -19030,9 +19020,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'nat.res.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Natural resourses and wildlife conservation'
+               {'is_valid': True
+               ,'major_en': 'Natural resourses and wildlife conservation'
+               ,'is_major': True
                ,'en':
                    {'short': 'nat.res.'
                    ,'title': 'Natural resourses and wildlife conservation'
@@ -19055,9 +19045,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'nat.sc.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'nat.sc.'
                    ,'title': 'Natural sciences'
@@ -19080,9 +19070,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'nautic.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Nautical'
+               {'is_valid': True
+               ,'major_en': 'Nautical'
+               ,'is_major': True
                ,'en':
                    {'short': 'nautic.'
                    ,'title': 'Nautical'
@@ -19105,9 +19095,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'navig.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Aviation'
+               {'is_valid': True
+               ,'major_en': 'Aviation'
+               ,'is_major': False
                ,'en':
                    {'short': 'navig.'
                    ,'title': 'Navigation'
@@ -19130,9 +19120,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'neol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'neol.'
                    ,'title': 'Neologism'
@@ -19155,9 +19145,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'nephr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'nephr.'
                    ,'title': 'Nephrology'
@@ -19180,9 +19170,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'neugoling.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Linguistics'
+               {'is_valid': True
+               ,'major_en': 'Linguistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'neugoling.'
                    ,'title': 'Neurolinguistics'
@@ -19205,9 +19195,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'neur.net.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'neur.net.'
                    ,'title': 'Neural networks'
@@ -19230,9 +19220,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'neurol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'neurol.'
                    ,'title': 'Neurology'
@@ -19255,9 +19245,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'neuropsychol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Psychology'
+               {'is_valid': True
+               ,'major_en': 'Psychology'
+               ,'is_major': False
                ,'en':
                    {'short': 'neuropsychol.'
                    ,'title': 'Neuropsychology'
@@ -19280,9 +19270,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'neurosurg.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'neurosurg.'
                    ,'title': 'Neurosurgery'
@@ -19305,9 +19295,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'new.zeal.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'new.zeal.'
                    ,'title': 'New Zealand'
@@ -19330,9 +19320,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'news':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'news'
                    ,'title': 'News style'
@@ -19355,9 +19345,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'nonferr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Metallurgy'
+               {'is_valid': True
+               ,'major_en': 'Metallurgy'
+               ,'is_major': False
                ,'en':
                    {'short': 'nonferr.'
                    ,'title': 'Nonferrous industry'
@@ -19380,9 +19370,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'nonlin.opt.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'nonlin.opt.'
                    ,'title': 'Nonlinear optics'
@@ -19405,9 +19395,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'nonstand.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'nonstand.'
                    ,'title': 'Nonstandard'
@@ -19430,9 +19420,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'norw.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'norw.'
                    ,'title': 'Norway'
@@ -19455,9 +19445,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'notar.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': True
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'notar.'
                    ,'title': 'Notarial practice'
@@ -19480,9 +19470,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'nucl.chem.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemistry'
+               {'is_valid': True
+               ,'major_en': 'Chemistry'
+               ,'is_major': False
                ,'en':
                    {'short': 'nucl.chem.'
                    ,'title': 'Nuclear chemistry'
@@ -19505,9 +19495,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'nucl.phys.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'nucl.phys.'
                    ,'title': 'Nuclear physics'
@@ -19530,9 +19520,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'nucl.pow.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Energy industry'
+               {'is_valid': True
+               ,'major_en': 'Energy industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'nucl.pow.'
                    ,'title': 'Nuclear and fusion power'
@@ -19555,9 +19545,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'numism.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Collecting'
+               {'is_valid': True
+               ,'major_en': 'Collecting'
+               ,'is_major': False
                ,'en':
                    {'short': 'numism.'
                    ,'title': 'Numismatics'
@@ -19580,9 +19570,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'nurs.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'nurs.'
                    ,'title': 'Nursing'
@@ -19605,9 +19595,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'obs.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': False
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'obs.'
                    ,'title': 'Obsolete / dated'
@@ -19630,9 +19620,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'obs., inform.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'obs., inform.'
                    ,'title': 'Obsolete / dated, Informal'
@@ -19655,9 +19645,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'obs., ironic.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'obs., ironic.'
                    ,'title': 'Obsolete / dated, Ironical'
@@ -19680,9 +19670,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'obs., mil.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'obs., mil.'
                    ,'title': 'Obsolete / dated, Military'
@@ -19705,9 +19695,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'obst.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'obst.'
                    ,'title': 'Obstetrics'
@@ -19730,9 +19720,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ocean.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'ocean.'
                    ,'title': 'Oceanography (oceanology)'
@@ -19755,9 +19745,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'offic.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'offic.'
                    ,'title': 'Officialese'
@@ -19780,9 +19770,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'office.equip.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'office.equip.'
                    ,'title': 'Office equipment'
@@ -19805,9 +19795,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'offsh.comp.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Business'
+               {'is_valid': True
+               ,'major_en': 'Business'
+               ,'is_major': False
                ,'en':
                    {'short': 'offsh.comp.'
                    ,'title': 'Offshore companies'
@@ -19830,9 +19820,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'oil':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Oil and gas'
+               {'is_valid': True
+               ,'major_en': 'Oil and gas'
+               ,'is_major': False
                ,'en':
                    {'short': 'oil'
                    ,'title': 'Oil / petroleum'
@@ -19855,9 +19845,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'oil.lubr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Oil and gas'
+               {'is_valid': True
+               ,'major_en': 'Oil and gas'
+               ,'is_major': False
                ,'en':
                    {'short': 'oil.lubr.'
                    ,'title': 'Oils and lubricants'
@@ -19880,9 +19870,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'oil.proc.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Oil and gas'
+               {'is_valid': True
+               ,'major_en': 'Oil and gas'
+               ,'is_major': False
                ,'en':
                    {'short': 'oil.proc.'
                    ,'title': 'Oil processing plants'
@@ -19905,9 +19895,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'old.fash.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'old.fash.'
                    ,'title': 'Old-fashioned'
@@ -19930,9 +19920,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'old.orth.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Auxilliary categories (editor use only)'
+               {'is_valid': True
+               ,'major_en': 'Auxilliary categories (editor use only)'
+               ,'is_major': False
                ,'en':
                    {'short': 'old.orth.'
                    ,'title': 'Old orthography'
@@ -19955,9 +19945,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'oncol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'oncol.'
                    ,'title': 'Oncology'
@@ -19980,9 +19970,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'op.hearth.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Metallurgy'
+               {'is_valid': True
+               ,'major_en': 'Metallurgy'
+               ,'is_major': False
                ,'en':
                    {'short': 'op.hearth.'
                    ,'title': 'Open-hearth process'
@@ -20005,9 +19995,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'op.syst.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'op.syst.'
                    ,'title': 'Operation systems'
@@ -20030,9 +20020,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ophtalm.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'ophtalm.'
                    ,'title': 'Ophthalmology'
@@ -20055,9 +20045,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'opt.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'opt.'
                    ,'title': 'Optics (branch of physics)'
@@ -20080,9 +20070,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'optometr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'optometr.'
                    ,'title': 'Optometry'
@@ -20105,9 +20095,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ore.form.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Mining'
+               {'is_valid': True
+               ,'major_en': 'Mining'
+               ,'is_major': False
                ,'en':
                    {'short': 'ore.form.'
                    ,'title': 'Ore formation'
@@ -20130,9 +20120,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'org.chem.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemistry'
+               {'is_valid': True
+               ,'major_en': 'Chemistry'
+               ,'is_major': False
                ,'en':
                    {'short': 'org.chem.'
                    ,'title': 'Organic chemistry'
@@ -20155,9 +20145,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'org.crime.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law enforcement'
+               {'is_valid': True
+               ,'major_en': 'Law enforcement'
+               ,'is_major': False
                ,'en':
                    {'short': 'org.crime.'
                    ,'title': 'Organized crime'
@@ -20180,9 +20170,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'org.name.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Proper name'
+               {'is_valid': True
+               ,'major_en': 'Proper name'
+               ,'is_major': False
                ,'en':
                    {'short': 'org.name.'
                    ,'title': 'Name of organization'
@@ -20205,9 +20195,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'orient.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'orient.'
                    ,'title': 'Oriental'
@@ -20230,9 +20220,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'orthop.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'orthop.'
                    ,'title': 'Orthopedics'
@@ -20255,9 +20245,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pack.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Production'
+               {'is_valid': True
+               ,'major_en': 'Production'
+               ,'is_major': False
                ,'en':
                    {'short': 'pack.'
                    ,'title': 'Packaging'
@@ -20280,9 +20270,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'paint.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'paint.'
                    ,'title': 'Painting'
@@ -20305,9 +20295,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'paint.varn.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Building materials'
+               {'is_valid': False
+               ,'major_en': 'Building materials'
+               ,'is_major': False
                ,'en':
                    {'short': 'paint.varn.'
                    ,'title': 'Paint, varnish and lacquer'
@@ -20330,9 +20320,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'paint.w.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'paint.w.'
                    ,'title': 'Paint work'
@@ -20355,9 +20345,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pal.bot.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'pal.bot.'
                    ,'title': 'Paleobotany'
@@ -20380,9 +20370,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'paleogr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Historical'
+               {'is_valid': True
+               ,'major_en': 'Historical'
+               ,'is_major': False
                ,'en':
                    {'short': 'paleogr.'
                    ,'title': 'Palaeography'
@@ -20405,9 +20395,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'paleont.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'paleont.'
                    ,'title': 'Paleontology'
@@ -20430,9 +20420,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'paleozool.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'paleozool.'
                    ,'title': 'Paleozoology'
@@ -20455,9 +20445,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'palyn.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'palyn.'
                    ,'title': 'Palynology'
@@ -20480,9 +20470,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'parapsych.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Parasciences'
+               {'is_valid': True
+               ,'major_en': 'Parasciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'parapsych.'
                    ,'title': 'Parapsychology'
@@ -20505,9 +20495,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'parasitol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'parasitol.'
                    ,'title': 'Parasitology'
@@ -20530,9 +20520,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'patents.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': False
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'patents.'
                    ,'title': 'Patents'
@@ -20555,9 +20545,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pathol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'pathol.'
                    ,'title': 'Pathology'
@@ -20580,9 +20570,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pedag.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Education'
+               {'is_valid': True
+               ,'major_en': 'Education'
+               ,'is_major': False
                ,'en':
                    {'short': 'pedag.'
                    ,'title': 'Pedagogics'
@@ -20605,9 +20595,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pediatr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'pediatr.'
                    ,'title': 'Pediatrics'
@@ -20630,9 +20620,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pejor.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Emotional values'
+               {'is_valid': True
+               ,'major_en': 'Emotional values'
+               ,'is_major': False
                ,'en':
                    {'short': 'pejor.'
                    ,'title': 'Pejorative'
@@ -20655,9 +20645,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'penitent.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Government, administration and public services'
+               {'is_valid': True
+               ,'major_en': 'Government, administration and public services'
+               ,'is_major': False
                ,'en':
                    {'short': 'penitent.'
                    ,'title': 'Penitentiary system'
@@ -20680,9 +20670,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'perf.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Wellness'
+               {'is_valid': True
+               ,'major_en': 'Wellness'
+               ,'is_major': False
                ,'en':
                    {'short': 'perf.'
                    ,'title': 'Perfume'
@@ -20705,9 +20695,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'permits.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Occupational health & safety'
+               {'is_valid': True
+               ,'major_en': 'Occupational health & safety'
+               ,'is_major': False
                ,'en':
                    {'short': 'permits.'
                    ,'title': 'Permit to work system'
@@ -20730,9 +20720,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pers.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'pers.'
                    ,'title': 'Persian'
@@ -20755,9 +20745,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pest.contr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'pest.contr.'
                    ,'title': 'Pest control'
@@ -20780,9 +20770,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pet.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Companion animals'
+               {'is_valid': True
+               ,'major_en': 'Companion animals'
+               ,'is_major': False
                ,'en':
                    {'short': 'pet.'
                    ,'title': 'Pets'
@@ -20805,9 +20795,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'petrogr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geology'
+               {'is_valid': True
+               ,'major_en': 'Geology'
+               ,'is_major': False
                ,'en':
                    {'short': 'petrogr.'
                    ,'title': 'Petrography'
@@ -20830,9 +20820,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'phaler.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Collecting'
+               {'is_valid': True
+               ,'major_en': 'Collecting'
+               ,'is_major': False
                ,'en':
                    {'short': 'phaler.'
                    ,'title': 'Phaleristics'
@@ -20855,9 +20845,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pharm.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'pharm.'
                    ,'title': 'Pharmacology'
@@ -20880,9 +20870,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pharmac.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'pharmac.'
                    ,'title': 'Pharmacy'
@@ -20905,9 +20895,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'philat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Collecting'
+               {'is_valid': True
+               ,'major_en': 'Collecting'
+               ,'is_major': False
                ,'en':
                    {'short': 'philat.'
                    ,'title': 'Philately / stamp collecting'
@@ -20930,9 +20920,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'philos.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Philosophy'
+               {'is_valid': True
+               ,'major_en': 'Philosophy'
+               ,'is_major': True
                ,'en':
                    {'short': 'philos.'
                    ,'title': 'Philosophy'
@@ -20955,9 +20945,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'phonol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Linguistics'
+               {'is_valid': True
+               ,'major_en': 'Linguistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'phonol.'
                    ,'title': 'Phonology'
@@ -20980,9 +20970,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'photo.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Photography'
+               {'is_valid': True
+               ,'major_en': 'Photography'
+               ,'is_major': True
                ,'en':
                    {'short': 'photo.'
                    ,'title': 'Photography'
@@ -21005,9 +20995,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'photo.sound.rec.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Cinematography'
+               {'is_valid': True
+               ,'major_en': 'Cinematography'
+               ,'is_major': False
                ,'en':
                    {'short': 'photo.sound.rec.'
                    ,'title': 'Photographical sound recording'
@@ -21030,9 +21020,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'photometr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'photometr.'
                    ,'title': 'Photometry'
@@ -21055,9 +21045,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'phras.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'phras.'
                    ,'title': 'Phraseological unit'
@@ -21080,9 +21070,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'phys.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': True
                ,'en':
                    {'short': 'phys.'
                    ,'title': 'Physics'
@@ -21105,9 +21095,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'phys.chem.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemistry'
+               {'is_valid': True
+               ,'major_en': 'Chemistry'
+               ,'is_major': False
                ,'en':
                    {'short': 'phys.chem.'
                    ,'title': 'Physical chemistry'
@@ -21130,9 +21120,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'physiol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'physiol.'
                    ,'title': 'Physiology'
@@ -21155,9 +21145,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'physioth.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'physioth.'
                    ,'title': 'Physiotherapy'
@@ -21180,9 +21170,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'phytophathol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'phytophathol.'
                    ,'title': 'Phytophathology'
@@ -21205,9 +21195,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'piez.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'piez.'
                    ,'title': 'Piezoelectric crystals'
@@ -21225,11 +21215,10 @@ SUBJECTS = {'AI.':
                    ,'title': 'Piezoelectric crystals'
                    }
                ,'uk':
-                   {'short': "п'єз."
-                   ,'title': "П'єзокристали"}}, 'pipes.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+                   {'short': "п'єз.", 'title': "П'єзокристали"}}, 'pipes.':
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'pipes.'
                    ,'title': 'Pipelines'
@@ -21252,9 +21241,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'plann.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Production'
+               {'is_valid': True
+               ,'major_en': 'Production'
+               ,'is_major': False
                ,'en':
                    {'short': 'plann.'
                    ,'title': 'Planning'
@@ -21277,9 +21266,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'plast.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemical industry'
+               {'is_valid': True
+               ,'major_en': 'Chemical industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'plast.'
                    ,'title': 'Plastics'
@@ -21302,9 +21291,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'plumb.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'plumb.'
                    ,'title': 'Plumbing'
@@ -21327,9 +21316,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pmp.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Machinery and mechanisms'
+               {'is_valid': True
+               ,'major_en': 'Machinery and mechanisms'
+               ,'is_major': False
                ,'en':
                    {'short': 'pmp.'
                    ,'title': 'Pumps'
@@ -21352,9 +21341,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pneum.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Machinery and mechanisms'
+               {'is_valid': True
+               ,'major_en': 'Machinery and mechanisms'
+               ,'is_major': False
                ,'en':
                    {'short': 'pneum.'
                    ,'title': 'Pneumatics'
@@ -21377,9 +21366,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'poetic':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'poetic'
                    ,'title': 'Poetic'
@@ -21402,9 +21391,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'poetry':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Literature'
+               {'is_valid': True
+               ,'major_en': 'Literature'
+               ,'is_major': False
                ,'en':
                    {'short': 'poetry'
                    ,'title': 'Poetry (terminology)'
@@ -21427,9 +21416,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'police':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Government, administration and public services'
+               {'is_valid': True
+               ,'major_en': 'Government, administration and public services'
+               ,'is_major': False
                ,'en':
                    {'short': 'police'
                    ,'title': 'Police'
@@ -21452,9 +21441,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'police.jarg.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Jargon and slang'
+               {'is_valid': True
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': False
                ,'en':
                    {'short': 'police.jarg.'
                    ,'title': 'Police jargon'
@@ -21477,9 +21466,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'polish.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'polish.'
                    ,'title': 'Polish'
@@ -21502,9 +21491,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'polit.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Politics'
+               {'is_valid': True
+               ,'major_en': 'Politics'
+               ,'is_major': True
                ,'en':
                    {'short': 'polit.'
                    ,'title': 'Politics'
@@ -21527,9 +21516,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'polit.econ.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Economy'
+               {'is_valid': True
+               ,'major_en': 'Economy'
+               ,'is_major': False
                ,'en':
                    {'short': 'polit.econ.'
                    ,'title': 'Political economy'
@@ -21552,9 +21541,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'polite':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Emotional values'
+               {'is_valid': True
+               ,'major_en': 'Emotional values'
+               ,'is_major': False
                ,'en':
                    {'short': 'polite'
                    ,'title': 'Polite'
@@ -21577,9 +21566,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'polygr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Publishing'
+               {'is_valid': True
+               ,'major_en': 'Publishing'
+               ,'is_major': False
                ,'en':
                    {'short': 'polygr.'
                    ,'title': 'Polygraphy'
@@ -21602,9 +21591,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'polym.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemical industry'
+               {'is_valid': True
+               ,'major_en': 'Chemical industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'polym.'
                    ,'title': 'Polymers'
@@ -21627,9 +21616,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'polynes.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'polynes.'
                    ,'title': 'Polynesian'
@@ -21652,9 +21641,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pomp.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Emotional values'
+               {'is_valid': True
+               ,'major_en': 'Emotional values'
+               ,'is_major': False
                ,'en':
                    {'short': 'pomp.'
                    ,'title': 'Pompous'
@@ -21677,9 +21666,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'port.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'port.'
                    ,'title': 'Portuguese'
@@ -21702,9 +21691,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'post':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Communications'
+               {'is_valid': True
+               ,'major_en': 'Communications'
+               ,'is_major': False
                ,'en':
                    {'short': 'post'
                    ,'title': 'Postal service'
@@ -21727,9 +21716,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pow.el.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Electrical engineering'
+               {'is_valid': True
+               ,'major_en': 'Electrical engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'pow.el.'
                    ,'title': 'Power electronics'
@@ -21752,9 +21741,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'powd.met.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Metallurgy'
+               {'is_valid': True
+               ,'major_en': 'Metallurgy'
+               ,'is_major': False
                ,'en':
                    {'short': 'powd.met.'
                    ,'title': 'Powder metallurgy'
@@ -21777,9 +21766,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pragm.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Linguistics'
+               {'is_valid': True
+               ,'major_en': 'Linguistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'pragm.'
                    ,'title': 'Pragmatics'
@@ -21802,9 +21791,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'press.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Industry'
+               {'is_valid': True
+               ,'major_en': 'Industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'press.'
                    ,'title': 'Press equipment'
@@ -21827,9 +21816,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pris.sl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Jargon and slang'
+               {'is_valid': True
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': False
                ,'en':
                    {'short': 'pris.sl.'
                    ,'title': 'Prison slang'
@@ -21847,14 +21836,13 @@ SUBJECTS = {'AI.':
                    ,'title': 'Prison slang'
                    }
                ,'uk':
-                   {'short': "в'язн.жарг."
-                   ,'title': 'В’язничний жаргон'
+                   {'short': "в'язн.жарг.", 'title': 'В’язничний жаргон'
                    }
                }
            ,'priv.int.law.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': True
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'priv.int.law.'
                    ,'title': 'Private international law'
@@ -21877,9 +21865,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'procur.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Logistics'
+               {'is_valid': True
+               ,'major_en': 'Logistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'procur.'
                    ,'title': 'Procurement'
@@ -21902,9 +21890,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'product.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Production'
+               {'is_valid': True
+               ,'major_en': 'Production'
+               ,'is_major': True
                ,'en':
                    {'short': 'product.'
                    ,'title': 'Production'
@@ -21927,9 +21915,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'prof.jarg.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Jargon and slang'
+               {'is_valid': True
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': False
                ,'en':
                    {'short': 'prof.jarg.'
                    ,'title': 'Professional jargon'
@@ -21952,9 +21940,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'progr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'progr.'
                    ,'title': 'Programming'
@@ -21977,9 +21965,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'proj.manag.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Management'
+               {'is_valid': True
+               ,'major_en': 'Management'
+               ,'is_major': False
                ,'en':
                    {'short': 'proj.manag.'
                    ,'title': 'Project management'
@@ -22002,9 +21990,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'project.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Cinematography'
+               {'is_valid': True
+               ,'major_en': 'Cinematography'
+               ,'is_major': False
                ,'en':
                    {'short': 'project.'
                    ,'title': 'Projectors'
@@ -22027,9 +22015,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'prop.&figur.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'prop.&figur.'
                    ,'title': 'Proper and figurative'
@@ -22052,9 +22040,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'prop.name':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Proper name'
+               {'is_valid': True
+               ,'major_en': 'Proper name'
+               ,'is_major': True
                ,'en':
                    {'short': 'prop.name'
                    ,'title': 'Proper name'
@@ -22077,9 +22065,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'protozool.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'protozool.'
                    ,'title': 'Protozoology'
@@ -22102,9 +22090,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'proverb':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Folklore'
+               {'is_valid': True
+               ,'major_en': 'Folklore'
+               ,'is_major': False
                ,'en':
                    {'short': 'proverb'
                    ,'title': 'Proverb'
@@ -22127,9 +22115,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'psychiat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'psychiat.'
                    ,'title': 'Psychiatry'
@@ -22152,9 +22140,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'psychol.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Psychology'
+               {'is_valid': True
+               ,'major_en': 'Psychology'
+               ,'is_major': True
                ,'en':
                    {'short': 'psychol.'
                    ,'title': 'Psychology'
@@ -22177,9 +22165,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'psycholing.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Linguistics'
+               {'is_valid': True
+               ,'major_en': 'Linguistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'psycholing.'
                    ,'title': 'Psycholinguistics'
@@ -22202,9 +22190,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'psychopathol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Psychology'
+               {'is_valid': True
+               ,'major_en': 'Psychology'
+               ,'is_major': False
                ,'en':
                    {'short': 'psychopathol.'
                    ,'title': 'Psychopathology'
@@ -22227,9 +22215,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'psychophys.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Psychology'
+               {'is_valid': True
+               ,'major_en': 'Psychology'
+               ,'is_major': False
                ,'en':
                    {'short': 'psychophys.'
                    ,'title': 'Psychophysiology'
@@ -22252,9 +22240,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'psychother.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'psychother.'
                    ,'title': 'Psychotherapy'
@@ -22277,9 +22265,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'publ.law.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Law'
+               {'is_valid': True
+               ,'major_en': 'Law'
+               ,'is_major': False
                ,'en':
                    {'short': 'publ.law.'
                    ,'title': 'Public law'
@@ -22302,9 +22290,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'publ.transp.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Transport'
+               {'is_valid': True
+               ,'major_en': 'Transport'
+               ,'is_major': False
                ,'en':
                    {'short': 'publ.transp.'
                    ,'title': 'Public transportation'
@@ -22327,9 +22315,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'publ.util.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Government, administration and public services'
+               {'is_valid': True
+               ,'major_en': 'Government, administration and public services'
+               ,'is_major': False
                ,'en':
                    {'short': 'publ.util.'
                    ,'title': 'Public utilities'
@@ -22352,9 +22340,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'publish.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Publishing'
+               {'is_valid': True
+               ,'major_en': 'Publishing'
+               ,'is_major': True
                ,'en':
                    {'short': 'publish.'
                    ,'title': 'Publishing'
@@ -22377,9 +22365,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'puert.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'puert.'
                    ,'title': 'Puerto Rican Spanish'
@@ -22402,9 +22390,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pulm.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'pulm.'
                    ,'title': 'Pulmonology'
@@ -22427,9 +22415,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pulp.n.paper':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Wood, pulp and paper industries'
+               {'is_valid': True
+               ,'major_en': 'Wood, pulp and paper industries'
+               ,'is_major': False
                ,'en':
                    {'short': 'pulp.n.paper'
                    ,'title': 'Pulp and paper industry'
@@ -22452,9 +22440,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'pwr.lines.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Energy industry'
+               {'is_valid': True
+               ,'major_en': 'Energy industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'pwr.lines.'
                    ,'title': 'Power lines'
@@ -22477,9 +22465,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'qual.cont.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Quality control and standards'
+               {'is_valid': True
+               ,'major_en': 'Quality control and standards'
+               ,'is_major': True
                ,'en':
                    {'short': 'qual.cont.'
                    ,'title': 'Quality control and standards'
@@ -22502,9 +22490,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'quant.el.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'quant.el.'
                    ,'title': 'Quantum electronics'
@@ -22527,9 +22515,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'quant.mech.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'quant.mech.'
                    ,'title': 'Quantum mechanics'
@@ -22552,9 +22540,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'quar.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Mining'
+               {'is_valid': True
+               ,'major_en': 'Mining'
+               ,'is_major': False
                ,'en':
                    {'short': 'quar.'
                    ,'title': 'Quarrying'
@@ -22572,14 +22560,13 @@ SUBJECTS = {'AI.':
                    ,'title': 'Quarrying'
                    }
                ,'uk':
-                   {'short': "кар'єр."
-                   ,'title': 'Кар’єрні роботи'
+                   {'short': "кар'єр.", 'title': 'Кар’єрні роботи'
                    }
                }
            ,'quran':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Religion'
+               {'is_valid': True
+               ,'major_en': 'Religion'
+               ,'is_major': False
                ,'en':
                    {'short': 'quran'
                    ,'title': 'Quran'
@@ -22602,9 +22589,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'racing':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'racing'
                    ,'title': 'Racing and motorsport'
@@ -22627,9 +22614,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'rad.geod.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'rad.geod.'
                    ,'title': 'Radiogeodesy'
@@ -22652,9 +22639,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'radio':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Communications'
+               {'is_valid': True
+               ,'major_en': 'Communications'
+               ,'is_major': False
                ,'en':
                    {'short': 'radio'
                    ,'title': 'Radio'
@@ -22677,9 +22664,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'radio, amer.usg., abbr.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'radio, amer.usg., abbr.'
                    ,'title': 'Radio, American (usage, not AmE), Abbreviation'
@@ -22702,9 +22689,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'radioastron.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Space'
+               {'is_valid': True
+               ,'major_en': 'Space'
+               ,'is_major': False
                ,'en':
                    {'short': 'radioastron.'
                    ,'title': 'Radioastronomy'
@@ -22727,9 +22714,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'radiobiol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'radiobiol.'
                    ,'title': 'Radiobiology'
@@ -22752,9 +22739,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'radiogr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical appliances'
+               {'is_valid': True
+               ,'major_en': 'Medical appliances'
+               ,'is_major': False
                ,'en':
                    {'short': 'radiogr.'
                    ,'title': 'Radiography'
@@ -22777,9 +22764,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'radiol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'radiol.'
                    ,'title': 'Radiology'
@@ -22802,9 +22789,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'radioloc.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Military'
+               {'is_valid': True
+               ,'major_en': 'Military'
+               ,'is_major': False
                ,'en':
                    {'short': 'radioloc.'
                    ,'title': 'Radiolocation'
@@ -22827,9 +22814,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'railw.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Transport'
+               {'is_valid': True
+               ,'major_en': 'Transport'
+               ,'is_major': False
                ,'en':
                    {'short': 'railw.'
                    ,'title': 'Railway term'
@@ -22852,9 +22839,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'rare':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'rare'
                    ,'title': 'Rare'
@@ -22877,9 +22864,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'real.est.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'real.est.'
                    ,'title': 'Real estate'
@@ -22902,9 +22889,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'rec.mngmt':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Records management'
+               {'is_valid': True
+               ,'major_en': 'Records management'
+               ,'is_major': True
                ,'en':
                    {'short': 'rec.mngmt'
                    ,'title': 'Records management'
@@ -22927,9 +22914,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'refr.mat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Building materials'
+               {'is_valid': True
+               ,'major_en': 'Building materials'
+               ,'is_major': False
                ,'en':
                    {'short': 'refr.mat.'
                    ,'title': 'Refractory materials'
@@ -22952,9 +22939,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'refrig.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'refrig.'
                    ,'title': 'Refrigeration'
@@ -22977,9 +22964,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'reg.usg.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': True
                ,'en':
                    {'short': 'reg.usg.'
                    ,'title': 'Regional usage (other than language varieties)'
@@ -23002,9 +22989,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'rel., budd.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Religion'
+               {'is_valid': False
+               ,'major_en': 'Religion'
+               ,'is_major': False
                ,'en':
                    {'short': 'rel., budd.'
                    ,'title': 'Buddhism'
@@ -23027,9 +23014,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'rel., cath.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Religion'
+               {'is_valid': False
+               ,'major_en': 'Religion'
+               ,'is_major': False
                ,'en':
                    {'short': 'rel., cath.'
                    ,'title': 'Catholic'
@@ -23052,9 +23039,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'rel., christ.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Religion'
+               {'is_valid': False
+               ,'major_en': 'Religion'
+               ,'is_major': False
                ,'en':
                    {'short': 'rel., christ.'
                    ,'title': 'Christianity'
@@ -23077,9 +23064,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'rel., east.orth.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Religion'
+               {'is_valid': False
+               ,'major_en': 'Religion'
+               ,'is_major': False
                ,'en':
                    {'short': 'rel., east.orth.'
                    ,'title': 'Eastern Orthodoxy'
@@ -23099,9 +23086,9 @@ SUBJECTS = {'AI.':
                ,'uk':
                    {'short': 'рел., правосл.'
                    ,'title': "Православ'я"}}, 'rel., hind.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Mythology'
+               {'is_valid': False
+               ,'major_en': 'Mythology'
+               ,'is_major': False
                ,'en':
                    {'short': 'rel., hind.'
                    ,'title': 'Hinduism'
@@ -23124,9 +23111,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'rel., islam':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Religion'
+               {'is_valid': False
+               ,'major_en': 'Religion'
+               ,'is_major': False
                ,'en':
                    {'short': 'rel., islam'
                    ,'title': 'Islam'
@@ -23149,9 +23136,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'reliabil.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Quality control and standards'
+               {'is_valid': True
+               ,'major_en': 'Quality control and standards'
+               ,'is_major': False
                ,'en':
                    {'short': 'reliabil.'
                    ,'title': 'Reliability'
@@ -23174,9 +23161,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'relig.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Religion'
+               {'is_valid': True
+               ,'major_en': 'Religion'
+               ,'is_major': True
                ,'en':
                    {'short': 'relig.'
                    ,'title': 'Religion'
@@ -23199,9 +23186,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'rem.sens.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'rem.sens.'
                    ,'title': 'Remote sensing'
@@ -23224,9 +23211,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'reptil.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'reptil.'
                    ,'title': 'Amphibians and reptiles'
@@ -23249,9 +23236,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'resin.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemical industry'
+               {'is_valid': True
+               ,'major_en': 'Chemical industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'resin.'
                    ,'title': 'Resins'
@@ -23274,9 +23261,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'respect.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Emotional values'
+               {'is_valid': True
+               ,'major_en': 'Emotional values'
+               ,'is_major': False
                ,'en':
                    {'short': 'respect.'
                    ,'title': 'Respectful'
@@ -23299,9 +23286,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'rhetor.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'rhetor.'
                    ,'title': 'Rhetoric'
@@ -23324,9 +23311,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'risk.man.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Management'
+               {'is_valid': True
+               ,'major_en': 'Management'
+               ,'is_major': False
                ,'en':
                    {'short': 'risk.man.'
                    ,'title': 'Risk Management'
@@ -23349,9 +23336,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'rit.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Dialectal'
+               {'is_valid': True
+               ,'major_en': 'Dialectal'
+               ,'is_major': False
                ,'en':
                    {'short': 'rit.'
                    ,'title': 'Ritual'
@@ -23374,9 +23361,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'road.constr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'road.constr.'
                    ,'title': 'Road construction'
@@ -23399,9 +23386,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'road.sign.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Transport'
+               {'is_valid': True
+               ,'major_en': 'Transport'
+               ,'is_major': False
                ,'en':
                    {'short': 'road.sign.'
                    ,'title': 'Road sign'
@@ -23424,9 +23411,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'road.surf.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'road.surf.'
                    ,'title': 'Road surface'
@@ -23449,9 +23436,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'road.wrk.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'road.wrk.'
                    ,'title': 'Road works'
@@ -23474,9 +23461,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'robot.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'robot.'
                    ,'title': 'Robotics'
@@ -23499,9 +23486,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'roll.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Metallurgy'
+               {'is_valid': True
+               ,'major_en': 'Metallurgy'
+               ,'is_major': False
                ,'en':
                    {'short': 'roll.'
                    ,'title': 'Roll stock'
@@ -23524,9 +23511,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'romanian.lang.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'romanian.lang.'
                    ,'title': 'Romanian'
@@ -23549,9 +23536,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'rude':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Emotional values'
+               {'is_valid': True
+               ,'major_en': 'Emotional values'
+               ,'is_major': False
                ,'en':
                    {'short': 'rude'
                    ,'title': 'Rude'
@@ -23574,9 +23561,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'rugb.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'rugb.'
                    ,'title': 'Rugby football'
@@ -23599,9 +23586,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'russ.lang.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'russ.lang.'
                    ,'title': 'Russian language'
@@ -23624,9 +23611,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'s.germ.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 's.germ.'
                    ,'title': 'South German'
@@ -23649,9 +23636,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sail.ships':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Nautical'
+               {'is_valid': True
+               ,'major_en': 'Nautical'
+               ,'is_major': False
                ,'en':
                    {'short': 'sail.ships'
                    ,'title': 'Sailing ships'
@@ -23674,9 +23661,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sanit.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'sanit.'
                    ,'title': 'Sanitation'
@@ -23699,9 +23686,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sanscr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'sanscr.'
                    ,'title': 'Sanskrit'
@@ -23724,9 +23711,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sarcast.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Emotional values'
+               {'is_valid': True
+               ,'major_en': 'Emotional values'
+               ,'is_major': False
                ,'en':
                    {'short': 'sarcast.'
                    ,'title': 'Sarcastical'
@@ -23749,9 +23736,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sat.comm.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Communications'
+               {'is_valid': True
+               ,'major_en': 'Communications'
+               ,'is_major': False
                ,'en':
                    {'short': 'sat.comm.'
                    ,'title': 'Satellite communications'
@@ -23774,9 +23761,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'saying.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Folklore'
+               {'is_valid': True
+               ,'major_en': 'Folklore'
+               ,'is_major': False
                ,'en':
                    {'short': 'saying.'
                    ,'title': 'Saying'
@@ -23799,9 +23786,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'school.sl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Jargon and slang'
+               {'is_valid': True
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': False
                ,'en':
                    {'short': 'school.sl.'
                    ,'title': 'School'
@@ -23824,9 +23811,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'scient.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'scient.'
                    ,'title': 'Scientific'
@@ -23849,9 +23836,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'scottish':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'scottish'
                    ,'title': 'Scottish (usage)'
@@ -23874,9 +23861,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'scr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Literature'
+               {'is_valid': True
+               ,'major_en': 'Literature'
+               ,'is_major': False
                ,'en':
                    {'short': 'scr.'
                    ,'title': 'Screenwriting'
@@ -23899,9 +23886,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'scub.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Outdoor activities and extreme sports'
+               {'is_valid': True
+               ,'major_en': 'Outdoor activities and extreme sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'scub.'
                    ,'title': 'Scuba diving'
@@ -23924,9 +23911,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sec.sys.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Security systems'
+               {'is_valid': True
+               ,'major_en': 'Security systems'
+               ,'is_major': True
                ,'en':
                    {'short': 'sec.sys.'
                    ,'title': 'Security systems'
@@ -23949,9 +23936,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'securit.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Finances'
+               {'is_valid': True
+               ,'major_en': 'Finances'
+               ,'is_major': False
                ,'en':
                    {'short': 'securit.'
                    ,'title': 'Securities'
@@ -23974,9 +23961,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'seism.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'seism.'
                    ,'title': 'Seismology'
@@ -23999,9 +23986,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'seism.res.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'seism.res.'
                    ,'title': 'Seismic resistance'
@@ -24024,9 +24011,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sel.breed.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'sel.breed.'
                    ,'title': 'Selective breeding'
@@ -24049,9 +24036,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'semant.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Linguistics'
+               {'is_valid': True
+               ,'major_en': 'Linguistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'semant.'
                    ,'title': 'Semantics'
@@ -24074,9 +24061,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'semicond.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Electrical engineering'
+               {'is_valid': True
+               ,'major_en': 'Electrical engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'semicond.'
                    ,'title': 'Semiconductors'
@@ -24099,9 +24086,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'semiot.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Linguistics'
+               {'is_valid': True
+               ,'major_en': 'Linguistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'semiot.'
                    ,'title': 'Semiotics'
@@ -24124,9 +24111,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sens.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'sens.'
                    ,'title': 'Sensitometry'
@@ -24149,9 +24136,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sew.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Light industries'
+               {'is_valid': True
+               ,'major_en': 'Light industries'
+               ,'is_major': False
                ,'en':
                    {'short': 'sew.'
                    ,'title': 'Sewing and clothing industry'
@@ -24174,9 +24161,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sewage':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'sewage'
                    ,'title': 'Sewage and wastewater treatment'
@@ -24199,9 +24186,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sex':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'sex'
                    ,'title': 'Sex and sexual subcultures'
@@ -24224,9 +24211,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sexol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'sexol.'
                    ,'title': 'Sexology'
@@ -24249,9 +24236,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'shinto.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Religion'
+               {'is_valid': True
+               ,'major_en': 'Religion'
+               ,'is_major': False
                ,'en':
                    {'short': 'shinto.'
                    ,'title': 'Shinto'
@@ -24274,9 +24261,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ship.handl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Nautical'
+               {'is_valid': True
+               ,'major_en': 'Nautical'
+               ,'is_major': False
                ,'en':
                    {'short': 'ship.handl.'
                    ,'title': 'Ship handling'
@@ -24299,9 +24286,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'shipb.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Nautical'
+               {'is_valid': True
+               ,'major_en': 'Nautical'
+               ,'is_major': False
                ,'en':
                    {'short': 'shipb.'
                    ,'title': 'Shipbuilding'
@@ -24324,9 +24311,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'shoot.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'shoot.'
                    ,'title': 'Shooting sport'
@@ -24349,9 +24336,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'show.biz.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'show.biz.'
                    ,'title': 'Show business'
@@ -24374,9 +24361,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'signall.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Security systems'
+               {'is_valid': True
+               ,'major_en': 'Security systems'
+               ,'is_major': False
                ,'en':
                    {'short': 'signall.'
                    ,'title': 'Signalling'
@@ -24399,9 +24386,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'silic.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemical industry'
+               {'is_valid': True
+               ,'major_en': 'Chemical industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'silic.'
                    ,'title': 'Silicate industry'
@@ -24424,9 +24411,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ski.jump.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'ski.jump.'
                    ,'title': 'Ski jumping'
@@ -24449,9 +24436,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'skiing':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'skiing'
                    ,'title': 'Skiing'
@@ -24474,9 +24461,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'skydive.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Outdoor activities and extreme sports'
+               {'is_valid': True
+               ,'major_en': 'Outdoor activities and extreme sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'skydive.'
                    ,'title': 'Skydiving'
@@ -24499,9 +24486,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sl., drug.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Jargon and slang'
+               {'is_valid': False
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': False
                ,'en':
                    {'short': 'sl., drug.'
                    ,'title': 'Drug-related slang'
@@ -24524,9 +24511,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sl., teen.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'sl., teen.'
                    ,'title': 'Teenager slang'
@@ -24549,9 +24536,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'slang':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Jargon and slang'
+               {'is_valid': True
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': False
                ,'en':
                    {'short': 'slang'
                    ,'title': 'Slang'
@@ -24574,9 +24561,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sms':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Communications'
+               {'is_valid': True
+               ,'major_en': 'Communications'
+               ,'is_major': False
                ,'en':
                    {'short': 'sms'
                    ,'title': 'Short message service'
@@ -24599,9 +24586,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'snd.proc.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Multimedia'
+               {'is_valid': True
+               ,'major_en': 'Multimedia'
+               ,'is_major': False
                ,'en':
                    {'short': 'snd.proc.'
                    ,'title': 'Digital sound processing'
@@ -24624,9 +24611,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'snd.rec.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Cinematography'
+               {'is_valid': True
+               ,'major_en': 'Cinematography'
+               ,'is_major': False
                ,'en':
                    {'short': 'snd.rec.'
                    ,'title': 'Sound recording'
@@ -24649,9 +24636,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'snowb.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Outdoor activities and extreme sports'
+               {'is_valid': True
+               ,'major_en': 'Outdoor activities and extreme sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'snowb.'
                    ,'title': 'Snowboard'
@@ -24674,9 +24661,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'soc.med.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'soc.med.'
                    ,'title': 'Social media'
@@ -24699,9 +24686,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'social.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Historical'
+               {'is_valid': True
+               ,'major_en': 'Historical'
+               ,'is_major': False
                ,'en':
                    {'short': 'social.'
                    ,'title': 'Socialism'
@@ -24724,9 +24711,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sociol.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Sociology'
+               {'is_valid': True
+               ,'major_en': 'Sociology'
+               ,'is_major': True
                ,'en':
                    {'short': 'sociol.'
                    ,'title': 'Sociology'
@@ -24749,9 +24736,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'socioling.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Linguistics'
+               {'is_valid': True
+               ,'major_en': 'Linguistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'socioling.'
                    ,'title': 'Sociolinguistics'
@@ -24774,9 +24761,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'softw.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Computing'
+               {'is_valid': True
+               ,'major_en': 'Computing'
+               ,'is_major': False
                ,'en':
                    {'short': 'softw.'
                    ,'title': 'Software'
@@ -24799,9 +24786,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'soil.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'soil.'
                    ,'title': 'Soil science'
@@ -24824,9 +24811,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'soil.mech.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'soil.mech.'
                    ,'title': 'Soil mechanics'
@@ -24849,9 +24836,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sol.pow.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Energy industry'
+               {'is_valid': True
+               ,'major_en': 'Energy industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'sol.pow.'
                    ,'title': 'Solar power'
@@ -24874,9 +24861,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'solid.st.phys.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'solid.st.phys.'
                    ,'title': 'Solid-state physics'
@@ -24899,9 +24886,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'som.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medicine - Alternative medicine'
+               {'is_valid': True
+               ,'major_en': 'Medicine - Alternative medicine'
+               ,'is_major': False
                ,'en':
                    {'short': 'som.'
                    ,'title': 'Somatics'
@@ -24924,9 +24911,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sound.eng.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Cinematography'
+               {'is_valid': True
+               ,'major_en': 'Cinematography'
+               ,'is_major': False
                ,'en':
                    {'short': 'sound.eng.'
                    ,'title': 'Sound engineering'
@@ -24949,9 +24936,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'south.Dutch.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'south.Dutch.'
                    ,'title': 'Southern Dutch'
@@ -24974,9 +24961,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'south.afr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'south.afr.'
                    ,'title': 'South African'
@@ -24999,9 +24986,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'soviet.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Historical'
+               {'is_valid': True
+               ,'major_en': 'Historical'
+               ,'is_major': False
                ,'en':
                    {'short': 'soviet.'
                    ,'title': 'Soviet'
@@ -25024,9 +25011,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sp.dis.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'sp.dis.'
                    ,'title': 'Speech disorders'
@@ -25049,9 +25036,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'space':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Space'
+               {'is_valid': True
+               ,'major_en': 'Space'
+               ,'is_major': True
                ,'en':
                    {'short': 'space'
                    ,'title': 'Space'
@@ -25074,9 +25061,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'span.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'span.'
                    ,'title': 'Spanish'
@@ -25099,9 +25086,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'span.-am.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Jargon and slang'
+               {'is_valid': False
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': False
                ,'en':
                    {'short': 'span.-am.'
                    ,'title': 'Spanish-American'
@@ -25124,9 +25111,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'spectr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemistry'
+               {'is_valid': True
+               ,'major_en': 'Chemistry'
+               ,'is_major': False
                ,'en':
                    {'short': 'spectr.'
                    ,'title': 'Spectroscopy'
@@ -25149,9 +25136,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'speed.skat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Outdoor activities and extreme sports'
+               {'is_valid': True
+               ,'major_en': 'Outdoor activities and extreme sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'speed.skat.'
                    ,'title': 'Speed skating'
@@ -25174,9 +25161,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'speleo.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geology'
+               {'is_valid': True
+               ,'major_en': 'Geology'
+               ,'is_major': False
                ,'en':
                    {'short': 'speleo.'
                    ,'title': 'Speleology'
@@ -25199,9 +25186,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'spice.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Cooking'
+               {'is_valid': True
+               ,'major_en': 'Cooking'
+               ,'is_major': False
                ,'en':
                    {'short': 'spice.'
                    ,'title': 'Spices'
@@ -25224,9 +25211,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'spoken':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'spoken'
                    ,'title': 'Spoken'
@@ -25249,9 +25236,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sport, bask.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': False
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'sport, bask.'
                    ,'title': 'Basketball'
@@ -25274,9 +25261,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sport.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': True
                ,'en':
                    {'short': 'sport.'
                    ,'title': 'Sports'
@@ -25299,9 +25286,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'st.exch.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Finances'
+               {'is_valid': True
+               ,'major_en': 'Finances'
+               ,'is_major': False
                ,'en':
                    {'short': 'st.exch.'
                    ,'title': 'Stock Exchange'
@@ -25324,9 +25311,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'starch.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Food industry'
+               {'is_valid': True
+               ,'major_en': 'Food industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'starch.'
                    ,'title': 'Starch industry'
@@ -25349,9 +25336,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'stat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Mathematics'
+               {'is_valid': True
+               ,'major_en': 'Mathematics'
+               ,'is_major': False
                ,'en':
                    {'short': 'stat.'
                    ,'title': 'Statistics'
@@ -25374,9 +25361,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'station.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Records management'
+               {'is_valid': True
+               ,'major_en': 'Records management'
+               ,'is_major': False
                ,'en':
                    {'short': 'station.'
                    ,'title': 'Stationery'
@@ -25399,9 +25386,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'stereo.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Multimedia'
+               {'is_valid': True
+               ,'major_en': 'Multimedia'
+               ,'is_major': False
                ,'en':
                    {'short': 'stereo.'
                    ,'title': 'Stereo'
@@ -25424,9 +25411,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'stmp.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Industry'
+               {'is_valid': True
+               ,'major_en': 'Industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'stmp.'
                    ,'title': 'Stamping'
@@ -25449,9 +25436,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'stn.mas.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'stn.mas.'
                    ,'title': 'Stonemasonry'
@@ -25474,9 +25461,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'str.mater.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'str.mater.'
                    ,'title': 'Strength of materials'
@@ -25499,9 +25486,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'strat.plast.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Chemical industry'
+               {'is_valid': True
+               ,'major_en': 'Chemical industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'strat.plast.'
                    ,'title': 'Stratified plastics'
@@ -25524,9 +25511,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'stratigr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geology'
+               {'is_valid': True
+               ,'major_en': 'Geology'
+               ,'is_major': False
                ,'en':
                    {'short': 'stratigr.'
                    ,'title': 'Stratigraphy'
@@ -25549,9 +25536,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'stylist.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Linguistics'
+               {'is_valid': True
+               ,'major_en': 'Linguistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'stylist.'
                    ,'title': 'Stylistics'
@@ -25574,9 +25561,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'subl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'subl.'
                    ,'title': 'Sublime'
@@ -25599,9 +25586,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'subm.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Nautical'
+               {'is_valid': True
+               ,'major_en': 'Nautical'
+               ,'is_major': False
                ,'en':
                    {'short': 'subm.'
                    ,'title': 'Submarines'
@@ -25624,9 +25611,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'sugar.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Food industry'
+               {'is_valid': True
+               ,'major_en': 'Food industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'sugar.'
                    ,'title': 'Sugar production'
@@ -25649,9 +25636,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'supercond.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Electrical engineering'
+               {'is_valid': True
+               ,'major_en': 'Electrical engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'supercond.'
                    ,'title': 'Superconductivity'
@@ -25674,9 +25661,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'superl.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'superl.'
                    ,'title': 'Superlative'
@@ -25699,9 +25686,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'surg.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'surg.'
                    ,'title': 'Surgery'
@@ -25724,9 +25711,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'surn.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Proper name'
+               {'is_valid': True
+               ,'major_en': 'Proper name'
+               ,'is_major': False
                ,'en':
                    {'short': 'surn.'
                    ,'title': 'Surname'
@@ -25749,9 +25736,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'survey.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'survey.'
                    ,'title': 'Surveying'
@@ -25774,9 +25761,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'svc.ind.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Service industry'
+               {'is_valid': True
+               ,'major_en': 'Service industry'
+               ,'is_major': True
                ,'en':
                    {'short': 'svc.ind.'
                    ,'title': 'Service industry'
@@ -25799,9 +25786,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'swed.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'swed.'
                    ,'title': 'Swedish'
@@ -25824,9 +25811,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'swim.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'swim.'
                    ,'title': 'Swimming'
@@ -25849,9 +25836,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'swiss.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Regional usage (other than language varieties)'
+               {'is_valid': True
+               ,'major_en': 'Regional usage (other than language varieties)'
+               ,'is_major': False
                ,'en':
                    {'short': 'swiss.'
                    ,'title': 'Swiss term'
@@ -25874,9 +25861,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'swtch.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'swtch.'
                    ,'title': 'Switches'
@@ -25899,9 +25886,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'synt.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Linguistics'
+               {'is_valid': True
+               ,'major_en': 'Linguistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'synt.'
                    ,'title': 'Syntax'
@@ -25924,9 +25911,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'tab.tenn.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'tab.tenn.'
                    ,'title': 'Table tennis'
@@ -25949,9 +25936,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'tabl.game':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Games (other than sports)'
+               {'is_valid': True
+               ,'major_en': 'Games (other than sports)'
+               ,'is_major': False
                ,'en':
                    {'short': 'tabl.game'
                    ,'title': 'Tabletop games'
@@ -25974,9 +25961,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'taboo':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'taboo'
                    ,'title': 'Taboo expressions and obscenities'
@@ -25999,9 +25986,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'taboo, amer.usg., black.sl., slang':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'taboo, amer.usg., black.sl., slang'
                    ,'title': 'Taboo expressions and obscenities, American (usage, not AmE), Black slang, Slang'
@@ -26024,9 +26011,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'taiw.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'taiw.'
                    ,'title': 'Taiwan'
@@ -26049,9 +26036,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'tao.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Religion'
+               {'is_valid': False
+               ,'major_en': 'Religion'
+               ,'is_major': False
                ,'en':
                    {'short': 'tao.'
                    ,'title': 'Taoism'
@@ -26074,9 +26061,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'tat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'tat.'
                    ,'title': 'Tatar'
@@ -26099,9 +26086,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'taur.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'taur.'
                    ,'title': 'Tauromachy'
@@ -26124,9 +26111,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'tax.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Government, administration and public services'
+               {'is_valid': True
+               ,'major_en': 'Government, administration and public services'
+               ,'is_major': False
                ,'en':
                    {'short': 'tax.'
                    ,'title': 'Taxes'
@@ -26149,9 +26136,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'tech.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': True
                ,'en':
                    {'short': 'tech.'
                    ,'title': 'Technology'
@@ -26174,9 +26161,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'tecton.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geology'
+               {'is_valid': True
+               ,'major_en': 'Geology'
+               ,'is_major': False
                ,'en':
                    {'short': 'tecton.'
                    ,'title': 'Tectonics'
@@ -26199,9 +26186,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'tel.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Communications'
+               {'is_valid': True
+               ,'major_en': 'Communications'
+               ,'is_major': False
                ,'en':
                    {'short': 'tel.'
                    ,'title': 'Telephony'
@@ -26224,9 +26211,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'tel.mech.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Communications'
+               {'is_valid': True
+               ,'major_en': 'Communications'
+               ,'is_major': False
                ,'en':
                    {'short': 'tel.mech.'
                    ,'title': 'Telemechanics'
@@ -26249,9 +26236,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'telecom.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Communications'
+               {'is_valid': True
+               ,'major_en': 'Communications'
+               ,'is_major': False
                ,'en':
                    {'short': 'telecom.'
                    ,'title': 'Telecommunications'
@@ -26274,9 +26261,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'telegr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Communications'
+               {'is_valid': True
+               ,'major_en': 'Communications'
+               ,'is_major': False
                ,'en':
                    {'short': 'telegr.'
                    ,'title': 'Telegraphy'
@@ -26299,9 +26286,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'tenn.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'tenn.'
                    ,'title': 'Tennis'
@@ -26324,9 +26311,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'textile':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Light industries'
+               {'is_valid': True
+               ,'major_en': 'Light industries'
+               ,'is_major': False
                ,'en':
                    {'short': 'textile'
                    ,'title': 'Textile industry'
@@ -26349,9 +26336,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'thai.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'thai.'
                    ,'title': 'Thai'
@@ -26374,9 +26361,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'theatre.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'theatre.'
                    ,'title': 'Theatre'
@@ -26399,9 +26386,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'therm.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'therm.'
                    ,'title': 'Thermodynamics'
@@ -26424,9 +26411,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'therm.energ.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Energy industry'
+               {'is_valid': True
+               ,'major_en': 'Energy industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'therm.energ.'
                    ,'title': 'Thermal Energy'
@@ -26449,9 +26436,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'therm.eng.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'therm.eng.'
                    ,'title': 'Thermal engineering'
@@ -26474,9 +26461,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'timb.float.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Wood, pulp and paper industries'
+               {'is_valid': True
+               ,'major_en': 'Wood, pulp and paper industries'
+               ,'is_major': False
                ,'en':
                    {'short': 'timb.float.'
                    ,'title': 'Timber floating'
@@ -26499,9 +26486,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'tin.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Production'
+               {'is_valid': True
+               ,'major_en': 'Production'
+               ,'is_major': False
                ,'en':
                    {'short': 'tin.'
                    ,'title': 'Tinware'
@@ -26524,9 +26511,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'tirk.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'tirk.'
                    ,'title': 'Turk'
@@ -26549,9 +26536,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'titles':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Art and culture (n.e.s.)'
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': False
                ,'en':
                    {'short': 'titles'
                    ,'title': 'Titles of works of art'
@@ -26574,9 +26561,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'tobac.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Industry'
+               {'is_valid': True
+               ,'major_en': 'Industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'tobac.'
                    ,'title': 'Tobacco industry'
@@ -26599,9 +26586,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'tools':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'tools'
                    ,'title': 'Tools'
@@ -26624,9 +26611,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'topogr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': True
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'topogr.'
                    ,'title': 'Topography'
@@ -26649,9 +26636,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'topol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Mathematics'
+               {'is_valid': True
+               ,'major_en': 'Mathematics'
+               ,'is_major': False
                ,'en':
                    {'short': 'topol.'
                    ,'title': 'Topology'
@@ -26674,9 +26661,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'topon.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Proper name'
+               {'is_valid': True
+               ,'major_en': 'Proper name'
+               ,'is_major': False
                ,'en':
                    {'short': 'topon.'
                    ,'title': 'Toponym'
@@ -26699,9 +26686,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'torped.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Military'
+               {'is_valid': True
+               ,'major_en': 'Military'
+               ,'is_major': False
                ,'en':
                    {'short': 'torped.'
                    ,'title': 'Torpedoes'
@@ -26724,9 +26711,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'toxicol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'toxicol.'
                    ,'title': 'Toxicology'
@@ -26749,9 +26736,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'toy.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'toy.'
                    ,'title': 'Toys'
@@ -26774,9 +26761,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'tradem.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Business'
+               {'is_valid': True
+               ,'major_en': 'Business'
+               ,'is_major': False
                ,'en':
                    {'short': 'tradem.'
                    ,'title': 'Trademark'
@@ -26799,9 +26786,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'traf.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Transport'
+               {'is_valid': True
+               ,'major_en': 'Transport'
+               ,'is_major': False
                ,'en':
                    {'short': 'traf.'
                    ,'title': 'Road traffic'
@@ -26824,9 +26811,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'traf.contr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Transport'
+               {'is_valid': True
+               ,'major_en': 'Transport'
+               ,'is_major': False
                ,'en':
                    {'short': 'traf.contr.'
                    ,'title': 'Traffic control'
@@ -26849,9 +26836,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'trampol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'trampol.'
                    ,'title': 'Trampolining'
@@ -26874,9 +26861,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'transf.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Electrical engineering'
+               {'is_valid': True
+               ,'major_en': 'Electrical engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'transf.'
                    ,'title': 'Transformers'
@@ -26899,9 +26886,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'transp.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Transport'
+               {'is_valid': True
+               ,'major_en': 'Transport'
+               ,'is_major': True
                ,'en':
                    {'short': 'transp.'
                    ,'title': 'Transport'
@@ -26924,9 +26911,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'transpl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'transpl.'
                    ,'title': 'Transplantology'
@@ -26949,9 +26936,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'traumat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'traumat.'
                    ,'title': 'Traumatology'
@@ -26974,9 +26961,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'trav.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Travel'
+               {'is_valid': True
+               ,'major_en': 'Travel'
+               ,'is_major': True
                ,'en':
                    {'short': 'trav.'
                    ,'title': 'Travel'
@@ -26999,9 +26986,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'trd.class.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Business'
+               {'is_valid': True
+               ,'major_en': 'Business'
+               ,'is_major': False
                ,'en':
                    {'short': 'trd.class.'
                    ,'title': 'Trade classification'
@@ -27024,9 +27011,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'trib.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Physics'
+               {'is_valid': True
+               ,'major_en': 'Physics'
+               ,'is_major': False
                ,'en':
                    {'short': 'trib.'
                    ,'title': 'Tribology'
@@ -27049,9 +27036,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'trucks':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Transport'
+               {'is_valid': False
+               ,'major_en': 'Transport'
+               ,'is_major': False
                ,'en':
                    {'short': 'trucks'
                    ,'title': 'Trucks/Lorries'
@@ -27074,9 +27061,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'tunn.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'tunn.'
                    ,'title': 'Tunneling'
@@ -27099,9 +27086,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'turb.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Machinery and mechanisms'
+               {'is_valid': True
+               ,'major_en': 'Machinery and mechanisms'
+               ,'is_major': False
                ,'en':
                    {'short': 'turb.'
                    ,'title': 'Turbines'
@@ -27124,9 +27111,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'turkish':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'turkish'
                    ,'title': 'Turkish language'
@@ -27149,9 +27136,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'typogr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Publishing'
+               {'is_valid': True
+               ,'major_en': 'Publishing'
+               ,'is_major': False
                ,'en':
                    {'short': 'typogr.'
                    ,'title': 'Typography'
@@ -27174,9 +27161,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'typol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Linguistics'
+               {'is_valid': True
+               ,'major_en': 'Linguistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'typol.'
                    ,'title': 'Typology'
@@ -27199,9 +27186,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ufol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Parasciences'
+               {'is_valid': True
+               ,'major_en': 'Parasciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'ufol.'
                    ,'title': 'Ufology'
@@ -27224,9 +27211,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'ultrasnd.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical appliances'
+               {'is_valid': True
+               ,'major_en': 'Medical appliances'
+               ,'is_major': False
                ,'en':
                    {'short': 'ultrasnd.'
                    ,'title': 'Ultrasound'
@@ -27249,9 +27236,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'unions.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Production'
+               {'is_valid': True
+               ,'major_en': 'Production'
+               ,'is_major': False
                ,'en':
                    {'short': 'unions.'
                    ,'title': 'Trade unions'
@@ -27274,9 +27261,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'unit.meas.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'unit.meas.'
                    ,'title': 'Unit measures'
@@ -27299,9 +27286,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'univer.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Education'
+               {'is_valid': True
+               ,'major_en': 'Education'
+               ,'is_major': False
                ,'en':
                    {'short': 'univer.'
                    ,'title': 'University'
@@ -27324,9 +27311,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'urol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'urol.'
                    ,'title': 'Urology'
@@ -27349,9 +27336,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'urug.sp.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Dialectal'
+               {'is_valid': True
+               ,'major_en': 'Dialectal'
+               ,'is_major': False
                ,'en':
                    {'short': 'urug.sp.'
                    ,'title': 'Uruguayan Spanish'
@@ -27374,9 +27361,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'vac.tub.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Electronics'
+               {'is_valid': True
+               ,'major_en': 'Electronics'
+               ,'is_major': False
                ,'en':
                    {'short': 'vac.tub.'
                    ,'title': 'Vacuum tubes'
@@ -27399,9 +27386,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'valves':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'valves'
                    ,'title': 'Valves'
@@ -27424,9 +27411,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'venereol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'venereol.'
                    ,'title': 'Venereology'
@@ -27449,9 +27436,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'vent.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'vent.'
                    ,'title': 'Ventilation'
@@ -27474,9 +27461,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'verbat.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Subjects for Chinese dictionaries (container)'
+               {'is_valid': True
+               ,'major_en': 'Subjects for Chinese dictionaries (container)'
+               ,'is_major': False
                ,'en':
                    {'short': 'verbat.'
                    ,'title': 'Verbatim'
@@ -27499,9 +27486,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'verl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Jargon and slang'
+               {'is_valid': True
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': False
                ,'en':
                    {'short': 'verl.'
                    ,'title': 'Verlan'
@@ -27524,9 +27511,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'vernac.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'vernac.'
                    ,'title': 'Vernacular language'
@@ -27549,9 +27536,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'vet.med.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Medical'
+               {'is_valid': True
+               ,'major_en': 'Medical'
+               ,'is_major': False
                ,'en':
                    {'short': 'vet.med.'
                    ,'title': 'Veterinary medicine'
@@ -27574,9 +27561,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'vibr.monit.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'vibr.monit.'
                    ,'title': 'Vibration monitoring'
@@ -27599,9 +27586,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'video.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Multimedia'
+               {'is_valid': True
+               ,'major_en': 'Multimedia'
+               ,'is_major': False
                ,'en':
                    {'short': 'video.'
                    ,'title': 'Video recording'
@@ -27624,9 +27611,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'viet.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'viet.'
                    ,'title': 'Vietnamese'
@@ -27649,9 +27636,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'virol.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Life sciences'
+               {'is_valid': True
+               ,'major_en': 'Life sciences'
+               ,'is_major': False
                ,'en':
                    {'short': 'virol.'
                    ,'title': 'Virology'
@@ -27674,9 +27661,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'volcan.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Geology'
+               {'is_valid': True
+               ,'major_en': 'Geology'
+               ,'is_major': False
                ,'en':
                    {'short': 'volcan.'
                    ,'title': 'Volcanology'
@@ -27699,9 +27686,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'voll.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'voll.'
                    ,'title': 'Volleyball'
@@ -27724,9 +27711,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'vulg.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Stylistic values'
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': False
                ,'en':
                    {'short': 'vulg.'
                    ,'title': 'Vulgar'
@@ -27749,9 +27736,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'wales':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'wales'
                    ,'title': 'Wales'
@@ -27774,9 +27761,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'wareh.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Logistics'
+               {'is_valid': True
+               ,'major_en': 'Logistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'wareh.'
                    ,'title': 'Warehouse'
@@ -27799,9 +27786,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'waste.man.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Industry'
+               {'is_valid': True
+               ,'major_en': 'Industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'waste.man.'
                    ,'title': 'Waste management'
@@ -27824,9 +27811,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'watchm.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Machinery and mechanisms'
+               {'is_valid': True
+               ,'major_en': 'Machinery and mechanisms'
+               ,'is_major': False
                ,'en':
                    {'short': 'watchm.'
                    ,'title': 'Watchmaking'
@@ -27849,9 +27836,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'water.res.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Natural resourses and wildlife conservation'
+               {'is_valid': True
+               ,'major_en': 'Natural resourses and wildlife conservation'
+               ,'is_major': False
                ,'en':
                    {'short': 'water.res.'
                    ,'title': 'Water resources'
@@ -27874,9 +27861,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'water.suppl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Engineering'
+               {'is_valid': True
+               ,'major_en': 'Engineering'
+               ,'is_major': False
                ,'en':
                    {'short': 'water.suppl.'
                    ,'title': 'Water supply'
@@ -27899,9 +27886,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'waterski.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Outdoor activities and extreme sports'
+               {'is_valid': True
+               ,'major_en': 'Outdoor activities and extreme sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'waterski.'
                    ,'title': 'Waterskiing'
@@ -27924,9 +27911,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'weap.':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'weap.'
                    ,'title': 'Weapons and gunsmithing'
@@ -27949,9 +27936,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'weightlift.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Sports'
+               {'is_valid': True
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'weightlift.'
                    ,'title': 'Weightlifting'
@@ -27974,9 +27961,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'weld.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'weld.'
                    ,'title': 'Welding'
@@ -27999,9 +27986,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'welf.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Government, administration and public services'
+               {'is_valid': True
+               ,'major_en': 'Government, administration and public services'
+               ,'is_major': False
                ,'en':
                    {'short': 'welf.'
                    ,'title': 'Welfare & Social Security'
@@ -28024,9 +28011,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'well.contr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Oil and gas'
+               {'is_valid': True
+               ,'major_en': 'Oil and gas'
+               ,'is_major': False
                ,'en':
                    {'short': 'well.contr.'
                    ,'title': 'Well control'
@@ -28049,9 +28036,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'welln.':
-               {'valid': True
-               ,'major': True
-               ,'group': 'Wellness'
+               {'is_valid': True
+               ,'major_en': 'Wellness'
+               ,'is_major': True
                ,'en':
                    {'short': 'welln.'
                    ,'title': 'Wellness'
@@ -28071,9 +28058,9 @@ SUBJECTS = {'AI.':
                ,'uk':
                    {'short': 'крас.здор.'
                    ,'title': "Краса і здоров'я"}}, 'west.Ind.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Countries and regions'
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': False
                ,'en':
                    {'short': 'west.Ind.'
                    ,'title': 'West Indies'
@@ -28096,9 +28083,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'win.tast.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Food industry'
+               {'is_valid': True
+               ,'major_en': 'Food industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'win.tast.'
                    ,'title': 'Wine tasting'
@@ -28121,9 +28108,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'wind.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Energy industry'
+               {'is_valid': True
+               ,'major_en': 'Energy industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'wind.'
                    ,'title': 'Wind Energy'
@@ -28146,9 +28133,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'windows':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'windows'
                    ,'title': 'Windows'
@@ -28171,9 +28158,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'wine.gr.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'wine.gr.'
                    ,'title': 'Wine growing'
@@ -28196,9 +28183,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'winemak.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Food industry'
+               {'is_valid': True
+               ,'major_en': 'Food industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'winemak.'
                    ,'title': 'Winemaking'
@@ -28221,9 +28208,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'wir.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Construction'
+               {'is_valid': True
+               ,'major_en': 'Construction'
+               ,'is_major': False
                ,'en':
                    {'short': 'wir.'
                    ,'title': 'Wiring'
@@ -28246,9 +28233,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'wire.drw.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Industry'
+               {'is_valid': True
+               ,'major_en': 'Industry'
+               ,'is_major': False
                ,'en':
                    {'short': 'wire.drw.'
                    ,'title': 'Wire drawing'
@@ -28271,9 +28258,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'wnd.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Technology'
+               {'is_valid': True
+               ,'major_en': 'Technology'
+               ,'is_major': False
                ,'en':
                    {'short': 'wnd.'
                    ,'title': 'Winding'
@@ -28296,9 +28283,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'wood.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Wood, pulp and paper industries'
+               {'is_valid': True
+               ,'major_en': 'Wood, pulp and paper industries'
+               ,'is_major': False
                ,'en':
                    {'short': 'wood.'
                    ,'title': 'Wood processing'
@@ -28321,9 +28308,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'work.fl.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Records management'
+               {'is_valid': True
+               ,'major_en': 'Records management'
+               ,'is_major': False
                ,'en':
                    {'short': 'work.fl.'
                    ,'title': 'Work flow'
@@ -28346,9 +28333,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'wrest.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Martial arts and combat sports'
+               {'is_valid': True
+               ,'major_en': 'Martial arts and combat sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'wrest.'
                    ,'title': 'Wrestling'
@@ -28371,9 +28358,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'yacht.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Nautical'
+               {'is_valid': True
+               ,'major_en': 'Nautical'
+               ,'is_major': False
                ,'en':
                    {'short': 'yacht.'
                    ,'title': 'Yachting'
@@ -28396,9 +28383,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'yiddish.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Languages'
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': False
                ,'en':
                    {'short': 'yiddish.'
                    ,'title': 'Yiddish'
@@ -28421,9 +28408,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'zool.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Biology'
+               {'is_valid': True
+               ,'major_en': 'Biology'
+               ,'is_major': False
                ,'en':
                    {'short': 'zool.'
                    ,'title': 'Zoology'
@@ -28446,9 +28433,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'zoot.':
-               {'valid': True
-               ,'major': False
-               ,'group': 'Agriculture'
+               {'is_valid': True
+               ,'major_en': 'Agriculture'
+               ,'is_major': False
                ,'en':
                    {'short': 'zoot.'
                    ,'title': 'Zootechnics'
@@ -28471,9 +28458,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Игорь Миг':
-               {'valid': True
-               ,'major': False
-               ,'group': ''
+               {'is_valid': True
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'Игорь Миг'
                    ,'title': 'General'
@@ -28496,9 +28483,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Игорь Миг, abbr.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Grammatical labels'
+               {'is_valid': False
+               ,'major_en': 'Grammatical labels'
+               ,'is_major': False
                ,'en':
                    {'short': 'Игорь Миг, abbr.'
                    ,'title': 'Abbreviation'
@@ -28521,9 +28508,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Игорь Миг, calque.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Auxilliary categories (editor use only)'
+               {'is_valid': False
+               ,'major_en': 'Auxilliary categories (editor use only)'
+               ,'is_major': False
                ,'en':
                    {'short': 'Игорь Миг, calque.'
                    ,'title': 'Loan translation'
@@ -28546,9 +28533,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Игорь Миг, cloth.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Light industries'
+               {'is_valid': False
+               ,'major_en': 'Light industries'
+               ,'is_major': False
                ,'en':
                    {'short': 'Игорь Миг, cloth.'
                    ,'title': 'Clothing'
@@ -28571,9 +28558,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Игорь Миг, earth.sc.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': False
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'Игорь Миг, earth.sc.'
                    ,'title': 'Earth sciences'
@@ -28596,9 +28583,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Игорь Миг, hydrom.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Geography'
+               {'is_valid': False
+               ,'major_en': 'Geography'
+               ,'is_major': False
                ,'en':
                    {'short': 'Игорь Миг, hydrom.'
                    ,'title': 'Hydrometry'
@@ -28621,9 +28608,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Игорь Миг, inform.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'Игорь Миг, inform.'
                    ,'title': 'Informal'
@@ -28646,9 +28633,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Игорь Миг, quot.aph.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Literature'
+               {'is_valid': False
+               ,'major_en': 'Literature'
+               ,'is_major': False
                ,'en':
                    {'short': 'Игорь Миг, quot.aph.'
                    ,'title': 'Quotes and aphorisms'
@@ -28671,9 +28658,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Игорь Миг, sport.':
-               {'valid': False
-               ,'major': True
-               ,'group': 'Sports'
+               {'is_valid': False
+               ,'major_en': 'Sports'
+               ,'is_major': False
                ,'en':
                    {'short': 'Игорь Миг, sport.'
                    ,'title': 'Sports'
@@ -28696,9 +28683,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Игорь Миг, tagmem.':
-               {'valid': False
-               ,'major': False
-               ,'group': 'Linguistics'
+               {'is_valid': False
+               ,'major_en': 'Linguistics'
+               ,'is_major': False
                ,'en':
                    {'short': 'Игорь Миг, tagmem.'
                    ,'title': 'Tagmemics'
@@ -28721,9 +28708,9 @@ SUBJECTS = {'AI.':
                    }
                }
            ,'Игорь Миг, weap.':
-               {'valid': False
-               ,'major': False
-               ,'group': ''
+               {'is_valid': False
+               ,'major_en': ''
+               ,'is_major': False
                ,'en':
                    {'short': 'Игорь Миг, weap.'
                    ,'title': 'Weapons and gunsmithing'
@@ -28758,7 +28745,7 @@ class Subjects:
         ''' Short titles are more valid than full titles, e.g.,
             'Gruzovik, obs.' -> 'Obsolete / dated' due to a bug
             at multitran.com. Thus, it's not necessary to check for
-            'valid' key there.
+            'is_valid' key there.
         '''
         for key in SUBJECTS.keys():
             if SUBJECTS[key][self.lang]['short'] == short:
@@ -28785,13 +28772,13 @@ class Subjects:
         f = '[MClient] plugins.multitrancom.subjects.Subjects._get_group_en'
         for key in SUBJECTS.keys():
             if title == SUBJECTS[key][self.lang]['title']:
-                return SUBJECTS[key]['group']
+                return SUBJECTS[key]['major_en']
     
     def get_majors(self):
         # Takes ~0.0016s on Intel Atom
         majors = []
         for key in SUBJECTS.keys():
-            if SUBJECTS[key]['major'] and SUBJECTS[key]['valid']:
+            if SUBJECTS[key]['is_major'] and SUBJECTS[key]['is_valid']:
                 majors.append(SUBJECTS[key][self.lang]['title'])
         return sorted(majors)
     
@@ -28800,8 +28787,8 @@ class Subjects:
         major_en = self._get_major_en(title)
         if major_en:
             for key in SUBJECTS.keys():
-                if major_en == SUBJECTS[key]['group'] \
-                and SUBJECTS[key]['major']:
+                if major_en == SUBJECTS[key]['major_en'] \
+                and SUBJECTS[key]['is_major']:
                     return SUBJECTS[key][self.lang]['title']
         else:
             sh.com.rep_empty(f)
@@ -28829,8 +28816,8 @@ class Subjects:
         major_en = self._get_major_en(title)
         if major_en:
             for key in SUBJECTS.keys():
-                if major_en == SUBJECTS[key]['group'] \
-                and not SUBJECTS[key]['major']:
+                if major_en == SUBJECTS[key]['major_en'] \
+                and not SUBJECTS[key]['is_major']:
                     group.append(SUBJECTS[key][self.lang]['title'])
         else:
             sh.com.rep_empty(f)

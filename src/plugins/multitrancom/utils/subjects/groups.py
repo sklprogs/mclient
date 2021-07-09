@@ -60,7 +60,8 @@ SUBJECTS = [['Agriculture'
             ,'Meaning 2'
             ,'Meaning 3'
             ,'Misused'
-            ,'Old orthography', "Translator's false friend"
+            ,'Old orthography'
+            ,"Translator's false friend"
             ]
            ,['Aviation'
             ,'Aerial photography and topography'

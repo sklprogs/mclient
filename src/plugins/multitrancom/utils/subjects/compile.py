@@ -9,13 +9,31 @@ import plugins.multitrancom.utils.subjects.groups as gp
 class Compile:
     
     def __init__(self,Debug=False):
+        self.set_values()
+        self.Debug = Debug
+    
+    def set_values(self):
+        self.Debug = False
         self.Success = True
         self.file = '/home/pete/bin/mclient/tests/subjects_auto.txt'
         self.text = ''
         self.lst = []
+        self.vip = ['Gruzovik','Игорь Миг']
         self.subjects = {}
         self.colsno = 10
-        self.Debug = Debug
+    
+    def copy(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.compile.Compile.copy'
+        if self.Success:
+            if self.subjects:
+                sh.Clipboard().copy(self.subjects)
+                mes = _('Copied to clipboard. Paste it and press Return to exit.')
+                input(mes)
+            else:
+                self.Success = False
+                sh.com.rep_empty(f)
+        else:
+            sh.com.cancel(f)
     
     def _debug_attrs(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.compile.Compile._debug_attrs'
@@ -28,16 +46,17 @@ class Compile:
         for key in self.subjects:
             keys.append(key)
             en.append(self.subjects[key]['en']['title'])
-            valid.append(self.subjects[key]['valid'])
-            majors.append(self.subjects[key]['major'])
-            groups.append(self.subjects[key]['group'])
-        headers = (_('#'),_('KEY'),'EN',_('VALID'),_('MAJOR'),_('GROUP')
+            valid.append(self.subjects[key]['is_valid'])
+            majors.append(self.subjects[key]['is_major'])
+            groups.append(self.subjects[key]['major_en'])
+        headers = (_('#'),_('KEY'),'EN',_('VALID'),_('MAJOR')
+                  ,_('MAJOR (EN)')
                   )
         iterable = [nos,keys,en,valid,majors,groups]
-        # 10'' monitor: 30 symbols per column
+        # 10'' monitor: 25 symbols per column
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
-                           ,maxrow = 30
+                           ,maxrow = 25
                            ).run()
         return f + '\n' + mes
     
@@ -58,7 +77,7 @@ class Compile:
         uk = []
         for key in self.subjects:
             keys.append(key)
-            valid.append(self.subjects[key]['valid'])
+            valid.append(self.subjects[key]['is_valid'])
             en_short.append(self.subjects[key]['en']['short'])
             en.append(self.subjects[key]['en']['title'])
             ru_short.append(self.subjects[key]['ru']['short'])
@@ -101,6 +120,11 @@ class Compile:
                 return False
         return True
     
+    def _is_vip(self,item):
+        for vip in self.vip:
+            if vip in item:
+                return True
+    
     def compile(self):
         f = '[MClient] plugins.multitrancom.utils.subjects.compile.Compile.compile'
         if self.Success:
@@ -112,9 +136,12 @@ class Compile:
                         sh.objs.get_mes(f,mes,True).show_warning()
                     else:
                         self.subjects[row[0]] = {}
-                        self.subjects[row[0]]['valid'] = self._is_valid(row)
-                        self.subjects[row[0]]['major'] = gp.objs.get_groups().is_major(row[1])
-                        self.subjects[row[0]]['group'] = gp.objs.groups.get_major(row[1])
+                        self.subjects[row[0]]['is_valid'] = self._is_valid(row)
+                        major_en = gp.objs.get_groups().get_major(row[1])
+                        is_major = gp.objs.groups.is_major(row[1])
+                        is_vip = self._is_vip(row[0])
+                        self.subjects[row[0]]['major_en'] = major_en
+                        self.subjects[row[0]]['is_major'] = is_major and not is_vip
                         self.subjects[row[0]]['en'] = {}
                         self.subjects[row[0]]['ru'] = {}
                         self.subjects[row[0]]['de'] = {}
@@ -162,4 +189,4 @@ class Compile:
         self.split()
         self.compile()
         self.debug()
-        #print(self.subjects)
+        self.copy()

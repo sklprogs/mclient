@@ -364,12 +364,12 @@ class Commands:
         shorts = []
         titles = []
         for key in sj.SUBJECTS.keys():
-            if sj.SUBJECTS[key]['major']:
-                groups.append(sj.SUBJECTS[key]['group'])
+            if sj.SUBJECTS[key]['is_major']:
+                groups.append(sj.SUBJECTS[key]['major_en'])
                 shorts.append(sj.SUBJECTS[key]['en']['short'])
                 titles.append(sj.SUBJECTS[key]['en']['title'])
         nos = [i + 1 for i in range(len(groups))]
-        headers = (_('#'),_('GROUP'),_('SHORT'),_('TITLE'))
+        headers = (_('#'),_('MAJOR (EN)'),_('SHORT'),_('TITLE'))
         iterable = [nos,groups,shorts,titles]
         mes = sh.FastTable (iterable = iterable
                            ,headers = headers
