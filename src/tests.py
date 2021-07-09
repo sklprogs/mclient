@@ -49,20 +49,6 @@ class ArticleSubjects:
 
 
 
-class Tests:
-    
-    def run_speech(self):
-        import logic as lg
-        order = (_('Noun'),_('Verb'),_('Adjective'))
-        lg.objs.get_speech_prior().reset(order)
-        lg.objs.speech_prior.debug()
-    
-    def generate_config(self):
-        import config as cf
-        cf.CreateConfig().run()
-
-
-
 class Block:
     
     def __init__(self):
@@ -370,6 +356,40 @@ class Plugin:
 
 
 class Commands:
+    
+    def get_majors_en(self):
+        f = '[MClient] tests.Commands.get_majors_en'
+        import plugins.multitrancom.subjects as sj
+        groups = []
+        shorts = []
+        titles = []
+        for key in sj.SUBJECTS.keys():
+            if sj.SUBJECTS[key]['major']:
+                groups.append(sj.SUBJECTS[key]['group'])
+                shorts.append(sj.SUBJECTS[key]['en']['short'])
+                titles.append(sj.SUBJECTS[key]['en']['title'])
+        nos = [i + 1 for i in range(len(groups))]
+        headers = (_('#'),_('GROUP'),_('SHORT'),_('TITLE'))
+        iterable = [nos,groups,shorts,titles]
+        mes = sh.FastTable (iterable = iterable
+                           ,headers = headers
+                           ,maxrow = 30
+                           ).run()
+        sh.com.run_fast_debug(f,mes)
+    
+    def get_majors(self):
+        import plugins.multitrancom.subjects as sj
+        print(sj.objs.get_subjects().get_majors())
+    
+    def run_speech(self):
+        import logic as lg
+        order = (_('Noun'),_('Verb'),_('Adjective'))
+        lg.objs.get_speech_prior().reset(order)
+        lg.objs.speech_prior.debug()
+    
+    def generate_config(self):
+        import config as cf
+        cf.CreateConfig().run()
     
     def edit_priorities(self):
         import mclient as mc
@@ -723,6 +743,7 @@ if __name__ == '__main__':
     #Plugin().run_multitrancom()
     #com.show_about()
     #ArticleSubjects().run()
-    com.edit_blacklist()
+    #com.edit_blacklist()
     #com.edit_priorities()
+    com.get_majors_en()
     sh.com.end()
