@@ -12,6 +12,28 @@ class Check:
     def __init__(self):
         self.Success = True
     
+    def _has_title_en(self,title):
+        for key in sj.SUBJECTS.keys():
+            if title == sj.SUBJECTS[key]['en']['title']:
+                return True
+    
+    def get_missing_subjects(self):
+        f = 'plugins.multitrancom.utils.subjects.check.Check.get_missing_subjects'
+        if self.Success:
+            missing = []
+            for row in gr.SUBJECTS:
+                for subject in row:
+                    if not self._has_title_en(subject):
+                        missing.append(subject)
+            if missing:
+                sub = '\n'.join(sorted(set(missing)))
+                mes = _('Those subjects ({}) were not found:')
+                mes = mes.format(len(missing))
+                mes += '\n\n' + sub
+                sh.com.run_fast_debug(f,mes)
+        else:
+            sh.com.cancel(f)
+    
     def _search_major(self,major):
         for key in sj.SUBJECTS.keys():
             if sj.SUBJECTS[key]['is_major'] \
@@ -28,8 +50,9 @@ class Check:
                     if not self._search_major(major):
                         missing.append(major)
                 if missing:
-                    sub = '\n'.join(missing)
-                    mes = _('Those major subjects were not found:')
+                    sub = '\n'.join(sorted(set(missing)))
+                    mes = _('Those major subjects ({}) were not found:')
+                    mes = mes.format(len(missing))
                     mes += '\n\n' + sub
                     sh.com.run_fast_debug(f,mes)
             else:
@@ -40,3 +63,4 @@ class Check:
     
     def run(self):
         self.get_missing_majors()
+        self.get_missing_subjects()

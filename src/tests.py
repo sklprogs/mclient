@@ -729,7 +729,7 @@ com = Commands()
 
 
 if __name__ == '__main__':
-    f = '[MClient] plugins.stardict.tags.__main__'
+    f = '[MClient] tests.__main__'
     sh.com.start()
     #Get().run_multitrancom()
     #Get().run_dsl()
@@ -742,7 +742,7 @@ if __name__ == '__main__':
     #Tags().run_multitrancom()
     #Plugin().run_multitrancom()
     #com.show_about()
-    ArticleSubjects().run()
+    #ArticleSubjects().run()
     #com.edit_blacklist()
     #com.edit_priorities()
     #com.get_majors_en()
