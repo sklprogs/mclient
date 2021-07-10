@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MClient\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-09 21:32+0300\n"
-"PO-Revision-Date: 2021-07-09 21:33+0300\n"
+"POT-Creation-Date: 2021-07-11 00:19+0300\n"
+"PO-Revision-Date: 2021-07-11 00:20+0300\n"
 "Last-Translator: Peter Sklyar <skl.progs@gmail.com>\n"
 "Language-Team: ru <skl.progs@gmail.com>\n"
 "Language: ru_RU\n"
@@ -76,8 +76,8 @@ msgstr "Написать письмо автору"
 #: mclient/src/plugins/dsl/tags.py:125 mclient/src/plugins/dsl/tags.py:294
 #: mclient/src/plugins/multitrancom/tags.py:356
 #: mclient/src/plugins/multitrancom/tags.py:432
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:52
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:91
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:59
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:98
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:203
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:458
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:477
@@ -86,8 +86,8 @@ msgid "#"
 msgstr "№"
 
 #: mclient/src/cells.py:95
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:52
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:91
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:59
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:98
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:477
 #: mclient/src/subjects/subjects.py:76 skl_shared/src/shared.py:4077
 msgid "KEY"
@@ -1252,7 +1252,7 @@ msgstr "АББРЕВИАТУРА"
 #: mclient/src/plugins/multitrancom/pairs.py:2810
 #: mclient/src/plugins/multitrancom/run.py:93
 #: mclient/src/plugins/multitrancom/run.py:104
-#: mclient/src/plugins/multitrancom/subjects.py:28840
+#: mclient/src/plugins/multitrancom/subjects.py:29326
 #: mclient/src/plugins/multitrancom/utils/subjects/extract.py:363
 #: mclient/src/plugins/multitrancom/utils/utils.py:164
 #: mclient/src/plugins/multitrandem/elems.py:135
@@ -1283,7 +1283,7 @@ msgstr "Фраза"
 #: mclient/src/logic.py:154 mclient/src/logic.py:160
 #: mclient/src/mclient.py:2631 mclient/src/plugins/dsl/cleanup.py:109
 #: mclient/src/plugins/dsl/get.py:222
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:163
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:173
 #: mclient/src/plugins/multitrancom/utils/utils.py:68
 #: mclient/src/plugins/multitrancom/utils/utils.py:235
 #: mclient/src/plugins/multitrancom/utils/utils.py:333
@@ -1758,11 +1758,11 @@ msgstr "Невозможно продолжить ввиду некоррект�
 msgid "Goodbye!"
 msgstr "До свидания!"
 
-#: mclient/src/mkhtml.py:409
+#: mclient/src/mkhtml.py:397
 msgid "Nothing has been found (skipped subjects: {})."
 msgstr "Ничего не найдено (игнорировано тематик: {})."
 
-#: mclient/src/mkhtml.py:415
+#: mclient/src/mkhtml.py:403
 msgid "Nothing has been found."
 msgstr "Ничего не найдено."
 
@@ -14998,31 +14998,35 @@ msgstr "СТРОКА"
 msgid "CELL"
 msgstr "ЯЧЕЙКА"
 
-#: mclient/src/plugins/multitrancom/utils/subjects/check.py:32
-msgid "Those major subjects were not found:"
-msgstr "Не удалось найти следующие тематики:"
+#: mclient/src/plugins/multitrancom/utils/subjects/check.py:30
+msgid "Those subjects ({}) were not found:"
+msgstr "Не удалось найти следующие тематики ({}):"
 
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:30
+#: mclient/src/plugins/multitrancom/utils/subjects/check.py:54
+msgid "Those major subjects ({}) were not found:"
+msgstr "Не удалось найти следующие основные тематики ({}):"
+
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:37
 msgid "Copied to clipboard. Paste it and press Return to exit."
 msgstr ""
 "Скопировано в буфер обмена. Вставьте его содержимое и нажмите Return для "
 "выхода."
 
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:52
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:91
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:59
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:98
 msgid "VALID"
 msgstr "ВЕРНО"
 
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:52
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:59
 msgid "MAJOR"
 msgstr "ОСНОВНАЯ"
 
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:53
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:60
 #: mclient/src/tests.py:372
 msgid "MAJOR (EN)"
 msgstr "ОСНОВНАЯ (EN)"
 
-#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:134
+#: mclient/src/plugins/multitrancom/utils/subjects/compile.py:143
 msgid "Key \"{}\" already exists!"
 msgstr "Ключ \"{}\" уже существует!"
 
@@ -16518,6 +16522,9 @@ msgstr ""
 #: skl_shared/src/tests.py:1142
 msgid "Anchor: {}"
 msgstr "Привязка: {}"
+
+#~ msgid "Those major subjects were not found:"
+#~ msgstr "Не удалось найти следующие тематики:"
 
 #~ msgid "GROUP"
 #~ msgstr "ГРУППА"
