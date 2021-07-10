@@ -6,7 +6,432 @@ import locale
 from skl_shared.localize import _
 import skl_shared.shared as sh
 
-SUBJECTS = {'AI.':
+SUBJECTS = {'Wood, pulp and paper industries':
+               {'is_valid': True
+               ,'major_en': 'Wood, pulp and paper industries'
+               ,'is_major': True
+               ,'en':
+                   {'short': 'Wood, pulp and paper industries'
+                   ,'title': 'Wood, pulp and paper industries'
+                   }
+               ,'ru':
+                   {'short': 'Лесная и целюллозная промышленность'
+                   ,'title': 'Лесная и целюллозная промышленность'
+                   }
+               ,'de':
+                   {'short': 'Wood, pulp and paper industries'
+                   ,'title': 'Wood, pulp and paper industries'
+                   }
+               ,'es':
+                   {'short': 'Wood, pulp and paper industries'
+                   ,'title': 'Wood, pulp and paper industries'
+                   }
+               ,'uk':
+                   {'short': 'Лісова та целюлозна промисловість'
+                   ,'title': 'Лісова та целюлозна промисловість'
+                   }
+               }
+           ,'Subjects for Chinese dictionaries (container)':
+               {'is_valid': True
+               ,'major_en': 'Subjects for Chinese dictionaries (container)'
+               ,'is_major': True
+               ,'en':
+                   {'short': 'Subjects for Chinese dictionaries (container)'
+                   ,'title': 'Subjects for Chinese dictionaries (container)'
+                   }
+               ,'ru':
+                   {'short': 'Тематики для китайских словарей'
+                   ,'title': 'Тематики для китайских словарей'
+                   }
+               ,'de':
+                   {'short': 'Subjects for Chinese dictionaries (container)'
+                   ,'title': 'Subjects for Chinese dictionaries (container)'
+                   }
+               ,'es':
+                   {'short': 'Subjects for Chinese dictionaries (container)'
+                   ,'title': 'Subjects for Chinese dictionaries (container)'
+                   }
+               ,'uk':
+                   {'short': 'Тематики для китайських словників (конт.)'
+                   ,'title': 'Тематики для китайських словників (конт.)'
+                   }
+               }
+           ,'Stylistic values':
+               {'is_valid': True
+               ,'major_en': 'Stylistic values'
+               ,'is_major': True
+               ,'en':
+                   {'short': 'Stylistic values'
+                   ,'title': 'Stylistic values'
+                   }
+               ,'ru':
+                   {'short': 'Стили речи'
+                   ,'title': 'Стили речи'
+                   }
+               ,'de':
+                   {'short': 'Stilkathegorien'
+                   ,'title': 'Stilkathegorien'
+                   }
+               ,'es':
+                   {'short': 'Stylistic values'
+                   ,'title': 'Stylistic values'
+                   }
+               ,'uk':
+                   {'short': 'Стилі мовлення'
+                   ,'title': 'Стилі мовлення'
+                   }
+               }
+           ,'Philology':
+               {'is_valid': True
+               ,'major_en': 'Philology'
+               ,'is_major': True
+               ,'en':
+                   {'short': 'Philology'
+                   ,'title': 'Philology'
+                   }
+               ,'ru':
+                   {'short': 'Филология'
+                   ,'title': 'Филология'
+                   }
+               ,'de':
+                   {'short': 'Philologie'
+                   ,'title': 'Philologie'
+                   }
+               ,'es':
+                   {'short': 'Philology'
+                   ,'title': 'Philology'
+                   }
+               ,'uk':
+                   {'short': 'Філологія'
+                   ,'title': 'Філологія'
+                   }
+               }
+           ,'Parasciences':
+               {'is_valid': True
+               ,'major_en': 'Parasciences'
+               ,'is_major': True
+               ,'en':
+                   {'short': 'Parasciences'
+                   ,'title': 'Parasciences'
+                   }
+               ,'ru':
+                   {'short': 'Паранауки'
+                   ,'title': 'Паранауки'
+                   }
+               ,'de':
+                   {'short': 'Parawissenschaft'
+                   ,'title': 'Parawissenschaft'
+                   }
+               ,'es':
+                   {'short': 'Parasciences'
+                   ,'title': 'Parasciences'
+                   }
+               ,'uk':
+                   {'short': 'Паранауки'
+                   ,'title': 'Паранауки'
+                   }
+               }
+           ,'Outdoor activities and extreme sports':
+               {'is_valid': True
+               ,'major_en': 'Outdoor activities and extreme sports'
+               ,'is_major': True
+               ,'en':
+                   {'short': 'Outdoor activities and extreme sports'
+                   ,'title': 'Outdoor activities and extreme sports'
+                   }
+               ,'ru':
+                   {'short': 'Активный отдых и экстремальный спорт'
+                   ,'title': 'Активный отдых и экстремальный спорт'
+                   }
+               ,'de':
+                   {'short': 'Outdoor activities and extreme sports'
+                   ,'title': 'Outdoor activities and extreme sports'
+                   }
+               ,'es':
+                   {'short': 'Outdoor activities and extreme sports'
+                   ,'title': 'Outdoor activities and extreme sports'
+                   }
+               ,'uk':
+                   {'short': 'Активний відпочинок та екстемальний спорт'
+                   ,'title': 'Активний відпочинок та екстемальний спорт'
+                   }
+               }
+           ,'Machinery and mechanisms':
+               {'is_valid': True
+               ,'major_en': 'Machinery and mechanisms'
+               ,'is_major': True
+               ,'en':
+                   {'short': 'Machinery and mechanisms'
+                   ,'title': 'Machinery and mechanisms'
+                   }
+               ,'ru':
+                   {'short': 'Машины и механизмы'
+                   ,'title': 'Машины и механизмы'
+                   }
+               ,'de':
+                   {'short': 'Machinery and mechanisms'
+                   ,'title': 'Machinery and mechanisms'
+                   }
+               ,'es':
+                   {'short': 'Machinery and mechanisms'
+                   ,'title': 'Machinery and mechanisms'
+                   }
+               ,'uk':
+                   {'short': 'Машини та механізми'
+                   ,'title': 'Машини та механізми'
+                   }
+               }
+           ,'Light industries':
+               {'is_valid': True
+               ,'major_en': 'Light industries'
+               ,'is_major': True
+               ,'en':
+                   {'short': 'Light industries'
+                   ,'title': 'Light industries'
+                   }
+               ,'ru':
+                   {'short': 'Легкая промышленность'
+                   ,'title': 'Легкая промышленность'
+                   }
+               ,'de':
+                   {'short': 'Light industries'
+                   ,'title': 'Light industries'
+                   }
+               ,'es':
+                   {'short': 'Light industries'
+                   ,'title': 'Light industries'
+                   }
+               ,'uk':
+                   {'short': 'Легка промисловість'
+                   ,'title': 'Легка промисловість'
+                   }
+               }
+           ,'Languages':
+               {'is_valid': True
+               ,'major_en': 'Languages'
+               ,'is_major': True
+               ,'en':
+                   {'short': 'Languages'
+                   ,'title': 'Languages'
+                   }
+               ,'ru':
+                   {'short': 'Языки'
+                   ,'title': 'Языки'
+                   }
+               ,'de':
+                   {'short': 'Sprachen'
+                   ,'title': 'Sprachen'
+                   }
+               ,'es':
+                   {'short': 'Languages'
+                   ,'title': 'Languages'
+                   }
+               ,'uk':
+                   {'short': 'Мови'
+                   ,'title': 'Мови'
+                   }
+               }
+           ,'Jargon and slang':
+               {'is_valid': True
+               ,'major_en': 'Jargon and slang'
+               ,'is_major': True
+               ,'en':
+                   {'short': 'Jargon and slang'
+                   ,'title': 'Jargon and slang'
+                   }
+               ,'ru':
+                   {'short': 'Жаргонизмы и сленг'
+                   ,'title': 'Жаргонизмы и сленг'
+                   }
+               ,'de':
+                   {'short': 'Jargon and slang'
+                   ,'title': 'Jargon and slang'
+                   }
+               ,'es':
+                   {'short': 'Jargon and slang'
+                   ,'title': 'Jargon and slang'
+                   }
+               ,'uk':
+                   {'short': 'Жаргонізми та сленг'
+                   ,'title': 'Жаргонізми та сленг'
+                   }
+               }
+           ,'Grammatical labels':
+               {'is_valid': True
+               ,'major_en': 'Grammatical labels'
+               ,'is_major': True
+               ,'en':
+                   {'short': 'Grammatical labels'
+                   ,'title': 'Grammatical labels'
+                   }
+               ,'ru':
+                   {'short': 'Грамматические пометы'
+                   ,'title': 'Грамматические пометы'
+                   }
+               ,'de':
+                   {'short': 'Grammatische Begriffe'
+                   ,'title': 'Grammatische Begriffe'
+                   }
+               ,'es':
+                   {'short': 'Grammatical labels'
+                   ,'title': 'Grammatical labels'
+                   }
+               ,'uk':
+                   {'short': 'Граматичні помітки'
+                   ,'title': 'Граматичні помітки'
+                   }
+               }
+           ,'Emotional values':
+               {'is_valid': True
+               ,'major_en': 'Emotional values'
+               ,'is_major': True
+               ,'en':
+                   {'short': 'Emotional values'
+                   ,'title': 'Emotional values'
+                   }
+               ,'ru':
+                   {'short': 'Эмоциональная окраска речи'
+                   ,'title': 'Эмоциональная окраска речи'
+                   }
+               ,'de':
+                   {'short': 'Emotional values'
+                   ,'title': 'Emotional values'
+                   }
+               ,'es':
+                   {'short': 'Emotional values'
+                   ,'title': 'Emotional values'
+                   }
+               ,'uk':
+                   {'short': 'Емоційне забарвлення мовлення'
+                   ,'title': 'Емоційне забарвлення мовлення'
+                   }
+               }
+           ,'Crafts':
+               {'is_valid': True
+               ,'major_en': 'Crafts'
+               ,'is_major': True
+               ,'en':
+                   {'short': 'Crafts'
+                   ,'title': 'Crafts'
+                   }
+               ,'ru':
+                   {'short': 'Ремёсла и народные промыслы'
+                   ,'title': 'Ремёсла и народные промыслы'
+                   }
+               ,'de':
+                   {'short': 'Crafts'
+                   ,'title': 'Crafts'
+                   }
+               ,'es':
+                   {'short': 'Crafts'
+                   ,'title': 'Crafts'
+                   }
+               ,'uk':
+                   {'short': 'Ремесла та народні промисли'
+                   ,'title': 'Ремесла та народні промисли'
+                   }
+               }
+           ,'Countries and regions':
+               {'is_valid': True
+               ,'major_en': 'Countries and regions'
+               ,'is_major': True
+               ,'en':
+                   {'short': 'Countries and regions'
+                   ,'title': 'Countries and regions'
+                   }
+               ,'ru':
+                   {'short': 'Страны и регионы'
+                   ,'title': 'Страны и регионы'
+                   }
+               ,'de':
+                   {'short': 'Länder und Gebiete'
+                   ,'title': 'Länder und Gebiete'
+                   }
+               ,'es':
+                   {'short': 'Countries and regions'
+                   ,'title': 'Countries and regions'
+                   }
+               ,'uk':
+                   {'short': 'Країни і регіони'
+                   ,'title': 'Країни і регіони'
+                   }
+               }
+           ,'Companion animals':
+               {'is_valid': True
+               ,'major_en': 'Companion animals'
+               ,'is_major': True
+               ,'en':
+                   {'short': 'Companion animals'
+                   ,'title': 'Companion animals'
+                   }
+               ,'ru':
+                   {'short': 'Животные-компаньоны'
+                   ,'title': 'Животные-компаньоны'
+                   }
+               ,'de':
+                   {'short': 'Companion animals'
+                   ,'title': 'Companion animals'
+                   }
+               ,'es':
+                   {'short': 'Companion animals'
+                   ,'title': 'Companion animals'
+                   }
+               ,'uk':
+                   {'short': 'Тварини-компаньйони'
+                   ,'title': 'Тварини-компаньйони'
+                   }
+               }
+           ,'Auxilliary categories (editor use only)':
+               {'is_valid': True
+               ,'major_en': 'Auxilliary categories (editor use only)'
+               ,'is_major': True
+               ,'en':
+                   {'short': 'Auxilliary categories (editor use only)'
+                   ,'title': 'Auxilliary categories (editor use only)'
+                   }
+               ,'ru':
+                   {'short': 'Служебные пометы (для редакторов)'
+                   ,'title': 'Служебные пометы (для редакторов)'
+                   }
+               ,'de':
+                   {'short': 'Auxilliary categories (editor use only)'
+                   ,'title': 'Auxilliary categories (editor use only)'
+                   }
+               ,'es':
+                   {'short': 'Auxilliary categories (editor use only)'
+                   ,'title': 'Auxilliary categories (editor use only)'
+                   }
+               ,'uk':
+                   {'short': 'Службові помітки (для редакторів)'
+                   ,'title': 'Службові помітки (для редакторів)'
+                   }
+               }
+           ,'Art and culture (n.e.s.)':
+               {'is_valid': True
+               ,'major_en': 'Art and culture (n.e.s.)'
+               ,'is_major': True
+               ,'en':
+                   {'short': 'Art and culture (n.e.s.)'
+                   ,'title': 'Art and culture (n.e.s.)'
+                   }
+               ,'ru':
+                   {'short': 'Искусство и культура (прочее)'
+                   ,'title': 'Искусство и культура (прочее)'
+                   }
+               ,'de':
+                   {'short': 'Kunst und Kultur'
+                   ,'title': 'Kunst und Kultur'
+                   }
+               ,'es':
+                   {'short': 'Art and culture (n.e.s.)'
+                   ,'title': 'Art and culture (n.e.s.)'
+                   }
+               ,'uk':
+                   {'short': 'Мистецтво і культура (інше)'
+                   ,'title': 'Мистецтво і культура (інше)'
+                   }
+               }
+           ,'AI.':
                {'is_valid': True
                ,'major_en': 'Computing'
                ,'is_major': False
