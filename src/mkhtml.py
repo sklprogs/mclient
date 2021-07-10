@@ -4,7 +4,7 @@
 import io
 from skl_shared.localize import _
 import skl_shared.shared as sh
-import logic as lg
+import subjects.subjects as sj
 
 
 # Shortened
@@ -196,12 +196,12 @@ class HTM:
 
     def _is_blocked(self,lst):
         for item in lst:
-            if lg.objs.get_order().is_blocked(item):
+            if sj.objs.get_article().is_blocked(item):
                 return True
     
     def _is_prioritized(self,lst):
         for item in lst:
-            if lg.objs.get_order().is_prioritized(item):
+            if sj.objs.get_article().get_priority(item) > 0:
                 return True
     
     def _run_dic(self):
