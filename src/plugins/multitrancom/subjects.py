@@ -928,7 +928,10 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                ,'uk':
                    {'short': 'КТ'
-                   ,'title': "Комп'ютерна томографія"}}, 'Canada':
+                   ,'title': "Комп'ютерна томографія"
+                   }
+               }
+           ,'Canada':
                {'is_valid': True
                ,'major_en': 'Countries and regions'
                ,'is_major': False
@@ -1675,7 +1678,10 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                ,'uk':
                    {'short': 'Gruzovik, комп.'
-                   ,'title': "Комп'ютери"}}, 'Gruzovik, cryptogr.':
+                   ,'title': "Комп'ютери"
+                   }
+               }
+           ,'Gruzovik, cryptogr.':
                {'is_valid': False
                ,'major_en': 'Security systems'
                ,'is_major': False
@@ -4572,7 +4578,10 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                ,'uk':
                    {'short': 'ООН'
-                   ,'title': "Організація Об'єднаних Націй"}}, 'USA':
+                   ,'title': "Організація Об'єднаних Націй"
+                   }
+               }
+           ,'USA':
                {'is_valid': True
                ,'major_en': 'Countries and regions'
                ,'is_major': False
@@ -4994,7 +5003,10 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                ,'uk':
                    {'short': 'абрев., комп., мереж.'
-                   ,'title': "Абревіатура, Комп'ютерні мережі"}}, 'abbr., comp., net., IT':
+                   ,'title': "Абревіатура, Комп'ютерні мережі"
+                   }
+               }
+           ,'abbr., comp., net., IT':
                {'is_valid': False
                ,'major_en': ''
                ,'is_major': False
@@ -5016,7 +5028,10 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                ,'uk':
                    {'short': 'абрев., комп., мереж., IT'
-                   ,'title': "Абревіатура, Комп'ютерні мережі, Інформаційні технології"}}, 'abbr., fant./sci-fi.':
+                   ,'title': "Абревіатура, Комп'ютерні мережі, Інформаційні технології"
+                   }
+               }
+           ,'abbr., fant./sci-fi.':
                {'is_valid': False
                ,'major_en': ''
                ,'is_major': False
@@ -9188,7 +9203,10 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                ,'uk':
                    {'short': 'комп.'
-                   ,'title': "Комп'ютери"}}, 'comp., MS':
+                   ,'title': "Комп'ютери"
+                   }
+               }
+           ,'comp., MS':
                {'is_valid': False
                ,'major_en': 'Computing'
                ,'is_major': False
@@ -9235,7 +9253,10 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                ,'uk':
                    {'short': 'комп., мереж.'
-                   ,'title': "Комп'ютерні мережі"}}, 'comp., net., abbr.':
+                   ,'title': "Комп'ютерні мережі"
+                   }
+               }
+           ,'comp., net., abbr.':
                {'is_valid': False
                ,'major_en': ''
                ,'is_major': False
@@ -9257,7 +9278,10 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                ,'uk':
                    {'short': 'комп., мереж., абрев.'
-                   ,'title': "Комп'ютерні мережі, Абревіатура"}}, 'comp.games.':
+                   ,'title': "Комп'ютерні мережі, Абревіатура"
+                   }
+               }
+           ,'comp.games.':
                {'is_valid': True
                ,'major_en': 'Computing'
                ,'is_major': False
@@ -19019,7 +19043,10 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                ,'uk':
                    {'short': 'моб.зв.'
-                   ,'title': "Мобільний та стільниковий зв'язок"}}, 'modern':
+                   ,'title': "Мобільний та стільниковий зв'язок"
+                   }
+               }
+           ,'modern':
                {'is_valid': True
                ,'major_en': 'Stylistic values'
                ,'is_major': False
@@ -21665,7 +21692,10 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    ,'title': 'Piezoelectric crystals'
                    }
                ,'uk':
-                   {'short': "п'єз.", 'title': "П'єзокристали"}}, 'pipes.':
+                   {'short': "п'єз.", 'title': "П'єзокристали"
+                   }
+               }
+           ,'pipes.':
                {'is_valid': True
                ,'major_en': 'Construction'
                ,'is_major': False
@@ -23535,7 +23565,10 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                ,'uk':
                    {'short': 'рел., правосл.'
-                   ,'title': "Православ'я"}}, 'rel., hind.':
+                   ,'title': "Православ'я"
+                   }
+               }
+           ,'rel., hind.':
                {'is_valid': False
                ,'major_en': 'Mythology'
                ,'is_major': False
@@ -28507,7 +28540,10 @@ SUBJECTS = {'Wood, pulp and paper industries':
                    }
                ,'uk':
                    {'short': 'крас.здор.'
-                   ,'title': "Краса і здоров'я"}}, 'west.Ind.':
+                   ,'title': "Краса і здоров'я"
+                   }
+               }
+           ,'west.Ind.':
                {'is_valid': True
                ,'major_en': 'Countries and regions'
                ,'is_major': False
