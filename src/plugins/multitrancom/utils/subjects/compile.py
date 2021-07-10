@@ -1,9 +1,128 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import re
 from skl_shared.localize import _
 import skl_shared.shared as sh
 import plugins.multitrancom.utils.subjects.groups as gp
+
+
+class Missing:
+    
+    def __init__(self,Debug=False):
+        self.set_values()
+        self.Debug = Debug
+    
+    def _debug_wanted(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.compile.Missing._debug_wanted'
+        nos = [i + 1 for i in range(len(self.wanted))]
+        headers = (_('#'),_('TEXT'))
+        iterable = [nos,self.wanted]
+        mes = sh.FastTable (headers = headers
+                           ,iterable = iterable
+                           ,maxrow = 50
+                           ).run()
+        return f + ':\n' + mes
+    
+    def _debug_subjects(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.compile.Missing._debug_subjects'
+        nos = [i + 1 for i in range(len(self.subjects))]
+        rows = []
+        for i in range(len(self.subjects)):
+            row = self.subjects[i]
+            row.insert(0,i+1)
+            rows.append(row)
+        headers = (_('#'),'EN','RU','DE','ES','UK')
+        mes = sh.FastTable (iterable = rows
+                           ,headers = headers
+                           ,Transpose = True
+                           ,maxrow = 20
+                           ).run()
+        return f + ':\n' + mes
+    
+    def debug(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.compile.Missing.debug'
+        if self.Success:
+            if self.Debug:
+                mes = [self._debug_wanted(),self._debug_subjects()]
+                mes = '\n\n'.join(mes)
+                sh.com.run_fast_debug(f,mes)
+            else:
+                sh.com.rep_lazy(f)
+        else:
+            sh.com.cancel(f)
+    
+    def set_values(self):
+        self.Success = True
+        self.Debug = False
+        self.file_titles = '/home/pete/bin/mclient/tests/all_titles_auto.txt'
+        self.file_wanted = '/home/pete/bin/mclient/tests/translate titles.txt'
+        self.subjects = []
+        self.wanted = []
+        self.missing = []
+        self.text_titles = ''
+        self.text_wanted = ''
+        self.col_num = 5
+    
+    def _delete_no(self,row):
+        for i in range(len(row)):
+            row[i] = re.sub('@\d+','',row[i])
+        return row
+    
+    def split_titles(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.compile.Missing.split_titles'
+        if self.Success:
+            titles = self.text_titles.splitlines()
+            titles = [item.strip() for item in titles if item.strip()]
+            if titles:
+                for row in titles:
+                    row = row.split('\t')
+                    if len(row) == self.col_num:
+                        row = self._delete_no(row)
+                        self.subjects.append(row)
+                    else:
+                        self.Success = False
+                        sub = '{} == {}'.format(len(row),self.col_num)
+                        mes = _('The condition "{}" is not observed!')
+                        mes = mes.format(sub)
+                        sh.objs.get_mes(f,mes).show_warning()
+                        return
+            else:
+                self.Success = False
+                sh.com.rep_out(f)
+        else:
+            sh.com.cancel(f)
+    
+    def split_wanted(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.compile.Missing.split_wanted'
+        if self.Success:
+            self.wanted = self.text_wanted.splitlines()
+            self.wanted = [item.strip() for item in self.wanted \
+                           if item.strip()
+                          ]
+            if not self.wanted:
+                self.Success = False
+                sh.com.rep_out(f)
+        else:
+            sh.com.cancel(f)
+    
+    def load(self):
+        f = '[MClient] plugins.multitrancom.utils.subjects.compile.Missing.load'
+        if self.Success:
+            self.text_titles = sh.ReadTextFile(self.file_titles).get()
+            self.text_wanted = sh.ReadTextFile(self.file_wanted).get()
+            if not self.text_titles or not self.text_wanted:
+                self.Success = False
+                sh.com.rep_out(f)
+        else:
+            sh.com.cancel(f)
+    
+    def run(self):
+        self.load()
+        self.split_wanted()
+        self.split_titles()
+        self.debug()
+
 
 
 class Compile:
