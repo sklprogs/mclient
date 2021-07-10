@@ -19,7 +19,7 @@ class Check:
                 return True
     
     def get_missing_majors(self):
-        f = 'plugins.multitrancom.utils.subjects.get_missing_majors'
+        f = 'plugins.multitrancom.utils.subjects.check.Check.get_missing_majors'
         if self.Success:
             majors = gr.objs.get_groups().get_majors()
             if majors:

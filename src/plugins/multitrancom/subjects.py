@@ -6,6 +6,31 @@ import locale
 from skl_shared.localize import _
 import skl_shared.shared as sh
 
+''' About this dictionary:
+    - This structure describes subjects at multitran.com.
+    - Use plugins.multitrancom.utils.subjects to extract and process
+      these subjects.
+    - Generating SUBJECTS will warn about duplicate keys. Examine
+      these keys to ensure that all translations within these keys
+      correspond to each other.
+    - multitran.com divides subjects into major and normal ones;
+    - In order to get major subjects, log in to multitran.com, select
+      any article, click "Add". View the source of the web-page and
+      find "MajorToMinor" section. Change the interface language at
+      multitran.com, do the same. Launch the Python shell, copy and
+      paste the contents to a list, e.g., en = [...]. Create lists for
+      all languages. All subjects in this section come in the same
+      order. Use the index method to find subjects and
+      shared.Clipboard.copy to copy them. Do this for all missing
+      subjects that were not previously processed. Use
+      plugins.multitrancom.utils.subjects.check.Check.get_missing_majors
+      to get a list of such subjects.
+    - After SUBJECTS is created, run tests.Commands.get_majors_en and
+      review the list of major subject titles. Ensure that no user
+      names are included in this list.
+    - The result will be sorted and freed of duplicates, so subjects
+      may come in any order.
+'''
 SUBJECTS = {'Wood, pulp and paper industries':
                {'is_valid': True
                ,'major_en': 'Wood, pulp and paper industries'
